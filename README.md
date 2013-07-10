@@ -16,7 +16,7 @@ Table of contents:
     1. [Email messaging](#email-messaging)
     1. [Internationalization](#internationalization)
     1. [Unit tests](#unit-tests)
-    1. [Glue (Mano\)](#glue-mano)
+    1. [Glue (Mano)](#glue-mano)
         1. [Applications definition](#applications-definition)
         1. [Form submission Controllers](#form-submission-controllers)
         1. [Server-side program](#server-program)
