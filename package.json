@@ -1,0 +1,14 @@
+{
+  "name": "eregistrations",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Base framework for eregistrations applications",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/egovernment/eregistrations.git"
+  },
+  "engines": {
+    "node": ">=0.8"
+  },
+  "author": "UNCTAD team"
+}
