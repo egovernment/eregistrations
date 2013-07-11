@@ -17,7 +17,7 @@ Table of contents:
     1. [Internationalization](#internationalization)
     1. [Unit tests](#unit-tests)
     1. [Glue (Mano)](#glue-mano)
-        1. [Applications definition](#applications-definition)
+        1. [Applications & files organization](#applications-and-files-organization)
         1. [Form submission Controllers](#form-submission-controllers)
         1. [Server-side program](#server-program)
             1. [Initialization](#initialization)
@@ -120,7 +120,7 @@ It's scheduled to be heavily used in view templates, where we declaratively defi
 _if(greater(user._weight, 100), "You're fat!", " You look good!");
 ```
 
-Where `user._weight` implements mutable.
+Where `user._weight` implements mutable, and return value of `greater` and `_if` is also a mutable.
 
 See [documentation](https://github.com/medikoo/mutable) for more info
 
@@ -150,7 +150,7 @@ I also tried to coin the point in [presentation some while ago](http://www.medik
 
 If you're not familiar with `set`, Set is unordered collection of unique values, where value is any JavaScript value. We use `sets` heavily in [DBJS](#DBJS) they serve for multiple values and various object collections.
 
-This project should be (and will be) split into two, implementation of `set` up to ECMASCript 6 proposal, and `set-ext` (extensions for `set`). Currently as it's with [mutable](#mutable) it's in immature state, and is subject to many changes.
+This project should be (and will be) split into two, implementation of `set` up to ECMASCript 6 proposal, and `set-ext` (extensions for `set`). Currently as [mutable](#mutable) it's in immature state, and is subject to many changes.
 
 #### [dom-ext](https://github.com/medikoo/dom-ext) - DOM Utilities (extensions)
 
@@ -158,13 +158,79 @@ Equivalent for DOM API. List of all functions is currently missing in main doc, 
 
 ### Data modeling
 
-Here we're entering most powerful and most sophisticated part of the system. In common application we define models first in Database engine that persists our data, and then we try to resemble that in manual or more less automatic way via models written in language that we use, we connect both worlds and work like that.
+Here we're entering most powerful and most sophisticated part of the system. We use [DBJS](https://github.com/medikoo/dbjs) to handle all our data modeling needs.  
+__It's very important that you read [DBJS documentation](https://github.com/medikoo/dbjs)__ to see how engine is organized, how to define data models and how to work with data instances.
 
-In eRegistrations we define models directly (and just) in a language, using all things that JavaScript language has to offer (its types, functions, prototypal inheritance etc.). We do it through [DBJS](https://github.com/medikoo/dbjs) module. The persistent layer that is connected to DBJS is transparent to our work, and we don't need to deal with it directly. Technically persistent layer is low-level graph/key-value data representation, that is stored on a server.
+Currently we just put all data into MongoDB, and retrieve that on initialization, it is not effective and scalable approach when dealing with large amounts of data, but that's temporary solution. Plan for next months is to upgrade DBJS so it works with [LevelDB](http://dailyjs.com/2013/04/19/leveldb-and-node-1/) and is accompanied by both lazy loading and good scalability.
 
-Currently we just put all data into MongoDB, and retrieve that on initialization, it is not effective and scalable approach for large amounts of data, but that's temporary solution. Plan for next months is to upgrade DBJS so it works with [LevelDB](http://dailyjs.com/2013/04/19/leveldb-and-node-1/) and is accompanied by both lazy loading and good scalability.
+### Views & templates
 
-__It's very important that you read [DBJS documentiation](https://github.com/medikoo/dbjs)__ to see how engine is organized, how to define data models and how to work with data instances.
+#### Template language
 
+The common way across frameworks is to write HTML strings, concat them and inject via innerHTML. This is because it is what we were accustomed to, by serving static pages from a server to browsers in old days. Other reason is that HTML feels as most convenient way to many (especially designers, or front-end developers which don't want to mess with "server-side" language).
 
+The problem is that for SPA apps, HTML is limited approach, technically we write HTML, concat it, inject into DOM, and then get elements from DOM to do further processing.
+It can be simpler and we can be more effective if from a start we would work with a DOM. This problem was well described by Jed Smith, who is the author of DOMO (simple lib that stands on same principle as DOMJS we use). See: http://www.youtube.com/watch?feature=player_detailpage&v=_EsgFWU-xwU#t=573s
+
+So in eRegistrations we define templates with DOM, through [DOMJS](https://github.com/medikoo/domjs). It's actually plain JavaScript, see it's documentation for good introduction.
+
+What we're left with, is the problem of maintainability by designers or front-end developers.  
+First question, is, is it really a problem (?) Front-end developers are already familiar with JavaScript and it is not that they should work with unfamiliar language, in our case I already got two front-end developers from our team (Florent and Celia) working with that and they seem to do well by introducing and editing html on existing pages.
+
+Still, if there would be a need, we may also provide a HTML -> DOMJS converter, which [is provided in Facebook React](http://facebook.github.io/react/docs/syntax.html) which shares very same concept. It won't be difficult to configure such proxy, and we already have working _plain HTML to DOMJS_ converter.
+
+#### View files organization and URL routing
+
+All view files are grouped in _view_ folder (refer to [organization](#applications-and-files-organization) section).
+
+Each application has individual view folder, and has individual URL routing.
+
+Both URL's and Views are represented via individual trees, which are mapped together.
+
+Example of URL tree in Lomas user application:
+<img src="http://medyk.org/ereg-url-tree.png" />
+
+Example of View tree:
+<img src="http://medyk.org/ereg-view-tree.png" />
+
+If you look at the diagram of View tree, and at individual files in Lomas project, you'll see that each view is described by differences against it's parent. Currently it's in __routes.js_ file where it's decided which view descends from which. Differences are described by declaration of content for element of given id, e.g.:
+
+```javascript
+exports.main = function () {
+  // Replace content of #main element with following:
+  h1("New Main header");
+  p("New main content");
+};
+
+exports.footer = function () {
+  // Replace content of #footer element with following:
+  p("New footer content");
+};
+```
+
+We can also define new values for element attributes, and there's special handling for classes, e.g. in following we make sure that for #nextStepLi element class `active` was added
+```javascript
+exports.nextStepLi = { class: { active: true } };
+```
+
+If we need to define both attributes and new content for given element, then we provide new content via _''_ (empty string) property _(it's weird solution and is subject to change)_:
+
+```javascript
+exports.nextStepLi = {
+  class: { active: true },
+  '': function () {
+    // new content for element
+  }
+};
+```
+
+As it was already mentioned URL tree is mapped to View tree, it is currently done in __routes.js_ file, but in future such mapping will be read from organization of file tree. In above (Lomas) example following mapping was made:
+
+* index.js -> /
+* otras-caracteristicas.js -> /otras-caracteristicas/
+* ingrese-sus-datos.js -> /ingrese-sus-datos/
+* representante/index.js -> /representante/:id/
+* documentos.js -> /documentos/
+* envie.js -> /envie/
+* perfil.js -> /perfil/
 
