@@ -6,10 +6,10 @@ Table of contents:
 1. [Introduction](#introduction)
     1. [Language](#language)
     1. [Modules system](#modules-system)
-    1. [Quality maintanance](#quality-maintanance)
+    1. [Quality maintenance](#quality-maintenance)
 1. [Architecture](#architecture)
     1. [Low-level utilities](#low-level utilities)
-    1. [Data modelling](#data-modelling)
+    1. [Data modeling](#data-modeling)
     1. [Views & templates](#views-and-templates)
     1. [Legacy browsers handling](#legacy browsers handling)
     1. [Authentication](#authentication)
@@ -156,7 +156,7 @@ This project should be (and will be) split into two, implementation of `set` up 
 
 Equivalent for DOM API. List of all functions is currently missing in main doc, but they can be read from list of files in corresponding folders.
 
-### Data modelling
+### Data modeling
 
 Here we're entering most powerful and most sophisticated part of the system. In common application we define models first in Database engine that persists our data, and then we try to resemble that in manual or more less automatic way via models written in language that we use, we connect both worlds and work like that.
 
