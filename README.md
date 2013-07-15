@@ -185,7 +185,13 @@ First question, is, is it really a problem (?) Front-end developers are already 
 Still, if there would be a need, we may also provide a cross HTML to DOMJS format, something similar [is already provided in Facebook React](http://facebook.github.io/react/docs/syntax.html) which shares very same concept.
 
 ##### Batch conversion of HTML into DOMJS
-If you need to convert large portions of HTML into DOMJS, doing such by hand can be timetaking task, for that there's HTML -> DOMJS converter, you can use it from the shell:
+If you need to convert large portions of HTML into DOMJS, doing such by hand can be timetaking task, for that there's HTML -> DOMJS converter, which you  can use from the shell.
+
+**Note: it needs additional `jsdom` package installed:**
+
+    $ npm install jsdom
+
+Run converter with following command:
 
     $ node node_modules/domjs/bin/html-to-domjs --output=output.js input.html
 
