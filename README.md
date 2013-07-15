@@ -692,3 +692,39 @@ User application statuses (e.g. _application submitted_, _at revision_ etc.) are
 * For part A (Guia -> Application submission steps) in `/user/model/user/process.js`.
 * For part B (Application submission -> Release of requested documents) in `/user-submitted/model/user/user.js
 
+## Development (work) organization
+
+We follow generally agreed good practices that are followed by developers of popular open source projects today.
+
+Each programmer should work on his fork, and submit the work as pull request, which then is revised and accepted for master. Revision and acceptance of work should be done by other developer who is already experienced with application architecture.
+
+It's important that development is not made on _master_ branch of a fork. Ideally each feature should be implemented in own dedicated branch, which can be deleted after finished feature is merged into master repository.
+
+To avoid conflicts, programmer's fork should be updated with origin on regular basis, good practice is to update it each morning on a day of work on application.
+
+#### How to update your fork so it's up to date with origin repository
+
+If you're not that familiar with git, following step by step instruction should be helpful
+
+Open github shell in a path of your repository. You can do it from Github desktop app: _eregistrations-* -> tools -> open a shell here_.
+
+Firstly you need to make that you have already added _main_ repository to your git configuration. It's the thing that you do only once, with following command we name _main_ repository as `main`:
+
+```
+git remote add main git@github.com:egovernment/eregistrations-*.git
+```
+
+Be sure to replace `eregistrations-*` with exact name of eregistrations project you're gonna develop.
+
+After _main_ repository is configured, you can update your fork by executing following commands.
+
+* `git checkout master` (switch to master branch)
+* `git pull main master` (pull and merge changes from origin repository)
+* `git push` (push merged changes to github)
+* `git checkout name-of-your-working-branch` (switch to your working branch)
+* `git merge master` (merge your branch with master)
+* `git push` (push merged changes to github)
+
+After executing above, when you start/restart app, you'll see the most recent version of application.
+
+
