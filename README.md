@@ -27,7 +27,7 @@ Table of contents:
             1. [Client-side program](#client-side program)
     1. [Alphabetical list of all core packages](#alphabetical-list-of-all-core-packages)
 1. [Organization of eRegistrations logic](#organization-of-eregistrations-logic)
-1. [Development (work) organization](#developement-work-organization)
+1. [Development (work) organization](#development-work-organization)
 
 ## Introduction
 
