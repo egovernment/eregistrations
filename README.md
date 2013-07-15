@@ -180,9 +180,14 @@ It can be simpler and we can be more effective if from a start we would work wit
 So in eRegistrations we define templates with DOM, through [DOMJS](https://github.com/medikoo/domjs). It's actually plain JavaScript, see it's documentation for good introduction.
 
 What we're left with, is the problem of maintainability by designers or front-end developers.  
-First question, is, is it really a problem (?) Front-end developers are already familiar with JavaScript and it is not that they should work with unfamiliar language, in our case I already got two front-end developers from our team (Florent and Celia) working with that and they seem to do well by introducing and editing html on existing pages.
+First question, is, is it really a problem (?) Front-end developers are already familiar with JavaScript and it is not that they're forced to work with unfamiliar language, in our case we already have two front-end developers from our team working with that and they seem to do well by introducing and editing html on existing pages.
 
-Still, if there would be a need, we may also provide a HTML -> DOMJS converter, which [is provided in Facebook React](http://facebook.github.io/react/docs/syntax.html) which shares very same concept. It won't be difficult to configure such proxy, and we already have working _plain HTML to DOMJS_ converter.
+Still, if there would be a need, we may also provide a cross HTML to DOMJS format, something similar [is already provided in Facebook React](http://facebook.github.io/react/docs/syntax.html) which shares very same concept.
+
+##### Batch conversion of HTML into DOMJS
+If you need to convert large portions of HTML into DOMJS, doing such by hand can be timetaking task, for that there's HTML -> DOMJS converter, you can use it from the shell:
+
+    $ node node_modules/domjs/bin/html-to-domjs --output=output.js input.html
 
 #### View files organization and URL routing
 
