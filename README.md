@@ -172,17 +172,24 @@ After you get familiar with how DBJS works, be sure to check following projects:
 
 #### Template language
 
-The common way across frameworks is to write HTML strings, concat them and inject via innerHTML. This is because it is what we were accustomed to, by serving static pages from a server to browsers in old days. Other reason is that HTML feels as most convenient way to many (especially designers, or front-end developers which don't want to mess with "server-side" language).
+The common way across frameworks is to write HTML strings, concat them and inject via innerHTML.
 
-The problem is that for SPA apps, HTML is limited approach, technically we write HTML, concat it, inject into DOM, and then get elements from DOM to do further processing.
-It can be simpler and we can be more effective if from a start we would work with a DOM. This problem was well described by Jed Smith, who is the author of DOMO (simple lib that stands on same principle as DOMJS we use). See: http://www.youtube.com/watch?feature=player_detailpage&v=_EsgFWU-xwU#t=573s
+There are few valid reasons for that. Firstly, it's what we're used to. In old days we served static HTML pages to browsers, that's how web applications where build and server.
 
-So in eRegistrations we define templates with DOM, through [DOMJS](https://github.com/medikoo/domjs). It's actually plain JavaScript, see it's documentation for good introduction.
+Other reason is that HTML is convenient and readable format, and finally to work with plain HTML is especially important for designers or front-end developers which are not familiar with "server-side" language.
 
-What we're left with, is the problem of maintainability by designers or front-end developers.  
-First question, is, is it really a problem (?) Front-end developers are already familiar with JavaScript and it is not that they're forced to work with unfamiliar language, in our case we already have two front-end developers from our team working with that and they seem to do well by introducing and editing html on existing pages.
+The problem is that for SPA apps, where we need to configure a lot of dynamic behaviors, defining view with HTML started to be a limited approach.
 
-Still, if there would be a need, we may also provide a cross HTML to DOMJS format, something similar [is already provided in Facebook React](http://facebook.github.io/react/docs/syntax.html) which shares very same concept.
+Technically we write HTML, concat it, inject into DOM, and then get elements from DOM to do further configuration. 
+This closed circle limits our work, we need configure simple behaviors in cumbersome and errorprone way. This problem was also [well described by Jed Smith](http://www.youtube.com/watch?feature=player_detailpage&v=_EsgFWU-xwU#t=573s), who is the author of [DOMO](https://github.com/jed/domo) (simple lib that stands on same principle as DOMJS we use): 
+
+This is the reason in eRegistrations we build DOM directly, and we use [DOMJS](https://github.com/medikoo/domjs) engine which allows us to do it in most straightforward and readable way.
+
+What we're left with, is the problem of maintainability.
+
+First thing that we need to acknowledge, DOMJS is plain JavaScript, and that's the language any front-end developer is familiar with. So it shouldn't be a blocker for any dev to be able to edit DOMJS files. In first eRegistrations projets we already have two front-end developers working with that and they seem to do well by introducing and editing html on existing pages.
+
+If still for some reason, it's advisable to maintain plain HTML (e.g. when we deal with a lot of static HTML like pages for public website) [our view engine also supports plain HTML injection](#defining-views-with-plain-html) and as long as there's no need to introduce any dynamic behaviors it's perfect solution for that.
 
 ##### Batch conversion of HTML into DOMJS
 If you need to convert large portions of HTML into DOMJS, doing such by hand can be timetaking task, for that there's HTML -> DOMJS converter, which you  can use from the shell.
@@ -249,6 +256,54 @@ As it was already mentioned URL tree is mapped to View tree, it is currently don
 * documentos.js -> /documentos/
 * envie.js -> /envie/
 * perfil.js -> /perfil/
+
+##### Defining views with plain HTML
+
+If we deal with static HTML and we prefer maintain it as such. We can define our views with HTML.
+
+Instead of:
+```javascript
+exports.main = function () {
+  p("DOM injection");
+};
+```
+
+We can do:
+```javascript
+exports.main = '<p>Plain HTML injection</p>';
+```
+
+and as [Webmake reads also plain .html files](https://github.com/medikoo/modules-webmake#working-with-html-and-css)
+we can also keep our HTML in dedicated files:
+
+_main-body.html_
+```html
+<p>Plain HTML</p>
+```
+
+_template.js_
+```javascript
+exports.main = require('./main-body');
+```
+
+We can also mix DOMJS with plain HTML:
+```javascript
+exports.main = function () {
+  p("DOM injection");
+  html('<p>Plain HTML injection</p>');
+};
+```
+
+or:
+
+```javascript
+exports.main = function () {
+  p("DOM injection");
+  html(require('./main-body'));
+};
+```
+
+
 
 #### Legacy browsers handling
 
