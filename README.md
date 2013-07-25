@@ -368,11 +368,12 @@ Provides `$.radioMatch(container, name, map)`. Same as `select-match` but for ra
 
 Dynamic tabs configuration.
 
-Firstly decide whether you want to configure tabs dynamically at this level. If they're about changing main content of a webpage, then you should configure them with plain views and plain urls. Do not use this module for that.
+First decide whether you really want to configure tabs with this solution. If they're going to switch main content of a webpage, then you should configure them with plain views and plain urls. Do not use this module for that.
 
-If however tabs that you want to configure doesn't change main content, but rather content displayed aside, then this solution is right choice.
+If however tabs that you want to configure doesn't change main content, but rather content displayed aside, then this solution is good choice.
 
-Example of tabs configuration:
+To use tabs module, you need to build HTML structure and configure basic CSS on your own.
+Below it's example of such configuration.
 
 HTML:
 ```html
@@ -400,9 +401,10 @@ JavaScript:
 $.tabs('some-tabs'); // Pass id to tabs navigation bar
 ```
 
-If you'd like to use this pattern in few places, or you want to use tabs in plain HTML templates, you can configure them through `live` functionality. See [Preconfigured live configuration](#preconfigured-live-configuration) section for more information how it works.
+Tab content that needs to be switched is found by parsing element ids out of link `href` attributes.
+Then internal logic just switches `active` class across content containers. It's as simple as that.
 
-After following setup, `$.tabs` configuration will be run on all `ul` elements with `tabs` class.
+If you'd like to use this solution in few places, or you want to use tabs in plain HTML templates, you can configure them through `live` functionality. See [Preconfigured live configuration](#preconfigured-live-configuration) section for more information on how it works. Below setup will run`$.tabs` configuration on all `ul` elements with `tabs` class.
 
 ```javascript
 $.live('ul', 'class', 'tabs', $.tabs);
