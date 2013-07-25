@@ -334,15 +334,79 @@ Currently some behaviours (those required from `mano-legacy/element#`) are set d
 
 You can check list of all modules in `mano-legacy` project. Explanation of some that are often used:
 
-* `element#/class` - Provides `el.addClass`, `el.removeClass`, `el.toggleClass` and `el.hasClass` for elements
-* `element#/event` - Provides `el.addEvent`, `el.removeEvent` through which we can assign DOM events, additionally `$.preventDefault(event)`, `$.stopPropagation(event)`
-* `element#/get-by-class` - Provides `el.getByClass(name, className)`, get all descendant elements of given _name_ having given _class_. It's to be used, when we need something more than `getElementById` or `getElementsByTagName`.
-* `element#/toggle` - Provides `el.exclude` (removes element from document), `el.include` (puts element back), `el.toggle(true|false)` if argument is true runs `include` if false `exclude`
+###### element#/class
 
-* `on-env-update` - Provides `$.onEnvUpdate(el, fn)` - Through that we configure given function to be run whenever internal environment of provided DOM element has been changed. Usually we pass `form` as an element, and function is run whenever any value of form was changed. This is used when we want to react _live_ to `<form>` changes, and change some other statuses on page. in eRegistrations project we update Guia page state with that.
-* `dbjs-form-fill` - Provides `$.onEnvUpdate(obj, form)` - Fills given object with values read from given form. We use it with objects that resembles DBJS model in legacy logic.
-* `select-match` - Provides `$.selectMatch(select, map)`. In some cases we need to show some controls only if select is selected with given value. This is the function that configures such behavior. We provide select element, and map describing which elements should be shown if given value is selected (if value is not selected they're automatically hidden)
-* `radio-match` - Provides `$.selectMatch(container, name, map)`. Same as `select-match` but for radios. In that case we need to provide the _container_ that holds all radio inputs, _name_ of radio inputs we're after, and same _map_ as we provide to `selectMatch`.
+Provides `el.addClass`, `el.removeClass`, `el.toggleClass` and `el.hasClass` for elements
+
+###### element#/event
+
+Provides `el.addEvent`, `el.removeEvent` through which we can assign DOM events, additionally `$.preventDefault(event)`, `$.stopPropagation(event)`
+
+###### element#/get-by-class
+
+Provides `el.getByClass(name, className)`, get all descendant elements of given _name_ having given _class_. It's to be used, when we need something more than `getElementById` or `getElementsByTagName`.
+
+###### element#/toggle
+Provides `el.exclude` (removes element from document), `el.include` (puts element back), `el.toggle(true|false)` if argument is true runs `include` if false `exclude`
+
+###### on-env-update
+Provides `$.onEnvUpdate(el, fn)` - Through that we configure given function to be run whenever internal environment of provided DOM element has been changed. Usually we pass `form` as an element, and function is run whenever any value of form was changed. This is used when we want to react _live_ to `<form>` changes, and change some other statuses on page. in eRegistrations project we update Guia page state with that.
+
+###### dbjs-form-fill
+
+Provides `$.onEnvUpdate(obj, form)` - Fills given object with values read from given form. We use it with objects that resembles DBJS model in legacy logic.
+
+###### select-match
+
+Provides `$.selectMatch(select, map)`. In some cases we need to show some controls only if select is selected with given value. This is the function that configures such behavior. We provide select element, and map describing which elements should be shown if given value is selected (if value is not selected they're automatically hidden).
+
+###### radio-match
+
+Provides `$.radioMatch(container, name, map)`. Same as `select-match` but for radios. In that case we need to provide the _container_ that holds all radio inputs, _name_ of radio inputs we're after, and same _map_ as we provide to `selectMatch`.
+
+###### tabs
+
+Dynamic tabs configuration.
+
+Firstly decide whether you want to configure tabs dynamically at this level. If they're about changing main content of a webpage, then you should configure them with plain views and plain urls. Do not use this module for that.
+
+If however tabs that you want to configure doesn't change main content, but rather content displayed aside, then this solution is right choice.
+
+Example of tabs configuration:
+
+HTML:
+```html
+<ul class="tabs" id="some-tabs">
+  <li><a href="#one">One</a></li>
+  <li><a href="#two">Two</a></li>
+  <li><a href="#three">Three</a></li>
+</ul>
+<div class="tabs-content">
+  <div id="one" class="active">… One content …</div>
+  <div id="two">… Two content …</div>
+  <div id="three">… Three content …</div>
+</div>
+```
+
+CSS:
+```css
+div.tabs-content > div { display: none; }
+div.tabs-content > div.active { display: block; }
+```
+
+JavaScript:
+
+```javascript
+$.tabs('some-tabs'); // Pass id to tabs navigation bar
+```
+
+If you'd like to use this pattern in few places, or you want to use tabs in plain HTML templates, you can configure them through `live` functionality. See [Preconfigured live configuration](#preconfigured-live-configuration) section for more information how it works.
+
+After following setup, `$.tabs` configuration will be run on all `ul` elements with `tabs` class.
+
+```javascript
+$.live('ul', 'class', 'tabs', $.tabs);
+```
 
 ##### How to configure behaviors for legacy layer.
 
