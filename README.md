@@ -306,6 +306,9 @@ Not ok: `<DIV ID='my_div'></DIV>`
 Ok: `<img src="/images/xxx.png" />`  
 Not ok: `<img src="../images/xxx.png" />`
 1. Do not configure empty url's in links as `<a href="#">`. They make url's dirty, and on reload many browsers do not refresh assets if URL includes `#`. If you don't want the link to link anywhere just omit `href` attribute (just do `<a>`), or if it's placeholder for not yet existing url, make it empty: `<a href="">` it will be clean and will have same effect.
+1. All URL's referenced in href needs to end with `/`.  
+Ok: `href="/guide/"` or if we have query `href="/guide/?foo=bar"` or hash `href="/guide/#tab"`    
+Not ok: `href="/guide"`  
 1. Do not include any inline scripts, or reference JavaScript functions in HTML attributes. We use plain HTML only for static content. If we need some dynamic handling, we should use DOMJS.  
 The only dynamic behavior that is Ok to use in plain HTML is one which we can configure via [mano-legacy/live](https://github.com/egovernment/eregistrations#preconfigured-live-configuration) with plain classes or `data-*` attributes.
 
