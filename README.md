@@ -823,6 +823,8 @@ We follow generally agreed good practices that are followed by developers of pop
 
 Each programmer should work on his fork, and submit the work as pull request, which then is revised and accepted for master. Revision and acceptance of work should be done by other developer who is already experienced with application architecture.
 
+Whenever you submit pull request, please mention the person that should revise it in pull request body (e.g. `/cc @medikoo`). It's important as in case of specific notifications configuration, maintainer of repository may not be notified automatically. Mentioning revisor assures that email with Pull Request notification lands in his mailbox.
+
 It's important that development is not made on _master_ branch of a fork. Ideally each feature should be implemented in own dedicated branch, which can be deleted after finished feature is merged into master repository.
 
 To avoid conflicts, programmer's fork should be updated with origin on regular basis, good practice is to update it each morning on a day of work on application.
