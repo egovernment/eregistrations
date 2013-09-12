@@ -6,6 +6,7 @@ var Db         = require('dbjs')
 exports = module.exports = Db.Object.create('StatusLog', {
 	label: StringLine.required,
 	time: Db.DateTime.required,
+	official: Db.User,
 	text: Db.String.required
 });
 
