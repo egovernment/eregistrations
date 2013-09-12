@@ -29,6 +29,7 @@ exports.forEach(function (conf) {
 	conf.trigger.on('add', function (user) {
 		user.statusLog.add(new StatusLog({
 			label: conf.label,
+			official: conf.official ? user[conf.official] : null,
 			time: new Date(),
 			text: conf.text(user)
 		}));
