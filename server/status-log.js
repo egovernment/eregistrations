@@ -7,6 +7,7 @@ var template       = require('es5-ext/string/#/template')
   , resolveTrigger = require('./_resolve-trigger')
 
   , forEach = Array.prototype.forEach
+  , nextTick = process.nextTick
   , StatusLog = mano.db.StatusLog
   , configure;
 
@@ -27,11 +28,13 @@ mano.apps.forEach(function (app) {
 
 exports.forEach(function (conf) {
 	conf.trigger.on('add', function (user) {
-		user.statusLog.add(new StatusLog({
-			label: conf.label,
-			official: conf.official ? user[conf.official] : null,
-			time: new Date(),
-			text: conf.text(user)
-		}));
+		nextTick(function () {
+			user.statusLog.add(new StatusLog({
+				label: conf.label,
+				official: conf.official ? user[conf.official] : null,
+				time: new Date(),
+				text: conf.text(user)
+			}));
+		});
 	});
 });
