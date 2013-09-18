@@ -29,12 +29,16 @@ mano.apps.forEach(function (app) {
 exports.forEach(function (conf) {
 	conf.trigger.on('add', function (user) {
 		nextTick(function () {
+			var text;
+			mano.db.valueObjectMode = true;
+			text = conf.text(user);
+			mano.db.valueObjectMode = false;
 			user.statusLog.add(new StatusLog({
 				label: conf.label,
 				official: conf.official ? user[conf.official] : null,
 				time: new Date(Date.now() +
 					(conf.timeShift ? (conf.timeShift * 100) : 0)),
-				text: conf.text(user)
+				text: text
 			}));
 		});
 	});
