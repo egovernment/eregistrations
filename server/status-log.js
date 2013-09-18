@@ -32,7 +32,8 @@ exports.forEach(function (conf) {
 			user.statusLog.add(new StatusLog({
 				label: conf.label,
 				official: conf.official ? user[conf.official] : null,
-				time: new Date(),
+				time: new Date(Date.now() +
+					(conf.timeShift ? (conf.timeShift * 100) : 0)),
 				text: conf.text(user)
 			}));
 		});
