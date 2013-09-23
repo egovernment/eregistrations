@@ -10,6 +10,7 @@ maxlen 80
 ass
 nomen
 plusplus
+stupid
 
 ./server
-predef+ process
+predef+ process, __dirname
