@@ -93,7 +93,15 @@ It works by re-running lint command on each file save and showing output log in 
 
 #### XLint integration with WebStorm
 
-The best known way is to configure XLint as external tool, with following details:
+The are two ways:
+
+##### Integrate as Google Closure linter (for v7+ versions of WebStorm)
+
+Go to _Preferences -> JavaScript -> Code Quality Tools -> Closure Linter_ and choose `bin/lint-webstorm` as _Closure Linter executable file_ and `bin/lint-webstorm.conf` as _Configuration file_
+
+##### Integrate as external tool
+
+Go to _Preferences -> External Tools_ and add new tool with following settings:
 * __Program__: `npm` (on Windows put `npm.cmd`)
 * __Parameters__: `run lint-log-console`, it's different flavor of live console than one mentioned above. This one doesn't try to alter perviously outputed content, and as control characters doesn't work in WebStorm console, it's much better to use that version.
 * __Working directory__: `$ProjectFileDir$` (assuming that root directory of the repository matches root directory of WebStorm project).
