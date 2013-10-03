@@ -97,7 +97,7 @@ The are two ways:
 
 ##### Integrate as Google Closure linter (for v7+ versions of WebStorm)
 
-Go to _Preferences -> JavaScript -> Code Quality Tools -> Closure Linter_ and choose `bin/lint-webstorm` as _Closure Linter executable file_ and `bin/lint-webstorm.conf` as _Configuration file_
+Go to _Preferences -> JavaScript -> Code Quality Tools -> Closure Linter_ enable it and choose `bin/lint-webstorm` (on Windows: `bin/lint-webstorm.cmd`) as _Closure Linter executable file_ and `bin/lint-webstorm.conf` as _Configuration file_
 
 ##### Integrate as external tool
 
