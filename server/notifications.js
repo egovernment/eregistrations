@@ -29,7 +29,6 @@ getTo = function (user, to) {
 	return to;
 };
 
-
 getCc = function (user, cc) {
 	if (cc == null) return null;
 	if (typeof cc === 'function') return cc(user);
