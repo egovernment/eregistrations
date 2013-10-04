@@ -15,7 +15,7 @@ var isObject = require('es5-ext/object/is-object')
   , basename = path.basename, dirname = path.dirname, resolve = path.resolve
   , defaults = mano.mail.config, defVars = { url: mano.env.url,
 		domain: mano.env.url && urlParse(mano.env.url).host }
-  , setup, getFrom, getTo;
+  , setup, getFrom, getTo, getCc;
 
 getFrom = function (user, from) {
 	if (from == null) return defaults.from;
@@ -27,6 +27,12 @@ getTo = function (user, to) {
 	if (to == null) return user.email;
 	if (typeof to === 'function') return to(user);
 	return to;
+};
+
+getCc = function (user, cc) {
+	if (cc == null) return null;
+	if (typeof cc === 'function') return cc(user);
+	return cc;
 };
 
 setup = function (path) {
@@ -74,6 +80,7 @@ setup = function (path) {
 		mano.mail({
 			from: getFrom(user, settings.from),
 			to: getTo(user, settings.to),
+			cc: getCc(user, settings.cc),
 			subject: getSubject(user),
 			text: text
 		});
