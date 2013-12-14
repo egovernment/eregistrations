@@ -1,6 +1,6 @@
 'use strict';
 
-var template       = require('es5-ext/string/#/template')
+var template       = require('./template')
   , mano           = require('mano')
   , tryRequire     = require('mano/lib/utils/try-require').bind(require)
   , resolve        = require('path').resolve

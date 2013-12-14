@@ -1,7 +1,7 @@
 'use strict';
 
 var isObject = require('es5-ext/object/is-object')
-  , template = require('es5-ext/string/#/template')
+  , template = require('./template')
   , deferred = require('deferred')
   , memoize  = require('memoizee/lib/primitive')
   , delay    = require('timers-ext/delay')
