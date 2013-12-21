@@ -79,9 +79,9 @@ module.exports = function (value) {
 	state = $common;
 	while ((char = str[i++])) (state = state());
 	result.push([name, str.slice(last).trim()]);
-	return result.map(function (data) {
+	return '[\n\t' + result.map(function (data) {
 		var name = data[0], value = [data[1]];
 		if ((name[0] !== '\'') && (name[0] !== '"')) name = stringify(name);
 		return '[' + name + ', ' + value + ']';
-	}).join(',\n\t');
+	}).join(',\n\t') + '\n]';
 };
