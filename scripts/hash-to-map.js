@@ -78,7 +78,6 @@ module.exports = function (value) {
 	i = last = 0;
 	state = $common;
 	while ((char = str[i++])) (state = state());
-	result.push([name, str.slice(last).trim()]);
 	return '[\n\t' + result.map(function (data) {
 		var name = data[0], value = [data[1]];
 		if ((name[0] !== '\'') && (name[0] !== '"')) name = stringify(name);
