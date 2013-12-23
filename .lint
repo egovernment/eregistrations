@@ -12,5 +12,6 @@ nomen
 plusplus
 stupid
 
+./bin
 ./server
 predef+ process, __dirname
