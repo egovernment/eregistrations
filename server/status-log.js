@@ -1,10 +1,10 @@
 'use strict';
 
-var template       = require('./template')
-  , mano           = require('mano')
+var mano           = require('mano')
   , tryRequire     = require('mano/lib/utils/try-require').bind(require)
   , resolve        = require('path').resolve
   , resolveTrigger = require('./_resolve-trigger')
+  , template       = require('./template')
 
   , forEach = Array.prototype.forEach
   , nextTick = process.nextTick

@@ -1,7 +1,6 @@
 'use strict';
 
 var isObject = require('es5-ext/object/is-object')
-  , template = require('./template')
   , deferred = require('deferred')
   , memoize  = require('memoizee/lib/primitive')
   , delay    = require('timers-ext/delay')
@@ -11,6 +10,7 @@ var isObject = require('es5-ext/object/is-object')
   , urlParse = require('url').parse
   , mano     = require('mano')
   , users    = require('../users')
+  , template = require('./template')
 
   , basename = path.basename, dirname = path.dirname, resolve = path.resolve
   , defaults = mano.mail.config, defVars = { url: mano.env.url,

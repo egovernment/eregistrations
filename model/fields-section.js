@@ -1,18 +1,21 @@
 'use strict';
 
-var Db         = require('dbjs')
-  , StringLine = require('dbjs-ext/string/string-line')
-  , User       = require('../../../user/model/user')
+var db = require('mano').db
+
   , FieldsSection;
 
-FieldsSection = module.exports = Db.Object.create('FieldsSection', {
-	caption: StringLine.required,
-	fields: StringLine.rel({ required: true, multiple: true }),
-	order: Db.Number.rel(0),
-	target: StringLine
+require('dbjs-ext/string/string-line')(db);
+
+FieldsSection = module.exports = db.Object.extend('FieldsSection', {
+	caption: { type: db.StringLine, required: true },
+	fields: { type: db.StringLine, required: true, multiple: true },
+	order: { type: db.Number, value: 0 },
+	target: { type: db.StringLine }
 });
 
-FieldsSection.prototype.set('sections', FieldsSection.rel({ multiple: true }));
+FieldsSection.prototype.define('sections',
+	{ type: FieldsSection, multiple: true });
 
-User.set('fieldSections', FieldsSection.rel({ multiple: true }));
-Db.DocumentRequest.set('fieldSections', FieldsSection.rel({ multiple: true }));
+db.User.define('fieldSections', { type: FieldsSection, multiple: true });
+db.DocumentRequest.define('fieldSections',
+	{ type: FieldsSection, multiple: true });

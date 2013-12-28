@@ -1,13 +1,14 @@
 'use strict';
 
-var Db         = require('dbjs')
-  , StringLine = require('dbjs-ext/string/string-line');
+var db = require('mano').db;
 
-exports = module.exports = Db.Object.create('StatusLog', {
-	label: StringLine.required,
-	time: Db.DateTime.required,
-	official: Db.User,
-	text: Db.String.required
+require('dbjs-ext/string/string-line')(db);
+
+exports = module.exports = db.Object.extend('StatusLog', {
+	label: { type: db.StringLine, required: true },
+	time: { type: db.DateTime, required: true },
+	official: { type: db.User },
+	text: { type: db.String, required: true }
 });
 
-Db.User.prototype.set('statusLog', exports.rel({ multiple: true }));
+db.User.prototype.define('statusLog', { type: exports, multiple: true });
