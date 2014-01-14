@@ -27,7 +27,7 @@ module.exports = function (set, meta, fragment) {
 			fragment.sets.delete(getFragment(event.value));
 			return;
 		}
-		throw new TypeError("Unsupported event");
+		throw new TypeError("Unsupported event: " + event.type);
 	});
 	return fragment;
 };
