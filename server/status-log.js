@@ -6,10 +6,11 @@ var mano           = require('mano')
   , resolveTrigger = require('./_resolve-trigger')
   , template       = require('./template')
 
-  , forEach = Array.prototype.forEach
+  , now = Date.now, forEach = Array.prototype.forEach
   , nextTick = process.nextTick
+  , stdout = process.stdout.write.bind(process.stdout)
   , StatusLog = mano.db.StatusLog
-  , configure;
+  , configure, time;
 
 exports = module.exports = [];
 
@@ -20,6 +21,8 @@ configure = function (conf) {
 	exports.push(conf);
 };
 
+time = now();
+stdout("Setup status log...");
 mano.apps.forEach(function (app) {
 	var conf = tryRequire(resolve(app.root, 'server/status-log'));
 	if (!conf) return;
@@ -43,3 +46,4 @@ exports.forEach(function (conf) {
 		});
 	});
 });
+console.log(" setup in " + ((now() - time) / 1000).toFixed(2) + "s\n");
