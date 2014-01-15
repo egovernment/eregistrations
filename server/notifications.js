@@ -47,7 +47,7 @@ setup = function (path) {
 	} else if (isObject(settings.trigger)) {
 		set = settings.trigger;
 	} else {
-		set = users.filterByProperty(settings.trigger,
+		set = users.filterByKey(settings.trigger,
 			(typeof settings.triggerValue === 'undefined') ? true :
 					settings.triggerValue);
 	}
