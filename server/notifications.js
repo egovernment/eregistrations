@@ -12,10 +12,12 @@ var isObject = require('es5-ext/object/is-object')
   , users    = require('../users')
   , template = require('./template')
 
+  , now = Date.now
   , basename = path.basename, dirname = path.dirname, resolve = path.resolve
+  , stdout = process.stdout.write.bind(process.stdout)
   , defaults = mano.mail.config, defVars = { url: mano.env.url,
 		domain: mano.env.url && urlParse(mano.env.url).host }
-  , setup, getFrom, getTo, getCc;
+  , setup, getFrom, getTo, getCc, time;
 
 getFrom = function (user, from) {
 	if (from == null) return defaults.from;
@@ -87,6 +89,8 @@ setup = function (path) {
 	}, 500));
 };
 
+time = now();
+stdout("Setup notifications...");
 deferred.map(mano.apps, function (app) {
 	return readdir(resolve(app.root, 'server/notifications'),
 		{ pattern: /\.js$/ })(function (names) {
@@ -96,4 +100,6 @@ deferred.map(mano.apps, function (app) {
 	}, function (e) {
 		if (e.code !== 'ENOENT') throw e;
 	});
+}).done(function () {
+	console.log(" setup in " + ((now() - time) / 1000).toFixed(2) + "s\n");
 });
