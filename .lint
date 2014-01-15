@@ -1,6 +1,5 @@
 @root
 
-es5
 module
 
 tabs
@@ -11,6 +10,8 @@ ass
 nomen
 plusplus
 stupid
+
+predef+ console
 
 ./bin
 ./server
