@@ -30,7 +30,7 @@ mano.apps.forEach(function (app) {
 });
 
 exports.forEach(function (conf) {
-	conf.trigger.on('add', function (user) {
+	var onUser = function (user) {
 		nextTick(function () {
 			var text;
 			mano.db.valueObjectMode = true;
@@ -44,6 +44,21 @@ exports.forEach(function (conf) {
 				text: text
 			}));
 		});
+	};
+	conf.trigger.on('change', function (event) {
+		if (event.type === 'add') {
+			onUser(event.value);
+			return;
+		}
+		if (event.type === 'delete') return;
+		if (event.type === 'batch') {
+			if (!event.added) return;
+			if (!event.added.size) return;
+			event.added.forEach(onUser);
+			return;
+		}
+		console.log("Errorneous event:", event);
+		throw new Error("Unsupported event: " + event.type);
 	});
 });
 stdout(" setup in " + ((now() - time) / 1000).toFixed(2) + "s\n");

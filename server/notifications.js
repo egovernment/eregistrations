@@ -37,7 +37,8 @@ getCc = function (user, cc) {
 
 setup = function (path) {
 	var dir = dirname(path), name = basename(path, '.js')
-	  , settings = require(path), getSubject, getText, set, getTemplate;
+	  , settings = require(path), getSubject, getText, set, getTemplate
+	  , sendMail;
 
 	if (settings.trigger == null) throw new TypeError("No trigger found");
 	if (typeof settings.trigger === 'function') {
@@ -72,7 +73,7 @@ setup = function (path) {
 		getText = template.call(settings.text, settings.variables || defVars);
 	}
 
-	set.on('add', delay(function (user) {
+	sendMail = delay(function (user) {
 		var text;
 		mano.db.valueObjectMode = true;
 		text = getText(user);
@@ -84,7 +85,23 @@ setup = function (path) {
 			subject: getSubject(user),
 			text: text
 		});
-	}, 500));
+	}, 500);
+
+	set.on('change', function (event) {
+		if (event.type === 'add') {
+			sendMail(event.value);
+			return;
+		}
+		if (event.type === 'delete') return;
+		if (event.type === 'batch') {
+			if (!event.added) return;
+			if (!event.added.size) return;
+			event.added.forEach(sendMail);
+			return;
+		}
+		console.log("Errorneous event:", event);
+		throw new Error("Unsupported event: " + event.type);
+	});
 };
 
 deferred.map(mano.apps, function (app) {
