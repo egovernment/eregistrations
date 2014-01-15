@@ -46,4 +46,4 @@ exports.forEach(function (conf) {
 		});
 	});
 });
-console.log(" setup in " + ((now() - time) / 1000).toFixed(2) + "s\n");
+stdout(" setup in " + ((now() - time) / 1000).toFixed(2) + "s\n");
