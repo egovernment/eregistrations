@@ -33,12 +33,10 @@ exports.forEach(function (conf) {
 	var onUser = function (user) {
 		nextTick(function () {
 			var text;
-			mano.db.valueObjectMode = true;
 			text = conf.text(user);
-			mano.db.valueObjectMode = false;
 			user.statusLog.add(new StatusLog({
 				label: conf.label,
-				official: conf.official ? user[conf.official] : null,
+				official: (conf.official && user[conf.official]) || null,
 				time: new Date(Date.now() +
 					(conf.timeShift ? (conf.timeShift * 100) : 0)),
 				text: text
