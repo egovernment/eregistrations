@@ -39,7 +39,7 @@ getCc = function (user, cc) {
 };
 
 getAttachments = function (user, att) {
-	if (att == null) return null;
+	if (att == null) return [];
 	if (typeof att === 'function') {
 		return att(user);
 	}
