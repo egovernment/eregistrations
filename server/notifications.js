@@ -1,6 +1,7 @@
 'use strict';
 
 var isObject = require('es5-ext/object/is-object')
+  , map      = require('es5-ext/object/map')
   , deferred = require('deferred')
   , memoize  = require('memoizee/lib/primitive')
   , delay    = require('timers-ext/delay')
@@ -11,11 +12,13 @@ var isObject = require('es5-ext/object/is-object')
   , mano     = require('mano')
   , users    = require('../users')
   , template = require('./template')
+  , isCallable = require('es5-ext/object/is-callable')
+  , escape = require('ent').encode
 
   , basename = path.basename, dirname = path.dirname, resolve = path.resolve
   , defaults = mano.mail.config, defVars = { url: mano.env.url,
 		domain: mano.env.url && urlParse(mano.env.url).host }
-  , setup, getFrom, getTo, getCc;
+  , setup, getFrom, getTo, getCc, escapeWrap, getAttachments;
 
 getFrom = function (user, from) {
 	if (from == null) return defaults.from;
@@ -35,10 +38,29 @@ getCc = function (user, cc) {
 	return cc;
 };
 
+getAttachments = function (user, att) {
+	if (att == null) return [];
+	if (typeof att === 'function') {
+		return att(user);
+	}
+	return [];
+};
+
+escapeWrap = function (settings) {
+	return map(settings, function (value) {
+		if (value && isCallable(value)) {
+			return function (ctx) {
+				return escape(value(ctx));
+			};
+		}
+		return escape(value);
+	});
+};
+
 setup = function (path) {
 	var dir = dirname(path), name = basename(path, '.js')
 	  , settings = require(path), getSubject, getText, set, getTemplate
-	  , sendMail;
+	  , sendMail, content, vars;
 
 	if (settings.trigger == null) throw new TypeError("No trigger found");
 	if (typeof settings.trigger === 'function') {
@@ -59,8 +81,16 @@ setup = function (path) {
 	getSubject = template.call(settings.subject, settings.variables || defVars);
 
 	if (settings.text == null) {
-		getText = template.call(readFile(resolve(dir, name + '.txt')),
-			settings.variables || defVars);
+		try {
+			content = readFile(resolve(dir, name + '.txt'));
+		} catch (e) {
+			if (e.code !== 'ENOENT') throw e;
+			content = readFile(resolve(dir, name + '.html'));
+			settings.isHtml = true;
+		}
+		vars = settings.variables || defVars;
+		if (settings.isHtml) vars = escapeWrap(vars);
+		getText = template.call(content, vars);
 	} else if (typeof settings.text === 'function') {
 		getTemplate = memoize(function (path) {
 			return template.call(readFile(resolve(dir, path + '.txt')),
@@ -70,21 +100,26 @@ setup = function (path) {
 			return getTemplate(settings.text(context))(context);
 		};
 	} else {
-		getText = template.call(settings.text, settings.variables || defVars);
+		vars = settings.variables || defVars;
+		if (settings.isHtml) vars = escapeWrap(vars);
+		getText = template.call(settings.text, vars);
 	}
 
 	sendMail = delay(function (user) {
-		var text;
+		var text, mailOpts;
 		mano.db.valueObjectMode = true;
 		text = getText(user);
 		mano.db.valueObjectMode = false;
-		mano.mail({
+		mailOpts = {
 			from: getFrom(user, settings.from),
 			to: getTo(user, settings.to),
 			cc: getCc(user, settings.cc),
 			subject: getSubject(user),
-			text: text
-		});
+			attachments: getAttachments(user, settings.attachments)
+		};
+		if (settings.isHtml) mailOpts.html = text;
+		else mailOpts.text = text;
+		mano.mail(mailOpts);
 	}, 500);
 
 	set.on('change', function (event) {
