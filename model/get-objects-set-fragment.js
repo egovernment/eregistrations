@@ -7,7 +7,7 @@ var memoize      = require('memoizee/lib/primitive')
   , getId = function (obj) { return obj.__id__; };
 
 module.exports = function (set, meta, fragment) {
-	var getFragment, onAdd;
+	var getFragment, onAdd, onDelete;
 
 	if (!fragment) fragment = new Fragment();
 	getFragment = memoize(function (obj) {
@@ -17,6 +17,7 @@ module.exports = function (set, meta, fragment) {
 	set.forEach(onAdd = function (obj) {
 		fragment.sets.add(getFragment(obj));
 	});
+	onDelete = function (obj) { fragment.sets.delete(getFragment(obj)); };
 
 	set.on('change', function (event) {
 		if (event.type === 'add') {
@@ -24,9 +25,15 @@ module.exports = function (set, meta, fragment) {
 			return;
 		}
 		if (event.type === 'delete') {
-			fragment.sets.delete(getFragment(event.value));
+			onDelete(event.value);
 			return;
 		}
+		if (event.type === 'batch') {
+			if (event.added) event.added.forEach(onAdd);
+			if (event.deleted) event.deleted.forEach(onDelete);
+			return;
+		}
+		console.log("Errorneous event:", event);
 		throw new TypeError("Unsupported event: " + event.type);
 	});
 	return fragment;
