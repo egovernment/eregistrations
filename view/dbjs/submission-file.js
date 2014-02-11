@@ -8,7 +8,7 @@ var d        = require('d/d')
 
   , db       = require('mano').db;
 
-Object.defineProperties(db.SubmissionFile, {
+module.exports = Object.defineProperties(db.SubmissionFile, {
 	inputOptions: d({
 		render: function (options) {
 			var el = this.make, label = options.label;
