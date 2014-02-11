@@ -11,10 +11,15 @@ var d        = require('d/d')
 Object.defineProperties(db.SubmissionFile, {
 	inputOptions: d({
 		render: function (options) {
-			var el = this.make;
+			var el = this.make, label = options.label;
+			if (label == null) {
+				if (options.dbOptions) label = options.dbOptions.label;
+				if (label == null) label = db.SubmissionFile.uploadLabel;
+				if (label == null) label = "Select file";
+			}
 			return el('div', this.valueDOM = el('ul', { class: 'documents' }),
 				el('div', { class: 'btn-upload' },
-					el('label', options.label,
+					el('label', label,
 						this.control = el('input', { type: 'file' }))));
 		},
 		renderItem: function (file) {
