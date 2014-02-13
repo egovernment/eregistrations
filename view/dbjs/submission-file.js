@@ -6,21 +6,33 @@ var d        = require('d/d')
   , map      = require('observable-value/map')
   , resolve  = require('observable-value/resolve')
 
-  , db       = require('mano').db;
+  , db       = require('mano').db
+  , normRe = /[$#:\/]/g;
 
 module.exports = Object.defineProperties(db.SubmissionFile, {
 	inputOptions: d({
 		render: function (options) {
-			var el = this.make, label = options.label;
+			var el = this.make, label = options.label, dom, errorTxt, errorSpan;
 			if (label == null) {
 				if (options.dbOptions) label = options.dbOptions.label;
 				if (label == null) label = db.SubmissionFile.uploadLabel;
 				if (label == null) label = "Select file";
 			}
-			return el('div', this.valueDOM = el('ul', { class: 'documents' }),
+			dom = el('div', this.valueDOM = el('ul', { class: 'documents' }),
 				el('div', { class: 'btn-upload' },
 					el('label', label,
-						this.control = el('input', { type: 'file' }))));
+						this.control = el('input', { type: 'file' }))),
+				errorSpan = el('span', { class: 'error-message-' +
+					options.dbOptions.__id__.replace(normRe, '-') }, ""));
+			errorTxt = errorSpan.firstChild;
+			this.control.addEventListener('invalid', function (e) {
+				e.preventDefault();
+				errorTxt.data = this.validationMessage;
+			});
+			this.control.addEventListener('change', function () {
+				errorTxt.data = "";
+			});
+			return dom;
 		},
 		renderItem: function (file) {
 			var el = this.make, data = {}, remove;
