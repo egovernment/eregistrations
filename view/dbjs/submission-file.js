@@ -40,7 +40,7 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 			data.dom = el('li', { 'data-id': file.__id__ });
 
 			remove = isNested(file)
-				? file.owner._clearNested_.bind(file.owner, file.__sKey__)
+				? file._clear_.bind(file)
 				: this.removeItem.bind(this, data.dom);
 
 			data.dom.appendChild(_if(file._url, el('span',
@@ -57,8 +57,7 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 					el('i', { class: 'icon-trash' })),
 				el('a', { href: file._url, target: '_blank',
 					class: 'dlBtn thumb-doc-action' },
-					el('i', { class: 'icon-arrow-down' }))),
-				el('input', { type: 'hidden', name: this.name, value: file.__id__ }))
+					el('i', { class: 'icon-arrow-down' }))))
 				.toDOM(this.document));
 			return data;
 		}
