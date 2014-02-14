@@ -32,8 +32,10 @@ module.exports = function (user/*, options*/) {
 		docName = replace.call(docName, ' ', '-');
 		zipFileName = user.applicationNumber + "." + docName;
 		doc.files.forEach(function (file) {
-			var fileExtension = path.extname(file.path)
-			  , archFile = zipFileName;
+			var fileExtension, archFile;
+			if (!file.path) return;
+			fileExtension = path.extname(file.path);
+			archFile = zipFileName;
 			if (index) archFile += '.' + index;
 			archFile += fileExtension;
 			archFile = unidecode(archFile);
