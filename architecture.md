@@ -1,5 +1,4 @@
 # eRegistrations Application Architecture
----
 
 **eRegistrations** is full-stack JavaScript project, that means both **client** and **server** side logic is programmed in **JavaScript**.  
 
