@@ -1,6 +1,6 @@
 'use strict';
 
-var d        = require('d/d')
+var d        = require('d')
   , isNested = require('dbjs/is-dbjs-nested-object')
   , _if      = require('observable-value/if')
   , map      = require('observable-value/map')
