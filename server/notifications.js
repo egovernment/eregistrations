@@ -3,7 +3,7 @@
 var isObject = require('es5-ext/object/is-object')
   , map      = require('es5-ext/object/map')
   , deferred = require('deferred')
-  , memoize  = require('memoizee/lib/primitive')
+  , memoize  = require('memoizee')
   , delay    = require('timers-ext/delay')
   , readFile = require('fs').readFileSync
   , path     = require('path')

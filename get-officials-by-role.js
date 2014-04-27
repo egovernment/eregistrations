@@ -1,6 +1,6 @@
 'use strict';
 
-var memoize = require('memoizee/lib/primitive'),
+var memoize = require('memoizee/plain'),
 	officials = require('./officials');
 
 module.exports = memoize(function (roleName) {
