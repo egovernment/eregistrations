@@ -19,7 +19,11 @@ Application server-side process runs on [Node.js](http://nodejs.org/) platform. 
 
 ##### Persistent DB
 
-[mongoDB](https://www.mongodb.org/) is used to save data persistently to disk space. Its role doesn't expand beyond simple key-value storage. It is planned to be replaced with [levelDB](https://code.google.com/p/leveldb/) within next months.
+Persistently we save data in very low-level state, exactly just _key: value_ pairs. Currently we use [mongoDB](https://www.mongodb.org/) for that but it is planned to be replaced with [levelDB](https://code.google.com/p/leveldb/) within next months.
+
+For relational level handling of data like: joins, configuration of filters and other compositions, we use in-memory [DBJS](https://github.com/medikoo/dbjs#dbjs) engine. It allows us to compose and work with data in same language as we program application, it provides all means of access, that normally SQL databases provide, and it goes far beyond that.
+
+Above setup with well thought configuration assures us with great scalability, we can easily load-balance traffic and data handling to many different servers, and maintenance is much easier as we use one programming language across all application.
 
 ##### Binary files storage
 
