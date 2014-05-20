@@ -1,24 +1,23 @@
 'use strict';
 
-var isObject = require('es5-ext/object/is-object')
-  , map      = require('es5-ext/object/map')
-  , deferred = require('deferred')
-  , memoize  = require('memoizee')
-  , delay    = require('timers-ext/delay')
-  , readFile = require('fs').readFileSync
-  , path     = require('path')
-  , readdir  = require('fs2/readdir')
-  , urlParse = require('url').parse
-  , mano     = require('mano')
-  , users    = require('../users')
-  , template = require('./template')
-  , isCallable = require('es5-ext/object/is-callable')
-  , escape = require('ent').encode
+var assign     = require('es5-ext/object/assign')
+  , isObject   = require('es5-ext/object/is-object')
+  , compileTpl = require('es6-template-strings/compile')
+  , resolveTpl = require('es6-template-strings/resolve-to-string')
+  , deferred   = require('deferred')
+  , memoize    = require('memoizee')
+  , delay      = require('timers-ext/delay')
+  , readFile   = require('fs').readFileSync
+  , path       = require('path')
+  , readdir    = require('fs2/readdir')
+  , urlParse   = require('url').parse
+  , mano       = require('mano')
+  , users      = require('../users')
 
   , basename = path.basename, dirname = path.dirname, resolve = path.resolve
-  , defaults = mano.mail.config, defVars = { url: mano.env.url,
-		domain: mano.env.url && urlParse(mano.env.url).host }
-  , setup, getFrom, getTo, getCc, escapeWrap, getAttachments;
+  , defaults = mano.mail.config
+  , defContext = { url: mano.env.url, domain: mano.env.url && urlParse(mano.env.url).host }
+  , setup, getFrom, getTo, getCc, getAttachments;
 
 getFrom = function (user, from) {
 	if (from == null) return defaults.from;
@@ -46,22 +45,12 @@ getAttachments = function (user, att) {
 	return [];
 };
 
-escapeWrap = function (settings) {
-	return map(settings, function (value) {
-		if (value && isCallable(value)) {
-			return function (ctx) {
-				return escape(value(ctx));
-			};
-		}
-		return escape(value);
-	});
-};
-
 setup = function (path) {
 	var dir = dirname(path), name = basename(path, '.js')
-	  , settings = require(path), getSubject, getText, set, getTemplate
-	  , sendMail, content, vars;
+	  , settings = require(path), subject, text, getText, set, getTemplate
+	  , sendMail, context = assign({}, defContext);
 
+	if (settings.variables) assign(context, settings.variables);
 	if (settings.trigger == null) throw new TypeError("No trigger found");
 	if (typeof settings.trigger === 'function') {
 		set = users.filter(settings.trigger);
@@ -73,52 +62,40 @@ setup = function (path) {
 					settings.triggerValue);
 	}
 
-	if (settings.variables) {
-		settings.variables.url = mano.env.url;
-		settings.variables.domain = defVars.domain;
-	}
-
-	getSubject = template.call(settings.subject, settings.variables || defVars);
+	subject = compileTpl(settings.subject);
 
 	if (settings.text == null) {
-		try {
-			content = readFile(resolve(dir, name + '.txt'));
-		} catch (e) {
-			if (e.code !== 'ENOENT') throw e;
-			content = readFile(resolve(dir, name + '.html'));
-			settings.isHtml = true;
-		}
-		vars = settings.variables || defVars;
-		if (settings.isHtml) vars = escapeWrap(vars);
-		getText = template.call(content, vars);
+		text = compileTpl(readFile(resolve(dir, name + '.txt')));
 	} else if (typeof settings.text === 'function') {
 		getTemplate = memoize(function (path) {
-			return template.call(readFile(resolve(dir, path + '.txt')),
-				settings.variables || defVars);
+			return compileTpl(readFile(resolve(dir, path + '.txt')));
 		});
-		getText = function (context) {
-			return getTemplate(settings.text(context))(context);
+		getText = function (user) {
+			return resolveTpl(getTemplate(settings.text(user, context)), context);
 		};
 	} else {
-		vars = settings.variables || defVars;
-		if (settings.isHtml) vars = escapeWrap(vars);
-		getText = template.call(settings.text, vars);
+		text = compileTpl(settings.text);
+	}
+
+	if (!getText) {
+		getText = function () { return resolveTpl(text, context); };
 	}
 
 	sendMail = delay(function (user) {
 		var text, mailOpts;
 		mano.db.valueObjectMode = true;
+		context.user = user;
 		text = getText(user);
 		mano.db.valueObjectMode = false;
 		mailOpts = {
 			from: getFrom(user, settings.from),
 			to: getTo(user, settings.to),
 			cc: getCc(user, settings.cc),
-			subject: getSubject(user),
+			subject: resolveTpl(subject, context),
 			attachments: getAttachments(user, settings.attachments)
 		};
-		if (settings.isHtml) mailOpts.html = text;
-		else mailOpts.text = text;
+		mailOpts.text = text;
+		context.user = null;
 		mano.mail(mailOpts);
 	}, 500);
 

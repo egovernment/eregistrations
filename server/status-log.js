@@ -1,10 +1,11 @@
 'use strict';
 
-var mano           = require('mano')
+var compileTpl     = require('es6-template-strings/compile')
+  , resolveTpl     = require('es6-template-strings/resolve-to-string')
+  , mano           = require('mano')
   , tryRequire     = require('mano/lib/utils/try-require').bind(require)
   , resolve        = require('path').resolve
   , resolveTrigger = require('./_resolve-trigger')
-  , template       = require('./template')
 
   , now = Date.now, forEach = Array.prototype.forEach
   , nextTick = process.nextTick
@@ -16,7 +17,7 @@ exports = module.exports = [];
 
 configure = function (conf) {
 	conf.trigger = resolveTrigger(conf.trigger, conf.triggerValue);
-	conf.text = template.call(conf.text, conf.variables);
+	conf.text = compileTpl(conf.text);
 	delete conf.triggerValue;
 	exports.push(conf);
 };
@@ -33,7 +34,7 @@ exports.forEach(function (conf) {
 	var onUser = function (user) {
 		nextTick(function () {
 			var text;
-			text = conf.text(user);
+			text = resolveTpl(conf.text, conf.variables);
 			user.statusLog.add(new StatusLog({
 				label: conf.label,
 				official: (conf.official && user[conf.official]) || null,
