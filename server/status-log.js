@@ -19,6 +19,7 @@ configure = function (conf) {
 	conf.trigger = resolveTrigger(conf.trigger, conf.triggerValue);
 	conf.text = compileTpl(conf.text);
 	delete conf.triggerValue;
+	conf.variables = Object(conf.variables);
 	exports.push(conf);
 };
 
@@ -34,7 +35,9 @@ exports.forEach(function (conf) {
 	var onUser = function (user) {
 		nextTick(function () {
 			var text;
+			conf.variables.user = user;
 			text = resolveTpl(conf.text, conf.variables);
+			delete conf.variables.user;
 			user.statusLog.add(new StatusLog({
 				label: conf.label,
 				official: (conf.official && user[conf.official]) || null,
