@@ -26,15 +26,20 @@ getFrom = function (user, from) {
 };
 
 getTo = function (user, to) {
-	if (to == null) return user.email;
-	if (typeof to === 'function') return to(user);
-	return to;
+	if (to != null) {
+		if (typeof to === 'function') return to(user);
+		return to;
+	}
+	if (user.email) return user.email;
+	if (user.manager) return user.manager.email;
 };
 
 getCc = function (user, cc) {
-	if (cc == null) return null;
-	if (typeof cc === 'function') return cc(user);
-	return cc;
+	if (cc != null) {
+		if (typeof cc === 'function') return cc(user);
+		return cc;
+	}
+	if (user.email && user.manager) return user.manager.email;
 };
 
 getAttachments = function (user, att) {
@@ -82,14 +87,16 @@ setup = function (path) {
 	}
 
 	sendMail = delay(function (user) {
-		var text, mailOpts;
-		mano.db.valueObjectMode = true;
+		var text, mailOpts, to = getTo(user, settings.to);
+		if (!to) {
+			console.error("No email provided for " + user.fullName + " [" + user.__id__ + "]");
+			return;
+		}
 		context.user = user;
 		text = getText(user);
-		mano.db.valueObjectMode = false;
 		mailOpts = {
 			from: getFrom(user, settings.from),
-			to: getTo(user, settings.to),
+			to: to,
 			cc: getCc(user, settings.cc),
 			subject: resolveTpl(subject, context),
 			attachments: getAttachments(user, settings.attachments)
