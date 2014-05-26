@@ -6,12 +6,12 @@ var memoize      = require('memoizee/plain')
 
   , getId = function (args) { return args[0].__id__; };
 
-module.exports = function (set, meta, fragment) {
+module.exports = function (set, rules, fragment) {
 	var getFragment, onAdd, onDelete;
 
 	if (!fragment) fragment = new Fragment();
 	getFragment = memoize(function (obj) {
-		return objFragment(obj, meta);
+		return objFragment(obj, rules);
 	}, { normalizer: getId });
 
 	set.forEach(onAdd = function (obj) {
