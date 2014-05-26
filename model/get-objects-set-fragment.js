@@ -1,6 +1,7 @@
 'use strict';
 
-var memoize      = require('memoizee/plain')
+var validValue   = require('es5-ext/object/valid-value')
+  , memoize      = require('memoizee/plain')
   , Fragment     = require('dbjs-fragment')
   , objFragment  = require('dbjs-fragment/object-family')
 
@@ -9,6 +10,7 @@ var memoize      = require('memoizee/plain')
 module.exports = function (set, rules, fragment) {
 	var getFragment, onAdd, onDelete;
 
+	validValue(rules);
 	if (!fragment) fragment = new Fragment();
 	getFragment = memoize(function (obj) {
 		return objFragment(obj, rules);
