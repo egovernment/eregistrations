@@ -1,6 +1,7 @@
 'use strict';
 
-var compileTpl     = require('es6-template-strings/compile')
+var callable       = require('es5-ext/object/valid-callable')
+  , compileTpl     = require('es6-template-strings/compile')
   , resolveTpl     = require('es6-template-strings/resolve-to-string')
   , mano           = require('mano')
   , tryRequire     = require('mano/lib/utils/try-require').bind(require)
@@ -19,6 +20,7 @@ configure = function (conf) {
 	conf.trigger = resolveTrigger(conf.trigger, conf.triggerValue);
 	conf.text = compileTpl(conf.text);
 	delete conf.triggerValue;
+	if (conf.resolveUser != null) callable(conf.resolveUser);
 	conf.variables = Object(conf.variables);
 	exports.push(conf);
 };
@@ -32,9 +34,12 @@ mano.apps.forEach(function (app) {
 });
 
 exports.forEach(function (conf) {
-	var onUser = function (user) {
+	var onTarget = function (target) {
 		nextTick(function () {
-			var text;
+			var text, user;
+			if (conf.resolveUser) user = conf.resolveUser(target);
+			else user = target;
+			conf.variables.target = target;
 			conf.variables.user = user;
 			text = resolveTpl(conf.text, conf.variables);
 			delete conf.variables.user;
@@ -49,14 +54,14 @@ exports.forEach(function (conf) {
 	};
 	conf.trigger.on('change', function (event) {
 		if (event.type === 'add') {
-			onUser(event.value);
+			onTarget(event.value);
 			return;
 		}
 		if (event.type === 'delete') return;
 		if (event.type === 'batch') {
 			if (!event.added) return;
 			if (!event.added.size) return;
-			event.added.forEach(onUser);
+			event.added.forEach(onTarget);
 			return;
 		}
 		console.log("Errorneous event:", event);
