@@ -1,14 +1,26 @@
 {
-  "name": "eregistrations",
-  "version": "0.1.0",
   "private": true,
+  "name": "eregistrations",
+  "version": "0.0.0",
   "description": "Base framework for eregistrations applications",
+  "author": "UNCTAD team",
   "repository": {
     "type": "git",
     "url": "git://github.com/egovernment/eregistrations.git"
   },
+  "scripts": {
+    "start": "node node_modules/mano/bin/start",
+    "quick-start": "node node_modules/mano/bin/start --quick",
+    "setup": "node node_modules/mano/bin/setup",
+    "client-make": "node node_modules/mano/bin/generate-client-files",
+    "webmake": "node node_modules/mano/bin/generate-client-programs",
+    "clean": "node node_modules/mano/bin/clear-generated",
+    "lint": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js",
+    "lint-ci": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js --no-cache --no-stream",
+    "lint-console": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js --watch",
+    "lint-log-console": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js --watch --logView"
+  },
   "engines": {
     "node": ">=0.8"
-  },
-  "author": "UNCTAD team"
+  }
 }

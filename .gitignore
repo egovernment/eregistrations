@@ -1,6 +1,12 @@
 .DS_Store
+/.lintcache
+index.generated.html
+model.generated.js
+model-tags.generated.js
+Thumbs.db
+/env.json
+/common/client/env.json
+/.idea
 /node_modules
 /npm-debug.log
-/.lintcache
-/.idea
-
+/prototype/public/prototype.js
