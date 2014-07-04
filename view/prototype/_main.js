@@ -4,20 +4,23 @@
   , login    = require('./_login');*/
 
 exports.body = function () {
-	header({ 'class': 'l-container l-primary' },
-		div(
+	header({ 'class': 'l-container l-cont-primary s-spacing-third' },
+		div({ 'class': 's-resize-center' },
 			a({ href: '/' },
-				img({ 'src': 'img/logo-lomas.png' })
+				img({ 'src': '/img/logo-lomas.png' })
 				)
-		),
-		nav({ 'class': '' },
-			ul({ 'class': 'm-menu-basic' },
-				li(a('en')),
-				li(a('sw')),
-				li({ 'class': 'separation' }),
-				li(a('link one')),
-				li(a('link two')),
-				li(a('link tree'))
+			),
+		nav({ 'class': 's-resize-center' },
+			menu({ 'class': 'm-menu-basic' },
+				menuitem(a('en')),
+				menuitem(a('sw')),
+				menuitem({ 'class': 'separation' }),
+				menuitem(a('link one')),
+				menuitem(a('link two')),
+				menuitem(a('link tree')),
+				menuitem(button({ 'class': 's-btn-secondary s-btn-small' },
+					'Log in'
+					))
 				)
 			)
 		/*p(a({ onclick: login.show }, "LOGIN")),
@@ -25,15 +28,15 @@ exports.body = function () {
 		p(a({ href: '/public-inner/' }, "PUBLIC INNER"))*/
 		);
 
-	div({ id: 'main' });
+	main({ id: 'main' });
 
-	footer({ 'class': 'l-container l-secondary l-footer' },
-		div({ 'class': 'l-container l-primary' },
+	footer({ 'class': 'l-container l-cont-secondary l-footer' },
+		div({ 'class': 'l-container l-cont-primary' },
 			div(
-				img({ 'src': 'img/logo_unctad.png' })
+				img({ 'src': '/img/logo_unctad.png' })
 			),
 			div(
-				img({ 'src': 'img/logo_lomas_bnw.png' })
+				img({ 'src': '/img/logo_lomas_bnw.png' })
 			)
 			)
 		);

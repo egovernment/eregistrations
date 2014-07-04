@@ -1,0 +1,82 @@
+/*
+Resuable class addet to element to give space above and under element
+*/
+.s-spacing-primary {
+    padding: 30px 0px;
+}
+
+/*
+Resuable class addet to element to give space above and under element
+*/
+.s-spacing-secondary {
+    padding: 20px 0px;
+}
+
+/*
+Resuable class addet to element to give space above and under element
+*/
+.s-spacing-third {
+    padding: 10px 0px;
+}
+
+/*
+Main type of heddings
+*/
+h1.s-primary, h2.s-primary, h3.s-primary, h4.s-primary, h5.s-primary, h6.s-primary {
+    color: white;
+}
+
+/*
+Secondary type of heddings
+*/
+h1.s-secondary, h2.s-secondary, h3.s-secondary, h4.s-secondary, h5.s-secondary, h6.s-secondary {
+    color: #da4c3b;
+}
+
+/*
+Resuable class setting main type of button
+*/
+.s-btn-primary {
+    color: white;
+    background-color: #da4c3b;
+}
+
+/*
+Resuable class setting secondary type of button
+*/
+.s-btn-secondary {
+    color: white;
+    background-color: #2C6BAF;
+}
+
+/*
+Resuable class setting large sieze of button
+*/
+.s-btn-large {
+    font-size: 24px;
+    padding: 5px 35px;
+    margin-top: 5px;
+}
+
+/*
+Resuable class setting small size of button
+*/
+.s-btn-small {
+    font-size: 12px;
+    padding: 3px 8px;
+    margin-top: 5px;
+}
+
+/*
+Styles applied while screen sieze is less than 640px
+*/
+@media only screen and (max-width: 640px) {
+    /*
+    Reusable class that can be added to elements that requier cenretin while
+    resizing
+    */
+    .s-resize-center {
+        text-align: center;
+        margin: 0 auto;
+    }
+}
