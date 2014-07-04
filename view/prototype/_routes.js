@@ -7,6 +7,7 @@ var bind = function (view) { return function (data, env) {
 	return view.load();
 }; };
 
+console.log("routes")
 module.exports = function (view) {
 	var main = view.documentElement.diff('./_main');
 
