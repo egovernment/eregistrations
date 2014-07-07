@@ -4,10 +4,10 @@
   , login    = require('./_login');*/
 
 exports.body = function () {
-	header({ 'class': 'l-container l-cont-primary s-spacing-third' },
+	header({ 'class': 'basic-header' },
 		div({ 'class': 's-resize-center' },
 			a({ href: '/' },
-				img({ 'src': '/img/logo-lomas.png' })
+				img({ 'src': '/img/logo.png' })
 				)
 			),
 		nav({ 'class': 's-resize-center' },
@@ -18,7 +18,7 @@ exports.body = function () {
 				menuitem(a('link one')),
 				menuitem(a('link two')),
 				menuitem(a('link tree')),
-				menuitem(button({ 'class': 's-btn-secondary s-btn-small' },
+				menuitem(button({ 'class': 'btn-primary btn-xs' },
 					'Log in'
 					))
 				)
@@ -30,13 +30,13 @@ exports.body = function () {
 
 	main({ id: 'main' });
 
-	footer({ 'class': 'l-container l-cont-secondary l-footer' },
-		div({ 'class': 'l-container l-cont-primary' },
+	footer({ 'class': 'footer-logos' },
+		div({ 'class': '' },
 			div(
-				img({ 'src': '/img/logo_unctad.png' })
+				img({ 'src': '/img/logo.png' })
 			),
 			div(
-				img({ 'src': '/img/logo_lomas_bnw.png' })
+				img({ 'src': '/img/logo.png' })
 			)
 			)
 		);

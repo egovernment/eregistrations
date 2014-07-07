@@ -1,49 +1,47 @@
 'use strict';
 
 exports.main = function () {
-	div({ 'class': 'l-container l-cont-secondary l-banner' },
-		div({ 'class': 'l-container l-cont-primary m-banner' },
-				div({ 'class': 'l-baner-box-primary s-resize-center' },
+	div({ 'class': 'public-banner' },
+		div({ 'class': 'banner-infos' },
+				div({ 'class': 'baner-box-text s-resize-center' },
 					h1({ 'class': 's-primary' },
-						'Habilite su negocio en línea'),
+						'Turn your online business on'),
 					h5({ 'class': 's-primary' },
-						'Toda persona o empresa ejerciendo una actividad lucrativa en Lomas' +
-						' de Zamora debe solicitar la habilitación de su negocio'),
-					h5({ 'class': 's-secondary' },
-						'Sepa aquí en que consiste la habilitación de negocio'),
-					button({ 'class': 's-btn-primary s-btn-large' },
+						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut in ' +
+						'massa malesuada, pharetra urna nec, pellentesque tortor. '),
+					button({ 'class': 'btn btn-primary btn-lg' },
 						'Cree su cuenta')
 				),
-				div({ 'class': 'l-baner-box-secondary' },
+				div({ 'class': 'baner-box-img' },
 					img({ 'src': '/img/mac.png' })
 				)
 				)
 		);
-	div({ 'class': 'l-container l-cont-primary s-spacing-primary' },
-		div({ 'class': 'm-box-secondary' },
-			img({ 'src': 'img/icon-one.png' }),
-			h3('Cree su expediente'),
+	div({ 'class': 'public-text' },
+		div({ 'class': 'm-box-text-centered' },
+			img({ 'src': 'img/img_300.png' }),
+			h3('Create your file'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
-			button({ 'class': 's-btn-small s-btn-primary' },
+			button({ 'class': 'btn btn-primary btn-xs' },
 				'Mas info'
 				)
 			),
-		div({ 'class': 'm-box-secondary' },
-			img({ 'src': 'img/icon-two.png' }),
-			h3('Pague los costos'),
+		div({ 'class': 'm-box-text-centered' },
+			img({ 'src': 'img/img_300.png' }),
+			h3('Pay costs'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
-			button({ 'class': 's-btn-small s-btn-primary' },
+			button({ 'class': 'btn btn-primary btn-xs' },
 				'Mas info'
 				)
 			),
-		div({ 'class': 'm-box-secondary' },
-			img({ 'src': 'img/icon-tree.png' }),
-			h3('Retire sus certificados'),
+		div({ 'class': 'm-box-text-centered' },
+			img({ 'src': 'img/img_300.png' }),
+			h3('Remove certificates'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
-			button({ 'class': 's-btn-small s-btn-primary' },
+			button({ 'class': 'btn btn-primary btn-xs' },
 				'Mas info'
 				))
 		);

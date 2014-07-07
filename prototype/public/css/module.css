@@ -28,27 +28,18 @@ menu.m-menu-basic menuitem button {
 }
 
 /*
-Module that sets height and width in order to display correctly banner and
-elements that are in side of it
-*/
-.m-banner {
-    min-height: 385px;
-    width: 1050px;
-}
-
-/*
 Resuable module used to create small contaners insight main container, that will
 fill main container and will have centered elemebts in sight
 */
-.m-box-secondary {
+.m-box-text-centered {
     text-align: center;
     max-width: 100%;
+    margin: 5px 0px;
 }
-
 /*
 Resuable module used to create small contaners insight main container, that will
 fill main container and will have centered elemebts in sight
 */
-.m-box-secondary img {
+.m-box-centered img {
     margin: 0 auto;
 }

@@ -1,20 +1,101 @@
+
 /*
-.l-conetainer - main container of page, is a flexible container.
-Is used to set felxibility on its descendants.
+Class descirbing how main header splits space between its elements. Elemetns are
+spreaded equaliy in 1050px space. Used i.e. with logo and simple menu
 */
-.l-container {
+.basic-header {
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -moz-box;         /* OLD - Firefox 19 */
+	display: -ms-flexbox;      /* TWEENER - IE 10 */
+	display: -webkit-flex;     /* NEW - Chrome */
+	display: flex;
+	justify-content: space-between;
+	-webkit-justify-content: space-between;
+	max-width: 1050px;
+	margin: 0 auto;
+	padding: 10px 0px;
+}
+
+/*
+Class describing how home page bunner is displayed as full width cover for i.e
+home page.
+*/
+.public-banner {
 	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
 	display: -moz-box;         /* OLD - Firefox 19 */
 	display: -ms-flexbox;      /* TWEENER - IE 10 */
 	display: -webkit-flex;     /* NEW - Chrome */
 	display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+	width: 100%;
+	background-image: url('../img/baner.png');
+	background-size: cover;
+	background-position: center center;
+	min-height: 385px;
 }
 
 /*
-.l-cont-primary - primary container - boxed are equali sprede in container,
-has max-width of 1050px, is centered on page. Need to be used with .l-container
+Class describing how boxes for informations insight banner are displayed
 */
-.l-container.l-cont-primary {
+.public-banner div.banner-infos {
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19 */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;
+  justify-content: space-between;
+  -webkit-justify-content: space-between;
+  margin: 0 auto;
+  max-width: 1050px;
+}
+
+/*
+	Class used for sticking img in banner bottom line, having 50% of banner width
+*/
+.baner-box-img {
+	align-self: flex-end;
+	-webkit-align-self: flex-end;
+	min-width: 50%;
+}
+
+/*
+ c
+*/
+.public-text {
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -moz-box;         /* OLD - Firefox 19 */
+	display: -ms-flexbox;      /* TWEENER - IE 10 */
+	display: -webkit-flex;     /* NEW - Chrome */
+	display: flex;
+	justify-content: space-between;
+	-webkit-justify-content: space-between;
+	max-width: 1050px;
+	margin: 0 auto;
+	padding: 30px 0px;
+}
+
+/*
+ Setting footer with logos as full width container with specific colour background
+*/
+.footer-logos {
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -moz-box;         /* OLD - Firefox 19 */
+	display: -ms-flexbox;      /* TWEENER - IE 10 */
+	display: -webkit-flex;     /* NEW - Chrome */
+	display: flex;
+	background-color: #333;
+	width: 100%;
+}
+
+/*
+ Class used for styling footer logos. Boxes are equaliy spreaded insight
+ of 1050px row.
+*/
+.footer-logos div {
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -moz-box;         /* OLD - Firefox 19 */
+	display: -ms-flexbox;      /* TWEENER - IE 10 */
+	display: -webkit-flex;     /* NEW - Chrome */
+	display: flex;
 	justify-content: space-between;
 	-webkit-justify-content: space-between;
 	max-width: 1050px;
@@ -22,59 +103,15 @@ has max-width of 1050px, is centered on page. Need to be used with .l-container
 }
 
 /*
-.l-cont-secondary - second type of container. boxes are spreaded one
-by one in a horizontal row. Its width is a full page width.
-*/
-.l-container.l-cont-secondary {
-	width: 100%;
-}
-
-/*
-.l-banner - class that can be added to .l-cont-secondary in order to add a
-responsive background image for this container.
-*/
-.l-container.l-cont-secondary.l-banner {
-	background-image: url('../img/baner.png');
-	background-size: cover;
-	background-position: center center;
-}
-
-/*
-.l-footer - class that can be added to .l-cont-secondary in order
-to add background color for this container.
-*/
-.l-container.l-cont-secondary.l-footer {
-	background-color: #333;
-}
-
-/*
-.l-baner-box-secondary  - class describing a image element in full width banner
-(.l-cont-secondary) at this time used to set position of image element
-center element.
-*/
-.l-baner-box-secondary {
-	align-self: flex-end;
-	-webkit-align-self: flex-end;
-	min-width: 50%;
-}
-
-/*
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: 640px) {
-	/*
-	Rulse that make element that are in any container wrap in multiple lines
-	*/
-	.l-container {
-		flex-wrap: wrap;
-		-webkit-flex-wrap: wrap;
-	}
 
 	/*
-	Changing allignemt centraly of elements in footer while screen sieze is less
-	than 640px
+		Setting flexibity wrap, so boxes are placed one under another.
 	*/
-	.l-footer div {
-		margin: 0 auto;
+	.basic-header, .public-text, .public-banner .banner-infos, .footer-logos div {
+		flex-wrap: wrap;
+		-webkit-flex-wrap: wrap;
 	}
 }
