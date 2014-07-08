@@ -9,4 +9,5 @@ Thumbs.db
 /.idea
 /node_modules
 /npm-debug.log
+/prototype/public/prototype.css
 /prototype/public/prototype.js
