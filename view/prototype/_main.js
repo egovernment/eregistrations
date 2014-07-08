@@ -7,7 +7,7 @@ exports.body = function () {
 	header({ 'class': 'basic-header' },
 		div({ 'class': 's-resize-center' },
 			a({ href: '/' },
-				img({ 'src': '/img/logo.png' })
+				img({ 'src': '/img/logo_2.png' })
 				)
 			),
 		nav({ 'class': 's-resize-center' },
@@ -29,15 +29,4 @@ exports.body = function () {
 		);
 
 	main({ id: 'main' });
-
-	footer({ 'class': 'footer-logos' },
-		div({ 'class': '' },
-			div(
-				img({ 'src': '/img/logo.png' })
-			),
-			div(
-				img({ 'src': '/img/logo.png' })
-			)
-			)
-		);
 };

@@ -16,6 +16,7 @@ module.exports = function (view) {
 		'public-inner':  bind(main.diff('./public-inner')),
 
 		// 404 page
-		404: bind(main.diff('./404'))
+		404: bind(main.diff('./404')),
+        'guide': bind(main.diff('./guide'))
 	};
 };

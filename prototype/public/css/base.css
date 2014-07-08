@@ -13,6 +13,10 @@ body {
   background-color: #ffffff;
 }
 
+main {
+  background-color: #f5f5f5;
+}
+
 article,
 aside,
 details,
@@ -194,6 +198,7 @@ html {
 h1, h2, h3, h4, h5, h6, p {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #333;
+  margin: 2% 0;
 }
 
 h1 {font-size: 52px;}
@@ -214,6 +219,10 @@ a {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+hr {
+ color: #f5f5f5;
+}
+
 header {
   align-items: center;
 }
@@ -228,4 +237,8 @@ img {
 
 button {
   border: 1px solid transparent;
+}
+
+form {
+  margin: 5px;
 }

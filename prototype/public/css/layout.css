@@ -103,6 +103,63 @@ Class describing how boxes for informations insight banner are displayed
 }
 
 /*
+*/
+div.steps-menu {
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -moz-box;         /* OLD - Firefox 19 */
+	display: -ms-flexbox;      /* TWEENER - IE 10 */
+	display: -webkit-flex;     /* NEW - Chrome */
+	display: flex;
+	background-color: #333;
+	background-size: cover;
+	background-position: center center;
+	width: 100%;
+	padding: 10px 0;
+}
+div.steps-menu nav {
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -moz-box;         /* OLD - Firefox 19 */
+	display: -ms-flexbox;      /* TWEENER - IE 10 */
+	display: -webkit-flex;     /* NEW - Chrome */
+	display: flex;
+	justify-content: space-between;
+	-webkit-justify-content: space-between;
+	width: 1050px;
+	margin: 0 auto;
+}
+div.steps-menu nav menuitem {
+	background-color: white;
+	background-color: #333;
+}
+
+/*
+*/
+section.business-guide {
+	display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+	display: -moz-box;         /* OLD - Firefox 19 */
+	display: -ms-flexbox;      /* TWEENER - IE 10 */
+	display: -webkit-flex;     /* NEW - Chrome */
+	display: flex;
+	justify-content: space-between;
+	-webkit-justify-content: space-between;
+	flex-wrap: wrap;
+	-webkit-flex-wrap: wrap;
+	max-width: 1050px;
+	margin: 0 auto;
+	background-color: #f5f5f5;
+}
+
+section.business-guide h1 {
+	width: 100%;
+}
+section.business-guide div {
+	width: 49%;
+}
+section.business-guide button {
+	margin: 1% 0;
+	width: 49%;
+}
+/*
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: 640px) {
@@ -110,8 +167,15 @@ Styles applied while screen sieze is less than 640px
 	/*
 		Setting flexibity wrap, so boxes are placed one under another.
 	*/
-	.basic-header, .public-text, .public-banner .banner-infos, .footer-logos div {
+	.basic-header,
+	.public-text,
+	.public-banner .banner-infos,
+	.footer-logos div,
+	div.steps-menu nav  {
 		flex-wrap: wrap;
 		-webkit-flex-wrap: wrap;
+	}
+	section.business-guide div {
+		width: 100%;
 	}
 }

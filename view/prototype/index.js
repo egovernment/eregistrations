@@ -10,7 +10,7 @@ exports.main = function () {
 						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut in ' +
 						'massa malesuada, pharetra urna nec, pellentesque tortor. '),
 					button({ 'class': 'btn btn-primary btn-lg' },
-						'Cree su cuenta')
+						'Create account')
 				),
 				div({ 'class': 'baner-box-img' },
 					img({ 'src': '/img/mac.png' })
@@ -24,7 +24,7 @@ exports.main = function () {
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
 			button({ 'class': 'btn btn-primary btn-xs' },
-				'Mas info'
+				'More info'
 				)
 			),
 		div({ 'class': 'm-box-text-centered' },
@@ -33,7 +33,7 @@ exports.main = function () {
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
 			button({ 'class': 'btn btn-primary btn-xs' },
-				'Mas info'
+				'More info'
 				)
 			),
 		div({ 'class': 'm-box-text-centered' },
@@ -42,8 +42,17 @@ exports.main = function () {
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
 			button({ 'class': 'btn btn-primary btn-xs' },
-				'Mas info'
+				'More info'
 				))
 		);
-
+	footer({ 'class': 'footer-logos' },
+		div({ 'class': '' },
+			div(
+				img({ 'src': '/img/logo.png' })
+			),
+			div(
+				img({ 'src': '/img/logo.png' })
+			)
+			)
+		);
 };
