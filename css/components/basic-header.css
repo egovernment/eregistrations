@@ -12,9 +12,12 @@ spreaded equaliy in 1050px space. Used i.e. with logo and simple menu
     justify-content: space-between;
     margin: 0 auto;
     max-width: 1050px;
-    padding: 10px 0px;
+    padding: 11px 0px;
 }
 
+.basic-header div.s-resize-center {
+    max-height: 88px;
+}
 /*
 Flexible basic menu - used on home page and can be reused elsewhere
 */

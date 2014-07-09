@@ -8,7 +8,7 @@ body {
   margin: 0;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
-  line-height: 1.42857143;
+  line-height: 21px;
   color: #333333;
   background-color: #ffffff;
 }
@@ -191,36 +191,62 @@ th {
   box-sizing: border-box;
 }
 html {
-  font-size: 10px;
+  font-size: 14px;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
 h1, h2, h3, h4, h5, h6, p {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   color: #333;
-  margin: 2% 0;
+
 }
 
-h1 {font-size: 52px;}
-h2 {font-size: 42px;}
-h3 {font-size: 32px;}
-h4 {font-size: 22px;}
-h5 {font-size: 17px;}
-h6 {font-size: 12px;}
+h1 {
+  font-size: 35px;
+  line-height: 44px;
+  margin: 11px 0;
+}
+h2 {
+  font-size: 28px;
+  line-height: 44px;
+  margin: 11px 0;
+}
+h3 {
+  font-size: 19px;
+  line-height: 22px;
+  margin: 11px 0;
+}
+h4 {
+  font-size: 14px;
+  line-height: 22px;
+  margin: 11px 0;
+}
+h5 {
+  font-size: 11.6px;
+  line-height: 22px;
+  margin: 11px 0;
+}
+h6 {
+  font-size: 10.5px;
+  line-height: 22px;
+  margin: 11px 0;
+}
 
 p {
-  font-size: 15px;
+  font-size: 14px;
   color: #555;
-  margin: 5px;
+  line-height: 22px;
+  margin: 11px 0;
 }
 
 a {
-  font-size: 13px;
+  font-size: 12px;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 hr {
  color: #f5f5f5;
+ margin: 18px 0;
 }
 
 header {
@@ -228,7 +254,7 @@ header {
 }
 
 footer {
-  padding: 15px 0px;
+  padding: 18px 0px;
 }
 
 img {
@@ -240,5 +266,5 @@ button {
 }
 
 form {
-  margin: 5px;
+  margin-bottom: 21px;
 }

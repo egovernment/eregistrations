@@ -1,37 +1,30 @@
 /*
+
 */
-section.business-guide {
-    -webkit-flex-wrap: wrap;
+.public-text {
     -webkit-justify-content: space-between;
-    background-color: #f5f5f5;
     display: -moz-box;         /* OLD - Firefox 19 */
     display: -ms-flexbox;      /* TWEENER - IE 10 */
     display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
     display: -webkit-flex;     /* NEW - Chrome */
     display: flex;
-    flex-wrap: wrap;
     justify-content: space-between;
     margin: 0 auto;
     max-width: 1050px;
+    padding: 21px 0px;
 }
-
-section.business-guide h1 {
-    width: 100%;
-}
-section.business-guide fieldset {
-    width: 49%;
-}
-section.business-guide button {
-    margin: 1% 0;
-    width: 49%;
-}
-
 
 /*
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: 640px) {
-    section.business-guide fieldset {
-        width: 100%;
+
+    /*
+        Setting flexibity wrap, so boxes are placed one under another.
+    */
+    .public-text {
+        -webkit-flex-wrap: wrap;
+        flex-wrap: wrap;
     }
+
 }

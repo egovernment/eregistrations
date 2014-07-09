@@ -6,7 +6,7 @@ exports.main = function () {
 				div({ 'class': 'baner-box-text s-resize-center' },
 					h1({ 'class': 's-primary' },
 						'Turn your online business on'),
-					h5({ 'class': 's-primary' },
+					h3({ 'class': 's-primary' },
 						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut in ' +
 						'massa malesuada, pharetra urna nec, pellentesque tortor. '),
 					button({ 'class': 'btn btn-primary btn-lg' },
