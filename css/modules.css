@@ -1,0 +1,85 @@
+/* Module */
+
+/*
+Resuable module used to create small contaners insight main container, that will
+fill main container and will have centered elemebts in sight
+*/
+.m-box-text-centered {
+    margin: 5px 0px;
+    max-width: 100%;
+    text-align: center;
+}
+/*
+Resuable module used to create small contaners insight main container, that will
+fill main container and will have centered elemebts in sight
+*/
+.m-box-centered img {
+    margin: 0 auto;
+}
+
+.m-cont-box {
+    -khtml-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: 1px solid #e3e3e3;
+    margin: 1% 0;
+    padding: 5px;
+}
+
+.f-horizontal {
+    -webkit-flex-wrap: wrap;
+    -webkit-justify-content: space-between;
+    display: -moz-box;         /* OLD - Firefox 19 */
+    display: -ms-flexbox;      /* TWEENER - IE 10 */
+    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -webkit-flex;     /* NEW - Chrome */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.f-horizontal.guide-records div, .f-horizontal.guide-records label {
+    width: 100%;
+}
+.f-horizontal label {
+    width: 50%;
+    margin-top: 2%;
+}
+.f-horizontal input {
+    width: 50%;
+}
+.f-horizontal div {
+    margin-top: 2%;
+}
+.f-horizontal div.radio {
+    -webkit-justify-content: space-between;
+    display: -moz-box;         /* OLD - Firefox 19 */
+    display: -ms-flexbox;      /* TWEENER - IE 10 */
+    display: -webkit-flex;     /* NEW - Chrome */
+    display: flex;
+    justify-content: space-between;
+    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+}
+.f-horizontal div.radio input[type="radio"] {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    margin: 0;
+}
+.f-horizontal div.checkbox input[type="checkbox"] {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    margin: 0;
+
+}
+.f-horizontal div.radio label {
+
+}
+h5.guide-total-costs {
+    background-color: #f5f5f5;
+    border-bottom: 1px solid black;
+    border-top: 1px solid black;
+    padding: 5px 0;
+}

@@ -1,0 +1,36 @@
+/* State */
+
+/*
+Resuable class addet to element to give space above and under element
+*/
+.s-spacing-tb-large {
+    padding: 30px 0px;
+}
+
+/*
+Resuable class addet to element to give space above and under element
+*/
+.s-spacing-tb-medium {
+    padding: 20px 0px;
+}
+
+/*
+Resuable class addet to element to give space above and under element
+*/
+.s-spacing-tb-small  {
+    padding: 10px 0px;
+}
+
+/*
+Styles applied while screen sieze is less than 640px
+*/
+@media only screen and (max-width: 640px) {
+    /*
+    Reusable class that can be added to elements that requier cenretin while
+    resizing
+    */
+    .s-resize-center {
+        margin: 0 auto;
+        text-align: center;
+    }
+}

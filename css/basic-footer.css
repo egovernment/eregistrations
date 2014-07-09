@@ -1,0 +1,38 @@
+/*
+ Setting footer with logos as full width container with specific colour background
+*/
+.footer-logos {
+    background-color: #333;
+    display: -moz-box;         /* OLD - Firefox 19 */
+    display: -ms-flexbox;      /* TWEENER - IE 10 */
+    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -webkit-flex;     /* NEW - Chrome */
+    display: flex;
+    width: 100%;
+}
+
+/*
+ Class used for styling footer logos. Boxes are equaliy spreaded insight
+ of 1050px row.
+*/
+.footer-logos div {
+    -webkit-justify-content: space-between;
+    display: -moz-box;         /* OLD - Firefox 19 */
+    display: -ms-flexbox;      /* TWEENER - IE 10 */
+    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -webkit-flex;     /* NEW - Chrome */
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    max-width: 1050px;
+}
+
+/*
+Styles applied while screen sieze is less than 640px
+*/
+@media only screen and (max-width: 640px) {
+    .footer-logos div {
+        -webkit-flex-wrap: wrap;
+        flex-wrap: wrap;
+    }
+}
