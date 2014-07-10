@@ -31,55 +31,19 @@ exports.main = function () {
 		)
 		);
 	section({ 'class': 'business-guide' },
-			h3('INDIVIDUAL REGISTRATION GUIDE FOR COMPANIES',
-				br(),
-				small('Complete the previous questions, pick your records and' +
-					'see the necessary documents and costs')
+			h3({ 'class': 'main-intro' },
+				'INDIVIDUAL REGISTRATION GUIDE FOR COMPANIES'),
+			h3('Complete the previous questions, pick your records and' +
+					'see the necessary documents and costs'
 			),
 			form({ 'role': 'form', 'class': 'f-horizontal' },
 				fieldset({ 'class': 'm-cont-box' },
-					h4('Basic questions'),
+					h3('Required records'),
 					hr(),
 					p('Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
 						' Etiam vestibulum dui mi, nec ultrices diam ultricies id. '),
-					label({ 'for': 'asset' },
-						'Curent value of the asset:'
-						),
-					div({ 'class': 'input-group' },
-						span({ 'class': 'input-group-addon' }, '$'),
-						input({ 'class': 'form-control', 'id': 'asset', 'type': 'number' })
-						),
-					label({ 'for': 'sales' },
-						'Total sales completed or planned:'
-						),
-					div({ 'class': 'input-group' },
-						span({ 'class': 'input-group-addon' }, '$'),
-						input({ 'class': 'form-control', 'id': 'sales', 'type': 'number'  })
-						),
-					label({ 'for': 'workers' },
-						'Employed worker(s)?'
-						),
-					div({ 'class': 'radio' },
-						input({ 'class': 'form-control',
-							'id': 'workers', 'type': 'radio', 'value': 'Yes'  }),
-						label('test'),
-						input({ 'class': 'form-control', 'id': 'workers', 'type': 'radio', 'value': 'No'  })
-						),
-					label({ 'for': 'side' },
-						'Has property (s) side (s)?'
-						),
-					div({ 'class': 'input-group' },
-						span({ 'class': 'input-group-addon' }, 'No.'),
-						input({ 'class': 'form-control', 'id': 'side', 'type': 'number'  })
-					),
-					label({ 'for': 'side' },
-						'Has property (s) side (s)?'
-						),
-					div({ 'class': 'checkbox' },
-						input({ 'class': 'form-control',
-							'id': 'property', 'type': 'checkbox', 'value': 'Yes'  }),
-						label('Yes')
-						)
+					p('Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
+						' Etiam vestibulum dui mi, nec ultrices diam ultricies id. ')
 				),
 				fieldset({ 'class': 'm-cont-box' },
 					h4('Required records'),
@@ -87,34 +51,12 @@ exports.main = function () {
 					p('Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
 						' Etiam vestibulum dui mi, nec ultrices diam ultricies id. ' +
 						' Etiam vestibulum dui mi, nec ultrices diam ultricies id. '),
-					div({ 'class': 'checkbox' },
-					input({ 'class': 'form-control', 'id': 'property', 'type': 'checkbox', 'value': 'Yes'  }),
-					label('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam')
-					),
-					div({ 'class': 'checkbox' },
-					input({ 'class': 'form-control', 'id': 'property', 'type': 'checkbox', 'value': 'Yes'  }),
-					label('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam')
-					),
-					div({ 'class': 'checkbox' },
-					input({ 'class': 'form-control', 'id': 'property', 'type': 'checkbox', 'value': 'Yes'  }),
-					label('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam')
-					),
-					div({ 'class': 'checkbox' },
-					input({ 'class': 'form-control', 'id': 'property', 'type': 'checkbox', 'value': 'Yes'  }),
-					label('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam')
-					),
-					h4('Optional records'),
-					hr(),
-					div({ 'class': 'f-horizontal guide-records' },
-						div({ 'class': 'checkbox' },
-						input({ 'class': 'form-control',
-							'id': 'property', 'type': 'checkbox', 'value': 'Yes'  }),
-						label('Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam')
-						)
-					)
+					p('Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
+						' Etiam vestibulum dui mi, nec ultrices diam ultricies id. ' +
+						' Etiam vestibulum dui mi, nec ultrices diam ultricies id. ')
 				),
 				fieldset({ 'class': 'm-cont-box' },
-					h4('Documents required'),
+					h3('Documents required'),
 					hr(),
 					p('Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
 						' Etiam vestibulum dui mi, nec ultrices diam ultricies id. '),
@@ -131,7 +73,7 @@ exports.main = function () {
 					hr(),
 					p('Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
 						' Etiam vestibulum dui mi, nec ultrices diam ultricies id. '),
-					h5({ 'class': 'guide-total-costs' },
+					h4({ 'class': 'guide-total-costs' },
 						'Total Costs:'
 						)
 				),

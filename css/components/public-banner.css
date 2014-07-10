@@ -39,6 +39,12 @@ Class describing how boxes for informations insight banner are displayed
     min-width: 50%;
 }
 
+.baner-box-img img {
+  margin-bottom: -3px;
+}
+.public-banner div.banner-infos h1 {
+  margin-top: 22px;
+}
 /*
 Styles applied while screen sieze is less than 640px
 */
