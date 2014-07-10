@@ -1,3 +1,6 @@
+@media only screen and (max-width: 640px) {
+
+}
 /*
 */
 div.steps-menu {
@@ -12,7 +15,7 @@ div.steps-menu {
     padding: 11px 0;
     width: 100%;
 }
-div.steps-menu nav {
+div.steps-menu nav.desktop-steps-menu {
     -webkit-justify-content: space-between;
     display: -moz-box;         /* OLD - Firefox 19 */
     display: -ms-flexbox;      /* TWEENER - IE 10 */
@@ -23,21 +26,64 @@ div.steps-menu nav {
     margin: 0 auto;
     width: 1050px;
 }
+
 div.steps-menu nav menuitem {
     background-color: white;
     background-color: #333;
 }
 
+nav.responsive-steps-menu {
+    display: none;
+}
+
+#responsive-steps {
+    display: none;
+}
+
+nav.responsive-steps-menu label {
+    width: 100%;
+}
+
+input[type=checkbox] {
+    display: none;
+}
+
+input[type=checkbox]:checked ~ #responsive-steps {
+    display: -moz-box;         /* OLD - Firefox 19 */
+    display: -ms-flexbox;      /* TWEENER - IE 10 */
+    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -webkit-flex;     /* NEW - Chrome */
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+}
+
+#responsive-steps menuitem {
+    width: 100%;
+    text-align: center;
+    margin: 11px 0;
+}
+#responsive-steps menuitem button {
+    margin: 0 auto;
+    width: 100%;
+}
 /*
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: 640px) {
+    div.steps-menu nav.desktop-steps-menu {
+        display: none;
+    }
 
-    /*
-        Setting flexibity wrap, so boxes are placed one under another.
-    */
-    div.steps-menu nav  {
-        -webkit-flex-wrap: wrap;
-        flex-wrap: wrap;
+    nav.responsive-steps-menu {
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        padding: 0 5%;
+    }
+
+    nav.responsive-steps-menu label {
+        width: 100%;
+        margin: 11px 0;
     }
 }

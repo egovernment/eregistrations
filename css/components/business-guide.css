@@ -50,11 +50,17 @@ h4.guide-total-costs {
     padding: 10px 0;
     line-height: 22px;
 }
+
 /*
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: 640px) {
     section.business-guide fieldset {
         width: 100%;
+    }
+
+    section.business-guide button {
+        width: 90%;
+        margin: 0 5%;
     }
 }
