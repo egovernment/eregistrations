@@ -3,6 +3,7 @@
 var path            = require('path')
   , common          = require('path2/common')
   , defaultReadFile = require('fs2/read-file')
+  , cssAid          = require('css-aid')
 
   , dirname = path.dirname, resolve = path.resolve;
 
@@ -25,8 +26,8 @@ module.exports = function (indexPath, readFile) {
 			};
 		});
 	})(function (data) {
-		return data.reduce(function (content, data) {
+		return cssAid(data.reduce(function (content, data) {
 			return content + '/* ' + data.filename + ' */\n\n' + data.content + '\n';
-		}, '');
+		}, ''));
 	});
 };
