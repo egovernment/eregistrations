@@ -2,9 +2,9 @@
  Setting footer with logos as full width container with specific colour background
 */
 .footer-logos {
-    background-color: #333;
-    display: flex;
-    width: 100%;
+	background-color: #333;
+	display: flex;
+	width: 100%;
 }
 
 /*
@@ -12,17 +12,17 @@
  of 1050px row.
 */
 .footer-logos div {
-    display: flex;
-    justify-content: space-between;
-    margin: 0 auto;
-    max-width: 1050px;
+	display: flex;
+	justify-content: space-between;
+	margin: 0 auto;
+	max-width: 1050px;
 }
 
 /*
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: 640px) {
-    .footer-logos div {
-        flex-wrap: wrap;
-    }
+	.footer-logos div {
+		flex-wrap: wrap;
+	}
 }
