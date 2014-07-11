@@ -1,7 +1,7 @@
 /*
 */
 .steps-menu {
-	background-color: #333;
+	background-color: var(--black-basic);
 	background-position: center center;
 	background-size: cover;
 	display: flex;
@@ -30,7 +30,7 @@ input[type=checkbox] {
 	display: flex;
 	justify-content: space-between;
 	margin: 0 auto;
-	width: 1050px;
+	width: var(--desktop-width);
 }
 
 nav.steps menuitem button.btn-lg {
@@ -44,7 +44,7 @@ nav.steps menuitem button.btn-lg {
 /*
 Styles applied while screen sieze is less than 640px
 */
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: var(--mobile-width)) {
 	div.steps-menu nav.steps {
 		display: none;
 	}

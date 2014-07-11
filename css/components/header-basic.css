@@ -6,7 +6,7 @@ spreaded equaliy in 1050px space. Used i.e. with logo and simple menu
 	display: flex;
 	justify-content: space-between;
 	margin: 0 auto;
-	max-width: 1050px;
+	max-width: var(--desktop-width);
 	padding: 11px 0px;
 }
 
@@ -50,7 +50,7 @@ menu.menu-basic menuitem button {
 /*
 Styles applied while screen sieze is less than 640px
 */
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: var(--mobile-width)) {
 	.header-basic {
 		flex-wrap: wrap;
 	}

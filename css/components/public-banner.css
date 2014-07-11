@@ -18,7 +18,7 @@ Class describing how boxes for informations insight banner are displayed
 	display: flex;
 	justify-content: space-between;
 	margin: 0 auto;
-	max-width: 1050px;
+	max-width: var(--desktop-width);
 }
 
 /*
@@ -38,7 +38,7 @@ Class describing how boxes for informations insight banner are displayed
 /*
 Styles applied while screen sieze is less than 640px
 */
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: var(--mobile-width)) {
 		.public-banner .banner-infos {
 				flex-wrap: wrap;
 		}

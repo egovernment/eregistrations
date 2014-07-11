@@ -24,7 +24,7 @@ Resuable class addet to element to give space above and under element
 /*
 Styles applied while screen sieze is less than 640px
 */
-@media only screen and (max-width: 640px) {
+@media only screen and (max-width: var(--mobile-width)) {
 	/*
 	Reusable class that can be added to elements that requier cenretin while
 	resizing

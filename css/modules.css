@@ -19,7 +19,7 @@ fill main container and will have centered elemebts in sight
 .m-cont-box {
 	background-color: #ffffff;
 	border-radius: 5px;
-	border: 1px solid #e3e3e3;
+	border: 1px solid var(--gray-borders);
 	padding: 0 5px;
 }
 
