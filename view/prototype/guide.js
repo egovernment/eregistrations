@@ -2,53 +2,17 @@
 
 exports.main = function () {
 	div({ 'class': 'steps-menu' },
-		nav({ 'class': 'desktop-steps-menu' },
-			menuitem(
-				button({ 'class': 'btn btn-primary btn-lg' },
-					'1. Guide'
-					)
-			),
-			menuitem(
-				button({ 'class': 'btn btn-default btn-lg' },
-					'2. Fill the form'
-					)
-			),
-			menuitem(
-				button({ 'class': 'btn btn-default btn-lg' },
-					'3. Upload docs'
-					)
-			),
-			menuitem(
-				button({ 'class': 'btn btn-default btn-lg' },
-					'4. Pay'
-					)
-			),
-			menuitem(
-				button({ 'class': 'btn btn-default btn-lg' },
-					'5. Send file'
-					)
-			)
-			),
-		nav({ 'class': 'responsive-steps-menu' },
-			/*menuitem(
-				button({ 'class': 'btn btn-primary btn-lg' },
-					label({ 'class': 'show-steps', 'for': 'show-steps' },
-						'Steps'
-						),
-					input({ 'id': 'show-steps', 'type': 'checkbox', 'role': 'button' }
-						)
-					)
-			)*/
-			label({ 'class': 'show-steps btn btn-primary btn-lg', 'for': 'show-steps' },
+		div({ 'class': 'all-menu-items' },
+			label({ 'class': 'btn btn-primary btn-lg steps-show-btn', 'for': 'show-steps' },
 				'Steps'
 				),
 			input({ 'id': 'show-steps', 'type': 'checkbox', 'role': 'button' }
 				),
-			nav({ 'id': 'responsive-steps' },
-					menuitem(
-				button({ 'class': 'btn btn-primary btn-lg' },
-					'1. Guide'
-					)
+			nav({ 'class': 'steps' },
+				menuitem(
+					button({ 'class': 'btn btn-primary btn-lg' },
+						'1. Guide'
+						)
 				),
 				menuitem(
 					button({ 'class': 'btn btn-default btn-lg' },

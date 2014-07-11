@@ -1,6 +1,3 @@
-@media only screen and (max-width: 640px) {
-
-}
 /*
 */
 div.steps-menu {
@@ -11,7 +8,7 @@ div.steps-menu {
     padding: 11px 0;
     width: 100%;
 }
-div.steps-menu nav.desktop-steps-menu {
+div.steps-menu nav.steps {
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
@@ -22,53 +19,52 @@ div.steps-menu nav menuitem {
     background-color: #333;
 }
 
-nav.responsive-steps-menu {
+.steps-show-btn {
     display: none;
-}
-
-#responsive-steps {
-    display: none;
-}
-
-nav.responsive-steps-menu label {
     width: 100%;
+
 }
 
 input[type=checkbox] {
     display: none;
 }
 
-input[type=checkbox]:checked ~ #responsive-steps {
+.all-menu-items{
     display: flex;
     flex-wrap: wrap;
+    margin: 0 auto;
+    width: 95%;
 }
 
-#responsive-steps menuitem {
-    margin: 11px 0;
-    text-align: center;
-    width: 100%;
-}
-#responsive-steps menuitem button {
-    margin: 0 auto;
-    width: 100%;
-}
 /*
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: 640px) {
-    div.steps-menu nav.desktop-steps-menu {
+    div.steps-menu nav.steps {
         display: none;
     }
 
-    nav.responsive-steps-menu {
+    .steps-show-btn {
         display: block;
         margin: 0 auto;
-        padding: 0 5%;
-        width: 100%;
     }
 
-    nav.responsive-steps-menu label {
+    input[type=checkbox]:checked ~ .steps {
+        display: flex;
+        flex-wrap: wrap;
+        padding-top: 11px;
+    }
+
+    input[type=checkbox]:checked ~ .steps menuitem {
         margin: 11px 0;
+        text-align: center;
         width: 100%;
+    }
+    input[type=checkbox]:checked ~ .steps menuitem button {
+        margin: 0 auto;
+        width: 100%;
+    }
+    input[type=checkbox]:checked ~ .steps menuitem:last-child {
+        margin-bottom: 0px;
     }
 }
