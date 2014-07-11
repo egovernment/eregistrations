@@ -1,0 +1,48 @@
+/*
+Class describing how home page bunner is displayed as full width cover for i.e
+home page.
+*/
+.public-banner {
+		background-image: url('../img/baner.png');
+		background-position: center center;
+		background-size: cover;
+		display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+		min-height: 374px;
+		width: 100%;
+}
+
+/*
+Class describing how boxes for informations insight banner are displayed
+*/
+.public-banner div.banner-infos {
+	display: flex;
+	justify-content: space-between;
+	margin: 0 auto;
+	max-width: var(--desktop-width);
+}
+
+/*
+		Class used for sticking img in banner bottom line, having 50% of banner width
+*/
+.baner-box-img {
+		align-self: flex-end;
+		min-width: 50%;
+}
+
+.baner-box-img img {
+	margin-bottom: -3px;
+}
+.public-banner div.banner-infos h1 {
+	margin-top: 22px;
+}
+/*
+Styles applied while screen sieze is less than 640px
+*/
+@media only screen and (max-width: var(--mobile-width)) {
+		.public-banner .banner-infos {
+				flex-wrap: wrap;
+		}
+		.public-banner {
+			min-height: 462px;
+		}
+}

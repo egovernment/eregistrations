@@ -1,0 +1,39 @@
+/*
+
+*/
+.public-text {
+	display: flex;
+	justify-content: space-between;
+	margin: 0 auto;
+	max-width: var(--desktop-width);
+	padding: 22px 0px;
+}
+
+.public-text img {
+	width: 90%;
+	margin-bottom: 19px;
+}
+
+.public-text .m-box-text-centered {
+	padding: 0 5px;
+}
+/*
+Styles applied while screen sieze is less than 640px
+*/
+@media only screen and (max-width: var(--mobile-width)) {
+
+	/*
+		Setting flexibity wrap, so boxes are placed one under another.
+	*/
+	.public-text {
+		flex-wrap: wrap;
+	}
+
+	.public-text .m-box-text-centered {
+		margin-bottom: 22px;
+	}
+
+	.public-text .m-box-text-centered:last-child {
+		margin-bottom: 0px;
+	}
+}

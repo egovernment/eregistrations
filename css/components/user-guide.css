@@ -1,0 +1,66 @@
+/*
+*/
+section.business-guide {
+	background-color: var(--gray-basic);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	margin: 0 auto;
+	max-width: var(--desktop-width);
+}
+
+section.business-guide h1, h3 {
+	width: 100%;
+}
+
+section.business-guide h3.main-intro {
+	margin-bottom: 0;
+	margin-top: 22px;
+}
+
+form.guide-form {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+section.business-guide fieldset {
+	-webkit-margin-end: 0;
+	-webkit-margin-start: 0;
+	-webkit-padding-after: 0.0;
+	-webkit-padding-before: 21px;
+	padding: 22px 15px 0 15px;
+	width: 49%;
+}
+
+section.business-guide fieldset.m-cont-box {
+	margin-bottom: 20px;
+}
+section.business-guide button {
+	width: 49%;
+}
+section.business-guide fieldset hr {
+	margin-bottom: 20px;
+}
+
+h4.guide-total-costs {
+	background-color: var(--gray-basic);
+	border-bottom: 1px solid black;
+	border-top: 1px solid black;
+	padding: 10px 0;
+	line-height: 22px;
+}
+
+/*
+Styles applied while screen sieze is less than 640px
+*/
+@media only screen and (max-width: var(--mobile-width)) {
+	section.business-guide fieldset {
+		width: 100%;
+	}
+
+	section.business-guide button {
+		width: 96%;
+		margin: 0 2%;
+	}
+}

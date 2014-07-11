@@ -1,0 +1,26 @@
+/* Module */
+
+/*
+Resuable module used to create small contaners insight main container, that will
+fill main container and will have centered elemebts in sight
+*/
+.m-box-text-centered {
+	max-width: 100%;
+	text-align: center;
+}
+/*
+Resuable module used to create small contaners insight main container, that will
+fill main container and will have centered elemebts in sight
+*/
+.m-box-centered img {
+	margin: 0 auto;
+}
+
+.m-cont-box {
+	background-color: #ffffff;
+	border-radius: 5px;
+	border: 1px solid var(--gray-borders);
+	padding: 0 5px;
+}
+
+
