@@ -10,7 +10,7 @@
 }
 
 .public-text img {
-    width: auto;
+    width: 90%;
     margin-bottom: 19px;
 }
 
@@ -29,4 +29,11 @@ Styles applied while screen sieze is less than 640px
         flex-wrap: wrap;
     }
 
+    .public-text .m-box-text-centered {
+        margin-bottom: 22px;
+    }
+
+    .public-text .m-box-text-centered:last-child {
+        margin-bottom: 0px;
+    }
 }

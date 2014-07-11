@@ -3,7 +3,7 @@
 exports.main = function () {
 	div({ 'class': 'steps-menu' },
 		div({ 'class': 'all-menu-items' },
-			label({ 'class': 'btn btn-primary btn-lg steps-show-btn', 'for': 'show-steps' },
+			label({ 'class': 'btn btn-primary btn-lg show-steps-btn', 'for': 'show-steps' },
 				'Steps'
 				),
 			input({ 'id': 'show-steps', 'type': 'checkbox', 'role': 'button' }
@@ -44,9 +44,9 @@ exports.main = function () {
 			h3('Complete the previous questions, pick your records and' +
 					'see the necessary documents and costs'
 			),
-			form({ 'role': 'form', 'class': 'f-horizontal' },
+			form({ 'role': 'form', 'class': 'guide-form' },
 				fieldset({ 'class': 'm-cont-box' },
-					h3('Required records'),
+					h3('Questions'),
 					hr(),
 					p('Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
 						' Etiam vestibulum dui mi, nec ultrices diam ultricies id. '),
@@ -54,7 +54,7 @@ exports.main = function () {
 						' Etiam vestibulum dui mi, nec ultrices diam ultricies id. ')
 				),
 				fieldset({ 'class': 'm-cont-box' },
-					h4('Required records'),
+					h3('Registrations'),
 					hr(),
 					p('Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
 						' Etiam vestibulum dui mi, nec ultrices diam ultricies id. ' +
@@ -64,7 +64,7 @@ exports.main = function () {
 						' Etiam vestibulum dui mi, nec ultrices diam ultricies id. ')
 				),
 				fieldset({ 'class': 'm-cont-box' },
-					h3('Documents required'),
+					h3('Requirements'),
 					hr(),
 					p('Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
 						' Etiam vestibulum dui mi, nec ultrices diam ultricies id. '),
@@ -77,7 +77,7 @@ exports.main = function () {
 				)
 				),
 				fieldset({ 'class': 'm-cont-box' },
-					h4('Costs'),
+					h3('Costs'),
 					hr(),
 					p('Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
 						' Etiam vestibulum dui mi, nec ultrices diam ultricies id. '),

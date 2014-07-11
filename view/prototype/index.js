@@ -9,7 +9,7 @@ exports.main = function () {
 					h3({ 'class': 's-primary' },
 						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut in ' +
 						'massa malesuada, pharetra urna nec, pellentesque tortor. '),
-					button({ 'class': 'btn btn-primary btn-lg' },
+					a({ 'class': 'btn btn-primary btn-lg', href: '/guide/' },
 						'Create account')
 				),
 				div({ 'class': 'baner-box-img' },

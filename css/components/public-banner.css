@@ -42,4 +42,7 @@ Styles applied while screen sieze is less than 640px
     .public-banner .banner-infos {
         flex-wrap: wrap;
     }
+    .public-banner {
+      min-height: 462px;
+    }
 }

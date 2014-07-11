@@ -23,37 +23,4 @@ fill main container and will have centered elemebts in sight
     padding: 0 5px;
 }
 
-.f-horizontal {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-.f-horizontal.guide-records div, .f-horizontal.guide-records label {
-    width: 100%;
-}
-.f-horizontal label {
-    margin-top: 2%;
-    width: 50%;
-}
-.f-horizontal input {
-    width: 50%;
-}
-.f-horizontal div {
-    margin-top: 2%;
-}
-.f-horizontal div.radio {
-    display: flex;
-    justify-content: space-between;
-}
-.f-horizontal div.radio input[type="radio"] {
-    box-shadow: none;
-    margin: 0;
-}
-.f-horizontal div.checkbox input[type="checkbox"] {
-    box-shadow: none;
-    margin: 0;
 
-}
-.f-horizontal div.radio label {
-
-}

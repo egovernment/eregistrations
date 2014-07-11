@@ -18,12 +18,18 @@ section.business-guide h3.main-intro {
     margin-top: 22px;
 }
 
+form.guide-form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
 section.business-guide fieldset {
     -webkit-margin-end: 0;
     -webkit-margin-start: 0;
     -webkit-padding-after: 0.0;
     -webkit-padding-before: 21px;
-    padding-top: 22px;
+    padding: 22px 15px 0 15px;
     width: 49%;
 }
 
@@ -54,7 +60,7 @@ Styles applied while screen sieze is less than 640px
     }
 
     section.business-guide button {
-        width: 90%;
-        margin: 0 5%;
+        width: 96%;
+        margin: 0 2%;
     }
 }
