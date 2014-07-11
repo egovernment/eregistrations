@@ -3,11 +3,6 @@ Class descirbing how main header splits space between its elements. Elemetns are
 spreaded equaliy in 1050px space. Used i.e. with logo and simple menu
 */
 .basic-header {
-    -webkit-justify-content: space-between;
-    display: -moz-box;         /* OLD - Firefox 19 */
-    display: -ms-flexbox;      /* TWEENER - IE 10 */
-    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-    display: -webkit-flex;     /* NEW - Chrome */
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
@@ -22,11 +17,7 @@ spreaded equaliy in 1050px space. Used i.e. with logo and simple menu
 Flexible basic menu - used on home page and can be reused elsewhere
 */
 menu.m-menu-basic {
-    display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
-    display: -ms-flexbox;      /* TWEENER - IE 10 */
-    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-    display: -webkit-flex;     /* NEW - Chrome */
-    display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+    display: flex;
     height: 100%;
     list-style: none;
 }
@@ -53,7 +44,6 @@ Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: 640px) {
     .basic-header {
-        -webkit-flex-wrap: wrap;
         flex-wrap: wrap;
     }
 }

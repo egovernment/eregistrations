@@ -2,11 +2,6 @@
 
 */
 .public-text {
-    -webkit-justify-content: space-between;
-    display: -moz-box;         /* OLD - Firefox 19 */
-    display: -ms-flexbox;      /* TWEENER - IE 10 */
-    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-    display: -webkit-flex;     /* NEW - Chrome */
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
@@ -31,7 +26,6 @@ Styles applied while screen sieze is less than 640px
         Setting flexibity wrap, so boxes are placed one under another.
     */
     .public-text {
-        -webkit-flex-wrap: wrap;
         flex-wrap: wrap;
     }
 

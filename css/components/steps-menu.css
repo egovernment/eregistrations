@@ -7,20 +7,11 @@ div.steps-menu {
     background-color: #333;
     background-position: center center;
     background-size: cover;
-    display: -moz-box;         /* OLD - Firefox 19 */
-    display: -ms-flexbox;      /* TWEENER - IE 10 */
-    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-    display: -webkit-flex;     /* NEW - Chrome */
     display: flex;
     padding: 11px 0;
     width: 100%;
 }
 div.steps-menu nav.desktop-steps-menu {
-    -webkit-justify-content: space-between;
-    display: -moz-box;         /* OLD - Firefox 19 */
-    display: -ms-flexbox;      /* TWEENER - IE 10 */
-    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-    display: -webkit-flex;     /* NEW - Chrome */
     display: flex;
     justify-content: space-between;
     margin: 0 auto;
@@ -28,7 +19,6 @@ div.steps-menu nav.desktop-steps-menu {
 }
 
 div.steps-menu nav menuitem {
-    background-color: white;
     background-color: #333;
 }
 
@@ -49,19 +39,14 @@ input[type=checkbox] {
 }
 
 input[type=checkbox]:checked ~ #responsive-steps {
-    display: -moz-box;         /* OLD - Firefox 19 */
-    display: -ms-flexbox;      /* TWEENER - IE 10 */
-    display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
-    display: -webkit-flex;     /* NEW - Chrome */
     display: flex;
-    -webkit-flex-wrap: wrap;
     flex-wrap: wrap;
 }
 
 #responsive-steps menuitem {
-    width: 100%;
-    text-align: center;
     margin: 11px 0;
+    text-align: center;
+    width: 100%;
 }
 #responsive-steps menuitem button {
     margin: 0 auto;
@@ -78,12 +63,12 @@ Styles applied while screen sieze is less than 640px
     nav.responsive-steps-menu {
         display: block;
         margin: 0 auto;
-        width: 100%;
         padding: 0 5%;
+        width: 100%;
     }
 
     nav.responsive-steps-menu label {
-        width: 100%;
         margin: 11px 0;
+        width: 100%;
     }
 }
