@@ -1,6 +1,7 @@
 ::root {
 	--desktop-width: 1050px;
 	--mobile-width: 640px;
+	--min-mobile-width: 320px;
 	--gray-basic: #f5f5f5;
 	--gray-borders: #e3e3e3;
 	--black-basic: #333;

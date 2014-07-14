@@ -55,6 +55,9 @@ h4.guide-total-costs {
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
+	section.business-guide {
+		min-width: var(--min-mobile-width);
+	}
 	section.business-guide fieldset {
 		width: 100%;
 	}
