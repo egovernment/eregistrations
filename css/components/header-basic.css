@@ -7,7 +7,7 @@ spreaded equaliy in 1050px space. Used i.e. with logo and simple menu
 	justify-content: space-between;
 	margin: 0 auto;
 	max-width: var(--desktop-width);
-	padding: 11px 0px;
+	padding: 11px 10px;
 }
 
 .header-basic div.s-resize-center {

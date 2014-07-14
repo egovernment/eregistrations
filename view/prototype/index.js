@@ -46,7 +46,7 @@ exports.main = function () {
 				))
 		);
 	footer({ 'class': 'footer-logos' },
-		div({ 'class': '' },
+		div({ 'class': 'logos' },
 			div(
 				img({ 'src': '/img/logo.png' })
 			),
