@@ -19,7 +19,7 @@ exports.main = function () {
 		);
 	div({ 'class': 'public-steps' },
 		div({ 'class': 'm-box-text-centered' },
-			img({ 'src': 'img/img_300.png' }),
+			img({ 'src': 'img/img-300.png' }),
 			h3('Create your file'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
@@ -28,7 +28,7 @@ exports.main = function () {
 				)
 			),
 		div({ 'class': 'm-box-text-centered' },
-			img({ 'src': 'img/img_300.png' }),
+			img({ 'src': 'img/img-300.png' }),
 			h3('Pay costs'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
@@ -37,7 +37,7 @@ exports.main = function () {
 				)
 			),
 		div({ 'class': 'm-box-text-centered' },
-			img({ 'src': 'img/img_300.png' }),
+			img({ 'src': 'img/img-300.png' }),
 			h3('Remove certificates'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),

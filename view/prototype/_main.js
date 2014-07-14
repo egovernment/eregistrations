@@ -7,7 +7,7 @@ exports.body = function () {
 	header({ 'class': 'header-basic' },
 		div({ 'class': 's-resize-center' },
 			a({ href: '/' },
-				img({ 'src': '/img/logo_2.png' })
+				img({ 'src': '/img/logo-2.png' })
 				)
 			),
 		nav({ 'class': 's-resize-center' },
