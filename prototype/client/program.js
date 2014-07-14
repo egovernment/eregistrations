@@ -3,13 +3,24 @@
 require('mano/lib/client')({
 	noData: true,
 	schema: function () {
-		var db = require('./model.generated');
+		var db      = require('./model.generated')
+		  , domEnum = require('dbjs-dom/enum');
 
 		require('dbjs-dom/text')(db);
 		require('dbjs-dom/input')(db);
+		require('dbjs-dom/text/utils/table')(db);
+		require('dbjs-dom/ext/domjs/table-cell-render');
+
+		require('dbjs-dom/input/date-time/date')(db);
 		require('dbjs-dom/input/string/string-line')(db);
 		require('dbjs-dom/input/string/string-line/email')(db);
 		require('dbjs-dom/input/string/string-line/password')(db);
+
+		require('dbjs-dom/input/utils/fieldset')(db);
+		require('dbjs-dom-bootstrap/number/currency')(db);
+		require('dbjs-dom-bootstrap/number/square-meters')(db);
+
+		domEnum(db.CompanyType);
 	},
 	viewRequire: require('../../view/prototype/_require'),
 	routes: function (router, view) {
