@@ -38,7 +38,7 @@ exports.main = function () {
 			)
 		);
 
-	section({ 'class': 'business-guide' },
+	section({ 'class': 'user-guide' },
 			h3({ 'class': 'main-intro' },
 				"INDIVIDUAL REGISTRATION GUIDE FOR COMPANIES"),
 			h3("Complete the previous questions, pick your records and" +
