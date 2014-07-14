@@ -3,10 +3,10 @@
 exports.main = function () {
 	div({ 'class': 'steps-menu' },
 		div({ 'class': 'all-menu-items' },
-			label({ 'class': 'btn btn-primary btn-lg show-steps-btn', 'for': 'show-steps' },
+			label({ 'class': 'btn btn-primary btn-lg show-steps-btn', 'for': 'show-steps-control' },
 				'Steps'
 				),
-			input({ 'id': 'show-steps', 'type': 'checkbox', 'role': 'button' }
+			input({ 'id': 'show-steps-control', 'type': 'checkbox', 'role': 'button' }
 				),
 			nav({ 'class': 'steps' },
 				menuitem(
