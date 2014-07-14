@@ -9,7 +9,7 @@
 	width: 100%;
 }
 
-.all-menu-items{
+.all-menu-items {
 	display: flex;
 	flex-wrap: wrap;
 	margin: 0 auto;
@@ -33,12 +33,26 @@ input[type=checkbox] {
 	width: var(--desktop-width);
 }
 
-nav.steps menuitem button.btn-lg {
-	padding: 10px 25px;
+.steps-menu nav.steps a {
+	margin: 0 0px;
+	width: 100%;
+}
+
+nav.steps menuitem a.btn-lg {
+	padding-left: 0px;
+	padding-right: 0px;
 }
 
 .steps-menu nav menuitem {
 	background-color: #333;
+	width: 100%;
+	margin: 0 2px;
+}
+
+@media only screen and (max-width: 760px) {
+	nav.steps menuitem a.btn-lg {
+		font-size: 14px;
+	}
 }
 
 /*
@@ -58,6 +72,10 @@ Styles applied while screen sieze is less than 640px
 		margin: 0 auto;
 	}
 
+	nav.steps menuitem a.btn-lg {
+		font-size: 18px;
+	}
+
 	input[type=checkbox]:checked ~ .steps {
 		display: flex;
 		flex-wrap: wrap;
@@ -69,7 +87,7 @@ Styles applied while screen sieze is less than 640px
 		text-align: center;
 		width: 100%;
 	}
-	input[type=checkbox]:checked ~ .steps menuitem button {
+	input[type=checkbox]:checked ~ .steps menuitem a {
 		margin: 0 auto;
 		width: 100%;
 	}
