@@ -1,7 +1,7 @@
 /*
 
 */
-.public-text {
+.public-steps {
 	display: flex;
 	justify-content: space-between;
 	margin: 0 auto;
@@ -9,19 +9,19 @@
 	padding: 22px 10px;
 }
 
-.public-text div:first-child {
+.public-steps div:first-child {
 	padding-left: 0px;
 }
 
-.public-text div:last-child {
+.public-steps div:last-child {
 	padding-right: 0px;
 }
-.public-text img {
+.public-steps img {
 	width: 90%;
 	margin-bottom: 16px;
 }
 
-.public-text .m-box-text-centered {
+.public-steps .m-box-text-centered {
 	padding: 0 5px;
 }
 /*
@@ -32,16 +32,16 @@ Styles applied while screen sieze is less than 640px
 	/*
 	Setting flexibity wrap, so boxes are placed one under another.
 	*/
-	.public-text {
+	.public-steps {
 		flex-wrap: wrap;
 		min-width: var(--min-mobile-width);
 	}
 
-	.public-text .m-box-text-centered {
+	.public-steps .m-box-text-centered {
 		margin-bottom: 22px;
 	}
 
-	.public-text .m-box-text-centered:last-child {
+	.public-steps .m-box-text-centered:last-child {
 		margin-bottom: 0px;
 	}
 }

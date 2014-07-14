@@ -17,7 +17,7 @@ exports.main = function () {
 				)
 				)
 		);
-	div({ 'class': 'public-text' },
+	div({ 'class': 'public-steps' },
 		div({ 'class': 'm-box-text-centered' },
 			img({ 'src': 'img/img_300.png' }),
 			h3('Create your file'),

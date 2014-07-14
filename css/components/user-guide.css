@@ -1,6 +1,6 @@
 /*
 */
-section.business-guide {
+section.user-guide {
 	background-color: var(--light-background);
 	display: flex;
 	flex-wrap: wrap;
@@ -10,11 +10,11 @@ section.business-guide {
 	padding: 0px 10px;
 }
 
-section.business-guide h1, h3 {
+section.user-guide h1, h3 {
 	width: 100%;
 }
 
-section.business-guide h3.main-intro {
+section.user-guide h3.main-intro {
 	margin-bottom: 0;
 	margin-top: 22px;
 }
@@ -25,7 +25,7 @@ form.guide-form {
 	justify-content: space-between;
 }
 
-section.business-guide fieldset {
+section.user-guide fieldset {
 	-webkit-margin-end: 0;
 	-webkit-margin-start: 0;
 	-webkit-padding-after: 0.0;
@@ -34,13 +34,13 @@ section.business-guide fieldset {
 	width: 49%;
 }
 
-section.business-guide fieldset.m-cont-box {
+section.user-guide fieldset.m-cont-box {
 	margin-bottom: 20px;
 }
-section.business-guide button {
+section.user-guide button {
 	width: 49%;
 }
-section.business-guide fieldset hr {
+section.user-guide fieldset hr {
 	margin-bottom: 20px;
 }
 
@@ -56,14 +56,14 @@ h4.guide-total-costs {
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
-	section.business-guide {
+	section.user-guide {
 		min-width: var(--min-mobile-width);
 	}
-	section.business-guide fieldset {
+	section.user-guide fieldset {
 		width: 100%;
 	}
 
-	section.business-guide button {
+	section.user-guide button {
 		width: 100%;
 	}
 }
