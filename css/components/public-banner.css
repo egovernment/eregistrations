@@ -19,6 +19,7 @@ Class describing how boxes for informations insight banner are displayed
 	justify-content: space-between;
 	margin: 0 auto;
 	max-width: var(--desktop-width);
+	padding: 0 10px;
 }
 
 /*

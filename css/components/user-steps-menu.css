@@ -13,7 +13,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	margin: 0 auto;
-	width: 95%;
+	width: 100%;
 }
 
 .show-steps-btn {
@@ -31,6 +31,7 @@ input[type=checkbox] {
 	justify-content: space-between;
 	margin: 0 auto;
 	width: var(--desktop-width);
+	padding: 0px 10px;
 }
 
 .steps-menu nav.steps a {
@@ -69,7 +70,8 @@ Styles applied while screen sieze is less than 640px
 
 	.show-steps-btn {
 		display: block;
-		margin: 0 auto;
+		margin: 0 10px;
+
 	}
 
 	nav.steps menuitem a.btn-lg {

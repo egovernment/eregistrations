@@ -11,19 +11,23 @@
  Class used for styling footer logos. Boxes are equaliy spreaded insight
  of 1050px row.
 */
-.footer-logos div {
+.footer-logos div.logos {
 	display: flex;
 	justify-content: space-between;
 	margin: 0 auto;
 	max-width: var(--desktop-width);
+
 }
 
 /*
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
-	.footer-logos div {
+	.footer-logos div.logos {
 		flex-wrap: wrap;
 		min-width: var(--min-mobile-width);
+	}
+	.footer-logos div.logos div {
+		margin: 0 auto;
 	}
 }
