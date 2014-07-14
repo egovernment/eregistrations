@@ -1,7 +1,7 @@
 /*
 */
 .steps-menu {
-	background-color: var(--black-basic);
+	background-color: var(--dark-background);
 	background-position: center center;
 	background-size: cover;
 	display: flex;

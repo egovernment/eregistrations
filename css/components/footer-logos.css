@@ -2,7 +2,7 @@
  Setting footer with logos as full width container with specific colour background
 */
 .footer-logos {
-	background-color: var(--black-basic);
+	background-color: var(--dark-background);
 	display: flex;
 	width: 100%;
 }
