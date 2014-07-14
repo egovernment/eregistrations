@@ -49,7 +49,7 @@ exports.main = function () {
 					"see the necessary documents and costs"
 			),
 			form({ 'role': 'form', 'class': 'guide-form' },
-				fieldset({ 'class': 'm-cont-box' },
+				fieldset({ 'class': '' },
 					h3("Questions"),
 					hr(),
 					ul(li(label(user.getDescriptor('businessActivity').label, " ",
@@ -62,7 +62,7 @@ exports.main = function () {
 						li(label(user.getDescriptor(name).label, " ",
 							input({ dbjs: user.getObservable(name) })));
 					}))),
-				fieldset({ 'class': 'm-cont-box' },
+				fieldset({ 'class': '' },
 					h3("Registrations"),
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
@@ -72,7 +72,7 @@ exports.main = function () {
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. " +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. ")
 				),
-				fieldset({ 'class': 'm-cont-box' },
+				fieldset({ 'class': '' },
 					h3("Requirements"),
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
@@ -82,7 +82,7 @@ exports.main = function () {
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))),
-				fieldset({ 'class': 'm-cont-box' },
+				fieldset({ 'class': '' },
 					h3("Costs"),
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +

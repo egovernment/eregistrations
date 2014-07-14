@@ -4,14 +4,14 @@
   , login    = require('./_login');*/
 
 exports.body = function () {
-	header({ 'class': 'header-basic' },
-		div({ 'class': 's-resize-center' },
+	header({ 'class': 'header-top' },
+		div({ 'class': '' },
 			a({ href: '/' },
 				img({ 'src': '/img/logo_2.png' })
 				)
 			),
-		nav({ 'class': 's-resize-center' },
-			menu({ 'class': 'menu-basic' },
+		nav({ 'class': '' },
+			menu({ 'class': 'menu-top' },
 				menuitem(a('en')),
 				menuitem(a('sw')),
 				menuitem(a('link one')),

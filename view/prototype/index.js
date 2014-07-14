@@ -3,7 +3,7 @@
 exports.main = function () {
 	div({ 'class': 'public-banner' },
 		div({ 'class': 'banner-infos' },
-				div({ 'class': 'baner-box-text s-resize-center' },
+				div({ 'class': 'baner-box-text' },
 					h1({ 'class': 's-primary' },
 						'Turn your online business on'),
 					h3({ 'class': 's-primary' },
@@ -18,7 +18,7 @@ exports.main = function () {
 				)
 		);
 	div({ 'class': 'public-steps' },
-		div({ 'class': 'm-box-text-centered' },
+		div({ 'class': '' },
 			img({ 'src': 'img/img_300.png' }),
 			h3('Create your file'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
@@ -27,7 +27,7 @@ exports.main = function () {
 				'More info'
 				)
 			),
-		div({ 'class': 'm-box-text-centered' },
+		div({ 'class': '' },
 			img({ 'src': 'img/img_300.png' }),
 			h3('Pay costs'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
@@ -36,7 +36,7 @@ exports.main = function () {
 				'More info'
 				)
 			),
-		div({ 'class': 'm-box-text-centered' },
+		div({ 'class': '' },
 			img({ 'src': 'img/img_300.png' }),
 			h3('Remove certificates'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
