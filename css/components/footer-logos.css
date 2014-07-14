@@ -24,5 +24,6 @@ Styles applied while screen sieze is less than 640px
 @media only screen and (max-width: var(--mobile-width)) {
 	.footer-logos div {
 		flex-wrap: wrap;
+		min-width: var(--min-mobile-width);
 	}
 }
