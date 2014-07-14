@@ -1,5 +1,9 @@
 'use strict';
 
+var db = require('mano').db
+
+  , user = db.User.prototype;
+
 exports.main = function () {
 	div({ 'class': 'steps-menu' },
 		div({ 'class': 'all-menu-items' },
@@ -48,11 +52,16 @@ exports.main = function () {
 				fieldset({ 'class': 'm-cont-box' },
 					h3("Questions"),
 					hr(),
-					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
-						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
-					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
-						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. ")
-				),
+					ul(li(label(user.getDescriptor('businessActivity').label, " ",
+						input({ dbjs: user._businessActivity, property: 'label', group: {
+						propertyName: 'category',
+						labelPropertyName: 'label'
+					} }))),
+					list(['isOwner', 'inventory', 'surfaceArea', 'members',
+						'companyType', 'isShoppingGallery'], function (name) {
+						li(label(user.getDescriptor(name).label, " ",
+							input({ dbjs: user.getObservable(name) })));
+					}))),
 				fieldset({ 'class': 'm-cont-box' },
 					h3("Registrations"),
 					hr(),
@@ -68,14 +77,11 @@ exports.main = function () {
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
-					ul(
-					li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
-					li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
-					li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
-					li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
-					li("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-				)
-				),
+					ul(li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
+						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
+						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
+						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
+						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))),
 				fieldset({ 'class': 'm-cont-box' },
 					h3("Costs"),
 					hr(),
