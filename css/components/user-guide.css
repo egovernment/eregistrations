@@ -1,7 +1,7 @@
 /*
 */
 section.business-guide {
-	background-color: var(--gray-basic);
+	background-color: var(--light-background);
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
@@ -45,7 +45,7 @@ section.business-guide fieldset hr {
 }
 
 h4.guide-total-costs {
-	background-color: var(--gray-basic);
+	background-color: var(--light-background);
 	border-bottom: 1px solid black;
 	border-top: 1px solid black;
 	padding: 10px 0;
