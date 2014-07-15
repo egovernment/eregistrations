@@ -77,7 +77,10 @@ module.exports = User;
 
 Partner = db.User.extend('Partner');
 
-user.defineProperty('partners', {
+user.define('partners', {
 	type: Partner,
 	multiple: true
 });
+
+user.partners.add(new Partner({ firstName: "Frank", lastName: "Grozel" }));
+user.partners.add(new Partner({ firstName: "Bita", lastName: "Mortazavi" }));
