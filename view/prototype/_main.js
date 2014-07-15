@@ -5,13 +5,11 @@
 
 exports.body = function () {
 	header({ 'class': 'header-top' },
-		div({ 'class': '' },
-			a({ href: '/' },
+		div(a({ href: '/' },
 				img({ 'src': '/img/logo-2.png' })
 				)
 			),
-		nav({ 'class': '' },
-			menu({ 'class': 'menu-top' },
+		nav(menu({ 'class': 'menu-top' },
 				menuitem(a('en')),
 				menuitem(a('sw')),
 				menuitem(a('link one')),
