@@ -45,8 +45,8 @@ BusinessActivity.newNamed('baReassurance', {
 });
 
 CompanyType = StringLine.createEnum('CompanyType', new Map([
-	["private", { label: "Private limited company" }],
-	["public", { label: "Public company" }]
+	['private', { label: "Private limited company" }],
+	['public', { label: "Public company" }]
 ]));
 
 user.defineProperties({
