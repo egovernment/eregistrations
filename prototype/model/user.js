@@ -9,6 +9,8 @@ var Map          = require('es6-map')
   , UsDollar     = require('dbjs-ext/number/currency/us-dollar')(db)
   , UInteger     = require('dbjs-ext/number/integer/u-integer')(db)
   , SquareMeters = require('dbjs-ext/number/square-meters')(db)
+  , Document     = require('./document')
+  , Submission   = require('./submission')
 
   , user = User.prototype
   , BusinessActivity, BusinessActivityCategory, CompanyType, Partner, bcAgencyBusiness, bcInsurance;
@@ -84,3 +86,20 @@ user.define('partners', {
 
 user.partners.add(new Partner({ firstName: "Frank", lastName: "Grozel" }));
 user.partners.add(new Partner({ firstName: "Bita", lastName: "Mortazavi" }));
+
+Submission.extend('DocumentASubmission', {},
+	{ Document: { value: Document.extend('DocumentA', {}, { label: "Document A" }) } });
+Submission.extend('DocumentBSubmission', {},
+	{ Document: { value: Document.extend('DocumentB', {}, { label: "Document B" }) } });
+Submission.extend('DocumentCSubmission', {},
+	{ Document: { value: Document.extend('DocumentC', {}, { label: "Document C" }) } });
+
+user.define('submissions', {
+	type: db.Object,
+	nested: true
+});
+user.submissions.defineProperties({
+	documentA: { type: db.DocumentASubmission, nested: true },
+	documentB: { type: db.DocumentBSubmission, nested: true },
+	documentC: { type: db.DocumentCSubmission, nested: true }
+});
