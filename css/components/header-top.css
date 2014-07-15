@@ -18,16 +18,16 @@ spreaded equaliy in 1050px space. Used i.e. with logo and simple menu
 Flexible basic menu - used on home page and can be reused elsewhere
 */
 .menu-top {
+	-webkit-margin-after: 0px;
+	-webkit-margin-before: 0px;
+	-webkit-margin-end: 0px;
+	-webkit-margin-start: 0px;
+	-webkit-padding-start: 00px;
 	display: flex;
 	height: 100%;
 	list-style: none;
-	-webkit-margin-before: 0px;
-	-webkit-margin-after: 0px;
-	-webkit-margin-start: 0px;
-	-webkit-margin-end: 0px;
-	-webkit-padding-start: 00px;
-	margin-top: 12px;
 	margin-bottom: 10px;
+	margin-top: 12px;
 	padding-left: 0px;
 }
 
@@ -41,7 +41,6 @@ Flexible basic menu link
 }
 
 .menu-top menuitem a.login {
-	-moz-user-select: none;
 	background-color: #428bca;
 	border-color: #357ebd;
 	border-radius: 3px;
@@ -49,8 +48,8 @@ Flexible basic menu link
 	cursor: pointer;
 	font-size: 12px;
 	margin: 0;
-	text-decoration: none;
 	text-align: center;
+	text-decoration: none;
     line-height: 18px;
     padding: 3px 7px 4px;
     vertical-align: middle;
@@ -59,9 +58,9 @@ Flexible basic menu link
 .menu-top menuitem a.login:hover,
 .menu-top menuitem a.login:focus,
 .menu-top menuitem a.login:active {
-	color: #ffffff;
 	background-color: #3071a9;
 	border-color: #285e8e;
+	color: #ffffff;
 }
 /*
 Flexible basic menu button positioning

@@ -48,7 +48,7 @@ exports.main = function () {
 			h3("Complete the previous questions, pick your records and" +
 					"see the necessary documents and costs"
 			),
-			form({ 'role': 'form', 'class': 'guide-form' },
+			form({ 'class': 'guide-form' },
 				fieldset(h3("Questions"),
 					hr(),
 					ul(li(label(user.getDescriptor('businessActivity').label, " ",

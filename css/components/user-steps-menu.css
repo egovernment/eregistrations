@@ -26,8 +26,8 @@ input[type=checkbox] {
 	display: flex;
 	justify-content: space-between;
 	margin: 0 auto;
-	width: var(--desktop-width);
 	padding: 0px 10px;
+	width: var(--desktop-width);
 }
 
 .steps-menu nav.steps a {
@@ -36,11 +36,10 @@ input[type=checkbox] {
 }
 
 .step-active {
-	border-radius: 6px;
-	-moz-user-select: none;
 	background-color: #428bca;
 	background-image: none;
 	border-color: #357ebd;
+	border-radius: 6px;
 	border: 1px solid transparent;
 	color: #ffffff;
 	cursor: pointer;
@@ -58,14 +57,13 @@ input[type=checkbox] {
 .step-active:hover,
 .step-active:focus,
 .step-active:active {
-	color: #ffffff;
 	background-color: #3071a9;
 	border-color: #285e8e;
+	color: #ffffff;
 	text-decoration: none;
 }
 
 .step-unactive {
-	-moz-user-select: none;
 	background-color: #ffffff;
 	background-image: none;
 	border-color: #357ebd;
@@ -87,10 +85,10 @@ input[type=checkbox] {
 .step-unactive:hover,
 .step-unactive:focus,
 .step-unactive:active {
-	text-decoration: none;
-	color: #333333;
 	background-color: #e6e6e6;
 	border-color: #adadad;
+	color: #333333;
+	text-decoration: none;
 }
 
 .steps-menu nav menuitem {
