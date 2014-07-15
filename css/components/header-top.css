@@ -2,7 +2,7 @@
 Class descirbing how main header splits space between its elements. Elemetns are
 spreaded equaliy in 1050px space. Used i.e. with logo and simple menu
 */
-.header-basic {
+.header-top {
 	display: flex;
 	justify-content: space-between;
 	margin: 0 auto;
@@ -10,13 +10,14 @@ spreaded equaliy in 1050px space. Used i.e. with logo and simple menu
 	padding: 11px 10px;
 }
 
-.header-basic div.s-resize-center {
+.header-top div {
 	max-height: 66px;
 }
+
 /*
 Flexible basic menu - used on home page and can be reused elsewhere
 */
-.menu-basic {
+.menu-top {
 	display: flex;
 	height: 100%;
 	list-style: none;
@@ -33,13 +34,13 @@ Flexible basic menu - used on home page and can be reused elsewhere
 /*
 Flexible basic menu link
 */
-.menu-basic menuitem a{
+.menu-top menuitem a{
 	color: #777777;
 	font-size: 14px;
 	margin-right: 15px;
 }
 
-.menu-basic menuitem a.login {
+.menu-top menuitem a.login {
 	-moz-user-select: none;
 	background-color: #428bca;
 	border-color: #357ebd;
@@ -55,9 +56,9 @@ Flexible basic menu link
     vertical-align: middle;
     white-space: nowrap;
 }
-.menu-basic menuitem a.login:hover,
-.menu-basic menuitem a.login:focus,
-.menu-basic menuitem a.login:active {
+.menu-top menuitem a.login:hover,
+.menu-top menuitem a.login:focus,
+.menu-top menuitem a.login:active {
 	color: #ffffff;
 	background-color: #3071a9;
 	border-color: #285e8e;
@@ -65,8 +66,8 @@ Flexible basic menu link
 /*
 Flexible basic menu button positioning
 */
-menu.menu-basic menuitem button {
-
+menu.menu-top menuitem button {
+	margin: 0;
 }
 
 
@@ -74,8 +75,12 @@ menu.menu-basic menuitem button {
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
-	.header-basic {
+	.header-top {
 		flex-wrap: wrap;
 		min-width: var(--min-mobile-width);
+	}
+	.header-top div, .header-top nav {
+		margin: 0 auto;
+		text-align: center;
 	}
 }

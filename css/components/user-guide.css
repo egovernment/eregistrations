@@ -30,13 +30,18 @@ section.user-guide fieldset {
 	-webkit-margin-start: 0;
 	-webkit-padding-after: 0.0;
 	-webkit-padding-before: 21px;
+	background-color: #ffffff;
+	border-radius: 5px;
+	border: 1px solid var(--light-inner-border);
+	margin-bottom: 20px;
 	padding: 22px 15px 0 15px;
 	width: 49%;
 }
 
-section.user-guide fieldset.m-cont-box {
+section.user-guide fieldset {
 	margin-bottom: 20px;
 }
+
 section.user-guide button.save-step-one {
 	border-radius: 6px;
 	-moz-user-select: none;
@@ -56,7 +61,6 @@ section.user-guide button.save-step-one {
 	text-decoration: none;
 	vertical-align: middle;
 	white-space: nowrap;
-	width: 49%;
 }
 section.user-guide button.save-step-one:hover,
 section.user-guide button.save-step-one:focus,
@@ -77,6 +81,10 @@ h4.guide-total-costs {
 	border-top: 1px solid black;
 	padding: 10px 0;
 	line-height: 22px;
+}
+
+section.user-guide button.save-step-one {
+	width: 49%;
 }
 
 /*

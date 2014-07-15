@@ -3,7 +3,7 @@
 exports.main = function () {
 	div({ 'class': 'public-banner' },
 		div({ 'class': 'banner-infos' },
-				div({ 'class': 'baner-box-text s-resize-center' },
+				div({ 'class': 'baner-box-text' },
 					h1({ 'class': 's-primary' },
 						'Turn your online business on'),
 					h3({ 'class': 's-primary' },

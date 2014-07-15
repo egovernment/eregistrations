@@ -1,0 +1,31 @@
+.public-error {
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 auto;
+    max-width: var(--desktop-width);
+    padding: 0px 10px;
+}
+
+.public-error div {
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: 1px solid var(--light-inner-border);
+    margin: 22px 0px;
+    text-align: center;
+}
+
+.public-error div h1, .public-error div h2 {
+    padding-top: 22px;
+    width: 100%;
+}
+
+
+.public-error div h1.error-type {
+    font-size: 84px;
+    line-height: 88px;
+}
+
+.public-error div img {
+    max-height: 396px;
+    max-width: 570px;
+}
