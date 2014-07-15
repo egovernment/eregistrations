@@ -15,7 +15,7 @@ exports.body = function () {
 				menuitem(a('link one')),
 				menuitem(a('link two')),
 				menuitem(a('link tree')),
-				menuitem(button({ 'class': 'btn-primary btn-xs' },
+				menuitem(a({ 'class': 'login' },
 					'Log in'
 					))
 				)
