@@ -2,7 +2,7 @@
 Class descirbing how main header splits space between its elements. Elemetns are
 spreaded equaliy in 1050px space. Used i.e. with logo and simple menu
 */
-.header-basic {
+.header-top {
 	display: flex;
 	justify-content: space-between;
 	margin: 0 auto;
@@ -10,13 +10,14 @@ spreaded equaliy in 1050px space. Used i.e. with logo and simple menu
 	padding: 11px 10px;
 }
 
-.header-basic div.s-resize-center {
+.header-top div {
 	max-height: 66px;
 }
+
 /*
 Flexible basic menu - used on home page and can be reused elsewhere
 */
-.menu-basic {
+.menu-top {
 	display: flex;
 	height: 100%;
 	list-style: none;
@@ -33,7 +34,7 @@ Flexible basic menu - used on home page and can be reused elsewhere
 /*
 Flexible basic menu link
 */
-.menu-basic menuitem a{
+.menu-top menuitem a{
 	color: #777777;
 	font-size: 14px;
 	margin-right: 15px;
@@ -42,7 +43,7 @@ Flexible basic menu link
 /*
 Flexible basic menu button positioning
 */
-menu.menu-basic menuitem button {
+menu.menu-top menuitem button {
 	margin: 0;
 }
 
@@ -51,8 +52,12 @@ menu.menu-basic menuitem button {
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
-	.header-basic {
+	.header-top {
 		flex-wrap: wrap;
 		min-width: var(--min-mobile-width);
+	}
+	.header-top div, .header-top nav {
+		margin: 0 auto;
+		text-align: center;
 	}
 }

@@ -9,12 +9,19 @@
 	padding: 22px 10px;
 }
 
+.public-steps div {
+	max-width: 100%;
+	text-align: center;
+}
+
 .public-steps div:first-child {
 	padding-left: 0px;
+	padding-right: 5px;
 }
 
 .public-steps div:last-child {
 	padding-right: 0px;
+	padding-left: 5px;
 }
 .public-steps img {
 	width: 90%;

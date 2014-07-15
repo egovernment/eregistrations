@@ -47,4 +47,8 @@ Styles applied while screen sieze is less than 640px
 		.public-banner {
 			min-height: 462px;
 		}
+		.baner-box-text {
+			margin: 0 auto;
+			text-align: center;
+		}
 }

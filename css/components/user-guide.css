@@ -30,13 +30,14 @@ section.user-guide fieldset {
 	-webkit-margin-start: 0;
 	-webkit-padding-after: 0.0;
 	-webkit-padding-before: 21px;
+	background-color: #ffffff;
+	border-radius: 5px;
+	border: 1px solid var(--light-inner-border);
+	margin-bottom: 20px;
 	padding: 22px 15px 0 15px;
 	width: 49%;
 }
 
-section.user-guide fieldset.m-cont-box {
-	margin-bottom: 20px;
-}
 section.user-guide button {
 	width: 49%;
 }
