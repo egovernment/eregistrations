@@ -63,6 +63,8 @@ user.defineProperties({
 	companyType: { type: CompanyType, label: "Registration type", required: true },
 	isShoppingGallery: { type: db.Boolean, label: "A shopping gallery", required: true,
 		trueLabel: "Yes", falseLabel: "No" },
+	isARequested: { type: db.Boolean, label: "Registration A", required: true },
+	isBRequested: { type: db.Boolean, label: "Registration B", required: true },
 
 	dateOfBirth: { type: DateType, label: "Date of birth", required: true },
 	userEmail: { type: Email, label: "Email" },
