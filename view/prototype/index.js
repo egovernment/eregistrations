@@ -9,7 +9,7 @@ exports.main = function () {
 					h3({ 'class': 's-primary' },
 						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut in ' +
 						'massa malesuada, pharetra urna nec, pellentesque tortor. '),
-					a({ 'class': 'btn btn-primary btn-lg', href: '/guide/' },
+					a({ 'class': 'create-account', href: '/guide/' },
 						'Create account')
 				),
 				div({ 'class': 'baner-box-img' },
@@ -23,7 +23,7 @@ exports.main = function () {
 			h3('Create your file'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
-			button({ 'class': 'btn btn-primary btn-xs' },
+			a({ 'class': 'more-info' },
 				'More info'
 				)
 			),
@@ -32,7 +32,7 @@ exports.main = function () {
 			h3('Pay costs'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
-			button({ 'class': 'btn btn-primary btn-xs' },
+			a({ 'class': 'more-info' },
 				'More info'
 				)
 			),
@@ -41,7 +41,7 @@ exports.main = function () {
 			h3('Remove certificates'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
-			button({ 'class': 'btn btn-primary btn-xs' },
+			a({ 'class': 'more-info' },
 				'More info'
 				))
 		);

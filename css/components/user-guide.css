@@ -37,9 +37,36 @@ section.user-guide fieldset {
 section.user-guide fieldset.m-cont-box {
 	margin-bottom: 20px;
 }
-section.user-guide button {
+section.user-guide button.save-step-one {
+	border-radius: 6px;
+	-moz-user-select: none;
+	background-color: #428bca;
+	background-image: none;
+	border-color: #357ebd;
+	border: 1px solid transparent;
+	color: #ffffff;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 22px;
+	margin-bottom: 0;
+	padding: 10px 16px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	white-space: nowrap;
 	width: 49%;
 }
+section.user-guide button.save-step-one:hover,
+section.user-guide button.save-step-one:focus,
+section.user-guide button.save-step-one:active {
+	color: #ffffff;
+	background-color: #3071a9;
+	border-color: #285e8e;
+	text-decoration: none;
+}
+
 section.user-guide fieldset hr {
 	margin-bottom: 20px;
 }
@@ -63,7 +90,7 @@ Styles applied while screen sieze is less than 640px
 		width: 100%;
 	}
 
-	section.user-guide button {
+	section.user-guide button.save-step-one {
 		width: 100%;
 	}
 }

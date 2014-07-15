@@ -39,11 +39,34 @@ Flexible basic menu link
 	margin-right: 15px;
 }
 
+.menu-basic menuitem a.login {
+	-moz-user-select: none;
+	background-color: #428bca;
+	border-color: #357ebd;
+	border-radius: 3px;
+	color: #ffffff;
+	cursor: pointer;
+	font-size: 12px;
+	margin: 0;
+	text-decoration: none;
+	text-align: center;
+    line-height: 18px;
+    padding: 3px 7px 4px;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+.menu-basic menuitem a.login:hover,
+.menu-basic menuitem a.login:focus,
+.menu-basic menuitem a.login:active {
+	color: #ffffff;
+	background-color: #3071a9;
+	border-color: #285e8e;
+}
 /*
 Flexible basic menu button positioning
 */
 menu.menu-basic menuitem button {
-	margin: 0;
+
 }
 
 
