@@ -3,12 +3,12 @@ Class describing how home page bunner is displayed as full width cover for i.e
 home page.
 */
 .public-banner {
-		background-image: url('../img/baner.png');
-		background-position: center center;
-		background-size: cover;
-		display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
-		min-height: 374px;
-		width: 100%;
+	background-image: url('../img/baner.png');
+	background-position: center center;
+	background-size: cover;
+	display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
+	min-height: 374px;
+	width: 100%;
 }
 
 /*
@@ -23,63 +23,61 @@ Class describing how boxes for informations insight banner are displayed
 }
 
 .public-banner div.banner-infos a.create-account {
+	background-color: #428bca;
+	background-image: none;
+	border-color: #357ebd;
 	border-radius: 6px;
-    -moz-user-select: none;
-    background-color: #428bca;
-    background-image: none;
-    border-color: #357ebd;
-    border: 1px solid transparent;
-    color: #ffffff;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 18px;
-    font-weight: normal;
-    line-height: 22px;
-    margin-bottom: 0;
-    padding: 10px 16px;
-    text-align: center;
-    text-decoration: none;
-    vertical-align: middle;
-    white-space: nowrap;
+	border: 1px solid transparent;
+	color: #ffffff;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 22px;
+	margin-bottom: 0;
+	padding: 10px 16px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	white-space: nowrap;
 }
 
 .public-banner div.banner-infos a.create-account:hover,
 .public-banner div.banner-infos a.create-account:focus,
 .public-banner div.banner-infos a.create-account:active {
-	color: #ffffff;
 	background-color: #3071a9;
 	border-color: #285e8e;
+	color: #ffffff;
 }
 
 .public-steps div a.more-info {
-	-moz-user-select: none;
 	background-color: #428bca;
 	border-color: #357ebd;
 	border-radius: 3px;
 	color: #ffffff;
 	cursor: pointer;
 	font-size: 12px;
+	line-height: 18px;
 	margin: 0;
-	text-decoration: none;
+	padding: 3px 7px 4px;
 	text-align: center;
-    line-height: 18px;
-    padding: 3px 7px 4px;
-    vertical-align: middle;
-    white-space: nowrap;
+	text-decoration: none;
+	vertical-align: middle;
+	white-space: nowrap;
 }
 .public-steps div a.more-info:hover,
 .public-steps div a.more-info:focus,
 .public-steps div a.more-info:active {
-	color: #ffffff;
 	background-color: #3071a9;
 	border-color: #285e8e;
+	color: #ffffff;
 }
 /*
 		Class used for sticking img in banner bottom line, having 50% of banner width
 */
 .baner-box-img {
-		align-self: flex-end;
-		min-width: 50%;
+	align-self: flex-end;
+	min-width: 50%;
 }
 
 .baner-box-img img {

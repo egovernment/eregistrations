@@ -43,11 +43,10 @@ form.guide-form {
 }
 
 .user-guide button.save-step-one {
-	border-radius: 6px;
-	-moz-user-select: none;
 	background-color: #428bca;
 	background-image: none;
 	border-color: #357ebd;
+	border-radius: 6px;
 	border: 1px solid transparent;
 	color: #ffffff;
 	cursor: pointer;
@@ -65,9 +64,9 @@ form.guide-form {
 .user-guide button.save-step-one:hover,
 .user-guide button.save-step-one:focus,
 .user-guide button.save-step-one:active {
-	color: #ffffff;
 	background-color: #3071a9;
 	border-color: #285e8e;
+	color: #ffffff;
 	text-decoration: none;
 }
 
@@ -79,8 +78,8 @@ h4.guide-total-costs {
 	background-color: var(--light-background);
 	border-bottom: 1px solid black;
 	border-top: 1px solid black;
-	padding: 10px 0;
 	line-height: 22px;
+	padding: 10px 0;
 }
 
 .user-guide button.save-step-one {
