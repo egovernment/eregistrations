@@ -14,12 +14,15 @@
     text-align: center;
 }
 
-.public-error div h1 {
+.public-error div h1, .public-error div h2 {
     padding-top: 22px;
     width: 100%;
 }
-.public-error div h2 {
-    width: 100%;
+
+
+.public-error div h1.error-type {
+    font-size: 84px;
+    line-height: 88px;
 }
 
 .public-error div img {
