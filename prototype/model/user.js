@@ -11,7 +11,7 @@ var Map          = require('es6-map')
   , SquareMeters = require('dbjs-ext/number/square-meters')(db)
 
   , user = User.prototype
-  , BusinessActivity, BusinessActivityCategory, CompanyType, bcAgencyBusiness, bcInsurance;
+  , BusinessActivity, BusinessActivityCategory, CompanyType, Partner, bcAgencyBusiness, bcInsurance;
 
 require('dbjs-ext/create-enum')(db);
 
@@ -74,3 +74,10 @@ user.defineProperties({
 });
 
 module.exports = User;
+
+Partner = db.User.extend('Partner');
+
+user.defineProperty('partners', {
+	type: Partner,
+	multiple: true
+});
