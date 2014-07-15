@@ -7,34 +7,34 @@ var db = require('mano').db
 exports.main = function () {
 	div({ 'class': 'steps-menu' },
 		div({ 'class': 'all-menu-items' },
-			label({ 'class': 'btn btn-primary btn-lg show-steps-btn', 'for': 'show-steps-control' },
+			label({ 'class': 'step-active show-steps-btn', 'for': 'show-steps-control' },
 				'Steps'
 				),
 			input({ 'id': 'show-steps-control', 'type': 'checkbox', 'role': 'button' }
 				),
 			nav({ 'class': 'steps' },
 				menuitem(
-					a({ 'class': 'btn btn-primary btn-lg' },
+					a({ 'class': 'step-active' },
 						"1. Guide"
 						)
 				),
 				menuitem(
-					a({ 'class': 'btn btn-default btn-lg' },
+					a({ 'class': 'step-unactive' },
 						"2. Fill the form"
 						)
 				),
 				menuitem(
-					a({ 'class': 'btn btn-default btn-lg' },
+					a({ 'class': 'step-unactive' },
 						"3. Upload docs"
 						)
 				),
 				menuitem(
-					a({ 'class': 'btn btn-default btn-lg' },
+					a({ 'class': 'step-unactive' },
 						"4. Pay"
 						)
 				),
 				menuitem(
-					a({ 'class': 'btn btn-default btn-lg' },
+					a({ 'class': 'step-unactive' },
 						"5. Send file"
 						)
 				)
@@ -87,7 +87,7 @@ exports.main = function () {
 						"Total Costs:"
 						)
 				),
-				button({ 'class': 'btn btn-primary btn-lg' },
+				button({ 'class': 'save-step-one' },
 					"Save and continue"
 				)
 			)
