@@ -1,6 +1,6 @@
 /*
 */
-section.user-guide {
+.user-guide {
 	background-color: var(--light-background);
 	display: flex;
 	flex-wrap: wrap;
@@ -10,11 +10,11 @@ section.user-guide {
 	padding: 0px 10px;
 }
 
-section.user-guide h1, h3 {
+.user-guide h1, h3 {
 	width: 100%;
 }
 
-section.user-guide h3.main-intro {
+.user-guide h3.main-intro {
 	margin-bottom: 0;
 	margin-top: 22px;
 }
@@ -25,7 +25,7 @@ form.guide-form {
 	justify-content: space-between;
 }
 
-section.user-guide fieldset {
+.user-guide fieldset {
 	-webkit-margin-end: 0;
 	-webkit-margin-start: 0;
 	-webkit-padding-after: 0.0;
@@ -38,11 +38,11 @@ section.user-guide fieldset {
 	width: 49%;
 }
 
-section.user-guide fieldset {
+.user-guide fieldset {
 	margin-bottom: 20px;
 }
 
-section.user-guide button.save-step-one {
+.user-guide button.save-step-one {
 	border-radius: 6px;
 	-moz-user-select: none;
 	background-color: #428bca;
@@ -62,16 +62,16 @@ section.user-guide button.save-step-one {
 	vertical-align: middle;
 	white-space: nowrap;
 }
-section.user-guide button.save-step-one:hover,
-section.user-guide button.save-step-one:focus,
-section.user-guide button.save-step-one:active {
+.user-guide button.save-step-one:hover,
+.user-guide button.save-step-one:focus,
+.user-guide button.save-step-one:active {
 	color: #ffffff;
 	background-color: #3071a9;
 	border-color: #285e8e;
 	text-decoration: none;
 }
 
-section.user-guide fieldset hr {
+.user-guide fieldset hr {
 	margin-bottom: 20px;
 }
 
@@ -83,7 +83,7 @@ h4.guide-total-costs {
 	line-height: 22px;
 }
 
-section.user-guide button.save-step-one {
+.user-guide button.save-step-one {
 	width: 49%;
 }
 
@@ -91,14 +91,15 @@ section.user-guide button.save-step-one {
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
-	section.user-guide {
+	.user-guide {
 		min-width: var(--min-mobile-width);
 	}
-	section.user-guide fieldset {
+
+	.user-guide fieldset {
 		width: 100%;
 	}
 
-	section.user-guide button.save-step-one {
+	.user-guide button.save-step-one {
 		width: 100%;
 	}
 }
