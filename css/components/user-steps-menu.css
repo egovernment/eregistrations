@@ -49,13 +49,11 @@ input[type=checkbox] {
 	font-weight: normal;
 	line-height: 22px;
 	margin-bottom: 0;
-	padding: 10px 16px;
+	padding: 10px 0px;
 	text-align: center;
 	text-decoration: none;
 	vertical-align: middle;
 	white-space: nowrap;
-	padding-left: 0px;
-	padding-right: 0px;
 }
 .step-active:hover,
 .step-active:focus,
@@ -80,9 +78,7 @@ input[type=checkbox] {
 	font-weight: normal;
 	line-height: 22px;
 	margin-bottom: 0;
-	padding-left: 0px;
-	padding-right: 0px;
-	padding: 10px 16px;
+	padding: 10px 0px;
 	text-align: center;
 	text-decoration: none;
 	vertical-align: middle;
