@@ -22,6 +22,7 @@ if (!Object.getPrototypeOf || !Object.defineProperty || !window.history ||
 		'</ul>' +
 		'</div></div>');
 } else {
+	document.write('<scr' + 'ipt src="${STATIC_ROOT_APP}prototype.legacy.js"></sc' + 'ript>');
 	document.write('<scr' + 'ipt src="${STATIC_ROOT_APP}prototype.js"></sc' + 'ript>');
 }
 	</script>
