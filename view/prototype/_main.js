@@ -1,7 +1,7 @@
 'use strict';
 
-/*var register = require('./_register')
-  , login    = require('./_login');*/
+var /*register = require('./_register'),*/
+	login    = require('./_login');
 
 exports.body = function () {
 	header({ 'class': 'header-top' },
@@ -15,7 +15,7 @@ exports.body = function () {
 				menuitem(a('link one')),
 				menuitem(a('link two')),
 				menuitem(a('link tree')),
-				menuitem(a({ 'class': 'login' },
+				menuitem(a({ 'class': 'login', 'onclick': login.show  },
 					'Log in'
 					))
 				)
@@ -24,6 +24,7 @@ exports.body = function () {
 		p(a({ onclick: register.show }, "REGISTER")),
 		p(a({ href: '/public-inner/' }, "PUBLIC INNER"))*/
 		);
-
+	div({ 'class': 'modal-courtain' });
+	insert(login);
 	main({ id: 'main' });
 };

@@ -1,6 +1,9 @@
 'use strict';
 
+var register = require('./_register');
+
 exports.main = function () {
+	insert(register);
 	div({ 'class': 'public-banner' },
 		div({ 'class': 'banner-infos' },
 				div({ 'class': 'baner-box-text' },
@@ -9,7 +12,7 @@ exports.main = function () {
 					h3({ 'class': 's-primary' },
 						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut in ' +
 						'massa malesuada, pharetra urna nec, pellentesque tortor. '),
-					a({ 'class': 'create-account', href: '/guide/' },
+					a({ 'class': 'create-account', 'onclick': register.show },
 						'Create account')
 				),
 				div({ 'class': 'baner-box-img' },

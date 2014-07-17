@@ -1,0 +1,15 @@
+.modal.login {
+	max-width: 500px;
+}
+
+.modal.login header h3 {
+	color: white;
+	padding-left: 20px;
+	padding: 11px;
+}
+
+.modal.login section form {
+	height: 155px;
+	margin-left: auto;
+	margin-right: auto;
+}
