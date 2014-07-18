@@ -1,14 +1,14 @@
-.modal.create-account {
+.modal-register {
 	max-width: 500px;
 }
 
-.modal.create-account header h3 {
+.modal-register header h3 {
 	color: white;
 	padding-left: 20px;
 	padding: 11px;
 }
 
-.modal.create-account section form fieldset {
+.modal-register section form fieldset {
 	border: none;
 	margin-left: auto;
 	margin-right: auto;
