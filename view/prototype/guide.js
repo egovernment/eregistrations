@@ -91,7 +91,7 @@ exports.main = function () {
 						"Total Costs:"
 						)
 				),
-				button({ 'class': 'save-step-one' },
+				button({ 'class': 'save-step-one', 'type': 'submit' },
 					"Save and continue"
 				)
 			)
