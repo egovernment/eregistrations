@@ -49,7 +49,7 @@ exports.main = function () {
 					"see the necessary documents and costs"
 			),
 			form({ 'class': 'guide-form' },
-				fieldset(h3("Questions"),
+				div(h3("Questions"),
 					hr(),
 					ul(li(label(user.getDescriptor('businessActivity').label, " ",
 						input({ dbjs: user._businessActivity, property: 'label', group: {
@@ -61,7 +61,7 @@ exports.main = function () {
 						li(label(user.getDescriptor(name).label, " ",
 							input({ dbjs: user.getObservable(name) })));
 					}))),
-				fieldset(h3("Registrations"),
+				div(h3("Registrations"),
 					hr(),
 					p(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 						user.getDescriptor('isARequested').label)),
@@ -74,7 +74,7 @@ exports.main = function () {
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. " +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. ")
 				),
-				fieldset(h3("Requirements"),
+				div(h3("Requirements"),
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
@@ -83,7 +83,7 @@ exports.main = function () {
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))),
-				fieldset(h3("Costs"),
+				div(h3("Costs"),
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),

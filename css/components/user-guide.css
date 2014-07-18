@@ -25,7 +25,7 @@ form.guide-form {
 	justify-content: space-between;
 }
 
-.user-guide fieldset {
+.user-guide div {
 	-webkit-margin-end: 0;
 	-webkit-margin-start: 0;
 	-webkit-padding-after: 0.0;
@@ -38,7 +38,7 @@ form.guide-form {
 	width: 49%;
 }
 
-.user-guide fieldset {
+.user-guide div {
 	margin-bottom: 20px;
 }
 
@@ -70,7 +70,7 @@ form.guide-form {
 	text-decoration: none;
 }
 
-.user-guide fieldset hr {
+.user-guide div hr {
 	margin-bottom: 20px;
 }
 
@@ -94,7 +94,7 @@ Styles applied while screen sieze is less than 640px
 		min-width: var(--min-mobile-width);
 	}
 
-	.user-guide fieldset {
+	.user-guide div {
 		width: 100%;
 	}
 
