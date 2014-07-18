@@ -901,5 +901,3 @@ After _main_ repository is configured, you can update your fork by executing fol
 * `git push` (push merged changes to github)
 
 After executing above, when you start/restart app, you'll see the most recent version of application.
-
-
