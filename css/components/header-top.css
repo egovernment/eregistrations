@@ -39,7 +39,7 @@ Flexible basic menu - used on home page and can be reused elsewhere
 Flexible basic menu link
 */
 .menu-top menuitem a{
-	color: var(--medium-background);
+	color: var(--normal-background);
 	font-size: 14px;
 	margin-right: 15px;
 	cursor: pointer;
@@ -47,11 +47,11 @@ Flexible basic menu link
 .menu-top menuitem a:hover,
 .menu-top menuitem a:focus,
 .menu-top menuitem a:active {
-	color: var(--medium-dark-background);
+	color: var(--normal-dark-background);
 }
 
 .menu-top menuitem a.login {
-	background-color: var(--medium-background);
+	background-color: var(--normal-background);
 	border-radius: 3px;
 	color: #ffffff;
 	cursor: pointer;
@@ -67,7 +67,7 @@ Flexible basic menu link
 .menu-top menuitem a.login:hover,
 .menu-top menuitem a.login:focus,
 .menu-top menuitem a.login:active {
-	background-color: var(--medium-dark-background);
+	background-color: var(--normal-dark-background);
 }
 /*
 Flexible basic menu button positioning

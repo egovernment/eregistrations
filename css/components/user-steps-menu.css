@@ -35,7 +35,7 @@ input[type=checkbox] {
 }
 
 .step-active {
-	background-color: var(--medium-background);
+	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
 	color: #ffffff;
@@ -54,7 +54,7 @@ input[type=checkbox] {
 .step-active:hover,
 .step-active:focus,
 .step-active:active {
-	background-color: var(--medium-dark-background);
+	background-color: var(--normal-dark-background);
 }
 
 .step-unactive {

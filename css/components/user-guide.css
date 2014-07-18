@@ -44,7 +44,7 @@ form.guide-form {
 }
 
 .user-guide button.save-step-one {
-	background-color: var(--medium-background);
+	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
 	color: #ffffff;
@@ -63,7 +63,7 @@ form.guide-form {
 .user-guide button.save-step-one:hover,
 .user-guide button.save-step-one:focus,
 .user-guide button.save-step-one:active {
-	background-color: var(--medium-dark-background);
+	background-color: var(--normal-dark-background);
 }
 
 .user-guide fieldset hr {
