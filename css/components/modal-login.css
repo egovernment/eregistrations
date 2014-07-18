@@ -1,3 +1,7 @@
+/*
+Component describing styles for login modal windows - rules specific only for this modal
+*/
+
 .modal-login {
 	max-width: 500px;
 }
