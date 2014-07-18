@@ -1,4 +1,5 @@
 /*
+Component describing styles for guide page of not submited user - non-reusable
 */
 .user-guide {
 	background-color: var(--light-background);
@@ -43,9 +44,7 @@ form.guide-form {
 }
 
 .user-guide button.save-step-one {
-	background-color: #428bca;
-	background-image: none;
-	border-color: #357ebd;
+	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
 	color: #ffffff;
@@ -64,10 +63,7 @@ form.guide-form {
 .user-guide button.save-step-one:hover,
 .user-guide button.save-step-one:focus,
 .user-guide button.save-step-one:active {
-	background-color: #3071a9;
-	border-color: #285e8e;
-	color: #ffffff;
-	text-decoration: none;
+	background-color: var(--normal-dark-background);
 }
 
 .user-guide div hr {
