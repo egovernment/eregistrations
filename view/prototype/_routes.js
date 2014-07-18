@@ -12,7 +12,7 @@ module.exports = function (view) {
 
 	return {
 		'/': bind(main.diff('./index')),
-		'public-inner':  bind(main.diff('./public-inner')),
+		'forms':  bind(main.diff('./forms')),
 
 		// 404 page
 		404: bind(main.diff('./404')),
