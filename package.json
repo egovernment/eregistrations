@@ -18,7 +18,8 @@
     "lint": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js",
     "lint-ci": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js --no-cache --no-stream",
     "lint-console": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js --watch",
-    "lint-log-console": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js --watch --logView"
+    "lint-log-console": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js --watch --logView",
+    "css-lint": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint/index.js --fileExt=css"
   },
   "engines": {
     "node": ">=0.8"

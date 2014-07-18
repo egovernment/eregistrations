@@ -1,5 +1,12 @@
 @root
 
+# CSS
+
+!css-adjoining-classes
+!css-qualified-headings
+
+# JS
+
 module
 
 tabs
