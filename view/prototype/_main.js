@@ -1,7 +1,6 @@
 'use strict';
 
-var /*register = require('./_register'),*/
-	login    = require('./_login');
+var login = require('./_login');
 
 exports.body = function () {
 	header({ 'class': 'header-top' },
