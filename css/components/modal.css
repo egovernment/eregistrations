@@ -39,7 +39,7 @@ div.modal-courtain {
 }
 
 .modal header {
-	background-color: #428bca;
+	background-color: var(--normal-background);
 	border-radius: 10px 10px 0 0;
 }
 
