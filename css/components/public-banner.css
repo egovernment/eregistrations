@@ -1,4 +1,8 @@
 /*
+Component describing styles for public banner - non-reusable
+*/
+
+/*
 Class describing how home page bunner is displayed as full width cover for i.e
 home page.
 */
@@ -23,9 +27,8 @@ Class describing how boxes for informations insight banner are displayed
 }
 
 .public-banner div.banner-infos a.create-account {
-	background-color: #428bca;
+	background-color: var(--normal-background);
 	background-image: none;
-	border-color: #357ebd;
 	border-radius: 6px;
 	border: 1px solid transparent;
 	color: #ffffff;
@@ -45,14 +48,11 @@ Class describing how boxes for informations insight banner are displayed
 .public-banner div.banner-infos a.create-account:hover,
 .public-banner div.banner-infos a.create-account:focus,
 .public-banner div.banner-infos a.create-account:active {
-	background-color: #3071a9;
-	border-color: #285e8e;
-	color: #ffffff;
+	background-color: var(--normal-dark-background);
 }
 
 .public-steps div a.more-info {
-	background-color: #428bca;
-	border-color: #357ebd;
+	background-color: var(--normal-background);
 	border-radius: 3px;
 	color: #ffffff;
 	cursor: pointer;
@@ -68,9 +68,7 @@ Class describing how boxes for informations insight banner are displayed
 .public-steps div a.more-info:hover,
 .public-steps div a.more-info:focus,
 .public-steps div a.more-info:active {
-	background-color: #3071a9;
-	border-color: #285e8e;
-	color: #ffffff;
+	background-color: var(--normal-dark-background);
 }
 /*
 		Class used for sticking img in banner bottom line, having 50% of banner width
