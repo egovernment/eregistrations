@@ -11,18 +11,11 @@ input, select {
 	color: var(--normal-background);
 	font-size: 14px;
 	line-height: 31px;
-	margin: 15.5px 0 17.5px 0;
+	margin: 6px 0;
 	padding: 0;
 	text-transform: none;
 	vertical-align: middle;
-}
-
-select {
-	height: 33px;
-}
-
-input[type='checkbox'] {
-	margin-bottom: 15.5px;
+	height: 32px;
 }
 
 .radio {
@@ -34,5 +27,10 @@ input[type='checkbox'] {
 	line-height: 44px;
 }
 .radio li input {
-	margin: 14px 0;
+	margin: 5px 0;
+}
+@-moz-document url-prefix() {
+    .radio li {
+        line-height: 42px;
+    }
 }
