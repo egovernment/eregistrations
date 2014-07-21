@@ -3,6 +3,10 @@
 	padding-left: 0;
 }
 
+.form-elements li {
+	line-height: 44px;
+}
+
 input, select {
 	background-color: white;
 	border-radius: 4px;
@@ -10,18 +14,21 @@ input, select {
 	box-shadow: inset 0 1px 1px var(--light-background);
 	color: var(--normal-background);
 	font-size: 14px;
-	line-height: 31px;
+	line-height: 30px;
 	margin: 6px 0;
 	padding: 0;
 	text-transform: none;
 	vertical-align: middle;
-	height: 32px;
+	height: 29px;
 }
 
 .radio {
 	list-style-type: none;
 	padding-left: 0;
 	margin-bottom: 0;
+}
+.radio label {
+	line-height: 44px;
 }
 .radio li {
 	line-height: 44px;
@@ -33,4 +40,7 @@ input, select {
     .radio li {
         line-height: 42px;
     }
+    .form-elements li {
+		line-height: 43.5px;
+	}
 }
