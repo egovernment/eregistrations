@@ -51,7 +51,8 @@ exports.main = function () {
 			form({ 'class': 'guide-form' },
 				div(h3("Questions"),
 					hr(),
-					ul(li(label(user.getDescriptor('businessActivity').label, " ",
+					ul({ 'class': 'form-elements' }, li(label(user.getDescriptor('businessActivity').label,
+						" ",
 						input({ dbjs: user._businessActivity, property: 'label', group: {
 						propertyName: 'category',
 						labelPropertyName: 'label'
