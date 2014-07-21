@@ -7,6 +7,12 @@
 	line-height: 44px;
 }
 
+.form-elements li label {
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
 input, select {
 	background-color: white;
 	border-radius: 4px;
