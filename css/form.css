@@ -36,11 +36,37 @@ input, select {
 .radio li input {
 	margin: 5px 0;
 }
+
+/* Input pre-element (span) */
+.input-prepend input {
+	border-radius: 0 4px 4px 0;
+}
+
+.add-on {
+	border-radius: 4px 0 0 4px;
+	background-color: var(--light-background);
+    border: 1px solid var(--normal-background);
+    display: inline-block;
+    font-size: 14px;
+    font-weight: normal;
+    min-width: 30px;
+    padding: 5px 5px 6px 5px;
+    text-align: center;
+    vertical-align: middle;
+    width: auto;
+    line-height: 16px;
+    margin-right: -1px;
+    display: inline-block;
+}
+
+/* Firefox styles only */
+
 @-moz-document url-prefix() {
     .radio li {
-        line-height: 42px;
+        line-height: 42.5px;
     }
     .form-elements li {
 		line-height: 43.5px;
 	}
 }
+
