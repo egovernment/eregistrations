@@ -64,10 +64,12 @@ exports.main = function () {
 					}))),
 				div(h3("Registrations"),
 					hr(),
-					p(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+					ul({ 'class': 'form-elements' },
+						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 						user.getDescriptor('isARequested').label)),
-					p(label(input({ dbjs: user._isBRequested, type: 'checkbox' }), " ",
-						user.getDescriptor('isBRequested').label)),
+						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+						user.getDescriptor('isARequested').label))
+					),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. " +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
