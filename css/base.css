@@ -23,9 +23,9 @@ html {
 body {
 	background-color: #ffffff;
 	color: #333333;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 14px;
 	margin: 0;
+	font-size: 14px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 main {
@@ -46,10 +46,8 @@ main {
 
 html {
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-	font-size: 14px;
 }
-
-h1, h2, h3, h4, h5, h6, p {
+h1, h2, h3, h4, h5, p {
 	color: var(--dark-background);
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
@@ -100,7 +98,6 @@ h6 {
 p {
 	-webkit-margin-after: 22px;
 	-webkit-margin-before: 0;
-	color: #555;
 	font-size: 14px;
 	line-height: 22px;
 	margin: 0 0 22px 0;
@@ -111,19 +108,9 @@ small {
 	line-height: 22px;
 }
 
-a {
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 14px;
-}
-
-button {
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 14px;
-}
-
 hr {
- color: var(--light-background);
- margin: 0 0 22px 0;
+	color: var(--light-background);
+	margin: 0 0 22px 0;
 }
 
 header {
@@ -153,6 +140,11 @@ ul {
 	-webkit-margin-end: 0;
 	-webkit-margin-start: 0;
 	-webkit-padding-start: 40px;
+	-moz-margin-after: 0;
+	-moz-margin-before: 0;
+	-moz-margin-end: 0;
+	-moz-margin-start: 0;
+	-moz-padding-start: 40px;
 	margin: 0 0 22px 0;
 }
 

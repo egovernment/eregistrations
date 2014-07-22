@@ -1,5 +1,5 @@
 /*
- Setting footer with logos as full width container with specific colour background
+	Setting footer with logos as full width container with specific colour background
 */
 .footer-logos {
 	background-color: var(--dark-background);
@@ -8,8 +8,8 @@
 }
 
 /*
- Class used for styling footer logos. Boxes are equaliy spreaded insight
- of 1050px row.
+	Class used for styling footer logos. Boxes are equaliy spreaded insight
+	of 1050px row.
 */
 .footer-logos div.logos {
 	display: flex;
@@ -19,7 +19,7 @@
 }
 
 /*
-Styles applied while screen sieze is less than 640px
+	Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
 	.footer-logos div.logos {

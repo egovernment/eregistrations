@@ -1,6 +1,7 @@
 /*
-
+	Component describing styles for
 */
+
 .public-steps {
 	display: flex;
 	justify-content: space-between;
@@ -15,13 +16,13 @@
 }
 
 .public-steps div:first-child {
-	padding-left: 0px;
+	padding-left: 0;
 	padding-right: 5px;
 }
 
 .public-steps div:last-child {
 	padding-left: 5px;
-	padding-right: 0px;
+	padding-right: 0;
 }
 .public-steps img {
 	margin-bottom: 16px;
@@ -49,6 +50,6 @@ Styles applied while screen sieze is less than 640px
 	}
 
 	.public-steps .m-box-text-centered:last-child {
-		margin-bottom: 0px;
+		margin-bottom: 0;
 	}
 }
