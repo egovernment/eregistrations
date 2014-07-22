@@ -1,0 +1,9 @@
+language: node_js
+node_js:
+  - 0.10
+
+notifications:
+  email:
+    - medikoo+eregistrations@medikoo.com
+
+script: "npm run lint-ci && npm run css-lint-ci"

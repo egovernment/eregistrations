@@ -1,5 +1,5 @@
 /*
-Component describing styles for guide steps menu - non-reusable
+	Component describing styles for guide steps menu - non-reusable
 */
 .steps-menu {
 	background-color: var(--dark-background);
@@ -25,12 +25,12 @@ Component describing styles for guide steps menu - non-reusable
 	display: flex;
 	justify-content: space-between;
 	margin: 0 auto;
-	padding: 0px 10px;
+	padding: 0 10px;
 	width: var(--desktop-width);
 }
 
 .steps-menu nav.steps a {
-	margin: 0 0px;
+	margin: 0 0;
 	width: 100%;
 }
 
@@ -45,7 +45,7 @@ Component describing styles for guide steps menu - non-reusable
 	font-weight: normal;
 	line-height: 22px;
 	margin-bottom: 0;
-	padding: 10px 0px;
+	padding: 10px 0;
 	text-align: center;
 	text-decoration: none;
 	vertical-align: middle;
@@ -70,7 +70,7 @@ Component describing styles for guide steps menu - non-reusable
 	font-weight: normal;
 	line-height: 22px;
 	margin-bottom: 0;
-	padding: 10px 0px;
+	padding: 10px 0;
 	text-align: center;
 	text-decoration: none;
 	vertical-align: middle;
@@ -137,6 +137,6 @@ Styles applied while screen sieze is less than 640px
 		width: 100%;
 	}
 	input[type=checkbox]:checked ~ .steps menuitem:last-child {
-		margin-bottom: 0px;
+		margin-bottom: 0;
 	}
 }

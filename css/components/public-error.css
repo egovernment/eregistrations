@@ -1,26 +1,24 @@
+/*
+Component describing styles for public error page
+*/
+
 .public-error {
 	display: flex;
 	flex-wrap: wrap;
 	margin: 0 auto;
 	max-width: var(--desktop-width);
-	padding: 0px 10px;
+	padding: 0 10px;
 }
 
 .public-error div {
 	background-color: #ffffff;
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
-	margin: 22px 0px;
+	margin: 22px 0;
 	text-align: center;
 }
 
-.public-error div h1, .public-error div h2 {
-	padding-top: 22px;
-	width: 100%;
-}
-
-
-.public-error div h1.error-type {
+.public-error div .error-type {
 	font-size: 84px;
 	line-height: 88px;
 }

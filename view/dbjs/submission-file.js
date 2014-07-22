@@ -23,7 +23,7 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 					el('label', label,
 						this.control = el('input', { type: 'file' }))),
 				errorSpan = el('span', { class: 'error-message-' +
-					options.dbOptions.__id__.replace(normRe, '-') }, ""));
+					options.observable.dbId.replace(normRe, '-') }, ""));
 			errorTxt = errorSpan.firstChild;
 			this.control.addEventListener('invalid', function (e) {
 				e.preventDefault();
