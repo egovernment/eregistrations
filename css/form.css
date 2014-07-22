@@ -66,42 +66,41 @@ input[type="radio"] {
 }
 
 .add-on {
-	border-radius: 4px 0 0 4px;
 	background-color: var(--light-background);
-    border: 1px solid var(--light-inner-border);
-    display: inline-block;
-    font-size: 14px;
-    font-weight: normal;
-    min-width: 30px;
-    padding: 5px 5px 6px 5px;
-    text-align: center;
-    vertical-align: middle;
-    width: auto;
-    line-height: 16px;
-    margin-right: -1px;
-    display: inline-block;
+	border-radius: 4px 0 0 4px;
+	border: 1px solid var(--light-inner-border);
+	display: inline-block;
+	font-size: 14px;
+	font-weight: normal;
+	line-height: 16px;
+	margin-right: -1px;
+	min-width: 30px;
+	padding: 5px 5px 6px 5px;
+	text-align: center;
+	vertical-align: middle;
+	width: auto;
 }
 
 .label {
 	display: block;
-    line-height: 22px;
-    margin-bottom: 7px;
-    margin-right: 5px;
-    margin-top: 9px;
-    padding-bottom: 6px;
-    padding-right: 10px;
-    width: 40%;
-    font-weight: bold;
+	line-height: 22px;
+	margin-bottom: 7px;
+	margin-right: 5px;
+	margin-top: 9px;
+	padding-bottom: 6px;
+	padding-right: 10px;
+	width: 40%;
+	font-weight: bold;
 }
 
 /* Firefox styles only */
 
 @-moz-document url-prefix() {
-    .radio li {
-        line-height: 42.5px;
-    }
+	.radio li {
+		line-height: 42.5px;
+	}
 
-    .form-elements li {
+	.form-elements li {
 		line-height: 43.5px;
 	}
 
