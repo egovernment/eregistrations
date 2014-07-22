@@ -8,6 +8,10 @@
     "type": "git",
     "url": "git://github.com/egovernment/eregistrations.git"
   },
+  "devDependencies": {
+    "xlint": "git://github.com/medikoo/xlint.git",
+    "xlint-csslint-next": "0.1.x"
+  },
   "scripts": {
     "start": "node node_modules/mano/bin/start",
     "quick-start": "node node_modules/mano/bin/start --quick",
@@ -19,8 +23,8 @@
     "lint-ci": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js --no-cache --no-stream",
     "lint-console": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js --watch",
     "lint-log-console": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js --watch --logView",
-    "css-lint": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint/index.js --fileExt=css",
-    "css-lint-ci": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint/index.js --fileExt=css --no-cache --no-stream"
+    "css-lint": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css",
+    "css-lint-ci": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css --no-cache --no-stream"
   },
   "engines": {
     "node": ">=0.8"
