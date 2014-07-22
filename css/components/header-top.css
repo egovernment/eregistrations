@@ -22,16 +22,6 @@
 Flexible basic menu - used on home page and can be reused elsewhere
 */
 .menu-top {
-	-webkit-margin-after: 0;
-	-webkit-margin-before: 0;
-	-webkit-margin-end: 0;
-	-webkit-margin-start: 0;
-	-webkit-padding-start: 0;
-	-moz-margin-after: 0;
-	-moz-margin-before: 0;
-	-moz-margin-end: 0;
-	-moz-margin-start: 0;
-	-moz-padding-start: 0;
 	display: flex;
 	height: 100%;
 	list-style: none;

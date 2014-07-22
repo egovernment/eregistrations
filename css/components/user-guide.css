@@ -27,10 +27,6 @@
 }
 
 .user-guide fieldset {
-	-webkit-margin-end: 0;
-	-webkit-margin-start: 0;
-	-webkit-padding-after: 0.0;
-	-webkit-padding-before: 21px;
 	background-color: #ffffff;
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
