@@ -10,7 +10,8 @@
   },
   "devDependencies": {
     "xlint": "git://github.com/medikoo/xlint.git",
-    "xlint-csslint-next": "0.1.x"
+    "xlint-csslint-next": "0.1.x",
+    "xlint-jslint-medikoo": "0.1.x"
   },
   "scripts": {
     "start": "node node_modules/mano/bin/start",
