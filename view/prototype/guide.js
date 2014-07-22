@@ -13,11 +13,7 @@ exports.main = function () {
 			input({ 'id': 'show-steps-control', 'type': 'checkbox', 'role': 'button' }
 				),
 			nav({ 'class': 'steps' },
-				menuitem(
-					a({ 'class': 'step-active' },
-						"1. Guide"
-						)
-				),
+				menuitem(a({ 'class': 'step-active' }, "1. Guide")),
 				menuitem(
 					a({ 'class': 'step-unactive' },
 						"2. Fill the form"
@@ -51,24 +47,29 @@ exports.main = function () {
 			form({ 'class': 'guide-form' },
 				div(h3("Questions"),
 					hr(),
-					ul({ 'class': 'form-elements' }, li(label(user.getDescriptor('businessActivity').label,
+					ul({ 'class': 'form-elements' },
+						li(label(
+						span({ 'class': 'label' }, user.getDescriptor('businessActivity').label),
 						" ",
-						input({ dbjs: user._businessActivity, property: 'label', group: {
-						propertyName: 'category',
-						labelPropertyName: 'label'
-					} }))),
+						input({
+							dbjs: user._businessActivity,
+							property: 'label',
+							group: { propertyName: 'category', labelPropertyName: 'label' }
+						})
+					)
+						),
 					list(['isOwner', 'inventory', 'surfaceArea', 'members',
 						'companyType', 'isShoppingGallery'], function (name) {
-						li(label(user.getDescriptor(name).label, " ",
+						li(label(span({ 'class': 'label' }, user.getDescriptor(name).label), " ",
 							input({ dbjs: user.getObservable(name) })));
 					}))),
 				div(h3("Registrations"),
 					hr(),
 					ul({ 'class': 'form-elements' },
 						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-						user.getDescriptor('isARequested').label)),
+						span(user.getDescriptor('isARequested').label))),
 						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-						user.getDescriptor('isARequested').label))
+						span(user.getDescriptor('isARequested').label)))
 					),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. " +

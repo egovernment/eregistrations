@@ -9,8 +9,7 @@
 
 .form-elements li label {
 	display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
+
 }
 
 input, select {
@@ -28,19 +27,28 @@ input, select {
 	height: 29px;
 }
 
+input[type="checkbox"], input[type="radio"] {
+	margin-top: 1px;
+	margin-right: 10px;
+}
+
 .radio {
 	list-style-type: none;
 	padding-left: 0;
 	margin-bottom: 0;
+	display: flex;
+	justify-content: space-around;
+	width: 55%;
 }
 .radio label {
 	line-height: 44px;
 }
 .radio li {
 	line-height: 44px;
+
 }
 .radio li input {
-	margin: 5px 0;
+	margin-top: 6px;
 }
 
 /* Input pre-element (span) */
@@ -65,6 +73,12 @@ input, select {
     display: inline-block;
 }
 
+.label {
+	display: block;
+	width: 40%;
+	margin-right: 5px;
+}
+
 /* Firefox styles only */
 
 @-moz-document url-prefix() {
@@ -76,3 +90,23 @@ input, select {
 	}
 }
 
+/*
+Styles applied while screen sieze is less than 640px
+*/
+@media only screen and (max-width: var(--mobile-width)) {
+	.form-elements li label {
+		flex-wrap: wrap;
+		justify-content: space-around;
+	}
+
+	.radio {
+		flex-wrap: wrap;
+	}
+
+	.label {
+		width: 100%;
+	}
+	input {
+		width: 80%;
+	}
+}
