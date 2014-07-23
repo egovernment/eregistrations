@@ -14,7 +14,7 @@ exports.body = function () {
 				menuitem(a('link one')),
 				menuitem(a('link two')),
 				menuitem(a('link tree')),
-				menuitem(a({ 'class': 'login', 'onclick': login.show  },
+				menuitem(a({ 'class': 'login', 'onclick': login.show },
 					'Log in'
 					))
 				)
