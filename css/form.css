@@ -21,7 +21,7 @@ input, select {
 	font-size: 14px;
 	line-height: 30px;
 	margin: 6px 0;
-	padding: 0;
+	padding: 0 5px;
 	text-transform: none;
 	vertical-align: middle;
 	height: 29px;
@@ -37,13 +37,18 @@ input[type="checkbox"] {
 input[type="radio"] {
 	margin-top: 2px;
 }
+input[type="submit"] {
+	height: 32px;
+}
+fieldset {
+	border: 0;
+}
 
 .radio {
 	list-style-type: none;
 	padding-left: 0;
 	margin-bottom: 0;
 	display: flex;
-	width: 55%;
 }
 .radio label {
 	line-height: 44px;
@@ -118,22 +123,25 @@ input[type="radio"] {
 /* dbjs components */
 /* Default styles */
 .required-status {
+	color: rgba(255,0,0,0.5);
 	display:none;
+	font-size: 20px;
+	font-weight: bold;
 	margin-left:5px;
 	visibility:hidden;
-	color: red;
-	font-weight: bold;
+	line-height: 22px;
+	margin-top: 3px;
 }
+
 .validation-status {
+	color: rgba(46,139,87,0.6);
 	display:none;
-	text-indent:-9999px;
-	width:23px;
-	height:24px;
-	margin-right:5px;
+	font-size: 20px;
+	font-weight: bold;
 	margin-left:5px;
-	vertical-align: top;
-	margin-top: 5px;
-	visibility: hidden;
+	visibility:hidden;
+	line-height: 22px;
+	margin-top: 6px;
 }
 
 /* Do not show statuses for disabled controls */
@@ -147,19 +155,20 @@ input[type="radio"] {
 /* Changed & valid */
 .dbjs-input-component.valid.changed span.validation-status {
 	visibility: visible;
-	display:inline-block;
+	display: inline-block;
 }
 
 /* Changed & invalid */
 .dbjs-input-component.invalid.changed span.validation-status {
 	visibility: visible;
-	display:inline-block;
+	display: inline-block;
 }
 
 /* Saved */
 .dbjs-input-component.dbjs-filled.not-changed span.validation-status {
 	visibility: visible;
-	display:inline-block;
+	display: inline-block;
+	color: rgba(46,139,87,0.6);
 }
 
 /* Required */
@@ -168,6 +177,10 @@ input[type="radio"] {
 	display:inline-block;
 }
 
+.dbjs.multiple ul {
+	list-style-type: none;
+	padding: 0;
+}
 
 /*
 Styles applied while screen sieze is less than 640px

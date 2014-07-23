@@ -19,6 +19,9 @@ exports.step = function () {
 							{ dbjs: user.getObservable(name) }
 						);
 					}
+				),
+				p(
+					input({ 'type': 'submit' }, "Submit")
 				)
 			)
 		)
@@ -40,6 +43,9 @@ exports.step = function () {
 							{ dbjs: user.getObservable(name) }
 						);
 					}
+				),
+				p(
+					input({ 'type': 'submit' }, "Submit")
 				)
 			)
 		)
