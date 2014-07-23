@@ -115,6 +115,60 @@ input[type="radio"] {
 	}
 }
 
+/* dbjs components */
+/* Default styles */
+.required-status {
+	display:none;
+	margin-left:5px;
+	visibility:hidden;
+	color: red;
+	font-weight: bold;
+}
+.validation-status {
+	display:none;
+	text-indent:-9999px;
+	width:23px;
+	height:24px;
+	margin-right:5px;
+	margin-left:5px;
+	vertical-align: top;
+	margin-top: 5px;
+	visibility: hidden;
+}
+
+/* Do not show statuses for disabled controls */
+.dbjs-input-component *:disabled ~ span.validation-status {
+	display: none;
+}
+.dbjs-input-component *:disabled ~ span.required-status {
+	display: none;
+}
+
+/* Changed & valid */
+.dbjs-input-component.valid.changed span.validation-status {
+	visibility: visible;
+	display:inline-block;
+}
+
+/* Changed & invalid */
+.dbjs-input-component.invalid.changed span.validation-status {
+	visibility: visible;
+	display:inline-block;
+}
+
+/* Saved */
+.dbjs-input-component.dbjs-filled.not-changed span.validation-status {
+	visibility: visible;
+	display:inline-block;
+}
+
+/* Required */
+.dbjs-input-component.required.not-changed.dbjs-empty span.required-status {
+	visibility: visible;
+	display:inline-block;
+}
+
+
 /*
 Styles applied while screen sieze is less than 640px
 */
