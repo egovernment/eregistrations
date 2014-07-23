@@ -30,7 +30,8 @@ predef+ console
 ./prototype/scripts
 predef+ process, __dirname
 
-./prototype/client/legacy.js
+./client
+./prototype/client
 predef+ window
 
 ./view/prototype
