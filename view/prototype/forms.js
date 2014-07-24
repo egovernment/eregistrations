@@ -21,6 +21,7 @@ exports.step = function () {
 					}
 				),
 				p(
+					{ 'class': 'submit-placeholder' },
 					input({ 'type': 'submit' }, "Submit")
 				)
 			)
@@ -45,9 +46,17 @@ exports.step = function () {
 					}
 				),
 				p(
+					{ 'class': 'submit-placeholder' },
 					input({ 'type': 'submit' }, "Submit")
 				)
 			)
+		)
+	);
+
+	div(
+		{ 'class': 'next-step', 'href': '#' },
+		a(
+			"Continue to next step"
 		)
 	);
 };

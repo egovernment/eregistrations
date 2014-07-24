@@ -14,21 +14,11 @@ exports.step = function () {
 				div(h3("Questions"),
 					hr(),
 					ul({ 'class': 'form-elements' },
-						li(label(
-						span({ 'class': 'label' }, user.getDescriptor('businessActivity').label),
-						" ",
-						input({
-							dbjs: user._businessActivity,
-							property: 'label',
-							group: { propertyName: 'category', labelPropertyName: 'label' }
-						})
-					)
-						),
-					list(['isOwner', 'inventory', 'surfaceArea', 'members',
+					['businessActivity', 'isOwner', 'inventory', 'surfaceArea', 'members',
 						'companyType', 'isShoppingGallery'], function (name) {
 						li(label(span({ 'class': 'label' }, user.getDescriptor(name).label), " ",
 							input({ dbjs: user.getObservable(name) })));
-					}))),
+					})),
 				div(h3("Registrations"),
 					hr(),
 					ul({ 'class': 'form-elements' },

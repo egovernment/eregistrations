@@ -20,7 +20,7 @@ input, select {
 	color: var(--normal-background);
 	font-size: 14px;
 	line-height: 30px;
-	margin: 6px 0;
+	margin: 6px 5px 6px 0;
 	padding: 0 5px;
 	text-transform: none;
 	vertical-align: middle;
@@ -39,9 +39,20 @@ input[type="radio"] {
 }
 input[type="submit"] {
 	height: 32px;
+	color: white;
+	background-color: var(--normal-background);
+	border: none;
+	box-shadow: none;
 }
 fieldset {
 	border: 0;
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.submit-placeholder {
+	margin-left: 30%;
+	padding-left: 5px;
 }
 
 .radio {
@@ -123,6 +134,7 @@ fieldset {
 /* dbjs components */
 /* Default styles */
 .required-status {
+	color: rgb(255,0,0);
 	color: rgba(255,0,0,0.5);
 	display:none;
 	font-size: 20px;
@@ -134,6 +146,7 @@ fieldset {
 }
 
 .validation-status {
+	color: rgb(46,139,87);
 	color: rgba(46,139,87,0.6);
 	display:none;
 	font-size: 20px;
@@ -168,7 +181,7 @@ fieldset {
 .dbjs-input-component.dbjs-filled.not-changed span.validation-status {
 	visibility: visible;
 	display: inline-block;
-	color: rgba(46,139,87,0.6);
+	color: rgb(46,139,87);
 }
 
 /* Required */
@@ -180,8 +193,16 @@ fieldset {
 .dbjs.multiple ul {
 	list-style-type: none;
 	padding: 0;
+	margin-bottom: 0;
 }
 
+.dbjs.multiple ul li a {
+	background-color: var(--normal-background);
+	color: white;
+	border-radius: 11px;
+	padding: 2px 7px 4px 7px;
+	font-size: 12px;
+}
 /*
 Styles applied while screen sieze is less than 640px
 */
