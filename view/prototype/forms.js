@@ -1,19 +1,43 @@
 'use strict';
 
-var db = require('mano').db
+var db = require('mano').db,
+	user = db.User.prototype;
 
-  , user = db.User.prototype;
+exports.step = function () {
+	section(
+		{ 'class': 'user-form' },
+		form(h2("Section A"),
+			fieldset(h3("Busieness Owner basic informations"),
+				hr(),
+				ul({ 'class': 'form-elements forms' },
+					['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
+					function (name) { return field({ dbjs: user.getObservable(name) }); }
+					),
+				p({ 'class': 'submit-placeholder' },
+					input({ 'type': 'submit' }, "Submit")
+					)
+				)
+			)
+	);
 
-exports.main = function () {
-	section(form(h2("Section A"),
-		fieldset({ dbjs: user, names: ['firstName', 'lastName', 'dateOfBirth', 'userEmail'] })));
+	section(
+		form({ 'class': 'user-form' },
+			h2("Section B"),
+			fieldset(h3("Busieness Owner secondary informations"),
+				hr(),
+				ul({ 'class': 'form-elements forms' },
+					['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
+						'registerIds'],
+					function (name) { return field({ dbjs: user.getObservable(name) }); }
+					),
+				p({ 'class': 'submit-placeholder' },
+					input({ 'type': 'submit' }, "Submit")
+					)
+				)
+			)
+	);
 
-	section(form(h2("Section B"),
-		fieldset({ dbjs: user, names: ['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner',
-			'businessActivity', 'registerIds'],
-			controls: { businessActivity: { disabled: true, property: 'label',
-				group: {
-					propertyName: 'category',
-					labelPropertyName: 'label'
-				} } } })));
+	div({ 'class': 'next-step', 'href': '#' },
+		a("Continue to next step")
+		);
 };

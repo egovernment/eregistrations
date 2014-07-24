@@ -20,8 +20,8 @@ input, select {
 	color: var(--normal-background);
 	font-size: 14px;
 	line-height: 30px;
-	margin: 6px 0;
-	padding: 0;
+	margin: 6px 5px 6px 0;
+	padding: 0 5px;
 	text-transform: none;
 	vertical-align: middle;
 	height: 29px;
@@ -36,6 +36,24 @@ input[type="checkbox"] {
 }
 input[type="radio"] {
 	margin-top: 2px;
+	box-shadow: none;
+}
+input[type="submit"] {
+	height: 32px;
+	color: white;
+	background-color: var(--normal-background);
+	border: none;
+	box-shadow: none;
+}
+fieldset {
+	border: 0;
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.submit-placeholder {
+	margin-left: 30%;
+	padding-left: 5px;
 }
 
 .radio {
@@ -43,7 +61,6 @@ input[type="radio"] {
 	padding-left: 0;
 	margin-bottom: 0;
 	display: flex;
-	width: 55%;
 }
 .radio label {
 	line-height: 44px;
@@ -91,6 +108,7 @@ input[type="radio"] {
 	padding-right: 10px;
 	width: 40%;
 	font-weight: bold;
+	text-align: right;
 }
 
 /* Firefox styles only */
@@ -114,6 +132,78 @@ input[type="radio"] {
 	}
 }
 
+/* dbjs components */
+/* Default styles */
+.dbjs-input-component .required-status {
+	color: rgb(255,0,0);
+	color: rgba(255,0,0,0.5);
+	display:none;
+	font-size: 20px;
+	font-weight: bold;
+	margin-left:5px;
+	visibility:hidden;
+	line-height: 22px;
+	margin-top: 3px;
+}
+
+.dbjs-input-component .validation-status {
+	color: rgb(46,139,87);
+	color: rgba(46,139,87,0.6);
+	display:none;
+	font-size: 20px;
+	font-weight: bold;
+	margin-left:5px;
+	visibility:hidden;
+	line-height: 22px;
+	margin-top: 6px;
+}
+
+/* Do not show statuses for disabled controls */
+.dbjs-input-component *:disabled ~ span.validation-status {
+	display: none;
+}
+.dbjs-input-component *:disabled ~ span.required-status {
+	display: none;
+}
+
+/* Changed & valid */
+.dbjs-input-component.valid.changed span.validation-status {
+	visibility: visible;
+	display: inline-block;
+}
+
+/* Changed & invalid */
+.dbjs-input-component.invalid.changed span.validation-status {
+	visibility: visible;
+	display: inline-block;
+}
+
+/* Saved */
+.dbjs-input-component.dbjs-filled.not-changed span.validation-status {
+	visibility: visible;
+	display: inline-block;
+	color: rgb(46,139,87);
+}
+
+/* Required */
+.dbjs-input-component.required.not-changed.dbjs-empty span.required-status {
+	visibility: visible;
+	display:inline-block;
+}
+
+.dbjs.multiple ul {
+	list-style-type: none;
+	padding: 0;
+	margin-bottom: 0;
+}
+
+.dbjs.multiple ul li a {
+	background-color: var(--normal-background);
+	color: white;
+	border-radius: 11px;
+	padding: 2px 7px 4px 7px;
+	font-size: 12px;
+}
 /*
 Styles applied while screen sieze is less than 640px
 */
@@ -122,15 +212,21 @@ Styles applied while screen sieze is less than 640px
 		flex-wrap: wrap;
 		justify-content: space-around;
 	}
-
 	.radio {
 		flex-wrap: wrap;
 	}
 
 	.label {
 		width: 100%;
+		text-align: center;
 	}
 	input {
 		width: 80%;
+	}
+	.submit-placeholder {
+		margin-left: 0;
+	}
+	.submit-placeholder input[type="submit"] {
+		width: 100%;
 	}
 }

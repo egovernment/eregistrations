@@ -1,43 +1,9 @@
 'use strict';
 
-var db = require('mano').db
+var db = require('mano').db,
+	user = db.User.prototype;
 
-  , user = db.User.prototype;
-
-exports.main = function () {
-	div({ 'class': 'steps-menu' },
-		div({ 'class': 'all-menu-items' },
-			label({ 'class': 'step-active show-steps-btn', 'for': 'show-steps-control' },
-				'Steps'
-				),
-			input({ 'id': 'show-steps-control', 'type': 'checkbox', 'role': 'button' }
-				),
-			nav({ 'class': 'steps' },
-				menuitem(a({ 'class': 'step-active' }, "1. Guide")),
-				menuitem(
-					a({ 'class': 'step-unactive' },
-						"2. Fill the form"
-						)
-				),
-				menuitem(
-					a({ 'class': 'step-unactive' },
-						"3. Upload docs"
-						)
-				),
-				menuitem(
-					a({ 'class': 'step-unactive' },
-						"4. Pay"
-						)
-				),
-				menuitem(
-					a({ 'class': 'step-unactive' },
-						"5. Send file"
-						)
-				)
-				)
-			)
-		);
-
+exports.step = function () {
 	section({ 'class': 'user-guide' },
 			h3({ 'class': 'main-intro' },
 				"INDIVIDUAL REGISTRATION GUIDE FOR COMPANIES"),
@@ -48,21 +14,11 @@ exports.main = function () {
 				div(h3("Questions"),
 					hr(),
 					ul({ 'class': 'form-elements' },
-						li(label(
-						span({ 'class': 'label' }, user.getDescriptor('businessActivity').label),
-						" ",
-						input({
-							dbjs: user._businessActivity,
-							property: 'label',
-							group: { propertyName: 'category', labelPropertyName: 'label' }
-						})
-					)
-						),
-					list(['isOwner', 'inventory', 'surfaceArea', 'members',
+					['businessActivity', 'isOwner', 'inventory', 'surfaceArea', 'members',
 						'companyType', 'isShoppingGallery'], function (name) {
 						li(label(span({ 'class': 'label' }, user.getDescriptor(name).label), " ",
 							input({ dbjs: user.getObservable(name) })));
-					}))),
+					})),
 				div(h3("Registrations"),
 					hr(),
 					ul({ 'class': 'form-elements' },
