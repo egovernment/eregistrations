@@ -19,6 +19,7 @@ require('mano/lib/client')({
 		require('dbjs-dom/input/utils/fieldset')(db);
 		require('dbjs-dom-bootstrap/number/currency')(db);
 		require('dbjs-dom-bootstrap/number/square-meters')(db);
+		require('../../view/dbjs/business-activity');
 
 		domEnum(db.CompanyType);
 	},

@@ -17,7 +17,7 @@
 	width: 100%;
 }
 
-input[type=checkbox] {
+.steps-menu input[type=checkbox] {
 	display: none;
 }
 

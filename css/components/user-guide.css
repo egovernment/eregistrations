@@ -26,7 +26,7 @@
 	justify-content: space-between;
 }
 
-.user-guide fieldset {
+.user-guide div {
 	background-color: #ffffff;
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
@@ -35,7 +35,7 @@
 	width: 49%;
 }
 
-.user-guide fieldset {
+.user-guide div {
 	margin-bottom: 20px;
 }
 
@@ -62,7 +62,7 @@
 	background-color: var(--normal-dark-background);
 }
 
-.user-guide fieldset hr {
+.user-guide div hr {
 	margin-bottom: 20px;
 }
 
@@ -86,7 +86,7 @@ Styles applied while screen sieze is less than 640px
 		min-width: var(--min-mobile-width);
 	}
 
-	.user-guide fieldset {
+	.user-guide div {
 		width: 100%;
 	}
 

@@ -1,47 +1,9 @@
 'use strict';
 
-var db = require('mano').db
+var db = require('mano').db,
+	user = db.User.prototype;
 
-  , user = db.User.prototype;
-
-exports.main = function () {
-	div({ 'class': 'steps-menu' },
-		div({ 'class': 'all-menu-items' },
-			label({ 'class': 'step-active show-steps-btn', 'for': 'show-steps-control' },
-				'Steps'
-				),
-			input({ 'id': 'show-steps-control', 'type': 'checkbox', 'role': 'button' }
-				),
-			nav({ 'class': 'steps' },
-				menuitem(
-					a({ 'class': 'step-active' },
-						"1. Guide"
-						)
-				),
-				menuitem(
-					a({ 'class': 'step-unactive' },
-						"2. Fill the form"
-						)
-				),
-				menuitem(
-					a({ 'class': 'step-unactive' },
-						"3. Upload docs"
-						)
-				),
-				menuitem(
-					a({ 'class': 'step-unactive' },
-						"4. Pay"
-						)
-				),
-				menuitem(
-					a({ 'class': 'step-unactive' },
-						"5. Send file"
-						)
-				)
-				)
-			)
-		);
-
+exports.step = function () {
 	section({ 'class': 'user-guide' },
 			h3({ 'class': 'main-intro' },
 				"INDIVIDUAL REGISTRATION GUIDE FOR COMPANIES"),
@@ -49,24 +11,22 @@ exports.main = function () {
 					"see the necessary documents and costs"
 			),
 			form({ 'class': 'guide-form' },
-				fieldset(h3("Questions"),
+				div(h3("Questions"),
 					hr(),
-					ul(li(label(user.getDescriptor('businessActivity').label, " ",
-						input({ dbjs: user._businessActivity, property: 'label', group: {
-						propertyName: 'category',
-						labelPropertyName: 'label'
-					} }))),
-					list(['isOwner', 'inventory', 'surfaceArea', 'members',
+					ul({ 'class': 'form-elements' },
+					['businessActivity', 'isOwner', 'inventory', 'surfaceArea', 'members',
 						'companyType', 'isShoppingGallery'], function (name) {
-						li(label(user.getDescriptor(name).label, " ",
+						li(label(span({ 'class': 'label' }, user.getDescriptor(name).label), " ",
 							input({ dbjs: user.getObservable(name) })));
-					}))),
-				fieldset(h3("Registrations"),
+					})),
+				div(h3("Registrations"),
 					hr(),
-					p(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-						user.getDescriptor('isARequested').label)),
-					p(label(input({ dbjs: user._isBRequested, type: 'checkbox' }), " ",
-						user.getDescriptor('isBRequested').label)),
+					ul({ 'class': 'form-elements' },
+						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+						span(user.getDescriptor('isARequested').label))),
+						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+						span(user.getDescriptor('isARequested').label)))
+					),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. " +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
@@ -74,7 +34,7 @@ exports.main = function () {
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. " +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. ")
 				),
-				fieldset(h3("Requirements"),
+				div(h3("Requirements"),
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
@@ -83,7 +43,7 @@ exports.main = function () {
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))),
-				fieldset(h3("Costs"),
+				div(h3("Costs"),
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
