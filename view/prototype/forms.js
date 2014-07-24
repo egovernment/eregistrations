@@ -53,6 +53,82 @@ exports.step = function () {
 		)
 	);
 
+	section(
+		div(
+			{ 'class': 'partners' },
+			h2("Section C"),
+			div(
+				h3("Directors & non-directors owner / partners"),
+				hr(),
+				table(
+					{ 'class': 'partners-list' },
+					thead(
+						tr(
+							th("Entity"),
+							th("First name"),
+							th("Surname"),
+							th("Director?"),
+							th("Subscriber?"),
+							th("?"),
+							th("Actions")
+						)
+					),
+					tbody(
+						tr(
+							td("NA"),
+							td("Lorem"),
+							td("Ipsum"),
+							td("Yes"),
+							td("Yes"),
+							td("✓"),
+							td("Edit Delete")
+						),
+						tr(
+							td("NA"),
+							td("Lorem"),
+							td("Ipsum"),
+							td("Yes"),
+							td("Yes"),
+							td("✓"),
+							td("Edit Delete")
+						),
+						tr(
+							td("NA"),
+							td("Lorem"),
+							td("Ipsum"),
+							td("Yes"),
+							td("Yes"),
+							td("✓"),
+							td("Edit Delete")
+						),
+						tr(
+							td("NA"),
+							td("Lorem"),
+							td("Ipsum"),
+							td("Yes"),
+							td("Yes"),
+							td("✓"),
+							td("Edit Delete")
+						),
+						tr(
+							td("NA"),
+							td("Lorem"),
+							td("Ipsum"),
+							td("Yes"),
+							td("Yes"),
+							td("✓"),
+							td("Edit Delete")
+						)
+					)
+				),
+				a(
+					{ 'class': 'new-partner' },
+					"Add new partner"
+				)
+			)
+		)
+	);
+
 	div(
 		{ 'class': 'next-step', 'href': '#' },
 		a(

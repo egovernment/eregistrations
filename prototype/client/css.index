@@ -1,5 +1,6 @@
 ../../css/base.css
 ../../css/form.css
+../../css/table.css
 ../../css/components/modal.css
 ../../css/components/modal-login.css
 ../../css/components/modal-register.css
