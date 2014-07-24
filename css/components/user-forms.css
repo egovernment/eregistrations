@@ -58,3 +58,23 @@
 .next-step a:active {
 	background-color: var(--normal-dark-background);
 }
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.forms  .label {
+		width: 100%;
+		text-align: center;
+	}
+	.next-step a {
+		width: 100%;
+	}
+	.forms li .dbjs-input-component.optional {
+		justify-content: center;
+	}
+	.forms li .dbjs-input-component.optional .validation-status {
+		margin-top: 0;
+	}
+	.forms li .controls a {
+		min-width: 120px;
+		display: block;
+	}
+}

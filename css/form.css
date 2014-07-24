@@ -36,6 +36,7 @@ input[type="checkbox"] {
 }
 input[type="radio"] {
 	margin-top: 2px;
+	box-shadow: none;
 }
 input[type="submit"] {
 	height: 32px;
@@ -211,15 +212,21 @@ Styles applied while screen sieze is less than 640px
 		flex-wrap: wrap;
 		justify-content: space-around;
 	}
-
 	.radio {
 		flex-wrap: wrap;
 	}
 
 	.label {
 		width: 100%;
+		text-align: center;
 	}
 	input {
 		width: 80%;
+	}
+	.submit-placeholder {
+		margin-left: 0;
+	}
+	.submit-placeholder input[type="submit"] {
+		width: 100%;
 	}
 }
