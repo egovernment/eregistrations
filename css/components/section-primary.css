@@ -1,0 +1,12 @@
+.section-primary {
+    margin: 22px auto 0;
+    max-width: var(--desktop-width);
+    padding: 0 10px;
+}
+
+.section-primary fieldset, .section-primary div {
+    background-color: #ffffff;
+    border-radius: 5px;
+    border: 1px solid var(--light-inner-border);
+    padding: 20px 15px 0 15px;
+}
