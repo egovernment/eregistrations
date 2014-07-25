@@ -1,16 +1,3 @@
-.user-form, .partners {
-	margin: 22px auto 0;
-	max-width: var(--desktop-width);
-	padding: 0 10px;
-}
-
-.user-form fieldset,  .partners div {
-	background-color: #ffffff;
-	border-radius: 5px;
-	border: 1px solid var(--light-inner-border);
-	padding: 20px 15px 0 15px;
-}
-
 .forms .label {
 	width: 30%;
 }
