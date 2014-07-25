@@ -53,8 +53,8 @@ exports.step = function () {
 							th("Surname"),
 							th("Director?"),
 							th("Subscriber?"),
-							th("?"),
-							th("Actions")
+							th(""),
+							th({ 'class': 'actions' }, "Actions")
 						)
 					),
 					tbody(
@@ -64,8 +64,11 @@ exports.step = function () {
 							td("Ipsum"),
 							td("Yes"),
 							td("Yes"),
-							td("✓"),
-							td("Edit Delete")
+							td({ 'class': 'confirmed' }, "✓"),
+							td({ 'class': 'actions' },
+								a({ 'href': '#' }, "Edit"),
+								a({ 'href': '#' }, "Delete")
+								)
 						),
 						tr(
 							td("NA"),
@@ -73,8 +76,11 @@ exports.step = function () {
 							td("Ipsum"),
 							td("Yes"),
 							td("Yes"),
-							td("✓"),
-							td("Edit Delete")
+							td({ 'class': 'confirmed' }, "✓"),
+							td({ 'class': 'actions' },
+								a({ 'href': '#' }, "Edit"),
+								a({ 'href': '#' }, "Delete")
+								)
 						),
 						tr(
 							td("NA"),
@@ -82,8 +88,11 @@ exports.step = function () {
 							td("Ipsum"),
 							td("Yes"),
 							td("Yes"),
-							td("✓"),
-							td("Edit Delete")
+							td({ 'class': 'confirmed' }, "✓"),
+							td({ 'class': 'actions' },
+								a({ 'href': '#' }, "Edit"),
+								a({ 'href': '#' }, "Delete")
+								)
 						),
 						tr(
 							td("NA"),
@@ -91,8 +100,11 @@ exports.step = function () {
 							td("Ipsum"),
 							td("Yes"),
 							td("Yes"),
-							td("✓"),
-							td("Edit Delete")
+							td({ 'class': 'confirmed' }, "✓"),
+							td({ 'class': 'actions' },
+								a({ 'href': '#' }, "Edit"),
+								a({ 'href': '#' }, "Delete")
+								)
 						),
 						tr(
 							td("NA"),
@@ -100,8 +112,11 @@ exports.step = function () {
 							td("Ipsum"),
 							td("Yes"),
 							td("Yes"),
-							td("✓"),
-							td("Edit Delete")
+							td({ 'class': 'confirmed' }, "✓"),
+							td({ 'class': 'actions' },
+								a({ 'href': '#' }, "Edit"),
+								a({ 'href': '#' }, "Delete")
+								)
 						)
 					)
 				),

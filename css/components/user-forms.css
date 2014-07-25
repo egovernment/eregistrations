@@ -29,6 +29,11 @@
 	vertical-align: text-bottom;
 	white-space: nowrap;
 }
+.controls a:hover,
+.controls a:focus,
+.controls a:active {
+	background-color: var(--normal-dark-background);
+}
 
 .next-step {
 	max-width: var(--desktop-width);
@@ -83,6 +88,36 @@
 	background-color: var(--normal-dark-background);
 }
 
+.actions {
+	text-align: center;
+}
+.actions a:first-child {
+	margin-right: 15%;
+}
+.actions a {
+	background-color: var(--normal-background);
+	border-radius: 3px;
+	color: #ffffff;
+	cursor: pointer;
+	font-size: 12px;
+	line-height: 18px;
+	margin: 0;
+	padding: 3px 7px 4px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	white-space: nowrap;
+}
+.actions a:hover,
+.actions a:focus,
+.actions a:active {
+	background-color: var(--normal-dark-background);
+}
+
+.confirmed {
+	text-align: center;
+	color: rgb(46,139,87);
+}
 @media only screen and (max-width: var(--mobile-width)) {
 	.forms  .label {
 		width: 100%;
@@ -106,12 +141,24 @@
 		width: 100%;
 	}
 
+	.confirmed {
+		text-align: left;
+	}
+
+	.actions {
+		text-align: left;
+		display: inline;
+	}
+	.actions a {
+		width: 35%;
+	}
+
 	/* Label the data*/
 	.partners-list td:nth-of-type(1):before { content: "Entity"; }
 	.partners-list td:nth-of-type(2):before { content: "First name"; }
 	.partners-list td:nth-of-type(3):before { content: "Surname"; }
 	.partners-list td:nth-of-type(4):before { content: "Director?"; }
 	.partners-list td:nth-of-type(5):before { content: "Subscriber?"; }
-	.partners-list td:nth-of-type(6):before { content: "?"; }
+	.partners-list td:nth-of-type(6):before { content: ""; }
 	.partners-list td:nth-of-type(7):before { content: "Actions"; }
 }
