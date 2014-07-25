@@ -51,6 +51,7 @@
 	background-color: var(--normal-dark-background);
 }
 
+/* Object tabel rules */
 .new-partner {
 	background-color: var(--normal-background);
 	border-radius: 6px;
@@ -105,6 +106,7 @@
 	text-align: center;
 	color: rgb(46,139,87);
 }
+
 @media only screen and (max-width: var(--mobile-width)) {
 	.forms  .label {
 		width: 100%;

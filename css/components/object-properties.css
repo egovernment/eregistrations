@@ -1,0 +1,60 @@
+.property-list {
+	list-style-type: none;
+}
+
+.property-list li {
+	display: flex;
+	padding-left: 10%;
+}
+
+.property-name {
+	font-weight: bold;
+	width: 25%;
+	display: block;
+}
+
+.naviagate-back {
+	max-width: var(--desktop-width);
+	padding: 22px 10px;
+	margin: 0 auto;
+}
+
+.naviagate-back a {
+	background-color: var(--normal-background);
+	border-radius: 6px;
+	border: 1px solid transparent;
+	color: #ffffff;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 22px;
+	margin-bottom: 0;
+	padding: 10px 16px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	white-space: nowrap;
+	width: 49%;
+}
+.naviagate-back a:hover,
+.naviagate-back a:focus,
+.naviagate-back a:active {
+	background-color: var(--normal-dark-background);
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.property-list {
+		padding-left: 0;
+	}
+
+	.property-list li {
+		padding-left: 0;
+		text-align: center;
+		flex-wrap:wrap;
+	}
+
+	.property-list li span, .naviagate-back a {
+		width: 100%;
+	}
+}
