@@ -134,7 +134,7 @@ fieldset {
 
 /* dbjs components */
 /* Default styles */
-.required-status {
+.dbjs-input-component .required-status {
 	color: rgb(255,0,0);
 	color: rgba(255,0,0,0.5);
 	display:none;
@@ -146,7 +146,7 @@ fieldset {
 	margin-top: 3px;
 }
 
-.validation-status {
+.dbjs-input-component .validation-status {
 	color: rgb(46,139,87);
 	color: rgba(46,139,87,0.6);
 	display:none;

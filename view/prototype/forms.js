@@ -6,51 +6,35 @@ var db = require('mano').db,
 exports.step = function () {
 	section(
 		{ 'class': 'user-form' },
-		form(
-			h2("Section A"),
-			fieldset(
-				h3("Busieness Owner basic informations"),
+		form(h2("Section A"),
+			fieldset(h3("Busieness Owner basic informations"),
 				hr(),
-				ul(
-					{ 'class': 'form-elements forms' },
+				ul({ 'class': 'form-elements forms' },
 					['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
-					function (name) {
-						return field(
-							{ dbjs: user.getObservable(name) }
-						);
-					}
-				),
-				p(
-					{ 'class': 'submit-placeholder' },
+					function (name) { return field({ dbjs: user.getObservable(name) }); }
+					),
+				p({ 'class': 'submit-placeholder' },
 					input({ 'type': 'submit' }, "Submit")
+					)
 				)
 			)
-		)
 	);
 
 	section(
-		form(
-			{ 'class': 'user-form' },
+		form({ 'class': 'user-form' },
 			h2("Section B"),
-			fieldset(
-				h3("Busieness Owner secondary informations"),
+			fieldset(h3("Busieness Owner secondary informations"),
 				hr(),
-				ul(
-					{ 'class': 'form-elements forms' },
+				ul({ 'class': 'form-elements forms' },
 					['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
 						'registerIds'],
-					function (name) {
-						return field(
-							{ dbjs: user.getObservable(name) }
-						);
-					}
-				),
-				p(
-					{ 'class': 'submit-placeholder' },
+					function (name) { return field({ dbjs: user.getObservable(name) }); }
+					),
+				p({ 'class': 'submit-placeholder' },
 					input({ 'type': 'submit' }, "Submit")
+					)
 				)
 			)
-		)
 	);
 
 	section(
@@ -129,10 +113,7 @@ exports.step = function () {
 		)
 	);
 
-	div(
-		{ 'class': 'next-step', 'href': '#' },
-		a(
-			"Continue to next step"
-		)
-	);
+	div({ 'class': 'next-step', 'href': '#' },
+		a("Continue to next step")
+		);
 };

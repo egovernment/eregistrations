@@ -9,18 +9,20 @@ var bind = function (view) { return function (data, env) {
 
 module.exports = function (view) {
 
-	// All pages - no imported content, only header and #main to import elements
+	// All routes - no imported content, only header and #main to import elements
 	var main = view.documentElement.diff('./_main'),
-		// User Pages - import content directly to #main element
+		// User routes - import content directly to #main element
 		userMain = main.diff('./_user-main');
 
 	return {
-		// Public pages - imports content directly to #main element
+		// Public routes - imports content directly to #main element
 		'/': bind(main.diff('./index')),
-		404: bind(main.diff('./404')),
 
-		// User pages - imports content to #steps element in #main element
+		// User routes - imports content to #steps element in #main element
 		'forms':  bind(userMain.diff('./forms')),
-		'guide': bind(userMain.diff('./guide'))
+		'guide': bind(userMain.diff('./guide')),
+
+		// Error routes
+		404: bind(main.diff('./404'))
 	};
 };
