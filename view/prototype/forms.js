@@ -38,8 +38,8 @@ exports.step = function () {
 	);
 
 	section(
+		{ 'class': 'section-primary' },
 		div(
-			{ 'class': 'section-primary' },
 			h2("Section C"),
 			div(
 				h3("Directors & non-directors owner / partners"),
@@ -62,14 +62,10 @@ exports.step = function () {
 							td({ 'class': 'desktop-only' },
 								a({ 'href': '/forms/partner-id' }, "Lorem")
 								),
-							td({ 'class': 'desktop-only' },
-								a({ 'href': '/forms/partner-id' }, "Ipsum")
-								),
-							td({ 'class': 'desktop-only' },
-								a({ 'href': '/forms/partner-id' }, "Dor Sit")
-								),
-							td(a({ 'href': '/forms/partner-id' }, "Yes")),
-							td(a({ 'href': '/forms/partner-id' }, "Yes")),
+							td(a({ 'href': '/forms/partner-id' }, "Ipsum")),
+							td(a({ 'href': '/forms/partner-id' }, "Dor Sit")),
+							td({ 'class': 'desktop-only' }, a({ 'href': '/forms/partner-id' }, "Yes")),
+							td({ 'class': 'desktop-only' }, a({ 'href': '/forms/partner-id' }, "Yes")),
 							td({ 'class': 'desktop-only' }, "✓"),
 							td({ 'class': 'actions' },
 								a({ 'href': '#' }, "Edit"),
@@ -80,14 +76,10 @@ exports.step = function () {
 							td({ 'class': 'desktop-only' },
 								a({ 'href': '/forms/partner-id' }, "Lorem")
 								),
-							td({ 'class': 'desktop-only' },
-								a({ 'href': '/forms/partner-id' }, "Ipsum")
-								),
-							td({ 'class': 'desktop-only' },
-								a({ 'href': '/forms/partner-id' }, "Dor Sit")
-								),
-							td(a({ 'href': '/forms/partner-id' }, "Yes")),
-							td(a({ 'href': '/forms/partner-id' }, "Yes")),
+							td(a({ 'href': '/forms/partner-id' }, "Ipsum")),
+							td(a({ 'href': '/forms/partner-id' }, "Dor Sit")),
+							td({ 'class': 'desktop-only' }, a({ 'href': '/forms/partner-id' }, "Yes")),
+							td({ 'class': 'desktop-only' }, a({ 'href': '/forms/partner-id' }, "Yes")),
 							td({ 'class': 'desktop-only' }, "✓"),
 							td({ 'class': 'actions' },
 								a({ 'href': '#' }, "Edit"),
@@ -98,14 +90,10 @@ exports.step = function () {
 							td({ 'class': 'desktop-only' },
 								a({ 'href': '/forms/partner-id' }, "Lorem")
 								),
-							td({ 'class': 'desktop-only' },
-								a({ 'href': '/forms/partner-id' }, "Ipsum")
-								),
-							td({ 'class': 'desktop-only' },
-								a({ 'href': '/forms/partner-id' }, "Dor Sit")
-								),
-							td(a({ 'href': '/forms/partner-id' }, "Yes")),
-							td(a({ 'href': '/forms/partner-id' }, "Yes")),
+							td(a({ 'href': '/forms/partner-id' }, "Ipsum")),
+							td(a({ 'href': '/forms/partner-id' }, "Dor Sit")),
+							td({ 'class': 'desktop-only' }, a({ 'href': '/forms/partner-id' }, "Yes")),
+							td({ 'class': 'desktop-only' }, a({ 'href': '/forms/partner-id' }, "Yes")),
 							td({ 'class': 'desktop-only' }, "✓"),
 							td({ 'class': 'actions' },
 								a({ 'href': '#' }, "Edit"),
@@ -116,14 +104,10 @@ exports.step = function () {
 							td({ 'class': 'desktop-only' },
 								a({ 'href': '/forms/partner-id' }, "Lorem")
 								),
-							td({ 'class': 'desktop-only' },
-								a({ 'href': '/forms/partner-id' }, "Ipsum")
-								),
-							td({ 'class': 'desktop-only' },
-								a({ 'href': '/forms/partner-id' }, "Dor Sit")
-								),
-							td(a({ 'href': '/forms/partner-id' }, "Yes")),
-							td(a({ 'href': '/forms/partner-id' }, "Yes")),
+							td(a({ 'href': '/forms/partner-id' }, "Ipsum")),
+							td(a({ 'href': '/forms/partner-id' }, "Dor Sit")),
+							td({ 'class': 'desktop-only' }, a({ 'href': '/forms/partner-id' }, "Yes")),
+							td({ 'class': 'desktop-only' }, a({ 'href': '/forms/partner-id' }, "Yes")),
 							td({ 'class': 'desktop-only' }, "✓"),
 							td({ 'class': 'actions' },
 								a({ 'href': '#' }, "Edit"),
@@ -134,14 +118,10 @@ exports.step = function () {
 							td({ 'class': 'desktop-only' },
 								a({ 'href': '/forms/partner-id' }, "Lorem")
 								),
-							td({ 'class': 'desktop-only' },
-								a({ 'href': '/forms/partner-id' }, "Ipsum")
-								),
-							td({ 'class': 'desktop-only' },
-								a({ 'href': '/forms/partner-id' }, "Dor Sit")
-								),
-							td(a({ 'href': '/forms/partner-id' }, "Yes")),
-							td(a({ 'href': '/forms/partner-id' }, "Yes")),
+							td(a({ 'href': '/forms/partner-id' }, "Ipsum")),
+							td(a({ 'href': '/forms/partner-id' }, "Dor Sit")),
+							td({ 'class': 'desktop-only' }, a({ 'href': '/forms/partner-id' }, "Yes")),
+							td({ 'class': 'desktop-only' }, a({ 'href': '/forms/partner-id' }, "Yes")),
 							td({ 'class': 'desktop-only' }, "✓"),
 							td({ 'class': 'actions' },
 								a({ 'href': '#' }, "Edit"),
