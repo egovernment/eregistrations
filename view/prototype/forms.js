@@ -106,7 +106,7 @@ exports.step = function () {
 					)
 				),
 				a(
-					{ 'class': 'new-partner' },
+					{ 'class': 'new-partner', 'href': '/forms/add-partner' },
 					"Add new partner"
 				)
 			)
