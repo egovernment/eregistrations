@@ -9,26 +9,34 @@ exports.main = function () {
 			input({ 'id': 'show-steps-control', 'type': 'checkbox', 'role': 'button' }
 				),
 			nav({ 'class': 'steps' },
-				menuitem(a({ 'class': 'step-active', 'href': '/guide' }, "1. Guide")),
+				menuitem(
+					a({ 'class': 'step-active', 'href': '/guide' },
+						"1. Guide"),
+					div({ 'style': 'width: 100%' })
+				),
 				menuitem(
 					a({ 'class': 'step-unactive', 'href': '/forms' },
 						"2. Fill the form"
-						)
+						),
+					div({ 'style': 'width: 50%' })
 				),
 				menuitem(
 					a({ 'class': 'step-unactive', 'href': '#' },
 						"3. Upload docs"
-						)
+						),
+					div()
 				),
 				menuitem(
 					a({ 'class': 'step-unactive' },
 						"4. Pay"
-						)
+						),
+					div()
 				),
 				menuitem(
 					a({ 'class': 'step-unactive' },
 						"5. Send file"
-						)
+						),
+					div()
 				)
 				)
 			)
