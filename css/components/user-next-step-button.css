@@ -1,0 +1,34 @@
+.next-step {
+	max-width: var(--desktop-width);
+	padding: 22px 10px;
+	margin: 0 auto;
+}
+.next-step a {
+	background-color: var(--normal-background);
+	border-radius: 6px;
+	border: 1px solid transparent;
+	color: #ffffff;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 22px;
+	margin-bottom: 0;
+	padding: 10px 16px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	white-space: nowrap;
+	width: 49%;
+}
+.next-step a:hover,
+.next-step a:focus,
+.next-step a:active {
+	background-color: var(--normal-dark-background);
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.next-step a {
+		width: 100%;
+	}
+}

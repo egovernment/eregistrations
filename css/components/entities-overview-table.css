@@ -1,0 +1,61 @@
+/* Object tabel rules */
+.new-entity {
+	background-color: var(--normal-background);
+	border-radius: 6px;
+	border: 1px solid transparent;
+	color: #ffffff;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 22px;
+	margin-bottom: 22px;
+	padding: 10px 16px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	white-space: nowrap;
+	width: 25%;
+}
+.new-entity:hover,
+.new-entity:focus,
+.new-entity:active {
+	background-color: var(--normal-dark-background);
+}
+
+.actions {
+	text-align: center;
+}
+.actions a:first-child {
+	margin-right: 15%;
+}
+.actions a {
+	background-color: var(--normal-background);
+	border-radius: 3px;
+	color: #ffffff;
+	cursor: pointer;
+	font-size: 12px;
+	line-height: 18px;
+	margin: 0;
+	padding: 3px 7px 4px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	white-space: nowrap;
+}
+.actions a:hover,
+.actions a:focus,
+.actions a:active {
+	background-color: var(--normal-dark-background);
+}
+
+.confirmed {
+	text-align: center;
+	color: rgb(46,139,87);
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.new-entity {
+		width: 100%;
+	}
+}

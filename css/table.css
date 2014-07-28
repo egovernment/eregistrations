@@ -1,0 +1,33 @@
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-bottom: 22px;
+}
+
+tr {
+	height: 44px;
+}
+/* Zebra striping */
+tr:nth-of-type(odd) {
+	background-color: var(--light-background);
+}
+th {
+	background-color: var(--normal-background);
+	color: white;
+}
+td, th {
+	padding: 6px;
+	border: 1px solid var(--light-inner-border);
+	text-align: left;
+}
+
+td a {
+	text-decoration: none;
+	color: var(--normal-dark-background);
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.desktop-only {
+		display: none;
+	}
+}
