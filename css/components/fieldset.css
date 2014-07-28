@@ -1,0 +1,40 @@
+.fieldset .label {
+	width: 30%;
+}
+
+.controls a {
+	background-color: var(--normal-background);
+	border-radius: 3px;
+	color: #ffffff;
+	cursor: pointer;
+	font-size: 12px;
+	line-height: 18px;
+	margin: 0;
+	padding: 3px 7px 4px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	white-space: nowrap;
+}
+.controls a:hover,
+.controls a:focus,
+.controls a:active {
+	background-color: var(--normal-dark-background);
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.fieldset  .label {
+		width: 100%;
+		text-align: center;
+	}
+	.fieldset li .dbjs-input-component.optional {
+		justify-content: center;
+	}
+	.fieldset li .dbjs-input-component.optional .validation-status {
+		margin-top: 0;
+	}
+	.fieldset li .controls a {
+		min-width: 120px;
+		display: block;
+	}
+}

@@ -8,22 +8,22 @@ exports.step = function () {
 			h3("Busieness Partner basic informations"),
 			hr(),
 			ul(
-				{ 'class': 'property-list' },
+				{ 'class': 'entity-properties' },
 				li(
-					span({ 'class': 'property-name' }, "First name: "),
-					span({ 'class': 'property-value' }, "John")
+					span({ 'class': 'entity-properties-name' }, "First name: "),
+					span({ 'class': 'entity-properties-value' }, "John")
 				),
 				li(
-					span({ 'class': 'property-name' }, "Last name: "),
-					span({ 'class': 'property-value' }, "Wattson")
+					span({ 'class': 'entity-properties-name' }, "Last name: "),
+					span({ 'class': 'entity-properties-value' }, "Wattson")
 				),
 				li(
-					span({ 'class': 'property-name' }, "Date of birth: "),
-					span({ 'class': 'property-value' }, "01-01-1870")
+					span({ 'class': 'entity-properties-name' }, "Date of birth: "),
+					span({ 'class': 'entity-properties-value' }, "01-01-1870")
 				),
 				li(
-					span({ 'class': 'property-name' }, "Email address: "),
-					span({ 'class': 'property-value' }, "john.wattson@gamil.com")
+					span({ 'class': 'entity-properties-name' }, "Email address: "),
+					span({ 'class': 'entity-properties-value' }, "john.wattson@gamil.com")
 				)
 			)
 		)
@@ -35,31 +35,31 @@ exports.step = function () {
 			h3("Busieness Partner secondary informations"),
 			hr(),
 			ul(
-				{ 'class': 'property-list' },
+				{ 'class': 'entity-properties' },
 				li(
-					span({ 'class': 'property-name' }, "Registration type: "),
-					span({ 'class': 'property-value' }, "Private limited company")
+					span({ 'class': 'entity-properties-name' }, "Registration type: "),
+					span({ 'class': 'entity-properties-value' }, "Private limited company")
 				),
 				li(
-					span({ 'class': 'property-name' }, "Quantity of members: "),
-					span({ 'class': 'property-value' }, "4")
+					span({ 'class': 'entity-properties-name' }, "Quantity of members: "),
+					span({ 'class': 'entity-properties-value' }, "4")
 				),
 				li(
-					span({ 'class': 'property-name' }, "Inventory value: "),
-					span({ 'class': 'property-value' }, "1 000 000 ")
+					span({ 'class': 'entity-properties-name' }, "Inventory value: "),
+					span({ 'class': 'entity-properties-value' }, "1 000 000 ")
 				),
 				li(
-					span({ 'class': 'property-name' }, "Owner of business premises: "),
-					span({ 'class': 'property-value' }, "Sherlock Holmes")
+					span({ 'class': 'entity-properties-name' }, "Owner of business premises: "),
+					span({ 'class': 'entity-properties-value' }, "Sherlock Holmes")
 				),
 				li(
-					span({ 'class': 'property-name' }, "Business activity: "),
-					span({ 'class': 'property-value' }, "Re-assurance and endowmen")
+					span({ 'class': 'entity-properties-name' }, "Business activity: "),
+					span({ 'class': 'entity-properties-value' }, "Re-assurance and endowmen")
 				)
 			)
 		)
 	);
-	div({ 'class': 'naviagate-back' },
+	div({ 'class': 'nav-back' },
 		a({ 'href': '/forms' }, "Back to forms")
 		);
 };

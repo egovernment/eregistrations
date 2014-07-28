@@ -9,7 +9,7 @@ exports.step = function () {
 		form(h2("Section A"),
 			fieldset(h3("Busieness Owner basic informations"),
 				hr(),
-				ul({ 'class': 'form-elements forms' },
+				ul({ 'class': 'form-elements fieldset' },
 					['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
 					function (name) { return field({ dbjs: user.getObservable(name) }); }
 					),
@@ -25,7 +25,7 @@ exports.step = function () {
 			h2("Section B"),
 			fieldset(h3("Busieness Owner secondary informations"),
 				hr(),
-				ul({ 'class': 'form-elements forms' },
+				ul({ 'class': 'form-elements fieldset' },
 					['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
 						'registerIds'],
 					function (name) { return field({ dbjs: user.getObservable(name) }); }
@@ -130,7 +130,7 @@ exports.step = function () {
 					)
 				),
 				a(
-					{ 'class': 'new-partner', 'href': '/forms/partner-add' },
+					{ 'class': 'new-entity', 'href': '/forms/partner-add' },
 					"Add new partner"
 				)
 			)

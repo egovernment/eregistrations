@@ -1,25 +1,25 @@
-.property-list {
+.entity-properties {
 	list-style-type: none;
 }
 
-.property-list li {
+.entity-properties li {
 	display: flex;
 	padding-left: 10%;
 }
 
-.property-name {
+.entity-properties-name {
 	font-weight: bold;
 	width: 25%;
 	display: block;
 }
 
-.naviagate-back {
+.nav-back {
 	max-width: var(--desktop-width);
 	padding: 22px 10px;
 	margin: 0 auto;
 }
 
-.naviagate-back a {
+.nav-back a {
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
@@ -37,24 +37,24 @@
 	white-space: nowrap;
 	width: 49%;
 }
-.naviagate-back a:hover,
-.naviagate-back a:focus,
-.naviagate-back a:active {
+.nav-back a:hover,
+.nav-back a:focus,
+.nav-back a:active {
 	background-color: var(--normal-dark-background);
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.property-list {
+	.entity-properties {
 		padding-left: 0;
 	}
 
-	.property-list li {
+	.entity-properties li {
 		padding-left: 0;
 		text-align: center;
 		flex-wrap:wrap;
 	}
 
-	.property-list li span, .naviagate-back a {
+	.entity-properties li span, .nav-back a {
 		width: 100%;
 	}
 }
