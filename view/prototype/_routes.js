@@ -21,6 +21,7 @@ module.exports = function (view) {
 		// User routes - imports content to #steps element in #main element
 		'guide': bind(userMain.diff('./guide')),
 		'forms':  bind(userMain.diff('./forms')),
+		'docs':  bind(userMain.diff('./docs')),
 		'forms/partner-add': bind(userMain.diff('./partner-add')),
 		'forms/partner-id': bind(userMain.diff('./partner')),
 
