@@ -21,7 +21,7 @@ exports.step = function () {
 			function (submission) {
 				return li(form({ action: url('documents'), method: 'post',
 							enctype: 'multipart/form-data', autoSubmit: true },
-							div(h3(submission.__id__), hr(),
+							div(h3(submission.label), hr(),
 								input({ dbjs: submission._files, render: renderFile }))));
 			}
 		)
