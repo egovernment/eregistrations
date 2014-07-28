@@ -104,7 +104,7 @@ user.submissions.defineProperties({
 	documentC: { type: db.DocumentCSubmission, nested: true }
 });
 user.define('requiredSubmissions', {
-	type: db.DocumentASubmission,
+	type: db.DocumentSubmission,
 	multiple: true,
 	value: [user.submissions.documentA, user.submissions.documentB, user.submissions.documentC]
 });
