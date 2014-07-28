@@ -88,11 +88,11 @@ user.partners.add(new Partner({ firstName: "Frank", lastName: "Grozel" }));
 user.partners.add(new Partner({ firstName: "Bita", lastName: "Mortazavi" }));
 
 Submission.extend('DocumentASubmission', {},
-	{ Document: { value: Document.extend('DocumentA', {}, { label: "Document A" }) } });
+	{ Document: { value: Document.extend('DocumentA', {}, { label: { value: "Document A" } }) } });
 Submission.extend('DocumentBSubmission', {},
-	{ Document: { value: Document.extend('DocumentB', {}, { label: "Document B" }) } });
+	{ Document: { value: Document.extend('DocumentB', {}, { label: { value: "Document B" } }) } });
 Submission.extend('DocumentCSubmission', {},
-	{ Document: { value: Document.extend('DocumentC', {}, { label: "Document C" }) } });
+	{ Document: { value: Document.extend('DocumentC', {}, { label: { value: "Document C" } }) } });
 
 user.define('submissions', {
 	type: db.Object,
