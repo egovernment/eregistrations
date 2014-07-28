@@ -12,13 +12,13 @@ exports.main = function () {
 				menuitem(
 					a({ 'class': 'step-active', 'href': '/guide' },
 						"1. Guide"),
-					div({ 'class': 'complete' })
+					div({ 'style': 'width: 100%' })
 				),
 				menuitem(
 					a({ 'class': 'step-unactive', 'href': '/forms' },
 						"2. Fill the form"
 						),
-					div({ 'class': 'complete' })
+					div({ 'style': 'width: 50%' })
 				),
 				menuitem(
 					a({ 'class': 'step-unactive', 'href': '#' },
