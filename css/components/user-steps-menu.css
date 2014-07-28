@@ -6,7 +6,7 @@
 	background-position: center center;
 	background-size: cover;
 	display: flex;
-	padding: 11px 0;
+	padding: 11px 0 4px;
 	width: 100%;
 }
 
@@ -92,6 +92,16 @@
 	display: none;
 	width: 100%;
 
+}
+
+nav.steps menuitem div {
+	height: 5px;
+	width: 100%;
+	margin-top: 2px;
+
+}
+nav.steps menuitem div.complete {
+	background-color: green;
 }
 @media only screen and (max-width: 760px) {
 	nav.steps menuitem a {
