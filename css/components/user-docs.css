@@ -1,0 +1,33 @@
+.doc-upload-button {
+	background-color: var(--normal-background);
+	border-radius: 6px;
+	border: 1px solid transparent;
+	color: #ffffff;
+	display: inline-block;
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 22px;
+	margin-bottom: 0;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	white-space: nowrap;
+	width: 29%;
+}
+.doc-upload-button:hover,
+.doc-upload-button:focus,
+.doc-upload-button:active {
+	background-color: var(--normal-dark-background);
+}
+
+.doc-upload-button label input {
+	display: none;
+}
+
+.doc-upload-button label {
+	display: block;
+	width: 100%;
+	height: 100%;
+	padding: 10px 16px;
+	cursor: pointer;
+}

@@ -4,7 +4,7 @@
 	padding: 0 10px;
 }
 
-.section-primary fieldset, .section-primary > div {
+.section-primary fieldset, .section-primary > div, .section-primary > ul li {
 	background-color: #ffffff;
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
@@ -13,6 +13,15 @@
 }
 
 .section-primary > ul {
-    padding-left: 0;
-    list-style-type: none;
+	padding-left: 0;
+	list-style-type: none;
+	margin-bottom: 0;
+}
+
+.section-primary ul li {
+	margin-bottom: 22px;
+}
+
+.section-primary ul li:last-child {
+	margin-bottom: 0;
 }

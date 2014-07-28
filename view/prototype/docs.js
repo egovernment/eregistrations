@@ -5,25 +5,24 @@ var db = require('mano').db,
 	renderFile;
 
 renderFile = function (options) {
-	var submission = options.observable.object;
-
-	return div(h2(submission.label),
-		div(this.valueDOM = ul({ class: 'documents' })),
-			div({ class: 'btn-upload' }, label("+ Choose file", this.control = input({ type: 'file' })))
+	return div(div(this.valueDOM = ul({ class: 'documents' })),
+			a({ class: 'doc-upload-button' }, label("+ Choose file",
+				this.control = input({ type: 'file' })))
 			);
 };
 
 exports.step = function () {
 	section(
 		{ 'class': 'section-primary' },
+		h2("3 Upload Your Documents"),
 		ul(
 			{ class: 'submissions' },
 			user.requiredSubmissions,
 			function (submission) {
-				console.log(submission.__id__)
 				return li(form({ action: url('documents'), method: 'post',
 							enctype: 'multipart/form-data', autoSubmit: true },
-							fieldset(input({ dbjs: submission._files, render: renderFile }))));
+							div(h3(submission.__id__), hr(),
+								input({ dbjs: submission._files, render: renderFile }))));
 			}
 		)
 	);
