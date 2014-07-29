@@ -54,10 +54,13 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 				data.control = el('input', { type: 'hidden', name: this.name,
 					value: file.__id__ }),
 				el('a', { class: 'thumb-doc-action', onclick: remove },
-					el('i', { class: 'icon-trash' })),
+					el('i', { class: 'icon-trash' }, "delete")
+					),
 				el('a', { href: file._url, target: '_blank',
 					class: 'dlBtn thumb-doc-action' },
-					el('i', { class: 'icon-arrow-down' }))));
+					el('i', { class: 'icon-arrow-down' })
+					)
+				));
 			data.dom.appendChild(itemDom.toDOM ? itemDom.toDOM(this.document) : itemDom);
 			return data;
 		}
