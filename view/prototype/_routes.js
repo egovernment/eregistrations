@@ -17,6 +17,7 @@ module.exports = function (view) {
 	return {
 		// Public routes - imports content directly to #main element
 		'/': bind(main.diff('./index')),
+		'sub-public': bind(main.diff('./sub-public')),
 
 		// User routes - imports content to #steps element in #main element
 		'guide': bind(userMain.diff('./guide')),
