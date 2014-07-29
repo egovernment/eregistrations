@@ -15,5 +15,5 @@ exports.main = function () {
 				)
 			)
 		);
-	div({ 'id': 'main' });
+	div({ 'id': 'sub-main' });
 };

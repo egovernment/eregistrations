@@ -10,7 +10,7 @@
 	display: flex;
 	justify-content: flex-start;
 	margin: 0 auto;
-	padding: 0 10px;
+	padding: 0 1px;
 	width: var(--desktop-width);
 }
 
@@ -28,3 +28,8 @@
 	display: block;
 }
 
+.section-submitted {
+	margin: 0 auto;
+	max-width: var(--desktop-width);
+	padding-top: 22px;
+}

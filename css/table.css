@@ -26,8 +26,63 @@ td a {
 	color: var(--normal-dark-background);
 }
 
+.mobile-table-view {
+	display: none;
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
+
+	.mobile-table-view {
+		display: flex;
+		width: 50%;
+		background-color: var(--normal-background);
+		padding: 6px;
+		color: #ffffff;
+	}
+	.mobile-table-view-2 {
+		display: flex;
+		width: 50%;
+		padding: 6px;
+	}
 	.desktop-only {
 		display: none;
+	}    
+	table, thead, tbody, th, tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	tr { 
+		border: 1px solid #ccc; 
+		height: auto;
+	}
+	
+	td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+	}
+	
+	td:before { 
+		/* Now like a table header */
+		position: absolute;
+		/* Top/left values mimic padding */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+	}
+	.table-submitted td {
+		display: flex;
+		justify-content: space-around;
+		padding: 0;
 	}
 }
