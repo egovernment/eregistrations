@@ -8,16 +8,14 @@ tr {
 	height: 44px;
 }
 /* Zebra striping */
-tr:nth-of-type(odd) {
+tbody tr:nth-of-type(odd) {
 	background-color: var(--light-background);
 }
 th {
-	background-color: var(--normal-background);
-	color: white;
+	color: var(--normal-dark-background);
 }
 td, th {
 	padding: 6px;
-	border: 1px solid var(--light-inner-border);
 	text-align: left;
 }
 

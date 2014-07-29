@@ -35,7 +35,7 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 			return dom;
 		},
 		renderItem: function (file) {
-			var el = this.make, data = {}, remove;
+			var el = this.make, data = {}, remove, itemDom;
 
 			data.dom = el('li', { 'data-id': file.__id__ });
 
@@ -43,7 +43,7 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 				? file._clear_.bind(file)
 				: this.removeItem.bind(this, data.dom);
 
-			data.dom.appendChild(_if(file._name, el('span',
+			itemDom = _if(file._name, el('span',
 				el('a', { href: file._url, target: '_blank', class: 'thumb-doc' },
 					el('img', { src: resolve(file._thumb, '_url') })),
 				el('span', { class: 'thumb-doc-action' },
@@ -57,8 +57,8 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 					el('i', { class: 'icon-trash' })),
 				el('a', { href: file._url, target: '_blank',
 					class: 'dlBtn thumb-doc-action' },
-					el('i', { class: 'icon-arrow-down' }))))
-				.toDOM(this.document));
+					el('i', { class: 'icon-arrow-down' }))));
+			data.dom.appendChild(itemDom.toDOM ? itemDom.toDOM(this.document) : itemDom);
 			return data;
 		}
 	})
