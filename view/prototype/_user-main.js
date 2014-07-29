@@ -10,12 +10,12 @@ exports.main = function () {
 				),
 			nav({ 'class': 'steps' },
 				menuitem(
-					a({ 'class': 'step-active', 'href': '/guide' },
+					a({ 'class': 'step-active', 'href': '/guide/' },
 						"1. Guide"),
 					div({ 'style': 'width: 100%' })
 				),
 				menuitem(
-					a({ 'class': 'step-unactive', 'href': '/forms' },
+					a({ 'class': 'step-unactive', 'href': '/forms/' },
 						"2. Fill the form"
 						),
 					div({ 'style': 'width: 50%' })
@@ -33,7 +33,7 @@ exports.main = function () {
 					div()
 				),
 				menuitem(
-					a({ 'class': 'step-unactive' },
+					a({ 'class': 'step-unactive', 'href': '/submission/' },
 						"5. Send file"
 						),
 					div()
