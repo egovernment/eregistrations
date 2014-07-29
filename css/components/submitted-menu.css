@@ -33,3 +33,47 @@
 	max-width: var(--desktop-width);
 	padding-top: 22px;
 }
+
+.mobile-table-view {
+	display: none;
+}
+
+.section-submitted thead {
+	background-color: var(--normal-background);
+}
+.section-submitted thead th {
+	color: #fff;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+
+	.mobile-table-view {
+		display: flex;
+		width: 50%;
+		background-color: var(--normal-background);
+		padding: 6px;
+		color: #ffffff;
+	}
+	.mobile-table-view-2 {
+		display: flex;
+		width: 50%;
+		padding: 6px;
+	}
+	
+	tr { 
+		border: 1px solid #ccc; 
+		height: auto;
+	}
+	
+	td { 
+		border: none;
+		border-bottom: 1px solid #eee; 
+		position: relative;
+	}
+	
+	.table-submitted td {
+		display: flex;
+		justify-content: space-around;
+		padding: 0;
+	}
+}

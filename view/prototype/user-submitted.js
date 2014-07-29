@@ -47,11 +47,48 @@ exports['sub-main'] = function () {
 						span({ 'class': 'mobile-table-view-2' },
 							"XXX YYY ZZZ EEE RRR TAG TAG TAG TAG")
 						),
-						td({ 'class': '' },
+					td({ 'class': '' },
 						span({ 'class': 'mobile-table-view' },
 							""),
 						span({ 'class': 'mobile-table-view-2' },
 							"D")
+						)
+				)
+			)
+		)
+	);
+	section(
+		{ 'class': 'section-primary' },
+		h2("History of your request"),
+		table(
+			{ 'class': '' },
+			tbody(
+				tr(
+					th({ 'class': '' },
+						span({ 'class': '' },
+							"User")
+						),
+					td({ 'class': '' },
+						span({ 'class': '' },
+							"abstudios")
+						),
+					td({ 'class': '' },
+						span({ 'class': '' },
+							"123")
+						)
+				),
+				tr(
+					th({ 'class': '' },
+						span({ 'class': '' },
+							"File sent")
+						),
+					td({ 'class': '' },
+						span({ 'class': '' },
+							"abstudios")
+						),
+					td({ 'class': '' },
+						span({ 'class': '' },
+							"123")
 						)
 				)
 			)

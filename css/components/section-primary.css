@@ -11,3 +11,10 @@
 	padding: 21px 15px 0 15px;
 	margin-bottom: -1px;
 }
+
+.section-primary thead {
+	background-color: var(--normal-background);
+}
+.section-primary thead th {
+	color: #fff;
+}
