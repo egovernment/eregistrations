@@ -30,3 +30,26 @@
 	padding: 10px 16px;
 	cursor: pointer;
 }
+
+.documents {
+	list-style-type: none;
+	display: flex;
+	padding-left: 0;
+}
+
+.documents li {
+	max-height: 144px;
+	margin-right: 22px;
+}
+
+.documents li span {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 22px;
+}
+
+.documents li a img {
+	max-height: 88px;
+	width: auto;
+	margin: 0;
+}
