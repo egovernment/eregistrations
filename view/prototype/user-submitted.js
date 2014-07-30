@@ -59,37 +59,39 @@ exports['sub-main'] = function () {
 	);
 	section(
 		{ 'class': 'section-primary' },
-		h2("History of your request"),
-		table(
-			{ 'class': '' },
-			tbody(
-				tr(
-					th({ 'class': '' },
-						span({ 'class': '' },
-							"User")
-						),
-					td({ 'class': '' },
-						span({ 'class': '' },
-							"abstudios")
-						),
-					td({ 'class': '' },
-						span({ 'class': '' },
-							"123")
-						)
-				),
-				tr(
-					th({ 'class': '' },
-						span({ 'class': '' },
-							"File sent")
-						),
-					td({ 'class': '' },
-						span({ 'class': '' },
-							"abstudios")
-						),
-					td({ 'class': '' },
-						span({ 'class': '' },
-							"123")
-						)
+		div(
+			h2("History of your request"),
+			table(
+				{ 'class': 'table-history' },
+				tbody(
+					tr(
+						th({ 'class': '' },
+							span({ 'class': '' },
+								"User")
+							),
+						td({ 'class': '' },
+							span({ 'class': '' },
+								"abstudios")
+							),
+						td({ 'class': '' },
+							span({ 'class': '' },
+								"123")
+							)
+					),
+					tr(
+						th({ 'class': '' },
+							span({ 'class': '' },
+								"File sent")
+							),
+						td({ 'class': '' },
+							span({ 'class': '' },
+								"abstudios")
+							),
+						td({ 'class': '' },
+							span({ 'class': '' },
+								"123")
+							)
+					)
 				)
 			)
 		)

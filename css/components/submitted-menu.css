@@ -45,6 +45,18 @@
 	color: #fff;
 }
 
+.section-submitted tbody tr {
+	background-color: #ffffff;
+}
+
+.table-submitted th, .table-submitted td {
+	border: 1px solid var(--normal-dark-background);
+}
+
+.table-history tr {
+	border-top: 1px solid var(--normal-background);
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 
 	.mobile-table-view {
