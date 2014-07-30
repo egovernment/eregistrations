@@ -6,7 +6,7 @@ var db = require('mano').db,
 
 renderFile = function (options) {
 	return div(div(this.valueDOM = ul({ class: 'uploaded-document-files' })),
-			a({ class: 'doc-upload-button' }, label("+ Choose file",
+			a({ class: 'user-uploaded-files-upload-button' }, label("+ Choose file",
 				this.control = input({ type: 'file' })))
 			);
 };
@@ -19,9 +19,7 @@ exports.step = function () {
 			{ class: 'submissions' },
 			user.requiredSubmissions,
 			function (submission) {
-				return li(form({ action: url('documents'), method: 'post',
-							enctype: 'multipart/form-data', autoSubmit: true },
-							div(h3(submission.label), hr(),
+				return li(form(div(h3(submission.label), hr(),
 								input({ dbjs: submission._files, render: renderFile }))));
 			}
 		)
@@ -37,11 +35,11 @@ exports.step = function () {
 					"Secretary and all Subscribers of the company or their authorised representatives. " +
 					"Once signed, please upload it onto the system using the button below."
 			),
-			a({ 'href': '#' }, "View and print form")
+			a("View and print form")
 		)
 	);
 
-	div({ 'class': 'next-step', 'href': '#' },
-		a("Continue to next step")
+	div({ 'class': 'next-step' },
+		a({ 'href': '/submission/' }, "Continue to next step")
 		);
 };

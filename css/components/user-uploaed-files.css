@@ -1,4 +1,4 @@
-.doc-upload-button {
+.user-uploaded-files-upload-button {
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	color: #ffffff;
@@ -14,17 +14,17 @@
 	width: 29%;
 	height: 44px;
 }
-.doc-upload-button:hover,
-.doc-upload-button:focus,
-.doc-upload-button:active {
+.user-uploaded-files-upload-button:hover,
+.user-uploaded-files-upload-button:focus,
+.user-uploaded-files-upload-button:active {
 	background-color: var(--normal-dark-background);
 }
 
-.doc-upload-button label input {
+.user-uploaded-files-upload-button label input {
 	display: none;
 }
 
-.doc-upload-button label {
+.user-uploaded-files-upload-button label {
 	display: block;
 	width: 100%;
 	height: 100%;
@@ -101,7 +101,7 @@
 		flex-wrap: wrap;
 		justify-content: space-around;
 	}
-	.doc-upload-button {
+	.user-uploaded-files-upload-button {
 		width: 100%;
 	}
 	.section-primary .uploaded-document-files li {

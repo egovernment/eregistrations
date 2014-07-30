@@ -10,18 +10,18 @@ exports.main = function () {
 				),
 			nav({ 'class': 'steps' },
 				menuitem(
-					a({ 'class': 'step-active', 'href': '/guide' },
+					a({ 'class': 'step-active', 'href': '/guide/' },
 						"1. Guide"),
 					div({ 'style': 'width: 100%' })
 				),
 				menuitem(
-					a({ 'class': 'step-unactive', 'href': '/forms' },
+					a({ 'class': 'step-unactive', 'href': '/forms/' },
 						"2. Fill the form"
 						),
 					div({ 'style': 'width: 50%' })
 				),
 				menuitem(
-					a({ 'class': 'step-unactive', 'href': '/docs' },
+					a({ 'class': 'step-unactive', 'href': '/documents/' },
 						"3. Upload docs"
 						),
 					div()
