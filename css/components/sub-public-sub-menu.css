@@ -1,0 +1,58 @@
+.sub-public-sub-menu-container {
+	background-color: #fff;
+	min-height: 66px;
+}
+
+.sub-public-sub-menu {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 auto;
+	max-width: var(--desktop-width);
+	padding: 22px 10px;
+	min-height: 66px;
+}
+
+.sub-public-sub-menu menuitem a {
+	padding:11px 10px;
+	text-align: center;
+	color: var(--normal-dark-background);
+	background-color: transparent;
+	text-decoration: none;
+	line-height: 1;
+	height: 66px;
+	width: 154px;
+	display: block;
+	font-size: 14px;
+}
+
+.sub-public-sub-menu menuitem a img {
+	margin: 0 auto 11px auto;
+	width: auto;
+	height: 22px;
+	display: block;
+}
+
+.sub-public-sub-menu menuitem a:hover,
+.sub-public-sub-menu menuitem a:focus,
+.sub-public-sub-menu menuitem .active {
+	border-radius: var(--normal-rounded-border);
+	background-color: var(--light-background);
+	cursor: pointer;
+}
+
+.separator:before {
+	content: '>';
+}
+
+.separator {
+	padding: 22px;
+	color: var(--dark-background);
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.sub-public-sub-menu {
+		flex-wrap: wrap;
+		min-width: var(--min-mobile-width);
+	}
+}

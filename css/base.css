@@ -12,6 +12,9 @@ Component describing basic elements styles - reusable
 	--normal-background: #999;
 	--normal-dark-background: #666;
 	--dark-background: #333;
+	--normal-rounded-border: 6px;
+	--left-rounded-border: 6px 0px 0px 6px;
+	--right-rounded-border: 0px 6px 6px 0px;
 }
 
 html {

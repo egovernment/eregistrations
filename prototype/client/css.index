@@ -16,3 +16,7 @@
 ../../css/components/entity-properties.css
 ../../css/components/entities-overview-table.css
 ../../css/components/fieldset.css
+../../css/components/sub-public-menu.css
+../../css/components/sub-public-sub-menu.css
+../../css/components/vertical-tabs.css
+../../css/components/public-articles.css
