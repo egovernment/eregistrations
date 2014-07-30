@@ -65,13 +65,15 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 						el('a',
 							{ class: 'doc-action', onclick: remove },
 							el('i',
-								{ class: 'fa fa-download fa-lg' }
+								{ class: 'fa fa-download' },
+								"d"
 								)
 							),
 						el('a',
 							{ href: file._url, target: '_blank', class: 'doc-action' },
 							el('i',
-								{ class: 'fa fa-trash-o fa-lg' }
+								{ class: 'fa fa-trash-o' },
+								"d"
 								)
 							)
 						)
