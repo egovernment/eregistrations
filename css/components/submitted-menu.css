@@ -10,7 +10,7 @@
 	display: flex;
 	justify-content: flex-start;
 	margin: 0 auto;
-	padding: 0 1px;
+	padding: 0 10px;
 	width: var(--desktop-width);
 }
 
@@ -31,7 +31,7 @@
 .section-submitted {
 	margin: 0 auto;
 	max-width: var(--desktop-width);
-	padding-top: 22px;
+	padding: 22px 10px 0 10px;
 }
 
 .mobile-table-view {
@@ -50,11 +50,11 @@
 }
 
 .table-submitted th, .table-submitted td {
-	border: 1px solid var(--normal-dark-background);
+	border: 1px solid var(--light-inner-border);
 }
 
 .table-history tr {
-	border-top: 1px solid var(--normal-background);
+	border-top: 1px solid var(--light-inner-border);
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
