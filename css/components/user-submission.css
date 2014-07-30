@@ -1,0 +1,24 @@
+.application-preview {
+	background-color: var(--normal-background);
+	border-radius: 6px;
+	border: 1px solid transparent;
+	color: #ffffff;
+	cursor: pointer;
+	display: inline-block;
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 22px;
+	margin-bottom: 0;
+	padding: 10px 16px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	white-space: nowrap;
+	width: 49%;
+	margin-bottom: 22px;
+}
+.application-preview:hover,
+.application-preview:focus,
+.application-preview:active {
+	background-color: var(--normal-dark-background);
+}

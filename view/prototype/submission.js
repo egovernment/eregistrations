@@ -34,6 +34,8 @@ exports.step = function () {
 		);
 
 	section({ 'class': 'section-primary' },
-		div(h3("Preview of your application"), hr())
+		div(h3("Preview of your application"), hr(),
+				a({ 'class': 'application-preview ' }, "Preview of application")
+			)
 		);
 };
