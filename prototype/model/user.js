@@ -13,7 +13,8 @@ var Map          = require('es6-map')
   , Submission   = require('./submission')
 
   , user = User.prototype
-  , BusinessActivity, BusinessActivityCategory, CompanyType, Partner, bcAgencyBusiness, bcInsurance;
+  , BusinessActivity, BusinessActivityCategory, CompanyType, Partner, bcAgencyBusiness, bcInsurance
+  , file;
 
 require('dbjs-ext/create-enum')(db);
 
@@ -108,3 +109,45 @@ user.define('requiredSubmissions', {
 	multiple: true,
 	value: [user.submissions.documentA, user.submissions.documentB, user.submissions.documentC]
 });
+
+file = db.SubmissionFile.newNamed('docASubFile1', {
+	name: 'idoc.jpg',
+	type: 'image/jpeg',
+	diskSize: 376306,
+	url: '/uploads/docASubFile1.idoc.jpg'
+});
+file.preview = file;
+file.thumb = db.JpegFile.newNamed('docASubFile1Thumb', {
+	url: '/uploads/docASubFile1.thumb.idoc.jpg',
+	name: 'idoc.jpg'
+});
+user.submissions.documentA.files.add(file);
+
+file = db.SubmissionFile.newNamed('docASubFile2', {
+	name: 'idoc.png',
+	type: 'image/png',
+	diskSize: 124998,
+	url: '/uploads/docASubFile2.idoc.png'
+});
+file.preview = db.JpegFile.newNamed('docASubFile2Preview', {
+	url: '/uploads/docASubFile2.thumb.idoc.png.jpg',
+	name: 'idoc.png'
+});
+file.thumb = db.JpegFile.newNamed('docASubFile2Thumb', {
+	url: '/uploads/docASubFile2.thumb.idoc.png.jpg',
+	name: 'idoc.png'
+});
+user.submissions.documentA.files.add(file);
+
+file = db.SubmissionFile.newNamed('docBSubFile1', {
+	name: 'idoc.jpg',
+	type: 'image/jpeg',
+	diskSize: 426150,
+	url: '/uploads/docBSubFile1.idoc.jpg'
+});
+file.preview = file;
+file.thumb = db.JpegFile.newNamed('docBSubFile1Thumb', {
+	url: '/uploads/docBSubFile1.thumb.idoc.jpg',
+	name: 'idoc.jpg'
+});
+user.submissions.documentB.files.add(file);

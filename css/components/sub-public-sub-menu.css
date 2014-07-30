@@ -54,5 +54,14 @@
 	.sub-public-sub-menu {
 		flex-wrap: wrap;
 		min-width: var(--min-mobile-width);
+		justify-content: space-around;
+	}
+
+	.sub-public-sub-menu item {
+		margin-right: 11px;
+	}
+
+	.sub-public-sub-menu item a img {
+		display: none;
 	}
 }

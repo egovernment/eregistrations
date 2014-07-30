@@ -20,7 +20,6 @@
 	background-color: transparent;
 	border-radius: var(--normal-rounded-border);
 	text-decoration: none;
-	vertical-align: middle;
 	white-space: nowrap;
 	line-height: 22px;
 	font-size:18px;
@@ -44,7 +43,7 @@
 	.sub-public-menu {
 		flex-wrap: wrap;
 		min-width: var(--min-mobile-width);
-		justify-content: flex-start;
+		justify-content: space-around;
 	}
 
 	.sub-public-menu menuitem a {
