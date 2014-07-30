@@ -43,24 +43,40 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 				? file._clear_.bind(file)
 				: this.removeItem.bind(this, data.dom);
 
-			itemDom = _if(file._name, el('span',
-				el('a', { href: file._url, target: '_blank', class: 'thumb-doc' },
-					el('img', { src: resolve(file._thumb, '_url') })),
-				el('span', { class: 'thumb-doc-action' },
-					map(file._diskSize, function (size) {
-						if (size == null) return null;
-						return ((size / 1000000).toFixed(2) + ' Mo');
-					})),
-				data.control = el('input', { type: 'hidden', name: this.name,
-					value: file.__id__ }),
-				el('a', { class: 'thumb-doc-action', onclick: remove },
-					el('i', { class: 'icon-trash' }, "delete")
-					),
-				el('a', { href: file._url, target: '_blank',
-					class: 'dlBtn thumb-doc-action' },
-					el('i', { class: 'icon-arrow-down' })
-					)
-				));
+			itemDom = _if(file._name,
+				el('div',
+					el('a',
+						{ href: file._url, target: '_blank', class: 'thumb-doc' },
+						el('img',
+							{ src: resolve(file._thumb, '_url') }
+							)
+						),
+					data.control =
+						el('input',
+							{ type: 'hidden', name: this.name, value: file.__id__ }
+							),
+					el('div',
+						el('span', { class: 'document-size' },
+							map(file._diskSize, function (size) {
+								if (size == null) return null;
+								return ((size / 1000000).toFixed(2) + ' Mo');
+							})
+							),
+						el('a',
+							{ class: 'doc-action', onclick: remove },
+							el('i',
+								{ class: 'fa fa-download fa-lg' }
+								)
+							),
+						el('a',
+							{ href: file._url, target: '_blank', class: 'doc-action' },
+							el('i',
+								{ class: 'fa fa-trash-o fa-lg' }
+								)
+							)
+						)
+
+					));
 			data.dom.appendChild(itemDom.toDOM ? itemDom.toDOM(this.document) : itemDom);
 			return data;
 		}

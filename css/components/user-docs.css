@@ -12,6 +12,7 @@
 	vertical-align: middle;
 	white-space: nowrap;
 	width: 29%;
+	height: 44px;
 }
 .doc-upload-button:hover,
 .doc-upload-button:focus,
@@ -37,19 +38,72 @@
 	padding-left: 0;
 }
 
-.documents li {
-	max-height: 144px;
+.section-primary .documents li {
 	margin-right: 22px;
+	border: none;
+	margin-bottom: 0;
+	padding-top: 1px;
 }
 
-.documents li span {
+.documents li div {
 	display: flex;
 	flex-direction: column;
-	margin-bottom: 22px;
 }
 
-.documents li a img {
+.documents li div a {
+	border: 1px solid var(--light-inner-border);
+	border-radius: 5px;
+	padding: 8px;
+	text-align: center;
+}
+.documents li div a:hover,
+.documents li div a:focus,
+.documents li div a:active {
+	box-shadow: 0 1px 6px var(--light-inner-border);
+}
+
+.documents li div a img {
 	max-height: 88px;
 	width: auto;
 	margin: 0;
+}
+
+.documents li div div {
+	flex-direction: row;
+	justify-content: space-around;
+	margin-top: 14px;
+	margin-bottom: 0;
+}
+
+.documents li div div .doc-action {
+	border-radius: 3px;
+	background-color: var(--normal-background);
+	color: white;
+	padding: 3px;
+	border: none;
+	margin-right: 3px;
+}
+.documents li div div .doc-action:hover,
+.documents li div div .doc-action:focus,
+.documents li div div .doc-action:active {
+	background-color: var(--normal-dark-background);
+	box-shadow: none;
+}
+
+.document-size {
+	font-size: 12px;
+	margin-right: 3px;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.documents {
+		flex-wrap: wrap;
+		justify-content: space-around;
+	}
+	.doc-upload-button {
+		width: 100%;
+	}
+	.section-primary .documents li {
+		margin-bottom: 22px;
+	}
 }
