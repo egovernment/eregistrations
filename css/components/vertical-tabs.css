@@ -1,0 +1,51 @@
+/*
+Component describing vertical-tabs elements styles - reusable
+*/
+
+.tabbed-content {
+	display: flex;
+	align-items: stretch;
+	margin: 0 auto;
+	max-width: var(--desktop-width);
+	padding: 22px 10px;
+}
+
+.sided-menu {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	margin-top: 0;
+	padding: 0;
+}
+
+.sided-menu menuitem {
+	margin-bottom: 22px;
+}
+
+.sided-menu menuitem a {
+	padding:22px 10px;
+	text-align: right;
+	background-color: transparent;
+	color: var(--dark-background);
+	display: block;
+	font-size: 18px;
+	text-decoration: none;
+}
+article
+.sided-menu menuitem a:hover,
+.sided-menu menuitem a:focus,
+.sided-menu menuitem .active {
+	text-align: right;
+	background-color: #fff;
+	color: var(--dark-background);
+	border-radius: var(--left-rounded-border);
+	cursor: pointer;
+}
+
+.sided-content {
+	flex: 3;
+	background-color: #fff;
+	padding: 22px;
+	border-radius: var(--right-rounded-border);
+}
