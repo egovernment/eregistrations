@@ -32,50 +32,50 @@
 	cursor: pointer;
 }
 
-.documents {
+.uploaded-document-files {
 	list-style-type: none;
 	display: flex;
 	padding-left: 0;
 }
 
-.section-primary .documents li {
+.section-primary .uploaded-document-files li {
 	margin-right: 22px;
 	border: none;
 	margin-bottom: 0;
 	padding-top: 1px;
 }
 
-.documents li div {
+.uploaded-document-files li div {
 	display: flex;
 	flex-direction: column;
 }
 
-.documents li div a {
+.uploaded-document-files li div a {
 	border: 1px solid var(--light-inner-border);
 	border-radius: 5px;
 	padding: 8px;
 	text-align: center;
 }
-.documents li div a:hover,
-.documents li div a:focus,
-.documents li div a:active {
+.uploaded-document-files li div a:hover,
+.uploaded-document-files li div a:focus,
+.uploaded-document-files li div a:active {
 	box-shadow: 0 1px 6px var(--light-inner-border);
 }
 
-.documents li div a img {
+.uploaded-document-files li div a img {
 	max-height: 88px;
 	width: auto;
 	margin: 0;
 }
 
-.documents li div div {
+.uploaded-document-files li div div {
 	flex-direction: row;
 	justify-content: space-around;
 	margin-top: 18px;
 	margin-bottom: 0;
 }
 
-.documents li div div .doc-action {
+.uploaded-document-files li div div .doc-action {
 	border-radius: 3px;
 	background-color: var(--normal-background);
 	color: white;
@@ -84,9 +84,9 @@
 	margin-right: 3px;
 	text-align: center;
 }
-.documents li div div .doc-action:hover,
-.documents li div div .doc-action:focus,
-.documents li div div .doc-action:active {
+.uploaded-document-files li div div .doc-action:hover,
+.uploaded-document-files li div div .doc-action:focus,
+.uploaded-document-files li div div .doc-action:active {
 	background-color: var(--normal-dark-background);
 	box-shadow: none;
 }
@@ -97,14 +97,14 @@
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.documents {
+	.uploaded-document-files {
 		flex-wrap: wrap;
 		justify-content: space-around;
 	}
 	.doc-upload-button {
 		width: 100%;
 	}
-	.section-primary .documents li {
+	.section-primary .uploaded-document-files li {
 		margin-bottom: 22px;
 	}
 }
