@@ -62,18 +62,16 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 								return ((size / 1000000).toFixed(2) + ' Mo');
 							})
 							),
-						el('a',
+						el('span',
 							{ class: 'doc-action', onclick: remove },
-							el('i',
-								{ class: 'fa fa-download' },
-								"d"
+							el('span',
+								{ class: 'fa fa-download' }, "download"
 								)
 							),
 						el('a',
 							{ href: file._url, target: '_blank', class: 'doc-action' },
-							el('i',
-								{ class: 'fa fa-trash-o' },
-								"d"
+							el('span',
+								{ class: 'fa fa-trash-o' }, "delete"
 								)
 							)
 						)
