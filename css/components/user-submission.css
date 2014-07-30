@@ -8,7 +8,6 @@
 	font-size: 18px;
 	font-weight: normal;
 	line-height: 22px;
-	margin-bottom: 0;
 	padding: 10px 16px;
 	text-align: center;
 	text-decoration: none;
@@ -21,4 +20,14 @@
 .application-preview:focus,
 .application-preview:active {
 	background-color: var(--normal-dark-background);
+}
+
+.form-complition-link {
+	color: var(--normal-dark-background);
+	cursor: pointer;
+}
+.form-complition-link:hover,
+.form-complition-link:focus,
+.form-complition-link:active {
+	text-decoration: underline;
 }

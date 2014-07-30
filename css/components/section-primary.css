@@ -11,3 +11,11 @@
 	padding: 21px 15px 0 15px;
 	margin-bottom: -1px;
 }
+
+.section-primary .section-primary-warning {
+	background-color: #ffffff;
+	border: none;
+	border-left: 3px solid var(--dark-background);
+	padding: 22px 15px;
+	border-radius: 0;
+}
