@@ -96,4 +96,63 @@ exports['sub-main'] = function () {
 			)
 		)
 	);
+	section(
+		{ 'class': 'section-primary' },
+		div(
+			h3("Documents uploaded with the application"),
+			ol({ 'class': 'documents' },
+				li(
+					a({ 'href': '' }, "Memorandum and articles of association")
+				),
+				li(
+					a({ 'href': '' }, "Proof of identity for director 1")
+				),
+				li(
+					a({ 'href': '' }, "Proof of identity for director 2")
+				),
+				li(
+					a({ 'href': '' }, "Registered title deed")
+				)
+				),
+			h3("Complete content of the company file"),
+			ol({ 'class': 'thumb-docs' },
+				li(
+					a({ 'href': '' },
+						img({ 'src': '/img/doc-image-thumb.png' })
+						)
+				),
+				li(
+					a({ 'href': '' },
+						img({ 'src': '/img/doc-image-thumb.png' })
+						)
+				),
+				li(
+					a({ 'href': '' },
+						img({ 'src': '/img/doc-image-thumb.png' })
+						)
+				),
+				li(
+					a({ 'href': '' },
+						img({ 'src': '/img/doc-image-thumb.png' })
+						)
+				)
+				)
+		)
+	);
+	section(
+		{ 'class': 'section-primary revision-content' },
+		div({ 'class': 'revision-document' },
+			h3("Memorandum and articles of association"),
+			ol({ 'class': 'image-docs' },
+				li(
+					a({ 'href': '' },
+						img({ 'src': '/img/doc-image.png' })
+						)
+				)
+				)
+			),
+		div({ 'class': 'revision-user' },
+			h3("Application form")
+			)
+	);
 };
