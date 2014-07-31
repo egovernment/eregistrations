@@ -1,0 +1,19 @@
+.section-warning {
+	margin: 22px auto 0;
+	max-width: var(--desktop-width);
+	padding: 0 10px;
+}
+
+.section-warning ul {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+.section-warning li {
+	background-color: #ffffff;
+	border: none;
+	border-left: 3px solid var(--dark-background);
+	padding: 22px 15px;
+	border-radius: 0;
+	margin-bottom: 22px;
+}

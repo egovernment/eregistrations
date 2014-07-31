@@ -16,6 +16,7 @@
 ../../css/components/user-uploaded-files.css
 ../../css/components/user-next-step-button.css
 ../../css/components/section-primary.css
+../../css/components/section-warning.css
 ../../css/components/entity-properties.css
 ../../css/components/entities-overview-table.css
 ../../css/components/fieldset.css
