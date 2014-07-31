@@ -17,11 +17,11 @@
 	margin-bottom: 0;
 }
 
-.section-primary ul li {
+.section-primary li {
 	margin-bottom: 22px;
 }
 
-.section-primary ul li:last-child {
+.section-primary li:last-child {
 	margin-bottom: 0;
 }
 
@@ -47,9 +47,10 @@
 	white-space: nowrap;
 	width: auto;
 	padding: 11px;
+	cursor: pointer;
 }
-.section-primary .section-primary-warning a :hover,
-.section-primary .section-primary-warning a :focus,
-.section-primary .section-primary-warning a :active {
+.section-primary .section-primary-warning a:hover,
+.section-primary .section-primary-warning a:focus,
+.section-primary .section-primary-warning a:active {
 	background-color: var(--normal-dark-background);
 }
