@@ -100,7 +100,7 @@ exports['sub-main'] = function () {
 		{ 'class': 'section-primary' },
 		div(
 			h3("Documents uploaded with the application"),
-			ol({ 'class': 'documents' },
+			ol({ 'class': 'list-docs' },
 				li(
 					a({ 'href': '' }, "Memorandum and articles of association")
 				),
