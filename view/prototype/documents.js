@@ -5,7 +5,7 @@ var db = require('mano').db,
 	renderFile;
 
 renderFile = function (options) {
-	return div(div(this.valueDOM = ul({ class: 'uploaded-document-files' })),
+	return div(div(this.valueDOM = ul({ class: 'user-uploaded-files' })),
 			a({ class: 'user-uploaded-files-upload-button' }, label("+ Choose file",
 				this.control = input({ type: 'file' })))
 			);

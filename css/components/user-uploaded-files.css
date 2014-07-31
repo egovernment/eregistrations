@@ -32,50 +32,50 @@
 	cursor: pointer;
 }
 
-.uploaded-document-files {
+.user-uploaded-files {
 	list-style-type: none;
 	display: flex;
 	padding-left: 0;
 }
 
-.section-primary .uploaded-document-files li {
+.section-primary .user-uploaded-files li {
 	margin-right: 22px;
 	border: none;
 	margin-bottom: 0;
 	padding-top: 1px;
 }
 
-.uploaded-document-files li div {
+.user-uploaded-files li div {
 	display: flex;
 	flex-direction: column;
 }
 
-.uploaded-document-files li div a {
+.user-uploaded-files li div a {
 	border: 1px solid var(--light-inner-border);
 	border-radius: 5px;
 	padding: 8px;
 	text-align: center;
 }
-.uploaded-document-files li div a:hover,
-.uploaded-document-files li div a:focus,
-.uploaded-document-files li div a:active {
+.user-uploaded-files li div a:hover,
+.user-uploaded-files li div a:focus,
+.user-uploaded-files li div a:active {
 	box-shadow: 0 1px 6px var(--light-inner-border);
 }
 
-.uploaded-document-files li div a img {
+.user-uploaded-files li div a img {
 	max-height: 88px;
 	width: auto;
 	margin: 0;
 }
 
-.uploaded-document-files li div div {
+.user-uploaded-files li div div {
 	flex-direction: row;
 	justify-content: space-around;
 	margin-top: 18px;
 	margin-bottom: 0;
 }
 
-.uploaded-document-files li div div .doc-action {
+.user-uploaded-files li div div .doc-action {
 	border-radius: 3px;
 	background-color: var(--normal-background);
 	color: white;
@@ -84,9 +84,9 @@
 	margin-right: 3px;
 	text-align: center;
 }
-.uploaded-document-files li div div .doc-action:hover,
-.uploaded-document-files li div div .doc-action:focus,
-.uploaded-document-files li div div .doc-action:active {
+.user-uploaded-files li div div .doc-action:hover,
+.user-uploaded-files li div div .doc-action:focus,
+.user-uploaded-files li div div .doc-action:active {
 	background-color: var(--normal-dark-background);
 	box-shadow: none;
 }
@@ -97,14 +97,14 @@
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.uploaded-document-files {
+	.user-uploaded-files {
 		flex-wrap: wrap;
 		justify-content: space-around;
 	}
 	.user-uploaded-files-upload-button {
 		width: 100%;
 	}
-	.section-primary .uploaded-document-files li {
+	.section-primary .user-uploaded-files li {
 		margin-bottom: 22px;
 	}
 }
