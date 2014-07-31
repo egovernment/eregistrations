@@ -114,6 +114,7 @@ Styles applied while screen sieze is less than 640px
 @media only screen and (max-width: var(--mobile-width)) {
 	div.steps-menu {
 		min-width: var(--min-mobile-width);
+		padding-bottom: 11px;
 	}
 
 	div.steps-menu nav.steps {
