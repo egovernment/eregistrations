@@ -21,7 +21,7 @@ exports.main = function () {
 					div({ 'style': 'width: 50%' })
 				),
 				menuitem(
-					a({ 'class': 'step-unactive', 'href': '#' },
+					a({ 'class': 'step-unactive', 'href': '/documents/' },
 						"3. Upload docs"
 						),
 					div()

@@ -1,3 +1,8 @@
+/*!
+Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome
+License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+*/
+
 @font-face {
 	font-family: 'FontAwesome';
 	src: url('/fonts/font-awesome-webfont.eot');
@@ -36,3 +41,16 @@ e.g.:
 	content: "\f1b9";
 }
 */
+.fa-download {
+	width: 0.94em;
+}
+.fa-download:before {
+	content: "\f019";
+}
+
+.fa-trash-o {
+	width: 0.79em;
+}
+.fa-trash-o:before {
+	content: "\f014";
+}
