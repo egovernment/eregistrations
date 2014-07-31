@@ -12,6 +12,7 @@ require('mano/lib/client')({
 		require('dbjs-dom/ext/domjs/table-cell-render');
 
 		require('dbjs-dom/input/date-time/date')(db);
+		require('dbjs-dom/input/object/file')(db);
 		require('dbjs-dom/input/string/string-line')(db);
 		require('dbjs-dom/input/string/string-line/email')(db);
 		require('dbjs-dom/input/string/string-line/password')(db);
@@ -19,6 +20,7 @@ require('mano/lib/client')({
 		require('dbjs-dom/input/utils/fieldset')(db);
 		require('dbjs-dom-bootstrap/number/currency')(db);
 		require('dbjs-dom-bootstrap/number/square-meters')(db);
+		require('eregistrations/view/dbjs/submission-file');
 		require('../../view/dbjs/business-activity');
 
 		domEnum(db.CompanyType);

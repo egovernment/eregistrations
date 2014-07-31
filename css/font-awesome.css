@@ -1,13 +1,12 @@
 /*!
- *  Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome
- *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
- */
-/* FONT PATH
- * -------------------------- */
+Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome
+License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+*/
+
 @font-face {
 	font-family: 'FontAwesome';
 	src: url('/fonts/font-awesome-webfont.eot');
-	src: url('/fonts/font-awesome-webfont.eot') format('embedded-opentype'),
+	src: url('/fonts/font-awesome-webfont.eot?#iefix') format('embedded-opentype'),
 	url('/fonts/font-awesome-webfont.woff') format('woff'),
 	url('/fonts/font-awesome-webfont.ttf') format('truetype'),
 	url('/fonts/font-awesome-webfont.svg') format('svg');
@@ -42,3 +41,16 @@ e.g.:
 	content: "\f1b9";
 }
 */
+.fa-download {
+	width: 0.94em;
+}
+.fa-download:before {
+	content: "\f019";
+}
+
+.fa-trash-o {
+	width: 0.79em;
+}
+.fa-trash-o:before {
+	content: "\f014";
+}
