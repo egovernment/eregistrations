@@ -1,0 +1,34 @@
+.nav-burger-button {
+	width: 100%;
+	margin: auto;
+	text-align: center;
+	background-color: #fff;
+	padding: 11px 22px;
+	border-radius: 6px;
+	cursor: pointer;
+	vertical-align: middle;
+	display: none;
+}
+
+.nav-burger-button:hover,
+.nav-burger-button:focus,
+.nav-burger-button:active {
+	color: #fff;
+	background-color: var(--normal-dark-background);
+}
+
+.nav-burger-container input[type=checkbox] {
+	display: none;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+
+	input[type=checkbox]:checked ~ .nav-burger {
+		display: flex;
+	}
+
+	.nav-burger-button {
+		display: block;
+	}
+
+}

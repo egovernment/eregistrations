@@ -1,6 +1,19 @@
 .sub-public-sub-menu-container {
 	background-color: #fff;
 	min-height: 66px;
+	padding: 11px;
+}
+
+.sub-public-sub-menu-container .nav-burger-button {
+	color: #fff;
+	background-color: var(--normal-dark-background);
+}
+
+.sub-public-sub-menu-container .nav-burger-button:hover,
+.sub-public-sub-menu-container .nav-burger-button:focus,
+.sub-public-sub-menu-container .nav-burger-button:active {
+	color: var(--normal-dark-background);
+	background-color: var(--light-background);
 }
 
 .sub-public-sub-menu {
@@ -26,10 +39,9 @@
 	font-size: 14px;
 }
 
-.sub-public-sub-menu menuitem a img {
-	margin: 0 auto 11px auto;
-	width: auto;
-	height: 22px;
+.sub-public-sub-menu menuitem a .fa {
+	font-size: 22px;
+	margin: 0 auto 4px auto;
 	display: block;
 }
 
@@ -47,7 +59,7 @@
 
 .separator {
 	padding: 22px;
-	color: var(--dark-background);
+	color: var(--normal-dark-background);
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
@@ -55,13 +67,12 @@
 		flex-wrap: wrap;
 		min-width: var(--min-mobile-width);
 		justify-content: space-around;
-	}
-
-	.sub-public-sub-menu item {
-		margin-right: 11px;
-	}
-
-	.sub-public-sub-menu item a img {
+		flex-direction: column;
 		display: none;
 	}
+
+	.separator {
+		display: none;
+	}
+
 }

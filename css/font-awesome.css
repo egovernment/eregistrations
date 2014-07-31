@@ -42,3 +42,35 @@ e.g.:
 	content: "\f1b9";
 }
 */
+
+.fa-laptop {
+	width: 1.2em;
+}
+
+.fa-laptop:before {
+	content: "\f109";
+}
+
+.fa-clipboard {
+	width: 1.2em;
+}
+
+.fa-clipboard:before {
+	content: "\f0ea";
+}
+
+.fa-download {
+	width: 1.2em;
+}
+
+.fa-download:before {
+	content: "\f019";
+}
+
+.fa-envelope {
+	width: 1.2em;
+}
+
+.fa-envelope:before {
+	content: "\f003";
+}

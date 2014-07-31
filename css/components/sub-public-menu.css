@@ -1,6 +1,7 @@
 .sub-public-menu-container {
 	background-color: var(--dark-background);
 	min-height: 66px;
+	padding: 11px 10px;
 }
 
 .sub-public-menu {
@@ -39,14 +40,24 @@
 	height: auto;
 }
 
+@media only screen and (max-width: 1024px) {
+	.sub-public-menu menuitem a {
+		font-size: 14px;
+		padding:11px 5px;
+	}
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 	.sub-public-menu {
 		flex-wrap: wrap;
 		min-width: var(--min-mobile-width);
 		justify-content: space-around;
+		flex-direction: column;
+		display: none;
 	}
 
 	.sub-public-menu menuitem a {
 		font-size: 14px;
 	}
+
 }

@@ -10,6 +10,11 @@ Component describing vertical-tabs elements styles - reusable
 	padding: 22px 10px;
 }
 
+.tabbed-content > .nav-burger-button {
+	border-bottom: 1px solid var(--light-background);
+	border-radius: var(--top-rounded-border);
+}
+
 .sided-menu {
 	flex: 1;
 	display: flex;
@@ -32,7 +37,7 @@ Component describing vertical-tabs elements styles - reusable
 	font-size: 18px;
 	text-decoration: none;
 }
-article
+
 .sided-menu menuitem a:hover,
 .sided-menu menuitem a:focus,
 .sided-menu menuitem .active {
@@ -48,4 +53,32 @@ article
 	background-color: #fff;
 	padding: 22px;
 	border-radius: var(--right-rounded-border);
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+
+	.tabbed-content {
+		flex-direction: column;
+	}
+
+	.sided-menu {
+		flex-wrap: wrap;
+		min-width: var(--min-mobile-width);
+		justify-content: space-around;
+		flex-direction: column;
+		display: none;
+	}
+
+	.sided-menu menuitem a,
+	.sided-menu menuitem a:hover,
+	.sided-menu menuitem a:focus,
+	.sided-menu menuitem .active {
+		font-size: 14px;
+		text-align: center;
+		border-radius: var(--normal-rounded-border);
+	}
+
+	.sided-content {
+		border-radius: var(--bottom-rounded-border);
+	}
 }
