@@ -29,6 +29,22 @@
 	content: "Add icon style in CSS";
 }
 
+.fa-print {
+	width: 1em;
+}
+
+.fa-print:before {
+	content: "\f02f";
+}
+
+.fa-download {
+	width: 1em;
+}
+
+.fa-download:before {
+	content: "\f019";
+}
+
 /*
 
 Add missing icons manually

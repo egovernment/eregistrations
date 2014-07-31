@@ -51,7 +51,8 @@ exports['sub-main'] = function () {
 						span({ 'class': 'mobile-table-view' },
 							""),
 						span({ 'class': 'mobile-table-view-2' },
-							"D")
+							a({ 'class': 'fa fa-download' }, "Print")
+							)
 						)
 				)
 			)
@@ -61,6 +62,7 @@ exports['sub-main'] = function () {
 		{ 'class': 'section-primary' },
 		div(
 			h2("History of your request"),
+			a({ 'class': 'fa fa-print' }, "Print"),
 			table(
 				{ 'class': 'table-history' },
 				tbody(
@@ -118,17 +120,17 @@ exports['sub-main'] = function () {
 			ol({ 'class': 'thumb-docs' },
 				li(
 					a({ 'href': '' },
-						img({ 'src': '/img/doc-image-thumb.png' })
+						img({ 'src': '/uploads/docASubFile1.thumb.idoc.jpg' })
 						)
 				),
 				li(
 					a({ 'href': '' },
-						img({ 'src': '/img/doc-image-thumb.png' })
+						img({ 'src': '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 						)
 				),
 				li(
 					a({ 'href': '' },
-						img({ 'src': '/img/doc-image-thumb.png' })
+						img({ 'src': '/uploads/docBSubFile1.thumb.idoc.jpg' })
 						)
 				),
 				li(
@@ -142,17 +144,105 @@ exports['sub-main'] = function () {
 	section(
 		{ 'class': 'section-primary revision-content' },
 		div({ 'class': 'revision-document' },
-			h3("Memorandum and articles of association"),
-			ol({ 'class': 'image-docs' },
+			h3(
+				i({ 'class': 'document-number' },
+						("1")),
+				"Memorandum and articles of association"
+			),
+			ul({ 'class': 'image-docs' },
 				li(
 					a({ 'href': '' },
-						img({ 'src': '/img/doc-image.png' })
+						img({ 'src': '/uploads/docASubFile2.idoc.png.jpg' })
 						)
 				)
 				)
 			),
 		div({ 'class': 'revision-user' },
-			h3("Application form")
+			h3("Application form"),
+			a({ 'class': 'fa fa-print' }, "Print"),
+			h4("Proposed company name"),
+			table(
+				{ 'class': 'table-revision' },
+				tbody(
+					tr(
+						td({ 'class': '' }, "Blink IT Solutions")
+					)
+				)
+			),
+			h4("Business activity"),
+			table(
+				{ 'class': 'table-revision' },
+				tbody(
+					tr(
+						th({ 'class': '' }, "Activity"),
+						td({ 'class': '' }, "Air chater agent")
+					),
+					tr(
+						th({ 'class': '' }, "Activity starting date"),
+						td({ 'class': '' }, "7/30/2014")
+					),
+					tr(
+						th({ 'class': '' }, "Date of account year end"),
+						td({ 'class': '' }, "12/31/2014")
+					),
+					tr(
+						th({ 'class': '' }, "Does the company have branches?"),
+						td({ 'class': '' }, "Yes")
+					)
+				)
+			),
+			h4("Company secretary"),
+			table(
+				{ 'class': 'table-revision' },
+				tbody(
+					tr(
+						th({ 'class': '' }, "Title"),
+						td({ 'class': '' }, "Mr")
+					),
+					tr(
+						th({ 'class': '' }, "First Name"),
+						td({ 'class': '' }, "Andrei")
+					),
+					tr(
+						th({ 'class': '' }, "Middle Name"),
+						td({ 'class': '' }, "Mihai")
+					),
+					tr(
+						th({ 'class': '' }, "Surname"),
+						td({ 'class': '' }, "Balan")
+					)
+				)
+			),
+			h5("Residential address"),
+			table(
+				{ 'class': 'table-revision' },
+				tbody(
+					tr(
+						th({ 'class': '' }, "Plot"),
+						td({ 'class': '' }, "1")
+					),
+					tr(
+						th({ 'class': '' }, "Block"),
+						td({ 'class': '' }, "1")
+					),
+					tr(
+						th({ 'class': '' }, "Street or location"),
+						td({ 'class': '' }, "Nicolae Filipescu")
+					),
+					tr(
+						th({ 'class': '' }, "City, district or town"),
+						td({ 'class': '' }, "Bucharest")
+					),
+					tr(
+						th({ 'class': '' }, "P.O. box"),
+						td({ 'class': '' }, "1")
+					),
+					tr(
+						th({ 'class': '' }, "Country"),
+						td({ 'class': '' }, "Romania")
+					)
+				)
+			)
 			)
 	);
 };
