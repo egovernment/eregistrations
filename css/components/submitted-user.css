@@ -192,9 +192,9 @@
 .revision-user h4 {
 	margin-bottom: 5px;
 	color: #ffffff;
-	margin-top: 20px;
+	margin: 0;
 	background-color: var(--normal-background);
-	padding: 8px 0 8px 8px;
+	padding: 11px 0 11px 8px;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
