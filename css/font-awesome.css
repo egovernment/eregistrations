@@ -54,3 +54,10 @@ e.g.:
 .fa-trash-o:before {
 	content: "\f014";
 }
+
+.fa-check {
+	width: 0.99em;
+}
+.fa-check:before {
+	content: "\f00c"
+}

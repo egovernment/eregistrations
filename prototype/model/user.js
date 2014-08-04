@@ -73,7 +73,8 @@ user.defineProperties({
 	userEmail: { type: Email, label: "Email" },
 
 	registerIds: { type: StringLine, multiple: true, label: "Padrón", pattern: /^\d{8}$/,
-		inputMask: '88888888' }
+		inputMask: '88888888' },
+	isAffidavitSigned: { type: db.Boolean }
 });
 
 module.exports = User;

@@ -1,5 +1,8 @@
 'use strict';
 
+var db = require('mano').db,
+	user = db.User.prototype;
+
 exports.step = function () {
 	section({ 'class': 'section-primary' },
 		div(h3("Where do you want to withdraw your documents?"),
@@ -54,18 +57,31 @@ exports.step = function () {
 		)
 	);
 
-	/*
-	section({ 'class': 'section-primary' },
-			p({ 'class': 'section-primary-warning' },
-					a({ 'class': 'form-complition-link' },
-						"Some documents have not been uploaded")
+	section(
+		{ 'class': 'section-primary' },
+		form(
+			fieldset(
+				{ 'class': 'sworn-declaration' },
+				h3("Sworn declaration"),
+				hr(),
+				field(
+					{ dbjs: user._isAffidavitSigned,
+						type: 'checkbox',
+						label: " I declare I have read and understood all the conditions I have to " +
+						"comply with and swear that the information provided in this application is true.",
+						render: function (input, options) {
+							return label(input, " ", options.label,
+									span({ class: 'required-status' }, ''),
+									span({ class: 'validation-status fa fa-check' }, 'Check')
+									);
+						}
+						}
 				)
-		);
+			)
+		)
+	);
 
-	section({ 'class': 'section-primary' },
-			p({ 'class': 'section-primary-warning' },
-					a({ 'class': 'form-complition-link' },
-						"Payment has not been cleared")
-				)
-		);*/
+	div({ 'class': 'submit-user-button' },
+		a({ 'href': ' ' }, "Send Your files")
+		);
 };
