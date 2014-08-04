@@ -1,0 +1,17 @@
+.page-elements-disabler {
+	position: relative;
+}
+.disabler {
+	display: none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 100%;
+	background-color: #fff;
+	opacity: 0.7;
+	cursor: not-allowed;
+}
+.disabler.disable {
+	display: block;
+}
