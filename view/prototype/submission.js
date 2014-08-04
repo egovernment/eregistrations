@@ -61,7 +61,7 @@ exports.step = function () {
 		{ 'class': 'section-primary' },
 		form(
 			fieldset(
-				{ 'class': 'sworn-declaration' },
+				{ 'class': 'user-submission-sworn-declaration' },
 				h3("Sworn declaration"),
 				hr(),
 				field(
