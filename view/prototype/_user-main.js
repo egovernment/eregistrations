@@ -1,39 +1,39 @@
 'use strict';
 
 exports.main = function () {
-	div({ 'class': 'steps-menu' },
-		div({ 'class': 'all-menu-items' },
-			label({ 'class': 'step-active show-steps-btn', 'for': 'show-steps-control' },
+	div({ class: 'steps-menu' },
+		div({ class: 'all-menu-items' },
+			label({ class: 'step-active show-steps-btn', for: 'show-steps-control' },
 				'Steps'
 				),
-			input({ 'id': 'show-steps-control', 'type': 'checkbox', 'role': 'button' }
+			input({ id: 'show-steps-control', type: 'checkbox', role: 'button' }
 				),
-			nav({ 'class': 'steps' },
+			nav({ class: 'steps' },
 				menuitem(
-					a({ 'class': 'step-active', 'href': /guide/ },
+					a({ class: 'step-active', href: '/guide/' },
 						"1. Guide"),
 					div({ 'style': 'width: 100%' })
 				),
 				menuitem(
-					a({ 'class': 'step-unactive', 'href': /forms/ },
+					a({ class: 'step-unactive', href: '/forms/' },
 						"2. Fill the form"
 						),
-					div({ 'style': 'width: 50%' })
+					div({ style: 'width: 50%' })
 				),
 				menuitem(
-					a({ 'class': 'step-unactive', 'href': /documents/ },
+					a({ class: 'step-unactive', href: '/documents/' },
 						"3. Upload docs"
 						),
 					div()
 				),
 				menuitem(
-					a({ 'class': 'step-unactive' },
+					a({ class: 'step-unactive' },
 						"4. Pay"
 						),
 					div()
 				),
 				menuitem(
-					a({ 'class': 'step-unactive', 'href': /submission/ },
+					a({ class: 'step-unactive', href: '/submission/' },
 						"5. Send file"
 						),
 					div()
@@ -41,5 +41,5 @@ exports.main = function () {
 				)
 			)
 		);
-	div({ 'id': 'step' });
+	div({ id: 'step' });
 };
