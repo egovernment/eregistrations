@@ -20,3 +20,6 @@
 ../../css/components/fieldset.css
 ../../css/components/submitted-user.css
 ../../css/components/submitted-user-menu.css
+../../css/components/user-submitted-uploaded-documents.css
+../../css/components/user-submitted-history.css
+../../css/components/user-submitted-document-date-preview.css
