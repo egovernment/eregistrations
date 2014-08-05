@@ -32,18 +32,13 @@ exports.step = function () {
 		{ 'class': 'section-warning' },
 		ul(
 			li(
-				a({ 'class': 'form-complition-link' },
+				a({ 'class': 'form-complition-link', href: '/forms/' },
 					"Some required fields in the tab Fill the form have not been completed"
 					)
 			),
 			li(
-				a({ 'class': 'form-complition-link' },
+				a({ 'class': 'form-complition-link', href: '/documents/' },
 					"Some documents have not been uploaded"
-					)
-			),
-			li(
-				a({ 'class': 'form-complition-link' },
-					"Payment has not been cleared"
 					)
 			)
 		)
