@@ -1,4 +1,4 @@
-.disabled-range {
+.disabler-range {
 	position: relative;
 }
 .disabler {
@@ -12,6 +12,6 @@
 	opacity: 0.7;
 	cursor: not-allowed;
 }
-.disabled-range.disable .disabler{
+.disabler-range.disabled .disabler {
 	display: block;
 }

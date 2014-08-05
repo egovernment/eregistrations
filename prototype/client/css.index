@@ -2,7 +2,7 @@
 ../../css/form.css
 ../../css/table.css
 ../../css/font-awesome.css
-../../css/components/page-disabler.css
+../../css/components/disabler.css
 ../../css/components/modal.css
 ../../css/components/modal-login.css
 ../../css/components/modal-register.css
