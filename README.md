@@ -95,9 +95,14 @@ It works by re-running lint command on each file save and showing output log in 
 
 The are two ways:
 
-##### Integrate as Google Closure linter (for v7+ versions of WebStorm)
+##### Integrate as Google Closure linter (for v7 versions of WebStorm)
 
 Go to _Preferences -> JavaScript -> Code Quality Tools -> Closure Linter_ enable it and choose `bin/lint-webstorm` (on Windows: `bin/lint-webstorm.cmd`) as _Closure Linter executable file_ and `bin/lint-webstorm.conf` as _Configuration file_
+
+
+##### Integrate as Google Closure linter (for v8+ versions of WebStorm)
+
+Go to _File -> Settings -> JavaScript -> Code Quality Tools -> Closure Linter_ enable it and choose `bin/lint-webstorm` (on Windows: `bin/lint-webstorm.cmd`) as _Closure Linter executable file_ and `bin/lint-webstorm.conf` as _Configuration file_
 
 ##### Integrate as external tool
 
