@@ -60,6 +60,6 @@ exports.step = function () {
 		)
 	);
 	div({ 'class': 'nav-back' },
-		a({ 'href': '/forms' }, "Back to forms")
+		a({ 'href': '/forms/' }, "Back to forms")
 		);
 };
