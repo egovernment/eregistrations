@@ -18,39 +18,39 @@ exports['sub-main'] = function () {
 			tbody(
 				tr(
 					td({ 'class': '' },
-						span({ 'class': 'mobile-table-view' },
+						span({ 'class': 'mobile-table-view-head' },
 							"Status"),
-						span({ 'class': 'mobile-table-view-2' },
+						span({ 'class': 'mobile-table-view-body' },
 							"Pending for revision")
 						),
 					td({ 'class': '' },
-						span({ 'class': 'mobile-table-view' },
+						span({ 'class': 'mobile-table-view-head' },
 							"Company"),
-						span({ 'class': 'mobile-table-view-2' },
+						span({ 'class': 'mobile-table-view-body' },
 							"abstudios")
 						),
 					td({ 'class': '' },
-						span({ 'class': 'mobile-table-view' },
+						span({ 'class': 'mobile-table-view-head' },
 							"Application number"),
-						span({ 'class': 'mobile-table-view-2' },
+						span({ 'class': 'mobile-table-view-body' },
 							"123")
 						),
 					td({ 'class': '' },
-						span({ 'class': 'mobile-table-view' },
+						span({ 'class': 'mobile-table-view-head' },
 							"Application date"),
-						span({ 'class': 'mobile-table-view-2' },
+						span({ 'class': 'mobile-table-view-body' },
 							"29/07/2014")
 						),
 					td({ 'class': '' },
-						span({ 'class': 'mobile-table-view' },
+						span({ 'class': 'mobile-table-view-head' },
 							"Requested registrations"),
-						span({ 'class': 'mobile-table-view-2' },
+						span({ 'class': 'mobile-table-view-body' },
 							"XXX YYY ZZZ EEE RRR TAG TAG TAG TAG")
 						),
 					td({ 'class': '' },
-						span({ 'class': 'mobile-table-view' },
+						span({ 'class': 'mobile-table-view-head' },
 							""),
-						span({ 'class': 'mobile-table-view-2' },
+						span({ 'class': 'mobile-table-view-body' },
 							a({ 'class': 'fa fa-download' }, "Print")
 							)
 						)
@@ -102,7 +102,7 @@ exports['sub-main'] = function () {
 		{ 'class': 'section-primary' },
 		div(
 			h3("Documents uploaded with the application"),
-			ol({ 'class': 'list-docs' },
+			ol({ 'class': 'submitted-list-documents' },
 				li(
 					a({ 'href': '' }, "Memorandum and articles of association")
 				),
@@ -117,7 +117,7 @@ exports['sub-main'] = function () {
 				)
 				),
 			h3("Complete content of the company file"),
-			ol({ 'class': 'thumb-docs' },
+			ol({ 'class': 'submitted-thumb-documents' },
 				li(
 					a({ 'href': '' },
 						img({ 'src': '/uploads/docASubFile1.thumb.idoc.jpg' })
@@ -149,7 +149,7 @@ exports['sub-main'] = function () {
 						("1")),
 				"Memorandum and articles of association"
 			),
-			ul({ 'class': 'image-docs' },
+			ul({ 'class': 'submitted-image-documents' },
 				li(
 					a({ 'href': '' },
 						img({ 'src': '/uploads/docASubFile2.idoc.png.jpg' })
