@@ -35,6 +35,6 @@ exports.step = function () {
 		);
 
 	div({ 'class': 'next-step' },
-			a({ 'href': '/forms' }, "Save")
+			a({ 'href': '/forms/' }, "Save")
 			);
 };
