@@ -74,7 +74,10 @@ user.defineProperties({
 
 	registerIds: { type: StringLine, multiple: true, label: "Padrón", pattern: /^\d{8}$/,
 		inputMask: '88888888' },
-	isAffidavitSigned: { type: db.Boolean }
+	isAffidavitSigned: { type: db.Boolean },
+	placeOfWithdraw: { type: StringLine, label: "Withdraw documents to" },
+	pickCertificates: { type: db.Boolean, trueLabel: "I will pick the certificates.",
+		falseLabel: "he following person will pick the certificates", label: "The following person:" }
 });
 
 module.exports = User;

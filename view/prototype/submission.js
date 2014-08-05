@@ -7,34 +7,26 @@ exports.step = function () {
 	section({ 'class': 'section-primary' },
 		div(h3("Where do you want to withdraw your documents?"),
 			hr(),
-			form(ul({ 'class': 'form-elements fieldset' },
-					li(label(span({ 'class': 'label' }, "Withdraw documents to:"
-								), select(option("LoremIpsum Investemet Center"))
-							)
-						)
+			form(ul({ class: 'form-elements fieldset' },
+					['placeOfWithdraw'],
+					function (name) { return field({ dbjs: user.getObservable(name) }); }
 					)
 				),
 			p({ 'class': 'submit-placeholder' }, input({ 'type': 'submit' }, "Save"))
 			)
 		);
 
-	section({ 'class': 'section-primary' },
+	section(
+		{ 'class': 'section-primary' },
 		div(h3("Who will pick the certificates?"),
 			hr(),
-			form(ul({ 'class': 'form-elements fieldset' },
-					li(label(span({ 'class': 'label' }, "The following person:"),
-							ul({ 'class': 'radio' },
-								li(label(input({ 'type': 'radio' }), "I will pick the certificates.")),
-								li(label(input({ 'type': 'radio' }),
-									"The following person will pick the certificates :"))
-								)
-							)
-						)
-					)
-				),
-			p({ 'class': 'submit-placeholder' }, input({ 'type': 'submit' }, "Save"))
+			form(ul({ 'class': 'form-elements fieldset' }, ['pickCertificates'],
+					function (name) { return field({ dbjs: user.getObservable(name) }); }
+					),
+				p({ 'class': 'submit-placeholder' }, input({ 'type': 'submit' }, "Save"))
+				)
 			)
-		);
+	);
 
 	section(
 		{ 'class': 'section-warning' },
