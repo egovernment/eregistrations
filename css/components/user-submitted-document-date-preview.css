@@ -9,10 +9,12 @@
 
 .revision-document {
 	width: 59%;
+	max-height: 927px;
 }
 
 .section-primary .revision-user {
 	width: 39%;
+	max-height: 927px;
 	overflow-y: scroll;
 	padding: 22px 15px 0 15px;
 }
