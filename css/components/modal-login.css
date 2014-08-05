@@ -13,7 +13,18 @@ Component describing styles for login modal windows - rules specific only for th
 }
 
 .modal-login section form {
-	height: 155px;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.modal-login input {
+	margin-top: 9px;
+}
+
+.modal-login input[type="submit"] {
+	margin-top: 6px;
+}
+
+.modal-login form p:last-child {
+	margin-bottom: 0;
 }

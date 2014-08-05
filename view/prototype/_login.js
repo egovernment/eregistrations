@@ -12,13 +12,15 @@ module.exports = modal(
 			h3("Login")
 		),
 		div(
-			form({ id: 'login-form', method: 'post', action: '/login/' },
+			form(
+				{ id: 'login-form', method: 'post', action: '/login/' },
 				p(input({ dbjs: db.Email, required: true, name: 'email',
 					placeholder: user.getDescriptor('email').label })),
 				p(input({ dbjs: db.Password,
 					required: true, name: 'password', placeholder: user.getDescriptor('password').label })),
 				p("Email or password is not recognized"),
-				p(input({ type: 'submit', value: "Sign In" })))
+				p(input({ type: 'submit', value: "Sign In" }))
+			)
 		),
 		footer(
 			p("No account?",
