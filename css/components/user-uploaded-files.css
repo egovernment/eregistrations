@@ -96,29 +96,6 @@
 	margin-right: 3px;
 }
 
-.section-warning .view-form-link {
-	background-color: var(--normal-background);
-	border-radius: 6px;
-	color: #ffffff;
-	display: inline-block;
-	font-size: 14px;
-	font-weight: normal;
-	line-height: 22px;
-	margin-bottom: 0;
-	text-align: center;
-	text-decoration: none;
-	vertical-align: middle;
-	white-space: nowrap;
-	width: auto;
-	padding: 11px;
-	cursor: pointer;
-}
-.section-warning .view-form-link:hover,
-.section-warning .view-form-link:focus,
-.section-warning .view-form-link:active {
-	background-color: var(--normal-dark-background);
-}
-
 @media only screen and (max-width: var(--mobile-width)) {
 	.user-uploaded-files {
 		flex-wrap: wrap;
