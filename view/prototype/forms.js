@@ -5,7 +5,7 @@ var db = require('mano').db,
 
 exports.step = function () {
 	div(
-		{ class: 'disabler-range', id: 'disabled-range-disabled' },
+		{ class: 'disabler-range', id: 'forms-disabler-range' },
 		section(
 			{ 'class': 'section-primary' },
 			form(h2("Section A"),

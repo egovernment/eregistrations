@@ -13,7 +13,7 @@ renderFile = function (options) {
 
 exports.step = function () {
 	div(
-		{ class: 'disabler-range', id: 'disabled-range-disabled' },
+		{ class: 'disabler-range', id: 'documents-disabler-range' },
 		section(
 			{ 'class': 'section-primary' },
 			h2("3 Upload Your Documents"),

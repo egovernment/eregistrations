@@ -1,3 +1,3 @@
 'use strict';
 
-exports['disabled-range-disabled'] = { class: { disabled: true } };
+exports['documents-disabler-range'] = { class: { disabled: true } };
