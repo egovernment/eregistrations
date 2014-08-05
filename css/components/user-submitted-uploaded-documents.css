@@ -1,11 +1,12 @@
 .submitted-list-documents {
 	counter-reset:li;
-	margin: 30px 0;
+	margin: 32px 0;
 }
 
 .submitted-list-documents > li {
 	position: relative;
-	margin-left: 14px;
+	margin-bottom: 0;
+	margin-left: 15px;
 	padding: 0 8px 11px 8px;
 	list-style: none;
 	font-size: 15px;
