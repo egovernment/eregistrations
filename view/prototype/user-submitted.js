@@ -62,7 +62,7 @@ exports['sub-main'] = function () {
 		{ 'class': 'section-primary' },
 		div(
 			h2("History of your request"),
-			a({ 'class': 'fa fa-print' }, "Print"),
+			a({ 'class': 'fa fa-print top-right' }, "Print"),
 			table(
 				{ 'class': 'table-history' },
 				tbody(
@@ -159,7 +159,7 @@ exports['sub-main'] = function () {
 			),
 		div({ 'class': 'revision-user' },
 			h3("Application form"),
-			a({ 'class': 'fa fa-print' }, "Print"),
+			a({ 'class': 'fa fa-print top-right' }, "Print"),
 			h4("Proposed company name"),
 			table(
 				{ 'class': 'table-revision' },

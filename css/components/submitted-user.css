@@ -1,33 +1,3 @@
-.submitted-menu {
-	background-color: var(--dark-background);
-	background-position: center center;
-	background-size: cover;
-	display: flex;
-	width: 100%;
-}
-
-.submitted-menu .items {
-	display: flex;
-	justify-content: flex-start;
-	margin: 0 auto;
-	padding: 0 10px;
-	width: var(--desktop-width);
-}
-
-.submitted-menu menuitem .item-active {
-	background: var(--normal-dark-background);
-}
-
-.submitted-menu a {
-	color: #ffffff;
-	font-size: 16px;
-	text-decoration: none;
-	padding: 0 17px;
-	height: 44px;
-	line-height: 44px;
-	display: block;
-}
-
 .section-submitted {
 	margin: 0 auto;
 	max-width: var(--desktop-width);
@@ -38,10 +8,10 @@
 	display: none;
 }
 
-.section-submitted thead {
+.table-submitted thead {
 	background-color: var(--normal-background);
 }
-.section-submitted thead th {
+.table-submitted thead th {
 	color: #fff;
 }
 
@@ -152,10 +122,11 @@
 	width: 59%;
 }
 
-.revision-user {
+.section-primary .revision-user {
 	width: 39%;
 	overflow-y: scroll;
 	max-height: 770px;
+	padding: 22px 15px 0 15px;
 }
 
 .image-docs {
