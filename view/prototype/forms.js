@@ -7,8 +7,8 @@ exports.step = function () {
 	div(
 		{ class: 'disabler-range', id: 'forms-disabler-range' },
 		section(
-			{ 'class': 'section-primary' },
-			form(h2("Section A"),
+			form({ 'class': 'section-primary' },
+				h2("Section A"),
 				fieldset(h3("Busieness Owner basic informations"),
 					hr(),
 					ul({ 'class': 'form-elements fieldset' },
