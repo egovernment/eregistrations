@@ -139,7 +139,7 @@ exports.step = function () {
 			)
 			),
 
-		div({ 'class': 'next-step'},
+		div({ 'class': 'next-step' },
 			a("Continue to next step")
 			),
 		div({ 'class': 'disabler' })
