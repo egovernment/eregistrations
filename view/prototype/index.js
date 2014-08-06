@@ -26,7 +26,7 @@ exports.main = function () {
 			h3('Create your file'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
-			a({ 'class': 'more-info' },
+			a({ 'class': 'more-info', href: '/guide/' },
 				'More info'
 				)
 			),
@@ -35,7 +35,7 @@ exports.main = function () {
 			h3('Pay costs'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
-			a({ 'class': 'more-info' },
+			a({ 'class': 'more-info', href: '/guide/' },
 				'More info'
 				)
 			),
@@ -44,7 +44,7 @@ exports.main = function () {
 			h3('Remove certificates'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
-			a({ 'class': 'more-info' },
+			a({ 'class': 'more-info', href: '/guide/' },
 				'More info'
 				))
 		);
