@@ -111,12 +111,7 @@ fieldset {
 	text-align: right;
 }
 
-.form-helper {
-	font-style: italic;
-	color: var(--light-text);
-}
-
-.form-error {
+.error-message {
 	color: var(--error-text);
 }
 /* Firefox styles only */
