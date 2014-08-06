@@ -2,44 +2,18 @@
 Component describing styles for registration modal windows - rules specific only for this modal
 */
 
-.modal-register {
-	max-width: 500px;
-}
-
-.modal-register header h3 {
-	color: white;
-	padding-left: 20px;
-	padding: 11px;
-}
-
 .modal-register section form fieldset {
 	border: none;
 	margin-left: auto;
 	margin-right: auto;
-	width: 70%;
 	padding-top: 0;
 	padding-bottom: 0;
 }
 
-.modal-register input {
-	margin-top: 0;
+.modal-register fieldset p:last-child {
 	margin-bottom: 0;
-}
-
-.modal-register p {
-	margin-bottom: 15px;
 }
 
 .modal-register .form-helper {
-	margin-bottom: 22px;
-}
-
-.modal-register input[type="submit"] {
-	margin-bottom: 0;
-	height: 44px;
-	font-size: 16px;
-}
-
-.modal-register fieldset p:last-child {
-	margin-bottom: 0;
+	max-width: 300px;
 }

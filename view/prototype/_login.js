@@ -18,7 +18,7 @@ module.exports = modal(
 					placeholder: user.getDescriptor('email').label })),
 				p(input({ dbjs: db.Password,
 					required: true, name: 'password', placeholder: user.getDescriptor('password').label })),
-				p("Email or password is not recognized"),
+				p({ class: 'form-helper' }, "Email or password is not recognized"),
 				p(input({ type: 'submit', value: "Sign In" }))
 			)
 		),
