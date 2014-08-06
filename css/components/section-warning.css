@@ -10,7 +10,7 @@
 }
 
 .section-warning li {
-	background-color: #ffffff;
+	background-color: var(--white-background);
 	border: none;
 	border-left: 3px solid var(--dark-background);
 	padding: 22px 15px;
@@ -20,7 +20,7 @@
 
 .section-warning li a {
 	text-decoration: none;
-	color: var(--dark-background);
+	color: var(--dark-text);
 }
 .section-warning li a:hover,
 .section-warning li a:focus,
