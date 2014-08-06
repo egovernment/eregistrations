@@ -27,7 +27,7 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	list-style: none;
 	margin-bottom: 10px;
 	margin-top: 12px;
-	padding-left: 0;
+	padding-left: 15px;
 	line-height: 22px;
 }
 
@@ -83,5 +83,8 @@ Styles applied while screen sieze is less than 640px
 	.header-top div, .header-top nav {
 		margin: 0 auto;
 		text-align: center;
+	}
+	.menu-top {
+		padding-left: 0;
 	}
 }
