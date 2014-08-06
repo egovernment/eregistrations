@@ -1,4 +1,4 @@
-.revision-content {
+.revision {
 	background-color: var(--light-background);
 	display: flex;
 	flex-wrap: wrap;
@@ -12,28 +12,23 @@
 	max-height: 927px;
 }
 
-.section-primary .revision-user {
+.revision-user {
 	width: 39%;
 	max-height: 927px;
 	overflow-y: scroll;
 	padding: 22px 15px 0 15px;
 }
 
-.submitted-image-documents {
-	list-style: none;
-	padding: 0;
-}
-
-.submitted-image-documents a {
+.revision-document-preview a {
 	border: 1px solid var(--light-inner-border);
 	display: block;
 }
 
-.submitted-image-documents img {
+.revision-document-preview img {
 	margin: 0;
 }
 
-.document-number {
+.list-item-number {
 	bottom: 4px;
 	left: 4px;
 	width: 20px;

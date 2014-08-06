@@ -2,7 +2,7 @@
 
 exports['sub-main'] = function () {
 	section(
-		{ 'class': 'section-submitted' },
+		{ 'class': 'submitted-main' },
 		table(
 			{ 'class': 'table-submitted' },
 			thead(
@@ -62,7 +62,7 @@ exports['sub-main'] = function () {
 		{ 'class': 'section-primary' },
 		div(
 			h2("History of your request"),
-			a({ 'class': 'fa fa-print top-right' }, "Print"),
+			a({ 'class': 'fa fa-print nav-alternatives' }, "Print"),
 			table(
 				{ 'class': 'table-history' },
 				tbody(
@@ -126,34 +126,27 @@ exports['sub-main'] = function () {
 					a({ 'href': '' },
 						img({ 'src': '/uploads/docBSubFile1.thumb.idoc.jpg' })
 						)
-				),
-				li(
-					a({ 'href': '' },
-						img({ 'src': '/img/doc-image-thumb.png' })
-						)
 				)
 				)
 		)
 	);
 	section(
-		{ 'class': 'section-primary revision-content' },
+		{ 'class': 'section-primary revision' },
 		div({ 'class': 'revision-document' },
 			h3(
-				i({ 'class': 'document-number' },
-						("1")),
+				i({ 'class': 'list-item-number' },
+						"1"),
 				"Memorandum and articles of association"
 			),
-			ul({ 'class': 'submitted-image-documents' },
-				li(
-					a({ 'href': '' },
-						img({ 'src': '/uploads/docASubFile2.idoc.png.jpg' })
-						)
-				)
+			div({ 'class': 'revision-document-preview' },
+				a({ 'href': '' },
+					img({ 'src': '/uploads/docASubFile2.idoc.png.jpg' })
+					)
 				)
 			),
 		div({ 'class': 'revision-user' },
 			h3("Application form"),
-			a({ 'class': 'fa fa-print top-right' }, "Print"),
+			a({ 'class': 'fa fa-print nav-alternatives' }, "Print"),
 			h4("Proposed company name"),
 			table(
 				{ 'class': 'table-revision' },

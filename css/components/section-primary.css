@@ -16,14 +16,7 @@
 	position: relative;
 }
 
-.section-primary thead {
-	background-color: var(--normal-background);
-}
-.section-primary thead th {
-	color: #fff;
-}
-
-.section-primary .fa-print.top-right {
+.section-primary .nav-alternatives {
 	position: absolute;
 	right: 25px;
 	top: 25px;

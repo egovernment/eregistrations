@@ -28,22 +28,6 @@ License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
 	content: "Add icon style in CSS";
 }
 
-.fa-print {
-	width: 1em;
-}
-
-.fa-print:before {
-	content: "\f02f";
-}
-
-.fa-download {
-	width: 1em;
-}
-
-.fa-download:before {
-	content: "\f019";
-}
-
 /*
 
 Add missing icons manually
@@ -57,11 +41,29 @@ e.g.:
 	content: "\f1b9";
 }
 */
+
+.fa-check {
+	width: 0.99em;
+}
+
+.fa-check:before {
+	content: "\f00c"
+}
+
 .fa-download {
 	width: 0.94em;
 }
+
 .fa-download:before {
 	content: "\f019";
+}
+
+.fa-print {
+	width: 1em;
+}
+
+.fa-print:before {
+	content: "\f02f";
 }
 
 .fa-trash-o {
@@ -69,11 +71,4 @@ e.g.:
 }
 .fa-trash-o:before {
 	content: "\f014";
-}
-
-.fa-check {
-	width: 0.99em;
-}
-.fa-check:before {
-	content: "\f00c"
 }
