@@ -4,15 +4,15 @@ exports['sub-main'] = function () {
 	section(
 		{ 'class': 'submitted-main' },
 		table(
-			{ 'class': 'table-submitted' },
+			{ 'class': 'user-submitted-data-table' },
 			thead(
 				tr(
-					th({ 'class': 'desktop-only' }, "Status"),
-					th({ 'class': 'desktop-only' }, "Company"),
-					th({ 'class': 'desktop-only' }, "Application number"),
-					th({ 'class': 'desktop-only' }, "Application date"),
-					th({ 'class': 'desktop-only' }, "Requested registrations"),
-					th({ 'class': 'desktop-only' }, "")
+					th("Status"),
+					th("Company"),
+					th("Application number"),
+					th("Application date"),
+					th("Requested registrations"),
+					th("")
 				)
 			),
 			tbody(
@@ -96,7 +96,7 @@ exports['sub-main'] = function () {
 		{ 'class': 'section-primary' },
 		div(
 			h3("Documents uploaded with the application"),
-			ol({ 'class': 'submitted-list-documents' },
+			ol({ 'class': 'submitted-documents-list' },
 				li(
 					a({ 'href': '' }, "Memorandum and articles of association")
 				),

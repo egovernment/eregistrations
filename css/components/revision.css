@@ -52,3 +52,18 @@
 	background-color: var(--normal-background);
 	padding: 11px 0 11px 8px;
 }
+
+@media only screen and (max-width: var(--mobile-width)) {
+
+	.revision .revision-document {
+		width: 100%;
+		padding-bottom: 22px;
+		}
+
+	.revision-user {
+		width: 100%;
+		max-height: 100%;
+		overflow: visible;
+		margin-top: 22px;
+		}
+}

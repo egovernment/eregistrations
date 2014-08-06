@@ -1,0 +1,54 @@
+.mobile-table-view-head {
+	display: none;
+}
+
+.user-submitted-data-table thead {
+	background-color: var(--normal-background);
+}
+.user-submitted-data-table thead th {
+	color: #fff;
+}
+
+.user-submitted-data-table tbody tr {
+	background-color: #ffffff;
+}
+
+.user-submitted-data-table th, .table-submitted td {
+	border: 1px solid var(--light-inner-border);
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+
+	.mobile-table-view-head {
+		display: flex;
+		width: 50%;
+		background-color: var(--normal-background);
+		padding: 6px;
+		color: #ffffff;
+	}
+	.mobile-table-view-body {
+		display: flex;
+		width: 50%;
+		padding: 6px;
+	}
+
+	.user-submitted-data-table tr {
+		border: 1px solid #ccc;
+		height: auto;
+		}
+
+	.user-submitted-data-table td {
+		border-bottom: 1px solid #ccc;
+		position: relative;
+		}
+
+	.user-submitted-data-table td {
+		display: flex;
+		justify-content: space-around;
+		padding: 0;
+		}
+
+	.user-submitted-data-table th {
+		display: none;
+	}
+}
