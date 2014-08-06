@@ -44,8 +44,14 @@ exports['sub-main'] = function () {
 					td(
 						span({ 'class': 'mobile-table-view-head' },
 							"Requested registrations"),
-						span({ 'class': 'mobile-table-view-body' },
-							"XXX YYY ZZZ EEE RRR TAG TAG TAG TAG")
+						div({ 'class': 'mobile-table-view-body' },
+							span({ class: 'label-reg' }, "Brela"),
+							span({ class: 'label-reg' }, "Tinc"),
+							span({ class: 'label-reg' }, "Vat"),
+							span({ class: 'label-reg' }, "Gepf"),
+							span({ class: 'label-reg' }, "Nssf"),
+							span({ class: 'label-reg' }, "Lapf")
+							)
 					),
 					td(
 						span({ 'class': 'mobile-table-view-head' },
