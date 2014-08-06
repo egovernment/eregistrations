@@ -49,7 +49,7 @@ Flexible basic menu - used on home page and can be reused elsewhere
 .menu-top menuitem a.login {
 	background-color: var(--normal-background);
 	border-radius: 3px;
-	color: var(--lighter-text);
+	color: var(--white-text);
 	cursor: pointer;
 	font-size: 12px;
 	margin: 0;

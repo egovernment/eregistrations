@@ -31,7 +31,7 @@ Class describing how boxes for informations insight banner are displayed
 	background-image: none;
 	border-radius: 6px;
 	border: 1px solid transparent;
-	color: var(--lighter-text);
+	color: var(--white-text);
 	cursor: pointer;
 	display: inline-block;
 	font-size: 18px;
@@ -54,7 +54,7 @@ Class describing how boxes for informations insight banner are displayed
 .public-steps div a.more-info {
 	background-color: var(--normal-background);
 	border-radius: 3px;
-	color: var(--lighter-text);
+	color: var(--white-text);
 	cursor: pointer;
 	font-size: 12px;
 	line-height: 18px;

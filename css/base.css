@@ -8,18 +8,18 @@ Component describing basic elements styles - reusable
 	--min-mobile-width: 320px;
 	--light-inner-border: #e3e3e3;
 	/* Theme colors virables */
-	--lighter-background: #ffffff;
+	--white-background: #ffffff;
 	--light-background: #f5f5f5;
 	--normal-background: #999;
 	--normal-dark-background: #666;
 	--dark-background: #333;
 	/* Text colors */
-	--lighter-text: #ffffff;
+	--white-text: #ffffff;
 	--light-text: #e3e3e3;
 	--normal-text: #666666;
 	--dark-text: #333333;
-	--valid-text: rgb(46,139,87);
-	--required-text: rgb(255,0,0);
+	--success-text: #2e8b57;
+	--error-text: #ff0000;
 }
 
 html {

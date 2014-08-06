@@ -10,7 +10,7 @@
 }
 
 .section-warning li {
-	background-color: var(--lighter-background);
+	background-color: var(--white-background);
 	border: none;
 	border-left: 3px solid var(--dark-background);
 	padding: 22px 15px;

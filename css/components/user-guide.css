@@ -27,7 +27,7 @@
 }
 
 .user-guide div {
-	background-color: var(--lighter-background);
+	background-color: var(--white-background);
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
 	margin-bottom: 20px;
@@ -43,7 +43,7 @@
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
-	color: var(--lighter-text);
+	color: var(--white-text);
 	cursor: pointer;
 	display: inline-block;
 	font-size: 18px;

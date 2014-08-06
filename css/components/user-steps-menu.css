@@ -38,7 +38,7 @@
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
-	color: var(--lighter-text);
+	color: var(--white-text);
 	cursor: pointer;
 	display: inline-block;
 	font-size: 18px;
@@ -58,7 +58,7 @@
 }
 
 .step-unactive {
-	background-color: var(--lighter-background);
+	background-color: var(--white-background);
 	background-image: none;
 	border-radius: 6px;
 	border: 1px solid transparent;
@@ -79,7 +79,7 @@
 .step-unactive:focus,
 .step-unactive:active {
 	background-color: var(--normal-background);
-	color: var(--lighter-text);
+	color: var(--white-text);
 }
 
 .steps-menu nav menuitem {
