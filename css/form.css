@@ -27,6 +27,10 @@ input, select {
 	height: 29px;
 }
 
+select {
+	color: var(--dark-font);
+}
+
 input[type="checkbox"], input[type="radio"] {
 	margin-right: 8px;
 }

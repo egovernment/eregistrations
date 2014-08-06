@@ -12,6 +12,7 @@ Component describing basic elements styles - reusable
 	--normal-background: #999;
 	--normal-dark-background: #666;
 	--dark-background: #333;
+	--dark-font: #333333;
 }
 
 html {
