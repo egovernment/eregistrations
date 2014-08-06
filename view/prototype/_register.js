@@ -17,7 +17,8 @@ module.exports = modal(
 					return p(input({ dbjs: rel, placeholder: rel.descriptor.label }),
 						span("Error message"));
 				}),
-					p("Your password must be at least 6 caracters and include at least one number."),
+					p({ class: 'form-helper' },
+						"Your password must be at least 6 caracters and include at least one number."),
 					p(input({ type: 'submit', value: "Create account" }))))
 		),
 		footer(

@@ -111,6 +111,10 @@ fieldset {
 	text-align: right;
 }
 
+.form-helper {
+	font-style: italic;
+	color: var(--normal-background);
+}
 /* Firefox styles only */
 
 @-moz-document url-prefix() {
