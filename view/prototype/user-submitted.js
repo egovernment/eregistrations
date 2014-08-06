@@ -17,43 +17,43 @@ exports['sub-main'] = function () {
 			),
 			tbody(
 				tr(
-					td({ 'class': '' },
+					td(
 						span({ 'class': 'mobile-table-view-head' },
 							"Status"),
 						span({ 'class': 'mobile-table-view-body' },
 							"Pending for revision")
-						),
-					td({ 'class': '' },
+					),
+					td(
 						span({ 'class': 'mobile-table-view-head' },
 							"Company"),
 						span({ 'class': 'mobile-table-view-body' },
 							"abstudios")
-						),
-					td({ 'class': '' },
+					),
+					td(
 						span({ 'class': 'mobile-table-view-head' },
 							"Application number"),
 						span({ 'class': 'mobile-table-view-body' },
 							"123")
-						),
-					td({ 'class': '' },
+					),
+					td(
 						span({ 'class': 'mobile-table-view-head' },
 							"Application date"),
 						span({ 'class': 'mobile-table-view-body' },
 							"29/07/2014")
-						),
-					td({ 'class': '' },
+					),
+					td(
 						span({ 'class': 'mobile-table-view-head' },
 							"Requested registrations"),
 						span({ 'class': 'mobile-table-view-body' },
 							"XXX YYY ZZZ EEE RRR TAG TAG TAG TAG")
-						),
-					td({ 'class': '' },
+					),
+					td(
 						span({ 'class': 'mobile-table-view-head' },
 							""),
 						span({ 'class': 'mobile-table-view-body' },
 							a({ 'class': 'fa fa-download' }, "Print")
 							)
-						)
+					)
 				)
 			)
 		)
@@ -67,32 +67,26 @@ exports['sub-main'] = function () {
 				{ 'class': 'table-history' },
 				tbody(
 					tr(
-						th({ 'class': '' },
-							span({ 'class': '' },
-								"User")
-							),
-						td({ 'class': '' },
-							span({ 'class': '' },
-								"abstudios")
-							),
-						td({ 'class': '' },
-							span({ 'class': '' },
-								"123")
-							)
+						th(
+							span("User")
+						),
+						td(
+							span("abstudios")
+						),
+						td(
+							span("123")
+						)
 					),
 					tr(
-						th({ 'class': '' },
-							span({ 'class': '' },
-								"File sent")
-							),
-						td({ 'class': '' },
-							span({ 'class': '' },
-								"abstudios")
-							),
-						td({ 'class': '' },
-							span({ 'class': '' },
-								"123")
-							)
+						th(
+							span("File sent")
+						),
+						td(
+							span("abstudios")
+						),
+						td(
+							span("123")
+						)
 					)
 				)
 			)
@@ -165,7 +159,7 @@ exports['sub-main'] = function () {
 				{ 'class': 'table-revision' },
 				tbody(
 					tr(
-						td({ 'class': '' }, "Blink IT Solutions")
+						td("Blink IT Solutions")
 					)
 				)
 			),
@@ -174,20 +168,20 @@ exports['sub-main'] = function () {
 				{ 'class': 'table-revision' },
 				tbody(
 					tr(
-						th({ 'class': '' }, "Activity"),
-						td({ 'class': '' }, "Air chater agent")
+						th("Activity"),
+						td("Air chater agent")
 					),
 					tr(
-						th({ 'class': '' }, "Activity starting date"),
-						td({ 'class': '' }, "7/30/2014")
+						th("Activity starting date"),
+						td("7/30/2014")
 					),
 					tr(
-						th({ 'class': '' }, "Date of account year end"),
-						td({ 'class': '' }, "12/31/2014")
+						th("Date of account year end"),
+						td("12/31/2014")
 					),
 					tr(
-						th({ 'class': '' }, "Does the company have branches?"),
-						td({ 'class': '' }, "Yes")
+						th("Does the company have branches?"),
+						td("Yes")
 					)
 				)
 			),
@@ -196,20 +190,20 @@ exports['sub-main'] = function () {
 				{ 'class': 'table-revision' },
 				tbody(
 					tr(
-						th({ 'class': '' }, "Title"),
-						td({ 'class': '' }, "Mr")
+						th("Title"),
+						td("Mr")
 					),
 					tr(
-						th({ 'class': '' }, "First Name"),
-						td({ 'class': '' }, "Andrei")
+						th("First Name"),
+						td("Andrei")
 					),
 					tr(
-						th({ 'class': '' }, "Middle Name"),
-						td({ 'class': '' }, "Mihai")
+						th("Middle Name"),
+						td("Mihai")
 					),
 					tr(
-						th({ 'class': '' }, "Surname"),
-						td({ 'class': '' }, "Balan")
+						th("Surname"),
+						td("Balan")
 					)
 				)
 			),
@@ -218,28 +212,28 @@ exports['sub-main'] = function () {
 				{ 'class': 'table-revision' },
 				tbody(
 					tr(
-						th({ 'class': '' }, "Plot"),
-						td({ 'class': '' }, "1")
+						th("Plot"),
+						td("1")
 					),
 					tr(
-						th({ 'class': '' }, "Block"),
-						td({ 'class': '' }, "1")
+						th("Block"),
+						td("1")
 					),
 					tr(
-						th({ 'class': '' }, "Street or location"),
-						td({ 'class': '' }, "Nicolae Filipescu")
+						th("Street or location"),
+						td("Nicolae Filipescu")
 					),
 					tr(
-						th({ 'class': '' }, "City, district or town"),
-						td({ 'class': '' }, "Bucharest")
+						th("City, district or town"),
+						td("Bucharest")
 					),
 					tr(
-						th({ 'class': '' }, "P.O. box"),
-						td({ 'class': '' }, "1")
+						th("P.O. box"),
+						td("1")
 					),
 					tr(
-						th({ 'class': '' }, "Country"),
-						td({ 'class': '' }, "Romania")
+						th("Country"),
+						td("Romania")
 					)
 				)
 			)
