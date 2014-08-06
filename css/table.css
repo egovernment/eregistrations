@@ -12,7 +12,7 @@ tbody tr:nth-of-type(odd) {
 	background-color: var(--light-background);
 }
 th {
-	color: var(--normal-dark-background);
+	color: var(--dark-text);
 }
 td, th {
 	padding: 6px;
@@ -21,7 +21,7 @@ td, th {
 
 td a {
 	text-decoration: none;
-	color: var(--normal-dark-background);
+	color: var(--dark-text);
 }
 
 @media only screen and (max-width: var(--mobile-width)) {

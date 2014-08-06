@@ -38,7 +38,7 @@
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
-	color: #ffffff;
+	color: var(--lighter-text);
 	cursor: pointer;
 	display: inline-block;
 	font-size: 18px;
@@ -58,12 +58,11 @@
 }
 
 .step-unactive {
-	background-color: #ffffff;
+	background-color: var(--lighter-background);
 	background-image: none;
-	border-color: #357ebd;
 	border-radius: 6px;
 	border: 1px solid transparent;
-	color: #333333;
+	color: var(--dark-text);
 	cursor: pointer;
 	display: inline-block;
 	font-size: 18px;
@@ -79,15 +78,16 @@
 .step-unactive:hover,
 .step-unactive:focus,
 .step-unactive:active {
-	background-color: #e6e6e6;
-	border-color: #adadad;
+	background-color: var(--normal-background);
+	color: var(--lighter-text);
 }
 
 .steps-menu nav menuitem {
-	background-color: #333;
+	background-color: var(--dark-background);
 	width: 100%;
 	margin: 0 2px;
 }
+
 .show-steps-btn {
 	display: none;
 	width: 100%;

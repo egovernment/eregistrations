@@ -8,7 +8,7 @@
 .section-primary > form,
 .section-primary > div,
 .section-primary > ul li {
-	background-color: #ffffff;
+	background-color: var(--lighter-background);
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
 	padding: 21px 15px 0 15px;

@@ -1,7 +1,7 @@
 .user-uploaded-files-upload-button {
 	background-color: var(--normal-background);
 	border-radius: 6px;
-	color: #ffffff;
+	color: var(--lighter-text);
 	display: inline-block;
 	font-size: 18px;
 	font-weight: normal;
@@ -78,7 +78,7 @@
 .user-uploaded-files li div div .doc-action {
 	border-radius: 3px;
 	background-color: var(--normal-background);
-	color: white;
+	color: var(--lighter-text);
 	padding: 2px 4px 0;
 	border: none;
 	margin-right: 3px;

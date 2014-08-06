@@ -16,7 +16,7 @@
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
-	color: #ffffff;
+	color: var(--lighter-text);
 	cursor: pointer;
 	font-size: 18px;
 	font-weight: normal;

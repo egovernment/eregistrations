@@ -7,7 +7,7 @@ Component describing styles for login modal windows - rules specific only for th
 }
 
 .modal-login header h3 {
-	color: white;
+	color: var(--lighter-text);
 	padding-left: 20px;
 	padding: 11px;
 }
