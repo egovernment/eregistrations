@@ -48,16 +48,16 @@ exports.step = function () {
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
 					ul({ class: 'guide-costs-list' },
-						li(span("Registration fee"),
-							span("50'000")
+						li(span("Registration fee"), " ",
+							span("$50'000")
 							),
-						li(span("Stamp duty for registration"),
-							span("10'000")),
-						li(span("Filing fees for memorandum"),
-							span("45'000")),
+						li(span("Stamp duty for registration"), " ",
+							span("$10'000")),
+						li(span("Filing fees for memorandum"), " ",
+							span("$45'000")),
 						li({ 'class': 'guide-total-costs' },
-								span("Total Costs:"),
-								span("105'000")
+								span("Total Costs:"), " ",
+								span("$105'000")
 							)
 						)
 				),
