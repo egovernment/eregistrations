@@ -2,7 +2,7 @@
 Component describing styles for login modal windows - rules specific only for this modal
 */
 .modal-login.modal {
-    top: 287px;
+	top: 287px;
 }
 
 .modal-login section form {
