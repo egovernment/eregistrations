@@ -5,7 +5,7 @@
 .controls a {
 	background-color: var(--normal-background);
 	border-radius: 3px;
-	color: #ffffff;
+	color: var(--white-text);
 	cursor: pointer;
 	font-size: 12px;
 	line-height: 18px;

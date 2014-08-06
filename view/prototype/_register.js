@@ -18,7 +18,7 @@ module.exports = modal(
 						span("Error message"));
 				}),
 					p({ class: 'form-helper' },
-						"Your password must be at least 6 caracters and include at least one number."),
+						"Your password must be at least 6 characters and include at least one number."),
 					p(input({ type: 'submit', value: "Create account" }))))
 		),
 		footer(

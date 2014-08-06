@@ -140,7 +140,7 @@ exports.step = function () {
 			),
 
 		div({ 'class': 'next-step' },
-			a("Continue to next step")
+			a({ href: '/documents/' }, "Continue to next step")
 			),
 		div({ 'class': 'disabler' })
 	);
