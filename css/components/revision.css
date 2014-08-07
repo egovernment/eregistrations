@@ -18,10 +18,9 @@
 	overflow-y: scroll;
 	padding: 22px 15px 0 15px;
 }
-
 .revision-user-data-section h4 {
 	margin-bottom: 5px;
-	color: #ffffff;
+	color: var(--white-text);
 	margin:  22px 0 0 0;
 	background-color: var(--normal-background);
 	padding: 11px 0 11px 8px;
@@ -37,12 +36,12 @@
 	margin-top: 22px;
 }
 
-.table-revision {
+.revision-user-data-section > table {
 	margin: 0;
 }
 
-.table-revision th,
-.table-revision td {
+.revision-user-data-section > table th,
+.revision-user-data-section > table td {
 	width: 50%;
 }
 

@@ -19,7 +19,7 @@
 }
 
 .submitted-menu a {
-	color: #ffffff;
+	color: var(--white-text);
 	font-size: 16px;
 	text-decoration: none;
 	padding: 0 17px;

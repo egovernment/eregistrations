@@ -6,11 +6,11 @@
 	background-color: var(--normal-background);
 }
 .user-submitted-data-table thead th {
-	color: #fff;
+	color: var(--white-text);
 }
 
 .user-submitted-data-table tbody tr {
-	background-color: #ffffff;
+	background-color: var(--white-text);
 }
 
 .user-submitted-data-table th, .table-submitted td {
@@ -24,7 +24,7 @@
 		width: 50%;
 		background-color: var(--normal-background);
 		padding: 6px;
-		color: #ffffff;
+		color: var(--white-text);
 	}
 	.mobile-table-view-body {
 		display: flex;
@@ -34,12 +34,12 @@
 	}
 
 	.user-submitted-data-table tr {
-		border: 1px solid #ccc;
+		border: 1px solid var(--light-inner-border);
 		height: auto;
 		}
 
 	.user-submitted-data-table td {
-		border-bottom: 1px solid #ccc;
+		border-bottom: 1px solid var(--light-inner-border);
 		position: relative;
 		}
 

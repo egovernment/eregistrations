@@ -22,7 +22,7 @@
 	margin-right: 8px;
 	border-top:1px solid var(--normal-dark-background);
 	border-radius: 50%;
-	color:#fff;
+	color:	var(--white-text);
 	background:	var(--normal-dark-background);
 	text-align: center;
 	font-size: 11px;

@@ -1,7 +1,7 @@
 .label-reg {
 	background: var(--normal-background);
 	border-radius: 5px;
-	color: #fff;
+	color: var(--white-text);
 	font-weight: bold;
 	display: inline-block;
 	margin: 0 4px 4px 0;
