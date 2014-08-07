@@ -59,5 +59,26 @@ e.g.:
 	width: 0.99em;
 }
 .fa-check:before {
-	content: "\f00c"
+	content: "\f00c";
+}
+
+.fa-power-off {
+	width: 0.85em;
+}
+.fa-power-off:before {
+	content: "\f011";
+}
+
+.fa-cogs {
+	width: 1.1em;
+}
+.fa-cogs:before {
+	content: '\f085';
+}
+
+.fa-user {
+	width: 1em;
+}
+.fa-user:before {
+	content: '\f007'
 }

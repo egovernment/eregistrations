@@ -1,7 +1,20 @@
 'use strict';
 
 exports.menu = function () {
-	menuitem("test");
+	menuitem(
+		span({ class: 'fa fa-user' }),
+		span({ class: 'user-name' }, "User Name")
+	);
+	menuitem(
+		a(
+			span({ class: 'fa fa-cogs accout-preferences' }, "Preferences")
+		)
+	);
+	menuitem(
+		a({ href: '/' },
+			span({ class: 'fa fa-power-off log-out' }, "Log out")
+			)
+	);
 };
 
 exports.main = function () {
