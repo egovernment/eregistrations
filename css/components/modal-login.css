@@ -1,19 +1,15 @@
 /*
 Component describing styles for login modal windows - rules specific only for this modal
 */
-
-.modal-login {
-	max-width: 500px;
-}
-
-.modal-login header h3 {
-	color: var(--white-text);
-	padding-left: 20px;
-	padding: 11px;
+.modal-login.modal {
+	top: 287px;
 }
 
 .modal-login section form {
-	height: 155px;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.modal-login form p:last-child {
+	margin-bottom: 0;
 }
