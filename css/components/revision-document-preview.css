@@ -1,0 +1,25 @@
+.revision-document-preview a {
+	border: 1px solid var(--light-inner-border);
+	display: block;
+}
+
+.revision-document-preview img {
+	margin: 0;
+}
+
+.list-item-number {
+	bottom: 4px;
+	left: 4px;
+	width: 20px;
+	height: 20px;
+	margin-right: 8px;
+	padding: 0;
+	border-radius: 50%;
+	color: #fff;
+	background: var(--normal-dark-background);
+	text-align: center;
+	font-size: 11px;
+	line-height: 22px;
+	display: inline-block;
+	font-style: normal;
+}

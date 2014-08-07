@@ -18,31 +18,31 @@ exports['sub-main'] = function () {
 			tbody(
 				tr(
 					td(
-						span({ 'class': 'mobile-table-view-head' },
+						div({ 'class': 'mobile-table-view-head' },
 							"Status"),
-						span({ 'class': 'mobile-table-view-body' },
+						div({ 'class': 'mobile-table-view-body' },
 							"Pending for revision")
 					),
 					td(
-						span({ 'class': 'mobile-table-view-head' },
+						div({ 'class': 'mobile-table-view-head' },
 							"Company"),
-						span({ 'class': 'mobile-table-view-body' },
+						div({ 'class': 'mobile-table-view-body' },
 							"abstudios")
 					),
 					td(
-						span({ 'class': 'mobile-table-view-head' },
+						div({ 'class': 'mobile-table-view-head' },
 							"Application number"),
-						span({ 'class': 'mobile-table-view-body' },
+						div({ 'class': 'mobile-table-view-body' },
 							"123")
 					),
 					td(
-						span({ 'class': 'mobile-table-view-head' },
+						div({ 'class': 'mobile-table-view-head' },
 							"Application date"),
-						span({ 'class': 'mobile-table-view-body' },
+						div({ 'class': 'mobile-table-view-body' },
 							"29/07/2014")
 					),
 					td(
-						span({ 'class': 'mobile-table-view-head' },
+						div({ 'class': 'mobile-table-view-head' },
 							"Requested registrations"),
 						div({ 'class': 'mobile-table-view-body' },
 							span({ class: 'label-reg' }, "Brela"),
@@ -54,9 +54,9 @@ exports['sub-main'] = function () {
 							)
 					),
 					td(
-						span({ 'class': 'mobile-table-view-head' },
+						div({ 'class': 'mobile-table-view-head' },
 							""),
-						span({ 'class': 'mobile-table-view-body' },
+						div({ 'class': 'mobile-table-view-body' },
 							a({ 'class': 'fa fa-download' }, "Print")
 							)
 					)
@@ -74,24 +74,24 @@ exports['sub-main'] = function () {
 				tbody(
 					tr(
 						th(
-							span("User")
+							div("User")
 						),
 						td(
-							span("abstudios")
+							div("abstudios")
 						),
 						td(
-							span("123")
+							div("123")
 						)
 					),
 					tr(
 						th(
-							span("File sent")
+							div("File sent")
 						),
 						td(
-							span("abstudios")
+							div("abstudios")
 						),
 						td(
-							span("123")
+							div("123")
 						)
 					)
 				)
@@ -117,7 +117,7 @@ exports['sub-main'] = function () {
 				)
 				),
 			h3("Complete content of the company file"),
-			ol({ 'class': 'submitted-thumb-documents' },
+			ol({ 'class': 'submitted-documents-thumbs-list' },
 				li(
 					a({ 'href': '' },
 						img({ 'src': '/uploads/docASubFile1.thumb.idoc.jpg' })
@@ -150,7 +150,7 @@ exports['sub-main'] = function () {
 					)
 				)
 			),
-		div({ 'class': 'revision-user' },
+		div({ 'class': 'revision-user-data-section' },
 			h3("Application form"),
 			a({ 'class': 'fa fa-print nav-alternatives' }, "Print"),
 			h4("Proposed company name"),
@@ -229,6 +229,72 @@ exports['sub-main'] = function () {
 					tr(
 						th("P.O. box"),
 						td("1")
+					),
+					tr(
+						th("Country"),
+						td("Romania")
+					)
+				)
+			),
+			h4("Applicants"),
+			h5("Marko Zagola"),
+			h6("Personal data"),
+			table(
+				{ 'class': 'table-revision' },
+				tbody(
+					tr(
+						th("Name"),
+						td("Marko")
+					),
+					tr(
+						th("Surname"),
+						td("Zagalo")
+					),
+					tr(
+						th("Document type"),
+						td("X")
+					),
+					tr(
+						th("Document number"),
+						td("123")
+					),
+					tr(
+						th("Marital status"),
+						td("")
+					),
+					tr(
+						th("Date of birth"),
+						td("25-06-1991")
+					),
+					tr(
+						th("Nationality"),
+						td("Romanian")
+					),
+					tr(
+						th("E-mail"),
+						td("andrei.balan@blink-it.ro")
+					)
+				)
+			),
+			h6("Address"),
+				table(
+				{ 'class': 'table-revision' },
+				tbody(
+					tr(
+						th("Address"),
+						td("XXX")
+					),
+					tr(
+						th("Number"),
+						td("1")
+					),
+					tr(
+						th("Postal code"),
+						td("X")
+					),
+					tr(
+						th("City"),
+						td("Bucharest")
 					),
 					tr(
 						th("Country"),

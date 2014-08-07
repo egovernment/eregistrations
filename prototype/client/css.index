@@ -23,9 +23,10 @@
 ../../css/components/fieldset.css
 ../../css/components/submitted-user.css
 ../../css/components/submitted-menu.css
-../../css/components/user-submitted-uploaded-documents.css
+../../css/components/submitted-documents-list.css
 ../../css/components/user-submitted-history.css
 ../../css/components/revision.css
+../../css/components/revision-document-preview.css
 ../../css/components/submitted-documents-thumbs-list.css
 ../../css/components/user-submitted-data-table.css
 ../../css/components/label-reg.css
