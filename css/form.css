@@ -111,6 +111,9 @@ fieldset {
 	text-align: right;
 }
 
+.error-message {
+	color: var(--error-text);
+}
 /* Firefox styles only */
 
 @-moz-document url-prefix() {

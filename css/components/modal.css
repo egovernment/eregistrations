@@ -11,6 +11,7 @@ Component describing styles for generic modal windows - reusable
 	right: 0;
 	top: 0;
 	visibility: visible;
+	z-index: 999;
 }
 
 div.modal-courtain {
@@ -18,14 +19,17 @@ div.modal-courtain {
 }
 
 .modal {
-	background: #ffffff;
-	border-radius: 12px;
-	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-	left: 0;
+	left: 50%;
 	margin: 22px auto;
 	max-width: 1050px;
 	position: absolute;
-	right: 0;
+	transform: translate(-50%, -50%);
+}
+
+.modal header h3 {
+	color: white;
+	padding-left: 20px;
+	padding: 11px;
 }
 
 .modal.hidden {
@@ -34,8 +38,10 @@ div.modal-courtain {
 }
 
 .modal.visible {
-	display: block;
+	display: flex;
 	opacity:1;
+	z-index: 1000;
+	margin: 0 auto;
 }
 
 .modal header {
@@ -43,20 +49,33 @@ div.modal-courtain {
 	border-radius: 10px 10px 0 0;
 }
 
+.modal section {
+	background: #ffffff;
+	border-radius: 12px;
+	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+	width: 100%;
+}
+
 .modal section div {
 	display: flex;
-	justify-content: space-between;
+	justify-content: center;
 }
 
 .modal footer {
 	border-top: 1px solid var(--light-inner-border);
 	display: flex;
 	justify-content: space-between;
+	padding-top: 0;
 }
 
 .modal footer p {
-	margin-left: auto;
-	margin-right: auto;
+	margin: 8px auto 14px;
+	padding-left: 30px;
+	padding-right: 30px;
+}
+
+.modal p {
+	margin-bottom: 15px;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
