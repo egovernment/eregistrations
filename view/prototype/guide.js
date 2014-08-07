@@ -38,8 +38,11 @@ exports.step = function () {
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
-					ul(li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
-						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
+					ul(li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+						" Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
+						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum " +
+							"dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet," +
+							" consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))),
