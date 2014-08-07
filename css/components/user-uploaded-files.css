@@ -61,11 +61,18 @@
 .user-uploaded-files li div a:active {
 	box-shadow: 0 1px 6px var(--light-inner-border);
 }
+.user-uploaded-files .thumb-doc {
+	height: 144px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
 
 .user-uploaded-files li div a img {
-	max-height: 88px;
-	width: auto;
+	max-height: 110px;
+	width: 88px;
 	margin: 0;
+	vertical-align: middle;
 }
 
 .user-uploaded-files li div div {
