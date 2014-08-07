@@ -23,9 +23,11 @@ exports.step = function () {
 					hr(),
 					ul({ 'class': 'form-elements' },
 						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-						span(user.getDescriptor('isARequested').label))),
+						span({ class: 'checkbox-label' }, user.getDescriptor('isARequested').label))),
 						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-						span(user.getDescriptor('isARequested').label)))
+						span({ class: 'checkbox-label' }, user.getDescriptor('isBRequested').label))),
+						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+						span({ class: 'checkbox-label' }, user.getDescriptor('isARequested').label)))
 					),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. " +

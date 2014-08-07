@@ -11,6 +11,9 @@
 	display: flex;
 
 }
+.checkbox-label {
+	line-height: 22px;
+}
 
 input, select {
 	background-color: var(--white-background);
@@ -31,8 +34,9 @@ input[type="checkbox"], input[type="radio"] {
 	margin-right: 8px;
 }
 input[type="checkbox"] {
-	margin-top: 4px;
-	margin-bottom: 8px;
+	margin-top: 0;
+	height: 22px;
+	vertical-align: top;
 }
 input[type="radio"] {
 	margin-top: 2px;
@@ -129,10 +133,6 @@ fieldset {
 		padding-top: 4px;
 	}
 
-	input[type="checkbox"] {
-		margin-top: 3px;
-		margin-bottom: 9px;
-	}
 }
 
 /* dbjs components */
