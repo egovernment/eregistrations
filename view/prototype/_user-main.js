@@ -1,5 +1,9 @@
 'use strict';
 
+exports.menu = function () {
+	menuitem("test");
+};
+
 exports.main = function () {
 	div({ class: 'steps-menu' },
 		div({ class: 'all-menu-items' },
