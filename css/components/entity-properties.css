@@ -23,7 +23,7 @@
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
-	color: #ffffff;
+	color: var(--white-text);
 	cursor: pointer;
 	display: inline-block;
 	font-size: 18px;

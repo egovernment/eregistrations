@@ -47,8 +47,18 @@ exports.step = function () {
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
-					h4({ 'class': 'guide-total-costs' },
-						"Total Costs:"
+					ul({ class: 'guide-costs-list' },
+						li(span("Registration fee"), " ",
+							span("$50'000")
+							),
+						li(span("Stamp duty for registration"), " ",
+							span("$10'000")),
+						li(span("Filing fees for memorandum"), " ",
+							span("$45'000")),
+						li({ 'class': 'guide-total-costs' },
+								span("Total Costs:"), " ",
+								span("$105'000")
+							)
 						)
 				),
 				button({ 'class': 'save-step-one', 'type': 'submit' },

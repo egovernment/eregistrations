@@ -4,6 +4,7 @@
 ../../css/font-awesome.css
 ../../css/components/disabler.css
 ../../css/components/modal.css
+../../css/components/modal-form.css
 ../../css/components/modal-login.css
 ../../css/components/modal-register.css
 ../../css/components/header-top.css

@@ -4,11 +4,11 @@ var db = require('mano').db,
 	user = db.User.prototype;
 
 exports.step = function () {
+	div({ class: 'section-primary' }, h2("2 Fill the form"));
 	div(
 		{ class: 'disabler-range', id: 'forms-disabler-range' },
 		section(
-			{ 'class': 'section-primary' },
-			form(h2("Section A"),
+			form({ 'class': 'section-primary' },
 				fieldset(h3("Busieness Owner basic informations"),
 					hr(),
 					ul({ 'class': 'form-elements fieldset' },
@@ -140,7 +140,7 @@ exports.step = function () {
 			),
 
 		div({ 'class': 'next-step' },
-			a("Continue to next step")
+			a({ href: '/documents/' }, "Continue to next step")
 			),
 		div({ 'class': 'disabler' })
 	);

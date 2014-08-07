@@ -27,7 +27,7 @@
 }
 
 .user-guide div {
-	background-color: #ffffff;
+	background-color: var(--white-background);
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
 	margin-bottom: 20px;
@@ -43,7 +43,7 @@
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
-	color: #ffffff;
+	color: var(--white-text);
 	cursor: pointer;
 	display: inline-block;
 	font-size: 18px;
@@ -66,12 +66,24 @@
 	margin-bottom: 20px;
 }
 
+.guide-costs-list {
+	padding-left: 0;
+	list-style-type: none;
+}
+
+.guide-costs-list li {
+	display: flex;
+	justify-content: space-between;
+}
+
 .guide-total-costs {
 	background-color: var(--light-background);
 	border-bottom: 1px solid black;
 	border-top: 1px solid black;
 	line-height: 22px;
-	padding: 10px 0;
+	padding: 10px 0 11px;
+	margin-top: 20px;
+	font-weight: bolder;
 }
 
 .user-guide button.save-step-one {

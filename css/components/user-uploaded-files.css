@@ -1,7 +1,7 @@
 .user-uploaded-files-upload-button {
 	background-color: var(--normal-background);
 	border-radius: 6px;
-	color: #ffffff;
+	color: var(--white-text);
 	display: inline-block;
 	font-size: 18px;
 	font-weight: normal;
@@ -11,7 +11,7 @@
 	text-decoration: none;
 	vertical-align: middle;
 	white-space: nowrap;
-	width: 29%;
+	width:15%;
 	height: 44px;
 }
 .user-uploaded-files-upload-button:hover,
@@ -61,11 +61,18 @@
 .user-uploaded-files li div a:active {
 	box-shadow: 0 1px 6px var(--light-inner-border);
 }
+.user-uploaded-files .thumb-doc {
+	height: 144px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
 
 .user-uploaded-files li div a img {
-	max-height: 88px;
-	width: auto;
+	max-height: 110px;
+	width: 88px;
 	margin: 0;
+	vertical-align: middle;
 }
 
 .user-uploaded-files li div div {
@@ -78,7 +85,7 @@
 .user-uploaded-files li div div .doc-action {
 	border-radius: 3px;
 	background-color: var(--normal-background);
-	color: white;
+	color: var(--white-text);
 	padding: 2px 4px 0;
 	border: none;
 	margin-right: 3px;
