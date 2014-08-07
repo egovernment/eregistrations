@@ -16,7 +16,3 @@ Component describing styles for registration modal windows - rules specific only
 .modal-register fieldset p:last-child {
 	margin-bottom: 0;
 }
-
-.modal-register .form-helper {
-	max-width: 300px;
-}
