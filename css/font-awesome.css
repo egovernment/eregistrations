@@ -77,7 +77,7 @@ e.g.:
 }
 
 .fa-user {
-	width: 1em;
+	width: 0.8em;
 }
 .fa-user:before {
 	content: '\f007'

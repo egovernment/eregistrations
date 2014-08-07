@@ -2,17 +2,23 @@
 
 exports.menu = function () {
 	menuitem(
-		span({ class: 'fa fa-user' }),
-		span({ class: 'user-name' }, "User Name")
+		a(
+			span({ class: 'fa fa-user' }, "Preferences")
+		)
 	);
 	menuitem(
 		a(
-			span({ class: 'fa fa-cogs accout-preferences' }, "Preferences")
+			span({ class: 'user-name' }, "User Name")
+		)
+	);
+	menuitem(
+		a(
+			span({ class: 'fa fa-cogs' }, "Preferences")
 		)
 	);
 	menuitem(
 		a({ href: '/' },
-			span({ class: 'fa fa-power-off log-out' }, "Log out")
+			span({ class: 'fa fa-power-off' }, "Log out")
 			)
 	);
 };
