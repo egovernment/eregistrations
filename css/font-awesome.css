@@ -41,11 +41,29 @@ e.g.:
 	content: "\f1b9";
 }
 */
+
+.fa-check {
+	width: 0.99em;
+}
+
+.fa-check:before {
+	content: "\f00c"
+}
+
 .fa-download {
 	width: 0.94em;
 }
+
 .fa-download:before {
 	content: "\f019";
+}
+
+.fa-print {
+	width: 1em;
+}
+
+.fa-print:before {
+	content: "\f02f";
 }
 
 .fa-trash-o {

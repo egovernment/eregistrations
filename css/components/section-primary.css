@@ -12,6 +12,14 @@
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
 	padding: 21px 15px 0 15px;
+	margin-bottom: -1px;
+	position: relative;
+}
+
+.section-primary .nav-alternatives {
+	position: absolute;
+	right: 25px;
+	top: 25px;
 }
 
 .section-primary > ul {

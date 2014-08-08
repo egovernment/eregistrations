@@ -13,6 +13,7 @@ module.exports = function (view) {
 	var main = view.documentElement.diff('./_main'),
 		// User routes - import content directly to #main element
 		userMain = main.diff('./_user-main'),
+		submittedMain = main.diff('./_submitted-main'),
 		userForm = userMain.diff('./forms'),
 		userDocuments = userMain.diff('./documents');
 
@@ -29,6 +30,7 @@ module.exports = function (view) {
 		'documents/disabled':  bind(userDocuments.diff('./disabled-documents')),
 		'forms/partner-add': bind(userMain.diff('./partner-add')),
 		'forms/partner-id': bind(userMain.diff('./partner')),
+		'user-submitted': bind(submittedMain.diff('./user-submitted')),
 
 		// Error routes
 		404: bind(main.diff('./404'))
