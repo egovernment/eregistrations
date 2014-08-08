@@ -6,6 +6,9 @@ form {
 	list-style: none;
 	padding-left: 0;
 }
+ul.form-elements li {
+	margin-bottom: 0;
+}
 
 .form-elements .main-label {
 	display: block;
@@ -39,7 +42,10 @@ ul.radio li {
 	margin-right: 5px;
 }
 
-input[type="text"],input[type="number"], select {
+input[type="text"],
+input[type="number"],
+input[type="email"],
+select {
 	background-color: var(--white-background);
 	border-radius: 4px;
 	border: 1px solid var(--light-inner-border);
@@ -53,16 +59,20 @@ input[type="text"],input[type="number"], select {
 }
 
 input[type="submit"] {
-	height: 32px;
+	height: 30px;
+	border-radius: 4px;
 	color: var(--white-text);
 	background-color: var(--normal-background);
 	border: none;
 	box-shadow: none;
+	font-size: 14px;
+	margin-bottom: 22px;
+	margin: -5px 0 -5px;
 }
 
 .submit-placeholder {
 	margin-left: 30%;
-	padding-left: 5px;
+	padding-left: 13px;
 }
 
 /* Input pre-element (span) */
@@ -87,36 +97,25 @@ input[type="submit"] {
 .error-message {
 	color: var(--error-text);
 }
-/* Firefox styles only */
-
-@-moz-document url-prefix() {
-	input[type="text"],input[type="number"], select {
-		margin-bottom: -6px;
-	}
-}
 
 /* dbjs components */
 /* Default styles */
 .dbjs-input-component .required-status {
 	color: var(--error-text);
 	display:none;
-	font-size: 20px;
 	font-weight: bold;
 	margin-left:5px;
 	visibility:hidden;
 	line-height: 22px;
-	margin-top: 3px;
 }
 
 .dbjs-input-component .validation-status {
 	color: var(--success-text);
 	display:none;
-	font-size: 20px;
 	font-weight: bold;
 	margin-left:5px;
 	visibility:hidden;
 	line-height: 22px;
-	margin-top: 6px;
 }
 
 /* Do not show statuses for disabled controls */
@@ -165,6 +164,19 @@ input[type="submit"] {
 	padding: 2px 7px 4px 7px;
 	font-size: 12px;
 }
+
+/* Firefox styles only */
+
+@-moz-document url-prefix() {
+	input[type="text"],input[type="number"], select {
+		margin-bottom: -6px;
+	}
+	.dbjs-input-component .required-status,
+	.dbjs-input-component .validation-status {
+		line-height: 21px;
+	}
+}
+
 /*
 Styles applied while screen sieze is less than 640px
 */
