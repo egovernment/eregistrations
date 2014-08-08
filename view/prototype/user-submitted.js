@@ -4,7 +4,7 @@ exports['sub-main'] = function () {
 	section(
 		{ 'class': 'submitted-main' },
 		table(
-			{ 'class': 'user-submitted-data-table' },
+			{ 'class': 'user-submitted-data-table table-responsive' },
 			thead(
 				tr(
 					th("Status"),
@@ -18,33 +18,33 @@ exports['sub-main'] = function () {
 			tbody(
 				tr(
 					td(
-						div({ 'class': 'mobile-table-view-head' },
+						div({ 'class': 'cell-caption' },
 							"Status"),
-						div({ 'class': 'mobile-table-view-body' },
+						div({ 'class': 'cell-body' },
 							"Pending for revision")
 					),
 					td(
-						div({ 'class': 'mobile-table-view-head' },
+						div({ 'class': 'cell-caption' },
 							"Company"),
-						div({ 'class': 'mobile-table-view-body' },
+						div({ 'class': 'cell-body' },
 							"abstudios")
 					),
 					td(
-						div({ 'class': 'mobile-table-view-head' },
+						div({ 'class': 'cell-caption' },
 							"Application number"),
-						div({ 'class': 'mobile-table-view-body' },
+						div({ 'class': 'cell-body' },
 							"123")
 					),
 					td(
-						div({ 'class': 'mobile-table-view-head' },
+						div({ 'class': 'cell-caption' },
 							"Application date"),
-						div({ 'class': 'mobile-table-view-body' },
+						div({ 'class': 'cell-body' },
 							"29/07/2014")
 					),
 					td(
-						div({ 'class': 'mobile-table-view-head' },
+						div({ 'class': 'cell-caption' },
 							"Requested registrations"),
-						div({ 'class': 'mobile-table-view-body' },
+						div({ 'class': 'cell-body' },
 							span({ class: 'label-reg' }, "Brela"),
 							span({ class: 'label-reg' }, "Tinc"),
 							span({ class: 'label-reg' }, "Vat"),
@@ -54,9 +54,9 @@ exports['sub-main'] = function () {
 							)
 					),
 					td(
-						div({ 'class': 'mobile-table-view-head' },
+						div({ 'class': 'cell-caption' },
 							""),
-						div({ 'class': 'mobile-table-view-body' },
+						div({ 'class': 'cell-body' },
 							a({ 'class': 'fa fa-download' }, "Print")
 							)
 					)
@@ -120,17 +120,22 @@ exports['sub-main'] = function () {
 			ol({ 'class': 'submitted-documents-thumbs-list' },
 				li(
 					a({ 'href': '' },
-						img({ 'src': '/uploads/docASubFile1.thumb.idoc.jpg' })
-						)
-				),
-				li(
-					a({ 'href': '' },
 						img({ 'src': '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 						)
 				),
 				li(
 					a({ 'href': '' },
+						img({ 'src': '/uploads/docASubFile1.thumb.idoc.jpg' })
+						)
+				),
+				li(
+					a({ 'href': '' },
 						img({ 'src': '/uploads/docBSubFile1.thumb.idoc.jpg' })
+						)
+				),
+				li(
+					a({ 'href': '' },
+						img({ 'src': '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 						)
 				)
 				)

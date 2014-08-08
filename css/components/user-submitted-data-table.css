@@ -1,7 +1,3 @@
-.mobile-table-view-head {
-	display: none;
-}
-
 .user-submitted-data-table thead {
 	background-color: var(--normal-background);
 }
@@ -17,21 +13,11 @@
 	border: 1px solid var(--light-inner-border);
 }
 
-@media only screen and (max-width: var(--mobile-width)) {
+.user-submitted-data-table .fa-download {
+	margin: 0 auto;
+}
 
-	.mobile-table-view-head {
-		display: flex;
-		width: 50%;
-		background-color: var(--normal-background);
-		padding: 6px;
-		color: var(--white-text);
-	}
-	.mobile-table-view-body {
-		display: flex;
-		width: 50%;
-		padding: 6px;
-		flex-wrap: wrap;
-	}
+@media only screen and (max-width: var(--mobile-width)) {
 
 	.user-submitted-data-table tr {
 		border: 1px solid var(--light-inner-border);
