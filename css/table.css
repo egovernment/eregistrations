@@ -25,9 +25,7 @@ td a {
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-
 	.desktop-only {
 		display: none;
 	}
-
 }

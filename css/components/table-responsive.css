@@ -1,16 +1,16 @@
-.cell-caption {
+.table-responsive .cell-caption {
 	display: none;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.cell-caption {
+	.table-responsive .cell-caption {
 		display: flex;
 		width: 50%;
 		background-color: var(--normal-background);
 		padding: 6px;
 		color: var(--white-text);
 	}
-	.cell-body {
+	.table-responsive .cell-body {
 		display: flex;
 		width: 50%;
 		padding: 6px;

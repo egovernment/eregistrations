@@ -30,9 +30,7 @@ module.exports = function (view) {
 		'documents/disabled':  bind(userDocuments.diff('./disabled-documents')),
 		'forms/partner-add': bind(userMain.diff('./partner-add')),
 		'forms/partner-id': bind(userMain.diff('./partner')),
-
 		'user-submitted': bind(submittedMain.diff('./user-submitted')),
-		'user-submitted/content': bind(submittedMain.diff('./content')),
 
 		// Error routes
 		404: bind(main.diff('./404'))

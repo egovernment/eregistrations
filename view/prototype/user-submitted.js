@@ -70,7 +70,7 @@ exports['sub-main'] = function () {
 			h2("History of your request"),
 			a({ 'class': 'fa fa-print nav-alternatives' }, "Print"),
 			table(
-				{ 'class': 'table-history' },
+				{ 'class': 'user-submitted-history' },
 				tbody(
 					tr(
 						th(
@@ -160,7 +160,6 @@ exports['sub-main'] = function () {
 			a({ 'class': 'fa fa-print nav-alternatives' }, "Print"),
 			h4("Proposed company name"),
 			table(
-				{ 'class': 'table-revision' },
 				tbody(
 					tr(
 						td("Blink IT Solutions")
@@ -169,7 +168,6 @@ exports['sub-main'] = function () {
 			),
 			h4("Business activity"),
 			table(
-				{ 'class': 'table-revision' },
 				tbody(
 					tr(
 						th("Activity"),
@@ -191,7 +189,6 @@ exports['sub-main'] = function () {
 			),
 			h4("Company secretary"),
 			table(
-				{ 'class': 'table-revision' },
 				tbody(
 					tr(
 						th("Title"),
@@ -213,7 +210,6 @@ exports['sub-main'] = function () {
 			),
 			h5("Residential address"),
 			table(
-				{ 'class': 'table-revision' },
 				tbody(
 					tr(
 						th("Plot"),
@@ -245,7 +241,6 @@ exports['sub-main'] = function () {
 			h5("Marko Zagola"),
 			h6("Personal data"),
 			table(
-				{ 'class': 'table-revision' },
 				tbody(
 					tr(
 						th("Name"),
@@ -283,7 +278,6 @@ exports['sub-main'] = function () {
 			),
 			h6("Address"),
 				table(
-				{ 'class': 'table-revision' },
 				tbody(
 					tr(
 						th("Address"),
