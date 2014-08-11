@@ -30,9 +30,9 @@
 	background-color: var(--white-background);
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
-	padding: 22px 15px 0 15px;
+	padding: 20px 15px 0 15px;
 	width: 49%;
-	margin-bottom: 20px;
+	margin-bottom: 22px;
 }
 
 .user-guide button.save-step-one {
@@ -51,11 +51,18 @@
 	text-decoration: none;
 	vertical-align: middle;
 	white-space: nowrap;
+	width: 49%;
 }
 .user-guide button.save-step-one:hover,
 .user-guide button.save-step-one:focus,
 .user-guide button.save-step-one:active {
 	background-color: var(--normal-dark-background);
+}
+
+@-moz-document url-prefix() {
+	.user-guide button.save-step-one  {
+		padding: 9px 16px;
+	}
 }
 
 .user-guide div hr {
@@ -80,10 +87,6 @@
 	padding: 10px 0 11px;
 	margin-top: 20px;
 	font-weight: bolder;
-}
-
-.user-guide button.save-step-one {
-	width: 49%;
 }
 
 /*

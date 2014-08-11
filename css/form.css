@@ -45,6 +45,8 @@ ul.radio li {
 input[type="text"],
 input[type="number"],
 input[type="email"],
+input[type="password"],
+input[type="data"],
 select {
 	background-color: var(--white-background);
 	border-radius: 4px;
@@ -117,6 +119,15 @@ input[type="submit"] {
 	visibility:hidden;
 	line-height: 22px;
 }
+@-moz-document url-prefix() {
+	input[type="text"],input[type="number"], select {
+		margin-bottom: -6px;
+	}
+	.dbjs-input-component .required-status,
+	.dbjs-input-component .validation-status {
+		line-height: 21px;
+	}
+}
 
 /* Do not show statuses for disabled controls */
 .dbjs-input-component *:disabled ~ span.validation-status {
@@ -180,18 +191,6 @@ input[type="submit"] {
 	padding: 2px 7px 4px 7px;
 	font-size: 12px;
 	margin-left: 5px;
-}
-
-/* Firefox styles only */
-
-@-moz-document url-prefix() {
-	input[type="text"],input[type="number"], select {
-		margin-bottom: -6px;
-	}
-	.dbjs-input-component .required-status,
-	.dbjs-input-component .validation-status {
-		line-height: 21px;
-	}
 }
 
 /*
