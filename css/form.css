@@ -15,15 +15,18 @@ ul.form-elements li {
 	padding: 11px 0;
 }
 
-.form-elements label, .control {
+.dbjs-input-component label, .control {
 	display: inline-block;
 	vertical-align: top;
 	padding: 0 10px;
 }
-.form-elements  label {
+.dbjs-input-component  label {
 	width: 40%;
 	text-align: right;
 	font-weight: bold;
+}
+.control {
+	width: 60%;
 }
 
 ul.radio {

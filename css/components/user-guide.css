@@ -26,16 +26,12 @@
 	justify-content: space-between;
 }
 
-.user-guide div {
+.user-guide .guide-box {
 	background-color: var(--white-background);
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
-	margin-bottom: 20px;
 	padding: 22px 15px 0 15px;
 	width: 49%;
-}
-
-.user-guide div {
 	margin-bottom: 20px;
 }
 
