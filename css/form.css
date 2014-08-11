@@ -25,9 +25,6 @@ ul.form-elements li {
 	text-align: right;
 	font-weight: bold;
 }
-.control {
-	max-width: 60%;
-}
 
 ul.radio {
 	list-style: none;
@@ -198,25 +195,27 @@ input[type="submit"] {
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
-	.form-elements li label {
-		flex-wrap: wrap;
-		justify-content: space-around;
-	}
-	.radio {
-		flex-wrap: wrap;
+	.form-elements label, .control {
+		display: block;
+		padding: 0 10px;
+		width: 100%;
 	}
 
-	.label {
-		width: 100%;
+	.form-elements  label {
+		text-align: center;
+		font-weight: bold;
+	}
+	.control {
 		text-align: center;
 	}
-	input {
-		width: 80%;
-	}
+
 	.submit-placeholder {
 		margin-left: 0;
+		padding-left: 0;
+		text-align: center;
 	}
-	.submit-placeholder input[type="submit"] {
-		width: 100%;
+
+	.dbjs.multiple .controls a {
+		display: inline;
 	}
 }
