@@ -234,10 +234,10 @@ Styles applied while screen sieze is less than 640px
 	.form-elements  label {
 		text-align: left;
 		font-weight: bold;
-		padding: 11px 10px;
 	}
 	.control {
 		text-align: left;
+		padding: 11px 10px;
 	}
 
 	.submit-placeholder {
