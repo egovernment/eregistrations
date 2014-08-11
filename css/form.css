@@ -46,7 +46,17 @@ input[type="text"],
 input[type="number"],
 input[type="email"],
 input[type="password"],
-input[type="data"],
+input[type="date"],
+input[type="month"],
+input[type="week"],
+input[type="time"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="search"],
+input[type="email"],
+input[type="url"],
+input[type="tel"],
+input[type="color"],
 select {
 	background-color: var(--white-background);
 	border-radius: 4px;
@@ -70,6 +80,11 @@ input[type="submit"] {
 	font-size: 14px;
 	margin-bottom: 22px;
 	margin: -5px 0 -5px;
+}
+@-moz-document url-prefix() {
+	input[type="text"],input[type="number"], select {
+		margin-bottom: -6px;
+	}
 }
 
 .submit-placeholder {
@@ -120,9 +135,6 @@ input[type="submit"] {
 	line-height: 22px;
 }
 @-moz-document url-prefix() {
-	input[type="text"],input[type="number"], select {
-		margin-bottom: -6px;
-	}
 	.dbjs-input-component .required-status,
 	.dbjs-input-component .validation-status {
 		line-height: 21px;
@@ -171,13 +183,16 @@ input[type="submit"] {
 	padding: 0;
 	margin-bottom: 0;
 }
-
+.dbjs.multiple ul li:first-child {
+	padding-top: 0;
+}
 .dbjs.multiple ul li {
-	line-height: 43px;
+	padding-top: 10px;
+	padding-bottom: 11px;
 }
 
 .dbjs.multiple {
-	margin-top: -10px;
+
 }
 
 .dbjs.multiple ul li:last-child{
