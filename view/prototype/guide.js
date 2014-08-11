@@ -11,19 +11,22 @@ exports.step = function () {
 					"see the necessary documents and costs"
 			),
 			form({ 'class': 'guide-form' },
-				div(h3("Questions"),
+				div({ class: 'guide-box' }, h3("Questions"),
 					hr(),
 					ul({ 'class': 'form-elements' },
 					['businessActivity', 'isOwner', 'inventory', 'surfaceArea', 'members',
 						'companyType', 'isShoppingGallery'], function (name) {
-						li(label(span({ 'class': 'label' }, user.getDescriptor(name).label), " ",
-							input({ dbjs: user.getObservable(name) })));
+						li(div({ class: 'dbjs-input-component' },
+							label(user.getDescriptor(name).label, ":"),
+							div({ class: 'control' }, input({ dbjs: user.getObservable(name) }))));
 					})),
-				div(h3("Registrations"),
+				div({ class: 'guide-box' }, h3("Registrations"),
 					hr(),
 					ul({ 'class': 'form-elements' },
 						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 						span(user.getDescriptor('isARequested').label))),
+						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+						span(user.getDescriptor('isBRequested').label))),
 						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 						span(user.getDescriptor('isARequested').label)))
 					),
@@ -34,7 +37,7 @@ exports.step = function () {
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. " +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. ")
 				),
-				div(h3("Requirements"),
+				div({ class: 'guide-box' }, h3("Requirements"),
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
@@ -46,7 +49,7 @@ exports.step = function () {
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))),
-				div(h3("Costs"),
+				div({ class: 'guide-box' }, h3("Costs"),
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),

@@ -67,7 +67,9 @@ user.defineProperties({
 	isShoppingGallery: { type: db.Boolean, label: "A shopping gallery", required: true,
 		trueLabel: "Yes", falseLabel: "No" },
 	isARequested: { type: db.Boolean, label: "Registration A", required: true },
-	isBRequested: { type: db.Boolean, label: "Registration B", required: true },
+	isBRequested: { type: db.Boolean, label: "Etiam vestibulum dui mi," +
+		" nec ultrices diam ultricies id vestibulum dui mi," +
+		" nec ultrices diam ultricies id vestibulum dui mi,", required: true },
 
 	dateOfBirth: { type: DateType, label: "Date of birth", required: true },
 	userEmail: { type: Email, label: "Email" },
