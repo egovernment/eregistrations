@@ -69,6 +69,26 @@ select {
 	margin: -5px 0 -5px;
 	font-size: 14px;
 }
+@-moz-document url-prefix() {
+	input[type="text"],
+	input[type="number"],
+	input[type="email"],
+	input[type="password"],
+	input[type="date"],
+	input[type="month"],
+	input[type="week"],
+	input[type="time"],
+	input[type="datetime"],
+	input[type="datetime-local"],
+	input[type="search"],
+	input[type="email"],
+	input[type="url"],
+	input[type="tel"],
+	input[type="color"],
+	select {
+		margin-bottom: -6px;
+	}
+}
 
 input[type="submit"] {
 	height: 30px;
@@ -80,11 +100,6 @@ input[type="submit"] {
 	font-size: 14px;
 	margin-bottom: 22px;
 	margin: -5px 0 -5px;
-}
-@-moz-document url-prefix() {
-	input[type="text"],input[type="number"], select {
-		margin-bottom: -6px;
-	}
 }
 
 .submit-placeholder {

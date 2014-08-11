@@ -53,16 +53,16 @@
 	white-space: nowrap;
 	width: 49%;
 }
-.user-guide button.save-step-one:hover,
-.user-guide button.save-step-one:focus,
-.user-guide button.save-step-one:active {
-	background-color: var(--normal-dark-background);
-}
-
 @-moz-document url-prefix() {
 	.user-guide button.save-step-one  {
 		padding: 9px 16px;
 	}
+}
+
+.user-guide button.save-step-one:hover,
+.user-guide button.save-step-one:focus,
+.user-guide button.save-step-one:active {
+	background-color: var(--normal-dark-background);
 }
 
 .user-guide div hr {
