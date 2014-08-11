@@ -10,23 +10,23 @@ ul.form-elements li {
 	margin-bottom: 0;
 }
 
-.form-elements .main-label {
+.form-elements .dbjs-input-component {
 	display: block;
 	padding: 11px 0;
 }
 
-.label, .control {
+.form-elements label, .control {
 	display: inline-block;
 	vertical-align: top;
 	padding: 0 10px;
 }
-.label {
+.form-elements  label {
 	width: 40%;
 	text-align: right;
 	font-weight: bold;
 }
 .control {
-	width: 60%;
+	max-width: 60%;
 }
 
 ul.radio {
@@ -71,7 +71,7 @@ input[type="submit"] {
 }
 
 .submit-placeholder {
-	margin-left: 30%;
+	margin-left: 40%;
 	padding-left: 13px;
 }
 
@@ -151,10 +151,26 @@ input[type="submit"] {
 	display:inline-block;
 }
 
+.dbjs.multiple {
+	display: inline-block;
+}
+
 .dbjs.multiple ul {
 	list-style-type: none;
 	padding: 0;
 	margin-bottom: 0;
+}
+
+.dbjs.multiple ul li {
+	line-height: 43px;
+}
+
+.dbjs.multiple {
+	margin-top: -10px;
+}
+
+.dbjs.multiple ul li:last-child{
+	margin-bottom: 10px;
 }
 
 .dbjs.multiple ul li a {
@@ -163,6 +179,7 @@ input[type="submit"] {
 	border-radius: 11px;
 	padding: 2px 7px 4px 7px;
 	font-size: 12px;
+	margin-left: 5px;
 }
 
 /* Firefox styles only */
