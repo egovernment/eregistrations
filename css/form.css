@@ -191,10 +191,6 @@ input[type="submit"] {
 	padding-bottom: 11px;
 }
 
-.dbjs.multiple {
-
-}
-
 .dbjs.multiple ul li:last-child{
 	margin-bottom: 10px;
 }
