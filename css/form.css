@@ -224,18 +224,17 @@ Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
 	.form-elements .dbjs-input-component {
-		padding-top: 3px;
+		padding: 0;
 	}
 	.form-elements label, .control {
 		display: block;
-		padding: 0 10px;
 		width: 100%;
 	}
 
 	.form-elements  label {
 		text-align: left;
 		font-weight: bold;
-		padding-bottom: 8px;
+		padding: 11px 10px;
 	}
 	.control {
 		text-align: left;
@@ -251,8 +250,16 @@ Styles applied while screen sieze is less than 640px
 		display: inline;
 	}
 
+	ul.radio, ul.radio li {
+	display: list-item;
+}
+
 	ul.radio {
 		margin-bottom: 0;
+	}
+
+	ul.radio li label:first-child {
+		padding-top: 0;
 	}
 
 	ul.radio li label {
