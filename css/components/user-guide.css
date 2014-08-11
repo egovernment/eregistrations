@@ -97,7 +97,7 @@ Styles applied while screen sieze is less than 640px
 		min-width: var(--min-mobile-width);
 	}
 
-	.user-guide div {
+	.user-guide .guide-box {
 		width: 100%;
 	}
 

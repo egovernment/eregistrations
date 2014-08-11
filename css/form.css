@@ -223,27 +223,46 @@ input[type="submit"] {
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
+	.form-elements .dbjs-input-component {
+		padding: 0;
+	}
 	.form-elements label, .control {
 		display: block;
-		padding: 0 10px;
 		width: 100%;
 	}
 
 	.form-elements  label {
-		text-align: center;
+		text-align: left;
 		font-weight: bold;
 	}
 	.control {
-		text-align: center;
+		text-align: left;
+		padding: 11px 10px;
 	}
 
 	.submit-placeholder {
 		margin-left: 0;
-		padding-left: 0;
-		text-align: center;
+		padding-left: 10px;
+		text-align: left;
 	}
 
 	.dbjs.multiple .controls a {
 		display: inline;
+	}
+
+	ul.radio, ul.radio li {
+	display: list-item;
+}
+
+	ul.radio {
+		margin-bottom: 0;
+	}
+
+	ul.radio li label:first-child {
+		padding-top: 0;
+	}
+
+	ul.radio li label {
+		padding-bottom: 0;
 	}
 }
