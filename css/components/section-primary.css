@@ -34,3 +34,12 @@
 .section-primary li:last-child {
 	margin-bottom: 0;
 }
+
+/*
+Styles applied while screen sieze is less than 640px
+*/
+@media only screen and (max-width: var(--mobile-width)) {
+	.section-primary {
+		min-width: var(--min-mobile-width);
+	}
+}
