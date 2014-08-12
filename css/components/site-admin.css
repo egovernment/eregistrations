@@ -22,6 +22,7 @@
 	white-space: nowrap;
 	height: 44px;
 	padding: 11px 10px;
+	width: 15%;
 }
 .admin-new-user-add-button :hover,
 .admin-new-user-add-button :focus,
@@ -56,25 +57,15 @@
 	background-color: var(--light-background);
 }
 
+.site-admin-data-table ul {
+	list-style-type: none;
+	margin-bottom: 0;
+	margin: -6px 0;
+}
+
+
 @media only screen and (max-width: var(--mobile-width)) {
-
-	.site-admin-data-table tr {
-		border: 1px solid var(--light-inner-border);
-		height: auto;
-		}
-
-	.site-admin-data-table td {
-		border-bottom: 1px solid var(--light-inner-border);
-		position: relative;
-		}
-
-	.site-admin-data-table td {
-		display: flex;
-		justify-content: space-around;
-		padding: 0;
-		}
-
-	.site-admin-data-table th {
-		display: none;
+	.admin-new-user-add-button {
+		width: 100%;
 	}
 }

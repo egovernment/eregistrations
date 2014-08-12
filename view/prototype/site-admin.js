@@ -27,91 +27,105 @@ exports['sub-main'] = function () {
 			a({ class: 'admin-new-user-add-button' }, "New User")
 		),
 		table(
-			{ 'class': 'site-admin-data-table table-responsive' },
+			{ 'class': 'site-admin-data-table' },
 			thead(
 				tr(
 					th("Email"),
 					th("Institution"),
-					th("Creation date")
+					th({ 'class': 'desktop-only' }, "Creation date")
 				)
 			),
 			tbody(
 				tr(
 					td(
-						div({ 'class': 'cell-caption' },
-							"Email"),
 						div({ 'class': 'cell-body' },
 							"john.watson@sherloc.com")
 					),
 					td(
-						div({ 'class': 'cell-caption' },
-							"Institution"),
 						div({ 'class': 'cell-body' },
 							"Bussines Licence A")
 					),
 					td(
-						div({ 'class': 'cell-caption' },
-							"Creation date"),
+						{ 'class': 'desktop-only' },
 						div({ 'class': 'cell-body' },
 							"23/07/2014 18:09:22")
 					)
 				),
 				tr(
 					td(
-						div({ 'class': 'cell-caption' },
-							"Email"),
 						div({ 'class': 'cell-body' },
 							"john.watson@sherloc.com")
 					),
 					td(
-						div({ 'class': 'cell-caption' },
-							"Institution"),
 						div({ 'class': 'cell-body' },
 							"Bussines Licence A")
 					),
 					td(
-						div({ 'class': 'cell-caption' },
-							"Creation date"),
+						{ 'class': 'desktop-only' },
 						div({ 'class': 'cell-body' },
 							"23/07/2014 18:09:22")
 					)
 				),
 				tr(
 					td(
-						div({ 'class': 'cell-caption' },
-							"Email"),
 						div({ 'class': 'cell-body' },
 							"john.watson@sherloc.com")
 					),
 					td(
-						div({ 'class': 'cell-caption' },
-							"Institution"),
 						div({ 'class': 'cell-body' },
 							"Bussines Licence A")
 					),
 					td(
-						div({ 'class': 'cell-caption' },
-							"Creation date"),
+						{ 'class': 'desktop-only' },
 						div({ 'class': 'cell-body' },
 							"23/07/2014 18:09:22")
 					)
 				),
 				tr(
 					td(
-						div({ 'class': 'cell-caption' },
-							"Email"),
 						div({ 'class': 'cell-body' },
 							"john.watson@sherloc.com")
 					),
 					td(
-						div({ 'class': 'cell-caption' },
-							"Institution"),
+						ul(
+							li("Bussines Licence A"),
+							li("Bussines Licence A"),
+							li("Bussines Licence A"),
+							li("Bussines Licence A")
+						)
+					),
+					td(
+						{ 'class': 'desktop-only' },
+						div({ 'class': 'cell-body' },
+							"23/07/2014 18:09:22")
+					)
+				),
+				tr(
+					td(
+						div({ 'class': 'cell-body' },
+							"john.watson@sherloc.com")
+					),
+					td(
 						div({ 'class': 'cell-body' },
 							"Bussines Licence A")
 					),
 					td(
-						div({ 'class': 'cell-caption' },
-							"Creation date"),
+						{ 'class': 'desktop-only' },
+						div({ 'class': 'cell-body' },
+							"23/07/2014 18:09:22")
+					)
+				),
+				tr(
+					td(
+						div({ 'class': 'cell-body' },
+							"john.watson@sherloc.com")
+					),
+					td(
+						div({ 'class': 'cell-body' },
+							"Bussines Licence A")
+					),
+					td(
+						{ 'class': 'desktop-only' },
 						div({ 'class': 'cell-body' },
 							"23/07/2014 18:09:22")
 					)
