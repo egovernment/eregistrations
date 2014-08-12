@@ -10,7 +10,7 @@ exports['submitted-menu'] = function () {
 		nav(
 			{ class: 'items' },
 			menuitem(
-				a({ class: 'item-active', href: '/site-admin/' },
+				a({ class: 'item-active', href: '/users-admin/' },
 					"Application")
 			),
 			menuitem(

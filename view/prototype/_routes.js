@@ -36,7 +36,7 @@ module.exports = function (view) {
 		'user-submitted': bind(subMain.diff('./user-submitted')),
 
 		// Site admin routes
-		'site-admin': bind(subMain.diff('./site-admin')),
+		'users-admin': bind(subMain.diff('./users-admin')),
 
 		// Error routes
 		404: bind(main.diff('./404'))
