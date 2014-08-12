@@ -3,13 +3,13 @@
 exports.main = function () {
 	div({ class: 'submitted-menu' },
 		div({ class: 'all-menu-items' },
-			nav({ class: 'items' },
+			nav({ class: 'items', id: 'submitted-menu' },
 				menuitem(
 					a({ class: 'item-active' },
 						"Request")
 				),
 				menuitem(
-					a("Profile")
+					a({ href: '/profile/' }, "Profile")
 				)
 				)
 			)
