@@ -38,6 +38,7 @@ body {
 
 main {
 	background-color: var(--light-background);
+	padding-bottom: 22px;
 }
 
 * {
