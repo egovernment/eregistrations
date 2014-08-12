@@ -3,6 +3,7 @@
 var Map          = require('es6-map')
   , db           = require('mano').db
   , User         = require('mano-auth/model/user')
+  , Role         = require('mano-auth/model/role')
   , DateType     = require('dbjs-ext/date-time/date')(db)
   , StringLine   = require('dbjs-ext/string/string-line')(db)
   , Email        = require('dbjs-ext/string/string-line/email')(db)
@@ -17,6 +18,31 @@ var Map          = require('es6-map')
   , file;
 
 require('dbjs-ext/create-enum')(db);
+
+Role.members.add('user-admin');
+Role.meta.get('user-admin').setProperties({
+	label: "User Admin"
+});
+Role.members.add('meta-admin');
+Role.meta.get('meta-admin').setProperties({
+	label: "Meta Admin"
+});
+Role.members.add('demo-user');
+Role.meta.get('demo-user').setProperties({
+	label: "Demo User"
+});
+Role.members.add('official-revision');
+Role.meta.get('official-revision').setProperties({
+	label: "Revision"
+});
+Role.members.add('official-processing');
+Role.meta.get('official-processing').setProperties({
+	label: "Processing"
+});
+Role.members.add('official-registration');
+Role.meta.get('official-registration').setProperties({
+	label: "Registration"
+});
 
 BusinessActivityCategory = db.Object.extend('BusinessActivityCategory', {
 	label: { type: StringLine, required: true }
