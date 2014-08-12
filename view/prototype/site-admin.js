@@ -10,11 +10,11 @@ exports['submitted-menu'] = function () {
 		nav(
 			{ class: 'items' },
 			menuitem(
-				a({ class: 'item-active' },
+				a({ class: 'item-active', href: '/site-admin/' },
 					"Application")
 			),
 			menuitem(
-				a("Profile")
+				a({ href: '/profile/' }, "Profile")
 			)
 		)
 	);
@@ -24,10 +24,10 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'submitted-main' },
 		div(
-			a({ class: 'admin-new-user-add-button' }, "New User")
+			a({ class: 'button-main ' }, "New User")
 		),
 		table(
-			{ 'class': 'site-admin-data-table' },
+			{ 'class': 'official-users-table' },
 			thead(
 				tr(
 					th("Email"),
@@ -38,53 +38,42 @@ exports['sub-main'] = function () {
 			tbody(
 				tr(
 					td(
-						div({ 'class': 'cell-body' },
-							"john.watson@sherloc.com")
+						div("john.watson@sherloc.com")
 					),
 					td(
-						div({ 'class': 'cell-body' },
-							"Bussines Licence A")
+						div("Bussines Licence A")
 					),
 					td(
-						{ 'class': 'desktop-only' },
-						div({ 'class': 'cell-body' },
-							"23/07/2014 18:09:22")
+						div("23/07/2014 18:09:22")
 					)
 				),
 				tr(
 					td(
-						div({ 'class': 'cell-body' },
-							"john.watson@sherloc.com")
+						div("john.watson@sherloc.com")
 					),
 					td(
-						div({ 'class': 'cell-body' },
-							"Bussines Licence A")
+						div("Bussines Licence A")
 					),
 					td(
 						{ 'class': 'desktop-only' },
-						div({ 'class': 'cell-body' },
-							"23/07/2014 18:09:22")
+						div("23/07/2014 18:09:22")
 					)
 				),
 				tr(
 					td(
-						div({ 'class': 'cell-body' },
-							"john.watson@sherloc.com")
+						div("john.watson@sherloc.com")
 					),
 					td(
-						div({ 'class': 'cell-body' },
-							"Bussines Licence A")
+						div("Bussines Licence A")
 					),
 					td(
 						{ 'class': 'desktop-only' },
-						div({ 'class': 'cell-body' },
-							"23/07/2014 18:09:22")
+						div("23/07/2014 18:09:22")
 					)
 				),
 				tr(
 					td(
-						div({ 'class': 'cell-body' },
-							"john.watson@sherloc.com")
+						div("john.watson@sherloc.com")
 					),
 					td(
 						ul(
@@ -96,38 +85,31 @@ exports['sub-main'] = function () {
 					),
 					td(
 						{ 'class': 'desktop-only' },
-						div({ 'class': 'cell-body' },
-							"23/07/2014 18:09:22")
+						div("23/07/2014 18:09:22")
 					)
 				),
 				tr(
 					td(
-						div({ 'class': 'cell-body' },
-							"john.watson@sherloc.com")
+						div("john.watson@sherloc.com")
 					),
 					td(
-						div({ 'class': 'cell-body' },
-							"Bussines Licence A")
+						div("Bussines Licence A")
 					),
 					td(
 						{ 'class': 'desktop-only' },
-						div({ 'class': 'cell-body' },
-							"23/07/2014 18:09:22")
+						div("23/07/2014 18:09:22")
 					)
 				),
 				tr(
 					td(
-						div({ 'class': 'cell-body' },
-							"john.watson@sherloc.com")
+						div("john.watson@sherloc.com")
 					),
 					td(
-						div({ 'class': 'cell-body' },
-							"Bussines Licence A")
+						div("Bussines Licence A")
 					),
 					td(
 						{ 'class': 'desktop-only' },
-						div({ 'class': 'cell-body' },
-							"23/07/2014 18:09:22")
+						div("23/07/2014 18:09:22")
 					)
 				)
 			)

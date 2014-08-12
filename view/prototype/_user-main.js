@@ -1,5 +1,9 @@
 'use strict';
 
+exports['user-name'] = function () {
+	text("User Name");
+};
+
 exports.main = function () {
 	div({ id: 'user-steps-menu', class: 'steps-menu' },
 		div({ class: 'all-menu-items' },

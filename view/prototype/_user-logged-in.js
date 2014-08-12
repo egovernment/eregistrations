@@ -10,7 +10,7 @@ exports.menu = function () {
 	menuitem(
 		a(
 			{ href: '/profile/' },
-			span({ class: 'user-name', id: 'user-name' }, "User Name")
+			span({ class: 'user-name', id: 'user-name' })
 		)
 	);
 	menuitem(

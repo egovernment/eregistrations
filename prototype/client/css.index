@@ -2,6 +2,7 @@
 ../../css/form.css
 ../../css/table.css
 ../../css/font-awesome.css
+../../css/components/button-main.css
 ../../css/components/disabler.css
 ../../css/components/modal.css
 ../../css/components/modal-form.css
@@ -32,4 +33,4 @@
 ../../css/components/user-submitted-data-table.css
 ../../css/components/label-reg.css
 ../../css/components/table-responsive.css
-../../css/components/site-admin.css
+../../css/components/site-admin-data-table.css
