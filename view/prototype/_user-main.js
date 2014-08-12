@@ -3,16 +3,19 @@
 exports.menu = function () {
 	menuitem(
 		a(
+			{ href: '/profile/' },
 			span({ class: 'fa fa-user' }, "Preferences")
 		)
 	);
 	menuitem(
 		a(
+			{ href: '/profile/' },
 			span({ class: 'user-name' }, "User Name")
 		)
 	);
 	menuitem(
 		a(
+			{ href: '/profile/' },
 			span({ class: 'fa fa-cogs' }, "Preferences")
 		)
 	);
@@ -24,7 +27,7 @@ exports.menu = function () {
 };
 
 exports.main = function () {
-	div({ class: 'steps-menu' },
+	div({ id: 'user-steps-menu', class: 'steps-menu' },
 		div({ class: 'all-menu-items' },
 			label({ class: 'step-active show-steps-btn', for: 'show-steps-control' },
 				'Steps'
