@@ -27,3 +27,12 @@
 .section-warning li a:active {
 	text-decoration: underline;
 }
+
+/*
+Styles applied while screen sieze is less than 640px
+*/
+@media only screen and (max-width: var(--mobile-width)) {
+	.section-warning  {
+		min-width: var(--min-mobile-width);
+	}
+}

@@ -4,8 +4,9 @@ var db = require('mano').db,
 		user = db.User.prototype;
 
 exports.step = function () {
-	section({ 'class': 'section-primary' },
-		form(h2("Section A"),
+	section(
+		form({ 'class': 'section-primary' },
+			h2("Section A"),
 			fieldset(h3("Busieness Partner basic informations"),
 				hr(),
 				ul({ 'class': 'form-elements forms' },
@@ -17,10 +18,11 @@ exports.step = function () {
 					)
 				)
 			)
-		);
+	);
 
-	section({ 'class': 'section-primary' },
-		form(h2("Section B"),
+	section(
+		form({ 'class': 'section-primary' },
+			h2("Section B"),
 				fieldset(h3("Busieness Partner secondary informations"),
 					hr(),
 					ul({ 'class': 'form-elements forms' },
@@ -32,7 +34,7 @@ exports.step = function () {
 						)
 					)
 				)
-		);
+	);
 
 	div({ 'class': 'next-step' },
 			a({ 'href': '/forms/' }, "Save")
