@@ -18,7 +18,7 @@ exports.main = function () {
 					hr(),
 					ul(
 						{ 'class': 'form-elements fieldset' },
-						['firstName', 'lastName', 'dateOfBirth', 'userEmail', 'password'],
+						['firstName', 'lastName', 'userEmail', 'password'],
 						function (name) {
 							return field({ dbjs: user.getObservable(name) });
 						}
