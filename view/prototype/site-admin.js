@@ -44,6 +44,7 @@ exports['sub-main'] = function () {
 						div("Bussines Licence A")
 					),
 					td(
+						{ 'class': 'desktop-only' },
 						div("23/07/2014 18:09:22")
 					)
 				),
