@@ -1,7 +1,7 @@
 'use strict';
 
 exports.main = function () {
-	div({ class: 'submitted-menu' },
+	div({ class: 'submitted-menu', id: 'submitted-menu' },
 		div({ class: 'all-menu-items' },
 			nav({ class: 'items' },
 				menuitem(

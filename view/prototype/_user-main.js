@@ -1,31 +1,5 @@
 'use strict';
 
-exports.menu = function () {
-	menuitem(
-		a(
-			{ href: '/profile/' },
-			span({ class: 'fa fa-user' }, "Preferences")
-		)
-	);
-	menuitem(
-		a(
-			{ href: '/profile/' },
-			span({ class: 'user-name' }, "User Name")
-		)
-	);
-	menuitem(
-		a(
-			{ href: '/profile/' },
-			span({ class: 'fa fa-cogs' }, "Preferences")
-		)
-	);
-	menuitem(
-		a({ href: '/' },
-			span({ class: 'fa fa-power-off' }, "Log out")
-			)
-	);
-};
-
 exports.main = function () {
 	div({ id: 'user-steps-menu', class: 'steps-menu' },
 		div({ class: 'all-menu-items' },

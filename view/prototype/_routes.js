@@ -12,10 +12,12 @@ module.exports = function (view) {
 	// All routes - no imported content, only header and #main to import elements
 	var main = view.documentElement.diff('./_main'),
 		// User routes - import content directly to #main element
-		userMain = main.diff('./_user-main'),
-		submittedMain = main.diff('./_submitted-main'),
-		userForm = userMain.diff('./forms'),
-		userDocuments = userMain.diff('./documents');
+		userLogedIn = main.diff('./_user-loged-in'),
+		userMain = userLogedIn.diff('./_user-main'),
+		subMain = userLogedIn.diff('./_sub-main'),
+		// For disablers
+		userForm = userLogedIn.diff('./forms'),
+		userDocuments = userLogedIn.diff('./documents');
 
 	return {
 		// Public routes - imports content directly to #main element
@@ -31,9 +33,12 @@ module.exports = function (view) {
 		'documents/disabled':  bind(userDocuments.diff('./disabled-documents')),
 		'forms/partner-add': bind(userMain.diff('./partner-add')),
 		'forms/partner-id': bind(userMain.diff('./partner')),
-		'user-submitted': bind(submittedMain.diff('./user-submitted')),
+		'user-submitted': bind(subMain.diff('./user-submitted')),
 
 		// Error routes
-		404: bind(main.diff('./404'))
+		404: bind(main.diff('./404')),
+
+		// Site admin routes
+		'site-admin': bind(subMain.diff('./site-admin'))
 	};
 };

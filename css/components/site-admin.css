@@ -1,0 +1,80 @@
+.site-admin {
+	background-color: var(--light-background);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	margin: 0 auto;
+	max-width: var(--desktop-width);
+	padding: 22px 10px 0;
+}
+
+.admin-new-user-add-button {
+	background-color: var(--normal-background);
+	border-radius: 6px;
+	color: var(--white-text);
+	display: block;
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 22px;
+	margin-bottom: 0;
+	text-align: center;
+	text-decoration: none;
+	white-space: nowrap;
+	height: 44px;
+	padding: 11px 10px;
+}
+.admin-new-user-add-button :hover,
+.admin-new-user-add-button :focus,
+.admin-new-user-add-button :active {
+	background-color: var(--normal-dark-background);
+}
+
+.site-admin-data-table {
+	margin-top: 22px;
+}
+
+.site-admin-data-table thead {
+	background-color: var(--normal-background);
+}
+.site-admin-data-table thead th {
+	color: var(--white-text);
+}
+
+.site-admin-data-table tbody tr {
+	background-color: var(--white-text);
+}
+
+.site-admin-data-table tbody tr td {
+	border: 1px solid var(--light-inner-border);
+}
+
+.site-admin-data-table th, .table-submitted td {
+	border: 1px solid var(--light-inner-border);
+}
+
+.site-admin-data-table tbody tr:nth-of-type(even) {
+	background-color: var(--light-background);
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+
+	.site-admin-data-table tr {
+		border: 1px solid var(--light-inner-border);
+		height: auto;
+		}
+
+	.site-admin-data-table td {
+		border-bottom: 1px solid var(--light-inner-border);
+		position: relative;
+		}
+
+	.site-admin-data-table td {
+		display: flex;
+		justify-content: space-around;
+		padding: 0;
+		}
+
+	.site-admin-data-table th {
+		display: none;
+	}
+}

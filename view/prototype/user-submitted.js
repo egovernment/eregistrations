@@ -1,5 +1,9 @@
 'use strict';
 
+exports['user-name'] = function () {
+	text("User Submited");
+};
+
 exports['sub-main'] = function () {
 	section(
 		{ 'class': 'submitted-main' },
