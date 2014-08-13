@@ -5,6 +5,11 @@
 	display: flex;
 	width: 100%;
 }
+.submitted-all-menu-items {
+	display: flex;
+	margin: 0 auto;
+	width: 100%;
+}
 
 .submitted-menu .items {
 	display: flex;
@@ -26,6 +31,17 @@
 	height: 44px;
 	line-height: 44px;
 	display: block;
+}
+
+.navs-both-sides {
+	display: flex;
+	justify-content: space-between;
+	width: var(--desktop-width);
+	margin: 0 auto;
+}
+.navs-both-sides .items {
+	width: auto;
+	margin: 0;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {

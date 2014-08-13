@@ -5,18 +5,25 @@ exports['user-name'] = function () {
 };
 
 exports['submitted-menu'] = function () {
-	nav(
-		{ class: 'items' },
-		menuitem(
-			a({ class: 'item-active' },
-				"Revision")
+	div(
+		{ class: 'navs-both-sides' },
+		nav(
+			{ class: 'items' },
+			menuitem(
+				a({ class: 'item-active' },
+					"Revision")
+			),
+			menuitem(
+				a({ href: '/profile/' }, "Profile")
+			)
 		),
-		menuitem(
-			a({ href: '/profile/' }, "Profile")
+		nav(
+			{ class: 'items' },
+			menuitem(
+				a({ class: 'item-active' },
+					"Role")
+			)
 		)
-	);
-	nav(
-		menuitem(a("test"))
 	);
 };
 
