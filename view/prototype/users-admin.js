@@ -1,7 +1,7 @@
 'use strict';
 
 exports['user-name'] = function () {
-	text("Site Admin");
+	text("Users Admin");
 };
 
 exports['submitted-menu'] = function () {
@@ -10,7 +10,7 @@ exports['submitted-menu'] = function () {
 		nav(
 			{ class: 'items' },
 			menuitem(
-				a({ class: 'item-active', href: '/site-admin/' },
+				a({ class: 'item-active', href: '/users-admin/' },
 					"Application")
 			),
 			menuitem(
