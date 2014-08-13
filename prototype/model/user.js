@@ -115,6 +115,13 @@ user.defineProperties({
 
 module.exports = User;
 
+User.newNamed('userVianney', {
+	firstName: 'Vianney',
+	lastName: 'Lesaffre',
+	email: 'vianney@lesaffre.com',
+	roles: ['users-admin']
+});
+
 Partner = db.User.extend('Partner');
 
 user.define('partners', {
@@ -122,8 +129,8 @@ user.define('partners', {
 	multiple: true
 });
 
-user.partners.add(new Partner({ firstName: "Frank", lastName: "Grozel" }));
-user.partners.add(new Partner({ firstName: "Bita", lastName: "Mortazavi" }));
+user.partners.add(Partner.newNamed('partnerFrank', { firstName: "Frank", lastName: "Grozel" }));
+user.partners.add(Partner.newNamed('partnerBita', { firstName: "Bita", lastName: "Mortazavi" }));
 
 Submission.extend('DocumentASubmission', {},
 	{ Document: { value: Document.extend('DocumentA', {}, { label: { value: "Document A" } }) } });
