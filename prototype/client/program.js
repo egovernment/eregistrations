@@ -24,6 +24,7 @@ require('mano/lib/client')({
 		require('../../view/dbjs/business-activity');
 		require('../../view/dbjs/user-registerIds');
 
+		domEnum(db.Role);
 		domEnum(db.CompanyType);
 	},
 	viewRequire: require('../../view/prototype/_require'),
