@@ -26,24 +26,20 @@
 	justify-content: space-between;
 }
 
-.user-guide div {
-	background-color: #ffffff;
+.user-guide .guide-box {
+	background-color: var(--white-background);
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
-	margin-bottom: 20px;
-	padding: 22px 15px 0 15px;
+	padding: 20px 15px 0 15px;
 	width: 49%;
-}
-
-.user-guide div {
-	margin-bottom: 20px;
+	margin-bottom: 22px;
 }
 
 .user-guide button.save-step-one {
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
-	color: #ffffff;
+	color: var(--white-text);
 	cursor: pointer;
 	display: inline-block;
 	font-size: 18px;
@@ -55,7 +51,14 @@
 	text-decoration: none;
 	vertical-align: middle;
 	white-space: nowrap;
+	width: 49%;
 }
+@-moz-document url-prefix() {
+	.user-guide button.save-step-one  {
+		padding: 9px 16px;
+	}
+}
+
 .user-guide button.save-step-one:hover,
 .user-guide button.save-step-one:focus,
 .user-guide button.save-step-one:active {
@@ -66,16 +69,24 @@
 	margin-bottom: 20px;
 }
 
+.guide-costs-list {
+	padding-left: 0;
+	list-style-type: none;
+}
+
+.guide-costs-list li {
+	display: flex;
+	justify-content: space-between;
+}
+
 .guide-total-costs {
 	background-color: var(--light-background);
 	border-bottom: 1px solid black;
 	border-top: 1px solid black;
 	line-height: 22px;
-	padding: 10px 0;
-}
-
-.user-guide button.save-step-one {
-	width: 49%;
+	padding: 10px 0 11px;
+	margin-top: 20px;
+	font-weight: bolder;
 }
 
 /*
@@ -86,7 +97,7 @@ Styles applied while screen sieze is less than 640px
 		min-width: var(--min-mobile-width);
 	}
 
-	.user-guide div {
+	.user-guide .guide-box {
 		width: 100%;
 	}
 

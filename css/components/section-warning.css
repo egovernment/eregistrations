@@ -1,0 +1,38 @@
+.section-warning {
+	margin: 22px auto 0;
+	max-width: var(--desktop-width);
+	padding: 0 10px;
+}
+
+.section-warning ul {
+	list-style-type: none;
+	padding-left: 0;
+}
+
+.section-warning li {
+	background-color: var(--white-background);
+	border: none;
+	border-left: 3px solid var(--dark-background);
+	padding: 22px 15px;
+	border-radius: 0;
+	margin-bottom: 22px;
+}
+
+.section-warning li a {
+	text-decoration: none;
+	color: var(--dark-text);
+}
+.section-warning li a:hover,
+.section-warning li a:focus,
+.section-warning li a:active {
+	text-decoration: underline;
+}
+
+/*
+Styles applied while screen sieze is less than 640px
+*/
+@media only screen and (max-width: var(--mobile-width)) {
+	.section-warning  {
+		min-width: var(--min-mobile-width);
+	}
+}

@@ -2,7 +2,10 @@
 ../../css/form.css
 ../../css/table.css
 ../../css/font-awesome.css
+../../css/components/button-main.css
+../../css/components/disabler.css
 ../../css/components/modal.css
+../../css/components/modal-form.css
 ../../css/components/modal-login.css
 ../../css/components/modal-register.css
 ../../css/components/header-top.css
@@ -12,9 +15,11 @@
 ../../css/components/public-error.css
 ../../css/components/user-steps-menu.css
 ../../css/components/user-guide.css
+../../css/components/user-submission-sworn-declaration.css
 ../../css/components/user-uploaded-files.css
 ../../css/components/user-next-step-button.css
 ../../css/components/section-primary.css
+../../css/components/section-warning.css
 ../../css/components/entity-properties.css
 ../../css/components/entities-overview-table.css
 ../../css/components/fieldset.css
@@ -23,3 +28,14 @@
 ../../css/components/vertical-tabs.css
 ../../css/components/public-articles.css
 ../../css/components/nav-burger.css
+../../css/components/submitted-main.css
+../../css/components/submitted-menu.css
+../../css/components/submitted-documents-list.css
+../../css/components/user-submitted-history.css
+../../css/components/revision.css
+../../css/components/revision-document-preview.css
+../../css/components/submitted-documents-thumbs-list.css
+../../css/components/user-submitted-data-table.css
+../../css/components/label-reg.css
+../../css/components/table-responsive.css
+../../css/components/official-users-table.css

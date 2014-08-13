@@ -1,0 +1,35 @@
+.submitted-menu {
+	background-color: var(--dark-background);
+	background-position: center center;
+	background-size: cover;
+	display: flex;
+	width: 100%;
+}
+
+.submitted-menu .items {
+	display: flex;
+	justify-content: flex-start;
+	margin: 0 auto;
+	padding: 0 10px;
+	width: var(--desktop-width);
+}
+
+.submitted-menu menuitem .item-active {
+	background: var(--normal-dark-background);
+}
+
+.submitted-menu a {
+	color: var(--white-text);
+	font-size: 16px;
+	text-decoration: none;
+	padding: 0 17px;
+	height: 44px;
+	line-height: 44px;
+	display: block;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.submitted-menu {
+		min-width: var(--min-mobile-width);
+	}
+}

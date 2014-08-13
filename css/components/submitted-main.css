@@ -1,0 +1,11 @@
+.submitted-main {
+	margin: 0 auto;
+	max-width: var(--desktop-width);
+	padding: 22px 10px 0 10px;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.submitted-main {
+		min-width: var(--min-mobile-width);
+	}
+}

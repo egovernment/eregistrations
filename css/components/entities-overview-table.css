@@ -3,7 +3,7 @@
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
-	color: #ffffff;
+	color: var(--white-text);
 	cursor: pointer;
 	display: inline-block;
 	font-size: 18px;
@@ -32,7 +32,7 @@
 .actions a {
 	background-color: var(--normal-background);
 	border-radius: 3px;
-	color: #ffffff;
+	color: var(--white-text);
 	cursor: pointer;
 	font-size: 12px;
 	line-height: 18px;
@@ -51,7 +51,7 @@
 
 .confirmed {
 	text-align: center;
-	color: rgb(46,139,87);
+	color: var(--success-text);
 }
 
 @media only screen and (max-width: var(--mobile-width)) {

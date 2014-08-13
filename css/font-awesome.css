@@ -59,6 +59,7 @@ e.g.:
 
 .fa-clipboard:before {
 	content: "\f0ea";
+
 }
 
 .fa-download {
@@ -77,9 +78,45 @@ e.g.:
 	content: "\f003";
 }
 
+.fa-print {
+	width: 1em;
+}
+
+.fa-print:before {
+	content: "\f02f";
+}
+
 .fa-trash-o {
 	width: 0.79em;
 }
 .fa-trash-o:before {
 	content: "\f014";
+}
+
+.fa-check {
+	width: 0.99em;
+}
+.fa-check:before {
+	content: "\f00c";
+}
+
+.fa-power-off {
+	width: 0.85em;
+}
+.fa-power-off:before {
+	content: "\f011";
+}
+
+.fa-cogs {
+	width: 1.1em;
+}
+.fa-cogs:before {
+	content: '\f085';
+}
+
+.fa-user {
+	width: 0.8em;
+}
+.fa-user:before {
+	content: '\f007'
 }

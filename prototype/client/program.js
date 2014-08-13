@@ -22,7 +22,9 @@ require('mano/lib/client')({
 		require('dbjs-dom-bootstrap/number/square-meters')(db);
 		require('eregistrations/view/dbjs/submission-file');
 		require('../../view/dbjs/business-activity');
+		require('../../view/dbjs/user-registerIds');
 
+		domEnum(db.Role);
 		domEnum(db.CompanyType);
 	},
 	viewRequire: require('../../view/prototype/_require'),

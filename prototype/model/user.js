@@ -3,6 +3,7 @@
 var Map          = require('es6-map')
   , db           = require('mano').db
   , User         = require('mano-auth/model/user')
+  , Role         = require('mano-auth/model/role')
   , DateType     = require('dbjs-ext/date-time/date')(db)
   , StringLine   = require('dbjs-ext/string/string-line')(db)
   , Email        = require('dbjs-ext/string/string-line/email')(db)
@@ -17,6 +18,35 @@ var Map          = require('es6-map')
   , file;
 
 require('dbjs-ext/create-enum')(db);
+
+Role.members.add('user');
+Role.meta.get('user').setProperties({
+	label: "Self employed"
+});
+Role.members.add('users-admin');
+Role.meta.get('users-admin').setProperties({
+	label: "Users Admin"
+});
+Role.members.add('meta-admin');
+Role.meta.get('meta-admin').setProperties({
+	label: "Meta Admin"
+});
+Role.members.add('demo-user');
+Role.meta.get('demo-user').setProperties({
+	label: "Demo User"
+});
+Role.members.add('official-revision');
+Role.meta.get('official-revision').setProperties({
+	label: "Revision"
+});
+Role.members.add('official-processing');
+Role.meta.get('official-processing').setProperties({
+	label: "Processing"
+});
+Role.members.add('official-registration');
+Role.meta.get('official-registration').setProperties({
+	label: "Registration"
+});
 
 BusinessActivityCategory = db.Object.extend('BusinessActivityCategory', {
 	label: { type: StringLine, required: true }
@@ -67,13 +97,20 @@ user.defineProperties({
 	isShoppingGallery: { type: db.Boolean, label: "A shopping gallery", required: true,
 		trueLabel: "Yes", falseLabel: "No" },
 	isARequested: { type: db.Boolean, label: "Registration A", required: true },
-	isBRequested: { type: db.Boolean, label: "Registration B", required: true },
+	isBRequested: { type: db.Boolean, label: "Etiam vestibulum dui mi," +
+		" nec ultrices diam ultricies id vestibulum dui mi," +
+		" nec ultrices diam ultricies id vestibulum dui mi,", required: true },
 
 	dateOfBirth: { type: DateType, label: "Date of birth", required: true },
 	userEmail: { type: Email, label: "Email" },
 
 	registerIds: { type: StringLine, multiple: true, label: "Padrón", pattern: /^\d{8}$/,
-		inputMask: '88888888' }
+		inputMask: '88888888' },
+	isAffidavitSigned: { type: db.Boolean },
+	//Submission
+	placeOfWithdraw: { type: StringLine, label: "Withdraw documents to" },
+	pickCertificates: { type: db.Boolean, trueLabel: "I will pick the certificates.",
+		falseLabel: "he following person will pick the certificates", label: "The following person:" }
 });
 
 module.exports = User;

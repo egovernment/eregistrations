@@ -11,7 +11,7 @@ Component describing styles for public error page
 }
 
 .public-error div {
-	background-color: #ffffff;
+	background-color: var(--white-background);
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
 	margin: 22px 0;

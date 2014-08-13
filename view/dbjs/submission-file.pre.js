@@ -1,3 +1,5 @@
+// Temporary, to be used until prototype is used as base for all systems
+
 'use strict';
 
 var d        = require('d')
@@ -43,40 +45,21 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 				? file._clear_.bind(file)
 				: this.removeItem.bind(this, data.dom);
 
-			itemDom = _if(file._name,
-				el('div',
-					el('a',
-						{ href: file._url, target: '_blank', class: 'thumb-doc' },
-						el('img',
-							{ src: resolve(file._thumb, '_url') }
-							)
-						),
-					data.control =
-						el('input',
-							{ type: 'hidden', name: this.name, value: file.__id__ }
-							),
-					el('div',
-						el('span', { class: 'document-size' },
-							map(file._diskSize, function (size) {
-								if (size == null) return null;
-								return ((size / 1000000).toFixed(2) + ' Mo');
-							})
-							),
-						el('span',
-							{ class: 'doc-action', onclick: remove },
-							el('span',
-								{ class: 'fa fa-trash-o' }, "delete"
-								)
-							),
-						el('a',
-							{ href: file._url, target: '_blank', class: 'doc-action' },
-							el('span',
-								{ class: 'fa fa-download' }, "download"
-								)
-							)
-						)
-
-					));
+			itemDom = _if(file._name, el('span',
+				el('a', { href: file._url, target: '_blank', class: 'thumb-doc' },
+					el('img', { src: resolve(file._thumb, '_url') })),
+				el('span', { class: 'thumb-doc-action' },
+					map(file._diskSize, function (size) {
+						if (size == null) return null;
+						return ((size / 1000000).toFixed(2) + ' Mo');
+					})),
+				data.control = el('input', { type: 'hidden', name: this.name,
+					value: file.__id__ }),
+				el('a', { class: 'thumb-doc-action', onclick: remove },
+					el('i', { class: 'icon-trash' })),
+				el('a', { href: file._url, target: '_blank',
+					class: 'dlBtn thumb-doc-action' },
+					el('i', { class: 'icon-arrow-down' }))));
 			data.dom.appendChild(itemDom.toDOM ? itemDom.toDOM(this.document) : itemDom);
 			return data;
 		}

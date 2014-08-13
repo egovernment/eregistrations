@@ -8,15 +8,24 @@ Component describing basic elements styles - reusable
 	--min-mobile-width: 320px;
 	--light-inner-border: #e3e3e3;
 	/* Theme colors virables */
+	--white-background: #ffffff;
 	--light-background: #f5f5f5;
 	--normal-background: #999;
 	--normal-dark-background: #666;
 	--dark-background: #333;
+	/* Rounded borders */
 	--normal-rounded-border: 6px;
 	--left-rounded-border: 6px 0 0 6px;
 	--right-rounded-border: 0 6px 6px 0;
 	--top-rounded-border: 6px 6px 0 0;
 	--bottom-rounded-border: 0 0 6px 6px;
+	/* Text colors */
+	--white-text: #ffffff;
+	--light-text: #e3e3e3;
+	--normal-text: #666666;
+	--dark-text: #333333;
+	--success-text: #2e8b57;
+	--error-text: #ff0000;
 }
 
 html {
@@ -27,7 +36,7 @@ html {
 
 body {
 	background-color: #ffffff;
-	color: #333333;
+	color: var(--dark-text);
 	margin: 0;
 	font-size: 14px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -35,10 +44,13 @@ body {
 
 main {
 	background-color: var(--light-background);
+	padding-bottom: 22px;
 }
 
 * {
 	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
 }
 *:before,
 *:after {
@@ -49,7 +61,7 @@ html {
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 h1, h2, h3, h4, h5, p {
-	color: var(--dark-background);
+	color: var(--dark-text);
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
@@ -82,6 +94,11 @@ h6 {
 	font-size: 10.5px;
 	line-height: 22px;
 	margin: 0 0 22px 0;
+}
+
+a {
+	text-decoration: none;
+	color: var(--dark-text);
 }
 
 p {
@@ -118,7 +135,7 @@ button {
 }
 
 form {
-	margin-bottom: 21px;
+	margin-bottom: 22px;
 }
 
 ul {
