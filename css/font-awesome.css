@@ -98,5 +98,12 @@ e.g.:
 	width: 0.8em;
 }
 .fa-user:before {
-	content: '\f007'
+	content: '\f007';
+}
+
+.fa-edit {
+	width: 1em;
+}
+.fa-edit:before {
+	content: '\f044';
 }

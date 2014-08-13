@@ -26,13 +26,14 @@ exports['sub-main'] = function () {
 				tr(
 					th("Email"),
 					th("Institution"),
-					th({ 'class': 'desktop-only' }, "Creation date")
+					th({ 'class': 'desktop-only' }, "Creation date"),
+					th({ class: 'actions' }, "Actions")
 				)
 			),
 			tbody(
 				tr(
 					td(
-						div("john.watson@sherloc.com")
+						div(a({ href: '/users-admin/user-id/' }, "john.watson@sherloc.com"))
 					),
 					td(
 						div("Bussines Licence A")
@@ -40,11 +41,16 @@ exports['sub-main'] = function () {
 					td(
 						{ 'class': 'desktop-only' },
 						div("23/07/2014 18:09:22")
+					),
+					td(
+						{ class: 'actions' },
+						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
+						a("Delete")
 					)
 				),
 				tr(
 					td(
-						div("john.watson@sherloc.com")
+						div(a({ href: '/users-admin/user-id/' }, "john.watson@sherloc.com"))
 					),
 					td(
 						div("Bussines Licence A")
@@ -52,11 +58,16 @@ exports['sub-main'] = function () {
 					td(
 						{ 'class': 'desktop-only' },
 						div("23/07/2014 18:09:22")
+					),
+					td(
+						{ class: 'actions' },
+						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
+						a("Delete")
 					)
 				),
 				tr(
 					td(
-						div("john.watson@sherloc.com")
+						div(a({ href: '/users-admin/user-id/' }, "john.watson@sherloc.com"))
 					),
 					td(
 						div("Bussines Licence A")
@@ -64,11 +75,16 @@ exports['sub-main'] = function () {
 					td(
 						{ 'class': 'desktop-only' },
 						div("23/07/2014 18:09:22")
+					),
+					td(
+						{ class: 'actions' },
+						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
+						a("Delete")
 					)
 				),
 				tr(
 					td(
-						div("john.watson@sherloc.com")
+						div(a({ href: '/users-admin/user-id/' }, "john.watson@sherloc.com"))
 					),
 					td(
 						ul(
@@ -81,11 +97,16 @@ exports['sub-main'] = function () {
 					td(
 						{ 'class': 'desktop-only' },
 						div("23/07/2014 18:09:22")
+					),
+					td(
+						{ class: 'actions' },
+						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
+						a("Delete")
 					)
 				),
 				tr(
 					td(
-						div("john.watson@sherloc.com")
+						div(a({ href: '/users-admin/user-id/' }, "john.watson@sherloc.com"))
 					),
 					td(
 						div("Bussines Licence A")
@@ -93,11 +114,16 @@ exports['sub-main'] = function () {
 					td(
 						{ 'class': 'desktop-only' },
 						div("23/07/2014 18:09:22")
+					),
+					td(
+						{ class: 'actions' },
+						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
+						a("Delete")
 					)
 				),
 				tr(
 					td(
-						div("john.watson@sherloc.com")
+						div(a({ href: '/users-admin/user-id/' }, "john.watson@sherloc.com"))
 					),
 					td(
 						div("Bussines Licence A")
@@ -105,6 +131,11 @@ exports['sub-main'] = function () {
 					td(
 						{ 'class': 'desktop-only' },
 						div("23/07/2014 18:09:22")
+					),
+					td(
+						{ class: 'actions' },
+						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
+						a("Delete")
 					)
 				)
 			)
