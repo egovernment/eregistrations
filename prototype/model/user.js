@@ -19,6 +19,10 @@ var Map          = require('es6-map')
 
 require('dbjs-ext/create-enum')(db);
 
+Role.members.add('user');
+Role.meta.get('user').setProperties({
+	label: "Self employed"
+});
 Role.members.add('users-admin');
 Role.meta.get('users-admin').setProperties({
 	label: "Users Admin"
