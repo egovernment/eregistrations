@@ -21,6 +21,7 @@
 ../../css/components/section-primary.css
 ../../css/components/section-warning.css
 ../../css/components/entity-properties.css
+../../css/components/entity-options.css
 ../../css/components/entities-overview-table.css
 ../../css/components/fieldset.css
 ../../css/components/submitted-main.css
