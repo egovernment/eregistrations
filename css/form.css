@@ -20,7 +20,7 @@ ul.form-elements li {
 	vertical-align: top;
 	padding: 0 10px;
 }
-.dbjs-input-component  label {
+.dbjs-input-component > label {
 	width: 40%;
 	text-align: right;
 	font-weight: bold;
@@ -193,6 +193,7 @@ input[type="submit"] {
 
 .dbjs.multiple {
 	display: inline-block;
+	list-style-type: none;
 }
 
 .dbjs.multiple ul {
@@ -200,6 +201,11 @@ input[type="submit"] {
 	padding: 0;
 	margin-bottom: 0;
 }
+
+ul.multiple {
+	margin-bottom: 0;
+}
+
 .dbjs.multiple ul li:first-child {
 	padding-top: 0;
 }

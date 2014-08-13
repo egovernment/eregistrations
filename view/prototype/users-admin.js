@@ -5,18 +5,12 @@ exports['user-name'] = function () {
 };
 
 exports['submitted-menu'] = function () {
-	div(
-		{ class: 'all-menu-items' },
-		nav(
-			{ class: 'items' },
-			menuitem(
-				a({ class: 'item-active', href: '/users-admin/' },
-					"Application")
-			),
-			menuitem(
-				a({ href: '/profile/' }, "Profile")
-			)
-		)
+	menuitem(
+		a({ class: 'item-active', href: '/users-admin/' },
+			"Application")
+	);
+	menuitem(
+		a({ href: '/profile/' }, "Profile")
 	);
 };
 
@@ -24,7 +18,7 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'submitted-main' },
 		div(
-			a({ class: 'button-main ' }, "New User")
+			a({ class: 'button-main ', href: '/users-admin/add-user/' }, "New User")
 		),
 		table(
 			{ 'class': 'official-users-table' },
