@@ -57,7 +57,10 @@ bcInsurance = BusinessActivityCategory.newNamed('bcInsurance', { label: "Insuran
 
 BusinessActivity = db.Object.extend('BusinessActivity', {
 	label: { type: StringLine, required: true },
-	category: { type: BusinessActivityCategory, required: true }
+	category: { type: BusinessActivityCategory, required: true },
+	toString: { value: function (/* ignore */) {
+		return this.label;
+	} }
 });
 
 BusinessActivity.newNamed('baComissionAgent', {
@@ -129,7 +132,19 @@ user.define('partners', {
 	multiple: true
 });
 
-user.partners.add(Partner.newNamed('partnerFrank', { firstName: "Frank", lastName: "Grozel" }));
+user.partners.add(Partner.newNamed('partnerFrank',
+	{
+		firstName: "Frank",
+		lastName: "Grozel",
+		dateOfBirth: "01.01.1960",
+		email: "frank@grozel.fr",
+		companyType: 'private',
+		inventory: 1000000,
+		isOwner: true,
+		businessActivity: db.baAirCharterAgent,
+		members: 5
+
+	}));
 user.partners.add(Partner.newNamed('partnerBita', { firstName: "Bita", lastName: "Mortazavi" }));
 
 Submission.extend('DocumentASubmission', {},
