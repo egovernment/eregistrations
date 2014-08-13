@@ -115,6 +115,13 @@ user.defineProperties({
 
 module.exports = User;
 
+User.newNamed('userVianney', {
+	firstName: 'Vianney',
+	lastName: 'Lesaffre',
+	email: 'vianney@lesaffre.com',
+	roles: ['users-admin']
+});
+
 Partner = db.User.extend('Partner');
 
 user.define('partners', {
