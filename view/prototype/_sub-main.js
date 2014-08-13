@@ -2,8 +2,8 @@
 
 exports.main = function () {
 	div({ class: 'submitted-menu' },
-		div({ class: 'all-menu-items' },
-			nav({ class: 'items', id: 'submitted-menu' },
+		div({ class: 'all-menu-items', id: 'submitted-menu' },
+			nav({ class: 'items' },
 				menuitem(
 					a({ class: 'item-active' },
 						"Request")
