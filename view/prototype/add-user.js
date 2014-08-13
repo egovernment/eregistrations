@@ -24,7 +24,7 @@ exports['sub-main'] = function () {
 						),
 					li(field({ dbjs: user._roles,
 							filter: filterOfficial,
-							label: 'Funcionarios'
+							label: 'Officials'
 							}
 							)
 						),
