@@ -1,65 +1,68 @@
 'use strict';
 
+var db = require('mano').db,
+	partner = db.partnerFrank;
+
 exports.step = function () {
 	section(
-		{ 'class': 'section-primary' },
+		{ class: 'section-primary' },
 		h2("Section A"),
 		div(
 			h3("Busieness Partner basic informations"),
 			hr(),
 			ul(
-				{ 'class': 'entity-properties' },
+				{ class: 'entity-properties' },
 				li(
-					span({ 'class': 'entity-properties-name' }, "First name: "),
-					span({ 'class': 'entity-properties-value' }, "John")
+					span({ class: 'entity-properties-name' }, "First name: "),
+					span({ class: 'entity-properties-value' }, partner._firstName)
 				),
 				li(
-					span({ 'class': 'entity-properties-name' }, "Last name: "),
-					span({ 'class': 'entity-properties-value' }, "Wattson")
+					span({ class: 'entity-properties-name' }, "Last name: "),
+					span({ class: 'entity-properties-value' }, partner._lastName)
 				),
 				li(
-					span({ 'class': 'entity-properties-name' }, "Date of birth: "),
-					span({ 'class': 'entity-properties-value' }, "01-01-1870")
+					span({ class: 'entity-properties-name' }, "Date of birth: "),
+					span({ class: 'entity-properties-value' }, partner._dateOfBirth)
 				),
 				li(
-					span({ 'class': 'entity-properties-name' }, "Email address: "),
-					span({ 'class': 'entity-properties-value' }, "john.wattson@gamil.com")
+					span({ class: 'entity-properties-name' }, "Email address: "),
+					span({ class: 'entity-properties-value' }, partner.email)
 				)
 			)
 		)
 	);
 	section(
-		{ 'class': 'section-primary' },
+		{ class: 'section-primary' },
 		h2("Section B"),
 		div(
 			h3("Busieness Partner secondary informations"),
 			hr(),
 			ul(
-				{ 'class': 'entity-properties' },
+				{ class: 'entity-properties' },
 				li(
-					span({ 'class': 'entity-properties-name' }, "Registration type: "),
-					span({ 'class': 'entity-properties-value' }, "Private limited company")
+					span({ class: 'entity-properties-name' }, "Registration type: "),
+					span({ class: 'entity-properties-value' }, partner.companyType)
 				),
 				li(
-					span({ 'class': 'entity-properties-name' }, "Quantity of members: "),
-					span({ 'class': 'entity-properties-value' }, "4")
+					span({ class: 'entity-properties-name' }, "Quantity of members: "),
+					span({ class: 'entity-properties-value' }, partner.members)
 				),
 				li(
-					span({ 'class': 'entity-properties-name' }, "Inventory value: "),
-					span({ 'class': 'entity-properties-value' }, "1 000 000 ")
+					span({ class: 'entity-properties-name' }, "Inventory value: "),
+					span({ class: 'entity-properties-value' }, partner.inventory)
 				),
 				li(
-					span({ 'class': 'entity-properties-name' }, "Owner of business premises: "),
-					span({ 'class': 'entity-properties-value' }, "Sherlock Holmes")
+					span({ class: 'entity-properties-name' }, "Owner of business premises: "),
+					span({ class: 'entity-properties-value' }, partner.isOwner)
 				),
 				li(
-					span({ 'class': 'entity-properties-name' }, "Business activity: "),
-					span({ 'class': 'entity-properties-value' }, "Re-assurance and endowmen")
+					span({ class: 'entity-properties-name' }, "Business activity: "),
+					span({ class: 'entity-properties-value' }, partner.businessActivity)
 				)
 			)
 		)
 	);
-	div({ 'class': 'nav-back' },
-		a({ 'href': '/forms/' }, "Back to forms")
+	div({ class: 'nav-back' },
+		a({ href: '/forms/' }, "Back to forms")
 		);
 };
