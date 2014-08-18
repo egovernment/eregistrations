@@ -51,7 +51,6 @@
 	color: var(--white-text);
 	margin: 0;
 	height: 44px;
-	outline: none;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
