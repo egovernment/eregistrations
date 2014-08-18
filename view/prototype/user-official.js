@@ -75,7 +75,8 @@ exports['sub-main'] = function () {
 					th("Name"),
 					th("Application number"),
 					th({ 'class': 'desktop-only' }, "Date of registration"),
-					th("Requested registration")
+					th("Requested registration"),
+					th({ class: 'actions' }, "Actions")
 				)
 			),
 			tbody(
@@ -84,7 +85,7 @@ exports['sub-main'] = function () {
 						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
 					),
 					td(
-						div("123456789")
+						div("4068-50001-N-2013")
 					),
 					td(
 						{ 'class': 'desktop-only' },
@@ -92,6 +93,10 @@ exports['sub-main'] = function () {
 					),
 					td(
 						div('Investment')
+					),
+					td(
+						{ class: 'actions' },
+						a("Download")
 					)
 				),
 				tr(
@@ -99,7 +104,7 @@ exports['sub-main'] = function () {
 						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
 					),
 					td(
-						div("123456789")
+						div("4068-50001-N-2013")
 					),
 					td(
 						{ 'class': 'desktop-only' },
@@ -107,6 +112,10 @@ exports['sub-main'] = function () {
 					),
 					td(
 						div('Investment')
+					),
+					td(
+						{ class: 'actions' },
+						a("Download")
 					)
 				),
 				tr(
@@ -114,7 +123,7 @@ exports['sub-main'] = function () {
 						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
 					),
 					td(
-						div("123456789")
+						div("4068-50001-N-2013")
 					),
 					td(
 						{ 'class': 'desktop-only' },
@@ -122,6 +131,10 @@ exports['sub-main'] = function () {
 					),
 					td(
 						div('Investment')
+					),
+					td(
+						{ class: 'actions' },
+						a("Download")
 					)
 				),
 				tr(
@@ -129,7 +142,7 @@ exports['sub-main'] = function () {
 						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
 					),
 					td(
-						div("123456789")
+						div("4068-50001-N-2013")
 					),
 					td(
 						{ 'class': 'desktop-only' },
@@ -137,6 +150,10 @@ exports['sub-main'] = function () {
 					),
 					td(
 						div('Investment')
+					),
+					td(
+						{ class: 'actions' },
+						a("Download")
 					)
 				),
 				tr(
@@ -144,7 +161,7 @@ exports['sub-main'] = function () {
 						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
 					),
 					td(
-						div("123456789")
+						div("4068-50001-N-2013")
 					),
 					td(
 						{ 'class': 'desktop-only' },
@@ -152,6 +169,10 @@ exports['sub-main'] = function () {
 					),
 					td(
 						div('Investment')
+					),
+					td(
+						{ class: 'actions' },
+						a("Download")
 					)
 				),
 				tr(
@@ -159,7 +180,7 @@ exports['sub-main'] = function () {
 						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
 					),
 					td(
-						div("123456789")
+						div("4068-50001-N-2013")
 					),
 					td(
 						{ 'class': 'desktop-only' },
@@ -167,6 +188,10 @@ exports['sub-main'] = function () {
 					),
 					td(
 						div('Investment')
+					),
+					td(
+						{ class: 'actions' },
+						a("Download")
 					)
 				),
 				tr(
@@ -174,7 +199,7 @@ exports['sub-main'] = function () {
 						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
 					),
 					td(
-						div("123456789")
+						div("4068-50001-N-2013")
 					),
 					td(
 						{ 'class': 'desktop-only' },
@@ -182,6 +207,48 @@ exports['sub-main'] = function () {
 					),
 					td(
 						div('Investment')
+					),
+					td(
+						{ class: 'actions' },
+						a("Download")
+					)
+				),
+				tr(
+					td(
+						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+					),
+					td(
+						div("4068-50001-N-2013")
+					),
+					td(
+						{ 'class': 'desktop-only' },
+						div("23/07/2014 18:09:22")
+					),
+					td(
+						div('Investment')
+					),
+					td(
+						{ class: 'actions' },
+						a("Download")
+					)
+				),
+				tr(
+					td(
+						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+					),
+					td(
+						div("4068-50001-N-2013")
+					),
+					td(
+						{ 'class': 'desktop-only' },
+						div("23/07/2014 18:09:22")
+					),
+					td(
+						div('Investment')
+					),
+					td(
+						{ class: 'actions' },
+						a("Download")
 					)
 				)
 			)
