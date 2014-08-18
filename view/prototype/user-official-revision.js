@@ -60,7 +60,7 @@ exports['sub-main'] = function () {
 	section(
 		{ 'class': 'section-primary' },
 		div(
-			h2("History of your request"),
+			h2("Application history"),
 			a({ 'class': 'fa fa-print nav-alternatives' }, "Print"),
 			table(
 				{ 'class': 'user-submitted-history' },
@@ -70,10 +70,10 @@ exports['sub-main'] = function () {
 							div("User")
 						),
 						td(
-							div("abstudios")
+							div("24/07/2014 10:09:22")
 						),
 						td(
-							div("123")
+							div("Required modifications sent by user")
 						)
 					),
 					tr(
@@ -81,10 +81,10 @@ exports['sub-main'] = function () {
 							div("File sent")
 						),
 						td(
-							div("abstudios")
+							div("24/07/2014 13:09:22")
 						),
 						td(
-							div("123")
+							div("File sent")
 						)
 					)
 				)
