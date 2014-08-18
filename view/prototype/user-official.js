@@ -67,6 +67,125 @@ exports['sub-main'] = function () {
 			div(
 				a({ class: 'print-button' }, "Print files list")
 			)
+		),
+		table(
+			{ 'class': 'user-official-table' },
+			thead(
+				tr(
+					th("Name"),
+					th("Application number"),
+					th({ 'class': 'desktop-only' }, "Date of registration"),
+					th("Requested registration")
+				)
+			),
+			tbody(
+				tr(
+					td(
+						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+					),
+					td(
+						div("123456789")
+					),
+					td(
+						{ 'class': 'desktop-only' },
+						div("23/07/2014 18:09:22")
+					),
+					td(
+						div('Investment')
+					)
+				),
+				tr(
+					td(
+						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+					),
+					td(
+						div("123456789")
+					),
+					td(
+						{ 'class': 'desktop-only' },
+						div("23/07/2014 18:09:22")
+					),
+					td(
+						div('Investment')
+					)
+				),
+				tr(
+					td(
+						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+					),
+					td(
+						div("123456789")
+					),
+					td(
+						{ 'class': 'desktop-only' },
+						div("23/07/2014 18:09:22")
+					),
+					td(
+						div('Investment')
+					)
+				),
+				tr(
+					td(
+						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+					),
+					td(
+						div("123456789")
+					),
+					td(
+						{ 'class': 'desktop-only' },
+						div("23/07/2014 18:09:22")
+					),
+					td(
+						div('Investment')
+					)
+				),
+				tr(
+					td(
+						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+					),
+					td(
+						div("123456789")
+					),
+					td(
+						{ 'class': 'desktop-only' },
+						div("23/07/2014 18:09:22")
+					),
+					td(
+						div('Investment')
+					)
+				),
+				tr(
+					td(
+						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+					),
+					td(
+						div("123456789")
+					),
+					td(
+						{ 'class': 'desktop-only' },
+						div("23/07/2014 18:09:22")
+					),
+					td(
+						div('Investment')
+					)
+				),
+				tr(
+					td(
+						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+					),
+					td(
+						div("123456789")
+					),
+					td(
+						{ 'class': 'desktop-only' },
+						div("23/07/2014 18:09:22")
+					),
+					td(
+						div('Investment')
+					)
+				)
+			)
 		)
 	);
+
 };
