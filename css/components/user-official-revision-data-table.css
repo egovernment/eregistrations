@@ -1,0 +1,41 @@
+.user-official-revision-data-table thead {
+	background-color: var(--normal-background);
+}
+.user-official-revision-data-table thead th {
+	color: var(--white-text);
+}
+
+.user-official-revision-data-table tbody tr {
+	background-color: var(--white-text);
+}
+
+.user-official-revision-data-table th, .table-submitted td {
+	border: 1px solid var(--light-inner-border);
+}
+
+.user-official-revision-data-table .fa-download {
+	margin: 0 auto;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+
+	.user-official-revision-data-table tr {
+		border: 1px solid var(--light-inner-border);
+		height: auto;
+		}
+
+	.user-official-revision-data-table td {
+		border-bottom: 1px solid var(--light-inner-border);
+		position: relative;
+		}
+
+	.user-official-revision-data-table td {
+		display: flex;
+		justify-content: space-around;
+		padding: 0;
+		}
+
+	.user-official-revision-data-table th {
+		display: none;
+	}
+}
