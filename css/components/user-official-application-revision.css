@@ -37,3 +37,16 @@
 	line-height: 18px;
 	font-weight: bold;
 }
+
+.revision-required-documents-thumbs-list .confirmed-document {
+	position: absolute;
+	line-height: 18px;
+	right: 0;
+	display: block;
+	border-radius: 10px;
+	border: 1px solid var(--normal-dark-background);
+	width: 20px;
+	text-align: center;
+	background: var(--white-background);
+	color: var(--success-text);
+}
