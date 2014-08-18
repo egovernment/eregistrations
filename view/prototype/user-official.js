@@ -20,13 +20,53 @@ exports['submitted-menu'] = function () {
 		nav(
 			{ class: 'items' },
 			menuitem(
-				a({ class: 'item-active' },
-					"Role")
+				select({ class: 'role-select' },
+						option("Official user"),
+						option("Admin user"),
+						option("User")
+					)
 			)
 		)
 	);
 };
 
 exports['sub-main'] = function () {
-	div("test");
+	section(
+		{ class: 'section-primary' },
+		div(
+			{ class: 'user-official-tools' },
+			form(
+				{ class: 'dbjs-input-component' },
+				label(
+					"Status: "
+				),
+				div(
+					{ class: "controle" },
+					select(
+						option("Pending for revision"),
+						option("Revisioned"),
+						option("Todo")
+					)
+				)
+			),
+			form(
+				{ class: 'dbjs-input-component' },
+				label(
+					"Status: "
+				),
+				div(
+					{ class: "controle" },
+					span({ class: 'input-append' },
+							input({ type: 'text' }),
+							button({ class: 'add-on' },
+								span({ class: 'fa fa-search' })
+								)
+						)
+				)
+			),
+			div(
+				a({ class: 'print-button' }, "Print files list")
+			)
+		)
+	);
 };

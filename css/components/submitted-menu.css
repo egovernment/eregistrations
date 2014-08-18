@@ -44,6 +44,16 @@
 	margin: 0;
 }
 
+.role-select {
+	border: none;
+	background-color: var(--dark-background);
+	box-shadow: none;
+	color: var(--white-text);
+	margin: 0;
+	height: 44px;
+	outline: none;
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 	.submitted-menu {
 		min-width: var(--min-mobile-width);

@@ -107,3 +107,10 @@ e.g.:
 .fa-edit:before {
 	content: '\f044';
 }
+
+.fa-search {
+	width: 1em;
+}
+.fa-search:before {
+	content: '\f002'
+}

@@ -114,6 +114,10 @@ input[type="submit"] {
 	border-radius: 0 4px 4px 0;
 }
 
+.input-append input {
+	border-radius: 4px 0 0 4px;
+}
+
 .add-on {
 	background-color: var(--light-background);
 	border-radius: 4px 0 0 4px;
@@ -128,6 +132,15 @@ input[type="submit"] {
 	margin: -5px 0;
 }
 
+.input-append .add-on {
+	border-radius: 0 4px 4px 0;
+}
+
+@-moz-document url-prefix() {
+	.input-append button.add-on {
+		line-height: 26px;
+	}
+}
 .error-message {
 	color: var(--error-text);
 }
