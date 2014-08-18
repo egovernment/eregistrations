@@ -8,7 +8,6 @@ exports['sub-main'] = function () {
 			thead(
 				tr(
 					th("Status"),
-					th("Company"),
 					th("Application number"),
 					th("Application date"),
 					th("Requested registrations"),
@@ -25,21 +24,15 @@ exports['sub-main'] = function () {
 					),
 					td(
 						div({ 'class': 'cell-caption' },
-							"Company"),
-						div({ 'class': 'cell-body' },
-							"abstudios")
-					),
-					td(
-						div({ 'class': 'cell-caption' },
 							"Application number"),
 						div({ 'class': 'cell-body' },
-							"123")
+							"4068-50001-N-2013")
 					),
 					td(
 						div({ 'class': 'cell-caption' },
 							"Application date"),
 						div({ 'class': 'cell-body' },
-							"29/07/2014")
+							"23/07/2014 18:09:22")
 					),
 					td(
 						div({ 'class': 'cell-caption' },
