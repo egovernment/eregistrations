@@ -116,6 +116,7 @@ input[type="submit"] {
 
 .input-append input {
 	border-radius: 4px 0 0 4px;
+	width: 77%;
 }
 
 .add-on {

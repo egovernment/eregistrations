@@ -1,15 +1,11 @@
 .user-official-tools {
 		display: flex;
-		justify-content: space-beetween;
+		justify-content: space-between;
 }
 
 .user-official-tools div, .user-official-tools  form {
 	display: flex;
 	width: 100%;
-}
-
-.user-official-tools div a{
-
 }
 
 .user-official-tools label {
@@ -27,8 +23,17 @@
 	box-shadow: none;
 	font-size: 14px;
 	margin-bottom: 22px;
-	margin: -5px auto -5px;
+	margin: -3px auto -5px;
 	padding-left: 10px;
 	padding-right: 10px;
 	padding-top: 6px;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.user-official-tools {
+		flex-wrap: wrap;
+	}
+	.section-primary > div.user-official-tools {
+		padding-bottom: 22px;
+	}
 }
