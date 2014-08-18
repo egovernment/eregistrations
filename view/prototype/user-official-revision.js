@@ -94,6 +94,10 @@ exports['sub-main'] = function () {
 	section(
 		{ 'class': 'section-primary' },
 		div(
+			{ class: 'user-official-application-revision' },
+			h2("Application revision"),
+			a({ class: 'button-main' }, "Reject file"),
+			hr(),
 			h3("Documents uploaded with the application"),
 			ol({ 'class': 'submitted-documents-list' },
 				li(
