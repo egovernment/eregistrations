@@ -4,14 +4,13 @@
 
 .revision-required-documents-list {
 	display: flex;
-	flex-wrap: wrap;
+	justify-content: space-between;
 	counter-reset:li;
 	margin: 32px 0;
 	padding-left: 10px;
 }
 
 .revision-required-documents-list li {
-	width: 48%;
 	position: relative;
 	margin-bottom: 0;
 	margin-left: 15px;
