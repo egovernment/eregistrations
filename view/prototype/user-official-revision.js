@@ -98,8 +98,8 @@ exports['sub-main'] = function () {
 			h2("Application revision"),
 			a({ class: 'button-main' }, "Reject file"),
 			hr(),
-			h3("Documents uploaded with the application"),
-			ol({ 'class': 'submitted-documents-list' },
+			h3("Required documents"),
+			ol({ 'class': 'revision-required-documents-list' },
 				li(
 					a({ 'href': '' }, "Memorandum and articles of association")
 				),
@@ -113,7 +113,7 @@ exports['sub-main'] = function () {
 					a({ 'href': '' }, "Registered title deed")
 				)
 				),
-			h3("Complete content of the company file"),
+			h3("Received documents"),
 			ol({ 'class': 'submitted-documents-thumbs-list' },
 				li(
 					a({ 'href': '' },

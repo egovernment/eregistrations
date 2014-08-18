@@ -1,3 +1,40 @@
 .user-official-application-revision .button-main {
 	margin-bottom: 22px;
 }
+
+.revision-required-documents-list {
+	display: flex;
+	flex-wrap: wrap;
+	counter-reset:li;
+	margin: 32px 0;
+	padding-left: 10px;
+}
+
+.revision-required-documents-list li {
+	width: 48%;
+	position: relative;
+	margin-bottom: 0;
+	margin-left: 15px;
+	padding: 0 8px 11px 8px;
+	list-style: none;
+	font-size: 15px;
+}
+
+.revision-required-documents-list > li:before {
+	content: counter(li);
+	counter-increment: li;
+	position: absolute;
+	left: -24px;
+	bottom: 12px;
+	width: 19px;
+	height: 19px;
+	margin-right: 8px;
+	border-top:1px solid var(--normal-dark-background);
+	border-radius: 50%;
+	color:	var(--white-text);
+	background:	var(--normal-dark-background);
+	text-align: center;
+	font-size: 11px;
+	line-height: 18px;
+	font-weight: bold;
+}
