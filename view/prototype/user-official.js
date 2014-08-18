@@ -21,6 +21,7 @@ exports['submitted-menu'] = function () {
 			{ class: 'items' },
 			menuitem(
 				select({ class: 'role-select' },
+						option("Role"),
 						option("Official user"),
 						option("Admin user"),
 						option("User")
@@ -82,7 +83,7 @@ exports['sub-main'] = function () {
 			tbody(
 				tr(
 					td(
-						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+						div(a("John Watson"))
 					),
 					td(
 						div("4068-50001-N-2013")
@@ -101,7 +102,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+						div(a("John Watson"))
 					),
 					td(
 						div("4068-50001-N-2013")
@@ -120,7 +121,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+						div(a("John Watson"))
 					),
 					td(
 						div("4068-50001-N-2013")
@@ -139,7 +140,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+						div(a("John Watson"))
 					),
 					td(
 						div("4068-50001-N-2013")
@@ -158,7 +159,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+						div(a("John Watson"))
 					),
 					td(
 						div("4068-50001-N-2013")
@@ -177,7 +178,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+						div(a("John Watson"))
 					),
 					td(
 						div("4068-50001-N-2013")
@@ -196,7 +197,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+						div(a("John Watson"))
 					),
 					td(
 						div("4068-50001-N-2013")
@@ -215,7 +216,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+						div(a("John Watson"))
 					),
 					td(
 						div("4068-50001-N-2013")
@@ -234,7 +235,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						div(a({ href: '/users-admin/user-id/' }, "John Watson"))
+						div(a("John Watson"))
 					),
 					td(
 						div("4068-50001-N-2013")
