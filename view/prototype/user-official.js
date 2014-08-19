@@ -37,7 +37,7 @@ exports['sub-main'] = function () {
 		div(
 			{ class: 'user-official-tools' },
 			form(
-				{ class: 'dbjs-input-component' },
+				{ class: '' },
 				label(
 					"Status: "
 				),
