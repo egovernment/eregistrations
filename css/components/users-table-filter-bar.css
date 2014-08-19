@@ -1,18 +1,27 @@
-.user-official-tools {
+.users-table-filter-bar {
 		display: flex;
 		justify-content: space-between;
 }
 
-.user-official-tools div, .user-official-tools  form {
+.users-table-filter-bar div,
+.users-table-filter-bar form {
 	display: flex;
-	width: 100%;
+}
+.users-table-filter-bar form div {
+	margin-left: 20px;
 }
 
-.user-official-tools label {
+.users-table-filter-bar label {
 	text-align: left;
 }
+.users-table-filter-bar label {
+		margin-left: 30px;
+}
+.users-table-filter-bar label:first-child {
+	margin-left: 0;
+}
 
-.user-official-tools .print-button {
+.users-table-filter-bar .print-button {
 	height: 30px;
 	border-radius: 4px;
 	color: var(--white-text);
@@ -30,10 +39,10 @@
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.user-official-tools {
+	.users-table-filter-bar {
 		flex-wrap: wrap;
 	}
-	.section-primary > div.user-official-tools {
+	.section-primary > div.users-table-filter-bar{
 		padding-bottom: 22px;
 	}
 }

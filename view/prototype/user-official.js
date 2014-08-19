@@ -1,7 +1,7 @@
 'use strict';
 
 exports['user-name'] = function () {
-	text("Users Official");
+	text("Official");
 };
 
 exports['submitted-menu'] = function () {
@@ -35,30 +35,26 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'section-primary' },
 		div(
-			{ class: 'user-official-tools' },
+			{ class: 'users-table-filter-bar' },
 			form(
-				{ class: 'dbjs-input-component' },
 				label(
 					"Status: "
 				),
 				div(
-					{ class: "controle" },
+					{ class: "" },
 					select(
 						option("Pending for revision"),
 						option("Revisioned"),
 						option("Todo")
 					)
-				)
-			),
-			form(
-				{ class: 'dbjs-input-component' },
+				),
 				label(
 					"Status: "
 				),
 				div(
-					{ class: "controle" },
+					{ class: "" },
 					span({ class: 'input-append' },
-							input({ type: 'text' }),
+							input({ type: 'search' }),
 							button({ class: 'add-on' },
 								span({ class: 'fa fa-search' })
 								)
