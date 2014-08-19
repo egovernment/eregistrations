@@ -1,7 +1,7 @@
 'use strict';
 
 exports['user-name'] = function () {
-	text("Users Official");
+	text("Official");
 };
 
 exports['submitted-menu'] = function () {
