@@ -45,7 +45,7 @@ module.exports = function (view) {
 
 		// Official user routes
 		'official': bind(subMain.diff('./official')),
-		'official/revision/user-id': bind(userOfficialMain.diff('./user-official-revision')),
+		'official/revision/user-id': bind(userOfficialMain.diff('./official-revision')),
 
 		// Error routes
 		404: bind(main.diff('./404'))
