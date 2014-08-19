@@ -38,15 +38,22 @@
 	font-weight: bold;
 }
 
-.revision-required-documents-thumbs-list .confirmed-document {
+.revision-required-documents-thumbs-list .document-confirmation {
 	position: absolute;
 	line-height: 18px;
 	right: 0;
 	display: block;
 	border-radius: 10px;
-	border: 1px solid var(--normal-dark-background);
+	border: 1px solid var(--light-text);
 	width: 20px;
 	text-align: center;
 	background: var(--white-background);
+	margin-top: -8px;
+	margin-right: -8px;
+}
+.document-confirmation.success {
 	color: var(--success-text);
+}
+.document-confirmation.error {
+	color: var(--error-text);
 }

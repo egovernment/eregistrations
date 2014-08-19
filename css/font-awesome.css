@@ -114,3 +114,10 @@ e.g.:
 .fa-search:before {
 	content: '\f002'
 }
+
+.fa-exclamation {
+	width: 1em;
+}
+.fa-exclamation:before {
+	content: '\f12a';
+}
