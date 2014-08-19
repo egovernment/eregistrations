@@ -33,13 +33,13 @@
 	display: block;
 }
 
-.navs-both-sides {
+.nav-dual {
 	display: flex;
 	justify-content: space-between;
 	width: var(--desktop-width);
 	margin: 0 auto;
 }
-.navs-both-sides .items {
+.nav-dual .items {
 	width: auto;
 	margin: 0;
 }

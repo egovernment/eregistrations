@@ -63,7 +63,7 @@ exports['sub-main'] = function () {
 			)
 		),
 		table(
-			{ 'class': 'user-official-table' },
+			{ 'class': 'users-table' },
 			thead(
 				tr(
 					th("Name"),
