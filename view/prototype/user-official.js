@@ -5,28 +5,25 @@ exports['user-name'] = function () {
 };
 
 exports['submitted-menu'] = function () {
-	div(
-		{ class: 'navs-both-sides' },
-		nav(
-			{ class: 'items' },
-			menuitem(
-				a({ class: 'item-active' },
-					"Revision")
-			),
-			menuitem(
-				a({ href: '/profile/' }, "Profile")
-			)
+	nav(
+		{ class: 'items' },
+		menuitem(
+			a({ class: 'item-active' },
+				"Revision")
 		),
-		nav(
-			{ class: 'items' },
-			menuitem(
-				select({ class: 'role-select' },
-						option("Role"),
-						option("Official user"),
-						option("Admin user"),
-						option("User")
-					)
-			)
+		menuitem(
+			a({ href: '/profile/' }, "Profile")
+		)
+	);
+	nav(
+		{ class: 'items' },
+		menuitem(
+			select({ class: 'role-select' },
+					option("Role"),
+					option("Official user"),
+					option("Admin user"),
+					option("User")
+				)
 		)
 	);
 };
