@@ -42,7 +42,7 @@ exports['sub-main'] = function () {
 					"Status: "
 				),
 				div(
-					{ class: "controle" },
+					{ class: "" },
 					select(
 						option("Pending for revision"),
 						option("Revisioned"),
@@ -51,12 +51,12 @@ exports['sub-main'] = function () {
 				)
 			),
 			form(
-				{ class: 'dbjs-input-component' },
+				{ class: '' },
 				label(
 					"Status: "
 				),
 				div(
-					{ class: "controle" },
+					{ class: "" },
 					span({ class: 'input-append' },
 							input({ type: 'text' }),
 							button({ class: 'add-on' },
