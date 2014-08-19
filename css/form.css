@@ -240,7 +240,31 @@ ul.multiple {
 	font-size: 12px;
 	margin-left: 5px;
 }
-
+.inline-button-radio  {
+	margin-bottom: 22px;
+}
+.inline-button-radio input[type="radio"] {
+	display: none;
+}
+.inline-button-radio label {
+	border: 1px solid var(--light-inner-border);
+	padding: 11px;
+	cursor: pointer
+}
+.inline-button-radio label:first-child {
+	border-radius: 4px 0 0 4px;
+}
+.inline-button-radio label:last-child {
+	border-radius: 0 4px 4px 0;
+}
+.inline-button-radio .success {
+	background: var(--success-background);
+	color: var(--white-text);
+}
+.inline-button-radio .error {
+	background: var(--error-background);
+	color: var(--white-text);
+}
 /*
 Styles applied while screen sieze is less than 640px
 */

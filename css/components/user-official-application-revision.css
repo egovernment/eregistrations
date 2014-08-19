@@ -57,3 +57,7 @@
 .document-confirmation.error {
 	color: var(--error-text);
 }
+
+.revision-document {
+	overflow-y: scroll;
+}

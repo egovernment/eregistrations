@@ -150,6 +150,43 @@ exports['sub-main'] = function () {
 						"1"),
 				"Memorandum and articles of association"
 			),
+			form(
+				{ class: 'official-revision-form' },
+				ul(
+					{ class: 'form-elements' },
+					li(
+						div(
+							{ class: 'inline-button-radio' },
+							label(
+								{ class: 'success' },
+								input({ type: 'radio' }),
+								"Validate document"
+							),
+							label(
+								{ class: 'error' },
+								input({ type: 'radio' }),
+								"Reject document"
+							)
+						)
+					),
+					li(
+						div(
+							{ class: 'dbjs-input-component' },
+							label("Reject document: "),
+							div(
+								{ class: 'control' },
+								select(
+									option("Choose rejection reason: "),
+									option("Document is not readable."),
+									option("The document is not acurate or does not match the data of the form."),
+									option("Other")
+								)
+							)
+						)
+					)
+				),
+				input({ type: 'submit' }, "Save")
+			),
 			div({ 'class': 'revision-document-preview' },
 				a({ 'href': '' },
 					img({ 'src': '/uploads/docASubFile2.idoc.png.jpg' })
