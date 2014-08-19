@@ -4,13 +4,21 @@
 }
 
 .users-table-filter-bar div,
-.users-table-filter-bar  form {
+.users-table-filter-bar form {
 	display: flex;
-	width: 100%;
+}
+.users-table-filter-bar form div {
+	margin-left: 20px;
 }
 
 .users-table-filter-bar label {
 	text-align: left;
+}
+.users-table-filter-bar label {
+		margin-left: 30px;
+}
+.users-table-filter-bar label:first-child {
+	margin-left: 0;
 }
 
 .users-table-filter-bar .print-button {

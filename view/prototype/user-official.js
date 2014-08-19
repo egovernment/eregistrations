@@ -37,7 +37,6 @@ exports['sub-main'] = function () {
 		div(
 			{ class: 'users-table-filter-bar' },
 			form(
-				{ class: '' },
 				label(
 					"Status: "
 				),
@@ -48,10 +47,7 @@ exports['sub-main'] = function () {
 						option("Revisioned"),
 						option("Todo")
 					)
-				)
-			),
-			form(
-				{ class: '' },
+				),
 				label(
 					"Status: "
 				),
