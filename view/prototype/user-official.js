@@ -58,7 +58,7 @@ exports['sub-main'] = function () {
 				div(
 					{ class: "" },
 					span({ class: 'input-append' },
-							input({ type: 'text' }),
+							input({ type: 'search' }),
 							button({ class: 'add-on' },
 								span({ class: 'fa fa-search' })
 								)
