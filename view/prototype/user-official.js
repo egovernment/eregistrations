@@ -35,7 +35,7 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'section-primary' },
 		div(
-			{ class: 'user-official-tools' },
+			{ class: 'users-table-filter-bar' },
 			form(
 				{ class: '' },
 				label(
