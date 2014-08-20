@@ -19,6 +19,7 @@
 ../../css/components/user-uploaded-files.css
 ../../css/components/user-next-step-button.css
 ../../css/components/section-primary.css
+../../css/components/section-tabs.css
 ../../css/components/section-warning.css
 ../../css/components/entity-properties.css
 ../../css/components/entity-options.css
@@ -39,3 +40,4 @@
 ../../css/components/official-revision-form.css
 ../../css/components/users-table-filter-bar.css
 ../../css/components/users-table.css
+../../css/components/incorporation-form.css

@@ -92,10 +92,12 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ 'class': 'section-primary' },
+		{ class: 'section-primary section-tabs' },
+		a({ class: 'tab active' }, "Certificate of incorporation"),
+		a({ class: 'tab' }, "Documents and data of petitioner"),
 		div(
-			{ class: '' },
-			h2("Incorporation approved")
+			{ class: 'incorporation-form' },
+			h3("Incorporation approved")
 		)
 	);
 };
