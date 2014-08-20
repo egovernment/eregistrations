@@ -3,7 +3,259 @@
 exports['incorporation-tabs'] = function () {
 	a({ class: 'tab', href: '/official/non-revision/user-id/' }, "Certificate of incorporation");
 	a({ class: 'tab active' }, "Documents and data of petitioner");
+
 	div(
-		p("test")
+		{ class: 'user-official-application-revision' },
+		h3(
+			{ class: 'heading-tools' },
+			"Documents received from petitioner",
+			div(
+				a(span({ class: 'fa fa-download' }), "View and print form"),
+				a(span({ class: 'fa fa-download' }), "Payment receipt")
+			)
+		),
+
+		ol({ 'class': 'submitted-documents-list' },
+			li(
+				a({ 'href': '' }, "Memorandum and articles of association")
+			),
+			li(
+				a({ 'href': '' }, "Proof of identity for director 1")
+			),
+			li(
+				a({ 'href': '' }, "Proof of identity for director 2")
+			),
+			li(
+				a({ 'href': '' }, "Registered title deed")
+			)
+			),
+		h3("Certificates uploaded by institutions"),
+
+		h3("Complete content of the company file"),
+		ol({ 'class': 'submitted-documents-thumbs-list revision-required-documents-thumbs-list ' },
+			li(
+				a({ 'href': '' },
+					span({ class: 'document-confirmation success fa fa-check ' }),
+					img({ 'src': '/uploads/docASubFile2.thumb.idoc.png.jpg' })
+					)
+			),
+			li(
+				a({ 'href': '' },
+					span({ class: 'document-confirmation success fa fa-check ' }),
+					img({ 'src': '/uploads/docASubFile1.thumb.idoc.jpg' })
+					)
+			),
+			li(
+				a({ 'href': '' },
+					span({ class: 'document-confirmation error fa fa-exclamation ' }),
+					img({ 'src': '/uploads/docBSubFile1.thumb.idoc.jpg' })
+					)
+			),
+			li(
+				a({ 'href': '' },
+					span({ class: 'document-confirmation success fa fa-check ' }),
+					img({ 'src': '/uploads/docASubFile2.thumb.idoc.png.jpg' })
+					)
+			)
+			)
+	);
+	section(
+		{ 'class': 'section-primary revision' },
+		div({ 'class': 'revision-document' },
+			h3(
+				i({ 'class': 'list-item-number' },
+						"1"),
+				"Memorandum and articles of association"
+			),
+			form(
+				{ class: 'official-revision-form' },
+				ul(
+					{ class: 'form-elements' },
+					li(
+						div(
+							{ class: 'inline-button-radio' },
+							label(
+								{ class: 'success' },
+								input({ type: 'radio' }),
+								"Validate document"
+							),
+							label(
+								{ class: 'error' },
+								input({ type: 'radio' }),
+								"Reject document"
+							)
+						)
+					),
+					li(
+						div(
+							{ class: 'dbjs-input-component' },
+							label("Reject document: "),
+							div(
+								{ class: 'control' },
+								select(
+									option("Choose rejection reason: "),
+									option("Document is not readable."),
+									option("The document is not acurate or does not match the data of the form."),
+									option("Other")
+								)
+							)
+						)
+					)
+				),
+				input({ type: 'submit' }, "Save")
+			),
+			div({ 'class': 'revision-document-preview' },
+				a({ 'href': '' },
+					img({ 'src': '/uploads/docASubFile2.idoc.png.jpg' })
+					)
+				)
+			),
+		div({ 'class': 'revision-user-data-section' },
+			h3("Application form"),
+			a({ 'class': 'fa fa-print nav-alternatives' }, "Print"),
+			h4("Proposed company name"),
+			table(
+				tbody(
+					tr(
+						td("Blink IT Solutions")
+					)
+				)
+			),
+			h4("Business activity"),
+			table(
+				tbody(
+					tr(
+						th("Activity"),
+						td("Air chater agent")
+					),
+					tr(
+						th("Activity starting date"),
+						td("7/30/2014")
+					),
+					tr(
+						th("Date of account year end"),
+						td("12/31/2014")
+					),
+					tr(
+						th("Does the company have branches?"),
+						td("Yes")
+					)
+				)
+			),
+			h4("Company secretary"),
+			table(
+				tbody(
+					tr(
+						th("Title"),
+						td("Mr")
+					),
+					tr(
+						th("First Name"),
+						td("Andrei")
+					),
+					tr(
+						th("Middle Name"),
+						td("Mihai")
+					),
+					tr(
+						th("Surname"),
+						td("Balan")
+					)
+				)
+			),
+			h5("Residential address"),
+			table(
+				tbody(
+					tr(
+						th("Plot"),
+						td("1")
+					),
+					tr(
+						th("Block"),
+						td("1")
+					),
+					tr(
+						th("Street or location"),
+						td("Nicolae Filipescu")
+					),
+					tr(
+						th("City, district or town"),
+						td("Bucharest")
+					),
+					tr(
+						th("P.O. box"),
+						td("1")
+					),
+					tr(
+						th("Country"),
+						td("Romania")
+					)
+				)
+			),
+			h4("Applicants"),
+			h5("Marko Zagola"),
+			h6("Personal data"),
+			table(
+				tbody(
+					tr(
+						th("Name"),
+						td("Marko")
+					),
+					tr(
+						th("Surname"),
+						td("Zagalo")
+					),
+					tr(
+						th("Document type"),
+						td("X")
+					),
+					tr(
+						th("Document number"),
+						td("123")
+					),
+					tr(
+						th("Marital status"),
+						td("")
+					),
+					tr(
+						th("Date of birth"),
+						td("25-06-1991")
+					),
+					tr(
+						th("Nationality"),
+						td("Romanian")
+					),
+					tr(
+						th("E-mail"),
+						td("andrei.balan@blink-it.ro")
+					)
+				)
+			),
+			h6("Address"),
+				table(
+				tbody(
+					tr(
+						th("Address"),
+						td("XXX")
+					),
+					tr(
+						th("Number"),
+						td("1")
+					),
+					tr(
+						th("Postal code"),
+						td("X")
+					),
+					tr(
+						th("City"),
+						td("Bucharest")
+					),
+					tr(
+						th("Country"),
+						td("Romania")
+					)
+				)
+			)
+			)
 	);
 };
