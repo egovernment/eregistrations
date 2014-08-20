@@ -114,7 +114,7 @@ textarea {
 	color: var(--dark-text);
 	width: 100%;
 	text-transform: none;
-	min-height: 65px;
+	min-height: 70px;
 	margin: -5px 0 -5px;
 	font-size: 14px;
 	padding: 10px 10px 0;

@@ -122,7 +122,7 @@ exports['sub-main'] = function () {
 			form(
 				ul(
 					{ class: 'form-elements' },
-					li(textarea())
+					li(textarea({ placeholder: "Reason of rejection" }))
 				),
 				input({ class: 'incorporation-rejection',
 					type: 'submit', value: 'Reject the incorporation' })
