@@ -109,7 +109,14 @@ exports['sub-main'] = function () {
 				button({ class: 'button-main ' }, "Registered articles of association")
 			),
 			hr(),
-			h3("Request changes to the application")
+			h3("Request changes to the application"),
+			form(
+				ul(
+					{ class: 'form-elements' },
+					li(textarea())
+				),
+				input({ type: 'submit' })
+			)
 		)
 	);
 };

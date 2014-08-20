@@ -4,3 +4,6 @@
 .incorporation-documents-upload button {
 	margin-right: 20px;
 }
+.incorporation-form textarea {
+	min-height: 95px;
+}
