@@ -97,7 +97,19 @@ exports['sub-main'] = function () {
 		a({ class: 'tab' }, "Documents and data of petitioner"),
 		div(
 			{ class: 'incorporation-form' },
-			h3("Incorporation approved")
+			h3("Incorporation approved"),
+			form(
+				input({ type: 'number' }),
+				input({ class: 'incorporation-number-submit', type: 'submit' })
+			),
+			p("Upload here the certificates:"),
+			p(
+				{ class: 'incorporation-documents-upload' },
+				button({ class: 'button-main ' }, "Certificate of incorporation"),
+				button({ class: 'button-main ' }, "Registered articles of association")
+			),
+			hr(),
+			h3("Request changes to the application")
 		)
 	);
 };
