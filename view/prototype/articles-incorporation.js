@@ -29,9 +29,16 @@ exports['incorporation-tabs'] = function () {
 			)
 			),
 		h3("Certificates uploaded by institutions"),
-
+		ol({ 'class': 'submitted-documents-list' },
+			li(
+				a({ 'href': '' }, "Memorandum and articles of association")
+			),
+			li(
+				a({ 'href': '' }, "Proof of identity for director 1")
+			)
+			),
 		h3("Complete content of the company file"),
-		ol({ 'class': 'submitted-documents-thumbs-list revision-required-documents-thumbs-list ' },
+		ol({ 'class': 'submitted-documents-thumbs-list revision-required-documents-thumbs-list' },
 			li(
 				a({ 'href': '' },
 					span({ class: 'document-confirmation success fa fa-check ' }),
