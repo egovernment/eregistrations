@@ -7,3 +7,6 @@
 .incorporation-form textarea {
 	min-height: 95px;
 }
+.incorporation-form .incorporation-rejection {
+	background: var(--error-background);
+}

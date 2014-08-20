@@ -100,7 +100,7 @@ exports['sub-main'] = function () {
 			h3("Incorporation approved"),
 			form(
 				input({ type: 'number' }),
-				input({ class: 'incorporation-number-submit', type: 'submit' })
+				input({ class: 'incorporation-number-submit', type: 'submit', value: 'Save' })
 			),
 			p("Upload here the certificates:"),
 			p(
@@ -113,9 +113,19 @@ exports['sub-main'] = function () {
 			form(
 				ul(
 					{ class: 'form-elements' },
+					li(textarea({ placeholder: "Write request for changes here" }))
+				),
+				input({ type: 'submit', value: 'Send back for modyfications' })
+			),
+			hr(),
+			h3("Reject application"),
+			form(
+				ul(
+					{ class: 'form-elements' },
 					li(textarea())
 				),
-				input({ type: 'submit' })
+				input({ class: 'incorporation-rejection',
+					type: 'submit', value: 'Reject the incorporation' })
 			)
 		)
 	);

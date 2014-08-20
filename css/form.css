@@ -1,5 +1,6 @@
 form {
 	line-height: 22px;
+	font-family: "Helvetica";
 }
 
 .form-elements {
@@ -68,6 +69,7 @@ select {
 	height: 30px;
 	margin: -5px 0 -5px;
 	font-size: 14px;
+	font-family: "Helvetica";
 }
 @-moz-document url-prefix() {
 	input[type="text"],
@@ -115,6 +117,8 @@ textarea {
 	min-height: 65px;
 	margin: -5px 0 -5px;
 	font-size: 14px;
+	padding: 10px 10px 0;
+	font-family: "Helvetica";
 }
 
 .submit-placeholder {
