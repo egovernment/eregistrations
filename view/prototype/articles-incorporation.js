@@ -5,7 +5,6 @@ exports['incorporation-tabs'] = function () {
 	a({ class: 'tab active' }, "Documents and data of petitioner");
 
 	div(
-		{ class: 'user-official-application-revision' },
 		h3(
 			{ class: 'heading-tools' },
 			"Documents received from petitioner",
