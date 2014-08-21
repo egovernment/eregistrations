@@ -24,7 +24,7 @@ exports['sub-main'] = function () {
 			a({ class: 'button-main ', href: '/users-admin/add-user/' }, "New User")
 		),
 		table(
-			{ 'class': 'users-table' },
+			{ 'class': 'official-users-table' },
 			thead(
 				tr(
 					th("Email"),
