@@ -25,12 +25,12 @@ module.exports = function (view) {
 		'/': bind(main.diff('./index')),
 
 		// User routes - imports content to #steps element in #main element
-		'profile': bind(userMain.diff('./user-profile')),
-		'guide': bind(userMain.diff('./guide')),
-		'forms':  bind(userMain.diff('./forms')),
+		profile: bind(userMain.diff('./user-profile')),
+		guide: bind(userMain.diff('./guide')),
+		forms:  bind(userMain.diff('./forms')),
 		'forms/disabled':  bind(userForm.diff('./disabled-forms')),
-		'documents':  bind(userMain.diff('./documents')),
-		'submission':  bind(userMain.diff('./submission')),
+		documents:  bind(userMain.diff('./documents')),
+		submission:  bind(userMain.diff('./submission')),
 		'documents/disabled':  bind(userDocuments.diff('./disabled-documents')),
 		'forms/partner-add': bind(userMain.diff('./partner-add')),
 		'forms/partner-id': bind(userMain.diff('./partner')),
@@ -43,7 +43,7 @@ module.exports = function (view) {
 		'users-admin/user-id': bind(usersAdminMain.diff('./users-admin-user')),
 
 		// Official user routes
-		'official': bind(subMain.diff('./official')),
+		official: bind(subMain.diff('./official')),
 
 		// Error routes
 		404: bind(main.diff('./404'))

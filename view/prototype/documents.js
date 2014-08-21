@@ -16,7 +16,7 @@ exports.step = function () {
 	div(
 		{ class: 'disabler-range', id: 'documents-disabler-range' },
 		section(
-			{ 'class': 'section-primary' },
+			{ class: 'section-primary' },
 			ul(
 				{ class: 'submissions' },
 				user.requiredSubmissions,
@@ -27,9 +27,9 @@ exports.step = function () {
 			)
 		),
 
-		div({ 'class': 'next-step' },
-			a({ 'href': '/submission/' }, "Continue to next step")
+		div({ class: 'next-step' },
+			a({ href: '/submission/' }, "Continue to next step")
 			),
-		div({ 'class': 'disabler' })
+		div({ class: 'disabler' })
 	);
 };

@@ -12,21 +12,21 @@ exports.main = function () {
 		{ class: 'disabler-range', id: 'forms-disabler-range' },
 		section(
 			form(
-				{ 'class': 'section-primary' },
+				{ class: 'section-primary' },
 				fieldset(
 					h3("Basic informations"),
 					hr(),
 					ul(
-						{ 'class': 'form-elements fieldset' },
+						{ class: 'form-elements fieldset' },
 						['firstName', 'lastName', 'userEmail', 'password'],
 						function (name) {
 							return field({ dbjs: user.getObservable(name) });
 						}
 					),
 					p(
-						{ 'class': 'submit-placeholder' },
+						{ class: 'submit-placeholder' },
 						input(
-							{ 'type': 'submit' },
+							{ type: 'submit' },
 							"Save"
 						)
 					)

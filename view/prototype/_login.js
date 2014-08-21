@@ -6,7 +6,7 @@ var register = require('./_register')
   , user = db.User.prototype;
 
 module.exports = modal(
-	{ 'class': 'modal-login' },
+	{ class: 'modal-login' },
 	section(
 		header(
 			h3("Login")
