@@ -29,7 +29,7 @@
 ../../css/components/submitted-main.css
 ../../css/components/submitted-menu.css
 ../../css/components/submitted-documents-list.css
-../../css/components/user-submitted-history.css
+../../css/components/submitted-user-history.css
 ../../css/components/revision.css
 ../../css/components/revision-document-preview.css
 ../../css/components/submitted-documents-thumbs-list.css
@@ -39,5 +39,5 @@
 ../../css/components/user-official-application-revision.css
 ../../css/components/official-revision-form.css
 ../../css/components/users-table-filter-bar.css
-../../css/components/users-table.css
 ../../css/components/incorporation-form.css
+../../css/components/official-users-table.css
