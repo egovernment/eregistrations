@@ -9,7 +9,7 @@ exports['submitted-menu'] = function () {
 		{ class: 'items' },
 		menuitem(
 			a({ class: 'item-active' },
-				"Revision")
+				"Official")
 		),
 		menuitem(
 			a({ href: '/profile/' }, "Profile")
