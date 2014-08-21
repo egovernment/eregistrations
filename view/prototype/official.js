@@ -137,7 +137,7 @@ exports['sub-main'] = function () {
 						div("4068-50001-N-2013")
 					),
 					td(
-						{ 'class': 'desktop-only' },
+						{ class: 'desktop-only' },
 						div("23/07/2014 18:09:22")
 					),
 					td(
@@ -175,7 +175,7 @@ exports['sub-main'] = function () {
 						div("4068-50001-N-2013")
 					),
 					td(
-						{ 'class': 'desktop-only' },
+						{ class: 'desktop-only' },
 						div("23/07/2014 18:09:22")
 					),
 					td(
@@ -194,7 +194,7 @@ exports['sub-main'] = function () {
 						div("4068-50001-N-2013")
 					),
 					td(
-						{ 'class': 'desktop-only' },
+						{ class: 'desktop-only' },
 						div("23/07/2014 18:09:22")
 					),
 					td(
@@ -213,7 +213,7 @@ exports['sub-main'] = function () {
 						div("4068-50001-N-2013")
 					),
 					td(
-						{ 'class': 'desktop-only' },
+						{ class: 'desktop-only' },
 						div("23/07/2014 18:09:22")
 					),
 					td(
@@ -232,7 +232,7 @@ exports['sub-main'] = function () {
 						div("4068-50001-N-2013")
 					),
 					td(
-						{ 'class': 'desktop-only' },
+						{ class: 'desktop-only' },
 						div("23/07/2014 18:09:22")
 					),
 					td(
