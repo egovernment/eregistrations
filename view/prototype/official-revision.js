@@ -63,7 +63,7 @@ exports['sub-main'] = function () {
 			h2("Application history"),
 			a({ 'class': 'fa fa-print nav-alternatives' }, "Print"),
 			table(
-				{ 'class': 'user-submitted-history' },
+				{ 'class': 'submitted-user-history' },
 				tbody(
 					tr(
 						th(

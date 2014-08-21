@@ -27,7 +27,7 @@
 ../../css/components/submitted-main.css
 ../../css/components/submitted-menu.css
 ../../css/components/submitted-documents-list.css
-../../css/components/user-submitted-history.css
+../../css/components/submitted-user-history.css
 ../../css/components/revision.css
 ../../css/components/revision-document-preview.css
 ../../css/components/submitted-documents-thumbs-list.css
