@@ -4,6 +4,18 @@ exports['user-name'] = function () {
 	text("User Submited");
 };
 
+exports['submitted-menu'] = function () {
+	nav({ class: 'items' },
+		menuitem(
+			a({ class: 'item-active' },
+				"Request")
+		),
+		menuitem(
+			a({ href: '/profile/' }, "Profile")
+		)
+		);
+};
+
 exports['sub-main'] = function () {
 	section(
 		{ 'class': 'submitted-main' },
