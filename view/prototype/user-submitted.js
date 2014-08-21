@@ -120,39 +120,43 @@ exports['sub-main'] = function () {
 			h3("Documents uploaded with the application"),
 			ol({ 'class': 'submitted-documents-list' },
 				li(
-					a({ 'href': '' }, "Memorandum and articles of association")
+					a("Memorandum and articles of association")
 				),
 				li(
-					a({ 'href': '' }, "Proof of identity for director 1")
+					a("Proof of identity for director 1")
 				),
 				li(
-					a({ 'href': '' }, "Proof of identity for director 2")
+					a("Proof of identity for director 2")
 				),
 				li(
-					a({ 'href': '' }, "Registered title deed")
+					a("Registered title deed")
 				)
 				),
 			h3("Complete content of the company file"),
-			ol({ 'class': 'submitted-documents-thumbs-list' },
+			ol({ 'class': 'submitted-documents-thumbs' },
 				li(
-					a({ 'href': '' },
+					a(
+						span({ class: 'document-confirmation success fa fa-check ' }),
 						img({ 'src': '/uploads/docASubFile2.thumb.idoc.png.jpg' })
-						)
+					)
 				),
 				li(
-					a({ 'href': '' },
+					a(
+						span({ class: 'document-confirmation error fa fa-exclamation ' }),
 						img({ 'src': '/uploads/docASubFile1.thumb.idoc.jpg' })
-						)
+					)
 				),
 				li(
-					a({ 'href': '' },
+					a(
+						span({ class: 'document-confirmation success fa fa-check ' }),
 						img({ 'src': '/uploads/docBSubFile1.thumb.idoc.jpg' })
-						)
+					)
 				),
 				li(
-					a({ 'href': '' },
+					a(
+						span({ class: 'document-confirmation success fa fa-check ' }),
 						img({ 'src': '/uploads/docASubFile2.thumb.idoc.png.jpg' })
-						)
+					)
 				)
 				)
 		)

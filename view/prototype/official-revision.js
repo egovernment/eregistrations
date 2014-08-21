@@ -94,9 +94,8 @@ exports['sub-main'] = function () {
 	section(
 		{ 'class': 'section-primary' },
 		div(
-			{ class: 'user-official-application-revision' },
 			h2("Application revision"),
-			a({ class: 'button-main' }, "Reject file"),
+			p(a({ class: 'button-main' }, "Reject file")),
 			hr(),
 			h3("Required documents"),
 			ol({ 'class': 'submitted-documents-list' },
@@ -114,7 +113,7 @@ exports['sub-main'] = function () {
 				)
 				),
 			h3("Received documents"),
-			ol({ 'class': 'submitted-documents-thumbs-list revision-required-documents-thumbs-list ' },
+			ol({ 'class': 'submitted-documents-thumbs' },
 				li(
 					a({ 'href': '' },
 						span({ class: 'document-confirmation success fa fa-check ' }),
