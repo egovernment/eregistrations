@@ -32,11 +32,10 @@
 ../../css/components/submitted-user-history.css
 ../../css/components/revision.css
 ../../css/components/revision-document-preview.css
-../../css/components/submitted-documents-thumbs-list.css
+../../css/components/submitted-documents-thumbs.css
 ../../css/components/submitted-user-data-table.css
 ../../css/components/label-reg.css
 ../../css/components/table-responsive.css
-../../css/components/user-official-application-revision.css
 ../../css/components/official-revision-form.css
 ../../css/components/users-table-filter-bar.css
 ../../css/components/incorporation-form.css
