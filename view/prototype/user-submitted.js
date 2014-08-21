@@ -93,10 +93,10 @@ exports['sub-main'] = function () {
 							div("User")
 						),
 						td(
-							div("abstudios")
+							div("24/07/2014 10:09:22")
 						),
 						td(
-							div("123")
+							div("Required modifications sent by user")
 						)
 					),
 					tr(
@@ -104,10 +104,21 @@ exports['sub-main'] = function () {
 							div("File sent")
 						),
 						td(
-							div("abstudios")
+							div("24/07/2014 13:09:22")
 						),
 						td(
-							div("123")
+							div("File sent")
+						)
+					),
+					tr(
+						th(
+							div("Official")
+						),
+						td(
+							div("24/07/2014 16:19:22")
+						),
+						td(
+							div("Document accepted")
 						)
 					)
 				)

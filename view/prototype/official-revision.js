@@ -86,6 +86,17 @@ exports['sub-main'] = function () {
 						td(
 							div("File sent")
 						)
+					),
+					tr(
+						th(
+							div("Official")
+						),
+						td(
+							div("24/07/2014 16:19:22")
+						),
+						td(
+							div("Document accepted")
+						)
 					)
 				)
 			)
