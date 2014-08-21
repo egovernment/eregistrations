@@ -18,9 +18,9 @@ exports['submitted-menu'] = function () {
 
 exports['sub-main'] = function () {
 	section(
-		{ 'class': 'submitted-main' },
+		{ class: 'submitted-main' },
 		table(
-			{ 'class': 'submitted-user-data-table table-responsive' },
+			{ class: 'submitted-user-data-table table-responsive' },
 			thead(
 				tr(
 					th("Status"),
@@ -34,33 +34,33 @@ exports['sub-main'] = function () {
 			tbody(
 				tr(
 					td(
-						div({ 'class': 'cell-caption' },
+						div({ class: 'cell-caption' },
 							"Status"),
-						div({ 'class': 'cell-body' },
+						div({ class: 'cell-body' },
 							"Pending for revision")
 					),
 					td(
-						div({ 'class': 'cell-caption' },
+						div({ class: 'cell-caption' },
 							"Company"),
-						div({ 'class': 'cell-body' },
+						div({ class: 'cell-body' },
 							"abstudios")
 					),
 					td(
-						div({ 'class': 'cell-caption' },
+						div({ class: 'cell-caption' },
 							"Application number"),
-						div({ 'class': 'cell-body' },
+						div({ class: 'cell-body' },
 							"123")
 					),
 					td(
-						div({ 'class': 'cell-caption' },
+						div({ class: 'cell-caption' },
 							"Application date"),
-						div({ 'class': 'cell-body' },
+						div({ class: 'cell-body' },
 							"29/07/2014")
 					),
 					td(
-						div({ 'class': 'cell-caption' },
+						div({ class: 'cell-caption' },
 							"Requested registrations"),
-						div({ 'class': 'cell-body' },
+						div({ class: 'cell-body' },
 							span({ class: 'label-reg' }, "Brela"),
 							span({ class: 'label-reg' }, "Tinc"),
 							span({ class: 'label-reg' }, "Vat"),
@@ -70,10 +70,10 @@ exports['sub-main'] = function () {
 							)
 					),
 					td(
-						div({ 'class': 'cell-caption' },
+						div({ class: 'cell-caption' },
 							""),
-						div({ 'class': 'cell-body' },
-							a({ 'class': 'fa fa-download' }, "Print")
+						div({ class: 'cell-body' },
+							a({ class: 'fa fa-download' }, "Print")
 							)
 					)
 				)
@@ -81,12 +81,12 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ 'class': 'section-primary' },
+		{ class: 'section-primary' },
 		div(
 			h2("History of your request"),
-			a({ 'class': 'fa fa-print nav-alternatives' }, "Print"),
+			a({ class: 'fa fa-print nav-alternatives' }, "Print"),
 			table(
-				{ 'class': 'submitted-user-history' },
+				{ class: 'submitted-user-history' },
 				tbody(
 					tr(
 						th(
@@ -126,10 +126,10 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ 'class': 'section-primary' },
+		{ class: 'section-primary' },
 		div(
 			h3("Documents uploaded with the application"),
-			ol({ 'class': 'submitted-documents-list' },
+			ol({ class: 'submitted-documents-list' },
 				li(
 					a("Memorandum and articles of association")
 				),
@@ -144,50 +144,49 @@ exports['sub-main'] = function () {
 				)
 				),
 			h3("Complete content of the company file"),
-			ol({ 'class': 'submitted-documents-thumbs' },
+			ol({ class: 'submitted-documents-thumbs' },
 				li(
 					a(
 						span({ class: 'document-confirmation success fa fa-check ' }),
-						img({ 'src': '/uploads/docASubFile2.thumb.idoc.png.jpg' })
+						img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 					)
 				),
 				li(
 					a(
 						span({ class: 'document-confirmation error fa fa-exclamation ' }),
-						img({ 'src': '/uploads/docASubFile1.thumb.idoc.jpg' })
+						img({ src: '/uploads/docASubFile1.thumb.idoc.jpg' })
 					)
 				),
 				li(
 					a(
 						span({ class: 'document-confirmation success fa fa-check ' }),
-						img({ 'src': '/uploads/docBSubFile1.thumb.idoc.jpg' })
+						img({ src: '/uploads/docBSubFile1.thumb.idoc.jpg' })
 					)
 				),
 				li(
 					a(
 						span({ class: 'document-confirmation success fa fa-check ' }),
-						img({ 'src': '/uploads/docASubFile2.thumb.idoc.png.jpg' })
+						img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 					)
 				)
 				)
 		)
 	);
 	section(
-		{ 'class': 'section-primary submitted-preview' },
-		div({ 'class': 'submitted-preview-document' },
+		{ class: 'section-primary submitted-preview' },
+		div({ class: 'submitted-preview-document' },
 			h3(
-				i({ 'class': 'list-item-number' },
+				i({ class: 'list-item-number' },
 						"1"),
 				"Memorandum and articles of association"
 			),
-			div(a({ 'href': '' },
-					img({ 'src': '/uploads/docASubFile2.idoc.png.jpg' })
+			div(a(img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
 					)
 				)
 			),
-		div({ 'class': 'submitted-preview-user-data' },
+		div({ class: 'submitted-preview-user-data' },
 			h3("Application form"),
-			a({ 'class': 'fa fa-print nav-alternatives' }, "Print"),
+			a({ class: 'fa fa-print nav-alternatives' }, "Print"),
 			h4("Proposed company name"),
 			table(
 				tbody(
