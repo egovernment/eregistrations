@@ -4,7 +4,7 @@ exports['sub-main'] = function () {
 	section(
 		{ 'class': 'submitted-main' },
 		table(
-			{ 'class': 'user-official-revision-data-table  table-responsive' },
+			{ 'class': 'submitted-user-data-table table-responsive' },
 			thead(
 				tr(
 					th("Status"),
