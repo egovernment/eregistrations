@@ -1,31 +1,31 @@
-.users-table {
+.official-users-table {
 	margin-top: 22px;
 }
 
-.users-table thead {
+.official-users-table thead {
 	background-color: var(--normal-background);
 }
-.users-table thead th {
+.official-users-table thead th {
 	color: var(--white-text);
 }
 
-.users-table tbody tr {
+.official-users-table tbody tr {
 	background-color: var(--white-text);
 }
 
-.users-table tbody tr td {
+.official-users-table tbody tr td {
 	border: 1px solid var(--light-inner-border);
 }
 
-.users-table th {
+.official-users-table th {
 	border: 1px solid var(--light-inner-border);
 }
 
-.users-table tbody tr:nth-of-type(even) {
+.official-users-table tbody tr:nth-of-type(even) {
 	background-color: var(--light-background);
 }
 
-.users-table ul {
+.official-users-table ul {
 	list-style-type: none;
 	margin-bottom: 0;
 	margin: -6px 0;
