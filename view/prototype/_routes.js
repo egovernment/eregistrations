@@ -42,6 +42,9 @@ module.exports = function (view) {
 		'users-admin/edit-user-id': bind(usersAdminMain.diff('./edit-user')),
 		'users-admin/user-id': bind(usersAdminMain.diff('./users-admin-user')),
 
+		// Official user routes
+		'official': bind(subMain.diff('./official')),
+
 		// Error routes
 		404: bind(main.diff('./404'))
 	};

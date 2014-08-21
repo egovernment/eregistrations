@@ -5,12 +5,15 @@ exports['user-name'] = function () {
 };
 
 exports['submitted-menu'] = function () {
-	menuitem(
-		a({ class: 'item-active', href: '/users-admin/' },
-			"Application")
-	);
-	menuitem(
-		a({ href: '/profile/' }, "Profile")
+	nav(
+		{ class: 'items' },
+		menuitem(
+			a({ class: 'item-active', href: '/users-admin/' },
+				"Application")
+		),
+		menuitem(
+			a({ href: '/profile/' }, "Profile")
+		)
 	);
 };
 
