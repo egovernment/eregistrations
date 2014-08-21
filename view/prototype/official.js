@@ -38,7 +38,6 @@ exports['sub-main'] = function () {
 					"Status: "
 				),
 				div(
-					{ class: "" },
 					select(
 						option("Pending for revision"),
 						option("Revisioned"),
@@ -49,7 +48,6 @@ exports['sub-main'] = function () {
 					"Status: "
 				),
 				div(
-					{ class: "" },
 					span({ class: 'input-append' },
 							input({ type: 'search' }),
 							button({ class: 'add-on' },
@@ -63,12 +61,12 @@ exports['sub-main'] = function () {
 			)
 		),
 		table(
-			{ 'class': 'official-users-table' },
+			{ class: 'official-users-table' },
 			thead(
 				tr(
 					th("Name"),
 					th("Application number"),
-					th({ 'class': 'desktop-only' }, "Date of registration"),
+					th({ class: 'desktop-only' }, "Date of registration"),
 					th("Requested registration"),
 					th({ class: 'actions' }, "Actions")
 				)
@@ -82,7 +80,45 @@ exports['sub-main'] = function () {
 						div("4068-50001-N-2013")
 					),
 					td(
-						{ 'class': 'desktop-only' },
+						{ class: 'desktop-only' },
+						div("23/07/2014 18:09:22")
+					),
+					td(
+						div('Investment')
+					),
+					td(
+						{ class: 'actions' },
+						a("Download")
+					)
+				),
+				tr(
+					td(
+						div(a("John Watson"))
+					),
+					td(
+						div("4068-50001-N-2013")
+					),
+					td(
+						{ class: 'desktop-only' },
+						div("23/07/2014 18:09:22")
+					),
+					td(
+						div('Investment')
+					),
+					td(
+						{ class: 'actions' },
+						a("Download")
+					)
+				),
+				tr(
+					td(
+						div(a("John Watson"))
+					),
+					td(
+						div("4068-50001-N-2013")
+					),
+					td(
+						{ class: 'desktop-only' },
 						div("23/07/2014 18:09:22")
 					),
 					td(
@@ -120,45 +156,7 @@ exports['sub-main'] = function () {
 						div("4068-50001-N-2013")
 					),
 					td(
-						{ 'class': 'desktop-only' },
-						div("23/07/2014 18:09:22")
-					),
-					td(
-						div('Investment')
-					),
-					td(
-						{ class: 'actions' },
-						a("Download")
-					)
-				),
-				tr(
-					td(
-						div(a("John Watson"))
-					),
-					td(
-						div("4068-50001-N-2013")
-					),
-					td(
-						{ 'class': 'desktop-only' },
-						div("23/07/2014 18:09:22")
-					),
-					td(
-						div('Investment')
-					),
-					td(
-						{ class: 'actions' },
-						a("Download")
-					)
-				),
-				tr(
-					td(
-						div(a("John Watson"))
-					),
-					td(
-						div("4068-50001-N-2013")
-					),
-					td(
-						{ 'class': 'desktop-only' },
+						{ class: 'desktop-only' },
 						div("23/07/2014 18:09:22")
 					),
 					td(
