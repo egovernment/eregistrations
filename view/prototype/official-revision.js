@@ -99,7 +99,7 @@ exports['sub-main'] = function () {
 			a({ class: 'button-main' }, "Reject file"),
 			hr(),
 			h3("Required documents"),
-			ol({ 'class': 'revision-required-documents-list' },
+			ol({ 'class': 'submitted-documents-list' },
 				li(
 					a({ 'href': '' }, "Memorandum and articles of association")
 				),
