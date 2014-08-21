@@ -16,7 +16,7 @@ exports.main = function () {
 				menuitem(
 					a({ class: 'step-active', href: '/guide/' },
 						"1. Guide"),
-					div({ 'style': 'width: 100%' })
+					div({ style: 'width: 100%' })
 				),
 				menuitem(
 					a({ class: 'step-unactive', href: '/forms/' },

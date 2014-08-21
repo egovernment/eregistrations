@@ -32,9 +32,9 @@ exports['sub-main'] = function () {
 					li(field({ dbjs: user._password }))
 					),
 				p(
-					{ 'class': 'submit-placeholder' },
+					{ class: 'submit-placeholder' },
 					input(
-						{ 'type': 'submit' },
+						{ type: 'submit' },
 						"Save"
 					)
 				)

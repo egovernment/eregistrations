@@ -24,12 +24,12 @@ exports['sub-main'] = function () {
 			a({ class: 'button-main ', href: '/users-admin/add-user/' }, "New User")
 		),
 		table(
-			{ 'class': 'official-users-table' },
+			{ class: 'official-users-table' },
 			thead(
 				tr(
 					th("Email"),
 					th("Institution"),
-					th({ 'class': 'desktop-only' }, "Creation date"),
+					th({ class: 'desktop-only' }, "Creation date"),
 					th({ class: 'actions' }, "Actions")
 				)
 			),
@@ -42,7 +42,7 @@ exports['sub-main'] = function () {
 						div("Bussines Licence A")
 					),
 					td(
-						{ 'class': 'desktop-only' },
+						{ class: 'desktop-only' },
 						div("23/07/2014 18:09:22")
 					),
 					td(
@@ -59,7 +59,7 @@ exports['sub-main'] = function () {
 						div("Bussines Licence A")
 					),
 					td(
-						{ 'class': 'desktop-only' },
+						{ class: 'desktop-only' },
 						div("23/07/2014 18:09:22")
 					),
 					td(
@@ -76,7 +76,7 @@ exports['sub-main'] = function () {
 						div("Bussines Licence A")
 					),
 					td(
-						{ 'class': 'desktop-only' },
+						{ class: 'desktop-only' },
 						div("23/07/2014 18:09:22")
 					),
 					td(
@@ -98,7 +98,7 @@ exports['sub-main'] = function () {
 						)
 					),
 					td(
-						{ 'class': 'desktop-only' },
+						{ class: 'desktop-only' },
 						div("23/07/2014 18:09:22")
 					),
 					td(
@@ -115,7 +115,7 @@ exports['sub-main'] = function () {
 						div("Bussines Licence A")
 					),
 					td(
-						{ 'class': 'desktop-only' },
+						{ class: 'desktop-only' },
 						div("23/07/2014 18:09:22")
 					),
 					td(
@@ -132,7 +132,7 @@ exports['sub-main'] = function () {
 						div("Bussines Licence A")
 					),
 					td(
-						{ 'class': 'desktop-only' },
+						{ class: 'desktop-only' },
 						div("23/07/2014 18:09:22")
 					),
 					td(
