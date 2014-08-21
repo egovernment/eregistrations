@@ -4,7 +4,7 @@ var db = require('mano').db,
 	user = db.User.prototype;
 
 exports.step = function () {
-	section({ 'class': 'section-primary' },
+	section({ class: 'section-primary' },
 		div(h3("Where do you want to withdraw your documents?"),
 			hr(),
 			form(ul({ class: 'form-elements fieldset' },
@@ -12,32 +12,32 @@ exports.step = function () {
 					function (name) { return field({ dbjs: user.getObservable(name) }); }
 					)
 				),
-			p({ 'class': 'submit-placeholder' }, input({ 'type': 'submit' }, "Save"))
+			p({ class: 'submit-placeholder' }, input({ type: 'submit' }, "Save"))
 			)
 		);
 
 	section(
-		{ 'class': 'section-primary' },
+		{ class: 'section-primary' },
 		div(h3("Who will pick the certificates?"),
 			hr(),
-			form(ul({ 'class': 'form-elements fieldset' }, ['pickCertificates'],
+			form(ul({ class: 'form-elements fieldset' }, ['pickCertificates'],
 					function (name) { return field({ dbjs: user.getObservable(name) }); }
 					),
-				p({ 'class': 'submit-placeholder' }, input({ 'type': 'submit' }, "Save"))
+				p({ class: 'submit-placeholder' }, input({ type: 'submit' }, "Save"))
 				)
 			)
 	);
 
 	section(
-		{ 'class': 'section-warning' },
+		{ class: 'section-warning' },
 		ul(
 			li(
-				a({ 'class': 'form-complition-link', href: '/forms/' },
+				a({ class: 'form-complition-link', href: '/forms/' },
 					"Some required fields in the tab Fill the form have not been completed"
 					)
 			),
 			li(
-				a({ 'class': 'form-complition-link', href: '/documents/' },
+				a({ class: 'form-complition-link', href: '/documents/' },
 					"Some documents have not been uploaded"
 					)
 			)
@@ -45,10 +45,10 @@ exports.step = function () {
 	);
 
 	section(
-		{ 'class': 'section-primary' },
+		{ class: 'section-primary' },
 		form(
 			div(
-				{ 'class': 'user-submission-sworn-declaration' },
+				{ class: 'user-submission-sworn-declaration' },
 				h3("Sworn declaration"),
 				hr(),
 				field(
@@ -68,7 +68,7 @@ exports.step = function () {
 		)
 	);
 
-	div({ 'class': 'submit-user-button' },
-		a({ 'href': ' ' }, "Send Your files")
+	div({ class: 'submit-user-button' },
+		a({ href: ' ' }, "Send Your files")
 		);
 };

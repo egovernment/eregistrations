@@ -4,16 +4,16 @@ var db = require('mano').db,
 	user = db.User.prototype;
 
 exports.step = function () {
-	section({ 'class': 'user-guide' },
-			h3({ 'class': 'main-intro' },
+	section({ class: 'user-guide' },
+			h3({ class: 'main-intro' },
 				"INDIVIDUAL REGISTRATION GUIDE FOR COMPANIES"),
 			h3("Complete the previous questions, pick your records and" +
 					"see the necessary documents and costs"
 			),
-			form({ 'class': 'guide-form' },
+			form({ class: 'guide-form' },
 				div({ class: 'guide-box' }, h3("Questions"),
 					hr(),
-					ul({ 'class': 'form-elements' },
+					ul({ class: 'form-elements' },
 					['businessActivity', 'isOwner', 'inventory', 'surfaceArea', 'members',
 						'companyType', 'isShoppingGallery'], function (name) {
 						li(div({ class: 'dbjs-input-component' },
@@ -22,7 +22,7 @@ exports.step = function () {
 					})),
 				div({ class: 'guide-box' }, h3("Registrations"),
 					hr(),
-					ul({ 'class': 'form-elements' },
+					ul({ class: 'form-elements' },
 						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 						span(user.getDescriptor('isARequested').label))),
 						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
@@ -61,13 +61,13 @@ exports.step = function () {
 							span("$10'000")),
 						li(span("Filing fees for memorandum"), " ",
 							span("$45'000")),
-						li({ 'class': 'guide-total-costs' },
+						li({ class: 'guide-total-costs' },
 								span("Total Costs:"), " ",
 								span("$105'000")
 							)
 						)
 				),
-				button({ 'class': 'save-step-one', 'type': 'submit' },
+				button({ class: 'save-step-one', type: 'submit' },
 					"Save and continue"
 				)
 			)

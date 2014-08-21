@@ -18,22 +18,22 @@ exports['sub-main'] = function () {
 			),
 			hr(),
 			ul(
-				{ 'class': 'entity-properties' },
+				{ class: 'entity-properties' },
 				li(
-					span({ 'class': 'entity-properties-name' }, "First name: "),
-					span({ 'class': 'entity-properties-value' }, user._firstName)
+					span({ class: 'entity-properties-name' }, "First name: "),
+					span({ class: 'entity-properties-value' }, user._firstName)
 				),
 				li(
-					span({ 'class': 'entity-properties-name' }, "Last name: "),
-					span({ 'class': 'entity-properties-value' }, user._lastName)
+					span({ class: 'entity-properties-name' }, "Last name: "),
+					span({ class: 'entity-properties-value' }, user._lastName)
 				),
 				li(
-					span({ 'class': 'entity-properties-name' }, "Roles:"),
-					span({ 'class': 'entity-properties-value' }, user._roles)
+					span({ class: 'entity-properties-name' }, "Roles:"),
+					span({ class: 'entity-properties-value' }, user._roles)
 				),
 				li(
-					span({ 'class': 'entity-properties-name' }, "Email address: "),
-					span({ 'class': 'entity-properties-value' }, user._email)
+					span({ class: 'entity-properties-name' }, "Email address: "),
+					span({ class: 'entity-properties-value' }, user._email)
 				)
 			)
 		)
