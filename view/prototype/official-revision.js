@@ -142,8 +142,8 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ 'class': 'section-primary revision' },
-		div({ 'class': 'revision-document' },
+		{ 'class': 'section-primary submitted-preview' },
+		div({ 'class': 'submitted-preview-document' },
 			h3(
 				i({ 'class': 'list-item-number' },
 						"1"),
@@ -186,13 +186,13 @@ exports['sub-main'] = function () {
 				),
 				input({ type: 'submit' }, "Save")
 			),
-			div({ 'class': 'revision-document-preview' },
+			div({ 'class': '' },
 				a({ 'href': '' },
 					img({ 'src': '/uploads/docASubFile2.idoc.png.jpg' })
 					)
 				)
 			),
-		div({ 'class': 'revision-user-data-section' },
+		div({ 'class': 'submitted-preview-user-data' },
 			h3("Application form"),
 			a({ 'class': 'fa fa-print nav-alternatives' }, "Print"),
 			h4("Proposed company name"),

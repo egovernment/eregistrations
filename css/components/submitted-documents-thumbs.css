@@ -75,10 +75,6 @@
 	color: var(--error-text);
 }
 
-.revision-document {
-	overflow-y: scroll;
-}
-
 @media only screen and (max-width: var(--mobile-width)) {
 
 	.submitted-documents-thumbs li {
