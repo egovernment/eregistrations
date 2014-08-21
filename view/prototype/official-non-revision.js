@@ -2,9 +2,9 @@
 
 exports['sub-main'] = function () {
 	section(
-		{ 'class': 'submitted-main' },
+		{ class: 'submitted-main' },
 		table(
-			{ 'class': 'submitted-user-data-table table-responsive' },
+			{ class: 'submitted-user-data-table table-responsive' },
 			thead(
 				tr(
 					th("Status"),
@@ -17,27 +17,27 @@ exports['sub-main'] = function () {
 			tbody(
 				tr(
 					td(
-						div({ 'class': 'cell-caption' },
+						div({ class: 'cell-caption' },
 							"Status"),
-						div({ 'class': 'cell-body' },
+						div({ class: 'cell-body' },
 							"Pending for revision")
 					),
 					td(
-						div({ 'class': 'cell-caption' },
+						div({ class: 'cell-caption' },
 							"Application number"),
-						div({ 'class': 'cell-body' },
+						div({ class: 'cell-body' },
 							"4068-50001-N-2013")
 					),
 					td(
-						div({ 'class': 'cell-caption' },
+						div({ class: 'cell-caption' },
 							"Application date"),
-						div({ 'class': 'cell-body' },
+						div({ class: 'cell-body' },
 							"23/07/2014 18:09:22")
 					),
 					td(
-						div({ 'class': 'cell-caption' },
+						div({ class: 'cell-caption' },
 							"Requested registrations"),
-						div({ 'class': 'cell-body' },
+						div({ class: 'cell-body' },
 							span({ class: 'label-reg' }, "Brela"),
 							span({ class: 'label-reg' }, "Tinc"),
 							span({ class: 'label-reg' }, "Vat"),
@@ -47,10 +47,10 @@ exports['sub-main'] = function () {
 							)
 					),
 					td(
-						div({ 'class': 'cell-caption' },
+						div({ class: 'cell-caption' },
 							""),
-						div({ 'class': 'cell-body' },
-							a({ 'class': 'fa fa-download' }, "Print")
+						div({ class: 'cell-body' },
+							a({ class: 'fa fa-download' }, "Print")
 							)
 					)
 				)
@@ -58,12 +58,12 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ 'class': 'section-primary' },
+		{ class: 'section-primary' },
 		div(
 			h2("Application history"),
-			a({ 'class': 'fa fa-print nav-alternatives' }, "Print"),
+			a({ class: 'fa fa-print nav-alternatives' }, "Print"),
 			table(
-				{ 'class': 'submitted-user-history' },
+				{ class: 'submitted-user-history' },
 				tbody(
 					tr(
 						th(

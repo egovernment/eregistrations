@@ -14,74 +14,68 @@ exports['incorporation-tabs'] = function () {
 			)
 		),
 
-		ol({ 'class': 'submitted-documents-list' },
+		ol({ class: 'submitted-documents-list' },
 			li(
-				a({ 'href': '' }, "Memorandum and articles of association")
+				a("Memorandum and articles of association")
 			),
 			li(
-				a({ 'href': '' }, "Proof of identity for director 1")
+				a("Proof of identity for director 1")
 			),
 			li(
-				a({ 'href': '' }, "Proof of identity for director 2")
+				a("Proof of identity for director 2")
 			),
 			li(
-				a({ 'href': '' }, "Registered title deed")
+				a("Registered title deed")
 			)
 			),
 		h3("Certificates uploaded by institutions"),
-		ol({ 'class': 'submitted-documents-list' },
+		ol({ class: 'submitted-documents-list' },
 			li(
-				a({ 'href': '' }, "Memorandum and articles of association")
+				a("Memorandum and articles of association")
 			),
 			li(
-				a({ 'href': '' }, "Proof of identity for director 1")
+				a("Proof of identity for director 1")
 			)
 			),
 		h3("Complete content of the company file"),
-		ol({ 'class': 'submitted-documents-thumbs' },
+		ol({ class: 'submitted-documents-thumbs' },
 			li(
-				a({ 'href': '' },
-					span({ class: 'document-confirmation success fa fa-check ' }),
-					img({ 'src': '/uploads/docASubFile2.thumb.idoc.png.jpg' })
+				a(span({ class: 'document-confirmation success fa fa-check ' }),
+					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 					)
 			),
 			li(
-				a({ 'href': '' },
-					span({ class: 'document-confirmation success fa fa-check ' }),
-					img({ 'src': '/uploads/docASubFile1.thumb.idoc.jpg' })
+				a(span({ class: 'document-confirmation success fa fa-check ' }),
+					img({ src: '/uploads/docASubFile1.thumb.idoc.jpg' })
 					)
 			),
 			li(
-				a({ 'href': '' },
-					span({ class: 'document-confirmation error fa fa-exclamation ' }),
-					img({ 'src': '/uploads/docBSubFile1.thumb.idoc.jpg' })
+				a(span({ class: 'document-confirmation error fa fa-exclamation ' }),
+					img({ src: '/uploads/docBSubFile1.thumb.idoc.jpg' })
 					)
 			),
 			li(
-				a({ 'href': '' },
-					span({ class: 'document-confirmation success fa fa-check ' }),
-					img({ 'src': '/uploads/docASubFile2.thumb.idoc.png.jpg' })
+				a(span({ class: 'document-confirmation success fa fa-check ' }),
+					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 					)
 			)
 			)
 	);
 	section(
-		{ 'class': 'section-primary submitted-preview' },
-		div({ 'class': 'submitted-preview-document' },
+		{ class: 'section-primary submitted-preview' },
+		div({ class: 'submitted-preview-document' },
 			h3(
-				i({ 'class': 'list-item-number' },
+				i({ class: 'list-item-number' },
 						"1"),
 				"Memorandum and articles of association"
 			),
-			div({ 'class': '' },
-				a({ 'href': '' },
-					img({ 'src': '/uploads/docASubFile2.idoc.png.jpg' })
+			div(a(img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
 					)
 				)
 			),
-		div({ 'class': 'submitted-preview-user-data' },
+		div({ class: 'submitted-preview-user-data' },
 			h3("Application form"),
-			a({ 'class': 'fa fa-print nav-alternatives' }, "Print"),
+			a({ class: 'fa fa-print nav-alternatives' }, "Print"),
 			h4("Proposed company name"),
 			table(
 				tbody(
