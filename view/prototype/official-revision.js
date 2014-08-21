@@ -70,6 +70,9 @@ exports['sub-main'] = function () {
 							div("User")
 						),
 						td(
+							div("John Watson (4068-50001-N-2013)")
+						),
+						td(
 							div("24/07/2014 10:09:22")
 						),
 						td(
@@ -81,6 +84,9 @@ exports['sub-main'] = function () {
 							div("File sent")
 						),
 						td(
+							div("John Watson (4068-50001-N-2013)")
+						),
+						td(
 							div("24/07/2014 13:09:22")
 						),
 						td(
@@ -90,6 +96,9 @@ exports['sub-main'] = function () {
 					tr(
 						th(
 							div("Official")
+						),
+						td(
+							div("Sherlock Holmes (4068-50001-N-2013)")
 						),
 						td(
 							div("24/07/2014 16:19:22")
