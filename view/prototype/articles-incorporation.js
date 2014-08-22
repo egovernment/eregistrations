@@ -6,7 +6,7 @@ exports['incorporation-tabs'] = function () {
 
 	div(
 		h3(
-			{ class: 'heading-tools' },
+			{ class: 'nav-alternatives' },
 			"Documents received from petitioner",
 			div(
 				a({ class: 'button' }, span({ class: 'fa fa-download' }), "View and print form"),
@@ -74,7 +74,7 @@ exports['incorporation-tabs'] = function () {
 				)
 			),
 		div({ class: 'submitted-preview-user-data' },
-			h3({ class: 'heading-tools' }, "Application form",
+			h3({ class: 'nav-alternatives' }, "Application form",
 				a({ class: 'fa fa-print' }, "Print")
 				),
 			h4("Proposed company name"),
