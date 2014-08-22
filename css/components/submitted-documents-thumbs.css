@@ -51,7 +51,7 @@
 	vertical-align: middle;
 }
 
-.submitted-documents-thumbs .document-confirmation {
+.submitted-documents-thumbs .review-status {
 	position: absolute;
 	line-height: 18px;
 	right: 0;
@@ -63,12 +63,6 @@
 	background: var(--white-background);
 	margin-top: -8px;
 	margin-right: -8px;
-}
-.document-confirmation.success {
-	color: var(--success-text);
-}
-.document-confirmation.error {
-	color: var(--error-text);
 }
 
 @media only screen and (max-width: var(--mobile-width)) {

@@ -147,25 +147,25 @@ exports['sub-main'] = function () {
 			ol({ class: 'submitted-documents-thumbs' },
 				li(
 					a(
-						span({ class: 'document-confirmation fa fa-check-success ' }),
+						span({ class: 'review-status fa fa-check-success ' }),
 						img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 					)
 				),
 				li(
 					a(
-						span({ class: 'document-confirmation fa fa-exclamation-error ' }),
+						span({ class: 'review-status fa fa-exclamation-error ' }),
 						img({ src: '/uploads/docASubFile1.thumb.idoc.jpg' })
 					)
 				),
 				li(
 					a(
-						span({ class: 'document-confirmation fa fa-check-success ' }),
+						span({ class: 'review-status fa fa-check-success ' }),
 						img({ src: '/uploads/docBSubFile1.thumb.idoc.jpg' })
 					)
 				),
 				li(
 					a(
-						span({ class: 'document-confirmation fa fa-check-success ' }),
+						span({ class: 'review-status fa fa-check-success ' }),
 						img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 					)
 				)
