@@ -2,11 +2,13 @@
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	color: var(--white-text);
+	cursor: pointer;
 	display: inline-block;
 	font-size: 18px;
 	font-weight: normal;
 	line-height: 22px;
 	margin-bottom: 0;
+	margin-right: 10px;
 	text-align: center;
 	text-decoration: none;
 	white-space: nowrap;
