@@ -23,3 +23,7 @@
 	border-bottom: none;
 	z-index: 999;
 }
+.section-tabs .section-primary {
+	padding-left: 0;
+	padding-right: 0;
+}

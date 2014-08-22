@@ -39,3 +39,6 @@ h2.nav-alternatives .fa {
 	top: 2px;
 	right: 2px;
 }
+.nav-alternatives div {
+	min-width: 30%;
+}

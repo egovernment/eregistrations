@@ -7,7 +7,7 @@ exports['incorporation-tabs'] = function () {
 	div(
 		h3(
 			{ class: 'nav-alternatives' },
-			"Documents received from petitioner",
+			"Documents received from petitioner Documents received from petitioner Documents received from petitioner",
 			div(
 				a({ class: 'button' }, span({ class: 'fa fa-download' }), "View and print form"),
 				a({ class: 'button' }, span({ class: 'fa fa-download' }), "Payment receipt")
