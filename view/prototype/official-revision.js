@@ -115,7 +115,10 @@ exports['sub-main'] = function () {
 		{ class: 'section-primary' },
 		div(
 			h2("Application revision"),
-			p(a({ class: 'button-main' }, "Reject file")),
+			p(a({ class: 'button-main' }, "Approve file"),
+				a({ class: 'button-main' }, "Send for corrections"),
+				a({ class: 'button-main' }, "Reject file")
+				),
 			hr(),
 			h3("Required documents"),
 			ol({ class: 'submitted-documents-list' },
@@ -135,22 +138,22 @@ exports['sub-main'] = function () {
 			h3("Received documents"),
 			ol({ class: 'submitted-documents-thumbs' },
 				li(
-					a(span({ class: 'document-confirmation success fa fa-check ' }),
+					a(span({ class: 'review-status success fa fa-check ' }),
 						img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 						)
 				),
 				li(
-					a(span({ class: 'document-confirmation success fa fa-check ' }),
+					a(span({ class: 'review-status success fa fa-check ' }),
 						img({ src: '/uploads/docASubFile1.thumb.idoc.jpg' })
 						)
 				),
 				li(
-					a(span({ class: 'document-confirmation error fa fa-exclamation ' }),
+					a(span({ class: 'review-status error fa fa-exclamation ' }),
 						img({ src: '/uploads/docBSubFile1.thumb.idoc.jpg' })
 						)
 				),
 				li(
-					a(span({ class: 'document-confirmation success fa fa-check ' }),
+					a(span({ class: 'review-status success fa fa-check ' }),
 						img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 						)
 				)
@@ -166,7 +169,7 @@ exports['sub-main'] = function () {
 				"Memorandum and articles of association"
 			),
 			form(
-				{ class: 'official-revision-form' },
+				{ class: 'submitted-preview-form' },
 				ul(
 					{ class: 'form-elements' },
 					li(
