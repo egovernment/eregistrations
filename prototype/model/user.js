@@ -12,6 +12,7 @@ var Map          = require('es6-map')
   , SquareMeters = require('dbjs-ext/number/square-meters')(db)
   , Document     = require('./document')
   , Submission   = require('./submission')
+  , File         = require('./file')
 
   , user = User.prototype
   , BusinessActivity, BusinessActivityCategory, CompanyType, Partner, bcAgencyBusiness, bcInsurance
@@ -113,7 +114,11 @@ user.defineProperties({
 	//Submission
 	placeOfWithdraw: { type: StringLine, label: "Withdraw documents to" },
 	pickCertificates: { type: db.Boolean, trueLabel: "I will pick the certificates.",
-		falseLabel: "he following person will pick the certificates", label: "The following person:" }
+		falseLabel: "he following person will pick the certificates", label: "The following person:" },
+
+	incorporationCertificateFile: { type: File, nested: true, label: "Certificate of incorporation" },
+	registeredArticlesFile: { type: File, nested: true,
+		label: "Registered articles of association" }
 });
 
 module.exports = User;
