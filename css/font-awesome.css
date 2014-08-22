@@ -80,14 +80,6 @@ e.g.:
 	content: "\f00c";
 }
 
-.fa-check-success {
-	width: 0.99em;
-	color: var(--success-text);
-}
-.fa-check-success:before {
-	content: "\f00c";
-}
-
 .fa-power-off {
 	width: 0.85em;
 }
@@ -123,10 +115,9 @@ e.g.:
 	content: '\f002'
 }
 
-.fa-exclamation-error {
+.fa-exclamation {
 	width: 1em;
-	color: var(--error-text);
 }
-.fa-exclamation-error:before {
+.fa-exclamation:before {
 	content: '\f12a';
 }

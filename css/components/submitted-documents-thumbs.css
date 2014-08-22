@@ -65,6 +65,13 @@
 	margin-right: -8px;
 }
 
+.review-status.success {
+	color: var(--success-text);
+}
+.review-status.error {
+color: var(--error-text);
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 
 	.submitted-documents-thumbs li {
