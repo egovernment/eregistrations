@@ -27,12 +27,12 @@
 ../../css/components/submitted-main.css
 ../../css/components/submitted-menu.css
 ../../css/components/submitted-documents-list.css
-../../css/components/user-submitted-history.css
-../../css/components/revision.css
-../../css/components/revision-document-preview.css
-../../css/components/submitted-documents-thumbs-list.css
-../../css/components/user-submitted-data-table.css
+../../css/components/submitted-user-history.css
+../../css/components/submitted-preview.css
+../../css/components/submitted-documents-thumbs.css
+../../css/components/submitted-user-data-table.css
 ../../css/components/label-reg.css
 ../../css/components/table-responsive.css
+../../css/components/submitted-preview-form.css
 ../../css/components/users-table-filter-bar.css
 ../../css/components/official-users-table.css

@@ -1,21 +1,5 @@
 'use strict';
 
-exports['user-name'] = function () {
-	text("User Submited");
-};
-
-exports['submitted-menu'] = function () {
-	nav({ class: 'items' },
-		menuitem(
-			a({ class: 'item-active' },
-				"Request")
-		),
-		menuitem(
-			a({ href: '/profile/' }, "Profile")
-		)
-		);
-};
-
 exports['sub-main'] = function () {
 	section(
 		{ class: 'submitted-main' },
@@ -24,7 +8,6 @@ exports['sub-main'] = function () {
 			thead(
 				tr(
 					th("Status"),
-					th("Company"),
 					th("Application number"),
 					th("Application date"),
 					th("Requested registrations"),
@@ -41,21 +24,15 @@ exports['sub-main'] = function () {
 					),
 					td(
 						div({ class: 'cell-caption' },
-							"Company"),
-						div({ class: 'cell-body' },
-							"abstudios")
-					),
-					td(
-						div({ class: 'cell-caption' },
 							"Application number"),
 						div({ class: 'cell-body' },
-							"123")
+							"4068-50001-N-2013")
 					),
 					td(
 						div({ class: 'cell-caption' },
 							"Application date"),
 						div({ class: 'cell-body' },
-							"29/07/2014")
+							"23/07/2014 18:09:22")
 					),
 					td(
 						div({ class: 'cell-caption' },
@@ -83,7 +60,7 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'section-primary' },
 		div(
-			h2("History of your request"),
+			h2("Application history"),
 			a({ class: 'fa fa-print nav-alternatives' }, "Print"),
 			table(
 				{ class: 'submitted-user-history' },
@@ -91,6 +68,9 @@ exports['sub-main'] = function () {
 					tr(
 						th(
 							div("User")
+						),
+						td(
+							div("John Watson (4068-50001-N-2013)")
 						),
 						td(
 							div("24/07/2014 10:09:22")
@@ -104,6 +84,9 @@ exports['sub-main'] = function () {
 							div("File sent")
 						),
 						td(
+							div("John Watson (4068-50001-N-2013)")
+						),
+						td(
 							div("24/07/2014 13:09:22")
 						),
 						td(
@@ -113,6 +96,9 @@ exports['sub-main'] = function () {
 					tr(
 						th(
 							div("Official")
+						),
+						td(
+							div("Sherlock Holmes (4068-50001-N-2013)")
 						),
 						td(
 							div("24/07/2014 16:19:22")
@@ -128,7 +114,13 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'section-primary' },
 		div(
-			h3("Documents uploaded with the application"),
+			h2("Application revision"),
+			p(a({ class: 'button-main' }, "Approve file"),
+				a({ class: 'button-main' }, "Send for corrections"),
+				a({ class: 'button-main' }, "Reject file")
+				),
+			hr(),
+			h3("Required documents"),
 			ol({ class: 'submitted-documents-list' },
 				li(
 					a("Memorandum and articles of association")
@@ -143,31 +135,27 @@ exports['sub-main'] = function () {
 					a("Registered title deed")
 				)
 				),
-			h3("Complete content of the company file"),
+			h3("Received documents"),
 			ol({ class: 'submitted-documents-thumbs' },
 				li(
-					a(
-						span({ class: 'review-status success fa fa-check ' }),
+					a(span({ class: 'review-status success fa fa-check ' }),
 						img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
-					)
+						)
 				),
 				li(
-					a(
-						span({ class: 'review-status error fa fa-exclamation ' }),
+					a(span({ class: 'review-status success fa fa-check ' }),
 						img({ src: '/uploads/docASubFile1.thumb.idoc.jpg' })
-					)
+						)
 				),
 				li(
-					a(
-						span({ class: 'review-status success fa fa-check ' }),
+					a(span({ class: 'review-status error fa fa-exclamation ' }),
 						img({ src: '/uploads/docBSubFile1.thumb.idoc.jpg' })
-					)
+						)
 				),
 				li(
-					a(
-						span({ class: 'review-status success fa fa-check ' }),
+					a(span({ class: 'review-status success fa fa-check ' }),
 						img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
-					)
+						)
 				)
 				)
 		)
@@ -180,9 +168,48 @@ exports['sub-main'] = function () {
 						"1"),
 				"Memorandum and articles of association"
 			),
-			div(a(img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
+			form(
+				{ class: 'submitted-preview-form' },
+				ul(
+					{ class: 'form-elements' },
+					li(
+						div(
+							{ class: 'inline-button-radio' },
+							label(
+								{ class: 'success' },
+								input({ type: 'radio' }),
+								"Validate document"
+							),
+							label(
+								{ class: 'error' },
+								input({ type: 'radio' }),
+								"Reject document"
+							)
+						)
+					),
+					li(
+						div(
+							{ class: 'dbjs-input-component' },
+							label("Reject document: "),
+							div(
+								{ class: 'control' },
+								select(
+									option("Choose rejection reason: "),
+									option("Document is not readable."),
+									option("The document is not acurate or does not match the data of the form."),
+									option("Other")
+								)
+							)
+						)
 					)
+				),
+				input({ type: 'submit' }, "Save")
+			),
+			div(
+				a(
+					img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
 				)
+			)
 			),
 		div({ class: 'submitted-preview-user-data' },
 			h3("Application form"),

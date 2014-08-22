@@ -16,6 +16,7 @@ module.exports = function (view) {
 		userMain = userLoggedIn.diff('./_user-main'),
 		subMain = userLoggedIn.diff('./_sub-main'),
 		usersAdminMain = subMain.diff('./users-admin'),
+		userOfficialMain = subMain.diff('./official'),
 		// For disablers
 		userForm = userLoggedIn.diff('./forms'),
 		userDocuments = userLoggedIn.diff('./documents');
@@ -44,6 +45,7 @@ module.exports = function (view) {
 
 		// Official user routes
 		official: bind(subMain.diff('./official')),
+		'official/revision/user-id': bind(userOfficialMain.diff('./official-revision')),
 
 		// Error routes
 		404: bind(main.diff('./404'))
