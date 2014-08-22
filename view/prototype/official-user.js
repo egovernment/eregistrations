@@ -114,41 +114,13 @@ exports['sub-main'] = function () {
 	);
 	section(
 		{ class: 'section-primary section-tabs', id: 'incorporation-tabs' },
-		a({ class: 'tab active', href: '/official/user-id/' }, "Certificate of incorporation"),
-		a({ class: 'tab', href: '/official/user-id/document/' },
-			"Documents and data of petitioner"),
-		div(
-			{ class: 'incorporation-form' },
-			h3("Incorporation approved"),
-			form(
-				input({ type: 'number' }),
-				input({ class: 'incorporation-number-submit', type: 'submit', value: 'Save' })
+		a({ class: 'tab', id: 'official-form', href: '/official/user-id/' },
+			"Certificate of incorporation"
 			),
-			p("Upload here the certificates:"),
-			p(
-				{ class: 'incorporation-documents-upload' },
-				button({ class: 'button-main ' }, "Certificate of incorporation"),
-				button({ class: 'button-main ' }, "Registered articles of association")
+		a({ class: 'tab', id: 'official-document', href: '/official/user-id/document/' },
+			"Documents and data of petitioner"
 			),
-			hr(),
-			h3("Request changes to the application"),
-			form(
-				ul(
-					{ class: 'form-elements' },
-					li(textarea({ placeholder: "Write request for changes here" }))
-				),
-				input({ type: 'submit', value: 'Send back for modyfications' })
-			),
-			hr(),
-			h3("Reject application"),
-			form(
-				ul(
-					{ class: 'form-elements' },
-					li(textarea({ placeholder: "Reason of rejection" }))
-				),
-				input({ class: 'incorporation-rejection',
-					type: 'submit', value: 'Reject the incorporation' })
-			)
-		)
+
+		div({ class: 'incorporation-form', id: 'tab' })
 	);
 };

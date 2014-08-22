@@ -1,9 +1,8 @@
 'use strict';
 
-exports['incorporation-tabs'] = function () {
-	a({ class: 'tab', href: '/official/user-id/' }, "Certificate of incorporation");
-	a({ class: 'tab active' }, "Documents and data of petitioner");
+exports['official-document'] = { class: { active: true } };
 
+exports.tab = function () {
 	div(
 		h3(
 			{ class: 'nav-alternatives' },
