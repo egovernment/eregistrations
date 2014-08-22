@@ -166,7 +166,7 @@ exports['sub-main'] = function () {
 				"Memorandum and articles of association"
 			),
 			form(
-				{ class: 'official-revision-form' },
+				{ class: 'submitted-preview-form' },
 				ul(
 					{ class: 'form-elements' },
 					li(
