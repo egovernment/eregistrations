@@ -9,8 +9,8 @@ exports['incorporation-tabs'] = function () {
 			{ class: 'heading-tools' },
 			"Documents received from petitioner",
 			div(
-				a(span({ class: 'fa fa-download' }), "View and print form"),
-				a(span({ class: 'fa fa-download' }), "Payment receipt")
+				a({ class: 'button' }, span({ class: 'fa fa-download' }), "View and print form"),
+				a({ class: 'button' }, span({ class: 'fa fa-download' }), "Payment receipt")
 			)
 		),
 
@@ -74,8 +74,9 @@ exports['incorporation-tabs'] = function () {
 				)
 			),
 		div({ class: 'submitted-preview-user-data' },
-			h3("Application form"),
-			a({ class: 'fa fa-print nav-alternatives' }, "Print"),
+			h3({ class: 'heading-tools' }, "Application form",
+				a({ class: 'fa fa-print' }, "Print")
+				),
 			h4("Proposed company name"),
 			table(
 				tbody(

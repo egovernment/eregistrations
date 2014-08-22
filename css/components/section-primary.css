@@ -15,12 +15,6 @@
 	position: relative;
 }
 
-.section-primary .nav-alternatives {
-	position: absolute;
-	right: 25px;
-	top: 25px;
-}
-
 .section-primary > ul {
 	padding-left: 0;
 	list-style-type: none;
