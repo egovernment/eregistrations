@@ -18,6 +18,7 @@
 ../../css/components/user-guide.css
 ../../css/components/user-submission-sworn-declaration.css
 ../../css/components/user-uploaded-files.css
+../../css/components/file-thumb.css
 ../../css/components/user-next-step-button.css
 ../../css/components/section-primary.css
 ../../css/components/section-tabs.css

@@ -18,8 +18,8 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 				if (label == null) label = db.SubmissionFile.uploadLabel;
 				if (label == null) label = "Select file";
 			}
-			dom = el('div', this.valueDOM = el('ul', { class: 'documents' }),
-				el('div', { class: 'btn-upload' },
+			dom = el('div', this.valueDOM = el('ul', { class: 'user-uploaded-files' }),
+				el('a', { class: 'user-uploaded-files-upload-button' },
 					el('label', label,
 						this.control = el('input', { type: 'file' }))),
 				errorSpan = el('span', { class: 'error-message-' +
@@ -44,9 +44,9 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 				: this.removeItem.bind(this, data.dom);
 
 			itemDom = _if(file._name,
-				el('div',
+				el('div', { class: 'file-thumb' },
 					el('a',
-						{ href: file._url, target: '_blank', class: 'thumb-doc' },
+						{ href: file._url, target: '_blank', class: 'file-thumb-image' },
 						el('img',
 							{ src: resolve(file._thumb, '_url') }
 							)
@@ -63,13 +63,13 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 							})
 							),
 						el('span',
-							{ class: 'doc-action', onclick: remove },
+							{ class: 'document-actions', onclick: remove },
 							el('span',
 								{ class: 'fa fa-trash-o' }, "delete"
 								)
 							),
 						el('a',
-							{ href: file._url, target: '_blank', class: 'doc-action' },
+							{ href: file._url, target: '_blank', class: 'document-actions' },
 							el('span',
 								{ class: 'fa fa-download' }, "download"
 								)
