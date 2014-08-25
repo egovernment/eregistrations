@@ -18,6 +18,20 @@
 	margin-left: 20px;
 }
 
-.incorporation-documents-upload .file-section:first-child{
+.incorporation-documents-upload .file-section:first-child {
 	margin-left: 0;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.incorporation-documents-upload {
+		flex-wrap: wrap;
+	}
+	.incorporation-documents-upload .file-section {
+		width: 100%;
+		margin-left: 0;
+		margin-bottom: 22px;
+	}
+	.incorporation-documents-upload .file-section:last-child {
+		margin-bottom: 0;
+	}
 }

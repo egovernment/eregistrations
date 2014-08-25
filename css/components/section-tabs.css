@@ -27,3 +27,30 @@
 	padding-left: 0;
 	padding-right: 0;
 }
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.section-tabs {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.section-tabs .tab {
+		background: var(--light-background);
+		border-radius: 10px;
+		width: 100%;
+		padding-top: 0;
+		padding-bottom: 0;
+		margin-bottom: 22px;
+		text-align: center;
+	}
+	.section-tabs .tab:hover,
+	.section-tabs .tab:focus,
+	.section-tabs .tab:active {
+		background: var(--normal-dark-background);
+		color: var(--white-text);
+	}
+	.section-tabs .tab.active {
+		border: 1px solid var(--light-inner-border);
+		background: var(--normal-dark-background);
+		color: var(--white-text);
+	}
+}
