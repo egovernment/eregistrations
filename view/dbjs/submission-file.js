@@ -12,15 +12,15 @@ var d        = require('d')
 module.exports = Object.defineProperties(db.SubmissionFile, {
 	inputOptions: d({
 		render: function (options) {
-			var el = this.make, label = options.label, dom, errorTxt, errorSpan;
+			var el = this.make, label = options.label, dom, errorTxt, errorSpan, typeOfParent;
 			if (label == null) {
 				if (options.dbOptions) label = options.dbOptions.label;
 				if (label == null) label = db.SubmissionFile.uploadLabel;
 				if (label == null) label = "Select file";
 			}
+
 			dom = el('div', { class: 'file-section' },
-				console.log(this.multiple, 'render'),
-				this.valueDOM = el('ul', { class: 'files-upload' }),
+				this.valueDOM = el(this.multiple ? 'ul' : 'div', { class: 'files-upload' }),
 				el('a', { class: 'files-upload-button' },
 					el('label', label,
 						this.control = el('input', { type: 'file' }))),
@@ -38,8 +38,12 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 		},
 		renderItem: function (file) {
 			var el = this.make, data = {}, remove, itemDom;
-			console.log(this.multiple, 'render item');
-			data.dom = el('li', { 'data-id': file.__id__ });
+
+			if (this.multiple) {
+				data.dom = el('li', { 'data-id': file.__id__ });
+			} else {
+				data.dom = el('div', { 'data-id': file.__id__ });
+			}
 
 			remove = isNested(file)
 				? file._clear_.bind(file)
