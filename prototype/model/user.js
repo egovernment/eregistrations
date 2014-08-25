@@ -16,7 +16,7 @@ var Map          = require('es6-map')
 
   , user = User.prototype
   , BusinessActivity, BusinessActivityCategory, CompanyType, Partner, bcAgencyBusiness, bcInsurance
-  , file;
+  , file, props;
 
 require('dbjs-ext/create-enum')(db);
 
@@ -174,7 +174,7 @@ user.define('requiredSubmissions', {
 	value: [user.submissions.documentA, user.submissions.documentB, user.submissions.documentC]
 });
 
-file = db.SubmissionFile.newNamed('docASubFile1', {
+file = db.SubmissionFile.newNamed('docASubFile1', props = {
 	name: 'idoc.jpg',
 	type: 'image/jpeg',
 	diskSize: 376306,
@@ -186,7 +186,9 @@ file.thumb = db.JpegFile.newNamed('docASubFile1Thumb', {
 	name: 'idoc.jpg'
 });
 user.submissions.documentA.files.add(file);
-user.registeredArticlesFile = file;
+user.registeredArticlesFile.setProperties(props);
+user.registeredArticlesFile.preview = file;
+user.registeredArticlesFile.thumb = file.thumb;
 
 file = db.SubmissionFile.newNamed('docASubFile2', {
 	name: 'idoc.png',
