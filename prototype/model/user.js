@@ -186,6 +186,7 @@ file.thumb = db.JpegFile.newNamed('docASubFile1Thumb', {
 	name: 'idoc.jpg'
 });
 user.submissions.documentA.files.add(file);
+user.registeredArticlesFile = file;
 
 file = db.SubmissionFile.newNamed('docASubFile2', {
 	name: 'idoc.png',
