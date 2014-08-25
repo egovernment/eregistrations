@@ -12,7 +12,7 @@ var d        = require('d')
 module.exports = Object.defineProperties(db.SubmissionFile, {
 	inputOptions: d({
 		render: function (options) {
-			var el = this.make, label = options.label, dom, errorTxt, errorSpan, typeOfParent;
+			var el = this.make, label = options.label, dom, errorTxt, errorSpan;
 			if (label == null) {
 				if (options.dbOptions) label = options.dbOptions.label;
 				if (label == null) label = db.SubmissionFile.uploadLabel;
