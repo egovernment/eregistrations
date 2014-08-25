@@ -1,15 +1,7 @@
 'use strict';
 
 var db = require('mano').db,
-	user = db.User.prototype,
-	renderFile;
-
-renderFile = function (options) {
-	return div(div(this.valueDOM = ul({ class: 'user-uploaded-files' })),
-			a({ class: 'user-uploaded-files-upload-button' }, label("+ Choose file",
-				this.control = input({ type: 'file' })))
-			);
-};
+	user = db.User.prototype;
 
 exports.step = function () {
 	div({ class: 'section-primary' }, h2("3 Upload Your Documents"));
@@ -22,7 +14,7 @@ exports.step = function () {
 				user.requiredSubmissions,
 				function (submission) {
 					return li(form(div(h3(submission.label), hr(),
-									input({ dbjs: submission._files, render: renderFile }))));
+									input({ dbjs: submission._files }))));
 				}
 			)
 		),

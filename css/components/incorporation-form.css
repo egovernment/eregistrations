@@ -1,9 +1,36 @@
 .incorporation-form .incorporation-number-submit {
 	margin-left: 20px;
 }
+
+.incorporation-documents-upload {
+	display: inline-flex;
+}
+
 .incorporation-documents-upload button {
 	margin-right: 20px;
 }
+
 .incorporation-form .incorporation-rejection {
 	background: var(--error-background);
+}
+
+.incorporation-documents-upload .file-section {
+	margin-left: 20px;
+}
+
+.incorporation-documents-upload .file-section:first-child{
+	margin-left: 0;
+}
+
+.official-uploaded-files {
+	list-style-type: none;
+	display: flex;
+	padding-left: 0;
+}
+
+.official-uploaded-files li {
+	margin-right: 22px;
+	border: none;
+	margin-bottom: 0;
+	padding-top: 1px;
 }

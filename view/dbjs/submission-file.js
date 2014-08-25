@@ -18,8 +18,10 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 				if (label == null) label = db.SubmissionFile.uploadLabel;
 				if (label == null) label = "Select file";
 			}
-			dom = el('div', this.valueDOM = el('ul', { class: 'user-uploaded-files' }),
-				el('a', { class: 'user-uploaded-files-upload-button' },
+			dom = el('div', { class: 'file-section' },
+				console.log(this.multiple, 'render'),
+				this.valueDOM = el('ul', { class: 'files-upload' }),
+				el('a', { class: 'files-upload-button' },
 					el('label', label,
 						this.control = el('input', { type: 'file' }))),
 				errorSpan = el('span', { class: 'error-message-' +
@@ -36,7 +38,7 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 		},
 		renderItem: function (file) {
 			var el = this.make, data = {}, remove, itemDom;
-
+			console.log(this.multiple, 'render item');
 			data.dom = el('li', { 'data-id': file.__id__ });
 
 			remove = isNested(file)
