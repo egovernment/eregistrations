@@ -2,32 +2,32 @@
 	background: var(--error-background);
 }
 
-.official-documents-upload {
+.official-form-upload {
 	display: inline-flex;
 }
 
-.official-documents-upload button {
+.official-form-upload button {
 	margin-right: 20px;
 }
 
-.official-documents-upload .file-section {
+.official-form-upload .file-section {
 	margin-left: 20px;
 }
 
-.official-documents-upload .file-section:first-child {
+.official-form-upload .file-section:first-child {
 	margin-left: 0;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.official-documents-upload {
+	.official-form-upload {
 		flex-wrap: wrap;
 	}
-	.official-documents-upload .file-section {
+	.official-form-upload .file-section {
 		width: 100%;
 		margin-left: 0;
 		margin-bottom: 22px;
 	}
-	.official-documents-upload .file-section:last-child {
+	.official-form-upload .file-section:last-child {
 		margin-bottom: 0;
 	}
 }
