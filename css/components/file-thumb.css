@@ -1,0 +1,65 @@
+.file-thumb {
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 22px;
+}
+
+.file-thumb-image {
+	height: 132px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+
+	border: 1px solid var(--light-inner-border);
+	border-radius: 5px;
+	padding: 8px;
+	text-align: center;
+
+	line-height: 22px;
+}
+.file-thumb-image:hover,
+.file-thumb-image:focus,
+.file-thumb-image:active {
+	box-shadow: 0 1px 6px var(--light-inner-border);
+}
+
+.file-thumb-image img {
+	max-height: 110px;
+	width: 88px;
+	margin: 0;
+	vertical-align: middle;
+}
+
+.file-thumb div {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	margin-top: 22px;
+	margin-bottom: 0;
+	line-height: 22px;
+}
+
+.file-thumb div .document-size {
+	font-size: 12px;
+	margin-right: 3px;
+}
+
+.file-thumb div .document-actions {
+	border-radius: 3px;
+	background-color: var(--normal-background);
+	color: var(--white-text);
+	padding: 0 4px 0;
+	border: none;
+	margin-right: 3px;
+	text-align: center;
+}
+.file-thumb div .document-actions:hover,
+.file-thumb div .document-actions:focus,
+.file-thumb div .document-actions:active {
+	background-color: var(--normal-dark-background);
+	box-shadow: none;
+}
+.file-thumb div .document-actions span {
+	position: relative;
+	top: 3px;
+}

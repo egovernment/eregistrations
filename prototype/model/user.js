@@ -12,10 +12,11 @@ var Map          = require('es6-map')
   , SquareMeters = require('dbjs-ext/number/square-meters')(db)
   , Document     = require('./document')
   , Submission   = require('./submission')
+  , File         = require('./file')
 
   , user = User.prototype
   , BusinessActivity, BusinessActivityCategory, CompanyType, Partner, bcAgencyBusiness, bcInsurance
-  , file;
+  , file, props;
 
 require('dbjs-ext/create-enum')(db);
 
@@ -113,7 +114,11 @@ user.defineProperties({
 	//Submission
 	placeOfWithdraw: { type: StringLine, label: "Withdraw documents to" },
 	pickCertificates: { type: db.Boolean, trueLabel: "I will pick the certificates.",
-		falseLabel: "he following person will pick the certificates", label: "The following person:" }
+		falseLabel: "The following person will pick the certificates", label: "The following person" },
+
+	incorporationCertificateFile: { type: File, nested: true, label: "Certificate of incorporation" },
+	registeredArticlesFile: { type: File, nested: true,
+		label: "Registered articles of association" }
 });
 
 module.exports = User;
@@ -169,7 +174,7 @@ user.define('requiredSubmissions', {
 	value: [user.submissions.documentA, user.submissions.documentB, user.submissions.documentC]
 });
 
-file = db.SubmissionFile.newNamed('docASubFile1', {
+file = db.SubmissionFile.newNamed('docASubFile1', props = {
 	name: 'idoc.jpg',
 	type: 'image/jpeg',
 	diskSize: 376306,
@@ -181,6 +186,9 @@ file.thumb = db.JpegFile.newNamed('docASubFile1Thumb', {
 	name: 'idoc.jpg'
 });
 user.submissions.documentA.files.add(file);
+user.registeredArticlesFile.setProperties(props);
+user.registeredArticlesFile.preview = file;
+user.registeredArticlesFile.thumb = file.thumb;
 
 file = db.SubmissionFile.newNamed('docASubFile2', {
 	name: 'idoc.png',

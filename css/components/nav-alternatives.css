@@ -1,0 +1,47 @@
+.nav-alternatives {
+	display: flex;
+	justify-content: space-between;
+}
+
+.nav-alternatives .fa {
+	font-size: 14px;
+}
+h1.nav-alternatives .fa,
+h2.nav-alternatives .fa {
+	padding-top: 10px;
+}
+
+.nav-alternatives .button {
+	font-size: 14px;
+	font-weight: normal;
+	background: var(--light-background);
+	border-radius: 3px;
+	border: 1px solid var(--light-inner-border);
+	padding: 5px 8px;
+	cursor: pointer;
+	text-decoration: none;
+}
+.nav-alternatives .button:hover,
+.nav-alternatives .button:focus,
+.nav-alternatives .button:active {
+	background: var(--normal-background);
+	text-decoration: none;
+	color: var(--white-text);
+}
+
+.nav-alternatives .button .fa {
+	padding-top: 5px;
+}
+
+.nav-alternatives a:last-child {
+	margin-left: 10px;
+}
+
+.nav-alternatives a span {
+	position: relative;
+	top: 2px;
+	right: 2px;
+}
+.nav-alternatives div {
+	min-width: 30%;
+}

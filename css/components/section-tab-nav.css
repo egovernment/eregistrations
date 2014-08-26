@@ -1,0 +1,60 @@
+.section-tab-nav > div {
+	border-top-left-radius: 0;
+}
+
+.section-tab-nav .tab {
+	background: var(--light-background);
+	border: 1px solid var(--light-inner-border);
+	border-radius: 4px 4px 0 0;
+	color: var(--dark-text);
+	line-height: 44px;
+	padding: 13px;
+	margin-right: 1px;
+	position: relative;
+	cursor: pointer;
+	font-size: 17px;
+	text-decoration: none;
+}
+.section-tab-nav .tab:hover,
+.section-tab-nav .tab:focus,
+.section-tab-nav .tab:active {
+	background: var(--white-background);
+	text-decoration: none;
+}
+.section-tab-nav .tab.active {
+	background: var(--white-background);
+	border-bottom: none;
+	z-index: 999;
+}
+.section-tab-nav .section-primary {
+	padding-left: 0;
+	padding-right: 0;
+	background-color: var(--white-background);
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.section-tab-nav {
+		display: flex;
+		flex-wrap: wrap;
+	}
+	.section-tab-nav .tab {
+		background: var(--light-background);
+		border-radius: 10px;
+		width: 100%;
+		padding-top: 0;
+		padding-bottom: 0;
+		margin-bottom: 22px;
+		text-align: center;
+	}
+	.section-tab-nav .tab:hover,
+	.section-tab-nav .tab:focus,
+	.section-tab-nav .tab:active {
+		background: var(--normal-dark-background);
+		color: var(--white-text);
+	}
+	.section-tab-nav .tab.active {
+		border: 1px solid var(--light-inner-border);
+		background: var(--normal-dark-background);
+		color: var(--white-text);
+	}
+}

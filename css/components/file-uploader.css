@@ -1,0 +1,61 @@
+.file-uploader {
+	list-style-type: none;
+	display: flex;
+	padding-left: 0;
+	margin-bottom: 0;
+}
+
+.file-uploader-button {
+	background-color: var(--normal-background);
+	border-radius: 6px;
+	color: var(--white-text);
+	display: inline-block;
+	font-size: 18px;
+	font-weight: normal;
+	line-height: 22px;
+	margin-bottom: 0;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	white-space: nowrap;
+	width: auto;
+	height: 44px;
+}
+.file-uploader-button:hover,
+.file-uploader-button:focus,
+.file-uploader-button:active {
+	background-color: var(--normal-dark-background);
+	color: var(--white-text);
+}
+
+.file-uploader-button label input {
+	display: none;
+}
+
+.file-uploader-button label {
+	display: block;
+	width: 100%;
+	height: 100%;
+	padding: 10px 16px;
+	cursor: pointer;
+}
+
+.section-primary .file-uploader li {
+	margin-right: 22px;
+	border: none;
+	margin-bottom: 0;
+	padding-top: 1px;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.file-uploader {
+		flex-wrap: wrap;
+		justify-content: space-around;
+	}
+	.file-uploader-button {
+		width: 100%;
+	}
+	.section-primary .file-uploader li {
+		margin-bottom: 22px;
+	}
+}
