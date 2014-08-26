@@ -1,6 +1,7 @@
 'use strict';
 
-var login = require('./_login');
+var login = require('./_login'),
+		resetPassword = require('./_reset-password');
 
 exports.body = function () {
 	header({ class: 'header-top' },
@@ -22,5 +23,6 @@ exports.body = function () {
 		);
 	div({ class: 'modal-courtain' });
 	insert(login);
+	insert(resetPassword);
 	main({ id: 'main' });
 };
