@@ -12,6 +12,7 @@ module.exports = function (view) {
 	// All routes - no imported content, only header and #main to import elements
 	var main = view.documentElement.diff('./_main'),
 		// User routes - import content directly to #main element
+		index = main.diff('./index'),
 		userLoggedIn = main.diff('./_user-logged-in'),
 		userMain = userLoggedIn.diff('./_user-main'),
 		subMain = userLoggedIn.diff('./_sub-main'),
@@ -24,6 +25,7 @@ module.exports = function (view) {
 	return {
 		// Public routes - imports content directly to #main element
 		'/': bind(main.diff('./index')),
+		'multi-entry': bind(index.diff('./multi-entry')),
 
 		// User routes - imports content to #steps element in #main element
 		profile: bind(userMain.diff('./user-profile')),

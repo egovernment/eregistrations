@@ -4,7 +4,7 @@ var register = require('./_register');
 
 exports.main = function () {
 	insert(register);
-	div({ class: 'public-banner' },
+	div({ class: 'public-banner', id: 'banner' },
 		div({ class: 'banner-infos' },
 				div({ class: 'baner-box-text' },
 					h1({ class: 's-primary' },
@@ -22,7 +22,7 @@ exports.main = function () {
 		);
 	div({ class: 'public-steps' },
 		div({ class: 'm-box-text-centered' },
-			img({ src: 'img/img-300.png' }),
+			img({ src: '/img/img-300.png' }),
 			h3('Create your file'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
@@ -31,7 +31,7 @@ exports.main = function () {
 				)
 			),
 		div({ class: 'm-box-text-centered' },
-			img({ src: 'img/img-300.png' }),
+			img({ src: '/img/img-300.png' }),
 			h3('Pay costs'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
@@ -40,7 +40,7 @@ exports.main = function () {
 				)
 			),
 		div({ class: 'm-box-text-centered' },
-			img({ src: 'img/img-300.png' }),
+			img({ src: '/img/img-300.png' }),
 			h3('Remove certificates'),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 				" nequepharetra, pellentesque risus in, condimentum nulla. "),
