@@ -113,7 +113,7 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ class: 'section-primary section-tabs', id: 'incorporation-tabs' },
+		{ class: 'section-primary section-tabs' },
 		a({ class: 'tab', id: 'official-form', href: '/official/user-id/' },
 			"Certificate of incorporation"
 			),
@@ -121,6 +121,6 @@ exports['sub-main'] = function () {
 			"Documents and data of petitioner"
 			),
 
-		div({ class: 'incorporation-form', id: 'tab' })
+		div({ class: 'official-form', id: 'tab' })
 	);
 };

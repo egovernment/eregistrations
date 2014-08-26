@@ -9,11 +9,11 @@ exports.tab = function () {
 	h3("Incorporation approved");
 	form(
 		input({ type: 'number' }),
-		input({ class: 'incorporation-number-submit', type: 'submit', value: 'Save' })
+		input({ class: 'official-number-submit', type: 'submit', value: 'Save' })
 	);
 	p("Upload here the certificates:");
 	form(
-		{ class: 'incorporation-documents-upload', method: 'post' },
+		{ class: 'official-documents-upload', method: 'post' },
 		input({ dbjs: user._incorporationCertificateFile }),
 		input({ dbjs: user._registeredArticlesFile })
 	);
@@ -33,7 +33,7 @@ exports.tab = function () {
 			{ class: 'form-elements' },
 			li(textarea({ placeholder: "Reason of rejection" }))
 		),
-		input({ class: 'incorporation-rejection',
+		input({ class: 'official-rejection',
 			type: 'submit', value: 'Reject the incorporation' })
 	);
 };
