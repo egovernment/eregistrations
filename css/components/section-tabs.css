@@ -29,6 +29,7 @@
 .section-tabs .section-primary {
 	padding-left: 0;
 	padding-right: 0;
+	background-color: var(--white-background);
 }
 
 @media only screen and (max-width: var(--mobile-width)) {

@@ -121,6 +121,6 @@ exports['sub-main'] = function () {
 			"Documents and data of petitioner"
 			),
 
-		div({ class: 'official-form', id: 'tab' })
+		div({ id: 'tab' })
 	);
 };
