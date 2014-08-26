@@ -1,11 +1,11 @@
-.files-upload {
+.file-uploader {
 	list-style-type: none;
 	display: flex;
 	padding-left: 0;
 	margin-bottom: 0;
 }
 
-.files-upload-button {
+.file-uploader-button {
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	color: var(--white-text);
@@ -21,17 +21,18 @@
 	width: auto;
 	height: 44px;
 }
-.files-upload-button:hover,
-.files-upload-button:focus,
-.files-upload-button:active {
+.file-uploader-button:hover,
+.file-uploader-button:focus,
+.file-uploader-button:active {
 	background-color: var(--normal-dark-background);
+	color: var(--white-text);
 }
 
-.files-upload-button label input {
+.file-uploader-button label input {
 	display: none;
 }
 
-.files-upload-button label {
+.file-uploader-button label {
 	display: block;
 	width: 100%;
 	height: 100%;
@@ -39,7 +40,7 @@
 	cursor: pointer;
 }
 
-.section-primary .files-upload li {
+.section-primary .file-uploader li {
 	margin-right: 22px;
 	border: none;
 	margin-bottom: 0;
@@ -47,14 +48,14 @@
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.files-upload {
+	.file-uploader {
 		flex-wrap: wrap;
 		justify-content: space-around;
 	}
-	.files-upload-button {
+	.file-uploader-button {
 		width: 100%;
 	}
-	.section-primary .files-upload li {
+	.section-primary .file-uploader li {
 		margin-bottom: 22px;
 	}
 }
