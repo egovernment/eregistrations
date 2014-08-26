@@ -16,14 +16,10 @@
 	justify-content: space-around;
 }
 
-.multi-entry a {
-		display: block;
-	width: 200px;
-	height: 200px;
-	border-radius: 100px;
-	background: var(--white-background);
-	border: 1px solid var(--light-inner-border);
-	text-align: center;
-	padding-top: 90px;
-	cursor: pointer;
+.multi-entry .single-entry {
+		width: 200px;
+		height: 200px;
+		border-radius: 100px;
+		background: var(--white-background);
+		border: 1px solid var(--light-inner-border);
 }

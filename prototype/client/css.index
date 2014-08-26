@@ -13,9 +13,9 @@
 ../../css/components/public-banner.css
 ../../css/components/public-steps.css
 ../../css/components/public-error.css
+../../css/components/public-multi-entry.css
 ../../css/components/user-steps-menu.css
 ../../css/components/user-guide.css
-../../css/components/multi-entry.css
 ../../css/components/user-submission-sworn-declaration.css
 ../../css/components/user-uploaded-files.css
 ../../css/components/user-next-step-button.css
