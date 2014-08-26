@@ -114,7 +114,7 @@ user.defineProperties({
 	//Submission
 	placeOfWithdraw: { type: StringLine, label: "Withdraw documents to" },
 	pickCertificates: { type: db.Boolean, trueLabel: "I will pick the certificates.",
-		falseLabel: "he following person will pick the certificates", label: "The following person:" },
+		falseLabel: "The following person will pick the certificates", label: "The following person" },
 
 	incorporationCertificateFile: { type: File, nested: true, label: "Certificate of incorporation" },
 	registeredArticlesFile: { type: File, nested: true,
