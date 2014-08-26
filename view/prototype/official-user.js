@@ -113,7 +113,7 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ class: 'section-primary section-tabs' },
+		{ class: 'section-primary section-tab-nav' },
 		a({ class: 'tab', id: 'official-form', href: '/official/user-id/' },
 			"Certificate of incorporation"
 			),
