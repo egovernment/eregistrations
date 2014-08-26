@@ -25,7 +25,7 @@ module.exports = modal(
 			p("Already has account? ",
 				loginLink = a("Log in"),
 				span(" | "),
-				a({ href: '/reset-password/' }, " Reset password"))
+				a(" Reset password"))
 		)
 	)
 );
