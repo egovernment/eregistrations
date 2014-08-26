@@ -1,8 +1,8 @@
 'use strict';
 
-var db = require('mano').db
-
-  , user = db.User.prototype;
+var db = require('mano').db,
+		user = db.User.prototype,
+		loginLink;
 
 module.exports = modal(
 	{ class: 'modal-register' },
@@ -22,9 +22,12 @@ module.exports = modal(
 					p(input({ type: 'submit', value: "Create account" }))))
 		),
 		footer(
-			p("Already has account?",
-				a(" Log in  | "),
-				a({ href: '/reset-password/' }, " Reset password"))
+			p("Already has account? ",
+				loginLink = a("Log in"),
+				span(" | "),
+				a(" Reset password"))
 		)
 	)
 );
+
+loginLink.castAttribute('onclick', require('./_login').show);

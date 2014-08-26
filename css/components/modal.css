@@ -59,13 +59,14 @@ div.modal-courtain {
 .modal section div {
 	display: flex;
 	justify-content: center;
+	padding: 0 10px;
 }
 
 .modal footer {
 	border-top: 1px solid var(--light-inner-border);
 	display: flex;
 	justify-content: space-between;
-	padding-top: 0;
+	padding: 0 10px;
 }
 
 .modal footer p {
@@ -79,7 +80,7 @@ div.modal-courtain {
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.modal, .modal footer p {
-		width: 90%;
+	.modal {
+		min-width: var(--min-mobile-width);
 	}
 }

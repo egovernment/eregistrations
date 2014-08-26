@@ -1,9 +1,8 @@
 'use strict';
 
-var register = require('./_register')
-
-  , db = require('mano').db
-  , user = db.User.prototype;
+var db = require('mano').db
+  , user = db.User.prototype
+  , registerLink;
 
 module.exports = modal(
 	{ class: 'modal-login' },
@@ -23,9 +22,12 @@ module.exports = modal(
 			)
 		),
 		footer(
-			p("No account?",
-				a({ onclick: register.show }, " Create an account  | "),
-				a({ href: '/reset-password/' }, " Reset password"))
+			p("No account? ",
+				registerLink = a(" Create an account"),
+				span(" | "),
+				a(" Reset password"))
 		)
 	)
 );
+
+registerLink.castAttribute('onclick', require('./_register').show);

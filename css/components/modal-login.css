@@ -3,6 +3,7 @@ Component describing styles for login modal windows - rules specific only for th
 */
 .modal-login.modal {
 	top: 287px;
+	width: 45%;
 }
 
 .modal-login section form {
@@ -12,4 +13,10 @@ Component describing styles for login modal windows - rules specific only for th
 
 .modal-login form p:last-child {
 	margin-bottom: 0;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.modal-login.modal {
+		width: 90%;
+	}
 }
