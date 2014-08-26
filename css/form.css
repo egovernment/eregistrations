@@ -282,6 +282,11 @@ ul.multiple {
 	background: var(--error-background);
 	color: var(--white-text);
 }
+
+.form-single-control input[type="submit"] {
+	margin-left: 20px;
+}
+
 /*
 Styles applied while screen sieze is less than 640px
 */

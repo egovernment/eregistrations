@@ -10,8 +10,9 @@ exports.tab = function () {
 		{ class: 'official-form' },
 		h3("Incorporation approved"),
 		form(
+			{ class: 'form-single-control' },
 			input({ type: 'number' }),
-			input({ class: 'official-number-submit', type: 'submit', value: 'Save' })
+			input({ type: 'submit', value: 'Save' })
 		),
 		p("Upload here the certificates:"),
 		form(
