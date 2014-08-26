@@ -40,7 +40,7 @@ body {
 
 main {
 	background-color: var(--light-background);
-	padding-bottom: 22px;
+
 }
 
 * {
@@ -93,7 +93,13 @@ h6 {
 }
 
 a {
-	text-decoration: none;
+	text-decoration: underline;
+	color: var(--normal-text);
+	cursor: pointer;
+}
+a:hover,
+a:focus,
+a:active {
 	color: var(--dark-text);
 }
 

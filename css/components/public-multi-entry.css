@@ -1,0 +1,25 @@
+.public-multi-entry {
+	width: var(--desktop-width);
+	margin: 0 auto;
+}
+
+.public-multi-entry h1 {
+	text-align: center;
+	width: 100%;
+	margin: 22px 0;
+}
+
+.public-multi-entry div {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-around;
+}
+
+.public-multi-entry .single-entry {
+		width: 200px;
+		height: 200px;
+		border-radius: 100px;
+		background: var(--white-background);
+		border: 1px solid var(--light-inner-border);
+}
