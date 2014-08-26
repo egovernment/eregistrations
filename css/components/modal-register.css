@@ -20,3 +20,9 @@ Component describing styles for registration modal windows - rules specific only
 .modal-register fieldset p:last-child {
 	margin-bottom: 0;
 }
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.modal-register section form fieldset  {
+		width: 90%;
+	}
+}

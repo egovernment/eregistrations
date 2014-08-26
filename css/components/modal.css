@@ -80,7 +80,7 @@ div.modal-courtain {
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.modal, .modal footer p {
-		width: 90%;
+	.modal {
+		min-width: var(--min-mobile-width);
 	}
 }
