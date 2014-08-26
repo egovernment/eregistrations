@@ -22,7 +22,7 @@ module.exports = modal(
 					p(input({ type: 'submit', value: "Create account" }))))
 		),
 		footer(
-			p("Already has account?",
+			p("Already has account? ",
 				loginLink = a("Log in"),
 				span(" | "),
 				a({ href: '/reset-password/' }, " Reset password"))

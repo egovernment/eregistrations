@@ -22,8 +22,9 @@ module.exports = modal(
 			)
 		),
 		footer(
-			p("No account?",
-				registerLink = a(" Create an account  | "),
+			p("No account? ",
+				registerLink = a(" Create an account"),
+				span(" | "),
 				a({ href: '/reset-password/' }, " Reset password"))
 		)
 	)
