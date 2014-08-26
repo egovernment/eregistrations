@@ -19,11 +19,14 @@ h2.nav-alternatives .fa {
 	border: 1px solid var(--light-inner-border);
 	padding: 5px 8px;
 	cursor: pointer;
+	text-decoration: none;
 }
 .nav-alternatives .button:hover,
 .nav-alternatives .button:focus,
 .nav-alternatives .button:active {
 	background: var(--normal-background);
+	text-decoration: none;
+	color: var(--white-text);
 }
 
 .nav-alternatives .button .fa {
