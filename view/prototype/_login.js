@@ -33,5 +33,3 @@ module.exports = modal(
 
 registerLink.castAttribute('onclick', require('./_register').show);
 resetPasswordLink.castAttribute('onclick', require('./_reset-password').show);
-console.log(registerLink);
-console.log(resetPasswordLink);
