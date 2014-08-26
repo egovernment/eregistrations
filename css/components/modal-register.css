@@ -2,7 +2,7 @@
 Component describing styles for registration modal windows - rules specific only for this modal
 */
 .modal-register.modal {
-	top: 298px;
+	top: 45%;
 }
 
 .modal-register section form fieldset {
