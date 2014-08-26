@@ -24,6 +24,7 @@ module.exports = modal(
 							input(
 								{ dbjs: user._isManager, type: 'checkbox' }
 							),
+							" ",
 							span(user.getDescriptor('isManager').label)
 						)
 					),
