@@ -3,6 +3,7 @@ Component describing styles for login modal windows - rules specific only for th
 */
 .modal-login.modal {
 	top: 287px;
+	width: 40%;
 }
 
 .modal-login section form {

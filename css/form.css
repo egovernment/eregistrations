@@ -70,6 +70,7 @@ select {
 	margin: -5px 0 -5px;
 	font-size: 14px;
 	font-family: "Helvetica";
+	padding: 0 5px;
 }
 @-moz-document url-prefix() {
 	input[type="text"],
