@@ -1,6 +1,6 @@
 'use strict';
 
-exports['official-document'] = { class: { active: true } };
+exports['official-user-details'] = { class: { active: true } };
 
 exports.tab = function () {
 	div(
