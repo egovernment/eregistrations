@@ -94,6 +94,7 @@ user.defineProperties({
 	businessActivity: { type: BusinessActivity, required: true, label: "Business activity" },
 	isOwner: { type: db.Boolean, trueLabel: "I am the owner", falseLabel: "I rent it",
 		label: "Owner of business premises" },
+	isManager: { type: db.Boolean, label: "I am manager" },
 	inventory: { type: UsDollar, label: "Inventory value", required: true, step: 1 },
 	surfaceArea: { type: SquareMeters, label: "Area used for the activity", required: true },
 	members: { type: UInteger, label: "Quantity of members", required: true },
