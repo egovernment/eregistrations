@@ -19,7 +19,3 @@ Component describing styles for login modal windows - rules specific only for th
 	width: 320px;
 }
 
-@media only screen and (max-width: var(--mobile-width)) {
-	.modal-login.modal {
-	}
-}
