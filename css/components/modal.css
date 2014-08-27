@@ -22,7 +22,7 @@ div.modal-courtain {
 	left: 50%;
 	margin: 22px auto;
 	position: absolute;
-	transform: translate(-50%, -50%);
+	transform: translate(-50%);
 }
 
 .modal a {

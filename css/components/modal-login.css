@@ -1,9 +1,6 @@
 /*
 Component describing styles for login modal windows - rules specific only for this modal
 */
-.modal-login.modal {
-	top: 45%;
-}
 
 .modal-login footer p {
 	width: 320px;

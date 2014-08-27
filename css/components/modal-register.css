@@ -1,9 +1,6 @@
 /*
 Component describing styles for registration modal windows - rules specific only for this modal
 */
-.modal-register.modal {
-	top: 43%;
-}
 
 .modal-register section form fieldset {
 	border: none;
