@@ -8,7 +8,15 @@ exports.step = function () {
 		{ class: 'section-primary' },
 		h2("Section A"),
 		div(
-			h3("Busieness Partner basic informations"),
+			div(
+				{ class: 'entity-options' },
+				h3("Business Partner basic informations"),
+				div(
+					{ class: 'entity-actions' },
+					a({ href: '/users-admin/edit-user-id/' }, "Edit", span({ class: 'fa fa-edit' }, "Edit")),
+					a("Delete", span({ class: 'fa fa-trash-o' }, "Delete"))
+				)
+			),
 			hr(),
 			ul(
 				{ class: 'entity-properties' },
@@ -35,7 +43,7 @@ exports.step = function () {
 		{ class: 'section-primary' },
 		h2("Section B"),
 		div(
-			h3("Busieness Partner secondary informations"),
+			h3("Business Partner secondary informations"),
 			hr(),
 			ul(
 				{ class: 'entity-properties' },
