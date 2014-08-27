@@ -92,7 +92,7 @@ select {
 		margin-bottom: -6px;
 	}
 }
-.helper-text {
+form .hint {
 	margin-left: 20px;
 }
 
