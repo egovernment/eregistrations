@@ -1,25 +1,21 @@
 /*
 Component describing styles for registration modal windows - rules specific only for this modal
 */
-
 .modal-register section form fieldset {
 	border: none;
-	margin-left: auto;
-	margin-right: auto;
 }
 
 .modal-register input[type="text"],
 .modal-register input[type="email"],
-.modal-register input[type="password"] {
+.modal-register input[type="password"],
+.modal-register fieldset p {
 	width: 320px;
 }
 
 .modal-register input {
 	margin-right: 20px;
 }
-.modal-register fieldset p {
-		width: 320px;
-}
+
 .modal-register fieldset p p:last-child {
 	margin-bottom: -1px;
 }

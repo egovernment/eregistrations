@@ -1,17 +1,13 @@
 /*
 Component describing styles for login modal windows - rules specific only for this modal
 */
-
-.modal-login footer p {
-	width: 320px;
-}
-
 .modal-login input[type="email"],
-.modal-login input[type="password"] {
+.modal-login input[type="password"],
+.modal-login footer p,
+.modal-login form p:last-child  {
 	width: 320px;
 }
 
 .modal-login form p:last-child {
 	margin-bottom: 0;
-	width: 320px;
 }
