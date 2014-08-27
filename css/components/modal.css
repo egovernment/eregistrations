@@ -25,10 +25,6 @@ div.modal-courtain {
 	transform: translate(-50%);
 }
 
-.modal a {
-	white-space: nowrap;
-}
-
 .modal header h3 {
 	color: white;
 	padding-left: 20px;

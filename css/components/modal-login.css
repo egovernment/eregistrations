@@ -11,3 +11,7 @@ Component describing styles for login modal windows - rules specific only for th
 .modal-login form p:last-child {
 	margin-bottom: 0;
 }
+
+.modal-login footer a {
+	white-space: nowrap;
+}
