@@ -69,11 +69,11 @@
 	margin-bottom: 20px;
 }
 
-.guide-box ul {
+.guide-box .guide-requirements-list {
 	padding-left: 15px;
 }
 
-.guide-costs-list.guide-costs-list {
+.guide-costs-list {
 	padding-left: 0;
 	list-style-type: none;
 }
