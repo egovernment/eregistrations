@@ -1,7 +1,7 @@
 'use strict';
 
 var login = require('./_login'),
-		resetPassword = require('./_reset-password');
+		resetPassword = require('./_reset-password-request');
 
 exports.body = function () {
 	header({ class: 'header-top' },

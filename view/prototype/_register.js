@@ -42,4 +42,4 @@ module.exports = modal(
 );
 
 loginLink.castAttribute('onclick', require('./_login').show);
-resetPasswordLink.castAttribute('onclick', require('./_reset-password').show);
+resetPasswordLink.castAttribute('onclick', require('./_reset-password-request').show);
