@@ -92,6 +92,9 @@ select {
 		margin-bottom: -6px;
 	}
 }
+.helper-text {
+	margin-left: 20px;
+}
 
 input[type="submit"] {
 	height: 30px;
@@ -339,5 +342,8 @@ Styles applied while screen sieze is less than 640px
 	}
 	.inline-button-radio label:last-child {
 		border-radius: 0 0 4px 4px;
+	}
+	.helper-text {
+		display: none;
 	}
 }
