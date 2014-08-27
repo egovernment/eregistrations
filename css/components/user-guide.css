@@ -69,7 +69,11 @@
 	margin-bottom: 20px;
 }
 
-.guide-costs-list {
+.guide-box ul {
+	padding-left: 15px;
+}
+
+.guide-costs-list.guide-costs-list {
 	padding-left: 0;
 	list-style-type: none;
 }
@@ -84,7 +88,7 @@
 	border-bottom: 1px solid black;
 	border-top: 1px solid black;
 	line-height: 22px;
-	padding: 10px 0 11px;
+	padding: 10px 5px 11px;
 	margin-top: 20px;
 	font-weight: bolder;
 }
