@@ -7,7 +7,7 @@ exports.step = function () {
 	section(
 		form({ class: 'section-primary' },
 			h1("Add new Partenr"),
-			fieldset(h2("Busieness Partner basic informations"),
+			fieldset(h2("Business Partner basic informations"),
 				hr(),
 				ul({ class: 'form-elements forms' },
 					['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
@@ -22,7 +22,7 @@ exports.step = function () {
 
 	section(
 		form({ class: 'section-primary' },
-				fieldset(h2("Busieness Partner secondary informations"),
+				fieldset(h2("Business Partner secondary informations"),
 					hr(),
 					ul({ class: 'form-elements forms' },
 						['companyType', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity'],

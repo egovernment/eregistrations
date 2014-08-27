@@ -8,7 +8,7 @@ exports.step = function () {
 		{ class: 'section-primary' },
 		h1("Partner: " + partner._firstName + " " + partner._lastName),
 		div(
-			h2("Busieness Partner basic informations"),
+			h2("Business Partner basic informations"),
 			hr(),
 			ul(
 				{ class: 'entity-properties' },
@@ -34,7 +34,7 @@ exports.step = function () {
 	section(
 		{ class: 'section-primary' },
 		div(
-			h2("Busieness Partner secondary informations"),
+			h2("Business Partner secondary informations"),
 			hr(),
 			ul(
 				{ class: 'entity-properties' },

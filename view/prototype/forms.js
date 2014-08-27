@@ -22,10 +22,23 @@ exports.step = function () {
 				)
 		),
 
-		section(
-			form({ class: 'section-primary' },
-				fieldset(h2("Busieness Owner secondary informations"),
-					hr(),
+		section({ class: 'section-primary' },
+			form(
+				h2("Busieness Owner secondary informations"),
+				hr(),
+				fieldset({ class: 'sub-section' },
+					h3("Busieness Owner secondary informations part one"),
+					ul({ class: 'form-elements fieldset' },
+						['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
+							'registerIds'],
+						function (name) { return field({ dbjs: user.getObservable(name) }); }
+						),
+					p({ class: 'submit-placeholder' },
+						input({ type: 'submit' }, "Submit")
+						)
+					),
+				fieldset({ class: 'sub-section' },
+					h3("Busieness Owner secondary informations part two"),
 					ul({ class: 'form-elements fieldset' },
 						['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
 							'registerIds'],
@@ -35,8 +48,8 @@ exports.step = function () {
 						input({ type: 'submit' }, "Submit")
 						)
 					)
-				)
-		),
+			)
+			),
 
 		section({ class: 'section-primary' },
 			div(
