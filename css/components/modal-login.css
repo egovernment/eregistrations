@@ -2,7 +2,7 @@
 Component describing styles for login modal windows - rules specific only for this modal
 */
 .modal-login.modal {
-	top: 45%;;
+	top: 287px;
 	width: 45%;
 }
 
