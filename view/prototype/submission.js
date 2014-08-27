@@ -5,7 +5,8 @@ var db = require('mano').db,
 
 exports.step = function () {
 	section({ class: 'section-primary' },
-		div(h3("Where do you want to withdraw your documents?"),
+		h1("5 Sent your file"),
+		div(h2("Where do you want to withdraw your documents?"),
 			hr(),
 			form(ul({ class: 'form-elements fieldset' },
 					['placeOfWithdraw'],
@@ -18,7 +19,7 @@ exports.step = function () {
 
 	section(
 		{ class: 'section-primary' },
-		div(h3("Who will pick the certificates?"),
+		div(h2("Who will pick the certificates?"),
 			hr(),
 			form(ul({ class: 'form-elements fieldset' }, ['pickCertificates'],
 					function (name) { return field({ dbjs: user.getObservable(name) }); }
@@ -49,7 +50,7 @@ exports.step = function () {
 		form(
 			div(
 				{ class: 'user-submission-sworn-declaration' },
-				h3("Sworn declaration"),
+				h2("Sworn declaration"),
 				hr(),
 				field(
 					{ dbjs: user._isAffidavitSigned,
