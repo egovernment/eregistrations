@@ -4,7 +4,7 @@ var db = require('mano').db,
 	user = db.User.prototype;
 
 exports.step = function () {
-	div({ class: 'section-primary' }, h2("3 Upload Your Documents"));
+	div({ class: 'section-primary' }, h1("3 Upload Your Documents"));
 	div(
 		{ class: 'disabler-range', id: 'documents-disabler-range' },
 		section(
@@ -13,7 +13,7 @@ exports.step = function () {
 				{ class: 'submissions' },
 				user.requiredSubmissions,
 				function (submission) {
-					return li(form(div(h3(submission.label), hr(),
+					return li(form(div(h2(submission.label), hr(),
 									input({ dbjs: submission._files }))));
 				}
 			)

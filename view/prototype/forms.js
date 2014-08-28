@@ -4,12 +4,12 @@ var db = require('mano').db,
 	user = db.User.prototype;
 
 exports.step = function () {
-	div({ class: 'section-primary' }, h2("2 Fill the form"));
+	div({ class: 'section-primary' }, h1("2 Fill the form"));
 	div(
 		{ class: 'disabler-range', id: 'forms-disabler-range' },
 		section(
 			form({ class: 'section-primary' },
-				fieldset(h3("Busieness Owner basic informations"),
+				fieldset(h2("Business Owner basic informations"),
 					hr(),
 					ul({ class: 'form-elements fieldset' },
 						['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
@@ -22,11 +22,23 @@ exports.step = function () {
 				)
 		),
 
-		section(
-			form({ class: 'section-primary' },
-				h2("Section B"),
-				fieldset(h3("Busieness Owner secondary informations"),
-					hr(),
+		section({ class: 'section-primary' },
+			form(
+				h2("Business Owner secondary informations"),
+				hr(),
+				fieldset({ class: 'sub-section' },
+					h3("First subsection"),
+					ul({ class: 'form-elements fieldset' },
+						['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
+							'registerIds'],
+						function (name) { return field({ dbjs: user.getObservable(name) }); }
+						),
+					p({ class: 'submit-placeholder' },
+						input({ type: 'submit' }, "Submit")
+						)
+					),
+				fieldset({ class: 'sub-section' },
+					h3("Second subsection"),
 					ul({ class: 'form-elements fieldset' },
 						['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
 							'registerIds'],
@@ -36,14 +48,13 @@ exports.step = function () {
 						input({ type: 'submit' }, "Submit")
 						)
 					)
-				)
-		),
+			)
+			),
 
 		section({ class: 'section-primary' },
-			h2("Section C"),
 			div(
 				div(
-					h3("Directors & non-directors owner / partners"),
+					h2("Directors & non-directors owner / partners"),
 					hr(),
 					table(
 						{ class: 'partners-list' },

@@ -260,6 +260,7 @@ ul.multiple {
 	padding: 2px 7px 4px 7px;
 	font-size: 12px;
 	margin-left: 5px;
+	text-decoration: none;
 }
 .inline-button-radio  {
 	margin-bottom: 22px;
