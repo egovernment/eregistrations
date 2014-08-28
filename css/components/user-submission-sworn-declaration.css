@@ -3,7 +3,9 @@
 }
 
 .user-submission-sworn-declaration .dbjs-input-component .fa {
-	margin-top: 0;
+	margin-top: -7px;
+	top: 4px;
+	position: relative;
 }
 
 .submit-user-button {
