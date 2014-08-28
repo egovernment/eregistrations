@@ -59,8 +59,8 @@ exports.step = function () {
 						"comply with and swear that the information provided in this application is true.",
 						render: function (input, options) {
 							return label(input, " ", options.label,
-									span({ class: 'required-status' }, ''),
-									span({ class: 'validation-status fa fa-check' }, 'Check')
+									span({ class: 'required-status' }, '*'),
+									span({ class: 'validation-status' }, '✓')
 									);
 						}
 						}
