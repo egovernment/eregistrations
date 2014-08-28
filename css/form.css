@@ -7,6 +7,11 @@ form {
 	list-style: none;
 	padding-left: 0;
 }
+
+form ul {
+	list-style: none;
+}
+
 ul.form-elements li {
 	margin-bottom: 0;
 }
@@ -35,7 +40,7 @@ ul.radio {
 	padding-left: 0;
 }
 
-ul.radio, ul.radio li {
+.form-elements ul.radio, .form-elements ul.radio li {
 	display: inline;
 }
 

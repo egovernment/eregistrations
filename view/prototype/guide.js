@@ -47,7 +47,24 @@ exports.step = function () {
 							" consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
-						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))),
+						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")),
+
+					ul(li(input({ dbjs: user._isType, type: 'radio' }), " ")),
+
+					ul({ class: '' },
+						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+						span(user.getDescriptor('isBRequested').label))),
+						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+						span(user.getDescriptor('isBRequested').label))),
+						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+						span(user.getDescriptor('isBRequested').label))),
+						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+						span(user.getDescriptor('isARequested').label))),
+						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+						span(user.getDescriptor('isBRequested').label)))
+					)
+
+					),
 				div({ class: 'guide-box' }, h2("Costs"),
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
