@@ -9,7 +9,7 @@ exports.step = function () {
 		{ class: 'disabler-range', id: 'forms-disabler-range' },
 		section(
 			form({ class: 'section-primary' },
-				fieldset(h2("Busieness Owner basic informations"),
+				fieldset(h2("Business Owner basic informations"),
 					hr(),
 					ul({ class: 'form-elements fieldset' },
 						['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
@@ -24,10 +24,10 @@ exports.step = function () {
 
 		section({ class: 'section-primary' },
 			form(
-				h2("Busieness Owner secondary informations"),
+				h2("Business Owner secondary informations"),
 				hr(),
 				fieldset({ class: 'sub-section' },
-					h3("Busieness Owner secondary informations part one"),
+					h3("First subsection"),
 					ul({ class: 'form-elements fieldset' },
 						['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
 							'registerIds'],
@@ -38,7 +38,7 @@ exports.step = function () {
 						)
 					),
 				fieldset({ class: 'sub-section' },
-					h3("Busieness Owner secondary informations part two"),
+					h3("Second subsection"),
 					ul({ class: 'form-elements fieldset' },
 						['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
 							'registerIds'],
