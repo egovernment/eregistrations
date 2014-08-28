@@ -47,25 +47,26 @@ exports.step = function () {
 							" consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
-						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")),
+						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
+						li("Lorem ipsum dolor sit amet: ",
+						ul(li(input({ dbjs: user._isType, type: 'radio' }), " "))),
+						li("Please choose x docs in the list: ",
+							ul({ class: 'disabler-range disabled' }, // add 'disabled' class to disable ul
+							li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+								span(user.getDescriptor('isBRequested').label))),
+							li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+								span(user.getDescriptor('isBRequested').label))),
+							li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+								span(user.getDescriptor('isARequested').label))),
+							li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+								span(user.getDescriptor('isARequested').label))),
+							li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+								span(user.getDescriptor('isBRequested').label))),
+							li({ class: 'disabler' })
+							)
+							)
 
-					ul(li("Lorem ipsum dolor sit amet: "),
-						li(input({ dbjs: user._isType, type: 'radio' }), " ")),
-
-					ul({ class: 'disabler-range' }, // add 'disabled' class to disable ul
-						li("Please choose x docs in the list: "),
-						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-						span(user.getDescriptor('isBRequested').label))),
-						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-						span(user.getDescriptor('isBRequested').label))),
-						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-						span(user.getDescriptor('isBRequested').label))),
-						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-						span(user.getDescriptor('isARequested').label))),
-						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-						span(user.getDescriptor('isBRequested').label))),
-						div({ class: 'disabler' })
-					)
+						)
 
 					),
 				div({ class: 'guide-box' }, h2("Costs"),
