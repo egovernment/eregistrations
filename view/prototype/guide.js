@@ -52,7 +52,8 @@ exports.step = function () {
 					ul(li("Lorem ipsum dolor sit amet: "),
 						li(input({ dbjs: user._isType, type: 'radio' }), " ")),
 
-					ul(li("Please choose x docs in the list: "),
+					ul({ class: 'disabler-range' }, // add 'disabled' class to disable ul
+						li("Please choose x docs in the list: "),
 						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 						span(user.getDescriptor('isBRequested').label))),
 						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
@@ -62,7 +63,8 @@ exports.step = function () {
 						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 						span(user.getDescriptor('isARequested').label))),
 						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-						span(user.getDescriptor('isBRequested').label)))
+						span(user.getDescriptor('isBRequested').label))),
+						div({ class: 'disabler' })
 					)
 
 					),
