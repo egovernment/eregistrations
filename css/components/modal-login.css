@@ -1,22 +1,17 @@
 /*
 Component describing styles for login modal windows - rules specific only for this modal
 */
-.modal-login.modal {
-	top: 287px;
-	width: 45%;
-}
-
-.modal-login section form {
-	margin-left: auto;
-	margin-right: auto;
+.modal-login input[type="email"],
+.modal-login input[type="password"],
+.modal-login footer p,
+.modal-login form p:last-child  {
+	width: 320px;
 }
 
 .modal-login form p:last-child {
 	margin-bottom: 0;
 }
 
-@media only screen and (max-width: var(--mobile-width)) {
-	.modal-login.modal {
-		width: 90%;
-	}
+.modal-login footer a {
+	white-space: nowrap;
 }
