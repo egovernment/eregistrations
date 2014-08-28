@@ -20,8 +20,8 @@ module.exports = function (view) {
 		userOfficialMain = subMain.diff('./official'),
 		userOfficialUser = userOfficialMain.diff('./official-user'),
 		// For disablers
-		userForm = userLoggedIn.diff('./forms'),
-		userDocuments = userLoggedIn.diff('./documents');
+		userForm = userMain.diff('./forms'),
+		userDocuments = userMain.diff('./documents');
 
 	return {
 		// Public routes - imports content directly to #main element

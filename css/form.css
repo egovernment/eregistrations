@@ -7,6 +7,11 @@ form {
 	list-style: none;
 	padding-left: 0;
 }
+
+form ul {
+	list-style: none;
+}
+
 ul.form-elements li {
 	margin-bottom: 0;
 }
@@ -35,12 +40,16 @@ ul.radio {
 	padding-left: 0;
 }
 
-ul.radio, ul.radio li {
+.form-elements ul.radio, .form-elements ul.radio li {
 	display: inline;
 }
 
 ul.radio li {
 	margin-right: 5px;
+}
+
+ul.radio li div ul {
+	padding-left: 10px;
 }
 
 input[type="text"],
@@ -338,6 +347,7 @@ Styles applied while screen sieze is less than 640px
 	ul.radio li label {
 		padding-bottom: 0;
 	}
+
 	.inline-button-radio label:first-child{
 		border-radius: 4px 4px 0 0;
 	}

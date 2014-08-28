@@ -147,3 +147,16 @@ ul {
 li {
 	line-height: 22px;
 }
+
+li ul {
+	margin: 0;
+}
+
+.disabled {
+	cursor: not-allowed;
+	background-color: #fff;
+	opacity: 0.4;
+}
+.disabled * {
+	cursor: not-allowed;
+}
