@@ -96,7 +96,7 @@ user.defineProperties({
 		label: "Owner of business premises" },
 	isType: { type: db.Boolean,
 		trueLabel: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit ame",
-		falseLabel: "Lorem ipsum dolor sit amet" },
+		falseLabel: "Please choose x docs in the list: " },
 	isManager: { type: db.Boolean, label: "I am manager" },
 	inventory: { type: UsDollar, label: "Inventory value", required: true, step: 1 },
 	surfaceArea: { type: SquareMeters, label: "Area used for the activity", required: true },

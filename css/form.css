@@ -48,6 +48,10 @@ ul.radio li {
 	margin-right: 5px;
 }
 
+ul.radio li div ul {
+	padding-left: 10px;
+}
+
 input[type="text"],
 input[type="number"],
 input[type="email"],
@@ -343,6 +347,7 @@ Styles applied while screen sieze is less than 640px
 	ul.radio li label {
 		padding-bottom: 0;
 	}
+
 	.inline-button-radio label:first-child{
 		border-radius: 4px 4px 0 0;
 	}

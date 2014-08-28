@@ -1,7 +1,8 @@
 'use strict';
 
 var db = require('mano').db,
-	user = db.User.prototype;
+	user = db.User.prototype,
+	reqRadio;
 
 exports.step = function () {
 	section({ class: 'user-guide' },
@@ -49,26 +50,32 @@ exports.step = function () {
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet: ",
-						ul(li(input({ dbjs: user._isType, type: 'radio' }), " "))),
-						li("Please choose x docs in the list: ",
-							ul({ class: 'disabler-range disabled' }, // add 'disabled' class to disable ul
-							li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-								span(user.getDescriptor('isBRequested').label))),
-							li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-								span(user.getDescriptor('isBRequested').label))),
-							li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-								span(user.getDescriptor('isARequested').label))),
-							li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-								span(user.getDescriptor('isARequested').label))),
-							li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-								span(user.getDescriptor('isBRequested').label))),
-							li({ class: 'disabler' })
+						ul(li(reqRadio = input({ dbjs: user._isType, type: 'radio' }), " "))),
+						li(
+						div({ class: 'disabler-range' }, // add 'disabled' class to disable ul
+							"Please choose x docs in the list: ",
+							ul(
+								li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+									span(user.getDescriptor('isBRequested').label))),
+								li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+									span(user.getDescriptor('isBRequested').label))),
+								li({ class: 'disabled' },
+									label(input({ dbjs: user._isBRequested,
+																type: 'checkbox',
+																disabled: 'disabled',
+																value: 'checked' }),
+										" ",
+										span(user.getDescriptor('isBRequested').label))),
+								li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+									span(user.getDescriptor('isARequested').label))),
+								li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+									span(user.getDescriptor('isBRequested').label)))
+							),
+							div({ class: 'disabler' })
 							)
-							)
-
-						)
-
-					),
+					)
+					)
+				),
 				div({ class: 'guide-box' }, h2("Costs"),
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
@@ -92,4 +99,16 @@ exports.step = function () {
 				)
 			)
 		);
+	reqRadio._dbjsInput.listItems[0].appendChild(
+		div({ class: 'disabler-range disabled' }, // add 'disabled' class to disable ul
+			ul(
+				li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+					span(user.getDescriptor('isBRequested').label))),
+				li(label(input({ dbjs: user._isARequested,
+					type: 'checkbox', value: 'checked', disabled: 'disabled' }), " ",
+					span(user.getDescriptor('isBRequested').label)))
+			),
+			div({ class: 'disabler' })
+			)
+	);
 };
