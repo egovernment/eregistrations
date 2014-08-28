@@ -2,10 +2,6 @@
 	padding-bottom: 22px;
 }
 
-.user-submission-sworn-declaration .dbjs-input-component .fa {
-	margin-top: 0;
-}
-
 .submit-user-button {
 	max-width: var(--desktop-width);
 	padding: 0 10px 22px;
