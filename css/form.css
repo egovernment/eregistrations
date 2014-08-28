@@ -92,6 +92,9 @@ select {
 		margin-bottom: -6px;
 	}
 }
+form .hint {
+	margin-left: 20px;
+}
 
 input[type="submit"] {
 	height: 30px;
@@ -257,6 +260,7 @@ ul.multiple {
 	padding: 2px 7px 4px 7px;
 	font-size: 12px;
 	margin-left: 5px;
+	text-decoration: none;
 }
 .inline-button-radio  {
 	margin-bottom: 22px;
@@ -339,5 +343,8 @@ Styles applied while screen sieze is less than 640px
 	}
 	.inline-button-radio label:last-child {
 		border-radius: 0 0 4px 4px;
+	}
+	form .hint {
+		display: none;
 	}
 }

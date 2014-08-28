@@ -29,6 +29,20 @@
 	margin-bottom: 0;
 }
 
+.section-primary .sub-section {
+	border: none;
+	padding: 0;
+}
+
+.section-primary .sub-section h3 {
+	background: var(--light-background);
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 5px;
+	margin-bottom: 12px;
+	border-left: 3px solid var(--normal-dark-background);
+	color: var(--normal-dark-background);
+}
 /*
 Styles applied while screen sieze is less than 640px
 */

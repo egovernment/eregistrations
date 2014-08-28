@@ -5,13 +5,11 @@ var db = require('mano').db,
 
 exports.step = function () {
 	section({ class: 'user-guide' },
-			h3({ class: 'main-intro' },
-				"INDIVIDUAL REGISTRATION GUIDE FOR COMPANIES"),
-			h3("Complete the previous questions, pick your records and" +
-					"see the necessary documents and costs"
+			h1({ class: 'main-intro' },
+				"1. Individual registration guide for companies"
 			),
 			form({ class: 'guide-form' },
-				div({ class: 'guide-box' }, h3("Questions"),
+				div({ class: 'guide-box' }, h2("Questions"),
 					hr(),
 					ul({ class: 'form-elements' },
 					['businessActivity', 'isOwner', 'inventory', 'surfaceArea', 'members',
@@ -20,7 +18,7 @@ exports.step = function () {
 							label(user.getDescriptor(name).label, ":"),
 							div({ class: 'control' }, input({ dbjs: user.getObservable(name) }))));
 					})),
-				div({ class: 'guide-box' }, h3("Registrations"),
+				div({ class: 'guide-box' }, h2("Registrations"),
 					hr(),
 					ul({ class: 'form-elements' },
 						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
@@ -37,11 +35,12 @@ exports.step = function () {
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. " +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. ")
 				),
-				div({ class: 'guide-box' }, h3("Requirements"),
+				div({ class: 'guide-box' }, h2("Requirements"),
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
-					ul(li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+					ul({ class: 'guide-requirements-list' },
+						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 						" Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum " +
 							"dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet," +
@@ -49,7 +48,7 @@ exports.step = function () {
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))),
-				div({ class: 'guide-box' }, h3("Costs"),
+				div({ class: 'guide-box' }, h2("Costs"),
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),

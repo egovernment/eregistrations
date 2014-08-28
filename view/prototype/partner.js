@@ -6,17 +6,9 @@ var db = require('mano').db,
 exports.step = function () {
 	section(
 		{ class: 'section-primary' },
-		h2("Section A"),
+		h1("Partner: " + partner._firstName + " " + partner._lastName),
 		div(
-			div(
-				{ class: 'entity-options' },
-				h3("Business Partner basic informations"),
-				div(
-					{ class: 'entity-actions' },
-					a({ href: '/users-admin/edit-user-id/' }, "Edit", span({ class: 'fa fa-edit' }, "Edit")),
-					a("Delete", span({ class: 'fa fa-trash-o' }, "Delete"))
-				)
-			),
+			h2("Business Partner basic informations"),
 			hr(),
 			ul(
 				{ class: 'entity-properties' },
@@ -41,9 +33,8 @@ exports.step = function () {
 	);
 	section(
 		{ class: 'section-primary' },
-		h2("Section B"),
 		div(
-			h3("Business Partner secondary informations"),
+			h2("Business Partner secondary informations"),
 			hr(),
 			ul(
 				{ class: 'entity-properties' },
