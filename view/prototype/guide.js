@@ -49,9 +49,10 @@ exports.step = function () {
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")),
 
-					ul(li(input({ dbjs: user._isType, type: 'radio' }), " ")),
+					ul(li("Lorem ipsum dolor sit amet: "),
+						li(input({ dbjs: user._isType, type: 'radio' }), " ")),
 
-					ul({ class: '' },
+					ul(li("Please choose x docs in the list: "),
 						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 						span(user.getDescriptor('isBRequested').label))),
 						li(label(input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
