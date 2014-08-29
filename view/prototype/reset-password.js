@@ -32,7 +32,7 @@ exports.main = function () {
 											id: 'input-password',
 											dbjs: db.Password,
 											name: 'password' }),
-							span({ class: 'helper-text' }, "Password need to be at least 6 characters long.")
+							span({ class: 'hint' }, "Password need to be at least 6 characters long.")
 						)
 					)
 				),
@@ -46,7 +46,7 @@ exports.main = function () {
 											id: 'input-password-repeat',
 											dbjs: db.Password,
 											name: 'password' }),
-							span({ class: 'helper-text' }, "Repeat new password here")
+							span({ class: 'hint' }, "Repeat new password here")
 						)
 					)
 				),
