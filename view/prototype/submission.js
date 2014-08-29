@@ -5,7 +5,7 @@ var db = require('mano').db,
 
 exports.step = function () {
 	section({ class: 'section-primary' },
-		h1("5 Send your file"),
+		h1("5. Send your file"),
 		div(h2("Where do you want to withdraw your documents?"),
 			hr(),
 			form(ul({ class: 'form-elements fieldset' },
