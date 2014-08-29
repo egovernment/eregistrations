@@ -3,6 +3,7 @@
 ../../css/table.css
 ../../css/font-awesome.css
 ../../css/components/button-main.css
+../../css/components/error-main.css
 ../../css/components/disabler.css
 ../../css/components/modal.css
 ../../css/components/modal-form.css

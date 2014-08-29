@@ -5,6 +5,8 @@ var db = require('mano').db,
 
 exports.step = function () {
 	div({ class: 'section-primary' }, h1("2 Fill the form"));
+	div({ class: 'error-main' },
+		p(span({ class: 'fa fa-exclamation-circle' }), "Please fill the Guide first"));
 	div(
 		{ class: 'disabler-range', id: 'forms-disabler-range' },
 		section(
