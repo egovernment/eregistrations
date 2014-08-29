@@ -21,14 +21,13 @@ exports.step = function () {
 					})),
 				div({ class: 'guide-box' }, h2("Registrations"),
 					hr(),
-					ul({ class: '' },
-						li(label({ class: 'input-aside ' },
+					ul(li(label({ class: 'input-aside' },
 							input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 						span(user.getDescriptor('isARequested').label))),
-						li(label({ class: 'input-aside ' },
+						li(label({ class: 'input-aside' },
 							input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 						span(user.getDescriptor('isBRequested').label))),
-						li(label({ class: 'input-aside ' },
+						li(label({ class: 'input-aside' },
 							input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 						span(user.getDescriptor('isARequested').label)))
 					),
@@ -64,23 +63,23 @@ exports.step = function () {
 						li(
 						"Please choose x docs in the list: ",
 						ul(
-							li(label({ class: 'input-aside ' },
+							li(label({ class: 'input-aside' },
 								input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 								span(user.getDescriptor('isBRequested').label))),
-							li(label({ class: 'input-aside ' },
+							li(label({ class: 'input-aside' },
 								input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 								span(user.getDescriptor('isBRequested').label))),
 							li({ class: 'disabled' },
-								label({ class: 'input-aside ' }, input({ dbjs: user._isBRequested,
+								label({ class: 'input-aside' }, input({ dbjs: user._isBRequested,
 															type: 'checkbox',
 															disabled: 'disabled',
 															value: 'checked' }),
 									" ",
 									span(user.getDescriptor('isBRequested').label))),
-							li(label({ class: 'input-aside ' },
+							li(label({ class: 'input-aside' },
 								input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 								span(user.getDescriptor('isARequested').label))),
-							li(label({ class: 'input-aside ' },
+							li(label({ class: 'input-aside' },
 								input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 								span(user.getDescriptor('isBRequested').label)))
 						)
@@ -113,10 +112,10 @@ exports.step = function () {
 	reqRadio._dbjsInput.listItems[0].appendChild(
 		div({ class: 'disabler-range' }, // add 'disabled' class to disable ul
 			ul(
-				li(label({ class: 'input-aside ' },
+				li(label({ class: 'input-aside' },
 					input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 					span(user.getDescriptor('isBRequested').label))),
-				li(label({ class: 'input-aside ' },
+				li(label({ class: 'input-aside' },
 					input({ dbjs: user._isARequested,
 						type: 'checkbox', value: 'checked' }), " ",
 					span(user.getDescriptor('isBRequested').label)))
