@@ -142,11 +142,7 @@ textarea {
 	min-width: 15px;
 }
 
-.input-aside input[type="checkbox"] {
-	position: relative;
-	top: -1px;
-}
-
+.input-aside input[type="checkbox"],
 .input-aside input[type="radio"] {
 	position: relative;
 	top: -1px;
