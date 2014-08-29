@@ -45,7 +45,7 @@ exports['sub-main'] = function () {
 					)
 				),
 				label(
-					"Status: "
+					"Search: "
 				),
 				div(
 					span({ class: 'input-append' },
