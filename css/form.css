@@ -214,12 +214,14 @@ textarea {
 .dbjs-input-component.valid.changed span.validation-status {
 	visibility: visible;
 	display: inline-block;
+	opacity: 0.5;
 }
 
 /* Changed & invalid */
 .dbjs-input-component.invalid.changed span.validation-status {
-	visibility: visible;
+	visibility: hidden;
 	display: inline-block;
+	opacity: 0.5;
 }
 
 /* Saved */
@@ -229,8 +231,13 @@ textarea {
 	color: var(--success-text);
 }
 
+.dbjs-input-component.dbjs-filled.not-changed span.required-status {
+	visibility: visible;
+	display:inline-block;
+}
+
 /* Required */
-.dbjs-input-component.required.not-changed.dbjs-empty span.required-status {
+.dbjs-input-component.required.dbjs-empty span.required-status {
 	visibility: visible;
 	display:inline-block;
 }
