@@ -140,13 +140,22 @@ textarea {
 }
 
 /* Input pre-element (span) */
+.input-prepend {
+	white-space: nowrap;
+}
+
 .input-prepend input {
 	border-radius: 0 4px 4px 0;
+	max-width: 90%;
+}
+
+.input-append {
+	white-space: nowrap;
 }
 
 .input-append input {
 	border-radius: 4px 0 0 4px;
-	width: 77%;
+	max-width: 90%;
 }
 
 .add-on {
