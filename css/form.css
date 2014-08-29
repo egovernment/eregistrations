@@ -134,6 +134,19 @@ textarea {
 	font-family: "Helvetica";
 }
 
+.input-aside {
+	display: flex;
+}
+
+.input-aside span:first-child {
+	min-width: 15px;
+}
+
+.input-aside input[type="checkbox"] {
+	position: relative;
+	top: -1px;
+}
+
 .submit-placeholder {
 	margin-left: 40%;
 	padding-left: 13px;
