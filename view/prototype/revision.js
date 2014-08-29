@@ -116,7 +116,8 @@ exports['sub-main'] = function () {
 		{ class: 'section-primary' },
 		div(
 			h2("Application revision"),
-			p(a({ class: 'button-main' }, "Approve file"),
+			p({ class: 'submitted-revision-toolbar' },
+				a({ class: 'button-main' }, "Approve file"),
 				a({ class: 'button-main' }, "Send for corrections"),
 				a({ class: 'button-main' }, "Reject file")
 				),
