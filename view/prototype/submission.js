@@ -21,7 +21,8 @@ exports.step = function () {
 		{ class: 'section-primary' },
 		div(h2("Who will pick the certificates?"),
 			hr(),
-			form(ul({ class: 'form-elements fieldset' }, ['pickCertificates'],
+			form(ul({ class: 'form-elements fieldset' },
+				['pickCertificates', 'lastName', 'dateOfBirth', 'inventory'],
 					function (name) { return field({ dbjs: user.getObservable(name) }); }
 					),
 				p({ class: 'submit-placeholder' }, input({ type: 'submit' }, "Save"))
