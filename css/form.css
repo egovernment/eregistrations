@@ -147,6 +147,11 @@ textarea {
 	top: -1px;
 }
 
+.input-aside input[type="radio"] {
+	position: relative;
+	top: -1px;
+}
+
 .submit-placeholder {
 	margin-left: 40%;
 	padding-left: 13px;

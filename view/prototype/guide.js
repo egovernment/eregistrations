@@ -53,7 +53,14 @@ exports.step = function () {
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet: ",
-						ul(li(reqRadio = input({ dbjs: user._isType, type: 'radio' }), " "))),
+						ul(li(reqRadio = input({ dbjs: user._isType, type: 'radio',
+							renderOption: function (labelTxt) {
+								var data = {};
+								data.dom = li(label({ class: 'input-aside' },
+									span(data.input = input()),
+									span(labelTxt)));
+								return data;
+							}  }), " "))),
 						li(
 						"Please choose x docs in the list: ",
 						ul(
