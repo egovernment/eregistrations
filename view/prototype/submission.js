@@ -59,9 +59,9 @@ exports.step = function () {
 						label: " I declare I have read and understood all the conditions I have to " +
 						"comply with and swear that the information provided in this application is true.",
 						render: function (input, options) {
-							return label(input, " ", options.label,
+							return label({ class: 'input-aside' }, input, span(" ", options.label,
 									span({ class: 'required-status' }, '*'),
-									span({ class: 'validation-status' }, '✓')
+									span({ class: 'validation-status' }, '✓'))
 									);
 						}
 						}
