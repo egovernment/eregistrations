@@ -1,4 +1,4 @@
-.users-table-filter-bar.users-table-filter-bar  {
+.users-table-filter-bar {
 		display: flex;
 		justify-content: space-between;
 }
