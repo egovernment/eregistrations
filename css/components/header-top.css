@@ -12,7 +12,6 @@
 	margin: 0 auto;
 	max-width: var(--desktop-width);
 	padding: 11px 10px;
-	background: var(--white-background);
 }
 
 .header-top-main {
