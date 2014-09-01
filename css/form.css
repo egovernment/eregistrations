@@ -138,15 +138,16 @@ textarea {
 	display: flex;
 }
 
+/* Chrome flex display defect fix. Defect raised for Chrome browser https://code.google.com/p/chromium/issues/detail?id=409581 */
 .input-aside span:first-child {
-	display: table; /* Chrome flex display defect fix */
+	display: table;
 }
 
 .input-aside input[type="checkbox"],
 .input-aside input[type="radio"] {
 	vertical-align: 1px;
 }
-/* Chrome flex display defect fix. Defect raised for Chrome browser https://code.google.com/p/chromium/issues/detail?id=409581 */
+
 .input-aside span:last-child {
 	padding-left: 5px;
 }
