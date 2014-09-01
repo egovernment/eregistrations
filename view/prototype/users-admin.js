@@ -38,17 +38,17 @@ exports['sub-main'] = function () {
 					td(
 						{ class: 'user-basic-data' },
 						div(
-							a("John Watson",
+							a({ href: '/users-admin/user-id/' }, "John Watson",
 								span('johnwatson@gmail.com')
 								)
 						)
 					),
 					td(
-						div(a("Bussines Licence A"))
+						div(a({ href: '/users-admin/user-id/' }, "Bussines Licence A"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div(a("23/07/2014 18:09:22"))
+						div(a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22"))
 					),
 					td(
 						{ class: 'actions' },
@@ -60,17 +60,17 @@ exports['sub-main'] = function () {
 					td(
 						{ class: 'user-basic-data' },
 						div(
-							a("John Watson",
+							a({ href: '/users-admin/user-id/' }, "John Watson",
 								span('johnwatson@gmail.com')
 								)
 						)
 					),
 					td(
-						div(a("Bussines Licence A"))
+						div(a({ href: '/users-admin/user-id/' }, "Bussines Licence A"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div(a("23/07/2014 18:09:22"))
+						div(a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22"))
 					),
 					td(
 						{ class: 'actions' },
@@ -82,17 +82,17 @@ exports['sub-main'] = function () {
 					td(
 						{ class: 'user-basic-data' },
 						div(
-							a("John Watson",
+							a({ href: '/users-admin/user-id/' }, "John Watson",
 								span('johnwatson@gmail.com')
 								)
 						)
 					),
 					td(
-						div(a("Bussines Licence A"))
+						div(a({ href: '/users-admin/user-id/' }, "Bussines Licence A"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div(a("23/07/2014 18:09:22"))
+						div(a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22"))
 					),
 					td(
 						{ class: 'actions' },
@@ -104,17 +104,17 @@ exports['sub-main'] = function () {
 					td(
 						{ class: 'user-basic-data' },
 						div(
-							a("John Watson",
+							a({ href: '/users-admin/user-id/' }, "John Watson",
 								span('johnwatson@gmail.com')
 								)
 						)
 					),
 					td(
-						div(a("Bussines Licence A"))
+						div(a({ href: '/users-admin/user-id/' }, "Bussines Licence A"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div(a("23/07/2014 18:09:22"))
+						div(a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22"))
 					),
 					td(
 						{ class: 'actions' },
@@ -126,17 +126,17 @@ exports['sub-main'] = function () {
 					td(
 						{ class: 'user-basic-data' },
 						div(
-							a("John Watson",
+							a({ href: '/users-admin/user-id/' }, "John Watson",
 								span('johnwatson@gmail.com')
 								)
 						)
 					),
 					td(
-						div(a("Bussines Licence A"))
+						div(a({ href: '/users-admin/user-id/' }, "Bussines Licence A"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div(a("23/07/2014 18:09:22"))
+						div(a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22"))
 					),
 					td(
 						{ class: 'actions' },
@@ -148,17 +148,17 @@ exports['sub-main'] = function () {
 					td(
 						{ class: 'user-basic-data' },
 						div(
-							a("John Watson",
+							a({ href: '/users-admin/user-id/' }, "John Watson",
 								span('johnwatson@gmail.com')
 								)
 						)
 					),
 					td(
-						div(a("Bussines Licence A"))
+						div(a({ href: '/users-admin/user-id/' }, "Bussines Licence A"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div(a("23/07/2014 18:09:22"))
+						div(a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22"))
 					),
 					td(
 						{ class: 'actions' },
