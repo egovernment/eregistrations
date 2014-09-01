@@ -231,6 +231,9 @@ textarea {
 .dbjs-input-component *:disabled ~ span.status-missing {
 	display: none;
 }
+.dbjs-input-component *:disabled ~ span.status-error {
+	display: none;
+}
 
 /* Changed & valid */
 .dbjs-input-component.valid.changed span.status-ok {
