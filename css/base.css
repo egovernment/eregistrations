@@ -41,6 +41,8 @@ body {
 
 main {
 	background-color: var(--light-background);
+	padding-top: 22px;
+	padding-bottom: 22px;
 }
 
 * {
@@ -125,6 +127,7 @@ header {
 
 footer {
 	padding: 22px 0 0 0;
+	margin-bottom: -22px;
 }
 
 img {
