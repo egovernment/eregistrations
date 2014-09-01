@@ -29,10 +29,10 @@ html {
 	-ms-text-size-adjust: 100%;
 	-webkit-text-size-adjust: 100%;
 	font-family: sans-serif;
+	background-color: var(--light-background);
 }
 
 body {
-	background-color: #ffffff;
 	color: var(--dark-text);
 	margin: 0;
 	font-size: 14px;
@@ -40,9 +40,6 @@ body {
 }
 
 main {
-	background-color: var(--light-background);
-	padding-top: 22px;
-	padding-bottom: 22px;
 }
 
 * {
@@ -127,7 +124,6 @@ header {
 
 footer {
 	padding: 22px 0 0 0;
-	margin-bottom: -22px;
 }
 
 img {

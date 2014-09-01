@@ -13,7 +13,6 @@ home page.
 	display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
 	min-height: 374px;
 	width: 100%;
-	margin-top: -22px;
 }
 
 /*

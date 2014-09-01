@@ -15,14 +15,11 @@
 	width: 100%;
 }
 
-.user-guide .main-intro {
-	margin-top: 22px;
-}
-
 .guide-form {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
+	margin-bottom: 22px;
 }
 
 .user-guide .guide-box {

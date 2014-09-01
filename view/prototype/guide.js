@@ -6,7 +6,7 @@ var db = require('mano').db,
 
 exports.step = function () {
 	section({ class: 'user-guide' },
-			h1({ class: 'main-intro' },
+			h1({ class: 'section-main-intro' },
 				"1. Individual registration guide for companies"
 			),
 			form({ class: 'guide-form' },

@@ -26,6 +26,7 @@
 ../../css/components/section-primary.css
 ../../css/components/section-tab-nav.css
 ../../css/components/section-warning.css
+../../css/components/section-main-intro.css
 ../../css/components/entity-properties.css
 ../../css/components/entity-options.css
 ../../css/components/entities-overview-table.css

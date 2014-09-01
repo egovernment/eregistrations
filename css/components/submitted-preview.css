@@ -4,7 +4,7 @@
 	flex-wrap: wrap;
 	justify-content: space-between;
 	max-width: var(--desktop-width);
-	padding: 0 10px 22px 10px;
+	padding: 0 10px;
 }
 
 .submitted-preview-document {
