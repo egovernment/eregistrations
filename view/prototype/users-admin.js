@@ -27,7 +27,7 @@ exports['sub-main'] = function () {
 			{ class: 'official-users-table' },
 			thead(
 				tr(
-					th("Email"),
+					th("User"),
 					th("Institution"),
 					th({ class: 'desktop-only' }, "Creation date"),
 					th({ class: 'actions' }, "Actions")
@@ -36,70 +36,19 @@ exports['sub-main'] = function () {
 			tbody(
 				tr(
 					td(
-						div(a({ href: '/users-admin/user-id/' }, "john.watson@sherloc.com"))
-					),
-					td(
-						div("Bussines Licence A")
-					),
-					td(
-						{ class: 'desktop-only' },
-						div("23/07/2014 18:09:22")
-					),
-					td(
-						{ class: 'actions' },
-						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
-						a("Delete")
-					)
-				),
-				tr(
-					td(
-						div(a({ href: '/users-admin/user-id/' }, "john.watson@sherloc.com"))
-					),
-					td(
-						div("Bussines Licence A")
-					),
-					td(
-						{ class: 'desktop-only' },
-						div("23/07/2014 18:09:22")
-					),
-					td(
-						{ class: 'actions' },
-						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
-						a("Delete")
-					)
-				),
-				tr(
-					td(
-						div(a({ href: '/users-admin/user-id/' }, "john.watson@sherloc.com"))
-					),
-					td(
-						div("Bussines Licence A")
-					),
-					td(
-						{ class: 'desktop-only' },
-						div("23/07/2014 18:09:22")
-					),
-					td(
-						{ class: 'actions' },
-						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
-						a("Delete")
-					)
-				),
-				tr(
-					td(
-						div(a({ href: '/users-admin/user-id/' }, "john.watson@sherloc.com"))
-					),
-					td(
-						ul(
-							li("Bussines Licence A"),
-							li("Bussines Licence A"),
-							li("Bussines Licence A"),
-							li("Bussines Licence A")
+						{ class: 'user-basic-data' },
+						div(
+							a("John Watson",
+								span('johnwatson@gmail.com')
+								)
 						)
 					),
 					td(
+						div(a("Bussines Licence A"))
+					),
+					td(
 						{ class: 'desktop-only' },
-						div("23/07/2014 18:09:22")
+						div(a("23/07/2014 18:09:22"))
 					),
 					td(
 						{ class: 'actions' },
@@ -109,14 +58,19 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						div(a({ href: '/users-admin/user-id/' }, "john.watson@sherloc.com"))
+						{ class: 'user-basic-data' },
+						div(
+							a("John Watson",
+								span('johnwatson@gmail.com')
+								)
+						)
 					),
 					td(
-						div("Bussines Licence A")
+						div(a("Bussines Licence A"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div("23/07/2014 18:09:22")
+						div(a("23/07/2014 18:09:22"))
 					),
 					td(
 						{ class: 'actions' },
@@ -126,14 +80,85 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						div(a({ href: '/users-admin/user-id/' }, "john.watson@sherloc.com"))
+						{ class: 'user-basic-data' },
+						div(
+							a("John Watson",
+								span('johnwatson@gmail.com')
+								)
+						)
 					),
 					td(
-						div("Bussines Licence A")
+						div(a("Bussines Licence A"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div("23/07/2014 18:09:22")
+						div(a("23/07/2014 18:09:22"))
+					),
+					td(
+						{ class: 'actions' },
+						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
+						a("Delete")
+					)
+				),
+				tr(
+					td(
+						{ class: 'user-basic-data' },
+						div(
+							a("John Watson",
+								span('johnwatson@gmail.com')
+								)
+						)
+					),
+					td(
+						div(a("Bussines Licence A"))
+					),
+					td(
+						{ class: 'desktop-only' },
+						div(a("23/07/2014 18:09:22"))
+					),
+					td(
+						{ class: 'actions' },
+						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
+						a("Delete")
+					)
+				),
+				tr(
+					td(
+						{ class: 'user-basic-data' },
+						div(
+							a("John Watson",
+								span('johnwatson@gmail.com')
+								)
+						)
+					),
+					td(
+						div(a("Bussines Licence A"))
+					),
+					td(
+						{ class: 'desktop-only' },
+						div(a("23/07/2014 18:09:22"))
+					),
+					td(
+						{ class: 'actions' },
+						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
+						a("Delete")
+					)
+				),
+				tr(
+					td(
+						{ class: 'user-basic-data' },
+						div(
+							a("John Watson",
+								span('johnwatson@gmail.com')
+								)
+						)
+					),
+					td(
+						div(a("Bussines Licence A"))
+					),
+					td(
+						{ class: 'desktop-only' },
+						div(a("23/07/2014 18:09:22"))
 					),
 					td(
 						{ class: 'actions' },
