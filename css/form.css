@@ -146,8 +146,9 @@ textarea {
 .input-aside input[type="radio"] {
 	vertical-align: 1px;
 }
+/* Chrome flex display defect fix. Defect raised for Chrome browser https://code.google.com/p/chromium/issues/detail?id=409581 */
 .input-aside span:last-child {
-	padding-left: 5px; /* Chrome flex display defect fix */
+	padding-left: 5px;
 }
 
 .submit-placeholder {
