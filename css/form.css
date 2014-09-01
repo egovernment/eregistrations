@@ -189,31 +189,24 @@ textarea {
 
 /* dbjs components */
 /* Default styles */
-.dbjs-input-component .status-missing {
-	color: var(--error-text);
+.dbjs-input-component .status-missing,
+.dbjs-input-component .status-ok,
+.dbjs-input-component .status-error {
 	display:none;
 	font-weight: bold;
 	margin-left:5px;
 	visibility:hidden;
 	line-height: 22px;
+}
+
+.dbjs-input-component .status-missing,
+.dbjs-input-component .status-error  {
+	color: var(--error-text);
+
 }
 
 .dbjs-input-component .status-ok {
 	color: var(--success-text);
-	display:none;
-	font-weight: bold;
-	margin-left:5px;
-	visibility:hidden;
-	line-height: 22px;
-}
-
-.dbjs-input-component .status-error {
-	color: var(--error-text);
-	display:none;
-	font-weight: bold;
-	margin-left:5px;
-	visibility:hidden;
-	line-height: 22px;
 }
 
 @-moz-document url-prefix() {
