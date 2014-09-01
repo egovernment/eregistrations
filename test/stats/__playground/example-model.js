@@ -94,7 +94,7 @@ CompanyType = StringLine.createEnum('CompanyType', new Map([
 ]));
 
 user.defineProperties({
-	firstName: { type: StringLine, required: true, label: "First Name", statsBase: '' },
+	firstName: { type: StringLine, required: true, label: "First Name" },
 	lastName: { type: StringLine, required: true, label: "Last Name" },
 
 	// Guide
@@ -102,7 +102,7 @@ user.defineProperties({
 	isOwner: { type: db.Boolean, trueLabel: "I am the owner", falseLabel: "I rent it",
 		label: "Owner of business premises" },
 	isManager: { type: db.Boolean, label: "I am manager" },
-	inventory: { type: UsDollar, label: "Inventory value", required: true, step: 1 },
+	inventory: { type: UsDollar, label: "Inventory value", required: true, step: 1, statsBase: null },
 	surfaceArea: { type: SquareMeters, label: "Area used for the activity", required: true },
 	members: { type: UInteger, label: "Quantity of members", required: true },
 	companyType: { type: CompanyType, label: "Registration type", required: true },
@@ -135,7 +135,8 @@ User.newNamed('userVianney', {
 });
 
 Partner = db.User.extend('Partner', {
-	price: { type: UsDollar, label: 'Cena partnera', statsBase: 0, value: 10 }
+	fee: { type: UsDollar, value: function () {},
+		statsBase: 0 }
 });
 
 user.define('partners', {
@@ -158,3 +159,8 @@ user.partners.add(Partner.newNamed('partnerFrank',
 
 	}));
 user.partners.add(Partner.newNamed('partnerBita', { firstName: "Bita", lastName: "Mortazavi" }));
+
+user.define('submissions', {
+	type: db.Object,
+	nested: true
+});
