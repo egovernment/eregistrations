@@ -121,3 +121,9 @@ e.g.:
 .fa-exclamation:before {
 	content: '\f12a';
 }
+.fa-exclamation-circle {
+	width: 1em;
+}
+.fa-exclamation-circle:before {
+	content: '\f06a';
+}

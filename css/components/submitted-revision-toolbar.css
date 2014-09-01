@@ -1,0 +1,8 @@
+@media only screen and (max-width: var(--mobile-width)) {
+	.submitted-revision-toolbar a {
+		margin-bottom: 22px;
+	}
+	.submitted-revision-toolbar a:last-child {
+		margin-bottom: 0;
+	}
+}

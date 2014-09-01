@@ -27,7 +27,7 @@ exports.tab = function () {
 				{ class: 'form-elements' },
 				li(textarea({ placeholder: "Write request for changes here" }))
 			),
-			input({ type: 'submit', value: 'Send back for modyfications' })
+			input({ type: 'submit', value: 'Send back for modifications' })
 		),
 		hr(),
 		h3("Reject application"),

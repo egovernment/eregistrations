@@ -5,7 +5,7 @@ var db = require('mano').db,
 
 exports.step = function () {
 	section({ class: 'section-primary' },
-		h1("5 Send your file"),
+		h1("5. Send your file"),
 		div(h2("Where do you want to withdraw your documents?"),
 			hr(),
 			form(ul({ class: 'form-elements fieldset' },
@@ -21,7 +21,8 @@ exports.step = function () {
 		{ class: 'section-primary' },
 		div(h2("Who will pick the certificates?"),
 			hr(),
-			form(ul({ class: 'form-elements fieldset' }, ['pickCertificates'],
+			form(ul({ class: 'form-elements fieldset' },
+				['pickCertificates', 'lastName', 'dateOfBirth', 'inventory'],
 					function (name) { return field({ dbjs: user.getObservable(name) }); }
 					),
 				p({ class: 'submit-placeholder' }, input({ type: 'submit' }, "Save"))
