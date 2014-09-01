@@ -138,7 +138,8 @@ textarea {
 	display: flex;
 }
 
-/* Chrome flex display defect fix. Defect raised for Chrome browser https://code.google.com/p/chromium/issues/detail?id=409581 */
+/* Chrome flex display defect fix. Defect raised for Chrome browser
+https://code.google.com/p/chromium/issues/detail?id=409581 */
 .input-aside span:first-child {
 	display: table;
 }
