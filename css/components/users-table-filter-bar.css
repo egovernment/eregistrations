@@ -1,7 +1,6 @@
 .users-table-filter-bar.users-table-filter-bar  {
 		display: flex;
 		justify-content: space-between;
-		padding-bottom: 22px;
 }
 
 .users-table-filter-bar div,
