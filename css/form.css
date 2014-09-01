@@ -354,7 +354,7 @@ Styles applied while screen sieze is less than 640px
 		font-weight: bold;
 	}
 
-	.form-elements ul.radio, .form-elements ul.radio li {
+	.form-elements ul.radio li {
 		display: block;
 	}
 	.form-elements ul.radio li label {
