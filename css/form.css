@@ -366,4 +366,7 @@ Styles applied while screen sieze is less than 640px
 	form .hint {
 		display: none;
 	}
+	input[type="submit"] {
+		width: 100%
+	}
 }
