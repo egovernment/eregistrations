@@ -139,13 +139,14 @@ textarea {
 }
 
 .input-aside span:first-child {
-	min-width: 15px;
+	display: table; /* Chrome flex display defect fix */
 }
 
 .input-aside input[type="checkbox"],
 .input-aside input[type="radio"] {
 	position: relative;
 	top: -1px;
+	margin-right: 3px;
 }
 
 .submit-placeholder {
