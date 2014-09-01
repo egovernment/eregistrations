@@ -140,13 +140,24 @@ textarea {
 }
 
 /* Input pre-element (span) */
+.input-prepend {
+	white-space: nowrap;
+}
+
 .input-prepend input {
 	border-radius: 0 4px 4px 0;
+	max-width: 90%;
+	border-left: none;
+}
+
+.input-append {
+	white-space: nowrap;
 }
 
 .input-append input {
 	border-radius: 4px 0 0 4px;
-	width: 77%;
+	max-width: 90%;
+	border-right: none;
 }
 
 .add-on {
@@ -178,8 +189,9 @@ textarea {
 
 /* dbjs components */
 /* Default styles */
-.dbjs-input-component .required-status {
-	color: var(--error-text);
+.dbjs-input-component .status-missing,
+.dbjs-input-component .status-ok,
+.dbjs-input-component .status-error {
 	display:none;
 	font-weight: bold;
 	margin-left:5px;
@@ -187,50 +199,55 @@ textarea {
 	line-height: 22px;
 }
 
-.dbjs-input-component .validation-status {
-	color: var(--success-text);
-	display:none;
-	font-weight: bold;
-	margin-left:5px;
-	visibility:hidden;
-	line-height: 22px;
+.dbjs-input-component .status-missing,
+.dbjs-input-component .status-error  {
+	color: var(--error-text);
+
 }
+
+.dbjs-input-component .status-ok {
+	color: var(--success-text);
+}
+
 @-moz-document url-prefix() {
-	.dbjs-input-component .required-status,
-	.dbjs-input-component .validation-status {
+	.dbjs-input-component .status-missing,
+	.dbjs-input-component .status-ok,
+	.dbjs-input-component .status-error {
 		line-height: 21px;
 	}
 }
 
 /* Do not show statuses for disabled controls */
-.dbjs-input-component *:disabled ~ span.validation-status {
+.dbjs-input-component *:disabled ~ span.status-ok {
 	display: none;
 }
-.dbjs-input-component *:disabled ~ span.required-status {
+.dbjs-input-component *:disabled ~ span.status-missing {
+	display: none;
+}
+.dbjs-input-component *:disabled ~ span.status-error {
 	display: none;
 }
 
 /* Changed & valid */
-.dbjs-input-component.valid.changed span.validation-status {
+.dbjs-input-component.valid.changed span.status-ok {
 	visibility: visible;
-	display: inline-block;
+	display:inline-block;
+	opacity: 0.5;
 }
 
 /* Changed & invalid */
-.dbjs-input-component.invalid.changed span.validation-status {
+.dbjs-input-component.invalid.changed span.status-error {
 	visibility: visible;
-	display: inline-block;
+	display:inline-block;
 }
 
 /* Saved */
-.dbjs-input-component.dbjs-filled.not-changed span.validation-status {
-	visibility: visible;
-	display: inline-block;
-	color: var(--success-text);
+.dbjs-input-component.dbjs-filled.not-changed span.status-ok { visibility: visible;
+	display:inline-block;
 }
 
 /* Required */
-.dbjs-input-component.required.not-changed.dbjs-empty span.required-status {
+.dbjs-input-component.required.not-changed.dbjs-empty span.status-missing {
 	visibility: visible;
 	display:inline-block;
 }
@@ -356,5 +373,8 @@ Styles applied while screen sieze is less than 640px
 	}
 	form .hint {
 		display: none;
+	}
+	input[type="submit"] {
+		width: 100%
 	}
 }
