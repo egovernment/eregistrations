@@ -12,7 +12,7 @@
     "xlint": "~0.2.1",
     "xlint-csslint-next": "0.1.x",
     "xlint-jslint-medikoo": "0.1.x",
-		"tad": "0.2.x"
+    "tad": "0.2.x"
   },
   "scripts": {
     "start": "node node_modules/mano/bin/start",
@@ -28,7 +28,7 @@
     "css-lint": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css",
     "css-lint-console": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css --watch",
     "css-lint-ci": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css --no-cache --no-stream",
-		"test": "node node_modules/tad/bin/tad stats/create-database.js"
+    "test": "node node_modules/tad/bin/tad stats/create-database.js"
   },
   "engines": {
     "node": ">=0.8"
