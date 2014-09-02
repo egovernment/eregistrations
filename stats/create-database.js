@@ -21,34 +21,33 @@ addMissingTypes = function (sourceType) {
 	}
 };
 
-setupDescriptor = function (object, descProp) {
-	var newDescProp, defaultValue, descKey;
+setupDescriptor = function (object, descProp, isStatsHandled) {
+	var newDescProp, descKey;
 	descKey        = descProp.key;
-	defaultValue   = null;
-	if (descProp._value_ != null) {
-		if (isGetter(descProp) || srcDb.Object.prototype.isPrototypeOf(descProp.master)) {
-			if (descProp.statsBase != null) {
-				defaultValue = descProp.statsBase;
-			}
-		} else {
-			defaultValue = descProp._value_;
-		}
-	}
-	newDescProp       = copy(descProp);
+	newDescProp    = copy(descProp);
 	addMissingTypes(descProp.type);
 	newDescProp.type  = statsDb[descProp.type.__id__];
-	if (defaultValue != null) {
-		newDescProp.value = defaultValue;
+	if (descProp._value_ != null) {
+		if (isGetter(descProp._value_) && isStatsHandled) {
+			if (descProp.statsBase != null) {
+				newDescProp.value = descProp.statsBase;
+			}
+		} else {
+			newDescProp.value = descProp._value_;
+		}
 	}
+
 	object.define(descKey, newDescProp);
 };
 
-migrateObject = function (sourceInstance, statsInstance, copyAll) {
+migrateObject = function (sourceInstance, statsInstance) {
+	var isStatsHandled = srcDb.Object.prototype.isPrototypeOf(sourceInstance.master);
+
 	sourceInstance._forEachOwnDescriptor_(function (descProp) {
-		if (!descProp.hasOwnProperty('statsBase') && !descProp.nested && !copyAll) {
+		if (isStatsHandled && !descProp.hasOwnProperty('statsBase')) {
 			return;
 		}
-		setupDescriptor(statsInstance, descProp);
+		setupDescriptor(statsInstance, descProp, isStatsHandled);
 	});
 };
 
@@ -56,7 +55,7 @@ module.exports = function (sourceDb) {
 	validDbjs(sourceDb);
 	statsDb = new Database();
 	statsDb.User = manoAuthUser(statsDb);
-	if (!sourceDb.User || !sourceDb.User.prototype) {
+	if (!sourceDb.User) {
 		throw customError('Stats createDatabase expects db with defined User.prototype',
 			'NO_USER_PROTOTYPE_IN_DB');
 	}

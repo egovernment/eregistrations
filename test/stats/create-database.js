@@ -13,8 +13,24 @@ module.exports = function (t, a) {
 		"Property with marked statsBase");
 	a(isFunction(res.Currency.getDescriptor('format').type), true,
 		"Method of parent of property with marked statsBase");
-	a(res.Partner.prototype.fee, 0,
-		"Property with marked statsBase with default value overwritten by statsBase");
-	a(res.Partner.prototype.isShoppingGallery, undefined,
-		"Unwanted property is not present");
+	a(res.User.prototype.isShoppingGallery, false,
+		"Property with marked not null statsBase, with computed value of primitive type" +
+			" - we take value");
+	a(res.User.prototype.favouritePartner, undefined,
+			"Property with marked null statsBase, with computed value of Object type" +
+			" - we ignore property");
+	a(res.User.prototype.isManager, true,
+		"Property with marked null statsBase with default non computed value" +
+			" - we ignore default value and statsBase");
+	a(res.User.prototype.inventory, 5,
+			"Property with marked null statsBase with default non computed value" +
+			" - we ignore statsBase");
+	a(res.User.prototype.members, undefined,
+			"Property with marked null statsBase without default value");
+	sourceDb.User.prototype._forEachOwnDescriptor_(function (descProp) {
+		if (!descProp.hasOwnProperty('statsBase') && !descProp.nested) {
+			a(res.Partner.prototype[descProp.key], undefined,
+				"Unwanted property: " + descProp.key);
+		}
+	});
 };

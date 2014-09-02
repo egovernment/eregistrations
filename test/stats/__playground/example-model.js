@@ -10,6 +10,7 @@ var Map          = require('es6-map')
   , UsDollar     = require('dbjs-ext/number/currency/us-dollar')(db)
   , UInteger     = require('dbjs-ext/number/integer/u-integer')(db)
   , SquareMeters = require('dbjs-ext/number/square-meters')(db)
+  , SubmissionFile = require('./file')
 
   , user = User.prototype
   , BusinessActivity, BusinessActivityCategory, CompanyType, Partner, bcAgencyBusiness, bcInsurance;
@@ -100,14 +101,15 @@ user.defineProperties({
 	// Guide
 	businessActivity: { type: BusinessActivity, required: true, label: "Business activity" },
 	isOwner: { type: db.Boolean, trueLabel: "I am the owner", falseLabel: "I rent it",
-		label: "Owner of business premises" },
-	isManager: { type: db.Boolean, label: "I am manager" },
-	inventory: { type: UsDollar, label: "Inventory value", required: true, step: 1, statsBase: null },
+		label: "Owner of business premises", value: true },
+	isManager: { type: db.Boolean, label: "I am manager", value: true, statsBase: false },
+	inventory: { type: UsDollar, label: "Inventory value", required: true, step: 1, value: 5,
+		statsBase: null },
 	surfaceArea: { type: SquareMeters, label: "Area used for the activity", required: true },
-	members: { type: UInteger, label: "Quantity of members", required: true },
+	members: { type: UInteger, label: "Quantity of members", required: true, statsBase: null },
 	companyType: { type: CompanyType, label: "Registration type", required: true },
 	isShoppingGallery: { type: db.Boolean, label: "A shopping gallery", required: true,
-		trueLabel: "Yes", falseLabel: "No" },
+		value: function () { return true; }, statsBase: false, trueLabel: "Yes", falseLabel: "No" },
 	isARequested: { type: db.Boolean, label: "Registration A", required: true },
 	isBRequested: { type: db.Boolean, label: "Etiam vestibulum dui mi," +
 		" nec ultrices diam ultricies id vestibulum dui mi," +
@@ -135,8 +137,14 @@ User.newNamed('userVianney', {
 });
 
 Partner = db.User.extend('Partner', {
-	fee: { type: UsDollar, value: function () {},
-		statsBase: 0 }
+	fee: { type: UsDollar, value: 0,
+		statsBase: 5 }
+});
+
+user.define('favouritePartner', {
+	type: Partner,
+	value: function () { return this.partners.first; },
+	statsBase: null
 });
 
 user.define('partners', {
@@ -160,7 +168,7 @@ user.partners.add(Partner.newNamed('partnerFrank',
 	}));
 user.partners.add(Partner.newNamed('partnerBita', { firstName: "Bita", lastName: "Mortazavi" }));
 
-user.define('submissions', {
-	type: db.Object,
+user.define('submission', {
+	type: SubmissionFile,
 	nested: true
 });
