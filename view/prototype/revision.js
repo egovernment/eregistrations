@@ -165,11 +165,28 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'section-primary submitted-preview' },
 		div({ class: 'submitted-preview-document' },
-			h3(
-				i({ class: 'list-item-number' },
-						"1"),
-				"Memorandum and articles of association"
+			h3({ class: 'nav-alternatives' },
+				div(i({ class: 'list-item-number' }, "1"),
+					"Memorandum and articles of association"
+					),
+				div(
+					a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
+					span(" 1" + " / " + "4 "),
+					a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
+				)
+				),
+			div(
+				a(
+					img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
+				)
 			),
+			div({ class: 'nav-alternatives nav-alterantiv-single' },
+				div(
+					a(span({ class: 'fa fa-chevron-circle-left' })),
+					span("1" + " / " + "4"),
+					a(span({ class: 'fa fa-chevron-circle-right' }))
+				)
+				),
 			form(
 				{ class: 'submitted-preview-form' },
 				ul(
@@ -206,11 +223,6 @@ exports['sub-main'] = function () {
 					)
 				),
 				input({ type: 'submit' }, "Save")
-			),
-			div(
-				a(
-					img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
-				)
 			)
 			),
 		div({ class: 'submitted-preview-user-data' },

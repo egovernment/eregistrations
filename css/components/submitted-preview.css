@@ -12,6 +12,18 @@
 	max-height: 927px;
 }
 
+.submitted-preview-document .nav-alternatives div {
+	min-width: inherit;
+}
+
+.submitted-preview-document .nav-alternatives div:last-child span {
+	font-size: 14px;
+	font-weight: normal;
+}
+.submitted-preview-document .nav-alternatives div a {
+	margin-left: 5px;
+}
+
 .submitted-preview-user-data {
 	width: 39%;
 	max-height: 927px;
