@@ -16,9 +16,14 @@ var Map          = require('es6-map')
 
   , user = User.prototype
   , BusinessActivity, BusinessActivityCategory, CompanyType, Partner, bcAgencyBusiness, bcInsurance
-  , file, props;
+  , file, props
+  , InventoryValue;
 
 require('dbjs-ext/create-enum')(db);
+
+InventoryValue = db.Object.extend('InventoryValue', {
+	description: { type: StringLine }
+});
 
 Role.members.add('user');
 Role.meta.get('user').setProperties({
@@ -123,7 +128,17 @@ user.defineProperties({
 
 	incorporationCertificateFile: { type: File, nested: true, label: "Certificate of incorporation" },
 	registeredArticlesFile: { type: File, nested: true,
-		label: "Registered articles of association" }
+		label: "Registered articles of association" },
+
+	inventoryShelves: { type: InventoryValue, multiple: true,
+		label: "Shelves", inputPlaceholder: "Shelves #1",
+		description: "Add lines necessary to mention the cost and source" +
+		" each element. Leave empty if no item." },
+	inventoryCounters: { type: InventoryValue, multiple: true,
+		label: "Counters", inputPlaceholder: "Counters #1",
+		description: "Enter other lines necessary to mention the cost and source" +
+		" each element. Leave empty if no item.",
+		addLabel: "Add counter" }
 });
 
 module.exports = User;
