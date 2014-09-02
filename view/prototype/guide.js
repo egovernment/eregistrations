@@ -13,11 +13,21 @@ exports.step = function () {
 				div({ class: 'guide-box' }, h2("Questions"),
 					hr(),
 					ul({ class: 'form-elements' },
-					['businessActivity', 'isOwner', 'inventory', 'surfaceArea', 'members',
-						'companyType', 'isShoppingGallery'], function (name) {
-						li(div({ class: 'dbjs-input-component' },
-							label(user.getDescriptor(name).label, ":"),
-							div({ class: 'control' }, input({ dbjs: user.getObservable(name) }))));
+					['businessActivity',
+						'isOwner',
+						'inventory',
+						'inventoryCaluculation',
+						'surfaceArea', 'members',
+						'companyType',
+						'isShoppingGallery'],
+					function (name) {
+						if (name === 'inventoryCaluculation') {
+							li("inventoryCaluculation");
+						} else {
+							li(div({ class: 'dbjs-input-component' },
+								label(user.getDescriptor(name).label, ":"),
+								div({ class: 'control' }, input({ dbjs: user.getObservable(name) }))));
+						}
 					})),
 				div({ class: 'guide-box' }, h2("Registrations"),
 					hr(),
