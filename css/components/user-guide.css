@@ -98,9 +98,39 @@
 	padding-top: 11px;
 	padding-bottom: 11px;
 }
+
+.guide-form .inventory-caluculation span:first-child {
+	font-size: 30px;
+	margin-bottom: -10px;
+	margin-top: -4px;
+}
+@-moz-document url-prefix() {
+	.guide-form .inventory-caluculation span:first-child {
+		margin-bottom: -11px;
+		margin-top: -5px;
+	}
+}
+
+.guide-form .inventory-caluculation span:last-child {
+	background: var(--normal-background);
+	color: var(--white-text);
+	padding: 2px 5px 2px 2px;
+	margin-left: -3px;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
 .guide-form .inventory-caluculation a {
 	padding-left: 10px;
+	text-decoration: none;
 }
+
+.guide-form .inventory-caluculation a:hover span:last-child,
+.guide-form .inventory-caluculation a:focus span:last-child,
+.guide-form .inventory-caluculation a:active span:last-child {
+	background: var(--normal-dark-background);
+}
+
 /*
 Styles applied while screen sieze is less than 640px
 */
