@@ -1,17 +1,17 @@
 'use strict';
 
-var assign         = require('es5-ext/object/assign')
-  , compileTpl     = require('es6-template-strings/compile')
-  , resolveTpl     = require('es6-template-strings/resolve-to-string')
-  , deferred       = require('deferred')
-  , memoize        = require('memoizee')
-  , delay          = require('timers-ext/delay')
-  , readFile       = require('fs').readFileSync
-  , path           = require('path')
-  , readdir        = require('fs2/readdir')
-  , urlParse       = require('url').parse
-  , mano           = require('mano')
-  , resolveTrigger = require('./_resolve-trigger')
+var assign        = require('es5-ext/object/assign')
+  , compileTpl    = require('es6-template-strings/compile')
+  , resolveTpl    = require('es6-template-strings/resolve-to-string')
+  , deferred      = require('deferred')
+  , memoize       = require('memoizee')
+  , delay         = require('timers-ext/delay')
+  , readFile      = require('fs').readFileSync
+  , path          = require('path')
+  , readdir       = require('fs2/readdir')
+  , urlParse      = require('url').parse
+  , mano          = require('mano')
+  , setupTriggers = require('./_setup-triggers')
 
   , basename = path.basename, dirname = path.dirname, resolve = path.resolve
   , defaults = mano.mail.config
@@ -51,11 +51,10 @@ getAttachments = function (user, att) {
 
 setup = function (path) {
 	var dir = dirname(path), name = basename(path, '.js')
-	  , conf = require(path), subject, text, getText, set, getTemplate
-	  , sendMail, context = assign({}, defContext);
+	  , conf = require(path), subject, text, getText, getTemplate
+	  , context = assign({}, defContext);
 
 	if (conf.variables) assign(context, conf.variables);
-	set = resolveTrigger(conf.trigger, conf.triggerValue);
 
 	subject = compileTpl(conf.subject);
 
@@ -76,7 +75,7 @@ setup = function (path) {
 		getText = function () { return resolveTpl(text, context); };
 	}
 
-	sendMail = delay(function (user) {
+	setupTriggers(conf, delay(function (user) {
 		var text, mailOpts, to = getTo(user, conf.to);
 		if (!to) {
 			console.error("No email provided for " + user.fullName + " [" + user.__id__ + "]");
@@ -94,23 +93,7 @@ setup = function (path) {
 		mailOpts.text = text;
 		context.user = null;
 		mano.mail(mailOpts);
-	}, 500);
-
-	set.on('change', function (event) {
-		if (event.type === 'add') {
-			sendMail(event.value);
-			return;
-		}
-		if (event.type === 'delete') return;
-		if (event.type === 'batch') {
-			if (!event.added) return;
-			if (!event.added.size) return;
-			event.added.forEach(sendMail);
-			return;
-		}
-		console.log("Errorneous event:", event);
-		throw new Error("Unsupported event: " + event.type);
-	});
+	}, 500));
 };
 
 deferred.map(mano.apps, function (app) {
