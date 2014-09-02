@@ -171,7 +171,7 @@ exports['sub-main'] = function () {
 					),
 				div(
 					a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
-					span(" 1" + " / " + "4 "),
+					span("1 / 4"),
 					a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
 				)
 				),
