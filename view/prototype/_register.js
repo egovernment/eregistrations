@@ -22,6 +22,7 @@ module.exports = modal(
 						"Your password must be at least 6 characters and include at least one number."),
 					p(
 						label(
+							{ class: 'input-aside' },
 							input(
 								{ dbjs: user._isManager, type: 'checkbox' }
 							),
