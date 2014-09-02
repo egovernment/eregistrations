@@ -22,7 +22,12 @@ exports.step = function () {
 						'isShoppingGallery'],
 					function (name) {
 						if (name === 'inventoryCaluculation') {
-							li("inventoryCaluculation");
+							li({ class: 'inventory-caluculation' },
+								a(
+									span({ class: 'fa fa-calculator' }, "Calculator"),
+									"Calculate the amount of your assets"
+								)
+								);
 						} else {
 							li(div({ class: 'dbjs-input-component' },
 								label(user.getDescriptor(name).label, ":"),

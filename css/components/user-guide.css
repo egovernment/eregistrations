@@ -93,6 +93,14 @@
 	font-weight: bolder;
 }
 
+.guide-form .inventory-caluculation {
+	padding-left: 40%;
+	padding-top: 11px;
+	padding-bottom: 11px;
+}
+.guide-form .inventory-caluculation a {
+	padding-left: 10px;
+}
 /*
 Styles applied while screen sieze is less than 640px
 */
