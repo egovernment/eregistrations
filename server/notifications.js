@@ -1,18 +1,19 @@
 'use strict';
 
-var assign     = require('es5-ext/object/assign')
-  , isObject   = require('es5-ext/object/is-object')
-  , compileTpl = require('es6-template-strings/compile')
-  , resolveTpl = require('es6-template-strings/resolve-to-string')
-  , deferred   = require('deferred')
-  , memoize    = require('memoizee')
-  , delay      = require('timers-ext/delay')
-  , readFile   = require('fs').readFileSync
-  , path       = require('path')
-  , readdir    = require('fs2/readdir')
-  , urlParse   = require('url').parse
-  , mano       = require('mano')
-  , users      = require('../users')
+var assign         = require('es5-ext/object/assign')
+  , isObject       = require('es5-ext/object/is-object')
+  , compileTpl     = require('es6-template-strings/compile')
+  , resolveTpl     = require('es6-template-strings/resolve-to-string')
+  , deferred       = require('deferred')
+  , memoize        = require('memoizee')
+  , delay          = require('timers-ext/delay')
+  , readFile       = require('fs').readFileSync
+  , path           = require('path')
+  , readdir        = require('fs2/readdir')
+  , urlParse       = require('url').parse
+  , mano           = require('mano')
+  , resolveTrigger = require('./_resolve-trigger')
+  , users          = require('../users')
 
   , basename = path.basename, dirname = path.dirname, resolve = path.resolve
   , defaults = mano.mail.config
@@ -56,16 +57,7 @@ setup = function (path) {
 	  , sendMail, context = assign({}, defContext);
 
 	if (conf.variables) assign(context, conf.variables);
-	if (conf.trigger == null) throw new TypeError("No trigger found");
-	if (typeof conf.trigger === 'function') {
-		set = users.filter(conf.trigger);
-	} else if (isObject(conf.trigger)) {
-		set = conf.trigger;
-	} else {
-		set = users.filterByKey(conf.trigger,
-			(typeof conf.triggerValue === 'undefined') ? true :
-					conf.triggerValue);
-	}
+	set = resolveTrigger(conf.trigger, conf.triggerValue);
 
 	subject = compileTpl(conf.subject);
 
