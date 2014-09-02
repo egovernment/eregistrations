@@ -183,7 +183,7 @@ exports['sub-main'] = function () {
 			div({ class: 'nav-alternatives nav-alterantiv-single' },
 				div(
 					a(span({ class: 'fa fa-chevron-circle-left' })),
-					span("1" + " / " + "4"),
+					span("1 / 4"),
 					a(span({ class: 'fa fa-chevron-circle-right' }))
 				)
 				),
