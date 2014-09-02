@@ -101,8 +101,14 @@ select {
 		margin-bottom: -6px;
 	}
 }
-form .hint {
-	margin-left: 20px;
+
+.form-elements .hint {
+	display: block;
+	font-size: 12px;
+	margin-bottom: -10px;
+	margin-top: 10px;
+	width: 100%;
+	color: var(--hint-text);
 }
 
 input[type="submit"] {
@@ -353,6 +359,14 @@ Styles applied while screen sieze is less than 640px
 		text-align: left;
 		font-weight: bold;
 	}
+
+	.form-elements ul.radio li {
+		display: block;
+	}
+	.form-elements ul.radio li label {
+		font-weight: normal;
+	}
+
 	.control {
 		text-align: left;
 		padding: 11px 10px;
@@ -389,9 +403,6 @@ Styles applied while screen sieze is less than 640px
 	}
 	.inline-button-radio label:last-child {
 		border-radius: 0 0 4px 4px;
-	}
-	form .hint {
-		display: none;
 	}
 	input[type="submit"] {
 		width: 100%

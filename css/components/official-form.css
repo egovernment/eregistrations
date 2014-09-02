@@ -3,7 +3,7 @@
 }
 
 .official-form-upload {
-	display: inline-flex;
+	display: inline-block;
 }
 
 .official-form-upload button {
@@ -12,6 +12,7 @@
 
 .official-form-upload .file-section {
 	margin-left: 20px;
+	display: inline-block;
 }
 
 .official-form-upload .file-section:first-child {
