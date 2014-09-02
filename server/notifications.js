@@ -52,34 +52,34 @@ getAttachments = function (user, att) {
 
 setup = function (path) {
 	var dir = dirname(path), name = basename(path, '.js')
-	  , settings = require(path), subject, text, getText, set, getTemplate
+	  , conf = require(path), subject, text, getText, set, getTemplate
 	  , sendMail, context = assign({}, defContext);
 
-	if (settings.variables) assign(context, settings.variables);
-	if (settings.trigger == null) throw new TypeError("No trigger found");
-	if (typeof settings.trigger === 'function') {
-		set = users.filter(settings.trigger);
-	} else if (isObject(settings.trigger)) {
-		set = settings.trigger;
+	if (conf.variables) assign(context, conf.variables);
+	if (conf.trigger == null) throw new TypeError("No trigger found");
+	if (typeof conf.trigger === 'function') {
+		set = users.filter(conf.trigger);
+	} else if (isObject(conf.trigger)) {
+		set = conf.trigger;
 	} else {
-		set = users.filterByKey(settings.trigger,
-			(typeof settings.triggerValue === 'undefined') ? true :
-					settings.triggerValue);
+		set = users.filterByKey(conf.trigger,
+			(typeof conf.triggerValue === 'undefined') ? true :
+					conf.triggerValue);
 	}
 
-	subject = compileTpl(settings.subject);
+	subject = compileTpl(conf.subject);
 
-	if (settings.text == null) {
+	if (conf.text == null) {
 		text = compileTpl(readFile(resolve(dir, name + '.txt')));
-	} else if (typeof settings.text === 'function') {
+	} else if (typeof conf.text === 'function') {
 		getTemplate = memoize(function (path) {
 			return compileTpl(readFile(resolve(dir, path + '.txt')));
 		});
 		getText = function (user) {
-			return resolveTpl(getTemplate(settings.text(user, context)), context);
+			return resolveTpl(getTemplate(conf.text(user, context)), context);
 		};
 	} else {
-		text = compileTpl(settings.text);
+		text = compileTpl(conf.text);
 	}
 
 	if (!getText) {
@@ -87,7 +87,7 @@ setup = function (path) {
 	}
 
 	sendMail = delay(function (user) {
-		var text, mailOpts, to = getTo(user, settings.to);
+		var text, mailOpts, to = getTo(user, conf.to);
 		if (!to) {
 			console.error("No email provided for " + user.fullName + " [" + user.__id__ + "]");
 			return;
@@ -95,11 +95,11 @@ setup = function (path) {
 		context.user = user;
 		text = getText(user);
 		mailOpts = {
-			from: getFrom(user, settings.from),
+			from: getFrom(user, conf.from),
 			to: to,
-			cc: getCc(user, settings.cc),
+			cc: getCc(user, conf.cc),
 			subject: resolveTpl(subject, context),
-			attachments: getAttachments(user, settings.attachments)
+			attachments: getAttachments(user, conf.attachments)
 		};
 		mailOpts.text = text;
 		context.user = null;
