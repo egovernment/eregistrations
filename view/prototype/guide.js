@@ -25,7 +25,7 @@ exports.step = function () {
 							li({ class: 'inventory-caluculation' },
 								a(
 									span({ class: 'fa fa-calculator' }, "Calculator"),
-									span("Calculate the amount of your assets")
+									span("Calculate the amount")
 								)
 								);
 						} else {

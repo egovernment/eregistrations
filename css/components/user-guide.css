@@ -123,6 +123,7 @@
 .guide-form .inventory-caluculation a {
 	padding-left: 10px;
 	text-decoration: none;
+	white-space: nowrap;
 }
 
 .guide-form .inventory-caluculation a:hover span:last-child,
@@ -145,5 +146,9 @@ Styles applied while screen sieze is less than 640px
 
 	.user-guide button.save-step-one {
 		width: 100%;
+	}
+
+	.guide-form .inventory-caluculation {
+		padding-left: 0;
 	}
 }
