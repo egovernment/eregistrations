@@ -1,7 +1,6 @@
 'use strict';
 
 var assign         = require('es5-ext/object/assign')
-  , isObject       = require('es5-ext/object/is-object')
   , compileTpl     = require('es6-template-strings/compile')
   , resolveTpl     = require('es6-template-strings/resolve-to-string')
   , deferred       = require('deferred')
@@ -13,7 +12,6 @@ var assign         = require('es5-ext/object/assign')
   , urlParse       = require('url').parse
   , mano           = require('mano')
   , resolveTrigger = require('./_resolve-trigger')
-  , users          = require('../users')
 
   , basename = path.basename, dirname = path.dirname, resolve = path.resolve
   , defaults = mano.mail.config
