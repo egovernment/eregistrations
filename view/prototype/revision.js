@@ -60,7 +60,7 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'section-primary' },
 		div(
-			h2({ class: 'nav-alternatives' }, "Application history",
+			h2({ class: 'container-with-nav' }, "Application history",
 				a({ class: 'fa fa-print' }, "Print")
 				),
 			table(
@@ -165,7 +165,7 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'section-primary submitted-preview' },
 		div({ class: 'submitted-preview-document' },
-			div({ class: 'nav-alternatives' },
+			div({ class: 'container-with-nav' },
 				h3(i({ class: 'list-item-number' }, "1"),
 					"Memorandum and articles of association"
 					),
@@ -180,7 +180,7 @@ exports['sub-main'] = function () {
 					img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
 				)
 			),
-			div({ class: 'nav-alternatives nav-alternative-single' },
+			div({ class: 'container-with-nav container-with-nav-single' },
 				div(
 					a(span({ class: 'fa fa-chevron-circle-left' })),
 					span("1 / 4"),
@@ -226,7 +226,7 @@ exports['sub-main'] = function () {
 			)
 			),
 		div({ class: 'submitted-preview-user-data' },
-			h3({ class: 'nav-alternatives' }, "Application form",
+			h3({ class: 'container-with-nav' }, "Application form",
 				a({ class: 'fa fa-print' }, "Print")
 				),
 			h4("Proposed company name"),

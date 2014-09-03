@@ -83,7 +83,7 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'section-primary' },
 		div(
-			h2({ class: 'nav-alternatives' }, "History of your request",
+			h2({ class: 'container-with-nav' }, "History of your request",
 				a({ class: 'fa fa-print' }, "Print")
 				),
 			table(
@@ -186,7 +186,7 @@ exports['sub-main'] = function () {
 				)
 			),
 		div({ class: 'submitted-preview-user-data' },
-			h3({ class: 'nav-alternatives' }, "Application form",
+			h3({ class: 'container-with-nav' }, "Application form",
 				a({ class: 'fa fa-print' }, "Print")
 				),
 			h4("Proposed company name"),

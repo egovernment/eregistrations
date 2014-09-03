@@ -60,7 +60,7 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'section-primary' },
 		div(
-			h2({ class: 'nav-alternatives' }, "Application history",
+			h2({ class: 'container-with-nav' }, "Application history",
 				a({ class: 'fa fa-print' }, "Print")
 				),
 			table(

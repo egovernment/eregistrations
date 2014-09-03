@@ -12,15 +12,15 @@
 	max-height: 927px;
 }
 
-.submitted-preview-document .nav-alternatives div {
+.submitted-preview-document .container-with-nav div {
 	min-width: inherit;
 }
 
-.submitted-preview-document .nav-alternatives div:last-child span {
+.submitted-preview-document .container-with-nav div:last-child span {
 	font-size: 14px;
 	font-weight: normal;
 }
-.submitted-preview-document .nav-alternatives div a {
+.submitted-preview-document .container-with-nav div a {
 	margin-left: 5px;
 }
 
