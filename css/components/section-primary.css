@@ -10,6 +10,7 @@
 	border: 1px solid var(--light-inner-border);
 	padding: 20px 15px 0 15px;
 	position: relative;
+	margin: 22px 0;
 }
 
 /*.section-primary-wrapper fieldset,

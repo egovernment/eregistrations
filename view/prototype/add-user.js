@@ -7,9 +7,10 @@ var db = require('mano').db,
 
 exports['sub-main'] = function () {
 	section(
+		{ class: 'section-primary-wrapper' },
 		form(
-			{ class: 'section-primary-wrapper' },
 			fieldset(
+				{ class: 'section-primary' },
 				h3("Add new user"),
 				hr(),
 				ul({ class: 'form-elements fieldset' },
