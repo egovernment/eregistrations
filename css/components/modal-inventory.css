@@ -1,6 +1,3 @@
-.modal-inventory form {
-	margin-bottom: 0;
-}
 .modal-inventory form > ul {
 	width: var(--mobile-width);
 	padding: 0 20px;
@@ -65,7 +62,7 @@
 }
 .modal-inventory footer .inventory-total-value .inventory-value-save {
 	text-align: right;
-	margin-bottom: 21px;
+	margin-bottom: 0;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
