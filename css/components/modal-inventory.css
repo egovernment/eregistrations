@@ -36,9 +36,7 @@
 .modal-inventory .total-section-costs {
 	vertical-align: top;
 	width: 20%;
-}
-
-.modal-inventory .total-section-costs p {
+	display: inline-block;
 	text-align: right;
 }
 

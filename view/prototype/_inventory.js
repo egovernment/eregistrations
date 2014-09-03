@@ -46,12 +46,10 @@ module.exports = inventario = modal(
 								}
 							)
 						),
-						div(
+						p(
 							{ class: 'total-section-costs' },
-							p(
-								span("Total: "),
-								totalTxt = span({ class: 'total' }, "$0")
-							)
+							span("Total: "),
+							totalTxt = span({ class: 'total' }, "$0")
 						),
 						script(function (list, totalTxt) {
 
