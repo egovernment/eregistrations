@@ -1,7 +1,7 @@
 .next-step {
 	max-width: var(--desktop-width);
-	padding: 22px 10px;
-	margin: 0 auto;
+	padding: 0 10px;
+	margin: 22px auto;
 }
 .next-step a {
 	background-color: var(--normal-background);
