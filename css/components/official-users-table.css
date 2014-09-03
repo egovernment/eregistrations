@@ -16,6 +16,7 @@
 .official-users-table tbody tr td {
 	border: 1px solid var(--light-inner-border);
 	padding: 0;
+	font-size: 16px;
 }
 .official-users-table tbody tr td a {
 	display: block;
