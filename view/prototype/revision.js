@@ -180,7 +180,7 @@ exports['sub-main'] = function () {
 					img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
 				)
 			),
-			div({ class: 'nav-alternatives nav-alterantiv-single' },
+			div({ class: 'nav-alternatives nav-alternative-single' },
 				div(
 					a(span({ class: 'fa fa-chevron-circle-left' })),
 					span("1 / 4"),
