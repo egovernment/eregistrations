@@ -19,6 +19,7 @@ Component describing basic elements styles - reusable
 	/* Text colors */
 	--white-text: #ffffff;
 	--light-text: #e3e3e3;
+	--hint-text: #b3b3b3;
 	--normal-text: #666666;
 	--dark-text: #333333;
 	--success-text: #5CB85C;
@@ -29,19 +30,14 @@ html {
 	-ms-text-size-adjust: 100%;
 	-webkit-text-size-adjust: 100%;
 	font-family: sans-serif;
+	background-color: var(--light-background);
 }
 
 body {
-	background-color: #ffffff;
 	color: var(--dark-text);
 	margin: 0;
 	font-size: 14px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-main {
-	background-color: var(--light-background);
-
 }
 
 * {
