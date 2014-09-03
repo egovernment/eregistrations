@@ -28,6 +28,10 @@
 	display: inline-block;
 }
 
+.modal-inventory li ul li div input:first-child {
+	width: 250px;
+}
+
 .modal-inventory li .single-section-cost {
 	width: 80%
 }
@@ -62,4 +66,24 @@
 .modal-inventory footer .inventory-total-value .inventory-value-save {
 	text-align: right;
 	margin-bottom: 21px;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.modal-inventory {
+		width: 90%;
+		min-width: var(--min-mobile-width);
+	}
+	.modal-inventory form > ul {
+		width: 100%;
+	}
+	.modal-inventory li ul li div input:first-child {
+		width: 100%;
+	}
+	.modal-inventory li ul li div .input-prepend {
+		width: 40%;
+	}
+	.modal-inventory li ul li div .input-prepend input {
+		margin-top: 10px;
+		width: 100%;
+	}
 }
