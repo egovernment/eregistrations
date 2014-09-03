@@ -22,7 +22,8 @@ var Map          = require('es6-map')
 require('dbjs-ext/create-enum')(db);
 
 InventoryValue = db.Object.extend('InventoryValue', {
-	description: { type: StringLine }
+	description: { type: StringLine },
+	value: { type: UsDollar, step: 1, min: 0 }
 });
 
 Role.members.add('user');
