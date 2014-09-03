@@ -12,10 +12,6 @@ Component describing styles for registration modal windows - rules specific only
 	width: 320px;
 }
 
-.modal-register input {
-	margin-right: 20px;
-}
-
 .modal-register fieldset p p:last-child {
 	margin-bottom: -1px;
 }

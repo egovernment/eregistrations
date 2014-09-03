@@ -50,12 +50,8 @@ exports.main = function () {
 		);
 	footer({ class: 'footer-logos' },
 		div({ class: 'logos' },
-			div(
-				img({ src: '/img/logo.png' })
-			),
-			div(
-				img({ src: '/img/logo.png' })
-			)
+			img({ src: '/img/logo.png' }),
+			img({ src: '/img/logo.png' })
 			)
 		);
 };
