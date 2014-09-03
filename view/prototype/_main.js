@@ -4,7 +4,7 @@ var login = require('./_login'),
 		resetPassword = require('./_reset-password-request');
 
 exports.body = function () {
-	header({ class: 'header-top-full-page-wrapper' },
+	header({ class: 'header-top-wrapper' },
 		div({ class: 'header-top' },
 			div(a({ href: '/' },
 					img({ src: '/img/logo-2.png' })

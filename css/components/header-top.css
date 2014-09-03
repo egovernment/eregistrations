@@ -9,12 +9,13 @@
 .header-top {
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	margin: 0 auto;
 	max-width: var(--desktop-width);
 	padding: 11px 10px;
 }
 
-.header-top-full-page-wrapper {
+.header-top-wrapper {
 	background: var(--white-background);
 }
 
@@ -27,12 +28,9 @@ Flexible basic menu - used on home page and can be reused elsewhere
 */
 .menu-top {
 	display: flex;
-	height: 100%;
+	height: 22px;
 	list-style: none;
-	margin-bottom: 10px;
-	margin-top: 22px;
 	padding-left: 15px;
-	line-height: 22px;
 }
 
 /*
