@@ -134,11 +134,11 @@ user.defineProperties({
 	inventoryShelves: { type: InventoryValue, multiple: true,
 		label: "Shelves", inputPlaceholder: "Shelves #1",
 		description: "Add lines necessary to mention the cost and source" +
-		" each element. Leave empty if no item." },
+		" of each element. Leave empty if no item." },
 	inventoryCounters: { type: InventoryValue, multiple: true,
 		label: "Counters", inputPlaceholder: "Counters #1",
 		description: "Enter other lines necessary to mention the cost and source" +
-		" each element. Leave empty if no item.",
+		" of each element. Leave empty if no item.",
 		addLabel: "Add counter" }
 });
 
