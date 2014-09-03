@@ -17,13 +17,15 @@ exports.step = function () {
 					['businessActivity',
 						'isOwner',
 						'inventory',
-						'inventoryCaluculation',
 						'surfaceArea', 'members',
 						'companyType',
 						'isShoppingGallery'],
 					function (name) {
-						if (name === 'inventoryCaluculation') {
-							li({ class: 'inventory-calculation' },
+						if (name === 'inventory') {
+							li(div({ class: 'dbjs-input-component' },
+								label(user.getDescriptor(name).label, ":"),
+								div({ class: 'control' }, input({ dbjs: user.getObservable(name) }))));
+							div({ class: 'inventory-calculation' },
 								a({ onclick: inventoryCaluculation.show },
 									span({ class: 'fa fa-calculator' }, "Calculator"),
 									span("Calculate the amount")
