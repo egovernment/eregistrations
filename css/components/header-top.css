@@ -28,7 +28,6 @@ Flexible basic menu - used on home page and can be reused elsewhere
 */
 .menu-top {
 	display: flex;
-	height: 22px;
 	list-style: none;
 	padding-left: 15px;
 }
