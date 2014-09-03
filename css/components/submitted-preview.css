@@ -61,6 +61,18 @@
 	overflow-y: scroll;
 }
 
+.submitted-preview-documents-navigation {
+	text-align: right;
+}
+.submitted-preview-documents-navigation a {
+	margin-left: 5px;
+}
+.submitted-preview-documents-navigation a span {
+	position: relative;
+	top: 2px;
+	right: 2px;
+}
+
 .list-item-number {
 	bottom: 4px;
 	left: 4px;

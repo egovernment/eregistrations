@@ -180,11 +180,11 @@ exports['sub-main'] = function () {
 					img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
 				)
 			),
-			div({ class: 'container-with-nav container-with-nav-single' },
+			div({ class: 'submitted-preview-documents-navigation' },
 				div(
-					a(span({ class: 'fa fa-chevron-circle-left' })),
+					a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
 					span("1 / 4"),
-					a(span({ class: 'fa fa-chevron-circle-right' }))
+					a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
 				)
 				),
 			form(
