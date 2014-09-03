@@ -26,7 +26,7 @@
 	border-bottom: none;
 	z-index: 999;
 }
-.section-tab-nav .section-primary {
+.section-tab-nav .section-primary-wrapper {
 	padding-left: 0;
 	padding-right: 0;
 	background-color: var(--white-background);

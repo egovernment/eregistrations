@@ -58,7 +58,7 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ class: 'section-primary' },
+		{ class: 'section-primary-wrapper' },
 		div(
 			h2({ class: 'nav-alternatives' }, "Application history",
 				a({ class: 'fa fa-print' }, "Print")
@@ -113,7 +113,7 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ class: 'section-primary' },
+		{ class: 'section-primary-wrapper' },
 		div(
 			h2("Application revision"),
 			p({ class: 'submitted-revision-toolbar' },
@@ -163,7 +163,7 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ class: 'section-primary submitted-preview' },
+		{ class: 'section-primary-wrapper submitted-preview' },
 		div({ class: 'submitted-preview-document' },
 			h3(
 				i({ class: 'list-item-number' },

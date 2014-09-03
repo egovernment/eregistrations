@@ -51,7 +51,7 @@
 	}
 }
 
-.section-primary .file-uploader li {
+.section-primary-wrapper .file-uploader li {
 	margin-right: 22px;
 	border: none;
 	margin-bottom: 0;
@@ -67,7 +67,7 @@
 	.file-uploader-button {
 		width: 100%;
 	}
-	.section-primary .file-uploader li {
+	.section-primary-wrapper .file-uploader li {
 		margin-bottom: 22px;
 	}
 }

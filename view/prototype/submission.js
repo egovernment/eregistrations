@@ -4,7 +4,7 @@ var db = require('mano').db,
 	user = db.User.prototype;
 
 exports.step = function () {
-	section({ class: 'section-primary' },
+	section({ class: 'section-primary-wrapper' },
 		h1("5. Send your file"),
 		div(h2("Where do you want to withdraw your documents?"),
 			hr(),
@@ -18,7 +18,7 @@ exports.step = function () {
 		);
 
 	section(
-		{ class: 'section-primary' },
+		{ class: 'section-primary-wrapper' },
 		div(h2("Who will pick the certificates?"),
 			hr(),
 			form(ul({ class: 'form-elements fieldset' },
@@ -47,7 +47,7 @@ exports.step = function () {
 	);
 
 	section(
-		{ class: 'section-primary' },
+		{ class: 'section-primary-wrapper' },
 		form(
 			div(
 				{ class: 'user-submission-sworn-declaration' },

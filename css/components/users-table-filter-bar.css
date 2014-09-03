@@ -42,7 +42,7 @@
 	.users-table-filter-bar {
 		flex-wrap: wrap;
 	}
-	.section-primary > div.users-table-filter-bar{
+	.section-primary-wrapper > div.users-table-filter-bar{
 		padding-bottom: 22px;
 	}
 }

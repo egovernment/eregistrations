@@ -1,13 +1,13 @@
-.section-primary {
+.section-primary-wrapper {
 	margin: 22px auto 0;
 	max-width: var(--desktop-width);
 	padding: 0 10px;
 }
 
-.section-primary fieldset,
-.section-primary > form,
-.section-primary > div,
-.section-primary > ul li {
+.section-primary-wrapper fieldset,
+.section-primary-wrapper > form,
+.section-primary-wrapper > div,
+.section-primary-wrapper > ul li {
 	background-color: var(--white-background);
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
@@ -15,26 +15,26 @@
 	position: relative;
 }
 
-.section-primary > ul {
+.section-primary-wrapper > ul {
 	padding-left: 0;
 	list-style-type: none;
 	margin-bottom: 0;
 }
 
-.section-primary li {
+.section-primary-wrapper li {
 	margin-bottom: 22px;
 }
 
-.section-primary li:last-child {
+.section-primary-wrapper li:last-child {
 	margin-bottom: 0;
 }
 
-.section-primary .sub-section {
+.section-primary-wrapper .sub-section {
 	border: none;
 	padding: 0;
 }
 
-.section-primary .sub-section h3 {
+.section-primary-wrapper .sub-section h3 {
 	background: var(--light-background);
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -47,7 +47,7 @@
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
-	.section-primary {
+	.section-primary-wrapper {
 		min-width: var(--min-mobile-width);
 	}
 }

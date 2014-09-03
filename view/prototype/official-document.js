@@ -61,7 +61,7 @@ exports.tab = function () {
 			)
 	);
 	section(
-		{ class: 'section-primary submitted-preview' },
+		{ class: 'section-primary-wrapper submitted-preview' },
 		div({ class: 'submitted-preview-document' },
 			h3(
 				i({ class: 'list-item-number' },
