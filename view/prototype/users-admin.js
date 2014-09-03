@@ -30,7 +30,7 @@ exports['sub-main'] = function () {
 					th("User"),
 					th("Institution"),
 					th({ class: 'desktop-only' }, "Creation date"),
-					th({ class: 'actions' }, "Actions")
+					th("Actions")
 				)
 			),
 			tbody(
