@@ -27,6 +27,7 @@ module.exports = inventario = modal(
 						h3(desc.label),
 						p(desc.description),
 						list = div(
+							{ class: 'single-section-cost' },
 							control = user._get(name).toDOMInput(
 								document,
 								{
@@ -40,15 +41,19 @@ module.exports = inventario = modal(
 											}
 										}
 									},
-									addLable: i("icon"),
 									deleteLabel: function () {
-										return i("delete");
+										return a("x");
 									}
 								}
 							)
 						),
-						totalTxt = p({ class: 'total' }, "$0"),
-						p("Total"),
+						div(
+							{ class: 'total-section-costs' },
+							p(
+								span("Total: "),
+								totalTxt = span({ class: 'total' }, "$0")
+							)
+						),
 						script(function (list, totalTxt) {
 
 							list = $(list);
@@ -66,6 +71,7 @@ module.exports = inventario = modal(
 							});
 						}, list.getId(), totalTxt.getId())
 					);
+
 					control.on('change', function () {
 						var items, ph;
 						items = list.querySelectorAll('input[type=text]');
@@ -79,38 +85,41 @@ module.exports = inventario = modal(
 			),
 			footer(
 				p(
-					resetBtn = a({ class: 'btn-red', onclick: true },
-						("Restablecer todos los campos"))
+					resetBtn = a({ onclick: true },
+						("Reset all fields"))
 				),
-				p(
-					("Valor del inventario a la fecha: "),
-					span({ class: 'total-value-container' }, "$",
-						totalTxt = span({ class: 'total-value' }, "0"))
-				),
-				p(input({ type: 'submit', value: ("Utilizar") })),
-				script(function (container, resetBtn, totalTxt) {
-					container = $(container);
-					totalTxt = $(totalTxt).firstChild;
-					$(resetBtn).onclick = function () {
-						var lis = container.getElementsByTagName('li'), i, li;
-						for (i = lis.length - 1; (li = lis[i]); --i) {
-							if (!li.previousSibling) continue;
-							if (!$(li.parentNode.parentNode).hasClass('multiple')) continue;
-							li.parentNode.removeChild(li);
-						}
-						$.forEach(container.getElementsByTagName('input'), function (el) {
-							el.value = '';
+				div(
+					{ class: 'inventory-total-value' },
+					p(
+						("Total value of the inventory: "),
+						span({ class: 'total-value-container' }, "$",
+							totalTxt = span({ class: 'total-value' }, "0"))
+					),
+					p({ class: 'inventory-value-save' }, input({ type: 'submit', value: ("Save") })),
+					script(function (container, resetBtn, totalTxt) {
+						container = $(container);
+						totalTxt = $(totalTxt).firstChild;
+						$(resetBtn).onclick = function () {
+							var lis = container.getElementsByTagName('li'), i, li;
+							for (i = lis.length - 1; (li = lis[i]); --i) {
+								if (!li.previousSibling) continue;
+								if (!$(li.parentNode.parentNode).hasClass('multiple')) continue;
+								li.parentNode.removeChild(li);
+							}
+							$.forEach(container.getElementsByTagName('input'), function (el) {
+								el.value = '';
+							});
+							$.propagateEnvUpdate(container);
+						};
+						$.onEnvUpdate(container, function () {
+							var total = 0;
+							$.forEach(container.getByClass('span', 'total'), function (p) {
+								total += Number(p.firstChild.data.slice(1)) || 0;
+							});
+							totalTxt.data = total;
 						});
-						$.propagateEnvUpdate(container);
-					};
-					$.onEnvUpdate(container, function () {
-						var total = 0;
-						$.forEach(container.getByClass('p', 'total'), function (p) {
-							total += Number(p.firstChild.data.slice(1)) || 0;
-						});
-						totalTxt.data = total;
-					});
-				}, container.getId(), resetBtn.getId(), totalTxt.getId())
+					}, container.getId(), resetBtn.getId(), totalTxt.getId())
+				)
 			)
 		)
 	)
