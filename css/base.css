@@ -30,19 +30,14 @@ html {
 	-ms-text-size-adjust: 100%;
 	-webkit-text-size-adjust: 100%;
 	font-family: sans-serif;
+	background-color: var(--light-background);
 }
 
 body {
-	background-color: #ffffff;
 	color: var(--dark-text);
 	margin: 0;
 	font-size: 14px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-main {
-	background-color: var(--light-background);
-
 }
 
 * {
