@@ -7,7 +7,6 @@ var db = require('mano').db,
 		resetBtn,
 		totalTxt,
 		inventario,
-		closeBtn,
 		invForm,
 		inventoryFields = ['inventoryShelves', 'inventoryCounters'];
 
@@ -92,7 +91,7 @@ module.exports = inventario = modal(
 					{ class: 'inventory-total-value' },
 					p(
 						("Total value of the inventory: "),
-						span({ class: 'total-value-container' }, "$",
+						span("$",
 							totalTxt = span({ class: 'total-value' }, "0"))
 					),
 					p({ class: 'inventory-value-save' }, input({ type: 'submit', value: ("Save") })),
@@ -124,5 +123,4 @@ module.exports = inventario = modal(
 		)
 	)
 );
-//closeBtn.castAttribute('onclick', inventario.hide);
 invForm.castAttribute('onsubmit', inventario.hide);
