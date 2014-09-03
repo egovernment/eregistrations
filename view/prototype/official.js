@@ -76,20 +76,20 @@ exports['sub-main'] = function () {
 					td(
 						{ class: 'user-basic-data' },
 						div(
-							a("John Watson",
+							a({ href: '/official/user-id/' }, "John Watson",
 								span('johnwatson@gmail.com')
 								)
 						)
 					),
 					td(
-						div(a("4068-50001-N-2013"))
+						div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div(a("23/07/2014 18:09:22"))
+						div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
 					),
 					td(
-						div(a("Investment"))
+						div(a({ href: '/official/user-id/' }, "Investment"))
 					),
 					td(
 						{ class: 'actions' },
@@ -100,20 +100,20 @@ exports['sub-main'] = function () {
 					td(
 						{ class: 'user-basic-data' },
 						div(
-							a("John Watson",
+							a({ href: '/official/user-id/' }, "John Watson",
 								span('johnwatson@gmail.com')
 								)
 						)
 					),
 					td(
-						div(a("4068-50001-N-2013"))
+						div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div(a("23/07/2014 18:09:22"))
+						div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
 					),
 					td(
-						div(a("Investment"))
+						div(a({ href: '/official/user-id/' }, "Investment"))
 					),
 					td(
 						{ class: 'actions' },
@@ -124,20 +124,20 @@ exports['sub-main'] = function () {
 					td(
 						{ class: 'user-basic-data' },
 						div(
-							a("John Watson",
+							a({ href: '/official/user-id/' }, "John Watson",
 								span('johnwatson@gmail.com')
 								)
 						)
 					),
 					td(
-						div(a("4068-50001-N-2013"))
+						div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div(a("23/07/2014 18:09:22"))
+						div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
 					),
 					td(
-						div(a("Investment"))
+						div(a({ href: '/official/user-id/' }, "Investment"))
 					),
 					td(
 						{ class: 'actions' },
@@ -148,20 +148,20 @@ exports['sub-main'] = function () {
 					td(
 						{ class: 'user-basic-data' },
 						div(
-							a("John Watson",
+							a({ href: '/official/user-id/' }, "John Watson",
 								span('johnwatson@gmail.com')
 								)
 						)
 					),
 					td(
-						div(a("4068-50001-N-2013"))
+						div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div(a("23/07/2014 18:09:22"))
+						div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
 					),
 					td(
-						div(a("Investment"))
+						div(a({ href: '/official/user-id/' }, "Investment"))
 					),
 					td(
 						{ class: 'actions' },
@@ -172,20 +172,20 @@ exports['sub-main'] = function () {
 					td(
 						{ class: 'user-basic-data' },
 						div(
-							a("John Watson",
+							a({ href: '/official/user-id/' }, "John Watson",
 								span('johnwatson@gmail.com')
 								)
 						)
 					),
 					td(
-						div(a("4068-50001-N-2013"))
+						div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div(a("23/07/2014 18:09:22"))
+						div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
 					),
 					td(
-						div(a("Investment"))
+						div(a({ href: '/official/user-id/' }, "Investment"))
 					),
 					td(
 						{ class: 'actions' },
@@ -196,20 +196,20 @@ exports['sub-main'] = function () {
 					td(
 						{ class: 'user-basic-data' },
 						div(
-							a("John Watson",
+							a({ href: '/official/user-id/' }, "John Watson",
 								span('johnwatson@gmail.com')
 								)
 						)
 					),
 					td(
-						div(a("4068-50001-N-2013"))
+						div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div(a("23/07/2014 18:09:22"))
+						div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
 					),
 					td(
-						div(a("Investment"))
+						div(a({ href: '/official/user-id/' }, "Investment"))
 					),
 					td(
 						{ class: 'actions' },
@@ -220,20 +220,20 @@ exports['sub-main'] = function () {
 					td(
 						{ class: 'user-basic-data' },
 						div(
-							a("John Watson",
+							a({ href: '/official/user-id/' }, "John Watson",
 								span('johnwatson@gmail.com')
 								)
 						)
 					),
 					td(
-						div(a("4068-50001-N-2013"))
+						div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div(a("23/07/2014 18:09:22"))
+						div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
 					),
 					td(
-						div(a("Investment"))
+						div(a({ href: '/official/user-id/' }, "Investment"))
 					),
 					td(
 						{ class: 'actions' },
@@ -244,20 +244,20 @@ exports['sub-main'] = function () {
 					td(
 						{ class: 'user-basic-data' },
 						div(
-							a("John Watson",
+							a({ href: '/official/user-id/' }, "John Watson",
 								span('johnwatson@gmail.com')
 								)
 						)
 					),
 					td(
-						div(a("4068-50001-N-2013"))
+						div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div(a("23/07/2014 18:09:22"))
+						div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
 					),
 					td(
-						div(a("Investment"))
+						div(a({ href: '/official/user-id/' }, "Investment"))
 					),
 					td(
 						{ class: 'actions' },
@@ -268,20 +268,20 @@ exports['sub-main'] = function () {
 					td(
 						{ class: 'user-basic-data' },
 						div(
-							a("John Watson",
+							a({ href: '/official/user-id/' }, "John Watson",
 								span('johnwatson@gmail.com')
 								)
 						)
 					),
 					td(
-						div(a("4068-50001-N-2013"))
+						div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
 					),
 					td(
 						{ class: 'desktop-only' },
-						div(a("23/07/2014 18:09:22"))
+						div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
 					),
 					td(
-						div(a("Investment"))
+						div(a({ href: '/official/user-id/' }, "Investment"))
 					),
 					td(
 						{ class: 'actions' },

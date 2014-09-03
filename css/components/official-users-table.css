@@ -28,6 +28,12 @@
 		padding: 11px 25px 10px;
 		font-weight: bold;
 }
+.official-users-table tbody tr td a:hover,
+.official-users-table tbody tr td a:active,
+.official-users-table tbody tr td a:focus {
+	background: var(--normal-dark-background);
+	color: var(--white-background);
+}
 .official-users-table tbody tr td.user-basic-data a span {
 	display: block;
 	width: 100%;
