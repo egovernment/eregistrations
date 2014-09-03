@@ -8,6 +8,7 @@ exports.main = function () {
 	form(
 		{ class: 'section-primary-wrapper public-reset-password' },
 		div(
+			{ class: 'section-primary' },
 			h3("Reset Password"),
 			hr(),
 			ul(

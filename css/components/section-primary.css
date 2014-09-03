@@ -4,7 +4,15 @@
 	padding: 0 10px;
 }
 
-.section-primary-wrapper fieldset,
+.section-primary-wrapper .section-primary {
+	background-color: var(--white-background);
+	border-radius: 5px;
+	border: 1px solid var(--light-inner-border);
+	padding: 20px 15px 0 15px;
+	position: relative;
+}
+
+/*.section-primary-wrapper fieldset,
 .section-primary-wrapper > form,
 .section-primary-wrapper > div,
 .section-primary-wrapper > ul li {
@@ -27,7 +35,7 @@
 
 .section-primary-wrapper li:last-child {
 	margin-bottom: 0;
-}
+}*/
 
 .section-primary-wrapper .sub-section {
 	border: none;
