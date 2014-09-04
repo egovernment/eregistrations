@@ -121,6 +121,7 @@ e.g.:
 .fa-exclamation:before {
 	content: '\f12a';
 }
+
 .fa-exclamation-circle {
 	width: 1em;
 }
@@ -133,4 +134,18 @@ e.g.:
 }
 .fa-calculator:before {
 	content: '\f1ec';
+}
+
+.fa-chevron-circle-left {
+	width: 0.9em;
+}
+.fa-chevron-circle-left:before {
+	content: '\f137';
+}
+
+.fa-chevron-circle-right {
+	width: 0.9em;
+}
+.fa-chevron-circle-right:before {
+	content: '\f138';
 }
