@@ -17,6 +17,7 @@ exports.step = function () {
 			)
 		),
 		div(
+			{ class: 'section-primary' },
 			h2("Business Partner basic informations"),
 			hr(),
 			ul(
@@ -38,11 +39,10 @@ exports.step = function () {
 					span({ class: 'entity-properties-value' }, partner.email)
 				)
 			)
-		)
-	);
-	section(
-		{ class: 'content' },
+		),
+
 		div(
+			{ class: 'section-primary' },
 			h2("Business Partner secondary informations"),
 			hr(),
 			ul(
@@ -68,9 +68,9 @@ exports.step = function () {
 					span({ class: 'entity-properties-value' }, partner.businessActivity)
 				)
 			)
-		)
+		),
+		div({ class: 'nav-back' },
+			a({ href: '/forms/' }, "Back to forms")
+			)
 	);
-	div({ class: 'nav-back' },
-		a({ href: '/forms/' }, "Back to forms")
-		);
 };
