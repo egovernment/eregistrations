@@ -1,7 +1,3 @@
-.section-tab-nav > div {
-	border-top-left-radius: 0;
-}
-
 .section-tab-nav .tab {
 	background: var(--light-background);
 	border: 1px solid var(--light-inner-border);
