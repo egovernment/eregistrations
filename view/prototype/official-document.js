@@ -6,7 +6,7 @@ exports.tab = function () {
 	div(
 		{ class: 'section-primary official-document' },
 		h3(
-			{ class: 'nav-alternatives' },
+			{ class: 'container-with-nav' },
 			"Documents received from petitioner",
 			div(
 				a({ class: 'button' }, span({ class: 'fa fa-download' }), "View and print form"),
@@ -64,16 +64,17 @@ exports.tab = function () {
 			{ class: 'submitted-preview' },
 			div({ class: 'section-primary submitted-preview-document' },
 				h3(
-					i({ class: 'list-item-number' },
-							"1"),
+					i({ class: 'list-item-number' }, "1"),
 					"Memorandum and articles of association"
 				),
-				div(a(img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
-						)
+				div(
+					a(
+						img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
 					)
+				)
 				),
 			div({ class: 'section-primary submitted-preview-user-data' },
-				h3({ class: 'nav-alternatives' }, "Application form",
+				h3({ class: 'container-with-nav' }, "Application form",
 					a({ class: 'fa fa-print' }, "Print")
 					),
 				h4("Proposed company name"),

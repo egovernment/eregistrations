@@ -11,6 +11,18 @@
 	margin: 0;
 }
 
+.submitted-preview-document .container-with-nav div {
+	min-width: inherit;
+}
+
+.submitted-preview-document .container-with-nav div:last-child span {
+	font-size: 14px;
+	font-weight: normal;
+}
+.submitted-preview-document .container-with-nav div a {
+	margin-left: 5px;
+}
+
 .submitted-preview-user-data {
 	width: 39%;
 	max-height: 927px;
@@ -47,6 +59,18 @@
 
 .submitted-preview-document {
 	overflow-y: scroll;
+}
+
+.submitted-preview-documents-navigation {
+	text-align: right;
+}
+.submitted-preview-documents-navigation a {
+	margin-left: 5px;
+}
+.submitted-preview-documents-navigation a span {
+	position: relative;
+	top: 2px;
+	right: 2px;
 }
 
 .list-item-number {
