@@ -12,6 +12,11 @@
 	max-height: 927px;
 }
 
+.submitted-preview-document img {
+	border: 1px solid var(--light-inner-border);
+	margin-bottom: 0;
+}
+
 .submitted-preview-document .container-with-nav div {
 	min-width: inherit;
 }
@@ -60,14 +65,19 @@
 .submitted-preview-document {
 	overflow-y: scroll;
 }
-
-.submitted-preview-documents-navigation {
+.submitted-preview-documents-navigation-top {
+	margin-top: -17px;
+}
+.submitted-preview-documents-navigation,
+.submitted-preview-documents-navigation-top  {
 	text-align: right;
 }
-.submitted-preview-documents-navigation a {
+.submitted-preview-documents-navigation a,
+.submitted-preview-documents-navigation-top a {
 	margin-left: 5px;
 }
-.submitted-preview-documents-navigation a span {
+.submitted-preview-documents-navigation a span,
+.submitted-preview-documents-navigation-top a span {
 	position: relative;
 	top: 2px;
 	right: 2px;
