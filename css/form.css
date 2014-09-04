@@ -148,6 +148,7 @@ textarea {
 https://code.google.com/p/chromium/issues/detail?id=409581 */
 .input-aside span:first-child {
 	display: table;
+	padding: 0;
 }
 
 .input-aside input[type="checkbox"],
@@ -155,7 +156,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	vertical-align: 1px;
 }
 
-.input-aside span:last-child {
+.input-aside span {
 	padding-left: 5px;
 }
 
