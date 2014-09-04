@@ -13,6 +13,10 @@
 	margin: 22px 0;
 }
 
+ul.sections-primary-list {
+	list-style-type: none;
+}
+
 /*.section-primary-wrapper fieldset,
 .section-primary-wrapper > form,
 .section-primary-wrapper > div,

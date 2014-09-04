@@ -10,10 +10,10 @@ exports.step = function () {
 		section(
 			{ class: 'section-primary-wrapper' },
 			ul(
-				{ class: 'submissions' },
+				{ class: 'sections-primary-list submissions' },
 				user.requiredSubmissions,
 				function (submission) {
-					return li(form(div(h2(submission.label), hr(),
+					return li({ class: 'section-primary' }, form(div(h2(submission.label), hr(),
 									input({ dbjs: submission._files }))));
 				}
 			)
