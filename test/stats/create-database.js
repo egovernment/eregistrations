@@ -1,6 +1,6 @@
 'use strict';
 
-var sourceDb = require('./__playground/example-model')
+var sourceDb = require('../__playground/stats/example-model')
   , isFunction = require('es5-ext/function/is-function');
 
 module.exports = function (t, a) {
