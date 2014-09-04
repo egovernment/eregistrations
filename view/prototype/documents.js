@@ -4,11 +4,10 @@ var db = require('mano').db,
 	user = db.User.prototype;
 
 exports.step = function () {
-	div({ class: 'content' }, h1("3. Upload Your Documents"));
+	div(h1("3. Upload Your Documents"));
 	div(
 		{ class: 'disabler-range', id: 'documents-disabler-range' },
 		section(
-			{ class: 'content' },
 			ul(
 				{ class: 'sections-primary-list submissions' },
 				user.requiredSubmissions,
