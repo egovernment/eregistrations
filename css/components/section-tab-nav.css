@@ -22,11 +22,6 @@
 	border-bottom: none;
 	z-index: 999;
 }
-.section-tab-nav .content {
-	padding-left: 0;
-	padding-right: 0;
-	background-color: var(--white-background);
-}
 
 @media only screen and (max-width: var(--mobile-width)) {
 	.section-tab-nav {
