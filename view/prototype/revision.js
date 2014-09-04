@@ -165,8 +165,7 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'section-primary submitted-preview' },
 		div({ class: 'submitted-preview-document' },
-			div({ class: 'container-with-nav' },
-				h3(i({ class: 'list-item-number' }, "1"),
+			div(h3(i({ class: 'list-item-number' }, "1"),
 					"Memorandum and articles of association"
 					)
 				),
