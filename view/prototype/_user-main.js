@@ -6,7 +6,7 @@ exports['user-name'] = function () {
 
 exports.main = function () {
 	div({ id: 'user-steps-menu', class: 'steps-menu' },
-		div({ class: 'all-menu-items' },
+		div({ class: 'content all-menu-items' },
 			label({ class: 'step-active show-steps-btn', for: 'show-steps-control' },
 				'Steps'
 				),
