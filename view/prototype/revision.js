@@ -58,7 +58,7 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ class: 'content' },
+		{ class: 'section-primary' },
 		div(
 			h2({ class: 'nav-alternatives' }, "Application history",
 				a({ class: 'fa fa-print' }, "Print")
@@ -113,7 +113,7 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ class: 'content' },
+		{ class: 'section-primary' },
 		div(
 			h2("Application revision"),
 			p({ class: 'submitted-revision-toolbar' },
@@ -163,8 +163,8 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ class: 'content submitted-preview' },
-		div({ class: 'submitted-preview-document' },
+		{ class: 'submitted-preview' },
+		div({ class: 'section-primary submitted-preview-document' },
 			h3(
 				i({ class: 'list-item-number' },
 						"1"),
@@ -213,7 +213,7 @@ exports['sub-main'] = function () {
 				)
 			)
 			),
-		div({ class: 'submitted-preview-user-data' },
+		div({ class: 'section-primary submitted-preview-user-data' },
 			h3({ class: 'nav-alternatives' }, "Application form",
 				a({ class: 'fa fa-print' }, "Print")
 				),
