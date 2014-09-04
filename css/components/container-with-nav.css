@@ -1,17 +1,17 @@
-.nav-alternatives {
+.container-with-nav {
 	display: flex;
 	justify-content: space-between;
 }
 
-.nav-alternatives .fa {
+.container-with-nav .fa {
 	font-size: 14px;
 }
-h1.nav-alternatives .fa,
-h2.nav-alternatives .fa {
+h1.container-with-nav .fa,
+h2.container-with-nav .fa {
 	padding-top: 10px;
 }
 
-.nav-alternatives .button {
+.container-with-nav .button {
 	font-size: 14px;
 	font-weight: normal;
 	background: var(--light-background);
@@ -21,27 +21,27 @@ h2.nav-alternatives .fa {
 	cursor: pointer;
 	text-decoration: none;
 }
-.nav-alternatives .button:hover,
-.nav-alternatives .button:focus,
-.nav-alternatives .button:active {
+.container-with-nav .button:hover,
+.container-with-nav .button:focus,
+.container-with-nav .button:active {
 	background: var(--normal-background);
 	text-decoration: none;
 	color: var(--white-text);
 }
 
-.nav-alternatives .button .fa {
+.container-with-nav .button .fa {
 	padding-top: 5px;
 }
 
-.nav-alternatives a:last-child {
+.container-with-nav a:last-child {
 	margin-left: 10px;
 }
 
-.nav-alternatives a span {
+.container-with-nav a span {
 	position: relative;
 	top: 2px;
 	right: 2px;
 }
-.nav-alternatives div {
+.container-with-nav div {
 	min-width: 30%;
 }

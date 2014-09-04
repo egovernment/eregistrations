@@ -5,7 +5,7 @@ exports['official-user-details'] = { class: { active: true } };
 exports.tab = function () {
 	div(
 		h3(
-			{ class: 'nav-alternatives' },
+			{ class: 'container-with-nav' },
 			"Documents received from petitioner",
 			div(
 				a({ class: 'button' }, span({ class: 'fa fa-download' }), "View and print form"),
@@ -73,7 +73,7 @@ exports.tab = function () {
 				)
 			),
 		div({ class: 'submitted-preview-user-data' },
-			h3({ class: 'nav-alternatives' }, "Application form",
+			h3({ class: 'container-with-nav' }, "Application form",
 				a({ class: 'fa fa-print' }, "Print")
 				),
 			h4("Proposed company name"),
