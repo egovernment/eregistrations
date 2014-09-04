@@ -2,11 +2,11 @@
 
 var db = require('mano').db,
 	user = db.User.prototype,
-	inventoryCaluculation = require('./_inventory'),
+	inventory = require('./_inventory'),
 	reqRadio;
 
 exports.step = function () {
-	insert(inventoryCaluculation);
+	insert(inventory);
 	section({ class: 'user-guide' },
 			h1("1. Individual registration guide for companies"
 			),
@@ -25,8 +25,8 @@ exports.step = function () {
 							li(div({ class: 'dbjs-input-component' },
 								label(user.getDescriptor(name).label, ":"),
 								div({ class: 'control' }, input({ dbjs: user.getObservable(name) }))));
-							div({ class: 'inventory-calculation' },
-								a({ onclick: inventoryCaluculation.show },
+							div({ class: 'inventory-button' },
+								a({ onclick: inventory.show },
 									span({ class: 'fa fa-calculator' }, "Calculator"),
 									span("Calculate the amount")
 									)

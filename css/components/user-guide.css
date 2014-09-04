@@ -90,25 +90,25 @@
 	font-weight: bolder;
 }
 
-.guide-form .inventory-calculation {
+.guide-form .inventory-button {
 	padding-left: 40%;
 	padding-top: 11px;
 	padding-bottom: 11px;
 }
 
-.guide-form .inventory-calculation .fa-calculator {
+.guide-form .inventory-button .fa-calculator {
 	font-size: 30px;
 	margin-bottom: -10px;
 	margin-top: -4px;
 }
 @-moz-document url-prefix() {
-	.guide-form .inventory-calculation .fa-calculator {
+	.guide-form .inventory-button .fa-calculator {
 		margin-bottom: -11px;
 		margin-top: -5px;
 	}
 }
 
-.guide-form .inventory-calculation span:last-child {
+.guide-form .inventory-button span:last-child {
 	background: var(--normal-background);
 	color: var(--white-text);
 	padding: 2px 5px 2px 2px;
@@ -117,15 +117,15 @@
 	border-bottom-right-radius: 3px;
 }
 
-.guide-form .inventory-calculation a {
+.guide-form .inventory-button a {
 	padding-left: 10px;
 	text-decoration: none;
 	white-space: nowrap;
 }
 
-.guide-form .inventory-calculation a:hover span:last-child,
-.guide-form .inventory-calculation a:focus span:last-child,
-.guide-form .inventory-calculation a:active span:last-child {
+.guide-form .inventory-button a:hover span:last-child,
+.guide-form .inventory-button a:focus span:last-child,
+.guide-form .inventory-button a:active span:last-child {
 	background: var(--normal-dark-background);
 }
 
@@ -145,7 +145,7 @@ Styles applied while screen sieze is less than 640px
 		width: 100%;
 	}
 
-	.guide-form .inventory-calculation {
+	.guide-form .inventory-button {
 		padding-left: 0;
 	}
 }
