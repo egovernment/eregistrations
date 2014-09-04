@@ -11,37 +11,12 @@
 	list-style-type: none;
 }
 
-/*.content fieldset,
-.content > form,
-.content > div,
-.content > ul li {
-	background-color: var(--white-background);
-	border-radius: 5px;
-	border: 1px solid var(--light-inner-border);
-	padding: 20px 15px 0 15px;
-	position: relative;
-}
-
-.content > ul {
-	padding-left: 0;
-	list-style-type: none;
-	margin-bottom: 0;
-}
-
-.content li {
-	margin-bottom: 22px;
-}
-
-.content li:last-child {
-	margin-bottom: 0;
-}*/
-
-.content .sub-section {
+.sub-section {
 	border: none;
 	padding: 0;
 }
 
-.content .sub-section h3 {
+.sub-section h3 {
 	background: var(--light-background);
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -49,12 +24,4 @@
 	margin-bottom: 12px;
 	border-left: 3px solid var(--normal-dark-background);
 	color: var(--normal-dark-background);
-}
-/*
-Styles applied while screen sieze is less than 640px
-*/
-@media only screen and (max-width: var(--mobile-width)) {
-	.content {
-		min-width: var(--min-mobile-width);
-	}
 }

@@ -163,3 +163,12 @@ li ul {
 	max-width: var(--desktop-width);
 	padding: 0 10px;
 }
+
+/*
+Styles applied while screen sieze is less than 640px
+*/
+@media only screen and (max-width: var(--mobile-width)) {
+	.content {
+		min-width: var(--min-mobile-width);
+	}
+}
