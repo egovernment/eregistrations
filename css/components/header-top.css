@@ -96,9 +96,16 @@ Styles applied while screen sieze is less than 640px
 		flex-wrap: wrap;
 		min-width: var(--min-mobile-width);
 	}
-	.header-top div, .header-top nav {
-		margin: 0 auto;
+	.header-top div,
+	.header-top nav {
 		text-align: center;
+	}
+	.header-top div {
+		margin: 0 auto;
+	}
+
+	.header-top nav {
+		margin:  11px auto 0;
 	}
 	.menu-top {
 		padding-left: 0;
