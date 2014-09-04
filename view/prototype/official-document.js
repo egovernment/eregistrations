@@ -4,7 +4,7 @@ exports['official-user-details'] = { class: { active: true } };
 
 exports.tab = function () {
 	div(
-		{ class: 'section-primary ' },
+		{ class: 'section-primary official-document' },
 		h3(
 			{ class: 'nav-alternatives' },
 			"Documents received from petitioner",
@@ -62,7 +62,7 @@ exports.tab = function () {
 			)
 	);
 	section(
-		{ class: 'submitted-preview' },
+		{ class: 'section-primary submitted-preview' },
 		div({ class: 'submitted-preview-document' },
 			h3(
 				i({ class: 'list-item-number' },
