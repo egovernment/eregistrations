@@ -30,7 +30,6 @@
 ../../css/components/entity-options.css
 ../../css/components/entities-overview-table.css
 ../../css/components/fieldset.css
-../../css/components/submitted-main.css
 ../../css/components/submitted-menu.css
 ../../css/components/submitted-documents-list.css
 ../../css/components/submitted-user-history.css
