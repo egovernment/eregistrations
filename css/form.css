@@ -7,6 +7,11 @@ form {
 	list-style: none;
 	padding-left: 0;
 }
+
+form ul {
+	list-style: none;
+}
+
 ul.form-elements li {
 	margin-bottom: 0;
 }
@@ -35,12 +40,16 @@ ul.radio {
 	padding-left: 0;
 }
 
-ul.radio, ul.radio li {
+.form-elements ul.radio, .form-elements ul.radio li {
 	display: inline;
 }
 
 ul.radio li {
 	margin-right: 5px;
+}
+
+ul.radio li div ul {
+	padding-left: 10px;
 }
 
 input[type="text"],
@@ -92,8 +101,14 @@ select {
 		margin-bottom: -6px;
 	}
 }
-form .hint {
-	margin-left: 20px;
+
+.form-elements .hint {
+	display: block;
+	font-size: 12px;
+	margin-bottom: -10px;
+	margin-top: 10px;
+	width: 100%;
+	color: var(--hint-text);
 }
 
 input[type="submit"] {
@@ -125,19 +140,49 @@ textarea {
 	font-family: "Helvetica";
 }
 
+.input-aside {
+	display: flex;
+}
+
+/* Chrome flex display defect fix. Defect raised for Chrome browser
+https://code.google.com/p/chromium/issues/detail?id=409581 */
+.input-aside span:first-child {
+	display: table;
+}
+
+.input-aside input[type="checkbox"],
+.input-aside input[type="radio"] {
+	vertical-align: 1px;
+}
+
+.input-aside span:last-child {
+	padding-left: 5px;
+}
+
 .submit-placeholder {
 	margin-left: 40%;
 	padding-left: 13px;
 }
 
 /* Input pre-element (span) */
+.input-prepend {
+	white-space: nowrap;
+}
+
 .input-prepend input {
 	border-radius: 0 4px 4px 0;
+	max-width: 90%;
+	border-left: none;
+}
+
+.input-append {
+	white-space: nowrap;
 }
 
 .input-append input {
 	border-radius: 4px 0 0 4px;
-	width: 77%;
+	max-width: 90%;
+	border-right: none;
 }
 
 .add-on {
@@ -169,8 +214,9 @@ textarea {
 
 /* dbjs components */
 /* Default styles */
-.dbjs-input-component .required-status {
-	color: var(--error-text);
+.dbjs-input-component .status-missing,
+.dbjs-input-component .status-ok,
+.dbjs-input-component .status-error {
 	display:none;
 	font-weight: bold;
 	margin-left:5px;
@@ -178,50 +224,55 @@ textarea {
 	line-height: 22px;
 }
 
-.dbjs-input-component .validation-status {
-	color: var(--success-text);
-	display:none;
-	font-weight: bold;
-	margin-left:5px;
-	visibility:hidden;
-	line-height: 22px;
+.dbjs-input-component .status-missing,
+.dbjs-input-component .status-error  {
+	color: var(--error-text);
+
 }
+
+.dbjs-input-component .status-ok {
+	color: var(--success-text);
+}
+
 @-moz-document url-prefix() {
-	.dbjs-input-component .required-status,
-	.dbjs-input-component .validation-status {
+	.dbjs-input-component .status-missing,
+	.dbjs-input-component .status-ok,
+	.dbjs-input-component .status-error {
 		line-height: 21px;
 	}
 }
 
 /* Do not show statuses for disabled controls */
-.dbjs-input-component *:disabled ~ span.validation-status {
+.dbjs-input-component *:disabled ~ span.status-ok {
 	display: none;
 }
-.dbjs-input-component *:disabled ~ span.required-status {
+.dbjs-input-component *:disabled ~ span.status-missing {
+	display: none;
+}
+.dbjs-input-component *:disabled ~ span.status-error {
 	display: none;
 }
 
 /* Changed & valid */
-.dbjs-input-component.valid.changed span.validation-status {
+.dbjs-input-component.valid.changed span.status-ok {
 	visibility: visible;
-	display: inline-block;
+	display:inline-block;
+	opacity: 0.5;
 }
 
 /* Changed & invalid */
-.dbjs-input-component.invalid.changed span.validation-status {
+.dbjs-input-component.invalid.changed span.status-error {
 	visibility: visible;
-	display: inline-block;
+	display:inline-block;
 }
 
 /* Saved */
-.dbjs-input-component.dbjs-filled.not-changed span.validation-status {
-	visibility: visible;
-	display: inline-block;
-	color: var(--success-text);
+.dbjs-input-component.dbjs-filled.not-changed span.status-ok { visibility: visible;
+	display:inline-block;
 }
 
 /* Required */
-.dbjs-input-component.required.not-changed.dbjs-empty span.required-status {
+.dbjs-input-component.required.not-changed.dbjs-empty span.status-missing {
 	visibility: visible;
 	display:inline-block;
 }
@@ -235,6 +286,10 @@ textarea {
 	list-style-type: none;
 	padding: 0;
 	margin-bottom: 0;
+}
+
+.dbjs.multiple ul li:only-child .dbjs-multiple-button-remove {
+	display: none;
 }
 
 ul.multiple {
@@ -308,6 +363,14 @@ Styles applied while screen sieze is less than 640px
 		text-align: left;
 		font-weight: bold;
 	}
+
+	.form-elements ul.radio li {
+		display: block;
+	}
+	.form-elements ul.radio li label {
+		font-weight: normal;
+	}
+
 	.control {
 		text-align: left;
 		padding: 11px 10px;
@@ -338,13 +401,14 @@ Styles applied while screen sieze is less than 640px
 	ul.radio li label {
 		padding-bottom: 0;
 	}
+
 	.inline-button-radio label:first-child{
 		border-radius: 4px 4px 0 0;
 	}
 	.inline-button-radio label:last-child {
 		border-radius: 0 0 4px 4px;
 	}
-	form .hint {
-		display: none;
+	input[type="submit"] {
+		width: 100%
 	}
 }

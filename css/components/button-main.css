@@ -19,6 +19,7 @@
 .button-main:focus,
 .button-main:active {
 	background-color: var(--normal-dark-background);
+	color: var(--white-text);
 }
 @media only screen and (max-width: var(--mobile-width)) {
 	.button-main {

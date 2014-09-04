@@ -20,13 +20,13 @@ module.exports = function (view) {
 		userOfficialMain = subMain.diff('./official'),
 		userOfficialUser = userOfficialMain.diff('./official-user'),
 		// For disablers
-		userForm = userLoggedIn.diff('./forms'),
-		userDocuments = userLoggedIn.diff('./documents');
+		userForm = userMain.diff('./forms'),
+		userDocuments = userMain.diff('./documents');
 
 	return {
 		// Public routes - imports content directly to #main element
 		'/': bind(main.diff('./index')),
-		'reset-password/token': bind(main.diff('./reset-password')),
+		'reset-password': bind(main.diff('./reset-password')),
 		'multi-entry': bind(index.diff('./multi-entry')),
 
 		// User routes - imports content to #steps element in #main element

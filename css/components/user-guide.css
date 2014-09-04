@@ -11,12 +11,9 @@
 	padding: 0 10px;
 }
 
-.user-guide h1, h3 {
+.user-guide h1 {
 	width: 100%;
-}
-
-.user-guide .main-intro {
-	margin-top: 22px;
+	margin: 22px 0;
 }
 
 .guide-form {
@@ -70,6 +67,7 @@
 
 .guide-box .guide-requirements-list {
 	padding-left: 15px;
+	list-style: initial;
 }
 
 .guide-costs-list {

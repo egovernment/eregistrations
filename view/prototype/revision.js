@@ -60,7 +60,7 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'section-primary' },
 		div(
-			h2({ class: 'nav-alternatives' }, "Application history",
+			h2({ class: 'container-with-nav' }, "Application history",
 				a({ class: 'fa fa-print' }, "Print")
 				),
 			table(
@@ -116,7 +116,8 @@ exports['sub-main'] = function () {
 		{ class: 'section-primary' },
 		div(
 			h2("Application revision"),
-			p(a({ class: 'button-main' }, "Approve file"),
+			p({ class: 'submitted-revision-toolbar' },
+				a({ class: 'button-main' }, "Approve file"),
 				a({ class: 'button-main' }, "Send for corrections"),
 				a({ class: 'button-main' }, "Reject file")
 				),
@@ -164,11 +165,28 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'section-primary submitted-preview' },
 		div({ class: 'submitted-preview-document' },
-			h3(
-				i({ class: 'list-item-number' },
-						"1"),
-				"Memorandum and articles of association"
+			div({ class: 'container-with-nav' },
+				h3(i({ class: 'list-item-number' }, "1"),
+					"Memorandum and articles of association"
+					),
+				div(
+					a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
+					span("1 / 4"),
+					a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
+				)
+				),
+			div(
+				a(
+					img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
+				)
 			),
+			div({ class: 'submitted-preview-documents-navigation' },
+				div(
+					a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
+					span("1 / 4"),
+					a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
+				)
+				),
 			form(
 				{ class: 'submitted-preview-form' },
 				ul(
@@ -205,15 +223,10 @@ exports['sub-main'] = function () {
 					)
 				),
 				input({ type: 'submit' }, "Save")
-			),
-			div(
-				a(
-					img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
-				)
 			)
 			),
 		div({ class: 'submitted-preview-user-data' },
-			h3({ class: 'nav-alternatives' }, "Application form",
+			h3({ class: 'container-with-nav' }, "Application form",
 				a({ class: 'fa fa-print' }, "Print")
 				),
 			h4("Proposed company name"),

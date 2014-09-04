@@ -88,14 +88,18 @@ CompanyType = StringLine.createEnum('CompanyType', new Map([
 
 user.defineProperties({
 	firstName: { type: StringLine, required: true, label: "First Name" },
-	lastName: { type: StringLine, required: true, label: "Last Name" },
+	lastName: { type: StringLine, required: true, label: "Last Name", value: "Smith" },
 
 	// Guide
 	businessActivity: { type: BusinessActivity, required: true, label: "Business activity" },
 	isOwner: { type: db.Boolean, trueLabel: "I am the owner", falseLabel: "I rent it",
 		label: "Owner of business premises" },
+	isType: { type: db.Boolean,
+		trueLabel: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit ame",
+		falseLabel: "Please choose x docs in the list: " },
 	isManager: { type: db.Boolean, label: "I am manager" },
-	inventory: { type: UsDollar, label: "Inventory value", required: true, step: 1 },
+	inventory: { type: UsDollar, label: "Inventory value", required: true, step: 1,
+		inputHint: "Etiam vestibulum dui mi, nec ultrices diam ultricies id " },
 	surfaceArea: { type: SquareMeters, label: "Area used for the activity", required: true },
 	members: { type: UInteger, label: "Quantity of members", required: true },
 	companyType: { type: CompanyType, label: "Registration type", required: true },

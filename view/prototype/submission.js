@@ -5,7 +5,7 @@ var db = require('mano').db,
 
 exports.step = function () {
 	section({ class: 'section-primary' },
-		h1("5 Send your file"),
+		h1("5. Send your file"),
 		div(h2("Where do you want to withdraw your documents?"),
 			hr(),
 			form(ul({ class: 'form-elements fieldset' },
@@ -21,7 +21,8 @@ exports.step = function () {
 		{ class: 'section-primary' },
 		div(h2("Who will pick the certificates?"),
 			hr(),
-			form(ul({ class: 'form-elements fieldset' }, ['pickCertificates'],
+			form(ul({ class: 'form-elements fieldset' },
+				['pickCertificates', 'lastName', 'dateOfBirth', 'inventory'],
 					function (name) { return field({ dbjs: user.getObservable(name) }); }
 					),
 				p({ class: 'submit-placeholder' }, input({ type: 'submit' }, "Save"))
@@ -58,9 +59,9 @@ exports.step = function () {
 						label: " I declare I have read and understood all the conditions I have to " +
 						"comply with and swear that the information provided in this application is true.",
 						render: function (input, options) {
-							return label(input, " ", options.label,
+							return label({ class: 'input-aside' }, input, span(" ", options.label,
 									span({ class: 'required-status' }, '*'),
-									span({ class: 'validation-status' }, '✓')
+									span({ class: 'validation-status' }, '✓'))
 									);
 						}
 						}

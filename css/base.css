@@ -15,9 +15,11 @@ Component describing basic elements styles - reusable
 	--dark-background: #333;
 	--success-background: #5CB85C;
 	--error-background: #D9534F;
+	--light-error-background: #D69592;
 	/* Text colors */
 	--white-text: #ffffff;
 	--light-text: #e3e3e3;
+	--hint-text: #b3b3b3;
 	--normal-text: #666666;
 	--dark-text: #333333;
 	--success-text: #5CB85C;
@@ -28,19 +30,14 @@ html {
 	-ms-text-size-adjust: 100%;
 	-webkit-text-size-adjust: 100%;
 	font-family: sans-serif;
+	background-color: var(--light-background);
 }
 
 body {
-	background-color: #ffffff;
 	color: var(--dark-text);
 	margin: 0;
 	font-size: 14px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-main {
-	background-color: var(--light-background);
-
 }
 
 * {
@@ -146,4 +143,17 @@ ul {
 
 li {
 	line-height: 22px;
+}
+
+li ul {
+	margin: 0;
+}
+
+.disabled {
+	cursor: not-allowed;
+	background-color: #fff;
+	opacity: 0.4;
+}
+.disabled * {
+	cursor: not-allowed;
 }
