@@ -5,9 +5,10 @@ var db = require('mano').db,
 
 exports.step = function () {
 	section(
-		form({ class: 'content' },
+		{ class: 'content ' },
+		form(
 			h1("Add new Partner"),
-			fieldset(h2("Business Partner basic informations"),
+			fieldset({ class: 'section-primary' }, h2("Business Partner basic informations"),
 				hr(),
 				ul({ class: 'form-elements forms' },
 					['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
@@ -17,25 +18,24 @@ exports.step = function () {
 					input({ type: 'submit' }, "Submit")
 					)
 				)
-			)
-	);
+		),
 
-	section(
-		form({ class: 'content' },
-				fieldset(h2("Business Partner secondary informations"),
-					hr(),
-					ul({ class: 'form-elements forms' },
-						['companyType', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity'],
-						function (name) { return field({ dbjs: user.getObservable(name) }); }
-						),
-					p({ class: 'submit-placeholder' },
-						input({ type: 'submit' }, "Submit")
-						)
+		form(
+			fieldset({ class: 'section-primary' }, h2("Business Partner secondary informations"),
+				hr(),
+				ul({ class: 'form-elements forms' },
+					['companyType', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity'],
+					function (name) { return field({ dbjs: user.getObservable(name) }); }
+					),
+				p({ class: 'submit-placeholder' },
+					input({ type: 'submit' }, "Submit")
 					)
 				)
-	);
+		),
 
-	div({ class: 'next-step' },
+		div(
+			{ class: 'next-step' },
 			a({ href: '/forms/' }, "Save")
-			);
+		)
+	);
 };

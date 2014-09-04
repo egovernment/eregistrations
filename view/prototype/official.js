@@ -32,7 +32,7 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'content' },
 		div(
-			{ class: 'users-table-filter-bar' },
+			{ class: 'section-primary users-table-filter-bar' },
 			form(
 				label(
 					"Status: "
