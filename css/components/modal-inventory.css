@@ -30,13 +30,10 @@
 }
 
 .modal-inventory li .single-section-cost {
-	width: 80%
+	width: 100%;
 }
 
 .modal-inventory .total-section-costs {
-	vertical-align: top;
-	width: 20%;
-	display: inline-block;
 	text-align: right;
 }
 

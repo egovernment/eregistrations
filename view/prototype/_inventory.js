@@ -27,7 +27,7 @@ module.exports = inventario = modal(
 						p(desc.description),
 						list = div(
 							{ class: 'single-section-cost' },
-							control = user._get(name).toDOMInput(
+							window.control = control = user._get(name).toDOMInput(
 								document,
 								{
 									minInputsCount: 1,
@@ -41,15 +41,15 @@ module.exports = inventario = modal(
 										}
 									},
 									deleteLabel: function () {
-										return a("x");
+										return a({ class: 'dbjs-multiple-button-remove' }, "x");
 									}
 								}
+							),
+							p(
+								{ class: 'total-section-costs' },
+								span("Total: "),
+								totalTxt = span({ class: 'total' }, "$0")
 							)
-						),
-						p(
-							{ class: 'total-section-costs' },
-							span("Total: "),
-							totalTxt = span({ class: 'total' }, "$0")
 						),
 						script(function (list, totalTxt) {
 
