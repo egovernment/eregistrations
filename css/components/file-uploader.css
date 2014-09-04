@@ -1,8 +1,6 @@
 .file-uploader {
 	list-style-type: none;
 	display: flex;
-	padding-left: 0;
-	margin-bottom: 0;
 }
 
 .file-uploader-button {
@@ -51,12 +49,8 @@
 	}
 }
 
-.content .file-uploader li {
-	margin-right: 22px;
-	border: none;
-	margin-bottom: 0;
-	padding-top: 1px;
-	background: transparent;
+.file-uploader li {
+	margin-right: 20px;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
@@ -66,8 +60,5 @@
 	}
 	.file-uploader-button {
 		width: 100%;
-	}
-	.content .file-uploader li {
-		margin-bottom: 22px;
 	}
 }
