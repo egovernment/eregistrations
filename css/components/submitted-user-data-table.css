@@ -5,8 +5,19 @@
 	color: var(--white-text);
 }
 
+.submitted-user-data-table  thead th,
+.submitted-user-data-table  tbody td div {
+		padding: 11px 25px 10px;
+		line-height: 22px;
+}
+
 .submitted-user-data-table  tbody tr {
 	background-color: var(--white-text);
+}
+
+.submitted-user-data-table tbody tr td {
+	border: 1px solid var(--light-inner-border);
+	padding: 0;
 }
 
 .submitted-user-data-table  th, .table-submitted td {
