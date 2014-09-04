@@ -1,15 +1,14 @@
 .submitted-preview {
-	background-color: var(--light-background);
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
 	max-width: var(--desktop-width);
-	padding: 0 10px;
 }
 
 .submitted-preview-document {
 	width: 59%;
 	max-height: 927px;
+	margin-top: 0;
 }
 
 .submitted-preview-user-data {
@@ -17,6 +16,7 @@
 	max-height: 927px;
 	overflow-y: scroll;
 	padding: 22px 15px 0 15px;
+	margin-top: 0;
 }
 .submitted-preview-user-data h4 {
 	margin-bottom: 5px;
