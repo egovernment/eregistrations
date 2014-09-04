@@ -12,6 +12,9 @@
 	width: 25%;
 	display: block;
 }
+.nav-back {
+	margin: 22px 0;
+}
 
 .nav-back a {
 	background-color: var(--normal-background);

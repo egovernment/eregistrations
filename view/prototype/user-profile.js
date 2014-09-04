@@ -6,7 +6,7 @@ var db = require('mano').db,
 exports.main = function () {
 	div(
 		{ class: 'content' },
-		h2("User Profile"),
+		h1("User Profile"),
 		div(
 			{ class: 'disabler-range', id: 'forms-disabler-range' },
 			section(

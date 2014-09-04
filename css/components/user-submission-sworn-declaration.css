@@ -1,6 +1,10 @@
-.content .user-submission-sworn-declaration {
+.user-submission-sworn-declaration {
 	padding-bottom: 22px;
 }
+.submit-user-button {
+	margin: 22px 0;
+}
+
 .submit-user-button a {
 	background-color: var(--normal-background);
 	border-radius: 6px;

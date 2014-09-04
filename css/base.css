@@ -61,7 +61,7 @@ h1, h2, h3, h4, h5, p {
 h1 {
 	font-size: 35px;
 	line-height: 44px;
-	margin: 0 0 22px 0;
+	margin: 22px 0;
 }
 h2 {
 	font-size: 28px;
@@ -159,7 +159,7 @@ li ul {
 }
 
 .content {
-	margin: 22px auto;
+	margin: 0 auto;
 	max-width: var(--desktop-width);
 	padding: 0 10px;
 }

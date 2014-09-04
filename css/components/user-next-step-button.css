@@ -1,3 +1,6 @@
+.next-step {
+	margin: 22px 0;
+}
 .next-step a {
 	background-color: var(--normal-background);
 	border-radius: 6px;

@@ -3,6 +3,7 @@
 	flex-wrap: wrap;
 	justify-content: space-between;
 	max-width: var(--desktop-width);
+	margin: 22px 0;
 }
 
 .submitted-preview-document {
