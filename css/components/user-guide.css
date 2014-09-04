@@ -6,20 +6,13 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
-	margin: 0 auto;
-	max-width: var(--desktop-width);
-	padding: 0 10px;
-}
-
-.user-guide h1 {
-	width: 100%;
-	margin: 22px 0;
 }
 
 .guide-form {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
+	margin-bottom: 0;
 }
 
 .user-guide .guide-box {
