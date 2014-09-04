@@ -1,17 +1,17 @@
-.entity-options {
+.entity-header {
 	display: flex;
 	justify-content: space-between;
 	padding-top: 22px;
 }
-.section-primary .entity-options {
+.section-primary .entity-header {
 	padding-top: 0;
 }
 
-.entity-options h1 {
+.entity-header h1 {
 	margin: 0;
 }
 
-.entity-options .entity-actions a:last-child {
+.entity-header .entity-actions a:last-child {
 	margin-right: 0;
 }
 

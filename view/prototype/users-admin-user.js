@@ -7,7 +7,7 @@ exports['sub-main'] = function () {
 	div(
 		{ class: 'section-primary' },
 		div(
-			{ class: 'entity-options' },
+			{ class: 'entity-header' },
 			h3("User: " + user._firstName + " " + user._lastName),
 			div(
 				{ class: 'entity-actions' },

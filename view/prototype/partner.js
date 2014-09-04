@@ -5,7 +5,7 @@ var db = require('mano').db,
 
 exports.step = function () {
 	div(
-		{ class: 'entity-options' },
+		{ class: 'entity-header' },
 		h1("Partner: " + partner._firstName + " " + partner._lastName),
 		div(
 			{ class: 'entity-actions' },
