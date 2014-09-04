@@ -81,7 +81,7 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ class: 'section-primary-wrapper' },
+		{ class: 'content' },
 		div(
 			h2({ class: 'nav-alternatives' }, "History of your request",
 				a({ class: 'fa fa-print' }, "Print")
@@ -127,7 +127,7 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ class: 'section-primary-wrapper' },
+		{ class: 'content' },
 		div(
 			h3("Documents uploaded with the application"),
 			ol({ class: 'submitted-documents-list' },
@@ -174,7 +174,7 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ class: 'section-primary-wrapper submitted-preview' },
+		{ class: 'content submitted-preview' },
 		div({ class: 'submitted-preview-document' },
 			h3(
 				i({ class: 'list-item-number' },

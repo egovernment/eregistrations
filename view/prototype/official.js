@@ -30,7 +30,7 @@ exports['submitted-menu'] = function () {
 
 exports['sub-main'] = function () {
 	section(
-		{ class: 'section-primary-wrapper' },
+		{ class: 'content' },
 		div(
 			{ class: 'users-table-filter-bar' },
 			form(

@@ -5,7 +5,7 @@ var db = require('mano').db,
 
 exports.step = function () {
 	section(
-		form({ class: 'section-primary-wrapper' },
+		form({ class: 'content' },
 			h1("Add new Partner"),
 			fieldset(h2("Business Partner basic informations"),
 				hr(),
@@ -21,7 +21,7 @@ exports.step = function () {
 	);
 
 	section(
-		form({ class: 'section-primary-wrapper' },
+		form({ class: 'content' },
 				fieldset(h2("Business Partner secondary informations"),
 					hr(),
 					ul({ class: 'form-elements forms' },

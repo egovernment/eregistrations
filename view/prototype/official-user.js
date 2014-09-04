@@ -58,7 +58,7 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ class: 'section-primary-wrapper' },
+		{ class: 'content' },
 		div(
 			h2({ class: 'nav-alternatives' }, "Application history",
 				a({ class: 'fa fa-print' }, "Print")
@@ -113,7 +113,7 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ class: 'section-primary-wrapper section-tab-nav' },
+		{ class: 'content section-tab-nav' },
 		a({ class: 'tab', id: 'official-form', href: '/official/user-id/' },
 			"Certificate of incorporation"
 			),

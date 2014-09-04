@@ -5,14 +5,14 @@ var db = require('mano').db,
 
 exports.main = function () {
 	div(
-		{ class: 'section-primary-wrapper' },
+		{ class: 'content' },
 		h2("User Profile")
 	);
 	div(
 		{ class: 'disabler-range', id: 'forms-disabler-range' },
 		section(
 			form(
-				{ class: 'section-primary-wrapper' },
+				{ class: 'content' },
 				fieldset(
 					h3("Basic informations"),
 					hr(),

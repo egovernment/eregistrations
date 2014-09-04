@@ -3,14 +3,14 @@
 	justify-content: space-between;
 }
 
-.section-primary-wrapper > .entity-options	{
+.content > .entity-options	{
 	background: none;
 	border:none;
 	padding-top: 0;
 	padding-left: 0;
 	padding-right: 0;
 }
-.section-primary-wrapper > .entity-options .entity-actions a:last-child {
+.content > .entity-options .entity-actions a:last-child {
 	margin-right: 0;
 }
 .entity-actions a {

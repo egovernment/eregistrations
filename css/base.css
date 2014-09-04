@@ -157,3 +157,9 @@ li ul {
 .disabled * {
 	cursor: not-allowed;
 }
+
+.content {
+	margin: 22px auto;
+	max-width: var(--desktop-width);
+	padding: 0 10px;
+}

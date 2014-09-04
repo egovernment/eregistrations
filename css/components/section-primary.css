@@ -1,10 +1,4 @@
-.section-primary-wrapper {
-	margin: 22px auto;
-	max-width: var(--desktop-width);
-	padding: 0 10px;
-}
-
-.section-primary-wrapper .section-primary {
+.section-primary {
 	background-color: var(--white-background);
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
@@ -17,10 +11,10 @@ ul.sections-primary-list {
 	list-style-type: none;
 }
 
-/*.section-primary-wrapper fieldset,
-.section-primary-wrapper > form,
-.section-primary-wrapper > div,
-.section-primary-wrapper > ul li {
+/*.content fieldset,
+.content > form,
+.content > div,
+.content > ul li {
 	background-color: var(--white-background);
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
@@ -28,26 +22,26 @@ ul.sections-primary-list {
 	position: relative;
 }
 
-.section-primary-wrapper > ul {
+.content > ul {
 	padding-left: 0;
 	list-style-type: none;
 	margin-bottom: 0;
 }
 
-.section-primary-wrapper li {
+.content li {
 	margin-bottom: 22px;
 }
 
-.section-primary-wrapper li:last-child {
+.content li:last-child {
 	margin-bottom: 0;
 }*/
 
-.section-primary-wrapper .sub-section {
+.content .sub-section {
 	border: none;
 	padding: 0;
 }
 
-.section-primary-wrapper .sub-section h3 {
+.content .sub-section h3 {
 	background: var(--light-background);
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -60,7 +54,7 @@ ul.sections-primary-list {
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
-	.section-primary-wrapper {
+	.content {
 		min-width: var(--min-mobile-width);
 	}
 }

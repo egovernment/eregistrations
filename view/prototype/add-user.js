@@ -7,7 +7,7 @@ var db = require('mano').db,
 
 exports['sub-main'] = function () {
 	section(
-		{ class: 'section-primary-wrapper' },
+		{ class: 'content' },
 		form(
 			fieldset(
 				{ class: 'section-primary' },
