@@ -45,5 +45,5 @@ exports.main = function () {
 				)
 			)
 		);
-	div({ id: 'step' });
+	div({ class: 'content', id: 'step' });
 };
