@@ -11,6 +11,8 @@
 
 .all-menu-items {
 	display: flex;
+
+
 }
 
 .steps-menu input[type=checkbox] {
@@ -117,6 +119,7 @@ Styles applied while screen sieze is less than 640px
 
 	.all-menu-items {
 		width: 100%;
+		flex-wrap: wrap;
 	}
 
 	.show-steps-btn {
