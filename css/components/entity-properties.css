@@ -12,11 +12,8 @@
 	width: 25%;
 	display: block;
 }
-
 .nav-back {
-	max-width: var(--desktop-width);
-	padding: 0 10px;
-	margin: 22px auto;
+	margin: 22px 0;
 }
 
 .nav-back a {

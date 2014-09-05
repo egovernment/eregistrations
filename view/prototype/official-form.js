@@ -7,7 +7,7 @@ exports['official-form'] = { class: { active: true } };
 
 exports.tab = function () {
 	div(
-		{ class: 'official-form' },
+		{ class: 'section-primary official-form' },
 		h3("Incorporation approved"),
 		form(
 			{ class: 'form-single-control' },
