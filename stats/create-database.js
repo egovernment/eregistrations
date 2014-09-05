@@ -24,7 +24,7 @@ migrateObject = function (obj, targetDatabase) {
 	prototype = migrateObject(getPrototypeOf(obj), targetDatabase);
 	if (typeof obj !== 'function') migrateType(obj.constructor, targetDatabase);
 	if (obj.object !== obj) {
-		if (typeof obj.object === 'function') migrateType(obj.constructor, targetDatabase);
+		if (typeof obj.object === 'function') migrateType(obj.object, targetDatabase);
 		else migrateObject(obj.object, targetDatabase);
 	}
 	sourceEvent = obj._lastOwnEvent_;
