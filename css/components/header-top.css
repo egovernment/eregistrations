@@ -42,10 +42,6 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	padding-left: 8px;
 	cursor: pointer;
 }
-.menu-top menuitem:last-child a {
-	padding-right: 0;
-}
-
 .menu-top menuitem a:hover,
 .menu-top menuitem a:focus,
 .menu-top menuitem a:active {
@@ -58,7 +54,7 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	color: var(--white-text);
 	cursor: pointer;
 	font-size: 12px;
-	margin: 0;
+	margin: 0 0 0 5px;
 	text-align: center;
 	text-decoration: none;
 	line-height: 18px;
