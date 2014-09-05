@@ -74,6 +74,7 @@
 .submitted-preview-documents-navigation {
 	text-align: right;
 	line-height: 44px;
+	white-space: nowrap;
 }
 
 .container-with-nav .submitted-preview-documents-navigation {
