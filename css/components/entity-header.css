@@ -55,8 +55,14 @@
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.entity-options {
-		flex-wrap:wrap;
-		padding-bottom: 22px;
+	.entity-header {
+		flex-wrap: wrap;
+		margin-bottom: 22px;
+	}
+	.entity-header h1 {
+		margin-bottom: 22px;
+	}
+	.entity-actions .button-main {
+		width: inherit;
 	}
 }
