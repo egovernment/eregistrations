@@ -6,7 +6,7 @@ var Database    = require('dbjs')
   , isGetter    = require('dbjs/_setup/utils/is-getter')
   , customError = require('es5-ext/error/custom')
 
-  , getPrototypeOf = Object.getPrototypeOf
+  , create = Object.create, getPrototypeOf = Object.getPrototypeOf
   , migrateType, migrateObject, migrateProperty, migrateProperties;
 
 migrateType = function (type, targetDatabase) {
@@ -28,7 +28,7 @@ migrateObject = function (obj, targetDatabase) {
 		else migrateObject(obj.object, targetDatabase);
 	}
 	sourceEvent = obj._lastOwnEvent_;
-	if (obj.master === obj) {
+	if ((obj.master === obj) && (obj.constructor.prototype !== obj)) {
 		new DbjsEvent(targetObj = targetDatabase.objects.unserialize(obj.__id__, prototype),
 			prototype, (sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
 	}
@@ -37,9 +37,13 @@ migrateObject = function (obj, targetDatabase) {
 };
 
 migrateProperty = function (sourceDesc, targetDatabase) {
-	var hasInformation = false, value, sourceEvent;
-	if (targetDatabase.objects.getById(sourceDesc.__id__)) return hasInformation;
+	var id = sourceDesc.__id__, hasInformation = false, value, sourceEvent;
+	if (targetDatabase._done_[id]) return hasInformation;
+	targetDatabase._done_[id] = true;
+	if (targetDatabase.objects.getById(id)) return hasInformation;
 	if (migrateProperty(getPrototypeOf(sourceDesc), targetDatabase)) hasInformation = true;
+	if (typeof sourceDesc.object === 'function') migrateType(sourceDesc.object, targetDatabase);
+	else migrateObject(sourceDesc.object, targetDatabase);
 	sourceDesc._forEachOwnDescriptor_(function (subDesc) {
 		var key = subDesc.key, sourceEvent, value;
 		hasInformation = true;
@@ -98,7 +102,8 @@ module.exports = function (mainDb) {
 	if (!mainDb.User) throw customError('User type not found on source database', 'NO_USER_IN_DB');
 
 	statsDb = new Database();
-
+	statsDb._done_ = create(null);
 	migrateType(mainDb.User, statsDb);
+	delete statsDb._done_;
 	return statsDb;
 };
