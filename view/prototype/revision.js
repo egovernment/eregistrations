@@ -167,19 +167,17 @@ exports['sub-main'] = function () {
 		div({ class: 'section-primary submitted-preview-document' },
 			div({ class: 'container-with-nav' },
 				h3(i({ class: 'list-item-number' }, "1"),
-					"Memorandum and articles of association"
+					"Memorandum and articles of associat sdf s sdf asdf asdfasdfdsfg sdfg sdfg s dfg sdfgsdf gdf gsdfg sdfg sdfg sdfgion "
+					),
+				div({ class: 'submitted-preview-documents-navigation' },
+					div(
+						a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
+						span("1 / 4"),
+						a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
+					)
 					)
 				),
-			div({ class: 'submitted-preview-documents-navigation-top' },
-				div(
-					a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
-					span("1 / 4"),
-					a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
-				)
-				),
-			div(
-				img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
-			),
+			img({ src: '/uploads/docASubFile2.idoc.png.jpg' }),
 			div({ class: 'submitted-preview-documents-navigation' },
 				div(
 					a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),

@@ -66,39 +66,45 @@
 .submitted-preview-document {
 	overflow-y: scroll;
 }
-.submitted-preview-documents-navigation-top {
-	margin-top: -17px;
+
+.submitted-preview-document .container-with-nav h3 {
+	max-width: 80%;
 }
-.submitted-preview-documents-navigation,
-.submitted-preview-documents-navigation-top  {
+
+.submitted-preview-documents-navigation {
 	text-align: right;
+	line-height: 44px;
 }
-.submitted-preview-documents-navigation a,
-.submitted-preview-documents-navigation-top a {
+
+.container-with-nav .submitted-preview-documents-navigation {
+	display: flex;
+}
+
+.container-with-nav .submitted-preview-documents-navigation div {
+	align-self: flex-end;
+}
+
+.submitted-preview-documents-navigation a {
 	margin-left: 5px;
 }
-.submitted-preview-documents-navigation a span,
-.submitted-preview-documents-navigation-top a span {
+
+.submitted-preview-documents-navigation a span {
 	position: relative;
 	top: 2px;
 	right: 2px;
 }
 
-.list-item-number {
-	bottom: 4px;
-	left: 4px;
-	width: 20px;
-	height: 20px;
+.submitted-preview-document .list-item-number {
+	width: 22px;
 	margin-right: 8px;
-	padding: 0;
 	border-radius: 50%;
 	color: var(--white-text);
 	background: var(--normal-dark-background);
 	text-align: center;
-	font-size: 11px;
-	line-height: 22px;
-	display: inline-block;
+	vertical-align: top;
 	font-style: normal;
+	display: inline-block;
+	font-size: 11px
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
