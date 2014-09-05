@@ -5,16 +5,12 @@
 	background-color: var(--dark-background);
 	background-position: center center;
 	background-size: cover;
-	display: flex;
 	padding: 11px 0 4px;
 	width: 100%;
 }
 
 .all-menu-items {
 	display: flex;
-	flex-wrap: wrap;
-	margin: 0 auto;
-	width: 100%;
 }
 
 .steps-menu input[type=checkbox] {
@@ -24,13 +20,10 @@
 .steps-menu nav.steps {
 	display: flex;
 	justify-content: space-between;
-	margin: 0 auto;
-	padding: 0 10px;
 	width: var(--desktop-width);
 }
 
 .steps-menu nav.steps a {
-	margin: 0 0;
 	width: 100%;
 }
 
@@ -55,6 +48,7 @@
 .step-active:focus,
 .step-active:active {
 	background-color: var(--normal-dark-background);
+	color: var(--white-text);
 }
 
 .step-unactive {
@@ -121,10 +115,13 @@ Styles applied while screen sieze is less than 640px
 		display: none;
 	}
 
+	.all-menu-items {
+		width: 100%;
+		flex-wrap: wrap;
+	}
+
 	.show-steps-btn {
 		display: block;
-		margin: 0 10px;
-
 	}
 
 	nav.steps menuitem a {

@@ -42,7 +42,14 @@
 	.users-table-filter-bar {
 		flex-wrap: wrap;
 	}
-	.section-primary > div.users-table-filter-bar{
+	.users-table-filter-bar {
 		padding-bottom: 22px;
+	}
+	.users-table-filter-bar div:last-child {
+		width: 100%;
+	}
+	.users-table-filter-bar div:last-child .print-button {
+		width: 100%;
+		text-align: center;
 	}
 }
