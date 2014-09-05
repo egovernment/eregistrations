@@ -167,7 +167,7 @@ exports['sub-main'] = function () {
 		div({ class: 'section-primary submitted-preview-document' },
 			div({ class: 'container-with-nav' },
 				h3(i({ class: 'list-item-number' }, "1"),
-					"Memorandum and articles of associat sdf s sdf asdf asdfasdfdsfg sdfg sdfg s dfg sdfgsdf gdf gsdfg sdfg sdfg sdfgion "
+					"Memorandum and articles of association"
 					),
 				div({ class: 'submitted-preview-documents-navigation' },
 					div(
