@@ -16,10 +16,10 @@
 	counter-increment: li;
 	position: absolute;
 	left: -24px;
-	bottom: 12px;
 	width: 19px;
 	height: 19px;
 	margin-right: 8px;
+	margin-top: 2px;
 	border-top:1px solid var(--normal-dark-background);
 	border-radius: 50%;
 	color:	var(--white-text);
