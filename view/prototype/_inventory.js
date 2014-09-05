@@ -17,7 +17,6 @@ module.exports = inventario = modal(
 			h3("Inventory of your business")
 		),
 		invForm = form(
-			{ action: url('inventory'), method: 'post' },
 			container = ul(
 				inventoryFields,
 				function (name) {
