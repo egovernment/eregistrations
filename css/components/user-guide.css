@@ -96,10 +96,11 @@
 	padding-bottom: 11px;
 }
 
-.guide-form .inventory-button .fa-calculator {
+.guide-form .inventory-button .icon {
 	font-size: 30px;
 	margin-bottom: -10px;
 	margin-top: -4px;
+	z-index: 10;
 }
 @-moz-document url-prefix() {
 	.guide-form .inventory-button .fa-calculator {
@@ -108,11 +109,11 @@
 	}
 }
 
-.guide-form .inventory-button span:last-child {
+.guide-form .inventory-button .label {
 	background: var(--normal-background);
 	color: var(--white-text);
 	padding: 2px 5px 2px 2px;
-	margin-left: -3px;
+	margin-left: -2px;
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
 }
@@ -123,9 +124,9 @@
 	white-space: nowrap;
 }
 
-.guide-form .inventory-button a:hover span:last-child,
-.guide-form .inventory-button a:focus span:last-child,
-.guide-form .inventory-button a:active span:last-child {
+.guide-form .inventory-button a:hover .label,
+.guide-form .inventory-button a:focus .label,
+.guide-form .inventory-button a:active .label {
 	background: var(--normal-dark-background);
 }
 

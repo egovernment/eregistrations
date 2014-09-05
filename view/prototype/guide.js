@@ -27,8 +27,8 @@ exports.step = function () {
 								div({ class: 'control' }, input({ dbjs: user.getObservable(name) }))));
 							div({ class: 'inventory-button' },
 								a({ onclick: inventory.show },
-									span({ class: 'fa fa-calculator' }, "Calculator"),
-									span("Calculate the amount")
+									span({ class: 'fa fa-calculator icon' }, "Calculator"),
+									span({ class: 'label' }, "Calculate the amount")
 									)
 								);
 						} else {
