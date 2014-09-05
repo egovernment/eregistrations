@@ -5,22 +5,30 @@ var Database    = require('dbjs')
   , validDbjs   = require('dbjs/valid-dbjs')
   , isGetter    = require('dbjs/_setup/utils/is-getter')
   , customError = require('es5-ext/error/custom')
-  , defineUser  = require('mano-auth/model/user')
 
   , getPrototypeOf = Object.getPrototypeOf
-  , migrateType, migrateProperty, migrateObject;
+  , migrateType, migrateObject, migrateProperty, migrateProperties;
 
 migrateType = function (type, targetDatabase) {
-	var prototype, sourceEvent, targetType;
-	targetType = targetDatabase.objects.getById(type.__id__);
+	var targetType = targetDatabase.objects.getById(type.__id__);
 	if (targetType) return targetType;
-	prototype = migrateType(getPrototypeOf(type), targetDatabase);
-	sourceEvent = type._lastOwnEvent_;
-	new DbjsEvent(targetType = targetDatabase.objects.unserialize(type.__id__, prototype),
-		prototype, (sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
-	migrateObject(type, targetDatabase);
-	migrateObject(type.prototype, targetDatabase);
+	targetType = migrateObject(type, targetDatabase);
+	migrateProperties(type.prototype, targetDatabase);
 	return targetType;
+};
+
+migrateObject = function (obj, targetDatabase) {
+	var prototype, sourceEvent, targetObj;
+	if (!obj || !obj.__id__) throw new TypeError("WHAT!");
+	targetObj = targetDatabase.objects.getById(obj.__id__);
+	if (targetObj) return targetObj;
+	prototype = migrateObject(getPrototypeOf(obj), targetDatabase);
+	if (typeof obj !== 'function') migrateType(obj.constructor, targetDatabase);
+	sourceEvent = obj._lastOwnEvent_;
+	new DbjsEvent(targetObj = targetDatabase.objects.unserialize(obj.__id__, prototype),
+		prototype, (sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
+	migrateProperties(obj, targetDatabase);
+	return targetObj;
 };
 
 migrateProperty = function (sourceDesc, targetDatabase) {
@@ -60,13 +68,13 @@ migrateProperty = function (sourceDesc, targetDatabase) {
 	return true;
 };
 
-migrateObject = function (source, targetDatabase) {
+migrateProperties = function (source, targetDatabase) {
 	var isFullCopy = !(source.master instanceof source.database.Object), sKey, desc, anyDefined;
 
 	for (sKey in source.__descriptors__) {
 		desc = source.__descriptors__[sKey];
 		if (desc.nested) {
-			if (migrateObject(source.get(desc.key), targetDatabase)) {
+			if (migrateProperties(source.get(desc.key), targetDatabase)) {
 				anyDefined = true;
 				migrateProperty(desc, targetDatabase);
 			}
@@ -85,9 +93,7 @@ module.exports = function (mainDb) {
 	if (!mainDb.User) throw customError('User type not found on source database', 'NO_USER_IN_DB');
 
 	statsDb = new Database();
-	defineUser(statsDb);
 
-	migrateObject(mainDb.User, statsDb);
-	migrateObject(mainDb.User.prototype, statsDb);
+	migrateType(mainDb.User, statsDb);
 	return statsDb;
 };
