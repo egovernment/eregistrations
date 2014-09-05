@@ -137,14 +137,16 @@ e.g.:
 }
 
 .fa-chevron-circle-left {
-	width: 0.9em;
+	width: 0.93em;
+	padding-left: 1px;
 }
 .fa-chevron-circle-left:before {
 	content: '\f137';
 }
 
 .fa-chevron-circle-right {
-	width: 0.9em;
+	width: 0.93em;
+	padding-left: 1px;
 }
 .fa-chevron-circle-right:before {
 	content: '\f138';
