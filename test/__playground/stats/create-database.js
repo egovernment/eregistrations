@@ -1,10 +1,10 @@
 'use strict';
 
-var Database     = require('dbjs')
-  , db           = new Database()
-  , DateType     = require('dbjs-ext/date-time/date')(db)
-  , StringLine   = require('dbjs-ext/string/string-line')(db)
-  , UsDollar     = require('dbjs-ext/number/currency/us-dollar')(db)
+var Database   = require('dbjs')
+  , db         = new Database()
+  , DateType   = require('dbjs-ext/date-time/date')(db)
+  , StringLine = require('dbjs-ext/string/string-line')(db)
+  , UsDollar   = require('dbjs-ext/number/currency/us-dollar')(db)
 
   , defineTestProperties, TypeA, TypeB, TypeC, TypeD, user;
 
