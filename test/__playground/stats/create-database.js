@@ -2,12 +2,13 @@
 
 var Database     = require('dbjs')
   , db           = new Database()
-  , User         = require('mano-auth/model/user')(db)
   , DateType     = require('dbjs-ext/date-time/date')(db)
   , StringLine   = require('dbjs-ext/string/string-line')(db)
   , UsDollar     = require('dbjs-ext/number/currency/us-dollar')(db)
 
-  , user = User.prototype, defineTestProperties, TypeA, TypeB, TypeC, TypeD;
+  , defineTestProperties, TypeA, TypeB, TypeC, TypeD, user;
+
+user = db.Object.extend('User').prototype;
 
 defineTestProperties = function (obj) {
 	return obj.defineProperties({
