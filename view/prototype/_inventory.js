@@ -21,13 +21,13 @@ module.exports = inventario = modal(
 			container = ul(
 				inventoryFields,
 				function (name) {
-					var list, totalTxt, desc = user.$get(name), control;
+					var list, desc = user.$get(name), control;
 					li(
 						h3(desc.label),
 						p(desc.description),
 						list = div(
 							{ class: 'single-section-cost' },
-							window.control = control = user._get(name).toDOMInput(
+							control = user._get(name).toDOMInput(
 								document,
 								{
 									minInputsCount: 1,
@@ -44,11 +44,6 @@ module.exports = inventario = modal(
 										return a({ class: 'dbjs-multiple-button-remove' }, "x");
 									}
 								}
-							),
-							p(
-								{ class: 'total-section-costs' },
-								span("Total: "),
-								totalTxt = span({ class: 'total' }, "$0")
 							)
 						),
 						script(function (list, totalTxt) {
@@ -66,9 +61,15 @@ module.exports = inventario = modal(
 								totalTxt.data = '$' + total;
 
 							});
-						}, list.getId(), totalTxt.getId())
+						}, list.getId(), 'span-total-' + name)
 					);
-
+					control.dom.querySelector('.controls').appendChild(
+						p(
+							{ class: 'total-section-costs' },
+							span("Total: "),
+							span({ id: 'span-total-' + name, class: 'total' }, "$0")
+						)
+					);
 					control.on('change', function () {
 						var items, ph;
 						items = list.querySelectorAll('input[type=text]');
