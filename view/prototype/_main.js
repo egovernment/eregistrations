@@ -5,7 +5,7 @@ var login = require('./_login'),
 
 exports.body = function () {
 	header({ class: 'header-top-wrapper' },
-		div({ class: 'header-top' },
+		div({ class: 'content header-top' },
 			div(a({ href: '/' },
 					img({ src: '/img/logo-2.png' })
 					)
