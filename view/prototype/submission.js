@@ -4,31 +4,28 @@ var db = require('mano').db,
 	user = db.User.prototype;
 
 exports.step = function () {
-	section({ class: 'section-primary' },
-		h1("5. Send your file"),
-		div(h2("Where do you want to withdraw your documents?"),
-			hr(),
-			form(ul({ class: 'form-elements fieldset' },
-					['placeOfWithdraw'],
-					function (name) { return field({ dbjs: user.getObservable(name) }); }
-					)
+	h1("5. Send your file");
+	div({ class: 'section-primary' },
+		h2("Where do you want to withdraw your documents?"),
+		hr(),
+		form(ul({ class: 'form-elements fieldset' },
+				['placeOfWithdraw'],
+				function (name) { return field({ dbjs: user.getObservable(name) }); }
+				)
+			),
+		p({ class: 'submit-placeholder' }, input({ type: 'submit' }, "Save"))
+		);
+
+	div({ class: 'section-primary' },
+		h2("Who will pick the certificates?"),
+		hr(),
+		form(ul({ class: 'form-elements fieldset' },
+			['pickCertificates', 'lastName', 'dateOfBirth', 'inventory'],
+				function (name) { return field({ dbjs: user.getObservable(name) }); }
 				),
 			p({ class: 'submit-placeholder' }, input({ type: 'submit' }, "Save"))
 			)
 		);
-
-	section(
-		{ class: 'section-primary' },
-		div(h2("Who will pick the certificates?"),
-			hr(),
-			form(ul({ class: 'form-elements fieldset' },
-				['pickCertificates', 'lastName', 'dateOfBirth', 'inventory'],
-					function (name) { return field({ dbjs: user.getObservable(name) }); }
-					),
-				p({ class: 'submit-placeholder' }, input({ type: 'submit' }, "Save"))
-				)
-			)
-	);
 
 	section(
 		{ class: 'section-warning' },

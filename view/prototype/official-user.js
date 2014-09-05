@@ -2,7 +2,6 @@
 
 exports['sub-main'] = function () {
 	section(
-		{ class: 'submitted-main' },
 		table(
 			{ class: 'submitted-user-data-table table-responsive' },
 			thead(
@@ -57,9 +56,11 @@ exports['sub-main'] = function () {
 			)
 		)
 	);
+
 	section(
-		{ class: 'section-primary' },
 		div(
+
+			{ class: 'section-primary' },
 			h2({ class: 'container-with-nav' }, "Application history",
 				a({ class: 'fa fa-print' }, "Print")
 				),
@@ -113,7 +114,7 @@ exports['sub-main'] = function () {
 		)
 	);
 	section(
-		{ class: 'section-primary section-tab-nav' },
+		{ class: 'section-tab-nav' },
 		a({ class: 'tab', id: 'official-form', href: '/official/user-id/' },
 			"Certificate of incorporation"
 			),

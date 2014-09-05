@@ -11,8 +11,8 @@
 	justify-content: space-between;
 	align-items: center;
 	margin: 0 auto;
-	max-width: var(--desktop-width);
-	padding: 11px 10px;
+	padding-top: 11px;
+	padding-bottom: 11px;
 }
 
 .header-top-wrapper {
@@ -96,9 +96,16 @@ Styles applied while screen sieze is less than 640px
 		flex-wrap: wrap;
 		min-width: var(--min-mobile-width);
 	}
-	.header-top div, .header-top nav {
-		margin: 0 auto;
+	.header-top div,
+	.header-top nav {
 		text-align: center;
+	}
+	.header-top div {
+		margin: 0 auto;
+	}
+
+	.header-top nav {
+		margin:  11px auto 0;
 	}
 	.menu-top {
 		padding-left: 0;
