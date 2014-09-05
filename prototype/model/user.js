@@ -173,7 +173,7 @@ user.partners.add(Partner.newNamed('partnerFrank',
 	}));
 user.partners.add(Partner.newNamed('partnerBita', { firstName: "Bita", lastName: "Mortazavi" }));
 
-Submission.extend('DocumentASubmission', {},
+Submission.extend('DocumentASubmission',
 	{ Document: { value: Document.extend('DocumentA', {}, { label: { value: "Document A" } }) } });
 Submission.extend('DocumentBSubmission', {},
 	{ Document: { value: Document.extend('DocumentB', {}, { label: { value: "Document B" } }) } });
@@ -239,3 +239,5 @@ file.thumb = db.JpegFile.newNamed('docBSubFile1Thumb', {
 	name: 'idoc.jpg'
 });
 user.submissions.documentB.files.add(file);
+
+user.submissions.documentA.getOwnDescriptor('isApproved').statsBase = null;
