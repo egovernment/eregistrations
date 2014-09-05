@@ -23,6 +23,7 @@ migrateObject = function (obj, targetDatabase) {
 	if (targetObj) return targetObj;
 	prototype = migrateObject(getPrototypeOf(obj), targetDatabase);
 	if (typeof obj !== 'function') migrateType(obj.constructor, targetDatabase);
+	else if (obj.object !== obj) migrateObject(obj.object, targetDatabase);
 	sourceEvent = obj._lastOwnEvent_;
 	new DbjsEvent(targetObj = targetDatabase.objects.unserialize(obj.__id__, prototype),
 		prototype, (sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
