@@ -1,18 +1,20 @@
-.entity-options {
+.entity-header {
 	display: flex;
 	justify-content: space-between;
+	padding-top: 22px;
+}
+.section-primary .entity-header {
+	padding-top: 0;
 }
 
-.section-primary > .entity-options	{
-	background: none;
-	border:none;
-	padding-top: 0;
-	padding-left: 0;
-	padding-right: 0;
+.entity-header h1 {
+	margin: 0;
 }
-.section-primary > .entity-options .entity-actions a:last-child {
+
+.entity-header .entity-actions a:last-child {
 	margin-right: 0;
 }
+
 .entity-actions a {
 	background-color: #999;
 	-moz-border-radius: 3px;

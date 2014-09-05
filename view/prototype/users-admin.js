@@ -21,6 +21,7 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'submitted-main' },
 		div(
+			{ class: 'submitted-add-user' },
 			a({ class: 'button-main ', href: '/users-admin/add-user/' }, "New User")
 		),
 		table(
