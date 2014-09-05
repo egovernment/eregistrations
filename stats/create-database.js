@@ -19,7 +19,6 @@ migrateType = function (type, targetDatabase) {
 
 migrateObject = function (obj, targetDatabase) {
 	var prototype, sourceEvent, targetObj;
-	if (!obj || !obj.__id__) throw new TypeError("WHAT!");
 	targetObj = targetDatabase.objects.getById(obj.__id__);
 	if (targetObj) return targetObj;
 	prototype = migrateObject(getPrototypeOf(obj), targetDatabase);
