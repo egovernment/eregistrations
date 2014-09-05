@@ -8,8 +8,11 @@
     "type": "git",
     "url": "git://github.com/egovernment/eregistrations.git"
   },
-  "devDependencies": {
+  "dependencies": {
     "dbjs": "git://github.com/medikoo/dbjs.git",
+    "es5-ext": "~0.10.4"
+  },
+  "devDependencies": {
     "dbjs-ext": "git://github.com/medikoo/dbjs-ext.git",
     "xlint": "~0.2.1",
     "xlint-csslint-next": "0.1.x",
