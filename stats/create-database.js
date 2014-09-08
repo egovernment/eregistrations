@@ -60,10 +60,8 @@ migrateProperty = function (sourceDesc, targetDatabase) {
 		new DbjsEvent(targetDatabase.objects.unserialize(subDesc.__id__), value,
 			(sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
 	});
-	if (!sourceDesc.hasOwnProperty('_value_') || (sourceDesc._value_ === undefined)) {
-		return hasInformation;
-	}
 	value = sourceDesc._value_;
+	if (!sourceDesc.hasOwnProperty('_value_') || (value === undefined)) return hasInformation;
 	if (sourceDesc.master instanceof sourceDesc.database.Object) {
 		if (isGetter(value)) {
 			if (!sourceDesc.hasOwnProperty('statsBase')) return hasInformation;
