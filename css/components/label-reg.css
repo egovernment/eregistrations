@@ -4,11 +4,12 @@
 	color: var(--white-text);
 	font-weight: bold;
 	display: inline-block;
-	margin: -1px 4px -2px 0;
+	margin: 0 4px 0 0;
 	padding: 0 4px;
 	font-size: 12px;
 	text-transform: uppercase;
-	line-height: 20px;
+	line-height: 19px;
+	vertical-align: top;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
