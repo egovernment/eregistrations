@@ -2,9 +2,11 @@
 
 var db = require('mano').db,
 	user = db.User.prototype,
+	inventory = require('./_inventory'),
 	reqRadio;
 
 exports.step = function () {
+	insert(inventory);
 	section({ class: 'user-guide' },
 			h1("1. Individual registration guide for companies"
 			),
@@ -12,11 +14,28 @@ exports.step = function () {
 				div({ class: 'guide-box' }, h2("Questions"),
 					hr(),
 					ul({ class: 'form-elements' },
-					['businessActivity', 'isOwner', 'inventory', 'surfaceArea', 'members',
-						'companyType', 'isShoppingGallery'], function (name) {
-						li(div({ class: 'dbjs-input-component' },
-							label(user.getDescriptor(name).label, ":"),
-							div({ class: 'control' }, input({ dbjs: user.getObservable(name) }))));
+					['businessActivity',
+						'isOwner',
+						'inventory',
+						'surfaceArea', 'members',
+						'companyType',
+						'isShoppingGallery'],
+					function (name) {
+						if (name === 'inventory') {
+							li(div({ class: 'dbjs-input-component' },
+								label(user.getDescriptor(name).label, ":"),
+								div({ class: 'control' }, input({ dbjs: user.getObservable(name) }))));
+							div({ class: 'inventory-button' },
+								a({ onclick: inventory.show },
+									span({ class: 'fa fa-calculator icon' }, "Calculator"),
+									span({ class: 'label' }, "Calculate the amount")
+									)
+								);
+						} else {
+							li(div({ class: 'dbjs-input-component' },
+								label(user.getDescriptor(name).label, ":"),
+								div({ class: 'control' }, input({ dbjs: user.getObservable(name) }))));
+						}
 					})),
 				div({ class: 'guide-box' }, h2("Registrations"),
 					hr(),

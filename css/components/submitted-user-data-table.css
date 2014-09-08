@@ -1,3 +1,7 @@
+.submitted-user-data-table {
+	margin: 22px 0;
+}
+
 .submitted-user-data-table  thead {
 	background-color: var(--normal-background);
 }

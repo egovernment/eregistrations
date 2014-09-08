@@ -10,7 +10,8 @@ var archiver = require('archiver')
   , renameFile = promisify(fs.rename)
   , path = require('path')
   , resolve = path.resolve
-  , envUploadsDir = require('mano').uploadsPath;
+  , envUploadsDir = require('mano').uploadsPath
+  , toSafeFileName = require('mano/lib/utils/to-ident');
 
 module.exports = function (user/*, options*/) {
 	var def = deferred()
@@ -19,19 +20,20 @@ module.exports = function (user/*, options*/) {
 	  , files = []
 	  , missingFiles = []
 	  , archDocumentName
-	  , zipTempName = user.applicationNumber + '.'
+	  , zipTempName = user.__id__ + '.'
 			+ replace.call(user.fullName, ' ', '-') + Date.now() + '.zip'
-	  , zipName = user.applicationNumber + '.'
+	  , zipName = user.__id__ + '.'
 			+ replace.call(user.fullName, ' ', '-') + '.zip';
 
 	if (options.uploadsPath != null) uploadsPath = options.uploadsPath;
 	else uploadsPath = envUploadsDir;
 
-	user.uploadedSubmissions.forEach(function (doc) {
-		var docName = doc.constructor.Document.label, zipFileName, index = 0;
+	user.requiredSubmissions.forEach(function (submission) {
+		var docName = submission.label, zipFileName, index = 0;
 		docName = replace.call(docName, ' ', '-');
-		zipFileName = user.applicationNumber + "." + docName;
-		doc.files.forEach(function (file) {
+		zipFileName = user.companyName ? toSafeFileName(user.companyName) : user.__id__;
+		zipFileName += "." + docName;
+		submission.files.forEach(function (file) {
 			var fileExtension, archFile;
 			if (!file.path) return;
 			fileExtension = path.extname(file.path);
@@ -47,7 +49,9 @@ module.exports = function (user/*, options*/) {
 	if (options.extraFiles) {
 		options.extraFiles.forEach(function (file) {
 			if (file.path) {
-				archDocumentName =  user.applicationNumber + "."
+				archDocumentName = user.companyName ?
+						toSafeFileName(user.companyName) : user.__id__;
+				archDocumentName +=  "."
 					+ file.name
 					+ path.extname(file.path);
 				files.push({ path: file.path,

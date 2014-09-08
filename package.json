@@ -8,10 +8,16 @@
     "type": "git",
     "url": "git://github.com/egovernment/eregistrations.git"
   },
+  "dependencies": {
+    "dbjs": "git://github.com/medikoo/dbjs.git",
+    "es5-ext": "~0.10.4"
+  },
   "devDependencies": {
+    "dbjs-ext": "git://github.com/medikoo/dbjs-ext.git",
     "xlint": "~0.2.1",
     "xlint-csslint-next": "0.1.x",
-    "xlint-jslint-medikoo": "0.1.x"
+    "xlint-jslint-medikoo": "0.1.x",
+    "tad": "0.2.x"
   },
   "scripts": {
     "start": "node node_modules/mano/bin/start",
@@ -26,7 +32,8 @@
     "lint-log-console": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js --watch --logView",
     "css-lint": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css",
     "css-lint-console": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css --watch",
-    "css-lint-ci": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css --no-cache --no-stream"
+    "css-lint-ci": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css --no-cache --no-stream",
+    "test": "node node_modules/tad/bin/tad stats"
   },
   "engines": {
     "node": ">=0.8"
