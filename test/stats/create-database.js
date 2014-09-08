@@ -5,11 +5,11 @@ var source = require('../__playground/stats/create-database');
 module.exports = function (t, a) {
 	var target = t(source), targetUser = target.User.prototype, desc, testObject;
 
-	testObject = function (obj, deepTestCase) {
+	testObject = function (obj) {
 		var desc;
 		a.h3("Not imported");
 		a.not(obj.$get('regular').object, obj);
-		if (!deepTestCase) a.not(obj.$get('regularValue').object.__id__, obj.__id__, "Value");
+		a.not(obj.$get('regularValue').object.__id__, obj.__id__, "Value");
 		a.not(obj.$get('regularComputed').object, obj, "Computed");
 
 		a.h3("Imported");
@@ -82,10 +82,16 @@ module.exports = function (t, a) {
 		"Non stats parent");
 
 	a.h2("Imported");
-	desc = targetUser.nestedBridgeStats.$get('regularValue');
+	desc = targetUser.nestedBridgeStats.$get('bridgeRegularValue');
 	a(desc.object, targetUser.nestedBridgeStats, "Owner");
 	a(!desc.hasOwnProperty('_value_') || desc._value_ === undefined, true, "Value");
 	a.deep(desc, { type: target.UsDollar }, "Data");
+
+	a.h3("Computed deep");
+	desc = targetUser.nestedBridgeStats.$get('bridgeRegularComputed');
+	a(desc.object, targetUser.nestedBridgeStats, "Owner");
+	a(desc._value_, false, "Value");
+	a.deep(desc, {}, "Data");
 
 	a.h1("Types");
 	a.h2("Not Imported");
@@ -111,11 +117,15 @@ module.exports = function (t, a) {
 	a.deep(desc, { type: target.String }, "Data");
 
 	a.h2("Prototype properties");
-	testObject(target.TypeC.prototype, true);
+	testObject(target.TypeC.prototype);
 	a.h3("Demanded by extension");
-	desc = target.TypeC.prototype.$get('regularValue');
+	desc = target.TypeC.prototype.$get('bridgeRegularValue');
 	a(desc.object, target.TypeC.prototype, "Owner");
 	a(desc._value_, 'foo', "Value");
 	a.deep(desc, { type: target.String }, "Data");
 
+	desc = target.TypeC.prototype.$get('bridgeRegularComputed');
+	a(desc.object, target.TypeC.prototype, "Owner");
+	a(desc._value_, undefined, "Value");
+	a.deep(desc, { type: target.String }, "Data");
 };
