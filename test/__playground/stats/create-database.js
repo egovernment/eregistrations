@@ -50,6 +50,11 @@ defineTestProperties = function (obj) {
 			type: db.String,
 			value: function () {},
 			statsBase: 'def'
+		},
+		statsMultiple: {
+			type: UsDollar,
+			multiple: true,
+			statsBase: null
 		}
 	});
 };
