@@ -52,7 +52,7 @@ defineTestProperties = function (obj) {
 			statsBase: 'def'
 		},
 		statsMultiple: {
-			type: UsDollar,
+			type: db.Number,
 			multiple: true,
 			statsBase: null
 		}

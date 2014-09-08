@@ -49,6 +49,11 @@ module.exports = function (t, a) {
 		a(desc.hasOwnProperty('_value_') && desc._value_, 'def', "Value");
 		a.deep(desc, { type: target.String }, "Data");
 
+		a.h4("Multiple");
+		desc = obj.$get('statsMultiple');
+		a(desc.object, obj, "Owner");
+		a(desc.hasOwnProperty('_value_') && desc._value_, undefined, "Value");
+		a.deep(desc, { type: target.Number, multiple: true }, "Data");
 	};
 
 	a.h1("Direct properties");
