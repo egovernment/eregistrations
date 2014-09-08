@@ -22,6 +22,10 @@
 .official-users-table tbody tr td {
 		padding: 11px 25px 10px;
 		vertical-align: top;
+		line-height: 22px;
+	}
+	.official-users-table tbody tr .actions {
+		padding: 10px 25px 9px;
 	}
 .official-users-table tbody tr td a {
 	display: block;
@@ -41,10 +45,6 @@
 	display: block;
 	width: 100%;
 	font-weight: normal;
-}
-
-.official-users-table tbody tr td.actions {
-	padding: 11px 25px 32px;
 }
 
 .official-users-table tbody tr td.actions a {

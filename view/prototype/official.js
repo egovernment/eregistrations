@@ -72,15 +72,15 @@ exports['sub-main'] = function () {
 		tbody(
 			tr(
 				td(
-					{ class: 'user-basic-data' },
+					{ class: '' },
 					div(
-						a({ href: '/official/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
+						a({ href: '/official/user-id/' }, "John Watson"
+
 							)
 					)
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "4068-50001-N-2013 4068-50001-N-2013"))
+					div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
 				),
 				td(
 					{ class: 'desktop-only' },

@@ -3,7 +3,7 @@
 exports['sub-main'] = function () {
 	section(
 		table(
-			{ class: 'submitted-user-data-table table-responsive' },
+			{ class: 'official-users-table table-responsive' },
 			thead(
 				tr(
 					th("Status"),
@@ -16,10 +16,12 @@ exports['sub-main'] = function () {
 			tbody(
 				tr(
 					td(
+						a(
 						div({ class: 'cell-caption' },
 							"Status"),
 						div({ class: 'cell-body' },
 							"Pending for revision")
+						)
 					),
 					td(
 						div({ class: 'cell-caption' },

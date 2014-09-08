@@ -37,7 +37,7 @@ exports['sub-main'] = function () {
 						div({ class: 'cell-caption' },
 							"Status"),
 						div({ class: 'cell-body' },
-							"Pending for revision")
+							"Pending")
 					),
 					td(
 						div({ class: 'cell-caption' },

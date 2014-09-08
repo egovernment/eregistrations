@@ -4,8 +4,9 @@
 	color: var(--white-text);
 	font-weight: bold;
 	display: inline-block;
-	margin: 0 4px 4px 0;
-	padding: 1px 4px;
+	margin: -1px 4px -2px 0;
+	padding: 0 4px;
 	font-size: 12px;
 	text-transform: uppercase;
+	line-height: 20px;
 }
