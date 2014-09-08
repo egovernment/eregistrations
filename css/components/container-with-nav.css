@@ -17,9 +17,11 @@ h2.container-with-nav .fa {
 	background: var(--light-background);
 	border-radius: 3px;
 	border: 1px solid var(--light-inner-border);
-	padding: 5px 8px;
+	padding: 3px 8px;
 	cursor: pointer;
 	text-decoration: none;
+	margin: -5px 2px;
+	text-align: center;
 }
 .container-with-nav .button:hover,
 .container-with-nav .button:focus,
@@ -30,11 +32,11 @@ h2.container-with-nav .fa {
 }
 
 .container-with-nav .button .fa {
-	padding-top: 5px;
+	padding-top: 2px;
 }
 
 .container-with-nav a:last-child {
-	margin-left: 10px;
+	margin-right: 0;
 }
 
 .container-with-nav a span {
@@ -44,4 +46,5 @@ h2.container-with-nav .fa {
 }
 .container-with-nav div {
 	min-width: 30%;
+	display: flex;
 }
