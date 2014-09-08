@@ -72,10 +72,9 @@ exports['sub-main'] = function () {
 		tbody(
 			tr(
 				td(
-					{ class: '' },
 					div(
-						a({ href: '/official/user-id/' }, "John Watson"
-
+						a({ href: '/official/user-id/' }, "John Watson",
+							span('johnwatson@gmail.com')
 							)
 					)
 				),
