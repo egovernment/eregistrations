@@ -16,12 +16,10 @@ exports['sub-main'] = function () {
 			tbody(
 				tr(
 					td(
-						a(
 						div({ class: 'cell-caption' },
 							"Status"),
 						div({ class: 'cell-body' },
 							"Pending for revision")
-						)
 					),
 					td(
 						div({ class: 'cell-caption' },
