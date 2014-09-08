@@ -19,15 +19,17 @@
 	border: 1px solid var(--light-inner-border);
 	padding: 0;
 }
+.official-users-table tbody tr td {
+		padding: 11px 25px 10px;
+		vertical-align: top;
+	}
 .official-users-table tbody tr td a {
 	display: block;
 	width: 100%;
 	position: relative;
-	padding: 11px 25px 32px;
 	line-height: 22px;
 }
 .official-users-table tbody tr td.user-basic-data a {
-		padding: 11px 25px 10px;
 		font-weight: bold;
 }
 .official-users-table tbody tr td a:hover,
@@ -67,4 +69,30 @@
 	list-style-type: none;
 	margin-bottom: 0;
 	margin: -6px 0;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+
+	.official-users-table.table-responsive tr {
+		border: 1px solid var(--light-inner-border);
+		height: auto;
+		}
+
+	.official-users-table.table-responsive td {
+		border-bottom: 1px solid var(--light-inner-border);
+		position: relative;
+		}
+
+	.official-users-table.table-responsive td {
+		display: flex;
+		justify-content: space-around;
+		padding: 0;
+		}
+
+	.official-users-table.table-responsive th {
+		display: none;
+	}
+	.official-users-table.table-responsive tbody tr td {
+		padding: 0;
+	}
 }
