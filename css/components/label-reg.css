@@ -14,6 +14,6 @@
 
 @media only screen and (max-width: var(--mobile-width)) {
 	.label-reg {
-		margin-top: 4px;
+		margin-top: 2px;
 	}
 }
