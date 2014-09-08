@@ -59,7 +59,7 @@ exports['sub-main'] = function () {
 		)
 	);
 	table(
-		{ class: 'official-users-table' },
+		{ class: 'submitted-user-data-table' },
 		thead(
 			tr(
 				th("User"),
@@ -72,7 +72,6 @@ exports['sub-main'] = function () {
 		tbody(
 			tr(
 				td(
-					{ class: 'user-basic-data' },
 					div(
 						a({ href: '/official/user-id/' }, "John Watson",
 							span('johnwatson@gmail.com')

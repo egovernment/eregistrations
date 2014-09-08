@@ -4,8 +4,16 @@
 	color: var(--white-text);
 	font-weight: bold;
 	display: inline-block;
-	margin: 0 4px 4px 0;
-	padding: 1px 4px;
+	margin: 0 4px 0 0;
+	padding: 0 4px;
 	font-size: 12px;
 	text-transform: uppercase;
+	height: 20px;
+	vertical-align: top;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.label-reg {
+		margin-top: 2px;
+	}
 }
