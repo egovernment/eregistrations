@@ -1,0 +1,9 @@
+.partners-list td:not(.actions) a {
+	text-align: center;
+	padding: 14px 6px;
+	display: block;
+	width: 100%;
+}
+.partners-list thead tr {
+	height: 44px;
+}
