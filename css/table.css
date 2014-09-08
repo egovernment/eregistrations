@@ -10,7 +10,9 @@ tbody tr:nth-of-type(odd) {
 th {
 	color: var(--dark-text);
 }
-
+td {
+	height: 44px;
+}
 td a {
 	text-decoration: none;
 	color: var(--dark-text);

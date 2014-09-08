@@ -24,6 +24,10 @@
 	vertical-align: top;
 	line-height: 22px;
 }
+.submitted-user-data-table tbody tr td > a:only-child {
+	padding: 11px 25px 10px;
+	margin: -11px -25px -10px ;
+}
 
 .submitted-user-data-table tbody tr .actions {
 	padding: 10px 25px 9px;
@@ -31,8 +35,6 @@
 
 .submitted-user-data-table tbody tr td a {
 	display: block;
-	width: 100%;
-	position: relative;
 	line-height: 22px;
 }
 .submitted-user-data-table tbody tr td.user-basic-data a {
@@ -89,6 +91,7 @@
 		display: flex;
 		justify-content: space-around;
 		padding: 0;
+		height: auto;
 		}
 
 	.submitted-user-data-table.table-responsive th {
