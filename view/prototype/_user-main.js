@@ -19,25 +19,25 @@ exports.main = function () {
 					div({ style: 'width: 100%' })
 				),
 				menuitem(
-					a({ class: 'step-unactive', href: '/forms/' },
+					a({ class: 'step-inactive', href: '/forms/' },
 						"2. Fill the form"
 						),
 					div({ style: 'width: 50%' })
 				),
 				menuitem(
-					a({ class: 'step-unactive', href: '/documents/' },
+					a({ class: 'step-inactive', href: '/documents/' },
 						"3. Upload docs"
 						),
 					div()
 				),
 				menuitem(
-					a({ class: 'step-unactive' },
+					a({ class: 'step-inactive' },
 						"4. Pay"
 						),
 					div()
 				),
 				menuitem(
-					a({ class: 'step-unactive', href: '/submission/' },
+					a({ class: 'step-inactive', href: '/submission/' },
 						"5. Send file"
 						),
 					div()

@@ -49,7 +49,7 @@ exports['sub-main'] = function () {
 						div({ class: 'cell-caption' },
 							""),
 						div({ class: 'cell-body' },
-							a({ class: 'fa fa-download' }, "Print")
+							a(span({ class: 'fa fa-download' }, "Download"))
 							)
 					)
 				)
