@@ -1,13 +1,14 @@
 'use strict';
 
-var Database     = require('dbjs')
-  , db           = new Database()
-  , User         = require('mano-auth/model/user')(db)
-  , DateType     = require('dbjs-ext/date-time/date')(db)
-  , StringLine   = require('dbjs-ext/string/string-line')(db)
-  , UsDollar     = require('dbjs-ext/number/currency/us-dollar')(db)
+var Database   = require('dbjs')
+  , db         = new Database()
+  , DateType   = require('dbjs-ext/date-time/date')(db)
+  , StringLine = require('dbjs-ext/string/string-line')(db)
+  , UsDollar   = require('dbjs-ext/number/currency/us-dollar')(db)
 
-  , user = User.prototype, defineTestProperties, TypeA, TypeB, TypeC, TypeD;
+  , defineTestProperties, TypeA, TypeB, TypeC, TypeD, user;
+
+user = db.Object.extend('User').prototype;
 
 defineTestProperties = function (obj) {
 	return obj.defineProperties({
@@ -70,6 +71,16 @@ TypeC.defineProperties({
 	}
 });
 defineTestProperties(TypeC.prototype);
+TypeC.prototype.defineProperties({
+	bridgeRegularValue: {
+		type: db.String,
+		value: 'foo'
+	},
+	bridgeRegularComputed: {
+		type: db.String,
+		value: function () {}
+	}
+});
 TypeD = TypeC.extend('TypeD');
 
 defineTestProperties(user);
@@ -150,9 +161,11 @@ user.statsNestedDeep.defineProperties({
 defineTestProperties(user.statsNestedDeep.statsNested);
 
 user.nestedBridge.$statsRegular.required = true;
-
 user.nestedBridgeStats.$statsRegular.required = true;
-user.nestedBridgeStats.$regularValue.statsBase = null;
-user.nestedBridgeStats.$regularValue.type = UsDollar;
+
+user.nestedBridgeStats.$bridgeRegularValue.statsBase = null;
+user.nestedBridgeStats.$bridgeRegularValue.type = UsDollar;
+
+user.nestedBridgeStats.$bridgeRegularComputed.statsBase = false;
 
 module.exports = db;

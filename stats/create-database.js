@@ -60,16 +60,13 @@ migrateProperty = function (sourceDesc, targetDatabase) {
 		new DbjsEvent(targetDatabase.objects.unserialize(subDesc.__id__), value,
 			(sourceEvent && sourceEvent.stamp) || 0); //jslint: ignore
 	});
-	if (!sourceDesc.hasOwnProperty('_value_') || (sourceDesc._value_ === undefined)) {
-		return hasInformation;
-	}
 	value = sourceDesc._value_;
-	if (sourceDesc.master instanceof sourceDesc.database.Object) {
-		if (isGetter(value)) {
-			if (!sourceDesc.hasOwnProperty('statsBase')) return hasInformation;
-			value = sourceDesc.statsBase;
-			if (value == null) return hasInformation;
-		}
+	if ((sourceDesc.master instanceof sourceDesc.database.Object) && isGetter(value)) {
+		if (!sourceDesc.hasOwnProperty('statsBase')) return hasInformation;
+		value = sourceDesc.statsBase;
+		if (value == null) return hasInformation;
+	} else if (!sourceDesc.hasOwnProperty('_value_') || (value === undefined)) {
+		return hasInformation;
 	}
 	sourceEvent = sourceDesc._lastOwnEvent_;
 	new DbjsEvent(targetDatabase.objects.unserialize(sourceDesc.__valueId__), value,
