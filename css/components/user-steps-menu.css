@@ -51,7 +51,7 @@
 	color: var(--white-text);
 }
 
-.step-unactive {
+.step-inactive {
 	background-color: var(--white-background);
 	background-image: none;
 	border-radius: 6px;
@@ -69,9 +69,9 @@
 	vertical-align: middle;
 	white-space: nowrap;
 }
-.step-unactive:hover,
-.step-unactive:focus,
-.step-unactive:active {
+.step-inactive:hover,
+.step-inactive:focus,
+.step-inactive:active {
 	background-color: var(--normal-background);
 	color: var(--white-text);
 }
