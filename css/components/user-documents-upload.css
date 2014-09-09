@@ -1,0 +1,6 @@
+.user-upload li h2 {
+	margin-bottom: 0;
+}
+.user-upload small {
+	color: var(--normal-text);
+}

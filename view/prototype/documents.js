@@ -9,7 +9,7 @@ exports.step = function () {
 		{ class: 'disabler-range', id: 'documents-disabler-range' },
 		section(
 			ul(
-				{ class: 'sections-primary-list user-upload' },
+				{ class: 'sections-primary-list user-documents-upload' },
 				user.requiredSubmissions,
 				function (submission) {
 					return li({ class: 'section-primary' },
