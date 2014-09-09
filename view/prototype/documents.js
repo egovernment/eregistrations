@@ -9,11 +9,19 @@ exports.step = function () {
 		{ class: 'disabler-range', id: 'documents-disabler-range' },
 		section(
 			ul(
-				{ class: 'sections-primary-list submissions' },
+				{ class: 'sections-primary-list user-documents-upload' },
 				user.requiredSubmissions,
 				function (submission) {
-					return li({ class: 'section-primary' }, form(div(h2(submission.label), hr(),
-									input({ dbjs: submission._files }))));
+					return li({ class: 'section-primary' },
+						form(
+							div(
+								h2(submission.label),
+								small(submission.legend),
+								hr(),
+								input({ dbjs: submission._files })
+							)
+						)
+						);
 				}
 			)
 		),
