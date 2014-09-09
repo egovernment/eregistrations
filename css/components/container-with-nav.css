@@ -48,3 +48,15 @@ h2.container-with-nav .fa {
 	min-width: 30%;
 	display: flex;
 }
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.container-with-nav {
+		flex-wrap: wrap;
+	}
+	.container-with-nav a:first-child {
+		margin-left: 0;
+	}
+	.container-with-nav div {
+		margin-top: 24px;
+	}
+}
