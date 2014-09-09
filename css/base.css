@@ -112,7 +112,7 @@ small {
 }
 
 hr {
-	background: var(--normal-background);
+	background: var(--light-background);
 	margin: 0 0 21px 0;
 	border: none;
 	height: 1px;
