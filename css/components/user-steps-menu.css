@@ -9,6 +9,16 @@
 	width: 100%;
 }
 
+.fixed-top-placeholder {
+	height: 66px;
+}
+
+.fixed-top-placeholder.fixed .steps-menu {
+	position: fixed;
+	top: 0;
+	z-index: 2;
+}
+
 .all-menu-items {
 	display: flex;
 }
