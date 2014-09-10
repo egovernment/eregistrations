@@ -1,5 +1,9 @@
 'use strict';
 
+var syncStyle = require('dom-ext/html-element/#/sync-style'),
+		source,
+		target;
+
 exports['sub-main'] = function () {
 	section(
 		{ class: 'submitted-main' },
@@ -164,7 +168,8 @@ exports['sub-main'] = function () {
 	);
 	section(
 		{ class: 'submitted-preview' },
-		div({ class: 'section-primary submitted-preview-document' },
+		source = div(
+			{ class: 'section-primary submitted-preview-document' },
 			div({ class: 'container-with-nav' },
 				h3(i({ class: 'list-item-number' }, "1"),
 					"Memorandum and articles of association"
@@ -222,8 +227,8 @@ exports['sub-main'] = function () {
 				),
 				input({ type: 'submit' }, "Save")
 			)
-			),
-		div({ class: 'section-primary submitted-preview-user-data' },
+		),
+		target = div({ class: 'section-primary submitted-preview-user-data' },
 			h3({ class: 'container-with-nav' }, "Application form",
 				a({ class: 'fa fa-print' }, "Print")
 				),
@@ -372,4 +377,5 @@ exports['sub-main'] = function () {
 			)
 			)
 	);
+	syncStyle.call(target, source, 'height');
 };

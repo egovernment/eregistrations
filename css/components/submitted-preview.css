@@ -8,13 +8,8 @@
 
 .submitted-preview-document {
 	width: 59%;
+	height: 100%;
 	margin: 0;
-	padding-top: 0
-}
-
-.submitted-preview-document > div:first-child {
-	padding-top: 22px;
-	margin-top: -2px;
 }
 
 .submitted-preview-document img {
