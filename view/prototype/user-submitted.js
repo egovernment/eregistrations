@@ -1,8 +1,6 @@
 'use strict';
 
-var syncStyle = require('dom-ext/html-element/#/sync-style'),
-		source,
-		target;
+var syncStyle = require('dom-ext/html-element/#/sync-style');
 
 exports['user-name'] = function () {
 	text("User Submited");
@@ -21,6 +19,9 @@ exports['submitted-menu'] = function () {
 };
 
 exports['sub-main'] = function () {
+	var source,
+			target;
+
 	section(
 		{ class: 'submitted-main' },
 		table(

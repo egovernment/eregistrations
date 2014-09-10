@@ -1,10 +1,11 @@
 'use strict';
 
-var syncStyle = require('dom-ext/html-element/#/sync-style'),
-		source,
-		target;
+var syncStyle = require('dom-ext/html-element/#/sync-style');
 
 exports['sub-main'] = function () {
+	var source,
+			target;
+
 	section(
 		{ class: 'submitted-main' },
 		table(

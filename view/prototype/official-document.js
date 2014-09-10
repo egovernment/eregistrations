@@ -1,12 +1,13 @@
 'use strict';
 
-var syncStyle = require('dom-ext/html-element/#/sync-style'),
-		source,
-		target;
+var syncStyle = require('dom-ext/html-element/#/sync-style');
 
 exports['official-user-details'] = { class: { active: true } };
 
 exports.tab = function () {
+	var source,
+			target;
+
 	div(
 		{ class: 'section-primary official-document' },
 		h3(
