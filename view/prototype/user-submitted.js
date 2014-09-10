@@ -84,7 +84,10 @@ exports['sub-main'] = function () {
 		{ class: 'section-primary' },
 		div(
 			h2({ class: 'container-with-nav' }, "History of your request",
-				a({ class: 'fa fa-print' }, "Print")
+				a(
+					{ class: 'hint--left', 'data-hint': 'Print history of Your request' },
+					span({ class: 'fa fa-print' }, "Print")
+				)
 				),
 			table(
 				{ class: 'submitted-user-history' },
