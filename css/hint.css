@@ -1,25 +1,17 @@
 /*! Hint.css - v1.3.3 - 2014-07-06
-* HINT.css is a tooltip library made in pure CSS.
-*
-* Source: https://github.com/chinchang/hint.css
-* Demo: http://kushagragour.in/lab/hint/
-*
+* HINT.css is a tooltip library made in pure CSS.*
 * Release under The MIT License
-*
 */
 .hint, [data-hint] {
 	position: relative;
 	display: inline-block;
-/**
-* tooltip arrow
-*/
-/**
-* tooltip body
-*/ }
+}
 .hint:before, .hint:after, [data-hint]:before, [data-hint]:after {
 	position: absolute;
 	-webkit-transform: translate3d(0, 0, 0);
 	-moz-transform: translate3d(0, 0, 0);
+	-o-transform: translate3d(0, 0, 0);
+	-ms-transform: translate3d(0, 0, 0);
 	transform: translate3d(0, 0, 0);
 	visibility: hidden;
 	opacity: 0;
@@ -27,9 +19,11 @@
 	pointer-events: none;
 	-webkit-transition: 0.3s ease;
 	-moz-transition: 0.3s ease;
+	-o-transition: 0.3s ease;
 	transition: 0.3s ease;
 	-webkit-transition-delay: 0ms;
 	-moz-transition-delay: 0ms;
+	-o-transition-delay: 0ms;
 	transition-delay: 0ms; }
 .hint:hover:before, .hint:hover:after, .hint:focus:before, .hint:focus:after, [data-hint]:hover:before, [data-hint]:hover:after, [data-hint]:focus:before, [data-hint]:focus:after {
 	visibility: visible;
@@ -37,6 +31,7 @@
 .hint:hover:before, .hint:hover:after, [data-hint]:hover:before, [data-hint]:hover:after {
 	-webkit-transition-delay: 100ms;
 	-moz-transition-delay: 100ms;
+	-o-transition-delay: 100ms;
 	transition-delay: 100ms; }
 .hint:before, [data-hint]:before {
 	content: '';
@@ -60,10 +55,10 @@
 * Defines the positoning logic for the tooltips.
 *
 * Classes added:
-* 	1) hint--top
-* 	2) hint--bottom
-* 	3) hint--left
-* 	4) hint--right
+* 1) hint--top
+* 2) hint--bottom
+* 3) hint--left
+* 4) hint--right
 */
 /**
 * set default color for tooltip arrows
@@ -93,6 +88,8 @@
 .hint--top:hover:after, .hint--top:hover:before, .hint--top:focus:after, .hint--top:focus:before {
 	-webkit-transform: translateY(-8px);
 	-moz-transform: translateY(-8px);
+	-o-transform: translateY(-8px);
+	-ms-transform: translateY(-8px);
 	transform: translateY(-8px); }
 
 /**
@@ -108,6 +105,8 @@
 .hint--bottom:hover:after, .hint--bottom:hover:before, .hint--bottom:focus:after, .hint--bottom:focus:before {
 	-webkit-transform: translateY(8px);
 	-moz-transform: translateY(8px);
+	-ms-transform: translateY(8px);
+	-o-transform: translateY(8px);
 	transform: translateY(8px); }
 
 /**
@@ -124,6 +123,8 @@
 .hint--right:hover:after, .hint--right:hover:before, .hint--right:focus:after, .hint--right:focus:before {
 	-webkit-transform: translateX(8px);
 	-moz-transform: translateX(8px);
+	-o-transform: translateX(8px);
+	-ms-transform: translateX(8px);
 	transform: translateX(8px); }
 
 /**
@@ -140,6 +141,8 @@
 .hint--left:hover:after, .hint--left:hover:before, .hint--left:focus:after, .hint--left:focus:before {
 	-webkit-transform: translateX(-8px);
 	-moz-transform: translateX(-8px);
+	-ms-transform: translateX(8px);
+	-o-transform: translateX(8px);
 	transform: translateX(-8px); }
 
 /**
@@ -148,10 +151,10 @@
 * Contains tooltips of various types based on color differences.
 *
 * Classes added:
-* 	1) hint--error
-* 	2) hint--warning
-* 	3) hint--info
-* 	4) hint--success
+* 1) hint--error
+* 2) hint--warning
+* 3) hint--info
+* 4) hint--success
 *
 */
 /**
@@ -159,7 +162,7 @@
 */
 .hint--error:after {
 	background-color: #b34e4d;
-	text-shadow: 0 -1px 0px #592726; }
+	text-shadow: 0 -1px 0 #592726; }
 .hint--error.hint--top:before {
 	border-top-color: #b34e4d; }
 .hint--error.hint--bottom:before {
@@ -174,7 +177,7 @@
 */
 .hint--warning:after {
 	background-color: #c09854;
-	text-shadow: 0 -1px 0px #6c5328; }
+	text-shadow: 0 -1px 0 #6c5328; }
 .hint--warning.hint--top:before {
 	border-top-color: #c09854; }
 .hint--warning.hint--bottom:before {
@@ -189,7 +192,7 @@
 */
 .hint--info:after {
 	background-color: #3986ac;
-	text-shadow: 0 -1px 0px #193b4d; }
+	text-shadow: 0 -1px 0 #193b4d; }
 .hint--info.hint--top:before {
 	border-top-color: #3986ac; }
 .hint--info.hint--bottom:before {
@@ -204,7 +207,7 @@
 */
 .hint--success:after {
 	background-color: #458746;
-	text-shadow: 0 -1px 0px #1a321a; }
+	text-shadow: 0 -1px 0 #1a321a; }
 .hint--success.hint--top:before {
 	border-top-color: #458746; }
 .hint--success.hint--bottom:before {
@@ -220,7 +223,7 @@
 * Defines a persisted tooltip which shows always.
 *
 * Classes added:
-* 	1) hint--always
+* 1) hint--always
 *
 */
 .hint--always:after, .hint--always:before {
@@ -229,18 +232,26 @@
 .hint--always.hint--top:after, .hint--always.hint--top:before {
 	-webkit-transform: translateY(-8px);
 	-moz-transform: translateY(-8px);
+	-o-transform: translateY(-8px);
+	-ms-transform: translateY(-8px);
 	transform: translateY(-8px); }
 .hint--always.hint--bottom:after, .hint--always.hint--bottom:before {
 	-webkit-transform: translateY(8px);
 	-moz-transform: translateY(8px);
+	-o-transform: translateY(8px);
+	-ms-transform: translateY(8px);
 	transform: translateY(8px); }
 .hint--always.hint--left:after, .hint--always.hint--left:before {
 	-webkit-transform: translateX(-8px);
 	-moz-transform: translateX(-8px);
+	-o-transform: translateX(-8px);
+	-ms-transform: translateX(-8px);
 	transform: translateX(-8px); }
 .hint--always.hint--right:after, .hint--always.hint--right:before {
 	-webkit-transform: translateX(8px);
 	-moz-transform: translateX(8px);
+	-o-transform: translateX(8px);
+	-ms-transform: translateX(8px);
 	transform: translateX(8px); }
 
 /**
@@ -249,9 +260,9 @@
 * Defines rounded corner tooltips.
 *
 * Classes added:
-* 	1) hint--rounded
+* 1) hint--rounded
 *
- */
+*/
 .hint--rounded:after {
 	border-radius: 4px; }
 
@@ -261,16 +272,18 @@
 * Defines various transition effects for the tooltips.
 *
 * Classes added:
-* 	1) hint--no-animate
-* 	2) hint--bounce
+* 1) hint--no-animate
+* 2) hint--bounce
 *
 */
 .hint--no-animate:before, .hint--no-animate:after {
 	-webkit-transition-duration: 0ms;
 	-moz-transition-duration: 0ms;
+	-o-transition-duration: 0ms;
 	transition-duration: 0ms; }
 
 .hint--bounce:before, .hint--bounce:after {
 	-webkit-transition: opacity 0.3s ease, visibility 0.3s ease, -webkit-transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
 	-moz-transition: opacity 0.3s ease, visibility 0.3s ease, -moz-transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
+	-o-transition: opacity 0.3s ease, visibility 0.3s ease, -moz-transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24);
 	transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s cubic-bezier(0.71, 1.7, 0.77, 1.24); }
