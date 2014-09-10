@@ -8,7 +8,6 @@
 
 .submitted-preview-document {
 	width: 59%;
-	max-height: 927px;
 	margin: 0;
 }
 
@@ -61,10 +60,6 @@
 .submitted-preview-user-data > table th,
 .submitted-preview-user-data > table td {
 	width: 50%;
-}
-
-.submitted-preview-document {
-	overflow-y: scroll;
 }
 
 .submitted-preview-document .container-with-nav h3 {
