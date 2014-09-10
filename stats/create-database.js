@@ -12,6 +12,7 @@ var Database    = require('dbjs')
 migrateType = function (type, targetDatabase) {
 	var targetType = targetDatabase.objects.getById(type.__id__);
 	if (targetType) return targetType;
+	migrateType(getPrototypeOf(type), targetDatabase);
 	targetType = migrateObject(type, targetDatabase);
 	migrateProperties(type.prototype, targetDatabase);
 	return targetType;
