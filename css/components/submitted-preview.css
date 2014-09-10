@@ -9,6 +9,12 @@
 .submitted-preview-document {
 	width: 59%;
 	margin: 0;
+	padding-top: 0
+}
+
+.submitted-preview-document > div:first-child {
+	padding-top: 22px;
+	margin-top: -2px;
 }
 
 .submitted-preview-document img {
@@ -30,7 +36,6 @@
 
 .submitted-preview-user-data {
 	width: 39%;
-	max-height: 927px;
 	overflow-y: scroll;
 	padding: 22px 15px 0 15px;
 	margin: 0;

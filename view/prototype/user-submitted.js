@@ -1,5 +1,9 @@
 'use strict';
 
+var syncStyle = require('dom-ext/html-element/#/sync-style'),
+		source,
+		target;
+
 exports['user-name'] = function () {
 	text("User Submited");
 };
@@ -175,11 +179,22 @@ exports['sub-main'] = function () {
 	);
 	section(
 		{ class: 'submitted-preview' },
-		div({ class: 'section-primary submitted-preview-document' },
-			div({ class: 'container-with-nav' },
-				h3(i({ class: 'list-item-number' }, "1"),
-					"Memorandum and articles of association"
+		div(
+			{ class: 'section-primary submitted-preview-document' },
+			source = div(
+				div({ class: 'container-with-nav' },
+					h3(i({ class: 'list-item-number' }, "1"),
+						"Memorandum and articles of association"
+						),
+					div({ class: 'submitted-preview-documents-navigation' },
+						div(
+							a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
+							span("1 / 4"),
+							a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
+						)
+						)
 					),
+				img({ src: '/uploads/docASubFile2.idoc.png.jpg' }),
 				div({ class: 'submitted-preview-documents-navigation' },
 					div(
 						a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
@@ -187,17 +202,9 @@ exports['sub-main'] = function () {
 						a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
 					)
 					)
-				),
-			img({ src: '/uploads/docASubFile2.idoc.png.jpg' }),
-			div({ class: 'submitted-preview-documents-navigation' },
-				div(
-					a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
-					span("1 / 4"),
-					a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
-				)
-				)
-			),
-		div({ class: 'section-primary submitted-preview-user-data' },
+			)
+		),
+		target = div({ class: 'section-primary submitted-preview-user-data' },
 			h3({ class: 'container-with-nav' }, "Application form",
 				a({ class: 'fa fa-print' }, "Print")
 				),
@@ -346,4 +353,5 @@ exports['sub-main'] = function () {
 			)
 			)
 	);
+	syncStyle.call(target, source, 'height');
 };
