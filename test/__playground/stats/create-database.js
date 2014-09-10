@@ -54,7 +54,7 @@ defineTestProperties = function (obj) {
 		statsMultiple: {
 			type: db.Number,
 			multiple: true,
-			statsBase: null
+			statsBase: 'bar'
 		}
 	});
 };
@@ -90,6 +90,15 @@ TypeD = TypeC.extend('TypeD');
 
 defineTestProperties(user);
 user.defineProperties({
+	multipleObj: {
+		type: TypeB,
+		multiple: true
+	},
+	statsMultipleObj: {
+		type: TypeD,
+		multiple: true,
+		statsBase: 'foo'
+	},
 	nested: {
 		type: db.Object,
 		nested: true

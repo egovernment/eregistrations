@@ -15,7 +15,7 @@ module.exports = function (t, a) {
 		a.h3("Imported");
 		a.h4("Regular");
 		desc = obj.$get('statsRegular');
-		a(desc.object, obj, "Owner");
+		a(desc.object.__id__, obj.__id__, "Owner");
 		a(desc._value_, undefined, "Value");
 		a.deep(desc, { type: target.String }, "Data");
 
@@ -58,6 +58,16 @@ module.exports = function (t, a) {
 
 	a.h1("Direct properties");
 	testObject(targetUser);
+
+	a.h1("Multiple properties");
+	a.h2("Not Imported");
+	a.not(targetUser.$get('multipleObj').object, targetUser);
+
+	a.h2("Imported");
+	desc = targetUser.$get('statsMultipleObj');
+	a(desc.object.__id__, targetUser.__id__, "Owner");
+	a(desc._value_, undefined, "Value");
+	a.deep(desc, { type: target.TypeD, multiple: true }, "Data");
 
 	a.h1("Nested properties");
 	a.h2("Not Imported");
