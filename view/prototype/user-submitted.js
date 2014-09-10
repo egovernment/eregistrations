@@ -202,7 +202,10 @@ exports['sub-main'] = function () {
 			),
 		div({ class: 'section-primary submitted-preview-user-data' },
 			h3({ class: 'container-with-nav' }, "Application form",
-				a({ class: 'fa fa-print' }, "Print")
+				a(
+					{ class: 'hint--left', 'data-hint': 'Print Your application form' },
+					span({ class: 'fa fa-print' }, "Print")
+				)
 				),
 			h4("Proposed company name"),
 			table(
