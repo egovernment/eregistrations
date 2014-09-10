@@ -1,6 +1,7 @@
 'use strict';
 
-var syncStyle = require('dom-ext/html-element/#/sync-style');
+var syncStyle = require('dom-ext/html-element/#/sync-style'),
+		isMobileView = require('../utils/is-mobile-view');
 
 exports['user-name'] = function () {
 	text("User Submited");
@@ -352,10 +353,5 @@ exports['sub-main'] = function () {
 			)
 			)
 	);
-	syncStyle.call(target, source, 'height', function () {
-		if (window.innerWidth < 640) {
-			return false;
-		}
-		return true;
-	});
+	syncStyle.call(target, source, 'height', isMobileView);
 };

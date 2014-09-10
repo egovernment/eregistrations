@@ -1,6 +1,7 @@
 'use strict';
 
-var syncStyle = require('dom-ext/html-element/#/sync-style');
+var syncStyle = require('dom-ext/html-element/#/sync-style'),
+		isMobileView = require('../utils/is-mobile-view');
 
 exports['official-user-details'] = { class: { active: true } };
 
@@ -239,10 +240,5 @@ exports.tab = function () {
 				)
 		)
 	);
-	syncStyle.call(target, source, 'height', function () {
-		if (window.innerWidth < 640) {
-			return false;
-		}
-		return true;
-	});
+	syncStyle.call(target, source, 'height', isMobileView);
 };
