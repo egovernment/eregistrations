@@ -34,7 +34,8 @@ exports.step = function () {
 						} else {
 							li(div({ class: 'dbjs-input-component' },
 								label(user.getDescriptor(name).label, ":"),
-								div({ class: 'control' }, input({ dbjs: user.getObservable(name) }))));
+								div({ class: 'control' }, input({ dbjs: user.getObservable(name),
+									class: 'hint--right', 'data-hint': 'Lorem ipsum dolor sit amet' }))));
 						}
 					})),
 				div({ class: 'guide-box' }, h2("Registrations"),
@@ -69,7 +70,9 @@ exports.step = function () {
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 						li("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
-						li("Lorem ipsum dolor sit amet: ",
+						li(
+						span({ class: 'hint--right', 'data-hint': 'Select one option from below' },
+							"Lorem ipsum dolor sit amet: "),
 						ul(li(reqRadio = input({ dbjs: user._isType, type: 'radio',
 							renderOption: function (labelTxt) {
 								var data = {};
@@ -77,7 +80,8 @@ exports.step = function () {
 									span(data.input = input()),
 									span(labelTxt)));
 								return data;
-							}  }), " "))),
+							}  }), " "))
+					),
 						li(
 						"Please choose x docs in the list: ",
 						ul(
