@@ -378,5 +378,10 @@ exports['sub-main'] = function () {
 			)
 			)
 	);
-	syncStyle.call(target, source, 'height');
+	syncStyle.call(target, source, 'height', function () {
+		if (window.innerWidth < 640) {
+			return false;
+		}
+		return true;
+	});
 };
