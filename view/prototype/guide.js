@@ -77,8 +77,7 @@ exports.step = function () {
 									span(data.input = input()),
 									span(labelTxt)));
 								return data;
-							}  }), " "))
-						),
+							}  }), " "))),
 						li(
 						"Please choose x docs in the list: ",
 						ul(
