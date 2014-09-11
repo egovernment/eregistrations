@@ -2,7 +2,7 @@
 
 var Map          = require('es6-map')
   , db           = require('mano').db
-  , User         = require('mano-auth/model/user')
+  , User         = require('mano-auth/model/user')(db)
   , Role         = require('mano-auth/model/role')
   , DateType     = require('dbjs-ext/date-time/date')(db)
   , StringLine   = require('dbjs-ext/string/string-line')(db)
@@ -12,12 +12,19 @@ var Map          = require('es6-map')
   , SquareMeters = require('dbjs-ext/number/square-meters')(db)
   , Document     = require('./document')
   , Submission   = require('./submission')
+  , File         = require('./file')
 
   , user = User.prototype
   , BusinessActivity, BusinessActivityCategory, CompanyType, Partner, bcAgencyBusiness, bcInsurance
-  , file;
+  , file, props
+  , InventoryValue;
 
 require('dbjs-ext/create-enum')(db);
+
+InventoryValue = db.Object.extend('InventoryValue', {
+	description: { type: StringLine },
+	value: { type: UsDollar, step: 1, min: 0 }
+});
 
 Role.members.add('user');
 Role.meta.get('user').setProperties({
@@ -57,7 +64,10 @@ bcInsurance = BusinessActivityCategory.newNamed('bcInsurance', { label: "Insuran
 
 BusinessActivity = db.Object.extend('BusinessActivity', {
 	label: { type: StringLine, required: true },
-	category: { type: BusinessActivityCategory, required: true }
+	category: { type: BusinessActivityCategory, required: true },
+	toString: { value: function (/* ignore */) {
+		return this.label;
+	} }
 });
 
 BusinessActivity.newNamed('baComissionAgent', {
@@ -84,13 +94,18 @@ CompanyType = StringLine.createEnum('CompanyType', new Map([
 
 user.defineProperties({
 	firstName: { type: StringLine, required: true, label: "First Name" },
-	lastName: { type: StringLine, required: true, label: "Last Name" },
+	lastName: { type: StringLine, required: true, label: "Last Name", value: "Smith" },
 
 	// Guide
 	businessActivity: { type: BusinessActivity, required: true, label: "Business activity" },
 	isOwner: { type: db.Boolean, trueLabel: "I am the owner", falseLabel: "I rent it",
 		label: "Owner of business premises" },
-	inventory: { type: UsDollar, label: "Inventory value", required: true, step: 1 },
+	isType: { type: db.Boolean,
+		trueLabel: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit ame",
+		falseLabel: "Please choose x docs in the list: " },
+	isManager: { type: db.Boolean, label: "I am manager" },
+	inventory: { type: UsDollar, label: "Inventory value", required: true, step: 1,
+		inputHint: "Etiam vestibulum dui mi, nec ultrices diam ultricies id " },
 	surfaceArea: { type: SquareMeters, label: "Area used for the activity", required: true },
 	members: { type: UInteger, label: "Quantity of members", required: true },
 	companyType: { type: CompanyType, label: "Registration type", required: true },
@@ -110,10 +125,31 @@ user.defineProperties({
 	//Submission
 	placeOfWithdraw: { type: StringLine, label: "Withdraw documents to" },
 	pickCertificates: { type: db.Boolean, trueLabel: "I will pick the certificates.",
-		falseLabel: "he following person will pick the certificates", label: "The following person:" }
+		falseLabel: "The following person will pick the certificates", label: "The following person" },
+
+	incorporationCertificateFile: { type: File, nested: true, label: "Certificate of incorporation" },
+	registeredArticlesFile: { type: File, nested: true,
+		label: "Registered articles of association" },
+
+	inventoryShelves: { type: InventoryValue, multiple: true,
+		label: "Shelves", inputPlaceholder: "Shelves #1",
+		description: "Add lines necessary to mention the cost and source" +
+		" of each element. Leave empty if no item." },
+	inventoryCounters: { type: InventoryValue, multiple: true,
+		label: "Counters", inputPlaceholder: "Counters #1",
+		description: "Enter other lines necessary to mention the cost and source" +
+		" of each element. Leave empty if no item.",
+		addLabel: "Add counter" }
 });
 
 module.exports = User;
+
+User.newNamed('userVianney', {
+	firstName: 'Vianney',
+	lastName: 'Lesaffre',
+	email: 'vianney@lesaffre.com',
+	roles: ['users-admin']
+});
 
 Partner = db.User.extend('Partner');
 
@@ -122,14 +158,32 @@ user.define('partners', {
 	multiple: true
 });
 
-user.partners.add(new Partner({ firstName: "Frank", lastName: "Grozel" }));
-user.partners.add(new Partner({ firstName: "Bita", lastName: "Mortazavi" }));
+user.partners.add(Partner.newNamed('partnerFrank',
+	{
+		firstName: "Frank",
+		lastName: "Grozel",
+		dateOfBirth: "01.01.1960",
+		email: "frank@grozel.fr",
+		companyType: 'private',
+		inventory: 1000000,
+		isOwner: true,
+		businessActivity: db.baAirCharterAgent,
+		members: 5
 
-Submission.extend('DocumentASubmission', {},
+	}));
+user.partners.add(Partner.newNamed('partnerBita', { firstName: "Bita", lastName: "Mortazavi" }));
+
+Submission.extend('DocumentASubmission',
+	{ legend: { type: StringLine, value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
+		" Duis sodales nec ligula in accumsan. Etiam tempus consequat libero ac facilisis. " } },
 	{ Document: { value: Document.extend('DocumentA', {}, { label: { value: "Document A" } }) } });
-Submission.extend('DocumentBSubmission', {},
+Submission.extend('DocumentBSubmission',
+	{ legend: { type: StringLine, value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
+		" Duis sodales nec ligula in accumsan. Etiam tempus consequat libero ac facilisis. " } },
 	{ Document: { value: Document.extend('DocumentB', {}, { label: { value: "Document B" } }) } });
-Submission.extend('DocumentCSubmission', {},
+Submission.extend('DocumentCSubmission',
+	{ legend: { type: StringLine, value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
+		" Duis sodales nec ligula in accumsan. Etiam tempus consequat libero ac facilisis. " } },
 	{ Document: { value: Document.extend('DocumentC', {}, { label: { value: "Document C" } }) } });
 
 user.define('submissions', {
@@ -147,7 +201,7 @@ user.define('requiredSubmissions', {
 	value: [user.submissions.documentA, user.submissions.documentB, user.submissions.documentC]
 });
 
-file = db.SubmissionFile.newNamed('docASubFile1', {
+file = db.SubmissionFile.newNamed('docASubFile1', props = {
 	name: 'idoc.jpg',
 	type: 'image/jpeg',
 	diskSize: 376306,
@@ -159,6 +213,9 @@ file.thumb = db.JpegFile.newNamed('docASubFile1Thumb', {
 	name: 'idoc.jpg'
 });
 user.submissions.documentA.files.add(file);
+user.registeredArticlesFile.setProperties(props);
+user.registeredArticlesFile.preview = file;
+user.registeredArticlesFile.thumb = file.thumb;
 
 file = db.SubmissionFile.newNamed('docASubFile2', {
 	name: 'idoc.png',

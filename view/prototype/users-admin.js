@@ -5,12 +5,15 @@ exports['user-name'] = function () {
 };
 
 exports['submitted-menu'] = function () {
-	menuitem(
-		a({ class: 'item-active', href: '/users-admin/' },
-			"Application")
-	);
-	menuitem(
-		a({ href: '/profile/' }, "Profile")
+	nav(
+		{ class: 'items' },
+		menuitem(
+			a({ class: 'item-active', href: '/users-admin/' },
+				"Application")
+		),
+		menuitem(
+			a({ href: '/profile/' }, "Profile")
+		)
 	);
 };
 
@@ -18,93 +21,150 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'submitted-main' },
 		div(
+			{ class: 'submitted-add-user' },
 			a({ class: 'button-main ', href: '/users-admin/add-user/' }, "New User")
 		),
 		table(
-			{ 'class': 'official-users-table' },
+			{ class: 'submitted-user-data-table' },
 			thead(
 				tr(
-					th("Email"),
+					th("User"),
 					th("Institution"),
-					th({ 'class': 'desktop-only' }, "Creation date")
+					th({ class: 'desktop-only' }, "Creation date"),
+					th("Actions")
 				)
 			),
 			tbody(
 				tr(
 					td(
-						div("john.watson@sherloc.com")
-					),
-					td(
-						div("Bussines Licence A")
-					),
-					td(
-						{ 'class': 'desktop-only' },
-						div("23/07/2014 18:09:22")
-					)
-				),
-				tr(
-					td(
-						div("john.watson@sherloc.com")
-					),
-					td(
-						div("Bussines Licence A")
-					),
-					td(
-						{ 'class': 'desktop-only' },
-						div("23/07/2014 18:09:22")
-					)
-				),
-				tr(
-					td(
-						div("john.watson@sherloc.com")
-					),
-					td(
-						div("Bussines Licence A")
-					),
-					td(
-						{ 'class': 'desktop-only' },
-						div("23/07/2014 18:09:22")
-					)
-				),
-				tr(
-					td(
-						div("john.watson@sherloc.com")
-					),
-					td(
-						ul(
-							li("Bussines Licence A"),
-							li("Bussines Licence A"),
-							li("Bussines Licence A"),
-							li("Bussines Licence A")
+						{ class: 'user-basic-data' },
+						div(
+							a({ href: '/users-admin/user-id/' }, "John Watson",
+								span('johnwatson@gmail.com')
+								)
 						)
 					),
 					td(
-						{ 'class': 'desktop-only' },
-						div("23/07/2014 18:09:22")
+						div(a({ href: '/users-admin/user-id/' }, "Bussines Licence A"))
+					),
+					td(
+						{ class: 'desktop-only' },
+						div(a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22"))
+					),
+					td(
+						{ class: 'actions' },
+						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
+						a("Delete")
 					)
 				),
 				tr(
 					td(
-						div("john.watson@sherloc.com")
+						{ class: 'user-basic-data' },
+						div(
+							a({ href: '/users-admin/user-id/' }, "John Watson",
+								span('johnwatson@gmail.com')
+								)
+						)
 					),
 					td(
-						div("Bussines Licence A")
+						div(a({ href: '/users-admin/user-id/' }, "Bussines Licence A"))
 					),
 					td(
-						{ 'class': 'desktop-only' },
-						div("23/07/2014 18:09:22")
+						{ class: 'desktop-only' },
+						div(a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22"))
+					),
+					td(
+						{ class: 'actions' },
+						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
+						a("Delete")
 					)
 				),
 				tr(
 					td(
-						div("john.watson@sherloc.com")
+						{ class: 'user-basic-data' },
+						div(
+							a({ href: '/users-admin/user-id/' }, "John Watson",
+								span('johnwatson@gmail.com')
+								)
+						)
 					),
 					td(
-						div("Bussines Licence A")
+						div(a({ href: '/users-admin/user-id/' }, "Bussines Licence A"))
 					),
 					td(
-						{ 'class': 'desktop-only' },
-						div("23/07/2014 18:09:22")
+						{ class: 'desktop-only' },
+						div(a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22"))
+					),
+					td(
+						{ class: 'actions' },
+						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
+						a("Delete")
+					)
+				),
+				tr(
+					td(
+						{ class: 'user-basic-data' },
+						div(
+							a({ href: '/users-admin/user-id/' }, "John Watson",
+								span('johnwatson@gmail.com')
+								)
+						)
+					),
+					td(
+						div(a({ href: '/users-admin/user-id/' }, "Bussines Licence A"))
+					),
+					td(
+						{ class: 'desktop-only' },
+						div(a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22"))
+					),
+					td(
+						{ class: 'actions' },
+						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
+						a("Delete")
+					)
+				),
+				tr(
+					td(
+						{ class: 'user-basic-data' },
+						div(
+							a({ href: '/users-admin/user-id/' }, "John Watson",
+								span('johnwatson@gmail.com')
+								)
+						)
+					),
+					td(
+						div(a({ href: '/users-admin/user-id/' }, "Bussines Licence A"))
+					),
+					td(
+						{ class: 'desktop-only' },
+						div(a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22"))
+					),
+					td(
+						{ class: 'actions' },
+						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
+						a("Delete")
+					)
+				),
+				tr(
+					td(
+						{ class: 'user-basic-data' },
+						div(
+							a({ href: '/users-admin/user-id/' }, "John Watson",
+								span('johnwatson@gmail.com')
+								)
+						)
+					),
+					td(
+						div(a({ href: '/users-admin/user-id/' }, "Bussines Licence A"))
+					),
+					td(
+						{ class: 'desktop-only' },
+						div(a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22"))
+					),
+					td(
+						{ class: 'actions' },
+						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
+						a("Delete")
 					)
 				)
 			)

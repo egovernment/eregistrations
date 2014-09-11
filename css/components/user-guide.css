@@ -6,24 +6,13 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
-	margin: 0 auto;
-	max-width: var(--desktop-width);
-	padding: 0 10px;
-}
-
-.user-guide h1, h3 {
-	width: 100%;
-}
-
-.user-guide .main-intro {
-	margin-bottom: 0;
-	margin-top: 22px;
 }
 
 .guide-form {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
+	margin-bottom: 22px;
 }
 
 .user-guide .guide-box {
@@ -69,6 +58,11 @@
 	margin-bottom: 20px;
 }
 
+.guide-box .guide-requirements-list {
+	padding-left: 15px;
+	list-style: initial;
+}
+
 .guide-costs-list {
 	padding-left: 0;
 	list-style-type: none;
@@ -84,9 +78,48 @@
 	border-bottom: 1px solid black;
 	border-top: 1px solid black;
 	line-height: 22px;
-	padding: 10px 0 11px;
+	padding: 10px 5px 11px;
 	margin-top: 20px;
 	font-weight: bolder;
+}
+
+.guide-form .inventory-button {
+	padding-left: 40%;
+	padding-top: 11px;
+	padding-bottom: 11px;
+}
+
+.guide-form .inventory-button .icon {
+	font-size: 30px;
+	margin-bottom: -10px;
+	margin-top: -4px;
+}
+@-moz-document url-prefix() {
+	.guide-form .inventory-button .fa-calculator {
+		margin-bottom: -11px;
+		margin-top: -5px;
+	}
+}
+
+.guide-form .inventory-button .label {
+	background: var(--normal-background);
+	color: var(--white-text);
+	padding: 2px 5px 2px 2px;
+	margin-left: -2px;
+	border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+}
+
+.guide-form .inventory-button a {
+	padding-left: 10px;
+	text-decoration: none;
+	white-space: nowrap;
+}
+
+.guide-form .inventory-button a:hover .label,
+.guide-form .inventory-button a:focus .label,
+.guide-form .inventory-button a:active .label {
+	background: var(--normal-dark-background);
 }
 
 /*
@@ -103,5 +136,9 @@ Styles applied while screen sieze is less than 640px
 
 	.user-guide button.save-step-one {
 		width: 100%;
+	}
+
+	.guide-form .inventory-button {
+		padding-left: 0;
 	}
 }

@@ -1,0 +1,62 @@
+.container-with-nav {
+	display: flex;
+	justify-content: space-between;
+}
+
+.container-with-nav .fa {
+	font-size: 14px;
+}
+h1.container-with-nav .fa,
+h2.container-with-nav .fa {
+	padding-top: 10px;
+}
+
+.container-with-nav .button {
+	font-size: 14px;
+	font-weight: normal;
+	background: var(--light-background);
+	border-radius: 3px;
+	border: 1px solid var(--light-inner-border);
+	padding: 3px 8px;
+	cursor: pointer;
+	text-decoration: none;
+	margin: -5px 2px;
+	text-align: center;
+}
+.container-with-nav .button:hover,
+.container-with-nav .button:focus,
+.container-with-nav .button:active {
+	background: var(--normal-background);
+	text-decoration: none;
+	color: var(--white-text);
+}
+
+.container-with-nav .button .fa {
+	padding-top: 2px;
+}
+
+.container-with-nav a:last-child {
+	margin-right: 0;
+}
+
+.container-with-nav a span {
+	position: relative;
+	top: 2px;
+	right: 2px;
+}
+.container-with-nav div {
+	min-width: 30%;
+	display: flex;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.container-with-nav {
+		flex-wrap: wrap;
+	}
+	.container-with-nav a:first-child {
+		margin-left: 0;
+	}
+	.container-with-nav div {
+		margin-top: 24px;
+	}
+}

@@ -118,5 +118,56 @@ e.g.:
 	width: 0.8em;
 }
 .fa-user:before {
-	content: '\f007'
+	content: '\f007';
+}
+
+.fa-edit {
+	width: 1em;
+}
+.fa-edit:before {
+	content: '\f044';
+}
+
+.fa-search {
+	width: 1em;
+}
+.fa-search:before {
+	content: '\f002'
+}
+
+.fa-exclamation {
+	width: 1em;
+}
+.fa-exclamation:before {
+	content: '\f12a';
+}
+
+.fa-exclamation-circle {
+	width: 1em;
+}
+.fa-exclamation-circle:before {
+	content: '\f06a';
+}
+
+.fa-calculator {
+	width: 1em;
+}
+.fa-calculator:before {
+	content: '\f1ec';
+}
+
+.fa-chevron-circle-left {
+	width: 0.93em;
+	padding-left: 1px;
+}
+.fa-chevron-circle-left:before {
+	content: '\f137';
+}
+
+.fa-chevron-circle-right {
+	width: 0.93em;
+	padding-left: 1px;
+}
+.fa-chevron-circle-right:before {
+	content: '\f138';
 }

@@ -1,0 +1,119 @@
+.submitted-preview {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	max-width: var(--desktop-width);
+	margin: 22px 0;
+}
+
+.submitted-preview-document {
+	width: 59%;
+	height: 100%;
+	margin: 0;
+}
+
+.submitted-preview-document img {
+	border: 1px solid var(--light-inner-border);
+	margin-bottom: 0;
+}
+
+.submitted-preview-document .container-with-nav div {
+	min-width: inherit;
+}
+
+.submitted-preview-document .container-with-nav div:last-child span {
+	font-size: 14px;
+	font-weight: normal;
+}
+.submitted-preview-document .container-with-nav div a {
+	margin-left: 5px;
+}
+
+.submitted-preview-user-data {
+	width: 39%;
+	overflow-y: scroll;
+	padding: 22px 15px 0 15px;
+	margin: 0;
+}
+.submitted-preview-user-data h4 {
+	margin-bottom: 5px;
+	color: var(--white-text);
+	margin:  22px 0 0 0;
+	background-color: var(--normal-background);
+	padding: 11px 0 11px 8px;
+}
+
+.submitted-preview-user-data h5 {
+	margin: 22px 0;
+	font-size: 15px;
+}
+
+.submitted-preview-user-data h6 {
+	font-size: 13px;
+	margin-top: 22px;
+}
+
+.submitted-preview-user-data > table {
+	margin: 0;
+}
+
+.submitted-preview-user-data > table th,
+.submitted-preview-user-data > table td {
+	width: 50%;
+}
+
+.submitted-preview-document .container-with-nav h3 {
+	max-width: 80%;
+}
+
+.submitted-preview-documents-navigation {
+	text-align: right;
+	line-height: 44px;
+	white-space: nowrap;
+}
+
+.container-with-nav .submitted-preview-documents-navigation {
+	display: flex;
+}
+
+.container-with-nav .submitted-preview-documents-navigation div {
+	align-self: flex-end;
+}
+
+.submitted-preview-documents-navigation a {
+	margin-left: 5px;
+}
+
+.submitted-preview-documents-navigation a span {
+	position: relative;
+	top: 2px;
+	right: 2px;
+}
+
+.submitted-preview-document .list-item-number {
+	width: 22px;
+	margin-right: 8px;
+	border-radius: 50%;
+	color: var(--white-text);
+	background: var(--normal-dark-background);
+	text-align: center;
+	vertical-align: top;
+	font-style: normal;
+	display: inline-block;
+	font-size: 11px
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+
+	.submitted-preview .submitted-preview-document {
+		width: 100%;
+		padding-bottom: 22px;
+		}
+
+	.submitted-preview-user-data {
+		width: 100%;
+		max-height: 100%;
+		overflow: visible;
+		margin-top: 22px;
+		}
+}

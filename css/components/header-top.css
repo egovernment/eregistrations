@@ -9,9 +9,14 @@
 .header-top {
 	display: flex;
 	justify-content: space-between;
+	align-items: center;
 	margin: 0 auto;
-	max-width: var(--desktop-width);
-	padding: 11px 10px;
+	padding-top: 11px;
+	padding-bottom: 11px;
+}
+
+.header-top-wrapper {
+	background: var(--white-background);
 }
 
 .header-top div {
@@ -23,12 +28,8 @@ Flexible basic menu - used on home page and can be reused elsewhere
 */
 .menu-top {
 	display: flex;
-	height: 100%;
 	list-style: none;
-	margin-bottom: 10px;
-	margin-top: 12px;
 	padding-left: 15px;
-	line-height: 22px;
 }
 
 /*
@@ -41,10 +42,6 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	padding-left: 8px;
 	cursor: pointer;
 }
-.menu-top menuitem:last-child a {
-	padding-right: 0;
-}
-
 .menu-top menuitem a:hover,
 .menu-top menuitem a:focus,
 .menu-top menuitem a:active {
@@ -57,7 +54,7 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	color: var(--white-text);
 	cursor: pointer;
 	font-size: 12px;
-	margin: 0;
+	margin: 0 0 0 5px;
 	text-align: center;
 	text-decoration: none;
 	line-height: 18px;
@@ -95,9 +92,16 @@ Styles applied while screen sieze is less than 640px
 		flex-wrap: wrap;
 		min-width: var(--min-mobile-width);
 	}
-	.header-top div, .header-top nav {
-		margin: 0 auto;
+	.header-top div,
+	.header-top nav {
 		text-align: center;
+	}
+	.header-top div {
+		margin: 0 auto;
+	}
+
+	.header-top nav {
+		margin:  11px auto 0;
 	}
 	.menu-top {
 		padding-left: 0;

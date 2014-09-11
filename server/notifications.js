@@ -1,18 +1,17 @@
 'use strict';
 
-var assign     = require('es5-ext/object/assign')
-  , isObject   = require('es5-ext/object/is-object')
-  , compileTpl = require('es6-template-strings/compile')
-  , resolveTpl = require('es6-template-strings/resolve-to-string')
-  , deferred   = require('deferred')
-  , memoize    = require('memoizee')
-  , delay      = require('timers-ext/delay')
-  , readFile   = require('fs').readFileSync
-  , path       = require('path')
-  , readdir    = require('fs2/readdir')
-  , urlParse   = require('url').parse
-  , mano       = require('mano')
-  , users      = require('../users')
+var assign        = require('es5-ext/object/assign')
+  , compileTpl    = require('es6-template-strings/compile')
+  , resolveTpl    = require('es6-template-strings/resolve-to-string')
+  , deferred      = require('deferred')
+  , memoize       = require('memoizee')
+  , delay         = require('timers-ext/delay')
+  , readFile      = require('fs').readFileSync
+  , path          = require('path')
+  , readdir       = require('fs2/readdir')
+  , urlParse      = require('url').parse
+  , mano          = require('mano')
+  , setupTriggers = require('./_setup-triggers')
 
   , basename = path.basename, dirname = path.dirname, resolve = path.resolve
   , defaults = mano.mail.config
@@ -52,42 +51,32 @@ getAttachments = function (user, att) {
 
 setup = function (path) {
 	var dir = dirname(path), name = basename(path, '.js')
-	  , settings = require(path), subject, text, getText, set, getTemplate
-	  , sendMail, context = assign({}, defContext);
+	  , conf = require(path), subject, text, getText, getTemplate
+	  , context = assign({}, defContext);
 
-	if (settings.variables) assign(context, settings.variables);
-	if (settings.trigger == null) throw new TypeError("No trigger found");
-	if (typeof settings.trigger === 'function') {
-		set = users.filter(settings.trigger);
-	} else if (isObject(settings.trigger)) {
-		set = settings.trigger;
-	} else {
-		set = users.filterByKey(settings.trigger,
-			(typeof settings.triggerValue === 'undefined') ? true :
-					settings.triggerValue);
-	}
+	if (conf.variables) assign(context, conf.variables);
 
-	subject = compileTpl(settings.subject);
+	subject = compileTpl(conf.subject);
 
-	if (settings.text == null) {
+	if (conf.text == null) {
 		text = compileTpl(readFile(resolve(dir, name + '.txt')));
-	} else if (typeof settings.text === 'function') {
+	} else if (typeof conf.text === 'function') {
 		getTemplate = memoize(function (path) {
 			return compileTpl(readFile(resolve(dir, path + '.txt')));
 		});
 		getText = function (user) {
-			return resolveTpl(getTemplate(settings.text(user, context)), context);
+			return resolveTpl(getTemplate(conf.text(user, context)), context);
 		};
 	} else {
-		text = compileTpl(settings.text);
+		text = compileTpl(conf.text);
 	}
 
 	if (!getText) {
 		getText = function () { return resolveTpl(text, context); };
 	}
 
-	sendMail = delay(function (user) {
-		var text, mailOpts, to = getTo(user, settings.to);
+	setupTriggers(conf, delay(function (user) {
+		var text, mailOpts, to = getTo(user, conf.to);
 		if (!to) {
 			console.error("No email provided for " + user.fullName + " [" + user.__id__ + "]");
 			return;
@@ -95,32 +84,16 @@ setup = function (path) {
 		context.user = user;
 		text = getText(user);
 		mailOpts = {
-			from: getFrom(user, settings.from),
+			from: getFrom(user, conf.from),
 			to: to,
-			cc: getCc(user, settings.cc),
+			cc: getCc(user, conf.cc),
 			subject: resolveTpl(subject, context),
-			attachments: getAttachments(user, settings.attachments)
+			attachments: getAttachments(user, conf.attachments)
 		};
 		mailOpts.text = text;
 		context.user = null;
 		mano.mail(mailOpts);
-	}, 500);
-
-	set.on('change', function (event) {
-		if (event.type === 'add') {
-			sendMail(event.value);
-			return;
-		}
-		if (event.type === 'delete') return;
-		if (event.type === 'batch') {
-			if (!event.added) return;
-			if (!event.added.size) return;
-			event.added.forEach(sendMail);
-			return;
-		}
-		console.log("Errorneous event:", event);
-		throw new Error("Unsupported event: " + event.type);
-	});
+	}, 500));
 };
 
 deferred.map(mano.apps, function (app) {

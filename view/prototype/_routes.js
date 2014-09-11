@@ -12,7 +12,7 @@ module.exports = function (view) {
 	// All routes - no imported content, only header and #main to import elements
 	var main = view.documentElement.diff('./_main'),
 		// User routes - import content directly to #main element
-
+		index = main.diff('./index'),
 		userLoggedIn = main.diff('./_user-logged-in'),
 		userMain = userLoggedIn.diff('./_user-main'),
 		subPublic = main.diff('./sub-public'),
@@ -21,21 +21,26 @@ module.exports = function (view) {
 		subPublicPart1Page1Tab2 = subPublicPart1Page1.diff('./part1page1tab2'),
 		subMain = userLoggedIn.diff('./_sub-main'),
 		usersAdminMain = subMain.diff('./users-admin'),
+		userOfficialMain = subMain.diff('./official'),
+		userOfficialUser = userOfficialMain.diff('./official-user'),
 		// For disablers
-		userForm = userLoggedIn.diff('./forms'),
-		userDocuments = userLoggedIn.diff('./documents');
+		userForm = userMain.diff('./forms'),
+		userDocuments = userMain.diff('./documents');
 
 	return {
 		// Public routes - imports content directly to #main element
 		'/': bind(main.diff('./index')),
 		'subpublic': bind(subPublicPart1Page1Tab2),
+		'reset-password': bind(main.diff('./reset-password')),
+		'multi-entry': bind(index.diff('./multi-entry')),
+
 		// User routes - imports content to #steps element in #main element
-		'profile': bind(userMain.diff('./user-profile')),
-		'guide': bind(userMain.diff('./guide')),
-		'forms':  bind(userMain.diff('./forms')),
+		profile: bind(userMain.diff('./user-profile')),
+		guide: bind(userMain.diff('./guide')),
+		forms:  bind(userMain.diff('./forms')),
 		'forms/disabled':  bind(userForm.diff('./disabled-forms')),
-		'documents':  bind(userMain.diff('./documents')),
-		'submission':  bind(userMain.diff('./submission')),
+		documents:  bind(userMain.diff('./documents')),
+		submission:  bind(userMain.diff('./submission')),
 		'documents/disabled':  bind(userDocuments.diff('./disabled-documents')),
 		'forms/partner-add': bind(userMain.diff('./partner-add')),
 		'forms/partner-id': bind(userMain.diff('./partner')),
@@ -44,7 +49,14 @@ module.exports = function (view) {
 		// Users admin routes
 		'users-admin': bind(subMain.diff('./users-admin')),
 		'users-admin/add-user': bind(usersAdminMain.diff('./add-user')),
+		'users-admin/edit-user-id': bind(usersAdminMain.diff('./edit-user')),
+		'users-admin/user-id': bind(usersAdminMain.diff('./users-admin-user')),
 
+		// Official user routes
+		official: bind(subMain.diff('./official')),
+		'revision/user-id': bind(userOfficialMain.diff('./revision')),
+		'official/user-id': bind(userOfficialUser.diff('./official-form')),
+		'official/user-id/document': bind(userOfficialUser.diff('./official-document')),
 		// Error routes
 		404: bind(main.diff('./404'))
 	};

@@ -9,6 +9,6 @@ var deferred  = require('deferred')
 
 module.exports = deferred(
 	writeFile(resolve(__dirname, '../../common/client/env.json'), stringify({
-		"static": { host: staticHost }
+		static: { host: staticHost }
 	}), { intermediate: true })
 );

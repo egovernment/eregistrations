@@ -6,37 +6,35 @@ var db = require('mano').db,
 	filterOfficial = require('../../model/filter-official-roles');
 
 exports['sub-main'] = function () {
-	section(
-		form(
+	form(
+		fieldset(
 			{ class: 'section-primary' },
-			fieldset(
-				h3("Add new user"),
-				hr(),
-				ul({ class: 'form-elements fieldset' },
-					li(field({ dbjs: user._firstName })),
-					li(field({ dbjs: user._lastName })),
-					li(field({ dbjs: user._roles,
-							multiple: false,
-							only: new Set(['users-admin', 'meta-admin', 'demo-user', 'user']),
-							append: option({ value: 'official' }, "Official")
-								}
-								)
-						),
-					li(field({ dbjs: user._roles,
-							filter: filterOfficial,
-							label: 'Officials'
+			h3("Add new user"),
+			hr(),
+			ul({ class: 'form-elements fieldset' },
+				li(field({ dbjs: user._firstName })),
+				li(field({ dbjs: user._lastName })),
+				li(field({ dbjs: user._roles,
+						multiple: false,
+						only: new Set(['users-admin', 'meta-admin', 'demo-user', 'user']),
+						append: option({ value: 'official' }, "Official")
 							}
 							)
-						),
-					li(field({ dbjs: user._email })),
-					li(field({ dbjs: user._password }))
 					),
-				p(
-					{ 'class': 'submit-placeholder' },
-					input(
-						{ 'type': 'submit' },
-						"Save"
-					)
+				li(field({ dbjs: user._roles,
+						filter: filterOfficial,
+						label: 'Officials'
+						}
+						)
+					),
+				li(field({ dbjs: user._email })),
+				li(field({ dbjs: user._password }))
+				),
+			p(
+				{ class: 'submit-placeholder' },
+				input(
+					{ type: 'submit' },
+					"Save"
 				)
 			)
 		)

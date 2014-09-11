@@ -6,12 +6,19 @@
 	width: 100%;
 }
 
+.submitted-menu-bar {
+	display: flex;
+	justify-content: space-between;
+	margin: 0 auto;
+	width: var(--desktop-width);
+}
+
 .submitted-menu .items {
 	display: flex;
 	justify-content: flex-start;
-	margin: 0 auto;
+	margin: 0;
 	padding: 0 10px;
-	width: var(--desktop-width);
+	width: auto;
 }
 
 .submitted-menu menuitem .item-active {
@@ -26,6 +33,15 @@
 	height: 44px;
 	line-height: 44px;
 	display: block;
+}
+
+.role-select {
+	border: none;
+	background-color: var(--dark-background);
+	box-shadow: none;
+	color: var(--white-text);
+	margin: 0;
+	height: 44px;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {

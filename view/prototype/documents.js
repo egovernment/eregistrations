@@ -1,35 +1,34 @@
 'use strict';
 
 var db = require('mano').db,
-	user = db.User.prototype,
-	renderFile;
-
-renderFile = function (options) {
-	return div(div(this.valueDOM = ul({ class: 'user-uploaded-files' })),
-			a({ class: 'user-uploaded-files-upload-button' }, label("+ Choose file",
-				this.control = input({ type: 'file' })))
-			);
-};
+	user = db.User.prototype;
 
 exports.step = function () {
-	div({ class: 'section-primary' }, h2("3 Upload Your Documents"));
+	div(h1("3. Upload Your Documents"));
 	div(
 		{ class: 'disabler-range', id: 'documents-disabler-range' },
 		section(
-			{ 'class': 'section-primary' },
 			ul(
-				{ class: 'submissions' },
+				{ class: 'sections-primary-list user-documents-upload' },
 				user.requiredSubmissions,
 				function (submission) {
-					return li(form(div(h3(submission.label), hr(),
-									input({ dbjs: submission._files, render: renderFile }))));
+					return li({ class: 'section-primary' },
+						form(
+							div(
+								h2(submission.label),
+								small(submission.legend),
+								hr(),
+								input({ dbjs: submission._files })
+							)
+						)
+						);
 				}
 			)
 		),
 
-		div({ 'class': 'next-step' },
-			a({ 'href': '/submission/' }, "Continue to next step")
+		div({ class: 'next-step' },
+			a({ href: '/submission/' }, "Continue to next step")
 			),
-		div({ 'class': 'disabler' })
+		div({ class: 'disabler' })
 	);
 };

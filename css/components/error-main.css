@@ -1,0 +1,13 @@
+.error-main p {
+	background-color: var(--white-background);
+	border-radius: 5px;
+	border: 1px solid var(--light-error-background);
+	padding: 21px 15px 21px 15px;
+}
+
+.error-main p .fa {
+	top: 2px;
+	position: relative;
+	margin-right: 5px;
+	color: var(--error-background);
+}

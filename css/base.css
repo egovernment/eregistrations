@@ -13,6 +13,9 @@ Component describing basic elements styles - reusable
 	--normal-background: #999;
 	--normal-dark-background: #666;
 	--dark-background: #333;
+	--success-background: #5CB85C;
+	--error-background: #D9534F;
+	--light-error-background: #D69592;
 	/* Rounded borders */
 	--normal-rounded-border: 6px;
 	--left-rounded-border: 6px 0 0 6px;
@@ -22,29 +25,25 @@ Component describing basic elements styles - reusable
 	/* Text colors */
 	--white-text: #ffffff;
 	--light-text: #e3e3e3;
+	--hint-text: #b3b3b3;
 	--normal-text: #666666;
 	--dark-text: #333333;
-	--success-text: #2e8b57;
-	--error-text: #ff0000;
+	--success-text: #5CB85C;
+	--error-text: #D9534F;
 }
 
 html {
 	-ms-text-size-adjust: 100%;
 	-webkit-text-size-adjust: 100%;
 	font-family: sans-serif;
+	background-color: var(--light-background);
 }
 
 body {
-	background-color: #ffffff;
 	color: var(--dark-text);
 	margin: 0;
 	font-size: 14px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-}
-
-main {
-	background-color: var(--light-background);
-	padding-bottom: 22px;
 }
 
 * {
@@ -68,7 +67,7 @@ h1, h2, h3, h4, h5, p {
 h1 {
 	font-size: 35px;
 	line-height: 44px;
-	margin: 0 0 22px 0;
+	margin: 22px 0;
 }
 h2 {
 	font-size: 28px;
@@ -97,7 +96,13 @@ h6 {
 }
 
 a {
-	text-decoration: none;
+	text-decoration: underline;
+	color: var(--normal-text);
+	cursor: pointer;
+}
+a:hover,
+a:focus,
+a:active {
 	color: var(--dark-text);
 }
 
@@ -113,8 +118,10 @@ small {
 }
 
 hr {
-	color: var(--light-background);
-	margin: 0 0 20px 0;
+	background: var(--light-background);
+	margin: 0 0 21px 0;
+	border: none;
+	height: 1px;
 }
 
 header {
@@ -144,4 +151,32 @@ ul {
 
 li {
 	line-height: 22px;
+}
+
+li ul {
+	margin: 0;
+}
+
+.disabled {
+	cursor: not-allowed;
+	background-color: #fff;
+	opacity: 0.4;
+}
+.disabled * {
+	cursor: not-allowed;
+}
+
+.content {
+	margin: 0 auto;
+	max-width: var(--desktop-width);
+	padding: 0 10px;
+}
+
+/*
+Styles applied while screen sieze is less than 640px
+*/
+@media only screen and (max-width: var(--mobile-width)) {
+	.content {
+		min-width: var(--min-mobile-width);
+	}
 }
