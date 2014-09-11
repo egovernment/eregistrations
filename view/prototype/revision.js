@@ -1,11 +1,14 @@
 'use strict';
 
 var syncStyle = require('dom-ext/html-element/#/sync-style'),
-		isMobileView = require('../utils/is-mobile-view');
+		zoomOnHover = require('dom-ext/html-element/#/zoom-on-hover'),
+		isMobileView = require('../utils/is-mobile-view'),
+		syncHeight = require('../utils/sync-height');
 
 exports['sub-main'] = function () {
 	var source,
-			target;
+			target,
+			elem;
 
 	section(
 		{ class: 'submitted-main' },
@@ -188,7 +191,12 @@ exports['sub-main'] = function () {
 					)
 					)
 				),
-			img({ src: '/uploads/docASubFile2.idoc.png.jpg' }),
+			zoomOnHover.call(
+				elem = div(
+					{ class: 'image-placeholder' },
+					img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
+				)
+			),
 			div({ class: 'submitted-preview-documents-navigation' },
 				div(
 					a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
@@ -387,4 +395,5 @@ exports['sub-main'] = function () {
 			)
 	);
 	syncStyle.call(target, source, 'height', isMobileView);
+	syncHeight(elem);
 };
