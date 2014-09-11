@@ -1,6 +1,8 @@
 .submitted-user-history tr {
 	border-top: 1px solid var(--light-inner-border);
 }
+.submitted-user-history tr,
 .submitted-user-history td {
-	height: 44px;
+	line-height: 22px;
+	padding: 11px 0 10px;
 }
