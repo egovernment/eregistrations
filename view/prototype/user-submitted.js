@@ -3,16 +3,7 @@
 var syncStyle = require('dom-ext/html-element/#/sync-style'),
 		zoomOnHover = require('dom-ext/html-element/#/zoom-on-hover'),
 		isMobileView = require('../utils/is-mobile-view'),
-		nextTick = require('next-tick'),
-		syncHeight;
-
-syncHeight = function (el) {
-	var updateHeight = function () {
-		el.style.height = (el.clientWidth * 1.415) + 'px';
-	};
-	nextTick(updateHeight);
-	window.addEventListener('resize', updateHeight, false);
-};
+		syncHeight = require('../utils/sync-height');
 
 exports['user-name'] = function () {
 	text("User Submited");
