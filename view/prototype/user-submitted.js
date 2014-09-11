@@ -2,7 +2,17 @@
 
 var syncStyle = require('dom-ext/html-element/#/sync-style'),
 		zoomOnHover = require('dom-ext/html-element/#/zoom-on-hover'),
-		isMobileView = require('../utils/is-mobile-view');
+		isMobileView = require('../utils/is-mobile-view'),
+		nextTick = require('next-tick'),
+		syncHeight;
+
+syncHeight = function (el) {
+	var updateHeight = function () {
+		el.style.height = (el.clientWidth * 1.415) + 'px';
+	};
+	nextTick(updateHeight);
+	window.addEventListener('resize', updateHeight, false);
+};
 
 exports['user-name'] = function () {
 	text("User Submited");
@@ -22,7 +32,8 @@ exports['submitted-menu'] = function () {
 
 exports['sub-main'] = function () {
 	var source,
-			target;
+			target,
+			elem;
 
 	section(
 		{ class: 'submitted-main' },
@@ -202,7 +213,12 @@ exports['sub-main'] = function () {
 					)
 					)
 				),
-			zoomOnHover.call(div(img({ src: '/uploads/docASubFile2.idoc.png.jpg' }))),
+			zoomOnHover.call(
+				elem = div(
+					{ class: 'image-placeholder' },
+					img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
+				)
+			),
 			div({ class: 'submitted-preview-documents-navigation' },
 				div(
 					a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
@@ -364,4 +380,5 @@ exports['sub-main'] = function () {
 			)
 	);
 	syncStyle.call(target, source, 'height', isMobileView);
+	syncHeight(elem);
 };
