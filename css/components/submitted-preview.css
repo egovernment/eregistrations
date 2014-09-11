@@ -12,8 +12,11 @@
 	margin: 0;
 }
 
-.submitted-preview-document img {
+.submitted-preview-document .image-placeholder {
 	border: 1px solid var(--light-inner-border);
+}
+
+.submitted-preview-document .image-placeholder img {
 	margin-bottom: 0;
 }
 
