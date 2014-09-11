@@ -173,11 +173,17 @@ user.partners.add(Partner.newNamed('partnerFrank',
 	}));
 user.partners.add(Partner.newNamed('partnerBita', { firstName: "Bita", lastName: "Mortazavi" }));
 
-Submission.extend('DocumentASubmission', {},
+Submission.extend('DocumentASubmission',
+	{ legend: { type: StringLine, value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
+		" Duis sodales nec ligula in accumsan. Etiam tempus consequat libero ac facilisis. " } },
 	{ Document: { value: Document.extend('DocumentA', {}, { label: { value: "Document A" } }) } });
-Submission.extend('DocumentBSubmission', {},
+Submission.extend('DocumentBSubmission',
+	{ legend: { type: StringLine, value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
+		" Duis sodales nec ligula in accumsan. Etiam tempus consequat libero ac facilisis. " } },
 	{ Document: { value: Document.extend('DocumentB', {}, { label: { value: "Document B" } }) } });
-Submission.extend('DocumentCSubmission', {},
+Submission.extend('DocumentCSubmission',
+	{ legend: { type: StringLine, value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
+		" Duis sodales nec ligula in accumsan. Etiam tempus consequat libero ac facilisis. " } },
 	{ Document: { value: Document.extend('DocumentC', {}, { label: { value: "Document C" } }) } });
 
 user.define('submissions', {

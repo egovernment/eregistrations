@@ -112,8 +112,10 @@ small {
 }
 
 hr {
-	color: var(--light-background);
-	margin: 0 0 20px 0;
+	background: var(--light-background);
+	margin: 0 0 21px 0;
+	border: none;
+	height: 1px;
 }
 
 header {

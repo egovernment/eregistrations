@@ -1,6 +1,15 @@
 'use strict';
 
+var syncStyle = require('dom-ext/html-element/#/sync-style'),
+		zoomOnHover = require('dom-ext/html-element/#/zoom-on-hover'),
+		isMobileView = require('../utils/is-mobile-view'),
+		syncHeight = require('../utils/sync-height');
+
 exports['sub-main'] = function () {
+	var source,
+			target,
+			elem;
+
 	section(
 		{ class: 'submitted-main' },
 		table(
@@ -50,7 +59,8 @@ exports['sub-main'] = function () {
 						div({ class: 'cell-caption' },
 							""),
 						div({ class: 'cell-body' },
-							a(span({ class: 'fa fa-download' }, "Download"))
+							a({ class: 'hint hint--left', 'data-hint': 'Download status' },
+								span({ class: 'fa fa-download' }, "Download"))
 							)
 					)
 				)
@@ -61,7 +71,10 @@ exports['sub-main'] = function () {
 		{ class: 'section-primary' },
 		div(
 			h2({ class: 'container-with-nav' }, "Application history",
-				a({ class: 'fa fa-print' }, "Print")
+				a(
+					{ class: 'hint hint--left', 'data-hint': 'Print history of application' },
+					span({ class: 'fa fa-print' }, "Print")
+				)
 				),
 			table(
 				{ class: 'submitted-user-history' },
@@ -164,7 +177,8 @@ exports['sub-main'] = function () {
 	);
 	section(
 		{ class: 'submitted-preview' },
-		div({ class: 'section-primary submitted-preview-document' },
+		source = div(
+			{ class: 'section-primary submitted-preview-document' },
 			div({ class: 'container-with-nav' },
 				h3(i({ class: 'list-item-number' }, "1"),
 					"Memorandum and articles of association"
@@ -177,7 +191,12 @@ exports['sub-main'] = function () {
 					)
 					)
 				),
-			img({ src: '/uploads/docASubFile2.idoc.png.jpg' }),
+			zoomOnHover.call(
+				elem = div(
+					{ class: 'image-placeholder' },
+					img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
+				)
+			),
 			div({ class: 'submitted-preview-documents-navigation' },
 				div(
 					a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
@@ -222,10 +241,13 @@ exports['sub-main'] = function () {
 				),
 				input({ type: 'submit' }, "Save")
 			)
-			),
-		div({ class: 'section-primary submitted-preview-user-data' },
+		),
+		target = div({ class: 'section-primary submitted-preview-user-data' },
 			h3({ class: 'container-with-nav' }, "Application form",
-				a({ class: 'fa fa-print' }, "Print")
+				a(
+					{ class: 'hint hint--left', 'data-hint': 'Print application form' },
+					span({ class: 'fa fa-print' }, "Print")
+				)
 				),
 			h4("Proposed company name"),
 			table(
@@ -372,4 +394,6 @@ exports['sub-main'] = function () {
 			)
 			)
 	);
+	syncStyle.call(target, source, 'height', isMobileView);
+	syncHeight(elem);
 };

@@ -7,6 +7,11 @@
 	background-size: cover;
 	padding: 11px 0 4px;
 	width: 100%;
+	z-index: 2;
+}
+
+.fixed-top-placeholder {
+	height: 66px;
 }
 
 .all-menu-items {
