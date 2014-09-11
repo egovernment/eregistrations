@@ -1,24 +1,12 @@
 'use strict';
 
-var chagegToFixed = function (el) {
-	window.onscroll = function () {
-		var currentPosition = window.pageYOffset;
-		if (currentPosition >= el.offsetTop) {
-			el.addClass('fixed');
-		} else {
-			el.removeClass('fixed');
-		}
-	};
-};
-
 exports['user-name'] = function () {
 	text("User Name");
 };
 
 exports.main = function () {
-	var stepsElem;
-	stepsElem = div({ class: 'fixed-top-placeholder' },
-		div({ id: 'user-steps-menu', class: 'steps-menu' },
+	div({ class: 'fixed-top-placeholder' },
+		div({ id: 'user-steps-menu', class: 'steps-menu', fixed: true },
 			div({ class: 'content all-menu-items' },
 				label({ class: 'step-active show-steps-btn', for: 'show-steps-control' },
 					'Steps'
@@ -59,7 +47,6 @@ exports.main = function () {
 				)
 			)
 		);
-	chagegToFixed(stepsElem);
 	div({ class: 'content', id: 'step' });
 
 };
