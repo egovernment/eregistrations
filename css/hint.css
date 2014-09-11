@@ -13,21 +13,12 @@
 	opacity: 0;
 	z-index: 1000000;
 	pointer-events: none;
-	-webkit-transition: 0.3s ease;
-	-moz-transition: 0.3s ease;
-	-o-transition: 0.3s ease;
 	transition: 0.3s ease;
-	-webkit-transition-delay: 0ms;
-	-moz-transition-delay: 0ms;
-	-o-transition-delay: 0ms;
 	transition-delay: 0ms; }
 .hint:hover:before, .hint:hover:after, .hint:focus:before, .hint:focus:after, [data-hint]:hover:before, [data-hint]:hover:after, [data-hint]:focus:before, [data-hint]:focus:after {
 	visibility: visible;
 	opacity: 1; }
 .hint:hover:before, .hint:hover:after, [data-hint]:hover:before, [data-hint]:hover:after {
-	-webkit-transition-delay: 100ms;
-	-moz-transition-delay: 100ms;
-	-o-transition-delay: 100ms;
 	transition-delay: 100ms; }
 .hint:before, [data-hint]:before {
 	content: '';
@@ -241,9 +232,6 @@
 *
 */
 .hint--no-animate:before, .hint--no-animate:after {
-	-webkit-transition-duration: 0ms;
-	-moz-transition-duration: 0ms;
-	-o-transition-duration: 0ms;
 	transition-duration: 0ms; }
 
 .hint--bounce:before, .hint--bounce:after {
