@@ -1,4 +1,4 @@
-.partners-list td:not(.actions) a {
+.partners-list td > a:only-child {
 	text-align: center;
 	padding: 14px 6px;
 	display: block;

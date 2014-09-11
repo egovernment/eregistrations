@@ -1,3 +1,6 @@
 .submitted-user-history tr {
 	border-top: 1px solid var(--light-inner-border);
 }
+.submitted-user-history td {
+	height: 44px;
+}
