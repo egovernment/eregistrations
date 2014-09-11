@@ -10,7 +10,7 @@ Component describing vertical-tabs elements styles - reusable
 	padding: 22px 10px;
 }
 
-.tabbed-content > .nav-burger-button {
+.tabbed-content > .nav-mobile-button {
 	border-bottom: 1px solid var(--light-background);
 	border-radius: var(--top-rounded-border);
 }

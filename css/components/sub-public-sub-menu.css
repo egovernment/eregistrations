@@ -4,14 +4,14 @@
 	padding: 11px;
 }
 
-.sub-public-sub-menu-container .nav-burger-button {
+.sub-public-sub-menu-container .nav-mobile-button {
 	color: #fff;
 	background-color: var(--normal-dark-background);
 }
 
-.sub-public-sub-menu-container .nav-burger-button:hover,
-.sub-public-sub-menu-container .nav-burger-button:focus,
-.sub-public-sub-menu-container .nav-burger-button:active {
+.sub-public-sub-menu-container .nav-mobile-button:hover,
+.sub-public-sub-menu-container .nav-mobile-button:focus,
+.sub-public-sub-menu-container .nav-mobile-button:active {
 	color: var(--normal-dark-background);
 	background-color: var(--light-background);
 }
