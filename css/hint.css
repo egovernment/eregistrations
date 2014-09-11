@@ -2,11 +2,11 @@
 * HINT.css is a tooltip library made in pure CSS.*
 * Release under The MIT License
 */
-.hint, [data-hint] {
+.hint {
 	position: relative;
 	display: inline-block;
 }
-.hint:before, .hint:after, [data-hint]:before, [data-hint]:after {
+.hint:before, .hint:after {
 	position: absolute;
 	transform: translate3d(0, 0, 0);
 	visibility: hidden;
@@ -15,18 +15,18 @@
 	pointer-events: none;
 	transition: 0.3s ease;
 	transition-delay: 0ms; }
-.hint:hover:before, .hint:hover:after, .hint:focus:before, .hint:focus:after, [data-hint]:hover:before, [data-hint]:hover:after, [data-hint]:focus:before, [data-hint]:focus:after {
+.hint:hover:before, .hint:hover:after, .hint:focus:before, .hint:focus:after {
 	visibility: visible;
 	opacity: 1; }
-.hint:hover:before, .hint:hover:after, [data-hint]:hover:before, [data-hint]:hover:after {
+.hint:hover:before, .hint:hover:after {
 	transition-delay: 100ms; }
-.hint:before, [data-hint]:before {
+.hint:before {
 	content: '';
 	position: absolute;
 	background: transparent;
 	border: 6px solid transparent;
 	z-index: 1000001; }
-.hint:after, [data-hint]:after {
+.hint:after {
 	content: attr(data-hint);
 	background: #383838;
 	color: white;
