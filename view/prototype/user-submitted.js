@@ -1,5 +1,8 @@
 'use strict';
 
+var syncStyle = require('dom-ext/html-element/#/sync-style'),
+		isMobileView = require('../utils/is-mobile-view');
+
 exports['user-name'] = function () {
 	text("User Submited");
 };
@@ -17,6 +20,9 @@ exports['submitted-menu'] = function () {
 };
 
 exports['sub-main'] = function () {
+	var source,
+			target;
+
 	section(
 		{ class: 'submitted-main' },
 		table(
@@ -181,7 +187,8 @@ exports['sub-main'] = function () {
 	);
 	section(
 		{ class: 'submitted-preview' },
-		div({ class: 'section-primary submitted-preview-document' },
+		source = div(
+			{ class: 'section-primary submitted-preview-document' },
 			div({ class: 'container-with-nav' },
 				h3(i({ class: 'list-item-number' }, "1"),
 					"Memorandum and articles of association"
@@ -202,8 +209,8 @@ exports['sub-main'] = function () {
 					a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
 				)
 				)
-			),
-		div({ class: 'section-primary submitted-preview-user-data' },
+		),
+		target = div({ class: 'section-primary submitted-preview-user-data' },
 			h3({ class: 'container-with-nav' }, "Application form",
 				a(
 					{ class: 'hint--left', 'data-hint': 'Print Your application form' },
@@ -355,4 +362,5 @@ exports['sub-main'] = function () {
 			)
 			)
 	);
+	syncStyle.call(target, source, 'height', isMobileView);
 };
