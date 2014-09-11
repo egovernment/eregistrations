@@ -1,4 +1,4 @@
-.nav-burger-button {
+.nav-mobile-button {
 	width: 100%;
 	margin: auto;
 	text-align: center;
@@ -10,24 +10,24 @@
 	display: none;
 }
 
-.nav-burger-button:hover,
-.nav-burger-button:focus,
-.nav-burger-button:active {
+.nav-mobile-button:hover,
+.nav-mobile-button:focus,
+.nav-mobile-button:active {
 	color: #fff;
 	background-color: var(--normal-dark-background);
 }
 
-.nav-burger-container input[type=checkbox] {
+.nav-mobile-container input[type=checkbox] {
 	display: none;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
 
-	input[type=checkbox]:checked ~ .nav-burger {
+	input[type=checkbox]:checked ~ .nav-mobile {
 		display: flex;
 	}
 
-	.nav-burger-button {
+	.nav-mobile-button {
 		display: block;
 	}
 }
