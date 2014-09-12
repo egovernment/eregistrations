@@ -1,7 +1,7 @@
 'use strict';
 
 exports.main = function () {
-	div({ class: 'public-error' },
+	div({ class: 'public-error content' },
 		div(
 			h1("Oops!"),
 			h1({ class: 'error-type' }, "#404"),

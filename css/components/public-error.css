@@ -5,9 +5,6 @@ Component describing styles for public error page
 .public-error {
 	display: flex;
 	flex-wrap: wrap;
-	margin: 0 auto;
-	max-width: var(--desktop-width);
-	padding: 0 10px;
 }
 
 .public-error div {

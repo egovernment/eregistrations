@@ -21,7 +21,6 @@ Class describing how boxes for informations insight banner are displayed
 .public-banner div.banner-infos {
 	display: flex;
 	justify-content: space-between;
-	padding: 0 10px;
 }
 
 .public-banner div.banner-infos a.create-account {
