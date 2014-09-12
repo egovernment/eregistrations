@@ -20,7 +20,7 @@ exports.main = function () {
 				)
 				)
 		);
-	div({ class: 'public-steps' },
+	div({ class: 'public-steps content' },
 		div({ class: 'm-box-text-centered' },
 			img({ src: '/img/img-300.png' }),
 			h3('Create your file'),
