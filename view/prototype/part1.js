@@ -2,28 +2,28 @@
 
 exports.sub1 = { class: { active: true } };
 exports['sup-public-page'] = function () {
-	div({ 'class': 'sub-public-sub-menu-container nav-mobile-container' },
-		label({ 'class': 'nav-mobile-button', 'for': 'show-pages-control' },
+	div({ class: 'sub-public-sub-menu-container nav-mobile-container' },
+		label({ class: 'nav-mobile-button', for: 'show-pages-control' },
 			'Pages'
 			),
-		input({ 'id': 'show-pages-control', 'type': 'checkbox', 'role': 'button' }
+		input({ id: 'show-pages-control', type: 'checkbox', role: 'button' }
 			),
-		nav({ 'class': 'sub-public-sub-menu nav-mobile' },
-			menuitem(a({ 'id': 'page1' },
-				span({ 'class': 'fa fa-laptop' }),
+		nav({ class: 'sub-public-sub-menu nav-mobile' },
+			menuitem(a({ id: 'page1' },
+				span({ class: 'fa fa-laptop' }),
 				'Interactive guide')),
-			menuitem({ 'class': 'separator' }),
-			menuitem(a({ 'id': 'page2' },
-				span({ 'class': 'fa fa-clipboard' }),
+			menuitem({ class: 'separator' }),
+			menuitem(a({ id: 'page2' },
+				span({ class: 'fa fa-clipboard' }),
 				'Fill the forms')),
-			menuitem({ 'class': 'separator' }),
-			menuitem(a({ 'id': 'page3' },
-				span({ 'class': 'fa fa-download' }),
+			menuitem({ class: 'separator' }),
+			menuitem(a({ id: 'page3' },
+				span({ class: 'fa fa-download' }),
 				'Upload documents')),
-			menuitem({ 'class': 'separator' }),
-			menuitem(a({ 'id': 'page3' },
-				span({ 'class': 'fa fa-envelope' }),
+			menuitem({ class: 'separator' }),
+			menuitem(a({ id: 'page3' },
+				span({ class: 'fa fa-envelope' }),
 				'Send the file')))
 		);
-	div({ 'id': 'sub-page-content', 'class': 'sub-public-main' });
+	div({ id: 'sub-page-content', class: 'sub-public-main' });
 };

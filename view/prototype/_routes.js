@@ -29,8 +29,8 @@ module.exports = function (view) {
 
 	return {
 		// Public routes - imports content directly to #main element
-		'/': bind(main.diff('./index')),
-		'subpublic': bind(subPublicPart1Page1Tab2),
+		'/': bind(index),
+		subpublic: bind(subPublicPart1Page1Tab2),
 		'reset-password': bind(main.diff('./reset-password')),
 		'multi-entry': bind(index.diff('./multi-entry')),
 
