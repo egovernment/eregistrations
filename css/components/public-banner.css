@@ -21,9 +21,6 @@ Class describing how boxes for informations insight banner are displayed
 .public-banner div.banner-infos {
 	display: flex;
 	justify-content: space-between;
-	margin: 0 auto;
-	max-width: var(--desktop-width);
-	padding: 0 10px;
 }
 
 .public-banner div.banner-infos a.create-account {
@@ -80,6 +77,7 @@ Class describing how boxes for informations insight banner are displayed
 
 .baner-box-img img {
 	margin-bottom: -3px;
+	width: 100%;
 }
 .public-banner div.banner-infos h1 {
 	margin-top: 22px;
