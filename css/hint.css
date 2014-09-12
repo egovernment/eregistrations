@@ -6,6 +6,12 @@
 	position: relative;
 	display: inline-block;
 }
+
+.hint:after {
+	border-radius: 4px;
+	box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
 .hint:before, .hint:after {
 	position: absolute;
 	transform: translate3d(0, 0, 0);
@@ -208,18 +214,6 @@
 	transform: translateX(-8px); }
 .hint--always.hint--right:after, .hint--always.hint--right:before {
 	transform: translateX(8px); }
-
-/**
-* source: hint-rounded.scss
-*
-* Defines rounded corner tooltips.
-*
-* Classes added:
-* 1) hint--rounded
-*
-*/
-.hint--rounded:after {
-	border-radius: 4px; }
 
 /**
 * source: hint-effects.scss
