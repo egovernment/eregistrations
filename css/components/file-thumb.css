@@ -7,14 +7,11 @@
 .file-thumb-image {
 	height: 132px;
 	width: 110px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
+	display: block;
 	border: 1px solid var(--light-inner-border);
 	border-radius: 5px;
 	padding: 8px;
 	text-align: center;
-	line-height: 22px;
 }
 .file-thumb-image:hover,
 .file-thumb-image:focus,
