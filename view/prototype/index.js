@@ -52,9 +52,11 @@ exports.main = function () {
 			)
 	);
 	footer({ class: 'footer-logos' },
-		div({ class: 'logos' },
-			img({ src: '/img/logo.png' }), " ",
-			img({ src: '/img/logo.png' })
+		div({ class: 'content' },
+			div({ class: 'logos' },
+				img({ src: '/img/logo.png' }),
+				img({ src: '/img/logo.png' })
+				)
 			)
 		);
 };
