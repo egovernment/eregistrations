@@ -48,11 +48,13 @@
 
 .submitted-preview-user-data h5 {
 	margin: 22px 0;
+	padding-left: 10px;
 	font-size: 15px;
 }
 
 .submitted-preview-user-data h6 {
 	font-size: 13px;
+	padding-left: 10px;
 	margin-top: 22px;
 }
 
@@ -63,6 +65,12 @@
 .submitted-preview-user-data > table th,
 .submitted-preview-user-data > table td {
 	width: 50%;
+	line-height: 22px;
+	padding: 11px 0 11px 10px;
+	text-align: left;
+}
+.submitted-preview-user-data table:last-child {
+	margin-bottom: 22px;
 }
 
 .submitted-preview-document .container-with-nav h3 {
