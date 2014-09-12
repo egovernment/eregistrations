@@ -7,7 +7,6 @@
 .file-thumb-image {
 	height: 132px;
 	width: 110px;
-	display: block;
 	border: 1px solid var(--light-inner-border);
 	border-radius: 5px;
 	padding: 8px;
