@@ -50,6 +50,7 @@
 .submitted-documents-thumbs img {
 	margin: 0;
 	vertical-align: middle;
+	width: 100%;
 }
 
 .submitted-documents-thumbs .review-status {

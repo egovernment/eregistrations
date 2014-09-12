@@ -18,6 +18,7 @@
 
 .submitted-preview-document .image-placeholder img {
 	margin-bottom: 0;
+	width: 100%;
 }
 
 .submitted-preview-document .container-with-nav div {
