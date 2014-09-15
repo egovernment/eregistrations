@@ -5,9 +5,8 @@
 .public-steps {
 	display: flex;
 	justify-content: space-between;
-	margin: 0 auto;
-	max-width: var(--desktop-width);
-	padding: 22px 10px;
+	padding-top: 22px;
+	padding-bottom: 22px;
 }
 
 .public-steps div {
