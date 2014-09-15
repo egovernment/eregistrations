@@ -60,8 +60,6 @@ div.modal-courtain {
 
 .modal footer {
 	border-top: 1px solid var(--light-inner-border);
-	display: flex;
-	justify-content: space-between;
 	padding: 0 20px;
 }
 
