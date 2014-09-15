@@ -50,9 +50,9 @@ exports.main = function () {
 					'More info'
 					))
 			),
-		div({ class: 'public-institutions' },
-				a(img({ src: '/img/img-150.png' })),
-				a(img({ src: '/img/img-150.png' }))
+		ul({ class: 'public-institutions' },
+			li(a(img({ src: '/img/img-150.png' }))),
+			li(a(img({ src: '/img/img-150.png' })))
 			)
 	);
 
