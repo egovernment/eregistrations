@@ -24,6 +24,7 @@
 @media only screen and (max-width: var(--mobile-width)) {
 	.footer-logos div.logos {
 		flex-wrap: wrap;
+		justify-content: center;
 		min-width: var(--min-mobile-width);
 	}
 	.footer-logos div.logos div {
