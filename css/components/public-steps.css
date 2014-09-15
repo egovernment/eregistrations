@@ -25,6 +25,7 @@
 }
 .public-steps img {
 	margin-bottom: 16px;
+	max-width: 95%;
 }
 
 .public-steps .m-box-text-centered {
