@@ -49,8 +49,13 @@ exports.main = function () {
 				a({ class: 'more-info', href: '/guide/' },
 					'More info'
 					))
+			),
+		div({ class: 'public-institutions' },
+				a(img({ src: '/img/img-150.png' })),
+				a(img({ src: '/img/img-150.png' }))
 			)
 	);
+
 	footer({ class: 'footer-logos' },
 		div({ class: 'content' },
 			div({ class: 'logos' },

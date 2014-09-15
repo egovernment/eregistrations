@@ -1,0 +1,19 @@
+.public-institutions {
+	display: flex;
+	justify-content: center;
+	margin: 11px 0;
+}
+.public-institutions a {
+	padding: 10px;
+	border: 1px solid transparent;
+	border-radius: 5px;
+}
+.public-institutions a:hover,
+.public-institutions a:focus,
+.public-institutions a:active {
+	border: 1px solid var(--light-inner-border);
+	box-shadow: 0 0 10px -2px var(--dark-background);
+}
+.public-institutions a img {
+	display: block;
+}
