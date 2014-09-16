@@ -66,7 +66,8 @@ exports['sub-main'] = function () {
 			{ class: 'section-primary' },
 			h2({ class: 'container-with-nav' }, "Application history",
 				a(
-					{ class: 'hint-optional hint-optional-left', 'data-hint': 'Print history of application' },
+					{ class: 'hint-optional hint-optional-left',
+						'data-hint': 'Print history of application' },
 					span({ class: 'fa fa-print' }, "Print")
 				)
 				),
