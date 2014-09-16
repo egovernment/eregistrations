@@ -59,7 +59,7 @@ exports['sub-main'] = function () {
 						div({ class: 'cell-caption' },
 							""),
 						div({ class: 'cell-body' },
-							a({ class: 'hint hint--left', 'data-hint': 'Download status' },
+							a({ class: 'hint-optional hint-optional-left', 'data-hint': 'Download status' },
 								span({ class: 'fa fa-download' }, "Download"))
 							)
 					)
@@ -72,7 +72,8 @@ exports['sub-main'] = function () {
 		div(
 			h2({ class: 'container-with-nav' }, "Application history",
 				a(
-					{ class: 'hint hint--left', 'data-hint': 'Print history of application' },
+					{ class: 'hint-optional hint-optional-left',
+						'data-hint': 'Print history of application' },
 					span({ class: 'fa fa-print' }, "Print")
 				)
 				),
@@ -245,7 +246,7 @@ exports['sub-main'] = function () {
 		target = div({ class: 'section-primary submitted-preview-user-data' },
 			h3({ class: 'container-with-nav' }, "Application form",
 				a(
-					{ class: 'hint hint--left', 'data-hint': 'Print application form' },
+					{ class: 'hint-optional hint-optional-left', 'data-hint': 'Print application form' },
 					span({ class: 'fa fa-print' }, "Print")
 				)
 				),
