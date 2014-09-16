@@ -101,7 +101,7 @@ exports.tab = function () {
 			target = div({ class: 'section-primary submitted-preview-user-data' },
 				h3({ class: 'container-with-nav' }, "Application form",
 					a(
-						{ class: 'hint hint--left', 'data-hint': 'Print application form' },
+						{ class: 'hint-optional hint-optional-left', 'data-hint': 'Print application form' },
 						span({ class: 'fa fa-print' }, "Print")
 					)
 					),
