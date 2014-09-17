@@ -27,7 +27,7 @@ exports.main = function () {
 				img({ src: '/img/img-300.png' }),
 				h3('Create your file'),
 				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
-					" nequepharetra, pellentesque risus in, condimentum nulla. "),
+					" "),
 				a({ class: 'more-info', href: '/guide/' },
 					'More info'
 					)

@@ -46,9 +46,16 @@ Styles applied while screen sieze is less than 640px
 
 	.public-steps .m-box-text-centered {
 		margin-bottom: 22px;
+		width: 100%;
+		padding: 0;
+	}
+
+	.public-steps div:first-child {
+		padding-right: 0;
 	}
 
 	.public-steps .m-box-text-centered:last-child {
 		margin-bottom: 0;
+		padding-left: 0;
 	}
 }
