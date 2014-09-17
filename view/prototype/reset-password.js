@@ -2,9 +2,23 @@
 
 var db  = require('mano').db,
 		location = require('mano/lib/client/location'),
-		user = db.User.prototype;
+		user = db.User.prototype,
+		register = require('./_register'),
+		login = require('./_login');
+
+exports.menu = function () {
+	menuitem(a('en'));
+	menuitem(a('sw'));
+	menuitem(a('link one'));
+	menuitem(a('link two'));
+	menuitem(a('link tree'));
+	menuitem(a({ class: 'login', onclick: login.show },
+		"Log in"
+		));
+};
 
 exports.main = function () {
+	insert(register);
 	form(
 		{ class: 'content public-reset-password' },
 		div(
