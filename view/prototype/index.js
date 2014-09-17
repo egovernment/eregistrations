@@ -1,6 +1,18 @@
 'use strict';
 
-var register = require('./_register');
+var register = require('./_register'),
+	login = require('./_login');
+
+exports.menu = function () {
+	menuitem(a('en'));
+	menuitem(a('sw'));
+	menuitem(a('link one'));
+	menuitem(a('link two'));
+	menuitem(a('link tree'));
+	menuitem(a({ class: 'login', onclick: login.show },
+		"Log in"
+		));
+};
 
 exports.main = function () {
 	insert(register);
