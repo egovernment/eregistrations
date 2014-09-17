@@ -10,16 +10,7 @@ exports.body = function () {
 					img({ src: '/img/logo-2.png' })
 					)
 				),
-			nav(menu({ class: 'menu-top', id: 'menu' },
-					menuitem(a('en')),
-					menuitem(a('sw')),
-					menuitem(a('link one')),
-					menuitem(a('link two')),
-					menuitem(a('link tree')),
-					menuitem(a({ class: 'login', onclick: login.show },
-						"Log in"
-						))
-					)
+			nav(menu({ class: 'menu-top', id: 'menu' })
 				)
 			)
 		);
