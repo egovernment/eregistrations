@@ -62,17 +62,17 @@ Styles applied while screen sieze is less than 640px
 		min-width: var(--min-mobile-width);
 	}
 
-	.public-steps .single-step {
+	.public-steps .public-single-step {
 		margin-bottom: 22px;
 		width: 100%;
 		padding: 0;
 	}
 
-	.public-steps div:first-child {
+	.public-steps .public-single-step:first-child {
 		padding-right: 0;
 	}
 
-	.public-steps .single-step:last-child {
+	.public-steps .public-single-step:last-child {
 		margin-bottom: 0;
 		padding-left: 0;
 	}
