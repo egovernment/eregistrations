@@ -9,28 +9,46 @@
 	padding-bottom: 22px;
 }
 
-.public-steps div {
+.public-steps .public-single-step {
+	padding: 0 5px;
 	max-width: 100%;
 	text-align: center;
 }
 
-.public-steps div:first-child {
+.public-steps .public-single-step:first-child {
 	padding-left: 0;
 	padding-right: 5px;
 }
 
-.public-steps div:last-child {
+.public-steps .public-single-step:last-child {
 	padding-left: 5px;
 	padding-right: 0;
 }
-.public-steps img {
+.public-single-step img {
 	margin-bottom: 16px;
 	max-width: 95%;
 }
 
-.public-steps .m-box-text-centered {
-	padding: 0 5px;
+.public-single-step a.step-button {
+	background-color: var(--normal-background);
+	border-radius: 3px;
+	color: var(--white-text);
+	cursor: pointer;
+	font-size: 12px;
+	line-height: 18px;
+	margin: 0;
+	padding: 3px 7px 4px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	white-space: nowrap;
 }
+.public-single-step a.step-button:hover,
+.public-single-step a.step-button:focus,
+.public-single-step a.step-button:active {
+	background-color: var(--normal-dark-background);
+}
+
 /*
 Styles applied while screen sieze is less than 640px
 */
@@ -44,7 +62,7 @@ Styles applied while screen sieze is less than 640px
 		min-width: var(--min-mobile-width);
 	}
 
-	.public-steps .m-box-text-centered {
+	.public-steps .single-step {
 		margin-bottom: 22px;
 		width: 100%;
 		padding: 0;
@@ -54,7 +72,7 @@ Styles applied while screen sieze is less than 640px
 		padding-right: 0;
 	}
 
-	.public-steps .m-box-text-centered:last-child {
+	.public-steps .single-step:last-child {
 		margin-bottom: 0;
 		padding-left: 0;
 	}
