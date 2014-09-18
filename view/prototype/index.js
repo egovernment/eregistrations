@@ -22,8 +22,8 @@ exports.main = function () {
 		);
 	div(
 		{ class: 'content' },
-		div({ class: 'public-steps' },
-			div({ class: 'public-single-step' },
+		ul({ class: 'public-steps' },
+			li(
 				img({ src: '/img/img-300.png' }),
 				h3('Create your file'),
 				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
@@ -31,8 +31,8 @@ exports.main = function () {
 				a({ class: 'step-button', href: '/guide/' },
 					'More info'
 					)
-				),
-			div({ class: 'public-single-step' },
+			),
+			li(
 				img({ src: '/img/img-300.png' }),
 				h3('Pay costs'),
 				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
@@ -40,15 +40,16 @@ exports.main = function () {
 				a({ class: 'step-button', href: '/guide/' },
 					'More info'
 					)
-				),
-			div({ class: 'public-single-step' },
+			),
+			li(
 				img({ src: '/img/img-300.png' }),
 				h3('Remove certificates'),
 				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 					" nequepharetra, pellentesque risus in, condimentum nulla. "),
 				a({ class: 'step-button ', href: '/guide/' },
 					'More info'
-					))
+					)
+			)
 			),
 		ul({ class: 'public-institutions' },
 			li(a(img({ src: '/img/img-150.png' }))),

@@ -7,29 +7,30 @@
 	justify-content: space-between;
 	padding-top: 22px;
 	padding-bottom: 22px;
+	list-style-type: none;
 }
 
-.public-steps .public-single-step {
+.public-steps li {
 	padding: 0 5px;
 	max-width: 100%;
 	text-align: center;
 }
 
-.public-steps .public-single-step:first-child {
+.public-steps li:first-child {
 	padding-left: 0;
 	padding-right: 5px;
 }
 
-.public-steps .public-single-step:last-child {
+.public-steps li:last-child {
 	padding-left: 5px;
 	padding-right: 0;
 }
-.public-single-step img {
+li img {
 	margin-bottom: 16px;
 	max-width: 95%;
 }
 
-.public-single-step a.step-button {
+.public-steps li .step-button {
 	background-color: var(--normal-background);
 	border-radius: 3px;
 	color: var(--white-text);
@@ -43,9 +44,9 @@
 	vertical-align: middle;
 	white-space: nowrap;
 }
-.public-single-step a.step-button:hover,
-.public-single-step a.step-button:focus,
-.public-single-step a.step-button:active {
+.public-steps li .step-button:hover,
+.public-steps li .step-button:focus,
+.public-steps li .step-button:active {
 	background-color: var(--normal-dark-background);
 }
 
@@ -62,17 +63,17 @@ Styles applied while screen sieze is less than 640px
 		min-width: var(--min-mobile-width);
 	}
 
-	.public-steps .public-single-step {
+	.public-steps li {
 		margin-bottom: 22px;
 		width: 100%;
 		padding: 0;
 	}
 
-	.public-steps .public-single-step:first-child {
+	.public-steps li:first-child {
 		padding-right: 0;
 	}
 
-	.public-steps .public-single-step:last-child {
+	.public-steps li:last-child {
 		margin-bottom: 0;
 		padding-left: 0;
 	}
