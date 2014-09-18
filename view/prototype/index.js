@@ -5,7 +5,7 @@ var register = require('./_register');
 exports.main = function () {
 	insert(register);
 	div({ class: 'public-banner', id: 'banner' },
-		div({ class: 'banner-infos content' },
+		div({ class: 'banner-text content' },
 				div({ class: 'baner-box-text' },
 					h1({ class: 's-primary' },
 						'Turn your online business on'),
@@ -22,33 +22,34 @@ exports.main = function () {
 		);
 	div(
 		{ class: 'content' },
-		div({ class: 'public-steps' },
-			div({ class: 'm-box-text-centered' },
+		ul({ class: 'public-steps' },
+			li(
 				img({ src: '/img/img-300.png' }),
 				h3('Create your file'),
 				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 					" nequepharetra, pellentesque risus in, condimentum nulla. "),
-				a({ class: 'more-info', href: '/guide/' },
+				a({ class: 'step-button', href: '/guide/' },
 					'More info'
 					)
-				),
-			div({ class: 'm-box-text-centered' },
+			),
+			li(
 				img({ src: '/img/img-300.png' }),
 				h3('Pay costs'),
 				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 					" nequepharetra, pellentesque risus in, condimentum nulla. "),
-				a({ class: 'more-info', href: '/guide/' },
+				a({ class: 'step-button', href: '/guide/' },
 					'More info'
 					)
-				),
-			div({ class: 'm-box-text-centered' },
+			),
+			li(
 				img({ src: '/img/img-300.png' }),
 				h3('Remove certificates'),
 				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 					" nequepharetra, pellentesque risus in, condimentum nulla. "),
-				a({ class: 'more-info', href: '/guide/' },
+				a({ class: 'step-button ', href: '/guide/' },
 					'More info'
-					))
+					)
+			)
 			),
 		ul({ class: 'public-institutions' },
 			li(a(img({ src: '/img/img-150.png' }))),

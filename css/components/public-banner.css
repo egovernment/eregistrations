@@ -18,12 +18,12 @@ home page.
 /*
 Class describing how boxes for informations insight banner are displayed
 */
-.public-banner div.banner-infos {
+.public-banner div.banner-text {
 	display: flex;
 	justify-content: space-between;
 }
 
-.public-banner div.banner-infos a.create-account {
+.public-banner div.banner-text a.create-account {
 	background-color: var(--normal-background);
 	background-image: none;
 	border-radius: 6px;
@@ -42,31 +42,12 @@ Class describing how boxes for informations insight banner are displayed
 	white-space: nowrap;
 }
 
-.public-banner div.banner-infos a.create-account:hover,
-.public-banner div.banner-infos a.create-account:focus,
-.public-banner div.banner-infos a.create-account:active {
+.public-banner div.banner-text a.create-account:hover,
+.public-banner div.banner-text a.create-account:focus,
+.public-banner div.banner-text a.create-account:active {
 	background-color: var(--normal-dark-background);
 }
 
-.public-steps div a.more-info {
-	background-color: var(--normal-background);
-	border-radius: 3px;
-	color: var(--white-text);
-	cursor: pointer;
-	font-size: 12px;
-	line-height: 18px;
-	margin: 0;
-	padding: 3px 7px 4px;
-	text-align: center;
-	text-decoration: none;
-	vertical-align: middle;
-	white-space: nowrap;
-}
-.public-steps div a.more-info:hover,
-.public-steps div a.more-info:focus,
-.public-steps div a.more-info:active {
-	background-color: var(--normal-dark-background);
-}
 /*
 		Class used for sticking img in banner bottom line, having 50% of banner width
 */
@@ -79,14 +60,14 @@ Class describing how boxes for informations insight banner are displayed
 	margin-bottom: -3px;
 	width: 100%;
 }
-.public-banner div.banner-infos h1 {
+.public-banner div.banner-text h1 {
 	margin-top: 22px;
 }
 /*
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
-		.public-banner .banner-infos {
+		.public-banner .banner-text {
 			flex-wrap: wrap;
 			min-width: var(--min-mobile-width);
 		}
