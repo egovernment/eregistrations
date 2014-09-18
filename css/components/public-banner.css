@@ -18,12 +18,12 @@ home page.
 /*
 Class describing how boxes for informations insight banner are displayed
 */
-.public-banner div.banner-infos {
+.public-banner div.banner-text {
 	display: flex;
 	justify-content: space-between;
 }
 
-.public-banner div.banner-infos a.create-account {
+.public-banner div.banner-text a.create-account {
 	background-color: var(--normal-background);
 	background-image: none;
 	border-radius: 6px;
@@ -42,9 +42,9 @@ Class describing how boxes for informations insight banner are displayed
 	white-space: nowrap;
 }
 
-.public-banner div.banner-infos a.create-account:hover,
-.public-banner div.banner-infos a.create-account:focus,
-.public-banner div.banner-infos a.create-account:active {
+.public-banner div.banner-text a.create-account:hover,
+.public-banner div.banner-text a.create-account:focus,
+.public-banner div.banner-text a.create-account:active {
 	background-color: var(--normal-dark-background);
 }
 
@@ -60,14 +60,14 @@ Class describing how boxes for informations insight banner are displayed
 	margin-bottom: -3px;
 	width: 100%;
 }
-.public-banner div.banner-infos h1 {
+.public-banner div.banner-text h1 {
 	margin-top: 22px;
 }
 /*
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
-		.public-banner .banner-infos {
+		.public-banner .banner-text {
 			flex-wrap: wrap;
 			min-width: var(--min-mobile-width);
 		}

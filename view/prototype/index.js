@@ -5,7 +5,7 @@ var register = require('./_register');
 exports.main = function () {
 	insert(register);
 	div({ class: 'public-banner', id: 'banner' },
-		div({ class: 'banner-infos content' },
+		div({ class: 'banner-text content' },
 				div({ class: 'baner-box-text' },
 					h1({ class: 's-primary' },
 						'Turn your online business on'),
