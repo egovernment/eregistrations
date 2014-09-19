@@ -5,7 +5,7 @@
 	margin: 22px 0;
 }
 
-.submit-user-button a {
+.submit-user-button button {
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
@@ -22,8 +22,8 @@
 	width: 75%;
 	display: block;
 }
-.submit-user-button a:hover,
-.submit-user-button a:focus,
-.submit-user-button aactive {
+.submit-user-button button:hover,
+.submit-user-button button:focus,
+.submit-user-button button:active {
 	background-color: var(--normal-dark-background);
 }
