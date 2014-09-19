@@ -5,6 +5,8 @@ var db = require('mano').db,
 	inventory = require('./_inventory'),
 	reqRadio;
 
+exports['step-guide'] = { class: { 'step-active': true } };
+
 exports.step = function () {
 	insert(inventory);
 	section({ class: 'user-guide' },

@@ -3,6 +3,8 @@
 var db = require('mano').db,
 	partner = db.partnerFrank;
 
+exports['step-form'] = { class: { 'step-active': true } };
+
 exports.step = function () {
 	div(
 		{ class: 'entity-header' },
