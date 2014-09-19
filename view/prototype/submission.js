@@ -71,7 +71,7 @@ exports.step = function () {
 			)
 		),
 		div({ class: 'submit-user-button' },
-			button("Send Your files")
+			button({ type: 'submit' }, "Send Your files")
 			)
 	);
 
