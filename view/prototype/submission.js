@@ -46,6 +46,7 @@ exports.step = function () {
 	);
 
 	form(
+		{ action: '/user-submitted/' },
 		section(
 			{ class: 'section-primary' },
 			div(
