@@ -32,6 +32,7 @@
 	width: 100%;
 }
 
+.step-active,
 .steps-menu nav.steps menuitem > .step-active {
 	background-color: var(--normal-background);
 	border-radius: 6px;
@@ -108,6 +109,7 @@ Styles applied while screen sieze is less than 640px
 	div.steps-menu {
 		min-width: var(--min-mobile-width);
 		padding-bottom: 11px;
+		position: relative;
 	}
 
 	div.steps-menu nav.steps {
