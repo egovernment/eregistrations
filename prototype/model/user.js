@@ -65,7 +65,9 @@ bcInsurance = BusinessActivityCategory.newNamed('bcInsurance', { label: "Insuran
 BusinessActivity = db.Object.extend('BusinessActivity', {
 	label: { type: StringLine, required: true },
 	category: { type: BusinessActivityCategory, required: true },
-	toString: { value: function (descriptor) { return this.label; } }
+	toString: { value: function (/* ignore */) {
+		return this.label;
+	} }
 });
 
 BusinessActivity.newNamed('baComissionAgent', {

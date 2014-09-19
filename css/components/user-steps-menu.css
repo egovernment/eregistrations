@@ -32,8 +32,7 @@
 	width: 100%;
 }
 
-.step-active,
-.steps-menu nav.steps menuitem > .step-active {
+.step-active {
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
@@ -50,8 +49,14 @@
 	vertical-align: middle;
 	white-space: nowrap;
 }
+.step-active:hover,
+.step-active:focus,
+.step-active:active {
+	background-color: var(--normal-dark-background);
+	color: var(--white-text);
+}
 
-.steps-menu nav.steps menuitem > a {
+.step-inactive {
 	background-color: var(--white-background);
 	background-image: none;
 	border-radius: 6px;
@@ -69,9 +74,9 @@
 	vertical-align: middle;
 	white-space: nowrap;
 }
-.steps-menu nav.steps menuitem > a:hover,
-.steps-menu nav.steps menuitem > a:focus,
-.steps-menu nav.steps menuitem > a:active {
+.step-inactive:hover,
+.step-inactive:focus,
+.step-inactive:active {
 	background-color: var(--normal-background);
 	color: var(--white-text);
 }
@@ -109,7 +114,6 @@ Styles applied while screen sieze is less than 640px
 	div.steps-menu {
 		min-width: var(--min-mobile-width);
 		padding-bottom: 11px;
-		position: relative;
 	}
 
 	div.steps-menu nav.steps {

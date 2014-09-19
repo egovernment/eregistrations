@@ -15,29 +15,30 @@ exports.main = function () {
 					),
 				nav({ class: 'steps' },
 					menuitem(
-						a({ href: '/guide/', id: 'step-guide' },
+						a({ class: 'step-active', href: '/guide/' },
 							"1. Guide"),
 						div({ style: 'width: 100%' })
 					),
 					menuitem(
-						a({ href: '/forms/', id: 'step-form' },
+						a({ class: 'step-inactive', href: '/forms/' },
 							"2. Fill the form"
 							),
 						div({ style: 'width: 50%' })
 					),
 					menuitem(
-						a({ href: '/documents/', id: 'step-documents' },
+						a({ class: 'step-inactive', href: '/documents/' },
 							"3. Upload docs"
 							),
 						div()
 					),
 					menuitem(
-						a("4. Pay"
+						a({ class: 'step-inactive' },
+							"4. Pay"
 							),
 						div()
 					),
 					menuitem(
-						a({ href: '/submission/', id: 'step-submission' },
+						a({ class: 'step-inactive', href: '/submission/' },
 							"5. Send file"
 							),
 						div()

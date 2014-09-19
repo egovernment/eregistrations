@@ -3,8 +3,6 @@
 var db = require('mano').db,
 	user = db.User.prototype;
 
-exports['step-submission'] = { class: { 'step-active': true } };
-
 exports.step = function () {
 	h1("5. Send your file");
 	div({ class: 'section-primary' },

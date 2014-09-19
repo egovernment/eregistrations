@@ -3,8 +3,6 @@
 var db = require('mano').db,
 		user = db.User.prototype;
 
-exports['step-form'] = { class: { 'step-active': true } };
-
 exports.step = function () {
 	form(
 		h1("Add new Partner"),
