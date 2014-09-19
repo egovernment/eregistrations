@@ -53,11 +53,11 @@
 	cursor: pointer;
 }
 
-.separator:before {
+.sub-public-sub-menu-separator:before {
 	content: '>';
 }
 
-.separator {
+.sub-public-sub-menu-separator {
 	padding: 22px;
 	color: var(--normal-dark-background);
 }
@@ -71,7 +71,7 @@
 		display: none;
 	}
 
-	.separator {
+	.ssub-public-sub-menu-eparator {
 		display: none;
 	}
 

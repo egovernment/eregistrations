@@ -16,9 +16,10 @@ module.exports = function (view) {
 		userLoggedIn = main.diff('./_user-logged-in'),
 		userMain = userLoggedIn.diff('./_user-main'),
 		subPublic = main.diff('./sub-public'),
-		subPublicPart1 = subPublic.diff('./part1'),
-		subPublicPart1Page1 = subPublicPart1.diff('./part1page1'),
-		subPublicPart1Page1Tab2 = subPublicPart1Page1.diff('./part1page1tab2'),
+		subPublicPart = subPublic.diff('./subPublicPart'),
+		subPublicPartPage = subPublicPart.diff('./subPublicPartPage'),
+		subPublicPartPageTab1 = subPublicPartPage.diff('./public-guide-presentation'),
+		subPublicPartPageTab2 = subPublicPartPage.diff('./public-guide-situation'),
 		subMain = userLoggedIn.diff('./_sub-main'),
 		usersAdminMain = subMain.diff('./users-admin'),
 		userOfficialMain = subMain.diff('./official'),
@@ -30,7 +31,9 @@ module.exports = function (view) {
 	return {
 		// Public routes - imports content directly to #main element
 		'/': bind(index),
-		subpublic: bind(subPublicPart1Page1Tab2),
+		subpublic: bind(subPublicPartPageTab1),
+		'subpublic/interactive-guide/presentation': bind(subPublicPartPageTab1),
+		'subpublic/interactive-guide/situation': bind(subPublicPartPageTab2),
 		'reset-password': bind(main.diff('./reset-password')),
 		'multi-entry': bind(index.diff('./multi-entry')),
 

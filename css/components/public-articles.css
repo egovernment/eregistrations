@@ -1,6 +1,7 @@
 .public-article img {
 	border-radius: var(--normal-rounded-border);
 	border: 1px solid var(--light-inner-border);
+	max-width: 100%;
 }
 
 .info-block {
