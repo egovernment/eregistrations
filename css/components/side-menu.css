@@ -1,21 +1,4 @@
-/*
-Component describing vertical-tabs elements styles - reusable
-*/
-
-.tabbed-content {
-	display: flex;
-	align-items: stretch;
-	margin: 0 auto;
-	max-width: var(--desktop-width);
-	padding: 22px 10px;
-}
-
-.tabbed-content > .nav-mobile-button {
-	border-bottom: 1px solid var(--light-background);
-	border-radius: var(--top-rounded-border);
-}
-
-.sided-menu {
+.side-menu {
 	flex: 1;
 	display: flex;
 	flex-direction: column;
@@ -24,11 +7,11 @@ Component describing vertical-tabs elements styles - reusable
 	padding: 0;
 }
 
-.sided-menu menuitem {
+.side-menu menuitem {
 	margin-bottom: 22px;
 }
 
-.sided-menu menuitem a {
+.side-menu menuitem a {
 	padding:22px 10px;
 	text-align: right;
 	background-color: transparent;
@@ -38,9 +21,9 @@ Component describing vertical-tabs elements styles - reusable
 	text-decoration: none;
 }
 
-.sided-menu menuitem a:hover,
-.sided-menu menuitem a:focus,
-.sided-menu menuitem .active {
+.side-menu menuitem a:hover,
+.side-menu menuitem a:focus,
+.side-menu menuitem .active {
 	text-align: right;
 	background-color: #fff;
 	color: var(--dark-background);
@@ -48,7 +31,7 @@ Component describing vertical-tabs elements styles - reusable
 	cursor: pointer;
 }
 
-.sided-content {
+.side-content {
 	flex: 3;
 	background-color: #fff;
 	padding: 22px;
@@ -57,11 +40,7 @@ Component describing vertical-tabs elements styles - reusable
 
 @media only screen and (max-width: var(--mobile-width)) {
 
-	.tabbed-content {
-		flex-direction: column;
-	}
-
-	.sided-menu {
+	.side-menu {
 		flex-wrap: wrap;
 		min-width: var(--min-mobile-width);
 		justify-content: space-around;
@@ -69,16 +48,16 @@ Component describing vertical-tabs elements styles - reusable
 		display: none;
 	}
 
-	.sided-menu menuitem a,
-	.sided-menu menuitem a:hover,
-	.sided-menu menuitem a:focus,
-	.sided-menu menuitem .active {
+	.side-menu menuitem a,
+	.side-menu menuitem a:hover,
+	.side-menu menuitem a:focus,
+	.side-menu menuitem .active {
 		font-size: 14px;
 		text-align: center;
 		border-radius: var(--normal-rounded-border);
 	}
 
-	.sided-content {
+	.side-content {
 		border-radius: var(--bottom-rounded-border);
 	}
 }

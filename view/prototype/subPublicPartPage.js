@@ -8,7 +8,7 @@ exports['sub-page-content'] = function () {
 			),
 		input({ id: 'nav-tabs-control', type: 'checkbox', role: 'button' }
 			),
-		menu({ class: 'sided-menu nav-mobile' },
+		menu({ class: 'side-menu nav-mobile' },
 			menuitem(a({ id: 'tab1', href: '/subpublic/interactive-guide/presentation' },
 				'Presentation')),
 			menuitem(a({ id: 'tab2', href: '/subpublic/interactive-guide/situation' },
@@ -19,5 +19,5 @@ exports['sub-page-content'] = function () {
 			menuitem(a({ id: 'tab6' }, 'Costs')),
 			menuitem(a({ id: 'tab7' }, 'Conditions'))
 			),
-		div({ id: 'side-content', class: 'sided-content' }));
+		div({ id: 'side-content', class: 'side-content' }));
 };

@@ -1,22 +1,22 @@
-.sub-public-sub-menu-container {
+.public-sub-sub-menu-container {
 	background-color: #fff;
 	min-height: 66px;
 	padding: 11px;
 }
 
-.sub-public-sub-menu-container .nav-mobile-button {
+.public-sub-sub-menu-container .nav-mobile-button {
 	color: #fff;
 	background-color: var(--normal-dark-background);
 }
 
-.sub-public-sub-menu-container .nav-mobile-button:hover,
-.sub-public-sub-menu-container .nav-mobile-button:focus,
-.sub-public-sub-menu-container .nav-mobile-button:active {
+.public-sub-sub-menu-container .nav-mobile-button:hover,
+.public-sub-sub-menu-container .nav-mobile-button:focus,
+.public-sub-sub-menu-container .nav-mobile-button:active {
 	color: var(--normal-dark-background);
 	background-color: var(--light-background);
 }
 
-.sub-public-sub-menu {
+.public-sub-sub-menu {
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -26,7 +26,7 @@
 	min-height: 66px;
 }
 
-.sub-public-sub-menu menuitem a {
+.public-sub-sub-menu menuitem a {
 	padding:11px 10px;
 	text-align: center;
 	color: var(--normal-dark-background);
@@ -39,31 +39,31 @@
 	font-size: 14px;
 }
 
-.sub-public-sub-menu menuitem a .fa {
+.public-sub-sub-menu menuitem a .fa {
 	font-size: 22px;
 	margin: 0 auto 4px auto;
 	display: block;
 }
 
-.sub-public-sub-menu menuitem a:hover,
-.sub-public-sub-menu menuitem a:focus,
-.sub-public-sub-menu menuitem .active {
+.public-sub-sub-menu menuitem a:hover,
+.public-sub-sub-menu menuitem a:focus,
+.public-sub-sub-menu menuitem .active {
 	border-radius: var(--normal-rounded-border);
 	background-color: var(--light-background);
 	cursor: pointer;
 }
 
-.sub-public-sub-menu-separator:before {
+.public-sub-sub-menu-separator:before {
 	content: '>';
 }
 
-.sub-public-sub-menu-separator {
+.public-sub-sub-menu-separator {
 	padding: 22px;
 	color: var(--normal-dark-background);
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.sub-public-sub-menu {
+	.public-sub-sub-menu {
 		flex-wrap: wrap;
 		min-width: var(--min-mobile-width);
 		justify-content: space-around;
@@ -71,7 +71,7 @@
 		display: none;
 	}
 
-	.ssub-public-sub-menu-eparator {
+	.public-sub-sub-menu-separator {
 		display: none;
 	}
 

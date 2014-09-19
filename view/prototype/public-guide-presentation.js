@@ -3,7 +3,7 @@
 exports.tab1 = { class: { active: true } };
 exports['side-content'] = function () {
 	div({ class: 'public-article' },
-		p({ class: 'info-block' },
+		p({ class: 'public-article-block' },
 			'Integer pharetra nisl a iaculis suscipit.' +
 			' Integer a feugiat velit.'),
 		p('Fusce eu neque eu ante pharetra gravida' +

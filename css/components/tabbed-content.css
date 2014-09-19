@@ -1,0 +1,24 @@
+/*
+Component describing vertical-tabs elements styles - reusable
+*/
+
+.tabbed-content {
+	display: flex;
+	align-items: stretch;
+	margin: 0 auto;
+	max-width: var(--desktop-width);
+	padding: 22px 10px;
+}
+
+.tabbed-content > .nav-mobile-button {
+	border-bottom: 1px solid var(--light-background);
+	border-radius: var(--top-rounded-border);
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+
+	.tabbed-content {
+		flex-direction: column;
+	}
+
+}

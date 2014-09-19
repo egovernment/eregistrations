@@ -35,10 +35,11 @@
 ../../css/components/entity-header.css
 ../../css/components/entities-overview-table.css
 ../../css/components/fieldset.css
-../../css/components/sub-public-menu.css
-../../css/components/sub-public-sub-menu.css
-../../css/components/vertical-tabs.css
-../../css/components/public-articles.css
+../../css/components/public-sub-menu.css
+../../css/components/public-sub-sub-menu.css
+../../css/components/tabbed-content.css
+../../css/components/side-menu.css
+../../css/components/public-article.css
 ../../css/components/nav-mobile.css
 ../../css/components/submitted-menu.css
 ../../css/components/submitted-documents-list.css

@@ -4,7 +4,7 @@
 	max-width: 100%;
 }
 
-.info-block {
+.public-article-block {
 	background-color: var(--light-background);
 	color: var(--dark-background);
 	border-radius: var(--normal-rounded-border);

@@ -1,10 +1,10 @@
-.sub-public-menu-container {
+.public-sub-menu-container {
 	background-color: var(--dark-background);
 	min-height: 66px;
 	padding: 11px 10px;
 }
 
-.sub-public-menu {
+.public-sub-menu {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -14,7 +14,7 @@
 	min-height: 66px;
 }
 
-.sub-public-menu menuitem a {
+.public-sub-menu menuitem a {
 	padding:11px 10px;
 	text-align: center;
 	color: #fff;
@@ -27,28 +27,28 @@
 	display: block;
 }
 
-.sub-public-menu menuitem a:hover,
-.sub-public-menu menuitem a:focus,
-.sub-public-menu menuitem .active {
+.public-sub-menu menuitem a:hover,
+.public-sub-menu menuitem a:focus,
+.public-sub-menu menuitem .active {
 	color: var(--dark-background);
 	background-color: var(--light-background);
 	cursor: pointer;
 }
 
-.sub-public-main {
+.public-sub-main {
 	width: 100%;
 	height: auto;
 }
 
 @media only screen and (max-width: 1024px) {
-	.sub-public-menu menuitem a {
+	.public-sub-menu menuitem a {
 		font-size: 14px;
 		padding:11px 5px;
 	}
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.sub-public-menu {
+	.public-sub-menu {
 		flex-wrap: wrap;
 		min-width: var(--min-mobile-width);
 		justify-content: space-around;
@@ -56,7 +56,7 @@
 		display: none;
 	}
 
-	.sub-public-menu menuitem a {
+	.public-sub-menu menuitem a {
 		font-size: 14px;
 	}
 
