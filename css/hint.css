@@ -2,11 +2,17 @@
 * HINT.css is a tooltip library made in pure CSS.*
 * Release under The MIT License
 */
-.hint {
+.hint-optional {
 	position: relative;
 	display: inline-block;
 }
-.hint:before, .hint:after {
+
+.hint-optional:after {
+	border-radius: 4px;
+	box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hint-optional:before, .hint-optional:after {
 	position: absolute;
 	transform: translate3d(0, 0, 0);
 	visibility: hidden;
@@ -15,18 +21,18 @@
 	pointer-events: none;
 	transition: 0.3s ease;
 	transition-delay: 0ms; }
-.hint:hover:before, .hint:hover:after, .hint:focus:before, .hint:focus:after {
+.hint-optional:hover:before, .hint-optional:hover:after, .hint-optional:focus:before, .hint-optional:focus:after {
 	visibility: visible;
 	opacity: 1; }
-.hint:hover:before, .hint:hover:after {
+.hint-optional:hover:before, .hint-optional:hover:after {
 	transition-delay: 100ms; }
-.hint:before {
+.hint-optional:before {
 	content: '';
 	position: absolute;
 	background: transparent;
 	border: 6px solid transparent;
 	z-index: 1000001; }
-.hint:after {
+.hint-optional:after {
 	content: attr(data-hint);
 	background: #383838;
 	color: white;
@@ -50,70 +56,70 @@
 /**
 * set default color for tooltip arrows
 */
-.hint--top:before {
+.hint-optional-top:before {
 	border-top-color: #383838; }
 
-.hint--bottom:before {
+.hint-optional-bottom:before {
 	border-bottom-color: #383838; }
 
-.hint--left:before {
+.hint-optional-left:before {
 	border-left-color: #383838; }
 
-.hint--right:before {
+.hint-optional-right:before {
 	border-right-color: #383838; }
 
 /**
 * top tooltip
 */
-.hint--top:before {
+.hint-optional-top:before {
 	margin-bottom: -12px; }
-.hint--top:after {
+.hint-optional-top:after {
 	margin-left: -18px; }
-.hint--top:before, .hint--top:after {
+.hint-optional-top:before, .hint-optional-top:after {
 	bottom: 100%;
 	left: 50%; }
-.hint--top:hover:after, .hint--top:hover:before, .hint--top:focus:after, .hint--top:focus:before {
+.hint-optional-top:hover:after, .hint-optional-top:hover:before, .hint-optional-top:focus:after, .hint-optional-top:focus:before {
 	transform: translateY(-8px); }
 
 /**
 * bottom tooltip
 */
-.hint--bottom:before {
+.hint-optional-bottom:before {
 	margin-top: -12px; }
-.hint--bottom:after {
+.hint-optional-bottom:after {
 	margin-left: -18px; }
-.hint--bottom:before, .hint--bottom:after {
+.hint-optional-bottom:before, .hint-optional-bottom:after {
 	top: 100%;
 	left: 50%; }
-.hint--bottom:hover:after, .hint--bottom:hover:before, .hint--bottom:focus:after, .hint--bottom:focus:before {
+.hint-optional-bottom:hover:after, .hint-optional-bottom:hover:before, .hint-optional-bottom:focus:after, .hint-optional-bottom:focus:before {
 	transform: translateY(8px); }
 
 /**
 * right tooltip
 */
-.hint--right:before {
+.hint-optional-right:before {
 	margin-left: -12px;
 	margin-bottom: -6px; }
-.hint--right:after {
+.hint-optional-right:after {
 	margin-bottom: -14px; }
-.hint--right:before, .hint--right:after {
+.hint-optional-right:before, .hint-optional-right:after {
 	left: 100%;
 	bottom: 50%; }
-.hint--right:hover:after, .hint--right:hover:before, .hint--right:focus:after, .hint--right:focus:before {
+.hint-optional-right:hover:after, .hint-optional-right:hover:before, .hint-optional-right:focus:after, .hint-optional-right:focus:before {
 	transform: translateX(8px); }
 
 /**
 * left tooltip
 */
-.hint--left:before {
+.hint-optional-left:before {
 	margin-right: -12px;
 	margin-bottom: -6px; }
-.hint--left:after {
+.hint-optional-left:after {
 	margin-bottom: -14px; }
-.hint--left:before, .hint--left:after {
+.hint-optional-left:before, .hint-optional-left:after {
 	right: 100%;
 	bottom: 50%; }
-.hint--left:hover:after, .hint--left:hover:before, .hint--left:focus:after, .hint--left:focus:before {
+.hint-optional-left:hover:after, .hint-optional-left:hover:before, .hint-optional-left:focus:after, .hint-optional-left:focus:before {
 	transform: translateX(-8px); }
 
 /**
@@ -131,61 +137,61 @@
 /**
 * Error
 */
-.hint--error:after {
+.hint-optional-error:after {
 	background-color: #b34e4d;
 	text-shadow: 0 -1px 0 #592726; }
-.hint--error.hint--top:before {
+.hint-optional-error.hint-optional-top:before {
 	border-top-color: #b34e4d; }
-.hint--error.hint--bottom:before {
+.hint-optional-error.hint-optional-bottom:before {
 	border-bottom-color: #b34e4d; }
-.hint--error.hint--left:before {
+.hint-optional-error.hint-optional-left:before {
 	border-left-color: #b34e4d; }
-.hint--error.hint--right:before {
+.hint-optional-error.hint-optional-right:before {
 	border-right-color: #b34e4d; }
 
 /**
 * Warning
 */
-.hint--warning:after {
+.hint-optional-warning:after {
 	background-color: #c09854;
 	text-shadow: 0 -1px 0 #6c5328; }
-.hint--warning.hint--top:before {
+.hint-optional-warning.hint-optional-top:before {
 	border-top-color: #c09854; }
-.hint--warning.hint--bottom:before {
+.hint-optional-warning.hint-optional-bottom:before {
 	border-bottom-color: #c09854; }
-.hint--warning.hint--left:before {
+.hint-optional-warning.hint-optional-left:before {
 	border-left-color: #c09854; }
-.hint--warning.hint--right:before {
+.hint-optional-warning.hint-optional-right:before {
 	border-right-color: #c09854; }
 
 /**
 * Info
 */
-.hint--info:after {
+.hint-optional-info:after {
 	background-color: #3986ac;
 	text-shadow: 0 -1px 0 #193b4d; }
-.hint--info.hint--top:before {
+.hint-optional-info.hint-optional-top:before {
 	border-top-color: #3986ac; }
-.hint--info.hint--bottom:before {
+.hint-optional-info.hint-optional-bottom:before {
 	border-bottom-color: #3986ac; }
-.hint--info.hint--left:before {
+.hint-optional-info.hint-optional-left:before {
 	border-left-color: #3986ac; }
-.hint--info.hint--right:before {
+.hint-optional-info.hint-optional-right:before {
 	border-right-color: #3986ac; }
 
 /**
 * Success
 */
-.hint--success:after {
+.hint-optional-success:after {
 	background-color: #458746;
 	text-shadow: 0 -1px 0 #1a321a; }
-.hint--success.hint--top:before {
+.hint-optional-success.hint-optional-top:before {
 	border-top-color: #458746; }
-.hint--success.hint--bottom:before {
+.hint-optional-success.hint-optional-bottom:before {
 	border-bottom-color: #458746; }
-.hint--success.hint--left:before {
+.hint-optional-success.hint-optional-left:before {
 	border-left-color: #458746; }
-.hint--success.hint--right:before {
+.hint-optional-success.hint-optional-right:before {
 	border-right-color: #458746; }
 
 /**
@@ -197,29 +203,17 @@
 * 1) hint--always
 *
 */
-.hint--always:after, .hint--always:before {
+.hint-optional-always:after, .hint-optional-always:before {
 	opacity: 1;
 	visibility: visible; }
-.hint--always.hint--top:after, .hint--always.hint--top:before {
+.hint-optional-always.hint-optional-top:after, .hint-optional-always.hint-optional-top:before {
 	transform: translateY(-8px); }
-.hint--always.hint--bottom:after, .hint--always.hint--bottom:before {
+.hint-optional-always.hint-optional-bottom:after, .hint-optional-always.hint-optional-bottom:before {
 	transform: translateY(8px); }
-.hint--always.hint--left:after, .hint--always.hint--left:before {
+.hint-optional-always.hint-optional-left:after, .hint-optional-always.hint-optional-left:before {
 	transform: translateX(-8px); }
-.hint--always.hint--right:after, .hint--always.hint--right:before {
+.hint-optional-always.hint-optional-right:after, .hint-optional-always.hint-optional-right:before {
 	transform: translateX(8px); }
-
-/**
-* source: hint-rounded.scss
-*
-* Defines rounded corner tooltips.
-*
-* Classes added:
-* 1) hint--rounded
-*
-*/
-.hint--rounded:after {
-	border-radius: 4px; }
 
 /**
 * source: hint-effects.scss
@@ -230,5 +224,5 @@
 * 1) hint--no-animate
 *
 */
-.hint--no-animate:before, .hint--no-animate:after {
+.hint-optional-no-animate:before, .hint-optional-no-animate:after {
 	transition-duration: 0ms; }

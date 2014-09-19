@@ -5,33 +5,53 @@
 .public-steps {
 	display: flex;
 	justify-content: space-between;
-	margin: 0 auto;
-	max-width: var(--desktop-width);
-	padding: 22px 10px;
+	padding-top: 22px;
+	padding-bottom: 22px;
+	list-style-type: none;
+	margin-bottom: 0;
 }
 
-.public-steps div {
+.public-steps li {
+	padding: 0 5px;
 	max-width: 100%;
 	text-align: center;
 }
 
-.public-steps div:first-child {
+.public-steps li:first-child {
 	padding-left: 0;
 	padding-right: 5px;
 }
 
-.public-steps div:last-child {
+.public-steps li:last-child {
 	padding-left: 5px;
 	padding-right: 0;
 }
-.public-steps img {
+
+.public-steps li img {
 	margin-bottom: 16px;
-	width: 90%;
+	max-width: 95%;
 }
 
-.public-steps .m-box-text-centered {
-	padding: 0 5px;
+.public-steps li .step-button {
+	background-color: var(--normal-background);
+	border-radius: 3px;
+	color: var(--white-text);
+	cursor: pointer;
+	font-size: 12px;
+	line-height: 18px;
+	margin: 0;
+	padding: 3px 7px 4px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	white-space: nowrap;
 }
+.public-steps li .step-button:hover,
+.public-steps li .step-button:focus,
+.public-steps li .step-button:active {
+	background-color: var(--normal-dark-background);
+}
+
 /*
 Styles applied while screen sieze is less than 640px
 */
@@ -45,11 +65,18 @@ Styles applied while screen sieze is less than 640px
 		min-width: var(--min-mobile-width);
 	}
 
-	.public-steps .m-box-text-centered {
+	.public-steps li {
 		margin-bottom: 22px;
+		width: 100%;
+		padding: 0;
 	}
 
-	.public-steps .m-box-text-centered:last-child {
+	.public-steps li:first-child {
+		padding-right: 0;
+	}
+
+	.public-steps li:last-child {
 		margin-bottom: 0;
+		padding-left: 0;
 	}
 }

@@ -9,7 +9,7 @@ exports.step = function () {
 		h1("Partner: " + partner._firstName + " " + partner._lastName),
 		div(
 			{ class: 'entity-actions' },
-			a({ href: '/users-admin/edit-user-id/', class: 'button-main' },
+			a({ class: 'button-main' },
 				"Edit", span({ class: 'fa fa-edit' }, "Edit")),
 			a({ class: 'button-main' }, "Delete", span({ class: 'fa fa-trash-o' }, "Delete"))
 		)
