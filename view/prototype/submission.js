@@ -70,9 +70,7 @@ exports.step = function () {
 				)
 			)
 		),
-		div({ class: 'submit-user-button' },
-			button({ type: 'submit' }, "Send Your files")
-			)
+		button({ type: 'submit', class: 'submit-user-button' }, "Send Your files")
 	);
 
 };

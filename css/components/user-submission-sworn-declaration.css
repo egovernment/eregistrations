@@ -1,11 +1,8 @@
 .user-submission-sworn-declaration {
 	padding-bottom: 22px;
 }
-.submit-user-button {
-	margin: 22px 0;
-}
 
-.submit-user-button button {
+.submit-user-button {
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
@@ -22,8 +19,8 @@
 	width: 75%;
 	display: block;
 }
-.submit-user-button button:hover,
-.submit-user-button button:focus,
-.submit-user-button button:active {
+.submit-user-button:hover,
+.submit-user-button:focus,
+.submit-user-button:active {
 	background-color: var(--normal-dark-background);
 }
