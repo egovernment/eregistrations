@@ -45,9 +45,10 @@ exports.step = function () {
 		)
 	);
 
-	section(
-		{ class: 'section-primary' },
-		form(
+	form(
+		{ action: '/user-submitted/' },
+		section(
+			{ class: 'section-primary' },
 			div(
 				{ class: 'user-submission-sworn-declaration' },
 				h2("Sworn declaration"),
@@ -69,10 +70,8 @@ exports.step = function () {
 						}
 				)
 			)
-		)
+		),
+		button({ type: 'submit', class: 'submit-user-button' }, "Send Your files")
 	);
 
-	div({ class: 'submit-user-button' },
-		a({ href: ' ' }, "Send Your files")
-		);
 };
