@@ -8,13 +8,19 @@
 
 .submitted-preview-document {
 	width: 59%;
-	max-height: 927px;
+	height: 100%;
 	margin: 0;
 }
 
-.submitted-preview-document img {
+.submitted-preview-document .image-placeholder {
 	border: 1px solid var(--light-inner-border);
+	text-align: center;
+}
+
+.submitted-preview-document .image-placeholder img {
 	margin-bottom: 0;
+	max-width: 100%;
+	max-height: 100%;
 }
 
 .submitted-preview-document .container-with-nav div {
@@ -31,7 +37,6 @@
 
 .submitted-preview-user-data {
 	width: 39%;
-	max-height: 927px;
 	overflow-y: scroll;
 	padding: 22px 15px 0 15px;
 	margin: 0;
@@ -46,11 +51,13 @@
 
 .submitted-preview-user-data h5 {
 	margin: 22px 0;
+	padding-left: 10px;
 	font-size: 15px;
 }
 
 .submitted-preview-user-data h6 {
 	font-size: 13px;
+	padding-left: 10px;
 	margin-top: 22px;
 }
 
@@ -61,10 +68,12 @@
 .submitted-preview-user-data > table th,
 .submitted-preview-user-data > table td {
 	width: 50%;
+	line-height: 22px;
+	padding: 11px 0 11px 10px;
+	text-align: left;
 }
-
-.submitted-preview-document {
-	overflow-y: scroll;
+.submitted-preview-user-data table:last-child {
+	margin-bottom: 22px;
 }
 
 .submitted-preview-document .container-with-nav h3 {

@@ -3,10 +3,6 @@ table {
 	border-collapse: collapse;
 	margin-bottom: 22px;
 }
-
-tr {
-	height: 44px;
-}
 /* Zebra striping */
 tbody tr:nth-of-type(odd) {
 	background-color: var(--light-background);
@@ -14,11 +10,6 @@ tbody tr:nth-of-type(odd) {
 th {
 	color: var(--dark-text);
 }
-td, th {
-	padding: 6px;
-	text-align: left;
-}
-
 td a {
 	text-decoration: none;
 	color: var(--dark-text);

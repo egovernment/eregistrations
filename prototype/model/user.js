@@ -65,9 +65,7 @@ bcInsurance = BusinessActivityCategory.newNamed('bcInsurance', { label: "Insuran
 BusinessActivity = db.Object.extend('BusinessActivity', {
 	label: { type: StringLine, required: true },
 	category: { type: BusinessActivityCategory, required: true },
-	toString: { value: function (/* ignore */) {
-		return this.label;
-	} }
+	toString: { value: function (descriptor) { return this.label; } }
 });
 
 BusinessActivity.newNamed('baComissionAgent', {
@@ -175,9 +173,13 @@ user.partners.add(Partner.newNamed('partnerBita', { firstName: "Bita", lastName:
 
 Submission.extend('DocumentASubmission',
 	{ Document: { value: Document.extend('DocumentA', {}, { label: { value: "Document A" } }) } });
-Submission.extend('DocumentBSubmission', {},
+Submission.extend('DocumentBSubmission',
+	{ legend: { type: StringLine, value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
+		" Duis sodales nec ligula in accumsan. Etiam tempus consequat libero ac facilisis. " } },
 	{ Document: { value: Document.extend('DocumentB', {}, { label: { value: "Document B" } }) } });
-Submission.extend('DocumentCSubmission', {},
+Submission.extend('DocumentCSubmission',
+	{ legend: { type: StringLine, value: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
+		" Duis sodales nec ligula in accumsan. Etiam tempus consequat libero ac facilisis. " } },
 	{ Document: { value: Document.extend('DocumentC', {}, { label: { value: "Document C" } }) } });
 
 user.define('submissions', {

@@ -49,7 +49,10 @@ exports['sub-main'] = function () {
 						div({ class: 'cell-caption' },
 							""),
 						div({ class: 'cell-body' },
-							a({ class: 'fa fa-download' }, "Print")
+							a(
+								{ class: 'hint-optional hint-optional-left', 'data-hint': 'Download status' },
+								span({ class: 'fa fa-download' }, "Download")
+							)
 							)
 					)
 				)
@@ -62,7 +65,11 @@ exports['sub-main'] = function () {
 
 			{ class: 'section-primary' },
 			h2({ class: 'container-with-nav' }, "Application history",
-				a({ class: 'fa fa-print' }, "Print")
+				a(
+					{ class: 'hint-optional hint-optional-left',
+						'data-hint': 'Print history of application' },
+					span({ class: 'fa fa-print' }, "Print")
+				)
 				),
 			table(
 				{ class: 'submitted-user-history' },

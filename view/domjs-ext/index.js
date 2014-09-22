@@ -48,6 +48,7 @@ module.exports = function (domjs) {
 	require('domjs-ext/url')(domjs);
 
 	// Directives
+	require('domjs-ext/d/fixed')(domjs);
 	require('domjs-ext/d/form/auto-submit')(domjs);
 
 	// DBJS extensions

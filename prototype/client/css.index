@@ -2,6 +2,7 @@
 ../../css/form.css
 ../../css/table.css
 ../../css/font-awesome.css
+../../css/hint.css
 ../../css/components/button-main.css
 ../../css/components/error-main.css
 ../../css/components/disabler.css
@@ -16,10 +17,13 @@
 ../../css/components/footer-logos.css
 ../../css/components/public-banner.css
 ../../css/components/public-steps.css
+../../css/components/public-institutions.css
 ../../css/components/public-error.css
 ../../css/components/public-multi-entry.css
+../../css/components/partners-table.css
 ../../css/components/user-steps-menu.css
 ../../css/components/user-guide.css
+../../css/components/user-documents-upload.css
 ../../css/components/user-submission-sworn-declaration.css
 ../../css/components/file-uploader.css
 ../../css/components/file-thumb.css
@@ -37,7 +41,6 @@
 ../../css/components/submitted-user-history.css
 ../../css/components/submitted-preview.css
 ../../css/components/submitted-documents-thumbs.css
-../../css/components/submitted-user-data-table.css
 ../../css/components/submitted-revision-toolbar.css
 ../../css/components/label-reg.css
 ../../css/components/table-responsive.css
@@ -45,4 +48,4 @@
 ../../css/components/users-table-filter-bar.css
 ../../css/components/official-form.css
 ../../css/components/official-document.css
-../../css/components/official-users-table.css
+../../css/components/submitted-user-data-table.css

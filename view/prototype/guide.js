@@ -5,6 +5,8 @@ var db = require('mano').db,
 	inventory = require('./_inventory'),
 	reqRadio;
 
+exports['step-guide'] = { class: { 'step-active': true } };
+
 exports.step = function () {
 	insert(inventory);
 	section({ class: 'user-guide' },
@@ -23,8 +25,9 @@ exports.step = function () {
 					function (name) {
 						if (name === 'inventory') {
 							li(div({ class: 'dbjs-input-component' },
-								label(user.getDescriptor(name).label, ":"),
-								div({ class: 'control' }, input({ dbjs: user.getObservable(name) }))));
+								label({ for: 'input-' + name }, user.getDescriptor(name).label, ":"),
+								div({ class: 'control' },
+									input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) }))));
 							div({ class: 'inventory-button' },
 								a({ onclick: inventory.show },
 									span({ class: 'fa fa-calculator icon' }, "Calculator"),
@@ -33,8 +36,13 @@ exports.step = function () {
 								);
 						} else {
 							li(div({ class: 'dbjs-input-component' },
-								label(user.getDescriptor(name).label, ":"),
-								div({ class: 'control' }, input({ dbjs: user.getObservable(name) }))));
+								label(
+									{ for: 'input-' + name },
+									user.getDescriptor(name).label,
+									":"
+								),
+								div({ class: 'control' },
+									input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) }))));
 						}
 					})),
 				div({ class: 'guide-box' }, h2("Registrations"),

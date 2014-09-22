@@ -1,6 +1,5 @@
 .public-multi-entry {
-	width: var(--desktop-width);
-	margin: 0 auto;
+	width: 100%;
 }
 
 .public-multi-entry h1 {

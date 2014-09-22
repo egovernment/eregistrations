@@ -12,3 +12,4 @@ Thumbs.db
 /npm-debug.log
 /prototype/public/prototype.css
 /prototype/public/prototype.js
+/prototype/public/prototype.legacy.js

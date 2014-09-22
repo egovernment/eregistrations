@@ -5,6 +5,8 @@
 	background-color: var(--dark-background);
 	display: flex;
 	width: 100%;
+	padding-top: 22px;
+	padding-bottom: 22px;
 }
 
 /*
@@ -14,8 +16,6 @@
 .footer-logos div.logos {
 	display: flex;
 	justify-content: space-between;
-	margin: 0 auto;
-	max-width: var(--desktop-width);
 }
 
 /*
@@ -24,6 +24,7 @@
 @media only screen and (max-width: var(--mobile-width)) {
 	.footer-logos div.logos {
 		flex-wrap: wrap;
+		justify-content: center;
 		min-width: var(--min-mobile-width);
 	}
 	.footer-logos div.logos div {

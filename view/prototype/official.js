@@ -59,7 +59,7 @@ exports['sub-main'] = function () {
 		)
 	);
 	table(
-		{ class: 'official-users-table' },
+		{ class: 'submitted-user-data-table' },
 		thead(
 			tr(
 				th("User"),
@@ -73,21 +73,19 @@ exports['sub-main'] = function () {
 			tr(
 				td(
 					{ class: 'user-basic-data' },
-					div(
-						a({ href: '/official/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					)
+					a({ href: '/official/user-id/' }, "John Watson",
+						span('johnwatson@gmail.com')
+						)
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
+					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
 					{ class: 'desktop-only' },
-					div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
+					a({ href: '/official/user-id/' }, "23/07/2014 18:09:22")
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "Investment"))
+					a({ href: '/official/user-id/' }, "Investment")
 				),
 				td(
 					{ class: 'actions' },
@@ -97,21 +95,19 @@ exports['sub-main'] = function () {
 			tr(
 				td(
 					{ class: 'user-basic-data' },
-					div(
-						a({ href: '/official/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					)
+					a({ href: '/official/user-id/' }, "John Watson",
+						span('johnwatson@gmail.com')
+						)
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
+					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
 					{ class: 'desktop-only' },
-					div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
+					a({ href: '/official/user-id/' }, "23/07/2014 18:09:22")
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "Investment"))
+					a({ href: '/official/user-id/' }, "Investment")
 				),
 				td(
 					{ class: 'actions' },
@@ -121,21 +117,19 @@ exports['sub-main'] = function () {
 			tr(
 				td(
 					{ class: 'user-basic-data' },
-					div(
-						a({ href: '/official/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					)
+					a({ href: '/official/user-id/' }, "John Watson",
+						span('johnwatson@gmail.com')
+						)
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
+					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
 					{ class: 'desktop-only' },
-					div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
+					a({ href: '/official/user-id/' }, "23/07/2014 18:09:22")
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "Investment"))
+					a({ href: '/official/user-id/' }, "Investment")
 				),
 				td(
 					{ class: 'actions' },
@@ -145,21 +139,19 @@ exports['sub-main'] = function () {
 			tr(
 				td(
 					{ class: 'user-basic-data' },
-					div(
-						a({ href: '/official/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					)
+					a({ href: '/official/user-id/' }, "John Watson",
+						span('johnwatson@gmail.com')
+						)
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
+					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
 					{ class: 'desktop-only' },
-					div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
+					a({ href: '/official/user-id/' }, "23/07/2014 18:09:22")
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "Investment"))
+					a({ href: '/official/user-id/' }, "Investment")
 				),
 				td(
 					{ class: 'actions' },
@@ -169,21 +161,19 @@ exports['sub-main'] = function () {
 			tr(
 				td(
 					{ class: 'user-basic-data' },
-					div(
-						a({ href: '/official/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					)
+					a({ href: '/official/user-id/' }, "John Watson",
+						span('johnwatson@gmail.com')
+						)
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
+					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
 					{ class: 'desktop-only' },
-					div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
+					a({ href: '/official/user-id/' }, "23/07/2014 18:09:22")
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "Investment"))
+					a({ href: '/official/user-id/' }, "Investment")
 				),
 				td(
 					{ class: 'actions' },
@@ -193,21 +183,19 @@ exports['sub-main'] = function () {
 			tr(
 				td(
 					{ class: 'user-basic-data' },
-					div(
-						a({ href: '/official/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					)
+					a({ href: '/official/user-id/' }, "John Watson",
+						span('johnwatson@gmail.com')
+						)
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
+					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
 					{ class: 'desktop-only' },
-					div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
+					a({ href: '/official/user-id/' }, "23/07/2014 18:09:22")
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "Investment"))
+					a({ href: '/official/user-id/' }, "Investment")
 				),
 				td(
 					{ class: 'actions' },
@@ -217,21 +205,19 @@ exports['sub-main'] = function () {
 			tr(
 				td(
 					{ class: 'user-basic-data' },
-					div(
-						a({ href: '/official/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					)
+					a({ href: '/official/user-id/' }, "John Watson",
+						span('johnwatson@gmail.com')
+						)
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
+					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
 					{ class: 'desktop-only' },
-					div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
+					a({ href: '/official/user-id/' }, "23/07/2014 18:09:22")
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "Investment"))
+					a({ href: '/official/user-id/' }, "Investment")
 				),
 				td(
 					{ class: 'actions' },
@@ -241,21 +227,19 @@ exports['sub-main'] = function () {
 			tr(
 				td(
 					{ class: 'user-basic-data' },
-					div(
-						a({ href: '/official/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					)
+					a({ href: '/official/user-id/' }, "John Watson",
+						span('johnwatson@gmail.com')
+						)
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
+					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
 					{ class: 'desktop-only' },
-					div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
+					a({ href: '/official/user-id/' }, "23/07/2014 18:09:22")
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "Investment"))
+					a({ href: '/official/user-id/' }, "Investment")
 				),
 				td(
 					{ class: 'actions' },
@@ -265,21 +249,19 @@ exports['sub-main'] = function () {
 			tr(
 				td(
 					{ class: 'user-basic-data' },
-					div(
-						a({ href: '/official/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					)
+					a({ href: '/official/user-id/' }, "John Watson",
+						span('johnwatson@gmail.com')
+						)
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "4068-50001-N-2013"))
+					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
 					{ class: 'desktop-only' },
-					div(a({ href: '/official/user-id/' }, "23/07/2014 18:09:22"))
+					a({ href: '/official/user-id/' }, "23/07/2014 18:09:22")
 				),
 				td(
-					div(a({ href: '/official/user-id/' }, "Investment"))
+					a({ href: '/official/user-id/' }, "Investment")
 				),
 				td(
 					{ class: 'actions' },

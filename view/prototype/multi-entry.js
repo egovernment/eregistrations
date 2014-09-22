@@ -3,7 +3,7 @@
 var register = require('./_register');
 
 exports.banner = function () {
-	div({ class: 'public-multi-entry' },
+	div({ class: 'public-multi-entry content' },
 		h1("Lorem ipsum dolor sit amet"),
 		div(
 			div(

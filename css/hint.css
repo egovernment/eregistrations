@@ -1,0 +1,228 @@
+/*! Hint.css - v1.3.3 - 2014-07-06
+* HINT.css is a tooltip library made in pure CSS.*
+* Release under The MIT License
+*/
+.hint-optional {
+	position: relative;
+	display: inline-block;
+}
+
+.hint-optional:after {
+	border-radius: 4px;
+	box-shadow: 4px 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.hint-optional:before, .hint-optional:after {
+	position: absolute;
+	transform: translate3d(0, 0, 0);
+	visibility: hidden;
+	opacity: 0;
+	z-index: 1000000;
+	pointer-events: none;
+	transition: 0.3s ease;
+	transition-delay: 0ms; }
+.hint-optional:hover:before, .hint-optional:hover:after, .hint-optional:focus:before, .hint-optional:focus:after {
+	visibility: visible;
+	opacity: 1; }
+.hint-optional:hover:before, .hint-optional:hover:after {
+	transition-delay: 100ms; }
+.hint-optional:before {
+	content: '';
+	position: absolute;
+	background: transparent;
+	border: 6px solid transparent;
+	z-index: 1000001; }
+.hint-optional:after {
+	content: attr(data-hint);
+	background: #383838;
+	color: white;
+	padding: 8px 10px;
+	font-size: 12px;
+	line-height: 12px;
+	white-space: nowrap;
+}
+
+/**
+* source: hint-position.scss
+*
+* Defines the positoning logic for the tooltips.
+*
+* Classes added:
+* 1) hint--top
+* 2) hint--bottom
+* 3) hint--left
+* 4) hint--right
+*/
+/**
+* set default color for tooltip arrows
+*/
+.hint-optional-top:before {
+	border-top-color: #383838; }
+
+.hint-optional-bottom:before {
+	border-bottom-color: #383838; }
+
+.hint-optional-left:before {
+	border-left-color: #383838; }
+
+.hint-optional-right:before {
+	border-right-color: #383838; }
+
+/**
+* top tooltip
+*/
+.hint-optional-top:before {
+	margin-bottom: -12px; }
+.hint-optional-top:after {
+	margin-left: -18px; }
+.hint-optional-top:before, .hint-optional-top:after {
+	bottom: 100%;
+	left: 50%; }
+.hint-optional-top:hover:after, .hint-optional-top:hover:before, .hint-optional-top:focus:after, .hint-optional-top:focus:before {
+	transform: translateY(-8px); }
+
+/**
+* bottom tooltip
+*/
+.hint-optional-bottom:before {
+	margin-top: -12px; }
+.hint-optional-bottom:after {
+	margin-left: -18px; }
+.hint-optional-bottom:before, .hint-optional-bottom:after {
+	top: 100%;
+	left: 50%; }
+.hint-optional-bottom:hover:after, .hint-optional-bottom:hover:before, .hint-optional-bottom:focus:after, .hint-optional-bottom:focus:before {
+	transform: translateY(8px); }
+
+/**
+* right tooltip
+*/
+.hint-optional-right:before {
+	margin-left: -12px;
+	margin-bottom: -6px; }
+.hint-optional-right:after {
+	margin-bottom: -14px; }
+.hint-optional-right:before, .hint-optional-right:after {
+	left: 100%;
+	bottom: 50%; }
+.hint-optional-right:hover:after, .hint-optional-right:hover:before, .hint-optional-right:focus:after, .hint-optional-right:focus:before {
+	transform: translateX(8px); }
+
+/**
+* left tooltip
+*/
+.hint-optional-left:before {
+	margin-right: -12px;
+	margin-bottom: -6px; }
+.hint-optional-left:after {
+	margin-bottom: -14px; }
+.hint-optional-left:before, .hint-optional-left:after {
+	right: 100%;
+	bottom: 50%; }
+.hint-optional-left:hover:after, .hint-optional-left:hover:before, .hint-optional-left:focus:after, .hint-optional-left:focus:before {
+	transform: translateX(-8px); }
+
+/**
+* source: hint-color-types.scss
+*
+* Contains tooltips of various types based on color differences.
+*
+* Classes added:
+* 1) hint--error
+* 2) hint--warning
+* 3) hint--info
+* 4) hint--success
+*
+*/
+/**
+* Error
+*/
+.hint-optional-error:after {
+	background-color: #b34e4d;
+	text-shadow: 0 -1px 0 #592726; }
+.hint-optional-error.hint-optional-top:before {
+	border-top-color: #b34e4d; }
+.hint-optional-error.hint-optional-bottom:before {
+	border-bottom-color: #b34e4d; }
+.hint-optional-error.hint-optional-left:before {
+	border-left-color: #b34e4d; }
+.hint-optional-error.hint-optional-right:before {
+	border-right-color: #b34e4d; }
+
+/**
+* Warning
+*/
+.hint-optional-warning:after {
+	background-color: #c09854;
+	text-shadow: 0 -1px 0 #6c5328; }
+.hint-optional-warning.hint-optional-top:before {
+	border-top-color: #c09854; }
+.hint-optional-warning.hint-optional-bottom:before {
+	border-bottom-color: #c09854; }
+.hint-optional-warning.hint-optional-left:before {
+	border-left-color: #c09854; }
+.hint-optional-warning.hint-optional-right:before {
+	border-right-color: #c09854; }
+
+/**
+* Info
+*/
+.hint-optional-info:after {
+	background-color: #3986ac;
+	text-shadow: 0 -1px 0 #193b4d; }
+.hint-optional-info.hint-optional-top:before {
+	border-top-color: #3986ac; }
+.hint-optional-info.hint-optional-bottom:before {
+	border-bottom-color: #3986ac; }
+.hint-optional-info.hint-optional-left:before {
+	border-left-color: #3986ac; }
+.hint-optional-info.hint-optional-right:before {
+	border-right-color: #3986ac; }
+
+/**
+* Success
+*/
+.hint-optional-success:after {
+	background-color: #458746;
+	text-shadow: 0 -1px 0 #1a321a; }
+.hint-optional-success.hint-optional-top:before {
+	border-top-color: #458746; }
+.hint-optional-success.hint-optional-bottom:before {
+	border-bottom-color: #458746; }
+.hint-optional-success.hint-optional-left:before {
+	border-left-color: #458746; }
+.hint-optional-success.hint-optional-right:before {
+	border-right-color: #458746; }
+
+/**
+* source: hint-always.scss
+*
+* Defines a persisted tooltip which shows always.
+*
+* Classes added:
+* 1) hint--always
+*
+*/
+.hint-optional-always:after, .hint-optional-always:before {
+	opacity: 1;
+	visibility: visible; }
+.hint-optional-always.hint-optional-top:after, .hint-optional-always.hint-optional-top:before {
+	transform: translateY(-8px); }
+.hint-optional-always.hint-optional-bottom:after, .hint-optional-always.hint-optional-bottom:before {
+	transform: translateY(8px); }
+.hint-optional-always.hint-optional-left:after, .hint-optional-always.hint-optional-left:before {
+	transform: translateX(-8px); }
+.hint-optional-always.hint-optional-right:after, .hint-optional-always.hint-optional-right:before {
+	transform: translateX(8px); }
+
+/**
+* source: hint-effects.scss
+*
+* Defines various transition effects for the tooltips.
+*
+* Classes added:
+* 1) hint--no-animate
+*
+*/
+.hint-optional-no-animate:before, .hint-optional-no-animate:after {
+	transition-duration: 0ms; }

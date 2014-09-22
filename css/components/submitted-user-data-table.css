@@ -1,45 +1,103 @@
 .submitted-user-data-table {
 	margin: 22px 0;
+	font-size: 16px;
 }
 
-.submitted-user-data-table  thead {
+.submitted-user-data-table thead {
 	background-color: var(--normal-background);
 }
-.submitted-user-data-table  thead th {
+.submitted-user-data-table thead th {
 	color: var(--white-text);
+	padding: 11px 25px 10px;
 }
 
-.submitted-user-data-table  tbody tr {
+.submitted-user-data-table tbody tr {
 	background-color: var(--white-text);
 }
 
-.submitted-user-data-table  th, .table-submitted td {
+.submitted-user-data-table tbody tr td {
+	border: 1px solid var(--light-inner-border);
+	padding: 0;
+}
+.submitted-user-data-table tbody tr td {
+	padding: 11px 25px 10px;
+	vertical-align: top;
+	line-height: 22px;
+}
+.submitted-user-data-table tbody tr td > a:only-child {
+	padding: 11px 25px 10px;
+	margin: -11px -25px -10px ;
+}
+
+.submitted-user-data-table tbody tr .actions {
+	padding: 10px 25px 9px;
+}
+
+.submitted-user-data-table tbody tr td a {
+	display: block;
+	line-height: 22px;
+}
+.submitted-user-data-table tbody tr td.user-basic-data a {
+		font-weight: bold;
+}
+.submitted-user-data-table tbody tr td a:hover,
+.submitted-user-data-table tbody tr td a:active,
+.submitted-user-data-table tbody tr td a:focus {
+	text-decoration: underline;
+}
+.submitted-user-data-table tbody tr td.user-basic-data a span {
+	display: block;
+	width: 100%;
+	font-weight: normal;
+}
+
+.submitted-user-data-table tbody tr td.actions a {
+	font-size: 16px;
+	display: inline;
+	padding: 5px;
+	margin-left: 15%;
+}
+.submitted-user-data-table tbody tr td.actions a:first-child {
+	margin: 0;
+}
+
+.submitted-user-data-table th {
 	border: 1px solid var(--light-inner-border);
 }
 
-.submitted-user-data-table  .fa-download {
-	margin: 0 auto;
+.submitted-user-data-table tbody tr:nth-of-type(even) {
+	background-color: var(--light-background);
+}
+
+.submitted-user-data-table ul {
+	list-style-type: none;
+	margin-bottom: 0;
+	margin: -6px 0;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
 
-	.submitted-user-data-table  tr {
+	.submitted-user-data-table.table-responsive tr {
 		border: 1px solid var(--light-inner-border);
 		height: auto;
 		}
 
-	.submitted-user-data-table  td {
+	.submitted-user-data-table.table-responsive td {
 		border-bottom: 1px solid var(--light-inner-border);
 		position: relative;
 		}
 
-	.submitted-user-data-table  td {
+	.submitted-user-data-table.table-responsive td {
 		display: flex;
 		justify-content: space-around;
 		padding: 0;
+		height: auto;
 		}
 
-	.submitted-user-data-table  th {
+	.submitted-user-data-table.table-responsive th {
 		display: none;
+	}
+	.submitted-user-data-table.table-responsive tbody tr td {
+		padding: 0;
 	}
 }

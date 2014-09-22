@@ -6,16 +6,11 @@
 
 .file-thumb-image {
 	height: 132px;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-
+	width: 110px;
 	border: 1px solid var(--light-inner-border);
 	border-radius: 5px;
 	padding: 8px;
 	text-align: center;
-
-	line-height: 22px;
 }
 .file-thumb-image:hover,
 .file-thumb-image:focus,
@@ -24,8 +19,8 @@
 }
 
 .file-thumb-image img {
-	max-height: 110px;
-	width: 88px;
+	max-height: 100%;
+	max-width: 100%;
 	margin: 0;
 	vertical-align: middle;
 }

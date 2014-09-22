@@ -3,13 +3,15 @@
 var db = require('mano').db,
 	partner = db.partnerFrank;
 
+exports['step-form'] = { class: { 'step-active': true } };
+
 exports.step = function () {
 	div(
 		{ class: 'entity-header' },
 		h1("Partner: " + partner._firstName + " " + partner._lastName),
 		div(
 			{ class: 'entity-actions' },
-			a({ href: '/users-admin/edit-user-id/', class: 'button-main' },
+			a({ class: 'button-main' },
 				"Edit", span({ class: 'fa fa-edit' }, "Edit")),
 			a({ class: 'button-main' }, "Delete", span({ class: 'fa fa-trash-o' }, "Delete"))
 		)
