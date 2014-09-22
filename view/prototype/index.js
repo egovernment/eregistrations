@@ -56,13 +56,4 @@ exports.main = function () {
 			li(a(img({ src: '/img/img-150.png' })))
 			)
 	);
-
-	footer({ class: 'footer-logos' },
-		div({ class: 'content' },
-			div({ class: 'logos' },
-				img({ src: '/img/logo.png' }),
-				img({ src: '/img/logo.png' })
-				)
-			)
-		);
 };

@@ -1,12 +1,13 @@
 'use strict';
 
-var callable       = require('es5-ext/object/valid-callable')
-  , compileTpl     = require('es6-template-strings/compile')
-  , resolveTpl     = require('es6-template-strings/resolve-to-string')
-  , mano           = require('mano')
-  , tryRequire     = require('mano/lib/utils/try-require').bind(require)
-  , resolve        = require('path').resolve
-  , setupTriggers  = require('./_setup-triggers')
+var normalizeOpts = require('es5-ext/object/normalize-options')
+  , callable      = require('es5-ext/object/valid-callable')
+  , compileTpl    = require('es6-template-strings/compile')
+  , resolveTpl    = require('es6-template-strings/resolve-to-string')
+  , mano          = require('mano')
+  , tryRequire    = require('mano/lib/utils/try-require').bind(require)
+  , resolve       = require('path').resolve
+  , setupTriggers = require('./_setup-triggers')
 
   , now = Date.now, forEach = Array.prototype.forEach
   , nextTick = process.nextTick
@@ -17,6 +18,7 @@ var callable       = require('es5-ext/object/valid-callable')
 exports = module.exports = [];
 
 configure = function (conf) {
+	conf = normalizeOpts(conf);
 	conf.text = compileTpl(conf.text);
 	if (conf.resolveUser != null) callable(conf.resolveUser);
 	conf.variables = Object(conf.variables);
