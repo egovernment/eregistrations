@@ -27,4 +27,12 @@ exports.body = function () {
 	insert(login);
 	insert(resetPassword);
 	main({ id: 'main' });
+	footer({ class: 'footer-logos' },
+		div({ class: 'content' },
+			div({ class: 'logos' },
+				img({ src: '/img/logo.png' }),
+				img({ src: '/img/logo.png' })
+				)
+			)
+		);
 };
