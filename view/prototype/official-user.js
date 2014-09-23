@@ -3,7 +3,7 @@
 exports['sub-main'] = function () {
 	section(
 		table(
-			{ class: 'submitted-user-data-table table-responsive' },
+			{ class: 'submitted-user-data-table', responsive: true },
 			thead(
 				tr(
 					th("Status"),
@@ -15,45 +15,22 @@ exports['sub-main'] = function () {
 			),
 			tbody(
 				tr(
+					td("Pending for revision"),
+					td("4068-50001-N-2013"),
+					td("23/07/2014 18:09:22"),
 					td(
-						div({ class: 'cell-caption' },
-							"Status"),
-						div({ class: 'cell-body' },
-							"Pending for revision")
+						span({ class: 'label-reg' }, "Brela"),
+						span({ class: 'label-reg' }, "Tinc"),
+						span({ class: 'label-reg' }, "Vat"),
+						span({ class: 'label-reg' }, "Gepf"),
+						span({ class: 'label-reg' }, "Nssf"),
+						span({ class: 'label-reg' }, "Lapf")
 					),
 					td(
-						div({ class: 'cell-caption' },
-							"Application number"),
-						div({ class: 'cell-body' },
-							"4068-50001-N-2013")
-					),
-					td(
-						div({ class: 'cell-caption' },
-							"Application date"),
-						div({ class: 'cell-body' },
-							"23/07/2014 18:09:22")
-					),
-					td(
-						div({ class: 'cell-caption' },
-							"Requested registrations"),
-						div({ class: 'cell-body' },
-							span({ class: 'label-reg' }, "Brela"),
-							span({ class: 'label-reg' }, "Tinc"),
-							span({ class: 'label-reg' }, "Vat"),
-							span({ class: 'label-reg' }, "Gepf"),
-							span({ class: 'label-reg' }, "Nssf"),
-							span({ class: 'label-reg' }, "Lapf")
-							)
-					),
-					td(
-						div({ class: 'cell-caption' },
-							""),
-						div({ class: 'cell-body' },
-							a(
-								{ class: 'hint-optional hint-optional-left', 'data-hint': 'Download status' },
-								span({ class: 'fa fa-download' }, "Download")
-							)
-							)
+						a(
+							{ class: 'hint-optional hint-optional-left', 'data-hint': 'Download status' },
+							span({ class: 'fa fa-download' }, "Download")
+						)
 					)
 				)
 			)
