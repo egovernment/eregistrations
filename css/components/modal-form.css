@@ -1,9 +1,4 @@
-.modal input {
+.modal input:not([type="submit"]) {
 	margin-top: 0;
 	margin-bottom: 0;
-}
-
-.modal input[type="submit"] {
-	margin-top: -5px;
-	margin-bottom: -5px;
 }
