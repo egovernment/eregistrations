@@ -106,7 +106,7 @@ select {
 	display: block;
 	font-size: 12px;
 	margin-bottom: -10px;
-	margin-top: 10px;
+	padding-top: 10px;
 	width: 100%;
 	color: var(--hint-text);
 }
@@ -208,6 +208,10 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	}
 }
 .error-message {
+	display: block;
+	margin-top: 10px;
+	margin-bottom: -10px;
+	width: 100%;
 	color: var(--error-text);
 }
 

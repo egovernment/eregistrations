@@ -12,11 +12,12 @@ module.exports = modal(
 			h3("Create your account")
 		),
 		div(
-			form({ action: '/register/', method: 'post' },
+			form({ class: 'form-elements', action: '/register/', method: 'post' },
 				fieldset(['firstName', 'lastName', 'email', 'password'].map(function (name) {
 					var rel = user._get(name);
-					return p(input({ dbjs: rel, placeholder: rel.descriptor.label }),
-						p({ class: 'error-message' }, "Error message"));
+					return div({ class: 'dbjs-input-component' },
+						input({ dbjs: rel, placeholder: rel.descriptor.label }),
+						span({ class: 'error-message' }, "Error message"));
 				}),
 					p({ class: 'error-message' },
 						"Your password must be at least 6 characters and include at least one number."),
