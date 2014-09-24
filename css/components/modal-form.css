@@ -4,7 +4,6 @@
 }
 
 .modal input[type="submit"] {
-	margin-bottom: 0;
-	height: 44px;
-	font-size: 16px;
+	margin-top: -5px;
+	margin-bottom: -5px;
 }
