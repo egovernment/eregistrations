@@ -13,10 +13,10 @@ module.exports = modal(
 		),
 		div(
 			form(
-				{ id: 'login-form', method: 'post', action: '/login/' },
-				p(input({ dbjs: db.Email, required: true, name: 'email',
+				{ class: 'form-elements', id: 'login-form', method: 'post', action: '/login/' },
+				div({ class: 'dbjs-input-component' }, input({ dbjs: db.Email, required: true, name: 'email',
 					placeholder: user.getDescriptor('email').label })),
-				p(input({ dbjs: db.Password,
+				div({ class: 'dbjs-input-component' }, input({ dbjs: db.Password,
 					required: true, name: 'password', placeholder: user.getDescriptor('password').label })),
 				p({ class: 'error-message' }, "Email or password is not recognized"),
 				p(input({ type: 'submit', value: "Sign In" }))
