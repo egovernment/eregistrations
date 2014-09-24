@@ -24,15 +24,7 @@ ul.form-elements li {
 .dbjs-input-component label, .control {
 	display: inline-block;
 	vertical-align: top;
-	padding: 0 10px;
-}
-.dbjs-input-component > label {
-	width: 40%;
-	text-align: right;
-	font-weight: bold;
-}
-.control {
-	width: 60%;
+
 }
 
 ul.radio {
