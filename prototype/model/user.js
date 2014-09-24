@@ -3,7 +3,7 @@
 var Map          = require('es6-map')
   , db           = require('mano').db
   , User         = require('mano-auth/model/user')(db)
-  , Role         = require('mano-auth/model/role')
+  , Role         = require('mano-auth/model/role')(db)
   , DateType     = require('dbjs-ext/date-time/date')(db)
   , StringLine   = require('dbjs-ext/string/string-line')(db)
   , Email        = require('dbjs-ext/string/string-line/email')(db)
