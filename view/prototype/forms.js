@@ -48,7 +48,7 @@ exports.step = function () {
 						input({ type: 'submit' }, "Submit")
 						)
 					),
-				fieldset({ class: 'sub-section' },
+				div({ class: 'sub-section' },
 					h3("Second subsection"),
 					fieldset(
 						{ class: 'form-elements' },
