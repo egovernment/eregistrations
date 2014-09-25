@@ -13,25 +13,28 @@ module.exports = modal(
 		),
 		div(
 			form({ action: '/register/', method: 'post' },
-				fieldset(['firstName', 'lastName', 'email', 'password'].map(function (name) {
-					var rel = user._get(name);
-					return p(input({ dbjs: rel, placeholder: rel.descriptor.label }),
-						p({ class: 'error-message' }, "Error message"));
-				}),
-					p({ class: 'error-message' },
-						"Your password must be at least 6 characters and include at least one number."),
-					p(
+				ul({ class: 'form-elements' }, ['firstName', 'lastName', 'email', 'password'].map(
+					function (name) {
+						var rel = user._get(name);
+						return li({ class: 'dbjs-input-component' },
+							input({ dbjs: rel, placeholder: rel.descriptor.label }),
+							span({ class: 'error-message' }, "Error message"));
+					}
+				),
+					li(
+						{ class: 'dbjs-input-component' },
 						label(
-							{ class: 'input-aside' },
 							input(
 								{ dbjs: user._isManager, type: 'checkbox' }
 							),
 							" ",
 							span(user.getDescriptor('isManager').label)
-						)
+						),
+						span({ class: 'hint' },
+							"Manager account allows you to create multiple requests on behalf of others.")
+					)
 					),
-					p("Manager account allows you to create multiple requests on behalf of others."),
-					p(input({ type: 'submit', value: "Create account" }))))
+				p(input({ type: 'submit', value: "Create account" })))
 		),
 		footer(
 			p("Already has account? ",

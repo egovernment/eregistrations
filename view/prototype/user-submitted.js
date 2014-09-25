@@ -29,7 +29,7 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'submitted-main' },
 		table(
-			{ class: 'submitted-user-data-table table-responsive' },
+			{ class: 'submitted-user-data-table', responsive: true },
 			thead(
 				tr(
 					th("Status"),
@@ -42,51 +42,23 @@ exports['sub-main'] = function () {
 			),
 			tbody(
 				tr(
+					td("Pending for revision"),
+					td("abstudios"),
+					td("123"),
+					td("29/07/2014"),
 					td(
-						div({ class: 'cell-caption' },
-							"Status"),
-						div({ class: 'cell-body' },
-							"Pending for revision")
+						span({ class: 'label-reg' }, "Brela"),
+						span({ class: 'label-reg' }, "Tinc"),
+						span({ class: 'label-reg' }, "Vat"),
+						span({ class: 'label-reg' }, "Gepf"),
+						span({ class: 'label-reg' }, "Nssf"),
+						span({ class: 'label-reg' }, "Lapf")
 					),
 					td(
-						div({ class: 'cell-caption' },
-							"Company"),
-						div({ class: 'cell-body' },
-							"abstudios")
-					),
-					td(
-						div({ class: 'cell-caption' },
-							"Application number"),
-						div({ class: 'cell-body' },
-							"123")
-					),
-					td(
-						div({ class: 'cell-caption' },
-							"Application date"),
-						div({ class: 'cell-body' },
-							"29/07/2014")
-					),
-					td(
-						div({ class: 'cell-caption' },
-							"Requested registrations"),
-						div({ class: 'cell-body' },
-							span({ class: 'label-reg' }, "Brela"),
-							span({ class: 'label-reg' }, "Tinc"),
-							span({ class: 'label-reg' }, "Vat"),
-							span({ class: 'label-reg' }, "Gepf"),
-							span({ class: 'label-reg' }, "Nssf"),
-							span({ class: 'label-reg' }, "Lapf")
-							)
-					),
-					td(
-						div({ class: 'cell-caption' },
-							""),
-						div({ class: 'cell-body' },
-							a(
-								{ class: 'hint-optional hint-optional-left', 'data-hint': 'Download status' },
-								span({ class: 'fa fa-download' }, "Download")
-							)
-							)
+						a(
+							{ class: 'hint-optional hint-optional-left', 'data-hint': 'Download status' },
+							span({ class: 'fa fa-download' }, "Download")
+						)
 					)
 				)
 			)

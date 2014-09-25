@@ -65,9 +65,6 @@
 	margin: 8px 0 12px;
 }
 
-.modal-inventory input[type="submit"] {
-	height: 22px;
-}
 .modal-inventory footer .inventory-total-value {
 	padding: 0;
 }

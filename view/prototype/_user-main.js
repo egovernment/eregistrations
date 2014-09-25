@@ -1,44 +1,48 @@
 'use strict';
 
+var location = require('mano/lib/client/location');
+
 exports['user-name'] = function () {
 	text("User Name");
 };
 
 exports.main = function () {
+
+	var mobileCheckbox;
+
 	div({ class: 'fixed-top-placeholder' },
 		div({ id: 'user-steps-menu', class: 'steps-menu', fixed: true },
 			div({ class: 'content all-menu-items' },
 				label({ class: 'step-active show-steps-btn', for: 'show-steps-control' },
 					'Steps'
 					),
-				input({ id: 'show-steps-control', type: 'checkbox', role: 'button' }
+				mobileCheckbox = input({ id: 'show-steps-control', type: 'checkbox', role: 'button' }
 					),
 				nav({ class: 'steps' },
 					menuitem(
-						a({ class: 'step-active', href: '/guide/' },
+						a({ href: '/guide/', id: 'step-guide' },
 							"1. Guide"),
 						div({ style: 'width: 100%' })
 					),
 					menuitem(
-						a({ class: 'step-inactive', href: '/forms/' },
+						a({ href: '/forms/', id: 'step-form' },
 							"2. Fill the form"
 							),
 						div({ style: 'width: 50%' })
 					),
 					menuitem(
-						a({ class: 'step-inactive', href: '/documents/' },
+						a({ href: '/documents/', id: 'step-documents' },
 							"3. Upload docs"
 							),
 						div()
 					),
 					menuitem(
-						a({ class: 'step-inactive' },
-							"4. Pay"
+						a("4. Pay"
 							),
 						div()
 					),
 					menuitem(
-						a({ class: 'step-inactive', href: '/submission/' },
+						a({ href: '/submission/', id: 'step-submission' },
 							"5. Send file"
 							),
 						div()
@@ -48,4 +52,9 @@ exports.main = function () {
 			)
 		);
 	div({ class: 'content', id: 'step' });
+
+	location.on('change', function () {
+		mobileCheckbox.checked = false;
+	});
+
 };

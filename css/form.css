@@ -24,15 +24,7 @@ ul.form-elements li {
 .dbjs-input-component label, .control {
 	display: inline-block;
 	vertical-align: top;
-	padding: 0 10px;
-}
-.dbjs-input-component > label {
-	width: 40%;
-	text-align: right;
-	font-weight: bold;
-}
-.control {
-	width: 60%;
+
 }
 
 ul.radio {
@@ -75,11 +67,14 @@ select {
 	color: var(--dark-text);
 	max-width: 100%;
 	text-transform: none;
-	height: 30px;
+	line-height: 22px;
 	margin: -5px 0 -5px;
 	font-size: 14px;
 	font-family: "Helvetica";
-	padding: 0 5px;
+	padding: 3px 5px;
+}
+select {
+	height: 30px;
 }
 @-moz-document url-prefix() {
 	input[type="text"],
@@ -106,23 +101,21 @@ select {
 	display: block;
 	font-size: 12px;
 	margin-bottom: -10px;
-	margin-top: 10px;
+	padding-top: 10px;
 	width: 100%;
 	color: var(--hint-text);
 }
 
 input[type="submit"] {
-	height: 30px;
+	line-height: 22px;
 	border-radius: 4px;
 	color: var(--white-text);
 	background-color: var(--normal-background);
 	border: none;
 	box-shadow: none;
 	font-size: 14px;
-	margin-bottom: 22px;
 	margin: -5px 0 -5px;
-	padding-left: 10px;
-	padding-right: 10px;
+	padding: 4px 10px;
 }
 
 textarea {
@@ -208,7 +201,11 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 		line-height: 26px;
 	}
 }
-.error-message {
+.dbjs-input-component .error-message {
+	display: block;
+	margin-top: 11px;
+	margin-bottom: -11px;
+	width: 100%;
 	color: var(--error-text);
 }
 
