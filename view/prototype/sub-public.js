@@ -10,7 +10,7 @@ exports.main = function () {
 			),
 		input({ id: 'nav-sub-public-control', type: 'checkbox', role: 'button' }
 			),
-		nav({ class: 'public-sub-menu nav-mobile' },
+		nav({ class: 'public-sub-menu content nav-mobile' },
 			menuitem(a({ id: 'subO' }, 'Index')),
 			menuitem(a({ id: 'sub1' }, 'Why enable your business?')),
 			menuitem(a({ id: 'sub2' }, '1. Create your application file')),

@@ -1,4 +1,4 @@
-.public-sub-sub-menu-container {
+.public-parts-menu-container {
 	background-color: #fff;
 	padding: 11px;
 }
@@ -8,24 +8,27 @@
 	background-color: var(--normal-dark-background);
 }
 
-.public-sub-sub-menu-container .nav-mobile-button:hover,
-.public-sub-sub-menu-container .nav-mobile-button:focus,
-.public-sub-sub-menu-container .nav-mobile-button:active {
+.public-parts-menu-container .nav-mobile-button:hover,
+.public-parts-menu-container .nav-mobile-button:focus,
+.public-parts-menu-container .nav-mobile-button:active {
 	color: var(--normal-dark-background);
 	background-color: var(--light-background);
 }
 
-.public-sub-sub-menu {
+.public-parts-menu {
 	display: flex;
 	justify-content: center;
 	align-items: center;
 	margin: 0 auto;
-	max-width: var(--desktop-width);
 	padding: 11px 10px;
 	min-height: 66px;
 }
 
-.public-sub-sub-menu menuitem a {
+.public-parts-menu menuitem {
+	display: flex;
+}
+
+.public-parts-menu menuitem a {
 	padding:11px 10px;
 	text-align: center;
 	color: var(--normal-dark-background);
@@ -33,49 +36,44 @@
 	text-decoration: none;
 	line-height: 1;
 	height: 66px;
-	width: 154px;
+	width: 100%;
 	display: block;
 	font-size: 14px;
 }
 
-.public-sub-sub-menu menuitem a .fa {
+.public-parts-menu menuitem a .fa {
 	font-size: 22px;
 	margin: 0 auto 4px auto;
 	display: block;
 }
 
-.public-sub-sub-menu menuitem a:hover,
-.public-sub-sub-menu menuitem a:focus,
-.public-sub-sub-menu menuitem .active {
+.public-parts-menu menuitem a:hover,
+.public-parts-menu menuitem a:focus,
+.public-parts-menu menuitem .active {
 	border-radius: var(--normal-rounded-border);
 	background-color: var(--light-background);
 	cursor: pointer;
 }
 
-.public-sub-sub-menu-separator:before {
+.public-parts-menu-separator:before {
 	content: '>';
 }
 
-.public-sub-sub-menu-separator {
+.public-parts-menu-separator {
 	padding: 22px;
 	color: var(--normal-dark-background);
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.public-sub-sub-menu {
+	.public-parts-menu {
 		flex-wrap: wrap;
-		min-width: var(--min-mobile-width);
 		justify-content: space-around;
 		flex-direction: column;
 		display: none;
 	}
 
-	.public-sub-sub-menu menuitem {
+	.public-parts-menu menuitem {
 		margin: 11px 0;
-	}
-
-	.public-sub-sub-menu-separator {
-		display: none;
 	}
 
 }

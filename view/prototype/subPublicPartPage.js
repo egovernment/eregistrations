@@ -2,7 +2,7 @@
 
 exports.page1 = { class: { active: true } };
 exports['sub-page-content'] = function () {
-	div({ class: 'tabbed-content nav-mobile-container' },
+	div({ class: 'tabbed-content content nav-mobile-container' },
 		label({ class: 'nav-mobile-button', for: 'nav-tabs-control' },
 			'Tabs'
 			),

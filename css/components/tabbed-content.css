@@ -6,7 +6,6 @@ Component describing vertical-tabs elements styles - reusable
 	display: flex;
 	align-items: stretch;
 	margin: 0 auto;
-	max-width: var(--desktop-width);
 	padding: 22px 10px;
 }
 
