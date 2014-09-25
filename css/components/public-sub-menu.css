@@ -1,6 +1,5 @@
 .public-sub-menu-container {
 	background-color: var(--dark-background);
-	min-height: 66px;
 	padding: 11px 10px;
 }
 
@@ -54,6 +53,10 @@
 		justify-content: space-around;
 		flex-direction: column;
 		display: none;
+	}
+
+	.public-sub-menu menuitem {
+		margin: 11px 0;
 	}
 
 	.public-sub-menu menuitem a {
