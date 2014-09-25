@@ -39,3 +39,14 @@
 .section-primary .dbjs-input-component > .control {
 	width: 60%;
 }
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.section-primary .dbjs-input-component label {
+		text-align: left;
+		width: 100%;
+	}
+	.section-primary .dbjs-input-component > .control {
+		padding: 11px 10px;
+		width: 100%;
+	}
+}

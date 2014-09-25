@@ -348,9 +348,7 @@ ul.multiple {
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
-	.form-elements .dbjs-input-component {
-		padding: 0;
-	}
+
 	.form-elements label, .control {
 		display: block;
 		width: 100%;
@@ -358,7 +356,6 @@ Styles applied while screen sieze is less than 640px
 
 	.form-elements  label {
 		text-align: left;
-		font-weight: bold;
 	}
 
 	.form-elements ul.radio li {

@@ -16,13 +16,10 @@ exports.step = function () {
 				div({ class: 'section-primary' },
 					h2("Business Owner basic informations"),
 					hr(),
-					fieldset(
-						{ class: 'form-elements fieldset' },
-						ul(
-							['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
-							function (name) { return field({ dbjs: user.getObservable(name) }); }
-						)
-					),
+					ul({ class: 'form-elements' },
+						['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
+						function (name) { return field({ dbjs: user.getObservable(name) }); }
+						),
 					p({ class: 'submit-placeholder' },
 						input({ type: 'submit' }, "Submit")
 						)
@@ -36,7 +33,7 @@ exports.step = function () {
 				hr(),
 				div({ class: 'sub-section' },
 					h3("First subsection"),
-					ul({ class: 'form-elements fieldset' },
+					ul({ class: 'form-elements' },
 						['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
 							'registerIds'],
 						function (name) { return field({ dbjs: user.getObservable(name) }); }
@@ -47,14 +44,11 @@ exports.step = function () {
 					),
 				fieldset({ class: 'sub-section' },
 					h3("Second subsection"),
-					fieldset(
-						{ class: 'form-elements fieldset' },
-						ul({ class: 'form-elements fieldset' },
-							['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
-								'registerIds'],
-							function (name) { return field({ dbjs: user.getObservable(name) }); }
-							)
-					),
+					ul({ class: 'form-elements' },
+						['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
+							'registerIds'],
+						function (name) { return field({ dbjs: user.getObservable(name) }); }
+						),
 					p({ class: 'submit-placeholder' },
 						input({ type: 'submit' }, "Submit")
 						)
