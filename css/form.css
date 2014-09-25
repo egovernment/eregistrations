@@ -201,10 +201,10 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 		line-height: 26px;
 	}
 }
-.error-message {
+.dbjs-input-component .error-message {
 	display: block;
-	margin-top: 10px;
-	margin-bottom: -10px;
+	margin-top: 11px;
+	margin-bottom: -11px;
 	width: 100%;
 	color: var(--error-text);
 }

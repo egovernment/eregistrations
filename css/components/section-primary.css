@@ -36,6 +36,6 @@
 	text-align: right;
 	font-weight: bold;
 }
-.section-primary .control {
+.section-primary .dbjs-input-component > .control {
 	width: 60%;
 }
