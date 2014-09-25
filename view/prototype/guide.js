@@ -13,7 +13,7 @@ exports.step = function () {
 			h1("1. Individual registration guide for companies"
 			),
 			form({ class: 'guide-form' },
-				div({ class: 'guide-box' }, h2("Questions"),
+				div({ class: 'section-primary' }, h2("Questions"),
 					hr(),
 					ul({ class: 'form-elements' },
 					['businessActivity',
@@ -45,7 +45,7 @@ exports.step = function () {
 									input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) }))));
 						}
 					})),
-				div({ class: 'guide-box' }, h2("Registrations"),
+				div({ class: 'section-primary' }, h2("Registrations"),
 					hr(),
 					ul(li(label({ class: 'input-aside' },
 							input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
@@ -64,7 +64,7 @@ exports.step = function () {
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. " +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. ")
 				),
-				div({ class: 'guide-box' }, h2("Requirements"),
+				div({ class: 'section-primary' }, h2("Requirements"),
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
@@ -112,7 +112,7 @@ exports.step = function () {
 					)
 					)
 				),
-				div({ class: 'guide-box' }, h2("Costs"),
+				div({ class: 'section-primary' }, h2("Costs"),
 					hr(),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 						" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
