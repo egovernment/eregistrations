@@ -4,6 +4,7 @@
 ../../css/font-awesome.css
 ../../css/hint.css
 ../../css/components/button-main.css
+../../css/components/controls.css
 ../../css/components/error-main.css
 ../../css/components/disabler.css
 ../../css/components/modal.css
@@ -33,7 +34,6 @@
 ../../css/components/entity-properties.css
 ../../css/components/entity-header.css
 ../../css/components/entities-overview-table.css
-../../css/components/fieldset.css
 ../../css/components/public-sub-menu.css
 ../../css/components/public-parts-menu.css
 ../../css/components/tabbed-content.css

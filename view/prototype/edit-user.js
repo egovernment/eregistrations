@@ -11,7 +11,7 @@ exports['sub-main'] = function () {
 			{ class: 'section-primary' },
 			h3("Edit user"),
 			hr(),
-			ul({ class: 'form-elements fieldset' },
+			ul({ class: 'form-elements' },
 				li(field({ dbjs: user._firstName })),
 				li(field({ dbjs: user._lastName })),
 				li(field({ dbjs: user._roles,

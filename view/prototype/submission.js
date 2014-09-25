@@ -10,7 +10,7 @@ exports.step = function () {
 	div({ class: 'section-primary' },
 		h2("Where do you want to withdraw your documents?"),
 		hr(),
-		form(ul({ class: 'form-elements fieldset' },
+		form(ul({ class: 'form-elements' },
 				['placeOfWithdraw'],
 				function (name) { return field({ dbjs: user.getObservable(name) }); }
 				)
@@ -21,7 +21,7 @@ exports.step = function () {
 	div({ class: 'section-primary' },
 		h2("Who will pick the certificates?"),
 		hr(),
-		form(ul({ class: 'form-elements fieldset' },
+		form(ul({ class: 'form-elements' },
 			['pickCertificates', 'lastName', 'dateOfBirth', 'inventory'],
 				function (name) { return field({ dbjs: user.getObservable(name) }); }
 				),
