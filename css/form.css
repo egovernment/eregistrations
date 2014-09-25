@@ -348,6 +348,14 @@ ul.multiple {
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
+	.form-elements .dbjs-input-component label {
+		margin-top: -11px;
+	}
+
+	.form-elements .dbjs-input-component .control {
+		margin-bottom: -11px;
+
+	}
 
 	.form-elements label, .control {
 		display: block;
