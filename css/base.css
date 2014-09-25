@@ -130,6 +130,10 @@ form {
 	margin-bottom: 22px;
 }
 
+fieldset {
+	border: none;
+}
+
 ul {
 	margin: 0 0 22px 0;
 }
