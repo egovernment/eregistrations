@@ -17,7 +17,7 @@ exports.step = function () {
 					h2("Business Owner basic informations"),
 					hr(),
 					fieldset(
-						{ class: 'form-elements fieldset' },
+						{ class: 'form-elements' },
 						ul(
 							['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
 							function (name) { return field({ dbjs: user.getObservable(name) }); }
