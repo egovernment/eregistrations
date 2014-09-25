@@ -67,11 +67,14 @@ select {
 	color: var(--dark-text);
 	max-width: 100%;
 	text-transform: none;
-	height: 30px;
+	line-height: 22px;
 	margin: -5px 0 -5px;
 	font-size: 14px;
 	font-family: "Helvetica";
-	padding: 0 5px;
+	padding: 3px 5px;
+}
+select {
+	height: 30px;
 }
 @-moz-document url-prefix() {
 	input[type="text"],
