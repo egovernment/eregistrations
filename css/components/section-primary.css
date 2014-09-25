@@ -45,7 +45,8 @@
 		text-align: left;
 		width: 100%;
 	}
-	.section-primary .dbjs-input-component .control {
+	.section-primary .dbjs-input-component > .control {
 		padding: 11px 10px;
+		width: 100%;
 	}
 }
