@@ -16,7 +16,7 @@ exports.step = function () {
 				fieldset({ class: 'section-primary' },
 					h2("Business Owner basic informations"),
 					hr(),
-					ul({ class: 'form-elements fieldset' },
+					ul({ class: 'form-elements' },
 						['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
 						function (name) { return field({ dbjs: user.getObservable(name) }); }
 						),
@@ -33,7 +33,7 @@ exports.step = function () {
 				hr(),
 				fieldset({ class: 'sub-section' },
 					h3("First subsection"),
-					ul({ class: 'form-elements fieldset' },
+					ul({ class: 'form-elements' },
 						['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
 							'registerIds'],
 						function (name) { return field({ dbjs: user.getObservable(name) }); }
@@ -44,7 +44,7 @@ exports.step = function () {
 					),
 				fieldset({ class: 'sub-section' },
 					h3("Second subsection"),
-					ul({ class: 'form-elements fieldset' },
+					ul({ class: 'form-elements' },
 						['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
 							'registerIds'],
 						function (name) { return field({ dbjs: user.getObservable(name) }); }
