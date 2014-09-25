@@ -13,13 +13,16 @@ exports.step = function () {
 		{ class: 'disabler-range', id: 'forms-disabler-range' },
 		section(
 			form(
-				fieldset({ class: 'section-primary' },
+				div({ class: 'section-primary' },
 					h2("Business Owner basic informations"),
 					hr(),
-					ul({ class: 'form-elements fieldset' },
-						['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
-						function (name) { return field({ dbjs: user.getObservable(name) }); }
-						),
+					fieldset(
+						{ class: 'form-elements fieldset' },
+						ul(
+							['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
+							function (name) { return field({ dbjs: user.getObservable(name) }); }
+						)
+					),
 					p({ class: 'submit-placeholder' },
 						input({ type: 'submit' }, "Submit")
 						)
@@ -31,7 +34,7 @@ exports.step = function () {
 			form(
 				h2("Business Owner secondary informations"),
 				hr(),
-				fieldset({ class: 'sub-section' },
+				div({ class: 'sub-section' },
 					h3("First subsection"),
 					ul({ class: 'form-elements fieldset' },
 						['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
@@ -44,11 +47,14 @@ exports.step = function () {
 					),
 				fieldset({ class: 'sub-section' },
 					h3("Second subsection"),
-					ul({ class: 'form-elements fieldset' },
-						['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
-							'registerIds'],
-						function (name) { return field({ dbjs: user.getObservable(name) }); }
-						),
+					fieldset(
+						{ class: 'form-elements fieldset' },
+						ul({ class: 'form-elements fieldset' },
+							['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
+								'registerIds'],
+							function (name) { return field({ dbjs: user.getObservable(name) }); }
+							)
+					),
 					p({ class: 'submit-placeholder' },
 						input({ type: 'submit' }, "Submit")
 						)
