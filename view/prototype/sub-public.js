@@ -18,14 +18,4 @@ exports.main = function () {
 			menuitem(a({ id: 'sub4' }, '3. Get your certificates')))
 		);
 	div({ id: 'public-sub-page' });
-	footer({ class: 'footer-logos' },
-		div({ class: 'logos' },
-			div(
-				img({ src: '/img/logo.png' })
-			),
-			div(
-				img({ src: '/img/logo.png' })
-			)
-			)
-		);
 };
