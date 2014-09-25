@@ -25,3 +25,17 @@
 	border-left: 3px solid var(--normal-dark-background);
 	color: var(--normal-dark-background);
 }
+
+.section-primary .dbjs-input-component label,
+.section-primary .control {
+	padding: 0 10px;
+}
+
+.section-primary .dbjs-input-component > label {
+	width: 40%;
+	text-align: right;
+	font-weight: bold;
+}
+.section-primary .dbjs-input-component > .control {
+	width: 60%;
+}

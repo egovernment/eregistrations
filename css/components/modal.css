@@ -64,11 +64,7 @@ div.modal-courtain {
 }
 
 .modal footer p {
-	margin: 8px auto 14px;
+	margin: 10px auto 11px;
 	padding-left: 0;
 	padding-right: 0;
-}
-
-.modal p {
-	margin-bottom: 15px;
 }
