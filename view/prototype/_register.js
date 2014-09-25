@@ -24,7 +24,6 @@ module.exports = modal(
 					li(
 						{ class: 'dbjs-input-component' },
 						label(
-							{ class: '' },
 							input(
 								{ dbjs: user._isManager, type: 'checkbox' }
 							),

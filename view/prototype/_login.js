@@ -24,7 +24,7 @@ module.exports = modal(
 						span({ class: 'error-message' }, "Email or password is not recognized")
 						)
 				),
-				p({ class: '' }, input({ type: 'submit', value: "Sign In" }))
+				p(input({ type: 'submit', value: "Sign In" }))
 			)
 		),
 		footer(
