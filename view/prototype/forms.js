@@ -16,10 +16,13 @@ exports.step = function () {
 				div({ class: 'section-primary' },
 					h2("Business Owner basic informations"),
 					hr(),
-					ul({ class: 'form-elements' },
-						['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
-						function (name) { return field({ dbjs: user.getObservable(name) }); }
-						),
+					fieldset(
+						{ class: 'form-elements fieldset' },
+						ul(
+							['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
+							function (name) { return field({ dbjs: user.getObservable(name) }); }
+						)
+					),
 					p({ class: 'submit-placeholder' },
 						input({ type: 'submit' }, "Submit")
 						)
@@ -33,22 +36,28 @@ exports.step = function () {
 				hr(),
 				div({ class: 'sub-section' },
 					h3("First subsection"),
-					ul({ class: 'form-elements' },
-						['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
-							'registerIds'],
-						function (name) { return field({ dbjs: user.getObservable(name) }); }
-						),
+					fieldset(
+						{ class: 'form-elements' },
+						ul(
+							['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
+								'registerIds'],
+							function (name) { return field({ dbjs: user.getObservable(name) }); }
+						)
+					),
 					p({ class: 'submit-placeholder' },
 						input({ type: 'submit' }, "Submit")
 						)
 					),
 				fieldset({ class: 'sub-section' },
 					h3("Second subsection"),
-					ul({ class: 'form-elements' },
-						['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
-							'registerIds'],
-						function (name) { return field({ dbjs: user.getObservable(name) }); }
-						),
+					fieldset(
+						{ class: 'form-elements' },
+						ul(
+							['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
+								'registerIds'],
+							function (name) { return field({ dbjs: user.getObservable(name) }); }
+						)
+					),
 					p({ class: 'submit-placeholder' },
 						input({ type: 'submit' }, "Submit")
 						)
