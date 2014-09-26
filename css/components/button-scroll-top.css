@@ -1,17 +1,17 @@
-.button-nav-top {
-	display: flex;
-	flex-direction: row-reverse;
+.button-scroll-top {
+	text-align: right;
 }
 
-.button-nav-top a {
+.button-scroll-top a {
 	background: var(--normal-background);
 	border-radius: 3px;
 	color: var(--white-text);
+	display: inline-block;
 	padding: 0 5px;
 	text-decoration: none;
 }
-.button-nav-top a:hover,
-.button-nav-top a:focus,
-.button-nav-top a:active {
+.button-scroll-top a:hover,
+.button-scroll-top a:focus,
+.button-scroll-top a:active {
 	background: var(--normal-dark-background);
 }
