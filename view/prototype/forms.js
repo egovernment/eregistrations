@@ -168,7 +168,10 @@ exports.step = function () {
 						"Add new partner"
 					)
 				)
-			)
+			),
+			p({ class: 'button-scroll-top' },
+				a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Back to top"))
+				)
 			),
 
 		div({ class: 'next-step' },
