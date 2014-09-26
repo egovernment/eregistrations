@@ -40,6 +40,24 @@
 	width: 60%;
 }
 
+.section-primary .button-scroll-top {
+	text-align: right;
+}
+
+.section-primary .button-scroll-top a {
+	background: var(--normal-background);
+	border-radius: 3px;
+	color: var(--white-text);
+	display: inline-block;
+	padding: 0 5px;
+	text-decoration: none;
+}
+.section-primary .button-scroll-top a:hover,
+.section-primary .button-scroll-top a:focus,
+.section-primary .button-scroll-top a:active {
+	background: var(--normal-dark-background);
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 	.section-primary .dbjs-input-component label {
 		text-align: left;
