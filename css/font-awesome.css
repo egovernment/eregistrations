@@ -151,3 +151,11 @@ e.g.:
 .fa-chevron-circle-right:before {
 	content: '\f138';
 }
+
+.fa-arrow-up {
+	width: 0.93em;
+	white-space: nowrap;
+}
+.fa-arrow-up:before {
+	content: '\f062';
+}

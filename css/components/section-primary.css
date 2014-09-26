@@ -57,6 +57,9 @@
 .section-primary .button-scroll-top a:active {
 	background: var(--normal-dark-background);
 }
+.section-primary .button-scroll-top a span {
+	vertical-align: text-top;
+}
 
 @media only screen and (max-width: var(--mobile-width)) {
 	.section-primary .dbjs-input-component label {

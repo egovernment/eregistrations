@@ -27,7 +27,7 @@ exports.step = function () {
 						input({ type: 'submit' }, "Submit")
 						),
 					p({ class: 'button-scroll-top' },
-						a({ onclick: 'window.scroll(0, 0)' }, "Go top")
+						a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Download to"))
 						)
 					)
 			)
@@ -66,7 +66,7 @@ exports.step = function () {
 						input({ type: 'submit' }, "Submit")
 						),
 					p({ class: 'button-scroll-top' },
-						a({ onclick: 'window.scroll(0, 0)' }, "Go top")
+						a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Download to"))
 						)
 					)
 			)
