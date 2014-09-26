@@ -1,4 +1,4 @@
 .button-nav-top {
 	display: flex;
-
+	flex-direction: row-reverse;
 }
