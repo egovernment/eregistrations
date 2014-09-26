@@ -2,3 +2,16 @@
 	display: flex;
 	flex-direction: row-reverse;
 }
+
+.button-nav-top a {
+	background: var(--normal-background);
+	border-radius: 3px;
+	color: var(--white-text);
+	padding: 0 5px;
+	text-decoration: none;
+}
+.button-nav-top a:hover,
+.button-nav-top a:focus,
+.button-nav-top a:active {
+	background: var(--normal-dark-background);
+}
