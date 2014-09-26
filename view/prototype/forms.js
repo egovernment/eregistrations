@@ -61,8 +61,11 @@ exports.step = function () {
 					p({ class: 'submit-placeholder' },
 						input({ type: 'submit' }, "Submit")
 						)
-					)
-			)
+					),
+					p({ class: 'button-nav-top' }
+						input({ type: 'submit' }, "Submit")
+						)
+					),			)
 			),
 
 		section({ class: 'section-primary' },

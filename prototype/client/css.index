@@ -4,6 +4,7 @@
 ../../css/font-awesome.css
 ../../css/hint.css
 ../../css/components/button-main.css
+../../css/components/button-nav-top.css
 ../../css/components/controls.css
 ../../css/components/error-main.css
 ../../css/components/disabler.css
