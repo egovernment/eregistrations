@@ -22,6 +22,7 @@ License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	overflow: hidden;
+	white-space: nowrap;
 }
 
 .fa:before {
@@ -150,4 +151,11 @@ e.g.:
 }
 .fa-chevron-circle-right:before {
 	content: '\f138';
+}
+
+.fa-arrow-up {
+	width: 0.93em;
+}
+.fa-arrow-up:before {
+	content: '\f062';
 }

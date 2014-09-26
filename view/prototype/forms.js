@@ -25,12 +25,16 @@ exports.step = function () {
 					),
 					p({ class: 'submit-placeholder' },
 						input({ type: 'submit' }, "Submit")
+						),
+					p({ class: 'button-scroll-top' },
+						a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Back to top"))
 						)
 					)
 			)
 		),
 
-		section({ class: 'section-primary' },
+		section(
+			{ class: 'section-primary' },
 			form(
 				h2("Business Owner secondary informations"),
 				hr(),
@@ -60,10 +64,13 @@ exports.step = function () {
 					),
 					p({ class: 'submit-placeholder' },
 						input({ type: 'submit' }, "Submit")
+						),
+					p({ class: 'button-scroll-top' },
+						a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Back to top"))
 						)
 					)
 			)
-			),
+		),
 
 		section({ class: 'section-primary' },
 			div(
@@ -161,7 +168,10 @@ exports.step = function () {
 						"Add new partner"
 					)
 				)
-			)
+			),
+			p({ class: 'button-scroll-top' },
+				a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Back to top"))
+				)
 			),
 
 		div({ class: 'next-step' },
