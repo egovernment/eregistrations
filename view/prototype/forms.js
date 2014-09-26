@@ -25,12 +25,16 @@ exports.step = function () {
 					),
 					p({ class: 'submit-placeholder' },
 						input({ type: 'submit' }, "Submit")
+						),
+					p({ class: 'button-nav-top' },
+						a({ onclick: 'window.scroll(0, 0)' }, "Go top")
 						)
 					)
 			)
 		),
 
-		section({ class: 'section-primary' },
+		section(
+			{ class: 'section-primary' },
 			form(
 				h2("Business Owner secondary informations"),
 				hr(),
@@ -60,13 +64,13 @@ exports.step = function () {
 					),
 					p({ class: 'submit-placeholder' },
 						input({ type: 'submit' }, "Submit")
+						),
+					p({ class: 'button-nav-top' },
+						a({ onclick: 'window.scroll(0, 0)' }, "Go top")
 						)
-					),
-					p({ class: 'button-nav-top' }
-						input({ type: 'submit' }, "Submit")
-						)
-					),			)
-			),
+					)
+			)
+		),
 
 		section({ class: 'section-primary' },
 			div(
