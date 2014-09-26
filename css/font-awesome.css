@@ -22,6 +22,7 @@ License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 	overflow: hidden;
+	white-space: nowrap;
 }
 
 .fa:before {
@@ -154,7 +155,6 @@ e.g.:
 
 .fa-arrow-up {
 	width: 0.93em;
-	white-space: nowrap;
 }
 .fa-arrow-up:before {
 	content: '\f062';
