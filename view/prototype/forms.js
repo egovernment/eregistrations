@@ -26,7 +26,7 @@ exports.step = function () {
 					p({ class: 'submit-placeholder' },
 						input({ type: 'submit' }, "Submit")
 						),
-					p({ class: 'button-nav-top' },
+					p({ class: 'button-scroll-top' },
 						a({ onclick: 'window.scroll(0, 0)' }, "Go top")
 						)
 					)
@@ -65,7 +65,7 @@ exports.step = function () {
 					p({ class: 'submit-placeholder' },
 						input({ type: 'submit' }, "Submit")
 						),
-					p({ class: 'button-nav-top' },
+					p({ class: 'button-scroll-top' },
 						a({ onclick: 'window.scroll(0, 0)' }, "Go top")
 						)
 					)
