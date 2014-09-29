@@ -103,9 +103,9 @@ user.defineProperties({
 		falseLabel: "Please choose x docs in the list: " },
 	notyfication: {
 		type: db.StringLine.createEnum('NotyficationType', new Map([
-			['optionOne', { label: "Private limited company" }],
-			['optionTwo', { label: "Private limited company" }],
-			['optionTree', { label: "Public company" }]
+			['optionOne', { label: "Lorem ipsum dolor sit amet" }],
+			['optionTwo', { label: "Lorem ipsum dolor sit amet" }],
+			['optionTree', { label: "PLorem ipsum dolor sit amet" }]
 		])),
 		label: "Lorem ipsum dolor sit amet"
 	},
