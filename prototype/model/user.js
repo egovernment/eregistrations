@@ -98,9 +98,17 @@ user.defineProperties({
 	businessActivity: { type: BusinessActivity, required: true, label: "Business activity" },
 	isOwner: { type: db.Boolean, trueLabel: "I am the owner", falseLabel: "I rent it",
 		label: "Owner of business premises" },
-	isType: { type: db.Boolean,
+	isType: { type: db.Boolean, label: "Lorem ipsum dolor sit amet",
 		trueLabel: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit ame",
 		falseLabel: "Please choose x docs in the list: " },
+	notyfication: {
+		type: db.StringLine.createEnum('NotyficationType', new Map([
+			['optionOne', { label: "Private limited company" }],
+			['optionTwo', { label: "Private limited company" }],
+			['optionTree', { label: "Public company" }]
+		])),
+		label: "Lorem ipsum dolor sit amet"
+	},
 	isManager: { type: db.Boolean, label: "I am manager" },
 	inventory: { type: UsDollar, label: "Inventory value", required: true, step: 1,
 		inputHint: "Etiam vestibulum dui mi, nec ultrices diam ultricies id " },

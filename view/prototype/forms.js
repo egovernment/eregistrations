@@ -58,8 +58,13 @@ exports.step = function () {
 						{ class: 'form-elements' },
 						ul(
 							['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
-								'registerIds'],
-							function (name) { return field({ dbjs: user.getObservable(name) }); }
+								'notyfication', 'registerIds'],
+							function (name) {
+								if (name === 'notyfication') {
+									return field({ dbjs: user.getObservable(name), type: 'radio' });
+								}
+								return field({ dbjs: user.getObservable(name) });
+							}
 						)
 					),
 					p({ class: 'submit-placeholder' },
