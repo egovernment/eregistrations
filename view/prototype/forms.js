@@ -174,6 +174,35 @@ exports.step = function () {
 				)
 			),
 
+		section({ class: 'section-primary' },
+			div(
+				div(
+					h2("Directors & non-directors owner / partners"),
+					hr(),
+					table(
+						{ class: 'partners-list empty-partenr-list' },
+						thead(
+							tr(
+								th("Partners")
+							)
+						),
+						tbody(
+							tr(
+								td("There are no parters added at the moment.")
+							)
+						)
+					),
+					a(
+						{ class: 'new-entity', href: '/forms/partner-add/' },
+						"Add new partner"
+					)
+				)
+			),
+			p({ class: 'button-scroll-top' },
+				a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Back to top"))
+				)
+			),
+
 		div({ class: 'next-step' },
 			a({ href: '/documents/' }, "Continue to next step")
 			),

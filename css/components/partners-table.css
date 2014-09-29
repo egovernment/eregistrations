@@ -7,3 +7,10 @@
 .partners-list thead tr {
 	height: 44px;
 }
+
+.partners-list.empty-partenr-list td {
+	text-align: center;
+	padding: 14px 6px;
+	display: block;
+	width: 100%;
+}
