@@ -98,7 +98,7 @@ user.defineProperties({
 	businessActivity: { type: BusinessActivity, required: true, label: "Business activity" },
 	isOwner: { type: db.Boolean, trueLabel: "I am the owner", falseLabel: "I rent it",
 		label: "Owner of business premises" },
-	isType: { type: db.Boolean, label: "Lorem ipsum dolor sit amet",
+	isType: { type: db.Boolean,
 		trueLabel: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit ame",
 		falseLabel: "Please choose x docs in the list: " },
 	notyfication: {
