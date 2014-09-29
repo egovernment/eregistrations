@@ -289,6 +289,10 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	display: none;
 }
 
+.form-elements .radio.multiline li {
+	display: block;
+}
+
 ul.multiple {
 	margin-bottom: 0;
 }

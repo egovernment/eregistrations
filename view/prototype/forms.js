@@ -61,7 +61,9 @@ exports.step = function () {
 								'notyfication', 'registerIds'],
 							function (name) {
 								if (name === 'notyfication') {
-									return field({ dbjs: user.getObservable(name), type: 'radio' });
+									return field({ dbjs: user.getObservable(name), type: 'radio',
+										input: { class: 'multiline' }
+										});
 								}
 								return field({ dbjs: user.getObservable(name) });
 							}
