@@ -19,7 +19,7 @@ exports.step = function () {
 					fieldset(
 						{ class: 'form-elements' },
 						ul(
-							['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
+							['firstName', 'lastName', 'dateOfBirth', 'userEmail', 'street'],
 							function (name) { return field({ dbjs: user.getObservable(name) }); }
 						)
 					),

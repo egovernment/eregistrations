@@ -28,6 +28,7 @@ require('mano/lib/client')({
 		domEnum(db.Role);
 		domEnum(db.CompanyType);
 		domEnum(db.NotificationType);
+		domEnum(db.StreetTypeChoice);
 
 		user.$street.DOMInput = require('dbjs-dom/input/composites/line');
 	},
