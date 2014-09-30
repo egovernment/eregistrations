@@ -58,9 +58,9 @@ exports.step = function () {
 						{ class: 'form-elements' },
 						ul(
 							['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
-								'notyfication', 'registerIds'],
+								'notification', 'registerIds'],
 							function (name) {
-								if (name === 'notyfication') {
+								if (name === 'notification') {
 									return field({ dbjs: user.getObservable(name), type: 'radio',
 										input: { class: 'multiline' }
 										});
