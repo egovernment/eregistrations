@@ -190,7 +190,7 @@ exports.step = function () {
 							{ onEmpty: tr({ class: 'empty' }) },
 							tr(
 								{ class: 'empty' },
-								td("There are no parters added at the moment.")
+								td("There are no partners added at the moment.")
 							)
 						)
 					),
