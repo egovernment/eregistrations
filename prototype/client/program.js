@@ -4,7 +4,8 @@ require('mano/lib/client')({
 	noData: true,
 	schema: function () {
 		var db      = require('./model.generated')
-		  , domEnum = require('dbjs-dom/enum');
+		  , domEnum = require('dbjs-dom/enum')
+		  , user = db.User.prototype;
 
 		require('dbjs-dom/text')(db);
 		require('dbjs-dom/input')(db);
@@ -27,6 +28,8 @@ require('mano/lib/client')({
 		domEnum(db.Role);
 		domEnum(db.CompanyType);
 		domEnum(db.NotificationType);
+
+		user.$street.DOMInput = require('dbjs-dom/input/composites/line');
 	},
 	viewRequire: require('../../view/prototype/_require'),
 	routes: function (router, view) {

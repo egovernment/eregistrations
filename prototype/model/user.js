@@ -17,9 +17,25 @@ var Map          = require('es6-map')
   , user = User.prototype
   , BusinessActivity, BusinessActivityCategory, CompanyType, Partner, bcAgencyBusiness, bcInsurance
   , file, props
-  , InventoryValue;
+  , InventoryValue
+  , StreetTypeChoice;
 
 require('dbjs-ext/create-enum')(db);
+
+StreetTypeChoice = StringLine.createEnum('StreetTypeChoice', new Map([
+	['street', {
+		label: "Street"
+	}],
+	['avenue', {
+		label: "Avenue"
+	}],
+	['diagonal', {
+		label: "Diagonal"
+	}],
+	['road', {
+		label: "Road"
+	}]
+]));
 
 InventoryValue = db.Object.extend('InventoryValue', {
 	description: { type: StringLine },
@@ -145,7 +161,14 @@ user.defineProperties({
 		label: "Counters", inputPlaceholder: "Counters #1",
 		description: "Enter other lines necessary to mention the cost and source" +
 		" of each element. Leave empty if no item.",
-		addLabel: "Add counter" }
+		addLabel: "Add counter" },
+	streetType: { type: StreetTypeChoice, value: 'street', required: true },
+	streetName: { type: StringLine, required: true },
+	street: { type: StringLine, label: "Calle o avenida", required: true,
+		value: function () {
+			if (!this.streetType || !this.streetName) return null;
+			return this.database.StreetTypeChoice.meta[this.streetType].label + ' ' + this.streetName;
+		} }
 });
 
 module.exports = User;
