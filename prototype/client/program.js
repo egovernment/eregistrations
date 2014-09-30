@@ -26,7 +26,7 @@ require('mano/lib/client')({
 
 		domEnum(db.Role);
 		domEnum(db.CompanyType);
-		domEnum(db.NotyficationType);
+		domEnum(db.NotificationType);
 	},
 	viewRequire: require('../../view/prototype/_require'),
 	routes: function (router, view) {
