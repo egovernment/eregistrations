@@ -21,7 +21,8 @@ ul.form-elements li {
 	padding: 11px 0;
 }
 
-.dbjs-input-component label, .control {
+.dbjs-input-component label,
+.control {
 	display: inline-block;
 	vertical-align: top;
 
@@ -32,7 +33,8 @@ ul.radio {
 	padding-left: 0;
 }
 
-ul.radio, ul.radio li {
+.form-elements ul.radio,
+.form-elements ul.radio li {
 	display: inline;
 }
 
@@ -133,7 +135,8 @@ textarea {
 	font-family: "Helvetica";
 }
 
-.input-aside {
+.input-aside,
+.dbjs-input-component .input-aside {
 	display: flex;
 }
 
@@ -293,12 +296,12 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 .dbjs.multiple ul li:only-child .dbjs-multiple-button-remove {
 	display: none;
 }
-.radio.multiline {
+.form-elements .radio.multiline {
 	display: inline-block;
 	max-width: 90%;
 }
 
-.radio.multiline > li {
+.form-elements .radio.multiline > li {
 	display: block;
 }
 
