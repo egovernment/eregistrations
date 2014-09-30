@@ -32,7 +32,7 @@ ul.radio {
 	padding-left: 0;
 }
 
-.form-elements ul.radio, .form-elements ul.radio li {
+ul.radio, ul.radio li {
 	display: inline;
 }
 
@@ -289,7 +289,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	display: none;
 }
 
-.form-elements .radio.multiline li {
+.radio.multiline > li {
 	display: block;
 }
 
