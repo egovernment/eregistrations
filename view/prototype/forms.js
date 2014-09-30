@@ -183,15 +183,26 @@ exports.step = function () {
 						{ class: 'entities-overview-table' },
 						thead(
 							tr(
-								th("Partners")
+								th({ class: 'desktop-only' }, "Entity"),
+								th("First name"),
+								th("Surname"),
+								th({ class: 'desktop-only' }, "Director?"),
+								th({ class: 'desktop-only' }, "Subscriber?"),
+								th({ class: 'desktop-only' }, ""),
+								th({ class: 'actions' }, "Actions")
 							)
 						),
 						tbody(
-							{ onEmpty: tr({ class: 'empty' }) },
-							tr(
+							{ onEmpty: tr(
 								{ class: 'empty' },
-								td("There are no partners added at the moment.")
+								td(
+									{ colspan: 7 },
+									"There are no partners added at the moment."
+								)
 							)
+								},
+							[],
+							function () {}
 						)
 					),
 					a(

@@ -12,8 +12,6 @@
 .entities-overview-table .empty td {
 	text-align: center;
 	padding: 14px 6px;
-	display: block;
-	width: 100%;
 }
 
 .new-entity {
