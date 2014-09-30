@@ -78,7 +78,7 @@ exports.step = function () {
 					h2("Directors & non-directors owner / partners"),
 					hr(),
 					table(
-						{ class: 'partners-list' },
+						{ class: 'entities-overview-table' },
 						thead(
 							tr(
 								th({ class: 'desktop-only' }, "Entity"),
@@ -180,7 +180,7 @@ exports.step = function () {
 					h2("Directors & non-directors owner / partners"),
 					hr(),
 					table(
-						{ class: 'partners-list empty-partenr-list' },
+						{ class: 'entities-overview-table empty' },
 						thead(
 							tr(
 								th("Partners")

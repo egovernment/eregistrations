@@ -1,4 +1,21 @@
 /* Object tabel rules */
+.entities-overview-table td > a:only-child {
+	text-align: center;
+	padding: 14px 6px;
+	display: block;
+	width: 100%;
+}
+.entities-overview-table thead tr {
+	height: 44px;
+}
+
+.entities-overview-table.empty td {
+	text-align: center;
+	padding: 14px 6px;
+	display: block;
+	width: 100%;
+}
+
 .new-entity {
 	background-color: var(--normal-background);
 	border-radius: 6px;
