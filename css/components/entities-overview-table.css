@@ -37,7 +37,7 @@
 .new-entity:focus,
 .new-entity:active {
 	background-color: var(--normal-dark-background);
-	color: white;
+	color: var(--white-text);
 }
 
 .actions {
