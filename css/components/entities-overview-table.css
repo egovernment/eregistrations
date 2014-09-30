@@ -32,12 +32,12 @@
 	text-decoration: none;
 	vertical-align: middle;
 	white-space: nowrap;
-	width: 25%;
 }
 .new-entity:hover,
 .new-entity:focus,
 .new-entity:active {
 	background-color: var(--normal-dark-background);
+	color: white;
 }
 
 .actions {
