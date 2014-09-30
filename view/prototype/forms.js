@@ -62,7 +62,16 @@ exports.step = function () {
 							function (name) {
 								if (name === 'notification') {
 									return field({ dbjs: user.getObservable(name), type: 'radio',
-										input: { class: 'multiline' }
+										input: {
+											class: 'multiline',
+											renderOption: function (labelTxt) {
+												var data = {};
+												data.dom = li(label({ class: 'input-aside' },
+													span(data.input = input()),
+													span(labelTxt)));
+												return data;
+											}
+										}
 										});
 								}
 								return field({ dbjs: user.getObservable(name) });
