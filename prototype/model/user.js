@@ -164,7 +164,7 @@ user.defineProperties({
 		addLabel: "Add counter" },
 	streetType: { type: StreetTypeChoice, value: 'street', required: true },
 	streetName: { type: StringLine, required: true },
-	street: { type: StringLine, label: "Calle o avenida", required: true,
+	street: { type: StringLine, label: "Type of street", required: true,
 		value: function () {
 			if (!this.streetType || !this.streetName) return null;
 			return this.database.StreetTypeChoice.meta[this.streetType].label + ' ' + this.streetName;
