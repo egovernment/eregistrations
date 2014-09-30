@@ -211,6 +211,11 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 
 /* dbjs components */
 /* Default styles */
+.statuses {
+	display: inline-block;
+	vertical-align: top;
+}
+
 .dbjs-input-component .status-missing,
 .dbjs-input-component .status-ok,
 .dbjs-input-component .status-error {
@@ -287,6 +292,10 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 
 .dbjs.multiple ul li:only-child .dbjs-multiple-button-remove {
 	display: none;
+}
+.radio.multiline {
+	display: inline-block;
+	max-width: 90%;
 }
 
 .radio.multiline > li {
