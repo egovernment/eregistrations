@@ -22,7 +22,7 @@ ul.form-elements li {
 }
 
 .dbjs-input-component label,
-.control {
+.input {
 	display: inline-block;
 	vertical-align: top;
 
@@ -368,12 +368,12 @@ Styles applied while screen sieze is less than 640px
 		margin-top: -11px;
 	}
 
-	.form-elements .dbjs-input-component > .control {
+	.form-elements .dbjs-input-component > .input {
 		margin-bottom: -11px;
 
 	}
 
-	.form-elements label, .control {
+	.form-elements label, .input {
 		display: block;
 		width: 100%;
 	}
@@ -389,7 +389,7 @@ Styles applied while screen sieze is less than 640px
 		font-weight: normal;
 	}
 
-	.control {
+	.input {
 		text-align: left;
 		padding: 11px 10px;
 	}
