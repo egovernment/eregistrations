@@ -180,14 +180,16 @@ exports.step = function () {
 					h2("Directors & non-directors owner / partners"),
 					hr(),
 					table(
-						{ class: 'entities-overview-table empty' },
+						{ class: 'entities-overview-table' },
 						thead(
 							tr(
 								th("Partners")
 							)
 						),
 						tbody(
+							{ onEmpty: tr({ class: 'empty' }) },
 							tr(
+								{ class: 'empty' },
 								td("There are no parters added at the moment.")
 							)
 						)
