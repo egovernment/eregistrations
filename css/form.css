@@ -415,9 +415,6 @@ Styles applied while screen sieze is less than 640px
 	input[type="submit"] {
 		width: 100%
 	}
-	.inputs {
-		width: 90%;
-	}
 	.form-elements ul.radio {
 		display: inline-block;
 		padding-top: 11px;
