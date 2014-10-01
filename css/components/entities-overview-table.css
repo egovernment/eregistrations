@@ -1,17 +1,21 @@
 /* Object tabel rules */
+.entities-overview-table {
+	line-height: 22px;
+}
+
 .entities-overview-table td > a:only-child {
 	text-align: center;
-	padding: 14px 6px;
+	padding: 11px 6px;
 	display: block;
 	width: 100%;
 }
-.entities-overview-table thead tr {
-	height: 44px;
+.entities-overview-table thead tr th {
+	padding: 11px 6px;
 }
 
 .entities-overview-table .empty td {
 	text-align: center;
-	padding: 14px 6px;
+	padding: 11px 6px;
 }
 
 .new-entity {
