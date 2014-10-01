@@ -375,6 +375,7 @@ Styles applied while screen sieze is less than 640px
 
 	.form-elements ul.radio li {
 		display: block;
+		line-height: 22px;
 	}
 	.form-elements ul.radio li label {
 		font-weight: normal;
@@ -422,5 +423,9 @@ Styles applied while screen sieze is less than 640px
 	}
 	.inputs {
 		width: 90%;
+	}
+	.form-elements ul.radio {
+		display: inline-block;
+		padding-top: 11px;
 	}
 }
