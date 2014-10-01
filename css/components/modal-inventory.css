@@ -18,6 +18,7 @@
 }
 .modal-inventory .multiple {
 	display: block;
+	line-height: 44px;
 }
 .modal-inventory .controls {
 	display: flex;
@@ -26,6 +27,7 @@
 
 .modal-inventory .controls a {
 	height: 22px;
+	margin-top: 11px;
 }
 
 .modal-inventory section ul li h3 {
