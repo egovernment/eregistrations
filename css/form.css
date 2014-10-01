@@ -299,7 +299,6 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 }
 .form-elements .radio.multiline {
 	display: inline-block;
-	max-width: 90%;
 	padding-top: 11px;
 }
 
