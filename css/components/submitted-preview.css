@@ -68,7 +68,6 @@
 .submitted-preview-user-data > table th,
 .submitted-preview-user-data > table td {
 	width: 50%;
-	line-height: 22px;
 	padding: 11px 0 11px 10px;
 	text-align: left;
 }
