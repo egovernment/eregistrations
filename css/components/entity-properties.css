@@ -5,7 +5,6 @@
 .entity-properties li {
 	display: flex;
 	padding-left: 10%;
-	line-height: 22px;
 }
 
 .entity-properties-name {
