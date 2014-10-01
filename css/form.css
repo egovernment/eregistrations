@@ -24,7 +24,6 @@ ul.form-elements li {
 .input {
 	display: inline-block;
 	vertical-align: top;
-
 }
 
 .inputs {
@@ -34,11 +33,13 @@ ul.form-elements li {
 ul.radio {
 	list-style: none;
 	padding-left: 0;
+	line-height: 22px;
+	padding-top: 11px;
 }
 
 .form-elements ul.radio,
 .form-elements ul.radio li {
-	display: inline;
+	display: inline-block;
 }
 
 ul.radio li {
@@ -297,14 +298,9 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 .dbjs.multiple ul li:only-child .dbjs-multiple-button-remove {
 	display: none;
 }
-.form-elements .radio.multiline {
-	display: inline-block;
-	padding-top: 11px;
-}
 
 .form-elements .radio.multiline > li {
 	display: block;
-	line-height: 22px;
 }
 
 ul.multiple {
@@ -390,8 +386,8 @@ Styles applied while screen sieze is less than 640px
 	}
 
 	ul.radio, ul.radio li {
-	display: list-item;
-}
+		display: list-item;
+	}
 
 	ul.radio {
 		margin-bottom: 0;
