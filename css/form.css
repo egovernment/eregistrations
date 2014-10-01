@@ -364,11 +364,6 @@ Styles applied while screen sieze is less than 640px
 		margin-top: -11px;
 	}
 
-	.form-elements .dbjs-input-component > .input {
-		margin-bottom: -11px;
-
-	}
-
 	.form-elements label, .input {
 		display: block;
 		width: 100%;

@@ -64,12 +64,12 @@
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.section-primary .dbjs-input-component label {
+	.section-primary .dbjs-input-component > label {
 		text-align: left;
 		width: 100%;
+		margin: 0;
 	}
 	.section-primary .dbjs-input-component > .input {
-		padding: 11px 10px;
 		width: 100%;
 	}
 }
