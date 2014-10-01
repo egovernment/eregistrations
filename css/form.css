@@ -215,7 +215,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 
 /* dbjs components */
 /* Default styles */
-.statuses {
+.dbjs-input-component .statuses {
 	display: inline-block;
 	vertical-align: top;
 }
