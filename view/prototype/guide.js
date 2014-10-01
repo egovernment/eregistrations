@@ -26,7 +26,7 @@ exports.step = function () {
 						if (name === 'inventory') {
 							li(div({ class: 'dbjs-input-component' },
 								label({ for: 'input-' + name }, user.getDescriptor(name).label, ":"),
-								div({ class: 'control' },
+								div({ class: 'input' },
 									input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) }))));
 							div({ class: 'inventory-button' },
 								a({ onclick: inventory.show },
@@ -41,7 +41,7 @@ exports.step = function () {
 									user.getDescriptor(name).label,
 									":"
 								),
-								div({ class: 'control' },
+								div({ class: 'input' },
 									input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) }))));
 						}
 					})),
