@@ -380,11 +380,6 @@ Styles applied while screen sieze is less than 640px
 		font-weight: normal;
 	}
 
-	.input {
-		text-align: left;
-		padding: 11px 10px;
-	}
-
 	.submit-placeholder {
 		margin-left: 0;
 		padding-left: 10px;
