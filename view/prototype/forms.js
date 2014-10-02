@@ -105,7 +105,7 @@ exports.step = function () {
 					h2("Directors & non-directors owner / partners"),
 					hr(),
 					table(
-						{ class: 'partners-list' },
+						{ class: 'entities-overview-table' },
 						thead(
 							tr(
 								th({ class: 'desktop-only' }, "Entity"),
@@ -188,6 +188,48 @@ exports.step = function () {
 									a("Delete")
 									)
 							)
+						)
+					),
+					a(
+						{ class: 'new-entity', href: '/forms/partner-add/' },
+						"Add new partner"
+					)
+				)
+			),
+			p({ class: 'button-scroll-top' },
+				a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Back to top"))
+				)
+			),
+
+		section({ class: 'section-primary' },
+			div(
+				div(
+					h2("Directors & non-directors owner / partners"),
+					hr(),
+					table(
+						{ class: 'entities-overview-table' },
+						thead(
+							tr(
+								th({ class: 'desktop-only' }, "Entity"),
+								th("First name"),
+								th("Surname"),
+								th({ class: 'desktop-only' }, "Director?"),
+								th({ class: 'desktop-only' }, "Subscriber?"),
+								th({ class: 'desktop-only' }, ""),
+								th({ class: 'actions' }, "Actions")
+							)
+						),
+						tbody(
+							{ onEmpty: tr(
+								{ class: 'empty' },
+								td(
+									{ colspan: 7 },
+									"There are no partners added at the moment."
+								)
+							)
+								},
+							[],
+							function () {}
 						)
 					),
 					a(
