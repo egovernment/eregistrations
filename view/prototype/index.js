@@ -7,11 +7,9 @@ exports.main = function () {
 	div({ class: 'public-banner', id: 'banner' },
 		div({ class: 'banner-text content' },
 				div({ class: 'baner-box-text' },
-					h1({ class: 's-primary' },
-						'Turn your online business on'),
-					h3({ class: 's-primary' },
-						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut in ' +
-						'massa malesuada, pharetra urna nec, pellentesque tortor. '),
+					h1("Turn your online business on"),
+					h3("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut in " +
+						"massa malesuada, pharetra urna nec, pellentesque tortor. "),
 					a({ class: 'create-account', onclick: register.show },
 						'Create account')
 				),
