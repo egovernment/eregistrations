@@ -1,5 +1,4 @@
 form {
-	line-height: 22px;
 	font-family: "Helvetica";
 }
 
@@ -18,29 +17,37 @@ ul.form-elements li {
 
 .form-elements .dbjs-input-component {
 	display: block;
-	padding: 11px 0;
 }
 
-.dbjs-input-component label, .control {
+.input,
+.inputs {
+	line-height: 44px;
+}
+
+.inputs {
 	display: inline-block;
-	vertical-align: top;
-
+}
+.input .radio,
+.input .checkbox {
+	line-height: 22px;
+	padding-top: 11px;
 }
 
-ul.radio {
+.radio {
 	list-style: none;
 	padding-left: 0;
 }
 
-.form-elements ul.radio, .form-elements ul.radio li {
-	display: inline;
+.form-elements .radio,
+.form-elements .radio li {
+	display: inline-block;
 }
 
-ul.radio li {
+.radio li {
 	margin-right: 5px;
 }
 
-ul.radio li div ul {
+.radio li div ul {
 	padding-left: 10px;
 }
 
@@ -100,10 +107,9 @@ select {
 .form-elements .hint {
 	display: block;
 	font-size: 12px;
-	margin-bottom: -10px;
-	padding-top: 10px;
 	width: 100%;
 	color: var(--hint-text);
+	line-height: 22px;
 }
 
 input[type="submit"] {
@@ -133,7 +139,8 @@ textarea {
 	font-family: "Helvetica";
 }
 
-.input-aside {
+.input-aside,
+.dbjs-input-component .input-aside {
 	display: flex;
 }
 
@@ -203,14 +210,18 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 }
 .dbjs-input-component .error-message {
 	display: block;
-	margin-top: 11px;
-	margin-bottom: -11px;
 	width: 100%;
 	color: var(--error-text);
+	line-height: 22px;
 }
 
 /* dbjs components */
 /* Default styles */
+.dbjs-input-component .statuses {
+	display: inline-block;
+	vertical-align: top;
+}
+
 .dbjs-input-component .status-missing,
 .dbjs-input-component .status-ok,
 .dbjs-input-component .status-error {
@@ -289,20 +300,16 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	display: none;
 }
 
+.form-elements .radio.multiline > li {
+	display: block;
+}
+
 ul.multiple {
 	margin-bottom: 0;
 }
 
 .dbjs.multiple ul li:first-child {
 	padding-top: 0;
-}
-.dbjs.multiple ul li {
-	padding-top: 10px;
-	padding-bottom: 11px;
-}
-
-.dbjs.multiple ul li:last-child{
-	margin-bottom: 10px;
 }
 
 .dbjs.multiple ul li a {
@@ -352,12 +359,8 @@ Styles applied while screen sieze is less than 640px
 		margin-top: -11px;
 	}
 
-	.form-elements .dbjs-input-component > .control {
-		margin-bottom: -11px;
-
-	}
-
-	.form-elements label, .control {
+	.form-elements .dbjs-input-component > .label,
+	.form-elements .dbjs-input-component > .input {
 		display: block;
 		width: 100%;
 	}
@@ -366,16 +369,11 @@ Styles applied while screen sieze is less than 640px
 		text-align: left;
 	}
 
-	.form-elements ul.radio li {
+	.form-elements .radio li {
 		display: block;
 	}
-	.form-elements ul.radio li label {
+	.form-elements .radio li label {
 		font-weight: normal;
-	}
-
-	.control {
-		text-align: left;
-		padding: 11px 10px;
 	}
 
 	.submit-placeholder {
@@ -388,19 +386,19 @@ Styles applied while screen sieze is less than 640px
 		display: inline;
 	}
 
-	ul.radio, ul.radio li {
-	display: list-item;
-}
+	.radio, .radio li {
+		display: list-item;
+	}
 
-	ul.radio {
+	.radio {
 		margin-bottom: 0;
 	}
 
-	ul.radio li label:first-child {
+	.radio li label:first-child {
 		padding-top: 0;
 	}
 
-	ul.radio li label {
+	.radio li label {
 		padding-bottom: 0;
 	}
 
@@ -412,5 +410,9 @@ Styles applied while screen sieze is less than 640px
 	}
 	input[type="submit"] {
 		width: 100%
+	}
+	.form-elements .radio {
+		display: inline-block;
+		padding-top: 11px;
 	}
 }

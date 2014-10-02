@@ -17,9 +17,25 @@ var Map          = require('es6-map')
   , user = User.prototype
   , BusinessActivity, BusinessActivityCategory, CompanyType, Partner, bcAgencyBusiness, bcInsurance
   , file, props
-  , InventoryValue;
+  , InventoryValue
+  , StreetTypeChoice;
 
 require('dbjs-ext/create-enum')(db);
+
+StreetTypeChoice = StringLine.createEnum('StreetTypeChoice', new Map([
+	['street', {
+		label: "Street"
+	}],
+	['avenue', {
+		label: "Avenue"
+	}],
+	['diagonal', {
+		label: "Diagonal"
+	}],
+	['road', {
+		label: "Road"
+	}]
+]));
 
 InventoryValue = db.Object.extend('InventoryValue', {
 	description: { type: StringLine },
@@ -97,10 +113,19 @@ user.defineProperties({
 	// Guide
 	businessActivity: { type: BusinessActivity, required: true, label: "Business activity" },
 	isOwner: { type: db.Boolean, trueLabel: "I am the owner", falseLabel: "I rent it",
-		label: "Owner of business premises" },
+		label: "Owner of business premises",
+		required: true },
 	isType: { type: db.Boolean,
 		trueLabel: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit ame",
 		falseLabel: "Please choose x docs in the list: " },
+	notification: {
+		type: db.StringLine.createEnum('NotificationType', new Map([
+			['optionOne', { label: "Use my home address." }],
+			['optionTwo', { label: "Use my business address." }],
+			['optionTree', { label: "The address for submissions is different" }]
+		])),
+		label: "Lorem ipsum dolor sit amet"
+	},
 	isManager: { type: db.Boolean, label: "I am manager" },
 	inventory: { type: UsDollar, label: "Inventory value", required: true, step: 1,
 		inputHint: "Etiam vestibulum dui mi, nec ultrices diam ultricies id " },
@@ -137,7 +162,14 @@ user.defineProperties({
 		label: "Counters", inputPlaceholder: "Counters #1",
 		description: "Enter other lines necessary to mention the cost and source" +
 		" of each element. Leave empty if no item.",
-		addLabel: "Add counter" }
+		addLabel: "Add counter" },
+	streetType: { type: StreetTypeChoice, value: 'street', required: true },
+	streetName: { type: StringLine, required: true },
+	street: { type: StringLine, label: "Type of street", required: true,
+		value: function () {
+			if (!this.streetType || !this.streetName) return null;
+			return this.database.StreetTypeChoice.meta[this.streetType].label + ' ' + this.streetName;
+		} }
 });
 
 module.exports = User;

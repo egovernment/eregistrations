@@ -18,7 +18,7 @@ exports.main = function () {
 						{ class: 'dbjs-input-component' },
 						label({ for: 'input-email' }, user.$get('email').label, ":"),
 						div(
-							{ class: 'control' },
+							{ class: 'input' },
 							input({ type: 'email', id: 'input-email', dbjs: db.Email, name: 'email' })
 						)
 					)
@@ -28,7 +28,7 @@ exports.main = function () {
 						{ class: 'dbjs-input-component' },
 						label({ for: 'input-password' }, "New password", ":"),
 						div(
-							{ class: 'control' },
+							{ class: 'input' },
 							input({ type: 'password',
 											id: 'input-password',
 											dbjs: db.Password,
@@ -42,7 +42,7 @@ exports.main = function () {
 						{ class: 'dbjs-input-component' },
 						label({ for: 'input-password-repeat' }, "Repeat password", ":"),
 						div(
-							{ class: 'control' },
+							{ class: 'input' },
 							input({ type: 'password',
 											id: 'input-password-repeat',
 											dbjs: db.Password,

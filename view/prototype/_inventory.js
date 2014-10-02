@@ -23,7 +23,7 @@ module.exports = inventario = modal(
 					var list, desc = user.$get(name), control;
 					li(
 						h3(desc.label),
-						p(desc.description),
+						p({ class: 'inventory-item-description' }, desc.description),
 						list = div(
 							{ class: 'single-section-cost' },
 							control = user._get(name).toDOMInput(
