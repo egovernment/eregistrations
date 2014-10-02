@@ -26,17 +26,20 @@
 	color: var(--normal-dark-background);
 }
 
-.section-primary .dbjs-input-component label,
-.section-primary .control {
+.section-primary .dbjs-input-component > label,
+.section-primary .dbjs-input-component > .input {
 	padding: 0 10px;
+	display: inline-block;
+	vertical-align: top;
 }
 
 .section-primary .dbjs-input-component > label {
 	width: 40%;
 	text-align: right;
 	font-weight: bold;
+	margin: 11px 0;
 }
-.section-primary .dbjs-input-component > .control {
+.section-primary .dbjs-input-component > .input {
 	width: 60%;
 }
 
@@ -62,12 +65,12 @@
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.section-primary .dbjs-input-component label {
+	.section-primary .dbjs-input-component > label {
 		text-align: left;
 		width: 100%;
+		margin: 0;
 	}
-	.section-primary .dbjs-input-component > .control {
-		padding: 11px 10px;
+	.section-primary .dbjs-input-component > .input {
 		width: 100%;
 	}
 }

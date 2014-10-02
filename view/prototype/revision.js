@@ -206,7 +206,7 @@ exports['sub-main'] = function () {
 							{ class: 'dbjs-input-component' },
 							label("Reject document: "),
 							div(
-								{ class: 'control' },
+								{ class: 'input' },
 								select(
 									option("Choose rejection reason: "),
 									option("Document is not readable."),
