@@ -374,10 +374,10 @@ Styles applied while screen sieze is less than 640px
 		text-align: left;
 	}
 
-	.form-elements ul.radio li {
+	.form-elements .radio li {
 		display: block;
 	}
-	.form-elements ul.radio li label {
+	.form-elements .radio li label {
 		font-weight: normal;
 	}
 
@@ -391,19 +391,19 @@ Styles applied while screen sieze is less than 640px
 		display: inline;
 	}
 
-	ul.radio, ul.radio li {
+	.radio, .radio li {
 		display: list-item;
 	}
 
-	ul.radio {
+	.radio {
 		margin-bottom: 0;
 	}
 
-	ul.radio li label:first-child {
+	.radio li label:first-child {
 		padding-top: 0;
 	}
 
-	ul.radio li label {
+	.radio li label {
 		padding-bottom: 0;
 	}
 
@@ -416,7 +416,7 @@ Styles applied while screen sieze is less than 640px
 	input[type="submit"] {
 		width: 100%
 	}
-	.form-elements ul.radio {
+	.form-elements .radio {
 		display: inline-block;
 		padding-top: 11px;
 	}
