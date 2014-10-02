@@ -8,21 +8,21 @@ module.exports = db.Object.extend('Registration', {}, {
 		type: StringLine
 	},
 	requirements: {
-		type: StringLine,
+		type: db.Function,
 		multiple: true,
 		value: function (user) {
 			return [];
 		}
 	},
 	certificates: {
-		type: StringLine,
+		type: db.Function,
 		multiple: true,
 		value: function (user) {
 			return [];
 		}
 	},
 	costs: {
-		type: StringLine,
+		type: db.Function,
 		multiple: true,
 		value: function (user) {
 			return [];
