@@ -1,6 +1,7 @@
 .modal-inventory form > ul {
 	width: var(--mobile-width);
 	padding: 0 20px;
+	margin-bottom: 0;
 }
 .modal-inventory form > ul > li {
 	margin-top: 22px;
@@ -10,7 +11,6 @@
 .modal-inventory form > ul > li:last-child {
 	border-bottom: none;
 	padding-bottom: 0;
-	margin-bottom: 22px;
 }
 
 .modal-inventory section ul li div {
@@ -18,7 +18,6 @@
 }
 .modal-inventory .multiple {
 	display: block;
-	line-height: 44px;
 }
 .modal-inventory .controls {
 	display: flex;
@@ -27,7 +26,6 @@
 
 .modal-inventory .controls a {
 	height: 22px;
-	margin-top: 11px;
 }
 
 .modal-inventory section ul li h3 {
@@ -72,6 +70,10 @@
 }
 .modal-inventory footer .inventory-total-value .inventory-value-save {
 	text-align: right;
+	margin-bottom: 0;
+}
+
+.inventory-item-description {
 	margin-bottom: 0;
 }
 

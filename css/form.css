@@ -17,7 +17,6 @@ ul.form-elements li {
 
 .form-elements .dbjs-input-component {
 	display: block;
-	line-height: 44px;
 }
 
 .dbjs-input-component label,
@@ -26,27 +25,35 @@ ul.form-elements li {
 	vertical-align: top;
 }
 
+.input,
+.inputs {
+	line-height: 44px;
+}
+
 .inputs {
 	display: inline-block;
 }
-
-ul.radio {
-	list-style: none;
-	padding-left: 0;
+.input .radio,
+.input .checkbox {
 	line-height: 22px;
 	padding-top: 11px;
 }
 
-.form-elements ul.radio,
-.form-elements ul.radio li {
+.radio {
+	list-style: none;
+	padding-left: 0;
+}
+
+.form-elements .radio,
+.form-elements .radio li {
 	display: inline-block;
 }
 
-ul.radio li {
+.radio li {
 	margin-right: 5px;
 }
 
-ul.radio li div ul {
+.radio li div ul {
 	padding-left: 10px;
 }
 
@@ -369,7 +376,6 @@ Styles applied while screen sieze is less than 640px
 
 	.form-elements ul.radio li {
 		display: block;
-		line-height: 22px;
 	}
 	.form-elements ul.radio li label {
 		font-weight: normal;

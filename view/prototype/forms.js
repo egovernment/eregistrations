@@ -58,7 +58,7 @@ exports.step = function () {
 						{ class: 'form-elements' },
 						ul(
 							['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
-								'notification', 'registerIds'],
+								'notification', 'isShoppingGallery', 'registerIds'],
 							function (name) {
 								if (name === 'notification') {
 									return field({ dbjs: user.getObservable(name), type: 'radio',
@@ -73,6 +73,17 @@ exports.step = function () {
 											}
 										}
 										});
+								}
+								if (name === 'isShoppingGallery') {
+									var data = li(div({ class: 'dbjs-input-component' },
+										label(
+											{ for: 'input-' + name },
+											"Is shopping gallery?"
+										),
+										div({ class: 'input' },
+											input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name),
+												type: 'checkbox' }))));
+									return data;
 								}
 								return field({ dbjs: user.getObservable(name) });
 							}
