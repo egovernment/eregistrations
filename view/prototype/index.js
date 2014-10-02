@@ -28,27 +28,24 @@ exports.main = function () {
 				h3('Create your file'),
 				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 					" nequepharetra, pellentesque risus in, condimentum nulla. "),
-				a({ class: 'step-button', href: '/guide/' },
-					'More info'
-					)
+				p(a({ class: 'step-button', href: '/guide/' },
+					'More info'))
 			),
 			li(
 				img({ src: '/img/img-300.png' }),
 				h3('Pay costs'),
 				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 					" nequepharetra, pellentesque risus in, condimentum nulla. "),
-				a({ class: 'step-button', href: '/guide/' },
-					'More info'
-					)
+				p(a({ class: 'step-button', href: '/guide/' },
+					'More info'))
 			),
 			li(
 				img({ src: '/img/img-300.png' }),
 				h3('Remove certificates'),
 				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 					" nequepharetra, pellentesque risus in, condimentum nulla. "),
-				a({ class: 'step-button ', href: '/guide/' },
-					'More info'
-					)
+				p(a({ class: 'step-button ', href: '/guide/' },
+					'More info'))
 			)
 			),
 		ul({ class: 'public-institutions' },
