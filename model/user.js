@@ -9,3 +9,5 @@ User.prototype.defineProperties({
 		nested: true
 	}
 });
+
+module.exports = User;
