@@ -1,8 +1,4 @@
 /* Object tabel rules */
-.entities-overview-table {
-	line-height: 22px;
-}
-
 .entities-overview-table td > a:only-child {
 	text-align: center;
 	padding: 11px 6px;
