@@ -7,23 +7,21 @@ module.exports = db.Object.extend('Registration', {}, {
 	label: {
 		type: StringLine
 	},
+	abbr: {
+		type: StringLine
+	},
 	requirements: {
 		type: db.Function,
-		multiple: true,
 		value: function (user) {
 			return [];
 		}
 	},
 	certificates: {
-		type: db.Function,
-		multiple: true,
-		value: function (user) {
-			return [];
-		}
+		type: StringLine,
+		multiple: true
 	},
 	costs: {
 		type: db.Function,
-		multiple: true,
 		value: function (user) {
 			return [];
 		}
