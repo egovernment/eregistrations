@@ -26,9 +26,11 @@
 	color: var(--normal-dark-background);
 }
 
-.section-primary .dbjs-input-component label,
-.section-primary .input {
+.section-primary .dbjs-input-component > label,
+.section-primary .dbjs-input-component > .input {
 	padding: 0 10px;
+	display: inline-block;
+	vertical-align: top;
 }
 
 .section-primary .dbjs-input-component > label {
