@@ -16,13 +16,13 @@ module.exports = modal(
 				ul({ class: 'form-elements' }, ['firstName', 'lastName', 'email', 'password'].map(
 					function (name) {
 						var rel = user._get(name);
-						return li({ class: 'dbjs-input-component' },
+						return li({ class: 'dbjs-input-component input' },
 							input({ dbjs: rel, placeholder: rel.descriptor.label }),
 							span({ class: 'error-message' }, "Error message"));
 					}
 				),
 					li(
-						{ class: 'dbjs-input-component' },
+						{ class: 'dbjs-input-component input' },
 						label(
 							input(
 								{ dbjs: user._isManager, type: 'checkbox' }
