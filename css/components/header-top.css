@@ -100,7 +100,7 @@ Styles applied while screen sieze is less than 640px
 	}
 
 	.header-top nav {
-		margin:  11px auto 0;
+		margin:  11px auto 11px;
 	}
 	.menu-top {
 		padding-left: 0;
