@@ -1,14 +1,8 @@
 /*
 	Component describing styles for guide page of not submited user - non-reusable
 */
-.user-guide {
-	background-color: var(--light-background);
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-}
 
-.guide-form {
+.user-guide {
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: space-between;
@@ -48,10 +42,6 @@
 	background-color: var(--normal-dark-background);
 }
 
-.user-guide div hr {
-	margin-bottom: 20px;
-}
-
 .guide-requirements-list {
 	padding-left: 15px;
 	list-style: initial;
@@ -76,25 +66,25 @@
 	font-weight: bolder;
 }
 
-.guide-form .inventory-button {
+.user-guide .inventory-button {
 	padding-left: 40%;
 	padding-top: 11px;
 	padding-bottom: 11px;
 }
 
-.guide-form .inventory-button .icon {
+.user-guide .inventory-button .icon {
 	font-size: 30px;
 	margin-bottom: -10px;
 	margin-top: -4px;
 }
 @-moz-document url-prefix() {
-	.guide-form .inventory-button .fa-calculator {
+	.user-guide .inventory-button .fa-calculator {
 		margin-bottom: -11px;
 		margin-top: -5px;
 	}
 }
 
-.guide-form .inventory-button .label {
+.user-guide .inventory-button .label {
 	background: var(--normal-background);
 	color: var(--white-text);
 	padding: 2px 5px 2px 2px;
@@ -103,15 +93,15 @@
 	border-bottom-right-radius: 3px;
 }
 
-.guide-form .inventory-button a {
+.user-guide .inventory-button a {
 	padding-left: 10px;
 	text-decoration: none;
 	white-space: nowrap;
 }
 
-.guide-form .inventory-button a:hover .label,
-.guide-form .inventory-button a:focus .label,
-.guide-form .inventory-button a:active .label {
+.user-guide .inventory-button a:hover .label,
+.user-guide .inventory-button a:focus .label,
+.user-guide .inventory-button a:active .label {
 	background: var(--normal-dark-background);
 }
 
@@ -131,7 +121,7 @@ Styles applied while screen sieze is less than 640px
 		width: 100%;
 	}
 
-	.guide-form .inventory-button {
+	.user-guide .inventory-button {
 		padding-left: 0;
 	}
 }

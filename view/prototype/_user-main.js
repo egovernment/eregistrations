@@ -51,7 +51,7 @@ exports.main = function () {
 				)
 			)
 		);
-	div({ class: 'content', id: 'step' });
+	div({ class: 'content user-forms', id: 'step' });
 
 	location.on('change', function () {
 		mobileCheckbox.checked = false;

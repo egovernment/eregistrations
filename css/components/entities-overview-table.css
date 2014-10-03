@@ -22,12 +22,9 @@
 	cursor: pointer;
 	display: inline-block;
 	font-size: 18px;
-	font-weight: normal;
-	margin-bottom: 22px;
 	padding: 10px 16px;
 	text-align: center;
 	text-decoration: none;
-	vertical-align: middle;
 	white-space: nowrap;
 }
 .new-entity:hover,

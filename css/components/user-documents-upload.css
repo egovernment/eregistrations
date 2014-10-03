@@ -1,6 +1,10 @@
-.user-documents-upload li h2 {
-	margin-bottom: 0;
+.user-documents-upload > li {
+	margin-bottom: 22px;
 }
 .user-documents-upload small {
 	color: var(--normal-text);
+	display:block;
+}
+.user-documents-upload .file-section {
+	margin-top: 22px;
 }
