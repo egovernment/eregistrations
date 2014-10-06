@@ -410,13 +410,10 @@ Styles applied while screen sieze is less than 640px
 		border-radius: 0 0 4px 4px;
 	}
 	input[type="submit"] {
-		width: 100%
+
 	}
 	.form-elements .radio {
 		display: inline-block;
 		padding-top: 11px;
-	}
-	.form-single-control input[type="submit"] {
-	margin-left: 0;
 	}
 }
