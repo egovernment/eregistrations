@@ -30,7 +30,7 @@
 	margin: -5px 0;
 	white-space: nowrap;
 }
-.users-table-filter-bar .print-button span {
+.users-table-filter-bar .print-button .fa {
 	margin-right: 5px;
 	position: relative;
 	top: 2px;
