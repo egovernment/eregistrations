@@ -50,9 +50,5 @@
 @media only screen and (max-width: var(--mobile-width)) {
 	.file-uploader {
 		flex-wrap: wrap;
-		justify-content: space-around;
-	}
-	.file-uploader-button {
-		width: 100%;
 	}
 }

@@ -117,10 +117,6 @@ Styles applied while screen sieze is less than 640px
 		width: 100%;
 	}
 
-	.user-guide button.save-step-one {
-		width: 100%;
-	}
-
 	.user-guide .inventory-button {
 		padding-left: 0;
 	}
