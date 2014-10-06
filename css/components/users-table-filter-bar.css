@@ -8,7 +8,7 @@
 	display: flex;
 }
 .users-table-filter-bar form div {
-	margin-left: 20px;
+	margin-right: 20px;
 }
 
 .users-table-filter-bar label {
@@ -19,27 +19,21 @@
 }
 .users-table-filter-bar label:first-child {
 	margin-left: 0;
+	margin-right: 5px;
 }
 
 .users-table-filter-bar .print-button {
-	height: 30px;
 	border-radius: 4px;
 	color: var(--white-text);
 	background-color: var(--normal-background);
-	border: none;
-	-webkit-box-shadow: none;
-	-moz-box-shadow: none;
-	box-shadow: none;
-	font-size: 14px;
-	margin-bottom: 22px;
-	margin: -3px auto -5px;
-	padding-left: 10px;
-	padding-right: 10px;
-	padding-top: 6px;
+	padding: 5px 10px;
+	margin: -5px 0;
+	white-space: nowrap;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.users-table-filter-bar {
+	.users-table-filter-bar,
+	.users-table-filter-bar form {
 		flex-wrap: wrap;
 	}
 	.users-table-filter-bar {

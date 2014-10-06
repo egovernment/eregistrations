@@ -32,20 +32,20 @@ exports['sub-main'] = function () {
 	div(
 		{ class: 'section-primary users-table-filter-bar' },
 		form(
-			label(
-				"Status: "
-			),
 			div(
+				label(
+					"Status: "
+				),
 				select(
 					option("Pending for revision"),
 					option("Revisioned"),
 					option("Todo")
 				)
 			),
-			label(
-				"Search: "
-			),
 			div(
+				label(
+					"Search: "
+				),
 				span({ class: 'input-append' },
 						input({ type: 'search' }),
 						button({ class: 'add-on' },
