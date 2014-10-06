@@ -1,26 +1,18 @@
 .submitted-documents-list {
 	counter-reset:li;
-	margin: 32px 0;
+	list-style: none;
+	line-height: 33px;
 }
 
 .submitted-documents-list > li {
-	position: relative;
-	margin-bottom: 0;
-	margin-left: 15px;
-	padding: 0 8px 11px 8px;
-	list-style: none;
 	font-size: 15px;
 }
 .submitted-documents-list > li:before {
 	content: counter(li);
 	counter-increment: li;
-	position: absolute;
-	left: -24px;
+	display: inline-block;
 	width: 19px;
-	height: 19px;
 	margin-right: 8px;
-	margin-top: 2px;
-	border-top:1px solid var(--normal-dark-background);
 	border-radius: 50%;
 	color:	var(--white-text);
 	background:	var(--normal-dark-background);
