@@ -30,6 +30,11 @@
 	margin: -5px 0;
 	white-space: nowrap;
 }
+.users-table-filter-bar .print-button span {
+	margin-right: 5px;
+	position: relative;
+	top: 2px;
+}
 
 @media only screen and (max-width: var(--mobile-width)) {
 	.users-table-filter-bar,
@@ -45,5 +50,8 @@
 	.users-table-filter-bar div:last-child .print-button {
 		width: 100%;
 		text-align: center;
+	}
+	.users-table-filter-bar form div:last-child {
+		margin-right: 0;
 	}
 }
