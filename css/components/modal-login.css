@@ -8,6 +8,14 @@ Component describing styles for login modal windows - rules specific only for th
 	width: 320px;
 }
 
+.modal-login section div {
+	padding-top: 11px;
+}
+
+.modal-login form > * {
+	margin-bottom: 22px;
+}
+
 .modal-login footer a {
 	white-space: nowrap;
 }
