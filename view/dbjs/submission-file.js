@@ -21,10 +21,11 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 
 			dom = el('div', { class: 'file-section' },
 				this.valueDOM = el(this.multiple ? 'ul' : 'div', { class: 'file-uploader' }),
-				el('a', { class: 'file-uploader-button' },
-					el('label', label,
-						this.control = el('input', { type: 'file' }))),
-				errorSpan = el('span', { class: 'error-message-' +
+				el('p',
+					el('a', { class: 'file-uploader-button' },
+						el('label', label,
+							this.control = el('input', { type: 'file' })))),
+				errorSpan = el('span', { class: 'error-message error-message-' +
 					options.observable.dbId.replace(normRe, '-') }, ""));
 			errorTxt = errorSpan.firstChild;
 			this.control.addEventListener('invalid', function (e) {

@@ -318,6 +318,7 @@ ul.multiple {
 	border-radius: 11px;
 	padding: 2px 7px 4px 7px;
 	font-size: 12px;
+	vertical-align: 1px; /* Fixes weird 1px jump due to font-size */
 	margin-left: 5px;
 	text-decoration: none;
 }

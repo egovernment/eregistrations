@@ -1,9 +1,9 @@
 'use strict';
 
-var syncStyle = require('dom-ext/html-element/#/sync-style'),
-		zoomOnHover = require('dom-ext/html-element/#/zoom-on-hover'),
-		isMobileView = require('../utils/is-mobile-view'),
-		syncHeight = require('../utils/sync-height');
+var syncStyle = require('dom-ext/html-element/#/sync-style')
+  , zoomOnHover = require('dom-ext/html-element/#/zoom-on-hover')
+  , isMobileView = require('../utils/is-mobile-view')
+  , syncHeight = require('../utils/sync-height');
 
 exports['user-name'] = function () {
 	text("User Submited");
@@ -17,14 +17,13 @@ exports['submitted-menu'] = function () {
 		),
 		menuitem(
 			a({ href: '/profile/' }, "Profile")
-		)
-		);
+		));
 };
 
 exports['sub-main'] = function () {
 	var source,
-			target,
-			elem;
+	target,
+	elem;
 
 	section(
 		{ class: 'submitted-main' },
@@ -66,49 +65,46 @@ exports['sub-main'] = function () {
 	);
 	section(
 		{ class: 'section-primary' },
-		div(
-			h2({ class: 'container-with-nav' }, "History of your request",
-				a(
-					{ class: 'hint-optional hint-optional-left',
-						'data-hint': 'Print history of Your request' },
-					span({ class: 'fa fa-print' }, "Print")
-				)
+		h2({ class: 'container-with-nav' }, "History of your request",
+			a(
+				{ class: 'hint-optional hint-optional-left',
+					'data-hint': 'Print history of Your request' },
+				span({ class: 'fa fa-print' }, "Print")
+			)),
+		table(
+			{ class: 'submitted-user-history' },
+			tbody(
+				tr(
+					th(
+						div("User")
+					),
+					td(
+						div("24/07/2014 10:09:22")
+					),
+					td(
+						div("Required modifications sent by user")
+					)
 				),
-			table(
-				{ class: 'submitted-user-history' },
-				tbody(
-					tr(
-						th(
-							div("User")
-						),
-						td(
-							div("24/07/2014 10:09:22")
-						),
-						td(
-							div("Required modifications sent by user")
-						)
+				tr(
+					th(
+						div("File sent")
 					),
-					tr(
-						th(
-							div("File sent")
-						),
-						td(
-							div("24/07/2014 13:09:22")
-						),
-						td(
-							div("File sent")
-						)
+					td(
+						div("24/07/2014 13:09:22")
 					),
-					tr(
-						th(
-							div("Official")
-						),
-						td(
-							div("24/07/2014 16:19:22")
-						),
-						td(
-							div("Document accepted")
-						)
+					td(
+						div("File sent")
+					)
+				),
+				tr(
+					th(
+						div("Official")
+					),
+					td(
+						div("24/07/2014 16:19:22")
+					),
+					td(
+						div("Document accepted")
 					)
 				)
 			)
@@ -116,50 +112,46 @@ exports['sub-main'] = function () {
 	);
 	section(
 		{ class: 'section-primary' },
-		div(
-			h3("Documents uploaded with the application"),
-			ol({ class: 'submitted-documents-list' },
-				li(
-					a("Memorandum and articles of association")
-				),
-				li(
-					a("Proof of identity for director 1")
-				),
-				li(
-					a("Proof of identity for director 2")
-				),
-				li(
-					a("Registered title deed")
+		h3("Documents uploaded with the application"),
+		ol({ class: 'submitted-documents-list' },
+			li(
+				a("Memorandum and articles of association")
+			),
+			li(
+				a("Proof of identity for director 1")
+			),
+			li(
+				a("Proof of identity for director 2")
+			),
+			li(
+				a("Registered title deed")
+			)),
+		h3("Complete content of the company file"),
+		ol({ class: 'submitted-documents-thumbs' },
+			li(
+				a(
+					span({ class: 'review-status success fa fa-check ' }),
+					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 				)
-				),
-			h3("Complete content of the company file"),
-			ol({ class: 'submitted-documents-thumbs' },
-				li(
-					a(
-						span({ class: 'review-status success fa fa-check ' }),
-						img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
-					)
-				),
-				li(
-					a(
-						span({ class: 'review-status error fa fa-exclamation ' }),
-						img({ src: '/uploads/docASubFile1.thumb.idoc.jpg' })
-					)
-				),
-				li(
-					a(
-						span({ class: 'review-status success fa fa-check ' }),
-						img({ src: '/uploads/docBSubFile1.thumb.idoc.jpg' })
-					)
-				),
-				li(
-					a(
-						span({ class: 'review-status success fa fa-check ' }),
-						img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
-					)
+			),
+			li(
+				a(
+					span({ class: 'review-status error fa fa-exclamation ' }),
+					img({ src: '/uploads/docASubFile1.thumb.idoc.jpg' })
 				)
+			),
+			li(
+				a(
+					span({ class: 'review-status success fa fa-check ' }),
+					img({ src: '/uploads/docBSubFile1.thumb.idoc.jpg' })
 				)
-		)
+			),
+			li(
+				a(
+					span({ class: 'review-status success fa fa-check ' }),
+					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
+				)
+			))
 	);
 	section(
 		{ class: 'submitted-preview' },
@@ -167,16 +159,13 @@ exports['sub-main'] = function () {
 			{ class: 'section-primary submitted-preview-document' },
 			div({ class: 'container-with-nav' },
 				h3(i({ class: 'list-item-number' }, "1"),
-					"Memorandum and articles of association"
-					),
+					"Memorandum and articles of association"),
 				div({ class: 'submitted-preview-documents-navigation' },
 					div(
 						a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
 						span("1 / 4"),
 						a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
-					)
-					)
-				),
+					))),
 			zoomOnHover.call(
 				elem = div(
 					{ class: 'image-placeholder' },
@@ -188,8 +177,7 @@ exports['sub-main'] = function () {
 					a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
 					span("1 / 4"),
 					a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
-				)
-				)
+				))
 		),
 		target = div({ class: 'section-primary submitted-preview-user-data' },
 			h3({ class: 'container-with-nav' }, "Application form",
@@ -197,8 +185,7 @@ exports['sub-main'] = function () {
 					{ class: 'hint-optional hint-optional-left',
 						'data-hint': 'Print Your application form' },
 					span({ class: 'fa fa-print' }, "Print")
-				)
-				),
+				)),
 			h4("Proposed company name"),
 			table(
 				tbody(
@@ -318,7 +305,7 @@ exports['sub-main'] = function () {
 				)
 			),
 			h6("Address"),
-				table(
+			table(
 				tbody(
 					tr(
 						th("Address"),
@@ -341,8 +328,7 @@ exports['sub-main'] = function () {
 						td("Romania")
 					)
 				)
-			)
-			)
+			))
 	);
 	syncStyle.call(target, source, 'height', isMobileView);
 	syncHeight(elem);

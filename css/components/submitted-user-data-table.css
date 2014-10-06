@@ -1,6 +1,6 @@
 .submitted-user-data-table {
-	margin: 22px 0;
 	font-size: 16px;
+	margin-top: -1px; /* Fixes weird 1px addon as observed in Chrome */
 }
 
 .submitted-user-data-table thead {
@@ -76,7 +76,6 @@
 @media only screen and (max-width: var(--mobile-width)) {
 
 	.submitted-user-data-table.table-responsive tr {
-		border: 1px solid var(--light-inner-border);
 		height: auto;
 		}
 

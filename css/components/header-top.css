@@ -41,6 +41,8 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	padding-right: 8px;
 	padding-left: 8px;
 	cursor: pointer;
+	display: block;
+	height: 22px;
 }
 .menu-top menuitem a:hover,
 .menu-top menuitem a:focus,
@@ -75,9 +77,8 @@ menu.menu-top menuitem button {
 }
 
 menu.menu-top .fa {
-	height: 1.1em;
+	margin-top: 1px;
 	font-size: 19px;
-	padding-top: 2px;
 }
 .user-name {
 	font-size: 17px;
@@ -100,7 +101,7 @@ Styles applied while screen sieze is less than 640px
 	}
 
 	.header-top nav {
-		margin:  11px auto 0;
+		margin:  11px auto 11px;
 	}
 	.menu-top {
 		padding-left: 0;
