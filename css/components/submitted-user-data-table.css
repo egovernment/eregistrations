@@ -1,6 +1,6 @@
 .submitted-user-data-table {
 	font-size: 16px;
-	margin-bottom: -1px; /* Fixes weird 1px addon as observed in Chrome */
+	margin-top: -1px; /* Fixes weird 1px addon as observed in Chrome */
 }
 
 .submitted-user-data-table thead {
