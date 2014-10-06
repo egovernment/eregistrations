@@ -133,8 +133,7 @@ exports.step = function () {
 							),
 							tr(
 								td({ class: 'desktop-only' },
-									a({ href: '/forms/partner-id/' }, "Lorem")
-								),
+									a({ href: '/forms/partner-id/' }, "Lorem")),
 								td(a({ href: '/forms/partner-id/' }, "John")),
 								td(a({ href: '/forms/partner-id/' }, "Watson")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
