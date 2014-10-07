@@ -409,9 +409,6 @@ Styles applied while screen sieze is less than 640px
 	.inline-button-radio label:last-child {
 		border-radius: 0 0 4px 4px;
 	}
-	input[type="submit"] {
-		width: 100%
-	}
 	.form-elements .radio {
 		display: inline-block;
 		padding-top: 11px;

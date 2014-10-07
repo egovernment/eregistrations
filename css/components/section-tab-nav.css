@@ -22,6 +22,9 @@
 	border-bottom: none;
 	z-index: 999;
 }
+.section-tab-nav > div {
+	width: 100%;
+}
 
 @media only screen and (max-width: var(--mobile-width)) {
 	.section-tab-nav {

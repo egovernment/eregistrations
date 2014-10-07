@@ -32,30 +32,37 @@ exports['sub-main'] = function () {
 	div(
 		{ class: 'section-primary users-table-filter-bar' },
 		form(
-			label(
-				"Status: "
-			),
 			div(
+				label(
+					"Status: "
+				),
 				select(
 					option("Pending for revision"),
 					option("Revisioned"),
 					option("Todo")
 				)
 			),
-			label(
-				"Search: "
-			),
 			div(
+				label(
+					"Search: "
+				),
 				span({ class: 'input-append' },
 						input({ type: 'search' }),
 						button({ class: 'add-on' },
 							span({ class: 'fa fa-search' })
 							)
 					)
+			),
+			div(
+				input({ type: 'submit' }, "Submit")
 			)
 		),
 		div(
-			a({ class: 'print-button' }, "Print files list")
+			a(
+				{ class: 'print-button' },
+				span({ class: 'fa fa-print' }),
+				"Print list"
+			)
 		)
 	);
 	table(
@@ -63,7 +70,7 @@ exports['sub-main'] = function () {
 		thead(
 			tr(
 				th("User"),
-				th("Application number"),
+				th({ class: 'desktop-only' }, "Application number"),
 				th({ class: 'desktop-only' }, "Date of registration"),
 				th("Requested registration"),
 				th("Actions")
@@ -78,6 +85,7 @@ exports['sub-main'] = function () {
 						)
 				),
 				td(
+					{ class: 'desktop-only' },
 					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
@@ -89,7 +97,7 @@ exports['sub-main'] = function () {
 				),
 				td(
 					{ class: 'actions' },
-					a("Download")
+					a(span({ class: 'fa fa-download' }, "Download"))
 				)
 			),
 			tr(
@@ -100,6 +108,7 @@ exports['sub-main'] = function () {
 						)
 				),
 				td(
+					{ class: 'desktop-only' },
 					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
@@ -111,7 +120,7 @@ exports['sub-main'] = function () {
 				),
 				td(
 					{ class: 'actions' },
-					a("Download")
+					a(span({ class: 'fa fa-download' }, "Download"))
 				)
 			),
 			tr(
@@ -122,6 +131,7 @@ exports['sub-main'] = function () {
 						)
 				),
 				td(
+					{ class: 'desktop-only' },
 					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
@@ -133,7 +143,7 @@ exports['sub-main'] = function () {
 				),
 				td(
 					{ class: 'actions' },
-					a("Download")
+					a(span({ class: 'fa fa-download' }, "Download"))
 				)
 			),
 			tr(
@@ -144,6 +154,7 @@ exports['sub-main'] = function () {
 						)
 				),
 				td(
+					{ class: 'desktop-only' },
 					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
@@ -155,7 +166,7 @@ exports['sub-main'] = function () {
 				),
 				td(
 					{ class: 'actions' },
-					a("Download")
+					a(span({ class: 'fa fa-download' }, "Download"))
 				)
 			),
 			tr(
@@ -166,6 +177,7 @@ exports['sub-main'] = function () {
 						)
 				),
 				td(
+					{ class: 'desktop-only' },
 					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
@@ -177,7 +189,7 @@ exports['sub-main'] = function () {
 				),
 				td(
 					{ class: 'actions' },
-					a("Download")
+					a(span({ class: 'fa fa-download' }, "Download"))
 				)
 			),
 			tr(
@@ -188,6 +200,7 @@ exports['sub-main'] = function () {
 						)
 				),
 				td(
+					{ class: 'desktop-only' },
 					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
@@ -199,7 +212,7 @@ exports['sub-main'] = function () {
 				),
 				td(
 					{ class: 'actions' },
-					a("Download")
+					a(span({ class: 'fa fa-download' }, "Download"))
 				)
 			),
 			tr(
@@ -210,6 +223,7 @@ exports['sub-main'] = function () {
 						)
 				),
 				td(
+					{ class: 'desktop-only' },
 					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
@@ -221,7 +235,7 @@ exports['sub-main'] = function () {
 				),
 				td(
 					{ class: 'actions' },
-					a("Download")
+					a(span({ class: 'fa fa-download' }, "Download"))
 				)
 			),
 			tr(
@@ -232,6 +246,7 @@ exports['sub-main'] = function () {
 						)
 				),
 				td(
+					{ class: 'desktop-only' },
 					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
@@ -243,7 +258,7 @@ exports['sub-main'] = function () {
 				),
 				td(
 					{ class: 'actions' },
-					a("Download")
+					a(span({ class: 'fa fa-download' }, "Download"))
 				)
 			),
 			tr(
@@ -254,6 +269,7 @@ exports['sub-main'] = function () {
 						)
 				),
 				td(
+					{ class: 'desktop-only' },
 					a({ href: '/official/user-id/' }, "4068-50001-N-2013")
 				),
 				td(
@@ -265,7 +281,7 @@ exports['sub-main'] = function () {
 				),
 				td(
 					{ class: 'actions' },
-					a("Download")
+					a(span({ class: 'fa fa-download' }, "Download"))
 				)
 			)
 		)

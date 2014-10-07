@@ -56,4 +56,10 @@ h2.container-with-nav .fa {
 	.container-with-nav a:first-child {
 		margin-left: 0;
 	}
+	.container-with-nav > * {
+		margin-bottom: 22px;
+	}
+	.container-with-nav > :last-child {
+		margin-bottom: 0;
+	}
 }

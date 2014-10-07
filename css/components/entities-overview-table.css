@@ -64,9 +64,3 @@
 	text-align: center;
 	color: var(--success-text);
 }
-
-@media only screen and (max-width: var(--mobile-width)) {
-	.new-entity {
-		width: 100%;
-	}
-}

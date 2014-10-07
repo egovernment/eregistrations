@@ -81,10 +81,13 @@ exports.step = function () {
 						)
 					)),
 				p({ class: 'submit-placeholder' },
-					input({ type: 'submit' }, "Submit"),
-					p({ class: 'button-scroll-top' },
-						a({ onclick: 'window.scroll(0, 0)' },
-							span({ class: 'fa fa-arrow-up' }, "Back to top"))))
+					input({ type: 'submit' }, "Submit")
+					),
+				p(
+					{ class: 'button-scroll-top' },
+					a({ onclick: 'window.scroll(0, 0)' },
+						span({ class: 'fa fa-arrow-up' }, "Back to top"))
+				)
 			)
 		),
 
@@ -168,11 +171,13 @@ exports.step = function () {
 									a("Delete"))
 							)
 						)
-					),
-					a(
-						{ class: 'new-entity', href: '/forms/partner-add/' },
-						"Add new partner"
 					)
+				)
+			),
+			p(
+				a(
+					{ class: 'new-entity', href: '/forms/partner-add/' },
+					"Add new partner"
 				)
 			),
 			p({ class: 'button-scroll-top' },
@@ -207,11 +212,13 @@ exports.step = function () {
 							[],
 							function () {}
 						)
-					),
-					a(
-						{ class: 'new-entity', href: '/forms/partner-add/' },
-						"Add new partner"
 					)
+				)
+			),
+			p(
+				a(
+					{ class: 'new-entity', href: '/forms/partner-add/' },
+					"Add new partner"
 				)
 			),
 			p({ class: 'button-scroll-top' },
