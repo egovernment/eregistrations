@@ -120,4 +120,7 @@ Styles applied while screen sieze is less than 640px
 	.user-guide .inventory-button {
 		padding-left: 0;
 	}
+	.user-guide button.save-step-one {
+		width: auto;
+	}
 }
