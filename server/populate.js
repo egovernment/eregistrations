@@ -4,11 +4,13 @@ var forEach       = require('es5-ext/object/for-each')
   , isObject      = require('es5-ext/object/is-object')
   , customError   = require('es5-ext/error')
   , toPosInteger  = require('es5-ext/number/to-pos-integer')
+  , validArray    = require('es5-ext/array/valid-array')
+  , validValue    = require('es5-ext/object/valid-value')
   , dbjsSerialize = require('dbjs/_setup/serialize/value')
   , genId         = require('time-uuid')
   , now           = require('microtime-x')
-  , options, main, serializeProperty, serializeObject
-  , updatesArray;
+  , options, serializeProperty, serializeObject, updatesArray
+  , generateSection, generateObject, generateProperty;
 
 module.exports = function (map/*, options */) {
 	var count = 1;
@@ -22,41 +24,49 @@ module.exports = function (map/*, options */) {
 	}
 	updatesArray = [];
 	while (count--) {
-		main(map);
+		generateObject(map);
 	}
 	return updatesArray;
 };
 
-main = function (map, objId) {
+generateSection = function (map, objId) {
 	var idForUpdate;
-	if (map.id) {
-		idForUpdate = objId || serializeObject(map.id).id;
-		if (Array.isArray(map.value)) {
-			map.value.forEach(function (section) {
-				main(section, idForUpdate);
-			});
-		}
-		return;
-	}
-	forEach(map, function (item, key) {
-		if (item.id) {
-			main(item);
-		} else {
-			if (item.multiple) {
-				item.value.forEach(function (multipleItem, multipleItemKey) {
-					if (multipleItem.id) {
-						idForUpdate = serializeObject(multipleItem.id).id;
-						serializeProperty(objId, key + '*' + idForUpdate, true);
-						main(multipleItem, idForUpdate);
-					} else {
-						serializeProperty(objId, key + '*' + multipleItemKey, multipleItem);
-					}
-				});
+	idForUpdate = objId || serializeObject(map.id).id;
+	validArray(map);
+	map.forEach(function (section) {
+		forEach(section, function (item, key) {
+			if (item.id) {
+				generateObject(item);
 			} else {
-				serializeProperty(objId, key, item);
+				generateProperty(item, key, idForUpdate);
 			}
-		}
+		});
 	});
+};
+
+generateObject = function (map, objId) {
+	var idForUpdate;
+	validValue(map.id);
+	idForUpdate = objId || serializeObject(map.id).id;
+	generateSection(map.value, idForUpdate);
+};
+
+generateProperty = function (item, key, objId) {
+	var idForUpdate;
+	if (item.multiple) {
+		validArray(item.value);
+		item.value.forEach(function (multipleItem, multipleItemKey) {
+			if (multipleItem.id) {
+				idForUpdate = serializeObject(multipleItem.id).id;
+				serializeProperty(objId, key + '*' + idForUpdate, true);
+				generateSection(multipleItem.value, idForUpdate);
+			} else {
+				serializeProperty(objId, key + '*' + multipleItemKey, multipleItem);
+			}
+		});
+	} else {
+		serializeProperty(objId, key, item);
+	}
 };
 
 serializeObject = function (prototypeId) {
