@@ -1,6 +1,6 @@
 /*!
-Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome
-License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+*  Font Awesome 4.1.0 by @davegandy - http://fontawesome.io - @fontawesome
+*  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
 */
 
 @font-face {
@@ -43,12 +43,21 @@ e.g.:
 }
 */
 
-.fa-check {
-	width: 0.99em;
+.fa-laptop {
+	width: 1.2em;
 }
 
-.fa-check:before {
-	content: "\f00c"
+.fa-laptop:before {
+	content: "\f109";
+}
+
+.fa-clipboard {
+	width: 1.2em;
+}
+
+.fa-clipboard:before {
+	content: "\f0ea";
+
 }
 
 .fa-download {
@@ -57,6 +66,14 @@ e.g.:
 
 .fa-download:before {
 	content: "\f019";
+}
+
+.fa-envelope {
+	width: 1.2em;
+}
+
+.fa-envelope:before {
+	content: "\f003";
 }
 
 .fa-print {

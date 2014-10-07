@@ -1,0 +1,14 @@
+.public-article img {
+	border-radius: var(--normal-rounded-border);
+	border: 1px solid var(--light-inner-border);
+	max-width: 100%;
+}
+
+.public-article-block {
+	background-color: var(--light-background);
+	color: var(--dark-background);
+	border-radius: var(--normal-rounded-border);
+	border: 1px solid var(--light-inner-border);
+	padding: 11px;
+	max-width: 100%;
+}

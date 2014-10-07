@@ -16,6 +16,12 @@ Component describing basic elements styles - reusable
 	--success-background: #5CB85C;
 	--error-background: #D9534F;
 	--light-error-background: #D69592;
+	/* Rounded borders */
+	--normal-rounded-border: 6px;
+	--left-rounded-border: 6px 0 0 6px;
+	--right-rounded-border: 0 6px 6px 0;
+	--top-rounded-border: 6px 6px 0 0;
+	--bottom-rounded-border: 0 0 6px 6px;
 	/* Text colors */
 	--white-text: #ffffff;
 	--light-text: #e3e3e3;

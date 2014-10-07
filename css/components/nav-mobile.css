@@ -1,0 +1,33 @@
+.nav-mobile-button {
+	width: 100%;
+	margin: auto;
+	text-align: center;
+	background-color: #fff;
+	padding: 11px 22px;
+	border-radius: 6px;
+	cursor: pointer;
+	vertical-align: middle;
+	display: none;
+}
+
+.nav-mobile-button:hover,
+.nav-mobile-button:focus,
+.nav-mobile-button:active {
+	color: #fff;
+	background-color: var(--normal-dark-background);
+}
+
+.nav-mobile-container input[type=checkbox] {
+	display: none;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+
+	input[type=checkbox]:checked ~ .nav-mobile {
+		display: flex;
+	}
+
+	.nav-mobile-button {
+		display: block;
+	}
+}

@@ -34,6 +34,12 @@
 ../../css/components/entity-properties.css
 ../../css/components/entity-header.css
 ../../css/components/entities-overview-table.css
+../../css/components/public-sub-menu.css
+../../css/components/public-parts-menu.css
+../../css/components/tabbed-content.css
+../../css/components/side-menu.css
+../../css/components/public-article.css
+../../css/components/nav-mobile.css
 ../../css/components/submitted-menu.css
 ../../css/components/submitted-documents-list.css
 ../../css/components/submitted-add-user.css
