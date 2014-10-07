@@ -1,0 +1,12 @@
+/*
+Component describing styles for public error page
+*/
+
+.error-page .section-primary {
+	text-align: center;
+}
+
+.error-page h1 {
+	font-size: 84px;
+	line-height: 88px;
+}
