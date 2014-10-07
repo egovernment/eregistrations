@@ -6,7 +6,7 @@ var db  = require('mano').db,
 
 exports.main = function () {
 	form(
-		{ class: 'content public-reset-password' },
+		{ class: 'content user-forms' },
 		div(
 			{ class: 'section-primary' },
 			h3("Reset Password"),
