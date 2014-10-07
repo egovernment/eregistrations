@@ -7,7 +7,7 @@ var configMap
 
 getRandomName = function () {
 	called++;
-	if (called > 2) {
+	if (called >= names.length) {
 		called = 0;
 	}
 	return names[called];
@@ -44,8 +44,7 @@ module.exports = function (t, a) {
 			] } }
 		]
 	};
-	result = t(configMap, { howMany: 3 });
-
+	result = t(configMap, { count: 3 });
 	result.sort(function (a, b) { return a.value - b.value; });
 	a(result.length, 42);
 	a(result[2].value, "3Kowalski");

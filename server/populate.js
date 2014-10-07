@@ -3,23 +3,25 @@
 var forEach       = require('es5-ext/object/for-each')
   , isObject      = require('es5-ext/object/is-object')
   , customError   = require('es5-ext/error')
+  , toPosInteger  = require('es5-ext/number/to-pos-integer')
   , dbjsSerialize = require('dbjs/_setup/serialize/value')
   , genId         = require('time-uuid')
   , now           = require('microtime-x')
   , options, main, serializeProperty, serializeObject
-  , updatesArray, howMany;
+  , updatesArray;
 
 module.exports = function (map/*, options */) {
+	var count = 1;
 	options = Object(arguments[1]);
-	if (options.howMany) {
-		howMany = Math.ceil(Number(options.howMany));
-		if (Number.isNaN(howMany) || howMany <= 0) {
+	if (options.count) {
+		count = toPosInteger(options.count);
+		if (!count) {
 			throw customError("hawMany parameter must be a positive integer",
 				"WRONG_PARAM_HOW_MANY", { statusCode: 401 });
 		}
 	}
 	updatesArray = [];
-	while (howMany--) {
+	while (count--) {
 		main(map);
 	}
 	return updatesArray;

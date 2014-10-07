@@ -12,7 +12,7 @@
     "dbjs": "git://github.com/medikoo/dbjs.git",
     "es5-ext": "~0.10.4",
     "dbjs-reduce": "git://github.com/medikoo/dbjs-reduce.git",
-		"time-uuid": "~0.2.1",
+    "time-uuid": "~0.2.1",
     "microtime-x": "~0.2.1"
   },
   "devDependencies": {
