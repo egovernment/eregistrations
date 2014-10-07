@@ -10,7 +10,7 @@ var forEach       = require('es5-ext/object/for-each')
   , genId         = require('time-uuid')
   , now           = require('microtime-x')
   , options, serializeProperty, serializeObject, updatesArray
-  , generateSection, generateObject, generateProperty;
+  , generateSection, generateObject, generateProperty, generateMultiple;
 
 module.exports = function (map/*, options */) {
 	var count = 1;
@@ -18,7 +18,7 @@ module.exports = function (map/*, options */) {
 	if (options.count) {
 		count = toPosInteger(options.count);
 		if (!count) {
-			throw customError("hawMany parameter must be a positive integer",
+			throw customError("count parameter must be a positive integer",
 				"WRONG_PARAM_HOW_MANY", { statusCode: 401 });
 		}
 	}
@@ -30,54 +30,62 @@ module.exports = function (map/*, options */) {
 };
 
 generateSection = function (map, objId) {
-	var idForUpdate;
-	idForUpdate = objId || serializeObject(map.id).id;
 	validArray(map);
 	map.forEach(function (section) {
 		forEach(section, function (item, key) {
 			if (item.id) {
 				generateObject(item);
 			} else {
-				generateProperty(item, key, idForUpdate);
+				generateProperty(item, key, objId);
 			}
 		});
 	});
 };
 
-generateObject = function (map, objId) {
-	var idForUpdate;
+generateObject = function (map) {
 	validValue(map.id);
-	idForUpdate = objId || serializeObject(map.id).id;
-	generateSection(map.value, idForUpdate);
+	generateSection(map.value, serializeObject(map.id));
 };
 
 generateProperty = function (item, key, objId) {
-	var idForUpdate;
 	if (item.multiple) {
-		validArray(item.value);
-		item.value.forEach(function (multipleItem, multipleItemKey) {
-			if (multipleItem.id) {
-				idForUpdate = serializeObject(multipleItem.id).id;
-				serializeProperty(objId, key + '*' + idForUpdate, true);
-				generateSection(multipleItem.value, idForUpdate);
-			} else {
-				serializeProperty(objId, key + '*' + multipleItemKey, multipleItem);
-			}
-		});
+		generateMultiple(item, key, objId);
 	} else {
 		serializeProperty(objId, key, item);
 	}
 };
 
+generateMultiple = function (item, key, objId) {
+	var idForUpdate, min, value;
+	if (item.get || Array.isArray(item.value)) { //primitive
+		value = item.value;
+		if (item.get) {
+			value = item.get();
+		}
+		validArray(value);
+		value.forEach(function (v) {
+			serializeProperty(objId, key + '*' + dbjsSerialize(v), v);
+		});
+		return;
+	}
+	min = Number(item.min) || 1;
+	while (min--) {
+		idForUpdate = serializeObject(item.value.id);
+		serializeProperty(objId, key + '*' + idForUpdate, true);
+		generateSection(item.value.value, idForUpdate);
+	}
+};
+
 serializeObject = function (prototypeId) {
-	var itemForUpdate;
+	var itemForUpdate, id;
+	id = genId();
 	itemForUpdate = {
-		id: '7' + genId(),
+		id: '7' + id,
 		value: prototypeId,
 		stamp: now()
 	};
 	updatesArray.push(itemForUpdate);
-	return itemForUpdate;
+	return itemForUpdate.id;
 };
 
 serializeProperty = function (objId, key, item) {

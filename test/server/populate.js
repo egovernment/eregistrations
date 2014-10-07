@@ -28,26 +28,25 @@ module.exports = function (t, a) {
 				'secretary/title': { value: 'mr' },
 				'secretary/businessAddress/street': { value: 'Czereśniowa' }
 			},
-			{ partners: { multiple: true, value: [
+			{ partners: { multiple: true, min: 2, value:
 				{ id: 'Person#', value: [
 					{
 						firstName: { get: getRandomName },
 						isTall: { value: true }
-					}
-				] },
-				{ id: 'Person#', value: [
-					{
-						firstName: { get: getRandomName },
-						isTall: { value: false }
-					}
+					} ] }
+				} },
+			{
+				primitivesMultiple: { multiple: true, value: [
+					"first", "second", "third"
 				] }
-			] } }
+			}
 		]
 	};
 	result = t(configMap, { count: 3 });
 	result.sort(function (a, b) { return a.value - b.value; });
-	a(result.length, 42);
-	a(result[2].value, "3Kowalski");
-	a(result[12].value, "3Adam");
-	a(result[29].value, "3Stephen");
+	a(result.length, 51);
+	a(result[42].value, "3Alice");
+	a(result[45].value, "11");
+	a(result[49].value, "3second");
+	a(result[50].value, "3Alice");
 };
