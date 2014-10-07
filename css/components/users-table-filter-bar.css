@@ -5,8 +5,12 @@
 
 .users-table-filter-bar div,
 .users-table-filter-bar form {
-	display: flex;
+	display: inline-block;
 }
+.users-table-filter-bar form > div {
+	white-space: nowrap;
+}
+
 .users-table-filter-bar form div {
 	margin-right: 20px;
 }
@@ -40,9 +44,6 @@
 	.users-table-filter-bar,
 	.users-table-filter-bar form {
 		flex-wrap: wrap;
-	}
-	.users-table-filter-bar {
-		padding-bottom: 22px;
 	}
 	.users-table-filter-bar div:last-child {
 		width: 100%;
