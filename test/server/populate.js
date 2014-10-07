@@ -47,14 +47,6 @@ module.exports = function (t, a) {
 	result = t(configMap, { howMany: 3 });
 
 	result.sort(function (a, b) { return a.value - b.value; });
-//	result.forEach(function (item, index) {
-//		if (item.value === '3Adam') {
-//			console.log(item.value, index);
-//		}
-//		if (item.value === '3Stephen') {
-//			console.log(item.value, index);
-//		}
-//	});
 	a(result.length, 42);
 	a(result[2].value, "3Kowalski");
 	a(result[12].value, "3Adam");

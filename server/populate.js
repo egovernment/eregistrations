@@ -2,10 +2,10 @@
 
 var forEach       = require('es5-ext/object/for-each')
   , isObject      = require('es5-ext/object/is-object')
+  , customError   = require('es5-ext/error')
   , dbjsSerialize = require('dbjs/_setup/serialize/value')
   , genId         = require('time-uuid')
   , now           = require('microtime-x')
-  , customError   = require('es5-ext/error')
   , options, main, serializeProperty, serializeObject
   , updatesArray, howMany;
 
