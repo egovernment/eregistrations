@@ -1,7 +1,7 @@
 ../../css/base.css
 ../../css/form.css
 ../../css/table.css
-../../css/font-awesome.css
+../../css/components/fa.css
 ../../css/components/hint-optional.css
 ../../css/components/button-main.css
 ../../css/components/controls.css
