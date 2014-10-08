@@ -1,6 +1,7 @@
 .container-with-nav {
 	display: flex;
 	justify-content: space-between;
+	line-height: 44px;
 }
 
 .container-with-nav .fa {
@@ -17,11 +18,13 @@ h2.container-with-nav .fa {
 	background: var(--light-background);
 	border-radius: 3px;
 	border: 1px solid var(--light-inner-border);
-	padding: 3px 8px;
+	padding: 8px;
 	cursor: pointer;
 	text-decoration: none;
-	margin: -5px 2px;
+	margin: 0 2px;
 	text-align: center;
+	line-height: 22px;
+	display: inline-block;
 }
 .container-with-nav .button:hover,
 .container-with-nav .button:focus,
