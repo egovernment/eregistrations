@@ -43,7 +43,7 @@ module.exports = function (t, a) {
 			],
 			[
 				{ name: 'petitioner',  value: { value: {
-					id: 'Person#',
+					id: 'Partner#',
 					value: [
 						[
 							{ name: 'firstName', value: { get: getRandomName } },
