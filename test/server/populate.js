@@ -1,7 +1,6 @@
 'use strict';
 
-var isObject = require('es5-ext/object/is-object')
-  , isString = require('es5-ext/string/is-string')
+var isNumber = require('es5-ext/number/is-number')
   , configMap
   , output
   , getRandomName
@@ -75,14 +74,14 @@ module.exports = function (t, a) {
 		{ id: null, value: '7User#', stamp: null },
 		{ id: [0, '/firstName'],                   value: '3Stephen', stamp: 0 },
 		{ id: [0, '/lastName'],                    value: '3Kowalski', stamp: 1 },
-		{ id: [0, '/annualTurnover'],              value: '2500', stamp: 2 },
-		{ id: [0, '/secretary/title'],             value: '3mr', stamp: 3 },
+		{ id: [0, '/annualTurnover'],              value: '2500', stamp: null },
+		{ id: [0, '/secretary/title'],             value: '3mr', stamp: null },
 		{ id: [0, '/secretary/businessAddress/street'],
 			value: '3Czereśniowa', stamp: 4 },
 		{ id: null,                                value: '7Partner#', stamp: null },
 		{ id: [6, '/firstName'],                   value: '3Alice', stamp: 6 },
 		{ id: [6, '/lastName'],                    value: '3Smith', stamp: 7 },
-		{ id: [6, '/petitioner'],                  value: [6], stamp: 8 },
+		{ id: [6, '/petitioner'],                  value: 6, stamp: null },
 		{ id: null,                                value: '7Person#', stamp: null },
 		{ id: [10, '/firstName'],                  value: '3Adam', stamp: 10 },
 		{ id: [10, '/isTall'],                     value: '11', stamp: 11 },
@@ -98,26 +97,23 @@ module.exports = function (t, a) {
 		{ id: [0, '/primitivesMultipleWithGet*c'], value: '3c', stamp: 21 },
 		{ id: [0, '/primitivesMultipleWithGet*a'], value: '3a', stamp: 22 }
 	];
-	result = t(configMap, { count: 1, stamp: 1 });
+	result = t(configMap, { count: 1 });
+	a(result.length === output.length, true);
+	if (result.length === output.length) {
+		return;
+	}
 	result.forEach(function (entry, index) {
-		a(isObject(output[index]), true);
-		if (!output[index]) {
-			return;
-		}
 		if (Array.isArray(output[index].id)) {
 			dbKey = output[index].id.reduce(function (prev, curr) {
-				if (!isString(prev)) {
-					prev = result[prev].id;
-				}
-				if (!isString(curr)) {
+				if (isNumber(curr)) {
 					curr = result[curr].id;
 				}
 				return prev + curr;
-			});
+			}, '');
 			a(entry.id, dbKey);
 		}
-		if (Array.isArray(output[index].value)) {
-			a(entry.value === result[output[index].value[0]].id);
+		if (isNumber(output[index].value)) {
+			a(entry.value === ('7' + result[output[index].value].id));
 		} else {
 			a(entry.value === output[index].value);
 		}
