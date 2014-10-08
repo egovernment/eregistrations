@@ -63,12 +63,6 @@
 	background-color: var(--light-background);
 }
 
-.submitted-user-data-table ul {
-	list-style-type: none;
-	margin-bottom: 0;
-	margin: -6px 0;
-}
-
 @media only screen and (max-width: var(--mobile-width)) {
 
 	.submitted-user-data-table.table-responsive tr {
