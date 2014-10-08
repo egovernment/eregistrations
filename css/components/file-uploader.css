@@ -2,16 +2,17 @@
 	list-style-type: none;
 	display: flex;
 }
-
 .file-uploader-button {
+	line-height: 44px;
+}
+.file-uploader-button a {
 	background-color: var(--normal-background);
 	border-radius: 4px;
 	color: var(--white-text);
 	display: inline-block;
 	text-decoration: none;
 	white-space: nowrap;
-	margin-top: -5px;
-	margin-bottom: -5px;
+	line-height: 22px;
 }
 @-moz-document url-prefix() {
 	.file-uploader-button  {
@@ -19,9 +20,9 @@
 		margin-bottom: -4px;
 	}
 }
-.file-uploader-button:hover,
-.file-uploader-button:focus,
-.file-uploader-button:active {
+.file-uploader-button a:hover,
+.file-uploader-button a:focus,
+.file-uploader-button a:active {
 	background-color: var(--normal-dark-background);
 	color: var(--white-text);
 }
