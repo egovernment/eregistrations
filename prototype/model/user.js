@@ -132,6 +132,8 @@ user.defineProperties({
 	surfaceArea: { type: SquareMeters, label: "Area used for the activity", required: true },
 	members: { type: UInteger, label: "Quantity of members", required: true },
 	companyType: { type: CompanyType, label: "Registration type", required: true },
+	descriptionText: { type: db.String, label: "Your description", required: true,
+		inputCols: 35, inputRows: 4 },
 	isShoppingGallery: { type: db.Boolean, label: "A shopping gallery", required: true,
 		trueLabel: "Yes", falseLabel: "No" },
 	isARequested: { type: db.Boolean, label: "Registration A", required: true },

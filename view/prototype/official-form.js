@@ -28,19 +28,31 @@ exports.tab = function () {
 		form(
 			ul(
 				{ class: 'form-elements' },
-				li(textarea({ placeholder: "Write request for changes here" }))
+				li(
+					{ class: 'input' },
+					input({ dbjs: user.getObservable('descriptionText') })
+				)
 			),
-			input({ type: 'submit', value: 'Send back for modifications' })
+			p(
+				{ class: 'input' },
+				input({ type: 'submit', value: 'Send back for modifications' })
+			)
 		),
 		hr(),
 		h3("Reject application"),
 		form(
 			ul(
 				{ class: 'form-elements' },
-				li(textarea({ placeholder: "Reason of rejection" }))
+				li(
+					{ class: 'input' },
+					input({ dbjs: user.getObservable('descriptionText') })
+				)
 			),
-			input({ class: 'official-rejection',
-				type: 'submit', value: 'Reject the incorporation' })
+			p(
+				{ class: 'input' },
+				input({ class: 'official-rejection',
+					type: 'submit', value: 'Reject the incorporation' })
+			)
 		)
 	);
 };

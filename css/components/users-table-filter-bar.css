@@ -31,7 +31,6 @@
 	color: var(--white-text);
 	background-color: var(--normal-background);
 	padding: 5px 10px;
-	margin: -5px 0;
 	white-space: nowrap;
 }
 .users-table-filter-bar .print-button .fa {

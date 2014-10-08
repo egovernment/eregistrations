@@ -13,7 +13,7 @@ exports.step = function () {
 		form(ul({ class: 'form-elements' },
 			['placeOfWithdraw'],
 			function (name) { return field({ dbjs: user.getObservable(name) }); })),
-		p({ class: 'submit-placeholder' }, input({ type: 'submit' }, "Save")));
+		p({ class: 'submit-placeholder input' }, input({ type: 'submit' }, "Save")));
 
 	div({ class: 'section-primary' },
 		h2("Who will pick the certificates?"),
@@ -21,7 +21,7 @@ exports.step = function () {
 		form(ul({ class: 'form-elements' },
 			['pickCertificates', 'lastName', 'dateOfBirth', 'inventory'],
 			function (name) { return field({ dbjs: user.getObservable(name) }); }),
-			p({ class: 'submit-placeholder' }, input({ type: 'submit' }, "Save"))));
+			p({ class: 'submit-placeholder input' }, input({ type: 'submit' }, "Save"))));
 
 	section(
 		{ class: 'section-warning' },
