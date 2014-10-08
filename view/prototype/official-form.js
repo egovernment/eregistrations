@@ -28,19 +28,25 @@ exports.tab = function () {
 		form(
 			ul(
 				{ class: 'form-elements' },
-				li(textarea({ placeholder: "Write request for changes here" }))
+				li({ class: 'input' }, textarea({ placeholder: "Write request for changes here" }))
 			),
-			input({ type: 'submit', value: 'Send back for modifications' })
+			p(
+				{ class: 'input' },
+				input({ type: 'submit', value: 'Send back for modifications' })
+			)
 		),
 		hr(),
 		h3("Reject application"),
 		form(
 			ul(
 				{ class: 'form-elements' },
-				li(textarea({ placeholder: "Reason of rejection" }))
+				li({ class: 'input' }, textarea({ placeholder: "Reason of rejection" }))
 			),
-			input({ class: 'official-rejection',
-				type: 'submit', value: 'Reject the incorporation' })
+			p(
+				{ class: 'input' },
+				input({ class: 'official-rejection',
+					type: 'submit', value: 'Reject the incorporation' })
+			)
 		)
 	);
 };

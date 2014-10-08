@@ -14,7 +14,7 @@ exports.step = function () {
 				['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
 				function (name) { return field({ dbjs: user.getObservable(name) }); }
 				),
-			p({ class: 'submit-placeholder' },
+			p({ class: 'submit-placeholder input' },
 				input({ type: 'submit' }, "Submit")
 				)
 			)
@@ -27,7 +27,7 @@ exports.step = function () {
 				['companyType', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity'],
 				function (name) { return field({ dbjs: user.getObservable(name) }); }
 				),
-			p({ class: 'submit-placeholder' },
+			p({ class: 'submit-placeholder input' },
 				input({ type: 'submit' }, "Submit")
 				)
 			)
