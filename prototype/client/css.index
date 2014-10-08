@@ -2,7 +2,7 @@
 ../../css/form.css
 ../../css/table.css
 ../../css/font-awesome.css
-../../css/hint.css
+../../css/components/hint-optional.css
 ../../css/components/button-main.css
 ../../css/components/controls.css
 ../../css/components/error-main.css
