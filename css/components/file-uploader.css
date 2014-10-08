@@ -14,12 +14,7 @@
 	white-space: nowrap;
 	line-height: 22px;
 }
-@-moz-document url-prefix() {
-	.file-uploader-button  {
-		margin-top: -6px;
-		margin-bottom: -4px;
-	}
-}
+
 .file-uploader-button a:hover,
 .file-uploader-button a:focus,
 .file-uploader-button a:active {
