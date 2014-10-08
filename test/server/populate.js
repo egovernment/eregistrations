@@ -42,7 +42,7 @@ module.exports = function (t, a) {
 				{ sKey: 'secretary/businessAddress/street', value: { value: 'Czereśniowa' } }
 			],
 			[
-				{ sKey: 'petitioner',  value: { value: {
+				{ sKey: 'petitioner', value: {
 					id: 'Partner#',
 					value: [
 						[
@@ -50,7 +50,7 @@ module.exports = function (t, a) {
 							{ sKey: 'lastName', value: 'Smith' }
 						]
 					]
-				} } }
+				} }
 			],
 			[
 				{ sKey: 'partners', multiple: true, min: 2, value: { id: 'Person#', value: [
