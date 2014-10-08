@@ -31,74 +31,72 @@ module.exports = function (t, a) {
 		id: 'User#',
 		value: [
 			[
-				{ name: 'firstName', value: { get: getRandomName } },
-				{ name: 'lastName', value: { value: 'Kowalski' } }
+				{ sKey: 'firstName', get: getRandomName },
+				{ sKey: 'lastName', value: 'Kowalski' }
 			],
 			[
-				{ name: 'annualTurnover', value: { value: 500 } }
+				{ sKey: 'annualTurnover', value: { value: 500 } }
 			],
 			[
-				{ name: 'secretary/title', value: { value: 'mr' } },
-				{ name: 'secretary/businessAddress/street', value: { value: 'Czereśniowa' } }
+				{ sKey: 'secretary/title', value: { value: 'mr' } },
+				{ sKey: 'secretary/businessAddress/street', value: { value: 'Czereśniowa' } }
 			],
 			[
-				{ name: 'petitioner',  value: { value: {
+				{ sKey: 'petitioner',  value: { value: {
 					id: 'Partner#',
 					value: [
 						[
-							{ name: 'firstName', value: { get: getRandomName } },
-							{ name: 'lastName', value: { value: 'Smith' } }
+							{ sKey: 'firstName', get: getRandomName },
+							{ sKey: 'lastName', value: 'Smith' }
 						]
 					]
 				} } }
 			],
 			[
-				{ name: 'partners', value: { multiple: true, min: 2, value: { id: 'Person#', value: [
+				{ sKey: 'partners', multiple: true, min: 2, value: { id: 'Person#', value: [
 					[
-						{ name: 'firstName', value: { get: getRandomName } },
-						{ name: 'isTall', value: { value: true } }
+						{ sKey: 'firstName', get: getRandomName },
+						{ sKey: 'isTall', value: true }
 					]
 				] }
-					} }
-			],
-			[
-				{ name: 'primitivesMultiple', value: { multiple: true, value: [
-					"first", "second", "third"
-				] } }
-			],
-			[
-				{ name: 'primitivesMultipleWithGet',
-					value: { multiple: true, min: 2, get: getRandomPrimitive }
 					}
+			],
+			[
+				{ sKey: 'primitivesMultiple', multiple: true, value: [
+					"first", "second", "third"
+				] }
+			],
+			[
+				{ sKey: 'primitivesMultipleWithGet', multiple: true, min: 2, get: getRandomPrimitive }
 			]
 		]
 	};
 	output = [
 		{ id: null, value: '7User#', stamp: null },
-		{ id: [0, '/firstName'],                   value: '3Stephen' },
-		{ id: [0, '/lastName'],                    value: '3Kowalski' },
-		{ id: [0, '/annualTurnover'],              value: '2500' },
-		{ id: [0, '/secretary/title'],             value: '3mr' },
+		{ id: [0, '/firstName'],                   value: '3Stephen', stamp: 0 },
+		{ id: [0, '/lastName'],                    value: '3Kowalski', stamp: 1 },
+		{ id: [0, '/annualTurnover'],              value: '2500', stamp: 2 },
+		{ id: [0, '/secretary/title'],             value: '3mr', stamp: 3 },
 		{ id: [0, '/secretary/businessAddress/street'],
-			value: '3Czereśniowa' },
-		{ id: null,                                value: '7Partner#' },
-		{ id: [6, '/firstName'],                   value: '3Alice' },
-		{ id: [6, '/lastName'],                    value: '3Smith' },
-		{ id: [6, '/petitioner'],                  value: [6] },
-		{ id: null,                                value: '7Person#' },
-		{ id: [10, '/firstName'],                  value: '3Adam' },
-		{ id: [10, '/isTall'],                     value: '11' },
-		{ id: [0, '/partners*', 9],                value: '11' },
-		{ id: null,                                value: '7Person#' },
-		{ id: [14, '/firstName'],                  value: '3Adam' },
-		{ id: [14, '/isTall'],                     value: '11' },
-		{ id: [0, '/partners*', 13],               value: '11' },
-		{ id: [0, '/primitivesMultiple*first'],    value: '3first' },
-		{ id: [0, '/primitivesMultiple*second'],   value: '3second' },
-		{ id: [0, '/primitivesMultiple*third'],    value: '3third' },
-		{ id: [0, '/primitivesMultipleWithGet*b'], value: '3b' },
-		{ id: [0, '/primitivesMultipleWithGet*c'], value: '3c' },
-		{ id: [0, '/primitivesMultipleWithGet*a'], value: '3a' }
+			value: '3Czereśniowa', stamp: 4 },
+		{ id: null,                                value: '7Partner#', stamp: null },
+		{ id: [6, '/firstName'],                   value: '3Alice', stamp: 6 },
+		{ id: [6, '/lastName'],                    value: '3Smith', stamp: 7 },
+		{ id: [6, '/petitioner'],                  value: [6], stamp: 8 },
+		{ id: null,                                value: '7Person#', stamp: null },
+		{ id: [10, '/firstName'],                  value: '3Adam', stamp: 10 },
+		{ id: [10, '/isTall'],                     value: '11', stamp: 11 },
+		{ id: [0, '/partners*', 9],                value: '11', stamp: 12 },
+		{ id: null,                                value: '7Person#', stamp: null },
+		{ id: [14, '/firstName'],                  value: '3Adam', stamp: 13 },
+		{ id: [14, '/isTall'],                     value: '11', stamp: 14 },
+		{ id: [0, '/partners*', 13],               value: '11', stamp: 15 },
+		{ id: [0, '/primitivesMultiple*first'],    value: '3first', stamp: 16 },
+		{ id: [0, '/primitivesMultiple*second'],   value: '3second', stamp: 17 },
+		{ id: [0, '/primitivesMultiple*third'],    value: '3third', stamp: 18 },
+		{ id: [0, '/primitivesMultipleWithGet*b'], value: '3b', stamp: 19 },
+		{ id: [0, '/primitivesMultipleWithGet*c'], value: '3c', stamp: 20 },
+		{ id: [0, '/primitivesMultipleWithGet*a'], value: '3a', stamp: 21 }
 	];
 	result = t(configMap, { count: 1, stamp: 1 });
 	result.forEach(function (entry, index) {
@@ -118,11 +116,13 @@ module.exports = function (t, a) {
 			});
 			a(entry.id, dbKey);
 		}
-		a.ok(entry.stamp >= (result[0] + index));
 		if (Array.isArray(output[index].value)) {
 			a(entry.value === result[output[index].value[0]].id);
 		} else {
 			a(entry.value === output[index].value);
+		}
+		if (output[index].stamp != null) {
+			a.ok(entry.stamp > result[output[index].stamp].stamp);
 		}
 	});
 };
