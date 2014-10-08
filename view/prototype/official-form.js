@@ -28,7 +28,10 @@ exports.tab = function () {
 		form(
 			ul(
 				{ class: 'form-elements' },
-				li({ class: 'input' }, textarea({ placeholder: "Write request for changes here" }))
+				li(
+					{ class: 'input' },
+					input({ dbjs: user.getObservable('descriptionText') })
+				)
 			),
 			p(
 				{ class: 'input' },
@@ -40,7 +43,10 @@ exports.tab = function () {
 		form(
 			ul(
 				{ class: 'form-elements' },
-				li({ class: 'input' }, textarea({ placeholder: "Reason of rejection" }))
+				li(
+					{ class: 'input' },
+					input({ dbjs: user.getObservable('descriptionText') })
+				)
 			),
 			p(
 				{ class: 'input' },
