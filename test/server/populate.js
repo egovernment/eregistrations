@@ -35,11 +35,11 @@ module.exports = function (t, a) {
 				{ sKey: 'lastName', value: 'Kowalski' }
 			],
 			[
-				{ sKey: 'annualTurnover', value: { value: 500 } }
+				{ sKey: 'annualTurnover',  value: 500 }
 			],
 			[
-				{ sKey: 'secretary/title', value: { value: 'mr' } },
-				{ sKey: 'secretary/businessAddress/street', value: { value: 'Czereśniowa' } }
+				{ sKey: 'secretary/title', value: 'mr' },
+				{ sKey: 'secretary/businessAddress/street', value: 'Czereśniowa' }
 			],
 			[
 				{ sKey: 'petitioner', value: {
