@@ -56,7 +56,7 @@ exports.main = function () {
 				)
 			),
 			p(
-				{ class: 'submit-placeholder' },
+				{ class: 'submit-placeholder input' },
 				input({ type: 'submit' })
 			)
 		)

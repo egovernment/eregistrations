@@ -23,10 +23,6 @@
 	padding: 11px 25px 10px;
 	vertical-align: top;
 }
-.submitted-user-data-table tbody tr td > a:only-child {
-	padding: 11px 25px 10px;
-	margin: -11px -25px -10px ;
-}
 
 .submitted-user-data-table tbody tr .actions {
 	padding: 10px 25px 9px;
@@ -65,12 +61,6 @@
 
 .submitted-user-data-table tbody tr:nth-of-type(even) {
 	background-color: var(--light-background);
-}
-
-.submitted-user-data-table ul {
-	list-style-type: none;
-	margin-bottom: 0;
-	margin: -6px 0;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {

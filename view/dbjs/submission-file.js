@@ -21,8 +21,8 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 
 			dom = el('div', { class: 'file-section' },
 				this.valueDOM = el(this.multiple ? 'ul' : 'div', { class: 'file-uploader' }),
-				el('p',
-					el('a', { class: 'file-uploader-button' },
+				el('p', { class: 'file-uploader-button' },
+					el('a',
 						el('label', label,
 							this.control = el('input', { type: 'file' })))),
 				errorSpan = el('span', { class: 'error-message error-message-' +

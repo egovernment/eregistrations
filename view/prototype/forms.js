@@ -22,7 +22,7 @@ exports.step = function () {
 						function (name) { return field({ dbjs: user.getObservable(name) }); }
 					)
 				),
-				p({ class: 'submit-placeholder' },
+				p({ class: 'submit-placeholder input' },
 					input({ type: 'submit' }, "Submit")),
 				p({ class: 'button-scroll-top' },
 					a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Back to top")))
@@ -49,7 +49,7 @@ exports.step = function () {
 						{ class: 'form-elements' },
 						ul(
 							['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
-								'notification', 'isShoppingGallery', 'registerIds'],
+								'descriptionText', 'notification', 'isShoppingGallery', 'registerIds'],
 							function (name) {
 								if (name === 'notification') {
 									return field({ dbjs: user.getObservable(name), type: 'radio',
@@ -80,7 +80,7 @@ exports.step = function () {
 							}
 						)
 					)),
-				p({ class: 'submit-placeholder' },
+				p({ class: 'submit-placeholder input' },
 					input({ type: 'submit' }, "Submit")
 					),
 				p(
