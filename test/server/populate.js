@@ -88,15 +88,15 @@ module.exports = function (t, a) {
 		{ id: [10, '/isTall'],                     value: '11', stamp: 11 },
 		{ id: [0, '/partners*', 9],                value: '11', stamp: 12 },
 		{ id: null,                                value: '7Person#', stamp: null },
-		{ id: [14, '/firstName'],                  value: '3Adam', stamp: 13 },
-		{ id: [14, '/isTall'],                     value: '11', stamp: 14 },
-		{ id: [0, '/partners*', 13],               value: '11', stamp: 15 },
-		{ id: [0, '/primitivesMultiple*first'],    value: '3first', stamp: 16 },
-		{ id: [0, '/primitivesMultiple*second'],   value: '3second', stamp: 17 },
-		{ id: [0, '/primitivesMultiple*third'],    value: '3third', stamp: 18 },
-		{ id: [0, '/primitivesMultipleWithGet*b'], value: '3b', stamp: 19 },
-		{ id: [0, '/primitivesMultipleWithGet*c'], value: '3c', stamp: 20 },
-		{ id: [0, '/primitivesMultipleWithGet*a'], value: '3a', stamp: 21 }
+		{ id: [14, '/firstName'],                  value: '3Adam', stamp: 14 },
+		{ id: [14, '/isTall'],                     value: '11', stamp: 15 },
+		{ id: [0, '/partners*', 13],               value: '11', stamp: 16 },
+		{ id: [0, '/primitivesMultiple*first'],    value: '3first', stamp: 17 },
+		{ id: [0, '/primitivesMultiple*second'],   value: '3second', stamp: 18 },
+		{ id: [0, '/primitivesMultiple*third'],    value: '3third', stamp: 19 },
+		{ id: [0, '/primitivesMultipleWithGet*b'], value: '3b', stamp: 20 },
+		{ id: [0, '/primitivesMultipleWithGet*c'], value: '3c', stamp: 21 },
+		{ id: [0, '/primitivesMultipleWithGet*a'], value: '3a', stamp: 22 }
 	];
 	result = t(configMap, { count: 1, stamp: 1 });
 	result.forEach(function (entry, index) {
