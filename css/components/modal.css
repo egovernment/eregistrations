@@ -62,7 +62,7 @@ div.modal-courtain {
 .modal footer {
 	border-top: 1px solid var(--light-inner-border);
 	padding: 0 20px;
-	overflow: auto;
+	overflow: hidden;
 }
 
 .modal footer p {
