@@ -98,8 +98,8 @@ module.exports = function (t, a) {
 		{ id: [0, '/primitivesMultipleWithGet*a'], value: '3a', stamp: 22 }
 	];
 	result = t(configMap, { count: 1 });
-	a(result.length === output.length, true);
-	if (result.length === output.length) {
+	a(result.length, output.length);
+	if (result.length !== output.length) {
 		return;
 	}
 	result.forEach(function (entry, index) {
