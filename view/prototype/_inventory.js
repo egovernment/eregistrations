@@ -30,6 +30,7 @@ module.exports = inventario = modal(
 								document,
 								{
 									minInputsCount: 1,
+									class: 'input',
 									item: {
 										type: 'edit',
 										inputProperties: ['description', 'value'],
@@ -92,7 +93,7 @@ module.exports = inventario = modal(
 						span("$",
 							totalTxt = span({ class: 'total-value' }, "0"))
 					),
-					p({ class: 'inventory-value-save' }, input({ type: 'submit', value: ("Save") })),
+					p({ class: 'inventory-value-save input' }, input({ type: 'submit', value: ("Save") })),
 					script(function (container, resetBtn, totalTxt) {
 						container = $(container);
 						totalTxt = $(totalTxt).firstChild;
