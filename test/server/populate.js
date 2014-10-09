@@ -1,7 +1,6 @@
 'use strict';
 
-var isNumber = require('es5-ext/number/is-number')
-  , configMap
+var configMap
   , output
   , getRandomName
   , getRandomPrimitive
@@ -105,14 +104,14 @@ module.exports = function (t, a) {
 	result.forEach(function (entry, index) {
 		if (Array.isArray(output[index].id)) {
 			dbKey = output[index].id.reduce(function (prev, curr) {
-				if (isNumber(curr)) {
+				if (typeof curr === 'number') {
 					curr = result[curr].id;
 				}
 				return prev + curr;
 			}, '');
 			a(entry.id, dbKey);
 		}
-		if (isNumber(output[index].value)) {
+		if (typeof output[index].value === 'number') {
 			a(entry.value === ('7' + result[output[index].value].id));
 		} else {
 			a(entry.value === output[index].value);
