@@ -111,7 +111,7 @@ textarea {
 	line-height: 22px;
 	margin-bottom: -17px; /* To assure it doesn't expand line-height of element in which textarea is placed */
 	font-size: 14px;
-	padding: 10px;
+	padding: 10px 5px;
 	font-family: "Helvetica";
 }
 @-moz-document url-prefix() {
