@@ -1,7 +1,7 @@
 'use strict';
 
-var db = require('mano').db,
-	user = db.User.prototype;
+var db = require('mano').db
+  , user = db.User.prototype;
 
 exports['step-form'] = { class: { 'step-active': true } };
 
@@ -11,27 +11,22 @@ exports.step = function () {
 		p(span({ class: 'fa fa-exclamation-circle' }), "Please fill the Guide first"));
 	div(
 		{ class: 'disabler-range', id: 'forms-disabler-range' },
-		section(
+		section({ class: 'section-primary' },
 			form(
-				div({ class: 'section-primary' },
-					h2("Business Owner basic informations"),
-					hr(),
-					fieldset(
-						{ class: 'form-elements' },
-						ul(
-							['firstName', 'lastName', 'dateOfBirth', 'userEmail', 'street'],
-							function (name) { return field({ dbjs: user.getObservable(name) }); }
-						)
-					),
-					p({ class: 'submit-placeholder' },
-						input({ type: 'submit' }, "Submit")
-						),
-					p({ class: 'button-scroll-top' },
-						a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Back to top"))
-						)
+				h2("Business Owner basic informations"),
+				hr(),
+				fieldset(
+					{ class: 'form-elements' },
+					ul(
+						['firstName', 'lastName', 'dateOfBirth', 'userEmail', 'street'],
+						function (name) { return field({ dbjs: user.getObservable(name) }); }
 					)
-			)
-		),
+				),
+				p({ class: 'submit-placeholder input' },
+					input({ type: 'submit' }, "Submit")),
+				p({ class: 'button-scroll-top' },
+					a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Back to top")))
+			)),
 
 		section(
 			{ class: 'section-primary' },
@@ -47,18 +42,14 @@ exports.step = function () {
 								'registerIds'],
 							function (name) { return field({ dbjs: user.getObservable(name) }); }
 						)
-					),
-					p({ class: 'submit-placeholder' },
-						input({ type: 'submit' }, "Submit")
-						)
-					),
+					)),
 				div({ class: 'sub-section' },
 					h3("Second subsection"),
 					fieldset(
 						{ class: 'form-elements' },
 						ul(
 							['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
-								'notification', 'isShoppingGallery', 'registerIds'],
+								'descriptionText', 'notification', 'isShoppingGallery', 'registerIds'],
 							function (name) {
 								if (name === 'notification') {
 									return field({ dbjs: user.getObservable(name), type: 'radio',
@@ -88,14 +79,15 @@ exports.step = function () {
 								return field({ dbjs: user.getObservable(name) });
 							}
 						)
+					)),
+				p({ class: 'submit-placeholder input' },
+					input({ type: 'submit' }, "Submit")
 					),
-					p({ class: 'submit-placeholder' },
-						input({ type: 'submit' }, "Submit")
-						),
-					p({ class: 'button-scroll-top' },
-						a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Back to top"))
-						)
-					)
+				p(
+					{ class: 'button-scroll-top' },
+					a({ onclick: 'window.scroll(0, 0)' },
+						span({ class: 'fa fa-arrow-up' }, "Back to top"))
+				)
 			)
 		),
 
@@ -120,8 +112,7 @@ exports.step = function () {
 						tbody(
 							tr(
 								td({ class: 'desktop-only' },
-									a({ href: '/forms/partner-id/' }, "Lorem")
-									),
+									a({ href: '/forms/partner-id/' }, "Lorem")),
 								td(a({ href: '/forms/partner-id/' }, "John")),
 								td(a({ href: '/forms/partner-id/' }, "Watson")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
@@ -129,13 +120,11 @@ exports.step = function () {
 								td({ class: 'desktop-only confirmed' }, "✓"),
 								td({ class: 'actions' },
 									a("Edit"),
-									a("Delete")
-									)
+									a("Delete"))
 							),
 							tr(
 								td({ class: 'desktop-only' },
-									a({ href: '/forms/partner-id/' }, "Lorem")
-									),
+									a({ href: '/forms/partner-id/' }, "Lorem")),
 								td(a({ href: '/forms/partner-id/' }, "John")),
 								td(a({ href: '/forms/partner-id/' }, "Watson")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
@@ -143,13 +132,11 @@ exports.step = function () {
 								td({ class: 'desktop-only confirmed' }, "✓"),
 								td({ class: 'actions' },
 									a("Edit"),
-									a("Delete")
-									)
+									a("Delete"))
 							),
 							tr(
 								td({ class: 'desktop-only' },
-									a({ href: '/forms/partner-id/' }, "Lorem")
-									),
+									a({ href: '/forms/partner-id/' }, "Lorem")),
 								td(a({ href: '/forms/partner-id/' }, "John")),
 								td(a({ href: '/forms/partner-id/' }, "Watson")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
@@ -157,13 +144,11 @@ exports.step = function () {
 								td({ class: 'desktop-only confirmed' }, "✓"),
 								td({ class: 'actions' },
 									a("Edit"),
-									a("Delete")
-									)
+									a("Delete"))
 							),
 							tr(
 								td({ class: 'desktop-only' },
-									a({ href: '/forms/partner-id/' }, "Lorem")
-									),
+									a({ href: '/forms/partner-id/' }, "Lorem")),
 								td(a({ href: '/forms/partner-id/' }, "John")),
 								td(a({ href: '/forms/partner-id/' }, "Watson")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
@@ -171,13 +156,11 @@ exports.step = function () {
 								td({ class: 'desktop-only confirmed' }, "✓"),
 								td({ class: 'actions' },
 									a("Edit"),
-									a("Delete")
-									)
+									a("Delete"))
 							),
 							tr(
 								td({ class: 'desktop-only' },
-									a({ href: '/forms/partner-id/' }, "Lorem")
-									),
+									a({ href: '/forms/partner-id/' }, "Lorem")),
 								td(a({ href: '/forms/partner-id/' }, "John")),
 								td(a({ href: '/forms/partner-id/' }, "Watson")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
@@ -185,21 +168,20 @@ exports.step = function () {
 								td({ class: 'desktop-only confirmed' }, "✓"),
 								td({ class: 'actions' },
 									a("Edit"),
-									a("Delete")
-									)
+									a("Delete"))
 							)
 						)
-					),
-					a(
-						{ class: 'new-entity', href: '/forms/partner-add/' },
-						"Add new partner"
 					)
 				)
 			),
-			p({ class: 'button-scroll-top' },
-				a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Back to top"))
+			p(
+				a(
+					{ class: 'new-entity', href: '/forms/partner-add/' },
+					"Add new partner"
 				)
 			),
+			p({ class: 'button-scroll-top' },
+				a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Back to top")))),
 
 		section({ class: 'section-primary' },
 			div(
@@ -226,26 +208,24 @@ exports.step = function () {
 									{ colspan: 7 },
 									"There are no partners added at the moment."
 								)
-							)
-								},
+							) },
 							[],
 							function () {}
 						)
-					),
-					a(
-						{ class: 'new-entity', href: '/forms/partner-add/' },
-						"Add new partner"
 					)
 				)
 			),
-			p({ class: 'button-scroll-top' },
-				a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Back to top"))
+			p(
+				a(
+					{ class: 'new-entity', href: '/forms/partner-add/' },
+					"Add new partner"
 				)
 			),
+			p({ class: 'button-scroll-top' },
+				a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Back to top")))),
 
 		div({ class: 'next-step' },
-			a({ href: '/documents/' }, "Continue to next step")
-			),
+			a({ href: '/documents/' }, "Continue to next step")),
 		div({ class: 'disabler' })
 	);
 };

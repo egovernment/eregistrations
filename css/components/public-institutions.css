@@ -2,8 +2,8 @@
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
-	margin: 11px 0;
 	list-style-type: none;
+	margin-bottom: 22px;
 }
 .public-institutions a {
 	padding: 10px;

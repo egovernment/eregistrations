@@ -1,6 +1,6 @@
 .submitted-user-data-table {
-	margin: 22px 0;
 	font-size: 16px;
+	margin-top: -1px; /* Fixes weird 1px addon as observed in Chrome */
 }
 
 .submitted-user-data-table thead {
@@ -22,10 +22,6 @@
 .submitted-user-data-table tbody tr td {
 	padding: 11px 25px 10px;
 	vertical-align: top;
-}
-.submitted-user-data-table tbody tr td > a:only-child {
-	padding: 11px 25px 10px;
-	margin: -11px -25px -10px ;
 }
 
 .submitted-user-data-table tbody tr .actions {
@@ -67,16 +63,9 @@
 	background-color: var(--light-background);
 }
 
-.submitted-user-data-table ul {
-	list-style-type: none;
-	margin-bottom: 0;
-	margin: -6px 0;
-}
-
 @media only screen and (max-width: var(--mobile-width)) {
 
 	.submitted-user-data-table.table-responsive tr {
-		border: 1px solid var(--light-inner-border);
 		height: auto;
 		}
 
