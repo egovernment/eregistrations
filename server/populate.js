@@ -1,15 +1,13 @@
 'use strict';
 
-var forEach       = require('es5-ext/object/for-each')
-  , isObject      = require('es5-ext/object/is-object')
+var isObject      = require('es5-ext/object/is-object')
   , customError   = require('es5-ext/error')
   , toPosInteger  = require('es5-ext/number/to-pos-integer')
   , validArray    = require('es5-ext/array/valid-array')
   , validValue    = require('es5-ext/object/valid-value')
-  , assign        = require('es5-ext/object/assign')
   , dbjsSerialize = require('dbjs/_setup/serialize/value')
   , genId         = require('time-uuid')
-  , now           = require('microtime-x')
+  , now           = require('time-uuid/time')
   , options, serializeProperty, serializeObject, updatesArray
   , generateObject, generateProperty, generateMultiple;
 
@@ -30,55 +28,67 @@ module.exports = function (map/*, options */) {
 	return updatesArray;
 };
 
-generateObject = function (map/*, options */) {
-	var options = Object(arguments[1]), itemForUpdate, opts, stamp;
+generateObject = function (map) {
+	var itemForUpdate, opts, stamp;
 	validValue(map.id);
-	itemForUpdate = serializeObject(map.id, options);
+	itemForUpdate = serializeObject(map.id);
 	stamp = itemForUpdate.stamp;
-	if (options && options.multiple && options.parentId && options.propKey) {
-		serializeProperty(options.parentId, options.propKey + '*' + itemForUpdate.id,
-			true, { stamp: stamp });
-	}
 	validArray(map.value);
 	map.value.forEach(function (section) {
-		opts = { stamp: stamp };
-		forEach(section, function (item, key) {
-			if (item.id) {
-				generateObject(item, opts);
-			} else {
-				generateProperty(item, key, itemForUpdate.id, opts);
-			}
+		section.forEach(function (item) {
+			stamp = now.increment();
+			opts = { stamp: stamp };
+			generateProperty(item, item.sKey, itemForUpdate.id, opts);
 		});
-		stamp++;
+		stamp = now();
 	});
+
+	return { id: itemForUpdate.id, stamp: stamp };
 };
 
 generateProperty = function (item, key, objId/*, options */) {
-	var options = Object(arguments[3]);
+	var options = Object(arguments[3]), itemForUpdate, value;
 	if (item.multiple) {
 		generateMultiple(item, key, objId, options);
 	} else {
-		serializeProperty(objId, key, item, options);
+		if (isObject(item.value)) {
+			itemForUpdate = generateObject(item.value);
+			serializeProperty(objId, key, '7' + itemForUpdate.id, options);
+			return;
+		}
+		value = item.get ? dbjsSerialize(item.get()) : dbjsSerialize(item.value);
+		serializeProperty(objId, key, value, options);
 	}
 };
 
 generateMultiple = function (item, key, objId/*, options */) {
-	var min, value, options;
+	var min, value, options, itemForUpdate;
 	options = Object(arguments[3]);
+	min = Number(item.min) || 1;
 	if (item.get || Array.isArray(item.value)) { //primitive
 		value = item.value;
 		if (item.get) {
-			value = item.get();
+			while (min--) {
+				value = item.get();
+				serializeProperty(objId, key + '*' + value, dbjsSerialize(value), options);
+				if (options.stamp) {
+					options.stamp = now.increment();
+				}
+			}
+			return;
 		}
 		validArray(value);
 		value.forEach(function (v) {
-			serializeProperty(objId, key + '*' + dbjsSerialize(v), v, options);
+			serializeProperty(objId, key + '*' + v, dbjsSerialize(v), options);
+			if (options.stamp) {
+				options.stamp = now.increment();
+			}
 		});
 		return;
 	}
-	min = Number(item.min) || 1;
 	while (min--) {
-		generateObject(item.value, assign(options, { parentId: objId, propKey: key, multiple: true }));
+		itemForUpdate = generateObject(item.value);
+		serializeProperty(objId, key + '*' + itemForUpdate.id, '11', { stamp: itemForUpdate.stamp });
 	}
 };
 
@@ -87,28 +97,20 @@ serializeObject = function (prototypeId/*,options */) {
 	options = Object(arguments[1]);
 	id = genId();
 	itemForUpdate = {
-		id: '7' + id,
-		value: prototypeId,
+		id: id,
+		value: '7' + prototypeId,
 		stamp: options.stamp || now()
 	};
 	updatesArray.push(itemForUpdate);
 	return itemForUpdate;
 };
 
-serializeProperty = function (objId, key, item/*, options */) {
-	var itemForUpdate, value, options;
+serializeProperty = function (objId, key, value/*, options */) {
+	var itemForUpdate, options;
 	options = Object(arguments[3]);
-	value = item;
-	if (isObject(item)) {
-		if (item.get) {
-			value = item.get();
-		} else {
-			value = item.value;
-		}
-	}
 	itemForUpdate = {
 		id: objId + '/' + key,
-		value: dbjsSerialize(value),
+		value: value,
 		stamp: options.stamp || now()
 	};
 	updatesArray.push(itemForUpdate);

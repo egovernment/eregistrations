@@ -65,7 +65,7 @@ module.exports = function (t, a) {
 				] }
 			],
 			[
-				{ sKey: 'primitivesMultipleWithGet', multiple: true, min: 2, get: getRandomPrimitive }
+				{ sKey: 'primitivesMultipleWithGet', multiple: true, min: 3, get: getRandomPrimitive }
 			]
 		]
 	};
@@ -80,19 +80,19 @@ module.exports = function (t, a) {
 		{ id: null,                                value: '7Partner#', stamp: null },
 		{ id: [6, '/firstName'],                   value: '3Alice', stamp: 6 },
 		{ id: [6, '/lastName'],                    value: '3Smith', stamp: 7 },
-		{ id: [6, '/petitioner'],                  value: 6, stamp: null },
+		{ id: [0, '/petitioner'],                  value: 6, stamp: null },
 		{ id: null,                                value: '7Person#', stamp: null },
 		{ id: [10, '/firstName'],                  value: '3Adam', stamp: 10 },
 		{ id: [10, '/isTall'],                     value: '11', stamp: 11 },
-		{ id: [0, '/partners*', 9],                value: '11', stamp: 12 },
+		{ id: [0, '/partners*', 10],               value: '11', stamp: 12 },
 		{ id: null,                                value: '7Person#', stamp: null },
-		{ id: [14, '/firstName'],                  value: '3Adam', stamp: 14 },
+		{ id: [14, '/firstName'],                  value: '3Stephen', stamp: 14 },
 		{ id: [14, '/isTall'],                     value: '11', stamp: 15 },
-		{ id: [0, '/partners*', 13],               value: '11', stamp: 16 },
-		{ id: [0, '/primitivesMultiple*first'],    value: '3first', stamp: 17 },
+		{ id: [0, '/partners*', 14],               value: '11', stamp: 16 },
+		{ id: [0, '/primitivesMultiple*first'],    value: '3first', stamp: null },
 		{ id: [0, '/primitivesMultiple*second'],   value: '3second', stamp: 18 },
 		{ id: [0, '/primitivesMultiple*third'],    value: '3third', stamp: 19 },
-		{ id: [0, '/primitivesMultipleWithGet*b'], value: '3b', stamp: 20 },
+		{ id: [0, '/primitivesMultipleWithGet*b'], value: '3b', stamp: null },
 		{ id: [0, '/primitivesMultipleWithGet*c'], value: '3c', stamp: 21 },
 		{ id: [0, '/primitivesMultipleWithGet*a'], value: '3a', stamp: 22 }
 	];
@@ -112,11 +112,15 @@ module.exports = function (t, a) {
 			a(entry.id, dbKey);
 		}
 		if (typeof output[index].value === 'number') {
-			a(entry.value === ('7' + result[output[index].value].id));
+			a(entry.value, ('7' + result[output[index].value].id));
 		} else {
-			a(entry.value === output[index].value);
+			a(entry.value, output[index].value);
 		}
 		if (output[index].stamp != null) {
+			if (!(entry.stamp > result[output[index].stamp].stamp)) {
+				console.log('Compare: ', output[index].stamp);
+				console.log(entry.stamp, result[output[index].stamp].stamp);
+			}
 			a.ok(entry.stamp > result[output[index].stamp].stamp);
 		}
 	});
