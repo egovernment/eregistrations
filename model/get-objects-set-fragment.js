@@ -1,25 +1,19 @@
 'use strict';
 
-var validValue   = require('es5-ext/object/valid-value')
-  , memoize      = require('memoizee/plain')
-  , Fragment     = require('dbjs-fragment')
-  , objFragment  = require('dbjs-fragment/object-family')
-
-  , getId = function (args) { return args[0].__id__; };
+var validValue        = require('es5-ext/object/valid-value')
+  , Fragment          = require('dbjs-fragment')
+  , getObjectFragment = require('./get-object-fragment');
 
 module.exports = function (set, rules, fragment) {
-	var getFragment, onAdd, onDelete;
+	var onAdd, onDelete;
 
 	validValue(rules);
 	if (!fragment) fragment = new Fragment();
-	getFragment = memoize(function (obj) {
-		return objFragment(obj, rules);
-	}, { normalizer: getId });
 
 	set.forEach(onAdd = function (obj) {
-		fragment.sets.add(getFragment(obj));
+		fragment.sets.add(getObjectFragment(obj, rules));
 	});
-	onDelete = function (obj) { fragment.sets.delete(getFragment(obj)); };
+	onDelete = function (obj) { fragment.sets.delete(getObjectFragment(obj, rules)); };
 
 	set.on('change', function (event) {
 		if (event.type === 'add') {
