@@ -13,6 +13,7 @@ exports.step = function () {
 		{ class: 'disabler-range', id: 'forms-disabler-range' },
 		section({ class: 'section-primary' },
 			form(
+				{ class: 'completed' },
 				h2("Business Owner basic informations"),
 				hr(),
 				fieldset(
