@@ -101,6 +101,9 @@ input[type="submit"] {
 	font-size: 14px;
 	padding: 4px 10px;
 }
+.completed input[type="submit"] {
+	background-color: var(--success-text);
+}
 
 textarea {
 	background-color: var(--white-background);
