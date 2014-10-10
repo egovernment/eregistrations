@@ -120,7 +120,7 @@ exports.step = function () {
 								td({ class: 'desktop-only confirmed' }, "✓"),
 								td({ class: 'actions' },
 									a("Edit"),
-									a("Delete"))
+									postButton({ action: '', value: 'Delete' }))
 							),
 							tr(
 								td({ class: 'desktop-only' },
@@ -132,7 +132,7 @@ exports.step = function () {
 								td({ class: 'desktop-only confirmed' }, "✓"),
 								td({ class: 'actions' },
 									a("Edit"),
-									a("Delete"))
+									postButton({ action: '', value: 'Delete' }))
 							),
 							tr(
 								td({ class: 'desktop-only' },
@@ -144,7 +144,7 @@ exports.step = function () {
 								td({ class: 'desktop-only confirmed' }, "✓"),
 								td({ class: 'actions' },
 									a("Edit"),
-									a("Delete"))
+									postButton({ action: '', value: 'Delete' }))
 							),
 							tr(
 								td({ class: 'desktop-only' },
@@ -156,7 +156,7 @@ exports.step = function () {
 								td({ class: 'desktop-only confirmed' }, "✓"),
 								td({ class: 'actions' },
 									a("Edit"),
-									a("Delete"))
+									postButton({ action: '', value: 'Delete' }))
 							),
 							tr(
 								td({ class: 'desktop-only' },
@@ -168,7 +168,7 @@ exports.step = function () {
 								td({ class: 'desktop-only confirmed' }, "✓"),
 								td({ class: 'actions' },
 									a("Edit"),
-									a("Delete"))
+									postButton({ action: '', value: 'Delete' }))
 							)
 						)
 					)
