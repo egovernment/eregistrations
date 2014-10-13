@@ -36,30 +36,31 @@ exports.step = function () {
 			)
 		)
 	);
-
-	form(
-		{ action: '/user-submitted/' },
-		section(
-			{ class: 'section-primary user-submission-sworn-declaration' },
-			h2("Sworn declaration"),
-			hr(),
-			field(
-				{ dbjs: user._isAffidavitSigned,
-					type: 'checkbox',
-					label: " I declare I have read and understood all the conditions I have to " +
-					"comply with and swear that the information provided in this application is true.",
-					render: function (input, options) {
-						return label({ class: 'input-aside' },
-							input,
-							span(" ", options.label),
-							span({ class: 'status-missing' }, '*'),
-							span({ class: 'status-ok' }, '✓'),
-							span({ class: 'status-error' }, '✕'));
-					} }
-			)
-		),
-		div({ class: 'next-step' },
-			button({ type: 'submit', class: 'submit-user-button' }, "Send Your files"))
+	div(
+		{ class: 'user-submission-declaration-wrapper' },
+		form(
+			{ action: '/user-submitted/' },
+			section(
+				{ class: 'section-primary user-submission-sworn-declaration' },
+				h2("Sworn declaration"),
+				hr(),
+				field(
+					{ dbjs: user._isAffidavitSigned,
+						type: 'checkbox',
+						label: " I declare I have read and understood all the conditions I have to " +
+						"comply with and swear that the information provided in this application is true.",
+						render: function (input, options) {
+							return label({ class: 'input-aside' },
+								input,
+								span(" ", options.label),
+								span({ class: 'status-missing' }, '*'),
+								span({ class: 'status-ok' }, '✓'),
+								span({ class: 'status-error' }, '✕'));
+						} }
+				)
+			),
+			div({ class: 'next-step' },
+				button({ type: 'submit', class: 'submit-user-button' }, "Send Your files"))
+		)
 	);
-
 };
