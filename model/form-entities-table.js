@@ -9,7 +9,7 @@ module.exports = memoize(function (db) {
 	var StringLine, FormSectionBase;
 	validDb(db);
 	StringLine = defineStringLine(db);
-	FormSectionBase = defineFormSectionBase(db); //jslint: ignore
+	FormSectionBase = defineFormSectionBase(db);
 	return FormSectionBase.extend('FormEntitiesTable', {
 		propertyName: { type: StringLine, required: true }
 	});
