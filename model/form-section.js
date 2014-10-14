@@ -1,10 +1,15 @@
 'use strict';
 
-var memoize = require('memoizee/plain')
-  , validDb = require('dbjs/valid-dbjs');
+var memoize         = require('memoizee/plain')
+  , validDb         = require('dbjs/valid-dbjs')
+  , StringLine      = require('dbjs-ext/string/string-line')
+  , FormSectionBase = require('./form-section-base');
 
 module.exports = memoize(function (db) {
-	return validDb(db).FormSectionBase.extend('FormSection', {
-		propertyNames: { type: db.StringLine, multiple: true }
+	validDb(db);
+	StringLine = StringLine(db); //jslint: ignore
+	FormSectionBase = FormSectionBase(db); //jslint: ignore
+	return FormSectionBase.extend('FormSection', {
+		propertyNames: { type: StringLine, multiple: true }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
