@@ -12,6 +12,7 @@ module.exports = memoize(function (db) {
 	FormSectionBase = defineFormSectionBase(db);
 	return User.prototype.define('formSections', {
 		type: FormSectionBase,
-		multiple: true
+		multiple: true,
+		reverse: 'user'
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
