@@ -334,6 +334,11 @@ ul.multiple {
 	margin-left: 20px;
 }
 
+.readonly {
+	cursor: not-allowed;
+	opacity: 0.5;
+}
+
 /*
 Styles applied while screen sieze is less than 640px
 */
