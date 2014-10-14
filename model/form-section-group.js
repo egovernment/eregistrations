@@ -1,14 +1,15 @@
 'use strict';
 
-var memoize         = require('memoizee/plain')
-  , validDb         = require('dbjs/valid-dbjs')
-  , FormSectionBase = require('./form-section-base')
-  , FormSection     = require('./form-section');
+var memoize               = require('memoizee/plain')
+  , validDb               = require('dbjs/valid-dbjs')
+  , defineFormSectionBase = require('./form-section-base')
+  , defineFormSection     = require('./form-section')
+  , FormSectionBase, FormSection;
 
 module.exports = memoize(function (db) {
 	validDb(db);
-	FormSectionBase = FormSectionBase(db); //jslint: ignore
-	FormSection     = FormSection(db);     //jslint: ignore
+	FormSectionBase = defineFormSectionBase(db);
+	FormSection     = defineFormSection(db);
 	return FormSectionBase.extend('FormSectionGroup', {
 		sections: { type: FormSection, multiple: true }
 	});
