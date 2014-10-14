@@ -14,7 +14,7 @@
     "dbjs-reduce": "git://github.com/medikoo/dbjs-reduce.git",
     "time-uuid": "~0.2.1",
     "microtime-x": "~0.2.1",
-    "memoizee": "~0.3.2"
+    "memoizee": "~0.3.8"
   },
   "devDependencies": {
     "dbjs-ext": "git://github.com/medikoo/dbjs-ext.git",
