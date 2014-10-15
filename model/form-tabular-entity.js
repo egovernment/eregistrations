@@ -8,10 +8,10 @@ module.exports = memoize(function (db) {
 	var StringLine;
 	validDb(db);
 	StringLine = defineStringLine(db);
-	return db.Object.extend('FormSectionBase', {
-		label: { type: StringLine, required: true },
-		isApplicable: { type: db.Boolean, required: true, value: true },
-		resolventProperty: { type: StringLine },
-		actionUrl: { type: StringLine, required: true }
+	return db.Object.extend('FormTabularEntity', {
+		propertyName: { type: StringLine, required: true },
+		desktopOnly: { type: db.Boolean, value: true },
+		mobileOnly: { type: db.Boolean, value: false },
+		label: { type: StringLine }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

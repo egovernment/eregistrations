@@ -10,9 +10,11 @@ module.exports = memoize(function (db) {
 	validDb(db);
 	User = defineUser(db);
 	FormSectionBase = defineFormSectionBase(db);
-	return User.prototype.define('formSections', {
+	User.prototype.define('formSections', {
 		type: FormSectionBase,
-		multiple: true,
-		reverse: 'user'
+		reverse: 'entityPrototype',
+		unique: true,
+		multiple: true
 	});
+	return User;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
