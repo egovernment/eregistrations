@@ -5,16 +5,17 @@
 .public-steps {
 	display: flex;
 	justify-content: space-between;
-	padding-top: 22px;
-	padding-bottom: 22px;
 	list-style-type: none;
-	margin-bottom: 0;
+	margin-bottom: 22px;
 }
 
 .public-steps li {
 	padding: 0 5px;
 	max-width: 100%;
 	text-align: center;
+}
+.public-steps li > * {
+	margin-top: 22px;
 }
 
 .public-steps li:first-child {
@@ -28,7 +29,9 @@
 }
 
 .public-steps li img {
-	margin-bottom: 16px;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 	max-width: 95%;
 }
 
@@ -38,13 +41,12 @@
 	color: var(--white-text);
 	cursor: pointer;
 	font-size: 12px;
-	line-height: 18px;
-	margin: 0;
-	padding: 3px 7px 4px;
+	padding: 0 7px;
 	text-align: center;
 	text-decoration: none;
-	vertical-align: middle;
+	vertical-align: 1px;
 	white-space: nowrap;
+	display: inline-block;
 }
 .public-steps li .step-button:hover,
 .public-steps li .step-button:focus,
@@ -66,7 +68,6 @@ Styles applied while screen sieze is less than 640px
 	}
 
 	.public-steps li {
-		margin-bottom: 22px;
 		width: 100%;
 		padding: 0;
 	}

@@ -29,7 +29,6 @@
 	padding: 2px 7px 3px;
 	text-align: center;
 	text-decoration: none;
-	vertical-align: text-bottom;
 	white-space: nowrap;
 }
 .entity-actions a:hover,
@@ -55,11 +54,14 @@
 
 @media only screen and (max-width: var(--mobile-width)) {
 	.entity-header {
-		flex-wrap: wrap;
+		display: block;
 		margin-bottom: 22px;
 	}
 	.entity-header h1 {
 		margin-bottom: 22px;
+	}
+	.entity-actions {
+		margin-top: 22px;
 	}
 	.entity-actions .button-main {
 		width: inherit;

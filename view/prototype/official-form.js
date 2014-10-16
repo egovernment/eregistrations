@@ -10,9 +10,12 @@ exports.tab = function () {
 		{ class: 'section-primary official-form' },
 		h3("Incorporation approved"),
 		form(
-			{ class: 'form-single-control' },
-			input({ type: 'number' }),
-			input({ type: 'submit', value: 'Save' })
+			{ class: 'form-single-control ' },
+			p(
+				{ class: 'input' },
+				input({ class: 'input', type: 'number' }),
+				input({ type: 'submit', value: 'Save' })
+			)
 		),
 		p("Upload here the certificates:"),
 		form(
@@ -25,19 +28,31 @@ exports.tab = function () {
 		form(
 			ul(
 				{ class: 'form-elements' },
-				li(textarea({ placeholder: "Write request for changes here" }))
+				li(
+					{ class: 'input' },
+					input({ dbjs: user.getObservable('descriptionText') })
+				)
 			),
-			input({ type: 'submit', value: 'Send back for modifications' })
+			p(
+				{ class: 'input' },
+				input({ type: 'submit', value: 'Send back for modifications' })
+			)
 		),
 		hr(),
 		h3("Reject application"),
 		form(
 			ul(
 				{ class: 'form-elements' },
-				li(textarea({ placeholder: "Reason of rejection" }))
+				li(
+					{ class: 'input' },
+					input({ dbjs: user.getObservable('descriptionText') })
+				)
 			),
-			input({ class: 'official-rejection',
-				type: 'submit', value: 'Reject the incorporation' })
+			p(
+				{ class: 'input' },
+				input({ class: 'official-rejection',
+					type: 'submit', value: 'Reject the incorporation' })
+			)
 		)
 	);
 };

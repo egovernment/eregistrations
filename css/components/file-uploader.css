@@ -1,32 +1,24 @@
 .file-uploader {
 	list-style-type: none;
 	display: flex;
+	flex-wrap: wrap;
 }
-
 .file-uploader-button {
+	line-height: 44px;
+}
+.file-uploader-button a {
 	background-color: var(--normal-background);
 	border-radius: 4px;
 	color: var(--white-text);
 	display: inline-block;
-	font-size: 14px;
-	font-weight: normal;
-	text-align: center;
 	text-decoration: none;
-	vertical-align: middle;
 	white-space: nowrap;
-	width: auto;
-	margin-top: -5px;
-	margin-bottom: -5px;
+	line-height: 22px;
 }
-@-moz-document url-prefix() {
-	.file-uploader-button  {
-		margin-top: -6px;
-		margin-bottom: -4px;
-	}
-}
-.file-uploader-button:hover,
-.file-uploader-button:focus,
-.file-uploader-button:active {
+
+.file-uploader-button a:hover,
+.file-uploader-button a:focus,
+.file-uploader-button a:active {
 	background-color: var(--normal-dark-background);
 	color: var(--white-text);
 }
@@ -49,15 +41,5 @@
 }
 
 .file-uploader li {
-	margin-right: 20px;
-}
-
-@media only screen and (max-width: var(--mobile-width)) {
-	.file-uploader {
-		flex-wrap: wrap;
-		justify-content: space-around;
-	}
-	.file-uploader-button {
-		width: 100%;
-	}
+	margin-right: 17px;
 }

@@ -14,9 +14,9 @@ exports.tab = function () {
 
 	div(
 		{ class: 'section-primary official-document' },
-		h3(
+		div(
 			{ class: 'container-with-nav' },
-			"Documents received from petitioner",
+			h3("Documents received from petitioner"),
 			div(
 				a({ class: 'button' }, span({ class: 'fa fa-download' }), "View and print form"),
 				a({ class: 'button' }, span({ class: 'fa fa-download' }), "Payment receipt")

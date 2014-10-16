@@ -1,0 +1,14 @@
+.user-forms > * {
+	margin-bottom: 22px;
+	width: 100%;
+}
+.user-forms > *:first-child {
+	margin-top: 22px;
+}
+.user-forms > form, .user-forms > .disabler-range {
+	margin-bottom: 0;
+}
+.user-forms > form > *, .user-forms > .disabler-range > * {
+	margin-bottom: 22px;
+	width: 100%;
+}

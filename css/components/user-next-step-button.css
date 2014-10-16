@@ -1,6 +1,3 @@
-.next-step {
-	margin: 22px 0;
-}
 .next-step a {
 	background-color: var(--normal-background);
 	border-radius: 6px;
@@ -9,12 +6,9 @@
 	cursor: pointer;
 	display: inline-block;
 	font-size: 18px;
-	font-weight: normal;
-	margin-bottom: 0;
 	padding: 10px 16px;
 	text-align: center;
 	text-decoration: none;
-	vertical-align: middle;
 	white-space: nowrap;
 	width: 49%;
 }
@@ -26,7 +20,6 @@
 
 @media only screen and (max-width: var(--mobile-width)) {
 	.next-step a {
-		width: 100%;
 		min-width: var(--min-mobile-width);
 	}
 }

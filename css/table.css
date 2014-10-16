@@ -1,7 +1,6 @@
 table {
 	width: 100%;
 	border-collapse: collapse;
-	margin-bottom: 22px;
 }
 /* Zebra striping */
 tbody tr:nth-of-type(odd) {

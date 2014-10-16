@@ -4,7 +4,12 @@
 	border: 1px solid var(--light-inner-border);
 	padding: 20px 15px 0 15px;
 	position: relative;
-	margin: 22px 0;
+}
+.section-primary > *, .section-primary > form > * {
+	margin-bottom: 22px;
+}
+.section-primary > form {
+	margin-bottom: 0;
 }
 
 .sections-primary-list {

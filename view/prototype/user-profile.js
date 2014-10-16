@@ -5,7 +5,7 @@ var db = require('mano').db,
 
 exports.main = function () {
 	div(
-		{ class: 'content' },
+		{ class: 'content user-forms' },
 		h1("User Profile"),
 		div(
 			{ class: 'disabler-range', id: 'forms-disabler-range' },
@@ -23,7 +23,7 @@ exports.main = function () {
 							}
 						),
 						p(
-							{ class: 'submit-placeholder' },
+							{ class: 'submit-placeholder input' },
 							input(
 								{ type: 'submit' },
 								"Save"

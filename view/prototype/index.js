@@ -7,11 +7,9 @@ exports.main = function () {
 	div({ class: 'public-banner', id: 'banner' },
 		div({ class: 'banner-text content' },
 				div({ class: 'baner-box-text' },
-					h1({ class: 's-primary' },
-						'Turn your online business on'),
-					h3({ class: 's-primary' },
-						'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut in ' +
-						'massa malesuada, pharetra urna nec, pellentesque tortor. '),
+					h1("Turn your online business on"),
+					h3("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut in " +
+						"massa malesuada, pharetra urna nec, pellentesque tortor. "),
 					a({ class: 'create-account', onclick: register.show },
 						'Create account')
 				),
@@ -28,27 +26,24 @@ exports.main = function () {
 				h3('Create your file'),
 				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 					" nequepharetra, pellentesque risus in, condimentum nulla. "),
-				a({ class: 'step-button', href: '/guide/' },
-					'More info'
-					)
+				p(a({ class: 'step-button', href: '/guide/' },
+					'More info'))
 			),
 			li(
 				img({ src: '/img/img-300.png' }),
 				h3('Pay costs'),
 				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 					" nequepharetra, pellentesque risus in, condimentum nulla. "),
-				a({ class: 'step-button', href: '/guide/' },
-					'More info'
-					)
+				p(a({ class: 'step-button', href: '/guide/' },
+					'More info'))
 			),
 			li(
 				img({ src: '/img/img-300.png' }),
 				h3('Remove certificates'),
 				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 					" nequepharetra, pellentesque risus in, condimentum nulla. "),
-				a({ class: 'step-button ', href: '/guide/' },
-					'More info'
-					)
+				p(a({ class: 'step-button ', href: '/guide/' },
+					'More info'))
 			)
 			),
 		ul({ class: 'public-institutions' },
