@@ -1,7 +1,7 @@
 'use strict';
 
 var db = require('mano').db,
-		user = db.User.prototype;
+		partner = db.Partner.prototype;
 
 exports['step-form'] = { class: { 'step-active': true } };
 
@@ -10,10 +10,8 @@ exports.step = function () {
 		h1("Add new Partner"),
 		fieldset({ class: 'section-primary' }, h2("Business Partner basic informations"),
 			hr(),
-			ul({ class: 'form-elements forms' },
-				['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
-				function (name) { return field({ dbjs: user.getObservable(name) }); }
-				),
+			fieldset({ class: 'form-elements forms', dbjs: partner, names: ['firstName',
+				'lastName', 'dateOfBirth', 'userEmail'] }),
 			p({ class: 'submit-placeholder input' },
 				input({ type: 'submit' }, "Submit")
 				)
@@ -23,10 +21,8 @@ exports.step = function () {
 	form(
 		fieldset({ class: 'section-primary' }, h2("Business Partner secondary informations"),
 			hr(),
-			ul({ class: 'form-elements forms' },
-				['companyType', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity'],
-				function (name) { return field({ dbjs: user.getObservable(name) }); }
-				),
+			fieldset({ class: 'form-elements forms', dbjs: partner, names: ['companyType', 'inventory',
+				'surfaceArea', 'isOwner', 'businessActivity'] }),
 			p({ class: 'submit-placeholder input' },
 				input({ type: 'submit' }, "Submit")
 				)

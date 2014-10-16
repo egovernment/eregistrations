@@ -24,6 +24,8 @@ require('mano/lib/client')({
 		require('eregistrations/view/dbjs/submission-file');
 		require('../../view/dbjs/business-activity');
 		require('../../view/dbjs/user-register-ids');
+		require('../../view/dbjs/notification');
+		require('../../view/dbjs/is-shopping-gallery');
 
 		domEnum(db.Role);
 		domEnum(db.CompanyType);

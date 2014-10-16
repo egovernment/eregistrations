@@ -17,11 +17,8 @@ exports.step = function () {
 				h2("Business Owner basic informations"),
 				hr(),
 				fieldset(
-					{ class: 'form-elements' },
-					ul(
-						['firstName', 'lastName', 'dateOfBirth', 'userEmail', 'street'],
-						function (name) { return field({ dbjs: user.getObservable(name) }); }
-					)
+					{ class: 'form-elements', dbjs: user, names: ['firstName', 'lastName',
+						'dateOfBirth', 'userEmail', 'street'] }
 				),
 				p({ class: 'submit-placeholder input' },
 					input({ type: 'submit' }, "Submit")),
@@ -37,50 +34,19 @@ exports.step = function () {
 				div({ class: 'sub-section' },
 					h3("First subsection"),
 					fieldset(
-						{ class: 'form-elements' },
-						ul(
-							['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
-								'registerIds'],
-							function (name) { return field({ dbjs: user.getObservable(name) }); }
-						)
+						{ class: 'form-elements', dbjs: user, names: ['companyType', 'members', 'inventory',
+							'surfaceArea', 'isOwner', 'businessActivity',
+							'registerIds'] }
 					)),
 				div({ class: 'sub-section' },
 					h3("Second subsection"),
 					fieldset(
-						{ class: 'form-elements' },
-						ul(
-							['companyType', 'members', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
-								'descriptionText', 'notification', 'isShoppingGallery', 'registerIds'],
-							function (name) {
-								if (name === 'notification') {
-									return field({ dbjs: user.getObservable(name), type: 'radio',
-										input: {
-											class: 'multiline',
-											renderOption: function (labelTxt) {
-												var data = {};
-												data.dom = li(label({ class: 'input-aside' },
-													span(data.input = input()),
-													span(labelTxt)));
-												return data;
-											}
-										}
-										});
-								}
-								if (name === 'isShoppingGallery') {
-									var data = li(div({ class: 'dbjs-input-component' },
-										label(
-											{ for: 'input-' + name },
-											"Is shopping gallery?"
-										),
-										div({ class: 'input' },
-											input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name),
-												type: 'checkbox' }))));
-									return data;
-								}
-								return field({ dbjs: user.getObservable(name) });
+						{ class: 'form-elements', dbjs: user, names: ['companyType', 'members',
+							'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
+							'descriptionText', 'notification', 'isShoppingGallery', 'registerIds']
 							}
-						)
-					)),
+					)
+					),
 				p({ class: 'submit-placeholder input' },
 					input({ type: 'submit' }, "Submit")
 					),
