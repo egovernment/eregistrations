@@ -8,6 +8,10 @@
 .entities-overview-table thead tr th {
 	padding: 11px 6px;
 }
+.entities-overview-table tfoot tr th {
+	border-top: 1px solid var(--normal-background);
+	padding: 10px 6px 11px;
+}
 
 .entities-overview-table .empty td {
 	text-align: center;
@@ -26,12 +30,16 @@
 	text-align: center;
 	text-decoration: none;
 	white-space: nowrap;
+	margin-right: 10px;
 }
 .new-entity:hover,
 .new-entity:focus,
 .new-entity:active {
 	background-color: var(--normal-dark-background);
 	color: var(--white-text);
+}
+.new-entity:last-child {
+	margin: 0;
 }
 
 .entities-overview-table .actions {
