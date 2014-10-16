@@ -85,7 +85,7 @@
 }
 
 .entities-overview-table .completed .status-complete {
-	display: inherit;
+	display: inline;
 	color: var(--success-text);
 }
 .entities-overview-table .status-incomplete {
