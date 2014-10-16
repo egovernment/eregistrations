@@ -1,21 +1,23 @@
 'use strict';
 
 var _  = require('mano').i18n.bind('Sections')
+  , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
+  , resolveObservable   = require('dbjs-dom/input/utils/resolve-observable')
   , ns = require('mano').domjs.ns
   , genFormSection, genFormSectionGroup, genFormEntitiesTable
-  , mainSectionObject, url;
+  , mainEntity, url;
 
 genFormSection = function (section) {
 	ns.section({ class: 'section-primary' },
 		ns.form(
 			{ action: url(section.actionUrl), class: ns._if(ns.eq(
-				mainSectionObject.getObservable(section.statusResolventProperty),
+				mainEntity.getObservable(section.statusResolventProperty),
 				1
 			), 'completed') },
 			ns.h2(section.label),
 			ns.hr(),
 			ns.fieldset(
-				{ class: 'form-elements', dbjs: mainSectionObject, names:  section.propertyNames }
+				{ class: 'form-elements', dbjs: mainEntity, names:  section.propertyNames }
 			),
 			ns.p({ class: 'submit-placeholder input' },
 				ns.input({ type: 'submit' }, _("Submit"))),
@@ -30,7 +32,7 @@ genFormSectionGroup = function (section) {
 		{ class: 'section-primary' },
 		ns.form({ action: url(section.actionUrl), class:
 			ns._if(ns.eq(
-				mainSectionObject.getObservable(section.statusResolventProperty),
+				mainEntity.getObservable(section.statusResolventProperty),
 				1
 			), 'completed')
 			},
@@ -40,7 +42,7 @@ genFormSectionGroup = function (section) {
 				return ns.div({ class: 'sub-section' },
 					ns.h3(subSection.label),
 					ns.fieldset(
-						{ class: 'form-elements', dbjs: mainSectionObject, names:  subSection.propertyNames }
+						{ class: 'form-elements', dbjs: mainEntity,  names: subSection.propertyNames }
 					));
 			}),
 			ns.p({ class: 'submit-placeholder input' },
@@ -55,7 +57,10 @@ genFormSectionGroup = function (section) {
 };
 
 genFormEntitiesTable = function (section) {
-	ns.section({ class: 'section-primary' },
+	ns.section({ class: ns._if(ns.eq(
+		mainEntity.getObservable(section.statusResolventProperty),
+		1
+	), 'section-primary completed', 'section-primary') },
 		ns.div(
 			ns.div(
 				ns.h2(section.label),
@@ -64,9 +69,11 @@ genFormEntitiesTable = function (section) {
 					{ class: 'entities-overview-table' },
 					ns.thead(
 						ns.tr(ns.list(section.entities, function (entity) {
+							var result;
+							result = resolvePropertyPath(section.entityPrototype, entity.propertyName);
 							return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
 									ns._if(entity._mobileOnly, 'mobileOnly')) },
-								section.entityPrototype.getDescriptor(entity.propertyName).label);
+								result.object.getDescriptor(result.key).label);
 						}), ns.th(),
 							ns.th({ class: 'actions' }, _("Actions")))
 					),
@@ -75,11 +82,12 @@ genFormEntitiesTable = function (section) {
 								_("There are no elements added at the moment.")
 							)
 						) },
-						mainSectionObject[section.propertyName], function (object) {
+						mainEntity[section.propertyName], function (object) {
 							return ns.tr(ns.list(section.entities, function (entity) {
 								return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
 									ns._if(entity._mobileOnly, 'mobileOnly')) },
-									ns.a({ href: url(section.actionUrl) }, object[entity.propertyName]));
+									ns.a({ href: url(section.actionUrl) },
+										resolveObservable(object, entity.propertyName)));
 							}),
 								ns.td({ class: ns._if(ns.eq(object.getObservable('completionStatus'), 1),
 										'completed') },
@@ -107,7 +115,7 @@ genFormEntitiesTable = function (section) {
 module.exports = function (sections) {
 	var db;
 	db = sections.object.database;
-	mainSectionObject = sections.object;
+	mainEntity = sections.object;
 	url = ns.url;
 	sections.forEach(function (section) {
 		switch (section.constructor) {

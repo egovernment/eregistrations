@@ -5,16 +5,16 @@ var memoize               = require('memoizee')
   , validDbType           = require('dbjs/valid-dbjs-type')
   , defineFormSectionBase = require('./form-section-base');
 
-module.exports = memoize(function (MainSectionObject) {
+module.exports = memoize(function (Entity) {
 	var FormSectionBase, db;
-	db = validDb(MainSectionObject.database);
-	validDbType(MainSectionObject);
+	db = validDb(Entity.database);
+	validDbType(Entity);
 	FormSectionBase = defineFormSectionBase(db);
-	MainSectionObject.prototype.define('formSections', {
+	Entity.prototype.define('formSections', {
 		type: FormSectionBase,
 		reverse: 'entityPrototype',
 		unique: true,
 		multiple: true
 	});
-	return MainSectionObject;
+	return Entity;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

@@ -11,7 +11,6 @@ module.exports = memoize(function (db) {
 	return db.Object.extend('FormTabularEntity', {
 		propertyName: { type: StringLine, required: true },
 		desktopOnly: { type: db.Boolean, value: true },
-		mobileOnly: { type: db.Boolean, value: false },
-		label: { type: StringLine }
+		mobileOnly: { type: db.Boolean, value: false }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
