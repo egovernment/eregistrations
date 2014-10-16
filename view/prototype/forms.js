@@ -118,7 +118,11 @@ exports.step = function () {
 								td(a({ href: '/forms/partner-id/' }, "Watson")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
-								td({ class: 'desktop-only confirmed' }, "✓"),
+								td(
+									{ class: 'desktop-only completed' },
+									span({ class: 'status-complete' },  "✓"),
+									span({ class: 'status-incomplete' },  "✕")
+								),
 								td({ class: 'actions' },
 									a("Edit"),
 									postButton({ action: '', value: 'Delete' }))
@@ -130,7 +134,11 @@ exports.step = function () {
 								td(a({ href: '/forms/partner-id/' }, "Watson")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
-								td({ class: 'desktop-only confirmed' }, "✓"),
+								td(
+									{ class: 'desktop-only completed' },
+									span({ class: 'status-complete' },  "✓"),
+									span({ class: 'status-incomplete' },  "✕")
+								),
 								td({ class: 'actions' },
 									a("Edit"),
 									postButton({ action: '', value: 'Delete' }))
@@ -142,7 +150,11 @@ exports.step = function () {
 								td(a({ href: '/forms/partner-id/' }, "Watson")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
-								td({ class: 'desktop-only confirmed' }, "✓"),
+								td(
+									{ class: 'desktop-only' },
+									span({ class: 'status-complete' },  "✓"),
+									span({ class: 'status-incomplete' },  "✕")
+								),
 								td({ class: 'actions' },
 									a("Edit"),
 									postButton({ action: '', value: 'Delete' }))
@@ -154,7 +166,11 @@ exports.step = function () {
 								td(a({ href: '/forms/partner-id/' }, "Watson")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
-								td({ class: 'desktop-only confirmed' }, "✓"),
+								td(
+									{ class: 'desktop-only completed' },
+									span({ class: 'status-complete' },  "✓"),
+									span({ class: 'status-incomplete' },  "✕")
+								),
 								td({ class: 'actions' },
 									a("Edit"),
 									postButton({ action: '', value: 'Delete' }))
@@ -166,87 +182,11 @@ exports.step = function () {
 								td(a({ href: '/forms/partner-id/' }, "Watson")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
 								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
-								td({ class: 'desktop-only confirmed' }, "✓"),
-								td({ class: 'actions' },
-									a("Edit"),
-									postButton({ action: '', value: 'Delete' }))
-							)
-						)
-					)
-				)
-			),
-			p(
-				a(
-					{ class: 'new-entity', href: '/forms/partner-add/' },
-					"Add new partner"
-				)
-			),
-			p({ class: 'button-scroll-top' },
-				a({ onclick: 'window.scroll(0, 0)' }, span({ class: 'fa fa-arrow-up' }, "Back to top")))),
-
-		section({ class: 'section-primary' },
-			div(
-				div(
-					h2("Directors & non-directors owner / partners"),
-					hr(),
-					table(
-						{ class: 'entities-overview-table' },
-						thead(
-							tr(
-								th({ class: 'desktop-only' }, "Entity"),
-								th("First name"),
-								th("Surname"),
-								th({ class: 'desktop-only' }, "Director?"),
-								th({ class: 'desktop-only' }, "Subscriber?"),
-								th({ class: 'desktop-only' }, ""),
-								th({ class: 'actions' }, "Actions")
-							)
-						),
-						tbody(
-							tr(
-								td({ class: 'desktop-only' },
-									a({ href: '/forms/partner-id/' }, "Lorem")),
-								td(a({ href: '/forms/partner-id/' }, "John")),
-								td(a({ href: '/forms/partner-id/' }, "Watson")),
-								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
-								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
-								td({ class: 'desktop-only confirmed' }, "✓"),
-								td({ class: 'actions' },
-									a("Edit"),
-									postButton({ action: '', value: 'Delete' }))
-							),
-							tr(
-								td({ class: 'desktop-only' },
-									a({ href: '/forms/partner-id/' }, "Lorem")),
-								td(a({ href: '/forms/partner-id/' }, "John")),
-								td(a({ href: '/forms/partner-id/' }, "Watson")),
-								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
-								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
-								td({ class: 'desktop-only confirmed' }, "✓"),
-								td({ class: 'actions' },
-									a("Edit"),
-									postButton({ action: '', value: 'Delete' }))
-							),
-							tr(
-								td({ class: 'desktop-only' },
-									a({ href: '/forms/partner-id/' }, "Lorem")),
-								td(a({ href: '/forms/partner-id/' }, "John")),
-								td(a({ href: '/forms/partner-id/' }, "Watson")),
-								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
-								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
-								td({ class: 'desktop-only confirmed' }, "✓"),
-								td({ class: 'actions' },
-									a("Edit"),
-									postButton({ action: '', value: 'Delete' }))
-							),
-							tr(
-								td({ class: 'desktop-only' },
-									a({ href: '/forms/partner-id/' }, "Lorem")),
-								td(a({ href: '/forms/partner-id/' }, "John")),
-								td(a({ href: '/forms/partner-id/' }, "Watson")),
-								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
-								td({ class: 'desktop-only' }, a({ href: '/forms/partner-id/' }, "Yes")),
-								td({ class: 'desktop-only confirmed' }, "✓"),
+								td(
+									{ class: 'desktop-only' },
+									span({ class: 'status-complete' },  "✓"),
+									span({ class: 'status-incomplete' },  "✕")
+								),
 								td({ class: 'actions' },
 									a("Edit"),
 									postButton({ action: '', value: 'Delete' }))
