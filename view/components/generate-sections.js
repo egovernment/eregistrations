@@ -17,7 +17,7 @@ genFormSection = function (section) {
 			ns.h2(section.label),
 			ns.hr(),
 			ns.fieldset(
-				{ class: 'form-elements', dbjs: mainEntity, names:  section.propertyNames }
+				{ class: 'form-elements', dbjs: mainEntity, names: section.propertyNames }
 			),
 			ns.p({ class: 'submit-placeholder input' },
 				ns.input({ type: 'submit' }, _("Submit"))),
@@ -42,7 +42,7 @@ genFormSectionGroup = function (section) {
 				return ns.div({ class: 'sub-section' },
 					ns.h3(subSection.label),
 					ns.fieldset(
-						{ class: 'form-elements', dbjs: mainEntity,  names: subSection.propertyNames }
+						{ class: 'form-elements', dbjs: mainEntity, names: subSection.propertyNames }
 					));
 			}),
 			ns.p({ class: 'submit-placeholder input' },
