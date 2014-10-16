@@ -72,7 +72,7 @@ genFormEntitiesTable = function (section) {
 							var result;
 							result = resolvePropertyPath(section.entityPrototype, entity.propertyName);
 							return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
-									ns._if(entity._mobileOnly, 'mobileOnly')) },
+									ns._if(entity._mobileOnly, 'mobile-only')) },
 								result.object.getDescriptor(result.key).label);
 						}), ns.th(),
 							ns.th({ class: 'actions' }, _("Actions")))
@@ -85,7 +85,7 @@ genFormEntitiesTable = function (section) {
 						mainEntity[section.propertyName], function (object) {
 							return ns.tr(ns.list(section.entities, function (entity) {
 								return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
-									ns._if(entity._mobileOnly, 'mobileOnly')) },
+									ns._if(entity._mobileOnly, 'mobile-only')) },
 									ns.a({ href: url(section.actionUrl) },
 										resolveObservable(object, entity.propertyName)));
 							}),
