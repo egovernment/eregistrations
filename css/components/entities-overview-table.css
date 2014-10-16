@@ -84,7 +84,15 @@
 	display: inline;
 }
 
-.confirmed {
-	text-align: center;
+.entities-overview-table .completed .status-complete {
+	display: inline;
 	color: var(--success-text);
+}
+.entities-overview-table .status-incomplete {
+	color: var(--error-text);
+}
+.entities-overview-table .status-complete,
+.entities-overview-table .completed .status-incomplete {
+	display: none;
+
 }
