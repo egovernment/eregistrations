@@ -77,7 +77,9 @@ User.prototype.defineProperties({
 			var reqs = [];
 			this.requestedRegistrations.forEach(function (regName) {
 				var userRegistration =  this.registrations[regName];
-				reqs.push.apply(reqs, userRegistration.requirements);
+				userRegistration.requirements.forEach(function (req) {
+					reqs.push(req);
+				});
 			}, this);
 			return reqs;
 		}
@@ -89,7 +91,9 @@ User.prototype.defineProperties({
 			var costs = [];
 			this.requestedRegistrations.forEach(function (regName) {
 				var userRegistration =  this.registrations[regName];
-				costs.push.apply(costs, userRegistration.costs);
+				userRegistration.costs.forEach(function (cost) {
+					costs.push(cost);
+				});
 			}, this);
 			return costs;
 		}
