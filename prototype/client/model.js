@@ -2,7 +2,7 @@
 
 var db       = require('mano').db
   , User     = require('../model/user');
-require('../model/form-sections');
+require('../model/user-sections');
 require('dbjs-ext/string/string-line/password')(db);
 User.prototype.$password.type = db.Password;
 

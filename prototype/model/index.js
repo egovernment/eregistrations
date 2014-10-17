@@ -1,6 +1,6 @@
 'use strict';
 
 require('./user');
-require('./form-sections');
+require('./user-sections');
 
 module.exports = require('mano').db;

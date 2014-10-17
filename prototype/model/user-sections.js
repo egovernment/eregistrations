@@ -11,6 +11,7 @@ var db                = require('mano').db
 
 module.exports = User;
 require('../../model/form-sections')(User);
+require('../../model/form-send-sections')(User);
 user = User.prototype;
 
 //temporary helper, cause status is required
@@ -94,3 +95,17 @@ tables.forEach(function (table) {
 
 user.formSections.add(db.partnersTable);
 user.formSections.add(db.emptyPartnersTable);
+
+user.formSendSections.add(FormSection.newNamed('withdrawToSection', {
+	propertyNames: ['placeOfWithdraw'],
+	label: "Where do you want to withdraw your documents?",
+	actionUrl: '/',
+	statusResolventProperty: 'statusOfAll'
+}));
+
+user.formSendSections.add(FormSection.newNamed('whoWithdrawsSection', {
+	propertyNames: ['pickCertificates', 'lastName', 'dateOfBirth', 'inventory'],
+	label: "Who will pick the certificates?",
+	actionUrl: '/',
+	statusResolventProperty: 'statusOfAll'
+}));

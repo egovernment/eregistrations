@@ -1,24 +1,15 @@
 'use strict';
 
 var db = require('mano').db
+  , generateSections = require('../components/generate-sections')
   , user = db.User.prototype;
 
 exports['step-submission'] = { class: { 'step-active': true } };
 
 exports.step = function () {
 	h1("5. Send your file");
-	div({ class: 'section-primary' },
-		h2("Where do you want to withdraw your documents?"),
-		hr(),
-		form(fieldset({ class: 'form-elements', dbjs: user, names: ['placeOfWithdraw'] })),
-		p({ class: 'submit-placeholder input' }, input({ type: 'submit' }, "Save")));
 
-	div({ class: 'section-primary' },
-		h2("Who will pick the certificates?"),
-		hr(),
-		form(fieldset({ class: 'form-elements', dbjs: user, names: ['pickCertificates',
-				'lastName', 'dateOfBirth', 'inventory'] }),
-			p({ class: 'submit-placeholder input' }, input({ type: 'submit' }, "Save"))));
+	generateSections(user.formSendSections);
 
 	section(
 		{ class: 'section-warning' },
