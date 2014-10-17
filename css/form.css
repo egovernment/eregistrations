@@ -179,6 +179,8 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	min-width: 30px;
 	text-align: center;
 	width: auto;
+	padding-left: 5px;
+	padding-right: 5px;
 }
 
 .input-append .add-on {
