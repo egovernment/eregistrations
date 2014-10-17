@@ -70,7 +70,7 @@ genFormEntitiesTable = function (section) {
 					ns.thead(
 						ns.tr(ns.list(section.entities, function (entity) {
 							var result;
-							result = resolvePropertyPath(section.entityPrototype, entity.propertyName);
+							result = resolvePropertyPath(mainEntity, entity.propertyName);
 							return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
 									ns._if(entity._mobileOnly, 'mobile-only')) },
 								result.object.getDescriptor(result.key).label);
