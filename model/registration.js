@@ -1,38 +1,30 @@
 'use strict';
 
-var db = require('mano').db,
-	StringLine = require('dbjs-ext/string/string-line')(db);
+var db = require('mano').db
+  , StringLine = require('dbjs-ext/string/string-line')(db)
+  , Document   = require('./document');
 
 module.exports = db.Object.extend('Registration', {
 	requirements: {
 		type: StringLine,
-		multiple: true,
-		value: function () {
-			return [];
-		}
+		multiple: true
 	},
 	costs: {
 		type: StringLine,
-		multiple: true,
-		value: function () {
-			return [];
-		}
+		multiple: true
 	},
 	isMandatory: {
 		type: db.Boolean,
-		value: function () {
-			return true;
-		}
+		value: true
 
 	},
 	isApplicable: {
 		type: db.Boolean,
-		value: function () {
-			return true;
-		}
+		value: true
 	},
 	isRequested: {
-		type: db.Boolean
+		type: db.Boolean,
+		value: true
 	}
 }, {
 	label: {
@@ -42,7 +34,7 @@ module.exports = db.Object.extend('Registration', {
 		type: StringLine
 	},
 	certificates: {
-		type: StringLine,
+		type: Document,
 		multiple: true
 	}
 });

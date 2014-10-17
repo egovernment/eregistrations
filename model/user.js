@@ -1,7 +1,7 @@
 'use strict';
 
 var db           = require('mano').db
-  , StringLine = require('dbjs-ext/string/string-line')(db)
+  , StringLine   = require('dbjs-ext/string/string-line')(db)
   , User         = require('mano-auth/model/user')(db)
   , Registration = require('./registration');
 
@@ -11,32 +11,45 @@ User.prototype.defineProperties({
 		nested: true
 	},
 	registrations: {
-		type: Registration,
+		type: db.Object,
 		nested: true
+	},
+	applicableRegistrations: {
+		type: StringLine,
+		multiple: true,
+		value: function () {
+			var regs = [];
+			this.registrations.forEach(function (reg) {
+				if (reg.isApplicable) {
+					regs.push(reg.key);
+				}
+			}, this);
+			return regs;
+		}
 	},
 	mandatoryRegistrations: {
 		type: StringLine,
 		multiple: true,
 		value: function () {
 			var regs = [];
-			this.database.Registration.extensions.forEach(function (reg) {
-				var regName = reg.__id__[0].toLowerCase() + reg.__id__.slice(1);
-				if (this.registrations[regName].isMandatory) {
+			this.applicableRegistrations.forEach(function (regName) {
+				var registration = this.registrations[regName];
+				if (registration.isMandatory) {
 					regs.push(regName);
 				}
 			}, this);
 			return regs;
 		}
 	},
+
 	optionalRegistrations: {
 		type: StringLine,
 		multiple: true,
 		value: function () {
 			var regs = [];
-			this.database.Registration.extensions.forEach(function (reg) {
-				var regName = reg.__id__[0].toLowerCase() + reg.__id__.slice(1);
-				if (!this.registrations[regName].isMandatory
-						&& this.registrations[regName].isApplicable) {
+			this.applicableRegistrations.forEach(function (regName) {
+				var registration = this.registrations[regName];
+				if (!registration.isMandatory) {
 					regs.push(regName);
 				}
 			}, this);
@@ -46,11 +59,11 @@ User.prototype.defineProperties({
 	requestedRegistrations: {
 		type: StringLine,
 		multiple: true,
-		value: function (_observe) {
+		value: function () {
 			var regs = [];
-			this.database.Registration.extensions.forEach(function (reg) {
-				var regName = reg.__id__[0].toLowerCase() + reg.__id__.slice(1);
-				if (this.registrations[regName].isRequested) {
+			this.applicableRegistrations.forEach(function (regName) {
+				var registration = this.registrations[regName];
+				if (registration.isRequested) {
 					regs.push(regName);
 				}
 			}, this);
@@ -64,9 +77,7 @@ User.prototype.defineProperties({
 			var reqs = [];
 			this.requestedRegistrations.forEach(function (regName) {
 				var userRegistration =  this.registrations[regName];
-				userRegistration.requirements.forEach(function (req) {
-					if (reqs.indexOf(req) === -1) reqs.push(req);
-				}, this);
+				reqs.push.apply(reqs, userRegistration.requirements);
 			}, this);
 			return reqs;
 		}
@@ -78,13 +89,13 @@ User.prototype.defineProperties({
 			var costs = [];
 			this.requestedRegistrations.forEach(function (regName) {
 				var userRegistration =  this.registrations[regName];
-				userRegistration.costs.forEach(function (cost) {
-					if (costs.indexOf(cost) === -1) costs.push(cost);
-				}, this);
+				costs.push.apply(costs, userRegistration.costs);
 			}, this);
 			return costs;
 		}
 	}
 });
+
+User.prototype.registrations._descriptorPrototype_.type = Registration;
 
 module.exports = User;
