@@ -27,6 +27,9 @@ require('mano/lib/client')({
 		require('../../view/dbjs/notification');
 		require('../../view/dbjs/is-shopping-gallery');
 		require('../../view/dbjs/partners-footer');
+		require('../../view/dbjs/form-section-to-dom');
+		require('../../view/dbjs/form-section-group-to-dom');
+		require('../../view/dbjs/form-entities-table-to-dom');
 
 		domEnum(db.Role);
 		domEnum(db.CompanyType);

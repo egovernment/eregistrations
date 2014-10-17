@@ -4,11 +4,12 @@
 partners section table custom footer
 */
 
-var db = require('mano').db
+var d = require('d')
+  , db = require('mano').db
   , ns = require('mano').domjs.ns;
 
-db.partnersTable.define('generateFooter',
-	{ value: function (propertyName) {
+module.exports = Object.defineProperty(db.partnersTable, 'generateFooter',
+	d(function (propertyName) {
 		return ns.tr(
 			ns.th({ class: 'desktop-only' }, "Summary"),
 			ns.th(""),
@@ -17,4 +18,4 @@ db.partnersTable.define('generateFooter',
 			ns.th({ class: 'desktop-only' }, ""),
 			ns.th({ class: 'actions' }, "")
 		);
-	} });
+	}));
