@@ -7,8 +7,7 @@ var db                = require('mano').db
   , FormSectionGroup  = require('../../model/form-section-group')(db)
   , FormEntitiesTable = require('../../model/form-entities-table')(db)
   , TabularEntity     = require('../../model/form-tabular-entity')(db)
-  , user, sub1, sub2, tabular1, tabular2, tabular3, tabular4, tables
-  , partnersTable, emptyPartnersTable;
+  , user, sub1, sub2, tabular1, tabular2, tabular3, tabular4, tables;
 
 module.exports = User;
 require('../../model/form-sections')(User);
@@ -17,14 +16,14 @@ user = User.prototype;
 //temporary helper, cause status is required
 user.defineProperties({ statusOfAll: { type: Percentage, value: 1 } });
 
-user.formSections.add(new FormSection({
+user.formSections.add(FormSection.newNamed('businessOwnerSection', {
 	propertyNames: ['firstName', 'lastName', 'dateOfBirth', 'userEmail', 'street'],
 	label: "Business Owner basic informations",
 	actionUrl: '/',
 	statusResolventProperty: 'statusOfAll'
 }));
 
-sub1 = new FormSection({
+sub1 = FormSection.newNamed('businessOwnerFirstSubSection', {
 	propertyNames: ['companyType', 'members', 'inventory',
 		'surfaceArea', 'isOwner', 'businessActivity',
 		'registerIds'],
@@ -33,7 +32,7 @@ sub1 = new FormSection({
 	statusResolventProperty: 'statusOfAll'
 });
 
-sub2 = new FormSection({
+sub2 = FormSection.newNamed('businessOwnerSecondSubSection', {
 	propertyNames: ['companyType', 'members',
 		'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
 		'descriptionText', 'notification', 'isShoppingGallery', 'registerIds'],
@@ -42,7 +41,7 @@ sub2 = new FormSection({
 	statusResolventProperty: 'statusOfAll'
 });
 
-user.formSections.add(new FormSectionGroup({
+user.formSections.add(FormSectionGroup.newNamed('businessOwnerGroupSection', {
 	label: "Business Owner secondary informations",
 	actionUrl: '/',
 	statusResolventProperty: 'statusOfAll'
@@ -51,21 +50,21 @@ user.formSections.add(new FormSectionGroup({
 user.formSections.last.sections.add(sub1);
 user.formSections.last.sections.add(sub2);
 
-partnersTable = new FormEntitiesTable({
+FormEntitiesTable.newNamed('partnersTable', {
 	label: 'Directors & non-directors owner / partners',
 	formAction: '',
 	propertyName: 'partners',
 	statusResolventProperty: 'statusOfAll'
 });
 
-emptyPartnersTable = new FormEntitiesTable({
+FormEntitiesTable.newNamed('emptyPartnersTable', {
 	label: 'Directors & non-directors owner / partners',
 	formAction: '',
 	propertyName: 'emptyPartners',
 	statusResolventProperty: 'statusOfAll'
 });
 
-tables = [partnersTable, emptyPartnersTable];
+tables = [db.partnersTable, db.emptyPartnersTable];
 
 tables.forEach(function (table) {
 	tabular1 = new TabularEntity({
@@ -93,5 +92,5 @@ tables.forEach(function (table) {
 	table.entities.add(tabular4);
 });
 
-user.formSections.add(partnersTable);
-user.formSections.add(emptyPartnersTable);
+user.formSections.add(db.partnersTable);
+user.formSections.add(db.emptyPartnersTable);
