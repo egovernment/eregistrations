@@ -5,6 +5,12 @@
 	display: block;
 	width: 100%;
 }
+.entities-overview-table td a:link {
+	cursor: pointer;
+}
+.entities-overview-table td a {
+	cursor: default;
+}
 .entities-overview-table thead tr th {
 	padding: 11px 6px;
 }
@@ -42,49 +48,15 @@
 	margin: 0;
 }
 
-.entities-overview-table .actions {
-	text-align: center;
-}
-.entities-overview-table .actions a:first-child {
-	margin-right: 15%;
-}
-.entities-overview-table .actions a,
-.entities-overview-table .actions button {
-	background-color: var(--normal-background);
-	border-radius: 3px;
-	color: var(--white-text);
-	cursor: pointer;
-	font-size: 12px;
-	line-height: 18px;
-	padding: 3px 7px 4px;
-	text-align: center;
-	text-decoration: none;
-	vertical-align: text-bottom;
-	white-space: nowrap;
-}
-.entities-overview-table .actions a:hover,
-.entities-overview-table .actions a:focus,
-.entities-overview-table .actions a:active,
-.entities-overview-table .actions button:hover,
-.entities-overview-table .actions button:focus,
-.entities-overview-table .actions button:active {
-	background-color: var(--normal-dark-background);
-}
-.entities-overview-table .actions button {
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	padding: 0 7px 1px;
-	position: relative;
-	top: 2px;
-}
-
-.entities-overview-table .actions form {
+.entities-overview-table .completed .status-complete {
 	display: inline;
-}
-.entities-overview-table .actions form p {
-	display: inline;
-}
-
-.confirmed {
-	text-align: center;
 	color: var(--success-text);
+}
+.entities-overview-table .status-incomplete {
+	color: var(--error-text);
+}
+.entities-overview-table .status-complete,
+.entities-overview-table .completed .status-incomplete {
+	display: none;
+
 }

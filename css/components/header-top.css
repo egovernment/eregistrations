@@ -35,7 +35,7 @@ Flexible basic menu - used on home page and can be reused elsewhere
 /*
 	Flexible basic menu link
 */
-.menu-top menuitem a {
+.menu-top li a {
 	color: var(--normal-text);
 	font-size: 14px;
 	padding-right: 8px;
@@ -44,13 +44,13 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	display: block;
 	height: 22px;
 }
-.menu-top menuitem a:hover,
-.menu-top menuitem a:focus,
-.menu-top menuitem a:active {
+.menu-top li a:hover,
+.menu-top li a:focus,
+.menu-top li a:active {
 	color: var(--dark-text);
 }
 
-.menu-top menuitem a.login {
+.menu-top li a.login {
 	background-color: var(--normal-background);
 	border-radius: 3px;
 	color: var(--white-text);
@@ -64,19 +64,19 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	vertical-align: middle;
 	white-space: nowrap;
 }
-.menu-top menuitem a.login:hover,
-.menu-top menuitem a.login:focus,
-.menu-top menuitem a.login:active {
+.menu-top li a.login:hover,
+.menu-top li a.login:focus,
+.menu-top li a.login:active {
 	background-color: var(--normal-dark-background);
 }
 /*
 Flexible basic menu button positioning
 */
-menu.menu-top menuitem button {
+ul.menu-top li button {
 	margin: 0;
 }
 
-menu.menu-top .fa {
+ul.menu-top .fa {
 	margin-top: 1px;
 	font-size: 19px;
 }
