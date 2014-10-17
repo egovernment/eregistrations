@@ -10,7 +10,7 @@ var Map          = require('es6-map')
   , UsDollar     = require('dbjs-ext/number/currency/us-dollar')(db)
   , UInteger     = require('dbjs-ext/number/integer/u-integer')(db)
   , SquareMeters = require('dbjs-ext/number/square-meters')(db)
-  , Document     = require('../model/document')
+  , Document     = require('../../model/document')
   , Submission   = require('./submission')
   , File         = require('./file')
 
