@@ -53,14 +53,14 @@ user.formSections.last.sections.add(sub2);
 
 FormEntitiesTable.newNamed('partnersTable', {
 	label: 'Directors & non-directors owner / partners',
-	formAction: '',
+	baseUrl: 'forms/partner',
 	propertyName: 'partners',
 	statusResolventProperty: 'completionStatus'
 });
 
 FormEntitiesTable.newNamed('emptyPartnersTable', {
 	label: 'Directors & non-directors owner / partners',
-	formAction: '',
+	baseUrl: 'forms/partner',
 	propertyName: 'emptyPartners',
 	statusResolventProperty: 'completionStatus'
 });
@@ -69,13 +69,11 @@ tables = [db.partnersTable, db.emptyPartnersTable];
 
 tables.forEach(function (table) {
 	tabular1 = new TabularEntity({
-		propertyName: 'firstName',
-		desktopOnly: true
+		propertyName: 'firstName'
 	});
 
 	tabular2 = new TabularEntity({
-		propertyName: 'lastName',
-		desktopOnly: true
+		propertyName: 'lastName'
 	});
 
 	tabular3 = new TabularEntity({

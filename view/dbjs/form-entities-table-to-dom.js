@@ -26,7 +26,10 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 						ns.thead(
 							ns.tr(ns.list(this.entities, function (entity) {
 								var result;
-								result = resolvePropertyPath(mainEntity, entity.propertyName);
+								result = resolvePropertyPath(
+									mainEntity.getDescriptor(self.propertyName).type.prototype,
+									entity.propertyName
+								);
 								return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
 											ns._if(entity._mobileOnly, 'mobile-only')) },
 										result.object.getDescriptor(result.key).label);
@@ -42,7 +45,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 								return ns.tr(ns.list(self.entities, function (entity) {
 									return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
 												ns._if(entity._mobileOnly, 'mobile-only')) },
-											ns.a({ href: url(self.actionUrl) },
+											ns.a({ href: url(self.baseUrl + '-id') },
 												resolveObservable(object, entity.propertyName)));
 								}),
 									ns.td({ class: ns._if(ns.eq(object.getObservable('completionStatus'), 1),
@@ -60,7 +63,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 			),
 			ns.p(
 				ns.a(
-					{ class: 'new-entity', href: url(this.actionUrl) },
+					{ class: 'new-entity', href: url(this.baseUrl + '-add') },
 					_("Add new")
 				)
 			),
