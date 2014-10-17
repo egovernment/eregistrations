@@ -37,6 +37,9 @@ h2.container-with-nav .fa {
 .container-with-nav .button .fa {
 	padding-top: 2px;
 }
+.container-with-nav a {
+	cursor: pointer;
+}
 
 .container-with-nav a:last-child {
 	margin-right: 0;

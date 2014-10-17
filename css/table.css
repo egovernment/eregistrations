@@ -14,6 +14,48 @@ td a {
 	color: var(--dark-text);
 }
 
+table .actions {
+	text-align: center;
+}
+table .actions a:first-child {
+	margin-right: 15%;
+}
+table .actions a,
+table .actions button {
+	background-color: var(--normal-background);
+	border-radius: 3px;
+	color: var(--white-text);
+	cursor: pointer;
+	font-size: 12px;
+	line-height: 18px;
+	padding: 3px 7px 4px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: text-bottom;
+	white-space: nowrap;
+}
+table .actions a:hover,
+table .actions a:focus,
+table .actions a:active,
+table .actions button:hover,
+table .actions button:focus,
+actions button:active {
+	background-color: var(--normal-dark-background);
+}
+table .actions button {
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	padding: 0 7px 1px;
+	position: relative;
+	top: 2px;
+}
+
+table .actions form {
+	display: inline;
+}
+table .actions form p {
+	display: inline;
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 	.desktop-only {
 		display: none;

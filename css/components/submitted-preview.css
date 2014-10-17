@@ -95,6 +95,7 @@
 
 .submitted-preview-documents-navigation a {
 	margin-left: 5px;
+	cursor: pointer;
 }
 
 .submitted-preview-documents-navigation a span {
