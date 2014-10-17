@@ -30,7 +30,6 @@
 
 .submitted-user-data-table tbody tr td a {
 	display: block;
-	cursor: pointer;
 }
 .submitted-user-data-table tbody tr td.user-basic-data a {
 		font-weight: bold;

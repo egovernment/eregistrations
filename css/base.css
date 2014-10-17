@@ -80,14 +80,12 @@ h6 {
 a {
 	text-decoration: underline;
 	color: var(--normal-text);
+	cursor: pointer;
 }
 a:hover,
 a:focus,
 a:active {
 	color: var(--dark-text);
-}
-a:link {
-	cursor: pointer;
 }
 
 small {
