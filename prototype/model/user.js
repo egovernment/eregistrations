@@ -10,6 +10,7 @@ var Map          = require('es6-map')
   , UsDollar     = require('dbjs-ext/number/currency/us-dollar')(db)
   , UInteger     = require('dbjs-ext/number/integer/u-integer')(db)
   , SquareMeters = require('dbjs-ext/number/square-meters')(db)
+  , Percentage   = require('dbjs-ext/number/percentage')(db)
   , Document     = require('./document')
   , Submission   = require('./submission')
   , File         = require('./file')
@@ -183,9 +184,20 @@ User.newNamed('userVianney', {
 	roles: ['users-admin']
 });
 
-Partner = db.User.extend('Partner');
+Partner = db.User.extend('Partner', {
+	isDirector: { type: db.Boolean, label: "Director?",
+		trueLabel: "Yes", falseLabel: "No", value: true },
+	isSubscriber: { type: db.Boolean, label: "Subscriber?",
+		trueLabel: "Yes", falseLabel: "No", value: true },
+	completionStatus: { type: Percentage, value: 1 }
+});
 
 user.define('partners', {
+	type: Partner,
+	multiple: true
+});
+
+user.define('emptyPartners', {
 	type: Partner,
 	multiple: true
 });
@@ -201,7 +213,6 @@ user.partners.add(Partner.newNamed('partnerFrank',
 		isOwner: true,
 		businessActivity: db.baAirCharterAgent,
 		members: 5
-
 	}));
 user.partners.add(Partner.newNamed('partnerBita', { firstName: "Bita", lastName: "Mortazavi" }));
 

@@ -96,7 +96,9 @@ genFormEntitiesTable = function (section) {
 								ns.td({ class: 'actions' },
 									ns.a(_("Edit")),
 									ns.postButton({ action: '', value: _('Delete') })));
-						})
+						}),
+					section.generateFooter &&
+						ns.tfoot(section.generateFooter(mainEntity[section.propertyName]))
 				)
 			)
 		),

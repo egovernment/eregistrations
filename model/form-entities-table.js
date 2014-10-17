@@ -14,6 +14,7 @@ module.exports = memoize(function (db) {
 	FormTabularEntity = defineFormTabularEntity(db);
 	return FormSectionBase.extend('FormEntitiesTable', {
 		propertyName: { type: StringLine, required: true },
-		entities: { type: FormTabularEntity, multiple: true, reverse: 'entityTable', unique: true }
+		entities: { type: FormTabularEntity, multiple: true, reverse: 'entityTable', unique: true },
+		generateFooter: { type: db.Function }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
