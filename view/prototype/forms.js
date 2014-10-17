@@ -18,7 +18,7 @@ exports.step = function () {
 				hr(),
 				fieldset(
 					{ class: 'form-elements', dbjs: user, names: ['firstName', 'lastName',
-						'dateOfBirth', 'userEmail', 'street'] }
+						'dateOfBirth', 'userEmail', 'street', 'shares'] }
 				),
 				p({ class: 'submit-placeholder input' },
 					input({ type: 'submit' }, "Submit")),
