@@ -10,8 +10,8 @@ var db                = require('mano').db
   , user, sub1, sub2, tabular1, tabular2, tabular3, tabular4, tables;
 
 module.exports = User;
-require('../../model/form-sections')(User);
-require('../../model/form-send-sections')(User);
+require('../../model/form-sections')(User, 'formSections');
+require('../../model/form-sections')(User, 'formSendSections');
 user = User.prototype;
 
 //temporary helper, cause status is required
