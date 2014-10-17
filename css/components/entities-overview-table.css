@@ -5,10 +5,10 @@
 	display: block;
 	width: 100%;
 }
-.entities-overview-table td > a:link {
+.entities-overview-table td a:link {
 	cursor: pointer;
 }
-.entities-overview-table td > a {
+.entities-overview-table td a {
 	cursor: default;
 }
 .entities-overview-table thead tr th {

@@ -25,7 +25,6 @@ table .actions button {
 	background-color: var(--normal-background);
 	border-radius: 3px;
 	color: var(--white-text);
-	cursor: pointer;
 	font-size: 12px;
 	line-height: 18px;
 	padding: 3px 7px 4px;
