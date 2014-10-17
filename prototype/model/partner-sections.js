@@ -13,28 +13,28 @@ partner.formSections.forEach(function (section) {
 	new Event(partner._getOwnMultipleItem_('formSections', section, '7' + section.__id__), false);//jslint: ignore
 });
 
-FormSectionGroup.newNamed('addPartnerSection', {
+FormSectionGroup.newNamed('partnerFormSections', {
 	label: "Add new Partner",
 	actionUrl: '/',
-	statusResolventProperty: 'statusOfAll'
+	statusResolventProperty: 'completionStatus'
 });
 
-db.addPartnerSection.sections.add(
-	FormSection.newNamed('addPartnerBasicSection', {
+db.partnerFormSections.sections.add(
+	FormSection.newNamed('partnerFormBasicSection', {
 		propertyNames: ['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
 		label: "Business Partner basic informations",
 		actionUrl: '/',
-		statusResolventProperty: 'statusOfAll'
+		statusResolventProperty: 'completionStatus'
 	})
 );
 
-db.addPartnerSection.sections.add(
-	FormSection.newNamed('addPartnerSecondarySection', {
+db.partnerFormSections.sections.add(
+	FormSection.newNamed('partnerFormOtherSection', {
 		propertyNames: ['companyType', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity'],
 		label: "Business Partner secondary informations",
 		actionUrl: '/',
-		statusResolventProperty: 'statusOfAll'
+		statusResolventProperty: 'completionStatus'
 	})
 );
 
-partner.formSections.add(db.addPartnerSection);
+partner.formSections.add(db.partnerFormSections);

@@ -15,13 +15,13 @@ require('../../model/form-sections')(User, 'formSendSections');
 user = User.prototype;
 
 //temporary helper, cause status is required
-user.defineProperties({ statusOfAll: { type: Percentage, value: 1 } });
+user.defineProperties({ completionStatus: { type: Percentage, value: 1 } });
 
 user.formSections.add(FormSection.newNamed('businessOwnerSection', {
 	propertyNames: ['firstName', 'lastName', 'dateOfBirth', 'userEmail', 'street'],
 	label: "Business Owner basic informations",
 	actionUrl: '/',
-	statusResolventProperty: 'statusOfAll'
+	statusResolventProperty: 'completionStatus'
 }));
 
 sub1 = FormSection.newNamed('businessOwnerFirstSubSection', {
@@ -30,7 +30,7 @@ sub1 = FormSection.newNamed('businessOwnerFirstSubSection', {
 		'registerIds'],
 	label: "First Sub Section",
 	actionUrl: '/',
-	statusResolventProperty: 'statusOfAll'
+	statusResolventProperty: 'completionStatus'
 });
 
 sub2 = FormSection.newNamed('businessOwnerSecondSubSection', {
@@ -39,13 +39,13 @@ sub2 = FormSection.newNamed('businessOwnerSecondSubSection', {
 		'descriptionText', 'notification', 'isShoppingGallery', 'registerIds'],
 	label: 'Second Sub Section',
 	actionUrl: '/',
-	statusResolventProperty: 'statusOfAll'
+	statusResolventProperty: 'completionStatus'
 });
 
 user.formSections.add(FormSectionGroup.newNamed('businessOwnerGroupSection', {
 	label: "Business Owner secondary informations",
 	actionUrl: '/',
-	statusResolventProperty: 'statusOfAll'
+	statusResolventProperty: 'completionStatus'
 }));
 
 user.formSections.last.sections.add(sub1);
@@ -55,14 +55,14 @@ FormEntitiesTable.newNamed('partnersTable', {
 	label: 'Directors & non-directors owner / partners',
 	formAction: '',
 	propertyName: 'partners',
-	statusResolventProperty: 'statusOfAll'
+	statusResolventProperty: 'completionStatus'
 });
 
 FormEntitiesTable.newNamed('emptyPartnersTable', {
 	label: 'Directors & non-directors owner / partners',
 	formAction: '',
 	propertyName: 'emptyPartners',
-	statusResolventProperty: 'statusOfAll'
+	statusResolventProperty: 'completionStatus'
 });
 
 tables = [db.partnersTable, db.emptyPartnersTable];
@@ -100,12 +100,12 @@ user.formSendSections.add(FormSection.newNamed('withdrawToSection', {
 	propertyNames: ['placeOfWithdraw'],
 	label: "Where do you want to withdraw your documents?",
 	actionUrl: '/',
-	statusResolventProperty: 'statusOfAll'
+	statusResolventProperty: 'completionStatus'
 }));
 
 user.formSendSections.add(FormSection.newNamed('whoWithdrawsSection', {
 	propertyNames: ['pickCertificates', 'lastName', 'dateOfBirth', 'inventory'],
 	label: "Who will pick the certificates?",
 	actionUrl: '/',
-	statusResolventProperty: 'statusOfAll'
+	statusResolventProperty: 'completionStatus'
 }));
