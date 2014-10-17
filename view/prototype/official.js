@@ -6,24 +6,28 @@ exports['user-name'] = function () {
 
 exports['submitted-menu'] = function () {
 	nav(
-		{ class: 'items' },
-		menuitem(
-			a({ class: 'item-active' },
-				"Official")
-		),
-		menuitem(
-			a({ href: '/profile/' }, "Profile")
+		ul(
+			{ class: 'items' },
+			li(
+				a({ class: 'item-active' },
+					"Official")
+			),
+			li(
+				a({ href: '/profile/' }, "Profile")
+			)
 		)
 	);
 	nav(
-		{ class: 'items' },
-		menuitem(
-			select({ class: 'role-select' },
-					option("Role"),
-					option("Official user"),
-					option("Admin user"),
-					option("User")
-				)
+		ul(
+			{ class: 'items' },
+			li(
+				select({ class: 'role-select' },
+						option("Role"),
+						option("Official user"),
+						option("Admin user"),
+						option("User")
+					)
+			)
 		)
 	);
 };
