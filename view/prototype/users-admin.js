@@ -6,13 +6,15 @@ exports['user-name'] = function () {
 
 exports['submitted-menu'] = function () {
 	nav(
-		{ class: 'items' },
-		menuitem(
-			a({ class: 'item-active', href: '/users-admin/' },
-				"Application")
-		),
-		menuitem(
-			a({ href: '/profile/' }, "Profile")
+		ul(
+			{ class: 'items' },
+			li(
+				a({ class: 'item-active', href: '/users-admin/' },
+					"Application")
+			),
+			li(
+				a({ href: '/profile/' }, "Profile")
+			)
 		)
 	);
 };

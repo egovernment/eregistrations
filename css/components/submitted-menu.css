@@ -19,9 +19,10 @@
 	margin: 0;
 	padding: 0 10px;
 	width: auto;
+	list-style-type: none;
 }
 
-.submitted-menu menuitem .item-active {
+.submitted-menu li .item-active {
 	background: var(--normal-dark-background);
 }
 
