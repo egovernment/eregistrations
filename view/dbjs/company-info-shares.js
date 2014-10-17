@@ -10,42 +10,21 @@ Object.defineProperties(db.User.prototype.getDescriptor('shares'),
 		inputOptions: d({
 			render: function () {
 				var user = db.User.prototype;
-				this.dom = ns.table(
-					ns.tbody(
-						ns.tr(
-							ns.td(
-								ns.th(
-									user.$get('shareholdersNumber').label
-								)
-							),
-							ns.td(),
-							ns.td(
-								ns.th(
-									user.$get('shareholderAmount').label
-								)
-							)
-						),
-						ns.tr(
-							ns.td(
-								ns.input(
-									{ id: 'input-shares-amount',
-										dbjs: user._sharesAmount }
-								)
-							),
-							ns.td(" x "),
-							ns.td(
-								ns.input(
-									{ control: { id: 'input-shares-value' },
-										dbjs: user._sharesValue }
-								)
-							)
-						),
-						ns.tr(
-							{ id: 'tr-shares-hint' },
-							ns.td(
-								{ colspan: 3 },
-								user.$get('shares').inputHint
-							)
+				this.dom = ns.div(
+					{ class: 'computable-input-wrapper' },
+					ns.div(
+						{ class: 'computable-input' },
+						ns.span(user.$get('shareholdersNumber').label + ":"),
+						ns.input(
+							{ type: 'text', dbjs: user._sharesAmount }
+						)
+					),
+					ns.span('x'),
+					ns.div(
+						{ class: 'computable-input' },
+						ns.span(user.$get('shareholderAmount').label + ":"),
+						ns.input(
+							{ type: 'text', dbjs: user._sharesValue }
 						)
 					)
 				);

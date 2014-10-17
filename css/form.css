@@ -340,7 +340,22 @@ ul.multiple {
 	cursor: not-allowed;
 	opacity: 0.5;
 }
+.computable-input,
+.computable-input-wrapper {
+	display: inline-block;
+}
+.computable-input-wrapper > span {
+	margin-left: 10px;
+	margin-right: 10px;
+}
 
+.computable-input span:first-child {
+	display: block;
+	font-weight: bold;
+}
+.computable-input span:last-child {
+	line-height: 22px;
+}
 /*
 Styles applied while screen sieze is less than 640px
 */
