@@ -20,9 +20,9 @@ User.prototype.defineProperties({
 		value: function () {
 			var regs = [];
 			this.database.Registration.extensions.forEach(function (reg) {
-				var registrationPropName = reg.__id__[0].toLowerCase() + reg.__id__.slice(1);
-				if (this.registrations[registrationPropName].isMandatory) {
-					regs.push(registrationPropName);
+				var regName = reg.__id__[0].toLowerCase() + reg.__id__.slice(1);
+				if (this.registrations[regName].isMandatory) {
+					regs.push(regName);
 				}
 			}, this);
 			return regs;
@@ -34,10 +34,10 @@ User.prototype.defineProperties({
 		value: function () {
 			var regs = [];
 			this.database.Registration.extensions.forEach(function (reg) {
-				var registrationPropName = reg.__id__[0].toLowerCase() + reg.__id__.slice(1);
-				if (!this.registrations[registrationPropName].isMandatory
-						&& this.registrations[registrationPropName].isApplicable) {
-					regs.push(registrationPropName);
+				var regName = reg.__id__[0].toLowerCase() + reg.__id__.slice(1);
+				if (!this.registrations[regName].isMandatory
+						&& this.registrations[regName].isApplicable) {
+					regs.push(regName);
 				}
 			}, this);
 			return regs;
@@ -49,9 +49,9 @@ User.prototype.defineProperties({
 		value: function (_observe) {
 			var regs = [];
 			this.database.Registration.extensions.forEach(function (reg) {
-				var registrationPropName = reg.__id__[0].toLowerCase() + reg.__id__.slice(1);
-				if (this.registrations[registrationPropName].isRequested) {
-					regs.push(registrationPropName);
+				var regName = reg.__id__[0].toLowerCase() + reg.__id__.slice(1);
+				if (this.registrations[regName].isRequested) {
+					regs.push(regName);
 				}
 			}, this);
 			return regs;
@@ -86,6 +86,5 @@ User.prototype.defineProperties({
 		}
 	}
 });
-
 
 module.exports = User;
