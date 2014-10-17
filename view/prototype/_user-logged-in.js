@@ -1,25 +1,25 @@
 'use strict';
 
 exports.menu = function () {
-	menuitem(
+	li(
 		a(
 			{ href: '/profile/' },
 			span({ class: 'fa fa-user' }, "Preferences")
 		)
 	);
-	menuitem(
+	li(
 		a(
 			{ href: '/profile/' },
 			span({ class: 'user-name', id: 'user-name' })
 		)
 	);
-	menuitem(
+	li(
 		a(
 			{ href: '/profile/' },
 			span({ class: 'fa fa-cogs' }, "Preferences")
 		)
 	);
-	menuitem(
+	li(
 		a({ href: '/' },
 			span({ class: 'fa fa-power-off' }, "Log out")
 			)
