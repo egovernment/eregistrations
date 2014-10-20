@@ -18,7 +18,7 @@ user = User.prototype;
 user.defineProperties({ completionStatus: { type: Percentage, value: 1 } });
 
 user.formSections.add(FormSection.newNamed('businessOwnerSection', {
-	propertyNames: ['firstName', 'lastName', 'dateOfBirth', 'userEmail', 'street'],
+	propertyNames: ['firstName', 'lastName', 'dateOfBirth', 'userEmail', 'street', 'shares'],
 	label: "Business Owner basic informations",
 	actionUrl: '/',
 	statusResolventProperty: 'completionStatus'

@@ -9,5 +9,8 @@
 
 .labelled-inputs-component-item label:first-child {
 	display: block;
-	font-weight: bold;
+	font-size: 12px;
+	line-height: 22px;
+	position: relative;
+	top: 5px;
 }
