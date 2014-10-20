@@ -5,6 +5,6 @@ var ns = require('mano').domjs.ns;
 module.exports = function (sections) {
 	var mainEntity = sections.object;
 	sections.forEach(function (section) {
-		section.toDOM(ns.document, mainEntity);
+		section.toDOMForm(ns.document, mainEntity);
 	});
 };

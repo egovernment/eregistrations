@@ -8,7 +8,7 @@ var _  = require('mano').i18n.bind('Sections')
 
 url = ns.url;
 
-module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
+module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOMForm',
 	d(function (document, mainEntity) {
 		ns.section({ class: 'section-primary' },
 			ns.form(
