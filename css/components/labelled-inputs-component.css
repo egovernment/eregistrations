@@ -11,6 +11,3 @@
 	display: block;
 	font-weight: bold;
 }
-.labelled-inputs-component span:last-child {
-	line-height: 22px;
-}
