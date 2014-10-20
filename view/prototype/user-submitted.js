@@ -184,13 +184,13 @@ exports['sub-main'] = function () {
 				))
 		),
 		target = div({ class: 'section-primary submitted-preview-user-data' },
-			h3({ class: 'container-with-nav' }, "Application form",
+			h2({ class: 'container-with-nav' }, "Application form",
 				a(
 					{ class: 'hint-optional hint-optional-left',
 						'data-hint': 'Print Your application form' },
 					span({ class: 'fa fa-print' }, "Print")
 				)),
-			h4("Proposed company name"),
+			h3("Proposed company name"),
 			table(
 				tbody(
 					tr(
@@ -198,7 +198,7 @@ exports['sub-main'] = function () {
 					)
 				)
 			),
-			h4("Business activity"),
+			h3("Business activity"),
 			table(
 				tbody(
 					tr(
@@ -219,7 +219,7 @@ exports['sub-main'] = function () {
 					)
 				)
 			),
-			h4("Company secretary"),
+			h3("Company secretary"),
 			table(
 				tbody(
 					tr(
@@ -240,7 +240,7 @@ exports['sub-main'] = function () {
 					)
 				)
 			),
-			h5("Residential address"),
+			h4("Residential address"),
 			table(
 				tbody(
 					tr(
@@ -269,46 +269,58 @@ exports['sub-main'] = function () {
 					)
 				)
 			),
-			h4("Applicants"),
-			h5("Marko Zagola"),
-			h6("Personal data"),
-			table(
-				tbody(
-					tr(
-						th("Name"),
-						td("Marko")
-					),
-					tr(
-						th("Surname"),
-						td("Zagalo")
-					),
-					tr(
-						th("Document type"),
-						td("X")
-					),
-					tr(
-						th("Document number"),
-						td("123")
-					),
-					tr(
-						th("Marital status"),
-						td("")
-					),
-					tr(
-						th("Date of birth"),
-						td("25-06-1991")
-					),
-					tr(
-						th("Nationality"),
-						td("Romanian")
-					),
-					tr(
-						th("E-mail"),
-						td("andrei.balan@blink-it.ro")
+			h3("Applicants"),
+			h4("Marko Zagola"),
+			h5("Personal data"),
+			div(
+				{ class: 'entity-subsection' },
+				h6("Basic data"),
+				table(
+					tbody(
+						tr(
+							th("Name"),
+							td("Marko")
+						),
+						tr(
+							th("Surname"),
+							td("Zagalo")
+						)
 					)
 				)
 			),
-			h6("Address"),
+			div(
+				{ class: 'entity-subsection' },
+				h6("Additional data"),
+				table(
+					tbody(
+						tr(
+							th("Document type"),
+							td("X")
+						),
+						tr(
+							th("Document number"),
+							td("123")
+						),
+						tr(
+							th("Marital status"),
+							td("")
+						),
+						tr(
+							th("Date of birth"),
+							td("25-06-1991")
+						),
+						tr(
+							th("Nationality"),
+							td("Romanian")
+						),
+						tr(
+							th("E-mail"),
+							td("andrei.balan@blink-it.ro")
+						)
+					)
+				)
+			),
+			h5("Address"),
 			table(
 				tbody(
 					tr(
