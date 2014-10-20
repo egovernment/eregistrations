@@ -1,13 +1,13 @@
-.labelled-inputs-component,
-.labelled-inputs-component-wrapper {
+.labelled-inputs-component-item,
+.labelled-intputs-component {
 	display: inline-block;
 }
-.labelled-inputs-component-wrapper > span {
+.labelled-intputs-component > span {
 	margin-left: 10px;
 	margin-right: 10px;
 }
 
-.labelled-inputs-component label:first-child {
+.labelled-inputs-component-item label:first-child {
 	display: block;
 	font-weight: bold;
 }
