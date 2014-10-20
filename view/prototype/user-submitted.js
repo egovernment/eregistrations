@@ -1,9 +1,12 @@
 'use strict';
 
-var syncStyle = require('dom-ext/html-element/#/sync-style')
+var db = require('mano').db
+  , user = db.User.prototype
+  , syncStyle = require('dom-ext/html-element/#/sync-style')
   , zoomOnHover = require('dom-ext/html-element/#/zoom-on-hover')
   , isMobileView = require('../utils/is-mobile-view')
-  , syncHeight = require('../utils/sync-height');
+  , syncHeight = require('../utils/sync-height')
+  , generateSections = require('../components/generate-sections');
 
 exports['user-name'] = function () {
 	text("User Submited");
@@ -189,151 +192,9 @@ exports['sub-main'] = function () {
 					{ class: 'hint-optional hint-optional-left',
 						'data-hint': 'Print Your application form' },
 					span({ class: 'fa fa-print' }, "Print")
-				)),
-			h4("Proposed company name"),
-			table(
-				tbody(
-					tr(
-						td("Blink IT Solutions")
-					)
-				)
-			),
-			h4("Business activity"),
-			table(
-				tbody(
-					tr(
-						th("Activity"),
-						td("Air chater agent")
-					),
-					tr(
-						th("Activity starting date"),
-						td("7/30/2014")
-					),
-					tr(
-						th("Date of account year end"),
-						td("12/31/2014")
-					),
-					tr(
-						th("Does the company have branches?"),
-						td("Yes")
-					)
-				)
-			),
-			h4("Company secretary"),
-			table(
-				tbody(
-					tr(
-						th("Title"),
-						td("Mr")
-					),
-					tr(
-						th("First Name"),
-						td("Andrei")
-					),
-					tr(
-						th("Middle Name"),
-						td("Mihai")
-					),
-					tr(
-						th("Surname"),
-						td("Balan")
-					)
-				)
-			),
-			h5("Residential address"),
-			table(
-				tbody(
-					tr(
-						th("Plot"),
-						td("1")
-					),
-					tr(
-						th("Block"),
-						td("1")
-					),
-					tr(
-						th("Street or location"),
-						td("Nicolae Filipescu")
-					),
-					tr(
-						th("City, district or town"),
-						td("Bucharest")
-					),
-					tr(
-						th("P.O. box"),
-						td("1")
-					),
-					tr(
-						th("Country"),
-						td("Romania")
-					)
-				)
-			),
-			h4("Applicants"),
-			h5("Marko Zagola"),
-			h6("Personal data"),
-			table(
-				tbody(
-					tr(
-						th("Name"),
-						td("Marko")
-					),
-					tr(
-						th("Surname"),
-						td("Zagalo")
-					),
-					tr(
-						th("Document type"),
-						td("X")
-					),
-					tr(
-						th("Document number"),
-						td("123")
-					),
-					tr(
-						th("Marital status"),
-						td("")
-					),
-					tr(
-						th("Date of birth"),
-						td("25-06-1991")
-					),
-					tr(
-						th("Nationality"),
-						td("Romanian")
-					),
-					tr(
-						th("E-mail"),
-						td("andrei.balan@blink-it.ro")
-					)
-				)
-			),
-			h6("Address"),
-			table(
-				tbody(
-					tr(
-						th("Address"),
-						td("XXX")
-					),
-					tr(
-						th("Number"),
-						td("1")
-					),
-					tr(
-						th("Postal code"),
-						td("X")
-					),
-					tr(
-						th("City"),
-						td("Bucharest")
-					),
-					tr(
-						th("Country"),
-						td("Romania")
-					)
-				)
-			))
+				)), generateSections(user.formSections))
 	);
+
 	syncStyle.call(target, source, 'height', isMobileView);
 	syncHeight(elem);
 };
