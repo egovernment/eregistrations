@@ -1,11 +1,10 @@
 'use strict';
 
-var memoize               = require('memoizee')
-  , validDb               = require('dbjs/valid-dbjs')
+var validDb               = require('dbjs/valid-dbjs')
   , validDbType           = require('dbjs/valid-dbjs-type')
   , defineFormSectionBase = require('./form-section-base');
 
-module.exports = memoize(function (Entity, property) {
+module.exports = function (Entity, property) {
 	var FormSectionBase, db;
 	db = validDb(Entity.database);
 	validDbType(Entity);
@@ -17,4 +16,4 @@ module.exports = memoize(function (Entity, property) {
 		multiple: true
 	});
 	return Entity;
-}, { normalizer: require('memoizee/normalizers/get')() });
+};

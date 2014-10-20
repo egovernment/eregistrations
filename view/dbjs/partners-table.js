@@ -11,11 +11,11 @@ var d = require('d')
 module.exports = Object.defineProperty(db.partnersTable, 'generateFooter',
 	d(function (propertyName) {
 		return ns.tr(
-			ns.th({ class: 'desktop-only' }, "Summary"),
+			ns.th("Summary"),
 			ns.th(""),
 			ns.th({ class: 'desktop-only' }, "Directors no: 3"),
 			ns.th({ class: 'desktop-only' }, "Subscriber no: 3"),
-			ns.th({ class: 'desktop-only' }, ""),
+			ns.th(""),
 			ns.th({ class: 'actions' }, "")
 		);
 	}));
