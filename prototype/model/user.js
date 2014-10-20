@@ -172,6 +172,13 @@ user.defineProperties({
 		value: function () {
 			if (!this.streetType || !this.streetName) return null;
 			return this.database.StreetTypeChoice.meta[this.streetType].label + ' ' + this.streetName;
+		} },
+	shareholdersNumber: { type: UInteger, label: "Shareholders", required: true },
+	shareholderAmount: { type: UInteger, label: "Value of share", required: true },
+	shares: { type: StringLine, label: "Shares split", required: true,
+		value: function () {
+			if (!this.shareholdersNumber || !this.shareholderAmount) return null;
+			return this.shareholdersNumber + this.shareholderAmount;
 		} }
 });
 

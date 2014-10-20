@@ -1,0 +1,16 @@
+.labelled-inputs-component-item,
+.labelled-intputs-component {
+	display: inline-block;
+}
+.labelled-intputs-component > span {
+	margin-left: 10px;
+	margin-right: 10px;
+}
+
+.labelled-inputs-component-item label:first-child {
+	display: block;
+	font-size: 12px;
+	line-height: 22px;
+	position: relative;
+	top: 5px;
+}
