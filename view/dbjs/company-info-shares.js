@@ -15,17 +15,17 @@ Object.defineProperties(db.User.prototype.getDescriptor('shares'),
 					ns.div(
 						{ class: 'labelled-inputs-component' },
 						ns.label({ for: 'number-of-shares' }, user.$get('shareholdersNumber').label + ":"),
-						ns.input(
+						this.addItem(ns.input(
 							{ type: 'text', dbjs: user._sharesAmount, id: 'number-of-shares' }
-						)
+						))
 					),
 					ns.span('x'),
 					ns.div(
 						{ class: 'labelled-inputs-component' },
 						ns.label({ for: 'value-of-share' }, user.$get('shareholderAmount').label + ":"),
-						ns.input(
+						this.addItem(ns.input(
 							{ type: 'text', dbjs: user._sharesValue, id: 'value-of-share' }
-						)
+						))
 					)
 				);
 			}
