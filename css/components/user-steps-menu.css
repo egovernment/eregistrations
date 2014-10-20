@@ -22,18 +22,19 @@
 	display: none;
 }
 
-.steps-menu nav.steps {
+.steps-menu ul.steps {
 	display: flex;
 	justify-content: space-between;
 	width: var(--desktop-width);
+	list-style-type: none;
 }
 
-.steps-menu nav.steps a {
+.steps-menu ul.steps a {
 	width: 100%;
 }
 
 .step-active,
-.steps-menu nav.steps menuitem > .step-active {
+.steps-menu ul.steps li > .step-active {
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
@@ -50,7 +51,7 @@
 	white-space: nowrap;
 }
 
-.steps-menu nav.steps menuitem > a {
+.steps-menu ul.steps li > a {
 	background-color: var(--white-background);
 	background-image: none;
 	border-radius: 6px;
@@ -67,14 +68,14 @@
 	vertical-align: middle;
 	white-space: nowrap;
 }
-.steps-menu nav.steps menuitem > a:hover,
-.steps-menu nav.steps menuitem > a:focus,
-.steps-menu nav.steps menuitem > a:active {
+.steps-menu ul.steps li > a:hover,
+.steps-menu ul.steps li > a:focus,
+.steps-menu ul.steps li > a:active {
 	background-color: var(--normal-background);
 	color: var(--white-text);
 }
 
-.steps-menu nav menuitem {
+.steps-menu ul li {
 	background-color: var(--dark-background);
 	width: 100%;
 	margin: 0 2px;
@@ -86,7 +87,7 @@
 
 }
 
-nav.steps menuitem div {
+ul.steps li div {
 	height: 5px;
 	width: 0;
 	margin-top: 2px;
@@ -95,7 +96,7 @@ nav.steps menuitem div {
 }
 
 @media only screen and (max-width: 760px) {
-	nav.steps menuitem a {
+	ul.steps li a {
 		font-size: 14px;
 	}
 }
@@ -104,13 +105,13 @@ nav.steps menuitem div {
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
-	div.steps-menu {
+	nav.steps-menu {
 		min-width: var(--min-mobile-width);
 		padding-bottom: 11px;
 		position: relative;
 	}
 
-	div.steps-menu nav.steps {
+	nav.steps-menu ul.steps {
 		display: none;
 	}
 
@@ -123,7 +124,7 @@ Styles applied while screen sieze is less than 640px
 		display: block;
 	}
 
-	nav.steps menuitem a {
+	ul.steps li a {
 		font-size: 18px;
 	}
 
@@ -133,16 +134,16 @@ Styles applied while screen sieze is less than 640px
 		padding-top: 11px;
 	}
 
-	input[type=checkbox]:checked ~ .steps menuitem {
+	input[type=checkbox]:checked ~ .steps li {
 		margin: 11px 0;
 		text-align: center;
 		width: 100%;
 	}
-	input[type=checkbox]:checked ~ .steps menuitem a {
+	input[type=checkbox]:checked ~ .steps li a {
 		margin: 0 auto;
 		width: 100%;
 	}
-	input[type=checkbox]:checked ~ .steps menuitem:last-child {
+	input[type=checkbox]:checked ~ .steps li:last-child {
 		margin-bottom: 0;
 	}
 }

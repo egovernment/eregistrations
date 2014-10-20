@@ -11,7 +11,7 @@ var Map          = require('es6-map')
   , UInteger     = require('dbjs-ext/number/integer/u-integer')(db)
   , SquareMeters = require('dbjs-ext/number/square-meters')(db)
   , Percentage   = require('dbjs-ext/number/percentage')(db)
-  , Document     = require('./document')
+  , Document     = require('../../model/document')
   , Submission   = require('./submission')
   , File         = require('./file')
 

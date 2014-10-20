@@ -10,13 +10,13 @@ exports.body = function () {
 					img({ src: '/img/logo-2.png' })
 					)
 				),
-			nav(menu({ class: 'menu-top', id: 'menu' },
-					menuitem(a('en')),
-					menuitem(a('sw')),
-					menuitem(a('link one')),
-					menuitem(a('link two')),
-					menuitem(a('link tree')),
-					menuitem(a({ class: 'login', onclick: login.show },
+			nav(ul({ class: 'menu-top', id: 'menu' },
+					li(a('en')),
+					li(a('sw')),
+					li(a('link one')),
+					li(a('link two')),
+					li(a('link tree')),
+					li(a({ class: 'login', onclick: login.show },
 						"Log in"
 						))
 					)
