@@ -27,6 +27,7 @@
 ../../css/components/user-submission-sworn-declaration.css
 ../../css/components/file-uploader.css
 ../../css/components/file-thumb.css
+../../css/components/labelled-inputs-component.css
 ../../css/components/user-next-step-button.css
 ../../css/components/section-primary.css
 ../../css/components/section-tab-nav.css

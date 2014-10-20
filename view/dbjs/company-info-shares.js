@@ -11,20 +11,20 @@ Object.defineProperties(db.User.prototype.getDescriptor('shares'),
 			render: function () {
 				var user = db.User.prototype;
 				this.dom = ns.div(
-					{ class: 'computable-input-wrapper' },
+					{ class: 'labelled-inputs-component-wrapper' },
 					ns.div(
-						{ class: 'computable-input' },
-						ns.span(user.$get('shareholdersNumber').label + ":"),
+						{ class: 'labelled-inputs-component' },
+						ns.label({ for: 'number-of-shares' }, user.$get('shareholdersNumber').label + ":"),
 						ns.input(
-							{ type: 'text', dbjs: user._sharesAmount }
+							{ type: 'text', dbjs: user._sharesAmount, id: 'number-of-shares' }
 						)
 					),
 					ns.span('x'),
 					ns.div(
-						{ class: 'computable-input' },
-						ns.span(user.$get('shareholderAmount').label + ":"),
+						{ class: 'labelled-inputs-component' },
+						ns.label({ for: 'value-of-share' }, user.$get('shareholderAmount').label + ":"),
 						ns.input(
-							{ type: 'text', dbjs: user._sharesValue }
+							{ type: 'text', dbjs: user._sharesValue, id: 'value-of-share' }
 						)
 					)
 				);
