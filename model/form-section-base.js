@@ -12,6 +12,7 @@ module.exports = memoize(function (db) {
 		label: { type: StringLine, required: true },
 		isApplicable: { type: db.Boolean, required: true, value: true },
 		resolventProperty: { type: StringLine },
+		resolventValue: { type: db.Base },
 		actionUrl: { type: StringLine, required: true },
 		statusResolventProperty: { type: StringLine, required: true }
 	});

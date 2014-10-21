@@ -102,8 +102,10 @@ user.formSendSections.add(FormSection.newNamed('withdrawToSection', {
 }));
 
 user.formSendSections.add(FormSection.newNamed('whoWithdrawsSection', {
-	propertyNames: ['pickCertificates', 'lastName', 'dateOfBirth', 'inventory'],
+	propertyNames: ['lastName', 'dateOfBirth', 'inventory'],
 	label: "Who will pick the certificates?",
 	actionUrl: '/',
+	resolventProperty: 'pickCertificates',
+	resolventValue: false,
 	statusResolventProperty: 'completionStatus'
 }));
