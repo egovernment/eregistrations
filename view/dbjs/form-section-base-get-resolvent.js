@@ -7,8 +7,8 @@ var generateId = require('time-uuid')
 /*
 return object of form:
 {
-	formId: id,
-	affectedSectionId: id,
+	formId: id || undefined,
+	affectedSectionId: id || undefined,
 	radioMatch: radioMatch || undefined,
 	formResolvent: field || undefined
 }
@@ -19,9 +19,9 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 		result = {};
 		match = {};
 		options = Object(arguments[1]);
-		result.formId = options.formId || generateId();
-		result.affectedSectionId = generateId();
 		if (this.resolventProperty) {
+			result.formId = options.formId || generateId();
+			result.affectedSectionId = generateId();
 			if (typeof this.resolventValue === 'boolean') {
 				match[Number(this.resolventValue)] = result.affectedSectionId;
 			} else {
