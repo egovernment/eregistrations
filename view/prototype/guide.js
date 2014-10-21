@@ -51,8 +51,13 @@ exports.step = function () {
 								input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) }))));
 					}
 				})),
-		div({ class: 'section-primary' }, h2("Registrations"),
+		div(
+			{ class: 'section-primary' },
+			h2("Registrations"),
 			hr(),
+			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
+				" Etiam vestibulum dui mi, nec ultrices diam ultricies id. " +
+				" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
 			ul(li(label({ class: 'input-aside' },
 				input({ dbjs: user._isARequested, type: 'checkbox', control: { class: 'readonly' } }), " ",
 				span(user.getDescriptor('isARequested').label))),
@@ -62,12 +67,20 @@ exports.step = function () {
 				li(label({ class: 'input-aside' },
 					input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 					span(user.getDescriptor('isARequested').label)))),
-			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
-				" Etiam vestibulum dui mi, nec ultrices diam ultricies id. " +
-				" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
-			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
-				" Etiam vestibulum dui mi, nec ultrices diam ultricies id. " +
-				" Etiam vestibulum dui mi, nec ultrices diam ultricies id. ")),
+			div(
+				{ class: 'transparent-component' },
+				h2("Optional Registrations"),
+				hr(),
+				ul(li(label({ class: 'input-aside' },
+					input({ dbjs: user._isARequested, type: 'checkbox', control: { class: 'readonly' } }),
+					" ",
+					span(user.getDescriptor('isARequested').label))),
+					li(label({ class: 'input-aside' },
+						input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+						span(user.getDescriptor('isBRequested').label))))
+			)
+		),
+
 		div({ class: 'section-primary' }, h2("Requirements"),
 			hr(),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
