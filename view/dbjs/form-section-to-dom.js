@@ -10,7 +10,7 @@ url = ns.url;
 
 module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOMForm',
 	d(function (document, mainEntity) {
-		ns.section({ class: 'section-primary' },
+		return ns.section({ class: 'section-primary' },
 			ns.form(
 				{ action: url(this.actionUrl), class: ns._if(ns.eq(
 					mainEntity.getObservable(this.statusResolventProperty),
