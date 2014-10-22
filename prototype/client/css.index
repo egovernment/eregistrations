@@ -19,6 +19,7 @@
 ../../css/components/public-steps.css
 ../../css/components/public-institutions.css
 ../../css/components/error-page.css
+../../css/components/entity-data-section.css
 ../../css/components/public-multi-entry.css
 ../../css/components/user-steps-menu.css
 ../../css/components/user-forms.css

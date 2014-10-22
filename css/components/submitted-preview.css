@@ -41,41 +41,11 @@
 	width: 39%;
 	overflow-y: scroll;
 }
-.submitted-preview-user-data h4 {
-	margin-bottom: 5px;
-	color: var(--white-text);
-	margin:  22px 0 0 0;
-	background-color: var(--normal-background);
-	padding: 11px 0 11px 8px;
+.submitted-preview-user-data h2 {
+	font-size: 19px;
 }
 
-.submitted-preview-user-data h5 {
-	margin: 22px 0;
-	padding-left: 10px;
-	font-size: 15px;
-}
-
-.submitted-preview-user-data h6 {
-	font-size: 13px;
-	padding-left: 10px;
-	margin-top: 22px;
-}
-
-.submitted-preview-user-data > table {
-	margin: 0;
-}
-
-.submitted-preview-user-data > table th,
-.submitted-preview-user-data > table td {
-	width: 50%;
-	padding: 11px 0 11px 10px;
-	text-align: left;
-}
-.submitted-preview-user-data table:last-child {
-	margin-bottom: 22px;
-}
-
-.submitted-preview-document .container-with-nav h3 {
+.submitted-preview-document .container-with-nav h2 {
 	max-width: 80%;
 }
 

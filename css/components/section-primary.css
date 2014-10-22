@@ -5,10 +5,13 @@
 	padding: 20px 15px 0 15px;
 	position: relative;
 }
-.section-primary > *, .section-primary > form > * {
+.section-primary > *,
+.section-primary > form > *,
+.section-primary > .wrapper > * {
 	margin-bottom: 22px;
 }
-.section-primary > form {
+.section-primary > form,
+.section-primary > .wrapper {
 	margin-bottom: 0;
 }
 
