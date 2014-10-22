@@ -338,9 +338,9 @@ exports['sub-main'] = function () {
 								)
 							)
 						),
-						h5("Address"),
 						div(
 							{ class: 'entity-data-sub-section' },
+							h5("Address"),
 							table(
 								tbody(
 									tr(
