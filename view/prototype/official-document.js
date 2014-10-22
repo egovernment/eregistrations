@@ -145,23 +145,27 @@ exports.tab = function () {
 				section(
 					{ class: 'entity-data-section' },
 					h3("Company secretary"),
-					table(
-						tbody(
-							tr(
-								th("Title"),
-								td("Mr")
-							),
-							tr(
-								th("First Name"),
-								td("Andrei")
-							),
-							tr(
-								th("Middle Name"),
-								td("Mihai")
-							),
-							tr(
-								th("Surname"),
-								td("Balan")
+					section(
+						{ class: 'entity-data-sub-section' },
+						h4("Basic secretary data"),
+						table(
+							tbody(
+								tr(
+									th("Title"),
+									td("Mr")
+								),
+								tr(
+									th("First Name"),
+									td("Andrei")
+								),
+								tr(
+									th("Middle Name"),
+									td("Mihai")
+								),
+								tr(
+									th("Surname"),
+									td("Balan")
+								)
 							)
 						)
 					),
@@ -256,7 +260,7 @@ exports.tab = function () {
 							),
 							div(
 								{ class: 'entity-data-sub-section' },
-								h5("Address"),
+								h6("Address"),
 								table(
 									tbody(
 										tr(
