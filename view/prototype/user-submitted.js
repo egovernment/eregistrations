@@ -410,6 +410,7 @@ exports['sub-main'] = function () {
 			)
 			)
 	);
+
 	syncStyle.call(target, source, 'height', isMobileView);
 	syncHeight(elem);
 };

@@ -10,7 +10,7 @@ var _                   = require('mano').i18n.bind('Sections')
 
 url = ns.url;
 
-module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
+module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
 	d(function (document, mainEntity) {
 		var self = this;
 		ns.section({ class: ns._if(ns.eq(
