@@ -100,6 +100,9 @@ User.prototype.defineProperties({
 	}
 });
 
-User.prototype.registrations._descriptorPrototype_.type = Registration;
+User.prototype.registrations._descriptorPrototype_.setProperties({
+	nested: true,
+	type: Registration
+});
 
 module.exports = User;
