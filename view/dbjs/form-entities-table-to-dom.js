@@ -41,20 +41,22 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 									_("There are no elements added at the moment.")
 								)
 							) },
-							this.master[this.constructor.propertyName], function (object) {
+							this.master[this.constructor.propertyName], function (entityObject) {
 								return ns.tr(ns.list(self.constructor.entities, function (entity) {
 									return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
 												ns._if(entity._mobileOnly, 'mobile-only')) },
-											ns.a({ href: url(self.baseUrl + '-id') },
-												resolveObservable(object, entity.propertyName)));
+											ns.a({ href: url(self.constructor.baseUrl, entityObject.__id__) },
+												resolveObservable(entityObject, entity.propertyName)));
 								}),
-									ns.td({ class: ns._if(ns.eq(object.getObservable('completionStatus'), 1),
+									ns.td({ class: ns._if(ns.eq(entityObject.getObservable('completionStatus'), 1),
 											'completed') },
 										ns.span({ class: 'status-complete' }, "✓"),
 										ns.span({ class: 'status-incomplete' }, "✕")),
 									ns.td({ class: 'actions' },
-										ns.a(_("Edit")),
-										ns.postButton({ action: '', value: _('Delete') })));
+										ns.a({ href: url(self.constructor.baseUrl, entityObject.__id__) }, _("Edit")),
+										ns.postButton({ action: url(self.constructor.baseUrl,
+											entityObject.__id__, 'delete'),
+											value: _('Delete') })));
 							}),
 						this.constructor.generateFooter &&
 							ns.tfoot(this.constructor.generateFooter(this.master[this.constructor.propertyName]))
