@@ -6,14 +6,16 @@ var d  = require('d')
   , headersMap = require('../utils/headers-map');
 
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOM',
-	d(function (document, mainEntity) {
-		var headerRank, options;
-		options = Object(arguments[2]);
-		headerRank = options.headerRank || 4;
-		return ns.div(
-			headersMap[headerRank](this.label),
+	d(function (document/*,options */) {
+		var headerRank, cssClass, options;
+		options = Object(arguments[1]);
+		headerRank = options.headerRank || 3;
+		cssClass   = options.cssClass || 'entity-data-section';
+		return ns.section({ class: cssClass },
+			headersMap[headerRank](this.constructor.label),
 			ns.list(this.sections, function (section) {
-				return section.toDOM(document, mainEntity, { headerRank: headerRank + 1 });
+				return section.toDOM(document, { headerRank: headerRank + 1,
+					cssClass: 'entity-data-sub-section' });
 			})
-		);
+			);
 	}));

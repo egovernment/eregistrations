@@ -1,7 +1,6 @@
 'use strict';
 
 var db          = require('mano').db
-  , Event       = require('dbjs/_setup/event')
   , Partner     = db.Partner
   , FormSection = require('../../model/form-section')(db)
   , FormSectionGroup = require('../../model/form-section-group')(db)
@@ -9,32 +8,40 @@ var db          = require('mano').db
 
 partner = Partner.prototype;
 
-partner.formSections.forEach(function (section) {
-	new Event(partner._getOwnMultipleItem_('formSections', section, '7' + section.__id__), false);//jslint: ignore
+partner.formSections.forEach(function (section, name) {
+	partner.formSections.getOwnDescriptor(name).nested = false;
+	partner.formSections[name] = null;
 });
 
-FormSectionGroup.newNamed('partnerFormSections', {
-	label: "Add new Partner",
-	actionUrl: '/',
-	statusResolventProperty: 'completionStatus'
+FormSectionGroup.extend('PartnerFormSectionGroup', {
+	statusResolventProperty: { value: 'completionStatus' }
+}, {
+	label: { value: "Add new Partner" },
+	actionUrl: { value: '/' }
 });
 
-db.partnerFormSections.sections.add(
-	FormSection.newNamed('partnerFormBasicSection', {
-		propertyNames: ['firstName', 'lastName', 'dateOfBirth', 'userEmail'],
-		label: "Business Partner basic informations",
-		actionUrl: '/',
-		statusResolventProperty: 'completionStatus'
-	})
-);
+partner.formSections.getOwnDescriptor('partnerFormSectionGroup').type =
+	db.PartnerFormSectionGroup;
 
-db.partnerFormSections.sections.add(
-	FormSection.newNamed('partnerFormOtherSection', {
-		propertyNames: ['companyType', 'inventory', 'surfaceArea', 'isOwner', 'businessActivity'],
-		label: "Business Partner secondary informations",
-		actionUrl: '/',
-		statusResolventProperty: 'completionStatus'
-	})
-);
+FormSection.extend('PartnerFormBasicSection', {
+	statusResolventProperty: { value: 'completionStatus' }
+}, {
+	propertyNames: { value: ['firstName', 'lastName', 'dateOfBirth', 'userEmail'] },
+	label: { value: "Business Partner basic informations" },
+	actionUrl: { value: '/' }
+});
 
-partner.formSections.add(db.partnerFormSections);
+partner.formSections.partnerFormSectionGroup.sections.
+	getOwnDescriptor('partnerFormBasicSection').type = db.PartnerFormBasicSection;
+
+FormSection.extend('PartnerFormOtherSection', {
+	statusResolventProperty: { value: 'completionStatus' }
+}, {
+	propertyNames: { value: ['companyType', 'inventory', 'surfaceArea',
+		'isOwner', 'businessActivity'] },
+	label: { value: "Business Partner secondary informations" },
+	actionUrl: { value: '/' }
+});
+
+partner.formSections.partnerFormSectionGroup.sections.
+	getOwnDescriptor('partnerFormOtherSection').type = db.PartnerFormOtherSection;

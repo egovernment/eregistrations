@@ -13,10 +13,12 @@ module.exports = memoize(function (db) {
 	FormSectionBase   = defineFormSectionBase(db);
 	FormTabularEntity = defineFormTabularEntity(db);
 	return FormSectionBase.extend('FormEntitiesTable', {
-		propertyName: { type: StringLine, required: true },
-		entities: { type: FormTabularEntity, multiple: true, unique: true },
-		generateFooter: { type: db.Function },
+		generateFooter: { type: db.Function }
+	}, {
 		actionUrl: { required: false },
-		baseUrl: { type: StringLine, required: true }
+		baseUrl: { type: StringLine, required: true },
+		propertyName: { type: StringLine, required: true },
+		entityTitleProperty: { type: StringLine, required: true },
+		entities: { type: FormTabularEntity, multiple: true, unique: true }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

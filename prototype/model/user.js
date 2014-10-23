@@ -110,6 +110,9 @@ CompanyType = StringLine.createEnum('CompanyType', new Map([
 user.defineProperties({
 	firstName: { type: StringLine, required: true, label: "First Name" },
 	lastName: { type: StringLine, required: true, label: "Last Name", value: "Smith" },
+	fullName: { type: StringLine, required: true, label: "Full Name", value: function () {
+		return this.firstName + ' ' + this.lastName;
+	} },
 
 	// Guide
 	businessActivity: { type: BusinessActivity, required: true, label: "Business activity" },

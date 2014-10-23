@@ -9,11 +9,12 @@ module.exports = memoize(function (db) {
 	validDb(db);
 	StringLine = defineStringLine(db);
 	return db.Object.extend('FormSectionBase', {
-		label: { type: StringLine, required: true },
 		isApplicable: { type: db.Boolean, required: true, value: true },
 		resolventProperty: { type: StringLine },
 		resolventValue: { type: db.Base },
-		actionUrl: { type: StringLine, required: true },
 		statusResolventProperty: { type: StringLine, required: true }
+	}, {
+		actionUrl: { type: StringLine, required: true },
+		label: { type: StringLine, required: true }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

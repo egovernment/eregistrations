@@ -10,10 +10,11 @@ module.exports = function (Entity, property) {
 	validDbType(Entity);
 	FormSectionBase = defineFormSectionBase(db);
 	Entity.prototype.define(property, {
-		type: FormSectionBase,
-		reverse: 'entityPrototype',
-		unique: true,
-		multiple: true
+		type: db.Object,
+		nested: true
 	});
+	Entity.prototype[property]._descriptorPrototype_.type = FormSectionBase;
+	Entity.prototype[property]._descriptorPrototype_.nested = true;
+
 	return Entity;
 };

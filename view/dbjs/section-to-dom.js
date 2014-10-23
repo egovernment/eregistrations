@@ -6,22 +6,21 @@ var d  = require('d')
   , headersMap = require('../utils/headers-map');
 
 module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
-	d(function (document, mainEntity/*, options*/) {
-		var headerRank, options;
-		options = Object(arguments[2]);
-		headerRank = options.headerRank || 4;
-		return ns.div(
-			headersMap[headerRank](this.label),
-			ns.hr(),
-			ns.list(this.propertyNames, function (name) {
-				return ns.table(
-					ns.tbody(
-						ns.tr(
-							ns.th(mainEntity.getDescriptor(name).label),
-							ns.td(mainEntity.getObservable(name))
-						)
-					)
-				);
-			})
-		);
+	d(function (document/*, options*/) {
+		var self, headerRank, cssClass, options;
+		self = this;
+		options = Object(arguments[1]);
+		headerRank = options.headerRank || 3;
+		cssClass   = options.cssClass || 'entity-data-section';
+		return ns.section({ class: cssClass },
+			headersMap[headerRank](this.constructor.label),
+			ns.table(
+				ns.tbody(
+					ns.list(this.propertyNames, function (name) {
+						ns.tr(ns.th(self.master.getDescriptor(name).label),
+							ns.td(self.master.getObservable(name)));
+					})
+				)
+			)
+			);
 	}));

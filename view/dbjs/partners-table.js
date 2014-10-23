@@ -8,7 +8,7 @@ var d = require('d')
   , db = require('mano').db
   , ns = require('mano').domjs.ns;
 
-module.exports = Object.defineProperty(db.partnersTable, 'generateFooter',
+module.exports = Object.defineProperty(db.PartnersTable, 'generateFooter',
 	d(function (propertyName) {
 		return ns.tr(
 			ns.th("Summary"),

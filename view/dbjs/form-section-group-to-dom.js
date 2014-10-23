@@ -9,28 +9,29 @@ var _  = require('mano').i18n.bind('Sections')
 url = ns.url;
 
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm',
-	d(function (document, mainEntity) {
-		var mainFormResolvent = this.getFormResolvent(mainEntity);
+	d(function (document) {
+		var mainFormResolvent;
+		mainFormResolvent = this.getFormResolvent();
 		ns.section(
 			{ class: 'section-primary' },
-			ns.form({ id: mainFormResolvent.formId, action: url(this.actionUrl), class: ns._if(ns.eq(
-				mainEntity.getObservable(this.statusResolventProperty),
-				1
-			), 'completed')
+			ns.form({ id: mainFormResolvent.formId, action: url(this.constructor.actionUrl),
+					class: ns._if(ns.eq(
+					this.master.getObservable(this.statusResolventProperty),
+					1
+				), 'completed')
 				},
-				ns.h2(this.label),
+				ns.h2(this.constructor.label),
 				ns.hr(),
 				mainFormResolvent.formResolvent,
 				ns.div({ id: mainFormResolvent.affectedSectionId }, ns.list(this.sections,
 					function (subSection) {
-						var formResolvent = subSection.getFormResolvent(mainEntity,
-							{ formId: mainFormResolvent.formId });
+						var formResolvent = subSection.getFormResolvent({ formId: mainFormResolvent.formId });
 						return ns.div({ class: 'sub-section' },
-							ns.h3(subSection.label),
+							ns.h3(subSection.constructor.label),
 							formResolvent.formResolvent,
 							ns.fieldset(
 								{ id: formResolvent.affectedSectionId, class: 'form-elements',
-									dbjs: mainEntity, names: subSection.propertyNames }
+									dbjs: subSection.master, names: subSection.formPropertyNames }
 							), formResolvent.radioMatch);
 					})),
 				ns.p({ class: 'submit-placeholder input' },

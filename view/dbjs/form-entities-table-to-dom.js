@@ -11,23 +11,24 @@ var _                   = require('mano').i18n.bind('Sections')
 url = ns.url;
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
-	d(function (document, mainEntity) {
+	d(function (document) {
 		var self = this;
+		console.log('this.statusResolventProperty', this.statusResolventProperty);
 		ns.section({ class: ns._if(ns.eq(
-			mainEntity.getObservable(this.statusResolventProperty),
+			this.master.getObservable(this.statusResolventProperty),
 			1
 		), 'section-primary completed', 'section-primary') },
 			ns.div(
 				ns.div(
-					ns.h2(this.label),
+					ns.h2(this.constructor.label),
 					ns.hr(),
 					ns.table(
 						{ class: 'entities-overview-table' },
 						ns.thead(
-							ns.tr(ns.list(this.entities, function (entity) {
+							ns.tr(ns.list(this.constructor.entities, function (entity) {
 								var result;
 								result = resolvePropertyPath(
-									mainEntity.getDescriptor(self.propertyName).type.prototype,
+									self.master.getDescriptor(self.constructor.propertyName).type.prototype,
 									entity.propertyName
 								);
 								return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
@@ -37,12 +38,12 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 								ns.th({ class: 'actions' }, _("Actions")))
 						),
 						ns.tbody({ onEmpty: ns.tr({ class: 'empty' },
-								ns.td({ colspan: this.entities.size + 2 },
+								ns.td({ colspan: this.constructor.entities.size + 2 },
 									_("There are no elements added at the moment.")
 								)
 							) },
-							mainEntity[this.propertyName], function (object) {
-								return ns.tr(ns.list(self.entities, function (entity) {
+							this.master[this.constructor.propertyName], function (object) {
+								return ns.tr(ns.list(self.constructor.entities, function (entity) {
 									return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
 												ns._if(entity._mobileOnly, 'mobile-only')) },
 											ns.a({ href: url(self.baseUrl + '-id') },
@@ -57,13 +58,13 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 										ns.postButton({ action: '', value: _('Delete') })));
 							}),
 						this.generateFooter &&
-							ns.tfoot(this.generateFooter(mainEntity[this.propertyName]))
+							ns.tfoot(this.generateFooter(this.master[this.constructor.propertyName]))
 					)
 				)
 			),
 			ns.p(
 				ns.a(
-					{ class: 'new-entity', href: url(this.baseUrl + '-add') },
+					{ class: 'new-entity', href: url(this.constructor.baseUrl + '-add') },
 					_("Add new")
 				)
 			),

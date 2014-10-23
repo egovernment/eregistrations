@@ -7,7 +7,7 @@ var db                = require('mano').db
   , FormSectionGroup  = require('../../model/form-section-group')(db)
   , FormEntitiesTable = require('../../model/form-entities-table')(db)
   , TabularEntity     = require('../../model/form-tabular-entity')(db)
-  , user, sub1, sub2, tabular1, tabular2, tabular3, tabular4, tables;
+  , user, tabular1, tabular2, tabular3, tabular4, tables;
 
 module.exports = User;
 require('../../model/form-sections')(User, 'formSections');
@@ -17,55 +17,71 @@ user = User.prototype;
 //temporary helper, cause status is required
 user.defineProperties({ completionStatus: { type: Percentage, value: 1 } });
 
-user.formSections.add(FormSection.newNamed('businessOwnerSection', {
-	propertyNames: ['firstName', 'lastName', 'dateOfBirth', 'userEmail', 'street', 'shares'],
-	label: "Business Owner basic informations",
-	actionUrl: '/',
-	statusResolventProperty: 'completionStatus'
-}));
+FormSection.extend('BusinessOwnerSection', {
+	statusResolventProperty: { value: 'completionStatus' }
+}, {
+	actionUrl: { value: '/' },
+	label: { value: "Business Owner basic information" },
+	propertyNames: { value: ['firstName', 'lastName', 'dateOfBirth',
+		'userEmail', 'street', 'shares'] }
+});
 
-sub1 = FormSection.newNamed('businessOwnerFirstSubSection', {
-	propertyNames: ['companyType', 'members', 'inventory',
+user.formSections.getOwnDescriptor('businessOwnerSection').type = db.BusinessOwnerSection;
+
+FormSection.extend('BusinessOwnerFirstSubSection', {
+	statusResolventProperty: { value: 'completionStatus' }
+}, {
+	propertyNames: { value: ['companyType', 'members', 'inventory',
 		'surfaceArea', 'isOwner', 'businessActivity',
-		'registerIds', 'shares'],
-	label: "First Sub Section",
-	actionUrl: '/',
-	statusResolventProperty: 'completionStatus'
+		'registerIds', 'shares'] },
+	label: { value: "First Sub Section" },
+	actionUrl: { value: '/' }
 });
 
-sub2 = FormSection.newNamed('businessOwnerSecondSubSection', {
-	propertyNames: ['companyType', 'members',
+FormSection.extend('BusinessOwnerSecondSubSection', {
+	statusResolventProperty: { value: 'completionStatus' }
+}, {
+	propertyNames: { value: ['companyType', 'members',
 		'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
-		'descriptionText', 'notification', 'isShoppingGallery', 'registerIds'],
-	label: 'Second Sub Section',
-	actionUrl: '/',
-	statusResolventProperty: 'completionStatus'
+		'descriptionText', 'notification', 'isShoppingGallery', 'registerIds'] },
+	label: { value: "Second Sub Section" },
+	actionUrl: { value: '/' }
 });
 
-user.formSections.add(FormSectionGroup.newNamed('businessOwnerGroupSection', {
-	label: "Business Owner secondary informations",
-	actionUrl: '/',
-	statusResolventProperty: 'completionStatus'
-}));
-
-user.formSections.last.sections.add(sub1);
-user.formSections.last.sections.add(sub2);
-
-FormEntitiesTable.newNamed('partnersTable', {
-	label: 'Directors & non-directors owner / partners',
-	baseUrl: 'forms/partner',
-	propertyName: 'partners',
-	statusResolventProperty: 'completionStatus'
+FormSectionGroup.extend('BusinessOwnerGroupSection', {
+	statusResolventProperty: { value: 'completionStatus' }
+}, {
+	label: { value: "Business Owner secondary informations" },
+	actionUrl: { value: '/' }
 });
 
-FormEntitiesTable.newNamed('emptyPartnersTable', {
-	label: 'Directors & non-directors owner / partners',
-	baseUrl: 'forms/partner',
-	propertyName: 'emptyPartners',
-	statusResolventProperty: 'completionStatus'
+user.formSections.getOwnDescriptor('businessOwnerGroupSection').type = db.BusinessOwnerGroupSection;
+
+user.formSections.businessOwnerGroupSection.sections.
+	getOwnDescriptor('businessOwnerFirstSubSection').type = db.BusinessOwnerFirstSubSection;
+
+user.formSections.businessOwnerGroupSection.sections.
+	getOwnDescriptor('businessOwnerSecondSubSection').type = db.BusinessOwnerSecondSubSection;
+
+FormEntitiesTable.extend('PartnersTable', {
+	statusResolventProperty: { value: 'completionStatus' }
+}, {
+	label: { value: 'Directors & non-directors owner / partners' },
+	baseUrl: { value: 'forms/partner' },
+	entityTitleProperty: { value: 'fullName' },
+	propertyName: { value: 'partners' }
 });
 
-tables = [db.partnersTable, db.emptyPartnersTable];
+FormEntitiesTable.extend('EmptyPartnersTable', {
+	statusResolventProperty: { value: 'completionStatus' }
+}, {
+	label: { value: 'Directors & non-directors owner / partners' },
+	baseUrl: { value: 'forms/partner' },
+	entityTitleProperty: { value: 'fullName' },
+	propertyName: { value: 'emptyPartners' }
+});
+
+tables = [db.PartnersTable, db.EmptyPartnersTable];
 
 tables.forEach(function (table) {
 	tabular1 = new TabularEntity({
@@ -91,21 +107,26 @@ tables.forEach(function (table) {
 	table.entities.add(tabular4);
 });
 
-user.formSections.add(db.partnersTable);
-user.formSections.add(db.emptyPartnersTable);
+user.formSections.getOwnDescriptor('partnersTable').type = db.PartnersTable;
+user.formSections.getOwnDescriptor('emptyPartnersTable').type = db.EmptyPartnersTable;
 
-user.formSendSections.add(FormSection.newNamed('withdrawToSection', {
-	propertyNames: ['placeOfWithdraw'],
-	label: "Where do you want to withdraw your documents?",
-	actionUrl: '/',
-	statusResolventProperty: 'completionStatus'
-}));
+FormSection.extend('WithdrawToSection', {
+	statusResolventProperty: { value: 'completionStatus' }
+}, {
+	propertyNames: { value: ['placeOfWithdraw'] },
+	label: { value: "Where do you want to withdraw your documents?" },
+	actionUrl: { value: '/' }
+});
 
-user.formSendSections.add(FormSection.newNamed('whoWithdrawsSection', {
-	propertyNames: ['lastName', 'dateOfBirth', 'inventory'],
-	label: "Who will pick the certificates?",
-	actionUrl: '/',
-	resolventProperty: 'pickCertificates',
-	resolventValue: false,
-	statusResolventProperty: 'completionStatus'
-}));
+FormSection.extend('WhoWithdrawsSection', {
+	statusResolventProperty: { value: 'completionStatus' },
+	resolventProperty: { value: 'pickCertificates' },
+	resolventValue: { value: false }
+}, {
+	propertyNames: { value: ['lastName', 'dateOfBirth', 'inventory'] },
+	label: { value: "Who will pick the certificates?" },
+	actionUrl: { value: '/' }
+});
+
+user.formSendSections.getOwnDescriptor('withdrawToSection').type = db.WithdrawToSection;
+user.formSendSections.getOwnDescriptor('whoWithdrawsSection').type = db.WhoWithdrawsSection;

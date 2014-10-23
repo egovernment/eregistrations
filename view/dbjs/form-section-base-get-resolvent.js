@@ -14,11 +14,11 @@ return object of form:
 }
 */
 module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormResolvent',
-	d(function (mainEntity/*, options */) {
+	d(function (/*, options */) {
 		var result, match, options;
 		result = {};
 		match = {};
-		options = Object(arguments[1]);
+		options = Object(arguments[0]);
 		if (this.resolventProperty) {
 			result.formId = options.formId || generateId();
 			result.affectedSectionId = generateId();
@@ -27,9 +27,9 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 			} else {
 				match[this.resolventValue] = result.affectedSectionId;
 			}
-			result.formResolvent = ns.field({ dbjs: mainEntity.getObservable(this.resolventProperty) });
+			result.formResolvent = ns.field({ dbjs: this.master.getObservable(this.resolventProperty) });
 			result.radioMatch = ns.legacy('radioMatch', result.formId,
-					mainEntity.__id__ + '/' + this.resolventProperty,
+					this.master.__id__ + '/' + this.resolventProperty,
 				match);
 		}
 		return result;
