@@ -1,13 +1,10 @@
 .submitted-documents-thumbs {
 	counter-reset:li;
-	list-style-type: none;
-	display: block;
 	margin-bottom: 0;
 }
 
 .submitted-documents-thumbs li {
 	position: relative;
-	height: 132px;
 	line-height: 129px;
 	width: 94px;
 	margin-right: 19px;
