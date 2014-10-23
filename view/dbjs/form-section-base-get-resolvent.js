@@ -19,17 +19,19 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 		result = {};
 		match = {};
 		options = Object(arguments[0]);
-		if (this.resolventProperty) {
+		if (this.constructor.resolventProperty) {
 			result.formId = options.formId || generateId();
 			result.affectedSectionId = generateId();
-			if (typeof this.resolventValue === 'boolean') {
-				match[Number(this.resolventValue)] = result.affectedSectionId;
+			if (typeof this.constructor.resolventValue === 'boolean') {
+				match[Number(this.constructor.resolventValue)] = result.affectedSectionId;
 			} else {
-				match[this.resolventValue] = result.affectedSectionId;
+				match[this.constructor.resolventValue] = result.affectedSectionId;
 			}
-			result.formResolvent = ns.field({ dbjs: this.master.getObservable(this.resolventProperty) });
+			result.formResolvent = ns.field({ dbjs: this.master.getObservable(
+				this.constructor.resolventProperty
+			) });
 			result.radioMatch = ns.legacy('radioMatch', result.formId,
-					this.master.__id__ + '/' + this.resolventProperty,
+					this.master.__id__ + '/' + this.constructor.resolventProperty,
 				match);
 		}
 		return result;

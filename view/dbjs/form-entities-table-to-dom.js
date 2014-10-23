@@ -14,7 +14,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 	d(function (document) {
 		var self = this;
 		ns.section({ class: ns._if(ns.eq(
-			this.master.getObservable(this.statusResolventProperty),
+			this.status,
 			1
 		), 'section-primary completed', 'section-primary') },
 			ns.div(
@@ -56,8 +56,8 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 										ns.a(_("Edit")),
 										ns.postButton({ action: '', value: _('Delete') })));
 							}),
-						this.generateFooter &&
-							ns.tfoot(this.generateFooter(this.master[this.constructor.propertyName]))
+						this.constructor.generateFooter &&
+							ns.tfoot(this.constructor.generateFooter(this.master[this.constructor.propertyName]))
 					)
 				)
 			),

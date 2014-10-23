@@ -15,7 +15,7 @@ module.exports = memoize(function (db) {
 			return this.constructor.propertyNames;
 		} },
 		propertyNames: { type: StringLine, multiple: true, value: function () {
-			return this.constructor.propertyNames;
+			return this.formPropertyNames;
 		} }
 	}, {
 		propertyNames: { type: StringLine, multiple: true }

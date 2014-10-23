@@ -12,7 +12,12 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 		options = Object(arguments[1]);
 		headerRank = options.headerRank || 3;
 		return ns.section({ class: 'entity-data-section' },
-			headersMap[headerRank++](this.constructor.label),
+			(function () {
+				if (self.constructor.label) {
+					return headersMap[headerRank++](self.constructor.label);
+				}
+				headerRank++;
+			}()),
 			ns.ul({ class: 'entity-entities-section' },
 				this.master.getDescriptor(this.constructor.propertyName).type.prototype.formSections,
 				function (section) {

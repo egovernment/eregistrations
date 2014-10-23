@@ -14,7 +14,14 @@ module.exports = memoize(function (db) {
 		sections: {
 			type: db.Object,
 			nested: true
-		}
+		},
+		status: { value: function (_observe) {
+			var sum = 0;
+			this.sections.forEach(function (section) {
+				sum += section.status;
+			});
+			return sum / this.sections.size;
+		} }
 	});
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSection;
 	FormSectionGroup.prototype.sections._descriptorPrototype_.nested = true;

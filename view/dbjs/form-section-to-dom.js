@@ -14,7 +14,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		return ns.section({ class: 'section-primary' },
 			ns.form(
 				{ id: resolvent.formId, action: url(this.constructor.actionUrl), class: ns._if(ns.eq(
-					this.master.getObservable(this.statusResolventProperty),
+					this.status,
 					1
 				), 'completed') },
 				ns.h2(this.constructor.label),

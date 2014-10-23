@@ -17,9 +17,7 @@ user = User.prototype;
 //temporary helper, cause status is required
 user.defineProperties({ completionStatus: { type: Percentage, value: 1 } });
 
-FormSection.extend('BusinessOwnerSection', {
-	statusResolventProperty: { value: 'completionStatus' }
-}, {
+FormSection.extend('BusinessOwnerSection', {}, {
 	actionUrl: { value: '/' },
 	label: { value: "Business Owner basic information" },
 	propertyNames: { value: ['firstName', 'lastName', 'dateOfBirth',
@@ -28,9 +26,7 @@ FormSection.extend('BusinessOwnerSection', {
 
 user.formSections.getOwnDescriptor('businessOwnerSection').type = db.BusinessOwnerSection;
 
-FormSection.extend('BusinessOwnerFirstSubSection', {
-	statusResolventProperty: { value: 'completionStatus' }
-}, {
+FormSection.extend('BusinessOwnerFirstSubSection', {}, {
 	propertyNames: { value: ['companyType', 'members', 'inventory',
 		'surfaceArea', 'isOwner', 'businessActivity',
 		'registerIds', 'shares'] },
@@ -38,9 +34,7 @@ FormSection.extend('BusinessOwnerFirstSubSection', {
 	actionUrl: { value: '/' }
 });
 
-FormSection.extend('BusinessOwnerSecondSubSection', {
-	statusResolventProperty: { value: 'completionStatus' }
-}, {
+FormSection.extend('BusinessOwnerSecondSubSection', {}, {
 	propertyNames: { value: ['companyType', 'members',
 		'inventory', 'surfaceArea', 'isOwner', 'businessActivity',
 		'descriptionText', 'notification', 'isShoppingGallery', 'registerIds'] },
@@ -48,9 +42,7 @@ FormSection.extend('BusinessOwnerSecondSubSection', {
 	actionUrl: { value: '/' }
 });
 
-FormSectionGroup.extend('BusinessOwnerGroupSection', {
-	statusResolventProperty: { value: 'completionStatus' }
-}, {
+FormSectionGroup.extend('BusinessOwnerGroupSection', {}, {
 	label: { value: "Business Owner secondary informations" },
 	actionUrl: { value: '/' }
 });
@@ -63,20 +55,16 @@ user.formSections.businessOwnerGroupSection.sections.
 user.formSections.businessOwnerGroupSection.sections.
 	getOwnDescriptor('businessOwnerSecondSubSection').type = db.BusinessOwnerSecondSubSection;
 
-FormEntitiesTable.extend('PartnersTable', {
-	statusResolventProperty: { value: 'completionStatus' }
-}, {
+FormEntitiesTable.extend('PartnersTable', {}, {
 	label: { value: 'Directors & non-directors owner / partners' },
-	baseUrl: { value: 'forms/partner' },
+	baseUrl: { value: 'partner' },
 	entityTitleProperty: { value: 'fullName' },
 	propertyName: { value: 'partners' }
 });
 
-FormEntitiesTable.extend('EmptyPartnersTable', {
-	statusResolventProperty: { value: 'completionStatus' }
-}, {
+FormEntitiesTable.extend('EmptyPartnersTable', {}, {
 	label: { value: 'Directors & non-directors owner / partners' },
-	baseUrl: { value: 'forms/partner' },
+	baseUrl: { value: 'partner' },
 	entityTitleProperty: { value: 'fullName' },
 	propertyName: { value: 'emptyPartners' }
 });
@@ -110,22 +98,18 @@ tables.forEach(function (table) {
 user.formSections.getOwnDescriptor('partnersTable').type = db.PartnersTable;
 user.formSections.getOwnDescriptor('emptyPartnersTable').type = db.EmptyPartnersTable;
 
-FormSection.extend('WithdrawToSection', {
-	statusResolventProperty: { value: 'completionStatus' }
-}, {
+FormSection.extend('WithdrawToSection', {}, {
 	propertyNames: { value: ['placeOfWithdraw'] },
 	label: { value: "Where do you want to withdraw your documents?" },
 	actionUrl: { value: '/' }
 });
 
-FormSection.extend('WhoWithdrawsSection', {
-	statusResolventProperty: { value: 'completionStatus' },
-	resolventProperty: { value: 'pickCertificates' },
-	resolventValue: { value: false }
-}, {
+FormSection.extend('WhoWithdrawsSection', {}, {
 	propertyNames: { value: ['lastName', 'dateOfBirth', 'inventory'] },
 	label: { value: "Who will pick the certificates?" },
-	actionUrl: { value: '/' }
+	actionUrl: { value: '/' },
+	resolventProperty: { value: 'pickCertificates' },
+	resolventValue: { value: false }
 });
 
 user.formSendSections.getOwnDescriptor('withdrawToSection').type = db.WithdrawToSection;

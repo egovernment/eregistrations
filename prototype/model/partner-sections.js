@@ -13,19 +13,14 @@ partner.formSections.forEach(function (section, name) {
 	partner.formSections[name] = null;
 });
 
-FormSectionGroup.extend('PartnerFormSectionGroup', {
-	statusResolventProperty: { value: 'completionStatus' }
-}, {
-	label: { value: "Add new Partner" },
+FormSectionGroup.extend('PartnerFormSectionGroup', {}, {
 	actionUrl: { value: '/' }
 });
 
 partner.formSections.getOwnDescriptor('partnerFormSectionGroup').type =
 	db.PartnerFormSectionGroup;
 
-FormSection.extend('PartnerFormBasicSection', {
-	statusResolventProperty: { value: 'completionStatus' }
-}, {
+FormSection.extend('PartnerFormBasicSection', {}, {
 	propertyNames: { value: ['firstName', 'lastName', 'dateOfBirth', 'userEmail'] },
 	label: { value: "Business Partner basic informations" },
 	actionUrl: { value: '/' }
@@ -34,9 +29,7 @@ FormSection.extend('PartnerFormBasicSection', {
 partner.formSections.partnerFormSectionGroup.sections.
 	getOwnDescriptor('partnerFormBasicSection').type = db.PartnerFormBasicSection;
 
-FormSection.extend('PartnerFormOtherSection', {
-	statusResolventProperty: { value: 'completionStatus' }
-}, {
+FormSection.extend('PartnerFormOtherSection', {}, {
 	propertyNames: { value: ['companyType', 'inventory', 'surfaceArea',
 		'isOwner', 'businessActivity'] },
 	label: { value: "Business Partner secondary informations" },
