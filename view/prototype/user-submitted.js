@@ -293,79 +293,82 @@ exports['sub-main'] = function () {
 					{ class: 'entity-entities-section' },
 					li(
 						h4("Marko Zagola"),
-						h5("Personal data"),
-						div(
-							{ class: 'entity-data-sub-section' },
-							h6("Basic data"),
-							table(
-								tbody(
-									tr(
-										th("Name"),
-										td("Marko")
-									),
-									tr(
-										th("Surname"),
-										td("Zagalo")
+						section(
+							{ class: 'entity-data-section' },
+							h5("Personal data"),
+							section(
+								{ class: 'entity-data-sub-section' },
+								h6("Basic data"),
+								table(
+									tbody(
+										tr(
+											th("Name"),
+											td("Marko")
+										),
+										tr(
+											th("Surname"),
+											td("Zagalo")
+										)
 									)
 								)
-							)
-						),
-						div(
-							{ class: 'entity-data-sub-section' },
-							h6("Additional data"),
-							table(
-								tbody(
-									tr(
-										th("Document type"),
-										td("X")
-									),
-									tr(
-										th("Document number"),
-										td("123")
-									),
-									tr(
-										th("Marital status"),
-										td("")
-									),
-									tr(
-										th("Date of birth"),
-										td("25-06-1991")
-									),
-									tr(
-										th("Nationality"),
-										td("Romanian")
-									),
-									tr(
-										th("E-mail"),
-										td("andrei.balan@blink-it.ro")
+							),
+							section(
+								{ class: 'entity-data-sub-section' },
+								h6("Additional data"),
+								table(
+									tbody(
+										tr(
+											th("Document type"),
+											td("X")
+										),
+										tr(
+											th("Document number"),
+											td("123")
+										),
+										tr(
+											th("Marital status"),
+											td("")
+										),
+										tr(
+											th("Date of birth"),
+											td("25-06-1991")
+										),
+										tr(
+											th("Nationality"),
+											td("Romanian")
+										),
+										tr(
+											th("E-mail"),
+											td("andrei.balan@blink-it.ro")
+										)
 									)
 								)
-							)
-						),
-						div(
-							{ class: 'entity-data-sub-section' },
-							h6("Address"),
-							table(
-								tbody(
-									tr(
-										th("Address"),
-										td("XXX")
-									),
-									tr(
-										th("Number"),
-										td("1")
-									),
-									tr(
-										th("Postal code"),
-										td("X")
-									),
-									tr(
-										th("City"),
-										td("Bucharest")
-									),
-									tr(
-										th("Country"),
-										td("Romania")
+							),
+							section(
+								{ class: 'entity-data-sub-section' },
+								h6("Address"),
+								table(
+									tbody(
+										tr(
+											th("Address"),
+											td("XXX")
+										),
+										tr(
+											th("Number"),
+											td("1")
+										),
+										tr(
+											th("Postal code"),
+											td("X")
+										),
+										tr(
+											th("City"),
+											td("Bucharest")
+										),
+										tr(
+											th("Country"),
+											td("Romania")
+										)
 									)
 								)
 							)
@@ -373,9 +376,9 @@ exports['sub-main'] = function () {
 					),
 					li(
 						h4("Frank Grozel"),
-						h5("Additional data"),
-						div(
+						section(
 							{ class: 'entity-data-section' },
+							h5("Additional data"),
 							table(
 								tbody(
 									tr(
