@@ -1,5 +1,6 @@
 'use strict';
 var generateId = require('time-uuid')
+  , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
   , d  = require('d')
   , db = require('mano').db
   , ns = require('mano').domjs.ns;
@@ -27,9 +28,9 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 			} else {
 				match[this.constructor.resolventValue] = result.affectedSectionId;
 			}
-			result.formResolvent = ns.field({ dbjs: this.master.getObservable(
+			result.formResolvent = ns.field({ dbjs: resolvePropertyPath(this.master,
 				this.constructor.resolventProperty
-			) });
+				).value });
 			result.radioMatch = ns.legacy('radioMatch', result.formId,
 					this.master.__id__ + '/' + this.constructor.resolventProperty,
 				match);

@@ -4,7 +4,6 @@ var _                   = require('mano').i18n.bind('Sections')
   , d                   = require('d')
   , db                  = require('mano').db
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
-  , resolveObservable   = require('dbjs-dom/input/utils/resolve-observable')
   , ns = require('mano').domjs.ns
   , url;
 
@@ -25,14 +24,12 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 						{ class: 'entities-overview-table' },
 						ns.thead(
 							ns.tr(ns.list(this.constructor.entities, function (entity) {
-								var result;
-								result = resolvePropertyPath(
-									self.master.getDescriptor(self.constructor.propertyName).type.prototype,
-									entity.propertyName
-								);
 								return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
 											ns._if(entity._mobileOnly, 'mobile-only')) },
-										result.object.getDescriptor(result.key).label);
+									resolvePropertyPath(
+										self.master.getDescriptor(self.constructor.propertyName).type.prototype,
+										entity.propertyName
+									).descriptor.label);
 							}), ns.th(),
 								ns.th({ class: 'actions' }, _("Actions")))
 						),
@@ -41,14 +38,15 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 									_("There are no elements added at the moment.")
 								)
 							) },
-							this.master[this.constructor.propertyName], function (entityObject) {
+							resolvePropertyPath(this.master, this.constructor.propertyName).value,
+							function (entityObject) {
 								return ns.tr(ns.list(self.constructor.entities, function (entity) {
 									return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
 												ns._if(entity._mobileOnly, 'mobile-only')) },
 											ns.a({ href: url(self.constructor.baseUrl, entityObject.__id__) },
-												resolveObservable(entityObject, entity.propertyName)));
+												resolvePropertyPath(entityObject, entity.propertyName).observable));
 								}),
-									ns.td({ class: ns._if(ns.eq(entityObject.getObservable('completionStatus'), 1),
+									ns.td({ class: ns._if(ns.eq(entityObject.formSections.status, 1),
 											'completed') },
 										ns.span({ class: 'status-complete' }, "✓"),
 										ns.span({ class: 'status-incomplete' }, "✕")),
@@ -59,7 +57,9 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 											value: _('Delete') })));
 							}),
 						this.constructor.generateFooter &&
-							ns.tfoot(this.constructor.generateFooter(this.master[this.constructor.propertyName]))
+							ns.tfoot(this.constructor.generateFooter(
+								resolvePropertyPath(this.master, this.constructor.propertyName).value
+							))
 					)
 				)
 			),

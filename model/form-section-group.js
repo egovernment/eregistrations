@@ -15,7 +15,7 @@ module.exports = memoize(function (db) {
 			type: db.Object,
 			nested: true
 		},
-		status: { value: function (_observe) {
+		status: { value: function () {
 			var sum = 0;
 			this.sections.forEach(function (section) {
 				sum += section.status;

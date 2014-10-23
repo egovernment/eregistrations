@@ -3,7 +3,8 @@
 var d                   = require('d')
   , db = require('mano').db
   , ns = require('mano').domjs.ns
-  , headersMap = require('../utils/headers-map');
+  , headersMap = require('../utils/headers-map')
+  , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path');
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 	d(function (document/*, options */) {
@@ -19,13 +20,16 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 				headerRank++;
 			}()),
 			ns.ul({ class: 'entity-entities-section' },
-				this.master.getDescriptor(this.constructor.propertyName).type.prototype.formSections,
+				resolvePropertyPath(
+					this.master,
+					this.constructor.propertyName
+				).descriptor.type.prototype.formSections,
 				function (section) {
 					if (!section) {
 						return;
 					}
 					return ns.li(headersMap[headerRank](
-						self.master.getObservable(self.constructor.entityTitleProperty)
+						resolvePropertyPath(self.master, self.constructor.entityTitleProperty).value
 					), section.toDOM(document, { headerRank: headerRank + 1 }));
 				}
 				)
