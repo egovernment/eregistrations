@@ -148,10 +148,6 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 }
 
 /* Input pre-element (span) */
-.input-prepend *:only-child {
-	border-radius: 4px;
-	border: 1px solid var(--light-inner-border);
-}
 .input-prepend {
 	white-space: nowrap;
 }
@@ -160,6 +156,11 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	border-radius: 0 4px 4px 0;
 	max-width: 90%;
 	border-left: none;
+}
+
+.input-prepend input:only-child {
+	border-radius: 4px;
+	border: 1px solid var(--light-inner-border);
 }
 
 .input-append {
