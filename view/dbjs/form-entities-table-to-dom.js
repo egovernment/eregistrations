@@ -13,7 +13,6 @@ url = ns.url;
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
 	d(function (document) {
 		var self = this;
-		console.log('this.statusResolventProperty', this.statusResolventProperty);
 		ns.section({ class: ns._if(ns.eq(
 			this.master.getObservable(this.statusResolventProperty),
 			1
