@@ -15,10 +15,10 @@ module.exports = memoize(function (db) {
 			type: db.Object,
 			nested: true
 		},
-		status: { value: function () {
+		status: { value: function (_observe) {
 			var sum = 0;
 			this.sections.forEach(function (section) {
-				sum += section.status;
+				sum += _observe(section._status);
 			});
 			return sum / this.sections.size;
 		} }

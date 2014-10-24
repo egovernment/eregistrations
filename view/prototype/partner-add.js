@@ -11,6 +11,6 @@ exports['step-form'] = { class: { 'step-active': true } };
 exports.step = function () {
 	ns.div(
 		ns.h1(_("Add new Partner")),
-		generateSections(partner.formSections)
+		generateSections(partner.partnerFormSections)
 	);
 };

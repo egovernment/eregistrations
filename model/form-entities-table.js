@@ -13,18 +13,18 @@ module.exports = memoize(function (db) {
 	FormSectionBase   = defineFormSectionBase(db);
 	FormTabularEntity = defineFormTabularEntity(db);
 	return FormSectionBase.extend('FormEntitiesTable', {
-		status: { value: function () {
-			var Type, statusSum;
+		status: { value: function (_observe) {
+			var self, entityObjects, statusSum;
+			self = this;
 			statusSum = 0;
-			Type = this.master.getDescriptor(this.constructor.propertyName).type;
-			Type.prototype.formSections.forEach(function (section) {
-				if (!section) {
-					return;
-				}
-				statusSum += section._status;
+			entityObjects = this.master.resolveSKeyPath(this.constructor.propertyName).value;
+			entityObjects.forEach(function (entityObject) {
+				statusSum +=
+					_observe(entityObject.resolveSKeyPath(self.constructor.sectionProperty + 'Status')
+						.observable);
 			});
 
-			return statusSum / Type.prototype.formSections.size;
+			return statusSum / _observe(entityObjects._size);
 		} }
 	}, {
 		actionUrl: { required: false },
@@ -32,6 +32,7 @@ module.exports = memoize(function (db) {
 		propertyName: { type: StringLine, required: true },
 		entityTitleProperty: { type: StringLine, required: true },
 		entities: { type: FormTabularEntity, multiple: true, unique: true },
-		generateFooter: { type: db.Function }
+		generateFooter: { type: db.Function },
+		sectionProperty: { type: StringLine, required: true }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

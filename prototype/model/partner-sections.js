@@ -8,16 +8,13 @@ var db          = require('mano').db
 
 partner = Partner.prototype;
 
-partner.formSections.forEach(function (section, name) {
-	partner.formSections.getOwnDescriptor(name).nested = false;
-	partner.formSections[name] = null;
-});
+require('../../model/form-sections')(Partner, 'partnerFormSections');
 
 FormSectionGroup.extend('PartnerFormSectionGroup', {}, {
 	actionUrl: { value: '/' }
 });
 
-partner.formSections.getOwnDescriptor('partnerFormSectionGroup').type =
+partner.partnerFormSections.getOwnDescriptor('partnerFormSectionGroup').type =
 	db.PartnerFormSectionGroup;
 
 FormSection.extend('PartnerFormBasicSection', {}, {
@@ -26,7 +23,7 @@ FormSection.extend('PartnerFormBasicSection', {}, {
 	actionUrl: { value: '/' }
 });
 
-partner.formSections.partnerFormSectionGroup.sections.
+partner.partnerFormSections.partnerFormSectionGroup.sections.
 	getOwnDescriptor('partnerFormBasicSection').type = db.PartnerFormBasicSection;
 
 FormSection.extend('PartnerFormOtherSection', {}, {
@@ -36,5 +33,5 @@ FormSection.extend('PartnerFormOtherSection', {}, {
 	actionUrl: { value: '/' }
 });
 
-partner.formSections.partnerFormSectionGroup.sections.
+partner.partnerFormSections.partnerFormSectionGroup.sections.
 	getOwnDescriptor('partnerFormOtherSection').type = db.PartnerFormOtherSection;

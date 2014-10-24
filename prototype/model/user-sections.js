@@ -59,14 +59,16 @@ FormEntitiesTable.extend('PartnersTable', {}, {
 	label: { value: 'Directors & non-directors owner / partners' },
 	baseUrl: { value: 'partner' },
 	entityTitleProperty: { value: 'fullName' },
-	propertyName: { value: 'partners' }
+	propertyName: { value: 'partners' },
+	sectionProperty: { value: 'partnerFormSections' }
 });
 
 FormEntitiesTable.extend('EmptyPartnersTable', {}, {
 	label: { value: 'Directors & non-directors owner / partners' },
 	baseUrl: { value: 'partner' },
 	entityTitleProperty: { value: 'fullName' },
-	propertyName: { value: 'emptyPartners' }
+	propertyName: { value: 'emptyPartners' },
+	sectionProperty: { value: 'partnerFormSections' }
 });
 
 tables = [db.PartnersTable, db.EmptyPartnersTable];

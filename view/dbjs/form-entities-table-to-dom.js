@@ -46,7 +46,8 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 											ns.a({ href: url(self.constructor.baseUrl, entityObject.__id__) },
 												resolvePropertyPath(entityObject, entity.propertyName).observable));
 								}),
-									ns.td({ class: ns._if(ns.eq(entityObject.formSections.status, 1),
+									ns.td({ class: ns._if(ns.eq(resolvePropertyPath(entityObject,
+													self.constructor.sectionProperty + 'Status').observable, 1),
 											'completed') },
 										ns.span({ class: 'status-complete' }, "✓"),
 										ns.span({ class: 'status-incomplete' }, "✕")),

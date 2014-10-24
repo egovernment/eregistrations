@@ -30,7 +30,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 			}
 			result.formResolvent = ns.field({ dbjs: resolvePropertyPath(this.master,
 				this.constructor.resolventProperty
-				).value });
+				).observable });
 			result.radioMatch = ns.legacy('radioMatch', result.formId,
 					this.master.__id__ + '/' + this.constructor.resolventProperty,
 				match);

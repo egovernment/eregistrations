@@ -7,9 +7,6 @@ module.exports = function (sections/*, options */) {
 	options = Object(arguments[1]);
 	headerRank = options.headerRank || 3;
 	return ns.div(ns.list(sections, function (section) {
-		if (!section) {
-			return null;
-		}
 		ns.insert(ns._if(section._isApplicable,
 			section.toDOM(ns.document, { headerRank: headerRank })));
 	}));
