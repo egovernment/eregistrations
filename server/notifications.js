@@ -92,7 +92,9 @@ setup = function (path) {
 		};
 		mailOpts.text = text;
 		context.user = null;
-		mano.mail(mailOpts);
+		mano.mail(mailOpts).done(null, function (err) {
+			console.log("Cannot send email", err.stack);
+		});
 	}, 500));
 };
 
