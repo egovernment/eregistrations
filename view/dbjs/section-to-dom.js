@@ -3,7 +3,8 @@
 var d  = require('d')
   , db = require('mano').db
   , ns = require('mano').domjs.ns
-  , headersMap = require('../utils/headers-map');
+  , headersMap = require('../utils/headers-map')
+  , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path');
 
 module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 	d(function (document/*, options*/) {
@@ -17,8 +18,8 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 			ns.table(
 				ns.tbody(
 					ns.list(this.propertyNames, function (name) {
-						ns.tr(ns.th(self.master.getDescriptor(name).label),
-							ns.td(self.master.getObservable(name)));
+						ns.tr(ns.th(resolvePropertyPath(self.master, name).descriptor.label),
+							ns.td(resolvePropertyPath(self.master, name).observable));
 					})
 				)
 			)
