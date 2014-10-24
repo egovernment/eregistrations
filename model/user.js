@@ -97,7 +97,9 @@ User.prototype.defineProperties({
 			}, this);
 			return costs;
 		}
-	}
+	},
+	formPropertyApplicableMap: { type: db.Object, nested: true },
+	propertyApplicableMap: { type: db.Object, nested: true }
 });
 
 User.prototype.registrations._descriptorPrototype_.setProperties({
