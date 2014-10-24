@@ -18,6 +18,9 @@
 	border: 1px solid var(--light-inner-border);
 	text-align: center;
 }
+.submitted-preview-document .image-placeholder > li {
+	height: 100%;
+}
 
 .submitted-preview-document .image-placeholder img {
 	margin-bottom: 0;
