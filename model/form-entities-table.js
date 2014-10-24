@@ -1,6 +1,7 @@
 'use strict';
 
-var memoize                 = require('memoizee/plain')
+var _                       = require('mano').i18n.bind("Model: Form Entities Table")
+  , memoize                 = require('memoizee/plain')
   , validDb                 = require('dbjs/valid-dbjs')
   , defineStringLine        = require('dbjs-ext/string/string-line')
   , defineFormSectionBase   = require('./form-section-base')
@@ -33,6 +34,7 @@ module.exports = memoize(function (db) {
 		entityTitleProperty: { type: StringLine, required: true },
 		entities: { type: FormTabularEntity, multiple: true, unique: true },
 		generateFooter: { type: db.Function },
-		sectionProperty: { type: StringLine, required: true }
+		sectionProperty: { type: StringLine, required: true },
+		onEmptyMessage: { type: StringLine, value: _("There are no elements added at the moment.") }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

@@ -35,7 +35,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 						),
 						ns.tbody({ onEmpty: ns.tr({ class: 'empty' },
 								ns.td({ colspan: this.constructor.entities.size + 2 },
-									_("There are no elements added at the moment.")
+									this.constructor.onEmptyMessage
 								)
 							) },
 							resolvePropertyPath(this.master, this.constructor.propertyName).value,
