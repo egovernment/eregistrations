@@ -3,7 +3,7 @@
 require('mano/lib/client')({
 	noData: true,
 	schema: function () {
-		var db      = require('./model.generated')
+		var db      = require('./model')
 		  , domEnum = require('dbjs-dom/enum')
 		  , user = db.User.prototype;
 
