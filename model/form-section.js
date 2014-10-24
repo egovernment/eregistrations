@@ -11,6 +11,13 @@ module.exports = memoize(function (db) {
 	StringLine      = defineStringLine(db);
 	FormSectionBase = defineFormSectionBase(db);
 	return FormSectionBase.extend('FormSection', {
+		formPropertyNames: { type: StringLine, multiple: true, value: function () {
+			return this.constructor.propertyNames;
+		} },
+		propertyNames: { type: StringLine, multiple: true, value: function () {
+			return this.formPropertyNames;
+		} }
+	}, {
 		propertyNames: { type: StringLine, multiple: true }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

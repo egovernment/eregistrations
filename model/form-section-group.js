@@ -6,11 +6,25 @@ var memoize               = require('memoizee/plain')
   , defineFormSection     = require('./form-section');
 
 module.exports = memoize(function (db) {
-	var FormSectionBase, FormSection;
+	var FormSectionGroup, FormSectionBase, FormSection;
 	validDb(db);
 	FormSectionBase = defineFormSectionBase(db);
 	FormSection     = defineFormSection(db);
-	return FormSectionBase.extend('FormSectionGroup', {
-		sections: { type: FormSection, multiple: true }
+	FormSectionGroup = FormSectionBase.extend('FormSectionGroup', {
+		sections: {
+			type: db.Object,
+			nested: true
+		},
+		status: { value: function (_observe) {
+			var sum = 0;
+			this.sections.forEach(function (section) {
+				sum += _observe(section._status);
+			});
+			return sum / this.sections.size;
+		} }
 	});
+	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSection;
+	FormSectionGroup.prototype.sections._descriptorPrototype_.nested = true;
+
+	return FormSectionGroup;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

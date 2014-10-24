@@ -3,25 +3,25 @@
 var d  = require('d')
   , db = require('mano').db
   , ns = require('mano').domjs.ns
-  , headersMap = require('../utils/headers-map');
+  , headersMap = require('../utils/headers-map')
+  , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path');
 
 module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
-	d(function (document, mainEntity/*, options*/) {
-		var headerRank, options;
-		options = Object(arguments[2]);
-		headerRank = options.headerRank || 4;
-		return ns.div(
-			headersMap[headerRank](this.label),
-			ns.hr(),
-			ns.list(this.propertyNames, function (name) {
-				return ns.table(
-					ns.tbody(
-						ns.tr(
-							ns.th(mainEntity.getDescriptor(name).label),
-							ns.td(mainEntity.getObservable(name))
-						)
-					)
-				);
-			})
-		);
+	d(function (document/*, options*/) {
+		var self, headerRank, cssClass, options;
+		self = this;
+		options = Object(arguments[1]);
+		headerRank = options.headerRank || 3;
+		cssClass   = options.cssClass || 'entity-data-section';
+		return ns.section({ class: cssClass },
+			this.constructor.label && headersMap[headerRank](this.constructor.label),
+			ns.table(
+				ns.tbody(
+					ns.list(this.propertyNames, function (name) {
+						ns.tr(ns.th(resolvePropertyPath(self.master, name).descriptor.label),
+							ns.td(resolvePropertyPath(self.master, name).observable));
+					})
+				)
+			)
+			);
 	}));

@@ -9,20 +9,20 @@ var _  = require('mano').i18n.bind('Sections')
 url = ns.url;
 
 module.exports = Object.defineProperties(db.FormSection.prototype, {
-	toDOMForm: d(function (document, mainEntity) {
-		var resolvent = this.getFormResolvent(mainEntity);
+	toDOMForm: d(function (document) {
+		var resolvent = this.getFormResolvent();
 		return ns.section({ class: 'section-primary' },
 			ns.form(
-				{ id: resolvent.formId, action: url(this.actionUrl), class: ns._if(ns.eq(
-					mainEntity.getObservable(this.statusResolventProperty),
+				{ id: resolvent.formId, action: url(this.constructor.actionUrl), class: ns._if(ns.eq(
+					this.status,
 					1
 				), 'completed') },
-				ns.h2(this.label),
+				ns.h2(this.constructor.label),
 				ns.hr(),
 				resolvent.formResolvent,
 				ns.fieldset(
 					{ id: resolvent.affectedSectionId, class: 'form-elements',
-						dbjs: mainEntity, names: this.propertyNames }
+						dbjs: this.master, names: this.formPropertyNames }
 				),
 				ns.p({ class: 'submit-placeholder input' },
 					ns.input({ type: 'submit' }, _("Submit"))),

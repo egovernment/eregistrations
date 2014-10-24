@@ -37,7 +37,7 @@ module.exports = function (view) {
 		documents:  bind(userMain.diff('./documents')),
 		submission:  bind(userMain.diff('./submission')),
 		'documents/disabled':  bind(userDocuments.diff('./disabled-documents')),
-		'forms/partner-add': bind(userMain.diff('./partner-add')),
+		'partner-add': bind(userMain.diff('./partner-add')),
 		'forms/partner-id': bind(userMain.diff('./partner')),
 		'user-submitted': bind(subMain.diff('./user-submitted')),
 

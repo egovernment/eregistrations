@@ -4,66 +4,69 @@ var _                   = require('mano').i18n.bind('Sections')
   , d                   = require('d')
   , db                  = require('mano').db
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
-  , resolveObservable   = require('dbjs-dom/input/utils/resolve-observable')
   , ns = require('mano').domjs.ns
   , url;
 
 url = ns.url;
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
-	d(function (document, mainEntity) {
+	d(function (document) {
 		var self = this;
 		ns.section({ class: ns._if(ns.eq(
-			mainEntity.getObservable(this.statusResolventProperty),
+			this.status,
 			1
 		), 'section-primary completed', 'section-primary') },
 			ns.div(
 				ns.div(
-					ns.h2(this.label),
+					ns.h2(this.constructor.label),
 					ns.hr(),
 					ns.table(
 						{ class: 'entities-overview-table' },
 						ns.thead(
-							ns.tr(ns.list(this.entities, function (entity) {
-								var result;
-								result = resolvePropertyPath(
-									mainEntity.getDescriptor(self.propertyName).type.prototype,
-									entity.propertyName
-								);
+							ns.tr(ns.list(this.constructor.entities, function (entity) {
 								return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
 											ns._if(entity._mobileOnly, 'mobile-only')) },
-										result.object.getDescriptor(result.key).label);
+									resolvePropertyPath(
+										self.master.getDescriptor(self.constructor.propertyName).type.prototype,
+										entity.propertyName
+									).descriptor.label);
 							}), ns.th(),
 								ns.th({ class: 'actions' }, _("Actions")))
 						),
 						ns.tbody({ onEmpty: ns.tr({ class: 'empty' },
-								ns.td({ colspan: this.entities.size + 2 },
-									_("There are no elements added at the moment.")
+								ns.td({ colspan: this.constructor.entities.size + 2 },
+									this.constructor.onEmptyMessage
 								)
 							) },
-							mainEntity[this.propertyName], function (object) {
-								return ns.tr(ns.list(self.entities, function (entity) {
+							resolvePropertyPath(this.master, this.constructor.propertyName).value,
+							function (entityObject) {
+								return ns.tr(ns.list(self.constructor.entities, function (entity) {
 									return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
 												ns._if(entity._mobileOnly, 'mobile-only')) },
-											ns.a({ href: url(self.baseUrl + '-id') },
-												resolveObservable(object, entity.propertyName)));
+											ns.a({ href: url(self.constructor.baseUrl, entityObject.__id__) },
+												resolvePropertyPath(entityObject, entity.propertyName).observable));
 								}),
-									ns.td({ class: ns._if(ns.eq(object.getObservable('completionStatus'), 1),
+									ns.td({ class: ns._if(ns.eq(resolvePropertyPath(entityObject,
+													self.constructor.sectionProperty + 'Status').observable, 1),
 											'completed') },
 										ns.span({ class: 'status-complete' }, "✓"),
 										ns.span({ class: 'status-incomplete' }, "✕")),
 									ns.td({ class: 'actions' },
-										ns.a(_("Edit")),
-										ns.postButton({ action: '', value: _('Delete') })));
+										ns.a({ href: url(self.constructor.baseUrl, entityObject.__id__) }, _("Edit")),
+										ns.postButton({ action: url(self.constructor.baseUrl,
+											entityObject.__id__, 'delete'),
+											value: _('Delete') })));
 							}),
-						this.generateFooter &&
-							ns.tfoot(this.generateFooter(mainEntity[this.propertyName]))
+						this.constructor.generateFooter &&
+							ns.tfoot(this.constructor.generateFooter(
+								resolvePropertyPath(this.master, this.constructor.propertyName).value
+							))
 					)
 				)
 			),
 			ns.p(
 				ns.a(
-					{ class: 'new-entity', href: url(this.baseUrl + '-add') },
+					{ class: 'new-entity', href: url(this.constructor.baseUrl + '-add') },
 					_("Add new")
 				)
 			),
