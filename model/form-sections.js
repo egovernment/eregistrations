@@ -18,7 +18,7 @@ module.exports = function (Entity, property) {
 	Entity.prototype[property]._descriptorPrototype_.type = FormSectionBase;
 	Entity.prototype[property]._descriptorPrototype_.nested = true;
 	Entity.prototype.define(property + 'Status', { type: Percentage, value:
-		new Function('_observe', '\'use strict\'; var sum; sum = 0; this.' + //jslint: ignore
+		new Function('_observe', '\'use strict\'; var sum; sum = 0; this.' +
 			property +
 			'.forEach(function (section) { sum += _observe(section._status); }); return sum / this.'
 			+ property + '.size;')

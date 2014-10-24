@@ -14,15 +14,15 @@ module.exports = memoize(function (db) {
 	FormTabularEntity = defineFormTabularEntity(db);
 	return FormSectionBase.extend('FormEntitiesTable', {
 		status: { value: function (_observe) {
-			var self, entityObjects, statusSum;
-			self = this;
+			var entityObjects, statusSum, key;
 			statusSum = 0;
+			key = this.constructor.sectionProperty + 'Status';
 			entityObjects = this.master.resolveSKeyPath(this.constructor.propertyName).value;
 			entityObjects.forEach(function (entityObject) {
 				statusSum +=
-					_observe(entityObject.resolveSKeyPath(self.constructor.sectionProperty + 'Status')
+					_observe(entityObject.resolveSKeyPath(key)
 						.observable);
-			});
+			}, this);
 
 			return statusSum / _observe(entityObjects._size);
 		} }

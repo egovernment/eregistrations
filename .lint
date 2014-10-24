@@ -32,6 +32,9 @@ predef+ console
 ./prototype/scripts
 predef+ process, __dirname
 
+./model/form-sections.js
+evil
+
 ./client
 ./prototype/client
 predef+ window
