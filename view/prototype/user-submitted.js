@@ -174,7 +174,9 @@ exports['sub-main'] = function () {
 						a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
 					))),
 			elem = ul({ class: 'image-placeholder' },
-				zoomOnHover.call(li(img({ src: '/uploads/docASubFile2.idoc.png.jpg' })))),
+				zoomOnHover.call(li(img({ src: '/uploads/docASubFile2.idoc.png.jpg' }))),
+				zoomOnHover.call(li(img({ src: '/uploads/docASubFile1.idoc.jpg' }))),
+				zoomOnHover.call(li(img({ src: '/uploads/docBSubFile1.idoc.jpg' })))),
 			div({ class: 'submitted-preview-documents-navigation' },
 				div(
 					a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),

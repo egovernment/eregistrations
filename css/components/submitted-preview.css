@@ -17,6 +17,8 @@
 .submitted-preview-document .image-placeholder {
 	border: 1px solid var(--light-inner-border);
 	text-align: center;
+	list-style: none;
+	overflow: hidden;
 }
 .submitted-preview-document .image-placeholder > li {
 	height: 100%;
