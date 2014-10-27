@@ -12,11 +12,11 @@ module.exports = memoize(function (db) {
 	FormSectionBase = defineFormSectionBase(db);
 	return FormSectionBase.extend('FormSection', {
 		formPropertyNames: { type: StringLine, multiple: true, value: function (_observe) {
-			var props;
+			var props, resolved;
 			props = this.constructor.propertyNames.copy();
 			props.forEach(function (name) {
-				if (_observe(this.master.formPropertyApplicableMap.
-						resolveSKeyPath(name).observable) === false) {
+				resolved = this.master.resolveSKeyPath(name);
+				if (_observe(db.Object.createFormApplicableName(resolved.key).observable) === false) {
 					props.delete(name);
 				}
 			}, this);
@@ -27,8 +27,9 @@ module.exports = memoize(function (db) {
 			var props;
 			props = this.formPropertyNames.copy();
 			props.forEach(function (name) {
-				if (_observe(this.master.propertyApplicableMap.
-						resolveSKeyPath(name).observable) === false) {
+				if (_observe(this.master.resolveSKeyPath(
+						db.Object.createFormResolvedApplicableName(name)
+					).observable) === false) {
 					props.delete(name);
 				}
 			}, this);

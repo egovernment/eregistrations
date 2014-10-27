@@ -35,3 +35,7 @@ FormSection.extend('PartnerFormOtherSection', {}, {
 
 partner.partnerFormSections.partnerFormSectionGroup.sections.
 	getOwnDescriptor('partnerFormOtherSection').type = db.PartnerFormOtherSection;
+
+partner.define('isUserEmailApplicable', { type: db.Boolean, value: function () {
+	return this.firstName;
+} });

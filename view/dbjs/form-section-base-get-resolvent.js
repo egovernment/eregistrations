@@ -8,7 +8,7 @@ var generateId = require('time-uuid')
 /*
 return object of form:
 {
-	formId: id || undefined,
+	formId: id,
 	affectedSectionId: id || undefined,
 	radioMatch: radioMatch || undefined,
 	formResolvent: field || undefined
@@ -20,8 +20,8 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 		result = {};
 		match = {};
 		options = Object(arguments[0]);
+		result.formId = options.formId || 'form-' + generateId();
 		if (this.constructor.resolventProperty) {
-			result.formId = options.formId || generateId();
 			result.affectedSectionId = generateId();
 			if (typeof this.constructor.resolventValue === 'boolean') {
 				match[Number(this.constructor.resolventValue)] = result.affectedSectionId;

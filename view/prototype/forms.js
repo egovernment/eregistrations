@@ -2,7 +2,7 @@
 
 var db = require('mano').db
   , generateSections = require('../components/generate-form-sections')
-  , user = db.User.prototype;
+  , user = db.userVianney;//User.prototype;
 
 exports['step-form'] = { class: { 'step-active': true } };
 

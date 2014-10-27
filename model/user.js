@@ -5,6 +5,14 @@ var db           = require('mano').db
   , User         = require('mano-auth/model/user')(db)
   , Registration = require('./registration');
 
+db.Object.define('createFormApplicableName', { type: db.Function, value: function (prop) {
+	return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'Applicable';
+} });
+
+db.Object.define('createFormResolvedApplicableName', { type: db.Function, value: function (prop) {
+	return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'ResolvedApplicable';
+} });
+
 User.prototype.defineProperties({
 	certificates: {
 		type: db.Object,
@@ -97,9 +105,7 @@ User.prototype.defineProperties({
 			}, this);
 			return costs;
 		}
-	},
-	formPropertyApplicableMap: { type: db.Object, nested: true },
-	propertyApplicableMap: { type: db.Object, nested: true }
+	}
 });
 
 User.prototype.registrations._descriptorPrototype_.setProperties({
