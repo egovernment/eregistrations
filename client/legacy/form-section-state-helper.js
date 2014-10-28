@@ -7,11 +7,11 @@ require('mano-legacy/on-env-update');
 require('mano-legacy/dbjs-form-fill');
 require('mano-legacy/element#/toggle');
 
-getContext = function (formEntity, constraint) {
+getContext = function (formEntity, sKey) {
 	var i, context, arrayFromName;
 	context = formEntity;
-	if (constraint.sKey.indexOf('/') !== -1) {
-		arrayFromName = constraint.sKey.split('/');
+	if (sKey.indexOf('/') !== -1) {
+		arrayFromName = sKey.split('/');
 		for (i = 0; i < arrayFromName.length - 1; i++) {
 			context = context[arrayFromName[i]];
 		}
@@ -31,11 +31,11 @@ $.formSectionStateHelper = function (formId, entityId, constraints) {
 			if (!$(constraints[i].id)) {
 				continue;
 			}
-			context = getContext(formEntity, constraints[i]);
+			context = getContext(formEntity, constraints[i].sKey);
 			result = constraints[i].constraint.call(context);
 			$(constraints[i].id).toggle(result);
 			if (!result) {
-				delete context[constraints[i].id];
+				delete context[constraints[i].key];
 			} else {
 				$.dbjsFormFill(formEntity, form);
 			}
