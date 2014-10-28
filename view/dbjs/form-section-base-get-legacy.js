@@ -19,7 +19,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 		this.constructor.propertyNames.forEach(function (item, propName) {
 			var val, id, resolved;
 			resolved = resolvePropertyPath(this, propName);
-			val = resolved.object.getDescriptor(db.Object.getFormApplicablePropName(resolved.key)
+			val = resolved.object.getDescriptor(db.Object.getApplicablePropName(resolved.key)
 				)._value_;
 			if (typeof val !== 'function') {
 				return;

@@ -6,11 +6,11 @@ var db           = require('mano').db
   , Registration = require('./registration');
 
 db.Object.define('getFormApplicablePropName', { type: db.Function, value: function (prop) {
-	return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'Applicable';
+	return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'FormApplicable';
 } });
 
 db.Object.define('getApplicablePropName', { type: db.Function, value: function (prop) {
-	return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'ResolvedApplicable';
+	return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'Applicable';
 } });
 
 User.prototype.defineProperties({
