@@ -91,7 +91,8 @@ select {
 	line-height: 22px;
 }
 
-input[type="submit"] {
+input[type="submit"],
+button[type="submit"] {
 	line-height: 22px;
 	border-radius: 4px;
 	color: var(--white-text);
