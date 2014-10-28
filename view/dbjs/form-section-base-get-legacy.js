@@ -31,7 +31,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 				result.controls = {};
 			}
 			id = 'input-' + generateId();
-			legacyData.push({ id: id, constraint: val, sKey: propName, key: resolved.key });
+			legacyData.push({ id: id, constraint: val, sKeyPath: propName });
 			result.controls[resolved.object.__id__ + '/' + resolved.key] = { id: id };
 		}, this.master);
 		if (legacyData) {
