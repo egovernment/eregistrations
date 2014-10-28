@@ -253,6 +253,11 @@ user.define('requiredSubmissions', {
 	multiple: true,
 	value: [user.submissions.documentA, user.submissions.documentB, user.submissions.documentC]
 });
+user.define('correctionDocuments', {
+	type: db.DocumentSubmission,
+	multiple: true,
+	value: [user.submissions.documentB]
+});
 
 file = db.SubmissionFile.newNamed('docASubFile1', props = {
 	name: 'idoc.jpg',

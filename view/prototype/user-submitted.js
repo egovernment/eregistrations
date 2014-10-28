@@ -115,7 +115,28 @@ exports['sub-main'] = function () {
 					)
 				)
 			)
-		)
+		),
+		h3("Please correct folowing documents:"),
+		section(
+			ul(
+				{ class: 'sections-primary-list user-documents-upload' },
+				user.correctionDocuments,
+				function (submission) {
+					return li(
+						form(
+							div(
+								h4(submission.label),
+								small("Reason of rejaction: " + submission.legend),
+								hr(),
+								input({ dbjs: submission._files })
+							)
+						)
+					);
+				}
+			)
+		),
+		hr(),
+		postButton({ type: 'submit', value: 'Send corrected files' })
 	);
 	section(
 		{ class: 'section-primary' },
@@ -192,7 +213,9 @@ exports['sub-main'] = function () {
 					{ class: 'hint-optional hint-optional-left',
 						'data-hint': 'Print Your application form' },
 					span({ class: 'fa fa-print' }, "Print")
-				)), generateSections(user.formSections))
+				)),
+
+			generateSections(user.formSections))
 	);
 
 	syncStyle.call(target, source, 'height', isMobileView);
