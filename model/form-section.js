@@ -16,20 +16,20 @@ module.exports = memoize(function (db) {
 			props = this.constructor.propertyNames.copy();
 			props.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name);
-				if (_observe(db.Object.createFormApplicableName(resolved.key).observable) === false) {
+				if (_observe(resolved.object['_' + db.Object.getFormApplicablePropName(resolved.key)])
+						=== false) {
 					props.delete(name);
 				}
 			}, this);
-
 			return props;
 		} },
 		propertyNames: { type: StringLine, multiple: true, value: function (_observe) {
-			var props;
+			var props, resolved;
 			props = this.formPropertyNames.copy();
 			props.forEach(function (name) {
-				if (_observe(this.master.resolveSKeyPath(
-						db.Object.createFormResolvedApplicableName(name)
-					).observable) === false) {
+				resolved = this.master.resolveSKeyPath(name);
+				if (_observe(resolved.object['_' + db.Object.getApplicablePropName(resolved.key)])
+						=== false) {
 					props.delete(name);
 				}
 			}, this);

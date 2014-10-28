@@ -20,13 +20,13 @@ $.formSectionStateHelper = function (formId, entityId, constraints) {
 		formEntity.__id__ = entityId;
 		$.dbjsFormFill(formEntity, form);
 		for (i = 0; i < constraints.length; i++) {
-			if (constraints[i].constrain === undefined) {
-				continue;
-			}
 			result = constraints[i].constrain.call(formEntity);
 			domElements[constraints[i].id].toggle(result);
-			if (!result) delete formEntity[constraints[i].id];
-			$.dbjsFormFill(formEntity, form);
+			if (!result) {
+				delete formEntity[constraints[i].id];
+			} else {
+				$.dbjsFormFill(formEntity, form);
+			}
 		}
 	});
 };

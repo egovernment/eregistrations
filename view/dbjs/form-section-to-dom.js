@@ -6,6 +6,9 @@ var _  = require('mano').i18n.bind('Sections')
   , ns = require('mano').domjs.ns
   , url;
 
+require('./form-section-base-get-resolvent');
+require('./form-section-base-get-legacy');
+
 url = ns.url;
 
 module.exports = Object.defineProperties(db.FormSection.prototype, {

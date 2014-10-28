@@ -5,11 +5,11 @@ var db           = require('mano').db
   , User         = require('mano-auth/model/user')(db)
   , Registration = require('./registration');
 
-db.Object.define('createFormApplicableName', { type: db.Function, value: function (prop) {
+db.Object.define('getFormApplicablePropName', { type: db.Function, value: function (prop) {
 	return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'Applicable';
 } });
 
-db.Object.define('createFormResolvedApplicableName', { type: db.Function, value: function (prop) {
+db.Object.define('getApplicablePropName', { type: db.Function, value: function (prop) {
 	return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'ResolvedApplicable';
 } });
 
