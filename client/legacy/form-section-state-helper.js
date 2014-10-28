@@ -12,9 +12,8 @@ getContext = function (formEntity, constrain) {
 	context = formEntity;
 	if (constrain.sKey.indexOf('/') !== -1) {
 		arrayFromName = constrain.sKey.split('/');
-		context = arrayFromName[arrayFromName.length - 1];
 		for (i = 0; i < arrayFromName.length - 1; i++) {
-			context = context[arrayFromName[i]] || formEntity[arrayFromName[i]];
+			context = context[arrayFromName[i]];
 		}
 	}
 	return context;
