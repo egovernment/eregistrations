@@ -25,17 +25,18 @@ $.formSectionStateHelper = function (formId, entityId, constraints) {
 	var Entity = function () {}, form = $(formId);
 
 	$.onEnvUpdate(formId, function () {
-		var result, i, formEntity, context;
+		var result, i, formEntity, context, domElem;
 		formEntity = new Entity();
 		formEntity.__id__ = entityId;
 		$.dbjsFormFill(formEntity, form);
 		for (i = 0; i < constraints.length; i++) {
-			if (!$(constraints[i].id)) {
+			domElem = $(constraints[i].id);
+			if (!domElem) {
 				continue;
 			}
 			context = getContext(formEntity, constraints[i].sKeyPath);
 			result = constraints[i].constraint.call(context.object);
-			$(constraints[i].id).toggle(result);
+			domElem.toggle(result);
 			if (!result) {
 				delete context.object[context.sKey];
 			} else {
