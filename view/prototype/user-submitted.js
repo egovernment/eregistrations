@@ -5,8 +5,7 @@ var syncStyle = require('dom-ext/html-element/#/sync-style')
   , isMobileView = require('../utils/is-mobile-view')
   , syncHeight = require('../utils/sync-height')
   , db = require('mano').db
-  , user = db.User.prototype
-  , generateSections = require('../components/generate-sections');
+  , user = db.User.prototype;
 
 exports['user-name'] = function () {
 	text("User Submited");
@@ -115,6 +114,29 @@ exports['sub-main'] = function () {
 					)
 				)
 			)
+		),
+		h3("Please correct folowing documents:"),
+		form(
+			section(
+				ul(
+					{ class: 'sections-primary-list user-documents-upload' },
+					user.correctionDocuments,
+					function (submission) {
+						return li(
+							form(
+								div(
+									h4(submission.label),
+									small("Reason of rejaction: " + submission.legend),
+									hr(),
+									input({ dbjs: submission._files })
+								)
+							)
+						);
+					}
+				)
+			),
+			hr(),
+			input({ type: 'submit', value: 'Send corrected files' })
 		)
 	);
 	section(
@@ -192,7 +214,229 @@ exports['sub-main'] = function () {
 					{ class: 'hint-optional hint-optional-left',
 						'data-hint': 'Print Your application form' },
 					span({ class: 'fa fa-print' }, "Print")
-				)), generateSections(user.formSections))
+				)),
+
+			section(
+				{ class: 'entity-data-section' },
+				h3("Proposed company name"),
+				table(
+					tbody(
+						tr(
+							td("Blink IT Solutions")
+						)
+					)
+				)
+			),
+			section(
+				{ class: 'entity-data-section' },
+				h3("Business activity"),
+				table(
+					tbody(
+						tr(
+							th("Activity"),
+							td("Air chater agent")
+						),
+						tr(
+							th("Activity starting date"),
+							td("7/30/2014")
+						),
+						tr(
+							th("Date of account year end"),
+							td("12/31/2014")
+						),
+						tr(
+							th("Does the company have branches?"),
+							td("Yes")
+						)
+					)
+				)
+			),
+			section(
+				{ class: 'entity-data-section' },
+				h3("Company secretary"),
+				section(
+					{ class: 'entity-data-sub-section' },
+					h4("Basic secretary data"),
+					table(
+						tbody(
+							tr(
+								th("Title"),
+								td("Mr")
+							),
+							tr(
+								th("First Name"),
+								td("Andrei")
+							),
+							tr(
+								th("Middle Name"),
+								td("Mihai")
+							),
+							tr(
+								th("Surname"),
+								td("Balan")
+							)
+						)
+					)
+				),
+				section(
+					{ class: 'entity-data-sub-section' },
+					h4("Residential address"),
+					table(
+						tbody(
+							tr(
+								th("Plot"),
+								td("1")
+							),
+							tr(
+								th("Block"),
+								td("1")
+							),
+							tr(
+								th("Street or location"),
+								td("Nicolae Filipescu")
+							),
+							tr(
+								th("City, district or town"),
+								td("Bucharest")
+							),
+							tr(
+								th("P.O. box"),
+								td("1")
+							),
+							tr(
+								th("Country"),
+								td("Romania")
+							)
+						)
+					)
+				)
+			),
+			section(
+				{ class: 'entity-data-section' },
+				h3("Applicants"),
+				ul(
+					{ class: 'entity-entities-section' },
+					li(
+						h4("Marko Zagola"),
+						section(
+							{ class: 'entity-data-section' },
+							h5("Personal data"),
+							section(
+								{ class: 'entity-data-sub-section' },
+								h6("Basic data"),
+								table(
+									tbody(
+										tr(
+											th("Name"),
+											td("Marko")
+										),
+										tr(
+											th("Surname"),
+											td("Zagalo")
+										)
+									)
+								)
+							),
+							section(
+								{ class: 'entity-data-sub-section' },
+								h6("Additional data"),
+								table(
+									tbody(
+										tr(
+											th("Document type"),
+											td("X")
+										),
+										tr(
+											th("Document number"),
+											td("123")
+										),
+										tr(
+											th("Marital status"),
+											td("")
+										),
+										tr(
+											th("Date of birth"),
+											td("25-06-1991")
+										),
+										tr(
+											th("Nationality"),
+											td("Romanian")
+										),
+										tr(
+											th("E-mail"),
+											td("andrei.balan@blink-it.ro")
+										)
+									)
+								)
+							),
+							section(
+								{ class: 'entity-data-sub-section' },
+								h6("Address"),
+								table(
+									tbody(
+										tr(
+											th("Address"),
+											td("XXX")
+										),
+										tr(
+											th("Number"),
+											td("1")
+										),
+										tr(
+											th("Postal code"),
+											td("X")
+										),
+										tr(
+											th("City"),
+											td("Bucharest")
+										),
+										tr(
+											th("Country"),
+											td("Romania")
+										)
+									)
+								)
+							)
+						)
+					),
+					li(
+						h4("Frank Grozel"),
+						section(
+							{ class: 'entity-data-section' },
+							h5("Additional data"),
+							table(
+								tbody(
+									tr(
+										th("Document type"),
+										td("X")
+									),
+									tr(
+										th("Document number"),
+										td("123")
+									),
+									tr(
+										th("Marital status"),
+										td("")
+									),
+									tr(
+										th("Date of birth"),
+										td("25-06-1991")
+									),
+									tr(
+										th("Nationality"),
+										td("Romanian")
+									),
+									tr(
+										th("E-mail"),
+										td("andrei.balan@blink-it.ro")
+									)
+								)
+							)
+						)
+					)
+				)
+			)
+			)
 	);
 
 	syncStyle.call(target, source, 'height', isMobileView);
