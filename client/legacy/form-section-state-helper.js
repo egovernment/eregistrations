@@ -7,14 +7,13 @@ require('mano-legacy/on-env-update');
 require('mano-legacy/dbjs-form-fill');
 require('mano-legacy/element#/toggle');
 
-getContext = function (formEntity, constrain) {
+getContext = function (formEntity, constraint) {
 	var i, context, arrayFromName;
 	context = formEntity;
-	if (constrain.sKey.indexOf('/') !== -1) {
-		arrayFromName = constrain.sKey.split('/');
-		context = arrayFromName[arrayFromName.length - 1];
+	if (constraint.sKey.indexOf('/') !== -1) {
+		arrayFromName = constraint.sKey.split('/');
 		for (i = 0; i < arrayFromName.length - 1; i++) {
-			context = context[arrayFromName[i]] || formEntity[arrayFromName[i]];
+			context = context[arrayFromName[i]];
 		}
 	}
 	return context;
@@ -24,21 +23,19 @@ $.formSectionStateHelper = function (formId, entityId, constraints) {
 	var Entity = function () {}, form = $(formId);
 
 	$.onEnvUpdate(formId, function () {
-		var result, i, formEntity, domElements, context;
+		var result, i, formEntity, context;
 		formEntity = new Entity();
 		formEntity.__id__ = entityId;
 		$.dbjsFormFill(formEntity, form);
-		domElements = {};
 		for (i = 0; i < constraints.length; i++) {
-			domElements[constraints[i].id] = $(constraints[i].id);
-			if (!domElements[constraints[i].id]) {
+			if (!$(constraints[i].id)) {
 				continue;
 			}
 			context = getContext(formEntity, constraints[i]);
-			result = constraints[i].constrain.call(context);
-			domElements[constraints[i].id].toggle(result);
+			result = constraints[i].constraint.call(context);
+			$(constraints[i].id).toggle(result);
 			if (!result) {
-				delete formEntity[constraints[i].id];
+				delete context[constraints[i].id];
 			} else {
 				$.dbjsFormFill(formEntity, form);
 			}
