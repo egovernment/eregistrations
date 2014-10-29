@@ -147,25 +147,13 @@ exports['sub-main'] = function () {
 			{ class: 'section-primary submitted-preview-document' },
 			div({ class: 'container-with-nav' },
 				h3(i({ class: 'list-item-number' }, "1"),
-					"Memorandum and articles of association"),
-				div({ class: 'submitted-preview-documents-navigation' },
-					div(
-						a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
-						span("1 / 4"),
-						a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
-					))),
+					"Memorandum and articles of association")),
 			zoomOnHover.call(
 				elem = div(
 					{ class: 'image-placeholder' },
 					img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
 				)
 			),
-			div({ class: 'submitted-preview-documents-navigation' },
-				div(
-					a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
-					span("1 / 4"),
-					a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
-				)),
 			form(
 				{ class: 'submitted-preview-form' },
 				ul(
