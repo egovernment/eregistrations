@@ -18,7 +18,9 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		legacy = this.getLegacy(resolvent.formId);
 		return ns.section({ class: 'section-primary' },
 			ns.form(
-				{ id: resolvent.formId, action: url(this.constructor.actionUrl), class: ns._if(ns.eq(
+				{ id: resolvent.formId,
+					method: 'post',
+					action: url(this.constructor.actionUrl), class: ns._if(ns.eq(
 					this.status,
 					1
 				), 'completed') },
