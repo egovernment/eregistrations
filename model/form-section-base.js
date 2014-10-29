@@ -8,6 +8,15 @@ var memoize          = require('memoizee/plain')
 module.exports = memoize(function (db) {
 	var StringLine, Percentage;
 	validDb(db);
+	db.Object.defineProperties({
+		getFormApplicablePropName: { type: db.Function, value: function (prop) {
+			return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'FormApplicable';
+		} },
+		getApplicablePropName: { type: db.Function, value: function (prop) {
+			return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'Applicable';
+		} }
+	});
+
 	StringLine = defineStringLine(db);
 	Percentage = definePercentage(db);
 	return db.Object.extend('FormSectionBase', {
