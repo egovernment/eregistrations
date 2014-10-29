@@ -19,6 +19,7 @@
 	text-align: center;
 	list-style: none;
 	overflow: hidden;
+	margin-bottom: 22px;
 }
 .submitted-preview-document .image-placeholder > li {
 	height: 100%;
