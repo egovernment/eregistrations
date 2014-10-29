@@ -5,14 +5,6 @@ var db           = require('mano').db
   , User         = require('mano-auth/model/user')(db)
   , Registration = require('./registration');
 
-db.Object.define('getFormApplicablePropName', { type: db.Function, value: function (prop) {
-	return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'FormApplicable';
-} });
-
-db.Object.define('getApplicablePropName', { type: db.Function, value: function (prop) {
-	return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'Applicable';
-} });
-
 User.prototype.defineProperties({
 	certificates: {
 		type: db.Object,
