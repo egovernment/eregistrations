@@ -22,6 +22,10 @@
 }
 .submitted-preview-document .image-placeholder > li {
 	height: 100%;
+	display: none;
+}
+.submitted-preview-document .image-placeholder > li.active {
+	display: block;
 }
 
 .submitted-preview-document .image-placeholder img {
