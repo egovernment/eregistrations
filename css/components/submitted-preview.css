@@ -24,7 +24,7 @@
 	height: 100%;
 	display: none;
 }
-.submitted-preview-document .image-placeholder > li.active {
+.submitted-preview-document .image-placeholder > .active {
 	display: block;
 }
 
