@@ -82,6 +82,9 @@
 	top: 2px;
 	right: 2px;
 }
+.submitted-preview-documents-navigation {
+	margin-top: -22px;
+}
 
 .submitted-preview-document .list-item-number {
 	width: 22px;
