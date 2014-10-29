@@ -12,7 +12,7 @@ url = ns.url;
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
 	d(function (document) {
 		var self = this;
-		ns.section({ class: ns._if(ns.eq(
+		return ns.section({ class: ns._if(ns.eq(
 			this.status,
 			1
 		), 'section-primary completed', 'section-primary') },
