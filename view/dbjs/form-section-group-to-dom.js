@@ -17,7 +17,8 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		mainFormResolvent = this.getFormResolvent();
 		return ns.section(
 			{ class: 'section-primary' },
-			ns.form({ id: mainFormResolvent.formId, action: url(this.constructor.actionUrl),
+			ns.form({ id: mainFormResolvent.formId, method: 'post',
+					action: url(this.constructor.actionUrl),
 					class: ns._if(ns.eq(
 					this.status,
 					1
