@@ -75,30 +75,11 @@ exports.tab = function () {
 				div({ class: 'container-with-nav' },
 					h3(i({ class: 'list-item-number' }, "1"),
 						"Memorandum and articles of association"
-						),
-					div({ class: 'submitted-preview-documents-navigation' },
-						div(
-							a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
-							span("1 / 4"),
-							a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
-						)
 						)
 					),
-				zoomOnHover.call(
-					elem = div(
-						{ class: 'image-placeholder' },
-						img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
-					)
-				),
-				div({ class: 'submitted-preview-documents-navigation' },
-					div(
-						a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
-						span("1 / 4"),
-						a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
-					)
-					)
-				),
-
+				elem = ul({ class: 'image-placeholder' },
+					zoomOnHover.call(li({ class: 'active' },
+						img({ src: '/uploads/docASubFile2.idoc.png.jpg' }))))),
 			target = div({ class: 'section-primary submitted-preview-user-data' },
 				h2({ class: 'container-with-nav' }, "Application form",
 					a(

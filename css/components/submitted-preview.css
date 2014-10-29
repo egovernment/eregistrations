@@ -17,6 +17,16 @@
 .submitted-preview-document .image-placeholder {
 	border: 1px solid var(--light-inner-border);
 	text-align: center;
+	list-style: none;
+	overflow: hidden;
+	margin-bottom: 22px;
+}
+.submitted-preview-document .image-placeholder > li {
+	height: 100%;
+	display: none;
+}
+.submitted-preview-document .image-placeholder > .active {
+	display: block;
 }
 
 .submitted-preview-document .image-placeholder img {
@@ -71,6 +81,9 @@
 	position: relative;
 	top: 2px;
 	right: 2px;
+}
+.submitted-preview-documents-navigation {
+	margin-top: -22px;
 }
 
 .submitted-preview-document .list-item-number {

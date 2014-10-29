@@ -188,24 +188,29 @@ exports['sub-main'] = function () {
 			div({ class: 'container-with-nav' },
 				h3(i({ class: 'list-item-number' }, "1"),
 					"Memorandum and articles of association"),
-				div({ class: 'submitted-preview-documents-navigation' },
+				div({ id: 'submitted-preview-navigation-top',
+					class: 'submitted-preview-documents-navigation' },
 					div(
-						a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
-						span("1 / 4"),
-						a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
+						a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
+						span(span({ class: 'current-index' }, "1"),  " / 4"),
+						a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, "Next"))
 					))),
-			zoomOnHover.call(
-				elem = div(
-					{ class: 'image-placeholder' },
-					img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
-				)
-			),
-			div({ class: 'submitted-preview-documents-navigation' },
+			elem = ul({ id: 'doc-previews', class: 'image-placeholder' },
+				zoomOnHover.call(li(img({ src: '/uploads/docASubFile2.idoc.png.jpg' }))),
+				zoomOnHover.call(li(img({ src: '/uploads/docASubFile1.idoc.jpg' }))),
+				zoomOnHover.call(li(img({ src: '/uploads/docBSubFile1.idoc.jpg' })))),
+			legacy('hashNavContentList', 'doc-previews', 'doc-preview'),
+			div({ id: 'submitted-preview-navigation-bottom',
+				class: 'submitted-preview-documents-navigation' },
 				div(
-					a(span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
-					span("1 / 4"),
-					a(span({ class: 'fa fa-chevron-circle-right' }, "Next"))
-				))
+					a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' }, "Previous")),
+					span(span({ class: 'current-index' }, "1"),  " / 4"),
+					a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, "Next"))
+				)),
+			legacy('hashContentListNav', 'submitted-preview-navigation-top',
+				'doc-previews', 'doc-preview'),
+			legacy('hashContentListNav', 'submitted-preview-navigation-bottom',
+				'doc-previews', 'doc-preview')
 		),
 		target = div({ class: 'section-primary submitted-preview-user-data' },
 			h2({ class: 'container-with-nav' }, "Application form",
