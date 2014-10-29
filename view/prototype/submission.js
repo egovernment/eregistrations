@@ -9,7 +9,7 @@ exports['step-submission'] = { class: { 'step-active': true } };
 exports.step = function () {
 	h1("5. Send your file");
 
-	generateSections(user.formSendSections);
+	insert(generateSections(user.formSendSections));
 
 	section(
 		{ class: 'section-warning' },
