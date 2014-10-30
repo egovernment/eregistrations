@@ -37,6 +37,7 @@
 
 .submitted-preview-document .container-with-nav div {
 	min-width: inherit;
+	min-width: 63px;
 }
 
 .submitted-preview-document .container-with-nav div:last-child span {
