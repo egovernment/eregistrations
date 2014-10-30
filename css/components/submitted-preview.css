@@ -68,7 +68,9 @@
 .container-with-nav .submitted-preview-documents-navigation {
 	display: flex;
 }
-
+.submitted-preview-document .container-with-nav .submitted-preview-documents-navigation{
+		min-width: 63px;
+}
 .container-with-nav .submitted-preview-documents-navigation div {
 	align-self: flex-end;
 }
