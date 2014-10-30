@@ -31,5 +31,5 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 								return section.toDOM(document, { headerRank: headerRank + 1 });
 							}));
 					}
-					), ns.p(self.constructor.onEmptyMessage)));
+					), ns.p({ class: 'entity-section-no-data' }, self.constructor.onEmptyMessage)));
 	}));
