@@ -315,6 +315,7 @@ ul.multiple {
 }
 .inline-button-radio  {
 	margin-bottom: 22px;
+	font-size: 0;
 }
 .inline-button-radio input[type="radio"] {
 	display: none;
@@ -322,15 +323,17 @@ ul.multiple {
 .inline-button-radio label {
 	border: 1px solid var(--light-inner-border);
 	padding: 11px;
-	cursor: pointer
+	cursor: pointer;
+	font-size: 14px;
+}
+.inline-button-radio > label + label {
+	margin-left: -1px;
 }
 .inline-button-radio label:first-child {
 	border-radius: 4px 0 0 4px;
 }
 .inline-button-radio label:last-child {
 	border-radius: 0 4px 4px 0;
-	position: relative;
-	right: 4px;
 }
 .inline-button-radio label {
 	background: var(--light-background);
