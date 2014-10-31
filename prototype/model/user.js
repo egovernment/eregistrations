@@ -122,6 +122,9 @@ user.defineProperties({
 	isType: { type: db.Boolean,
 		trueLabel: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit ame",
 		falseLabel: "Please choose x docs in the list: " },
+	isValidated: { type: db.Boolean,
+		trueLabel: "Validate document",
+		falseLabel: "Reject document" },
 	notification: {
 		type: db.StringLine.createEnum('NotificationType', new Map([
 			['optionOne', { label: "Use my home address." }],

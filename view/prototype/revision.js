@@ -3,7 +3,9 @@
 var syncStyle    = require('dom-ext/html-element/#/sync-style')
   , zoomOnHover  = require('dom-ext/html-element/#/zoom-on-hover')
   , isMobileView = require('../utils/is-mobile-view')
-  , syncHeight   = require('../utils/sync-height');
+  , syncHeight   = require('../utils/sync-height')
+  , db = require('mano').db
+  , user = db.User.prototype;
 
 exports['sub-main'] = function () {
 	var source,
@@ -159,19 +161,7 @@ exports['sub-main'] = function () {
 				ul(
 					{ class: 'form-elements' },
 					li(
-						div(
-							{ class: 'inline-button-radio' },
-							label(
-								{ class: 'success' },
-								input({ type: 'radio' }),
-								"Validate document"
-							),
-							label(
-								{ class: 'error' },
-								input({ type: 'radio' }),
-								"Reject document"
-							)
-						)
+						input({ dbjs: user._isValidated })
 					),
 					li(
 						div(
