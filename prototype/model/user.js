@@ -216,7 +216,7 @@ user.partners.add(Partner.newNamed('partnerFrank',
 	{
 		firstName: "Frank",
 		lastName: "Grozel",
-		dateOfBirth: "01.01.1960",
+		dateOfBirth: new Date(1960, 0, 1),
 		email: "frank@grozel.fr",
 		companyType: 'private',
 		inventory: 1000000,
