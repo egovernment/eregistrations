@@ -330,6 +330,9 @@ ul.multiple {
 .inline-button-radio label:last-child {
 	border-radius: 0 4px 4px 0;
 }
+.inline-button-radio label {
+	background: var(--light-background);
+}
 .inline-button-radio .success {
 	background: var(--success-background);
 	color: var(--white-text);
