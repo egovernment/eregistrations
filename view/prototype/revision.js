@@ -103,7 +103,7 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'section-primary' },
 		h2("Application revision"),
-		p({ class: 'submitted-revision-toolbar' },
+		p({ class: 'official-submission-toolbar' },
 			a({ class: 'button-main' }, "Approve file"),
 			a({ class: 'button-main' }, "Send for corrections"),
 			a({ class: 'button-main' }, "Reject file")),
