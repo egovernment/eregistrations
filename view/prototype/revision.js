@@ -5,7 +5,8 @@ var syncStyle    = require('dom-ext/html-element/#/sync-style')
   , isMobileView = require('../utils/is-mobile-view')
   , syncHeight   = require('../utils/sync-height')
   , db = require('mano').db
-  , user = db.User.prototype;
+  , user = db.User.prototype
+  , reject = require('./_reject');
 
 exports['sub-main'] = function () {
 	var source,
@@ -104,11 +105,12 @@ exports['sub-main'] = function () {
 	);
 	section(
 		{ class: 'section-primary' },
+		insert(reject),
 		h2("Application revision"),
 		p({ class: 'official-submission-toolbar' },
 			postButton({ buttonClass: 'button-main', value: "Approve file" }),
 			postButton({ buttonClass: 'button-main', value: "Send for corrections" }),
-			a({ class: 'button-main' }, "Reject file")),
+			a({ class: 'button-main', onclick: reject.show }, "Reject file")),
 		hr(),
 		h3("Required documents"),
 		ol({ class: 'submitted-documents-list' },
