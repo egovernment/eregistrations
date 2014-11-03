@@ -1,0 +1,15 @@
+.modal-reject textarea {
+	width: 320px;
+}
+
+.modal-reject section div {
+	padding-top: 11px;
+}
+
+.modal-reject form > * {
+	margin-bottom: 22px;
+}
+
+.modal-reject footer p {
+	text-align: right;
+}
