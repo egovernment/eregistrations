@@ -105,9 +105,9 @@ exports['sub-main'] = function () {
 	section(
 		{ class: 'section-primary' },
 		h2("Application revision"),
-		p({ class: 'submitted-revision-toolbar' },
-			a({ class: 'button-main' }, "Approve file"),
-			a({ class: 'button-main' }, "Send for corrections"),
+		p({ class: 'official-submission-toolbar' },
+			postButton({ buttonClass: 'button-main', value: "Approve file" }),
+			postButton({ buttonClass: 'button-main', value: "Send for corrections" }),
 			a({ class: 'button-main' }, "Reject file")),
 		hr(),
 		h3("Required documents"),

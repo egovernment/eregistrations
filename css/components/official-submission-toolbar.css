@@ -1,0 +1,36 @@
+.official-submission-toolbar form {
+	display: inline-block;
+}
+
+.official-submission-toolbar form .button-main {
+	background-color: var(--normal-background);
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	-khtml-border-radius: 6px;
+	border-radius: 6px;
+	color: var(--white-text);
+	cursor: pointer;
+	display: inline-block;
+	font-size: 18px;
+	font-weight: normal;
+	margin-bottom: 0;
+	margin-right: 10px;
+	text-align: center;
+	text-decoration: none;
+	white-space: nowrap;
+	padding: 11px 15px;
+}
+.official-submission-toolbar form .button-main:hover,
+.official-submission-toolbar form .button-main:focus,
+.official-submission-toolbar form .button-main:active {
+	background: var(--normal-dark-background);
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.official-submission-toolbar > * {
+		margin-bottom: 22px;
+	}
+	.official-submission-toolbar > *:last-child {
+		margin-bottom: 0;
+	}
+}
