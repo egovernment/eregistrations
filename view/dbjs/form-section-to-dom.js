@@ -13,14 +13,20 @@ url = ns.url;
 
 module.exports = Object.defineProperties(db.FormSection.prototype, {
 	toDOMForm: d(function (document) {
-		var resolvent, legacy;
+		var resolvent, legacy, actionUrl;
 		resolvent = this.getFormResolvent();
 		legacy = this.getLegacy(resolvent.formId);
+		actionUrl = url(this.actionUrl);
+		if (this.buildActionUrl) {
+			actionUrl = this.master.constructor.prototype === this.master ?
+					url(this.constructor.actionUrl + '-add') :
+					url(this.constructor.actionUrl, this.master.__id__);
+		}
 		return ns.section({ class: 'section-primary' },
 			ns.form(
 				{ id: resolvent.formId,
 					method: 'post',
-					action: url(this.constructor.actionUrl), class: ns._if(ns.eq(
+					action: actionUrl, class: ns._if(ns.eq(
 					this.status,
 					1
 				), 'completed') },

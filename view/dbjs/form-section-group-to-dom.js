@@ -13,12 +13,18 @@ url = ns.url;
 
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm',
 	d(function (document) {
-		var mainFormResolvent;
+		var mainFormResolvent, actionUrl;
 		mainFormResolvent = this.getFormResolvent();
+		actionUrl = url(this.actionUrl);
+		if (this.buildActionUrl) {
+			actionUrl = this.master.constructor.prototype === this.master ?
+					url(this.constructor.actionUrl + '-add') :
+					url(this.constructor.actionUrl, this.master.__id__);
+		}
 		return ns.section(
 			{ class: 'section-primary' },
 			ns.form({ id: mainFormResolvent.formId, method: 'post',
-					action: url(this.constructor.actionUrl),
+					action: actionUrl,
 					class: ns._if(ns.eq(
 					this.status,
 					1
