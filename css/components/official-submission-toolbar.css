@@ -27,10 +27,10 @@
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.official-submission-toolbar a {
+	.official-submission-toolbar form {
 		margin-bottom: 22px;
 	}
-	.official-submission-toolbar a:last-child {
+	.official-submission-toolbar :last-child {
 		margin-bottom: 0;
 	}
 }
