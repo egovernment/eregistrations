@@ -9,26 +9,19 @@ module.exports = rejectModal = modal(
 	{ class: 'modal-reject' },
 	section(
 		header(
-			h3("Reason for rejection")
+			label({ for: 'reject-reason' }, h3("Reason for rejection"))
 		),
 		div(
 			form(
-				ul(
-					{ class: 'form-elements' },
-					li(
-						{ class: 'input' },
-						textarea({ dbjs: user.rejectReason })
-					)
-				),
+				textarea({ id: 'reject-reason', dbjs: user.rejectReason }),
 				p(
 					input({ type: 'submit', value: "Reject" })
 				)
-
 			)
 		),
 		footer(
 			p(
-				hideBtn = a('Close')
+				hideBtn = a('Cancel')
 			)
 		)
 	)

@@ -2,8 +2,7 @@
 	border: none;
 }
 
-.modal-reject textarea,
-.modal-reject li {
+.modal-reject textarea {
 	width: 320px;
 }
 
