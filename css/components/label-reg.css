@@ -13,15 +13,15 @@
 }
 
 .label-reg.ready {
-	background: var(--processed-text);
+	background: var(--progress-background);
 }
 
 .label-reg.rejected {
-	background: var(--error-text);
+	background: var(--error-background);
 }
 
 .label-reg.approved {
-	background: var(--success-text);
+	background: var(--success-background);
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
