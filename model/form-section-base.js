@@ -21,7 +21,8 @@ module.exports = memoize(function (db) {
 	Percentage = definePercentage(db);
 	return db.Object.extend('FormSectionBase', {
 		isApplicable: { type: db.Boolean, required: true, value: true },
-		status: { type: Percentage, required: true, value: 1 }
+		status: { type: Percentage, required: true, value: 1 },
+		buildActionUrl: { type: db.Boolean, value: false }
 	}, {
 		actionUrl: { type: StringLine, required: true },
 		label: { type: StringLine, required: true },

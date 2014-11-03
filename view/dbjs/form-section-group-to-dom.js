@@ -3,22 +3,27 @@
 var _  = require('mano').i18n.bind('Sections')
   , d  = require('d')
   , db = require('mano').db
-  , ns = require('mano').domjs.ns
-  , url;
+  , ns = require('mano').domjs.ns;
 
 require('./form-section-base-get-resolvent');
 require('./form-section-base-get-legacy');
 
-url = ns.url;
-
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm',
-	d(function (document) {
-		var mainFormResolvent;
+	d(function (document/*, options */) {
+		var mainFormResolvent, actionUrl, options, url;
 		mainFormResolvent = this.getFormResolvent();
+		options = Object(arguments[1]);
+		url = options.url || ns.url;
+		actionUrl = url(this.actionUrl);
+		if (this.buildActionUrl) {
+			actionUrl = this.master.constructor.prototype === this.master ?
+					url(this.constructor.actionUrl + '-add') :
+					url(this.constructor.actionUrl, this.master.__id__);
+		}
 		return ns.section(
 			{ class: 'section-primary' },
 			ns.form({ id: mainFormResolvent.formId, method: 'post',
-					action: url(this.constructor.actionUrl),
+					action: actionUrl,
 					class: ns._if(ns.eq(
 					this.status,
 					1
