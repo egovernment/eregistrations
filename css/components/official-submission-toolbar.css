@@ -30,7 +30,7 @@
 	.official-submission-toolbar > * {
 		margin-bottom: 22px;
 	}
-	.official-submission-toolbar :last-child {
+	.official-submission-toolbar > *:last-child {
 		margin-bottom: 0;
 	}
 }
