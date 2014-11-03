@@ -4,14 +4,14 @@ var _                   = require('mano').i18n.bind('Sections')
   , d                   = require('d')
   , db                  = require('mano').db
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
-  , ns = require('mano').domjs.ns
-  , url;
-
-url = ns.url;
+  , ns = require('mano').domjs.ns;
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
-	d(function (document) {
-		var self = this;
+	d(function (document/*, options */) {
+		var self = this, options, url;
+		url = ns.url;
+		options = Object(arguments[1]);
+		url = options.url || ns.url;
 		return ns.section({ class: ns._if(ns.eq(
 			this.status,
 			1

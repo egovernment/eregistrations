@@ -3,18 +3,17 @@
 var _  = require('mano').i18n.bind('Sections')
   , d  = require('d')
   , db = require('mano').db
-  , ns = require('mano').domjs.ns
-  , url;
+  , ns = require('mano').domjs.ns;
 
 require('./form-section-base-get-resolvent');
 require('./form-section-base-get-legacy');
 
-url = ns.url;
-
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm',
-	d(function (document) {
-		var mainFormResolvent, actionUrl;
+	d(function (document/*, options */) {
+		var mainFormResolvent, actionUrl, options, url;
 		mainFormResolvent = this.getFormResolvent();
+		options = Object(arguments[1]);
+		url = options.url || ns.url;
 		actionUrl = url(this.actionUrl);
 		if (this.buildActionUrl) {
 			actionUrl = this.master.constructor.prototype === this.master ?
