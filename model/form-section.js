@@ -16,7 +16,8 @@ module.exports = memoize(function (db) {
 			props = this.constructor.propertyNames.copy();
 			props.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name);
-				if (_observe(resolved.object['_' + db.Object.getFormApplicablePropName(resolved.key)])
+				if (_observe(resolved.object['_' +
+						this.database.Object.getFormApplicablePropName(resolved.key)])
 						=== false) {
 					props.delete(name);
 				}
@@ -28,7 +29,8 @@ module.exports = memoize(function (db) {
 			props = this.formPropertyNames.copy();
 			props.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name);
-				if (_observe(resolved.object['_' + db.Object.getApplicablePropName(resolved.key)])
+				if (_observe(resolved.object['_' +
+						this.database.Object.getApplicablePropName(resolved.key)])
 						=== false) {
 					props.delete(name);
 				}
