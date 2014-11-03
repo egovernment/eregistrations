@@ -12,6 +12,18 @@
 	vertical-align: top;
 }
 
+.label-reg.ready {
+	background: var(--progress-background);
+}
+
+.label-reg.rejected {
+	background: var(--error-background);
+}
+
+.label-reg.approved {
+	background: var(--success-background);
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 	.label-reg {
 		margin-top: 2px;
