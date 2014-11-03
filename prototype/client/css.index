@@ -10,6 +10,7 @@
 ../../css/components/modal.css
 ../../css/components/modal-login.css
 ../../css/components/modal-register.css
+../../css/components/modal-reject.css
 ../../css/components/modal-inventory.css
 ../../css/components/modal-reset-password.css
 ../../css/components/header-top.css

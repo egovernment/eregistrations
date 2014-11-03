@@ -1,9 +1,11 @@
 'use strict';
 
 var db = require('mano').db,
-	user = db.User.prototype;
+	user = db.User.prototype,
+	rejectModal,
+	hideBtn;
 
-module.exports = modal(
+module.exports = rejectModal = modal(
 	{ class: 'modal-reject' },
 	section(
 		header(
@@ -14,7 +16,8 @@ module.exports = modal(
 				ul(
 					{ class: 'form-elements' },
 					li(
-						input({ dbjs: user.rejectReason })
+						{ class: 'input' },
+						textarea({ dbjs: user.rejectReason })
 					)
 				),
 				p(
@@ -24,7 +27,10 @@ module.exports = modal(
 			)
 		),
 		footer(
-			a({ class: "close" }, 'X')
+			p(
+				hideBtn = a('Close')
+			)
 		)
 	)
 );
+hideBtn.castAttribute('onclick', rejectModal.hide);

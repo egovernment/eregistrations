@@ -141,6 +141,7 @@ user.defineProperties({
 	companyType: { type: CompanyType, label: "Registration type", required: true },
 	descriptionText: { type: db.String, label: "Your description", required: true,
 		inputCols: 35, inputRows: 4 },
+	rejectReason: { type: db.String },
 	isShoppingGallery: { type: db.Boolean, label: "A shopping gallery", required: true,
 		trueLabel: "Yes", falseLabel: "No" },
 	isARequested: { type: db.Boolean, label: "Registration A", required: true },
