@@ -53,9 +53,9 @@ exports['sub-main'] = function () {
 					td("123"),
 					td("29/07/2014"),
 					td(
-						span({ class: 'label-reg' }, "Brela"),
-						span({ class: 'label-reg' }, "Tinc"),
-						span({ class: 'label-reg' }, "Vat"),
+						span({ class: 'label-reg ready' }, "Brela"),
+						span({ class: 'label-reg rejected' }, "Tinc"),
+						span({ class: 'label-reg approved' }, "Vat"),
 						span({ class: 'label-reg' }, "Gepf"),
 						span({ class: 'label-reg' }, "Nssf"),
 						span({ class: 'label-reg' }, "Lapf")

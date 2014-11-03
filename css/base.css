@@ -24,6 +24,7 @@ Component describing basic elements styles - reusable
 	--dark-text: #333333;
 	--success-text: #5CB85C;
 	--error-text: #D9534F;
+	--processed-text: #f89406;
 }
 
 html {
