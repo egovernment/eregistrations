@@ -1,0 +1,16 @@
+.modal-reject section form fieldset {
+	border: none;
+}
+
+.modal-reject textarea,
+.modal-reject li {
+	width: 320px;
+}
+
+.modal-reject section div {
+	padding-top: 11px;
+}
+
+.modal-reject form > * {
+	margin-bottom: 22px;
+}
