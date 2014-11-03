@@ -13,7 +13,10 @@ module.exports = rejectModal = modal(
 		),
 		div(
 			form(
-				textarea({ id: 'reject-reason', dbjs: user.rejectReason }),
+				p(
+					{ class: 'input' },
+					textarea({ id: 'reject-reason', dbjs: user.rejectReason })
+				),
 				p(
 					input({ type: 'submit', value: "Reject" })
 				)
