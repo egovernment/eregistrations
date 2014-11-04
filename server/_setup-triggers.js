@@ -7,20 +7,20 @@ var once           = require('timers-ext/once')
 
 module.exports = function (conf, onTrigger) {
 	var postTrigger = resolveTrigger(conf.trigger, conf.triggerValue)
-	  , preTrigger, prePool, clearPrePool, onPreTarget, onPostTarget;
+	  , preTrigger, prePool, clearPool, onPreTarget, onPostTarget;
 
 	if (conf.preTrigger) preTrigger = resolveTrigger(conf.preTrigger, conf.preTriggerValue);
 
 	if (preTrigger) {
 		prePool = create(null);
-		clearPrePool = once(function () { prePool = create(null); });
+		clearPool = once(function () { prePool = create(null); });
 		onPreTarget = function (target) {
 			if (prePool[target.__id__] === 'post') {
 				onTrigger(target);
 				return;
 			}
 			prePool[target.__id__] = 'pre';
-			clearPrePool();
+			clearPool();
 		};
 		onPostTarget = function (target) {
 			if (prePool[target.__id__] === 'pre') {
@@ -28,7 +28,7 @@ module.exports = function (conf, onTrigger) {
 				return;
 			}
 			prePool[target.__id__] = 'post';
-			clearPrePool();
+			clearPool();
 		};
 		preTrigger.on('change', function (event) {
 			if (event.type === 'delete') {
