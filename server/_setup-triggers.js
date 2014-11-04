@@ -1,44 +1,58 @@
 'use strict';
 
-var once           = require('timers-ext/once')
+var forEach        = require('es5-ext/object/for-each')
+  , once           = require('timers-ext/once')
   , resolveTrigger = require('./_resolve-trigger')
 
   , create = Object.create;
 
 module.exports = function (conf, onTrigger) {
 	var postTrigger = resolveTrigger(conf.trigger, conf.triggerValue)
-	  , preTrigger, prePool, clearPool, onPreTarget, onPostTarget;
+	  , preTrigger, prePool, postPool, clearPool, onPreTargetAdd, onPreTargetDelete, onPostTarget;
 
 	if (conf.preTrigger) preTrigger = resolveTrigger(conf.preTrigger, conf.preTriggerValue);
 
 	if (preTrigger) {
 		prePool = create(null);
-		clearPool = once(function () { prePool = create(null); });
-		onPreTarget = function (target) {
-			if (prePool[target.__id__] === 'post') {
-				onTrigger(target);
-				return;
-			}
-			prePool[target.__id__] = 'pre';
+		postPool = create(null);
+		clearPool = once(function () {
+			var target = [];
+			forEach(postPool, function (obj, id) {
+				if (prePool == null) {
+					if (!preTrigger.has(obj)) return;
+				} else {
+					if (prePool !== false) return;
+				}
+				target.push(obj);
+			});
+			prePool = create(null);
+			postPool = create(null);
+			target.forEach(onTrigger);
+		});
+		onPreTargetAdd = function (target) {
+			prePool[target.__id__] = true;
+			clearPool();
+		};
+		onPreTargetDelete = function (target) {
+			prePool[target.__id__] = false;
 			clearPool();
 		};
 		onPostTarget = function (target) {
-			if (prePool[target.__id__] === 'pre') {
-				onTrigger(target);
-				return;
-			}
-			prePool[target.__id__] = 'post';
+			postPool[target.__id__] = target;
 			clearPool();
 		};
 		preTrigger.on('change', function (event) {
-			if (event.type === 'delete') {
-				onPreTarget(event.value);
+			if (event.type === 'add') {
+				onPreTargetAdd(event.value);
 				return;
 			}
-			if (event.type === 'add') return;
+			if (event.type === 'delete') {
+				onPreTargetDelete(event.value);
+				return;
+			}
 			if (event.type === 'batch') {
-				if (!event.deleted) return;
-				event.deleted.forEach(onPreTarget);
+				if (event.added) event.added.forEach(onPreTargetAdd);
+				if (event.deleted) event.deleted.forEach(onPreTargetDelete);
 				return;
 			}
 			console.log("Errorneous event:", event);
