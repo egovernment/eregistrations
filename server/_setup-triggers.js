@@ -18,10 +18,10 @@ module.exports = function (conf, onTrigger) {
 		clearPool = once(function () {
 			var target = [];
 			forEach(postPool, function (obj, id) {
-				if (prePool == null) {
+				if (prePool[id] == null) {
 					if (!preTrigger.has(obj)) return;
 				} else {
-					if (prePool !== false) return;
+					if (prePool[id] !== false) return;
 				}
 				target.push(obj);
 			});
