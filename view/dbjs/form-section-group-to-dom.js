@@ -36,7 +36,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 					function (subSection) {
 						var formResolvent, legacy;
 						formResolvent = subSection.getFormResolvent({ formId: mainFormResolvent.formId });
-						legacy = subSection.getLegacy(mainFormResolvent.formId);
+						legacy = subSection.getLegacy(mainFormResolvent.formId, options);
 						return ns.div({ class: 'sub-section' },
 							ns.h3(subSection.constructor.label),
 							formResolvent.formResolvent,

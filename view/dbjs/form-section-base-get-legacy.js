@@ -13,9 +13,10 @@ legacy: lagacyScript || undefined
 }
 */
 module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy',
-	d(function (formId) {
-		var result, legacyData;
+	d(function (formId/*, options */) {
+		var result, legacyData, options;
 		result = {};
+		options = Object(arguments[1]);
 		this.constructor.propertyNames.forEach(function (item, propName) {
 			var val, id, resolved;
 			resolved = resolvePropertyPath(this, propName);
@@ -35,7 +36,8 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 			result.controls[resolved.object.__id__ + '/' + resolved.key] = { id: id };
 		}, this.master);
 		if (legacyData) {
-			result.legacy = ns.legacy('formSectionStateHelper', formId, this.master.__id__, legacyData);
+			result.legacy = ns.legacy('formSectionStateHelper', formId, this.master.__id__,
+				legacyData, options.legacyEntityProto);
 		}
 
 		return result;
