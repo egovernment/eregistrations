@@ -82,7 +82,11 @@ setup = function (path) {
 			return;
 		}
 		context.user = user;
-		text = getText(user);
+		try { text = getText(user); } catch (e) {
+			if (mano.env && mano.env.dev) throw e;
+			console.error("Cannot generate email message!:\n" + e.stack);
+			return;
+		}
 		mailOpts = {
 			from: getFrom(user, conf.from),
 			to: to,
