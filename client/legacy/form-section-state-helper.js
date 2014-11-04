@@ -21,16 +21,15 @@ getContext = function (formEntity, sKeyPath) {
 	return { sKey: sKey, object: context };
 };
 
-$.formSectionStateHelper = function (formId, entityId, constraints/*, options */) {
-	var Entity = function () {}, form = $(formId), formEntity, options;
-	options = Object(arguments[3]);
-	if (options && options.legacyEntityProto) {
-		Entity.prototype = options.legacyEntityProto;
+$.formSectionStateHelper = function (formId, entityId, constraints, legacyEntityProto) {
+	var Entity = function () {}, form = $(formId);
+	if (legacyEntityProto) {
+		Entity.prototype = legacyEntityProto;
 	}
-	formEntity = new Entity();
-	formEntity.__id__ = entityId;
+	Entity.prototype.__id__ = entityId;
 	$.onEnvUpdate(formId, function () {
-		var result, i, context, domElem;
+		var result, i, context, domElem, formEntity;
+		formEntity = new Entity();
 		$.dbjsFormFill(formEntity, form);
 		for (i = 0; i < constraints.length; i++) {
 			domElem = $(constraints[i].id);

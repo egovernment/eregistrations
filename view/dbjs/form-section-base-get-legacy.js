@@ -37,7 +37,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 		}, this.master);
 		if (legacyData) {
 			result.legacy = ns.legacy('formSectionStateHelper', formId, this.master.__id__,
-				legacyData, options);
+				legacyData, options.legacyEntityProto);
 		}
 
 		return result;
