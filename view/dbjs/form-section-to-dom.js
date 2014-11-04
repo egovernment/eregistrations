@@ -11,9 +11,9 @@ require('./form-section-base-get-legacy');
 module.exports = Object.defineProperties(db.FormSection.prototype, {
 	toDOMForm: d(function (document/*, options */) {
 		var resolvent, legacy, actionUrl, options, url;
-		resolvent = this.getFormResolvent();
-		legacy = this.getLegacy(resolvent.formId);
 		options = Object(arguments[1]);
+		resolvent = this.getFormResolvent();
+		legacy = this.getLegacy(resolvent.formId, options);
 		url = options.url || ns.url;
 		actionUrl = url(this.actionUrl);
 		if (this.buildActionUrl) {
