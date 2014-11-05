@@ -37,6 +37,16 @@ module.exports = memoize(function (db) {
 			}, this);
 
 			return props;
+		} },
+		status: { value: function (_observe) {
+			var resolved, valid = 0, total = 0;
+			this.propertyNames.forEach(function (name) {
+				resolved = this.master.resolveSKeyPath(name);
+				if (!resolved.descriptor.required) return;
+				total++;
+				if (_observe(resolved.observable) != null) valid++;
+			}, this);
+			return total === 0 ? 1 : valid / total;
 		} }
 	}, {
 		propertyNames: { type: StringLine, multiple: true }
