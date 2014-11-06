@@ -1,4 +1,5 @@
-.button-main {
+.button-main,
+input[type='submit'].button-main {
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	color: var(--white-text);
@@ -14,8 +15,11 @@
 	padding: 11px 15px;
 }
 .button-main:hover,
+input[type='submit'].button-main:hover,
 .button-main:focus,
-.button-main:active {
+input[type='submit'].button-main:focus,
+.button-main:active,
+input[type='submit'].button-main:active {
 	background-color: var(--normal-dark-background);
 	color: var(--white-text);
 }

@@ -50,6 +50,9 @@
 .section-primary .dbjs-input-component > .input {
 	width: 60%;
 }
+.section-primary .dbjs-input-component > .input:first-child {
+	margin-left: 40%;
+}
 
 .section-primary .button-scroll-top {
 	text-align: right;
@@ -80,5 +83,8 @@
 	}
 	.section-primary .dbjs-input-component > .input {
 		width: 100%;
+	}
+	.section-primary .dbjs-input-component > .input:first-child {
+		margin-left: 0;
 	}
 }

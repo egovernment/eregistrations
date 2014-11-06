@@ -23,6 +23,9 @@ ul.form-elements li {
 .inputs {
 	line-height: 44px;
 }
+.input .file-thumb {
+	line-height: 22px;
+}
 
 .inputs {
 	display: inline-block;
