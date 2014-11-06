@@ -8,7 +8,7 @@ exports.certificates = function () {
 		{ method: 'post', class: 'form-elements ' },
 		div(
 			{ class: 'sub-section' },
-			h3("Upload here the certificates:"),
+			h3("Certificate A"),
 			fieldset(
 				ul(
 					li(
