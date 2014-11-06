@@ -10,7 +10,7 @@ module.exports = memoize(function (db) {
 	validDb(db);
 	StringLine      = defineStringLine(db);
 	FormSectionBase = defineFormSectionBase(db);
-	return FormSectionBase.extend('FormSection', {
+	FormSectionBase.extend('FormSection', {
 		formPropertyNames: { type: StringLine, multiple: true, value: function (_observe) {
 			var props, resolved;
 			props = this.constructor.propertyNames.copy();
@@ -47,8 +47,16 @@ module.exports = memoize(function (db) {
 				if (_observe(resolved.observable) != null) valid++;
 			}, this);
 			return total === 0 ? 1 : valid / total;
-		} }
+		} },
+		inputOptions: {
+			type: db.Object,
+			nested: true
+		}
 	}, {
 		propertyNames: { type: StringLine, multiple: true }
 	});
+	db.FormSection.prototype.inputOptions._descriptorPrototype_.nested = true;
+	db.FormSection.prototype.inputOptions._descriptorPrototype_.type   = db.Object;
+
+	return db.FormSection;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
