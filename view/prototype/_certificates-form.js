@@ -5,12 +5,11 @@ var db = require('mano').db
 
 exports.certificates = function () {
 	form(
-		{ method: 'post' },
+		{ method: 'post', class: 'form-elements ' },
 		div(
 			{ class: 'sub-section' },
 			h3("Upload here the certificates:"),
 			fieldset(
-				{ class: 'form-elements ' },
 				ul(
 					li(
 						div(
