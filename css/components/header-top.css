@@ -52,7 +52,6 @@ Flexible basic menu - used on home page and can be reused elsewhere
 }
 
 .menu-top li a.login {
-	position: relative;
 	background-color: var(--normal-background);
 	border-radius: 3px;
 	color: var(--white-text);
@@ -67,6 +66,7 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	white-space: nowrap;
 }
 .login-hint {
+	margin-left: 5px;
 	font-size: 10px;
 }
 .menu-top li a.login:hover,
