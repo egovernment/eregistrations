@@ -17,6 +17,9 @@
 .public-steps li > * {
 	margin-top: 22px;
 }
+.public-steps li a > * {
+	margin-top: 22px;
+}
 
 .public-steps li:first-child {
 	padding-left: 0;

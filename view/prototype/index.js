@@ -21,14 +21,15 @@ exports.main = function () {
 	div(
 		{ class: 'content' },
 		ul({ class: 'public-steps' },
-			li(
-				img({ src: '/img/img-300.png' }),
-				h3('Create your file'),
-				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
-					" nequepharetra, pellentesque risus in, condimentum nulla. "),
-				p(a({ class: 'step-button', href: '/guide/' },
-					'More info'))
-			),
+			li({ class: 'public-steps_li' },
+				a({ clas: 'public-steps_link', href: '#' },
+					img({ class: 'public-steps_img', src: '/img/img-300.png' }),
+					h3({ class: 'public-steps_title' }, ('Create your file')),
+					p({ class: 'public-steps_text' },
+						("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
+						" nequepharetra, pellentesque risus in, condimentum nulla."))
+					)
+				),
 			li(
 				img({ src: '/img/img-300.png' }),
 				h3('Pay costs'),
