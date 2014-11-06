@@ -17,10 +17,15 @@
 .public-steps li > * {
 	margin-top: 22px;
 }
+.public-steps li a {
+	text-decoration: none;
+}
 .public-steps li a > * {
 	margin-top: 22px;
 }
-
+.public-steps li.public-steps_link:hover {
+	box-shadow: 0 0px 10px rgba(0, 0, 0, 0.2);
+}
 .public-steps li:first-child {
 	padding-left: 0;
 	padding-right: 5px;
