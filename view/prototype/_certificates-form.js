@@ -51,6 +51,11 @@ exports.certificates = function () {
 					)
 				)
 			)
+		),
+		p(
+			input(
+				{ type: 'submit', value: 'Accept the incorporation', class: 'button-main' }
+			)
 		)
 	);
 };

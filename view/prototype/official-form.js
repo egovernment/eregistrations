@@ -7,7 +7,7 @@ exports['official-form'] = { class: { active: true } };
 
 exports.tab = function () {
 	div(
-		{ class: 'section-primary official-form' },
+		{ class: 'section-primary official-form', id: 'certificates' },
 		h3("Incorporation approved"),
 		form(
 			{ class: 'form-single-control ' },
@@ -19,7 +19,6 @@ exports.tab = function () {
 		),
 		hr(),
 		section(
-			{ id: 'certificates' },
 			p("Upload here the certificates:"),
 			form(
 				{ class: 'official-form-upload', method: 'post' },
