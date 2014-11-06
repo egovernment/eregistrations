@@ -17,11 +17,15 @@ exports.tab = function () {
 				input({ type: 'submit', value: 'Save' })
 			)
 		),
-		p("Upload here the certificates:"),
-		form(
-			{ class: 'official-form-upload', method: 'post' },
-			input({ dbjs: user._incorporationCertificateFile }),
-			input({ dbjs: user._registeredArticlesFile })
+		hr(),
+		section(
+			{ id: 'certificates' },
+			p("Upload here the certificates:"),
+			form(
+				{ class: 'official-form-upload', method: 'post' },
+				input({ dbjs: user._incorporationCertificateFile }),
+				input({ dbjs: user._registeredArticlesFile })
+			)
 		),
 		hr(),
 		h3("Request changes to the application"),

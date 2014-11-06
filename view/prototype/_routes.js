@@ -51,6 +51,7 @@ module.exports = function (view) {
 		official: bind(subMain.diff('./official')),
 		'revision/user-id': bind(userOfficialMain.diff('./revision')),
 		'official/user-id': bind(userOfficialUser.diff('./official-form')),
+		'official/user-id/certyficates': bind(userOfficialUser.diff('./official-form').diff('./_certificates-form')),
 		'official/user-id/document': bind(userOfficialUser.diff('./official-document')),
 		// Error routes
 		404: bind(main.diff('./404'))
