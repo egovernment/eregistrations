@@ -28,6 +28,7 @@ Flexible basic menu - used on home page and can be reused elsewhere
 */
 .menu-top {
 	display: flex;
+	align-items: flex-end;
 	list-style: none;
 	padding-left: 15px;
 }
@@ -66,9 +67,6 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	white-space: nowrap;
 }
 .login-hint {
-	position: absolute;
-	top: 5px;
-	width: 100px;
 	font-size: 10px;
 }
 .menu-top li a.login:hover,

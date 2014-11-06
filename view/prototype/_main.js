@@ -16,11 +16,10 @@ exports.body = function () {
 					li(a('link one')),
 					li(a('link two')),
 					li(a('link tree')),
-					li(a({ class: 'login', onclick: login.show },
+					li(span({ class: 'login-hint' }, ('Do you have an account?')),
+						a({ class: 'login', onclick: login.show },
 						"Log in"
-						),
-						span({ class: 'login-hint' }, ('Lorem Ipsum'))
-						)
+						))
 					)
 				)
 			)
