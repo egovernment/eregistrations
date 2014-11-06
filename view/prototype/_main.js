@@ -18,7 +18,9 @@ exports.body = function () {
 					li(a('link tree')),
 					li(a({ class: 'login', onclick: login.show },
 						"Log in"
-						))
+						),
+						span({ class: 'login-hint' }, ('Lorem Ipsum'))
+						)
 					)
 				)
 			)
