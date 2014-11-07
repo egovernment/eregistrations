@@ -5,7 +5,8 @@
 }
 
 .registration-form ul > li > fieldset > ul > *:last-child,
-.registrations-confirmations > *:last-child {
+.registrations-confirmations > *:last-child,
+.registration-form > ul  {
 	margin-bottom: 0;
 }
 

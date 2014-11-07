@@ -87,10 +87,19 @@ exports.certificates = function () {
 			)
 		),
 		hr(),
+		p(
+			a(
+				{ class: 'button-main' },
+				span({ class: 'fa fa-print' }, "Print"),
+				"Print certificate"
+			)
+		),
+		hr(),
 		fieldset(
 			{ class: 'registrations-confirmations' },
 			p(
-				"I certify that I have delivered the following registrations and uploaded a digital copy of them:"
+				"I certify that I have delivered the following registrations and " +
+					"uploaded a digital copy of them:"
 			),
 			ul(
 				li(label({ class: 'input-aside' },
@@ -100,6 +109,13 @@ exports.certificates = function () {
 					input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 					span(user.getDescriptor('isARequested').label)))
 			)
+		),
+		hr(),
+		p("Upload here the certificates:"),
+		fieldset(
+			{ class: 'official-form-upload' },
+			input({ dbjs: user._incorporationCertificateFile }),
+			input({ dbjs: user._registeredArticlesFile })
 		),
 		hr(),
 		p(
