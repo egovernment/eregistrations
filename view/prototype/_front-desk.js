@@ -18,11 +18,11 @@ exports.certificates = function () {
 	form(
 		{ method: 'post' },
 		ul(
-			{ class: 'front-desk-documents-validation' },
+			{ class: 'front-desk-validation' },
 			li(
 				fieldset(
 					ul(
-						{ class: 'front-desk-uploaded-document' },
+						{ class: 'front-desk-validation-document' },
 						li(
 							label({ class: 'input-aside' },
 								input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
@@ -40,7 +40,7 @@ exports.certificates = function () {
 			li(
 				fieldset(
 					ul(
-						{ class: 'front-desk-uploaded-document' },
+						{ class: 'front-desk-validation-document' },
 						li(
 							label({ class: 'input-aside' },
 								input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
@@ -58,7 +58,7 @@ exports.certificates = function () {
 			li(
 				fieldset(
 					ul(
-						{ class: 'front-desk-uploaded-document' },
+						{ class: 'front-desk-validation-document' },
 						li(
 							label({ class: 'input-aside' },
 								input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
@@ -76,7 +76,7 @@ exports.certificates = function () {
 			li(
 				fieldset(
 					ul(
-						{ class: 'front-desk-uploaded-document' },
+						{ class: 'front-desk-validation-document' },
 						li(
 							label({ class: 'input-aside' },
 								input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
@@ -123,7 +123,6 @@ exports.certificates = function () {
 
 	hr();
 
-	p("Upload here the certificates:");
 	form(
 		{ class: 'official-form-upload' },
 		input({ dbjs: user._incorporationCertificateFile }),
