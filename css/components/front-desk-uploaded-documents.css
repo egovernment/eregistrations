@@ -1,0 +1,26 @@
+.front-desk-uploaded-documents > li,
+.front-desk-uploaded-document > li {
+		margin-bottom: 22px;
+}
+
+.front-desk-uploaded-documents > li {
+	display: inline-block;
+	width: 47%;
+	margin-right: 3%;
+	margin-left: 0;
+}
+
+.front-desk-uploaded-documents > li:nth-child(even) {
+	margin-left: 3%;
+	margin-right: 0;
+}
+
+.front-desk-uploaded-documents > li:nth-last-child(2),
+.front-desk-uploaded-documents > li:last-child,
+.front-desk-uploaded-document > li:last-child {
+	margin-bottom: 0;
+}
+
+.front-desk-confirmations label span {
+	font-weight: bold;
+}
