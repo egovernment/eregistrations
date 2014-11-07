@@ -17,7 +17,7 @@
 .public-steps li > * {
 	margin-top: 22px;
 }
-.public-steps li a {
+.public-steps-clickable > a {
 	text-decoration: none;
 }
 .public-steps li a > * {
