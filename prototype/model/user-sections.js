@@ -106,12 +106,13 @@ FormSection.extend('WithdrawToSection', {}, {
 	actionUrl: { value: '/' }
 });
 
-FormSection.extend('WhoWithdrawsSection', {}, {
+FormSection.extend('WhoWithdrawsSection', {
+	resolventValue: { value: false }
+}, {
 	propertyNames: { value: ['lastName', 'dateOfBirth', 'inventory'] },
 	label: { value: "Who will pick the certificates?" },
 	actionUrl: { value: '/' },
-	resolventProperty: { value: 'pickCertificates' },
-	resolventValue: { value: false }
+	resolventProperty: { value: 'pickCertificates' }
 });
 
 user.formSendSections.getOwnDescriptor('withdrawToSection').type = db.WithdrawToSection;

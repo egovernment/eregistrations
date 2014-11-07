@@ -42,6 +42,6 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 				ns.p({ class: 'button-scroll-top' },
 					ns.a({ onclick: 'window.scroll(0, 0)' },
 						ns.span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
-			), resolvent.radioMatch, legacy.legacy);
+			), resolvent.legacyScript, legacy.legacy);
 	})
 });

@@ -1,8 +1,8 @@
 'use strict';
 var d  = require('d')
   , generateId = require('time-uuid')
-  , assign = require('es5-ext/object/assign')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
+  , normalizeOptions = require('es5-ext/object/normalize-options')
   , db = require('mano').db
   , ns = require('mano').domjs.ns;
 
@@ -16,10 +16,10 @@ legacy: lagacyScript || undefined
 module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy',
 	d(function (formId/*, options */) {
 		var result, legacyData, options, self;
-		self = this;
 		result = {};
 		result.controls = {};
 		options = Object(arguments[1]);
+		self = this;
 		this.constructor.propertyNames.forEach(function (item, propName) {
 			var val, id, resolved, formFieldPath;
 			resolved = resolvePropertyPath(this, propName);
@@ -37,11 +37,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 			}
 			id = 'input-' + generateId();
 			legacyData.push({ id: id, constraint: val, sKeyPath: propName });
-			if (result.controls[formFieldPath]) {
-				result.controls[formFieldPath] = assign(result.controls[formFieldPath], { id: id });
-			} else {
-				result.controls[formFieldPath] = { id: id };
-			}
+			result.controls[formFieldPath] = normalizeOptions(result.controls[formFieldPath], { id: id });
 		}, this.master);
 		if (legacyData) {
 			result.legacy = ns.legacy('formSectionStateHelper', formId, this.master.__id__,
