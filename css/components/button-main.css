@@ -23,3 +23,9 @@ input[type='submit'].button-main:active {
 	background-color: var(--normal-dark-background);
 	color: var(--white-text);
 }
+
+.button-main .fa {
+	position: relative;
+	top: 3px;
+	right: 3px;
+}

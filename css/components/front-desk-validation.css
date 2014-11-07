@@ -1,0 +1,22 @@
+.front-desk-validation> li,
+.front-desk-validation-document > li {
+		margin-bottom: 22px;
+}
+
+.front-desk-validation > li {
+	display: inline-block;
+	width: 47%;
+	margin-right: 3%;
+	margin-left: 0;
+}
+
+.front-desk-validation > li:nth-child(even) {
+	margin-left: 3%;
+	margin-right: 0;
+}
+
+.front-desk-validation > li:nth-last-child(2),
+.front-desk-validation > li:last-child,
+.front-desk-validation-document > li:last-child {
+	margin-bottom: 0;
+}
