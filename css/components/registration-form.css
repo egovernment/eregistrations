@@ -1,0 +1,26 @@
+.registration-form > ul > *,
+.registration-form ul > li > fieldset > ul > *,
+.registrations-confirmations > * {
+	margin-bottom: 22px;
+}
+
+.registration-form ul > li > fieldset > ul > *:last-child,
+.registrations-confirmations > *:last-child {
+	margin-bottom: 0;
+}
+
+.registration-form > ul > li {
+	display: inline-block;
+	width: 47%;
+	margin-right: 3%;
+	margin-left: 0;
+}
+
+.registration-form > ul > li:nth-child(even) {
+	margin-left: 3%;
+	margin-right: 0;
+}
+
+.registrations-confirmations label span {
+	font-weight: bold;
+}
