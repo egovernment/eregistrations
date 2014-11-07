@@ -23,7 +23,7 @@
 .public-steps li a > * {
 	margin-top: 22px;
 }
-.public-steps .public-steps_link:hover {
+.public-steps .public-steps-clickable:hover {
 	box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 .public-steps li:first-child {
