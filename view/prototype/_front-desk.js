@@ -5,20 +5,20 @@ var db = require('mano').db
 
 exports['official-form'] =
 		{ href: '/front-desk/user-id/',
-		'': function () { insert('Registerations for approval'); }
+		'': function () { insert("Delivery of registrations"); }
 		};
 
 exports.certificates = function () {
 
-	h3("Registerations for approval");
+	h3("Delivery of registrations");
 	hr();
 
-	p("I certify to have seen the original of the following documents:");
+	h4("I certify to have seen the original of the following documents:");
 
 	form(
 		{ method: 'post' },
 		ul(
-			{ class: 'front-desk-uploaded-documents' },
+			{ class: 'front-desk-documents-validation' },
 			li(
 				fieldset(
 					ul(
@@ -107,7 +107,7 @@ exports.certificates = function () {
 	hr();
 	form(
 		{ class: 'front-desk-confirmations' },
-		p(
+		h4(
 			"I certify that I have delivered the following registrations and " +
 				"uploaded a digital copy of them:"
 		),
@@ -135,10 +135,10 @@ exports.certificates = function () {
 	p(
 		{ class: 'official-submission-toolbar' },
 		postButton(
-			{ value: "Pause certification", buttonClass: 'button-main' }
+			{ value: "Hold registrations", buttonClass: 'button-main' }
 		),
 		postButton(
-			{ value: "Sign certificate", buttonClass: 'button-main' }
+			{ value: "Approve registrations", buttonClass: 'button-main' }
 		)
 	);
 

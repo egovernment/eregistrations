@@ -55,8 +55,8 @@ module.exports = function (view) {
 		'official/user-id/certificates': bind(userOfficialCertificates.diff('./_certificates-form')),
 		'official/user-id/document': bind(userOfficialUser.diff('./official-document')),
 
-		// Registration routs
-		'front-desk/user-id': bind(userOfficialCertificates.diff('./_registration')),
+		// Front-desk routes
+		'front-desk/user-id': bind(userOfficialCertificates.diff('./_front-desk')),
 
 		// Error routes
 		404: bind(main.diff('./404'))
