@@ -19,6 +19,10 @@
 	background: var(--white-background);
 }
 
+.header-top > div:first-child {
+	overflow: hidden;
+}
+
 .header-top div {
 	max-height: 66px;
 }
@@ -43,7 +47,6 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	padding-left: 8px;
 	cursor: pointer;
 	display: block;
-	height: 22px;
 }
 .menu-top li a:hover,
 .menu-top li a:focus,
@@ -61,13 +64,14 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	text-align: center;
 	text-decoration: none;
 	line-height: 18px;
-	padding: 3px 7px 4px;
+	padding: 2px 7px 2px;
 	vertical-align: middle;
 	white-space: nowrap;
 }
 .login-hint {
 	margin-left: 5px;
 	font-size: 10px;
+	display:block;
 }
 .menu-top li a.login:hover,
 .menu-top li a.login:focus,
