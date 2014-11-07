@@ -44,7 +44,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 								{ id: formResolvent.affectedSectionId, class: 'form-elements',
 									dbjs: subSection.master, names: subSection.formPropertyNames,
 									controls: legacy.controls }
-							), formResolvent.radioMatch, legacy.legacy);
+							), formResolvent.legacyScript, legacy.legacy);
 					})),
 				ns.p({ class: 'submit-placeholder input' },
 					ns.input({ type: 'submit' }, _("Submit"))),
@@ -54,6 +54,6 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 						ns.span({ class: 'fa fa-arrow-up' }, "Back to top"))
 				)
 				),
-			mainFormResolvent.radioMatch
+			mainFormResolvent.legacyScript
 		);
 	}));
