@@ -21,11 +21,15 @@
 	margin-bottom: 0;
 }
 
-.print-certificate-button {
+.print-certificate-button-list li {
+	display: inline-block;
+}
+
+.print-certificate-button-list a {
 	background-color: var(--white-background);
 	border-radius: 4px;
 	color: var(--normal-text);
-	display: inline-block;
+	display: block;
 	text-decoration: none;
 	white-space: nowrap;
 	line-height: 22px;
@@ -33,12 +37,12 @@
 	margin-left: 20px;
 	border: 1px solid var(--normal-dark-background);
 }
-.print-certificate-button:hover,
-.print-certificate-button:focus,
-.print-certificate-button:active {
+.print-certificate-button-list a:hover,
+.print-certificate-button-list a:focus,
+.print-certificate-button-list a:active {
 	background-color: var(--light-background)
 }
 
-.print-certificate-button:first-child {
+.print-certificate-button-list li:first-child a {
 	margin-left: 0;
 }

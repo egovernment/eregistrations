@@ -97,17 +97,21 @@ exports.certificates = function () {
 	hr();
 
 	h4(
-		span({ class: 'fa fa-print' }, "Print"), " ",
+		span({ class: 'fa fa-print' }, "Print"),
+		" ",
 		"Print folowing certificates:"
 	);
-	p(
-		a(
-			{ class: 'print-certificate-button' },
-			user.getDescriptor('incorporationCertificateFile').label
+	ul(
+		{ class: 'print-certificate-button-list' },
+		li(
+			a(
+				user.getDescriptor('incorporationCertificateFile').label
+			)
 		),
-		a(
-			{ class: 'print-certificate-button' },
-			user.getDescriptor('registeredArticlesFile').label
+		li(
+			a(
+				user.getDescriptor('registeredArticlesFile').label
+			)
 		)
 	);
 
