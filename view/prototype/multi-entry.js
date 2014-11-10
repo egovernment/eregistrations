@@ -8,11 +8,23 @@ exports.banner = function () {
 		div(
 			div(
 				{ class: 'single-entry' },
-				a({ onclick: register.show  }, "Single trader")
+				a(
+					{ onclick: register.show  },
+					span({ class: "single-entry-hint hint-optional hint-optional-left",
+						"data-hint": "Hint displayed here." }),
+					p("Single Trader"),
+					p({ class: "public-multi-entry-action" }, "Account creation")
+				)
 			),
 			div(
 				{ class: 'single-entry' },
-				a({ onclick: register.show  }, "Partnership")
+				a(
+					{ onclick: register.show  },
+					span({ class: "single-entry-hint hint-optional hint-optional-left",
+						"data-hint": "Hint displayed here." }),
+					p("Partnership"),
+					p({ class: "public-multi-entry-action" }, "Account creation")
+				)
 			)
 		)
 		);
