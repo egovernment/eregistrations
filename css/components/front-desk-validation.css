@@ -23,6 +23,7 @@
 
 .print-certificate-button-list li {
 	display: inline-block;
+	margin-right: 20px;
 }
 
 .print-certificate-button-list a {
@@ -34,17 +35,12 @@
 	white-space: nowrap;
 	line-height: 22px;
 	padding: 5px 16px;
-	margin-left: 20px;
 	border: 1px solid var(--normal-dark-background);
 }
 .print-certificate-button-list a:hover,
 .print-certificate-button-list a:focus,
 .print-certificate-button-list a:active {
 	background-color: var(--light-background)
-}
-
-.print-certificate-button-list li:first-child a {
-	margin-left: 0;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
