@@ -97,10 +97,17 @@ exports.certificates = function () {
 	hr();
 
 	p(
+		span({ class: 'fa fa-print' }, "Print"),
+		"Print certificate"
+	);
+	p(
 		a(
-			{ class: 'button-main' },
-			span({ class: 'fa fa-print' }, "Print"),
-			"Print certificate"
+			{ class: 'print-certificate-button' },
+			user.getDescriptor('incorporationCertificateFile').label
+		),
+		a(
+			{ class: 'print-certificate-button' },
+			user.getDescriptor('registeredArticlesFile').label
 		)
 	);
 
