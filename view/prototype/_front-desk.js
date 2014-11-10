@@ -99,7 +99,7 @@ exports.certificates = function () {
 	h4(
 		span({ class: 'fa fa-print' }, "Print"),
 		" ",
-		"Print folowing certificates:"
+		"Print following certificates:"
 	);
 	ul(
 		{ class: 'front-desk-certificates-print' },
