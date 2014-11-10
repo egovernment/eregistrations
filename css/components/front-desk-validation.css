@@ -46,3 +46,19 @@
 .print-certificate-button-list li:first-child a {
 	margin-left: 0;
 }
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.front-desk-validation > li {
+		display: block;
+	}
+	.print-certificate-button-list li a {
+		display: block;
+		margin-left: 0;
+	}
+	.print-certificate-button-list li {
+		margin-bottom: 22px;
+	}
+	.print-certificate-button-list li:last-child {
+		margin-bottom: 0;
+	}
+}
