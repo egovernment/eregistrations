@@ -359,6 +359,8 @@ ul.multiple {
 	opacity: 0.5;
 }
 
+.auto-submit .submit { display: none; }
+
 /*
 Styles applied while screen sieze is less than 640px
 */
