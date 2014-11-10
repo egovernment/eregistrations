@@ -7,11 +7,8 @@
 	background: var(--error-background);
 }
 
-.official-form-upload {
+.official-form-upload ul > li {
 	display: inline-block;
-}
-
-.official-form-upload button {
 	margin-right: 20px;
 }
 

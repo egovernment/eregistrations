@@ -22,8 +22,10 @@ exports.tab = function () {
 			p("Upload here the certificates:"),
 			form(
 				{ class: 'official-form-upload', method: 'post' },
-				input({ dbjs: user._incorporationCertificateFile }),
-				input({ dbjs: user._registeredArticlesFile })
+				ul(
+					li(input({ dbjs: user._incorporationCertificateFile })),
+					li(input({ dbjs: user._registeredArticlesFile }))
+				)
 			)
 		),
 		hr(),
