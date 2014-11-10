@@ -13,7 +13,7 @@ exports.banner = function () {
 					span({ class: "single-entry-hint hint-optional hint-optional-left",
 						"data-hint": "Hint displayed here." }),
 					p("Single Trader"),
-					p(("ACCOUNT CREATION"))
+					p("ACCOUNT CREATION")
 				)
 			),
 			div(
@@ -23,7 +23,7 @@ exports.banner = function () {
 					span({ class: "single-entry-hint hint-optional hint-optional-left",
 						"data-hint": "Hint displayed here." }),
 					p("Partnership"),
-					p(("ACCOUNT CREATION"))
+					p("ACCOUNT CREATION")
 				)
 			)
 		)
