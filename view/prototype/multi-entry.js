@@ -13,7 +13,7 @@ exports.banner = function () {
 					span({ class: "single-entry-hint hint-optional hint-optional-left",
 						"data-hint": "Hint displayed here." }),
 					p("Single Trader"),
-					p({ class: "btn" }, ("account creation"))
+					p(("Account Creation"))
 				)
 			),
 			div(
