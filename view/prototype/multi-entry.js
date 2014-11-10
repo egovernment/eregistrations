@@ -12,7 +12,6 @@ exports.banner = function () {
 					{ onclick: register.show  },
 					span({ class: "single-entry-hint hint-optional hint-optional-left",
 						"data-hint": "Hint displayed here." }),
-					img({ class: "single-entry-img", src: "/img/img-150.png" }),
 					p("Single Trader"),
 					p({ class: "btn" }, ("account creation"))
 				)
@@ -23,7 +22,6 @@ exports.banner = function () {
 					{ onclick: register.show  },
 					span({ class: "single-entry-hint hint-optional hint-optional-left",
 						"data-hint": "Hint displayed here." }),
-					img({ class: "single-entry-img", src: "/img/img-150.png" }),
 					p("Partnership"),
 					p({ class: "btn" }, ("account creation"))
 				)
