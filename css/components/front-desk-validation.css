@@ -21,39 +21,8 @@
 	margin-bottom: 0;
 }
 
-.print-certificate-button-list li {
-	display: inline-block;
-	margin-right: 20px;
-}
-
-.print-certificate-button-list a {
-	background-color: var(--white-background);
-	border-radius: 4px;
-	color: var(--normal-text);
-	display: block;
-	text-decoration: none;
-	white-space: nowrap;
-	line-height: 22px;
-	padding: 5px 16px;
-	border: 1px solid var(--normal-dark-background);
-}
-.print-certificate-button-list a:hover,
-.print-certificate-button-list a:focus,
-.print-certificate-button-list a:active {
-	background-color: var(--light-background)
-}
-
 @media only screen and (max-width: var(--mobile-width)) {
 	.front-desk-validation > li {
 		display: block;
-	}
-	.print-certificate-button-list li a {
-		display: block;
-	}
-	.print-certificate-button-list li {
-		margin-bottom: 22px;
-	}
-	.print-certificate-button-list li:last-child {
-		margin-bottom: 0;
 	}
 }

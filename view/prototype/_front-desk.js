@@ -102,7 +102,7 @@ exports.certificates = function () {
 		"Print folowing certificates:"
 	);
 	ul(
-		{ class: 'print-certificate-button-list' },
+		{ class: 'front-desk-certificates-print' },
 		li(
 			a(
 				user.getDescriptor('incorporationCertificateFile').label
