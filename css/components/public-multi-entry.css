@@ -2,6 +2,10 @@
 	width: 100%;
 }
 
+.public-multi-entry a {
+	text-align: center;
+}
+
 .public-multi-entry h1 {
 	text-align: center;
 	width: 100%;
@@ -21,4 +25,40 @@
 		border-radius: 100px;
 		background: var(--white-background);
 		border: 1px solid var(--light-inner-border);
+}
+
+.single-entry {
+	position: relative;
+}
+
+.single-entry-title {
+	margin-bottom: 22px;
+}
+
+.single-entry-img {
+	display: block;
+}
+
+.single-entry-hint {
+	position: absolute;
+	top: 5px;
+	left: 25px;
+	width: 30px;
+	height: 30px;
+	border-radius: 15px;
+	background-color: #999;
+}
+
+.btn {
+	background-color: #999;
+	border-radius: 3px;
+	color: #ffffff;
+	cursor: pointer;
+	font-size: 12px;
+	padding: 0 7px;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: 1px;
+	white-space: nowrap;
+	display: inline-block;
 }
