@@ -22,24 +22,24 @@
 }
 
 .print-certificate-button {
-	background-color: #999;
+	background-color: var(--white-background);
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
 	-khtml-border-radius: 4px;
 	border-radius: 4px;
-	color: #ffffff;
+	color: var(--normal-text);
 	display: inline-block;
 	text-decoration: none;
 	white-space: nowrap;
 	line-height: 22px;
 	padding: 5px 16px;
-	cursor: pointer;
 	margin-left: 20px;
+	border: 1px solid var(--normal-dark-background);
 }
 .print-certificate-button:hover,
 .print-certificate-button:focus,
 .print-certificate-button:active {
-
+	background-color: var(--light-background)
 }
 
 .print-certificate-button:first-child {

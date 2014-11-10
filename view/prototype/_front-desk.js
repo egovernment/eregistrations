@@ -96,9 +96,9 @@ exports.certificates = function () {
 
 	hr();
 
-	p(
-		span({ class: 'fa fa-print' }, "Print"),
-		"Print certificate"
+	h4(
+		span({ class: 'fa fa-print' }, "Print"), " ",
+		"Print folowing certificates:"
 	);
 	p(
 		a(
