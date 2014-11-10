@@ -1,0 +1,33 @@
+.front-desk-certificates-print li {
+	display: inline-block;
+	margin-right: 20px;
+}
+
+.front-desk-certificates-print a {
+	background-color: var(--white-background);
+	border-radius: 4px;
+	color: var(--normal-text);
+	display: block;
+	text-decoration: none;
+	white-space: nowrap;
+	line-height: 22px;
+	padding: 5px 16px;
+	border: 1px solid var(--normal-dark-background);
+}
+.front-desk-certificates-print a:hover,
+.front-desk-certificates-print a:focus,
+.front-desk-certificates-print a:active {
+	background-color: var(--light-background)
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.front-desk-certificates-print li a {
+		display: block;
+	}
+	.front-desk-certificates-print li {
+		margin-bottom: 22px;
+	}
+	.front-desk-certificates-print li:last-child {
+		margin-bottom: 0;
+	}
+}

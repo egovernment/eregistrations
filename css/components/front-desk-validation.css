@@ -20,3 +20,9 @@
 .front-desk-validation-document > li:last-child {
 	margin-bottom: 0;
 }
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.front-desk-validation > li {
+		display: block;
+	}
+}

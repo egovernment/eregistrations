@@ -96,11 +96,22 @@ exports.certificates = function () {
 
 	hr();
 
-	p(
-		a(
-			{ class: 'button-main' },
-			span({ class: 'fa fa-print' }, "Print"),
-			"Print certificate"
+	h4(
+		span({ class: 'fa fa-print' }, "Print"),
+		" ",
+		"Print following certificates:"
+	);
+	ul(
+		{ class: 'front-desk-certificates-print' },
+		li(
+			a(
+				user.getDescriptor('incorporationCertificateFile').label
+			)
+		),
+		li(
+			a(
+				user.getDescriptor('registeredArticlesFile').label
+			)
 		)
 	);
 
