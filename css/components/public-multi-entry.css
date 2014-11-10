@@ -45,16 +45,3 @@
 	background-color: #999;
 }
 
-.btn {
-	background-color: #999;
-	border-radius: 3px;
-	color: #ffffff;
-	cursor: pointer;
-	font-size: 12px;
-	padding: 0 7px;
-	text-align: center;
-	text-decoration: none;
-	vertical-align: 1px;
-	white-space: nowrap;
-	display: inline-block;
-}
