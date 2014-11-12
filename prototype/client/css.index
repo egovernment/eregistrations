@@ -6,6 +6,7 @@
 ../../css/components/button-main.css
 ../../css/components/controls.css
 ../../css/components/error-main.css
+../../css/components/info-main.css
 ../../css/components/disabler.css
 ../../css/components/modal.css
 ../../css/components/modal-login.css
