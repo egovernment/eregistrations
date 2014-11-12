@@ -119,8 +119,7 @@ fieldset {
 	background-color: #fff;
 	opacity: 0.4;
 }
-.disabled *,
-[disabled] * {
+.disabled * {
 	cursor: not-allowed;
 }
 
