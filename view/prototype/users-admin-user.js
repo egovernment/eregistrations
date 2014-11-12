@@ -12,7 +12,7 @@ exports['sub-main'] = function () {
 			div(
 				{ class: 'entity-actions' },
 				a({ href: '/users-admin/edit-user-id/' }, "Edit", span({ class: 'fa fa-edit' }, "Edit")),
-				a("Delete", span({ class: 'fa fa-trash-o' }, "Delete"))
+				postButton({ value: ["Delete", span({ class: 'fa fa-trash-o' }, "Delete")] })
 			)
 		),
 		hr(),
