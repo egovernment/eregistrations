@@ -20,6 +20,10 @@
 	border: 1px solid var(--light-inner-border);
 	padding: 0;
 }
+.submitted-user-data-table tbody tr:hover,
+.submitted-user-data-table tbody tr:nth-of-type(even):hover {
+	background-color: var(--light-background)
+}
 
 .submitted-user-data-table tbody tr td {
 	vertical-align: top;
@@ -73,7 +77,7 @@
 }
 
 .submitted-user-data-table tbody tr:nth-of-type(even) {
-	background-color: var(--light-background);
+	background-color: var(--lightest-background);
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
