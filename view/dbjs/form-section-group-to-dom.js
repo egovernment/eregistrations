@@ -9,12 +9,11 @@ require('./form-section-base');
 
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var mainFormResolvent, actionUrl, options, url, self;
+		var mainFormResolvent, actionUrl, options, url;
 		mainFormResolvent = this.getFormResolvent();
 		options = Object(arguments[1]);
 		url = options.url || ns.url;
 		actionUrl = url(this.constructor.actionUrl);
-		self = this;
 		if (this.buildActionUrl) {
 			actionUrl = this.master.constructor.prototype === this.master ?
 					url(this.constructor.actionUrl + '-add') :
@@ -36,7 +35,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 					function (subSection) {
 						var formResolvent, legacy;
 						formResolvent = subSection.getFormResolvent();
-						legacy = subSection.getLegacy(self.domId, options);
+						legacy = subSection.getLegacy(this.domId, options);
 						return ns.div({ class: 'sub-section', id: subSection.domId },
 							ns.h3(subSection.constructor.label),
 							formResolvent.formResolvent,
@@ -45,7 +44,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 									dbjs: subSection.master, names: subSection.formPropertyNames,
 									controls: legacy.controls }
 							), formResolvent.legacyScript, legacy.legacy);
-					})),
+					}, this)),
 				ns.p({ class: 'submit-placeholder input' },
 					ns.input({ type: 'submit' }, _("Submit"))),
 				ns.p(
