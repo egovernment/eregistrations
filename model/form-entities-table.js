@@ -23,9 +23,8 @@ module.exports = memoize(function (db) {
 				statusSum +=
 					_observe(entityObject.resolveSKeyPath(key)
 						.observable);
-			}, this);
-
-			return statusSum / _observe(entityObjects._size);
+			});
+			return !_observe(entityObjects._size) ? 1 : statusSum / entityObjects.size;
 		} }
 	}, {
 		actionUrl: { required: false },
