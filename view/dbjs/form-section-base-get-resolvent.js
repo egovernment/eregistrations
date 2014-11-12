@@ -8,19 +8,16 @@ var generateId = require('time-uuid')
 /*
 	return object of form:
 	{
-	formId: id,
 	affectedSectionId: id || undefined,
 	legacyScript: radioMatch || selectMatch || undefined,
 	formResolvent: field || undefined
 	}
 */
 module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormResolvent',
-	d(function (/*, options */) {
-		var result, match, options;
+	d(function () {
+		var result, match;
 		result = {};
 		match = {};
-		options = Object(arguments[0]);
-		result.formId = options.formId || 'form-' + generateId();
 		if (this.constructor.resolventProperty) {
 			result.affectedSectionId = generateId();
 			if (typeof this.resolventValue === 'boolean') {
@@ -37,7 +34,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 					result.formResolvent._dbjsInput.control.id,
 					match);
 			} else {
-				result.legacyScript = ns.legacy('radioMatch', result.formId,
+				result.legacyScript = ns.legacy('radioMatch', this.domId,
 						this.master.__id__ + '/' + this.constructor.resolventProperty,
 					match);
 			}

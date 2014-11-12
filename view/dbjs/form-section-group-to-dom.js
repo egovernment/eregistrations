@@ -5,8 +5,7 @@ var _  = require('mano').i18n.bind('Sections')
   , db = require('mano').db
   , ns = require('mano').domjs.ns;
 
-require('./form-section-base-get-resolvent');
-require('./form-section-base-get-legacy');
+require('./form-section-base');
 
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
@@ -22,7 +21,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		}
 		return ns.section(
 			{ class: 'section-primary' },
-			ns.form({ id: mainFormResolvent.formId, method: 'post',
+			ns.form({ id: this.domId, method: 'post',
 					action: actionUrl,
 					class: ns._if(ns.eq(
 					this.status,
@@ -35,9 +34,9 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 				ns.div({ id: mainFormResolvent.affectedSectionId }, ns.list(this.sections,
 					function (subSection) {
 						var formResolvent, legacy;
-						formResolvent = subSection.getFormResolvent({ formId: mainFormResolvent.formId });
-						legacy = subSection.getLegacy(mainFormResolvent.formId, options);
-						return ns.div({ class: 'sub-section' },
+						formResolvent = subSection.getFormResolvent();
+						legacy = subSection.getLegacy(this.domId, options);
+						return ns.div({ class: 'sub-section', id: subSection.domId },
 							ns.h3(subSection.constructor.label),
 							formResolvent.formResolvent,
 							ns.fieldset(
@@ -45,7 +44,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 									dbjs: subSection.master, names: subSection.formPropertyNames,
 									controls: legacy.controls }
 							), formResolvent.legacyScript, legacy.legacy);
-					})),
+					}, this)),
 				ns.p({ class: 'submit-placeholder input' },
 					ns.input({ type: 'submit' }, _("Submit"))),
 				ns.p(
