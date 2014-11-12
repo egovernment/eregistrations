@@ -10,11 +10,12 @@ require('./form-section-base-get-legacy');
 
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var mainFormResolvent, actionUrl, options, url;
+		var mainFormResolvent, actionUrl, options, url, self;
 		mainFormResolvent = this.getFormResolvent();
 		options = Object(arguments[1]);
 		url = options.url || ns.url;
 		actionUrl = url(this.constructor.actionUrl);
+		self = this;
 		if (this.buildActionUrl) {
 			actionUrl = this.master.constructor.prototype === this.master ?
 					url(this.constructor.actionUrl + '-add') :
@@ -22,7 +23,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		}
 		return ns.section(
 			{ class: 'section-primary' },
-			ns.form({ id: mainFormResolvent.formId, method: 'post',
+			ns.form({ id: this.domId, method: 'post',
 					action: actionUrl,
 					class: ns._if(ns.eq(
 					this.status,
@@ -35,8 +36,8 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 				ns.div({ id: mainFormResolvent.affectedSectionId }, ns.list(this.sections,
 					function (subSection) {
 						var formResolvent, legacy;
-						formResolvent = subSection.getFormResolvent({ formId: mainFormResolvent.formId });
-						legacy = subSection.getLegacy(mainFormResolvent.formId, options);
+						formResolvent = subSection.getFormResolvent({ domId: self.domId });
+						legacy = subSection.getLegacy(self.domId, options);
 						return ns.div({ class: 'sub-section' },
 							ns.h3(subSection.constructor.label),
 							formResolvent.formResolvent,

@@ -13,7 +13,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		var resolvent, legacy, actionUrl, options, url;
 		options = Object(arguments[1]);
 		resolvent = this.getFormResolvent();
-		legacy = this.getLegacy(resolvent.formId, options);
+		legacy = this.getLegacy(this.domId, options);
 		url = options.url || ns.url;
 		actionUrl = url(this.constructor.actionUrl);
 		if (this.buildActionUrl) {
@@ -23,7 +23,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		}
 		return ns.section({ class: 'section-primary' },
 			ns.form(
-				{ id: resolvent.formId,
+				{ id: this.domId,
 					method: 'post',
 					action: actionUrl, class: ns._if(ns.eq(
 					this.status,

@@ -9,6 +9,6 @@ module.exports = function (sections) {
 		msg = section.msg || _('${sectionLabel} is incomplete',
 			{ sectionLabel: section.constructor.label });
 		return ns._if(ns.not(ns.eq(section._status, 1)),
-			ns.section({ class: 'prev-empty-alert' }, ns.a({ href: section.incompleteLinkUrl }, msg)));
+			ns.section({ class: 'prev-empty-alert' }, ns.a({ href: '#' + section.domId }, msg)));
 	});
 };

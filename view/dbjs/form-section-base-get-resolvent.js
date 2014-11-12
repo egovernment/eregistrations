@@ -8,7 +8,6 @@ var generateId = require('dom-ext/html-document/generate-id')
 /*
 	return object of form:
 	{
-	formId: id,
 	affectedSectionId: id || undefined,
 	legacyScript: radioMatch || selectMatch || undefined,
 	formResolvent: field || undefined
@@ -20,8 +19,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 		result = {};
 		match = {};
 		options = Object(arguments[0]);
-		result.formId = options.formId || generateId(this.constructor.label);
-		Object.defineProperty(this, 'incompleteLinkUrl', d('#' + result.formId));
+		Object.defineProperty(this, 'domId', d(options.domId || generateId(this.constructor.label)));
 		if (this.constructor.resolventProperty) {
 			result.affectedSectionId = generateId();
 			if (typeof this.resolventValue === 'boolean') {
@@ -38,7 +36,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 					result.formResolvent._dbjsInput.control.id,
 					match);
 			} else {
-				result.legacyScript = ns.legacy('radioMatch', result.formId,
+				result.legacyScript = ns.legacy('radioMatch', this.domId,
 						this.master.__id__ + '/' + this.constructor.resolventProperty,
 					match);
 			}
