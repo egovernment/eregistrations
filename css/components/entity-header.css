@@ -15,6 +15,14 @@
 	margin-right: 0;
 }
 
+.entity-actions form {
+	display: inline-block;
+}
+.entity-actions form button[type="submit"] {
+	padding: 0 7px;
+	cursor: pointer;
+}
+
 .entity-actions a {
 	background-color: #999;
 	-moz-border-radius: 3px;
@@ -23,24 +31,27 @@
 	border-radius: 3px;
 	color: #ffffff;
 	cursor: pointer;
-	font-size: 14px;
 	margin: 0;
 	margin-right: 12px;
-	padding: 2px 7px 3px;
+	padding: 3px 7px 3px;
 	text-align: center;
 	text-decoration: none;
 	white-space: nowrap;
 }
 .entity-actions a:hover,
 .entity-actions a:focus,
-.entity-actions a:active {
+.entity-actions a:active,
+.entity-actions form button[type="submit"]:hover,
+.entity-actions form button[type="submit"]:focus,
+.entity-actions form button[type="submit"]:active {
 	background-color: var(--normal-dark-background);
 }
 .entity-actions a:last-child {
 	margin-right: 20px;
 }
 
-.entity-actions a span {
+.entity-actions a span,
+.entity-actions form button[type="submit"] span {
 	position: relative;
 	top: 2px;
 	left: 3px;
