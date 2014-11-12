@@ -12,7 +12,8 @@
 	padding: 11px 25px 10px;
 }
 
-.submitted-user-data-table tbody tr {
+.submitted-user-data-table tbody tr,
+.submitted-user-data-table.submitted-current-user-data-table tbody tr:hover {
 	background-color: var(--white-text);
 }
 
@@ -22,7 +23,15 @@
 }
 .submitted-user-data-table tbody tr:hover,
 .submitted-user-data-table tbody tr:nth-of-type(even):hover {
-	background-color: var(--light-background)
+	background-color: var(--normal-light-background);
+}
+
+.submitted-user-data-table tbody tr:hover a {
+	text-decoration: underline;
+}
+
+.submitted-user-data-table tbody tr:hover .actions a {
+	text-decoration: none;
 }
 
 .submitted-user-data-table tbody tr td {
@@ -37,6 +46,7 @@
 	padding: 11px 25px 10px;
 	vertical-align: top;
 }
+
 .submitted-user-data-table.submitted-current-user-data-table tbody tr td a {
 	padding: 0;
 }
@@ -76,8 +86,9 @@
 	border: 1px solid var(--light-inner-border);
 }
 
-.submitted-user-data-table tbody tr:nth-of-type(even) {
-	background-color: var(--lightest-background);
+.submitted-user-data-table tbody tr:nth-of-type(even),
+.submitted-user-data-table.submitted-current-user-data-table tbody tr:nth-of-type(even) {
+	background-color: var(--light-background);
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
