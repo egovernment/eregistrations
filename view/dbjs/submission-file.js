@@ -5,6 +5,7 @@ var d        = require('d')
   , _if      = require('observable-value/if')
   , map      = require('observable-value/map')
   , resolve  = require('observable-value/resolve')
+  , _  = require('mano').i18n.bind("Documents")
 
   , db       = require('mano').db
   , normRe = /[$#:\/]/g;
@@ -16,7 +17,7 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 			if (label == null) {
 				if (options.dbOptions) label = options.dbOptions.label;
 				if (label == null) label = db.SubmissionFile.uploadLabel;
-				if (label == null) label = "Select file";
+				if (label == null) label = _("Select file");
 			}
 
 			dom = el('div', { class: 'file-section' },
