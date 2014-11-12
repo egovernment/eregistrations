@@ -10,6 +10,7 @@ Component describing basic elements styles - reusable
 	/* Theme colors virables */
 	--white-background: #ffffff;
 	--light-background: #f5f5f5;
+	--normal-light-background: #ddd;
 	--normal-background: #999;
 	--normal-dark-background: #666;
 	--dark-background: #333;

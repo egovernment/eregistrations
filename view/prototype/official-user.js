@@ -3,7 +3,7 @@
 exports['sub-main'] = function () {
 	section(
 		table(
-			{ class: 'submitted-user-data-table', responsive: true },
+			{ class: 'submitted-user-data-table submitted-current-user-data-table', responsive: true },
 			thead(
 				tr(
 					th("Status"),
