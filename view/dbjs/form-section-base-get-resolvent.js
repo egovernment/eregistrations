@@ -1,5 +1,5 @@
 'use strict';
-var generateId = require('time-uuid')
+var generateId = require('dom-ext/html-document/generate-id')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
   , d  = require('d')
   , db = require('mano').db
@@ -20,7 +20,8 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 		result = {};
 		match = {};
 		options = Object(arguments[0]);
-		result.formId = options.formId || 'form-' + generateId();
+		result.formId = options.formId || generateId(this.constructor.label);
+		Object.defineProperty(this, 'incompleteLinkUrl', d('#' + result.formId));
 		if (this.constructor.resolventProperty) {
 			result.affectedSectionId = generateId();
 			if (typeof this.resolventValue === 'boolean') {
