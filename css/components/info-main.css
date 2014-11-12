@@ -1,0 +1,14 @@
+.info-main {
+	background-color: var(--white-background);
+	border-radius: 5px;
+	border: 1px solid var(--light-inner-border);
+	padding: 20px 15px 0 15px;
+}
+
+.info-main > * {
+	margin-bottom: 22px;
+}
+
+.info-main > ul {
+	margin-left: 40px;
+}
