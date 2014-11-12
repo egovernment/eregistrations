@@ -38,13 +38,10 @@
 	vertical-align: top;
 }
 
-.submitted-user-data-table tbody tr td a {
-	padding: 11px 25px 10px;
-
-}
+.submitted-user-data-table tbody tr td a,
 .submitted-user-data-table.submitted-current-user-data-table tbody tr td {
 	padding: 11px 25px 10px;
-	vertical-align: top;
+
 }
 
 .submitted-user-data-table.submitted-current-user-data-table tbody tr td a {
@@ -87,7 +84,7 @@
 }
 
 .submitted-user-data-table tbody tr:nth-of-type(even),
-.submitted-user-data-table.submitted-current-user-data-table tbody tr:nth-of-type(even) {
+.submitted-user-data-table.submitted-current-user-data-table tbody tr:nth-of-type(even):hover {
 	background-color: var(--light-background);
 }
 
