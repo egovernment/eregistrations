@@ -209,6 +209,13 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	line-height: 22px;
 }
 
+.dbjs-input-component .success-message {
+	display: block;
+	width: 100%;
+	color: var(--success-text);
+	line-height: 22px;
+}
+
 /* dbjs components */
 /* Default styles */
 .dbjs-input-component .statuses {
