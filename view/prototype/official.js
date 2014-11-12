@@ -77,7 +77,7 @@ exports['sub-main'] = function () {
 				th({ class: 'desktop-only' }, "Application number"),
 				th({ class: 'desktop-only' }, "Date of registration"),
 				th("Requested registration"),
-				th("Actions")
+				th({ class: 'actions' }, "Actions")
 			)
 		),
 		tbody(

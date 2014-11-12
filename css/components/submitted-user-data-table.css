@@ -5,6 +5,7 @@
 
 .submitted-user-data-table thead {
 	background-color: var(--normal-background);
+	text-align: left;
 }
 .submitted-user-data-table thead th {
 	color: var(--white-text);
