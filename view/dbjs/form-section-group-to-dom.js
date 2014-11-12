@@ -5,8 +5,7 @@ var _  = require('mano').i18n.bind('Sections')
   , db = require('mano').db
   , ns = require('mano').domjs.ns;
 
-require('./form-section-base-get-resolvent');
-require('./form-section-base-get-legacy');
+require('./form-section-base');
 
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
@@ -36,9 +35,9 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 				ns.div({ id: mainFormResolvent.affectedSectionId }, ns.list(this.sections,
 					function (subSection) {
 						var formResolvent, legacy;
-						formResolvent = subSection.getFormResolvent({ domId: self.domId });
+						formResolvent = subSection.getFormResolvent();
 						legacy = subSection.getLegacy(self.domId, options);
-						return ns.div({ class: 'sub-section' },
+						return ns.div({ class: 'sub-section', id: subSection.domId },
 							ns.h3(subSection.constructor.label),
 							formResolvent.formResolvent,
 							ns.fieldset(

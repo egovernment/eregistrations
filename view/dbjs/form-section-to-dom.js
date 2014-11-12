@@ -5,8 +5,7 @@ var _  = require('mano').i18n.bind('Sections')
   , db = require('mano').db
   , ns = require('mano').domjs.ns;
 
-require('./form-section-base-get-resolvent');
-require('./form-section-base-get-legacy');
+require('./form-section-base');
 
 module.exports = Object.defineProperties(db.FormSection.prototype, {
 	toDOMForm: d(function (document/*, options */) {
