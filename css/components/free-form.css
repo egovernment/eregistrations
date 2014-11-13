@@ -1,0 +1,10 @@
+.free-form {
+	margin-bottom: 0;
+}
+.free-form > * {
+	margin-bottom: 22px;
+}
+.free-form ul {
+	list-style: initial;
+	padding-left: 22px;
+}
