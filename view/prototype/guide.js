@@ -11,7 +11,9 @@ exports['step-guide'] = { class: { 'step-active': true } };
 exports.step = function () {
 	h1("1. Individual registration guide for companies");
 	insert(inventory);
-	form({ class: 'user-guide' },
+
+	form(
+		{ class: 'user-guide' },
 		div({ class: 'section-primary' }, h2("Questions"),
 			hr(),
 			ul({ class: 'form-elements' },
@@ -143,7 +145,8 @@ exports.step = function () {
 					span("Total Costs:"), " ",
 					span("$105'000")))),
 		p(button({ class: 'save-step-one', type: 'submit' },
-			"Save and continue")));
+			"Save and continue"))
+	);
 	reqRadio._dbjsInput.listItems[0].appendChild(
 		div({ class: 'disabler-range' }, // add 'disabler-active' class to disable ul
 			ul(

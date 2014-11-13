@@ -12,3 +12,14 @@
 	margin-bottom: 22px;
 	width: 100%;
 }
+.user-forms > form > *, .user-forms > .disabler-range > form {
+	margin-bottom: 0;
+}
+
+.user-forms > form > *, .user-forms > .disabler-range > form > * {
+	margin-bottom: 22px;
+}
+
+.user-forms > form > *, .user-forms > .disabler-range > form > p:last-child {
+	width: 100%;
+}
