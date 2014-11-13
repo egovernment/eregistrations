@@ -33,6 +33,7 @@ module.exports = function (domjs) {
 	require('domjs-ext/list')(domjs);
 	require('domjs-ext/lt')(domjs);
 	require('domjs-ext/lt-or-eq')(domjs);
+	ns.md = require('i18n2-md-to-dom')(domjs.document);
 	require('domjs-ext/mmap')(domjs);
 	require('domjs-ext/modal')(domjs);
 	require('domjs-ext/not')(domjs);
