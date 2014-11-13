@@ -55,6 +55,10 @@ table .actions form p {
 	display: inline;
 }
 
+table .empty td {
+	text-align: center;
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 	.desktop-only {
 		display: none;
