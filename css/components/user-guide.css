@@ -9,7 +9,7 @@
 	margin-bottom: 22px;
 }
 
-.user-guide .section-primary {
+.user-guide > * {
 	width: 49%;
 }
 
@@ -28,7 +28,7 @@
 	text-decoration: none;
 	vertical-align: middle;
 	white-space: nowrap;
-	width: 49%;
+	width: 100%;
 }
 @-moz-document url-prefix() {
 	.user-guide button.save-step-one  {

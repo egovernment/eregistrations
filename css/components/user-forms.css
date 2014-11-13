@@ -5,10 +5,13 @@
 .user-forms > *:first-child {
 	margin-top: 22px;
 }
-.user-forms > form, .user-forms > .disabler-range {
+.user-forms > form,
+.user-forms > .disabler-range,
+.user-forms > .disabler-range > form  {
 	margin-bottom: 0;
 }
-.user-forms > form > *, .user-forms > .disabler-range > * {
+.user-forms > form > *,
+.user-forms > .disabler-range > *,
+.user-forms > .disabler-range > form > * {
 	margin-bottom: 22px;
-	width: 100%;
 }
