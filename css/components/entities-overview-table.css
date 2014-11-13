@@ -19,11 +19,6 @@
 	padding: 10px 6px 11px;
 }
 
-.entities-overview-table .empty td {
-	text-align: center;
-	padding: 11px 6px;
-}
-
 .new-entity {
 	background-color: var(--normal-background);
 	border-radius: 6px;
