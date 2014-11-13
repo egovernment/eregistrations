@@ -19,14 +19,14 @@ exports.step = function () {
 			li(
 				h4("Lorem ipsum dolor sit amet, consectetur adipiscing elit: "),
 				" ",
-				"Lorem ipsum dolor sit amet, consectetur"
+				p("Lorem ipsum dolor sit amet, consectetur")
 			),
 			li(
 				h4("Lorem ipsum dolor sit amet, consectetur adipiscing elit: "),
 				" ",
-				"LoLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat aliquet massa," +
+				p("LoLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat aliquet massa," +
 					" quis vulputate diam. Morbi non dolor ac tellus finibus commodo. Donec convallis" +
-					" tortor felis, et sodales quam vulputate ac."
+					" tortor felis, et sodales quam vulputate ac.")
 			)
 		),
 		p("Lorem ipsum dolor sit amet, consectetur adipiscing elit"));
