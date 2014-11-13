@@ -11,7 +11,6 @@ exports['step-guide'] = { class: { 'step-active': true } };
 exports.step = function () {
 	h1("1. Individual registration guide for companies");
 	insert(inventory);
-
 	form(
 		{ class: 'user-guide' },
 		div({ class: 'section-primary' }, h2("Questions"),
