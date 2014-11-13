@@ -145,7 +145,7 @@ exports.step = function () {
 		p(button({ class: 'save-step-one', type: 'submit' },
 			"Save and continue")));
 	reqRadio._dbjsInput.listItems[0].appendChild(
-		div({ class: 'disabler-range' }, // add 'disabled' class to disable ul
+		div({ class: 'disabler-range' }, // add 'disabler-active' class to disable ul
 			ul(
 				li(label({ class: 'input-aside' },
 					input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
