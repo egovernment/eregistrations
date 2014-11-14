@@ -73,7 +73,7 @@ User.prototype.define('isExplainWhyNotNiceApplicable', {
 ```
 
 That's our model definition, we extended FormSection and then embedded our freshly created GeneralInfoFormSection class under User.prototype.formSections.generalInfoFormSection (you should be able to access it now).
-After that we just added some code to resolve our show/hide explainWhyNotNice logic. We simply created a getter based on special convention. Convention is following is<CapitalizedNameOfPropertyToResolve>Applicable.
+After that we just added some code to resolve our show/hide explainWhyNotNice logic. We simply created a getter based on special convention. Convention is following is&lt;CapitalizedNameOfPropertyToResolve&gt;Applicable.
 So in our case it's isExplainWhyNotNiceApplicable, as the property which visibility depends on isNice is explainWhyNotNice.
 
 2. Use it in the view
