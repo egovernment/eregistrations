@@ -23,7 +23,8 @@ module.exports = memoize(function (db) {
 		isApplicable: { type: db.Boolean, required: true, value: true },
 		status: { type: Percentage, required: true, value: 1 },
 		buildActionUrl: { type: db.Boolean, value: false },
-		resolventValue: { type: db.Base }
+		resolventValue: { type: db.Base },
+		onIncompleteMessage: { type: StringLine }
 	}, {
 		actionUrl: { type: StringLine, required: true },
 		label: { type: StringLine, required: true },
