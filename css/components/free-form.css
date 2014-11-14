@@ -6,7 +6,11 @@
 }
 
 .free-form ul,
-.free-form ol {
+.free-form ol,
+.free-form  ul ul,
+.free-form ol ul,
+.free-form ol ol,
+.free-form ul ol  {
 	padding-left: 22px;
 }
 
@@ -21,10 +25,8 @@
 .free-form  ul ul,
 .free-form ol ul {
 	list-style-type: circle;
-	padding-left: 22px;
 }
 .free-form ol ol,
 .free-form ul ol {
 	list-style-type: lower-latin;
-	padding-left: 22px;
 }
