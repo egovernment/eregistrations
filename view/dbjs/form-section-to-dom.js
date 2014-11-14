@@ -28,8 +28,9 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 					this.status,
 					1
 				), 'completed') },
-				ns.h2(this.constructor.label),
-				ns.hr(),
+				ns._if(this.constructor.label,
+					[ns.h2(this.constructor.label),
+						ns.hr()]),
 				resolvent.formResolvent,
 				ns.fieldset(
 					{ id: resolvent.affectedSectionId, class: 'form-elements',

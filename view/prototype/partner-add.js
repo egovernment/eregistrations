@@ -9,8 +9,6 @@ var _  = require('mano').i18n.bind('Add partner')
 exports['step-form'] = { class: { 'step-active': true } };
 
 exports.step = function () {
-	ns.div(
-		ns.h1(_("Add new Partner")),
-		generateSections(partner.partnerFormSections)
-	);
+	return ns.insert(ns.h1(_("Add new Partner")),
+		generateSections(partner.partnerFormSections));
 };
