@@ -131,6 +131,36 @@ exports.step = function () {
 				))),
 		div({ class: 'section-primary' }, h2("Costs"),
 			hr(),
+			div(
+				{ class: 'free-form' },
+				p("LoLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat aliquet massa," +
+					" quis vulputate diam. Morbi non dolor ac tellus finibus commodo. Donec convallis" +
+					" tortor felis, et sodales quam vulputate ac."),
+				ul(
+					li(
+						p("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+						ul(
+							li("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+							li("Lorem ipsum dolor sit amet, consectetur adipiscing elit")
+						)
+					),
+					li("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+					li("Lorem ipsum dolor sit amet, consectetur adipiscing elit")
+				),
+				ol(
+					li(
+						p("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+						ol(
+							li("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+							li("Lorem ipsum dolor sit amet, consectetur adipiscing elit")
+						)
+					),
+					li("Lorem ipsum dolor sit amet, consectetur adipiscing elit")
+				),
+				p("LoLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat aliquet massa," +
+					" quis vulputate diam. Morbi non dolor ac tellus finibus commodo. Donec convallis" +
+					" tortor felis, et sodales quam vulputate ac.")
+			),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 				" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
 			ul({ class: 'guide-costs-list' },
