@@ -1,10 +1,30 @@
-.free-form {
+.free-form > :last-child {
 	margin-bottom: 0;
 }
 .free-form > * {
 	margin-bottom: 22px;
 }
+
+.free-form ul,
+.free-form ol {
+	padding-left: 22px;
+}
+
 .free-form ul {
-	list-style: initial;
+	list-style-type: disc;
+}
+
+.free-form ol {
+	list-style-type: decimal;
+}
+
+.free-form  ul ul,
+.free-form ol ul {
+	list-style-type: circle;
+	padding-left: 22px;
+}
+.free-form ol ol,
+.free-form ul ol {
+	list-style-type: lower-latin;
 	padding-left: 22px;
 }
