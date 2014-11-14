@@ -1,0 +1,52 @@
+.app-nav-dialog {
+	position: fixed;
+	left: 50%;
+	z-index: 1;
+	border-radius: 10px;
+	border: 1px var(--light-inner-border);
+}
+
+.app-nav-dialog header,
+.app-nav-dialog > section,
+.app-nav-dialog footer {
+	padding: 11px 10px;
+}
+
+.app-nav-dialog header,
+.app-nav-dialog footer {
+	background-color: var(--normal-background);
+}
+
+.app-nav-dialog header {
+	display: flex;
+	justify-content: space-between;
+	padding: 11px 10px;
+	background-color: var(--normal-background);
+	border-radius: 10px 10px 0 0;
+}
+.app-nav-dialog header h4,
+.app-nav-dialog header a {
+	color: var(--white-text);
+}
+.app-nav-dialog header a {
+	text-decoration: none;
+}
+.app-nav-dialog header a:hover,
+.app-nav-dialog header a:focus,
+.app-nav-dialog header a:active {
+	color: var(--light-text);
+}
+
+.app-nav-dialog > section ol li {
+	padding: 11px 0;
+}
+.app-nav-dialog > section ol li:first-child {
+	padding-top: 0;
+}
+.app-nav-dialog > section ol li:last-child {
+	padding-bottom: 0;
+}
+
+.app-nav-dialog footer {
+	border-radius: 0 0 10px 10px;
+}
