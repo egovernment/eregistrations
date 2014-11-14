@@ -4,6 +4,8 @@ var login = require('./_login'),
 		resetPassword = require('./_reset-password-request');
 
 exports.body = function () {
+	var closeBtn, openBtn, appNavDialog, close, open;
+
 	header({ class: 'header-top-wrapper' },
 		div({ class: 'content header-top' },
 			div(a({ href: '/' },
@@ -15,7 +17,7 @@ exports.body = function () {
 					li(a('sw')),
 					li(a('link one')),
 					li(a('link two')),
-					li(a('link tree')),
+					li(openBtn = a('nav dialog')),
 					li(span({ class: 'login-hint' }, ('Do you have an account?')),
 						a({ class: 'login', onclick: login.show },
 						"Log in"
@@ -28,11 +30,11 @@ exports.body = function () {
 	insert(login);
 	insert(resetPassword);
 
-	dialog(
+	appNavDialog = dialog(
 		{ open: true, class: 'app-nav-dialog' },
 		header(
 			h4("Application navigation"),
-			a(span({ class: 'fa fa-close' }, "Close"))
+			closeBtn = a(span({ class: 'fa fa-close' }, "Close"))
 		),
 		section(
 			ol(
@@ -85,19 +87,19 @@ exports.body = function () {
 						span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
-					a({ href: '/users-admin/' }, span("Users admin"), span({ class: 'label-reg' }, "Part B"))
+					a({ href: '/users-admin/' }, span("Users admin"), span({ class: 'label-reg' }, "Admin"))
 				),
 				li(
 					a({ href: '/users-admin/user-id/' }, span("Users admin - user page"),
-						span({ class: 'label-reg' }, "Part B"))
+						span({ class: 'label-reg' }, "Admin"))
 				),
 				li(
 					a({ href: '/users-admin/add-user/' }, span("Users admin - add new user"),
-						span({ class: 'label-reg' }, "Part B"))
+						span({ class: 'label-reg' }, "Admin"))
 				),
 				li(
 					a({ href: '/users-admin/edit-user-id/' }, span("Users admin - edit user"),
-						span({ class: 'label-reg' }, "Part B"))
+						span({ class: 'label-reg' }, "Admin"))
 				),
 				li(
 					a({ href: '/official/' }, span("Official user"),
@@ -114,6 +116,14 @@ exports.body = function () {
 				li(
 					a({ href: '/official/user-id/document/' },
 							span("Official user - documents page"), span({ class: 'label-reg' }, "Part B"))
+				),
+				li(
+					a({ href: '/official/user-id/certificates/' },
+							span("Official user - certificates page"), span({ class: 'label-reg' }, "Part B"))
+				),
+				li(
+					a({ href: '/front-desk/user-id/' },
+							span("Official user - front desk"), span({ class: 'label-reg' }, "Part B"))
 				)
 			)
 		),
@@ -129,4 +139,23 @@ exports.body = function () {
 				)
 			)
 		);
+
+	close = function () {
+		if (typeof appNavDialog.close === 'function') {
+			appNavDialog.close();
+			return;
+		}
+		appNavDialog.exclude();
+	};
+
+	open = function () {
+		if (typeof appNavDialog.show === 'function') {
+			appNavDialog.show();
+			return;
+		}
+		appNavDialog.include();
+	};
+
+	closeBtn.onclick = close;
+	openBtn.onclick = open;
 };

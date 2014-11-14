@@ -8,7 +8,7 @@
 	transition: opacity 0.5s ease-out;
 }
 .app-nav-dialog:hover {
-opacity: 0.95;
+opacity: 1;
 }
 
 .app-nav-dialog header,
