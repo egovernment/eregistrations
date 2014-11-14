@@ -23,7 +23,7 @@ Where User is a constructor of an entity for which we want to define formSection
 **eregistrations/model/form-sections** takes the name of property under which we want to have our sections.
 After execution of above code we should have an empty collection under User.prototype.formSections (note: under prototype, not under constructor).
 Now we need to define some actual sections.
-let's say we have a following models:
+let's say we have following models:
 
 ```javascript
 User.prototype.defineProperties(
@@ -45,7 +45,7 @@ Partner.prototype.defineProperties(
 )
 ```
 
-Now, we let's say we want to have a form which will correspond to such fields: user.name, user.isNice, user.explainWhyNotNice, user.address.country, user.address.street.
+Now, we want to have a form which will correspond to such fields: user.name, user.isNice, user.explainWhyNotNice, user.address.country, user.address.street.
 Obviously, when someone is nice we don't want to show the field asking for explanation why the user is not nice (if !user.isNice -> show user.explainWhyNotNice).
 We can either create one form with all the fields or break it into sub sections. Let's see how we would have created a form with no subsections. This case is handled by FormSection class.
 
