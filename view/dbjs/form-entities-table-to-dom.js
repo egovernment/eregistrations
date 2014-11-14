@@ -18,8 +18,9 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 		), 'section-primary completed', 'section-primary') },
 			ns.div(
 				ns.div(
-					ns.h2(this.constructor.label),
-					ns.hr(),
+					ns._if(this.constructor.label,
+						[ns.h2(this.constructor.label),
+							ns.hr()]),
 					ns.table(
 						{ class: 'entities-overview-table' },
 						ns.thead(

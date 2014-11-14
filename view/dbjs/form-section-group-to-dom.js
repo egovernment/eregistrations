@@ -28,8 +28,9 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 					1
 				), 'completed')
 				},
-				ns.h2(this.constructor.label),
-				ns.hr(),
+				ns._if(this.constructor.label,
+					[ns.h2(this.constructor.label),
+						ns.hr()]),
 				mainFormResolvent.formResolvent,
 				ns.div({ id: mainFormResolvent.affectedSectionId }, ns.list(this.sections,
 					function (subSection) {
@@ -37,7 +38,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 						formResolvent = subSection.getFormResolvent();
 						legacy = subSection.getLegacy(this.domId, options);
 						return ns.div({ class: 'sub-section', id: subSection.domId },
-							ns.h3(subSection.constructor.label),
+							ns._if(subSection.constructor.label, ns.h3(subSection.constructor.label)),
 							formResolvent.formResolvent,
 							ns.fieldset(
 								{ id: formResolvent.affectedSectionId, class: 'form-elements',
