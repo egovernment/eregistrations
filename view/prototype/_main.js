@@ -37,7 +37,7 @@ exports.body = function () {
 		section(
 			ol(
 				li(
-					a({ href: '/' }, "Public: Home page")
+					a({ href: '/' }, span("Home page"), span({ class: 'label-reg' }, "Public"))
 				),
 				li(
 					a({ href: '/multi-entry/' }, "Public: Home page - multi entry")

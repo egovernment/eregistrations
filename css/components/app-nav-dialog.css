@@ -7,7 +7,6 @@
 }
 
 .app-nav-dialog header,
-.app-nav-dialog > section,
 .app-nav-dialog footer {
 	padding: 11px 10px;
 }
@@ -37,14 +36,38 @@
 	color: var(--light-text);
 }
 
-.app-nav-dialog > section ol li {
-	padding: 11px 0;
+.app-nav-dialog > section {
+	max-height: 484px;
+	overflow: auto;
 }
-.app-nav-dialog > section ol li:first-child {
-	padding-top: 0;
+.app-nav-dialog > section ol {
+	counter-reset: li;
 }
-.app-nav-dialog > section ol li:last-child {
-	padding-bottom: 0;
+.app-nav-dialog > section ol li a span:first-child:before {
+	content: counter(li);
+	counter-increment: li;
+	display: inline-block;
+	width: 19px;
+	margin-right: 8px;
+	border-radius: 50%;
+	color: var(--white-text);
+	background: var(--normal-dark-background);
+	text-align: center;
+	font-size: 11px;
+	line-height: 18px;
+	font-weight: bold;
+}
+
+.app-nav-dialog > section ol li a {
+	padding: 11px 10px;
+	display: flex;
+	justify-content: space-between;
+	text-decoration: none;
+}
+.app-nav-dialog > section ol li a:hover,
+.app-nav-dialog > section ol li a:focus,
+.app-nav-dialog > section ol li a:active {
+	background: var(--normal-light-background);
 }
 
 .app-nav-dialog footer {
