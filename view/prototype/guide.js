@@ -138,7 +138,7 @@ exports.step = function () {
 					" tortor felis, et sodales quam vulputate ac."),
 				ul(
 					li(
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+						p("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
 						ul(
 							li("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
 							li("Lorem ipsum dolor sit amet, consectetur adipiscing elit")
@@ -149,7 +149,7 @@ exports.step = function () {
 				),
 				ol(
 					li(
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit",
+						p("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
 						ol(
 							li("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
 							li("Lorem ipsum dolor sit amet, consectetur adipiscing elit")
