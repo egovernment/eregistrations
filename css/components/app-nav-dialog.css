@@ -6,6 +6,7 @@
 	border: 1px var(--light-inner-border);
 	opacity: 0.3;
 	transition: opacity 0.5s ease-out;
+	max-width: 550px;
 }
 .app-nav-dialog:hover {
 	opacity: 1;
