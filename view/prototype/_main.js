@@ -87,21 +87,6 @@ exports.body = function () {
 						span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
-					a({ href: '/users-admin/' }, span("Users admin"), span({ class: 'label-reg' }, "Admin"))
-				),
-				li(
-					a({ href: '/users-admin/user-id/' }, span("Users admin - user"),
-						span({ class: 'label-reg' }, "Admin"))
-				),
-				li(
-					a({ href: '/users-admin/add-user/' }, span("Users admin - add user"),
-						span({ class: 'label-reg' }, "Admin"))
-				),
-				li(
-					a({ href: '/users-admin/edit-user-id/' }, span("Users admin - edit user"),
-						span({ class: 'label-reg' }, "Admin"))
-				),
-				li(
 					a({ href: '/official/' }, span("Official"),
 						span({ class: 'label-reg' }, "Part B"))
 				),
@@ -125,6 +110,21 @@ exports.body = function () {
 				li(
 					a({ href: '/front-desk/user-id/' },
 							span("Official - user at front-desk"), span({ class: 'label-reg' }, "Part B"))
+				),
+				li(
+					a({ href: '/users-admin/' }, span("Users admin"), span({ class: 'label-reg' }, "Admin"))
+				),
+				li(
+					a({ href: '/users-admin/user-id/' }, span("Users admin - user"),
+						span({ class: 'label-reg' }, "Admin"))
+				),
+				li(
+					a({ href: '/users-admin/add-user/' }, span("Users admin - add user"),
+						span({ class: 'label-reg' }, "Admin"))
+				),
+				li(
+					a({ href: '/users-admin/edit-user-id/' }, span("Users admin - edit user"),
+						span({ class: 'label-reg' }, "Admin"))
 				)
 			)
 		),
