@@ -5,7 +5,9 @@
 var assign     = require('es5-ext/object/assign')
   , callable   = require('es5-ext/object/valid-callable')
   , elementExt = require('domjs/ext/_element')
-  , mano       = require('mano');
+  , mano       = require('mano')
+
+  , mdiOptions = { inline: true };
 
 assign(elementExt, {
 	addClass: require('dbjs-dom/ext/element/add-class'),
@@ -13,7 +15,7 @@ assign(elementExt, {
 });
 
 module.exports = function (domjs) {
-	var RelValue, ns = domjs.ns;
+	var RelValue, ns = domjs.ns, md;
 
 	// Elements
 	require('domjs-ext/_if')(domjs);
@@ -33,7 +35,8 @@ module.exports = function (domjs) {
 	require('domjs-ext/list')(domjs);
 	require('domjs-ext/lt')(domjs);
 	require('domjs-ext/lt-or-eq')(domjs);
-	ns.md = require('i18n2-md-to-dom')(domjs.document);
+	md = ns.md = require('i18n2-md-to-dom')(domjs.document);
+	ns.mdi = function (message) { return md(message, mdiOptions); };
 	require('domjs-ext/mmap')(domjs);
 	require('domjs-ext/modal')(domjs);
 	require('domjs-ext/not')(domjs);
