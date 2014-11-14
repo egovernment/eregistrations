@@ -39,10 +39,10 @@ exports.body = function () {
 		section(
 			ol(
 				li(
-					a({ href: '/' }, span("Home page"), span({ class: 'label-reg' }, "Public"))
+					a({ href: '/' }, span("Public"), span({ class: 'label-reg' }, "Public"))
 				),
 				li(
-					a({ href: '/multi-entry/' }, span("Home page - multi entry"),
+					a({ href: '/multi-entry/' }, span("Public - multi entry"),
 						span({ class: 'label-reg' }, "Public"))
 				),
 				li(
@@ -50,37 +50,37 @@ exports.body = function () {
 						span({ class: 'label-reg' }, "Public"))
 				),
 				li(
-					a({ href: '/guide/' }, span("User guide"), span({ class: 'label-reg' }, "Part A"))
+					a({ href: '/guide/' }, span("User - guide"), span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/forms/' }, span("User forms"), span({ class: 'label-reg' }, "Part A"))
+					a({ href: '/forms/' }, span("User - forms"), span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/forms/disabled/' }, span("User forms - disabled"),
+					a({ href: '/forms/disabled/' }, span("User - forms (disabled)"),
 						span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/forms/partner-id/' }, span("User forms - parter page"),
+					a({ href: '/forms/partner-id/' }, span("User - forms, partner"),
 						span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/partner-add/' }, span("User forms - add new parter"),
+					a({ href: '/partner-add/' }, span("User - forms, add partner"),
 						span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/documents/' }, span("User documents"),
+					a({ href: '/documents/' }, span("User - documents"),
 						span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/documents/disabled/' }, span("User documents - disabled"),
+					a({ href: '/documents/disabled/' }, span("User - documents (disabled)"),
 						span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/submission/' }, span("User submission"),
+					a({ href: '/submission/' }, span("User - submission"),
 						span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/profile/' }, span("User profile"), span({ class: 'label-reg' }, "Part A"))
+					a({ href: '/profile/' }, span("User - profile"), span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
 					a({ href: '/user-submitted/' }, span("User submitted"),
@@ -90,11 +90,11 @@ exports.body = function () {
 					a({ href: '/users-admin/' }, span("Users admin"), span({ class: 'label-reg' }, "Admin"))
 				),
 				li(
-					a({ href: '/users-admin/user-id/' }, span("Users admin - user page"),
+					a({ href: '/users-admin/user-id/' }, span("Users admin - user"),
 						span({ class: 'label-reg' }, "Admin"))
 				),
 				li(
-					a({ href: '/users-admin/add-user/' }, span("Users admin - add new user"),
+					a({ href: '/users-admin/add-user/' }, span("Users admin - add user"),
 						span({ class: 'label-reg' }, "Admin"))
 				),
 				li(
@@ -102,28 +102,29 @@ exports.body = function () {
 						span({ class: 'label-reg' }, "Admin"))
 				),
 				li(
-					a({ href: '/official/' }, span("Official user"),
+					a({ href: '/official/' }, span("Official"),
 						span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
-					a({ href: '/revision/user-id/' }, span("User submitted revision"),
+					a({ href: '/revision/user-id/' }, span("Official - user at revision"),
 						span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
-					a({ href: '/official/user-id/' }, span("Official user - user page"),
+					a({ href: '/official/user-id/' }, span("Official - user"),
 						span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
 					a({ href: '/official/user-id/document/' },
-							span("Official user - documents page"), span({ class: 'label-reg' }, "Part B"))
+							span("Official - user, document"), span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
 					a({ href: '/official/user-id/certificates/' },
-							span("Official user - certificates page"), span({ class: 'label-reg' }, "Part B"))
+							span("Official - user at certificate process"),
+							span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
 					a({ href: '/front-desk/user-id/' },
-							span("Official user - front desk"), span({ class: 'label-reg' }, "Part B"))
+							span("Official - user at front-desk"), span({ class: 'label-reg' }, "Part B"))
 				)
 			)
 		),
