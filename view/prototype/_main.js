@@ -32,7 +32,7 @@ exports.body = function () {
 		{ open: true, class: 'app-nav-dialog' },
 		header(
 			h4("Application navigation"),
-			a("X")
+			a(span({ class: 'fa fa-close' }, "Close"))
 		),
 		section(
 			ol(

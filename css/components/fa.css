@@ -159,3 +159,10 @@ e.g.:
 .fa-arrow-up:before {
 	content: '\f062';
 }
+
+.fa-close {
+	width: 0.8em;
+}
+.fa-close:before {
+	content: '\f00d';
+}
