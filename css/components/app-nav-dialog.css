@@ -1,0 +1,87 @@
+.app-nav-dialog {
+	position: fixed;
+	left: 50%;
+	z-index: 1000;
+	border-radius: 10px;
+	border: 1px var(--light-inner-border);
+	opacity: 0.3;
+	transition: opacity 0.5s ease-out;
+}
+.app-nav-dialog:hover {
+	opacity: 1;
+}
+.app-nav-dialog header,
+.app-nav-dialog footer {
+	padding: 11px 10px;
+}
+
+.app-nav-dialog header,
+.app-nav-dialog footer {
+	background-color: var(--normal-background);
+}
+
+.app-nav-dialog header {
+	display: flex;
+	justify-content: space-between;
+	padding: 11px 10px;
+	background-color: var(--normal-background);
+	border-radius: 10px 10px 0 0;
+}
+.app-nav-dialog header h4,
+.app-nav-dialog header a {
+	color: var(--white-text);
+}
+.app-nav-dialog header a {
+	text-decoration: none;
+}
+.app-nav-dialog header a:hover,
+.app-nav-dialog header a:focus,
+.app-nav-dialog header a:active {
+	color: var(--light-text);
+}
+
+.app-nav-dialog > section {
+	max-height: 484px;
+	overflow: auto;
+}
+.app-nav-dialog > section ol {
+	counter-reset: li;
+}
+.app-nav-dialog > section ol li a {
+	padding: 11px 10px;
+	display: flex;
+	justify-content: space-between;
+	text-decoration: none;
+	white-space: nowrap;
+}
+.app-nav-dialog > section ol li a:hover,
+.app-nav-dialog > section ol li a:focus,
+.app-nav-dialog > section ol li a:active {
+	background: var(--normal-light-background);
+}
+.app-nav-dialog > section ol li a span:first-child {
+	margin-right: 20px;
+}
+.app-nav-dialog > section ol li a span:first-child:before {
+	content: counter(li);
+	counter-increment: li;
+	display: inline-block;
+	width: 19px;
+	margin-right: 8px;
+	border-radius: 50%;
+	color: var(--white-text);
+	background: var(--normal-dark-background);
+	text-align: center;
+	font-size: 11px;
+	line-height: 18px;
+	font-weight: bold;
+}
+
+.app-nav-dialog footer {
+	border-radius: 0 0 10px 10px;
+}
+@media only screen and (max-width: var(--mobile-width)) {
+	.app-nav-dialog {
+		display: none;
+	}
+}

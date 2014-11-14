@@ -135,6 +135,17 @@ fieldset {
 	padding: 0 10px;
 }
 
+dialog {
+	position: absolute;
+	left: 0;
+	right: 0;
+	margin: auto;
+	border: solid;
+	background: var(--white-background);
+	color: var(--dark-text);
+	z-index: 999;
+}
+
 /*
 Styles applied while screen sieze is less than 640px
 */
