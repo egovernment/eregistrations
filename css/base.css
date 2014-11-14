@@ -141,8 +141,9 @@ dialog {
 	right: 0;
 	margin: auto;
 	border: solid;
-	background: white;
-	color: black;
+	background: var(--white-background);
+	color: var(--dark-text);
+	z-index: 999;
 }
 
 /*
