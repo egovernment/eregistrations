@@ -40,65 +40,80 @@ exports.body = function () {
 					a({ href: '/' }, span("Home page"), span({ class: 'label-reg' }, "Public"))
 				),
 				li(
-					a({ href: '/multi-entry/' }, "Public: Home page - multi entry")
+					a({ href: '/multi-entry/' }, span("Home page - multi entry"),
+						span({ class: 'label-reg' }, "Public"))
 				),
 				li(
-					a({ href: '/reset-password/' }, "Public: Reset password")
+					a({ href: '/reset-password/' }, span("Reset password"),
+						span({ class: 'label-reg' }, "Public"))
 				),
 				li(
-					a({ href: '/guide/' }, "Part A: User guide")
+					a({ href: '/guide/' }, span("User guide"), span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/forms/' }, "Part A: User forms")
+					a({ href: '/forms/' }, span("User forms"), span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/forms/disabled/' }, "Part A: User forms - disabled")
+					a({ href: '/forms/disabled/' }, span("User forms - disabled"),
+						span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/forms/partner-id/' }, "Part A: User forms - parter page")
+					a({ href: '/forms/partner-id/' }, span("User forms - parter page"),
+						span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/partner-add/' }, "Part A: User forms - add new parter")
+					a({ href: '/partner-add/' }, span("User forms - add new parter"),
+						span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/documents/' }, "Part A: User documents")
+					a({ href: '/documents/' }, span("User documents"),
+						span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/documents/disabled/' }, "Part A: User documents - disabled")
+					a({ href: '/documents/disabled/' }, span("User documents - disabled"),
+						span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/submission/' }, "Part A: User submission")
+					a({ href: '/submission/' }, span("User submission"),
+						span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/profile/' }, "Part A: User profile")
+					a({ href: '/profile/' }, span("User profile"), span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
-					a({ href: '/user-submitted/' }, "Part B: User submitted")
+					a({ href: '/user-submitted/' }, span("User submitted"),
+						span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
-					a({ href: '/users-admin/' }, "Part B: Users admin")
+					a({ href: '/users-admin/' }, span("Users admin"), span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
-					a({ href: '/users-admin/user-id/' }, "Part B: Users admin - user page")
+					a({ href: '/users-admin/user-id/' }, span("Users admin - user page"),
+						span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
-					a({ href: '/users-admin/add-user/' }, "Part B: Users admin - add new user")
+					a({ href: '/users-admin/add-user/' }, span("Users admin - add new user"),
+						span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
-					a({ href: '/users-admin/edit-user-id/' }, "Part B: Users admin - edit user")
+					a({ href: '/users-admin/edit-user-id/' }, span("Users admin - edit user"),
+						span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
-					a({ href: '/official/' }, "Part B: Official user")
+					a({ href: '/official/' }, span("Official user"),
+						span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
-					a({ href: '/revision/user-id/' }, "Part B:  User submitted revision")
+					a({ href: '/revision/user-id/' }, span("User submitted revision"),
+						span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
-					a({ href: '/official/user-id/' }, "Part B: Official user - user submitted page")
+					a({ href: '/official/user-id/' }, span("Official user - user page"),
+						span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
 					a({ href: '/official/user-id/document/' },
-							"Part B: Official user - user submitted documents page")
+							span("Official user - documents page"), span({ class: 'label-reg' }, "Part B"))
 				)
 			)
 		),

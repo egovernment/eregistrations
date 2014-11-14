@@ -4,6 +4,11 @@
 	z-index: 1;
 	border-radius: 10px;
 	border: 1px var(--light-inner-border);
+	opacity: 0.3;
+	transition: opacity 0.5s ease-out;
+}
+.app-nav-dialog:hover {
+opacity: 0.95;
 }
 
 .app-nav-dialog header,
@@ -43,6 +48,21 @@
 .app-nav-dialog > section ol {
 	counter-reset: li;
 }
+.app-nav-dialog > section ol li a {
+	padding: 11px 10px;
+	display: flex;
+	justify-content: space-between;
+	text-decoration: none;
+	white-space: nowrap;
+}
+.app-nav-dialog > section ol li a:hover,
+.app-nav-dialog > section ol li a:focus,
+.app-nav-dialog > section ol li a:active {
+	background: var(--normal-light-background);
+}
+.app-nav-dialog > section ol li a span:first-child {
+	margin-right: 20px;
+}
 .app-nav-dialog > section ol li a span:first-child:before {
 	content: counter(li);
 	counter-increment: li;
@@ -56,18 +76,6 @@
 	font-size: 11px;
 	line-height: 18px;
 	font-weight: bold;
-}
-
-.app-nav-dialog > section ol li a {
-	padding: 11px 10px;
-	display: flex;
-	justify-content: space-between;
-	text-decoration: none;
-}
-.app-nav-dialog > section ol li a:hover,
-.app-nav-dialog > section ol li a:focus,
-.app-nav-dialog > section ol li a:active {
-	background: var(--normal-light-background);
 }
 
 .app-nav-dialog footer {
