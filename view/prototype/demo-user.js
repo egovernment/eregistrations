@@ -33,7 +33,7 @@ exports['submitted-menu'] = function () {
 };
 
 exports['sub-main'] = {
-	class: { content: false, 'demo-user': true },
+	class: { content: false, 'user-forms': false, 'demo-user': true },
 	'': exports.main
 };
 

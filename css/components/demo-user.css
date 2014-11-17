@@ -1,3 +1,4 @@
-.demo-user.user-forms .fixed-top-placeholder {
-	margin-top: 0;
+.demo-user .steps-menu,
+.demo-user .steps-menu ul li {
+	background: var(--normal-dark-background);
 }
