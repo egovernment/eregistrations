@@ -15,7 +15,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		legacy = this.getLegacy(this.domId, options);
 		url = options.url || ns.url;
 		actionUrl = url(this.constructor.actionUrl);
-		if (this.buildActionUrl) {
+		if (options.isChildEntity) {
 			actionUrl = this.master.constructor.prototype === this.master ?
 					url(this.constructor.actionUrl + '-add') :
 					url(this.constructor.actionUrl, this.master.__id__);
