@@ -156,9 +156,7 @@ var defineFormSections = require('eregistrations/model/form-sections')
 
 defineFormSections(Partner, 'formSections');
 
-FormSection.extend('PartnerFormSection', {
-    buildActionUrl: { value: true }
-}, {
+FormSection.extend('PartnerFormSection', {}, {
 	actionUrl: { value: 'partner' },
 	label: { value: "Partner information" },
 	propertyNames: { value: ['name', 'isShareholder'] }
@@ -167,7 +165,18 @@ FormSection.extend('PartnerFormSection', {
 Partner.prototype.formSections.getOwnDescriptor('partnerFormSection').type = db.PartnerFormSection;
 ```
 
+We need to pass `isChildEntity` option to `eregistrations/components/generate-form-sections` invocation in order for the partner form to build it's forms urls correctly.
+
+```javascript
+var generateFormSections = require('eregistrations/components/generate-form-sections');
+
+h1('Add Partner');
+div(generateFormSections(Partner.prototype.formSections, { isChildEntity: true }));
+
+```
+
 Form created around the above form section definition will have `section.actionUrl + '-add'` url (in that case `partner-add`) url for partner creation  and `section.actionUrl + '/' + <partnerId>` url for edition of existing partner.
+
 
 Let's now create **FormEntitiesTable** for partners.
 
@@ -227,7 +236,7 @@ User.prototype.defineProperty(
 
 ```
 
-Now we need to adjust the our sections definitions.
+Now we need to adjust our sections definitions.
  
  ```javascript
  FormSection.extend('PersonalInformationSection', {}, {
