@@ -9,6 +9,7 @@
 ../../css/components/controls.css
 ../../css/components/error-main.css
 ../../css/components/info-main.css
+../../css/components/demo-user-app-navigation.css
 ../../css/components/disabler.css
 ../../css/components/modal.css
 ../../css/components/modal-login.css
