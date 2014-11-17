@@ -10,6 +10,7 @@
 ../../css/components/error-main.css
 ../../css/components/info-main.css
 ../../css/components/disabler.css
+../../css/components/demo-user.css
 ../../css/components/modal.css
 ../../css/components/modal-login.css
 ../../css/components/modal-register.css

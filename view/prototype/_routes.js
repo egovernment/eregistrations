@@ -22,6 +22,7 @@ module.exports = function (view) {
 		// For disablers
 		userForm = userMain.diff('./forms'),
 		userDocuments = userMain.diff('./documents'),
+		demoUserMain = subMain.diff('./demo-user'),
 		userOfficialCertificates = userOfficialUser.diff('./official-form');
 
 	return {
@@ -57,6 +58,9 @@ module.exports = function (view) {
 
 		// Front-desk routes
 		'front-desk/user-id': bind(userOfficialCertificates.diff('./_front-desk')),
+
+		// Demo-user routes
+		'demo-user': bind(demoUserMain.diff('./guide')),
 
 		// Error routes
 		404: bind(main.diff('./404'))
