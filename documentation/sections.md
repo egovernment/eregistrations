@@ -46,19 +46,19 @@ Partner.prototype.defineProperties(
 )
 ```
 
-Now, we want to have a form which will correspond to such fields: user.name, user.isNice, user.explainWhyNotNice, user.address.country, user.address.street.
+Now, we want to have a form which will correspond to such fields: `user.name`, `user.isNice`, `user.explainWhyNotNice`, `user.address.country`, `user.address.street`.
 Obviously, when someone is nice we don't want to show the field asking for explanation why the user is not nice (if !user.isNice -> show user.explainWhyNotNice).
 We can either create one form with all the fields or break it into sub sections. Let's see how we would have created a form with no subsections. This case is handled by FormSection class.
 
 ###FormSection###
 
-1. Prepare definition in model
+Prepare definition in model
 
 ```javascript
 var FormSection = require('eregistrations/model/form-section');
 
 FormSection.extend('GeneralInfoFormSection', {}, {
-	actionUrl: { value: 'save-user' },
+	actionUrl: { value: 'general' },
 	label: { value: "User information" },
 	propertyNames: { value: ['name', 'isNice', 'explainWhyNotNice',
 		'address/country', 'address/street'] }
