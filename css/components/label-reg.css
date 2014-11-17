@@ -9,7 +9,7 @@
 	font-size: 12px;
 	text-transform: uppercase;
 	height: 20px;
-	vertical-align: top;
+	line-height: 22px;
 }
 
 .label-reg.ready {
