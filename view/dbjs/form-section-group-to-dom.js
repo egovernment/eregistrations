@@ -14,7 +14,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		options = Object(arguments[1]);
 		url = options.url || ns.url;
 		actionUrl = url(this.constructor.actionUrl);
-		if (this.buildActionUrl) {
+		if (options.buildActionUrl) {
 			actionUrl = this.master.constructor.prototype === this.master ?
 					url(this.constructor.actionUrl + '-add') :
 					url(this.constructor.actionUrl, this.master.__id__);

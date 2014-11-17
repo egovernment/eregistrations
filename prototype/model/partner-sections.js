@@ -10,9 +10,7 @@ partner = Partner.prototype;
 
 require('../../model/form-sections')(Partner, 'partnerFormSections');
 
-FormSectionGroup.extend('PartnerFormSectionGroup', {
-	buildActionUrl: { value: true }
-}, {
+FormSectionGroup.extend('PartnerFormSectionGroup', {}, {
 	actionUrl: { value: '/' }
 });
 
