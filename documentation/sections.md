@@ -256,7 +256,7 @@ Now we need to adjust our sections definitions.
  
 Aside of `resolventProperty`, we also should define `resolventValue` on the constructor (it tells us what value will trigger section visibility).
 
-So, we can resolve form's conditional logic with the help of `is&lt;CapitalizedNameOfProperty&gt;Applicable` or with `resolventProperty`. But none of these two techniques will cover the case when a form's field presence depends on something completely external to this form i.e. a property defined in another form (like guide). Such dependency can be covered with usage of another convention. let's add a `isPrivateCompany` property to our user model. Let's assume this property is filled in the guide form, so we don't use it in our sections.
+So, we can resolve form's conditional logic with the help of `is<CapitalizedNameOfProperty>Applicable` or with `resolventProperty`. But none of these two techniques will cover the case when a form's field presence depends on something completely external to this form i.e. a property defined in another form (like guide). Such dependency can be covered with usage of another convention. let's add a `isPrivateCompany` property to our user model. Let's assume this property is filled in the guide form, so we don't use it in our sections.
 
 ```javascript
 
@@ -278,7 +278,7 @@ User.prototype.define('isNameFormApplicable', {
 
 ```
 
-As you can see the convention for resolving such logic is to create a property of the form `is&lt;CapitalizedNameOfProperty&gt;FormApplicable`.
+As you can see the convention for resolving such logic is to create a property of the form `is<CapitalizedNameOfProperty>FormApplicable`.
 
 ###Sections after submission###
 
