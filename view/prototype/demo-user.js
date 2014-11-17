@@ -32,5 +32,9 @@ exports['submitted-menu'] = function () {
 	);
 };
 
-exports['sub-main'] = exports.main;
+exports['sub-main'] = {
+	class: { content: false, 'demo-user': true },
+	'': exports.main
+};
+
 delete exports.main;
