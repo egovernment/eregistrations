@@ -9,5 +9,5 @@ exports['step-form'] = { class: { 'step-active': true } };
 
 exports.step = function () {
 	h1(_("Add new Partner"));
-	insert(generateSections(partner.partnerFormSections, { buildActionUrl: true }));
+	insert(generateSections(partner.partnerFormSections, { isChildEntity: true }));
 };
