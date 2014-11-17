@@ -58,6 +58,9 @@ module.exports = function (view) {
 		// Front-desk routes
 		'front-desk/user-id': bind(userOfficialCertificates.diff('./_front-desk')),
 
+		// Demo-user routes
+		'demo-user': bind(subMain.diff('./demo-user')),
+
 		// Error routes
 		404: bind(main.diff('./404'))
 	};
