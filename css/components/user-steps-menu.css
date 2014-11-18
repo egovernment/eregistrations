@@ -42,17 +42,14 @@
 	margin: 0 2px;
 }
 
-.step-active,
+.show-steps-btn,
 .user-steps-menu ul.user-steps-menu-list li > a {
 	display: inline-block;
 	white-space: nowrap;
 }
 
-label.step-active {
-	cursor: pointer;
-}
-
 label.show-steps-btn {
+	cursor: pointer;
 	display: none;
 	width: 100%;
 
