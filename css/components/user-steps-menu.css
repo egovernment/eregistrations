@@ -1,7 +1,7 @@
 /*
 	Component describing styles for guide steps menu - non-reusable
 */
-.steps-menu {
+.user-steps-menu {
 	background-color: var(--dark-background);
 	background-position: center center;
 	background-size: cover;
@@ -18,23 +18,23 @@
 	display: flex;
 }
 
-.steps-menu input[type=checkbox] {
+.user-steps-menu input[type=checkbox] {
 	display: none;
 }
 
-.steps-menu ul.steps {
+.user-steps-menu ul.steps {
 	display: flex;
 	justify-content: space-between;
 	width: var(--desktop-width);
 	list-style-type: none;
 }
 
-.steps-menu ul.steps a {
+.user-steps-menu ul.steps a {
 	width: 100%;
 }
 
 .step-active,
-.steps-menu ul.steps li > .step-active {
+.user-steps-menu ul.steps li > .step-active {
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
@@ -51,7 +51,7 @@
 	white-space: nowrap;
 }
 
-.steps-menu ul.steps li > a {
+.user-steps-menu ul.steps li > a {
 	background-color: var(--white-background);
 	background-image: none;
 	border-radius: 6px;
@@ -68,14 +68,14 @@
 	vertical-align: middle;
 	white-space: nowrap;
 }
-.steps-menu ul.steps li > a:hover,
-.steps-menu ul.steps li > a:focus,
-.steps-menu ul.steps li > a:active {
+.user-steps-menu ul.steps li > a:hover,
+.user-steps-menu ul.steps li > a:focus,
+.user-steps-menu ul.steps li > a:active {
 	background-color: var(--normal-background);
 	color: var(--white-text);
 }
 
-.steps-menu ul li {
+.user-steps-menu ul li {
 	background-color: var(--dark-background);
 	width: 100%;
 	margin: 0 2px;
@@ -105,13 +105,13 @@ ul.steps li div {
 Styles applied while screen sieze is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
-	nav.steps-menu {
+	nav.user-steps-menu {
 		min-width: var(--min-mobile-width);
 		padding-bottom: 11px;
 		position: relative;
 	}
 
-	nav.steps-menu ul.steps {
+	nav.user-steps-menu ul.steps {
 		display: none;
 	}
 

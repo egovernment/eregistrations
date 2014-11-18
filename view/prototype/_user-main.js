@@ -11,7 +11,7 @@ exports.main = function () {
 	var mobileCheckbox;
 
 	div({ class: 'fixed-top-placeholder' },
-		nav({ id: 'user-steps-menu', class: 'steps-menu', fixed: true },
+		nav({ id: 'user-steps-menu', class: 'user-steps-menu', fixed: true },
 			div({ class: 'content all-menu-items' },
 				label({ class: 'step-active show-steps-btn', for: 'show-steps-control' },
 					'Steps'
