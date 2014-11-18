@@ -33,6 +33,11 @@
 	width: 100%;
 }
 
+.user-steps-menu ul li {
+	width: 100%;
+	margin: 0 2px;
+}
+
 .step-active,
 .user-steps-menu ul.user-steps-menu-list li > a {
 	background-color: var(--white-background);
@@ -63,12 +68,6 @@
 .user-steps-menu ul.user-steps-menu-list li > a:active {
 	background-color: var(--normal-background);
 	color: var(--white-text);
-}
-
-.user-steps-menu ul li {
-	background-color: var(--dark-background);
-	width: 100%;
-	margin: 0 2px;
 }
 
 .show-steps-btn {
