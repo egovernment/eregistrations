@@ -18,7 +18,7 @@ exports.main = function () {
 					),
 				mobileCheckbox = input({ id: 'show-steps-control', type: 'checkbox', role: 'button' }
 					),
-				ul({ class: 'steps' },
+				ul({ class: 'user-steps-menu-list' },
 					li(
 						a({ href: '/guide/', id: 'step-guide' },
 							"1. Guide"),

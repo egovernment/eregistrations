@@ -22,19 +22,19 @@
 	display: none;
 }
 
-.user-steps-menu ul.steps {
+.user-steps-menu ul.user-steps-menu-list {
 	display: flex;
 	justify-content: space-between;
 	width: var(--desktop-width);
 	list-style-type: none;
 }
 
-.user-steps-menu ul.steps a {
+.user-steps-menu ul.user-steps-menu-list a {
 	width: 100%;
 }
 
 .step-active,
-.user-steps-menu ul.steps li > .step-active {
+.user-steps-menu ul.user-steps-menu-list li > .step-active {
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
@@ -51,7 +51,7 @@
 	white-space: nowrap;
 }
 
-.user-steps-menu ul.steps li > a {
+.user-steps-menu ul.user-steps-menu-list li > a {
 	background-color: var(--white-background);
 	background-image: none;
 	border-radius: 6px;
@@ -68,9 +68,9 @@
 	vertical-align: middle;
 	white-space: nowrap;
 }
-.user-steps-menu ul.steps li > a:hover,
-.user-steps-menu ul.steps li > a:focus,
-.user-steps-menu ul.steps li > a:active {
+.user-steps-menu ul.user-steps-menu-list li > a:hover,
+.user-steps-menu ul.user-steps-menu-list li > a:focus,
+.user-steps-menu ul.user-steps-menu-list li > a:active {
 	background-color: var(--normal-background);
 	color: var(--white-text);
 }
@@ -87,7 +87,7 @@
 
 }
 
-ul.steps li div {
+ul.user-steps-menu-list li div {
 	height: 5px;
 	width: 0;
 	margin-top: 2px;
@@ -96,7 +96,7 @@ ul.steps li div {
 }
 
 @media only screen and (max-width: 760px) {
-	ul.steps li a {
+	ul.user-steps-menu-list li a {
 		font-size: 14px;
 	}
 }
@@ -111,7 +111,7 @@ Styles applied while screen sieze is less than 640px
 		position: relative;
 	}
 
-	nav.user-steps-menu ul.steps {
+	nav.user-steps-menu ul.user-steps-menu-list {
 		display: none;
 	}
 
@@ -124,26 +124,26 @@ Styles applied while screen sieze is less than 640px
 		display: block;
 	}
 
-	ul.steps li a {
+	ul.user-steps-menu-list li a {
 		font-size: 18px;
 	}
 
-	input[type=checkbox]:checked ~ .steps {
+	input[type=checkbox]:checked ~ .user-steps-menu-list {
 		display: flex;
 		flex-wrap: wrap;
 		padding-top: 11px;
 	}
 
-	input[type=checkbox]:checked ~ .steps li {
+	input[type=checkbox]:checked ~ .user-steps-menu-list li {
 		margin: 11px 0;
 		text-align: center;
 		width: 100%;
 	}
-	input[type=checkbox]:checked ~ .steps li a {
+	input[type=checkbox]:checked ~ .user-steps-menu-list li a {
 		margin: 0 auto;
 		width: 100%;
 	}
-	input[type=checkbox]:checked ~ .steps li:last-child {
+	input[type=checkbox]:checked ~ .user-steps-menu-list li:last-child {
 		margin-bottom: 0;
 	}
 }
