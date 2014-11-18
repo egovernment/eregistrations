@@ -6,7 +6,7 @@
 	color: var(--white-text);
 	background-position: center center;
 	background-size: cover;
-	padding: 11px 0 4px;
+	padding: 11px 0;
 	width: 100%;
 	z-index: 2;
 }
