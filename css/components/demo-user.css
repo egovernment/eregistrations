@@ -1,4 +1,3 @@
-.demo-user .steps-menu,
-.demo-user .steps-menu ul li {
+.demo-user .user-steps-menu {
 	background: var(--normal-dark-background);
 }
