@@ -14,7 +14,7 @@
 	height: 66px;
 }
 
-.all-menu-items {
+.user-steps-menu-wrapper {
 	display: flex;
 }
 
@@ -115,7 +115,7 @@ Styles applied while screen sieze is less than 640px
 		display: none;
 	}
 
-	.all-menu-items {
+	.user-steps-menu-wrapper {
 		width: 100%;
 		flex-wrap: wrap;
 	}

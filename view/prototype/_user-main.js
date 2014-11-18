@@ -12,7 +12,7 @@ exports.main = function () {
 
 	div({ class: 'fixed-top-placeholder' },
 		nav({ id: 'user-steps-menu', class: 'user-steps-menu', fixed: true },
-			div({ class: 'content all-menu-items' },
+			div({ class: 'content user-steps-menu-wrapper' },
 				label({ class: 'step-active show-steps-btn', for: 'show-steps-control' },
 					'Steps'
 					),
