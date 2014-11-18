@@ -34,3 +34,12 @@
 	background-color: var(--light-background);
 
 }
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.user-steps-menu {
+		padding-bottom: 11px;
+	}
+	input[type=checkbox]:checked ~ .user-steps-menu-list li {
+		margin-bottom: 4px;
+	}
+}
