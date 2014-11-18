@@ -3,11 +3,15 @@
 */
 .user-steps-menu {
 	background-color: var(--dark-background);
+	color: var(--white-text);
 	background-position: center center;
 	background-size: cover;
 	padding: 11px 0 4px;
 	width: 100%;
 	z-index: 2;
+}
+.user-steps-menu a {
+	color: var(--white-text);
 }
 
 .fixed-top-placeholder {
@@ -40,41 +44,17 @@
 
 .step-active,
 .user-steps-menu ul.user-steps-menu-list li > a {
-	background-color: var(--white-background);
-	border-radius: 6px;
-	color: var(--dark-text);
 	display: inline-block;
-	font-size: 18px;
-	padding: 11px 0;
-	text-align: center;
-	text-decoration: none;
-	white-space: nowrap;
-}
-.step-active,
-.user-steps-menu ul.user-steps-menu-list li > .step-active {
-	background-color: var(--normal-background);
-	color: var(--white-text);
 	white-space: nowrap;
 }
 
-.user-steps-menu ul.user-steps-menu-list li > a:hover,
-.user-steps-menu ul.user-steps-menu-list li > a:focus,
-.user-steps-menu ul.user-steps-menu-list li > a:active {
-	background-color: var(--normal-background);
-	color: var(--white-text);
+label.step-active {
+	cursor: pointer;
 }
 
-.show-steps-btn {
+label.show-steps-btn {
 	display: none;
 	width: 100%;
-
-}
-
-.user-steps-menu-item-progress {
-	height: 5px;
-	width: 0;
-	margin-top: 2px;
-	background-color: var(--light-background);
 
 }
 
@@ -103,7 +83,7 @@ Styles applied while screen sieze is less than 640px
 		flex-wrap: wrap;
 	}
 
-	.show-steps-btn {
+	label.show-steps-btn {
 		display: block;
 	}
 

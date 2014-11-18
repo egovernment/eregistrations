@@ -1,0 +1,32 @@
+.step-active,
+.user-steps-menu ul.user-steps-menu-list li > a {
+	background-color: var(--white-background);
+	border-radius: 6px;
+	color: var(--dark-text);
+	display: inline-block;
+	font-size: 18px;
+	padding: 11px 0;
+	text-align: center;
+	text-decoration: none;
+	white-space: nowrap;
+}
+.step-active,
+.user-steps-menu ul.user-steps-menu-list li > .step-active {
+	background-color: var(--normal-background);
+	color: var(--white-text);
+}
+
+.user-steps-menu ul.user-steps-menu-list li > a:hover,
+.user-steps-menu ul.user-steps-menu-list li > a:focus,
+.user-steps-menu ul.user-steps-menu-list li > a:active {
+	background-color: var(--normal-background);
+	color: var(--white-text);
+}
+
+.user-steps-menu-item-progress {
+	height: 5px;
+	width: 0;
+	margin-top: 2px;
+	background-color: var(--light-background);
+
+}
