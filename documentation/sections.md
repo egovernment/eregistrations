@@ -308,7 +308,7 @@ div(generateSections(User.prototype.formSections));
 
 ####FormSectionBase (base class)####
 
-#####prototype#####
+_prototype_
 
 **isApplicable** The section will not by visible on view if false
     
@@ -318,7 +318,7 @@ div(generateSections(User.prototype.formSections));
     
 **onIncompleteMessage** Used to overwrite default message which is shown through view/components/incomplete-form-nav.
 
-#####constructor#####
+_constructor_
 	
 **actionUrl** The url to which the the form created around the section will be submitted.
 	
@@ -330,7 +330,7 @@ div(generateSections(User.prototype.formSections));
 
 ####FormSection####
 
-#####prototype#####
+_prototype_
 
 **formPropertyNames** Only for internal usage
     
@@ -338,19 +338,19 @@ div(generateSections(User.prototype.formSections));
     
 **inputOptions** Used to set input options for form. Note that in order to use it, you need to set every option separately i.e: `db.SomeFormClass.prototype.inputOptions.get('someProperty').set('disabled', true)`
     
-#####constructor#####
+_constructor_
 
 **propertyNames** This is were the set containing all property names to be used in form is set.
     
 ####FormSectionGroup####
 
-#####prototype#####
+_prototype_
 
 **sections** Used to setup child sections. Note that in order to use it, you need to set every child section separately i.e: `User.prototype.formSections.generalInfoFormSection.sections.getOwnDescriptor('personalInformatioSection').type = db.PersonalInformationSection;`
     
 ####FormEntitiesTable####
 
-#####constructor#####
+_constructor_
 
 **baseUrl** the base url around which links and postButtons to entities will be created. By convention following links to following urls will be created: `section.constructor.baseUrl + '-add'`, `section.constructor.baseUrl + '/' + <entityId>`.
 By convention url to delete an entity will be created: `section.constructor.baseUrl + '/' + <entityId> + '/delete'`
