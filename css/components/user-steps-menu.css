@@ -25,7 +25,7 @@
 .user-steps-menu ul.user-steps-menu-list {
 	display: flex;
 	justify-content: space-between;
-	width: var(--desktop-width);
+	width: 100%;
 	list-style-type: none;
 }
 
