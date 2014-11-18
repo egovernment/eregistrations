@@ -42,13 +42,13 @@
 	margin: 0 2px;
 }
 
-.show-steps-btn,
+.user-steps-menu-show,
 .user-steps-menu ul.user-steps-menu-list li > a {
 	display: inline-block;
 	white-space: nowrap;
 }
 
-label.show-steps-btn {
+label.user-steps-menu-show {
 	cursor: pointer;
 	display: none;
 	width: 100%;
@@ -80,7 +80,7 @@ Styles applied while screen sieze is less than 640px
 		flex-wrap: wrap;
 	}
 
-	label.show-steps-btn {
+	label.user-steps-menu-show {
 		display: block;
 	}
 

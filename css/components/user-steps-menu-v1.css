@@ -1,4 +1,4 @@
-.show-steps-btn,
+.user-steps-menu-show,
 .user-steps-menu ul.user-steps-menu-list li > a {
 	background-color: var(--white-background);
 	border-radius: 6px;
@@ -10,7 +10,7 @@
 	text-decoration: none;
 	white-space: nowrap;
 }
-.show-steps-btn,
+.user-steps-menu-show,
 .user-steps-menu ul.user-steps-menu-list li > .step-active {
 	background-color: var(--normal-background);
 	color: var(--white-text);

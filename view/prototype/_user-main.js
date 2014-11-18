@@ -13,7 +13,7 @@ exports.main = function () {
 	div({ class: 'fixed-top-placeholder' },
 		nav({ id: 'user-steps-menu', class: 'user-steps-menu', fixed: true },
 			div({ class: 'content user-steps-menu-wrapper' },
-				label({ class: 'show-steps-btn', for: 'show-steps-control' },
+				label({ class: 'user-steps-menu-show', for: 'show-steps-control' },
 					'Steps'
 					),
 				mobileCheckbox = input({ id: 'show-steps-control', type: 'checkbox', role: 'button' }
