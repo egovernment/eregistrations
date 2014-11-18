@@ -304,112 +304,65 @@ div(generateSections(User.prototype.formSections));
 
 ```
 
-
 ###API###
 
 ####FormSectionBase (base class)####
 
 #####prototype#####
+
+**isApplicable** The section will not by visible on view if false
     
-    `isApplicable`
+**status** Status as used in steps for a given section, type dbjs-ext/number/percentage, default 1.
     
-    The section will not by visible on view if false
+**resolventValue** Value to check against in resolving section visiblity, section is visible when section.master[section.resolventProperty] === section.resolventValue
     
-    `status`
-    
-    Status as used in steps for a given section, type dbjs-ext/number/percentage, default 1.
-    
-    `resolventValue`
-    
-    Value to check against in resolving section visiblity, section is visible when section.master[section.resolventProperty] === section.resolventValue
-    
-    `onIncompleteMessage`
-    
-    Overrides a default message which is shown when
+**onIncompleteMessage** Used to overwrite default message which is shown through view/components/incomplete-form-nav.
 
 #####constructor#####
 	
-	`actionUrl`
+**actionUrl** The url to which the the form created around the section will be submitted.
+	
+**label** The label of the section (can be translated to form header, or header of data in user submitted)
+	
+**resolventProperty** This property is used together with `resolventValue`, to check if the fields section fields should be displayed.
 
-	The url to which the the form created around the section will be submitted.
-	
-	`label`
-	
-	The label of the section (can be translated to form header, or header of data in user submitted)
-	
-	`resolventProperty`
-	
-	This property is used together with `resolventValue`, to check if the fields section fields should be displayed. `resolventProperty`
-	should be the name of a property defined on section's master object (usually user).
+**resolventProperty** The name of a property defined on section's master object (usually user).
 
 ####FormSection####
 
 #####prototype#####
 
-    `formPropertyNames`
+**formPropertyNames** Only for internal usage
     
-    Only for internal usage
+**propertyNames** Only for internal usage
     
-    `propertyNames`
-    
-    Only for internal usage
-    
-    `inputOptions`
-    
-    Used to set input options for form. Note that in order to use it, you need to set every option separately i.e:
-    `db.SomeFormClass.prototype.inputOptions.get('someProperty').set('disabled', true)`
+**inputOptions** Used to set input options for form. Note that in order to use it, you need to set every option separately i.e: `db.SomeFormClass.prototype.inputOptions.get('someProperty').set('disabled', true)`
     
 #####constructor#####
 
-    `propertyNames`
-    
-    This is were the set containing all property names to be used in form is set.
+**propertyNames** This is were the set containing all property names to be used in form is set.
     
 ####FormSectionGroup####
 
 #####prototype#####
 
-    `sections`
-    
-    Used to setup child sections. Note that in order to use it, you need to set every child section separately i.e:
-    `User.prototype.formSections.generalInfoFormSection.sections.getOwnDescriptor('personalInformationSection').type = db.PersonalInformationSection;`
+**sections** Used to setup child sections. Note that in order to use it, you need to set every child section separately i.e: `User.prototype.formSections.generalInfoFormSection.sections.getOwnDescriptor('personalInformatioSection').type = db.PersonalInformationSection;`
     
 ####FormEntitiesTable####
 
 #####constructor#####
 
-    `baseUrl`
+**baseUrl** the base url around which links and postButtons to entities will be created. By convention following links to following urls will be created: `section.constructor.baseUrl + '-add'`, `section.constructor.baseUrl + '/' + <entityId>`.
+By convention url to delete an entity will be created: `section.constructor.baseUrl + '/' + <entityId> + '/delete'`
     
-    the base url around which links and postButtons to entities will be created.
-    By convention following links to following urls will be created:
-    `section.constructor.baseUrl + '-add'`
-    `section.constructor.baseUrl + '/' + <entityId>`
-    By convention url to delete an entity will be created:
-    `section.constructor.baseUrl + '/' + <entityId> + '/delete'`
+**propertyName** The name of section's master property to which the section refers i.e: `partners`. 
     
-    `propertyName`
-    
-    The name of section's master property to which the section refers i.e: `partners`. 
-    
-	`entityTitleProperty`
+**entityTitleProperty** The name of property of entity from which the header will be taken i.e: `name` (the header will be taken from partner.name)
 	
-	The name of property of entity from which the header will be taken i.e: `name` (the header will be taken from partner.name)
+**entities** Set of objects of type `FormTabularEntity` which represent the table columns
 	
-	`entities`
+**generateFooter** A placeholder for custom footer definition. If you want to create custom definition of footer, you should define is on `section.constructor.generateFooter` (this must be ecmaScript, not dbjs definition, so place it in view/dbjs). Your custom `generateFooter` function will receive on argument (with the value of `propertyName` of section's master i.e. the partners set of given user). 
 	
-	Set of objects of type `FormTabularEntity` which represent the table columns
+**sectionProperty** The name of the property on which the sections collection has been defined on the entity. For example `formSections`.
 	
-	`generateFooter`
-	
-	A placeholder for custom footer definition. If you want to create custom definition of footer, you should define is on
-	`section.constructor.generateFooter` (this must be ecmaScript, not dbjs definition, so place it in view/dbjs).
-	Your custom `generateFooter` function will receive on argument (with the value of `propertyName` of section's master i.e. the partners set of given user). 
-	
-	`sectionProperty`
-	
-	You should put the name of the property on which the sections collection has been defined on the entity. For example `formSections`.
-	
-	`onEmptyMessage`
-	
-	Used to overwrite default message which is shown through view/components/incomplete-form-nav.
-	
+**onEmptyMessage** The text of message displayed when there are no entities.
