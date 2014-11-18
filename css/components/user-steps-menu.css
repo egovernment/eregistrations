@@ -84,19 +84,9 @@ Styles applied while screen sieze is less than 640px
 	input[type=checkbox]:checked ~ .user-steps-menu-list {
 		display: flex;
 		flex-wrap: wrap;
-		padding-top: 11px;
 	}
 
 	input[type=checkbox]:checked ~ .user-steps-menu-list li {
 		margin: 11px 0;
-		text-align: center;
-		width: 100%;
-	}
-	input[type=checkbox]:checked ~ .user-steps-menu-list li a {
-		margin: 0 auto;
-		width: 100%;
-	}
-	input[type=checkbox]:checked ~ .user-steps-menu-list li:last-child {
-		margin-bottom: 0;
 	}
 }
