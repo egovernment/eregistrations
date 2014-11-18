@@ -361,7 +361,7 @@ By convention url to delete an entity will be created: `section.constructor.base
 	
 **entities** Set of objects of type `FormTabularEntity` which represent the table columns
 	
-**generateFooter** A placeholder for custom footer definition. If you want to create custom definition of footer, you should define is on `section.constructor.generateFooter` (this must be ecmaScript, not dbjs definition, so place it in view/dbjs). Your custom `generateFooter` function will receive on argument (with the value of `propertyName` of section's master i.e. the partners set of given user). 
+**generateFooter** A placeholder for custom footer definition. If you want to create custom definition of footer, you should do it on `section.constructor.generateFooter` (this must be ecmaScript, not dbjs definition, so place it in view/dbjs). Your custom `generateFooter` function will receive one argument (with the value of `propertyName` of section's master i.e. the partners set of given user). 
 	
 **sectionProperty** The name of the property on which the sections collection has been defined on the entity. For example `formSections`.
 	
