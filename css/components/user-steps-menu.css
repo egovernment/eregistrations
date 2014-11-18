@@ -41,7 +41,6 @@
 .step-active,
 .user-steps-menu ul.user-steps-menu-list li > a {
 	background-color: var(--white-background);
-	background-image: none;
 	border-radius: 6px;
 	border: 1px solid transparent;
 	color: var(--dark-text);
