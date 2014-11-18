@@ -42,14 +42,13 @@
 .user-steps-menu ul.user-steps-menu-list li > a {
 	background-color: var(--white-background);
 	border-radius: 6px;
-	border: 1px solid transparent;
 	color: var(--dark-text);
 	cursor: pointer;
 	display: inline-block;
 	font-size: 18px;
 	font-weight: normal;
 	margin-bottom: 0;
-	padding: 10px 0;
+	padding: 11px 0;
 	text-align: center;
 	text-decoration: none;
 	vertical-align: middle;
