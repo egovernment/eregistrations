@@ -1,5 +1,4 @@
-.user-steps-menu-show,
-.user-steps-menu ul.user-steps-menu-list li > a {
+.user-steps-menu-show, .user-steps-menu-list li > a {
 	background-color: var(--white-background);
 	border-radius: 6px;
 	color: var(--dark-text);
@@ -10,15 +9,14 @@
 	text-decoration: none;
 	white-space: nowrap;
 }
-.user-steps-menu-show,
-.user-steps-menu ul.user-steps-menu-list li > .step-active {
+.user-steps-menu-show, .user-steps-menu-list li > .step-active {
 	background-color: var(--normal-background);
 	color: var(--white-text);
 }
 
-.user-steps-menu ul.user-steps-menu-list li > a:hover,
-.user-steps-menu ul.user-steps-menu-list li > a:focus,
-.user-steps-menu ul.user-steps-menu-list li > a:active {
+.user-steps-menu-list li > a:hover,
+.user-steps-menu-list li > a:focus,
+.user-steps-menu-list li > a:active {
 	background-color: var(--normal-background);
 	color: var(--white-text);
 }
