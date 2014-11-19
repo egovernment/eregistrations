@@ -42,7 +42,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 						controls: legacy.controls }
 				),
 				ns.p({ class: 'submit-placeholder input' },
-					ns.input({ type: 'submit' }, _("Submit"))),
+					ns.input({ type: 'submit', value: _("Submit") })),
 				ns.p({ class: 'button-scroll-top' },
 					ns.a({ onclick: 'window.scroll(0, 0)' },
 						ns.span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
