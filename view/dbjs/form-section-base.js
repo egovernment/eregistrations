@@ -11,5 +11,6 @@ require('./form-section-base-get-legacy');
 Object.defineProperties(db.FormSectionBase.prototype, lazy({
 	domId: d(function () {
 		return generateId(this.constructor.label);
-	})
+	}),
+	isControlRequired: d(false)
 }));

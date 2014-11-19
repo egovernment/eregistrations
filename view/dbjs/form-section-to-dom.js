@@ -35,6 +35,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 				ns.fieldset(
 					{ id: resolvent.affectedSectionId, class: 'form-elements',
 						dbjs: this.master, names: this.formPropertyNames,
+						control: { required: this.isControlRequired },
 						controls: legacy.controls }
 				),
 				ns.p({ class: 'submit-placeholder input' },
