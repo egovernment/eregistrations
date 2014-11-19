@@ -9,7 +9,7 @@ require('./form-section-base');
 
 module.exports = Object.defineProperties(db.FormSection.prototype, {
 	toDOMForm: d(function (document/*, options */) {
-		var resolvent, legacy, actionUrl, options, url;
+		var resolvent, legacy, actionUrl, options, url, control;
 		options = Object(arguments[1]);
 		resolvent = this.getFormResolvent();
 		legacy = this.getLegacy(this.domId, options);
@@ -19,6 +19,9 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 			actionUrl = this.master.constructor.prototype === this.master ?
 					url(this.constructor.actionUrl + '-add') :
 					url(this.constructor.actionUrl, this.master.__id__);
+		}
+		if (!this.forceRequiredInput) {
+			control = { required: this.forceRequiredInput };
 		}
 		return ns.section({ class: 'section-primary' },
 			ns.form(
@@ -35,6 +38,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 				ns.fieldset(
 					{ id: resolvent.affectedSectionId, class: 'form-elements',
 						dbjs: this.master, names: this.formPropertyNames,
+						control: control,
 						controls: legacy.controls }
 				),
 				ns.p({ class: 'submit-placeholder input' },
