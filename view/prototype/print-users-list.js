@@ -10,35 +10,218 @@ exports.body = function () {
 		)
 	);
 	section(
+
 		table(
-			{ class: 'submitted-user-data-table' },
 			thead(
 				tr(
+					th("Pending for revision", " ", span("(3)"))
+				),
+				tr(
 					th("User"),
-					th("Institution"),
-					th({ class: 'desktop-only' }, "Creation date"),
-					th({ class: 'actions' }, "Actions")
+					th("Number"),
+					th("Creation date")
 				)
 			),
 			tbody(
 				tr(
 					td(
-						{ class: 'user-basic-data' },
 						a({ href: '/users-admin/user-id/' }, "John Watson",
 							span('johnwatson@gmail.com')
 							)
 					),
 					td(
-						a({ href: '/users-admin/user-id/' }, "Bussines Licence A")
+						a({ href: '/users-admin/user-id/' }, "123-234-342")
 					),
 					td(
-						{ class: 'desktop-only' },
 						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
+					)
+				),
+				tr(
+					td(
+						a({ href: '/users-admin/user-id/' }, "John Watson",
+							span('johnwatson@gmail.com')
+							)
 					),
 					td(
-						{ class: 'actions' },
-						a({ href: '/users-admin/edit-user-id/' }, "Edit"),
-						a("Delete")
+						a({ href: '/users-admin/user-id/' }, "123-234-342")
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
+					)
+				),
+				tr(
+					td(
+						a({ href: '/users-admin/user-id/' }, "John Watson",
+							span('johnwatson@gmail.com')
+							)
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "123-234-342")
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
+					)
+				)
+			)
+		),
+
+		table(
+			thead(
+				tr(
+					th("Sent for corrections", " ", span("(3)"))
+				),
+				tr(
+					th("User"),
+					th("Number"),
+					th("Creation date")
+				)
+			),
+			tbody(
+				tr(
+					td(
+						a({ href: '/users-admin/user-id/' }, "John Watson",
+							span('johnwatson@gmail.com')
+							)
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "123-234-342")
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
+					)
+				),
+				tr(
+					td(
+						a({ href: '/users-admin/user-id/' }, "John Watson",
+							span('johnwatson@gmail.com')
+							)
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "123-234-342")
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
+					)
+				),
+				tr(
+					td(
+						a({ href: '/users-admin/user-id/' }, "John Watson",
+							span('johnwatson@gmail.com')
+							)
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "123-234-342")
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
+					)
+				)
+			)
+		),
+
+		table(
+			thead(
+				tr(
+					th("Rejected", " ", span("(3)"))
+				),
+				tr(
+					th("User"),
+					th("Number"),
+					th("Creation date")
+				)
+			),
+			tbody(
+				tr(
+					td(
+						a({ href: '/users-admin/user-id/' }, "John Watson",
+							span('johnwatson@gmail.com')
+							)
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "123-234-342")
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
+					)
+				),
+				tr(
+					td(
+						a({ href: '/users-admin/user-id/' }, "John Watson",
+							span('johnwatson@gmail.com')
+							)
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "123-234-342")
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
+					)
+				),
+				tr(
+					td(
+						a({ href: '/users-admin/user-id/' }, "John Watson",
+							span('johnwatson@gmail.com')
+							)
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "123-234-342")
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
+					)
+				)
+			)
+		),
+
+		table(
+			thead(
+				tr(
+					th("Approved", " ", span("(3)"))
+				),
+				tr(
+					th("User"),
+					th("Number"),
+					th("Creation date")
+				)
+			),
+			tbody(
+				tr(
+					td(
+						a({ href: '/users-admin/user-id/' }, "John Watson",
+							span('johnwatson@gmail.com')
+							)
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "123-234-342")
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
+					)
+				),
+				tr(
+					td(
+						a({ href: '/users-admin/user-id/' }, "John Watson",
+							span('johnwatson@gmail.com')
+							)
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "123-234-342")
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
+					)
+				),
+				tr(
+					td(
+						a({ href: '/users-admin/user-id/' }, "John Watson",
+							span('johnwatson@gmail.com')
+							)
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "123-234-342")
+					),
+					td(
+						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
 					)
 				)
 			)
