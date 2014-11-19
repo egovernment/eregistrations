@@ -12,5 +12,5 @@ Object.defineProperties(db.FormSectionBase.prototype, lazy({
 	domId: d(function () {
 		return generateId(this.constructor.label);
 	}),
-	isControlRequired: d(false)
+	forceRequiredInput: d(false)
 }));
