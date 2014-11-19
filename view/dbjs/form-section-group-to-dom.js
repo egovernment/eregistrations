@@ -34,16 +34,20 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 				mainFormResolvent.formResolvent,
 				ns.div({ id: mainFormResolvent.affectedSectionId }, ns.list(this.sections,
 					function (subSection) {
-						var formResolvent, legacy;
+						var formResolvent, legacy, control;
 						formResolvent = subSection.getFormResolvent();
 						legacy = subSection.getLegacy(this.domId, options);
+						if (!subSection.forceRequiredInput) {
+							control = { required: subSection.forceRequiredInput };
+						}
 						return ns.div({ class: 'sub-section', id: subSection.domId },
 							ns._if(subSection.constructor.label, ns.h3(subSection.constructor.label)),
 							formResolvent.formResolvent,
 							ns.fieldset(
 								{ id: formResolvent.affectedSectionId, class: 'form-elements',
 									dbjs: subSection.master, names: subSection.formPropertyNames,
-									control: { required: subSection.forceRequiredInput },
+
+									control: control,
 									controls: legacy.controls }
 							), formResolvent.legacyScript, legacy.legacy);
 					}, this)),
