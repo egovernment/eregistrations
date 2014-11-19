@@ -24,43 +24,19 @@ exports.body = function () {
 			),
 			tbody(
 				tr(
-					td(
-						a({ href: '/users-admin/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "123-234-342")
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
-					)
+					td("John Watson", span('johnwatson@gmail.com')),
+					td("123-234-342"),
+					td("23/07/2014 18:09:22")
 				),
 				tr(
-					td(
-						a({ href: '/users-admin/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "123-234-342")
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
-					)
+					td("John Watson", span('johnwatson@gmail.com')),
+					td("123-234-342"),
+					td("23/07/2014 18:09:22")
 				),
 				tr(
-					td(
-						a({ href: '/users-admin/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "123-234-342")
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
-					)
+					td("John Watson", span('johnwatson@gmail.com')),
+					td("123-234-342"),
+					td("23/07/2014 18:09:22")
 				)
 			)
 		),
@@ -78,43 +54,19 @@ exports.body = function () {
 			),
 			tbody(
 				tr(
-					td(
-						a({ href: '/users-admin/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "123-234-342")
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
-					)
+					td("John Watson", span('johnwatson@gmail.com')),
+					td("123-234-342"),
+					td("23/07/2014 18:09:22")
 				),
 				tr(
-					td(
-						a({ href: '/users-admin/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "123-234-342")
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
-					)
+					td("John Watson", span('johnwatson@gmail.com')),
+					td("123-234-342"),
+					td("23/07/2014 18:09:22")
 				),
 				tr(
-					td(
-						a({ href: '/users-admin/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "123-234-342")
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
-					)
+					td("John Watson", span('johnwatson@gmail.com')),
+					td("123-234-342"),
+					td("23/07/2014 18:09:22")
 				)
 			)
 		),
@@ -132,43 +84,19 @@ exports.body = function () {
 			),
 			tbody(
 				tr(
-					td(
-						a({ href: '/users-admin/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "123-234-342")
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
-					)
+					td("John Watson", span('johnwatson@gmail.com')),
+					td("123-234-342"),
+					td("23/07/2014 18:09:22")
 				),
 				tr(
-					td(
-						a({ href: '/users-admin/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "123-234-342")
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
-					)
+					td("John Watson", span('johnwatson@gmail.com')),
+					td("123-234-342"),
+					td("23/07/2014 18:09:22")
 				),
 				tr(
-					td(
-						a({ href: '/users-admin/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "123-234-342")
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
-					)
+					td("John Watson", span('johnwatson@gmail.com')),
+					td("123-234-342"),
+					td("23/07/2014 18:09:22")
 				)
 			)
 		),
@@ -186,43 +114,19 @@ exports.body = function () {
 			),
 			tbody(
 				tr(
-					td(
-						a({ href: '/users-admin/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "123-234-342")
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
-					)
+					td("John Watson", span('johnwatson@gmail.com')),
+					td("123-234-342"),
+					td("23/07/2014 18:09:22")
 				),
 				tr(
-					td(
-						a({ href: '/users-admin/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "123-234-342")
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
-					)
+					td("John Watson", span('johnwatson@gmail.com')),
+					td("123-234-342"),
+					td("23/07/2014 18:09:22")
 				),
 				tr(
-					td(
-						a({ href: '/users-admin/user-id/' }, "John Watson",
-							span('johnwatson@gmail.com')
-							)
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "123-234-342")
-					),
-					td(
-						a({ href: '/users-admin/user-id/' }, "23/07/2014 18:09:22")
-					)
+					td("John Watson", span('johnwatson@gmail.com')),
+					td("123-234-342"),
+					td("23/07/2014 18:09:22")
 				)
 			)
 		)
