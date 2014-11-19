@@ -55,6 +55,7 @@ module.exports = function (view) {
 		'official/user-id': bind(userOfficialUser.diff('./official-form')),
 		'official/user-id/certificates': bind(userOfficialCertificates.diff('./_certificates-form')),
 		'official/user-id/document': bind(userOfficialUser.diff('./official-document')),
+		'official/users-list/print': bind(view.documentElement.diff('./print-users-list')),
 
 		// Front-desk routes
 		'front-desk/user-id': bind(userOfficialCertificates.diff('./_front-desk')),

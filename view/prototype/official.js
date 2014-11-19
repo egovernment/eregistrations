@@ -63,7 +63,7 @@ exports['sub-main'] = function () {
 		),
 		div(
 			a(
-				{ class: 'print-button' },
+				{ class: 'print-button', href: '/official/users-list/print/' },
 				span({ class: 'fa fa-print' }),
 				"Print list"
 			)
