@@ -12,7 +12,6 @@ exports.body = {
 			)
 		);
 		section(
-			{ class: 'print-header' },
 			table(
 				thead(
 					tr(

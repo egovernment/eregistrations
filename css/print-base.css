@@ -1,0 +1,8 @@
+.print {
+	padding-top: 22px;
+}
+
+.print > * {
+	width: 1070px;
+	margin: 0 auto 22px;
+}
