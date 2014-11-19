@@ -11,7 +11,7 @@
 ../../css/components/info-main.css
 ../../css/components/demo-user-app-navigation.css
 ../../css/components/disabler.css
-../../css/components/demo-user.css
+../../css/components/nested-user.css
 ../../css/components/modal.css
 ../../css/components/modal-login.css
 ../../css/components/modal-register.css
