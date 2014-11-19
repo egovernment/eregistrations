@@ -1,0 +1,5 @@
+.print-users-list  th,
+.print-users-list td {
+	padding: 11px;
+	line-height: 22px;
+}

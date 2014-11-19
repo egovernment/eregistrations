@@ -11,8 +11,10 @@ exports.body = {
 				p("19/11/2015")
 			)
 		);
+		hr();
 		section(
 			table(
+				{ class: 'print-users-list' },
 				thead(
 					tr(
 						th("Pending for revision", " ", span("(3)"))
@@ -43,6 +45,7 @@ exports.body = {
 			),
 
 			table(
+				{ class: 'print-users-list' },
 				thead(
 					tr(
 						th("Sent for corrections", " ", span("(3)"))
@@ -73,6 +76,7 @@ exports.body = {
 			),
 
 			table(
+				{ class: 'print-users-list' },
 				thead(
 					tr(
 						th("Rejected", " ", span("(3)"))
@@ -103,6 +107,7 @@ exports.body = {
 			),
 
 			table(
+				{ class: 'print-users-list' },
 				thead(
 					tr(
 						th("Approved", " ", span("(3)"))

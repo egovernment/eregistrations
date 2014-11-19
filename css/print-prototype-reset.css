@@ -1,7 +1,10 @@
 .print {
-	background-color: white;
-	height: 100%;
+	background-color: var(--white-background);
+	min-height: 100%;
 }
 html {
 	height: 100%;
+}
+tbody tr:nth-of-type(odd) {
+	background-color: var(--white-background);
 }
