@@ -46,7 +46,6 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 							ns.fieldset(
 								{ id: formResolvent.affectedSectionId, class: 'form-elements',
 									dbjs: subSection.master, names: subSection.formPropertyNames,
-
 									control: control,
 									controls: legacy.controls }
 							), formResolvent.legacyScript, legacy.legacy);
