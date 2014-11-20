@@ -6,8 +6,7 @@ exports.body = function () {
 		{ class: 'print-header' },
 		img({ src: '/img/logo-2.png' }),
 		div(
-			h2("Revision"),
-			p("19/11/2015")
+			{ id: 'print-page-title' }
 		)
 	);
 	hr();

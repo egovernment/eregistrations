@@ -1,5 +1,10 @@
 'use strict';
 
+exports['print-page-title'] = function () {
+	h2("Revision");
+	p("19/11/2015");
+};
+
 exports.main = function () {
 	table(
 		{ class: 'print-users-list' },
@@ -98,7 +103,7 @@ exports.main = function () {
 		{ class: 'print-users-list' },
 		thead(
 			tr(
-				th({ colspan: 3 }, "Proccessing", " ", span("(3)"))
+				th({ colspan: 3 }, "Proccessing", " ", span("(0)"))
 			),
 			tr(
 				th("User"),
