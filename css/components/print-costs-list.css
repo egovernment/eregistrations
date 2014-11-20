@@ -1,0 +1,16 @@
+.print-costs-list {
+	border-top: 1px solid var(--light-background);
+	border-bottom: 1px solid var(--light-background);
+}
+.print-costs-list li {
+	padding: 11px 0;
+	display: flex;
+	justify-content: space-between;
+}
+.print-costs-list .print-costs-list-total {
+	font-weight: bold;
+	border-top: 1px solid var(--light-background);
+}
+.print-costs-list .print-costs-list-total:not(:last-child) {
+	border-bottom: 1px solid var(--light-background);
+}
