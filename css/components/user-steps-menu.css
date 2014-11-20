@@ -25,24 +25,21 @@
 	display: none;
 }
 
-.user-steps-menu ul.user-steps-menu-list {
+.user-steps-menu-list {
 	display: flex;
 	justify-content: space-between;
 	width: 100%;
 	list-style-type: none;
 }
 
-.user-steps-menu ul.user-steps-menu-list a {
-	width: 100%;
-}
-
-.user-steps-menu ul li {
+.user-steps-menu-list li {
 	width: 100%;
 	margin: 0 2px;
 }
 
 .user-steps-menu-show,
-.user-steps-menu ul.user-steps-menu-list li > a {
+.user-steps-menu-list li > a {
+	width: 100%;
 	display: inline-block;
 	white-space: nowrap;
 }
@@ -51,11 +48,10 @@ label.user-steps-menu-show {
 	cursor: pointer;
 	display: none;
 	width: 100%;
-
 }
 
 @media only screen and (max-width: 760px) {
-	ul.user-steps-menu-list li a {
+	.user-steps-menu-list li > a {
 		font-size: 14px;
 	}
 }
@@ -68,7 +64,7 @@ Styles applied while screen sieze is less than 640px
 		position: relative;
 	}
 
-	nav.user-steps-menu ul.user-steps-menu-list {
+	.user-steps-menu-list {
 		display: none;
 	}
 

@@ -46,13 +46,12 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 							ns.fieldset(
 								{ id: formResolvent.affectedSectionId, class: 'form-elements',
 									dbjs: subSection.master, names: subSection.formPropertyNames,
-
 									control: control,
 									controls: legacy.controls }
 							), formResolvent.legacyScript, legacy.legacy);
 					}, this)),
 				ns.p({ class: 'submit-placeholder input' },
-					ns.input({ type: 'submit' }, _("Submit"))),
+					ns.input({ type: 'submit', value: _("Submit") })),
 				ns.p(
 					{ class: 'button-scroll-top' },
 					ns.a({ onclick: 'window.scroll(0, 0)' },
