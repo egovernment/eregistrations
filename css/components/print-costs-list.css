@@ -7,7 +7,10 @@
 	display: flex;
 	justify-content: space-between;
 }
-.print-costs-list li:last-child {
+.print-costs-list .print-costs-list-total {
 	font-weight: bold;
 	border-top: 1px solid var(--light-background);
+}
+.print-costs-list .print-costs-list-total:not(:last-child) {
+	border-bottom: 1px solid var(--light-background);
 }
