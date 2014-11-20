@@ -35,6 +35,7 @@ module.exports = function (view) {
 		// User routes - imports content to #steps element in #main element
 		profile: bind(userMain.diff('./user-profile')),
 		guide: bind(userMain.diff('./guide')),
+		'guide/costs/print': bind(mainPrint.diff('./print-user-costs')),
 		forms:  bind(userMain.diff('./forms')),
 		'forms/disabled':  bind(userForm.diff('./disabled-forms')),
 		documents:  bind(userMain.diff('./documents')),
