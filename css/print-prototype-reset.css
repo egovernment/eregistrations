@@ -1,4 +1,4 @@
-.print {
+body {
 	background-color: var(--white-background);
 	min-height: 100%;
 }
