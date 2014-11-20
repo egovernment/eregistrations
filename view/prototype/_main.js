@@ -53,6 +53,10 @@ exports.body = function () {
 					a({ href: '/guide/' }, span("User - guide"), span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
+					a({ href: '/guide/costs/print/' }, span("User - costs print list"),
+						span({ class: 'label-reg' }, "Part A"))
+				),
+				li(
 					a({ href: '/forms/' }, span("User - forms"), span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
