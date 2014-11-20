@@ -18,8 +18,10 @@ exports.tab = function () {
 			{ class: 'container-with-nav' },
 			h3("Documents received from petitioner"),
 			div(
-				a({ class: 'button' }, span({ class: 'fa fa-download' }), "View and print form"),
-				a({ class: 'button' }, span({ class: 'fa fa-download' }), "Payment receipt")
+				a({ class: 'button-resource-link' },
+					span({ class: 'fa fa-download' }), "View and print form"),
+				a({ class: 'button-resource-link' },
+					span({ class: 'fa fa-download' }), "Payment receipt")
 			)
 		),
 

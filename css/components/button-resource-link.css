@@ -1,0 +1,24 @@
+.button-resource-link {
+	font-size: 14px;
+	font-weight: normal;
+	background: var(--light-background);
+	border-radius: 3px;
+	border: 1px solid var(--light-inner-border);
+	padding: 10px;
+	cursor: pointer;
+	text-decoration: none;
+	text-align: center;
+	line-height: 22px;
+	display: inline-block;
+}
+.button-resource-link:hover,
+.button-resource-link:focus,
+.button-resource-link:active {
+	background: var(--normal-background);
+	text-decoration: none;
+	color: var(--white-text);
+}
+
+.button-resource-link .fa {
+	padding-top: 2px;
+}

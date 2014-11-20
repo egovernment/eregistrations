@@ -172,7 +172,14 @@ exports.step = function () {
 					span("$45'000")),
 				li({ class: 'guide-total-costs' },
 					span("Total Costs:"), " ",
-					span("$105'000")))),
+					span("$105'000"))),
+			p(
+				a({ class: 'button-resource-link', href: 'costs-print/' },
+					span({ class: 'fa fa-print' }), " ",
+					"Print costs list"
+					)
+			)
+			),
 		p(button({ class: 'save-step-one', type: 'submit' },
 			"Save and continue"))
 	);
