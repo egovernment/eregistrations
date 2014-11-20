@@ -1,0 +1,58 @@
+::root {
+	--desktop-width: 1070px;
+	/* Theme colors virables */
+	--white-background: #ffffff;
+	--normal-light-background: #ddd;
+	/* Text colors */
+	--dark-text: #333333;
+}
+
+html {
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	font-family: sans-serif;
+}
+
+body {
+	color: var(--dark-text);
+	margin: 0;
+	font-size: 14px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	line-height: 22px;
+	padding-top: 22px;
+}
+body > * {
+	width: var(--desktop-width);
+	margin: 0 auto 22px;
+}
+
+body > section > * {
+	margin-bottom: 22px;
+}
+
+* {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+*:before,
+*:after {
+	box-sizing: border-box;
+}
+
+h1, h2, h3, h4, h5, p {
+	color: var(--dark-text);
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+hr {
+	background: var(--light-background);
+	margin-top: -1px;
+	border: none;
+	height: 1px;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+}

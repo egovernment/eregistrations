@@ -12,6 +12,7 @@ module.exports = function (view) {
 	// All routes - no imported content, only header and #main to import elements
 	var main = view.documentElement.diff('./_main'),
 		// User routes - import content directly to #main element
+		mainPrint = view.documentElement.diff('./_print-main'),
 		index = main.diff('./index'),
 		userLoggedIn = main.diff('./_user-logged-in'),
 		userMain = userLoggedIn.diff('./_user-main'),
@@ -55,6 +56,7 @@ module.exports = function (view) {
 		'official/user-id': bind(userOfficialUser.diff('./official-form')),
 		'official/user-id/certificates': bind(userOfficialCertificates.diff('./_certificates-form')),
 		'official/user-id/document': bind(userOfficialUser.diff('./official-document')),
+		'official/users-list/print': bind(mainPrint.diff('./print-users-list')),
 
 		// Front-desk routes
 		'front-desk/user-id': bind(userOfficialCertificates.diff('./_front-desk')),

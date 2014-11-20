@@ -1,0 +1,19 @@
+.print-users-list th,
+.print-users-list td {
+	padding: 11px;
+	line-height: 22px;
+	text-align: left;
+}
+
+.print-users-list tr {
+	border-top: 1px solid var(--normal-light-background);
+	border-bottom: 1px solid var(--normal-light-background);
+}
+
+.print-users-list {
+	border: 1px solid var(--normal-light-background);
+}
+
+.print-users-list thead tr:first-child {
+	background-color: var(--normal-light-background);
+}
