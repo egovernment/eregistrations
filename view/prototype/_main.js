@@ -87,6 +87,10 @@ exports.body = function () {
 						span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
+					a({ href: '/user-submitted/history-print/' }, span("User history print"),
+						span({ class: 'label-reg' }, "Part B"))
+				),
+				li(
 					a({ href: '/official/' }, span("Official"),
 						span({ class: 'label-reg' }, "Part B"))
 				),
