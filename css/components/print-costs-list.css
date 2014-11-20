@@ -11,5 +11,6 @@
 }
 .print-costs-list-total {
 	font-weight: bold;
-	background: var(--normal-light-background);
+	border-top: 1px solid var(--normal-light-background);
+	border-bottom: 1px solid var(--normal-light-background);
 }

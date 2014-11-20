@@ -12,7 +12,6 @@ exports.main = function () {
 		li(span("Filing fees for memorandum"), " ", span("$45'000")),
 		li({ class: 'print-costs-list-total' }, span("Total Costs:"), " ", span("$105'000"))
 	);
-	hr();
 	p("LoLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat aliquet massa," +
 		" quis vulputate diam. Morbi non dolor ac tellus finibus commodo. Donec convallis" +
 		" tortor felis, et sodales quam vulputate ac.");
