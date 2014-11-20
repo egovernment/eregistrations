@@ -112,6 +112,10 @@ exports.body = function () {
 							span("Official - user at front-desk"), span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
+					a({ href: '/official/users-list/print/' },
+							span("Official - users print list"), span({ class: 'label-reg' }, "Part B"))
+				),
+				li(
 					a({ href: '/demo-user/' }, span("Demo user"),
 						span({ class: 'label-reg' }, "Demo"))
 				),
