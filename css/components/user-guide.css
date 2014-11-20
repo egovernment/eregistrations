@@ -105,6 +105,22 @@
 	background: var(--normal-dark-background);
 }
 
+.user-guide .print-costs-list {
+	display: inline-block;
+	line-height: 44px;
+	background: var(--normal-light-background);
+	border: 1px solid var(--normal-background);
+	border-radius: 5px;
+	text-decoration: none;
+	padding: 0 10px;
+}
+.user-guide .print-costs-list:hover,
+.user-guide .print-costs-list:focus,
+.user-guide .print-costs-list:active {
+	background: var(--normal-background);
+	color: var(--white-text);
+}
+
 /*
 Styles applied while screen sieze is less than 640px
 */
