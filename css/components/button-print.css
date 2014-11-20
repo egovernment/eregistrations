@@ -1,0 +1,25 @@
+.button-print {
+	font-size: 14px;
+	font-weight: normal;
+	background: var(--light-background);
+	border-radius: 3px;
+	border: 1px solid var(--light-inner-border);
+	padding: 10px;
+	cursor: pointer;
+	text-decoration: none;
+	margin: 0 2px;
+	text-align: center;
+	line-height: 22px;
+	display: inline-block;
+}
+.button-print:hover,
+.button-print:focus,
+.button-print:active {
+	background: var(--normal-background);
+	text-decoration: none;
+	color: var(--white-text);
+}
+
+.button-print .fa {
+	padding-top: 2px;
+}

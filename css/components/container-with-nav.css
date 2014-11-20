@@ -12,32 +12,6 @@ h2.container-with-nav .fa {
 	padding-top: 10px;
 }
 
-.container-with-nav .button {
-	font-size: 14px;
-	font-weight: normal;
-	background: var(--light-background);
-	border-radius: 3px;
-	border: 1px solid var(--light-inner-border);
-	padding: 8px;
-	cursor: pointer;
-	text-decoration: none;
-	margin: 0 2px;
-	text-align: center;
-	line-height: 22px;
-	display: inline-block;
-}
-.container-with-nav .button:hover,
-.container-with-nav .button:focus,
-.container-with-nav .button:active {
-	background: var(--normal-background);
-	text-decoration: none;
-	color: var(--white-text);
-}
-
-.container-with-nav .button .fa {
-	padding-top: 2px;
-}
-
 .container-with-nav a:last-child {
 	margin-right: 0;
 }
@@ -49,7 +23,6 @@ h2.container-with-nav .fa {
 }
 .container-with-nav div {
 	min-width: 30%;
-	display: flex;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {

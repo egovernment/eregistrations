@@ -174,7 +174,7 @@ exports.step = function () {
 					span("Total Costs:"), " ",
 					span("$105'000"))),
 			p(
-				a({ class: 'print-costs-list', href: 'costs/print/' },
+				a({ class: 'button-print', href: 'costs/print/' },
 					span({ class: 'fa fa-print' }), " ",
 					"Print costs list"
 					)
