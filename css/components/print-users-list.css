@@ -1,4 +1,4 @@
-.print-users-list  th,
+.print-users-list th,
 .print-users-list td {
 	padding: 11px;
 	line-height: 22px;
@@ -12,10 +12,8 @@
 
 .print-users-list {
 	border: 1px solid var(--normal-light-background);
-	border-radius: 5px;
 }
 
 .print-users-list thead tr:first-child {
 	background-color: var(--normal-light-background);
-	text-align: left;
 }
