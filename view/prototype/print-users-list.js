@@ -17,7 +17,7 @@ exports.body = {
 				{ class: 'print-users-list' },
 				thead(
 					tr(
-						th("Pending for revision", " ", span("(3)"))
+						th({ colspan: 3 }, "Pending for revision", " ", span("(3)"))
 					),
 					tr(
 						th("User"),
@@ -27,17 +27,17 @@ exports.body = {
 				),
 				tbody(
 					tr(
-						td("John Watson", span('johnwatson@gmail.com')),
+						td("John Watson", " - ", span('johnwatson@gmail.com')),
 						td("123-234-342"),
 						td("23/07/2014 18:09:22")
 					),
 					tr(
-						td("John Watson", span('johnwatson@gmail.com')),
+						td("John Watson", " - ", span('johnwatson@gmail.com')),
 						td("123-234-342"),
 						td("23/07/2014 18:09:22")
 					),
 					tr(
-						td("John Watson", span('johnwatson@gmail.com')),
+						td("John Watson", " - ", span('johnwatson@gmail.com')),
 						td("123-234-342"),
 						td("23/07/2014 18:09:22")
 					)
@@ -48,7 +48,7 @@ exports.body = {
 				{ class: 'print-users-list' },
 				thead(
 					tr(
-						th("Sent for corrections", " ", span("(3)"))
+						th({ colspan: 3 }, "Sent for corrections", " ", span("(3)"))
 					),
 					tr(
 						th("User"),
@@ -58,17 +58,17 @@ exports.body = {
 				),
 				tbody(
 					tr(
-						td("John Watson", span('johnwatson@gmail.com')),
+						td("John Watson", " - ", span('johnwatson@gmail.com')),
 						td("123-234-342"),
 						td("23/07/2014 18:09:22")
 					),
 					tr(
-						td("John Watson", span('johnwatson@gmail.com')),
+						td("John Watson", " - ", span('johnwatson@gmail.com')),
 						td("123-234-342"),
 						td("23/07/2014 18:09:22")
 					),
 					tr(
-						td("John Watson", span('johnwatson@gmail.com')),
+						td("John Watson", " - ", span('johnwatson@gmail.com')),
 						td("123-234-342"),
 						td("23/07/2014 18:09:22")
 					)
@@ -79,7 +79,7 @@ exports.body = {
 				{ class: 'print-users-list' },
 				thead(
 					tr(
-						th("Rejected", " ", span("(3)"))
+						th({ colspan: 3 }, "Rejected", " ", span("(3)"))
 					),
 					tr(
 						th("User"),
@@ -89,17 +89,17 @@ exports.body = {
 				),
 				tbody(
 					tr(
-						td("John Watson", span('johnwatson@gmail.com')),
+						td("John Watson", " - ", span('johnwatson@gmail.com')),
 						td("123-234-342"),
 						td("23/07/2014 18:09:22")
 					),
 					tr(
-						td("John Watson", span('johnwatson@gmail.com')),
+						td("John Watson", " - ", span('johnwatson@gmail.com')),
 						td("123-234-342"),
 						td("23/07/2014 18:09:22")
 					),
 					tr(
-						td("John Watson", span('johnwatson@gmail.com')),
+						td("John Watson", " - ", span('johnwatson@gmail.com')),
 						td("123-234-342"),
 						td("23/07/2014 18:09:22")
 					)
@@ -110,7 +110,7 @@ exports.body = {
 				{ class: 'print-users-list' },
 				thead(
 					tr(
-						th("Approved", " ", span("(3)"))
+						th({ colspan: 3 }, "Proccessing", " ", span("(3)"))
 					),
 					tr(
 						th("User"),
@@ -120,17 +120,37 @@ exports.body = {
 				),
 				tbody(
 					tr(
-						td("John Watson", span('johnwatson@gmail.com')),
+						{ class: 'empty' },
+						td({ colspan: 3 }, "There are no users at the moment.")
+					)
+				)
+			),
+
+			table(
+				{ class: 'print-users-list' },
+				thead(
+					tr(
+						th({ colspan: 3 }, "Approved", " ", span("(3)"))
+					),
+					tr(
+						th("User"),
+						th("Number"),
+						th("Creation date")
+					)
+				),
+				tbody(
+					tr(
+						td("John Watson", " - ", span('johnwatson@gmail.com')),
 						td("123-234-342"),
 						td("23/07/2014 18:09:22")
 					),
 					tr(
-						td("John Watson", span('johnwatson@gmail.com')),
+						td("John Watson", " - ", span('johnwatson@gmail.com')),
 						td("123-234-342"),
 						td("23/07/2014 18:09:22")
 					),
 					tr(
-						td("John Watson", span('johnwatson@gmail.com')),
+						td("John Watson", " - ", span('johnwatson@gmail.com')),
 						td("123-234-342"),
 						td("23/07/2014 18:09:22")
 					)

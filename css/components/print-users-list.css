@@ -2,9 +2,20 @@
 .print-users-list td {
 	padding: 11px;
 	line-height: 22px;
+	text-align: left;
 }
 
 .print-users-list tr {
-	border-top: 1px solid gray;
-	border-bottom: 1px solid gray;
+	border-top: 1px solid var(--normal-light-background);
+	border-bottom: 1px solid var(--normal-light-background);
+}
+
+.print-users-list {
+	border: 1px solid var(--normal-light-background);
+	border-radius: 5px;
+}
+
+.print-users-list thead tr:first-child {
+	background-color: var(--normal-light-background);
+	text-align: left;
 }
