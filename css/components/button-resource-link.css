@@ -1,4 +1,4 @@
-.button-print {
+.button-resource-link {
 	font-size: 14px;
 	font-weight: normal;
 	background: var(--light-background);
@@ -7,19 +7,18 @@
 	padding: 10px;
 	cursor: pointer;
 	text-decoration: none;
-	margin: 0 2px;
 	text-align: center;
 	line-height: 22px;
 	display: inline-block;
 }
-.button-print:hover,
-.button-print:focus,
-.button-print:active {
+.button-resource-link:hover,
+.button-resource-link:focus,
+.button-resource-link:active {
 	background: var(--normal-background);
 	text-decoration: none;
 	color: var(--white-text);
 }
 
-.button-print .fa {
+.button-resource-link .fa {
 	padding-top: 2px;
 }

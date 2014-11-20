@@ -11,6 +11,9 @@ h1.container-with-nav .fa,
 h2.container-with-nav .fa {
 	padding-top: 10px;
 }
+.container-with-nav a {
+	margin: 0 2px;
+}
 
 .container-with-nav a:last-child {
 	margin-right: 0;
