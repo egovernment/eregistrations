@@ -44,7 +44,8 @@ exports['sub-main'] = function () {
 			h2({ class: 'container-with-nav' }, "Application history",
 				a(
 					{ class: 'hint-optional hint-optional-left',
-						'data-hint': 'Print history of application' },
+						'data-hint': 'Print history of application',
+						href: '/user-submitted/history-print/' },
 					span({ class: 'fa fa-print' }, "Print")
 				)
 				),
