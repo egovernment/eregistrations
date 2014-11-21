@@ -22,8 +22,9 @@ exports['submitted-menu'] = function () {
 exports['sub-main'] = function () {
 	h2("Registrations statistics");
 	section(
-		{ class: 'statstics-tables' },
+		{ class: 'statistics-table-dual' },
 		table(
+			{ class: 'statistics-table statistics-table-dual-main' },
 			thead(
 				tr(
 					th(),
@@ -120,6 +121,7 @@ exports['sub-main'] = function () {
 			)
 		),
 		table(
+			{ class: 'statistics-table statistics-table-dual-aside' },
 			thead(
 				tr(
 					th(),

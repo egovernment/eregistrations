@@ -60,4 +60,5 @@
 ../../css/components/submitted-user-data-table.css
 ../../css/components/front-desk-validation.css
 ../../css/components/front-desk-certificates-print.css
-../../css/components/statistics.css
+../../css/components/statistics-table.css
+../../css/components/statistics-table-dual.css

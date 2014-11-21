@@ -1,0 +1,19 @@
+.statistics-table-dual .statistics-table-dual-main {
+	max-width: 58%;
+	margin-right: 2%;
+}
+
+.statistics-table-dual .statistics-table-dual-aside {
+	max-width: 40%;
+}
+
+@media only screen and (max-width: var(--mobile-secondary-width)) {
+	.statistics-table-dual .statistics-table-dual-main {
+		margin-right: 0;
+	}
+	.statistics-table-dual .statistics-table-dual-main,
+	.statistics-table-dual .statistics-table-dual-aside  {
+		max-width: none;
+
+	}
+}
