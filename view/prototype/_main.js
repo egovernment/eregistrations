@@ -144,7 +144,7 @@ exports.body = function () {
 				),
 				li(
 					a({ href: '/statistics/' },
-							span("Statistics"), span({ class: 'label-reg' }, "Part B"))
+							span("Statistics"), span({ class: 'label-reg' }, "Statistics"))
 				)
 			)
 		),
