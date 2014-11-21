@@ -1,0 +1,17 @@
+.statstics-tables {
+	padding-top: 22px;
+}
+
+.statstics-tables table:not(:only-child) {
+	display: inline-table;
+}
+.statstics-tables table:first-child:not(:only-child) {
+	width: 60%;
+}
+.statstics-tables table:last-child:not(:only-child) {
+	width: 35%;
+}
+
+.statstics-tables > * {
+	margin-bottom: 22px;
+}
