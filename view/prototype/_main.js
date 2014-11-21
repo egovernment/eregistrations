@@ -124,6 +124,10 @@ exports.body = function () {
 							span("Official - users print list"), span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
+					a({ href: '/statistics/' },
+							span("Statistics page"), span({ class: 'label-reg' }, "Part B"))
+				),
+				li(
 					a({ href: '/demo-user/' }, span("Demo user"),
 						span({ class: 'label-reg' }, "Demo"))
 				),
