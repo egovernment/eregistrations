@@ -1,7 +1,3 @@
-.statstics-tables {
-	padding-top: 22px;
-}
-
 .statstics-tables > table:first-child:not(:only-child),
 .statstics-tables > table:last-child:not(:only-child) {
 	display: inline-table;

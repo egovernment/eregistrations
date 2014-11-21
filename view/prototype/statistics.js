@@ -1,8 +1,28 @@
 'use strict';
 
-exports.main = function () {
+exports['user-name'] = function () {
+	text("Admin");
+};
+
+exports['submitted-menu'] = function () {
+	nav(
+		ul(
+			{ class: 'items' },
+			li(
+				a({ class: 'item-active', href: '/statistics/' },
+					"Application")
+			),
+			li(
+				a({ href: '/profile/' }, "Profile")
+			)
+		)
+	);
+};
+
+exports['sub-main'] = function () {
+	h2("Registrations statistics");
 	section(
-		{ class: 'content statstics-tables' },
+		{ class: 'statstics-tables' },
 		table(
 			thead(
 				tr(

@@ -124,10 +124,6 @@ exports.body = function () {
 							span("Official - users print list"), span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
-					a({ href: '/statistics/' },
-							span("Statistics page"), span({ class: 'label-reg' }, "Part B"))
-				),
-				li(
 					a({ href: '/demo-user/' }, span("Demo user"),
 						span({ class: 'label-reg' }, "Demo"))
 				),
@@ -145,6 +141,10 @@ exports.body = function () {
 				li(
 					a({ href: '/users-admin/edit-user-id/' }, span("Users admin - edit user"),
 						span({ class: 'label-reg' }, "Admin"))
+				),
+				li(
+					a({ href: '/statistics/' },
+							span("Statistics"), span({ class: 'label-reg' }, "Part B"))
 				)
 			)
 		),

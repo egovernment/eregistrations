@@ -67,7 +67,7 @@ module.exports = function (view) {
 		'demo-user': bind(demoUserMain.diff('./guide')),
 
 		// Statistics routes
-		statistics: bind(main.diff('./statistics')),
+		statistics: bind(subMain.diff('./statistics')),
 
 		// Error routes
 		404: bind(main.diff('./404'))
