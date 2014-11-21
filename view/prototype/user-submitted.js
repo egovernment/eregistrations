@@ -53,12 +53,19 @@ exports['sub-main'] = function () {
 					td("123"),
 					td("29/07/2014"),
 					td(
-						span({ class: 'label-reg ready' }, "Brela"),
-						span({ class: 'label-reg rejected' }, "Tinc"),
-						span({ class: 'label-reg approved' }, "Vat"),
-						span({ class: 'label-reg' }, "Gepf"),
-						span({ class: 'label-reg' }, "Nssf"),
-						span({ class: 'label-reg' }, "Lapf")
+						span({ class: 'hint-optional hint-optional-left label-reg ready',
+							'data-hint': 'Lorem ipsum dolor sit amet' },
+							"Brela"),
+						span({ class: 'hint-optional hint-optional-left label-reg rejected',
+							'data-hint': 'Lorem ipsum dolor sit amet' }, "Tinc"),
+						span({ class: 'hint-optional hint-optional-left label-reg approved',
+							'data-hint': 'Lorem ipsum dolor sit amet' }, "Vat"),
+						span({ class: 'hint-optional hint-optional-left label-reg',
+							'data-hint': 'Lorem ipsum dolor sit amet' }, "Gepf"),
+						span({ class: 'hint-optional hint-optional-left label-reg',
+							'data-hint': 'Lorem ipsum dolor sit amet' }, "Nssf"),
+						span({ class: 'hint-optional hint-optional-left label-reg',
+							'data-hint': 'Lorem ipsum dolor sit amet' }, "Lapf")
 					),
 					td(
 						a(

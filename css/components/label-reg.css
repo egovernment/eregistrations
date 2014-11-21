@@ -11,6 +11,9 @@
 	height: 20px;
 	line-height: 22px;
 }
+.label-reg:after {
+	text-transform: none;
+}
 
 .label-reg.ready {
 	background: var(--progress-background);
