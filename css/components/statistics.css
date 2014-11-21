@@ -1,6 +1,10 @@
 .statstics-tables {
 	padding-top: 22px;
-	display: flex;
+}
+
+.statstics-tables > table:first-child:not(:only-child),
+.statstics-tables > table:last-child:not(:only-child) {
+	display: inline-table;
 }
 
 .statstics-tables > table:first-child:not(:only-child) {
@@ -27,9 +31,17 @@
 	text-align: right;
 }
 
-.statstics-tables > table thead tr th span,
-.statstics-tables > table tbody tr td span {
+.statstics-tables > table thead tr th span {
 	margin: 0;
+}
+.statstics-tables > table tbody tr td span {
+	margin: 0 2px;
+}
+.statstics-tables > table tbody tr td span:first-child {
+	margin-left: 0;
+}
+.statstics-tables > table tbody tr td span:last-child {
+	margin-right: 0;
 }
 
 .statstics-tables > table tbody tr td {
@@ -55,11 +67,12 @@
 }
 
 @media only screen and (max-width: var(--mobile-secondary-width)) {
-	.statstics-tables {
-		flex-wrap: wrap;
+	.statstics-tables > table:first-child:not(:only-child) {
+		margin-right: 0;
 	}
 	.statstics-tables > table:first-child:not(:only-child),
 	.statstics-tables > table:last-child:not(:only-child) {
 		max-width: none;
+
 	}
 }
