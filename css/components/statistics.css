@@ -1,18 +1,15 @@
 .statstics-tables {
 	padding-top: 22px;
-}
-
-.statstics-tables > table:not(:only-child) {
-	display: inline-table;
+	display: flex;
 }
 
 .statstics-tables > table:first-child:not(:only-child) {
-	width: 60%;
-	margin-right: 5%;
+	max-width: 58%;
+	margin-right: 2%;
 }
 
 .statstics-tables > table:last-child:not(:only-child) {
-	width: 35%;
+	max-width: 40%;
 }
 
 .statstics-tables > table {
@@ -21,23 +18,32 @@
 
 .statstics-tables > table thead tr th,
 .statstics-tables > table tbody tr td {
-	padding: 11px;
+	padding: 11px 5px;
 }
 
 .statstics-tables > table thead tr th {
-	background: var(--normal-background);
+	background: var(--normal-light-medium-background);
 	color: var(--white-text);
-	text-align: left;
+	text-align: right;
+}
+
+.statstics-tables > table thead tr th span,
+.statstics-tables > table tbody tr td span {
+	margin: 0;
 }
 
 .statstics-tables > table tbody tr td {
 	border-bottom: 1px solid var(--light-inner-border);
 	background: var(--white-background);
+	text-align: right;
+}
+.statstics-tables > table tbody tr td:first-child {
+	text-align: left;
 }
 
 .statstics-tables > table tbody .statstics-table-sub-header td {
 	font-weight: bold;
-	background: var(--light-inner-border);
+	background: var(--light-medium-background);
 }
 
 .statstics-tables > table tbody .statstics-table-sub-sub-header td {
@@ -46,4 +52,14 @@
 
 .statstics-tables > * {
 	margin-bottom: 22px;
+}
+
+@media only screen and (max-width: var(--mobile-secondary-width)) {
+	.statstics-tables {
+		flex-wrap: wrap;
+	}
+	.statstics-tables > table:first-child:not(:only-child),
+	.statstics-tables > table:last-child:not(:only-child) {
+		max-width: none;
+	}
 }

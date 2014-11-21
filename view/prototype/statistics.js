@@ -8,10 +8,10 @@ exports.main = function () {
 				tr(
 					th(),
 					th(
-						"a"
+						span({ class: 'fa fa-user' }, "User")
 					),
 					th(
-						"b"
+						span({ class: 'fa fa-users' }, "Users")
 					),
 					th(
 						"Total"
@@ -102,15 +102,19 @@ exports.main = function () {
 		table(
 			thead(
 				tr(
-					th(
-						"test"
-					)
+					th(),
+					th(span({ class: 'label-reg ready' }, "Wait")),
+					th(span({ class: 'label-reg approved' }, "Proc.")),
+					th(span({ class: 'label-reg rejected' }, "Term.")),
+					th(span({ class: 'label-reg ' }, "Total."))
 				)
 			),
 			tbody(
 				tr(
-					td("test"),
+					{ class: 'statstics-table-sub-header' },
+					td("Company"),
 					td("123"),
+					td("132"),
 					td("132"),
 					td("534")
 				),
@@ -118,17 +122,20 @@ exports.main = function () {
 					td("test"),
 					td("123"),
 					td("132"),
-					td("534")
-				),
-				tr(
-					td("test"),
-					td("123"),
 					td("132"),
 					td("534")
 				),
 				tr(
 					td("test"),
 					td("123"),
+					td("132"),
+					td("132"),
+					td("534")
+				),
+				tr(
+					td("test"),
+					td("123"),
+					td("132"),
 					td("132"),
 					td("534")
 				)
