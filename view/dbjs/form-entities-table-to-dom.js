@@ -12,10 +12,11 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 		url = ns.url;
 		options = Object(arguments[1]);
 		url = options.url || ns.url;
-		return ns.section({ class: ns._if(ns.eq(
+		return ns.section({ id: this.domId, class: ns._if(ns.eq(
 			this.status,
 			1
 		), 'section-primary completed', 'section-primary') },
+			options.prepend,
 			ns.div(
 				ns.div(
 					ns._if(this.constructor.label,
@@ -65,6 +66,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 					)
 				)
 			),
+			options.append,
 			ns.p(
 				ns.a(
 					{ class: 'new-entity', href: url(this.constructor.baseUrl + '-add') },
