@@ -5,7 +5,6 @@ Component describing basic elements styles - reusable
 ::root {
 	--desktop-width: 1070px;
 	--mobile-width: 640px;
-	--mobile-secondary-width: 780px;
 	--min-mobile-width: 320px;
 	--light-inner-border: #e3e3e3;
 	/* Theme colors virables */
