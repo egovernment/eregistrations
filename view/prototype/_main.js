@@ -141,6 +141,10 @@ exports.body = function () {
 				li(
 					a({ href: '/users-admin/edit-user-id/' }, span("Users admin - edit user"),
 						span({ class: 'label-reg' }, "Admin"))
+				),
+				li(
+					a({ href: '/statistics/' },
+							span("Statistics"), span({ class: 'label-reg' }, "Statistics"))
 				)
 			)
 		),

@@ -166,3 +166,9 @@ e.g.:
 .fa-close:before {
 	content: '\f00d';
 }
+.fa-users {
+	width: 1em;
+}
+.fa-users:before {
+	content: '\f0c0';
+}
