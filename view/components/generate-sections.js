@@ -1,6 +1,7 @@
 'use strict';
 
-var ns = require('mano').domjs.ns;
+var ns = require('mano').domjs.ns
+  , document = require('mano').domjs.document;
 
 module.exports = function (sections/*, options */) {
 	var headerRank, options, result;
@@ -9,7 +10,7 @@ module.exports = function (sections/*, options */) {
 	result = [];
 	sections.forEach(function (section) {
 		result.push(ns._if(section._isApplicable,
-			section.toDOM(ns.document, { headerRank: headerRank })));
+			section.toDOM(document, { headerRank: headerRank })));
 	});
 	return result;
 };

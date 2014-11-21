@@ -1,7 +1,8 @@
 'use strict';
 
 var ns = require('mano').domjs.ns
-  , customError = require('es5-ext/error/custom');
+  , customError = require('es5-ext/error/custom')
+  , document = require('mano').domjs.document;
 
 module.exports = function (sections/*, options */) {
 	var result, options;
@@ -13,7 +14,7 @@ module.exports = function (sections/*, options */) {
 			"plsease use FormSectionGroup instead", "UNSUPPORTED_SECTIONS_FUNCTIONALITY");
 	}
 	sections.forEach(function (section) {
-		result.push(ns._if(section._isApplicable, section.toDOMForm(ns.document, options)));
+		result.push(ns._if(section._isApplicable, section.toDOMForm(document, options)));
 	});
 
 	return result;
