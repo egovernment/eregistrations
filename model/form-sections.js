@@ -18,10 +18,11 @@ module.exports = function (Entity, property) {
 	Entity.prototype[property]._descriptorPrototype_.type = FormSectionBase;
 	Entity.prototype[property]._descriptorPrototype_.nested = true;
 	Entity.prototype.define(property + 'Status', { type: Percentage, value:
-		new Function('_observe', '\'use strict\'; var sum; sum = 0; this.' +
+		new Function('_observe', '\'use strict\'; var sum, total; sum = 0; total = 0; this.' +
 			property +
-			'.forEach(function (section) { sum += _observe(section._status); }); return sum / this.'
-			+ property + '.size;')
+			'.forEach(function (section) {' +
+			'if (_observe(section._isApplicable)) { sum += _observe(section._status); total++; }' +
+			'}); return sum / total;')
 		});
 
 	return Entity;
