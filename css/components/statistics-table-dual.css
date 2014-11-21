@@ -1,3 +1,11 @@
+.statistics-table-dual {
+	margin-bottom: 0;
+}
+
+.statistics-table-dual > * {
+	margin-bottom: 22px;
+}
+
 .statistics-table-dual-main {
 	max-width: 58%;
 	margin-right: 2%;
@@ -7,7 +15,7 @@
 	max-width: 40%;
 }
 
-@media only screen and (max-width: var(--mobile-secondary-width)) {
+@media only screen and (max-width: var(--mobile-width)) {
 	.statistics-table-dual-main {
 		margin-right: 0;
 	}
