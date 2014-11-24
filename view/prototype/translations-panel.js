@@ -1,7 +1,7 @@
 'use strict';
 
 exports['user-name'] = function () {
-	text("Translations");
+	text("Meta Admin");
 };
 
 exports['submitted-menu'] = function () {
@@ -28,86 +28,24 @@ exports['sub-main'] = function () {
 			fieldset(
 				{ class: 'form-elements' },
 				ul(
-					li(
+					['Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+						'Lorem ipsum dolor sit amet, consectetur',
+						'Lorem ipsum dolor sit amet',
+						'Lorem ipsum dolor sit amet, consectetur adipiscing',
+						'Lorem ipsum dolor sit amet, consectetur',
+						'Lorem ipsum dolor sit amet',
+						'Lorem ipsum dolor sit amet, consectetur adipiscing'],
+					function (text, index) {
+						var id = 'i18n-textarea-' + index;
 						div(
 							{ class: 'dbjs-input-component ' },
-							label("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+							label({ for: id }, text),
 							div(
 								{ class: 'input' },
-								textarea()
+								textarea({ id: id, cols: 60 })
 							)
-						)
-					),
-					li(
-						div(
-							{ class: 'dbjs-input-component ' },
-							label("Lorem ipsum dolor sit amet, consectetur"),
-							div(
-								{ class: 'input' },
-								textarea()
-							)
-						)
-					),
-					li(
-						div(
-							{ class: 'dbjs-input-component ' },
-							label("Lorem ipsum"),
-							div(
-								{ class: 'input' },
-								textarea()
-							)
-						)
-					),
-					li(
-						div(
-							{ class: 'dbjs-input-component ' },
-							label("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
-							div(
-								{ class: 'input' },
-								textarea()
-							)
-						)
-					),
-					li(
-						div(
-							{ class: 'dbjs-input-component ' },
-							label("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
-							div(
-								{ class: 'input' },
-								textarea()
-							)
-						)
-					),
-					li(
-						div(
-							{ class: 'dbjs-input-component ' },
-							label("Lorem ipsum dolor sit amet, consectetur"),
-							div(
-								{ class: 'input' },
-								textarea()
-							)
-						)
-					),
-					li(
-						div(
-							{ class: 'dbjs-input-component ' },
-							label("Lorem ipsum"),
-							div(
-								{ class: 'input' },
-								textarea()
-							)
-						)
-					),
-					li(
-						div(
-							{ class: 'dbjs-input-component ' },
-							label("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
-							div(
-								{ class: 'input' },
-								textarea()
-							)
-						)
-					)
+						);
+					}
 				)
 			),
 			p(

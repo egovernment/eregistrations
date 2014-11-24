@@ -148,7 +148,7 @@ exports.body = function () {
 				),
 				li(
 					a({ href: '/i18n/' },
-							span("Translations panel"), span({ class: 'label-reg' }, "Translations"))
+							span("Translations"), span({ class: 'label-reg' }, "Meta"))
 				)
 			)
 		),
