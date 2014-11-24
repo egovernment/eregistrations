@@ -69,6 +69,9 @@ module.exports = function (view) {
 		// Statistics routes
 		statistics: bind(subMain.diff('./statistics')),
 
+		// Translations routes
+		i18n: bind(subMain.diff('./translations-panel')),
+
 		// Error routes
 		404: bind(main.diff('./404'))
 	};
