@@ -31,8 +31,8 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 					this.status,
 					1
 				), 'completed') },
-				ns._if(this.constructor.label,
-					[ns.h2(this.constructor.label),
+				ns._if(this.label,
+					[ns.h2(this.label),
 						ns.hr()]),
 				resolvent.formResolvent,
 				ns.fieldset(

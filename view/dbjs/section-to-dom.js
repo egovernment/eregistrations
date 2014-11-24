@@ -14,7 +14,7 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 		headerRank = options.headerRank || 3;
 		cssClass   = options.cssClass || 'entity-data-section';
 		return ns.section({ class: cssClass },
-			this.constructor.label && headersMap[headerRank](this.constructor.label),
+			this.label && headersMap[headerRank](this.label),
 			ns.table(
 				ns.tbody(
 					ns.list(this.propertyNames, function (name) {
