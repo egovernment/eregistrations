@@ -20,5 +20,106 @@ exports['submitted-menu'] = function () {
 };
 
 exports['sub-main'] = function () {
-	p('Translations');
+	section(
+		{ class: 'section-primary' },
+		form(
+			h2("Translations"),
+			hr(),
+			fieldset(
+				{ class: 'form-elements' },
+				ul(
+					li(
+						div(
+							{ class: 'dbjs-input-component ' },
+							label("Lorem ipsum"),
+							div(
+								{ class: 'input' },
+								textarea()
+							)
+						)
+					),
+					li(
+						div(
+							{ class: 'dbjs-input-component ' },
+							label("Lorem ipsum"),
+							div(
+								{ class: 'input' },
+								textarea()
+							)
+						)
+					),
+					li(
+						div(
+							{ class: 'dbjs-input-component ' },
+							label("Lorem ipsum"),
+							div(
+								{ class: 'input' },
+								textarea()
+							)
+						)
+					),
+					li(
+						div(
+							{ class: 'dbjs-input-component ' },
+							label("Lorem ipsum"),
+							div(
+								{ class: 'input' },
+								textarea()
+							)
+						)
+					),
+					li(
+						div(
+							{ class: 'dbjs-input-component ' },
+							label("Lorem ipsum"),
+							div(
+								{ class: 'input' },
+								textarea()
+							)
+						)
+					),
+					li(
+						div(
+							{ class: 'dbjs-input-component ' },
+							label("Lorem ipsum"),
+							div(
+								{ class: 'input' },
+								textarea()
+							)
+						)
+					),
+					li(
+						div(
+							{ class: 'dbjs-input-component ' },
+							label("Lorem ipsum"),
+							div(
+								{ class: 'input' },
+								textarea()
+							)
+						)
+					),
+					li(
+						div(
+							{ class: 'dbjs-input-component ' },
+							label("Lorem ipsum"),
+							div(
+								{ class: 'input' },
+								textarea()
+							)
+						)
+					),
+					li(
+						div(
+							{ class: 'dbjs-input-component ' },
+							label("Lorem ipsum"),
+							div(
+								{ class: 'input' },
+								textarea()
+							)
+						)
+					)
+				)
+			)
+		)
+	);
 };
