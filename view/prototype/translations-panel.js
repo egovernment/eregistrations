@@ -31,7 +31,17 @@ exports['sub-main'] = function () {
 					li(
 						div(
 							{ class: 'dbjs-input-component ' },
-							label("Lorem ipsum"),
+							label("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+							div(
+								{ class: 'input' },
+								textarea()
+							)
+						)
+					),
+					li(
+						div(
+							{ class: 'dbjs-input-component ' },
+							label("Lorem ipsum dolor sit amet, consectetur"),
 							div(
 								{ class: 'input' },
 								textarea()
@@ -51,7 +61,27 @@ exports['sub-main'] = function () {
 					li(
 						div(
 							{ class: 'dbjs-input-component ' },
-							label("Lorem ipsum"),
+							label("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+							div(
+								{ class: 'input' },
+								textarea()
+							)
+						)
+					),
+					li(
+						div(
+							{ class: 'dbjs-input-component ' },
+							label("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
+							div(
+								{ class: 'input' },
+								textarea()
+							)
+						)
+					),
+					li(
+						div(
+							{ class: 'dbjs-input-component ' },
+							label("Lorem ipsum dolor sit amet, consectetur"),
 							div(
 								{ class: 'input' },
 								textarea()
@@ -71,47 +101,7 @@ exports['sub-main'] = function () {
 					li(
 						div(
 							{ class: 'dbjs-input-component ' },
-							label("Lorem ipsum"),
-							div(
-								{ class: 'input' },
-								textarea()
-							)
-						)
-					),
-					li(
-						div(
-							{ class: 'dbjs-input-component ' },
-							label("Lorem ipsum"),
-							div(
-								{ class: 'input' },
-								textarea()
-							)
-						)
-					),
-					li(
-						div(
-							{ class: 'dbjs-input-component ' },
-							label("Lorem ipsum"),
-							div(
-								{ class: 'input' },
-								textarea()
-							)
-						)
-					),
-					li(
-						div(
-							{ class: 'dbjs-input-component ' },
-							label("Lorem ipsum"),
-							div(
-								{ class: 'input' },
-								textarea()
-							)
-						)
-					),
-					li(
-						div(
-							{ class: 'dbjs-input-component ' },
-							label("Lorem ipsum"),
+							label("Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
 							div(
 								{ class: 'input' },
 								textarea()
@@ -119,6 +109,10 @@ exports['sub-main'] = function () {
 						)
 					)
 				)
+			),
+			p(
+				{ class: 'submit-placeholder' },
+				input({ type: 'submit' })
 			)
 		)
 	);
