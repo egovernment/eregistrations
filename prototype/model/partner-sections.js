@@ -17,19 +17,21 @@ FormSectionGroup.extend('PartnerFormSectionGroup', {}, {
 partner.partnerFormSections.getOwnDescriptor('partnerFormSectionGroup').type =
 	db.PartnerFormSectionGroup;
 
-FormSection.extend('PartnerFormBasicSection', {}, {
+FormSection.extend('PartnerFormBasicSection', {
+	label: { value: "Business Partner basic informations" }
+}, {
 	propertyNames: { value: ['firstName', 'lastName', 'dateOfBirth', 'userEmail'] },
-	label: { value: "Business Partner basic informations" },
 	actionUrl: { value: '/' }
 });
 
 partner.partnerFormSections.partnerFormSectionGroup.sections.
 	getOwnDescriptor('partnerFormBasicSection').type = db.PartnerFormBasicSection;
 
-FormSection.extend('PartnerFormOtherSection', {}, {
+FormSection.extend('PartnerFormOtherSection', {
+	label: { value: "Business Partner secondary informations" }
+}, {
 	propertyNames: { value: ['companyType', 'inventory', 'surfaceArea',
 		'isOwner', 'businessActivity'] },
-	label: { value: "Business Partner secondary informations" },
 	actionUrl: { value: '/' }
 });
 

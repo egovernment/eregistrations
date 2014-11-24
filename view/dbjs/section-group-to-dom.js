@@ -12,7 +12,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOM',
 		headerRank = options.headerRank || 3;
 		cssClass   = options.cssClass || 'entity-data-section';
 		return ns.section({ class: cssClass },
-			this.constructor.label && headersMap[headerRank](this.constructor.label),
+			this.label && headersMap[headerRank](this.label),
 			ns.list(this.sections, function (section) {
 				return section.toDOM(document, { headerRank: headerRank + 1,
 					cssClass: 'entity-data-sub-section' });

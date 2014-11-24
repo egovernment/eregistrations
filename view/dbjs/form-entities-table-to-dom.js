@@ -19,8 +19,8 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 			options.prepend,
 			ns.div(
 				ns.div(
-					ns._if(this.constructor.label,
-						[ns.h2(this.constructor.label),
+					ns._if(this.label,
+						[ns.h2(this.label),
 							ns.hr()]),
 					ns.table(
 						{ class: 'entities-overview-table' },

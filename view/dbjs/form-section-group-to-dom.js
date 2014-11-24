@@ -28,8 +28,8 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 					1
 				), 'completed')
 				},
-				ns._if(this.constructor.label,
-					[ns.h2(this.constructor.label),
+				ns._if(this.label,
+					[ns.h2(this.label),
 						ns.hr()]),
 				mainFormResolvent.formResolvent,
 				ns.div({ id: mainFormResolvent.affectedSectionId }, ns.list(this.sections,
@@ -41,7 +41,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 							control = { required: subSection.forceRequiredInput };
 						}
 						return ns.div({ class: 'sub-section', id: subSection.domId },
-							ns._if(subSection.constructor.label, ns.h3(subSection.constructor.label)),
+							ns._if(subSection.label, ns.h3(subSection.label)),
 							formResolvent.formResolvent,
 							ns.fieldset(
 								{ id: formResolvent.affectedSectionId, class: 'form-elements',
