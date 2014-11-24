@@ -28,8 +28,8 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 					1
 				), 'completed')
 				},
-				ns._if(this.label,
-					[ns.h2(this.label),
+				ns._if(this._label,
+					[ns.h2(this._label),
 						ns.hr()]),
 				mainFormResolvent.formResolvent,
 				ns.div({ id: mainFormResolvent.affectedSectionId }, ns.list(this.sections,
