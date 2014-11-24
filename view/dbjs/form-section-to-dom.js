@@ -34,13 +34,14 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 				ns._if(this._label,
 					[ns.h2(this._label),
 						ns.hr()]),
+				options.prepend,
 				resolvent.formResolvent,
 				ns.fieldset(
 					{ id: resolvent.affectedSectionId, class: 'form-elements',
 						dbjs: this.master, names: this.formPropertyNames,
 						control: control,
 						controls: legacy.controls }
-				),
+				).extend(options.append),
 				ns.p({ class: 'submit-placeholder input' },
 					ns.input({ type: 'submit', value: _("Submit") })),
 				ns.p({ class: 'button-scroll-top' },
