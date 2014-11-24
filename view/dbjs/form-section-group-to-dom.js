@@ -31,6 +31,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 				ns._if(this._label,
 					[ns.h2(this._label),
 						ns.hr()]),
+				options.prepend,
 				mainFormResolvent.formResolvent,
 				ns.div({ id: mainFormResolvent.affectedSectionId }, ns.list(this.sections,
 					function (subSection) {
@@ -49,7 +50,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 									control: control,
 									controls: legacy.controls }
 							), formResolvent.legacyScript, legacy.legacy);
-					}, this)),
+					}, this)).extend(options.append),
 				ns.p({ class: 'submit-placeholder input' },
 					ns.input({ type: 'submit', value: _("Submit") })),
 				ns.p(

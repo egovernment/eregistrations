@@ -16,12 +16,12 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 			this.status,
 			1
 		), 'section-primary completed', 'section-primary') },
-			options.prepend,
 			ns.div(
 				ns.div(
 					ns._if(this._label,
 						[ns.h2(this._label),
 							ns.hr()]),
+					options.prepend,
 					ns.table(
 						{ class: 'entities-overview-table' },
 						ns.thead(
@@ -63,10 +63,10 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 							ns.tfoot(this.constructor.generateFooter(
 								resolvePropertyPath(this.master, this.constructor.propertyName).value
 							))
-					)
+					),
+					options.append
 				)
 			),
-			options.append,
 			ns.p(
 				ns.a(
 					{ class: 'new-entity', href: url(this.constructor.baseUrl + '-add') },
