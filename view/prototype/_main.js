@@ -145,6 +145,10 @@ exports.body = function () {
 				li(
 					a({ href: '/statistics/' },
 							span("Statistics"), span({ class: 'label-reg' }, "Statistics"))
+				),
+				li(
+					a({ href: '/i18n/' },
+							span("Translations panel"), span({ class: 'label-reg' }, "Translations"))
 				)
 			)
 		),
