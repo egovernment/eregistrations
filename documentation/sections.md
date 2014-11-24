@@ -60,13 +60,14 @@ We can either create one form with all the fields or break it into sub sections.
 var FormSection = require('eregistrations/model/form-section');
 
 // Define a Type that would represent a specific section
-FormSection.extend('GeneralInfoFormSection', {}, {
-	// Form POST url
-	actionUrl: { value: 'general' },
-	// Section label
-	label: { value: "User information" },
-	// Property names of all involved fields (order is significant)
-	propertyNames: { value: ['name', 'isNice', 'explainWhyNotNice',
+FormSection.extend('GeneralInfoFormSection', {
+    // Section label
+    label: { value: "User information" }
+}, {
+    // Form POST url
+    actionUrl: { value: 'general' },
+    // Property names of all involved fields (order is significant)
+    propertyNames: { value: ['name', 'isNice', 'explainWhyNotNice',
 		'address/country', 'address/street'] }
 });
 
@@ -105,18 +106,21 @@ In _Address Details_ we'll have: `user.address.country`, `user.address.street`:
 var FormSection      = require('eregistrations/model/form-section')
   , FormSectionGroup = require('eregistrations/model/form-section-group');
 
-FormSectionGroup.extend('GeneralInfoFormSection', {}, {
-	actionUrl: { value: 'general-infp' },
-	label: { value: "User Information" } }
+FormSectionGroup.extend('GeneralInfoFormSection', {
+    label: { value: "User Information" } }
+}, {
+    actionUrl: { value: 'general-infp' }
 });
 
-FormSection.extend('PersonalInformationSection', {}, {
+FormSection.extend('PersonalInformationSection', {
     label: { value: "Personal Information" }
+}, {
     propertyNames: { value: ['name', 'isNice', 'explainWhyNotNice'] }
 });
 
-FormSection.extend('AddressDetailsSection', {}, {
+FormSection.extend('AddressDetailsSection', {
     label: { value: "Address Details" }
+}, {
     propertyNames: { value: ['address/country', 'address/street'] }
 });
 
@@ -156,10 +160,11 @@ var defineFormSections = require('eregistrations/model/form-sections')
 
 defineFormSections(Partner, 'formSections');
 
-FormSection.extend('PartnerFormSection', {}, {
-	actionUrl: { value: 'partner' },
-	label: { value: "Partner information" },
-	propertyNames: { value: ['name', 'isShareholder'] }
+FormSection.extend('PartnerFormSection', {
+    label: { value: "Partner information" }
+}, {
+    actionUrl: { value: 'partner' },
+    propertyNames: { value: ['name', 'isShareholder'] }
 });
 
 Partner.prototype.formSections.getOwnDescriptor('partnerFormSection').type = db.PartnerFormSection;
@@ -239,15 +244,16 @@ User.prototype.defineProperty(
 Now we need to adjust our sections definitions.
  
  ```javascript
- FormSection.extend('PersonalInformationSection', {}, {
+ FormSection.extend('PersonalInformationSection', {
      label: { value: "Personal Information" }
+ }, {
      propertyNames: { value: ['name', 'isNice', 'explainWhyNotNice', 'isResident'] }
  });
  
  FormSection.extend('AddressDetailsSection', {
-    resolventValue: { value: true }
+     label: { value: "Address Details" },
+     resolventValue: { value: true }
  }, {
-     label: { value: "Address Details" }
      propertyNames: { value: ['address/country', 'address/street'] }
      resolventProperty: { value: 'isResident' }
  });
@@ -311,6 +317,8 @@ div(generateSections(User.prototype.formSections));
 _prototype_
 
 **isApplicable** The section will not by visible on view if false
+
+**label** The label of the section (can be translated to form header, or header of data in user submitted)
     
 **status** Status as used in steps for a given section, type dbjs-ext/number/percentage, default 1.
     
@@ -321,8 +329,6 @@ _prototype_
 _constructor_
 	
 **actionUrl** The url to which the the form created around the section will be submitted.
-	
-**label** The label of the section (can be translated to form header, or header of data in user submitted)
 	
 **resolventProperty** This property is used together with `resolventValue`, to check if the fields section fields should be displayed.
 
