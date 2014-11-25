@@ -54,7 +54,7 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	color: var(--dark-text);
 }
 
-.menu-top li a.login {
+.menu-top li .login {
 	background-color: var(--normal-background);
 	border-radius: 3px;
 	color: var(--white-text);
@@ -73,10 +73,11 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	font-size: 10px;
 	display:block;
 }
-.menu-top li a.login:hover,
-.menu-top li a.login:focus,
-.menu-top li a.login:active {
+.menu-top li .login:hover,
+.menu-top li .login:focus,
+.menu-top li .login:active {
 	background-color: var(--normal-dark-background);
+	color: var(--white-text);
 }
 /*
 Flexible basic menu button positioning
