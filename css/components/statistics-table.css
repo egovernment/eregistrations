@@ -44,3 +44,12 @@
 .statistics-table tbody .statstics-table-sub-sub-header td {
 	background: var(--light-background);
 }
+
+.statistics-table-dual-aside tr:not(.statstics-table-sub-header) td:first-child,
+.statistics-table-dual-aside tr:not(.statstics-table-sub-sub-header) td:first-child  {
+	padding-right: 0;
+}
+.statistics-table-dual-aside tr:not(.statstics-table-sub-header) td:nth-child(2),
+.statistics-table-dual-aside tr:not(.statstics-table-sub-sub-header) td:nth-child(2) {
+	padding-left: 0;
+}
