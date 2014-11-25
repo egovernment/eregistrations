@@ -19,6 +19,7 @@ Component describing basic elements styles - reusable
 	--light-error-background: #D69592;
 	--success-background: #5CB85C;
 	--error-background: #D9534F;
+	--info-background: #4892A4;
 	--progress-background: #f89406;
 	/* Text colors */
 	--white-text: #ffffff;

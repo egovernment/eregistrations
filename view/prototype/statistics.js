@@ -125,10 +125,10 @@ exports['sub-main'] = function () {
 			thead(
 				tr(
 					th({ colspan: 2 }),
-					th(span({ class: 'label-reg ready' }, "Wait")),
-					th(span({ class: 'label-reg approved' }, "Proc.")),
-					th(span({ class: 'label-reg rejected' }, "Term.")),
-					th(span({ class: 'label-reg ' }, "Total."))
+					th(span({ class: 'label-reg' }, "Wait")),
+					th(span({ class: 'label-reg ready' }, "Proc.")),
+					th(span({ class: 'label-reg approved' }, "Term.")),
+					th(span({ class: 'label-reg info' }, "Total."))
 				)
 			),
 			tbody(
