@@ -124,7 +124,7 @@ exports['sub-main'] = function () {
 			{ class: 'statistics-table statistics-table-dual-aside' },
 			thead(
 				tr(
-					th(),
+					th({ colspan: 2 }),
 					th(span({ class: 'label-reg ready' }, "Wait")),
 					th(span({ class: 'label-reg approved' }, "Proc.")),
 					th(span({ class: 'label-reg rejected' }, "Term.")),
@@ -134,35 +134,39 @@ exports['sub-main'] = function () {
 			tbody(
 				tr(
 					{ class: 'statstics-table-sub-header' },
-					td(span({ class: 'fa fa-user' }, "User"), " ", "Individual"),
+					td({ colspan: 2 }, span({ class: 'fa fa-user' }, "User"), " ", "Individual"),
 					td("123"),
 					td("132"),
 					td("132"),
 					td("534")
 				),
 				tr(
-					td(span({ class: 'label-reg ' }, "NIT"), span({ class: 'label-reg ' }, "MH")),
+					td(span({ class: 'label-reg ' }, "NIT")),
+					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
 					td("132"),
 					td("132"),
 					td("534")
 				),
 				tr(
-					td(span({ class: 'label-reg ' }, "NIT"), span({ class: 'label-reg ' }, "MH")),
+					td(span({ class: 'label-reg ' }, "NIT")),
+					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
 					td("132"),
 					td("132"),
 					td("534")
 				),
 				tr(
-					td(span({ class: 'label-reg ' }, "NIT"), span({ class: 'label-reg ' }, "MH")),
+					td(span({ class: 'label-reg ' }, "NIT")),
+					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
 					td("132"),
 					td("132"),
 					td("534")
 				),
 				tr(
-					td(span({ class: 'label-reg ' }, "NIT"), span({ class: 'label-reg ' }, "MH")),
+					td(span({ class: 'label-reg ' }, "NIT")),
+					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
 					td("132"),
 					td("132"),
@@ -170,35 +174,47 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					{ class: 'statstics-table-sub-header' },
-					td(span({ class: 'fa fa-users' }, "User"), " ", "Company"),
+					td({ colspan: 2 }, span({ class: 'fa fa-users' }, "User"), " ", "Company"),
 					td("123"),
 					td("132"),
 					td("132"),
 					td("534")
 				),
 				tr(
-					td(span({ class: 'label-reg ' }, "NIT"), span({ class: 'label-reg ' }, "MH")),
+					td(span({ class: 'label-reg ' }, "NIT")),
+					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
 					td("132"),
 					td("132"),
 					td("534")
 				),
 				tr(
-					td(span({ class: 'label-reg ' }, "NIT"), span({ class: 'label-reg ' }, "MH")),
+					td(span({ class: 'label-reg ' }, "NIT")),
+					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
 					td("132"),
 					td("132"),
 					td("534")
 				),
 				tr(
-					td(span({ class: 'label-reg ' }, "NIT"), span({ class: 'label-reg ' }, "MH")),
+					td(span({ class: 'label-reg ' }, "NIT")),
+					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
 					td("132"),
 					td("132"),
 					td("534")
 				),
 				tr(
-					td(span({ class: 'label-reg ' }, "NIT"), span({ class: 'label-reg ' }, "MH")),
+					td(span({ class: 'label-reg ' }, "NIT")),
+					td(span({ class: 'label-reg ' }, "MH")),
+					td("123"),
+					td("132"),
+					td("132"),
+					td("534")
+				),
+				tr(
+					td(span({ class: 'label-reg ' }, "NIT")),
+					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
 					td("132"),
 					td("132"),
