@@ -27,6 +27,10 @@
 	background: var(--success-background);
 }
 
+.label-reg.info {
+	background: var(--info-background);
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 	.label-reg {
 		margin-top: 2px;
