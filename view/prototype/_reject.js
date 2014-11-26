@@ -2,16 +2,16 @@
 
 var db = require('mano').db,
 	user = db.User.prototype,
-	rejectModal,
+	rejectDialog,
 	hideBtn;
 
-module.exports = rejectModal = modal(
-	{ class: 'modal-reject' },
+module.exports = rejectDialog = modal(
+	{ class: 'dialog-reject' },
 	header(
 		label({ for: 'reject-reason' }, h3("Reason for rejection"))
 	),
 	section(
-		{ class: 'modal-body' },
+		{ class: 'dialog-body' },
 		form(
 			p(
 				{ class: 'input' },
@@ -28,4 +28,4 @@ module.exports = rejectModal = modal(
 		)
 	)
 );
-hideBtn.castAttribute('onclick', rejectModal.hide);
+hideBtn.castAttribute('onclick', rejectDialog.hide);

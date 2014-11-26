@@ -1,9 +1,9 @@
 /*
 Component describing styles for login modal windows - rules specific only for this modal
 */
-.modal-login input[type="email"],
-.modal-login input[type="password"],
-.modal-login footer p,
-.modal-login form p:last-child  {
+.dialog-login input[type="email"],
+.dialog-login input[type="password"],
+.dialog-login footer p,
+.dialog-login form p:last-child  {
 	width: 320px;
 }

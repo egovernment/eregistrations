@@ -6,12 +6,12 @@ var db = require('mano').db,
 		resetPasswordLink;
 
 module.exports = modal(
-	{ class: 'modal-register' },
+	{ class: 'dialog-register' },
 	header(
 		h3("Create your account")
 	),
 	section(
-		{ class: 'modal-body' },
+		{ class: 'dialog-body' },
 		form({ action: '/register/', method: 'post' },
 			ul({ class: 'form-elements' }, ['firstName', 'lastName', 'email', 'password'].map(
 				function (name) {

@@ -1,13 +1,13 @@
 /*
 Component describing styles for registration modal windows - rules specific only for this modal
 */
-.modal-register section form fieldset {
+.dialog-register section form fieldset {
 	border: none;
 }
 
-.modal-register input[type="text"],
-.modal-register input[type="email"],
-.modal-register input[type="password"],
-.modal-register li {
+.dialog-register input[type="text"],
+.dialog-register input[type="email"],
+.dialog-register input[type="password"],
+.dialog-register li {
 	width: 320px;
 }

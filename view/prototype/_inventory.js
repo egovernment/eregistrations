@@ -11,7 +11,7 @@ var db = require('mano').db,
 		inventoryFields = ['inventoryShelves', 'inventoryCounters'];
 
 module.exports = inventario = modal(
-	{ class: 'modal-inventory' },
+	{ class: 'dialog-inventory' },
 	header(
 		h3("Inventory of your business")
 	),

@@ -1,7 +1,7 @@
-.modal-reject textarea {
+.dialog-reject textarea {
 	width: 320px;
 }
 
-.modal-reject footer p {
+.dialog-reject footer p {
 	text-align: right;
 }

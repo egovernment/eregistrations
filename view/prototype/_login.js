@@ -6,12 +6,12 @@ var db = require('mano').db,
 		resetPasswordLink;
 
 module.exports = modal(
-	{ class: 'modal-login' },
+	{ class: 'dialog-login' },
 	header(
 		h3("Login")
 	),
 	section(
-		{ class: 'modal-body' },
+		{ class: 'dialog-body' },
 		form(
 			{ id: 'login-form', method: 'post', action: '/login/' },
 			ul(

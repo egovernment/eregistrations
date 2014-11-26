@@ -1,74 +1,74 @@
-.modal-inventory form > ul {
+.dialog-inventory form > ul {
 	width: var(--mobile-width);
 	padding: 0 20px;
 	margin-bottom: 0;
 }
-.modal-inventory form > ul > li {
+.dialog-inventory form > ul > li {
 	margin-top: 22px;
 	border-bottom: 1px solid var(--light-inner-border);
 }
 
-.modal-inventory form > ul > li:last-child {
+.dialog-inventory form > ul > li:last-child {
 	border-bottom: none;
 	padding-bottom: 0;
 }
 
-.modal-inventory section ul li div {
+.dialog-inventory section ul li div {
 	padding: 0;
 }
-.modal-inventory .multiple {
+.dialog-inventory .multiple {
 	display: block;
 }
-.modal-inventory .controls {
+.dialog-inventory .controls {
 	display: flex;
 	justify-content: space-between;
 }
 
-.modal-inventory .controls a {
+.dialog-inventory .controls a {
 	height: 22px;
 }
 
-.modal-inventory section ul li h3 {
+.dialog-inventory section ul li h3 {
 	margin-bottom: 0;
 }
 
-.modal-inventory li > div {
+.dialog-inventory li > div {
 	display: inline-block;
 }
 
-.modal-inventory li ul li div input:first-child {
+.dialog-inventory li ul li div input:first-child {
 	width: 370px;
 	margin-right: 4px;
 }
 
-.modal-inventory li .single-section-cost {
+.dialog-inventory li .single-section-cost {
 	width: 100%;
 }
 
-.modal-inventory .total-section-costs {
+.dialog-inventory .total-section-costs {
 	text-align: right;
 }
 
-.modal-inventory .total-value,
-.modal-inventory .total {
+.dialog-inventory .total-value,
+.dialog-inventory .total {
 	font-weight: bold;
 }
-.modal-inventory .total-value {
+.dialog-inventory .total-value {
 	font-size: 18px;
 }
-.modal-inventory footer {
+.dialog-inventory footer {
 	display: flex;
 	justify-content: space-between;
 }
 
-.modal-inventory footer p {
+.dialog-inventory footer p {
 	margin: 8px 0 12px;
 }
 
-.modal-inventory footer .inventory-total-value {
+.dialog-inventory footer .inventory-total-value {
 	padding: 0;
 }
-.modal-inventory footer .inventory-total-value .inventory-value-save {
+.dialog-inventory footer .inventory-total-value .inventory-value-save {
 	text-align: right;
 	margin: 0;
 }
@@ -78,20 +78,20 @@
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.modal-inventory {
+	.dialog-inventory {
 		width: 90%;
 		min-width: var(--min-mobile-width);
 	}
-	.modal-inventory form > ul {
+	.dialog-inventory form > ul {
 		width: 100%;
 	}
-	.modal-inventory li ul li div input:first-child {
+	.dialog-inventory li ul li div input:first-child {
 		width: 100%;
 	}
-	.modal-inventory li ul li div .input-prepend {
+	.dialog-inventory li ul li div .input-prepend {
 		width: 40%;
 	}
-	.modal-inventory li ul li div .input-prepend input {
+	.dialog-inventory li ul li div .input-prepend input {
 		margin-top: 10px;
 		width: 100%;
 	}
