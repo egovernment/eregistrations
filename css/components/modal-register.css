@@ -11,10 +11,3 @@ Component describing styles for registration modal windows - rules specific only
 .modal-register li {
 	width: 320px;
 }
-
-.modal-register form > * {
-	margin-bottom: 22px;
-}
-.modal-register form > *:last-child {
-	margin-bottom: 0;
-}

@@ -11,7 +11,8 @@ module.exports = rejectModal = modal(
 		header(
 			label({ for: 'reject-reason' }, h3("Reason for rejection"))
 		),
-		div(
+		section(
+			{ class: 'modal-body' },
 			form(
 				p(
 					{ class: 'input' },

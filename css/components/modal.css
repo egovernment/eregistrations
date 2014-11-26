@@ -48,10 +48,12 @@ div.modal-courtain {
 	background-color: var(--normal-background);
 	border-radius: 10px 10px 0 0;
 }
-.modal > section > .modal-body > * {
+.modal > section > .modal-body > *,
+.modal > section > .modal-body > form > * {
 	margin-bottom: 22px;
 }
-.modal > section > .modal-body > *:last-child {
+.modal > section > .modal-body > *:last-child,
+.modal > section > .modal-body > form > *:last-child {
 	margin-bottom: 0;
 }
 .modal > section {

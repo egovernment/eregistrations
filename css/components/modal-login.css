@@ -7,10 +7,3 @@ Component describing styles for login modal windows - rules specific only for th
 .modal-login form p:last-child  {
 	width: 320px;
 }
-
-.modal-login form > * {
-	margin-bottom: 22px;
-}
-.modal-login form > *:last-child {
-	margin-bottom: 0;
-}
