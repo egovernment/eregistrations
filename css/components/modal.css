@@ -48,21 +48,21 @@ div.modal-courtain {
 	background-color: var(--normal-background);
 	border-radius: 10px 10px 0 0;
 }
-.modal > section > .modal-body > *,
-.modal > section > .modal-body > form > * {
+.modal > .modal-body > *,
+.modal > .modal-body > form > * {
 	margin-bottom: 22px;
 }
-.modal > section > .modal-body > *:last-child,
-.modal > section > .modal-body > form > *:last-child {
+.modal > .modal-body > *:last-child,
+.modal > .modal-body > form > *:last-child {
 	margin-bottom: 0;
 }
-.modal > section {
+.modal {
 	background: #ffffff;
 	border-radius: 12px;
 	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.modal > section .modal-body {
+.modal .modal-body {
 	padding: 11px 20px 11px;
 }
 
