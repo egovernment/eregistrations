@@ -9,7 +9,8 @@ module.exports = modal(
 		header(
 			h3("Reset password")
 		),
-		div(
+		section(
+			{ class: 'modal-body' },
 			form(
 				{ id: 'reset-password-form', method: 'post' },
 				p(input({ dbjs: db.Email, required: true, name: 'email',

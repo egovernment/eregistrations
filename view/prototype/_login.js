@@ -11,7 +11,8 @@ module.exports = modal(
 		header(
 			h3("Login")
 		),
-		div(
+		section(
+			{ class: 'modal-body' },
 			form(
 				{ id: 'login-form', method: 'post', action: '/login/' },
 				ul(

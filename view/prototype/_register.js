@@ -11,7 +11,8 @@ module.exports = modal(
 		header(
 			h3("Create your account")
 		),
-		div(
+		section(
+			{ class: 'modal-body' },
 			form({ action: '/register/', method: 'post' },
 				ul({ class: 'form-elements' }, ['firstName', 'lastName', 'email', 'password'].map(
 					function (name) {

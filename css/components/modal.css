@@ -48,15 +48,20 @@ div.modal-courtain {
 	background-color: var(--normal-background);
 	border-radius: 10px 10px 0 0;
 }
-
-.modal section {
+.modal > section > .modal-body > * {
+	margin-bottom: 22px;
+}
+.modal > section > .modal-body > *:last-child {
+	margin-bottom: 0;
+}
+.modal > section {
 	background: #ffffff;
 	border-radius: 12px;
 	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.modal section div {
-	padding: 0 20px;
+.modal > section .modal-body {
+	padding: 11px 20px 11px;
 }
 
 .modal footer {
@@ -69,4 +74,5 @@ div.modal-courtain {
 	margin: 10px auto 11px;
 	padding-left: 0;
 	padding-right: 0;
+	white-space: nowrap;
 }
