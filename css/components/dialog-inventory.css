@@ -1,3 +1,7 @@
+.dialog-inventory.dialog-inventory  {
+	width: auto;
+}
+
 .dialog-inventory form > ul {
 	width: var(--mobile-width);
 	padding: 0 20px;

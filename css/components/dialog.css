@@ -2,7 +2,7 @@
 Component describing styles for generic modal windows - reusable
 */
 
-.modal-on div.modal-courtain {
+.dialog-modal-on div.modal-courtain {
 	background: black;
 	bottom: 0;
 	left: 0;
@@ -33,12 +33,12 @@ dialog header h3 {
 	padding: 11px;
 }
 
-dialog.hidden {
+.dialog-hidden {
 	display: none;
 	opacity:0;
 }
 
-dialog.visible {
+.dialog-visible {
 	display: inline-block;
 	width: auto;
 	opacity:1;
