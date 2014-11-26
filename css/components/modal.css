@@ -23,6 +23,8 @@ div.modal-courtain {
 	margin: 22px auto;
 	position: absolute;
 	transform: translate(-50%);
+	right: inherit;
+	border: none;
 }
 
 .modal header h3 {
