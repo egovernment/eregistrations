@@ -63,8 +63,14 @@ label.user-steps-menu-show {
 .user-steps-menu ul li {
 	margin: 0 10px;
 	background: white;
-	border-radius: 5px;
+	border-radius: 5px 0 0 5px;
 }
+.user-steps-menu ul li:after {
+	content: url('img/arrow-mask.png');
+	position: absolute;
+	right: 0;
+}
+
 .user-steps-menu-list li {
 	position: relative;
 }
