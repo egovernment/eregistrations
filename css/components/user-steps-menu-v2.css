@@ -87,7 +87,7 @@ label.user-steps-menu-show {
 	color: black;
 	display: inline-block;
 	font-size: 18px;
-	padding: 11px 0 11px 20px;
+	padding: 11px 0 11px 10px;
 	text-align: left;
 	text-decoration: none;
 	position: relative;
@@ -98,13 +98,13 @@ label.user-steps-menu-show {
 	height: 100%;
 	top: 0;
 	width: 0;
-	background-color: #aaa;
+	background: linear-gradient(to top, var(--normal-background), var(--white-background));
 	position: absolute;
 	border-radius: 5px 0 0 5px;
-
+	border-right: 1px solid var(--normal-dark-background);
 }
 
-@media only screen and (max-width: 760px) {
+@media only screen and (max-width: 790px) {
 	.user-steps-menu ul.user-steps-menu-list li > a {
 		font-size: 14px;
 	}
