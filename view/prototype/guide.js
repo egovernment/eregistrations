@@ -10,7 +10,7 @@ exports['step-guide'] = { class: { 'step-active': true } };
 
 exports.step = function () {
 	h1("1. Individual registration guide for companies");
-	insert(inventory);
+
 	form(
 		{ class: 'user-guide' },
 		div({ class: 'section-primary' }, h2("Questions"),
@@ -24,10 +24,11 @@ exports.step = function () {
 					'isShoppingGallery'],
 				function (name) {
 					if (name === 'inventory') {
-						li(div({ class: 'dbjs-input-component' },
+						insert(inventory);
+						div({ class: 'dbjs-input-component' },
 							label({ for: 'input-' + name }, user.getDescriptor(name).label, ":"),
 							div({ class: 'input' },
-								input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) }))));
+								input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) })));
 						div({ class: 'inventory-button' },
 							a({ onclick: inventory.show },
 								span({ class: 'fa fa-calculator icon' }, "Calculator"),
