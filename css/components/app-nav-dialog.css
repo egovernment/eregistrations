@@ -1,6 +1,6 @@
 .app-nav-dialog {
 	position: fixed;
-	left: 50%;
+	left: 75%;
 	z-index: 1000;
 	border-radius: 10px;
 	border: 1px var(--light-inner-border);

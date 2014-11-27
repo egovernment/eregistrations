@@ -2,7 +2,7 @@
 Component describing styles for generic modal windows - reusable
 */
 
-.modal-on div.modal-courtain {
+.dialog-modal-on div.modal-courtain {
 	background: black;
 	bottom: 0;
 	left: 0;
@@ -18,25 +18,27 @@ div.modal-courtain {
 	visibility: hidden;
 }
 
-.modal {
+dialog {
 	left: 50%;
 	margin: 22px auto;
 	position: absolute;
 	transform: translate(-50%);
+	right: inherit;
+	border: none;
 }
 
-.modal header h3 {
+dialog header h3 {
 	color: white;
 	padding-left: 20px;
 	padding: 11px;
 }
 
-.modal.hidden {
+.dialog-hidden {
 	display: none;
 	opacity:0;
 }
 
-.modal.visible {
+.dialog-visible {
 	display: inline-block;
 	width: auto;
 	opacity:1;
@@ -44,29 +46,37 @@ div.modal-courtain {
 	margin: 0 auto;
 }
 
-.modal header {
+dialog header {
 	background-color: var(--normal-background);
 	border-radius: 10px 10px 0 0;
 }
-
-.modal section {
+dialog > .dialog-body > *,
+dialog > .dialog-body > form > * {
+	margin-bottom: 22px;
+}
+dialog > .dialog-body > *:last-child,
+dialog > .dialog-body > form > *:last-child {
+	margin-bottom: 0;
+}
+dialog {
 	background: #ffffff;
 	border-radius: 12px;
 	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.modal section div {
-	padding: 0 20px;
+dialog .dialog-body {
+	padding: 11px 20px 11px;
 }
 
-.modal footer {
+dialog footer {
 	border-top: 1px solid var(--light-inner-border);
 	padding: 0 20px;
 	overflow: hidden;
 }
 
-.modal footer p {
+dialog footer p {
 	margin: 10px auto 11px;
 	padding-left: 0;
 	padding-right: 0;
+	white-space: nowrap;
 }

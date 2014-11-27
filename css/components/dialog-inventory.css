@@ -1,0 +1,102 @@
+.dialog-inventory {
+	top: 88px;
+}
+
+.dialog-inventory form > ul {
+	width: var(--mobile-width);
+	padding: 0 20px;
+	margin-bottom: 0;
+}
+.dialog-inventory form > ul > li {
+	margin-top: 22px;
+	border-bottom: 1px solid var(--light-inner-border);
+}
+
+.dialog-inventory form > ul > li:last-child {
+	border-bottom: none;
+	padding-bottom: 0;
+}
+
+.dialog-inventory section ul li div {
+	padding: 0;
+}
+.dialog-inventory .multiple {
+	display: block;
+}
+.dialog-inventory .controls {
+	display: flex;
+	justify-content: space-between;
+}
+
+.dialog-inventory .controls a {
+	height: 22px;
+}
+
+.dialog-inventory section ul li h3 {
+	margin-bottom: 0;
+}
+
+.dialog-inventory li > div {
+	display: inline-block;
+}
+
+.dialog-inventory li ul li div input:first-child {
+	width: 370px;
+	margin-right: 4px;
+}
+
+.dialog-inventory li .single-section-cost {
+	width: 100%;
+}
+
+.dialog-inventory .total-section-costs {
+	text-align: right;
+}
+
+.dialog-inventory .total-value,
+.dialog-inventory .total {
+	font-weight: bold;
+}
+.dialog-inventory .total-value {
+	font-size: 18px;
+}
+.dialog-inventory footer {
+	display: flex;
+	justify-content: space-between;
+}
+
+.dialog-inventory footer p {
+	margin: 8px 0 12px;
+}
+
+.dialog-inventory footer .inventory-total-value {
+	padding: 0;
+}
+.dialog-inventory footer .inventory-total-value .inventory-value-save {
+	text-align: right;
+	margin: 0;
+}
+
+.inventory-item-description {
+	margin-bottom: 0;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.dialog-inventory {
+		width: 90%;
+		min-width: var(--min-mobile-width);
+	}
+	.dialog-inventory form > ul {
+		width: 100%;
+	}
+	.dialog-inventory li ul li div input:first-child {
+		width: 100%;
+	}
+	.dialog-inventory li ul li div .input-prepend {
+		width: 40%;
+	}
+	.dialog-inventory li ul li div .input-prepend input {
+		margin-top: 10px;
+		width: 100%;
+	}
+}
