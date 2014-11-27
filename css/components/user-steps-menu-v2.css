@@ -53,20 +53,28 @@ label.user-steps-menu-show {
 
 /* More specifity */
 .user-steps-menu {
-	background: grey;
+	background: var(--dark-background);
 }
 .user-steps-menu ul.user-steps-menu-list li > a {
-	background: #eee;
+	background: var(--dark-text);
 }
 
 /* V2 case */
 .user-steps-menu ul li {
 	margin: 0 10px;
 	background: white;
+	border-radius: 5px;
 }
 .user-steps-menu-list li {
 	position: relative;
 }
+.user-steps-menu-list li:first-child {
+	margin-left: 0;
+}
+.user-steps-menu-list li:last-child {
+	margin-right: 0;
+}
+
 .user-steps-menu ul.user-steps-menu-list li > a {
 	background-color: transparent;
 	border-radius: 6px;
@@ -86,5 +94,57 @@ label.user-steps-menu-show {
 	width: 0;
 	background-color: #aaa;
 	position: absolute;
+	border-radius: 5px 0 0 5px;
 
+}
+
+@media only screen and (max-width: 760px) {
+	.user-steps-menu ul.user-steps-menu-list li > a {
+		font-size: 14px;
+	}
+}
+
+/*
+Styles applied while screen sieze is less than 640px
+*/
+@media only screen and (max-width: var(--mobile-width)) {
+	nav.user-steps-menu {
+		position: relative;
+	}
+
+	.user-steps-menu ul.user-steps-menu-list {
+		display: none;
+	}
+
+	.user-steps-menu-wrapper {
+		width: 100%;
+		flex-wrap: wrap;
+	}
+
+	label.user-steps-menu-show {
+		display: block;
+		background-color: var(--white-background);
+		border-radius: 6px;
+		color: black;
+		font-size: 18px;
+		padding: 11px 0 11px 20px;
+		text-align: center;
+		text-decoration: none;
+		position: relative;
+		z-index: 4;
+	}
+
+	input[type=checkbox]:checked ~ .user-steps-menu-list {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
+	input[type=checkbox]:checked ~ .user-steps-menu-list li {
+		margin: 11px 0;
+	}
+
+	.user-steps-menu ul.user-steps-menu-list li > a {
+		font-size: 18px;
+		text-align: center;
+	}
 }
