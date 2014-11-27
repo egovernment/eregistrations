@@ -53,9 +53,7 @@ label.user-steps-menu-show {
 
 /* More specifity */
 .user-steps-menu {
-	margin: 0 20px;
 	background: grey;
-	width:500px;
 }
 .user-steps-menu ul.user-steps-menu-list li > a {
 	background: #eee;
