@@ -1,12 +1,3 @@
-/* More specifity */
-.user-steps-menu {
-	background: var(--dark-background);
-}
-.user-steps-menu ul.user-steps-menu-list li > a {
-	background: var(--dark-text);
-}
-
-/* V2 case */
 .user-steps-menu ul li {
 	margin: 0 10px;
 	background: white;
