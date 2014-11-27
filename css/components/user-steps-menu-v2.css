@@ -1,0 +1,92 @@
+/* Base steps menu styles (as user-steps-menu.css as in eRegistrations) */
+.user-steps-menu {
+	background-color: var(--dark-background);
+	color: var(--white-text);
+	padding: 11px 0;
+	/* Below rules needed for fixed view */
+	width: 100%;
+	z-index: 2;
+}
+.user-steps-menu a {
+	color: var(--white-text);
+}
+
+.fixed-top-placeholder {
+	height: 66px;
+}
+
+.user-steps-menu-wrapper {
+	display: flex;
+}
+
+.user-steps-menu input[type=checkbox] {
+	display: none;
+}
+
+.user-steps-menu ul.user-steps-menu-list {
+	display: flex;
+	justify-content: space-between;
+	width: 100%;
+	list-style-type: none;
+}
+
+.user-steps-menu ul.user-steps-menu-list a {
+	width: 100%;
+}
+
+.user-steps-menu ul li {
+	width: 100%;
+	margin: 0 2px;
+}
+
+.user-steps-menu-show,
+.user-steps-menu ul.user-steps-menu-list li > a {
+	display: inline-block;
+	white-space: nowrap;
+}
+
+label.user-steps-menu-show {
+	cursor: pointer;
+	display: none;
+	width: 100%;
+}
+
+/* More specifity */
+.user-steps-menu {
+	margin: 0 20px;
+	background: grey;
+	width:500px;
+}
+.user-steps-menu ul.user-steps-menu-list li > a {
+	background: #eee;
+}
+
+/* V2 case */
+.user-steps-menu ul li {
+	margin: 0 10px;
+	background: white;
+}
+.user-steps-menu-list li {
+	position: relative;
+}
+.user-steps-menu ul.user-steps-menu-list li > a {
+	background-color: transparent;
+	border-radius: 6px;
+	color: black;
+	display: inline-block;
+	font-size: 18px;
+	padding: 11px 0 11px 20px;
+	text-align: left;
+	text-decoration: none;
+	position: relative;
+	z-index: 4;
+}
+
+.user-steps-menu-item-progress {
+	height: 100%;
+	top: 0;
+	width: 0;
+	background-color: #aaa;
+	position: absolute;
+
+}
