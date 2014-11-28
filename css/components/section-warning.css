@@ -23,7 +23,7 @@
 }
 
 /*
-Styles applied while screen sieze is less than 640px
+Styles applied while screen size is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
 	.section-warning  {

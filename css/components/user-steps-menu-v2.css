@@ -1,20 +1,20 @@
-.user-steps-menu ul li {
+.user-steps-menu li {
 	margin: 0 10px;
 	background: white;
 	border-radius: 5px 0 0 5px;
+	position: relative;
 }
-.user-steps-menu ul li:after {
+
+.user-steps-menu li:after {
 	content: url('img/arrow-mask.png');
 	position: absolute;
 	right: 0;
 }
 
-.user-steps-menu-list li {
-	position: relative;
-}
 .user-steps-menu-list li:first-child {
 	margin-left: 0;
 }
+
 .user-steps-menu-list li:last-child {
 	margin-right: 0;
 }
@@ -49,7 +49,7 @@
 }
 
 /*
-Styles applied while screen sieze is less than 640px
+Styles applied while screen size is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
 
