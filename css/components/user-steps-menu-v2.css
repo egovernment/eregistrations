@@ -59,7 +59,7 @@
 	padding-right: 10px;
 }
 
-.user-steps-menu li.user-steps-menu-start-step .user-steps-menu-item-progress {
+.user-steps-menu-start-step .user-steps-menu-item-progress {
 	visibility: hidden;
 }
 
