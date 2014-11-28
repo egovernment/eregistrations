@@ -1,5 +1,5 @@
 .user-steps-menu-list li {
-	margin: 0 10px;
+	margin: 0 13px;
 	background: white;
 	border-radius: 5px 0 0 5px;
 	position: relative;
@@ -63,7 +63,7 @@
 	visibility: hidden;
 }
 
-@media only screen and (max-width: 790px) {
+@media only screen and (max-width: 780px) {
 	.user-steps-menu-list li > a {
 		font-size: 14px;
 	}
