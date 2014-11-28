@@ -23,6 +23,9 @@ module.exports = function (indexPath, readFile) {
 				filename: filename.slice(rootPath.length + 1),
 				content: content
 			};
+		}, function (e) {
+			if (e.code !== 'ENOENT') throw e;
+			throw new TypeError("Bad paths in " + indexPath + " -> " + e.message);
 		});
 	});
 };
