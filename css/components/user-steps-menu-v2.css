@@ -45,6 +45,7 @@
 .user-steps-menu li.user-steps-menu-start-step {
 	background: var(--normal-background);
 	border-radius: 5px;
+	flex-grow: 1;
 }
 .user-steps-menu li.user-steps-menu-start-step:after {
 	content: none;
@@ -56,6 +57,11 @@
 
 .user-steps-menu li.user-steps-menu-start-step .user-steps-menu-item-progress {
 	visibility: hidden;
+}
+
+.user-steps-menu-list li {
+	flex-basis: 0;
+	flex-grow: 2;
 }
 
 @media only screen and (max-width: 790px) {
@@ -77,6 +83,9 @@ Styles applied while screen size is less than 640px
 		font-size: 18px;
 		padding: 11px 0 11px 20px;
 		text-align: center;
+	}
+	.user-steps-menu ul.user-steps-menu-list li {
+		flex-basis: initial;
 	}
 
 	.user-steps-menu ul.user-steps-menu-list li > a {
