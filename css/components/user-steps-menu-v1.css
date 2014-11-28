@@ -42,7 +42,7 @@
 		padding-bottom: 11px;
 	}
 	input[type=checkbox]:checked ~ .user-steps-menu-list li {
-		flex-basis: initial;
+		flex-basis: auto;
 		margin-bottom: 4px;
 	}
 }

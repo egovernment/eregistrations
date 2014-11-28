@@ -53,6 +53,8 @@
 
 .user-steps-menu ul.user-steps-menu-list li.user-steps-menu-start-step > a {
 	color: var(--white-text);
+	text-align: center;
+	padding-right: 10px;
 }
 
 .user-steps-menu li.user-steps-menu-start-step .user-steps-menu-item-progress {
@@ -85,7 +87,7 @@ Styles applied while screen size is less than 640px
 		text-align: center;
 	}
 	.user-steps-menu ul.user-steps-menu-list li {
-		flex-basis: initial;
+		flex-basis: auto;
 	}
 
 	.user-steps-menu ul.user-steps-menu-list li > a {
