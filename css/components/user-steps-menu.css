@@ -67,6 +67,10 @@ Styles applied while screen sieze is less than 640px
 		display: none;
 	}
 
+	.user-steps-menu-list li {
+		width: 100%;
+	}
+
 	.user-steps-menu-wrapper {
 		width: 100%;
 		flex-wrap: wrap;
