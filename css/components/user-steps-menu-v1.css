@@ -1,3 +1,7 @@
+.user-steps-menu-list li {
+	flex-basis: 0;
+	flex-grow: 2;
+}
 .user-steps-menu-show, .user-steps-menu-list li > a {
 	background-color: var(--white-background);
 	border-radius: 6px;
