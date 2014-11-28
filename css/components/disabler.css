@@ -1,4 +1,4 @@
-.disabler-range {
+.disabler-range.disabler-active {
 	position: relative;
 }
 .disabler {
