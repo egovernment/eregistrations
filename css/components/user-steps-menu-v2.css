@@ -1,11 +1,13 @@
-.user-steps-menu li {
+.user-steps-menu-list li {
 	margin: 0 10px;
 	background: white;
 	border-radius: 5px 0 0 5px;
 	position: relative;
+	flex-basis: 0;
+	flex-grow: 2;
 }
 
-.user-steps-menu li:after {
+.user-steps-menu-list li:after {
 	content: url('img/arrow-mask.png');
 	position: absolute;
 	right: 0;
@@ -19,7 +21,7 @@
 	margin-right: 0;
 }
 
-.user-steps-menu ul.user-steps-menu-list li > a {
+.user-steps-menu-list li > a {
 	background-color: transparent;
 	border-radius: 6px;
 	color: black;
@@ -42,16 +44,16 @@
 	border-right: 1px solid var(--normal-dark-background);
 }
 
-.user-steps-menu li.user-steps-menu-start-step {
+.user-steps-menu-list li.user-steps-menu-start-step {
 	background: var(--normal-background);
 	border-radius: 5px;
 	flex-grow: 1;
 }
-.user-steps-menu li.user-steps-menu-start-step:after {
+.user-steps-menu-list li.user-steps-menu-start-step:after {
 	content: none;
 }
 
-.user-steps-menu ul.user-steps-menu-list li.user-steps-menu-start-step > a {
+.user-steps-menu-list li.user-steps-menu-start-step > a {
 	color: var(--white-text);
 	text-align: center;
 	padding-right: 10px;
@@ -61,13 +63,8 @@
 	visibility: hidden;
 }
 
-.user-steps-menu-list li {
-	flex-basis: 0;
-	flex-grow: 2;
-}
-
 @media only screen and (max-width: 790px) {
-	.user-steps-menu ul.user-steps-menu-list li > a {
+	.user-steps-menu-list li > a {
 		font-size: 14px;
 	}
 }
@@ -86,11 +83,11 @@ Styles applied while screen size is less than 640px
 		padding: 11px 0 11px 20px;
 		text-align: center;
 	}
-	.user-steps-menu ul.user-steps-menu-list li {
+	.user-steps-menu-list li {
 		flex-basis: auto;
 	}
 
-	.user-steps-menu ul.user-steps-menu-list li > a {
+	.user-steps-menu-list li > a {
 		font-size: 18px;
 		text-align: center;
 	}
