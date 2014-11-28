@@ -1,0 +1,94 @@
+.user-steps-menu-list li {
+	margin: 0 15px;
+	background: white;
+	border-radius: 5px 0 0 5px;
+	position: relative;
+	flex-basis: 0;
+	flex-grow: 2;
+}
+
+.user-steps-menu-list li:after {
+	content: url('img/arrow-mask.png');
+	position: absolute;
+	right: 0;
+}
+
+.user-steps-menu-list li:first-child {
+	margin-left: 0;
+}
+
+.user-steps-menu-list li:last-child {
+	margin-right: 0;
+}
+
+.user-steps-menu-list li > a {
+	background-color: transparent;
+	border-radius: 6px;
+	color: black;
+	display: inline-block;
+	font-size: 18px;
+	padding: 11px 0 11px 10px;
+	text-align: left;
+	text-decoration: none;
+	position: relative;
+	z-index: 4;
+}
+
+.user-steps-menu-item-progress {
+	height: 100%;
+	top: 0;
+	width: 0;
+	background: linear-gradient(to top, var(--normal-background), var(--white-background));
+	position: absolute;
+	border-radius: 5px 0 0 5px;
+	border-right: 1px solid var(--normal-dark-background);
+}
+
+.user-steps-menu-list li.user-steps-menu-start-step {
+	background: var(--normal-background);
+	border-radius: 5px;
+	flex-grow: 1;
+}
+.user-steps-menu-list li.user-steps-menu-start-step:after {
+	content: none;
+}
+
+.user-steps-menu-list li.user-steps-menu-start-step > a {
+	color: var(--white-text);
+	text-align: center;
+	padding-right: 10px;
+}
+
+.user-steps-menu-start-step .user-steps-menu-item-progress {
+	visibility: hidden;
+}
+
+@media only screen and (max-width: 780px) {
+	.user-steps-menu-list li > a {
+		font-size: 14px;
+	}
+}
+
+/*
+Styles applied while screen size is less than 640px
+*/
+@media only screen and (max-width: var(--mobile-width)) {
+
+	.user-steps-menu-show {
+		display: block;
+		background-color: var(--white-background);
+		border-radius: 6px;
+		color: black;
+		font-size: 18px;
+		padding: 11px 0 11px 20px;
+		text-align: center;
+	}
+	.user-steps-menu-list li {
+		flex-basis: auto;
+	}
+
+	.user-steps-menu-list li > a {
+		font-size: 18px;
+		text-align: center;
+	}
+}
