@@ -28,13 +28,13 @@ exports.main = function () {
 						a({ href: '/forms/', id: 'step-form' },
 							"2. Fill the form"
 							),
-						div({ class: 'user-steps-menu-item-progress', style: 'width: 50%' })
+						div({ class: 'user-steps-menu-item-progress', style: 'width: 95%' })
 					),
 					li(
 						a({ href: '/documents/', id: 'step-documents' },
 							"3. Upload docs"
 							),
-						div({ class: 'user-steps-menu-item-progress' })
+						div({ class: 'user-steps-menu-item-progress', style: 'width: 50%' })
 					),
 					li(
 						a("4. Pay"
