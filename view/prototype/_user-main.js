@@ -20,6 +20,7 @@ exports.main = function () {
 					),
 				ul({ class: 'user-steps-menu-list' },
 					li(
+						{ class: 'user-steps-menu-start-step' },
 						a({ href: '/guide/', id: 'step-guide' },
 							"1. Guide"),
 						div({ class: 'user-steps-menu-item-progress', style: 'width: 100%' })

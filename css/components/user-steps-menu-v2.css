@@ -42,6 +42,22 @@
 	border-right: 1px solid var(--normal-dark-background);
 }
 
+.user-steps-menu li.user-steps-menu-start-step {
+	background: var(--normal-background);
+	border-radius: 5px;
+}
+.user-steps-menu li.user-steps-menu-start-step:after {
+	content: none;
+}
+
+.user-steps-menu ul.user-steps-menu-list li.user-steps-menu-start-step > a {
+	color: var(--white-text);
+}
+
+.user-steps-menu li.user-steps-menu-start-step .user-steps-menu-item-progress {
+	visibility: hidden;
+}
+
 @media only screen and (max-width: 790px) {
 	.user-steps-menu ul.user-steps-menu-list li > a {
 		font-size: 14px;
