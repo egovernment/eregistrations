@@ -45,7 +45,7 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 				? file._clear_.bind(file)
 				: this.removeItem.bind(this, data.dom);
 
-			itemDom = _if(file._url, el('span',
+			itemDom = _if(file._name, el('span',
 				el('a', { href: file._url, target: '_blank', class: 'thumb-doc' },
 					el('img', { src: resolve(file._thumb, '_url') })),
 				el('span', { class: 'thumb-doc-action' },
