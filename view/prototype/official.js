@@ -10,7 +10,7 @@ exports['submitted-menu'] = function () {
 			{ class: 'items' },
 			li(
 				a({ class: 'item-active' },
-					"Official")
+					"Official asdasd asdasdasdasdsd")
 			),
 			li(
 				a({ href: '/profile/' }, "Profile")
@@ -21,12 +21,17 @@ exports['submitted-menu'] = function () {
 		ul(
 			{ class: 'items' },
 			li(
-				select({ class: 'role-select' },
-						option("Role"),
-						option("Official user"),
-						option("Admin user"),
-						option("User")
+				form(
+					{ class: 'role-select' },
+					p(
+						select(
+							option("Role"),
+							option("Official user"),
+							option("Admin user"),
+							option("User")
+						)
 					)
+				)
 			)
 		)
 	);
