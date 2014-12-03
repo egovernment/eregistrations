@@ -31,18 +31,19 @@
 	font-size: 16px;
 	text-decoration: none;
 	padding: 0 17px;
-	height: 44px;
 	line-height: 44px;
 	display: block;
 }
 
 .role-select {
+	line-height: 44px;
+}
+.role-select select {
 	border: none;
 	background-color: var(--dark-background);
 	box-shadow: none;
 	color: var(--white-text);
 	margin: 0;
-	height: 44px;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
