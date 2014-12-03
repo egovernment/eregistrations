@@ -2,48 +2,6 @@
 	display: inline-block;
 }
 
-.official-submission-toolbar form .button-main {
-	background-color: var(--normal-background);
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
-	-khtml-border-radius: 6px;
-	border-radius: 6px;
-	color: var(--white-text);
-	cursor: pointer;
-	display: inline-block;
-	font-size: 18px;
-	font-weight: normal;
-	margin-bottom: 0;
-	margin-right: 10px;
-	text-align: center;
-	text-decoration: none;
-	white-space: nowrap;
-	padding: 11px 15px;
-}
-.official-submission-toolbar form .button-main:hover,
-.official-submission-toolbar form .button-main:focus,
-.official-submission-toolbar form .button-main:active {
-	background: var(--normal-dark-background);
-}
-
-.official-submission-toolbar form .button-main.approve-submission {
-	background-color: var(--success-background);
-}
-.official-submission-toolbar form .button-main.approve-submission:hover,
-.official-submission-toolbar form .button-main.approve-submission:focus,
-.official-submission-toolbar form .button-main.approve-submission:active {
-	background-color: var(--success-dark-background);
-}
-
-.official-submission-toolbar .button-main.reject-submission {
-	background-color: var(--error-background);
-}
-.official-submission-toolbar .button-main.reject-submission:hover,
-.official-submission-toolbar .button-main.reject-submission:focus,
-.official-submission-toolbar .button-main.reject-submission:active {
-	background-color: var(--error-dark-background);
-}
-
 @media only screen and (max-width: var(--mobile-width)) {
 	.official-submission-toolbar > * {
 		margin-bottom: 22px;
