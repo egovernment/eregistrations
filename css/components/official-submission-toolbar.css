@@ -26,6 +26,24 @@
 	background: var(--normal-dark-background);
 }
 
+.official-submission-toolbar form .button-main.approve-submission {
+	background-color: var(--success-background);
+}
+.official-submission-toolbar form .button-main.approve-submission:hover,
+.official-submission-toolbar form .button-main.approve-submission:focus,
+.official-submission-toolbar form .button-main.approve-submission:active {
+	background-color: var(--success-dark-background);
+}
+
+.official-submission-toolbar .button-main.reject-submission {
+	background-color: var(--error-background);
+}
+.official-submission-toolbar .button-main.reject-submission:hover,
+.official-submission-toolbar .button-main.reject-submission:focus,
+.official-submission-toolbar .button-main.reject-submission:active {
+	background-color: var(--error-dark-background);
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 	.official-submission-toolbar > * {
 		margin-bottom: 22px;
