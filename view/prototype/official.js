@@ -10,7 +10,7 @@ exports['submitted-menu'] = function () {
 			{ class: 'items' },
 			li(
 				a({ class: 'item-active' },
-					"Official asdasd asdasdasdasdsd")
+					"Official")
 			),
 			li(
 				a({ href: '/profile/' }, "Profile")
