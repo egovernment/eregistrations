@@ -16,13 +16,13 @@ button[type='submit'].button-main {
 	padding: 11px 15px;
 }
 .button-main:hover,
-input[type='submit'].button-main:hover
+input[type='submit'].button-main:hover,
 button[type='submit'].button-main:hover,
 .button-main:focus,
-input[type='submit'].button-main:focus
+input[type='submit'].button-main:focus,
 button[type='submit'].button-main:focus,
 .button-main:active,
-input[type='submit'].button-main:active
+input[type='submit'].button-main:active,
 button[type='submit'].button-main:active {
 	background-color: var(--normal-dark-background);
 	color: var(--white-text);
