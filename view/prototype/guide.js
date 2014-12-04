@@ -173,7 +173,10 @@ exports.step = function () {
 					span("$45'000")),
 				li({ class: 'guide-total-costs' },
 					span("Total Costs:"), " ",
-					span("$105'000"))),
+					span("$105'000")),
+				li(span("Filing fees for memorandum"), " ",
+					span("$45'000")),
+					small("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")),
 			p(
 				a({ class: 'button-resource-link', href: 'costs-print/' },
 					span({ class: 'fa fa-print' }), " ",
