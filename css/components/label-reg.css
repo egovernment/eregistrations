@@ -10,6 +10,7 @@
 	text-transform: uppercase;
 	height: 20px;
 	line-height: 22px;
+	white-space: nowrap;
 }
 .label-reg:after {
 	text-transform: none;

@@ -5,7 +5,15 @@
 
 .statistics-table thead tr th,
 .statistics-table tbody tr td {
-	padding: 11px 11px;
+	padding: 11px 3px;
+}
+.statistics-table thead tr th:first-child,
+.statistics-table tbody tr td:first-child {
+	padding-left: 11px;
+}
+.statistics-table thead tr th:last-child,
+.statistics-table tbody tr td:last-child {
+	padding-right: 11px;
 }
 
 .statistics-table thead tr th {
