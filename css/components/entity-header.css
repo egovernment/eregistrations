@@ -18,7 +18,7 @@
 .entity-actions form {
 	display: inline-block;
 }
-.entity-actions form button[type="submit"] {
+.entity-actions button {
 	padding: 0 7px;
 	cursor: pointer;
 }
@@ -41,9 +41,9 @@
 .entity-actions a:hover,
 .entity-actions a:focus,
 .entity-actions a:active,
-.entity-actions form button:hover,
-.entity-actions form button:focus,
-.entity-actions form button:active {
+.entity-actions button:hover,
+.entity-actions button:focus,
+.entity-actions button:active {
 	background-color: var(--normal-dark-background);
 }
 .entity-actions a:last-child {
@@ -51,7 +51,7 @@
 }
 
 .entity-actions a span,
-.entity-actions form button[type="submit"] span {
+.entity-actions button span {
 	position: relative;
 	top: 2px;
 	left: 3px;
