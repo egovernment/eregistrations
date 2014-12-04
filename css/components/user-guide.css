@@ -55,6 +55,7 @@
 .guide-costs-list li {
 	display: flex;
 	justify-content: space-between;
+	flex-wrap: wrap;
 }
 
 .guide-total-costs {
@@ -63,7 +64,12 @@
 	border-top: 1px solid black;
 	padding: 10px 5px 11px;
 	margin-top: 20px;
+	margin-bottom: 22px;
 	font-weight: bolder;
+}
+
+.guide-costs-list li small {
+	width: 100%;
 }
 
 .user-guide .inventory-button {
