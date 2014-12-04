@@ -41,9 +41,9 @@
 .entity-actions a:hover,
 .entity-actions a:focus,
 .entity-actions a:active,
-.entity-actions form button[type="submit"]:hover,
-.entity-actions form button[type="submit"]:focus,
-.entity-actions form button[type="submit"]:active {
+.entity-actions form button:hover,
+.entity-actions form button:focus,
+.entity-actions form button:active {
 	background-color: var(--normal-dark-background);
 }
 .entity-actions a:last-child {
@@ -61,6 +61,15 @@
 .entity-actions .button-main {
 	font-size: 18px;
 	padding: 11px 15px;
+}
+
+.entity-actions .entity-actions-remove-button {
+	background: var(--error-background);
+}
+.entity-actions .entity-actions-remove-button:hover,
+.entity-actions .entity-actions-remove-button:focus,
+.entity-actions .entity-actions-remove-button:active {
+	background-color: var(--error-dark-background);
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
