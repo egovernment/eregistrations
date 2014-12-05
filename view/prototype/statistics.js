@@ -41,7 +41,7 @@ exports['sub-main'] = function () {
 			),
 			tbody(
 				tr(
-					{ class: 'statstics-table-sub-header' },
+					{ class: 'statistics-table-sub-header' },
 					td("Total amount of users"),
 					td("123"),
 					td("132"),
@@ -61,14 +61,14 @@ exports['sub-main'] = function () {
 				),
 
 				tr(
-					{ class: 'statstics-table-sub-header' },
+					{ class: 'statistics-table-sub-header' },
 					td("Total registrations"),
 					td("123"),
 					td("132"),
 					td("534")
 				),
 				tr(
-					{ class: 'statstics-table-sub-sub-header' },
+					{ class: 'statistics-table-sub-sub-header' },
 					td("Total registrations diviaded into sections"),
 					td("123"),
 					td("132"),
@@ -105,14 +105,14 @@ exports['sub-main'] = function () {
 					td("534")
 				),
 				tr(
-					{ class: 'statstics-table-sub-sub-header' },
+					{ class: 'statistics-table-sub-sub-header' },
 					td("Total registrations summary"),
 					td("123"),
 					td("132"),
 					td("534")
 				),
 				tr(
-					{ class: 'statstics-table-sub-header' },
+					{ class: 'statistics-table-sub-header' },
 					td("Total registrations diviaded into sections amount"),
 					td("123"),
 					td("132"),
@@ -133,7 +133,7 @@ exports['sub-main'] = function () {
 			),
 			tbody(
 				tr(
-					{ class: 'statstics-table-sub-header' },
+					{ class: 'statistics-table-sub-header' },
 					td({ colspan: 2 }, span({ class: 'fa fa-user' }, "User"), " ", "Individual"),
 					td("123"),
 					td("132"),
@@ -173,7 +173,7 @@ exports['sub-main'] = function () {
 					td("534")
 				),
 				tr(
-					{ class: 'statstics-table-sub-header' },
+					{ class: 'statistics-table-sub-header' },
 					td({ colspan: 2 }, span({ class: 'fa fa-users' }, "User"), " ", "Company"),
 					td("123"),
 					td("132"),

@@ -15,6 +15,13 @@
 	max-width: 40%;
 }
 
+.statistics-table-dual-aside tbody tr:not(.statistics-table-sub-header) td:first-child {
+	text-align: right;
+}
+.statistics-table-dual-aside tbody tr:not(.statistics-table-sub-header) td:nth-child(2) {
+	text-align: left;
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 	.statistics-table-dual-main {
 		margin-right: 0;
