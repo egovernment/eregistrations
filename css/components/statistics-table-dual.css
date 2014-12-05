@@ -15,10 +15,10 @@
 	max-width: 40%;
 }
 
-.statistics-table-dual-aside tbody tr:not(.statstics-table-sub-header) td:first-child {
+.statistics-table-dual-aside tbody tr:not(.statistics-table-sub-header) td:first-child {
 	text-align: right;
 }
-.statistics-table-dual-aside tbody tr:not(.statstics-table-sub-header) td:nth-child(2) {
+.statistics-table-dual-aside tbody tr:not(.statistics-table-sub-header) td:nth-child(2) {
 	text-align: left;
 }
 

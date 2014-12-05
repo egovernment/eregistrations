@@ -44,11 +44,11 @@
 	text-align: left;
 }
 
-.statistics-table tbody .statstics-table-sub-header td {
+.statistics-table tbody .statistics-table-sub-header td {
 	font-weight: bold;
 	background: var(--light-medium-background);
 }
 
-.statistics-table tbody .statstics-table-sub-sub-header td {
+.statistics-table tbody .statistics-table-sub-sub-header td {
 	background: var(--light-background);
 }
