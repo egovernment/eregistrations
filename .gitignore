@@ -8,6 +8,7 @@ Thumbs.db
 /i18n-scan-map.generated.json
 /common/client/env.json
 /.idea
+/log
 /node_modules
 /npm-debug.log
 /prototype/public/prototype.css
