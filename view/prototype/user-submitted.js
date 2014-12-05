@@ -224,7 +224,8 @@ exports['sub-main'] = function () {
 			h2({ class: 'container-with-nav' }, "Application form",
 				a(
 					{ class: 'hint-optional hint-optional-left',
-						'data-hint': 'Print Your application form' },
+						'data-hint': 'Print Your application form',
+						href: '/user-submitted/data-print/' },
 					span({ class: 'fa fa-print' }, "Print")
 				)),
 
