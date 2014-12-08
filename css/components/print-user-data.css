@@ -8,6 +8,8 @@
 	padding: 11px;
 	border: 2px solid var(--normal-background);
 	font-weight: bold;
+	text-align: left;
+	vertical-align: baseline;
 }
 
 .print-user-data td > span:first-child {
@@ -65,12 +67,17 @@ tbody tr.print-user-data-sub-header {
 	font-weight: normal;
 }
 
-.print-user-data-sub-sub-elem {
+.print-user-data .print-user-data-sub-sub-elem {
 	background: var(--light-background);
 	color: var(--normal-text);
 	text-transform: uppercase;
+	font-weight: normal;
 }
-
-.print-user-data-nested-row td {
-	border: none;
+.print-user-data .print-user-data-elem-thin:first-child {
+	border-bottom: 1px solid  var(--normal-background);
+	border-right: 1px solid  var(--normal-background);
+}
+.print-user-data .print-user-data-elem-thin:last-child {
+	border-bottom: 1px solid  var(--normal-background);
+	border-left: 1px solid  var(--normal-background);
 }

@@ -113,19 +113,149 @@ exports.main = function () {
 			),
 
 			tr(
-				td(),
-				td(),
-				td(),
-				td(),
-				td(),
-				td(),
-				td(),
-				td(),
-				td(),
-				td(),
-				td(),
-				td()
+				{ class: '' },
+				td(
+					{ colspan: 2, class:  'print-user-data-sub-sub-elem' },
+					"Lorem ipsum dolor:"
+				),
+				td(
+					{ colspan: 4 },
+					"Lorem ipsum dolor sit amet"
+				),
+				td(
+					{ colspan: 6, class:  'print-user-data-sub-sub-elem' },
+					"Lorem ipsum dolor sit amet"
+				)
+			),
+
+			tr(
+				{ class: '' },
+				th(
+					{ colspan: 2, class:  'print-user-data-sub-sub-elem' },
+					"Lorem ipsum dolor:"
+				),
+				td(
+					{ colspan: 4 },
+					"Lorem ipsum dolor sit amet"
+				),
+				th(
+					{ colspan: 6, rowspan: 4 },
+					"Lorem ipsum dolor sit amet"
+				)
+			),
+			tr(
+				th(
+					{ colspan: 2, class:  'print-user-data-sub-sub-elem' },
+					"Lorem ipsum dolor:"
+				),
+				td(
+					{ colspan: 4 },
+					"Lorem ipsum dolor sit amet"
+				)
+			),
+			tr(
+				th(
+					{ colspan: 2, class:  'print-user-data-sub-sub-elem' },
+					"Lorem ipsum dolor:"
+				),
+				td(
+					{ colspan: 4 },
+					"Lorem ipsum dolor sit amet"
+				)
+			),
+			tr(
+				td(
+					{ colspan: 2, class:  'print-user-data-sub-sub-elem' },
+					"Lorem ipsum dolor:"
+				),
+				td(
+					{ colspan: 4 },
+					"Lorem ipsum dolor sit amet"
+				)
+			),
+
+			tr(
+				th(
+					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					"NIT:"
+				),
+				td(
+					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					"NRC:"
+				),
+				td(
+					{ colspan: 4, rowspan: 2 }
+				)
+			),
+			tr(
+				th(
+					{ colspan: 4 },
+					"234523523542345"
+				),
+				td(
+					{ colspan: 4 },
+					"23452352345345345"
+				)
+			),
+
+			tr(
+				th(
+					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					"Date:"
+				),
+				td(
+					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					"Place:"
+				),
+				td(
+					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					"Lorem ipsum dolor sit amet"
+				)
+			),
+			tr(
+				th(
+					{ colspan: 4 },
+					"13.12.2014"
+				),
+				td(
+					{ colspan: 4 },
+					"Lorem ipsum"
+				),
+				td(
+					{ colspan: 4 },
+					"Lorem ipsum"
+				)
+			),
+
+			tr(
+				th(
+					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					"Capital:"
+				),
+				td(
+					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					"Shareholders:"
+				),
+				td(
+					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					"Average income"
+				)
+			),
+			tr(
+				th(
+					{ colspan: 4 },
+					"200 000"
+				),
+				td(
+					{ colspan: 4 },
+					"10"
+				),
+				td(
+					{ colspan: 4 },
+					"20 000"
+				)
 			)
+
 		),
 		tfoot("c")
 	);
