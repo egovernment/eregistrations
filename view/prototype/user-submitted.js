@@ -42,8 +42,7 @@ exports['sub-main'] = function () {
 					th("Company"),
 					th("Application number"),
 					th("Application date"),
-					th("Requested registrations"),
-					th("")
+					th("Requested registrations")
 				)
 			),
 			tbody(
@@ -66,12 +65,6 @@ exports['sub-main'] = function () {
 							'data-hint': 'Lorem ipsum dolor sit amet' }, "Nssf"),
 						span({ class: 'hint-optional hint-optional-left label-reg',
 							'data-hint': 'Lorem ipsum dolor sit amet' }, "Lapf")
-					),
-					td(
-						a(
-							{ class: 'hint-optional hint-optional-left', 'data-hint': 'Download status' },
-							span({ class: 'fa fa-download' }, "Download")
-						)
 					)
 				)
 			)

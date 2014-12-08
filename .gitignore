@@ -12,5 +12,6 @@ Thumbs.db
 /node_modules
 /npm-debug.log
 /prototype/public/prototype.css
+/prototype/public/prototype-print.css
 /prototype/public/prototype.js
 /prototype/public/prototype.legacy.js
