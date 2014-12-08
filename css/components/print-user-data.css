@@ -7,7 +7,7 @@
 .print-user-data th,
 .print-user-data td {
 	padding: 10px;
-	border: 2px solid var(--normal-background);
+	border: 2px solid #ddd;
 	font-weight: bold;
 	text-align: left;
 	vertical-align: baseline;
@@ -62,7 +62,7 @@ tbody tr.print-user-data-header {
 	font-weight: bold;
 }
 
-.print-user-data .print-user-data-document td {
+.print-user-data-document td {
 	padding-top: 0;
 	padding-bottom: 0;
 }
@@ -76,7 +76,7 @@ tbody tr.print-user-data-header {
 	font-weight: normal;
 }
 
-.print-user-data .print-user-data-head-elem,
+.print-user-data tbody th,
 .print-user-data-signature  {
 	background: #fafafa;
 	color: #888;

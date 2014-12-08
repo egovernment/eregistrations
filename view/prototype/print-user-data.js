@@ -81,16 +81,16 @@ exports.body = function () {
 				)
 			),
 			tr(
-				td(
-					{ colspan: 4, class:  'print-user-data-head-elem' },
+				th(
+					{ colspan: 4 },
 					"Company name:"
 				),
-				td(
-					{ colspan: 4, class:  'print-user-data-head-elem' },
+				th(
+					{ colspan: 4 },
 					"Company short name:"
 				),
-				td(
-					{ colspan: 4, class:  'print-user-data-head-elem' },
+				th(
+					{ colspan: 4 },
 					"Type of bussiness:"
 				)
 			),
@@ -110,37 +110,37 @@ exports.body = function () {
 			),
 
 			tr(
-				td(
-					{ colspan: 2, class:  'print-user-data-head-elem' },
+				th(
+					{ colspan: 2 },
 					"Lorem ipsum dolor:"
 				),
 				td(
 					{ colspan: 4 },
 					"Lorem ipsum dolor sit amet"
 				),
-				td(
-					{ colspan: 6, class:  'print-user-data-head-elem' },
+				th(
+					{ colspan: 6 },
 					"Lorem ipsum dolor sit amet"
 				)
 			),
 
 			tr(
 				th(
-					{ colspan: 2, class:  'print-user-data-head-elem' },
+					{ colspan: 2 },
 					"Lorem ipsum dolor:"
 				),
 				td(
 					{ colspan: 4 },
 					"Lorem ipsum dolor sit amet"
 				),
-				th(
+				td(
 					{ colspan: 6, rowspan: 4 },
 					"Lorem ipsum dolor sit amet"
 				)
 			),
 			tr(
 				th(
-					{ colspan: 2, class:  'print-user-data-head-elem' },
+					{ colspan: 2 },
 					"Lorem ipsum dolor:"
 				),
 				td(
@@ -150,7 +150,7 @@ exports.body = function () {
 			),
 			tr(
 				th(
-					{ colspan: 2, class:  'print-user-data-headelem' },
+					{ colspan: 2 },
 					"Lorem ipsum dolor:"
 				),
 				td(
@@ -159,8 +159,8 @@ exports.body = function () {
 				)
 			),
 			tr(
-				td(
-					{ colspan: 2, class:  'print-user-data-head-elem' },
+				th(
+					{ colspan: 2 },
 					"Lorem ipsum dolor:"
 				),
 				td(
@@ -171,11 +171,11 @@ exports.body = function () {
 
 			tr(
 				th(
-					{ colspan: 4, class:  'print-user-data-head-elem' },
+					{ colspan: 4 },
 					"NIT:"
 				),
-				td(
-					{ colspan: 4, class:  'print-user-data-head-elem' },
+				th(
+					{ colspan: 4 },
 					"NRC:"
 				),
 				td(
@@ -183,7 +183,7 @@ exports.body = function () {
 				)
 			),
 			tr(
-				th(
+				td(
 					{ colspan: 4 },
 					"234523523542345"
 				),
@@ -195,15 +195,15 @@ exports.body = function () {
 
 			tr(
 				th(
-					{ colspan: 4, class:  'print-user-data-head-elem' },
+					{ colspan: 4 },
 					"Date:"
 				),
-				td(
-					{ colspan: 4, class:  'print-user-data-head-elem' },
+				th(
+					{ colspan: 4 },
 					"Place:"
 				),
-				td(
-					{ colspan: 4, class:  'print-user-data-head-elem' },
+				th(
+					{ colspan: 4 },
 					"Lorem ipsum dolor sit amet"
 				)
 			),
@@ -224,20 +224,20 @@ exports.body = function () {
 
 			tr(
 				th(
-					{ colspan: 4, class:  'print-user-data-head-elem' },
+					{ colspan: 4 },
 					"Capital:"
 				),
-				td(
-					{ colspan: 4, class:  'print-user-data-head-elem' },
+				th(
+					{ colspan: 4 },
 					"Shareholders:"
 				),
-				td(
-					{ colspan: 4, class:  'print-user-data-head-elem' },
+				th(
+					{ colspan: 4 },
 					"Average income"
 				)
 			),
 			tr(
-				th(
+				td(
 					{ colspan: 4 },
 					"200 000"
 				),
