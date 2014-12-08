@@ -113,7 +113,6 @@ exports.main = function () {
 			),
 
 			tr(
-				{ class: '' },
 				td(
 					{ colspan: 2, class:  'print-user-data-sub-sub-elem' },
 					"Lorem ipsum dolor:"
@@ -129,7 +128,6 @@ exports.main = function () {
 			),
 
 			tr(
-				{ class: '' },
 				th(
 					{ colspan: 2, class:  'print-user-data-sub-sub-elem' },
 					"Lorem ipsum dolor:"
@@ -254,9 +252,88 @@ exports.main = function () {
 					{ colspan: 4 },
 					"20 000"
 				)
-			)
+			),
 
-		),
-		tfoot("c")
+			tr(
+				{ class:  'print-user-data-sub-header' },
+				td(
+					{ colspan: 12 },
+					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+				)
+			),
+			tr(
+				{ class: 'print-user-data-entities' },
+				td(
+					{ colspan: 6 },
+					"Name of shareholder"
+				),
+				td(
+					{ colspan: 2 },
+					"Is legal representant?"
+				),
+				td(
+					"% of shares"
+				),
+				td("Amount"),
+				td({ colspan: 2 }, "Value")
+			),
+			tr(
+				{ class: 'print-user-data-entities-entity' },
+				td({ colspan: 6 }, "Frank Grozel"),
+				td({ colspan: 2 }, "Yes"),
+				td('50%'),
+				td('10'),
+				td("$"),
+				td("1,000.00")
+			),
+			tr(
+				{ class: 'print-user-data-entities-entity' },
+				td({ colspan: 6 }, "Frank Grozel"),
+				td({ colspan: 2 }, "Yes"),
+				td('50%'),
+				td('10'),
+				td("$"),
+				td("1,000.00")
+			),
+			tr(
+				{ class: 'print-user-data-entities-sumary' },
+				td({ colspan: 8 }),
+				td('100%'),
+				td('20'),
+				td("$"),
+				td("2,000.00")
+			),
+
+			tr(
+				{ class: 'print-user-data-sub-header' },
+				td(
+					{ colspan: 12 },
+					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+				)
+			),
+			tr(
+				td(
+					{ colspan: 12 },
+					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse molestie, neque " +
+						"sed dignissim ultricies, odio mi porta tellus, blandit accumsan odio ipsum in sem. " +
+						"Fusce non rhoncus ante, at vulputate odio. Pellentesque vitae pretium ligula. Donec" +
+						" non iaculis metus. "
+				)
+			),
+			tr(
+				td(
+					{ colspan: 4 },
+					span({ class: 'print-user-data-signature' }, "Your signature")
+
+				),
+				td(
+					{ colspan: 4 },
+					span({ class: 'print-user-data-signature' }, "Your company name")
+				),
+				td(
+					{ colspan: 4 }
+				)
+			)
+		)
 	);
 };

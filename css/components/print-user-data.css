@@ -67,17 +67,39 @@ tbody tr.print-user-data-sub-header {
 	font-weight: normal;
 }
 
-.print-user-data .print-user-data-sub-sub-elem {
+.print-user-data .print-user-data-sub-sub-elem,
+.print-user-data-signature  {
 	background: var(--light-background);
 	color: var(--normal-text);
 	text-transform: uppercase;
 	font-weight: normal;
 }
-.print-user-data .print-user-data-elem-thin:first-child {
-	border-bottom: 1px solid  var(--normal-background);
-	border-right: 1px solid  var(--normal-background);
+
+.print-user-data .print-user-data-entities {
+	border: 2px solid var(--normal-background);
 }
-.print-user-data .print-user-data-elem-thin:last-child {
-	border-bottom: 1px solid  var(--normal-background);
-	border-left: 1px solid  var(--normal-background);
+.print-user-data .print-user-data-entities td {
+	border: none;
+}
+
+.print-user-data .print-user-data-entities-entity,
+.print-user-data-entities-sumary {
+	border-left: 2px solid var(--normal-background);
+	border-right: 2px solid var(--normal-background);
+}
+.print-user-data .print-user-data-entities-entity td {
+	border: none;
+	border-bottom: 1px solid var(--normal-background);
+	font-weight: normal;
+}
+.print-user-data-entities-sumary td {
+	border: none;
+	border-bottom: 2px solid var(--normal-background);
+}
+
+.print-user-data-signature {
+	display: block;
+	margin-top: 66px;
+	border-top: 1px solid black;
+	padding: 11px;
 }
