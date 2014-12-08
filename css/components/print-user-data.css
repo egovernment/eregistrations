@@ -1,0 +1,76 @@
+/* Default table styles */
+.print-user-data {
+	table-layout: fixed;
+}
+
+.print-user-data th,
+.print-user-data td {
+	padding: 11px;
+	border: 2px solid var(--normal-background);
+	font-weight: bold;
+}
+
+.print-user-data td > span:first-child {
+	vertical-align: text-top;
+	margin-right: 5px;
+}
+.print-user-data td > span:last-child:not(:first-child) {
+	color: var(--normal-text);
+	text-transform: uppercase;
+	font-size: 12px;
+}
+
+/* Table heder styles */
+.print-user-data thead {
+	background: var(--normal-background);
+}
+.print-user-data thead th {
+	text-align: left;
+	color: var(--white-text);
+}
+
+.print-user-data thead tr:first-child {
+	padding-top: 11px;
+}
+.print-user-data thead tr:first-child th {
+	padding-bottom: 0;
+	font-weight: normal;
+}
+
+.print-user-data thead tr:last-child {
+	font-size: 22px;
+	padding-bottom: 11px;
+}
+.print-user-data thead tr:last-child th {
+	padding-top: 0;
+}
+
+/* Table body styles */
+
+tbody tr.print-user-data-sub-header {
+	background: var(--normal-light-background);
+}
+.print-user-data-sub-header td {
+	color: var(--normal-text);
+	font-size: 18px;
+	font-weight: bold;
+}
+
+.print-user-data .print-user-data-document:not(:last-child) td {
+	border-bottom: none;
+
+}
+.print-user-data .print-user-data-document td {
+	border-top: none;
+	font-weight: normal;
+}
+
+.print-user-data-sub-sub-elem {
+	background: var(--light-background);
+	color: var(--normal-text);
+	text-transform: uppercase;
+}
+
+.print-user-data-nested-row td {
+	border: none;
+}
