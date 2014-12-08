@@ -34,7 +34,7 @@
 }
 
 .print-user-data thead tr:first-child {
-	padding-top: 11px;
+	padding-top: 10px;
 }
 .print-user-data thead tr:first-child th {
 	padding-bottom: 0;
@@ -44,7 +44,7 @@
 
 .print-user-data thead tr:last-child {
 	font-size: 22px;
-	padding-bottom: 11px;
+	padding-bottom: 10px;
 }
 .print-user-data thead tr:last-child th {
 	padding-top: 0;
