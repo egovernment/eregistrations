@@ -45,6 +45,7 @@ module.exports = function (view) {
 		'forms/partner-id': bind(userMain.diff('./partner')),
 		'user-submitted': bind(subMain.diff('./user-submitted')),
 		'user-submitted/history-print': bind(mainPrint.diff('./print-user-history')),
+		'user-submitted/data-print': bind(view.documentElement.diff('./print-user-data')),
 
 		// Users admin routes
 		'users-admin': bind(subMain.diff('./users-admin')),

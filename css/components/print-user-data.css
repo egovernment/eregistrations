@@ -1,0 +1,131 @@
+/* Default table styles */
+.print-user-data {
+	table-layout: fixed;
+	width: 747px;
+	border: 2px solid #ddd;
+}
+
+.print-user-data th,
+.print-user-data td {
+	padding: 10px;
+	border: 1px solid #ddd;
+	font-weight: bold;
+	text-align: left;
+	vertical-align: baseline;
+	color: #000;
+}
+
+.print-user-data td > span:first-child {
+	vertical-align: text-top;
+	margin-right: 5px;
+}
+.print-user-data td > span:last-child:not(:first-child) {
+	color: var(--normal-text);
+	text-transform: uppercase;
+	font-size: 12px;
+}
+
+.print-user-data-section-end td,
+.print-user-data-section-end th,
+.print-user-data .print-user-data-section-single-end {
+	border-bottom: 2px solid #ddd;
+}
+
+/* Table heder styles */
+.print-user-data thead {
+	background: #666;
+}
+.print-user-data thead th {
+	text-align: left;
+	color: var(--white-text);
+}
+
+.print-user-data thead tr:first-child {
+	padding-top: 10px;
+}
+.print-user-data thead tr:first-child th {
+	padding-bottom: 0;
+	font-weight: normal;
+	border-bottom: none;
+}
+
+.print-user-data thead tr:last-child {
+	font-size: 22px;
+	padding-bottom: 10px;
+}
+.print-user-data thead tr:last-child th {
+	padding-top: 0;
+	border-top: none;
+}
+
+/* Table body styles */
+
+tbody tr.print-user-data-header {
+	background: #eee;
+}
+.print-user-data-header td {
+	color: #888;
+	font-size: 18px;
+	font-weight: bold;
+	border: 2px solid #ddd;
+}
+
+.print-user-data-document td {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.print-user-data .print-user-data-document:not(:last-child) td {
+	border-bottom: none;
+
+}
+.print-user-data .print-user-data-document td {
+	border-top: none;
+	font-weight: normal;
+}
+
+.print-user-data tbody th,
+.print-user-data-signature  {
+	background: #fafafa;
+	color: #888;
+	text-transform: uppercase;
+	font-weight: normal;
+}
+
+.print-user-data .print-user-data-entities {
+	border: 1px solid var(--normal-background);
+}
+.print-user-data .print-user-data-entities td {
+	border: none;
+}
+.print-user-data .print-user-data-entities td:last-child {
+	text-align: center;
+}
+
+.print-user-data .print-user-data-entities-entity,
+.print-user-data-entities-sumary {
+	border-left: 1px solid var(--normal-background);
+	border-right: 1px solid var(--normal-background);
+}
+.print-user-data .print-user-data-entities-entity td {
+	border: none;
+	border-bottom: 1px solid var(--normal-background);
+	font-weight: normal;
+}
+.print-user-data .print-user-data-entities-entity td:nth-last-child(2) {
+	text-align: right;
+}
+
+.print-user-data-entities-sumary td {
+	border: none;
+	border-bottom: 1px solid var(--normal-background);
+}
+.print-user-data-entities-sumary td:nth-last-child(2) {
+	text-align: right;
+}
+.print-user-data-signature {
+	display: block;
+	margin-top: 66px;
+	border-top: 1px solid black;
+	padding: 11px;
+}

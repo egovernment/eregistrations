@@ -1,11 +1,16 @@
 ::root {
 	--desktop-width: 1070px;
+
 	/* Theme colors virables */
 	--white-background: #ffffff;
-	--normal-light-background: #ddd;
 	--light-background: #f5f5f5;
+	--normal-light-background: #ddd;
+	--normal-background: #999;
+
 	/* Text colors */
 	--dark-text: #333333;
+	--normal-text: #999;
+	--white-text: #ffffff;
 }
 
 html {
