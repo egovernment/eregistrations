@@ -1,15 +1,17 @@
 /* Default table styles */
 .print-user-data {
 	table-layout: fixed;
+	width: 747px;
 }
 
 .print-user-data th,
 .print-user-data td {
-	padding: 11px;
+	padding: 10px;
 	border: 2px solid var(--normal-background);
 	font-weight: bold;
 	text-align: left;
 	vertical-align: baseline;
+	color: #000;
 }
 
 .print-user-data td > span:first-child {
@@ -24,7 +26,7 @@
 
 /* Table heder styles */
 .print-user-data thead {
-	background: var(--normal-background);
+	background: #666;
 }
 .print-user-data thead th {
 	text-align: left;
@@ -37,6 +39,7 @@
 .print-user-data thead tr:first-child th {
 	padding-bottom: 0;
 	font-weight: normal;
+	border-bottom: none;
 }
 
 .print-user-data thead tr:last-child {
@@ -45,17 +48,23 @@
 }
 .print-user-data thead tr:last-child th {
 	padding-top: 0;
+	border-top: none;
 }
 
 /* Table body styles */
 
 tbody tr.print-user-data-sub-header {
-	background: var(--normal-light-background);
+	background: #eee;
 }
 .print-user-data-sub-header td {
-	color: var(--normal-text);
+	color: #888;
 	font-size: 18px;
 	font-weight: bold;
+}
+
+.print-user-data .print-user-data-document td {
+	padding-top: 0;
+	padding-bottom: 0;
 }
 
 .print-user-data .print-user-data-document:not(:last-child) td {
@@ -69,8 +78,8 @@ tbody tr.print-user-data-sub-header {
 
 .print-user-data .print-user-data-sub-sub-elem,
 .print-user-data-signature  {
-	background: var(--light-background);
-	color: var(--normal-text);
+	background: #fafafa;
+	color: #888;
 	text-transform: uppercase;
 	font-weight: normal;
 }
@@ -80,6 +89,9 @@ tbody tr.print-user-data-sub-header {
 }
 .print-user-data .print-user-data-entities td {
 	border: none;
+}
+.print-user-data .print-user-data-entities td:last-child {
+	text-align: center;
 }
 
 .print-user-data .print-user-data-entities-entity,
@@ -92,11 +104,17 @@ tbody tr.print-user-data-sub-header {
 	border-bottom: 1px solid var(--normal-background);
 	font-weight: normal;
 }
+.print-user-data .print-user-data-entities-entity td:nth-last-child(2) {
+	text-align: right;
+}
+
 .print-user-data-entities-sumary td {
 	border: none;
 	border-bottom: 2px solid var(--normal-background);
 }
-
+.print-user-data-entities-sumary td:nth-last-child(2) {
+	text-align: right;
+}
 .print-user-data-signature {
 	display: block;
 	margin-top: 66px;

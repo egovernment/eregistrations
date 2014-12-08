@@ -1,11 +1,8 @@
 'use strict';
 
-exports['print-page-title'] = function () {
-	h2("User Data");
-	p("19/11/2015");
-};
+exports.body = function () {
+	link({ href: '/prototype-print.css', rel: 'stylesheet' });
 
-exports.main = function () {
 	table(
 		{ class: 'print-user-data' },
 		thead(
@@ -264,7 +261,7 @@ exports.main = function () {
 			tr(
 				{ class: 'print-user-data-entities' },
 				td(
-					{ colspan: 6 },
+					{ colspan: 5 },
 					"Name of shareholder"
 				),
 				td(
@@ -275,33 +272,33 @@ exports.main = function () {
 					"% of shares"
 				),
 				td("Amount"),
-				td({ colspan: 2 }, "Value")
+				td({ colspan: 3 }, "Value")
 			),
 			tr(
 				{ class: 'print-user-data-entities-entity' },
-				td({ colspan: 6 }, "Frank Grozel"),
+				td({ colspan: 5 }, "Frank Grozel"),
 				td({ colspan: 2 }, "Yes"),
 				td('50%'),
 				td('10'),
 				td("$"),
-				td("1,000.00")
+				td({ colspan: 2 }, "1,000.00")
 			),
 			tr(
 				{ class: 'print-user-data-entities-entity' },
-				td({ colspan: 6 }, "Frank Grozel"),
+				td({ colspan: 5 }, "Frank Grozel"),
 				td({ colspan: 2 }, "Yes"),
 				td('50%'),
 				td('10'),
 				td("$"),
-				td("1,000.00")
+				td({ colspan: 2 }, "1,000.00")
 			),
 			tr(
 				{ class: 'print-user-data-entities-sumary' },
-				td({ colspan: 8 }),
+				td({ colspan: 7 }),
 				td('100%'),
 				td('20'),
 				td("$"),
-				td("2,000.00")
+				td({ colspan: 2 }, "2,000.00")
 			),
 
 			tr(
