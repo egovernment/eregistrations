@@ -53,10 +53,10 @@
 
 /* Table body styles */
 
-tbody tr.print-user-data-sub-header {
+tbody tr.print-user-data-header {
 	background: #eee;
 }
-.print-user-data-sub-header td {
+.print-user-data-header td {
 	color: #888;
 	font-size: 18px;
 	font-weight: bold;
@@ -76,7 +76,7 @@ tbody tr.print-user-data-sub-header {
 	font-weight: normal;
 }
 
-.print-user-data .print-user-data-sub-sub-elem,
+.print-user-data .print-user-data-head-elem,
 .print-user-data-signature  {
 	background: #fafafa;
 	color: #888;

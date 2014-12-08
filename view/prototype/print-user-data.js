@@ -21,7 +21,7 @@ exports.body = function () {
 		),
 		tbody(
 			tr(
-				{ class:  'print-user-data-sub-header' },
+				{ class:  'print-user-data-header' },
 				td(
 					{ colspan: 12 },
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
@@ -74,7 +74,7 @@ exports.body = function () {
 			),
 
 			tr(
-				{ class:  'print-user-data-sub-header' },
+				{ class:  'print-user-data-header' },
 				td(
 					{ colspan: 12 },
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
@@ -82,15 +82,15 @@ exports.body = function () {
 			),
 			tr(
 				td(
-					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 4, class:  'print-user-data-head-elem' },
 					"Company name:"
 				),
 				td(
-					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 4, class:  'print-user-data-head-elem' },
 					"Company short name:"
 				),
 				td(
-					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 4, class:  'print-user-data-head-elem' },
 					"Type of bussiness:"
 				)
 			),
@@ -111,7 +111,7 @@ exports.body = function () {
 
 			tr(
 				td(
-					{ colspan: 2, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 2, class:  'print-user-data-head-elem' },
 					"Lorem ipsum dolor:"
 				),
 				td(
@@ -119,14 +119,14 @@ exports.body = function () {
 					"Lorem ipsum dolor sit amet"
 				),
 				td(
-					{ colspan: 6, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 6, class:  'print-user-data-head-elem' },
 					"Lorem ipsum dolor sit amet"
 				)
 			),
 
 			tr(
 				th(
-					{ colspan: 2, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 2, class:  'print-user-data-head-elem' },
 					"Lorem ipsum dolor:"
 				),
 				td(
@@ -140,7 +140,7 @@ exports.body = function () {
 			),
 			tr(
 				th(
-					{ colspan: 2, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 2, class:  'print-user-data-head-elem' },
 					"Lorem ipsum dolor:"
 				),
 				td(
@@ -150,7 +150,7 @@ exports.body = function () {
 			),
 			tr(
 				th(
-					{ colspan: 2, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 2, class:  'print-user-data-headelem' },
 					"Lorem ipsum dolor:"
 				),
 				td(
@@ -160,7 +160,7 @@ exports.body = function () {
 			),
 			tr(
 				td(
-					{ colspan: 2, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 2, class:  'print-user-data-head-elem' },
 					"Lorem ipsum dolor:"
 				),
 				td(
@@ -171,11 +171,11 @@ exports.body = function () {
 
 			tr(
 				th(
-					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 4, class:  'print-user-data-head-elem' },
 					"NIT:"
 				),
 				td(
-					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 4, class:  'print-user-data-head-elem' },
 					"NRC:"
 				),
 				td(
@@ -195,15 +195,15 @@ exports.body = function () {
 
 			tr(
 				th(
-					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 4, class:  'print-user-data-head-elem' },
 					"Date:"
 				),
 				td(
-					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 4, class:  'print-user-data-head-elem' },
 					"Place:"
 				),
 				td(
-					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 4, class:  'print-user-data-head-elem' },
 					"Lorem ipsum dolor sit amet"
 				)
 			),
@@ -224,15 +224,15 @@ exports.body = function () {
 
 			tr(
 				th(
-					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 4, class:  'print-user-data-head-elem' },
 					"Capital:"
 				),
 				td(
-					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 4, class:  'print-user-data-head-elem' },
 					"Shareholders:"
 				),
 				td(
-					{ colspan: 4, class:  'print-user-data-sub-sub-elem' },
+					{ colspan: 4, class:  'print-user-data-head-elem' },
 					"Average income"
 				)
 			),
@@ -252,7 +252,7 @@ exports.body = function () {
 			),
 
 			tr(
-				{ class:  'print-user-data-sub-header' },
+				{ class:  'print-user-data-header' },
 				td(
 					{ colspan: 12 },
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
@@ -302,7 +302,7 @@ exports.body = function () {
 			),
 
 			tr(
-				{ class: 'print-user-data-sub-header' },
+				{ class: 'print-user-data-header' },
 				td(
 					{ colspan: 12 },
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
