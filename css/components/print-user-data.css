@@ -2,12 +2,13 @@
 .print-user-data {
 	table-layout: fixed;
 	width: 747px;
+	border: 2px solid #ddd;
 }
 
 .print-user-data th,
 .print-user-data td {
 	padding: 10px;
-	border: 2px solid #ddd;
+	border: 1px solid #ddd;
 	font-weight: bold;
 	text-align: left;
 	vertical-align: baseline;
@@ -22,6 +23,12 @@
 	color: var(--normal-text);
 	text-transform: uppercase;
 	font-size: 12px;
+}
+
+.print-user-data-section-end td,
+.print-user-data-section-end th,
+.print-user-data .print-user-data-section-single-end {
+	border-bottom: 2px solid #ddd;
 }
 
 /* Table heder styles */
@@ -60,6 +67,7 @@ tbody tr.print-user-data-header {
 	color: #888;
 	font-size: 18px;
 	font-weight: bold;
+	border: 2px solid #ddd;
 }
 
 .print-user-data-document td {
@@ -85,7 +93,7 @@ tbody tr.print-user-data-header {
 }
 
 .print-user-data .print-user-data-entities {
-	border: 2px solid var(--normal-background);
+	border: 1px solid var(--normal-background);
 }
 .print-user-data .print-user-data-entities td {
 	border: none;
@@ -96,8 +104,8 @@ tbody tr.print-user-data-header {
 
 .print-user-data .print-user-data-entities-entity,
 .print-user-data-entities-sumary {
-	border-left: 2px solid var(--normal-background);
-	border-right: 2px solid var(--normal-background);
+	border-left: 1px solid var(--normal-background);
+	border-right: 1px solid var(--normal-background);
 }
 .print-user-data .print-user-data-entities-entity td {
 	border: none;
@@ -110,7 +118,7 @@ tbody tr.print-user-data-header {
 
 .print-user-data-entities-sumary td {
 	border: none;
-	border-bottom: 2px solid var(--normal-background);
+	border-bottom: 1px solid var(--normal-background);
 }
 .print-user-data-entities-sumary td:nth-last-child(2) {
 	text-align: right;

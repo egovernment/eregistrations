@@ -95,6 +95,7 @@ exports.body = function () {
 				)
 			),
 			tr(
+				{ class: 'print-user-data-section-end ' },
 				td(
 					{ colspan: 4 },
 					"Lorem ipsum"
@@ -134,7 +135,7 @@ exports.body = function () {
 					"Lorem ipsum dolor sit amet"
 				),
 				td(
-					{ colspan: 6, rowspan: 4 },
+					{ colspan: 6, rowspan: 4, class: 'print-user-data-section-single-end' },
 					"Lorem ipsum dolor sit amet"
 				)
 			),
@@ -159,6 +160,7 @@ exports.body = function () {
 				)
 			),
 			tr(
+				{ class: 'print-user-data-section-end ' },
 				th(
 					{ colspan: 2 },
 					"Lorem ipsum dolor:"
@@ -183,6 +185,7 @@ exports.body = function () {
 				)
 			),
 			tr(
+				{ class: 'print-user-data-section-end ' },
 				td(
 					{ colspan: 4 },
 					"234523523542345"
@@ -208,6 +211,7 @@ exports.body = function () {
 				)
 			),
 			tr(
+				{ class: 'print-user-data-section-end ' },
 				th(
 					{ colspan: 4 },
 					"13.12.2014"
@@ -237,6 +241,7 @@ exports.body = function () {
 				)
 			),
 			tr(
+				{ class: 'print-user-data-section-end ' },
 				td(
 					{ colspan: 4 },
 					"200 000"
@@ -309,6 +314,7 @@ exports.body = function () {
 				)
 			),
 			tr(
+				{ class: 'print-user-data-section-end ' },
 				td(
 					{ colspan: 12 },
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse molestie, neque " +
