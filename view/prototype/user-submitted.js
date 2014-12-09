@@ -2,7 +2,7 @@
 
 var syncStyle        = require('dom-ext/html-element/#/sync-style')
   , zoomOnHover      = require('dom-ext/html-element/#/zoom-on-hover')
-  , isVisual         = require('../utlils/is-visual')
+  , isVisual         = require('../utils/is-visual')
   , isMobileView     = require('../utils/is-mobile-view')
   , syncHeight       = require('../utils/sync-height')
   , generateSections = require('../components/generate-sections')
