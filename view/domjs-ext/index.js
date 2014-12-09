@@ -54,7 +54,7 @@ module.exports = function (domjs) {
 	// Directives
 	require('domjs-ext/d/fixed')(domjs);
 	require('domjs-ext/d/form/auto-submit')(domjs);
-	require('../directives/responsive-table')(domjs);
+	require('../directives/table-responsive')(domjs);
 
 	// DBJS extensions
 	RelValue = require('dbjs-dom/text/utils/rel-value');
