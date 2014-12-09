@@ -1,7 +1,6 @@
 'use strict';
 
-var login = require('./_login'),
-		resetPassword = require('./_reset-password-request');
+var login = require('./_login');
 
 exports.body = function () {
 	var closeBtn, openBtn, appNavDialog, close, open;
@@ -27,8 +26,6 @@ exports.body = function () {
 			)
 		);
 	div({ class: 'modal-courtain' });
-	insert(login);
-	insert(resetPassword);
 
 	appNavDialog = dialog(
 		{ open: true, class: 'app-nav-dialog' },

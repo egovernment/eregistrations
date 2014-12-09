@@ -1,9 +1,13 @@
 'use strict';
 
-var register = require('./_register');
+var login         = require('./_login')
+  , register      = require('./_register')
+  , resetPassword = require('./_reset-password-request');
 
 exports.main = function () {
+	insert(login);
 	insert(register);
+	insert(resetPassword);
 	div({ class: 'public-banner', id: 'banner' },
 		div({ class: 'banner-text content' },
 				div({ class: 'baner-box-text' },
