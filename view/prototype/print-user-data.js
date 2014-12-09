@@ -15,7 +15,7 @@ exports.body = function () {
 			tr(
 				th(
 					{ colspan: 12 },
-					"Lorem ipsum dolor sit"
+					span("Lorem ipsum dolor sit")
 				)
 			)
 		),

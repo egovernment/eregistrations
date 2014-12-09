@@ -32,12 +32,17 @@
 }
 
 /* Table heder styles */
-.print-user-data thead {
+.print-user-data thead th {
 	background: #666;
 }
 .print-user-data thead th {
 	text-align: left;
 	color: var(--white-text);
+	font-size: 16px;
+	font-weight: normal;
+}
+.print-user-data thead th span:first-child {
+	font-size: 28px;
 }
 
 .print-user-data thead tr:first-child {

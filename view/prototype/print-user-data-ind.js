@@ -8,14 +8,19 @@ exports.body = function () {
 		thead(
 			tr(
 				th(
-					{ colspan: 12 },
-					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
+					{ colspan: 10 },
+					span("COMERCIANTE INDIVIDUAL"),
+					br(),
+					span("SOLICITUD DE INSCRIPCIÓN PARA")
+				),
+				td(
+					{ colspan: 2, rowspan: 2 }
 				)
 			),
 			tr(
 				th(
-					{ colspan: 12 },
-					"Lorem ipsum dolor sit"
+					{ colspan: 10 },
+					"TARJETA NIT ANTE EL MINISTERIO DE HACIENDA"
 				)
 			)
 		),

@@ -95,6 +95,11 @@ exports.body = function () {
 						span({ class: 'label-reg' }, "Part B"))
 				),
 				li(
+					a({ href: '/user-submitted/data-print-ind/' },
+						span("User submitted individual - data print"),
+						span({ class: 'label-reg' }, "Part B"))
+				),
+				li(
 					a({ href: '/user-submitted/history-print/' }, span("User history print"),
 						span({ class: 'label-reg' }, "Part B"))
 				),
