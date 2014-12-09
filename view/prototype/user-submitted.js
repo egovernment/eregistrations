@@ -1,7 +1,6 @@
 'use strict';
 
 var syncStyle        = require('dom-ext/html-element/#/sync-style')
-  , zoomOnHover      = require('dom-ext/html-element/#/zoom-on-hover')
   , isVisual         = require('../utils/is-visual')
   , isMobileView     = require('../utils/is-mobile-view')
   , syncHeight       = require('../utils/sync-height')
@@ -199,9 +198,9 @@ exports['sub-main'] = function () {
 						a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, "Next"))
 					))),
 			elem = ul({ id: 'doc-previews', class: 'image-placeholder' },
-				zoomOnHover.call(li(img({ src: '/uploads/docASubFile2.idoc.png.jpg' }))),
-				zoomOnHover.call(li(img({ src: '/uploads/docASubFile1.idoc.jpg' }))),
-				zoomOnHover.call(li(img({ src: '/uploads/docBSubFile1.idoc.jpg' })))),
+				li(img({ zoomOnHover: true, src: '/uploads/docASubFile2.idoc.png.jpg' })),
+				li(img({ zoomOnHover: true, src: '/uploads/docASubFile1.idoc.jpg' })),
+				li(img({ zoomOnHover: true, src: '/uploads/docBSubFile1.idoc.jpg' }))),
 			legacy('hashNavContentList', 'doc-previews', 'doc-preview'),
 			div({ id: 'submitted-preview-navigation-bottom',
 				class: 'submitted-preview-documents-navigation' },
