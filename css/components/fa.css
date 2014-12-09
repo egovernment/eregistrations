@@ -180,3 +180,10 @@ e.g.:
 .fa-check-square-o:before {
 	content: '\f046';
 }
+
+.fa-square-o {
+	width: 0.95em;
+}
+.fa-square-o:before {
+	content: '\f096'
+}
