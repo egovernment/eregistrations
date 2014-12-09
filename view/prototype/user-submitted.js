@@ -1,12 +1,13 @@
 'use strict';
 
-var syncStyle = require('dom-ext/html-element/#/sync-style')
-  , zoomOnHover = require('dom-ext/html-element/#/zoom-on-hover')
-  , isMobileView = require('../utils/is-mobile-view')
-  , syncHeight = require('../utils/sync-height')
-  , db = require('mano').db
-  , user = db.User.prototype
-  , generateSections = require('../components/generate-sections');
+var syncStyle        = require('dom-ext/html-element/#/sync-style')
+  , zoomOnHover      = require('dom-ext/html-element/#/zoom-on-hover')
+  , isMobileView     = require('../utils/is-mobile-view')
+  , syncHeight       = require('../utils/sync-height')
+  , generateSections = require('../components/generate-sections')
+  , db               = require('mano').db
+
+  , user = db.User.prototype;
 
 exports['user-name'] = function () {
 	text("User Submited");
