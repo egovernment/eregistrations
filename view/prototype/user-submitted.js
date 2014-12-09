@@ -2,6 +2,7 @@
 
 var syncStyle        = require('dom-ext/html-element/#/sync-style')
   , zoomOnHover      = require('dom-ext/html-element/#/zoom-on-hover')
+  , isVisual         = require('../utlils/is-visual')
   , isMobileView     = require('../utils/is-mobile-view')
   , syncHeight       = require('../utils/sync-height')
   , generateSections = require('../components/generate-sections')
@@ -226,6 +227,8 @@ exports['sub-main'] = function () {
 			generateSections(user.formSections))
 	);
 
-	syncStyle.call(target, source, 'height', isMobileView);
-	syncHeight(elem);
+	if (isVisual) {
+		syncStyle.call(target, source, 'height', isMobileView);
+		syncHeight(elem);
+	}
 };
