@@ -1,3 +1,6 @@
 .nested-user .user-steps-menu {
 	background: var(--normal-dark-background);
 }
+.nested-user .user-steps-menu-list li:after {
+	content: url('img/arrow-mask-demo.png');
+}
