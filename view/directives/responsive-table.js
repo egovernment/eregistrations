@@ -1,11 +1,19 @@
 'use strict';
 
-var memoize = require('memoizee/weak')
+var noop    = require('es5-ext/function/noop')
+  , memoize = require('memoizee/weak')
 
   , forEach = Array.prototype.forEach;
 
 module.exports = function (domjs) {
-	domjs.getDirectives('table').responsive = function () {
+	var directives = domjs.getDirectives('table');
+	if (typeof MutationObserver !== 'function') {
+		console.warn("MutationObserver implementation not found!" +
+			" Table `responsive` decorator was not configured");
+		directives.responsive = noop;
+		return;
+	}
+	directives.responsive = function () {
 		var transform, document = this.ownerDocument
 		  , headings = this.querySelectorAll('thead > tr:first-child > th')
 		  , tbody = this.querySelector('tbody')
