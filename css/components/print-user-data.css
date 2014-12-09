@@ -15,11 +15,11 @@
 	color: #000;
 }
 
-.print-user-data td > span:first-child {
+.print-user-data td > span {
 	vertical-align: text-top;
 	margin-right: 5px;
 }
-.print-user-data td > span:last-child:not(:first-child) {
+.print-user-data .print-user-data-document td > span:last-child:not(:first-child) {
 	color: var(--normal-text);
 	text-transform: uppercase;
 	font-size: 12px;
@@ -32,12 +32,17 @@
 }
 
 /* Table heder styles */
-.print-user-data thead {
+.print-user-data thead th {
 	background: #666;
 }
 .print-user-data thead th {
 	text-align: left;
 	color: var(--white-text);
+	font-size: 16px;
+	font-weight: normal;
+}
+.print-user-data thead th span:first-child {
+	font-size: 28px;
 }
 
 .print-user-data thead tr:first-child {
