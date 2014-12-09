@@ -32,49 +32,106 @@ exports.body = function () {
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
 				)
 			),
+
 			tr(
-				{ class:  'print-user-data-document' },
+				th(
+					{ colspan: 2 },
+					"Industry:"
+				),
 				td(
-					{ colspan: 12 },
+					{ colspan: 2 },
+					span({ class: 'fa fa-check-square-o' }, "Checked")
+				),
+				th(
+					{ colspan: 2 },
+					"Lorem ipsum:"
+				),
+				td(
+					{ colspan: 2 },
+					"Yes",
+					" ",
 					span({ class: 'fa fa-check-square-o' }, "Checked"),
-					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-					span("(502)")
+					"No",
+					" ",
+					span({ class: 'fa fa-check-square-o' }, "Checked")
+				),
+				th(
+					{ colspan: 2 },
+					"Lorem ipsum:"
+				),
+				td(
+					{ colspan: 2 },
+					"Lorem ipsum"
 				)
 			),
 			tr(
-				{ class:  'print-user-data-document' },
+				th(
+					{ colspan: 2 },
+					"Comerce:"
+				),
 				td(
-					{ colspan: 12 },
-					span({ class: 'fa fa-check-square-o' }, "Checked"),
-					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-					span("(502)")
+					{ colspan: 2 },
+					span({ class: 'fa fa-check-square-o' }, "Checked")
+				),
+				th(
+					{ colspan: 2 },
+					"Lorem ipsum:"
+				),
+				td(
+					{ colspan: 2 },
+					"Lorem ipsum"
+				),
+				td(
+					{ colspan: 4 }
 				)
 			),
 			tr(
-				{ class:  'print-user-data-document' },
+				th(
+					{ colspan: 2 },
+					"Services:"
+				),
 				td(
-					{ colspan: 12 },
-					span({ class: 'fa fa-check-square-o' }, "Checked"),
-					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-					span("(502)")
+					{ colspan: 2 },
+					span({ class: 'fa fa-check-square-o' }, "Checked")
+				),
+				td(
+					{ colspan: 4 }
+				),
+				td(
+					{ colspan: 4 }
 				)
 			),
 			tr(
-				{ class:  'print-user-data-document' },
+				th(
+					{ colspan: 2 },
+					"Agriculture:"
+				),
 				td(
-					{ colspan: 12 },
-					span({ class: 'fa fa-check-square-o' }, "Checked"),
-					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-					span("(502)")
+					{ colspan: 2 },
+					span({ class: 'fa fa-check-square-o' }, "Checked")
+				),
+				td(
+					{ colspan: 4 }
+				),
+				td(
+					{ colspan: 4 }
 				)
 			),
 			tr(
-				{ class:  'print-user-data-document' },
+				{ class: 'print-user-data-section-end ' },
+				th(
+					{ colspan: 2 },
+					"Other sector:"
+				),
 				td(
-					{ colspan: 12 },
-					span({ class: 'fa fa-check-square-o' }, "Checked"),
-					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ",
-					span("(502)")
+					{ colspan: 2 },
+					span({ class: 'fa fa-check-square-o' }, "Checked")
+				),
+				td(
+					{ colspan: 4 }
+				),
+				td(
+					{ colspan: 4 }
 				)
 			),
 
@@ -85,6 +142,7 @@ exports.body = function () {
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
 				)
 			),
+
 			tr(
 				th(
 					{ colspan: 4 },
