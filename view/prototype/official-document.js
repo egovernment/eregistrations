@@ -1,9 +1,8 @@
 'use strict';
 
-var syncStyle = require('dom-ext/html-element/#/sync-style'),
-		zoomOnHover = require('dom-ext/html-element/#/zoom-on-hover'),
-		isMobileView = require('../utils/is-mobile-view'),
-		syncHeight = require('../utils/sync-height');
+var syncStyle    = require('dom-ext/html-element/#/sync-style')
+  , isMobileView = require('../utils/is-mobile-view')
+  , syncHeight   = require('../utils/sync-height');
 
 exports['official-user-details'] = { class: { active: true } };
 
@@ -80,8 +79,8 @@ exports.tab = function () {
 						)
 					),
 				elem = ul({ class: 'image-placeholder' },
-					zoomOnHover.call(li({ class: 'active' },
-						img({ src: '/uploads/docASubFile2.idoc.png.jpg' }))))),
+					li({ class: 'active' },
+						img({ zoomOnHover: true, src: '/uploads/docASubFile2.idoc.png.jpg' })))),
 			target = div({ class: 'section-primary submitted-preview-user-data' },
 				h2({ class: 'container-with-nav' }, "Application form",
 					a(

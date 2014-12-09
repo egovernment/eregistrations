@@ -1,12 +1,12 @@
 'use strict';
 
 var syncStyle    = require('dom-ext/html-element/#/sync-style')
-  , zoomOnHover  = require('dom-ext/html-element/#/zoom-on-hover')
   , isMobileView = require('../utils/is-mobile-view')
   , syncHeight   = require('../utils/sync-height')
-  , db = require('mano').db
-  , user = db.User.prototype
-  , reject = require('./_reject');
+  , db           = require('mano').db
+  , reject       = require('./_reject')
+
+  , user = db.User.prototype;
 
 exports['sub-main'] = function () {
 	var source,
@@ -153,12 +153,8 @@ exports['sub-main'] = function () {
 			div({ class: 'container-with-nav' },
 				h3(i({ class: 'list-item-number' }, "1"),
 					"Memorandum and articles of association")),
-			zoomOnHover.call(
-				elem = div(
-					{ class: 'image-placeholder' },
-					img({ src: '/uploads/docASubFile2.idoc.png.jpg' })
-				)
-			),
+			elem = div({ class: 'image-placeholder' },
+				img({ zoomOnHover: true, src: '/uploads/docASubFile2.idoc.png.jpg' })),
 			form(
 				{ class: 'submitted-preview-form' },
 				ul(
