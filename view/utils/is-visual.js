@@ -2,9 +2,9 @@
 
 'use strict';
 
-module.exports = function () {
+module.exports = (function () {
 	if ((typeof window !== 'object') || !window) return false;
 	if ((typeof document !== 'object') || !document) return false;
 	if (typeof window.getComputedStyle !== 'function') return false;
 	return Boolean(window.getComputedStyle(document.documentElement).color);
-};
+}());
