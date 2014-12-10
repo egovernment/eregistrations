@@ -47,8 +47,8 @@
 }
 @-moz-document url-prefix() {
 	.app-nav-dialog > section {
-		overflow: hidden;
-		overflow-y: auto;
+		overflow-x: hidden;
+
 	}
 }
 
