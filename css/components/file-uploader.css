@@ -36,7 +36,7 @@
 }
 @-moz-document url-prefix() {
 	.file-uploader-button label {
-		padding:  6px 16px 4px;
+		padding:  4px 16px 6px;
 	}
 }
 
