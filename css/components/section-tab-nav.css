@@ -17,6 +17,15 @@
 	background: var(--white-background);
 	text-decoration: none;
 }
+@-moz-document url-prefix() {
+	.section-tab-nav .tab {
+		bottom: 2px;
+	}
+	.section-tab-nav .tab.active {
+		padding-bottom: 14px;
+	}
+}
+
 .section-tab-nav .tab.active {
 	background: var(--white-background);
 	border-bottom: none;
