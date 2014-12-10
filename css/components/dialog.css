@@ -20,7 +20,6 @@ div.modal-courtain {
 
 dialog {
 	left: 50%;
-	margin: 22px auto;
 	position: absolute;
 	transform: translate(-50%);
 	right: inherit;
