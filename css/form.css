@@ -154,7 +154,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	white-space: nowrap;
 }
 
-.input-prepend inputs {
+.input-prepend input {
 	border-radius: 0 4px 4px 0;
 	max-width: 90%;
 	border-left: none;
