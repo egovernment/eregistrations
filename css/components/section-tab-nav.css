@@ -58,5 +58,6 @@
 		border: 1px solid var(--light-inner-border);
 		background: var(--normal-dark-background);
 		color: var(--white-text);
+		padding-bottom: 0;
 	}
 }
