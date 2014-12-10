@@ -7,6 +7,7 @@
 	padding: 13px;
 	margin-right: 1px;
 	position: relative;
+	bottom: 1px;
 	cursor: pointer;
 	font-size: 17px;
 	text-decoration: none;
@@ -17,10 +18,17 @@
 	background: var(--white-background);
 	text-decoration: none;
 }
+@-moz-document url-prefix() {
+	.section-tab-nav .tab {
+		bottom: 2px;
+	}
+}
+
 .section-tab-nav .tab.active {
 	background: var(--white-background);
 	border-bottom: none;
 	z-index: 999;
+	padding-bottom: 14px;
 }
 .section-tab-nav > div {
 	width: 100%;
