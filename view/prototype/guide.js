@@ -11,7 +11,6 @@ exports['step-guide'] = { class: { 'step-active': true } };
 exports.step = function () {
 	h1("1. Individual registration guide for companies");
 
-	insert(inventory);
 	form(
 		{ class: 'user-guide' },
 		div({ class: 'section-primary' }, h2("Questions"),
@@ -25,6 +24,7 @@ exports.step = function () {
 					'isShoppingGallery'],
 				function (name) {
 					if (name === 'inventory') {
+						insert(inventory);
 						div({ class: 'dbjs-input-component' },
 							label({ for: 'input-' + name }, user.getDescriptor(name).label, ":"),
 							div({ class: 'input' },
