@@ -3,8 +3,6 @@
 var modalContainer = require('./_modal-container');
 
 exports.body = function () {
-	var closeBtn, openBtn, appNavDialog, close, open;
-
 	header({ class: 'header-top-wrapper' },
 		div({ class: 'content header-top' },
 			div(a({ href: '/' },
@@ -12,26 +10,25 @@ exports.body = function () {
 					)
 				),
 			nav(ul({ class: 'menu-top', id: 'menu' },
-					li(a('en')),
-					li(a('sw')),
-					li(a('link one')),
-					li(a('link two')),
-					li(openBtn = a('nav dialog')),
-					li(span({ class: 'login-hint' }, ('Do you have an account?')),
-						a({ class: 'login', href: '#login' },
-						"Log in"
-						))
+				li(a('en')),
+				li(a('sw')),
+				li(a('link one')),
+				li(a('link two')),
+				li(a({ onclick: '$(\'dialog-app-nav\').include()' }, 'nav dialog')),
+				li(span({ class: 'login-hint' }, ('Do you have an account?')),
+					a({ class: 'login', href: '#login' },
+						"Log in"))
 					)
 				)
 			)
 		);
 	div({ class: 'modal-courtain' });
 
-	appNavDialog = dialog(
-		{ open: true, class: 'app-nav-dialog' },
+	dialog(
+		{ id: 'dialog-app-nav', open: true, class: 'app-nav-dialog' },
 		header(
 			h4("Application navigation"),
-			closeBtn = a(span({ class: 'fa fa-close' }, "Close"))
+			a({ onclick: '$(\'dialog-app-nav\').exclude()' }, span({ class: 'fa fa-close' }, "Close"))
 		),
 		section(
 			ol(
@@ -166,23 +163,4 @@ exports.body = function () {
 			)
 		);
 	insert(modalContainer);
-
-	close = function () {
-		if (typeof appNavDialog.close === 'function') {
-			appNavDialog.close();
-			return;
-		}
-		appNavDialog.exclude();
-	};
-
-	open = function () {
-		if (typeof appNavDialog.show === 'function') {
-			appNavDialog.show();
-			return;
-		}
-		appNavDialog.include();
-	};
-
-	closeBtn.onclick = close;
-	openBtn.onclick = open;
 };
