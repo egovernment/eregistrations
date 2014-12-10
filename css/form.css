@@ -197,6 +197,8 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 @-moz-document url-prefix() {
 	.input-append button.add-on {
 		line-height: 26px;
+		position: relative;
+		top: 2px;
 	}
 }
 .dbjs-input-component .error-message {
