@@ -45,6 +45,13 @@
 	max-height: 484px;
 	overflow: auto;
 }
+@-moz-document url-prefix() {
+	.app-nav-dialog > section {
+		overflow: hidden;
+		overflow-y: auto;
+	}
+}
+
 .app-nav-dialog > section ol {
 	counter-reset: li;
 }
