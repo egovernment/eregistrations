@@ -1,21 +1,18 @@
 'use strict';
 
-var db = require('mano').db,
-		user = db.User.prototype,
-		forEach = Array.prototype.forEach,
-		container,
-		resetBtn,
-		totalTxt,
-		inventario,
-		invForm,
-		inventoryFields = ['inventoryShelves', 'inventoryCounters'];
+var db             = require('mano').db
+  , modalContainer = require('./_modal-container')
 
-module.exports = inventario = modal(
-	{ class: 'dialog-inventory' },
+  , user = db.User.prototype, forEach = Array.prototype.forEach
+  , inventoryFields = ['inventoryShelves', 'inventoryCounters']
+  , container, resetBtn, totalTxt;
+
+module.exports = modalContainer.appendChild(dialog(
+	{ id: 'inventory', class: 'dialog-inventory dialog-modal' },
 	header(
 		h3("Inventory of your business")
 	),
-	invForm = form(
+	form(
 		container = ul(
 			inventoryFields,
 			function (name) {
@@ -119,5 +116,4 @@ module.exports = inventario = modal(
 			)
 		)
 	)
-);
-invForm.castAttribute('onsubmit', inventario.hide);
+));

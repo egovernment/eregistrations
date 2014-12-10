@@ -14,7 +14,7 @@ exports.main = function () {
 					h1("Turn your online business on"),
 					h3("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut in " +
 						"massa malesuada, pharetra urna nec, pellentesque tortor. "),
-					a({ class: 'create-account', onclick: register.show },
+					a({ class: 'create-account', href: '#register' },
 						'Create account')
 				),
 				div({ class: 'baner-box-img' },

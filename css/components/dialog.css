@@ -25,6 +25,10 @@ dialog {
 	transform: translate(-50%);
 	right: inherit;
 	border: none;
+	display: none;
+	width: auto;
+	z-index: 1000;
+	margin: 0 auto;
 }
 
 dialog header h3 {
@@ -33,17 +37,12 @@ dialog header h3 {
 	padding: 11px;
 }
 
-.dialog-hidden {
-	display: none;
-	opacity:0;
+.dialog-visible, dialog.active, dialog:target, dialog[open] {
+	display: inline-block;
 }
 
-.dialog-visible {
-	display: inline-block;
-	width: auto;
-	opacity:1;
-	z-index: 1000;
-	margin: 0 auto;
+.dialog-hidden, dialog.inactive {
+	display: none;
 }
 
 dialog header {

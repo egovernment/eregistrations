@@ -1,17 +1,17 @@
 'use strict';
 
 var db = require('mano').db
-  , inventory = require('./_inventory')
 
   , user = db.User.prototype
   , reqRadio;
 
 exports['step-guide'] = { class: { 'step-active': true } };
 
+require('./_inventory');
+
 exports.step = function () {
 	h1("1. Individual registration guide for companies");
 
-	insert(inventory);
 	form(
 		{ class: 'user-guide' },
 		div({ class: 'section-primary' }, h2("Questions"),
@@ -30,7 +30,7 @@ exports.step = function () {
 							div({ class: 'input' },
 								input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) })));
 						div({ class: 'inventory-button' },
-							a({ onclick: inventory.show },
+							a({ href: '#inventory' },
 								span({ class: 'fa fa-calculator icon' }, "Calculator"),
 								span({ class: 'label' }, "Calculate the amount")));
 					} else if (name === 'isShoppingGallery') {

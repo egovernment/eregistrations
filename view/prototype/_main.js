@@ -1,6 +1,6 @@
 'use strict';
 
-var login = require('./_login');
+var modalContainer = require('./_modal-container');
 
 exports.body = function () {
 	var closeBtn, openBtn, appNavDialog, close, open;
@@ -18,7 +18,7 @@ exports.body = function () {
 					li(a('link two')),
 					li(openBtn = a('nav dialog')),
 					li(span({ class: 'login-hint' }, ('Do you have an account?')),
-						a({ class: 'login', onclick: login.show },
+						a({ class: 'login', href: '#login' },
 						"Log in"
 						))
 					)
@@ -165,6 +165,7 @@ exports.body = function () {
 				)
 			)
 		);
+	insert(modalContainer);
 
 	close = function () {
 		if (typeof appNavDialog.close === 'function') {

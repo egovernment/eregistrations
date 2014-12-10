@@ -1,12 +1,11 @@
 'use strict';
 
-var db = require('mano').db,
-		user = db.User.prototype,
-		registerLink,
-		resetPasswordLink;
+var db = require('mano').db
 
-module.exports = modal(
-	{ class: 'dialog-login' },
+  , user = db.User.prototype;
+
+module.exports = dialog(
+	{ id: 'login', class: 'dialog-login dialog-modal' },
 	header(
 		h3("Login")
 	),
@@ -29,11 +28,8 @@ module.exports = modal(
 	),
 	footer(
 		p("No account? ",
-			registerLink = a(" Create an account"),
+			a({ href: '#register' }, "Create an account"),
 			span(" | "),
-			resetPasswordLink = a(" Reset password"))
+			a({ href: "#reset-password" }, "Reset password"))
 	)
 );
-
-registerLink.castAttribute('onclick', require('./_register').show);
-resetPasswordLink.castAttribute('onclick', require('./_reset-password-request').show);

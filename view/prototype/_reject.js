@@ -1,12 +1,11 @@
 'use strict';
 
-var db = require('mano').db,
-	user = db.User.prototype,
-	rejectDialog,
-	hideBtn;
+var db = require('mano').db
 
-module.exports = rejectDialog = modal(
-	{ class: 'dialog-reject' },
+  , user = db.User.prototype;
+
+module.exports = dialog(
+	{ id: 'reject', class: 'dialog-reject dialog-modal' },
 	header(
 		label({ for: 'reject-reason' }, h3("Reason for rejection"))
 	),
@@ -24,8 +23,7 @@ module.exports = rejectDialog = modal(
 	),
 	footer(
 		p(
-			hideBtn = a('Cancel')
+			a({ href: '' }, 'Cancel')
 		)
 	)
 );
-hideBtn.castAttribute('onclick', rejectDialog.hide);
