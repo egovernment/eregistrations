@@ -30,14 +30,14 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 					action: actionUrl, class: ns._if(ns.eq(
 					this.status,
 					1
-				), 'completed') },
+				), 'completed form-elements', 'form-elements') },
 				ns._if(this._label,
 					[ns.h2(this._label),
 						ns.hr()]),
 				options.prepend,
 				resolvent.formResolvent,
 				ns.fieldset(
-					{ id: resolvent.affectedSectionId, class: 'form-elements',
+					{ id: resolvent.affectedSectionId,
 						dbjs: this.master, names: this.formPropertyNames,
 						control: control,
 						controls: legacy.controls }

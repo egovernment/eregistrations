@@ -34,6 +34,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 					result.formResolvent._dbjsInput.control.id,
 					match);
 			} else {
+				result.formResolvent._dbjsInput.dom.classList.add('multiline');
 				result.legacyScript = ns.legacy('radioMatch', this.domId,
 						this.master.__id__ + '/' + this.constructor.resolventProperty,
 					match);
