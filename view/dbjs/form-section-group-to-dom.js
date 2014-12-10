@@ -26,7 +26,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 					class: ns._if(ns.eq(
 					this.status,
 					1
-				), 'completed')
+				), 'completed form-elements', 'form-elements')
 				},
 				ns._if(this._label,
 					[ns.h2(this._label),
