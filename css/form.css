@@ -149,7 +149,8 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 }
 
 /* Input pre-element (span) */
-.input-prepend {
+.input-prepend,
+.input-append {
 	white-space: nowrap;
 }
 
@@ -163,10 +164,6 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 .input-append input:only-child {
 	border-radius: 4px;
 	border: 1px solid var(--light-inner-border);
-}
-
-.input-append {
-	white-space: nowrap;
 }
 
 .input-append input {
@@ -197,6 +194,8 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 @-moz-document url-prefix() {
 	.input-append button.add-on {
 		line-height: 26px;
+		position: relative;
+		top: 2px;
 	}
 }
 .dbjs-input-component .error-message {
