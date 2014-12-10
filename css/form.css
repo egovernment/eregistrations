@@ -78,6 +78,13 @@ select {
 	font-family: "Helvetica";
 	padding: 3px 5px;
 }
+
+/* Safari hack  */
+input[type="search"] {
+	-webkit-appearance: textfield;
+	-moz-appearance: textfield;
+}
+
 select {
 	height: 30px;
 }
