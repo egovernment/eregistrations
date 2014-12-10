@@ -25,6 +25,7 @@ exports.step = function () {
 					'isShoppingGallery'],
 				function (name) {
 					if (name === 'inventory') {
+						insert(inventory);
 						div({ class: 'dbjs-input-component' },
 							label({ for: 'input-' + name }, user.getDescriptor(name).label, ":"),
 							div({ class: 'input' },
