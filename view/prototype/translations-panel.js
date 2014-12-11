@@ -26,7 +26,7 @@ exports['sub-main'] = function () {
 			h2("Translations"),
 			hr(),
 			fieldset(
-				{ class: 'form-elements' },
+				{ class: 'form-elements i18n-panel' },
 				ul(
 					['Lorem ipsum dolor sit amet, consectetur adipiscing elit',
 						'Lorem ipsum dolor sit amet, consectetur',
@@ -42,7 +42,7 @@ exports['sub-main'] = function () {
 							label({ for: id }, text),
 							div(
 								{ class: 'input' },
-								textarea({ id: id, cols: 60 })
+								textarea({ id: id })
 							)
 						);
 					}
