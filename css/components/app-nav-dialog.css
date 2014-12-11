@@ -89,7 +89,8 @@
 	border-radius: 0 0 10px 10px;
 }
 @media only screen and (max-width: var(--mobile-width)) {
-	.app-nav-dialog {
+	.app-nav-dialog,
+	dialog[open].app-nav-dialog {
 		display: none;
 	}
 }
