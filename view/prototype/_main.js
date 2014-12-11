@@ -1,8 +1,11 @@
 'use strict';
 
-var modalContainer = require('./_modal-container');
+var noop           = require('es5-ext/function/noop')
+  , modalContainer = require('./_modal-container');
 
 exports.body = function () {
+	var modalCurtain;
+
 	header({ class: 'header-top-wrapper' },
 		div({ class: 'content header-top' },
 			div(a({ href: '/' },
@@ -22,7 +25,7 @@ exports.body = function () {
 				)
 			)
 		);
-	div({ class: 'modal-courtain' });
+	modalCurtain = div({ class: 'modal-courtain' });
 
 	dialog(
 		{ id: 'dialog-app-nav', open: true, class: 'app-nav-dialog' },
@@ -163,4 +166,7 @@ exports.body = function () {
 			)
 		);
 	insert(modalContainer);
+
+	// iOS fix, without that modals don't get closed
+	modalCurtain.addEventListener('click', noop, false);
 };
