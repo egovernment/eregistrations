@@ -205,13 +205,10 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	border-radius: 0 4px 4px 0;
 }
 
-@-moz-document url-prefix() {
-	.input-append button.add-on {
-		line-height: 26px;
-		position: relative;
-		top: 2px;
-	}
+.input-append .add-on .fa {
+	vertical-align: middle;
 }
+
 .dbjs-input-component .error-message {
 	display: block;
 	width: 100%;
