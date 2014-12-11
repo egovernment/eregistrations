@@ -53,6 +53,7 @@
 ../../css/components/official-submission-toolbar.css
 ../../css/components/label-reg.css
 ../../css/components/table-responsive.css
+../../css/components/table-responsive-container.css
 ../../css/components/submitted-preview-form.css
 ../../css/components/users-table-filter-bar.css
 ../../css/components/official-form.css
