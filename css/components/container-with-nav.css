@@ -3,8 +3,11 @@
 	justify-content: space-between;
 	line-height: 44px;
 }
-
-.container-with-nav .fa {
+.container-with-nav > h3 {
+	line-height: 22px;
+	padding: 11px 0;
+}
+.container-with-nav > a .fa {
 	font-size: 20px;
 }
 h1.container-with-nav .fa,
@@ -12,8 +15,11 @@ h2.container-with-nav .fa {
 	padding-top: 10px;
 }
 
+.container-with-nav > div:last-child {
+	margin-bottom: -22px;
+}
 .container-with-nav > div > a {
-	margin: 0 2px;
+	margin: 0 2px 22px;
 }
 .container-with-nav > div > a:last-child {
 	margin-right: 0;
@@ -31,7 +37,7 @@ h2.container-with-nav .fa {
 	.container-with-nav {
 		flex-wrap: wrap;
 	}
-	.container-with-nav a:first-child {
+	.container-with-nav a {
 		margin-left: 0;
 	}
 	.container-with-nav > * {
