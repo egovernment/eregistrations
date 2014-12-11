@@ -53,6 +53,7 @@
 ../../css/components/official-submission-toolbar.css
 ../../css/components/label-reg.css
 ../../css/components/table-responsive.css
+../../css/components/table-responsive-container.css
 ../../css/components/submitted-preview-form.css
 ../../css/components/users-table-filter-bar.css
 ../../css/components/official-form.css
@@ -62,3 +63,4 @@
 ../../css/components/front-desk-certificates-print.css
 ../../css/components/statistics-table.css
 ../../css/components/statistics-table-dual.css
+../../css/components/i18n-panel.css

@@ -1,0 +1,6 @@
+@media only screen and (max-width: var(--mobile-width)) {
+	.table-responsive-container {
+		display: block;
+		overflow-x: auto;
+	}
+}
