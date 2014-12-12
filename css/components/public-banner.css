@@ -22,7 +22,7 @@ Class describing how boxes for informations insight banner are displayed
 	justify-content: space-between;
 }
 
-.public-banner div.public-banner-text a.create-account {
+.public-banner .public-banner-text .create-account {
 	background-color: var(--normal-background);
 	background-image: none;
 	border-radius: 6px;
@@ -40,9 +40,9 @@ Class describing how boxes for informations insight banner are displayed
 	white-space: nowrap;
 }
 
-.public-banner div.public-banner-text a.create-account:hover,
-.public-banner div.public-banner-text a.create-account:focus,
-.public-banner div.public-banner-text a.create-account:active {
+.public-banner .public-banner-text .create-account:hover,
+.public-banner .public-banner-text .create-account:focus,
+.public-banner .public-banner-text .create-account:active {
 	background-color: var(--normal-dark-background);
 }
 
