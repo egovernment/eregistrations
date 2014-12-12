@@ -44,7 +44,7 @@
 
 .guide-requirements-list {
 	padding-left: 22px;
-	list-style: initial;
+	list-style-type: disc;
 }
 
 .guide-costs-list {

@@ -18,7 +18,7 @@ h2.container-with-nav .fa {
 .container-with-nav > div:last-child {
 	margin-bottom: -22px;
 }
-.container-with-nav > div > a {
+.container-with-nav > div > * {
 	margin: 0 2px 22px;
 }
 .container-with-nav > div > a:last-child {
