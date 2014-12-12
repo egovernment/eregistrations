@@ -73,7 +73,10 @@ select {
 	color: var(--dark-text);
 	max-width: 100%;
 	text-transform: none;
-	line-height: 22px;
+	/* Height set to 30px in order to work properly in IE,
+		previously height of 30px was achieved by
+		line-height 22px, paddins 3ps and border 1px */
+	height: 30px;
 	font-size: 14px;
 	font-family: "Helvetica";
 	padding: 3px 5px;
@@ -83,10 +86,6 @@ select {
 input[type="search"] {
 	-webkit-appearance: textfield;
 	-moz-appearance: textfield;
-}
-
-select {
-	height: 30px;
 }
 
 .form-elements .hint {
