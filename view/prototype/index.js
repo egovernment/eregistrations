@@ -9,15 +9,15 @@ exports.main = function () {
 	insert(register);
 	insert(resetPassword);
 	div({ class: 'public-banner', id: 'banner' },
-		div({ class: 'banner-text content' },
-				div({ class: 'baner-box-text' },
+		div({ class: 'public-banner-text content' },
+				div({ class: 'public-banner-box-text' },
 					h1("Turn your online business on"),
 					h3("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut in " +
 						"massa malesuada, pharetra urna nec, pellentesque tortor. "),
 					a({ class: 'create-account', href: '#register' },
 						'Create account')
 				),
-				div({ class: 'baner-box-img' },
+				div({ class: 'public-baner-box-img' },
 					img({ src: '/img/mac.png' })
 				)
 				)
