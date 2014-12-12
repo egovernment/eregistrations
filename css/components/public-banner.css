@@ -17,7 +17,7 @@ home page.
 /*
 Class describing how boxes for informations insight banner are displayed
 */
-.public-banner div.public-banner-text {
+.public-banner .public-banner-text {
 	display: flex;
 	justify-content: space-between;
 }
