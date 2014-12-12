@@ -1,6 +1,7 @@
 'use strict';
 
-var path            = require('path')
+var callable        = require('es5-ext/object/valid-callable')
+  , path            = require('path')
   , common          = require('path2/common')
   , defaultReadFile = require('fs2/read-file')
 
@@ -8,12 +9,16 @@ var path            = require('path')
 
 module.exports = function (indexPath/*, options */) {
 	var rootPath, indexDir, options = Object(arguments[1])
-	  , readFile = options.readFile || defaultReadFile;
+	  , readFile = options.readFile || defaultReadFile
+	  , pathProxy = options.pathProxy;
 	indexPath = resolve(indexPath);
 	indexDir = dirname(indexPath);
+	if (pathProxy !== undefined) callable(pathProxy);
 	return readFile(indexPath, 'utf8')(function (content) {
 		var filenames = content.trim().split('\n').filter(Boolean).map(function (name) {
-			return resolve(indexDir, name);
+			var filename = resolve(indexDir, name);
+			if (pathProxy) filename = pathProxy(name, filename);
+			return filename;
 		});
 		rootPath = common.apply(null, filenames);
 		return filenames;
