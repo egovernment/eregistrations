@@ -74,7 +74,7 @@ select {
 	max-width: 100%;
 	text-transform: none;
 	/* Height set to 30px in order to work properly in IE,
-		prewiously height of 30px was achiwed by
+		previously height of 30px was achieved by
 		line-height 22px, paddins 3ps and border 1px */
 	height: 30px;
 	font-size: 14px;
