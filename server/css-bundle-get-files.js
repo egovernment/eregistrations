@@ -24,7 +24,7 @@ module.exports = function (indexPath/*, options */) {
 		rootPath = common.apply(null, filenames);
 		return filenames;
 	}).map(function (filename) {
-		return readFile(filename, 'utf8', { loose: options.loose })(function (content) {
+		return readFile(filename, { loose: options.loose, encoding: 'utf8' })(function (content) {
 			if (content == null) return null;
 			return {
 				filename: filename.slice(rootPath.length + 1),
