@@ -18,7 +18,7 @@ module.exports = function (indexPath/*, options */) {
 	return readFile(indexPath, 'utf8')(function (content) {
 		var filenames = content.trim().split('\n').filter(Boolean).map(function (name) {
 			var filename = resolve(indexDir, name);
-			if (pathProxy) filename = pathProxy(name, filename);
+			if (pathProxy) filename = pathProxy(filename);
 			return filename;
 		});
 		rootPath = common.apply(null, filenames);
