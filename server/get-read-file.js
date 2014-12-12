@@ -9,7 +9,8 @@ var resolve  = require('path').resolve
 module.exports = function () {
 	var cache = create(null);
 
-	return function (path) {
+	return function (path/*, options*/) {
+		var options = Object(arguments[1]);
 		path = resolve(path);
 		return stat(path)(function (stats) {
 			var etag = stats.size + '.' + stats.mtime.valueOf();
@@ -20,6 +21,9 @@ module.exports = function () {
 				cache[path] = { etag: etag };
 			}
 			return (cache[path].data = readFile(path, 'utf8'));
-		});
+		}, options.loose ? function (err) {
+			if (err.code !== 'ENOENT') throw err;
+			return null;
+		} : null);
 	};
 };
