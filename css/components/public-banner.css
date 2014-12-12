@@ -47,7 +47,7 @@ Class describing how boxes for informations insight banner are displayed
 	background-color: var(--normal-dark-background);
 }
 
-.baner-box-text {
+.public-banner .baner-box-text {
 	min-height: 374px;
 }
 /*
