@@ -1,6 +1,7 @@
 'use strict';
 
-var callable        = require('es5-ext/object/valid-callable')
+var compact         = require('es5-ext/array/#/compact')
+  , callable        = require('es5-ext/object/valid-callable')
   , path            = require('path')
   , common          = require('path2/common')
   , defaultReadFile = require('fs2/read-file')
@@ -23,7 +24,8 @@ module.exports = function (indexPath/*, options */) {
 		rootPath = common.apply(null, filenames);
 		return filenames;
 	}).map(function (filename) {
-		return readFile(filename, 'utf8')(function (content) {
+		return readFile(filename, 'utf8', { loose: options.loose })(function (content) {
+			if (content == null) return null;
 			return {
 				filename: filename.slice(rootPath.length + 1),
 				content: content
@@ -32,5 +34,5 @@ module.exports = function (indexPath/*, options */) {
 			if (e.code !== 'ENOENT') throw e;
 			throw new TypeError("Bad paths in " + indexPath + " -> " + e.message);
 		});
-	});
+	}).invoke(compact);
 };
