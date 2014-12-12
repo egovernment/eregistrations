@@ -49,6 +49,16 @@ table .actions button {
 	padding-top: 1px;
 	padding-bottom: 2px;
 }
+@media all and (-ms-high-contrast:none) {
+	table .actions a {
+		padding: 3px 7px;
+	}
+
+	table .actions button {
+		top: 3px;
+		padding: 1px 7px;
+	}
+}
 
 table .actions form {
 	display: inline;
