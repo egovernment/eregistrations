@@ -6,9 +6,9 @@ var path            = require('path')
 
   , dirname = path.dirname, resolve = path.resolve;
 
-module.exports = function (indexPath, readFile) {
-	var rootPath, indexDir;
-	if (!readFile) readFile = defaultReadFile;
+module.exports = function (indexPath/*, options */) {
+	var rootPath, indexDir, options = Object(arguments[1])
+	  , readFile = options.readFile || defaultReadFile;
 	indexPath = resolve(indexPath);
 	indexDir = dirname(indexPath);
 	return readFile(indexPath, 'utf8')(function (content) {
