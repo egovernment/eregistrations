@@ -26,3 +26,7 @@
 .free-form ul ol {
 	list-style-type: lower-latin;
 }
+
+.free-form > p + ul {
+	margin-top: -22px;
+}
