@@ -27,6 +27,7 @@
 	list-style-type: lower-latin;
 }
 
-.free-form > p + ul {
+.free-form > p + ul,
+.free-form > p + ol {
 	margin-top: -22px;
 }
