@@ -1,0 +1,21 @@
+.public-banner,
+.public-banner-box-text,
+.public-banner-text {
+	min-height: inherit;
+	width: 100%;
+}
+.public-banner-box-text,
+.public-baner-box-img {
+	display: inline-block;
+}
+.public-banner-box-text {
+	width: 50%;
+}
+.public-baner-box-img {
+	width: 50%;
+	height: 374px;
+}
+.public-baner-box-img img {
+	position: relative;
+	top: 116px;
+}
