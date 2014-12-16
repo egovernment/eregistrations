@@ -2,6 +2,7 @@
 
 exports['sub-main'] = function () {
 	section(
+		{ class: 'table-responsive-container' },
 		table(
 			{ class: 'submitted-user-data-table submitted-current-user-data-table', responsive: true },
 			thead(
