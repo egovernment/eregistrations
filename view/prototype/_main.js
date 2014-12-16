@@ -8,7 +8,7 @@ exports.body = function () {
 
 	header({ class: 'header-top-wrapper' },
 		div({ class: 'content header-top' },
-			div(a({ href: '/' },
+			div({ class: 'header-top-logo' }, a({ href: '/' },
 					img({ src: '/img/logo-2.png' })
 					)
 				),
