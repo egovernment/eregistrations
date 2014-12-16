@@ -19,8 +19,8 @@
 	background: var(--white-background);
 }
 
-.header-top > div:first-child {
-	overflow: hidden;
+.header-top-logo img {
+	max-width: 100%;
 }
 
 .header-top div {
