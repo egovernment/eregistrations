@@ -10,14 +10,14 @@
 	display: flex;
 	justify-content: space-between;
 	margin: 0 auto;
-	width: var(--desktop-width);
+	width: 100%;
 }
 
 .submitted-menu .items {
 	display: flex;
 	justify-content: flex-start;
 	margin: 0;
-	padding: 0 10px;
+	padding: 0;
 	width: auto;
 	list-style-type: none;
 }
