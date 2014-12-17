@@ -1,9 +1,13 @@
+.header-top {
+	overflow: hidden;
+}
+
 .header-top-logo img {
 	border: none;
 }
 .header-top > * {
 	display: inline-block;
-	vertical-align: top;
+	vertical-align:
 }
 .header-top > nav {
 	float: right;
