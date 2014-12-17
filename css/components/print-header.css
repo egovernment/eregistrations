@@ -1,4 +1,8 @@
-.print-header {
-	display: flex;
-	justify-content: space-between;
+.print-header > * {
+	display: inline-block;
+	vertical-align: top;
+}
+.print-header > div:last-child {
+	text-align: right;
+	width: 68%;
 }
