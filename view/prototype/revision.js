@@ -108,7 +108,7 @@ exports['sub-main'] = function () {
 		{ class: 'section-primary' },
 		insert(reject),
 		h2("Application revision"),
-		p({ class: 'official-submission-toolbar' },
+		div({ class: 'official-submission-toolbar' },
 			postButton({ buttonClass: 'button-main button-main-success', value: "Approve file" }),
 			postButton({ buttonClass: 'button-main', value: "Send for corrections" }),
 			a({ href: '#reject', class: 'button-main button-main-error' }, "Reject file")),
