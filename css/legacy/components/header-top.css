@@ -1,3 +1,17 @@
 .header-top-logo img {
 	border: none;
 }
+.header-top > * {
+	display: inline-block;
+	vertical-align: top;
+}
+.header-top > nav {
+	float: right;
+}
+
+.menu-top {
+	text-align: right;
+}
+.menu-top li {
+	display: inline-block;
+}
