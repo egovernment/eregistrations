@@ -8,10 +8,6 @@
 .header-top > nav {
 	float: right;
 }
-
-.menu-top {
-	text-align: right;
-}
 .menu-top li {
 	display: inline-block;
 }
