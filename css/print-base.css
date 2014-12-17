@@ -17,19 +17,20 @@ html {
 	-ms-text-size-adjust: 100%;
 	-webkit-text-size-adjust: 100%;
 	font-family: sans-serif;
+	background: var(--white-background);
 }
 
 body {
 	color: var(--dark-text);
-	margin: 0;
 	font-size: 14px;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	line-height: 22px;
 	padding-top: 22px;
+	width: var(--desktop-width);
+	margin: 0 auto;
 }
 body > * {
-	width: var(--desktop-width);
-	margin: 0 auto 22px;
+	margin-bottom: 22px;
 }
 
 body > section > * {
