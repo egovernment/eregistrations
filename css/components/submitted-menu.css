@@ -10,7 +10,10 @@
 	display: flex;
 	justify-content: space-between;
 	margin: 0 auto;
-	width: var(--desktop-width);
+	width: 100%;
+}
+.submitted-menu-bar.content {
+	padding: 0;
 }
 
 .submitted-menu .items {
