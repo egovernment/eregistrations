@@ -7,10 +7,14 @@
 }
 .header-top > * {
 	display: inline-block;
-	vertical-align:
+	vertical-align: top;
 }
 .header-top > nav {
 	float: right;
+}
+.menu-top {
+	position: relative;
+	top: 15px;
 }
 .menu-top li {
 	display: inline-block;
