@@ -1,7 +1,12 @@
+.print-header {
+	margin-bottom: 16px;
+}
+
 .print-header > * {
 	display: inline-block;
 }
 .print-header > div:last-child {
 	text-align: right;
 	width: 68%;
+	vertical-align: top;
 }
