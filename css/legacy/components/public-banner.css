@@ -1,26 +1,14 @@
-.public-banner {
-	height: 374px;
-}
-
-.public-banner,
-.public-banner-box-text,
 .public-banner-text {
-	min-height: inherit;
 	width: 100%;
 }
-.public-banner-box-text,
-.public-baner-box-img {
+.public-banner-text > * {
 	display: inline-block;
-}
-.public-banner-box-text {
 	width: 50%;
-	vertical-align: top;
 }
 .public-baner-box-img {
-	width: 50%;
-	height: 374px;
+	line-height: 374px;
 }
 .public-baner-box-img img {
-	position: relative;
-	top: 116px;
+	vertical-align: bottom;
+	display: inline;
 }
