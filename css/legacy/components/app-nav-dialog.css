@@ -1,0 +1,11 @@
+.app-nav-dialog header h4,
+.app-nav-dialog header a {
+	display: inline-block;
+}
+.app-nav-dialog header h4 {
+	width: 95%;
+}
+.app-nav-dialog header a {
+	width: 5%;
+	text-align: right;
+}
