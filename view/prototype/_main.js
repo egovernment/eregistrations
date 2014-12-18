@@ -159,7 +159,7 @@ exports.body = function () {
 	main({ id: 'main' });
 	footer({ class: 'footer-logos' },
 		div({ class: 'content' },
-			div({ class: 'logos' },
+			div({ class: 'footer-logos-container' },
 				img({ src: '/img/logo.png' }),
 				img({ src: '/img/logo.png' })
 				)
