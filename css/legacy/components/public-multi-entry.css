@@ -2,20 +2,20 @@
 	text-align: center;
 }
 
-.public-multi-entry-single-entry {
+.public-multi-entry-entrance {
 	display: inline-block;
 	margin: 0 10%;
 }
-.public-multi-entry-single-entry a {
+.public-multi-entry-entrance a {
 	display: block;
 	line-height: 100px;
 }
-.public-multi-entry-single-entry a > p {
+.public-multi-entry-entrance a > p {
 	width: 100%;
 	display: inline-block;
 	line-height: 22px;
 	vertical-align: bottom;
 }
-.public-multi-entry-single-entry a > .public-multi-entry-action {
+.public-multi-entry-entrance a > .public-multi-entry-action {
 	vertical-align: top;
 }

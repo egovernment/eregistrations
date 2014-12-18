@@ -19,7 +19,7 @@
 	justify-content: space-around;
 }
 
-.public-multi-entry-single-entry {
+.public-multi-entry-entrance {
 		width: 200px;
 		height: 200px;
 		border-radius: 100px;
@@ -27,15 +27,15 @@
 		border: 1px solid var(--light-inner-border);
 }
 
-.public-multi-entry-single-entry {
+.public-multi-entry-entrance {
 	position: relative;
 }
 
-.public-multi-entry-single-entry-title {
+.public-multi-entry-entrance-title {
 	margin-bottom: 22px;
 }
 
-.public-multi-entry-single-entry-hint {
+.public-multi-entry-entrance-hint {
 	position: absolute;
 	top: 5px;
 	left: 25px;
