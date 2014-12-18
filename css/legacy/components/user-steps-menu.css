@@ -1,0 +1,11 @@
+.user-steps-menu-list li {
+	display: inline-block;
+	width: 190px;
+}
+.user-steps-menu-list .user-steps-menu-start-step {
+	width: 103px;
+}
+.user-steps-menu-item-progress {
+	filter: progid:DXImageTransform.Microsoft.gradient(GradientType=0,startColorstr='#ffffff', endColorstr='#999999');/*For IE7-8-9*/
+	border-radius: 5px 0 0 5px;
+}
