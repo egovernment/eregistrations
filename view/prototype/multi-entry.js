@@ -10,7 +10,7 @@ exports.banner = function () {
 					{ href: '#register' },
 					span({ class: "public-multi-entry-single-entry-hint hint-optional hint-optional-left",
 						"data-hint": "Hint displayed here." }),
-					p(span("Single Trader")),
+					p("Single Trader"),
 					p({ class: "public-multi-entry-action" }, "Account creation")
 				)
 			),
