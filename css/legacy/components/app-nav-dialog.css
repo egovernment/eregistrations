@@ -9,3 +9,15 @@
 	width: 5%;
 	text-align: right;
 }
+
+.app-nav-dialog > section ol li a {
+	display: block;
+	overflow: hidden;
+}
+
+.app-nav-dialog > section ol li a span {
+	display: inline-block;
+}
+.app-nav-dialog > section ol li a span:first-child {
+	width: 75%;
+}
