@@ -1,3 +1,19 @@
+.header-top {
+	overflow: hidden;
+}
+
 .header-top-logo img {
 	border: none;
+}
+.header-top > * {
+	display: inline-block;
+	vertical-align: top;
+}
+.header-top > nav {
+	float: right;
+	position: relative;
+	top: 15px;
+}
+.menu-top li {
+	display: inline-block;
 }
