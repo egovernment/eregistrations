@@ -1,0 +1,7 @@
+.public-institutions {
+	text-align: center;
+}
+
+.public-institutions li {
+	display: inline-block;
+}
