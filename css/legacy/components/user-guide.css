@@ -2,10 +2,6 @@
 	display: inline-block;
 	vertical-align: top;
 }
-
-.user-guide > .section-primary:first-child {
+.user-guide > .section-primary {
 	margin-right: 20px;
-}
-.user-guide > div:last-of-type {
-	margin-left: 20px;
 }
