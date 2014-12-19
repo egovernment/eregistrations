@@ -7,4 +7,5 @@
 }
 .user-steps-menu-item-progress {
 	background: #999;
+	background: linear-gradient(to top, #999, #ffffff);
 }
