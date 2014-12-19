@@ -1,0 +1,9 @@
+.container-with-nav {
+	overflow: hidden;
+}
+.container-with-nav > a {
+	float: right;
+}
+.container-with-nav > * {
+	display: inline-block;
+}
