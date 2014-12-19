@@ -1,5 +1,9 @@
 'use strict';
 
+document.createElement('section');
+document.createElement('header');
+document.createElement('dialog');
+
 window.$ = require('mano-legacy');
 
 require('mano-legacy/for-each');
