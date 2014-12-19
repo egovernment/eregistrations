@@ -1,0 +1,7 @@
+.user-guide > * {
+	display: inline-block;
+	vertical-align: top;
+}
+.user-guide > .section-primary {
+	margin-right: 10px;
+}
