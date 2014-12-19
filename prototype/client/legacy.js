@@ -1,12 +1,6 @@
 'use strict';
 
-document.createElement('section');
-document.createElement('header');
-document.createElement('dialog');
-document.createElement('footer');
-document.createElement('fieldset');
-document.createElement('nav');
-
+require('mano-legacy/html5');
 window.$ = require('mano-legacy');
 
 require('mano-legacy/for-each');

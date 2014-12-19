@@ -153,7 +153,9 @@ dialog {
 	z-index: 999;
 }
 
-section, header, dialog, footer, fieldset, nav {
+section, header, dialog, footer, fieldset, nav,
+figcaption, article, figure, output, audio, aside,
+canvas, hgroup, video {
 	display: block;
 }
 
