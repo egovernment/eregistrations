@@ -3,8 +3,9 @@
 	vertical-align: top;
 }
 
-.user-guide > .section-primary{
-	margin-right: 5px;
-	margin-left: 5px;
-	height: 100%;
+.user-guide > .section-primary:first-child {
+	margin-right: 20px;
+}
+.user-guide > div:last-of-type {
+	margin-left: 20px;
 }
