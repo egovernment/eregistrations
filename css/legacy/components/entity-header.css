@@ -1,0 +1,9 @@
+.entity-header {
+	overflow: hidden;
+}
+.entity-header > * {
+	display: inline-block;
+}
+.entity-header > .entity-actions{
+	float: right;
+}
