@@ -1,0 +1,6 @@
+.container-with-nav {
+	overflow: hidden;
+}
+.container-with-nav > a {
+	float: right;
+}
