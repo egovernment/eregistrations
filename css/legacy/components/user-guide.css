@@ -2,3 +2,9 @@
 	display: inline-block;
 	vertical-align: top;
 }
+
+.user-guide > .section-primary{
+	margin-right: 5px;
+	margin-left: 5px;
+	height: 100%;
+}
