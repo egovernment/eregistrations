@@ -1,0 +1,15 @@
+.submitted-menu .items li {
+	display: inline-block;
+}
+.submitted-menu-bar > nav {
+	display: inline-block;
+}
+.submitted-menu-bar {
+	overflow: hidden;
+}
+.submitted-menu-bar > nav {
+	float: right;
+}
+.submitted-menu-bar > nav:first-child {
+	float: left;
+}
