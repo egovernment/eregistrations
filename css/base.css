@@ -153,6 +153,12 @@ dialog {
 	z-index: 999;
 }
 
+section, header, dialog, footer, fieldset, nav,
+figcaption, article, figure, output, audio, aside,
+canvas, hgroup, video {
+	display: block;
+}
+
 /*
 Styles applied while screen size is less than 640px
 */

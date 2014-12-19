@@ -1,5 +1,6 @@
 'use strict';
 
+require('mano-legacy/html5');
 window.$ = require('mano-legacy');
 
 require('mano-legacy/for-each');
