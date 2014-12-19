@@ -9,9 +9,9 @@ exports.body = function () {
 			tr(
 				th(
 					{ colspan: 10 },
-					span("COMERCIANTE INDIVIDUAL"),
+					span("Comerciante individual"),
 					br(),
-					span("SOLICITUD DE INSCRIPCIÓN PARA")
+					span("Solicitud de inscripción para")
 				),
 				td(
 					{ colspan: 2, rowspan: 2 }
@@ -20,7 +20,7 @@ exports.body = function () {
 			tr(
 				th(
 					{ colspan: 10 },
-					"TARJETA NIT ANTE EL MINISTERIO DE HACIENDA"
+					"Tarjeta nit ante el ministerio de hacienda"
 				)
 			)
 		),
