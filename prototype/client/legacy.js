@@ -3,6 +3,9 @@
 document.createElement('section');
 document.createElement('header');
 document.createElement('dialog');
+document.createElement('footer');
+document.createElement('fieldset');
+document.createElement('nav');
 
 window.$ = require('mano-legacy');
 

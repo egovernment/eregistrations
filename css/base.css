@@ -153,6 +153,10 @@ dialog {
 	z-index: 999;
 }
 
+section, header, dialog, footer, fieldset, nav {
+	display: block;
+}
+
 /*
 Styles applied while screen size is less than 640px
 */
