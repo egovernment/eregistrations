@@ -40,7 +40,9 @@
 	color: var(--white-text);
 	font-size: 16px;
 	font-weight: normal;
+	text-transform: uppercase;
 }
+
 .print-user-data thead th span:first-child {
 	font-size: 28px;
 }
@@ -73,6 +75,7 @@ tbody tr.print-user-data-header {
 	font-size: 18px;
 	font-weight: bold;
 	border: 2px solid #ddd;
+	text-transform: uppercase;
 }
 
 .print-user-data-document td {
