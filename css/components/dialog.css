@@ -35,8 +35,11 @@ dialog header h3 {
 	padding-left: 20px;
 	padding: 11px;
 }
+.dialog-visible, dialog.active, dialog[open] {
+	display: inline-block;
+}
 
-.dialog-visible, dialog.active, dialog:target, dialog[open] {
+dialog:target {
 	display: inline-block;
 }
 
