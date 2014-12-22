@@ -1,9 +1,11 @@
 .container-with-nav {
 	overflow: hidden;
 }
-.container-with-nav > a {
+.container-with-nav > a,
+.container-with-nav > div  {
 	float: right;
 }
+
 .container-with-nav > * {
 	display: inline-block;
 }
