@@ -115,7 +115,7 @@ All cross eRegistrations, styles are placed in eRegistrations project in css fol
 
 ### Vertical rhythm and layout
 
-####Vertical rhythm
+#### Vertical rhythm
 
 **Vertical rhythm** in eRegistration can be defined as *the spacing and arrangement of components as the reader descends the page*. More basic information on VR cvan be found in this [article](http://24ways.org/2006/compose-to-a-vertical-rhythm/).  
 
@@ -129,11 +129,22 @@ All cross eRegistrations, styles are placed in eRegistrations project in css fol
 If height of element is larger than 22px, line-height is doubled. [Example](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L72-L75).  
 This rule controls height of components that contain text, making shour that height is multiplication of 22px, and elements in side are place with corect VR.
 
-####Layout
+#### Layout
 
 **Layout** in eRegistration basic building block of layout is flexbox rule seted on parents of controlled elements. For more information on how flexbox works, please refer to this [article](http://css-tricks.com/snippets/css/a-guide-to-flexbox/).  
 No floats are allowed in main css components, positiong of elements can only be achieved via flexbox, inline-block, or if necessary postion relavie fixes. Floates are only allowed in legacy css override.
 
-**Content component** - main container of all content is [***.content***](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L139-L143) container defined in *base.css*. Its width is limited to **1070px**, and it is centered on page. All first chiled elements that width should be controlled and seted to full-page width, should have this class defined. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_main.js#L10).
+**Content component** - main container of all content is [***.content***](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L139-L143) container defined in *base.css*. Its width is limited to [**1070px**](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L6) and it is centered on page. All first chiled elements that width should be controlled and seted to full-page width, should have this class defined. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_main.js#L10).
 
 ***
+
+### Responsivnes
+
+**Resposives** is achived in eRegistration systems by [media-queries](https://github.com/egovernment/eregistrations/blob/master/css/form.css#L385), that are checking screen resolution. No user-agent detecting is applied. Resposive styles can only by applied this way.
+
+***Mobile resolution*** is turned on when screen resolution is less than [**640px**](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L7).  
+***Minimum mobile resolution*** is set to [**320px**](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L8)
+
+**Control of resposive display** is mostly done by changing *flex-wrap* property seted to *wrap* in mobile view. [Example](https://github.com/egovernment/eregistrations/blob/master/css/components/container-with-nav.css#L36-L39).
+
+****
