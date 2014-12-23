@@ -4,7 +4,7 @@
 dialog {
 	margin-left: -160px;
 }
-/* Reset of IE8 hack - styles not applied to IE<=9, due to :target selector */
+/* Reset of IE8 hack - styles not applied to IE<=8, due to :target selector */
 dialog, dialog:target {
 	margin-left: 0;
 }
