@@ -1,21 +1,20 @@
 # Documentation of styles created in eRegistration prototype
 
----
-
 ## Table of content
 
 ### Overview
 
-1. Base styles
+1. Introduction
+2. Base styles
  1. File organization
  2. Conventions
  3. Application specific CSS bundle configuration
-2. Vertical rhythm and layout
-3. Responsiveness
-4. Cross browser and legacy browsers
-5. Print
-6. Font icons
-7. Error page
+3. Vertical rhythm and layout
+4. Responsiveness
+5. Cross browser and legacy browsers
+6. Print
+7. Font icons
+8. Error page
 
 ### Reusable components
 
@@ -77,6 +76,11 @@
 ---
 
 ### Base styles
+
+#### Introduction
+
+**eRegistration style documentation** describes how styles for eRegistration prototype are designed and explain ways theye should be applied to all eRegistration systems. Markup of eRegistration systems should directly follow Prototype, in order for styles to work properly.
+
 #### File organization
 
 All cross eRegistrations, styles are placed in eRegistrations project in css folders:
@@ -90,6 +94,7 @@ All cross eRegistrations, styles are placed in eRegistrations project in css fol
 1. **No element id's** in css rules (in our application id's are set strictly for JS related functionalituies).
 2. **Classnames in lower case dash convention** e.g. foo-bar *(not fooBar)*.
 3. **Functional Class Names** - specifiy element class names (of components and its items) based on their function.
+4. **Sub components classes names** should contain component class name and added after dash their own identifier e.g. .foo-bar*(component)* .foo-bar-sub*(sub-component)* (this may not be yet in all components - if found wrong sub-components names convinin, ticket should be created and fix should be applied).
 4. **All prefixed properties are resolved** automatically (no need to add manualy) with help of [this utiltiy](https://github.com/medikoo/css-aid#css-aid) (there's a change we're move to more powerful autoprefixer at some point).
 5. **Use variables** - for colors and sizes, variables defined at beginning of *base.css* file should be used. [This utiltiy](https://github.com/medikoo/css-aid#variables) is used for variables.
 6. **Vertical rhythm in layout (VR)** - whole layout needs to comply to this rule, see [article](http://24ways.org/2006/compose-to-a-vertical-rhythm/) (We confirm it with browser extensions, e.g. GridFox on Firefox or PixelPerfect for Chrome (for this use *grid-22.png* file, placed in *eregistrations/css folder*).
