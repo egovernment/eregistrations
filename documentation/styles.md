@@ -78,12 +78,12 @@
 ## Base styles
 
 ### Introduction
-___
 
 **eRegistration style documentation** describes how styles for eRegistration prototype are designed and explain ways theye should be applied to all eRegistration systems. Markup of eRegistration systems should directly follow Prototype, in order for styles to work properly.
 
+***
+
 ### File organization
-___
 
 All cross eRegistrations, styles are placed in eRegistrations project in css folders:
 
@@ -91,8 +91,9 @@ All cross eRegistrations, styles are placed in eRegistrations project in css fol
 2. **Components** - *eregistrations/css/components* folder, contains all, reusable and non-reusable components files, such as *section-priamary* or *container-with-nav*.
 3. **Legacy** - *eregistrations/css/legacy* folder, contains all css components files that need overriding for legacy browsers *(IE8-IE11)*.
 
+***
+
 ### Conventions
-___
 
 1. **No element id's** in css rules (in our application id's are set strictly for JS related functionalituies).
 2. **Classnames in lower case dash convention** e.g. foo-bar *(not fooBar)*.
@@ -103,16 +104,20 @@ ___
 6. **Vertical rhythm in layout (VR)** - whole layout needs to comply to this rule, see [article](http://24ways.org/2006/compose-to-a-vertical-rhythm/) (We confirm it with browser extensions, e.g. GridFox on Firefox or PixelPerfect for Chrome (for this use *grid-22.png* file, placed in *eregistrations/css folder*).
 7. **Css lint rules** - we use [this lint tool](https://github.com/medikoo/csslint-next)  it is based on [this tool](https://github.com/CSSLint/csslint). There's already a css lint scripts configured within eRegistrations project.
 
+***
+
 ### Application specific CSS bundle configuration
-___
 
 - **Link application css file**, within *view/{applicationName}/index.html* (name should reflect application name) as [here](https://github.com/egovernment/eregistrations-salvador/blob/master/view/public/index.html#L27).
 - **Configure** *{applicationName}/client/index.css* file, it should list all css files in given order that should be included in a bundle, as e.g. [here](https://github.com/egovernment/eregistrations-salvador/blob/master/public/client/css.index)
 
-### Vertical rhythm and layout
-___
+***
 
-**Vertical rhythm** in eRegistration can be defined as *the spacing and arrangement of components as the reader descends the page*. Mor basic information on VR cvan be found in this [article](http://24ways.org/2006/compose-to-a-vertical-rhythm/).  
+### Vertical rhythm and layout
+
+####Vertical rhythm
+
+**Vertical rhythm** in eRegistration can be defined as *the spacing and arrangement of components as the reader descends the page*. More basic information on VR cvan be found in this [article](http://24ways.org/2006/compose-to-a-vertical-rhythm/).  
 
 **VR applies** to all elements (block and inline) that are placed in eRegistration system.  
 
@@ -124,4 +129,11 @@ ___
 If height of element is larger than 22px, line-height is doubled. [Example](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L72-L75).  
 This rule controls height of components that contain text, making shour that height is multiplication of 22px, and elements in side are place with corect VR.
 
-**Layout**, **Content component**, 
+####Layout
+
+**Layout** in eRegistration basic building block of layout is flexbox rule seted on parents of controlled elements. For more information on how flexbox works, please refer to this [article](http://css-tricks.com/snippets/css/a-guide-to-flexbox/).  
+No floats are allowed in main css components, positiong of elements can only be achieved via flexbox, inline-block, or if necessary postion relavie fixes. Floates are only allowed in legacy css override.
+
+**Content component** - main container of all content is [***.content***](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L139-L143) container defined in *base.css*. Its width is limited to **1070px**, and it is centered on page. All first chiled elements that width should be controlled and seted to full-page width, should have this class defined. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_main.js#L10).
+
+***
