@@ -7,8 +7,8 @@
 ### Overview
 
 1. Base styles
-2. Vertical rythem and layout
-3. Responsivnes
+2. Vertical rhythm and layout
+3. Responsiveness
 4. Cross browser and legacy browsers
 5. Print
 6. Font icons
@@ -21,7 +21,7 @@
  1. Entities table
  2. Responsive table
  3. Table filter bar
- 4. Submitted user history
+ 4. Submitted user history table
  5. Submitted user data table
  6. Statistics tables
 3. Sections 
@@ -55,7 +55,7 @@
 4. Document preview
 5. Dialogs
  1. Login
- 2. Signup
+ 2. Sign up
  3. Inventory
  4. Application navigation
 6. Public
