@@ -7,6 +7,9 @@
 ### Overview
 
 1. Base styles
+ 1. File organization
+ 2. Conventions
+ 3. Application specific CSS bundle configuration
 2. Vertical rhythm and layout
 3. Responsiveness
 4. Cross browser and legacy browsers
