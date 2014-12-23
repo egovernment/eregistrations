@@ -162,3 +162,28 @@ No floats are allowed in main css components, positiong of elements can only be 
 Rules are added to files that correspond to already created components. e.g. if we want to introduce some changes to legacy layer, for *css/base.css* file. We should add those rules to *css/legacy/base.css* file. Similar with components legacy fixes for *css/components/foo.css* should land in *css/legacy/components/foo.css*. Those files will be automatically picked and bundled, no extra effort is needed.
 
 ***
+
+### Font icons
+
+**Font Awsome** is used in eRegistration for icons. All iconse are not included, only those that are used. All new icons need to be added to icons file: *css/components/fa.css*.
+
+**Adding new icon** can be made by selecting new icon from [this list](https://fortawesome.github.io/Font-Awesome/cheatsheet/) and adding class for this font in *css/components/fa.css*  
+
+**Example** - adding *automobile icon* requiers adding its class and :before pseudo-element:
+
+```
+.fa-automobile {
+	width: 1.2em;
+}
+.fa-automobile:before {
+	content: "\f1b9";
+}
+```
+Then in templates a element need to be added:
+
+```
+span({ class: 'fa fa-automobile' }, "Car")
+```
+"Car" text will not be shown when CSS is applied.
+
+***
