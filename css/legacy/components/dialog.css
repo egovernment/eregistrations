@@ -1,0 +1,10 @@
+.dialog-modal-on .modal-courtain {
+	filter: alpha(opacity=40);
+}
+dialog {
+	margin-left: -160px;
+}
+/* Reset of IE8 hack - styles not applied to IE<=8, due to :target selector */
+dialog, dialog:target {
+	margin-left: 0;
+}
