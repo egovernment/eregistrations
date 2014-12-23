@@ -131,20 +131,34 @@ This rule controls height of components that contain text, making shour that hei
 
 #### Layout
 
-**Layout** in eRegistration basic building block of layout is flexbox rule seted on parents of controlled elements. For more information on how flexbox works, please refer to this [article](http://css-tricks.com/snippets/css/a-guide-to-flexbox/).  
+**Layout** in eRegistration basic building block of layout is flexbox rule set on parents of controlled elements. For more information on how flexbox works, please refer to this [article](http://css-tricks.com/snippets/css/a-guide-to-flexbox/).  
 No floats are allowed in main css components, positiong of elements can only be achieved via flexbox, inline-block, or if necessary postion relavie fixes. Floates are only allowed in legacy css override.
 
-**Content component** - main container of all content is [***.content***](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L139-L143) container defined in *base.css*. Its width is limited to [**1070px**](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L6) and it is centered on page. All first chiled elements that width should be controlled and seted to full-page width, should have this class defined. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_main.js#L10).
+**Content component** - main container of all content is [***.content***](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L139-L143) container defined in *base.css*. Its width is limited to [**1070px**](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L6) and it is centered on page. All first chiled elements that width should be controlled and set to full-page width, should have this class defined. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_main.js#L10).
 
 ***
 
 ### Responsivnes
 
-**Resposives** is achived in eRegistration systems by [media-queries](https://github.com/egovernment/eregistrations/blob/master/css/form.css#L385), that are checking screen resolution. No user-agent detecting is applied. Resposive styles can only by applied this way.
+**Responsivness** is achieved in eRegistration systems by [media-queries](https://github.com/egovernment/eregistrations/blob/master/css/form.css#L385), that are checking screen resolution. No user-agent detecting is applied and needed. Resposive styles can only by applied this way.
 
 ***Mobile resolution*** is turned on when screen resolution is less than [**640px**](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L7).  
 ***Minimum mobile resolution*** is set to [**320px**](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L8)
 
-**Control of resposive display** is mostly done by changing *flex-wrap* property seted to *wrap* in mobile view. [Example](https://github.com/egovernment/eregistrations/blob/master/css/components/container-with-nav.css#L36-L39).
+**Control of responsive display** is mostly done by changing *flex-wrap* property set to *wrap* in mobile view. [Example](https://github.com/egovernment/eregistrations/blob/master/css/components/container-with-nav.css#L36-L39).
 
 ****
+
+### Cross browser and legacy browsers
+
+**Chrome** browser is basic browser that is used for development of styles in eRegistration systems. All styles should be build directly for this browser. 
+
+**FireFox, Safari, Opera** are secondary browsers, that in most cases, will work as well as Chrome. But if necessary, theis browser hack are allowed in main and components css files.  
+***FireFox*** hack can be made with special media selector **@-moz-document url-prefix()**. For more information on this hack please refer to this [article](http://css-tricks.com/snippets/css/css-hacks-targeting-firefox/). [Exemple](https://github.com/egovernment/eregistrations/blob/f2932305330b5af839a0a7f9305171b1701a6ab3/css/components/file-uploader.css#L37).
+***Safari*** hack not applied, but if needed can be added in any proper way.
+***Opera*** hack not applied, but if needed can be added in any proper way.
+
+**Legacy browsers: IE8 - IE11** are treated in special css files, that are kept in *eregistrations/css/legacy* folder. All fixes are made by simplification of existing styles, and if necessary, set fix width and height. Layout can be fixed by applieing *floats* (but only in connection with *overflow: hidden* rule. [Example](https://github.com/egovernment/eregistrations/blob/master/css/legacy/components/container-with-nav.css#L1-L7).  
+Rules are added to files that correspond to already created components. e.g. if we want to introduce some changes to legacy layer, for *css/base.css* file. We should add those rules to *css/legacy/base.css* file. Similar with components legacy fixes for *css/components/foo.css* should land in *css/legacy/components/foo.css*. Those files will be automatically picked and bundled, no extra effort is needed.
+
+***
