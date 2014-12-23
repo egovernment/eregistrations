@@ -2,7 +2,7 @@
 	display: inline-block;
 	vertical-align: top;
 }
-.print-header > div:last-child {
+.print-header > div {
 	text-align: right;
 	width: 68%;
 }
