@@ -370,3 +370,22 @@ span({ class: 'input-prepend' },
 )
 
 ```
+
+***
+
+## Tables
+
+#### Default tables
+
+Basic styles for tables are keept in *css/table.css* file. By default table will be stripped, and displayed in container full width.  
+Default table can containt tabel head, table body, actions column, non-responsive display.  
+By adding ***actions*** class to table cells, and placing ***a*** or ***button*** element inside.  
+By adding ***desktop-only*** class to table cells, cells will be hidden in *mobile view*.
+
+
+#### Entities overview table
+
+Type of table used for displayin objects and its properties. Each object is placed in a seperate row of table. [Example]()
+
+#### Responsive tables
+
