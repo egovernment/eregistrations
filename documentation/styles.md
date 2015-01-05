@@ -222,15 +222,16 @@ span({ class: 'fa fa-automobile' }, "Car")
 #### Basic Form
 
 **Basic Form** - is basically made of ***ul*** and ***li*** elements wrapped in ***form*** element. Inside of ***li*** element there should be placed ***input*** element. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L14-L25).  
-After ***ul*** element, a ***p*** element should be place, wpraping ***submit*** type ***input***. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L26).
+After ***ul*** element, a ***p*** element should be place, wpraping ***submit*** type ***input***. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L26).  
+***Form*** or ***ul*** wrapper element requiers ***'form-elements'*** class in order for ***.radio*** and ***.hint*** elements to diplay properly.
 
 ```
 form(
-	ul(
+	ul({ class: 'form-elements' },
 		li({ class: 'input' },
 			input({ type: 'text' })
 			)
-	),
+		),
 	p(
 		input({ type: 'submit' })
 	)
@@ -238,5 +239,10 @@ form(
 
 ```
 
+#### Table-like forms
+
+***Table-like forms*** are used for displaying forms that are placed on 
 
  
+.form-elements - urzywana do .radio - displ inline
+               - .hint proper display
