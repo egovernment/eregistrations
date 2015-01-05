@@ -252,6 +252,8 @@ with ***hint*** class for diplay of hint text.
 
 After ***ul*** element, a ***p*** with ***submit-placeholder input*** classes element should be placed, wrapping ***submit*** type ***input***.
 
+*Table-like forms* are required to be placed in ***section-primary*** component.
+
 
 ```
 form(
@@ -398,4 +400,22 @@ There are two types of statistic tables: ***statistics-table-dual-main*** and **
 Classes introduced for purpose of setting proper width to statistic tables. 
 [Example of usage](https://github.com/egovernment/eregistrations/blob/master/view/prototype/statistics.js#L27).
 
+***
 
+## Sections 
+
+#### Section Primary
+
+Mostly used across eRegistration system component. Presets a white background with gray border and little radius. Can contain any type of information, in example [forms](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L17), [lists](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L86), or [freeform text](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L133). 
+
+All elements that are first line children of section primary, will get automaticaly 22px margin bottom.
+
+*Table-like forms* are required to be placed in ***section-primary*** component.
+
+#### Section Warning
+
+
+#### Tab navigation section
+
+
+#### Entity data section
