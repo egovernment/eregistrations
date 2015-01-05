@@ -76,6 +76,10 @@
 
 ---
 
+# Overview
+
+***
+
 ## Introduction
 
 **eRegistration style documentation** describes how eRegistration prototype is designed and explain ways it should be used in all eRegistration systems.  
@@ -208,3 +212,31 @@ span({ class: 'fa fa-automobile' }, "Car")
 "Car" text will not be shown when CSS is applied.
 
 ***
+
+# Reusable components
+
+***
+
+## Forms
+
+#### Basic Form
+
+**Basic Form** - is basically made of ***ul*** and ***li*** elements wrapped in ***form*** element. Inside of ***li*** element there should be placed ***input*** element. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L14-L25).  
+After ***ul*** element, a ***p*** element should be place, wpraping ***submit*** type ***input***. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L26).
+
+```
+form(
+	ul(
+		li({ class: 'input' },
+			input({ type: 'text' })
+			)
+	),
+	p(
+		input({ type: 'submit' })
+	)
+)
+
+```
+
+
+ 
