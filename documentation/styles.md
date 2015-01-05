@@ -6,15 +6,16 @@
 
 1. Introduction
 2. Base styles
- 1. File organization
+ 1. Common eRegistration styles (Prototype) files organization
  2. Conventions
- 3. Application specific CSS bundle configuration
+ 3. System specific styles files organization
+ 4. Application specific CSS bundle configuration
 3. Vertical rhythm and layout
+ 1. Vertical rhythm
+ 2. Layout
 4. Responsiveness
 5. Cross browser and legacy browsers
-6. Print
-7. Font icons
-8. Error page
+6. Font icons
 
 ### Reusable components
 
@@ -75,9 +76,7 @@
 
 ---
 
-## Base styles
-
-### Introduction
+## Introduction
 
 **eRegistration style documentation** describes how eRegistration prototype is designed and explain ways it should be used in all eRegistration systems.  
 Prototype contains all requierd for any eRegistration system markup and base styles. Markup of eRegistration systems should directly follow Prototype makup, in order for styles to work properly. Basic styles contain all visual and layout  elements.  
@@ -85,7 +84,9 @@ eRegistraiton systems need to specify their theme styles, to differentiate from 
 
 ***
 
-### File organization
+## Base styles
+
+### Common eRegistration styles (Prototype) file organization
 
 All cross eRegistrations, styles are placed in eRegistrations project in css folders:
 
@@ -109,6 +110,10 @@ All cross eRegistrations, styles are placed in eRegistrations project in css fol
 
 ***
 
+### System specific styles
+
+***
+
 ### Application specific CSS bundle configuration
 
 - **Link application css file**, within *view/{applicationName}/index.html* (name should reflect application name) as [here](https://github.com/egovernment/eregistrations-salvador/blob/master/view/public/index.html#L27).
@@ -116,9 +121,9 @@ All cross eRegistrations, styles are placed in eRegistrations project in css fol
 
 ***
 
-### Vertical rhythm and layout
+## Vertical rhythm and layout
 
-#### Vertical rhythm
+### Vertical rhythm
 
 **Vertical rhythm** in eRegistration can be defined as *the spacing and arrangement of components as the reader descends the page*. More basic information on VR cvan be found in this [article](http://24ways.org/2006/compose-to-a-vertical-rhythm/).  
 
@@ -132,7 +137,7 @@ All cross eRegistrations, styles are placed in eRegistrations project in css fol
 If height of element is larger than 22px, line-height is doubled. [Example](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L72-L75).  
 This rule controls height of components that contain text, making shour that height is multiplication of 22px, and elements in side are place with corect VR.
 
-#### Layout
+### Layout
 
 **Layout** in eRegistration basic building block of layout is flexbox rule set on parents of controlled elements. For more information on how flexbox works, please refer to this [article](http://css-tricks.com/snippets/css/a-guide-to-flexbox/).  
 No floats are allowed in main css components, positiong of elements can only be achieved via flexbox, inline-block, or if necessary postion relavie fixes. Floates are only allowed in legacy css override.
@@ -141,7 +146,7 @@ No floats are allowed in main css components, positiong of elements can only be 
 
 ***
 
-### Responsivnes
+## Responsivnes
 
 **Responsivness** is achieved in eRegistration systems by [media-queries](https://github.com/egovernment/eregistrations/blob/master/css/form.css#L385), that are checking screen resolution. No user-agent detecting is applied and needed. Resposive styles can only by applied this way.
 
@@ -152,7 +157,7 @@ No floats are allowed in main css components, positiong of elements can only be 
 
 ****
 
-### Cross browser and legacy browsers
+## Cross browser and legacy browsers
 
 **Chrome** browser is basic browser that is used for development of styles in eRegistration systems. All styles should be build directly for this browser. 
 
@@ -166,7 +171,7 @@ Rules are added to files that correspond to already created components. e.g. if 
 
 ***
 
-### Font icons
+## Font icons
 
 **Font Awsome** is used in eRegistration for icons. All iconse are not included, only those that are used. All new icons need to be added to icons file: *css/components/fa.css*.
 
