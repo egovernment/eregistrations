@@ -346,3 +346,27 @@ form(
 )
 
 ```
+
+#### Prepend and append inputs
+
+***Prepend*** and ***append*** inputs can be used in any type of form. They are created by placing significant type of ***input*** in ***span*** with ***input-prepend*** or ***input-append*** class element.  
+According to type *pre* or *append* type, ***span*** with ***add-on*** class and  appropriate content element need to be inserted before or after ***input*** element.
+
+***Prepend input***
+
+```
+span({ class: 'input-prepend' },
+	span({ class: 'add-on' }, "$"),
+	input({ type: 'number' })
+)
+
+```
+***Append input***
+
+```
+span({ class: 'input-prepend' },
+	input({ type: 'number' }),
+	span({ class: 'add-on' }, "$")
+)
+
+```
