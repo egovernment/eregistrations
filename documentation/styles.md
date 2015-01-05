@@ -91,7 +91,8 @@ All cross eRegistrations, styles are placed in eRegistrations project in css fol
 
 1. **Basic** - directly in *eregistrations/css* folder, contains all defauld, basic style files, such as *base*, *forms*, *table*. 
 2. **Components** - *eregistrations/css/components* folder, contains all, reusable and non-reusable components files, such as *section-priamary* or *container-with-nav*.
-3. **Legacy** - *eregistrations/css/legacy* folder, contains all css components files that need overriding for legacy browsers *(IE8-IE11)*.
+3. **Legacy browser styles** - *eregistrations/css/legacy* folder, contains all css components files that need overriding for legacy browsers *(IE8-IE11)*.
+4. **Print** - base print css are directly in *eregistrations/css* (as basic files), and special print components are kept in *eregistrations/css/components* (just like other reusable and non-reusable components)
 
 ***
 
