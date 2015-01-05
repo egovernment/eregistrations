@@ -222,8 +222,8 @@ span({ class: 'fa fa-automobile' }, "Car")
 #### Basic Form
 
 **Basic Form** - is basically made of ***ul*** and ***li*** elements wrapped in ***form*** element. Inside of ***li*** element there should be placed ***input*** element. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L14-L25).  
-After ***ul*** element, a ***p*** element should be place, wpraping ***submit*** type ***input***. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L26).  
-***Form*** or ***ul*** wrapper element requiers ***'form-elements'*** class in order for ***.radio*** and ***.hint*** elements to diplay properly.
+After ***ul*** element, a ***p*** element should be placed, wrapping ***submit*** type ***input***. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L26).  
+***Form*** or ***ul*** wrapper element requires ***'form-elements'*** class in order for ***.radio*** and ***.hint*** elements to diplay properly.
 
 ```
 form(
@@ -241,8 +241,38 @@ form(
 
 #### Table-like forms
 
-***Table-like forms*** are used for displaying forms that are placed on 
-
+***Table-like forms*** are used for displaying forms that are not placed on the left side of its containers, but slightly in the middle of screen. Mostly they are used for generating automatic forms based on model.  
+Like *basic forms*, they are made of ***ul*** and ***li*** elements wrapped in ***form*** element.
+  
+Inside of ***li*** element, there is a ***div*** child, with automatically added *dbjs-input-component* class. This ***div*** contains two first level children - ***label*** element and ***div*** with ***'input'*** class element. 
  
-.form-elements - urzywana do .radio - displ inline
-               - .hint proper display
+In ***labele*** simply label text is placed.  
+In ***div.input*** input of significant type is placed, folowd by ***span***'s:  
+with ***statuses*** class for status marks;  
+with ***error-message*** class for display of error text;  
+with ***hint*** class for diplay of hint text. 
+
+After ***ul*** element, a ***p*** with ***submit-placeholder input*** classes element should be placed, wrapping ***submit*** type ***input***. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L26).
+
+
+```
+form(
+	ul({ class: 'form-elements' },
+		li(
+			div({ class: 'dbjs-input-component' },
+				label('Lorem ipsum'),
+				div({ class: 'input' },
+					input({ type: 'text' }),
+					span({ class: 'statuses' }),
+					span({ class: 'error-message' }),
+					span({ class: 'hint' })
+					)
+				)
+			)
+		),
+	p({ class: 'submit-placeholder input' },
+		input({ type: 'submit' })
+	)
+)
+
+```
