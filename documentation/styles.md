@@ -21,12 +21,10 @@
 
 1. Forms
 2. Tables 
- 1. Entities table
- 2. Responsive table
- 3. Table filter bar
- 4. Submitted user history table
- 5. Submitted user data table
- 6. Statistics tables
+ 1. Default table
+ 2. Submitted user data table
+ 3. Responsive table
+ 4. Statistics tables
 3. Sections 
  1. Primary
  2. Warning
@@ -377,15 +375,22 @@ span({ class: 'input-prepend' },
 
 #### Default tables
 
-Basic styles for tables are keept in *css/table.css* file. By default table will be stripped, and displayed in container full width.  
-Default table can containt tabel head, table body, actions column, non-responsive display.  
+Basic styles for tables are kept in *css/table.css* file. By default table will be stripped, and displayed in container full width.  
+Default table can contain table head, table body, actions column, non-responsive display.  
 By adding ***actions*** class to table cells, and placing ***a*** or ***button*** element inside.  
 By adding ***desktop-only*** class to table cells, cells will be hidden in *mobile view*.
 
 
-#### Entities overview table
+#### Submitted-user-data-table
 
-Type of table used for displayin objects and its properties. Each object is placed in a seperate row of table. [Example]()
+Mostly used across eRegistration system. Type of table that can be used to display objects and its properties.  
+Each object can be placed in a separate row of table. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/users-admin.js#L31-L32)   
 
 #### Responsive tables
+
+Responsive table flips its header to be first column for every row of table. From the code perspective, this can be achived simply by adding property ***'responsive'*** seted to value ***'true'*** on table. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/user-submitted.js#L39) 
+
+#### Statistics tables
+
+
 
