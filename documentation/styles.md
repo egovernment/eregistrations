@@ -88,7 +88,7 @@ eRegistraiton systems need to specify their theme styles, to differentiate from 
 
 ### Common eRegistration styles (Prototype) file organization
 
-All cross eRegistrations, styles are placed in eRegistrations project in css folders:
+All cross eRegistrations, styles are divided into main sections:
 
 1. **Basic** - directly in *eregistrations/css* folder, contains all defauld, basic style files, such as *base*, *forms*, *table*. 
 2. **Components** - *eregistrations/css/components* folder, contains all, reusable and non-reusable components files, such as *section-priamary* or *container-with-nav*.
@@ -111,6 +111,15 @@ All cross eRegistrations, styles are placed in eRegistrations project in css fol
 ***
 
 ### System specific styles
+
+Any specific system builded on top of eRegistration, in order to differentiate from Prototype, require theme specific styles. **Theme** css files are placed directly in *system-name/css* folder. Theme contains upcommint components: 
+
+1. **theme.css** file, where all basic styles from prototype are overiten. At the beginning of file, [used in theme fonts](https://github.com/egovernment/eregistrations-salvador/blob/master/css/theme.css#L1-L28) need to be defined, as well as [variables overide](https://github.com/egovernment/eregistrations-salvador/blob/master/css/theme.css#L30-L47).
+2.  **theme-public.css** file, where all components used on public pages (like modals, [example here](https://github.com/egovernment/eregistrations-salvador/blob/master/css/theme-public.css#L149-L155)) are overwritten.
+3. **theme-part-a.css** file, where all componens used for not-submitted user (like *inventory modal*, [example here](https://github.com/egovernment/eregistrations-salvador/blob/master/css/theme-part-a.css#L153-L159)) are overwritten.
+4. **theme-part-b.css** file, where all componens used for submitted user and all official users (like *submitted menu*, [example here](https://github.com/egovernment/eregistrations-salvador/blob/master/css/theme-part-b.css#L5-L8)) are overwritten.
+
+Any legacy browser overwriting should take place in separate files, in *system-name/css/legacy* folder. 
 
 ***
 
@@ -166,8 +175,8 @@ No floats are allowed in main css components, positiong of elements can only be 
 **Chrome** browser is basic browser that is used for development of styles in eRegistration systems. All styles should be build directly for this browser. 
 
 **FireFox, Safari, Opera** are secondary browsers, that in most cases, will work as well as Chrome. But if necessary, theis browser hack are allowed in main and components css files.  
-***FireFox*** hack can be made with special media selector **@-moz-document url-prefix()**. For more information on this hack please refer to this [article](http://css-tricks.com/snippets/css/css-hacks-targeting-firefox/). [Exemple](https://github.com/egovernment/eregistrations/blob/f2932305330b5af839a0a7f9305171b1701a6ab3/css/components/file-uploader.css#L37).
-***Safari*** hack not applied, but if needed can be added in any proper way.
+***FireFox*** hack can be made with special media selector **@-moz-document url-prefix()**. For more information on this hack please refer to this [article](http://css-tricks.com/snippets/css/css-hacks-targeting-firefox/). [Exemple](https://github.com/egovernment/eregistrations/blob/f2932305330b5af839a0a7f9305171b1701a6ab3/css/components/file-uploader.css#L37).  
+***Safari*** hack not applied, but if needed can be added in any proper way.  
 ***Opera*** hack not applied, but if needed can be added in any proper way.
 
 **Legacy browsers: IE8 - IE11** are treated in special css files, that are kept in *eregistrations/css/legacy* folder. All fixes are made by simplification of existing styles, and if necessary, set fix width and height. Layout can be fixed by applieing *floats* (but only in connection with *overflow: hidden* rule. [Example](https://github.com/egovernment/eregistrations/blob/master/css/legacy/components/container-with-nav.css#L1-L7).  
