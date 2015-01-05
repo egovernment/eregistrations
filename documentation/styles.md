@@ -414,7 +414,8 @@ All elements that are first line children of section primary, will get automatic
 
 #### Section Warning
 
-
+Can by used for display of warning message to user. Presents a white background with gray left-border and no radius.  
+In Prototype used [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/submission.js#L14-L15).
 
 
 #### Tab navigation section
