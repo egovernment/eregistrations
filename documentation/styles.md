@@ -406,7 +406,7 @@ Classes introduced for purpose of setting proper width to statistic tables.
 
 #### Section Primary
 
-Mostly used across eRegistration system component. Presets a white background with gray border and little radius. Can contain any type of information, in example [forms](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L17), [lists](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L86), or [freeform text](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L133). 
+Mostly used across eRegistration system component. Presents a white background with gray border and little radius. Can contain any type of information, in example [forms](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L17), [lists](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L86), or [freeform text](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L133). 
 
 All elements that are first line children of section primary, will get automaticaly 22px margin bottom.
 
@@ -415,7 +415,24 @@ All elements that are first line children of section primary, will get automatic
 #### Section Warning
 
 
+
+
 #### Tab navigation section
 
 
 #### Entity data section
+
+
+***
+
+## Error-main
+
+Can by used for display of important to user message. Presents a white background with red border and little radius. Also can contain a red exlamation mark.  
+In Prototype used [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/forms.js#L12-L13).
+
+***
+
+## Info-main
+
+Can by used for display of information type message to user. Presents a white background with gray border and little radius. Also can contain a special list of informations needed to be displayed.  
+In Prototype used [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/forms.js#L15).
