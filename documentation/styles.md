@@ -116,6 +116,10 @@ All cross eRegistrations, styles are placed in eRegistrations project in css fol
 
 ### Application specific CSS bundle configuration
 
+For any application within eRegistration, one css file is created out of all css components files listed.
+In Prototype there is one application *prototype*, so one css file is created.
+Creating proper css file for application requires *linking css file* and *configuring it*:
+
 - **Link application css file**, within *view/{applicationName}/index.html* (name should reflect application name) as [here](https://github.com/egovernment/eregistrations-salvador/blob/master/view/public/index.html#L27).
 - **Configure** *{applicationName}/client/index.css* file, it should list all css files in given order that should be included in a bundle, as e.g. [here](https://github.com/egovernment/eregistrations-salvador/blob/master/public/client/css.index)
 
