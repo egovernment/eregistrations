@@ -252,7 +252,7 @@ with ***statuses*** class for status marks;
 with ***error-message*** class for display of error text;  
 with ***hint*** class for diplay of hint text. 
 
-After ***ul*** element, a ***p*** with ***submit-placeholder input*** classes element should be placed, wrapping ***submit*** type ***input***. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L26).
+After ***ul*** element, a ***p*** with ***submit-placeholder input*** classes element should be placed, wrapping ***submit*** type ***input***.
 
 
 ```
@@ -272,6 +272,76 @@ form(
 		),
 	p({ class: 'submit-placeholder input' },
 		input({ type: 'submit' })
+	)
+)
+
+```
+
+#### Checkboxes
+
+Checkbox and its label should be placed in ***label*** with ***input-aside*** class.  
+This ***label*** should contain two ***span*** children. First should contain ***input*** type ***checkbox***, and second simply label text. 
+
+
+```
+form(
+	ul(
+		li(
+			label({ class: 'input-aside' },
+				span(
+					input({ type: 'checkbox' })
+				),
+				span(
+					"Lorem ipsum"
+				)
+			)
+		)
+	)
+)
+
+```
+#### Radio buttons
+
+Radio buttons and its labels should be placed in ***ul*** with ***radio*** or ***radio multiline*** classes element where each ***li*** element corresponds to each radio button and its label.   
+
+***Radio*** class element places radio buttons next to each other.  
+
+```
+form(
+	ul({ class: 'radio' },
+		li(
+			label(
+				input({ type: 'radio' }),
+				"Lorem ipsum"
+			)
+		),
+		li(
+			label(
+				input({ type: 'radio' }),
+				"Lorem ipsum"
+			)
+		)
+	)
+)
+
+```
+***Radio multiline*** classes element places radio button under each other.
+
+```
+form(
+	ul({ class: 'radio multiline' },
+		li(
+			label(
+				input({ type: 'radio' }),
+				"Lorem ipsum"
+			)
+		),
+		li(
+			label(
+				input({ type: 'radio' }),
+				"Lorem ipsum"
+			)
+		)
 	)
 )
 
