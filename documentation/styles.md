@@ -392,5 +392,10 @@ Responsive table flips its header to be first column for every row of table. Fro
 
 #### Statistics tables
 
+For proper display of statistic tables, ***statistics-table*** class is introduced. This class make all content of statistics table smaller, so two tables can be placed side by side. 
+
+There are two types of statistic tables: ***statistics-table-dual-main*** and ***statistics-table-dual-aside***.  
+Classes introduced for purpose of setting proper width to statistic tables. 
+[Example of usage](https://github.com/egovernment/eregistrations/blob/master/view/prototype/statistics.js#L27).
 
 
