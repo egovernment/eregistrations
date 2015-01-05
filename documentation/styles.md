@@ -79,7 +79,9 @@
 
 ### Introduction
 
-**eRegistration style documentation** describes how styles for eRegistration prototype are designed and explain ways theye should be applied to all eRegistration systems. Markup of eRegistration systems should directly follow Prototype, in order for styles to work properly.
+**eRegistration style documentation** describes how eRegistration prototype is designed and explain ways it should be used in all eRegistration systems.  
+Prototype contains all requierd for any eRegistration system markup and base styles. Markup of eRegistration systems should directly follow Prototype makup, in order for styles to work properly. Basic styles contain all visual and layout  elements.  
+eRegistraiton systems need to specify their theme styles, to differentiate from Prototype. 
 
 ***
 
