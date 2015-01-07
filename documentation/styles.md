@@ -561,7 +561,7 @@ Uploaded by user files are displayed with usage of ***file-section*** class cont
 File uploader class consists of ***ul*** element with ***file-uploader*** class. Its each ***li*** is a single uploaded by user file.  
 Single ***li*** is a container for ***div*** with ***file-thumb*** class. ***file-thumb*** requires two first line children:  
 ***a*** as a container of file (i.e.. ***img***)  
-***div*** as a container for file options menu and informations
+***div*** as a container for file options menu and informations.
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/dbjs/submission-file.js#L23-L55)
 
@@ -585,6 +585,40 @@ div({ class: 'file-section' },
 );
 
 ```
+***
+
+## Hints optional
+
+Optional-hints are small, black, popup windows that are displayed on hover over significant element. 
+Optional-hints are developed on top of vendor library - [hint.css](http://kushagragour.in/lab/hint/).
+
+Any element which needs to have a tooltip has to be given ***hint-optional*** class. To position hint, at least one of the position classes need to be added:  
+
+***hint-optional-top***,  
+***hint-optional-bottom***,  
+***hint-optional-left***,  
+***hint-optional-right***  
+  
+The ***tooltip text*** has to be given using the ***data-hint attribute*** on that 
+element.
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/user-submitted.js#L56-L58).
+
+```
+span({ class: ''hint-optional hint-optional-left', 
+		'data-hint': "Lorem ipsum dolor sit amet" },
+	"Lorem ipsum"
+	);
+
+```
+
+***
+
+## Freeform text
+
+*** 
+
+## Disabler
 
 ***
 
