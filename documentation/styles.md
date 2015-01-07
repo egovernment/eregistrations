@@ -501,6 +501,15 @@ postButton(
 
 ```
 
+#### Resource link button
+
+Resource link is used for ***a*** elements, and displayes it as a light gray button. 
+This type of button can be used for downloading files.  
+Class ***button-resource-link*** is used for creating this type of button. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/official-document.js#L20)
+
+#### Next step button
 
 ***
 
