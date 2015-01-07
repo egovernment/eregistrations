@@ -503,13 +503,25 @@ postButton(
 
 #### Resource link button
 
-Resource link is used for ***a*** elements, and displayes it as a light gray button. 
+Resource link is used for ***a*** elements, and displays it as a light gray button. 
 This type of button can be used for downloading files.  
 Class ***button-resource-link*** is used for creating this type of button. 
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/official-document.js#L20)
 
 #### Next step button
+
+Resource link is used for ***a*** elements that are placed in ***div*** with ***next-step*** class element. This type of button is used in non-submitted user pages, for navigation on user registration form pages. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/documents.js#L31-L33).
+
+```
+div({ class: 'next-step' },
+	a("Lorem ipsum")
+);
+
+```
+
 
 ***
 
