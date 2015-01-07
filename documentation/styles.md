@@ -434,7 +434,18 @@ section({ class: 'section-tab-nav' },
 
 ## Container with navigation
 
+Container with navigation component is resposible for displaing all components require a text on one sied of contaner, and a navigation or any other links or buttons on the other side of this container. Mstly used for display of heading and on its right side buttons.
 
+Markup is flexible: - one contaner block element is required, with ***container-with-nav*** class. Two children or *text* and child element are required.  
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/official-document.js#L16-L25).
+
+```
+div({ class: 'container-with-nav' },
+	"Lorem ipsum",
+	div("Navigation")
+)
+
+```
 
 ***
 
