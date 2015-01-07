@@ -661,3 +661,26 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 Can by used for display of information type message to user. Presents a white background with gray border and little radius. Also can contain a special list of informations needed to be displayed.  
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/forms.js#L15).
+
+***
+
+# Single type components
+
+***
+
+## User steps menu
+
+***User-steps-menu*** component is used in non-submitted user for displaying steps that user has to fill out to submitted registration. User steps menu can be displayed in 3 variants:  
+***user-steps-menu*** - basic display of steps menu  
+***user-steps-menu-v1*** - first type of steps menu, regular shape steps  
+***user-steps-menu-v2*** - second type of steps menu, arrow shape steps
+
+Basic display shows only simple links placed equally spread along steps menu.
+
+***Usage of one of versions*** is simple, all that need to be done, is adding one of versions files to css bundle, right under basic file. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/prototype/client/css.index#L31-L32). 
+
+Markup does not change in any of 3 versions. User steps menu is builded out of ***nav*** element, containing a ***div*** with ***user-steps-menu-wrapper*** wrapper. Inside of wrapper, ***ul*** with ***user-steps-menu-list*** class and single ***li's*** as steps is present.
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/prototype/client/css.index#L31-L32). 
