@@ -616,6 +616,11 @@ span({ class: ''hint-optional hint-optional-left',
 
 ## Freeform text
 
+Freeform text component need to be used where big parts of text shuould be placed. This component can be used by adding ***free-form*** class to element that will contain this biger part of text.  
+Freeform text supplies text with styles for ***ol*** and ***ul***, sets margin bottom to all first line children to 22px (proper VR), and reduces this margin for ***ul's*** and ***ol's*** that are right next after ***p*** element.  
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L135-L136).
+
 *** 
 
 ## Disabler
