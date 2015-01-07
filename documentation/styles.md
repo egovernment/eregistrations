@@ -29,7 +29,6 @@
  1. Primary
  2. Warning
  3. Tab navigation
- 4. Entity data
 4. Container with navigation
 5. Labels
 6. Buttons
@@ -431,9 +430,10 @@ section({ class: 'section-tab-nav' },
 )
 
 ```
+***
 
+## Container with navigation
 
-#### Entity data section
 
 
 ***
