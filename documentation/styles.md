@@ -414,11 +414,23 @@ All elements that are first line children of section primary, will get automatic
 
 #### Section Warning
 
-Can by used for display of warning message to user. Presents a white background with gray left-border and no radius.  
+Can be used for display of warning message to user. Presents a white background with gray left-border and no radius.  
 In Prototype used [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/submission.js#L14-L15).
 
 
 #### Tab navigation section
+
+Can be used for display of white background with gray border and little radius container, that also have number of tabs at its top. Requiers ***a*** elements with ***tab*** class for tabs placed as first children, and after requires a div element as main conatiner for tab.  
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/official-user.js#L102-L112).
+
+```
+section({ class: 'section-tab-nav' },
+	a({ class: 'tab' }, "First Tab"),
+	a({ class: 'tab' }, "Second Tab"),
+	div("Tab content container")
+)
+
+```
 
 
 #### Entity data section
