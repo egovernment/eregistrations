@@ -448,6 +448,27 @@ div({ class: 'container-with-nav' },
 ```
 ***
 
+## Labels
+
+Labels can be used at any text. For usage of labels, text that should be wrapped in label, need to be wrapped in ***span*** with ***label-reg*** class inline element (like span).
+
+There are five types of labels:  
+***label-reg*** - simple gray label  
+***label-reg.ready*** - orange label  
+***label-reg.rejected*** - red label  
+***label-reg.approved*** - green label  
+***label-reg.info*** - blue label
+
+Combined classes need to be used for color labels to display properly: ***label-reg*** and type class, i.e.. ***ready***
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/statistics.js#L128-L131).
+
+
+```
+span({ class: 'label-reg' }, "Lorem ipsum");
+
+```
+
 
 
 ***
