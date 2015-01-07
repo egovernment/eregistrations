@@ -605,7 +605,7 @@ element.
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/user-submitted.js#L56-L58).
 
 ```
-span({ class: ''hint-optional hint-optional-left', 
+span({ class: 'hint-optional hint-optional-left', 
 		'data-hint': "Lorem ipsum dolor sit amet" },
 	"Lorem ipsum"
 	);
@@ -636,6 +636,15 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 For turning on disabler, a ***disabler-active*** class needs to be added to ***disabler-range*** component. 
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/disabled-documents.js#L5).
+
+```
+div({ class: 'disabler-range' },
+	"Lorem ipsum to be disabled",
+	
+	div({ class: 'disabler' })
+);
+
+```
 
 ***
 
