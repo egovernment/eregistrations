@@ -38,7 +38,7 @@
  4. Next step
 7. Files
  1. Uploader
- 2. Button
+ 2. File upload button 
 8. Hints optional
 11. Freeform text
 12. Disabler
@@ -558,8 +558,33 @@ Uploaded by user files are displayed with usage of ***file-section*** class cont
 
 #### File uploader 
 
-File uploader class consists of ***ul*** element with ***file-uploader*** class. Its each ***li*** 
+File uploader class consists of ***ul*** element with ***file-uploader*** class. Its each ***li*** is a single uploaded by user file.  
+Single ***li*** is a container for ***div*** with ***file-thumb*** class. ***file-thumb*** requires two first line children:  
+***a*** as a container of file (i.e.. ***img***)  
+***div*** as a container for file options menu and informations
 
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/dbjs/submission-file.js#L23-L55)
+
+#### File upload button 
+
+File upload button is used in ***file-section*** class container, displayed below ***file-uploader*** component. File upload button is used for ***a*** elements that are placed in ***p*** with ***file-uploader-button*** class element. It is used by user for selecting file to upload. 
+
+```
+div({ class: 'file-section' },
+	ul({ class: 'file-uploader' },
+		li(
+			div({ class: 'file-thumb' },
+				a(img(...)),
+				div(...)
+			)
+		)
+	),
+	p({ class: 'file-uploader-button' },
+		a("Lorem ipsum")
+	)
+);
+
+```
 
 ***
 
