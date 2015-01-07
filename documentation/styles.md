@@ -625,6 +625,18 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 ## Disabler
 
+Disabler is a component, that can cover all other components under partially transparent background, and make all of them not clickable and unactive.
+
+Disabler requires a wrapper component, containing all  elements that should be disabled. This wrapper component needs to have ***disabler-range*** class.  
+
+Disabler requires empty ***div*** with ***disabler*** class, as first line last child element. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/documents.js#L11-L34).
+
+For turning on disabler, a ***disabler-active*** class needs to be added to ***disabler-range*** component. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/disabled-documents.js#L5).
+
 ***
 
 ## Error-main
