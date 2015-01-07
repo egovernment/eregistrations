@@ -131,8 +131,10 @@ For any application within eRegistration, one css file is created out of all css
 In Prototype there is one application *prototype*, so one css file is created.
 Creating proper css file for application requires *linking css file* and *configuring it*:
 
-- **Link application css file**, within *view/{applicationName}/index.html* (name should reflect application name) as [here](https://github.com/egovernment/eregistrations-salvador/blob/master/view/public/index.html#L27).
-- **Configure** *{applicationName}/client/index.css* file, it should list all css files in given order that should be included in a bundle, as e.g. [here](https://github.com/egovernment/eregistrations-salvador/blob/master/public/client/css.index)
+- **Link application css file**, within *view/{applicationName}/index.html* (name should reflect application name).  
+Example can be found [here](https://github.com/egovernment/eregistrations-salvador/blob/master/view/public/index.html#L27).
+- **Configure** *{applicationName}/client/index.css* file, it should list all css files in given order that should be included in a bundle.  
+Example can be found [here](https://github.com/egovernment/eregistrations-salvador/blob/master/public/client/css.index)
 
 ***
 
@@ -148,8 +150,14 @@ Creating proper css file for application requires *linking css file* and *config
 
 **Box components** like *section-primary* or *section-primary > form* children recive ***margin-bottom: 22px***, what gives proper VR between them (thair content is height and VR is protected by proper line-height). [Example](https://github.com/egovernment/eregistrations/blob/master/css/components/section-primary.css#L7-L11).
   
-**Text components** like *headings*, *spans* or *paragraphs* have ***line-height*** defined in *base.css* to ***22px***. [Example](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L46-L52).  
-If height of element is larger than 22px, line-height is doubled. [Example](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L72-L75).  
+**Text components** like *headings*, *spans* or *paragraphs* have ***line-height*** defined in *base.css* to ***22px***. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L46-L52).  
+
+If height of element is larger than 22px, line-height is doubled. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L72-L75).  
+
 This rule controls height of components that contain text, making shour that height is multiplication of 22px, and elements in side are place with corect VR.
 
 ### Layout
@@ -157,7 +165,9 @@ This rule controls height of components that contain text, making shour that hei
 **Layout** in eRegistration basic building block of layout is flexbox rule set on parents of controlled elements. For more information on how flexbox works, please refer to this [article](http://css-tricks.com/snippets/css/a-guide-to-flexbox/).  
 No floats are allowed in main css components, positiong of elements can only be achieved via flexbox, inline-block, or if necessary postion relavie fixes. Floates are only allowed in legacy css override.
 
-**Content component** - main container of all content is [***.content***](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L139-L143) container defined in *base.css*. Its width is limited to [**1070px**](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L6) and it is centered on page. All first chiled elements that width should be controlled and set to full-page width, should have this class defined. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_main.js#L10).
+**Content component** - main container of all content is [***.content***](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L139-L143) container defined in *base.css*. Its width is limited to [**1070px**](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L6) and it is centered on page. All first chiled elements that width should be controlled and set to full-page width, should have this class defined. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_main.js#L10).
 
 ***
 
@@ -168,7 +178,9 @@ No floats are allowed in main css components, positiong of elements can only be 
 ***Mobile resolution*** is turned on when screen resolution is less than [**640px**](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L7).  
 ***Minimum mobile resolution*** is set to [**320px**](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L8)
 
-**Control of responsive display** is mostly done by changing *flex-wrap* property set to *wrap* in mobile view. [Example](https://github.com/egovernment/eregistrations/blob/master/css/components/container-with-nav.css#L36-L39).
+**Control of responsive display** is mostly done by changing *flex-wrap* property set to *wrap* in mobile view. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/css/components/container-with-nav.css#L36-L39).
 
 ****
 
@@ -181,7 +193,10 @@ No floats are allowed in main css components, positiong of elements can only be 
 ***Safari*** hack not applied, but if needed can be added in any proper way.  
 ***Opera*** hack not applied, but if needed can be added in any proper way.
 
-**Legacy browsers: IE8 - IE11** are treated in special css files, that are kept in *eregistrations/css/legacy* folder. All fixes are made by simplification of existing styles, and if necessary, set fix width and height. Layout can be fixed by applieing *floats* (but only in connection with *overflow: hidden* rule. [Example](https://github.com/egovernment/eregistrations/blob/master/css/legacy/components/container-with-nav.css#L1-L7).  
+**Legacy browsers: IE8 - IE11** are treated in special css files, that are kept in *eregistrations/css/legacy* folder. All fixes are made by simplification of existing styles, and if necessary, set fix width and height. Layout can be fixed by applieing *floats* (but only in connection with *overflow: hidden* rule. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/css/legacy/components/container-with-nav.css#L1-L7).  
+
 Rules are added to files that correspond to already created components. e.g. if we want to introduce some changes to legacy layer, for *css/base.css* file. We should add those rules to *css/legacy/base.css* file. Similar with components legacy fixes for *css/components/foo.css* should land in *css/legacy/components/foo.css*. Those files will be automatically picked and bundled, no extra effort is needed.
 
 ***
@@ -219,8 +234,14 @@ span({ class: 'fa fa-automobile' }, "Car")
 
 #### Basic Form
 
-**Basic Form** - is basically made of ***ul*** and ***li*** elements wrapped in ***form*** element. Inside of ***li*** element there should be placed ***input*** element. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L14-L25).  
-After ***ul*** element, a ***p*** element should be placed, wrapping ***submit*** type ***input***. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L26).  
+**Basic Form** - is basically made of ***ul*** and ***li*** elements wrapped in ***form*** element. Inside of ***li*** element there should be placed ***input*** element. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L14-L25).  
+
+After ***ul*** element, a ***p*** element should be placed, wrapping ***submit*** type ***input***. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L26).  
+
 ***Form*** or ***ul*** wrapper element requires ***'form-elements'*** class in order for ***.radio*** and ***.hint*** elements to diplay properly.
 
 ```
@@ -386,11 +407,15 @@ By adding ***desktop-only*** class to table cells, cells will be hidden in *mobi
 #### Submitted-user-data-table
 
 Mostly used across eRegistration system. Type of table that can be used to display objects and its properties.  
-Each object can be placed in a separate row of table. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/users-admin.js#L31-L32)   
+Each object can be placed in a separate row of table. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/users-admin.js#L31-L32)   
 
 #### Responsive tables
 
-Responsive table flips its header to be first column for every row of table. From the code perspective, this can be achived simply by adding property ***'responsive'*** seted to value ***'true'*** on table. [Example](https://github.com/egovernment/eregistrations/blob/master/view/prototype/user-submitted.js#L39) 
+Responsive table flips its header to be first column for every row of table. From the code perspective, this can be achived simply by adding property ***'responsive'*** seted to value ***'true'*** on table. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/user-submitted.js#L39) 
 
 #### Statistics tables
 
@@ -398,7 +423,8 @@ For proper display of statistic tables, ***statistics-table*** class is introduc
 
 There are two types of statistic tables: ***statistics-table-dual-main*** and ***statistics-table-dual-aside***.  
 Classes introduced for purpose of setting proper width to statistic tables. 
-[Example of usage](https://github.com/egovernment/eregistrations/blob/master/view/prototype/statistics.js#L27).
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/statistics.js#L27).
 
 ***
 
@@ -415,12 +441,14 @@ All elements that are first line children of section primary, will get automatic
 #### Section Warning
 
 Can be used for display of warning message to user. Presents a white background with gray left-border and no radius.  
-In Prototype used [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/submission.js#L14-L15).
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/submission.js#L14-L15).
 
 
 #### Tab navigation section
 
 Can be used for display of white background with gray border and little radius container, that also have number of tabs at its top. Requiers ***a*** elements with ***tab*** class for tabs placed as first children, and after requires a div element as main conatiner for tab.  
+
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/official-user.js#L102-L112).
 
 ```
@@ -438,6 +466,7 @@ section({ class: 'section-tab-nav' },
 Container with navigation component is responsible for displaying all components require a text on one side of container, and a navigation or any other links or buttons on the other side of this container. Mostly used for display of heading and on its right side buttons.
 
 Markup is flexible: - one container block element is required, with ***container-with-nav*** class. Two children or *text* and child element are required.  
+
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/official-document.js#L16-L25).
 
 ```
@@ -521,6 +550,15 @@ div({ class: 'next-step' },
 );
 
 ```
+***
+
+## Files
+
+Uploaded by user files are displayed with usage of ***file-section*** class container. 
+
+#### File uploader 
+
+File uploader class consists of ***ul*** element with ***file-uploader*** class. Its each ***li*** 
 
 
 ***
@@ -528,11 +566,13 @@ div({ class: 'next-step' },
 ## Error-main
 
 Can by used for display of important to user message. Presents a white background with red border and little radius. Also can contain a red exlamation mark.  
-In Prototype used [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/forms.js#L12-L13).
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/forms.js#L12-L13).
 
 ***
 
 ## Info-main
 
 Can by used for display of information type message to user. Presents a white background with gray border and little radius. Also can contain a special list of informations needed to be displayed.  
-In Prototype used [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/forms.js#L15).
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/forms.js#L15).
