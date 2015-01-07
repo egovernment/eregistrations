@@ -33,8 +33,9 @@
 5. Labels
 6. Buttons
  1. Main
- 2. Resource link
- 3. Next step
+ 2. Post button
+ 3. Resource link
+ 4. Next step
 7. Files
  1. Uploader
  2. Button
@@ -468,7 +469,37 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 span({ class: 'label-reg' }, "Lorem ipsum");
 
 ```
+*** 
 
+## Buttons
+
+There are various links displayed as buttons used in eRegistrations Prototype. They are ***a*** element with significatn class. ***Button*** elements are only used in ***form*** elements. 
+
+#### Button main
+
+Can be used on ***links***, ***buttons*** and ***inputs*** with ***submit*** type. Creates a grey button with total height of 44px. Can be combined with color changing classes:  
+***button-main-success*** - green color button
+***button-main-error*** - red color button
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/revision.js#L114).
+
+#### Post button
+
+Post button component is a combinance of elements created out of postButton() function. Markup created cosists of ***form*** and ***submit*** type ***button***.  
+Class for button can be added by adding ***buttonClass*** property in arguments object.  
+Text on button can be added by adding ***value*** property in argument object.
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/revision.js#L112-L113)
+
+```
+postButton(
+	{ 
+		buttonClass: 'button-main button-main-success', 
+		value: "Success" 
+	}
+);
+
+```
 
 
 ***
