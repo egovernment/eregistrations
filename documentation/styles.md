@@ -51,26 +51,24 @@
  1. Steps menu version 1
  2. Steps menu version 2
 2. Submitted menu
-3. Submitted list and thumb of documents
-3. User guide box components
-4. Document preview
-5. Dialogs
+3. Document preview
+4. Dialogs
  1. Login
  2. Sign up
  3. Inventory
  4. Application navigation
-6. Public
+5. Public
  1. Multiple entry
  2. Banner
  3. Steps
  4. Institutions
-7. Prints
+6. Prints
  1. Users list
  2. User history
  3. User data
  4. Costs list
-8. Front desk
-9. Footer
+7. Front desk
+8. Footer
 
 ---
 
@@ -723,3 +721,32 @@ div({ class: 'submitted-menu' },
 ```
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_sub-main.js#L4-L5) and [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/official.js#L7-L38).
+
+***
+
+## Document preview
+
+Document preview component is used on submitted users (official and non-official) pages. It display preview of currently selected document. On hover on documents preview, zoom to document part is presented. One document can consist of more than one file, in this case documents files navigation is displayed.
+
+#### Submitted preview document
+
+Markup requires ***submitted-preview-document*** class ***div*** wrapper, used with ***section-primary*** class.  
+Inside of ***submitted-preview-document*** wrapper, ***ul*** element with ***image-placeholder*** class is placed.  
+Each ***li*** element corresponds to documents single file. Currently displayed ***li*** requires ***active*** class. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/user-submitted.js#L189-L204). 
+
+#### Submitted preview documents navigation
+
+Markup requires ***submitted-preview-documents-navigation*** class ***div*** wrapper.  
+Inside of this wrapper, ***div*** containing ***a*** elements for navigation (***previous*** and ***next*** classes), and a ***span*** with ***current-index*** for display of currend file number.
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/user-submitted.js#L206-L211). 
+
+***
+
+## Dialogs
+
+
+
+
