@@ -754,12 +754,25 @@ In order to show dialog, class ***active*** need to replace ***inactive*** class
 
 For dialogs, also whole page background is changed. To achive that, a ***div** element with ***modal-courtain*** is introduced. It need to be placed in markup, just as a empty div. ***modal-courtain*** requires ***dialog-modal-on*** class to be set on ***body*** element, for *courtain* to be displayed.
 
+Markup for basic dialog cosists of ***dialog*** main element.  
+Inside of this element, ***header*** element is placed. In ***header***, ***heading*** like *h3* emelent can be placed. Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L9-L10).  
+Next is ***section*** with ***dialog-body*** class element. It is dedicated for all posible for dialog content. Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L12-L13).  
+Last is ***footer*** element, where any type of content (and non) can be placed. Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L29).
+ 
 
 #### Login
 
+Rules for login dialog are placed in *dialog-login.css* file. This dialog has ***dialog-login*** class. Only content width is set set for this dialog type.  
+Content of this modal is simply a ***form*** element. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L14-L28).
 
 #### Sign in
 
+Rules for sign up dialog are placed in *dialog-register.css* file. This dialog has ***dialog-register*** class. Only content width is set set for this dialog type.  
+Content of this modal is simply a ***form*** element. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L14-L28).
 
 #### Inventory
 
