@@ -786,3 +786,38 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 Application navigation is displayed on every page of eRegistration Prototype and it consists of all aplication pages navigation tree. Rules for application navigation dialog are placed in *app-nav-dialog.css* file. This dialog has ***app-nav-dialog*** class.  Rules in its css file corespond to this position of this modal, as well as its content display. 
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_main.js#L30-L157).
+
+***
+
+## Public
+
+Public page is displayed as main index page of Prototype. It consists of non-reused components. Main are: ***public-banner***, ***public-steps***, ***public-institutions***, ***multi-entry***.  
+For each component separate css file is maintained.
+
+#### Public banner 
+
+Public banner is used to display first section on public page, which consists of text area, and image. All rules are maintained in *public-banner.css*.
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/index.js#L11-L24).
+
+#### Public steps
+
+Public steps are used to display certain amount of text and options image information on public page. For ***public-steps*** display, a ***ul*** element with ***public-steps*** class is used. Each ***li*** corresponds to one step. All rules are maintained in *public-steps.css*.
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/index.js#L27-L52).
+
+#### Public steps
+
+Public institutions are used to display images of all institutions connected to single eRegistration system.  For ***public-institutions*** display, a ***ul*** element with ***public-institutions*** class is used. Each ***li*** corresponds to one institutions. All rules are maintained in *public-institutions.css*.
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/index.js#L53-L56).
+
+#### Multiple entry 
+
+Multiple entry is a second type of public page. It differs from first type, by displaying different content in ***public-banner*** component. ***public-multi-entry*** component, consists of two rounded elements, that are used for registration purpose.  
+These elements are ***div**'s and have ***public-multi-entry-entrance*** class.
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/multi-entry.js#L4-L28).
+
+***
+
