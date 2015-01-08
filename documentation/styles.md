@@ -670,17 +670,56 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 ## User steps menu
 
-***User-steps-menu*** component is used in non-submitted user for displaying steps that user has to fill out to submitted registration. User steps menu can be displayed in 3 variants:  
+***User-steps-menu*** component is used in non-submitted user for displaying steps that user has to fill out to submit registration. User steps menu can be displayed in 3 variants:  
 ***user-steps-menu*** - basic display of steps menu  
 ***user-steps-menu-v1*** - first type of steps menu, regular shape steps  
 ***user-steps-menu-v2*** - second type of steps menu, arrow shape steps
 
-Basic display shows only simple links placed equally spread along steps menu.
+Basic display shows only simple links equally spread along steps menu.
 
-***Usage of one of versions*** is simple, all that need to be done, is adding one of versions files to css bundle, right under basic file. 
+***Usage any version*** is simple, all that need to be done, is adding one of versions files to css bundle, right under basic file. 
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/prototype/client/css.index#L31-L32). 
 
 Markup does not change in any of 3 versions. User steps menu is builded out of ***nav*** element, containing a ***div*** with ***user-steps-menu-wrapper*** wrapper. Inside of wrapper, ***ul*** with ***user-steps-menu-list*** class and single ***li's*** as steps is present.
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/prototype/client/css.index#L31-L32). 
+
+***
+
+## Submitted menu
+
+***Submitted-menu*** component is used in all submitted users (official and non-official) pages. It displays basic black menu wrapper with available navigation and options links for user. 
+
+Markup requires wrapper ***div*** with ***submitted-menu*** class, for full screen width black background.  
+Inside of ***submitted-menu*** wrapper, another wrapper, ***div*** with ***submitted-menu-bar content*** classes is placed. It is a container for all navigation and options links, buttons.  
+Inside of ***submitted-menu-bar content*** wrapper, ***nav*** elements can be placed. First ***nav*** is displayed by left border of ***submitted-menu-bar content***, and if second is added, it'll be placed by right border.  
+Inside of each ***nav*** element, ***ul*** with ***items*** class need to placed, where each ***li*** element is single navigation item.
+
+```
+div({ class: 'submitted-menu' },
+	div({ class: 'submitted-menu-bar content' },
+		nav(
+			ul({ class: 'items' }
+				li(
+					a("Lorem ipsum")
+				),
+				li(
+					a("Lorem ipsum")
+				)
+			)
+		),
+		nav(
+			ul({ class: 'items' }
+				li(
+					a("Lorem ipsum")
+				)
+			)
+		)
+	
+	)
+);
+
+```
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_sub-main.js#L4-L5) and [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/official.js#L7-L38).
