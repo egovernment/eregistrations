@@ -68,7 +68,6 @@
  3. User data
  4. Costs list
 7. Front desk
-8. Footer
 
 ---
 
@@ -820,4 +819,27 @@ These elements are ***div**'s and have ***public-multi-entry-entrance*** class.
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/multi-entry.js#L4-L28).
 
 ***
+
+## Print 
+
+For pages that are prepared for printing, second css bundle is generated. 
+
+Print css bundle file need to be configured in the same way as main bundle, so it need to be placed in ***{applicationName}/client/*** folder, and it should list all print-css files.
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/prototype/client/css-print.index).
+
+Print bundle need to be linked on page that is prepared for printing.
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/print-user-data.js#L4).
+
+Print components are maintained in ***eregistrations/css/components*** (just like other reusable and non-reusable components).
+
+In prototype there are four print pages:  
+***users list***, ***user history***, ***user data***, ***costs list***.
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/print-user-data.js).
+
+***
+
+## Front desk
 
