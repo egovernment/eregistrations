@@ -747,6 +747,22 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 ## Dialogs
 
+Main, reusable and repeatable element of dialogs is simply ***dialog*** element. All dialog modals use ***dialog*** element and its styles. Basic rules for dialogs are placed in *dialog.css* file.  
+
+Dialogs are *not displayed* while they have ***inactive*** class added.  
+In order to show dialog, class ***active*** need to replace ***inactive*** class in ***dialog*** element.
+
+For dialogs, also whole page background is changed. To achive that, a ***div** element with ***modal-courtain*** is introduced. It need to be placed in markup, just as a empty div. ***modal-courtain*** requires ***dialog-modal-on*** class to be set on ***body*** element, for *courtain* to be displayed.
 
 
+#### Login
+
+
+#### Sign in
+
+
+#### Inventory
+
+
+#### Application navigation
 
