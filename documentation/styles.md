@@ -755,8 +755,8 @@ In order to show dialog, class ***active*** need to replace ***inactive*** class
 For dialogs, also whole page background is changed. To achive that, a ***div** element with ***modal-courtain*** is introduced. It need to be placed in markup, just as a empty div. ***modal-courtain*** requires ***dialog-modal-on*** class to be set on ***body*** element, for *courtain* to be displayed.
 
 Markup for basic dialog cosists of ***dialog*** main element.  
-Inside of this element, ***header*** element is placed. In ***header***, ***heading*** like *h3* emelent can be placed. Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L9-L10).  
-Next is ***section*** with ***dialog-body*** class element. It is dedicated for all posible for dialog content. Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L12-L13).  
+Inside of this element, ***header*** element is placed. In ***header***, ***heading*** like *h3* element can be placed. Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L9-L10).  
+Next is ***section*** with ***dialog-body*** class element. It is dedicated for all possible for dialog content. Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L12-L13).  
 Last is ***footer*** element, where any type of content (and non) can be placed. Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_login.js#L29).
  
 
@@ -776,6 +776,13 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 #### Inventory
 
+Inventory dialog is displayed for non-submitted user, in first step of submission - *guide*. Rules for sign up dialog are placed in *dialog-inventory.css* file. This dialog has ***dialog-inventory*** class. Main content of this dialog is a form, and most rules in its css file corespond to this element. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_inventory.js#L15-L79).
+
 
 #### Application navigation
 
+Application navigation is displayed on every page of eRegistration Prototype and it consists of all aplication pages navigation tree. Rules for application navigation dialog are placed in *app-nav-dialog.css* file. This dialog has ***app-nav-dialog*** class.  Rules in its css file corespond to this position of this modal, as well as its content display. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_main.js#L30-L157).
