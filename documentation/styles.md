@@ -20,6 +20,11 @@
 ### Reusable components
 
 1. Forms
+ 1. Basic form
+ 2. Table-like form
+ 3. Checkbox
+ 4. Radio button
+ 5. Prepend and append input
 2. Tables 
  1. Default table
  2. Submitted user data table
@@ -48,8 +53,8 @@
 ### Single type components
 
 1. User steps menu
- 1. Steps menu version 1
- 2. Steps menu version 2
+ 1. Steps menu version one
+ 2. Steps menu version two
 2. Submitted menu
 3. Document preview
 4. Dialogs
@@ -58,16 +63,12 @@
  3. Inventory
  4. Application navigation
 5. Public
- 1. Multiple entry
- 2. Banner
- 3. Steps
- 4. Institutions
-6. Prints
- 1. Users list
- 2. User history
- 3. User data
- 4. Costs list
-7. Front desk
+ 1. Public banner
+ 3. Public steps
+ 4. Public institutions
+ 5. Multiple entry
+6. Print
+
 
 ---
 
@@ -92,7 +93,7 @@ All cross eRegistrations, styles are divided into main sections:
 1. **Basic** - directly in *eregistrations/css* folder, contains all defauld, basic style files, such as *base*, *forms*, *table*. 
 2. **Components** - *eregistrations/css/components* folder, contains all, reusable and non-reusable components files, such as *section-priamary* or *container-with-nav*.
 3. **Legacy browser styles** - *eregistrations/css/legacy* folder, contains all css components files that need overriding for legacy browsers *(IE8-IE11)*.
-4. **Print** - base print css are directly in *eregistrations/css* (as basic files), and special print components are kept in *eregistrations/css/components* (just like other reusable and non-reusable components)
+4. **Print** - base print css are directly in *eregistrations/css* (as basic files), and special print components are maintained in *eregistrations/css/components* (just like other reusable and non-reusable components)
 
 ***
 
@@ -111,7 +112,7 @@ All cross eRegistrations, styles are divided into main sections:
 
 ### System specific styles
 
-Any specific system builded on top of eRegistration, in order to differentiate from Prototype, require theme specific styles. **Theme** css files are placed directly in *system-name/css* folder. Theme contains upcommint components: 
+Any specific system builded on top of eRegistration, in order to differentiate from Prototype, require theme specific styles. **Theme** css files are placed directly in *system-name/css* folder. Theme contains components: 
 
 1. **theme.css** file, where all basic styles from prototype are overiten. At the beginning of file, [used in theme fonts](https://github.com/egovernment/eregistrations-salvador/blob/master/css/theme.css#L1-L28) need to be defined, as well as [variables overide](https://github.com/egovernment/eregistrations-salvador/blob/master/css/theme.css#L30-L47).
 2.  **theme-public.css** file, where all components used on public pages (like modals, [example here](https://github.com/egovernment/eregistrations-salvador/blob/master/css/theme-public.css#L149-L155)) are overwritten.
@@ -190,7 +191,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 ***Safari*** hack not applied, but if needed can be added in any proper way.  
 ***Opera*** hack not applied, but if needed can be added in any proper way.
 
-**Legacy browsers: IE8 - IE11** are treated in special css files, that are kept in *eregistrations/css/legacy* folder. All fixes are made by simplification of existing styles, and if necessary, set fix width and height. Layout can be fixed by applieing *floats* (but only in connection with *overflow: hidden* rule. 
+**Legacy browsers: IE8 - IE11** are treated in special css files, that are maintained in *eregistrations/css/legacy* folder. All fixes are made by simplification of existing styles, and if necessary, set fix width and height. Layout can be fixed by applying *floats* (but only in connection with *overflow: hidden* rule. 
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/css/legacy/components/container-with-nav.css#L1-L7).  
 
@@ -229,7 +230,7 @@ span({ class: 'fa fa-automobile' }, "Car")
 
 ## Forms
 
-#### Basic Form
+#### Basic form
 
 **Basic Form** - is basically made of ***ul*** and ***li*** elements wrapped in ***form*** element. Inside of ***li*** element there should be placed ***input*** element. 
 
@@ -255,7 +256,7 @@ form(
 
 ```
 
-#### Table-like forms
+#### Table-like form
 
 ***Table-like forms*** are used for displaying forms that are not placed on the left side of its containers, but slightly in the middle of screen. Mostly they are used for generating automatic forms based on model.  
 Like *basic forms*, they are made of ***ul*** and ***li*** elements wrapped in ***form*** element.
@@ -295,7 +296,7 @@ form(
 
 ```
 
-#### Checkboxes
+#### Checkboxe
 
 Checkbox and its label should be placed in ***label*** with ***input-aside*** class.  
 This ***label*** should contain two ***span*** children. First should contain ***input*** type ***checkbox***, and second simply label text. 
@@ -318,7 +319,7 @@ form(
 )
 
 ```
-#### Radio buttons
+#### Radio button
 
 Radio buttons and its labels should be placed in ***ul*** with ***radio*** or ***radio multiline*** classes element where each ***li*** element corresponds to each radio button and its label.   
 
@@ -365,7 +366,7 @@ form(
 
 ```
 
-#### Prepend and append inputs
+#### Prepend and append input
 
 ***Prepend*** and ***append*** inputs can be used in any type of form. They are created by placing significant type of ***input*** in ***span*** with ***input-prepend*** or ***input-append*** class element.  
 According to type *pre* or *append* type, ***span*** with ***add-on*** class and  appropriate content element need to be inserted before or after ***input*** element.
@@ -393,9 +394,9 @@ span({ class: 'input-prepend' },
 
 ## Tables
 
-#### Default tables
+#### Default table
 
-Basic styles for tables are kept in *css/table.css* file. By default table will be stripped, and displayed in container full width.  
+Basic styles for tables are maintained in *css/table.css* file. By default table will be stripped, and displayed in on page full width.  
 Default table can contain table head, table body, actions column, non-responsive display.  
 By adding ***actions*** class to table cells, and placing ***a*** or ***button*** element inside.  
 By adding ***desktop-only*** class to table cells, cells will be hidden in *mobile view*.
@@ -838,8 +839,3 @@ In prototype there are four print pages:
 ***users list***, ***user history***, ***user data***, ***costs list***.
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/print-user-data.js).
-
-***
-
-## Front desk
-
