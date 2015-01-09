@@ -4,19 +4,19 @@
 
 ## Introduction
 
-**eRegistration style documentation** describes how eRegistration prototype is designed and explain ways it should be used in all eRegistration systems.  
-Prototype contains all required for any eRegistration system markup and base styles. Markup of eRegistration systems should directly follow Prototype markup, in order for styles to work properly. Basic styles contain all visual and layout  elements.  
-eRegistraiton systems need to specify their theme styles, to differentiate from Prototype. 
+**eRegistrations style documentation** describes how eRegistrations prototype is designed and explain ways it should be used in all eRegistrations systems.  
+Prototype contains all required for any eRegistrations system markup and base styles. Markup of eRegistrations systems should directly follow Prototype markup, in order for styles to work properly. Basic styles contain all visual and layout  elements.  
+eRegistrations systems need to specify their theme styles, to differentiate from Prototype. 
 
 ***
 
 ## Css files and folders organisation
 
 All Prototype styles are maintained in ***eregistrations/css*** folder.  
-All css rules are placed in *components css files* (component represents a small part of application, *i.e.. navigation menu*).  
+All css rules are placed in *components css files* (component represents a small part of application, *i.e. navigation menu*).  
 Css components files are **bundled** for each application in system into one css file (bundled configuration described at the end of this section). 
 
-### Common eRegistration styles (Prototype) file organisation
+### Common eRegistrations styles (Prototype) file organisation
 
 All cross eRegistrations, styles are divided into main sections:
 
@@ -27,7 +27,7 @@ All cross eRegistrations, styles are divided into main sections:
 
 ### System specific styles
 
-Any specific system builded on top of eRegistration, in order to differentiate from Prototype, require theme specific styles. 
+Any specific system builded on top of eRegistrations, in order to differentiate from Prototype, require theme specific styles. 
 
 **Theme** css files are maintained directly in ***system-name/css*** folder. Theme contains components: 
 
@@ -40,7 +40,7 @@ Any legacy browser overwriting should take place in separate files (, in *system
 
 ### Application specific CSS bundle configuration
 
-For any application within eRegistration, one css file is created out of all css components files listed.
+For any application within eRegistrations, one css file is created out of all css components files listed.
 In Prototype there is one application *prototype*, so one css file is created.
 Creating proper css file for application requires *linking css file* and *configuring it*:
 
@@ -66,11 +66,11 @@ Example can be found [here](https://github.com/egovernment/eregistrations-salvad
 
 ### Vertical rhythm
 
-**Vertical rhythm** in eRegistration can be defined as *the spacing and arrangement of components as the reader descends the page*. More basic information on VR can be found in this [article](http://24ways.org/2006/compose-to-a-vertical-rhythm/).  
+**Vertical rhythm** in eRegistrations can be defined as *the spacing and arrangement of components as the reader descends the page*. More basic information on VR can be found in this [article](http://24ways.org/2006/compose-to-a-vertical-rhythm/).  
 
-**VR applies** to all elements (block and inline) that are placed in eRegistration system.  
+**VR applies** to all elements (block and inline) that are placed in eRegistrations system.  
 
-**Base line** of VR in eRegistration Prototype is **22px**.
+**Base line** of VR in eRegistrations Prototype is **22px**.
 
 **Box components** like *section-primary* or *section-primary > form* children receive ***margin-bottom: 22px***, what gives proper VR between them (their content is height and VR is protected by proper line-height). [Example](https://github.com/egovernment/eregistrations/blob/master/css/components/section-primary.css#L7-L11).
   
@@ -86,7 +86,7 @@ This rule controls height of components that contain text, making shore that hei
 
 ### Layout
 
-**Layout** in eRegistration basic building block of layout is flexbox rule set on parents of controlled elements. For more information on how flexbox works, please refer to this [article](http://css-tricks.com/snippets/css/a-guide-to-flexbox/).  
+**Layout** in eRegistrations basic building block of layout is flexbox rule set on parents of controlled elements. For more information on how flexbox works, please refer to this [article](http://css-tricks.com/snippets/css/a-guide-to-flexbox/).  
 No floats are allowed in main css components, position of elements can only be achieved via flexbox, inline-block, or if necessary position relative fixes. Floats are only allowed in legacy css override.
 
 **Content component** - main container of all content is [***.content***](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L139-L143) container defined in *base.css*. Its width is limited to [**1070px**](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L6) and it is centred on page. All first child elements that width should be controlled and set to full-page width, should have this class defined. 
@@ -95,7 +95,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 ### Responsiveness
 
-**Responsiveness** is achieved in eRegistration systems by [media-queries](https://github.com/egovernment/eregistrations/blob/master/css/form.css#L385), that are checking screen resolution. No user-agent detecting is applied and needed. Responsive styles can only by applied this way.
+**Responsiveness** is achieved in eRegistrations systems by [media-queries](https://github.com/egovernment/eregistrations/blob/master/css/form.css#L385), that are checking screen resolution. No user-agent detecting is applied and needed. Responsive styles can only by applied this way.
 
 ***Mobile resolution*** is turned on when screen resolution is less than [**640px**](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L7).  
 ***Minimum mobile resolution*** is set to [**320px**](https://github.com/egovernment/eregistrations/blob/master/css/base.css#L8)
@@ -106,7 +106,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 ### Cross browser and legacy browsers
 
-**Chrome** browser is basic browser that is used for development of styles in eRegistration systems. All styles should be build directly for this browser. 
+**Chrome** browser is basic browser that is used for development of styles in eRegistrations systems. All styles should be build directly for this browser. 
 
 **FireFox, Safari, Opera** are secondary browsers, that in most cases, will work as well as Chrome. But if necessary, their browser hack are allowed in main and components css files.  
 ***FireFox*** hack can be made with special media selector **@-moz-document url-prefix()**. For more information on this hack please refer to this [article](http://css-tricks.com/snippets/css/css-hacks-targeting-firefox/). [Example](https://github.com/egovernment/eregistrations/blob/f2932305330b5af839a0a7f9305171b1701a6ab3/css/components/file-uploader.css#L37).  
@@ -297,7 +297,7 @@ By adding ***desktop-only*** class to table cells, cells will be hidden in *mobi
 
 #### Submitted-user-data-table
 
-Mostly used across eRegistration system. Type of table that can be used to display objects and its properties.  
+Mostly used across eRegistrations system. Type of table that can be used to display objects and its properties.  
 Each object can be placed in a separate row of table. 
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/users-admin.js#L31-L32)   
@@ -323,7 +323,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 #### Section Primary
 
-Mostly used across eRegistration system component. Presents a white background with grey border and little radius. Can contain any type of information, in example [forms](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L17), [lists](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L86), or [freeform text](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L133). 
+Mostly used across eRegistrations system component. Presents a white background with grey border and little radius. Can contain any type of information, in example [forms](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L17), [lists](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L86), or [freeform text](https://github.com/egovernment/eregistrations/blob/master/view/prototype/guide.js#L133). 
 
 All elements that are first line children of section primary, will get automatically 22px margin bottom.
 
@@ -354,7 +354,7 @@ section({ class: 'section-tab-nav' },
 
 ### Font icons
 
-**Font Awesome** is used in eRegistration for icons. All icons are not included, only those that are used. All new icons need to be added to icons file: *css/components/fa.css*.
+**Font Awesome** is used in eRegistrations for icons. All icons are not included, only those that are used. All new icons need to be added to icons file: *css/components/fa.css*.
 
 **Adding new icon** can be made by selecting new icon from [this list](https://fortawesome.github.io/Font-Awesome/cheatsheet/) and adding class for this font in *css/components/fa.css*  
 
@@ -697,7 +697,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 #### Application navigation
 
-Application navigation is displayed on every page of eRegistration Prototype and it consists of all application pages navigation tree. Rules for application navigation dialog are placed in *app-nav-dialog.css* file. This dialog has ***app-nav-dialog*** class.  Rules in its css file correspond to this position of this modal, as well as its content display. 
+Application navigation is displayed on every page of eRegistrations Prototype and it consists of all application pages navigation tree. Rules for application navigation dialog are placed in *app-nav-dialog.css* file. This dialog has ***app-nav-dialog*** class.  Rules in its css file correspond to this position of this modal, as well as its content display. 
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_main.js#L30-L157).
 
@@ -722,7 +722,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 #### Public steps
 
-Public institutions are used to display images of all institutions connected to single eRegistration system.  For ***public-institutions*** display, a ***ul*** element with ***public-institutions*** class is used. Each ***li*** corresponds to one institutions. All rules are maintained in *public-institutions.css*.
+Public institutions are used to display images of all institutions connected to single eRegistrations system.  For ***public-institutions*** display, a ***ul*** element with ***public-institutions*** class is used. Each ***li*** corresponds to one institutions. All rules are maintained in *public-institutions.css*.
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/index.js#L53-L56).
 
