@@ -4,7 +4,7 @@
 	border-bottom: 1px solid var(--light-text);
 }
 
-.entity-entities-section .entity-data-section {
+.entity-data-section-entities .entity-data-section {
 	border-left: none;
 	border-right: none;
 	border-bottom: none;
@@ -30,7 +30,7 @@
 	padding-left: 10px;
 	margin-top: 22px;
 }
-.entity-entities-section h5 {
+..entity-data-section-entities h5 {
 	margin-bottom: 22px;
 }
 
@@ -40,7 +40,7 @@
 	margin-top: 22px;
 }
 
-.entity-data-section .entity-entities-section {
+.entity-data-section-entities {
 	list-style-type: none;
 }
 
@@ -59,15 +59,15 @@
 	border-bottom: 1px solid var(--light-text);
 }
 
-.entity-entities-section .entity-data-sub-section table th,
-.entity-entities-section .entity-data-sub-section table td,
-.entity-entities-section .entity-data-section table th,
-.entity-entities-section .entity-data-section table td {
+.entity-data-section-entities .entity-data-section-sub table th,
+.entity-data-section-entities .entity-data-section-sub table td,
+.entity-data-section-entities .entity-data-section table th,
+.entity-data-section-entities .entity-data-section table td {
 	font-weight: normal;
 	font-size: 12px;
 	padding: 0 0 0 10px;
 }
-.entity-data-section .entity-section-no-data {
+.entity-data-section .entity-data-section-empty {
 	padding: 11px 0 11px 8px;
 	color: var(--hint-text);
 	font-style: italic;

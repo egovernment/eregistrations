@@ -21,7 +21,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 				headerRank++;
 			}()),
 			ns._if(resolved.value._size,
-				ns.ul({ class: 'entity-entities-section' },
+				ns.ul({ class: 'entity-data-section-entities' },
 					resolved.value,
 					function (entityObject) {
 						return ns.li(headersMap[headerRank](
@@ -31,5 +31,5 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 								return section.toDOM(document, { headerRank: headerRank + 1 });
 							}));
 					}
-					), ns.p({ class: 'entity-section-no-data' }, self.constructor.onEmptyMessage)));
+					), ns.p({ class: 'entity-data-section-empty' }, self.constructor.onEmptyMessage)));
 	}));
