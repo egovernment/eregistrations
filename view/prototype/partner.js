@@ -69,7 +69,7 @@ exports.step = function () {
 			)
 		)
 	);
-	div({ class: 'nav-back' },
+	div({ class: 'next-step' },
 		a({ href: '/forms/' }, "Back to forms")
 		);
 };

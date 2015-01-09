@@ -12,32 +12,6 @@
 	width: 25%;
 	display: block;
 }
-.nav-back {
-	margin: 22px 0;
-}
-
-.nav-back a {
-	background-color: var(--normal-background);
-	border-radius: 6px;
-	border: 1px solid transparent;
-	color: var(--white-text);
-	cursor: pointer;
-	display: inline-block;
-	font-size: 18px;
-	font-weight: normal;
-	margin-bottom: 0;
-	padding: 10px 16px;
-	text-align: center;
-	text-decoration: none;
-	vertical-align: middle;
-	white-space: nowrap;
-	width: 49%;
-}
-.nav-back a:hover,
-.nav-back a:focus,
-.nav-back a:active {
-	background-color: var(--normal-dark-background);
-}
 
 @media only screen and (max-width: var(--mobile-width)) {
 	.entity-properties {
@@ -49,7 +23,7 @@
 		flex-wrap:wrap;
 	}
 
-	.entity-properties li span, .nav-back a {
+	.entity-properties li span {
 		width: 100%;
 	}
 }
