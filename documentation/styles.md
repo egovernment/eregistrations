@@ -1,80 +1,6 @@
-# Documentation of styles created in eRegistration prototype
-
-## Table of content
-
-### Overview
-
-1. Introduction
-2. Base styles
- 1. Common eRegistration styles (Prototype) files organisation
- 2. Conventions
- 3. System specific styles files organisation
- 4. Application specific CSS bundle configuration
-3. Vertical rhythm and layout
- 1. Vertical rhythm
- 2. Layout
-4. Responsiveness
-5. Cross browser and legacy browsers
-6. Font icons
-
-### Reusable components
-
-1. Forms
- 1. Basic form
- 2. Table-like form
- 3. Checkbox
- 4. Radio button
- 5. Prepend and append input
-2. Tables 
- 1. Default table
- 2. Submitted user data table
- 3. Responsive table
- 4. Statistics tables
-3. Sections 
- 1. Primary
- 2. Warning
- 3. Tab navigation
-4. Container with navigation
-5. Labels
-6. Buttons
- 1. Main
- 2. Post button
- 3. Resource link
- 4. Next step
-7. Files
- 1. Uploader
- 2. File upload button 
-8. Hints optional
-11. Freeform text
-12. Disabler
-13. Error main
-14. Info main
-
-### Single type components
-
-1. User steps menu
- 1. Steps menu version one
- 2. Steps menu version two
-2. Submitted menu
-3. Document preview
-4. Dialogs
- 1. Login
- 2. Sign up
- 3. Inventory
- 4. Application navigation
-5. Public
- 1. Public banner
- 3. Public steps
- 4. Public institutions
- 5. Multiple entry
-6. Print
-
+# Documentation of styles created in eRegistrations prototype
 
 ---
-
-# Overview
-
-***
 
 ## Introduction
 
@@ -84,7 +10,10 @@ eRegistraiton systems need to specify their theme styles, to differentiate from 
 
 ***
 
-## Base styles
+## Css files and folders organisation
+
+All css rules are placed in components css files (component represents a small part of application, *i.e.. navigation menu*).  
+Css components files are **bundled** into one css file. 
 
 ### Common eRegistration styles (Prototype) file organisation
 
@@ -94,21 +23,6 @@ All cross eRegistrations, styles are divided into main sections:
 2. **Components** - *eregistrations/css/components* folder, contains all, reusable and non-reusable components files, such as *section-primary* or *container-with-nav*.
 3. **Legacy browser styles** - *eregistrations/css/legacy* folder, contains all css components files that need overriding for legacy browsers *(IE8-IE11)*.
 4. **Print** - base print css are directly in *eregistrations/css* (as basic files), and special print components are maintained in *eregistrations/css/components* (just like other reusable and non-reusable components)
-
-***
-
-### Conventions
-
-1. **No element id's** in css rules (in our application id's are set strictly for JS related functionalities).
-2. **Classnames in lower case dash convention** e.g. foo-bar *(not fooBar)*.
-3. **Functional Class Names** - specific element class names (of components and its items) based on their function.
-4. **Sub components classes names** should contain component class name and added after dash their own identifier e.g. .foo-bar*(component)* .foo-bar-sub*(sub-component)* (this may not be yet in all components - if found wrong sub-components names, ticket should be created and fix should be applied).
-4. **All prefixed properties are resolved** automatically (no need to add manually) with help of [this utility](https://github.com/medikoo/css-aid#css-aid) (there's a change we're move to more powerful autoprefixer at some point).
-5. **Use variables** - for colours and sizes, variables defined at beginning of *base.css* file should be used. [This utility](https://github.com/medikoo/css-aid#variables) is used for variables.
-6. **Vertical rhythm in layout (VR)** - whole layout needs to comply to this rule, see [article](http://24ways.org/2006/compose-to-a-vertical-rhythm/) (We confirm it with browser extensions, e.g. GridFox on Firefox or PixelPerfect for Chrome (for this use *grid-22.png* file, placed in *eregistrations/css folder*).
-7. **Css lint rules** - we use [this lint tool](https://github.com/medikoo/csslint-next)  it is based on [this tool](https://github.com/CSSLint/csslint). There's already a css lint scripts configured within eRegistrations project.
-
-***
 
 ### System specific styles
 
@@ -121,8 +35,6 @@ Any specific system builded on top of eRegistration, in order to differentiate f
 
 Any legacy browser overwriting should take place in separate files, in *system-name/css/legacy* folder. 
 
-***
-
 ### Application specific CSS bundle configuration
 
 For any application within eRegistration, one css file is created out of all css components files listed.
@@ -134,9 +46,35 @@ Example can be found [here](https://github.com/egovernment/eregistrations-salvad
 - **Configure** *{applicationName}/client/index.css* file, it should list all css files in given order that should be included in a bundle.  
 Example can be found [here](https://github.com/egovernment/eregistrations-salvador/blob/master/public/client/css.index)
 
+### Cross browser and legacy browsers
+
+**Chrome** browser is basic browser that is used for development of styles in eRegistration systems. All styles should be build directly for this browser. 
+
+**FireFox, Safari, Opera** are secondary browsers, that in most cases, will work as well as Chrome. But if necessary, their browser hack are allowed in main and components css files.  
+***FireFox*** hack can be made with special media selector **@-moz-document url-prefix()**. For more information on this hack please refer to this [article](http://css-tricks.com/snippets/css/css-hacks-targeting-firefox/). [Example](https://github.com/egovernment/eregistrations/blob/f2932305330b5af839a0a7f9305171b1701a6ab3/css/components/file-uploader.css#L37).  
+***Safari*** hack not applied, but if needed can be added in any proper way.  
+***Opera*** hack not applied, but if needed can be added in any proper way.
+
+**Legacy browsers: IE8 - IE11** are treated in special css files, that are maintained in *eregistrations/css/legacy* folder. All fixes are made by simplification of existing styles, and if necessary, set fix width and height. Layout can be fixed by applying *floats* (but only in connection with *overflow: hidden* rule. 
+
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/css/legacy/components/container-with-nav.css#L1-L7).  
+
+Rules are added to files that correspond to already created components. e.g. if we want to introduce some changes to legacy layer, for *css/base.css* file. We should add those rules to *css/legacy/base.css* file. Similar with components legacy fixes for *css/components/foo.css* should land in *css/legacy/components/foo.css*. Those files will be automatically picked and bundled, no extra effort is needed.
+
 ***
 
-## Vertical rhythm and layout
+## Styles organisation
+
+### Conventions
+
+1. **No element id's** in css rules (in our application id's are set strictly for JS related functionalities).
+2. **Classnames in lower case dash convention** e.g. foo-bar *(not fooBar)*.
+3. **Functional Class Names** - specific element class names (of components and its items) based on their function.
+4. **Sub components classes names** should contain component class name and added after dash their own identifier e.g. .foo-bar*(component)* .foo-bar-sub*(sub-component)* (this may not be yet in all components - if found wrong sub-components names, ticket should be created and fix should be applied).
+4. **All prefixed properties are resolved** automatically (no need to add manually) with help of [this utility](https://github.com/medikoo/css-aid#css-aid) (there's a change we're move to more powerful autoprefixer at some point).
+5. **Use variables** - for colours and sizes, variables defined at beginning of *base.css* file should be used. [This utility](https://github.com/medikoo/css-aid#variables) is used for variables.
+6. **Vertical rhythm in layout (VR)** - whole layout needs to comply to this rule, see [article](http://24ways.org/2006/compose-to-a-vertical-rhythm/) (We confirm it with browser extensions, e.g. GridFox on Firefox or PixelPerfect for Chrome (for this use *grid-22.png* file, placed in *eregistrations/css folder*).
+7. **Css lint rules** - we use [this lint tool](https://github.com/medikoo/csslint-next)  it is based on [this tool](https://github.com/CSSLint/csslint). There's already a css lint scripts configured within eRegistrations project.
 
 ### Vertical rhythm
 
@@ -167,9 +105,7 @@ No floats are allowed in main css components, position of elements can only be a
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/view/prototype/_main.js#L10).
 
-***
-
-## Responsiveness
+### Responsiveness
 
 **Responsiveness** is achieved in eRegistration systems by [media-queries](https://github.com/egovernment/eregistrations/blob/master/css/form.css#L385), that are checking screen resolution. No user-agent detecting is applied and needed. Responsive styles can only by applied this way.
 
@@ -180,26 +116,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/css/components/container-with-nav.css#L36-L39).
 
-****
-
-## Cross browser and legacy browsers
-
-**Chrome** browser is basic browser that is used for development of styles in eRegistration systems. All styles should be build directly for this browser. 
-
-**FireFox, Safari, Opera** are secondary browsers, that in most cases, will work as well as Chrome. But if necessary, their browser hack are allowed in main and components css files.  
-***FireFox*** hack can be made with special media selector **@-moz-document url-prefix()**. For more information on this hack please refer to this [article](http://css-tricks.com/snippets/css/css-hacks-targeting-firefox/). [Example](https://github.com/egovernment/eregistrations/blob/f2932305330b5af839a0a7f9305171b1701a6ab3/css/components/file-uploader.css#L37).  
-***Safari*** hack not applied, but if needed can be added in any proper way.  
-***Opera*** hack not applied, but if needed can be added in any proper way.
-
-**Legacy browsers: IE8 - IE11** are treated in special css files, that are maintained in *eregistrations/css/legacy* folder. All fixes are made by simplification of existing styles, and if necessary, set fix width and height. Layout can be fixed by applying *floats* (but only in connection with *overflow: hidden* rule. 
-
-Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/css/legacy/components/container-with-nav.css#L1-L7).  
-
-Rules are added to files that correspond to already created components. e.g. if we want to introduce some changes to legacy layer, for *css/base.css* file. We should add those rules to *css/legacy/base.css* file. Similar with components legacy fixes for *css/components/foo.css* should land in *css/legacy/components/foo.css*. Those files will be automatically picked and bundled, no extra effort is needed.
-
-***
-
-## Font icons
+### Font icons
 
 **Font Awesome** is used in eRegistration for icons. All icons are not included, only those that are used. All new icons need to be added to icons file: *css/components/fa.css*.
 
@@ -224,11 +141,10 @@ span({ class: 'fa fa-automobile' }, "Car")
 
 ***
 
-# Reusable components
+## Components documentation
 
-***
 
-## Forms
+### Forms
 
 #### Basic form
 
@@ -389,10 +305,9 @@ span({ class: 'input-prepend' },
 )
 
 ```
-
 ***
 
-## Tables
+### Tables
 
 #### Default table
 
@@ -426,7 +341,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 ***
 
-## Sections 
+### Sections 
 
 #### Section Primary
 
@@ -459,7 +374,7 @@ section({ class: 'section-tab-nav' },
 ```
 ***
 
-## Container with navigation
+### Container with navigation
 
 Container with navigation component is responsible for displaying all components require a text on one side of container, and a navigation or any other links or buttons on the other side of this container. Mostly used for display of heading and on its right side buttons.
 
@@ -476,7 +391,7 @@ div({ class: 'container-with-nav' },
 ```
 ***
 
-## Labels
+### Labels
 
 Labels can be used at any text. For usage of labels, text that should be wrapped in label, need to be wrapped in ***span*** with ***label-reg*** class inline element (like span).
 
@@ -498,7 +413,7 @@ span({ class: 'label-reg' }, "Lorem ipsum");
 ```
 *** 
 
-## Buttons
+### Buttons
 
 There are various links displayed as buttons used in eRegistrations Prototype. They are ***a*** element with significant class. ***Button*** elements are only used in ***form*** elements. 
 
@@ -550,7 +465,7 @@ div({ class: 'next-step' },
 ```
 ***
 
-## Files
+### Files
 
 Uploaded by user files are displayed with usage of ***file-section*** class container. 
 
@@ -585,7 +500,7 @@ div({ class: 'file-section' },
 ```
 ***
 
-## Hints optional
+### Hints optional
 
 Optional-hints are small, black, popup windows that are displayed on hover over significant element. 
 Optional-hints are developed on top of vendor library - [hint.css](http://kushagragour.in/lab/hint/).
@@ -612,7 +527,7 @@ span({ class: 'hint-optional hint-optional-left',
 
 ***
 
-## Freeform text
+### Freeform text
 
 Freeform text component need to be used where big parts of text should be placed. This component can be used by adding ***free-form*** class to element that will contain this bigger part of text.  
 Freeform text supplies text with styles for ***ol*** and ***ul***, sets margin bottom to all first line children to 22px (proper VR), and reduces this margin for ***ul's*** and ***ol's*** that are right next after ***p*** element.  
@@ -621,7 +536,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 *** 
 
-## Disabler
+### Disabler
 
 Disabler is a component, that can cover all other components under partially transparent background, and make all of them not clickable and inactive.
 
@@ -646,7 +561,7 @@ div({ class: 'disabler-range' },
 
 ***
 
-## Error-main
+### Error-main
 
 Can by used for display of important to user message. Presents a white background with red border and little radius. Also can contain a red exclamation mark.  
 
@@ -654,7 +569,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 ***
 
-## Info-main
+### Info-main
 
 Can by used for display of information type message to user. Presents a white background with grey border and little radius. Also can contain a special list of informations needed to be displayed.  
 
@@ -662,11 +577,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 ***
 
-# Single type components
-
-***
-
-## User steps menu
+### User steps menu
 
 ***User-steps-menu*** component is used in non-submitted user for displaying steps that user has to fill out to submit registration. User steps menu can be displayed in 3 variants:  
 ***user-steps-menu*** - basic display of steps menu  
@@ -685,7 +596,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 ***
 
-## Submitted menu
+### Submitted menu
 
 ***Submitted-menu*** component is used in all submitted users (official and non-official) pages. It displays basic black menu wrapper with available navigation and options links for user. 
 
@@ -724,7 +635,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 ***
 
-## Document preview
+### Document preview
 
 Document preview component is used on submitted users (official and non-official) pages. It display preview of currently selected document. On hover on documents preview, zoom to document part is presented. One document can consist of more than one file, in this case documents files navigation is displayed.
 
@@ -745,7 +656,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 ***
 
-## Dialogs
+### Dialogs
 
 Main, reusable and repeatable element of dialogs is simply ***dialog*** element. All dialog modals use ***dialog*** element and its styles. Basic rules for dialogs are placed in *dialog.css* file.  
 
@@ -789,7 +700,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 ***
 
-## Public
+### Public
 
 Public page is displayed as main index page of Prototype. It consists of non-reused components. Main are: ***public-banner***, ***public-steps***, ***public-institutions***, ***multi-entry***.  
 For each component separate css file is maintained.
@@ -821,7 +732,7 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 ***
 
-## Print 
+### Print 
 
 For pages that are prepared for printing, second css bundle is generated. 
 
