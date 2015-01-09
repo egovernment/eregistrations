@@ -10,7 +10,7 @@ exports.step = function () {
 		{ class: 'entity-header' },
 		h1("Partner: " + partner._firstName + " " + partner._lastName),
 		div(
-			{ class: 'entity-actions' },
+			{ class: 'entity-header-actions' },
 			a({ class: 'button-main' },
 				"Edit", span({ class: 'fa fa-edit' }, "Edit")),
 			a({ class: 'button-main' }, "Delete", span({ class: 'fa fa-trash-o' }, "Delete"))

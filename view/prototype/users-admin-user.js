@@ -10,9 +10,9 @@ exports['sub-main'] = function () {
 			{ class: 'entity-header' },
 			h3("User: " + user._firstName + " " + user._lastName),
 			div(
-				{ class: 'entity-actions' },
+				{ class: 'entity-header-actions' },
 				a({ href: '/users-admin/edit-user-id/' }, "Edit", span({ class: 'fa fa-edit' }, "Edit")),
-				postButton({ buttonClass: 'entity-actions-remove-button',
+				postButton({ buttonClass: 'entity-header-actions-remove-button',
 					value: ["Delete", span({ class: 'fa fa-trash-o' }, "Delete")] })
 			)
 		),

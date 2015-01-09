@@ -11,19 +11,19 @@
 	margin: 0;
 }
 
-.entity-header .entity-actions a:last-child {
+.entity-header-actions a:last-child {
 	margin-right: 0;
 }
 
-.entity-actions form {
+.entity-header-actions form {
 	display: inline-block;
 }
-.entity-actions button {
+.entity-header-actions button {
 	padding: 0 7px;
 	cursor: pointer;
 }
 
-.entity-actions a {
+.entity-header-actions a {
 	background-color: #999;
 	-moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
@@ -38,37 +38,37 @@
 	text-decoration: none;
 	white-space: nowrap;
 }
-.entity-actions a:hover,
-.entity-actions a:focus,
-.entity-actions a:active,
-.entity-actions button:hover,
-.entity-actions button:focus,
-.entity-actions button:active {
+.entity-header-actions a:hover,
+.entity-header-actions a:focus,
+.entity-header-actions a:active,
+.entity-header-actions button:hover,
+.entity-header-actions button:focus,
+.entity-header-actions button:active {
 	background-color: var(--normal-dark-background);
 }
-.entity-actions a:last-child {
+.entity-header-actions a:last-child {
 	margin-right: 20px;
 }
 
-.entity-actions a span,
-.entity-actions button span {
+.entity-header-actions a span,
+.entity-header-actions button span {
 	position: relative;
 	top: 2px;
 	left: 3px;
 	margin-left: 2px;
 }
 
-.entity-actions .button-main {
+.entity-header-actions .button-main {
 	font-size: 18px;
 	padding: 11px 15px;
 }
 
-.entity-actions .entity-actions-remove-button {
+.entity-header-actions .entity-header-actions-remove-button {
 	background: var(--error-background);
 }
-.entity-actions .entity-actions-remove-button:hover,
-.entity-actions .entity-actions-remove-button:focus,
-.entity-actions .entity-actions-remove-button:active {
+.entity-header-actions .entity-header-actions-remove-button:hover,
+.entity-header-actions .entity-header-actions-remove-button:focus,
+.entity-header-actions .entity-header-actions-remove-button:active {
 	background-color: var(--error-dark-background);
 }
 
@@ -83,7 +83,7 @@
 	.entity-actions {
 		margin-top: 22px;
 	}
-	.entity-actions .button-main {
+	.entity-header-actions .button-main {
 		width: inherit;
 	}
 }
