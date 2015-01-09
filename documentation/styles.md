@@ -12,8 +12,9 @@ eRegistraiton systems need to specify their theme styles, to differentiate from 
 
 ## Css files and folders organisation
 
-All css rules are placed in components css files (component represents a small part of application, *i.e.. navigation menu*).  
-Css components files are **bundled** into one css file. 
+All Prototype styles are maintained in ***eregistrations/css*** folder.  
+All css rules are placed in *components css files* (component represents a small part of application, *i.e.. navigation menu*).  
+Css components files are **bundled** for each application in system into one css file (bundled configuration described at the end of this section). 
 
 ### Common eRegistration styles (Prototype) file organisation
 
@@ -21,19 +22,21 @@ All cross eRegistrations, styles are divided into main sections:
 
 1. **Basic** - directly in *eregistrations/css* folder, contains all default, basic style files, such as *base*, *forms*, *table*. 
 2. **Components** - *eregistrations/css/components* folder, contains all, reusable and non-reusable components files, such as *section-primary* or *container-with-nav*.
-3. **Legacy browser styles** - *eregistrations/css/legacy* folder, contains all css components files that need overriding for legacy browsers *(IE8-IE11)*.
+3. **Legacy browser styles** - *eregistrations/css/legacy* folder, contains all css components files that need overriding for legacy browsers *(IE8-IE11)*. Rules are added to files that correspond to already created components. e.g. if we want to introduce some changes to legacy layer, for *css/base.css* file. We should add those rules to *css/legacy/base.css* file. Similar with components legacy fixes for *css/components/foo.css* should land in *css/legacy/components/foo.css*. Those files will be automatically picked and bundled, no extra effort is needed.
 4. **Print** - base print css are directly in *eregistrations/css* (as basic files), and special print components are maintained in *eregistrations/css/components* (just like other reusable and non-reusable components)
 
 ### System specific styles
 
-Any specific system builded on top of eRegistration, in order to differentiate from Prototype, require theme specific styles. **Theme** css files are placed directly in *system-name/css* folder. Theme contains components: 
+Any specific system builded on top of eRegistration, in order to differentiate from Prototype, require theme specific styles. 
+
+**Theme** css files are maintained directly in ***system-name/css*** folder. Theme contains components: 
 
 1. **theme.css** file, where all basic styles from prototype are overwritten. At the beginning of file, [used in theme fonts](https://github.com/egovernment/eregistrations-salvador/blob/master/css/theme.css#L1-L28) need to be defined, as well as [variables override](https://github.com/egovernment/eregistrations-salvador/blob/master/css/theme.css#L30-L47).
 2.  **theme-public.css** file, where all components used on public pages (like modals, [example here](https://github.com/egovernment/eregistrations-salvador/blob/master/css/theme-public.css#L149-L155)) are overwritten.
 3. **theme-part-a.css** file, where all components used for not-submitted user (like *inventory modal*, [example here](https://github.com/egovernment/eregistrations-salvador/blob/master/css/theme-part-a.css#L153-L159)) are overwritten.
 4. **theme-part-b.css** file, where all components used for submitted user and all official users (like *submitted menu*, [example here](https://github.com/egovernment/eregistrations-salvador/blob/master/css/theme-part-b.css#L5-L8)) are overwritten.
 
-Any legacy browser overwriting should take place in separate files, in *system-name/css/legacy* folder. 
+Any legacy browser overwriting should take place in separate files (, in *system-name/css/legacy* folder. 
 
 ### Application specific CSS bundle configuration
 
@@ -43,23 +46,8 @@ Creating proper css file for application requires *linking css file* and *config
 
 - **Link application css file**, within *view/{applicationName}/index.html* (name should reflect application name).  
 Example can be found [here](https://github.com/egovernment/eregistrations-salvador/blob/master/view/public/index.html#L27).
-- **Configure** *{applicationName}/client/index.css* file, it should list all css files in given order that should be included in a bundle.  
+- **Configure** *{applicationName}/client/index.css* file. It should ***list all css files*** (including *prototype css files* and *theme css files*) in given order, that should be included in a *bundle*.  
 Example can be found [here](https://github.com/egovernment/eregistrations-salvador/blob/master/public/client/css.index)
-
-### Cross browser and legacy browsers
-
-**Chrome** browser is basic browser that is used for development of styles in eRegistration systems. All styles should be build directly for this browser. 
-
-**FireFox, Safari, Opera** are secondary browsers, that in most cases, will work as well as Chrome. But if necessary, their browser hack are allowed in main and components css files.  
-***FireFox*** hack can be made with special media selector **@-moz-document url-prefix()**. For more information on this hack please refer to this [article](http://css-tricks.com/snippets/css/css-hacks-targeting-firefox/). [Example](https://github.com/egovernment/eregistrations/blob/f2932305330b5af839a0a7f9305171b1701a6ab3/css/components/file-uploader.css#L37).  
-***Safari*** hack not applied, but if needed can be added in any proper way.  
-***Opera*** hack not applied, but if needed can be added in any proper way.
-
-**Legacy browsers: IE8 - IE11** are treated in special css files, that are maintained in *eregistrations/css/legacy* folder. All fixes are made by simplification of existing styles, and if necessary, set fix width and height. Layout can be fixed by applying *floats* (but only in connection with *overflow: hidden* rule. 
-
-Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/css/legacy/components/container-with-nav.css#L1-L7).  
-
-Rules are added to files that correspond to already created components. e.g. if we want to introduce some changes to legacy layer, for *css/base.css* file. We should add those rules to *css/legacy/base.css* file. Similar with components legacy fixes for *css/components/foo.css* should land in *css/legacy/components/foo.css*. Those files will be automatically picked and bundled, no extra effort is needed.
 
 ***
 
@@ -116,28 +104,18 @@ Example can be found [here](https://github.com/egovernment/eregistrations/blob/m
 
 Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/css/components/container-with-nav.css#L36-L39).
 
-### Font icons
+### Cross browser and legacy browsers
 
-**Font Awesome** is used in eRegistration for icons. All icons are not included, only those that are used. All new icons need to be added to icons file: *css/components/fa.css*.
+**Chrome** browser is basic browser that is used for development of styles in eRegistration systems. All styles should be build directly for this browser. 
 
-**Adding new icon** can be made by selecting new icon from [this list](https://fortawesome.github.io/Font-Awesome/cheatsheet/) and adding class for this font in *css/components/fa.css*  
+**FireFox, Safari, Opera** are secondary browsers, that in most cases, will work as well as Chrome. But if necessary, their browser hack are allowed in main and components css files.  
+***FireFox*** hack can be made with special media selector **@-moz-document url-prefix()**. For more information on this hack please refer to this [article](http://css-tricks.com/snippets/css/css-hacks-targeting-firefox/). [Example](https://github.com/egovernment/eregistrations/blob/f2932305330b5af839a0a7f9305171b1701a6ab3/css/components/file-uploader.css#L37).  
+***Safari*** hack not applied, but if needed can be added in any proper way.  
+***Opera*** hack not applied, but if needed can be added in any proper way.
 
-**Example** - adding *automobile icon* requires adding its class and :before pseudo-element:
+**Legacy browsers: IE8 - IE11** are treated in special css files, that are maintained in *eregistrations/css/legacy* folder. All fixes are made by simplification of existing styles, and if necessary, set fix width and height. Layout can be fixed by applying *floats* (but only in connection with *overflow: hidden* rule. 
 
-```
-.fa-automobile {
-	width: 1.2em;
-}
-.fa-automobile:before {
-	content: "\f1b9";
-}
-```
-Then in templates a element need to be added:
-
-```
-span({ class: 'fa fa-automobile' }, "Car")
-```
-"Car" text will not be shown when CSS is applied.
+Example can be found [here](https://github.com/egovernment/eregistrations/blob/master/css/legacy/components/container-with-nav.css#L1-L7).  
 
 ***
 
@@ -372,6 +350,31 @@ section({ class: 'section-tab-nav' },
 )
 
 ```
+***
+
+### Font icons
+
+**Font Awesome** is used in eRegistration for icons. All icons are not included, only those that are used. All new icons need to be added to icons file: *css/components/fa.css*.
+
+**Adding new icon** can be made by selecting new icon from [this list](https://fortawesome.github.io/Font-Awesome/cheatsheet/) and adding class for this font in *css/components/fa.css*  
+
+**Example** - adding *automobile icon* requires adding its class and :before pseudo-element:
+
+```
+.fa-automobile {
+	width: 1.2em;
+}
+.fa-automobile:before {
+	content: "\f1b9";
+}
+```
+Then in templates a element need to be added:
+
+```
+span({ class: 'fa fa-automobile' }, "Car")
+```
+"Car" text will not be shown when CSS is applied.
+
 ***
 
 ### Container with navigation
