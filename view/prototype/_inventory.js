@@ -89,7 +89,8 @@ module.exports = modalContainer.appendChild(dialog(
 					span("$",
 						totalTxt = span({ class: 'dialog-inventory-total-value' }, "0"))
 				),
-				p({ class: 'dialog-inventory-value-save input' }, input({ type: 'submit', value: ("Save") })),
+				p({ class: 'dialog-inventory-value-save input' },
+					input({ type: 'submit', value: ("Save") })),
 				script(function (container, resetBtn, totalTxt) {
 					container = $(container);
 					totalTxt = $(totalTxt).firstChild;
