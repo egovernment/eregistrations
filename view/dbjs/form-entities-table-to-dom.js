@@ -15,7 +15,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 		return ns.section({ id: this.domId, class: ns._if(ns.eq(
 			this.status,
 			1
-		), 'section-primary completed', 'section-primary') },
+		), 'section-primary completed entities-overview', 'section-primary entities-overview') },
 			ns.div(
 				ns.div(
 					ns._if(this._label,
@@ -69,7 +69,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 			),
 			ns.p(
 				ns.a(
-					{ class: 'new-entity', href: url(this.constructor.baseUrl + '-add') },
+					{ class: 'button-main', href: url(this.constructor.baseUrl + '-add') },
 					_("Add new")
 				)
 			),

@@ -23,30 +23,6 @@
 	padding: 11px 6px;
 }
 
-.new-entity {
-	background-color: var(--normal-background);
-	border-radius: 6px;
-	border: 1px solid transparent;
-	color: var(--white-text);
-	cursor: pointer;
-	display: inline-block;
-	font-size: 18px;
-	padding: 10px 16px;
-	text-align: center;
-	text-decoration: none;
-	white-space: nowrap;
-	margin-right: 10px;
-}
-.new-entity:hover,
-.new-entity:focus,
-.new-entity:active {
-	background-color: var(--normal-dark-background);
-	color: var(--white-text);
-}
-.new-entity:last-child {
-	margin: 0;
-}
-
 .entities-overview-table .completed .status-complete {
 	display: inline;
 	color: var(--success-text);
@@ -57,5 +33,4 @@
 .entities-overview-table .status-complete,
 .entities-overview-table .completed .status-incomplete {
 	display: none;
-
 }
