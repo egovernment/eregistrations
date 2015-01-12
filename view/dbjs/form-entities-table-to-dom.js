@@ -73,7 +73,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 					_("Add new")
 				)
 			),
-			ns.p({ class: 'button-scroll-top' },
+			ns.p({ class: 'section-primary-scroll-top' },
 				ns.a({ onclick: 'window.scroll(0, 0)' }, ns.span({ class: 'fa fa-arrow-up' },
 					_("Back to top"))))
 				);

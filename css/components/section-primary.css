@@ -18,12 +18,12 @@
 	list-style-type: none;
 }
 
-.sub-section {
+.sections-primary-sub {
 	border: none;
 	padding: 0;
 }
 
-.sub-section h3 {
+.sections-primary-sub h3 {
 	background: var(--light-background);
 	padding-top: 5px;
 	padding-bottom: 5px;
@@ -58,11 +58,11 @@
 	padding-left: 0;
 }
 
-.section-primary .button-scroll-top {
+.section-primary-scroll-top {
 	text-align: right;
 }
 
-.section-primary .button-scroll-top a {
+.section-primary-scroll-top a {
 	background: var(--normal-background);
 	border-radius: 3px;
 	color: var(--white-text);
@@ -70,12 +70,12 @@
 	padding: 0 5px;
 	text-decoration: none;
 }
-.section-primary .button-scroll-top a:hover,
-.section-primary .button-scroll-top a:focus,
-.section-primary .button-scroll-top a:active {
+.section-primary-scroll-top a:hover,
+.section-primary-scroll-top a:focus,
+.section-primary-scroll-top a:active {
 	background: var(--normal-dark-background);
 }
-.section-primary .button-scroll-top a span {
+.section-primary-scroll-top a span {
 	vertical-align: text-top;
 }
 

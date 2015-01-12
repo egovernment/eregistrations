@@ -41,7 +41,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 						if (!subSection.forceRequiredInput) {
 							control = { required: subSection.forceRequiredInput };
 						}
-						return ns.div({ class: 'sub-section', id: subSection.domId },
+						return ns.div({ class: 'sections-primary-sub', id: subSection.domId },
 							ns._if(subSection.label, ns.h3(subSection.label)),
 							formResolvent.formResolvent,
 							ns.fieldset(
@@ -54,7 +54,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 				ns.p({ class: 'submit-placeholder input' },
 					ns.input({ type: 'submit', value: _("Submit") })),
 				ns.p(
-					{ class: 'button-scroll-top' },
+					{ class: 'section-primary-scroll-top' },
 					ns.a({ onclick: 'window.scroll(0, 0)' },
 						ns.span({ class: 'fa fa-arrow-up' }, "Back to top"))
 				)
