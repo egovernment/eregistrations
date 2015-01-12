@@ -22,29 +22,6 @@ Class describing how boxes for informations insight banner are displayed
 	justify-content: space-between;
 }
 
-.public-banner .create-account {
-	background-color: var(--normal-background);
-	background-image: none;
-	border-radius: 6px;
-	border: 1px solid transparent;
-	color: var(--white-text);
-	cursor: pointer;
-	display: inline-block;
-	font-size: 18px;
-	font-weight: normal;
-	margin-bottom: 0;
-	padding: 10px 16px;
-	text-align: center;
-	text-decoration: none;
-	vertical-align: middle;
-	white-space: nowrap;
-}
-
-.public-banner .create-account:hover,
-.public-banner .create-account:focus,
-.public-banner .create-account:active {
-	background-color: var(--normal-dark-background);
-}
 
 .public-banner,
 .public-banner-box-text {
