@@ -38,7 +38,7 @@ exports.main = function () {
 				h3('Pay costs'),
 				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 					" nequepharetra, pellentesque risus in, condimentum nulla. "),
-				p(a({ class: 'step-button', href: '/guide/' },
+				p(a({ class: 'public-steps-button', href: '/guide/' },
 					'More info'))
 			),
 			li(
@@ -46,7 +46,7 @@ exports.main = function () {
 				h3('Remove certificates'),
 				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ut" +
 					" nequepharetra, pellentesque risus in, condimentum nulla. "),
-				p(a({ class: 'step-button ', href: '/guide/' },
+				p(a({ class: 'public-steps-button', href: '/guide/' },
 					'More info'))
 			)
 			),
