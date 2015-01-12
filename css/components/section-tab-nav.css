@@ -1,4 +1,4 @@
-.section-tab-nav .tab {
+.section-tab-nav-tab {
 	background: var(--light-background);
 	border: 1px solid var(--light-inner-border);
 	border-radius: 4px 4px 0 0;
@@ -12,9 +12,9 @@
 	font-size: 17px;
 	text-decoration: none;
 }
-.section-tab-nav .tab:hover,
-.section-tab-nav .tab:focus,
-.section-tab-nav .tab:active {
+.section-tab-nav-tab:hover,
+.section-tab-nav-tab:focus,
+.section-tab-nav-tab:active {
 	background: var(--white-background);
 	text-decoration: none;
 }
@@ -24,7 +24,7 @@
 	}
 }
 
-.section-tab-nav .tab.active {
+.section-tab-nav-tab.active {
 	background: var(--white-background);
 	border-bottom: none;
 	z-index: 999;
@@ -39,7 +39,7 @@
 		display: flex;
 		flex-wrap: wrap;
 	}
-	.section-tab-nav .tab {
+	.section-tab-nav-tab {
 		background: var(--light-background);
 		border-radius: 10px;
 		width: 100%;
@@ -48,13 +48,13 @@
 		margin-bottom: 22px;
 		text-align: center;
 	}
-	.section-tab-nav .tab:hover,
-	.section-tab-nav .tab:focus,
-	.section-tab-nav .tab:active {
+	.section-tab-nav-tab:hover,
+	.section-tab-nav-tab:focus,
+	.section-tab-nav-tab:active {
 		background: var(--normal-dark-background);
 		color: var(--white-text);
 	}
-	.section-tab-nav .tab.active {
+	.section-tab-nav-tab.active {
 		border: 1px solid var(--light-inner-border);
 		background: var(--normal-dark-background);
 		color: var(--white-text);
