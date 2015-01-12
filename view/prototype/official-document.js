@@ -74,11 +74,11 @@ exports.tab = function () {
 			{ class: 'submitted-preview' },
 			source = div({ class: 'section-primary submitted-preview-document' },
 				div({ class: 'container-with-nav' },
-					h3(i({ class: 'list-item-number' }, "1"),
+					h3(i({ class: 'submitted-preview-item-number' }, "1"),
 						"Memorandum and articles of association"
 						)
 					),
-				elem = ul({ class: 'image-placeholder' },
+				elem = ul({ class: 'submitted-preview-image-placeholder' },
 					li({ class: 'active' },
 						img({ zoomOnHover: true, src: '/uploads/docASubFile2.idoc.png.jpg' })))),
 			target = div({ class: 'section-primary submitted-preview-user-data' },
