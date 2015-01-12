@@ -8,7 +8,7 @@ Common styles for all eRegistrations system components are developed as part of 
 
 Prototype project provides base HTML/CSS foundation and all common interfaces for any eRegistrations system. It's provided in design agnostic manner, in form of tiny modules that can be used selectively in any eRegistrations system.
 
-Below documentation describes how to configure markup and styles of eRegistrations system with existing modules, and also describes style guide rules up to which HTML and CSS for modules were developed, and up to which future extensions or system specific components should be developed.
+Below documentation describes how to configure markup and styles of eRegistrations system with existing modules, and also describes style guide rules up to which HTML and CSS modules were developed, and up to which future extensions or system specific components should be developed.
 
 ### How to adopt this work in eRegistrations system
 
