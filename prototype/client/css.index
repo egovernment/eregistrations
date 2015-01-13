@@ -43,7 +43,7 @@
 ../../css/components/section-warning.css
 ../../css/components/entity-properties.css
 ../../css/components/entity-header.css
-../../css/components/entities-overview-table.css
+../../css/components/entities-overview.css
 ../../css/components/submitted-menu.css
 ../../css/components/submitted-documents-list.css
 ../../css/components/submitted-add-user.css
