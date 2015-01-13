@@ -45,19 +45,19 @@
 	margin-right: 4px;
 }
 
-.dialog-inventory li .single-section-cost {
+.dialog-inventory-single-section-cost {
 	width: 100%;
 }
 
-.dialog-inventory .total-section-costs {
+.dialog-inventory-total-section-costs {
 	text-align: right;
 }
 
-.dialog-inventory .total-value,
-.dialog-inventory .total {
+.dialog-inventory-total-value,
+.dialog-inventory-total {
 	font-weight: bold;
 }
-.dialog-inventory .total-value {
+.dialog-inventory-total-value {
 	font-size: 18px;
 }
 .dialog-inventory footer {
@@ -69,15 +69,15 @@
 	margin: 8px 0 12px;
 }
 
-.dialog-inventory footer .inventory-total-value {
+.dialog-inventory-total-value-section {
 	padding: 0;
 }
-.dialog-inventory footer .inventory-total-value .inventory-value-save {
+.dialog-inventory-value-save {
 	text-align: right;
 	margin: 0;
 }
 
-.inventory-item-description {
+.dialog-inventory-item-description {
 	margin-bottom: 0;
 }
 

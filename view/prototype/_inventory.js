@@ -19,9 +19,9 @@ module.exports = modalContainer.appendChild(dialog(
 				var list, desc = user.$get(name), control;
 				li(
 					h3(desc.label),
-					p({ class: 'inventory-item-description' }, desc.description),
+					p({ class: 'dialog-inventory-item-description' }, desc.description),
 					list = div(
-						{ class: 'single-section-cost' },
+						{ class: 'dialog-inventory-single-section-cost' },
 						control = user._get(name).toDOMInput(
 							document,
 							{
@@ -61,9 +61,9 @@ module.exports = modalContainer.appendChild(dialog(
 				);
 				control.dom.querySelector('.controls').appendChild(
 					p(
-						{ class: 'total-section-costs' },
+						{ class: 'dialog-inventory-total-section-costs' },
 						span("Total: "),
-						span({ id: 'span-total-' + name, class: 'total' }, "$0")
+						span({ id: 'span-total-' + name, class: 'dialog-inventory-total' }, "$0")
 					)
 				);
 				control.on('change', function () {
@@ -83,13 +83,14 @@ module.exports = modalContainer.appendChild(dialog(
 					("Reset all fields"))
 			),
 			div(
-				{ class: 'inventory-total-value' },
+				{ class: 'dialog-inventory-total-value-section' },
 				p(
 					("Total value of the inventory: "),
 					span("$",
-						totalTxt = span({ class: 'total-value' }, "0"))
+						totalTxt = span({ class: 'dialog-inventory-total-value' }, "0"))
 				),
-				p({ class: 'inventory-value-save input' }, input({ type: 'submit', value: ("Save") })),
+				p({ class: 'dialog-inventory-value-save input' },
+					input({ type: 'submit', value: ("Save") })),
 				script(function (container, resetBtn, totalTxt) {
 					container = $(container);
 					totalTxt = $(totalTxt).firstChild;
@@ -107,7 +108,7 @@ module.exports = modalContainer.appendChild(dialog(
 					};
 					$.onEnvUpdate(container, function () {
 						var total = 0;
-						$.forEach(container.getByClass('span', 'total'), function (p) {
+						$.forEach(container.getByClass('span', 'dialog-inventory-total'), function (p) {
 							total += Number(p.firstChild.data.slice(1)) || 0;
 						});
 						totalTxt.data = total;
