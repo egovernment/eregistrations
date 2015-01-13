@@ -229,7 +229,7 @@ exports['sub-main'] = function () {
 				{ class: 'entity-data-section' },
 				h3("Company secretary"),
 				section(
-					{ class: 'entity-data-sub-section' },
+					{ class: 'entity-data-section-sub' },
 					h4("Basic secretary data"),
 					table(
 						tbody(
@@ -253,7 +253,7 @@ exports['sub-main'] = function () {
 					)
 				),
 				section(
-					{ class: 'entity-data-sub-section' },
+					{ class: 'entity-data-section-sub' },
 					h4("Residential address"),
 					table(
 						tbody(
@@ -289,14 +289,14 @@ exports['sub-main'] = function () {
 				{ class: 'entity-data-section' },
 				h3("Applicants"),
 				ul(
-					{ class: 'entity-entities-section' },
+					{ class: 'entity-data-section-entities' },
 					li(
 						h4("Marko Zagola"),
 						section(
 							{ class: 'entity-data-section' },
 							h5("Personal data"),
 							section(
-								{ class: 'entity-data-sub-section' },
+								{ class: 'entity-data-section-sub' },
 								h6("Basic data"),
 								table(
 									tbody(
@@ -312,7 +312,7 @@ exports['sub-main'] = function () {
 								)
 							),
 							section(
-								{ class: 'entity-data-sub-section' },
+								{ class: 'entity-data-section-sub' },
 								h6("Additional data"),
 								table(
 									tbody(
@@ -344,7 +344,7 @@ exports['sub-main'] = function () {
 								)
 							),
 							section(
-								{ class: 'entity-data-sub-section' },
+								{ class: 'entity-data-section-sub' },
 								h6("Address"),
 								table(
 									tbody(
