@@ -7,9 +7,9 @@ exports['user-name'] = function () {
 exports['submitted-menu'] = function () {
 	nav(
 		ul(
-			{ class: 'items' },
+			{ class: 'submitted-menu-items' },
 			li(
-				a({ class: 'item-active', href: '/i18n/' },
+				a({ class: 'submitted-menu-item-active', href: '/i18n/' },
 					"Application")
 			),
 			li(

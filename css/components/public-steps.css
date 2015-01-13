@@ -43,7 +43,7 @@
 	max-width: 95%;
 }
 
-.public-steps li .step-button {
+.public-steps .public-steps-button {
 	background-color: var(--normal-background);
 	border-radius: 3px;
 	color: var(--white-text);
@@ -56,9 +56,9 @@
 	white-space: nowrap;
 	display: inline-block;
 }
-.public-steps li .step-button:hover,
-.public-steps li .step-button:focus,
-.public-steps li .step-button:active {
+.public-steps-button:hover,
+.public-steps-button:focus,
+.public-steps-button:active {
 	background-color: var(--normal-dark-background);
 }
 

@@ -29,10 +29,10 @@ exports.step = function () {
 							label({ for: 'input-' + name }, user.getDescriptor(name).label, ":"),
 							div({ class: 'input' },
 								input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) })));
-						div({ class: 'inventory-button' },
+						div({ class: 'user-guide-inventory-button' },
 							a({ href: '#inventory' },
-								span({ class: 'fa fa-calculator icon' }, "Calculator"),
-								span({ class: 'label' }, "Calculate the amount")));
+								span({ class: 'fa fa-calculator user-guide-inventory-icon' }, "Calculator"),
+								span({ class: 'user-guide-inventory-label' }, "Calculate the amount")));
 					} else if (name === 'isShoppingGallery') {
 						li(div({ class: 'dbjs-input-component' },
 							label(
@@ -87,7 +87,7 @@ exports.step = function () {
 			hr(),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 				" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
-			ul({ class: 'guide-requirements-list' },
+			ul({ class: 'user-guide-requirements-list' },
 				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 					" Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
 				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum " +
@@ -164,14 +164,14 @@ exports.step = function () {
 			),
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 				" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "),
-			ul({ class: 'guide-costs-list' },
+			ul({ class: 'user-guide-costs-list' },
 				li(span("Registration fee"), " ",
 					span("$50'000")),
 				li(span("Stamp duty for registration"), " ",
 					span("$10'000")),
 				li(span("Filing fees for memorandum"), " ",
 					span("$45'000")),
-				li({ class: 'guide-total-costs' },
+				li({ class: 'user-guide-total-costs' },
 					span("Total Costs:"), " ",
 					span("$105'000")),
 				li(span("Filing fees for memorandum"), " ",
@@ -184,8 +184,9 @@ exports.step = function () {
 					)
 			)
 			),
-		p(button({ class: 'save-step-one', type: 'submit' },
-			"Save and continue"))
+		p({ class: 'user-next-step-button' },
+			button({ type: 'submit' },
+				"Save and continue"))
 	);
 	reqRadio._dbjsInput.listItems[0].appendChild(
 		div({ class: 'disabler-range' }, // add 'disabler-active' class to disable ul

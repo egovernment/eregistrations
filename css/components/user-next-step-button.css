@@ -1,4 +1,5 @@
-.next-step a {
+.user-next-step-button a,
+.user-next-step-button [type=submit] {
 	background-color: var(--normal-background);
 	border-radius: 6px;
 	border: 1px solid transparent;
@@ -12,14 +13,19 @@
 	white-space: nowrap;
 	width: 49%;
 }
-.next-step a:hover,
-.next-step a:focus,
-.next-step a:active {
+
+form > .user-next-step-button [type=submit] {
+	width: 100%;
+}
+
+.user-next-step-button a:hover,
+.user-next-step-button a:focus,
+.user-next-step-button a:active {
 	background-color: var(--normal-dark-background);
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.next-step a {
+	.user-next-step-button a {
 		min-width: var(--min-mobile-width);
 	}
 }

@@ -55,7 +55,7 @@ exports.tab = function () {
 			),
 			p(
 				{ class: 'input' },
-				input({ class: 'official-rejection',
+				input({ class: 'official-form-rejection',
 					type: 'submit', value: 'Reject the incorporation' })
 			)
 		)

@@ -7,9 +7,9 @@ exports['user-name'] = function () {
 exports['submitted-menu'] = function () {
 	nav(
 		ul(
-			{ class: 'items' },
+			{ class: 'submitted-menu-items' },
 			li(
-				a({ class: 'item-active' },
+				a({ class: 'submitted-menu-item-active' },
 					"Official")
 			),
 			li(
@@ -19,10 +19,10 @@ exports['submitted-menu'] = function () {
 	);
 	nav(
 		ul(
-			{ class: 'items' },
+			{ class: 'submitted-menu-items' },
 			li(
 				form(
-					{ class: 'role-select' },
+					{ class: 'submitted-menu-role-select' },
 					p(
 						select(
 							option("Role"),
@@ -68,7 +68,7 @@ exports['sub-main'] = function () {
 		),
 		div(
 			a(
-				{ class: 'print-button', href: '/official/users-list/print/' },
+				{ class: 'users-table-filter-bar-print', href: '/official/users-list/print/' },
 				span({ class: 'fa fa-print' }),
 				"Print list"
 			)
@@ -90,7 +90,7 @@ exports['sub-main'] = function () {
 			tbody(
 				tr(
 					td(
-						{ class: 'user-basic-data' },
+						{ class: 'submitted-user-data-table-basic' },
 						a({ href: '/official/user-id/' }, "John Watson",
 							span('johnwatson@gmail.com')
 							)
@@ -113,7 +113,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						{ class: 'user-basic-data' },
+						{ class: 'submitted-user-data-table-basic' },
 						a({ href: '/official/user-id/' }, "John Watson",
 							span('johnwatson@gmail.com')
 							)
@@ -136,7 +136,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						{ class: 'user-basic-data' },
+						{ class: 'submitted-user-data-table-basic' },
 						a({ href: '/official/user-id/' }, "John Watson",
 							span('johnwatson@gmail.com')
 							)
@@ -159,7 +159,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						{ class: 'user-basic-data' },
+						{ class: 'submitted-user-data-table-basic' },
 						a({ href: '/official/user-id/' }, "John Watson",
 							span('johnwatson@gmail.com')
 							)
@@ -182,7 +182,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						{ class: 'user-basic-data' },
+						{ class: 'submitted-user-data-table-basic' },
 						a({ href: '/official/user-id/' }, "John Watson",
 							span('johnwatson@gmail.com')
 							)
@@ -205,7 +205,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						{ class: 'user-basic-data' },
+						{ class: 'submitted-user-data-table-basic' },
 						a({ href: '/official/user-id/' }, "John Watson",
 							span('johnwatson@gmail.com')
 							)
@@ -228,7 +228,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						{ class: 'user-basic-data' },
+						{ class: 'submitted-user-data-table-basic' },
 						a({ href: '/official/user-id/' }, "John Watson",
 							span('johnwatson@gmail.com')
 							)
@@ -251,7 +251,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						{ class: 'user-basic-data' },
+						{ class: 'submitted-user-data-table-basic' },
 						a({ href: '/official/user-id/' }, "John Watson",
 							span('johnwatson@gmail.com')
 							)
@@ -274,7 +274,7 @@ exports['sub-main'] = function () {
 				),
 				tr(
 					td(
-						{ class: 'user-basic-data' },
+						{ class: 'submitted-user-data-table-basic' },
 						a({ href: '/official/user-id/' }, "John Watson",
 							span('johnwatson@gmail.com')
 							)

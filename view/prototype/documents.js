@@ -28,7 +28,7 @@ exports.step = function () {
 			)
 		),
 
-		div({ class: 'next-step' },
+		div({ class: 'user-next-step-button' },
 			a({ href: '/submission/' }, "Continue to next step")
 			),
 		div({ class: 'disabler' })

@@ -13,52 +13,23 @@
 	width: 49%;
 }
 
-.user-guide button.save-step-one {
-	background-color: var(--normal-background);
-	border-radius: 6px;
-	border: 1px solid transparent;
-	color: var(--white-text);
-	cursor: pointer;
-	display: inline-block;
-	font-size: 18px;
-	font-weight: normal;
-	margin-bottom: 0;
-	padding: 10px 16px;
-	text-align: center;
-	text-decoration: none;
-	vertical-align: middle;
-	white-space: nowrap;
-	width: 100%;
-}
-@-moz-document url-prefix() {
-	.user-guide button.save-step-one  {
-		padding: 9px 16px;
-	}
-}
-
-.user-guide button.save-step-one:hover,
-.user-guide button.save-step-one:focus,
-.user-guide button.save-step-one:active {
-	background-color: var(--normal-dark-background);
-}
-
-.guide-requirements-list {
+.user-guide-requirements-list {
 	padding-left: 22px;
 	list-style-type: disc;
 }
 
-.guide-costs-list {
+.user-guide-costs-list {
 	padding-left: 0;
 	list-style-type: none;
 }
 
-.guide-costs-list li {
+.user-guide-costs-list li {
 	display: flex;
 	justify-content: space-between;
 	flex-wrap: wrap;
 }
 
-.guide-total-costs {
+.user-guide-total-costs {
 	background-color: var(--light-background);
 	border-bottom: 1px solid black;
 	border-top: 1px solid black;
@@ -68,29 +39,29 @@
 	font-weight: bolder;
 }
 
-.guide-costs-list li small {
+.user-guide-costs-list li small {
 	width: 100%;
 }
 
-.user-guide .inventory-button {
+.user-guide-inventory-button {
 	padding-left: 40%;
 	padding-top: 11px;
 	padding-bottom: 11px;
 }
 
-.user-guide .inventory-button .icon {
+.user-guide-inventory-icon {
 	font-size: 30px;
 	margin-bottom: -10px;
 	margin-top: -4px;
 }
 @-moz-document url-prefix() {
-	.user-guide .inventory-button .fa-calculator {
+	.user-guide-inventory-button .fa-calculator {
 		margin-bottom: -11px;
 		margin-top: -5px;
 	}
 }
 
-.user-guide .inventory-button .label {
+.user-guide-inventory-label {
 	background: var(--normal-background);
 	color: var(--white-text);
 	padding: 2px 5px 2px 2px;
@@ -99,15 +70,15 @@
 	border-bottom-right-radius: 3px;
 }
 
-.user-guide .inventory-button a {
+.user-guide-inventory-button a {
 	padding-left: 10px;
 	text-decoration: none;
 	white-space: nowrap;
 }
 
-.user-guide .inventory-button a:hover .label,
-.user-guide .inventory-button a:focus .label,
-.user-guide .inventory-button a:active .label {
+a:hover .user-guide-inventory-label,
+a:focus .user-guide-inventory-label,
+a:active .user-guide-inventory-label {
 	background: var(--normal-dark-background);
 }
 
@@ -123,10 +94,7 @@ Styles applied while screen size is less than 640px
 		width: 100%;
 	}
 
-	.user-guide .inventory-button {
+	.user-guide-inventory-button {
 		padding-left: 0;
-	}
-	.user-guide button.save-step-one {
-		width: auto;
 	}
 }

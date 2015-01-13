@@ -16,9 +16,9 @@ exports['user-name'] = function () {
 exports['submitted-menu'] = function () {
 	nav(
 		ul(
-			{ class: 'items' },
+			{ class: 'submitted-menu-items' },
 			li(
-				a({ class: 'item-active' },
+				a({ class: 'submitted-menu-item-active' },
 					"Request")
 			),
 			li(
@@ -160,25 +160,25 @@ exports['sub-main'] = function () {
 		ol({ class: 'submitted-documents-thumbs' },
 			li(
 				a(
-					span({ class: 'review-status success fa fa-check ' }),
+					span({ class: 'submitted-documents-thumbs-status success fa fa-check ' }),
 					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 				)
 			),
 			li(
 				a(
-					span({ class: 'review-status error fa fa-exclamation ' }),
+					span({ class: 'submitted-documents-thumbs-status error fa fa-exclamation ' }),
 					img({ src: '/uploads/docASubFile1.thumb.idoc.jpg' })
 				)
 			),
 			li(
 				a(
-					span({ class: 'review-status success fa fa-check ' }),
+					span({ class: 'submitted-documents-thumbs-status success fa fa-check ' }),
 					img({ src: '/uploads/docBSubFile1.thumb.idoc.jpg' })
 				)
 			),
 			li(
 				a(
-					span({ class: 'review-status success fa fa-check ' }),
+					span({ class: 'submitted-documents-thumbs-status success fa fa-check ' }),
 					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 				)
 			))
@@ -188,7 +188,7 @@ exports['sub-main'] = function () {
 		source = div(
 			{ class: 'section-primary submitted-preview-document' },
 			div({ class: 'container-with-nav' },
-				h3(i({ class: 'list-item-number' }, "1"),
+				h3(i({ class: 'submitted-preview-item-number' }, "1"),
 					"Memorandum and articles of association"),
 				div({ id: 'submitted-preview-navigation-top',
 					class: 'submitted-preview-documents-navigation' },
@@ -197,7 +197,7 @@ exports['sub-main'] = function () {
 						span(span({ class: 'current-index' }, "1"),  " / 4"),
 						a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, "Next"))
 					))),
-			elem = ul({ id: 'doc-previews', class: 'image-placeholder' },
+			elem = ul({ id: 'doc-previews', class: 'submitted-preview-image-placeholder' },
 				li(img({ zoomOnHover: true, src: '/uploads/docASubFile2.idoc.png.jpg' })),
 				li(img({ zoomOnHover: true, src: '/uploads/docASubFile1.idoc.jpg' })),
 				li(img({ zoomOnHover: true, src: '/uploads/docBSubFile1.idoc.jpg' }))),

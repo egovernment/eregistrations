@@ -26,14 +26,14 @@
 	margin-right: 5px;
 }
 
-.users-table-filter-bar .print-button {
+.users-table-filter-bar-print {
 	border-radius: 4px;
 	color: var(--white-text);
 	background-color: var(--normal-background);
 	padding: 5px 10px;
 	white-space: nowrap;
 }
-.users-table-filter-bar .print-button .fa {
+.users-table-filter-bar-print .fa {
 	margin-right: 5px;
 	position: relative;
 	top: 2px;
@@ -47,7 +47,7 @@
 	.users-table-filter-bar div:last-child {
 		width: 100%;
 	}
-	.users-table-filter-bar div:last-child .print-button {
+	.users-table-filter-bar-print {
 		text-align: center;
 	}
 	.users-table-filter-bar form div:last-child {

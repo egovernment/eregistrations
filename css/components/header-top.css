@@ -30,7 +30,7 @@
 /*
 Flexible basic menu - used on home page and can be reused elsewhere
 */
-.menu-top {
+.header-top-menu {
 	display: flex;
 	align-items: flex-end;
 	list-style: none;
@@ -40,7 +40,7 @@ Flexible basic menu - used on home page and can be reused elsewhere
 /*
 	Flexible basic menu link
 */
-.menu-top li a {
+.header-top-menu li a {
 	color: var(--normal-text);
 	font-size: 14px;
 	padding-right: 8px;
@@ -48,13 +48,13 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	cursor: pointer;
 	display: block;
 }
-.menu-top li a:hover,
-.menu-top li a:focus,
-.menu-top li a:active {
+.header-top-menu li a:hover,
+.header-top-menu li a:focus,
+.header-top-menu li a:active {
 	color: var(--dark-text);
 }
 
-.menu-top li .login {
+.header-top-menu .header-top-login {
 	background-color: var(--normal-background);
 	border-radius: 3px;
 	color: var(--white-text);
@@ -68,29 +68,29 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	vertical-align: middle;
 	white-space: nowrap;
 }
-.login-hint {
+.header-top-login-hint {
 	margin-left: 5px;
 	font-size: 10px;
 	display:block;
 }
-.menu-top li .login:hover,
-.menu-top li .login:focus,
-.menu-top li .login:active {
+.header-top-menu .header-top-login:hover,
+.header-top-menu .header-top-login:focus,
+.header-top-menu .header-top-login:active {
 	background-color: var(--normal-dark-background);
 	color: var(--white-text);
 }
 /*
 Flexible basic menu button positioning
 */
-ul.menu-top li button {
+ul.header-top-menu li button {
 	margin: 0;
 }
 
-ul.menu-top .fa {
+ul.header-top-menu .fa {
 	margin-top: 1px;
 	font-size: 19px;
 }
-.user-name {
+.header-top-user-name {
 	font-size: 17px;
 }
 
@@ -113,7 +113,7 @@ Styles applied while screen size is less than 640px
 	.header-top nav {
 		margin:  11px auto 11px;
 	}
-	.menu-top {
+	.header-top-menu {
 		padding-left: 0;
 	}
 }
