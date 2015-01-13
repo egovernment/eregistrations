@@ -40,7 +40,7 @@ Flexible basic menu - used on home page and can be reused elsewhere
 /*
 	Flexible basic menu link
 */
-.header-top-menu li a {
+.header-top-menu a {
 	color: var(--normal-text);
 	font-size: 14px;
 	padding-right: 8px;
@@ -48,9 +48,9 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	cursor: pointer;
 	display: block;
 }
-.header-top-menu li a:hover,
-.header-top-menu li a:focus,
-.header-top-menu li a:active {
+.header-top-menu a:hover,
+.header-top-menu a:focus,
+.header-top-menu a:active {
 	color: var(--dark-text);
 }
 
@@ -82,11 +82,11 @@ Flexible basic menu - used on home page and can be reused elsewhere
 /*
 Flexible basic menu button positioning
 */
-ul.header-top-menu li button {
+.header-top-menu button {
 	margin: 0;
 }
 
-ul.header-top-menu .fa {
+.header-top-menu .fa {
 	margin-top: 1px;
 	font-size: 19px;
 }
