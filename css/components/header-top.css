@@ -7,6 +7,10 @@
 	spreaded equaliy in 1050px space. Used i.e. with logo and simple menu
 */
 .header-top {
+	background: var(--white-background);
+}
+
+.header-top-wrapper {
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
@@ -15,15 +19,11 @@
 	padding-bottom: 11px;
 }
 
-.header-top-wrapper {
-	background: var(--white-background);
-}
-
 .header-top-logo img {
 	max-width: 100%;
 }
 
-.header-top div {
+.header-top-wrapper div {
 	max-height: 66px;
 }
 
@@ -98,19 +98,19 @@ ul.header-top-menu .fa {
 Styles applied while screen size is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
-	.header-top {
+	.header-top-wrapper {
 		flex-wrap: wrap;
 		min-width: var(--min-mobile-width);
 	}
-	.header-top div,
-	.header-top nav {
+	.header-top-wrapper div,
+	.header-top-wrapper nav {
 		text-align: center;
 	}
-	.header-top div {
+	.header-top-wrapper div {
 		margin: 0 auto;
 	}
 
-	.header-top nav {
+	.header-top-wrapper nav {
 		margin:  11px auto 11px;
 	}
 	.header-top-menu {
