@@ -6,20 +6,20 @@ var noop           = require('es5-ext/function/noop')
 exports.body = function () {
 	var modalCurtain;
 
-	header({ class: 'header-top-wrapper' },
-		div({ class: 'content header-top' },
+	header({ class: 'header-top' },
+		div({ class: 'content header-top-wrapper' },
 			div({ class: 'header-top-logo' }, a({ href: '/' },
 					img({ src: '/img/logo-2.png' })
 					)
 				),
-			nav(ul({ class: 'menu-top', id: 'menu' },
+			nav(ul({ class: 'header-top-menu', id: 'menu' },
 				li(a('en')),
 				li(a('sw')),
 				li(a('link one')),
 				li(a('link two')),
 				li(a({ onclick: '$(\'dialog-app-nav\').include()' }, 'nav dialog')),
-				li(span({ class: 'login-hint' }, ('Do you have an account?')),
-					a({ class: 'login', href: '#login' },
+				li(span({ class: 'header-top-login-hint' }, ('Do you have an account?')),
+					a({ class: 'header-top-login', href: '#login' },
 						"Log in"))
 					)
 				)
