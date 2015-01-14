@@ -192,7 +192,7 @@ exports['sub-main'] = function () {
 		source = div(
 			{ class: 'section-primary submitted-preview-document' },
 			div({ class: 'container-with-nav' },
-				h3(i({ class: 'list-item-number' }, "1"),
+				h3(i({ class: 'submitted-preview-item-number' }, "1"),
 					"Memorandum and articles of association"),
 				div({ id: 'submitted-preview-navigation-top',
 					class: 'submitted-preview-documents-navigation' },
@@ -201,7 +201,7 @@ exports['sub-main'] = function () {
 						span(span({ class: 'current-index' }, "1"),  " / 4"),
 						a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, "Next"))
 					))),
-			elem = ul({ id: 'doc-previews', class: 'image-placeholder' },
+			elem = ul({ id: 'doc-previews', class: 'submitted-preview-image-placeholder' },
 				li(img({ zoomOnHover: true, src: '/uploads/docASubFile2.idoc.png.jpg' })),
 				li(img({ zoomOnHover: true, src: '/uploads/docASubFile1.idoc.jpg' })),
 				li(img({ zoomOnHover: true, src: '/uploads/docBSubFile1.idoc.jpg' }))),

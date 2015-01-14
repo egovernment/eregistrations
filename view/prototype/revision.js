@@ -155,9 +155,9 @@ exports['sub-main'] = function () {
 		source = div(
 			{ class: 'section-primary submitted-preview-document' },
 			div({ class: 'container-with-nav' },
-				h3(i({ class: 'list-item-number' }, "1"),
+				h3(i({ class: 'submitted-preview-item-number' }, "1"),
 					"Memorandum and articles of association")),
-			elem = div({ class: 'image-placeholder' },
+			elem = div({ class: 'submitted-preview-image-placeholder' },
 				img({ zoomOnHover: true, src: '/uploads/docASubFile2.idoc.png.jpg' })),
 			form(
 				{ class: 'submitted-preview-form' },

@@ -14,22 +14,22 @@
 	margin-bottom: 0;
 }
 
-.submitted-preview-document .image-placeholder {
+.submitted-preview-image-placeholder {
 	border: 1px solid var(--light-inner-border);
 	text-align: center;
 	list-style: none;
 	overflow: hidden;
 	margin-bottom: 22px;
 }
-.submitted-preview-document .image-placeholder > li {
+.submitted-preview-image-placeholder > li {
 	height: 100%;
 	display: none;
 }
-.submitted-preview-document .image-placeholder > .active {
+.submitted-preview-image-placeholder > .active {
 	display: block;
 }
 
-.submitted-preview-document .image-placeholder img {
+.submitted-preview-image-placeholder img {
 	margin-bottom: 0;
 	max-width: 100%;
 	max-height: 100%;
@@ -88,7 +88,7 @@
 	margin-top: -22px;
 }
 
-.submitted-preview-document .list-item-number {
+.submitted-preview-item-number {
 	width: 22px;
 	line-height: 22px;
 	margin-right: 8px;
