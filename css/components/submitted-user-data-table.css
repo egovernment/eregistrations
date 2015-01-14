@@ -59,7 +59,7 @@
 .submitted-user-data-table tbody tr td a {
 	display: block;
 }
-.submitted-user-data-table tbody tr td.submitted-user-data-table-basic a {
+.submitted-user-data-table-basic > a {
 		font-weight: bold;
 }
 .submitted-user-data-table tbody tr td a:hover,
@@ -67,7 +67,7 @@
 .submitted-user-data-table tbody tr td a:focus {
 	text-decoration: underline;
 }
-.submitted-user-data-table tbody tr td.submitted-user-data-table-basic a span {
+.submitted-user-data-table-basic > a > span {
 	display: block;
 	width: 100%;
 	font-weight: normal;
