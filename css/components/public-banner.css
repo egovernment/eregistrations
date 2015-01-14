@@ -22,7 +22,6 @@ Class describing how boxes for informations insight banner are displayed
 	justify-content: space-between;
 }
 
-
 .public-banner,
 .public-banner-box-text {
 	min-height: 374px;
