@@ -4,7 +4,7 @@
 	margin-bottom: 22px;
 }
 
-.file-thumb div {
+.file-thumb-actions {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-around;
@@ -38,7 +38,7 @@
 	margin-right: 3px;
 }
 
-.file-thumb-actions {
+.file-thumb-action {
 	border-radius: 3px;
 	background-color: var(--normal-background);
 	color: var(--white-text);
@@ -47,13 +47,13 @@
 	margin-right: 3px;
 	text-align: center;
 }
-.file-thumb-actions:hover,
-.file-thumb-actions:focus,
-.file-thumb-actions:active {
+.file-thumb-action:hover,
+.file-thumb-action:focus,
+.file-thumb-action:active {
 	background-color: var(--normal-dark-background);
 	box-shadow: none;
 }
-.file-thumb-actions span {
+.file-thumb-action span {
 	position: relative;
 	top: 3px;
 }
