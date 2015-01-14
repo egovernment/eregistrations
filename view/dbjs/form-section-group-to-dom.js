@@ -41,7 +41,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 						if (!subSection.forceRequiredInput) {
 							control = { required: subSection.forceRequiredInput };
 						}
-						return ns.div({ class: 'sections-primary-sub', id: subSection.domId },
+						return ns.div({ class: 'section-primary-sub', id: subSection.domId },
 							ns._if(subSection.label, ns.h3(subSection.label)),
 							formResolvent.formResolvent,
 							ns.fieldset(
