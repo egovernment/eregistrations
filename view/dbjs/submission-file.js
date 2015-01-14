@@ -63,7 +63,7 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 						el('input',
 							{ type: 'hidden', name: this.name, value: file.__id__ }
 							),
-					el('div',
+					el('div', { class: 'file-thumb-actions' },
 						el('span', { class: 'file-thumb-document-size' },
 							map(file._diskSize, function (size) {
 								if (size == null) return null;
@@ -71,13 +71,13 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 							})
 							),
 						el('span',
-							{ class: 'file-thumb-actions', onclick: remove },
+							{ class: 'file-thumb-action', onclick: remove },
 							el('span',
 								{ class: 'fa fa-trash-o' }, "delete"
 								)
 							),
 						el('a',
-							{ href: file._url, target: '_blank', class: 'file-thumb-actions' },
+							{ href: file._url, target: '_blank', class: 'file-thumb-action' },
 							el('span',
 								{ class: 'fa fa-download' }, "download"
 								)

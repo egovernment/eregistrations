@@ -18,12 +18,12 @@
 	list-style-type: none;
 }
 
-.sections-primary-sub {
+.section-primary-sub {
 	border: none;
 	padding: 0;
 }
 
-.sections-primary-sub h3 {
+.section-primary-sub h3 {
 	background: var(--light-background);
 	padding-top: 5px;
 	padding-bottom: 5px;
