@@ -6,8 +6,8 @@ var noop           = require('es5-ext/function/noop')
 exports.body = function () {
 	var modalCurtain;
 
-	header({ class: 'header-top-wrapper' },
-		div({ class: 'content header-top' },
+	header({ class: 'header-top' },
+		div({ class: 'content header-top-wrapper' },
 			div({ class: 'header-top-logo' }, a({ href: '/' },
 					img({ src: '/img/logo-2.png' })
 					)
