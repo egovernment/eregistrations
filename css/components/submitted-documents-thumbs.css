@@ -49,7 +49,7 @@
 	max-height: 100%;
 }
 
-.submitted-documents-thumbs .review-status {
+.submitted-documents-thumbs-status {
 	position: absolute;
 	line-height: 18px;
 	right: 0;
@@ -63,10 +63,10 @@
 	margin-right: -8px;
 }
 
-.review-status.success {
+.submitted-documents-thumbs-success {
 	color: var(--success-text);
 }
-.review-status.error {
+.submitted-documents-thumbs-error {
 color: var(--error-text);
 }
 

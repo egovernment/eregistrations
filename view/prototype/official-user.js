@@ -105,7 +105,7 @@ exports['sub-main'] = function () {
 			"Certificate of incorporation"
 			),
 		a({ class: 'section-tab-nav-tab', id: 'official-user-details',
-				href: '/official/user-id/document/' },
+			href: '/official/user-id/document/' },
 			"Documents and data of petitioner"
 			),
 

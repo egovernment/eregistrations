@@ -13,7 +13,7 @@
 	width: 100%;
 }
 
-.submitted-menu .items {
+.submitted-menu-items {
 	display: flex;
 	justify-content: flex-start;
 	margin: 0;
@@ -22,7 +22,7 @@
 	list-style-type: none;
 }
 
-.submitted-menu li .item-active {
+.submitted-menu-item-active {
 	background: var(--normal-dark-background);
 }
 
@@ -35,10 +35,10 @@
 	display: block;
 }
 
-.role-select {
+.submitted-menu-role-select {
 	line-height: 44px;
 }
-.role-select select {
+.submitted-menu-role-select select {
 	border: none;
 	background-color: var(--dark-background);
 	box-shadow: none;

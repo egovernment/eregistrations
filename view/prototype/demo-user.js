@@ -7,9 +7,9 @@ exports = module.exports = copy(require('./_user-main'));
 exports['submitted-menu'] = function () {
 	nav(
 		ul(
-			{ class: 'items' },
+			{ class: 'submitted-menu-items' },
 			li(
-				a({ class: 'item-active' },
+				a({ class: 'submitted-menu-item-active' },
 					"Demo user")
 			),
 			li(
@@ -19,10 +19,10 @@ exports['submitted-menu'] = function () {
 	);
 	nav(
 		ul(
-			{ class: 'items' },
+			{ class: 'submitted-menu-items' },
 			li(
 				form(
-					{ class: 'role-select' },
+					{ class: 'submitted-menu-role-select' },
 					p(
 						select(
 							option("Role"),

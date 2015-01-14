@@ -16,9 +16,9 @@ exports['user-name'] = function () {
 exports['submitted-menu'] = function () {
 	nav(
 		ul(
-			{ class: 'items' },
+			{ class: 'submitted-menu-items' },
 			li(
-				a({ class: 'item-active' },
+				a({ class: 'submitted-menu-item-active' },
 					"Request")
 			),
 			li(
@@ -160,25 +160,29 @@ exports['sub-main'] = function () {
 		ol({ class: 'submitted-documents-thumbs' },
 			li(
 				a(
-					span({ class: 'review-status success fa fa-check ' }),
+					span({ class: 'submitted-documents-thumbs-status ' +
+							'submitted-documents-thumbs-success fa fa-check ' }),
 					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 				)
 			),
 			li(
 				a(
-					span({ class: 'review-status error fa fa-exclamation ' }),
+					span({ class: 'submitted-documents-thumbs-status ' +
+						'submitted-documents-thumbs-error fa fa-exclamation ' }),
 					img({ src: '/uploads/docASubFile1.thumb.idoc.jpg' })
 				)
 			),
 			li(
 				a(
-					span({ class: 'review-status success fa fa-check ' }),
+					span({ class: 'submitted-documents-thumbs-status ' +
+						'submitted-documents-thumbs-success fa fa-check ' }),
 					img({ src: '/uploads/docBSubFile1.thumb.idoc.jpg' })
 				)
 			),
 			li(
 				a(
-					span({ class: 'review-status success fa fa-check ' }),
+					span({ class: 'submitted-documents-thumbs-status ' +
+							'submitted-documents-thumbs-success fa fa-check ' }),
 					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 				)
 			))
