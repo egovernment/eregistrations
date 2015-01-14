@@ -101,10 +101,11 @@ exports['sub-main'] = function () {
 	);
 	section(
 		{ class: 'section-tab-nav' },
-		a({ class: 'tab', id: 'official-form', href: '/official/user-id/' },
+		a({ class: 'section-tab-nav-tab', id: 'official-form', href: '/official/user-id/' },
 			"Certificate of incorporation"
 			),
-		a({ class: 'tab', id: 'official-user-details', href: '/official/user-id/document/' },
+		a({ class: 'section-tab-nav-tab', id: 'official-user-details',
+				href: '/official/user-id/document/' },
 			"Documents and data of petitioner"
 			),
 
