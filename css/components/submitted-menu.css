@@ -22,7 +22,7 @@
 	list-style-type: none;
 }
 
-.submitted-menu .submitted-menu-item-active {
+.submitted-menu-item-active {
 	background: var(--normal-dark-background);
 }
 
