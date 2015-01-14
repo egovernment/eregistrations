@@ -63,10 +63,10 @@
 	margin-right: -8px;
 }
 
-.submitted-documents-thumbs-status.success {
+.submitted-documents-thumbs-success {
 	color: var(--success-text);
 }
-.submitted-documents-thumbs-status.error {
+.submitted-documents-thumbs-error {
 color: var(--error-text);
 }
 
