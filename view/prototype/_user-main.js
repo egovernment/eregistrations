@@ -10,7 +10,7 @@ exports.main = function () {
 
 	var mobileCheckbox;
 
-	div({ class: 'fixed-top-placeholder' },
+	div({ class: 'user-steps-menu-fixed-top-placeholder' },
 		nav({ id: 'user-steps-menu', class: 'user-steps-menu', fixed: true },
 			div({ class: 'content user-steps-menu-wrapper' },
 				label({ class: 'user-steps-menu-show', for: 'show-steps-control' },

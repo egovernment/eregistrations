@@ -50,22 +50,22 @@ exports.tab = function () {
 		h3("Complete content of the company file"),
 		ol({ class: 'submitted-documents-thumbs' },
 			li(
-				a(span({ class: 'review-status success fa fa-check ' }),
+				a(span({ class: 'submitted-documents-thumbs-status success fa fa-check ' }),
 					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 					)
 			),
 			li(
-				a(span({ class: 'review-status success fa fa-check ' }),
+				a(span({ class: 'submitted-documents-thumbs-status success fa fa-check ' }),
 					img({ src: '/uploads/docASubFile1.thumb.idoc.jpg' })
 					)
 			),
 			li(
-				a(span({ class: 'review-status error fa fa-exclamation ' }),
+				a(span({ class: 'submitted-documents-thumbs-status error fa fa-exclamation ' }),
 					img({ src: '/uploads/docBSubFile1.thumb.idoc.jpg' })
 					)
 			),
 			li(
-				a(span({ class: 'review-status success fa fa-check ' }),
+				a(span({ class: 'submitted-documents-thumbs-status success fa fa-check ' }),
 					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
 					)
 			)
@@ -74,11 +74,11 @@ exports.tab = function () {
 			{ class: 'submitted-preview' },
 			source = div({ class: 'section-primary submitted-preview-document' },
 				div({ class: 'container-with-nav' },
-					h3(i({ class: 'list-item-number' }, "1"),
+					h3(i({ class: 'submitted-preview-item-number' }, "1"),
 						"Memorandum and articles of association"
 						)
 					),
-				elem = ul({ class: 'image-placeholder' },
+				elem = ul({ class: 'submitted-preview-image-placeholder' },
 					li({ class: 'active' },
 						img({ zoomOnHover: true, src: '/uploads/docASubFile2.idoc.png.jpg' })))),
 			target = div({ class: 'section-primary submitted-preview-user-data' },
