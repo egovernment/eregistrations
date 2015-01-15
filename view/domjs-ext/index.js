@@ -47,6 +47,7 @@ module.exports = function (domjs) {
 		if (path[0] === '/') path = path.slice(1);
 		return mano.env.static.host + path;
 	};
+	require('domjs-reactive-script')(domjs);
 	require('./thumb')(domjs);
 	require('domjs-ext/upload-button')(domjs);
 	require('domjs-ext/url')(domjs);

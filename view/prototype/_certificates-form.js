@@ -7,7 +7,7 @@ exports.certificates = function () {
 	form(
 		{ method: 'post', class: 'form-elements ' },
 		div(
-			{ class: 'sections-primary-sub' },
+			{ class: 'section-primary-sub' },
 			h3("Certificate A"),
 			fieldset(
 				ul(
