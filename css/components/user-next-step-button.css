@@ -14,10 +14,6 @@
 	width: 49%;
 }
 
-form > .user-next-step-button [type=submit] {
-	width: 100%;
-}
-
 .user-next-step-button a:hover,
 .user-next-step-button a:focus,
 .user-next-step-button a:active {
