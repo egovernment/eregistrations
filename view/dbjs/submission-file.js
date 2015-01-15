@@ -20,8 +20,8 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 				if (label == null) label = _("Select file");
 			}
 
-			dom = el('div', { class: 'file-section' },
-				this.valueDOM = el(this.multiple ? 'ul' : 'div', { class: 'file-uploader' }),
+			dom = el('div', { class: 'file-uploader' },
+				this.valueDOM = el(this.multiple ? 'ul' : 'div', { class: 'file-uploader-items' }),
 				el('p', { class: 'file-uploader-button' },
 					el('a',
 						el('label', label,

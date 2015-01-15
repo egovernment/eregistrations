@@ -1,4 +1,4 @@
-.file-uploader {
+.file-uploader-items {
 	list-style-type: none;
 	display: flex;
 	flex-wrap: wrap;
@@ -40,6 +40,6 @@
 	}
 }
 
-.file-uploader li {
+.file-uploader-items li {
 	margin-right: 17px;
 }
