@@ -3,7 +3,7 @@
 	margin-top: -1px; /* Fixes weird 1px addon as observed in Chrome */
 }
 
-.submitted-user-data-table-empty td {
+.submitted-user-data-table .empty td {
 	padding: 11px 6px;
 }
 
