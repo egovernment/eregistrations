@@ -63,12 +63,12 @@
 	padding: 11px 15px;
 }
 
-.entity-header-actions .entity-header-actions-remove-button {
+[type='submit'].entity-header-actions-remove-button {
 	background: var(--error-background);
 }
-.entity-header-actions .entity-header-actions-remove-button:hover,
-.entity-header-actions .entity-header-actions-remove-button:focus,
-.entity-header-actions .entity-header-actions-remove-button:active {
+[type='submit'].entity-header-actions-remove-button:hover,
+[type='submit'].entity-header-actions-remove-button:focus,
+[type='submit'].entity-header-actions-remove-button:active {
 	background-color: var(--error-dark-background);
 }
 
