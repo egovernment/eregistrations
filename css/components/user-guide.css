@@ -13,7 +13,7 @@
 	width: 49%;
 }
 
-.user-guide > .user-next-step-button [type=submit] {
+.user-guide .user-next-step-button [type=submit] {
 	width: 100%;
 }
 
