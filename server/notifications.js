@@ -61,11 +61,15 @@ setup = function (path) {
 	if (conf.text == null) {
 		text = compileTpl(readFile(resolve(dir, name + '.txt')));
 	} else if (typeof conf.text === 'function') {
-		getTemplate = memoize(function (path) {
-			return compileTpl(readFile(resolve(dir, path + '.txt')));
-		});
+		if (!conf.textResolvesTemplate) {
+			getTemplate = memoize(function (path) {
+				return compileTpl(readFile(resolve(dir, path + '.txt')));
+			});
+		}
 		getText = function (user) {
-			return resolveTpl(getTemplate(conf.text(user, context)), context);
+			var data = conf.text(user, context);
+			if (!conf.textResolvesTemplate) data = getTemplate(data);
+			return resolveTpl(data, context);
 		};
 	} else {
 		text = compileTpl(conf.text);
