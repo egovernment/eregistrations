@@ -13,33 +13,8 @@
 	width: 49%;
 }
 
-[type=submit].user-guide-step-save {
-	background-color: var(--normal-background);
-	border-radius: 6px;
-	border: 1px solid transparent;
-	color: var(--white-text);
-	cursor: pointer;
-	display: inline-block;
-	font-size: 18px;
-	font-weight: normal;
-	margin-bottom: 0;
-	padding: 10px 16px;
-	text-align: center;
-	text-decoration: none;
-	vertical-align: middle;
-	white-space: nowrap;
+.user-guide .user-next-step-button [type=submit] {
 	width: 100%;
-}
-@-moz-document url-prefix() {
-	[type=submit].user-guide-step-save  {
-		padding: 9px 16px;
-	}
-}
-
-.user-guide-step-save:hover,
-.user-guide-step-save:focus,
-.user-guide-step-save:active {
-	background-color: var(--normal-dark-background);
 }
 
 .user-guide-requirements-list {
@@ -125,8 +100,5 @@ Styles applied while screen size is less than 640px
 
 	.user-guide-inventory-button {
 		padding-left: 0;
-	}
-	.user-guide-step-save {
-		width: auto;
 	}
 }

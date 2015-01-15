@@ -184,8 +184,9 @@ exports.step = function () {
 					)
 			)
 			),
-		p(button({ class: 'user-guide-step-save', type: 'submit' },
-			"Save and continue"))
+		p({ class: 'user-next-step-button' },
+			button({ type: 'submit' },
+				"Save and continue"))
 	);
 	reqRadio._dbjsInput.listItems[0].appendChild(
 		div({ class: 'disabler-range' }, // add 'disabler-active' class to disable ul
