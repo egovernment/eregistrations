@@ -46,7 +46,7 @@ exports.step = function () {
 					} }
 			)
 		),
-		div(button({ type: 'submit', class: 'submit-user-button' }, "Send Your files"))
+		div(button({ type: 'submit', class: 'user-submission-button' }, "Send Your files"))
 	);
 
 };
