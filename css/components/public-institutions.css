@@ -10,6 +10,7 @@
 	border: 1px solid transparent;
 	border-radius: 5px;
 	display: block;
+	transition: all 0.5s ease;
 }
 .public-institutions a:hover,
 .public-institutions a:focus,
@@ -17,6 +18,15 @@
 	border-color: var(--light-inner-border);
 	box-shadow: 0 0 10px -2px var(--dark-background);
 }
-.public-institutions a img {
+.public-institutions img {
 	display: block;
+	transition: all 0.5s ease;
+	max-width: 140px;
+	max-height: 70px;
+	filter: grayscale(1);
+}
+.public-institutions a:hover img,
+.public-institutions a:focus img,
+.public-institutions a:active img {
+	filter: grayscale(0);
 }
