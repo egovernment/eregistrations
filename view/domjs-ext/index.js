@@ -31,7 +31,6 @@ module.exports = function (domjs) {
 	require('domjs-ext/gt')(domjs);
 	require('domjs-ext/gt-or-eq')(domjs);
 	require('domjs-ext/html')(domjs);
-	require('domjs-ext/legacy')(domjs);
 	require('domjs-ext/list')(domjs);
 	require('domjs-ext/lt')(domjs);
 	require('domjs-ext/lt-or-eq')(domjs);
@@ -48,6 +47,7 @@ module.exports = function (domjs) {
 		return mano.env.static.host + path;
 	};
 	require('domjs-reactive-script')(domjs);
+	require('domjs-ext/legacy')(domjs);
 	require('./thumb')(domjs);
 	require('domjs-ext/upload-button')(domjs);
 	require('domjs-ext/url')(domjs);
