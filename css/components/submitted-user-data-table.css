@@ -38,10 +38,6 @@
 	text-decoration: none;
 }
 
-.submitted-user-data-table tbody tr td {
-	vertical-align: top;
-}
-
 .submitted-user-data-table tbody tr td a,
 .submitted-user-data-table.submitted-current-user-data-table tbody tr td {
 	padding: 11px 25px 10px;
