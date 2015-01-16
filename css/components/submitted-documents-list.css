@@ -4,6 +4,10 @@
 	line-height: 33px;
 }
 
+.submitted-documents-list a {
+	text-decoration: none;
+}
+
 .submitted-documents-list > li {
 	font-size: 15px;
 }
