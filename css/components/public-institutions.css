@@ -5,8 +5,12 @@
 	list-style-type: none;
 	margin-bottom: 22px;
 }
+.public-institutions li {
+	line-height: 86px;
+}
+
 .public-institutions a {
-	padding: 10px;
+	padding: 0 10px;
 	border: 1px solid transparent;
 	border-radius: 5px;
 	display: block;
@@ -19,11 +23,12 @@
 	box-shadow: 0 0 10px -2px var(--dark-background);
 }
 .public-institutions img {
-	display: block;
+	display: inline-block;
 	transition: all 0.5s ease;
 	max-width: 140px;
 	max-height: 70px;
 	filter: grayscale(1);
+	vertical-align: middle;
 }
 .public-institutions a:hover img,
 .public-institutions a:focus img,
