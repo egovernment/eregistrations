@@ -19,7 +19,7 @@
 	text-decoration: none;
 }
 @-moz-document url-prefix() {
-	.section-tab-nav .tab {
+	.section-tab-nav .section-tab-nav-tab {
 		bottom: 2px;
 	}
 }
