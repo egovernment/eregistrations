@@ -1,12 +1,22 @@
 .users-table-filter-bar {
 		display: flex;
 		justify-content: space-between;
+		padding-bottom: 0;
+		padding-top: 20px;
+}
+.users-table-filter-bar > * {
+	margin-bottom: 0;
+}
+.users-table-filter-bar > form > *:last-child,
+.users-table-filter-bar > div:last-child  {
+	margin-bottom: 22px;
 }
 
 .users-table-filter-bar div,
 .users-table-filter-bar form {
 	display: inline-block;
 }
+
 .users-table-filter-bar form > div {
 	white-space: nowrap;
 }
