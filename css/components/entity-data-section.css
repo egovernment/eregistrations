@@ -55,7 +55,7 @@
 	text-align: left;
 }
 
-.entity-entities-section li:not(:last-child) {
+.entity-data-section-entities li:not(:last-child) {
 	border-bottom: 1px solid var(--light-text);
 }
 
