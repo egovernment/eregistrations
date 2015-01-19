@@ -70,7 +70,7 @@ exports.step = function () {
 					input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 					span(user.getDescriptor('isARequested').label)))),
 			div(
-				{ class: 'wrapper' },
+				{ class: 'section-primary-wrapper' },
 				h2("Optional Registrations"),
 				hr(),
 				ul(li(label({ class: 'input-aside' },
