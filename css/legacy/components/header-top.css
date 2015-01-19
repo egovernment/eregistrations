@@ -1,19 +1,19 @@
-.header-top {
+.header-top-wrapper {
 	overflow: hidden;
 }
 
 .header-top-logo img {
 	border: none;
 }
-.header-top > * {
+.header-top-wrapper > * {
 	display: inline-block;
 	vertical-align: top;
 }
-.header-top > nav {
+.header-top-wrapper > nav {
 	float: right;
 	position: relative;
 	top: 15px;
 }
-.menu-top li {
+.header-top-menu li {
 	display: inline-block;
 }
