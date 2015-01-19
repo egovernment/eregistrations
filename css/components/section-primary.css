@@ -6,11 +6,11 @@
 }
 .section-primary > *,
 .section-primary > form > *,
-.section-primary > .wrapper > * {
+.section-primary > .section-primary-wrapper > * {
 	margin-bottom: 22px;
 }
 .section-primary > form,
-.section-primary > .wrapper {
+.section-primary > .section-primary-wrapper {
 	margin-bottom: 0;
 }
 
