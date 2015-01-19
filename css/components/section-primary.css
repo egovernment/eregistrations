@@ -2,15 +2,16 @@
 	background-color: var(--white-background);
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
-	padding: 20px 15px 0 15px;
+	padding: 21px 20px;
 }
 .section-primary > *,
 .section-primary > form > *,
 .section-primary > .section-primary-wrapper > * {
 	margin-bottom: 22px;
 }
-.section-primary > form,
-.section-primary > .section-primary-wrapper {
+.section-primary > *:last-child,
+.section-primary > form > *:last-child,
+.section-primary > .section-primary-wrapper > *:last-child {
 	margin-bottom: 0;
 }
 
