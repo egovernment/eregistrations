@@ -14,9 +14,9 @@
 }
 
 .user-guide > .section-primary > h2,
-.user-guide > .section-primary > .wrapper > h2,
+.user-guide > .section-primary > .section-primary-wrapper > h2,
 .user-guide > .section-primary > h2 + hr,
-.user-guide > .section-primary > .wrapper > h2 + hr {
+.user-guide > .section-primary > .section-primary-wrapper > h2 + hr {
 	margin-bottom: 11px;
 }
 
