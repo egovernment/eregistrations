@@ -23,7 +23,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		if (!this.forceRequiredInput) {
 			control = { required: this.forceRequiredInput };
 		}
-		return ns.insert(ns.section({ class: 'section-primary' },
+		return [ns.section({ class: 'section-primary' },
 			ns.form(
 				{ id: this.domId,
 					method: 'post',
@@ -47,6 +47,6 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 				ns.p({ class: 'section-primary-scroll-top' },
 					ns.a({ onclick: 'window.scroll(0, 0)' },
 						ns.span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
-			)), resolvent.legacyScript, legacy.legacy);
+			)), resolvent.legacyScript, legacy.legacy];
 	})
 });

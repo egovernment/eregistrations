@@ -19,7 +19,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 					url(this.constructor.actionUrl + '-add') :
 					url(this.constructor.actionUrl, this.master.__id__);
 		}
-		return ns.section(
+		return [ns.section(
 			{ class: 'section-primary' },
 			ns.form({ id: this.domId, method: 'post',
 					action: actionUrl,
@@ -58,7 +58,6 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 					ns.a({ onclick: 'window.scroll(0, 0)' },
 						ns.span({ class: 'fa fa-arrow-up' }, "Back to top"))
 				)
-				),
-			mainFormResolvent.legacyScript
-		);
+				)
+		), mainFormResolvent.legacyScript];
 	}));
