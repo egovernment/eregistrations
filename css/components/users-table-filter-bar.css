@@ -7,11 +7,9 @@
 .users-table-filter-bar > * {
 	margin-bottom: 0;
 }
-.users-table-filter-bar > form > *:last-child {
+.users-table-filter-bar > form > *:last-child,
+.users-table-filter-bar > div:last-child  {
 	margin-bottom: 22px;
-}
-.users-table-filter-bar > div:last-child {
-	padding-bottom: 22px;
 }
 
 .users-table-filter-bar div,
