@@ -4,6 +4,6 @@
 .entity-header > * {
 	display: inline-block;
 }
-.entity-header > .entity-actions{
+.entity-header > .entity-header-actions {
 	float: right;
 }
