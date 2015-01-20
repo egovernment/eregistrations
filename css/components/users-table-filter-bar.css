@@ -9,7 +9,7 @@
 }
 .users-table-filter-bar > form > *:last-child,
 .users-table-filter-bar > div:last-child  {
-	margin-bottom: 22px;
+	margin-bottom: 11px;
 }
 
 .users-table-filter-bar div,
@@ -22,7 +22,8 @@
 }
 
 .users-table-filter-bar form div {
-	margin-right: 20px;
+	line-height: 44px;
+	margin: -11px 20px 11px 0;
 }
 
 .users-table-filter-bar label {
