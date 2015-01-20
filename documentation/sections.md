@@ -296,6 +296,7 @@ good to remember that calculation is quite simplistic and you may encounter situ
 You don't have to (and usually shouldn't) iterate manually over `formSections` (the section's collection) to get overall sections status.
 That's because once you define `formSections` property, another property with the name `yourSectionsPropertyNameStatus` (in our example `formSectionsStatus`)
 will be created as Well. The `formSectionsStatus` will give you the total status of sections it contains.
+Sometimes you your form is prefilled with some values like for example user's email. It may happen that you don't want to calculate status for such prefilled property, in other words you want the status to be ignore email as long as it's ok. In that case you can use use `excludedFromStatusIfFilled` method from constructor.
 
 
 ###Sections after submission###
@@ -327,7 +328,9 @@ _prototype_
 **onIncompleteMessage** Used to overwrite default message which is shown through view/components/incomplete-form-nav.
 
 _constructor_
-	
+
+**excludedFromStatusIfFilled** a multiple for which you can pass names of the properties you want excluded from status calculation if they were already provided for the form (for example from guide).
+
 **actionUrl** The url to which the the form created around the section will be submitted.
 	
 **resolventProperty** This property is used together with `resolventValue`, to check if the fields section fields should be displayed.
