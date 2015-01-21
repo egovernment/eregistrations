@@ -1,0 +1,8 @@
+.user-guide-lomas-intro > p:first-child {
+	font-weight: bold;
+}
+
+.user-guide-lomas-intro > ol {
+	list-style-type: decimal;
+	padding-left: 22px;
+}
