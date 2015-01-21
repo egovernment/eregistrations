@@ -14,6 +14,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		resolvent = this.getFormResolvent();
 		legacy = this.getLegacy(this.domId, options);
 		url = options.url || ns.url;
+		if (!options.customize) options.customize = {};
 		actionUrl = url(this.constructor.actionUrl);
 		if (options.isChildEntity) {
 			actionUrl = this.master.constructor.prototype === this.master ?
@@ -23,7 +24,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		if (!this.forceRequiredInput) {
 			control = { required: this.forceRequiredInput };
 		}
-		return [ns.section({ class: 'section-primary' },
+		return [options.customize.container = ns.section({ class: 'section-primary' },
 			ns.form(
 				{ id: this.domId,
 					method: 'post',
@@ -36,7 +37,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 						ns.hr()]),
 				options.prepend,
 				resolvent.formResolvent,
-				ns.fieldset(
+				options.customize.fieldset = ns.fieldset(
 					{ id: resolvent.affectedSectionId,
 						dbjs: this.master, names: this.formPropertyNames,
 						control: control,
