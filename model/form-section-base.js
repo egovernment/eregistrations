@@ -26,6 +26,7 @@ module.exports = memoize(function (db) {
 		resolventValue: { type: db.Base },
 		onIncompleteMessage: { type: StringLine }
 	}, {
+		excludedFromStatusIfFilled: { type: StringLine, multiple: true },
 		actionUrl: { type: StringLine, required: true },
 		resolventProperty: { type: StringLine }
 	});

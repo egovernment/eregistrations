@@ -43,7 +43,11 @@ module.exports = memoize(function (db) {
 			this.propertyNames.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name);
 				if (!resolved.descriptor.required) return;
-				total++;
+				if (this.constructor.excludedFromStatusIfFilled.has(name) &&
+						_observe(resolved.observable) != null) {
+					return;
+				}
+				++total;
 				if (_observe(resolved.observable) != null) valid++;
 			}, this);
 			return total === 0 ? 1 : valid / total;
