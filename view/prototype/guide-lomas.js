@@ -10,4 +10,13 @@ require('./_inventory');
 
 exports.step = function () {
 	h1("1. Individual registration guide for companies - lomas like");
+
+	section(
+		{ class: 'section-primary' },
+		p(),
+		ol(
+			li("Lorem ispum"),
+			li("Lorem ipsum")
+		)
+	);
 };
