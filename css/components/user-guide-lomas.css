@@ -6,3 +6,46 @@
 	list-style-type: decimal;
 	padding-left: 22px;
 }
+
+.user-guide-lomas-basic-section.section-primary {
+	background-color: var(--light-medium-background);
+}
+
+.user-guide-lomas-basic-section-nav > li {
+	display: inline-block;
+	line-height: 44px;
+}
+
+.user-guide-lomas-basic-section-nav-separator {
+	padding: 0 10px;
+}
+
+.user-guide-lomas-basic-section-nav a {
+	display: block;
+	border-radius: 5px;
+	padding: 0 10px;
+}
+.user-guide-lomas-basic-section-nav-active a,
+.user-guide-lomas-basic-section-nav a:hover,
+.user-guide-lomas-basic-section-nav a:focus,
+.user-guide-lomas-basic-section-nav a:active {
+	background: var(--normal-light-medium-background);
+}
+
+.user-guide-lomas-basic-section-components > form {
+	display: flex;
+	flex-wrap: wrap;
+}
+.user-guide-lomas-basic-section-components > form > fieldset {
+	width: 50%;
+}
+
+.user-guide-lomas-information-section {
+	display: flex;
+}
+.user-guide-lomas-information-section > div {
+	width: 49%;
+}
+.user-guide-lomas-information-section > div:first-child {
+	margin-right: 2%;
+}

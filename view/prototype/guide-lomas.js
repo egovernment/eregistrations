@@ -25,17 +25,19 @@ exports.step = function () {
 	);
 
 	section(
-		{ class: 'section-primary' },
+		{ class: 'section-primary user-guide-lomas-basic-section' },
 		ul(
 			{ class: 'user-guide-lomas-basic-section-nav' },
 			li(
+				{ class: 'user-guide-lomas-basic-section-nav-active' },
 				a("Location of company")
 			),
+			li({ class: 'user-guide-lomas-basic-section-nav-separator' }, '>'),
 			li(
 				a("Other informations")
 			)
 		),
-		div({ class: 'user-guide-lomas-basic-section-component' },
+		div({ class: 'user-guide-lomas-basic-section-components' },
 			form(
 				fieldset(
 					p("Address of your business?"),
