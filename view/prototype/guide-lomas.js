@@ -29,7 +29,7 @@ exports.step = function () {
 		ul(
 			{ class: 'user-guide-lomas-basic-section-nav' },
 			li(
-				{ class: 'user-guide-lomas-basic-section-nav-active' },
+				{ class: 'user-guide-lomas-basic-section-nav-active', id: 'basic-info-tab' },
 				a(
 					{ href: '/guide-lomas/' },
 					span({ class: 'fa fa-map-marker' }, "Location"),
@@ -38,6 +38,7 @@ exports.step = function () {
 			),
 			li({ class: 'user-guide-lomas-basic-section-nav-separator' }, '>'),
 			li(
+				{ id: 'additional-info-tab' },
 				a(
 					{ href: '/guide-lomas/secondary-info/' },
 					span({ class: 'fa fa-folder-open' }, "Informations"),
