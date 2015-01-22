@@ -70,7 +70,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 			ns.p(
 				ns.a(
 					{ class: 'button-main', href: url(this.constructor.baseUrl + '-add') },
-					options.addButton || _("Add new")
+					options.addButtonLabel || _("Add new")
 				)
 			),
 			ns.p({ class: 'section-primary-scroll-top' },
