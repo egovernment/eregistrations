@@ -12,18 +12,14 @@ module.exports = memoize(function (db) {
 	Submission = defineSubmission(db);
 	db.Object.extend('Requirement', {
 		isApplicable: { type: db.Boolean, value: true },
-		submissions: { type: db.Object, nested: true },
+		submissions: { type: Submission, multiple: true },
 		label: { type: StringLine, value: function () {
 			if (!this.constructor.Document) return null;
 			return this.constructor.Document.label;
 		} }
 	}, {
-		Document: { type: db.Base }, //it's actually type: Type...but can't be defined like that now
-		label: { type: StringLine }
+		Document: { type: db.Base } //it's actually type: Type...but can't be defined like that now
 	});
-
-	db.Requirement.prototype.submissions._descriptorPrototype_.type   = Submission;
-	db.Requirement.prototype.submissions._descriptorPrototype_.nested = true;
 
 	return db.Requirement;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
