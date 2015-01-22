@@ -50,7 +50,8 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 						ns.span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
 			)), resolvent.legacyScript, legacy.legacy];
 		if (typeof options.customize === 'function') {
-			options.customize(customizeData);
+			customizeData.fieldset = customizeData.fieldset._dbjsFieldset;
+			options.customize.call(this, customizeData);
 		}
 		return customizeData.arrayResult;
 	})
