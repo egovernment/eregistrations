@@ -85,20 +85,20 @@ exports.step = function () {
 	section(
 		{ class: 'user-guide-lomas-information-section' },
 		div(
-			{ class: 'section-primary' },
+			{ class: 'section-primary user-guide-lomas-information-section-summary' },
 			h3("Your business summary"),
 			ul(
 				li(
 					span("Local"),
-					span("Lorem ipsum dolor sit amet,")
+					span("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
 				),
 				li(
-					span("Local"),
-					span("Lorem ipsum dolor sit amet,")
+					span("Property"),
+					span("Lorem ipsum dolor sit amet")
 				),
 				li(
-					span("Local"),
-					span("Lorem ipsum dolor sit amet,")
+					span("Inventory"),
+					span("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
 				),
 				li(
 					span("Local"),
@@ -107,12 +107,12 @@ exports.step = function () {
 			)
 		),
 		div(
-			{ class: 'section-primary' },
+			{ class: 'section-primary user-guide-lomas-information-section-process' },
 			h3("Your qualification process"),
 			ol(
+				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
-				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
-				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
+				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. ")
 			)
@@ -123,6 +123,7 @@ exports.step = function () {
 		{ class: 'section-tab-nav' },
 		a({ class: 'section-tab-nav-tab active' }, "Requirements (10)"),
 		a({ class: 'section-tab-nav-tab' }, "Costs (120$)"),
+		a({ class: 'section-tab-nav-tab' }, "Conditions (12)"),
 		div(
 			{ class: 'section-primary' },
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +

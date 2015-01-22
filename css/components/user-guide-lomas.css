@@ -1,18 +1,5 @@
-.user-guide-lomas-intro > p:first-child {
-	font-weight: bold;
-}
+/* Basic rules, for layout bulding */
 
-.user-guide-lomas-intro > ol {
-	list-style-type: decimal;
-	padding-left: 22px;
-}
-
-.user-guide-lomas-basic-section {
-	border-radius: 5px;
-	border: 1px solid var(--normal-background);
-	background-color: var(--light-medium-background);
-	padding: 21px 20px;
-}
 .user-guide-lomas-basic-section > *,
 .user-guide-lomas-basic-section-components > form > * {
 	margin-bottom: 22px;
@@ -22,16 +9,34 @@
 	margin-bottom: 0;
 }
 
+/* Intro section rules */
+
+.user-guide-lomas-intro > p:first-child {
+	font-weight: bold;
+}
+
+.user-guide-lomas-intro > ol {
+	list-style-type: decimal;
+	padding-left: 22px;
+}
+
+/* Basic informations section rules (map etc.) */
+
+.user-guide-lomas-basic-section {
+	border-radius: 5px;
+	border: 1px solid var(--normal-background);
+	background-color: var(--light-medium-background);
+	padding: 21px 20px;
+}
+
+
 .user-guide-lomas-basic-section-nav > li {
 	display: inline-block;
 	line-height: 44px;
 }
 
-.user-guide-lomas-basic-section-nav-separator {
-	padding: 0 10px;
-}
-
 .user-guide-lomas-basic-section-nav a {
+	font-size: 15px;
 	display: block;
 	border-radius: 5px;
 	padding: 0 10px;
@@ -41,7 +46,30 @@
 .user-guide-lomas-basic-section-nav a:focus,
 .user-guide-lomas-basic-section-nav a:active {
 	background: var(--normal-light-medium-background);
+	color: var(--dark-background);
 }
+
+.user-guide-lomas-basic-section-nav span {
+	color: white;
+	font-size: 28px;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+
+.user-guide-lomas-basic-section-nav-separator {
+	padding: 0 10px;
+}
+
+.user-guide-lomas-basic-section-components > form {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.user-guide-lomas-basic-section-components fieldset:first-child {
+	width: 56%;
+	margin-right: 4%;
+}
+
 
 .user-guide-lomas-basic-section-components fieldset:first-child .input > input:first-child {
 	width: 80%;
@@ -50,42 +78,53 @@
 	width: 20%;
 }
 
-.user-guide-lomas-basic-section-components > form {
-	display: flex;
-	flex-wrap: wrap;
+.user-guide-lomas-basic-section-components fieldset:not(:first-child) input {
+	width: 100%;
 }
 
-.user-guide-lomas-basic-section-components > form > fieldset:first-child {
-	width: 56%;
-}
-.user-guide-lomas-basic-section-components > form > fieldset:first-child {
-	margin-right: 4%;
-}
-
-.user-guide-lomas-basic-section-components iframe {
+.user-guide-lomas-basic-section-components fieldset iframe {
 	border: none;
 	width: 100%;
 	height: 220px;
 	display: block;
 }
 
-.user-guide-lomas-basic-section-components > form > fieldset:not(:first-child) input {
-	width: 100%;
-}
-
-.user-guide-lomas-basic-section-components > form > div:last-child > * {
+.user-guide-lomas-basic-section-components form > div:last-child > * {
 	display: inline-block;
 }
-.user-guide-lomas-basic-section-components > form > div:last-child > [type='submit'] {
+
+.user-guide-lomas-basic-section-components form > div:last-child > [type='submit'] {
 	margin-right: 20px;
 }
+
+/* Secondary informations section rules (displayed to user) */
 
 .user-guide-lomas-information-section {
 	display: flex;
 }
-.user-guide-lomas-information-section > div {
+.user-guide-lomas-information-section-summary,
+.user-guide-lomas-information-section-process {
 	width: 49%;
 }
 .user-guide-lomas-information-section > div:first-child {
 	margin-right: 2%;
 }
+
+.user-guide-lomas-information-section-summary li {
+	line-height: 44px;
+	vertical-align: middle;
+}
+
+.user-guide-lomas-information-section-summary li span:first-child {
+	width: 15%;
+	text-align: right;
+	margin-right: 10px;
+	display: inline-block;
+	font-weight: bold;
+}
+
+.user-guide-lomas-information-section-process ol {
+	list-style-type: decimal;
+	padding-left: 22px;
+}
+

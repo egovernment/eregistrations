@@ -203,7 +203,7 @@ e.g.:
 }
 
 .fa-folder-open {
-	width: 1em;
+	width: 1.1em;
 }
 .fa-folder-open:before {
 	content: '\f115';
