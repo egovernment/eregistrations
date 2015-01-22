@@ -18,8 +18,7 @@ module.exports = memoize(function (db) {
 			return this.constructor.Document.label;
 		} }
 	}, {
-		Document: { type: db.Base }, //it's actually type: Type...but can't be defined like that now
-		label: { type: StringLine }
+		Document: { type: db.Base } //it's actually type: Type...but can't be defined like that now
 	});
 
 	db.Requirement.prototype.submissions._descriptorPrototype_.type   = Submission;
