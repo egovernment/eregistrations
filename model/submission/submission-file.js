@@ -12,10 +12,11 @@ module.exports = memoize(function (db) {
 	JpegFile = defineJpegFile(db);
 	File.extend('SubmissionFile', {
 		preview: { type: File, value: function () {
-			return this !== this.externalPreview ? this.externalPreview : this;
+			return this.isPreviewGenerated ? this.generatedPreview : this;
 		} },
-		externalPreview: { type: File, required: true, nested: true },
-		thumb: { type: JpegFile, required: true, nested: true }
+		isPreviewGenerated: { type: db.Boolean, value: true },
+		generatedPreview: { type: File, nested: true },
+		thumb: { type: JpegFile, nested: true }
 	}, {
 		accept: { value: ['image/jpeg', 'application/pdf', 'image/png'] }
 	});

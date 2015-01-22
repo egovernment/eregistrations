@@ -31,9 +31,11 @@ module.exports = memoize(function (db) {
 			return false;
 		} },
 		label: { value: function () {
+			if (!this.constructor.Document) return null;
 			return this.constructor.Document.label;
 		} },
 		legend: { value: function () {
+			if (!this.constructor.Document) return null;
 			return this.constructor.Document.legend;
 		} },
 		uniqueKey: { value: function () { return this.key; } }
