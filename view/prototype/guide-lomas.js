@@ -1,7 +1,7 @@
 'use strict';
 
-//var db = require('mano').db
-//  , user = db.User.prototype
+var db = require('mano').db
+  , user = db.User.prototype;
 //  , reqRadio;
 
 exports['step-guide'] = { class: { 'step-active': true } };
@@ -25,7 +25,7 @@ exports.step = function () {
 	);
 
 	section(
-		{ class: 'section-primary user-guide-lomas-basic-section' },
+		{ class: 'user-guide-lomas-basic-section' },
 		ul(
 			{ class: 'user-guide-lomas-basic-section-nav' },
 			li(
@@ -41,16 +41,30 @@ exports.step = function () {
 			form(
 				fieldset(
 					p("Address of your business?"),
-					input(),
-					div('map'),
+					div({ class: 'input' },
+						input({ type: 'text' }),
+						input({ type: 'number' })
+						),
+					div(
+						iframe({ src: 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d2760.18457802187!2d6.1402920000000005!3d46.226674!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x478c64fcaacb2e3f%3A0x86f47c470f8978b7!2sUnited+Nations+Office+at+Geneva!5e0!3m2!1spl!2spl!4v1421919850718' })
+					),
 					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 							"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 							"Praesent porttitor dui a ante luctus gravida.")
 				),
 				fieldset(
-					ul(
-						li(input()),
-						li(input())
+					p("Business activity?"),
+					ul({ class: 'form-elements' },
+						['businessActivity',
+							'surfaceArea',
+							'inventory',
+							'descriptionText'],
+						function (name) { 
+							li(
+								div({ class: 'input' },
+									input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name), placeholder: user.getDescriptor(name).label }))
+							);
+						 }
 					)
 				),
 				div(

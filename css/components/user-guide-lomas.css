@@ -7,8 +7,19 @@
 	padding-left: 22px;
 }
 
-.user-guide-lomas-basic-section.section-primary {
+.user-guide-lomas-basic-section {
+	border-radius: 5px;
+	border: 1px solid var(--normal-background);
 	background-color: var(--light-medium-background);
+	padding: 21px 20px;
+}
+.user-guide-lomas-basic-section > *,
+.user-guide-lomas-basic-section-components > form > * {
+	margin-bottom: 22px;
+}
+.user-guide-lomas-basic-section > *:last-child,
+.user-guide-lomas-basic-section-components > form > *:last-child {
+	margin-bottom: 0;
 }
 
 .user-guide-lomas-basic-section-nav > li {
@@ -32,12 +43,34 @@
 	background: var(--normal-light-medium-background);
 }
 
+.user-guide-lomas-basic-section-components fieldset:first-child .input > input:first-child {
+	width: 80%;
+}
+.user-guide-lomas-basic-section-components fieldset:first-child .input > input:last-child {
+	width: 20%;
+}
+
 .user-guide-lomas-basic-section-components > form {
 	display: flex;
 	flex-wrap: wrap;
 }
-.user-guide-lomas-basic-section-components > form > fieldset {
-	width: 50%;
+
+.user-guide-lomas-basic-section-components > form > fieldset:first-child {
+	width: 56%;
+}
+.user-guide-lomas-basic-section-components > form > fieldset:first-child {
+	margin-right: 4%;
+}
+
+.user-guide-lomas-basic-section-components iframe {
+	border: none;
+	width: 100%;
+	height: 220px;
+	display: block;
+}
+
+.user-guide-lomas-basic-section-components > form > fieldset:not(:first-child) input {
+	width: 100%;
 }
 
 .user-guide-lomas-information-section {
