@@ -54,10 +54,12 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 										ns.span({ class: 'status-complete' }, "✓"),
 										ns.span({ class: 'status-incomplete' }, "✕")),
 									ns.td({ class: 'actions' },
-										ns.a({ href: url(self.constructor.baseUrl, entityObject.__id__) }, _("Edit")),
+										ns.a({ href: url(self.constructor.baseUrl, entityObject.__id__) },
+											ns.span({ class: 'fa fa-edit' }, _("Edit"))),
 										ns.postButton({ action: url(self.constructor.baseUrl,
 											entityObject.__id__, 'delete'),
-											value: _('Delete') })));
+											value: ns.span({ class: 'fa fa-trash-o' },
+												_("Delete")) })));
 							}),
 						this.constructor.generateFooter &&
 							ns.tfoot(this.constructor.generateFooter(

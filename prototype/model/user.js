@@ -2,7 +2,7 @@
 
 var Map          = require('es6-map')
   , db           = require('mano').db
-  , User         = require('../../model/user')
+  , User         = require('../../model/user')(db)
   , Role         = require('mano-auth/model/role')(db)
   , DateType     = require('dbjs-ext/date-time/date')(db)
   , StringLine   = require('dbjs-ext/string/string-line')(db)
@@ -11,7 +11,7 @@ var Map          = require('es6-map')
   , UInteger     = require('dbjs-ext/number/integer/u-integer')(db)
   , SquareMeters = require('dbjs-ext/number/square-meters')(db)
   , Percentage   = require('dbjs-ext/number/percentage')(db)
-  , Document     = require('../../model/document')
+  , Document     = require('../../model/document')(db)
   , Submission   = require('./submission')
   , File         = require('./file')
 

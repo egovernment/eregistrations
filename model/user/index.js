@@ -1,6 +1,6 @@
 'use strict';
 
-var validDb          = require('dbjs/valid-dbjs');
+var validDb = require('dbjs/valid-dbjs');
 
 module.exports = function (db) {
 	validDb(db);
@@ -8,4 +8,6 @@ module.exports = function (db) {
 	require('./costs')(db);
 	require('./requirements')(db);
 	require('./certificates')(db);
+
+	return db.User;
 };
