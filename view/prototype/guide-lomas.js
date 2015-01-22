@@ -30,11 +30,19 @@ exports.step = function () {
 			{ class: 'user-guide-lomas-basic-section-nav' },
 			li(
 				{ class: 'user-guide-lomas-basic-section-nav-active' },
-				a(span({ class: 'fa fa-map-marker' }, "Location"), "Location of company")
+				a(
+					{ href: '/guide-lomas/' },
+					span({ class: 'fa fa-map-marker' }, "Location"),
+					"Location of company"
+				)
 			),
 			li({ class: 'user-guide-lomas-basic-section-nav-separator' }, '>'),
 			li(
-				a(span({ class: 'fa fa-folder-open' }, "Informations"), "Other informations")
+				a(
+					{ href: '/guide-lomas/secondary-info/' },
+					span({ class: 'fa fa-folder-open' }, "Informations"),
+					"Other informations"
+				)
 			)
 		),
 		div({ class: 'user-guide-lomas-basic-section-components', id: 'user-guide-lomas-basic' },
@@ -110,9 +118,11 @@ exports.step = function () {
 			{ class: 'section-primary user-guide-lomas-information-section-process' },
 			h3("Your qualification process"),
 			ol(
-				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
+				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+						"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
-				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
+				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+						"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. ")
 			)
@@ -121,9 +131,12 @@ exports.step = function () {
 
 	section(
 		{ class: 'section-tab-nav' },
-		a({ class: 'section-tab-nav-tab active' }, "Requirements (10)"),
-		a({ class: 'section-tab-nav-tab' }, "Costs (120$)"),
-		a({ class: 'section-tab-nav-tab' }, "Conditions (12)"),
+		a({ class: 'section-tab-nav-tab active', href: '/guide-lomas/' },
+				"Requirements (10)"),
+		a({ class: 'section-tab-nav-tab', href: '/guide-lomas/costs/' },
+				"Costs (120$)"),
+		a({ class: 'section-tab-nav-tab', href: '/guide-lomas/conditions/' },
+				"Conditions (12)"),
 		div(
 			{ class: 'section-primary', id: 'summary-tabs' },
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +

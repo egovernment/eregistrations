@@ -24,7 +24,8 @@ module.exports = function (view) {
 		userForm = userMain.diff('./forms'),
 		userDocuments = userMain.diff('./documents'),
 		demoUserMain = subMain.diff('./demo-user'),
-		userOfficialCertificates = userOfficialUser.diff('./official-form');
+		userOfficialCertificates = userOfficialUser.diff('./official-form'),
+		userGuideLomas = userMain.diff('./guide-lomas');
 
 	return {
 		// Public routes - imports content directly to #main element
@@ -35,10 +36,10 @@ module.exports = function (view) {
 		// User routes - imports content to #steps element in #main element
 		profile: bind(userMain.diff('./user-profile')),
 		guide: bind(userMain.diff('./guide')),
-		'guide-lomas': bind(userMain.diff('./guide-lomas')),
-		'guide-lomas/secondary-info': bind(userMain.diff('./guide-lomas').diff('./guide-lomas-sec')),
-		'guide-lomas/costs': bind(userMain.diff('./guide-lomas').diff('./guide-lomas-costs')),
-		'guide-lomas/conditions': bind(userMain.diff('./guide-lomas').diff('./guide-lomas-cond')),
+		'guide-lomas': bind(userGuideLomas),
+		'guide-lomas/secondary-info': bind(userGuideLomas.diff('./guide-lomas-sec')),
+		'guide-lomas/costs': bind(userGuideLomas.diff('./guide-lomas-costs')),
+		'guide-lomas/conditions': bind(userGuideLomas.diff('./guide-lomas-cond')),
 		'guide/costs-print': bind(mainPrint.diff('./print-user-costs')),
 		forms:  bind(userMain.diff('./forms')),
 		'forms/disabled':  bind(userForm.diff('./disabled-forms')),
