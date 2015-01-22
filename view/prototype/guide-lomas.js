@@ -66,6 +66,7 @@ exports.step = function () {
 		{ class: 'user-guide-lomas-information-section' },
 		div(
 			{ class: 'section-primary' },
+			h3("Your business summary"),
 			ul(
 				li(
 					span("Local"),
@@ -87,6 +88,7 @@ exports.step = function () {
 		),
 		div(
 			{ class: 'section-primary' },
+			h3("Your qualification process"),
 			ol(
 				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
@@ -99,8 +101,8 @@ exports.step = function () {
 
 	section(
 		{ class: 'section-tab-nav' },
-		a({ class: 'section-tab-nav-tab active' }, "Requirements"),
-		a({ class: 'section-tab-nav-tab' }, "Costs"),
+		a({ class: 'section-tab-nav-tab active' }, "Requirements (10)"),
+		a({ class: 'section-tab-nav-tab' }, "Costs (120$)"),
 		div(
 			{ class: 'section-primary' },
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
