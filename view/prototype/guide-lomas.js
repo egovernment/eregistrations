@@ -37,7 +37,7 @@ exports.step = function () {
 				a(span({ class: 'fa fa-folder-open' }, "Informations"), "Other informations")
 			)
 		),
-		div({ class: 'user-guide-lomas-basic-section-components' },
+		div({ class: 'user-guide-lomas-basic-section-components', id: 'user-guide-lomas-basic' },
 			form(
 				fieldset(
 					p("Address of your business?"),
@@ -125,7 +125,7 @@ exports.step = function () {
 		a({ class: 'section-tab-nav-tab' }, "Costs (120$)"),
 		a({ class: 'section-tab-nav-tab' }, "Conditions (12)"),
 		div(
-			{ class: 'section-primary' },
+			{ class: 'section-primary', id: 'summary-tabs' },
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 				"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 				"Praesent porttitor dui a ante luctus gravida."),
