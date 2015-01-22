@@ -30,11 +30,11 @@ exports.step = function () {
 			{ class: 'user-guide-lomas-basic-section-nav' },
 			li(
 				{ class: 'user-guide-lomas-basic-section-nav-active' },
-				a("Location of company")
+				a(span({ class: 'fa fa-map-marker' }, "Location"), "Location of company")
 			),
 			li({ class: 'user-guide-lomas-basic-section-nav-separator' }, '>'),
 			li(
-				a("Other informations")
+				a(span({ class: 'fa fa-folder-open' }, "Informations"), "Other informations")
 			)
 		),
 		div({ class: 'user-guide-lomas-basic-section-components' },
@@ -51,7 +51,8 @@ exports.step = function () {
 							'4!2i768!4f13.1!3m3!1m2!1s0x478c64fcaacb2e3f%3A0x86f47c470f8978' +
 							'b7!2sUnited+Nations+Office+at+Geneva!5e0!3m2!1spl!2spl!4v1421919850718' })
 					),
-					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+					p(span({ class: 'fa fa-info-circle' }, "Information:"),
+						"Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 							"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 							"Praesent porttitor dui a ante luctus gravida.")
 				),
@@ -72,9 +73,10 @@ exports.step = function () {
 						)
 				),
 				div(
-					p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-							"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. "),
-					input({ type: 'submit' })
+					input({ type: 'submit' }),
+					p(span({ class: 'fa fa-info-circle' }, "Information:"),
+							"Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+							"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. ")
 				)
 			)
 			)

@@ -185,5 +185,26 @@ e.g.:
 	width: 0.95em;
 }
 .fa-square-o:before {
-	content: '\f096'
+	content: '\f096';
+}
+
+.fa-info-circle {
+	width: 0.9em;
+}
+.fa-info-circle:before {
+	content: '\f05a';
+}
+
+.fa-map-marker {
+	width: 0.6em;
+}
+.fa-map-marker:before {
+	content: '\f041';
+}
+
+.fa-folder-open {
+	width: 1em;
+}
+.fa-folder-open:before {
+	content: '\f115';
 }

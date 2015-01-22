@@ -73,6 +73,13 @@
 	width: 100%;
 }
 
+.user-guide-lomas-basic-section-components > form > div:last-child > * {
+	display: inline-block;
+}
+.user-guide-lomas-basic-section-components > form > div:last-child > [type='submit'] {
+	margin-right: 20px;
+}
+
 .user-guide-lomas-information-section {
 	display: flex;
 }
