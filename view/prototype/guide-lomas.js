@@ -131,11 +131,11 @@ exports.step = function () {
 
 	section(
 		{ class: 'section-tab-nav' },
-		a({ class: 'section-tab-nav-tab active', href: '/guide-lomas/' },
+		a({ class: 'section-tab-nav-tab active', href: '/guide-lomas/', id: 'req-tab' },
 				"Requirements (10)"),
-		a({ class: 'section-tab-nav-tab', href: '/guide-lomas/costs/' },
+		a({ class: 'section-tab-nav-tab', href: '/guide-lomas/costs/', id: 'cost-tab'  },
 				"Costs (120$)"),
-		a({ class: 'section-tab-nav-tab', href: '/guide-lomas/conditions/' },
+		a({ class: 'section-tab-nav-tab', href: '/guide-lomas/conditions/', id: 'cond-tab'  },
 				"Conditions (12)"),
 		div(
 			{ class: 'section-primary', id: 'summary-tabs' },
