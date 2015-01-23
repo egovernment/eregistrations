@@ -42,7 +42,7 @@ module.exports = memoize(function (db) {
 			var resolved, valid = 0, total = 0;
 			if (this.constructor.resolventProperty) {
 				resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty);
-				if (resolved.observable !== _observe(this.resolventValue) &&
+				if (_observe(resolved.observable) !== _observe(this.resolventValue) &&
 						(!resolved.descriptor.required || (_observe(resolved.observable) != null))) {
 					return 1;
 				}

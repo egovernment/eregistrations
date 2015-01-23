@@ -13,7 +13,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 		options = Object(arguments[1]);
 		url = options.url || ns.url;
 		return ns.section({ id: this.domId, class: ns._if(ns.eq(
-			this.status,
+			this._status,
 			1
 		), 'section-primary completed entities-overview', 'section-primary entities-overview') },
 			ns.div(
