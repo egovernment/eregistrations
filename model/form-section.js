@@ -40,6 +40,13 @@ module.exports = memoize(function (db) {
 		} },
 		status: { value: function (_observe) {
 			var resolved, valid = 0, total = 0;
+			if (this.constructor.resolventProperty) {
+				resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty);
+				if (resolved.observable !== _observe(this.resolventValue) &&
+					(!resolved.descriptor.required || (_observe(resolved.observable) != null))) {
+					return 1;
+				}
+			}
 			this.propertyNames.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name);
 				if (!resolved.descriptor.required) return;

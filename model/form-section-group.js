@@ -17,6 +17,13 @@ module.exports = memoize(function (db) {
 		},
 		status: { value: function (_observe) {
 			var sum = 0;
+			if (this.constructor.resolventProperty) {
+				resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty);
+				if (resolved.observable !== _observe(this.resolventValue) &&
+					(!resolved.descriptor.required || (_observe(resolved.observable) != null))) {
+					return 1;
+				}
+			}
 			this.sections.forEach(function (section) {
 				sum += _observe(section._status);
 			});
