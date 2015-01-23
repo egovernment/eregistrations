@@ -132,6 +132,11 @@ fieldset + fieldset .user-guide-lomas-basic-section-components-secondary-info {
 	width: 40%;
 }
 
+.user-guide-lomas-basic-section-components-secondary-info > li > ul > li {
+	display: flex;
+	justify-content: space-between;
+}
+
 /* Secondary informations section rules (displayed to user) */
 
 .user-guide-lomas-information-section {
