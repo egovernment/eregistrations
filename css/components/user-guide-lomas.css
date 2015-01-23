@@ -29,7 +29,6 @@
 	padding: 21px 20px;
 }
 
-
 .user-guide-lomas-basic-section-nav > li {
 	display: inline-block;
 	line-height: 44px;
@@ -65,21 +64,24 @@
 	flex-wrap: wrap;
 }
 
-.user-guide-lomas-basic-section-components fieldset:first-child {
-	width: 56%;
-	margin-right: 4%;
+.user-guide-lomas-basic-section-components > form > section {
+	display: flex;
 }
 
+.user-guide-lomas-basic-section-components fieldset:first-child {
+	width: 66%;
+	margin-right: 2%;
+}
+
+.user-guide-lomas-basic-section-components fieldset {
+	width: 30%;
+}
 
 .user-guide-lomas-basic-section-components fieldset:first-child .input > input:first-child {
 	width: 80%;
 }
 .user-guide-lomas-basic-section-components fieldset:first-child .input > input:last-child {
 	width: 20%;
-}
-
-.user-guide-lomas-basic-section-components fieldset:not(:first-child) input {
-	width: 100%;
 }
 
 .user-guide-lomas-basic-section-components fieldset iframe {
@@ -95,6 +97,39 @@
 
 .user-guide-lomas-basic-section-components form > div:last-child > [type='submit'] {
 	margin-right: 20px;
+}
+
+fieldset + fieldset .user-guide-lomas-basic-section-components-secondary-info {
+	padding-left: 15px;
+	border-left: 1px solid var(--normal-background);
+}
+
+.user-guide-lomas-basic-section-components-secondary-info > li {
+	padding: 11px 0;
+}
+
+.user-guide-lomas-basic-section-components-secondary-info > li:not(:last-child) {
+	border-bottom: 1px solid var(--normal-background);
+}
+
+.user-guide-lomas-basic-section-components-secondary-info > li > div {
+	display: flex;
+}
+
+.user-guide-lomas-basic-section-components-secondary-info > li > div > span:first-child {
+	width: 40%;
+}
+
+.user-guide-lomas-basic-section-components-secondary-info > li > div > *:nth-child(2) {
+	width: 20%;
+	margin-right: 15px;
+}
+.user-guide-lomas-basic-section-components-secondary-info > li > div > span:nth-child(2) input {
+	max-width: 70%;
+}
+
+.user-guide-lomas-basic-section-components-secondary-info > li > div > span:last-child {
+	width: 40%;
 }
 
 /* Secondary informations section rules (displayed to user) */
