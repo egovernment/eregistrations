@@ -29,7 +29,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 				{ id: this.domId,
 					method: 'post',
 					action: actionUrl, class: ns._if(ns.eq(
-					this.status,
+					this._status,
 					1
 				), 'completed form-elements', 'form-elements') },
 				ns._if(this._label,
