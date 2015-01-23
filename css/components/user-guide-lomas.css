@@ -91,12 +91,22 @@
 	display: block;
 }
 
+.user-guide-lomas-basic-components form > div:last-child {
+	line-height: 44px;
+}
+
+.user-guide-lomas-basic-components form > div:last-child > p:last-child {
+	max-width: 50%
+}
+
 .user-guide-lomas-basic-components form > div:last-child > * {
 	display: inline-block;
 }
 
 .user-guide-lomas-basic-components form > div:last-child > [type='submit'] {
 	margin-right: 20px;
+	vertical-align: top;
+	line-height: 22px;
 }
 
 /* Second tab of form basci components containg table-like form wit complementary information */
@@ -176,3 +186,29 @@ fieldset + fieldset .user-guide-lomas-basic-complement {
 	padding-left: 22px;
 }
 
+/* Responsive styles for lomas-guide */
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.user-guide-lomas-basic-components > form > section {
+		flex-wrap: wrap;
+	}
+	.user-guide-lomas-basic-components fieldset:first-child {
+		margin-bottom: 22px;
+	}
+	.user-guide-lomas-basic-components fieldset:first-child,
+	.user-guide-lomas-basic-components fieldset {
+		width: 100%;
+	}
+	fieldset + fieldset .user-guide-lomas-basic-complement {
+		border-left: none;
+		padding-left: 0; 
+	}
+
+	.user-guide-lomas-information {
+		flex-wrap: wrap;
+	}
+	.user-guide-lomas-information-summary,
+	.user-guide-lomas-information-process {
+		width: 100%;
+	}
+}
