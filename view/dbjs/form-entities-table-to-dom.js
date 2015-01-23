@@ -56,8 +56,9 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 									ns.td({ class: 'actions' },
 										ns.a({ href: url(self.constructor.baseUrl, entityObject.__id__) },
 											ns.span({ class: 'fa fa-edit' }, _("Edit"))),
-										ns.postButton({ action: url(self.constructor.baseUrl,
-											entityObject.__id__, 'delete'),
+										ns.postButton({ buttonClass: 'actions-delete',
+												action: url(self.constructor.baseUrl,
+												entityObject.__id__, 'delete'),
 											value: ns.span({ class: 'fa fa-trash-o' },
 												_("Delete")) })));
 							}),
