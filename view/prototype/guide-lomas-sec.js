@@ -3,15 +3,15 @@
 var db = require('mano').db
   , user = db.User.prototype;
 
-exports['basic-info-tab'] = { class: { 'user-guide-lomas-basic-section-nav-active': false } };
-exports['additional-info-tab'] = { class: { 'user-guide-lomas-basic-section-nav-active': true } };
+exports['basic-info-tab'] = { class: { 'user-guide-lomas-basic-nav-active': false } };
+exports['additional-info-tab'] = { class: { 'user-guide-lomas-basic-nav-active': true } };
 
 exports['user-guide-lomas-basic'] = function () {
 	form(
 		section(
 			fieldset(
 				ul(
-					{ class: 'user-guide-lomas-basic-section-components-secondary-info' },
+					{ class: 'user-guide-lomas-basic-complement' },
 					['surfaceArea',
 						'inventory',
 						'businessActivity'],
@@ -28,7 +28,7 @@ exports['user-guide-lomas-basic'] = function () {
 			fieldset(
 				{ class: 'form-elements' },
 				ul(
-					{ class: 'user-guide-lomas-basic-section-components-secondary-info' },
+					{ class: 'user-guide-lomas-basic-complement' },
 					li(
 						div(input({ control: { id: 'input-' + user.notification },
 							dbjs: user._notification }))

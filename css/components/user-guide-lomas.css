@@ -1,11 +1,11 @@
 /* Basic rules, for layout bulding */
 
-.user-guide-lomas-basic-section > *,
-.user-guide-lomas-basic-section-components > form > * {
+.user-guide-lomas-basic > *,
+.user-guide-lomas-basic-components > form > * {
 	margin-bottom: 22px;
 }
-.user-guide-lomas-basic-section > *:last-child,
-.user-guide-lomas-basic-section-components > form > *:last-child {
+.user-guide-lomas-basic > *:last-child,
+.user-guide-lomas-basic-components > form > *:last-child {
 	margin-bottom: 0;
 }
 
@@ -22,148 +22,156 @@
 
 /* Basic informations section rules (map etc.) */
 
-.user-guide-lomas-basic-section {
+.user-guide-lomas-basic {
 	border-radius: 5px;
 	border: 1px solid var(--normal-background);
 	background-color: var(--light-medium-background);
 	padding: 21px 20px;
 }
 
-.user-guide-lomas-basic-section-nav > li {
+.user-guide-lomas-basic-nav > li {
 	display: inline-block;
 	line-height: 44px;
 }
 
-.user-guide-lomas-basic-section-nav a {
+.user-guide-lomas-basic-nav a {
 	font-size: 15px;
 	display: block;
 	border-radius: 5px;
 	padding: 0 10px;
 }
-.user-guide-lomas-basic-section-nav-active a,
-.user-guide-lomas-basic-section-nav a:hover,
-.user-guide-lomas-basic-section-nav a:focus,
-.user-guide-lomas-basic-section-nav a:active {
+.user-guide-lomas-basic-nav-active a,
+.user-guide-lomas-basic-nav a:hover,
+.user-guide-lomas-basic-nav a:focus,
+.user-guide-lomas-basic-nav a:active {
 	background: var(--normal-light-medium-background);
 	color: var(--dark-background);
 }
 
-.user-guide-lomas-basic-section-nav span {
+.user-guide-lomas-basic-nav span {
 	color: white;
 	font-size: 28px;
 	vertical-align: middle;
 	margin-right: 10px;
 }
 
-.user-guide-lomas-basic-section-nav-separator {
+.user-guide-lomas-basic-nav-separator {
 	padding: 0 10px;
 }
 
-.user-guide-lomas-basic-section-components > form {
+.user-guide-lomas-basic-components > form {
 	display: flex;
 	flex-wrap: wrap;
 }
 
-.user-guide-lomas-basic-section-components > form > section {
+.user-guide-lomas-basic-components > form > section {
 	display: flex;
 }
 
-.user-guide-lomas-basic-section-components fieldset:first-child {
+.user-guide-lomas-basic-components fieldset:first-child {
 	width: 66%;
 	margin-right: 2%;
 }
 
-.user-guide-lomas-basic-section-components fieldset {
+.user-guide-lomas-basic-components fieldset {
 	width: 30%;
 }
 
-.user-guide-lomas-basic-section-components fieldset:first-child .input > input:first-child {
+.user-guide-lomas-basic-components fieldset:first-child .input > input:first-child {
 	width: 80%;
 }
-.user-guide-lomas-basic-section-components fieldset:first-child .input > input:last-child {
+.user-guide-lomas-basic-components fieldset:first-child .input > input:last-child {
 	width: 20%;
 }
 
-.user-guide-lomas-basic-section-components fieldset iframe {
+.user-guide-lomas-basic-components fieldset iframe {
 	border: none;
 	width: 100%;
 	height: 220px;
 	display: block;
 }
 
-.user-guide-lomas-basic-section-components form > div:last-child > * {
+.user-guide-lomas-basic-components form > div:last-child > * {
 	display: inline-block;
 }
 
-.user-guide-lomas-basic-section-components form > div:last-child > [type='submit'] {
+.user-guide-lomas-basic-components form > div:last-child > [type='submit'] {
 	margin-right: 20px;
 }
 
-fieldset + fieldset .user-guide-lomas-basic-section-components-secondary-info {
+/* Second tab of form basci components containg table-like form wit complementary information */
+
+fieldset + fieldset .user-guide-lomas-basic-complement {
 	padding-left: 15px;
 	border-left: 1px solid var(--normal-background);
 }
 
-.user-guide-lomas-basic-section-components-secondary-info > li {
+.user-guide-lomas-basic-complement > li {
 	padding: 11px 0;
 }
 
-.user-guide-lomas-basic-section-components-secondary-info > li:not(:last-child) {
+.user-guide-lomas-basic-complement > li:not(:last-child) {
 	border-bottom: 1px solid var(--normal-background);
 }
 
-.user-guide-lomas-basic-section-components-secondary-info > li > div {
+.user-guide-lomas-basic-complement > li > div {
 	display: flex;
 }
 
-.user-guide-lomas-basic-section-components-secondary-info > li > div > span:first-child {
+.user-guide-lomas-basic-complement > li > div > span:first-child {
 	width: 40%;
 }
 
-.user-guide-lomas-basic-section-components-secondary-info > li > div > *:nth-child(2) {
+.user-guide-lomas-basic-complement > li > div > *:nth-child(2) {
 	width: 20%;
 	margin-right: 15px;
 }
-.user-guide-lomas-basic-section-components-secondary-info > li > div > span:nth-child(2) input {
+.user-guide-lomas-basic-complement > li > div > *:nth-child(2) input {
 	max-width: 70%;
 }
 
-.user-guide-lomas-basic-section-components-secondary-info > li > div > span:last-child {
+.user-guide-lomas-basic-complement > li > div > span:last-child {
 	width: 40%;
 }
 
-.user-guide-lomas-basic-section-components-secondary-info > li > ul > li {
+.user-guide-lomas-basic-complement > li > ul > li {
 	display: flex;
 	justify-content: space-between;
 }
 
 /* Secondary informations section rules (displayed to user) */
 
-.user-guide-lomas-information-section {
+.user-guide-lomas-information {
 	display: flex;
 }
-.user-guide-lomas-information-section-summary,
-.user-guide-lomas-information-section-process {
+.user-guide-lomas-information-summary,
+.user-guide-lomas-information-process {
 	width: 49%;
 }
-.user-guide-lomas-information-section > div:first-child {
+.user-guide-lomas-information > div:first-child {
 	margin-right: 2%;
 }
 
-.user-guide-lomas-information-section-summary li {
+.user-guide-lomas-information-summary li {
 	line-height: 44px;
 	vertical-align: middle;
+	display: flex;
 }
 
-.user-guide-lomas-information-section-summary li span:first-child {
+.user-guide-lomas-information-summary li span:first-child {
 	width: 15%;
 	text-align: right;
-	margin-right: 10px;
-	display: inline-block;
+	margin-right: 5px;
 	font-weight: bold;
+	display: table; /* as in input-aside component */
+}
+.user-guide-lomas-information-summary li span:last-child {
+	width: 80%;
+	line-height: 22px;
+	padding-top: 11px;
 }
 
-.user-guide-lomas-information-section-process ol {
+.user-guide-lomas-information-process ol {
 	list-style-type: decimal;
 	padding-left: 22px;
 }

@@ -25,18 +25,18 @@ exports.step = function () {
 	);
 
 	section(
-		{ class: 'user-guide-lomas-basic-section' },
+		{ class: 'user-guide-lomas-basic' },
 		ul(
-			{ class: 'user-guide-lomas-basic-section-nav' },
+			{ class: 'user-guide-lomas-basic-nav' },
 			li(
-				{ class: 'user-guide-lomas-basic-section-nav-active', id: 'basic-info-tab' },
+				{ class: 'user-guide-lomas-basic-nav-active', id: 'basic-info-tab' },
 				a(
 					{ href: '/guide-lomas/' },
 					span({ class: 'fa fa-map-marker' }, "Location"),
 					"Location of company"
 				)
 			),
-			li({ class: 'user-guide-lomas-basic-section-nav-separator' }, '>'),
+			li({ class: 'user-guide-lomas-basic-nav-separator' }, '>'),
 			li(
 				{ id: 'additional-info-tab' },
 				a(
@@ -46,7 +46,7 @@ exports.step = function () {
 				)
 			)
 		),
-		div({ class: 'user-guide-lomas-basic-section-components', id: 'user-guide-lomas-basic' },
+		div({ class: 'user-guide-lomas-basic-components', id: 'user-guide-lomas-basic' },
 			form(
 				section(
 					fieldset(
@@ -77,7 +77,8 @@ exports.step = function () {
 								li(
 									div({ class: 'input' },
 										input({ control: { id: 'input-' + name },
-											dbjs: user.getObservable(name), placeholder: user.getDescriptor(name).label }))
+											dbjs: user.getObservable(name),
+												placeholder: user.getDescriptor(name).label }))
 								);
 							}
 							)
@@ -94,9 +95,9 @@ exports.step = function () {
 	);
 
 	section(
-		{ class: 'user-guide-lomas-information-section' },
+		{ class: 'user-guide-lomas-information' },
 		div(
-			{ class: 'section-primary user-guide-lomas-information-section-summary' },
+			{ class: 'section-primary user-guide-lomas-information-summary' },
 			h3("Your business summary"),
 			ul(
 				li(
@@ -118,7 +119,7 @@ exports.step = function () {
 			)
 		),
 		div(
-			{ class: 'section-primary user-guide-lomas-information-section-process' },
+			{ class: 'section-primary user-guide-lomas-information-process' },
 			h3("Your qualification process"),
 			ol(
 				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
