@@ -201,7 +201,7 @@ fieldset + fieldset .user-guide-lomas-basic-complement {
 	}
 	fieldset + fieldset .user-guide-lomas-basic-complement {
 		border-left: none;
-		padding-left: 0; 
+		padding-left: 0;
 	}
 
 	.user-guide-lomas-information {
