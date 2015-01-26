@@ -101,9 +101,6 @@
 	max-width: 50%
 }
 
-.user-guide-lomas-basic-components form > div:last-child > * {
-}
-
 .user-guide-lomas-basic-components form > div:last-child > p:first-child {
 	margin-top: 7px;
 	margin-right: 20px;
@@ -226,7 +223,7 @@ fieldset + fieldset .user-guide-lomas-basic-complement {
 	margin-bottom: 0;
 }
 .user-guide-lomas-tab-conditions > ul > li > h3 {
-	padding: 11px; 
+	padding: 11px;
 }
 .user-guide-lomas-tab-conditions > ul > li > table {
 	border-top: 1px solid var(--normal-background);
