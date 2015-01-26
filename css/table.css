@@ -27,11 +27,12 @@ table .actions button {
 	color: var(--white-text);
 	font-size: 12px;
 	line-height: 18px;
-	padding: 3px 7px 4px;
+	padding: 3px 6px 4px;
 	text-align: center;
 	text-decoration: none;
 	vertical-align: text-bottom;
 	white-space: nowrap;
+	cursor: pointer;
 }
 table .actions a:hover,
 table .actions a:focus,
@@ -49,6 +50,21 @@ table .actions button {
 	padding-top: 1px;
 	padding-bottom: 2px;
 }
+table .actions a > span,
+table .actions button > span {
+	vertical-align: middle;
+}
+
+table .actions .actions-delete {
+	background-color: var(--error-background);
+}
+
+table .actions .actions-delete:hover,
+table .actions .actions-delete:focus,
+table .actions .actions-delete:active {
+	background-color: var(--error-dark-background);
+}
+
 @media all and (-ms-high-contrast:none) {
 	table .actions a {
 		padding: 3px 7px;

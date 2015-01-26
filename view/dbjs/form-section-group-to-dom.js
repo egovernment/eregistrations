@@ -24,7 +24,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 			ns.form({ id: this.domId, method: 'post',
 					action: actionUrl,
 					class: ns._if(ns.eq(
-					this.status,
+					this._status,
 					1
 				), 'completed form-elements', 'form-elements')
 				},

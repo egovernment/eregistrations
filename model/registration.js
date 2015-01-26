@@ -1,40 +1,50 @@
 'use strict';
 
-var db = require('mano').db
-  , StringLine = require('dbjs-ext/string/string-line')(db)
-  , Document   = require('./document');
+var memoize          = require('memoizee/plain')
+  , validDb          = require('dbjs/valid-dbjs')
+  , defineStringLine = require('dbjs-ext/string/string-line')
+  , defineDocument   = require('./document');
 
-module.exports = db.Object.extend('Registration', {
-	requirements: {
-		type: StringLine,
-		multiple: true
-	},
-	costs: {
-		type: StringLine,
-		multiple: true
-	},
-	isMandatory: {
-		type: db.Boolean,
-		value: true
+module.exports = memoize(function (db) {
+	var StringLine, Document;
+	validDb(db);
+	StringLine = defineStringLine(db);
+	Document   = defineDocument(db);
 
-	},
-	isApplicable: {
-		type: db.Boolean,
-		value: true
-	},
-	isRequested: {
-		type: db.Boolean,
-		value: true
-	}
-}, {
-	label: {
-		type: StringLine
-	},
-	abbr: {
-		type: StringLine
-	},
-	certificates: {
-		type: Document,
-		multiple: true
-	}
-});
+	db.Object.extend('Registration', {
+		requirements: {
+			type: StringLine,
+			multiple: true
+		},
+		costs: {
+			type: StringLine,
+			multiple: true
+		},
+		isMandatory: {
+			type: db.Boolean,
+			value: true
+
+		},
+		isApplicable: {
+			type: db.Boolean,
+			value: true
+		},
+		isRequested: {
+			type: db.Boolean,
+			value: true
+		}
+	}, {
+		label: {
+			type: StringLine
+		},
+		abbr: {
+			type: StringLine
+		},
+		certificates: {
+			type: Document,
+			multiple: true
+		}
+	});
+
+	return db.Registration;
+}, { normalizer: require('memoizee/normalizers/get-1')() });

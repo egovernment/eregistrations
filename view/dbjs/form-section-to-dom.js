@@ -9,7 +9,8 @@ require('./form-section-base');
 
 module.exports = Object.defineProperties(db.FormSection.prototype, {
 	toDOMForm: d(function (document/*, options */) {
-		var resolvent, legacy, actionUrl, options, url, control;
+		var resolvent, legacy, actionUrl, options, url, control, customizeData;
+		customizeData = {};
 		options = Object(arguments[1]);
 		resolvent = this.getFormResolvent();
 		legacy = this.getLegacy(this.domId, options);
@@ -23,12 +24,12 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		if (!this.forceRequiredInput) {
 			control = { required: this.forceRequiredInput };
 		}
-		return [ns.section({ class: 'section-primary' },
+		customizeData.arrayResult = [customizeData.container = ns.section({ class: 'section-primary' },
 			ns.form(
 				{ id: this.domId,
 					method: 'post',
 					action: actionUrl, class: ns._if(ns.eq(
-					this.status,
+					this._status,
 					1
 				), 'completed form-elements', 'form-elements') },
 				ns._if(this._label,
@@ -36,7 +37,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 						ns.hr()]),
 				options.prepend,
 				resolvent.formResolvent,
-				ns.fieldset(
+				customizeData.fieldset = ns.fieldset(
 					{ id: resolvent.affectedSectionId,
 						dbjs: this.master, names: this.formPropertyNames,
 						control: control,
@@ -48,5 +49,10 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 					ns.a({ onclick: 'window.scroll(0, 0)' },
 						ns.span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
 			)), resolvent.legacyScript, legacy.legacy];
+		if (typeof options.customize === 'function') {
+			customizeData.fieldset = customizeData.fieldset._dbjsFieldset;
+			options.customize.call(this, customizeData);
+		}
+		return customizeData.arrayResult;
 	})
 });

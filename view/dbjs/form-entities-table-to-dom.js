@@ -13,7 +13,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 		options = Object(arguments[1]);
 		url = options.url || ns.url;
 		return ns.section({ id: this.domId, class: ns._if(ns.eq(
-			this.status,
+			this._status,
 			1
 		), 'section-primary completed entities-overview', 'section-primary entities-overview') },
 			ns.div(
@@ -54,10 +54,14 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 										ns.span({ class: 'status-complete' }, "✓"),
 										ns.span({ class: 'status-incomplete' }, "✕")),
 									ns.td({ class: 'actions' },
-										ns.a({ href: url(self.constructor.baseUrl, entityObject.__id__) }, _("Edit")),
-										ns.postButton({ action: url(self.constructor.baseUrl,
-											entityObject.__id__, 'delete'),
-											value: _('Delete') })));
+										ns.a({ class: 'actions-edit',
+												href: url(self.constructor.baseUrl, entityObject.__id__) },
+											ns.span({ class: 'fa fa-edit' }, _("Edit"))),
+										ns.postButton({ buttonClass: 'actions-delete',
+												action: url(self.constructor.baseUrl,
+												entityObject.__id__, 'delete'),
+											value: ns.span({ class: 'fa fa-trash-o' },
+												_("Delete")) })));
 							}),
 						this.constructor.generateFooter &&
 							ns.tfoot(this.constructor.generateFooter(
@@ -70,7 +74,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 			ns.p(
 				ns.a(
 					{ class: 'button-main', href: url(this.constructor.baseUrl + '-add') },
-					_("Add new")
+					options.addButtonLabel || _("Add new")
 				)
 			),
 			ns.p({ class: 'section-primary-scroll-top' },

@@ -74,7 +74,7 @@ FormSection.extend('GeneralInfoFormSection', {
 // Assign created Type to chosen section at User.prototype.formSections
 User.prototype.formSections.getOwnDescriptor('generalInfoFormSection').type = db.GeneralInfoFormSection;
 
-// As isExplainWhyNotNiceApplicable field should be shown conditionally we define a condition for it
+// As explainWhyNotNice field should be shown conditionally we define a condition for it. The convention to create such a condition is explained later on.
 User.prototype.define('isExplainWhyNotNiceApplicable', {
     value: function () {
         return !this.isNice;
@@ -298,6 +298,27 @@ That's because once you define `formSections` property, another property with th
 will be created as Well. The `formSectionsStatus` will give you the total status of sections it contains.
 Sometimes you your form is prefilled with some values like for example user's email. It may happen that you don't want to calculate status for such prefilled property, in other words you want the status to be ignore email as long as it's ok. In that case you can use use `excludedFromStatusIfFilled` method from constructor.
 
+###View customization###
+
+Ok, so you can render forms seemlesly with sections. But what if you have a very custom form in a view and sections just will not render it? You will need to tweak `toDOMForm` method of the section you want to customize. In an extreme situation you can overwrite it completely in `view/dbjs`. This way you can create completely custom markup. There is more subtle solution available if you don't need to rewrite everything and your section extends `FormSection`. You may call your section's super class `toDOMForm` and pass to it an object as a last argument. This object must have a property called `customize` which is a function. Let's see an example:
+
+```javascript
+var db = require('mano').db;
+
+module.exports = Object.defineProperty(db.CustomSection.prototype, 'toDOMForm',
+	d(function (document/*, options */) {
+		  return db.FormSection.prototype.toDOMForm.call(this, document, { customize: function (data) {
+		  	var fieldset = data.fieldset, container = data.container, data.arrayResult;
+		  	...
+		  	container.appendChild(....)
+		   }
+		  });
+		};
+	})
+);
+```
+
+In the above code the `data.fieldset` is the fieldset of the section, `data.container` is the whole section dom, `data.arrayResult` is an array of all elements returned from `toDOMForm` (section and legacy scripts).
 
 ###Sections after submission###
 
