@@ -195,6 +195,24 @@ fieldset + fieldset .user-guide-lomas-basic-complement {
 	margin-right: 10px;
 }
 
+.user-guide-lomas-tab-costs ul li {
+	display: flex;
+	line-height: 44px;
+	vertical-align: middle;
+}
+.user-guide-lomas-tab-costs ul li > span:first-child {
+	width: 5%;
+	text-align: right;
+	margin-right: 5px;
+	font-weight: bold;
+	display: table; /* as in input-aside component */
+}
+.user-guide-lomas-tab-costs ul li > span:last-child {
+	width: 90%;
+	line-height: 22px;
+	padding-top: 11px;
+}
+
 /* Responsive styles for lomas-guide */
 
 @media only screen and (max-width: var(--mobile-width)) {

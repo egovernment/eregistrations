@@ -27,7 +27,6 @@
 .section-tab-nav-tab.active {
 	background: var(--white-background);
 	border-bottom: none;
-	z-index: 999;
 	padding-bottom: 14px;
 }
 .section-tab-nav > div {
