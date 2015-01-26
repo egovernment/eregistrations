@@ -84,11 +84,8 @@
 	width: 20%;
 }
 
-.user-guide-lomas-basic-components fieldset iframe {
-	border: none;
-	width: 100%;
-	height: 220px;
-	display: block;
+.user-guide-lomas-basic-components fieldset img {
+	max-width: 100%;
 }
 
 .user-guide-lomas-basic-components fieldset li > ul > li {
@@ -161,7 +158,7 @@ fieldset + fieldset .user-guide-lomas-basic-complement {
 .user-guide-lomas-information-process {
 	width: 49%;
 }
-.user-guide-lomas-information > div:first-child {
+.user-guide-lomas-information-summary {
 	margin-right: 2%;
 }
 
@@ -276,11 +273,12 @@ fieldset + fieldset .user-guide-lomas-basic-complement {
 	.user-guide-lomas-information {
 		flex-wrap: wrap;
 	}
+
 	.user-guide-lomas-information-summary,
 	.user-guide-lomas-information-process {
 		width: 100%;
+		margin: 0;
 	}
-
 	.user-guide-lomas-information-summary {
 		margin-bottom: 22px;
 	}

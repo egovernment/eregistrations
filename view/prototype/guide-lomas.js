@@ -55,10 +55,7 @@ exports.step = function () {
 							input({ type: 'number' })
 							),
 						div(
-							iframe({ src: 'https://www.google.com/maps/embed?pb=!1m14!1m8!1m3' +
-								'!1d2760.18457802187!2d6.1402920000000005!3d46.226674!3m2!1i102' +
-								'4!2i768!4f13.1!3m3!1m2!1s0x478c64fcaacb2e3f%3A0x86f47c470f8978' +
-								'b7!2sUnited+Nations+Office+at+Geneva!5e0!3m2!1spl!2spl!4v1421919850718' })
+							img({ src: '/img/map.png' })
 						),
 						p(span({ class: 'fa fa-info-circle' }, "Information:"),
 							"Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +

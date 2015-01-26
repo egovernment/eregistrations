@@ -50,6 +50,10 @@ exports.body = function () {
 					a({ href: '/guide/' }, span("User - guide"), span({ class: 'label-reg' }, "Part A"))
 				),
 				li(
+					a({ href: '/guide-lomas/' }, span("User - Lomas like guide "),
+							span({ class: 'label-reg' }, "Part A"))
+				),
+				li(
 					a({ href: '/guide/costs-print/' }, span("User - costs print list"),
 						span({ class: 'label-reg' }, "Part A"))
 				),

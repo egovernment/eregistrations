@@ -49,6 +49,7 @@
 		padding-bottom: 0;
 		margin-bottom: 22px;
 		text-align: center;
+		display: block;
 	}
 	.section-tab-nav-tab:hover,
 	.section-tab-nav-tab:focus,
@@ -56,10 +57,16 @@
 		background: var(--normal-dark-background);
 		color: var(--white-text);
 	}
+	
+	.section-tab-nav .active > .section-tab-nav-tab,
 	.section-tab-nav-tab.active {
 		border: 1px solid var(--light-inner-border);
 		background: var(--normal-dark-background);
 		color: var(--white-text);
 		padding-bottom: 0;
+	}
+	.section-tab-nav li {
+		display: block;
+		width: 100%;
 	}
 }
