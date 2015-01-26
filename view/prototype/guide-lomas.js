@@ -77,7 +77,7 @@ exports.step = function () {
 							function (name) {
 								if (name === 'questions') {
 									ul(
-										['isLomas', 'isLomas'],
+										['isLomas', 'isLomas', 'isLomas'],
 										function (name) {
 											li(
 												{ class: 'input' },
@@ -156,16 +156,29 @@ exports.step = function () {
 		a({ class: 'section-tab-nav-tab', href: '/guide-lomas/conditions/', id: 'cond-tab'  },
 				"Conditions (12)"),
 		div(
-			{ class: 'section-primary', id: 'summary-tabs' },
+			{ class: 'section-primary user-guide-lomas-tab-requirements', id: 'summary-tabs' },
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 				"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 				"Praesent porttitor dui a ante luctus gravida."),
 			ul(
-				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
-				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
-				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
-				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
-				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. ")
+				li(span({ class: 'fa fa-check' }, "Check"),
+					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
+				li(span({ class: 'fa fa-check' }, "Check"),
+					"Lorem ipsum dolor sit amet. "),
+				li(span({ class: 'fa fa-check' }, "Check"),
+					"Lorem ipsum dolor sit amet, consectetur. "),
+				li(span({ class: 'fa fa-check' }, "Check"),
+					"Lorem ipsum. "),
+				li(span({ class: 'fa fa-check' }, "Check"),
+					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
+				li(span({ class: 'fa fa-check' }, "Check"),
+					"Lorem ipsum dolor sit amet. "),
+				li(span({ class: 'fa fa-check' }, "Check"),
+					"Lorem ipsum dolor sit amet, consectetur. "),
+				li(span({ class: 'fa fa-check' }, "Check"),
+					"Lorem ipsum. "),
+				li(span({ class: 'fa fa-check' }, "Check"),
+					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ")
 			)
 		)
 	);

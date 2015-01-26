@@ -189,6 +189,12 @@ fieldset + fieldset .user-guide-lomas-basic-complement {
 	padding-left: 22px;
 }
 
+/* Tabs summary informations section rules (displayed to user) */
+
+.user-guide-lomas-tab-requirements li > span {
+	margin-right: 10px;
+}
+
 /* Responsive styles for lomas-guide */
 
 @media only screen and (max-width: var(--mobile-width)) {
