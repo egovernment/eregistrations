@@ -149,18 +149,16 @@ exports.step = function () {
 	section(
 		ul(
 			{ class: 'section-tab-nav', id: 'lomas-guid-tabs' },
-			li(a({ class: 'section-tab-nav-tab active', href: '#req-tab' },
+			li(a({ class: 'section-tab-nav-tab', href: '#req-tab' },
 				"Requirements (10)")),
 			li(a({ class: 'section-tab-nav-tab', href: '#cost-tab' },
 				"Costs (120$)")),
 			li(a({ class: 'section-tab-nav-tab', href: '#cond-tab' },
 				"Conditions (12)"))
 		),
-
-		legacy('tabs', 'lomas-guid-tabs'),
-
 		div(
-			{ class: 'section-primary user-guide-lomas-tab-requirements', id: 'req-tab' },
+			{ class: 'section-primary user-guide-lomas-tab user-guide-lomas-tab-requirements',
+				id: 'req-tab' },
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 				"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 				"Praesent porttitor dui a ante luctus gravida."),
@@ -186,7 +184,7 @@ exports.step = function () {
 			)
 		),
 		div(
-			{ class: 'section-primary user-guide-lomas-tab-costs', id: 'cost-tab' },
+			{ class: 'section-primary user-guide-lomas-tab user-guide-lomas-tab-costs', id: 'cost-tab' },
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 				"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 				"Praesent porttitor dui a ante luctus gravida."),
@@ -212,7 +210,8 @@ exports.step = function () {
 			)
 		),
 		div(
-			{ class: 'section-primary user-guide-lomas-tab-conditions', id: 'cond-tab' },
+			{ class: 'section-primary user-guide-lomas-tab user-guide-lomas-tab-conditions',
+				id: 'cond-tab' },
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 				"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 				"Praesent porttitor dui a ante luctus gravida."),
@@ -337,6 +336,9 @@ exports.step = function () {
 			)
 		)
 	);
+
+	legacy('tabs', 'lomas-guid-tabs');
+
 	p({ class: 'user-next-step-button' },
 			button({ type: 'submit' },
 				"Save and continue"));

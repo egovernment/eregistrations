@@ -38,8 +38,6 @@ module.exports = function (view) {
 		guide: bind(userMain.diff('./guide')),
 		'guide-lomas': bind(userGuideLomas),
 		'guide-lomas/secondary-info': bind(userGuideLomas.diff('./guide-lomas-sec')),
-		'guide-lomas/costs': bind(userGuideLomas.diff('./guide-lomas-costs')),
-		'guide-lomas/conditions': bind(userGuideLomas.diff('./guide-lomas-cond')),
 		'guide/costs-print': bind(mainPrint.diff('./print-user-costs')),
 		forms:  bind(userMain.diff('./forms')),
 		'forms/disabled':  bind(userForm.diff('./disabled-forms')),

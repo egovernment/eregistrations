@@ -191,6 +191,13 @@ fieldset + fieldset .user-guide-lomas-basic-complement {
 
 /* Tabs summary informations section rules (displayed to user) */
 
+.user-guide-lomas-tab {
+	display: none;
+}
+.user-guide-lomas-tab.active {
+	display: block;
+}
+
 .user-guide-lomas-tab-requirements li > span {
 	margin-right: 10px;
 }

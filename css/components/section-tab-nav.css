@@ -23,7 +23,7 @@
 		bottom: 2px;
 	}
 }
-
+.section-tab-nav .active > .section-tab-nav-tab,
 .section-tab-nav-tab.active {
 	background: var(--white-background);
 	border-bottom: none;
