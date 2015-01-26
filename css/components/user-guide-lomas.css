@@ -213,6 +213,41 @@ fieldset + fieldset .user-guide-lomas-basic-complement {
 	padding-top: 11px;
 }
 
+.user-guide-lomas-tab-conditions > ul > li {
+	border: 1px solid var(--normal-background);
+	border-radius: 5px;
+	margin-bottom: 22px;
+}
+.user-guide-lomas-tab-conditions > ul > li:last-child {
+	margin-bottom: 0;
+}
+.user-guide-lomas-tab-conditions > ul > li > h3 {
+	padding: 11px; 
+}
+.user-guide-lomas-tab-conditions > ul > li > table {
+	border-top: 1px solid var(--normal-background);
+	padding: 11px;
+
+}
+.user-guide-lomas-tab-conditions > ul > li > table > tbody tr:nth-of-type(odd) {
+	background: none;
+}
+.user-guide-lomas-tab-conditions > ul > li > table > tbody tr td {
+	padding: 11px 0;
+	vertical-align: top;
+}
+.user-guide-lomas-tab-conditions > ul > li > table > tbody tr td:first-child {
+	padding: 11px 5px;
+	text-align: center;
+}
+.user-guide-lomas-tab-conditions > ul > li > table > tbody tr td:nth-child(2) {
+	padding-right: 11px;
+	width: 60%;
+}
+.user-guide-lomas-tab-conditions > ul > li > table > tbody tr td a {
+	color: var(--hint-text);
+	white-space: nowrap;
+}
 /* Responsive styles for lomas-guide */
 
 @media only screen and (max-width: var(--mobile-width)) {
@@ -237,5 +272,9 @@ fieldset + fieldset .user-guide-lomas-basic-complement {
 	.user-guide-lomas-information-summary,
 	.user-guide-lomas-information-process {
 		width: 100%;
+	}
+
+	.user-guide-lomas-information-summary {
+		margin-bottom: 22px;
 	}
 }

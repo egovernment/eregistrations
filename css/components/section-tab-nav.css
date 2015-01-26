@@ -32,6 +32,9 @@
 .section-tab-nav > div {
 	width: 100%;
 }
+.section-tab-nav li {
+	display: inline-block;
+}
 
 @media only screen and (max-width: var(--mobile-width)) {
 	.section-tab-nav {

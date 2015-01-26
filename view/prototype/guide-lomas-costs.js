@@ -6,6 +6,7 @@ exports['cond-tab'] = { class: { active: false } };
 
 exports['summary-tabs'] = {
 	class: { 'user-guide-lomas-tab-costs': true,
+		'user-guide-lomas-tab-conditions': false,
 		'user-guide-lomas-tab-requirements': false },
 	'':  function () {
 		p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +

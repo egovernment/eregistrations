@@ -2,7 +2,6 @@
 
 var db = require('mano').db
   , user = db.User.prototype;
-//  , reqRadio;
 
 exports['step-guide'] = { class: { 'step-active': true } };
 
@@ -148,15 +147,20 @@ exports.step = function () {
 	);
 
 	section(
-		{ class: 'section-tab-nav' },
-		a({ class: 'section-tab-nav-tab active', href: '/guide-lomas/', id: 'req-tab' },
-				"Requirements (10)"),
-		a({ class: 'section-tab-nav-tab', href: '/guide-lomas/costs/', id: 'cost-tab'  },
-				"Costs (120$)"),
-		a({ class: 'section-tab-nav-tab', href: '/guide-lomas/conditions/', id: 'cond-tab'  },
-				"Conditions (12)"),
+		ul(
+			{ class: 'section-tab-nav', id: 'lomas-guid-tabs' },
+			li(a({ class: 'section-tab-nav-tab active', href: '#req-tab' },
+				"Requirements (10)")),
+			li(a({ class: 'section-tab-nav-tab', href: '#cost-tab' },
+				"Costs (120$)")),
+			li(a({ class: 'section-tab-nav-tab', href: '#cond-tab' },
+				"Conditions (12)"))
+		),
+
+		legacy('tabs', 'lomas-guid-tabs'),
+
 		div(
-			{ class: 'section-primary user-guide-lomas-tab-requirements', id: 'summary-tabs' },
+			{ class: 'section-primary user-guide-lomas-tab-requirements', id: 'req-tab' },
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 				"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 				"Praesent porttitor dui a ante luctus gravida."),
@@ -179,6 +183,157 @@ exports.step = function () {
 					"Lorem ipsum. "),
 				li(span({ class: 'fa fa-check' }, "Check"),
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. ")
+			)
+		),
+		div(
+			{ class: 'section-primary user-guide-lomas-tab-costs', id: 'cost-tab' },
+			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+				"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
+				"Praesent porttitor dui a ante luctus gravida."),
+			ul(
+				li(span("56$"),
+					span("Lorem ipsum dolor sit amet, consectetur adipiscing elit. ")),
+				li(span("43$"),
+					span("Lorem ipsum dolor sit amet, consectetur elit. ")),
+				li(span("123$"),
+					span("Lorem ipsum dolor. ")),
+				li(span("56$"),
+					span("Lorem ipsum dolor sit amet, consectetur adipiscing elit. ")),
+				li(span("56$"),
+					span("Lorem ipsum dolor sit amet, consectetur. ")),
+				li(span("87$"),
+					span("Lorem ipsum dolor sit amet. ")),
+				li(span("135$"),
+					span("Lorem ipsum dolor elit. ")),
+				li(span("45$"),
+					span("Lorem ipsum dolor sit amet.")),
+				li(span("345$"),
+					span("Total"))
+			)
+		),
+		div(
+			{ class: 'section-primary user-guide-lomas-tab-conditions', id: 'cond-tab' },
+			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+				"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
+				"Praesent porttitor dui a ante luctus gravida."),
+			ul(
+				li(
+					h3("Electricity"),
+					table(
+						tbody(
+							tr(
+								td(span({ class: 'fa fa-check' }, "Check")),
+								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+										"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
+										"Praesent porttitor dui a ante luctus gravida."),
+								td(
+									ul(
+										li("Ordinance 11025 - ", a("art. 26")),
+										li("Ordinance 11025 - ", a("art. 27")),
+										li("Ordinance 11025 - ", a("art. 28"))
+									)
+								)
+							),
+							tr(
+								td(span({ class: 'fa fa-check' }, "Check")),
+								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
+								td(
+									ul(
+										li("Ordinance 11025 - ", a("art. 26")),
+										li("Ordinance 11025 - ", a("art. 26"))
+									)
+								)
+							),
+							tr(
+								td(span({ class: 'fa fa-check' }, "Check")),
+								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
+								td(
+									ul(
+										li("Ordinance 11025 - ", a("art. 26"))
+									)
+								)
+							)
+						)
+					)
+				),
+				li(
+					h3("Personal"),
+					table(
+						tbody(
+							tr(
+								td(span({ class: 'fa fa-check' }, "Check")),
+								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+										"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
+										"Praesent porttitor dui a ante luctus gravida."),
+								td(
+									ul(
+										li("Ordinance 11025 - ", a("art. 26")),
+										li("Ordinance 11025 - ", a("art. 27")),
+										li("Ordinance 11025 - ", a("art. 28"))
+									)
+								)
+							),
+							tr(
+								td(span({ class: 'fa fa-check' }, "Check")),
+								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
+								td(
+									ul(
+										li("Ordinance 11025 - ", a("art. 26")),
+										li("Ordinance 11025 - ", a("art. 26"))
+									)
+								)
+							),
+							tr(
+								td(span({ class: 'fa fa-check' }, "Check")),
+								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
+								td(
+									ul(
+										li("Ordinance 11025 - ", a("art. 26"))
+									)
+								)
+							)
+						)
+					)
+				),
+				li(
+					h3("Local"),
+					table(
+						tbody(
+							tr(
+								td(span({ class: 'fa fa-check' }, "Check")),
+								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+										"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
+										"Praesent porttitor dui a ante luctus gravida."),
+								td(
+									ul(
+										li("Ordinance 11025 - ", a("art. 26")),
+										li("Ordinance 11025 - ", a("art. 27")),
+										li("Ordinance 11025 - ", a("art. 28"))
+									)
+								)
+							),
+							tr(
+								td(span({ class: 'fa fa-check' }, "Check")),
+								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
+								td(
+									ul(
+										li("Ordinance 11025 - ", a("art. 26")),
+										li("Ordinance 11025 - ", a("art. 26"))
+									)
+								)
+							),
+							tr(
+								td(span({ class: 'fa fa-check' }, "Check")),
+								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
+								td(
+									ul(
+										li("Ordinance 11025 - ", a("art. 26"))
+									)
+								)
+							)
+						)
+					)
+				)
 			)
 		)
 	);
