@@ -71,21 +71,35 @@ exports.step = function () {
 						ul({ class: 'form-elements' },
 							['businessActivity',
 								'surfaceArea',
-								'inventory',
-								'descriptionText'],
+								'descriptionText',
+								'questions'
+								],
 							function (name) {
-								li(
-									div({ class: 'input' },
-										input({ control: { id: 'input-' + name },
-											dbjs: user.getObservable(name),
-												placeholder: user.getDescriptor(name).label }))
-								);
+								if (name === 'questions') {
+									ul(
+										['isLomas', 'isLomas'],
+										function (name) {
+											li(
+												{ class: 'input' },
+												span(user.getDescriptor(name).label),
+												input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) })
+											);
+										}
+									);
+								} else {
+									li(
+										div({ class: 'input' },
+											input({ control: { id: 'input-' + name },
+												dbjs: user.getObservable(name),
+													placeholder: user.getDescriptor(name).label }))
+									);
+								}
 							}
 							)
 					)
 				),
 				div(
-					input({ type: 'submit' }),
+					p(input({ type: 'submit' })),
 					p(span({ class: 'fa fa-info-circle' }, "Information:"),
 							"Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 							"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. ")

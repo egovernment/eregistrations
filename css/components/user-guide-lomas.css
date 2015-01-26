@@ -91,8 +91,13 @@
 	display: block;
 }
 
+.user-guide-lomas-basic-components fieldset li > ul > li {
+	display: flex;
+	justify-content: space-between;
+}
+
 .user-guide-lomas-basic-components form > div:last-child {
-	line-height: 44px;
+	display: flex;
 }
 
 .user-guide-lomas-basic-components form > div:last-child > p:last-child {
@@ -100,13 +105,11 @@
 }
 
 .user-guide-lomas-basic-components form > div:last-child > * {
-	display: inline-block;
 }
 
-.user-guide-lomas-basic-components form > div:last-child > [type='submit'] {
+.user-guide-lomas-basic-components form > div:last-child > p:first-child {
+	margin-top: 7px;
 	margin-right: 20px;
-	vertical-align: top;
-	line-height: 22px;
 }
 
 /* Second tab of form basci components containg table-like form wit complementary information */

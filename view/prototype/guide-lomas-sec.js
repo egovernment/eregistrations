@@ -50,7 +50,7 @@ exports['user-guide-lomas-basic'] = function () {
 			)
 		),
 		div(
-			input({ type: 'submit' }),
+			p(input({ type: 'submit' })),
 			p(span({ class: 'fa fa-info-circle' }, "Information:"),
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 					"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. ")

@@ -129,7 +129,7 @@ textarea {
 	color: var(--dark-text);
 	line-height: 22px;
 	margin-top: 10px;
-	margin-bottom: -7px; /* To assure it doesn't expand line-height of element in which textarea is placed */
+	margin-bottom: -8px; /* To assure it doesn't expand line-height of element in which textarea is placed */
 	font-size: 14px;
 	padding: 0 5px;
 	font-family: "Helvetica";
