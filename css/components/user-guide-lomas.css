@@ -165,7 +165,7 @@ fieldset + fieldset .user-guide-lomas-form-complement {
 	display: flex;
 }
 
-.user-guide-lomas-result-summary li span:first-child {
+.user-guide-lomas-result-business-category {
 	width: 15%;
 	text-align: right;
 	margin-right: 5px;

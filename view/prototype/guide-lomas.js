@@ -111,20 +111,24 @@ exports.step = function () {
 			h3("Your business summary"),
 			ul(
 				li(
-					span("Local"),
-					span("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+					span({ class: 'user-guide-lomas-result-business-category' }, "Local"),
+					span({ class: 'user-guide-lomas-result-business-description' },
+							"Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
 				),
 				li(
-					span("Property"),
-					span("Lorem ipsum dolor sit amet")
+					span({ class: 'user-guide-lomas-result-business-category' }, "Property"),
+					span({ class: 'user-guide-lomas-result-business-description' },
+							"Lorem ipsum dolor sit amet")
 				),
 				li(
-					span("Inventory"),
-					span("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+					span({ class: 'user-guide-lomas-result-business-category' }, "Inventory"),
+					span({ class: 'user-guide-lomas-result-business-description' },
+							"Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
 				),
 				li(
-					span("Local"),
-					span("Lorem ipsum dolor sit amet,")
+					span({ class: 'user-guide-lomas-result-business-category' }, "Local"),
+					span({ class: 'user-guide-lomas-result-business-description' },
+							"Lorem ipsum dolor sit amet,")
 				)
 			)
 		),
@@ -145,7 +149,7 @@ exports.step = function () {
 
 	section(
 		ul(
-			{ class: 'section-tab-nav', id: 'lomas-guid-tabs' },
+			{ class: 'section-tab-nav', id: 'lomas-guide-tabs' },
 			li(a({ class: 'section-tab-nav-tab', href: '#req-tab' },
 				"Requirements (10)")),
 			li(a({ class: 'section-tab-nav-tab', href: '#cost-tab' },
@@ -334,7 +338,7 @@ exports.step = function () {
 		)
 	);
 
-	legacy('tabs', 'lomas-guid-tabs');
+	legacy('tabs', 'lomas-guide-tabs');
 
 	p({ class: 'user-next-step-button' },
 			button({ type: 'submit' },
