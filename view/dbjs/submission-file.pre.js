@@ -42,7 +42,7 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 			data.dom = el('li', { 'data-id': file.__id__ });
 
 			remove = isNested(file)
-				? file._clear_.bind(file)
+				? file._destroy_.bind(file)
 				: this.removeItem.bind(this, data.dom);
 
 			itemDom = _if(file._name, el('span',

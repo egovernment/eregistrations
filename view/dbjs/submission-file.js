@@ -48,7 +48,7 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 			}
 
 			remove = isNested(file)
-				? file._clear_.bind(file)
+				? file._destroy_.bind(file)
 				: this.removeItem.bind(this, data.dom);
 
 			itemDom = _if(file._name,
