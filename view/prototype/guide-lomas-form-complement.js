@@ -17,8 +17,8 @@ exports['user-guide-lomas-form'] = function () {
 					function (name) {
 						li(
 							div(span(user.getDescriptor(name).label),
-								input({ control: { id: 'input-' + name },
-									dbjs: user.getObservable(name) }),
+								span(input({ control: { id: 'input-' + name },
+									dbjs: user.getObservable(name) })),
 								span(user.getDescriptor(name).inputHint))
 						);
 					}
@@ -33,9 +33,11 @@ exports['user-guide-lomas-form'] = function () {
 							dbjs: user._notification }))
 					),
 					li(
-						p('Lorem ipsum dolor ist amet:'),
+						div(
+							p('Lorem ipsum dolor ist amet:')
+						),
 						ul(
-							['isLomas', 'isLomas'],
+							['isLomas', 'isLomas', 'isLomas', 'isLomas'],
 							function (name) {
 								li(
 									{ class: 'input' },

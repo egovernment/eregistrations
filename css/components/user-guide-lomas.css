@@ -126,25 +126,24 @@ fieldset + fieldset .user-guide-lomas-form-complement {
 	border-left: 1px solid var(--normal-background);
 }
 
-.user-guide-lomas-form-complement > li {
-	padding: 11px 0;
-}
-
 .user-guide-lomas-form-complement > li:not(:last-child) {
 	border-bottom: 1px solid var(--normal-background);
 }
 
 .user-guide-lomas-form-complement > li > div {
 	display: flex;
+	margin: 11px 0;
 }
 
 .user-guide-lomas-form-complement > li > div > span:first-child {
 	width: 40%;
+	margin: 11px 0;
 }
 
 .user-guide-lomas-form-complement > li > div > *:nth-child(2) {
 	width: 20%;
 	margin-right: 15px;
+	line-height: 44px;
 }
 .user-guide-lomas-form-complement > li > div > *:nth-child(2) input {
 	max-width: 70%;
@@ -152,6 +151,8 @@ fieldset + fieldset .user-guide-lomas-form-complement {
 
 .user-guide-lomas-form-complement > li > div > span:last-child {
 	width: 40%;
+	margin: 11px 0;
+	font-size: 12px;
 }
 
 .user-guide-lomas-form-complement > li > ul > li {

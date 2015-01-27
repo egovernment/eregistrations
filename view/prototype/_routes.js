@@ -25,7 +25,7 @@ module.exports = function (view) {
 		userDocuments = userMain.diff('./documents'),
 		demoUserMain = subMain.diff('./demo-user'),
 		userOfficialCertificates = userOfficialUser.diff('./official-form'),
-		userGuideLomas = userMain.diff('./guide-lomas');
+		userGuideLomas = userMain.diff('./guide-lomas-main');
 
 	return {
 		// Public routes - imports content directly to #main element
