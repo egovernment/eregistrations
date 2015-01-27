@@ -216,6 +216,10 @@ fieldset + fieldset .user-guide-lomas-form-complement {
 
 /* Requirements tab */
 
+.user-guide-lomas-tab-requirements li {
+	margin-bottom: 11px;
+}
+
 .user-guide-lomas-tab-requirements li > span {
 	margin-right: 10px;
 }
@@ -224,7 +228,7 @@ fieldset + fieldset .user-guide-lomas-form-complement {
 
 .user-guide-lomas-tab-costs ul li {
 	display: flex;
-	line-height: 44px;
+	margin-bottom: 11px;
 	vertical-align: middle;
 }
 .user-guide-lomas-cost-value {
@@ -237,7 +241,6 @@ fieldset + fieldset .user-guide-lomas-form-complement {
 .user-guide-lomas-tab-cost-description {
 	width: 90%;
 	line-height: 22px;
-	padding-top: 11px;
 }
 
 /* Conditions tab */
