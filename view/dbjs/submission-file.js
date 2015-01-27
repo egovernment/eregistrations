@@ -42,9 +42,9 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 			var el = this.make, data = {}, remove, itemDom;
 
 			if (this.multiple) {
-				data.dom = el('li', { 'data-id': file.__id__ });
+				data.dom = el('li', { class: _if(file._name, null, 'empty'), 'data-id': file.__id__ });
 			} else {
-				data.dom = el('div', { 'data-id': file.__id__ });
+				data.dom = el('div', { class: _if(file._name, null, 'empty'), 'data-id': file.__id__ });
 			}
 
 			remove = isNested(file)
