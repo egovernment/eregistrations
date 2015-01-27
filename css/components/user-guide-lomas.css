@@ -100,6 +100,10 @@
 .user-guide-lomas-form-components fieldset li > ul > li {
 	display: flex;
 	justify-content: space-between;
+	line-height: 22px;
+}
+.user-guide-lomas-form-components fieldset li > ul > li .radio {
+	padding-top: 0;
 }
 
 .user-guide-lomas-form-components form > div:last-child {
