@@ -172,7 +172,7 @@ fieldset + fieldset .user-guide-lomas-form-complement {
 	font-weight: bold;
 	display: table; /* as in input-aside component */
 }
-.user-guide-lomas-result-summary li span:last-child {
+.user-guide-lomas-result-business-description {
 	width: 80%;
 	line-height: 22px;
 	padding-top: 11px;
@@ -205,14 +205,14 @@ fieldset + fieldset .user-guide-lomas-form-complement {
 	line-height: 44px;
 	vertical-align: middle;
 }
-.user-guide-lomas-tab-costs ul li > span:first-child {
+.user-guide-lomas-cost-value {
 	width: 5%;
 	text-align: right;
 	margin-right: 5px;
 	font-weight: bold;
 	display: table; /* as in input-aside component */
 }
-.user-guide-lomas-tab-costs ul li > span:last-child {
+.user-guide-lomas-tab-cost-description {
 	width: 90%;
 	line-height: 22px;
 	padding-top: 11px;
