@@ -105,9 +105,9 @@ exports.step = function () {
 	);
 
 	section(
-		{ class: 'user-guide-lomas-information' },
+		{ class: 'user-guide-lomas-result' },
 		div(
-			{ class: 'section-primary user-guide-lomas-information-summary' },
+			{ class: 'section-primary user-guide-lomas-result-summary' },
 			h3("Your business summary"),
 			ul(
 				li(
@@ -129,7 +129,7 @@ exports.step = function () {
 			)
 		),
 		div(
-			{ class: 'section-primary user-guide-lomas-information-process' },
+			{ class: 'section-primary user-guide-lomas-result-process' },
 			h3("Your qualification process"),
 			ol(
 				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +

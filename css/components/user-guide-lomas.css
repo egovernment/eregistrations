@@ -148,37 +148,37 @@ fieldset + fieldset .user-guide-lomas-form-complement {
 
 /* Secondary informations section rules (displayed to user) */
 
-.user-guide-lomas-information {
+.user-guide-lomas-result {
 	display: flex;
 }
-.user-guide-lomas-information-summary,
-.user-guide-lomas-information-process {
+.user-guide-lomas-result-summary,
+.user-guide-lomas-result-process {
 	width: 49%;
 }
-.user-guide-lomas-information-summary {
+.user-guide-lomas-result-summary {
 	margin-right: 2%;
 }
 
-.user-guide-lomas-information-summary li {
+.user-guide-lomas-result-summary li {
 	line-height: 44px;
 	vertical-align: middle;
 	display: flex;
 }
 
-.user-guide-lomas-information-summary li span:first-child {
+.user-guide-lomas-result-summary li span:first-child {
 	width: 15%;
 	text-align: right;
 	margin-right: 5px;
 	font-weight: bold;
 	display: table; /* as in input-aside component */
 }
-.user-guide-lomas-information-summary li span:last-child {
+.user-guide-lomas-result-summary li span:last-child {
 	width: 80%;
 	line-height: 22px;
 	padding-top: 11px;
 }
 
-.user-guide-lomas-information-process ol {
+.user-guide-lomas-result-process ol {
 	list-style-type: decimal;
 	padding-left: 22px;
 }
@@ -275,15 +275,15 @@ fieldset + fieldset .user-guide-lomas-form-complement {
 		padding-left: 0;
 	}
 
-	.user-guide-lomas-information {
+	.user-guide-lomas-result {
 		flex-wrap: wrap;
 	}
-	.user-guide-lomas-information-summary,
-	.user-guide-lomas-information-process {
+	.user-guide-lomas-result-summary,
+	.user-guide-lomas-result-process {
 		width: 100%;
 		margin: 0;
 	}
-	.user-guide-lomas-information-summary {
+	.user-guide-lomas-result-summary {
 		margin-bottom: 22px;
 	}
 }
