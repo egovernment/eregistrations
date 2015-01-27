@@ -126,6 +126,15 @@ fieldset + fieldset .user-guide-lomas-form-complement {
 	border-left: 1px solid var(--normal-background);
 }
 
+.user-guide-lomas-form-complement .user-guide-inventory-button,
+.user-guide-lomas-form-complement .user-guide-inventory-button a {
+	padding: 0;
+}
+.user-guide-lomas-form-complement .user-guide-inventory-icon {
+	margin-bottom: -11px;
+	margin-top: -5px;
+}
+
 .user-guide-lomas-form-complement > li:not(:last-child) {
 	border-bottom: 1px solid var(--normal-background);
 }

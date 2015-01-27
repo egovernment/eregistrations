@@ -15,12 +15,26 @@ exports['user-guide-lomas-form'] = function () {
 						'inventory',
 						'businessActivity'],
 					function (name) {
-						li(
-							div(span(user.getDescriptor(name).label),
-								span(input({ control: { id: 'input-' + name },
-									dbjs: user.getObservable(name) })),
-								span(user.getDescriptor(name).inputHint))
-						);
+						if (name === 'inventory') {
+							li(
+								div(span(user.getDescriptor(name).label),
+									span(input({ control: { id: 'input-' + name },
+										dbjs: user.getObservable(name) })),
+									span({ class: 'user-guide-inventory-button' },
+										a({ href: '#inventory' },
+											span({ class: 'fa fa-calculator user-guide-inventory-icon' },
+													"Calculator"),
+											span({ class: 'user-guide-inventory-label' },
+													"Calculate the amount"))))
+							);
+						} else {
+							li(
+								div(span(user.getDescriptor(name).label),
+									span(input({ control: { id: 'input-' + name },
+										dbjs: user.getObservable(name) })),
+									span(user.getDescriptor(name).inputHint))
+							);
+						}
 					}
 				)
 			),
