@@ -24,18 +24,18 @@ exports.step = function () {
 	);
 
 	section(
-		{ class: 'user-guide-lomas-basic' },
+		{ class: 'user-guide-lomas-form' },
 		ul(
-			{ class: 'user-guide-lomas-basic-nav' },
+			{ class: 'user-guide-lomas-form-nav' },
 			li(
-				{ class: 'user-guide-lomas-basic-nav-active', id: 'basic-info-tab' },
+				{ class: 'user-guide-lomas-form-nav-active', id: 'basic-info-tab' },
 				a(
 					{ href: '/guide-lomas/' },
 					span({ class: 'fa fa-map-marker' }, "Location"),
 					"Location of company"
 				)
 			),
-			li({ class: 'user-guide-lomas-basic-nav-separator' }, '>'),
+			li({ class: 'user-guide-lomas-form-nav-separator' }, '>'),
 			li(
 				{ id: 'additional-info-tab' },
 				a(
@@ -45,7 +45,7 @@ exports.step = function () {
 				)
 			)
 		),
-		div({ class: 'user-guide-lomas-basic-components', id: 'user-guide-lomas-basic' },
+		div({ class: 'user-guide-lomas-form-components', id: 'user-guide-lomas-form' },
 			form(
 				section(
 					fieldset(
