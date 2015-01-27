@@ -181,24 +181,23 @@ fieldset + fieldset .user-guide-lomas-form-complement {
 .user-guide-lomas-result-summary {
 	margin-right: 2%;
 }
+.user-guide-lomas-result-summary tbody tr:nth-of-type(odd) {
+	background: none;
+}
 
-.user-guide-lomas-result-summary li {
+.user-guide-lomas-result-summary tr {
 	line-height: 44px;
 	vertical-align: middle;
-	display: flex;
 }
 
 .user-guide-lomas-result-business-category {
 	width: 15%;
 	text-align: right;
-	margin-right: 5px;
 	font-weight: bold;
-	display: table; /* as in input-aside component */
+	padding-right: 5px;
 }
 .user-guide-lomas-result-business-description {
-	width: 80%;
 	line-height: 22px;
-	padding-top: 11px;
 }
 
 .user-guide-lomas-result-process ol {

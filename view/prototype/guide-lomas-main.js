@@ -50,26 +50,28 @@ exports.step = function () {
 		div(
 			{ class: 'section-primary user-guide-lomas-result-summary' },
 			h3("Your business summary"),
-			ul(
-				li(
-					span({ class: 'user-guide-lomas-result-business-category' }, "Local"),
-					span({ class: 'user-guide-lomas-result-business-description' },
-							"Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-				),
-				li(
-					span({ class: 'user-guide-lomas-result-business-category' }, "Property"),
-					span({ class: 'user-guide-lomas-result-business-description' },
-							"Lorem ipsum dolor sit amet")
-				),
-				li(
-					span({ class: 'user-guide-lomas-result-business-category' }, "Inventory"),
-					span({ class: 'user-guide-lomas-result-business-description' },
-							"Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-				),
-				li(
-					span({ class: 'user-guide-lomas-result-business-category' }, "Local"),
-					span({ class: 'user-guide-lomas-result-business-description' },
-							"Lorem ipsum dolor sit amet,")
+			table(
+				tbody(
+					tr(
+						td({ class: 'user-guide-lomas-result-business-category' }, "Local"),
+						td({ class: 'user-guide-lomas-result-business-description ' },
+								"Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+					),
+					tr(
+						td({ class: 'user-guide-lomas-result-business-category' }, "Property"),
+						td({ class: 'user-guide-lomas-result-business-description ' },
+								"Lorem ipsum dolor sit amet")
+					),
+					tr(
+						td({ class: 'user-guide-lomas-result-business-category' }, "Inventory"),
+						td({ class: 'user-guide-lomas-result-business-description ' },
+								"Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+					),
+					tr(
+						td({ class: 'user-guide-lomas-result-business-category' }, "Local"),
+						td({ class: 'user-guide-lomas-result-business-description ' },
+								"Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+					)
 				)
 			)
 		),
