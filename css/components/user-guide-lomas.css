@@ -192,9 +192,13 @@ fieldset + fieldset .user-guide-lomas-basic-complement {
 	display: block;
 }
 
+/* Requirements tab */
+
 .user-guide-lomas-tab-requirements li > span {
 	margin-right: 10px;
 }
+
+/* Costs tab */
 
 .user-guide-lomas-tab-costs ul li {
 	display: flex;
@@ -213,6 +217,8 @@ fieldset + fieldset .user-guide-lomas-basic-complement {
 	line-height: 22px;
 	padding-top: 11px;
 }
+
+/* Conditions tab */
 
 .user-guide-lomas-tab-conditions > ul > li {
 	border: 1px solid var(--normal-background);
@@ -249,6 +255,7 @@ fieldset + fieldset .user-guide-lomas-basic-complement {
 	color: var(--hint-text);
 	white-space: nowrap;
 }
+
 /* Responsive styles for lomas-guide */
 
 @media only screen and (max-width: var(--mobile-width)) {
@@ -262,6 +269,7 @@ fieldset + fieldset .user-guide-lomas-basic-complement {
 	.user-guide-lomas-basic-components fieldset {
 		width: 100%;
 	}
+
 	fieldset + fieldset .user-guide-lomas-basic-complement {
 		border-left: none;
 		padding-left: 0;
@@ -270,7 +278,6 @@ fieldset + fieldset .user-guide-lomas-basic-complement {
 	.user-guide-lomas-information {
 		flex-wrap: wrap;
 	}
-
 	.user-guide-lomas-information-summary,
 	.user-guide-lomas-information-process {
 		width: 100%;
