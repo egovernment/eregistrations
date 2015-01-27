@@ -1,8 +1,5 @@
 'use strict';
 
-var db = require('mano').db
-  , user = db.User.prototype;
-
 exports['step-guide'] = { class: { 'step-active': true } };
 
 require('./_inventory');
@@ -28,7 +25,7 @@ exports.step = function () {
 		ul(
 			{ class: 'user-guide-lomas-form-nav' },
 			li(
-				{ class: 'user-guide-lomas-form-nav-active', id: 'basic-info-tab' },
+				{ id: 'basic-info-tab' },
 				a(
 					{ href: '/guide-lomas/' },
 					span({ class: 'fa fa-map-marker' }, "Location"),
@@ -39,69 +36,13 @@ exports.step = function () {
 			li(
 				{ id: 'additional-info-tab' },
 				a(
-					{ href: '/guide-lomas/secondary-info/' },
+					{ href: '/guide-lomas/form-complement/' },
 					span({ class: 'fa fa-folder-open' }, "Informations"),
 					"Other informations"
 				)
 			)
 		),
-		div({ class: 'user-guide-lomas-form-components', id: 'user-guide-lomas-form' },
-			form(
-				section(
-					fieldset(
-						p("Address of your business?"),
-						div({ class: 'input' },
-							input({ type: 'text' }),
-							input({ type: 'number' })
-							),
-						div(
-							img({ src: '/img/map.png' })
-						),
-						p(span({ class: 'fa fa-info-circle' }, "Information:"),
-							"Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-								"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
-								"Praesent porttitor dui a ante luctus gravida.")
-					),
-					fieldset(
-						p("Business activity?"),
-						ul({ class: 'form-elements' },
-							['businessActivity',
-								'surfaceArea',
-								'descriptionText',
-								'questions'
-								],
-							function (name) {
-								if (name === 'questions') {
-									ul(
-										['isLomas', 'isLomas', 'isLomas'],
-										function (name) {
-											li(
-												{ class: 'input' },
-												span(user.getDescriptor(name).label),
-												input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) })
-											);
-										}
-									);
-								} else {
-									li(
-										div({ class: 'input' },
-											input({ control: { id: 'input-' + name },
-												dbjs: user.getObservable(name),
-													placeholder: user.getDescriptor(name).label }))
-									);
-								}
-							}
-							)
-					)
-				),
-				div(
-					p(input({ type: 'submit' })),
-					p(span({ class: 'fa fa-info-circle' }, "Information:"),
-							"Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
-							"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. ")
-				)
-			)
-			)
+		div({ class: 'user-guide-lomas-form-components', id: 'user-guide-lomas-form' })
 	);
 
 	section(

@@ -3,8 +3,7 @@
 var db = require('mano').db
   , user = db.User.prototype;
 
-exports['basic-info-tab'] = { class: { 'user-guide-lomas-form-nav-active': false } };
-exports['additional-info-tab'] = { class: { 'user-guide-lomas-form-nav-active': true } };
+exports['additional-info-tab'] = { class: { active: true } };
 
 exports['user-guide-lomas-form'] = function () {
 	form(

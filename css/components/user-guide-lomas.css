@@ -40,7 +40,7 @@
 	border-radius: 5px;
 	padding: 0 10px;
 }
-.user-guide-lomas-form-nav-active a,
+.user-guide-lomas-form-nav .active a,
 .user-guide-lomas-form-nav a:hover,
 .user-guide-lomas-form-nav a:focus,
 .user-guide-lomas-form-nav a:active {
