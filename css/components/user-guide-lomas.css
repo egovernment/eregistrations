@@ -159,7 +159,7 @@
 .user-guide-lomas-form-complement-list {
 	padding-left: 15px;
 	border-left: 1px solid var(--normal-background);
-	min-width: 200px;
+	min-width: 230px;
 }
 .user-guide-lomas-form-complement-list > li:not(:last-child) {
 	border-bottom: 1px solid var(--normal-background);
@@ -314,6 +314,9 @@
 	.user-guide-lomas-form-complement-list {
 		border-left: none;
 		padding-left: 0;
+	}
+	.user-guide-lomas-form-complement-list .radio li {
+		display: inline-block;
 	}
 
 	.user-guide-lomas-result {
