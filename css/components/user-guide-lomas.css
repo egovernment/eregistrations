@@ -63,10 +63,8 @@
 .user-guide-lomas-info {
 	display: flex;
 }
-.user-guide-lomas-info-icon {
-	margin-right: 3px;
-	padding-top: 4px;
-	min-width: 13px;
+.user-guide-lomas-info > span {
+	display: table;
 }
 
 .user-guide-lomas-form-components > form {
