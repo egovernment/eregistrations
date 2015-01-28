@@ -9,47 +9,45 @@ exports['user-guide-lomas-form'] = function () {
 	form(
 		section(
 			fieldset(
-				ul(
-					{ class: 'user-guide-lomas-form-complement' },
-					['surfaceArea',
-						'inventory',
-						'businessActivity'],
-					function (name) {
-						if (name === 'inventory') {
-							li(
-								div(span(user.getDescriptor(name).label),
-									span(input({ control: { id: 'input-' + name },
-										dbjs: user.getObservable(name) })),
-									span({ class: 'user-guide-inventory-button' },
-										a({ href: '#inventory' },
-											span({ class: 'fa fa-calculator user-guide-inventory-icon' },
-													"Calculator"),
-											span({ class: 'user-guide-inventory-label' },
-													"Calculate the amount"))))
-							);
-						} else {
-							li(
-								div(span(user.getDescriptor(name).label),
-									span(input({ control: { id: 'input-' + name },
-										dbjs: user.getObservable(name) })),
-									span(user.getDescriptor(name).inputHint))
-							);
-						}
-					}
+				table(
+					{ class: 'user-guide-lomas-form-complement-table' },
+					tbody(
+						tr(
+							td(user.getDescriptor('surfaceArea').label),
+							td(input({ control: { id: 'input-' + user._surfaceArea },
+										dbjs: user._surfaceArea })),
+							td(user.getDescriptor('surfaceArea').inputHint)
+						),
+						tr(
+							td(user.getDescriptor('inventory').label),
+							td(input({ control: { id: 'input-' + user._inventory },
+										dbjs: user._inventory })),
+							td(span({ class: 'user-guide-inventory-button' },
+									a({ href: '#inventory' },
+										span({ class: 'fa fa-calculator user-guide-inventory-icon' },
+												"Calculator"),
+										span({ class: 'user-guide-inventory-label' },
+												"Calculate the amount"))))
+						),
+						tr(
+							td(user.getDescriptor('businessActivity').label),
+							td(input({ control: { id: 'input-' + user._businessActivity },
+										dbjs: user._businessActivity })),
+							td(user.getDescriptor('businessActivity').inputHint)
+						)
+					)
 				)
 			),
 			fieldset(
 				{ class: 'form-elements' },
 				ul(
-					{ class: 'user-guide-lomas-form-complement' },
+					{ class: 'user-guide-lomas-form-complement-list' },
 					li(
 						div(input({ control: { id: 'input-' + user.notification },
 							dbjs: user._notification }))
 					),
 					li(
-						div(
-							p('Lorem ipsum dolor ist amet:')
-						),
+						p('Lorem ipsum dolor ist amet:'),
 						ul(
 							['isLomas', 'isLomas', 'isLomas', 'isLomas'],
 							function (name) {

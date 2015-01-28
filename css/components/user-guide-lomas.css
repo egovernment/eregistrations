@@ -121,50 +121,43 @@
 
 /* Second tab of form basci components containg table-like form wit complementary information */
 
-fieldset + fieldset .user-guide-lomas-form-complement {
-	padding-left: 15px;
-	border-left: 1px solid var(--normal-background);
+.user-guide-lomas-form-complement-table tbody tr:nth-of-type(odd) {
+	background: none;
 }
 
-.user-guide-lomas-form-complement .user-guide-inventory-button,
-.user-guide-lomas-form-complement .user-guide-inventory-button a {
+.user-guide-lomas-form-complement-table .user-guide-inventory-button,
+.user-guide-lomas-form-complement-table .user-guide-inventory-button a {
 	padding: 0;
 }
-.user-guide-lomas-form-complement .user-guide-inventory-icon {
-	margin-bottom: -11px;
-	margin-top: -5px;
-}
 
-.user-guide-lomas-form-complement > li:not(:last-child) {
+.user-guide-lomas-form-complement-table tbody tr:not(:last-child) {
 	border-bottom: 1px solid var(--normal-background);
 }
 
-.user-guide-lomas-form-complement > li > div {
-	display: flex;
-	margin: 11px 0;
+.user-guide-lomas-form-complement-table tbody tr td {
+	padding: 22px 0;
 }
 
-.user-guide-lomas-form-complement > li > div > span:first-child {
-	width: 40%;
-	margin: 11px 0;
+.user-guide-lomas-form-complement-list {
+	padding-left: 15px;
+	border-left: 1px solid var(--normal-background);
+}
+.user-guide-lomas-form-complement-list li {
+	margin-bottom: 11px;
+}
+.user-guide-lomas-form-complement-list > li:not(:last-child) {
+	border-bottom: 1px solid var(--normal-background);
+	padding-bottom: 10px;
 }
 
-.user-guide-lomas-form-complement > li > div > *:nth-child(2) {
-	width: 20%;
-	margin-right: 15px;
-	line-height: 44px;
+.user-guide-lomas-form-complement-list > li:not(:first-child) {
+	margin-top: 11px;
 }
-.user-guide-lomas-form-complement > li > div > *:nth-child(2) input {
-	max-width: 70%;
+.user-guide-lomas-form-complement-list > li > p {
+	margin-bottom: 11px;
 }
 
-.user-guide-lomas-form-complement > li > div > span:last-child {
-	width: 40%;
-	margin: 11px 0;
-	font-size: 12px;
-}
-
-.user-guide-lomas-form-complement > li > ul > li {
+.user-guide-lomas-form-complement-list > li > ul > li {
 	display: flex;
 	justify-content: space-between;
 }
