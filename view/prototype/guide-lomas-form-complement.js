@@ -27,13 +27,13 @@ exports['user-guide-lomas-form'] = function () {
 										span({ class: 'fa fa-calculator user-guide-inventory-icon' },
 												"Calculator"),
 										span({ class: 'user-guide-inventory-label' },
-												"Calculate the amount"))))
+												"Calculate"))),
+								a(span({ class: 'fa fa-print' }, "Print")))
 						),
 						tr(
 							td(user.getDescriptor('businessActivity').label),
-							td(input({ control: { id: 'input-' + user._businessActivity },
-										dbjs: user._businessActivity })),
-							td(user.getDescriptor('businessActivity').inputHint)
+							td({ colspan: 2 }, input({ control: { id: 'input-' + user._businessActivity },
+										dbjs: user._businessActivity }))
 						)
 					)
 				)
@@ -43,8 +43,8 @@ exports['user-guide-lomas-form'] = function () {
 				ul(
 					{ class: 'user-guide-lomas-form-complement-list' },
 					li(
-						div(input({ control: { id: 'input-' + user.notification },
-							dbjs: user._notification }))
+						input({ control: { id: 'input-' + user.notification },
+							dbjs: user._notification })
 					),
 					li(
 						p('Lorem ipsum dolor ist amet:'),

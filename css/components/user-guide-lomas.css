@@ -27,6 +27,7 @@
 	border: 1px solid var(--normal-background);
 	background-color: var(--light-medium-background);
 	padding: 21px 20px;
+	overflow-x: auto;
 }
 
 .user-guide-lomas-form-nav > li {
@@ -75,6 +76,7 @@
 
 .user-guide-lomas-form-components > form > section {
 	display: flex;
+	flex-wrap: wrap;
 }
 
 .user-guide-lomas-form-components fieldset:first-child {
@@ -135,15 +137,26 @@
 }
 
 .user-guide-lomas-form-complement-table tbody tr td {
-	padding: 22px 0;
+	padding: 22px 11px;
+}
+
+.user-guide-lomas-form-complement-table tbody tr td:nth-child(2) {
+	text-align: center;
+}
+.user-guide-lomas-form-complement-table tbody tr td:nth-child(3) {
+	text-align: left;
+	display: flex;
+	justify-content: space-between;
+}
+
+.user-guide-lomas-form-complement-table tbody tr td:last-child {
+	text-align: left;
 }
 
 .user-guide-lomas-form-complement-list {
 	padding-left: 15px;
 	border-left: 1px solid var(--normal-background);
-}
-.user-guide-lomas-form-complement-list li {
-	margin-bottom: 11px;
+	min-width: 200px;
 }
 .user-guide-lomas-form-complement-list > li:not(:last-child) {
 	border-bottom: 1px solid var(--normal-background);
@@ -160,6 +173,10 @@
 .user-guide-lomas-form-complement-list > li > ul > li {
 	display: flex;
 	justify-content: space-between;
+	margin-bottom: 11px;
+}
+.user-guide-lomas-form-complement-list > li > ul > li:last-child {
+	margin-bottom: 0;
 }
 
 /* Secondary informations section rules (displayed to user) */
