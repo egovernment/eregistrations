@@ -39,10 +39,10 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 		renderItem: function (file) {
 			var el = this.make, data = {}, remove, itemDom;
 
-			data.dom = el('li', { 'data-id': file.__id__ });
+			data.dom = el('li', { class: _if(file._name, null, 'empty'), 'data-id': file.__id__ });
 
 			remove = isNested(file)
-				? file._clear_.bind(file)
+				? file._destroy_.bind(file)
 				: this.removeItem.bind(this, data.dom);
 
 			itemDom = _if(file._name, el('span',

@@ -15,7 +15,7 @@ getContext = function (formEntity, sKeyPath) {
 		arrayFromName = sKeyPath.split('/');
 		sKey = arrayFromName[arrayFromName.length - 1];
 		for (i = 0; i < arrayFromName.length - 1; i++) {
-			context = context[arrayFromName[i]];
+			context = context[arrayFromName[i]] || {};
 		}
 	}
 	return { sKey: sKey, object: context };
