@@ -38,7 +38,18 @@ module.exports = memoize(function (db) {
 			if (!this.constructor.Document) return null;
 			return this.constructor.Document.legend;
 		} },
-		uniqueKey: { value: function () { return this.key; } }
+		uniqueKey: { value: function () { return this.key; } },
+		firstFile: { type: SubmissionFile, value: function (_observe) {
+			var result;
+			this.files.some(function (file) {
+				if (_observe(file._name)) {
+					result = file;
+					return true;
+				}
+			});
+
+			return result;
+		} }
 	}, {
 		Document: { type: db.Base }, //it's actually type: Type...but can't be defined like that now
 		validateWithOriginal: { type: db.Boolean, required: true, value: false }
