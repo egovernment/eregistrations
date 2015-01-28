@@ -266,27 +266,27 @@
 .user-guide-lomas-tab-conditions > ul > li > h3 {
 	padding: 11px;
 }
-.user-guide-lomas-tab-conditions > ul > li > table {
+.user-guide-lomas-tab-conditions table {
 	border-top: 1px solid var(--normal-background);
 	padding: 11px;
 
 }
-.user-guide-lomas-tab-conditions > ul > li > table > tbody tr:nth-of-type(odd) {
+.user-guide-lomas-tab-conditions table > tbody tr:nth-of-type(odd) {
 	background: none;
 }
-.user-guide-lomas-tab-conditions > ul > li > table > tbody tr td {
+.user-guide-lomas-tab-conditions table > tbody tr td {
 	padding: 11px 0;
 	vertical-align: top;
 }
-.user-guide-lomas-tab-conditions > ul > li > table > tbody tr td:first-child {
+.user-guide-lomas-tab-conditions table > tbody tr td:first-child {
 	padding: 11px 5px;
 	text-align: center;
 }
-.user-guide-lomas-tab-conditions > ul > li > table > tbody tr td:nth-child(2) {
+.user-guide-lomas-tab-conditions table > tbody tr td:nth-child(2) {
 	padding-right: 11px;
 	width: 60%;
 }
-.user-guide-lomas-tab-conditions > ul > li > table > tbody tr td a {
+.user-guide-lomas-tab-conditions table > tbody tr td a {
 	color: var(--hint-text);
 	white-space: nowrap;
 }
