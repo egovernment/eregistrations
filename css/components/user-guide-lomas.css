@@ -122,6 +122,9 @@
 }
 
 /* Second tab of form basci components containg table-like form wit complementary information */
+.user-guide-lomas-form-complement-table tbody {
+	vertical-align: baseline;
+}
 
 .user-guide-lomas-form-complement-table tbody tr:nth-of-type(odd) {
 	background: none;
@@ -137,7 +140,7 @@
 }
 
 .user-guide-lomas-form-complement-table tbody tr td {
-	padding: 22px 11px;
+	padding: 22px 5px;
 }
 
 .user-guide-lomas-form-complement-table tbody tr td:nth-child(2) {
