@@ -304,8 +304,11 @@
 	.user-guide-lomas-form-components fieldset {
 		width: 100%;
 	}
+	.user-guide-lomas-form-components fieldset:first-child {
+		border-bottom: 1px solid var(--normal-background);
+	}
 
-	fieldset + fieldset .user-guide-lomas-form-complement {
+	.user-guide-lomas-form-complement-list {
 		border-left: none;
 		padding-left: 0;
 	}
