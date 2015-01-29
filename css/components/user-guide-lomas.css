@@ -192,7 +192,7 @@
 .user-guide-lomas-result-summary {
 	margin-right: 2%;
 }
-.user-guide-lomas-result-summary tbody tr:nth-of-type(odd) {
+.user-guide-lomas-result-summary tr:nth-of-type(odd) {
 	background: none;
 }
 
@@ -272,22 +272,22 @@
 	padding: 11px;
 
 }
-.user-guide-lomas-tab-conditions table > tbody tr:nth-of-type(odd) {
+.user-guide-lomas-tab-conditions tr:nth-of-type(odd) {
 	background: none;
 }
-.user-guide-lomas-tab-conditions table > tbody tr td {
+.user-guide-lomas-tab-conditions td {
 	padding: 11px 0;
 	vertical-align: top;
 }
-.user-guide-lomas-tab-conditions table > tbody tr td:first-child {
+.user-guide-lomas-tab-conditions td:first-child {
 	padding: 11px 5px;
 	text-align: center;
 }
-.user-guide-lomas-tab-conditions table > tbody tr td:nth-child(2) {
+.user-guide-lomas-tab-conditions td:nth-child(2) {
 	padding-right: 11px;
 	width: 60%;
 }
-.user-guide-lomas-tab-conditions table > tbody tr td a {
+.user-guide-lomas-tab-conditions td a {
 	color: var(--hint-text);
 	white-space: nowrap;
 }
