@@ -16,7 +16,7 @@ getContext = function (formEntity, sKeyPath) {
 		sKey = arrayFromName[arrayFromName.length - 1];
 		for (i = 0; i < arrayFromName.length - 1; i++) {
 			context = context[arrayFromName[i]] || { master: formEntity.master,
-				key: formEntity.key, owner: formEntity.owner };
+				key: arrayFromName[i], owner: context };
 		}
 	}
 	return { sKey: sKey, object: context };
