@@ -39,16 +39,16 @@ module.exports = memoize(function (db) {
 			return this.constructor.Document.legend;
 		} },
 		uniqueKey: { value: function () { return this.key; } },
-		firstFile: { type: SubmissionFile, value: function (_observe) {
-			var result;
-			_observe(this.files).some(function (file) {
-				if (_observe(file._name)) {
-					result = file;
-					return true;
-				}
+		orderedFiles: { type: SubmissionFile, multiple: true, value: function (_observe) {
+			var files = [];
+			_observe(this.files).forEach(function (file) {
+				if (!_observe(file._name)) return;
+				files.push(file);
 			});
-
-			return result;
+			return files.sort(function (a, b) {
+				return a.getDescriptor('name')._lastOwnModified_ -
+					b.getDescriptor('name')._lastOwnModified_;
+			});
 		} }
 	}, {
 		Document: { type: db.Base }, //it's actually type: Type...but can't be defined like that now
