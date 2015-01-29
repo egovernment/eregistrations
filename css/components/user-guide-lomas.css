@@ -124,7 +124,7 @@
 	vertical-align: baseline;
 }
 
-.user-guide-lomas-form-complement-table tbody tr:nth-of-type(odd) {
+.user-guide-lomas-form-complement-table tr:nth-of-type(odd) {
 	background: none;
 }
 
@@ -133,24 +133,24 @@
 	padding: 0;
 }
 
-.user-guide-lomas-form-complement-table tbody tr:not(:last-child) {
+.user-guide-lomas-form-complement-table tr:not(:last-child) {
 	border-bottom: 1px solid var(--normal-background);
 }
 
-.user-guide-lomas-form-complement-table tbody tr td {
+.user-guide-lomas-form-complement-table td {
 	padding: 22px 5px;
 }
 
-.user-guide-lomas-form-complement-table tbody tr td:nth-child(2) {
+.user-guide-lomas-form-complement-table td:nth-child(2) {
 	text-align: center;
 }
-.user-guide-lomas-form-complement-table tbody tr td:nth-child(3) {
+.user-guide-lomas-form-complement-table td:nth-child(3) {
 	text-align: left;
 	display: flex;
 	justify-content: space-between;
 }
 
-.user-guide-lomas-form-complement-table tbody tr td:last-child {
+.user-guide-lomas-form-complement-table td:last-child {
 	text-align: left;
 }
 
