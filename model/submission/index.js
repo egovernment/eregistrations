@@ -38,7 +38,18 @@ module.exports = memoize(function (db) {
 			if (!this.constructor.Document) return null;
 			return this.constructor.Document.legend;
 		} },
-		uniqueKey: { value: function () { return this.key; } }
+		uniqueKey: { value: function () { return this.key; } },
+		orderedFiles: { type: SubmissionFile, multiple: true, value: function (_observe) {
+			var files = [];
+			_observe(this.files).forEach(function (file) {
+				if (!_observe(file._name)) return;
+				files.push(file);
+			});
+			return files.sort(function (a, b) {
+				return a.getDescriptor('name')._lastOwnModified_ -
+					b.getDescriptor('name')._lastOwnModified_;
+			});
+		} }
 	}, {
 		Document: { type: db.Base }, //it's actually type: Type...but can't be defined like that now
 		validateWithOriginal: { type: db.Boolean, required: true, value: false }

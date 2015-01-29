@@ -9,6 +9,9 @@ module.exports = memoize(function (db) {
 	var File, JpegFile;
 	validDb(db);
 	File     = defineFile(db);
+	File.prototype.url = function () {
+		return '/' + encodeURIComponent(this.path);
+	};
 	JpegFile = defineJpegFile(db);
 	File.extend('SubmissionFile', {
 		preview: { type: File, value: function () {

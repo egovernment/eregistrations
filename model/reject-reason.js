@@ -1,20 +1,26 @@
 'use strict';
 
-var Map = require('es6-map')
-  , db  = require('mano').db
-  , StringLine = require('dbjs-ext/string/string-line')(db)
-  , _ = require('mano').i18n.bind('Model: User');
+var memoize          = require('memoizee/plain')
+  , validDb          = require('dbjs/valid-dbjs')
+  , Map              = require('es6-map')
+  , _                = require('mano').i18n.bind('Model: User')
+  , defineStringLine = require('dbjs-ext/string/string-line');
 
-require('dbjs-ext/create-enum')(db);
+module.exports = memoize(function (db) {
+	var StringLine;
+	validDb(db);
+	StringLine = defineStringLine(db);
+	require('dbjs-ext/create-enum')(db);
 
-module.exports = StringLine.createEnum('RejectReason', new Map([
-	["illegible", {
-		label: _("The document is unreadable")
-	}],
-	["invalid", {
-		label: _("The loaded document does not match the required document")
-	}],
-	["other", {
-		label: _("Other") + "..."
-	}]
-]));
+	return StringLine.createEnum('RejectReason', new Map([
+		["illegible", {
+			label: _("The document is unreadable")
+		}],
+		["invalid", {
+			label: _("The loaded document does not match the required document")
+		}],
+		["other", {
+			label: _("Other") + "..."
+		}]
+	]));
+}, { normalizer: require('memoizee/normalizers/get-1')() });
