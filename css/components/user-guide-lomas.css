@@ -65,6 +65,7 @@
 }
 .user-guide-lomas-info > span {
 	display: table;
+	margin: 2px 3px 0 0;
 }
 
 .user-guide-lomas-form-components > form {
