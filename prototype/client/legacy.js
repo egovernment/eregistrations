@@ -11,7 +11,7 @@ require('mano-legacy/hash-nav');
 require('mano-legacy/hash-nav-modal');
 require('mano-legacy/hash-nav-ordered-list');
 require('mano-legacy/hash-nav-ordered-list-controls');
-require('mano-legacy/tabs');
+require('mano-legacy/hash-nav-tabs');
 
 require('../../client/legacy/form-section-state-helper');
 require('../../common/legacy/date-controls');

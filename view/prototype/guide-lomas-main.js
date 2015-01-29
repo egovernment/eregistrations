@@ -1,5 +1,7 @@
 'use strict';
 
+var location = require('mano/lib/client/location');
+
 exports['step-guide'] = { class: { 'step-active': true } };
 
 require('./_inventory');
@@ -27,7 +29,7 @@ exports.step = function () {
 			li(
 				{ id: 'basic-info-tab' },
 				a(
-					{ href: '/guide-lomas/' },
+					{ href: mmap(location._hash, function (hash) { return '/guide-lomas/' + hash; }) },
 					span({ class: 'fa fa-map-marker' }, "Location"),
 					"Location of company"
 				)
@@ -36,7 +38,8 @@ exports.step = function () {
 			li(
 				{ id: 'additional-info-tab' },
 				a(
-					{ href: '/guide-lomas/form-complement/' },
+					{ href: mmap(location._hash,
+						function (hash) { return '/guide-lomas/form-complement/' + hash; }) },
 					span({ class: 'fa fa-folder-open' }, "Informations"),
 					"Other informations"
 				)
@@ -93,7 +96,7 @@ exports.step = function () {
 	section(
 		ul(
 			{ class: 'section-tab-nav', id: 'lomas-guide-tabs' },
-			li(a({ class: 'section-tab-nav-tab', href: '#req-tab' },
+			li(a({ class: 'section-tab-nav-tab', href: '.' },
 				"Requirements (10)")),
 			li(a({ class: 'section-tab-nav-tab', href: '#cost-tab' },
 				"Costs (120$)")),
@@ -290,7 +293,7 @@ exports.step = function () {
 		)
 	);
 
-	legacy('tabs', 'lomas-guide-tabs');
+	legacy('hashNavTabs', 'lomas-guide-tabs', 'req-tab');
 
 	p({ class: 'user-next-step-button' },
 			button({ type: 'submit' },
