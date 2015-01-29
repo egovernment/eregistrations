@@ -1,0 +1,333 @@
+/* Basic rules, for layout bulding */
+
+.user-guide-lomas-form > *,
+.user-guide-lomas-form-components > form > * {
+	margin-bottom: 22px;
+}
+.user-guide-lomas-form > *:last-child,
+.user-guide-lomas-form-components > form > *:last-child {
+	margin-bottom: 0;
+}
+
+/* Intro section rules */
+
+.user-guide-lomas-intro > p:first-child {
+	font-weight: bold;
+}
+
+.user-guide-lomas-intro > ol {
+	list-style-type: decimal;
+	padding-left: 22px;
+}
+
+/* Basic informations section rules (map etc.) */
+
+.user-guide-lomas-form {
+	border-radius: 5px;
+	border: 1px solid var(--normal-background);
+	background-color: var(--light-medium-background);
+	padding: 21px 20px;
+	overflow-x: auto;
+}
+
+.user-guide-lomas-form-nav > li {
+	display: inline-block;
+	line-height: 44px;
+}
+
+.user-guide-lomas-form-nav a {
+	font-size: 15px;
+	display: block;
+	border-radius: 5px;
+	padding: 0 10px;
+}
+.user-guide-lomas-form-nav .active a,
+.user-guide-lomas-form-nav a:hover,
+.user-guide-lomas-form-nav a:focus,
+.user-guide-lomas-form-nav a:active {
+	background: var(--normal-light-medium-background);
+	color: var(--dark-background);
+}
+
+.user-guide-lomas-form-nav span {
+	color: white;
+	font-size: 28px;
+	vertical-align: middle;
+	margin-right: 10px;
+}
+
+.user-guide-lomas-form-nav-separator {
+	padding: 0 10px;
+}
+
+.user-guide-lomas-info {
+	display: flex;
+}
+.user-guide-lomas-info > span {
+	display: table;
+	margin: 2px 3px 0 0;
+}
+
+.user-guide-lomas-form-components > form {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.user-guide-lomas-form-components > form > section {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.user-guide-lomas-form-components fieldset {
+	width: 30%;
+}
+
+.user-guide-lomas-form-components fieldset:first-child {
+	width: 66%;
+	margin-right: 2%;
+}
+
+.user-guide-lomas-form-components fieldset img {
+	max-width: 100%;
+}
+
+.user-guide-lomas-form-components fieldset li > ul > li {
+	display: flex;
+	justify-content: space-between;
+	line-height: 22px;
+}
+
+.user-guide-lomas-form-components fieldset li > ul > li .radio {
+	padding-top: 0;
+}
+
+.user-guide-lomas-form-street {
+	width: 80%;
+}
+.user-guide-lomas-form-street-no {
+	width: 20%;
+}
+
+.user-guide-lomas-form-components-submit {
+	display: flex;
+}
+
+.user-guide-lomas-form-components-submit .user-guide-lomas-info {
+	max-width: 50%
+}
+
+.user-guide-lomas-form-components-submit-container {
+	margin-top: 7px;
+	margin-right: 20px;
+}
+
+/* Second tab of form basci components containg table-like form wit complementary information */
+.user-guide-lomas-form-complement-table tbody {
+	vertical-align: baseline;
+}
+
+.user-guide-lomas-form-complement-table tr:nth-of-type(odd) {
+	background: none;
+}
+
+.user-guide-lomas-form-complement-table .user-guide-inventory-button,
+.user-guide-lomas-form-complement-table .user-guide-inventory-button a {
+	padding: 0;
+}
+
+.user-guide-lomas-form-complement-table tr:not(:last-child) {
+	border-bottom: 1px solid var(--normal-background);
+}
+
+.user-guide-lomas-form-complement-table td {
+	padding: 22px 5px;
+}
+
+.user-guide-lomas-form-complement-table td:nth-child(2) {
+	text-align: center;
+}
+.user-guide-lomas-form-complement-table td:nth-child(3) {
+	text-align: left;
+	display: flex;
+	justify-content: space-between;
+}
+
+.user-guide-lomas-form-complement-table td:last-child {
+	text-align: left;
+}
+
+.user-guide-lomas-form-complement-list {
+	padding-left: 15px;
+	border-left: 1px solid var(--normal-background);
+	min-width: 230px;
+}
+.user-guide-lomas-form-complement-list > li:not(:last-child) {
+	border-bottom: 1px solid var(--normal-background);
+	padding-bottom: 10px;
+}
+
+.user-guide-lomas-form-complement-list > li:not(:first-child) {
+	margin-top: 11px;
+}
+.user-guide-lomas-form-complement-list > li > p {
+	margin-bottom: 11px;
+}
+
+.user-guide-lomas-form-complement-list > li > ul > li {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 11px;
+}
+.user-guide-lomas-form-complement-list > li > ul > li:last-child {
+	margin-bottom: 0;
+}
+
+/* Secondary informations section rules (displayed to user) */
+
+.user-guide-lomas-result {
+	display: flex;
+}
+.user-guide-lomas-result-summary,
+.user-guide-lomas-result-process {
+	width: 49%;
+}
+.user-guide-lomas-result-summary {
+	margin-right: 2%;
+}
+.user-guide-lomas-result-summary tr:nth-of-type(odd) {
+	background: none;
+}
+
+.user-guide-lomas-result-summary tr {
+	vertical-align: top;
+}
+
+.user-guide-lomas-result-business-category {
+	width: 15%;
+	text-align: right;
+	font-weight: bold;
+	padding-right: 5px;
+}
+.user-guide-lomas-result-business-description {
+	line-height: 22px;
+	padding: 0 0 11px 5px;
+}
+
+.user-guide-lomas-result-process ol {
+	list-style-type: decimal;
+	padding-left: 22px;
+}
+
+/* Tabs summary informations section rules (displayed to user) */
+
+.user-guide-lomas-tab {
+	display: none;
+}
+.user-guide-lomas-tab.active {
+	display: block;
+}
+
+/* Requirements tab */
+
+.user-guide-lomas-tab-requirements li {
+	margin-bottom: 11px;
+}
+
+.user-guide-lomas-tab-requirements li > span {
+	margin-right: 10px;
+}
+
+/* Costs tab */
+
+.user-guide-lomas-tab-costs ul li {
+	display: flex;
+	margin-bottom: 11px;
+	vertical-align: middle;
+}
+.user-guide-lomas-cost-value {
+	width: 5%;
+	text-align: right;
+	margin-right: 5px;
+	font-weight: bold;
+	display: table; /* as in input-aside component */
+}
+.user-guide-lomas-tab-cost-description {
+	width: 90%;
+	line-height: 22px;
+}
+
+/* Conditions tab */
+
+.user-guide-lomas-tab-conditions > ul > li {
+	border: 1px solid var(--normal-background);
+	border-radius: 5px;
+	margin-bottom: 22px;
+}
+.user-guide-lomas-tab-conditions > ul > li:last-child {
+	margin-bottom: 0;
+}
+.user-guide-lomas-tab-conditions > ul > li > h3 {
+	padding: 11px;
+}
+.user-guide-lomas-tab-conditions table {
+	border-top: 1px solid var(--normal-background);
+	padding: 11px;
+
+}
+.user-guide-lomas-tab-conditions tr:nth-of-type(odd) {
+	background: none;
+}
+.user-guide-lomas-tab-conditions td {
+	padding: 11px 0;
+	vertical-align: top;
+}
+.user-guide-lomas-tab-conditions td:first-child {
+	padding: 11px 5px;
+	text-align: center;
+}
+.user-guide-lomas-tab-conditions td:nth-child(2) {
+	padding-right: 11px;
+	width: 60%;
+}
+.user-guide-lomas-tab-conditions td a {
+	color: var(--hint-text);
+	white-space: nowrap;
+}
+
+/* Responsive styles for lomas-guide */
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.user-guide-lomas-form-components > form > section {
+		flex-wrap: wrap;
+	}
+	.user-guide-lomas-form-components fieldset:first-child {
+		margin-bottom: 22px;
+	}
+	.user-guide-lomas-form-components fieldset:first-child,
+	.user-guide-lomas-form-components fieldset {
+		width: 100%;
+	}
+	.user-guide-lomas-form-components fieldset:first-child {
+		border-bottom: 1px solid var(--normal-background);
+	}
+
+	.user-guide-lomas-form-complement-list {
+		border-left: none;
+		padding-left: 0;
+	}
+	.user-guide-lomas-form .radio li {
+		display: inline-block;
+	}
+
+	.user-guide-lomas-result {
+		flex-wrap: wrap;
+	}
+	.user-guide-lomas-result-summary,
+	.user-guide-lomas-result-process {
+		width: 100%;
+		margin: 0;
+	}
+	.user-guide-lomas-result-summary {
+		margin-bottom: 22px;
+	}
+}

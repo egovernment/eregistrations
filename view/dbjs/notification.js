@@ -10,9 +10,9 @@ Object.defineProperties(db.User.prototype.getDescriptor('notification'), {
 		class: 'multiline',
 		renderOption: function (labelTxt) {
 			var data = {};
-			data.dom = ns.label({ class: 'input-aside' },
+			data.dom = ns.li(ns.label({ class: 'input-aside' },
 				ns.span(data.input = ns.input()),
-				ns.span(labelTxt));
+				ns.span(labelTxt)));
 			return data;
 		}
 	})
