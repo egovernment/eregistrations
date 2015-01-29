@@ -78,20 +78,13 @@
 	flex-wrap: wrap;
 }
 
-.user-guide-lomas-form-components fieldset:first-child {
-	width: 66%;
-	margin-right: 2%;
-}
-
 .user-guide-lomas-form-components fieldset {
 	width: 30%;
 }
 
-.user-guide-lomas-form-components fieldset:first-child .input > input:first-child {
-	width: 80%;
-}
-.user-guide-lomas-form-components fieldset:first-child .input > input:last-child {
-	width: 20%;
+.user-guide-lomas-form-components fieldset:first-child {
+	width: 66%;
+	margin-right: 2%;
 }
 
 .user-guide-lomas-form-components fieldset img {
@@ -103,19 +96,27 @@
 	justify-content: space-between;
 	line-height: 22px;
 }
+
 .user-guide-lomas-form-components fieldset li > ul > li .radio {
 	padding-top: 0;
 }
 
-.user-guide-lomas-form-components form > div:last-child {
+.user-guide-lomas-form-street {
+	width: 80%;
+}
+.user-guide-lomas-form-street-no {
+	width: 20%;
+}
+
+.user-guide-lomas-form-components-submit {
 	display: flex;
 }
 
-.user-guide-lomas-form-components form > div:last-child > p:last-child {
+.user-guide-lomas-form-components-submit .user-guide-lomas-info {
 	max-width: 50%
 }
 
-.user-guide-lomas-form-components form > div:last-child > p:first-child {
+.user-guide-lomas-form-components-submit-container {
 	margin-top: 7px;
 	margin-right: 20px;
 }

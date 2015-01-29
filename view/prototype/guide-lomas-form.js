@@ -11,8 +11,8 @@ exports['user-guide-lomas-form'] = function () {
 			fieldset(
 				p("Address of your business?"),
 				div({ class: 'input' },
-					input({ type: 'text' }),
-					input({ type: 'number' })
+					input({ class: 'user-guide-lomas-form-street', type: 'text' }),
+					input({ class: 'user-guide-lomas-form-street-no', type: 'number' })
 					),
 				div(
 					img({ src: '/img/map.png' })
@@ -57,7 +57,9 @@ exports['user-guide-lomas-form'] = function () {
 			)
 		),
 		div(
-			p(input({ type: 'submit' })),
+			{ class: 'user-guide-lomas-form-components-submit' },
+			p({ class: 'user-guide-lomas-form-components-submit-container' },
+					input({ type: 'submit' })),
 			p({ class: 'user-guide-lomas-info' },
 				span(span({ class: 'fa fa-info-circle user-guide-lomas-info-icon' },
 					"Information:")),
