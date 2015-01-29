@@ -41,7 +41,7 @@ module.exports = memoize(function (db) {
 		uniqueKey: { value: function () { return this.key; } },
 		firstFile: { type: SubmissionFile, value: function (_observe) {
 			var result;
-			this.files.some(function (file) {
+			_observe(this.files).some(function (file) {
 				if (_observe(file._name)) {
 					result = file;
 					return true;
