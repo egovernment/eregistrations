@@ -81,6 +81,12 @@ exports.step = function () {
 		div(
 			{ class: 'section-primary user-guide-lomas-result-process' },
 			h3("Your qualification process"),
+			div(
+				{ class: 'user-guide-lomas-result-warning' },
+				p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+					"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
+					"Praesent porttitor dui a ante luctus gravida.")
+			),
 			ol(
 				li("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 						"Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
