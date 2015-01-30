@@ -218,6 +218,13 @@
 	padding-left: 22px;
 }
 
+.user-guide-lomas-result-warning {
+	border-radius: 5px;
+	border: 1px solid var(--normal-background);
+	background-color: var(--light-medium-background);
+	padding: 10px 10px;
+}
+
 /* Tabs summary informations section rules (displayed to user) */
 
 .user-guide-lomas-tab {
