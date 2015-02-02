@@ -146,7 +146,7 @@
 .user-guide-lomas-form-complement-table td:nth-child(2) {
 	text-align: center;
 }
-.user-guide-lomas-form-complement-table td:nth-child(3) {
+.user-guide-lomas-form-complement-table td:nth-child(3) > div {
 	text-align: left;
 	display: flex;
 	justify-content: space-between;
@@ -299,6 +299,14 @@
 .user-guide-lomas-tab-conditions td a {
 	color: var(--hint-text);
 	white-space: nowrap;
+}
+
+/* FireFox fixes for lomas-guide */
+
+@-moz-document url-prefix() {
+	.user-guide-lomas-form-complement-table td:nth-child(3) > div {
+		margin-bottom: -8px;
+	}
 }
 
 /* Responsive styles for lomas-guide */

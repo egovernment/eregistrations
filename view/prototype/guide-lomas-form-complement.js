@@ -22,13 +22,13 @@ exports['user-guide-lomas-form'] = function () {
 							td(user.getDescriptor('inventory').label),
 							td(input({ control: { id: 'input-' + user._inventory },
 										dbjs: user._inventory })),
-							td(span({ class: 'user-guide-inventory-button' },
+							td(div(span({ class: 'user-guide-inventory-button' },
 									a({ href: '#inventory' },
 										span({ class: 'fa fa-calculator user-guide-inventory-icon' },
 												"Calculator"),
 										span({ class: 'user-guide-inventory-label' },
 												"Calculate"))),
-								a(span({ class: 'fa fa-print' }, "Print")))
+								a(span({ class: 'fa fa-print' }, "Print"))))
 						),
 						tr(
 							td(user.getDescriptor('businessActivity').label),
