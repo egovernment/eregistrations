@@ -81,6 +81,13 @@
 	border-bottom-right-radius: 3px;
 }
 
+/* Safari 8+ fixes for inventory-label */
+
+_::-webkit-full-page-media, _:future, :root .user-guide-inventory-label {
+	position: relative;
+	bottom: 4px;
+}
+
 .user-guide-inventory-button a {
 	padding-left: 10px;
 	text-decoration: none;
