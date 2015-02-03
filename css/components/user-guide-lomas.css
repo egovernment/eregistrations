@@ -150,6 +150,13 @@
 	margin-left: 20px;
 }
 
+/* Safari 8+ fixes for guide-lomas-form-complement inventory button */
+
+_::-webkit-full-page-media, _:future, :root .user-guide-lomas-form-complement-table td:nth-child(3) > .user-guide-inventory-button {
+	position: relative;
+	top: 4px;
+}
+
 .user-guide-lomas-form-complement-table td:last-child {
 	text-align: left;
 }
