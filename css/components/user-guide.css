@@ -83,9 +83,9 @@
 
 /* Safari 8+ fixes for inventory-label */
 
-_::-webkit-full-page-media, _:future, :root .user-guide-inventory-label {
+_::-webkit-full-page-media, _:future, :root .user-guide-inventory-icon {
+	top: 4px;
 	position: relative;
-	bottom: 4px;
 }
 
 .user-guide-inventory-button a {
