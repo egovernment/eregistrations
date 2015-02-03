@@ -146,25 +146,8 @@
 .user-guide-lomas-form-complement-table td:nth-child(2) {
 	text-align: center;
 }
-.user-guide-lomas-form-complement-table td:nth-child(3) > div {
-	text-align: left;
-	display: flex;
-	justify-content: space-between;
-}
-
-/* FireFox fixes for guide-lomas-form-complement */
-
-@-moz-document url-prefix() {
-	.user-guide-lomas-form-complement-table td:nth-child(3) > div {
-		margin-bottom: -8px;
-	}
-}
-
-/* Safari 8+ fixes for guide-lomas-form-complement */
-
-_::-webkit-full-page-media, _:future, :root .user-guide-lomas-form-complement-table td:nth-child(3) > div {
-	position: relative;
-	top: 4px;
+.user-guide-lomas-form-complement-table td:nth-child(3) > a:last-child {
+	margin-left: 20px;
 }
 
 .user-guide-lomas-form-complement-table td:last-child {
