@@ -1,0 +1,5 @@
+.user-guide-lomas-form-components > form > section > *,
+.user-guide-lomas-result > * {
+	display: inline-block;
+	vertical-align: top;
+}
