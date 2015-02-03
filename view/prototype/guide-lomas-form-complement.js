@@ -28,7 +28,7 @@ exports['user-guide-lomas-form'] = function () {
 												"Calculator"),
 										span({ class: 'user-guide-inventory-label' },
 												"Calculate"))),
-								a({ class: 'user-guide-lomas-form-complement-print' },
+								a({ class: 'user-guide-lomas-inventory-print' },
 										span({ class: 'fa fa-print' }, "Print")))
 						),
 						tr(
