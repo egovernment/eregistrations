@@ -72,6 +72,13 @@
 	}
 }
 
+/* Safari 8+ fixes for inventory-icon */
+
+_::-webkit-full-page-media, _:future, :root .user-guide-inventory-icon {
+	top: 4px;
+	position: relative;
+}
+
 .user-guide-inventory-label {
 	background: var(--normal-background);
 	color: var(--white-text);
@@ -79,13 +86,6 @@
 	margin-left: -2px;
 	border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
-}
-
-/* Safari 8+ fixes for inventory-label */
-
-_::-webkit-full-page-media, _:future, :root .user-guide-inventory-icon {
-	top: 4px;
-	position: relative;
 }
 
 .user-guide-inventory-button a {
