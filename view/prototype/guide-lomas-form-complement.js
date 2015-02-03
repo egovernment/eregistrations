@@ -28,7 +28,8 @@ exports['user-guide-lomas-form'] = function () {
 												"Calculator"),
 										span({ class: 'user-guide-inventory-label' },
 												"Calculate"))),
-								a(span({ class: 'fa fa-print' }, "Print")))
+								a({ class: 'user-guide-lomas-form-complement-print' },
+										span({ class: 'fa fa-print' }, "Print")))
 						),
 						tr(
 							td(user.getDescriptor('businessActivity').label),
