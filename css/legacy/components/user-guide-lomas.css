@@ -1,0 +1,19 @@
+.user-guide-lomas-form-components > form > section > *,
+.user-guide-lomas-result > * {
+	display: inline-block;
+	vertical-align: top;
+}
+.user-guide-lomas-info {
+	display: block;
+}
+.user-guide-lomas-cost-value {
+	display: inline-block;
+}
+
+.user-guide-lomas-form-complement-table tr {
+	border-bottom: 1px solid #999;
+}
+
+.user-guide-lomas-form-complement-table tr:last-child {
+	border-bottom: none;
+}

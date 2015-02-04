@@ -63,13 +63,19 @@
 .user-guide-inventory-icon {
 	font-size: 30px;
 	margin-bottom: -10px;
-	margin-top: -4px;
+	margin-top: -5px;
 }
 @-moz-document url-prefix() {
 	.user-guide-inventory-button .fa-calculator {
 		margin-bottom: -11px;
-		margin-top: -5px;
 	}
+}
+
+/* Safari 8+ fixes for inventory-icon */
+
+_::-webkit-full-page-media, _:future, :root .user-guide-inventory-icon {
+	top: 4px;
+	position: relative;
 }
 
 .user-guide-inventory-label {
