@@ -9,3 +9,11 @@
 .user-guide-lomas-cost-value {
 	display: inline-block;
 }
+
+.user-guide-lomas-form-complement-table tr {
+	border-bottom: 1px solid #999;
+}
+
+.user-guide-lomas-form-complement-table tr:last-child {
+	border-bottom: none;
+}
