@@ -87,8 +87,9 @@
 	margin-right: 2%;
 }
 
-.user-guide-lomas-form-components fieldset img {
-	max-width: 100%;
+.user-guide-lomas-map {
+	width: 100%;
+	height: 220px;
 }
 
 .user-guide-lomas-form-components fieldset li > ul > li {

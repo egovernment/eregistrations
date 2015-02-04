@@ -14,9 +14,7 @@ exports['user-guide-lomas-form'] = function () {
 					input({ class: 'user-guide-lomas-form-street', type: 'text' }),
 					input({ class: 'user-guide-lomas-form-street-no', type: 'number' })
 					),
-				div(
-					img({ src: '/img/map.png' })
-				),
+				div({ class: 'user-guide-lomas-map', style: 'background-image: url(\'../img/map.png\')' }),
 				p({ class: 'user-guide-lomas-info' },
 					span(span({ class: 'fa fa-info-circle user-guide-lomas-info-icon' }, "Information:")),
 					"Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
