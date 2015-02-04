@@ -140,11 +140,12 @@
 }
 
 .user-guide-lomas-form-complement-table td {
-	padding: 22px 5px;
+	padding: 11px 5px;
 }
 
 .user-guide-lomas-form-complement-table td:nth-child(2) {
 	text-align: center;
+	line-height: 44px;
 }
 .user-guide-lomas-inventory-print {
 	margin-left: 20px;
