@@ -140,12 +140,20 @@
 }
 
 .user-guide-lomas-form-complement-table td {
-	padding: 11px 5px;
+	padding: 22px 5px;
 }
 
-.user-guide-lomas-form-complement-table td:nth-child(2) {
+.user-guide-lomas-form-complement-table tr:not(:last-child) td {
+	padding-bottom: 21px;
+}
+.user-guide-lomas-form-complement-table tr:not(:last-child) .user-guide-lomas-controls-cell {
+	padding-bottom: 10px;
+}
+
+.user-guide-lomas-form-complement-table .user-guide-lomas-controls-cell {
 	text-align: center;
 	line-height: 44px;
+	padding: 11px 5px;
 }
 .user-guide-lomas-inventory-print {
 	margin-left: 20px;

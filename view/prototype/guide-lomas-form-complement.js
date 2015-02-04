@@ -14,13 +14,15 @@ exports['user-guide-lomas-form'] = function () {
 					tbody(
 						tr(
 							td(user.getDescriptor('surfaceArea').label),
-							td(input({ control: { id: 'input-' + user._surfaceArea },
+							td({ class: 'user-guide-lomas-controls-cell' },
+									input({ control: { id: 'input-' + user._surfaceArea },
 										dbjs: user._surfaceArea })),
 							td(user.getDescriptor('surfaceArea').inputHint)
 						),
 						tr(
 							td(user.getDescriptor('inventory').label),
-							td(input({ control: { id: 'input-' + user._inventory },
+							td({ class: 'user-guide-lomas-controls-cell' },
+									input({ control: { id: 'input-' + user._inventory },
 										dbjs: user._inventory })),
 							td(span({ class: 'user-guide-inventory-button' },
 									a({ href: '#inventory' },
@@ -33,7 +35,8 @@ exports['user-guide-lomas-form'] = function () {
 						),
 						tr(
 							td(user.getDescriptor('businessActivity').label),
-							td({ colspan: 2 }, input({ control: { id: 'input-' + user._businessActivity },
+							td({ colspan: 2, class: 'user-guide-lomas-controls-cell' },
+									input({ control: { id: 'input-' + user._businessActivity },
 										dbjs: user._businessActivity }))
 						)
 					)
