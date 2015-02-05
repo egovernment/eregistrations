@@ -9,7 +9,7 @@ module.exports = memoize(function (db) {
 	validDb(db);
 	StringLine = defineStringLine(db);
 
-	db.Object.extend('Registration', {
+	return db.Object.extend('Registration', {
 		label: {
 			type: StringLine,
 			value: function () {
@@ -44,10 +44,6 @@ module.exports = memoize(function (db) {
 		}
 	}, {
 		Document: { type: db.Base }, // It should be a type: Type, but can't be defined like that now
-		abbr: {
-			type: StringLine
-		}
+		abbr: { type: StringLine }
 	});
-
-	return db.Registration;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
