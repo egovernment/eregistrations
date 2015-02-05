@@ -12,11 +12,14 @@ module.exports = memoize(function (db) {
 	Submission = defineSubmission(db);
 	db.Object.extend('Requirement', {
 		isApplicable: { type: db.Boolean, value: true },
-		submissions: { type: Submission, multiple: true },
+		submissions: { type: Submission, multiple: true, value: function () {
+			return [this.master.submissions[this.uniqueKey]];
+		} },
 		label: { type: StringLine, value: function () {
 			if (!this.constructor.Document) return null;
 			return this.constructor.Document.label;
-		} }
+		} },
+		uniqueKey: { value: function () { return this.key; } }
 	}, {
 		Document: { type: db.Base } //it's actually type: Type...but can't be defined like that now
 	});
