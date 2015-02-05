@@ -33,7 +33,6 @@ module.exports = memoize(function (db) {
 		isMandatory: {
 			type: db.Boolean,
 			value: true
-
 		},
 		isApplicable: {
 			type: db.Boolean,
