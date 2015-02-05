@@ -75,10 +75,5 @@ module.exports = memoize(function (db) {
 		}
 	});
 
-	User.prototype.registrations._descriptorPrototype_.setProperties({
-		nested: true,
-		type: Registration
-	});
-
 	return db.User;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
