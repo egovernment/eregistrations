@@ -10,6 +10,13 @@ module.exports = memoize(function (db) {
 	StringLine = defineStringLine(db);
 
 	db.Object.extend('Registration', {
+		label: {
+			type: StringLine,
+			value: function () {
+				var Document = this.constructor.Document;
+				return Document ? Document.label : null;
+			}
+		},
 		certificates: {
 			type: StringLine,
 			multiple: true,
@@ -38,9 +45,6 @@ module.exports = memoize(function (db) {
 		}
 	}, {
 		Document: { type: db.Base }, // It should be a type: Type, but can't be defined like that now
-		label: {
-			type: StringLine
-		},
 		abbr: {
 			type: StringLine
 		}
