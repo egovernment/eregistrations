@@ -42,6 +42,12 @@
 	white-space: nowrap;
 }
 
+/* Sets fix width and line brake for hints containing long strings */
+.hint-optional-multiline:after {
+	white-space: normal;
+	width: 300px;
+}
+
 /**
 * source: hint-position.scss
 *
