@@ -37,6 +37,7 @@ module.exports = memoize(function (db) {
 			value: true
 		}
 	}, {
+		Document: { type: db.Base }, // It should be a type: Type, but can't be defined like that now
 		label: {
 			type: StringLine
 		},
