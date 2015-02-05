@@ -46,6 +46,6 @@ module.exports = memoize(function (db) {
 		Document: { type: db.Base }, // It should be a type: Type, but can't be defined like that now
 		abbr: { type: StringLine },
 		institution: { type: Institution },
-		isElectronic: { type: Boolean, value: false }
+		isElectronic: { type: db.Boolean, value: false }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
