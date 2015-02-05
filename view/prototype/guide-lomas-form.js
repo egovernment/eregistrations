@@ -32,12 +32,13 @@ exports['user-guide-lomas-form'] = function () {
 					function (name) {
 						if (name === 'questions') {
 							ul(
-								['isLomas', 'isLomas', 'isLomas', 'isLomas', 'isLomas', 'isLomas',
-									'isLomas', 'isLomas', 'isLomas', 'isLomas'],
+								['isLomas', 'isLomas', 'isLomasLong', 'isLomas', 'isLomas', 'isLomas',
+									'isLomas', 'isLomasLong', 'isLomas', 'isLomas'],
 								function (name) {
 									li(
 										{ class: 'input' },
-										span(user.getDescriptor(name).label),
+										span({ class: 'user-guide-lomas-form-question' },
+												user.getDescriptor(name).label),
 										input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) })
 									);
 								}
