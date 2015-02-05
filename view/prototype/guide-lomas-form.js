@@ -32,8 +32,8 @@ exports['user-guide-lomas-form'] = function () {
 					function (name) {
 						if (name === 'questions') {
 							ul(
-								['isLomas', 'isLomas', 'isLomas', 'isLomas', 'isLomas', 'isLomas',
-									'isLomas', 'isLomas', 'isLomas', 'isLomas'],
+								['isLomas', 'isLomas', 'isLomasLong', 'isLomas', 'isLomas', 'isLomas',
+									'isLomas', 'isLomasLong', 'isLomas', 'isLomas'],
 								function (name) {
 									li(
 										{ class: 'input' },
