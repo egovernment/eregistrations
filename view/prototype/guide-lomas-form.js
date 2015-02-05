@@ -24,7 +24,7 @@ exports['user-guide-lomas-form'] = function () {
 			fieldset(
 				p("Business activity?"),
 				ul({ class: 'form-elements' },
-					['businessActivity',
+					['lomasActivity',
 						'surfaceArea',
 						'descriptionText',
 						'questions'
