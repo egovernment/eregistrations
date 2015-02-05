@@ -23,9 +23,7 @@ module.exports = memoize(function (db) {
 			value: function () {
 				var regs = [];
 				this.registrations.forEach(function (reg) {
-					if (reg.isApplicable) {
-						regs.push(reg.key);
-					}
+					if (reg.isApplicable) regs.push(reg.key);
 				}, this);
 				return regs;
 			}
@@ -37,9 +35,7 @@ module.exports = memoize(function (db) {
 				var regs = [];
 				this.applicableRegistrations.forEach(function (regName) {
 					var registration = this.registrations[regName];
-					if (registration.isMandatory) {
-						regs.push(regName);
-					}
+					if (registration.isMandatory) regs.push(regName);
 				}, this);
 				return regs;
 			}
@@ -52,9 +48,7 @@ module.exports = memoize(function (db) {
 				var regs = [];
 				this.applicableRegistrations.forEach(function (regName) {
 					var registration = this.registrations[regName];
-					if (!registration.isMandatory) {
-						regs.push(regName);
-					}
+					if (!registration.isMandatory) regs.push(regName);
 				}, this);
 				return regs;
 			}
@@ -66,9 +60,7 @@ module.exports = memoize(function (db) {
 				var regs = [];
 				this.applicableRegistrations.forEach(function (regName) {
 					var registration = this.registrations[regName];
-					if (registration.isRequested) {
-						regs.push(regName);
-					}
+					if (registration.isRequested) regs.push(regName);
 				}, this);
 				return regs;
 			}
