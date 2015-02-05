@@ -2,16 +2,19 @@
 
 var memoize          = require('memoizee/plain')
   , validDb          = require('dbjs/valid-dbjs')
-  , defineStringLine = require('dbjs-ext/string/string-line')
-  , defineDocument   = require('./document');
+  , defineStringLine = require('dbjs-ext/string/string-line');
 
 module.exports = memoize(function (db) {
-	var StringLine, Document;
+	var StringLine;
 	validDb(db);
 	StringLine = defineStringLine(db);
-	Document   = defineDocument(db);
 
 	db.Object.extend('Registration', {
+		certificates: {
+			type: StringLine,
+			multiple: true,
+			value: function () { return [this.key]; }
+		},
 		requirements: {
 			type: StringLine,
 			multiple: true
@@ -39,10 +42,6 @@ module.exports = memoize(function (db) {
 		},
 		abbr: {
 			type: StringLine
-		},
-		certificates: {
-			type: Document,
-			multiple: true
 		}
 	});
 
