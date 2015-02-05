@@ -8,14 +8,16 @@ var _                   = require('mano').i18n.bind('Sections')
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var self = this, options, url;
+		var self = this, options, url, customizeData;
+		customizeData = {};
 		url = ns.url;
 		options = Object(arguments[1]);
 		url = options.url || ns.url;
-		return ns.section({ id: this.domId, class: ns._if(ns.eq(
-			this._status,
-			1
-		), 'section-primary completed entities-overview', 'section-primary entities-overview') },
+		customizeData.arrayResult = [customizeData.container = ns.section(
+			{ id: this.domId, class: ns._if(ns.eq(
+				this._status,
+				1
+			), 'section-primary completed entities-overview', 'section-primary entities-overview') },
 			ns.div(
 				ns.div(
 					ns._if(this._label,
@@ -72,7 +74,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 				)
 			),
 			ns.p(
-				ns.a(
+				customizeData.addButton = ns.a(
 					{ class: 'button-main', href: url(this.constructor.baseUrl + '-add') },
 					options.addButtonLabel || _("Add new")
 				)
@@ -80,5 +82,9 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 			ns.p({ class: 'section-primary-scroll-top' },
 				ns.a({ onclick: 'window.scroll(0, 0)' }, ns.span({ class: 'fa fa-arrow-up' },
 					_("Back to top"))))
-				);
+		)];
+		if (typeof options.customize === 'function') {
+			options.customize.call(this, customizeData);
+		}
+		return customizeData.arrayResult;
 	}));
