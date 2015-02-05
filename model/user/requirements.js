@@ -2,28 +2,16 @@
 
 var memoize            = require('memoizee/plain')
   , validDb            = require('dbjs/valid-dbjs')
-  , defineUser         = require('mano-auth/model/user')
-  , defineStringLine   = require('dbjs-ext/string/string-line');
+  , defineUser         = require('mano-auth/model/user');
 
 module.exports = memoize(function (db) {
-	var User, StringLine;
+	var User;
 	validDb(db);
-	User       = defineUser(db);
-	StringLine = defineStringLine(db);
+	User = defineUser(db);
 	User.prototype.defineProperties({
 		requirements: {
-			type: StringLine,
-			multiple: true,
-			value: function () {
-				var reqs = [];
-				this.requestedRegistrations.forEach(function (regName) {
-					var userRegistration =  this.registrations[regName];
-					userRegistration.requirements.forEach(function (req) {
-						reqs.push(req);
-					});
-				}, this);
-				return reqs;
-			}
+			type: db.Object,
+			nested: true
 		}
 	});
 
