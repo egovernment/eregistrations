@@ -7,11 +7,11 @@ var memoize            = require('memoizee/plain')
   , defineRegistration = require('./../registration');
 
 module.exports = memoize(function (db) {
-	var User, StringLine, Registration;
-	validDb(db);
+	var User, StringLine;
+	defineRegistration(validDb(db));
 	User         = defineUser(db);
 	StringLine   = defineStringLine(db);
-	Registration = defineRegistration(db);
+
 	User.prototype.defineProperties({
 		registrations: {
 			type: db.Object,
