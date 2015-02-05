@@ -1,13 +1,13 @@
 'use strict';
 
-var memoize          = require('memoizee/plain')
-  , validDb          = require('dbjs/valid-dbjs')
-  , defineStringLine = require('dbjs-ext/string/string-line');
+var memoize           = require('memoizee/plain')
+  , validDb           = require('dbjs/valid-dbjs')
+  , defineStringLine  = require('dbjs-ext/string/string-line')
+  , defineInstitution = require('./institution');
 
 module.exports = memoize(function (db) {
-	var StringLine;
-	validDb(db);
-	StringLine = defineStringLine(db);
+	var StringLine = defineStringLine(validDb(db))
+	  , Institution = defineInstitution(validDb(db));
 
 	return db.Object.extend('Registration', {
 		label: {
@@ -44,6 +44,7 @@ module.exports = memoize(function (db) {
 		}
 	}, {
 		Document: { type: db.Base }, // It should be a type: Type, but can't be defined like that now
-		abbr: { type: StringLine }
+		abbr: { type: StringLine },
+		institution: { type: Institution }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
