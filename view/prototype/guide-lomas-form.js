@@ -37,7 +37,8 @@ exports['user-guide-lomas-form'] = function () {
 								function (name) {
 									li(
 										{ class: 'input' },
-										span(user.getDescriptor(name).label),
+										span({ class: 'user-guide-lomas-form-question' },
+												user.getDescriptor(name).label),
 										input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) })
 									);
 								}

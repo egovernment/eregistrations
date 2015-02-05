@@ -190,6 +190,10 @@
 	margin-bottom: 0;
 }
 
+.user-guide-lomas-form-question {
+	max-width: 70%;
+}
+
 /* Secondary informations section rules (displayed to user) */
 
 .user-guide-lomas-result {
