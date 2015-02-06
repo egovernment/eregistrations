@@ -20,10 +20,11 @@ module.exports = memoize(function (db) {
 		applicableRegistrations: {
 			type: StringLine,
 			multiple: true,
-			value: function () {
+			value: function (_observe) {
 				var regs = [];
 				this.registrations.forEach(function (reg) {
-					if (reg.isApplicable) regs.push(reg.key);
+					var isApplicable = reg._get ? _observe(reg._isApplicable) : reg.isApplicable;
+					if (isApplicable) regs.push(reg.key);
 				}, this);
 				return regs;
 			}
@@ -31,11 +32,13 @@ module.exports = memoize(function (db) {
 		mandatoryRegistrations: {
 			type: StringLine,
 			multiple: true,
-			value: function () {
+			value: function (_observe) {
 				var regs = [];
 				this.applicableRegistrations.forEach(function (regName) {
 					var registration = this.registrations[regName];
-					if (registration.isMandatory) regs.push(regName);
+					var isMandatory = registration._get
+						? _observe(registration._isMandatory) : registration.isMandatory;
+					if (isMandatory) regs.push(regName);
 				}, this);
 				return regs;
 			}
@@ -44,11 +47,13 @@ module.exports = memoize(function (db) {
 		optionalRegistrations: {
 			type: StringLine,
 			multiple: true,
-			value: function () {
+			value: function (_observe) {
 				var regs = [];
 				this.applicableRegistrations.forEach(function (regName) {
 					var registration = this.registrations[regName];
-					if (!registration.isMandatory) regs.push(regName);
+					var isMandatory = registration._get
+						? _observe(registration._isMandatory) : registration.isMandatory;
+					if (!isMandatory) regs.push(regName);
 				}, this);
 				return regs;
 			}
@@ -56,11 +61,13 @@ module.exports = memoize(function (db) {
 		requestedRegistrations: {
 			type: StringLine,
 			multiple: true,
-			value: function () {
+			value: function (_observe) {
 				var regs = [];
 				this.applicableRegistrations.forEach(function (regName) {
 					var registration = this.registrations[regName];
-					if (registration.isRequested) regs.push(regName);
+					var isRequested = registration._get
+						? _observe(registration._isRequested) : registration.isRequested;
+					if (isRequested) regs.push(regName);
 				}, this);
 				return regs;
 			}
