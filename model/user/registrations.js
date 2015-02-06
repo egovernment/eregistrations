@@ -99,6 +99,19 @@ module.exports = memoize(function (db) {
 				}, this);
 				return result;
 			}
+		},
+		applicableSubmissions: {
+			type: StringLine,
+			multiple: true,
+			value: function (_observe) {
+				var result = [];
+				this.applicableRequirements.forEach(function (req) {
+					_observe(this.requirements[req].submissions).forEach(function (name) {
+						result.push(name);
+					});
+				}, this);
+				return result;
+			}
 		}
 	});
 
