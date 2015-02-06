@@ -84,6 +84,21 @@ module.exports = memoize(function (db) {
 				}, this);
 				return certs;
 			}
+		},
+		applicableRequirements: {
+			type: StringLine,
+			multiple: true,
+			value: function (_observe) {
+				var certs = this.requestedCertificates, result = [];
+				this.requestedRegistrations.forEach(function (regName) {
+					_observe(this.registrations[regName].requirements).forEach(function (req) {
+						if (certs.has(req)) return;
+						if (!this.requirements[req].isApplicable) return;
+						result.push(req);
+					}, this);
+				}, this);
+				return result;
+			}
 		}
 	});
 
