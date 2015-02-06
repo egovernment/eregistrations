@@ -58,7 +58,10 @@ module.exports = function (domjs) {
 	require('../directives/img-zoom-on-hover')(domjs);
 	require('../directives/table-responsive')(domjs);
 
-	// DBJS extensions
+	// extensions
+	require('domjs-ext/ext/_element/toggle');
+
+	// Dbjs extensions
 	RelValue = require('dbjs-dom/text/utils/rel-value');
 	RelValue.prototype.domjs = domjs;
 	require('dbjs-dom/ext/domjs/rel-value');
