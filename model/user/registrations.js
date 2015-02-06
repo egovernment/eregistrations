@@ -64,6 +64,19 @@ module.exports = memoize(function (db) {
 				}, this);
 				return regs;
 			}
+		},
+		requestedCertificates: {
+			type: StringLine,
+			multiple: true,
+			value: function (_observe) {
+				var certs = [];
+				this.requestedRegistrations.forEach(function (regName) {
+					_observe(this.registrations[regName].certificates).forEach(function (cert) {
+						certs.push(cert);
+					});
+				}, this);
+				return certs;
+			}
 		}
 	});
 
