@@ -9,13 +9,13 @@ require('./form-section-base');
 
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var mainFormResolvent, actionUrl, options, url;
+		var mainFormResolvent, actionUrl, options = Object(arguments[1]), url
+		  , master = options.master || this.master;
 		mainFormResolvent = this.getFormResolvent();
-		options = Object(arguments[1]);
 		url = options.url || ns.url;
 		actionUrl = url(this.constructor.actionUrl);
 		if (options.isChildEntity) {
-			actionUrl = this.master.constructor.prototype === this.master ?
+			actionUrl = master.constructor.prototype === master ?
 					url(this.constructor.actionUrl + '-add') :
 					url(this.constructor.actionUrl, this.master.__id__);
 		}
@@ -46,7 +46,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 							formResolvent.formResolvent,
 							ns.fieldset(
 								{ id: formResolvent.affectedSectionId, class: 'form-elements',
-									dbjs: subSection.master, names: subSection.formPropertyNames,
+									dbjs: master, names: subSection.formPropertyNames,
 									control: control,
 									controls: legacy.controls }
 							), formResolvent.legacyScript, legacy.legacy);
