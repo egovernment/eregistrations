@@ -17,7 +17,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		if (options.isChildEntity) {
 			actionUrl = master.constructor.prototype === master ?
 					url(this.constructor.actionUrl + '-add') :
-					url(this.constructor.actionUrl, this.master.__id__);
+					url(this.constructor.actionUrl, master.__id__);
 		}
 		return [ns.section(
 			{ class: 'section-primary' },

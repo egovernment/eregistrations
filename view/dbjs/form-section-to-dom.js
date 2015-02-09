@@ -19,7 +19,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		if (options.isChildEntity) {
 			actionUrl = (master.constructor.prototype === master) ?
 					url(this.constructor.actionUrl + '-add') :
-					url(this.constructor.actionUrl, this.master.__id__);
+					url(this.constructor.actionUrl, master.__id__);
 		}
 		if (!this.forceRequiredInput) {
 			control = { required: this.forceRequiredInput };
