@@ -19,7 +19,6 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 		master = options.master || this.master;
 		result = {};
 		result.controls = {};
-		options = Object(arguments[1]);
 		self = this;
 		this.constructor.propertyNames.forEach(function (item, propName) {
 			var val, id, resolved, formFieldPath;
