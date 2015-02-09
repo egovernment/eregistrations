@@ -9,17 +9,17 @@ require('./form-section-base');
 
 module.exports = Object.defineProperties(db.FormSection.prototype, {
 	toDOMForm: d(function (document/*, options */) {
-		var resolvent, legacy, actionUrl, options, url, control, customizeData;
+		var resolvent, legacy, actionUrl, options = Object(arguments[1]), url, control, customizeData
+		  , master = options.master || this.master;
 		customizeData = {};
-		options = Object(arguments[1]);
-		resolvent = this.getFormResolvent();
+		resolvent = this.getFormResolvent(options);
 		legacy = this.getLegacy(this.domId, options);
 		url = options.url || ns.url;
 		actionUrl = url(this.constructor.actionUrl);
 		if (options.isChildEntity) {
-			actionUrl = this.master.constructor.prototype === this.master ?
+			actionUrl = (master.constructor.prototype === master) ?
 					url(this.constructor.actionUrl + '-add') :
-					url(this.constructor.actionUrl, this.master.__id__);
+					url(this.constructor.actionUrl, master.__id__);
 		}
 		if (!this.forceRequiredInput) {
 			control = { required: this.forceRequiredInput };
@@ -39,7 +39,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 				resolvent.formResolvent,
 				customizeData.fieldset = ns.fieldset(
 					{ id: resolvent.affectedSectionId,
-						dbjs: this.master, names: this.formPropertyNames,
+						dbjs: master, names: this.formPropertyNames,
 						control: control,
 						controls: legacy.controls }
 				).extend(options.append),

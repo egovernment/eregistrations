@@ -14,8 +14,9 @@ var generateId = require('time-uuid')
 	}
 */
 module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormResolvent',
-	d(function () {
-		var result, match;
+	d(function (/*options*/) {
+		var result, match, options = Object(arguments[0])
+		  , master = options.master || this.master;
 		result = {};
 		match = {};
 		if (this.constructor.resolventProperty) {
@@ -25,7 +26,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 			} else {
 				match[this.resolventValue] = result.affectedSectionId;
 			}
-			result.formResolvent = ns.field({ dbjs: resolvePropertyPath(this.master,
+			result.formResolvent = ns.field({ dbjs: resolvePropertyPath(master,
 				this.constructor.resolventProperty
 				).observable });
 			if (result.formResolvent._dbjsInput instanceof db.Base.DOMSelect) {
@@ -36,7 +37,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 			} else {
 				result.formResolvent._dbjsInput.dom.classList.add('multiline');
 				result.legacyScript = ns.legacy('radioMatch', this.domId,
-						this.master.__id__ + '/' + this.constructor.resolventProperty,
+						master.__id__ + '/' + this.constructor.resolventProperty,
 					match);
 			}
 		}
