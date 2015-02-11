@@ -78,9 +78,19 @@ exports.step = function () {
 				li(label({ class: 'input-aside' },
 					input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
 					span(user.getDescriptor('isBRequested').label))),
-				li(label({ class: 'input-aside' },
+				li(label({ class: 'input-aside tooltip-target' },
 					input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
-					span(user.getDescriptor('isARequested').label)))),
+					span(user.getDescriptor('isARequested').label),
+					div({ class: 'tooltip-container' },
+						p("Lorem ipsum dolor sit amet, consectetur adipiscing elit."),
+						ul(
+							li("Curabitur non"),
+							li("lectus ut orci "),
+							li("auctor scelerisque"),
+							li(" ut id turpis")
+						),
+						p("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")))
+					)),
 			div(
 				{ class: 'section-primary-wrapper' },
 				h2("Optional Registrations"),
