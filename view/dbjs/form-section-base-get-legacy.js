@@ -26,8 +26,10 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 			formFieldPath = resolved.object.__id__ + '/' + resolved.key;
 			if (propName in self.inputOptions) {
 				controlOption = self.inputOptions[propName];
-				result.controls[formFieldPath] =
-					(typeof controlOption === 'function') ? controlOption() : controlOption;
+				if ((typeof controlOption === 'function') && controlOption.isOptionResolver) {
+					controlOption = controlOption();
+				}
+				result.controls[formFieldPath] = controlOption;
 			}
 			val = resolved.object.getDescriptor(db.Object.getApplicablePropName(resolved.key)
 				)._value_;
