@@ -21,11 +21,13 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 		result.controls = {};
 		self = this;
 		this.constructor.propertyNames.forEach(function (item, propName) {
-			var val, id, resolved, formFieldPath;
+			var val, id, resolved, formFieldPath, controlOption;
 			resolved = resolvePropertyPath(this, propName);
 			formFieldPath = resolved.object.__id__ + '/' + resolved.key;
-			if (self.inputOptions.has(propName)) {
-				result.controls[formFieldPath] = self.inputOptions.get(propName);
+			if (propName in self.inputOptions) {
+				controlOption = self.inputOptions[propName];
+				result.controls[formFieldPath] =
+					(typeof controlOption === 'function') ? controlOption() : controlOption;
 			}
 			val = resolved.object.getDescriptor(db.Object.getApplicablePropName(resolved.key)
 				)._value_;
