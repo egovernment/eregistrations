@@ -32,7 +32,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 				forEach(propOptions, function (value, name) {
 					if (typeof value !== 'function') return;
 					if (!value.isOptionResolver) return;
-					propOptions[name] = value();
+					propOptions[name] = value.call(this);
 				});
 				result.controls[formFieldPath] = propOptions;
 			}
