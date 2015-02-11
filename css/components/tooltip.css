@@ -6,7 +6,7 @@
 	padding: 8px 10px;
 	font-size: 12px;
 	line-height: 12px;
-	position: absolute; 
+	position: absolute;
 	transform: translateX(8px);
 	opacity: 0;
 	transition: 0.3s ease;
@@ -39,5 +39,3 @@
 	padding-left: 22px;
 
 }
-.tooltip-container li {
-	}
