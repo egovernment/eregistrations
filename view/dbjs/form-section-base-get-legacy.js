@@ -1,8 +1,11 @@
 'use strict';
-var d  = require('d')
-  , generateId = require('time-uuid')
+
+var forEach             = require('es5-ext/object/for-each')
+  , normalizeOptions    = require('es5-ext/object/normalize-options')
+  , d                   = require('d')
+  , generateId          = require('time-uuid')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
-  , normalizeOptions = require('es5-ext/object/normalize-options')
+
   , db = require('mano').db
   , ns = require('mano').domjs.ns;
 
@@ -21,15 +24,17 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 		result.controls = {};
 		self = this;
 		this.constructor.propertyNames.forEach(function (item, propName) {
-			var val, id, resolved, formFieldPath, controlOption;
+			var val, id, resolved, formFieldPath, propOptions;
 			resolved = resolvePropertyPath(this, propName);
 			formFieldPath = resolved.object.__id__ + '/' + resolved.key;
-			if (propName in self.inputOptions) {
-				controlOption = self.inputOptions[propName];
-				if ((typeof controlOption === 'function') && controlOption.isOptionResolver) {
-					controlOption = controlOption();
-				}
-				result.controls[formFieldPath] = controlOption;
+			if (self.inputOptions.has(propName)) {
+				propOptions = normalizeOptions(self.inputOptions.get(propName));
+				forEach(propOptions, function (value, name) {
+					if (typeof value !== 'function') return;
+					if (!value.isOptionResolver) return;
+					propOptions[name] = value();
+				});
+				result.controls[formFieldPath] = propOptions;
 			}
 			val = resolved.object.getDescriptor(db.Object.getApplicablePropName(resolved.key)
 				)._value_;
