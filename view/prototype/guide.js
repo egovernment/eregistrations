@@ -52,7 +52,7 @@ exports.step = function () {
 									option('Adam'),
 									option('Alan'),
 									option('Frank'),
-									option('Viene'),
+									option('Vianney'),
 									option('Bita'))));
 					} else {
 						li(div({ class: 'dbjs-input-component' },
