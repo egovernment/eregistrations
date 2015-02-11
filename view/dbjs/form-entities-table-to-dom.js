@@ -6,6 +6,8 @@ var _                   = require('mano').i18n.bind('Sections')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
   , ns = require('mano').domjs.ns;
 
+require('./form-section-base');
+
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
 		var self = this, options, url, customizeData;

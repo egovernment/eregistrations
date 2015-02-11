@@ -13,6 +13,6 @@ Object.defineProperties(db.FormSectionBase.prototype, assign({
 	forceRequiredInput: d(false)
 }, lazy({
 	domId: d(function () {
-		return generateId(this.constructor.label);
+		return generateId(this.label);
 	})
 })));
