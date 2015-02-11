@@ -22,7 +22,8 @@ exports.step = function () {
 					'inventory',
 					'surfaceArea', 'members',
 					'companyType',
-					'isShoppingGallery'],
+					'isShoppingGallery',
+					'autocomplet'],
 				function (name) {
 					if (name === 'inventory') {
 						div({ class: 'dbjs-input-component' },
@@ -42,6 +43,17 @@ exports.step = function () {
 							div({ class: 'input' },
 								input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name),
 									type: 'checkbox' }))));
+					} else if (name === 'autocomplet') {
+						li(div({ class: 'dbjs-input-component' },
+								label('Autocomplet input:'),
+								div({ class: 'input' },
+									input({ list: 'datalist', type: 'text', placeholder: 'Start typing' })),
+								datalist({ id: 'datalist' },
+									option('Adam'),
+									option('Alan'),
+									option('Frank'),
+									option('Viene'),
+									option('Bita'))));
 					} else {
 						li(div({ class: 'dbjs-input-component' },
 							label(
