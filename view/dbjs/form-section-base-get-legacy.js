@@ -18,17 +18,16 @@ legacy: lagacyScript || undefined
 */
 module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy',
 	d(function (formId/*, options */) {
-		var result, legacyData, options = Object(arguments[1]), self, master;
+		var result, legacyData, options = Object(arguments[1]), master;
 		master = options.master || this.master;
 		result = {};
 		result.controls = {};
-		self = this;
 		this.constructor.propertyNames.forEach(function (item, propName) {
 			var val, id, resolved, formFieldPath, propOptions;
 			resolved = resolvePropertyPath(master, propName);
 			formFieldPath = resolved.object.__id__ + '/' + resolved.key;
-			if (self.inputOptions.has(propName)) {
-				propOptions = normalizeOptions(self.inputOptions.get(propName));
+			if (this.inputOptions.has(propName)) {
+				propOptions = normalizeOptions(this.inputOptions.get(propName));
 				forEach(propOptions, function (value, name) {
 					if (typeof value !== 'function') return;
 					if (!value.isOptionResolver) return;
