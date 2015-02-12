@@ -11,14 +11,15 @@
 	font-size: 12px;
 	line-height: 12px;
 	position: absolute;
-	top: 0;
-	right: 0;
 	opacity: 0;
 	transition: 0.3s ease;
+	visibility: hidden;
+	z-index: 1;
 }
 
 .tooltip-target:hover .tooltip-container {
 	opacity: 1;
+	visibility: visible;
 }
 
 .tooltip-container * {
