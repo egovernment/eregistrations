@@ -42,10 +42,8 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 							}), ns.th(),
 								ns.th({ class: 'actions' }, _("Actions")))
 						),
-						ns.tbody({ onEmpty: ns.tr({ class: 'empty' },
-								ns.td({ colspan: this.constructor.entities.size + 2 },
-									this.constructor.onEmptyMessage
-								)
+						ns.tbody({ onEmpty: ns.tr(ns.td({ colspan: this.constructor.entities.size + 2 },
+									this.constructor.onEmptyMessage)
 							) },
 							tableData,
 							function (entityObject) {

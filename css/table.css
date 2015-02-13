@@ -83,7 +83,7 @@ table .actions form p {
 	display: inline;
 }
 
-table .empty td {
+table.empty td {
 	text-align: center;
 }
 
