@@ -1,0 +1,20 @@
+.section-sides > * {
+	display: inline-block;
+	width: 49%;
+	vertical-align: top;
+	margin-left: 1%;
+}
+.section-sides > *:first-child {
+	margin-right: 1%;
+	margin-left: 0;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.section-sides > * {
+		width: 100%;
+		margin: 0;
+	}
+	.section-sides > *:first-child {
+		margin-bottom: 22px;
+	}
+}
