@@ -28,7 +28,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 							ns.hr()]),
 					options.prepend,
 					ns.table(
-						{ class: ns._if(tableData.size !== 0,
+						{ class: ns._if(ns.not(ns.eq(tableData._size, 0)),
 								'entities-overview-table',
 								'entities-overview-table entities-overview-table-empty') },
 						ns.thead(
