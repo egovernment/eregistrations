@@ -30,7 +30,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 					ns.table(
 						{ class: ns._if(tableData.size !== 0,
 								'entities-overview-table',
-								'entities-overview-table empty') },
+								'entities-overview-table entities-overview-table-empty') },
 						ns.thead(
 							ns.tr(ns.list(this.constructor.entities, function (entity) {
 								return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',

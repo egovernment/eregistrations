@@ -100,7 +100,7 @@ exports.main = function () {
 	);
 
 	table(
-		{ class: 'print-users-list empty' },
+		{ class: 'print-users-list' },
 		thead(
 			tr(
 				th({ colspan: 3 }, "Proccessing", " ", span("(0)"))
@@ -113,6 +113,7 @@ exports.main = function () {
 		),
 		tbody(
 			tr(
+				{ class: 'empty' },
 				td({ colspan: 3 }, "There are no users at the moment.")
 			)
 		)
