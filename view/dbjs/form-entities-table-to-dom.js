@@ -10,11 +10,12 @@ require('./form-section-base');
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var self = this, options, url, customizeData;
+		var self = this, options, url, customizeData, tableData;
 		customizeData = {};
 		url = ns.url;
 		options = Object(arguments[1]);
 		url = options.url || ns.url;
+		tableData = resolvePropertyPath(this.master, this.constructor.propertyName).value;
 		customizeData.arrayResult = [customizeData.container = ns.section(
 			{ id: this.domId, class: ns._if(ns.eq(
 				this._status,
@@ -27,7 +28,9 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 							ns.hr()]),
 					options.prepend,
 					ns.table(
-						{ class: 'entities-overview-table' },
+						{ class: ns._if(ns.not(ns.eq(tableData._size, 0)),
+								'entities-overview-table',
+								'entities-overview-table entities-overview-table-empty') },
 						ns.thead(
 							ns.tr(ns.list(this.constructor.entities, function (entity) {
 								return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
@@ -39,12 +42,10 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 							}), ns.th(),
 								ns.th({ class: 'actions' }, _("Actions")))
 						),
-						ns.tbody({ onEmpty: ns.tr({ class: 'empty' },
-								ns.td({ colspan: this.constructor.entities.size + 2 },
-									this.constructor.onEmptyMessage
-								)
+						ns.tbody({ onEmpty: ns.tr(ns.td({ colspan: this.constructor.entities.size + 2 },
+									this.constructor.onEmptyMessage)
 							) },
-							resolvePropertyPath(this.master, this.constructor.propertyName).value,
+							tableData,
 							function (entityObject) {
 								return ns.tr(ns.list(self.constructor.entities, function (entity) {
 									return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',

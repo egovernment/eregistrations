@@ -19,8 +19,14 @@
 	padding: 10px 6px 11px;
 }
 
-.entities-overview-table .empty td {
+.entities-overview-table-empty thead,
+.entities-overview-table-empty tfoot {
+	display: none;
+}
+
+.entities-overview-table-empty td {
 	padding: 11px 6px;
+	text-align: center;
 }
 
 .entities-overview-table .completed .status-complete {
