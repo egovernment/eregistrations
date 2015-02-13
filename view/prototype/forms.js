@@ -44,13 +44,53 @@ exports.step = function () {
 						h3("First Sub Section"),
 						div(
 							{ class: 'section-sides' },
-							div('test1'),
-							div('test2')
+							div(
+								ul({ class: 'form-elements' },
+									['businessActivity',
+										'isOwner',
+										'surfaceArea',
+										'members',
+										'companyType'],
+									function (name) {
+										li(div({ class: 'dbjs-input-component' },
+											label(
+												{ for: 'input-' + name },
+												user.getDescriptor(name).label,
+												":"
+											),
+											div({ class: 'input' },
+												input({ control: { id: 'input-' + name },
+													dbjs: user.getObservable(name) }))));
+									})
+							),
+							div(
+								div({ class: 'user-guide-lomas-map',
+									style: 'background-image: url(\'../img/map.png\')' }),
+								p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+										"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
+										"Praesent porttitor dui a ante luctus gravida.")
+							)
 						)
 					),
 					div(
 						{ class: 'section-primary-sub' },
-						h3("Second Sub Section")
+						h3("Second Sub Section"),
+						ul({ class: 'form-elements' },
+							['businessActivity',
+								'isOwner',
+								'surfaceArea',
+								'members',
+								'companyType'],
+							function (name) {
+								li(div({ class: 'dbjs-input-component' },
+									label(
+										{ for: 'input-' + name },
+										user.getDescriptor(name).label,
+										":"
+									),
+									div({ class: 'input' },
+										input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) }))));
+							})
 					)
 				)
 			)
