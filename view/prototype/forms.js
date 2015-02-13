@@ -32,6 +32,13 @@ exports.step = function () {
 	div(
 		{ class: 'disabler-range', id: 'forms-disabler-range' },
 		generateSections(user.formSections),
+
+		section(
+			{ class: 'section-primary section-sides' },
+			div('test1'),
+			div('test2')
+		),
+
 		div({ class: 'user-next-step-button' },
 			a({ href: '/documents/' }, "Continue to next step")),
 		div({ class: 'disabler' })
