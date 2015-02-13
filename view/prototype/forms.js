@@ -34,9 +34,26 @@ exports.step = function () {
 		generateSections(user.formSections),
 
 		section(
-			{ class: 'section-primary section-sides' },
-			div('test1'),
-			div('test2')
+			{ class: 'section-primary' },
+			form(
+				h2("Business Owner sides informations"),
+				hr(),
+				div(
+					div(
+						{ class: 'section-primary-sub' },
+						h3("First Sub Section"),
+						div(
+							{ class: 'section-sides' },
+							div('test1'),
+							div('test2')
+						)
+					),
+					div(
+						{ class: 'section-primary-sub' },
+						h3("Second Sub Section")
+					)
+				)
+			)
 		),
 
 		div({ class: 'user-next-step-button' },
