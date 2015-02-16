@@ -1,18 +1,18 @@
 'use strict';
 
 var memoize            = require('memoizee/plain')
-  , validDb            = require('dbjs/valid-dbjs')
-  , defineUser         = require('mano-auth/model/user')
+  , validDbType = require('dbjs/valid-dbjs-type')
   , defineStringLine   = require('dbjs-ext/string/string-line')
   , defineRegistration = require('./../registration');
 
-module.exports = memoize(function (db) {
-	var User, StringLine;
-	defineRegistration(validDb(db));
-	User         = defineUser(db);
-	StringLine   = defineStringLine(db);
+module.exports = memoize(function (Target) {
+	var db, StringLine;
+	validDbType(Target);
+	db = Target.database;
+	defineRegistration(db);
+	StringLine = defineStringLine(db);
 
-	User.prototype.defineProperties({
+	Target.prototype.defineProperties({
 		registrations: {
 			type: db.Object,
 			nested: true
@@ -115,5 +115,5 @@ module.exports = memoize(function (db) {
 		}
 	});
 
-	return db.User;
+	return Target;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

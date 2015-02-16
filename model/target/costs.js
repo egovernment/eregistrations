@@ -1,16 +1,15 @@
 'use strict';
 
-var memoize            = require('memoizee/plain')
-  , validDb            = require('dbjs/valid-dbjs')
-  , defineUser         = require('mano-auth/model/user')
-  , defineStringLine   = require('dbjs-ext/string/string-line');
+var memoize          = require('memoizee/plain')
+  , validDbType      = require('dbjs/valid-dbjs-type')
+  , defineStringLine = require('dbjs-ext/string/string-line');
 
-module.exports = memoize(function (db) {
-	var User, StringLine;
-	validDb(db);
-	User       = defineUser(db);
-	StringLine = defineStringLine(db);
-	User.prototype.defineProperties({
+module.exports = memoize(function (Target) {
+	var StringLine;
+	validDbType(Target);
+	StringLine = defineStringLine(Target.database);
+
+	Target.prototype.defineProperties({
 		costs: {
 			type: StringLine,
 			multiple: true,
@@ -27,5 +26,5 @@ module.exports = memoize(function (db) {
 		}
 	});
 
-	return db.User;
+	return Target;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

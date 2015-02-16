@@ -2,7 +2,7 @@
 
 var Map          = require('es6-map')
   , db           = require('mano').db
-  , User         = require('../../model/user')(db)
+  , User         = require('../../model/target')(require('mano-auth/model/user')(db))
   , Role         = require('mano-auth/model/role')(db)
   , DateType     = require('dbjs-ext/date-time/date')(db)
   , StringLine   = require('dbjs-ext/string/string-line')(db)
@@ -55,8 +55,8 @@ Role.members.add('meta-admin');
 Role.meta.get('meta-admin').setProperties({
 	label: "Meta Admin"
 });
-Role.members.add('demo-user');
-Role.meta.get('demo-user').setProperties({
+Role.members.add('demo-target');
+Role.meta.get('demo-target').setProperties({
 	label: "Demo User"
 });
 Role.members.add('official-revision');
