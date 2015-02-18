@@ -15,8 +15,12 @@ module.exports = memoize(function (Target/* options */) {
 		}
 	});
 
-	if (options.classNames) {
-		options.classNames.forEach(function (submission) {
+	if (options.classes) {
+		options.classes.forEach(function (submission) {
+			if (submission.slice(-("Submission".length)) !== "Submission") {
+				throw new Error("class: " + submission.__id__ + " doesn't end with 'Submission'." +
+					" All submission class names must end with 'Submission'.");
+			}
 			Target.prototype.submissions.define(submission[0].toLowerCase() +
 				submission.slice(1, -("Submission".length)), {
 					type: db[submission],

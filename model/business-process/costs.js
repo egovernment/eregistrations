@@ -16,8 +16,12 @@ module.exports = memoize(function (Target/* options */) {
 		}
 	});
 
-	if (options.classNames) {
-		options.classNames.forEach(function (cost) {
+	if (options.classes) {
+		options.classes.forEach(function (cost) {
+			if (cost.slice(-("Cost".length)) !== "Cost") {
+				throw new Error("class: " + cost.__id__ + " doesn't end with 'Cost'." +
+					" All cost class names must end with 'Cost'.");
+			}
 			Target.prototype.costs.define(cost[0].toLowerCase() +
 				cost.slice(1, -("Cost".length)), {
 					type: db[cost],

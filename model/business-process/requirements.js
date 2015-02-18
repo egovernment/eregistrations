@@ -15,8 +15,12 @@ module.exports = memoize(function (Target/* options */) {
 		}
 	});
 
-	if (options.classNames) {
-		options.classNames.forEach(function (requirement) {
+	if (options.classes) {
+		options.classes.forEach(function (requirement) {
+			if (requirement.slice(-("Requirement".length)) !== "Requirement") {
+				throw new Error("class: " + requirement.__id__ + " doesn't end with 'Requirement'." +
+					" All submission class names must end with 'Requirement'.");
+			}
 			Target.prototype.requirements.define(requirement[0].toLowerCase() +
 				requirement.slice(1, -("Requirement".length)), {
 					type: db[requirement],

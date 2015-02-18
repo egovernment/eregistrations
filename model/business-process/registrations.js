@@ -116,8 +116,12 @@ module.exports = memoize(function (Target/* options */) {
 		}
 	});
 
-	if (options.classNames) {
-		options.classNames.forEach(function (registration) {
+	if (options.classes) {
+		options.classes.forEach(function (registration) {
+			if (registration.slice(-("Registration".length)) !== "Registration") {
+				throw new Error("class: " + registration.__id__ + " doesn't end with 'Registration'." +
+					" All registration class names must end with 'Registration'.");
+			}
 			Target.prototype.registrations.define(registration[0].toLowerCase() +
 				registration.slice(1, -("Registration".length)), {
 					type: db[registration],
