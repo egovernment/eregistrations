@@ -119,7 +119,7 @@ module.exports = memoize(function (Target/* options */) {
 
 	if (options.classes) {
 		options.classes.forEach(function (registration) {
-			if (endsWith.call(registration.__id__, "Registration")) {
+			if (!endsWith.call(registration.__id__, "Registration")) {
 				throw new Error("Class: " + registration.__id__ + " doesn't end with 'Registration'." +
 					" All registration class names must end with 'Registration'.");
 			}

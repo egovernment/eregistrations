@@ -19,7 +19,7 @@ module.exports = memoize(function (Target/* options */) {
 
 	if (options.classes) {
 		options.classes.forEach(function (cost) {
-			if (endsWith.call(cost.__id__, "Cost")) {
+			if (!endsWith.call(cost.__id__, "Cost")) {
 				throw new Error("Class: " + cost.__id__ + " doesn't end with 'Cost'." +
 					" All cost class names must end with 'Cost'.");
 			}
