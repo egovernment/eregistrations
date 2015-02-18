@@ -5,10 +5,11 @@ var memoize            = require('memoizee/plain')
   , defineStringLine   = require('dbjs-ext/string/string-line')
   , defineRegistration = require('./../registration');
 
-module.exports = memoize(function (Target) {
-	var db, StringLine;
+module.exports = memoize(function (Target/* options */) {
+	var db, StringLine, options;
 	validDbType(Target);
 	db = Target.database;
+	options = Object(arguments[1]);
 	defineRegistration(db);
 	StringLine = defineStringLine(db);
 
@@ -114,6 +115,16 @@ module.exports = memoize(function (Target) {
 			}
 		}
 	});
+
+	if (options.registrationsClassNames) {
+		options.registrationsClassNames.forEach(function (registration) {
+			Target.prototype.registrations.define(registration[0].toLowerCase() +
+				registration.slice(1, -("Registration".length)), {
+					type: db[registration],
+					nested: true
+				});
+		});
+	}
 
 	return Target;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
