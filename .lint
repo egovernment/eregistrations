@@ -39,7 +39,8 @@ evil
 
 ./client
 ./prototype/client
-predef+ window
+./view
+predef+ window, document
 
 ./view/prototype
 ./view/utils
