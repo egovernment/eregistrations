@@ -18,13 +18,13 @@ module.exports = memoize(function (Target/* options */) {
 
 	if (options.classes) {
 		options.classes.forEach(function (cost) {
-			if (cost.slice(-("Cost".length)) !== "Cost") {
+			if (cost.__id__.slice(-("Cost".length)) !== "Cost") {
 				throw new Error("class: " + cost.__id__ + " doesn't end with 'Cost'." +
 					" All cost class names must end with 'Cost'.");
 			}
-			Target.prototype.costs.define(cost[0].toLowerCase() +
-				cost.slice(1, -("Cost".length)), {
-					type: db[cost],
+			Target.prototype.costs.define(cost.__id__[0].toLowerCase() +
+				cost.__id__.slice(1, -("Cost".length)), {
+					type: cost,
 					nested: true
 				});
 		});

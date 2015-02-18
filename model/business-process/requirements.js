@@ -17,13 +17,13 @@ module.exports = memoize(function (Target/* options */) {
 
 	if (options.classes) {
 		options.classes.forEach(function (requirement) {
-			if (requirement.slice(-("Requirement".length)) !== "Requirement") {
+			if (requirement.__id__.slice(-("Requirement".length)) !== "Requirement") {
 				throw new Error("class: " + requirement.__id__ + " doesn't end with 'Requirement'." +
 					" All submission class names must end with 'Requirement'.");
 			}
-			Target.prototype.requirements.define(requirement[0].toLowerCase() +
-				requirement.slice(1, -("Requirement".length)), {
-					type: db[requirement],
+			Target.prototype.requirements.define(requirement.__id__[0].toLowerCase() +
+				requirement.__id__.slice(1, -("Requirement".length)), {
+					type: requirement,
 					nested: true
 				});
 		});
