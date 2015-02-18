@@ -3,7 +3,8 @@
 var memoize            = require('memoizee/plain')
   , validDbType = require('dbjs/valid-dbjs-type')
   , defineStringLine   = require('dbjs-ext/string/string-line')
-  , defineRegistration = require('./../registration');
+  , defineRegistration = require('./../registration')
+  , endsWith    = require('es5-ext/string/#/ends-with');
 
 module.exports = memoize(function (Target/* options */) {
 	var db, StringLine, options;
@@ -118,8 +119,8 @@ module.exports = memoize(function (Target/* options */) {
 
 	if (options.classes) {
 		options.classes.forEach(function (registration) {
-			if (registration.__id__.slice(-("Registration".length)) !== "Registration") {
-				throw new Error("class: " + registration.__id__ + " doesn't end with 'Registration'." +
+			if (endsWith.call(registration.__id__, "Registration")) {
+				throw new Error("Class: " + registration.__id__ + " doesn't end with 'Registration'." +
 					" All registration class names must end with 'Registration'.");
 			}
 			Target.prototype.registrations.define(registration.__id__[0].toLowerCase() +
