@@ -15,8 +15,8 @@ module.exports = memoize(function (Target/* options */) {
 		}
 	});
 
-	if (options.submissionsClassNames) {
-		options.submissionsClassNames.forEach(function (submission) {
+	if (options.classNames) {
+		options.classNames.forEach(function (submission) {
 			Target.prototype.submissions.define(submission[0].toLowerCase() +
 				submission.slice(1, -("Submission".length)), {
 					type: db[submission],

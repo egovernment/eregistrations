@@ -16,8 +16,8 @@ module.exports = memoize(function (Target/* options */) {
 		}
 	});
 
-	if (options.costsClassNames) {
-		options.costsClassNames.forEach(function (cost) {
+	if (options.classNames) {
+		options.classNames.forEach(function (cost) {
 			Target.prototype.costs.define(cost[0].toLowerCase() +
 				cost.slice(1, -("Cost".length)), {
 					type: db[cost],

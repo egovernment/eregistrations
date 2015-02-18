@@ -116,8 +116,8 @@ module.exports = memoize(function (Target/* options */) {
 		}
 	});
 
-	if (options.registrationsClassNames) {
-		options.registrationsClassNames.forEach(function (registration) {
+	if (options.classNames) {
+		options.classNames.forEach(function (registration) {
 			Target.prototype.registrations.define(registration[0].toLowerCase() +
 				registration.slice(1, -("Registration".length)), {
 					type: db[registration],

@@ -15,8 +15,8 @@ module.exports = memoize(function (Target/* options */) {
 		}
 	});
 
-	if (options.requirementsClassNames) {
-		options.requirementsClassNames.forEach(function (requirement) {
+	if (options.classNames) {
+		options.classNames.forEach(function (requirement) {
 			Target.prototype.requirements.define(requirement[0].toLowerCase() +
 				requirement.slice(1, -("Requirement".length)), {
 					type: db[requirement],
