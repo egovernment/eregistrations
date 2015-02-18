@@ -5,11 +5,11 @@ var memoize          = require('memoizee/plain')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineSubmission = require('./submission');
 
-module.exports = memoize(function (db) {
-	var StringLine, Submission;
+module.exports = memoize(function (db/*, options*/) {
+	var StringLine, Submission, options = Object(arguments[1]);
 	validDb(db);
 	StringLine = defineStringLine(db);
-	Submission = defineSubmission(db);
+	Submission = options.submissionClass || defineSubmission(db);
 	db.Object.extend('Requirement', {
 		isApplicable: { type: db.Boolean, value: true },
 		submissions: { type: Submission, multiple: true, value: function () {
