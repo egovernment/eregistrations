@@ -18,7 +18,7 @@ module.exports = memoize(function (Target/* options */) {
 
 	if (options.classes) {
 		options.classes.forEach(function (requirement) {
-			if (endsWith.call(requirement.__id__, "Requirement")) {
+			if (!endsWith.call(requirement.__id__, "Requirement")) {
 				throw new Error("Class: " + requirement.__id__ + " doesn't end with 'Requirement'." +
 					" All requirement class names must end with 'Requirement'.");
 			}

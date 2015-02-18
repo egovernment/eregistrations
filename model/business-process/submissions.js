@@ -18,7 +18,7 @@ module.exports = memoize(function (Target/* options */) {
 
 	if (options.classes) {
 		options.classes.forEach(function (submission) {
-			if (endsWith.call(submission.__id__, "Submission")) {
+			if (!endsWith.call(submission.__id__, "Submission")) {
 				throw new Error("Class: " + submission.__id__ + " doesn't end with 'Submission'." +
 					" All submission class names must end with 'Submission'.");
 			}
