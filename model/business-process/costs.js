@@ -1,7 +1,8 @@
 'use strict';
 
-var memoize          = require('memoizee/plain')
-  , validDbType      = require('dbjs/valid-dbjs-type');
+var memoize     = require('memoizee/plain')
+  , validDbType = require('dbjs/valid-dbjs-type')
+  , endsWith    = require('es5-ext/string/#/ends-with');
 
 module.exports = memoize(function (Target/* options */) {
 	var db, options;
@@ -16,11 +17,15 @@ module.exports = memoize(function (Target/* options */) {
 		}
 	});
 
-	if (options.classNames) {
-		options.classNames.forEach(function (cost) {
-			Target.prototype.costs.define(cost[0].toLowerCase() +
-				cost.slice(1, -("Cost".length)), {
-					type: db[cost],
+	if (options.classes) {
+		options.classes.forEach(function (cost) {
+			if (endsWith.call(cost.__id__, "Cost")) {
+				throw new Error("Class: " + cost.__id__ + " doesn't end with 'Cost'." +
+					" All cost class names must end with 'Cost'.");
+			}
+			Target.prototype.costs.define(cost.__id__[0].toLowerCase() +
+				cost.__id__.slice(1, -("Cost".length)), {
+					type: cost,
 					nested: true
 				});
 		});
