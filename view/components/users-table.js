@@ -1,15 +1,16 @@
 'use strict';
 
-var toNatural     = require('es5-ext/number/to-pos-integer')
-  , array         = require('es5-ext/array/valid-array')
-  , object        = require('es5-ext/object/valid-object')
-  , value         = require('es5-ext/object/valid-value')
-  , includes      = require('es5-ext/string/#/contains')
-  , memoize       = require('memoizee/plain')
-  , ReactiveTable = require('reactive-table')
-  , ReactiveList  = require('reactive-table/list')
-  , location      = require('mano/lib/client/location')
-  , db            = require('mano').db
+var toNatural       = require('es5-ext/number/to-pos-integer')
+  , array           = require('es5-ext/array/valid-array')
+  , object          = require('es5-ext/object/valid-object')
+  , value           = require('es5-ext/object/valid-value')
+  , includes        = require('es5-ext/string/#/contains')
+  , memoize         = require('memoizee/plain')
+  , ObservableValue = require('observable-value')
+  , ReactiveTable   = require('reactive-table')
+  , ReactiveList    = require('reactive-table/list')
+  , location        = require('mano/lib/client/location')
+  , db              = require('mano').db
 
   , create = Object.create, toLowerCase = String.prototype.toLowerCase;
 
@@ -49,8 +50,9 @@ module.exports = function (snapshots, options) {
 			}
 		}
 		page = toNatural(pageQuery.value) || 1;
+		table.snapshot.value = snapshot = db.User.dataSnapshots.get(snapshotId);
 		if (page > 1) {
-			snapshot = db.User.dataSnapshots.get(snapshotId).get(page);
+			snapshot = snapshot.get(page);
 			if (snapshots.last !== snapshot) snapshots.add(snapshot);
 			list.set = snapshot;
 			list.filter = undefined;
@@ -86,6 +88,7 @@ module.exports = function (snapshots, options) {
 
 	list = new ReactiveList(set, options.compare);
 	table = new ReactiveTable(document, list, columns);
+	table.snapshot = new ObservableValue();
 
 	if (options.id) table.table.id = options.id;
 	if (options.class) table.table.className = options.class;
