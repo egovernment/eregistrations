@@ -12,6 +12,7 @@ module.exports = memoize(function (db) {
 	StringLine = defineStringLine(db);
 	db.Object.extend('Document', {}, {
 		label: { type: StringLine, required: true },
+		legend: { type: StringLine, required: true },
 		abbr: { type: StringLine, required: true }
 	});
 
