@@ -87,7 +87,7 @@ module.exports = memoize(function (Target/* options */) {
 				return certs;
 			}
 		},
-		applicableRequirements: {
+		resolvedRequirements: {
 			type: StringLine,
 			multiple: true,
 			value: function (_observe) {
@@ -95,9 +95,19 @@ module.exports = memoize(function (Target/* options */) {
 				this.requestedRegistrations.forEach(function (regName) {
 					_observe(this.registrations[regName].requirements).forEach(function (req) {
 						if (certs.has(req)) return;
-						if (!this.requirements[req].isApplicable) return;
 						result.push(req);
 					}, this);
+				}, this);
+				return result;
+			}
+		},
+		applicableRequirements: {
+			type: StringLine,
+			multiple: true,
+			value: function (_observe) {
+				var result = [];
+				this.resolvedRequirements.forEach(function (requirement) {
+					if (_observe(this.requirements[requirement].isApplicable)) result.push(requirement);
 				}, this);
 				return result;
 			}
