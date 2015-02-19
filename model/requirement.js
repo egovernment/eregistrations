@@ -19,6 +19,10 @@ module.exports = memoize(function (db/*, options*/) {
 			if (!this.constructor.Document) return null;
 			return this.constructor.Document.label;
 		} },
+		legend: { value: function () {
+			if (!this.constructor.Document) return null;
+			return this.constructor.Document.legend;
+		} },
 		uniqueKey: { value: function () { return this.key; } }
 	}, {
 		Document: { type: db.Base } //it's actually type: Type...but can't be defined like that now
