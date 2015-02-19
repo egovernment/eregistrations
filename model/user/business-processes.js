@@ -1,7 +1,7 @@
 'use strict';
 
 var memoize               = require('memoizee/plain')
-  , defineBusinessProcess = require('../business-process')
+  , defineBusinessProcess = require('../business-process/base')
   , validDbType           = require('dbjs/valid-dbjs-type');
 
 module.exports = memoize(function (Target/* options */) {
@@ -13,6 +13,7 @@ module.exports = memoize(function (Target/* options */) {
 	Target.prototype.defineProperties({
 		businessProcesses: {
 			type: BusinessProcess,
+			unique: true,
 			multiple: true
 		}
 	});
