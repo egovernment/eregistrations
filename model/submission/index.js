@@ -30,7 +30,9 @@ module.exports = memoize(function (db) {
 			if (this.rejectReason == null) return null;
 			return false;
 		} },
-		label: { value: function () {
+		label: { value: function (_observe) {
+			var requirement = this.master.requirements[this.key];
+			if (requirement && requirement.label) return _observe(requirement._label);
 			if (!this.constructor.Document) return null;
 			return this.constructor.Document.label;
 		} },
