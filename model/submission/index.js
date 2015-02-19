@@ -36,7 +36,9 @@ module.exports = memoize(function (db) {
 			if (!this.constructor.Document) return null;
 			return this.constructor.Document.label;
 		} },
-		legend: { value: function () {
+		legend: { value: function (_observe) {
+			var requirement = this.master.requirements[this.key];
+			if (requirement && requirement.legend) return _observe(requirement._legend);
 			if (!this.constructor.Document) return null;
 			return this.constructor.Document.legend;
 		} },
