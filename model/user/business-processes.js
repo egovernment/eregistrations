@@ -14,7 +14,8 @@ module.exports = memoize(function (Target/* options */) {
 		businessProcesses: {
 			type: BusinessProcess,
 			unique: true,
-			multiple: true
+			multiple: true,
+			reverse: 'user'
 		}
 	});
 
