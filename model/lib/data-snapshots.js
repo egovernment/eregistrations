@@ -11,9 +11,6 @@ module.exports = memoize(function (db) {
 		totalSize: { type: NaturalNumber, multiple: false }
 	});
 
-	DataSnapshots.prototype._descriptorPrototype_.setProperties({
-		type: db.Object,
-		multiple: true
-	});
+	DataSnapshots.prototype._descriptorPrototype_.setProperties({ type: db.String });
 	return DataSnapshots;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
