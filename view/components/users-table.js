@@ -7,7 +7,6 @@ var toNatural        = require('es5-ext/number/to-pos-integer')
   , includes         = require('es5-ext/string/#/contains')
   , memoize          = require('memoizee/plain')
   , ObservableValue  = require('observable-value')
-  , _if              = require('observable-value/if')
   , ReactiveTable    = require('reactive-table')
   , ReactiveList     = require('reactive-table/list')
   , location         = require('mano/lib/client/location')
@@ -28,15 +27,14 @@ var getFilter = memoize(function (query, propNames) {
 }, { length: 1 });
 
 module.exports = function (snapshots, options) {
-	var list, table, paginator, users, i18n, columns, searchPropertyNames
-	  , statusQuery, searchQuery, set, pathname, limit
+	var list, table, paginator, i18n, columns, searchPropertyNames
+	  , statusQuery, searchQuery, pathname, limit, statusMap
 	  , active, update, appName, pageQuery, inSync;
 
-	var getInSyncObservable = memoize(function (status) {
-		var snapshot = db.User.dataSnapshots.get(appName + ';' + status);
-		return _if(snapshot._totalSize, users[status]._size.eq(_if(snapshot._totalSize.gt(limit),
-			limit, snapshot._totalSize)), true);
-	});
+	var getPageCount = function (value) {
+		if (!value) return 1;
+		return ceil(value / limit);
+	};
 	object(options);
 	columns = object(options.columns);
 	i18n = options.i18n ? object(options.i18n) : create(null);
@@ -47,20 +45,25 @@ module.exports = function (snapshots, options) {
 	inSync = new ObservableValue(true);
 
 	update = function () {
-		var status, search, normalizedSearch, page, snapshot, snapshotId, maxPage;
+		var status, search, normalizedSearch, page, baseSnapshot, snapshot, snapshotId, maxPage, users;
 		if (!active) return;
 		snapshotId = appName;
 
 		// Resolve status
 		if (statusQuery) {
-			if (statusQuery.value && !users[statusQuery.value]) {
+			if (statusQuery.value && !statusMap[statusQuery.value]) {
 				fixLocationQuery(i18n.status || 'status');
 				status = '';
 			} else {
 				status = statusQuery.value || '';
 			}
 			snapshotId += ';' + status;
+			users = statusMap[status];
+		} else {
+			users = options.users;
 		}
+
+		baseSnapshot = db.User.dataSnapshots.get(snapshotId);
 
 		// Resolve search
 		if (searchQuery) {
@@ -74,11 +77,17 @@ module.exports = function (snapshots, options) {
 			}
 			if (search) {
 				snapshotId += ';' + search;
+				users = users.filter(getFilter(search, searchPropertyNames));
 			}
 		}
 
 		snapshot = db.User.dataSnapshots.get(snapshotId);
-		maxPage = paginator.count.value = snapshot.totalSize ? ceil(snapshot.totalSize / limit) : 1;
+
+		paginator.count.value = baseSnapshot._totalSize.map(function (value) {
+			if (!value) return getPageCount(users._size);
+			return snapshot._totalValue.map(getPageCount);
+		});
+		maxPage = paginator.count.value;
 
 		// Resolve page
 		if (pageQuery.value != null) {
@@ -94,28 +103,34 @@ module.exports = function (snapshots, options) {
 		paginator.current.value = page || 1;
 
 		// Update table
-		if (page) {
-			snapshot = snapshot.get(page);
+		if (baseSnapshot.totalSize) {
+			// Remote handling
+			snapshot = snapshot.get(page || 1);
 			if (snapshots.last !== snapshot) snapshots.add(snapshot);
-			inSync.value = snapshot._size.gt(0);
-			list.set = snapshot;
-			list.filter = undefined;
-			return;
+			if (page) {
+				inSync.value = snapshot._size.gt(0);
+				list.set = snapshot;
+				list.page = 1;
+				return;
+			}
 		}
-		inSync.value = getInSyncObservable(status);
-		if (statusQuery) list.set = users[status];
-		if (searchQuery) list.filter = search ? getFilter(search, searchPropertyNames) : undefined;
+		list.set = users;
+		list.page = page || 1;
+		inSync.value = baseSnapshot._totalSize.map(function (value) {
+			if (!value) return true;
+			return snapshot._totalValue.map(function (value) {
+				if (value == null) return false;
+				return list.result._size.eq(value);
+			});
+		});
 	};
 
 	// Setup
 	// Status filter
 	if (options.users['']) {
-		users = options.users;
+		statusMap = options.users;
 		statusQuery = location.query.get(i18n.status || 'status');
 		statusQuery.on('change', update);
-		set = options.users[''];
-	} else {
-		set = options.users;
 	}
 
 	// Search filter
@@ -130,9 +145,11 @@ module.exports = function (snapshots, options) {
 	pageQuery.on('change', update);
 
 	// Table configuration
-	list = new ReactiveList(set, options.compare);
+	list = new ReactiveList(options.users[''] || options.users, options.compare);
+	list.limit = limit;
 	table = new ReactiveTable(document, list, columns);
 	table.paginator = paginator = new Paginator(pathname);
+
 	table.inSync = inSync;
 	inSync.on('change', function (event) {
 		table.table.classList[event.newValue ? 'remove' : 'add']('not-in-sync');
