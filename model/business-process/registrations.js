@@ -1,17 +1,19 @@
 'use strict';
 
 var memoize            = require('memoizee/plain')
-  , validDbType = require('dbjs/valid-dbjs-type')
+  , validDbType        = require('dbjs/valid-dbjs-type')
+  , definePercentage   = require('dbjs-ext/number/percentage')
   , defineStringLine   = require('dbjs-ext/string/string-line')
   , defineRegistration = require('./../registration')
-  , endsWith    = require('es5-ext/string/#/ends-with');
+  , endsWith           = require('es5-ext/string/#/ends-with');
 
 module.exports = memoize(function (Target/* options */) {
-	var db, StringLine, options;
+	var db, StringLine, Percentage, options;
 	validDbType(Target);
 	db = Target.database;
 	options = Object(arguments[1]);
 	defineRegistration(db);
+	Percentage = definePercentage(db);
 	StringLine = defineStringLine(db);
 
 	Target.prototype.defineProperties({
@@ -123,6 +125,28 @@ module.exports = memoize(function (Target/* options */) {
 					});
 				}, this);
 				return result;
+			}
+		},
+		questionsStatus: {
+			type: Percentage,
+			value: 1
+		},
+		submissionsStatus: {
+			type: Percentage,
+			value: function (_observe) {
+				var total, valid, submission;
+				total = valid = 0;
+				if (this.questionsStatus !== 1) return 0;
+				if (!this.applicableSubmissions.size) return 1;
+				this.applicableSubmissions.forEach(function (subName) {
+					++total;
+					submission = this.submissions[subName];
+					if (!_observe(submission.orderedFiles._size)) return;
+					if (submission.orderedFiles.some(function (file) { return _observe(file._path); })) {
+						++valid;
+					}
+				}, this);
+				return valid / total;
 			}
 		}
 	});
