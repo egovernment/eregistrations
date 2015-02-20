@@ -97,7 +97,7 @@ module.exports = function (snapshots, options) {
 				if (maxPage < page) page = (maxPage > 1) ? maxPage : null;
 			}
 			if (page) page = String(page);
-			if (page !== pageQuery.value) fixLocationQuery(i18n.page || 'page');
+			if (page !== pageQuery.value) fixLocationQuery(i18n.page || 'page', page);
 			if (page) page = Number(page);
 		}
 		paginator.current.value = page || 1;
