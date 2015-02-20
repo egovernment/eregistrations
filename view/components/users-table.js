@@ -7,6 +7,7 @@ var toNatural        = require('es5-ext/number/to-pos-integer')
   , includes         = require('es5-ext/string/#/contains')
   , memoize          = require('memoizee/plain')
   , ObservableValue  = require('observable-value')
+  , ObservableSet    = require('observable-set')
   , ReactiveTable    = require('reactive-table')
   , ReactiveList     = require('reactive-table/list')
   , location         = require('mano/lib/client/location')
@@ -25,6 +26,23 @@ var getFilter = memoize(function (query, propNames) {
 		});
 	};
 }, { length: 1 });
+
+var resolveUsers = function (value) {
+	if (!value) return [];
+	return value.split(',').map(function (id) {
+		return db.objects.unserialize(id, db.User);
+	});
+};
+var getUsersSnapshot = memoize(function (observable) {
+	var set = new ObservableSet(resolveUsers(observable.value));
+	observable.on('change', function (event) {
+		set._postponed_ += 1;
+		set.clear();
+		resolveUsers(event.newValue).forEach(set.add, set);
+		set._postponed_ -= 1;
+	});
+	return set;
+}, { normalize: function (args) { return args[0].dbId; } });
 
 module.exports = function (snapshots, options) {
 	var list, table, paginator, i18n, columns, searchPropertyNames
@@ -45,7 +63,8 @@ module.exports = function (snapshots, options) {
 	inSync = new ObservableValue(true);
 
 	update = function () {
-		var status, search, normalizedSearch, page, baseSnapshot, snapshot, snapshotId, maxPage, users;
+		var status, search, normalizedSearch, page, baseSnapshot, snapshot, usersSnapshot
+		  , snapshotId, maxPage, users;
 		if (!active) return;
 		snapshotId = appName;
 
@@ -105,11 +124,12 @@ module.exports = function (snapshots, options) {
 		// Update table
 		if (baseSnapshot.totalSize) {
 			// Remote handling
-			snapshot = snapshot.get(page || 1);
-			if (snapshots.last !== snapshot) snapshots.add(snapshot);
+			snapshotId += ';' + (page || 1);
+			usersSnapshot = getUsersSnapshot(snapshot._get(page || 1));
+			if (snapshots.last !== snapshotId) snapshots.add(snapshotId);
 			if (page) {
-				inSync.value = snapshot._size.gt(0);
-				list.set = snapshot;
+				inSync.value = usersSnapshot._size.gt(0);
+				list.set = usersSnapshot;
 				list.page = 1;
 				return;
 			}
