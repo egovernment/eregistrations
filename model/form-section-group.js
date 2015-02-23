@@ -18,7 +18,10 @@ module.exports = memoize(function (db) {
 		status: { value: function (_observe) {
 			var sum = 0, resolved;
 			if (this.constructor.resolventProperty) {
-				resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty);
+				resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty, _observe);
+				if (!resolved) {
+					return 0;
+				}
 				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
 					if (!resolved.descriptor.required || (_observe(resolved.observable) != null)) return 1;
 					return 0;

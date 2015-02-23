@@ -15,7 +15,10 @@ module.exports = memoize(function (db) {
 			var props, resolved;
 			props = this.constructor.propertyNames.copy();
 			props.forEach(function (name) {
-				resolved = this.master.resolveSKeyPath(name);
+				resolved = this.master.resolveSKeyPath(name, _observe);
+				if (!resolved) {
+					return;
+				}
 				if (_observe(resolved.object['_' +
 						this.database.Object.getFormApplicablePropName(resolved.key)])
 						=== false) {
@@ -28,7 +31,10 @@ module.exports = memoize(function (db) {
 			var props, resolved;
 			props = this.formPropertyNames.copy();
 			props.forEach(function (name) {
-				resolved = this.master.resolveSKeyPath(name);
+				resolved = this.master.resolveSKeyPath(name, _observe);
+				if (!resolved) {
+					return;
+				}
 				if (_observe(resolved.object['_' +
 						this.database.Object.getApplicablePropName(resolved.key)])
 						=== false) {
@@ -41,14 +47,21 @@ module.exports = memoize(function (db) {
 		status: { value: function (_observe) {
 			var resolved, valid = 0, total = 0;
 			if (this.constructor.resolventProperty) {
-				resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty);
+				resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty, _observe);
+				if (!resolved) {
+					return 0;
+				}
 				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
 					if (!resolved.descriptor.required || (_observe(resolved.observable) != null)) return 1;
 					return 0;
 				}
 			}
 			this.propertyNames.forEach(function (name) {
-				resolved = this.master.resolveSKeyPath(name);
+				resolved = this.master.resolveSKeyPath(name, _observe);
+				if (!resolved) {
+					++total;
+					return;
+				}
 				if (!resolved.descriptor.required) return;
 				if (this.constructor.excludedFromStatusIfFilled.has(name) &&
 						_observe(resolved.observable) != null) {

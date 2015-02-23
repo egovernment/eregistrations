@@ -18,11 +18,17 @@ module.exports = memoize(function (db) {
 			var entityObjects, statusSum, key;
 			statusSum = 0;
 			key = this.constructor.sectionProperty + 'Status';
-			entityObjects = this.master.resolveSKeyPath(this.constructor.propertyName).value;
+			entityObjects = this.master.resolveSKeyPath(this.constructor.propertyName, _observe);
+			if (!entityObjects) {
+				return 0;
+			}
+			entityObjects = entityObjects.value;
 			entityObjects.forEach(function (entityObject) {
-				statusSum +=
-					_observe(entityObject.resolveSKeyPath(key)
-						.observable);
+				var resolved = entityObject.resolveSKeyPath(key, _observe);
+				if (!resolved) {
+					return;
+				}
+				statusSum += _observe(resolved.observable);
 			});
 			return !_observe(entityObjects._size) ? 1 : statusSum / entityObjects.size;
 		} }
