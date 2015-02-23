@@ -1,7 +1,7 @@
 'use strict';
 
 var once                = require('timers-ext/once')
-  , getMultiObjFragment = require('eregistrations/model/get-objects-set-fragment')
+  , getMultiObjFragment = require('../model/get-objects-set-fragment')
 
   , max = Math.max;
 
