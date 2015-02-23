@@ -24,12 +24,11 @@ module.exports = memoize(function (db) {
 			}
 			entityObjects = entityObjects.value;
 			entityObjects.forEach(function (entityObject) {
-				if (!entityObject.resolveSKeyPath(key, _observe)) {
+				var resolved = entityObject.resolveSKeyPath(key, _observe);
+				if (!resolved) {
 					return;
 				}
-				statusSum +=
-					_observe(entityObject.resolveSKeyPath(key, _observe)
-						.observable);
+				statusSum += _observe(resolved.observable);
 			});
 			return !_observe(entityObjects._size) ? 1 : statusSum / entityObjects.size;
 		} }
