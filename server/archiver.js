@@ -28,7 +28,7 @@ module.exports = function (user/*, options*/) {
 	if (options.uploadsPath != null) uploadsPath = options.uploadsPath;
 	else uploadsPath = envUploadsDir;
 
-	user.requiredSubmissions.forEach(function (submission) {
+	user.applicableSubmissions.forEach(function (submission) {
 		var docName = submission.label, zipFileName, index = 0;
 		docName = replace.call(docName, ' ', '-');
 		zipFileName = user.companyName ? toSafeFileName(user.companyName) : user.__id__;
