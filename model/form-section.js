@@ -59,6 +59,7 @@ module.exports = memoize(function (db) {
 			this.propertyNames.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name, _observe);
 				if (!resolved) {
+					++total;
 					return;
 				}
 				if (!resolved.descriptor.required) return;
