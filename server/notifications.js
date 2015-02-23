@@ -69,6 +69,7 @@ setup = function (path) {
 		getText = function (user) {
 			var data = conf.text(user, context);
 			if (!conf.textResolvesTemplate) data = getTemplate(data);
+			else data = compileTpl(data);
 			return resolveTpl(data, context);
 		};
 	} else {
