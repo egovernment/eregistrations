@@ -4,17 +4,19 @@ var memoize            = require('memoizee/plain')
   , validDbType        = require('dbjs/valid-dbjs-type')
   , definePercentage   = require('dbjs-ext/number/percentage')
   , defineStringLine   = require('dbjs-ext/string/string-line')
-  , defineRegistration = require('./../registration')
+  , defineRegistration = require('../registration')
+  , defineSubmission   = require('../submission')
   , endsWith           = require('es5-ext/string/#/ends-with');
 
 module.exports = memoize(function (Target/* options */) {
-	var db, StringLine, Percentage, options;
+	var db, StringLine, Percentage, Submission, options;
 	validDbType(Target);
 	db = Target.database;
 	options = Object(arguments[1]);
 	defineRegistration(db);
 	Percentage = definePercentage(db);
 	StringLine = defineStringLine(db);
+	Submission = options.submissionClass || defineSubmission(db);
 
 	Target.prototype.defineProperties({
 		registrations: {
@@ -115,13 +117,13 @@ module.exports = memoize(function (Target/* options */) {
 			}
 		},
 		applicableSubmissions: {
-			type: StringLine,
+			type: Submission,
 			multiple: true,
 			value: function (_observe) {
 				var result = [];
 				this.applicableRequirements.forEach(function (req) {
-					_observe(this.requirements[req].submissions).forEach(function (name) {
-						result.push(name);
+					_observe(this.requirements[req].submissions).forEach(function (sub) {
+						result.push(sub);
 					});
 				}, this);
 				return result;
