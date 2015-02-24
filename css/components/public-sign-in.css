@@ -1,5 +1,11 @@
+.public-sign-in {
+	padding: 22px 0;
+}
 .public-sign-in > * {
 	display: inline-block;
-	width: 50%;
+	width: 49%;
 	vertical-align: top;
+}
+.public-sign-in > *:first-child {
+	margin-right: 2%;
 }
