@@ -176,7 +176,7 @@ module.exports = function (usersPass, computedUsersPass, dbSubmitted
 		var statuses;
 
 		// Add general fragment
-		fragment.add(generalFragment);
+		fragment.sets.add(generalFragment);
 
 		// Initialize snapshots set (if empty)
 		if (!snapshotsSet.size) {
