@@ -25,7 +25,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 		this.constructor.propertyNames.forEach(function (item, propName) {
 			var val, id, resolved, formFieldPath, propOptions;
 			resolved = resolvePropertyPath(master, propName);
-			formFieldPath = resolved.object.__id__ + '/' + resolved.key;
+			formFieldPath = resolved.id;
 			if (this.inputOptions.has(propName)) {
 				propOptions = normalizeOptions(this.inputOptions.get(propName));
 				forEach(propOptions, function (value, name) {
@@ -44,7 +44,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 				legacyData = [];
 			}
 			id = 'input-' + generateId();
-			legacyData.push({ id: id, constraint: val, sKeyPath: propName });
+			legacyData.push({ id: id, constraint: val, sKeyPath: propName, sKey: formFieldPath });
 			result.controls[formFieldPath] = normalizeOptions(result.controls[formFieldPath], { id: id });
 		}, this);
 		if (legacyData) {
