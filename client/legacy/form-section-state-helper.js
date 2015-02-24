@@ -27,15 +27,19 @@ $.formSectionStateHelper = function (formId, entityId, constraints, legacyEntity
 	if (legacyEntityProto) {
 		Entity.prototype = legacyEntityProto;
 	}
-	Entity.prototype.__id__ = entityId;
 	$.onEnvUpdate(formId, function () {
-		var result, i, context, domElem, formEntity;
-		formEntity = new Entity();
-		$.dbjsFormFill(formEntity, form);
+		var result, i, context, domElem, entities = {}, formEntityId, formEntity;
 		for (i = 0; i < constraints.length; i++) {
 			domElem = $(constraints[i].id);
 			if (!domElem) {
 				continue;
+			}
+			formEntityId = constraints[i].sKey.split('/', 1)[0];
+			formEntity = entities[formEntityId];
+			if (!formEntity) {
+				formEntity = entities[formEntityId] = new FormEntity();
+				formEntity.__id__ = formEntityId;
+				$.dbjsFormFill(formEntity, form);
 			}
 			context = getContext(formEntity, constraints[i].sKeyPath);
 			result = constraints[i].constraint.call(context.object);
