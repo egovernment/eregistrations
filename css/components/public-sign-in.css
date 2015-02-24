@@ -1,5 +1,5 @@
 .public-sign-in {
-	padding: 22px 0;
+	padding: 22px 10px;
 }
 .public-sign-in > * {
 	display: inline-block;
@@ -8,4 +8,15 @@
 }
 .public-sign-in > *:first-child {
 	margin-right: 2%;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.public-sign-in > * {
+		display: block;
+		width: 100%;
+		margin-bottom: 22px;
+	}
+	.public-sign-in > *:last-child {
+		margin-bottom: 0;
+	}
 }
