@@ -26,6 +26,22 @@ exports['sub-main'] = function () {
 			{ class: 'submitted-add-user' },
 			a({ class: 'button-main ', href: '/users-admin/add-user/' }, "New User")
 		),
+
+		div(
+			{ class: 'pagination-wrapper' },
+			ul(
+				{ class: 'pagination' },
+				li("<<"),
+				li("<"),
+				li({ class: 'pagination-activ' }, "1"),
+				li("2"),
+				li("3"),
+				li("4"),
+				li(">"),
+				li(">>")
+			)
+		),
+
 		div(
 			{ class: 'table-responsive-container' },
 			table(
@@ -160,6 +176,20 @@ exports['sub-main'] = function () {
 						)
 					)
 				)
+			)
+		),
+		div(
+			{ class: 'pagination-wrapper' },
+			ul(
+				{ class: 'pagination' },
+				li("<<"),
+				li("<"),
+				li({ class: 'pagination-activ' }, "1"),
+				li("2"),
+				li("3"),
+				li("4"),
+				li(">"),
+				li(">>")
 			)
 		)
 	);
