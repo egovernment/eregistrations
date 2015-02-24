@@ -8,6 +8,10 @@
 	margin-right: 1%;
 	margin-left: 0;
 }
+.section-sides > * > *,
+.section-sides form > * {
+	margin-bottom: 22px;
+}
 
 @media only screen and (max-width: var(--mobile-width)) {
 	.section-sides > * {
