@@ -172,7 +172,7 @@ module.exports = function (usersPass, computedUsersPass, dbSubmitted
 		generalFragment.sets.add(new ObjectFragment(snapshot, totalSizePropertyPass));
 	});
 
-	return function (user, snapshotsSet, fragment) {
+	return function (snapshotsSet, fragment) {
 		var statuses;
 
 		// Add general fragment
