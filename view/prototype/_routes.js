@@ -29,7 +29,7 @@ module.exports = function (view) {
 
 	return {
 		// Public routes - imports content directly to #main element
-		//'/': bind(index),
+		'/': bind(main.diff('./home-page')),
 		public: bind(index),
 		'reset-password': bind(main.diff('./reset-password')),
 		'multi-entry': bind(index.diff('./multi-entry')),
