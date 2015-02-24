@@ -113,7 +113,7 @@ var getComputedUsersSet = function (users, dbSubmitted) {
 	  , onDelete = function (user) { set.delete(resolveUser(user)); };
 
 	users.forEach(function (user) { computedUsers.push(resolveUser(user)); });
-	set = new ObservableSet(users);
+	set = new ObservableSet(computedUsers);
 	computedUsers = null;
 
 	users.on('change', function (event) {
