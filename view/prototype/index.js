@@ -17,7 +17,6 @@ exports.main = function () {
 			{ class: 'section-primary section-sides' },
 			div(
 				h3("Login"),
-				hr(),
 				form(
 					ul({ class: 'form-elements' },
 						['email', 'password'],
@@ -34,13 +33,12 @@ exports.main = function () {
 						),
 					p({ class: 'submit-placeholder' }, input({ type: 'submit', value: "Sign In" }))
 				),
-				hr(),
 				p("Forgot password? ",
 					a({ href: "#reset-password" }, "Reset password"))
 			),
 			div(
+				{ class: 'section-sides-separator' },
 				h3("Create your account"),
-				hr(),
 				form(
 					ul({ class: 'form-elements' },
 						['firstName', 'lastName', 'email', 'password'],
@@ -56,9 +54,7 @@ exports.main = function () {
 						}
 						),
 					p({ class: 'submit-placeholder' }, input({ type: 'submit', value: "Sign Up" }))
-				),
-				hr(),
-				p("Already has account? Log in using form on left side")
+				)
 			)
 		)
 	);

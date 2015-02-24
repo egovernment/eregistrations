@@ -36,7 +36,7 @@ exports.body = function () {
 		section(
 			ol(
 				li(
-					a({ href: '/' }, span("Index"), span({ class: 'label-reg' }, "Public"))
+					a({ href: '/' }, span("Login"), span({ class: 'label-reg' }, "Public"))
 				),
 				li(
 					a({ href: '/public/' }, span("Public"), span({ class: 'label-reg' }, "Public"))
