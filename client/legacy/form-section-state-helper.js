@@ -37,7 +37,7 @@ $.formSectionStateHelper = function (formId, entityId, constraints, legacyEntity
 			formEntityId = constraints[i].sKey.split('/', 1)[0];
 			formEntity = entities[formEntityId];
 			if (!formEntity) {
-				formEntity = entities[formEntityId] = new FormEntity();
+				formEntity = entities[formEntityId] = new Entity();
 				formEntity.__id__ = formEntityId;
 				$.dbjsFormFill(formEntity, form);
 			}
