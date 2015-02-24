@@ -31,14 +31,14 @@ exports['sub-main'] = function () {
 			{ class: 'pagination-wrapper' },
 			ul(
 				{ class: 'pagination' },
-				li("<<"),
-				li("<"),
+				li(span({ class: 'fa fa-angle-double-left' }, "<<")),
+				li(span({ class: 'fa fa-angle-left' }, "<")),
 				li({ class: 'pagination-activ' }, "1"),
 				li("2"),
 				li("3"),
 				li("4"),
-				li(">"),
-				li(">>")
+				li(span({ class: 'fa fa-angle-right' }, ">")),
+				li(span({ class: 'fa fa-angle-double-right' }, ">>"))
 			)
 		),
 
@@ -182,14 +182,14 @@ exports['sub-main'] = function () {
 			{ class: 'pagination-wrapper' },
 			ul(
 				{ class: 'pagination' },
-				li("<<"),
-				li("<"),
+				li(span({ class: 'fa fa-angle-double-left' }, "<<")),
+				li(span({ class: 'fa fa-angle-left' }, "<")),
 				li({ class: 'pagination-activ' }, "1"),
 				li("2"),
 				li("3"),
 				li("4"),
-				li(">"),
-				li(">>")
+				li(span({ class: 'fa fa-angle-right' }, ">")),
+				li(span({ class: 'fa fa-angle-double-right' }, ">>"))
 			)
 		)
 	);
