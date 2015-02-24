@@ -1,6 +1,7 @@
 'use strict';
 
-var forEach                = require('es5-ext/object/for-each')
+var includes               = require('es5-ext/array/#/contains')
+  , forEach                = require('es5-ext/object/for-each')
   , d                      = require('d')
   , memoize                = require('memoizee/plain')
   , ObservableSet          = require('observable-set')
@@ -47,6 +48,19 @@ var resolveSnapshot = memoize(function (key, compare) {
 	return snapshot;
 }, { length: 1 });
 
+var arrayToSet = function (array) {
+	var set = new ObservableSet(array);
+	array.on('change', function () {
+		set._postponed_ += 1;
+		set.forEach(function (user) {
+			if (!includes.call(array, user)) set.delete(user);
+		});
+		array.forEach(function (user) { set.add(user); });
+		set._postponed_ -= 1;
+	});
+	return set;
+};
+
 var resolveSnapshotPage = memoize(function (key, compare, pageLimit) {
 	var data = unserializeSnapshotKey(key), snapshot = resolveSnapshot(data.snapshotKey, compare)
 	  , users = snapshot.items.slice((data.page - 1) * pageLimit, pageLimit)
@@ -56,7 +70,7 @@ var resolveSnapshotPage = memoize(function (key, compare, pageLimit) {
 		if (snapshot.get(data.page) !== serialized) snapshot.set(data.page, serialized);
 		users.on('change', function () { snapshot.set(data.page, serializeUsers(users)); });
 	}
-	return users.toSet();
+	return arrayToSet(users);
 }, { length: 1 });
 
 var usersFromSnapshots = function (snapshots, compare, cacheLimits) {
