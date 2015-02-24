@@ -1,0 +1,37 @@
+.pagination-wrapper {
+	text-align: right;
+	margin: 22px 0;
+}
+
+.pagination {
+	display: inline-block;
+}
+
+.pagination li {
+	display: inline;
+}
+
+.pagination li > a {
+	border: 1px solid var(--light-inner-border);
+	padding: 6px 10px;
+	background: var(--white-background);
+	margin-left: -1px;
+	text-decoration: none;
+}
+.pagination li > a:hover,
+.pagination li > a:focus,
+.pagination li > a:active {
+	background: var(--light-background);
+}
+
+.pagination li > .pagination-active {
+	background: var(--normal-background);
+	color: var(--white-background);
+}
+
+.pagination li:first-child > a {
+	border-radius: 4px 0 0 4px;
+}
+.pagination li:last-child > a {
+	border-radius: 0 4px 4px 0;
+}

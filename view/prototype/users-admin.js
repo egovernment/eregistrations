@@ -27,18 +27,22 @@ exports['sub-main'] = function () {
 			a({ class: 'button-main ', href: '/users-admin/add-user/' }, "New User")
 		),
 
-		div(
+		nav(
 			{ class: 'pagination-wrapper' },
 			ul(
 				{ class: 'pagination' },
-				li(span({ class: 'fa fa-angle-double-left' }, "<<")),
-				li(span({ class: 'fa fa-angle-left' }, "<")),
-				li({ class: 'pagination-activ' }, "1"),
-				li("2"),
-				li("3"),
-				li("4"),
-				li(span({ class: 'fa fa-angle-right' }, ">")),
-				li(span({ class: 'fa fa-angle-double-right' }, ">>"))
+				li(a(span({ class: 'fa fa-angle-double-left' }, "<<"))),
+				li(a(span({ class: 'fa fa-angle-left' }, "<"))),
+				li(a({ class: 'pagination-active' }, "1")),
+				li(a("2")),
+				li(a("3")),
+				li(a("4")),
+				li(a("5")),
+				li(a("6")),
+				li(a("7")),
+				li(a("8")),
+				li(a(span({ class: 'fa fa-angle-right' }, ">"))),
+				li(a(span({ class: 'fa fa-angle-double-right' }, ">>")))
 			)
 		),
 
@@ -178,18 +182,22 @@ exports['sub-main'] = function () {
 				)
 			)
 		),
-		div(
+		nav(
 			{ class: 'pagination-wrapper' },
 			ul(
 				{ class: 'pagination' },
-				li(span({ class: 'fa fa-angle-double-left' }, "<<")),
-				li(span({ class: 'fa fa-angle-left' }, "<")),
-				li({ class: 'pagination-activ' }, "1"),
-				li("2"),
-				li("3"),
-				li("4"),
-				li(span({ class: 'fa fa-angle-right' }, ">")),
-				li(span({ class: 'fa fa-angle-double-right' }, ">>"))
+				li(a(span({ class: 'fa fa-angle-double-left' }, "<<"))),
+				li(a(span({ class: 'fa fa-angle-left' }, "<"))),
+				li(a({ class: 'pagination-active' }, "1")),
+				li(a("2")),
+				li(a("3")),
+				li(a("4")),
+				li(a("5")),
+				li(a("6")),
+				li(a("7")),
+				li(a("8")),
+				li(a(span({ class: 'fa fa-angle-right' }, ">"))),
+				li(a(span({ class: 'fa fa-angle-double-right' }, ">>")))
 			)
 		)
 	);
