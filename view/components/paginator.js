@@ -17,7 +17,7 @@ var assign          = require('es5-ext/object/assign')
 var PaginatorDom = function (paginator) {
 	this.paginator = paginator;
 	this.list = ns.ul({ class: 'paginator' });
-	this.dom = ns._if(ns.gt(this.paginator.count, 0), this.dom).toDOM(document);
+	this.dom = ns._if(ns.gt(this.paginator.count, 0), this.list).toDOM(document);
 	this.reload();
 	this.paginator.count.on('change', this.reload);
 };
