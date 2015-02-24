@@ -92,9 +92,9 @@ var usersFromSnapshots = function (snapshots, compare, cacheLimits) {
 	return users;
 };
 
-var getComputedUsersSet = function (users, submittedDb) {
+var getComputedUsersSet = function (users, dbSubmitted) {
 	var computedUsers = [], set
-	  , resolveUser = function (user) { return submittedDb.User.getById(user.__id__); }
+	  , resolveUser = function (user) { return dbSubmitted.User.getById(user.__id__); }
 	  , onAdd = function (user) { set.add(resolveUser(user)); }
 	  , onDelete = function (user) { set.delete(resolveUser(user)); };
 
@@ -123,7 +123,7 @@ var getComputedUsersSet = function (users, submittedDb) {
 };
 
 var addSnapshotsFragment = function (fragment, snapshotsSet
-	  , usersPass, computedUsersPass, submittedDb
+	  , usersPass, computedUsersPass, dbSubmitted
 	  , compare, cacheLimits) {
 	var users = usersFromSnapshots(snapshotsSet, compare, cacheLimits);
 	var onSnapshotAdd = function (key) {
@@ -135,7 +135,7 @@ var addSnapshotsFragment = function (fragment, snapshotsSet
 		if (data.page > 1) fragment.sets.delete(getSnapshotPageFragment(data.snapshotKey, data.page));
 	};
 	getObjectsSetFragment(users, usersPass, fragment);
-	getObjectsSetFragment(getComputedUsersSet(users, submittedDb), computedUsersPass, fragment);
+	getObjectsSetFragment(getComputedUsersSet(users, dbSubmitted), computedUsersPass, fragment);
 	snapshotsSet.forEach(onSnapshotAdd);
 	snapshotsSet.on('change', function (event) {
 		if (event.type === 'add') {
@@ -157,7 +157,7 @@ var addSnapshotsFragment = function (fragment, snapshotsSet
 	return fragment;
 };
 
-module.exports = function (usersPass, computedUsersPass, submittedDb
+module.exports = function (usersPass, computedUsersPass, dbSubmitted
 	  , appName, usersMap, compare, cacheLimits) {
 
 	var generalFragment;
@@ -196,7 +196,7 @@ module.exports = function (usersPass, computedUsersPass, submittedDb
 
 		// Add snapshots fragment
 		addSnapshotsFragment(fragment, snapshotsSet
-			  , usersPass, computedUsersPass, submittedDb
+			  , usersPass, computedUsersPass, dbSubmitted
 			  , compare, cacheLimits);
 
 		return fragment;
