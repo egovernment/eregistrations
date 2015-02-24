@@ -43,5 +43,5 @@ module.exports = function (limitedUsers, applicable, preferred, userPass/*, opti
 	limitedUsers.on('change', once(function () {
 		normalize(limitedUsers, applicable, preferred, limit);
 	}));
-	return getObjectsSetFragment(limitedUsers, userPass);
+	return getObjectsSetFragment(limitedUsers, userPass, options.fragment);
 };
