@@ -1,5 +1,9 @@
 'use strict';
 
 exports.main = function () {
-	div('test');
+	section(
+		{ class: 'content public-sign-in' },
+		div("f1"),
+		div("f2")
+	);
 };

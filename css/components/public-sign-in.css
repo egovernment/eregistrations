@@ -1,0 +1,5 @@
+.public-sign-in > * {
+	display: inline-block;
+	width: 50%;
+	vertical-align: top;
+}
