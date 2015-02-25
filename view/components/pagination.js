@@ -33,7 +33,8 @@ Object.defineProperties(PaginationDom.prototype, assign({
 }), memoizeMethods({
 	getPageButton: d(function (page) {
 		return ns.li({ class: ns._if(this.pagination.current.eq(page), 'active') },
-			ns.a({ href: this.pagination.getLink(page) }, page));
+			ns.a({ href: ns._if(this.pagination.current.eq(page), null, this.pagination.getLink(page)) },
+				page));
 	})
 })));
 
@@ -55,13 +56,15 @@ ee(Object.defineProperties(Pagination.prototype, assign({
 		this.url.query = copy(location.query);
 		var i, l = this.count.value;
 		for (i = 1; i <= l; ++i) {
-			this.url.query.page = i;
+			if (i === 1) delete this.url.query.page;
+			else this.url.query.page = i;
 			this.getLink(i).value = formatUrl(this.url);
 		}
 	})
 }), memoizeMethods({
 	getLink: d(function (page) {
-		this.url.query.page = page;
+		if (page === 1) delete this.url.query.page;
+		else this.url.query.page = page;
 		return new ObservableValue(formatUrl(this.url));
 	})
 }))));
