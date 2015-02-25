@@ -37,8 +37,7 @@ var getUsersSnapshot = memoize(function (observable) {
 module.exports = function (snapshots, options) {
 	var list, table, pagination, i18n, columns
 	  , statusQuery, searchQuery, pathname, pageLimit, statusMap
-	  , active, update, appName, pageQuery, inSync, isPartial
-	  , allUsers;
+	  , active, update, appName, pageQuery, inSync, isPartial;
 
 	var getPageCount = function (value) {
 		if (!value) return 1;
@@ -53,10 +52,12 @@ module.exports = function (snapshots, options) {
 	pageLimit = options.cacheLimits.usersPerPage;
 	statusMap = object(options.users);
 	inSync = new ObservableValue(true);
-	allUsers = statusMap[i18n.all || 'all'] || statusMap[''];
-	isPartial = allUsers._size.map(function (value) {
-		return value > options.cacheLimits.listedUsers;
-	});
+	isPartial = (function () {
+		var snapshotTokens = [appName];
+		if (statusMap[i18n.all || 'all']) snapshotTokens.push(i18n.all || 'all');
+		return db.User.dataSnapshots.get(serializeSnapshotKey(snapshotTokens))
+			._totalSize.map(function (value) { return value > options.cacheLimits.listedUsers; });
+	}());
 
 	update = function () {
 		var status, search, normalizedSearch, page, snapshot, usersSnapshot
