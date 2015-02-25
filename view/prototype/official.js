@@ -87,6 +87,14 @@ exports['sub-main'] = function () {
 		li(a("6")),
 		li(a("7")),
 		li(a("8")),
+		li(a("9")),
+		li(a("10")),
+		li(a("11")),
+		li(a("12")),
+		li(a("13")),
+		li(a("14")),
+		li(a("15")),
+		li(a("16")),
 		li(a(span({ class: 'fa fa-angle-right' }, ">"))),
 		li(a(span({ class: 'fa fa-angle-double-right' }, ">>")))
 	);
@@ -328,6 +336,14 @@ exports['sub-main'] = function () {
 		li(a("6")),
 		li(a("7")),
 		li(a("8")),
+		li(a("9")),
+		li(a("10")),
+		li(a("11")),
+		li(a("12")),
+		li(a("13")),
+		li(a("14")),
+		li(a("15")),
+		li(a("16")),
 		li(a(span({ class: 'fa fa-angle-right' }, ">"))),
 		li(a(span({ class: 'fa fa-angle-double-right' }, ">>")))
 	);
