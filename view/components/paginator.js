@@ -55,7 +55,7 @@ ee(Object.defineProperties(Paginator.prototype, assign({
 		this.url.query = copy(location.query);
 		var i, l = this.count.value;
 		for (i = 1; i <= l; ++i) {
-			this.url.query.page = 1;
+			this.url.query.page = i;
 			this.getLink(i).value = formatUrl(this.url);
 		}
 	})
