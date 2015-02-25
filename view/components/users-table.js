@@ -32,7 +32,7 @@ var getUsersSnapshot = memoize(function (observable) {
 		set._postponed_ -= 1;
 	});
 	return set;
-}, { normalize: function (args) { return args[0].dbId; } });
+}, { normalizer: function (args) { return args[0].dbId; } });
 
 module.exports = function (snapshots, options) {
 	var list, table, pagination, i18n, columns
