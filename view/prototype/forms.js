@@ -7,7 +7,12 @@ var db = require('mano').db
 exports['step-form'] = { class: { 'step-active': true } };
 
 exports.step = function () {
-	h1("2. Fill the form");
+	div(
+		{ class: 'capital-first' },
+		div("2"),
+		div(h1("Fill the form"),
+			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
+	);
 
 	div({ class: 'error-main' },
 		p(span({ class: 'fa fa-exclamation-circle' }), "Please fill the Guide first"));
