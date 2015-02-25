@@ -3,7 +3,7 @@
 var includes               = require('es5-ext/array/#/contains')
   , forEach                = require('es5-ext/object/for-each')
   , d                      = require('d')
-  , memoize                = require('memoizee/plain')
+  , memoize                = require('memoizee')
   , ObservableSet          = require('observable-set')
   , ObservableMultiSet     = require('observable-multi-set/primitive')
   , serializeKey           = require('dbjs/_setup/serialize/key')
@@ -36,7 +36,7 @@ var getSnapshotPageFragment = memoize(function (key, page) {
 	var pass = { totalSize: 1 };
 	if (page) pass[serializeKey(page)] = 1;
 	return new ObjectFragment(dataSnapshots.get(key), pass);
-});
+}, { primitive: true });
 
 var resolveSnapshot = memoize(function (key) {
 	var snapshot = dataSnapshots.get(key), data = unserializeSnapshotKey(key)
@@ -46,7 +46,7 @@ var resolveSnapshot = memoize(function (key) {
 	defineProperty(snapshot, 'items', d(users));
 	users._size.on('change', function (event) { snapshot.totalSize = event.newValue; });
 	return snapshot;
-});
+}, { primitive: true });
 
 var arrayToSet = function (array) {
 	var set = new ObservableSet(array);
@@ -74,7 +74,7 @@ var resolveSnapshotPage = memoize(function (key, compare, pageLimit) {
 		users.on('change', function () { snapshot.set(data.page, serializeUsers(users)); });
 	}
 	return arrayToSet(users);
-}, { length: 1 });
+}, { length: 1, primitive: true });
 
 var usersFromSnapshots = function (snapshots, compare, cacheLimits) {
 	var users = new ObservableMultiSet(null, getId);
