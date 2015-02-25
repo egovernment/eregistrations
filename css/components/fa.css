@@ -208,15 +208,3 @@ e.g.:
 .fa-folder-open:before {
 	content: '\f115';
 }
-
-.fa-angle-double-left { width: 0.6em; }
-.fa-angle-double-left:before { content: '\f100'; }
-
-.fa-angle-double-right { width: 0.6em; }
-.fa-angle-double-right:before { content: '\f101'; }
-
-.fa-angle-left { width: 0.35em; }
-.fa-angle-left:before { content: '\f104'; }
-
-.fa-angle-right { width: 0.35em; }
-.fa-angle-right:before { content: '\f105' }

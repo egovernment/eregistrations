@@ -28,8 +28,8 @@ exports['sub-main'] = function () {
 
 	ul(
 		{ class: 'pagination' },
-		li(a(span({ class: 'fa fa-angle-double-left' }, "<<"))),
-		li(a(span({ class: 'fa fa-angle-left' }, "<"))),
+		li(a("<<")),
+		li(a("<")),
 		li(a({ class: 'pagination-active' }, "1")),
 		li(a("2")),
 		li(a("3")),
@@ -38,8 +38,8 @@ exports['sub-main'] = function () {
 		li(a("6")),
 		li(a("7")),
 		li(a("8")),
-		li(a(span({ class: 'fa fa-angle-right' }, ">"))),
-		li(a(span({ class: 'fa fa-angle-double-right' }, ">>")))
+		li(a(">")),
+		li(a(">>"))
 	);
 
 	div(
@@ -181,8 +181,8 @@ exports['sub-main'] = function () {
 
 	ul(
 		{ class: 'pagination' },
-		li(a(span({ class: 'fa fa-angle-double-left' }, "<<"))),
-		li(a(span({ class: 'fa fa-angle-left' }, "<"))),
+		li(a("<<")),
+		li(a("<")),
 		li(a({ class: 'pagination-active' }, "1")),
 		li(a("2")),
 		li(a("3")),
@@ -191,7 +191,7 @@ exports['sub-main'] = function () {
 		li(a("6")),
 		li(a("7")),
 		li(a("8")),
-		li(a(span({ class: 'fa fa-angle-right' }, ">"))),
-		li(a(span({ class: 'fa fa-angle-double-right' }, ">>")))
+		li(a(">")),
+		li(a(">>"))
 	);
 };
