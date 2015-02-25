@@ -38,15 +38,15 @@ var getSnapshotPageFragment = memoize(function (key, page) {
 	return new ObjectFragment(dataSnapshots.get(key), pass);
 });
 
-var resolveSnapshot = memoize(function (key, compare) {
+var resolveSnapshot = memoize(function (key) {
 	var snapshot = dataSnapshots.get(key), data = unserializeSnapshotKey(key)
 	  , map = dataMap[data.appName], users = map[data.status || ''];
 	if (data.search) users = users.filter(getUsersFilter(data.search));
 	if (snapshot.totalSize !== users.size) snapshot.totalSize = users.size;
-	defineProperty(snapshot, 'items', d(users.toArray(compare)));
+	defineProperty(snapshot, 'items', d(users));
 	users._size.on('change', function (event) { snapshot.totalSize = event.newValue; });
 	return snapshot;
-}, { length: 1 });
+});
 
 var arrayToSet = function (array) {
 	var set = new ObservableSet(array);
@@ -63,7 +63,7 @@ var arrayToSet = function (array) {
 
 var resolveSnapshotPage = memoize(function (key, compare, pageLimit) {
 	var data = unserializeSnapshotKey(key), snapshot = resolveSnapshot(data.snapshotKey, compare)
-	  , users = snapshot.items.slice((data.page - 1) * pageLimit, pageLimit)
+	  , users = snapshot.items.toArray(compare).slice((data.page - 1) * pageLimit, pageLimit)
 	  , serialized;
 	if (data.page > 1) {
 		serialized = serializeUsers(users);
