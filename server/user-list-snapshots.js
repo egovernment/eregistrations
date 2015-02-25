@@ -67,7 +67,6 @@ var resolveSnapshotPage = memoize(function (key, compare, pageLimit) {
 	if (data.page == null) return snapshot.items;
 	start = (data.page - 1) * pageLimit;
 	users = snapshot.items.toArray(compare).slice(start, start + pageLimit);
-	console.log("Snapshot page", key, users.size, data.page);
 	if (data.page > 1) {
 		serialized = serializeUsers(users);
 		if (snapshot.get(data.page) !== serialized) snapshot.set(data.page, serialized);
@@ -145,7 +144,6 @@ var addSnapshotsFragment = function (fragment, snapshotsSet
 	var users = usersFromSnapshots(snapshotsSet, compare, cacheLimits);
 	var onSnapshotAdd = function (key) {
 		var data = unserializeSnapshotKey(key);
-		console.log("Snapshot add", key, data);
 		if (data.page > 1) fragment.sets.add(getSnapshotPageFragment(data.snapshotKey, data.page));
 	};
 	var onSnapshotDelete = function (key) {
