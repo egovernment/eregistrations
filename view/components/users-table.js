@@ -131,6 +131,12 @@ module.exports = function (snapshots, options) {
 				if (value == null) return false;
 				return users._size.gtOrEq(value > pageLimit ? pageLimit : value);
 			});
+		} else {
+			// Assure that we have all data on board
+			snapshotTokens = [appName];
+			if (statusMap[i18n.all || 'all']) snapshotTokens.push(i18n.all || 'all');
+			snapshotKey = serializeSnapshotKey(snapshotTokens);
+			if (snapshots.last !== snapshotKey) snapshots.add(snapshotKey);
 		}
 		list.set = users;
 		list.page = page || 1;
