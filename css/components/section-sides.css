@@ -26,4 +26,8 @@
 	.section-sides > *:first-child {
 		margin-bottom: 22px;
 	}
+
+	.section-sides-separator {
+		border-left: none;
+	}
 }
