@@ -10,7 +10,7 @@
 
 .pagination li > a {
 	border: 1px solid var(--light-inner-border);
-	padding: 0 6px;
+	padding: 0 10px;
 	display: block;
 	background: var(--white-background);
 	border-left-width: 0;
