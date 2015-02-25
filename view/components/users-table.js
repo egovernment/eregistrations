@@ -4,6 +4,7 @@ var toNatural            = require('es5-ext/number/to-pos-integer')
   , object               = require('es5-ext/object/valid-object')
   , value                = require('es5-ext/object/valid-value')
   , memoize              = require('memoizee/plain')
+  , once                 = require('timers-ext/once')
   , ObservableValue      = require('observable-value')
   , ObservableSet        = require('observable-set')
   , ReactiveTable        = require('reactive-table')
@@ -59,7 +60,7 @@ module.exports = function (snapshots, options) {
 			._totalSize.map(function (value) { return value > options.cacheLimits.listedUsers; });
 	}());
 
-	update = function () {
+	update = once(function () {
 		var status, search, normalizedSearch, page, snapshot, usersSnapshot
 		  , snapshotTokens, snapshotKey, maxPage, users;
 		if (!active) return;
@@ -141,7 +142,7 @@ module.exports = function (snapshots, options) {
 		list.set = users;
 		list.page = page || 1;
 		inSync.value = true;
-	};
+	});
 
 	// Setup
 	// Status filter
