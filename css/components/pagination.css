@@ -19,7 +19,10 @@
 	background: var(--light-background);
 }
 
-.pagination li > .pagination-active {
+.pagination li > .pagination-active,
+.pagination li > .pagination-active:hover,
+.pagination li > .pagination-active:focus,
+.pagination li > .pagination-active:active {
 	background: var(--normal-background);
 	color: var(--white-background);
 }

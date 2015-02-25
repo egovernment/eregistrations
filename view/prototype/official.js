@@ -74,6 +74,23 @@ exports['sub-main'] = function () {
 			)
 		)
 	);
+
+	ul(
+		{ class: 'pagination' },
+		li(a(span({ class: 'fa fa-angle-double-left' }, "<<"))),
+		li(a(span({ class: 'fa fa-angle-left' }, "<"))),
+		li(a({ class: 'pagination-active' }, "1")),
+		li(a("2")),
+		li(a("3")),
+		li(a("4")),
+		li(a("5")),
+		li(a("6")),
+		li(a("7")),
+		li(a("8")),
+		li(a(span({ class: 'fa fa-angle-right' }, ">"))),
+		li(a(span({ class: 'fa fa-angle-double-right' }, ">>")))
+	);
+
 	div(
 		{ class: 'table-responsive-container' },
 		table(
@@ -297,6 +314,22 @@ exports['sub-main'] = function () {
 				)
 			)
 		)
+	);
+
+	ul(
+		{ class: 'pagination' },
+		li(a(span({ class: 'fa fa-angle-double-left' }, "<<"))),
+		li(a(span({ class: 'fa fa-angle-left' }, "<"))),
+		li(a({ class: 'pagination-active' }, "1")),
+		li(a("2")),
+		li(a("3")),
+		li(a("4")),
+		li(a("5")),
+		li(a("6")),
+		li(a("7")),
+		li(a("8")),
+		li(a(span({ class: 'fa fa-angle-right' }, ">"))),
+		li(a(span({ class: 'fa fa-angle-double-right' }, ">>")))
 	);
 
 };
