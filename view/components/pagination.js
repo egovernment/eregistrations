@@ -46,6 +46,7 @@ var Pagination = module.exports = function (pathname, count, current) {
 	this.url.query = copy(location.query);
 	location.on('change', this.updateLinks);
 	this.count = new ObservableValue(count);
+	this.count.on('change', this.updateLinks);
 	this.current = new ObservableValue(count);
 };
 
