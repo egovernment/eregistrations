@@ -9,10 +9,6 @@
 	padding-left: 0;
 }
 
-.section-sides-separator {
-	border-left: 1px solid var(--light-inner-border);
-}
-
 .section-sides > * > *,
 .section-sides form > * {
 	margin-bottom: 22px;
@@ -25,9 +21,5 @@
 	}
 	.section-sides > *:first-child {
 		margin-bottom: 22px;
-	}
-
-	.section-sides-separator {
-		border-left: none;
 	}
 }
