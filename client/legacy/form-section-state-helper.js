@@ -41,7 +41,7 @@ $.formSectionStateHelper = function (formId, entityId, constraints, legacyEntity
 				formEntity.__id__ = formEntityId;
 				$.dbjsFormFill(formEntity, form);
 			}
-			context = getContext(formEntity, constraints[i].id.slice(formEntityId.length + 1));
+			context = getContext(formEntity, constraints[i].sKey.slice(formEntityId.length + 1));
 			result = constraints[i].constraint.call(context.object);
 			domElem.toggle(result);
 			if (!result) {
