@@ -6,6 +6,7 @@
 ../../css/components/free-form.css
 ../../css/components/hint-optional.css
 ../../css/components/tooltip.css
+../../css/components/capital-first.css
 ../../css/components/button-main.css
 ../../css/components/button-resource-link.css
 ../../css/components/controls.css

@@ -1,0 +1,23 @@
+.capital-first {
+	display: flex;
+}
+
+.capital-first > div > h1 {
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.capital-first > div:first-child {
+	text-shadow: none;
+	font-size: 80px;
+	line-height: 66px;
+	vertical-align: top;
+	margin-right: 10px;
+	min-width: 55px;
+}
+
+.capital-first > div > p {
+	font-size: 20px;
+	font-weight: normal;
+	text-transform: none;
+}
