@@ -63,9 +63,10 @@ var arrayToSet = function (array) {
 
 var resolveSnapshotPage = memoize(function (key, compare, pageLimit) {
 	var data = unserializeSnapshotKey(key), snapshot = resolveSnapshot(data.snapshotKey, compare)
-	  , users, serialized;
+	  , users, serialized, start;
 	if (data.page == null) return snapshot.items;
-	users = snapshot.items.toArray(compare).slice((data.page - 1) * pageLimit, pageLimit);
+	start = (data.page - 1) * pageLimit;
+	users = snapshot.items.toArray(compare).slice(start, start + pageLimit);
 	if (data.page > 1) {
 		serialized = serializeUsers(users);
 		if (snapshot.get(data.page) !== serialized) snapshot.set(data.page, serialized);
