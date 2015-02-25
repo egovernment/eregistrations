@@ -206,6 +206,12 @@ module.exports = function (usersPass, computedUsersPass, dbSubmitted
 				if (status) snapshotTokens.push(status);
 				snapshotsSet.add(serializeSnapshotKey(snapshotTokens));
 			});
+			statuses.forEach(function (status) {
+				var snapshotTokens = [appName];
+				if (status) snapshotTokens.push(status);
+				snapshotTokens.unshift(1);
+				snapshotsSet.add(serializeSnapshotKey(snapshotTokens));
+			});
 		}
 
 		// Add snapshots fragment
