@@ -115,7 +115,7 @@ module.exports = function (snapshots, options) {
 		// Update table
 		if (isPartial.value) {
 			// We rely on snapshots functionality
-			snapshotTokens.unshift(page);
+			snapshotTokens.unshift(page || 1);
 			// Inform remote
 			snapshotKey = serializeSnapshotKey(snapshotTokens);
 			if (snapshots.last !== snapshotKey) snapshots.add(snapshotKey);
