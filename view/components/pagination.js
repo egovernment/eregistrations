@@ -14,31 +14,31 @@ var assign          = require('es5-ext/object/assign')
   , ns              = require('mano').domjs.ns
   , location        = require('mano/lib/client/location');
 
-var PaginatorDom = function (paginator) {
-	this.paginator = paginator;
+var PaginationDom = function (pagination) {
+	this.pagination = pagination;
 	this.list = ns.ul({ class: 'pagination' });
-	this.dom = ns._if(ns.gt(this.paginator.count, 0), this.list).toDOM(document);
+	this.dom = ns._if(ns.gt(this.pagination.count, 0), this.list).toDOM(document);
 	this.reload();
-	this.paginator.count.on('change', this.reload);
+	this.pagination.count.on('change', this.reload);
 };
-Object.defineProperties(PaginatorDom.prototype, assign({
+Object.defineProperties(PaginationDom.prototype, assign({
 	toDOM: d(function (document) { return this.dom; })
 }, autoBind({
 	reload: d(function () {
-		var i, l = this.paginator.count.value, buttons = [];
+		var i, l = this.pagination.count.value, buttons = [];
 		if (l < 2) return;
 		for (i = 1; i <= l; ++i) buttons.push(this.getPageButton(i));
 		replaceContent.call(this.list, buttons);
 	})
 }), memoizeMethods({
 	getPageButton: d(function (page) {
-		return ns.li({ class: ns._if(this.paginator.current.eq(page), 'active') },
-			ns.a({ href: this.paginator.getLink(page) }, page));
+		return ns.li({ class: ns._if(this.pagination.current.eq(page), 'active') },
+			ns.a({ href: this.pagination.getLink(page) }, page));
 	})
 })));
 
-var Paginator = module.exports = function (pathname, count, current) {
-	if (!(this instanceof Paginator)) return new Paginator(pathname, count, current);
+var Pagination = module.exports = function (pathname, count, current) {
+	if (!(this instanceof Pagination)) return new Pagination(pathname, count, current);
 	this.pathname = String(value(pathname));
 	this.url = parseUrl(this.pathname, true);
 	delete this.url.search;
@@ -47,8 +47,8 @@ var Paginator = module.exports = function (pathname, count, current) {
 	this.current = new ObservableValue(count);
 };
 
-ee(Object.defineProperties(Paginator.prototype, assign({
-	toDOM: d(function (document) { return (new PaginatorDom(this)).toDOM(document); })
+ee(Object.defineProperties(Pagination.prototype, assign({
+	toDOM: d(function (document) { return (new PaginationDom(this)).toDOM(document); })
 }, autoBind({
 	updateLinks: d(function () {
 		if (this.pathname !== location.pathname) return;

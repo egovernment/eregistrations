@@ -13,7 +13,7 @@ var toNatural            = require('es5-ext/number/to-pos-integer')
   , fixLocationQuery     = require('../../utils/fix-location-query')
   , serializeSnapshotKey = require('../../utils/serialize-to-snapshot-key')
   , getFilter            = require('../../utils/get-users-filter')
-  , Paginator            = require('./pagination')
+  , Pagination            = require('./pagination')
 
   , ceil = Math.ceil, create = Object.create, keys = Object.keys;
 
@@ -35,7 +35,7 @@ var getUsersSnapshot = memoize(function (observable) {
 }, { normalize: function (args) { return args[0].dbId; } });
 
 module.exports = function (snapshots, options) {
-	var list, table, paginator, i18n, columns
+	var list, table, pagination, i18n, columns
 	  , statusQuery, searchQuery, pathname, pageLimit, statusMap
 	  , active, update, appName, pageQuery, inSync, isPartial
 	  , allUsers;
@@ -94,9 +94,9 @@ module.exports = function (snapshots, options) {
 		}
 		snapshot = db.User.dataSnapshots.get(serializeSnapshotKey(snapshotTokens));
 
-		paginator.count.value = isPartial.value
+		pagination.count.value = isPartial.value
 			? snapshot._totalSize.map(getPageCount) : users._size.map(getPageCount);
-		maxPage = paginator.count.value;
+		maxPage = pagination.count.value;
 
 		// Resolve page
 		if (pageQuery.value != null) {
@@ -109,7 +109,7 @@ module.exports = function (snapshots, options) {
 			if (page !== pageQuery.value) fixLocationQuery(i18n.page || 'page', page);
 			if (page) page = Number(page);
 		}
-		paginator.current.value = page || 1;
+		pagination.current.value = page || 1;
 
 		// Update table
 		if (isPartial.value) {
@@ -157,7 +157,7 @@ module.exports = function (snapshots, options) {
 	list = new ReactiveList(statusMap[''], options.compare);
 	list.limit = pageLimit;
 	table = new ReactiveTable(document, list, columns);
-	table.paginator = paginator = new Paginator(pathname);
+	table.pagination = pagination = new Pagination(pathname);
 
 	table.inSync = inSync;
 	inSync.on('change', function (event) {
