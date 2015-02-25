@@ -7,7 +7,12 @@ var db = require('mano').db
 exports['step-submission'] = { class: { 'step-active': true } };
 
 exports.step = function () {
-	h1("5. Send your file");
+	div(
+		{ class: 'capital-first' },
+		div("5"),
+		div(h1("Send your file"),
+			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
+	);
 
 	insert(generateSections(user.formSendSections));
 

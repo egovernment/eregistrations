@@ -6,7 +6,13 @@ var db = require('mano').db,
 exports['step-documents'] = { class: { 'step-active': true } };
 
 exports.step = function () {
-	div(h1("3. Upload Your Documents"));
+	div(
+		{ class: 'capital-first' },
+		div("3"),
+		div(h1("Upload Your Documents"),
+			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
+	);
+
 	div(
 		{ class: 'disabler-range', id: 'documents-disabler-range' },
 		section(
