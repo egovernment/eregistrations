@@ -14,7 +14,7 @@ exports.main = function () {
 	section(
 		{ class: 'content user-forms' },
 		div(
-			{ class: 'section-primary section-sides' },
+			{ class: 'section-primary section-sides public-login-register-section' },
 			div(
 				h3("Login"),
 				form(
