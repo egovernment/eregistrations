@@ -63,8 +63,9 @@ var arrayToSet = function (array) {
 
 var resolveSnapshotPage = memoize(function (key, compare, pageLimit) {
 	var data = unserializeSnapshotKey(key), snapshot = resolveSnapshot(data.snapshotKey, compare)
-	  , users = snapshot.items.toArray(compare).slice((data.page - 1) * pageLimit, pageLimit)
-	  , serialized;
+	  , users, serialized;
+	if (data.page == null) return snapshot.items;
+	users = snapshot.items.toArray(compare).slice((data.page - 1) * pageLimit, pageLimit);
 	if (data.page > 1) {
 		serialized = serializeUsers(users);
 		if (snapshot.get(data.page) !== serialized) snapshot.set(data.page, serialized);
@@ -203,7 +204,6 @@ module.exports = function (usersPass, computedUsersPass, dbSubmitted
 			statuses.forEach(function (status) {
 				var snapshotTokens = [appName];
 				if (status) snapshotTokens.push(status);
-				snapshotTokens.unshift(1);
 				snapshotsSet.add(serializeSnapshotKey(snapshotTokens));
 			});
 		}
