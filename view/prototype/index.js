@@ -7,6 +7,8 @@ var db = require('mano').db
   , register      = require('./_register')
   , resetPassword = require('./_reset-password-request');
 
+exports['header-top-menu-login'] = { class: { 'header-top-login-inactive': true } };
+
 exports.main = function () {
 	insert(login);
 	insert(register);

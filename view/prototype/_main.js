@@ -18,7 +18,8 @@ exports.body = function () {
 				li(a('link one')),
 				li(a('link two')),
 				li(a({ onclick: '$(\'dialog-app-nav\').include()' }, 'nav dialog')),
-				li(span({ class: 'header-top-login-hint' }, ('Do you have an account?')),
+				li({ id: 'header-top-menu-login' },
+					span({ class: 'header-top-login-hint' }, ('Do you have an account?')),
 					a({ class: 'header-top-login', href: '#login' },
 						"Log in"))
 					)

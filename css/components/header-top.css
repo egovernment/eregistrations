@@ -73,6 +73,11 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	font-size: 10px;
 	display:block;
 }
+
+.header-top-login-inactive {
+	display: none;
+}
+
 .header-top-menu .header-top-login:hover,
 .header-top-menu .header-top-login:focus,
 .header-top-menu .header-top-login:active {
