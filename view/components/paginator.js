@@ -32,8 +32,8 @@ Object.defineProperties(PaginatorDom.prototype, assign({
 	})
 }), memoizeMethods({
 	getPageButton: d(function (page) {
-		return ns.a({ href: this.paginator.getLink(page),
-			class: ns._if(this.paginator.current.eq(page), 'active') }, page);
+		return ns.li({ class: ns._if(this.paginator.current.eq(page), 'active') },
+			ns.a({ href: this.paginator.getLink(page) }, page));
 	})
 })));
 
