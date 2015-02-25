@@ -1,31 +1,21 @@
 'use strict';
 
-var toNatural        = require('es5-ext/number/to-pos-integer')
-  , array            = require('es5-ext/array/valid-array')
-  , object           = require('es5-ext/object/valid-object')
-  , value            = require('es5-ext/object/valid-value')
-  , includes         = require('es5-ext/string/#/contains')
-  , memoize          = require('memoizee/plain')
-  , ObservableValue  = require('observable-value')
-  , ObservableSet    = require('observable-set')
-  , ReactiveTable    = require('reactive-table')
-  , ReactiveList     = require('reactive-table/list')
-  , location         = require('mano/lib/client/location')
-  , db               = require('mano').db
-  , fixLocationQuery = require('../../utils/fix-location-query')
-  , Paginator        = require('./paginator')
+var toNatural            = require('es5-ext/number/to-pos-integer')
+  , object               = require('es5-ext/object/valid-object')
+  , value                = require('es5-ext/object/valid-value')
+  , memoize              = require('memoizee/plain')
+  , ObservableValue      = require('observable-value')
+  , ObservableSet        = require('observable-set')
+  , ReactiveTable        = require('reactive-table')
+  , ReactiveList         = require('reactive-table/list')
+  , location             = require('mano/lib/client/location')
+  , db                   = require('mano').db
+  , fixLocationQuery     = require('../../utils/fix-location-query')
+  , serializeSnapshotKey = require('../../utils/serialize-to-snapshot-key')
+  , getFilter            = require('../../utils/get-users-filter')
+  , Paginator            = require('./paginator')
 
-  , ceil = Math.ceil
-  , create = Object.create, toLowerCase = String.prototype.toLowerCase;
-
-var getFilter = memoize(function (query, propNames) {
-	return function (user) {
-		return propNames.some(function (name) {
-			if (!user[name]) return;
-			return includes.call(toLowerCase.call(user[name]), query);
-		});
-	};
-}, { length: 1 });
+  , ceil = Math.ceil, create = Object.create, keys = Object.keys;
 
 var resolveUsers = function (value) {
 	if (!value) return [];
@@ -45,44 +35,47 @@ var getUsersSnapshot = memoize(function (observable) {
 }, { normalize: function (args) { return args[0].dbId; } });
 
 module.exports = function (snapshots, options) {
-	var list, table, paginator, i18n, columns, searchPropertyNames
-	  , statusQuery, searchQuery, pathname, limit, statusMap
-	  , active, update, appName, pageQuery, inSync;
+	var list, table, paginator, i18n, columns
+	  , statusQuery, searchQuery, pathname, pageLimit, statusMap
+	  , active, update, appName, pageQuery, inSync, isPartial
+	  , allUsers;
 
 	var getPageCount = function (value) {
 		if (!value) return 1;
-		return ceil(value / limit);
+		return ceil(value / pageLimit);
 	};
 	object(options);
 	columns = object(options.columns);
 	i18n = options.i18n ? object(options.i18n) : create(null);
 	appName = value(options.appName);
 	pathname = value(options.pathname);
-	limit = toNatural(options.limit) || 50;
-	object(options.users);
+	value(options.cacheLimits);
+	pageLimit = options.cacheLimits.usersPerPage;
+	statusMap = object(options.users);
 	inSync = new ObservableValue(true);
+	allUsers = statusMap[i18n.all || 'all'] || statusMap[''];
+	isPartial = allUsers._size.map(function (value) {
+		return value > options.cacheLimits.listedUsers;
+	});
 
 	update = function () {
-		var status, search, normalizedSearch, page, baseSnapshot, snapshot, usersSnapshot
-		  , snapshotId, maxPage, users;
+		var status, search, normalizedSearch, page, snapshot, usersSnapshot
+		  , snapshotTokens, snapshotKey, maxPage, users;
 		if (!active) return;
-		snapshotId = appName;
+		snapshotTokens = [appName];
 
 		// Resolve status
 		if (statusQuery) {
 			if (statusQuery.value && !statusMap[statusQuery.value]) {
 				fixLocationQuery(i18n.status || 'status');
-				status = '';
 			} else {
 				status = statusQuery.value || '';
 			}
-			snapshotId += ';' + status;
 			users = statusMap[status];
+			if (status) snapshotTokens.push(status);
 		} else {
-			users = options.users;
+			users = statusMap[''];
 		}
-
-		baseSnapshot = db.User.dataSnapshots.get(snapshotId);
 
 		// Resolve search
 		if (searchQuery) {
@@ -95,17 +88,14 @@ module.exports = function (snapshots, options) {
 				}
 			}
 			if (search) {
-				snapshotId += ';' + search;
-				users = users.filter(getFilter(search, searchPropertyNames));
+				users = users.filter(getFilter(search));
+				snapshotTokens.push(search);
 			}
 		}
+		snapshot = db.User.dataSnapshots.get(serializeSnapshotKey(snapshotTokens));
 
-		snapshot = db.User.dataSnapshots.get(snapshotId);
-
-		paginator.count.value = baseSnapshot._totalSize.map(function (value) {
-			if (!value) return getPageCount(users._size);
-			return snapshot._totalValue.map(getPageCount);
-		});
+		paginator.count.value = isPartial.value
+			? snapshot._totalSize.map(getPageCount) : users._size.map(getPageCount);
 		maxPage = paginator.count.value;
 
 		// Resolve page
@@ -122,40 +112,39 @@ module.exports = function (snapshots, options) {
 		paginator.current.value = page || 1;
 
 		// Update table
-		if (baseSnapshot.totalSize) {
-			// Remote handling
-			snapshotId += ';' + (page || 1);
-			usersSnapshot = getUsersSnapshot(snapshot._get(page || 1));
-			if (snapshots.last !== snapshotId) snapshots.add(snapshotId);
+		if (isPartial.value) {
+			// We rely on snapshots functionality
+			snapshotTokens.unshift(page);
+			// Inform remote
+			snapshotKey = serializeSnapshotKey(snapshotTokens);
+			if (snapshots.last !== snapshotKey) snapshots.add(snapshotKey);
 			if (page) {
+				// Rely on remote prepared snapshot
+				usersSnapshot = getUsersSnapshot(snapshot._get(page));
 				inSync.value = usersSnapshot._size.gt(0);
 				list.set = usersSnapshot;
 				list.page = 1;
 				return;
 			}
+			inSync.value = snapshot._totalSize.map(function (value) {
+				if (value == null) return false;
+				return users._size.gtOrEq(value > pageLimit ? pageLimit : value);
+			});
 		}
 		list.set = users;
 		list.page = page || 1;
-		inSync.value = baseSnapshot._totalSize.map(function (value) {
-			if (!value) return true;
-			return snapshot._totalValue.map(function (value) {
-				if (value == null) return false;
-				return list.result._size.eq(value);
-			});
-		});
+		inSync.value = true;
 	};
 
 	// Setup
 	// Status filter
-	if (options.users['']) {
-		statusMap = options.users;
+	if (keys(statusMap).length > 1) {
 		statusQuery = location.query.get(i18n.status || 'status');
 		statusQuery.on('change', update);
 	}
 
 	// Search filter
-	if (options.searchPropertyNames) {
-		searchPropertyNames = array(options.searchPropertyNames);
+	if (options.searchFilter) {
 		searchQuery = location.query.get(i18n.search || 'search');
 		searchQuery.on('change', update);
 	}
@@ -165,8 +154,8 @@ module.exports = function (snapshots, options) {
 	pageQuery.on('change', update);
 
 	// Table configuration
-	list = new ReactiveList(options.users[''] || options.users, options.compare);
-	list.limit = limit;
+	list = new ReactiveList(statusMap[''], options.compare);
+	list.limit = pageLimit;
 	table = new ReactiveTable(document, list, columns);
 	table.paginator = paginator = new Paginator(pathname);
 
@@ -183,6 +172,9 @@ module.exports = function (snapshots, options) {
 		update();
 	});
 	active = location.pathname === pathname;
+
+	isPartial.on('change', update);
+	window.addEventListener('focus', update, false);
 
 	update();
 	return table;

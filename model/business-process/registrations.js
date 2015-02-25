@@ -136,13 +136,12 @@ module.exports = memoize(function (Target/* options */) {
 		submissionsStatus: {
 			type: Percentage,
 			value: function (_observe) {
-				var total, valid, submission;
+				var total, valid;
 				total = valid = 0;
 				if (this.questionsStatus !== 1) return 0;
 				if (!this.applicableSubmissions.size) return 1;
-				this.applicableSubmissions.forEach(function (subName) {
+				this.applicableSubmissions.forEach(function (submission) {
 					++total;
-					submission = this.submissions[subName];
 					if (!_observe(submission.orderedFiles._size)) return;
 					if (submission.orderedFiles.some(function (file) { return _observe(file._path); })) {
 						++valid;

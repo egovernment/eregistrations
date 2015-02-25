@@ -1,7 +1,7 @@
 'use strict';
 
-var once                = require('timers-ext/once')
-  , getMultiObjFragment = require('eregistrations/model/get-objects-set-fragment')
+var once                  = require('timers-ext/once')
+  , getObjectsSetFragment = require('../model/get-objects-set-fragment')
 
   , max = Math.max;
 
@@ -43,5 +43,5 @@ module.exports = function (limitedUsers, applicable, preferred, userPass/*, opti
 	limitedUsers.on('change', once(function () {
 		normalize(limitedUsers, applicable, preferred, limit);
 	}));
-	return getMultiObjFragment(limitedUsers, userPass);
+	return getObjectsSetFragment(limitedUsers, userPass, options.fragment);
 };
