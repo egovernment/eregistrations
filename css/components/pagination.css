@@ -1,0 +1,39 @@
+.pagination {
+	margin-top: -5px;
+	margin-bottom: -5px;
+}
+
+.pagination li {
+	display: inline-block;
+	line-height: 30px;
+}
+
+.pagination li > a {
+	border: 1px solid var(--light-inner-border);
+	padding: 0 10px;
+	display: block;
+	background: var(--white-background);
+	border-left-width: 0;
+	text-decoration: none;
+}
+.pagination li > a:hover,
+.pagination li > a:focus,
+.pagination li > a:active {
+	background: var(--light-background);
+}
+
+.pagination li > .pagination-active,
+.pagination li > .pagination-active:hover,
+.pagination li > .pagination-active:focus,
+.pagination li > .pagination-active:active {
+	background: var(--normal-background);
+	color: var(--white-background);
+}
+
+.pagination li:first-child > a {
+	border-radius: 4px 0 0 4px;
+	border-left-width: 1px;
+}
+.pagination li:last-child > a {
+	border-radius: 0 4px 4px 0;
+}

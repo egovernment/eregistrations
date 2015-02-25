@@ -74,6 +74,31 @@ exports['sub-main'] = function () {
 			)
 		)
 	);
+
+	ul(
+		{ class: 'pagination' },
+		li(a("<<")),
+		li(a("<")),
+		li(a({ class: 'pagination-active' }, "1")),
+		li(a("2")),
+		li(a("3")),
+		li(a("4")),
+		li(a("5")),
+		li(a("6")),
+		li(a("7")),
+		li(a("8")),
+		li(a("9")),
+		li(a("10")),
+		li(a("11")),
+		li(a("12")),
+		li(a("13")),
+		li(a("14")),
+		li(a("15")),
+		li(a("16")),
+		li(a(">")),
+		li(a(">>"))
+	);
+
 	div(
 		{ class: 'table-responsive-container' },
 		table(
@@ -297,6 +322,30 @@ exports['sub-main'] = function () {
 				)
 			)
 		)
+	);
+
+	ul(
+		{ class: 'pagination' },
+		li(a("<<")),
+		li(a("<")),
+		li(a({ class: 'pagination-active' }, "1")),
+		li(a("2")),
+		li(a("3")),
+		li(a("4")),
+		li(a("5")),
+		li(a("6")),
+		li(a("7")),
+		li(a("8")),
+		li(a("9")),
+		li(a("10")),
+		li(a("11")),
+		li(a("12")),
+		li(a("13")),
+		li(a("14")),
+		li(a("15")),
+		li(a("16")),
+		li(a(">")),
+		li(a(">>"))
 	);
 
 };
