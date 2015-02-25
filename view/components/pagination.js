@@ -17,7 +17,7 @@ var assign          = require('es5-ext/object/assign')
 var PaginationDom = function (pagination) {
 	this.pagination = pagination;
 	this.list = ns.ul({ class: 'pagination' });
-	this.dom = ns._if(ns.gt(this.pagination.count, 0), this.list).toDOM(document);
+	this.dom = ns._if(this.pagination.count.gt(1), this.list).toDOM(document);
 	this.reload();
 	this.pagination.count.on('change', this.reload);
 };
