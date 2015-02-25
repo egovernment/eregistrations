@@ -15,3 +15,7 @@
 .user-forms > .disabler-range > form > * {
 	margin-bottom: 22px;
 }
+
+.user-forms > .pagination {
+	margin-bottom: 17px;
+}
