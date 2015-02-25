@@ -18,7 +18,8 @@ exports.body = function () {
 				li(a('link one')),
 				li(a('link two')),
 				li(a({ onclick: '$(\'dialog-app-nav\').include()' }, 'nav dialog')),
-				li(span({ class: 'header-top-login-hint' }, ('Do you have an account?')),
+				li({ id: 'header-top-menu-login' },
+					span({ class: 'header-top-login-hint' }, ('Do you have an account?')),
 					a({ class: 'header-top-login', href: '#login' },
 						"Log in"))
 					)
@@ -36,7 +37,10 @@ exports.body = function () {
 		section(
 			ol(
 				li(
-					a({ href: '/' }, span("Public"), span({ class: 'label-reg' }, "Public"))
+					a({ href: '/' }, span("Login"), span({ class: 'label-reg' }, "Public"))
+				),
+				li(
+					a({ href: '/public/' }, span("Public"), span({ class: 'label-reg' }, "Public"))
 				),
 				li(
 					a({ href: '/multi-entry/' }, span("Public - multi entry"),

@@ -2,11 +2,16 @@
 	display: inline-block;
 	width: 49%;
 	vertical-align: top;
-	margin-left: 1%;
+	padding-left: 1%;
 }
 .section-sides > *:first-child {
-	margin-right: 1%;
-	margin-left: 0;
+	padding-right: 1%;
+	padding-left: 0;
+}
+
+.section-sides > * > *,
+.section-sides form > * {
+	margin-bottom: 22px;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
