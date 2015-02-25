@@ -13,7 +13,7 @@ var toNatural            = require('es5-ext/number/to-pos-integer')
   , fixLocationQuery     = require('../../utils/fix-location-query')
   , serializeSnapshotKey = require('../../utils/serialize-to-snapshot-key')
   , getFilter            = require('../../utils/get-users-filter')
-  , Paginator            = require('./paginator')
+  , Paginator            = require('./pagination')
 
   , ceil = Math.ceil, create = Object.create, keys = Object.keys;
 
