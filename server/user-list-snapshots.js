@@ -182,9 +182,9 @@ module.exports = function (usersPass, computedUsersPass, dbSubmitted
 
 	// Setup base snapshots
 	forEach(usersMap, function (users, status) {
-		var tokens = [appName], snapshot;
-		if (status) tokens.push(status);
-		snapshot = resolveSnapshot(serializeSnapshotKey(tokens), compare);
+		var snapshotData = { appName: appName }, snapshot;
+		if (status) snapshotData.status = status;
+		snapshot = resolveSnapshot(serializeSnapshotKey(snapshotData), compare);
 		generalFragment.sets.add(new ObjectFragment(snapshot, totalSizePropertyPass));
 	});
 
@@ -203,15 +203,15 @@ module.exports = function (usersPass, computedUsersPass, dbSubmitted
 			statuses.reverse();
 			statuses.push('');
 			statuses.forEach(function (status) {
-				var snapshotTokens = [appName];
-				if (status) snapshotTokens.push(status);
-				snapshotsSet.add(serializeSnapshotKey(snapshotTokens));
+				var snapshotData = { appName: appName };
+				if (status) snapshotData.status = status;
+				snapshotsSet.add(serializeSnapshotKey(snapshotData));
 			});
 			statuses.forEach(function (status) {
-				var snapshotTokens = [appName];
-				if (status) snapshotTokens.push(status);
-				snapshotTokens.unshift(1);
-				snapshotsSet.add(serializeSnapshotKey(snapshotTokens));
+				var snapshotData = { appName: appName };
+				if (status) snapshotData.status = status;
+				snapshotData.page = 1;
+				snapshotsSet.add(serializeSnapshotKey(snapshotData));
 			});
 		}
 

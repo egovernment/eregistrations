@@ -54,17 +54,17 @@ module.exports = function (snapshots, options) {
 	statusMap = object(options.users);
 	inSync = new ObservableValue(true);
 	isPartial = (function () {
-		var snapshotTokens = [appName];
-		if (statusMap[i18n.all || 'all']) snapshotTokens.push(i18n.all || 'all');
-		return db.User.dataSnapshots.get(serializeSnapshotKey(snapshotTokens))
+		var snapshotData = { appName: appName };
+		if (statusMap[i18n.all || 'all']) snapshotData.status = i18n.all || 'all';
+		return db.User.dataSnapshots.get(serializeSnapshotKey(snapshotData))
 			._totalSize.map(function (value) { return value > options.cacheLimits.listedUsers; });
 	}());
 
 	update = once(function () {
 		var status, search, normalizedSearch, page, snapshot, usersSnapshot
-		  , snapshotTokens, snapshotKey, maxPage, users;
+		  , snapshotData, snapshotKey, maxPage, users;
 		if (!active) return;
-		snapshotTokens = [appName];
+		snapshotData = { appName: appName };
 
 		// Resolve status
 		if (statusQuery) {
@@ -74,7 +74,7 @@ module.exports = function (snapshots, options) {
 				status = statusQuery.value || '';
 			}
 			users = statusMap[status];
-			if (status) snapshotTokens.push(status);
+			if (status) snapshotData.status = status;
 		} else {
 			users = statusMap[''];
 		}
@@ -91,10 +91,10 @@ module.exports = function (snapshots, options) {
 			}
 			if (search) {
 				users = users.filter(getFilter(search));
-				snapshotTokens.push(search);
+				snapshotData.search = search;
 			}
 		}
-		snapshot = db.User.dataSnapshots.get(serializeSnapshotKey(snapshotTokens));
+		snapshot = db.User.dataSnapshots.get(serializeSnapshotKey(snapshotData));
 
 		pagination.count.value = isPartial.value
 			? snapshot._totalSize.map(getPageCount) : users._size.map(getPageCount);
@@ -116,9 +116,9 @@ module.exports = function (snapshots, options) {
 		// Update table
 		if (isPartial.value) {
 			// We rely on snapshots functionality
-			snapshotTokens.unshift(page || 1);
+			snapshotData.page = page || 1;
 			// Inform remote
-			snapshotKey = serializeSnapshotKey(snapshotTokens);
+			snapshotKey = serializeSnapshotKey(snapshotData);
 			if (snapshots.last !== snapshotKey) snapshots.add(snapshotKey);
 			if (page) {
 				// Rely on remote prepared snapshot
@@ -134,9 +134,9 @@ module.exports = function (snapshots, options) {
 			});
 		} else {
 			// Assure that we have all data on board
-			snapshotTokens = [appName];
-			if (statusMap[i18n.all || 'all']) snapshotTokens.push(i18n.all || 'all');
-			snapshotKey = serializeSnapshotKey(snapshotTokens);
+			snapshotData = { appName: appName };
+			if (statusMap[i18n.all || 'all']) snapshotData.status = i18n.all || 'all';
+			snapshotKey = serializeSnapshotKey(snapshotData);
 			if (snapshots.last !== snapshotKey) snapshots.add(snapshotKey);
 		}
 		list.set = users;
