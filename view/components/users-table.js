@@ -38,7 +38,7 @@ var getUsersSnapshot = memoize(function (observable) {
 module.exports = function (snapshots, options) {
 	var list, table, pagination, i18n, columns
 	  , statusQuery, searchQuery, pathname, pageLimit, statusMap
-	  , active, update, appName, pageQuery, inSync, isPartial, tableStyle;
+	  , active, update, appName, pageQuery, inSync, isPartial, tableStyle, snapshotKey;
 
 	var getPageCount = function (value) {
 		if (!value) return 1;
@@ -62,7 +62,7 @@ module.exports = function (snapshots, options) {
 
 	update = once(function () {
 		var status, search, normalizedSearch, page, snapshot, usersSnapshot
-		  , snapshotData, snapshotKey, maxPage, users;
+		  , snapshotData, maxPage, users;
 		if (!active) return;
 		snapshotData = { appName: appName };
 
@@ -185,6 +185,10 @@ module.exports = function (snapshots, options) {
 
 	isPartial.on('change', update);
 	window.addEventListener('focus', update, false);
+	snapshots.on('change', function () {
+		if (document.hasFocus && !document.hasFocus()) return;
+		if (!snapshots.has(snapshotKey)) snapshots.add(snapshotKey);
+	});
 
 	update();
 	return table;
