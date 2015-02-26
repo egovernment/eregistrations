@@ -32,7 +32,7 @@ Object.defineProperties(PaginationDom.prototype, assign({
 	})
 }), memoizeMethods({
 	getPageButton: d(function (page) {
-		return ns.li({ class: ns._if(this.pagination.current.eq(page), 'active') },
+		return ns.li({ class: ns._if(this.pagination.current.eq(page), 'pagination-active') },
 			ns.a({ href: ns._if(this.pagination.current.eq(page), null, this.pagination.getLink(page)) },
 				page));
 	})
