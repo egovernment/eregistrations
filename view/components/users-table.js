@@ -38,7 +38,8 @@ var getUsersSnapshot = memoize(function (observable) {
 module.exports = function (snapshots, options) {
 	var list, table, pagination, i18n, columns
 	  , statusQuery, searchQuery, pathname, pageLimit, statusMap
-	  , active, update, appName, pageQuery, inSync, isPartial, tableStyle, snapshotKey;
+	  , active, update, appName, pageQuery, inSync, isPartial, tableStyle, snapshotKey
+	  , lastTableHeight = '';
 
 	var getPageCount = function (value) {
 		if (!value) return 1;
@@ -52,7 +53,7 @@ module.exports = function (snapshots, options) {
 	value(options.cacheLimits);
 	pageLimit = options.cacheLimits.usersPerPage;
 	statusMap = object(options.users);
-	inSync = new ObservableValue(true);
+	inSync = new ObservableValue(false);
 	isPartial = (function () {
 		var snapshotData = { appName: appName };
 		if (statusMap[i18n.all || 'all']) snapshotData.status = i18n.all || 'all';
@@ -170,7 +171,8 @@ module.exports = function (snapshots, options) {
 	table.inSync = inSync;
 	tableStyle = window.getComputedStyle(table.table);
 	inSync.on('change', function (event) {
-		table.table.style.height = event.newValue ? '' : tableStyle.height;
+		table.table.style.height = event.newValue ? '' : lastTableHeight;
+		if (event.newValue) lastTableHeight = tableStyle.height;
 		table.table.classList[event.newValue ? 'remove' : 'add']('not-in-sync');
 	});
 
