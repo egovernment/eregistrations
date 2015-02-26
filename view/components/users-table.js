@@ -38,7 +38,7 @@ var getUsersSnapshot = memoize(function (observable) {
 module.exports = function (snapshots, options) {
 	var list, table, pagination, i18n, columns
 	  , statusQuery, searchQuery, pathname, pageLimit, statusMap
-	  , active, update, appName, pageQuery, inSync, isPartial;
+	  , active, update, appName, pageQuery, inSync, isPartial, tableStyle;
 
 	var getPageCount = function (value) {
 		if (!value) return 1;
@@ -168,7 +168,9 @@ module.exports = function (snapshots, options) {
 	table.pagination = pagination = new Pagination(pathname);
 
 	table.inSync = inSync;
+	tableStyle = window.getComputedStyle(table.table);
 	inSync.on('change', function (event) {
+		table.table.style.height = event.newValue ? '' : tableStyle.height;
 		table.table.classList[event.newValue ? 'remove' : 'add']('not-in-sync');
 	});
 
