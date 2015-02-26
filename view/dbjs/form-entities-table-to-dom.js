@@ -21,11 +21,11 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 				this._status,
 				1
 			), 'section-primary completed entities-overview', 'section-primary entities-overview') },
+			ns._if(this._label,
+				[ns.h2(this._label),
+					ns.hr()]),
 			ns.div(
 				ns.div(
-					ns._if(this._label,
-						[ns.h2(this._label),
-							ns.hr()]),
 					options.prepend,
 					ns.table(
 						{ class: ns._if(ns.not(ns.eq(tableData._size, 0)),
