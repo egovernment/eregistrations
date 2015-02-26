@@ -144,11 +144,13 @@ var addSnapshotsFragment = function (fragment, snapshotsSet
 	var users = usersFromSnapshots(snapshotsSet, compare, cacheLimits);
 	var onSnapshotAdd = function (key) {
 		var data = unserializeSnapshotKey(key);
-		if (data.page > 1) fragment.sets.add(getSnapshotPageFragment(data.snapshotKey, data.page));
+		fragment.sets.add(getSnapshotPageFragment(data.snapshotKey,
+			data.page > 1 ? data.page : undefined));
 	};
 	var onSnapshotDelete = function (key) {
 		var data = unserializeSnapshotKey(key);
-		if (data.page > 1) fragment.sets.delete(getSnapshotPageFragment(data.snapshotKey, data.page));
+		fragment.sets.delete(getSnapshotPageFragment(data.snapshotKey,
+			data.page > 1 ? data.page : undefined));
 	};
 	getObjectsSetFragment(users, usersPass, fragment);
 	getObjectsSetFragment(getComputedUsersSet(users, dbSubmitted), computedUsersPass, fragment);
