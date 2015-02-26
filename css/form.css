@@ -273,6 +273,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 
 /* Changed & valid */
 .dbjs-input-component.valid.changed span.status-ok,
+.dbjs-input-component.valid.not-changed.dbjs-not-own span.status-ok,
 .dbjs-input-component.valid.dbjs-invalid span.status-ok {
 	visibility: visible;
 	display:inline-block;
@@ -286,7 +287,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 }
 
 /* Saved */
-.dbjs-input-component.dbjs-filled.not-changed span.status-ok {
+.dbjs-input-component.dbjs-filled.not-changed.dbjs-own span.status-ok {
 	visibility: visible;
 	display:inline-block;
 }
