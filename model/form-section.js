@@ -11,6 +11,7 @@ module.exports = memoize(function (db) {
 	StringLine      = defineStringLine(db);
 	FormSectionBase = defineFormSectionBase(db);
 	FormSectionBase.extend('FormSection', {
+		invalidateNotOwn: { type: db.Boolean, value: false },
 		formPropertyNames: { type: StringLine, multiple: true, value: function (_observe) {
 			var props, resolved;
 			props = this.constructor.propertyNames.copy();
@@ -45,7 +46,7 @@ module.exports = memoize(function (db) {
 			return props;
 		} },
 		status: { value: function (_observe) {
-			var resolved, valid = 0, total = 0;
+			var resolved, valid = 0, total = 0, isOwn;
 			if (this.constructor.resolventProperty) {
 				resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty, _observe);
 				if (!resolved) {
@@ -68,6 +69,15 @@ module.exports = memoize(function (db) {
 					return;
 				}
 				++total;
+				if (this.invalidateNotOwn) {
+					_observe(resolved.observable);
+					if (resolved.descriptor.multiple) {
+						isOwn = typeof resolved.descriptor._value_ !== 'function';
+					} else {
+						isOwn = resolved.descriptor._hasOwnValue_(resolved.object);
+					}
+					if (!isOwn) return;
+				}
 				if (_observe(resolved.observable) != null) valid++;
 			}, this);
 			return total === 0 ? 1 : valid / total;
