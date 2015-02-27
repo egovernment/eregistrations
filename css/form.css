@@ -2,13 +2,15 @@ form {
 	font-family: "Helvetica";
 }
 
-/* For web-kit browser default fieldset min-width override */
+/* For web-kit browser default fieldset min-width override. For more information,
+please refer to: http://stackoverflow.com/questions/17408815/fieldset-resizes-wrong-appears-to-have-unremovable-min-width-min-content; */
 
 fieldset {
 	min-width: 0;
 }
 
-/* For firefox browser default fieldset display override */
+/* For firefox browser default fieldset display override. For more information,
+please refer to: http://stackoverflow.com/questions/17408815/fieldset-resizes-wrong-appears-to-have-unremovable-min-width-min-content; */
 
 @-moz-document url-prefix() {
 	fieldset {
@@ -315,6 +317,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 .dbjs.multiple {
 	display: inline-block;
 	list-style-type: none;
+	width: 100%;
 }
 
 .dbjs.multiple ul {
