@@ -11,7 +11,6 @@ module.exports = memoize(function (db) {
 	StringLine      = defineStringLine(db);
 	FormSectionBase = defineFormSectionBase(db);
 	FormSectionBase.extend('FormSection', {
-		invalidateNotOwn: { type: db.Boolean, value: false },
 		formPropertyNames: { type: StringLine, multiple: true, value: function (_observe) {
 			var props, resolved;
 			props = this.constructor.propertyNames.copy();
@@ -69,7 +68,7 @@ module.exports = memoize(function (db) {
 					return;
 				}
 				++total;
-				if (this.invalidateNotOwn) {
+				if (resolved.descriptor.requireOwn) {
 					_observe(resolved.observable);
 					if (resolved.descriptor.multiple) {
 						isOwn = typeof resolved.descriptor._value_ !== 'function';
