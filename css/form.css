@@ -1,16 +1,19 @@
 form {
 	font-family: "Helvetica";
 }
+
 /* For web-kit browser default fieldset min-width override */
+
 fieldset {
 	min-width: 0;
 }
 
 /* For firefox browser default fieldset display override */
+
 @-moz-document url-prefix() {
-    fieldset {
-        display: table-cell;
-    }
+	fieldset {
+		display: table-cell;
+	}
 }
 
 .form-elements {
