@@ -90,7 +90,9 @@ BusinessActivity.newNamed('baComissionAgent', {
 	category: bcAgencyBusiness
 });
 BusinessActivity.newNamed('baAirCharterAgent', {
-	label: "Air charter agent",
+	label: "Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
+		" Ut in tincidunt tellus. Etiam at blandit tortor. Etiam at blandit tortor." +
+		" Etiam at blandit tortor. Etiam at blandit tortor.",
 	category: bcAgencyBusiness
 });
 BusinessActivity.newNamed('baGeneralInsurance', {

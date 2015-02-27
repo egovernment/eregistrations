@@ -2,6 +2,24 @@ form {
 	font-family: "Helvetica";
 }
 
+/* For web-kit browser default fieldset min-width override.
+For more information, please refer to:
+http://stackoverflow.com/a/17863685/1484847 */
+
+fieldset {
+	min-width: 0;
+}
+
+/* For firefox browser default fieldset display override.
+For more information, please refer to:
+http://stackoverflow.com/a/17863685/1484847 */
+
+@-moz-document url-prefix() {
+	fieldset {
+		display: table-cell;
+	}
+}
+
 .form-elements {
 	list-style: none;
 	padding-left: 0;
@@ -301,6 +319,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 .dbjs.multiple {
 	display: inline-block;
 	list-style-type: none;
+	width: 100%;
 }
 
 .dbjs.multiple ul {
