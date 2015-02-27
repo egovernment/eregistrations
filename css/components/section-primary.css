@@ -53,6 +53,26 @@
 .section-primary .dbjs-input-component > .input:first-child {
 	margin-left: 40%;
 }
+
+.section-primary .dbjs-input-component > .input input[type="text"],
+.section-primary .dbjs-input-component > .input input[type="number"],
+.section-primary .dbjs-input-component > .input input[type="email"],
+.section-primary .dbjs-input-component > .input input[type="password"],
+.section-primary .dbjs-input-component > .input input[type="date"],
+.section-primary .dbjs-input-component > .input input[type="month"],
+.section-primary .dbjs-input-component > .input input[type="week"],
+.section-primary .dbjs-input-component > .input input[type="time"],
+.section-primary .dbjs-input-component > .input input[type="datetime"],
+.section-primary .dbjs-input-component > .input input[type="datetime-local"],
+.section-primary .dbjs-input-component > .input input[type="search"],
+.section-primary .dbjs-input-component > .input input[type="email"],
+.section-primary .dbjs-input-component > .input input[type="url"],
+.section-primary .dbjs-input-component > .input input[type="tel"],
+.section-primary .dbjs-input-component > .input input[type="color"],
+.section-primary .dbjs-input-component > .input select {
+	max-width: 90%;
+}
+
 .section-primary .dbjs-input-component > .input .input {
 	width: auto;
 	margin-left: 0;
