@@ -39,7 +39,6 @@ exports.main = function () {
 					a({ href: "#reset-password" }, "Reset password"))
 			),
 			div(
-				{ class: 'section-sides-separator' },
 				h3("Create your account"),
 				form(
 					ul({ class: 'form-elements' },

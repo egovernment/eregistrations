@@ -2,13 +2,3 @@
 .public-login-register-section > * > p {
 	text-align: center;
 }
-
-.public-login-register-section > :first-child {
-	border-right: 1px solid var(--light-inner-border);
-}
-
-@media only screen and (max-width: var(--mobile-width)) {
-	.public-login-register-section > :first-child {
-		border-right: none;
-	}
-}
