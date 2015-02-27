@@ -3,10 +3,14 @@
 	width: 49%;
 	vertical-align: top;
 	padding-left: 1%;
+	border-left: 1px solid var(--light-inner-border);
 }
 .section-sides > *:first-child {
 	padding-right: 1%;
 	padding-left: 0;
+	border-right: 1px solid var(--light-inner-border);
+	border-left: none;
+	margin-right: -1px;
 }
 
 .section-sides > * > *,
@@ -18,8 +22,12 @@
 	.section-sides > * {
 		width: 100%;
 		margin: 0;
+		border-left: none;
 	}
 	.section-sides > *:first-child {
 		margin-bottom: 22px;
+		margin-right: 0;
+		border-right: none;
+		border-bottom: 1px solid var(--light-inner-border);
 	}
 }
