@@ -11,7 +11,7 @@ var forEach                = require('es5-ext/object/for-each')
   , getObjectsSetFragment  = require('../model/get-objects-set-fragment')
   , serializeSnapshotKey   = require('../utils/serialize-to-snapshot-key')
   , unserializeSnapshotKey = require('../utils/unserialize-snapshot-key')
-  , arrayToSet             = require('../utils/array-to-users')
+  , arrayToSet             = require('../utils/array-to-set')
   , getUsersFilter         = require('../utils/get-users-filter')
   , db                     = require('mano').db
 
