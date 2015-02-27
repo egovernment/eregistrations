@@ -3,10 +3,8 @@
 var toNatural            = require('es5-ext/number/to-pos-integer')
   , object               = require('es5-ext/object/valid-object')
   , value                = require('es5-ext/object/valid-value')
-  , memoize              = require('memoizee/plain')
   , once                 = require('timers-ext/once')
   , ObservableValue      = require('observable-value')
-  , ObservableSet        = require('observable-set')
   , ReactiveTable        = require('reactive-table')
   , ReactiveList         = require('reactive-table/list')
   , location             = require('mano/lib/client/location')
@@ -14,26 +12,10 @@ var toNatural            = require('es5-ext/number/to-pos-integer')
   , fixLocationQuery     = require('../../utils/fix-location-query')
   , serializeSnapshotKey = require('../../utils/serialize-to-snapshot-key')
   , getFilter            = require('../../utils/get-users-filter')
+  , getUsersSnapshot     = require('../../utils/get-users-snapshot')
   , Pagination           = require('./pagination')
 
   , ceil = Math.ceil, create = Object.create, keys = Object.keys;
-
-var resolveUsers = function (value) {
-	if (!value) return [];
-	return value.split(',').map(function (id) {
-		return db.objects.unserialize(id, db.User);
-	});
-};
-var getUsersSnapshot = memoize(function (observable) {
-	var set = new ObservableSet(resolveUsers(observable.value));
-	observable.on('change', function (event) {
-		set._postponed_ += 1;
-		set.clear();
-		resolveUsers(event.newValue).forEach(set.add, set);
-		set._postponed_ -= 1;
-	});
-	return set;
-}, { normalizer: function (args) { return args[0].dbId; } });
 
 module.exports = function (snapshots, options) {
 	var list, table, pagination, i18n, columns
