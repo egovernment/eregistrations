@@ -2,13 +2,17 @@ form {
 	font-family: "Helvetica";
 }
 
-/* For web-kit browser default fieldset min-width override. For more information, please refer to: http://stackoverflow.com/questions/17408815/fieldset-resizes-wrong-appears-to-have-unremovable-min-width-min-content; */
+/* For web-kit browser default fieldset min-width override.
+For more information, please refer to:
+http://stackoverflow.com/a/17863685/1484847 */
 
 fieldset {
 	min-width: 0;
 }
 
-/* For firefox browser default fieldset display override. For more information, please refer to: http://stackoverflow.com/questions/17408815/fieldset-resizes-wrong-appears-to-have-unremovable-min-width-min-content; */
+/* For firefox browser default fieldset display override.
+For more information, please refer to:
+http://stackoverflow.com/a/17863685/1484847 */
 
 @-moz-document url-prefix() {
 	fieldset {
