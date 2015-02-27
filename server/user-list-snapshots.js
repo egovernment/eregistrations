@@ -1,7 +1,6 @@
 'use strict';
 
-var includes               = require('es5-ext/array/#/contains')
-  , forEach                = require('es5-ext/object/for-each')
+var forEach                = require('es5-ext/object/for-each')
   , d                      = require('d')
   , memoize                = require('memoizee')
   , ObservableSet          = require('observable-set')
@@ -12,6 +11,7 @@ var includes               = require('es5-ext/array/#/contains')
   , getObjectsSetFragment  = require('../model/get-objects-set-fragment')
   , serializeSnapshotKey   = require('../utils/serialize-to-snapshot-key')
   , unserializeSnapshotKey = require('../utils/unserialize-snapshot-key')
+  , arrayToSet             = require('../utils/array-to-users')
   , getUsersFilter         = require('../utils/get-users-filter')
   , db                     = require('mano').db
 
@@ -47,19 +47,6 @@ var resolveSnapshot = memoize(function (key) {
 	users._size.on('change', function (event) { snapshot.totalSize = event.newValue; });
 	return snapshot;
 }, { primitive: true });
-
-var arrayToSet = function (array) {
-	var set = new ObservableSet(array);
-	array.on('change', function () {
-		set._postponed_ += 1;
-		set.forEach(function (user) {
-			if (!includes.call(array, user)) set.delete(user);
-		});
-		array.forEach(function (user) { set.add(user); });
-		set._postponed_ -= 1;
-	});
-	return set;
-};
 
 var resolveSnapshotPage = memoize(function (key, compare, pageLimit) {
 	var data = unserializeSnapshotKey(key), snapshot = resolveSnapshot(data.snapshotKey, compare)
