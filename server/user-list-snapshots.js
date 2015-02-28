@@ -140,7 +140,9 @@ var addSnapshotsFragment = function (fragment, snapshotsSet
 			data.page > 1 ? data.page : undefined));
 	};
 	getObjectsSetFragment(users, usersPass, fragment);
-	getObjectsSetFragment(getComputedUsersSet(users, dbSubmitted), computedUsersPass, fragment);
+	if (computedUsersPass) {
+		getObjectsSetFragment(getComputedUsersSet(users, dbSubmitted), computedUsersPass, fragment);
+	}
 	snapshotsSet.forEach(onSnapshotAdd);
 	snapshotsSet.on('change', function (event) {
 		if (event.type === 'add') {
