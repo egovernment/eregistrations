@@ -95,13 +95,22 @@ module.exports = memoize(function (Target/* options */) {
 			type: StringLine,
 			multiple: true,
 			value: function (_observe) {
-				var certs = this.requestedCertificates, result = [];
+				var certs = this.requestedCertificates, resolved = {}, result = [], i, count = 0;
 				this.requestedRegistrations.forEach(function (regName) {
 					_observe(this.registrations[regName].requirements).forEach(function (req) {
 						if (certs.has(req)) return;
-						result.push(req);
+						if (result[req]) return;
+						result[req] = true;
+						++count;
 					}, this);
 				}, this);
+				for (i in this.requirements) {
+					if (resolved.hasOwnProperty(i)) {
+						result.push(i);
+						--count;
+					}
+				}
+				if (count) throw new Error("Undefined requirements resolved from registrations");
 				return result;
 			}
 		},
