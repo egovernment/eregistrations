@@ -237,15 +237,6 @@
 	padding: 10px 10px;
 }
 
-/* Tabs summary informations section rules (displayed to user) */
-
-.user-guide-lomas-tab {
-	display: none;
-}
-.user-guide-lomas-tab.active {
-	display: block;
-}
-
 /* Requirements tab */
 
 .user-guide-lomas-tab-requirements li {
