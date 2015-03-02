@@ -99,8 +99,8 @@ module.exports = memoize(function (Target/* options */) {
 				this.requestedRegistrations.forEach(function (regName) {
 					_observe(this.registrations[regName].requirements).forEach(function (req) {
 						if (certs.has(req)) return;
-						if (result[req]) return;
-						result[req] = true;
+						if (resolved[req]) return;
+						resolved[req] = true;
 						++count;
 					}, this);
 				}, this);
