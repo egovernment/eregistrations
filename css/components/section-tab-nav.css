@@ -38,10 +38,10 @@
 
 /* Tabs content section rules (displayed to user) */
 
-.section-tab-content {
+.section-tab-nav-tab-content {
 	display: none;
 }
-.section-tab-content.active {
+.section-tab-nav-tab-content.active {
 	display: block;
 }
 

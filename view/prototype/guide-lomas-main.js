@@ -110,7 +110,7 @@ exports.step = function () {
 				"Conditions (12)"))
 		),
 		div(
-			{ class: 'section-primary section-tab-content user-guide-lomas-tab-requirements',
+			{ class: 'section-primary section-tab-nav-tab-content user-guide-lomas-tab-requirements',
 				id: 'req-tab' },
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 				"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
@@ -137,7 +137,8 @@ exports.step = function () {
 			)
 		),
 		div(
-			{ class: 'section-primary section-tab-content user-guide-lomas-tab-costs', id: 'cost-tab' },
+			{ class: 'section-primary section-tab-nav-tab-content user-guide-lomas-tab-costs',
+				id: 'cost-tab' },
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 				"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 				"Praesent porttitor dui a ante luctus gravida."),
@@ -172,7 +173,7 @@ exports.step = function () {
 			)
 		),
 		div(
-			{ class: 'section-primary section-tab-content user-guide-lomas-tab-conditions',
+			{ class: 'section-primary section-tab-nav-tab-content user-guide-lomas-tab-conditions',
 				id: 'cond-tab' },
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 				"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
