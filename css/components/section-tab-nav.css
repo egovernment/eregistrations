@@ -36,6 +36,15 @@
 	display: inline-block;
 }
 
+/* Tabs content section rules (displayed to user) */
+
+.section-tab-nav-tab-content {
+	display: none;
+}
+.section-tab-nav-tab-content.active {
+	display: block;
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 	.section-tab-nav {
 		display: flex;
