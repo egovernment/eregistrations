@@ -95,7 +95,7 @@ module.exports = memoize(function (Target/* options */) {
 			type: StringLine,
 			multiple: true,
 			value: function (_observe) {
-				var certs = this.requestedCertificates, resolved = {}, result = [], i, count = 0;
+				var certs = this.requestedCertificates, resolved = {}, result = [], key, count = 0;
 				this.requestedRegistrations.forEach(function (regName) {
 					_observe(this.registrations[regName].requirements).forEach(function (req) {
 						if (certs.has(req)) return;
@@ -104,10 +104,19 @@ module.exports = memoize(function (Target/* options */) {
 						++count;
 					}, this);
 				}, this);
-				for (i in this.requirements) {
-					if (resolved.hasOwnProperty(i)) {
-						result.push(i);
-						--count;
+				if (this.requirements.forEach) {
+					this.requirements.forEach(function (value, key) {
+						if (resolved.hasOwnProperty(key)) {
+							result.push(key);
+							--count;
+						}
+					});
+				} else {
+					for (key in this.requirements) {
+						if (resolved.hasOwnProperty(key)) {
+							result.push(key);
+							--count;
+						}
 					}
 				}
 				if (count) throw new Error("Undefined requirements resolved from registrations");
