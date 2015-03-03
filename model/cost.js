@@ -11,7 +11,7 @@ module.exports = memoize(function (db) {
 	StringLine = defineStringLine(db);
 	Currency   = defineCurrency(db);
 	db.Object.extend('Cost', {
-		amount: { type:  Currency },
+		amount: { type:  Currency,  step: 1 },
 		label: { type: StringLine }
 	});
 
