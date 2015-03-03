@@ -1,0 +1,37 @@
+/* Conditions tab */
+
+.lomas-conditions-list > li {
+	border: 1px solid var(--normal-background);
+	border-radius: 5px;
+	margin-bottom: 22px;
+}
+.lomas-conditions-list > li:last-child {
+	margin-bottom: 0;
+}
+.lomas-conditions-list > li > h3 {
+	padding: 11px;
+}
+.lomas-conditions-list table {
+	border-top: 1px solid var(--normal-background);
+	padding: 11px;
+
+}
+.lomas-conditions-list tr:nth-of-type(odd) {
+	background: none;
+}
+.lomas-conditions-list td {
+	padding: 11px 0;
+	vertical-align: top;
+}
+.lomas-conditions-list td:first-child {
+	padding: 11px 5px;
+	text-align: center;
+}
+.lomas-conditions-list td:nth-child(2) {
+	padding-right: 11px;
+	width: 60%;
+}
+.lomas-conditions-list td a {
+	color: var(--hint-text);
+	white-space: nowrap;
+}
