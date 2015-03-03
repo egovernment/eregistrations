@@ -1,0 +1,37 @@
+/* Conditions tab */
+
+.section-conditions > ul > li {
+	border: 1px solid var(--normal-background);
+	border-radius: 5px;
+	margin-bottom: 22px;
+}
+.section-conditions > ul > li:last-child {
+	margin-bottom: 0;
+}
+.section-conditions > ul > li > h3 {
+	padding: 11px;
+}
+.section-conditions table {
+	border-top: 1px solid var(--normal-background);
+	padding: 11px;
+
+}
+.section-conditions tr:nth-of-type(odd) {
+	background: none;
+}
+.section-conditions td {
+	padding: 11px 0;
+	vertical-align: top;
+}
+.section-conditions td:first-child {
+	padding: 11px 5px;
+	text-align: center;
+}
+.section-conditions td:nth-child(2) {
+	padding-right: 11px;
+	width: 60%;
+}
+.section-conditions td a {
+	color: var(--hint-text);
+	white-space: nowrap;
+}

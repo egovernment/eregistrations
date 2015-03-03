@@ -173,7 +173,7 @@ exports.step = function () {
 			)
 		),
 		div(
-			{ class: 'section-primary section-tab-nav-tab-content user-guide-lomas-tab-conditions',
+			{ class: 'section-primary section-tab-nav-tab-content section-conditions',
 				id: 'cond-tab' },
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 				"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
