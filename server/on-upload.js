@@ -12,7 +12,7 @@ var contains    = require('es5-ext/string/#/contains')
 
   , promisify = deferred.promisify
   , resolve = path.resolve
-  , uploadsPath = resolve(__dirname, '../../uploads');
+  , uploadsPath = require('mano').uploadsPath;
 
 if (descHandler.initialized) gm.prototype.write = descHandler.wrap(gm.prototype.write);
 gm.prototype.writeP = promisify(gm.prototype.write);
