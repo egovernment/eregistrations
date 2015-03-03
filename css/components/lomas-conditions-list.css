@@ -1,37 +1,37 @@
 /* Conditions tab */
 
-.section-conditions > ul > li {
+.lomas-conditions-list > li {
 	border: 1px solid var(--normal-background);
 	border-radius: 5px;
 	margin-bottom: 22px;
 }
-.section-conditions > ul > li:last-child {
+.lomas-conditions-list > li:last-child {
 	margin-bottom: 0;
 }
-.section-conditions > ul > li > h3 {
+.lomas-conditions-list > li > h3 {
 	padding: 11px;
 }
-.section-conditions table {
+.lomas-conditions-list table {
 	border-top: 1px solid var(--normal-background);
 	padding: 11px;
 
 }
-.section-conditions tr:nth-of-type(odd) {
+.lomas-conditions-list tr:nth-of-type(odd) {
 	background: none;
 }
-.section-conditions td {
+.lomas-conditions-list td {
 	padding: 11px 0;
 	vertical-align: top;
 }
-.section-conditions td:first-child {
+.lomas-conditions-list td:first-child {
 	padding: 11px 5px;
 	text-align: center;
 }
-.section-conditions td:nth-child(2) {
+.lomas-conditions-list td:nth-child(2) {
 	padding-right: 11px;
 	width: 60%;
 }
-.section-conditions td a {
+.lomas-conditions-list td a {
 	color: var(--hint-text);
 	white-space: nowrap;
 }

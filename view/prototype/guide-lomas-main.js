@@ -173,12 +173,13 @@ exports.step = function () {
 			)
 		),
 		div(
-			{ class: 'section-primary section-tab-nav-tab-content section-conditions',
+			{ class: 'section-primary section-tab-nav-tab-content',
 				id: 'cond-tab' },
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 				"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 				"Praesent porttitor dui a ante luctus gravida."),
 			ul(
+				{ class: 'lomas-conditions-list' },
 				li(
 					h3("Electricity"),
 					table(
