@@ -12,7 +12,8 @@ module.exports = memoize(function (db) {
 	Currency   = defineCurrency(db);
 	db.Object.extend('Cost', {
 		amount: { type:  Currency },
-		label: { type: StringLine }
+		label: { type: StringLine },
+		step: { value: 1 }
 	});
 
 	return db.Cost;
