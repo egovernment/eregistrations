@@ -321,6 +321,9 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	list-style-type: none;
 	width: 100%;
 }
+.dbjs.multiple.checkbox {
+	width: auto;
+}
 
 .dbjs.multiple ul {
 	list-style-type: none;
