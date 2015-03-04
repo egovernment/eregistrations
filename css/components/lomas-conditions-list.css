@@ -20,12 +20,18 @@
 	background: none;
 }
 .lomas-conditions-list td {
-	padding: 11px;
+	padding: 11px 5px;
 	vertical-align: top;
 }
+.lomas-conditions-list td:first-child {
+	padding-left: 10px;
+}
+.lomas-conditions-list td:last-child {
+	padding-right: 10px;
+}
+
 .lomas-conditions-list .lomas-conditions-status {
 	text-align: center;
-	padding-right: 0;
 }
 
 .lomas-conditions-list td a {
