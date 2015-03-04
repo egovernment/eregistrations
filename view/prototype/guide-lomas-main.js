@@ -190,8 +190,8 @@ exports.step = function () {
 										"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 										"Praesent porttitor dui a ante luctus gravida."),
 								td(
+									{ class: 'lomas-conditions-ordinance-list' },
 									ul(
-										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26")),
 										li("Ordinance 11025 - ", a("art. 27")),
 										li("Ordinance 11025 - ", a("art. 28"))
@@ -202,8 +202,8 @@ exports.step = function () {
 								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
+									{ class: 'lomas-conditions-ordinance-list' },
 									ul(
-										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26")),
 										li("Ordinance 11025 - ", a("art. 26"))
 									)
@@ -213,8 +213,8 @@ exports.step = function () {
 								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
+									{ class: 'lomas-conditions-ordinance-list' },
 									ul(
-										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26"))
 									)
 								)
@@ -232,8 +232,8 @@ exports.step = function () {
 										"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 										"Praesent porttitor dui a ante luctus gravida."),
 								td(
+									{ class: 'lomas-conditions-ordinance-list' },
 									ul(
-										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26")),
 										li("Ordinance 11025 - ", a("art. 27")),
 										li("Ordinance 11025 - ", a("art. 28"))
@@ -244,8 +244,8 @@ exports.step = function () {
 								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
+									{ class: 'lomas-conditions-ordinance-list' },
 									ul(
-										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26")),
 										li("Ordinance 11025 - ", a("art. 26"))
 									)
@@ -255,8 +255,8 @@ exports.step = function () {
 								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
+									{ class: 'lomas-conditions-ordinance-list' },
 									ul(
-										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26"))
 									)
 								)
@@ -274,8 +274,8 @@ exports.step = function () {
 										"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 										"Praesent porttitor dui a ante luctus gravida."),
 								td(
+									{ class: 'lomas-conditions-ordinance-list' },
 									ul(
-										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26")),
 										li("Ordinance 11025 - ", a("art. 27")),
 										li("Ordinance 11025 - ", a("art. 28"))
@@ -286,8 +286,8 @@ exports.step = function () {
 								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
+									{ class: 'lomas-conditions-ordinance-list' },
 									ul(
-										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26")),
 										li("Ordinance 11025 - ", a("art. 26"))
 									)
@@ -297,8 +297,8 @@ exports.step = function () {
 								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
+									{ class: 'lomas-conditions-ordinance-list' },
 									ul(
-										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26"))
 									)
 								)
