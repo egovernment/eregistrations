@@ -319,7 +319,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 .dbjs.multiple {
 	display: inline-block;
 	list-style-type: none;
-	width: 100%;
+	max-width: 100%;
 }
 
 .dbjs.multiple ul {
