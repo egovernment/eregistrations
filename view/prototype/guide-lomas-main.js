@@ -185,7 +185,7 @@ exports.step = function () {
 					table(
 						tbody(
 							tr(
-								td(span({ class: 'fa fa-check' }, "Check")),
+								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 										"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 										"Praesent porttitor dui a ante luctus gravida."),
@@ -198,7 +198,7 @@ exports.step = function () {
 								)
 							),
 							tr(
-								td(span({ class: 'fa fa-check' }, "Check")),
+								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
 									ul(
@@ -208,7 +208,7 @@ exports.step = function () {
 								)
 							),
 							tr(
-								td(span({ class: 'fa fa-check' }, "Check")),
+								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
 									ul(
@@ -224,7 +224,7 @@ exports.step = function () {
 					table(
 						tbody(
 							tr(
-								td(span({ class: 'fa fa-check' }, "Check")),
+								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 										"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 										"Praesent porttitor dui a ante luctus gravida."),
@@ -237,7 +237,7 @@ exports.step = function () {
 								)
 							),
 							tr(
-								td(span({ class: 'fa fa-check' }, "Check")),
+								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
 									ul(
@@ -247,7 +247,7 @@ exports.step = function () {
 								)
 							),
 							tr(
-								td(span({ class: 'fa fa-check' }, "Check")),
+								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
 									ul(
@@ -263,7 +263,7 @@ exports.step = function () {
 					table(
 						tbody(
 							tr(
-								td(span({ class: 'fa fa-check' }, "Check")),
+								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
 										"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
 										"Praesent porttitor dui a ante luctus gravida."),
@@ -276,7 +276,7 @@ exports.step = function () {
 								)
 							),
 							tr(
-								td(span({ class: 'fa fa-check' }, "Check")),
+								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
 									ul(
@@ -286,13 +286,34 @@ exports.step = function () {
 								)
 							),
 							tr(
-								td(span({ class: 'fa fa-check' }, "Check")),
+								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
 									ul(
 										li("Ordinance 11025 - ", a("art. 26"))
 									)
 								)
+							)
+						)
+					)
+				),
+				li(
+					h3("Lorem ipsum"),
+					table(
+						tbody(
+							tr(
+								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
+								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. " +
+										"Duis dolor velit, feugiat ut nulla ac, mollis ornare orci. " +
+										"Praesent porttitor dui a ante luctus gravida.")
+							),
+							tr(
+								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
+								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. ")
+							),
+							tr(
+								td({ class: 'lomas-conditions-status' }, span({ class: 'fa fa-check' }, "Check")),
+								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. ")
 							)
 						)
 					)
