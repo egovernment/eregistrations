@@ -32,12 +32,12 @@
 
 .lomas-conditions-list .lomas-conditions-status {
 	text-align: center;
-	width: 5%;
+	width: 45px;
 }
 
 .lomas-conditions-list td a {
 	color: var(--hint-text);
 }
 .lomas-conditions-ordinance-list {
-	width: 30%;
+	width: 290px;
 }
