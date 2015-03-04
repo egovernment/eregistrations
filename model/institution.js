@@ -10,6 +10,9 @@ module.exports = memoize(function (db) {
 	return db.Object.extend('Institution', {
 		name: { type: StringLine, required: true },
 		abbr: { type: StringLine, required: true },
-		address: { type: StringLine, required: true }
+		address: { type: StringLine, required: true },
+		toString: { value: function (options) {
+			return this.name;
+		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
