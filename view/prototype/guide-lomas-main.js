@@ -191,6 +191,7 @@ exports.step = function () {
 										"Praesent porttitor dui a ante luctus gravida."),
 								td(
 									ul(
+										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26")),
 										li("Ordinance 11025 - ", a("art. 27")),
 										li("Ordinance 11025 - ", a("art. 28"))
@@ -202,6 +203,7 @@ exports.step = function () {
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
 									ul(
+										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26")),
 										li("Ordinance 11025 - ", a("art. 26"))
 									)
@@ -212,6 +214,7 @@ exports.step = function () {
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
 									ul(
+										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26"))
 									)
 								)
@@ -230,6 +233,7 @@ exports.step = function () {
 										"Praesent porttitor dui a ante luctus gravida."),
 								td(
 									ul(
+										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26")),
 										li("Ordinance 11025 - ", a("art. 27")),
 										li("Ordinance 11025 - ", a("art. 28"))
@@ -241,6 +245,7 @@ exports.step = function () {
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
 									ul(
+										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26")),
 										li("Ordinance 11025 - ", a("art. 26"))
 									)
@@ -251,6 +256,7 @@ exports.step = function () {
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
 									ul(
+										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26"))
 									)
 								)
@@ -269,6 +275,7 @@ exports.step = function () {
 										"Praesent porttitor dui a ante luctus gravida."),
 								td(
 									ul(
+										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26")),
 										li("Ordinance 11025 - ", a("art. 27")),
 										li("Ordinance 11025 - ", a("art. 28"))
@@ -280,6 +287,7 @@ exports.step = function () {
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
 									ul(
+										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26")),
 										li("Ordinance 11025 - ", a("art. 26"))
 									)
@@ -290,6 +298,7 @@ exports.step = function () {
 								td("Lorem ipsum dolor sit amet, consectetur adipiscing elit. "),
 								td(
 									ul(
+										{ class: 'lomas-conditions-ordinance-list' },
 										li("Ordinance 11025 - ", a("art. 26"))
 									)
 								)

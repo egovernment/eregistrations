@@ -30,8 +30,7 @@
 
 .lomas-conditions-list td a {
 	color: var(--hint-text);
-	white-space: nowrap;
 }
-.lomas-conditions-list td li {
+.lomas-conditions-ordinance-list li {
 	white-space: nowrap;
 }
