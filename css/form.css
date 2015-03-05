@@ -347,7 +347,7 @@ ul.multiple {
 	padding-top: 0;
 }
 
-.dbjs.multiple ul li a {
+.dbjs.multiple .dbjs-multiple-button-remove {
 	background-color: var(--normal-background);
 	color: var(--white-text);
 	border-radius: 11px;
