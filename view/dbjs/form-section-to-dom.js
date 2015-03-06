@@ -24,31 +24,36 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		if (!this.forceRequiredInput) {
 			control = { required: this.forceRequiredInput };
 		}
-		customizeData.arrayResult = [customizeData.container = ns.section({ class: 'section-primary' },
-			ns.form(
-				{ id: this.domId,
-					method: 'post',
-					action: actionUrl, class: ns._if(ns.eq(
-					this._status,
-					1
-				), 'completed form-elements', 'form-elements') },
-				ns._if(this._label,
-					[ns.h2(this._label),
-						ns.hr()]),
-				options.prepend,
-				resolvent.formResolvent,
-				customizeData.fieldset = ns.fieldset(
-					{ id: resolvent.affectedSectionId,
-						dbjs: master, names: this.formPropertyNames,
-						control: control,
-						controls: legacy.controls }
-				).extend(options.append),
-				ns.p({ class: 'submit-placeholder input' },
-					ns.input({ type: 'submit', value: _("Submit") })),
-				ns.p({ class: 'section-primary-scroll-top' },
-					ns.a({ onclick: 'window.scroll(0, 0)' },
-						ns.span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
-			)), resolvent.legacyScript, legacy.legacy];
+		customizeData.arrayResult = [ns.div(
+			{ class: ns._if(this._isDisabled, "disabler-range disabler-active", "disabler-range") },
+			customizeData.container = ns.section({ class: 'section-primary' },
+				ns.form(
+					{ id: this.domId,
+						method: 'post',
+						action: actionUrl, class: ns._if(ns.eq(
+						this._status,
+						1
+					), 'completed form-elements', 'form-elements') },
+					ns._if(this._label,
+						[ns.h2(this._label),
+							ns.hr()]),
+					options.prepend,
+					resolvent.formResolvent,
+					customizeData.fieldset = ns.fieldset(
+						{ id: resolvent.affectedSectionId,
+							dbjs: master, names: this.formPropertyNames,
+							control: control,
+							controls: legacy.controls }
+					).extend(options.append),
+					ns.p({ class: 'submit-placeholder input' },
+						ns.input({ type: 'submit', value: _("Submit") })),
+					ns.p({ class: 'section-primary-scroll-top' },
+						ns.a({ onclick: 'window.scroll(0, 0)' },
+							ns.span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
+				)),
+			ns.div({ class: "disabler" })
+		),
+			resolvent.legacyScript, legacy.legacy];
 		if (typeof options.customize === 'function') {
 			customizeData.fieldset = customizeData.fieldset._dbjsFieldset;
 			options.customize.call(this, customizeData);

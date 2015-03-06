@@ -22,6 +22,7 @@ module.exports = memoize(function (db) {
 	return db.Object.extend('FormSectionBase', {
 		label: { type: StringLine, required: true },
 		isApplicable: { type: db.Boolean, required: true, value: true },
+		isDisabled: { type: db.Boolean, value: false },
 		status: { type: Percentage, required: true, value: 1 },
 		resolventValue: { type: db.Base },
 		onIncompleteMessage: { type: StringLine }
