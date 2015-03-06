@@ -24,9 +24,13 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		if (!this.forceRequiredInput) {
 			control = { required: this.forceRequiredInput };
 		}
-		customizeData.arrayResult = [ns.div(
-			{ class: ns._if(this._isDisabled, "disabler-range disabler-active", "disabler-range") },
-			customizeData.container = ns.section({ class: 'section-primary' },
+		customizeData.arrayResult = [
+			customizeData.container = ns.section({ class: ns._if(
+				this._isDisabled,
+				"section-primary disabler-range disabler-active",
+				"section-primary disabler-range"
+			)
+				},
 				ns.form(
 					{ id: this.domId,
 						method: 'post',
@@ -50,9 +54,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 					ns.p({ class: 'section-primary-scroll-top' },
 						ns.a({ onclick: 'window.scroll(0, 0)' },
 							ns.span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
-				)),
-			ns.div({ class: "disabler" })
-		),
+				), ns.div({ class: "disabler" })),
 			resolvent.legacyScript, legacy.legacy];
 		if (typeof options.customize === 'function') {
 			customizeData.fieldset = customizeData.fieldset._dbjsFieldset;

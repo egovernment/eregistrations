@@ -16,13 +16,12 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 		options = Object(arguments[1]);
 		url = options.url || ns.url;
 		tableData = resolvePropertyPath(this.master, this.constructor.propertyName).value;
-		customizeData.arrayResult = [ns.div(
-			{ class: ns._if(this._isDisabled, "disabler-range disabler-active", "disabler-range") },
+		customizeData.arrayResult = [
 			customizeData.container = ns.section(
-				{ id: this.domId, class: ns._if(ns.eq(
+				{ id: this.domId, class: ['section-primary entities-overview disabler-range', ns._if(ns.eq(
 					this._status,
 					1
-				), 'section-primary completed entities-overview', 'section-primary entities-overview') },
+				), 'completed'), ns._if(this._isDisabled, 'disabler-active')] },
 				ns._if(this._label,
 					[ns.h2(this._label),
 						ns.hr()]),
@@ -82,10 +81,10 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 				),
 				ns.p({ class: 'section-primary-scroll-top' },
 					ns.a({ onclick: 'window.scroll(0, 0)' }, ns.span({ class: 'fa fa-arrow-up' },
-						_("Back to top"))))
-			),
-			ns.div({ class: "disabler" })
-		)];
+						_("Back to top")))),
+				ns.div({ class: "disabler" })
+			)
+		];
 		if (typeof options.customize === 'function') {
 			options.customize.call(this, customizeData);
 		}

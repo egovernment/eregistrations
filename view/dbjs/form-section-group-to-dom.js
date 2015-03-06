@@ -19,10 +19,13 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 					url(this.constructor.actionUrl + '-add') :
 					url(this.constructor.actionUrl, master.__id__);
 		}
-		return [ns.div(
-			{ class: ns._if(this._isDisabled, "disabler-range disabler-active", "disabler-range") },
+		return [
 			ns.section(
-				{ class: 'section-primary' },
+				{ class: ns._if(
+					this._isDisabled,
+					"section-primary disabler-range disabler-active",
+					"section-primary disabler-range"
+				) },
 				ns.form({ id: this.domId, method: 'post',
 						action: actionUrl,
 						class: ns._if(ns.eq(
@@ -60,8 +63,8 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 						ns.a({ onclick: 'window.scroll(0, 0)' },
 							ns.span({ class: 'fa fa-arrow-up' }, "Back to top"))
 					)
-					)
+					),
+				ns.div({ class: "disabler" })
 			),
-			ns.div({ class: "disabler" })
-		), mainFormResolvent.legacyScript];
+			mainFormResolvent.legacyScript];
 	}));
