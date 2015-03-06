@@ -3,7 +3,7 @@
 	<title>eRegistrations</title>
 	<meta name="viewport" content="width=device-width" />
 	<noscript><meta http-equiv="refresh" content="0;/?legacy=set" /></noscript>
-	<script>
+	<script data-spa>
 if (!Object.getPrototypeOf || !Object.defineProperty || !window.history ||
 	 (Object.getPrototypeOf({ __proto__: Function.prototype }) !==
 		 Function.prototype) || (Object.defineProperty({}, 'foo',
@@ -28,7 +28,7 @@ if (!Object.getPrototypeOf || !Object.defineProperty || !window.history ||
 	}
 } else {
 	document.write('<scr' + 'ipt src="${STATIC_ROOT_APP}prototype.legacy.js"></sc' + 'ript>');
-	document.write('<scr' + 'ipt src="${STATIC_ROOT_APP}prototype.js"></sc' + 'ript>');
+	document.write('<scr' + 'ipt data-spa src="${STATIC_ROOT_APP}prototype.js"></sc' + 'ript>');
 }
 	</script>
 	<link href="${STATIC_ROOT}prototype.css" rel="stylesheet" />
