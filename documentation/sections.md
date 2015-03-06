@@ -343,6 +343,8 @@ _prototype_
 
 **isApplicable** The section will not by visible on view if false
 
+**isDisabled** The section will have a disabler on view if true
+
 **label** The label of the section (can be translated to form header, or header of data in user submitted)
     
 **status** Status as used in steps for a given section, type dbjs-ext/number/percentage, default 1.
