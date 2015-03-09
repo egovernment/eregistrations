@@ -52,7 +52,12 @@ module.exports = memoize(function (db) {
 					return 0;
 				}
 				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-					if (!resolved.descriptor.required || (_observe(resolved.observable) != null)) return 1;
+					if (!resolved.descriptor.required) return 1;
+					if (resolved.descriptor.multiple) {
+						if (_observe(resolved.observable).size) return 1;
+					} else {
+						if (_observe(resolved.observable) != null) return 1;
+					}
 					return 0;
 				}
 			}
@@ -63,9 +68,13 @@ module.exports = memoize(function (db) {
 					return;
 				}
 				if (!resolved.descriptor.required) return;
-				if (this.constructor.excludedFromStatusIfFilled.has(name) &&
-						_observe(resolved.observable) != null) {
-					return;
+				if (this.constructor.excludedFromStatusIfFilled.has(name) ||
+						(Object.getPrototypeOf(resolved.object).get(resolved.key) != null)) {
+					if (resolved.descriptor.multiple) {
+						if (_observe(resolved.observable).size) return;
+					} else {
+						if (_observe(resolved.observable) != null) return;
+					}
 				}
 				++total;
 				if (resolved.descriptor.requireOwn) {
@@ -76,6 +85,9 @@ module.exports = memoize(function (db) {
 						isOwn = resolved.descriptor._hasOwnValue_(resolved.object);
 					}
 					if (!isOwn) return;
+				}
+				if (resolved.descriptor.multiple && !_observe(resolved.observable).size) {
+					return;
 				}
 				if (_observe(resolved.observable) != null) valid++;
 			}, this);
