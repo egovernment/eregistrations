@@ -236,6 +236,7 @@ user.partners.add(Partner.newNamed('partnerFrank',
 		companyType: 'private',
 		inventory: 1000000,
 		isOwner: true,
+		surfaceArea: 123,
 		businessActivity: db.baAirCharterAgent,
 		members: 5
 	}));

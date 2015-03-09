@@ -29,8 +29,14 @@
 	text-align: center;
 }
 
+.entities-overview-table .completed .status-complete,
+.entities-overview-table .status-incomplete {
+	font-weight: bold;
+	display: block;
+	text-align: center;
+}
+
 .entities-overview-table .completed .status-complete {
-	display: inline;
 	color: var(--success-text);
 }
 .entities-overview-table .status-incomplete {
