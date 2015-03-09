@@ -56,7 +56,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 									'completed') },
 								ns.span({ class: 'status-complete' }, "✓"),
 								ns.span({ class: 'hint-optional hint-optional-left status-incomplete',
-										'data-hint': "Some required fields are not filled" },
+										'data-hint': _("Some required fields are not filled") },
 										"!")),
 							ns.td({ class: 'actions' },
 								ns.a({ class: 'actions-edit',
