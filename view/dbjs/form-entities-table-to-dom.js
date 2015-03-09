@@ -55,7 +55,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 											self.constructor.sectionProperty + 'Status').observable, 1),
 									'completed') },
 								ns.span({ class: 'status-complete' }, "✓"),
-								ns.span({ class: 'status-incomplete' }, "✕")),
+								ns.span({ class: 'status-incomplete' }, "!")),
 							ns.td({ class: 'actions' },
 								ns.a({ class: 'actions-edit',
 										href: url(self.constructor.baseUrl, entityObject.__id__) },
