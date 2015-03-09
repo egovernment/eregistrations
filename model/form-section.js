@@ -69,12 +69,9 @@ module.exports = memoize(function (db) {
 				}
 				if (!resolved.descriptor.required) return;
 				if (this.constructor.excludedFromStatusIfFilled.has(name) ||
-						(Object.getPrototypeOf(resolved.object).get(resolved.key) != null)) {
-					if (resolved.descriptor.multiple) {
-						if (_observe(resolved.observable).size) return;
-					} else {
-						if (_observe(resolved.observable) != null) return;
-					}
+						(Object.getPrototypeOf(resolved.object).get(resolved.key) != null &&
+							!resolved.descriptor.multiple)) {
+					if (_observe(resolved.observable) != null) return;
 				}
 				++total;
 				if (resolved.descriptor.requireOwn) {
