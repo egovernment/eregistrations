@@ -36,6 +36,8 @@
 .entities-overview-table .status-incomplete {
 	color: var(--error-text);
 	font-weight: bold;
+	display: block;
+	text-align: center;
 }
 .entities-overview-table .status-complete,
 .entities-overview-table .completed .status-incomplete {
