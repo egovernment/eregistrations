@@ -2,15 +2,17 @@
 
 var validDb               = require('dbjs/valid-dbjs')
   , validDbType           = require('dbjs/valid-dbjs-type')
+  , defineUInteger        = require('dbjs-ext/number/integer/u-integer')
   , definePercentage      = require('dbjs-ext/number/percentage')
   , defineFormSectionBase = require('./form-section-base');
 
 module.exports = function (Entity, property) {
-	var FormSectionBase, Percentage, db;
+	var FormSectionBase, Percentage, db, UInteger;
 	db = validDb(Entity.database);
 	validDbType(Entity);
+	UInteger        = defineUInteger(db);
 	FormSectionBase = defineFormSectionBase(db);
-	Percentage = definePercentage(db);
+	Percentage      = definePercentage(db);
 	Entity.prototype.define(property, {
 		type: db.Object,
 		nested: true
@@ -27,7 +29,7 @@ module.exports = function (Entity, property) {
 			' weightTotal += section.weight; }' +
 			'}); if (!weightTotal) return 1; return sum / weightTotal;')
 		});
-	Entity.prototype.define(property + 'Weight', { type: db.Number, value:
+	Entity.prototype.define(property + 'Weight', { type: UInteger, value:
 		new Function('_observe', '\'use strict\'; var weightTotal; weightTotal = 0;' +
 			'this.' +
 			property +
