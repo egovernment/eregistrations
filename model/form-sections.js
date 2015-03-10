@@ -25,7 +25,7 @@ module.exports = function (Entity, property) {
 			'if (_observe(section._isApplicable)) { ' +
 			'sum += (_observe(section._status) * _observe(section._weight));' +
 			' weightTotal += section.weight; }' +
-			'}); return sum / weightTotal;')
+			'}); if (!weightTotal) return 1; return sum / weightTotal;')
 		});
 	Entity.prototype.define(property + 'Weight', { type: db.Number, value:
 		new Function('_observe', '\'use strict\'; var weightTotal; weightTotal = 0;' +

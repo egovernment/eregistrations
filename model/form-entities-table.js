@@ -48,7 +48,7 @@ module.exports = memoize(function (db) {
 				}
 				weightTotal += _observe(resolved.observable);
 			});
-			return !_observe(entityObjects._size) ? 1 : weightTotal;
+			return !_observe(entityObjects._size) ? 0 : weightTotal;
 		} }
 	}, {
 		actionUrl: { required: false },
