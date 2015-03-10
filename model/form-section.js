@@ -52,17 +52,18 @@ module.exports = memoize(function (db) {
 					return total;
 				}
 				isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
-				if (!isResolventExcluded) {
-					++total;
-				}
 				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
 					if (isResolventExcluded) return 1;
 					if (resolved.descriptor.multiple) {
-						if (_observe(resolved.observable).size) ++valid;
+						if (_observe(resolved.observable).size) return 1;
 					} else {
-						if (_observe(resolved.observable) != null) ++valid;
+						if (_observe(resolved.observable) != null) return 1;
 					}
-					return valid / total;
+					return 0;
+				}
+				if (!isResolventExcluded) {
+					++total;
+					++valid;
 				}
 			}
 
@@ -101,7 +102,7 @@ module.exports = memoize(function (db) {
 				}
 				isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
 				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-					return isResolventExcluded ? 1 : 0;
+					return isResolventExcluded ? 0 : 1;
 				}
 				if (!isResolventExcluded) {
 					++total;
