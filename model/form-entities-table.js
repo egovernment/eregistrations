@@ -15,20 +15,23 @@ module.exports = memoize(function (db) {
 	FormTabularEntity = defineFormTabularEntity(db);
 	return FormSectionBase.extend('FormEntitiesTable', {
 		status: { value: function (_observe) {
-			var entityObjects, statusSum, key;
+			var entityObjects, statusSum, statusKey, weightKey;
 			statusSum = 0;
-			key = this.constructor.sectionProperty + 'Status';
+			statusKey = this.constructor.sectionProperty + 'Status';
+			weightKey = this.constructor.sectionProperty + 'Weight';
 			entityObjects = this.master.resolveSKeyPath(this.constructor.propertyName, _observe);
 			if (!entityObjects) {
 				return 0;
 			}
 			entityObjects = entityObjects.value;
 			entityObjects.forEach(function (entityObject) {
-				var resolved = entityObject.resolveSKeyPath(key, _observe);
-				if (!resolved) {
+				var resolvedStatus, resolvedWeight;
+				resolvedStatus = entityObject.resolveSKeyPath(statusKey, _observe);
+				resolvedWeight = entityObject.resolveSKeyPath(weightKey, _observe);
+				if (!resolvedStatus || !resolvedWeight) {
 					return;
 				}
-				statusSum += _observe(resolved.observable);
+				statusSum += (_observe(resolvedStatus.observable) * _observe(resolvedWeight.observable));
 			});
 			if (!this.weight) return 1;
 			return statusSum / this.weight;
