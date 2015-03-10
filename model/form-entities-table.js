@@ -30,7 +30,8 @@ module.exports = memoize(function (db) {
 				}
 				statusSum += _observe(resolved.observable);
 			});
-			return !_observe(entityObjects._size) ? 1 : statusSum / entityObjects.size;
+			if (!this.weight) return 1;
+			return statusSum / this.weight;
 		} },
 		weight: { value: function (_observe) {
 			var entityObjects, weightTotal, key;
