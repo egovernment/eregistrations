@@ -45,14 +45,15 @@ module.exports = memoize(function (db) {
 			return props;
 		} },
 		status: { value: function (_observe) {
-			var resolved, valid = 0, total = 0, isOwn;
+			var resolved, valid = 0, total = 0, isResolventExcluded, isOwn;
 			if (this.constructor.resolventProperty) {
 				resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty, _observe);
 				if (!resolved) {
-					return 0;
+					return total;
 				}
+				isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
 				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-					if (!resolved.descriptor.required) return 1;
+					if (isResolventExcluded) return 1;
 					if (resolved.descriptor.multiple) {
 						if (_observe(resolved.observable).size) return 1;
 					} else {
@@ -60,22 +61,20 @@ module.exports = memoize(function (db) {
 					}
 					return 0;
 				}
+				if (!isResolventExcluded) {
+					++total;
+					++valid;
+				}
 			}
+
 			this.propertyNames.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name, _observe);
 				if (!resolved) {
 					++total;
 					return;
 				}
-				if (!resolved.descriptor.required) return;
-				if (this.constructor.excludedFromStatusIfFilled.has(name) ||
-						(!resolved.descriptor.multiple &&
-							Object.getPrototypeOf(resolved.object).get(resolved.key) != null)) {
-					if (resolved.descriptor.multiple) {
-						if (_observe(resolved.observable).size) return;
-					} else {
-						if (_observe(resolved.observable) != null) return;
-					}
+				if (this.isPropertyExcludedFromStatus(resolved, _observe)) {
+					return;
 				}
 				++total;
 				if (resolved.descriptor.requireOwn) {
@@ -95,22 +94,28 @@ module.exports = memoize(function (db) {
 			return total === 0 ? 1 : valid / total;
 		} },
 		weight: { value: function (_observe) {
-			var resolved, total = 0;
+			var resolved, total = 0, isResolventExcluded;
+			if (this.constructor.resolventProperty) {
+				resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty, _observe);
+				if (!resolved) {
+					return 0;
+				}
+				isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
+				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
+					return isResolventExcluded ? 0 : 1;
+				}
+				if (!isResolventExcluded) {
+					++total;
+				}
+			}
 			this.propertyNames.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name, _observe);
 				if (!resolved) {
 					++total;
 					return;
 				}
-				if (!resolved.descriptor.required) return;
-				if (this.constructor.excludedFromStatusIfFilled.has(name) ||
-						(!resolved.descriptor.multiple &&
-						Object.getPrototypeOf(resolved.object).get(resolved.key) != null)) {
-					if (resolved.descriptor.multiple) {
-						if (_observe(resolved.observable).size) return;
-					} else {
-						if (_observe(resolved.observable) != null) return;
-					}
+				if (this.isPropertyExcludedFromStatus(resolved, _observe)) {
+					return;
 				}
 				++total;
 			}, this);

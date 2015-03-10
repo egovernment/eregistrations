@@ -26,7 +26,21 @@ module.exports = memoize(function (db) {
 		status: { type: Percentage, required: true, value: 1 },
 		weight: { type: UInteger, required: true },
 		resolventValue: { type: db.Base },
-		onIncompleteMessage: { type: StringLine }
+		onIncompleteMessage: { type: StringLine },
+		isPropertyExcludedFromStatus: { type: db.Function, value: function (resolved, _observe) {
+			if (!resolved.descriptor.required) return true;
+			if (this.constructor.excludedFromStatusIfFilled.has(resolved.key) ||
+					(!resolved.descriptor.multiple &&
+					Object.getPrototypeOf(resolved.object).get(resolved.key) != null)) {
+				if (resolved.descriptor.multiple) {
+					if (_observe(resolved.observable).size) return true;
+				} else {
+					if (_observe(resolved.observable) != null) return true;
+				}
+			}
+
+			return false;
+		} }
 	}, {
 		excludedFromStatusIfFilled: { type: StringLine, multiple: true },
 		actionUrl: { type: StringLine, required: true },
