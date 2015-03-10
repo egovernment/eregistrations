@@ -94,6 +94,28 @@ module.exports = memoize(function (db) {
 			}, this);
 			return total === 0 ? 1 : valid / total;
 		} },
+		weight: { value: function (_observe) {
+			var resolved, total = 0;
+			this.propertyNames.forEach(function (name) {
+				resolved = this.master.resolveSKeyPath(name, _observe);
+				if (!resolved) {
+					++total;
+					return;
+				}
+				if (!resolved.descriptor.required) return;
+				if (this.constructor.excludedFromStatusIfFilled.has(name) ||
+						(!resolved.descriptor.multiple &&
+						Object.getPrototypeOf(resolved.object).get(resolved.key) != null)) {
+					if (resolved.descriptor.multiple) {
+						if (_observe(resolved.observable).size) return;
+					} else {
+						if (_observe(resolved.observable) != null) return;
+					}
+				}
+				++total;
+			}, this);
+			return total;
+		} },
 		inputOptions: {
 			type: db.Object,
 			nested: true

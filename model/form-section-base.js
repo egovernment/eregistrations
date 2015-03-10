@@ -23,6 +23,7 @@ module.exports = memoize(function (db) {
 		label: { type: StringLine, required: true },
 		isApplicable: { type: db.Boolean, required: true, value: true },
 		status: { type: Percentage, required: true, value: 1 },
+		weight: { type: db.Number, required: true, value: 1 },
 		resolventValue: { type: db.Base },
 		onIncompleteMessage: { type: StringLine }
 	}, {

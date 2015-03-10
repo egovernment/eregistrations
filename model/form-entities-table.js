@@ -31,6 +31,24 @@ module.exports = memoize(function (db) {
 				statusSum += _observe(resolved.observable);
 			});
 			return !_observe(entityObjects._size) ? 1 : statusSum / entityObjects.size;
+		} },
+		weight: { value: function (_observe) {
+			var entityObjects, weightTotal, key;
+			weightTotal = 0;
+			key = this.constructor.sectionProperty + 'Weight';
+			entityObjects = this.master.resolveSKeyPath(this.constructor.propertyName, _observe);
+			if (!entityObjects) {
+				return 0;
+			}
+			entityObjects = entityObjects.value;
+			entityObjects.forEach(function (entityObject) {
+				var resolved = entityObject.resolveSKeyPath(key, _observe);
+				if (!resolved) {
+					return;
+				}
+				weightTotal += _observe(resolved.observable);
+			});
+			return !_observe(entityObjects._size) ? 1 : weightTotal;
 		} }
 	}, {
 		actionUrl: { required: false },

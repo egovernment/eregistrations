@@ -16,7 +16,7 @@ module.exports = memoize(function (db) {
 			nested: true
 		},
 		status: { value: function (_observe) {
-			var sum = 0, resolved;
+			var sum = 0, weightTotal = 0, resolved;
 			if (this.constructor.resolventProperty) {
 				resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty, _observe);
 				if (!resolved) {
@@ -28,9 +28,18 @@ module.exports = memoize(function (db) {
 				}
 			}
 			this.sections.forEach(function (section) {
-				sum += _observe(section._status);
+				sum += (_observe(section._status) * _observe(section._weight));
+				weightTotal += section.weight;
 			});
-			return sum / this.sections.size;
+			return sum / weightTotal;
+		} },
+		weight: { value: function (_observe) {
+			var weightTotal = 0;
+			this.sections.forEach(function (section) {
+				weightTotal += _observe(section._weight);
+			});
+
+			return weightTotal;
 		} }
 	});
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSection;
