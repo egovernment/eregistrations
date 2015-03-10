@@ -28,9 +28,18 @@ module.exports = memoize(function (db) {
 				}
 			}
 			this.sections.forEach(function (section) {
-				sum += _observe(section._status);
+				sum += (_observe(section._status) * _observe(section._weight));
 			});
-			return sum / this.sections.size;
+			if (!this.weight) return 1;
+			return sum / this.weight;
+		} },
+		weight: { value: function (_observe) {
+			var weightTotal = 0;
+			this.sections.forEach(function (section) {
+				weightTotal += _observe(section._weight);
+			});
+
+			return weightTotal;
 		} }
 	});
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSection;

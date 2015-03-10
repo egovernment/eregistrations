@@ -3,10 +3,11 @@
 var memoize          = require('memoizee/plain')
   , validDb          = require('dbjs/valid-dbjs')
   , defineStringLine = require('dbjs-ext/string/string-line')
+  , defineUInteger   = require('dbjs-ext/number/integer/u-integer')
   , definePercentage = require('dbjs-ext/number/percentage');
 
 module.exports = memoize(function (db) {
-	var StringLine, Percentage;
+	var StringLine, Percentage, UInteger;
 	validDb(db);
 	db.Object.defineProperties({
 		getFormApplicablePropName: { type: db.Function, value: function (prop) {
@@ -16,13 +17,14 @@ module.exports = memoize(function (db) {
 			return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'Applicable';
 		} }
 	});
-
+	UInteger   = defineUInteger(db);
 	StringLine = defineStringLine(db);
 	Percentage = definePercentage(db);
 	return db.Object.extend('FormSectionBase', {
 		label: { type: StringLine, required: true },
 		isApplicable: { type: db.Boolean, required: true, value: true },
 		status: { type: Percentage, required: true, value: 1 },
+		weight: { type: UInteger, required: true },
 		resolventValue: { type: db.Base },
 		onIncompleteMessage: { type: StringLine }
 	}, {
