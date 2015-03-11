@@ -24,6 +24,13 @@ Object.defineProperty(db.SubmissionFile.prototype, 'onUpload', d(function () {
 	  , thumbPath = replace.call(this.__id__, '/', '-')
 			+ '.thumb.' + this.name;
 
+	if (!db.SubmissionFile.accept.has(this.type)) {
+		console.log("Error: Uploaded file (" + this.name + ") is of not supported type (" +
+			this.type + ")");
+		this._destroy_();
+		return;
+	}
+
 	// Generate thumb and (if needed) preview
 	if (this.type !== 'image/jpeg') {
 		thumbPath += '.jpg';
