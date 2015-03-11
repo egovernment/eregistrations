@@ -11,6 +11,10 @@
 .entities-overview-table td a {
 	cursor: default;
 }
+.entities-overview-table thead {
+	background-color: var(--white-background);
+}
+
 .entities-overview-table thead tr th {
 	padding: 11px 6px;
 }

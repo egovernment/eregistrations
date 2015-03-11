@@ -6,7 +6,7 @@
 	border-top: none;
 }
 
-.table-primary th, td {
+.table-primary th,
+.table-primary td {
 	padding: 11px;
-	text-align: center;
 }
