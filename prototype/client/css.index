@@ -1,6 +1,7 @@
 ../../css/base.css
 ../../css/form.css
 ../../css/table.css
+../../css/components/table-primary.css
 ../../css/components/app-nav-dialog.css
 ../../css/components/fa.css
 ../../css/components/free-form.css

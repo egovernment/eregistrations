@@ -6,6 +6,7 @@ table {
 tbody tr:nth-of-type(odd) {
 	background-color: var(--light-background);
 }
+
 th {
 	color: var(--dark-text);
 }

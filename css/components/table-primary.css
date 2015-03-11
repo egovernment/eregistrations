@@ -1,0 +1,12 @@
+.table-primary tr {
+	border-top: 1px solid var(--light-inner-border);
+}
+
+.table-primary tr:first-child {
+	border-top: none;
+}
+
+.table-primary th, td {
+	padding: 11px;
+	text-align: center;
+}
