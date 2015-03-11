@@ -14,6 +14,7 @@
 .submitted-user-data-table thead th {
 	color: var(--white-text);
 	padding: 11px 25px 10px;
+	text-align: left;
 }
 
 .submitted-user-data-table tbody tr,
@@ -24,6 +25,7 @@
 .submitted-user-data-table tbody tr td {
 	border: 1px solid var(--light-inner-border);
 	padding: 0;
+	text-align: left;
 }
 .submitted-user-data-table tbody tr:hover,
 .submitted-user-data-table tbody tr:nth-of-type(even):hover {

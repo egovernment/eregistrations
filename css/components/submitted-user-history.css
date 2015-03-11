@@ -8,4 +8,5 @@
 .submitted-user-history tr,
 .submitted-user-history td {
 	padding: 11px 0 10px;
+	text-align: left;
 }
