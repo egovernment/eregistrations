@@ -20,6 +20,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 				}
 				headerRank++;
 			}()),
+			ns.hr(),
 			ns._if(resolved.value._size,
 				ns.ul({ class: 'entity-data-section-entities' },
 					resolved.value,
