@@ -19,7 +19,7 @@ module.exports = function (files, url) {
 	else type = files.object._getDescriptor_(files.__pSKey__).type;
 	var form = ns.form({ action: url('upload-files'), method: 'post', enctype: 'multipart/form-data',
 		autoSubmit: true, class: [ns._if(ns.resolve(files._first, '_path'), 'completed'),
-			!isReadOnlyRender && 'auto-submit'] },
+			(!isReadOnlyRender && 'auto-submit') || null] },
 		ns.p({ class: 'file-uploader-button' },
 			ns.a(ns.label(_("Select file"),
 				control = ns.input({ type: 'file', name: files.__id__ || files.dbId, multiple: true,
