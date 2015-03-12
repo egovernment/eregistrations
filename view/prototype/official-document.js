@@ -87,7 +87,8 @@ exports.tab = function () {
 				elem = ul({ class: 'submitted-preview-image-placeholder' },
 					li({ class: 'active' },
 						img({ zoomOnHover: true, src: '/uploads/docASubFile2.idoc.png.jpg' })))),
-			target = div({ class: 'section-primary submitted-preview-user-data' },
+			target = div({ class: 'section-primary submitted-preview-user-data' +
+					' entity-data-section-side' },
 				h2({ class: 'container-with-nav' }, "Application form",
 					a(
 						{ class: 'hint-optional hint-optional-left',

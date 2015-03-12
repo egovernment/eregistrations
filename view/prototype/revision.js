@@ -185,7 +185,7 @@ exports['sub-main'] = function () {
 				p(input({ type: 'submit' }, "Save"))
 			)
 		),
-		target = div({ class: 'section-primary submitted-preview-user-data' },
+		target = div({ class: 'section-primary submitted-preview-user-data entity-data-section-side' },
 			h2({ class: 'container-with-nav' }, "Application form",
 				a(
 					{ class: 'hint-optional hint-optional-left',

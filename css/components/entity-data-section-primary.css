@@ -1,0 +1,33 @@
+.entity-data-section-primary h3 {
+	margin-bottom: 22px;
+}
+.entity-data-section-primary .entity-data-section-sub h4,
+.entity-data-section-primary .entity-data-section-sub h6  {
+	background: var(--light-background);
+	padding-top: 5px;
+	padding-bottom: 5px;
+	padding-left: 5px;
+	margin-bottom: 12px;
+	border-left: 3px solid #666;
+	color: #666;
+}
+
+.entity-data-section-primary table,
+.entity-data-section-primary table tr {
+	border: none;
+	background-color: var(--white-background);
+}
+.entity-data-section-primary table th {
+	width: 40%;
+	text-align: right;
+	padding: 11px 10px 11px 0;
+}
+
+.entity-data-section-primary .entity-data-section-entities .entity-data-section-sub table th {
+	font-weight: bold;
+}
+
+.entity-data-section-primary .entity-data-section-empty {
+	text-align: center;
+	background-color: var(--light-background);
+}
