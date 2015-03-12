@@ -19,7 +19,7 @@ module.exports = function (files, url) {
 				ns.postButton({ action: url('delete-file'),
 					buttonClass: 'file-thumb-action',
 					value: ns.span({ class: 'fa fa-trash-o' }, _("Delete")) },
-					ns.input({ type: 'hidden', name: file.__id__ })),
+					ns.input({ type: 'hidden', name: 'fileId', value: file.__id__ })),
 				ns.a({ href: file._url, target: '_blank', class: 'file-thumb-action' },
 					ns.span({ class: 'fa fa-download' }, "download"))))));
 	}));
