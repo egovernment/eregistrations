@@ -13,12 +13,13 @@ var acceptToString = function (accept) {
 	return String(data);
 };
 
-module.exports = function (files, url) {
+module.exports = function (files, url, orderedFiles) {
 	var control, errorDom, errorTxt, type;
 	if (files.__id__) type = files.__descriptorPrototype__.type;
 	else type = files.object._getDescriptor_(files.__pSKey__).type;
 	var form = ns.form({ action: url('upload-files'), method: 'post', enctype: 'multipart/form-data',
-		autoSubmit: true, class: [ns._if(ns.resolve(files._first, '_path'), 'completed'),
+		autoSubmit: true, class:
+		[ns._if(ns.resolve((orderedFiles || files)._first, '_path'), 'completed'),
 			(!isReadOnlyRender && 'auto-submit') || null] },
 		ns.p({ class: 'file-uploader-button' },
 			ns.a(ns.label(_("Select file"),
