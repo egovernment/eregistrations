@@ -28,3 +28,7 @@
 .entity-data-section-side .entity-data-section-entities li:not(:last-child) {
 	border-bottom: 1px solid var(--light-text);
 }
+
+.entity-data-section-side .entity-data-section table tr:nth-child(even) {
+	background-color: var(--light-background);
+}
