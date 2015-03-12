@@ -16,7 +16,7 @@
 	padding: 11px;
 
 }
-.lomas-conditions-list tr:nth-of-type(odd) {
+.lomas-conditions-list tr:nth-of-type(even) {
 	background: none;
 }
 .lomas-conditions-list td {
