@@ -29,6 +29,7 @@ Component describing basic elements styles - reusable
 	--white-text: #ffffff;
 	--light-text: #e3e3e3;
 	--hint-text: #b3b3b3;
+	--light-normal-text: #909090;
 	--normal-text: #666666;
 	--dark-text: #333333;
 	--success-text: #5CB85C;

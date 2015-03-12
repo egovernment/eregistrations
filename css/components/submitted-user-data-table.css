@@ -5,6 +5,9 @@
 
 .submitted-user-data-table .empty td {
 	padding: 11px 6px;
+	text-align: center;
+	font-style: italic;
+	color: var(--light-normal-text);
 }
 
 .submitted-user-data-table thead {
