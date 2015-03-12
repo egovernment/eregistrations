@@ -1,7 +1,9 @@
 'use strict';
 
 var db = require('mano').db,
-	partner = db.partnerFrank;
+	partner = db.partnerFrank,
+	generateSections = require('../components/generate-sections'),
+	user = db.User.prototype;
 
 exports['step-form'] = { class: { 'step-active': true } };
 
@@ -72,4 +74,8 @@ exports.step = function () {
 	div({ class: 'user-next-step-button' },
 		a({ href: '/forms/' }, "Back to forms")
 		);
+
+	hr();
+	div({ class: 'section-primary entity-data-section-primary' },
+		generateSections(user.formSections));
 };
