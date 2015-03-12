@@ -38,7 +38,7 @@
 	margin-right: 3px;
 }
 
-.file-thumb-action {
+.file-thumb-action, .file-thumb-action[type=submit] {
 	border-radius: 3px;
 	background-color: var(--normal-background);
 	color: var(--white-text);
@@ -56,4 +56,7 @@
 .file-thumb-action span {
 	position: relative;
 	top: 3px;
+}
+button.file-thumb-action span {
+	top: 2px;
 }
