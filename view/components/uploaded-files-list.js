@@ -9,8 +9,8 @@ var resolveSize = function (size) {
 };
 
 module.exports = function (files, url) {
-	return ns.ul({ class: 'file-uploader-items' }, ns.list(files, function (file) {
-		return ns._if(file._name, ns.li(ns.div({ class: 'file-thumb' },
+	return ns.ul({ class: 'file-uploader-items' }, files, function (file) {
+		return ns.li(ns.div({ class: 'file-thumb' },
 			ns.a({ href: file._url, target: '_blank', class: 'file-thumb-image' },
 				ns.img({ src: ns.resolve(file._thumb, '_url') })),
 			ns.div({ class: 'file-thumb-actions' },
@@ -21,6 +21,6 @@ module.exports = function (files, url) {
 					value: ns.span({ class: 'fa fa-trash-o' }, _("Delete")) },
 					ns.input({ type: 'hidden', name: 'fileId', value: file.__id__ })),
 				ns.a({ href: file._url, target: '_blank', class: 'file-thumb-action' },
-					ns.span({ class: 'fa fa-download' }, "download"))))));
-	}));
+					ns.span({ class: 'fa fa-download' }, "download")))));
+	});
 };
