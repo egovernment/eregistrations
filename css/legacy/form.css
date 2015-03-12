@@ -5,3 +5,6 @@
 .input-aside > span:first-child {
 	display: inline-block;
 }
+.auto-submit .submit {
+	display: block;
+}
