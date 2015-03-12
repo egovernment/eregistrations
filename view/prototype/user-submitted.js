@@ -218,7 +218,8 @@ exports['sub-main'] = function () {
 			legacy('hashNavOrderedListControls', 'submitted-preview-navigation-bottom',
 				'doc-previews', 'doc-preview')
 		),
-		target = div({ class: 'section-primary submitted-preview-user-data' },
+		target = div({ class: 'section-primary submitted-preview-user-data' +
+				' entity-data-section-side' },
 			h2({ class: 'container-with-nav' }, "Application form",
 				a(
 					{ class: 'hint-optional hint-optional-left',

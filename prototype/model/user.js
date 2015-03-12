@@ -110,7 +110,7 @@ CompanyType = StringLine.createEnum('CompanyType', new Map([
 ]));
 
 user.defineProperties({
-	firstName: { type: StringLine, required: true, label: "First Name" },
+	firstName: { type: StringLine, required: true, label: "First Name", value: "John" },
 	lastName: { type: StringLine, required: true, label: "Last Name", value: "Smith" },
 	fullName: { type: StringLine, required: true, label: "Full Name", value: function () {
 		return this.firstName + ' ' + this.lastName;
@@ -158,8 +158,9 @@ user.defineProperties({
 		" nec ultrices diam ultricies id vestibulum dui mi," +
 		" nec ultrices diam ultricies id vestibulum dui mi,", required: true },
 
-	dateOfBirth: { type: DateType, label: "Date of birth", required: true },
-	userEmail: { type: Email, label: "Email" },
+	dateOfBirth: { type: DateType, label: "Date of birth", required: true,
+		value: new Date("October 13, 1984 11:13:00") },
+	userEmail: { type: Email, label: "Email", value: 'john.smith@abc.com' },
 
 	registerIds: { type: StringLine, multiple: true, label: "Padrón", pattern: /^\d{8}$/,
 		inputMask: '88888888' },

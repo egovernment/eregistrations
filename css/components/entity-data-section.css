@@ -1,35 +1,9 @@
-.entity-data-section {
-	border-left: 1px solid var(--light-text);
-	border-right: 1px solid var(--light-text);
-	border-bottom: 1px solid var(--light-text);
-}
-
 .entity-data-section-entities .entity-data-section {
 	border-left: none;
 	border-right: none;
 	border-bottom: none;
 }
 
-.entity-data-section h3 {
-	font-size: 17px;
-	margin-bottom: 5px;
-	color: var(--white-text);
-	margin:  22px 0 0 0;
-	background-color: var(--normal-background);
-	padding: 11px 0 11px 8px;
-}
-
-.entity-data-section h4 {
-	margin: 22px 0;
-	padding-left: 10px;
-	font-size: 15px;
-}
-
-.entity-data-section h5 {
-	font-size: 13px;
-	padding-left: 10px;
-	margin-top: 22px;
-}
 .entity-data-section-entities h5 {
 	margin-bottom: 22px;
 }
@@ -53,10 +27,6 @@
 	width: 50%;
 	padding: 11px 0 11px 10px;
 	text-align: left;
-}
-
-.entity-data-section-entities li:not(:last-child) {
-	border-bottom: 1px solid var(--light-text);
 }
 
 .entity-data-section-entities .entity-data-section-sub table th,
