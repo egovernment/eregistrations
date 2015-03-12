@@ -16,7 +16,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 		return ns.section({ class: 'entity-data-section' },
 			(function () {
 				if (self.label) {
-					return headersMap[headerRank++](self._label);
+					return [headersMap[headerRank++](self._label), ns.hr()];
 				}
 				headerRank++;
 			}()),
