@@ -4,7 +4,3 @@
 	line-height: 22px;
 	text-align: left;
 }
-
-.print-user-history tr:nth-of-type(odd) {
-	background-color: var(--light-background);
-}
