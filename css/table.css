@@ -2,10 +2,6 @@ table {
 	width: 100%;
 	border-collapse: collapse;
 }
-/* Zebra striping */
-tbody tr:nth-of-type(even) {
-	background-color: var(--light-background);
-}
 
 th, td {
 	text-align: center;
