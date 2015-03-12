@@ -2,10 +2,11 @@
 
 'use strict';
 
-var assign     = require('es5-ext/object/assign')
-  , callable   = require('es5-ext/object/valid-callable')
-  , elementExt = require('domjs/ext/_element')
-  , mano       = require('mano')
+var assign           = require('es5-ext/object/assign')
+  , callable         = require('es5-ext/object/valid-callable')
+  , elementExt       = require('domjs/ext/_element')
+  , mano             = require('mano')
+  , isReadOnlyRender = require('mano/client/utils/is-read-only-render')
 
   , mdiOptions = { inline: true };
 
@@ -53,10 +54,12 @@ module.exports = function (domjs) {
 	require('domjs-ext/url')(domjs);
 
 	// Directives
-	require('domjs-ext/d/fixed')(domjs);
-	require('domjs-ext/d/form/auto-submit')(domjs);
-	require('../directives/img-zoom-on-hover')(domjs);
-	require('../directives/table-responsive')(domjs);
+	if (!isReadOnlyRender) {
+		require('domjs-ext/d/fixed')(domjs);
+		require('domjs-ext/d/form/auto-submit')(domjs);
+		require('../directives/img-zoom-on-hover')(domjs);
+		require('../directives/table-responsive')(domjs);
+	}
 
 	// extensions
 	require('domjs-ext/ext/_element/toggle');
