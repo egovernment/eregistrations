@@ -16,9 +16,6 @@
 	padding: 11px;
 
 }
-.lomas-conditions-list tr:nth-of-type(even) {
-	background: none;
-}
 .lomas-conditions-list td {
 	padding: 11px 10px;
 	vertical-align: top;

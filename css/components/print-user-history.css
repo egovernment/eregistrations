@@ -1,3 +1,7 @@
+.print-user-history tr:nth-child(even) {
+	background-color: var(--light-background);
+}
+
 .print-user-history th,
 .print-user-history td {
 	padding: 11px;
