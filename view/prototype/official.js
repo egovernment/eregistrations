@@ -42,6 +42,7 @@ exports['sub-main'] = function () {
 		{ class: 'section-primary users-table-filter-bar' },
 		form(
 			div(
+				{ class: 'users-table-filter-bar-status' },
 				label(
 					"Status: "
 				),
