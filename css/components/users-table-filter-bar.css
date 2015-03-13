@@ -17,6 +17,13 @@
 	display: inline-block;
 }
 
+.users-table-filter-bar-status {
+	max-width: 50%;
+}
+.users-table-filter-bar-status > select {
+	max-width: 85%;
+}
+
 .users-table-filter-bar form > div {
 	white-space: nowrap;
 }
@@ -70,5 +77,8 @@
 	}
 	.users-table-filter-bar form div:last-child {
 		margin-right: 0;
+	}
+	.users-table-filter-bar-status {
+		max-width: 100%;
 	}
 }
