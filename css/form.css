@@ -127,12 +127,23 @@ button[type="submit"] {
 	box-shadow: none;
 	font-size: 14px;
 	padding: 4px 10px;
+	cursor: pointer;
 }
 @-moz-document url-prefix() {
 	input[type="submit"],
 	button[type="submit"] {
 		padding: 1px 10px 5px;
 	}
+}
+
+input[type="submit"]:hover,
+input[type="submit"]:focus,
+input[type="submit"]:active,
+button[type="submit"]:hover,
+button[type="submit"]:focus,
+button[type="submit"]:active {
+	color: var(--white-text);
+	background-color: var(--normal-dark-background);
 }
 
 .completed input[type="submit"] {
