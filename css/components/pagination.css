@@ -18,14 +18,15 @@
 }
 .pagination li > a:hover,
 .pagination li > a:focus,
-.pagination li > a:active {
-	background: var(--light-background);
-}
-
-.pagination li > .pagination-active,
+.pagination li > a:active,
 .pagination li > .pagination-active:hover,
 .pagination li > .pagination-active:focus,
 .pagination li > .pagination-active:active {
+	color: var(--white-text);
+	background-color: var(--normal-dark-background);
+}
+
+.pagination li > .pagination-active {
 	background: var(--normal-background);
 	color: var(--white-background);
 }
