@@ -52,6 +52,8 @@
 .file-thumb-action:active {
 	background-color: var(--normal-dark-background);
 	box-shadow: none;
+	cursor: pointer;
+	color: var(--white-text);
 }
 .file-thumb-action span {
 	position: relative;
