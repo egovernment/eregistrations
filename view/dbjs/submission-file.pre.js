@@ -37,13 +37,12 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 			return dom;
 		},
 		renderItem: function (file) {
-			var el = this.make, data = {}, remove, itemDom;
+			var el = this.make, data = {}, itemDom, name;
 
 			data.dom = el('li', { class: _if(file._name, null, 'empty'), 'data-id': file.__id__ });
 
-			remove = isNested(file)
-				? file._destroy_.bind(file)
-				: this.removeItem.bind(this, data.dom);
+			if (isNested(file)) name = file.__id__;
+			else name = this.descriptor.__valueId__ + '*' + file.__id__;
 
 			itemDom = _if(file._name, el('span',
 				el('a', { href: file._url, target: '_blank', class: 'thumb-doc' },
@@ -53,9 +52,8 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 						if (size == null) return null;
 						return ((size / 1000000).toFixed(2) + ' Mo');
 					})),
-				data.control = el('input', { type: 'hidden', name: this.name,
-					value: file.__id__ }),
-				el('a', { class: 'thumb-doc-action', onclick: remove },
+				el('label', { class: 'thumb-doc-action' },
+					el('input', { type: 'checkbox', name: name, value: '' }),
 					el('i', { class: 'icon-trash' })),
 				el('a', { href: file._url, target: '_blank',
 					class: 'dlBtn thumb-doc-action' },
