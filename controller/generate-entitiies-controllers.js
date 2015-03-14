@@ -37,6 +37,7 @@ module.exports = function (routes, data) {
 	};
 	routes[name + '/[0-9][a-z0-9]+/delete'] = {
 		match: match,
-		save: function () { db.objects.delete(this.target); }
+		save: function () { db.objects.delete(this.target); },
+		formHtmlId: '#' + tableHtmlId
 	};
 };
