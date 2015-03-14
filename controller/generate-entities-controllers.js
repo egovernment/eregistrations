@@ -2,7 +2,7 @@
 
 var object        = require('es5-ext/object/valid-object')
   , callable      = require('es5-ext/object/valid-callable')
-  , stringifiable = require('es5-ext/object/valid-stringifiable-value')
+  , stringifiable = require('es5-ext/object/validate-stringifiable-value')
   , validateType  = require('dbjs/valid-dbjs-type')
   , save          = require('mano/utils/save')
   , db            = require('mano').db
