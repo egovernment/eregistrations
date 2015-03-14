@@ -88,7 +88,7 @@ setup = function (path) {
 		}
 		context.user = user;
 		try { text = getText(user); } catch (e) {
-			console.log("Errorneous notification", path);
+			console.log("Error: Resolution of notification crashed\n\tpath: " + path);
 			if (mano.env && mano.env.dev) throw e;
 			console.error("Cannot generate email message!:\n" + e.stack);
 			return;
