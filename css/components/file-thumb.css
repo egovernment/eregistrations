@@ -62,3 +62,10 @@
 button.file-thumb-action span {
 	top: 2px;
 }
+
+.file-thumb-action input {
+	margin-right: 4px;
+}
+.auto-submit .file-thumb-action input {
+	display: none; /* cleared in legacy */
+}
