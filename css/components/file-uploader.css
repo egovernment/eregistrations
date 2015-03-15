@@ -43,3 +43,4 @@
 .file-uploader-items li {
 	margin-right: 17px;
 }
+.file-uploader-items .empty { margin-right: 0; }
