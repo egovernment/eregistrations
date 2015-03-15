@@ -13,26 +13,19 @@ var d        = require('d')
 module.exports = Object.defineProperties(db.SubmissionFile, {
 	inputOptions: d({
 		render: function (options) {
-			var el = this.make, label = options.label, dom, errorTxt, errorSpan;
+			var el = this.make, label = options.label;
 			if (label == null) {
 				if (options.dbOptions) label = options.dbOptions.label;
 				if (label == null) label = db.SubmissionFile.uploadLabel;
 				if (label == null) label = _("Select file");
 			}
 
-			dom = el('div', { class: 'file-uploader' },
+			return el('div', { class: 'file-uploader' },
 				this.valueDOM = el(this.multiple ? 'ul' : 'div', { class: 'file-uploader-items' }),
 				el('p', { class: 'file-uploader-button' },
 					el('a', el('label', label, this.control = el('input', { type: 'file' })))),
-				errorSpan = el('span', { class: 'error-message error-message-' +
+				el('span', { class: 'error-message error-message-' +
 					options.observable.dbId.replace(normRe, '-') }, ""));
-			errorTxt = errorSpan.firstChild;
-			this.control.addEventListener('invalid', function (e) {
-				e.preventDefault();
-				errorTxt.data = this.validationMessage;
-			});
-			this.control.addEventListener('change', function () { errorTxt.data = ""; });
-			return dom;
 		},
 		renderItem: function (file) {
 			var el = this.make, data = {}, itemDom, name;
