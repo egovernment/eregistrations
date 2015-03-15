@@ -43,7 +43,8 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 				data.dom = el('div', { class: _if(file._name, null, 'empty'), 'data-id': file.__id__ });
 			}
 			if (isNested(file)) name = file.__id__;
-			else name = this.descriptor.__valueId__ + '*' + file.__id__;
+			else if (this.multiple) name = this.observable.dbId + '*7' + file.__id__;
+			else name = this.observable.dbId;
 
 			itemDom = _if(file._name, el('div', { class: 'file-thumb' },
 				el('a', { href: file._url, target: '_blank', class: 'file-thumb-image' },
