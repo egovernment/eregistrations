@@ -24,6 +24,9 @@
 }
 
 .file-uploader-button label input {
+	display: block;
+}
+.auto-submit .file-uploader-button label input {
 	display: none;
 }
 
