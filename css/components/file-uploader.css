@@ -12,7 +12,6 @@
 	color: var(--white-text);
 	display: inline-block;
 	text-decoration: none;
-	white-space: nowrap;
 	line-height: 22px;
 	padding:  5px 16px;
 	cursor: pointer;
