@@ -27,8 +27,7 @@ exports.step = function () {
 								small(submission.legend),
 								hr(),
 								input({ dbjs: submission._files })
-							)
-						)
+							))
 						);
 				}
 			)
