@@ -19,9 +19,9 @@ Input.prototype = Object.create(DOMInput.prototype, assign({
 	constructor: d(Input),
 	classMap: d({}),
 	current: d(null),
-	_render: d(function () {
+	_render: d(function (options) {
 		this.dom = this.document.createElement('div');
-		this.dom.setAttribute('class', 'inline-button-radio');
+		this.dom.setAttribute('class', options.class || 'inline-button-radio');
 	}),
 	createOption: d(function (value, labelTextDOM) {
 		var dom = createOption.call(this, value, labelTextDOM, this.controlsOptions[value]);
