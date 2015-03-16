@@ -1,0 +1,10 @@
+.section-secondary {
+	background-color: var(--light-background);
+	border-radius: 5px;
+	border: 1px solid var(--light-inner-border);
+	padding: 20px 15px 0 15px;
+}
+
+.section-secondary > * {
+	margin-bottom: 22px;
+}

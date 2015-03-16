@@ -1,61 +1,53 @@
-.large-button-select {
-	padding: 22px 11px 0;
-	border: 1px solid var(--light-inner-border);
-	background-color: var(--light-background);
-	border-radius: 5px;
-}
-.large-button-select > * {
-	margin-bottom: 22px;
-}
 
-.large-button-select .btn-group {
+.large-button-select {
+	display: flex;
+}
+.large-button-select label {
 	text-align: center;
 }
 
-.large-button-select .btn {
+.large-button-select label {
 	width: 30%;
 	margin: 0 1.5%;
-	display: inline-block;
-	vertical-align: middle;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 	color: var(--white-text);
 	background-color: var(--normal-background);
 	border-radius: 4px;
 	font-size: 14px;
 	padding: 11px 10px;
 	cursor: pointer;
-	min-height: 44px;
 }
-.large-button-select .btn:hover,
-.large-button-select .btn:focus,
-.large-button-select .btn:active {
+.large-button-select label:hover,
+.large-button-select label:focus,
+.large-button-select label:active {
 	background-color: var(--normal-dark-background);
 }
 
-.large-button-select .btn:nth-child(2) {
-	padding: 0 10px;
-}
-.large-button-select .btn:first-child.btn-success {
+.large-button-select .large-button-select-selected-accept {
 	background-color: var(--success-background);
 }
-.large-button-select .btn:nth-child(2).btn-success {
+.large-button-select .large-button-select-selected {
 	background-color: var(--progress-background);
 }
-.large-button-select .btn:last-child.btn-success {
+.large-button-select .large-button-select-selected-reject {
 	background-color: var(--error-background);
 }
 
-.large-button-select .btn input {
+.large-button-select label input {
 	display: none;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
-	.large-button-select .btn-group > * {
-		margin-bottom: 22px;
+	.large-button-select {
+		flex-wrap: wrap;
 	}
-	.large-button-select .btn {
+	.large-button-select label {
+		margin-bottom: 22px;
 		width: 97%;
 	}
-	.large-button-select .btn:last-child {
+	.large-button-select label:last-child {
 		margin-bottom: 0;
 	}
 }

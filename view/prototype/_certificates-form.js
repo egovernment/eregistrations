@@ -52,7 +52,8 @@ exports.certificates = function () {
 				)
 			)
 		),
-		p(
+		div(
+			{ class: 'section-secondary' },
 			input({ dbjs: user._isDebtContinusStatus })
 		),
 		p(

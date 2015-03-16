@@ -12,5 +12,7 @@ module.exports = RuleRadio = function (document, type/*, options*/) {
 };
 RuleRadio.prototype = Object.create(Radio.prototype, {
 	constructor: d(RuleRadio),
-	classMap: d({ paused: 'success', yes: 'success', no: 'success' })
+	classMap: d({ paused: 'large-button-select-selected',
+		yes: 'large-button-select-selected-accept',
+		no: 'large-button-select-selected-reject' })
 });
