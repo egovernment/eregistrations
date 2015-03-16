@@ -45,7 +45,7 @@ module.exports = memoize(function (db) {
 		uniqueKey: { value: function () { return this.key; } },
 		orderedFiles: { type: SubmissionFile, multiple: true, value: function (_observe) {
 			var files = [];
-			_observe(this.files).forEach(function (file) {
+			_observe(this.files, true).forEach(function (file) {
 				if (!_observe(file._name)) return;
 				files.push(file);
 			});
