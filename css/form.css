@@ -321,7 +321,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 }
 
 /* Missing */
-.dbjs-input-component.required.not-changed.dbjs-empty.invalid span.status-missing {
+.dbjs-input-component.required.not-changed.dbjs-empty span.status-missing {
 	visibility: visible;
 	display:inline-block;
 }
