@@ -21,7 +21,7 @@ exports.step = function () {
 				user.requiredSubmissions,
 				function (submission) {
 					return li({ class: 'section-primary' },
-						form(
+						form({ class: 'auto-submit' },
 							div(
 								h2(submission.label),
 								small(submission.legend),
