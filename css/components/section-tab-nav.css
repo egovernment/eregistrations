@@ -73,7 +73,7 @@
 		color: var(--white-text);
 		padding-bottom: 0;
 	}
-	.section-tab-nav li {
+	.section-tab-nav > li {
 		display: block;
 		width: 100%;
 	}
