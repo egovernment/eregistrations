@@ -13,17 +13,22 @@ var d        = require('d')
 module.exports = Object.defineProperties(db.SubmissionFile, {
 	inputOptions: d({
 		render: function (options) {
-			var el = this.make, label = options.label;
+			var el = this.make, label = options.label, content;
+			this.control = el('input', { type: 'file' });
 			if (label == null) {
-				if (options.dbOptions) label = options.dbOptions.label;
-				if (label == null) label = db.SubmissionFile.uploadLabel;
-				if (label == null) label = _("Select file");
+				content = this.control;
+			} else {
+				if (label === true) {
+					if (options.dbOptions) label = options.dbOptions.label;
+					if (label == null) label = db.SubmissionFile.uploadLabel;
+					if (label == null) label = _("Select file");
+				}
+				content = el('label', label, this.control);
 			}
 
 			return el('div', { class: 'file-uploader' },
 				this.valueDOM = el(this.multiple ? 'ul' : 'div', { class: 'file-uploader-items' }),
-				el('p', { class: 'file-uploader-button' },
-					el('label', label, this.control = el('input', { type: 'file' }))),
+				el('p', { class: 'file-uploader-button' }, content),
 				el('span', { class: 'error-message error-message-' +
 					options.observable.dbId.replace(normRe, '-') }, ""));
 		},

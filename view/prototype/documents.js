@@ -26,7 +26,7 @@ exports.step = function () {
 								h2(submission.label),
 								small(submission.legend),
 								hr(),
-								input({ dbjs: submission._files })
+								input({ dbjs: submission._files, label: true })
 							))
 						);
 				}
