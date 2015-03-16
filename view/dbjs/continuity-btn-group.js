@@ -2,7 +2,7 @@
 
 var normalizeOptions = require('es5-ext/object/normalize-options'),
 	d = require('d'),
-	Radio = require('eregistrations/view/dbjs/_enum-inline-button-group'),
+	Radio = require('./_enum-inline-button-group'),
 	RuleRadio;
 
 module.exports = RuleRadio = function (document, type/*, options*/) {
