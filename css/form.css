@@ -320,7 +320,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	display:inline-block;
 }
 
-/* Required */
+/* Missing */
 .dbjs-input-component.required.not-changed.dbjs-empty.invalid span.status-missing {
 	visibility: visible;
 	display:inline-block;
