@@ -23,7 +23,7 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 			return el('div', { class: 'file-uploader' },
 				this.valueDOM = el(this.multiple ? 'ul' : 'div', { class: 'file-uploader-items' }),
 				el('p', { class: 'file-uploader-button' },
-					el('a', el('label', label, this.control = el('input', { type: 'file' })))),
+					el('label', label, this.control = el('input', { type: 'file' }))),
 				el('span', { class: 'error-message error-message-' +
 					options.observable.dbId.replace(normRe, '-') }, ""));
 		},
