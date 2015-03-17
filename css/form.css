@@ -253,8 +253,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	color: var(--success-text);
 	line-height: 22px;
 }
-.dbjs-component-message,
-.dbjs-component-message  {
+.dbjs-component-message {
 	width: 60%;
 	margin-left: 40%;
 	padding-left: 13px;
