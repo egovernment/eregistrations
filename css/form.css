@@ -240,14 +240,14 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	vertical-align: middle;
 }
 
-.dbjs-input-component .error-message {
+.error-message {
 	display: block;
 	width: 100%;
 	color: var(--error-text);
 	line-height: 22px;
 }
 
-.dbjs-input-component .success-message {
+.success-message {
 	display: block;
 	width: 100%;
 	color: var(--success-text);
