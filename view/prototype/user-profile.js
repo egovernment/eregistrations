@@ -23,7 +23,7 @@ exports.main = function () {
 							}
 						),
 						p(
-							{ class: 'dbjs-component-success-message' },
+							{ class: 'dbjs-component-message success-message' },
 							"Profile has been successfully updated."
 						),
 						p(

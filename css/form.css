@@ -240,23 +240,21 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	vertical-align: middle;
 }
 
-.error-message,
-.dbjs-component-error-message  {
+.error-message {
 	display: block;
 	width: 100%;
 	color: var(--error-text);
 	line-height: 22px;
 }
 
-.success-message,
-.dbjs-component-success-message {
+.success-message {
 	display: block;
 	width: 100%;
 	color: var(--success-text);
 	line-height: 22px;
 }
-.dbjs-component-success-message,
-.dbjs-component-error-message  {
+.dbjs-component-message,
+.dbjs-component-message  {
 	width: 60%;
 	margin-left: 40%;
 	padding-left: 13px;
