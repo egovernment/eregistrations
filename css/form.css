@@ -240,18 +240,26 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	vertical-align: middle;
 }
 
-.error-message {
+.error-message,
+.dbjs-component-error-message  {
 	display: block;
 	width: 100%;
 	color: var(--error-text);
 	line-height: 22px;
 }
 
-.success-message {
+.success-message,
+.dbjs-component-success-message {
 	display: block;
 	width: 100%;
 	color: var(--success-text);
 	line-height: 22px;
+}
+.dbjs-component-success-message,
+.dbjs-component-error-message  {
+	width: 60%;
+	margin-left: 40%;
+	padding-left: 13px;
 }
 
 /* dbjs components */
@@ -468,5 +476,10 @@ Styles applied while screen size is less than 640px
 	.form-elements .radio {
 		display: inline-block;
 		padding-top: 11px;
+	}
+	.dbjs-component-success-message,
+	.dbjs-component-error-message	{
+		margin-left: 0;
+		width: 100%;
 	}
 }

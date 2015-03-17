@@ -23,6 +23,10 @@ exports.main = function () {
 							}
 						),
 						p(
+							{ class: 'dbjs-component-success-message' },
+							"Profile has been succesfuly updated."
+						),
+						p(
 							{ class: 'submit-placeholder input' },
 							input(
 								{ type: 'submit' },
