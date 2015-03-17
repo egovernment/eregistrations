@@ -475,8 +475,7 @@ Styles applied while screen size is less than 640px
 		display: inline-block;
 		padding-top: 11px;
 	}
-	.dbjs-component-success-message,
-	.dbjs-component-error-message	{
+	.dbjs-component-message {
 		margin-left: 0;
 		width: 100%;
 	}
