@@ -19,7 +19,8 @@ var Map          = require('es6-map')
   , BusinessActivity, BusinessActivityCategory, CompanyType, Partner, bcAgencyBusiness, bcInsurance
   , file, props
   , InventoryValue
-  , StreetTypeChoice;
+  , StreetTypeChoice
+  , EnumTripleOption = require('./enum-triple-option');
 
 require('dbjs-ext/create-enum')(db);
 
@@ -141,6 +142,7 @@ user.defineProperties({
 		])),
 		label: "Lorem ipsum dolor sit amet"
 	},
+	isDebtContinusStatus: { type: EnumTripleOption, required: true },
 	isManager: { type: db.Boolean, label: "I am manager" },
 	inventory: { type: UsDollar, label: "Inventory value", required: true, step: 1,
 		inputHint: "Etiam vestibulum dui mi, nec ultrices diam ultricies id " },

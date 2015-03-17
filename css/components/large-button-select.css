@@ -1,0 +1,58 @@
+
+.large-button-select {
+	display: flex;
+}
+.large-button-select label {
+	text-align: center;
+	margin-right: 10px;
+}
+.large-button-select label:last-child {
+	margin-right: 0;
+}
+
+.large-button-select label {
+	flex-grow: 1;
+	flex-basis: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	color: var(--white-text);
+	background-color: var(--normal-background);
+	border-radius: 4px;
+	font-size: 14px;
+	padding: 11px 10px;
+	cursor: pointer;
+}
+.large-button-select label:hover,
+.large-button-select label:focus,
+.large-button-select label:active {
+	background-color: var(--normal-dark-background);
+}
+
+.large-button-select .large-button-select-selected-accept {
+	background-color: var(--success-background);
+}
+.large-button-select .large-button-select-selected {
+	background-color: var(--progress-background);
+}
+.large-button-select .large-button-select-selected-reject {
+	background-color: var(--error-background);
+}
+
+.large-button-select label input {
+	display: none;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.large-button-select {
+		flex-wrap: wrap;
+	}
+	.large-button-select label {
+		margin-bottom: 22px;
+		flex-basis: auto;
+		margin-right: 0;
+	}
+	.large-button-select label:last-child {
+		margin-bottom: 0;
+	}
+}

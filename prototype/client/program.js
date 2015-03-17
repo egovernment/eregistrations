@@ -43,6 +43,8 @@ require('mano/lib/client')({
 		domEnum(db.StreetTypeChoice);
 
 		user.$street.DOMInput = require('dbjs-dom/input/composites/line');
+		user.$isDebtContinusStatus.DOMInput =
+			require('../../view/dbjs/continuity-btn-group');
 	},
 	viewRequire: require('../../view/prototype/_require'),
 	routes: function (router, view) {

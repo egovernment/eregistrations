@@ -52,6 +52,10 @@ exports.certificates = function () {
 				)
 			)
 		),
+		div(
+			{ class: 'section-secondary' },
+			input({ dbjs: user._isDebtContinusStatus })
+		),
 		p(
 			input(
 				{ type: 'submit', value: 'Accept the incorporation', class: 'button-main' }
