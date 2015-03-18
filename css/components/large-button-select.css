@@ -29,13 +29,22 @@
 	background-color: var(--normal-dark-background);
 }
 
-.large-button-select .large-button-select-selected-accept {
+.large-button-select .large-button-select-selected-accept,
+.large-button-select .large-button-select-selected-accept:hover,
+.large-button-select .large-button-select-selected-accept:focus,
+.large-button-select .large-button-select-selected-accept:active {
 	background-color: var(--success-background);
 }
-.large-button-select .large-button-select-selected {
+.large-button-select .large-button-select-selected,
+.large-button-select .large-button-select-selected:hover,
+.large-button-select .large-button-select-selected:focus,
+.large-button-select .large-button-select-selected:active {
 	background-color: var(--progress-background);
 }
-.large-button-select .large-button-select-selected-reject {
+.large-button-select .large-button-select-selected-reject,
+.large-button-select .large-button-select-selected-reject:hover,
+.large-button-select .large-button-select-selected-reject:focus,
+.large-button-select .large-button-select-selected-reject:active {
 	background-color: var(--error-background);
 }
 
