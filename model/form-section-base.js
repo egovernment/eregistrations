@@ -27,7 +27,7 @@ module.exports = memoize(function (db) {
 		weight: { type: UInteger, required: true },
 		resolventValue: { type: db.Base },
 		onIncompleteMessage: { type: StringLine },
-		isUnResolved: { type: db.Boolean, value: function (_observe) {
+		isUnresolved: { type: db.Boolean, value: function (_observe) {
 			var resolved;
 			if (!this.constructor.resolventProperty) return false;
 			resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty, _observe);

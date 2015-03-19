@@ -17,7 +17,7 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 			ns._if(self._label, [headersMap[headerRank](self._label), ns.hr()]),
 			ns.table(
 				ns.tbody(
-					(self.isUnResolved  &&
+					(self.isUnresolved  &&
 						ns.tr(ns.th(resolvePropertyPath(self.master,
 								self.constructor.resolventProperty).descriptor.label),
 							ns.td(resolvePropertyPath(self.master,
