@@ -22,11 +22,12 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 								self.constructor.resolventProperty).descriptor.label),
 							ns.td(resolvePropertyPath(self.master,
 								self.constructor.resolventProperty).observable));
-					},
-						ns.list(this.propertyNames, function (name) {
+					}, function () {
+						return ns.list(self.propertyNames, function (name) {
 							ns.tr(ns.th(resolvePropertyPath(self.master, name).descriptor.label),
 								ns.td(resolvePropertyPath(self.master, name).observable));
-						}))
+						});
+					})
 				)
 			)
 			);
