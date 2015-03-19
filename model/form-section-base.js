@@ -31,7 +31,7 @@ module.exports = memoize(function (db) {
 			var resolved;
 			if (!this.constructor.resolventProperty) return false;
 			resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty, _observe);
-			return _observe(resolved.observable) !== _observe(this.resolventValue);
+			return _observe(resolved.observable) !== this.resolventValue;
 		} },
 		isPropertyExcludedFromStatus: { type: db.Function, value: function (resolved, _observe) {
 			if (!resolved.descriptor.required) return true;

@@ -17,15 +17,16 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 			ns._if(self._label, [headersMap[headerRank](self._label), ns.hr()]),
 			ns.table(
 				ns.tbody(
-					(self.isUnresolved  &&
-						ns.tr(ns.th(resolvePropertyPath(self.master,
+					ns._if(self._isUnresolved, function () {
+						return ns.tr(ns.th(resolvePropertyPath(self.master,
 								self.constructor.resolventProperty).descriptor.label),
 							ns.td(resolvePropertyPath(self.master,
-								self.constructor.resolventProperty).observable))) ||
+								self.constructor.resolventProperty).observable));
+					},
 						ns.list(this.propertyNames, function (name) {
 							ns.tr(ns.th(resolvePropertyPath(self.master, name).descriptor.label),
 								ns.td(resolvePropertyPath(self.master, name).observable));
-						})
+						}))
 				)
 			)
 			);
