@@ -40,6 +40,9 @@
 	display: inline-block;
 	vertical-align: top;
 }
+.section-primary .dbjs-input-component.pure-value > .input {
+	padding-top: 11px;
+}
 
 .section-primary .dbjs-input-component > label {
 	width: 40%;
