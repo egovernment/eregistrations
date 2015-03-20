@@ -415,7 +415,13 @@ ul.multiple {
 	opacity: 0.5;
 }
 
-.auto-submit .submit { display: none; }
+.auto-submit .submit {
+	display: none;
+}
+
+.pure-value .input {
+	line-height: 22px;
+}
 
 /*
 Styles applied while screen size is less than 640px
