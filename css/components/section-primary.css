@@ -104,6 +104,12 @@
 	vertical-align: text-top;
 }
 
+.section-primary .info-main {
+	background: var(--normal-light-background);
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 	.section-primary .dbjs-input-component > label {
 		text-align: left;
