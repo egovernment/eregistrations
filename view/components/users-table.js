@@ -71,11 +71,13 @@ module.exports = function (snapshots, options) {
 		}
 
 		if (customFilter) {
-			if (customFilterQuery.value && !customFilter.filters[customFilterQuery.value]) {
-				fixLocationQuery(customFilter.name);
-			} else {
-				users = users.filter(customFilter.filters[customFilterQuery.value]);
-				snapshotData[customFilter.name] = customFilterQuery.value;
+			if (customFilterQuery.value) {
+				if (!customFilter.filters[customFilterQuery.value]) {
+					fixLocationQuery(customFilter.name);
+				} else {
+					users = users.filter(customFilter.filters[customFilterQuery.value]);
+					snapshotData[customFilter.name] = customFilterQuery.value;
+				}
 			}
 		}
 
