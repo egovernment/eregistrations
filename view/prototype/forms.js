@@ -17,7 +17,7 @@ exports.step = function () {
 	div({ class: 'error-main' },
 		p(span({ class: 'fa fa-exclamation-circle' }), "Please fill the Guide first"));
 
-	div({ class: 'info-main' },
+	div({ class: 'info-main free-form' },
 		h3("Observation"),
 		p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat aliquet massa."),
 		ul(
