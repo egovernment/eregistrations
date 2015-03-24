@@ -43,6 +43,7 @@ ul.form-elements li {
 
 .inputs {
 	display: inline-block;
+	max-width: 90%;
 }
 .input .radio,
 .input .checkbox {
