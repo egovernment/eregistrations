@@ -38,18 +38,21 @@ var getSnapshotPageFragment = memoize(function (key, page) {
 	return new ObjectFragment(dataSnapshots.get(key), pass);
 }, { primitive: true });
 
-var resolveSnapshot = memoize(function (key) {
+var resolveSnapshot = memoize(function (key, customFilter) {
 	var snapshot = dataSnapshots.get(key), data = unserializeSnapshotKey(key)
 	  , map = dataMap[data.appName], users = map[data.status || ''];
+	if (customFilter && data[customFilter.name]) {
+		users = users.filter(customFilter.filters[data[customFilter.name]]);
+	}
 	if (data.search) users = users.filter(getUsersFilter(data.search));
 	if (snapshot.totalSize !== users.size) snapshot.totalSize = users.size;
 	defineProperty(snapshot, 'items', d(users));
 	users._size.on('change', function (event) { snapshot.totalSize = event.newValue; });
 	return snapshot;
-}, { primitive: true });
+}, { length: 1, primitive: true });
 
-var resolveSnapshotPage = memoize(function (key, compare, pageLimit) {
-	var data = unserializeSnapshotKey(key), snapshot = resolveSnapshot(data.snapshotKey, compare)
+var resolveSnapshotPage = memoize(function (key, compare, pageLimit, customFilter) {
+	var data = unserializeSnapshotKey(key), snapshot = resolveSnapshot(data.snapshotKey, customFilter)
 	  , users, serialized, start;
 	if (data.page == null) return snapshot.items;
 	start = (data.page - 1) * pageLimit;
@@ -62,10 +65,10 @@ var resolveSnapshotPage = memoize(function (key, compare, pageLimit) {
 	return arrayToSet(users);
 }, { length: 1, primitive: true });
 
-var usersFromSnapshots = function (snapshots, compare, cacheLimits) {
+var usersFromSnapshots = function (snapshots, compare, cacheLimits, customFilter) {
 	var users = new ObservableMultiSet(null, getId);
 	var onAdd = function (value) {
-		users.sets.add(resolveSnapshotPage(value, compare, cacheLimits.usersPerPage));
+		users.sets.add(resolveSnapshotPage(value, compare, cacheLimits.usersPerPage, customFilter));
 	};
 	var onDelete = function (value) { users.sets.delete(resolveSnapshotPage(value)); };
 
@@ -127,8 +130,8 @@ var getComputedUsersSet = function (users, dbSubmitted) {
 
 var addSnapshotsFragment = function (fragment, snapshotsSet
 	  , usersPass, computedUsersPass, dbSubmitted
-	  , compare, cacheLimits) {
-	var users = usersFromSnapshots(snapshotsSet, compare, cacheLimits);
+	  , compare, cacheLimits, customFilter) {
+	var users = usersFromSnapshots(snapshotsSet, compare, cacheLimits, customFilter);
 	var onSnapshotAdd = function (key) {
 		var data = unserializeSnapshotKey(key);
 		fragment.sets.add(getSnapshotPageFragment(data.snapshotKey,
@@ -165,7 +168,7 @@ var addSnapshotsFragment = function (fragment, snapshotsSet
 };
 
 module.exports = function (usersPass, computedUsersPass, dbSubmitted
-	  , appName, usersMap, compare, cacheLimits) {
+	  , appName, usersMap, compare, cacheLimits, customFilter) {
 
 	var generalFragment;
 	dataMap[appName] = usersMap;
@@ -209,7 +212,7 @@ module.exports = function (usersPass, computedUsersPass, dbSubmitted
 		// Add snapshots fragment
 		addSnapshotsFragment(fragment, snapshotsSet
 			  , usersPass, computedUsersPass, dbSubmitted
-			  , compare, cacheLimits);
+			  , compare, cacheLimits, customFilter);
 
 		return fragment;
 	};

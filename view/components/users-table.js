@@ -1,8 +1,11 @@
 'use strict';
 
 var toNatural            = require('es5-ext/number/to-pos-integer')
+  , forEach              = require('es5-ext/object/for-each')
   , object               = require('es5-ext/object/valid-object')
+  , callable             = require('es5-ext/object/valid-callable')
   , value                = require('es5-ext/object/valid-value')
+  , stringifiable        = require('es5-ext/object/validate-stringifiable-value')
   , once                 = require('timers-ext/once')
   , ObservableValue      = require('observable-value')
   , ReactiveTable        = require('reactive-table')
@@ -19,9 +22,9 @@ var toNatural            = require('es5-ext/number/to-pos-integer')
 
 module.exports = function (snapshots, options) {
 	var list, table, pagination, i18n, columns
-	  , statusQuery, searchQuery, pathname, pageLimit, statusMap
+	  , statusQuery, searchQuery, pathname, pageLimit, statusMap, customFilter
 	  , active, update, appName, pageQuery, inSync, isPartial, tableStyle, snapshotKey
-	  , lastTableHeight = '';
+	  , lastTableHeight = '', customFilterQuery;
 
 	var getPageCount = function (value) {
 		if (!value) return 1;
@@ -35,6 +38,11 @@ module.exports = function (snapshots, options) {
 	value(options.cacheLimits);
 	pageLimit = options.cacheLimits.usersPerPage;
 	statusMap = object(options.users);
+	if (options.customFilter != null) {
+		customFilter = object(options.customFilter);
+		stringifiable(customFilter.name);
+		forEach(object(customFilter.filters), callable);
+	}
 	inSync = new ObservableValue(false);
 	isPartial = (function () {
 		var snapshotData = { appName: appName };
@@ -60,6 +68,15 @@ module.exports = function (snapshots, options) {
 			if (status) snapshotData.status = status;
 		} else {
 			users = statusMap[''];
+		}
+
+		if (customFilter) {
+			if (customFilterQuery.value && !customFilter.filters[customFilterQuery.value]) {
+				fixLocationQuery(customFilter.name);
+			} else {
+				users = users.filter(customFilter.filters[customFilterQuery.value]);
+				snapshotData[customFilter.name] = customFilterQuery.value;
+			}
 		}
 
 		// Resolve search
@@ -132,6 +149,12 @@ module.exports = function (snapshots, options) {
 	if (keys(statusMap).length > 1) {
 		statusQuery = location.query.get(i18n.status || 'status');
 		statusQuery.on('change', update);
+	}
+
+	// Custom filter
+	if (customFilter) {
+		customFilterQuery = location.query.get(customFilter.name);
+		customFilterQuery.on('change', update);
 	}
 
 	// Search filter
