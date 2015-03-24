@@ -4,7 +4,7 @@ var forEach      = require('es5-ext/object/for-each')
   , primitiveSet = require('es5-ext/object/primitive-set')
 
   , stringify = JSON.stringify
-  , standardKeys = primitiveSet('page', 'status', 'search');
+  , standardKeys = primitiveSet('appName', 'page', 'status', 'search');
 
 module.exports = function (data) {
 	var tokens = [];
