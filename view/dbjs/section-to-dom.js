@@ -24,8 +24,12 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 								self.constructor.resolventProperty).observable));
 					}, function () {
 						return ns.list(self.propertyNames, function (name) {
-							ns.tr(ns.th(resolvePropertyPath(self.master, name).descriptor.label),
-								ns.td(resolvePropertyPath(self.master, name).observable));
+
+							return ns._if(ns.not(
+								ns.eqSloppy(resolvePropertyPath(self.master, name).observable, null)
+							),
+								ns.tr(ns.th(resolvePropertyPath(self.master, name).descriptor.label),
+									ns.td(resolvePropertyPath(self.master, name).observable)));
 						});
 					})
 				)
