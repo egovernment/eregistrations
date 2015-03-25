@@ -36,6 +36,7 @@ require('mano/lib/client')({
 		require('../../view/dbjs/section-to-dom');
 		require('../../view/dbjs/section-group-to-dom');
 		require('../../view/dbjs/section-entities-table-to-dom');
+		require('../../view/dbjs/multiple');
 
 		domEnum(db.Role);
 		domEnum(db.CompanyType);

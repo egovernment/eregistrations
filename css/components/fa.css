@@ -208,3 +208,17 @@ e.g.:
 .fa-folder-open:before {
 	content: '\f115';
 }
+
+.fa-plus-circle {
+	width: 1em;
+}
+.fa-plus-circle:before {
+	content: '\f055';
+}
+
+.fa-minus-circle {
+	width: 1em;
+}
+.fa-minus-circle:before {
+	content: '\f056';
+}
