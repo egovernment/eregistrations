@@ -349,7 +349,9 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	display: inline-block;
 }
 
-.dbjs-input-component > .input .dbjs.multiple ul input {
+.dbjs-input-component > .input .dbjs.multiple ul input,
+.dbjs-input-component > .input .dbjs.multiple ul select,
+.dbjs-input-component > .input .dbjs.multiple ul textarea {
 	max-width: 100%;
 }
 
@@ -373,11 +375,15 @@ ul.multiple {
 	padding-top: 0;
 }
 
+.dbjs.multiple .dbjs-multiple-button-remove,
+.dbjs.multiple .dbjs-multiple-button-add {
+	margin: 0 3px;
+	text-decoration: none;
+}
 .dbjs.multiple .dbjs-multiple-button-remove .fa,
 .dbjs.multiple .dbjs-multiple-button-add .fa {
 	vertical-align: middle;
 	font-size: 18px;
-	margin: 0 3px;
 }
 
 .inline-button-radio  {
