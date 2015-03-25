@@ -349,12 +349,6 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	display: inline-block;
 }
 
-.dbjs-input-component > .input .dbjs.multiple ul input,
-.dbjs-input-component > .input .dbjs.multiple ul select,
-.dbjs-input-component > .input .dbjs.multiple ul textarea {
-	max-width: 100%;
-}
-
 .dbjs.multiple .template {
 	display: none;
 }
