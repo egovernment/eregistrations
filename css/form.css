@@ -332,6 +332,10 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	display:inline-block;
 }
 
+.optional .dbjs-input-component.dbjs-required.not-changed.dbjs-empty span.status-missing {
+	display: none;
+}
+
 .dbjs.multiple {
 	display: inline-block;
 	list-style-type: none;
