@@ -28,6 +28,7 @@ module.exports = function (domjs) {
 	};
 
 	require('domjs-ext/eq')(domjs);
+	require('domjs-ext/eq-sloppy')(domjs);
 	require('domjs-ext/eq-some')(domjs);
 	require('domjs-ext/gt')(domjs);
 	require('domjs-ext/gt-or-eq')(domjs);
