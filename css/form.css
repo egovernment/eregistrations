@@ -349,7 +349,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	display: inline-block;
 }
 
-.section-primary .dbjs-input-component > .input .dbjs.multiple ul input {
+.dbjs-input-component > .input .dbjs.multiple ul input {
 	max-width: 100%;
 }
 
