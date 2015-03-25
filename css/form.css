@@ -338,11 +338,17 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	max-width: 100%;
 }
 
+.dbjs.multiple .controls {
+	display: inline-block;
+}
+
 .dbjs.multiple ul {
 	list-style-type: none;
 	padding: 0;
 	margin-bottom: 0;
+	display: inline-block;
 }
+
 .dbjs.multiple .template {
 	display: none;
 }
@@ -363,16 +369,17 @@ ul.multiple {
 	padding-top: 0;
 }
 
-.dbjs.multiple .dbjs-multiple-button-remove {
-	background-color: var(--normal-background);
-	color: var(--white-text);
-	border-radius: 11px;
-	padding: 2px 7px 4px 7px;
-	font-size: 12px;
-	vertical-align: 1px; /* Fixes weird 1px jump due to font-size */
-	margin-left: 5px;
+.dbjs.multiple .dbjs-multiple-button-remove,
+.dbjs.multiple .dbjs-multiple-button-add {
+	margin-left: 6px;
 	text-decoration: none;
 }
+.dbjs.multiple .dbjs-multiple-button-remove .fa,
+.dbjs.multiple .dbjs-multiple-button-add .fa {
+	vertical-align: middle;
+	font-size: 18px;
+}
+
 .inline-button-radio  {
 	margin-bottom: 22px;
 	font-size: 0;
