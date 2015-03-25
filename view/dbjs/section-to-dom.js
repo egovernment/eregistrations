@@ -24,7 +24,6 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 								self.constructor.resolventProperty).observable));
 					}, function () {
 						return ns.list(self.propertyNames, function (name) {
-
 							return ns._if(ns.not(
 								ns.eqSloppy(resolvePropertyPath(self.master, name).observable, null)
 							),
