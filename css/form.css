@@ -371,7 +371,7 @@ ul.multiple {
 
 .dbjs.multiple .dbjs-multiple-button-remove,
 .dbjs.multiple .dbjs-multiple-button-add {
-	margin: 0 3px;
+	margin-left: 6px;
 	text-decoration: none;
 }
 .dbjs.multiple .dbjs-multiple-button-remove .fa,
