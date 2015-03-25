@@ -38,7 +38,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 								entity.propertyName
 							).descriptor.label);
 					}), ns.th(),
-						ns.th({ class: 'actions' }, _("Actions")))
+						ns.th())
 				),
 				ns.tbody({ onEmpty: ns.tr(ns.td({ colspan: this.constructor.entities.size + 2 },
 							this.constructor.onEmptyMessage)
