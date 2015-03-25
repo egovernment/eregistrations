@@ -23,6 +23,7 @@ License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
 	-moz-osx-font-smoothing: grayscale;
 	overflow: hidden;
 	white-space: nowrap;
+	padding-left: 0.02em;
 }
 
 .fa:before {
@@ -44,7 +45,7 @@ e.g.:
 */
 
 .fa-check {
-	width: 0.99em;
+	width: 1.01em;
 }
 
 .fa-check:before {
@@ -52,7 +53,7 @@ e.g.:
 }
 
 .fa-download {
-	width: 0.94em;
+	width: 0.96em;
 }
 
 .fa-download:before {
@@ -60,7 +61,7 @@ e.g.:
 }
 
 .fa-print {
-	width: 0.95em;
+	width: 0.97em;
 }
 
 .fa-print:before {
@@ -68,77 +69,77 @@ e.g.:
 }
 
 .fa-trash-o {
-	width: 0.79em;
+	width: 0.81em;
 }
 .fa-trash-o:before {
 	content: "\f014";
 }
 
 .fa-check {
-	width: 0.99em;
+	width: 1.01em;
 }
 .fa-check:before {
 	content: "\f00c";
 }
 
 .fa-power-off {
-	width: 0.85em;
+	width: 0.87em;
 }
 .fa-power-off:before {
 	content: "\f011";
 }
 
 .fa-cogs {
-	width: 1.1em;
+	width: 1.12em;
 }
 .fa-cogs:before {
 	content: '\f085';
 }
 
 .fa-user {
-	width: 0.8em;
+	width: 0.82em;
 }
 .fa-user:before {
 	content: '\f007';
 }
 
 .fa-edit {
-	width: 1em;
+	width: 1.02em;
 }
 .fa-edit:before {
 	content: '\f044';
 }
 
 .fa-search {
-	width: 1em;
+	width: 1.02em;
 }
 .fa-search:before {
 	content: '\f002'
 }
 
 .fa-exclamation {
-	width: 1em;
+	width: 1.02em;
 }
 .fa-exclamation:before {
 	content: '\f12a';
 }
 
 .fa-exclamation-circle {
-	width: 1em;
+	width: 1.02em;
 }
 .fa-exclamation-circle:before {
 	content: '\f06a';
 }
 
 .fa-calculator {
-	width: 1em;
+	width: 1.02em;
 }
 .fa-calculator:before {
 	content: '\f1ec';
 }
 
 .fa-chevron-circle-left {
-	width: 0.93em;
+	width: 0.95em;
 	padding-left: 1px;
 }
 .fa-chevron-circle-left:before {
@@ -146,7 +147,7 @@ e.g.:
 }
 
 .fa-chevron-circle-right {
-	width: 0.93em;
+	width: 0.95em;
 	padding-left: 1px;
 }
 .fa-chevron-circle-right:before {
@@ -154,27 +155,27 @@ e.g.:
 }
 
 .fa-arrow-up {
-	width: 0.93em;
+	width: 0.95em;
 }
 .fa-arrow-up:before {
 	content: '\f062';
 }
 
 .fa-close {
-	width: 0.8em;
+	width: 0.82em;
 }
 .fa-close:before {
 	content: '\f00d';
 }
 .fa-users {
-	width: 1em;
+	width: 1.02em;
 }
 .fa-users:before {
 	content: '\f0c0';
 }
 
 .fa-check-square-o {
-	width: 0.95em;
+	width: 0.97em;
 }
 
 .fa-check-square-o:before {
@@ -182,42 +183,42 @@ e.g.:
 }
 
 .fa-square-o {
-	width: 0.95em;
+	width: 0.97em;
 }
 .fa-square-o:before {
 	content: '\f096';
 }
 
 .fa-info-circle {
-	width: 0.9em;
+	width: 0.92em;
 }
 .fa-info-circle:before {
 	content: '\f05a';
 }
 
 .fa-map-marker {
-	width: 0.6em;
+	width: 0.62em;
 }
 .fa-map-marker:before {
 	content: '\f041';
 }
 
 .fa-folder-open {
-	width: 1.1em;
+	width: 1.12em;
 }
 .fa-folder-open:before {
 	content: '\f115';
 }
 
 .fa-plus-circle {
-	width: 1em;
+	width: 0.91em;
 }
 .fa-plus-circle:before {
 	content: '\f055';
 }
 
 .fa-minus-circle {
-	width: 1em;
+	width: 0.92em;
 }
 .fa-minus-circle:before {
 	content: '\f056';
