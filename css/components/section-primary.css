@@ -130,6 +130,10 @@
 	padding-bottom: 10px;
 }
 
+.section-primary .dbjs-input-component > .input .multiple ul {
+	max-width: 96%;
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 	.section-primary .dbjs-input-component > label {
 		text-align: left;
