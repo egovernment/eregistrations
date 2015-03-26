@@ -56,7 +56,7 @@ module.exports = modalContainer.appendChild(dialog(
 						});
 					}, list.getId(), 'span-total-' + name)
 				);
-				control.dom.querySelector('.controls').appendChild(
+				control.dom.appendChild(
 					p(
 						{ class: 'dialog-inventory-total-section-costs' },
 						span("Total: "),
