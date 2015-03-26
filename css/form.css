@@ -351,6 +351,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	padding: 0;
 	margin-bottom: 0;
 	display: inline-block;
+	max-width: 97%;
 }
 
 .dbjs.multiple .template {
