@@ -37,10 +37,11 @@ predef+ process, __dirname
 ./model/form-sections.js
 evil
 
+./controller/client
 ./client
 ./prototype/client
 ./view
-predef+ window, document
+predef+ window, document, location
 
 ./view/prototype
 ./view/utils
