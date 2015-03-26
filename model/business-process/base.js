@@ -2,7 +2,7 @@
 
 var memoize                     = require('memoizee/plain')
   , validDb                     = require('dbjs/valid-dbjs')
-  , defineBusinessProcessStatus = require('../business-process-status');
+  , defineBusinessProcessStatus = require('../lib/business-process-status');
 
 module.exports = memoize(function (db/*, options*/) {
 	var BusinessProcessStatus;

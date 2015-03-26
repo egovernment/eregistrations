@@ -19,9 +19,7 @@ module.exports = memoize(function (Target/* options */) {
 		},
 		businessProcesses: {
 			type: BusinessProcess,
-			unique: true,
 			multiple: true,
-			reverse: 'user',
 			value: function (_observe) {
 				var processes = [];
 				this.initialBusinessProcesses.forEach(function (initialProcess) {

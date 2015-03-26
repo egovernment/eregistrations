@@ -11,16 +11,17 @@ module.exports = memoize(function (Target/* options */) {
 	db      = Target.database;
 	Document = defineDocument(db, options);
 	Target.prototype.defineProperties({
-		businessProcessesDocuments: {
+		documents: {
 			type: Document,
 			multiple: true,
-			value: function (_observe) {
+			value: function () {
 				var documents = [];
 
-				this.businessProcesses.forEach(function (businessProcess) {
-					_observe(businessProcess.documents).forEach(function (doc) {
-						documents.push(doc);
-					});
+				this.requestedCertificates.forEach(function (cert) {
+					documents.push(this.certificates[cert]);
+				});
+				this.applicableSubmissions.forEach(function (sub) {
+					documents.push(sub.document);
 				});
 
 				return documents;

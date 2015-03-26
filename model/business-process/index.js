@@ -11,6 +11,7 @@ module.exports = function (db) {
 	require('./costs')(BusinessProcess);
 	require('./requirements')(BusinessProcess);
 	require('./certificates')(BusinessProcess);
+	require('./documents')(BusinessProcess);
 
 	return BusinessProcess;
 };
