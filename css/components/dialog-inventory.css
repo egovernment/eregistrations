@@ -20,6 +20,11 @@
 .dialog-inventory section ul li div {
 	padding: 0;
 }
+
+.dialog-inventory .inputs {
+	max-width: 100%;
+}
+
 .dialog-inventory .multiple {
 	display: block;
 }
@@ -41,7 +46,7 @@
 }
 
 .dialog-inventory li ul li div input:first-child {
-	width: 370px;
+	width: 350px;
 	margin-right: 4px;
 }
 
