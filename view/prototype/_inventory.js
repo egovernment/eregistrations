@@ -35,9 +35,6 @@ module.exports = modalContainer.appendChild(dialog(
 											placeholder: desc.inputPlaceholder
 										}
 									}
-								},
-								deleteLabel: function () {
-									return a({ class: 'dbjs-multiple-button-remove' }, "x");
 								}
 							}
 						)

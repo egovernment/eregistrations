@@ -20,6 +20,11 @@
 .dialog-inventory section ul li div {
 	padding: 0;
 }
+
+.dialog-inventory .inputs {
+	max-width: 100%;
+}
+
 .dialog-inventory .multiple {
 	display: block;
 }
