@@ -13,7 +13,7 @@ module.exports = memoize(function (db/*, options*/) {
 		status: { type: BusinessProcessStatus, value: 'draft' }
 	});
 
-	db.BusinessProcess.defineProperties({
+	db.BusinessProcess.prototype.defineProperties({
 		derivedBusinessProcesses: {
 			type: db.BusinessProcess,
 			multiple: true
