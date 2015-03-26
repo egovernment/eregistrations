@@ -11,11 +11,28 @@ module.exports = memoize(function (Target/* options */) {
 	db      = Target.database;
 	BusinessProcess = defineBusinessProcess(db, options);
 	Target.prototype.defineProperties({
-		businessProcesses: {
+		initialBusinessProcesses: {
 			type: BusinessProcess,
 			unique: true,
 			multiple: true,
 			reverse: 'user'
+		},
+		businessProcesses: {
+			type: BusinessProcess,
+			unique: true,
+			multiple: true,
+			reverse: 'user',
+			value: function (_observe) {
+				var processes = [];
+				this.initialBusinessProcesses.forEach(function (initialProcess) {
+					processes.push(initialProcess);
+					_observe(initialProcess.derivedBusinessProcesses).forEach(function (derivedProcess) {
+						processes.push(derivedProcess);
+					});
+				});
+
+				return processes;
+			}
 		}
 	});
 
