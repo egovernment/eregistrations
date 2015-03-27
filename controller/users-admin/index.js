@@ -39,8 +39,7 @@ exports['user/[0-9][a-z0-9]+'] = {
 			delete data[propertyKey];
 		}
 		return validate.call(this, data);
-	},
-	redirectUrl: '/'
+	}
 };
 
 // Delete User
