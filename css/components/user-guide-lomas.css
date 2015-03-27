@@ -79,12 +79,17 @@
 }
 
 .user-guide-lomas-form-components fieldset {
-	width: 30%;
+	width: 320px;
+	display: block;
 }
 
 .user-guide-lomas-form-components fieldset:first-child {
-	width: 66%;
-	margin-right: 2%;
+	width: calc(100% - 340px);
+	margin-right: 20px;
+}
+
+.user-guide-lomas-form-components fieldset:last-child select {
+	width: 274px;
 }
 
 .user-guide-lomas-map {

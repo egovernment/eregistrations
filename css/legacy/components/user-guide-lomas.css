@@ -17,3 +17,7 @@
 .user-guide-lomas-form-complement-table tr:last-child {
 	border-bottom: none;
 }
+
+.user-guide-lomas-form-components fieldset:first-child  {
+	width: 600px;
+}
