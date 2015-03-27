@@ -80,6 +80,7 @@
 
 .user-guide-lomas-form-components fieldset {
 	width: 320px;
+	display: block;
 }
 
 .user-guide-lomas-form-components fieldset:first-child {
