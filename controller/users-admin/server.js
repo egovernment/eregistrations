@@ -8,7 +8,7 @@ var assign         = require('es5-ext/object/assign')
   , save  = router.save;
 
 // Common
-assign(exports, require('../user/client'));
+assign(exports, require('../user/server'));
 
 // Add User
 exports['user-add'] = require('mano-auth/controller/server/register');
