@@ -126,7 +126,11 @@ dt {
 
 dt,
 dd {
-	margin-bottom: 22px;
+	margin: 11px 0;
+}
+
+dt:first-child {
+	margin-top: 0;
 }
 
 button {
