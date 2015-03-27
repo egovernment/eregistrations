@@ -1,12 +1,11 @@
 'use strict';
 
-var assign   = require('es5-ext/object/assign')
-  , d        = require('d')
-  , autoBind = require('d/auto-bind')
-  , DOMInput = require('dbjs-dom/input/_controls/radio')
+var d              = require('d')
+  , generateScript = require('dom-ext/html-document/#/generate-inline-script')
+  , getId          = require('dom-ext/html-element/#/get-id')
+  , DOMInput       = require('dbjs-dom/input/_controls/radio')
 
   , createOption = DOMInput.prototype.createOption
-  , onChange = Object.getPrototypeOf(DOMInput.prototype).onChange
   , Input;
 
 module.exports = Input = function (document, type/*, options*/) {
@@ -15,30 +14,39 @@ module.exports = Input = function (document, type/*, options*/) {
 	DOMInput.call(this, document, type, options);
 };
 
-Input.prototype = Object.create(DOMInput.prototype, assign({
+Input.prototype = Object.create(DOMInput.prototype, {
 	constructor: d(Input),
 	classMap: d({}),
 	current: d(null),
 	_render: d(function (options) {
 		this.dom = this.document.createElement('div');
 		this.dom.setAttribute('class', options.class || 'inline-button-radio');
+		this.dom.appendChild(generateScript.call(this.document, function (id, classMap) {
+			var current, radio, radios;
+			var onChange = function () {
+				var nu, i;
+				for (i = 0; (radio = radios[i]); ++i) {
+					if (radio.checked) {
+						nu = radio;
+						break;
+					}
+				}
+				if (nu === current) return;
+				if (current) current.parentNode.removeClass(classMap[current.value] || 'success');
+				if (nu) $(nu.parentNode).addClass(classMap[nu.value] || 'success');
+				current = nu;
+			};
+			setTimeout(function () {
+				var container = $(id);
+				radios = container.getElementsByTagName('input');
+				container.addEvent('change', function () { setTimeout(onChange, 0); });
+				onChange();
+			}, 0);
+		}, getId.call(this.dom), this.classMap));
 	}),
 	createOption: d(function (value, labelTextDOM) {
 		var dom = createOption.call(this, value, labelTextDOM, this.controlsOptions[value]);
 		this.listItems[value] = dom = dom.firstChild;
 		return dom;
 	})
-}, autoBind({
-	onChange: d(function () {
-		var value;
-		onChange.call(this);
-		value = this.inputValue;
-		if (value === this.current) return;
-		if (this.current) {
-			this.listItems[this.current].classList.remove(this.classMap[this.current] || 'success');
-		}
-		this.current = value;
-		if (!value) return;
-		this.listItems[value].classList.add(this.classMap[value] || 'success');
-	})
-})));
+});

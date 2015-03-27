@@ -41,7 +41,7 @@ evil
 ./client
 ./prototype/client
 ./view
-predef+ window, document, location
+predef+ window, document, location, $, setTimeout
 
 ./view/prototype
 ./view/utils
