@@ -401,7 +401,7 @@ ul.multiple {
 .inline-button-radio > label + label {
 	margin-left: -1px;
 }
-.inline-button-radio label:first-child {
+.inline-button-radio label:first-child, .inline-button-radio > script:first-child + label {
 	border-radius: 4px 0 0 4px;
 }
 .inline-button-radio label:last-child {
