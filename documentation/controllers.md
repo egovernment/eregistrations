@@ -1,5 +1,4 @@
 # New POST submissions controllers
----
 
 ## Introduction
 
