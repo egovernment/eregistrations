@@ -40,7 +40,7 @@ module.exports = function (limitedUsers, applicable, preferred, userPass/*, opti
 	var options = Object(arguments[4]), limit = Number(options.limit);
 	if (isNaN(limit)) limit = 10;
 	normalize(limitedUsers, applicable, preferred, limit);
-	limitedUsers.on('change', once(function () {
+	limitedUsers.once('change', once(function () {
 		normalize(limitedUsers, applicable, preferred, limit);
 	}));
 	return getObjectsSetFragment(limitedUsers, userPass, options.fragment);
