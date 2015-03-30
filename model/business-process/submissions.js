@@ -30,20 +30,21 @@ module.exports = memoize(function (Target/* options */) {
 				nested: true
 			});
 			Target.prototype.submissions[name].getOwnDescriptor('document').type = Doc;
-			Target.prototype.submissions[name].document.uniqueKey = function () {
-				return this.owner.key;
-			};
-			Target.prototype.submissions[name].document.label = function (_observe) {
-				var requirement = this.master.requirements[this.uniqueKey];
-				if (requirement && requirement.label) return _observe(requirement._label);
-				return this.constructor.label;
-			};
-
-			Target.prototype.submissions[name].document.legend = function (_observe) {
-				var requirement = this.master.requirements[this.uniqueKey];
-				if (requirement && requirement.legend) return _observe(requirement._legend);
-				return this.constructor.label;
-			};
+			Target.prototype.submissions[name].document.setProperties({
+				uniqueKey: function () {
+					return this.owner.key;
+				},
+				label: function (_observe) {
+					var requirement = this.master.requirements[this.owner.key];
+					if (requirement && requirement.label) return _observe(requirement._label);
+					return this.constructor.label;
+				},
+				legend: function (_observe) {
+					var requirement = this.master.requirements[this.owner.key];
+					if (requirement && requirement.legend) return _observe(requirement._legend);
+					return this.constructor.label;
+				}
+			});
 		});
 	}
 
