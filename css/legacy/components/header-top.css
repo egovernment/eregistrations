@@ -12,7 +12,6 @@
 .header-top-wrapper > nav {
 	float: right;
 	position: relative;
-	top: 15px;
 }
 .header-top-menu li {
 	display: inline-block;
