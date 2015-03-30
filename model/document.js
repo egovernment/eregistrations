@@ -14,12 +14,12 @@ module.exports = memoize(function (db) {
 	File = defineFile(db);
 	db.Object.extend('Document', {
 		files: { type: db.Object, nested: true },
-		statusLog: { type: StringLine, multiple: true }, //changeme: we should use StatusLog class
 		label: { type: StringLine, value: function () {
 			return this.constructor.label;
 		} },
-		legend: { type: StringLine },
-		abbr: { type: StringLine },
+		legend: { type: StringLine, value: function () {
+			return this.constructor.legend;
+		} },
 		uniqueKey: { type: StringLine, value: function () { return this.key; } },
 		orderedFiles: { type: File, multiple: true, value: function (_observe) {
 			var files = [];

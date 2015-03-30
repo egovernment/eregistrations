@@ -33,17 +33,5 @@ module.exports = memoize(function (db) {
 		validateWithOriginal: { type: db.Boolean, required: true, value: false }
 	});
 
-	db.Submission.prototype.document.label = function (_observe) {
-		var requirement = this.master.requirements[this.key];
-		if (requirement && requirement.label) return _observe(requirement._label);
-		return this.constructor.label;
-	};
-
-	db.Submission.prototype.document.legend = function (_observe) {
-		var requirement = this.master.requirements[this.key];
-		if (requirement && requirement.legend) return _observe(requirement._legend);
-		return this.constructor.label;
-	};
-
 	return db.Submission;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
