@@ -160,8 +160,10 @@ module.exports = memoize(function (Target/* options */) {
 				if (!this.applicableSubmissions.size) return 1;
 				this.applicableSubmissions.forEach(function (submission) {
 					++total;
-					if (!_observe(submission.orderedFiles._size)) return;
-					if (submission.orderedFiles.some(function (file) { return _observe(file._path); })) {
+					if (!_observe(submission.document.orderedFiles._size)) return;
+					if (submission.document.orderedFiles.some(function (file) {
+							return _observe(file._path);
+						})) {
 						++valid;
 					}
 				}, this);

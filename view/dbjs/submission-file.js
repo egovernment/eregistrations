@@ -10,7 +10,7 @@ var d        = require('d')
 
   , normRe = /[$#:\/]/g;
 
-module.exports = Object.defineProperties(db.SubmissionFile, {
+module.exports = Object.defineProperties(db.File, {
 	inputOptions: d({
 		render: function (options) {
 			var el = this.make, label = options.label, content;
@@ -20,7 +20,7 @@ module.exports = Object.defineProperties(db.SubmissionFile, {
 			} else {
 				if (label === true) {
 					if (options.dbOptions) label = options.dbOptions.label;
-					if (label == null) label = db.SubmissionFile.uploadLabel;
+					if (label == null) label = db.File.uploadLabel;
 					if (label == null) label = _("Select file");
 				}
 				content = el('label', label, this.control);
