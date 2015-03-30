@@ -11,13 +11,13 @@ var d        = require('d')
   , db       = require('mano').db
   , normRe = /[$#:\/]/g;
 
-module.exports = Object.defineProperties(db.SubmissionFile, {
+module.exports = Object.defineProperties(db.File, {
 	inputOptions: d({
 		render: function (options) {
 			var el = this.make, label = options.label;
 			if (label == null) {
 				if (options.dbOptions) label = options.dbOptions.label;
-				if (label == null) label = db.SubmissionFile.uploadLabel;
+				if (label == null) label = db.File.uploadLabel;
 				if (label == null) label = "Select file";
 			}
 			return el('div', this.valueDOM = el('ul', { class: 'documents' }),

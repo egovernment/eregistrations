@@ -17,14 +17,14 @@ var contains    = require('es5-ext/string/#/contains')
 if (descHandler.initialized) gm.prototype.write = descHandler.wrap(gm.prototype.write);
 gm.prototype.writeP = promisify(gm.prototype.write);
 
-Object.defineProperty(db.SubmissionFile.prototype, 'onUpload', d(function () {
+Object.defineProperty(db.File.prototype, 'onUpload', d(function () {
 	var path = uploadsPath, thumb, preview, processFullPath, thumbFullPath, previewFullPath
 	  , previewPath = this.path
 	  , processPath = this.path
 	  , thumbPath = replace.call(this.__id__, '/', '-')
 			+ '.thumb.' + this.name;
 
-	if (!db.SubmissionFile.accept.has(this.type)) {
+	if (!db.File.accept.has(this.type)) {
 		console.log("Error: Uploaded file (" + this.name + ") is of not supported type (" +
 			this.type + ")");
 		this._destroy_();

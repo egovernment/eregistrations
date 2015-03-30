@@ -8,21 +8,20 @@ var memoize        = require('memoizee/plain')
 module.exports = memoize(function (db) {
 	var File, JpegFile;
 	validDb(db);
-	File     = defineFile(db);
+	File               = defineFile(db);
 	File.prototype.url = function () {
 		return this.path ? '/' + encodeURIComponent(this.path) : null;
 	};
 	JpegFile = defineJpegFile(db);
-	File.extend('SubmissionFile', {
+	File.prototype.defineProperties({
 		preview: { type: File, value: function () {
 			return this.isPreviewGenerated ? this.generatedPreview : this;
 		} },
 		isPreviewGenerated: { type: db.Boolean, value: true },
 		generatedPreview: { type: File, nested: true },
 		thumb: { type: JpegFile, nested: true }
-	}, {
-		accept: { value: ['image/jpeg', 'application/pdf', 'image/png'] }
 	});
+	File.accept = ['image/jpeg', 'application/pdf', 'image/png'];
 
-	return db.SubmissionFile;
+	return File;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

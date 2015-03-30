@@ -2,13 +2,16 @@
 
 var memoize     = require('memoizee/plain')
   , validDbType = require('dbjs/valid-dbjs-type')
-  , endsWith    = require('es5-ext/string/#/ends-with');
+  , defineDocument = require('../document')
+  , defineSubmission  = require('../submission');
 
 module.exports = memoize(function (Target/* options */) {
-	var db, options;
+	var db, options, name, Submission, Document;
 	validDbType(Target);
 	db = Target.database;
 	options = Object(arguments[1]);
+	Submission = defineSubmission(db);
+	Document = defineDocument(db);
 	Target.prototype.defineProperties({
 		submissions: {
 			type: db.Object,
@@ -17,16 +20,16 @@ module.exports = memoize(function (Target/* options */) {
 	});
 
 	if (options.classes) {
-		options.classes.forEach(function (submission) {
-			if (!endsWith.call(submission.__id__, "Submission")) {
-				throw new Error("Class: " + submission.__id__ + " doesn't end with 'Submission'." +
-					" All submission class names must end with 'Submission'.");
+		options.classes.forEach(function (Doc) {
+			name = Doc.__id__[0].toLowerCase() + Doc.__id__.slice(1);
+			if (Object.getPrototypeOf(Doc) !== Document) {
+				throw new Error("Class: " + Doc.__id__ + " must extend Document.");
 			}
-			Target.prototype.submissions.define(submission.__id__[0].toLowerCase() +
-				submission.__id__.slice(1, -("Submission".length)), {
-					type: submission,
-					nested: true
-				});
+			Target.prototype.submissions.define(name, {
+				type: Submission,
+				nested: true
+			});
+			Target.prototype.submissions[name].getOwnDescriptor('document').type = Doc;
 		});
 	}
 
