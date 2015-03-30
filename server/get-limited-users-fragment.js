@@ -36,12 +36,30 @@ var normalize = function (limitedUsers, applicable, preferred, limit) {
 	limitedUsers._postponed_ -= 1;
 };
 
+var observedLimitedUsersSets = [];
+
 module.exports = function (limitedUsers, applicable, preferred, userPass/*, options*/) {
-	var options = Object(arguments[4]), limit = Number(options.limit);
-	if (isNaN(limit)) limit = 10;
+
+	var options = Object(arguments[4]),
+		limit = Number(options.limit),
+		isChangeHandlerAttached = false;
+
+	if (isNaN(limit)) {
+		limit = 10;
+	}
+
 	normalize(limitedUsers, applicable, preferred, limit);
-	limitedUsers.once('change', once(function () {
-		normalize(limitedUsers, applicable, preferred, limit);
-	}));
+
+	isChangeHandlerAttached = observedLimitedUsersSets.indexOf(limitedUsers) !== -1;
+
+	if (!isChangeHandlerAttached) {
+
+		observedLimitedUsersSets.push(limitedUsers);
+
+		limitedUsers.on('change', once(function () {
+			normalize(limitedUsers, applicable, preferred, limit);
+		}));
+	}
+
 	return getObjectsSetFragment(limitedUsers, userPass, options.fragment);
 };
