@@ -15,7 +15,7 @@
 	line-height: 22px;
 }
 
-input::placeholder,
+:placeholder,
 ::-webkit-input-placeholder,
 :-moz-placeholder,
 ::-moz-placeholder,
