@@ -15,10 +15,8 @@
 	line-height: 22px;
 }
 
-:placeholder,
-::-webkit-input-placeholder,
-:-moz-placeholder,
-::-moz-placeholder,
-:-ms-input-placeholder {
-	color: #ffffff;
-}
+::placeholder { color: #ffffff; }
+::-webkit-input-placeholder { color: #ffffff; }
+::-moz-placeholder { color: #ffffff; }
+:-moz-placeholder { color: #ffffff; }
+:-ms-input-placeholder { color: #ffffff; }
