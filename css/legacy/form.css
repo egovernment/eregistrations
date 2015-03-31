@@ -8,3 +8,15 @@
 .auto-submit .submit {
 	display: block;
 }
+
+.placeholder-fallback {
+	display: block;
+	width: 100%;
+	line-height: 22px;
+}
+
+::placeholder { color: #ffffff; }
+::-webkit-input-placeholder { color: #ffffff; }
+::-moz-placeholder { color: #ffffff; }
+:-moz-placeholder { color: #ffffff; }
+:-ms-input-placeholder { color: #ffffff; }

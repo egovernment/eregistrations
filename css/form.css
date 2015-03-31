@@ -436,6 +436,10 @@ ul.multiple {
 	line-height: 22px;
 }
 
+.placeholder-fallback {
+	display: none;
+}
+
 /*
 Styles applied while screen size is less than 640px
 */
