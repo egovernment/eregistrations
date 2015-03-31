@@ -14,7 +14,7 @@ module.exports = dialog(
 			{ id: 'reset-password-form', method: 'post' },
 			p({ class: 'success-message' },
 				"Password reset email has been sent."),
-			p(label(span({ class: 'lable-legacy' }, user.getDescriptor('email').label, ":"),
+			p(label(span({ class: 'placeholder-fallback' }, user.getDescriptor('email').label, ":"),
 				input({ dbjs: db.Email, required: true, name: 'email',
 					placeholder: user.getDescriptor('email').label }))),
 			p(input({ type: 'submit', value: "Reset" }))

@@ -9,12 +9,12 @@
 	display: block;
 }
 
-.lable-legacy {
+.placeholder-fallback {
 	display: block;
 	width: 100%;
 	line-height: 22px;
 }
 
-:-ms-input-placeholder {
+input::placeholder {
 	color: #ffffff;
 }

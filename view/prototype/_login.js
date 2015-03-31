@@ -16,11 +16,11 @@ module.exports = dialog(
 			ul(
 				{ class: 'form-elements' },
 				li({ class: 'dbjs-input-component input' },
-					label(span({ class: 'lable-legacy' }, user.getDescriptor('email').label, ":"),
+					label(span({ class: 'placeholder-fallback' }, user.getDescriptor('email').label, ":"),
 						input({ dbjs: db.Email, required: true, name: 'email',
 							placeholder: user.getDescriptor('email').label }))),
 				li({ class: 'dbjs-input-component input' },
-					label(span({ class: 'lable-legacy' }, user.getDescriptor('password').label, ":"),
+					label(span({ class: 'placeholder-fallback' }, user.getDescriptor('password').label, ":"),
 						input({ dbjs: db.Password,
 							required: true, name: 'password',
 							placeholder: user.getDescriptor('password').label }),
