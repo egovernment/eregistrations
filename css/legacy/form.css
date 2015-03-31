@@ -8,3 +8,13 @@
 .auto-submit .submit {
 	display: block;
 }
+
+.lable-legacy {
+	display: block;
+	width: 100%;
+	line-height: 22px;
+}
+
+:-ms-input-placeholder {
+	color: #ffffff;
+}

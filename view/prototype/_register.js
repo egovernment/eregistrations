@@ -16,7 +16,8 @@ module.exports = dialog(
 				function (name) {
 					var rel = user._get(name);
 					return li({ class: 'dbjs-input-component input' },
-						input({ dbjs: rel, placeholder: rel.descriptor.label }),
+						label(span({ class: 'lable-legacy' }, rel.descriptor.label, ":"),
+							input({ dbjs: rel, placeholder: rel.descriptor.label })),
 						span({ class: 'error-message' }, "Error message"));
 				}
 			),
