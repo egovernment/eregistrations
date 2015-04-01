@@ -10,13 +10,13 @@ module.exports = memoize(function (Target) {
 	validDbType(Target);
 	db = Target.database;
 	StringLine = defineStringLine(db);
-	User       = defineUser(User);
+	User       = defineUser(db);
 
 	if (!db.StatusLog) {
 		db.Object.extend('StatusLog', {
 			label: { type: StringLine, required: true },
 			time: { type: db.DateTime, required: true },
-			official: { type: db.User },
+			official: { type: User },
 			text: { type: db.String, required: true }
 		});
 	}
