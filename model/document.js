@@ -6,7 +6,7 @@ var memoize          = require('memoizee/plain')
   , validDb          = require('dbjs/valid-dbjs')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineFile       = require('./file')
-  , defineStatusLog  = require('./business-process/status-log');
+  , defineStatusLog  = require('./status-log');
 
 module.exports = memoize(function (db) {
 	var StringLine, File;
