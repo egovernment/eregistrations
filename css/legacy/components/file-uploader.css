@@ -1,3 +1,6 @@
+.file-uploader-items li {
+	display: inline-block;
+}
 .file-uploader-button label input {
 	display: inline;
 	margin-left: 10px;
