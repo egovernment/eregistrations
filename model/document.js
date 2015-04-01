@@ -5,7 +5,8 @@
 var memoize          = require('memoizee/plain')
   , validDb          = require('dbjs/valid-dbjs')
   , defineStringLine = require('dbjs-ext/string/string-line')
-  , defineFile       = require('./file');
+  , defineFile       = require('./file')
+  , defineStatusLog  = require('./status-log');
 
 module.exports = memoize(function (db) {
 	var StringLine, File;
@@ -40,6 +41,8 @@ module.exports = memoize(function (db) {
 
 	db.Document.prototype.files._descriptorPrototype_.type   = File;
 	db.Document.prototype.files._descriptorPrototype_.nested = true;
+
+	defineStatusLog(db.Document);
 
 	return db.Document;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

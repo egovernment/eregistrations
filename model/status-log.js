@@ -1,14 +1,27 @@
 'use strict';
 
-var db = require('mano').db;
+var memoize          = require('memoizee/plain')
+  , defineUser       = require('mano-auth/model/user')
+  , validDbType      = require('dbjs/valid-dbjs-type')
+  , defineStringLine = require('dbjs-ext/string/string-line');
 
-require('dbjs-ext/string/string-line')(db);
+module.exports = memoize(function (Target) {
+	var StringLine, User, db;
+	validDbType(Target);
+	db = Target.database;
+	StringLine = defineStringLine(db);
+	User       = defineUser(db);
 
-exports = module.exports = db.Object.extend('StatusLog', {
-	label: { type: db.StringLine, required: true },
-	time: { type: db.DateTime, required: true },
-	official: { type: db.User },
-	text: { type: db.String, required: true }
-});
+	if (!db.StatusLog) {
+		db.Object.extend('StatusLog', {
+			label: { type: StringLine, required: true },
+			time: { type: db.DateTime, required: true },
+			official: { type: User },
+			text: { type: db.String, required: true }
+		});
+	}
 
-db.User.prototype.define('statusLog', { type: exports, multiple: true });
+	Target.prototype.define('statusLog', { type: db.StatusLog, multiple: true });
+
+	return db.StatusLog;
+}, { normalizer: require('memoizee/normalizers/get-1')() });
