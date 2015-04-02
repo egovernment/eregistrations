@@ -129,7 +129,7 @@ module.exports = memoize(function (Target/* options */) {
 			value: function (_observe) {
 				var result = [];
 				this.resolvedRequirements.forEach(function (requirement) {
-					if (_observe(this.requirements[requirement].isApplicable)) result.push(requirement);
+					if (_observe(this.requirements[requirement]._isApplicable)) result.push(requirement);
 				}, this);
 				return result;
 			}
