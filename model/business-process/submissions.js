@@ -6,7 +6,7 @@ var memoize     = require('memoizee/plain')
   , defineSubmission  = require('../submission');
 
 module.exports = memoize(function (Target/* options */) {
-	var db, options, name, Submission, Document;
+	var db, options, name, Submission, Document, Doc;
 	validDbType(Target);
 	db = Target.database;
 	options = Object(arguments[1]);
@@ -20,8 +20,14 @@ module.exports = memoize(function (Target/* options */) {
 	});
 
 	if (options.classes) {
-		options.classes.forEach(function (Doc) {
-			name = Doc.__id__[0].toLowerCase() + Doc.__id__.slice(1);
+		options.classes.forEach(function (param) {
+			if (param.name && param.Document) {
+				name = param.name;
+				Doc  = param.Document;
+			} else {
+				Doc = param;
+				name = Doc.__id__[0].toLowerCase() + Doc.__id__.slice(1);
+			}
 			if (Object.getPrototypeOf(Doc) !== Document) {
 				throw new Error("Class: " + Doc.__id__ + " must extend Document.");
 			}
