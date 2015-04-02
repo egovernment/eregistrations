@@ -40,6 +40,7 @@ Input.prototype = Object.create(DOMInput.prototype, {
 				var container = $(id);
 				radios = container.getElementsByTagName('input');
 				container.addEvent('change', function () { setTimeout(onChange, 0); });
+				container.addEvent('click', function () { setTimeout(onChange, 0); });
 				onChange();
 			}, 0);
 		}, getId.call(this.dom), this.classMap));
