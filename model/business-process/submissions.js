@@ -2,6 +2,7 @@
 
 var memoize     = require('memoizee/plain')
   , validDbType = require('dbjs/valid-dbjs-type')
+  , isDbjsType  = require('dbjs/is-dbjs-type')
   , defineDocument = require('../document')
   , defineSubmission  = require('../submission');
 
@@ -21,12 +22,12 @@ module.exports = memoize(function (Target/* options */) {
 
 	if (options.classes) {
 		options.classes.forEach(function (param) {
-			if (param.name && param.Document) {
-				name = param.name;
-				Doc  = param.Document;
-			} else {
+			if (isDbjsType(param)) {
 				Doc = param;
 				name = Doc.__id__[0].toLowerCase() + Doc.__id__.slice(1);
+			} else {
+				name = param.name;
+				Doc  = param.Document;
 			}
 			if (Object.getPrototypeOf(Doc) !== Document) {
 				throw new Error("Class: " + Doc.__id__ + " must extend Document.");
