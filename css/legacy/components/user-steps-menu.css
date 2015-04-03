@@ -1,6 +1,6 @@
 .user-steps-menu-list li {
 	display: inline-block;
-	width: 207px;
+	width: 198px;
 }
 .user-steps-menu-list .user-steps-menu-start-step {
 	width: 100px;
@@ -8,4 +8,10 @@
 .user-steps-menu-item-progress {
 	background: #999;
 	background: linear-gradient(to top, #999, #ffffff);
+}
+
+@media only screen and (max-width: 640px) {
+	.user-steps-menu-list li {
+		width: 100%;
+	}
 }
