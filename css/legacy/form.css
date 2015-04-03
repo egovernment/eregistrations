@@ -20,3 +20,8 @@
 ::-moz-placeholder { color: #ffffff; }
 :-moz-placeholder { color: #ffffff; }
 :-ms-input-placeholder { color: #ffffff; }
+
+.inline-button-radio input[type="radio"] {
+	display: inline-block;
+	width: 0;
+}
