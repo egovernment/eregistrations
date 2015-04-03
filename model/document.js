@@ -25,7 +25,7 @@ module.exports = memoize(function (db) {
 		orderedFiles: { type: File, multiple: true, value: function (_observe) {
 			var files = [];
 			_observe(this.files, true).forEach(function (file) {
-				if (!_observe(file._name)) return;
+				if (!_observe(file._path)) return;
 				files.push(file);
 			});
 			return files.sort(function (a, b) {
