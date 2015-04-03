@@ -19,7 +19,7 @@ module.exports = memoize(function (Target/*, options */) {
 
 	if (options.classes) {
 		options.classes.forEach(function (Certificate) {
-			if (Object.getPrototypeOf(Certificate) !== Document) {
+			if (!Document.isPrototypeOf(Certificate)) {
 				throw new Error("Class: " + Certificate.__id__ + " must extend Document.");
 			}
 			Target.prototype.certificates.define(Certificate.__id__[0].toLowerCase() +
