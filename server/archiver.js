@@ -29,11 +29,11 @@ module.exports = function (user/*, options*/) {
 	else uploadsPath = envUploadsDir;
 
 	user.applicableSubmissions.forEach(function (submission) {
-		var docName = submission.label, zipFileName, index = 0;
+		var docName = submission.document.label, zipFileName, index = 0;
 		docName = replace.call(docName, ' ', '-');
 		zipFileName = user.companyName ? toSafeFileName(user.companyName) : user.__id__;
 		zipFileName += "." + docName;
-		submission.files.forEach(function (file) {
+		submission.document.orderedFiles.forEach(function (file) {
 			var fileExtension, archFile;
 			if (!file.path) return;
 			fileExtension = path.extname(file.path);
