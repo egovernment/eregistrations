@@ -18,13 +18,13 @@ module.exports = memoize(function (Target/*, options */) {
 	});
 
 	if (options.classes) {
-		options.classes.forEach(function (certificate) {
-			if (certificate.constructor !== Document) {
-				throw new Error("Class: " + certificate.__id__ + " must extend Document.");
+		options.classes.forEach(function (Certificate) {
+			if (!Document.isPrototypeOf(Certificate)) {
+				throw new Error("Class: " + Certificate.__id__ + " must extend Document.");
 			}
-			Target.prototype.certificates.define(certificate.__id__[0].toLowerCase() +
-				certificate.__id__.slice(1), {
-					type: certificate,
+			Target.prototype.certificates.define(Certificate.__id__[0].toLowerCase() +
+				Certificate.__id__.slice(1), {
+					type: Certificate,
 					nested: true
 				});
 		});
