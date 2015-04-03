@@ -128,8 +128,11 @@ module.exports = memoize(function (Target/* options */) {
 			multiple: true,
 			value: function (_observe) {
 				var result = [];
-				this.resolvedRequirements.forEach(function (requirement) {
-					if (_observe(this.requirements[requirement]._isApplicable)) result.push(requirement);
+				this.resolvedRequirements.forEach(function (requirementName) {
+					var requirement = this.requirements[requirementName]
+					  , isApplicable = requirement._get
+						? _observe(requirement._isApplicable) : requirement.isApplicable;
+					if (isApplicable) result.push(requirementName);
 				}, this);
 				return result;
 			}
