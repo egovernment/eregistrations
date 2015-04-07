@@ -17,8 +17,7 @@
 	margin-right: 0;
 }
 
-.pills-nav-pill,
-.pills-nav-pill-active {
+.pills-nav-pill {
 	display: block;
 	padding: 0 11px;
 	margin: 0 11px;
