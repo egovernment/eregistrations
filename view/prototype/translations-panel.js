@@ -20,6 +20,15 @@ exports['submitted-menu'] = function () {
 };
 
 exports['sub-main'] = function () {
+	ul(
+		{ class: 'pills-nav' },
+		li({ class: 'pills-nav-pill-active' }, a("Lorem ipsum dolor amet")),
+		li(a("Lorem ipsum")),
+		li(a("Lorem ipsum dolor")),
+		li(a("Lorem ipsum")),
+		li(a("Lorem ipsum"))
+	);
+
 	section(
 		{ class: 'section-primary' },
 		form(

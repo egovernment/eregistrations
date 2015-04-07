@@ -1,0 +1,34 @@
+.pills-nav {
+	margin-bottom: 0;
+}
+
+.pills-nav li {
+	display: inline-block;
+	margin-bottom: 22px;
+}
+
+.pills-nav a {
+	display: block;
+	padding: 0 11px;
+	margin: 0 11px;
+	line-height: 44px;
+	border-radius: 5px;
+	text-decoration: none;
+}
+.pills-nav a:hover,
+.pills-nav a:focus,
+.pills-nav a:active {
+	background: var(--normal-light-background);
+}
+
+.pills-nav a:first-child {
+	margin-left: 0;
+}
+
+.pills-nav-pill-active a,
+.pills-nav-pill-active a:hover,
+.pills-nav-pill-active a:focus,
+.pills-nav-pill-active a:active {
+	background: var(--normal-background);
+	color: var(--white-text);
+}
