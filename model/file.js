@@ -21,7 +21,7 @@ module.exports = memoize(function (db) {
 		generatedPreview: { type: File, nested: true },
 		thumb: { type: JpegFile, nested: true }
 	});
-	File.accept = ['image/jpeg', 'application/pdf', 'image/png', 'image/pjpeg', 'image/x-png'];
+	File.accept = ['image/jpeg', 'application/pdf', 'image/png'];
 
 	return File;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
