@@ -54,11 +54,6 @@ Object.defineProperty(db.File.prototype, 'onUpload', d(function () {
 			this.isPreviewGenerated = false;
 		}
 	}.bind(this), function (e) {
-		if (contains.call(e.message, 'No decode delegate for this image format')) {
-			console.log("Could not produce Preview and Thumb!");
-			console.log(e.code, e.message, e.stack);
-			return;
-		}
 		if (!this.path && contains.call(e.message, 'Unable to open file')) {
 			return deferred(unlink(thumbFullPath), preview && unlink(previewFullPath))(null, false);
 		}
