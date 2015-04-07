@@ -7,6 +7,16 @@
 	margin-bottom: 22px;
 }
 
+.pills-nav li:first-child .pills-nav-pill,
+.pills-nav li:first-child .pills-nav-pill-active {
+	margin-left: 0;
+}
+
+.pills-nav li:last-child .pills-nav-pill,
+.pills-nav li:last-child .pills-nav-pill-active {
+	margin-right: 0;
+}
+
 .pills-nav-pill,
 .pills-nav-pill-active {
 	display: block;
@@ -20,10 +30,6 @@
 .pills-nav-pill:focus,
 .pills-nav-pill:active {
 	background: var(--normal-light-background);
-}
-
-.pills-nav-pill:first-child {
-	margin-left: 0;
 }
 
 .pills-nav-pill-active,
