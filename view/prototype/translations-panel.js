@@ -22,7 +22,7 @@ exports['submitted-menu'] = function () {
 exports['sub-main'] = function () {
 	ul(
 		{ class: 'pills-nav' },
-		li(a({ class: 'pills-nav-pill-active' }, "Lorem ipsum dolor amet")),
+		li(a({ class: 'pills-nav-pill pills-nav-pill-active' }, "Lorem ipsum dolor amet")),
 		li(a({ class: 'pills-nav-pill' }, "Lorem ipsum")),
 		li(a({ class: 'pills-nav-pill' }, "Lorem ipsum dolor")),
 		li(a({ class: 'pills-nav-pill' }, "Lorem ipsum")),
