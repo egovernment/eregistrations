@@ -1,9 +1,10 @@
 'use strict';
 
-var contains    = require('es5-ext/string/#/contains')
+var customError = require('es5-ext/error/custom')
+  , contains    = require('es5-ext/string/#/contains')
   , d           = require('d')
   , deferred    = require('deferred')
-  , db          = require('mano').db
+  , mano        = require('mano')
   , unlink      = require('fs2/unlink')
   , descHandler = require('fs2/descriptors-handler')
   , gm          = require('gm')
@@ -12,23 +13,23 @@ var contains    = require('es5-ext/string/#/contains')
 
   , promisify = deferred.promisify
   , resolve = path.resolve
-  , uploadsPath = require('mano').uploadsPath;
+  , db = mano.db, _ = mano.i18n.bind('Controller'), uploadsPath = mano.uploadsPath;
 
 if (descHandler.initialized) gm.prototype.write = descHandler.wrap(gm.prototype.write);
 gm.prototype.writeP = promisify(gm.prototype.write);
 
 Object.defineProperty(db.File.prototype, 'onUpload', d(function () {
-	var path = uploadsPath, thumb, preview, processFullPath, thumbFullPath, previewFullPath
+	var path = uploadsPath, thumb, preview, processFullPath, thumbFullPath, previewFullPath, errMsg
 	  , previewPath = this.path
 	  , processPath = this.path
 	  , thumbPath = replace.call(this.__id__, '/', '-')
 			+ '.thumb.' + this.name;
 
 	if (!db.File.accept.has(this.type)) {
-		console.log("Error: Uploaded file (" + this.name + ") is of not supported type (" +
-			this.type + ")");
+		errMsg = _("Error: Uploaded file \"${ filename }\" is of not supported type \"${ type }\"",
+			{ filename: this.name, type: this.type });
 		this._destroy_();
-		return;
+		return deferred.reject(customError(errMsg, 'UNSUPPORTED_FILE_TYPE'));
 	}
 
 	// Generate thumb and (if needed) preview
