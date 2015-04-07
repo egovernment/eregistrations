@@ -9,10 +9,10 @@ var assign         = require('es5-ext/object/assign')
   , save  = router.save;
 
 // Common
-assign(exports, require('../user/user-old-hash'));
+assign(exports, require('../user/server-old-hash'));
 
 // Add User
-exports['user-add'] = require('../public/public-old-hash').register;
+exports['user-add'] = require('../public/server-old-hash').register;
 
 // Edit User
 exports['user/[0-9][a-z0-9]+'] = {
