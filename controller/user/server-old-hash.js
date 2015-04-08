@@ -8,8 +8,8 @@ module.exports = exports = require('./server');
 exports.profile = {
 	save: function (normalizedData, data) {
 		if (data.password || data['password-new']) {
-			data.password = oldClientHash(data.email, data.password);
-			data['password-new'] = oldClientHash(data.email, data['password-new']);
+			data.password = oldClientHash(this.target.email, data.password);
+			data['password-new'] = oldClientHash(this.target.email, data['password-new']);
 		}
 		return profileSave.call(this, normalizedData, data);
 	}

@@ -13,7 +13,7 @@ exports['user-add'] = require('../public/server-old-hash').register;
 exports['user/[0-9][a-z0-9]+'] = {
 	save: function (normalizedData, data) {
 		if (this.propertyKey) {
-			data[this.propertyKey] = oldClientHash(data.email, this.propertyKey);
+			data[this.propertyKey] = oldClientHash(this.target.email, this.propertyKey);
 		}
 		return passwordSave.call(this, normalizedData, data);
 	}
