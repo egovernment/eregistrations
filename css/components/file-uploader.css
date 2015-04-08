@@ -1,3 +1,7 @@
+.file-uploader {
+	display: inline-block;
+}
+
 .file-uploader-items {
 	list-style-type: none;
 	display: flex;
