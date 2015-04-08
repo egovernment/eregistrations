@@ -15,6 +15,6 @@ exports['user/[0-9][a-z0-9]+'] = {
 		if (this.propertyKey) {
 			data[this.propertyKey] = oldClientHash(data.email, this.propertyKey);
 		}
-		passwordSave.call(this, normalizedData, data);
+		return passwordSave.call(this, normalizedData, data);
 	}
 };
