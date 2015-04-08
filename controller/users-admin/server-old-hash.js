@@ -1,7 +1,7 @@
 'use strict';
 
 var oldClientHash = require('mano-auth/utils/client-hash')
-  , savePassword   = require('./server')['user/[0-9][a-z0-9]+'].save;
+  , passwordSave   = require('./server')['user/[0-9][a-z0-9]+'].save;
 
 // Common
 module.exports = exports = require('./server');
@@ -15,6 +15,6 @@ exports['user/[0-9][a-z0-9]+'] = {
 		if (this.propertyKey) {
 			data[this.propertyKey] = oldClientHash(data.email, this.propertyKey);
 		}
-		savePassword.call(this, normalizedData, data);
+		passwordSave.call(this, normalizedData, data);
 	}
 };
