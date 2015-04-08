@@ -1,9 +1,9 @@
 'use strict';
 
 var oldClientHash = require('mano-auth/utils/client-hash')
-  , loginSave     = require('mano-auth/controller/server/login').save
-  , registerSave  = require('mano-auth/controller/server/register-and-login').save
-  , resetSave     = require('mano-auth/controller/server/reset-password').save;
+  , loginSave     = require('./server').login.save
+  , registerSave  = require('./server').register.save
+  , resetSave     = require('./server')['reset-password'].save;
 
 module.exports = exports = require('./server');
 
