@@ -29,10 +29,11 @@ module.exports = function (routes, data) {
 		match: match = function (id) {
 			var target, targetSet;
 			targetSet = call.call(getTargetSet, this);
-			if (!type) {
-				type = targetSet.getDescriptor().type;
+			if (type) {
+				target = type.getById(id);
+			} else {
+				target = targetSet.object._getDescriptor_(targetSet.__pSKey__).type.getById(id);
 			}
-			target = type.getById(id);
 			if (!target) return false;
 			if (!targetSet.has(target)) return false;
 			this.target = target;
