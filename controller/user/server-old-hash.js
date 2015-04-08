@@ -1,12 +1,12 @@
 'use strict';
 
-var router            = require('mano/server/post-router')
+var router        = require('mano/server/post-router')
   , oldClientHash = require('mano-auth/utils/client-hash')
   , changeOwnPassword = require('mano-auth/controller/server/change-own-password').save
 
   , save  = router.save;
 
-exports.login = require('../public/server-old-hash').login;
+module.exports = exports = require('./server');
 
 exports.profile = {
 	save: function (normalizedData, data) {

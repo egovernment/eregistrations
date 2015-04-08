@@ -1,15 +1,13 @@
 'use strict';
 
-var assign         = require('es5-ext/object/assign')
-  , router         = require('mano/server/post-router')
+var router         = require('mano/server/post-router')
   , oldClientHash = require('mano-auth/utils/client-hash')
   , changePassword = require('mano-auth/controller/server/change-password').save
-  , dbObjects      = require('mano').db.objects
 
   , save  = router.save;
 
 // Common
-assign(exports, require('../user/server-old-hash'));
+module.exports = exports = require('./server');
 
 // Add User
 exports['user-add'] = require('../public/server-old-hash').register;
@@ -23,9 +21,4 @@ exports['user/[0-9][a-z0-9]+'] = {
 		}
 		return save.apply(this, arguments);
 	}
-};
-
-// Delete User
-exports['user/[0-9][a-z0-9]+/delete'] = {
-	save: function () { dbObjects.delete(this.target); }
 };
