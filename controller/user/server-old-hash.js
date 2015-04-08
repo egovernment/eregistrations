@@ -1,10 +1,7 @@
 'use strict';
 
-var router        = require('mano/server/post-router')
-  , oldClientHash = require('mano-auth/utils/client-hash')
-  , changeOwnPassword = require('mano-auth/controller/server/change-own-password').save
-
-  , save  = router.save;
+var oldClientHash = require('mano-auth/utils/client-hash')
+  , profileSave = require('./server').profile.save;
 
 module.exports = exports = require('./server');
 
@@ -13,8 +10,7 @@ exports.profile = {
 		if (data.password || data['password-new']) {
 			data.password = oldClientHash(data.email, data.password);
 			data['password-new'] = oldClientHash(data.email, data['password-new']);
-			return changeOwnPassword.apply(this, arguments);
 		}
-		return save.apply(this, arguments);
+		return profileSave.call(this, normalizedData, data);
 	}
 };
