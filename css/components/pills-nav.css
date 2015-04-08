@@ -7,13 +7,11 @@
 	margin-bottom: 22px;
 }
 
-.pills-nav li:first-child .pills-nav-pill,
-.pills-nav li:first-child .pills-nav-pill-active {
+.pills-nav li:first-child .pills-nav-pill {
 	margin-left: 0;
 }
 
-.pills-nav li:last-child .pills-nav-pill,
-.pills-nav li:last-child .pills-nav-pill-active {
+.pills-nav li:last-child .pills-nav-pill {
 	margin-right: 0;
 }
 
