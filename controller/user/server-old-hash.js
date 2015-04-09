@@ -7,10 +7,11 @@ module.exports = exports = require('./server');
 
 exports.profile = {
 	save: function (normalizedData, data) {
-		if (data.password || data['password-new']) {
-			data.password = oldClientHash(this.target.email, data.password);
-			data['password-new'] = oldClientHash(this.target.email, data['password-new']);
+		if (normalizedData.password || normalizedData['password-new']) {
+			normalizedData.password = oldClientHash(this.user.email, normalizedData.password);
+			normalizedData['password-new'] =
+				oldClientHash(this.user.email, normalizedData['password-new']);
 		}
-		return profileSave.call(this, normalizedData, data);
+		return profileSave.apply(this, arguments);
 	}
 };

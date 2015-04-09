@@ -7,15 +7,17 @@ var oldClientHash = require('mano-auth/utils/client-hash')
 
 module.exports = exports = require('./server');
 
-exports.login.save = function (data) {
-	data.password = oldClientHash(data.email, data.password);
-	return loginSave.call(this, data);
+exports.login.save = function (normalizedData, data) {
+	normalizedData.password = oldClientHash(normalizedData.email, normalizedData.password);
+	return loginSave.apply(this, arguments);
 };
-exports.register.save = function (data) {
-	data['User#/password'] = oldClientHash(data['User#/email'], data['User#/password']);
-	return registerSave.call(this, data);
+exports.register.save = function (normalizedData, data) {
+	normalizedData['User#/password'] =
+		oldClientHash(normalizedData['User#/email'], normalizedData['User#/password']);
+	return registerSave.apply(this, arguments);
 };
-exports['reset-password'].save = function (data) {
-	data.password = oldClientHash(data.email, data.password);
-	return resetSave.call(this, data);
+exports['reset-password'].save = function (normalizedData, data) {
+	normalizedData.password = oldClientHash(normalizedData.email,
+		normalizedData.password);
+	return resetSave.apply(this, arguments);
 };
