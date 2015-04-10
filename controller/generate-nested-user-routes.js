@@ -39,6 +39,11 @@ module.exports = function (routes, data) {
 		}
 	});
 
+	if (db.User.prototype.isApplicationCompleted === undefined) {
+		throw new TypeError("Nested user routes rely on existense of user.isApplicationCompleted " +
+			"property");
+	}
+
 	// Part A
 	assign(routes, nest(name + '/[0-9][0-9a-z]+', partA, function (id) {
 		var user = matchUser.call(this, id);
