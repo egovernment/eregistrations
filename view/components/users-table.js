@@ -1,6 +1,7 @@
 'use strict';
 
 var toNatural            = require('es5-ext/number/to-pos-integer')
+  , assign               = require('es5-ext/object/assign')
   , forEach              = require('es5-ext/object/for-each')
   , object               = require('es5-ext/object/valid-object')
   , callable             = require('es5-ext/object/valid-callable')
@@ -24,7 +25,7 @@ module.exports = function (snapshots, options) {
 	var list, table, pagination, i18n, columns
 	  , statusQuery, searchQuery, pathname, pageLimit, statusMap, customFilter
 	  , active, update, appName, pageQuery, inSync, isPartial, tableStyle, snapshotKey
-	  , lastTableHeight = '', customFilterQuery, isActive;
+	  , lastTableHeight = '', customFilterQuery, isActive, snapshotKeyExt;
 
 	var getPageCount = function (value) {
 		if (!value) return 1;
@@ -44,9 +45,11 @@ module.exports = function (snapshots, options) {
 		forEach(object(customFilter.filters), callable);
 	}
 	if (options.isActive != null) isActive = callable(options.isActive);
+	if (options.snapshotKeyExt != null) snapshotKeyExt = object(options.snapshotKeyExt);
 	inSync = new ObservableValue(false);
 	isPartial = (function () {
 		var snapshotData = { appName: appName };
+		if (snapshotKeyExt) assign(snapshotData, snapshotKeyExt);
 		if (statusMap[i18n.all || 'all']) snapshotData.status = i18n.all || 'all';
 		return db.User.dataSnapshots.get(serializeSnapshotKey(snapshotData))
 			._totalSize.map(function (value) { return value > options.cacheLimits.listedUsers; });
@@ -58,6 +61,7 @@ module.exports = function (snapshots, options) {
 		if (!active) return;
 		if (isActive && !isActive()) return;
 		snapshotData = { appName: appName };
+		if (snapshotKeyExt) assign(snapshotData, snapshotKeyExt);
 
 		// Resolve status
 		if (statusQuery) {
@@ -139,6 +143,7 @@ module.exports = function (snapshots, options) {
 		} else {
 			// Assure that we have all data on board
 			snapshotData = { appName: appName };
+			if (snapshotKeyExt) assign(snapshotData, snapshotKeyExt);
 			if (statusMap[i18n.all || 'all']) snapshotData.status = i18n.all || 'all';
 			snapshotKey = serializeSnapshotKey(snapshotData);
 			if (snapshots.last !== snapshotKey) snapshots.add(snapshotKey);
