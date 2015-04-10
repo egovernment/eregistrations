@@ -23,7 +23,7 @@
 }
 
 .tooltip-container * {
-	color: white;
+	color: var(--white-text);
 }
 .tooltip-container > * {
 	margin-bottom: 11px;
@@ -36,4 +36,10 @@
 	list-style-type: disc;
 	padding-left: 22px;
 
+}
+.tooltip-container a:hover,
+.tooltip-container a:focus,
+.tooltip-container a:active {
+	color: var(--white-text);
+	text-decoration: none;
 }
