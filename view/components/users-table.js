@@ -176,6 +176,7 @@ module.exports = function (snapshots, options) {
 	list.limit = pageLimit;
 	table = new ReactiveTable(document, list, columns);
 	table.pagination = pagination = new Pagination(pathname);
+	table.updateState = update;
 
 	table.inSync = inSync;
 	tableStyle = window.getComputedStyle(table.table);
