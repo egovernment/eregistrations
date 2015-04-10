@@ -40,7 +40,7 @@ module.exports = function (routes, data) {
 	});
 
 	if (db.User.prototype.isApplicationCompleted === undefined) {
-		throw new TypeError("Nested user routes rely on existense of user.isApplicationCompleted " +
+		throw new TypeError("Nested user routes rely on existence of user.isApplicationCompleted " +
 			"property");
 	}
 
