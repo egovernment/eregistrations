@@ -24,7 +24,9 @@ module.exports = function (snapshots, options) {
 	var list, table, pagination, i18n, columns
 	  , statusQuery, searchQuery, pathname, pageLimit, statusMap, customFilter
 	  , active, update, appName, pageQuery, inSync, isPartial, tableStyle, snapshotKey
-	  , lastTableHeight = '', customFilterQuery;
+	  , lastTableHeight = '', customFilterQuery
+	  , customFilters
+	  , customFiltersQueries = {};
 
 	var getPageCount = function (value) {
 		if (!value) return 1;
@@ -38,11 +40,26 @@ module.exports = function (snapshots, options) {
 	value(options.cacheLimits);
 	pageLimit = options.cacheLimits.usersPerPage;
 	statusMap = object(options.users);
+
 	if (options.customFilter != null) {
-		customFilter = object(options.customFilter);
-		stringifiable(customFilter.name);
-		forEach(object(customFilter.filters), callable);
+
+		if (options.customFilter instanceof Array) {
+
+			customFilters = object(options.customFilter);
+
+			customFilters.forEach(function (filter) {
+				stringifiable(filter.name);
+				forEach(object(filter.filters), callable);
+			});
+
+		} else {
+
+			customFilter = object(options.customFilter);
+			stringifiable(customFilter.name);
+			forEach(object(customFilter.filters), callable);
+		}
 	}
+
 	inSync = new ObservableValue(false);
 	isPartial = (function () {
 		var snapshotData = { appName: appName };
@@ -79,6 +96,27 @@ module.exports = function (snapshots, options) {
 					snapshotData[customFilter.name] = customFilterQuery.value;
 				}
 			}
+		}
+
+		if (customFilters) {
+
+			customFilters.forEach(function (filter) {
+
+				var currentFilterValue = customFiltersQueries[filter.name]
+					? customFiltersQueries[filter.name].value
+					: null;
+
+				if (currentFilterValue) {
+
+					users = users.filter(function (candidate) {
+						return filter.filters(candidate, currentFilterValue);
+					});
+
+					snapshotData[filter.name] = customFiltersQueries.value;
+				} else {
+					fixLocationQuery(filter.name);
+				}
+			});
 		}
 
 		// Resolve search
@@ -157,6 +195,16 @@ module.exports = function (snapshots, options) {
 	if (customFilter) {
 		customFilterQuery = location.query.get(customFilter.name);
 		customFilterQuery.on('change', update);
+	}
+
+	// Multiple custom filters
+	if (customFilters) {
+
+		customFilters.forEach(function (filter) {
+
+			customFiltersQueries[filter.name] = location.query.get(filter.name);
+			customFiltersQueries[filter.name].on('change', update);
+		});
 	}
 
 	// Search filter
