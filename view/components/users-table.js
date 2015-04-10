@@ -24,7 +24,7 @@ module.exports = function (snapshots, options) {
 	var list, table, pagination, i18n, columns
 	  , statusQuery, searchQuery, pathname, pageLimit, statusMap, customFilter
 	  , active, update, appName, pageQuery, inSync, isPartial, tableStyle, snapshotKey
-	  , lastTableHeight = '', customFilterQuery;
+	  , lastTableHeight = '', customFilterQuery, isActive;
 
 	var getPageCount = function (value) {
 		if (!value) return 1;
@@ -43,6 +43,7 @@ module.exports = function (snapshots, options) {
 		stringifiable(customFilter.name);
 		forEach(object(customFilter.filters), callable);
 	}
+	if (options.isActive != null) isActive = callable(options.isActive);
 	inSync = new ObservableValue(false);
 	isPartial = (function () {
 		var snapshotData = { appName: appName };
@@ -55,6 +56,7 @@ module.exports = function (snapshots, options) {
 		var status, search, normalizedSearch, page, snapshot, usersSnapshot
 		  , snapshotData, maxPage, users;
 		if (!active) return;
+		if (isActive && !isActive()) return;
 		snapshotData = { appName: appName };
 
 		// Resolve status
