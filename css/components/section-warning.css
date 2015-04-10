@@ -12,13 +12,13 @@
 	margin-bottom: 22px;
 }
 
-.section-warning li a {
+.section-warning li > a {
 	text-decoration: none;
 	color: var(--dark-text);
 }
-.section-warning li a:hover,
-.section-warning li a:focus,
-.section-warning li a:active {
+.section-warning li > a:hover,
+.section-warning li > a:focus,
+.section-warning li > a:active {
 	text-decoration: underline;
 }
 
