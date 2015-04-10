@@ -40,7 +40,6 @@ module.exports = function (routes, data) {
 	});
 
 	// Part A
-	partA['application-submit'].redirectUrl = '/';
 	assign(routes, nest(name + '/[0-9][0-9a-z]+', partA, function (id) {
 		var user = matchUser.call(this, id);
 		if (!user) return false;
