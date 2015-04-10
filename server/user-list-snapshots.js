@@ -182,8 +182,10 @@ module.exports = function (usersPass, computedUsersPass, dbSubmitted
 		generalFragment.sets.add(new ObjectFragment(snapshot, totalSizePropertyPass));
 	});
 
-	return function (snapshotsSet, fragment) {
-		var statuses;
+	return function (snapshotsSet/*, fragment*/) {
+		var statuses, fragment = arguments[1];
+
+		if (!fragment) fragment = new Fragment();
 
 		// Add general fragment
 		fragment.sets.add(generalFragment);
