@@ -41,7 +41,7 @@ module.exports = function (user/*, options*/) {
 			if (index) archFile += '.' + index;
 			archFile += fileExtension;
 			archFile = unidecode(archFile);
-			files.push({ path: file.path, name: archFile });
+			files.push({ path: resolve(uploadsPath, file.path), name: archFile });
 			++index;
 		});
 	});
