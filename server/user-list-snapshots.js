@@ -1,10 +1,14 @@
 'use strict';
 
 var forEach                = require('es5-ext/object/for-each')
+  , callable               = require('es5-ext/object/valid-callable')
+  , object                 = require('es5-ext/object/valid-object')
+  , stringifiable          = require('es5-ext/object/validate-stringifiable-value')
   , d                      = require('d')
   , memoize                = require('memoizee')
   , ObservableSet          = require('observable-set')
   , ObservableMultiSet     = require('observable-multi-set/primitive')
+  , validateDb             = require('dbjs/valid-dbjs')
   , serializeKey           = require('dbjs/_setup/serialize/key')
   , Fragment               = require('dbjs-fragment')
   , ObjectFragment         = require('dbjs-fragment/object')
@@ -167,10 +171,20 @@ var addSnapshotsFragment = function (fragment, snapshotsSet
 	return fragment;
 };
 
-module.exports = function (usersPass, computedUsersPass, dbSubmitted
-	  , appName, usersMap, compare, cacheLimits, customFilter) {
+module.exports = function (conf) {
+	var usersPass, computedUsersPass, dbSubmitted, appName, usersMap, compare, cacheLimits
+	  , customFilter, generalFragment;
 
-	var generalFragment;
+	object(conf);
+	usersPass = object(conf.pass);
+	computedUsersPass = object(conf.computedPass);
+	dbSubmitted = validateDb(conf.db);
+	appName = stringifiable(conf.appName);
+	usersMap = object(conf.map);
+	compare = callable(conf.compare);
+	cacheLimits = object(conf.cacheLimits);
+	customFilter = object(conf.customFilter);
+
 	dataMap[appName] = usersMap;
 	generalFragment = new Fragment();
 
