@@ -177,13 +177,15 @@ module.exports = function (conf) {
 
 	object(conf);
 	usersPass = object(conf.pass);
-	computedUsersPass = object(conf.computedPass);
-	dbSubmitted = validateDb(conf.db);
+	if (conf.computedPass != null) {
+		computedUsersPass = object(conf.computedPass);
+		dbSubmitted = validateDb(conf.computedDb);
+	}
 	appName = stringifiable(conf.appName);
 	usersMap = object(conf.map);
 	compare = callable(conf.compare);
 	cacheLimits = object(conf.cacheLimits);
-	customFilter = object(conf.customFilter);
+	if (conf.customFilter != null) customFilter = object(conf.customFilter);
 
 	dataMap[appName] = usersMap;
 	generalFragment = new Fragment();
