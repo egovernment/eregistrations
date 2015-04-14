@@ -25,7 +25,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 					resolved.value,
 					function (entityObject) {
 						return ns.li(headersMap[headerRank](
-							resolvePropertyPath(entityObject, self.constructor.entityTitleProperty).value
+							resolvePropertyPath(entityObject, self.constructor.entityTitleProperty).observable
 						), ns.list(resolvePropertyPath(entityObject, self.constructor.sectionProperty).value,
 							function (section) {
 								return section.toDOM(document, { headerRank: headerRank + 1 });
