@@ -1,7 +1,7 @@
 'use strict';
 
-var validDb    = require('dbjs/valid-dbjs')
-  , defineUser = require('mano-auth/model/user');
+var validDb = require('dbjs/valid-dbjs')
+  , defineUser = require('./base');
 
 module.exports = function (db/* options */) {
 	var options, User;

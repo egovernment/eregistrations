@@ -2,7 +2,7 @@
 
 var memoize             = require('memoizee/plain')
   , validDb             = require('dbjs/valid-dbjs')
-  , defineUser          = require('mano-auth/model/user')
+  , defineUser          = require('./base')
   , defineDataSnapshots = require('../lib/data-snapshots');
 
 module.exports = memoize(function (db/* options */) {
