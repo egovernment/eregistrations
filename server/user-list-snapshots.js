@@ -44,14 +44,20 @@ var getSnapshotPageFragment = memoize(function (key, page) {
 
 var resolveSnapshot = memoize(function (key, customFilter) {
 	var snapshot = dataSnapshots.get(key), data = unserializeSnapshotKey(key)
-	  , map = dataMap[data.appName], users = map[data.status || ''];
-	if (customFilter && data[customFilter.name]) {
-		users = users.filter(customFilter.filters[data[customFilter.name]]);
+	  , map = dataMap[data.appName], users;
+	if (map) {
+		users = map[data.status || ''];
+		if (customFilter && data[customFilter.name]) {
+			users = users.filter(customFilter.filters[data[customFilter.name]]);
+		}
+		if (data.search) users = users.filter(getUsersFilter(data.search));
+		if (snapshot.totalSize !== users.size) snapshot.totalSize = users.size;
+		defineProperty(snapshot, 'items', d(users));
+		users._size.on('change', function (event) { snapshot.totalSize = event.newValue; });
+	} else {
+		if (snapshot.totalSize !== 0) snapshot.totalSize = 0;
+		defineProperty(snapshot, 'items', d(new ObservableSet()));
 	}
-	if (data.search) users = users.filter(getUsersFilter(data.search));
-	if (snapshot.totalSize !== users.size) snapshot.totalSize = users.size;
-	defineProperty(snapshot, 'items', d(users));
-	users._size.on('change', function (event) { snapshot.totalSize = event.newValue; });
 	return snapshot;
 }, { length: 1, primitive: true });
 
