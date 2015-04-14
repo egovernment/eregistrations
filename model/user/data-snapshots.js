@@ -7,7 +7,7 @@ var memoize             = require('memoizee/plain')
 
 module.exports = memoize(function (db/* options */) {
 	var options = arguments[1]
-	  , User = defineUser(validDb(db), options)
+	  , User = validDb(db).User || defineUser(db, options)
 	  , DataSnapshots = defineDataSnapshots(db);
 
 	User.define('dataSnapshots', {
