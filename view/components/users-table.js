@@ -1,7 +1,6 @@
 'use strict';
 
 var toNatural            = require('es5-ext/number/to-pos-integer')
-  , assign               = require('es5-ext/object/assign')
   , forEach              = require('es5-ext/object/for-each')
   , object               = require('es5-ext/object/valid-object')
   , callable             = require('es5-ext/object/valid-callable')
