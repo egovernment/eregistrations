@@ -1,10 +1,10 @@
 'use strict';
 
-var memoize              = require('memoizee/plain')
-  , validDb              = require('dbjs/valid-dbjs')
-  , defineRejectReason   = require('../reject-reason')
-  , defineDocument       = require('../document')
-  , _                    = require('mano').i18n.bind('Model: Submissions');
+var memoize            = require('memoizee/plain')
+  , validDb            = require('dbjs/valid-dbjs')
+  , defineRejectReason = require('../reject-reason')
+  , defineDocument     = require('../document')
+  , _                  = require('mano').i18n.bind('Model: Submissions');
 
 module.exports = memoize(function (db) {
 	var RejectReason, Document;
