@@ -13,3 +13,8 @@
 .submitted-menu-bar > nav:first-child {
 	float: left;
 }
+
+.submitted-menu-items li:first-child {
+	min-width: 170px;
+	text-align: center;
+}
