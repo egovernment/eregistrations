@@ -13,3 +13,7 @@
 .submitted-menu-bar > nav:first-child {
 	float: left;
 }
+
+.submitted-menu-items li {
+	padding-left: 0.01px; /* IE 8 fix of weird width calculation */
+}
