@@ -14,7 +14,6 @@
 	float: left;
 }
 
-.submitted-menu-items li:first-child {
-	min-width: 170px;
-	text-align: center;
+.submitted-menu-items li {
+	padding: 0 1px;
 }
