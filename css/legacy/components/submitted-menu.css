@@ -15,5 +15,5 @@
 }
 
 .submitted-menu-items li {
-	padding: 0 1px;
+	padding-left: 0.01px; /* IE 8 fix of weird width calculation */
 }
