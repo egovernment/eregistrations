@@ -22,10 +22,10 @@
 	background: var(--light-background);
 }
 
-.pagination li > .pagination-active,
-.pagination li > .pagination-active:hover,
-.pagination li > .pagination-active:focus,
-.pagination li > .pagination-active:active {
+.pagination .pagination-active > a,
+.pagination .pagination-active > a:hover,
+.pagination .pagination-active > a:focus,
+.pagination .pagination-active > a:active {
 	background: var(--normal-background);
 	color: var(--white-background);
 }
