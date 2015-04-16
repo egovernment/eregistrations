@@ -14,7 +14,7 @@ module.exports = memoize(function (Target/* options */) {
 			type: FormSectionBase,
 			multiple: true,
 			value: function (_observe) {
-				var sections = [], sectionNames = {}, derivatives, sectionFilter;
+				var sections = [], sectionNames = {}, derivatives = [], sectionFilter;
 
 				sectionFilter = function (section, sectionName) {
 					if (!sectionNames[sectionName]) {
@@ -24,10 +24,11 @@ module.exports = memoize(function (Target/* options */) {
 				};
 
 				if (_observe(this.derivedBusinessProcesses._size)) {
-					derivatives = this.derivedBusinessProcesses.toArray().sort(function (a, b) {
-						return b.lastModified - a.lastModified;
+					// we want to avoid potential race condition, hence no toArray
+					this.derivedBusinessProcesses.forEach(function (derived) {
+						derivatives.push(derived);
 					});
-					derivatives.forEach(function (derived) {
+					derivatives.reverse().forEach(function (derived) {
 						if (derived.formSections) {
 							derived.formSections.forEach(sectionFilter);
 						}
