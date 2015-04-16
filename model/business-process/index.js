@@ -12,6 +12,7 @@ module.exports = function (db) {
 	require('./requirements')(BusinessProcess);
 	require('./certificates')(BusinessProcess);
 	require('./documents')(BusinessProcess);
+	require('./sections')(BusinessProcess);
 
 	return BusinessProcess;
 };
