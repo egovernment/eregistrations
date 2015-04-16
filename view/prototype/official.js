@@ -80,7 +80,7 @@ exports['sub-main'] = function () {
 		{ class: 'pagination' },
 		li(a("<<")),
 		li(a("<")),
-		li(a({ class: 'pagination-active' }, "1")),
+		li({ class: 'pagination-active' }, a("1")),
 		li(a("2")),
 		li(a("3")),
 		li(a("4")),
