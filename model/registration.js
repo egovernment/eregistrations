@@ -17,6 +17,12 @@ module.exports = memoize(function (db) {
 				return Document ? Document.label : null;
 			}
 		},
+		shortLabel: {
+			type: StringLine,
+			value: function () {
+				return this.label;
+			}
+		},
 		certificates: {
 			type: StringLine,
 			multiple: true,
