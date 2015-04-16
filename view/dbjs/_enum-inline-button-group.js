@@ -29,6 +29,6 @@ Object.defineProperties(Radio.prototype, assign({
 }, autoBind({
 	reload: d(function () {
 		reload.apply(this, arguments);
-		this.dom.appendChild(this.classHandlerScript);
+		this.dom.insertBefore(this.classHandlerScript, this.dom.firstChild);
 	})
 })));
