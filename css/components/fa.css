@@ -223,3 +223,10 @@ e.g.:
 .fa-minus-circle:before {
 	content: '\f056';
 }
+
+.fa-bank {
+	width: 1.15em;
+}
+.fa-bank:before {
+	content: '\f19c'
+}
