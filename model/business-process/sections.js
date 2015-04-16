@@ -22,18 +22,15 @@ module.exports = memoize(function (Target/* options */) {
 						sections.push(section);
 					}
 				};
-
-				if (_observe(this.derivedBusinessProcesses._size)) {
-					// we want to avoid potential race condition, hence no toArray
-					this.derivedBusinessProcesses.forEach(function (derived) {
-						derivatives.push(derived);
-					});
-					derivatives.reverse().forEach(function (derived) {
-						if (derived.formSections) {
-							derived.formSections.forEach(sectionFilter);
-						}
-					});
-				}
+				// we want to avoid potential race condition, hence no toArray
+				this.derivedBusinessProcesses.forEach(function (derived) {
+					derivatives.push(derived);
+				});
+				derivatives.reverse().forEach(function (derived) {
+					if (derived.formSections) {
+						derived.formSections.forEach(sectionFilter);
+					}
+				});
 				if (this.formSections) {
 					this.formSections.forEach(sectionFilter);
 				}
