@@ -5,6 +5,6 @@ var resolve   = require('path').resolve
   , stringify = require('eregistrations/utils/i18n-stringify')
   , root      = require('mano').env.root;
 
-exports.save = function (data) {
+exports.submit = function (data) {
 	return writeFile(resolve(root, 'i18n.json'), stringify(data));
 };

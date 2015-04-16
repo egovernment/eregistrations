@@ -19,7 +19,7 @@ module.exports = function (routes, data) {
 	  , match;
 
 	routes[name + '-add'] = {
-		save: function () {
+		submit: function () {
 			save.apply(this, arguments);
 			call.call(getTargetSet, this).add(this.target);
 		},
@@ -43,7 +43,7 @@ module.exports = function (routes, data) {
 	};
 	routes[name + '/[0-9][a-z0-9]+/delete'] = {
 		match: match,
-		save: function () { db.objects.delete(this.target); },
+		submit: function () { db.objects.delete(this.target); },
 		formHtmlId: '#' + tableHtmlId
 	};
 };

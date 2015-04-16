@@ -1,23 +1,23 @@
 'use strict';
 
-var oldClientHash = require('mano-auth/utils/client-hash')
-  , loginSave     = require('./server').login.save
-  , registerSave  = require('./server').register.save
-  , resetSave     = require('./server')['reset-password'].save;
+var oldClientHash  = require('mano-auth/utils/client-hash')
+  , loginSubmit    = require('./server').login.submit
+  , registerSubmit = require('./server').register.submit
+  , resetSubmit    = require('./server')['reset-password'].submit;
 
 module.exports = exports = require('./server');
 
-exports.login.save = function (normalizedData, data) {
+exports.login.submit = function (normalizedData, data) {
 	normalizedData.password = oldClientHash(normalizedData.email, normalizedData.password);
-	return loginSave.apply(this, arguments);
+	return loginSubmit.apply(this, arguments);
 };
-exports.register.save = function (normalizedData, data) {
+exports.register.submit = function (normalizedData, data) {
 	normalizedData['User#/password'] =
 		oldClientHash(normalizedData['User#/email'], normalizedData['User#/password']);
-	return registerSave.apply(this, arguments);
+	return registerSubmit.apply(this, arguments);
 };
-exports['reset-password'].save = function (normalizedData, data) {
+exports['reset-password'].submit = function (normalizedData, data) {
 	normalizedData.password = oldClientHash(normalizedData.email,
 		normalizedData.password);
-	return resetSave.apply(this, arguments);
+	return resetSubmit.apply(this, arguments);
 };

@@ -1,15 +1,15 @@
 'use strict';
 
 var router            = require('mano/server/post-router')
-  , changeOwnPassword = require('mano-auth/controller/server/change-own-password').save
+  , changeOwnPassword = require('mano-auth/controller/server/change-own-password').submit
 
-  , save  = router.save;
+  , submit  = router.submit;
 
 exports.login = require('mano-auth/controller/server/login');
 
 exports.profile = {
-	save: function (normalizedData, data) {
+	submit: function (normalizedData, data) {
 		if (data.password || data['password-new']) return changeOwnPassword.apply(this, arguments);
-		return save.apply(this, arguments);
+		return submit.apply(this, arguments);
 	}
 };

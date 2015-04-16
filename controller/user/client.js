@@ -2,13 +2,13 @@
 
 var router = require('mano/client/post-router')
 
-  , save  = router.save, remoteSave = router.remoteSave;
+  , submit  = router.submit, remoteSubmit = router.remoteSubmit;
 
 exports.login = require('mano-auth/controller/client/login');
 
 exports.profile = {
-	save: function (normalizedData, data) {
-		if (data.password || data['password-new']) return remoteSave.apply(this, arguments);
-		return save.apply(this, arguments);
+	submit: function (normalizedData, data) {
+		if (data.password || data['password-new']) return remoteSubmit.apply(this, arguments);
+		return submit.apply(this, arguments);
 	}
 };

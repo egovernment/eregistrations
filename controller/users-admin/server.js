@@ -2,10 +2,10 @@
 
 var assign         = require('es5-ext/object/assign')
   , router         = require('mano/server/post-router')
-  , changePassword = require('mano-auth/controller/server/change-password').save
+  , changePassword = require('mano-auth/controller/server/change-password').submit
   , dbObjects      = require('mano').db.objects
 
-  , save  = router.save;
+  , submit  = router.submit;
 
 // Common
 assign(exports, require('../user/server'));
@@ -15,13 +15,13 @@ exports['user-add'] = require('mano-auth/controller/server/register');
 
 // Edit User
 exports['user/[0-9][a-z0-9]+'] = {
-	save: function (normalizedData, data) {
+	submit: function (normalizedData, data) {
 		if (this.propertyKey) return changePassword.apply(this, arguments);
-		return save.apply(this, arguments);
+		return submit.apply(this, arguments);
 	}
 };
 
 // Delete User
 exports['user/[0-9][a-z0-9]+/delete'] = {
-	save: function () { dbObjects.delete(this.target); }
+	submit: function () { dbObjects.delete(this.target); }
 };
