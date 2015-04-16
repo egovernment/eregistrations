@@ -14,11 +14,12 @@ module.exports = memoize(function (Target/* options */) {
 			type: FormSectionBase,
 			multiple: true,
 			value: function (_observe) {
-				var sections = [], derivatives, sectionFilter;
+				var sections = [], sectionNames = {}, derivatives, sectionFilter;
 
-				sectionFilter = function (formSection, sectionName) {
-					if (sections.indexOf(sectionName) === -1) {
-						sections.push(formSection);
+				sectionFilter = function (section, sectionName) {
+					if (!sectionNames[sectionName]) {
+						sectionNames[sectionName] = true;
+						sections.push(section);
 					}
 				};
 
