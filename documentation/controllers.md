@@ -24,8 +24,8 @@ If path is static e.g. `/guide/` then key is `guide`, if path is dynamic, e.g. `
 #### validate
 Optional. Defaults to common [validate](https://github.com/egovernment/eregistrations-lomas/blob/master/node_modules/mano/utils/validate.js) logic.
 
-#### save
-Optional. Defaults to common [save](https://github.com/egovernment/eregistrations-lomas/blob/master/node_modules/mano/utils/save.js) logic.
+#### submit
+Optional. Defaults to common [submit](https://github.com/egovernment/eregistrations-lomas/blob/master/node_modules/mano/utils/save.js) logic.
 
 #### redirectUrl
 Optional. Redirection url, if we want to switch interface to other page after successful submission.
@@ -38,7 +38,7 @@ Optional. If from is placed in a dialog (as e.g. login or inventory), or is in n
 Should be provided when we deal with a dynamic key.  
 `match` function would be called with tokens resolved from url. It should return _false_ if url seems malformed and doesn't address a valid entity. In other case _true_ should be returned.
 
-Any resolved objects within `match` function, should be assigned on the context (`this`), that way they're accessible to `validate` and `save` functions which will be called with same context.
+Any resolved objects within `match` function, should be assigned on the context (`this`), that way they're accessible to `validate` and `submit` functions which will be called with same context.
 
 --
 
@@ -59,12 +59,12 @@ e.g. we may say to client, that this request should be processed remotely:
 _client.js_
 ```javascript
 exports['server-only-action'] = {
-  remoteSave: true
+  remoteSubmit: true
 }
 ```
 
-#### remoteSave
-If we pass _true_, handler proceeds with [default remote save](https://github.com/egovernment/eregistrations-lomas/blob/master/node_modules/mano/client/post-router.js#L19) logic. We can override that behavior, by passing our own function handler.
+#### remoteSubmit
+If we pass _true_, handler proceeds with [default remote submit](https://github.com/egovernment/eregistrations-lomas/blob/master/node_modules/mano/client/post-router.js#L19) logic. We can override that behavior, by passing our own function handler.
 
 #### processResponse
 Additionally we may provide special response handler. Normally application does nothing after server propagated request, but if we want to react to it in specific way, or need to parse message send from server, then we need to provide `processResponse` function.  
