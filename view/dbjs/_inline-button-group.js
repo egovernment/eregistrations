@@ -21,7 +21,7 @@ Input.prototype = Object.create(DOMInput.prototype, {
 	_render: d(function (options) {
 		this.dom = this.document.createElement('div');
 		this.dom.setAttribute('class', options.class || 'inline-button-radio');
-		this.dom.appendChild(generateScript.call(this.document, function (id, classMap) {
+		this.classHandlerScript = generateScript.call(this.document, function (id, classMap) {
 			var current, radio, radios;
 			var onChange = function () {
 				var nu, i;
@@ -43,7 +43,8 @@ Input.prototype = Object.create(DOMInput.prototype, {
 				container.addEvent('click', function () { setTimeout(onChange, 0); });
 				onChange();
 			}, 0);
-		}, getId.call(this.dom), this.classMap));
+		}, getId.call(this.dom), this.classMap);
+		this.dom.appendChild(this.classHandlerScript);
 	}),
 	createOption: d(function (value, labelTextDOM) {
 		var dom = createOption.call(this, value, labelTextDOM, this.controlsOptions[value]);
