@@ -54,7 +54,7 @@ module.exports = memoize(function (db) {
 			});
 			return !_observe(entityObjects._size) ? 0 : weightTotal;
 		} },
-		editDate: {
+		lastEditDate: {
 			value: function (_observe) {
 				var res = 0, entityObjects, sectionKey;
 				entityObjects = this.master.resolveSKeyPath(this.constructor.propertyName, _observe);

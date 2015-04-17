@@ -65,7 +65,7 @@ module.exports = memoize(function (db) {
 
 			return weightTotal;
 		} },
-		editDate: {
+		lastEditDate: {
 			value: function (_observe) {
 				var res = 0;
 				this.sections.forEach(function (section) {

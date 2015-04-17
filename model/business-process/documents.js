@@ -19,7 +19,7 @@ module.exports = memoize(function (Target/* options */) {
 
 				this.requestedCertificates.forEach(function (cert) {
 					documents.push(this.certificates[cert]);
-				}.bind(this));
+				}, this);
 				this.applicableSubmissions.forEach(function (sub) {
 					documents.push(sub.document);
 				});

@@ -125,11 +125,10 @@ module.exports = memoize(function (db) {
 			type: db.Object,
 			nested: true
 		},
-		editDate: {
+		lastEditDate: {
 			value: function (_observe) {
-				var res = 0, props, resolved, lastModified;
-				props = this.constructor.propertyNames.copy();
-				props.forEach(function (name) {
+				var res = 0, resolved, lastModified;
+				this.constructor.propertyNames.forEach(function (name) {
 					resolved = this.master.resolveSKeyPath(name, _observe);
 					if (!resolved) {
 						return;

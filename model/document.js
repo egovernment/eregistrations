@@ -10,11 +10,11 @@ var memoize          = require('memoizee/plain')
   , defineDate       = require('dbjs-ext/date-time/date');
 
 module.exports = memoize(function (db) {
-	var StringLine, File, Date;
+	var StringLine, File, DateType;
 	validDb(db);
 	StringLine = defineStringLine(db);
 	File = defineFile(db);
-	Date = defineDate(db);
+	DateType = defineDate(db);
 	db.Object.extend('Document', {
 		files: { type: db.Object, nested: true },
 		issuedBy: { type: db.Object, value: function () {
@@ -27,7 +27,7 @@ module.exports = memoize(function (db) {
 			return this.constructor.legend;
 		} },
 		uniqueKey: { type: StringLine, value: function () { return this.key; } },
-		issueDate: { type: Date },
+		issueDate: { type: DateType },
 		orderedFiles: { type: File, multiple: true, value: function (_observe) {
 			var files = [];
 			_observe(this.files, true).forEach(function (file) {
