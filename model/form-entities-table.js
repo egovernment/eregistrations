@@ -53,7 +53,27 @@ module.exports = memoize(function (db) {
 				weightTotal += _observe(resolved.observable);
 			});
 			return !_observe(entityObjects._size) ? 0 : weightTotal;
-		} }
+		} },
+		editDate: {
+			value: function (_observe) {
+				var res = 0, entityObjects, sectionKey;
+				entityObjects = this.master.resolveSKeyPath(this.constructor.propertyName, _observe);
+				sectionKey = this.constructor.sectionProperty;
+				if (!entityObjects) {
+					return 0;
+				}
+				entityObjects = entityObjects.value;
+				entityObjects.forEach(function (entityObject) {
+					var sections;
+					sections = entityObject.resolveSKeyPath(sectionKey, _observe);
+					sections.forEach(function (section) {
+						if (_observe(section._editDate) > res) res = section.editDate;
+					});
+				});
+
+				return res / 1000;
+			}
+		}
 	}, {
 		actionUrl: { required: false },
 		baseUrl: { type: StringLine, required: true },
