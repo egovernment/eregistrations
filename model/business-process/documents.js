@@ -26,6 +26,30 @@ module.exports = memoize(function (Target/* options */) {
 
 				return documents;
 			}
+		},
+		cumulatedDocuments: {
+			type: Document,
+			multiple: true,
+			value: function () {
+				var documents = [], derivedDocs = [], documentNames = {}, filter;
+
+				filter = function (doc) {
+					if (!documentNames[doc.uniqueKey]) {
+						documentNames[doc.uniqueKey] = true;
+						documents.push(doc);
+					}
+				};
+
+				this.derivedBusinessProcesses.forEach(function (derived) {
+					derived.documents.forEach(function (doc) {
+						derivedDocs.push(doc);
+					});
+				});
+				derivedDocs.reverse().forEach(filter);
+				this.documents.forEach(filter);
+
+				return documents;
+			}
 		}
 	});
 
