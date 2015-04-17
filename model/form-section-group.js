@@ -64,7 +64,17 @@ module.exports = memoize(function (db) {
 			});
 
 			return weightTotal;
-		} }
+		} },
+		lastEditDate: {
+			value: function (_observe) {
+				var res = 0;
+				this.sections.forEach(function (section) {
+					if (_observe(section._editDate) > res) res = section.editDate;
+				});
+
+				return res;
+			}
+		}
 	});
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSection;
 	FormSectionGroup.prototype.sections._descriptorPrototype_.nested = true;

@@ -124,6 +124,21 @@ module.exports = memoize(function (db) {
 		inputOptions: {
 			type: db.Object,
 			nested: true
+		},
+		lastEditDate: {
+			value: function (_observe) {
+				var res = 0, resolved, lastModified;
+				this.constructor.propertyNames.forEach(function (name) {
+					resolved = this.master.resolveSKeyPath(name, _observe);
+					if (!resolved) {
+						return;
+					}
+					lastModified = _observe(resolved.object['_' + name]._lastModified);
+					if (lastModified > res) res = lastModified;
+				}, this);
+
+				return res / 1000;
+			}
 		}
 	}, {
 		propertyNames: { type: StringLine, multiple: true }

@@ -4,10 +4,11 @@ var memoize          = require('memoizee/plain')
   , validDb          = require('dbjs/valid-dbjs')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineUInteger   = require('dbjs-ext/number/integer/u-integer')
-  , definePercentage = require('dbjs-ext/number/percentage');
+  , definePercentage = require('dbjs-ext/number/percentage')
+  , defineDate       = require('dbjs-ext/date-time/date');
 
 module.exports = memoize(function (db) {
-	var StringLine, Percentage, UInteger;
+	var StringLine, Percentage, UInteger, DateType;
 	validDb(db);
 	db.Object.defineProperties({
 		getFormApplicablePropName: { type: db.Function, value: function (prop) {
@@ -20,6 +21,7 @@ module.exports = memoize(function (db) {
 	UInteger   = defineUInteger(db);
 	StringLine = defineStringLine(db);
 	Percentage = definePercentage(db);
+	DateType   = defineDate(db);
 	return db.Object.extend('FormSectionBase', {
 		label: { type: StringLine, required: true },
 		isApplicable: { type: db.Boolean, required: true, value: true },
@@ -46,7 +48,8 @@ module.exports = memoize(function (db) {
 			}
 
 			return false;
-		} }
+		} },
+		lastEditDate: { type: DateType }
 	}, {
 		excludedFromStatusIfFilled: { type: StringLine, multiple: true },
 		actionUrl: { type: StringLine, required: true },
