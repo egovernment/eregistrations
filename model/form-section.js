@@ -133,7 +133,7 @@ module.exports = memoize(function (db) {
 					if (!resolved) {
 						return;
 					}
-					lastModified = _observe(resolved.object['_' + name]._lastModified);
+					lastModified = _observe(resolved.object['_' + resolved.key]._lastModified);
 					if (lastModified > res) res = lastModified;
 				}, this);
 
