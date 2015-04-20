@@ -35,37 +35,37 @@
 	background-color: var(--normal-light-background);
 }
 
-.submitted-user-data-table tbody tr:hover a {
+.submitted-user-data-table tr:hover a {
 	text-decoration: underline;
 }
 
-.submitted-user-data-table tbody tr:hover .actions a {
+.submitted-user-data-table tr:hover .actions a {
 	text-decoration: none;
 }
 
-.submitted-user-data-table tbody tr td a,
+.submitted-user-data-table td a,
 .submitted-user-data-table.submitted-current-user-data-table tbody tr td {
 	padding: 11px 25px 10px;
 
 }
 
-.submitted-user-data-table.submitted-current-user-data-table tbody tr td a {
+.submitted-user-data-table.submitted-current-user-data-table td a {
 	padding: 0;
 }
 
-.submitted-user-data-table tbody tr .actions {
+.submitted-user-data-table tr .actions {
 	padding: 10px 25px 9px;
 }
 
-.submitted-user-data-table tbody tr td a {
+.submitted-user-data-table td a {
 	display: block;
 }
 .submitted-user-data-table-basic > a {
 		font-weight: bold;
 }
-.submitted-user-data-table tbody tr td a:hover,
-.submitted-user-data-table tbody tr td a:active,
-.submitted-user-data-table tbody tr td a:focus {
+.submitted-user-data-table td a:hover,
+.submitted-user-data-table td a:active,
+.submitted-user-data-table td a:focus {
 	text-decoration: underline;
 }
 .submitted-user-data-table-basic > a > span {
@@ -74,13 +74,13 @@
 	font-weight: normal;
 }
 
-.submitted-user-data-table tbody tr td.actions a {
+.submitted-user-data-table td.actions a {
 	font-size: 16px;
 	display: inline;
 	padding: 5px;
 	margin-left: 15%;
 }
-.submitted-user-data-table tbody tr td.actions a:first-child {
+.submitted-user-data-table td.actions a:first-child {
 	margin: 0;
 }
 
