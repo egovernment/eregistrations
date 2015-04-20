@@ -394,15 +394,15 @@ ul.multiple {
 }
 .inline-button-radio label {
 	border: 1px solid var(--light-inner-border);
+	border-left: none;
 	padding: 11px;
 	cursor: pointer;
 	font-size: 14px;
 }
-.inline-button-radio > label + label {
-	margin-left: -1px;
-}
+
 .inline-button-radio label:first-child, .inline-button-radio > script:first-child + label {
 	border-radius: 4px 0 0 4px;
+	border-left: 1px solid var(--light-inner-border);
 }
 .inline-button-radio label:last-child {
 	border-radius: 0 4px 4px 0;
