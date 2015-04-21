@@ -1,20 +1,23 @@
 'use strict';
 
-var memoize          = require('memoizee/plain')
-  , defineUser       = require('mano-auth/model/user')
-  , validDbType      = require('dbjs/valid-dbjs-type')
-  , defineStringLine = require('dbjs-ext/string/string-line');
+var memoize            = require('memoizee/plain')
+  , defineUser         = require('mano-auth/model/user')
+  , defineRegistration = require('./registration')
+  , validDbType        = require('dbjs/valid-dbjs-type')
+  , defineStringLine   = require('dbjs-ext/string/string-line');
 
 module.exports = memoize(function (Target) {
-	var StringLine, User, db;
+	var StringLine, User, Registration, db;
 	validDbType(Target);
 	db = Target.database;
 	StringLine = defineStringLine(db);
 	User       = defineUser(db);
+	Registration = defineRegistration(db);
 
 	if (!db.StatusLog) {
 		db.Object.extend('StatusLog', {
 			label: { type: StringLine, required: true },
+			registration: { type: Registration },
 			time: { type: db.DateTime, required: true },
 			official: { type: User },
 			text: { type: db.String, required: true }
