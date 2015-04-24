@@ -15,4 +15,5 @@
 }
 .header-top-menu li {
 	display: inline-block;
+	vertical-align: middle;
 }
