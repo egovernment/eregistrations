@@ -57,7 +57,9 @@ exports.main = function () {
 			),
 			p(
 				{ class: 'submit-placeholder input' },
-				input({ type: 'submit' })
+				input({ type: 'submit' }),
+				"  ",
+				a({ class: 'button-regular', href: '/' }, "Cancel")
 			)
 		)
 	);
