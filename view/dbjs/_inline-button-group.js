@@ -36,8 +36,12 @@ Input.prototype = Object.create(DOMInput.prototype, {
 				if (nu) $(nu.parentNode).addClass(classMap[nu.value] || 'success');
 				current = nu;
 			};
-			setTimeout(function () {
+			setTimeout(function self() {
 				var container = $(id);
+				if (!container) {
+					setTimeout(self, 1000);
+					return;
+				}
 				radios = container.getElementsByTagName('input');
 				container.addEvent('change', function () { setTimeout(onChange, 0); });
 				container.addEvent('click', function () { setTimeout(onChange, 0); });
