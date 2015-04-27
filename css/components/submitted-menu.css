@@ -36,11 +36,9 @@
 }
 
 .submitted-menu-role-select {
-	line-height: 44px;
+		line-height: 44px;
 }
-.submitted-menu-role-select > p {
-	display: inline-block;
-}
+
 .submitted-menu-role-select select {
 	border: none;
 	background-color: var(--dark-background);
