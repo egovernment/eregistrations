@@ -110,7 +110,7 @@ var usersFromSnapshots = function (snapshots, compare, cacheLimits, customFilter
 
 var getComputedUsersSet = function (users, dbSubmitted) {
 	var computedUsers = [], set
-	  , resolveUser = function (user) { return dbSubmitted.User.getById(user.__id__); }
+	  , resolveUser = function (user) { return dbSubmitted.Object.getById(user.__id__); }
 	  , onAdd = function (user) { set.add(resolveUser(user)); }
 	  , onDelete = function (user) { set.delete(resolveUser(user)); };
 
