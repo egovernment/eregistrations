@@ -63,6 +63,7 @@ module.exports = function (snapshots, options) {
 		if (statusQuery) {
 			if (statusQuery.value && !statusMap[statusQuery.value]) {
 				fixLocationQuery(i18n.status || 'status');
+				status = '';
 			} else {
 				status = statusQuery.value || '';
 			}
