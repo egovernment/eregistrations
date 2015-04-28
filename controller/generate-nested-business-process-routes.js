@@ -9,7 +9,7 @@ var assign        = require('es5-ext/object/assign')
 
   , keys = Object.keys;
 
-var matchUser = function (id) {
+var matchBusinessProcess = function (id) {
 	var businessProcess = db.BusinessProcess.getById(id);
 	if (!businessProcess) return;
 	if (!this.user.users.has(businessProcess)) return;
@@ -46,7 +46,7 @@ module.exports = function (routes, data) {
 
 	// Part A
 	assign(routes, nest(name + '/[0-9][0-9a-z]+', partA, function (id) {
-		var businessProcess = matchUser.call(this, id);
+		var businessProcess = matchBusinessProcess.call(this, id);
 		if (!businessProcess) return false;
 		if (businessProcess.isApplicationCompleted) return false;
 		if (constraint && !constraint.call(this, businessProcess)) return false;
@@ -56,7 +56,7 @@ module.exports = function (routes, data) {
 
 	// Part B
 	assign(routes, nest(name + '/[0-9][0-9a-z]+', partB, function (id) {
-		var businessProcess = matchUser.call(this, id);
+		var businessProcess = matchBusinessProcess.call(this, id);
 		if (!businessProcess) return false;
 		if (!businessProcess.isApplicationCompleted) return false;
 		if (constraint && !constraint.call(this, businessProcess)) return false;
