@@ -2,6 +2,7 @@
 
 var memoize                     = require('memoizee/plain')
   , validDb                     = require('dbjs/valid-dbjs')
+  , defineStatusLog  = require('../status-log')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineBusinessProcessStatus = require('../lib/business-process-status');
 
@@ -23,6 +24,8 @@ module.exports = memoize(function (db/*, options*/) {
 			multiple: true
 		}
 	});
+
+	defineStatusLog(db.BusinessProcess);
 
 	return db.BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
