@@ -161,6 +161,7 @@
 	line-height: 44px;
 	padding: 11px 5px;
 }
+
 .user-guide-lomas-inventory-print {
 	margin-left: 20px;
 }
@@ -273,29 +274,34 @@
 
 /* Responsive styles for lomas-guide */
 
-@media only screen and (max-width: var(--mobile-width)) {
-	.user-guide-lomas-form-components > form > section {
-		flex-wrap: wrap;
-	}
-	.user-guide-lomas-form-components fieldset:first-child {
-		margin-bottom: 22px;
-	}
-	.user-guide-lomas-form-components fieldset:first-child,
-	.user-guide-lomas-form-components fieldset {
+@media only screen and (max-width: 1000px) {
+	.user-guide-lomas-form-complement fieldset:first-child,
+	.user-guide-lomas-form-complement fieldset {
 		width: 100%;
 	}
-	.user-guide-lomas-form-components fieldset:first-child {
-		border-bottom: 1px solid var(--normal-background);
+	.user-guide-lomas-form-complement fieldset:first-child {
+		margin-bottom: 22px;
 	}
 
+	.user-guide-lomas-form-complement fieldset:first-child {
+		border-bottom: 1px solid var(--normal-background);
+	}
 	.user-guide-lomas-form-complement-list {
 		border-left: none;
 		padding-left: 0;
 	}
+	.user-guide-lomas-form-complement fieldset:first-child {
+		border-bottom: 1px solid var(--normal-background);
+	}
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.user-guide-lomas-form-components > form > section {
+		flex-wrap: wrap;
+	}
 	.user-guide-lomas-form .radio li {
 		display: inline-block;
 	}
-
 	.user-guide-lomas-result {
 		flex-wrap: wrap;
 	}
@@ -305,6 +311,13 @@
 		margin: 0;
 	}
 	.user-guide-lomas-result-summary {
+		margin-bottom: 22px;
+	}
+	.user-guide-lomas-form-components fieldset:first-child,
+	.user-guide-lomas-form-components fieldset {
+		width: 100%;
+	}
+	.user-guide-lomas-form-components fieldset:first-child {
 		margin-bottom: 22px;
 	}
 }
