@@ -8,6 +8,7 @@ exports['additional-info-tab'] = { class: { active: true } };
 exports['user-guide-lomas-form'] = function () {
 	form(
 		section(
+			{ class: 'user-guide-lomas-form-complement' },
 			fieldset(
 				table(
 					{ class: 'user-guide-lomas-form-complement-table' },
