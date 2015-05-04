@@ -17,6 +17,20 @@ module.exports = memoize(function (Target/* options */) {
 			multiple: true,
 			reverse: 'user'
 		},
+		completedInitialBusinessProcesses: {
+			type: BusinessProcess,
+			multiple: true,
+			value: function (_observe) {
+				var result = [];
+				this.initialBusinessProcesses.forEach(function (businessProcess) {
+					if (_observe(businessProcess._isApplicationResolved)) {
+						result.push(businessProcess);
+					}
+				});
+
+				return result;
+			}
+		},
 		businessProcesses: {
 			type: BusinessProcess,
 			multiple: true,
