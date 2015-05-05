@@ -14,14 +14,18 @@ module.exports = memoize(function (Target/* options */) {
 		documents: {
 			type: Document,
 			multiple: true,
-			value: function () {
+			value: function (_observe) {
 				var documents = [];
 
 				this.requestedCertificates.forEach(function (cert) {
-					documents.push(this.certificates[cert]);
+					if (_observe(this.certificates[cert].orderedFiles._size)) {
+						documents.push(this.certificates[cert]);
+					}
 				}, this);
 				this.applicableSubmissions.forEach(function (sub) {
-					documents.push(sub.document);
+					if (_observe(sub.document.orderedFiles._size)) {
+						documents.push(sub.document);
+					}
 				});
 
 				return documents;
