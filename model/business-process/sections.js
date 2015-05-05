@@ -13,11 +13,11 @@ module.exports = memoize(function (Target/* options */) {
 		cumulatedSections: {
 			type: FormSectionBase,
 			multiple: true,
-			value: function () {
+			value: function (_observe) {
 				var sections = [], sectionNames = {}, derivatives = [], sectionFilter;
 
 				sectionFilter = function (section, sectionName) {
-					if (!sectionNames[sectionName]) {
+					if (!sectionNames[sectionName] && _observe(section._status) > 0) {
 						sectionNames[sectionName] = true;
 						sections.push(section);
 					}

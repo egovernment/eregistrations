@@ -13,7 +13,19 @@ module.exports = memoize(function (db/*, options*/) {
 	StringLine            = defineStringLine(db);
 
 	db.Object.extend('BusinessProcess', {
-		status: { type: BusinessProcessStatus, value: 'draft' },
+		status: { type: BusinessProcessStatus, value: function () {
+			if (this.isRegistrationResolved || this.isApplicationRejected) {
+				return 'closed';
+			}
+			if (this.isRegistrationReady) {
+				return 'pickup';
+			}
+			if (this.isApplicationCompleted) {
+				return 'process';
+			}
+
+			return 'draft';
+		} },
 		submitted: { type: db.Boolean, value: false },
 		businessName: { type: StringLine }
 	});
