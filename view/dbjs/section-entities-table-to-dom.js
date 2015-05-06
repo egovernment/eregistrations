@@ -8,12 +8,13 @@ var d                   = require('d')
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 	d(function (document/*, options */) {
-		var self, headerRank, options, resolved;
+		var self, headerRank, options, resolved, cssClass;
 		self = this;
 		options = Object(arguments[1]);
 		headerRank = options.headerRank || 3;
+		cssClass   = options.cssClass || 'entity-data-section';
 		resolved = resolvePropertyPath(this.master, this.constructor.propertyName);
-		return ns.section({ class: 'entity-data-section' },
+		return ns.section({ class: cssClass },
 			(function () {
 				if (self.label) {
 					return [headersMap[headerRank++](self._label), ns.hr()];
