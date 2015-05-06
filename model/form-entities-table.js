@@ -68,11 +68,11 @@ module.exports = memoize(function (db) {
 					sections = entityObject.resolveSKeyPath(sectionKey, _observe);
 					sections = sections.object[sections.key];
 					sections.forEach(function (section) {
-						if (_observe(section._editDate) > res) res = section.editDate;
+						if (_observe(section._lastEditDate) > res) res = section.lastEditDate;
 					});
 				});
 
-				return res / 1000;
+				return res;
 			}
 		}
 	}, {
