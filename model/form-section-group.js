@@ -69,7 +69,7 @@ module.exports = memoize(function (db) {
 			value: function (_observe) {
 				var res = 0;
 				this.sections.forEach(function (section) {
-					if (_observe(section._editDate) > res) res = section.editDate;
+					if (_observe(section._lastEditDate) > res) res = section.lastEditDate;
 				});
 
 				return res;
