@@ -1,7 +1,7 @@
 'use strict';
 
 var memoize       = require('memoizee/plain')
-  , defineSection = require('../form-section')
+  , defineSection = require('../form-section-base')
   , validDbType   = require('dbjs/valid-dbjs-type');
 
 module.exports = memoize(function (Target/* options */) {
@@ -17,7 +17,8 @@ module.exports = memoize(function (Target/* options */) {
 				var sections = [], sectionNames = {}, derivatives = [], sectionFilter;
 
 				sectionFilter = function (section, sectionName) {
-					if (!sectionNames[sectionName] && _observe(section._status) > 0) {
+					if (!sectionNames[sectionName] && _observe(section._isApplicable)
+							&& _observe(section._status) > 0) {
 						sectionNames[sectionName] = true;
 						sections.push(section);
 					}
@@ -34,6 +35,7 @@ module.exports = memoize(function (Target/* options */) {
 				if (this.formSections) {
 					this.formSections.forEach(sectionFilter);
 				}
+
 				return sections;
 			}
 		}

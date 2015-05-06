@@ -66,6 +66,7 @@ module.exports = memoize(function (db) {
 				entityObjects.forEach(function (entityObject) {
 					var sections;
 					sections = entityObject.resolveSKeyPath(sectionKey, _observe);
+					sections = sections.object[sections.key];
 					sections.forEach(function (section) {
 						if (_observe(section._editDate) > res) res = section.editDate;
 					});
