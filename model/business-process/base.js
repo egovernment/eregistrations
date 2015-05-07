@@ -35,14 +35,12 @@ module.exports = memoize(function (db/*, options*/) {
 			type: db.BusinessProcess,
 			multiple: true,
 			value: function () {
-				var derivatives = [];
-				if (this.derivedBusinessProcess) {
-					derivatives.push(this.derivedBusinessProcess);
-					this.derivedBusinessProcess.derivedBusinessProcesses.forEach(function (derived) {
-						derivatives.push(derived);
-					});
+				var processes = [], derived = this.derivedBusinessProcess;
+				while (derived) {
+					processes.push(derived);
+					derived = derived.derivedBusinessProcess;
 				}
-				return derivatives;
+				return processes;
 			}
 		},
 		derivedBusinessProcess: {
