@@ -33,7 +33,20 @@ module.exports = memoize(function (db/*, options*/) {
 	db.BusinessProcess.prototype.defineProperties({
 		derivedBusinessProcesses: {
 			type: db.BusinessProcess,
-			multiple: true
+			multiple: true,
+			value: function () {
+				var processes = [], derived = this.derivedBusinessProcess;
+				while (derived) {
+					processes.push(derived);
+					derived = derived.derivedBusinessProcess;
+				}
+				return processes;
+			}
+		},
+		derivedBusinessProcess: {
+			type: db.BusinessProcess,
+			unique: true,
+			reverse: 'previousBusinessProcess'
 		}
 	});
 
