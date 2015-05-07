@@ -1,0 +1,11 @@
+.large-button-select label input {
+	display: inline-block;
+	width: 0;
+	opacity: 0;
+}
+
+.large-button-select label:hover,
+.large-button-select label:focus,
+.large-button-select label:active {
+	color: white;
+}

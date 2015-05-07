@@ -21,15 +21,8 @@
 :-moz-placeholder { color: #ffffff; }
 :-ms-input-placeholder { color: #ffffff; }
 
-.inline-button-radio input[type="radio"],
-.large-button-select label input {
+.inline-button-radio input[type="radio"] {
 	display: inline-block;
 	width: 0;
 	opacity: 0;
-}
-
-.large-button-select label:hover,
-.large-button-select label:focus,
-.large-button-select label:active {
-	color: white;
 }
