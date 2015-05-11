@@ -1,7 +1,8 @@
 "use strict";
 
-var memoize                     = require('memoizee/plain')
-  , validDb                     = require('dbjs/valid-dbjs')
+var _                = require('mano').i18n.bind("Model: Business Process")
+  , memoize          = require('memoizee/plain')
+  , validDb          = require('dbjs/valid-dbjs')
   , defineStatusLog  = require('../status-log')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineBusinessProcessStatus = require('../lib/business-process-status');
@@ -13,6 +14,10 @@ module.exports = memoize(function (db/*, options*/) {
 	StringLine            = defineStringLine(db);
 
 	db.Object.extend('BusinessProcess', {
+		isFromEregistrations: { type: db.Boolean,
+			value: true,
+			label: _("Has registration been made online?")
+			},
 		status: { type: BusinessProcessStatus, value: function () {
 			if (this.isRegistrationResolved || this.isApplicationRejected) {
 				return 'closed';
