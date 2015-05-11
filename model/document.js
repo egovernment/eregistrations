@@ -8,7 +8,7 @@ var memoize          = require('memoizee/plain')
   , defineFile       = require('./file')
   , defineStatusLog  = require('./status-log')
   , defineDate       = require('dbjs-ext/date-time/date')
-  , _                = require('mano').i18n.bind('Model: Documents');;
+  , _                = require('mano').i18n.bind('Model: Documents');
 
 module.exports = memoize(function (db) {
 	var StringLine, File, DateType;
