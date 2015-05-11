@@ -7,7 +7,8 @@ var memoize          = require('memoizee/plain')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineFile       = require('./file')
   , defineStatusLog  = require('./status-log')
-  , defineDate       = require('dbjs-ext/date-time/date');
+  , defineDate       = require('dbjs-ext/date-time/date')
+  , _                = require('mano').i18n.bind('Model: Documents');;
 
 module.exports = memoize(function (db) {
 	var StringLine, File, DateType;
@@ -27,7 +28,7 @@ module.exports = memoize(function (db) {
 			return this.constructor.legend;
 		} },
 		uniqueKey: { type: StringLine, value: function () { return this.key; } },
-		issueDate: { type: DateType },
+		issueDate: { type: DateType, required: true, label: _("Date of issuance") },
 		orderedFiles: { type: File, multiple: true, value: function (_observe) {
 			var files = [];
 			_observe(this.files, true).forEach(function (file) {
