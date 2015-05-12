@@ -28,6 +28,10 @@ module.exports = memoize(function (Target/* options */) {
 					}
 				});
 
+				documents.sort(function (a, b) {
+					return a.label.toLowerCase().localeCompare(b.label.toLowerCase());
+				});
+
 				return documents;
 			}
 		},
@@ -51,6 +55,10 @@ module.exports = memoize(function (Target/* options */) {
 				});
 				derivedDocs.reverse().forEach(filter);
 				this.documents.forEach(filter);
+
+				documents.sort(function (a, b) {
+					return a.label.toLowerCase().localeCompare(b.label.toLowerCase());
+				});
 
 				return documents;
 			}
