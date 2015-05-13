@@ -163,6 +163,10 @@ module.exports = memoize(function (Target/* options */) {
 				if (!this.applicableSubmissions.size) return 1;
 				this.applicableSubmissions.forEach(function (submission) {
 					++total;
+					if (_observe(submission._isApproved) === false) {
+						++valid;
+						return;
+					}
 					if (!_observe(submission.document.orderedFiles._size)) return;
 					if (submission.document.orderedFiles.some(function (file) {
 							return _observe(file._path);
