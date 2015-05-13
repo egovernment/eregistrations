@@ -64,10 +64,8 @@ module.exports = memoize(function (db/*, options*/) {
 					return false;
 				}
 				if (!_observe(this._isApplicationResolved)) return false;
-				if (this.isApplicationResolved &&
-						_observe(this.requestedRegistrations._has('closure'))) {
-					return false;
-				}
+				if (_observe(this.requestedRegistrations._has('closure'))) return false;
+
 				return true;
 			}
 		},
