@@ -63,7 +63,7 @@ module.exports = memoize(function (db/*, options*/) {
 				if (this.derivedBusinessProcess) {
 					return false;
 				}
-				if (!_observe(this._isApplicationResolved)) return false;
+				if (!this.isApplicationResolved) return false;
 				if (_observe(this.requestedRegistrations._has('closure'))) return false;
 
 				return true;
