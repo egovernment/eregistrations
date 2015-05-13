@@ -48,6 +48,35 @@ module.exports = memoize(function (db/*, options*/) {
 				return processes;
 			}
 		},
+		latestBusinessProcess: {
+			type: db.BusinessProcess,
+			value: function () {
+				if (!this.derivedBusinessProcess) {
+					return this;
+				}
+				return this.derivedBusinessProcesses.last;
+			}
+		},
+		canBeDerived: {
+			type: db.Boolean,
+			value: function (_observe) {
+				if (this.derivedBusinessProcess) {
+					return false;
+				}
+				if (!_observe(this._isApplicationResolved)) return false;
+				if (this.isApplicationResolved &&
+						_observe(this.requestedRegistrations._has('closure'))) {
+					return false;
+				}
+				return true;
+			}
+		},
+		canLatestBeDerived: {
+			type: db.Boolean,
+			value: function (_observe) {
+				return _observe(this.latestBusinessProcess._canBeDerived);
+			}
+		},
 		derivedBusinessProcess: {
 			type: db.BusinessProcess,
 			unique: true,
