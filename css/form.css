@@ -320,7 +320,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 }
 
 /* Changed & invalid */
-.dbjs-input-component.invalid.changed span.status-error {
+.dbjs-input-component.invalid.changed.dbjs-filled span.status-error {
 	visibility: visible;
 	display:inline-block;
 }
@@ -332,7 +332,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 }
 
 /* Missing */
-.dbjs-input-component.dbjs-required.not-changed.dbjs-empty span.status-missing {
+.dbjs-input-component.dbjs-required.invalid.dbjs-empty span.status-missing {
 	visibility: visible;
 	display:inline-block;
 }
