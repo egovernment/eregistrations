@@ -168,11 +168,7 @@ module.exports = memoize(function (Target/* options */) {
 						return;
 					}
 					if (!_observe(submission.document.orderedFiles._size)) return;
-					if (submission.document.orderedFiles.some(function (file) {
-							return _observe(file._path);
-						})) {
-						++valid;
-					}
+					++valid;
 				}, this);
 				return valid / total;
 			}
