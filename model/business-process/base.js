@@ -39,11 +39,11 @@ module.exports = memoize(function (db/*, options*/) {
 		derivedBusinessProcesses: {
 			type: db.BusinessProcess,
 			multiple: true,
-			value: function () {
+			value: function (_observe) {
 				var processes = [], derived = this.derivedBusinessProcess;
 				while (derived) {
 					processes.push(derived);
-					derived = derived.derivedBusinessProcess;
+					derived = _observe(derived._derivedBusinessProcess);
 				}
 				return processes;
 			}
@@ -51,10 +51,7 @@ module.exports = memoize(function (db/*, options*/) {
 		latestBusinessProcess: {
 			type: db.BusinessProcess,
 			value: function () {
-				if (!this.derivedBusinessProcess) {
-					return this;
-				}
-				return this.derivedBusinessProcesses.last;
+				return this.derivedBusinessProcesses.last || this;
 			}
 		},
 		canBeDerived: {
