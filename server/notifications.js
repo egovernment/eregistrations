@@ -29,6 +29,7 @@ getTo = function (user, to) {
 		if (typeof to === 'function') return to(user);
 		return to;
 	}
+	if (user.user) return user.user.email; // Fix in case of businessProcesses
 	if (user.email) return user.email;
 	if (user.manager) return user.manager.email;
 };
