@@ -38,12 +38,6 @@ module.exports = function (routes, data) {
 		}
 	});
 
-	if (db.BusinessProcess.prototype.isApplicationCompleted === undefined) {
-		throw new TypeError("Nested businessProcess routes rely on existence of " +
-			"businessProcess.isApplicationCompleted " +
-			"property");
-	}
-
 	// Part A
 	assign(routes, nest(name + '/[0-9][0-9a-z]+', partA, function (id) {
 		var businessProcess = matchBusinessProcess.call(this, id);
