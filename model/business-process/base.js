@@ -18,6 +18,10 @@ module.exports = memoize(function (db/*, options*/) {
 			value: true,
 			label: _("Has registration been made online?")
 			},
+		isApplicationCompleted: {
+			type: db.Boolean,
+			value: false
+		},
 		status: { type: BusinessProcessStatus, value: function () {
 			if (this.isApplicationResolved || this.isApplicationRejected) {
 				return 'closed';
