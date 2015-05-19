@@ -1,7 +1,7 @@
 'use strict';
 
 var memoize          = require('memoizee/plain')
-  , defineUser       = require('mano-auth/model/user')
+  , defineUser       = require('./user/base')
   , validDbType      = require('dbjs/valid-dbjs-type')
   , defineStringLine = require('dbjs-ext/string/string-line');
 
