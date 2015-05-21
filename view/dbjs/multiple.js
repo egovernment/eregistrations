@@ -8,18 +8,20 @@ var MultipleInput = require('dbjs-dom/input/_multiple'),
 Object.defineProperties(MultipleInput.prototype, {
 	addLabel: d(
 		function () {
+			var lHint = this.type.addLabelHint || _("Add new item");
 			return el('a',
 				{ class: 'dbjs-multiple-button-add hint-optional hint-optional-left',
-					'data-hint': _("Add new item") },
+					'data-hint': lHint },
 				el('span', { class: 'fa fa-plus-circle' }, _("Add"))
 				);
 		}
 	),
 	deleteLabel: d(
 		function () {
+			var lHint = this.type.deleteLabelHint || _("Remove this item");
 			return el('a',
 				{ class: 'dbjs-multiple-button-remove hint-optional hint-optional-left',
-					'data-hint': _("Remove this item") },
+					'data-hint': lHint },
 				el('span', { class: 'fa fa-minus-circle' }, _("Remove"))
 				);
 		}
