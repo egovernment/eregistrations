@@ -18,7 +18,7 @@ Object.defineProperties(MultipleInput.prototype, {
 	),
 	deleteLabel: d(
 		function () {
-			var lHint = this.type.deleteLabelHint || _("Delete item");
+			var lHint = this.type.deleteLabelHint || _("Remove this item");
 			return el('a',
 				{ class: 'dbjs-multiple-button-remove hint-optional hint-optional-left',
 					'data-hint': lHint },
