@@ -1,7 +1,6 @@
 /* Default table styles */
 .print-user-data {
 	table-layout: fixed;
-	width: 747px;
 	border: 2px solid #ddd;
 }
 
