@@ -42,12 +42,20 @@ module.exports = memoize(function (Target/* options */) {
 					return this.owner.key;
 				},
 				label: function (_observe) {
-					var requirement = this.master.requirements[this.owner.key];
+					var requirement;
+					//this.master may not have requirements (i.e CompanyRepresentative)
+					if (this.master.requirements) {
+						requirement = this.master.requirements[this.owner.key];
+					}
 					if (requirement && requirement.label) return _observe(requirement._label);
 					return this.constructor.label;
 				},
 				legend: function (_observe) {
-					var requirement = this.master.requirements[this.owner.key];
+					var requirement;
+					//this.master may not have requirements (i.e CompanyRepresentative)
+					if (this.master.requirements) {
+						requirement = this.master.requirements[this.owner.key];
+					}
 					if (requirement && requirement.legend) return _observe(requirement._legend);
 					return this.constructor.label;
 				}
