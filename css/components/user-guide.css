@@ -103,6 +103,14 @@ a:active .user-guide-inventory-label {
 	background: var(--normal-dark-background);
 }
 
+/* IE11 fixes for input aside in .user-guide-requirements-list */
+_:-ms-fullscreen, :root .user-guide-requirements-list .input-aside > span {
+	display: inline-block;
+}
+_:-ms-fullscreen, :root .user-guide-requirements-list .input-aside > span:last-child {
+	max-width: 415px;
+}
+
 /*
 Styles applied while screen size is less than 640px
 */

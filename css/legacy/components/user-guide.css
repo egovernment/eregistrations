@@ -5,3 +5,14 @@
 .user-guide > .section-primary {
 	margin-right: 10px;
 }
+
+/* IE9 only  */
+@media screen and (min-width:0\0) and (min-resolution: .001dpcm) {
+	.user-guide-requirements-list > li > ul > li:first-child {
+		margin-top: -22px;
+	}
+}
+/* IE8 only  */
+html>/**/body .user-guide-requirements-list > li > ul > li:first-child {
+	margin-top: -22px;
+}
