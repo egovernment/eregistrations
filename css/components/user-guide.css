@@ -29,6 +29,10 @@
 	list-style-type: disc;
 }
 
+.user-guide-requirements-list > li > ul > li {
+	display: inline-flex;
+}
+
 .user-guide-costs-list {
 	padding-left: 0;
 	list-style-type: none;
