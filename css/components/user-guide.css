@@ -33,14 +33,6 @@
 	display: inline-flex;
 }
 
-/* IE11 fixes in user-guide-requirements-list */
-_:-ms-fullscreen, :root .user-guide-requirements-list .input-aside > span {
-	display: inline-block;
-}
-_:-ms-fullscreen, :root .user-guide-requirements-list .input-aside > span:last-child {
-	max-width: 415px;
-}
-
 .user-guide-costs-list {
 	padding-left: 0;
 	list-style-type: none;
