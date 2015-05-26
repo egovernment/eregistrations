@@ -138,7 +138,7 @@
 	.section-primary .dbjs-input-component > label {
 		text-align: left;
 		width: 100%;
-		margin: 0;
+		margin: 3px 0 -3px;
 	}
 	.section-primary .dbjs-input-component > .input {
 		width: 100%;
