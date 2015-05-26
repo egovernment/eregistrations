@@ -5,3 +5,12 @@
 .user-guide > .section-primary {
 	margin-right: 10px;
 }
+
+/* IE9 only  */
+:root .user-guide-requirements-list > li > ul > li:first-child {
+	margin-top: -22px \0/IE9;
+}
+/* IE8 only  */
+html>/**/body .user-guide-requirements-list > li > ul > li:first-child {
+	margin-top: -22px;
+}

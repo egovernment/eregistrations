@@ -2,9 +2,15 @@
 .dbjs-input-component .input-aside {
 	display: block;
 }
-.input-aside > span:first-child {
+.input-aside > span:first-child,
+.input-aside > div {
 	display: inline-block;
+	vertical-align: top;
 }
+.input-aside > div {
+	width: 90%;
+}
+
 .auto-submit .submit {
 	display: block;
 }
