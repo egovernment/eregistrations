@@ -29,7 +29,7 @@
 	list-style-type: disc;
 }
 
-.user-guide-requirements-list > li > ul > li {
+.user-guide-requirements-list > li > ul > li:first-child {
 	display: inline-flex;
 }
 
