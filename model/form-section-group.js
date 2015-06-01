@@ -1,3 +1,8 @@
+/**
+	* This class should be used as a super class for those section classes
+	* which handle forms with more than one fields group.
+	*/
+
 'use strict';
 
 var memoize               = require('memoizee/plain')
@@ -11,6 +16,10 @@ module.exports = memoize(function (db) {
 	FormSectionBase = defineFormSectionBase(db);
 	FormSection     = defineFormSection(db);
 	FormSectionGroup = FormSectionBase.extend('FormSectionGroup', {
+		// A map of child sections.
+		// Note: to add a child section you should define a type on sections map.
+		// Example: BusinessProcess.prototype.formSections.groupSection.sections.define('myChild', {
+		// type: db.ChildClass })
 		sections: {
 			type: db.Object,
 			nested: true
