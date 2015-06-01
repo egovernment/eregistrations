@@ -3,10 +3,10 @@
 	margin: 0 5px;
 }
 
-.verification-status-positive > .verification-positive {
+.verification-status-positive > .verification-status-positive {
 	display: inline-block;
 }
 
-.verification-status-negative > .verification-negative {
+.verification-status-negative > .verification-status-negative {
 	display: inline-block;
 }
