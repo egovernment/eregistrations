@@ -1,3 +1,10 @@
+/** Responsible for setting up sections map.
+ * @param {db.Object} Entity - The model for which we define sections.
+ * @param {string} property - The name of the property under which we create sections map.
+ * Usually we use 'formSections' as property.
+ * @returns {db.Object} Entity
+ */
+
 'use strict';
 
 var validDb               = require('dbjs/valid-dbjs')

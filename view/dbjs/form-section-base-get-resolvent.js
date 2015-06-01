@@ -1,18 +1,20 @@
+/**
+ * @param options {object}
+ * @returns {object} of the form:
+ * {
+ *  affectedSectionId: id || undefined,
+ *  legacyScript: radioMatch || selectMatch || undefined,
+ *  formResolvent: field || undefined
+ * }
+ */
 'use strict';
+
 var generateId = require('time-uuid')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
   , d  = require('d')
   , db = require('mano').db
   , ns = require('mano').domjs.ns;
 
-/*
-	return object of form:
-	{
-	affectedSectionId: id || undefined,
-	legacyScript: radioMatch || selectMatch || undefined,
-	formResolvent: field || undefined
-	}
-*/
 module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormResolvent',
 	d(function (/*options*/) {
 		var result, match, options = Object(arguments[0])

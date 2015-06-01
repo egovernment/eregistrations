@@ -1,3 +1,11 @@
+/** @param {string} - identifier of the form
+ * @param options {object}
+ * @returns {object} - the object of the form:
+ * {
+ *  controls: ids || undefined,
+ *  legacy: lagacyScript || undefined
+ * }
+ */
 'use strict';
 
 var forEach             = require('es5-ext/object/for-each')
@@ -9,13 +17,6 @@ var forEach             = require('es5-ext/object/for-each')
   , db = require('mano').db
   , ns = require('mano').domjs.ns;
 
-/*
-return object of form:
-{
-controls: ids || undefined,
-legacy: lagacyScript || undefined
-}
-*/
 module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy',
 	d(function (formId/*, options */) {
 		var result, legacyData, options = Object(arguments[1]), master;
