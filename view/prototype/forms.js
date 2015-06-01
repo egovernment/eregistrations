@@ -1,3 +1,5 @@
+/* Forms step page */
+
 'use strict';
 
 var db = require('mano').db

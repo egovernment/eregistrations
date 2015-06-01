@@ -1,3 +1,5 @@
+/* Dummy model, used only for purpose of prototype application demo. */
+
 'use strict';
 
 var Map          = require('es6-map')
