@@ -102,7 +102,7 @@ exports.step = function () {
 												"Company name allowed"),
 											span({ class: 'label-reg rejected verification-negative' },
 												"Company name occupied")),
-										span({ class: 'scrollable-list-box' },
+										span({ class: 'scrollable-list-box-described' },
 											ul(li('First Company Name'),
 												li('Second Company Name'),
 												li('Third Company Name')),
