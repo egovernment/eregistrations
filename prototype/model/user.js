@@ -1,4 +1,4 @@
-/* Dummy model, used only for purpose of prototype application demo. */
+// Dummy model, used only for purpose of prototype application demo.
 
 'use strict';
 

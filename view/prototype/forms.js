@@ -1,4 +1,4 @@
-/* Forms step page */
+// Forms step page
 
 'use strict';
 
