@@ -76,7 +76,7 @@ FormSection.extend('GeneralInfoFormSection', {
 User.prototype.formSections.define('generalInfoFormSection', { type: db.GeneralInfoFormSection });
 
 // As explainWhyNotNice field should be shown conditionally, we define a condition for it.
-// This condition is a getter ad it's name should follow convention. The convention to create such getter's name // is: is<CapitalizedNameOfProperty>Applicable, so
+// This condition is a getter and it's name should follow convention. The convention to create such getter's name // is: is<CapitalizedNameOfProperty>Applicable, so
 // in our example it's isExplainWhyNotNiceApplicable. If we wanted to show name field conditionally
 // it would have been isNameApllicable.
 User.prototype.define('isExplainWhyNotNiceApplicable', {
