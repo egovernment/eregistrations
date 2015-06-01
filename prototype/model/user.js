@@ -1,3 +1,5 @@
+// Dummy model, used only for purpose of prototype application demo.
+
 'use strict';
 
 var Map          = require('es6-map')
@@ -116,6 +118,7 @@ user.defineProperties({
 	} },
 
 	// Guide
+	companyName: { type: StringLine, required: true, label: "Company Name" },
 	businessActivity: { type: BusinessActivity, required: true, label: "Business activity" },
 	isOwner: { type: db.Boolean, trueLabel: "I am the owner", falseLabel: "I rent it",
 		label: "Owner of business premises",

@@ -1,0 +1,7 @@
+.scrollable-list-box-described > * {
+	width: 49%;
+	margin-left: 1%;
+}
+.scrollable-list-box-described > *:first-child {
+	margin-right: 1%;
+}

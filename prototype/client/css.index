@@ -76,3 +76,6 @@
 ../../css/components/statistics-table-dual.css
 ../../css/components/i18n-panel.css
 ../../css/components/pills-nav.css
+../../css/components/verification-status.css
+../../css/components/scrollable-list-box.css
+../../css/components/scrollable-list-box-described.css
