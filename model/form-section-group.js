@@ -1,7 +1,6 @@
-/**
-	* This class should be used as a super class for those section classes
-	* which handle forms with more than one fields group.
-	*/
+/** This class should be used as a super class for those section classes
+ * which handle forms with more than one fields group.
+ */
 
 'use strict';
 

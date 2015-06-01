@@ -1,6 +1,4 @@
-/**
-	* Base class for all sections.
-	*/
+/** Base class for all sections. */
 
 'use strict';
 

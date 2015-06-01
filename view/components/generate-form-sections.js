@@ -1,7 +1,7 @@
 /**
-	* Used to generate forms from sections.
-	* This component should be used to display sections in part A.
-	*/
+ * Used to generate forms from sections.
+ * This component should be used to display sections in part A.
+ */
 
 'use strict';
 

@@ -1,7 +1,7 @@
 /**
-	* Used to generate data overview from sections.
-	* This component should be used to display sections in part B.
-	*/
+ * Used to generate data overview from sections.
+ * This component should be used to display sections in part B.
+ */
 
 'use strict';
 

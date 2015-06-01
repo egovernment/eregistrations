@@ -1,7 +1,6 @@
-/**
-	* This section should be used as a super class for sections which create tables of entities.
-	* Those entities are for example partners and branches.
-	*/
+/** This section should be used as a super class for sections which create tables of entities.
+ * Those entities are for example partners and branches.
+ */
 
 'use strict';
 

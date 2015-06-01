@@ -1,11 +1,12 @@
 /**
-	* @returns {Object} of the form:
-	* {
-	*  affectedSectionId: id || undefined,
-	*  legacyScript: radioMatch || selectMatch || undefined,
-	*  formResolvent: field || undefined
-	* }
-	*/
+ * @param options {object}
+ * @returns {object} of the form:
+ * {
+ *  affectedSectionId: id || undefined,
+ *  legacyScript: radioMatch || selectMatch || undefined,
+ *  formResolvent: field || undefined
+ * }
+ */
 'use strict';
 
 var generateId = require('time-uuid')

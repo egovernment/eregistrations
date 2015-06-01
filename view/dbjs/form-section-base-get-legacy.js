@@ -1,10 +1,11 @@
-/**
-	* @returns {Object} - the object of the form:
-	* {
-	*  controls: ids || undefined,
-	*  legacy: lagacyScript || undefined
-	* }
-	*/
+/** @param {string} - identifier of the form
+ * @param options {object}
+ * @returns {object} - the object of the form:
+ * {
+ *  controls: ids || undefined,
+ *  legacy: lagacyScript || undefined
+ * }
+ */
 'use strict';
 
 var forEach             = require('es5-ext/object/for-each')

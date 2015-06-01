@@ -1,8 +1,7 @@
-/**
-	* The most common candidate for a section's super class.
-	* This class should be extended by the section classes
-	* which you define for single form which has just one group of fields.
-	*/
+/** The most common candidate for a section's super class.
+ * This class should be extended by the section classes
+ * which you define for single form which has just one group of fields.
+ */
 
 'use strict';
 
