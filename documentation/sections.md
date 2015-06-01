@@ -4,7 +4,7 @@
 
 **Sections should be used for building:**
 - User forms (second step, after guide of user application)
-- Send application forms (lst step of user application)
+- Send application forms (last step of user application)
 
 ## Overview
 
