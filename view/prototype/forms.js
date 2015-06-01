@@ -1,3 +1,5 @@
+// Forms step page
+
 'use strict';
 
 var db = require('mano').db
@@ -81,19 +83,50 @@ exports.step = function () {
 					h3("Second Sub Section"),
 					ul({ class: 'form-elements' },
 						['businessActivity',
+							'companyName',
 							'isOwner',
 							'surfaceArea',
 							'members',
 							'companyType'],
 						function (name) {
-							li(div({ class: 'dbjs-input-component' },
-								label(
-									{ for: 'input-' + name },
-									user.getDescriptor(name).label,
-									":"
-								),
-								div({ class: 'input' },
-									input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) }))));
+							if (name === 'companyName') {
+								li(div({ class: 'dbjs-input-component' },
+									label(
+										{ for: 'input-' + name },
+										user.getDescriptor(name).label,
+										":"
+									),
+									div(
+										{ class: 'input' },
+										input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) }),
+										span({ class: 'verification-status verification-status-positive' },
+											span({ class: 'label-reg approved verification-status-positive' },
+												"Company name allowed"),
+											span({ class: 'label-reg rejected verification-status-negative' },
+												"Company name occupied")),
+										span({ class: 'scrollable-list-box-described' },
+											ul(li('First Company Name'),
+												li('Second Company Name'),
+												li('Third Company Name'),
+												li('Fourth Company Name'),
+												li('Fifth Company Name'),
+												li('Sixth Company Name')),
+											p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce " +
+													"efficitur mattis dolor, non facilisis felis varius feugiat. Nulla" +
+													" tincidunt odio sit amet euismod viverra."
+												)
+											)
+									)));
+							} else {
+								li(div({ class: 'dbjs-input-component' },
+									label(
+										{ for: 'input-' + name },
+										user.getDescriptor(name).label,
+										":"
+									),
+									div({ class: 'input' },
+										input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) }))));
+							}
 						})
 				)
 			)

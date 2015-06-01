@@ -1,0 +1,12 @@
+.verification-status > span {
+	display: none;
+	margin: 0 5px;
+}
+
+.verification-status-positive > .verification-status-positive {
+	display: inline-block;
+}
+
+.verification-status-negative > .verification-status-negative {
+	display: inline-block;
+}

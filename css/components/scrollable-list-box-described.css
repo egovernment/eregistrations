@@ -1,0 +1,40 @@
+.scrollable-list-box-described {
+	display: inline-block;
+}
+
+.scrollable-list-box-described > * {
+	display: inline-block;
+	width: calc(50% - 10px);
+	line-height: 22px;
+	vertical-align: top;
+	margin-left: 5px;
+}
+
+.scrollable-list-box-described > *:first-child {
+	margin-right: 5px;
+	margin-left: 0;
+}
+
+.scrollable-list-box-described > ul {
+	border: 1px solid var(--light-inner-border);
+	padding: 0 5px;
+	margin-top: -1px;
+	margin-bottom: -1px;
+	max-height: 88px;
+	overflow: auto;
+}
+
+.scrollable-list-box-described > p {
+	font-size: 12px;
+	color: var(--hint-text);
+}
+
+/*
+Styles applied while screen size is less than 640px
+*/
+@media only screen and (max-width: var(--mobile-width)) {
+	.scrollable-list-box-described > * {
+		width: 100%;
+		margin-left: 0;
+	}
+}
