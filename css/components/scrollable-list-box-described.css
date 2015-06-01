@@ -4,14 +4,14 @@
 
 .scrollable-list-box-described > * {
 	display: inline-block;
-	width: 46%;
+	width: calc(50% - 10px);
 	line-height: 22px;
 	vertical-align: top;
-	margin-left: 2%;
+	margin-left: 5px;
 }
 
 .scrollable-list-box-described > *:first-child {
-	margin-right: 2%;
+	margin-right: 5px;
 	margin-left: 0;
 }
 
@@ -30,5 +30,6 @@ Styles applied while screen size is less than 640px
 @media only screen and (max-width: var(--mobile-width)) {
 	.scrollable-list-box-described > * {
 		width: 100%;
+		margin-left: 0;
 	}
 }
