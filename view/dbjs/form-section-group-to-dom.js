@@ -3,14 +3,16 @@
 var _  = require('mano').i18n.bind('Sections')
   , d  = require('d')
   , db = require('mano').db
-  , ns = require('mano').domjs.ns;
+  , ns = require('mano').domjs.ns
+  , forEach = require('es5-ext/object/for-each');
 
 require('./form-section-base');
 
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
 		var mainFormResolvent, actionUrl, options = Object(arguments[1]), url
-		  , master = options.master || this.master;
+		  , customizeData, master = options.master || this.master;
+		customizeData = { subSections: {} };
 		mainFormResolvent = this.getFormResolvent(options);
 		url = options.url || ns.url;
 		actionUrl = url(this.constructor.actionUrl);
@@ -19,7 +21,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 					url(this.constructor.actionUrl + '-add') :
 					url(this.constructor.actionUrl, master.__id__);
 		}
-		return [ns.section(
+		customizeData.arrayResult = [customizeData.container = ns.section(
 			{ class: 'section-primary' },
 			ns.form({ id: this.domId, method: 'post',
 					action: actionUrl,
@@ -34,8 +36,9 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 				options.prepend,
 				mainFormResolvent.formResolvent,
 				ns.div({ id: mainFormResolvent.affectedSectionId }, ns.list(this.sections,
-					function (subSection) {
+					function (subSection, subSectionName) {
 						var formResolvent, legacy, control;
+						customizeData.subSections[subSectionName] = {};
 						formResolvent = subSection.getFormResolvent(options);
 						legacy = subSection.getLegacy(this.domId, options);
 						if (!subSection.forceRequiredInput) {
@@ -44,7 +47,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 						return ns.div({ class: 'section-primary-sub', id: subSection.domId },
 							ns._if(subSection.label, ns.h3(subSection.label)),
 							formResolvent.formResolvent,
-							ns.fieldset(
+							customizeData.subSections[subSectionName].fieldset = ns.fieldset(
 								{ id: formResolvent.affectedSectionId, class: 'form-elements',
 									dbjs: master, names: subSection.formPropertyNames,
 									control: control,
@@ -60,4 +63,12 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 				)
 				)
 		), mainFormResolvent.legacyScript];
+		if (typeof options.customize === 'function') {
+			forEach(customizeData.subSections, function (subSection) {
+				subSection.fieldset = subSection.fieldset._dbjsFieldset;
+			});
+			options.customize.call(this, customizeData);
+		}
+
+		return customizeData.arrayResult;
 	}));
