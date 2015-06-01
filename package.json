@@ -19,9 +19,9 @@
   "devDependencies": {
     "dbjs-ext": "git://github.com/medikoo/dbjs-ext.git",
     "xlint": "~0.2.1",
-    "xlint-csslint-next": "0.1.x",
-    "xlint-jslint-medikoo": "0.1.x",
-    "tad": "0.2.x"
+    "xlint-csslint-next": "0.1",
+    "xlint-jslint-medikoo": "^0.1.3",
+    "tad": "^0.2.2"
   },
   "scripts": {
     "start": "node node_modules/mano/bin/start",
