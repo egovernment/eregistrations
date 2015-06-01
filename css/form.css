@@ -445,6 +445,41 @@ ul.multiple {
 	display: none;
 }
 
+.input-conditional-verification > span {
+	display: none;
+	margin: 0 5px;
+}
+
+.input-conditional-verified > .input-conditional-true {
+	display: inline-block;
+}
+
+.input-conditional-verified-negative > .input-conditional-false {
+	display: inline-block;
+}
+
+.input-conditional-options-list {
+	display: inline-block;
+}
+.input-conditional-options-list > * {
+	display: inline-block;
+	width: 46%;
+	line-height: 22px;
+	vertical-align: top;
+	margin-left: 2%;
+}
+.input-conditional-options-list > *:first-child {
+	margin-right: 2%;
+	margin-left: 0;
+}
+
+.input-conditional-options-list > ul {
+	border: 1px solid var(--light-inner-border);
+	padding: 0 5px;
+	margin-top: -1px;
+	margin-bottom: -1px; 
+}
+
 /*
 Styles applied while screen size is less than 640px
 */
@@ -504,6 +539,9 @@ Styles applied while screen size is less than 640px
 	}
 	.dbjs-component-message {
 		margin-left: 0;
+		width: 100%;
+	}
+	.input-conditional-options-list > * {
 		width: 100%;
 	}
 }

@@ -116,6 +116,7 @@ user.defineProperties({
 	} },
 
 	// Guide
+	companyName: { type: StringLine, required: true, label: "Comapny Name" },
 	businessActivity: { type: BusinessActivity, required: true, label: "Business activity" },
 	isOwner: { type: db.Boolean, trueLabel: "I am the owner", falseLabel: "I rent it",
 		label: "Owner of business premises",

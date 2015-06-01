@@ -81,19 +81,47 @@ exports.step = function () {
 					h3("Second Sub Section"),
 					ul({ class: 'form-elements' },
 						['businessActivity',
+							'companyName',
 							'isOwner',
 							'surfaceArea',
 							'members',
 							'companyType'],
 						function (name) {
-							li(div({ class: 'dbjs-input-component' },
-								label(
-									{ for: 'input-' + name },
-									user.getDescriptor(name).label,
-									":"
-								),
-								div({ class: 'input' },
-									input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) }))));
+							if (name === 'companyName') {
+								li(div({ class: 'dbjs-input-component' },
+									label(
+										{ for: 'input-' + name },
+										user.getDescriptor(name).label,
+										":"
+									),
+									div(
+										{ class: 'input' },
+										input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) }),
+										span({ class: 'input-conditional-verification input-conditional-verified' },
+											span({ class: 'label-reg approved input-conditional-true' },
+												"Company name allowed"),
+											span({ class: 'label-reg rejected input-conditional-false' },
+												"Company name occupied")),
+										span({ class: 'input-conditional-options-list' },
+											ul(li('First Comapnay Name'),
+												li('Second Comapnay Name'),
+												li('Third Comapnay Name')),
+											p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce " +
+													"efficitur mattis dolor, non facilisis felis varius feugiat. Nulla" +
+													" tincidunt odio sit amet euismod viverra."
+												)
+											)
+									)));
+							} else {
+								li(div({ class: 'dbjs-input-component' },
+									label(
+										{ for: 'input-' + name },
+										user.getDescriptor(name).label,
+										":"
+									),
+									div({ class: 'input' },
+										input({ control: { id: 'input-' + name }, dbjs: user.getObservable(name) }))));
+							}
 						})
 				)
 			)
