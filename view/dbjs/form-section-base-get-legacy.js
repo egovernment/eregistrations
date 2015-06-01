@@ -26,6 +26,11 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 		this.constructor.propertyNames.forEach(function (item, propName) {
 			var val, id, resolved, formFieldPath, propOptions;
 			resolved = resolvePropertyPath(master, propName);
+			if (!resolved) {
+				throw new Error("Could not resolve property " +
+					"'" + propName + "' on an object of type " +
+					master.constructor.__id__ + ". Check your model.");
+			}
 			formFieldPath = resolved.id;
 			if (this.inputOptions.has(propName)) {
 				propOptions = normalizeOptions(this.inputOptions.get(propName));
