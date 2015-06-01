@@ -107,7 +107,10 @@ exports.step = function () {
 										span({ class: 'scrollable-list-box-described' },
 											ul(li('First Company Name'),
 												li('Second Company Name'),
-												li('Third Company Name')),
+												li('Third Company Name'),
+												li('Fourth Company Name'),
+												li('Fifth Company Name'),
+												li('Sixth Company Name')),
 											p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce " +
 													"efficitur mattis dolor, non facilisis felis varius feugiat. Nulla" +
 													" tincidunt odio sit amet euismod viverra."
