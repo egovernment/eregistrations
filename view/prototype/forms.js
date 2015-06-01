@@ -103,9 +103,9 @@ exports.step = function () {
 											span({ class: 'label-reg rejected input-conditional-false' },
 												"Company name occupied")),
 										span({ class: 'input-conditional-options-list' },
-											ul(li('First Comapnay Name'),
-												li('Second Comapnay Name'),
-												li('Third Comapnay Name')),
+											ul(li('First Company Name'),
+												li('Second Company Name'),
+												li('Third Company Name')),
 											p("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce " +
 													"efficitur mattis dolor, non facilisis felis varius feugiat. Nulla" +
 													" tincidunt odio sit amet euismod viverra."
