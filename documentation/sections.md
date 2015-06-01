@@ -17,7 +17,8 @@ We start by declaring that certain property will be a container for our section 
 
 ```javascript
 var defineFormSections = require('eregistrations/model/form-sections');
-
+// We create a nested map called formSections, which will be setup on User.prototype (not on User).
+// This map will later hold our section objects (which are also nesteds)
 defineFormSections(User, 'formSections');
 ```
 
