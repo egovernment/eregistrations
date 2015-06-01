@@ -71,8 +71,8 @@ FormSection.extend('GeneralInfoFormSection', {
 		'address/country', 'address/street'] }
 });
 
-// Assign created Type to chosen section at User.prototype.formSections
-User.prototype.formSections.getOwnDescriptor('generalInfoFormSection').type = db.GeneralInfoFormSection;
+// Define created Type for chosen section at User.prototype.formSections
+User.prototype.formSections.define('generalInfoFormSection', { type: db.GeneralInfoFormSection });
 
 // As explainWhyNotNice field should be shown conditionally we define a condition for it. The convention to create such a condition is explained later on.
 User.prototype.define('isExplainWhyNotNiceApplicable', {
@@ -124,10 +124,11 @@ FormSection.extend('AddressDetailsSection', {
     propertyNames: { value: ['address/country', 'address/street'] }
 });
 
-User.prototype.formSections.getOwnDescriptor('generalInfoFormSection').type = db.GeneralInfoFormSection;
+User.prototype.formSections.define('generalInfoFormSection', { type: db.GeneralInfoFormSection });
 
-User.prototype.formSections.generalInfoFormSection.sections.getOwnDescriptor('personalInformationSection').type = db.PersonalInformationSection;
-User.prototype.formSections.generalInfoFormSection.sections.getOwnDescriptor('addressDetailsSection').type = db.AddressDetailsSection;
+User.prototype.formSections.generalInfoFormSection.sections.define('personalInformationSection', { type: db.PersonalInformationSection });
+
+User.prototype.formSections.generalInfoFormSection.sections.define('addressDetailsSection', { type: db.AddressDetailsSection });
 
 User.prototype.define('isExplainWhyNotNiceApplicable', {
     value: function () {
@@ -167,7 +168,7 @@ FormSection.extend('PartnerFormSection', {
     propertyNames: { value: ['name', 'isShareholder'] }
 });
 
-Partner.prototype.formSections.getOwnDescriptor('partnerFormSection').type = db.PartnerFormSection;
+Partner.prototype.formSections.define('partnerFormSection', { type: db.PartnerFormSection });
 ```
 
 We need to pass `isChildEntity` option to `eregistrations/components/generate-form-sections` invocation in order for the partner form to build it's forms urls correctly.
@@ -203,8 +204,7 @@ db.PartnersTableSection.entities.add(new TabularEntity({
 	propertyName: 'isShareholder'
 }));
 
-user.formSections.getOwnDescriptor('partnersTableSection').type =
-	db.PartnersTableSection;
+user.formSections.define('partnersTableSection', { type: db.PartnersTableSection });
 ```
 
 Explanation of some `EntitiesTable` properties:
@@ -379,7 +379,7 @@ _constructor_
 
 _prototype_
 
-**sections** Used to setup child sections. Note that in order to use it, you need to set every child section separately i.e: `User.prototype.formSections.generalInfoFormSection.sections.getOwnDescriptor('personalInformatioSection').type = db.PersonalInformationSection;`
+**sections** Used to setup child sections. Note that in order to use it, you need to set every child section separately i.e: `User.prototype.formSections.generalInfoFormSection.sections.define('personalInformatioSection', type: db.PersonalInformationSection })`
     
 ####FormEntitiesTable####
 
