@@ -75,7 +75,10 @@ FormSection.extend('GeneralInfoFormSection', {
 // Define created Type for chosen section at User.prototype.formSections
 User.prototype.formSections.define('generalInfoFormSection', { type: db.GeneralInfoFormSection });
 
-// As explainWhyNotNice field should be shown conditionally we define a condition for it. The convention to create such a condition is explained later on.
+// As explainWhyNotNice field should be shown conditionally, we define a condition for it.
+// This condition is a getter ad it's name should follow convention. The convention to create such getter's name // is: is<CapitalizedNameOfProperty>Applicable, so
+// in our example it's isExplainWhyNotNiceApplicable. If we wanted to show name field conditionally
+// it would have been isNameApllicable.
 User.prototype.define('isExplainWhyNotNiceApplicable', {
     value: function () {
         return !this.isNice;
