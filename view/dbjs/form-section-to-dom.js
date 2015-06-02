@@ -3,6 +3,7 @@
 var _  = require('mano').i18n.bind('Sections')
   , d  = require('d')
   , db = require('mano').db
+  , find = require('es5-ext/array/#/find')
   , ns = require('mano').domjs.ns;
 
 require('./form-section-to-dom-fieldset');
@@ -45,7 +46,9 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 						ns.span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
 			))];
 		if (typeof options.customize === 'function') {
-			customizeData.fieldset = fieldsetResult[2].fieldset._dbjsFieldset;
+			customizeData.fieldset = find.call(fieldsetResult, function (el) {
+				return el && el.nodeName === 'FIELDSET';
+			})._dbjsFieldset;
 			options.customize.call(this, customizeData);
 		}
 

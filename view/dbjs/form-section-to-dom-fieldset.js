@@ -21,7 +21,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 			resolvent.formResolvent,
 			customizeData.fieldset = ns.fieldset({
 				id: resolvent.affectedSectionId,
-				class: options.cssClass,
+				class: 'form-elements',
 				dbjs: options.master || this.master,
 				names: this.formPropertyNames,
 				control: control,

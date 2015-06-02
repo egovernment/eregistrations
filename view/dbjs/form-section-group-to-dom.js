@@ -4,6 +4,7 @@ var _  = require('mano').i18n.bind('Sections')
   , d  = require('d')
   , db = require('mano').db
   , ns = require('mano').domjs.ns
+  , find = require('es5-ext/array/#/find')
   , forEach = require('es5-ext/object/for-each');
 
 require('./form-section-to-dom-fieldset');
@@ -24,7 +25,6 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		}
 		fieldsetOptions = {
 			master: master,
-			cssClass: 'form-elements',
 			formId: this.domId
 		};
 		customizeData.arrayResult = [customizeData.container = ns.section(
@@ -61,7 +61,9 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 
 		if (typeof options.customize === 'function') {
 			forEach(customizeData.subSections, function (subSection) {
-				subSection.fieldset = subSection.arrayResult[2].fieldset._dbjsFieldset;
+				subSection.fieldset = find.call(subSection.arrayResult, function (el) {
+					return el && el.nodeName === 'FIELDSET';
+				})._dbjsFieldset;
 			});
 			options.customize.call(this, customizeData);
 		}
