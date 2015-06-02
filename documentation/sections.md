@@ -326,10 +326,10 @@ In the above code the `data.fieldset` is the fieldset of the section, `data.cont
 The `customize` function will be called with the below arguments (depending on section class):
 
 
-`FormSection`: `data.fieldset`, `data.container`, `data.arrayResult`,
+`FormSection`: `data.fieldset`, `data.container`, `data.arrayResult`, `data.form`
 
 
-`FormGroupSection`: `data.subSections.<nameOfSubsectionAsInSectionMap>.fieldset`, `data.container`, `data.arrayResult`
+`FormGroupSection`: `data.subSections.<nameOfSubsectionAsInSectionMap>.fieldset`, `data.container`, `data.arrayResult`, `data.form`
 
 
 `FormEntitiesTable`: `data.addButton`, `data.container`, `data.arrayResult`
