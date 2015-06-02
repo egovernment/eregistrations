@@ -6,12 +6,13 @@ var _  = require('mano').i18n.bind('Sections')
   , ns = require('mano').domjs.ns
   , forEach = require('es5-ext/object/for-each');
 
+require('./form-section-to-dom-fieldset');
 require('./form-section-base');
 
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
 		var mainFormResolvent, actionUrl, options = Object(arguments[1]), url
-		  , customizeData, master = options.master || this.master;
+		  , customizeData, master = options.master || this.master, fieldsetOptions;
 		customizeData = { subSections: {} };
 		mainFormResolvent = this.getFormResolvent(options);
 		url = options.url || ns.url;
@@ -21,6 +22,11 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 					url(this.constructor.actionUrl + '-add') :
 					url(this.constructor.actionUrl, master.__id__);
 		}
+		fieldsetOptions = {
+			master: master,
+			cssClass: 'form-elements',
+			formId: this.domId
+		};
 		customizeData.arrayResult = [customizeData.container = ns.section(
 			{ class: 'section-primary' },
 			customizeData.form = ns.form({ id: this.domId, method: 'post',
@@ -37,22 +43,11 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 				mainFormResolvent.formResolvent,
 				ns.div({ id: mainFormResolvent.affectedSectionId }, ns.list(this.sections,
 					function (subSection, subSectionName) {
-						var formResolvent, legacy, control;
 						customizeData.subSections[subSectionName] = {};
-						formResolvent = subSection.getFormResolvent(options);
-						legacy = subSection.getLegacy(this.domId, options);
-						if (!subSection.forceRequiredInput) {
-							control = { required: subSection.forceRequiredInput };
-						}
 						return ns.div({ class: 'section-primary-sub', id: subSection.domId },
 							ns._if(subSection.label, ns.h3(subSection.label)),
-							formResolvent.formResolvent,
-							customizeData.subSections[subSectionName].fieldset = ns.fieldset(
-								{ id: formResolvent.affectedSectionId, class: 'form-elements',
-									dbjs: master, names: subSection.formPropertyNames,
-									control: control,
-									controls: legacy.controls }
-							), formResolvent.legacyScript, legacy.legacy);
+							customizeData.subSections[subSectionName].arrayResult =
+								subSection.toDOMFieldset(document, fieldsetOptions));
 					}, this)).extend(options.append),
 				ns.p({ class: 'submit-placeholder input' },
 					ns.input({ type: 'submit', value: _("Submit") })),
@@ -63,9 +58,10 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 				)
 				)
 		), mainFormResolvent.legacyScript];
+
 		if (typeof options.customize === 'function') {
 			forEach(customizeData.subSections, function (subSection) {
-				subSection.fieldset = subSection.fieldset._dbjsFieldset;
+				subSection.fieldset = subSection.arrayResult[2].fieldset._dbjsFieldset;
 			});
 			options.customize.call(this, customizeData);
 		}
