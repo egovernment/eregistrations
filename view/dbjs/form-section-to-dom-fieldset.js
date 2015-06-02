@@ -1,3 +1,15 @@
+/** Renders fieldset of a FormSection object
+ * @param document {object} - document object, usually DOM
+ * @param options {object} -
+ * {
+ *  append {object} - domjs object to append
+ *  customize {function} - customization callback
+ *  formId {string} - the id of the parent form
+ *  master {object} - by default section's master object
+ *  prepend {object} - domjs object to prepend
+ * }
+ * @returns {array} - array of constructed domjs elements
+ */
 'use strict';
 
 var d  = require('d')

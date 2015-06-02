@@ -1,3 +1,16 @@
+/** Renders form of a FormSection object
+ * @param document {object} - document object, usually DOM
+ * @param options {object} -
+ * {
+ *  append {object} - domjs object to append after fieldset
+ *  customize {function} - customization callback
+ *  isChildEntity {boolean} - used to handle addition of child objects
+ *  master {object} - by default section's master object
+ *  prepend {object} - domjs object to prepend before fieldset
+ *  url {string} - url used by the form (note: url is used to build action attribute for the form)
+ * }
+ * @returns {array} - array of constructed domjs elements
+ */
 'use strict';
 
 var _  = require('mano').i18n.bind('Sections')

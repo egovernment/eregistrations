@@ -1,3 +1,17 @@
+/** Renders table of a FormEntitiesTable object
+ * @param document {object} - document object, usually DOM
+ * @param options {object} -
+ * {
+ *  addButtonLabel {string} - default "Add new"
+ *  append {object} - domjs object to append after table
+ *  customize {function} - customization callback
+ *  master {object} - by default section's master object
+ *  prepend {object} - domjs object to prepend before table
+ *  url {string} - url used by the form (note: url is used to build action attribute for the form)
+ * }
+ * @returns {array} - array of constructed domjs elements
+ */
+
 'use strict';
 
 var _                   = require('mano').i18n.bind('Sections')
