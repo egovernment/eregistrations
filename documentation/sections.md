@@ -324,7 +324,8 @@ module.exports = Object.defineProperty(db.CustomSection.prototype, 'toDOMForm',
 
 In the above code the `data.fieldset` is the fieldset of the section, `data.container` is the whole section dom, `data.arrayResult` is an array of all elements returned from `toDOMForm` (section and legacy scripts).
 The `customize` function will be called with the below arguments (depending on section class):
-`FormSection`: `data.fieldset`, `data.container`, `data.arrayResult`
+`FormSection`: `data.fieldset`, `data.container`, `data.arrayResult`,
+`FormGroupSection`: `data.subSections.<nameOfSubsectionAsInSectionMap>.fieldset`, `data.container`, `data.arrayResult`
 `FormEntitiesTable`: `data.addButton`, `data.container`, `data.arrayResult`
 
 ###Sections after submission###
