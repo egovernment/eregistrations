@@ -25,7 +25,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 			control = { required: this.forceRequiredInput };
 		}
 		customizeData.arrayResult = [customizeData.container = ns.section({ class: 'section-primary' },
-			ns.form(
+			customizeData.form = ns.form(
 				{ id: this.domId,
 					method: 'post',
 					action: actionUrl, class: ns._if(ns.eq(
