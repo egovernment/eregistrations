@@ -23,7 +23,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		}
 		customizeData.arrayResult = [customizeData.container = ns.section(
 			{ class: 'section-primary' },
-			ns.form({ id: this.domId, method: 'post',
+			customizeData.form = ns.form({ id: this.domId, method: 'post',
 					action: actionUrl,
 					class: ns._if(ns.eq(
 					this._status,
