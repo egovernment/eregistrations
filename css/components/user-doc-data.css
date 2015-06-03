@@ -1,0 +1,12 @@
+.user-doc-data > select {
+	width: 100%;
+}
+
+.user-doc-data .submitted-user-data-table th {
+	white-space: nowrap;
+}
+
+.user-doc-data-table-actions {
+	width: 50px;
+	text-align: center;
+}
