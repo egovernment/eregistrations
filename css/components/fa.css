@@ -230,3 +230,12 @@ e.g.:
 .fa-bank:before {
 	content: '\f19c'
 }
+
+.fa-certificate {
+	width: 1em;
+}
+
+.fa-certificate:before {
+	content: "\f0a3";
+	color: var(--main-color);
+}
