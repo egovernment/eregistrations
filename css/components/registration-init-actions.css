@@ -1,0 +1,32 @@
+.registration-init-actions li {
+	margin-top: 22px;
+}
+.registration-init-actions li:first-child {
+	margin-top: 0;
+}
+
+.registration-init-actions li > * {
+	display: inline-block;
+	width: 70%;
+}
+.registration-init-actions li > *:first-child {
+	width: 28%;
+	margin-right: 2%;
+	vertical-align: top;
+}
+
+.registration-init-actions li > *:first-child a,
+.registration-init-actions li > *:first-child button {
+	width: 100%;
+}
+
+.registration-init-actions-dialog select {
+	width: 100%;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.registration-init-actions li > *,
+	.registration-init-actions li > *:first-child {
+		width: 100%;
+	}
+}

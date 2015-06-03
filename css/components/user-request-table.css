@@ -1,0 +1,4 @@
+.user-request-table tr td:first-child,
+.user-request-table tr td:last-child {
+	text-align: center;
+}
