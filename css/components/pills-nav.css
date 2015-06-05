@@ -29,10 +29,10 @@
 	background: var(--normal-light-background);
 }
 
-.pills-nav-pill-active,
-.pills-nav-pill-active:hover,
-.pills-nav-pill-active:focus,
-.pills-nav-pill-active:active {
+.pills-nav-active > a,
+.pills-nav-active > a:hover,
+.pills-nav-active > a:focus,
+.pills-nav-active > a:active {
 	background: var(--normal-background);
 	color: var(--white-text);
 }
