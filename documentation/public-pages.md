@@ -14,22 +14,22 @@ Follow below documentation
 
 Below is short list of rules which should be respected to assure trouble-less maintenance among different environments.
 
-- __All filenames added to the repository should be lowercase.__
+- __All filenames added to the repository should be lowercase.__  
 _Reasoning: We usually develop using case-insensitive filesystems, however our application is served on production from a filesystem which is case-sensitive.
-So while in development linking `Foo.jpg` in html with `foo.jpg` url, will not indicate anything wrong, on production it will produce 404 error. Sticking strictly to lower-case assures that such problems do not occur._
+So while in development linking `Foo.jpg` in html with `foo.jpg` fill, will not indicate anything wrong, on production it will produce 404 error. Sticking strictly to lowercase assures that such problems do not occur._
 - __Use only unix style line endings `\n`__  
 If you're on Windows please assure that you're editor is configured for those.  
-_Reasoning: Our developers work on many different systems (OSX, Linux, Windows), so using one agreed style is important to assure that files are visible properly for every developer that opens the file. Unix style line endings while being most appropriate from semantic point are also agreed as common convention among web developers_
+_Reasoning: Our developers work using many different systems (OSX, Linux, Windows), so using one agreed style is important to assure that files are visible properly for every developer that opens the file. Unix style line endings while being most appropriate from semantic point are also agreed as common convention among web developers_
 
 ## Static files
 
 Images, PDF documents, external JS libraries (which are loaded via `<script>` tag), and other files (meant to be accessible for download) should be put in [/public/public](https://github.com/egovernment/eregistrations-lomas/tree/new-public-pages/public/public) folder.
 
-[/public/public](https://github.com/egovernment/eregistrations-lomas/tree/new-public-pages/public/public) is also understood as root folder for all static content.  
-So if you put `foo.jpg` into `/public/public/img/foo.jpg`, then you can link it in HTML via `<img src="/img/foo.jpg" />`.  
-_See however [pre-generated root for static files](#pre-generated-url-root-for-static-files) section, to learn about `${ stRoot }` variable).
+[/public/public](https://github.com/egovernment/eregistrations-lomas/tree/new-public-pages/public/public) is also understood as a root folder for all static content.  
+So if you put `foo.jpg` into `/public/public/img/foo.jpg`, then you can link it in HTML via `<img src="/img/foo.jpg" />`.
+_See however [pre-generated root for static files](#pre-generated-url-root-for-static-files) section, to learn about `${ stRoot }` variable)._
 
-Do not place HTML and CSS files in that folder, next sections will explain how to deal with them:
+Do not place HTML and CSS files in that folder, next sections will explain where they should be maintained.
 
 ## CSS Stylesheets
 
@@ -92,13 +92,10 @@ _company.html (content for `<main>` element)_
 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
 ```
 
-Above files neatly in non repetitive way configure HTML we want to present, but we still miss a configuration that will say that e.g. _homepage.html_ is a content that should land in `<main>` element provided by _body.html_ view.
-
 #### Views tree configuration
 
-This is done via simple JS configuration, made in [/public/view/index.js](https://github.com/egovernment/eregistrations-lomas/blob/new-public-pages/public/view/index.js) file
+Plain HTML files, do not say a word about relations between them. This is in [/public/view/index.js](https://github.com/egovernment/eregistrations-lomas/blob/new-public-pages/public/view/index.js) file, with help of simple JS configuration
 
-Relation of each view is configured via simple JS objects.  
 e.g. configuration for base _body.html_ view:
 
 ```javascript
@@ -127,7 +124,7 @@ exports.homepage = {
 Configuration for an "Individual trader" and "Company" sub pages:
 
 ```javascript
-// Configuration for a "Individual trader" view
+// Configuration for an "Individual trader" view
 exports.individualTrader = {
   // Extend 'base' view:
   _parent: exports.base,
@@ -187,28 +184,28 @@ exports.someViewName = {
 View configuration defines relations between views, but doesn't decide which view is mapped to which url.  
 That is done in [/public/routes.js](https://github.com/egovernment/eregistrations-lomas/blob/new-public-pages/public/routes.js)
 
-e.g. for above example views, we may decide that _homepage_ should be displayed at `/`, _individual-trader_ at `/individual-trader/` and _company_ at `/company/` url:
+e.g. for above example views, we may decide that _homepage_ should be displayed at `/`, _individualTrader_ at `/individual-trader/` and _company_ at `/company/` urls:
 
 ```javascript
 var viewTree = require('./view');
 
 module.exports = {
   // On left side it's url, and on right side related view
-  '/': viewTree.homepage,
+  '/':                 viewTree.homepage,
   'individual-trader': viewTree.individualTrader,
-  'company': viewTree.company
+  'company':           viewTree.company
 }
 ```
 
-### Insertion of dynamic (or application model dependant) content
+### Insertion of dynamic (or application model dependent) content
 
 If we need to insert some content that comes from core application logic (e.g. table of objects coming from eRegistrations model, or some other things that require interaction with application), then we can achieve it via configuration of inserts.
 
-First we need to configure an insert in: [/public/view/inserts.js](https://github.com/egovernment/eregistrations-lomas/blob/new-public-pages/public/view/inserts.js) e.g.:
+First we need to add an insert in: [/public/view/inserts.js](https://github.com/egovernment/eregistrations-lomas/blob/new-public-pages/public/view/inserts.js) e.g.:
 
 ```javascript
 exports.generateCostsTable = function () {
-  // Dynamic domjs style content:
+  // Dynamic domjs style content, that lists all costs as defined in model
   return ul(db.Costs, function (cost) {
     return li(cost.name, " ", cost.amount);
   });
@@ -252,5 +249,5 @@ Usage of it is as simple as:
 <p><img src="${ stRoot }img/foo.jpg" /></p>
 ```
 
-Remember to use it only for __static files__ that are meant to be served from [/public/public](https://github.com/egovernment/eregistrations-lomas/tree/new-public-pages/public/public). Do not use it for application pages urls e.g. `<a href="/company">..` should stay that way.
+Remember to use it only for __static files__ that are meant to be served from [/public/public](https://github.com/egovernment/eregistrations-lomas/tree/new-public-pages/public/public). Do not use it for application pages urls e.g. `<a href="/company">..`.
 
