@@ -51,7 +51,5 @@ module.exports = memoize(function (db) {
 	db.Document.prototype.files._descriptorPrototype_.type   = File;
 	db.Document.prototype.files._descriptorPrototype_.nested = true;
 
-	defineStatusLog(db.Document);
-
 	return db.Document;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

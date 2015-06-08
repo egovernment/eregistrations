@@ -85,7 +85,5 @@ module.exports = memoize(function (db/*, options*/) {
 		}
 	});
 
-	defineStatusLog(db.BusinessProcess);
-
 	return db.BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
