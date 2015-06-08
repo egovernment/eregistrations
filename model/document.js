@@ -19,15 +19,9 @@ module.exports = memoize(function (db) {
 
 	db.Object.extend('Document', {
 		files: { type: db.Object, nested: true },
-		issuedBy: { type: db.Object, value: function () {
-			return this.master.user;
-		} },
-		label: { type: StringLine, value: function () {
-			return this.constructor.label;
-		} },
-		legend: { type: StringLine, value: function () {
-			return this.constructor.legend;
-		} },
+		issuedBy: { type: db.Object, value: function () { return this.master.user; } },
+		label: { type: StringLine, value: function () { return this.constructor.label; } },
+		legend: { type: StringLine, value: function () { return this.constructor.legend; } },
 		uniqueKey: { type: StringLine, value: function () { return this.key; } },
 		issueDate: { type: DateType, required: true, label: _("Date of issuance") },
 		orderedFiles: { type: File, multiple: true, value: function (_observe) {
