@@ -3,7 +3,7 @@
 'use strict';
 
 var memoize           = require('memoizee/plain')
-  , ensureDb           = require('dbjs/valid-dbjs')
+  , ensureDb          = require('dbjs/valid-dbjs')
   , defineStringLine  = require('dbjs-ext/string/string-line')
   , defineInstitution = require('./institution');
 
