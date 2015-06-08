@@ -5,11 +5,11 @@
 
 var memoize          = require('memoizee/plain')
   , validDb          = require('dbjs/valid-dbjs')
-  , defineStringLine = require('dbjs-ext/string/string-line')
-  , defineFile       = require('./file')
-  , defineStatusLog  = require('./lib/status-log')
   , defineDate       = require('dbjs-ext/date-time/date')
-  , _                = require('mano').i18n.bind('Model: Documents');
+  , defineStringLine = require('dbjs-ext/string/string-line')
+  , _                = require('mano').i18n.bind('Model: Documents')
+  , defineFile       = require('./file')
+  , defineStatusLog  = require('./lib/status-log');
 
 module.exports = memoize(function (db) {
 	var StringLine, File, DateType, StatusLog;
