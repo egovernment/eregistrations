@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 
 var _                = require('mano').i18n.bind("Model: Business Process")
   , memoize          = require('memoizee/plain')
