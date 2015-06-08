@@ -9,7 +9,7 @@ var memoize           = require('memoizee/plain')
 
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(ensureDb(db))
-	  , Institution = defineInstitution(ensureDb(db));
+	  , Institution = defineInstitution(db);
 
 	return db.Object.extend('Registration', {
 		label: {
