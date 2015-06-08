@@ -2,7 +2,7 @@
 
 var memoize          = require('memoizee/plain')
   , ensureDb         = require('dbjs/valid-dbjs')
-  , defineUser       = require('./user/base')
+  , defineUser       = require('../user/base')
   , defineStringLine = require('dbjs-ext/string/string-line');
 
 module.exports = memoize(function (db) {
