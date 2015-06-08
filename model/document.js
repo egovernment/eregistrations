@@ -37,9 +37,9 @@ module.exports = memoize(function (db) {
 		} },
 		statusLog: { type: StatusLog, multiple: true }
 	}, {
-		label: { type: StringLine, required: true },
-		legend: { type: StringLine, required: true },
-		abbr: { type: StringLine, required: true }
+		label: { type: StringLine },
+		legend: { type: StringLine },
+		abbr: { type: StringLine }
 	});
 
 	db.Document.prototype.files._descriptorPrototype_.type   = File;
