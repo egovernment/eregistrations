@@ -1,3 +1,5 @@
+// Registration (aka Inscription) model
+
 'use strict';
 
 var memoize           = require('memoizee/plain')
