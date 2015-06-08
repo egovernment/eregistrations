@@ -8,10 +8,11 @@ var _                = require('mano').i18n.bind("Model: Business Process")
   , defineBusinessProcessStatus = require('../lib/business-process-status');
 
 module.exports = memoize(function (db/*, options*/) {
-	var StringLine, BusinessProcessStatus;
+	var StringLine, BusinessProcessStatus, StatusLog;
 	validDb(db);
 	BusinessProcessStatus = defineBusinessProcessStatus(db);
 	StringLine            = defineStringLine(db);
+	StatusLog             = defineStatusLog(db);
 
 	db.Object.extend('BusinessProcess', {
 		isFromEregistrations: { type: db.Boolean,
@@ -36,7 +37,8 @@ module.exports = memoize(function (db/*, options*/) {
 			return 'draft';
 		} },
 		submitted: { type: db.Boolean, value: false },
-		businessName: { type: StringLine }
+		businessName: { type: StringLine },
+		statusLog: { type: StatusLog, multiple: true }
 	});
 
 	db.BusinessProcess.prototype.defineProperties({

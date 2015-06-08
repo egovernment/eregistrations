@@ -11,11 +11,12 @@ var memoize          = require('memoizee/plain')
   , _                = require('mano').i18n.bind('Model: Documents');
 
 module.exports = memoize(function (db) {
-	var StringLine, File, DateType;
+	var StringLine, File, DateType, StatusLog;
 	validDb(db);
 	StringLine = defineStringLine(db);
 	File = defineFile(db);
 	DateType = defineDate(db);
+	StatusLog = defineStatusLog(db);
 	db.Object.extend('Document', {
 		files: { type: db.Object, nested: true },
 		issuedBy: { type: db.Object, value: function () {
@@ -39,7 +40,8 @@ module.exports = memoize(function (db) {
 				return a.getDescriptor('name')._lastOwnModified_ -
 					b.getDescriptor('name')._lastOwnModified_;
 			});
-		} }
+		} },
+		statusLog: { type: StatusLog, multiple: true }
 	}, {
 		label: { type: StringLine, required: true },
 		legend: { type: StringLine, required: true },
