@@ -1,4 +1,5 @@
-// Document abstraction
+// Abstract document class
+// Each specific document class extends this one
 
 'use strict';
 
