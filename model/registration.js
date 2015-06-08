@@ -3,13 +3,13 @@
 'use strict';
 
 var memoize           = require('memoizee/plain')
-  , validDb           = require('dbjs/valid-dbjs')
+  , ensureDb           = require('dbjs/valid-dbjs')
   , defineStringLine  = require('dbjs-ext/string/string-line')
   , defineInstitution = require('./institution');
 
 module.exports = memoize(function (db) {
-	var StringLine = defineStringLine(validDb(db))
-	  , Institution = defineInstitution(validDb(db));
+	var StringLine = defineStringLine(ensureDb(db))
+	  , Institution = defineInstitution(ensureDb(db));
 
 	return db.Object.extend('Registration', {
 		label: {
