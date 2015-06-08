@@ -18,12 +18,12 @@ module.exports = memoize(function (db) {
 	  , StatusLog  = defineStatusLog(db);
 
 	db.Object.extend('Document', {
-		files: { type: db.Object, nested: true },
-		issuedBy: { type: db.Object, value: function () { return this.master.user; } },
 		label: { type: StringLine, value: function () { return this.constructor.label; } },
 		legend: { type: StringLine, value: function () { return this.constructor.legend; } },
 		uniqueKey: { type: StringLine, value: function () { return this.key; } },
+		issuedBy: { type: db.Object, value: function () { return this.master.user; } },
 		issueDate: { type: DateType, required: true, label: _("Date of issuance") },
+		files: { type: db.Object, nested: true },
 		orderedFiles: { type: File, multiple: true, value: function (_observe) {
 			var files = [];
 			_observe(this.files, true).forEach(function (file) {
