@@ -42,8 +42,10 @@ module.exports = memoize(function (db) {
 		abbr: { type: StringLine }
 	});
 
-	db.Document.prototype.files._descriptorPrototype_.type   = File;
-	db.Document.prototype.files._descriptorPrototype_.nested = true;
+	db.Document.prototype.files._descriptorPrototype_.setProperties({
+		type: File,
+		nested: true
+	});
 
 	return db.Document;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
