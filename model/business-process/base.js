@@ -3,7 +3,7 @@
 var _                = require('mano').i18n.bind("Model: Business Process")
   , memoize          = require('memoizee/plain')
   , validDb          = require('dbjs/valid-dbjs')
-  , defineStatusLog  = require('../../status-log')
+  , defineStatusLog  = require('../lib/status-log')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineBusinessProcessStatus = require('../lib/business-process-status');
 
