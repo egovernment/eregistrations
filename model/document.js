@@ -6,7 +6,7 @@ var memoize          = require('memoizee/plain')
   , validDb          = require('dbjs/valid-dbjs')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineFile       = require('./file')
-  , defineStatusLog  = require('./status-log')
+  , defineStatusLog  = require('./lib/status-log')
   , defineDate       = require('dbjs-ext/date-time/date')
   , _                = require('mano').i18n.bind('Model: Documents');
 
