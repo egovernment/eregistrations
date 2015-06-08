@@ -12,12 +12,11 @@ var memoize          = require('memoizee/plain')
   , defineStatusLog  = require('./lib/status-log');
 
 module.exports = memoize(function (db) {
-	var StringLine, File, DateType, StatusLog;
-	ensureDb(db);
-	StringLine = defineStringLine(db);
-	File = defineFile(db);
-	DateType = defineDate(db);
-	StatusLog = defineStatusLog(db);
+	var StringLine = defineStringLine(ensureDb(db))
+	  , File       = defineFile(db)
+	  , DateType   = defineDate(db)
+	  , StatusLog  = defineStatusLog(db);
+
 	db.Object.extend('Document', {
 		files: { type: db.Object, nested: true },
 		issuedBy: { type: db.Object, value: function () {
