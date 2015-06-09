@@ -21,61 +21,36 @@ module.exports = memoize(function (db/*, options*/) {
 
 	return db.Object.extend(options.className || 'Registration', {
 		// Label (name) of registration
-		label: {
-			type: StringLine,
-			value: function () {
-				var Document = this.constructor.Document;
-				if (!Document) {
-					throw new Error("Cannot resolve label, as there's no document for " +
-						JSON.stringify(this.key) + " registration defined");
-				}
-				return Document.label;
+		label: { type: StringLine, value: function () {
+			var Document = this.constructor.Document;
+			if (!Document) {
+				throw new Error("Cannot resolve label, as there's no document for " +
+					JSON.stringify(this.key) + " registration defined");
 			}
-		},
+			return Document.label;
+		} },
 		// Short label (name) of registration
 		// Used e.g. in official roles in tables where processes are listed
-		shortLabel: {
-			type: StringLine,
-			value: function () { return this.label; }
-		},
+		shortLabel: { type: StringLine, value: function () { return this.label; } },
 		// Whether registration is applicable
-		isApplicable: {
-			type: db.Boolean,
-			value: true
-		},
+		isApplicable: { type: db.Boolean, value: true },
 		// Whether registration is mandatory
-		isMandatory: {
-			type: db.Boolean,
-			value: true
-		},
+		isMandatory: { type: db.Boolean, value: true },
 		// Whether registration is requested
-		isRequested: {
-			type: db.Boolean,
-			value: true
-		},
+		isRequested: { type: db.Boolean, value: true },
 		// Certificates that are produced for this registration
-		certificates: {
-			type: Document,
-			multiple: true,
-			value: function () {
-				var certificate = this.master.certificates.map[this.key];
-				if (!certificate) {
-					throw new Error("No certifate defined for registration name: " +
-						JSON.stringify(this.key));
-				}
-				return certificate;
+		certificates: { type: Document, multiple: true, value: function () {
+			var certificate = this.master.certificates.map[this.key];
+			if (!certificate) {
+				throw new Error("No certifate defined for registration name: " +
+					JSON.stringify(this.key));
 			}
-		},
+			return certificate;
+		} },
 		// Requirements needed to obtain registration
-		requirements: {
-			type: Requirement,
-			multiple: true
-		},
+		requirements: { type: Requirement, multiple: true },
 		// Costs that are need to be covered to obtain registration
-		costs: {
-			type: Cost,
-			multiple: true
-		}
+		costs: { type: Cost, multiple: true }
 	}, {
 		// Usually registration is about resolution of single certificate document
 		// In such case certificate document should be referenced on registration constructor
