@@ -2,7 +2,7 @@
 
 var memoize            = require('memoizee/plain')
   , validDb            = require('dbjs/valid-dbjs')
-  , defineRejectReason = require('../reject-reason')
+  , defineRejectReason = require('../lib/reject-reason')
   , defineDocument     = require('../document')
   , _                  = require('mano').i18n.bind('Model: Submissions');
 
