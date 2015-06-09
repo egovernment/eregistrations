@@ -311,7 +311,7 @@ Just as we have `status` on each section's prototype, we also have `weight`. Wei
 
 ###View customization###
 
-Ok, so you can render forms seemlesly with sections. But what if you have a very custom form in a view and sections just will not render it? You will need to tweak `toDOMForm` method of the section you want to customize. In an extreme situation you can overwrite it completely in `view/dbjs`. This way you can create completely custom markup. There is more subtle solution available if you don't need to rewrite everything and your section extends `FormSection`. You may call your section's super class `toDOMForm` and pass to it an object as a last argument. This object must have a property called `customize` which is a function. Let's see an example:
+Ok, so you can render forms seemlesly with sections. But what if you have a very custom form in a view and sections just will not render it? You will need to tweak `toDOMForm` or `toDOMFieldset` method of the section you want to customize. In an extreme situation you can overwrite it completely in `view/dbjs`. This way you can create completely custom markup. There is more subtle solution available if you don't need to rewrite everything and your section extends `FormSection`. You may call your section's super class `toDOMForm` or `toDOMFieldset` and pass to it an object as a last argument. This object must have a property called `customize` which is a function. Let's see an example:
 
 ```javascript
 var db = require('mano').db;
@@ -340,6 +340,13 @@ The `customize` function will be called with the below arguments (depending on s
 
 
 `FormEntitiesTable`: `data.addButton`, `data.container`, `data.arrayResult`
+
+
+`toDOMFieldset` method can be used on `FormSection`. It passes the following to customize:
+
+
+`FormSection`: `data.arrayResult`, `data.fieldset`
+
 
 ###Sections after submission###
 
