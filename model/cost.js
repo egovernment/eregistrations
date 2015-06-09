@@ -11,7 +11,9 @@ module.exports = memoize(function (db) {
 	  , Currency = defineCurrency(db);
 
 	return db.Object.extend('Cost', {
-		amount: { type:  Currency,  step: 1 },
-		label: { type: StringLine }
+		// Cost label
+		label: { type: StringLine },
+		// Cost amount
+		amount: { type: Currency, step: 1 }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
