@@ -1,4 +1,4 @@
-// Cost model
+// Cost class
 
 'use strict';
 
