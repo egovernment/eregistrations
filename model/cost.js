@@ -1,19 +1,17 @@
+// Cost model
+
 'use strict';
 
 var memoize          = require('memoizee/plain')
-  , validDb          = require('dbjs/valid-dbjs')
   , defineCurrency   = require('dbjs-ext/number/currency')
   , defineStringLine = require('dbjs-ext/string/string-line');
 
 module.exports = memoize(function (db) {
-	var StringLine, Currency;
-	validDb(db);
-	StringLine = defineStringLine(db);
-	Currency   = defineCurrency(db);
-	db.Object.extend('Cost', {
+	var StringLine = defineStringLine(db)
+	  , Currency = defineCurrency(db);
+
+	return db.Object.extend('Cost', {
 		amount: { type:  Currency,  step: 1 },
 		label: { type: StringLine }
 	});
-
-	return db.Cost;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
