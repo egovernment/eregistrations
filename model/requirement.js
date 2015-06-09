@@ -12,7 +12,8 @@ module.exports = memoize(function (db/*, options*/) {
 	validDb(db);
 	StringLine = defineStringLine(db);
 	Submission = options.submissionClass || defineSubmission(db);
-	db.Object.extend('Requirement', {
+
+	return db.Object.extend('Requirement', {
 		isApplicable: { type: db.Boolean, value: true },
 		submissions: { type: Submission, multiple: true, value: function () {
 			return [this.master.submissions[this.uniqueKey]];
@@ -29,6 +30,4 @@ module.exports = memoize(function (db/*, options*/) {
 	}, {
 		Document: { type: db.Base } //it's actually type: Type...but can't be defined like that now
 	});
-
-	return db.Requirement;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
