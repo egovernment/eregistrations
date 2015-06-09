@@ -1,17 +1,15 @@
 'use strict';
 
 var memoize            = require('memoizee/plain')
-  , validDb            = require('dbjs/valid-dbjs')
   , defineRejectReason = require('../lib/reject-reason')
   , defineDocument     = require('../document')
   , _                  = require('mano').i18n.bind('Model: Submissions');
 
 module.exports = memoize(function (db) {
-	var RejectReason, Document;
-	validDb(db);
-	RejectReason   = defineRejectReason(db);
-	Document       = defineDocument(db);
-	db.Object.extend('Submission', {
+	var RejectReason = defineRejectReason(db)
+	  , Document = defineDocument(db);
+
+	return db.Object.extend('Submission', {
 		document: { type: Document, nested: true },
 		approved: { type: db.Boolean, required: true, trueLabel: _("Valid"), falseLabel: _("Invalid") },
 		matchesOriginal: { type: db.Boolean, required: true },
@@ -32,6 +30,4 @@ module.exports = memoize(function (db) {
 		} },
 		validateWithOriginal: { type: db.Boolean, required: true, value: false }
 	});
-
-	return db.Submission;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
