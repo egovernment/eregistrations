@@ -295,12 +295,19 @@ As you can see the convention for resolving such logic is to create a property o
 In eregistrations we use statuses (given as values of type `dbjs-ext/number/percentage`). They determine completion level of steps in _Part A_.
 Every section has `status` property. Sections can calculate their statuses automatically. Automatic status calculation can save you some time but it's
 good to remember that calculation is quite simplistic and you may encounter situations where you want to override it
-(the `status` method is defined on section's constructor).
+(the `status` method is defined on section's prototype).
 
-You don't have to (and usually shouldn't) iterate manually over `formSections` (the section's collection) to get overall sections status.
+You don't have to (and usually shouldn't) iterate manually over `formSections` (the section's collection) to get overall section's status.
 That's because once you define `formSections` property, another property with the name `yourSectionsPropertyNameStatus` (in our example `formSectionsStatus`)
-will be created as Well. The `formSectionsStatus` will give you the total status of sections it contains.
-Sometimes you your form is prefilled with some values like for example user's email. It may happen that you don't want to calculate status for such prefilled property, in other words you want the status to be ignore email as long as it's ok. In that case you can use use `excludedFromStatusIfFilled` method from constructor.
+will be created as well. The `formSectionsStatus` will give you the total status of sections it contains.
+Sometimes your form is prefilled with some values like for example user's email. It may happen that you don't want to calculate status for such prefilled property, in other words you want the status to ignore email as long as email is ok. In that case you can use use `excludedFromStatusIfFilled` method from constructor.
+
+####Status weight####
+
+One more property which is automatically created together with `<nameOfSectionsCollection>Status` is `<nameOfSectionsCollection>Weight`.
+This property is responsible for automatic calculation of weight of a given section collection status.
+Just as we have `status` on each section's prototype, we also have `weight`. Weight is used to give importence to a section (by default each weight point corresponds to one property which is considered by status). So for example a section which has status calculation based on 3 fields will by default have a weight of 3, hence it will be less "imporatant" than a section with weight 4.
+
 
 ###View customization###
 
@@ -357,6 +364,8 @@ _prototype_
 **label** The label of the section (can be translated to form header, or header of data in user submitted)
     
 **status** Status as used in steps for a given section, type dbjs-ext/number/percentage, default 1.
+
+**weight** The weight of the section status. It is used to determine weighed status across sections. It is usually equal to number of fields covered by the section.
     
 **resolventValue** Value to check against in resolving section visiblity, section is visible when section.master[section.resolventProperty] === section.resolventValue
     
