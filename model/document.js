@@ -3,19 +3,21 @@
 
 'use strict';
 
-var memoize          = require('memoizee/plain')
-  , ensureDb         = require('dbjs/valid-dbjs')
-  , defineDate       = require('dbjs-ext/date-time/date')
-  , defineStringLine = require('dbjs-ext/string/string-line')
-  , _                = require('mano').i18n.bind('Model: Documents')
-  , defineFile       = require('./file')
-  , defineStatusLog  = require('./lib/status-log');
+var memoize               = require('memoizee/plain')
+  , ensureDb              = require('dbjs/valid-dbjs')
+  , defineDate            = require('dbjs-ext/date-time/date')
+  , defineStringLine      = require('dbjs-ext/string/string-line')
+  , _                     = require('mano').i18n.bind('Model: Documents')
+  , defineFile            = require('./file')
+  , defineStatusLog       = require('./lib/status-log')
+  , defineFormSectionBase = require('./fomr-section-base');
 
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(ensureDb(db))
 	  , File       = defineFile(db)
 	  , DateType   = defineDate(db)
-	  , StatusLog  = defineStatusLog(db);
+	  , StatusLog  = defineStatusLog(db)
+	  , FormSectionBase = defineFormSectionBase(db);
 
 	db.Object.extend('Document', {
 		// Document label, fallbacks to label as decided on constructor
@@ -31,6 +33,7 @@ module.exports = memoize(function (db) {
 		issuedBy: { type: db.Object, value: function () { return this.master.user; } },
 		// Issue date. It's inputted by hand official issuance date
 		issueDate: { type: DateType, required: true, label: _("Date of issuance") },
+		dataForm: { type: FormSectionBase, nested: true },
 		// Map of uploaded files
 		// This property should be used *only* to generate form controls
 		// For "read" uses, always refer to "orderedFiles"
