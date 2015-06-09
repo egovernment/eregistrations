@@ -1,13 +1,26 @@
 'use strict';
 
-var memoize            = require('memoizee/plain')
-  , defineRejectReason = require('../lib/reject-reason')
-  , defineDocument     = require('../document')
-  , _                  = require('mano').i18n.bind('Model: Submissions');
+var Map              = require('es6-map')
+  , memoize          = require('memoizee/plain')
+  , defineStringLine = require('dbjs-ext/string/string-line')
+  , _                = require('mano').i18n.bind('Model: Submissions')
+  , defineDocument   = require('../document');
 
 module.exports = memoize(function (db) {
-	var RejectReason = defineRejectReason(db)
+	var StringLine = defineStringLine(db)
 	  , Document = defineDocument(db);
+
+	var RejectReason = StringLine.createEnum('RejectReason', new Map([
+		["illegible", {
+			label: _("The document is unreadable")
+		}],
+		["invalid", {
+			label: _("The loaded document does not match the required document")
+		}],
+		["other", {
+			label: _("Other") + "..."
+		}]
+	]));
 
 	return db.Object.extend('Submission', {
 		document: { type: Document, nested: true },
