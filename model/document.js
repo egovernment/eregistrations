@@ -33,6 +33,9 @@ module.exports = memoize(function (db) {
 		issuedBy: { type: db.Object, value: function () { return this.master.user; } },
 		// Issue date. It's inputted by hand official issuance date
 		issueDate: { type: DateType, required: true, label: _("Date of issuance") },
+		// Document fields sections
+		// It's about fields we want officials to fill either at revision (document upload) or
+		// processing step (certificate upload)
 		dataForm: { type: FormSectionBase, nested: true },
 		// Map of uploaded files
 		// This property should be used *only* to generate form controls
