@@ -1,3 +1,5 @@
+// Requirement class
+
 'use strict';
 
 var memoize          = require('memoizee/plain')
