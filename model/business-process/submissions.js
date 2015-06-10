@@ -57,7 +57,7 @@ module.exports = memoize(function (Target/* options */) {
 						requirement = this.master.requirements[this.owner.key];
 					}
 					if (requirement && requirement.legend) return _observe(requirement._legend);
-					return this.constructor.label;
+					return this.constructor.legend;
 				}
 			});
 		});
