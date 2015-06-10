@@ -1,0 +1,42 @@
+// BusinessProcess submission forms (step 3 of Part A) resolution
+
+'use strict';
+
+var memoize                     = require('memoizee/plain')
+  , definePropertyGroupsProcess = require('../lib/property-groups-process')
+  , defineInitial               = require('./abse');
+
+module.exports = memoize(function (db/* options */) {
+	var BusinessProcess       = defineInitial(db, arguments[1])
+	  , PropertyGroupsProcess = definePropertyGroupsProcess(db);
+
+	BusinessProcess.prototype.defineProperties({
+		submissionForms: { type: PropertyGroupsProcess, nested: true }
+	});
+	BusinessProcess.prototype.submissionForms.defineProperties({
+		// Required confirmation from user, presented as last step before file submission
+		isAffidavitSigned: { type: db.Boolean, required: true },
+		progress: { value: function (_observe) {
+			var superGetter = this.database.PropertyGroupsProcess.getDescriptor('progress')._value_
+			  , total, valid, progress;
+			superGetter = this.database.resolveGetterObservables(superGetter);
+			progress = superGetter.call(this, _observe);
+			total = this.weight - 1;
+			if (!total && (progress < 1)) {
+				++total;
+				valid = progress;
+			} else {
+				valid = progress * total;
+			}
+			++total;
+			if (this.isAffidavitSigned) ++valid;
+			return valid / total;
+		} },
+		weight: { value: function (_observe) {
+			var superGetter = this.database.PropertyGroupsProcess.getDescriptor('weight')._value_;
+			superGetter = this.database.resolveGetterObservables(superGetter);
+			return superGetter.call(this, _observe) + 1;
+		} }
+	});
+	return BusinessProcess;
+}, { normalizer: require('memoizee/normalizers/get-1')() });
