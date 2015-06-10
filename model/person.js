@@ -11,6 +11,9 @@ module.exports = memoize(function (db/*, options*/) {
 	StringLine = defineStringLine(db);
 
 	return db.Object.extend('Person', {
+		toString: { value: function (options) {
+			return this.fullName;
+		} },
 		firstName: { type: StringLine, label: _("First name"), required: true },
 		lastName: { type: StringLine, label: _("Last name"), required: true },
 		fullName: { type: db.StringLine, label: _("Full name"), value: function () {
