@@ -5,7 +5,6 @@ var customError      = require('es5-ext/error/custom')
   , i18nScanMap      = require('mano').i18nScanMap
   , isArray          = require('es5-ext/array/is-plain-array')
   , resolvePluralKey = require('i18n2/resolve-plural-key')
-  , _                = require('mano').i18n.bind('Controller')
 
   , create = Object.create;
 
@@ -18,8 +17,8 @@ exports.validate = function (data) {
 		if (!i18nScanMap[key]) return;
 		if (isArray(value)) {
 			if (value.length !== 2) {
-				throw customError(_("Unexpected arity of plural translation"),
-					"I18N_UNEXPECTED_ARITY", { statusCode: 401 });
+				throw customError("Unexpected arity of plural translation", "I18N_UNEXPECTED_ARITY",
+					{ statusCode: 401 });
 			}
 			resolvedPluralKey = resolvePluralKey(key);
 			normalizedValue = [
