@@ -70,7 +70,7 @@ module.exports = memoize(function (db) {
 			return false;
 		} },
 
-		// Wether uploaded documents should be verified at front-desk at certificates reception
+		// Whether uploaded documents should be verified at front-desk at certificates reception
 		validateWithOriginal: { type: db.Boolean, value: true },
 
 		// Whether uploaded files matches original document (decided at last front-desk processing step)
