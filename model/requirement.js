@@ -16,9 +16,15 @@ module.exports = memoize(function (db/*, options*/) {
 	  , Submission = options.submissionClass || defineSubmission(db);
 
 	return db.Object.extend('Requirement', {
+		// Document matching given requirement
+		// Defined on prototype, as in most cases requirements will be defined classless way
+		// Directly on businessProcess.requirements.map
+		// Type is db.Base, as at this point there's no db.Type in dbjs
+		// and we're not able to narrow it, to what is expected
+		Document: { type: db.Base },
 		// Requirement label (to be displayed in requirements list in guide)
 		label: { type: StringLine, value: function () {
-			var Document = this.constructor.Document;
+			var Document = this.Document || this.constructor.Document;
 			if (!Document) {
 				throw new Error("Cannot resolve label, as there's no document for " +
 					JSON.stringify(this.key) + " requirement defined");
@@ -27,13 +33,11 @@ module.exports = memoize(function (db/*, options*/) {
 		} },
 		// Requirement legend (to be displayed in requirements list in guide)
 		legend: { value: function () {
-			var Document = this.constructor.Document;
-			if (!Document) {
-				throw new Error("Cannot resolve label, as there's no document for " +
-					JSON.stringify(this.key) + " requirement defined");
-			}
+			var Document = this.Document || this.constructor.Document;
+			if (!Document) return null;
 			return Document.legend;
 		} },
+
 		// Wether requirement is applicable, used only to address corner cases e.g.:
 		// "If both utilityBill and electricityBiil resolve from registrations, please
 		// apply only electricityBill"
@@ -63,9 +67,6 @@ module.exports = memoize(function (db/*, options*/) {
 		} },
 		uniqueKey: { value: function () { return this.key; } }
 	}, {
-		// Document matching given requirement
-		// Type is db.Base, as at this point there's no db.Type in dbjs
-		// and we're not able to narrow it, to what is expected
-		Document: { type: db.Base }
+		Document: { type: db.Base },
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
