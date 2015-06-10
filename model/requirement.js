@@ -67,6 +67,6 @@ module.exports = memoize(function (db/*, options*/) {
 		} },
 		uniqueKey: { value: function () { return this.key; } }
 	}, {
-		Document: { type: db.Base },
+		Document: { type: db.Base }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
