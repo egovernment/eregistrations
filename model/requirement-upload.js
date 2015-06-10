@@ -5,34 +5,27 @@
 var Map              = require('es6-map')
   , memoize          = require('memoizee/plain')
   , defineStringLine = require('dbjs-ext/string/string-line')
-  , _                = require('mano').i18n.bind('Model: Submissions')
+  , defineCreateEnum = require('dbjs-ext/create-enum')
+  , _                = require('mano').i18n.bind('Model')
   , defineDocument   = require('./document');
 
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(db)
 	  , Document = defineDocument(db);
 
+	defineCreateEnum(db);
+
 	// Enum for document upload status
 	var RequirementUploadStatus = StringLine.createEnum('DocumentUploadStatus', new Map([
-		['valid', {
-			label: _("Valid")
-		}],
-		['invalid', {
-			label: _("Invalid")
-		}]
+		['valid', { label: _("Valid") }],
+		['invalid', { label: _("Invalid") }]
 	]));
 
 	// Enum for document upload reject reasn
 	var RequirementUploadRejectReason = StringLine.createEnum('DocumentUploadRejectReason', new Map([
-		["illegible", {
-			label: _("The document is unreadable")
-		}],
-		["invalid", {
-			label: _("The loaded document does not match the required document")
-		}],
-		["other", {
-			label: _("Other") + "..."
-		}]
+		["illegible", { label: _("The document is unreadable") }],
+		["invalid", { label: _("The loaded document does not match the required document") }],
+		["other", { label: _("Other...") }]
 	]));
 
 	return db.Object.extend('RequirementUpload', {
