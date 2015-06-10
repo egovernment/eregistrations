@@ -18,6 +18,7 @@
 .registration-init-actions li > *:first-child a,
 .registration-init-actions li > *:first-child button {
 	width: 100%;
+	white-space: normal;
 }
 
 .registration-init-actions-dialog select {
