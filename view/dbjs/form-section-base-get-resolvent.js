@@ -11,6 +11,7 @@
 
 var generateId = require('time-uuid')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
+  , isObject = require('dbjs/is-dbjs-object')
   , d  = require('d')
   , db = require('mano').db
   , ns = require('mano').domjs.ns;
@@ -25,6 +26,8 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 			result.affectedSectionId = generateId();
 			if (typeof this.resolventValue === 'boolean') {
 				match[Number(this.resolventValue)] = result.affectedSectionId;
+			} else if (isObject(this.resolventValue)) {
+				match[this.resolventValue.__id__] = result.affectedSectionId;
 			} else {
 				match[this.resolventValue] = result.affectedSectionId;
 			}
