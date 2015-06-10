@@ -75,30 +75,47 @@ exports['sub-main'] = function () {
 					td("534")
 				),
 				tr(
+					td("Total registrations diviaded into sections"),
+					td({ class: 'statistics-table-sensitive-data' }, "123"),
+					td({ class: 'statistics-table-sensitive-data' }, "132"),
+					td({ class: 'statistics-table-sensitive-data' }, "534")
+				),
+				tr(
+					td("Total registrations diviaded into sections"),
+					td({ class: 'statistics-table-sensitive-data' }, "123"),
+					td({ class: 'statistics-table-sensitive-data' }, "132"),
+					td({ class: 'statistics-table-sensitive-data' }, "534")
+				),
+				tr(
+					{ class: 'statistics-table-nested-row' },
 					td("- Lorem ipsum dolor sit amet,"),
 					td("123"),
 					td("132"),
 					td("534")
 				),
 				tr(
+					{ class: 'statistics-table-nested-row' },
 					td("- Lorem ipsum dolor sit amet,"),
 					td("123"),
 					td("132"),
 					td("534")
 				),
 				tr(
+					{ class: 'statistics-table-nested-row' },
 					td("- Lorem ipsum dolor sit amet, consectetur"),
 					td("123"),
 					td("132"),
 					td("534")
 				),
 				tr(
+					{ class: 'statistics-table-nested-row' },
 					td("- Lorem ipsum dolor sit amet, consectetur adipiscing"),
 					td("123"),
 					td("132"),
 					td("534")
 				),
 				tr(
+					{ class: 'statistics-table-nested-row' },
 					td("- Lorem ipsum dolor sit amet, consectetur adipiscing elit"),
 					td("123"),
 					td("132"),
@@ -141,6 +158,7 @@ exports['sub-main'] = function () {
 					td("534")
 				),
 				tr(
+					{ class: 'statistics-table-dual-labeled-data' },
 					td(span({ class: 'label-reg ' }, "NIT")),
 					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
@@ -149,6 +167,7 @@ exports['sub-main'] = function () {
 					td("534")
 				),
 				tr(
+					{ class: 'statistics-table-dual-labeled-data' },
 					td(span({ class: 'label-reg ' }, "NIT")),
 					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
@@ -157,6 +176,7 @@ exports['sub-main'] = function () {
 					td("534")
 				),
 				tr(
+					{ class: 'statistics-table-dual-labeled-data' },
 					td(span({ class: 'label-reg ' }, "NIT")),
 					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
@@ -165,6 +185,7 @@ exports['sub-main'] = function () {
 					td("534")
 				),
 				tr(
+					{ class: 'statistics-table-dual-labeled-data' },
 					td(span({ class: 'label-reg ' }, "NIT")),
 					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
@@ -181,6 +202,7 @@ exports['sub-main'] = function () {
 					td("534")
 				),
 				tr(
+					{ class: 'statistics-table-dual-labeled-data' },
 					td(span({ class: 'label-reg ' }, "NIT")),
 					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
@@ -189,6 +211,7 @@ exports['sub-main'] = function () {
 					td("534")
 				),
 				tr(
+					{ class: 'statistics-table-dual-labeled-data' },
 					td(span({ class: 'label-reg ' }, "NIT")),
 					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
@@ -197,6 +220,7 @@ exports['sub-main'] = function () {
 					td("534")
 				),
 				tr(
+					{ class: 'statistics-table-dual-labeled-data' },
 					td(span({ class: 'label-reg ' }, "NIT")),
 					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
@@ -205,6 +229,7 @@ exports['sub-main'] = function () {
 					td("534")
 				),
 				tr(
+					{ class: 'statistics-table-dual-labeled-data' },
 					td(span({ class: 'label-reg ' }, "NIT")),
 					td(span({ class: 'label-reg ' }, "MH")),
 					td("123"),
@@ -213,8 +238,39 @@ exports['sub-main'] = function () {
 					td("534")
 				),
 				tr(
+					{ class: 'statistics-table-dual-labeled-data' },
 					td(span({ class: 'label-reg ' }, "NIT")),
 					td(span({ class: 'label-reg ' }, "MH")),
+					td("123"),
+					td("132"),
+					td("132"),
+					td("534")
+				),
+				tr(
+					{ class: 'statistics-table-sub-header' },
+					td({ colspan: 2 }, span({ class: 'fa fa-user' }, "User"), " ", "No labels"),
+					td("123"),
+					td("132"),
+					td("132"),
+					td("534")
+				),
+				tr(
+					td({ colspan: 2 }, "Lorem ipsum "),
+					td("123"),
+					td("132"),
+					td("132"),
+					td("534")
+				),
+				tr(
+					td({ colspan: 2 }, "Lorem ipsum dolor"),
+					td("123"),
+					td("132"),
+					td("132"),
+					td("534")
+				),
+				tr(
+					{ class: 'statistics-table-nested-row' },
+					td({ colspan: 2 }, "- Lorem ipsum "),
 					td("123"),
 					td("132"),
 					td("132"),
