@@ -32,26 +32,6 @@ module.exports = memoize(function (db/*, options*/) {
 		// Short label (name) of registration
 		// Used e.g. in official roles in tables where processes are listed
 		shortLabel: { type: StringLine, value: function () { return this.label; } },
-		// Whether registration is applicable
-		isApplicable: { type: db.Boolean, value: true },
-		// Whether registration is mandatory
-		isMandatory: { type: db.Boolean, value: true },
-		// Whether registration is requested
-		isRequested: { type: db.Boolean, value: true },
-		// Certificates that are produced for this registration
-		certificates: { type: Document, multiple: true, value: function () {
-			var certificate = this.master.certificates.map[this.key];
-			if (!certificate) {
-				throw new Error("No certifate defined for registration name: " +
-					JSON.stringify(this.key));
-			}
-			return certificate;
-		} },
-		// Requirements needed to obtain registration
-		requirements: { type: Requirement, multiple: true },
-		// Costs that are need to be covered to obtain registration
-		costs: { type: Cost, multiple: true }
-	}, {
 		// Usually registration is about resolution of single certificate document
 		// In such case certificate document should be referenced on registration constructor
 		// Type is db.Base, as at this point there's no db.Type in dbjs
@@ -60,6 +40,27 @@ module.exports = memoize(function (db/*, options*/) {
 		// Registrations in various views are listed using short abbreviations
 		abbr: { type: StringLine },
 		// Which institution processes given registration
-		institution: { type: Institution }
+		institution: { type: Institution },
+
+		// Whether registration is applicable
+		isApplicable: { type: db.Boolean, value: true },
+		// Whether registration is mandatory
+		isMandatory: { type: db.Boolean, value: true },
+		// Whether registration is requested
+		isRequested: { type: db.Boolean, value: true },
+
+		// Certificates that are produced for this registration
+		certificates: { type: Document, multiple: true, value: function () {
+			var certificate = this.master.certificates.map[this.key];
+			if (!certificate) {
+				throw new Error("No certificate defined for registration name: " +
+					JSON.stringify(this.key));
+			}
+			return [certificate];
+		} },
+		// Requirements needed to obtain registration
+		requirements: { type: Requirement, multiple: true },
+		// Costs that are need to be covered to obtain registration
+		costs: { type: Cost, multiple: true }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
