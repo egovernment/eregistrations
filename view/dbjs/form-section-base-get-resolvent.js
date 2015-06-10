@@ -25,6 +25,8 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 			result.affectedSectionId = generateId();
 			if (typeof this.resolventValue === 'boolean') {
 				match[Number(this.resolventValue)] = result.affectedSectionId;
+			} else if (typeof this.resolventValue === 'object') {
+				match[this.resolventValue.__id__] = result.affectedSectionId;
 			} else {
 				match[this.resolventValue] = result.affectedSectionId;
 			}
