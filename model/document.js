@@ -10,7 +10,7 @@ var memoize               = require('memoizee/plain')
   , _                     = require('mano').i18n.bind('Model: Documents')
   , defineFile            = require('./file')
   , defineStatusLog       = require('./lib/status-log')
-  , defineFormSectionBase = require('./fomr-section-base');
+  , defineFormSectionBase = require('./form-section-base');
 
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(ensureDb(db))
