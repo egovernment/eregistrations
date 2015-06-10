@@ -52,3 +52,15 @@
 .statistics-table tbody .statistics-table-sub-sub-header td {
 	background: var(--light-background);
 }
+
+.statistics-table-nested-row td {
+	color: var(--light-normal-text);
+
+}
+.statistics-table tbody .statistics-table-nested-row td:first-child {
+	padding-left: 21px;
+}
+
+.statistics-table-sensitive-data {
+	color: var(--error-text);
+}
