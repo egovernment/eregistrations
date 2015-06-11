@@ -4,7 +4,7 @@
 
 var memoize                     = require('memoizee/plain')
   , definePropertyGroupsProcess = require('../lib/property-groups-process')
-  , defineInitial               = require('./abse');
+  , defineInitial               = require('./base');
 
 module.exports = memoize(function (db/* options */) {
 	var BusinessProcess       = defineInitial(db, arguments[1])
