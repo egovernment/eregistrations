@@ -45,8 +45,9 @@ module.exports = memoize(function (db) {
 			return statusSum / this.weight;
 		} },
 		weight: { value: function (_observe) {
-			var entityObjects, weightTotal, key, getWeightByEntity, protoWeight;
+			var entityObjects, weightTotal, key, getWeightByEntity, protoWeight, i;
 			weightTotal = 0;
+			i = 0;
 			key = this.constructor.sectionProperty + 'Weight';
 			getWeightByEntity = function (entityObject) {
 				var resolved = entityObject.resolveSKeyPath(key, _observe);
@@ -59,20 +60,20 @@ module.exports = memoize(function (db) {
 			if (!entityObjects) {
 				return 0;
 			}
-			entityObjects.value.forEach(function (entityObject) {
+			entityObjects.value.some(function (entityObject) {
+				++i;
+				if (this.max && (i > this.max)) {
+					// we add to weight in order to make status 1 unreachable
+					weightTotal += (entityObjects.value.size - this.max);
+					return true;
+				}
 				weightTotal += getWeightByEntity(entityObject);
-			});
+			}, this);
 			if (_observe(entityObjects.value._size) < this.min) {
 				protoWeight = getWeightByEntity(entityObjects.descriptor.type.prototype);
 
 				// we assume that each potential entity has the same weight as prototype
 				weightTotal += (protoWeight * (this.min - entityObjects.value.size));
-			}
-			entityObjects = entityObjects.value;
-
-			if (this.max && entityObjects.size > this.max) {
-				// we add to weight in order to make status 1 unreachable
-				weightTotal += (entityObjects.size - this.max);
 			}
 
 			return weightTotal;
