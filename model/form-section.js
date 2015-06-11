@@ -137,8 +137,13 @@ module.exports = memoize(function (db) {
 		},
 		lastEditDate: {
 			value: function (_observe) {
-				var res = 0, resolved, lastModified;
-				this.constructor.propertyNames.forEach(function (name) {
+				var res = 0, resolved, lastModified, propertiesToCheck;
+				propertiesToCheck = this.constructor.propertyNames.copy();
+				if (this.constructor.resolventProperty) {
+					propertiesToCheck.add(this.constructor.resolventProperty);
+				}
+
+				propertiesToCheck.forEach(function (name) {
 					resolved = this.master.resolveSKeyPath(name, _observe);
 					if (!resolved) {
 						return;
