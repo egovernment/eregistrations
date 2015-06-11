@@ -5,7 +5,7 @@
 var memoize               = require('memoizee/plain')
   , definePercentage      = require('dbjs-ext/number/percentage')
   , defineFormSectionBase = require('../form-section-base')
-  , defineRequirements    = require('../requirements');
+  , defineRequirements    = require('./requirements');
 
 module.exports = memoize(function (db/*, options*/) {
 	var BusinessProcess = defineRequirements(db, arguments[1])
