@@ -7,4 +7,4 @@ notifications:
   email:
     - medikoo+eregistrations@medikoo.com
 
-script: "npm run lint-ci && npm run css-lint-ci"
+script: "npm test && npm run lint-ci && npm run css-lint-ci"
