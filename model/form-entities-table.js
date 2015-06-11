@@ -45,27 +45,28 @@ module.exports = memoize(function (db) {
 			return statusSum / this.weight;
 		} },
 		weight: { value: function (_observe) {
-			var entityObjects, weightTotal, key, setupWeightByEntity;
+			var entityObjects, weightTotal, key, getWeightByEntity, protoWeight;
 			weightTotal = 0;
 			key = this.constructor.sectionProperty + 'Weight';
-			setupWeightByEntity = function (entityObject) {
+			getWeightByEntity = function (entityObject) {
 				var resolved = entityObject.resolveSKeyPath(key, _observe);
 				if (!resolved) {
 					return;
 				}
-				weightTotal += _observe(resolved.observable);
+				return _observe(resolved.observable);
 			};
 			entityObjects = this.master.resolveSKeyPath(this.constructor.propertyName, _observe);
 			if (!entityObjects) {
 				return 0;
 			}
-			if (!_observe(entityObjects.value._size) && this.min) {
-				setupWeightByEntity(entityObjects.descriptor.type.prototype);
-				// we assume that each potential entity has the same weight,
-				// if that is not the case, customization is needed
-				weightTotal *= this.min;
-			} else {
-				entityObjects.value.forEach(setupWeightByEntity);
+			entityObjects.value.forEach(function (entityObject) {
+				weightTotal += getWeightByEntity(entityObject);
+			});
+			if (_observe(entityObjects.value._size) < this.min) {
+				protoWeight = getWeightByEntity(entityObjects.descriptor.type.prototype);
+
+				// we assume that each potential entity has the same weight as prototype
+				weightTotal += (protoWeight * (this.min - entityObjects.value.size));
 			}
 			entityObjects = entityObjects.value;
 
