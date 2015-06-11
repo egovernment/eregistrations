@@ -33,7 +33,7 @@
     "css-lint": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css",
     "css-lint-console": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css --watch",
     "css-lint-ci": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css --no-cache --no-stream",
-    "test": "node node_modules/tad/bin/tad stats server/populate.js"
+    "test": "node node_modules/tad/bin/tad stats server/populate.js model"
   },
   "engines": {
     "node": ">=0.8"
