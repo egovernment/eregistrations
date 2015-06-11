@@ -9,7 +9,7 @@ module.exports = function (t, a) {
 		propToSync: {
 			type: testDb.Number,
 			value: 1,
-			statsBase: null
+			statsBase: true
 		},
 		propNotToSync: {
 			type: testDb.Number,
