@@ -9,15 +9,19 @@ var _                       = require('mano').i18n.bind("Model: Form Entities Ta
   , validDb                 = require('dbjs/valid-dbjs')
   , defineStringLine        = require('dbjs-ext/string/string-line')
   , defineFormSectionBase   = require('./form-section-base')
-  , defineFormTabularEntity = require('./form-tabular-entity');
+  , defineFormTabularEntity = require('./form-tabular-entity')
+  , defineUInteger          = require('dbjs-ext/number/integer/u-integer');
 
 module.exports = memoize(function (db) {
-	var StringLine, FormSectionBase, FormTabularEntity;
+	var StringLine, FormSectionBase, FormTabularEntity, UInteger;
 	validDb(db);
 	StringLine        = defineStringLine(db);
 	FormSectionBase   = defineFormSectionBase(db);
 	FormTabularEntity = defineFormTabularEntity(db);
+	UInteger          = defineUInteger(db);
 	return FormSectionBase.extend('FormEntitiesTable', {
+		min: { type: UInteger },
+		max: { type: UInteger },
 		status: { value: function (_observe) {
 			var entityObjects, statusSum, statusKey, weightKey;
 			statusSum = 0;
@@ -41,22 +45,38 @@ module.exports = memoize(function (db) {
 			return statusSum / this.weight;
 		} },
 		weight: { value: function (_observe) {
-			var entityObjects, weightTotal, key;
+			var entityObjects, weightTotal, key, getWeightByEntity, protoWeight, i;
 			weightTotal = 0;
+			i = 0;
 			key = this.constructor.sectionProperty + 'Weight';
+			getWeightByEntity = function (entityObject) {
+				var resolved = entityObject.resolveSKeyPath(key, _observe);
+				if (!resolved) {
+					return 0;
+				}
+				return _observe(resolved.observable);
+			};
 			entityObjects = this.master.resolveSKeyPath(this.constructor.propertyName, _observe);
 			if (!entityObjects) {
 				return 0;
 			}
-			entityObjects = entityObjects.value;
-			entityObjects.forEach(function (entityObject) {
-				var resolved = entityObject.resolveSKeyPath(key, _observe);
-				if (!resolved) {
-					return;
+			entityObjects.value.some(function (entityObject) {
+				++i;
+				if (this.max && (i > this.max)) {
+					// we add to weight in order to make status 1 unreachable
+					weightTotal += (entityObjects.value.size - this.max);
+					return true;
 				}
-				weightTotal += _observe(resolved.observable);
-			});
-			return !_observe(entityObjects._size) ? 0 : weightTotal;
+				weightTotal += getWeightByEntity(entityObject);
+			}, this);
+			if (_observe(entityObjects.value._size) < this.min) {
+				protoWeight = getWeightByEntity(entityObjects.descriptor.type.prototype);
+
+				// we assume that each potential entity has the same weight as prototype
+				weightTotal += (protoWeight * (this.min - entityObjects.value.size));
+			}
+
+			return weightTotal;
 		} },
 		lastEditDate: {
 			value: function (_observe) {
