@@ -9,7 +9,7 @@ var memoize                     = require('memoizee/plain')
   , defineRequirementUploads    = require('./requirement-uploads')
   , defineCosts                 = require('./costs')
   , defineSubmissionForms       = require('./submission-forms')
-  , defineProcessing            = require('./processing');
+  , defineProcessingSteps       = require('./processing-steps');
 
 module.exports = memoize(function (db/*, options*/) {
 	var BusinessProcess = defineGuide(db, arguments[1])
@@ -19,7 +19,7 @@ module.exports = memoize(function (db/*, options*/) {
 	defineRequirementUploads(db);
 	defineCosts(db);
 	defineSubmissionForms(db);
-	defineProcessing(db);
+	defineProcessingSteps(db);
 
 	BusinessProcess.prototype.defineProperties({
 		// Whether business process is submitted to Part B
