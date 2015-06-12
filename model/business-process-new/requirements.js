@@ -67,7 +67,7 @@ module.exports = memoize(function (db/* options */) {
 			var total = 0, valid = 0;
 			this.applicable.forEach(function (requirement) {
 				++total;
-				valid += requirement.progress;
+				valid += requirement.guideProgress;
 			});
 			if (!total) return 1;
 			return total / valid;

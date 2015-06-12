@@ -58,7 +58,7 @@ module.exports = memoize(function (db/*, options*/) {
 		// made by user.
 		// e.g. in ELS, there's a NRC registration, which displays a list of a potential documents to
 		// upload, and user is required to choose which documents he wishes to upload
-		progress: { type: Percentage, value: 1 },
+		guideProgress: { type: Percentage, value: 1 },
 
 		// DEPRECATED PROPERTIES
 		// To be removed once all systems that use that model rely on latest schema
