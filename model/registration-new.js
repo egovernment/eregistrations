@@ -22,7 +22,7 @@ module.exports = memoize(function (db/*, options*/) {
 	return db.Object.extend(options.className || 'Registration', {
 		// Label (name) of registration
 		label: { type: StringLine, value: function () {
-			var Document = this.constructor.Document;
+			var Document = this.Document;
 			if (!Document) {
 				throw new Error("Cannot resolve label, as there's no document for " +
 					JSON.stringify(this.key) + " registration defined");
