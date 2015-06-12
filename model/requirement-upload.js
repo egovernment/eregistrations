@@ -60,7 +60,7 @@ module.exports = memoize(function (db) {
 		isRejected: { type: db.Boolean, value: function () {
 			if (this.status == null) return false;
 			if (this.status !== 'invalid') return false;
-			return (this.rejectReason != null);
+			return Boolean(this.rejectReasons.size);
 		} },
 
 		// Whether document upload was validated and all required properties
