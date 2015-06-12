@@ -12,7 +12,7 @@ module.exports = memoize(function (db/*, options*/) {
 	  , FormSectionBase = defineFormSectionBase(db)
 	  , Percentage = definePercentage(db);
 
-	return BusinessProcess.prototype.defineProperties({
+	BusinessProcess.prototype.defineProperties({
 		// Determinants form section
 		determinants: { type: FormSectionBase, nested: true },
 
@@ -27,4 +27,5 @@ module.exports = memoize(function (db/*, options*/) {
 			return valid / total;
 		} }
 	});
+	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
