@@ -40,7 +40,7 @@ module.exports = memoize(function (db) {
 		rejectReasons: { type: db.String, multiple: true, required: true,
 			value: function () {
 				var result = [], isInvalid = false;
-				if (!this.rejectReasonTypes.size) return null;
+				if (!this.rejectReasonTypes.size) return result;
 				this.rejectReasonTypes.forEach(function (type) {
 					if (type === 'other') {
 						if (!this.rejectReasonMemo) {
@@ -52,7 +52,7 @@ module.exports = memoize(function (db) {
 					}
 					result.push(this.database.RejectReason.meta[type].label);
 				}, this);
-				if (isInvalid) return null;
+				if (isInvalid) return [];
 				return result;
 			}, selectField: 'rejectReasonType', otherField: 'rejectReasonMemo' },
 
