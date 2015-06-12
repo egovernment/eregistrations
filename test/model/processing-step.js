@@ -112,6 +112,7 @@ module.exports = function (t, a) {
 
 	a.h2("Approved");
 	step.status = 'approved';
+
 	a.h3("Incomplete");
 	a(step.isApplicable, true);
 	a(step.isReady, true);
