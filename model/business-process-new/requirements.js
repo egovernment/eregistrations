@@ -37,7 +37,7 @@ module.exports = memoize(function (db/* options */) {
 			});
 			// Assure expected order of result set
 			if (this.master.requirements.map.forEach) {
-				this.requirements.forEach(function (value, key) {
+				this.master.requirements.map.forEach(function (value, key) {
 					if (resolved.hasOwnProperty(key)) result.push(key);
 				});
 			} else {
