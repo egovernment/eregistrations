@@ -19,8 +19,6 @@ module.exports = memoize(function (db/* options */) {
 	});
 	BusinessProcess.prototype.requirements.map._descriptorPrototype_.type = Requirement;
 	BusinessProcess.prototype.requirements.defineProperties({
-		// Map of all possible certificates
-		map: { type: Requirement  },
 		// Resolved requirements out of requested registrations
 		resolved: { type: Requirement, multiple: true, value: function (_observe) {
 			var resolved = {}, certificates = _observe(this.master.certificates.applicable), result = []
