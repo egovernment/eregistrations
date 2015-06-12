@@ -56,7 +56,7 @@ module.exports = memoize(function (db) {
 			// If status not decided then clearly pending
 			if (!this.status) return true;
 			// If approved, but form data is complete, it's still pending
-			if (this.status === 'approved') return (_observe(this.dataForm._progress) !== 1);
+			if (this.status === 'approved') return (_observe(this.dataForm._status) !== 1);
 			// If sent back, but no reason provided, it's still pending
 			if (this.status === 'sentBack') return !this.sentBackReason;
 			// If rejected, but no reason provided, it's still pending
@@ -99,7 +99,7 @@ module.exports = memoize(function (db) {
 			// No approved status, means no it's not approved
 			if (this.status !== 'approved') return false;
 			// Completed form confirms step completion
-			return (_observe(this.dataForm._progress) === 1);
+			return (_observe(this.dataForm._status) === 1);
 		} },
 
 		// Whether processing of this step has ended
