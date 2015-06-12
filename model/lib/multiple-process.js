@@ -8,7 +8,7 @@ var memoize  = require('memoizee/plain')
   , ensureDb = require('dbjs/valid-dbjs');
 
 module.exports = memoize(function (db/*, options*/) {
-	return ensureDb(db).Object.extend('MultipleProcess', {
+	var MultipleProcess = ensureDb(db).Object.extend('MultipleProcess', {
 		map: { type: db.Object, nested: true },
 		applicable: { type: db.Object, multiple: true, value: function (_observe) {
 			var result = [];
@@ -19,4 +19,6 @@ module.exports = memoize(function (db/*, options*/) {
 			return result;
 		} }
 	});
+	MultipleProcess.prototype.map._descriptorPrototype_.type = db.Object;
+	return MultipleProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
