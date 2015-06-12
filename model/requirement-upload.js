@@ -56,18 +56,19 @@ module.exports = memoize(function (db) {
 				return result;
 			}, selectField: 'rejectReasonType', otherField: 'rejectReasonMemo' },
 
+		// Whether document upload was rejected and reject reason was provided
+		isRejected: { type: db.Boolean, value: function () {
+			if (this.status == null) return false;
+			if (this.status !== 'invalid') return false;
+			return (this.rejectReason != null);
+		} },
+
 		// Whether document upload was validated and all required properties
 		// where provided
-		// Returns null if validation is not complete, true if complete and valid,
-		// false if complete and invalid
-		isApproved: { type: db.Boolean, value: function () {
-			if (this.status == null) return null;
-			if (this.status === 'valid') {
-				if (this.document.dataForm.progress !== 1) return null;
-				return true;
-			}
-			if (this.rejectReason == null) return null;
-			return false;
+		isApproved: { type: db.Boolean, value: function (_observe) {
+			if (this.status == null) return false;
+			if (this.status !== 'valid') return false;
+			return (_observe(this.document.dataForm._status) === 1);
 		} },
 
 		// Whether uploaded documents should be verified at front-desk at certificates reception
