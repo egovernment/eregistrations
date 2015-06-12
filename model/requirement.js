@@ -45,7 +45,7 @@ module.exports = memoize(function (db/*, options*/) {
 
 		// Uploads that resolve out of given requirement
 		uploads: { type: RequirementUpload, multiple: true, value: function () {
-			var upload = this.master.requirementUploads[this.key];
+			var upload = this.master.requirementUploads.map[this.key];
 			if (!upload) {
 				throw new Error("Cannot resolve " +
 					JSON.stringify(this.key) + " requirementUpload out of businessProcess. " +
