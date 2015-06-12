@@ -23,9 +23,9 @@ module.exports = memoize(function (db) {
 
 	// Enum for document upload reject reasn
 	var RequirementUploadRejectReason = StringLine.createEnum('DocumentUploadRejectReason', new Map([
-		["illegible", { label: _("The document is unreadable") }],
-		["invalid", { label: _("The loaded document does not match the required document") }],
-		["other", { label: _("Other...") }]
+		['illegible', { label: _("The document is unreadable") }],
+		['invalid', { label: _("The loaded document does not match the required document") }],
+		['other', { label: _("Other...") }]
 	]));
 
 	return db.Object.extend('RequirementUpload', {
