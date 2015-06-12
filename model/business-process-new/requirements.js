@@ -38,12 +38,12 @@ module.exports = memoize(function (db/* options */) {
 			// Assure expected order of result set
 			if (this.master.requirements.map.forEach) {
 				this.master.requirements.map.forEach(function (value, key) {
-					if (resolved.hasOwnProperty(key)) result.push(key);
+					if (resolved.hasOwnProperty(key)) result.push(value);
 				});
 			} else {
 				// There's no forEach on this.requirements map in legacy browsers mock
 				for (key in this.master.requirements.map) {
-					if (resolved.hasOwnProperty(key)) result.push(key);
+					if (resolved.hasOwnProperty(key)) result.push(this.master.requirements.map[key]);
 				}
 			}
 			return result;
