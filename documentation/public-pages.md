@@ -162,6 +162,21 @@ exports.someViewName = {
 }
 ```
 
+##### Add/remove custom attributes on specified elements
+
+```javascript
+exports.someViewName = {
+  _parent: exports.otherView
+  // On element of id 'foo'...
+  foo: {
+    // Set attribute 'data-foo' to value 'elo'
+    attributes: { 'data-foo': 'elo' },
+    // Replace content of element with:
+    content: require('./html/foo')    
+  }
+}
+```
+
 ##### Append/prepend HTML
 
 Instead of replacing whole content for specified element, we may configure append or prepend of content to it:
