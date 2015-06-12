@@ -3,7 +3,6 @@
 'use strict';
 
 var ensureArray              = require('es5-ext/array/valid-array')
-  , assign                   = require('es5-ext/object/assign')
   , forEach                  = require('es5-ext/object/for-each')
   , ensureObject             = require('es5-ext/object/valid-object')
   , ensureStringifiable      = require('es5-ext/object/validate-stringifiable-value')
@@ -59,7 +58,8 @@ module.exports = function (db, data) {
 	});
 	BusinessProcess.prototype.requirementUploads.map.defineProperties(definitions);
 	forEach(typesMap, function (UploadDocument, name) {
-		this[name].document.defineProperties(assign({ type: UploadDocument }, documentDefinitions));
+		this[name].define('document', { type: UploadDocument });
+		this[name].document.defineProperties(documentDefinitions);
 	}, BusinessProcess.prototype.requirementUploads.map);
 	return BusinessProcess;
 };
