@@ -44,7 +44,7 @@ module.exports = memoize(function (db/*, options*/) {
 		isApplicable: { type: db.Boolean, value: true },
 
 		// Uploads that resolve out of given requirement
-		requirementUploads: { type: RequirementUpload, multiple: true, value: function () {
+		uploads: { type: RequirementUpload, multiple: true, value: function () {
 			var upload = this.master.requirementUploads[this.key];
 			if (!upload) {
 				throw new Error("Cannot resolve " +

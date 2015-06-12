@@ -23,7 +23,7 @@ module.exports = memoize(function (db/* options */) {
 		applicable: { type: RequirementUpload, value: function (_observe) {
 			var result = [];
 			_observe(this.master.requirements.applicable).forEach(function (requirement) {
-				_observe(requirement.requirementUploads).forEach(function (requirementUpload) {
+				_observe(requirement.uploads).forEach(function (requirementUpload) {
 					result.push(requirementUpload);
 				});
 			});
