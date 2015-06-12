@@ -38,7 +38,7 @@ module.exports = memoize(function (db) {
 		isApplicable: { type: db.Boolean, value: true },
 		// Whether business process is at given step or have passed it
 		isReady: { type: db.Boolean, value: function (_observe) {
-			return _observe(this.master._isSubmitted) && this.isApplicable;
+			return Boolean(_observe(this.master._isSubmitted) && this.isApplicable);
 		} },
 		// Processing step form fields section (applies only to approved status)
 		dataForm: { type: FormSectionBase, nested: true },
