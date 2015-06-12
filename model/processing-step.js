@@ -54,7 +54,7 @@ module.exports = memoize(function (db) {
 			// If not ready, then obviously not pending
 			if (!this.isReady) return false;
 			// If status not decided then clearly pending
-			if (!this.status) return false;
+			if (!this.status) return true;
 			// If approved, but form data is complete, it's still pending
 			if (this.status === 'approved') return (_observe(this.dataForm._progress) !== 1);
 			// If sent back, but no reason provided, it's still pending
