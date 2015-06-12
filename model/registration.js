@@ -25,6 +25,18 @@ module.exports = memoize(function (db) {
 				return this.label;
 			}
 		},
+		isApplicable: {
+			type: db.Boolean,
+			value: true
+		},
+		isMandatory: {
+			type: db.Boolean,
+			value: true
+		},
+		isRequested: {
+			type: db.Boolean,
+			value: true
+		},
 		certificates: {
 			type: StringLine,
 			multiple: true,
@@ -37,18 +49,6 @@ module.exports = memoize(function (db) {
 		costs: {
 			type: StringLine,
 			multiple: true
-		},
-		isMandatory: {
-			type: db.Boolean,
-			value: true
-		},
-		isApplicable: {
-			type: db.Boolean,
-			value: true
-		},
-		isRequested: {
-			type: db.Boolean,
-			value: true
 		}
 	}, {
 		Document: { type: db.Base }, // It should be a type: Type, but can't be defined like that now
