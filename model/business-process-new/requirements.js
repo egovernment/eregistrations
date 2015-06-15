@@ -70,7 +70,7 @@ module.exports = memoize(function (db/* options */) {
 				valid += requirement.guideProgress;
 			});
 			if (!total) return 1;
-			return total / valid;
+			return valid / total;
 		} }
 	});
 	return BusinessProcess;
