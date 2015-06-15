@@ -63,11 +63,11 @@ module.exports = memoize(function (db/* options */) {
 		// at guide steps (e.g. user may be forced to choose which documents he prefer to upload)
 		// In such case below property indicates that all questions were answered by user.
 		// It's one of the sub calculations that are needed to calcualate guide progress
-		guideProgress: { type: Percentage, value: function () {
+		guideProgress: { type: Percentage, value: function (_observe) {
 			var total = 0, valid = 0;
 			this.applicable.forEach(function (requirement) {
 				++total;
-				valid += requirement.guideProgress;
+				valid += _observe(requirement._guideProgress);
 			});
 			if (!total) return 1;
 			return valid / total;
