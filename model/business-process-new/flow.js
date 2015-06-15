@@ -39,21 +39,21 @@ module.exports = memoize(function (db/*, options*/) {
 		// Whether business process was sent back to Part A
 		isSentBack: { type: db.Boolean, value: function (_observe) {
 			if (!this.isSubmitted) return false;
-			return _observe(this.processsingSteps.applicable).some(function (step) {
+			return _observe(this.processingSteps.applicable).some(function (step) {
 				return _observe(step._isSentBack);
 			});
 		} },
 		// Whether business process was rejected
 		isRejected: { type: db.Boolean, value: function (_observe) {
 			if (!this.isSubmitted) return false;
-			return _observe(this.processsingSteps.applicable).some(function (step) {
+			return _observe(this.processingSteps.applicable).some(function (step) {
 				return _observe(step._isRejected);
 			});
 		} },
 		// Whether business process is closed
 		isClosed: { type: db.Boolean, value: function (_observe) {
 			if (!this.isSubmitted) return false;
-			return _observe(this.processsingSteps.applicable).every(function (step) {
+			return _observe(this.processingSteps.applicable).every(function (step) {
 				return _observe(step._isClosed);
 			});
 		} },
