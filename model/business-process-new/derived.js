@@ -33,7 +33,7 @@ module.exports = memoize(function (db/*, options*/) {
 			if (!this.isClosed) return false;
 			if (this.isRejected) return false;
 			// Means this update is about closure of business process
-			if (_observe(this.requestedRegistrations._has('closure'))) return false;
+			if (_observe(this.registrations.requested._has('closure'))) return false;
 			return true;
 		} },
 		// Wether latest businessProcess in chain can be derived
