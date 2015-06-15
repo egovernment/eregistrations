@@ -4,11 +4,13 @@ var Map              = require('es6-map')
   , memoize          = require('memoizee/plain')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , _                = require('mano').i18n.bind('Model: Submissions')
-  , defineDocument   = require('../document');
+  , defineDocument   = require('../document')
+  , defineCost       = require('../document');
 
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(db)
-	  , Document = defineDocument(db);
+	  , Document = defineDocument(db)
+	  , Cost = defineCost(db);
 
 	var RejectReason = StringLine.createEnum('RejectReason', new Map([
 		["illegible", {
@@ -25,6 +27,8 @@ module.exports = memoize(function (db) {
 	return db.Object.extend('Submission', {
 		document: { type: Document, nested: true },
 		approved: { type: db.Boolean, required: true, trueLabel: _("Valid"), falseLabel: _("Invalid") },
+		// If upload concerns payment receipt, this links cost it corresponds
+		correspondingCost: { type: Cost },
 		matchesOriginal: { type: db.Boolean, required: true },
 		rejectReasonType: { type: RejectReason, required: true, label: _("Reject document") },
 		rejectReasonMemo: { type: db.String, required: true, label: _("Explanation") },
@@ -35,9 +39,14 @@ module.exports = memoize(function (db) {
 				if (type === 'other') return (this.rejectReasonMemo || null);
 				return this.database.RejectReason.meta[type].label;
 			}, selectField: 'rejectReasonType', otherField: 'rejectReasonMemo' },
-		isApproved: { type: db.Boolean, value: function () {
+		isApproved: { type: db.Boolean, value: function (_observe) {
 			if (this.approved == null) return null;
-			if (this.approved) return true;
+			if (this.approved) {
+				if (this.correspondingCost) {
+					return _observe(this.correspondingCost._isPaid) || null;
+				}
+				return true;
+			}
 			if (this.rejectReason == null) return null;
 			return false;
 		} },
