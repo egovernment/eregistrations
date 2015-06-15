@@ -33,7 +33,8 @@ module.exports = memoize(function (db/* options */) {
 			return valid / total;
 		} },
 		weight: { value: function (_observe) {
-			var superGetter = this.database.PropertyGroupsProcess.getDescriptor('weight')._value_;
+			var superGetter =
+				this.database.PropertyGroupsProcess.prototype.getDescriptor('weight')._value_;
 			superGetter = this.database.resolveGetterObservables(superGetter);
 			return superGetter.call(this, _observe) + 1;
 		} }
