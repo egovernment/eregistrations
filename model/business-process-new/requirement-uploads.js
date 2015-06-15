@@ -39,6 +39,7 @@ module.exports = memoize(function (db/* options */) {
 		} },
 		// Progress of requirement uploads
 		progress: { type: Percentage, value: function (_observe) {
+			if (!this.applicable.size) return 1;
 			return this.uploaded.size / this.applicable.size;
 		} }
 	});
