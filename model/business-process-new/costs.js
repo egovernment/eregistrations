@@ -27,8 +27,19 @@ module.exports = memoize(function (db/* options */) {
 			});
 			return result;
 		} },
-		// If we integrate an online payment, this should reflect it's progress
-		paymentProgress: { type: Percentage, value: 1 }
+		// Paid costs
+		paid: { type: Cost, mutiple: true, value: function (_observe) {
+			var result = [];
+			this.applicable.forEach(function (cost) {
+				if (_observe(cost._isPaid)) result.push(cost);
+			});
+			return result;
+		} },
+		// Payment progress
+		paymentProgress: { type: Percentage, value: function () {
+			if (!this.applicable.size) return 1;
+			return this.paid.size / this.applicable.size;
+		} }
 	});
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
