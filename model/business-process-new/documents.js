@@ -6,10 +6,10 @@
 
 var memoize        = require('memoizee/plain')
   , defineDocument = require('../document')
-  , defineInitial  = require('./base');
+  , defineDerived  = require('./derived');
 
 module.exports = memoize(function (db/*, options*/) {
-	var Document = defineDocument(db), BusinessProcess = defineInitial(db, arguments[1]);
+	var Document = defineDocument(db), BusinessProcess = defineDerived(db, arguments[1]);
 
 	BusinessProcess.prototype.defineProperties({ documents: { type: db.Object, nested: true } });
 	BusinessProcess.prototype.documents.defineProperties({
