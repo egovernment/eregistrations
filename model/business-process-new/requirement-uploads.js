@@ -6,10 +6,10 @@ var memoize                 = require('memoizee/plain')
   , definePercentage        = require('dbjs-ext/number/percentage')
   , defineMultipleProcess   = require('../lib/multiple-process')
   , defineRequirementUpload = require('../requirement-upload')
-  , defineRegistrations     = require('./registrations');
+  , defineRequirements      = require('./requirements');
 
 module.exports = memoize(function (db/* options */) {
-	var BusinessProcess = defineRegistrations(db, arguments[1])
+	var BusinessProcess = defineRequirements(db, arguments[1])
 	  , Percentage = definePercentage(db)
 	  , MultipleProcess = defineMultipleProcess(db)
 	  , RequirementUpload = defineRequirementUpload(db);
