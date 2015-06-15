@@ -27,7 +27,7 @@ module.exports = memoize(function (db/*, options*/) {
 			if (this.guideProgress !== 1) return false;
 			if (_observe(this.dataForms._progress) !== 1) return false;
 			if (_observe(this.requirementUploads._progress) !== 1) return false;
-			if (_observe(this.costs._paymentProgress) !== 1) return false;
+			if (_observe(this.costs._onlinePaymentProgress) !== 1) return false;
 			if (_observe(this.submissionForms._progress) !== 1) return false;
 		} },
 		// Whether business process was sent back to Part A

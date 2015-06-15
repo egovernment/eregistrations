@@ -39,6 +39,17 @@ module.exports = memoize(function (db/* options */) {
 		paymentProgress: { type: Percentage, value: function () {
 			if (!this.applicable.size) return 1;
 			return this.paid.size / this.applicable.size;
+		} },
+		// Payment progress for online payments
+		onlinePaymentProgress: { type: Percentage, value: function (_observe) {
+			var valid = 0, total = 0;
+			this.applicable.forEach(function (cost) {
+				if (!cost.isElectronic) return;
+				++total;
+				if (_observe(cost._isPaid)) ++valid;
+			});
+			if (!total) return 1;
+			return valid / total;
 		} }
 	});
 	return BusinessProcess;
