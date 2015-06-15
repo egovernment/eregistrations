@@ -41,6 +41,8 @@ module.exports = memoize(function (db/* options */) {
 			return this.paid.size / this.applicable.size;
 		} },
 		// Payment progress for online payments
+		// We require all online payments to be done in Part A stage.
+		// So having this below 1, doesn't allow submit of application
 		onlinePaymentProgress: { type: Percentage, value: function (_observe) {
 			var valid = 0, total = 0;
 			this.applicable.forEach(function (cost) {
