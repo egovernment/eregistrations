@@ -50,4 +50,5 @@ module.exports = memoize(function (db/*, options*/) {
 			});
 		} }
 	});
+	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
