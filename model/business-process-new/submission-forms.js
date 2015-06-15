@@ -17,8 +17,8 @@ module.exports = memoize(function (db/* options */) {
 		// Required confirmation from user, presented as last step before file submission
 		isAffidavitSigned: { type: db.Boolean, required: true },
 		progress: { value: function (_observe) {
-			var superGetter = this.database.PropertyGroupsProcess.getDescriptor('progress')._value_
-			  , total, valid, progress;
+			var superGetter, total, valid, progress;
+			superGetter = this.database.PropertyGroupsProcess.prototype.getDescriptor('progress')._value_;
 			superGetter = this.database.resolveGetterObservables(superGetter);
 			progress = superGetter.call(this, _observe);
 			total = this.weight - 1;
