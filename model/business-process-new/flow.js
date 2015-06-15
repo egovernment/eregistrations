@@ -29,6 +29,7 @@ module.exports = memoize(function (db/*, options*/) {
 			if (_observe(this.requirementUploads._progress) !== 1) return false;
 			if (_observe(this.costs._onlinePaymentProgress) !== 1) return false;
 			if (_observe(this.submissionForms._progress) !== 1) return false;
+			return true;
 		} },
 		// Whether business process was sent back to Part A
 		isSentBack: { type: db.Boolean, value: function (_observe) {
