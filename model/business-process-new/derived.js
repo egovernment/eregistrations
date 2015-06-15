@@ -44,4 +44,5 @@ module.exports = memoize(function (db/*, options*/) {
 		derivedBusinessProcess: { type: db.BusinessProcess, unique: true,
 			reverse: 'previousBusinessProcess' }
 	});
+	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
