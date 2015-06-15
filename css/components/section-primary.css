@@ -128,7 +128,7 @@
 	background: var(--normal-dark-background);
 }
 .section-primary-scroll-top a span {
-	vertical-align: text-top;
+	vertical-align: middle;
 }
 
 .section-primary .info-main {
