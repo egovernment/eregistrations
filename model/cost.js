@@ -16,6 +16,8 @@ module.exports = memoize(function (db) {
 		// Cost amount
 		amount: { type: Currency, step: 1 },
 		// Whether cost have been paid
-		isPaid: { type: db.Boolean }
+		isPaid: { type: db.Boolean, value: false },
+		// Whether payment is made online
+		isElectronic: { type: db.Boolean, value: false }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
