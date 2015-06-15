@@ -3,11 +3,11 @@
 
 'use strict';
 
-var memoize       = require('memoizee/plain')
-  , defineInitial = require('./base');
+var memoize    = require('memoizee/plain')
+  , defineFlow = require('./flow');
 
 module.exports = memoize(function (db/*, options*/) {
-	var BusinessProcess = defineInitial(db, arguments[1]);
+	var BusinessProcess = defineFlow(db, arguments[1]);
 
 	BusinessProcess.prototype.defineProperties({
 		// Chain of all derived business process
