@@ -2,13 +2,13 @@
 
 var memoize     = require('memoizee/plain')
   , validDbType = require('dbjs/valid-dbjs-type')
-  , endsWith    = require('es5-ext/string/#/ends-with');
+  , endsWith    = require('es5-ext/string/#/ends-with')
+  , defineCost  = require('../cost');
 
 module.exports = memoize(function (Target/* options */) {
-	var db, options;
-	validDbType(Target);
-	db = Target.database;
-	options = Object(arguments[1]);
+	var Cost = defineCost(validDbType(Target).database)
+	  , db = Target.database
+	  , options = Object(arguments[1]);
 
 	Target.prototype.defineProperties({
 		costs: {
@@ -16,6 +16,7 @@ module.exports = memoize(function (Target/* options */) {
 			nested: true
 		}
 	});
+	Target.prototype.costs._descriptorPrototype_.type = Cost;
 
 	if (options.classes) {
 		options.classes.forEach(function (cost) {
