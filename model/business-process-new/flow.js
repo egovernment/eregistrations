@@ -24,10 +24,15 @@ module.exports = memoize(function (db/*, options*/) {
 	BusinessProcess.prototype.defineProperties({
 		// Whether business process is submitted to Part B
 		isSubmitted: { type: db.Boolean, value: function (_observe) {
+			// 0. Guide
 			if (this.guideProgress !== 1) return false;
+			// 1. Forms
 			if (_observe(this.dataForms._progress) !== 1) return false;
+			// 2. Uploads
 			if (_observe(this.requirementUploads._progress) !== 1) return false;
+			// 3. (optional) Payments
 			if (_observe(this.costs._onlinePaymentProgress) !== 1) return false;
+			// 4. Submission
 			if (_observe(this.submissionForms._progress) !== 1) return false;
 			return true;
 		} },
