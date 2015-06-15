@@ -17,10 +17,10 @@ module.exports = memoize(function (db/*, options*/) {
 		uploaded: { type: Document, multiple: true, value: function (_observe) {
 			var documents = [];
 
-			_observe(this.certificates.uploaded).forEach(function (certificate) {
+			_observe(this.master.certificates.uploaded).forEach(function (certificate) {
 				documents.push(certificate);
 			});
-			_observe(this.requirementUploads.uploaded).forEach(function (requirementUpload) {
+			_observe(this.master.requirementUploads.uploaded).forEach(function (requirementUpload) {
 				documents.push(requirementUpload.document);
 			});
 
