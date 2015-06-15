@@ -7,11 +7,13 @@ var Map              = require('es6-map')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineCreateEnum = require('dbjs-ext/create-enum')
   , _                = require('mano').i18n.bind('Model')
+  , defineCost       = require('./cost')
   , defineDocument   = require('./document');
 
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(db)
-	  , Document = defineDocument(db);
+	  , Document = defineDocument(db)
+	  , Cost = defineCost(db);
 
 	defineCreateEnum(db);
 
@@ -33,6 +35,9 @@ module.exports = memoize(function (db) {
 		document: { type: Document, nested: true },
 		// Verification status of upload
 		status: { type: RequirementUploadStatus, required: true },
+
+		// If upload concerns payment receipt, this links cost it corresponds
+		correspondingCost: { type: Cost },
 
 		// Eventual rejection details
 		rejectReasonTypes: { type: RequirementUploadRejectReason, multiple: true, required: true },
@@ -68,6 +73,7 @@ module.exports = memoize(function (db) {
 		isApproved: { type: db.Boolean, value: function (_observe) {
 			if (this.status == null) return false;
 			if (this.status !== 'valid') return false;
+			if (this.correspondingCost) return _observe(this.correspondingCost._isPaid) || false;
 			return (_observe(this.document.dataForm._status) === 1);
 		} },
 
