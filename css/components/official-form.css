@@ -22,6 +22,11 @@
 	margin-left: 0;
 }
 
+.official-form-document-revision .inputs select,
+.official-form-document-revision .inputs textarea {
+	width: 100%;
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 	.official-form-upload {
 		flex-wrap: wrap;

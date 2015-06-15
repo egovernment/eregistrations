@@ -162,7 +162,7 @@ exports['sub-main'] = function () {
 			form(
 				{ class: 'submitted-preview-form' },
 				ul(
-					{ class: 'form-elements' },
+					{ class: 'form-elements official-form-document-revision' },
 					li(
 						input({ dbjs: user._isValidated })
 					),
@@ -172,11 +172,15 @@ exports['sub-main'] = function () {
 							label("Reject document: "),
 							div(
 								{ class: 'input' },
-								select(
-									option("Choose rejection reason: "),
-									option("Document is not readable."),
-									option("The document is not acurate or does not match the data of the form."),
-									option("Other")
+								div(
+									{ class: 'inputs' },
+									select(
+										option("Choose rejection reason: "),
+										option("Document is not readable."),
+										option("The document is not acurate or does not match the data of the form."),
+										option("Other")
+									),
+									textarea()
 								)
 							)
 						)
