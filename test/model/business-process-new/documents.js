@@ -1,8 +1,8 @@
 'use strict';
 
-var aFrom    = require('es5-ext/array/from')
-  , Database = require('dbjs')
-  , defineFormSection = require('../../../model/form-section')
+var aFrom                 = require('es5-ext/array/from')
+  , Database              = require('dbjs')
+  , defineFormSection     = require('../../../model/form-section')
   , defineMapCertificates
 	= require('../../../model/business-process-new/utils/define-certificates')
   , defineMapUploads
