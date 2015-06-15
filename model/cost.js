@@ -13,6 +13,8 @@ module.exports = memoize(function (db) {
 	return db.Object.extend('Cost', {
 		// Cost label
 		label: { type: StringLine },
+		// Cost label
+		legend: { type: StringLine },
 		// Cost amount
 		amount: { type: Currency, step: 1 },
 		// Whether cost have been paid
