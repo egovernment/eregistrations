@@ -14,6 +14,8 @@ module.exports = memoize(function (db) {
 		// Cost label
 		label: { type: StringLine },
 		// Cost amount
-		amount: { type: Currency, step: 1 }
+		amount: { type: Currency, step: 1 },
+		// Whether cost have been paid
+		isPaid: { type: Boolean }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
