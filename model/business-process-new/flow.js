@@ -53,6 +53,7 @@ module.exports = memoize(function (db/*, options*/) {
 		// Whether business process is closed
 		isClosed: { type: db.Boolean, value: function (_observe) {
 			if (!this.isSubmitted) return false;
+			if (this.isRejected) return true;
 			return _observe(this.processingSteps.applicable).every(function (step) {
 				return _observe(step._isClosed);
 			});
