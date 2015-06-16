@@ -57,7 +57,7 @@ module.exports = function (t, a) {
 	a(businessProcess.status, 'draft');
 
 	businessProcess.bar = true;
-	businessProcess.isAffidavitSigned = true;
+	businessProcess.submissionForms.isAffidavitSigned = true;
 	businessProcess.requirementUploads.map.req.document.files.newUniq().path = '/elo.png';
 	a(businessProcess.isSubmitted, true);
 	a(businessProcess.isSentBack, false);
