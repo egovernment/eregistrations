@@ -81,7 +81,7 @@ exports.tab = function () {
 			source = div({ class: 'section-primary submitted-preview-document' },
 				div({ class: 'container-with-nav' },
 					h3(i({ class: 'submitted-preview-item-number' }, "1"),
-						"Memorandum and articles of association"
+						span("Memorandum and articles of association lorem ipsum dolor sit")
 						)
 					),
 				elem = ul({ class: 'submitted-preview-image-placeholder' },

@@ -35,6 +35,14 @@
 	max-height: 100%;
 }
 
+.submitted-preview-document .container-with-nav > * > i {
+	vertical-align: top;
+}
+.submitted-preview-document .container-with-nav > * > span {
+	display: inline-block;
+	width: 90%;
+}
+
 .submitted-preview-document .container-with-nav div {
 	min-width: inherit;
 }

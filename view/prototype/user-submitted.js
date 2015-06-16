@@ -193,7 +193,7 @@ exports['sub-main'] = function () {
 			{ class: 'section-primary submitted-preview-document' },
 			div({ class: 'container-with-nav' },
 				h3(i({ class: 'submitted-preview-item-number' }, "1"),
-					"Memorandum and articles of association"),
+					span("Memorandum and articles of association lorem ipsum dolor sit")),
 				div({ id: 'submitted-preview-navigation-top',
 					class: 'submitted-preview-documents-navigation' },
 					div(
