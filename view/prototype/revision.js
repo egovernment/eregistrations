@@ -171,17 +171,14 @@ exports['sub-main'] = function () {
 							{ class: 'dbjs-input-component' },
 							label("Reject document: "),
 							div(
-								{ class: 'input' },
-								div(
-									{ class: 'inputs' },
-									select(
-										option("Choose rejection reason: "),
-										option("Document is not readable."),
-										option("The document is not acurate or does not match the data of the form."),
-										option("Other")
-									),
-									textarea()
-								)
+								{ class: 'input official-form-document-revision-reject-reason' },
+								select(
+									option("Choose rejection reason: "),
+									option("Document is not readable."),
+									option("The document is not acurate or does not match the data of the form."),
+									option("Other")
+								),
+								textarea()
 							)
 						)
 					)

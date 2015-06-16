@@ -22,8 +22,8 @@
 	margin-left: 0;
 }
 
-.official-form-document-revision .inputs select,
-.official-form-document-revision .inputs textarea {
+.official-form-document-revision-reject-reason select,
+.official-form-document-revision-reject-reason textarea {
 	width: 100%;
 }
 
