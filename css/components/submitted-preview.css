@@ -35,10 +35,7 @@
 	max-height: 100%;
 }
 
-.submitted-preview-document .container-with-nav > * > i {
-	vertical-align: top;
-}
-.submitted-preview-document .container-with-nav > * > span {
+.submitted-preview-document .container-with-nav h3 > span {
 	display: inline-block;
 	width: 90%;
 }
@@ -107,7 +104,8 @@
 	vertical-align: text-bottom;
 	font-style: normal;
 	display: inline-block;
-	font-size: 11px
+	font-size: 11px;
+	vertical-align: top;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
