@@ -1,4 +1,4 @@
-.submitted-user-history tr {
+.submitted-user-history tr:not(:first-child) {
 	border-top: 1px solid var(--light-inner-border);
 }
 
@@ -14,4 +14,10 @@
 .submitted-user-history td {
 	padding: 11px 11px 10px;
 	text-align: left;
+}
+
+.submitted-user-history-wrapper {
+	max-height: 220px;
+	overflow: auto;
+	border: 1px solid var(--light-inner-border);
 }

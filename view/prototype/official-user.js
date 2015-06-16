@@ -50,49 +50,55 @@ exports['sub-main'] = function () {
 					span({ class: 'fa fa-print' }, "Print")
 				)
 				),
-			table(
-				{ class: 'submitted-user-history' },
-				tbody(
-					tr(
-						th(
-							div("User")
+			div(
+				{ class: 'submitted-user-history-wrapper' },
+				table(
+					{ class: 'submitted-user-history' },
+					tbody(
+						tr(
+							th(div("User")),
+							td(div("24/07/2014 10:09:22")),
+							td(div("Required modifications sent by user"))
 						),
-						td(
-							div("John Watson (4068-50001-N-2013)")
+						tr(
+							th(div("File sent")),
+							td(div("24/07/2014 13:09:22")),
+							td(div("File sent"))
 						),
-						td(
-							div("24/07/2014 10:09:22")
+						tr(
+							th(div("Official")),
+							td(div("24/07/2014 16:19:22")),
+							td(div("Document accepted"))
 						),
-						td(
-							div("Required modifications sent by user")
-						)
-					),
-					tr(
-						th(
-							div("File sent")
+						tr(
+							th(div("User")),
+							td(div("24/07/2014 10:09:22")),
+							td(div("Required modifications sent by user"))
 						),
-						td(
-							div("John Watson (4068-50001-N-2013)")
+						tr(
+							th(div("File sent")),
+							td(div("24/07/2014 13:09:22")),
+							td(div("File sent"))
 						),
-						td(
-							div("24/07/2014 13:09:22")
+						tr(
+							th(div("Official")),
+							td(div("24/07/2014 16:19:22")),
+							td(div("Document accepted"))
 						),
-						td(
-							div("File sent")
-						)
-					),
-					tr(
-						th(
-							div("Official")
+						tr(
+							th(div("User")),
+							td(div("24/07/2014 10:09:22")),
+							td(div("Required modifications sent by user"))
 						),
-						td(
-							div("Sherlock Holmes (4068-50001-N-2013)")
+						tr(
+							th(div("File sent")),
+							td(div("24/07/2014 13:09:22")),
+							td(div("File sent"))
 						),
-						td(
-							div("24/07/2014 16:19:22")
-						),
-						td(
-							div("Document accepted")
+						tr(
+							th(div("Official")),
+							td(div("24/07/2014 16:19:22")),
+							td(div("Document accepted"))
 						)
 					)
 				)

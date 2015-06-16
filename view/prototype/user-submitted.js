@@ -80,40 +80,55 @@ exports['sub-main'] = function () {
 					href: '/user-submitted/history-print/' },
 				span({ class: 'fa fa-print' }, "Print")
 			)),
-		table(
-			{ class: 'submitted-user-history' },
-			tbody(
-				tr(
-					th(
-						div("User")
+		div(
+			{ class: 'submitted-user-history-wrapper' },
+			table(
+				{ class: 'submitted-user-history' },
+				tbody(
+					tr(
+						th(div("User")),
+						td(div("24/07/2014 10:09:22")),
+						td(div("Required modifications sent by user"))
 					),
-					td(
-						div("24/07/2014 10:09:22")
+					tr(
+						th(div("File sent")),
+						td(div("24/07/2014 13:09:22")),
+						td(div("File sent"))
 					),
-					td(
-						div("Required modifications sent by user")
-					)
-				),
-				tr(
-					th(
-						div("File sent")
+					tr(
+						th(div("Official")),
+						td(div("24/07/2014 16:19:22")),
+						td(div("Document accepted"))
 					),
-					td(
-						div("24/07/2014 13:09:22")
+					tr(
+						th(div("User")),
+						td(div("24/07/2014 10:09:22")),
+						td(div("Required modifications sent by user"))
 					),
-					td(
-						div("File sent")
-					)
-				),
-				tr(
-					th(
-						div("Official")
+					tr(
+						th(div("File sent")),
+						td(div("24/07/2014 13:09:22")),
+						td(div("File sent"))
 					),
-					td(
-						div("24/07/2014 16:19:22")
+					tr(
+						th(div("Official")),
+						td(div("24/07/2014 16:19:22")),
+						td(div("Document accepted"))
 					),
-					td(
-						div("Document accepted")
+					tr(
+						th(div("User")),
+						td(div("24/07/2014 10:09:22")),
+						td(div("Required modifications sent by user"))
+					),
+					tr(
+						th(div("File sent")),
+						td(div("24/07/2014 13:09:22")),
+						td(div("File sent"))
+					),
+					tr(
+						th(div("Official")),
+						td(div("24/07/2014 16:19:22")),
+						td(div("Document accepted"))
 					)
 				)
 			)
