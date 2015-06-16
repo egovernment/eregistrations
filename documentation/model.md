@@ -162,9 +162,9 @@ RequirementUploads are defined as _nested_ objects on `BusinessProcess.prototype
 
 ##### FormSection
 
-https://github.com/egovernment/eregistrations/blob/master/model/form-section-base.js
-https://github.com/egovernment/eregistrations/blob/master/model/form-section.js
-https://github.com/egovernment/eregistrations/blob/master/model/form-section-group.js
+https://github.com/egovernment/eregistrations/blob/master/model/form-section-base.js  
+https://github.com/egovernment/eregistrations/blob/master/model/form-section.js  
+https://github.com/egovernment/eregistrations/blob/master/model/form-section-group.js  
 https://github.com/egovernment/eregistrations/blob/master/model/form-section-entities-table.js
 
 FormSections are defined as _nested_ objects at `BusinessProcess.prototype.dataForms` and `BusinessProcess.prototype.submissionForms`.  
