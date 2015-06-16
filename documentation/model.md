@@ -22,6 +22,8 @@ https://github.com/egovernment/eregistrations/blob/master/model/institution.js
 
 Specific institutions are defined in specific projects as _named_ objects (so instances of `Institution` class)
 
+---
+
 #### BusinessProcess
 
 https://github.com/egovernment/eregistrations/tree/master/model/business-process-new
