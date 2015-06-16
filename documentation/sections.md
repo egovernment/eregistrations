@@ -63,10 +63,10 @@ var FormSection = require('eregistrations/model/form-section');
 // Define a Type that would represent a specific section
 FormSection.extend('GeneralInfoFormSection', {
     // Section label
-    label: { value: "User information" }
-}, {
+    label: { value: "User information" },
     // Form POST url
-    actionUrl: { value: 'general' },
+    actionUrl: { value: 'general' }
+}, {
     // Property names of all involved fields (order is significant)
     propertyNames: { value: ['name', 'isNice', 'explainWhyNotNice',
 		'address/country', 'address/street'] }
@@ -96,7 +96,7 @@ div(generateFormSections(User.prototype.formSections));
 ```
 
 We import section's view generator and use it on the formSections field which we defined for user.
-This should lead to display of desired form. If the controllers are working (they still need to be configured manually) and we configured correct url in GeneralInfoFormSection.constructor.actionUrl, we should have fully working form by now.
+This should lead to display of desired form. If the controllers are working (they still need to be configured manually) and we configured correct url in GeneralInfoFormSection.actionUrl, we should have fully working form by now.
 
 What if we want to have the same form but grouped in two subsections: Personal Information, Address Details? We would use FormSectionGroup for that:
 
@@ -111,9 +111,8 @@ var FormSection      = require('eregistrations/model/form-section')
   , FormSectionGroup = require('eregistrations/model/form-section-group');
 
 FormSectionGroup.extend('GeneralInfoFormSection', {
-    label: { value: "User Information" } }
-}, {
-    actionUrl: { value: 'general-infp' }
+    label: { value: "User Information" } },
+    actionUrl: { value: 'general-info' }
 });
 
 FormSection.extend('PersonalInformationSection', {
@@ -166,9 +165,9 @@ var defineFormSections = require('eregistrations/model/form-sections')
 defineFormSections(Partner, 'formSections');
 
 FormSection.extend('PartnerFormSection', {
-    label: { value: "Partner information" }
-}, {
+    label: { value: "Partner information" },
     actionUrl: { value: 'partner' },
+}, {
     propertyNames: { value: ['name', 'isShareholder'] }
 });
 
@@ -194,17 +193,17 @@ Let's now create **FormEntitiesTable** for partners.
 var EntitiesTable = require('eregistrations/model/form-entities-table')(db)
   , TabularEntity = require('eregistrations/model/form-tabular-entity')(db)
 
-EntitiesTable.extend('PartnersTableSection', {}, {
-	baseUrl: { value: 'partner' },
+EntitiesTable.extend('PartnersTableSection', {
+    baseUrl: { value: 'partner' },
 	propertyName: { value: 'partners' },
 	entityTitleProperty: { value: 'name' },
 	sectionProperty: { value: 'formSections' }
 });
 
-db.PartnersTableSection.entities.add(new TabularEntity({
+db.PartnersTableSection.prototype.entities.add(new TabularEntity({
 	propertyName: 'name'
 }));
-db.PartnersTableSection.entities.add(new TabularEntity({
+db.PartnersTableSection.prototype.entities.add(new TabularEntity({
 	propertyName: 'isShareholder'
 }));
 
@@ -215,7 +214,7 @@ Explanation of some `EntitiesTable` properties:
 
 **propertyName** tells us on what user's property are defined our entities (in this example it leads us to `User.prototype.partners`).  
 **sectionProperty** which should expose the property name under which the form sections are defined on our partner, in our case it's `formSections`.  
- **entityTitleProperty** is where we tell **EntitiesTable** from which partner's property it should read every entity's title (it will be used after user has been submitted).  
+**entityTitleProperty** is where we tell **EntitiesTable** from which partner's property it should read every entity's title (it will be used after user has been submitted).  
 **baseUrl** url base for add/edit form views. After defining this, table links and postButtons will have the correct action urls, so that all is left to do is to configure routing and controllers.
 
 #### Defining FormEntitiesTable layout
@@ -224,7 +223,7 @@ Explanation of some `EntitiesTable` properties:
 
 `TabularEntity` just needs to have one property: `propertyName`, which tells us what partner's property will be displayed in a given column.
 
-The order of adding `TabularEntity` to `EntitiesTable.entities` property determines the order of table columns. If everything worked well, you should now see an entities table in your view, together with other sections you defined previously.
+The order of adding `TabularEntity` to `EntitiesTable.prototype.entities` property determines the order of table columns. If everything worked well, you should now see an entities table in your view, together with other sections you defined previously.
 
 
 ### Conditional section resolution
@@ -256,15 +255,15 @@ Now we need to adjust our sections definitions.
  
  FormSection.extend('AddressDetailsSection', {
      label: { value: "Address Details" },
-     resolventValue: { value: true }
+     resolventValue: { value: true },
+     resolventProperty: { value: 'isResident' }
  }, {
      propertyNames: { value: ['address/country', 'address/street'] }
-     resolventProperty: { value: 'isResident' }
  });
 
  ```
  
-Aside of `resolventProperty`, we also should define `resolventValue` on the constructor (it tells us what value will trigger section visibility).
+Aside of `resolventProperty`, we also should define `resolventValue` (it tells us what value will trigger section visibility).
 
 So, we can resolve form's conditional logic with the help of `is<CapitalizedNameOfProperty>Applicable` or with `resolventProperty`. But none of these two techniques will cover the case when a form's field presence depends on something completely external to this form i.e. a property defined in another form (like guide). Such dependency can be covered with usage of another convention. let's add a `isPrivateCompany` property to our user model. Let's assume this property is filled in the guide form, so we don't use it in our sections.
 
@@ -300,7 +299,7 @@ good to remember that calculation is quite simplistic and you may encounter situ
 You don't have to (and usually shouldn't) iterate manually over `formSections` (the section's collection) to get overall section's status.
 That's because once you define `formSections` property, another property with the name `yourSectionsPropertyNameStatus` (in our example `formSectionsStatus`)
 will be created as well. The `formSectionsStatus` will give you the total status of sections it contains.
-Sometimes your form is prefilled with some values like for example user's email. It may happen that you don't want to calculate status for such prefilled property, in other words you want the status to ignore email as long as email is ok. In that case you can use use `excludedFromStatusIfFilled` method from constructor.
+Sometimes your form is prefilled with some values like for example user's email. It may happen that you don't want to calculate status for such prefilled property, in other words you want the status to ignore email as long as email is ok. In that case you can use use `excludedFromStatusIfFilled` method.
 
 ####Status weight####
 
@@ -378,15 +377,13 @@ _prototype_
     
 **onIncompleteMessage** Used to overwrite default message which is shown through view/components/incomplete-form-nav.
 
-_constructor_
-
 **excludedFromStatusIfFilled** a multiple for which you can pass names of the properties you want excluded from status calculation if they were already provided for the form (for example from guide).
 
 **actionUrl** The url to which the the form created around the section will be submitted.
 	
 **resolventProperty** This property is used together with `resolventValue`, to check if the fields section fields should be displayed.
 
-**resolventProperty** The name of a property defined on section's master object (usually user).
+**resolventProperty** The name of a property defined on section's master object.
 
 ####FormSection####
 
@@ -397,8 +394,6 @@ _prototype_
 **propertyNames** Only for internal usage
     
 **inputOptions** Used to set input options for form. Note that in order to use it, you need to set every option separately i.e: `db.SomeFormClass.prototype.inputOptions.get('someProperty').set('disabled', true)`
-    
-_constructor_
 
 **propertyNames** This is were the set containing all property names to be used in form is set.
     
@@ -410,10 +405,10 @@ _prototype_
     
 ####FormEntitiesTable####
 
-_constructor_
+_prototype_
 
-**baseUrl** the base url around which links and postButtons to entities will be created. By convention following links to following urls will be created: `section.constructor.baseUrl + '-add'`, `section.constructor.baseUrl + '/' + <entityId>`.
-By convention url to delete an entity will be created: `section.constructor.baseUrl + '/' + <entityId> + '/delete'`
+**baseUrl** the base url around which links and postButtons to entities will be created. By convention following links to following urls will be created: `section.baseUrl + '-add'`, `section.baseUrl + '/' + <entityId>`.
+By convention url to delete an entity will be created: `section.baseUrl + '/' + <entityId> + '/delete'`
     
 **propertyName** The name of section's master property to which the section refers i.e: `partners`. 
     
@@ -421,7 +416,7 @@ By convention url to delete an entity will be created: `section.constructor.base
 	
 **entities** Set of objects of type `FormTabularEntity` which represent the table columns
 	
-**generateFooter** A placeholder for custom footer definition. If you want to create custom definition of footer, you should do it on `section.constructor.generateFooter` (this must be ecmaScript, not dbjs definition, so place it in view/dbjs). Your custom `generateFooter` function will receive one argument (with the value of `propertyName` of section's master i.e. the partners set of given user). 
+**generateFooter** A placeholder for custom footer definition. If you want to create custom definition of footer, you should do it on `section.generateFooter` (this must be ecmaScript, not dbjs definition, so place it in view/dbjs). Your custom `generateFooter` function will receive one argument (with the value of `propertyName` of section's master i.e. the partners set of given user). 
 	
 **sectionProperty** The name of the property on which the sections collection has been defined on the entity. For example `formSections`.
 	

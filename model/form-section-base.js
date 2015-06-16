@@ -34,7 +34,7 @@ module.exports = memoize(function (db) {
 		// The weight of the section status. It is used to determine weighed status across sections.
 		// It is usually equal to number of fields covered by the section.
 		weight: { type: UInteger, required: true, value: 0 },
-		// The value upon which constructor.resolventProperty is resolved.
+		// The value upon which resolventProperty is resolved.
 		// Section is visible when section.master[section.resolventProperty] === section.resolventValue
 		// See also resolventProperty.
 		resolventValue: { type: db.Base },
@@ -42,13 +42,13 @@ module.exports = memoize(function (db) {
 		onIncompleteMessage: { type: StringLine },
 		isUnresolved: { type: db.Boolean, value: function (_observe) {
 			var resolved;
-			if (!this.constructor.resolventProperty) return false;
-			resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty, _observe);
+			if (!this.resolventProperty) return false;
+			resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
 			return _observe(resolved.observable) !== this.resolventValue;
 		} },
 		isPropertyExcludedFromStatus: { type: db.Function, value: function (resolved, _observe) {
 			if (!resolved.descriptor.required) return true;
-			if (this.constructor.excludedFromStatusIfFilled.has(resolved.key) ||
+			if (this.excludedFromStatusIfFilled.has(resolved.key) ||
 					(!resolved.descriptor.multiple &&
 					Object.getPrototypeOf(resolved.object).get(resolved.key) != null)) {
 				if (resolved.descriptor.multiple) {
@@ -60,8 +60,7 @@ module.exports = memoize(function (db) {
 
 			return false;
 		} },
-		lastEditDate: { type: DateType }
-	}, {
+		lastEditDate: { type: DateType },
 		// A multiple for which you can pass names of the properties you want excluded from
 		// status calculation if they were already provided for the form (for example from guide).
 		excludedFromStatusIfFilled: { type: StringLine, multiple: true },

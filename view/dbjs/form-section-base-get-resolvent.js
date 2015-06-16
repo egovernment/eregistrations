@@ -22,7 +22,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 		  , master = options.master || this.master;
 		result = {};
 		match = {};
-		if (this.constructor.resolventProperty) {
+		if (this.resolventProperty) {
 			result.affectedSectionId = generateId();
 			if (typeof this.resolventValue === 'boolean') {
 				match[Number(this.resolventValue)] = result.affectedSectionId;
@@ -32,7 +32,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 				match[this.resolventValue] = result.affectedSectionId;
 			}
 			result.formResolvent = ns.field({ dbjs: resolvePropertyPath(master,
-				this.constructor.resolventProperty
+				this.resolventProperty
 				).observable });
 			if (result.formResolvent._dbjsInput instanceof db.Base.DOMSelect) {
 				result.formResolvent._dbjsInput.control.id = 'select-' + generateId();
@@ -42,7 +42,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 			} else {
 				result.formResolvent._dbjsInput.dom.classList.add('multiline');
 				result.legacyScript = ns.legacy('radioMatch', this.domId,
-						master.__id__ + '/' + this.constructor.resolventProperty,
+						master.__id__ + '/' + this.resolventProperty,
 					match);
 			}
 		}

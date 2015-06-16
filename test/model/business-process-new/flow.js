@@ -15,11 +15,11 @@ module.exports = function (t, a) {
 	  , businessProcess, step;
 
 	var FormSection1 = FormSection.extend('FormSection1');
-	FormSection.propertyNames = ['foo'];
+	FormSection.prototype.propertyNames = ['foo'];
 	var FormSection2 = FormSection.extend('FormSection2');
-	FormSection.propertyNames = ['bar'];
+	FormSection.prototype.propertyNames = ['bar'];
 	var FormSection3 = FormSection.extend('FormSection3');
-	FormSection.propertyNames = ['lorem'];
+	FormSection.prototype.propertyNames = ['lorem'];
 	var TestDocument = db.Document.extend('Test', { dataForm: { type: FormSection1 } }, {
 		label: { value: "Test document" }
 	});

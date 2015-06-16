@@ -26,8 +26,8 @@ module.exports = memoize(function (db) {
 		status: { value: function (_observe) {
 			var sum = 0, resolved, isResolventExcluded, weightModifier;
 			weightModifier = 0;
-			if (this.constructor.resolventProperty) {
-				resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty, _observe);
+			if (this.resolventProperty) {
+				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
 				if (!resolved) {
 					return 0;
 				}
@@ -54,8 +54,8 @@ module.exports = memoize(function (db) {
 		} },
 		weight: { value: function (_observe) {
 			var weightTotal = 0, resolved, isResolventExcluded;
-			if (this.constructor.resolventProperty) {
-				resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty, _observe);
+			if (this.resolventProperty) {
+				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
 				if (!resolved) {
 					return 0;
 				}

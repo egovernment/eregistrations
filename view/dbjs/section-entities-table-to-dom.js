@@ -13,7 +13,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 		options = Object(arguments[1]);
 		headerRank = options.headerRank || 3;
 		cssClass   = options.cssClass || 'entity-data-section';
-		resolved = resolvePropertyPath(this.master, this.constructor.propertyName);
+		resolved = resolvePropertyPath(this.master, this.propertyName);
 		return ns.section({ class: cssClass },
 			(function () {
 				if (self.label) {
@@ -26,11 +26,11 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 					resolved.value,
 					function (entityObject) {
 						return ns.li(headersMap[headerRank](
-							resolvePropertyPath(entityObject, self.constructor.entityTitleProperty).observable
-						), ns.list(resolvePropertyPath(entityObject, self.constructor.sectionProperty).value,
+							resolvePropertyPath(entityObject, self.entityTitleProperty).observable
+						), ns.list(resolvePropertyPath(entityObject, self.sectionProperty).value,
 							function (section) {
 								return section.toDOM(document, { headerRank: headerRank + 1 });
 							}));
 					}
-					), ns.p({ class: 'entity-data-section-empty' }, self.constructor.onEmptyMessage)));
+					), ns.p({ class: 'entity-data-section-empty' }, self.onEmptyMessage)));
 	}));
