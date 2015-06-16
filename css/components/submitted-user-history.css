@@ -1,5 +1,8 @@
-.submitted-user-history tr:not(:first-child) {
+.submitted-user-history tr {
 	border-top: 1px solid var(--light-inner-border);
+}
+.submitted-user-history tr:first-child {
+	border-top: none;
 }
 
 .submitted-user-history tr:nth-child(even) {
