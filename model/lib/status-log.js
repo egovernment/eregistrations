@@ -1,12 +1,11 @@
 'use strict';
 
 var memoize          = require('memoizee/plain')
-  , ensureDb         = require('dbjs/valid-dbjs')
   , defineUser       = require('../user/base')
   , defineStringLine = require('dbjs-ext/string/string-line');
 
 module.exports = memoize(function (db) {
-	var StringLine = defineStringLine(ensureDb(db))
+	var StringLine = defineStringLine(db)
 	  , User       = defineUser(db);
 
 	return db.Object.extend('StatusLog', {
