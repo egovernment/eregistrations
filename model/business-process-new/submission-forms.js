@@ -21,7 +21,7 @@ module.exports = memoize(function (db/* options */) {
 			superGetter = this.database.PropertyGroupsProcess.prototype.getDescriptor('progress')._value_;
 			superGetter = this.database.resolveGetterObservables(superGetter);
 			total = this.weight;
-			valid = superGetter.call(this, _observe) * total;
+			valid = superGetter.call(this, _observe) * (total - 1);
 			if (this.isAffidavitSigned) ++valid;
 			return valid / total;
 		} },
