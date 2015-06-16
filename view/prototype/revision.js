@@ -162,7 +162,7 @@ exports['sub-main'] = function () {
 			form(
 				{ class: 'submitted-preview-form' },
 				ul(
-					{ class: 'form-elements official-form-document-revision' },
+					{ class: 'form-elements' },
 					li(
 						input({ dbjs: user._isValidated })
 					),
