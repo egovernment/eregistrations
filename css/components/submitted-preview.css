@@ -101,7 +101,6 @@
 	color: var(--white-text);
 	background: var(--normal-dark-background);
 	text-align: center;
-	vertical-align: text-bottom;
 	font-style: normal;
 	display: inline-block;
 	font-size: 11px;
