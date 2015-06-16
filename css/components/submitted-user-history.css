@@ -1,6 +1,9 @@
 .submitted-user-history tr {
 	border-top: 1px solid var(--light-inner-border);
 }
+.submitted-user-history tr:first-child {
+	border-top: none;
+}
 
 .submitted-user-history tr:nth-child(even) {
 	background-color: var(--light-background);
@@ -14,4 +17,10 @@
 .submitted-user-history td {
 	padding: 11px 11px 10px;
 	text-align: left;
+}
+
+.submitted-user-history-wrapper {
+	max-height: 220px;
+	overflow: auto;
+	border: 1px solid var(--light-inner-border);
 }
