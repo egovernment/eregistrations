@@ -6,6 +6,7 @@ var syncStyle        = require('dom-ext/html-element/#/sync-style')
   , syncHeight       = require('../utils/sync-height')
   , scrollBottom     = require('../utils/scroll-to-bottom')
   , generateSections = require('../components/generate-sections')
+  , nextTick = require('next-tick')
   , db               = require('mano').db
 
   , user = db.User.prototype;
@@ -252,5 +253,5 @@ exports['sub-main'] = function () {
 		syncStyle.call(target, source, 'height', isMobileView);
 		syncHeight(elem);
 	}
-	scrollBottom(scrollableElem);
+	nextTick(function () { scrollBottom(scrollableElem); });
 };

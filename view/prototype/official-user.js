@@ -1,6 +1,7 @@
 'use strict';
 
-var scrollBottom     = require('../utils/scroll-to-bottom');
+var scrollBottom     = require('../utils/scroll-to-bottom'),
+nextTick = require('next-tick');
 
 exports['sub-main'] = function () {
 	var scrollableElem;
@@ -121,5 +122,5 @@ exports['sub-main'] = function () {
 
 		div({ id: 'tab' })
 	);
-	scrollBottom(scrollableElem);
+	nextTick(function () { scrollBottom(scrollableElem); });
 };
