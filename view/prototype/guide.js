@@ -206,7 +206,7 @@ exports.step = function () {
 					span("$45'000")),
 					small("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")),
 			p(
-				a({ class: 'button-resource-link', href: 'costs-print/' },
+				a({ class: 'button-resource-link', href: 'costs-print/', target: '_blank' },
 					span({ class: 'fa fa-print' }), " ",
 					"Print costs list"
 					)
