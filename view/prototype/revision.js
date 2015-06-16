@@ -4,14 +4,13 @@ var syncStyle    = require('dom-ext/html-element/#/sync-style')
   , isMobileView = require('../utils/is-mobile-view')
   , syncHeight   = require('../utils/sync-height')
   , db           = require('mano').db
+  , scrollBottom     = require('../utils/scroll-to-bottom')
   , reject       = require('./_reject')
 
   , user = db.User.prototype;
 
 exports['sub-main'] = function () {
-	var source,
-	target,
-	elem;
+	var source, target, elem, scrollableElem;
 
 	section(
 		{ class: 'submitted-main table-responsive-container' },
@@ -56,7 +55,7 @@ exports['sub-main'] = function () {
 					href: '/user-submitted/history-print/' },
 				span({ class: 'fa fa-print' }, "Print")
 			)),
-		div(
+		scrollableElem = div(
 			{ class: 'submitted-user-history-wrapper' },
 			table(
 				{ class: 'submitted-user-history' },
@@ -425,4 +424,5 @@ exports['sub-main'] = function () {
 	);
 	syncStyle.call(target, source, 'height', isMobileView);
 	syncHeight(elem);
+	scrollBottom(scrollableElem);
 };

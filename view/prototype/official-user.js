@@ -1,6 +1,10 @@
 'use strict';
 
+var scrollBottom     = require('../utils/scroll-to-bottom');
+
 exports['sub-main'] = function () {
+	var scrollableElem;
+
 	section(
 		{ class: 'table-responsive-container' },
 		table(
@@ -50,7 +54,7 @@ exports['sub-main'] = function () {
 					span({ class: 'fa fa-print' }, "Print")
 				)
 				),
-			div(
+			scrollableElem = div(
 				{ class: 'submitted-user-history-wrapper' },
 				table(
 					{ class: 'submitted-user-history' },
@@ -117,4 +121,5 @@ exports['sub-main'] = function () {
 
 		div({ id: 'tab' })
 	);
+	scrollBottom(scrollableElem);
 };

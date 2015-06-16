@@ -251,7 +251,6 @@ exports['sub-main'] = function () {
 	if (isVisual) {
 		syncStyle.call(target, source, 'height', isMobileView);
 		syncHeight(elem);
-		scrollBottom(scrollableElem);
 	}
-
+	scrollBottom(scrollableElem);
 };
