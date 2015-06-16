@@ -15,8 +15,8 @@ var ensureArray              = require('es5-ext/array/valid-array')
   , create = Object.create;
 
 var documentDefinitions = {
-	uniqueKey: function () { return this.owner.key; },
-	label: function (_observe) {
+	uniqueKey: { value: function () { return this.owner.key; } },
+	label: { value: function (_observe) {
 		var requirement;
 		// Master may not be a BusinessProcess (but e.g. Representative)
 		// so there might not be requirements
@@ -25,8 +25,8 @@ var documentDefinitions = {
 			if (requirement && requirement.label) return _observe(requirement._label);
 		}
 		return this.constructor.label;
-	},
-	legend: function (_observe) {
+	} },
+	legend: { value: function (_observe) {
 		var requirement;
 		// Master may not be a BusinessProcess (but e.g. Representative)
 		// so there might not be requirements
@@ -35,7 +35,7 @@ var documentDefinitions = {
 			if (requirement && requirement.legend) return _observe(requirement._legend);
 		}
 		return this.constructor.legend;
-	}
+	} }
 };
 
 module.exports = function (db, data) {
