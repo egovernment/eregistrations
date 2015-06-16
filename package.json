@@ -9,9 +9,15 @@
     "url": "git://github.com/egovernment/eregistrations.git"
   },
   "devDependencies": {
-    "es5-ext": "^0.10.7",
+    "es5-ext": "git://github.com/medikoo/es5-ext.git#12ee4b84a6dc0252cc205d6f878f268a140eaaf9",
     "dbjs": "git://github.com/medikoo/dbjs.git#af3c76fe9933f7b1ccdebd8b73c6b524d58a0efb",
+    "dbjs-ext": "git://github.com/medikoo/dbjs-ext.git#52401c551edf92da83db11e28844e68cef73bdd5",
+    "dbjs-fragment": "git://github.com/medikoo/dbjs-fragment.git#d79e0179640",
     "dbjs-reduce": "git://github.com/medikoo/dbjs-reduce.git#e3e7edbad748b7",
+    "es6-map": "git://github.com/medikoo/es6-map.git#06375a73acb1ad936281b9a1994b3212ab224a93",
+    "mano": "0.0.1",
+    "mano-auth": "0.0.2",
+    "memoizee": "^0.3.8",
     "time-uuid": "^0.2.1",
 
     "xlint": "^0.2.2",

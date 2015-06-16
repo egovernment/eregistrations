@@ -4,7 +4,6 @@
 'use strict';
 
 var memoize               = require('memoizee/plain')
-  , ensureDb              = require('dbjs/valid-dbjs')
   , defineDate            = require('dbjs-ext/date-time/date')
   , defineStringLine      = require('dbjs-ext/string/string-line')
   , _                     = require('mano').i18n.bind('Model: Documents')
@@ -13,7 +12,7 @@ var memoize               = require('memoizee/plain')
   , defineFormSectionBase = require('./form-section-base');
 
 module.exports = memoize(function (db) {
-	var StringLine = defineStringLine(ensureDb(db))
+	var StringLine = defineStringLine(db)
 	  , File       = defineFile(db)
 	  , DateType   = defineDate(db)
 	  , StatusLog  = defineStatusLog(db)
