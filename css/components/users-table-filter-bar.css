@@ -48,8 +48,9 @@
 	border-radius: 4px;
 	color: var(--white-text);
 	background-color: var(--normal-background);
-	padding: 5px 10px;
+	padding: 7px 10px;
 	white-space: nowrap;
+	text-decoration: none;
 }
 .users-table-filter-bar-print:hover,
 .users-table-filter-bar-print:focus,
