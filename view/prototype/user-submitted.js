@@ -4,7 +4,9 @@ var syncStyle        = require('dom-ext/html-element/#/sync-style')
   , isVisual         = require('../utils/is-visual')
   , isMobileView     = require('../utils/is-mobile-view')
   , syncHeight       = require('../utils/sync-height')
+  , scrollBottom     = require('../utils/scroll-to-bottom')
   , generateSections = require('../components/generate-sections')
+  , nextTick = require('next-tick')
   , db               = require('mano').db
 
   , user = db.User.prototype;
@@ -31,7 +33,8 @@ exports['submitted-menu'] = function () {
 exports['sub-main'] = function () {
 	var source,
 	target,
-	elem;
+	elem,
+	scrollableElem;
 
 	section(
 		{ class: 'submitted-main table-responsive-container' },
@@ -81,7 +84,7 @@ exports['sub-main'] = function () {
 					target: '_blank' },
 				span({ class: 'fa fa-print' }, "Print")
 			)),
-		div(
+		scrollableElem = div(
 			{ class: 'submitted-user-history-wrapper' },
 			table(
 				{ class: 'submitted-user-history' },
@@ -208,8 +211,8 @@ exports['sub-main'] = function () {
 		source = div(
 			{ class: 'section-primary submitted-preview-document' },
 			div({ class: 'container-with-nav' },
-				h3(i({ class: 'submitted-preview-item-number' }, "1"),
-					"Memorandum and articles of association"),
+				h3(span({ class: 'submitted-preview-item-number ' }, i("1")),
+					span("Memorandum and articles of association lorem ipsum dolor sit")),
 				div({ id: 'submitted-preview-navigation-top',
 					class: 'submitted-preview-documents-navigation' },
 					div(
@@ -252,4 +255,5 @@ exports['sub-main'] = function () {
 		syncStyle.call(target, source, 'height', isMobileView);
 		syncHeight(elem);
 	}
+	nextTick(function () { scrollBottom(scrollableElem); });
 };

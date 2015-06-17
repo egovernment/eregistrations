@@ -14,9 +14,10 @@ Follow below documentation
 
 Below is short list of rules which should be respected to assure trouble-less maintenance among different environments.
 
-- __All filenames added to the repository should be lowercase.__  
+- __All filenames added to the repository should be lowercase and use strictly a-z, 0-9, - chars__  
 _Reasoning: We usually develop using case-insensitive filesystems, however our application is served on production from a filesystem which is case-sensitive.
-So while in development linking `Foo.jpg` in html with `foo.jpg` fill, will not indicate anything wrong, on production it will produce 404 error. Sticking strictly to lowercase assures that such problems do not occur._
+So while in development linking `Foo.jpg` in html with `foo.jpg` fill, will not indicate anything wrong, on production it will produce 404 error. Sticking strictly to lowercase assures that such problems do not occur.  
+Restriction regarding restricted charset, applies to allowed characters in url. We don't won't rely on sometimes possibly broken, or non existent escape mechanism_
 - __Use only unix style line endings `\n`__  
 If you're on Windows please assure that you're editor is configured for those.  
 _Reasoning: Our developers work using many different systems (OSX, Linux, Windows), so using one agreed style is important to assure that files are visible properly for every developer that opens the file. Unix style line endings while being most appropriate from semantic point are also agreed as common convention among web developers_

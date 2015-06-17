@@ -33,7 +33,7 @@ module.exports = memoize(function (db) {
 		status: { type: Percentage, required: true, value: 1 },
 		// The weight of the section status. It is used to determine weighed status across sections.
 		// It is usually equal to number of fields covered by the section.
-		weight: { type: UInteger, required: true },
+		weight: { type: UInteger, required: true, value: 0 },
 		// The value upon which constructor.resolventProperty is resolved.
 		// Section is visible when section.master[section.resolventProperty] === section.resolventValue
 		// See also resolventProperty.

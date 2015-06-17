@@ -35,6 +35,10 @@
 	max-height: 100%;
 }
 
+.submitted-preview-document .container-with-nav h3 {
+	display: flex;
+}
+
 .submitted-preview-document .container-with-nav div {
 	min-width: inherit;
 }
@@ -89,17 +93,20 @@
 }
 
 .submitted-preview-item-number {
+	padding: 0 5px;
+	margin-right: 8px;
+}
+
+.submitted-preview-item-number i {
 	width: 22px;
 	line-height: 22px;
-	margin-right: 8px;
 	border-radius: 50%;
 	color: var(--white-text);
 	background: var(--normal-dark-background);
 	text-align: center;
-	vertical-align: text-bottom;
 	font-style: normal;
 	display: inline-block;
-	font-size: 11px
+	font-size: 11px;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {

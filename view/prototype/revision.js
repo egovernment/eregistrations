@@ -4,14 +4,14 @@ var syncStyle    = require('dom-ext/html-element/#/sync-style')
   , isMobileView = require('../utils/is-mobile-view')
   , syncHeight   = require('../utils/sync-height')
   , db           = require('mano').db
+  , scrollBottom     = require('../utils/scroll-to-bottom')
+  , nextTick = require('next-tick')
   , reject       = require('./_reject')
 
   , user = db.User.prototype;
 
 exports['sub-main'] = function () {
-	var source,
-	target,
-	elem;
+	var source, target, elem, scrollableElem;
 
 	section(
 		{ class: 'submitted-main table-responsive-container' },
@@ -57,49 +57,55 @@ exports['sub-main'] = function () {
 					target: '_blank' },
 				span({ class: 'fa fa-print' }, "Print")
 			)),
-		table(
-			{ class: 'submitted-user-history' },
-			tbody(
-				tr(
-					th(
-						div("User")
+		scrollableElem = div(
+			{ class: 'submitted-user-history-wrapper' },
+			table(
+				{ class: 'submitted-user-history' },
+				tbody(
+					tr(
+						th(div("User")),
+						td(div("24/07/2014 10:09:22")),
+						td(div("Required modifications sent by user"))
 					),
-					td(
-						div("John Watson (4068-50001-N-2013)")
+					tr(
+						th(div("File sent")),
+						td(div("24/07/2014 13:09:22")),
+						td(div("File sent"))
 					),
-					td(
-						div("24/07/2014 10:09:22")
+					tr(
+						th(div("Official")),
+						td(div("24/07/2014 16:19:22")),
+						td(div("Document accepted"))
 					),
-					td(
-						div("Required modifications sent by user")
-					)
-				),
-				tr(
-					th(
-						div("File sent")
+					tr(
+						th(div("User")),
+						td(div("24/07/2014 10:09:22")),
+						td(div("Required modifications sent by user"))
 					),
-					td(
-						div("John Watson (4068-50001-N-2013)")
+					tr(
+						th(div("File sent")),
+						td(div("24/07/2014 13:09:22")),
+						td(div("File sent"))
 					),
-					td(
-						div("24/07/2014 13:09:22")
+					tr(
+						th(div("Official")),
+						td(div("24/07/2014 16:19:22")),
+						td(div("Document accepted"))
 					),
-					td(
-						div("File sent")
-					)
-				),
-				tr(
-					th(
-						div("Official")
+					tr(
+						th(div("User")),
+						td(div("24/07/2014 10:09:22")),
+						td(div("Required modifications sent by user"))
 					),
-					td(
-						div("Sherlock Holmes (4068-50001-N-2013)")
+					tr(
+						th(div("File sent")),
+						td(div("24/07/2014 13:09:22")),
+						td(div("File sent"))
 					),
-					td(
-						div("24/07/2014 16:19:22")
-					),
-					td(
-						div("Document accepted")
+					tr(
+						th(div("Official")),
+						td(div("24/07/2014 16:19:22")),
+						td(div("Document accepted"))
 					)
 				)
 			)
@@ -156,8 +162,8 @@ exports['sub-main'] = function () {
 		source = div(
 			{ class: 'section-primary submitted-preview-document' },
 			div({ class: 'container-with-nav' },
-				h3(i({ class: 'submitted-preview-item-number' }, "1"),
-					"Memorandum and articles of association")),
+				h3(span({ class: 'submitted-preview-item-number' }, i("1")),
+					span("Memorandum and articles of association lorem ipsum dolor sit"))),
 			elem = div({ class: 'submitted-preview-image-placeholder' },
 				img({ zoomOnHover: true, src: '/uploads/docASubFile2.idoc.png.jpg' })),
 			form(
@@ -420,4 +426,5 @@ exports['sub-main'] = function () {
 	);
 	syncStyle.call(target, source, 'height', isMobileView);
 	syncHeight(elem);
+	nextTick(function () { scrollBottom(scrollableElem); });
 };
