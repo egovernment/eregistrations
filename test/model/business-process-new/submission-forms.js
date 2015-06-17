@@ -11,7 +11,7 @@ module.exports = function (t, a) {
 	  , businessProcess;
 
 	var FormSection1 = FormSection.extend('FormSection1');
-	FormSection.propertyNames = ['foo'];
+	FormSection.prototype.propertyNames = ['foo'];
 	BusinessProcess.prototype.submissionForms.map.defineProperties({
 		test1: { nested: true, type: FormSection1 }
 	});

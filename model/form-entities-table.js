@@ -25,13 +25,13 @@ module.exports = memoize(function (db) {
 		status: { value: function (_observe) {
 			var entityObjects, statusSum, statusKey, weightKey;
 			statusSum = 0;
-			statusKey = this.constructor.sectionProperty + 'Status';
-			weightKey = this.constructor.sectionProperty + 'Weight';
-			entityObjects = this.master.resolveSKeyPath(this.constructor.propertyName, _observe);
+			statusKey = this.sectionProperty + 'Status';
+			weightKey = this.sectionProperty + 'Weight';
+			entityObjects = this.master.resolveSKeyPath(this.propertyName, _observe);
 			if (!entityObjects) {
 				return 0;
 			}
-			entityObjects = entityObjects.value;
+			entityObjects = _observe(entityObjects.observable);
 			entityObjects.forEach(function (entityObject) {
 				var resolvedStatus, resolvedWeight;
 				resolvedStatus = entityObject.resolveSKeyPath(statusKey, _observe);
@@ -48,7 +48,7 @@ module.exports = memoize(function (db) {
 			var entityObjects, weightTotal, key, getWeightByEntity, protoWeight, i;
 			weightTotal = 0;
 			i = 0;
-			key = this.constructor.sectionProperty + 'Weight';
+			key = this.sectionProperty + 'Weight';
 			getWeightByEntity = function (entityObject) {
 				var resolved = entityObject.resolveSKeyPath(key, _observe);
 				if (!resolved) {
@@ -56,7 +56,7 @@ module.exports = memoize(function (db) {
 				}
 				return _observe(resolved.observable);
 			};
-			entityObjects = this.master.resolveSKeyPath(this.constructor.propertyName, _observe);
+			entityObjects = this.master.resolveSKeyPath(this.propertyName, _observe);
 			if (!entityObjects) {
 				return 0;
 			}
@@ -81,8 +81,8 @@ module.exports = memoize(function (db) {
 		lastEditDate: {
 			value: function (_observe) {
 				var res = 0, entityObjects, sectionKey;
-				entityObjects = this.master.resolveSKeyPath(this.constructor.propertyName, _observe);
-				sectionKey = this.constructor.sectionProperty;
+				entityObjects = this.master.resolveSKeyPath(this.propertyName, _observe);
+				sectionKey = this.sectionProperty;
 				if (!entityObjects) {
 					return 0;
 				}
@@ -98,15 +98,14 @@ module.exports = memoize(function (db) {
 
 				return res;
 			}
-		}
-	}, {
+		},
 		actionUrl: { required: false },
 		// The base url around which links and postButtons to entities will be created.
 		// By convention following links to following urls will be created:
-		// section.constructor.baseUrl + '-add',
-		// section.constructor.baseUrl + '/' + <entityId>.
+		// section.baseUrl + '-add',
+		// section.baseUrl + '/' + <entityId>.
 		// By convention url to delete an entity will be created:
-		// section.constructor.baseUrl + '/' + <entityId> + '/delete'
+		// section.baseUrl + '/' + <entityId> + '/delete'
 		baseUrl: { type: StringLine, required: true },
 		// The name of section's master property to which the section refers i.e: partners
 		propertyName: { type: StringLine, required: true },
@@ -117,7 +116,7 @@ module.exports = memoize(function (db) {
 		entities: { type: FormTabularEntity, multiple: true, unique: true },
 		// A placeholder for custom footer definition.
 		// If you want to create custom definition of footer,
-		// you should do it on section.constructor.generateFooter
+		// you should do it on section.generateFooter
 		// (this must be ecmaScript, not dbjs definition, so place it in view/dbjs).
 		// Your custom generateFooter function will receive one argument
 		// (with the value of propertyName of section's master i.e. the partners set of given user).

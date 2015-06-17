@@ -19,12 +19,12 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 				ns.tbody(
 					ns._if(self._isUnresolved, function () {
 						return ns.tr(ns.th(resolvePropertyPath(self.master,
-								self.constructor.resolventProperty).descriptor.label),
+								self.resolventProperty).descriptor.label),
 							ns.td(resolvePropertyPath(self.master,
-								self.constructor.resolventProperty).observable));
+								self.resolventProperty).observable));
 					}),
 					ns._if(ns.eq(self._isUnresolved, false), function () {
-						return ns.list(filteredNames = self.propertyNames.filter(function (name) {
+						return ns.list(filteredNames = self.resolvedPropertyNames.filter(function (name) {
 							var observable = resolvePropertyPath(self.master, name).observable;
 							observable.once('change', function (event) { filteredNames.refresh(name); });
 							return observable.value != null;

@@ -13,7 +13,7 @@ module.exports = function (t, a) {
 	  , businessProcess;
 
 	var FormSection1 = FormSection.extend('FormSection1');
-	FormSection.propertyNames = ['foo'];
+	FormSection.prototype.propertyNames = ['foo'];
 	var TestDocument = db.Document.extend('Test', { dataForm: { type: FormSection1 } }, {
 		label: { value: "Test document" }
 	});

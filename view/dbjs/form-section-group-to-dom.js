@@ -30,11 +30,11 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		customizeData = { subSections: {} };
 		mainFormResolvent = this.getFormResolvent(options);
 		url = options.url || ns.url;
-		actionUrl = url(this.constructor.actionUrl);
+		actionUrl = url(this.actionUrl);
 		if (options.isChildEntity) {
 			actionUrl = master.constructor.prototype === master ?
-					url(this.constructor.actionUrl + '-add') :
-					url(this.constructor.actionUrl, master.__id__);
+					url(this.actionUrl + '-add') :
+					url(this.actionUrl, master.__id__);
 		}
 		fieldsetOptions = {
 			master: master,
