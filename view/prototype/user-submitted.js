@@ -180,28 +180,28 @@ exports['sub-main'] = function () {
 				a(
 					span({ class: 'submitted-documents-thumbs-status ' +
 							'submitted-documents-thumbs-success fa fa-check ' }),
-					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
+					img({ src: '/uploads/doc-a-sub-file2.thumb.idoc.png.jpg' })
 				)
 			),
 			li(
 				a(
 					span({ class: 'submitted-documents-thumbs-status ' +
 						'submitted-documents-thumbs-error fa fa-exclamation ' }),
-					img({ src: '/uploads/docASubFile1.thumb.idoc.jpg' })
+					img({ src: '/uploads/doc-a-sub-file1.thumb.idoc.jpg' })
 				)
 			),
 			li(
 				a(
 					span({ class: 'submitted-documents-thumbs-status ' +
 						'submitted-documents-thumbs-success fa fa-check ' }),
-					img({ src: '/uploads/docBSubFile1.thumb.idoc.jpg' })
+					img({ src: '/uploads/doc-b-sub-file1.thumb.idoc.jpg' })
 				)
 			),
 			li(
 				a(
 					span({ class: 'submitted-documents-thumbs-status ' +
 							'submitted-documents-thumbs-success fa fa-check ' }),
-					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
+					img({ src: '/uploads/doc-a-sub-file2.thumb.idoc.png.jpg' })
 				)
 			))
 	);
@@ -220,9 +220,9 @@ exports['sub-main'] = function () {
 						a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, "Next"))
 					))),
 			elem = ul({ id: 'doc-previews', class: 'submitted-preview-image-placeholder' },
-				li(img({ zoomOnHover: true, src: '/uploads/docASubFile2.idoc.png.jpg' })),
-				li(img({ zoomOnHover: true, src: '/uploads/docASubFile1.idoc.jpg' })),
-				li(img({ zoomOnHover: true, src: '/uploads/docBSubFile1.idoc.jpg' }))),
+				li(img({ zoomOnHover: true, src: '/uploads/doc-a-sub-file2.idoc.png.jpg' })),
+				li(img({ zoomOnHover: true, src: '/uploads/doc-a-sub-file1.idoc.jpg' })),
+				li(img({ zoomOnHover: true, src: '/uploads/doc-b-sub-file1.idoc.jpg' }))),
 			legacy('hashNavOrderedList', 'doc-previews', 'doc-preview'),
 			div({ id: 'submitted-preview-navigation-bottom',
 				class: 'submitted-preview-documents-navigation' },

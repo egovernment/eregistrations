@@ -283,10 +283,10 @@ file = db.SubmissionFile.newNamed('docASubFile1', props = {
 	name: 'idoc.jpg',
 	type: 'image/jpeg',
 	diskSize: 376306,
-	url: '/uploads/docASubFile1.idoc.jpg'
+	url: '/uploads/doc-a-sub-file1.idoc.jpg'
 });
 file.preview = file;
-file.thumb.url  =  '/uploads/docASubFile1.thumb.idoc.jpg';
+file.thumb.url  =  '/uploads/doc-a-sub-file1.thumb.idoc.jpg';
 file.thumb.name = 'idoc.jpg';
 user.submissions.documentA.files.add(file);
 user.registeredArticlesFile.setProperties(props);
@@ -296,13 +296,13 @@ file = db.SubmissionFile.newNamed('docASubFile2', {
 	name: 'idoc.png',
 	type: 'image/png',
 	diskSize: 124998,
-	url: '/uploads/docASubFile2.idoc.png'
+	url: '/uploads/doc-a-sub-file2.idoc.png'
 });
 file.preview = db.JpegFile.newNamed('docASubFile2Preview', {
-	url: '/uploads/docASubFile2.thumb.idoc.png.jpg',
+	url: '/uploads/doc-a-sub-file2.thumb.idoc.png.jpg',
 	name: 'idoc.png'
 });
-file.thumb.url = '/uploads/docASubFile2.thumb.idoc.png.jpg';
+file.thumb.url = '/uploads/doc-a-sub-file2.thumb.idoc.png.jpg';
 file.thumb.name = 'idoc.png';
 
 user.submissions.documentA.files.add(file);
@@ -311,10 +311,10 @@ file = db.SubmissionFile.newNamed('docBSubFile1', {
 	name: 'idoc.jpg',
 	type: 'image/jpeg',
 	diskSize: 426150,
-	url: '/uploads/docBSubFile1.idoc.jpg'
+	url: '/uploads/doc-b-sub-file1.idoc.jpg'
 });
 file.preview = file;
-file.thumb.url = '/uploads/docBSubFile1.thumb.idoc.jpg';
+file.thumb.url = '/uploads/doc-b-sub-file1.thumb.idoc.jpg';
 file.thumb.name = 'idoc.jpg';
 
 user.submissions.documentB.files.add(file);

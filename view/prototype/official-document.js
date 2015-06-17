@@ -54,25 +54,25 @@ exports.tab = function () {
 					{ class: 'submitted-documents-thumbs-status' +
 						' submitted-documents-thumbs-success fa fa-check ' }
 				),
-					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
+					img({ src: '/uploads/doc-a-sub-file2.thumb.idoc.png.jpg' })
 					)
 			),
 			li(
 				a(span({ class: 'submitted-documents-thumbs-status' +
 						' submitted-documents-thumbs-success fa fa-check ' }),
-					img({ src: '/uploads/docASubFile1.thumb.idoc.jpg' })
+					img({ src: '/uploads/doc-a-sub-file1.thumb.idoc.jpg' })
 					)
 			),
 			li(
 				a(span({ class: 'submitted-documents-thumbs-status' +
 						' submitted-documents-thumbs-error fa fa-exclamation ' }),
-					img({ src: '/uploads/docBSubFile1.thumb.idoc.jpg' })
+					img({ src: '/uploads/doc-b-sub-file1.thumb.idoc.jpg' })
 					)
 			),
 			li(
 				a(span({ class: 'submitted-documents-thumbs-status' +
 						' submitted-documents-thumbs-success fa fa-check ' }),
-					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' })
+					img({ src: '/uploads/doc-a-sub-file2.thumb.idoc.png.jpg' })
 					)
 			)
 			),
@@ -86,7 +86,7 @@ exports.tab = function () {
 					),
 				elem = ul({ class: 'submitted-preview-image-placeholder' },
 					li({ class: 'active' },
-						img({ zoomOnHover: true, src: '/uploads/docASubFile2.idoc.png.jpg' })))),
+						img({ zoomOnHover: true, src: '/uploads/doc-a-sub-file2.idoc.png.jpg' })))),
 			target = div({ class: 'section-primary submitted-preview-user-data' +
 					' entity-data-section-side' },
 				h2({ class: 'container-with-nav' }, "Application form",

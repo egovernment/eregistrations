@@ -138,22 +138,22 @@ exports['sub-main'] = function () {
 			li(
 				a(span({ class: 'submitted-documents-thumbs-status ' +
 						'submitted-documents-thumbs-success fa fa-check ' }),
-					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' }))
+					img({ src: '/uploads/doc-a-sub-file2.thumb.idoc.png.jpg' }))
 			),
 			li(
 				a(span({ class: 'submitted-documents-thumbs-status' +
 						' submitted-documents-thumbs-success fa fa-check ' }),
-					img({ src: '/uploads/docASubFile1.thumb.idoc.jpg' }))
+					img({ src: '/uploads/doc-a-sub-file1.thumb.idoc.jpg' }))
 			),
 			li(
 				a(span({ class: 'submitted-documents-thumbs-status ' +
 						'submitted-documents-thumbs-error fa fa-exclamation ' }),
-					img({ src: '/uploads/docBSubFile1.thumb.idoc.jpg' }))
+					img({ src: '/uploads/doc-b-sub-file1.thumb.idoc.jpg' }))
 			),
 			li(
 				a(span({ class: 'submitted-documents-thumbs-status ' +
 						'submitted-documents-thumbs-success fa fa-check ' }),
-					img({ src: '/uploads/docASubFile2.thumb.idoc.png.jpg' }))
+					img({ src: '/uploads/doc-a-sub-file2.thumb.idoc.png.jpg' }))
 			))
 	);
 	section(
@@ -164,7 +164,7 @@ exports['sub-main'] = function () {
 				h3(span({ class: 'submitted-preview-item-number' }, i("1")),
 					span("Memorandum and articles of association lorem ipsum dolor sit"))),
 			elem = div({ class: 'submitted-preview-image-placeholder' },
-				img({ zoomOnHover: true, src: '/uploads/docASubFile2.idoc.png.jpg' })),
+				img({ zoomOnHover: true, src: '/uploads/doc-a-sub-file2.idoc.png.jpg' })),
 			form(
 				{ class: 'submitted-preview-form' },
 				ul(
