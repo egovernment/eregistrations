@@ -31,7 +31,7 @@ module.exports = memoize(function (db) {
 			if (!entityObjects) {
 				return 0;
 			}
-			entityObjects = entityObjects.value;
+			entityObjects = _observe(entityObjects.observable);
 			entityObjects.forEach(function (entityObject) {
 				var resolvedStatus, resolvedWeight;
 				resolvedStatus = entityObject.resolveSKeyPath(statusKey, _observe);
