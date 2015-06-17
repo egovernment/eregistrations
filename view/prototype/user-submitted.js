@@ -80,7 +80,8 @@ exports['sub-main'] = function () {
 			a(
 				{ class: 'hint-optional hint-optional-left',
 					'data-hint': 'Print history of Your request',
-					href: '/user-submitted/history-print/' },
+					href: '/user-submitted/history-print/',
+					target: '_blank' },
 				span({ class: 'fa fa-print' }, "Print")
 			)),
 		scrollableElem = div(
@@ -242,7 +243,8 @@ exports['sub-main'] = function () {
 				a(
 					{ class: 'hint-optional hint-optional-left',
 						'data-hint': 'Print Your application form',
-						href: '/user-submitted/data-print/' },
+						href: '/user-submitted/data-print/',
+						target: '_blank' },
 					span({ class: 'fa fa-print' }, "Print")
 				)),
 

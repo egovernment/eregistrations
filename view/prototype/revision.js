@@ -53,7 +53,8 @@ exports['sub-main'] = function () {
 			a(
 				{ class: 'hint-optional hint-optional-left',
 					'data-hint': 'Print history of application',
-					href: '/user-submitted/history-print/' },
+					href: '/user-submitted/history-print/',
+					target: '_blank' },
 				span({ class: 'fa fa-print' }, "Print")
 			)),
 		scrollableElem = div(

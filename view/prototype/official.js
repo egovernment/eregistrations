@@ -69,7 +69,8 @@ exports['sub-main'] = function () {
 		),
 		div(
 			a(
-				{ class: 'users-table-filter-bar-print', href: '/official/users-list/print/' },
+				{ class: 'users-table-filter-bar-print', href: '/official/users-list/print/',
+					target: '_blank' },
 				span({ class: 'fa fa-print' }),
 				"Print list"
 			)
