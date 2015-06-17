@@ -34,11 +34,11 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 			formId: this.domId
 		};
 		url = options.url || ns.url;
-		actionUrl = url(this.constructor.actionUrl);
+		actionUrl = url(this.actionUrl);
 		if (options.isChildEntity) {
 			actionUrl = (master.constructor.prototype === master) ?
-					url(this.constructor.actionUrl + '-add') :
-					url(this.constructor.actionUrl, master.__id__);
+					url(this.actionUrl + '-add') :
+					url(this.actionUrl, master.__id__);
 		}
 		customizeData.arrayResult = [customizeData.container = ns.section({ class: 'section-primary' },
 			customizeData.form = ns.form(

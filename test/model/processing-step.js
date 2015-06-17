@@ -13,7 +13,7 @@ module.exports = function (t, a) {
 	BusinessProcess.prototype.processingSteps.map.define('test', { nested: true });
 	BusinessProcess.prototype.processingSteps.map.test.define('dataForm', { type: FormSection });
 	BusinessProcess.prototype.define('foo', { required: true });
-	FormSection.propertyNames = ['foo'];
+	FormSection.prototype.propertyNames = ['foo'];
 	businessProcess = new BusinessProcess();
 	step = businessProcess.processingSteps.map.test;
 

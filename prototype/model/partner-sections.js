@@ -10,7 +10,7 @@ partner = Partner.prototype;
 
 require('../../model/form-sections')(Partner, 'partnerFormSections');
 
-FormSectionGroup.extend('PartnerFormSectionGroup', {}, {
+FormSectionGroup.extend('PartnerFormSectionGroup', {
 	actionUrl: { value: '/' }
 });
 
@@ -18,21 +18,19 @@ partner.partnerFormSections.getOwnDescriptor('partnerFormSectionGroup').type =
 	db.PartnerFormSectionGroup;
 
 FormSection.extend('PartnerFormBasicSection', {
-	label: { value: "Business Partner basic informations" }
-}, {
-	propertyNames: { value: ['firstName', 'lastName', 'dateOfBirth', 'userEmail'] },
-	actionUrl: { value: '/' }
+	label: { value: "Business Partner basic informations" },
+	actionUrl: { value: '/' },
+	propertyNames: { value: ['firstName', 'lastName', 'dateOfBirth', 'userEmail'] }
 });
 
 partner.partnerFormSections.partnerFormSectionGroup.sections.
 	getOwnDescriptor('partnerFormBasicSection').type = db.PartnerFormBasicSection;
 
 FormSection.extend('PartnerFormOtherSection', {
-	label: { value: "Business Partner secondary informations" }
-}, {
+	label: { value: "Business Partner secondary informations" },
+	actionUrl: { value: '/' },
 	propertyNames: { value: ['companyType', 'inventory', 'surfaceArea',
-		'isOwner', 'businessActivity'] },
-	actionUrl: { value: '/' }
+		'isOwner', 'businessActivity'] }
 });
 
 partner.partnerFormSections.partnerFormSectionGroup.sections.

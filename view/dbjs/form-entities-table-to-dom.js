@@ -29,7 +29,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 		url = ns.url;
 		options = Object(arguments[1]);
 		url = options.url || ns.url;
-		tableData = resolvePropertyPath(this.master, this.constructor.propertyName).value;
+		tableData = resolvePropertyPath(this.master, this.propertyName).value;
 		customizeData.arrayResult = [customizeData.container = ns.section(
 			{ id: this.domId, class: ns._if(ns.eq(
 				this._status,
@@ -44,29 +44,29 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 						'entities-overview-table',
 						'entities-overview-table entities-overview-table-empty') },
 				ns.thead(
-					ns.tr(ns.list(this.constructor.entities, function (entity) {
+					ns.tr(ns.list(this.entities, function (entity) {
 						return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
 									ns._if(entity._mobileOnly, 'mobile-only')) },
 							resolvePropertyPath(
-								self.master.getDescriptor(self.constructor.propertyName).type.prototype,
+								self.master.getDescriptor(self.propertyName).type.prototype,
 								entity.propertyName
 							).descriptor.label);
 					}), ns.th(),
 						ns.th({ class: 'actions' }))
 				),
-				ns.tbody({ onEmpty: ns.tr(ns.td({ colspan: this.constructor.entities.size + 2 },
-							this.constructor.onEmptyMessage)
+				ns.tbody({ onEmpty: ns.tr(ns.td({ colspan: this.entities.size + 2 },
+							this.onEmptyMessage)
 					) },
 					tableData,
 					function (entityObject) {
-						return ns.tr(ns.list(self.constructor.entities, function (entity) {
+						return ns.tr(ns.list(self.entities, function (entity) {
 							return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
 										ns._if(entity._mobileOnly, 'mobile-only')) },
-									ns.a({ href: url(self.constructor.baseUrl, entityObject.__id__) },
+									ns.a({ href: url(self.baseUrl, entityObject.__id__) },
 										resolvePropertyPath(entityObject, entity.propertyName).observable));
 						}),
 							ns.td({ class: ns._if(ns.eq(resolvePropertyPath(entityObject,
-											self.constructor.sectionProperty + 'Status').observable, 1),
+											self.sectionProperty + 'Status').observable, 1),
 									'completed') },
 								ns.span({ class: 'status-complete' }, "✓"),
 								ns.span({ class: 'hint-optional hint-optional-left status-incomplete',
@@ -74,23 +74,23 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 										"!")),
 							ns.td({ class: 'actions' },
 								ns.a({ class: 'actions-edit',
-										href: url(self.constructor.baseUrl, entityObject.__id__) },
+										href: url(self.baseUrl, entityObject.__id__) },
 									ns.span({ class: 'fa fa-edit' }, _("Edit"))),
 								ns.postButton({ buttonClass: 'actions-delete',
-										action: url(self.constructor.baseUrl,
+										action: url(self.baseUrl,
 										entityObject.__id__, 'delete'),
 									value: ns.span({ class: 'fa fa-trash-o' },
 										_("Delete")) })));
 					}),
-				this.constructor.generateFooter &&
-					ns.tfoot(this.constructor.generateFooter(
-						resolvePropertyPath(this.master, this.constructor.propertyName).value
+				this.generateFooter &&
+					ns.tfoot(this.generateFooter(
+						resolvePropertyPath(this.master, this.propertyName).value
 					))
 			),
 			options.append,
 			ns.p(
 				customizeData.addButton = ns.a(
-					{ class: 'button-main', href: url(this.constructor.baseUrl + '-add') },
+					{ class: 'button-main', href: url(this.baseUrl + '-add') },
 					options.addButtonLabel || _("Add new")
 				)
 			),

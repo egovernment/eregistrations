@@ -19,7 +19,7 @@ module.exports = memoize(function (db) {
 		// Only for internal usage
 		formPropertyNames: { type: StringLine, multiple: true, value: function (_observe) {
 			var props, resolved;
-			props = this.constructor.propertyNames.copy();
+			props = this.propertyNames.copy();
 			props.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name, _observe);
 				if (!resolved) {
@@ -34,7 +34,7 @@ module.exports = memoize(function (db) {
 			return props;
 		} },
 		// Only for internal usage
-		propertyNames: { type: StringLine, multiple: true, value: function (_observe) {
+		resolvedPropertyNames: { type: StringLine, multiple: true, value: function (_observe) {
 			var props, resolved;
 			props = this.formPropertyNames.copy();
 			props.forEach(function (name) {
@@ -53,8 +53,8 @@ module.exports = memoize(function (db) {
 		} },
 		status: { value: function (_observe) {
 			var resolved, valid = 0, total = 0, isResolventExcluded, isOwn;
-			if (this.constructor.resolventProperty) {
-				resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty, _observe);
+			if (this.resolventProperty) {
+				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
 				if (!resolved) {
 					return total;
 				}
@@ -74,7 +74,7 @@ module.exports = memoize(function (db) {
 				}
 			}
 
-			this.propertyNames.forEach(function (name) {
+			this.resolvedPropertyNames.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name, _observe);
 				if (!resolved) {
 					++total;
@@ -102,8 +102,8 @@ module.exports = memoize(function (db) {
 		} },
 		weight: { value: function (_observe) {
 			var resolved, total = 0, isResolventExcluded;
-			if (this.constructor.resolventProperty) {
-				resolved = this.master.resolveSKeyPath(this.constructor.resolventProperty, _observe);
+			if (this.resolventProperty) {
+				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
 				if (!resolved) {
 					return 0;
 				}
@@ -115,7 +115,7 @@ module.exports = memoize(function (db) {
 					++total;
 				}
 			}
-			this.propertyNames.forEach(function (name) {
+			this.resolvedPropertyNames.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name, _observe);
 				if (!resolved) {
 					++total;
@@ -138,9 +138,9 @@ module.exports = memoize(function (db) {
 		lastEditDate: {
 			value: function (_observe) {
 				var res = 0, resolved, lastModified, propertiesToCheck;
-				propertiesToCheck = this.constructor.propertyNames.copy();
-				if (this.constructor.resolventProperty) {
-					propertiesToCheck.add(this.constructor.resolventProperty);
+				propertiesToCheck = this.propertyNames.copy();
+				if (this.resolventProperty) {
+					propertiesToCheck.add(this.resolventProperty);
 				}
 
 				propertiesToCheck.forEach(function (name) {
@@ -154,8 +154,7 @@ module.exports = memoize(function (db) {
 
 				return res / 1000;
 			}
-		}
-	}, {
+		},
 		// The names of the model fields which should be handled by this section.
 		// Remember to write full property paths relative to the section's master object.
 		// value example: ["name", "lastName", "address/street"]
