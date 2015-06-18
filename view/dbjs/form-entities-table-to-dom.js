@@ -97,10 +97,10 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 						{ class: 'button-main', href: url(this.baseUrl + '-add') },
 						options.addButtonLabel || _("Add new")
 					)
-				),
-				ns.p({ class: 'section-primary-scroll-top' },
+				)),
+			ns.p({ class: 'section-primary-scroll-top' },
 					ns.a({ onclick: 'window.scroll(0, 0)' }, ns.span({ class: 'fa fa-arrow-up' },
-						_("Back to top")))))
+						_("Back to top"))))
 		)];
 		if (typeof options.customize === 'function') {
 			options.customize.call(this, customizeData);
