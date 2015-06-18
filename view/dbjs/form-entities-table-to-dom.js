@@ -24,11 +24,12 @@ require('./form-section-base');
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var self = this, options, url, customizeData, tableData;
+		var self = this, options, url, customizeData, resolvent, tableData;
 		customizeData = {};
 		url = ns.url;
 		options = Object(arguments[1]);
 		url = options.url || ns.url;
+		resolvent = this.getFormResolvent(options);
 		tableData = resolvePropertyPath(this.master, this.propertyName).value;
 		customizeData.arrayResult = [customizeData.container = ns.section(
 			{ id: this.domId, class: ns._if(ns.eq(
@@ -39,64 +40,67 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 				[ns.h2(this._label),
 					ns.hr()]),
 			options.prepend,
-			ns.table(
-				{ class: ns._if(ns.not(ns.eq(tableData._size, 0)),
+			resolvent.formResolvent,
+			ns.div({ id: resolvent.affectedSectionId },
+				ns.table(
+					{ class: ns._if(ns.not(ns.eq(tableData._size, 0)),
 						'entities-overview-table',
 						'entities-overview-table entities-overview-table-empty') },
-				ns.thead(
-					ns.tr(ns.list(this.entities, function (entity) {
-						return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
-									ns._if(entity._mobileOnly, 'mobile-only')) },
-							resolvePropertyPath(
-								self.master.getDescriptor(self.propertyName).type.prototype,
-								entity.propertyName
-							).descriptor.label);
-					}), ns.th(),
-						ns.th({ class: 'actions' }))
-				),
-				ns.tbody({ onEmpty: ns.tr(ns.td({ colspan: this.entities.size + 2 },
-							this.onEmptyMessage)
-					) },
-					tableData,
-					function (entityObject) {
-						return ns.tr(ns.list(self.entities, function (entity) {
-							return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
+					ns.thead(
+						ns.tr(ns.list(this.entities, function (entity) {
+							return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
 										ns._if(entity._mobileOnly, 'mobile-only')) },
-									ns.a({ href: url(self.baseUrl, entityObject.__id__) },
-										resolvePropertyPath(entityObject, entity.propertyName).observable));
-						}),
-							ns.td({ class: ns._if(ns.eq(resolvePropertyPath(entityObject,
-											self.sectionProperty + 'Status').observable, 1),
-									'completed') },
-								ns.span({ class: 'status-complete' }, "✓"),
-								ns.span({ class: 'hint-optional hint-optional-left status-incomplete',
-										'data-hint': _("Some required fields are not filled") },
+									resolvePropertyPath(
+									self.master.getDescriptor(self.propertyName).type.prototype,
+									entity.propertyName
+								).descriptor.label);
+						}), ns.th(),
+							ns.th({ class: 'actions' }))
+					),
+					ns.tbody({ onEmpty: ns.tr(ns.td({ colspan: this.entities.size + 2 },
+								this.onEmptyMessage)
+						) },
+						tableData,
+						function (entityObject) {
+							return ns.tr(ns.list(self.entities, function (entity) {
+								return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
+											ns._if(entity._mobileOnly, 'mobile-only')) },
+										ns.a({ href: url(self.baseUrl, entityObject.__id__) },
+											resolvePropertyPath(entityObject, entity.propertyName).observable));
+							}),
+								ns.td({ class: ns._if(ns.eq(resolvePropertyPath(entityObject,
+												self.sectionProperty + 'Status').observable, 1),
+										'completed') },
+									ns.span({ class: 'status-complete' }, "✓"),
+									ns.span({ class: 'hint-optional hint-optional-left status-incomplete',
+											'data-hint': _("Some required fields are not filled") },
 										"!")),
-							ns.td({ class: 'actions' },
-								ns.a({ class: 'actions-edit',
-										href: url(self.baseUrl, entityObject.__id__) },
-									ns.span({ class: 'fa fa-edit' }, _("Edit"))),
-								ns.postButton({ buttonClass: 'actions-delete',
+								ns.td({ class: 'actions' },
+									ns.a({ class: 'actions-edit',
+											href: url(self.baseUrl, entityObject.__id__) },
+										ns.span({ class: 'fa fa-edit' }, _("Edit"))),
+									ns.postButton({ buttonClass: 'actions-delete',
 										action: url(self.baseUrl,
-										entityObject.__id__, 'delete'),
-									value: ns.span({ class: 'fa fa-trash-o' },
-										_("Delete")) })));
-					}),
-				this.generateFooter &&
-					ns.tfoot(this.generateFooter(
-						resolvePropertyPath(this.master, this.propertyName).value
-					))
-			),
-			options.append,
-			ns.p(
-				customizeData.addButton = ns.a(
-					{ class: 'button-main', href: url(this.baseUrl + '-add') },
-					options.addButtonLabel || _("Add new")
-				)
-			),
-			ns.p({ class: 'section-primary-scroll-top' },
-				ns.a({ onclick: 'window.scroll(0, 0)' }, ns.span({ class: 'fa fa-arrow-up' },
-					_("Back to top"))))
+											entityObject.__id__, 'delete'),
+										value: ns.span({ class: 'fa fa-trash-o' },
+											_("Delete")) })));
+						}),
+					this.generateFooter &&
+						ns.tfoot(this.generateFooter(
+							resolvePropertyPath(this.master, this.propertyName).value
+						))
+				),
+				options.append,
+				resolvent.legacyScript,
+				ns.p(
+					customizeData.addButton = ns.a(
+						{ class: 'button-main', href: url(this.baseUrl + '-add') },
+						options.addButtonLabel || _("Add new")
+					)
+				),
+				ns.p({ class: 'section-primary-scroll-top' },
+					ns.a({ onclick: 'window.scroll(0, 0)' }, ns.span({ class: 'fa fa-arrow-up' },
+						_("Back to top")))))
 		)];
 		if (typeof options.customize === 'function') {
 			options.customize.call(this, customizeData);
