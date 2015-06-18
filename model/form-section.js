@@ -28,11 +28,7 @@ module.exports = memoize(function (db) {
 				if (_observe(resolved.object['_' +
 						this.database.Object.getFormApplicablePropName(resolved.key)])
 						!== false) {
-					if (this.master === this.propertyMaster) {
-						props.push(resolved.key);
-					} else {
-						props.push(resolved.id);
-					}
+					props.push(resolved.id.slice(this.master.__id__.length + 1));
 				}
 			}, this);
 
