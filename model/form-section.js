@@ -19,18 +19,19 @@ module.exports = memoize(function (db) {
 		// Only for internal usage
 		formPropertyNames: { type: StringLine, multiple: true, value: function (_observe) {
 			var props, resolved;
-			props = this.propertyNames.copy();
-			props.forEach(function (name) {
-				resolved = this.master.resolveSKeyPath(name, _observe);
+			props = [];
+			this.propertyNames.forEach(function (name) {
+				resolved = this.propertyMaster.resolveSKeyPath(name, _observe);
 				if (!resolved) {
 					return;
 				}
 				if (_observe(resolved.object['_' +
 						this.database.Object.getFormApplicablePropName(resolved.key)])
-						=== false) {
-					props.delete(name);
+						!== false) {
+					props.push(resolved.id.slice(this.master.__id__.length + 1));
 				}
 			}, this);
+
 			return props;
 		} },
 		// Only for internal usage

@@ -10,17 +10,33 @@ module.exports = function (t, a) {
 	  , TestFormSection
 	  , BusinessProcess = defineBusinessProcess(db)
 	  , DateType = defineDate(db)
-	  , businessProcess, section;
+	  , businessProcess, section, Partner;
 
 	TestFormSection = FormSection.extend('TestFormSection', {
 		actionUrl: { value: 'action' },
-		propertyNames: { value: ['prop1', 'prop2', 'prop3'] },
+		propertyNames: { value: ['prop1', 'prop2', 'prop3', 'partner/name',
+			'partner/hasSameLastName', 'partner/lastName'] },
 		resolventProperty: { value: 'prop0' },
 		resolventValue: { value: true }
+	});
+	Partner = db.Object.extend('Partner', {
+		name: { type: db.String, required: true },
+		hasSameLastName: { type: db.Boolean, required: true },
+		lastName: { type: db.String, required: true },
+		isLastNameApplicable: { type: db.Boolean, value: function () {
+			return this.hasSameLastName === false;
+		} }
+	});
+	['isNameFormApplicable', 'isLastNameFormApplicable',
+		'isHasSameLastNameFormApplicable'].forEach(function (name) {
+		Partner.prototype.define(name, { type: db.Boolean, value: function (_observe) {
+			return _observe(this.master._hasPartner);
+		} });
 	});
 	//section's resolvent
 	BusinessProcess.prototype.defineProperties(
 		{
+			hasPartner: { type: db.Boolean, value: false },
 			prop0: {
 				type: db.Boolean,
 				required: true,
@@ -29,6 +45,7 @@ module.exports = function (t, a) {
 			prop1: { type: db.String, required: true },
 			prop2: { type: db.Number },
 			prop3: { type: db.Boolean, required: true },
+			partner: { type: Partner, nested: true },
 			section: { type: TestFormSection, nested: true }
 		}
 	);
@@ -47,4 +64,17 @@ module.exports = function (t, a) {
 	businessProcess.prop3 = true;
 	a(section.status, 1);
 	a(String(section.lastEditDate), String(new DateType(businessProcess.$prop3.lastModified / 1000)));
+	businessProcess.hasPartner = true;
+	a(section.weight, 4);
+	a(section.status, 0.5);
+	businessProcess.partner.name = 'test';
+	a(section.weight, 4);
+	a(section.status, 0.75);
+	businessProcess.partner.hasSameLastName = true;
+	a(section.weight, 4);
+	a(section.status, 1);
+	businessProcess.partner.hasSameLastName = false;
+	a(section.status, 0.8);
+	businessProcess.partner.lastName = 'test';
+	a(section.status, 1);
 };

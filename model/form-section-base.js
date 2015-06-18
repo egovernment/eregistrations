@@ -29,6 +29,10 @@ module.exports = memoize(function (db) {
 		// When isApplicable !== true the section will not be visible in the view
 		// (rendered with default generator)
 		isApplicable: { type: db.Boolean, required: true, value: true },
+		// The master for property paths resolution
+		propertyMaster: { type: db.Object, value: function () {
+			return this.master;
+		} },
 		// A percentage of completion of fields covered by the section
 		status: { type: Percentage, required: true, value: 1 },
 		// The weight of the section status. It is used to determine weighed status across sections.
