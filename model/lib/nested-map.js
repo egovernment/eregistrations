@@ -3,7 +3,7 @@
 // It should be used for properties dedicated to hold multiple values of some type of object
 // instances, when those objects doesn't make sense in stand-alone form.
 
-// If stand-alone form is desired normal set properties (multiple: true) should be used instead.
+// If stand-alone form is desired, normal set properties (multiple: true) should be used instead.
 
 // Good example of nested map, is map of files on document. Also most of business process multiple
 // object properties qualify to be defined with nested map (e.g. representatives, branches etc,
