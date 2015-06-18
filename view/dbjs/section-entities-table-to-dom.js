@@ -21,16 +21,24 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 				}
 				headerRank++;
 			}()),
-			ns._if(resolved.value._size,
-				ns.ul({ class: 'entity-data-section-entities' },
-					resolved.value,
-					function (entityObject) {
-						return ns.li(headersMap[headerRank](
-							resolvePropertyPath(entityObject, self.entityTitleProperty).observable
-						), ns.list(resolvePropertyPath(entityObject, self.sectionProperty).value,
-							function (section) {
-								return section.toDOM(document, { headerRank: headerRank + 1 });
-							}));
-					}
-					), ns.p({ class: 'entity-data-section-empty' }, self.onEmptyMessage)));
+			ns._if(self._isUnresolved,
+				function () {
+					return ns.table(ns.tbody(ns.tr(ns.th(resolvePropertyPath(self.master,
+							self.resolventProperty).descriptor.label),
+						ns.td(resolvePropertyPath(self.master,
+							self.resolventProperty).observable))));
+				}, function () {
+					return ns._if(resolved.value._size,
+						ns.ul({ class: 'entity-data-section-entities' },
+							resolved.value,
+							function (entityObject) {
+								return ns.li(headersMap[headerRank](
+									resolvePropertyPath(entityObject, self.entityTitleProperty).observable
+								), ns.list(resolvePropertyPath(entityObject, self.sectionProperty).value,
+									function (section) {
+										return section.toDOM(document, { headerRank: headerRank + 1 });
+									}));
+							}),
+						ns.p({ class: 'entity-data-section-empty' }, self.onEmptyMessage));
+				}));
 	}));
