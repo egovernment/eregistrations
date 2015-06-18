@@ -1,4 +1,4 @@
-// MulitpleProcess model
+// MultipleProcess model
 // An abstract class that allows us to group some atomic process related entities
 // Like: registrations, requirements or processingSteps
 
