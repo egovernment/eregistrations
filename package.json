@@ -10,7 +10,7 @@
   },
   "devDependencies": {
     "es5-ext": "git://github.com/medikoo/es5-ext.git#12ee4b84a6dc0252cc205d6f878f268a140eaaf9",
-    "dbjs": "git://github.com/medikoo/dbjs.git#af3c76fe9933f7b1ccdebd8b73c6b524d58a0efb",
+    "dbjs": "git://github.com/medikoo/dbjs.git#fc9d058292244eddcac43bd4218c407d6e2c5172",
     "dbjs-ext": "git://github.com/medikoo/dbjs-ext.git#52401c551edf92da83db11e28844e68cef73bdd5",
     "dbjs-fragment": "git://github.com/medikoo/dbjs-fragment.git#d79e0179640",
     "dbjs-reduce": "git://github.com/medikoo/dbjs-reduce.git#e3e7edbad748b7",
