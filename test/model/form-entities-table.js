@@ -17,6 +17,8 @@ module.exports = function (t, a) {
 	  , businessProcess, section;
 
 	TestFormEntitiesTable = FormEntitiesTable.extend('TestFormEntitiesTable', {
+		resolventProperty: { value: 'tableResolver' },
+		resolventValue: { value: true },
 		actionUrl: { value: 'action' },
 		sectionProperty: { value: 'dataForms' },
 		propertyName: { value: 'partners' },
@@ -38,6 +40,7 @@ module.exports = function (t, a) {
 	//section's resolvent
 	BusinessProcess.prototype.defineProperties(
 		{
+			tableResolver: { type: db.Boolean, value: true },
 			partners: { type: Partner, multiple: true },
 			section: { type: TestFormEntitiesTable, nested: true }
 		}
@@ -72,4 +75,10 @@ module.exports = function (t, a) {
 	businessProcess.partners.add(new Partner());
 	a(section.weight, 7);
 	a(section.status, 0.85);
+	businessProcess.tableResolver = false;
+	a(section.weight, 0);
+	a(section.status, 1);
+	a(String(section.lastEditDate), String(
+		new DateType(businessProcess.getDescriptor('tableResolver').lastModified / 1000)
+	));
 };

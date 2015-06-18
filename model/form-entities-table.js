@@ -23,10 +23,29 @@ module.exports = memoize(function (db) {
 		min: { type: UInteger },
 		max: { type: UInteger },
 		status: { value: function (_observe) {
-			var entityObjects, statusSum, statusKey, weightKey;
+			var entityObjects, statusSum, statusKey, weightKey, isResolventExcluded, resolved;
 			statusSum = 0;
 			statusKey = this.sectionProperty + 'Status';
 			weightKey = this.sectionProperty + 'Weight';
+			if (this.resolventProperty) {
+				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
+				if (!resolved) {
+					return 0;
+				}
+				isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
+				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
+					if (isResolventExcluded) return 1;
+					if (resolved.descriptor.multiple) {
+						if (_observe(resolved.observable).size) return 1;
+					} else {
+						if (_observe(resolved.observable) != null) return 1;
+					}
+					return 0;
+				}
+				if (!isResolventExcluded) {
+					++statusSum;
+				}
+			}
 			entityObjects = this.master.resolveSKeyPath(this.propertyName, _observe);
 			if (!entityObjects) {
 				return 0;
@@ -45,10 +64,24 @@ module.exports = memoize(function (db) {
 			return statusSum / this.weight;
 		} },
 		weight: { value: function (_observe) {
-			var entityObjects, weightTotal, key, getWeightByEntity, protoWeight, i;
+			var entityObjects, weightTotal, key, getWeightByEntity, protoWeight, i,
+				isResolventExcluded, resolved;
 			weightTotal = 0;
 			i = 0;
 			key = this.sectionProperty + 'Weight';
+			if (this.resolventProperty) {
+				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
+				if (!resolved) {
+					return 0;
+				}
+				isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
+				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
+					return isResolventExcluded ? 0 : 1;
+				}
+				if (!isResolventExcluded) {
+					++weightTotal;
+				}
+			}
 			getWeightByEntity = function (entityObject) {
 				var resolved = entityObject.resolveSKeyPath(key, _observe);
 				if (!resolved) {
@@ -80,11 +113,15 @@ module.exports = memoize(function (db) {
 		} },
 		lastEditDate: {
 			value: function (_observe) {
-				var res = 0, entityObjects, sectionKey;
+				var res = 0, entityObjects, sectionKey, resolvent, resolventLastModified;
 				entityObjects = this.master.resolveSKeyPath(this.propertyName, _observe);
 				sectionKey = this.sectionProperty;
+				if (this.resolventProperty) {
+					resolvent = _observe(this.master.resolveSKeyPath(this.resolventProperty).observable);
+					resolventLastModified = resolvent ? resolvent.lastModified : 0;
+				}
 				if (!entityObjects) {
-					return 0;
+					return resolventLastModified;
 				}
 				entityObjects = entityObjects.value;
 				entityObjects.forEach(function (entityObject) {
@@ -95,6 +132,7 @@ module.exports = memoize(function (db) {
 						if (_observe(section._lastEditDate) > res) res = section.lastEditDate;
 					});
 				});
+				if (resolventLastModified > res) res = resolventLastModified;
 
 				return res;
 			}
