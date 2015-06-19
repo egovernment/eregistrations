@@ -16,6 +16,7 @@
 var memoize             = require('memoizee/plain')
   , d                   = require('d')
   , ensureStringifiable = require('es5-ext/object/validate-stringifiable-value')
+  , ensureObject        = require('es5-ext/object/valid-value')
   , ensureDbjsType      = require('dbjs/valid-dbjs-type')
   , ensureDb            = require('dbjs/valid-dbjs');
 
@@ -58,6 +59,7 @@ module.exports = memoize(function (db/*, options*/) {
 		function (propertyName, data) {
 			var db, cardinalPropertyKey;
 			db = this.database;
+			ensureObject(data);
 			if (data.ItemType) {
 				data.ItemType = ensureDbjsType(data.ItemType);
 				if (!db.isObjectType(data.ItemType)) {
