@@ -85,16 +85,14 @@ setup = function (path) {
 			return;
 		}
 		localContext = create(context);
+		localContext.user = localContext.businessProcess = user;
 		if (!getText) {
-			localContext.user = user;
 			if (conf.resolveGetters) {
 				for (prop in localContext) {
 					if (typeof localContext[prop] === 'function') localContext[prop] = localContext[prop]();
 				}
 			}
 			getText = function () { return resolveTpl(resolvedText, localContext); };
-		} else {
-			localContext.user = user;
 		}
 		try { text = getText(user); } catch (e) {
 			console.log("Error: Resolution of notification crashed\n\tpath: " + path);
