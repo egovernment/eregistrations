@@ -18,7 +18,6 @@ module.exports = memoize(function (db) {
 	  , DateType   = defineDate(db)
 	  , StatusLog  = defineStatusLog(db)
 	  , FormSectionBase = defineFormSectionBase(db)
-	  , NestedMap = defineNestedMap(db)
 	  , Document;
 
 	Document = db.Object.extend('Document', {
@@ -39,10 +38,6 @@ module.exports = memoize(function (db) {
 		// It's about fields we want officials to fill either at revision (document upload) or
 		// processing step (certificate upload)
 		dataForm: { type: FormSectionBase, nested: true },
-		// Map of uploaded files
-		// files.map property should be used *only* to generate form controls
-		// For "read" uses, always refer to files.ordered
-		files: { type: NestedMap, nested: true },
 		// History of document processing
 		statusLog: { type: StatusLog, multiple: true }
 	}, {
@@ -54,12 +49,11 @@ module.exports = memoize(function (db) {
 		abbr: { type: StringLine }
 	});
 
-	// Below defines characteristics for each property on document.files map
-	Document.prototype.files.defineProperties({
-		map: { type: File },
-		ordered: { type: File },
-		cardinalPropertyKey: { value: 'path' }
-	});
+	defineNestedMap(db);
+	// Map of uploaded files
+	// Document.prototype.files.map property should be used *only* to generate form controls
+	// For "read" uses, always refer to Document.prototype.files.ordered
+	Document.prototype.defineNestedMap('files', { ItemType: File, cardinalPropertyKey: 'path' });
 
 	return Document;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

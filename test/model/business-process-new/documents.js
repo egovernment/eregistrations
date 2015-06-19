@@ -30,12 +30,12 @@ module.exports = function (t, a) {
 	a.deep(aFrom(businessProcess.documents.uploaded), []);
 	a.deep(aFrom(businessProcess.documents.multiProcessUploaded), []);
 
-	businessProcess.certificates.map.test.files.newUniq().path = '/elo.png';
+	businessProcess.certificates.map.test.files.map.newUniq().path = '/elo.png';
 	a.deep(aFrom(businessProcess.documents.uploaded), [businessProcess.certificates.map.test]);
 	a.deep(aFrom(businessProcess.documents.multiProcessUploaded),
 		[businessProcess.certificates.map.test]);
 
-	businessProcess.requirementUploads.map.test2.document.files.newUniq().path = '/elo.png';
+	businessProcess.requirementUploads.map.test2.document.files.map.newUniq().path = '/elo.png';
 	a.deep(aFrom(businessProcess.documents.uploaded),
 		[businessProcess.certificates.map.test, businessProcess.requirementUploads.map.test2.document]);
 	a.deep(aFrom(businessProcess.documents.multiProcessUploaded),
@@ -51,7 +51,7 @@ module.exports = function (t, a) {
 	a.deep(aFrom(businessProcessUpdate.documents.uploaded), []);
 	a.deep(aFrom(businessProcessUpdate.documents.multiProcessUploaded), []);
 
-	businessProcessUpdate.certificates.map.test.files.newUniq().path = '/elo.png';
+	businessProcessUpdate.certificates.map.test.files.map.newUniq().path = '/elo.png';
 	a.deep(aFrom(businessProcess.documents.uploaded), [businessProcess.certificates.map.test,
 		businessProcess.requirementUploads.map.test2.document]);
 	a.deep(aFrom(businessProcess.documents.multiProcessUploaded),
@@ -62,7 +62,7 @@ module.exports = function (t, a) {
 	a.deep(aFrom(businessProcessUpdate.documents.multiProcessUploaded),
 		[businessProcessUpdate.certificates.map.test]);
 
-	businessProcessUpdate.requirementUploads.map.test2.document.files.newUniq().path = '/elo.png';
+	businessProcessUpdate.requirementUploads.map.test2.document.files.map.newUniq().path = '/elo.png';
 	a.deep(aFrom(businessProcess.documents.uploaded), [businessProcess.certificates.map.test,
 		businessProcess.requirementUploads.map.test2.document]);
 	a.deep(aFrom(businessProcess.documents.multiProcessUploaded),

@@ -43,7 +43,7 @@ module.exports = function (t, a) {
 	a.deep(aFrom(businessProcess.requirementUploads.uploaded), []);
 	a(businessProcess.requirementUploads.progress, 0);
 
-	businessProcess.requirementUploads.map.req.document.files.newUniq().path = '/elo.png';
+	businessProcess.requirementUploads.map.req.document.files.map.newUniq().path = '/elo.png';
 	a.deep(aFrom(businessProcess.requirementUploads.applicable),
 		[businessProcess.requirementUploads.map.req]);
 	a.deep(aFrom(businessProcess.requirementUploads.uploaded),
