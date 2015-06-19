@@ -68,11 +68,10 @@ setup = function (path) {
 				return compileTpl(readFile(resolve(dir, path + '.txt')));
 			});
 		}
-		getText = function (user) {
+		getText = function (user, context) {
 			var data = conf.text(user, context);
-			if (!conf.textResolvesTemplate) data = getTemplate(data);
-			else data = compileTpl(data);
-			return resolveTpl(data, context);
+			if (!conf.textResolvesTemplate) return getTemplate(data);
+			return compileTpl(data);
 		};
 	} else {
 		resolvedText = compileTpl(conf.text);
@@ -86,15 +85,14 @@ setup = function (path) {
 		}
 		localContext = create(context);
 		localContext.user = localContext.businessProcess = user;
-		if (!getText) {
-			if (conf.resolveGetters) {
-				for (prop in localContext) {
-					if (typeof localContext[prop] === 'function') localContext[prop] = localContext[prop]();
-				}
+		if (conf.resolveGetters) {
+			for (prop in localContext) {
+				if (typeof localContext[prop] === 'function') localContext[prop] = localContext[prop]();
 			}
-			getText = function () { return resolveTpl(resolvedText, localContext); };
 		}
-		try { text = getText(user); } catch (e) {
+		if (!resolvedText) text = getText(user, localContext);
+		else text = resolvedText;
+		try { text = resolveTpl(text, localContext); } catch (e) {
 			console.log("Error: Resolution of notification crashed\n\tpath: " + path);
 			if (mano.env && mano.env.dev) throw e;
 			console.error("Cannot generate email message!:\n" + e.stack);
