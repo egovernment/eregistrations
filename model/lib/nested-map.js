@@ -12,6 +12,7 @@
 'use strict';
 
 var memoize  = require('memoizee/plain')
+  , d        = require('d')
   , ensureDb = require('dbjs/valid-dbjs');
 
 module.exports = memoize(function (db/*, options*/) {
@@ -39,25 +40,24 @@ module.exports = memoize(function (db/*, options*/) {
 		type: db.Object
 	});
 
-	db.Object.prototype.define('defineNestedMap', {
-		type: db.Function,
-		value: function (propertyName/*, options */) {
-			var options = Object(arguments[1]), db;
+	Object.defineProperty(db.Object.prototype, 'defineNestedMap', d(
+		function (propertyName/*, data */) {
+			var data = Object(arguments[1]), db;
 			db = this.database;
 			this.define(propertyName, {
 				type: db.NestedMap,
 				nested: true
 			});
 			this[propertyName].defineProperties({
-				ordered: { type: options.ItemType || db.Object },
-				cardinalPropertyKey: { value: options.cardinalPropertyKey }
+				ordered: { type: data.ItemType || db.Object },
+				cardinalPropertyKey: { value: data.cardinalPropertyKey }
 			});
-			this[propertyName].map.__descriptorPrototype__.type = options.ItemType || db.Object;
+			this[propertyName].map.__descriptorPrototype__.type = data.ItemType || db.Object;
 
 			// For chaining
 			return this;
 		}
-	});
+	));
 
 	return NestedMap;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
