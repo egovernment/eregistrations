@@ -8,12 +8,17 @@
 // Good example of nested map, is map of files on document. Also most of business process multiple
 // object properties qualify to be defined with nested map (e.g. representatives, branches etc,
 // although in old versions they were defined as stand-alone).
+// In order to use NestedMap you need to require it. After that you will have defineNestedMap
+// accessible on db.Object.prototype.
+
 
 'use strict';
 
-var memoize  = require('memoizee/plain')
-  , d        = require('d')
-  , ensureDb = require('dbjs/valid-dbjs');
+var memoize             = require('memoizee/plain')
+  , d                   = require('d')
+  , ensureStringifiable = require('es5-ext/object/validate-stringifiable-value')
+  , ensureDbjsType      = require('dbjs/valid-dbjs-type')
+  , ensureDb            = require('dbjs/valid-dbjs');
 
 module.exports = memoize(function (db/*, options*/) {
 	var NestedMap = ensureDb(db).Object.extend('NestedMap', {
@@ -40,17 +45,34 @@ module.exports = memoize(function (db/*, options*/) {
 		type: db.Object
 	});
 
+/**
+ * @method defineNestedMap
+ * @param {string} propertyName -
+ * the name of the property on which the map will be created (i.e. "files")
+ * @param {Object} [ItemType=db.Object, cardinalPropertyKey=undefined] -
+ * ItemType will set the type for items in map and ordered,
+ * cardinalPropertyKey will mark the property which determines existence of a givne item
+ * @returns {Object} - the object on which defineNestedMap was called
+ */
+
 	Object.defineProperty(db.Object.prototype, 'defineNestedMap', d(
-		function (propertyName/*, data */) {
-			var data = Object(arguments[1]), db;
+		function (propertyName, data) {
+			var db, cardinalPropertyKey;
 			db = this.database;
+			if (data.ItemType) {
+				data.ItemType = ensureDbjsType(data.ItemType);
+				if (!db.isObjectType(data.ItemType)) {
+					throw new TypeError("defineNestedMap expects ItemType to be a db.Object");
+				}
+			}
+			cardinalPropertyKey = ensureStringifiable(data.cardinalPropertyKey);
 			this.define(propertyName, {
 				type: db.NestedMap,
 				nested: true
 			});
 			this[propertyName].defineProperties({
 				ordered: { type: data.ItemType || db.Object },
-				cardinalPropertyKey: { value: data.cardinalPropertyKey }
+				cardinalPropertyKey: { value: cardinalPropertyKey }
 			});
 			this[propertyName].map.__descriptorPrototype__.type = data.ItemType || db.Object;
 
