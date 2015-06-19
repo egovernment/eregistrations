@@ -11,7 +11,6 @@
 // In order to use NestedMap you need to require it. After that you will have defineNestedMap
 // accessible on db.Object.prototype.
 
-
 'use strict';
 
 var memoize             = require('memoizee/plain')
