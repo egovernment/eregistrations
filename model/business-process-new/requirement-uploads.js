@@ -33,7 +33,9 @@ module.exports = memoize(function (db/* options */) {
 		uploaded: { type: RequirementUpload, multiple: true, value: function (_observe) {
 			var result = [];
 			this.applicable.forEach(function (requirementUpload) {
-				if (_observe(requirementUpload.document.orderedFiles._size)) result.push(requirementUpload);
+				if (_observe(requirementUpload.document.files.ordered._size)) {
+					result.push(requirementUpload);
+				}
 			});
 			return result;
 		} },

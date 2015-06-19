@@ -18,12 +18,12 @@ module.exports = memoize(function (Target/* options */) {
 				var documents = [];
 
 				this.requestedCertificates.forEach(function (cert) {
-					if (_observe(this.certificates[cert].orderedFiles._size)) {
+					if (_observe(this.certificates[cert].files.ordered._size)) {
 						documents.push(this.certificates[cert]);
 					}
 				}, this);
 				this.applicableSubmissions.forEach(function (sub) {
-					if (_observe(sub.document.orderedFiles._size)) {
+					if (_observe(sub.document.files.ordered._size)) {
 						documents.push(sub.document);
 					}
 				});

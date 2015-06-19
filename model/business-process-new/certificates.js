@@ -32,7 +32,7 @@ module.exports = memoize(function (db/* options */) {
 		uploaded: { type: Document, multiple: true, value: function (_observe) {
 			var result = [];
 			this.applicable.forEach(function (certificate) {
-				if (_observe(certificate.orderedFiles._size)) result.push(certificate);
+				if (_observe(certificate.files.ordered._size)) result.push(certificate);
 			});
 			return result;
 		} }
