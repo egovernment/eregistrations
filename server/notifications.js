@@ -13,6 +13,7 @@ var assign        = require('es5-ext/object/assign')
   , mano          = require('mano')
   , setupTriggers = require('./_setup-triggers')
 
+  , create = Object.create
   , basename = path.basename, dirname = path.dirname, resolve = path.resolve
   , defaults = mano.mail.config
   , defContext = { url: mano.env.url, domain: mano.env.url && urlParse(mano.env.url).host }
@@ -52,7 +53,7 @@ getAttachments = function (user, att) {
 
 setup = function (path) {
 	var dir = dirname(path), name = basename(path, '.js')
-	  , conf = require(path), subject, text, getText, getTemplate
+	  , conf = require(path), subject, resolvedText, getText, getTemplate
 	  , context = assign({}, defContext);
 
 	if (conf.variables) assign(context, conf.variables);
@@ -60,7 +61,7 @@ setup = function (path) {
 	subject = compileTpl(conf.subject);
 
 	if (conf.text == null) {
-		text = compileTpl(readFile(resolve(dir, name + '.txt')));
+		resolvedText = compileTpl(readFile(resolve(dir, name + '.txt')));
 	} else if (typeof conf.text === 'function') {
 		if (!conf.textResolvesTemplate) {
 			getTemplate = memoize(function (path) {
@@ -74,20 +75,27 @@ setup = function (path) {
 			return resolveTpl(data, context);
 		};
 	} else {
-		text = compileTpl(conf.text);
-	}
-
-	if (!getText) {
-		getText = function () { return resolveTpl(text, context); };
+		resolvedText = compileTpl(conf.text);
 	}
 
 	setupTriggers(conf, delay(function (user) {
-		var text, mailOpts, to = getTo(user, conf.to);
+		var text, mailOpts, to = getTo(user, conf.to), prop, localContext;
 		if (!to) {
 			console.error("No email provided for " + user.fullName + " [" + user.__id__ + "]");
 			return;
 		}
-		context.user = user;
+		localContext = create(context);
+		if (!getText) {
+			localContext.user = user;
+			if (conf.resolveGetters) {
+				for (prop in localContext) {
+					if (typeof localContext[prop] === 'function') localContext[prop] = localContext[prop]();
+				}
+			}
+			getText = function () { return resolveTpl(resolvedText, localContext); };
+		} else {
+			localContext.user = user;
+		}
 		try { text = getText(user); } catch (e) {
 			console.log("Error: Resolution of notification crashed\n\tpath: " + path);
 			if (mano.env && mano.env.dev) throw e;
@@ -98,11 +106,10 @@ setup = function (path) {
 			from: getFrom(user, conf.from),
 			to: to,
 			cc: getCc(user, conf.cc),
-			subject: resolveTpl(subject, context),
+			subject: resolveTpl(subject, localContext),
 			attachments: getAttachments(user, conf.attachments)
 		};
 		mailOpts.text = text;
-		context.user = null;
 		mano.mail(mailOpts).done(null, function (err) {
 			console.log("Cannot send email", err.stack);
 		});
