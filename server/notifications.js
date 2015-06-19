@@ -1,8 +1,9 @@
 'use strict';
 
-var assign        = require('es5-ext/object/assign')
+var compact       = require('es5-ext/array/#/compact')
+  , assign        = require('es5-ext/object/assign')
   , compileTpl    = require('es6-template-strings/compile')
-  , resolveTpl    = require('es6-template-strings/resolve-to-string')
+  , resolveTpl    = require('es6-template-strings/resolve-to-array')
   , deferred      = require('deferred')
   , memoize       = require('memoizee')
   , delay         = require('timers-ext/delay')
@@ -98,11 +99,12 @@ setup = function (path) {
 			console.error("Cannot generate email message!:\n" + e.stack);
 			return;
 		}
+		text = compact.call(text).join('');
 		mailOpts = {
 			from: getFrom(user, conf.from),
 			to: to,
 			cc: getCc(user, conf.cc),
-			subject: resolveTpl(subject, localContext),
+			subject: compact.call(resolveTpl(subject, localContext)).join(''),
 			attachments: getAttachments(user, conf.attachments)
 		};
 		mailOpts.text = text;
