@@ -19,6 +19,7 @@
     "mano-auth": "0.0.2",
     "memoizee": "^0.3.8",
     "time-uuid": "^0.2.1",
+    "d": "0.1.1",
 
     "xlint": "^0.2.2",
     "xlint-csslint-next": "^0.1.1",
