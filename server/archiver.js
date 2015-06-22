@@ -33,7 +33,7 @@ module.exports = function (user/*, options*/) {
 		docName = replace.call(docName, ' ', '-');
 		zipFileName = user.companyName ? toSafeFileName(user.companyName) : user.__id__;
 		zipFileName += "." + docName;
-		submission.document.orderedFiles.forEach(function (file) {
+		submission.document.files.ordered.forEach(function (file) {
 			var fileExtension, archFile;
 			if (!file.path) return;
 			fileExtension = path.extname(file.path);
