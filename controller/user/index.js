@@ -12,6 +12,7 @@ exports.profile = {
 		if (data.password || data['password-new']) return changeOwnPassword.call(this, data);
 		delete data.password;
 		delete data['password-new'];
+		delete data['password-repeat'];
 		return validate.call(this, data, { partial: true });
 	}
 };
