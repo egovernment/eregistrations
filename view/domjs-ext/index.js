@@ -22,6 +22,7 @@ module.exports = function (domjs) {
 	require('domjs-ext/_if')(domjs);
 	require('domjs-ext/and')(domjs);
 	ns.browser = function (cb) {
+		if (isReadOnlyRender) return;
 		callable(cb);
 		if (typeof window === 'undefined') return;
 		cb();
