@@ -20,7 +20,7 @@ module.exports = function (t, a) {
 	a(typeof db.Object.prototype.defineNestedMap, 'function');
 	obj4 = new db.Object();
 	FooType = db.Object.extend('Foo');
-	obj4.defineNestedMap('foo', { ItemType: FooType, cardinalPropertyKey: 'bar' });
+	obj4.defineNestedMap('foo', { itemType: FooType, cardinalPropertyKey: 'bar' });
 	obj4.foo.map.define('mapItem1', { type: FooType });
 	a(obj4.foo.ordered.size, 0);
 	obj4.foo.map.mapItem1.bar = 'properName';
