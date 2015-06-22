@@ -53,7 +53,7 @@ module.exports = memoize(function (db) {
 	// Map of uploaded files
 	// Document.prototype.files.map property should be used *only* to generate form controls
 	// For "read" uses, always refer to Document.prototype.files.ordered
-	Document.prototype.defineNestedMap('files', { ItemType: File, cardinalPropertyKey: 'path' });
+	Document.prototype.defineNestedMap('files', { itemType: File, cardinalPropertyKey: 'path' });
 
 	return Document;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

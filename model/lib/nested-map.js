@@ -60,10 +60,10 @@ module.exports = memoize(function (db/*, options*/) {
 			var db, cardinalPropertyKey;
 			db = this.database;
 			ensureObject(data);
-			if (data.ItemType) {
-				data.ItemType = ensureDbjsType(data.ItemType);
-				if (!db.isObjectType(data.ItemType)) {
-					throw new TypeError("defineNestedMap expects ItemType to be a db.Object");
+			if (data.itemType) {
+				data.itemType = ensureDbjsType(data.itemType);
+				if (!db.isObjectType(data.itemType)) {
+					throw new TypeError("defineNestedMap expects itemType to be a db.Object");
 				}
 			}
 			cardinalPropertyKey = ensureStringifiable(data.cardinalPropertyKey);
@@ -72,10 +72,10 @@ module.exports = memoize(function (db/*, options*/) {
 				nested: true
 			});
 			this[propertyName].defineProperties({
-				ordered: { type: data.ItemType || db.Object },
+				ordered: { type: data.itemType || db.Object },
 				cardinalPropertyKey: { value: cardinalPropertyKey }
 			});
-			this[propertyName].map.__descriptorPrototype__.type = data.ItemType || db.Object;
+			this[propertyName].map.__descriptorPrototype__.type = data.itemType || db.Object;
 
 			// For chaining
 			return this;
