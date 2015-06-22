@@ -9,16 +9,18 @@ var memoize               = require('memoizee/plain')
   , _                     = require('mano').i18n.bind('Model: Documents')
   , defineFile            = require('./file')
   , defineStatusLog       = require('./lib/status-log')
-  , defineFormSectionBase = require('./form-section-base');
+  , defineFormSectionBase = require('./form-section-base')
+  , defineNestedMap       = require('./lib/nested-map');
 
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(db)
 	  , File       = defineFile(db)
 	  , DateType   = defineDate(db)
 	  , StatusLog  = defineStatusLog(db)
-	  , FormSectionBase = defineFormSectionBase(db);
+	  , FormSectionBase = defineFormSectionBase(db)
+	  , Document;
 
-	db.Object.extend('Document', {
+	Document = db.Object.extend('Document', {
 		// Document label, fallbacks to label as decided on constructor
 		label: { type: StringLine, value: function () { return this.constructor.label; } },
 		// Document legend, fallbacks to legend as decided on constructor
@@ -36,24 +38,6 @@ module.exports = memoize(function (db) {
 		// It's about fields we want officials to fill either at revision (document upload) or
 		// processing step (certificate upload)
 		dataForm: { type: FormSectionBase, nested: true },
-		// Map of uploaded files
-		// This property should be used *only* to generate form controls
-		// For "read" uses, always refer to "orderedFiles"
-		files: { type: db.Object, nested: true },
-		// Ordered (by upload date) list of files
-		// Normally 'files' should provide that, but due to limitation of dbjs
-		// we need a property that assures order and filters all cleared files
-		orderedFiles: { type: File, multiple: true, value: function (_observe) {
-			var files = [];
-			_observe(this.files, true).forEach(function (file) {
-				if (!_observe(file._path)) return;
-				files.push(file);
-			});
-			return files.sort(function (a, b) {
-				return a.getDescriptor('name')._lastOwnModified_ -
-					b.getDescriptor('name')._lastOwnModified_;
-			});
-		} },
 		// History of document processing
 		statusLog: { type: StatusLog, multiple: true }
 	}, {
@@ -65,11 +49,11 @@ module.exports = memoize(function (db) {
 		abbr: { type: StringLine }
 	});
 
-	// Below defines characteristics for each property on document.files map
-	db.Document.prototype.files._descriptorPrototype_.setProperties({
-		type: File,
-		nested: true
-	});
+	defineNestedMap(db);
+	// Map of uploaded files
+	// Document.prototype.files.map property should be used *only* to generate form controls
+	// For "read" uses, always refer to Document.prototype.files.ordered
+	Document.prototype.defineNestedMap('files', { itemType: File, cardinalPropertyKey: 'path' });
 
-	return db.Document;
+	return Document;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

@@ -8,9 +8,9 @@ module.exports = function (t, a) {
 	  , Document = t(db)
 	  , document = new Document()
 
-	  , file1 = document.files.newUniq()
-	  , file2 = document.files.newUniq()
-	  , file3 = document.files.newUniq();
+	  , file1 = document.files.map.newUniq()
+	  , file2 = document.files.map.newUniq()
+	  , file3 = document.files.map.newUniq();
 
 	file1.name = 'foo.js';
 	file2.name = 'test.js';
@@ -18,5 +18,5 @@ module.exports = function (t, a) {
 
 	file1.path = '/marko';
 	file3.path = '/elo';
-	a.deep(aFrom(document.orderedFiles), [file1, file3]);
+	a.deep(aFrom(document.files.ordered), [file1, file3]);
 };

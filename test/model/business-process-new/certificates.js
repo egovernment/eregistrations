@@ -27,6 +27,6 @@ module.exports = function (t, a) {
 	businessProcess.registrations.map.test.isApplicable = true;
 	a.deep(aFrom(businessProcess.certificates.applicable), [businessProcess.certificates.map.test]);
 	a.deep(aFrom(businessProcess.certificates.uploaded), []);
-	businessProcess.certificates.map.test.files.newUniq().path = '/elo.png';
+	businessProcess.certificates.map.test.files.map.newUniq().path = '/elo.png';
 	a.deep(aFrom(businessProcess.certificates.uploaded), [businessProcess.certificates.map.test]);
 };
