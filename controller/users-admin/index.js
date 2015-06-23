@@ -38,6 +38,7 @@ exports['user/[0-9][a-z0-9]+'] = {
 			if (data[propertyKey]) return changePassword.call(this, data);
 			delete data[propertyKey];
 		}
+		delete data['password-repeat'];
 		return validate.call(this, data);
 	}
 };
