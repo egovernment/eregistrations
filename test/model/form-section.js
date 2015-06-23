@@ -1,6 +1,7 @@
 'use strict';
 
-var Database              = require('dbjs')
+var aFrom                 = require('es5-ext/array/from')
+  , Database              = require('dbjs')
   , defineBusinessProcess = require('../../model/business-process/base')
   , defineDate            = require('dbjs-ext/date-time/date');
 
@@ -15,7 +16,7 @@ module.exports = function (t, a) {
 	TestFormSection = FormSection.extend('TestFormSection', {
 		actionUrl: { value: 'action' },
 		propertyNames: { value: ['prop1', 'prop2', 'prop3', 'partner/name',
-			'partner/hasSameLastName', 'partner/lastName'] },
+			'partner/hasSameLastName', 'partner/lastName', 'otherObject/foo'] },
 		resolventProperty: { value: 'prop0' },
 		resolventValue: { value: true }
 	});
@@ -46,11 +47,14 @@ module.exports = function (t, a) {
 			prop2: { type: db.Number },
 			prop3: { type: db.Boolean, required: true },
 			partner: { type: Partner, nested: true },
-			section: { type: TestFormSection, nested: true }
+			section: { type: TestFormSection, nested: true },
+			otherObj: { type: db.Object }
 		}
 	);
 	businessProcess = new BusinessProcess();
+	businessProcess.otherObject = new db.Object({ foo: 'bar' });
 	section = businessProcess.section;
+	a.deep(aFrom(section.formPropertyNames), ['prop1', 'prop2', 'prop3', 'otherObject/foo']);
 	a(section.actionUrl, 'action');
 	a(section.weight, 0); // default value is setup on prototype, so ignore (weight 0)
 	businessProcess.prop0 = true;
