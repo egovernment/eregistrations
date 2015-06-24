@@ -1,6 +1,7 @@
 'use strict';
 
-var normalizeOpts = require('es5-ext/object/normalize-options')
+var assign        = require('es5-ext/object/assign')
+  , normalizeOpts = require('es5-ext/object/normalize-options')
   , callable      = require('es5-ext/object/valid-callable')
   , compileTpl    = require('es6-template-strings/compile')
   , resolveTpl    = require('es6-template-strings/resolve-to-string')
@@ -9,7 +10,7 @@ var normalizeOpts = require('es5-ext/object/normalize-options')
   , resolve       = require('path').resolve
   , setupTriggers = require('./_setup-triggers')
 
-  , now = Date.now, forEach = Array.prototype.forEach
+  , now = Date.now, forEach = Array.prototype.forEach, create = Object.create
   , nextTick = process.nextTick
   , stdout = process.stdout.write.bind(process.stdout)
   , StatusLog = mano.db.StatusLog
@@ -34,15 +35,21 @@ mano.apps.forEach(function (app) {
 });
 
 exports.forEach(function (conf) {
+	var defaultContext = {};
+	if (conf.variables) assign(defaultContext, conf.variables);
 	setupTriggers(conf, function (target) {
 		nextTick(function () {
-			var text, user;
+			var text, user, context = create(defaultContext), prop;
 			if (conf.resolveUser) user = conf.resolveUser(target);
 			else user = target;
-			conf.variables.target = target;
-			conf.variables.user = user;
-			text = resolveTpl(conf.text, conf.variables);
-			delete conf.variables.user;
+			context.target = target;
+			context.user = context.businessProcess = user;
+			if (conf.resolveGetters) {
+				for (prop in context) {
+					if (typeof context[prop] === 'function') context[prop] = context[prop]();
+				}
+			}
+			text = resolveTpl(conf.text, context);
 			user.statusLog.add(new StatusLog({
 				label: conf.label,
 				official: (conf.official && user[conf.official]) || null,
