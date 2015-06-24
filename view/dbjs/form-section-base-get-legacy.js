@@ -49,7 +49,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 			if (!legacyData) {
 				legacyData = [];
 			}
-			id = 'input-' + generateId();
+			id = (propOptions && propOptions.id) || 'input-' + generateId();
 			legacyData.push({ id: id, constraint: val, sKeyPath: propName, sKey: formFieldPath });
 			result.controls[formFieldPath] = normalizeOptions(result.controls[formFieldPath], { id: id });
 		}, this);
