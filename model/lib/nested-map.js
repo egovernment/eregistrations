@@ -75,7 +75,7 @@ module.exports = memoize(function (db/*, options*/) {
 				ordered: { type: data.itemType || db.Object },
 				cardinalPropertyKey: { value: cardinalPropertyKey }
 			});
-			this[propertyName].map.__descriptorPrototype__.type = data.itemType || db.Object;
+			this[propertyName].map._descriptorPrototype_.type = data.itemType || db.Object;
 
 			// For chaining
 			return this;
