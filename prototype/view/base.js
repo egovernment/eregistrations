@@ -2,6 +2,8 @@
 
 var isReadOnlyRender = require('mano/client/utils/is-read-only-render');
 
+exports.title = "eRegistrations: Prototype demo";
+
 exports.head = function () {
 	meta({ name: 'viewport', content: 'width=device-width' });
 
