@@ -14,6 +14,9 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 		headerRank = options.headerRank || 3;
 		cssClass   = options.cssClass || 'entity-data-section';
 		resolved = resolvePropertyPath(this.master, this.propertyName);
+		if (resolved.descriptor.type === this.database.NestedMap) {
+			resolved = resolvePropertyPath(this.master, this.propertyName + '/ordered');
+		}
 		return ns.section({ class: cssClass },
 			(function () {
 				if (self.label) {
