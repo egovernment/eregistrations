@@ -12,6 +12,7 @@ var forEach             = require('es5-ext/object/for-each')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
   , d                   = require('d')
   , generateId          = require('time-uuid')
+  , isNested            = require('dbjs/is-dbjs-nested-object')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
 
   , db = require('mano').db
@@ -23,8 +24,8 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 		master = options.master || this.master;
 		result = {};
 		result.controls = {};
-		this.propertyNames.forEach(function (item, propName) {
-			var val, id, resolved, formFieldPath, propOptions;
+		this.formPropertyNames.forEach(function (item, propName) {
+			var val, id, resolved, formFieldPath, propOptions, defaultOptions = {}, ownerMap;
 			resolved = resolvePropertyPath(master, propName);
 			if (!resolved) {
 				throw new Error("Could not resolve property " +
@@ -32,15 +33,21 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 					master.constructor.__id__ + ". Check your model.");
 			}
 			formFieldPath = resolved.id;
+			ownerMap = isNested(this.propertyMaster) && this.propertyMaster.owner &&
+					this.propertyMaster.owner.owner;
+			if (ownerMap && ownerMap.cardinalPropertyKey === resolved.key) {
+				defaultOptions = { required: true };
+			}
+			propOptions = defaultOptions;
 			if (this.inputOptions.has(propName)) {
-				propOptions = normalizeOptions(this.inputOptions.get(propName));
+				propOptions = normalizeOptions(propOptions, this.inputOptions.get(propName));
 				forEach(propOptions, function (value, name) {
 					if (typeof value !== 'function') return;
 					if (!value.isOptionResolver) return;
 					propOptions[name] = value.call(this);
 				});
-				result.controls[formFieldPath] = propOptions;
 			}
+			result.controls[formFieldPath] = propOptions;
 			val = resolved.object.getDescriptor(db.Object.getApplicablePropName(resolved.key)
 				)._value_;
 			if (typeof val !== 'function') {

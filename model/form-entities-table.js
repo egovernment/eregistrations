@@ -50,6 +50,9 @@ module.exports = memoize(function (db) {
 			if (!entityObjects) {
 				return 0;
 			}
+			if (entityObjects.descriptor.type === this.database.NestedMap) {
+				entityObjects = this.master.resolveSKeyPath(this.propertyName + '/ordered', _observe);
+			}
 			entityObjects = _observe(entityObjects.observable);
 			entityObjects.forEach(function (entityObject) {
 				var resolvedStatus, resolvedWeight;
@@ -93,6 +96,9 @@ module.exports = memoize(function (db) {
 			if (!entityObjects) {
 				return 0;
 			}
+			if (entityObjects.descriptor.type === this.database.NestedMap) {
+				entityObjects = this.master.resolveSKeyPath(this.propertyName + '/ordered', _observe);
+			}
 			entityObjects.value.some(function (entityObject) {
 				++i;
 				if (this.max && (i > this.max)) {
@@ -122,6 +128,9 @@ module.exports = memoize(function (db) {
 				}
 				if (!entityObjects) {
 					return resolventLastModified;
+				}
+				if (entityObjects.descriptor.type === this.database.NestedMap) {
+					entityObjects = this.master.resolveSKeyPath(this.propertyName + '/ordered', _observe);
 				}
 				entityObjects = entityObjects.value;
 				entityObjects.forEach(function (entityObject) {
