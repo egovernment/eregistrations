@@ -64,5 +64,6 @@ var loadView = function () {
 	} else {
 		console.log("Application load time:", ((Date.now() - startTime) / 1000).toFixed(3) + "s");
 	}
+	if (typeof window.onDbSync === 'function') window.onDbSync();
 };
 loadView();
