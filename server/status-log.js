@@ -1,10 +1,11 @@
 'use strict';
 
-var assign        = require('es5-ext/object/assign')
+var compact       = require('es5-ext/array/#/compact')
+  , assign        = require('es5-ext/object/assign')
   , normalizeOpts = require('es5-ext/object/normalize-options')
   , callable      = require('es5-ext/object/valid-callable')
   , compileTpl    = require('es6-template-strings/compile')
-  , resolveTpl    = require('es6-template-strings/resolve-to-string')
+  , resolveTpl    = require('es6-template-strings/resolve-to-array')
   , mano          = require('mano')
   , tryRequire    = require('mano/lib/utils/try-require').bind(require)
   , resolve       = require('path').resolve
@@ -49,7 +50,7 @@ exports.forEach(function (conf) {
 					if (typeof context[prop] === 'function') context[prop] = context[prop]();
 				}
 			}
-			text = resolveTpl(conf.text, context);
+			text = compact.call(resolveTpl(conf.text, context)).join('');
 			user.statusLog.add(new StatusLog({
 				label: conf.label,
 				official: (conf.official && user[conf.official]) || null,
