@@ -5,7 +5,9 @@ var object        = require('es5-ext/object/valid-object')
   , stringifiable = require('es5-ext/object/validate-stringifiable-value')
   , validateType  = require('dbjs/valid-dbjs-type')
   , save          = require('mano/utils/save')
+  , validate      = require('mano/utils/validate')
   , db            = require('mano').db
+  , forEach       = require('es5-ext/object/for-each')
 
   , call = Function.prototype.call;
 
@@ -37,6 +39,19 @@ module.exports = function (routes, data) {
 		redirectUrl: pageUrl + '#' + tableHtmlId
 	};
 	routes[name + '/[a-z0-9]+'] = {
+		validate: function (data) {
+			var cardinalPropertyKey;
+			if (targetMap) {
+				cardinalPropertyKey = call.call(targetMap, this).owner.cardinalPropertyKey;
+				forEach(data, function (field, key) {
+					if (key.endsWith(cardinalPropertyKey) && !field) {
+						throw new Error('Missing required property: ' + cardinalPropertyKey,
+							'INVALID_INPUT');
+					}
+				});
+			}
+			return validate(data);
+		},
 		match: match = function (id) {
 			var target, targetSet;
 			// when we have NestedMap, create new entry or get existing
