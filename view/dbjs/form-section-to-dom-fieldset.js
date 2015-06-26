@@ -35,7 +35,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 				id: resolvent.affectedSectionId,
 				class: 'form-elements',
 				dbjs: options.master || this.master,
-				names: this.formPropertyNames,
+				names: this.formApplicablePropertyNames,
 				control: control,
 				controls: legacy.controls
 			}), options.append, resolvent.legacyScript, legacy.legacy];
