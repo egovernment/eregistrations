@@ -24,7 +24,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 		master = options.master || this.master;
 		result = {};
 		result.controls = {};
-		this.formPropertyNames.forEach(function (item, propName) {
+		this.resolvedPropertyNames.forEach(function (item, propName) {
 			var val, id, resolved, formFieldPath, propOptions, defaultOptions = {};
 			resolved = resolvePropertyPath(master, propName);
 			if (!resolved) {

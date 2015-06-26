@@ -17,35 +17,53 @@ module.exports = memoize(function (db) {
 	FormSectionBase = defineFormSectionBase(db);
 	FormSectionBase.extend('FormSection', {
 		// Only for internal usage
-		formPropertyNames: { type: StringLine, multiple: true, value: function (_observe) {
-			var props, resolved, masterPrefix, propertyMaster = this.propertyMaster;
-			props = [];
-			if (propertyMaster !== this.master) {
-				if (propertyMaster.master !== this.master) {
-					throw new Error("Defined propertyMaster must share master with defined formSection");
+		resolvedPropertyNames: {
+			type: StringLine,
+			multiple: true,
+			value: function (_observe) {
+				var props, resolved, masterPrefix, propertyMaster = this.propertyMaster;
+				props = [];
+				if (propertyMaster !== this.master) {
+					if (propertyMaster.master !== this.master) {
+						throw new Error("Defined propertyMaster must share master with defined formSection");
+					}
+					masterPrefix = propertyMaster.__id__.slice(this.master.__id__.length + 1) + '/';
+				} else {
+					masterPrefix = '';
 				}
-				masterPrefix = propertyMaster.__id__.slice(this.master.__id__.length + 1) + '/';
-			} else {
-				masterPrefix = '';
+				this.propertyNames.forEach(function (name) {
+					resolved = propertyMaster.resolveSKeyPath(name, _observe);
+					if (!resolved) {
+						return;
+					}
+					props.push(masterPrefix + name);
+				}, this);
+
+				return props;
 			}
-			this.propertyNames.forEach(function (name) {
-				resolved = propertyMaster.resolveSKeyPath(name, _observe);
+		},
+		// Only for internal usage
+		formApplicablePropertyNames: { type: StringLine, multiple: true, value: function (_observe) {
+			var result = [], resolved;
+
+			this.resolvedPropertyNames.forEach(function (name) {
+				resolved = this.master.resolveSKeyPath(name, _observe);
 				if (!resolved) {
 					return;
 				}
 				if (_observe(resolved.object['_' +
 						this.database.Object.getFormApplicablePropName(resolved.key)])
 						!== false) {
-					props.push(masterPrefix + name);
+					result.push(name);
 				}
 			}, this);
 
-			return props;
+			return result;
 		} },
 		// Only for internal usage
-		resolvedPropertyNames: { type: StringLine, multiple: true, value: function (_observe) {
+		applicablePropertyNames: { type: StringLine, multiple: true, value: function (_observe) {
 			var props, resolved;
-			props = this.formPropertyNames.copy();
+			props = this.formApplicablePropertyNames.copy();
 			props.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name, _observe);
 				if (!resolved) {
@@ -83,7 +101,7 @@ module.exports = memoize(function (db) {
 				}
 			}
 
-			this.resolvedPropertyNames.forEach(function (name) {
+			this.applicablePropertyNames.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name, _observe);
 				if (!resolved) {
 					++total;
@@ -124,7 +142,7 @@ module.exports = memoize(function (db) {
 					++total;
 				}
 			}
-			this.resolvedPropertyNames.forEach(function (name) {
+			this.applicablePropertyNames.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name, _observe);
 				if (!resolved) {
 					++total;
@@ -147,7 +165,7 @@ module.exports = memoize(function (db) {
 		lastEditDate: {
 			value: function (_observe) {
 				var res = 0, resolved, lastModified, propertiesToCheck;
-				propertiesToCheck = this.propertyNames.copy();
+				propertiesToCheck = this.resolvedPropertyNames.copy();
 				if (this.resolventProperty) {
 					propertiesToCheck.add(this.resolventProperty);
 				}
