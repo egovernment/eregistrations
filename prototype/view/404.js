@@ -1,9 +1,13 @@
-// 404 Page not found configuration
-
 'use strict';
 
-exports._parent = require('./base');
+exports._parent = require('./_main');
 
-exports.body = function () {
-	h1("404");
+exports.main = function () {
+	div({ class: 'error-page content user-forms' },
+		div(
+			{ class: 'section-primary' },
+			h1("#404"),
+			h2("We are very sorry, but it seems that page that You are looking for doesn't exist.")
+		)
+		);
 };
