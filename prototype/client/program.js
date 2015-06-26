@@ -1,60 +1,69 @@
+// Initializes prototype application client runtime
+
 'use strict';
 
-require('mano/lib/client')({
-	noData: true,
-	schema: function () {
-		var db      = require('./model')
-		  , domEnum = require('dbjs-dom/enum')
-		  , user = db.User.prototype;
+Error.stackTraceLimit = Infinity;
 
-		require('dbjs-dom/text')(db);
-		require('dbjs-dom/input')(db);
-		require('dbjs-dom/text/utils/table')(db);
-		require('dbjs-dom/ext/domjs/table-cell-render');
+if (window.performance && window.performance.now) {
+	console.log("Download & compilation:", (window.performance.now() / 1000).toFixed(3) + "s");
+}
+console.log("Build timestamp: ${BUILD_TIMESTAMP}");
 
-		require('dbjs-dom/input/date-time/date')(db);
-		require('dbjs-dom/input/object/file')(db);
-		require('dbjs-dom/input/string/string-line')(db);
-		require('dbjs-dom/input/string/string-line/email')(db);
-		require('dbjs-dom/input/string/string-line/password')(db);
+var startTime = Date.now(), mano, router;
 
-		require('dbjs-dom/input/utils/fieldset')(db);
-		require('dbjs-dom-bootstrap/number/currency')(db);
-		require('dbjs-dom-bootstrap/number/square-meters')(db);
-		require('eregistrations/view/dbjs/submission-file');
-		require('../../view/dbjs/business-activity');
-		require('../../view/dbjs/user-register-ids');
-		require('../../view/dbjs/user-lomas-activity');
-		require('../../view/dbjs/user-is-validated');
-		require('../../view/dbjs/notification');
-		require('../../view/dbjs/is-shopping-gallery');
-		require('../../view/dbjs/company-info-shares');
-		require('../../view/dbjs/partners-table');
-		require('../../view/dbjs/form-section-to-dom');
-		require('../../view/dbjs/form-section-group-to-dom');
-		require('../../view/dbjs/form-entities-table-to-dom');
-		require('../../view/dbjs/section-to-dom');
-		require('../../view/dbjs/section-group-to-dom');
-		require('../../view/dbjs/section-entities-table-to-dom');
-		require('../../view/dbjs/multiple');
+// JavaScript polyfills and shims
+// TODO: autodetect, generate and import from: './shims.generated'
+require('mano/lib/client/implement-es');
 
-		domEnum(db.Role);
-		domEnum(db.CompanyType);
-		domEnum(db.NotificationType);
-		domEnum(db.StreetTypeChoice);
+// Assure Client id
+// TODO: Require here strictly to log (there should be no log in imported module)
+require('mano/lib/client/client-id');
 
-		user.$street.DOMInput = require('dbjs-dom/input/composites/line');
-		user.$isDebtContinusStatus.DOMInput =
-			require('../../view/dbjs/continuity-btn-group');
-	},
-	viewRequire: require('../../view/prototype/_require'),
-	routes: function (router, view) {
-		var mano = require('mano');
-		mano.env = require('../../common/client/env');
-		router.get = require('../../view/prototype/_routes')(view);
-		router.post = require('mano/lib/client/build-controller')(
-			require('../controller'),
-			require('./controller')
-		);
+// DOM bindings for observables
+// TODO: Should not be here
+require('mano/lib/observable-dom');
+
+mano = require('mano');
+mano.env = require('../../common/client/env');
+
+// Expose for dev purposes
+// TODO: Expose only in dev environments
+window.db = mano.db;
+
+mano.noData = true;
+
+// DB Model
+require('./model');
+
+// DB DOM bindings
+// TODO: autodetect, generate and import from ./dbjs-dom.generated
+require('./dbjs-dom');
+
+// Location controller & router
+router = require('mano/lib/client/router')({ useNewPostController: true });
+
+var appLocation = window.appLocation = require('mano/lib/client/location')
+  , postRouter  = require('mano/client/post-router')
+  , view;
+
+// Supress form submissions, but do not provide any form controllers
+postRouter({});
+
+var loadView = function () {
+	if (!document.body) {
+		setTimeout(loadView, 0);
+		return;
 	}
-});
+	view = require('mano/lib/client/view')(require('../../view/prototype/_require'));
+	router.get = require('../../view/prototype/_routes')(view);
+
+	router.update();
+	if (location.hash) appLocation.goto(location.pathname + location.search + location.hash);
+	if (window.performance && window.performance.now) {
+		console.log("Total load time:", (window.performance.now() / 1000).toFixed(3) + "s");
+	} else {
+		console.log("Application load time:", ((Date.now() - startTime) / 1000).toFixed(3) + "s");
+	}
+	if (typeof window.onDbSync === 'function') window.onDbSync();
+};
+loadView();
