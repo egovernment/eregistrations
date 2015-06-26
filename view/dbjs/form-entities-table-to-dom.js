@@ -18,19 +18,36 @@ var _                   = require('mano').i18n.bind('Sections')
   , d                   = require('d')
   , db                  = require('mano').db
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
-  , ns = require('mano').domjs.ns;
+  , generateId          = require('time-uuid')
+  , loc                 = require('mano/lib/client/location')
+  , ns                  = require('mano').domjs.ns;
 
 require('./form-section-base');
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var self = this, options, url, customizeData, resolvent, tableData;
+		var self = this, options, url, customizeData, resolvent, tableData, resolved, getAddUrl,
+			collectionType, addButton, isMapMode;
 		customizeData = {};
 		url = ns.url;
 		options = Object(arguments[1]);
 		url = options.url || ns.url;
 		resolvent = this.getFormResolvent(options);
-		tableData = resolvePropertyPath(this.master, this.propertyName).value;
+		resolved = resolvePropertyPath(this.master, this.propertyName);
+		tableData = resolved.value;
+		if (tableData instanceof db.NestedMap) {
+			isMapMode = true;
+			tableData = tableData.ordered;
+			collectionType = resolved.value.getDescriptor('ordered').type;
+			getAddUrl = function () {
+				return url(self.baseUrl, 'p' + generateId());
+			};
+		} else {
+			collectionType = resolved.descriptor.type;
+			getAddUrl = function () {
+				return url(self.baseUrl + '-add');
+			};
+		}
 		customizeData.arrayResult = [customizeData.container = ns.section(
 			{ id: this.domId, class: ns._if(ns.eq(
 				this._status,
@@ -51,7 +68,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 							return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
 										ns._if(entity._mobileOnly, 'mobile-only')) },
 									resolvePropertyPath(
-									self.master.getDescriptor(self.propertyName).type.prototype,
+									collectionType.prototype,
 									entity.propertyName
 								).descriptor.label);
 						}), ns.th(),
@@ -62,10 +79,18 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 						) },
 						tableData,
 						function (entityObject) {
+							var editUrl, deleteUrl;
+							if (isMapMode) {
+								editUrl = url(self.baseUrl, entityObject.key);
+								deleteUrl = url(self.baseUrl, entityObject.key, 'delete');
+							} else {
+								editUrl = url(self.baseUrl, entityObject.__id__);
+								deleteUrl = url(self.baseUrl, entityObject.__id__, 'delete');
+							}
 							return ns.tr(ns.list(self.entities, function (entity) {
 								return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
 											ns._if(entity._mobileOnly, 'mobile-only')) },
-										ns.a({ href: url(self.baseUrl, entityObject.__id__) },
+										ns.a({ href: editUrl },
 											resolvePropertyPath(entityObject, entity.propertyName).observable));
 							}),
 								ns.td({ class: ns._if(ns.eq(resolvePropertyPath(entityObject,
@@ -77,11 +102,10 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 										"!")),
 								ns.td({ class: 'actions' },
 									ns.a({ class: 'actions-edit',
-											href: url(self.baseUrl, entityObject.__id__) },
+											href: editUrl },
 										ns.span({ class: 'fa fa-edit' }, _("Edit"))),
 									ns.postButton({ buttonClass: 'actions-delete',
-										action: url(self.baseUrl,
-											entityObject.__id__, 'delete'),
+										action: deleteUrl,
 										value: ns.span({ class: 'fa fa-trash-o' },
 											_("Delete")) })));
 						}),
@@ -93,8 +117,8 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 				options.append,
 				resolvent.legacyScript,
 				ns.p(
-					customizeData.addButton = ns.a(
-						{ class: 'button-main', href: url(this.baseUrl + '-add') },
+					customizeData.addButton = addButton = ns.a(
+						{ class: 'button-main', href: getAddUrl() },
 						options.addButtonLabel || _("Add new")
 					)
 				)),
@@ -102,8 +126,15 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 					ns.a({ onclick: 'window.scroll(0, 0)' }, ns.span({ class: 'fa fa-arrow-up' },
 						_("Back to top"))))
 		)];
+		if (isMapMode) {
+			loc.on('change', function (ev) {
+				if (loc.pathname !== addButton.pathname) return;
+				addButton.href = getAddUrl();
+			});
+		}
 		if (typeof options.customize === 'function') {
 			options.customize.call(this, customizeData);
 		}
+
 		return customizeData.arrayResult;
 	}));

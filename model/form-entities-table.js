@@ -10,7 +10,8 @@ var _                       = require('mano').i18n.bind("Model: Form Entities Ta
   , defineStringLine        = require('dbjs-ext/string/string-line')
   , defineFormSectionBase   = require('./form-section-base')
   , defineFormTabularEntity = require('./form-tabular-entity')
-  , defineUInteger          = require('dbjs-ext/number/integer/u-integer');
+  , defineUInteger          = require('dbjs-ext/number/integer/u-integer')
+  , defineNestedMap         = require('./lib/nested-map');
 
 module.exports = memoize(function (db) {
 	var StringLine, FormSectionBase, FormTabularEntity, UInteger;
@@ -19,6 +20,7 @@ module.exports = memoize(function (db) {
 	FormSectionBase   = defineFormSectionBase(db);
 	FormTabularEntity = defineFormTabularEntity(db);
 	UInteger          = defineUInteger(db);
+	defineNestedMap(db);
 	return FormSectionBase.extend('FormEntitiesTable', {
 		min: { type: UInteger },
 		max: { type: UInteger },
@@ -50,7 +52,11 @@ module.exports = memoize(function (db) {
 			if (!entityObjects) {
 				return 0;
 			}
-			entityObjects = _observe(entityObjects.observable);
+			entityObjects = entityObjects.value;
+			if (entityObjects instanceof this.database.NestedMap) {
+				entityObjects = entityObjects.ordered;
+			}
+			_observe(entityObjects);
 			entityObjects.forEach(function (entityObject) {
 				var resolvedStatus, resolvedWeight;
 				resolvedStatus = entityObject.resolveSKeyPath(statusKey, _observe);
@@ -65,7 +71,7 @@ module.exports = memoize(function (db) {
 		} },
 		weight: { value: function (_observe) {
 			var entityObjects, weightTotal, key, getWeightByEntity, protoWeight, i,
-				isResolventExcluded, resolved;
+				isResolventExcluded, resolved, objectsType;
 			weightTotal = 0;
 			i = 0;
 			key = this.sectionProperty + 'Weight';
@@ -93,20 +99,26 @@ module.exports = memoize(function (db) {
 			if (!entityObjects) {
 				return 0;
 			}
-			entityObjects.value.some(function (entityObject) {
+			objectsType = entityObjects.descriptor.type;
+			entityObjects = entityObjects.value;
+			if (entityObjects instanceof this.database.NestedMap) {
+				entityObjects = entityObjects.ordered;
+			}
+			_observe(entityObjects);
+			entityObjects.some(function (entityObject) {
 				++i;
 				if (this.max && (i > this.max)) {
 					// we add to weight in order to make status 1 unreachable
-					weightTotal += (entityObjects.value.size - this.max);
+					weightTotal += (entityObjects.size - this.max);
 					return true;
 				}
 				weightTotal += getWeightByEntity(entityObject);
 			}, this);
-			if (_observe(entityObjects.value._size) < this.min) {
-				protoWeight = getWeightByEntity(entityObjects.descriptor.type.prototype);
+			if (_observe(entityObjects._size) < this.min) {
+				protoWeight = getWeightByEntity(objectsType.prototype);
 
 				// we assume that each potential entity has the same weight as prototype
-				weightTotal += (protoWeight * (this.min - entityObjects.value.size));
+				weightTotal += (protoWeight * (this.min - entityObjects.size));
 			}
 
 			return weightTotal;
@@ -124,6 +136,10 @@ module.exports = memoize(function (db) {
 					return resolventLastModified;
 				}
 				entityObjects = entityObjects.value;
+				if (entityObjects instanceof this.database.NestedMap) {
+					entityObjects = entityObjects.ordered;
+				}
+				_observe(entityObjects);
 				entityObjects.forEach(function (entityObject) {
 					var sections;
 					sections = entityObject.resolveSKeyPath(sectionKey, _observe);

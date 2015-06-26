@@ -13,7 +13,8 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 		options = Object(arguments[1]);
 		headerRank = options.headerRank || 3;
 		cssClass   = options.cssClass || 'entity-data-section';
-		resolved = resolvePropertyPath(this.master, this.propertyName);
+		resolved = resolvePropertyPath(this.master, this.propertyName).value;
+		if (resolved instanceof db.NestedMap) resolved = resolved.ordered;
 		return ns.section({ class: cssClass },
 			(function () {
 				if (self.label) {
@@ -28,9 +29,9 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 						ns.td(resolvePropertyPath(self.master,
 							self.resolventProperty).observable))));
 				}, function () {
-					return ns._if(resolved.value._size,
+					return ns._if(resolved._size,
 						ns.ul({ class: 'entity-data-section-entities' },
-							resolved.value,
+							resolved,
 							function (entityObject) {
 								return ns.li(headersMap[headerRank](
 									resolvePropertyPath(entityObject, self.entityTitleProperty).observable

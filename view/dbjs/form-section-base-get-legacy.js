@@ -12,6 +12,7 @@ var forEach             = require('es5-ext/object/for-each')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
   , d                   = require('d')
   , generateId          = require('time-uuid')
+  , isNested            = require('dbjs/is-dbjs-nested-object')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
 
   , db = require('mano').db
@@ -24,7 +25,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 		result = {};
 		result.controls = {};
 		this.resolvedPropertyNames.forEach(function (item, propName) {
-			var val, id, resolved, formFieldPath, propOptions;
+			var val, id, resolved, formFieldPath, propOptions, defaultOptions = {};
 			resolved = resolvePropertyPath(master, propName);
 			if (!resolved) {
 				throw new Error("Could not resolve property " +
@@ -32,15 +33,26 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 					master.constructor.__id__ + ". Check your model.");
 			}
 			formFieldPath = resolved.id;
+			if (isNested(this.propertyMaster) &&
+					// Ensure it's really instance of NestedMap
+					(this.propertyMaster.owner.owner instanceof db.NestedMap) &&
+					// Ensure it's not about nested property in propertyMaster, otherwise resolved.key
+					// may accidentally match
+					(resolved.object === this.propertyMaster)) {
+				if (this.propertyMaster.owner.owner.cardinalPropertyKey === resolved.key) {
+					defaultOptions = { required: true };
+				}
+			}
+			propOptions = defaultOptions;
 			if (this.inputOptions.has(propName)) {
-				propOptions = normalizeOptions(this.inputOptions.get(propName));
+				propOptions = normalizeOptions(propOptions, this.inputOptions.get(propName));
 				forEach(propOptions, function (value, name) {
 					if (typeof value !== 'function') return;
 					if (!value.isOptionResolver) return;
 					propOptions[name] = value.call(this);
 				});
-				result.controls[formFieldPath] = propOptions;
 			}
+			result.controls[formFieldPath] = propOptions;
 			val = resolved.object.getDescriptor(db.Object.getApplicablePropName(resolved.key)
 				)._value_;
 			if (typeof val !== 'function') {
