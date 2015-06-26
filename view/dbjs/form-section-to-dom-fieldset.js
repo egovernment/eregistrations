@@ -20,8 +20,10 @@ require('./form-section-base');
 
 module.exports = Object.defineProperties(db.FormSection.prototype, {
 	toDOMFieldset: d(function (document/*, options */) {
-		var resolvent, legacy, control, options = Object(arguments[1]), customizeData;
-		customizeData = {};
+		var resolvent, legacy, control, options = Object(arguments[1]),
+			customizeData, master;
+		master = options.master || this.master;
+		customizeData = { master: master };
 		if (!this.forceRequiredInput) {
 			control = { required: this.forceRequiredInput };
 		}
@@ -34,7 +36,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 			customizeData.fieldset = ns.fieldset({
 				id: resolvent.affectedSectionId,
 				class: 'form-elements',
-				dbjs: options.master || this.master,
+				dbjs: master,
 				names: this.formApplicablePropertyNames,
 				control: control,
 				controls: legacy.controls
