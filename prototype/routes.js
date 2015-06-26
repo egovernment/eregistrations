@@ -11,5 +11,9 @@ module.exports = {
 	'guide-lomas': require('./view/guide-lomas-form'),
 	'guide-lomas/form-complement': require('./view/guide-lomas-form-complement'),
 	'guide/costs-print': require('./view/print-user-costs'),
+	//forms: require('./view/forms'),
+	//'forms/disabled': require('./view/forms'),
+	documents: require('./view/documents'),
+	//submission: require('./view/submission'),
 	profile: require('./view/user-profile')
 };
