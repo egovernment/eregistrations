@@ -6,6 +6,9 @@ module.exports = {
 	'/': require('./view/index'),
 	public: require('./view/public'),
 	'reset-password': require('./view/reset-password'),
-	'multi-entry': require('./view/multi-entry')
-
+	'multi-entry': require('./view/multi-entry'),
+	guide: require('./view/guide'),
+	'guide-lomas': require('./view/guide-lomas-form'),
+	'guide-lomas/form-complement': require('./view/guide-lomas-form-complement'),
+	profile: require('./view/user-profile')
 };

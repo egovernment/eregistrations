@@ -3,8 +3,6 @@
 var db = require('mano').db,
 	user = db.User.prototype;
 
-exports._parent = require('./_user-main');
-
 exports.main = function () {
 	div(
 		{ class: 'content user-forms' },
