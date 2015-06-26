@@ -25,7 +25,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 		result = {};
 		result.controls = {};
 		this.formPropertyNames.forEach(function (item, propName) {
-			var val, id, resolved, formFieldPath, propOptions, defaultOptions = {}, ownerMap;
+			var val, id, resolved, formFieldPath, propOptions, defaultOptions = {};
 			resolved = resolvePropertyPath(master, propName);
 			if (!resolved) {
 				throw new Error("Could not resolve property " +
@@ -42,11 +42,6 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 				if (this.propertyMaster.owner.owner.cardinalPropertyKey === resolved.key) {
 					defaultOptions = { required: true };
 				}
-			}
-			ownerMap = isNested(this.propertyMaster) && this.propertyMaster.owner &&
-					this.propertyMaster.owner.owner;
-			if (ownerMap && ownerMap.cardinalPropertyKey === resolved.key) {
-				defaultOptions = { required: true };
 			}
 			propOptions = defaultOptions;
 			if (this.inputOptions.has(propName)) {

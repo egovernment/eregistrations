@@ -136,10 +136,10 @@ module.exports = memoize(function (db) {
 					return resolventLastModified;
 				}
 				entityObjects = entityObjects.value;
-				_observe(entityObjects);
 				if (entityObjects instanceof this.database.NestedMap) {
 					entityObjects = entityObjects.ordered;
 				}
+				_observe(entityObjects);
 				entityObjects.forEach(function (entityObject) {
 					var sections;
 					sections = entityObject.resolveSKeyPath(sectionKey, _observe);
