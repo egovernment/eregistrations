@@ -27,7 +27,8 @@ require('./form-section-base');
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var self = this, options, url, customizeData, resolvent, tableData, resolved, getAddUrl;
+		var self = this, options, url, customizeData, resolvent, tableData, resolved, getAddUrl,
+			collectionType, addButton;
 		customizeData = {};
 		url = ns.url;
 		options = Object(arguments[1]);
@@ -37,13 +38,16 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 		};
 		resolvent = this.getFormResolvent(options);
 		resolved = resolvePropertyPath(this.master, this.propertyName);
-		if (resolved.descriptor.type === db.NestedMap) {
-			resolved = resolvePropertyPath(this.master, this.propertyName + '/ordered');
+		tableData = resolved.value;
+		if (tableData instanceof db.NestedMap) {
+			tableData = tableData.ordered;
+			collectionType = resolved.value.getDescriptor('ordered').type;
 			getAddUrl = function () {
 				return url(self.baseUrl, 'p' + generateId());
 			};
+		} else {
+			collectionType = resolved.descriptor.type;
 		}
-		tableData = resolved.value;
 		customizeData.arrayResult = [customizeData.container = ns.section(
 			{ id: this.domId, class: ns._if(ns.eq(
 				this._status,
@@ -64,7 +68,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 							return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
 										ns._if(entity._mobileOnly, 'mobile-only')) },
 									resolvePropertyPath(
-									resolved.descriptor.type.prototype,
+									collectionType.prototype,
 									entity.propertyName
 								).descriptor.label);
 						}), ns.th(),
@@ -110,7 +114,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 				options.append,
 				resolvent.legacyScript,
 				ns.p(
-					customizeData.addButton = ns.a(
+					customizeData.addButton = addButton = ns.a(
 						{ class: 'button-main', href: getAddUrl() },
 						options.addButtonLabel || _("Add new")
 					)
@@ -120,9 +124,8 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 						_("Back to top"))))
 		)];
 		loc.on('change', function (ev) {
-			if (ev.newValue.search(customizeData.addButton.href) !== -1) {
-				customizeData.addButton.href = getAddUrl();
-			}
+			if (loc.pathname !== addButton.pathname) return;
+			addButton.href = getAddUrl();
 		});
 		if (typeof options.customize === 'function') {
 			options.customize.call(this, customizeData);

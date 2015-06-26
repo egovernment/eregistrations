@@ -33,6 +33,16 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 					master.constructor.__id__ + ". Check your model.");
 			}
 			formFieldPath = resolved.id;
+			if (isNested(this.propertyMaster) &&
+					// Ensure it's really instance of NestedMap
+					(this.propertyMaster.owner.owner instanceof db.NestedMap) &&
+					// Ensure it's not about nested property in propertyMaster, otherwise resolved.key
+					// may accidentally match
+					(resolved.object === this.propertyMaster)) {
+				if (this.propertyMaster.owner.owner.cardinalPropertyKey === resolved.key) {
+					defaultOptions = { required: true };
+				}
+			}
 			ownerMap = isNested(this.propertyMaster) && this.propertyMaster.owner &&
 					this.propertyMaster.owner.owner;
 			if (ownerMap && ownerMap.cardinalPropertyKey === resolved.key) {

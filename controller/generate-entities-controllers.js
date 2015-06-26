@@ -42,9 +42,9 @@ module.exports = function (routes, data) {
 		validate: function (data) {
 			var cardinalPropertyKey;
 			if (targetMap) {
-				cardinalPropertyKey = call.call(targetMap, this).owner.cardinalPropertyKey;
+				cardinalPropertyKey = call.call(targetMap, this).cardinalPropertyKey;
 				forEach(data, function (field, key) {
-					if (key.endsWith(cardinalPropertyKey) && !field) {
+					if (key.endsWith(cardinalPropertyKey) && (field == null)) {
 						throw new Error('Missing required property: ' + cardinalPropertyKey,
 							'INVALID_INPUT');
 					}
@@ -56,7 +56,7 @@ module.exports = function (routes, data) {
 			var target, targetSet;
 			// when we have NestedMap, create new entry or get existing
 			if (targetMap) {
-				this.target = call.call(targetMap, this).get(id);
+				this.target = call.call(targetMap, this).map.get(id);
 				return true;
 			}
 			targetSet = call.call(getTargetSet, this);
