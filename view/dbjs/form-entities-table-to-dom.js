@@ -28,7 +28,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 	d(function (document/*, options */) {
 		var self = this, options, url, customizeData, resolvent, tableData, resolved, getAddUrl,
 			collectionType, addButton, isMapMode;
-		customizeData = {};
+		customizeData = { master: this.master };
 		url = ns.url;
 		options = Object(arguments[1]);
 		url = options.url || ns.url;
