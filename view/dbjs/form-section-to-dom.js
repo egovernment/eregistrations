@@ -26,7 +26,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 	toDOMForm: d(function (document/*, options */) {
 		var actionUrl, options = Object(arguments[1]), url, customizeData
 		  , master = options.master || this.master, fieldsetOptions, fieldsetResult;
-		customizeData = {};
+		customizeData = { master: master };
 		fieldsetOptions = {
 			prepend: options.prepend,
 			append: options.append,

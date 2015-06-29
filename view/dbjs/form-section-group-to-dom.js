@@ -27,7 +27,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 	d(function (document/*, options */) {
 		var mainFormResolvent, actionUrl, options = Object(arguments[1]), url
 		  , customizeData, master = options.master || this.master, fieldsetOptions;
-		customizeData = { subSections: {} };
+		customizeData = { subSections: {}, master: master };
 		mainFormResolvent = this.getFormResolvent(options);
 		url = options.url || ns.url;
 		actionUrl = url(this.actionUrl);

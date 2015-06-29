@@ -5,7 +5,9 @@ var object        = require('es5-ext/object/valid-object')
   , stringifiable = require('es5-ext/object/validate-stringifiable-value')
   , validateType  = require('dbjs/valid-dbjs-type')
   , save          = require('mano/utils/save')
+  , validate      = require('mano/utils/validate')
   , db            = require('mano').db
+  , forEach       = require('es5-ext/object/for-each')
 
   , call = Function.prototype.call;
 
@@ -13,10 +15,21 @@ module.exports = function (routes, data) {
 	(object(routes) && object(data));
 	var name = stringifiable(data.name)
 	  , type = (data.type && validateType(data.type))
-	  , getTargetSet = callable(data.getTargetSet)
+	  , getTargetSet
+	  , targetMap
 	  , pageUrl = stringifiable(data.pageUrl)
 	  , tableHtmlId = stringifiable(data.tableHtmlId)
 	  , match;
+
+	if (data.getTargetSet && data.targetMap) {
+		throw new Error('Cannot set both: getTargetSet and getTargetMap, choose one!',
+			'INVALID_OPTIONS');
+	}
+	if (data.getTargetSet) {
+		getTargetSet = callable(data.getTargetSet);
+	} else {
+		targetMap = callable(data.targetMap);
+	}
 
 	routes[name + '-add'] = {
 		submit: function () {
@@ -25,9 +38,27 @@ module.exports = function (routes, data) {
 		},
 		redirectUrl: pageUrl + '#' + tableHtmlId
 	};
-	routes[name + '/[0-9][a-z0-9]+'] = {
+	routes[name + '/[a-z0-9]+'] = {
+		validate: function (data) {
+			var cardinalPropertyKey;
+			if (targetMap) {
+				cardinalPropertyKey = call.call(targetMap, this).cardinalPropertyKey;
+				forEach(data, function (field, key) {
+					if (key.endsWith(cardinalPropertyKey) && (field == null)) {
+						throw new Error('Missing required property: ' + cardinalPropertyKey,
+							'INVALID_INPUT');
+					}
+				});
+			}
+			return validate(data);
+		},
 		match: match = function (id) {
 			var target, targetSet;
+			// when we have NestedMap, create new entry or get existing
+			if (targetMap) {
+				this.target = call.call(targetMap, this).map.get(id);
+				return true;
+			}
 			targetSet = call.call(getTargetSet, this);
 			if (type) {
 				target = type.getById(id);
@@ -41,9 +72,15 @@ module.exports = function (routes, data) {
 		},
 		redirectUrl: pageUrl + '#' + tableHtmlId
 	};
-	routes[name + '/[0-9][a-z0-9]+/delete'] = {
+	routes[name + '/[a-z0-9]+/delete'] = {
 		match: match,
-		submit: function () { db.objects.delete(this.target); },
+		submit: function () {
+			if (targetMap) {
+				this.target._destroy_();
+				return;
+			}
+			db.objects.delete(this.target);
+		},
 		formHtmlId: '#' + tableHtmlId
 	};
 };
