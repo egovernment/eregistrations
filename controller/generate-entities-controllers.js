@@ -19,7 +19,7 @@ module.exports = function (routes, data) {
 	  , targetMap
 	  , pageUrl = stringifiable(data.pageUrl)
 	  , tableHtmlId = stringifiable(data.tableHtmlId)
-	  , match;
+	  , match, result = {};
 
 	if (data.getTargetSet && data.targetMap) {
 		throw new Error('Cannot set both: getTargetSet and getTargetMap, choose one!',
@@ -31,14 +31,14 @@ module.exports = function (routes, data) {
 		targetMap = callable(data.targetMap);
 	}
 
-	routes[name + '-add'] = {
+	routes[name + '-add'] = result.add = {
 		submit: function () {
 			save.apply(this, arguments);
 			call.call(getTargetSet, this).add(this.target);
 		},
 		redirectUrl: pageUrl + '#' + tableHtmlId
 	};
-	routes[name + '/[a-z0-9]+'] = {
+	routes[name + '/[a-z0-9]+'] = result.edit = {
 		validate: function (data) {
 			var cardinalPropertyKey;
 			if (targetMap) {
@@ -72,7 +72,7 @@ module.exports = function (routes, data) {
 		},
 		redirectUrl: pageUrl + '#' + tableHtmlId
 	};
-	routes[name + '/[a-z0-9]+/delete'] = {
+	routes[name + '/[a-z0-9]+/delete'] = result.delete = {
 		match: match,
 		submit: function () {
 			if (targetMap) {
@@ -83,4 +83,6 @@ module.exports = function (routes, data) {
 		},
 		formHtmlId: '#' + tableHtmlId
 	};
+
+	return result;
 };
