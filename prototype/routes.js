@@ -27,6 +27,12 @@ module.exports = {
 	'user-submitted': require('./view/user-submitted'),
 	'user-submitted/history-print': require('./view/print-user-history'),
 	'user-submitted/data-print': require('./view/print-user-data'),
-	'user-submitted/print-user-data-alternative': require('./view/print-user-data-alternative')
+	'user-submitted/print-user-data-alternative': require('./view/print-user-data-alternative'),
+
+	// Part-B routes - users admin
+	'users-admin': require('./view/users-admin'),
+	'users-admin/add-user': require('./view/add-user'),
+	'users-admin/edit-user-id': require('./view/edit-user'),
+	'users-admin/user-id': require('./view/users-admin-user')
 
 };
