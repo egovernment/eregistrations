@@ -30,14 +30,14 @@ Each entity should have it's folder with `fields.js` and `sections.js` files,e.g
 ```
 
 ### /processing-steps
-Configuration of properties needed for PartB process
+Configuration of properties needed for Part B of the process
 
-It can be one file as e.g.
+Each step can be represented by one file as e.g.
 ```
 /processing-steps/inspection.js
 ```
 
-or folder of properties
+or folder of files, e.g.
 ```
 /processing-steps/inspection-report/section.js
 /processing-steps/inspection-report/fields.js
