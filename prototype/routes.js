@@ -33,6 +33,13 @@ module.exports = {
 	'users-admin': require('./view/users-admin'),
 	'users-admin/add-user': require('./view/add-user'),
 	'users-admin/edit-user-id': require('./view/edit-user'),
-	'users-admin/user-id': require('./view/users-admin-user')
+	'users-admin/user-id': require('./view/users-admin-user'),
 
+	// Part-B routes - official user
+	official: require('./view/official'),
+	'revision/user-id': require('./view/revision'),
+	'official/user-id': require('./view/official-form'),
+	'official/user-id/certificates': require('./view/_certificates-form'),
+	'official/user-id/document': require('./view/official-document'),
+	'official/users-list/print': require('./view/print-users-list')
 };
