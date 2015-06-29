@@ -1,7 +1,5 @@
 'use strict';
 
-exports._parent = require('./_main');
-
 exports.main = function () {
 	div({ class: 'error-page content user-forms' },
 		div(

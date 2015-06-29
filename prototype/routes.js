@@ -44,5 +44,17 @@ module.exports = {
 	'official/users-list/print': require('./view/print-users-list'),
 
 	// Part-B routes - front-desk
-	'front-desk/user-id': require('./view/_front-desk')
+	'front-desk/user-id': require('./view/_front-desk'),
+
+	// Part-B routes - demo-user
+	//'demo-user': require('./view/demo-user')
+
+	// Part-B routes - statistics
+	statistics: require('./view/statistics'),
+
+	// Part-B routes - translations
+	i18n: require('./view/translations-panel'),
+
+	// Error routes
+	404: require('./view/404')
 };
