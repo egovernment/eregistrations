@@ -16,7 +16,7 @@ Configuration of computable properties used to resolve process characteristics
 
 ### /fields.js
 All properties used for guide and forms.
-Computable properties used to resolve the process characteristics should be defined in `/determinants.`
+Computable properties used to resolve the process characteristics should be defined in `determinants.js`
 
 ### /guide.js
 Configuration of guide form section
