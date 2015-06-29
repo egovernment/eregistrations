@@ -1,7 +1,7 @@
 'use strict';
 
 var db = require('mano').db
-  , generateSections = require('../components/generate-form-sections')
+  , generateSections = require('./components/generate-form-sections')
   , user = db.User.prototype;
 
 exports._parent = require('./_user-main');
