@@ -39,31 +39,32 @@ require('./model');
 // TODO: autodetect, generate and import from ./dbjs-dom.generated
 require('./dbjs-dom');
 
-// Location controller & router
-router = require('mano/lib/client/router')({ useNewPostController: true });
-
-var appLocation = window.appLocation = require('mano/lib/client/location')
-  , postRouter  = require('mano/client/post-router')
-  , view;
+var appLocation    = window.appLocation = require('mano/lib/client/location')
+  , last           = require('es5-ext/string/#/last')
+  , postRouter     = require('mano/client/post-router')
+  , DomjsSiteTree  = require('domjs-site-tree')
+  , SiteTreeRouter = require('site-tree-router')
+  , update;
 
 // Supress form submissions, but do not provide any form controllers
 postRouter({});
 
-var loadView = function () {
-	if (!document.body) {
-		setTimeout(loadView, 0);
+var siteTree = new DomjsSiteTree(require('mano/lib/client/domjs'));
+router = new SiteTreeRouter(require('../routes'), siteTree,
+	{ notFound: require('../view/404') });
+appLocation.on('change', update = function () {
+	if (last.call(appLocation.pathname) !== '/') {
+		appLocation.goto(appLocation.pathname + '/' + appLocation.search + appLocation.hash);
 		return;
 	}
-	view = require('mano/lib/client/view')(require('../../view/prototype/_require'));
-	router.get = require('../../view/prototype/_routes')(view);
+	router.route(appLocation.pathname);
+});
+update();
 
-	router.update();
-	if (location.hash) appLocation.goto(location.pathname + location.search + location.hash);
-	if (window.performance && window.performance.now) {
-		console.log("Total load time:", (window.performance.now() / 1000).toFixed(3) + "s");
-	} else {
-		console.log("Application load time:", ((Date.now() - startTime) / 1000).toFixed(3) + "s");
-	}
-	if (typeof window.onDbSync === 'function') window.onDbSync();
-};
-loadView();
+if (location.hash) appLocation.goto(location.pathname + location.search + location.hash);
+if (window.performance && window.performance.now) {
+	console.log("Total load time:", (window.performance.now() / 1000).toFixed(3) + "s");
+} else {
+	console.log("Application load time:", ((Date.now() - startTime) / 1000).toFixed(3) + "s");
+}
+if (typeof window.onDbSync === 'function') window.onDbSync();
