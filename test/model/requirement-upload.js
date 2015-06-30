@@ -22,7 +22,7 @@ module.exports = function (t, a) {
 	BusinessProcess.prototype.costs.map.define('test', { nested: true });
 	TestDocument.prototype.dataForm.propertyNames = ['foo'];
 	BusinessProcess.prototype.define('foo', { required: true });
-	defineMapUploads(db, [TestDocument, { name: 'costRelated', class: TestDocument }]);
+	defineMapUploads(BusinessProcess, [TestDocument, { name: 'costRelated', class: TestDocument }]);
 	BusinessProcess.prototype.requirementUploads.map.costRelated.define('correspondingCost', {
 		value: function () { return this.master.costs.map.test; }
 	});

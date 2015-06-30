@@ -24,7 +24,7 @@ module.exports = function (a) {
 
 	TestDocument.prototype.dataForm.propertyNames = ['foo'];
 	BusinessProcess.prototype.define('foo', { required: true });
-	defineMapUploads(db, [TestDocument]);
+	defineMapUploads(BusinessProcess, [TestDocument]);
 	BusinessProcess.prototype.requirements.map.define('test', { nested: true });
 	BusinessProcess.prototype.requirements.map.test.Document = TestDocument;
 

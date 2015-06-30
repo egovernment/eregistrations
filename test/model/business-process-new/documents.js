@@ -24,7 +24,7 @@ module.exports = function (t, a) {
 	BusinessProcess.prototype.registrations.map.test.define('requirements',
 		{ value: function () { return [this.master.requirements.map.test2]; } });
 	defineMapCertificates(BusinessProcess, [TestDocument]);
-	defineMapUploads(db, [{ name: 'test2', class: TestDocument }]);
+	defineMapUploads(BusinessProcess, [{ name: 'test2', class: TestDocument }]);
 
 	businessProcess = new BusinessProcess();
 	a.deep(aFrom(businessProcess.documents.uploaded), []);

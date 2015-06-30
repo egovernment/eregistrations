@@ -2,15 +2,14 @@
 
 'use strict';
 
-var ensureArray              = require('es5-ext/array/valid-array')
-  , forEach                  = require('es5-ext/object/for-each')
-  , ensureObject             = require('es5-ext/object/valid-object')
-  , ensureStringifiable      = require('es5-ext/object/validate-stringifiable-value')
-  , uncapitalize             = require('es5-ext/string/#/uncapitalize')
-  , isType                   = require('dbjs/is-dbjs-type')
-  , ensureType               = require('dbjs/valid-dbjs-type')
-  , defineDocument           = require('../../document')
-  , defineRequirementUploads = require('../requirement-uploads')
+var ensureArray         = require('es5-ext/array/valid-array')
+  , forEach             = require('es5-ext/object/for-each')
+  , ensureObject        = require('es5-ext/object/valid-object')
+  , ensureStringifiable = require('es5-ext/object/validate-stringifiable-value')
+  , uncapitalize        = require('es5-ext/string/#/uncapitalize')
+  , isType              = require('dbjs/is-dbjs-type')
+  , ensureType          = require('dbjs/valid-dbjs-type')
+  , defineDocument      = require('../../document')
 
   , create = Object.create;
 
@@ -38,8 +37,8 @@ var documentDefinitions = {
 	} }
 };
 
-module.exports = function (db, data) {
-	var BusinessProcess = defineRequirementUploads(db), Document = defineDocument(db)
+module.exports = function (BusinessProcess, data) {
+	var Document = defineDocument(ensureType(BusinessProcess).database)
 	  , definitions = create(null), typesMap = create(null);
 	ensureArray(data).forEach(function (conf) {
 		var UploadDocument, name;
