@@ -13,7 +13,7 @@ module.exports = function (t, a) {
 
 	t(BusinessProcess, [Doc1, Doc2]);
 
-	a(db.BusinessProcess.prototype.certificates.map.test1 instanceof Doc1, true);
-	a(db.BusinessProcess.prototype.certificates.map.test2 instanceof Doc2, true);
-	a(db.BusinessProcess.prototype.certificates.map.foo, undefined);
+	a(BusinessProcess.prototype.certificates.map.test1 instanceof Doc1, true);
+	a(BusinessProcess.prototype.certificates.map.test2 instanceof Doc2, true);
+	a(BusinessProcess.prototype.certificates.map.foo, undefined);
 };
