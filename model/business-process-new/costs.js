@@ -28,7 +28,7 @@ module.exports = memoize(function (db/* options */) {
 			return result;
 		} },
 		// Paid costs
-		paid: { type: Cost, mutiple: true, value: function (_observe) {
+		paid: { type: Cost, multiple: true, value: function (_observe) {
 			var result = [];
 			this.applicable.forEach(function (cost) {
 				if (_observe(cost._isPaid)) result.push(cost);
