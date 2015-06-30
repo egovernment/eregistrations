@@ -46,9 +46,6 @@ module.exports = {
 	// Part-B routes - front-desk
 	'front-desk/user-id': require('./view/_front-desk'),
 
-	// Part-B routes - demo-user
-	//'demo-user': require('./view/demo-user')
-
 	// Part-B routes - statistics
 	statistics: require('./view/statistics'),
 
