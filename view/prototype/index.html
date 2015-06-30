@@ -1,35 +1,3 @@
 <!DOCTYPE html>
-<html>
-	<title>eRegistrations</title>
-	<meta name="viewport" content="width=device-width" />
-	<noscript><meta http-equiv="refresh" content="0;/?legacy=1" /></noscript>
-	<script data-spa>
-if (!Object.getPrototypeOf || !Object.defineProperty || !window.history ||
-	 (Object.getPrototypeOf({ __proto__: Function.prototype }) !==
-		 Function.prototype) || (Object.defineProperty({}, 'foo',
-			 { get: function () { return 'bar'; } }).foo !== 'bar')) {
-	if (document.cookie.indexOf('legacy=') === -1) {
-		document.cookie = 'legacy=1;path=/';
-		location.reload();
-	} else {
-	document.write('<link href="${STATIC_ROOT}css/legacy.css" rel="stylesheet" />' +
-		'<div class="legacy-container"><div class="legacy">' +
-		'<div class="legacy-logo"><img src="${STATIC_ROOT}img/title-logo.jpg"></div>' +
-		'<h1>Your browser is a little outdated</h1>' +
-		'<h2>Please upgrade your browser to its latest version available here</h2>' +
-		'<ul>' +
-			'<li><a href="http://www.mozilla.org/firefox" target="_blank"><img src="${STATIC_ROOT}img/legacy/firefox.jpg" alt="Mozilla Firefox"/></a></li>' +
-			'<li><a href="http://www.google.com/chrome" target="_blank"><img src="${STATIC_ROOT}img/legacy/chrome.jpg" alt="Google Chrome"/></a></li>' +
-			'<li><a href="http://www.apple.com/safari" target="_blank"><img src="${STATIC_ROOT}img/legacy/safari.jpg" alt="Apple Safari"/></a></li>' +
-			'<li><a href="http://www.opera.com/" target="_blank"><img src="${STATIC_ROOT}img/legacy/opera.jpg" alt="Opera"/></a></li>' +
-			'<li><a href="http://www.microsoft.com/internetexplorer" target="_blank"><img src="${STATIC_ROOT}img/legacy/ie11.jpg" alt="Internet Explorer 11"/></a></li>' +
-		'</ul>' +
-		'</div></div>');
-	}
-} else {
-	document.write('<scr' + 'ipt src="${STATIC_ROOT_APP}prototype.legacy.js"></sc' + 'ript>');
-	document.write('<scr' + 'ipt data-spa src="${STATIC_ROOT_APP}prototype.js"></sc' + 'ript>');
-}
-	</script>
-	<link href="${STATIC_ROOT}prototype.css" rel="stylesheet" />
-	<body id="body">
+<!-- Loaded only in server-side render mode -->
+<script data-spa src="${STATIC_ROOT_APP}prototype.js"></script>

@@ -2,7 +2,7 @@
 	Component describing styles for guide steps menu
 */
 .user-steps-menu {
-	background-color: var(--dark-background);
+	background-color: var(--normal-dark-background);
 	color: var(--white-text);
 	padding: 11px 0;
 	/* Below rules needed for fixed view */
@@ -15,6 +15,9 @@
 
 .user-steps-menu-fixed-top-placeholder {
 	height: 66px;
+}
+.user-forms > .user-steps-menu-fixed-top-placeholder:first-child {
+	margin-top: 0;
 }
 
 .user-steps-menu-wrapper {

@@ -19,4 +19,15 @@ module.exports = function (t, a) {
 		[businessProcess.costs.map.test1, businessProcess.costs.map.test2]);
 	businessProcess.registrations.map.test.isRequested = false;
 	a.deep(aFrom(businessProcess.costs.applicable), []);
+	a(businessProcess.costs.paymentProgress, 1);
+	businessProcess.registrations.map.test.isRequested = true;
+	businessProcess.costs.applicable.first.isPaid = true;
+	a.deep(aFrom(businessProcess.costs.paid), [businessProcess.costs.map.test1]);
+	a(businessProcess.costs.paymentProgress, 0.5);
+	a(businessProcess.costs.onlinePaymentProgress, 1);
+	businessProcess.costs.applicable.last.isElectronic = true;
+	a(businessProcess.costs.onlinePaymentProgress, 0);
+	businessProcess.costs.applicable.last.isPaid = true;
+	a(businessProcess.costs.onlinePaymentProgress, 1);
+	a(businessProcess.costs.paymentProgress, 1);
 };
