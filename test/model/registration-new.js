@@ -15,7 +15,7 @@ module.exports = function (t, a) {
 
 	BusinessProcess.prototype.registrations.map.define('test', { nested: true });
 	BusinessProcess.prototype.registrations.map.test.Document = TestDocument;
-	defineMapCertificates(db, [TestDocument]);
+	defineMapCertificates(BusinessProcess, [TestDocument]);
 	businessProcess = new BusinessProcess();
 	registration = businessProcess.registrations.map.test;
 	a(registration.label, "Test document");

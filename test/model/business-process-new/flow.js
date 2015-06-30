@@ -31,7 +31,7 @@ module.exports = function (t, a) {
 
 	BusinessProcess.prototype.requirements.map.define('req', { nested: true });
 	BusinessProcess.prototype.requirements.map.req.Document = TestDocument;
-	defineMapCertificates(db, [TestDocument]);
+	defineMapCertificates(BusinessProcess, [TestDocument]);
 	defineMapUploads(db, [{ name: 'req', class: TestDocument }]);
 
 	BusinessProcess.prototype.registrations.map.define('test', { nested: true });

@@ -36,7 +36,7 @@ module.exports = function (t, a) {
 		isRequested: { value: false },
 		requirements: { value: function () { return [this.master.requirements.map.req]; } }
 	});
-	defineMapCertificates(db, [TestDocument]);
+	defineMapCertificates(BusinessProcess, [TestDocument]);
 
 	businessProcess = new BusinessProcess();
 	a.deep(aFrom(businessProcess.requirements.resolved), []);

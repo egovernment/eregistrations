@@ -31,7 +31,7 @@ module.exports = function (t, a) {
 		isRequested: { value: false },
 		requirements: { value: function () { return [this.master.requirements.map.req]; } }
 	});
-	defineMapCertificates(db, [TestDocument]);
+	defineMapCertificates(BusinessProcess, [TestDocument]);
 
 	BusinessProcess.prototype.getOwnDescriptor('determinants').type = FormSection1;
 
