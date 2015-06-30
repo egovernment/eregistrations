@@ -5,10 +5,12 @@
 var ensureArray        = require('es5-ext/array/valid-array')
   , uncapitalize       = require('es5-ext/string/#/uncapitalize')
   , ensureType         = require('dbjs/valid-dbjs-type')
-  , defineDocument     = require('../../document');
+  , defineDocument     = require('../../document')
+  , defineCertificates = require('../certificates');
 
 module.exports = function (BusinessProcess, documentClasses) {
-	var Document = defineDocument(ensureType(BusinessProcess).database), definitions = {};
+	var db = ensureType(BusinessProcess).database, Document = defineDocument(db), definitions = {};
+	defineCertificates(db);
 	ensureArray(documentClasses).forEach(function (CertificateDocument) {
 		if (!Document.isPrototypeOf(ensureType(CertificateDocument))) {
 			throw new TypeError(CertificateDocument.__id__ + " must extend Document.");
