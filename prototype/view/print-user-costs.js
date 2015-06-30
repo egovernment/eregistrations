@@ -1,6 +1,6 @@
 'use strict';
 
-exports._parent = require('./_print-main');
+exports._parent = require('./print-base');
 
 exports['print-page-title'] = function () {
 	h2("Registration costs");
