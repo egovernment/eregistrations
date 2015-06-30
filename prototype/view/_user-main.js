@@ -8,7 +8,22 @@ exports['user-name'] = function () {
 
 exports._parent = require('./_user-logged-in');
 
-exports.main = function () {
+exports['submitted-menu'] = function () {
+	nav(
+		ul(
+			{ class: 'submitted-menu-items' },
+			li(
+				a({ href: '/guide/', class: 'submitted-menu-item-active' },
+					"Process")
+			),
+			li(
+				a({ href: '/profile/' }, "Profile")
+			)
+		)
+	);
+};
+
+exports['sub-main'] = function () {
 
 	var mobileCheckbox;
 

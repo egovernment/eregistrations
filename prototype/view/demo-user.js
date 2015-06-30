@@ -2,7 +2,7 @@
 
 var copy = require('es5-ext/object/copy'), guide;
 
-exports._parent = require('./_sub-main');
+exports._parent = require('./_user-logged-in');
 
 exports['submitted-menu'] = function () {
 	nav(

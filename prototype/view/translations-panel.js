@@ -1,6 +1,6 @@
 'use strict';
 
-exports._parent = require('./_sub-main');
+exports._parent = require('./_user-logged-in');
 
 exports['user-name'] = function () {
 	text("Meta Admin");
@@ -21,48 +21,51 @@ exports['submitted-menu'] = function () {
 	);
 };
 
-exports['sub-main'] = function () {
-	ul(
-		{ class: 'pills-nav' },
-		li({ class: 'pills-nav-active' }, a({ class: 'pills-nav-pill' }, "Lorem ipsum dolor amet")),
-		li(a({ class: 'pills-nav-pill' }, "Lorem ipsum")),
-		li(a({ class: 'pills-nav-pill' }, "Lorem ipsum dolor")),
-		li(a({ class: 'pills-nav-pill' }, "Lorem ipsum")),
-		li(a({ class: 'pills-nav-pill' }, "Lorem ipsum"))
-	);
+exports['sub-main'] = {
+	class: { content: true, 'user-forms': true },
+	content: function () {
+		ul(
+			{ class: 'pills-nav' },
+			li({ class: 'pills-nav-active' }, a({ class: 'pills-nav-pill' }, "Lorem ipsum dolor amet")),
+			li(a({ class: 'pills-nav-pill' }, "Lorem ipsum")),
+			li(a({ class: 'pills-nav-pill' }, "Lorem ipsum dolor")),
+			li(a({ class: 'pills-nav-pill' }, "Lorem ipsum")),
+			li(a({ class: 'pills-nav-pill' }, "Lorem ipsum"))
+		);
 
-	section(
-		{ class: 'section-primary' },
-		form(
-			h2("Translations"),
-			hr(),
-			fieldset(
-				{ class: 'form-elements i18n-panel' },
-				ul(
-					['Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-						'Lorem ipsum dolor sit amet, consectetur',
-						'Lorem ipsum dolor sit amet',
-						'Lorem ipsum dolor sit amet, consectetur adipiscing',
-						'Lorem ipsum dolor sit amet, consectetur',
-						'Lorem ipsum dolor sit amet',
-						'Lorem ipsum dolor sit amet, consectetur adipiscing'],
-					function (text, index) {
-						var id = 'i18n-textarea-' + index;
-						div(
-							{ class: 'dbjs-input-component ' },
-							label({ for: id }, text),
+		section(
+			{ class: 'section-primary' },
+			form(
+				h2("Translations"),
+				hr(),
+				fieldset(
+					{ class: 'form-elements i18n-panel' },
+					ul(
+						['Lorem ipsum dolor sit amet, consectetur adipiscing elit',
+							'Lorem ipsum dolor sit amet, consectetur',
+							'Lorem ipsum dolor sit amet',
+							'Lorem ipsum dolor sit amet, consectetur adipiscing',
+							'Lorem ipsum dolor sit amet, consectetur',
+							'Lorem ipsum dolor sit amet',
+							'Lorem ipsum dolor sit amet, consectetur adipiscing'],
+						function (text, index) {
+							var id = 'i18n-textarea-' + index;
 							div(
-								{ class: 'input' },
-								textarea({ id: id })
-							)
-						);
-					}
+								{ class: 'dbjs-input-component ' },
+								label({ for: id }, text),
+								div(
+									{ class: 'input' },
+									textarea({ id: id })
+								)
+							);
+						}
+					)
+				),
+				p(
+					{ class: 'submit-placeholder' },
+					input({ type: 'submit' })
 				)
-			),
-			p(
-				{ class: 'submit-placeholder' },
-				input({ type: 'submit' })
 			)
-		)
-	);
+		);
+	}
 };
