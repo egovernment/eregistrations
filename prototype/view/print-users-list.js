@@ -5,7 +5,7 @@ exports['print-page-title'] = function () {
 	p("19/11/2015");
 };
 
-exports._parent = require('./_print-main');
+exports._parent = require('./print-base');
 
 exports.main = function () {
 	table(

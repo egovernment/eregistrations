@@ -3,7 +3,7 @@
 exports.body = function () {
 	link({ href: '/prototype-print.css', rel: 'stylesheet' });
 
-	exports._parent = require('./_print-main');
+	exports._parent = require('./print-base');
 
 	table(
 		{ class: 'print-user-data' },
