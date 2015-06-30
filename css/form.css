@@ -207,8 +207,14 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 
 .input-prepend input {
 	border-radius: 0 4px 4px 0;
-	max-width: 90%;
 	border-left: none;
+}
+
+.input-prepend input,
+.input-append input {
+	max-width: 90%;
+	position: relative;
+	z-index: 1;
 }
 
 .input-prepend input:only-child,
@@ -219,7 +225,6 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 
 .input-append input {
 	border-radius: 4px 0 0 4px;
-	max-width: 90%;
 	border-right: none;
 }
 
