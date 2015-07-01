@@ -1,9 +1,8 @@
 'use strict';
 
-exports.body = function () {
-	link({ href: '/prototype-print.css', rel: 'stylesheet' });
+exports._parent = require('./print-base');
 
-	exports._parent = require('./print-base');
+exports.body = function () {
 
 	table(
 		{ class: 'print-user-data' },

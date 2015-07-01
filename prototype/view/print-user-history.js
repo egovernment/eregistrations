@@ -1,11 +1,11 @@
 'use strict';
 
+exports._parent = require('./print-base');
+
 exports['print-page-title'] = function () {
 	h2("Registration history");
 	p("19/11/2015");
 };
-
-exports._parent = require('./print-base');
 
 exports.main = function () {
 	h2("John Smith");
