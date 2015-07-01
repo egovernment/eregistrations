@@ -14,7 +14,6 @@ var compact       = require('es5-ext/array/#/compact')
   , now = Date.now, forEach = Array.prototype.forEach, create = Object.create
   , nextTick = process.nextTick
   , stdout = process.stdout.write.bind(process.stdout)
-  , generateId = require('time-uuid')
   , configure, time;
 
 exports = module.exports = [];
@@ -51,12 +50,14 @@ exports.forEach(function (conf) {
 				}
 			}
 			text = compact.call(resolveTpl(conf.text, context)).join('');
-			statusLog = user.statusLog.map.get('s' + generateId());
-			statusLog.label = conf.label;
-			statusLog.official = (conf.official && user[conf.official]) || null;
-			statusLog.time = new Date(Date.now() +
-					(conf.timeShift ? (conf.timeShift * 100) : 0));
-			statusLog.text = text;
+			statusLog = user.statusLog.map.newUniq();
+			statusLog.setProperties({
+				label: conf.label,
+				official: (conf.official && user[conf.official]) || null,
+				time: new Date(Date.now() +
+						(conf.timeShift ? (conf.timeShift * 100) : 0)),
+				text: text
+			});
 		});
 	});
 });
