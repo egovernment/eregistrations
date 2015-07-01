@@ -4,7 +4,7 @@ var db  = require('mano').db,
 		location = require('mano/lib/client/location'),
 		user = db.User.prototype;
 
-exports._parent = require('./_main');
+exports._parent = require('./base');
 
 exports.main = function () {
 	form(
