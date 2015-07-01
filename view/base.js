@@ -13,8 +13,6 @@ exports.body = function () {
 		);
 	modalCurtain = div({ class: 'modal-courtain' });
 
-	insert(exports._bodyAppend());
-
 	main({ id: 'main' });
 
 	footer({ class: 'footer-logos' },
@@ -24,6 +22,8 @@ exports.body = function () {
 
 	// iOS fix, without that modals don't get closed
 	modalCurtain.addEventListener('click', Function.prototype, false);
+
+	insert(exports._bodyAppend());
 };
 
 exports._logo = Function.prototype;
