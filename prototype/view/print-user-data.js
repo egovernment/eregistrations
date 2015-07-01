@@ -1,10 +1,8 @@
 'use strict';
 
+exports._parent = require('./print-base');
+
 exports.body = function () {
-	link({ href: '/prototype-print.css', rel: 'stylesheet' });
-
-	exports._parent = require('./print-base');
-
 	table(
 		{ class: 'print-user-data' },
 		thead(

@@ -2,11 +2,11 @@
 
 var location = require('mano/lib/client/location');
 
+exports._parent = require('./_user-logged-in');
+
 exports['user-name'] = function () {
 	text("User Name");
 };
-
-exports._parent = require('./_user-logged-in');
 
 exports['submitted-menu'] = function () {
 	nav(
