@@ -14,7 +14,6 @@ var compact       = require('es5-ext/array/#/compact')
   , now = Date.now, forEach = Array.prototype.forEach, create = Object.create
   , nextTick = process.nextTick
   , stdout = process.stdout.write.bind(process.stdout)
-  , StatusLog = mano.db.StatusLog
   , configure, time;
 
 exports = module.exports = [];
@@ -40,7 +39,7 @@ exports.forEach(function (conf) {
 	if (conf.variables) assign(defaultContext, conf.variables);
 	setupTriggers(conf, function (target) {
 		nextTick(function () {
-			var text, user, context = create(defaultContext), prop;
+			var text, user, context = create(defaultContext), prop, statusLog;
 			if (conf.resolveUser) user = conf.resolveUser(target);
 			else user = target;
 			context.target = target;
@@ -51,13 +50,14 @@ exports.forEach(function (conf) {
 				}
 			}
 			text = compact.call(resolveTpl(conf.text, context)).join('');
-			user.statusLog.add(new StatusLog({
+			statusLog = user.statusLog.map.newUniq();
+			statusLog.setProperties({
 				label: conf.label,
 				official: (conf.official && user[conf.official]) || null,
 				time: new Date(Date.now() +
-					(conf.timeShift ? (conf.timeShift * 100) : 0)),
+						(conf.timeShift ? (conf.timeShift * 100) : 0)),
 				text: text
-			}));
+			});
 		});
 	});
 });
