@@ -4,7 +4,7 @@ var login         = require('./_login')
   , register      = require('./_register')
   , resetPassword = require('./_reset-password-request');
 
-exports._parent = require('./_main');
+exports._parent = require('./base');
 
 exports.main = function () {
 	insert(login);
