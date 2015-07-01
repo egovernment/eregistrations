@@ -5,9 +5,7 @@
 module.exports = {
 	// Public routes
 	'/': require('./view/index'),
-	public: require('./view/public'),
 	'reset-password': require('./view/reset-password'),
-	'multi-entry': require('./view/multi-entry'),
 
 	// Part-A routes
 	guide: require('./view/guide'),

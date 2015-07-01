@@ -1,7 +1,7 @@
 'use strict';
 
 var db             = require('mano').db
-  , modalContainer = require('./_modal-container')
+  , modalContainer = require('../../view/_modal-container')
 
   , user = db.User.prototype, forEach = Array.prototype.forEach
   , inventoryFields = ['inventoryShelves', 'inventoryCounters']
