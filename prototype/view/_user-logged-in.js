@@ -1,6 +1,6 @@
 'use strict';
 
-exports._parent = require('./_main');
+exports._parent = require('./base');
 
 exports.menu = function () {
 	li(
