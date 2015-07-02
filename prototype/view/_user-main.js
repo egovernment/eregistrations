@@ -5,18 +5,7 @@ var location = require('mano/lib/client/location');
 exports._parent = require('../../view/user-base');
 
 exports['submitted-menu'] = function () {
-	nav(
-		ul(
-			{ class: 'submitted-menu-items' },
-			li(
-				a({ href: '/guide/', class: 'submitted-menu-item-active' },
-					"Process")
-			),
-			li(
-				a({ href: '/profile/' }, "Profile")
-			)
-		)
-	);
+	li(a({ href: '/guide/', class: 'submitted-menu-item-active' }, "Process"));
 };
 
 exports['sub-main'] = function () {
