@@ -51,7 +51,7 @@ postRouter({});
 
 var siteTree = new DomjsSiteTree(require('mano/lib/client/domjs'));
 router = new SiteTreeRouter(require('../routes'), siteTree, {
-	notFound: require('../view/404'),
+	notFound: require('../../view/404'),
 	eventProto: { user: db.User.prototype, businessProcess: db.User.prototype }
 });
 appLocation.on('change', update = function () {

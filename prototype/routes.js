@@ -48,8 +48,6 @@ module.exports = {
 	statistics: require('./view/statistics'),
 
 	// Part-B routes - translations
-	i18n: require('./view/translations-panel'),
+	i18n: require('./view/translations-panel')
 
-	// Error routes
-	404: require('./view/404')
 };
