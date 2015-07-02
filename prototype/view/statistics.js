@@ -3,18 +3,7 @@
 exports._parent = require('../../view/user-base');
 
 exports['submitted-menu'] = function () {
-	nav(
-		ul(
-			{ class: 'submitted-menu-items' },
-			li(
-				a({ class: 'submitted-menu-item-active', href: '/statistics/' },
-					"Application")
-			),
-			li(
-				a({ href: '/profile/' }, "Profile")
-			)
-		)
-	);
+	li(a({ class: 'submitted-menu-item-active', href: '/statistics/' }, "Application"));
 };
 
 exports['sub-main'] = {

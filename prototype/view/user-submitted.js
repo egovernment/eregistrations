@@ -14,18 +14,7 @@ var syncStyle        = require('dom-ext/html-element/#/sync-style')
 exports._parent = require('../../view/user-base');
 
 exports['submitted-menu'] = function () {
-	nav(
-		ul(
-			{ class: 'submitted-menu-items' },
-			li(
-				a({ class: 'submitted-menu-item-active' },
-					"Request")
-			),
-			li(
-				a({ href: '/profile/' }, "Profile")
-			)
-		)
-	);
+	li(a({ class: 'submitted-menu-item-active' }, "Request"));
 };
 
 exports['sub-main'] = {
