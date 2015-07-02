@@ -1,6 +1,6 @@
 'use strict';
 
-exports._parent = require('./_user-logged-in');
+exports._parent = require('./user-base');
 
 exports['user-name'] = function () {
 	text("Users Admin");
