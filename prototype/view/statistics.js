@@ -1,10 +1,6 @@
 'use strict';
 
-exports._parent = require('./_user-logged-in');
-
-exports['user-name'] = function () {
-	text("Statistics");
-};
+exports._parent = require('../../view/user-base');
 
 exports['submitted-menu'] = function () {
 	nav(

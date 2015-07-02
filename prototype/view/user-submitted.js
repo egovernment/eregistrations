@@ -11,11 +11,7 @@ var syncStyle        = require('dom-ext/html-element/#/sync-style')
 
   , user = db.User.prototype;
 
-exports._parent = require('./_user-logged-in');
-
-exports['user-name'] = function () {
-	text("User Submited");
-};
+exports._parent = require('../../view/user-base');
 
 exports['submitted-menu'] = function () {
 	nav(
