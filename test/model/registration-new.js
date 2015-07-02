@@ -9,9 +9,13 @@ var aFrom                 = require('es5-ext/array/from')
 module.exports = function (t, a) {
 	var db = new Database()
 	  , Document = defineDocument(db)
-	  , TestDocument = Document.extend('Test', {}, { label: { value: "Test document" } })
 	  , BusinessProcess = defineCertificates(db)
-	  , businessProcess, registration;
+	  , TestDocument, businessProcess, registration;
+
+	TestDocument = Document.extend('Test', {}, {
+		label: { value: "Test document" },
+		abbr: { value: "Test" }
+	});
 
 	BusinessProcess.prototype.registrations.map.define('test', { nested: true });
 	BusinessProcess.prototype.registrations.map.test.Document = TestDocument;
@@ -19,6 +23,7 @@ module.exports = function (t, a) {
 	businessProcess = new BusinessProcess();
 	registration = businessProcess.registrations.map.test;
 	a(registration.label, "Test document");
+	a(registration.abbr, "Test");
 	a(registration.isApplicable, true);
 	a(registration.isMandatory, true);
 	a(registration.isRequested, true);
