@@ -22,7 +22,7 @@ exports.menu = function () {
 		)
 	);
 	li(
-		a({ href: '/', rel: 'server' },
+		a({ href: '/logout/', rel: 'server' },
 			span({ class: 'fa fa-power-off' }, "Log out")
 			)
 	);
