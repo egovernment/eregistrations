@@ -7,7 +7,7 @@ exports.body = function () {
 
 	header({ class: 'header-top' },
 		div({ class: 'content header-top-wrapper' },
-			div({ class: 'header-top-logo' }, a({ href: '/' }, exports._logo())),
+			div({ class: 'header-top-logo' }, a({ href: '/' }, exports._logo(this))),
 			nav(ul({ class: 'header-top-menu', id: 'menu' }))
 			)
 		);
@@ -16,14 +16,14 @@ exports.body = function () {
 	main({ id: 'main' });
 
 	footer({ class: 'footer-logos' },
-		exports._footerContent());
+		exports._footerContent(this));
 
 	insert(modalContainer);
 
 	// iOS fix, without that modals don't get closed
 	modalCurtain.addEventListener('click', Function.prototype, false);
 
-	insert(exports._bodyAppend());
+	insert(exports._bodyAppend(this));
 };
 
 exports._logo = Function.prototype;
