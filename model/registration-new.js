@@ -44,6 +44,10 @@ module.exports = memoize(function (db/*, options*/) {
 				throw new Error("Cannot resolve abbr, as there's no document for " +
 					JSON.stringify(this.key) + " registration defined");
 			}
+			if (!Document.abbr) {
+				throw new Error("Cannot fallback abbr to document, as there's no abbr defined on " +
+					"document for " + JSON.stringify(this.key) + " registration");
+			}
 			return Document.abbr;
 		} },
 		// Which institution processes given registration
