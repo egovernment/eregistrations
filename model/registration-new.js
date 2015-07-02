@@ -38,7 +38,14 @@ module.exports = memoize(function (db/*, options*/) {
 		// and we're not able to narrow it, to what is expected
 		Document: { type: db.Base },
 		// Registrations in various views are listed using short abbreviations
-		abbr: { type: StringLine },
+		abbr: { type: StringLine, value: function () {
+			var Document = this.Document;
+			if (!Document) {
+				throw new Error("Cannot resolve abbr, as there's no document for " +
+					JSON.stringify(this.key) + " registration defined");
+			}
+			return Document.abbr;
+		} },
 		// Which institution processes given registration
 		institution: { type: Institution },
 
