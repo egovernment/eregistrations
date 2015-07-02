@@ -12,7 +12,7 @@ exports.menu = function () {
 	li(
 		a(
 			{ href: '/profile/' },
-			span({ class: 'header-top-user-name', id: 'user-name' })
+			span({ class: 'header-top-user-name' }, this.user.fullName)
 		)
 	);
 	li(
