@@ -5,6 +5,7 @@ var _                = require('mano').i18n.bind("Model: Business Process")
   , validDb          = require('dbjs/valid-dbjs')
   , defineStatusLog  = require('../lib/status-log')
   , defineStringLine = require('dbjs-ext/string/string-line')
+  , defineNestedMap  = require('../lib/nested-map')
   , defineBusinessProcessStatus = require('../lib/business-process-status');
 
 module.exports = memoize(function (db/*, options*/) {
@@ -13,6 +14,7 @@ module.exports = memoize(function (db/*, options*/) {
 	BusinessProcessStatus = defineBusinessProcessStatus(db);
 	StringLine            = defineStringLine(db);
 	StatusLog             = defineStatusLog(db);
+	defineNestedMap(db);
 
 	db.Object.extend('BusinessProcess', {
 		isFromEregistrations: { type: db.Boolean,
@@ -37,8 +39,7 @@ module.exports = memoize(function (db/*, options*/) {
 			return 'draft';
 		} },
 		submitted: { type: db.Boolean, value: false },
-		businessName: { type: StringLine },
-		statusLog: { type: StatusLog, multiple: true }
+		businessName: { type: StringLine }
 	});
 
 	db.BusinessProcess.prototype.defineProperties({
@@ -84,6 +85,9 @@ module.exports = memoize(function (db/*, options*/) {
 			reverse: 'previousBusinessProcess'
 		}
 	});
+
+	db.BusinessProcess.prototype.defineNestedMap('statusLog',
+		{ itemType: StatusLog, cardinalPropertyKey: 'label' });
 
 	return db.BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

@@ -37,9 +37,7 @@ module.exports = memoize(function (db) {
 		// Document fields sections
 		// It's about fields we want officials to fill either at revision (document upload) or
 		// processing step (certificate upload)
-		dataForm: { type: FormSectionBase, nested: true },
-		// History of document processing
-		statusLog: { type: StatusLog, multiple: true }
+		dataForm: { type: FormSectionBase, nested: true }
 	}, {
 		// Document label
 		label: { type: StringLine },
@@ -54,6 +52,10 @@ module.exports = memoize(function (db) {
 	// Document.prototype.files.map property should be used *only* to generate form controls
 	// For "read" uses, always refer to Document.prototype.files.ordered
 	Document.prototype.defineNestedMap('files', { itemType: File, cardinalPropertyKey: 'path' });
+
+	// History of document processing
+	Document.prototype.defineNestedMap('statusLog',
+		{ itemType: StatusLog, cardinalPropertyKey: 'label' });
 
 	return Document;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
