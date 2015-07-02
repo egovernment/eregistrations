@@ -28,7 +28,7 @@ mano.env = require('../../common/client/env');
 
 // Expose for dev purposes
 // TODO: Expose only in dev environments
-window.db = mano.db;
+var db = window.db = mano.db;
 
 mano.noData = true;
 
@@ -50,8 +50,10 @@ var appLocation    = window.appLocation = require('mano/lib/client/location')
 postRouter({});
 
 var siteTree = new DomjsSiteTree(require('mano/lib/client/domjs'));
-router = new SiteTreeRouter(require('../routes'), siteTree,
-	{ notFound: require('../view/404') });
+router = new SiteTreeRouter(require('../routes'), siteTree, {
+	notFound: require('../view/404'),
+	eventProto: { user: db.User.prototype, businessProcess: db.User.prototype }
+});
 appLocation.on('change', update = function () {
 	if (last.call(appLocation.pathname) !== '/') {
 		appLocation.goto(appLocation.pathname + '/' + appLocation.search + appLocation.hash);
