@@ -64,3 +64,12 @@
 .statistics-table-sensitive-data {
 	color: var(--error-text);
 }
+
+.statistics-table-filters {
+	margin-right: 2%;
+	width: 40%;
+	display: inline-block;
+}
+.statistics-table-filters + .statistics-table-dual-main {
+	margin-right: 0;
+}

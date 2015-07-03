@@ -46,6 +46,7 @@ module.exports = {
 
 	// Part-B routes - statistics
 	statistics: require('./view/statistics'),
+	'filtered-statistics': require('./view/filtered-statistics'),
 
 	// Part-B routes - translations
 	i18n: require('./view/translations-panel')
