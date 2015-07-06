@@ -9,7 +9,11 @@ exports['submitted-menu'] = function () {
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		h2("Filterable statistics");
+		section({ class: 'section-warning' },
+			ul(li(p("This statistic page displays quantitative data on current states of inscription in" +
+				" the system. You can filter the data with the filters on the left part of the page, the" +
+				" table will then be updated. You can also print the stats sheet with the button below " +
+				"the table."))));
 		ul(
 			{ class: 'pills-nav' },
 			li({ class: 'pills-nav-active' }, a({ class: 'pills-nav-pill' }, "Lorem ipsum dolor amet")),
