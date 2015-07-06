@@ -1,5 +1,7 @@
 'use strict';
 
+var isReadOnlyRender = require('mano/client/utils/is-read-only-render');
+
 exports._parent = require('../../view/user-base');
 
 exports['submitted-menu'] = function () {
@@ -34,9 +36,7 @@ exports['sub-main'] = {
 								)
 						)
 				),
-				div(
-					input({ type: 'submit' }, "Submit")
-				)
+				isReadOnlyRender ? div(input({ type: 'submit' }, "Submit")) : null
 			),
 			div(
 				a(
