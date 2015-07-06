@@ -36,7 +36,7 @@ exports['sub-main'] = {
 								)
 						)
 				),
-				_if(isReadOnlyRender, div(input({ type: 'submit' }, "Submit")))
+				isReadOnlyRender ? div(input({ type: 'submit' }, "Submit")) : null
 			),
 			div(
 				a(
