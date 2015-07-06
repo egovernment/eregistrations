@@ -22,6 +22,7 @@ exports.head = function () {
 			if (Object.defineProperty({}, 'foo',  { get: function () { return 'bar'; } }).foo !== 'bar') {
 				return;
 			}
+			if (document.cookie.indexOf('legacy=1') !== -1) return;
 			document.write('<scr' + 'ipt async src="' + appUrl + '"></sc' + 'ript>');
 		}, stUrl('prototype.js'));
 	}
