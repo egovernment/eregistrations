@@ -149,6 +149,10 @@ exports._bodyAppend = function () {
 						span("Statistics"), span({ class: 'label-reg' }, "Statistics"))
 			),
 			li(
+				a({ href: '/filtered-statistics/' },
+						span("Filtered statistics"), span({ class: 'label-reg' }, "Statistics"))
+			),
+			li(
 				a({ href: '/i18n/' },
 						span("Translations"), span({ class: 'label-reg' }, "Meta"))
 			)
