@@ -2,8 +2,6 @@
 
 var isReadOnlyRender = require('mano/client/utils/is-read-only-render');
 
-console.log(isReadOnlyRender);
-
 exports._parent = require('../../view/user-base');
 
 exports['submitted-menu'] = function () {
