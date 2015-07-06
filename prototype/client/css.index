@@ -73,6 +73,7 @@
 ../../css/components/front-desk-validation.css
 ../../css/components/front-desk-certificates-print.css
 ../../css/components/statistics-table.css
+../../css/components/statistics-table-filters.css
 ../../css/components/statistics-table-dual.css
 ../../css/components/i18n-panel.css
 ../../css/components/pills-nav.css
