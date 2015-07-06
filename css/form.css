@@ -102,6 +102,10 @@ select {
 	padding: 3px 5px;
 }
 
+select[multiple="multiple"] {
+	height: auto;
+}
+
 /* Safari hack  */
 input[type="search"] {
 	-webkit-appearance: textfield;
