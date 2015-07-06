@@ -22,12 +22,14 @@ exports.head = function () {
 			if (Object.defineProperty({}, 'foo',  { get: function () { return 'bar'; } }).foo !== 'bar') {
 				return;
 			}
+			if (document.cookie.indexOf('legacy=1') !== -1) return;
 			document.write('<scr' + 'ipt async src="' + appUrl + '"></sc' + 'ript>');
 		}, stUrl('prototype.js'));
 	}
 
 	script({ src: stUrl('prototype.legacy.js') });
 	link({ href: stUrl('prototype.css'), rel: 'stylesheet' });
+	if (isReadOnlyRender) link({ href: stUrl('prototype-legacy.css'), rel: 'stylesheet' });
 };
 
 exports._logo = function () { return img({ src: '/img/logo-2.png' }); };
