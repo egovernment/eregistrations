@@ -21,9 +21,9 @@ module.exports = function (user/*, options*/) {
 	  , missingFiles = []
 	  , archDocumentName
 	  , zipTempName = user.__id__ + '.'
-			+ replace.call(user.fullName, ' ', '-') + Date.now() + '.zip'
+			+ replace.call(user.businessName, ' ', '-') + Date.now() + '.zip'
 	  , zipName = user.__id__ + '.'
-			+ replace.call(user.fullName, ' ', '-') + '.zip';
+			+ replace.call(user.businessName, ' ', '-') + '.zip';
 
 	if (options.uploadsPath != null) uploadsPath = options.uploadsPath;
 	else uploadsPath = envUploadsDir;
