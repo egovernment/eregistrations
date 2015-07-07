@@ -7,10 +7,9 @@ isPluralKey = require('i18n2/is-plural-key'),
 resolvePluralKey = require('i18n2/resolve-plural-key'),
 locale = window.i18n;
 
-exports._parent = require('./user-base');
+exports._parent = require('./meta-admin-base');
 
-exports['sub-main'] = {
-	class: { content: true },
+exports['meta-admin-main'] = {
 	content: function () {
 		var url = baseUrl.bind(this.root), plural, pluralEdited;
 
