@@ -1,6 +1,8 @@
 'use strict';
 
-var i18nMap = require('../../i18n-scan-map.generated');
+var i18nMap = require('./i18n-fake-scan-map.json');
+
+window.i18n = {};
 
 module.exports = exports = require('../../view/translations-panel');
 

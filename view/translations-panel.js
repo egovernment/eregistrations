@@ -14,10 +14,6 @@ exports['sub-main'] = {
 	content: function () {
 		var url = baseUrl.bind(this.root), plural, pluralEdited;
 
-		if (!exports._i18n()) {
-			return;
-		}
-
 		section(
 			{ class: 'section-primary' },
 			form(
@@ -27,7 +23,7 @@ exports['sub-main'] = {
 				fieldset(
 					{ class: 'form-elements i18n-panel' },
 					ul(
-						toArray(exports._i18n),
+						toArray(exports._i18n()),
 						function (translation) {
 							if (isPluralKey(translation[0])) {
 								plural = resolvePluralKey(translation[0]);
