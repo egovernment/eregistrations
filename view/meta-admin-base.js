@@ -5,9 +5,9 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		ul({ class: 'pills-nav' }, exports._pillsNav(this));
+		ul({ class: 'pills-nav' }, exports._metaAdminNav(this));
 		div({ id: 'meta-admin-main' });
 	}
 };
 
-exports._pillsNav = Function.prototype;
+exports._metaAdminNav = Function.prototype;
