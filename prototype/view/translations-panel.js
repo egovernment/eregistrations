@@ -1,17 +1,13 @@
 'use strict';
 
+var i18nMap = require('../../i18n-scan-map.generated');
+
 module.exports = exports = require('../../view/translations-panel');
 
 exports['submitted-menu'] = function () {
 	li(a({ href: '/i18n/' }, "Translations"));
 };
 
-exports._translationsList = function () {
-	return ['Lorem ipsum dolor sit amet, consectetur adipiscing elit',
-		'Lorem ipsum dolor sit amet, consectetur',
-		'Lorem ipsum dolor sit amet',
-		'Lorem ipsum dolor sit amet, consectetur adipiscing',
-		'Lorem ipsum dolor sit amet, consectetur',
-		'Lorem ipsum dolor sit amet',
-		'Lorem ipsum dolor sit amet, consectetur adipiscing'];
+exports._i18n = function () {
+	return i18nMap;
 };
