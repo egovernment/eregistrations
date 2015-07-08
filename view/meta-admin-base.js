@@ -6,7 +6,7 @@ exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
 		ul({ class: 'pills-nav' }, exports._metaAdminNav(this));
-		div({ id: 'meta-admin-main' });
+		div({ class: 'meta-admin-main', id: 'meta-admin-main' });
 	}
 };
 
