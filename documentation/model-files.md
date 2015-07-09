@@ -23,7 +23,7 @@ Configuration of guide form section
 
 ### /nested-entities
 Model for nested entities (e.g. branches, representatives) used in dataForms.
-Each entity should have its folder with `fields.js` and `sections.js` files,e.g
+Each entity should have its folder with `fields.js` and `data-forms.js` files,e.g
 ```
 /nested-entities/branch/fields.js
 /nested-entities/branch/data-forms.js
