@@ -1,3 +1,5 @@
+// Prototype base view for user registration (Part A)
+
 'use strict';
 
 module.exports = exports = require('../../view/user-registration-base');

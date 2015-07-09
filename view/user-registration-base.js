@@ -1,3 +1,5 @@
+// Base view for user registration (Part A)
+
 'use strict';
 
 var location = require('mano/lib/client/location');
