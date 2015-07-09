@@ -39,8 +39,8 @@ Each step can be represented by one file as e.g.
 
 or folder of files, e.g.
 ```
-/processing-steps/inspection-report/section.js
 /processing-steps/inspection-report/fields.js
+/processing-steps/inspection-report/data-form.js
 ```
 
 There should be also `/processing-steps/index.js` file, which describes flow between processing roles
