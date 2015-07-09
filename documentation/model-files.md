@@ -34,7 +34,7 @@ Configuration of properties needed for Part B of the process
 
 Each step can be represented by one file as e.g.
 ```
-/processing-steps/inspection.js
+/processing-steps/inspection-report.js
 ```
 
 or folder of files, e.g.
