@@ -11,7 +11,7 @@ module.exports = function (t, a) {
 	  , TestFormSection
 	  , BusinessProcess = defineBusinessProcess(db)
 	  , DateType = defineDate(db)
-	  , businessProcess, section, Partner;
+	  , businessProcess, section, Partner, partnerSection;
 
 	TestFormSection = FormSection.extend('TestFormSection', {
 		actionUrl: { value: 'action' },
@@ -26,7 +26,8 @@ module.exports = function (t, a) {
 		lastName: { type: db.String, required: true },
 		isLastNameApplicable: { type: db.Boolean, value: function () {
 			return this.hasSameLastName === false;
-		} }
+		} },
+		section: { type: TestFormSection, nested: true }
 	});
 	['isNameFormApplicable', 'isLastNameFormApplicable',
 		'isHasSameLastNameFormApplicable'].forEach(function (name) {
@@ -86,4 +87,8 @@ module.exports = function (t, a) {
 	a(section.status, 0.8);
 	businessProcess.partner.lastName = 'test';
 	a(section.status, 1);
+	partnerSection = businessProcess.partner.section;
+	a(partnerSection.propertyMaster, businessProcess);
+	businessProcess.partner.section.propertyMasterType = Partner;
+	a(partnerSection.propertyMaster, businessProcess.partner);
 };
