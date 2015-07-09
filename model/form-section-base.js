@@ -31,8 +31,19 @@ module.exports = memoize(function (db) {
 		isApplicable: { type: db.Boolean, required: true, value: true },
 		// The master for property paths resolution
 		propertyMaster: { type: db.Object, value: function () {
+			var owner;
+			if (this.propertyMasterType) {
+				// we take first owner who is a person
+				owner = this.owner;
+				while (owner && !this.propertyMasterType.is(owner)) {
+					owner = owner.owner;
+				}
+				return owner;
+			}
 			return this.master;
 		} },
+		// Setup for type to check against in propertyMaster's owner search
+		propertyMasterType: { type: db.Base },
 		// A percentage of completion of fields covered by the section
 		status: { type: Percentage, required: true, value: 1 },
 		// The weight of the section status. It is used to determine weighed status across sections.
