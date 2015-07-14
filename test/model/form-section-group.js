@@ -2,8 +2,7 @@
 
 var Database              = require('dbjs')
   , defineBusinessProcess = require('../../model/business-process/base')
-  , defineFormSection     = require('../../model/form-section')
-  , defineDate            = require('dbjs-ext/date-time/date');
+  , defineFormSection     = require('../../model/form-section');
 
 module.exports = function (t, a) {
 	var db = new Database()
@@ -11,7 +10,6 @@ module.exports = function (t, a) {
 	  , FormSection = defineFormSection(db)
 	  , TestFormSectionGroup
 	  , BusinessProcess = defineBusinessProcess(db)
-	  , DateType = defineDate(db)
 	  , businessProcess, section;
 
 	TestFormSectionGroup = FormSectionGroup.extend('TestFormSectionGroup', {
@@ -57,5 +55,6 @@ module.exports = function (t, a) {
 	businessProcess.prop0 = true;
 	businessProcess.prop3 = true;
 	a(section.status, 1);
-	a(String(section.lastEditDate), String(new DateType(businessProcess.$prop3.lastModified / 1000)));
+	a(String(section.lastEditDate),
+		String(new db.DateTime(businessProcess.$prop3.lastModified / 1000)));
 };
