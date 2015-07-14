@@ -73,7 +73,10 @@ module.exports = memoize(function (db) {
 
 			return false;
 		} },
-		lastEditDate: { type: db.DateTime },
+		lastEditStamp: { type: UInteger, value: 0 },
+		lastEditDate: { type: db.DateTime, value: function () {
+			return this.lastEditStamp / 1000;
+		} },
 		// A multiple for which you can pass names of the properties you want excluded from
 		// status calculation if they were already provided for the form (for example from guide).
 		excludedFromStatusIfFilled: { type: StringLine, multiple: true },

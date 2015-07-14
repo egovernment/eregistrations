@@ -123,7 +123,7 @@ module.exports = memoize(function (db) {
 
 			return weightTotal;
 		} },
-		lastEditDate: {
+		lastEditStamp: {
 			value: function (_observe) {
 				var res = 0, entityObjects, sectionKey, resolvent, resolventLastModified;
 				entityObjects = this.master.resolveSKeyPath(this.propertyName, _observe);
@@ -145,7 +145,7 @@ module.exports = memoize(function (db) {
 					sections = entityObject.resolveSKeyPath(sectionKey, _observe);
 					sections = sections.object[sections.key];
 					sections.forEach(function (section) {
-						if (_observe(section._lastEditDate) > res) res = section.lastEditDate;
+						if (_observe(section._lastEditStamp) > res) res = section.lastEditStamp;
 					});
 				});
 				if (resolventLastModified > res) res = resolventLastModified;
