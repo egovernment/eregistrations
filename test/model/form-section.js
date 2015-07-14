@@ -2,15 +2,13 @@
 
 var aFrom                 = require('es5-ext/array/from')
   , Database              = require('dbjs')
-  , defineBusinessProcess = require('../../model/business-process/base')
-  , defineDate            = require('dbjs-ext/date-time/date');
+  , defineBusinessProcess = require('../../model/business-process/base');
 
 module.exports = function (t, a) {
 	var db = new Database()
 	  , FormSection = t(db)
 	  , TestFormSection
 	  , BusinessProcess = defineBusinessProcess(db)
-	  , DateType = defineDate(db)
 	  , businessProcess, section, Partner, partnerSection;
 
 	TestFormSection = FormSection.extend('TestFormSection', {
@@ -73,7 +71,8 @@ module.exports = function (t, a) {
 	businessProcess.prop0 = true;
 	businessProcess.prop3 = true;
 	a(section.status, 1);
-	a(String(section.lastEditDate), String(new DateType(businessProcess.$prop3.lastModified / 1000)));
+	a(String(section.lastEditDate),
+		String(new db.DateTime(businessProcess.$prop3.lastModified / 1000)));
 	businessProcess.hasPartner = true;
 	a(section.weight, 4);
 	a(section.status, 0.5);

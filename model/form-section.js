@@ -162,7 +162,7 @@ module.exports = memoize(function (db) {
 			type: db.Object,
 			nested: true
 		},
-		lastEditDate: {
+		lastEditStamp: {
 			value: function (_observe) {
 				var res = 0, resolved, lastModified, propertiesToCheck;
 				propertiesToCheck = this.resolvedPropertyNames.copy();
@@ -179,7 +179,7 @@ module.exports = memoize(function (db) {
 					if (lastModified > res) res = lastModified;
 				}, this);
 
-				return res / 1000;
+				return res;
 			}
 		},
 		// The names of the model fields which should be handled by this section.

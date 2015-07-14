@@ -3,8 +3,7 @@
 var Database              = require('dbjs')
   , defineBusinessProcess = require('../../model/business-process/base')
   , defineFormSection     = require('../../model/form-section')
-  , defineFormSections    = require('../../model/form-sections')
-  , defineDate            = require('dbjs-ext/date-time/date');
+  , defineFormSections    = require('../../model/form-sections');
 
 module.exports = function (t, a) {
 	var db = new Database()
@@ -13,7 +12,6 @@ module.exports = function (t, a) {
 	  , Partner
 	  , FormSection = defineFormSection(db)
 	  , BusinessProcess = defineBusinessProcess(db)
-	  , DateType = defineDate(db)
 	  , businessProcess, section;
 
 	TestFormEntitiesTable = FormEntitiesTable.extend('TestFormEntitiesTable', {
@@ -57,7 +55,7 @@ module.exports = function (t, a) {
 	businessProcess.partners.first.prop3 = true;
 	a(section.status, 1);
 	a(String(section.lastEditDate), String(
-		new DateType(businessProcess.partners.first.getDescriptor('prop3').lastModified / 1000)
+		new db.DateTime(businessProcess.partners.first.getDescriptor('prop3').lastModified / 1000)
 	));
 	section.min = 2;
 	a(section.status, 0.5);
@@ -79,6 +77,6 @@ module.exports = function (t, a) {
 	a(section.weight, 0);
 	a(section.status, 1);
 	a(String(section.lastEditDate), String(
-		new DateType(businessProcess.getDescriptor('tableResolver').lastModified / 1000)
+		new db.DateTime(businessProcess.getDescriptor('tableResolver').lastModified / 1000)
 	));
 };

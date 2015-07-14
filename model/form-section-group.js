@@ -73,11 +73,11 @@ module.exports = memoize(function (db) {
 
 			return weightTotal;
 		} },
-		lastEditDate: {
+		lastEditStamp: {
 			value: function (_observe) {
 				var res = 0;
 				this.sections.forEach(function (section) {
-					if (_observe(section._lastEditDate) > res) res = section.lastEditDate;
+					if (_observe(section._lastEditStamp) > res) res = section.lastEditStamp;
 				});
 
 				return res;
