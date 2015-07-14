@@ -5,7 +5,7 @@ var Map              = require('es6-map')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , _                = require('mano').i18n.bind('Model: Submissions')
   , defineDocument   = require('../document')
-  , defineCost       = require('../document');
+  , defineCost       = require('../cost');
 
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(db)
