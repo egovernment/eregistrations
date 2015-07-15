@@ -17,6 +17,8 @@ module.exports = memoize(function (db/*, options*/) {
 	defineNestedMap(db);
 
 	db.Object.extend('BusinessProcess', {
+		//Marks an obsolete model
+		isOldModel: { type: db.Boolean, value: true },
 		isFromEregistrations: { type: db.Boolean,
 			value: true,
 			label: _("Has registration been made online?")
