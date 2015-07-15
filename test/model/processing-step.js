@@ -76,7 +76,7 @@ module.exports = function (t, a) {
 	a(step.isClosed, false);
 
 	a.h3("Complete");
-	step.sentBackReason = "Whateever ..";
+	step.sendBackReason = "Whateever ..";
 	a(step.isApplicable, true);
 	a(step.isReady, true);
 	a(step.isPending, false);
@@ -100,7 +100,7 @@ module.exports = function (t, a) {
 	a(step.isClosed, false);
 
 	a.h3("Complete");
-	step.rejectReason = "Whateever ..";
+	step.rejectionReason = "Whateever ..";
 	a(step.isApplicable, true);
 	a(step.isReady, true);
 	a(step.isPending, false);
