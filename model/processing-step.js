@@ -55,12 +55,15 @@ module.exports = memoize(function (db) {
 		status: { type: ProcessingStepStatus, required: true },
 
 		// Progress of individual step statuses
+		// "approved" status progress
 		approvalProgress: { type: Percentage, value: function (_observe) {
 			return _observe(this.dataForm._status);
 		} },
+		// "sentBack" status progress
 		sendBackProgress: { type: Percentage, value: function (_observe) {
 			return this.sendBackReason ? 1 : 0;
 		} },
+		// "rejected" status progress
 		rejectionProgress: { type: Percentage, value: function (_observe) {
 			return this.rejectionReason ? 1 : 0;
 		} },
