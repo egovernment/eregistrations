@@ -28,17 +28,17 @@ module.exports = function (t, a) {
 
 	businessProcess = new BusinessProcess();
 	a.deep(aFrom(businessProcess.documents.uploaded), []);
-	a.deep(aFrom(businessProcess.documents.multiProcessUploaded), []);
+	a.deep(aFrom(businessProcess.documents.processChainUploaded), []);
 
 	businessProcess.certificates.map.test.files.map.newUniq().path = '/elo.png';
 	a.deep(aFrom(businessProcess.documents.uploaded), [businessProcess.certificates.map.test]);
-	a.deep(aFrom(businessProcess.documents.multiProcessUploaded),
+	a.deep(aFrom(businessProcess.documents.processChainUploaded),
 		[businessProcess.certificates.map.test]);
 
 	businessProcess.requirementUploads.map.test2.document.files.map.newUniq().path = '/elo.png';
 	a.deep(aFrom(businessProcess.documents.uploaded),
 		[businessProcess.certificates.map.test, businessProcess.requirementUploads.map.test2.document]);
-	a.deep(aFrom(businessProcess.documents.multiProcessUploaded),
+	a.deep(aFrom(businessProcess.documents.processChainUploaded),
 		[businessProcess.certificates.map.test, businessProcess.requirementUploads.map.test2.document]);
 
 	businessProcess.isClosed = true;
@@ -46,32 +46,32 @@ module.exports = function (t, a) {
 	businessProcess.derivedBusinessProcess = businessProcessUpdate;
 	a.deep(aFrom(businessProcess.documents.uploaded),
 		[businessProcess.certificates.map.test, businessProcess.requirementUploads.map.test2.document]);
-	a.deep(aFrom(businessProcess.documents.multiProcessUploaded),
+	a.deep(aFrom(businessProcess.documents.processChainUploaded),
 		[businessProcess.certificates.map.test, businessProcess.requirementUploads.map.test2.document]);
 	a.deep(aFrom(businessProcessUpdate.documents.uploaded), []);
-	a.deep(aFrom(businessProcessUpdate.documents.multiProcessUploaded), []);
+	a.deep(aFrom(businessProcessUpdate.documents.processChainUploaded), []);
 
 	businessProcessUpdate.certificates.map.test.files.map.newUniq().path = '/elo.png';
 	a.deep(aFrom(businessProcess.documents.uploaded), [businessProcess.certificates.map.test,
 		businessProcess.requirementUploads.map.test2.document]);
-	a.deep(aFrom(businessProcess.documents.multiProcessUploaded),
+	a.deep(aFrom(businessProcess.documents.processChainUploaded),
 		[businessProcessUpdate.certificates.map.test,
 			businessProcess.requirementUploads.map.test2.document]);
 	a.deep(aFrom(businessProcessUpdate.documents.uploaded),
 		[businessProcessUpdate.certificates.map.test]);
-	a.deep(aFrom(businessProcessUpdate.documents.multiProcessUploaded),
+	a.deep(aFrom(businessProcessUpdate.documents.processChainUploaded),
 		[businessProcessUpdate.certificates.map.test]);
 
 	businessProcessUpdate.requirementUploads.map.test2.document.files.map.newUniq().path = '/elo.png';
 	a.deep(aFrom(businessProcess.documents.uploaded), [businessProcess.certificates.map.test,
 		businessProcess.requirementUploads.map.test2.document]);
-	a.deep(aFrom(businessProcess.documents.multiProcessUploaded),
+	a.deep(aFrom(businessProcess.documents.processChainUploaded),
 		[businessProcessUpdate.certificates.map.test,
 			businessProcessUpdate.requirementUploads.map.test2.document]);
 	a.deep(aFrom(businessProcessUpdate.documents.uploaded),
 		[businessProcessUpdate.certificates.map.test,
 			businessProcessUpdate.requirementUploads.map.test2.document]);
-	a.deep(aFrom(businessProcessUpdate.documents.multiProcessUploaded),
+	a.deep(aFrom(businessProcessUpdate.documents.processChainUploaded),
 		[businessProcessUpdate.certificates.map.test,
 			businessProcessUpdate.requirementUploads.map.test2.document]);
 };
