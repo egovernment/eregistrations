@@ -1,5 +1,7 @@
 'use strict';
 
+module.exports = exports = require('../../view/print-base');
+
 exports.title = "eRegistrations: Prototype demo print";
 
 exports.head = function () {
@@ -8,14 +10,4 @@ exports.head = function () {
 	link({ href: stUrl('prototype-print.css'), rel: 'stylesheet' });
 };
 
-exports.body = function () {
-	header(
-		{ class: 'print-header' },
-		img({ src: '/img/logo-2.png' }),
-		div(
-			{ id: 'print-page-title' }
-		)
-	);
-	hr();
-	section({ id: 'main' });
-};
+exports._logo = function () { return img({ src: '/img/logo-2.png' }); };
