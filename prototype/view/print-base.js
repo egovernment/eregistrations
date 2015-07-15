@@ -2,7 +2,7 @@
 
 module.exports = exports = require('../../view/print-base');
 
-exports._title = function () { return "eRegistrations: Prototype demo print"; };
+exports.title = "eRegistrations: Prototype demo print";
 
 exports.head = function () {
 	meta({ name: 'viewport', content: 'width=device-width' });
