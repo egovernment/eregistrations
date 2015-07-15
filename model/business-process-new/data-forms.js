@@ -22,29 +22,21 @@ module.exports = memoize(function (db/* options */) {
 			type: FormSectionBase,
 			multiple: true,
 			value: function (_observe) {
-				var sections = [], sectionNames = {}, derivatives = [], sectionFilter;
+                var processes = [this.master], sections = [], taken = Object.create(null);
 
-				sectionFilter = function (section, sectionName) {
-					if (!sectionNames[sectionName] && _observe(section._status) > 0) {
-						sectionNames[sectionName] = true;
-						sections.push(section);
-					}
-				};
-
-				// we want to avoid potential race condition, hence no toArray
-				if (this.master.derivedBusinessProcesses) {
-					_observe(this.master.derivedBusinessProcesses).forEach(function (derived) {
-						derivatives.push(derived);
-					});
-					derivatives.reverse().forEach(function (derived) {
-						if (derived.dataForms) {
-							derived.dataForms.applicable.forEach(sectionFilter);
-						}
-					});
-				}
-				if (this.applicable) {
-					this.applicable.forEach(sectionFilter);
-				}
+                // Gather all business processes in chain
+                _observe(this.master.derivedBusinessProcesses).forEach(function (process) {
+                    processes.push(process);
+                });
+                // Iterate processes in reverse order (latest one should be considered first);
+                processes.reverse().forEach(function (process) {
+                    _observe(process.dataForms.applicable).forEach(function (section, name) {
+                        if (_observe(section._status) === 0) return;
+                        if (taken[name]) return;
+                        taken[name] = true;
+                        sections.push(section);
+                    });
+                });
 
 				return sections;
 			}
