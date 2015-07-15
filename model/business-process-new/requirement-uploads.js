@@ -43,6 +43,24 @@ module.exports = memoize(function (db/* options */) {
 		progress: { type: Percentage, value: function (_observe) {
 			if (!this.applicable.size) return 1;
 			return this.uploaded.size / this.applicable.size;
+		} },
+
+		// Revision step collections
+		// Subset of approved requirement uploads
+		approved: { type: RequirementUpload, multiple: true, value: function (_observe) {
+			var result = [];
+			this.applicable.forEach(function (requirementUpload) {
+				if (_observe(requirementUpload._isApproved)) result.push(requirementUpload);
+			});
+			return result;
+		} },
+		// Subset of rejected requirement uploads
+		rejected: { type: RequirementUpload, multiple: true, value: function (_observe) {
+			var result = [];
+			this.applicable.forEach(function (requirementUpload) {
+				if (_observe(requirementUpload._isRejected)) result.push(requirementUpload);
+			});
+			return result;
 		} }
 	});
 	return BusinessProcess;
