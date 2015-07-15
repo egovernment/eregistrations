@@ -29,7 +29,7 @@ module.exports = memoize(function (db/*, options*/) {
 			});
 		} },
 		// All documents (requirements and certificates) uploaded in this business process chain
-		multiProcessUploaded: { type: Document, multiple: true, value: function (_observe) {
+		processChainUploaded: { type: Document, multiple: true, value: function (_observe) {
 			var processes = [this.master], documents = [], taken = Object.create(null);
 
 			// Gather all business processes in chain
