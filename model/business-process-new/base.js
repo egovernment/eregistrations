@@ -2,21 +2,23 @@
 
 'use strict';
 
-var memoize          = require('memoizee/plain')
-  , defineStringLine = require('dbjs-ext/string/string-line')
-  , _                = require('mano').i18n.bind("Model: Business Process")
-  , defineStatusLog  = require('../lib/status-log')
-  , defineNestedMap  = require('../lib/nested-map');
+var memoize                   = require('memoizee/plain')
+  , defineStringLine          = require('dbjs-ext/string/string-line')
+  , _                         = require('mano').i18n.bind("Model: Business Process")
+  , defineBusinessProcessBase = require('../lib/business-process-base')
+  , defineNestedMap           = require('../lib/nested-map')
+  , defineStatusLog           = require('../lib/status-log');
 
 module.exports = memoize(function (db/*, options*/) {
 	var StringLine = defineStringLine(db)
 	  , StatusLog = defineStatusLog(db)
+	  , BusinessProcessBase = defineBusinessProcessBase(db)
 	  , BusinessProcess
 
 	  , options = Object(arguments[1]);
 	defineNestedMap(db);
 
-	BusinessProcess = db.Object.extend(options.className || 'BusinessProcess', {
+	BusinessProcess = BusinessProcessBase.extend(options.className || 'BusinessProcess', {
 		// Name of businessProcess
 		// Usually computed from other properties
 		businessName: { type: StringLine },

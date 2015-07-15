@@ -1,22 +1,22 @@
 'use strict';
 
-var _                = require('mano').i18n.bind("Model: Business Process")
-  , memoize          = require('memoizee/plain')
-  , validDb          = require('dbjs/valid-dbjs')
-  , defineStatusLog  = require('../lib/status-log')
-  , defineStringLine = require('dbjs-ext/string/string-line')
-  , defineNestedMap  = require('../lib/nested-map')
-  , defineBusinessProcessStatus = require('../lib/business-process-status');
+var memoize                     = require('memoizee/plain')
+  , defineStringLine            = require('dbjs-ext/string/string-line')
+  , _                           = require('mano').i18n.bind("Model: Business Process")
+  , defineBusinessProcessBase   = require('../lib/business-process-base')
+  , defineBusinessProcessStatus = require('../lib/business-process-status')
+  , defineNestedMap             = require('../lib/nested-map')
+  , defineStatusLog             = require('../lib/status-log');
 
 module.exports = memoize(function (db/*, options*/) {
-	var StringLine, BusinessProcessStatus, StatusLog;
-	validDb(db);
-	BusinessProcessStatus = defineBusinessProcessStatus(db);
-	StringLine            = defineStringLine(db);
-	StatusLog             = defineStatusLog(db);
+	var BusinessProcessStatus = defineBusinessProcessStatus(db)
+	  , StringLine = defineStringLine(db)
+	  , StatusLog = defineStatusLog(db)
+	  , BusinessProcessBase = defineBusinessProcessBase(db);
+
 	defineNestedMap(db);
 
-	db.Object.extend('BusinessProcess', {
+	BusinessProcessBase.extend('BusinessProcess', {
 		//Marks an obsolete model
 		isOldModel: { type: db.Boolean, value: true },
 		isFromEregistrations: { type: db.Boolean,
@@ -46,7 +46,7 @@ module.exports = memoize(function (db/*, options*/) {
 
 	db.BusinessProcess.prototype.defineProperties({
 		derivedBusinessProcesses: {
-			type: db.BusinessProcess,
+			type: BusinessProcessBase,
 			multiple: true,
 			value: function (_observe) {
 				var processes = [], derived = this.derivedBusinessProcess;
@@ -58,7 +58,7 @@ module.exports = memoize(function (db/*, options*/) {
 			}
 		},
 		latestBusinessProcess: {
-			type: db.BusinessProcess,
+			type: BusinessProcessBase,
 			value: function () {
 				return this.derivedBusinessProcesses.last || this;
 			}
@@ -82,7 +82,7 @@ module.exports = memoize(function (db/*, options*/) {
 			}
 		},
 		derivedBusinessProcess: {
-			type: db.BusinessProcess,
+			type: BusinessProcessBase,
 			unique: true,
 			reverse: 'previousBusinessProcess'
 		}

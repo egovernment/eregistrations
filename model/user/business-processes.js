@@ -1,24 +1,23 @@
 'use strict';
 
 var memoize               = require('memoizee/plain')
-  , defineBusinessProcess = require('../business-process/base')
-  , validDbType           = require('dbjs/valid-dbjs-type');
+  , ensureType            = require('dbjs/valid-dbjs-type')
+  , defineBusinessProcess = require('../business-process/base');
 
-module.exports = memoize(function (Target/* options */) {
-	var db, options, BusinessProcess;
-	validDbType(Target);
-	options = Object(arguments[1]);
-	db      = Target.database;
-	BusinessProcess = defineBusinessProcess(db, options);
-	Target.prototype.defineProperties({
+module.exports = memoize(function (User/* options */) {
+	var db = ensureType(User).database;
+
+	defineBusinessProcess(db, arguments[1]);
+
+	return User.prototype.defineProperties({
 		initialBusinessProcesses: {
-			type: BusinessProcess,
+			type: db.BusinessProcessBase,
 			unique: true,
 			multiple: true,
 			reverse: 'user'
 		},
 		businessProcesses: {
-			type: BusinessProcess,
+			type: db.BusinessProcessBase,
 			multiple: true,
 			value: function (_observe) {
 				var processes = [];
@@ -33,6 +32,4 @@ module.exports = memoize(function (Target/* options */) {
 			}
 		}
 	});
-
-	return Target;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
