@@ -9,12 +9,14 @@ var Map                   = require('es6-map')
   , defineStringLine      = require('dbjs-ext/string/string-line')
   , defineCreateEnum      = require('dbjs-ext/create-enum')
   , _                     = require('mano').i18n.bind('Model')
+  , defineUser            = require('./user')
   , defineInstitution     = require('./institution')
   , defineFormSectionBase = require('./form-section-base');
 
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(ensureDb(db))
 	  , Institution = defineInstitution(db)
+	  , User = defineUser(db)
 	  , FormSectionBase = defineFormSectionBase(db);
 
 	defineCreateEnum(db);
@@ -33,6 +35,8 @@ module.exports = memoize(function (db) {
 		// If step is processed by single institution
 		// then instution should be exposed here
 		institution: { type: Institution },
+		// Official that processed request at given processing step
+		processor: { type: User },
 
 		// Whether given step applies at all
 		isApplicable: { type: db.Boolean, value: true },
