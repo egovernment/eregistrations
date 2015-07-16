@@ -54,6 +54,10 @@
 	font-weight: bolder;
 }
 
+.user-guide-costs-list-cost {
+	max-width: 85%;
+}
+
 .user-guide-costs-list li small {
 	width: 100%;
 }
