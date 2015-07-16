@@ -41,7 +41,7 @@
 .user-guide-costs-list li {
 	display: flex;
 	justify-content: space-between;
-	flex-wrap: wrap;
+	flex-wrap: nowrap;
 }
 
 .user-guide-total-costs {
@@ -52,6 +52,10 @@
 	margin-top: 20px;
 	margin-bottom: 22px;
 	font-weight: bolder;
+}
+
+.user-guide-costs-list-label {
+	max-width: 85%;
 }
 
 .user-guide-costs-list li small {
