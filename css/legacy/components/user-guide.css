@@ -8,6 +8,7 @@
 
 .user-guide-costs-list li {
 	display: block;
+	display: flex;
 }
 
 .user-guide-requirements-list > li > ul > li:first-child {
