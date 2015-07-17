@@ -118,7 +118,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 				resolvent.legacyScript,
 				ns.p(
 					customizeData.addButton = addButton = ns.a(
-						{ class: 'button-main', href: getAddUrl() },
+						{ class: 'button-regular', href: getAddUrl() },
 						options.addButtonLabel || _("Add new")
 					)
 				)),
