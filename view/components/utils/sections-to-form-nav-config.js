@@ -6,8 +6,8 @@ module.exports = function (sections) {
 	var config = [], configItem;
 	sections.forEach(function (section) {
 		configItem = {};
-		configItem.msg = section.onIncompleteMessage || _('${sectionLabel} is incomplete',
-			{ sectionLabel: section.constructor.label });
+		configItem.msg = section.onIncompleteMessage || _("${sectionLabel} is incomplete",
+			{ sectionLabel: section.label });
 		configItem.status = section._status;
 		configItem.url = '#' + section.domId;
 		config.push(configItem);
