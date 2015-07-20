@@ -4,7 +4,7 @@
 
 var location = require('mano/lib/client/location'),
 _  = require('mano').i18n.bind('Registration'),
-setProgressWidth = require('eregistrations/view/utils/set-progress-width');
+setProgressWidth = require('./utils/set-progress-width');
 
 exports._parent = require('./user-base');
 
