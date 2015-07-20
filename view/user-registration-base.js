@@ -33,35 +33,36 @@ exports._stepsMenu = function () {
 		li(
 			{ class: 'user-steps-menu-start-step' },
 			a({ href: '/guide/', id: 'step-guide' },
-				_("1. Guide")),
+				"1. " + _("Guide")),
 			div({ class: 'user-steps-menu-item-progress',
 				style: mmap(this.businessProcess._guideProgress, setProgressWidth) })
 		),
 		li(
 			a({ href: '/forms/', id: 'step-form' },
-				_("2. Fill the form")
+				"2. " + _("Fill the form")
 				),
 			div({ class: 'user-steps-menu-item-progress',
-				style: mmap(this.businessProcess._dataForms.progress, setProgressWidth) })
+				style: mmap(this.businessProcess.dataForms._progress, setProgressWidth) })
 		),
 		li(
 			a({ href: '/documents/', id: 'step-documents' },
-				_("3. Upload docs")
+				"3. " + _("Upload docs")
 				),
 			div({ class: 'user-steps-menu-item-progress',
-				style: mmap(this.businessProcess._requirementUploads.progress, setProgressWidth) })
+				style: mmap(this.businessProcess.requirementUploads._progress, setProgressWidth) })
 		),
 		li(
-			a(_("4. Pay")
+			a({ href: '/pay/', id: 'step-pay' },
+				"4. " + _("Pay")
 				),
 			div({ class: 'user-steps-menu-item-progress',
-				style: mmap(this.businessProcess._costs.onlinePaymentProgress, setProgressWidth) })
+				style: mmap(this.businessProcess.costs._onlinePaymentProgress, setProgressWidth) })
 		),
 		li(
 			a({ href: '/submission/', id: 'step-submission' },
-				_("5. Send file")
+				"5. " + _("Send file")
 				),
 			div({ class: 'user-steps-menu-item-progress',
-				style: mmap(this.businessProcess._submissionForms.progress, setProgressWidth) })
+				style: mmap(this.businessProcess.submissionForms._progress, setProgressWidth) })
 		)];
 };
