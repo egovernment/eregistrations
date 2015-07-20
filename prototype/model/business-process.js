@@ -4,13 +4,22 @@
 
 var db = require('mano').db
   , BusinessProcessNew = require('../../model/business-process-new')(db)
-  , first = BusinessProcessNew.newNamed('firstBusinessProcess')
-  , second = BusinessProcessNew.newNamed('secondBusinessProcess')
-  , UInteger = require('dbjs-ext/number/integer/u-integer')(db)
-  , Person = require('../../model/person')(db)
+  , first       = BusinessProcessNew.newNamed('firstBusinessProcess')
+  , second      = BusinessProcessNew.newNamed('secondBusinessProcess')
+  , UInteger    = require('dbjs-ext/number/integer/u-integer')(db)
+  , StringLine  = require('dbjs-ext/string/string-line')(db)
+  , Person      = require('../../model/person')(db)
+  , DateType    = require('dbjs-ext/date-time/date')(db)
+  , Email       = require('dbjs-ext/string/string-line/email')(db)
   , FormSection = require('../../model/form-section')(db)
+  , CompanyType = require('./company-type')
+  , FormSectionGroup = require('../../model/form-section-group')(db)
+  , FormEntitiesTable = require('../../model/form-entities-table')(db)
+  , TabularEntity = require('../../model/form-tabular-entity')(db)
   , Registration = require('../../model/registration-new')(db)
   , Document = require('../../model/document')(db)
+  , Address  = require('./address')
+  , Branch   = require('./branch')
   , DeterminantSection
   , defineCertificates = require('../../model/business-process-new/utils/define-certificates')
   , defineRequirements = require('../../model/business-process-new/utils/define-requirements')
@@ -20,13 +29,49 @@ var db = require('mano').db
   , DocB
   , IdDoc
   , RequiredUploadA
+  , Representative
   , processes = [first, second];
 
+require('../../model/lib/nested-map');
 BusinessProcessNew.newNamed('emptyBusinessProcess');
 
 module.exports = BusinessProcessNew;
 
+Representative = Person.extend('Representative', {
+	address: {
+		type: Address,
+		nested: true
+	},
+	email: {
+		type: Email,
+		label: "Email",
+		required: true
+	},
+	dateOfBirth: {
+		type: DateType,
+		label: "Date of birth",
+		required: true,
+		value: new Date("October 13, 1984 11:13:00")
+	},
+	isMarried: {
+		type: db.Boolean,
+		required: true,
+		label: "Are you married?"
+	},
+	spouseName: {
+		type: StringLine,
+		required: true,
+		label: "Spouse name"
+	},
+	spouseLastName: {
+		type: StringLine,
+		required: true,
+		label: "Spouse last name"
+	}
+});
+
 BusinessProcessNew.prototype.defineProperties({
+	//guide
 	isCompany: {
 		type: db.Boolean,
 		required: true,
@@ -42,10 +87,43 @@ BusinessProcessNew.prototype.defineProperties({
 		required: true,
 		label: "How many branches?"
 	},
+	//dataForms
 	representative: {
-		type: Person,
+		type: Representative,
 		nested: true
-	}
+	},
+	companyType: {
+		type: CompanyType,
+		required: true,
+		label: "Company type"
+	},
+	companyName: {
+		type: StringLine,
+		required: true,
+		label: "Company Name"
+	},
+	rangeOfActivity: { type: db.String, label: "Economic activity" },
+	hasEmployees: {
+		type: db.Boolean,
+		required: true,
+		label: "Do you have employees?"
+	},
+	employeesCount: {
+		type: UInteger,
+		required: true,
+		label: "How many employees do you have?"
+	},
+	isAddressSameAsPersonal: {
+		type: db.Boolean,
+		required: true,
+		label: "Is company address the same as the representative's?"
+	},
+	businessAddress: Address
+});
+
+BusinessProcessNew.prototype.defineNestedMap('branches', {
+	cardinalPropertyKey: "companyName",
+	itemType: Branch
 });
 
 DocA = Document.extend('DocA', {
@@ -110,7 +188,7 @@ BusinessProcessNew.prototype.registrations.map.get('b').setProperties({
 
 DeterminantSection = FormSection.extend('DeterminantSection', {
 	label: { value: "Determinants" },
-	propertyNames: { value: [ 'isCompany', 'needsSpecialCommittee', 'branchCount', 'representative'] }
+	propertyNames: { value: ['isCompany', 'needsSpecialCommittee', 'branchCount'] }
 });
 
 BusinessProcessNew.prototype.getDescriptor('determinants').type = DeterminantSection;
@@ -122,4 +200,116 @@ processes.forEach(function (businessProcess) {
 	businessProcess.determinants.isCompany = false;
 	businessProcess.determinants.needsSpecialCommittee = true;
 	businessProcess.businessName = businessProcess.representative.fullName;
+	businessProcess.representative.dateOfBirth = new Date(1982, 2, 12);
+	businessProcess.representative.isMarried = true;
+	businessProcess.representative.spouseName = 'Alexis';
+	businessProcess.representative.spouseLastName = 'Colby';
+	businessProcess.representative.address.city = 'London';
+	businessProcess.representative.address.streetType = 'street';
+	businessProcess.representative.address.streetName = 'Cherry Tree Lane';
+	businessProcess.representative.address.streetNumber = '17';
+	businessProcess.representative.address.apartmentNumber = '50';
+	businessProcess.rangeOfActivity = 'Commerce';
+	businessProcess.companyType = 'private';
+	businessProcess.companyName = 'Dads & Sons';
+	businessProcess.hasEmployees = true;
+	businessProcess.employeesCount = 3;
+	businessProcess.isAddressSameAsPersonal = true;
+	businessProcess.branches.map.get('first').setProperties({
+		companyName: "First Branch inc.",
+		isFranchise: true,
+		isActivitySameAsMotherCompany: true
+	});
+	businessProcess.branches.map.get('first').responsiblePerson.firstName = "Bruce";
+	businessProcess.branches.map.get('first').responsiblePerson.lastName = "Wayne";
+	businessProcess.branches.map.get('first').responsiblePerson.email = "batman@gotham.com";
+
+	businessProcess.branches.map.get('second').setProperties({
+		companyName: "Second Branch inc.",
+		isFranchise: true,
+		isActivitySameAsMotherCompany: true
+	});
+	businessProcess.branches.map.get('second').responsiblePerson.firstName = "Peter";
+	businessProcess.branches.map.get('second').responsiblePerson.lastName = "Parker";
+	businessProcess.branches.map.get('second').responsiblePerson.email = "spiderman@daily-bugle.com";
+
 });
+
+// Sections
+BusinessProcessNew.prototype.dataForms.map.define('personal', {
+	type: FormSection,
+	nested: true
+});
+
+BusinessProcessNew.prototype.dataForms.map.get('personal').setProperties({
+	propertyNames: ['representative/firstName', 'representative/lastName',
+		'representative/dateOfBirth', 'representative/isMarried',
+		'representative/spouseName', 'representative/spouseLastName',
+		'representative/address/city', 'representative/address/streetType',
+		'representative/address/streetName', 'representative/address/streetNumber',
+		'representative/address/apartmentNumber'],
+	label: "Company's representative information"
+});
+
+BusinessProcessNew.prototype.dataForms.map.define('company', {
+	type: FormSectionGroup,
+	nested: true
+});
+
+BusinessProcessNew.prototype.dataForms.map.get('company').sections.define('details', {
+	type: FormSection,
+	nested: true
+});
+
+BusinessProcessNew.prototype.dataForms.map.get('company').sections.get('details').setProperties({
+	label: "Company details",
+	propertyNames: ['rangeOfActivity', 'companyType', 'companyName', 'hasEmployees', 'employeesCount']
+});
+
+BusinessProcessNew.prototype.dataForms.map.get('company').sections.get('address').setProperties({
+	label: "Company address",
+	resolventProperty: "isAddressSameAsPersonal",
+	propertyNames: ['address/city', 'address/streetType',
+		'address/streetType', 'address/streetName', 'address/street', 'address/streetNumber',
+		'address/apartmentNumber']
+});
+
+BusinessProcessNew.prototype.dataForms.map.define('branches', {
+	type: FormEntitiesTable,
+	nested: true
+});
+
+BusinessProcessNew.prototype.dataForms.map.get('branches').setProperties({
+	min: function () {
+		return this.branchCount;
+	},
+	max: function () {
+		return this.min;
+	},
+	baseUrl: 'branch',
+	sectionProperty: 'dataForms',
+	propertyName: 'branches',
+	entityTitleProperty: "companyName",
+	label: "Branches of the company"
+});
+
+BusinessProcessNew.prototype.dataForms.map.branches.entities.add(
+	new TabularEntity({
+		propertyName: 'companyName'
+	})
+);
+BusinessProcessNew.prototype.dataForms.map.branches.entities.add(
+	new TabularEntity({
+		propertyName: 'responsiblePerson/firstName'
+	})
+);
+BusinessProcessNew.prototype.dataForms.map.branches.entities.add(
+	new TabularEntity({
+		propertyName: 'responsiblePerson/lastName'
+	})
+);
+BusinessProcessNew.prototype.dataForms.map.branches.entities.add(
+	new TabularEntity({
+		propertyName: 'isFranchise'
+	})
+);

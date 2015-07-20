@@ -16,31 +16,20 @@ var Map          = require('es6-map')
   , Document     = require('../../model/document')(db)
   , Submission   = require('./submission')
   , File         = require('./file')
+  , CompanyType  = require('./company-type')
 
   , user = User.prototype
-  , BusinessActivity, BusinessActivityCategory, CompanyType, Partner, bcAgencyBusiness, bcInsurance
+  , BusinessActivity, BusinessActivityCategory, Partner, bcAgencyBusiness, bcInsurance
   , file, props
   , InventoryValue
   , StreetTypeChoice
   , EnumTripleOption = require('./enum-triple-option');
 
+require('./address');
 require('./business-process');
 require('dbjs-ext/create-enum')(db);
 
-StreetTypeChoice = StringLine.createEnum('StreetTypeChoice', new Map([
-	['street', {
-		label: "Street"
-	}],
-	['avenue', {
-		label: "Avenue"
-	}],
-	['diagonal', {
-		label: "Diagonal"
-	}],
-	['road', {
-		label: "Road"
-	}]
-]));
+StreetTypeChoice = db.StreetTypeChoice; // defined in address
 
 InventoryValue = db.Object.extend('InventoryValue', {
 	description: { type: StringLine },
@@ -105,11 +94,6 @@ BusinessActivity.newNamed('baReassurance', {
 	label: "Re-assurance & endowment",
 	category: bcInsurance
 });
-
-CompanyType = StringLine.createEnum('CompanyType', new Map([
-	['private', { label: "Private limited company" }],
-	['public', { label: "Public company" }]
-]));
 
 user.defineProperties({
 	firstName: { type: StringLine, required: true, label: "First Name", value: "John" },
