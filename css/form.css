@@ -400,11 +400,11 @@ ul.multiple {
 }
 
 .inline-button-radio  {
-	margin-bottom: 22px;
-	font-size: 0;
+	line-height: 44px;
 }
 .inline-button-radio input[type="radio"] {
 	display: none;
+	font-size: 0;
 }
 .inline-button-radio label {
 	border: 1px solid var(--light-inner-border);
