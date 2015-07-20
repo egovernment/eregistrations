@@ -129,24 +129,24 @@ BusinessProcessNew.prototype.defineNestedMap('branches', {
 	itemType: Branch
 });
 
-DocA = Document.extend('DocA', {
+DocA = Document.extend('DocA', {}, {
 	label: { value: "Document A" },
-	legend: { vlaue: "This document is issued as a result of Registration A" }
+	legend: { value: "This document is issued as a result of Registration A" }
 });
 
-DocB = Document.extend('DocB', {
+DocB = Document.extend('DocB', {}, {
 	label: { value: "Document B" },
-	legend: { vlaue: "This document is issued as a result of Registration B" }
+	legend: { value: "This document is issued as a result of Registration B" }
 });
 
-IdDoc = Document.extend('IdDoc', {
+IdDoc = Document.extend('IdDoc', {}, {
 	label: { value: "Identification document" },
-	legend: { vlaue: "This a requiredUpload for all registrations" }
+	legend: { value: "This a requiredUpload for all registrations" }
 });
 
-RequiredUploadA = Document.extend('RequiredUploadA', {
+RequiredUploadA = Document.extend('RequiredUploadA', {}, {
 	label: { value: "Required upload A" },
-	legend: { vlaue: "This upload is required in case of registration A" }
+	legend: { value: "This upload is required in case of registration A" }
 });
 
 defineCertificates(BusinessProcessNew, [DocA, DocB]);
