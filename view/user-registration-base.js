@@ -6,6 +6,8 @@ var location = require('mano/lib/client/location');
 
 exports._parent = require('./user-base');
 
+exports._match = 'businessProcess';
+
 exports['sub-main'] = function () {
 
 	var mobileCheckbox;
