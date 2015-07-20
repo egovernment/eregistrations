@@ -14,7 +14,7 @@ exports.step = function () {
 	div(
 		{ class: ['disabler-range', _if(this.businessProcess._isSentBack, 'disabler-active')] },
 		form(
-			{ class: 'user-guide' },
+			{ id: 'guide-form', class: 'user-guide', action: '/guide/', method: 'post' },
 			div({ class: 'section-primary' }, h2(_("Questions")),
 				hr(),
 				this.businessProcess.determinants.toDOMFieldset(document)),
@@ -54,7 +54,7 @@ exports.step = function () {
 			div({ class: 'section-primary' }, h2(_("Costs")),
 				hr(),
 				exports._costsIntro(),
-				ul({ class: 'user-guide-costs-list' },
+				ul({ id: 'costs-list', class: 'user-guide-costs-list' },
 					list(this.businessProcess.costs.map,
 						function (cost) {
 							li({ id: 'cost-' + camelToHyphen.call(cost.key) },
@@ -66,7 +66,7 @@ exports.step = function () {
 						span({ id: 'costs-total' }))
 					),
 				p({ id: 'costs-print' },
-					a({ class: 'button-resource-link', href: 'costs-print/', target: '_blank' },
+					a({ class: 'button-resource-link', href: '/costs-print/', target: '_blank' },
 						span({ class: 'fa fa-print' }), " ", "Print costs list"))),
 			p({ class: 'user-next-step-button' },
 				button({ type: 'submit' },
