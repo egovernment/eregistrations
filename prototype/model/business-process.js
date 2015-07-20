@@ -118,7 +118,7 @@ BusinessProcessNew.prototype.getDescriptor('determinants').type = DeterminantSec
 processes.forEach(function (businessProcess) {
 	businessProcess.representative.firstName = "John";
 	businessProcess.representative.lastName = "Doe";
-	businessProcess.determinants.branchCount = 3;
+	businessProcess.determinants.branchCount = 2;
 	businessProcess.determinants.isCompany = false;
 	businessProcess.determinants.needsSpecialCommittee = true;
 	businessProcess.businessName = businessProcess.representative.fullName;
