@@ -174,9 +174,10 @@ exports['sub-main'] = {
 					{ class: 'submitted-preview-form' },
 					ul(
 						{ class: 'form-elements' },
-						li(
-							input({ dbjs: user._isValidated })
-						),
+						li(label({ class: 'input-aside' },
+							input({ dbjs: user._isARequested, type: 'checkbox' }), " ",
+							span(user.getDescriptor('isBRequested').label))),
+						li(div({ class: 'input' }, input({ dbjs: user._isValidated }))),
 						li(
 							div(
 								{ class: 'dbjs-input-component' },
