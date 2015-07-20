@@ -20,7 +20,7 @@ exports.step = function () {
 				this.businessProcess.determinants.toDOMFieldset(document)),
 
 			div({ class: 'section-primary' },
-				h2(_("Registrations")),
+				h2(_("Mandatory Registrations")),
 				hr(),
 				exports._registrationIntro(),
 				ul(this.businessProcess.registrations.map,
@@ -46,9 +46,9 @@ exports.step = function () {
 				exports._requirementsIntro(),
 				ul({ class: 'user-guide-requirements-list' },
 					this.businessProcess.requirements.map,
-					function (requierment) {
-						li({ id: 'requierment-' + camelToHyphen.call(requierment.key) },
-							requierment.label);
+					function (requirement) {
+						li({ id: 'requirement-' + camelToHyphen.call(requirement.key) },
+							requirement.label);
 					})),
 
 			div({ class: 'section-primary' }, h2(_("Costs")),
