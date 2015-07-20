@@ -2,7 +2,9 @@
 
 'use strict';
 
-var location = require('mano/lib/client/location');
+var location = require('mano/lib/client/location'),
+_  = require('mano').i18n.bind('Registration'),
+setProgressWidth = require('eregistrations/view/utils/set-progress-width');
 
 exports._parent = require('./user-base');
 
@@ -26,4 +28,40 @@ exports['sub-main'] = function () {
 
 };
 
-exports._stepsMenu = Function.prototype;
+exports._stepsMenu = function () {
+	return [
+		li(
+			{ class: 'user-steps-menu-start-step' },
+			a({ href: '/guide/', id: 'step-guide' },
+				_("1. Guide")),
+			div({ class: 'user-steps-menu-item-progress',
+				style: mmap(this.businessProcess._guideProgress, setProgressWidth) })
+		),
+		li(
+			a({ href: '/forms/', id: 'step-form' },
+				_("2. Fill the form")
+				),
+			div({ class: 'user-steps-menu-item-progress',
+				style: mmap(this.businessProcess._dataForms.progress, setProgressWidth) })
+		),
+		li(
+			a({ href: '/documents/', id: 'step-documents' },
+				_("3. Upload docs")
+				),
+			div({ class: 'user-steps-menu-item-progress',
+				style: mmap(this.businessProcess._requirementUploads.progress, setProgressWidth) })
+		),
+		li(
+			a(_("4. Pay")
+				),
+			div({ class: 'user-steps-menu-item-progress',
+				style: mmap(this.businessProcess._costs.onlinePaymentProgress, setProgressWidth) })
+		),
+		li(
+			a({ href: '/submission/', id: 'step-submission' },
+				_("5. Send file")
+				),
+			div({ class: 'user-steps-menu-item-progress',
+				style: mmap(this.businessProcess._submissionForms.progress, setProgressWidth) })
+		)];
+};
