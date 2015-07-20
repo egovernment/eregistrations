@@ -1,7 +1,7 @@
 'use strict';
 
-var db = require('mano').db,
-camelToHyphen = require('es5-ext/string/#/camel-to-hyphen');
+var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen'),
+_  = require('mano').i18n.bind('Registration');
 
 exports._parent = require('./user-registration-base');
 
@@ -11,62 +11,68 @@ exports.step = function () {
 
 	exports._guideHeading();
 
-	form(
-		{ class: 'user-guide' },
-		div({ class: 'section-primary' }, h2("Questions"),
-			hr(),
-			db.firstBusinessProcess.determinants.toDOMFieldset(document)),
-
-		div({ class: 'section-primary' },
-			h2("Registrations"),
-			hr(),
-			exports._registrationIntro(),
-			ul(db.firstBusinessProcess.registrations.map,
-				function (registration) {
-					li({ id: 'registration-mandatory-' + camelToHyphen.call(registration.key) },
-						label({ class: 'input-aside' },
-							input({ dbjs: registration._isRequested, type: 'checkbox' }), " ",
-							span(registration.label)));
-				}),
-			div({ class: 'section-primary-wrapper' },
-				h2("Optional Registrations"),
+	div(
+		{ class: ['disabler-range', _if(this.businessProcess._isSentBack, 'disabler-active')] },
+		form(
+			{ class: 'user-guide' },
+			div({ class: 'section-primary' }, h2(_("Questions")),
 				hr(),
-				ul(db.firstBusinessProcess.registrations.map,
+				this.businessProcess.determinants.toDOMFieldset(document)),
+
+			div({ class: 'section-primary' },
+				h2(_("Registrations")),
+				hr(),
+				exports._registrationIntro(),
+				ul(this.businessProcess.registrations.map,
 					function (registration) {
-						li({ id: 'registration-optional-' + camelToHyphen.call(registration.key) },
+						li({ id: 'registration-mandatory-' + camelToHyphen.call(registration.key) },
 							label({ class: 'input-aside' },
 								input({ dbjs: registration._isRequested, type: 'checkbox' }), " ",
 								span(registration.label)));
-					}))),
-
-		div({ class: 'section-primary' }, h2("Requirements"),
-			hr(),
-			exports._requirementsIntro(),
-			ul({ class: 'user-guide-requirements-list' },
-				db.firstBusinessProcess.requirements.map,
-				function (requierment) {
-					li({ id: 'requierment-' + camelToHyphen.call(requierment.key) },
-						requierment.label);
-				})),
-
-		div({ class: 'section-primary' }, h2("Costs"),
-			hr(),
-			exports._costsIntro(),
-			ul({ class: 'user-guide-costs-list' },
-				list(db.firstBusinessProcess.costs.map,
-					function (cost) {
-						li({ id: 'cost-' + camelToHyphen.call(cost.key) },
-							span({ class: 'user-guide-costs-list-label' }, cost.label),
-							span(cost.amount));
 					}),
-				li({ class: 'user-guide-total-costs' },
-					span({ class: 'user-guide-costs-list-label' }, "Total Costs:"), " ",
-					span({ id: 'cost-total' }))
-				),
-			exports._costsEnding()),
-		p({ class: 'user-next-step-button' },
-			button({ type: 'submit' },
-				"Save and continue"))
+				div({ class: 'section-primary-wrapper' },
+					h2(_("Optional Registrations")),
+					hr(),
+					ul(this.businessProcess.registrations.map,
+						function (registration) {
+							li({ id: 'registration-optional-' + camelToHyphen.call(registration.key) },
+								label({ class: 'input-aside' },
+									input({ dbjs: registration._isRequested, type: 'checkbox' }), " ",
+									span(registration.label)));
+						}))),
+
+			div({ class: 'section-primary' }, h2(_("Requirements")),
+				hr(),
+				exports._requirementsIntro(),
+				ul({ class: 'user-guide-requirements-list' },
+					this.businessProcess.requirements.map,
+					function (requierment) {
+						li({ id: 'requierment-' + camelToHyphen.call(requierment.key) },
+							requierment.label);
+					})),
+
+			div({ class: 'section-primary' }, h2(_("Costs")),
+				hr(),
+				exports._costsIntro(),
+				ul({ class: 'user-guide-costs-list' },
+					list(this.businessProcess.costs.map,
+						function (cost) {
+							li({ id: 'cost-' + camelToHyphen.call(cost.key) },
+								span({ class: 'user-guide-costs-list-label' }, cost.label),
+								span({ id: 'cost-amount-' + camelToHyphen.call(cost.key) }));
+						}),
+					li({ class: 'user-guide-total-costs' },
+						span({ class: 'user-guide-costs-list-label' }, _("Total Costs:")), " ",
+						span({ id: 'costs-total' }))
+					),
+				p({ id: 'costs-print' },
+					a({ class: 'button-resource-link', href: 'costs-print/', target: '_blank' },
+						span({ class: 'fa fa-print' }), " ", "Print costs list"))),
+			p({ class: 'user-next-step-button' },
+				button({ type: 'submit' },
+					_("Save and continue")))
+		),
+		div({ class: 'disabler' })
 	);
 };
 
@@ -74,4 +80,3 @@ exports._guideHeading = Function.prototype;
 exports._registrationIntro = Function.prototype;
 exports._requirementsIntro = Function.prototype;
 exports._costsIntro = Function.prototype;
-exports._costsEnding = Function.prototype;

@@ -55,8 +55,3 @@ exports._costsIntro = function () {
 		p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 			" Etiam vestibulum dui mi, nec ultrices diam ultricies id. ")];
 };
-
-exports._costsEnding = function () {
-	return p(a({ class: 'button-resource-link', href: 'costs-print/', target: '_blank' },
-			span({ class: 'fa fa-print' }), " ", "Print costs list"));
-};
