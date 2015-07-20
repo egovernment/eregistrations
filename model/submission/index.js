@@ -12,17 +12,19 @@ module.exports = memoize(function (db) {
 	  , Document = defineDocument(db)
 	  , Cost = defineCost(db);
 
-	var RejectReason = StringLine.createEnum('RejectReason', new Map([
-		["illegible", {
-			label: _("The document is unreadable")
-		}],
-		["invalid", {
-			label: _("The loaded document does not match the required document")
-		}],
-		["other", {
-			label: _("Other") + "..."
-		}]
-	]));
+	if (!db.RejectReason) {
+		StringLine.createEnum('RejectReason', new Map([
+			["illegible", {
+				label: _("The document is unreadable")
+			}],
+			["invalid", {
+				label: _("The loaded document does not match the required document")
+			}],
+			["other", {
+				label: _("Other") + "..."
+			}]
+		]));
+	}
 
 	return db.Object.extend('Submission', {
 		document: { type: Document, nested: true },
@@ -30,7 +32,7 @@ module.exports = memoize(function (db) {
 		// If upload concerns payment receipt, this links cost it corresponds
 		correspondingCost: { type: Cost },
 		matchesOriginal: { type: db.Boolean, required: true },
-		rejectReasonType: { type: RejectReason, required: true, label: _("Reject document") },
+		rejectReasonType: { type: db.RejectReason, required: true, label: _("Reject document") },
 		rejectReasonMemo: { type: db.String, required: true, label: _("Explanation") },
 		rejectReason: { type: db.String, label: _("Reject document"), required: true,
 			value: function () {
