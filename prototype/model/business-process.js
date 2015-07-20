@@ -72,11 +72,11 @@ defineCertificates(BusinessProcessNew, [DocA, DocB]);
 defineRequirements(BusinessProcessNew, [IdDoc, RequiredUploadA]);
 defineRequirementUploads(BusinessProcessNew, [IdDoc, RequiredUploadA]);
 
-BusinessProcessNew.prototype.costs.map.define('handling-fee', {
+BusinessProcessNew.prototype.costs.map.define('handlingFee', {
 	nested: true
 });
 
-BusinessProcessNew.prototype.costs.map['handling-fee'].setProperties({
+BusinessProcessNew.prototype.costs.map.handlingFee.setProperties({
 	amount: 70,
 	label: "Handling fee"
 });
