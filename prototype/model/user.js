@@ -198,9 +198,9 @@ User.newNamed('userVianney', {
 	roles: ['users-admin']
 });
 
-db.userVianney.initialBusinessProcesses.add(db.firstBusinessProcess);
-db.userVianney.initialBusinessProcesses.add(db.secondBusinessProcess);
-db.userVianney.initialBusinessProcesses.add(db.emptyBusinessProcess);
+db.BusinessProcessNew.instances.forEach(function (businessProcess) {
+	db.userVianney.initialBusinessProcesses.add(businessProcess);
+});
 
 Partner = db.User.extend('Partner', {
 	isDirector: { type: db.Boolean, label: "Director?",
