@@ -41,7 +41,7 @@ module.exports = memoize(function (db/*, options*/) {
 			return _observe(this.latestBusinessProcess._canBeDerived);
 		} },
 		// Business process update (or closure) to given business process
-		derivedBusinessProcess: { type: db.BusinessProcess, unique: true,
+		derivedBusinessProcess: { type: BusinessProcess, unique: true,
 			reverse: 'previousBusinessProcess' }
 	});
 	return BusinessProcess;

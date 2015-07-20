@@ -24,6 +24,7 @@ var Map          = require('es6-map')
   , StreetTypeChoice
   , EnumTripleOption = require('./enum-triple-option');
 
+require('./business-process');
 require('dbjs-ext/create-enum')(db);
 
 StreetTypeChoice = StringLine.createEnum('StreetTypeChoice', new Map([
@@ -212,6 +213,10 @@ User.newNamed('userVianney', {
 	email: 'vianney@lesaffre.com',
 	roles: ['users-admin']
 });
+
+db.userVianney.initialBusinessProcesses.add(db.firstBusinessProcess);
+db.userVianney.initialBusinessProcesses.add(db.secondBusinessProcess);
+db.userVianney.initialBusinessProcesses.add(db.emptyBusinessProcess);
 
 Partner = db.User.extend('Partner', {
 	isDirector: { type: db.Boolean, label: "Director?",
