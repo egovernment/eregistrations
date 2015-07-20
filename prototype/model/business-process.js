@@ -116,7 +116,7 @@ DeterminantSection = FormSection.extend('DeterminantSection', {
 BusinessProcessNew.prototype.getDescriptor('determinants').type = DeterminantSection;
 
 processes.forEach(function (businessProcess) {
-	businessProcess.representative.firstName = "John";
+	businessProcess.representative.firstName = "Johny";
 	businessProcess.representative.lastName = "Doe";
 	businessProcess.determinants.branchCount = 2;
 	businessProcess.determinants.isCompany = false;
