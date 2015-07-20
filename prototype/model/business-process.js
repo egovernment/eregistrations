@@ -6,6 +6,9 @@ var db = require('mano').db
   , BusinessProcessNew = require('../../model/business-process-new')(db)
   , first       = BusinessProcessNew.newNamed('firstBusinessProcess')
   , second      = BusinessProcessNew.newNamed('secondBusinessProcess')
+  , third       = BusinessProcessNew.newNamed('thirdBusinessProcess')
+  , fourth      = BusinessProcessNew.newNamed('fourthBusinessProcess')
+  , fifth       = BusinessProcessNew.newNamed('fifthBusinessProcess')
   , UInteger    = require('dbjs-ext/number/integer/u-integer')(db)
   , StringLine  = require('dbjs-ext/string/string-line')(db)
   , Person      = require('../../model/person')(db)
@@ -30,7 +33,7 @@ var db = require('mano').db
   , IdDoc
   , RequiredUploadA
   , Representative
-  , processes = [first, second];
+  , processes = [first, second, third, fourth, fifth];
 
 require('../../model/lib/nested-map');
 BusinessProcessNew.newNamed('emptyBusinessProcess');
