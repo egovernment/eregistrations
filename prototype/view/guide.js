@@ -1,7 +1,5 @@
 'use strict';
 
-exports._parent = require('./_user-main');
-
 module.exports = exports = require('../../view/guide');
 
 require('./_inventory');
