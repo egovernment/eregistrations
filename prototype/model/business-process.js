@@ -86,7 +86,7 @@ BusinessProcessNew.prototype.registrations.map.get('a').setProperties({
 	label: "Registration A",
 	shortLabel: "A",
 	costs: function () {
-		return [this.master.costs.map['handling-fee']];
+		return [this.master.costs.map.handlingFee];
 	},
 	certificates: function () {
 		return [this.master.certificates.map.docA];
