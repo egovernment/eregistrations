@@ -59,7 +59,7 @@ exports.step = function () {
 						function (cost) {
 							li({ id: 'cost-' + camelToHyphen.call(cost.key) },
 								span({ class: 'user-guide-costs-list-label' }, cost.label),
-								span({ id: 'cost-amount-' + camelToHyphen.call(cost.key) }));
+								span({ id: 'cost-amount-' + camelToHyphen.call(cost.key) }, cost.amount));
 						}),
 					li({ class: 'user-guide-total-costs' },
 						span({ class: 'user-guide-costs-list-label' }, _("Total Costs:")), " ",
