@@ -59,17 +59,28 @@ module.exports = memoize(function (db) {
 			}
 			_observe(entityObjects);
 			entityObjects.some(function (entityObject) {
-				var resolvedStatus, resolvedWeight;
+				var resolvedStatus, resolvedWeight, dataForms;
 				i++;
-				resolvedStatus = entityObject.resolveSKeyPath(statusKey, _observe);
-				resolvedWeight = entityObject.resolveSKeyPath(weightKey, _observe);
-				if (!resolvedStatus || !resolvedWeight) {
-					return;
+				if (this.sectionProperty === 'dataForms') {
+					dataForms = entityObject.resolveSKeyPath(this.sectionProperty, _observe);
+					if (!dataForms) {
+						return;
+					}
+					resolvedStatus = _observe(dataForms.value._progress);
+					resolvedWeight = _observe(dataForms.value._weight);
+				} else {
+					resolvedStatus = entityObject.resolveSKeyPath(statusKey, _observe);
+					resolvedWeight = entityObject.resolveSKeyPath(weightKey, _observe);
+					if (!resolvedStatus || !resolvedWeight) {
+						return;
+					}
+					resolvedStatus = _observe(resolvedStatus.observable);
+					resolvedWeight = _observe(resolvedWeight.observable);
 				}
 				if (this.max && (i > this.max)) {
 					return true;
 				}
-				statusSum += (_observe(resolvedStatus.observable) * _observe(resolvedWeight.observable));
+				statusSum += (resolvedStatus * resolvedWeight);
 			}, this);
 			if (!this.weight) return 1;
 			return statusSum / this.weight;
@@ -79,7 +90,7 @@ module.exports = memoize(function (db) {
 				isResolventExcluded, resolved, objectsType;
 			weightTotal = 0;
 			i = 0;
-			key = this.sectionProperty + 'Weight';
+			key = this.sectionProperty;
 			if (this.resolventProperty) {
 				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
 				if (!resolved) {
@@ -94,7 +105,15 @@ module.exports = memoize(function (db) {
 				}
 			}
 			getWeightByEntity = function (entityObject) {
-				var resolved = entityObject.resolveSKeyPath(key, _observe);
+				if (key === 'dataForms') {
+					var dataForms = entityObject.resolveSKeyPath(key, _observe);
+					if (!dataForms) {
+						return 0;
+					}
+					return _observe(dataForms.object.dataForms._weight);
+				}
+				// for backwards compatibility
+				var resolved = entityObject.resolveSKeyPath(key + 'Weight', _observe);
 				if (!resolved) {
 					return 0;
 				}
@@ -149,6 +168,9 @@ module.exports = memoize(function (db) {
 					var sections;
 					sections = entityObject.resolveSKeyPath(sectionKey, _observe);
 					sections = sections.object[sections.key];
+					if (sectionKey === 'dataForms') {
+						sections = sections.applicable;
+					}
 					sections.forEach(function (section) {
 						if (_observe(section._lastEditStamp) > res) res = section.lastEditStamp;
 					});
