@@ -58,7 +58,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 					ns.hr()]),
 			options.prepend,
 			resolvent.formResolvent ? ns.form({
-				actionUrl: url(self.baseUrl + '-resolvent'),
+				action: url(self.baseUrl + '-resolvent'),
 				autoSubmit: true,
 				method: 'post'
 			}, resolvent.formResolvent, ns.p({ class: 'submit' },
