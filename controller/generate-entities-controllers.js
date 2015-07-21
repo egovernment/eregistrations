@@ -31,6 +31,9 @@ module.exports = function (routes, data) {
 		targetMap = callable(data.targetMap);
 	}
 
+	routes[name + '-resolvent'] = result.resolvent = {
+		redirectUrl: pageUrl + '#' + tableHtmlId
+	};
 	routes[name + '-add'] = result.add = {
 		submit: function () {
 			save.apply(this, arguments);
