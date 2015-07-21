@@ -3,7 +3,8 @@
 var Database              = require('dbjs')
   , defineBusinessProcess = require('../../model/business-process/base')
   , defineFormSection     = require('../../model/form-section')
-  , defineFormSections    = require('../../model/form-sections');
+  , defineFormSections    = require('../../model/form-sections')
+  , definePropertyGroupsProcess = require('../../model/lib/property-groups-process');
 
 module.exports = function (t, a) {
 	var db = new Database()
@@ -12,13 +13,14 @@ module.exports = function (t, a) {
 	  , Partner
 	  , FormSection = defineFormSection(db)
 	  , BusinessProcess = defineBusinessProcess(db)
+	  , PropertyGroupsProcess = definePropertyGroupsProcess(db)
 	  , businessProcess, section;
 
 	TestFormEntitiesTable = FormEntitiesTable.extend('TestFormEntitiesTable', {
 		resolventProperty: { value: 'tableResolver' },
 		resolventValue: { value: true },
 		actionUrl: { value: 'action' },
-		sectionProperty: { value: 'dataForms' },
+		sectionProperty: { value: 'formSections' },
 		propertyName: { value: 'partners' },
 		min: { value: 1 },
 		max: { value: 3 }
@@ -30,10 +32,10 @@ module.exports = function (t, a) {
 		prop3: { type: db.Boolean, required: true }
 	});
 
-	defineFormSections(Partner, 'dataForms');
+	defineFormSections(Partner, 'formSections');
 
-	Partner.prototype.dataForms.define('partnerSection', { type: FormSection });
-	Partner.prototype.dataForms.partnerSection.propertyNames = ['prop1', 'prop2', 'prop3'];
+	Partner.prototype.formSections.define('partnerSection', { type: FormSection });
+	Partner.prototype.formSections.partnerSection.propertyNames = ['prop1', 'prop2', 'prop3'];
 
 	//section's resolvent
 	BusinessProcess.prototype.defineProperties(
@@ -88,4 +90,34 @@ module.exports = function (t, a) {
 	businessProcess.partners.last.prop3 = true;
 	a(section.weight, 8);
 	a(section.status, 1);
+	// new model
+	Partner.prototype.define('dataForms', {
+		type: PropertyGroupsProcess,
+		nested: true
+	});
+	Partner.prototype.dataForms.map.define('partnerSection', {
+		type: FormSection,
+		nested: true
+	});
+	Partner.prototype.dataForms.map.get('partnerSection').setProperties({
+		propertyNames: ['prop1', 'prop2', 'prop3']
+	});
+	section.sectionProperty = "dataForms";
+	a(section.weight, 8);
+	a(section.status, 1);
+	businessProcess.partners.add(new Partner());
+	a(section.weight, 9);
+	a(section.status, 0.88); // 8/9
+	section.max = 5;
+	a(section.weight, 10);
+	a(section.status, 0.8);
+	businessProcess.partners.last.prop1 = 'test';
+	a(section.weight, 10);
+	a(section.status, 0.9);
+	businessProcess.partners.last.prop3 = true;
+	a(section.weight, 10);
+	a(section.status, 1);
+	a(String(section.lastEditDate), String(
+		new db.DateTime(businessProcess.partners.last.getDescriptor('prop3').lastModified / 1000)
+	));
 };
