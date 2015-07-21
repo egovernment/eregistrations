@@ -23,7 +23,7 @@ exports.step = function () {
 				h2(_("Mandatory Registrations")),
 				hr(),
 				exports._registrationIntro(),
-				ul(this.businessProcess.registrations.map,
+				ul(this.businessProcess.registrations.mandatory,
 					function (registration) {
 						li({ id: 'registration-mandatory-' + camelToHyphen.call(registration.key) },
 							label({ class: 'input-aside' },
@@ -33,7 +33,7 @@ exports.step = function () {
 				div({ class: 'section-primary-wrapper' },
 					h2(_("Optional Registrations")),
 					hr(),
-					ul(this.businessProcess.registrations.map,
+					ul(this.businessProcess.registrations.optional,
 						function (registration) {
 							li({ id: 'registration-optional-' + camelToHyphen.call(registration.key) },
 								label({ class: 'input-aside' },
@@ -45,7 +45,7 @@ exports.step = function () {
 				hr(),
 				exports._requirementsIntro(),
 				ul({ class: 'user-guide-requirements-list' },
-					this.businessProcess.requirements.map,
+					this.businessProcess.requirements.applicable,
 					function (requirement) {
 						li({ id: 'requirement-' + camelToHyphen.call(requirement.key) },
 							requirement.label);
@@ -55,7 +55,7 @@ exports.step = function () {
 				hr(),
 				exports._costsIntro(),
 				ul({ id: 'costs-list', class: 'user-guide-costs-list' },
-					list(this.businessProcess.costs.map,
+					list(this.businessProcess.costs.applicable,
 						function (cost) {
 							li({ id: 'cost-' + camelToHyphen.call(cost.key) },
 								span({ class: 'user-guide-costs-list-label' }, cost.label),
