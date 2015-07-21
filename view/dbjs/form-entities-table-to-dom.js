@@ -59,8 +59,10 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 			options.prepend,
 			ns.form({
 				actionUrl: url(self.baseUrl + '-resolvent'),
-				autoSubmit: true
-			}, resolvent.formResolvent),
+				autoSubmit: true,
+				method: 'post'
+			}, resolvent.formResolvent, ns.p({ class: 'submit' },
+				ns.input({ type: 'submit', value: _("Submit") }))),
 			ns.div({ id: resolvent.affectedSectionId },
 				ns.table(
 					{ class: ns._if(ns.not(ns.eq(tableData._size, 0)),
