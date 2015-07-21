@@ -23,9 +23,9 @@ exports.step = function () {
 				h2(_("Mandatory Registrations")),
 				hr(),
 				exports._registrationIntro(),
-				ul(this.businessProcess.registrations.map,
+				ul({ id: 'mandatory-registrations-list' }, this.businessProcess.registrations.map,
 					function (registration) {
-						li({ id: 'registration-mandatory-' + camelToHyphen.call(registration.key) },
+						li({ 'data-key': registration.key },
 							label({ class: 'input-aside' },
 								input({ dbjs: registration._isRequested, type: 'checkbox' }), " ",
 								span(registration.label)));
@@ -33,9 +33,9 @@ exports.step = function () {
 				div({ class: 'section-primary-wrapper' },
 					h2(_("Optional Registrations")),
 					hr(),
-					ul(this.businessProcess.registrations.map,
+					ul({ id: 'optional-registrations-list' }, this.businessProcess.registrations.map,
 						function (registration) {
-							li({ id: 'registration-optional-' + camelToHyphen.call(registration.key) },
+							li({ 'data-key': registration.key },
 								label({ class: 'input-aside' },
 									input({ dbjs: registration._isRequested, type: 'checkbox' }), " ",
 									span(registration.label)));
@@ -44,10 +44,10 @@ exports.step = function () {
 			div({ class: 'section-primary' }, h2(_("Requirements")),
 				hr(),
 				exports._requirementsIntro(),
-				ul({ class: 'user-guide-requirements-list' },
+				ul({ id: 'requirements-list', class: 'user-guide-requirements-list' },
 					this.businessProcess.requirements.map,
 					function (requirement) {
-						li({ id: 'requirement-' + camelToHyphen.call(requirement.key) },
+						li({ 'data-key': requirement.key },
 							requirement.label);
 					})),
 
@@ -57,7 +57,7 @@ exports.step = function () {
 				ul({ id: 'costs-list', class: 'user-guide-costs-list' },
 					list(this.businessProcess.costs.map,
 						function (cost) {
-							li({ id: 'cost-' + camelToHyphen.call(cost.key) },
+							li({ 'data-key': cost.key },
 								span({ class: 'user-guide-costs-list-label' }, cost.label),
 								span({ id: 'cost-amount-' + camelToHyphen.call(cost.key) }));
 						}),
