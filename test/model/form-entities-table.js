@@ -79,4 +79,13 @@ module.exports = function (t, a) {
 	a(String(section.lastEditDate), String(
 		new db.DateTime(businessProcess.getDescriptor('tableResolver').lastModified / 1000)
 	));
+	businessProcess.tableResolver = true;
+	section.max = 2;
+	a(section.weight, 6);
+	a(section.status, 0.66);
+	section.max = 4;
+	businessProcess.partners.last.prop1 = 'test';
+	businessProcess.partners.last.prop3 = true;
+	a(section.weight, 8);
+	a(section.status, 1);
 };
