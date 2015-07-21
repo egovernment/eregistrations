@@ -110,7 +110,6 @@ module.exports = memoize(function (db) {
 				entityObjects = entityObjects.ordered;
 			}
 			_observe(entityObjects);
-			protoWeight = getWeightByEntity(objectsType.prototype);
 			entityObjects.some(function (entityObject) {
 				++i;
 				if (this.max && (i > this.max)) {
@@ -121,6 +120,8 @@ module.exports = memoize(function (db) {
 				weightTotal += getWeightByEntity(entityObject);
 			}, this);
 			if (_observe(entityObjects._size) < this.min) {
+				protoWeight = getWeightByEntity(objectsType.prototype);
+
 				// we assume that each potential entity has the same weight as prototype
 				weightTotal += (protoWeight * (this.min - entityObjects.size));
 			}
