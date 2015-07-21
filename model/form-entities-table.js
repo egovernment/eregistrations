@@ -25,7 +25,8 @@ module.exports = memoize(function (db) {
 		min: { type: UInteger },
 		max: { type: UInteger },
 		status: { value: function (_observe) {
-			var entityObjects, statusSum, statusKey, weightKey, isResolventExcluded, resolved;
+			var entityObjects, statusSum, statusKey, weightKey, isResolventExcluded, resolved, i;
+			i = 0;
 			statusSum = 0;
 			statusKey = this.sectionProperty + 'Status';
 			weightKey = this.sectionProperty + 'Weight';
@@ -57,15 +58,19 @@ module.exports = memoize(function (db) {
 				entityObjects = entityObjects.ordered;
 			}
 			_observe(entityObjects);
-			entityObjects.forEach(function (entityObject) {
+			entityObjects.some(function (entityObject) {
 				var resolvedStatus, resolvedWeight;
+				i++;
 				resolvedStatus = entityObject.resolveSKeyPath(statusKey, _observe);
 				resolvedWeight = entityObject.resolveSKeyPath(weightKey, _observe);
 				if (!resolvedStatus || !resolvedWeight) {
 					return;
 				}
+				if (this.max && (i > this.max)) {
+					return true;
+				}
 				statusSum += (_observe(resolvedStatus.observable) * _observe(resolvedWeight.observable));
-			});
+			}, this);
 			if (!this.weight) return 1;
 			return statusSum / this.weight;
 		} },
