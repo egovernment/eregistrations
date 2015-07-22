@@ -1,3 +1,5 @@
+// Generic guide user page (Part A)
+
 'use strict';
 
 var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen'),

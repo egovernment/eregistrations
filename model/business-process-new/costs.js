@@ -4,6 +4,7 @@
 
 var memoize               = require('memoizee/plain')
   , definePercentage      = require('dbjs-ext/number/percentage')
+  , defineCurrency        = require('dbjs-ext/number/currency')
   , defineMultipleProcess = require('../lib/multiple-process')
   , defineCost            = require('../cost')
   , defineRegistrations   = require('./registrations');
@@ -12,6 +13,7 @@ module.exports = memoize(function (db/* options */) {
 	var BusinessProcess = defineRegistrations(db, arguments[1])
 	  , Percentage = definePercentage(db)
 	  , MultipleProcess = defineMultipleProcess(db)
+	  , Currency = defineCurrency(db)
 	  , Cost = defineCost(db);
 
 	BusinessProcess.prototype.defineProperties({
@@ -52,6 +54,15 @@ module.exports = memoize(function (db/* options */) {
 			});
 			if (!total) return 1;
 			return valid / total;
+		} },
+		// Total for all applicable costs
+		totalAmount: { type: Currency, value: function (_observe) {
+			var total = 0;
+			this.applicable.forEach(function (cost) {
+				var amount = cost._get ? _observe(cost._amount) : cost.amount;
+				total += amount;
+			});
+			return total;
 		} }
 	});
 	return BusinessProcess;
