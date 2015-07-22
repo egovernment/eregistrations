@@ -17,7 +17,7 @@ exports.step = function () {
 	insert(_if(or(not(eq(this.businessProcess._guideProgress, 1)), this.businessProcess._isSentBack),
 		div({ class: 'error-main' },
 			_if(not(eq(this.businessProcess._guideProgress, 1)),
-				function () { return "Please fill the Guide first"; },
+				function () { return _("Please fill the Guide first"); },
 					_if(this.businessProcess._isSentBack,
 					function () { exports._sentBackInformation(this); }.bind(this))))));
 
@@ -26,11 +26,11 @@ exports.step = function () {
 		generateSections(this.businessProcess.dataForms.applicable),
 		div({ class: 'disabler' }));
 
-	insert(_if(not(eq(this.businessProcess.dataForms._progress, 1)),
-		section({ class: 'section-warning' },
-			incompleteFormNav(sectionsToFormNavConfig(this.businessProcess.dataForms.applicable))),
+	insert(_if(eq(this.businessProcess.dataForms._progress, 1),
 		div({ class: 'user-next-step-button' },
-			a({ href: '/documents/' }, _("Continue to next step")))));
+			a({ href: '/documents/' }, _("Continue to next step"))),
+		section({ class: 'section-warning' },
+			incompleteFormNav(sectionsToFormNavConfig(this.businessProcess.dataForms.applicable)))));
 
 };
 
