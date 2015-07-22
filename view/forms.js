@@ -14,26 +14,27 @@ exports['step-guide'] = { class: { 'step-form': true } };
 exports.step = function () {
 	exports._formsHeading();
 
-	div({ class: 'error-main' },
-		exports._errorInformation());
+	insert(_if(or(not(eq(this.businessProcess._guideProgress, 1)), this.businessProcess._isSentBack),
+		div({ class: 'error-main' },
+			_if(not(eq(this.businessProcess._guideProgress, 1)),
+				exports._errorInformation(),
+					_if(this.businessProcess._isSentBack,
+					function () { exports._sentBackInformation(this); }.bind(this))))));
 
-	div({ class: 'info-main free-form' },
-		exports._mainInformation());
-
-	div(
-		{ class: 'disabler-range', id: 'forms-disabler-range' },
+	div({ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
+				'disabler-active')], id: 'forms-disabler-range' },
 		generateSections(this.businessProcess.dataForms.applicable),
+		div({ class: 'disabler' }));
 
+	insert(_if(not(eq(this.businessProcess.dataForms._progress, 1)),
+		section({ class: 'section-warning' },
+			incompleteFormNav(sectionsToFormNavConfig(this.businessProcess.dataForms.applicable)))));
+
+	insert(_if(eq(this.businessProcess.dataForms._progress, 1),
 		div({ class: 'user-next-step-button' },
-			a({ href: '/documents/' }, _("Continue to next step"))),
-		div({ class: 'disabler' })
-	);
-
-	section({ class: 'section-warning' },
-		incompleteFormNav(sectionsToFormNavConfig(this.businessProcess.dataForms.applicable)));
+			a({ href: '/documents/' }, _("Continue to next step")))));
 
 };
 
 exports._formsHeading = Function.prototype;
 exports._errorInformation = Function.prototype;
-exports._mainInformation = Function.prototype;
