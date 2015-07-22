@@ -84,7 +84,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 						) },
 						tableData,
 						function (entityObject) {
-							var editUrl, deleteUrl;
+							var editUrl, deleteUrl, status;
 							if (isMapMode) {
 								editUrl = url(self.baseUrl, entityObject.key);
 								deleteUrl = url(self.baseUrl, entityObject.key, 'delete');
@@ -92,14 +92,19 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 								editUrl = url(self.baseUrl, entityObject.__id__);
 								deleteUrl = url(self.baseUrl, entityObject.__id__, 'delete');
 							}
+							if (self.sectionProperty === 'dataForms') {
+								status = entityObject.dataForms._progress;
+							} else {
+								status = resolvePropertyPath(entityObject,
+										self.sectionProperty + 'Status').observable;
+							}
 							return ns.tr(ns.list(self.entities, function (entity) {
 								return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
 											ns._if(entity._mobileOnly, 'mobile-only')) },
 										ns.a({ href: editUrl },
 											resolvePropertyPath(entityObject, entity.propertyName).observable));
 							}),
-								ns.td({ class: ns._if(ns.eq(resolvePropertyPath(entityObject,
-												self.sectionProperty + 'Status').observable, 1),
+								ns.td({ class: ns._if(ns.eq(status, 1),
 										'completed') },
 									ns.span({ class: 'status-complete' }, "✓"),
 									ns.span({ class: 'hint-optional hint-optional-left status-incomplete',
@@ -128,8 +133,8 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 					)
 				)),
 			ns.p({ class: 'section-primary-scroll-top' },
-					ns.a({ onclick: 'window.scroll(0, 0)' }, ns.span({ class: 'fa fa-arrow-up' },
-						_("Back to top"))))
+				ns.a({ onclick: 'window.scroll(0, 0)' }, ns.span({ class: 'fa fa-arrow-up' },
+					_("Back to top"))))
 		)];
 		if (isMapMode) {
 			loc.on('change', function (ev) {

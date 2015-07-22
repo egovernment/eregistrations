@@ -33,9 +33,16 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 						ns.ul({ class: 'entity-data-section-entities' },
 							resolved,
 							function (entityObject) {
+								var sectionsContainer;
+								if (self.sectionProperty === 'dataForms') {
+									sectionsContainer =
+										resolvePropertyPath(entityObject, self.sectionProperty).value.applicable;
+								} else {
+									sectionsContainer = resolvePropertyPath(entityObject, self.sectionProperty).value;
+								}
 								return ns.li(headersMap[headerRank](
 									resolvePropertyPath(entityObject, self.entityTitleProperty).observable
-								), ns.list(resolvePropertyPath(entityObject, self.sectionProperty).value,
+								), ns.list(sectionsContainer,
 									function (section) {
 										return section.toDOM(document, { headerRank: headerRank + 1 });
 									}));
