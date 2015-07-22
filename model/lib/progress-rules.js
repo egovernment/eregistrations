@@ -20,8 +20,8 @@ module.exports = memoize(function (db/*, options*/) {
 			type: Percentage,
 			value: function (_observe) {
 				var progressSum = 0;
-				this.applicable.forEach(function (progress) {
-					progressSum += (_observe(progress._progress) * _observe(progress._weight));
+				this.applicable.forEach(function (rule) {
+					progressSum += (_observe(rule._progress) * _observe(rule._weight));
 				});
 
 				if (!this.weight) return 1;
@@ -32,8 +32,8 @@ module.exports = memoize(function (db/*, options*/) {
 			type:  UInteger,
 			value: function (_observe) {
 				var weightSum = 0;
-				this.applicable.forEach(function (progress) {
-					weightSum += _observe(progress._weight);
+				this.applicable.forEach(function (rule) {
+					weightSum += _observe(rule._weight);
 				});
 
 				return weightSum;
@@ -44,10 +44,10 @@ module.exports = memoize(function (db/*, options*/) {
 			multiple: true,
 			value: function (_observe) {
 				var result = [];
-				this.applicable.forEach(function (progress) {
-					var isValid = progress._get ? _observe(progress._isValid) :
-							progress.isValid;
-					if (isValid) result.push(progress);
+				this.applicable.forEach(function (rule) {
+					var isValid = rule._get ? _observe(rule._isValid) :
+							rule.isValid;
+					if (isValid) result.push(rule);
 				});
 				return result;
 			}
@@ -57,10 +57,10 @@ module.exports = memoize(function (db/*, options*/) {
 			multiple: true,
 			value: function (_observe) {
 				var result = [];
-				this.applicable.forEach(function (progress) {
-					var isInvalid = progress._get ? !_observe(progress._isValid) :
-							!progress.isValid;
-					if (isInvalid) result.push(progress);
+				this.applicable.forEach(function (rule) {
+					var isInvalid = rule._get ? !_observe(rule._isValid) :
+							!rule.isValid;
+					if (isInvalid) result.push(rule);
 				});
 				return result;
 			}
@@ -68,10 +68,10 @@ module.exports = memoize(function (db/*, options*/) {
 		applicable: {
 			value: function (_observe) {
 				var result = [];
-				this.map.forEach(function (progress) {
-					var isApplicable = progress._get ? _observe(progress._isApplicable) :
-							progress.isApplicable;
-					if (isApplicable) result.push(progress);
+				this.map.forEach(function (rule) {
+					var isApplicable = rule._get ? _observe(rule._isApplicable) :
+							rule.isApplicable;
+					if (isApplicable) result.push(rule);
 				});
 				return result;
 			}
