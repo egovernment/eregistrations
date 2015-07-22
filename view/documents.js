@@ -19,7 +19,6 @@ exports.step = function () {
 				{ class: 'sections-primary-list user-documents-upload' },
 				this.businessProcess.requirementUploads.applicable,
 				function (requirementUpload) {
-					console.log(requirementUpload.document._files);
 					return li({ class: 'section-primary' },
 						form({ class: 'auto-submit' },
 							div(
