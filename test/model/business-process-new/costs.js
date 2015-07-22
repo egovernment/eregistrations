@@ -10,7 +10,9 @@ module.exports = function (t, a) {
 
 	BusinessProcess.prototype.registrations.map.define('test', { nested: true });
 	BusinessProcess.prototype.costs.map.define('test1', { nested: true });
+	BusinessProcess.prototype.costs.map.test1.amount = 20;
 	BusinessProcess.prototype.costs.map.define('test2', { nested: true });
+	BusinessProcess.prototype.costs.map.test2.amount = 31;
 	BusinessProcess.prototype.registrations.map.test.costs = function () {
 		return [this.master.costs.map.test1, this.master.costs.map.test2];
 	};
@@ -30,4 +32,5 @@ module.exports = function (t, a) {
 	businessProcess.costs.applicable.last.isPaid = true;
 	a(businessProcess.costs.onlinePaymentProgress, 1);
 	a(businessProcess.costs.paymentProgress, 1);
+	a(businessProcess.costs.totalAmount, 51);
 };
