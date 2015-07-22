@@ -31,7 +31,7 @@ module.exports = memoize(function (db/* options */) {
 		} },
 		// Payable subset of applicable costs
 		// More directly: all applicable costs that are non 0
-		payable: { type: Cost, value: function (_observe) {
+		payable: { type: Cost, multiple: true, value: function (_observe) {
 			var result = [];
 			this.applicable.forEach(function (cost) {
 				var isPayable = Boolean(cost._get ? _observe(cost._amount) : cost.amount);
