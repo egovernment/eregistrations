@@ -40,7 +40,7 @@ module.exports = function (t, a) {
 	//section's resolvent
 	BusinessProcess.prototype.defineProperties(
 		{
-			tableResolver: { type: db.Boolean, value: true },
+			tableResolver: { type: db.Boolean, required: true },
 			partners: { type: Partner, multiple: true },
 			section: { type: TestFormEntitiesTable, nested: true }
 		}
@@ -49,6 +49,14 @@ module.exports = function (t, a) {
 	businessProcess = new BusinessProcess();
 	section = businessProcess.section;
 	a(section.actionUrl, 'action');
+	a(section.isStatusForcedByResolvent, true);
+	a(section.status, 0);
+	a(section.weight, 1);
+	businessProcess.tableResolver = true;
+	a(section.isStatusForcedByResolvent, false);
+	a(section.weight, 3);
+	a(section.status, 0.33);
+	section.excludedFromStatusIfFilled = ['tableResolver'];
 	a(section.weight, 2);
 	a(section.status, 0);
 	businessProcess.partners.add(new Partner());
@@ -75,13 +83,13 @@ module.exports = function (t, a) {
 	businessProcess.partners.add(new Partner());
 	a(section.weight, 7);
 	a(section.status, 0.85);
-//	businessProcess.tableResolver = false;
-//	a(section.weight, 0);
-//	a(section.status, 1);
-//	a(String(section.lastEditDate), String(
-//		new db.DateTime(businessProcess.getDescriptor('tableResolver').lastModified / 1000)
-//	));
-//	businessProcess.tableResolver = true;
+	businessProcess.tableResolver = false;
+	a(section.weight, 0);
+	a(section.status, 1);
+	a(String(section.lastEditDate), String(
+		new db.DateTime(businessProcess.getDescriptor('tableResolver').lastModified / 1000)
+	));
+	businessProcess.tableResolver = true;
 	section.max = 2;
 	a(section.weight, 6);
 	a(section.status, 0.66);

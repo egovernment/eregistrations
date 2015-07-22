@@ -28,49 +28,88 @@ module.exports = memoize(function (db) {
 		progressRules: { type: ProgressRules, nested: true },
 		min: { type: UInteger },
 		max: { type: UInteger },
-		status: { value: function (_observe) {
-			var resolventStatus, isResolventExcluded, resolved;
-			resolventStatus = 0;
-			if (this.resolventProperty) {
-				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
-				if (!resolved) {
-					return 0;
-				}
-				isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
-				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-					if (isResolventExcluded) return 1;
-					if (resolved.descriptor.multiple) {
-						if (_observe(resolved.observable).size) return 1;
-					} else {
-						if (_observe(resolved.observable) != null) return 1;
+		isStatusForcedByResolvent: {
+			type: db.Boolean,
+			value: function (_observe) {
+				var resolved;
+				if (this.resolventProperty) {
+					resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
+					if (!resolved) {
+						return false;
 					}
-					return 0;
+					if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
+						return true;
+					}
 				}
-				if (!isResolventExcluded) {
-					resolventStatus = 1;
-				}
+				return false;
 			}
-			if (!this.weight) return 1;
-			return _observe(this.progressRules._progress);
-		} },
+		},
+		status: {
+			value: function (_observe) {
+				if (this.isStatusForcedByResolvent) {
+					return this.resolventStatus;
+				}
+				if (!this.weight) return 1;
+				if (this.resolventStatus * this.resolventWeight) {
+					return (_observe(this.progressRules._progress) +
+						(this.resolventStatus * this.resolventWeight))
+						/ (this.progressRules.weight + this.resolventWeight);
+				}
+				return _observe(this.progressRules._progress);
+			}
+		},
+		resolventStatus: {
+			type: UInteger,
+			value: function (_observe) {
+				var isResolventExcluded, resolved;
+				if (this.resolventProperty) {
+					resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
+					if (!resolved) {
+						return 0;
+					}
+					isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
+					if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
+						if (isResolventExcluded) return 1;
+						if (resolved.descriptor.multiple) {
+							if (_observe(resolved.observable).size) return 1;
+						} else {
+							if (_observe(resolved.observable) != null) return 1;
+						}
+						return 0;
+					}
+					if (!isResolventExcluded) {
+						return 1;
+					}
+				}
+				return 0;
+			}
+		},
+		resolventWeight: {
+			type: UInteger,
+			value: function (_observe) {
+				var weightTotal, isResolventExcluded, resolved;
+				weightTotal = 0;
+				if (this.resolventProperty) {
+					resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
+					if (!resolved) {
+						return 0;
+					}
+					isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
+					if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
+						return isResolventExcluded ? 0 : 1;
+					}
+					if (!isResolventExcluded) {
+						++weightTotal;
+					}
+				}
+				return weightTotal;
+			}
+		},
 		weight: { value: function (_observe) {
-			var weightTotal, isResolventExcluded, resolved;
-			weightTotal = 0;
-			if (this.resolventProperty) {
-				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
-				if (!resolved) {
-					return 0;
-				}
-				isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
-				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-					return isResolventExcluded ? 0 : 1;
-				}
-				if (!isResolventExcluded) {
-					++weightTotal;
-				}
+			if (this.isStatusForcedByResolvent) {
+				return this.resolventWeight;
 			}
-
-			return _observe(this.progressRules._weight) + weightTotal;
+			return _observe(this.progressRules._weight) + this.resolventWeight;
 		} },
 		getWeightByEntity: {
 			type: db.Function,
