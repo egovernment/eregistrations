@@ -2,7 +2,9 @@
 
 'use strict';
 
-var _  = require('mano').i18n.bind('Registration');
+var _  = require('mano').i18n.bind('Registration'),
+errorMsg = require('./_user-registration-error-info').errorMsg,
+_d = _;
 
 exports._parent = require('./user-registration-base');
 
@@ -10,6 +12,8 @@ exports['step-documents'] = { class: { 'step-active': true } };
 
 exports.step = function () {
 	exports._documentsHeading();
+
+	insert(errorMsg(exports._sentBackInformation, this.businessProcess, this));
 
 	div(
 		{ class: ['disabler-range', _if(not(eq(this.businessProcess.requirementUploads._progress, 1)),
@@ -19,11 +23,14 @@ exports.step = function () {
 				{ class: 'sections-primary-list user-documents-upload' },
 				this.businessProcess.requirementUploads.applicable,
 				function (requirementUpload) {
+					console.log(requirementUpload.document._files);
 					return li({ class: 'section-primary' },
 						form({ class: 'auto-submit' },
 							div(
-								h2(requirementUpload.document.label),
-								small(requirementUpload.document.legend),
+								h2(_d(requirementUpload.document.label, { user: requirementUpload.master })),
+								requirementUpload.document.legend &&
+									small(mdi(_d(requirementUpload.document.legend,
+										{ user: requirementUpload.master }))),
 								hr(),
 								input({ dbjs: requirementUpload.document.files._map, label: true })
 							))

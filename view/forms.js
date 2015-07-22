@@ -17,7 +17,7 @@ exports.step = function () {
 	insert(_if(or(not(eq(this.businessProcess._guideProgress, 1)), this.businessProcess._isSentBack),
 		div({ class: 'error-main' },
 			_if(not(eq(this.businessProcess._guideProgress, 1)),
-				function () { return _("Please fill the Guide first"); },
+				function () { return p(_("Please fill the Guide first")); },
 					_if(this.businessProcess._isSentBack,
 					function () { exports._sentBackInformation(this); }.bind(this))))));
 
