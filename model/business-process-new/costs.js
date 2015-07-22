@@ -29,6 +29,16 @@ module.exports = memoize(function (db/* options */) {
 			});
 			return result;
 		} },
+		// Payable subset of applicable costs
+		// More directly: all applicable costs that are non 0
+		payable: { type: Cost, value: function (_observe) {
+			var result = [];
+			this.applicable.forEach(function (cost) {
+				var isPayable = Boolean(cost._get ? _observe(cost._amount) : cost.amount);
+				if (isPayable) result.push(cost);
+			});
+			return result;
+		} },
 		// Paid costs
 		paid: { type: Cost, multiple: true, value: function (_observe) {
 			var result = [];
@@ -58,7 +68,7 @@ module.exports = memoize(function (db/* options */) {
 		// Total for all applicable costs
 		totalAmount: { type: Currency, value: function (_observe) {
 			var total = 0;
-			this.applicable.forEach(function (cost) {
+			this.payable.forEach(function (cost) {
 				var amount = cost._get ? _observe(cost._amount) : cost.amount;
 				total += amount;
 			});
