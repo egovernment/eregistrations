@@ -259,6 +259,10 @@ BusinessProcessNew.prototype.dataForms.map.define('company', {
 	nested: true
 });
 
+BusinessProcessNew.prototype.dataForms.map.get('company').setProperties({
+	label: "Company information"
+});
+
 BusinessProcessNew.prototype.dataForms.map.get('company').sections.define('details', {
 	type: FormSection,
 	nested: true
@@ -275,6 +279,30 @@ BusinessProcessNew.prototype.dataForms.map.get('company').sections.get('address'
 	propertyNames: ['address/city', 'address/streetType',
 		'address/streetType', 'address/streetName', 'address/street', 'address/streetNumber',
 		'address/apartmentNumber']
+});
+
+// Forms sides section
+
+BusinessProcessNew.prototype.dataForms.map.define('sides', {
+	type: FormSectionGroup,
+	nested: true
+});
+
+BusinessProcessNew.prototype.dataForms.map.get('sides').setProperties({
+	label: "Business Owner sides informations"
+});
+
+BusinessProcessNew.prototype.dataForms.map.get('sides').sections.define('details', {
+	type: FormSection,
+	nested: true
+});
+
+BusinessProcessNew.prototype.dataForms.map.get('sides').sections.get('first').setProperties({
+	label: "First Sub Section"
+});
+
+BusinessProcessNew.prototype.dataForms.map.get('sides').sections.get('second').setProperties({
+	label: "Second Sub Section"
 });
 
 BusinessProcessNew.prototype.dataForms.map.define('branches', {
