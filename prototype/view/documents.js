@@ -1,3 +1,5 @@
+// Prototype documents user page (Part A)
+
 'use strict';
 
 module.exports = exports = require('../../view/documents');

@@ -2,8 +2,7 @@
 
 'use strict';
 
-var db = require('mano').db,
-	user = db.User.prototype;
+var _  = require('mano').i18n.bind('Registration');
 
 exports._parent = require('./user-registration-base');
 
@@ -18,15 +17,16 @@ exports.step = function () {
 		section(
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
-				user.requiredSubmissions,
-				function (submission) {
+				this.businessProcess.requirementUploads.applicable,
+				function (requirementUpload) {
+					console.log(requirementUpload.document._files);
 					return li({ class: 'section-primary' },
 						form({ class: 'auto-submit' },
 							div(
-								h2(submission.label),
-								small(submission.legend),
+								h2(requirementUpload.document.label),
+								small(requirementUpload.document.legend),
 								hr(),
-								input({ dbjs: submission._files, label: true })
+								input({ dbjs: requirementUpload.document.files._map, label: true })
 							))
 						);
 				}
@@ -36,7 +36,7 @@ exports.step = function () {
 	);
 	insert(_if(eq(this.businessProcess.requirementUploads._progress, 1),
 		div({ class: 'user-next-step-button' },
-			a({ href: '/submission/' }, "Continue to next step"))));
+			a({ href: '/submission/' }, _("Continue to next step")))));
 };
 
 exports._documentsHeading = Function.prototype;
