@@ -16,6 +16,18 @@ module.exports = memoize(function (db/*, options*/) {
 	UInteger        = defineUInteger(db);
 	ProgressRule    = defineProgressRule(db);
 	ProgressRules   = MultipleProcess.extend('ProgressRules', {
+		warnings: {
+			type: db.String,
+			multiple: true,
+			value: function (_observe) {
+				var result = [];
+				this.invalid.forEach(function (rule) {
+					result.push(_observe(rule._warning));
+				});
+
+				return result;
+			}
+		},
 		progress: {
 			type: Percentage,
 			value: function (_observe) {
