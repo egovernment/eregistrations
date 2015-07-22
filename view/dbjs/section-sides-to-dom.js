@@ -1,3 +1,5 @@
+// Section side used on forms user page (Part A)
+
 'use strict';
 
 var d  = require('d')
