@@ -12,7 +12,3 @@ exports._formsHeading = function () {
 			p("Lorem ipsum dolor sit amet, consectetur adipiscing elit."))
 	);
 };
-
-exports._errorInformation = function () {
-	return p(span({ class: 'fa fa-exclamation-circle' }), "Please fill the Guide first");
-};
