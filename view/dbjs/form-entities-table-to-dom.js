@@ -133,8 +133,8 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 					)
 				)),
 			ns.p({ class: 'section-primary-scroll-top' },
-				ns.a({ onclick: 'window.scroll(0, 0)' }, ns.span({ class: 'fa fa-arrow-up' },
-					_("Back to top"))))
+					ns.a({ onclick: 'window.scroll(0, 0)' }, ns.span({ class: 'fa fa-arrow-up' },
+						_("Back to top"))))
 		)];
 		if (isMapMode) {
 			loc.on('change', function (ev) {
