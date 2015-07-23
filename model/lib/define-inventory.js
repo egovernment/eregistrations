@@ -24,9 +24,6 @@ module.exports = memoize(function (db/*, options*/) {
 			}
 			if (data.currencyType) {
 				data.currencyType = ensureDbjsType(data.currencyType);
-				if (!data.currencyType.prototype instanceof db.Currency) {
-					throw new TypeError("defineInventory expects currencyType to extend db.Currency");
-				}
 				InventoryValue = ensureDb(db).Object.extend('InventoryValue', {
 					description: { type: db.StringLine },
 					value: { type: data.currencyType }
