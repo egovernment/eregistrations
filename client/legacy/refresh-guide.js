@@ -59,7 +59,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 	// Create mock BusinessProcess
 	var BusinessProcess = function () {};
-	BusinessProcess.prototype = $.legacyDb[businessProcessTypeName];
+	BusinessProcess.prototype = $.legacyDb[businessProcessTypeName].prototype;
 
 	// Gather required list elements
 
