@@ -2,8 +2,7 @@
 
 'use strict';
 
-var deferred  = require('deferred')
-  , serialize = require('es5-ext/object/serialize')
+var serialize = require('es5-ext/object/serialize')
   , writeFile = require('fs2/write-file')
   , db        = require('mano').db
   , Currency  = require('dbjs-ext/number/currency')(db)
@@ -92,10 +91,9 @@ module.exports = function (businessProcessTypeName, filename, customizeCb) {
 	if (customizeCb) customizeCb(legacyDb);
 
 	// Store file.
-	return deferred(writeFile(filename,
+	return writeFile(filename,
 			'\'use strict\';\n\n' +
 			'var $ = require(\'mano-legacy\');\n' +
 			'require(\'mano-legacy/dbjs-map-for-each\');\n\n' +
-			'module.exports = ' + serialize(legacyDb) + ';\n')
-		);
+			'module.exports = ' + serialize(legacyDb) + ';\n');
 };
