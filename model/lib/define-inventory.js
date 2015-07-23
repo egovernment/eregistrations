@@ -1,3 +1,10 @@
+/**
+ * Utility for defining inventory nested.
+ * It allows usage of defineInventory method on db.Object it uses similar interface
+ * as NestedMap.
+ * See defineInventory documentation for more information.
+ */
+
 'use strict';
 
 var memoize             = require('memoizee/plain')
@@ -13,6 +20,19 @@ module.exports = memoize(function (db/*, options*/) {
 	ensureDb(db);
 	defineStringLine(db);
 	defineNestedMap(db);
+
+	/**
+	 * @method defineInventory
+	 * @param {string} propertyName -
+	 * the name of the property on which the map will be created (i.e. "files")
+	 * @param {Object} [currencyType=db.Currency, key: item {Object} ] -
+	 * key will be the name of a map holding certain invnetory cathegory i.e "assets", "furniture".
+	 * item can have following properties:
+	 * label {String}
+	 * inputPlaceholder {String},
+	 * addLabel {String}
+	 * @returns {undefined}
+	 */
 	Object.defineProperty(db.Object.prototype, 'defineInventory', d(
 		function (propertyName, data) {
 			var db, self, InventoryValue;
