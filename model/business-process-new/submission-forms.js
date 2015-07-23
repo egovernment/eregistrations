@@ -22,7 +22,7 @@ module.exports = memoize(function (db/* options */) {
 			superGetter = this.database.resolveGetterObservables(superGetter);
 			return superGetter.call(this, _observe);
 		} },
-		progress: { value: function (_observe) {
+		progress: { value: function () {
 			var total = this.weight, valid = this.formsProgress * (total - 1);
 			if (this.isAffidavitSigned) ++valid;
 			return valid / total;
