@@ -121,7 +121,18 @@ BusinessProcessNew.prototype.defineProperties({
 		required: true,
 		label: "Is company address the same as the representative's?"
 	},
-	businessAddress: Address
+	businessAddress: Address,
+	// submissionForms
+	placeOfWithdraw: {
+		type: StringLine,
+		label: "Withdraw documents to"
+	},
+	pickCertificates: {
+		type: db.Boolean,
+		trueLabel: "I will pick the certificates.",
+		falseLabel: "The following person will pick the certificates",
+		label: "The following person"
+	}
 });
 
 BusinessProcessNew.prototype.defineNestedMap('branches', {
@@ -235,7 +246,45 @@ processes.forEach(function (businessProcess) {
 	businessProcess.branches.map.get('second').responsiblePerson.firstName = "Peter";
 	businessProcess.branches.map.get('second').responsiblePerson.lastName = "Parker";
 	businessProcess.branches.map.get('second').responsiblePerson.email = "spiderman@daily-bugle.com";
+	businessProcess.requirementUploads.applicable.first.document.files.map.
+			get('idDoc').setProperties({
+			name: 'idoc.jpg',
+			type: 'image/jpeg',
+			diskSize: 376306,
+			path: 'doc-a-sub-file1.idoc.jpg',
+			url: '/uploads/doc-a-sub-file1.idoc.jpg'
+		});
+	businessProcess.requirementUploads.applicable.first.document.files.map.
+			get('idDoc').thumb.url = '/uploads/doc-a-sub-file1.idoc.jpg';
+	businessProcess.requirementUploads.applicable.last.document.files.map.
+			get('idDoc').setProperties({
+			name: 'idoc.png',
+			type: 'image/png',
+			diskSize: 124998,
+			path: 'doc-a-sub-file2.idoc.png',
+			url: '/uploads/doc-a-sub-file2.idoc.png'
+		});
+	businessProcess.requirementUploads.applicable.last.document.files.map.
+			get('idDoc').thumb.url = '/uploads/doc-a-sub-file2.idoc.png';
+});
 
+// Submision sections
+BusinessProcessNew.prototype.submissionForms.map.define('withdraw', {
+	type: FormSection,
+	nested: true
+});
+BusinessProcessNew.prototype.submissionForms.map.get('withdraw').setProperties({
+	propertyNames: ['placeOfWithdraw'],
+	label: "Where do you want to withdraw your documents?"
+});
+
+BusinessProcessNew.prototype.submissionForms.map.define('certificates', {
+	type: FormSection,
+	nested: true
+});
+BusinessProcessNew.prototype.submissionForms.map.get('certificates').setProperties({
+	propertyNames: ['pickCertificates'],
+	label: "Who will pick the certificates?"
 });
 
 // Sections
