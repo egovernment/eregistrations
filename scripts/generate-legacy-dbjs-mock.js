@@ -2,7 +2,8 @@
 
 'use strict';
 
-var serialize = require('es5-ext/object/serialize')
+var ensureType = require('dbjs/valid-dbjs-type')
+  , serialize = require('es5-ext/object/serialize')
   , writeFile = require('fs2/write-file')
   , db        = require('mano').db
   , Currency  = require('dbjs-ext/number/currency')(db)
@@ -12,16 +13,14 @@ var defineForEach = function (object) {
 	object.forEach = new Function('cb, thisArg', '$.dbjsMapForEach(this, cb, thisArg);');
 };
 
-module.exports = function (businessProcessTypeName, filename, customizeCb) {
+module.exports = function (businessProcessType, filename, customizeCb) {
 	var legacyDb = {}, businessProcessProto, certificates = {}, costs = {}, registrations = {}
 	  , requirements = {}, currencyType = {}, costType = {};
 
-	// Get BusinessProcess prototype.
-	businessProcessProto = db[businessProcessTypeName].prototype;
+	ensureType(businessProcessType);
 
-	if (!businessProcessProto) {
-		throw new Error('Cannot get prototype of BusinessProcess:' + businessProcessTypeName);
-	}
+	// Get BusinessProcess prototype.
+	businessProcessProto = businessProcessType.prototype;
 
 	// Get all interesting fields from BusinessProcess prototype.
 	var getPropertyValue = function (multipleProcessName, propertyName) {
@@ -76,7 +75,7 @@ module.exports = function (businessProcessTypeName, filename, customizeCb) {
 	costType.step = Cost.prototype.getDescriptor('amount').step;
 
 	// Add everything to legacyDb
-	legacyDb[businessProcessTypeName] = {
+	legacyDb[businessProcessType.__id__] = {
 		prototype: {
 			certificates: certificates,
 			costs: costs,
