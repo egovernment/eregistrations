@@ -2,10 +2,9 @@
 
 'use strict';
 
-var db = require('mano').db
-  , generateSections = require('./components/generate-form-sections')
-  , user = db.User.prototype
-  , errorMsg = require('./_user-registration-error-info').errorMsg;
+var generateSections = require('./components/generate-form-sections')
+  , errorMsg = require('./_user-registration-error-info').errorMsg
+  , _  = require('mano').i18n.bind('Registration');
 
 exports._parent = require('./user-registration-base');
 
@@ -18,19 +17,22 @@ exports.step = function () {
 
 	insert(generateSections(this.businessProcess.submissionForms.applicable));
 
-	section(
+	insert(_if(or(lt(this.businessProcess.dataForms._progress, 1),
+			lt(this.businessProcess.requirementUploads._progress, 1),
+			lt(this.businessProcess.submissionForms._progress, 1)), section(
 		{ class: 'section-warning' },
 		ul(
-			li(
-				a({ class: 'form-complition-link', href: '/forms/' },
-					"Some required fields in the tab Fill the form have not been completed")
-			),
-			li(
-				a({ class: 'form-complition-link', href: '/documents/' },
-					"Some documents have not been uploaded")
-			)
+			_if(not(eq(this.businessProcess.dataForms._progress, 1)),
+				li(a({ class: 'form-complition-link', href: '/forms/' },
+					_("Some mandatory fields on tab 'Enter your details' have not been completed")))),
+			_if(not(eq(this.businessProcess.requirementUploads._progress, 1)),
+				li(a({ class: 'form-complition-link', href: '/documents/' },
+					_("Some documents have not been uploaded")))),
+			_if(not(eq(this.businessProcess.submissionForms._progress, 1)),
+				li(a({ class: 'form-complition-link', onclick: 'window.scroll(0, 0)' },
+					_("Some mandatory fields on tab 'Send' have not been completed"))))
 		)
-	);
+	)));
 
 	form(
 		{ action: '/user-submitted/' },
