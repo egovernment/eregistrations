@@ -199,9 +199,9 @@ BusinessProcessNew.prototype.getDescriptor('determinants').type = DeterminantSec
 processes.forEach(function (businessProcess) {
 	businessProcess.representative.firstName = "Johny";
 	businessProcess.representative.lastName = "Doe";
-	businessProcess.determinants.branchCount = 2;
-	businessProcess.determinants.isCompany = false;
-	businessProcess.determinants.needsSpecialCommittee = true;
+	businessProcess.branchCount = 2;
+	businessProcess.isCompany = false;
+	businessProcess.needsSpecialCommittee = true;
 	businessProcess.businessName = businessProcess.representative.fullName;
 	businessProcess.representative.dateOfBirth = new Date(1982, 2, 12);
 	businessProcess.representative.isMarried = true;
