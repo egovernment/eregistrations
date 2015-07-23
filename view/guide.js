@@ -78,7 +78,7 @@ exports.step = function () {
 		div({ class: 'disabler' })
 	);
 
-	legacy('guideHandler', 'guide-form', this.businessProcess.__id__);
+	legacy('refreshGuide', 'guide-form', this.businessProcess.__id__);
 };
 
 exports._guideHeading = Function.prototype;

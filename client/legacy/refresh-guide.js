@@ -47,9 +47,9 @@ var formatCurrency = (function () {
 	};
 }());
 
-// A legacy guideHandler method for Part A Guide page.
+// A legacy refreshGuide method for Part A Guide page.
 // Used in: /view/guide.js
-module.exports = function (guideFormId, businessProcessId) {
+module.exports = $.refreshGuide = function (guideFormId, businessProcessId) {
 	var guideForm = $(guideFormId)
 	  , mandatoryRegistrationsSection, mandatoryRegistrationsListElements
 	  , optionalRegistrationsSection, optionalRegistrationsListElements
