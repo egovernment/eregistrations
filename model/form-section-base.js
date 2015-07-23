@@ -88,22 +88,17 @@ module.exports = memoize(function (db) {
 		resolventWeight: {
 			type: UInteger,
 			value: function (_observe) {
-				var weightTotal, isResolventExcluded, resolved;
-				weightTotal = 0;
+				var isResolventExcluded, resolved;
 				if (this.resolventProperty) {
 					resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
 					if (!resolved) {
 						return 0;
 					}
 					isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
-					if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-						return isResolventExcluded ? 0 : 1;
-					}
-					if (!isResolventExcluded) {
-						++weightTotal;
-					}
+					if (isResolventExcluded) return 0;
+					return 1;
 				}
-				return weightTotal;
+				return 0;
 			}
 		},
 		isPropertyExcludedFromStatus: { type: db.Function, value: function (resolved, _observe) {
