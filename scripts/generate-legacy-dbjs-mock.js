@@ -46,15 +46,15 @@ module.exports = function (businessProcessType, filename/*, options*/) {
 		return result;
 	};
 
-	// Assure each map implements forEach.
-	[certificates.map, costs.map, registrations.map, requirements.map].forEach(defineForEach);
-
 	// Copy maps.
 	certificates.map  = copyMapEntities('certificates');
 	costs.map         = copyMapEntities('costs', ['amount']);
 	registrations.map = copyMapEntities('registrations', ['isApplicable', 'isMandatory',
 		'isRequested', 'certificates', 'requirements', 'costs']);
 	requirements.map  = copyMapEntities('requirements', ['isApplicable']);
+
+	// Assure each map implements forEach.
+	[certificates.map, costs.map, registrations.map, requirements.map].forEach(defineForEach);
 
 	// Copy MultipleProcess resolvers.
 	certificates.applicable  = getPropertyValue('certificates', 'applicable');
