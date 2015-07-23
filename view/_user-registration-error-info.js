@@ -9,7 +9,7 @@ exports.errorMsg = function (context, sendBackMsg) {
 			context.businessProcess._isSentBack),
 		div({ class: 'error-main' },
 			_if(not(eq(context.businessProcess._guideProgress, 1)),
-				function () { return p(_("Please fill the Guide first")); },
-					_if(context.businessProcess._isSentBack,
-					function () { sendBackMsg(context); }.bind(context)))));
+				function () { return p(_("Please fill the Guide first")); }),
+			_if(context.businessProcess._isSentBack,
+					function () { sendBackMsg(context); })));
 };
