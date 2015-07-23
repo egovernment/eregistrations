@@ -72,6 +72,16 @@ module.exports = memoize(function (db/* options */) {
 			if (!total) return 1;
 			return valid / total;
 		} },
+		// Payment weight
+		// Indicates number of step user needs to take to complete payment step in Part A
+		// e.g. one step per each payment receipt, and one step for one online payment
+		// If it's zero, that means we should not show payment step at all
+		paymentWeight: { type: Percentage, value: function (_observe) {
+			var weight = 0;
+			if (this.electronic.size) ++weight;
+			weight += _observe(this.mater.paymentReceiptUploads.applicable._size);
+			return weight;
+		} },
 		// Total for all payable costs
 		totalAmount: { type: Currency, value: function (_observe) {
 			var total = 0;
