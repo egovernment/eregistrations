@@ -60,8 +60,8 @@ module.exports = memoize(function (db) {
 						return 0;
 					}
 					isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
+					if (isResolventExcluded) return 1;
 					if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-						if (isResolventExcluded) return 1;
 						if (resolved.descriptor.multiple) {
 							if (_observe(resolved.observable).size) return 1;
 						} else {
