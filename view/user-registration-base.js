@@ -56,7 +56,7 @@ exports._stepsMenu = function (context) {
 				"4. ", _("Pay")
 				),
 			div({ class: 'user-steps-menu-item-progress',
-				style: mmap(context.businessProcess.costs._onlinePaymentProgress, setProgressWidth) })
+				style: mmap(context.businessProcess.costs._paymentProgress, setProgressWidth) })
 		),
 		li(
 			a({ href: '/submission/', id: 'step-submission' },

@@ -7,7 +7,9 @@ var memoize               = require('memoizee/plain')
   , defineCurrency        = require('dbjs-ext/number/currency')
   , defineMultipleProcess = require('../lib/multiple-process')
   , defineCost            = require('../cost')
-  , defineRegistrations   = require('./registrations');
+  , defineRegistrations   = require('./registrations')
+
+  , definePaymentReceiptUploads;
 
 module.exports = memoize(function (db/* options */) {
 	var BusinessProcess = defineRegistrations(db, arguments[1])
@@ -48,20 +50,18 @@ module.exports = memoize(function (db/* options */) {
 			return result;
 		} },
 		// Payment progress
-		paymentProgress: { type: Percentage, value: function () {
-			if (!this.payable.size) return 1;
-			return this.paid.size / this.payable.size;
-		} },
-		// Payment progress for online payments
-		// We require all online payments to be done in Part A stage.
-		// So having this below 1, doesn't allow submit of application
-		onlinePaymentProgress: { type: Percentage, value: function (_observe) {
-			var valid = 0, total = 0;
-			this.payable.forEach(function (cost) {
-				if (!cost.isElectronic) return;
-				++total;
-				if (_observe(cost._isPaid)) ++valid;
-			});
+		paymentProgress: { type: Percentage, value: function (_observe) {
+			var valid = 0, total = 0, paymentReceiptUploads = this.master.paymentReceiptUploads;
+			++total;
+			// Eventual online payments
+			if (this.payable.every(function (cost) {
+					if (!cost.isElectronic) return true;
+					if (_observe(cost._isPaid)) return true;
+				})) {
+				++valid;
+			}
+			total += _observe(paymentReceiptUploads.applicable._size);
+			valid += _observe(paymentReceiptUploads.uploaded._size);
 			if (!total) return 1;
 			return valid / total;
 		} },
@@ -75,5 +75,9 @@ module.exports = memoize(function (db/* options */) {
 			return total;
 		} }
 	});
+
+	if (!BusinessProcess.prototype.paymentReceiptUploads) definePaymentReceiptUploads(db);
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
+
+definePaymentReceiptUploads = require('./payment-receipt-uploads');

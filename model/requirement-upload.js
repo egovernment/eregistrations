@@ -7,37 +7,33 @@ var Map              = require('es6-map')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineCreateEnum = require('dbjs-ext/create-enum')
   , _                = require('mano').i18n.bind('Model')
-  , defineCost       = require('./cost')
   , defineDocument   = require('./document');
 
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(db)
-	  , Document = defineDocument(db)
-	  , Cost = defineCost(db);
+	  , Document = defineDocument(db);
 
 	defineCreateEnum(db);
 
 	// Enum for document upload status
-	var RequirementUploadStatus = StringLine.createEnum('DocumentUploadStatus', new Map([
+	var RequirementUploadStatus = StringLine.createEnum('RequirementUploadStatus', new Map([
 		['valid', { label: _("Valid") }],
 		['invalid', { label: _("Invalid") }]
 	]));
 
 	// Enum for document upload reject reasn
-	var RequirementUploadRejectReason = StringLine.createEnum('DocumentUploadRejectReason', new Map([
-		['illegible', { label: _("The document is unreadable") }],
-		['invalid', { label: _("The loaded document does not match the required document") }],
-		['other', { label: _("Other...") }]
-	]));
+	var RequirementUploadRejectReason = StringLine.createEnum('RequirementUploadRejectReason',
+		new Map([
+			['illegible', { label: _("The document is unreadable") }],
+			['invalid', { label: _("The loaded document does not match the required document") }],
+			['other', { label: _("Other...") }]
+		]));
 
 	return db.Object.extend('RequirementUpload', {
 		// Document which we upload
 		document: { type: Document, nested: true },
 		// Verification status of upload
 		status: { type: RequirementUploadStatus, required: true },
-
-		// If upload concerns payment receipt, this links cost it corresponds
-		correspondingCost: { type: Cost },
 
 		// Eventual rejection details
 		rejectReasonTypes: { type: RequirementUploadRejectReason, multiple: true, required: true },
@@ -55,7 +51,7 @@ module.exports = memoize(function (db) {
 						result.push(this.rejectReasonMemo);
 						return;
 					}
-					result.push(this.database.RejectReason.meta[type].label);
+					result.push(this.database.RequirementUploadRejectReason.meta[type].label);
 				}, this);
 				if (isInvalid) return [];
 				return result;
@@ -73,7 +69,6 @@ module.exports = memoize(function (db) {
 		isApproved: { type: db.Boolean, value: function (_observe) {
 			if (this.status == null) return false;
 			if (this.status !== 'valid') return false;
-			if (this.correspondingCost) return _observe(this.correspondingCost._isPaid) || false;
 			return (_observe(this.document.dataForm._status) === 1);
 		} },
 
