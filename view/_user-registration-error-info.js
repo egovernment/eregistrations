@@ -1,4 +1,4 @@
-// Guide not compleated user info (Part A)
+// Guide not completed user info (Part A)
 
 'use strict';
 
