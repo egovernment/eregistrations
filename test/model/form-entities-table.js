@@ -59,6 +59,7 @@ module.exports = function (t, a) {
 	section.excludedFromStatusIfFilled = ['tableResolver'];
 	a(section.weight, 2);
 	a(section.status, 0);
+	a(section.progressRules.invalid.first.message, "We expect between {$min} and {$max} items.");
 	businessProcess.partners.add(new Partner());
 	businessProcess.partners.first.prop1 = 'test';
 	a(section.status, 0.5);
@@ -92,6 +93,7 @@ module.exports = function (t, a) {
 	businessProcess.tableResolver = true;
 	section.max = 2;
 	a(section.weight, 6);
+	a(section.progressRules.invalid.first.message, "We expect exactly {$max} items.");
 	a(section.status, 0.66);
 	section.max = 4;
 	businessProcess.partners.last.prop1 = 'test';
@@ -122,6 +124,7 @@ module.exports = function (t, a) {
 	businessProcess.partners.last.prop1 = 'test';
 	a(section.weight, 10);
 	a(section.status, 0.9);
+	a(section.progressRules.invalid.first.message, "Some of the added items are incomplete.");
 	businessProcess.partners.last.prop3 = true;
 	a(section.weight, 10);
 	a(section.status, 1);

@@ -186,6 +186,7 @@ module.exports = memoize(function (db) {
 				}
 				statusSum += (resolvedStatus * resolvedWeight);
 			});
+			if (!this.weight) return 1;
 			return statusSum / this.weight;
 		},
 		weight: function (_observe) {
@@ -208,16 +209,67 @@ module.exports = memoize(function (db) {
 		}
 	});
 
-	FormEntitiesTable.prototype.progressRules.map.define('min', {
+	FormEntitiesTable.prototype.progressRules.map.define('minMax', {
 		type: ProgressRule,
 		nested: true
 	});
-	FormEntitiesTable.prototype.progressRules.map.get('min').setProperties({
-		message: _("To few items added."),
+
+	FormEntitiesTable.prototype.progressRules.map.get('minMax').setProperties({
+		minMessage: _("{$min} items expected."),
+		maxMessage: _("{$max} items expected."),
+		minMaxDiffMessage: _("We expect between {$min} and {$max} items."),
+		minMaxSameMessage: _("We expect exactly {$max} items."),
+		message: function (_observe) {
+			var tabularSection = this.owner.owner.owner, min, max;
+			min = _observe(tabularSection._min);
+			max = _observe(tabularSection._max);
+			if (min && max) {
+				return min === max ? this.minMaxSameMessage : this.minMaxDiffMessage;
+			}
+			if (min) {
+				return this.minMessage;
+			}
+			return this.maxMessage;
+		},
 		progress: function () {
 			return this.weight ? 0 : 1;
 		},
 		weight: function (_observe) {
+			var tabularSection = this.owner.owner.owner, min, max;
+			min = _observe(tabularSection._min);
+			max = _observe(tabularSection._max);
+			if (min && max) {
+				return this.minWeight + this.maxWeight;
+			}
+			if (min) {
+				return this.minWeight;
+			}
+			if (max) {
+				return this.maxWeight;
+			}
+			return 0;
+		},
+		maxWeight: function (_observe) {
+			var entityObjects, tabularSection;
+			tabularSection = this.owner.owner.owner;
+			if (!_observe(tabularSection._max)) {
+				return 0;
+			}
+			entityObjects = this.master.resolveSKeyPath(tabularSection.propertyName, _observe);
+			if (!entityObjects) {
+				return 0;
+			}
+			entityObjects = entityObjects.value;
+			if (entityObjects instanceof this.database.NestedMap) {
+				entityObjects = entityObjects.ordered;
+			}
+			_observe(entityObjects);
+			if (tabularSection.max && (entityObjects.size > tabularSection.max)) {
+				return entityObjects.size - tabularSection.max;
+			}
+			return 0;
+		},
+		minWeight: function (_observe) {
 			var entityObjects, mockWeight, objectsType, tabularSection, mockWeightObject;
 			tabularSection = this.owner.owner.owner;
 			if (!_observe(tabularSection._min)) {
@@ -243,37 +295,6 @@ module.exports = memoize(function (db) {
 
 				// we assume that each potential entity has the same weight as prototype
 				return mockWeight * (tabularSection.min - entityObjects.size);
-			}
-			return 0;
-		}
-	});
-
-	FormEntitiesTable.prototype.progressRules.map.define('max', {
-		type: ProgressRule,
-		nested: true
-	});
-	FormEntitiesTable.prototype.progressRules.map.get('max').setProperties({
-		message: _("To many items added."),
-		progress: function () {
-			return this.weight ? 0 : 1;
-		},
-		weight: function (_observe) {
-			var entityObjects, tabularSection;
-			tabularSection = this.owner.owner.owner;
-			if (!_observe(tabularSection._max)) {
-				return 0;
-			}
-			entityObjects = this.master.resolveSKeyPath(tabularSection.propertyName, _observe);
-			if (!entityObjects) {
-				return 0;
-			}
-			entityObjects = entityObjects.value;
-			if (entityObjects instanceof this.database.NestedMap) {
-				entityObjects = entityObjects.ordered;
-			}
-			_observe(entityObjects);
-			if (tabularSection.max && (entityObjects.size > tabularSection.max)) {
-				return entityObjects.size - tabularSection.max;
 			}
 			return 0;
 		}
