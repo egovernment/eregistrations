@@ -4,11 +4,12 @@
 
 var _  = require('mano').i18n.bind('Registration');
 
-exports.errorMsg = function (sendBackMsg, businessProcess, context) {
-	return _if(or(not(eq(businessProcess._guideProgress, 1)), businessProcess._isSentBack),
+exports.errorMsg = function (context, sendBackMsg) {
+	return _if(or(not(eq(context.businessProcess._guideProgress, 1)),
+			context.businessProcess._isSentBack),
 		div({ class: 'error-main' },
-			_if(not(eq(businessProcess._guideProgress, 1)),
+			_if(not(eq(context.businessProcess._guideProgress, 1)),
 				function () { return p(_("Please fill the Guide first")); },
-					_if(businessProcess._isSentBack,
+					_if(context.businessProcess._isSentBack,
 					function () { sendBackMsg(context); }.bind(context)))));
 };

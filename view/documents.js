@@ -13,26 +13,30 @@ exports['step-documents'] = { class: { 'step-active': true } };
 exports.step = function () {
 	exports._documentsHeading();
 
-	insert(errorMsg(exports._sentBackInformation, this.businessProcess, this));
+	insert(errorMsg(this, exports._sentBackInformation));
 
 	div(
-		{ class: ['disabler-range', _if(not(eq(this.businessProcess.requirementUploads._progress, 1)),
+		{ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
 				'disabler-active')], id: 'documents-disabler-range' },
 		section(
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
 				this.businessProcess.requirementUploads.applicable,
 				function (requirementUpload) {
-					console.log(requirementUpload.document._files);
 					return li({ class: 'section-primary' },
-						form({ class: 'auto-submit' },
+						form({ action: url('documents'), method: 'post',
+								enctype: 'multipart/form-data', autoSubmit: true },
 							div(
 								h2(_d(requirementUpload.document.label, { user: requirementUpload.master })),
 								requirementUpload.document.legend &&
 									small(mdi(_d(requirementUpload.document.legend,
 										{ user: requirementUpload.master }))),
 								hr(),
-								input({ dbjs: requirementUpload.document.files._map, label: true })
+								input({ dbjs: requirementUpload.document.files._map, label: true }),
+								p({ class: 'submit' }, input({ type: 'submit', value: _("Submit") })),
+								p({ class: 'section-primary-scroll-top' },
+										a({ onclick: 'window.scroll(0, 0)' },
+											span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
 							))
 						);
 				}
