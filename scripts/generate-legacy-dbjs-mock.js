@@ -13,9 +13,9 @@ var defineForEach = function (object) {
 	object.forEach = new Function('cb, thisArg', '$.dbjsMapForEach(this, cb, thisArg);');
 };
 
-module.exports = function (businessProcessType, filename, customizeCb) {
-	var legacyDb = {}, businessProcessProto, certificates = {}, costs = {}, registrations = {}
-	  , requirements = {}, currencyType = {}, costType = {};
+module.exports = function (businessProcessType, filename/*, options*/) {
+	var options = Object(arguments[2]), legacyDb = {}, businessProcessProto, certificates = {}
+	  , costs = {}, registrations = {}, requirements = {}, currencyType = {}, costType = {};
 
 	ensureType(businessProcessType);
 
@@ -87,7 +87,7 @@ module.exports = function (businessProcessType, filename, customizeCb) {
 	legacyDb.Cost = costType;
 
 	// Allow customizations on legacyDb.
-	if (customizeCb) customizeCb(legacyDb);
+	if (options.customizeCb) options.customizeCb(legacyDb);
 
 	// Store file.
 	return writeFile(filename,
