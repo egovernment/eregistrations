@@ -51,17 +51,6 @@ module.exports = memoize(function (db/*, options*/) {
 				});
 				return result;
 			}
-		},
-		applicable: {
-			value: function (_observe) {
-				var result = [];
-				this.map.forEach(function (rule) {
-					var isApplicable = rule._get ? _observe(rule._isApplicable) :
-							rule.isApplicable;
-					if (isApplicable) result.push(rule);
-				});
-				return result;
-			}
 		}
 	});
 	return ProgressRules;
