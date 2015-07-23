@@ -4,7 +4,8 @@
 
 var db = require('mano').db
   , generateSections = require('./components/generate-form-sections')
-  , user = db.User.prototype;
+  , user = db.User.prototype
+  , errorMsg = require('./_user-registration-error-info').errorMsg;
 
 exports._parent = require('./user-registration-base');
 
@@ -13,7 +14,9 @@ exports['step-submission'] = { class: { 'step-active': true } };
 exports.step = function () {
 	exports._submissionHeading();
 
-	insert(generateSections(user.formSendSections));
+	insert(errorMsg(this, exports._sentBackInformation));
+
+	insert(generateSections(this.businessProcess.submissionForms.applicable));
 
 	section(
 		{ class: 'section-warning' },
@@ -36,7 +39,7 @@ exports.step = function () {
 			h2("Sworn declaration"),
 			hr(),
 			field(
-				{ dbjs: user._isAffidavitSigned,
+				{ dbjs: this.businessProcess.submissionForms._isAffidavitSigned,
 					type: 'checkbox',
 					label: " I declare I have read and understood all the conditions I have to " +
 					"comply with and swear that the information provided in this application is true.",
