@@ -159,7 +159,7 @@ module.exports = memoize(function (db) {
 			tabularSection = this.owner.owner.owner;
 			statusKey = tabularSection.sectionProperty + 'Status';
 			weightKey = tabularSection.sectionProperty + 'Weight';
-			if (!tabularSection.entitiesSet) {
+			if (!_observe(tabularSection._entitiesSet)) {
 				return 0;
 			}
 			tabularSection.entitiesSet.some(function (entityObject) {
