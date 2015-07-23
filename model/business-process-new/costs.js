@@ -49,16 +49,23 @@ module.exports = memoize(function (db/* options */) {
 			});
 			return result;
 		} },
+		// Electronic costs
+		electronic: { type: Cost, multiple: true, value: function (_observe) {
+			var result = [];
+			this.payable.forEach(function (cost) {
+				if (cost.isElectronic) result.push(cost);
+			});
+			return result;
+		} },
 		// Payment progress
 		paymentProgress: { type: Percentage, value: function (_observe) {
 			var valid = 0, total = 0, paymentReceiptUploads = this.master.paymentReceiptUploads;
-			++total;
 			// Eventual online payments
-			if (this.payable.every(function (cost) {
-					if (!cost.isElectronic) return true;
-					if (_observe(cost._isPaid)) return true;
-				})) {
-				++valid;
+			if (this.electronic.size) {
+				++total;
+				if (this.electronic.every(function (cost) { return _observe(cost._isPaid); })) {
+					++valid;
+				}
 			}
 			total += _observe(paymentReceiptUploads.applicable._size);
 			valid += _observe(paymentReceiptUploads.uploaded._size);
