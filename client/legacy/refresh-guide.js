@@ -4,8 +4,8 @@
 
 var $             = require('mano-legacy')
   , camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
-  , Currency      = $.legacyProto.Currency
-  , Cost          = $.legacyProto.Cost;
+  , Currency      = $.legacyDb.Currency
+  , Cost          = $.legacyDb.Cost;
 
 require('mano-legacy/get-text-child');
 
@@ -49,7 +49,8 @@ var formatCurrency = (function () {
 
 // A legacy refreshGuide method for Part A Guide page.
 // Used in: /view/guide.js
-module.exports = $.refreshGuide = function (guideFormId, businessProcessId) {
+module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
+		businessProcessTypeName) {
 	var guideForm = $(guideFormId)
 	  , mandatoryRegistrationsSection, mandatoryRegistrationsListElements
 	  , optionalRegistrationsSection, optionalRegistrationsListElements
@@ -58,7 +59,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId) {
 
 	// Create mock BusinessProcess
 	var BusinessProcess = function () {};
-	BusinessProcess.prototype = $.legacyProto.BusinessProcess;
+	BusinessProcess.prototype = $.legacyDb[businessProcessTypeName];
 
 	// Gather required list elements
 
