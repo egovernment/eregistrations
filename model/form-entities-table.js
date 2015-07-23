@@ -30,16 +30,24 @@ module.exports = memoize(function (db) {
 		max: { type: UInteger },
 		status: {
 			value: function (_observe) {
+				var weight = 0, progress = 0;
+
+				// Take into account resolvent
+				progress += this.resolventStatus * this.resolventWeight;
+				weight += this.resolventWeight;
+
+				// If section is unresolved, exit just with resolvent
 				if (this.isUnresolved) {
-					return this.resolventStatus;
+					if (!weight) return 1;
+					return progress / weight;
 				}
-				if (!this.weight) return 1;
-				if (this.resolventStatus * this.resolventWeight) {
-					return (_observe(this.progressRules._progress) +
-						(this.resolventStatus * this.resolventWeight))
-						/ (this.progressRules.weight + this.resolventWeight);
-				}
-				return _observe(this.progressRules._progress);
+
+				// Take into account all rules
+				progress += _observe(this.progressRules._progress) * _observe(this.progressRules._weight);
+				weight += this.progressRules.weight;
+
+				if (!weight) return 1;
+				return progress / weight;
 			}
 		},
 		resolventStatus: {
