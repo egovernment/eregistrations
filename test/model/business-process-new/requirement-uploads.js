@@ -40,6 +40,7 @@ module.exports = function (t, a) {
 	businessProcess.requirements.map.req.isApplicable = true;
 	a.deep(aFrom(businessProcess.requirementUploads.applicable),
 		[businessProcess.requirementUploads.map.req]);
+	a(businessProcess.requirementUploads.map.req.document.label, "Test document");
 	a.deep(aFrom(businessProcess.requirementUploads.uploaded), []);
 	a(businessProcess.requirementUploads.progress, 0);
 

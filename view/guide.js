@@ -22,17 +22,18 @@ exports.step = function () {
 				this.businessProcess.determinants.toDOMFieldset(document)),
 
 			div({ class: 'section-primary' },
-				h2(_("Mandatory Registrations")),
-				hr(),
 				exports._registrationIntro(),
-				ul({ id: 'mandatory-registrations-list' }, this.businessProcess.registrations.map,
-					function (registration) {
-						li({ 'data-key': registration.key },
-							label({ class: 'input-aside' },
-								input({ dbjs: registration._isRequested, type: 'checkbox' }), " ",
-								span(registration.label)));
-					}),
-				div({ class: 'section-primary-wrapper' },
+				div({ id: 'mandatory-registrations-section', class: 'section-primary-wrapper' },
+					h2(_("Mandatory Registrations")),
+					hr(),
+					ul({ id: 'mandatory-registrations-list' }, this.businessProcess.registrations.map,
+						function (registration) {
+							li({ 'data-key': registration.key },
+								label({ class: 'input-aside' },
+									input({ dbjs: registration._isRequested, type: 'checkbox' }), " ",
+									span(registration.label)));
+						})),
+				div({ id: 'optional-registrations-section', class: 'section-primary-wrapper' },
 					h2(_("Optional Registrations")),
 					hr(),
 					ul({ id: 'optional-registrations-list' }, this.businessProcess.registrations.map,
@@ -76,6 +77,8 @@ exports.step = function () {
 		),
 		div({ class: 'disabler' })
 	);
+
+	legacy('guideHandler', 'guide-form', this.businessProcess.__id__);
 };
 
 exports._guideHeading = Function.prototype;
