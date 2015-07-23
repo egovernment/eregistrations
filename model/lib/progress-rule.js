@@ -28,9 +28,6 @@ module.exports = memoize(function (db/*, options*/) {
 		message: {
 			type: db.String
 		},
-		warning: {
-			type: db.String
-		},
 		isApplicable: {
 			type: db.Boolean,
 			value: true

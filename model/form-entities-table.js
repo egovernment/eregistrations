@@ -28,25 +28,9 @@ module.exports = memoize(function (db) {
 		progressRules: { type: ProgressRules, nested: true },
 		min: { type: UInteger },
 		max: { type: UInteger },
-		isStatusForcedByResolvent: {
-			type: db.Boolean,
-			value: function (_observe) {
-				var resolved;
-				if (this.resolventProperty) {
-					resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
-					if (!resolved) {
-						return false;
-					}
-					if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-						return true;
-					}
-				}
-				return false;
-			}
-		},
 		status: {
 			value: function (_observe) {
-				if (this.isStatusForcedByResolvent) {
+				if (this.isUnresolved) {
 					return this.resolventStatus;
 				}
 				if (!this.weight) return 1;
@@ -106,7 +90,7 @@ module.exports = memoize(function (db) {
 			}
 		},
 		weight: { value: function (_observe) {
-			if (this.isStatusForcedByResolvent) {
+			if (this.isUnresolved) {
 				return this.resolventWeight;
 			}
 			return _observe(this.progressRules._weight) + this.resolventWeight;
@@ -206,7 +190,7 @@ module.exports = memoize(function (db) {
 		nested: true
 	});
 	FormEntitiesTable.prototype.progressRules.map.get('entities').setProperties({
-		warning: _("Some of the added items are incomplete."),
+		message: _("Some of the added items are incomplete."),
 		progress: function (_observe) {
 			var statusSum, tabularSection, statusKey, weightKey, i, dataForms;
 			i = 0;
@@ -268,7 +252,7 @@ module.exports = memoize(function (db) {
 		nested: true
 	});
 	FormEntitiesTable.prototype.progressRules.map.get('min').setProperties({
-		warning: _("To few items added."),
+		message: _("To few items added."),
 		progress: function () {
 			return this.weight ? 0 : 1;
 		},
@@ -307,7 +291,7 @@ module.exports = memoize(function (db) {
 		nested: true
 	});
 	FormEntitiesTable.prototype.progressRules.map.get('max').setProperties({
-		warning: _("To many items added."),
+		message: _("To many items added."),
 		progress: function () {
 			return this.weight ? 0 : 1;
 		},

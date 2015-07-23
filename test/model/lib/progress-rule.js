@@ -10,7 +10,7 @@ module.exports = function (t, a) {
 
 	a(progressRule.getDescriptor('weight').type, db.UInteger);
 	a(progressRule.getDescriptor('progress').type, db.Percentage);
-	a(progressRule.getDescriptor('warning').type, db.String);
+	a(progressRule.getDescriptor('message').type, db.String);
 	a(progressRule.isApplicable, true);
 	a(progressRule.isValid, false);
 };

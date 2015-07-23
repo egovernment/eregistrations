@@ -21,7 +21,7 @@ module.exports = function (t, a) {
 	progressRules.map.get('rule1').setProperties({
 		progress: 1,
 		weight: 1,
-		warning: warning1
+		message: warning1
 	});
 
 	progressRules.map.define('rule2', {
@@ -32,7 +32,7 @@ module.exports = function (t, a) {
 	progressRules.map.get('rule2').setProperties({
 		progress: 0.5,
 		weight: 2,
-		warning: warning2
+		message: warning2
 	});
 
 	a(progressRules.weight, 3);
@@ -40,9 +40,8 @@ module.exports = function (t, a) {
 	a(progressRules.valid.size, 1);
 	a(progressRules.invalid.size, 1);
 	a(progressRules.progress, 0.66);
-	a(progressRules.warnings.size, 1);
-	a(progressRules.warnings.first, warning2);
+	a(progressRules.invalid.first.message, warning2);
 	progressRules.applicable.first.progress = 0.5;
-	a(progressRules.warnings.first, warning1);
-	a(progressRules.warnings.last, warning2);
+	a(progressRules.invalid.first.message, warning1);
+	a(progressRules.invalid.last.message, warning2);
 };

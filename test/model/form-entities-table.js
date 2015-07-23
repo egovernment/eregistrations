@@ -49,11 +49,11 @@ module.exports = function (t, a) {
 	businessProcess = new BusinessProcess();
 	section = businessProcess.section;
 	a(section.actionUrl, 'action');
-	a(section.isStatusForcedByResolvent, true);
+	a(section.isUnresolved, true);
 	a(section.status, 0);
 	a(section.weight, 1);
 	businessProcess.tableResolver = true;
-	a(section.isStatusForcedByResolvent, false);
+	a(section.isUnresolved, false);
 	a(section.weight, 3);
 	a(section.status, 0.33);
 	section.excludedFromStatusIfFilled = ['tableResolver'];
