@@ -39,19 +39,6 @@ module.exports = memoize(function (db/*, options*/) {
 				return weightSum;
 			}
 		},
-		valid: {
-			type: ProgressRule,
-			multiple: true,
-			value: function (_observe) {
-				var result = [];
-				this.applicable.forEach(function (rule) {
-					var isValid = rule._get ? _observe(rule._isValid) :
-							rule.isValid;
-					if (isValid) result.push(rule);
-				});
-				return result;
-			}
-		},
 		invalid: {
 			type: ProgressRule,
 			multiple: true,

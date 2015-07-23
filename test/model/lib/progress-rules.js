@@ -37,7 +37,6 @@ module.exports = function (t, a) {
 
 	a(progressRules.weight, 3);
 	a(progressRules.applicable.size, 2);
-	a(progressRules.valid.size, 1);
 	a(progressRules.invalid.size, 1);
 	a(progressRules.progress, 0.66);
 	a(progressRules.invalid.first.message, warning2);
