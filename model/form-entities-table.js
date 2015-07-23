@@ -50,53 +50,6 @@ module.exports = memoize(function (db) {
 				return progress / weight;
 			}
 		},
-		resolventStatus: {
-			type: UInteger,
-			value: function (_observe) {
-				var isResolventExcluded, resolved;
-				if (this.resolventProperty) {
-					resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
-					if (!resolved) {
-						return 0;
-					}
-					isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
-					if (isResolventExcluded) return 1;
-					if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-						if (resolved.descriptor.multiple) {
-							if (_observe(resolved.observable).size) return 1;
-						} else {
-							if (_observe(resolved.observable) != null) return 1;
-						}
-						return 0;
-					}
-					if (!isResolventExcluded) {
-						return 1;
-					}
-				}
-				return 0;
-			}
-		},
-		resolventWeight: {
-			type: UInteger,
-			value: function (_observe) {
-				var weightTotal, isResolventExcluded, resolved;
-				weightTotal = 0;
-				if (this.resolventProperty) {
-					resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
-					if (!resolved) {
-						return 0;
-					}
-					isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
-					if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-						return isResolventExcluded ? 0 : 1;
-					}
-					if (!isResolventExcluded) {
-						++weightTotal;
-					}
-				}
-				return weightTotal;
-			}
-		},
 		weight: { value: function (_observe) {
 			if (this.isUnresolved) {
 				return this.resolventWeight;
