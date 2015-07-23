@@ -42,22 +42,22 @@ module.exports = memoize(function (db/* options */) {
 		// Paid costs
 		paid: { type: Cost, multiple: true, value: function (_observe) {
 			var result = [];
-			this.applicable.forEach(function (cost) {
+			this.payable.forEach(function (cost) {
 				if (_observe(cost._isPaid)) result.push(cost);
 			});
 			return result;
 		} },
 		// Payment progress
 		paymentProgress: { type: Percentage, value: function () {
-			if (!this.applicable.size) return 1;
-			return this.paid.size / this.applicable.size;
+			if (!this.payable.size) return 1;
+			return this.paid.size / this.payable.size;
 		} },
 		// Payment progress for online payments
 		// We require all online payments to be done in Part A stage.
 		// So having this below 1, doesn't allow submit of application
 		onlinePaymentProgress: { type: Percentage, value: function (_observe) {
 			var valid = 0, total = 0;
-			this.applicable.forEach(function (cost) {
+			this.payable.forEach(function (cost) {
 				if (!cost.isElectronic) return;
 				++total;
 				if (_observe(cost._isPaid)) ++valid;
@@ -65,7 +65,7 @@ module.exports = memoize(function (db/* options */) {
 			if (!total) return 1;
 			return valid / total;
 		} },
-		// Total for all applicable costs
+		// Total for all payable costs
 		totalAmount: { type: Currency, value: function (_observe) {
 			var total = 0;
 			this.payable.forEach(function (cost) {
