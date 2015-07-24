@@ -58,3 +58,12 @@
 .entities-overview-table .completed .status-incomplete {
 	display: none;
 }
+
+.entities-overview-info {
+	border: 2px solid var(--error-dark-background);
+	border-radius: 5px;
+	padding: 22px 11px 0;
+}
+.entities-overview-info > * {
+	margin-bottom: 22px;
+}
