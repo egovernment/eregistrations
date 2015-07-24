@@ -20,11 +20,11 @@ module.exports = memoize(function (db/* options */) {
 	BusinessProcess.prototype.paymentReceiptUploads.map._descriptorPrototype_.type
 		= PaymentReceiptUpload;
 	BusinessProcess.prototype.paymentReceiptUploads.defineProperties({
-		// Applicable payment receipt uploads resolved out of payable costs
+		// Applicable payment receipt uploads
 		applicable: { type: PaymentReceiptUpload, value: function (_observe) {
 			var result = [];
-			_observe(this.master.costs.payable).forEach(function (cost) {
-				if (cost.paymentReceipt) result.push(_observe(cost._paymentReceipt));
+			this.map.forEach(function (paymentReceiptUpload) {
+				if (_observe(paymentReceiptUpload.applicableCosts._size)) result.push(paymentReceiptUpload);
 			});
 			return result;
 		} },

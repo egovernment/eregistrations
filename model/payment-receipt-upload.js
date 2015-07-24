@@ -13,12 +13,15 @@ module.exports = memoize(function (db) {
 	  , Cost = db.Cost || defineCost(db);
 
 	PaymentReceiptUpload.prototype.defineProperties({
-		// Costs which are covered by payment receipt
-		costs: { type: Cost, multiple: true, value: function (_observe) {
-			var result = [];
-			this.master.costs.payable.forEach(function (cost) {
-				if (cost.paymentReceipt === this) result.push(cost);
-			}, this);
+		// Costs which are covered by the payment receipt
+		costs: { type: Cost, multiple: true },
+		applicableCosts: { type: Cost, multiple: true, value: function (_observe) {
+			var result = [], payable = _observe(this.master.costs.payable);
+			this.costs.forEach(function (cost) {
+				if (!payable.has(cost)) return;
+				if (_observe(cost._isPaidOnline)) return;
+				result.push(cost);
+			});
 			return result;
 		} }
 	});
