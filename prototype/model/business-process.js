@@ -170,7 +170,8 @@ BusinessProcessNew.prototype.costs.map.define('handlingFee', {
 
 BusinessProcessNew.prototype.costs.map.handlingFee.setProperties({
 	amount: 70,
-	label: "Handling fee"
+	label: "Handling fee",
+	legend: "Lorem ipsum dolor sit amet"
 });
 
 BusinessProcessNew.prototype.registrations.map.define('a', { type: Registration, nested: true });

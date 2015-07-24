@@ -58,8 +58,8 @@
 	max-width: 85%;
 }
 
-.user-guide-costs-list li small {
-	width: 100%;
+.user-guide-costs-list li span > small {
+	display: block;
 }
 
 .user-guide-inventory-button {
