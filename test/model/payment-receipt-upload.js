@@ -25,13 +25,11 @@ module.exports = function (t, a) {
 	BusinessProcess.prototype.costs.map.test2.amount = 20;
 	BusinessProcess.prototype.costs.map.test3.amount = 40;
 
-	defineMapUploads(BusinessProcess, { test: { label: "Cost label", legend: "Cost legend" } });
-	BusinessProcess.prototype.costs.map.test3.paymentReceipt = function () {
-		return this.master.paymentReceiptUploads.map.test;
-	};
-	BusinessProcess.prototype.costs.map.test4.paymentReceipt = function () {
-		return this.master.paymentReceiptUploads.map.test;
-	};
+	defineMapUploads(BusinessProcess, { test: { label: "Cost label", legend: "Cost legend", costs: [
+		BusinessProcess.prototype.costs.map.test,
+		BusinessProcess.prototype.costs.map.test3,
+		BusinessProcess.prototype.costs.map.test4
+	] } });
 
 	BusinessProcess.prototype.registrations.map.define('test', { nested: true });
 	BusinessProcess.prototype.registrations.map.test.costs = function () {
@@ -45,7 +43,9 @@ module.exports = function (t, a) {
 	a.deep(aFrom(businessProcess.costs.payable),
 		[businessProcess.costs.map.test, businessProcess.costs.map.test2,
 			businessProcess.costs.map.test3]);
-	a.deep(aFrom(paymentReceiptUpload.costs),
+	a.deep(aFrom(paymentReceiptUpload.costs), [businessProcess.costs.map.test,
+		businessProcess.costs.map.test3, businessProcess.costs.map.test4]);
+	a.deep(aFrom(paymentReceiptUpload.applicableCosts),
 		[businessProcess.costs.map.test, businessProcess.costs.map.test3]);
 
 	a.h2("Initial");

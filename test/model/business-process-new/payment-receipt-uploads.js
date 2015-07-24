@@ -22,16 +22,13 @@ module.exports = function (t, a) {
 	BusinessProcess.prototype.costs.map.test3.amount = 40;
 
 	defineMapUploads(BusinessProcess, {
-		test: { label: "Cost label", legend: "Cost legend" },
-		test2: { label: "Cost2 label", legend: "Cost2 legend" },
-		test4: { label: "Cost4 label", legend: "Cost4 legend" }
+		test: { label: "Cost label", legend: "Cost legend", costs: [
+			BusinessProcess.prototype.costs.map.test,
+			BusinessProcess.prototype.costs.map.test3,
+			BusinessProcess.prototype.costs.map.test4
+		] },
+		test2: { label: "Cost2 label", legend: "Cost2 legend" }
 	});
-	BusinessProcess.prototype.costs.map.test3.paymentReceipt = function () {
-		return this.master.paymentReceiptUploads.map.test;
-	};
-	BusinessProcess.prototype.costs.map.test4.paymentReceipt = function () {
-		return this.master.paymentReceiptUploads.map.test;
-	};
 
 	BusinessProcess.prototype.registrations.map.define('test', { nested: true });
 	BusinessProcess.prototype.registrations.map.test.isRequested = false;
