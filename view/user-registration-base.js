@@ -33,34 +33,34 @@ exports._stepsMenu = function (context) {
 		li(
 			{ class: 'user-steps-menu-start-step' },
 			a({ href: '/guide/', id: 'step-guide' },
-				"1. ", _("Guide")),
+				_("Guide")),
 			div({ class: 'user-steps-menu-item-progress',
 				style: mmap(context.businessProcess._guideProgress, setProgressWidth) })
 		),
 		li(
 			a({ href: '/forms/', id: 'step-form' },
-				"2. ", _("Fill the form")
+				_("Fill the form")
 				),
 			div({ class: 'user-steps-menu-item-progress',
 				style: mmap(context.businessProcess.dataForms._progress, setProgressWidth) })
 		),
 		li(
 			a({ href: '/documents/', id: 'step-documents' },
-				"3. ", _("Upload docs")
+				_("Upload docs")
 				),
 			div({ class: 'user-steps-menu-item-progress',
 				style: mmap(context.businessProcess.requirementUploads._progress, setProgressWidth) })
 		),
 		li(
 			a({ href: '/pay/', id: 'step-pay' },
-				"4. ", _("Pay")
+				_("Pay")
 				),
 			div({ class: 'user-steps-menu-item-progress',
 				style: mmap(context.businessProcess.costs._paymentProgress, setProgressWidth) })
 		),
 		li(
 			a({ href: '/submission/', id: 'step-submission' },
-				"5. ", _("Send file")
+				_("Send file")
 				),
 			div({ class: 'user-steps-menu-item-progress',
 				style: mmap(context.businessProcess.submissionForms._progress, setProgressWidth) })
