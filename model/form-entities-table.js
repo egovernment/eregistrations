@@ -215,10 +215,10 @@ module.exports = memoize(function (db) {
 	});
 
 	FormEntitiesTable.prototype.progressRules.map.get('minMax').setProperties({
-		minMessage: _("{$min} items expected."),
-		maxMessage: _("{$max} items expected."),
-		minMaxDiffMessage: _("We expect between {$min} and {$max} items."),
-		minMaxSameMessage: _("We expect exactly {$max} items."),
+		minMessage: _("${min} items expected."),
+		maxMessage: _("${max} items expected."),
+		minMaxDiffMessage: _("We expect between ${min} and ${max} items."),
+		minMaxSameMessage: _("We expect exactly ${max} items."),
 		message: function (_observe) {
 			var tabularSection = this.owner.owner.owner, min, max;
 			min = _observe(tabularSection._min);
