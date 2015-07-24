@@ -6,10 +6,9 @@ var defineUsDollar = require('dbjs-ext/number/currency/us-dollar')
 module.exports = function (t, a) {
 	var db = new Database()
 	  , UsDollar = defineUsDollar(db)
-	  , container = db.Object.newNamed('inventoryContainer');
-	t(db);
-
-	container.defineInventory('inventory', {
+	  , BusinessProcess = require('../../../model/business-process-new')(db)
+	  , businessProcess = BusinessProcess.prototype;
+	t(BusinessProcess, {
 		currencyType: UsDollar,
 		assets: {
 			label: "Property",
@@ -26,10 +25,10 @@ module.exports = function (t, a) {
 		}
 	});
 
-	a(container.inventory.getDescriptor('assets').label, "Property");
-	container.inventory.assets.map.get('mop').setProperties({
+	a(businessProcess.inventory.getDescriptor('assets').label, "Property");
+	businessProcess.inventory.assets.map.get('mop').setProperties({
 		description: "Great for cleaning floors",
 		value: 150
 	});
-	a(container.inventory.assets.ordered.first.value, 150);
+	a(businessProcess.inventory.assets.ordered.first.value, 150);
 };
