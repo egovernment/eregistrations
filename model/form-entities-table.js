@@ -282,15 +282,13 @@ module.exports = memoize(function (db) {
 			objectsType   = entityObjects.descriptor.type;
 			entityObjects = entityObjects.value;
 			if (entityObjects instanceof this.database.NestedMap) {
+				mockWeightObject = entityObjects.map.get('testOnlyDontUseMe');
 				entityObjects = entityObjects.ordered;
 			} else {
 				mockWeightObject = objectsType.prototype;
 			}
 			_observe(entityObjects);
 			if (entityObjects.size < tabularSection._min) {
-				if (!mockWeightObject) {
-					mockWeightObject = entityObjects.map.get('testOnlyDontUseMe');
-				}
 				mockWeight = tabularSection.getWeightByEntity(mockWeightObject, _observe);
 
 				// we assume that each potential entity has the same weight as prototype
