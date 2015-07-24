@@ -4,15 +4,13 @@
 
 var memoize                 = require('memoizee/plain')
   , defineRequirementUpload = require('./requirement-upload')
-  , defineCost;
+  , defineCost              = require('./cost');
 
 module.exports = memoize(function (db) {
 	var RequirementUpload = defineRequirementUpload(db)
+	  , Cost = defineCost(db);
 
-	  , PaymentReceiptUpload = RequirementUpload.extend('PaymentReceiptUpload')
-	  , Cost = db.Cost || defineCost(db);
-
-	PaymentReceiptUpload.prototype.defineProperties({
+	return RequirementUpload.extend('PaymentReceiptUpload', {
 		// Costs which are covered by the payment receipt
 		costs: { type: Cost, multiple: true },
 		applicableCosts: { type: Cost, multiple: true, value: function (_observe) {
@@ -25,9 +23,4 @@ module.exports = memoize(function (db) {
 			return result;
 		} }
 	});
-
-	return PaymentReceiptUpload;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
-
-// Required here as it's circular reference
-defineCost = require('./cost');
