@@ -106,7 +106,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 								deleteUrl = url(self.baseUrl, entityObject.__id__, 'delete');
 							}
 							if (self.sectionProperty === 'dataForms') {
-								status = 0.5;//;entityObject.dataForms._progress;
+								status = entityObject.dataForms._progress;
 							} else {
 								status = resolvePropertyPath(entityObject,
 										self.sectionProperty + 'Status').observable;
