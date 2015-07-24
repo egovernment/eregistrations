@@ -1,4 +1,4 @@
-// representative is the person who fills the form
+// Representative is the person who fills the form.
 
 'use strict';
 
