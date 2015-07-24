@@ -88,11 +88,19 @@ Step 2 in Part A
 
 Resolution of requirement uploads resolved out of requirements resolved out of requested registrations
 
+###### payment receipt uploads
+
+https://github.com/egovernment/eregistrations/blob/master/model/business-process-new/payment-receipt-uploads.js
+
+Step 3 in Part A
+
+Resolution of payment receipt uploads resolved out of costs resolved out of requested registrations
+
 ###### submission forms
 
 https://github.com/egovernment/eregistrations/blob/master/model/business-process-new/submission-forms.js
 
-Step 3 in Part A
+Step 4 in Part A
 
 Resolution of submission forms
 
@@ -162,6 +170,12 @@ https://github.com/egovernment/eregistrations/blob/master/model/requirement-uplo
 
 RequirementUploads are defined as _nested_ objects on `BusinessProcess.prototype.requirementUploads.map`
 
+##### PaymentReceiptUpload
+
+https://github.com/egovernment/eregistrations/blob/master/model/payment-receipt-upload.js
+
+PaymentReceiptUploads are defined as _nested_ objects on `BusinessProcess.prototype.paymentReceiptUploads.map`
+
 ##### FormSection
 
 https://github.com/egovernment/eregistrations/blob/master/model/form-section-base.js  
@@ -180,8 +194,3 @@ For documentation on form sections see: https://github.com/egovernment/eregistra
 https://github.com/egovernment/eregistrations/blob/master/model/processing-step.js
 
 ProcessingSteps are defined as _nested_ objects on `BusinessProcess.prototype.processingSteps.map`
-
-
-
-
-

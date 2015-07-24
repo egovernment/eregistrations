@@ -16,18 +16,20 @@ module.exports = memoize(function (db/* options */) {
 	BusinessProcess.prototype.submissionForms.defineProperties({
 		// Required confirmation from user, presented as last step before file submission
 		isAffidavitSigned: { type: db.Boolean, required: true },
-		progress: { value: function (_observe) {
-			var superGetter, total, valid;
+		formsProgress: { value: function (_observe) {
+			var superGetter;
 			superGetter = this.database.PropertyGroupsProcess.prototype.getDescriptor('progress')._value_;
 			superGetter = this.database.resolveGetterObservables(superGetter);
-			total = this.weight;
-			valid = superGetter.call(this, _observe) * (total - 1);
+			return superGetter.call(this, _observe);
+		} },
+		progress: { value: function () {
+			var total = this.weight, valid = this.formsProgress * (total - 1);
 			if (this.isAffidavitSigned) ++valid;
 			return valid / total;
 		} },
 		weight: { value: function (_observe) {
-			var superGetter =
-				this.database.PropertyGroupsProcess.prototype.getDescriptor('weight')._value_;
+			var superGetter;
+			superGetter = this.database.PropertyGroupsProcess.prototype.getDescriptor('weight')._value_;
 			superGetter = this.database.resolveGetterObservables(superGetter);
 			return superGetter.call(this, _observe) + 1;
 		} }

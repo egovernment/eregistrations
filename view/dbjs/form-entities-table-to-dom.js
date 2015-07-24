@@ -63,7 +63,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 				method: 'post'
 			}, resolvent.formResolvent, ns.p({ class: 'submit' },
 				ns.input({ type: 'submit', value: _("Submit") }))) : undefined,
-			ns.div({ id: resolvent.affectedSectionId },
+			ns.div({ class: 'entities-overview-table-wrapper', id: resolvent.affectedSectionId },
 				ns.table(
 					{ class: ns._if(ns.not(ns.eq(tableData._size, 0)),
 						'entities-overview-table',

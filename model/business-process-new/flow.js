@@ -30,8 +30,8 @@ module.exports = memoize(function (db/*, options*/) {
 			if (_observe(this.dataForms._progress) !== 1) return false;
 			// 2. Uploads
 			if (_observe(this.requirementUploads._progress) !== 1) return false;
-			// 3. (optional) Payments
-			if (_observe(this.costs._onlinePaymentProgress) !== 1) return false;
+			// 3. Payments
+			if (_observe(this.costs._paymentProgress) !== 1) return false;
 			// 4. Submission
 			if (_observe(this.submissionForms._progress) !== 1) return false;
 			return true;

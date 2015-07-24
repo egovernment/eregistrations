@@ -1,6 +1,7 @@
 'use strict';
 
 var assign        = require('es5-ext/object/assign')
+  , copy          = require('es5-ext/object/copy')
   , callable      = require('es5-ext/object/valid-callable')
   , object        = require('es5-ext/object/valid-object')
   , stringifiable = require('es5-ext/object/validate-stringifiable-value')
@@ -20,8 +21,8 @@ module.exports = function (routes, data) {
 	var name, partA, partB, constraint;
 	(object(routes) && object(data));
 	name = stringifiable(data.name);
-	partA = object(data.partA);
-	partB = object(data.partB);
+	partA = copy(data.partA);
+	partB = copy(data.partB);
 	constraint = (data.constraint != null) && callable(data.constraint);
 
 	// Cleanup

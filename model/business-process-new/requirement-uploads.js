@@ -3,21 +3,18 @@
 'use strict';
 
 var memoize                 = require('memoizee/plain')
-  , definePercentage        = require('dbjs-ext/number/percentage')
-  , defineMultipleProcess   = require('../lib/multiple-process')
+  , defineUploadsProcess    = require('../lib/uploads-process')
   , defineRequirementUpload = require('../requirement-upload')
   , defineRequirements      = require('./requirements');
 
 module.exports = memoize(function (db/* options */) {
 	var BusinessProcess = defineRequirements(db, arguments[1])
-	  , Percentage = definePercentage(db)
-	  , MultipleProcess = defineMultipleProcess(db)
+	  , UploadsProcess = defineUploadsProcess(db)
 	  , RequirementUpload = defineRequirementUpload(db);
 
 	BusinessProcess.prototype.defineProperties({
-		requirementUploads: { type: MultipleProcess, nested: true }
+		requirementUploads: { type: UploadsProcess, nested: true }
 	});
-	BusinessProcess.prototype.requirementUploads.map._descriptorPrototype_.type = RequirementUpload;
 	BusinessProcess.prototype.requirementUploads.defineProperties({
 		// Applicable requirement uploads resolved out of applicable requirements
 		applicable: { type: RequirementUpload, value: function (_observe) {
@@ -26,39 +23,6 @@ module.exports = memoize(function (db/* options */) {
 				_observe(requirement.uploads).forEach(function (requirementUpload) {
 					result.push(requirementUpload);
 				});
-			});
-			return result;
-		} },
-		// Subset of applicable requirement uploads for which document files were uploaded
-		uploaded: { type: RequirementUpload, multiple: true, value: function (_observe) {
-			var result = [];
-			this.applicable.forEach(function (requirementUpload) {
-				if (_observe(requirementUpload.document.files.ordered._size)) {
-					result.push(requirementUpload);
-				}
-			});
-			return result;
-		} },
-		// Progress of requirement uploads
-		progress: { type: Percentage, value: function (_observe) {
-			if (!this.applicable.size) return 1;
-			return this.uploaded.size / this.applicable.size;
-		} },
-
-		// Revision step collections
-		// Subset of approved requirement uploads
-		approved: { type: RequirementUpload, multiple: true, value: function (_observe) {
-			var result = [];
-			this.applicable.forEach(function (requirementUpload) {
-				if (_observe(requirementUpload._isApproved)) result.push(requirementUpload);
-			});
-			return result;
-		} },
-		// Subset of rejected requirement uploads
-		rejected: { type: RequirementUpload, multiple: true, value: function (_observe) {
-			var result = [];
-			this.applicable.forEach(function (requirementUpload) {
-				if (_observe(requirementUpload._isRejected)) result.push(requirementUpload);
 			});
 			return result;
 		} }
