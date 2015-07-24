@@ -33,11 +33,11 @@ module.exports = memoize(function (Target, data) {
 		description: { type: StringLine },
 		value: { type: data.currencyType }
 	});
-	target.define('inventory', {
-		type: db.Object,
-		nested: true
-	});
 	target.defineProperties({
+		inventory: {
+			type: db.Object,
+			nested: true
+		},
 		inventoryTotal: {
 			type: data.currencyType,
 			value: function (_observe) {
@@ -59,9 +59,10 @@ module.exports = memoize(function (Target, data) {
 			{ itemType: InventoryValue, cardinalPropertyKey: "value" });
 
 		target.inventory.getDescriptor(key).setProperties({
-			label: item.label || '',
-			inputPlaceholder: item.inputPlaceholder || '',
-			addLabel: item.addLabel || ''
+			label: item.label || null,
+			description: item.description || null,
+			inputPlaceholder: item.inputPlaceholder || null,
+			addLabel: item.addLabel || null
 		});
 	});
 
