@@ -2,19 +2,15 @@
 
 'use strict';
 
-var memoize                    = require('memoizee/plain')
-  , defineCurrency             = require('dbjs-ext/number/currency')
-  , defineStringLine           = require('dbjs-ext/string/string-line')
-  , definePaymentReceiptUpload;
+var memoize          = require('memoizee/plain')
+  , defineCurrency   = require('dbjs-ext/number/currency')
+  , defineStringLine = require('dbjs-ext/string/string-line');
 
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(db)
-	  , Currency = defineCurrency(db)
+	  , Currency = defineCurrency(db);
 
-	  , Cost = db.Object.extend('Cost')
-	  , PaymentReceiptUpload = db.PaymentReceiptUpload || definePaymentReceiptUpload(db);
-
-	Cost.prototype.defineProperties({
+	return db.Object.extend('Cost', {
 		// Cost label
 		label: { type: StringLine },
 		// Cost label
@@ -28,9 +24,4 @@ module.exports = memoize(function (db) {
 		// Whether payment is made online
 		isElectronic: { type: db.Boolean, value: false }
 	});
-
-	return Cost;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
-
-// Required here as it's circular reference
-definePaymentReceiptUpload = require('./payment-receipt-upload');
