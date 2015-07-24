@@ -49,8 +49,8 @@ module.exports = memoize(function (db/*, options*/) {
  * @method defineNestedMap
  * @param {string} propertyName -
  * the name of the property on which the map will be created (i.e. "files")
- * @param {Object} [ItemType=db.Object, cardinalPropertyKey=undefined] -
- * ItemType will set the type for items in map and ordered,
+ * @param {Object} [itemType=db.Object, cardinalPropertyKey=undefined] -
+ * itemType will set the type for items in map and ordered,
  * cardinalPropertyKey will mark the property which determines existence of a givne item
  * @returns {Object} - the object on which defineNestedMap was called
  */

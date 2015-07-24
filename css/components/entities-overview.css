@@ -1,4 +1,8 @@
 /* Object tabel rules */
+.entities-overview-table-wrapper > * {
+	margin-bottom: 22px;
+}
+
 .entities-overview-table tbody tr:nth-child(even) {
 	background-color: var(--light-background);
 }

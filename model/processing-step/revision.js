@@ -15,9 +15,7 @@ module.exports = memoize(function (db) {
 		// Progress for "approved" status
 		// All applicable requirement uploads must be approved
 		approvalProgress: { value: function (_observe) {
-			var applicableSize = _observe(this.master.requirementUploads.applicable._size);
-			if (!applicableSize) return 1;
-			return _observe(this.master.requirementUploads.approved._size) / applicableSize;
+			return _observe(this.master.requirementUploads._approvalProgress);
 		} },
 
 		// Progress for "sentBack" status

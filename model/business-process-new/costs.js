@@ -7,7 +7,9 @@ var memoize               = require('memoizee/plain')
   , defineCurrency        = require('dbjs-ext/number/currency')
   , defineMultipleProcess = require('../lib/multiple-process')
   , defineCost            = require('../cost')
-  , defineRegistrations   = require('./registrations');
+  , defineRegistrations   = require('./registrations')
+
+  , definePaymentReceiptUploads;
 
 module.exports = memoize(function (db/* options */) {
 	var BusinessProcess = defineRegistrations(db, arguments[1])
@@ -29,41 +31,70 @@ module.exports = memoize(function (db/* options */) {
 			});
 			return result;
 		} },
+		// Payable subset of applicable costs
+		// More directly: all applicable costs that are non 0
+		payable: { type: Cost, multiple: true, value: function (_observe) {
+			var result = [];
+			this.applicable.forEach(function (cost) {
+				var isPayable = Boolean(cost._get ? _observe(cost._amount) : cost.amount);
+				if (isPayable) result.push(cost);
+			});
+			return result;
+		} },
 		// Paid costs
 		paid: { type: Cost, multiple: true, value: function (_observe) {
 			var result = [];
-			this.applicable.forEach(function (cost) {
+			this.payable.forEach(function (cost) {
 				if (_observe(cost._isPaid)) result.push(cost);
 			});
 			return result;
 		} },
-		// Payment progress
-		paymentProgress: { type: Percentage, value: function () {
-			if (!this.applicable.size) return 1;
-			return this.paid.size / this.applicable.size;
-		} },
-		// Payment progress for online payments
-		// We require all online payments to be done in Part A stage.
-		// So having this below 1, doesn't allow submit of application
-		onlinePaymentProgress: { type: Percentage, value: function (_observe) {
-			var valid = 0, total = 0;
-			this.applicable.forEach(function (cost) {
-				if (!cost.isElectronic) return;
-				++total;
-				if (_observe(cost._isPaid)) ++valid;
+		// Electronic costs
+		electronic: { type: Cost, multiple: true, value: function (_observe) {
+			var result = [];
+			this.payable.forEach(function (cost) {
+				if (cost.isElectronic) result.push(cost);
 			});
+			return result;
+		} },
+		// Payment progress
+		paymentProgress: { type: Percentage, value: function (_observe) {
+			var valid = 0, total = 0, paymentReceiptUploads = this.master.paymentReceiptUploads;
+			// Eventual online payments
+			if (this.electronic.size) {
+				++total;
+				if (this.electronic.every(function (cost) { return _observe(cost._isPaid); })) {
+					++valid;
+				}
+			}
+			total += _observe(paymentReceiptUploads.applicable._size);
+			valid += _observe(paymentReceiptUploads.uploaded._size);
 			if (!total) return 1;
 			return valid / total;
 		} },
-		// Total for all applicable costs
+		// Payment weight
+		// Indicates number of step user needs to take to complete payment step in Part A
+		// e.g. one step per each payment receipt, and one step for one online payment
+		// If it's zero, that means we should not show payment step at all
+		paymentWeight: { type: Percentage, value: function (_observe) {
+			var weight = 0;
+			if (this.electronic.size) ++weight;
+			weight += _observe(this.mater.paymentReceiptUploads.applicable._size);
+			return weight;
+		} },
+		// Total for all payable costs
 		totalAmount: { type: Currency, value: function (_observe) {
 			var total = 0;
-			this.applicable.forEach(function (cost) {
+			this.payable.forEach(function (cost) {
 				var amount = cost._get ? _observe(cost._amount) : cost.amount;
 				total += amount;
 			});
 			return total;
 		} }
 	});
+
+	if (!BusinessProcess.prototype.paymentReceiptUploads) definePaymentReceiptUploads(db);
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
+
+definePaymentReceiptUploads = require('./payment-receipt-uploads');

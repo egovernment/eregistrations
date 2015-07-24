@@ -56,32 +56,4 @@ module.exports = function (t, a) {
 	businessProcess.foo = 'bar';
 	a(requirementUpload.isRejected, false);
 	a(requirementUpload.isApproved, true);
-
-	a.h1("Cost related");
-	requirementUpload = businessProcess.requirementUploads.map.costRelated;
-	a.h2("Initial");
-	a(requirementUpload.isRejected, false);
-	a(requirementUpload.isApproved, false);
-
-	a.h2("Rejection");
-	requirementUpload.status = 'invalid';
-	a(requirementUpload.isRejected, false);
-	a(requirementUpload.isApproved, false);
-	requirementUpload.rejectReasonTypes.add('illegible');
-	a(requirementUpload.isRejected, true);
-	a(requirementUpload.isApproved, false);
-	requirementUpload.rejectReasonTypes.add('other');
-	a(requirementUpload.isRejected, false);
-	a(requirementUpload.isApproved, false);
-	requirementUpload.rejectReasonMemo = "Whatever ...";
-	a(requirementUpload.isRejected, true);
-	a(requirementUpload.isApproved, false);
-
-	a.h2("Approval");
-	requirementUpload.status = 'valid';
-	a(requirementUpload.isRejected, false);
-	a(requirementUpload.isApproved, false);
-	businessProcess.costs.map.test.isPaid = true;
-	a(requirementUpload.isRejected, false);
-	a(requirementUpload.isApproved, true);
 };
