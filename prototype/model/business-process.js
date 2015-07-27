@@ -13,7 +13,6 @@ var db = require('mano').db
   , StringLine  = require('dbjs-ext/string/string-line')(db)
   , Person      = require('../../model/person')(db)
   , DateType    = require('dbjs-ext/date-time/date')(db)
-  , Email       = require('dbjs-ext/string/string-line/email')(db)
   , FormSection = require('../../model/form-section')(db)
   , CompanyType = require('./company-type')
   , FormSectionGroup = require('../../model/form-section-group')(db)
@@ -44,11 +43,6 @@ Representative = Person.extend('Representative', {
 	address: {
 		type: Address,
 		nested: true
-	},
-	email: {
-		type: Email,
-		label: "Email",
-		required: true
 	},
 	dateOfBirth: {
 		type: DateType,
@@ -91,10 +85,6 @@ BusinessProcessNew.prototype.defineProperties({
 		label: "How many branches?"
 	},
 	//dataForms
-	representative: {
-		type: Representative,
-		nested: true
-	},
 	companyType: {
 		type: CompanyType,
 		required: true,
@@ -134,6 +124,8 @@ BusinessProcessNew.prototype.defineProperties({
 		label: "The following person"
 	}
 });
+
+BusinessProcessNew.prototype.getDescriptor('representative').type = Representative;
 
 BusinessProcessNew.prototype.defineNestedMap('branches', {
 	cardinalPropertyKey: "companyName",
