@@ -60,12 +60,12 @@
 }
 
 .entities-overview-info {
-	background-color: var(--msg-background);
-	border: 1px solid  var(--msg-dark-background);
+	background-color: var(--light-background);
+	border: 1px solid  var(--normal-light-background);
 	border-radius: 5px;
 	padding: 22px 15px 0;
 }
 .entities-overview-info > * {
 	margin-bottom: 22px;
-	color: var(--msg-text);
+	color: var(--light-normal-text);
 }
