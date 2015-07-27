@@ -8,7 +8,7 @@ _d = _;
 
 exports._parent = require('./user-registration-base');
 
-exports['step-payment'] = { class: { 'step-active': true } };
+exports['step-pay'] = { class: { 'step-active': true } };
 
 exports.step = function () {
 	exports._paymentHeading();

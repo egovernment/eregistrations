@@ -29,7 +29,7 @@ exports._stepsMenu = function () {
 			div({ class: 'user-steps-menu-item-progress', style: 'width: 50%' })
 		),
 		li(
-			a({ href: '/payment/', id: 'step-payment' },
+			a({ href: '/payment/', id: 'step-pay' },
 				"4. Pay"
 				),
 			div({ class: 'user-steps-menu-item-progress' })
