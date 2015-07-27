@@ -26,8 +26,10 @@ module.exports = function (t, a) {
 	user.businessProcess = businessProcess;
 	user.firstName = "Test";
 	user.lastName = "Testowski";
+	user.email = "test@test.com";
 	a(businessProcess.representative.firstName, "Test");
 	a(businessProcess.representative.lastName, "Testowski");
+	a(businessProcess.representative.email, "test@test.com");
 	user.firstName = "Tester";
 	a(businessProcess.representative.firstName, "Tester");
 };

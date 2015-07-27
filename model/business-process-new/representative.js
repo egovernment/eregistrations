@@ -3,49 +3,38 @@
 'use strict';
 
 var memoize       = require('memoizee/plain')
-  , _             = require('mano').i18n.bind("Model: Business Process")
   , defineInitial = require('./base')
-  , defineEmail   = require('dbjs-ext/string/string-line/email')
   , definePerson  = require('../person');
 
 module.exports = memoize(function (db/*, options*/) {
-	var BusinessProcess, Person, Email, options;
+	var BusinessProcess, Person, options;
 	options = Object(arguments[1]);
 	BusinessProcess = defineInitial(db, options);
 	Person  = definePerson(db, options);
-	Email   = defineEmail(db, options);
 
 	BusinessProcess.prototype.define('representative', {
 		type: Person,
 		nested: true
 	});
 
-	BusinessProcess.prototype.representative.defineProperties({
-		email: {
-			type: Email,
-			label: _("Email"),
-			value: function () {
-				if (!this.master.user) {
-					return;
-				}
-				return this.master.user.email;
+	BusinessProcess.prototype.representative.setProperties({
+		email: function () {
+			if (!this.master.user) {
+				return;
 			}
+			return this.master.user.email;
 		},
-		firstName: {
-			value: function (_observe) {
-				if (!this.master.user) {
-					return;
-				}
-				return _observe(this.master.user._firstName);
+		firstName: function (_observe) {
+			if (!this.master.user) {
+				return;
 			}
+			return _observe(this.master.user._firstName);
 		},
-		lastName: {
-			value: function (_observe) {
-				if (!this.master.user) {
-					return;
-				}
-				return _observe(this.master.user._lastName);
+		lastName: function (_observe) {
+			if (!this.master.user) {
+				return;
 			}
+			return _observe(this.master.user._lastName);
 		}
 	});
 
