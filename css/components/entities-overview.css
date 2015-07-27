@@ -60,7 +60,7 @@
 }
 
 .entities-overview-info {
-	background-color: var(--lightest-error-background); 
+	background-color: var(--lightest-error-background);
 	border: 1px solid  var(--light-error-background);
 	border-radius: 5px;
 	padding: 22px 15px 0;
