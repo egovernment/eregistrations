@@ -90,4 +90,11 @@ module.exports = function (t, a) {
 	a(partnerSection.propertyMaster, businessProcess);
 	businessProcess.partner.section.propertyMasterType = Partner;
 	a(partnerSection.propertyMaster, businessProcess.partner);
+	businessProcess.partner.section.propertyMasterType = TestFormSection;
+	a.throws(function () {
+		return partnerSection.propertyMaster;
+	},
+		new RegExp("[Error: Could not find propertyMaster of type " + TestFormSection.__id__
+			+ " for section: " + businessProcess.partner.section.__id__ + ". " +
+			"This is most likely due to invalid section's definition.]"), "errorTest");
 };
