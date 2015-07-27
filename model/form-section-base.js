@@ -36,6 +36,12 @@ module.exports = memoize(function (db) {
 				while (owner && !this.propertyMasterType.is(owner)) {
 					owner = owner.owner;
 				}
+				if (!owner) {
+					throw new Error("Could not find propertyMaster of type " +
+						this.propertyMasterType.__id__
+						+ " for section: " + this.__id__ + ". " +
+						"This is most likely due to invalid section's definition.");
+				}
 				return owner;
 			}
 			return this.master;
