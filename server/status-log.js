@@ -11,10 +11,9 @@ var compact       = require('es5-ext/array/#/compact')
   , resolve       = require('path').resolve
   , setupTriggers = require('./_setup-triggers')
 
-  , now = Date.now, forEach = Array.prototype.forEach, create = Object.create
+  , forEach = Array.prototype.forEach, create = Object.create
   , nextTick = process.nextTick
-  , stdout = process.stdout.write.bind(process.stdout)
-  , configure, time;
+  , configure;
 
 exports = module.exports = [];
 
@@ -26,8 +25,6 @@ configure = function (conf) {
 	exports.push(conf);
 };
 
-time = now();
-stdout("Setup status log...");
 mano.apps.forEach(function (app) {
 	var conf = tryRequire(resolve(app.root, 'server/status-log'));
 	if (!conf) return;
@@ -61,4 +58,3 @@ exports.forEach(function (conf) {
 		});
 	});
 });
-stdout(" setup in " + ((now() - time) / 1000).toFixed(2) + "s\n");
