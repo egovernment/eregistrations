@@ -45,7 +45,7 @@ exports.step = function () {
 		exports.__onlinePayments(),
 		div({ class: 'disabler' })
 	);
-	insert(_if(eq(this.businessProcess.paymentReceiptUploads._progress, 1),
+	insert(_if(eq(this.businessProcess._paymentProgress, 1),
 		div({ class: 'user-next-step-button' },
 			a({ href: '/submission/' }, _("Continue to next step")))));
 };
