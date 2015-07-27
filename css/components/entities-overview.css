@@ -63,9 +63,8 @@
 	background-color: var(--light-background);
 	border: 1px solid  var(--normal-light-background);
 	border-radius: 5px;
-	padding: 22px 15px 0;
+	padding: 10px 15px;
 }
 .entities-overview-info > * {
-	margin-bottom: 22px;
 	color: var(--light-normal-text);
 }
