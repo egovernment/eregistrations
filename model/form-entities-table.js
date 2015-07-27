@@ -151,7 +151,7 @@ module.exports = memoize(function (db) {
 		nested: true
 	});
 	FormEntitiesTable.prototype.progressRules.map.get('entities').setProperties({
-		message: _("Some of the added items are incomplete."),
+		message: _("Some of the added items are incomplete"),
 		progress: function (_observe) {
 			var statusSum, tabularSection, statusKey, weightKey, i, dataForms;
 			i = 0;
@@ -215,10 +215,10 @@ module.exports = memoize(function (db) {
 	});
 
 	FormEntitiesTable.prototype.progressRules.map.get('minMax').setProperties({
-		minMessage: _("${min} items expected."),
-		maxMessage: _("${max} items expected."),
-		minMaxDiffMessage: _("We expect between ${min} and ${max} items."),
-		minMaxSameMessage: _("We expect exactly ${max} items."),
+		minMessage: _("At least ${min} items should be added"),
+		maxMessage: _("No more than ${max} items should be added"),
+		minMaxDiffMessage: _("At least ${min} and no more than ${max} items should be added"),
+		minMaxSameMessage: _("Exactly ${max} items should be added"),
 		message: function (_observe) {
 			var tabularSection = this.owner.owner.owner, min, max;
 			min = _observe(tabularSection._min);
