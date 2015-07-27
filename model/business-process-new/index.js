@@ -19,6 +19,7 @@ module.exports = memoize(function (db) {
 	require('./requirement-uploads')(db, opts);
 	require('./requirements')(db, opts);
 	require('./submission-forms')(db, opts);
+	require('./representative')(db, opts);
 
 	return BusinessProcessNew;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
