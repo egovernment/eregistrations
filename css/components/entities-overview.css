@@ -60,10 +60,13 @@
 }
 
 .entities-overview-info {
-	border: 2px solid var(--error-dark-background);
+	background-color: var(--lightest-error-background); 
+	border: 1px solid  var(--light-error-background);
 	border-radius: 5px;
-	padding: 22px 11px 0;
+	padding: 22px 15px 0;
 }
 .entities-overview-info > * {
 	margin-bottom: 22px;
+	color: var(--error-dark-text);
+	font-weight: bolder;
 }

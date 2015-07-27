@@ -17,6 +17,7 @@ Component describing basic elements styles - reusable
 	--normal-background: #999;
 	--normal-dark-background: #666;
 	--dark-background: #333;
+	--lightest-error-background: #f2dede;
 	--light-error-background: #D69592;
 	--success-background: #5CB85C;
 	--success-dark-background: #3A733A;
@@ -34,6 +35,7 @@ Component describing basic elements styles - reusable
 	--dark-text: #333333;
 	--success-text: #5CB85C;
 	--error-text: #D9534F;
+	--error-dark-text: #D9534F;
 	--progress-text: #f89406;
 }
 
