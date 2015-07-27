@@ -22,17 +22,27 @@
 	list-style-type: none;
 }
 
-.submitted-menu-item-active {
+.submitted-menu-item-active,
+.submitted-menu a:hover,
+.submitted-menu a:focus,
+.submitted-menu a:active,
+.submitted-menu .submitted-menu-item-active {
 	background: var(--normal-dark-background);
 }
 
-.submitted-menu a {
+.submitted-menu a,
+.submitted-menu button {
 	color: var(--white-text);
 	font-size: 16px;
 	text-decoration: none;
 	padding: 0 17px;
 	line-height: 44px;
 	display: block;
+}
+
+.submitted-menu button {
+	border-radius: 0;
+	background-color: transparent;
 }
 
 .submitted-menu-role-select {
