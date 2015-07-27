@@ -9,7 +9,7 @@ var memoize       = require('memoizee/plain')
   , definePerson  = require('../person');
 
 module.exports = memoize(function (db/*, options*/) {
-	var BusinessProcess, Person, Email, options, representative;
+	var BusinessProcess, Person, Email, options;
 	options = Object(arguments[1]);
 	BusinessProcess = defineInitial(db, options);
 	Person  = definePerson(db, options);
@@ -19,31 +19,35 @@ module.exports = memoize(function (db/*, options*/) {
 		type: Person,
 		nested: true
 	});
-	representative = BusinessProcess.prototype.representative;
 
-	representative.define('email', {
-		type: Email,
-		label: _("Email"),
-		value: function () {
-			if (!this.master.user) {
-				return;
+	BusinessProcess.prototype.representative.defineProperties({
+		email: {
+			type: Email,
+			label: _("Email"),
+			value: function () {
+				if (!this.master.user) {
+					return;
+				}
+				return this.master.user.email;
 			}
-			return this.master.user.email;
+		},
+		firstName: {
+			value: function (_observe) {
+				if (!this.master.user) {
+					return;
+				}
+				return _observe(this.master.user._firstName);
+			}
+		},
+		lastName: {
+			value: function (_observe) {
+				if (!this.master.user) {
+					return;
+				}
+				return _observe(this.master.user._lastName);
+			}
 		}
 	});
-
-	representative.firstName = function (_observe) {
-		if (!this.master.user) {
-			return;
-		}
-		return _observe(this.master.user._firstName);
-	};
-	representative.lastName = function (_observe) {
-		if (!this.master.user) {
-			return;
-		}
-		return _observe(this.master.user._lastName);
-	};
 
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
