@@ -27,13 +27,14 @@ require('./form-section-base');
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
 		var self = this, options, url, customizeData, resolvent, tableData, resolved, getAddUrl,
-			collectionType, addButton, isMapMode;
+			collectionType, addButton, isMapMode, _d = _, translationInserts;
 		customizeData = { master: this.master };
 		url = ns.url;
 		options = Object(arguments[1]);
 		url = options.url || ns.url;
 		resolvent = this.getFormResolvent(options);
 		resolved = resolvePropertyPath(this.master, this.propertyName);
+		translationInserts = { max: self._max, min: self._min };
 		tableData = resolved.value;
 		if (tableData instanceof db.NestedMap) {
 			isMapMode = true;
@@ -63,6 +64,18 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 				method: 'post'
 			}, resolvent.formResolvent, ns.p({ class: 'submit' },
 				ns.input({ type: 'submit', value: _("Submit") }))) : undefined,
+
+			ns._if(gtOrEq(self.progressRules.invalid._size, 1),
+				div({ class: 'entities-overview-info' },
+					ns._if(eq(self.progressRules.invalid._size, 1),
+						function () {
+							return p(_d(self.progressRules.invalid.first._message, translationInserts));
+						},
+						ul(self.progressRules.invalid,
+							function (rule) {
+								return ns.li(_d(rule.message, translationInserts));
+							})))),
+
 			ns.div({ class: 'entities-overview-table-wrapper', id: resolvent.affectedSectionId },
 				ns.table(
 					{ class: ns._if(ns.not(ns.eq(tableData._size, 0)),

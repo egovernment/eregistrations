@@ -65,6 +65,48 @@ module.exports = memoize(function (db) {
 			resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
 			return _observe(resolved.observable) !== this.resolventValue;
 		} },
+		resolventStatus: {
+			type: UInteger,
+			value: function (_observe) {
+				var isResolventExcluded, resolved;
+				if (this.resolventProperty) {
+					resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
+					if (!resolved) {
+						return 0;
+					}
+					isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
+					if (isResolventExcluded) return 1;
+					if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
+						if (resolved.descriptor.multiple) {
+							if (_observe(resolved.observable).size) return 1;
+						} else {
+							if (_observe(resolved.observable) != null) return 1;
+						}
+						return 0;
+					}
+					if (!isResolventExcluded) {
+						return 1;
+					}
+				}
+				return 1;
+			}
+		},
+		resolventWeight: {
+			type: UInteger,
+			value: function (_observe) {
+				var isResolventExcluded, resolved;
+				if (this.resolventProperty) {
+					resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
+					if (!resolved) {
+						return 0;
+					}
+					isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
+					if (isResolventExcluded) return 0;
+					return 1;
+				}
+				return 0;
+			}
+		},
 		isPropertyExcludedFromStatus: { type: db.Function, value: function (resolved, _observe) {
 			if (!resolved.descriptor.required) return true;
 			if (this.excludedFromStatusIfFilled.has(resolved.key) ||

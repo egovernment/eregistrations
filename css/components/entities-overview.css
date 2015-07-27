@@ -58,3 +58,13 @@
 .entities-overview-table .completed .status-incomplete {
 	display: none;
 }
+
+.entities-overview-info {
+	background-color: var(--light-background);
+	border: 1px solid  var(--normal-light-background);
+	border-radius: 5px;
+	padding: 10px 15px;
+}
+.entities-overview-info > * {
+	color: var(--light-normal-text);
+}

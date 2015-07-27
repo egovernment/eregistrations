@@ -11,146 +11,88 @@ var _                       = require('mano').i18n.bind("Model: Form Entities Ta
   , defineFormSectionBase   = require('./form-section-base')
   , defineFormTabularEntity = require('./form-tabular-entity')
   , defineUInteger          = require('dbjs-ext/number/integer/u-integer')
-  , defineNestedMap         = require('./lib/nested-map');
+  , defineProgressRule      = require('./lib/progress-rule')
+  , defineProgressRules     = require('./lib/progress-rules');
 
 module.exports = memoize(function (db) {
-	var StringLine, FormSectionBase, FormTabularEntity, UInteger;
+	var FormEntitiesTable, StringLine, FormSectionBase, FormTabularEntity, UInteger
+	  , ProgressRule, ProgressRules;
 	validDb(db);
 	StringLine        = defineStringLine(db);
 	FormSectionBase   = defineFormSectionBase(db);
 	FormTabularEntity = defineFormTabularEntity(db);
 	UInteger          = defineUInteger(db);
-	defineNestedMap(db);
-	return FormSectionBase.extend('FormEntitiesTable', {
+	ProgressRule      = defineProgressRule(db);
+	ProgressRules     = defineProgressRules(db);
+	FormEntitiesTable = FormSectionBase.extend('FormEntitiesTable', {
+		progressRules: { type: ProgressRules, nested: true },
 		min: { type: UInteger },
 		max: { type: UInteger },
-		status: { value: function (_observe) {
-			var entityObjects, statusSum, statusKey, weightKey, isResolventExcluded, resolved, i;
-			i = 0;
-			statusSum = 0;
-			statusKey = this.sectionProperty + 'Status';
-			weightKey = this.sectionProperty + 'Weight';
-			if (this.resolventProperty) {
-				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
-				if (!resolved) {
-					return 0;
+		status: {
+			value: function (_observe) {
+				var weight = 0, progress = 0;
+
+				// Take into account resolvent
+				progress += this.resolventStatus * this.resolventWeight;
+				weight += this.resolventWeight;
+
+				// If section is unresolved, exit just with resolvent
+				if (this.isUnresolved) {
+					if (!weight) return 1;
+					return progress / weight;
 				}
-				isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
-				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-					if (isResolventExcluded) return 1;
-					if (resolved.descriptor.multiple) {
-						if (_observe(resolved.observable).size) return 1;
-					} else {
-						if (_observe(resolved.observable) != null) return 1;
-					}
-					return 0;
-				}
-				if (!isResolventExcluded) {
-					++statusSum;
-				}
+
+				// Take into account all rules
+				progress += _observe(this.progressRules._progress) * _observe(this.progressRules._weight);
+				weight += this.progressRules.weight;
+
+				if (!weight) return 1;
+				return progress / weight;
 			}
-			entityObjects = this.master.resolveSKeyPath(this.propertyName, _observe);
-			if (!entityObjects) {
-				return 0;
-			}
-			entityObjects = entityObjects.value;
-			if (entityObjects instanceof this.database.NestedMap) {
-				entityObjects = entityObjects.ordered;
-			}
-			_observe(entityObjects);
-			entityObjects.some(function (entityObject) {
-				var resolvedStatus, resolvedWeight, dataForms;
-				i++;
-				if (this.sectionProperty === 'dataForms') {
-					dataForms = entityObject.resolveSKeyPath(this.sectionProperty, _observe);
-					if (!dataForms) {
-						return;
-					}
-					resolvedStatus = _observe(dataForms.value._progress);
-					resolvedWeight = _observe(dataForms.value._weight);
-				} else {
-					resolvedStatus = entityObject.resolveSKeyPath(statusKey, _observe);
-					resolvedWeight = entityObject.resolveSKeyPath(weightKey, _observe);
-					if (!resolvedStatus || !resolvedWeight) {
-						return;
-					}
-					resolvedStatus = _observe(resolvedStatus.observable);
-					resolvedWeight = _observe(resolvedWeight.observable);
-				}
-				if (this.max && (i > this.max)) {
-					return true;
-				}
-				statusSum += (resolvedStatus * resolvedWeight);
-			}, this);
-			if (!this.weight) return 1;
-			return statusSum / this.weight;
-		} },
+		},
 		weight: { value: function (_observe) {
-			var entityObjects, weightTotal, key, getWeightByEntity, protoWeight, i,
-				isResolventExcluded, resolved, objectsType;
-			weightTotal = 0;
-			i = 0;
-			key = this.sectionProperty;
-			if (this.resolventProperty) {
-				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
-				if (!resolved) {
-					return 0;
-				}
-				isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
-				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-					return isResolventExcluded ? 0 : 1;
-				}
-				if (!isResolventExcluded) {
-					++weightTotal;
-				}
+			if (this.isUnresolved) {
+				return this.resolventWeight;
 			}
-			getWeightByEntity = function (entityObject) {
-				if (key === 'dataForms') {
-					var dataForms = entityObject.resolveSKeyPath(key, _observe);
+			return _observe(this.progressRules._weight) + this.resolventWeight;
+		} },
+		getWeightByEntity: {
+			type: db.Function,
+			value: function (entityObject, _observe) {
+				if (this.sectionProperty === 'dataForms') {
+					var dataForms = entityObject.resolveSKeyPath(this.sectionProperty, _observe);
 					if (!dataForms) {
 						return 0;
 					}
 					return _observe(dataForms.object.dataForms._weight);
 				}
 				// for backwards compatibility
-				var resolved = entityObject.resolveSKeyPath(key + 'Weight', _observe);
+				var resolved = entityObject.resolveSKeyPath(this.sectionProperty + 'Weight', _observe);
 				if (!resolved) {
 					return 0;
 				}
 				return _observe(resolved.observable);
-			};
-			entityObjects = this.master.resolveSKeyPath(this.propertyName, _observe);
-			if (!entityObjects) {
-				return 0;
 			}
-			objectsType = entityObjects.descriptor.type;
-			entityObjects = entityObjects.value;
-			if (entityObjects instanceof this.database.NestedMap) {
-				entityObjects = entityObjects.ordered;
-			}
-			_observe(entityObjects);
-			entityObjects.some(function (entityObject) {
-				++i;
-				if (this.max && (i > this.max)) {
-					// we add to weight in order to make status 1 unreachable
-					weightTotal += (entityObjects.size - this.max);
-					return true;
+		},
+		// returns a set of all currently setup entities, resolves some new / old model logic
+		entitiesSet: {
+			multiple: true,
+			value: function (_observe) {
+				var entityObjects = this.master.resolveSKeyPath(this.propertyName, _observe);
+				if (!entityObjects) {
+					return;
 				}
-				weightTotal += getWeightByEntity(entityObject);
-			}, this);
-			if (_observe(entityObjects._size) < this.min) {
-				protoWeight = getWeightByEntity(objectsType.prototype);
-
-				// we assume that each potential entity has the same weight as prototype
-				weightTotal += (protoWeight * (this.min - entityObjects.size));
+				entityObjects = entityObjects.value;
+				if (entityObjects instanceof this.database.NestedMap) {
+					entityObjects = entityObjects.ordered;
+				}
+				return _observe(entityObjects);
 			}
-
-			return weightTotal;
-		} },
+		},
 		lastEditStamp: {
 			value: function (_observe) {
 				var res = 0, entityObjects, sectionKey, resolvent, resolventLastModified;
-				entityObjects = this.master.resolveSKeyPath(this.propertyName, _observe);
+				entityObjects = this.entitiesSet;
 				sectionKey = this.sectionProperty;
 				if (this.resolventProperty) {
 					resolvent = _observe(this.master.resolveSKeyPath(this.resolventProperty).observable);
@@ -159,11 +101,6 @@ module.exports = memoize(function (db) {
 				if (!entityObjects) {
 					return resolventLastModified;
 				}
-				entityObjects = entityObjects.value;
-				if (entityObjects instanceof this.database.NestedMap) {
-					entityObjects = entityObjects.ordered;
-				}
-				_observe(entityObjects);
 				entityObjects.forEach(function (entityObject) {
 					var sections;
 					sections = entityObject.resolveSKeyPath(sectionKey, _observe);
@@ -208,4 +145,158 @@ module.exports = memoize(function (db) {
 		// The text of message displayed when there are no entities.
 		onEmptyMessage: { type: StringLine, value: _("There are no elements added at the moment.") }
 	});
+
+	FormEntitiesTable.prototype.progressRules.map.define('entities', {
+		type: ProgressRule,
+		nested: true
+	});
+	FormEntitiesTable.prototype.progressRules.map.get('entities').setProperties({
+		message: _("Some of the added items are incomplete"),
+		progress: function (_observe) {
+			var statusSum, tabularSection, statusKey, weightKey, i, dataForms;
+			i = 0;
+			statusSum = 0;
+			tabularSection = this.owner.owner.owner;
+			statusKey = tabularSection.sectionProperty + 'Status';
+			weightKey = tabularSection.sectionProperty + 'Weight';
+			if (!_observe(tabularSection._entitiesSet)) {
+				return 0;
+			}
+			tabularSection.entitiesSet.some(function (entityObject) {
+				var resolvedStatus, resolvedWeight;
+				i++;
+				if (tabularSection.sectionProperty === 'dataForms') {
+					dataForms = entityObject.resolveSKeyPath(tabularSection.sectionProperty, _observe);
+					if (!dataForms) {
+						return;
+					}
+					resolvedStatus = _observe(dataForms.value._progress);
+					resolvedWeight = _observe(dataForms.value._weight);
+				} else {
+					resolvedStatus = entityObject.resolveSKeyPath(statusKey, _observe);
+					resolvedWeight = entityObject.resolveSKeyPath(weightKey, _observe);
+					if (!resolvedStatus || !resolvedWeight) {
+						return;
+					}
+					resolvedStatus = _observe(resolvedStatus.observable);
+					resolvedWeight = _observe(resolvedWeight.observable);
+				}
+				if (tabularSection.max && (i > tabularSection.max)) {
+					return true;
+				}
+				statusSum += (resolvedStatus * resolvedWeight);
+			});
+			if (!this.weight) return 1;
+			return statusSum / this.weight;
+		},
+		weight: function (_observe) {
+			var weightTotal, i, tabularSection;
+			weightTotal = 0;
+			i = 0;
+			tabularSection = this.owner.owner.owner;
+			if (!_observe(tabularSection._entitiesSet)) {
+				return 0;
+			}
+			tabularSection.entitiesSet.some(function (entityObject) {
+				++i;
+				if (_observe(tabularSection._max) && (i > tabularSection.max)) {
+					return true;
+				}
+				weightTotal += tabularSection.getWeightByEntity(entityObject, _observe);
+			});
+
+			return weightTotal;
+		}
+	});
+
+	FormEntitiesTable.prototype.progressRules.map.define('minMax', {
+		type: ProgressRule,
+		nested: true
+	});
+
+	FormEntitiesTable.prototype.progressRules.map.get('minMax').setProperties({
+		minMessage: _("At least ${ min } items should be added"),
+		maxMessage: _("No more than ${ max } items should be added"),
+		minMaxDiffMessage: _("At least ${ min } and no more than ${ max } items should be added"),
+		minMaxSameMessage: _("Exactly ${ max } items should be added"),
+		message: function (_observe) {
+			var tabularSection = this.owner.owner.owner, min, max;
+			min = _observe(tabularSection._min);
+			max = _observe(tabularSection._max);
+			if (min && max) {
+				return min === max ? this.minMaxSameMessage : this.minMaxDiffMessage;
+			}
+			if (min) {
+				return this.minMessage;
+			}
+			return this.maxMessage;
+		},
+		progress: function () {
+			return this.weight ? 0 : 1;
+		},
+		weight: function (_observe) {
+			var tabularSection = this.owner.owner.owner, min, max;
+			min = _observe(tabularSection._min);
+			max = _observe(tabularSection._max);
+			if (min && max) {
+				return this.minWeight + this.maxWeight;
+			}
+			if (min) {
+				return this.minWeight;
+			}
+			if (max) {
+				return this.maxWeight;
+			}
+			return 0;
+		},
+		maxWeight: function (_observe) {
+			var entityObjects, tabularSection;
+			tabularSection = this.owner.owner.owner;
+			if (!_observe(tabularSection._max)) {
+				return 0;
+			}
+			entityObjects = this.master.resolveSKeyPath(tabularSection.propertyName, _observe);
+			if (!entityObjects) {
+				return 0;
+			}
+			entityObjects = entityObjects.value;
+			if (entityObjects instanceof this.database.NestedMap) {
+				entityObjects = entityObjects.ordered;
+			}
+			_observe(entityObjects);
+			if (tabularSection.max && (entityObjects.size > tabularSection.max)) {
+				return entityObjects.size - tabularSection.max;
+			}
+			return 0;
+		},
+		minWeight: function (_observe) {
+			var entityObjects, mockWeight, objectsType, tabularSection, mockWeightObject;
+			tabularSection = this.owner.owner.owner;
+			if (!_observe(tabularSection._min)) {
+				return 0;
+			}
+			entityObjects = this.master.resolveSKeyPath(tabularSection.propertyName, _observe);
+			if (!entityObjects) {
+				return 0;
+			}
+			objectsType   = entityObjects.descriptor.type;
+			entityObjects = entityObjects.value;
+			if (entityObjects instanceof this.database.NestedMap) {
+				mockWeightObject = entityObjects.map.get('testOnlyDontUseMe');
+				entityObjects = entityObjects.ordered;
+			} else {
+				mockWeightObject = objectsType.prototype;
+			}
+			_observe(entityObjects);
+			if (entityObjects.size < tabularSection._min) {
+				mockWeight = tabularSection.getWeightByEntity(mockWeightObject, _observe);
+
+				// we assume that each potential entity has the same weight as prototype
+				return mockWeight * (tabularSection.min - entityObjects.size);
+			}
+			return 0;
+		}
+	});
+
+	return FormEntitiesTable;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
