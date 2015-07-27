@@ -90,4 +90,9 @@ module.exports = function (t, a) {
 	a(partnerSection.propertyMaster, businessProcess);
 	businessProcess.partner.section.propertyMasterType = Partner;
 	a(partnerSection.propertyMaster, businessProcess.partner);
+	businessProcess.partner.section.propertyMasterType = TestFormSection;
+	a.throws(function () {
+		return partnerSection.propertyMaster;
+	},
+		new RegExp("Could not find propertyMaster of type"), "errorTest");
 };
