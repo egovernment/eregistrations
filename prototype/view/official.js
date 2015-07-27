@@ -6,6 +6,7 @@ exports._parent = require('../../view/user-base');
 
 exports['submitted-menu'] = function () {
 	li(a({ class: 'submitted-menu-item-active' }, "Official"));
+	li(postButton({ value: "Role" }));
 };
 
 exports['sub-main'] = {
