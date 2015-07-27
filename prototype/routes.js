@@ -15,6 +15,7 @@ module.exports = {
 	forms: require('./view/forms'),
 	'forms/disabled': require('./view/disabled-forms'),
 	documents: require('./view/documents'),
+	payment: require('./view/payment'),
 	'documents/disabled': require('./view/disabled-documents'),
 	submission: require('./view/submission'),
 	profile: require('./view/user-profile'),

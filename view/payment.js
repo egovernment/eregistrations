@@ -8,10 +8,10 @@ _d = _;
 
 exports._parent = require('./user-registration-base');
 
-exports['step-pay'] = { class: { 'step-active': true } };
+exports['step-payment'] = { class: { 'step-active': true } };
 
 exports.step = function () {
-	exports._documentsHeading();
+	exports._paymentHeading();
 
 	insert(errorMsg(this, exports._sentBackInformation));
 
@@ -50,5 +50,5 @@ exports.step = function () {
 			a({ href: '/submission/' }, _("Continue to next step")))));
 };
 
-exports._documentsHeading = Function.prototype;
+exports._paymentHeading = Function.prototype;
 exports.__onlinePayments = Function.prototype;
