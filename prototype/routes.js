@@ -19,6 +19,14 @@ module.exports = {
 	'documents/disabled': require('./view/disabled-documents'),
 	submission: require('./view/submission'),
 	profile: require('./view/user-profile'),
+	'add-edit-entity/[0-9]+': {
+		match: function (entity) {
+			console.log(entity);
+			this.entity = {};
+			return true;
+		},
+		view: require('./view/add-edit-entity')
+	},
 	'partner-add': require('./view/partner-add'),
 	'forms/partner-id': require('./view/partner'),
 
