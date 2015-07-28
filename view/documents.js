@@ -24,7 +24,7 @@ exports.step = function () {
 				this.businessProcess.requirementUploads.applicable,
 				function (requirementUpload) {
 					return li({ class: 'section-primary' },
-						form({ action: url('documents'), method: 'post',
+						form({ action: '/requirement-upload/', method: 'post',
 								enctype: 'multipart/form-data', autoSubmit: true },
 							div(
 								h2(_d(requirementUpload.document.label, { user: requirementUpload.master })),
@@ -46,7 +46,7 @@ exports.step = function () {
 	);
 	insert(_if(eq(this.businessProcess.requirementUploads._progress, 1),
 		div({ class: 'user-next-step-button' },
-			a({ href: _if(not(eq(this.businessProcess._paymentWeight, 0)), '/payment/', '/submission/') },
+			a({ href: _if(not(eq(this.businessProcess._paymentWeight, 0)), '/pay/', '/submission/') },
 				_("Continue to next step")))));
 };
 

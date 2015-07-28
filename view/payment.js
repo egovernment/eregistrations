@@ -24,7 +24,7 @@ exports.step = function () {
 				this.businessProcess.paymentReceiptUploads.applicable,
 				function (paymentUpload) {
 					return li({ class: 'section-primary' },
-						form({ action: url('documents'), method: 'post',
+						form({ action: '/payment-receipt-upload/', method: 'post',
 								enctype: 'multipart/form-data', autoSubmit: true },
 							div(
 								h2(_d(paymentUpload.document.label, { user: paymentUpload.master })),
