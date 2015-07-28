@@ -84,7 +84,7 @@ exports._bodyAppend = function () {
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
-				a({ href: '/payment/' }, span("User - payment"),
+				a({ href: '/pay/' }, span("User - payment"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(

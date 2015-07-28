@@ -24,7 +24,7 @@ exports.step = function () {
 				this.businessProcess.requirementUploads.applicable,
 				function (requirementUpload) {
 					return li({ class: 'section-primary' },
-						form({ action: url('documents'), method: 'post',
+						form({ action: '/requirement-upload/', method: 'post',
 								enctype: 'multipart/form-data', autoSubmit: true },
 							div(
 								h2(_d(requirementUpload.document.label, { user: requirementUpload.master })),
