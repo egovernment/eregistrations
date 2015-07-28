@@ -33,7 +33,7 @@ var db = require('mano').db
   , RequiredUploadA
   , Representative
   , processes = [first, second, third, fourth, fifth]
-  , pamentReceipt = require('../../model/business-process-new/' +
+  , paymentReceipt = require('../../model/business-process-new/' +
 		'utils/define-payment-receipt-uploads');
 
 require('../../model/lib/nested-map');
@@ -168,7 +168,7 @@ BusinessProcessNew.prototype.costs.map.handlingFee.setProperties({
 	legend: "Lorem ipsum dolor sit amet"
 });
 
-pamentReceipt(BusinessProcessNew,
+paymentReceipt(BusinessProcessNew,
 	{ handlingFee:  { label: "Handling fee receipt", legend: "Handling fee legend",
 		costs: [BusinessProcessNew.prototype.costs.map.handlingFee] } });
 
