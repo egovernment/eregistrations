@@ -13,11 +13,13 @@ exports['step-guide'] = { class: { 'step-form': true } };
 exports.step  = function () {
 	var entity = this.entity, url = baseUrl.bind(this.root);
 
+	console.log(entity.name);
+
 	h1(_if(eqSloppy(entity.getObservable(
 		entity.owner.owner.cardinalPropertyKey
 	), null),
-		_("Add entity"),
-		_("Edit entity")));
+		_("Add ${ entityLabel }", { entityLabel: this.entity.constructor.label }),
+		_("Edit ${ entityName }", { entityName: this.entity.name })));
 	insert(generateFormSections(entity.dataForms.applicable,
 		{ url: url, isChildEntity: true }));
 };

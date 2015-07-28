@@ -19,7 +19,7 @@ module.exports = {
 	'documents/disabled': require('./view/disabled-documents'),
 	submission: require('./view/submission'),
 	profile: require('./view/user-profile'),
-	'add-edit-entity/[0-9]+': {
+	'nested-entity/(example)': {
 		match: function (entity) {
 			this.entity = this.businessProcess.branches.map.get(entity);
 			return true;
