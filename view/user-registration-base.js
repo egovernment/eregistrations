@@ -51,13 +51,13 @@ exports._stepsMenu = function (context) {
 			div({ class: 'user-steps-menu-item-progress',
 				style: mmap(context.businessProcess.requirementUploads._progress, setProgressWidth) })
 		),
-		li(
+		_if(not(eq(context.businessProcess._paymentWeight, 0)), li(
 			a({ href: '/pay/', id: 'step-pay' },
 				_("Pay")
 				),
 			div({ class: 'user-steps-menu-item-progress',
 				style: mmap(context.businessProcess.costs._paymentProgress, setProgressWidth) })
-		),
+		)),
 		li(
 			a({ href: '/submission/', id: 'step-submission' },
 				_("Send file")

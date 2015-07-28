@@ -1,4 +1,4 @@
-// Generic documents user page (Part A)
+// Generic payment user page (Part A)
 
 'use strict';
 
@@ -8,10 +8,10 @@ _d = _;
 
 exports._parent = require('./user-registration-base');
 
-exports['step-documents'] = { class: { 'step-active': true } };
+exports['step-pay'] = { class: { 'step-active': true } };
 
 exports.step = function () {
-	exports._documentsHeading();
+	exports._paymentHeading();
 
 	insert(errorMsg(this, exports._sentBackInformation));
 
@@ -21,18 +21,18 @@ exports.step = function () {
 		section(
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
-				this.businessProcess.requirementUploads.applicable,
-				function (requirementUpload) {
+				this.businessProcess.paymentReceiptUploads.applicable,
+				function (paymentUpload) {
 					return li({ class: 'section-primary' },
-						form({ action: '/requirement-upload/', method: 'post',
+						form({ action: '/payment-receipt-upload/', method: 'post',
 								enctype: 'multipart/form-data', autoSubmit: true },
 							div(
-								h2(_d(requirementUpload.document.label, { user: requirementUpload.master })),
-								requirementUpload.document.legend &&
-									small(mdi(_d(requirementUpload.document.legend,
-										{ user: requirementUpload.master }))),
+								h2(_d(paymentUpload.document.label, { user: paymentUpload.master })),
+								paymentUpload.document.legend &&
+									small(mdi(_d(paymentUpload.document.legend,
+										{ user: paymentUpload.master }))),
 								hr(),
-								input({ dbjs: requirementUpload.document.files._map, label: true }),
+								input({ dbjs: paymentUpload.document.files._map, label: true }),
 								p({ class: 'submit' }, input({ type: 'submit', value: _("Submit") })),
 								p({ class: 'section-primary-scroll-top' },
 										a({ onclick: 'window.scroll(0, 0)' },
@@ -42,12 +42,13 @@ exports.step = function () {
 				}
 			)
 		),
+		exports.__onlinePayments(),
 		div({ class: 'disabler' })
 	);
-	insert(_if(eq(this.businessProcess.requirementUploads._progress, 1),
+	insert(_if(eq(this.businessProcess._paymentProgress, 1),
 		div({ class: 'user-next-step-button' },
-			a({ href: _if(not(eq(this.businessProcess._paymentWeight, 0)), '/pay/', '/submission/') },
-				_("Continue to next step")))));
+			a({ href: '/submission/' }, _("Continue to next step")))));
 };
 
-exports._documentsHeading = Function.prototype;
+exports._paymentHeading = Function.prototype;
+exports.__onlinePayments = Function.prototype;
