@@ -46,7 +46,8 @@ exports.step = function () {
 	);
 	insert(_if(eq(this.businessProcess.requirementUploads._progress, 1),
 		div({ class: 'user-next-step-button' },
-			a({ href: '/submission/' }, _("Continue to next step")))));
+			a({ href: _if(not(eq(this.businessProcess._paymentWeight, 0)), '/payment/', '/submission/') },
+				_("Continue to next step")))));
 };
 
 exports._documentsHeading = Function.prototype;

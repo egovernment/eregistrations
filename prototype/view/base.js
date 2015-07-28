@@ -84,6 +84,10 @@ exports._bodyAppend = function () {
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
+				a({ href: '/payment/' }, span("User - payment"),
+					span({ class: 'label-reg' }, "Part A"))
+			),
+			li(
 				a({ href: '/submission/' }, span("User - submission"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
