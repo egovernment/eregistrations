@@ -11,7 +11,6 @@ exports._parent = require('./user-registration-base');
 exports['step-guide'] = { class: { 'step-form': true } };
 
 exports.step  = function () {
-	console.log(this.entity);
 	var entity = this.entity, url = baseUrl.bind(this.root);
 
 	h1(_if(eqSloppy(entity.getObservable(

@@ -32,12 +32,12 @@ module.exports = db.Object.extend('Branch', {
 	}
 });
 
-db.Branch.prototype.dataForms.define('main', {
+db.Branch.prototype.dataForms.map.define('main', {
 	type: FormSection,
 	nested: true
 });
 
-db.Branch.prototype.dataForms.get('main').setProperties({
+db.Branch.prototype.dataForms.map.get('main').setProperties({
 	propertyMasterType: db.Branch,
 	propertyNames: ['companyName', 'responsiblePerson/firstName', 'responsiblePerson/lastName',
 		'responsiblePerson/email', 'isActivitySameAsMotherCompany', 'rangeOfActivity']

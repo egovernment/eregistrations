@@ -21,8 +21,7 @@ module.exports = {
 	profile: require('./view/user-profile'),
 	'add-edit-entity/[0-9]+': {
 		match: function (entity) {
-			console.log(entity);
-			this.entity = {};
+			this.entity = this.businessProcess.branches.map.get(entity);
 			return true;
 		},
 		view: require('./view/add-edit-entity')
