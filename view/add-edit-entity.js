@@ -8,6 +8,7 @@ var _  = require('mano').i18n.bind('User')
   , baseUrl = url;
 
 exports._parent = require('./user-registration-base');
+exports._match = 'entity';
 
 exports['step-guide'] = { class: { 'step-form': true } };
 
