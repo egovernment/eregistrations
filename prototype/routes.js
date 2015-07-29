@@ -24,7 +24,7 @@ module.exports = {
 			this.entity = this.businessProcess.branches.map.get(entity);
 			return true;
 		},
-		view: require('./view/add-edit-entity')
+		view: require('../view/add-edit-entity')
 	},
 	'partner-add': require('./view/partner-add'),
 	'forms/partner-id': require('./view/partner'),
