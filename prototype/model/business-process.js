@@ -3,7 +3,8 @@
 'use strict';
 
 var db = require('mano').db
-  , BusinessProcessNew = require('../../model/business-process-new')(db)
+  , BusinessProcessNew = require('../../model/business-process-new')(db,
+		{ className: 'BusinessProcessNew' })
   , first       = BusinessProcessNew.newNamed('firstBusinessProcess')
   , second      = BusinessProcessNew.newNamed('secondBusinessProcess')
   , third       = BusinessProcessNew.newNamed('thirdBusinessProcess')
