@@ -93,9 +93,11 @@ module.exports = function (routes, data) {
 
 	if (targetEntityDataFormsMap && targetEntityDataFormsMap.size > 1) {
 		targetEntityDataFormsMap.forEach(function (dataForm) {
-			routes[name + '/[a-z0-9]+/' + camelToHyphen.call(dataForm.key)] = {
+			var dataFormHtmlId = camelToHyphen.call(dataForm.key);
+			routes[name + '/[a-z0-9]+/' + dataFormHtmlId] = {
 				validate: commonValidator,
-				match: commonMatcher
+				match: commonMatcher,
+				formHtmlId: '#' + dataFormHtmlId
 			};
 		});
 	} else {
