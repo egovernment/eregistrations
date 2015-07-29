@@ -9,6 +9,7 @@ var object        = require('es5-ext/object/valid-object')
   , db            = require('mano').db
   , forEach       = require('es5-ext/object/for-each')
   , camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
+  , toIdString    = require('dom-ext/html-document/to-id-string')
 
   , call = Function.prototype.call;
 
@@ -93,11 +94,10 @@ module.exports = function (routes, data) {
 
 	if (targetEntityDataFormsMap && targetEntityDataFormsMap.size > 1) {
 		targetEntityDataFormsMap.forEach(function (dataForm) {
-			var dataFormHtmlId = camelToHyphen.call(dataForm.key);
-			routes[name + '/[a-z0-9]+/' + dataFormHtmlId] = {
+			routes[name + '/[a-z0-9]+/' + camelToHyphen.call(dataForm.key)] = {
 				validate: commonValidator,
 				match: commonMatcher,
-				formHtmlId: '#' + dataFormHtmlId
+				formHtmlId: '#' + toIdString(dataForm.label)
 			};
 		});
 	} else {
