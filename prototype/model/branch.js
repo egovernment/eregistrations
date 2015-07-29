@@ -37,6 +37,10 @@ db.Branch.prototype.dataForms.map.define('main', {
 	nested: true
 });
 
+db.Branch.defineProperties({
+	label: { value: 'Branch' }
+});
+
 db.Branch.prototype.dataForms.map.get('main').setProperties({
 	propertyMasterType: db.Branch,
 	propertyNames: ['companyName', 'responsiblePerson/firstName', 'responsiblePerson/lastName',

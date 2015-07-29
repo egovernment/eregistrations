@@ -72,7 +72,7 @@ exports._bodyAppend = function () {
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
-				a({ href: '/partner-add/' }, span("User - forms, add partner"),
+				a({ href: '/nested-entity/example/' }, span("User - forms, add entity"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
