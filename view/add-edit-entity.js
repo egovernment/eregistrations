@@ -4,6 +4,7 @@
 
 var _  = require('mano').i18n.bind('User')
   , generateFormSections = require('./components/generate-form-sections')
+  , toIdString = require('dom-ext/html-document/to-id-string')
   , baseUrl = url;
 
 exports._parent = require('./user-registration-base');
@@ -11,7 +12,15 @@ exports._parent = require('./user-registration-base');
 exports['step-guide'] = { class: { 'step-form': true } };
 
 exports.step  = function () {
-	var entity = this.entity, url = baseUrl.bind(this.root);
+	var entity = this.entity, url = baseUrl.bind(this.root)
+	  , entitiesNestedMap = entity.owner.owner, entitiesTableId;
+
+	entitiesNestedMap.owner.dataForms.map.some(function (section) {
+		if (section.propertyName && section.propertyName === entitiesNestedMap.key) {
+			entitiesTableId = toIdString(section.label);
+			return true;
+		}
+	});
 
 	h1(_if(eqSloppy(entity.getObservable(
 		entity.owner.owner.cardinalPropertyKey
@@ -22,8 +31,9 @@ exports.step  = function () {
 		{ url: url }));
 	if (this.entity.dataForms.map.size > 1) {
 		div({ class: 'user-next-step-button' },
-			a({ href: exports._entitiesTableUrl(this) }, _("Back to form")));
+			a({ href: exports._entitiesTableRootUrl(this) + '#' + entitiesTableId },
+				_("Back to form")));
 	}
 };
 
-exports._entitiesTableUrl = Function.prototype;
+exports._entitiesTableRootUrl = Function.prototype;

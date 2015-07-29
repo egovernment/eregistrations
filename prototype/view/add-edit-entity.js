@@ -4,6 +4,6 @@
 
 module.exports = exports = require('../../view/add-edit-entity');
 
-exports._entitiesTableUrl = function () {
+exports._entitiesTableRootUrl = function () {
 	return '/forms/';
 };
