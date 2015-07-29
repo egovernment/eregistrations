@@ -19,6 +19,13 @@ module.exports = {
 	'documents/disabled': require('./view/disabled-documents'),
 	submission: require('./view/submission'),
 	profile: require('./view/user-profile'),
+	'nested-entity/(example)': {
+		match: function (entity) {
+			this.entity = this.businessProcess.branches.map.get(entity);
+			return true;
+		},
+		view: require('./view/add-edit-entity')
+	},
 	'partner-add': require('./view/partner-add'),
 	'forms/partner-id': require('./view/partner'),
 
