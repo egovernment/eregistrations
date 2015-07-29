@@ -25,33 +25,23 @@ exports['sub-main'] = {
 				{ class: 'submitted-user-data-table submitted-current-user-data-table', responsive: true },
 				thead(
 					tr(
-						th("Status"),
-						th("Company"),
-						th("Application number"),
-						th("Application date"),
-						th("Requested registrations")
+						th(_("Entity")),
+						th(_("Service")),
+						th(_("Submission date")),
+						th(_("Withdraw date")),
+						th(_("Inscriptions and controls"))
 					)
 				),
 				tbody(
 					tr(
-						td("Pending for revision"),
-						td("abstudios"),
-						td("123"),
-						td("29/07/2014"),
+						td(this.businessProcess._businessName),
+						td(this.businessProcess._label),
+						td(this.businessProcess.submissionForms._isAffidavitSigned._lastModified),
+						td(this.businessProcess._isApproved._lastModified),
 						td(
-							span({ class: 'hint-optional hint-optional-left label-reg ready',
-								'data-hint': 'Lorem ipsum dolor sit amet' },
-								"Brela"),
-							span({ class: 'hint-optional hint-optional-left label-reg rejected',
-								'data-hint': 'Lorem ipsum dolor sit amet' }, "Tinc"),
-							span({ class: 'hint-optional hint-optional-left label-reg approved',
-								'data-hint': 'Lorem ipsum dolor sit amet' }, "Vat"),
-							span({ class: 'hint-optional hint-optional-left label-reg',
-								'data-hint': 'Lorem ipsum dolor sit amet' }, "Gepf"),
-							span({ class: 'hint-optional hint-optional-left label-reg',
-								'data-hint': 'Lorem ipsum dolor sit amet' }, "Nssf"),
-							span({ class: 'hint-optional hint-optional-left label-reg',
-								'data-hint': 'Lorem ipsum dolor sit amet' }, "Lapf")
+							list(this.businessProcess.registrations.requested, function (reg) {
+								return span({ class: 'label-reg' }, reg._abbr);
+							})
 						)
 					)
 				)

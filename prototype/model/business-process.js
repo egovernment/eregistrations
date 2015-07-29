@@ -177,6 +177,7 @@ BusinessProcessNew.prototype.registrations.map.define('a', { type: Registration,
 BusinessProcessNew.prototype.registrations.map.get('a').setProperties({
 	label: "Registration A",
 	shortLabel: "A",
+	abbr: 'reg a',
 	costs: function () {
 		return [this.master.costs.map.handlingFee];
 	},
@@ -192,6 +193,7 @@ BusinessProcessNew.prototype.registrations.map.define('b', { type: Registration,
 BusinessProcessNew.prototype.registrations.map.get('b').setProperties({
 	label: "Registration B",
 	shortLabel: "B",
+	abbr: 'reg b',
 	certificates: function () {
 		return [this.master.certificates.map.docB];
 	},
@@ -229,6 +231,10 @@ processes.forEach(function (businessProcess) {
 	businessProcess.hasEmployees = true;
 	businessProcess.employeesCount = 3;
 	businessProcess.isAddressSameAsPersonal = true;
+	// new
+	businessProcess.label = 'Revision';
+	businessProcess.submissionForms.isAffidavitSigned = true;
+	businessProcess.isApproved = true;
 	businessProcess.branches.map.get('first').setProperties({
 		companyName: "First Branch inc.",
 		isFranchise: true,
