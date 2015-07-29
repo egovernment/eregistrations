@@ -3,10 +3,10 @@
 
 var memoize = require('memoizee/plain');
 
-module.exports = memoize(function (db) {
-	var BusinessProcessNew, opts;
-	opts = { className: 'BusinessProcessNew' };
-	BusinessProcessNew = require('./base')(db, opts);
+module.exports = memoize(function (db/*, opts */) {
+	var BusinessProcess, opts;
+	opts = Object(arguments[1]);
+	BusinessProcess = require('./base')(db, opts);
 	require('./certificates')(db, opts);
 	require('./costs')(db, opts);
 	require('./data-forms')(db, opts);
@@ -21,5 +21,5 @@ module.exports = memoize(function (db) {
 	require('./submission-forms')(db, opts);
 	require('./representative')(db, opts);
 
-	return BusinessProcessNew;
+	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
