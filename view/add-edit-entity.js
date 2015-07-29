@@ -19,5 +19,10 @@ exports.step  = function () {
 		_("Add ${ entityLabel }", { entityLabel: this.entity.constructor.label }),
 		_("Edit ${ entityName }", { entityName: this.entity._name })));
 	insert(generateFormSections(entity.dataForms.applicable,
-		{ url: url, isChildEntity: true }));
+		{ url: url }));
+	insert(_if(gt(this.entity.dataForms.map.size, 1),
+		div({ class: 'user-next-step-button' },
+			a({ href: exports._entitiesTableUrl(this) }, _("Back to form")))));
 };
+
+exports._entitiesTableUrl = Function.prototype;
