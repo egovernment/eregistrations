@@ -16,7 +16,7 @@ exports.step  = function () {
 	  , entitiesNestedMap = entity.owner.owner, entitiesTableId;
 
 	entitiesNestedMap.owner.dataForms.map.some(function (section) {
-		if (section.propertyName && section.propertyName === entitiesNestedMap.key) {
+		if (section.propertyName === entitiesNestedMap.key) {
 			entitiesTableId = toIdString(section.label);
 			return true;
 		}
