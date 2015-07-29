@@ -26,7 +26,7 @@ exports.step  = function () {
 	h1(_if(eqSloppy(entity.getObservable(
 		entity.owner.owner.cardinalPropertyKey
 	), null),
-		_("Add ${ entityLabel }", { entityLabel: this.entity.constructor.label }),
+		_("Add ${ entityLabel }", { entityLabel: this.entity.label }),
 		_("Edit ${ entityName }", { entityName: this.entity._name })));
 	insert(generateFormSections(entity.dataForms.applicable,
 		{ url: url }));
