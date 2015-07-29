@@ -9,7 +9,8 @@ var syncStyle        = require('dom-ext/html-element/#/sync-style')
   , nextTick = require('next-tick')
   , db               = require('mano').db
 
-  , user = db.User.prototype;
+  , user = db.User.prototype
+  , _  = require('mano').i18n.bind('User Submitted');
 
 exports._parent = require('./user-base');
 
@@ -148,6 +149,90 @@ exports['sub-main'] = {
 			hr(),
 			postButton({ type: 'submit', value: 'Send corrected files' })
 		);
+
+		section({ class: 'section-primary' },
+			h2(_("Documents")),
+			hr(),
+			h3(_("Documents required")),
+			div(
+				{ class: 'table-responsive-container' },
+				table(
+					{ class: 'submitted-user-data-table ' +
+						'submitted-current-user-data-table user-request-table' },
+					thead(
+						tr(
+							th(),
+							th(_("Name")),
+							th(_("Issuer")),
+							th(_("Issue date")),
+							th()
+						)
+					),
+					tbody(
+						tr(
+							td('1'),
+							td('Lorem ipsum dolor sit'),
+							td('User'),
+							td('01/01/2015'),
+							td(span({ class: 'fa fa-search' }, _("Search")))
+						)
+					)
+				)
+			),
+			h3(_("Payment receipts")),
+			hr(),
+			div(
+				{ class: 'table-responsive-container' },
+				table(
+					{ class: 'submitted-user-data-table ' +
+						'submitted-current-user-data-table user-request-table' },
+					thead(
+						tr(
+							th(),
+							th(_("Name")),
+							th(_("Issuer")),
+							th(_("Issue date")),
+							th()
+						)
+					),
+					tbody(
+						tr(
+							td('1'),
+							td('Lorem ipsum dolor sit'),
+							td('User'),
+							td('01/01/2015'),
+							td(span({ class: 'fa fa-search' }, _("Search")))
+						)
+					)
+				)
+			),
+			h3(_("Certificates")),
+			div(
+				{ class: 'table-responsive-container' },
+				table(
+					{ class: 'submitted-user-data-table ' +
+						'submitted-current-user-data-table user-request-table' },
+					thead(
+						tr(
+							th(),
+							th(_("Name")),
+							th(_("Issuer")),
+							th(_("Issue date")),
+							th()
+						)
+					),
+					tbody(
+						tr(
+							td(span({ class: 'fa fa-print' })),
+							td('Lorem ipsum dolor sit'),
+							td('User'),
+							td('01/01/2015'),
+							td(span({ class: 'fa fa-search' }, _("Search")))
+						)
+					)
+				)
+			));
+
 		section(
 			{ class: 'section-primary' },
 			h3("Documents uploaded with the application"),
