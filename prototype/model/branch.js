@@ -7,6 +7,7 @@ var db                    = require('mano').db
   , Person                = require('../../model/person')(db);
 
 module.exports = db.Object.extend('Branch', {
+	label: { value: 'Branch' },
 	companyName: {
 		type: StringLine,
 		required: true,
@@ -35,10 +36,6 @@ module.exports = db.Object.extend('Branch', {
 db.Branch.prototype.dataForms.map.define('main', {
 	type: FormSection,
 	nested: true
-});
-
-db.Branch.defineProperties({
-	label: { value: 'Branch' }
 });
 
 db.Branch.prototype.dataForms.map.get('main').setProperties({
