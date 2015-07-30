@@ -172,7 +172,8 @@ BusinessProcessNew.prototype.costs.map.handlingFee.setProperties({
 
 paymentReceipt(BusinessProcessNew,
 	{ handlingFee:  { label: "Handling fee receipt", legend: "Handling fee legend",
-		costs: [BusinessProcessNew.prototype.costs.map.handlingFee] } });
+		costs: [BusinessProcessNew.prototype.costs.map.handlingFee],
+		issueDate: new Date(2015, 27, 7) } });
 
 BusinessProcessNew.prototype.registrations.map.define('a', { type: Registration, nested: true });
 BusinessProcessNew.prototype.registrations.map.get('a').setProperties({

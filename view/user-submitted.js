@@ -117,19 +117,19 @@ exports['sub-main'] = {
 						tr(
 							th(),
 							th(_("Name")),
-							th(_("Issuer")),
 							th(_("Issue date")),
 							th()
 						)
 					),
 					tbody(
-						tr(
-							td('1'),
-							td('Lorem ipsum dolor sit'),
-							td('User'),
-							td('01/01/2015'),
-							td(span({ class: 'fa fa-search' }, _("Search")))
-						)
+						this.businessProcess.paymentReceiptUploads.applicable,
+						function (receipt) {
+							console.log(receipt);
+							td();
+							td(receipt.document.label);
+							td(receipt.document.issueDate);
+							td();
+						}
 					)
 				)
 			),
