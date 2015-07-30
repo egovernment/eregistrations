@@ -23,6 +23,7 @@ var db = require('mano').db
   , Document = require('../../model/document')(db)
   , Address  = require('./address')
   , Branch   = require('./branch')
+  , StatusLog = require('../../model/lib/status-log')(db)
   , DeterminantSection
   , defineCertificates = require('../../model/business-process-new/utils/define-certificates')
   , defineRequirements = require('../../model/business-process-new/utils/define-requirements')
@@ -234,6 +235,32 @@ processes.forEach(function (businessProcess) {
 	// new
 	businessProcess.label = 'Revision';
 	businessProcess.submissionForms.isAffidavitSigned = true;
+	// status logs
+	businessProcess.statusLog.map.define('received', {
+		type: StatusLog
+	});
+	businessProcess.statusLog.map.get('received').setProperties({
+		label: 'Documents received',
+		time: new Date(2015, 27, 7),
+		text: 'Lorem ipsum dolor sit'
+	});
+	businessProcess.statusLog.map.define('revieved', {
+		type: StatusLog
+	});
+	businessProcess.statusLog.map.get('revieved').setProperties({
+		label: 'Documents revieved',
+		time: new Date(2015, 27, 7),
+		text: 'Lorem ipsum dolor sit'
+	});
+	businessProcess.statusLog.map.define('rejected', {
+		type: StatusLog
+	});
+	businessProcess.statusLog.map.get('rejected').setProperties({
+		label: 'Documents rejected',
+		time: new Date(2015, 27, 7),
+		text: 'Lorem ipsum dolor sit'
+	});
+
 	businessProcess.isApproved = true;
 	businessProcess.branches.map.get('first').setProperties({
 		companyName: "First Branch inc.",
