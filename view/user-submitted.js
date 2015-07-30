@@ -103,7 +103,9 @@ exports['sub-main'] = {
 							td(requirementUpload.document.label);
 							td(requirementUpload.document.issuedBy);
 							td(requirementUpload.document.issueDate);
-							td(span({ class: 'fa fa-search' }, _("Search")));
+							td(a({ href: '/document/' + requirementUpload.master.__id__ + "/" +
+									requirementUpload.document.uniqueKey + "/" },
+								span({ class: 'fa fa-search' }, _("Search"))));
 						}
 					)
 				)
@@ -128,7 +130,9 @@ exports['sub-main'] = {
 							td(index + 1);
 							td(receipt.document.label);
 							td(receipt.document.issueDate);
-							td();
+							td(a({ href: '/receipt/' + receipt.master.__id__ + "/" +
+								receipt.document.uniqueKey + "/" },
+								span({ class: 'fa fa-search' }, _("Search"))));
 						}
 					)
 				)
@@ -156,7 +160,9 @@ exports['sub-main'] = {
 								certificate.label);
 							td(certificate.issuedBy);
 							td(certificate.issueDate);
-							td();
+							td(a({ href: '/certificate/' + certificate.master.__id__ + "/" +
+									certificate.uniqueKey + "/" },
+								span({ class: 'fa fa-search' }, _("Search"))));
 						}
 					)
 				)
