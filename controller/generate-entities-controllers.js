@@ -12,8 +12,7 @@ var object        = require('es5-ext/object/valid-object')
   , camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
   , toIdString    = require('dom-ext/html-document/to-id-string')
 
-  , call = Function.prototype.call
-  , apply = Function.prototype.apply;
+  , call = Function.prototype.call;
 
 module.exports = function (routes, data) {
 	(object(routes) && object(data));
@@ -57,11 +56,12 @@ module.exports = function (routes, data) {
 		targetEntityDataFormsMap = data.targetEntityPrototype.dataForms.map;
 	}
 
-	var commonMatcher = function (/* ids */) {
-		var ids = arguments, target, targetSet, id = ids[ids.length - 1];
+	var commonMatcher = function (/* matchedIds */) {
+		var matchedIds = arguments, target, targetSet, id = matchedIds[matchedIds.length - 1];
 		// when we have NestedMap, create new entry or get existing
 		if (targetMap) {
-			this.target = apply.call(targetMap, this, ids).map.get(id);
+			this.matchedIds = matchedIds;
+			this.target = call.call(targetMap, this).map.get(id);
 			return true;
 		}
 		targetSet = call.call(getTargetSet, this);
