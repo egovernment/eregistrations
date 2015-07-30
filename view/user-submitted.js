@@ -81,92 +81,94 @@ exports['sub-main'] = {
 		section({ class: 'section-primary' },
 			h2(_("Documents")),
 			hr(),
-			h3(_("Documents required")),
-			div(
-				{ class: 'table-responsive-container' },
-				table(
-					{ class: 'submitted-user-data-table ' +
-						'submitted-current-user-data-table user-request-table' },
-					thead(
-						tr(
-							th(),
-							th(_("Name")),
-							th(_("Issuer")),
-							th(_("Issue date")),
-							th()
+			_if(gtOrEq(this.businessProcess.requirementUploads.applicable._size, 1),
+				[h3(_("Documents required")),
+					div(
+						{ class: 'table-responsive-container' },
+						table(
+							{ class: 'submitted-user-data-table ' +
+								'submitted-current-user-data-table user-request-table' },
+							thead(
+								tr(
+									th(),
+									th(_("Name")),
+									th(_("Issuer")),
+									th(_("Issue date")),
+									th()
+								)
+							),
+							tbody(
+								this.businessProcess.requirementUploads.applicable,
+								function (requirementUpload, index) {
+									td(index + 1);
+									td(requirementUpload.document.label);
+									td(requirementUpload.document.issuedBy);
+									td(requirementUpload.document.issueDate);
+									td(a({ href: '/document/' + requirementUpload.master.__id__ + "/" +
+											requirementUpload.document.uniqueKey + "/" },
+										span({ class: 'fa fa-search' }, _("Search"))));
+								}
+							)
 						)
-					),
-					tbody(
-						this.businessProcess.requirementUploads.applicable,
-						function (requirementUpload, index) {
-							td(index + 1);
-							td(requirementUpload.document.label);
-							td(requirementUpload.document.issuedBy);
-							td(requirementUpload.document.issueDate);
-							td(a({ href: '/document/' + requirementUpload.master.__id__ + "/" +
-									requirementUpload.document.uniqueKey + "/" },
-								span({ class: 'fa fa-search' }, _("Search"))));
-						}
-					)
-				)
-			),
-			h3(_("Payment receipts")),
-			div(
-				{ class: 'table-responsive-container' },
-				table(
-					{ class: 'submitted-user-data-table ' +
-						'submitted-current-user-data-table user-request-table' },
-					thead(
-						tr(
-							th(),
-							th(_("Name")),
-							th(_("Issue date")),
-							th()
+					)]),
+			_if(gtOrEq(this.businessProcess.paymentReceiptUploads.applicable._size, 1),
+				[h3(_("Payment receipts")),
+					div(
+						{ class: 'table-responsive-container' },
+						table(
+							{ class: 'submitted-user-data-table ' +
+								'submitted-current-user-data-table user-request-table' },
+							thead(
+								tr(
+									th(),
+									th(_("Name")),
+									th(_("Issue date")),
+									th()
+								)
+							),
+							tbody(
+								this.businessProcess.paymentReceiptUploads.applicable,
+								function (receipt, index) {
+									td(index + 1);
+									td(receipt.document.label);
+									td(receipt.document.issueDate);
+									td(a({ href: '/receipt/' + receipt.master.__id__ + "/" +
+										receipt.document.uniqueKey + "/" },
+										span({ class: 'fa fa-search' }, _("Search"))));
+								}
+							)
 						)
-					),
-					tbody(
-						this.businessProcess.paymentReceiptUploads.applicable,
-						function (receipt, index) {
-							td(index + 1);
-							td(receipt.document.label);
-							td(receipt.document.issueDate);
-							td(a({ href: '/receipt/' + receipt.master.__id__ + "/" +
-								receipt.document.uniqueKey + "/" },
-								span({ class: 'fa fa-search' }, _("Search"))));
-						}
-					)
-				)
-			),
-			h3(_("Certificates")),
-			div(
-				{ class: 'table-responsive-container' },
-				table(
-					{ class: 'submitted-user-data-table ' +
-						'submitted-current-user-data-table user-request-table' },
-					thead(
-						tr(
-							th(_("Name")),
-							th(_("Issuer")),
-							th(_("Issue date")),
-							th()
+					)]),
+			_if(gtOrEq(this.businessProcess.certificates.uploaded._size, 1),
+				[h3(_("Certificates")),
+					div(
+						{ class: 'table-responsive-container' },
+						table(
+							{ class: 'submitted-user-data-table ' +
+								'submitted-current-user-data-table user-request-table' },
+							thead(
+								tr(
+									th(_("Name")),
+									th(_("Issuer")),
+									th(_("Issue date")),
+									th()
+								)
+							),
+							tbody(
+								this.businessProcess.certificates.uploaded,
+								function (certificate) {
+									console.log(certificate.label);
+									td(span({ class: 'fa fa-certificate' }), " ",
+										certificate.label);
+									td(certificate.issuedBy);
+									td(certificate.issueDate);
+									td(a({ href: '/certificate/' + certificate.master.__id__ + "/" +
+											certificate.uniqueKey + "/" },
+										span({ class: 'fa fa-search' }, _("Search"))));
+								}
+							)
 						)
-					),
-					console.log(this.businessProcess.certificates.uploaded.size),
-					tbody(
-						this.businessProcess.certificates.uploaded,
-						function (certificate) {
-							console.log(certificate.label);
-							td(span({ class: 'fa fa-certificate' }), " ",
-								certificate.label);
-							td(certificate.issuedBy);
-							td(certificate.issueDate);
-							td(a({ href: '/certificate/' + certificate.master.__id__ + "/" +
-									certificate.uniqueKey + "/" },
-								span({ class: 'fa fa-search' }, _("Search"))));
-						}
-					)
-				)
-			));
+					)]));
 
 		section({ class: 'section-primary entity-data-section-side' },
 			h2({ class: 'container-with-nav' }, "Application form",
