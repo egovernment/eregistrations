@@ -4,6 +4,7 @@
 
 var ensureArray              = require('es5-ext/array/valid-array')
   , forEach                  = require('es5-ext/object/for-each')
+  , copy                     = require('es5-ext/object/copy')
   , ensureObject             = require('es5-ext/object/valid-object')
   , ensureStringifiable      = require('es5-ext/object/validate-stringifiable-value')
   , uncapitalize             = require('es5-ext/string/#/uncapitalize')
@@ -39,7 +40,7 @@ var documentDefinitions = {
 };
 
 module.exports = function (BusinessProcess, data) {
-	var db = ensureType(BusinessProcess).database, Document = defineDocument(db)
+	var db = ensureType(BusinessProcess).database, Document = defineDocument(db), docProps
 	  , definitions = create(null), typesMap = create(null), documentProperties = create(null);
 	defineRequirementUploads(db);
 	ensureArray(data).forEach(function (conf) {
@@ -47,6 +48,10 @@ module.exports = function (BusinessProcess, data) {
 		if (!isType(ensureObject(conf))) {
 			UploadDocument = ensureType(conf.class);
 			name = ensureStringifiable(conf.name);
+			docProps = copy(conf);
+			delete docProps.name;
+			delete docProps.class;
+			documentProperties[name] = docProps;
 		} else {
 			UploadDocument = conf;
 			name = uncapitalize.call(UploadDocument.__id__);
@@ -56,13 +61,14 @@ module.exports = function (BusinessProcess, data) {
 		}
 		definitions[name] = { nested: true };
 		typesMap[name] = UploadDocument;
-		documentProperties[name] = Object(conf.documentProperties);
 	});
 	BusinessProcess.prototype.requirementUploads.map.defineProperties(definitions);
 	forEach(typesMap, function (UploadDocument, name) {
 		this[name].define('document', { type: UploadDocument });
 		this[name].document.defineProperties(documentDefinitions);
-		this[name].document.setProperties(documentProperties[name]);
+		if (documentProperties[name]) {
+			this[name].document.setProperties(documentProperties[name]);
+		}
 	}, BusinessProcess.prototype.requirementUploads.map);
 	return BusinessProcess;
 };
