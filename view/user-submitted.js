@@ -10,10 +10,6 @@ var scrollBottom     = require('./utils/scroll-to-bottom')
 
 exports._parent = require('./user-base');
 
-exports['submitted-menu'] = function () {
-	li(a({ class: 'submitted-menu-item-active' }, "Request"));
-};
-
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
@@ -154,7 +150,6 @@ exports['sub-main'] = {
 							tbody(
 								this.businessProcess.certificates.uploaded,
 								function (certificate) {
-									console.log(certificate.label);
 									td(span({ class: 'fa fa-certificate' }), " ",
 										certificate.label);
 									td(certificate.issuedBy);
