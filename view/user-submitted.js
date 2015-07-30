@@ -66,11 +66,9 @@ exports['sub-main'] = {
 				{ class: 'submitted-user-history-wrapper' },
 				table(
 					{ class: 'submitted-user-history' },
-					console.log(this.businessProcess.statusLog.ordered.size),
 					tbody(
 						this.businessProcess.statusLog.ordered,
 						function (log) {
-							console.log('Log: ', log);
 							th(log.label);
 							td(log.time && format.call(log.time, '%d/%m/%Y %H:%M'));
 							td(log.text && log.text.split('\n').filter(Boolean).map(curry.call(p, 1)));

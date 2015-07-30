@@ -210,6 +210,16 @@ DeterminantSection = FormSection.extend('DeterminantSection', {
 
 BusinessProcessNew.prototype.getDescriptor('determinants').type = DeterminantSection;
 
+BusinessProcessNew.prototype.statusLog.map.define('received', {
+	type: StatusLog
+});
+BusinessProcessNew.prototype.statusLog.map.define('revieved', {
+	type: StatusLog
+});
+BusinessProcessNew.prototype.statusLog.map.define('rejected', {
+	type: StatusLog
+});
+
 processes.forEach(function (businessProcess) {
 	businessProcess.representative.firstName = "Johny";
 	businessProcess.representative.lastName = "Doe";
@@ -236,24 +246,15 @@ processes.forEach(function (businessProcess) {
 	businessProcess.label = 'Revision';
 	businessProcess.submissionForms.isAffidavitSigned = true;
 	// status logs
-	businessProcess.statusLog.map.define('received', {
-		type: StatusLog
-	});
 	businessProcess.statusLog.map.get('received').setProperties({
 		label: 'Documents received',
 		time: new Date(2015, 27, 7),
 		text: 'Lorem ipsum dolor sit'
 	});
-	businessProcess.statusLog.map.define('revieved', {
-		type: StatusLog
-	});
 	businessProcess.statusLog.map.get('revieved').setProperties({
 		label: 'Documents revieved',
 		time: new Date(2015, 27, 7),
 		text: 'Lorem ipsum dolor sit'
-	});
-	businessProcess.statusLog.map.define('rejected', {
-		type: StatusLog
 	});
 	businessProcess.statusLog.map.get('rejected').setProperties({
 		label: 'Documents rejected',
