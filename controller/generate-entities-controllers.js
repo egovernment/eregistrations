@@ -116,6 +116,8 @@ module.exports = function (routes, data) {
 
 	if (targetEntityDataFormsMap && targetEntityDataFormsMap.size > 1) {
 		targetEntityDataFormsMap.forEach(function (dataForm) {
+			if (db.FormEntitiesTable.is(dataForm)) return;
+
 			routes[name + '/[a-z0-9]+/' + camelToHyphen.call(dataForm.key)] = {
 				validate: commonValidator,
 				match: commonMatcher,
