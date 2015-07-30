@@ -97,13 +97,14 @@ exports['sub-main'] = {
 						)
 					),
 					tbody(
-						tr(
-							td('1'),
-							td('Lorem ipsum dolor sit'),
-							td('User'),
-							td('01/01/2015'),
-							td(span({ class: 'fa fa-search' }, _("Search")))
-						)
+						this.businessProcess.requirementUploads.applicable,
+						function (requirementUpload, index) {
+							td(index + 1);
+							td(requirementUpload.document.label);
+							td(requirementUpload.document.issuedBy);
+							td(requirementUpload.document.issueDate);
+							td(span({ class: 'fa fa-search' }, _("Search")));
+						}
 					)
 				)
 			),
@@ -123,9 +124,9 @@ exports['sub-main'] = {
 					),
 					tbody(
 						this.businessProcess.paymentReceiptUploads.applicable,
-						function (receipt) {
+						function (receipt, index) {
 							console.log(receipt);
-							td();
+							td(index + 1);
 							td(receipt.document.label);
 							td(receipt.document.issueDate);
 							td();

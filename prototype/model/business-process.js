@@ -281,6 +281,9 @@ processes.forEach(function (businessProcess) {
 	businessProcess.branches.map.get('second').responsiblePerson.firstName = "Peter";
 	businessProcess.branches.map.get('second').responsiblePerson.lastName = "Parker";
 	businessProcess.branches.map.get('second').responsiblePerson.email = "spiderman@daily-bugle.com";
+	businessProcess.requirementUploads.applicable.forEach(function (upload) {
+		upload.document.issueDate = new Date(2015, 23, 7);
+	});
 	businessProcess.requirementUploads.applicable.first.document.files.map.
 			get('idDoc').setProperties({
 			name: 'idoc.jpg',
