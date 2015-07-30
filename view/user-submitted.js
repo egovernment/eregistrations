@@ -6,7 +6,8 @@ var scrollBottom     = require('./utils/scroll-to-bottom')
   , db               = require('mano').db
 
   , user = db.User.prototype
-  , _  = require('mano').i18n.bind('User Submitted');
+  , _  = require('mano').i18n.bind('User Submitted')
+  , formatLastModified = require('./utils/last-modified');
 
 exports._parent = require('./user-base');
 
@@ -36,8 +37,10 @@ exports['sub-main'] = {
 					tr(
 						td(this.businessProcess._businessName),
 						td(this.businessProcess._label),
-						td(this.businessProcess.submissionForms._isAffidavitSigned._lastModified),
-						td(this.businessProcess._isApproved._lastModified),
+						td(formatLastModified(
+							this.businessProcess.submissionForms._isAffidavitSigned._lastModified
+						)),
+						td(formatLastModified(this.businessProcess._isApproved._lastModified)),
 						td(
 							list(this.businessProcess.registrations.requested, function (reg) {
 								return span({ class: 'label-reg' }, reg._abbr);
