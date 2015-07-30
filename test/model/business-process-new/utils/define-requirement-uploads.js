@@ -13,7 +13,8 @@ module.exports = function (t, a) {
 	  , Doc2 = Document.extend('Test2', {},
 			{ label: { value: "Test 2" }, legend: { value: "Legend of Test 2" } });
 
-	t(BusinessProcess, [Doc1, Doc2, { name: 'foo', class: Doc1 }]);
+	t(BusinessProcess, [Doc1, Doc2, { name: 'foo', class: Doc1 },
+		{ name: 'fooBar', class: Doc1, documentProperties: { label: 'Test label' } }]);
 
 	BusinessProcess.prototype.requirements.map.defineProperties({ test1: { nested: true } });
 	BusinessProcess.prototype.requirements.map.test1.label = "Req Test1 Label";
@@ -35,4 +36,5 @@ module.exports = function (t, a) {
 	a(BusinessProcess.prototype.requirementUploads.map.foo.document.uniqueKey, 'foo');
 
 	a(BusinessProcess.prototype.requirementUploads.map.bar, undefined);
+	a(BusinessProcess.prototype.requirementUploads.map.fooBar.document.label, 'Test label');
 };

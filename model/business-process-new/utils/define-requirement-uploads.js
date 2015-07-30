@@ -40,7 +40,7 @@ var documentDefinitions = {
 
 module.exports = function (BusinessProcess, data) {
 	var db = ensureType(BusinessProcess).database, Document = defineDocument(db)
-	  , definitions = create(null), typesMap = create(null);
+	  , definitions = create(null), typesMap = create(null), docDefinitions = create(null);
 	defineRequirementUploads(db);
 	ensureArray(data).forEach(function (conf) {
 		var UploadDocument, name;
@@ -56,11 +56,13 @@ module.exports = function (BusinessProcess, data) {
 		}
 		definitions[name] = { nested: true };
 		typesMap[name] = UploadDocument;
+		docDefinitions[name] = Object(conf.documentProperties);
 	});
 	BusinessProcess.prototype.requirementUploads.map.defineProperties(definitions);
 	forEach(typesMap, function (UploadDocument, name) {
 		this[name].define('document', { type: UploadDocument });
 		this[name].document.defineProperties(documentDefinitions);
+		this[name].document.setProperties(docDefinitions[name]);
 	}, BusinessProcess.prototype.requirementUploads.map);
 	return BusinessProcess;
 };
