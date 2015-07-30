@@ -133,7 +133,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 						}),
 					this.generateFooter &&
 						ns.tfoot(this.generateFooter(
-							resolvePropertyPath(this.master, this.propertyName).value
+							resolvePropertyPath(customizeData.master, this.propertyName).value
 						))
 				),
 				options.append,
