@@ -30,7 +30,6 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 			collectionType, addButton, isMapMode, _d = _, translationInserts;
 		options = Object(arguments[1]);
 		customizeData = { master: options.master || this.master };
-		url = ns.url;
 		url = options.url || ns.url;
 		resolvent = this.getFormResolvent(options);
 		resolved = resolvePropertyPath(customizeData.master, this.propertyName);
