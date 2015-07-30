@@ -57,7 +57,7 @@ exports['sub-main'] = {
 				a(
 					{ class: 'hint-optional hint-optional-left',
 						'data-hint': 'Print history of application',
-						href: '/user-submitted/history-print/',
+						href: '/print-request-history/',
 						target: '_blank' },
 					span({ class: 'fa fa-print' }, "Print")
 				)),
