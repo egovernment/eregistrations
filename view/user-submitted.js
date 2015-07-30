@@ -125,7 +125,6 @@ exports['sub-main'] = {
 					tbody(
 						this.businessProcess.paymentReceiptUploads.applicable,
 						function (receipt, index) {
-							console.log(receipt);
 							td(index + 1);
 							td(receipt.document.label);
 							td(receipt.document.issueDate);
@@ -142,21 +141,23 @@ exports['sub-main'] = {
 						'submitted-current-user-data-table user-request-table' },
 					thead(
 						tr(
-							th(),
 							th(_("Name")),
 							th(_("Issuer")),
 							th(_("Issue date")),
 							th()
 						)
 					),
+					console.log(this.businessProcess.certificates.uploaded.size),
 					tbody(
-						tr(
-							td(span({ class: 'fa fa-certificate' })),
-							td('Lorem ipsum dolor sit'),
-							td('User'),
-							td('01/01/2015'),
-							td(span({ class: 'fa fa-search' }, _("Search")))
-						)
+						this.businessProcess.certificates.uploaded,
+						function (certificate) {
+							console.log(certificate.label);
+							td(span({ class: 'fa fa-certificate' }), " ",
+								certificate.label);
+							td(certificate.issuedBy);
+							td(certificate.issueDate);
+							td();
+						}
 					)
 				)
 			));

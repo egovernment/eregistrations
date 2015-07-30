@@ -36,8 +36,10 @@ var db = require('mano').db
   , Representative
   , processes = [first, second, third, fourth, fifth]
   , paymentReceipt = require('../../model/business-process-new/' +
-		'utils/define-payment-receipt-uploads');
+		'utils/define-payment-receipt-uploads')
+  , User = require('../../model/user/base')(db);
 
+User.newNamed('userOfficialMinistry');
 require('../../model/lib/nested-map');
 BusinessProcessNew.newNamed('emptyBusinessProcess');
 
@@ -221,6 +223,8 @@ BusinessProcessNew.prototype.statusLog.map.define('rejected', {
 	type: StatusLog
 });
 
+BusinessProcessNew.prototype.certificates.map.define('', {});
+
 processes.forEach(function (businessProcess) {
 	businessProcess.representative.firstName = "Johny";
 	businessProcess.representative.lastName = "Doe";
@@ -281,6 +285,20 @@ processes.forEach(function (businessProcess) {
 	businessProcess.branches.map.get('second').responsiblePerson.firstName = "Peter";
 	businessProcess.branches.map.get('second').responsiblePerson.lastName = "Parker";
 	businessProcess.branches.map.get('second').responsiblePerson.email = "spiderman@daily-bugle.com";
+
+	businessProcess.certificates.applicable.forEach(function (certificate, index) {
+		certificate.label = 'Certyficate label';
+		certificate.issuedBy = db.userOfficialMinistry;
+		certificate.issueDate = new Date(2015, 23, 7);
+		certificate.files.map.get('cert' + index).setProperties({
+			name: 'idoc.jpg',
+			type: 'image/jpeg',
+			diskSize: 376306,
+			path: 'doc-a-sub-file1.idoc.jpg',
+			url: '/uploads/doc-a-sub-file1.idoc.jpg'
+		});
+	});
+
 	businessProcess.requirementUploads.applicable.forEach(function (upload) {
 		upload.document.issueDate = new Date(2015, 23, 7);
 	});
