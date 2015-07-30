@@ -3,9 +3,6 @@
 var scrollBottom     = require('./utils/scroll-to-bottom')
   , generateSections = require('./components/generate-sections')
   , nextTick = require('next-tick')
-  , db               = require('mano').db
-
-  , user = db.User.prototype
   , _  = require('mano').i18n.bind('User Submitted')
   , formatLastModified = require('./utils/last-modified')
   , format             = require('es5-ext/date/#/format')
@@ -180,7 +177,7 @@ exports['sub-main'] = {
 					span({ class: 'fa fa-print' }, "Print")
 				)),
 
-			generateSections(user.formSections));
+			generateSections(this.businessProcess.dataForms.applicable));
 
 		nextTick(function () { scrollBottom(scrollableElem); });
 	}
