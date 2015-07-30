@@ -47,7 +47,8 @@ module.exports = function (BusinessProcess, data) {
 		var UploadDocument, name;
 		if (!isType(ensureObject(conf))) {
 			UploadDocument = ensureType(conf.class);
-			name = ensureStringifiable(conf.name);
+			name = conf.name || uncapitalize.call(UploadDocument.__id__);
+			name = ensureStringifiable(name);
 			docProps = copy(conf);
 			delete docProps.name;
 			delete docProps.class;
