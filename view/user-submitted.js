@@ -5,7 +5,6 @@ var scrollBottom     = require('./utils/scroll-to-bottom')
   , nextTick = require('next-tick')
   , _  = require('mano').i18n.bind('User Submitted')
   , formatLastModified = require('./utils/last-modified')
-  , format             = require('es5-ext/date/#/format')
   , curry              = require('es5-ext/function/#/curry');
 
 exports._parent = require('./user-base');
@@ -32,13 +31,12 @@ exports['sub-main'] = {
 					tr(
 						td(this.businessProcess._businessName),
 						td(this.businessProcess._label),
-						td(formatLastModified(
-							this.businessProcess.submissionForms._isAffidavitSigned._lastModified
-						)),
+						td(this.businessProcess.submissionForms
+							._isAffidavitSigned._lastModified.map(formatLastModified)),
 						td(formatLastModified(this.businessProcess._isApproved._lastModified)),
 						td(
 							list(this.businessProcess.registrations.requested, function (reg) {
-								return span({ class: 'label-reg' }, reg._abbr);
+								return span({ class: 'label-reg' }, reg.abbr);
 							})
 						)
 					)
@@ -47,13 +45,13 @@ exports['sub-main'] = {
 		);
 		section(
 			{ class: 'section-primary' },
-			h2({ class: 'container-with-nav' }, "History of your request",
+			h2({ class: 'container-with-nav' }, _("History of your request"),
 				a(
 					{ class: 'hint-optional hint-optional-left',
-						'data-hint': 'Print history of Your request',
+						'data-hint': _("Print history of your request"),
 						href: '/print-request-history/',
 						target: '_blank' },
-					span({ class: 'fa fa-print' }, "Print")
+					span({ class: 'fa fa-print' }, _("Print"))
 				)),
 			scrollableElem = div(
 				{ class: 'submitted-user-history-wrapper' },
@@ -63,7 +61,7 @@ exports['sub-main'] = {
 						this.businessProcess.statusLog.ordered,
 						function (log) {
 							th(log.label);
-							td(log.time && format.call(log.time, '%d/%m/%Y %H:%M'));
+							td(log.time);
 							td(log.text && log.text.split('\n').filter(Boolean).map(curry.call(p, 1)));
 						}
 					)
@@ -74,7 +72,7 @@ exports['sub-main'] = {
 		section({ class: 'section-primary' },
 			h2(_("Documents")),
 			hr(),
-			_if(gtOrEq(this.businessProcess.requirementUploads.applicable._size, 1),
+			_if(this.businessProcess.requirementUploads.applicable._size,
 				[h3(_("Documents required")),
 					div(
 						{ class: 'table-responsive-container' },
@@ -83,7 +81,6 @@ exports['sub-main'] = {
 								'submitted-current-user-data-table user-request-table' },
 							thead(
 								tr(
-									th(),
 									th(_("Name")),
 									th(_("Issuer")),
 									th(_("Issue date")),
@@ -92,19 +89,18 @@ exports['sub-main'] = {
 							),
 							tbody(
 								this.businessProcess.requirementUploads.applicable,
-								function (requirementUpload, index) {
-									td(index + 1);
-									td(requirementUpload.document.label);
-									td(requirementUpload.document.issuedBy);
-									td(requirementUpload.document.issueDate);
-									td(a({ href: '/document/' + requirementUpload.master.__id__ + "/" +
+								function (requirementUpload) {
+									td(requirementUpload.document._label);
+									td(requirementUpload.document._issuedBy);
+									td(requirementUpload.document._issueDate);
+									td(a({ href: '/document/' +
 											requirementUpload.document.uniqueKey + "/" },
-										span({ class: 'fa fa-search' }, _("Search"))));
+										span({ class: 'fa fa-search' }, _("Go to"))));
 								}
 							)
 						)
 					)]),
-			_if(gtOrEq(this.businessProcess.paymentReceiptUploads.applicable._size, 1),
+			_if(this.businessProcess.paymentReceiptUploads.applicable._size,
 				[h3(_("Payment receipts")),
 					div(
 						{ class: 'table-responsive-container' },
@@ -113,7 +109,6 @@ exports['sub-main'] = {
 								'submitted-current-user-data-table user-request-table' },
 							thead(
 								tr(
-									th(),
 									th(_("Name")),
 									th(_("Issue date")),
 									th()
@@ -121,18 +116,17 @@ exports['sub-main'] = {
 							),
 							tbody(
 								this.businessProcess.paymentReceiptUploads.applicable,
-								function (receipt, index) {
-									td(index + 1);
+								function (receipt) {
 									td(receipt.document.label);
 									td(receipt.document.issueDate);
-									td(a({ href: '/receipt/' + receipt.master.__id__ + "/" +
+									td(a({ href: '/receipt/' +
 										receipt.document.uniqueKey + "/" },
-										span({ class: 'fa fa-search' }, _("Search"))));
+										span({ class: 'fa fa-search' }, _("Go to"))));
 								}
 							)
 						)
 					)]),
-			_if(gtOrEq(this.businessProcess.certificates.uploaded._size, 1),
+			_if(this.businessProcess.certificates.uploaded._size,
 				[h3(_("Certificates")),
 					div(
 						{ class: 'table-responsive-container' },
@@ -154,22 +148,22 @@ exports['sub-main'] = {
 										certificate.label);
 									td(certificate.issuedBy);
 									td(certificate.issueDate);
-									td(a({ href: '/certificate/' + certificate.master.__id__ + "/" +
+									td(a({ href: '/certificate/' +
 											certificate.uniqueKey + "/" },
-										span({ class: 'fa fa-search' }, _("Search"))));
+										span({ class: 'fa fa-search' }, _("Go to"))));
 								}
 							)
 						)
 					)]));
 
 		section({ class: 'section-primary entity-data-section-side' },
-			h2({ class: 'container-with-nav' }, "Application form",
+			h2({ class: 'container-with-nav' }, _("Application form"),
 				a(
 					{ class: 'hint-optional hint-optional-left',
 						'data-hint': 'Print your application form',
 						href: '/user-submitted/data-print/',
 						target: '_blank' },
-					span({ class: 'fa fa-print' }, "Print")
+					span({ class: 'fa fa-print' }, _("Print"))
 				)),
 
 			generateSections(this.businessProcess.dataForms.applicable));

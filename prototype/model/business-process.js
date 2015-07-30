@@ -181,7 +181,7 @@ BusinessProcessNew.prototype.registrations.map.define('a', { type: Registration,
 BusinessProcessNew.prototype.registrations.map.get('a').setProperties({
 	label: "Registration A",
 	shortLabel: "A",
-	abbr: 'reg a',
+	abbr: 'REGA',
 	costs: function () {
 		return [this.master.costs.map.handlingFee];
 	},
@@ -197,7 +197,7 @@ BusinessProcessNew.prototype.registrations.map.define('b', { type: Registration,
 BusinessProcessNew.prototype.registrations.map.get('b').setProperties({
 	label: "Registration B",
 	shortLabel: "B",
-	abbr: 'reg b',
+	abbr: 'REGB',
 	certificates: function () {
 		return [this.master.certificates.map.docB];
 	},
@@ -256,8 +256,8 @@ processes.forEach(function (businessProcess) {
 		time: new Date(2015, 27, 7),
 		text: 'Lorem ipsum dolor sit'
 	});
-	businessProcess.statusLog.map.get('revieved').setProperties({
-		label: 'Documents revieved',
+	businessProcess.statusLog.map.get('reviewed').setProperties({
+		label: 'Documents reviewed',
 		time: new Date(2015, 27, 7),
 		text: 'Lorem ipsum dolor sit'
 	});
