@@ -31,7 +31,7 @@ module.exports = {
 
 	// Part-B routes - user submitted
 	'user-submitted': require('./view/user-submitted'),
-	'user-submitted/document': require('../view/document'),
+	'user-submitted/document': require('./view/document'),
 	'print-request-history': require('./view/print-user-history'),
 	'user-submitted/data-print': require('./view/print-user-data'),
 	'user-submitted/print-user-data-alternative': require('./view/print-user-data-alternative'),

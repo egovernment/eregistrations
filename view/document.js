@@ -6,10 +6,6 @@ var scrollBottom     = require('./utils/scroll-to-bottom')
 
 exports._parent = require('./user-base');
 
-exports['submitted-menu'] = function () {
-	li(a({ class: 'submitted-menu-item-active' }, "Request"));
-};
-
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
