@@ -28,12 +28,11 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 	d(function (document/*, options */) {
 		var self = this, options, url, customizeData, resolvent, tableData, resolved, getAddUrl,
 			collectionType, addButton, isMapMode, _d = _, translationInserts;
-		customizeData = { master: this.master };
-		url = ns.url;
 		options = Object(arguments[1]);
+		customizeData = { master: options.master || this.master };
 		url = options.url || ns.url;
 		resolvent = this.getFormResolvent(options);
-		resolved = resolvePropertyPath(this.master, this.propertyName);
+		resolved = resolvePropertyPath(customizeData.master, this.propertyName);
 		translationInserts = { max: self._max, min: self._min };
 		tableData = resolved.value;
 		if (tableData instanceof db.NestedMap) {
@@ -134,7 +133,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 						}),
 					this.generateFooter &&
 						ns.tfoot(this.generateFooter(
-							resolvePropertyPath(this.master, this.propertyName).value
+							resolvePropertyPath(customizeData.master, this.propertyName).value
 						))
 				),
 				options.append,
