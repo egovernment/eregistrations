@@ -23,7 +23,7 @@ module.exports = memoize(function (db) {
 			return result;
 		} },
 
-		// In case of receipt upload we do not show all reject reasons just memp
+		// In case of receipt upload we do not show all reject reasons just memo
 		isRejected: { type: db.Boolean, value: function () {
 			if (this.status == null) return false;
 			if (this.status !== 'invalid') return false;
