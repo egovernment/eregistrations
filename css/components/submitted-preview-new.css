@@ -1,0 +1,124 @@
+.submitted-preview-new {
+	max-width: var(--desktop-width);
+}
+.submitted-preview-new > * {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.submitted-preview-new-document {
+	width: 54%;
+	margin-right: 2%;
+}
+.submitted-preview-new-document > * {
+	margin-bottom: 0;
+}
+
+.submitted-preview-new-image-placeholder {
+	border: 1px solid var(--light-inner-border);
+	text-align: center;
+	list-style: none;
+	overflow: hidden;
+	margin-bottom: 22px;
+}
+.submitted-preview-new-image-placeholder > li {
+	height: 100%;
+	display: none;
+}
+.submitted-preview-new-image-placeholder > .active {
+	display: block;
+}
+
+.submitted-preview-new-image-placeholder img {
+	margin-bottom: 0;
+	max-width: 100%;
+	max-height: 100%;
+}
+
+.submitted-preview-new-document .container-with-nav h3 {
+	display: flex;
+}
+
+.submitted-preview-new-document .container-with-nav div {
+	min-width: inherit;
+}
+
+.submitted-preview-new-document .container-with-nav div:last-child span {
+	font-size: 14px;
+	font-weight: normal;
+}
+.submitted-preview-new-document .container-with-nav div a {
+	margin-left: 5px;
+}
+
+.submitted-preview-new-side-data {
+	width: 44%;
+	display: inline-block;
+}
+.submitted-preview-new-side-data h2 {
+	font-size: 19px;
+}
+
+.submitted-preview-new-document .container-with-nav h2 {
+	max-width: 80%;
+}
+
+.submitted-preview-new-documents-navigation {
+	text-align: right;
+	line-height: 44px;
+	white-space: nowrap;
+}
+
+.container-with-nav .submitted-preview-new-documents-navigation {
+	display: flex;
+}
+.submitted-preview-new-document .container-with-nav .submitted-preview-new-documents-navigation{
+		min-width: 63px;
+}
+.container-with-nav .submitted-preview-new-documents-navigation div {
+	align-self: flex-end;
+}
+
+.submitted-preview-new-documents-navigation a {
+	margin-left: 5px;
+}
+
+.submitted-preview-new-documents-navigation a span {
+	position: relative;
+	top: 2px;
+	right: 2px;
+}
+.submitted-preview-new-documents-navigation {
+	margin-top: -22px;
+}
+
+.submitted-preview-new-item-number {
+	padding: 0 5px;
+	margin-right: 8px;
+}
+
+.submitted-preview-new-item-number i {
+	width: 22px;
+	line-height: 22px;
+	border-radius: 50%;
+	color: var(--white-text);
+	background: var(--normal-dark-background);
+	text-align: center;
+	font-style: normal;
+	display: inline-block;
+	font-size: 11px;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+
+	.submitted-preview-new .submitted-preview-new-document {
+		width: 100%;
+		}
+
+	.submitted-preview-new-side-data {
+		width: 100%;
+		max-height: 100%;
+		overflow: visible;
+		margin-top: 22px;
+		}
+}
