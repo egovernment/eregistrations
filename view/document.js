@@ -2,7 +2,8 @@
 
 var scrollBottom     = require('./utils/scroll-to-bottom')
   , nextTick = require('next-tick')
-  , _  = require('mano').i18n.bind('User Submitted');
+  , _  = require('mano').i18n.bind('User Submitted')
+  , curry = require('es5-ext/function/#/curry');
 
 exports._parent = require('./user-base');
 
@@ -11,66 +12,23 @@ exports['sub-main'] = {
 	content: function () {
 		var scrollableElem;
 
+		console.log(this.document.label);
+
 		section(
 			{ class: 'section-primary' },
-			h2({ class: 'container-with-nav' }, _("Documents history"),
-				a(
-					{ class: 'hint-optional hint-optional-left',
-						'data-hint': 'Print history of Your request',
-						href: '/user-submitted/history-print/',
-						target: '_blank' },
-					span({ class: 'fa fa-print' }, "Print")
-				)),
+			h2(_("Documents history")),
 			scrollableElem = div(
 				{ class: 'submitted-user-history-wrapper' },
 				table(
 					{ class: 'submitted-user-history' },
+					console.log(this.document.statusLog.ordered),
 					tbody(
-						tr(
-							th(div("User")),
-							td(div("24/07/2014 10:09:22")),
-							td(div("Required modifications sent by user"))
-						),
-						tr(
-							th(div("File sent")),
-							td(div("24/07/2014 13:09:22")),
-							td(div("File sent"))
-						),
-						tr(
-							th(div("Official")),
-							td(div("24/07/2014 16:19:22")),
-							td(div("Document accepted"))
-						),
-						tr(
-							th(div("User")),
-							td(div("24/07/2014 10:09:22")),
-							td(div("Required modifications sent by user"))
-						),
-						tr(
-							th(div("File sent")),
-							td(div("24/07/2014 13:09:22")),
-							td(div("File sent"))
-						),
-						tr(
-							th(div("Official")),
-							td(div("24/07/2014 16:19:22")),
-							td(div("Document accepted"))
-						),
-						tr(
-							th(div("User")),
-							td(div("24/07/2014 10:09:22")),
-							td(div("Required modifications sent by user"))
-						),
-						tr(
-							th(div("File sent")),
-							td(div("24/07/2014 13:09:22")),
-							td(div("File sent"))
-						),
-						tr(
-							th(div("Official")),
-							td(div("24/07/2014 16:19:22")),
-							td(div("Document accepted"))
-						)
+						this.document.statusLog.ordered,
+						function (log) {
+							th(log.label);
+							td(log.time);
+							td(log.text && log.text.split('\n').filter(Boolean).map(curry.call(p, 1)));
+						}
 					)
 				)
 			)

@@ -302,6 +302,26 @@ processes.forEach(function (businessProcess) {
 	businessProcess.requirementUploads.applicable.forEach(function (upload) {
 		upload.document.issueDate = new Date(2015, 23, 7);
 	});
+	businessProcess.requirementUploads.applicable.first.document
+		.statusLog.map.get('received').setProperties({
+			label: 'Document received',
+			time: new Date(2015, 27, 7),
+			text: 'Lorem ipsum dolor sit'
+		});
+	businessProcess.requirementUploads.applicable.first.document
+		.statusLog.map.get('rejected').setProperties({
+			label: 'Document rejected',
+			time: new Date(2015, 27, 7),
+			text: 'Lorem ipsum dolor sit'
+		});
+
+	businessProcess.requirementUploads.applicable.first.document
+		.statusLog.map.get('reviewed').setProperties({
+			label: 'Document reviewed',
+			time: new Date(2015, 27, 7),
+			text: 'Lorem ipsum dolor sit'
+		});
+
 	businessProcess.requirementUploads.applicable.first.document.files.map.
 			get('idDoc').setProperties({
 			name: 'idoc.jpg',
