@@ -81,6 +81,7 @@ exports['sub-main'] = {
 								'submitted-current-user-data-table user-request-table' },
 							thead(
 								tr(
+									th(_("Status")),
 									th(_("Name")),
 									th(_("Issuer")),
 									th(_("Issue date")),
@@ -90,6 +91,9 @@ exports['sub-main'] = {
 							tbody(
 								this.businessProcess.requirementUploads.applicable,
 								function (requirementUpload) {
+									td(_if(requirementUpload._isApproved,
+											span({ class: 'fa fa-check' }),
+											span({ class: 'fa fa-exclamation' })));
 									td(requirementUpload.document._label);
 									td(requirementUpload.document._issuedBy);
 									td(requirementUpload.document._issueDate);
@@ -135,6 +139,7 @@ exports['sub-main'] = {
 								'submitted-current-user-data-table user-request-table' },
 							thead(
 								tr(
+									th(),
 									th(_("Name")),
 									th(_("Issuer")),
 									th(_("Issue date")),
@@ -144,8 +149,8 @@ exports['sub-main'] = {
 							tbody(
 								this.businessProcess.certificates.uploaded,
 								function (certificate) {
-									td(span({ class: 'fa fa-certificate' }), " ",
-										certificate.label);
+									td(span({ class: 'fa fa-certificate' }));
+									td(certificate.label);
 									td(certificate.issuedBy);
 									td(certificate.issueDate);
 									td(a({ href: '/certificate/' +

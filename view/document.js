@@ -3,7 +3,8 @@
 var scrollBottom     = require('./utils/scroll-to-bottom')
   , nextTick = require('next-tick')
   , _  = require('mano').i18n.bind('User Submitted')
-  , curry = require('es5-ext/function/#/curry');
+  , curry = require('es5-ext/function/#/curry')
+  , submission = require('./_submission');
 
 exports._parent = require('./user-base');
 
@@ -21,7 +22,7 @@ exports['sub-main'] = {
 				{ class: 'submitted-user-history-wrapper' },
 				table(
 					{ class: 'submitted-user-history' },
-					console.log(this.document.statusLog.ordered),
+					console.log(this.document.files.ordered.size),
 					tbody(
 						this.document.statusLog.ordered,
 						function (log) {
@@ -35,6 +36,11 @@ exports['sub-main'] = {
 		);
 
 		nextTick(function () { scrollBottom(scrollableElem); });
+
+		section(
+			{ class: 'submitted-preview' },
+			submission(this.document)
+		);
 
 		section(
 			{ class: 'submitted-preview' },
