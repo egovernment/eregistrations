@@ -3,11 +3,17 @@
 var modalContainer = require('./_modal-container');
 
 exports.body = function () {
-	var modalCurtain;
+	var modalCurtain, logoAnchorOptions;
+
+	if (this.businessProcess) {
+		logoAnchorOptions = { href: '/my-account/', rel: 'server' };
+	} else {
+		logoAnchorOptions = { href: '/' };
+	}
 
 	header({ class: 'header-top' },
 		div({ class: 'content header-top-wrapper' },
-			div({ class: 'header-top-logo' }, a({ href: '/' }, exports._logo(this))),
+			div({ class: 'header-top-logo' }, a(logoAnchorOptions, exports._logo(this))),
 			nav(ul({ class: 'header-top-menu', id: 'menu' }))
 			)
 		);
