@@ -7,6 +7,7 @@
 
 var ns = require('mano').domjs.ns
   , customError = require('es5-ext/error/custom')
+  , isSet = require('es6-set/is-set')
   , document = require('mano').domjs.document;
 
 module.exports = function (sections/*, options */) {
@@ -18,6 +19,13 @@ module.exports = function (sections/*, options */) {
 			"with multiple sections is currently not supported," +
 			"plsease use FormSectionGroup instead", "UNSUPPORTED_SECTIONS_FUNCTIONALITY");
 	}
+	if (isSet(sections)) {
+		sections.forEach(function (section) {
+			result.push(section.toDOMForm(document, options));
+		});
+		return result;
+	}
+	//TODO: Below is deprecated code which expects map (old model version)
 	sections.forEach(function (section) {
 		result.push(ns._if(section._isApplicable, section.toDOMForm(document, options)));
 	});
