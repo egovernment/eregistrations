@@ -2,6 +2,7 @@
 
 var Database              = require('dbjs')
   , defineFormSection     = require('../../../model/form-section')
+  , defineProcessingStep  = require('../../../model/processing-step')
   , defineMapCertificates
 	= require('../../../model/business-process-new/utils/define-certificates')
   , defineMapUploads
@@ -10,6 +11,7 @@ var Database              = require('dbjs')
 module.exports = function (t, a) {
 	var db = new Database()
 	  , FormSection = defineFormSection(db)
+	  , ProcessingStep = defineProcessingStep(db)
 	  , BusinessProcess = t(db)
 
 	  , businessProcess, step;
@@ -41,9 +43,11 @@ module.exports = function (t, a) {
 	BusinessProcess.prototype.dataForms.map.define('formSection2',
 		{ nested: true, type: FormSection2 });
 
-	BusinessProcess.prototype.processingSteps.map.define('test', { nested: true });
+	BusinessProcess.prototype.processingSteps.map.define('test',
+		{ nested: true, type: ProcessingStep });
 	BusinessProcess.prototype.processingSteps.map.test.define('dataForm', { type: FormSection1 });
-	BusinessProcess.prototype.processingSteps.map.define('frontDesk', { nested: true });
+	BusinessProcess.prototype.processingSteps.map.define('frontDesk',
+		{ nested: true, type: ProcessingStep });
 	BusinessProcess.prototype.processingSteps.map.frontDesk.defineProperties({
 		dataForm: { type: FormSection3 },
 		isReady: { value: function (_observe) { return _observe(this.owner.test._isApproved); } }
