@@ -25,7 +25,7 @@ module.exports = function (sections/*, options */) {
 		});
 		return result;
 	}
-	//WARNING: Below is deprecated code which expects map (old model version)
+	//TODO: Below is deprecated code which expects map (old model version)
 	sections.forEach(function (section) {
 		result.push(ns._if(section._isApplicable, section.toDOMForm(document, options)));
 	});
