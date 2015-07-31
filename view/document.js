@@ -41,7 +41,9 @@ exports['sub-main'] = {
 			{ class: 'submitted-preview-new' },
 			div({ class: 'section-primary submitted-preview-new-document' }, submission(this.document)),
 			div({ class: 'section-primary submitted-preview-new-side-data' },
-				"Application form")
+				exports._documentSide(this))
 		);
 	}
 };
+
+exports._documentSide = Function.prototype;
