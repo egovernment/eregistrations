@@ -2,13 +2,26 @@
 
 'use strict';
 
-var memoize                 = require('memoizee/plain')
+var Map                     = require('es6-map')
+  , memoize                 = require('memoizee/plain')
+  , defineStringLine        = require('dbjs-ext/string/string-line')
+  , defineCreateEnum        = require('dbjs-ext/create-enum')
+  , _                       = require('mano').i18n.bind('Model')
   , defineRequirementUpload = require('./requirement-upload')
   , defineCost              = require('./cost');
 
 module.exports = memoize(function (db) {
-	var RequirementUpload = defineRequirementUpload(db)
+	var StringLine = defineStringLine(db)
+	  , RequirementUpload = defineRequirementUpload(db)
 	  , Cost = defineCost(db);
+
+	defineCreateEnum(db);
+
+	// Enum for document upload status
+	var PaymentReceiptUploadStatus = StringLine.createEnum('PaymentReceiptUploadStatus', new Map([
+		['valid', { label: _("Confirmed as paid") }],
+		['invalid', { label: _("Rejected") }]
+	]));
 
 	return RequirementUpload.extend('PaymentReceiptUpload', {
 		// Costs which are covered by the payment receipt
@@ -22,6 +35,8 @@ module.exports = memoize(function (db) {
 			});
 			return result;
 		} },
+
+		status: { type: PaymentReceiptUploadStatus },
 
 		// In case of receipt upload we do not show all reject reasons just memo
 		isRejected: { type: db.Boolean, value: function () {
