@@ -9,10 +9,10 @@ var syncHeight = require('./utils/sync-height')
   , curry = require('es5-ext/function/#/curry')
   , _d = _;
 
-module.exports = function (doc) {
+module.exports = function (doc, sideContent) {
 	var elem, scrollableElem;
 
-	return [h2(doc.label),
+	return [h2(_d(doc.label)),
 		section(
 			{ class: 'section-primary' },
 			h2(_("Documents history")),
@@ -78,6 +78,7 @@ module.exports = function (doc) {
 
 				syncHeight(elem)),
 				div({ class: 'section-primary submitted-preview-new-side-data' },
-					a({ class: 'button-main' }, "Download document"))
+					a({ class: 'button-main' }, "Download document"),
+					sideContent)
 			)];
 };

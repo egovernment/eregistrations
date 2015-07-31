@@ -5,7 +5,8 @@ var scrollBottom     = require('./utils/scroll-to-bottom')
   , nextTick = require('next-tick')
   , _  = require('mano').i18n.bind('User Submitted')
   , formatLastModified = require('./utils/last-modified')
-  , curry              = require('es5-ext/function/#/curry');
+  , curry              = require('es5-ext/function/#/curry')
+  , _d = _;
 
 exports._parent = require('./user-base');
 
@@ -91,9 +92,8 @@ exports['sub-main'] = {
 							tbody(
 								this.businessProcess.requirementUploads.applicable,
 								function (requirementUpload) {
-									td(_if(requirementUpload._isApproved,
-											span({ class: 'fa fa-check' }),
-											span({ class: 'fa fa-exclamation' })));
+									td(_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
+											_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' })));
 									td(requirementUpload.document._label);
 									td(requirementUpload.document._issuedBy);
 									td(requirementUpload.document._issueDate);
