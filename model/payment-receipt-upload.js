@@ -21,6 +21,13 @@ module.exports = memoize(function (db) {
 				result.push(cost);
 			});
 			return result;
+		} },
+
+		// In case of receipt upload we do not show all reject reasons just memp
+		isRejected: { type: db.Boolean, value: function () {
+			if (this.status == null) return false;
+			if (this.status !== 'invalid') return false;
+			return Boolean(this.rejectReasonMemo);
 		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
