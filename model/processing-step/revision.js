@@ -3,6 +3,7 @@
 'use strict';
 
 var memoize                  = require('memoizee/plain')
+  , _                        = require('mano').i18n.bind('Model')
   , defineProcessingStep     = require('../processing-step')
   , defineRequirementUploads = require('../business-process-new/requirement-uploads')
   , defineProcessingSteps    = require('../business-process-new/processing-steps');
@@ -11,6 +12,7 @@ module.exports = memoize(function (db) {
 	defineRequirementUploads(db);
 	defineProcessingSteps(db);
 	return defineProcessingStep(db).extend('RevisionProcessingStep', {
+		label: { value: _("Revision") },
 
 		// Progress for "approved" status
 		// All applicable requirement uploads must be approved
