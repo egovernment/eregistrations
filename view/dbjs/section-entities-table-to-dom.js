@@ -13,7 +13,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 		options = Object(arguments[1]);
 		headerRank = options.headerRank || 3;
 		cssClass   = options.cssClass || 'entity-data-section';
-		resolved = resolvePropertyPath(this.master, this.propertyName).value;
+		resolved = resolvePropertyPath(this.propertyMaster, this.propertyName).value;
 		if (resolved instanceof db.NestedMap) resolved = resolved.ordered;
 		return ns.section({ class: cssClass },
 			(function () {
