@@ -14,6 +14,26 @@ var object        = require('es5-ext/object/valid-object')
 
   , call = Function.prototype.call;
 
+var validateExactlyOne = function (object, properties) {
+	var foundProperties = [];
+
+	properties.forEach(function (property) {
+		if (object[property]) foundProperties.push(property);
+	});
+
+	if (foundProperties.length < 1) {
+		throw new Error('Missing one of required properties: ' + properties.join(', '),
+			'INVALID_INPUT');
+	}
+	if (foundProperties.length > 1) {
+		throw new Error('Cannot set: ' + foundProperties.join(', ') + ' at the same time, choose one!',
+			'INVALID_INPUT');
+	}
+
+	// A cookie for you:
+	// return SUCCESS!!!;
+};
+
 module.exports = function (routes, data) {
 	(object(routes) && object(data));
 	var name = ''
@@ -21,14 +41,19 @@ module.exports = function (routes, data) {
 	  , type = (data.type && validateType(data.type))
 	  , getTargetSet
 	  , targetMap
-	  , pageUrl = stringifiable(data.pageUrl)
+	  , pageUrl
 	  , tableHtmlId = stringifiable(data.tableHtmlId)
 	  , targetEntityDataFormsMap
 	  , result = {};
 
-	if (data.name && data.names) {
-		throw new Error('Cannot set both: name and names, choose one!', 'INVALID_OPTIONS');
-	}
+	var getResolvedPageUrl = function () {
+		var pageUrlPart = typeof pageUrl === 'function' ? call.call(pageUrl, this) : pageUrl;
+		return pageUrlPart + '#' + tableHtmlId;
+	};
+
+	validateExactlyOne(data, ['name', 'names']);
+	validateExactlyOne(data, ['getTargetSet', 'targetMap']);
+
 	if (data.name) {
 		name = stringifiable(data.name);
 	} else {
@@ -42,14 +67,16 @@ module.exports = function (routes, data) {
 		});
 	}
 
-	if (data.getTargetSet && data.targetMap) {
-		throw new Error('Cannot set both: getTargetSet and getTargetMap, choose one!',
-			'INVALID_OPTIONS');
-	}
 	if (data.getTargetSet) {
 		getTargetSet = callable(data.getTargetSet);
 	} else {
 		targetMap = callable(data.targetMap);
+	}
+
+	if (typeof data.pageUrl === 'function') {
+		pageUrl = data.pageUrl;
+	} else {
+		pageUrl = stringifiable(data.pageUrl);
 	}
 
 	if (data.targetEntityPrototype) {
@@ -92,7 +119,7 @@ module.exports = function (routes, data) {
 
 	routes[name + '-resolvent'] = result.resolvent = {
 		match: names ? commonMatcher : undefined,
-		redirectUrl: pageUrl + '#' + tableHtmlId
+		redirectUrl: getResolvedPageUrl
 	};
 	routes[name + '-add'] = result.add = {
 		match: names ? commonMatcher : undefined,
@@ -100,7 +127,7 @@ module.exports = function (routes, data) {
 			save.apply(this, arguments);
 			call.call(getTargetSet, this).add(this.target);
 		},
-		redirectUrl: pageUrl + '#' + tableHtmlId
+		redirectUrl: getResolvedPageUrl
 	};
 	routes[name + '/[a-z0-9]+/delete'] = result.delete = {
 		match: commonMatcher,
@@ -128,7 +155,7 @@ module.exports = function (routes, data) {
 		routes[name + '/[a-z0-9]+'] = result.edit = {
 			validate: commonValidator,
 			match: commonMatcher,
-			redirectUrl: pageUrl + '#' + tableHtmlId
+			redirectUrl: getResolvedPageUrl
 		};
 	}
 

@@ -50,6 +50,11 @@ module.exports = memoize(function (db/*, options*/) {
 		approvalProgress: { value: function (_observe) {
 			if (!this.applicable.size) return 1;
 			return this.approved.size / this.applicable.size;
+		} },
+		// Progress of revision
+		revisionProgress: { value: function (_observe) {
+			if (!this.applicable.size) return 1;
+			return (this.approved.size + this.rejected.size) / this.applicable.size;
 		} }
 	});
 	UploadsProcess.prototype.map._descriptorPrototype_.type = RequirementUpload;

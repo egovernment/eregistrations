@@ -8,9 +8,11 @@ module.exports = function (t, a) {
 	var db = new Database()
 	  , FormSection = defineFormSection(db)
 	  , BusinessProcess = defineFlow(db)
+	  , ProcessingStep = t(db)
 	  , businessProcess, step;
 
-	BusinessProcess.prototype.processingSteps.map.define('test', { nested: true });
+	BusinessProcess.prototype.processingSteps.map.define('test',
+		{ nested: true, type: ProcessingStep });
 	BusinessProcess.prototype.processingSteps.map.test.define('dataForm', { type: FormSection });
 	BusinessProcess.prototype.define('foo', { required: true });
 	FormSection.prototype.propertyNames = ['foo'];

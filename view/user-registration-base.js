@@ -32,7 +32,7 @@ exports._stepsMenu = function (context) {
 	return [
 		li(
 			{ class: 'user-steps-menu-start-step' },
-			a({ href: '/guide/', id: 'step-guide' },
+			a({ href: '/', id: 'step-guide' },
 				_("Guide")),
 			div({ class: 'user-steps-menu-item-progress',
 				style: mmap(context.businessProcess._guideProgress, setProgressWidth) })

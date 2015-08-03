@@ -56,11 +56,6 @@ module.exports = function (t, a) {
 	paymentReceiptUpload.status = 'invalid';
 	a(paymentReceiptUpload.isRejected, false);
 	a(paymentReceiptUpload.isApproved, false);
-	paymentReceiptUpload.rejectReasonTypes.add('illegible');
-	a(paymentReceiptUpload.isRejected, true);
-	a(paymentReceiptUpload.isApproved, false);
-	paymentReceiptUpload.rejectReasonTypes.add('other');
-	a(paymentReceiptUpload.isRejected, false);
 	a(paymentReceiptUpload.isApproved, false);
 	paymentReceiptUpload.rejectReasonMemo = "Whatever ...";
 	a(paymentReceiptUpload.isRejected, true);
