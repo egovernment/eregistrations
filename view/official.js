@@ -12,16 +12,16 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var searchForm, searchInput, rootUrl = url();
+		var searchForm, searchInput;
 
 		section({ class: 'section-primary users-table-filter-bar' },
-			searchForm = form({ action: rootUrl, autoSubmit: true },
+			searchForm = form({ action: '/', autoSubmit: true },
 				div({ class: 'users-table-filter-bar-status' },
 					label({ for: 'state-select' }, _("Status"), ":"),
-					select({ id: 'state-select', name: 'estado' },
+					select({ id: 'state-select', name: 'status' },
 						toArray(exports._statusMap(this), function (data, name) {
 							return option({ value: name, selected:
-								location.query.get('estado').map(function (value) {
+								location.query.get('status').map(function (value) {
 									var selected = (name ? (value === name) : (value == null));
 									return selected ? 'selected' : null;
 								}) },
@@ -30,22 +30,22 @@ exports['sub-main'] = {
 				div(
 					label({ for: 'search-input' }, _("Search")),
 					span({ class: 'input-append' },
-						searchInput = input({ id: 'search-input', name: 'buscar', type: 'search',
-							value: location.query.get('buscar') }),
+						searchInput = input({ id: 'search-input', name: 'search', type: 'search',
+							value: location.query.get('search') }),
 						span({ class: 'add-on' }, span({ class: 'fa fa-search' })))
 				),
 				div(
 					input({ type: 'submit', value: _("Search") })
 				)),
 			div(
-				a({ href: mmap(location.query.get('estado'), function (status) {
+				a({ href: mmap(location.query.get('status'), function (status) {
 					return mmap(location.query.get('page'), function (page) {
 						var search = [];
-						if (status) search.push('estado=' + status);
+						if (status) search.push('status=' + status);
 						if (page) search.push('page=' + page);
 						if (search.length) search = '?' + search.join('&');
 						else search = null;
-						return url('imprimir', search);
+						return url('print', search);
 					});
 				}), class: 'users-table-filter-bar-print', target: '_blank' },
 					span({ class: 'fa fa-print' },
