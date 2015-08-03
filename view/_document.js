@@ -7,12 +7,17 @@ var syncHeight = require('./utils/sync-height')
   , scrollBottom     = require('./utils/scroll-to-bottom')
   , nextTick = require('next-tick')
   , curry = require('es5-ext/function/#/curry')
-  , _d = _;
+  , _d = _
+  , db = require('mano').db;
 
 module.exports = function (doc, sideContent) {
-	var elem, scrollableElem;
-
-	return [h2(_d(doc.label)),
+	var elem, scrollableElem, master;
+	if (doc.issuedBy.constructor === db.Institution) {
+		master = doc.master;
+	} else {
+		master = doc.owner.owner.owner.owner;
+	}
+	return [h2(_d(doc.label, { entity: master })),
 		section(
 			{ class: 'section-primary' },
 			h2(_("Documents history")),
