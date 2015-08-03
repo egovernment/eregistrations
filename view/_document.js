@@ -7,12 +7,17 @@ var syncHeight = require('./utils/sync-height')
   , scrollBottom     = require('./utils/scroll-to-bottom')
   , nextTick = require('next-tick')
   , curry = require('es5-ext/function/#/curry')
-  , _d = _;
+  , _d = _
+  , db = require('mano').db;
 
 module.exports = function (doc, sideContent) {
-	var elem, scrollableElem;
-
-	return [h2(_d(doc.label)),
+	var elem, scrollableElem, master;
+	if (doc.issuedBy.constructor === db.Institution) {
+		master = doc.master;
+	} else {
+		master = doc.owner.owner.owner.owner;
+	}
+	return [h2(_d(doc.label, { entity: master })),
 		section(
 			{ class: 'section-primary' },
 			h2(_("Documents history")),
@@ -20,7 +25,6 @@ module.exports = function (doc, sideContent) {
 				{ class: 'submitted-user-history-wrapper' },
 				table(
 					{ class: 'submitted-user-history' },
-					console.log(doc.files.ordered.size),
 					tbody(
 						doc.statusLog.ordered,
 						function (log) {
@@ -36,8 +40,7 @@ module.exports = function (doc, sideContent) {
 		section({ class: 'submitted-preview-new' },
 			div({ class: 'section-primary submitted-preview-new-document' },
 				div({ class: 'container-with-nav' },
-					h3(span({ class: 'submitted-preview-new-item-number' }),
-						_d(doc.label, { user: doc.master })),
+					h3(span({ class: 'submitted-preview-new-item-number' })),
 
 					_if(gt(doc.files.ordered._size, 1),
 						div({ class: 'submitted-preview-new-documents-navigation' },
