@@ -12,14 +12,14 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var searchForm, searchInput, statusMap = require('./_status-map'), rootUrl = url();
+		var searchForm, searchInput, rootUrl = url();
 
 		section({ class: 'section-primary users-table-filter-bar' },
 			searchForm = form({ action: rootUrl, autoSubmit: true },
 				div({ class: 'users-table-filter-bar-status' },
 					label({ for: 'state-select' }, _("Status"), ":"),
 					select({ id: 'state-select', name: 'estado' },
-						toArray(statusMap, function (data, name) {
+						toArray(exports._statusMap(this), function (data, name) {
 							return option({ value: name, selected:
 								location.query.get('estado').map(function (value) {
 									var selected = (name ? (value === name) : (value == null));
@@ -330,3 +330,6 @@ exports['sub-main'] = {
 		);
 	}
 };
+
+exports._statusMap = Function.prototype;
+exports._usersTable = Function.prototype;
