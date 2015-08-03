@@ -20,7 +20,6 @@ module.exports = function (doc, sideContent) {
 				{ class: 'submitted-user-history-wrapper' },
 				table(
 					{ class: 'submitted-user-history' },
-					console.log(doc.files.ordered.size),
 					tbody(
 						doc.statusLog.ordered,
 						function (log) {
@@ -36,8 +35,7 @@ module.exports = function (doc, sideContent) {
 		section({ class: 'submitted-preview-new' },
 			div({ class: 'section-primary submitted-preview-new-document' },
 				div({ class: 'container-with-nav' },
-					h3(span({ class: 'submitted-preview-new-item-number' }),
-						_d(doc.label, { user: doc.master })),
+					h3(span({ class: 'submitted-preview-new-item-number' })),
 
 					_if(gt(doc.files.ordered._size, 1),
 						div({ class: 'submitted-preview-new-documents-navigation' },
