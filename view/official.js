@@ -1,48 +1,60 @@
 'use strict';
 
-var isReadOnlyRender = require('mano/client/utils/is-read-only-render');
+var _  = require('mano').i18n.bind('User Offcial')
+, toArray       = require('es5-ext/object/to-array')
+, byOrder = function (a, b) { return this[a].order - this[b].order; }
+, once          = require('timers-ext/once')
+, dispatch      = require('dom-ext/html-element/#/dispatch-event-2')
+, location     = require('mano/lib/client/location');
 
 exports._parent = require('./user-base');
 
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		div(
-			{ class: 'section-primary users-table-filter-bar' },
-			form(
+		var searchForm, searchInput, statusMap = require('./_status-map'), rootUrl = url();
+
+		section({ class: 'section-primary users-table-filter-bar' },
+			searchForm = form({ action: rootUrl, autoSubmit: true },
+				div({ class: 'users-table-filter-bar-status' },
+					label({ for: 'state-select' }, _("Status"), ":"),
+					select({ id: 'state-select', name: 'estado' },
+						toArray(statusMap, function (data, name) {
+							return option({ value: name, selected:
+								location.query.get('estado').map(function (value) {
+									var selected = (name ? (value === name) : (value == null));
+									return selected ? 'selected' : null;
+								}) },
+								data.label);
+						}, null, byOrder))),
 				div(
-					{ class: 'users-table-filter-bar-status' },
-					label(
-						"Status: "
-					),
-					select(
-						option("Pending for revision"),
-						option("Revisioned"),
-						option("Todo")
-					)
-				),
-				div(
-					label(
-						"Search: "
-					),
+					label({ for: 'search-input' }, _("Search")),
 					span({ class: 'input-append' },
-							input({ type: 'search' }),
-							span({ class: 'add-on' },
-								span({ class: 'fa fa-search' })
-								)
-						)
+						searchInput = input({ id: 'search-input', name: 'buscar', type: 'search',
+							value: location.query.get('buscar') }),
+						span({ class: 'add-on' }, span({ class: 'fa fa-search' })))
 				),
-				isReadOnlyRender ? div(input({ type: 'submit' }, "Submit")) : null
-			),
+				div(
+					input({ type: 'submit', value: _("Search") })
+				)),
 			div(
-				a(
-					{ class: 'users-table-filter-bar-print', href: '/official/users-list/print/',
-						target: '_blank' },
-					span({ class: 'fa fa-print' }),
-					"Print list"
-				)
+				a({ href: mmap(location.query.get('estado'), function (status) {
+					return mmap(location.query.get('page'), function (page) {
+						var search = [];
+						if (status) search.push('estado=' + status);
+						if (page) search.push('page=' + page);
+						if (search.length) search = '?' + search.join('&');
+						else search = null;
+						return url('imprimir', search);
+					});
+				}), class: 'users-table-filter-bar-print', target: '_blank' },
+					span({ class: 'fa fa-print' },
+						_("Print list of requests")), _("Print the list")
+					)
 			)
-		);
+			);
+
+		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
 
 		ul(
 			{ class: 'pagination' },
