@@ -50,7 +50,7 @@ module.exports = {
 
 	// Part-B routes - official user
 	official: require('./view/official'),
-	'revision/user-id': require('./view/revision'),
+	'revision/user-id': require('./view/official-revision'),
 	'official/user-id': require('./view/official-form'),
 	'official/user-id/certificates': require('./view/_certificates-form'),
 	'official/user-id/document': require('./view/official-document'),
