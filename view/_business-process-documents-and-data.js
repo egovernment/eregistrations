@@ -19,7 +19,7 @@ module.exports = function (businessProcess) {
 							'submitted-current-user-data-table user-request-table' },
 						thead(
 							tr(
-								th({ class: 'submitted-user-data-table-status' }, _("Status")),
+								th({ class: 'submitted-user-data-table-status' }),
 								th(_("Name")),
 								th(_("Issuer")),
 								th({ class: 'submitted-user-data-table-issue-date' }, _("Issue date")),
@@ -53,7 +53,7 @@ module.exports = function (businessProcess) {
 							'submitted-current-user-data-table user-request-table' },
 						thead(
 							tr(
-								th({ class: 'submitted-user-data-table-status' }, _("Status")),
+								th({ class: 'submitted-user-data-table-status' }),
 								th(_("Name")),
 								th({ class: 'submitted-user-data-table-issue-date' }, _("Issue date")),
 								th({ class: 'submitted-user-data-table-link' })
