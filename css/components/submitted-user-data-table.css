@@ -93,14 +93,16 @@
 	background-color: var(--light-background);
 }
 
-.submitted-user-data-table-status {
-	width: 100px;
+.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-status,
+.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-link {
+	width: 40px;
+	text-align: center;
+	padding-left: 0;
+	padding-right: 0;
 }
-.submitted-user-data-table-link {
-	width: 70px;
-}
+
 .submitted-user-data-table-issue-date {
-	width: 200px;
+	width: 130px;
 }
 @media only screen and (max-width: var(--mobile-width)) {
 
