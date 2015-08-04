@@ -19,24 +19,27 @@ module.exports = function (businessProcess) {
 							'submitted-current-user-data-table user-request-table' },
 						thead(
 							tr(
-								th(_("Status")),
+								th({ class: 'submitted-user-data-table-status' }, _("Status")),
 								th(_("Name")),
 								th(_("Issuer")),
-								th(_("Issue date")),
-								th()
+								th({ class: 'submitted-user-data-table-issue-date' }, _("Issue date")),
+								th({ class: 'submitted-user-data-table-link' })
 							)
 						),
 						tbody(
 							businessProcess.requirementUploads.applicable,
 							function (requirementUpload) {
-								td(_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
+								td({ class: 'submitted-user-data-table-status' },
+									_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
 										_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' })));
 								td(requirementUpload.document._label);
 								td(requirementUpload.document._issuedBy);
-								td(requirementUpload.document._issueDate);
-								td(a({ href: '/document/' +
+								td({ class: 'submitted-user-data-table-issue-date' },
+										requirementUpload.document._issueDate);
+								td({ class: 'submitted-user-data-table-link' },
+									a({ href: '/document/' +
 										requirementUpload.document.uniqueKey + "/" },
-									span({ class: 'fa fa-search' }, _("Go to"))));
+										span({ class: 'fa fa-search' }, _("Go to"))));
 							}
 						)
 					)
@@ -50,19 +53,23 @@ module.exports = function (businessProcess) {
 							'submitted-current-user-data-table user-request-table' },
 						thead(
 							tr(
+								th({ class: 'submitted-user-data-table-status' }, _("Status")),
 								th(_("Name")),
-								th(_("Issue date")),
-								th()
+								th({ class: 'submitted-user-data-table-issue-date' }, _("Issue date")),
+								th({ class: 'submitted-user-data-table-link' })
 							)
 						),
 						tbody(
 							businessProcess.paymentReceiptUploads.applicable,
 							function (receipt) {
+								td({ class: 'submitted-user-data-table-status' },
+									_if(receipt._isApproved, span({ class: 'fa fa-check' })),
+										_if(receipt._isRejected, span({ class: 'fa fa-exclamation' })));
 								td(receipt.document.label);
-								td(receipt.document._issueDate);
-								td(a({ href: '/receipt/' +
-									receipt.document.key + "/" },
-									span({ class: 'fa fa-search' }, _("Go to"))));
+								td({ class: 'submitted-user-data-table-issue-date' }, receipt.document._issueDate);
+								td({ class: 'submitted-user-data-table-link' },
+									a({ href: '/receipt/' + receipt.document.key + "/" },
+										span({ class: 'fa fa-search' }, _("Go to"))));
 							}
 						)
 					)
@@ -76,23 +83,24 @@ module.exports = function (businessProcess) {
 							'submitted-current-user-data-table user-request-table' },
 						thead(
 							tr(
-								th(),
+								th({ class: 'submitted-user-data-table-status' }),
 								th(_("Name")),
 								th(_("Issuer")),
-								th(_("Issue date")),
-								th()
+								th({ class: 'submitted-user-data-table-issue-date' }, _("Issue date")),
+								th({ class: 'submitted-user-data-table-link' })
 							)
 						),
 						tbody(
 							businessProcess.certificates.uploaded,
 							function (certificate) {
-								td(span({ class: 'fa fa-certificate' }));
+								td({ class: 'submitted-user-data-table-status' },
+									span({ class: 'fa fa-certificate' }));
 								td(certificate.label);
 								td(certificate._issuedBy);
-								td(certificate._issueDate);
-								td(a({ href: '/certificate/' +
-										certificate.key + "/" },
-									span({ class: 'fa fa-search' }, _("Go to"))));
+								td({ class: 'submitted-user-data-table-issue-date' }, certificate._issueDate);
+								td({ class: 'submitted-user-data-table-link' },
+									a({ href: '/certificate/' + certificate.key + "/" },
+										span({ class: 'fa fa-search' }, _("Go to"))));
 							}
 						)
 					)
