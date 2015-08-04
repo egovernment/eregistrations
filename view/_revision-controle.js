@@ -3,5 +3,5 @@
 'use strict';
 
 module.exports = function (doc) {
-
+	return span(doc.label);
 };
