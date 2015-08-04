@@ -45,6 +45,7 @@ domEnum(db.Role);
 domEnum(db.CompanyType);
 domEnum(db.NotificationType);
 domEnum(db.StreetTypeChoice);
+domEnum(db.RequirementUploadRejectReason);
 
 user.$street.DOMInput = require('dbjs-dom/input/composites/line');
 user.$isDebtContinusStatus.DOMInput =

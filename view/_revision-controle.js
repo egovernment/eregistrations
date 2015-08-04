@@ -7,9 +7,9 @@ var _          = require('mano').i18n.bind('Official: Revision')
 
 module.exports = function (doc) {
 	var  user = doc.master;
-
+console.log('fffffff');
 	return form(
-		{ id: 'revision-documento', action: url('revision', getSubUrl(user, doc.uniqueKey)),
+		{ id: 'revision-documento', action: url('revision', ''),
 			method: 'post', class: 'submitted-preview-form' },
 		ul(
 			{ class: 'form-elements' },
@@ -20,10 +20,10 @@ module.exports = function (doc) {
 						span(doc.correspondingCost.receiptLabel, ": ", doc.correspondingCost._amount));
 				})
 				)),
-			li(div({ class: 'input' }, input({ dbjs: doc._approved }))),
+			li(div({ class: 'input' }, input({ dbjs: doc._status }))),
 			li(
 				div({ class: 'official-form-document-revision-reject-reason' },
-					field({ dbjs: doc._rejectReason }))
+					field({ dbjs: doc._rejectReasonTypes, type: 'checkbox' }))
 			)
 		),
 		p(input({ class: 'enviar-btn', type: 'submit', value: _("Save") }))
