@@ -23,6 +23,7 @@ var db = require('mano').db
   , Document = require('../../model/document')(db)
   , Address  = require('./address')
   , Branch   = require('./branch')
+  , StatusLog = require('../../model/lib/status-log')(db)
   , DeterminantSection
   , defineCertificates = require('../../model/business-process-new/utils/define-certificates')
   , defineRequirements = require('../../model/business-process-new/utils/define-requirements')
@@ -35,8 +36,10 @@ var db = require('mano').db
   , Representative
   , processes = [first, second, third, fourth, fifth]
   , paymentReceipt = require('../../model/business-process-new/' +
-		'utils/define-payment-receipt-uploads');
+		'utils/define-payment-receipt-uploads')
+  , User = require('../../model/user/base')(db);
 
+User.newNamed('userOfficialMinistry');
 require('../../model/lib/nested-map');
 BusinessProcessNew.newNamed('emptyBusinessProcess');
 
@@ -171,12 +174,14 @@ BusinessProcessNew.prototype.costs.map.handlingFee.setProperties({
 
 paymentReceipt(BusinessProcessNew,
 	{ handlingFee:  { label: "Handling fee receipt", legend: "Handling fee legend",
-		costs: [BusinessProcessNew.prototype.costs.map.handlingFee] } });
+		costs: [BusinessProcessNew.prototype.costs.map.handlingFee],
+		issueDate: new Date(2015, 27, 7) } });
 
 BusinessProcessNew.prototype.registrations.map.define('a', { type: Registration, nested: true });
 BusinessProcessNew.prototype.registrations.map.get('a').setProperties({
 	label: "Registration A",
 	shortLabel: "A",
+	abbr: 'REGA',
 	costs: function () {
 		return [this.master.costs.map.handlingFee];
 	},
@@ -192,6 +197,7 @@ BusinessProcessNew.prototype.registrations.map.define('b', { type: Registration,
 BusinessProcessNew.prototype.registrations.map.get('b').setProperties({
 	label: "Registration B",
 	shortLabel: "B",
+	abbr: 'REGB',
 	certificates: function () {
 		return [this.master.certificates.map.docB];
 	},
@@ -206,6 +212,18 @@ DeterminantSection = FormSection.extend('DeterminantSection', {
 });
 
 BusinessProcessNew.prototype.getDescriptor('determinants').type = DeterminantSection;
+
+BusinessProcessNew.prototype.statusLog.map.define('received', {
+	type: StatusLog
+});
+BusinessProcessNew.prototype.statusLog.map.define('revieved', {
+	type: StatusLog
+});
+BusinessProcessNew.prototype.statusLog.map.define('rejected', {
+	type: StatusLog
+});
+
+BusinessProcessNew.prototype.certificates.map.define('', {});
 
 processes.forEach(function (businessProcess) {
 	businessProcess.representative.firstName = "Johny";
@@ -229,6 +247,27 @@ processes.forEach(function (businessProcess) {
 	businessProcess.hasEmployees = true;
 	businessProcess.employeesCount = 3;
 	businessProcess.isAddressSameAsPersonal = true;
+	// new
+	businessProcess.label = 'Revision';
+	businessProcess.submissionForms.isAffidavitSigned = true;
+	// status logs
+	businessProcess.statusLog.map.get('received').setProperties({
+		label: 'Documents received',
+		time: new Date(2015, 27, 7),
+		text: 'Lorem ipsum dolor sit'
+	});
+	businessProcess.statusLog.map.get('reviewed').setProperties({
+		label: 'Documents reviewed',
+		time: new Date(2015, 27, 7),
+		text: 'Lorem ipsum dolor sit'
+	});
+	businessProcess.statusLog.map.get('rejected').setProperties({
+		label: 'Documents rejected',
+		time: new Date(2015, 27, 7),
+		text: 'Lorem ipsum dolor sit'
+	});
+
+	businessProcess.isApproved = true;
 	businessProcess.branches.map.get('first').setProperties({
 		companyName: "First Branch inc.",
 		isFranchise: true,
@@ -246,6 +285,43 @@ processes.forEach(function (businessProcess) {
 	businessProcess.branches.map.get('second').responsiblePerson.firstName = "Peter";
 	businessProcess.branches.map.get('second').responsiblePerson.lastName = "Parker";
 	businessProcess.branches.map.get('second').responsiblePerson.email = "spiderman@daily-bugle.com";
+
+	businessProcess.certificates.applicable.forEach(function (certificate, index) {
+		certificate.label = 'Certyficate label';
+		certificate.issuedBy = db.userOfficialMinistry;
+		certificate.issueDate = new Date(2015, 23, 7);
+		certificate.files.map.get('cert' + index).setProperties({
+			name: 'idoc.jpg',
+			type: 'image/jpeg',
+			diskSize: 376306,
+			path: 'doc-a-sub-file1.idoc.jpg',
+			url: '/uploads/doc-a-sub-file1.idoc.jpg'
+		});
+	});
+
+	businessProcess.requirementUploads.applicable.forEach(function (upload) {
+		upload.document.issueDate = new Date(2015, 23, 7);
+	});
+	businessProcess.requirementUploads.applicable.first.document
+		.statusLog.map.get('received').setProperties({
+			label: 'Document received',
+			time: new Date(2015, 27, 7),
+			text: 'Lorem ipsum dolor sit'
+		});
+	businessProcess.requirementUploads.applicable.first.document
+		.statusLog.map.get('rejected').setProperties({
+			label: 'Document rejected',
+			time: new Date(2015, 27, 7),
+			text: 'Lorem ipsum dolor sit'
+		});
+
+	businessProcess.requirementUploads.applicable.first.document
+		.statusLog.map.get('reviewed').setProperties({
+			label: 'Document reviewed',
+			time: new Date(2015, 27, 7),
+			text: 'Lorem ipsum dolor sit'
+		});
+
 	businessProcess.requirementUploads.applicable.first.document.files.map.
 			get('idDoc').setProperties({
 			name: 'idoc.jpg',
