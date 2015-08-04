@@ -93,6 +93,15 @@
 	background-color: var(--light-background);
 }
 
+.submitted-user-data-table-status {
+	width: 100px;
+}
+.submitted-user-data-table-link {
+	width: 70px;
+}
+.submitted-user-data-table-issue-date {
+	width: 200px;
+}
 @media only screen and (max-width: var(--mobile-width)) {
 
 	.submitted-user-data-table.table-responsive tr {
