@@ -93,8 +93,8 @@
 	background-color: var(--light-background);
 }
 
-.submitted-user-data-table.submitted-current-user-data-table tbody tr .submitted-user-data-table-status,
-.submitted-user-data-table.submitted-current-user-data-table tbody tr .submitted-user-data-table-link {
+.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-status,
+.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-link {
 	width: 40px;
 	text-align: center;
 	padding-left: 0;
