@@ -2,12 +2,10 @@
 
 'use strict';
 
-var _          = require('mano').i18n.bind('Official: Revision')
-  , getSubUrl  = require('./utils/_get-sub-url');
+var _          = require('mano').i18n.bind('Official: Revision');
 
 module.exports = function (doc) {
-	var  user = doc.master;
-console.log('fffffff');
+	var revFail;
 	return form(
 		{ id: 'revision-documento', action: url('revision', ''),
 			method: 'post', class: 'submitted-preview-form' },
@@ -22,10 +20,16 @@ console.log('fffffff');
 				)),
 			li(div({ class: 'input' }, input({ dbjs: doc._status }))),
 			li(
-				div({ class: 'official-form-document-revision-reject-reason' },
-					field({ dbjs: doc._rejectReasonTypes, type: 'checkbox' }))
+				field({ dbjs: doc._rejectReasonTypes, type: 'checkbox' })
+			),
+			li(
+				revFail = div({ class: 'official-form-document-revision-reject-reason' },
+					field({ dbjs: doc._rejectReasonMemo }))
 			)
 		),
-		p(input({ class: 'enviar-btn', type: 'submit', value: _("Save") }))
+		p(input({ class: 'enviar-btn', type: 'submit', value: _("Save") })),
+		legacy('radioMatch', 'revision-documento', doc.__id__ + '/rejectReasonTypes', {
+			other: revFail.getId()
+		})
 	);
 };
