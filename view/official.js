@@ -59,7 +59,7 @@ exports['sub-main'] = {
 		usersTable = exports._usersTable(this);
 
 		insert(usersTable.pagination,
-			section({ class: 'table-responsive-container', id: 'revision' }, usersTable),
+			section({ class: 'table-responsive-container' }, usersTable),
 			usersTable.pagination);
 	}
 };
