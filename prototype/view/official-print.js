@@ -43,5 +43,5 @@ exports._defaultSort = function (a, b) {
 };
 
 exports._officialRoleName = function () {
-	return 'Role';
+	return h2('Role');
 };

@@ -11,3 +11,4 @@ exports.body = function () {
 };
 
 exports._logo = Function.prototype;
+exports._officialRoleName = Function.prototype;
