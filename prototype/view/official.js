@@ -44,7 +44,7 @@ exports._statusMap = memoize(function (institution) {
 	};
 });
 
-exports._usersTable = function () {
+exports._businessProcessTable = function () {
 	return table(
 		{ class: 'submitted-user-data-table' },
 		thead(

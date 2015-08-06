@@ -56,7 +56,7 @@ exports['sub-main'] = {
 
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
 
-		usersTable = exports._usersTable(this);
+		usersTable = exports._businessProcessTable(this);
 
 		insert(usersTable.pagination,
 			section({ class: 'table-responsive-container' }, usersTable),
@@ -65,4 +65,4 @@ exports['sub-main'] = {
 };
 
 exports._statusMap = Function.prototype;
-exports._usersTable = Function.prototype;
+exports._businessProcessTable = Function.prototype;
