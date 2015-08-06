@@ -42,6 +42,6 @@ exports._defaultSort = function (a, b) {
 	return a._submitted.lastModified - b._submitted.lastModified;
 };
 
-exports._officialRoleName = function () {
-	return h2('Role');
+exports._parent._officialRoleName = function () {
+	return 'Role';
 };

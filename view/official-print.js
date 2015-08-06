@@ -1,7 +1,7 @@
 'use strict';
 
 var location = require('mano/lib/client/location')
-  , db       = require('mano').db
+  , formatLastModified = require('./utils/last-modified')
   , _ = require('mano').i18n.bind('Official')
   , keys = Object.keys
   , officialStatusMap;
@@ -16,17 +16,32 @@ exports.main = {
 				businessProcesses = data.data.toArray(exports._defaultSort);
 
 			return table({ class: 'print-users-list' },
-				thead(tr(th({ colspan: 2 }, data.label, span(" (", businessProcesses._length, ")"))),
-					tr(th(_("User")), th(_("Creation date")))),
+				thead(
+					tr(
+						th({ colspan: 5 }, data.label, span(" (", businessProcesses._length, ")"))
+					),
+					tr(
+						th(_("Entity")),
+						th(_("Service")),
+						th(_("Submission date")),
+						th(_("Withdraw date")),
+						th(_("Inscriptions and controls"))
+					)
+				),
 				tbody(_if(gt(businessProcesses._length, 0),
 					list(businessProcesses, function (user) {
-						tr(td(user._businessName, " - ",
-							span(user.representative._email)),
-							td(mmap(user.isSubmitted._lastModified,
-								function (lm) {
-									if (!lm) return;
-									return String(new db.DateTime(lm / 1000));
-								})));
+						tr(
+							td(user._businessName, " - ", span(user.representative._email)),
+							td(user._label),
+							td(user.submissionForms.
+								_isAffidavitSigned._lastModified.map(formatLastModified)),
+							td(user._isApproved._lastModified.map(formatLastModified)),
+							td(
+								list(user.registrations.requested, function (reg) {
+									return span({ class: 'label-reg' }, reg.abbr);
+								})
+							)
+						);
 					}), tr({ class: 'empty' }, td({ colspan: 3 }, _("There are no users at the moment."))))));
 		};
 
@@ -47,10 +62,5 @@ exports.main = {
 	}
 };
 
-exports['print-page-title'] = function () {
-	exports._officialRoleName();
-};
-
 exports._statusMap = Function.prototype;
 exports._defaultSort = Function.prototype;
-exports._officialRoleName = Function.prototype;
