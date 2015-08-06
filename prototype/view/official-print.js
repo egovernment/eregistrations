@@ -3,13 +3,11 @@
 'use strict';
 
 var _ = require('mano').i18n.bind('Official: Revision')
-, all = require('eregistrations/business-processes').filterByKey('isRevisionReady', true)
-, memoize = require('memoizee/plain');
+, users = require('mano').db.BusinessProcessNew.instances;
 
 module.exports = exports = require('../../view/official-print');
 
-exports._statusMap = memoize(function (institution) {
-	var users = all.filterByKey('revisionInstitution', institution);
+exports._statusMap = function () {
 
 	return {
 		todos: {
@@ -18,12 +16,12 @@ exports._statusMap = memoize(function (institution) {
 			order: 1
 		},
 		'': {
-			data: users.filterByKey('isRevisionPending', true),
+			data: users,
 			label: _("Pending review"),
 			order: 2
 		},
 		'mandado-para-correciones': {
-			data: users.filterByKey('isRevisionSentBack', true),
+			data: users,
 			label: _("Sent for corrections"),
 			order: 3
 		},
@@ -38,12 +36,10 @@ exports._statusMap = memoize(function (institution) {
 			order: 5
 		}
 	};
-});
+};
 
-exports._defaultSort = function () {
-	return function (a, b) {
-		return a._submitted.lastModified - b._submitted.lastModified;
-	};
+exports._defaultSort = function (a, b) {
+	return a._submitted.lastModified - b._submitted.lastModified;
 };
 
 exports._officialRoleName = function () {

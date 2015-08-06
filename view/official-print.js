@@ -4,9 +4,8 @@ exports._parent = require('./print-base');
 
 exports.main = {
 	content: function () {
-		console.log('HOP');
-		require('./_official-print')(url, exports._statusMap(this),
-			exports._defaultSort(this),  exports._officialRoleName(this), 'print');
+		require('./_official-print')(url, exports._statusMap,
+			exports._defaultSort,  exports._officialRoleName(), 'print');
 	}
 };
 
