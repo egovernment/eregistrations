@@ -61,7 +61,7 @@ module.exports = {
 	'official/user-id': require('./view/official-form'),
 	'official/user-id/certificates': require('./view/_certificates-form'),
 	'official/user-id/document': require('./view/official-document'),
-	'official/users-list/print': require('./view/print-users-list'),
+	'official/users-list/print': require('./view/official-print'),
 
 	// Part-B routes - front-desk
 	'front-desk/user-id': require('./view/_front-desk'),
