@@ -6,7 +6,7 @@ var location = require('mano/lib/client/location')
   , keys = Object.keys
   , officialStatusMap;
 
-module.exports = function (url, statusMap, defaultSort, officialRoleName, cssPrefix) {
+module.exports = function (statusMap, defaultSort, officialRoleName) {
 	var getSection  = function (state, url) {
 		var data = officialStatusMap[state], users = data.data.toArray(defaultSort);
 

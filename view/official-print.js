@@ -4,8 +4,8 @@ exports._parent = require('./print-base');
 
 exports.main = {
 	content: function () {
-		require('./_official-print')(url, exports._statusMap,
-			exports._defaultSort,  exports._officialRoleName(), 'print');
+		require('./_official-print')(exports._statusMap,
+			exports._defaultSort,  exports._officialRoleName());
 	}
 };
 
