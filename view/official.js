@@ -45,7 +45,7 @@ exports['sub-main'] = {
 						if (page) search.push('page=' + page);
 						if (search.length) search = '?' + search.join('&');
 						else search = null;
-						return url('print', search);
+						return url('print-business-processes-list', search);
 					});
 				}), class: 'users-table-filter-bar-print', target: '_blank' },
 					span({ class: 'fa fa-print' },
@@ -56,7 +56,7 @@ exports['sub-main'] = {
 
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
 
-		usersTable = exports._usersTable(this);
+		usersTable = exports._businessProcessTable(this);
 
 		insert(usersTable.pagination,
 			section({ class: 'table-responsive-container' }, usersTable),
@@ -65,4 +65,4 @@ exports['sub-main'] = {
 };
 
 exports._statusMap = Function.prototype;
-exports._usersTable = Function.prototype;
+exports._businessProcessTable = Function.prototype;

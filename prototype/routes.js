@@ -39,7 +39,7 @@ module.exports = {
 		view: require('./view/document')
 	},
 	'print-request-history': require('./view/print-user-history'),
-	'user-submitted/data-print': require('./view/print-user-data'),
+	'data-print': require('./view/print-user-data'),
 	'user-submitted/print-user-data-alternative': require('./view/print-user-data-alternative'),
 
 	// Part-B routes - users admin
@@ -54,7 +54,7 @@ module.exports = {
 	'official/user-id': require('./view/official-form'),
 	'official/user-id/certificates': require('./view/_certificates-form'),
 	'official/user-id/document': require('./view/official-document'),
-	'official/users-list/print': require('./view/official-print'),
+	'print-business-processes-list': require('./view/official-print'),
 
 	// Part-B routes - front-desk
 	'front-desk/user-id': require('./view/_front-desk'),
