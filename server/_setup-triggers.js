@@ -7,10 +7,12 @@ var forEach        = require('es5-ext/object/for-each')
   , create = Object.create;
 
 module.exports = function (conf, onTrigger) {
-	var postTrigger = resolveTrigger(conf.trigger, conf.triggerValue)
+	var postTrigger = resolveTrigger(conf.trigger, conf.triggerValue, conf.BusinessProcessType)
 	  , preTrigger, prePool, postPool, clearPool, onPreTargetAdd, onPreTargetDelete, onPostTarget;
 
-	if (conf.preTrigger) preTrigger = resolveTrigger(conf.preTrigger, conf.preTriggerValue);
+	if (conf.preTrigger) {
+		preTrigger = resolveTrigger(conf.preTrigger, conf.preTriggerValue, conf.BusinessProcessType);
+	}
 
 	if (preTrigger) {
 		prePool = create(null);
