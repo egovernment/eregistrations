@@ -68,7 +68,7 @@ module.exports = function (businessProcess) {
 								td(receipt.document.label);
 								td({ class: 'submitted-user-data-table-issue-date' }, receipt.document._issueDate);
 								td({ class: 'submitted-user-data-table-link' },
-									a({ href: '/receipt/' + receipt.document.key + "/" },
+									a({ href: '/receipt/' + receipt.key + "/" },
 										span({ class: 'fa fa-search' }, _("Go to"))));
 							}
 						)
@@ -110,7 +110,7 @@ module.exports = function (businessProcess) {
 				a(
 					{ class: 'hint-optional hint-optional-left',
 						'data-hint': 'Print your application form',
-						href: '/user-submitted/data-print/',
+						href: '/data-print/',
 						target: '_blank' },
 					span({ class: 'fa fa-print' }, _("Print"))
 				)),
