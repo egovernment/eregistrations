@@ -110,7 +110,7 @@ module.exports = function (businessProcess) {
 				a(
 					{ class: 'hint-optional hint-optional-left',
 						'data-hint': 'Print your application form',
-						href: '/user-submitted/data-print/',
+						href: '/data-print/',
 						target: '_blank' },
 					span({ class: 'fa fa-print' }, _("Print"))
 				)),
