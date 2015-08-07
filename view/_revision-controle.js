@@ -5,7 +5,7 @@
 var _ = require('mano').i18n.bind('Official: Revision');
 
 module.exports = function (requirementUpload) {
-	var revFail;
+	var revFail, revFailOther;
 	return form(
 		{ id: 'revision-documento', action: url('revision', ''),
 			method: 'post', class: 'submitted-preview-form' },
@@ -21,17 +21,20 @@ module.exports = function (requirementUpload) {
 				)),
 			li(div({ class: 'input' }, input({ dbjs: requirementUpload._status }))),
 			li(
-				div({ class: 'input' },
+				revFail = div({ class: 'input' },
 					input({ dbjs: requirementUpload._rejectReasonTypes, type: 'checkbox' }))
 			),
 			li(
-				revFail = div({ class: 'official-form-document-revision-reject-reason' },
+				revFailOther = div({ class: 'official-form-document-revision-reject-reason' },
 					field({ dbjs: requirementUpload._rejectReasonMemo }))
 			)
 		),
 		p(input({ class: 'enviar-btn', type: 'submit', value: _("Save") })),
 		legacy('radioMatch', 'revision-documento', requirementUpload.__id__ + '/rejectReasonTypes', {
-			other: revFail.getId()
+			other: revFailOther.getId()
+		}),
+		legacy('radioMatch', 'revision-documento', requirementUpload.__id__ + '/status', {
+			invalid: revFail.getId()
 		})
 	);
 };
