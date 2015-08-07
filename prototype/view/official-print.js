@@ -3,11 +3,13 @@
 'use strict';
 
 var _ = require('mano').i18n.bind('Official: Revision')
+, statusMap
+, defaultSort
 , users = require('mano').db.BusinessProcessNew.instances;
 
 module.exports = exports = require('../../view/official-print');
 
-exports._statusMap = function () {
+statusMap = function () {
 
 	return {
 		todos: {
@@ -38,8 +40,12 @@ exports._statusMap = function () {
 	};
 };
 
-exports._defaultSort = function (a, b) {
+defaultSort = function (a, b) {
 	return a._submitted.lastModified - b._submitted.lastModified;
+};
+
+exports._businessProcessesTable = function () {
+	return p('table');
 };
 
 exports._parent._officialRoleName = function () {
