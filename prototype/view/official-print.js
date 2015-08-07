@@ -99,6 +99,6 @@ exports._businessProcessesTable = function () {
 		}));
 };
 
-exports._parent._officialRoleName = function () {
+exports._officialRoleName = function () {
 	return 'Role';
 };
