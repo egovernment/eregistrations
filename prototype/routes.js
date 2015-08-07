@@ -58,6 +58,13 @@ module.exports = {
 		},
 		view: require('./view/official-revision-document')
 	},
+	'revision/user-id/(payment)': {
+		match: function () {
+			this.payment = this.businessProcess.paymentReceiptUploads.applicable.first;
+			return true;
+		},
+		view: require('./view/official-revision-payment')
+	},
 	'official/user-id': require('./view/official-form'),
 	'official/user-id/certificates': require('./view/_certificates-form'),
 	'official/user-id/document': require('./view/official-document'),
