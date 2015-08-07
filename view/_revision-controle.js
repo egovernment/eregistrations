@@ -21,7 +21,8 @@ module.exports = function (requirementUpload) {
 				)),
 			li(div({ class: 'input' }, input({ dbjs: requirementUpload._status }))),
 			li(
-				field({ dbjs: requirementUpload._rejectReasonTypes, type: 'checkbox' })
+				div({ class: 'input' },
+					input({ dbjs: requirementUpload._rejectReasonTypes, type: 'checkbox' }))
 			),
 			li(
 				revFail = div({ class: 'official-form-document-revision-reject-reason' },
