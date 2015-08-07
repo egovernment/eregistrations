@@ -38,7 +38,7 @@ module.exports = {
 		},
 		view: require('./view/document')
 	},
-	'print-request-history': require('./view/print-user-history'),
+	'print-request-history': require('./view/print-request-history'),
 	'data-print': require('./view/print-user-data'),
 	'user-submitted/print-user-data-alternative': require('./view/print-user-data-alternative'),
 
