@@ -5,10 +5,13 @@
 var _ = require('mano').i18n.bind('Official: Revision');
 
 module.exports = function (paymentReceiptUpload) {
-	var revFail, revFailOther;
+	var revFail;
 	return form(
 		{ id: 'revision-documento', action: url('revision', ''),
 			method: 'post', class: 'submitted-preview-form' },
+		ul(paymentReceiptUpload.costs, function (cost) {
+			li(cost.label, " ", cost.amount);
+		}),
 		ul(
 			{ class: 'form-elements' },
 			li(div({ class: 'input' },
@@ -21,18 +24,11 @@ module.exports = function (paymentReceiptUpload) {
 				)),
 			li(div({ class: 'input' }, input({ dbjs: paymentReceiptUpload._status }))),
 			li(
-				revFail = div({ class: 'input' },
-					input({ dbjs: paymentReceiptUpload._rejectReasonTypes, type: 'checkbox' }))
-			),
-			li(
-				revFailOther = div({ class: 'official-form-document-revision-reject-reason' },
+				revFail = div({ class: 'official-form-document-revision-reject-reason' },
 					field({ dbjs: paymentReceiptUpload._rejectReasonMemo }))
 			)
 		),
-		p(input({ class: 'enviar-btn', type: 'submit', value: _("Save") })),
-		legacy('radioMatch', 'revision-documento', paymentReceiptUpload.__id__ + '/rejectReasonTypes', {
-			other: revFailOther.getId()
-		}),
+		p(input({ type: 'submit', value: _("Save") })),
 		legacy('radioMatch', 'revision-documento', paymentReceiptUpload.__id__ + '/status', {
 			invalid: revFail.getId()
 		})
