@@ -1,4 +1,5 @@
 ../../css/print-base.css
+../../css/components/fa.css
 ../../css/components/print-header.css
 ../../css/components/print-users-list.css
 ../../css/components/print-costs-list.css
