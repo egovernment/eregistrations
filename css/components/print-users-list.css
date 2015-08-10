@@ -13,7 +13,9 @@
 .print-users-list {
 	border: 1px solid var(--normal-light-background);
 }
-
-.print-users-list thead tr:first-child {
+.print-users-list-caption {
+	padding: 11px;
+	line-height: 22px;
+	font-weight: bold;
 	background-color: var(--normal-light-background);
 }

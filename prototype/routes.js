@@ -2,6 +2,9 @@
 
 'use strict';
 
+// Assure prototype specific print base customisations
+require('./view/print-base');
+
 module.exports = {
 	// Public routes
 	'/': require('./view/index'),
@@ -38,7 +41,7 @@ module.exports = {
 		},
 		view: require('./view/document')
 	},
-	'print-request-history': require('./view/print-request-history'),
+	'print-request-history': require('../view/print-request-history'),
 	'data-print': require('./view/print-user-data'),
 	'user-submitted/print-user-data-alternative': require('./view/print-user-data-alternative'),
 

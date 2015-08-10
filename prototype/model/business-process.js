@@ -29,6 +29,7 @@ var db = require('mano').db
   , defineRequirements = require('../../model/business-process-new/utils/define-requirements')
   , defineRequirementUploads =
 			require('../../model/business-process-new/utils/define-requirement-uploads')
+  , RevisionProcessingStep = require('../../model/processing-step/revision')(db)
   , DocA
   , DocB
   , IdDoc
@@ -373,6 +374,11 @@ processes.forEach(function (businessProcess) {
 		});
 	businessProcess.requirementUploads.applicable.last.document.files.map.
 			get('idDoc').thumb.url = '/uploads/doc-a-sub-file2.idoc.png';
+
+	businessProcess.processingSteps.map.define('revision', {
+		nested: true,
+		type: RevisionProcessingStep
+	});
 });
 
 // Submision sections
