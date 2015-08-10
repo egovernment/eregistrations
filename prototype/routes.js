@@ -2,7 +2,7 @@
 
 'use strict';
 
-// Assure prototype specific print base customistaions
+// Assure prototype specific print base customisations
 require('./view/print-base');
 
 module.exports = {
