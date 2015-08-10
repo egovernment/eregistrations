@@ -15,7 +15,7 @@ exports['sub-main'] = {
 
 		renderMainInfo(this.businessProcess);
 
-		_if(revisionStep._isPending, [
+		insert(_if(revisionStep._isPending, [
 			// show buttons only if step is pending
 
 			_if(eq(revisionStep._revisionProgress, 1),
@@ -44,7 +44,7 @@ exports['sub-main'] = {
 					" a notification with information on the changes that must be done in his form or" +
 					" in the documents that your request.") },
 				_("Reject application"))
-		]);
+		]));
 
 		renderDocumentsAndData(this.businessProcess);
 	}
