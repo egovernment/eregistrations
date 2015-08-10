@@ -98,7 +98,3 @@ exports._businessProcessesTable = function () {
 			}).data.sort(defaultSort), function (state) { return getSection(state, url); });
 		}));
 };
-
-exports._officialRoleName = function () {
-	return 'Role';
-};
