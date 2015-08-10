@@ -5,7 +5,7 @@ var  _       = require('mano').i18n.bind('Official: Revision')
 	.filterByKey('isApplicationResolved', false)
 , memoize = require('memoizee/plain');
 
-module.exports = exports = require('../../view/official');
+module.exports = exports = require('../../view/business-processes-table');
 
 exports['submitted-menu'] = function () {
 	li(a({ class: 'submitted-menu-item-active' }, "Official"));

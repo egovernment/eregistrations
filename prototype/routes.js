@@ -52,7 +52,7 @@ module.exports = {
 	'users-admin/user-id': require('./view/users-admin-user'),
 
 	// Part-B routes - official user
-	official: require('./view/official'),
+	official: require('./view/business-processes-table'),
 	'revision/user-id': require('./view/revision'),
 	'official/user-id': require('./view/official-form'),
 	'official/user-id/certificates': require('./view/_certificates-form'),
