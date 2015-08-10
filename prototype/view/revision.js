@@ -10,7 +10,7 @@ var syncStyle    = require('dom-ext/html-element/#/sync-style')
 
   , user = db.User.prototype;
 
-exports._parent = require('./official');
+exports._parent = require('./business-processes-table');
 
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },

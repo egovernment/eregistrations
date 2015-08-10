@@ -52,12 +52,12 @@ module.exports = {
 	'users-admin/user-id': require('./view/users-admin-user'),
 
 	// Part-B routes - official user
-	official: require('./view/official'),
-	'revision/user-id': require('./view/official-revision'),
+	official: require('./view/business-processes-table'),
+	'revision/user-id': require('./view/business-processes-revision'),
 	'official/user-id': require('./view/official-form'),
 	'official/user-id/certificates': require('./view/_certificates-form'),
 	'official/user-id/document': require('./view/official-document'),
-	'print-business-processes-list': require('./view/official-print'),
+	'print-business-processes-list': require('./view/print-business-processes-table'),
 
 	// Part-B routes - front-desk
 	'front-desk/user-id': require('./view/_front-desk'),
