@@ -6,7 +6,7 @@ var _ = require('mano').i18n.bind('Official: Revision')
 , users = require('mano').db.BusinessProcessNew.instances
 , formatLastModified = require('../../view/utils/last-modified');
 
-module.exports = exports = require('../../view/official-print');
+module.exports = exports = require('../../view/print-business-processes-table');
 
 exports._defaultSort = function (a, b) {
 	return a._submitted.lastModified - b._submitted.lastModified;

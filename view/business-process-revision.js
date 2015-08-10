@@ -1,7 +1,9 @@
+// Revision view for single business process
+
 'use strict';
 
-var documentsAndData = require('./_business-process-documents-and-data')
-, userData = require('./_business-process-main-info')
+var renderDocumentsAndData = require('./_business-process-documents-and-data')
+, renderMainInfo = require('./_business-process-main-info')
 , _       = require('mano').i18n.bind('Official: Revision');
 
 exports._parent = require('./user-base');
@@ -11,9 +13,9 @@ exports['sub-main'] = {
 	content: function () {
 		var revisionStep = this.businessProcess.processingSteps.map.revision;
 
-		userData(this.businessProcess);
+		renderMainInfo(this.businessProcess);
 
-		_if(revisionStep._isPending, [
+		insert(_if(revisionStep._isPending, [
 			// show buttons only if step is pending
 
 			_if(eq(revisionStep._revisionProgress, 1),
@@ -42,8 +44,8 @@ exports['sub-main'] = {
 					" a notification with information on the changes that must be done in his form or" +
 					" in the documents that your request.") },
 				_("Reject application"))
-		]);
+		]));
 
-		documentsAndData(this.businessProcess);
+		renderDocumentsAndData(this.businessProcess);
 	}
 };

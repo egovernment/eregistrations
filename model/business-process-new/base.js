@@ -23,6 +23,10 @@ module.exports = memoize(function (db/*, options*/) {
 		// Usually computed from other properties
 		businessName: { type: StringLine },
 
+		// Whether initial configuration for businessProcess was set
+		// Used to differentiate freshly created processes from those already "touched"
+		isInitialized: { type: db.Boolean, value: true },
+
 		// Whether registration is made online
 		// It may be overriden to false in case we import businessProces
 		// which not processed electronically.
