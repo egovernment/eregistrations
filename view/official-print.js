@@ -9,7 +9,7 @@ exports.main = {
 };
 
 exports['print-page-title'] = function () {
-	h2('test');
+	h2(this.processingStep.label);
 };
 
 exports._businessProcessesTable = Function.prototype;
