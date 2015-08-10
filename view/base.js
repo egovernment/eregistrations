@@ -1,3 +1,9 @@
+// Base for system views (root of a view tree)
+//
+// This view is meant to be additionally customised per eregistrations system,
+// for full picture of configuration, be sure to visit customisation module
+// in system you're working at (most likely placed at /view/base.js)
+
 'use strict';
 
 var modalContainer = require('./_modal-container');
