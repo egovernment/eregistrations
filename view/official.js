@@ -12,7 +12,7 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var searchForm, searchInput, usersTable;
+		var searchForm, searchInput, businessProcessesTable;
 
 		section({ class: 'section-primary users-table-filter-bar' },
 			searchForm = form({ action: '/', autoSubmit: true },
@@ -56,11 +56,11 @@ exports['sub-main'] = {
 
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
 
-		usersTable = exports._businessProcessTable(this);
+		businessProcessesTable = exports._businessProcessTable(this);
 
-		insert(usersTable.pagination,
-			section({ class: 'table-responsive-container' }, usersTable),
-			usersTable.pagination);
+		insert(businessProcessesTable.pagination,
+			section({ class: 'table-responsive-container' }, businessProcessesTable),
+			businessProcessesTable.pagination);
 	}
 };
 
