@@ -3,7 +3,7 @@
 var scrollBottom     = require('./utils/scroll-to-bottom'),
 nextTick = require('next-tick');
 
-exports._parent = require('./official');
+exports._parent = require('./business-processes-table');
 
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
