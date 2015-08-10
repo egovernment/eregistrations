@@ -54,9 +54,7 @@ module.exports = memoize(function (db/*, options*/) {
 		institution: { type: Institution },
 
 		// Whether registration is applicable
-		isApplicable: { type: db.Boolean, value: function (_observe) {
-			return this.master._get ? _observe(this.master._isInitialized) : this.master.isInitialized;
-		} },
+		isApplicable: { type: db.Boolean, value: true },
 		// Whether registration is mandatory
 		isMandatory: { type: db.Boolean, value: true },
 		// Whether registration is requested
