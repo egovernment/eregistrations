@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = exports = require('../../view/submission');
+module.exports = exports = require('../../view/business-process-submission-forms');
 
 exports._submissionHeading = function () {
 	return div(
