@@ -14,7 +14,7 @@ paymentForm = function (paymentReceiptUpload) {
 	var revFail;
 	return form(
 		{ id: 'form-revision-payment-receipt-upload',
-			action: '/fform-revision-payment-receipt-upload/' + paymentReceiptUpload.master.__id__ +
+			action: '/form-revision-payment-receipt-upload/' + paymentReceiptUpload.master.__id__ +
 				'/' + camelToHyphen.call(paymentReceiptUpload.key) + '/',
 			method: 'post', class: 'submitted-preview-form' },
 		p(_("Uploaded payment receipt applies to following costs:")),
