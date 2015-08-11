@@ -7,6 +7,7 @@ var renderDocumentsAndData = require('./_business-process-documents-and-data')
 , _       = require('mano').i18n.bind('Official: Revision');
 
 exports._parent = require('./user-base');
+exports._match = 'businessProcess';
 
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
