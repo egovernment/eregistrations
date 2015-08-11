@@ -2,8 +2,8 @@
 
 'use strict';
 
-var _  = require('mano').i18n.bind('User Submitted')
-, generateSections = require('./components/generate-sections');
+var _                = require('mano').i18n.bind('User Submitted')
+  , generateSections = require('./components/generate-sections');
 
 module.exports = function (businessProcess) {
 
