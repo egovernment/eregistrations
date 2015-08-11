@@ -20,7 +20,7 @@ module.exports = function (sections/*, options */) {
 	}
 	if (isSet(sections)) {
 		return ns.list(sections, function (section) {
-			section.toDOMForm(document, options);
+			return section.toDOMForm(document, options);
 		});
 	}
 	//TODO: Below is deprecated code which expects map (old model version)
