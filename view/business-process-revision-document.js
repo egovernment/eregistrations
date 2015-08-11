@@ -5,7 +5,7 @@
 var document = require('./_document'),
 revisionControle
 , _ = require('mano').i18n.bind('Official: Revision')
-, getSubUrl = require('./utils/_get-sub-url');
+, camelToHyphen = require('es5-ext/string/#/camel-to-hyphen');
 
 exports._parent = require('./user-base');
 exports._match = 'document';
@@ -13,8 +13,9 @@ exports._match = 'document';
 revisionControle = function (requirementUpload) {
 	var revFail, revFailOther;
 	return form(
-		{ id: 'revision-documento', action: url('revision',
-				getSubUrl(requirementUpload.owner, requirementUpload.document.uniqueKey)),
+		{ id: 'form-revision-requirement-upload',
+			action: '/revision-requirement-upload/' + requirementUpload.__id__ +
+				'/' + camelToHyphen.call(requirementUpload.document.uniqueKey) + '/',
 			method: 'post', class: 'submitted-preview-form' },
 		ul(
 			{ class: 'form-elements' },
@@ -37,12 +38,10 @@ revisionControle = function (requirementUpload) {
 			)
 		),
 		p(input({ type: 'submit', value: _("Save") })),
-		legacy('radioMatch', 'revision-documento', requirementUpload.__id__ + '/rejectReasonTypes', {
-			other: revFailOther.getId()
-		}),
-		legacy('radioMatch', 'revision-documento', requirementUpload.__id__ + '/status', {
-			invalid: revFail.getId()
-		})
+		legacy('radioMatch', 'form-revision-requirement-upload',
+			requirementUpload.__id__ + '/rejectReasonTypes', { other: revFailOther.getId() }),
+		legacy('radioMatch', 'form-revision-requirement-upload',
+			requirementUpload.__id__ + '/status', { invalid: revFail.getId() })
 	);
 };
 
