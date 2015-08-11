@@ -66,7 +66,7 @@ module.exports = {
 			this.payment = this.businessProcess.paymentReceiptUploads.applicable.first;
 			return true;
 		},
-		view: require('./view/official-revision-payment')
+		view: require('./view/business-process-revision-payment')
 	},
 	'official/user-id': require('./view/official-form'),
 	'official/user-id/certificates': require('./view/_certificates-form'),
