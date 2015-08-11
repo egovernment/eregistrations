@@ -2,7 +2,7 @@
 
 'use strict';
 
-module.exports = exports = require('../../view/payment');
+module.exports = exports = require('../../view/business-process-payment');
 
 exports._paymentHeading = function () {
 	return div(
