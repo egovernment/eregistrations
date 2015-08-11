@@ -17,3 +17,6 @@ require('mano-legacy/checkbox-toggle');
 
 require('../../client/legacy/form-section-state-helper');
 require('../../common/legacy/date-controls');
+
+// Assure empty mock
+$.refreshGuide = Function.prototype;
