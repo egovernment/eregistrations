@@ -4,28 +4,23 @@
 
 var document = require('./_payment'),
 paymentForm,
-_ = require('mano').i18n.bind('Official: Revision');
+_ = require('mano').i18n.bind('Official: Revision'),
+camelToHyphen = require('es5-ext/string/#/camel-to-hyphen');
 
 exports._parent = require('./user-base');
 
 paymentForm = function (paymentReceiptUpload) {
 	var revFail;
 	return form(
-		{ id: 'revision-documento', action: url('revision', ''),
+		{ id: 'revision-documento',
+			action: '/revision-requirement-upload/' + paymentReceiptUpload.__id__ +
+				'/' + camelToHyphen.call(paymentReceiptUpload.document.uniqueKey) + '/',
 			method: 'post', class: 'submitted-preview-form' },
 		ul(paymentReceiptUpload.costs, function (cost) {
 			li(cost.label, " ", cost.amount);
 		}),
 		ul(
 			{ class: 'form-elements' },
-			li(div({ class: 'input' },
-				_if(paymentReceiptUpload._correspondingCost, function () {
-					return label({ class: 'input-aside' },
-						input({ dbjs: paymentReceiptUpload.correspondingCost._isPaid, type: 'checkbox' }), " ",
-						span(paymentReceiptUpload.correspondingCost.receiptLabel, ": ",
-							paymentReceiptUpload.correspondingCost._amount));
-				})
-				)),
 			li(div({ class: 'input' }, input({ dbjs: paymentReceiptUpload._status }))),
 			li(
 				revFail = div({ class: 'official-form-document-revision-reject-reason' },
