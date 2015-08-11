@@ -56,7 +56,7 @@ module.exports = {
 	'revision/user-id': require('./view/business-process-revision'),
 	'revision/user-id/(document)': {
 		match: function () {
-			this.document = this.businessProcess.requirementUploads.applicable.first;
+			this.document = this.businessProcess.requirementUploads.applicable.first.document;
 			return true;
 		},
 		view: require('./view/business-process-revision-document')

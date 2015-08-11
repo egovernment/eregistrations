@@ -8,6 +8,7 @@ revisionControle
 , getSubUrl = require('./utils/_get-sub-url');
 
 exports._parent = require('./user-base');
+exports._match = 'document';
 
 revisionControle = function (requirementUpload) {
 	var revFail, revFailOther;
@@ -48,6 +49,6 @@ revisionControle = function (requirementUpload) {
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		document(this.document.document, revisionControle(this.document));
+		document(this.document, revisionControle(this.document.owner));
 	}
 };
