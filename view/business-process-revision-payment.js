@@ -13,7 +13,7 @@ paymentForm = function (paymentReceiptUpload) {
 	var revFail;
 	return form(
 		{ id: 'form-revision-payment-receipt',
-			action: '/form-revision-payment-receipt/' + paymentReceiptUpload.__id__ +
+			action: '/form-revision-payment-receipt/' + paymentReceiptUpload.owner.master.__id__ +
 				'/' + camelToHyphen.call(paymentReceiptUpload.document.uniqueKey) + '/',
 			method: 'post', class: 'submitted-preview-form' },
 		ul(paymentReceiptUpload.costs, function (cost) {
