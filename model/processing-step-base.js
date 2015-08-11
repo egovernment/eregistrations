@@ -24,6 +24,7 @@ module.exports = memoize(function (db) {
 
 		// Whether given step applies at all
 		isApplicable: { type: db.Boolean, value: true },
+
 		// Whether business process is at given step or have passed it
 		isReady: { type: db.Boolean, value: function (_observe) {
 			return Boolean(_observe(this.master._isSubmitted) && this.isApplicable);

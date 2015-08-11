@@ -52,14 +52,14 @@ module.exports = {
 	'users-admin/user-id': require('./view/users-admin-user'),
 
 	// Part-B routes - official user
-	official: require('./view/official'),
-	'revision/user-id': require('./view/official-revision'),
+	official: require('./view/business-processes-table'),
+	'revision/user-id': require('./view/business-process-revision'),
 	'revision/user-id/(document)': {
 		match: function () {
-			this.document = this.businessProcess.requirementUploads.applicable.first;
+			this.document = this.businessProcess.requirementUploads.applicable.first.document;
 			return true;
 		},
-		view: require('./view/official-revision-document')
+		view: require('./view/business-process-revision-document')
 	},
 	'revision/user-id/(payment)': {
 		match: function () {
@@ -71,7 +71,7 @@ module.exports = {
 	'official/user-id': require('./view/official-form'),
 	'official/user-id/certificates': require('./view/_certificates-form'),
 	'official/user-id/document': require('./view/official-document'),
-	'print-business-processes-list': require('./view/official-print'),
+	'print-business-processes-list': require('./view/print-business-processes-table'),
 
 	// Part-B routes - front-desk
 	'front-desk/user-id': require('./view/_front-desk'),

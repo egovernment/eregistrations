@@ -2,8 +2,9 @@
 
 'use strict';
 
-var _  = require('mano').i18n.bind('User Submitted')
-, generateSections = require('./components/generate-sections');
+var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
+  , _                = require('mano').i18n.bind('User Submitted')
+  , generateSections = require('./components/generate-sections');
 
 module.exports = function (businessProcess) {
 
@@ -38,7 +39,7 @@ module.exports = function (businessProcess) {
 										requirementUpload.document._issueDate);
 								td({ class: 'submitted-user-data-table-link' },
 									a({ href: '/document/' +
-										requirementUpload.document.uniqueKey + "/" },
+										camelToHyphen.call(requirementUpload.document.uniqueKey) + "/" },
 										span({ class: 'fa fa-search' }, _("Go to"))));
 							}
 						)
@@ -68,7 +69,7 @@ module.exports = function (businessProcess) {
 								td(receipt.document.label);
 								td({ class: 'submitted-user-data-table-issue-date' }, receipt.document._issueDate);
 								td({ class: 'submitted-user-data-table-link' },
-									a({ href: '/receipt/' + receipt.key + "/" },
+									a({ href: '/receipt/' + camelToHyphen.call(receipt.key) + "/" },
 										span({ class: 'fa fa-search' }, _("Go to"))));
 							}
 						)
@@ -99,7 +100,7 @@ module.exports = function (businessProcess) {
 								td(certificate._issuedBy);
 								td({ class: 'submitted-user-data-table-issue-date' }, certificate._issueDate);
 								td({ class: 'submitted-user-data-table-link' },
-									a({ href: '/certificate/' + certificate.key + "/" },
+									a({ href: '/certificate/' + camelToHyphen.call(certificate.key) + "/" },
 										span({ class: 'fa fa-search' }, _("Go to"))));
 							}
 						)
