@@ -2,23 +2,27 @@
 
 'use strict';
 
-var document = require('./_payment'),
+var document = require('./_document'),
 paymentForm,
 _ = require('mano').i18n.bind('Official: Revision'),
 camelToHyphen = require('es5-ext/string/#/camel-to-hyphen');
 
 exports._parent = require('./user-base');
+exports._match = 'document';
 
 paymentForm = function (paymentReceiptUpload) {
 	var revFail;
 	return form(
-		{ id: 'form-revision-payment-receipt',
-			action: '/form-revision-payment-receipt/' + paymentReceiptUpload.owner.master.__id__ +
-				'/' + camelToHyphen.call(paymentReceiptUpload.document.uniqueKey) + '/',
+		{ id: 'form-revision-payment-receipt-upload',
+			action: '/form-revision-payment-receipt/' + paymentReceiptUpload.master.__id__ +
+				'/' + camelToHyphen.call(paymentReceiptUpload.key) + '/',
 			method: 'post', class: 'submitted-preview-form' },
-		ul(paymentReceiptUpload.costs, function (cost) {
-			li(cost.label, " ", cost.amount);
-		}),
+		p(_("Uploaded payment receipt applies to following costs:")),
+		ul({ class: 'user-guide-costs-list' },
+				paymentReceiptUpload.costs, function (cost) {
+				li(span({ class: 'user-guide-costs-list-label' }, cost.label),
+					span(cost.amount));
+			}),
 		ul(
 			{ class: 'form-elements' },
 			li(div({ class: 'input' }, input({ dbjs: paymentReceiptUpload._status }))),
@@ -28,9 +32,8 @@ paymentForm = function (paymentReceiptUpload) {
 			)
 		),
 		p(input({ type: 'submit', value: _("Save") })),
-		legacy('radioMatch', 'form-revision-payment-receipt', paymentReceiptUpload.__id__ + '/status', {
-			invalid: revFail.getId()
-		})
+		legacy('radioMatch', 'form-revision-payment-receipt-upload',
+			paymentReceiptUpload.__id__ + '/status', { invalid: revFail.getId() })
 	);
 };
 
