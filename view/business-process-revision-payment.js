@@ -12,8 +12,8 @@ exports._parent = require('./user-base');
 paymentForm = function (paymentReceiptUpload) {
 	var revFail;
 	return form(
-		{ id: 'revision-documento',
-			action: '/revision-requirement-upload/' + paymentReceiptUpload.__id__ +
+		{ id: 'form-revision-payment-receipt',
+			action: '/form-revision-payment-receipt/' + paymentReceiptUpload.__id__ +
 				'/' + camelToHyphen.call(paymentReceiptUpload.document.uniqueKey) + '/',
 			method: 'post', class: 'submitted-preview-form' },
 		ul(paymentReceiptUpload.costs, function (cost) {
@@ -28,7 +28,7 @@ paymentForm = function (paymentReceiptUpload) {
 			)
 		),
 		p(input({ type: 'submit', value: _("Save") })),
-		legacy('radioMatch', 'revision-documento', paymentReceiptUpload.__id__ + '/status', {
+		legacy('radioMatch', 'form-revision-payment-receipt', paymentReceiptUpload.__id__ + '/status', {
 			invalid: revFail.getId()
 		})
 	);
