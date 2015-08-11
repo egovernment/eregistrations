@@ -40,6 +40,6 @@ paymentForm = function (paymentReceiptUpload) {
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		document(this.payment.document, paymentForm(this.payment));
+		document(this.document, paymentForm(this.document.owner));
 	}
 };

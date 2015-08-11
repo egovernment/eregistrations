@@ -63,7 +63,7 @@ module.exports = {
 	},
 	'revision/user-id/(payment)': {
 		match: function () {
-			this.payment = this.businessProcess.paymentReceiptUploads.applicable.first;
+			this.document = this.businessProcess.paymentReceiptUploads.applicable.first.document;
 			return true;
 		},
 		view: require('./view/business-process-revision-payment')
