@@ -68,7 +68,7 @@ module.exports = {
 		},
 		view: require('./view/business-process-revision-payment')
 	},
-	'official/user-id': require('./view/official-form'),
+	'official/user-id': require('./view/business-process-official'),
 	'official/user-id/certificates': require('./view/_certificates-form'),
 	'official/user-id/document': require('./view/official-document'),
 	'print-business-processes-list': require('./view/print-business-processes-table'),
