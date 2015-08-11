@@ -13,6 +13,7 @@ require('mano-legacy/hash-nav-ordered-list');
 require('mano-legacy/hash-nav-ordered-list-controls');
 require('mano-legacy/hash-nav-tabs');
 require('mano-legacy/ie8-font-visibility-fix');
+require('mano-legacy/checkbox-toggle');
 
 require('../../client/legacy/form-section-state-helper');
 require('../../common/legacy/date-controls');

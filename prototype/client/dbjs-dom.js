@@ -2,6 +2,7 @@
 
 var domEnum = require('dbjs-dom/enum')
   , db      = require('mano').db
+  , requirementUpload = db.RequirementUpload.prototype
 
   , user = db.User.prototype;
 
@@ -41,10 +42,13 @@ require('../../view/dbjs/section-entities-table-to-dom');
 require('../../view/dbjs/multiple');
 require('../../view/dbjs/section-sides-to-dom');
 
+requirementUpload.$status.DOMInput = require('../../view/dbjs/_enum-inline-button-group');
+
 domEnum(db.Role);
 domEnum(db.CompanyType);
 domEnum(db.NotificationType);
 domEnum(db.StreetTypeChoice);
+domEnum(db.RequirementUploadRejectReason);
 
 user.$street.DOMInput = require('dbjs-dom/input/composites/line');
 user.$isDebtContinusStatus.DOMInput =
