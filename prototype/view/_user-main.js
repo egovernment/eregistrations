@@ -2,7 +2,7 @@
 
 'use strict';
 
-module.exports = exports = require('../../view/user-registration-base');
+module.exports = exports = require('../../view/business-process-base');
 
 exports['submitted-menu'] = function () {
 	li(a({ href: '/guide/', class: 'submitted-menu-item-active' }, "Process"));

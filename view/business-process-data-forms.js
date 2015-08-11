@@ -8,7 +8,7 @@ var generateSections = require('./components/generate-form-sections')
 , _  = require('mano').i18n.bind('Registration')
 , errorMsg = require('./_user-registration-error-info').errorMsg;
 
-exports._parent = require('./user-registration-base');
+exports._parent = require('./business-process-base');
 
 exports['step-guide'] = { class: { 'step-form': true } };
 

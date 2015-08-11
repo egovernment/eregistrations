@@ -7,7 +7,7 @@ var _  = require('mano').i18n.bind('User')
   , toIdString = require('dom-ext/html-document/to-id-string')
   , baseUrl = url;
 
-exports._parent = require('./user-registration-base');
+exports._parent = require('./business-process-base');
 exports._match = 'entity';
 
 exports['step-guide'] = { class: { 'step-form': true } };

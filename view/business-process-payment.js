@@ -6,7 +6,7 @@ var _  = require('mano').i18n.bind('Registration'),
 errorMsg = require('./_user-registration-error-info').errorMsg,
 _d = _;
 
-exports._parent = require('./user-registration-base');
+exports._parent = require('./business-process-base');
 
 exports['step-pay'] = { class: { 'step-active': true } };
 

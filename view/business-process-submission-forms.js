@@ -6,7 +6,7 @@ var generateSections = require('./components/generate-form-sections')
   , errorMsg = require('./_user-registration-error-info').errorMsg
   , _  = require('mano').i18n.bind('Registration');
 
-exports._parent = require('./user-registration-base');
+exports._parent = require('./business-process-base');
 
 exports['step-submission'] = { class: { 'step-active': true } };
 
