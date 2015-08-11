@@ -11,7 +11,7 @@ exports._parent = require('./user-base');
 exports._match = 'document';
 
 revisionControle = function (requirementUpload) {
-	var revFail, revFailOther;
+	var revFail, revFailOther, revFailInput;
 	return form(
 		{ id: 'form-revision-requirement-upload',
 			action: '/revision-requirement-upload/' + requirementUpload.__id__ +
@@ -19,18 +19,11 @@ revisionControle = function (requirementUpload) {
 			method: 'post', class: 'submitted-preview-form' },
 		ul(
 			{ class: 'form-elements' },
-			li(div({ class: 'input' },
-				_if(requirementUpload._correspondingCost, function () {
-					return label({ class: 'input-aside' },
-						input({ dbjs: requirementUpload.correspondingCost._isPaid, type: 'checkbox' }), " ",
-						span(requirementUpload.correspondingCost.receiptLabel, ": ",
-							requirementUpload.correspondingCost._amount));
-				})
-				)),
 			li(div({ class: 'input' }, input({ dbjs: requirementUpload._status }))),
 			li(
 				revFail = div({ class: 'input' },
-					input({ dbjs: requirementUpload._rejectReasonTypes, type: 'checkbox' }))
+					revFailInput = input({ dbjs: requirementUpload._rejectReasonTypes, type: 'checkbox' })
+						._dbjsInput)
 			),
 			li(
 				revFailOther = div({ class: 'official-form-document-revision-reject-reason' },
@@ -39,9 +32,9 @@ revisionControle = function (requirementUpload) {
 		),
 		p(input({ type: 'submit', value: _("Save") })),
 		legacy('radioMatch', 'form-revision-requirement-upload',
-			requirementUpload.__id__ + '/rejectReasonTypes', { other: revFailOther.getId() }),
-		legacy('radioMatch', 'form-revision-requirement-upload',
-			requirementUpload.__id__ + '/status', { invalid: revFail.getId() })
+			requirementUpload.__id__ + '/status', { invalid: revFail.getId() }),
+		legacy('checkboxToggle', normalize(revFailInput.itemsByValue.other.dom).getId(),
+				revFailOther.getId())
 	);
 };
 
