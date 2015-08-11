@@ -2,7 +2,7 @@
 
 'use strict';
 
-module.exports = exports = require('../../view/add-edit-entity');
+module.exports = exports = require('../../view/business-process-add-edit-entity');
 
 exports._entitiesTableRootUrl = function () {
 	return '/forms/';
