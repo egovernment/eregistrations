@@ -14,14 +14,14 @@ paymentForm = function (paymentReceiptUpload) {
 	var revFail;
 	return form(
 		{ id: 'form-revision-payment-receipt-upload',
-			action: '/form-revision-payment-receipt/' + paymentReceiptUpload.master.__id__ +
+			action: '/fform-revision-payment-receipt-upload/' + paymentReceiptUpload.master.__id__ +
 				'/' + camelToHyphen.call(paymentReceiptUpload.key) + '/',
 			method: 'post', class: 'submitted-preview-form' },
 		p(_("Uploaded payment receipt applies to following costs:")),
 		ul({ class: 'user-guide-costs-list' },
 				paymentReceiptUpload.costs, function (cost) {
-				li(span({ class: 'user-guide-costs-list-label' }, cost.label),
-					span(cost.amount));
+				li(span({ class: 'user-guide-costs-list-label' }, cost._label),
+					span(cost._amount));
 			}),
 		ul(
 			{ class: 'form-elements' },
