@@ -59,7 +59,7 @@ module.exports = {
 			this.document = this.businessProcess.requirementUploads.applicable.first;
 			return true;
 		},
-		view: require('./view/official-revision-document')
+		view: require('./view/business-process-revision-document')
 	},
 	'official/user-id': require('./view/official-form'),
 	'official/user-id/certificates': require('./view/_certificates-form'),
