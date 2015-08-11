@@ -43,8 +43,7 @@ var appLocation    = window.appLocation = require('mano/lib/client/location')
   , last           = require('es5-ext/string/#/last')
   , postRouter     = require('mano/client/post-router')
   , DomjsSiteTree  = require('domjs-site-tree')
-  , SiteTreeRouter = require('site-tree-router')
-  , update;
+  , SiteTreeRouter = require('site-tree-router');
 
 // Supress form submissions, but do not provide any form controllers
 postRouter({});
@@ -55,14 +54,14 @@ router = new SiteTreeRouter(require('../routes'), siteTree, {
 	eventProto: { user: db.User.prototype, businessProcess: db.firstBusinessProcess,
 		processingStep: db.firstBusinessProcess.processingSteps.map.revision  }
 });
-appLocation.on('change', update = function () {
+appLocation.on('change', function () {
 	if (last.call(appLocation.pathname) !== '/') {
 		appLocation.goto(appLocation.pathname + '/' + appLocation.search + appLocation.hash);
 		return;
 	}
 	router.route(appLocation.pathname);
 });
-update();
+appLocation.onchange();
 
 if (location.hash) appLocation.goto(location.pathname + location.search + location.hash);
 if (window.performance && window.performance.now) {
