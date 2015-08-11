@@ -3,18 +3,18 @@
 'use strict';
 
 var document = require('./_document'),
-revisionControle
+revisionForm
 , _ = require('mano').i18n.bind('Official: Revision')
 , camelToHyphen = require('es5-ext/string/#/camel-to-hyphen');
 
 exports._parent = require('./user-base');
 exports._match = 'document';
 
-revisionControle = function (requirementUpload) {
+revisionForm = function (requirementUpload) {
 	var revFail, revFailOther, revFailInput;
 	return form(
 		{ id: 'form-revision-requirement-upload',
-			action: '/revision-requirement-upload/' + requirementUpload.__id__ +
+			action: '/revision-requirement-upload/' + requirementUpload.master.__id__ +
 				'/' + camelToHyphen.call(requirementUpload.document.uniqueKey) + '/',
 			method: 'post', class: 'submitted-preview-form' },
 		ul(
@@ -41,6 +41,6 @@ revisionControle = function (requirementUpload) {
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		document(this.document, revisionControle(this.document.owner));
+		document(this.document, revisionForm(this.document.owner));
 	}
 };
