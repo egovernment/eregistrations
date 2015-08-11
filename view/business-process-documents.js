@@ -3,7 +3,7 @@
 'use strict';
 
 var _  = require('mano').i18n.bind('Registration'),
-errorMsg = require('./_user-registration-error-info').errorMsg,
+errorMsg = require('./_business-process-error-info').errorMsg,
 _d = _;
 
 exports._parent = require('./business-process-base');

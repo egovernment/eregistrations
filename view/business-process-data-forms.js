@@ -6,7 +6,7 @@ var generateSections = require('./components/generate-form-sections')
 , sectionsToFormNavConfig = require('./components/utils/sections-to-form-nav-config')
 , incompleteFormNav = require('./components/incomplete-form-nav')
 , _  = require('mano').i18n.bind('Registration')
-, errorMsg = require('./_user-registration-error-info').errorMsg;
+, errorMsg = require('./_business-process-error-info').errorMsg;
 
 exports._parent = require('./business-process-base');
 
