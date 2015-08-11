@@ -300,6 +300,26 @@ processes.forEach(function (businessProcess) {
 		});
 	});
 
+	businessProcess.paymentReceiptUploads.applicable.first.document
+		.statusLog.map.get('received').setProperties({
+			label: 'Payment receipt received',
+			time: new Date(2015, 27, 7),
+			text: 'Lorem ipsum dolor sit'
+		});
+	businessProcess.paymentReceiptUploads.applicable.first.document
+		.statusLog.map.get('rejected').setProperties({
+			label: 'Payment receipt rejected',
+			time: new Date(2015, 27, 7),
+			text: 'Lorem ipsum dolor sit'
+		});
+
+	businessProcess.paymentReceiptUploads.applicable.first.document
+		.statusLog.map.get('reviewed').setProperties({
+			label: 'Payment receipt reviewed',
+			time: new Date(2015, 27, 7),
+			text: 'Lorem ipsum dolor sit'
+		});
+
 	businessProcess.requirementUploads.applicable.forEach(function (upload) {
 		upload.document.issueDate = new Date(2015, 23, 7);
 	});
@@ -322,6 +342,17 @@ processes.forEach(function (businessProcess) {
 			time: new Date(2015, 27, 7),
 			text: 'Lorem ipsum dolor sit'
 		});
+
+	businessProcess.paymentReceiptUploads.applicable.first.document.files.map.
+			get('idDoc').setProperties({
+			name: 'idoc.jpg',
+			type: 'image/jpeg',
+			diskSize: 376306,
+			path: 'doc-a-sub-file1.idoc.jpg',
+			url: '/uploads/doc-a-sub-file1.idoc.jpg'
+		});
+	businessProcess.paymentReceiptUploads.applicable.first.document.files.map.
+			get('idDoc').thumb.url = '/uploads/doc-a-sub-file1.idoc.jpg';
 
 	businessProcess.requirementUploads.applicable.first.document.files.map.
 			get('idDoc').setProperties({
