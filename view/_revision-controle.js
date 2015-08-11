@@ -2,12 +2,14 @@
 
 'use strict';
 
-var _ = require('mano').i18n.bind('Official: Revision');
+var _ = require('mano').i18n.bind('Official: Revision')
+  , getSubUrl = require('./utils/_get-sub-url');
 
 module.exports = function (requirementUpload) {
 	var revFail, revFailOther;
 	return form(
-		{ id: 'revision-documento', action: url('revision', ''),
+		{ id: 'revision-documento', action: url('revision',
+				getSubUrl(requirementUpload.owner, requirementUpload.document.uniqueKey)),
 			method: 'post', class: 'submitted-preview-form' },
 		ul(
 			{ class: 'form-elements' },
@@ -29,7 +31,7 @@ module.exports = function (requirementUpload) {
 					field({ dbjs: requirementUpload._rejectReasonMemo }))
 			)
 		),
-		p(input({ class: 'enviar-btn', type: 'submit', value: _("Save") })),
+		p(input({ type: 'submit', value: _("Save") })),
 		legacy('radioMatch', 'revision-documento', requirementUpload.__id__ + '/rejectReasonTypes', {
 			other: revFailOther.getId()
 		}),
