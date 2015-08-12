@@ -44,6 +44,7 @@ module.exports = {
 	'print-request-history': require('../view/print-business-process-status-log'),
 	'data-print': require('./view/print-user-data'),
 	'user-submitted/print-user-data-alternative': require('./view/print-user-data-alternative'),
+	'print-business-processes-data': require('../view/print-business-process-data'),
 
 	// Part-B routes - users admin
 	'users-admin': require('./view/users-admin'),
