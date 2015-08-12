@@ -68,9 +68,12 @@ module.exports = {
 		},
 		view: require('./view/business-process-revision-payment')
 	},
-	'official/business-process-official-details': require('./view/business-process-official-form'),
+	firstBusinessProcess: {
+		match: function () { return true; },
+		view: require('./view/business-process-official-form')
+	},
 	'official/user-id/certificates': require('./view/_certificates-form'),
-	'official/business-process-official-form/(document)': {
+	'firstBusinessProcess/documents-and-data': {
 		match: function () {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;
 			return true;

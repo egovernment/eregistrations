@@ -15,11 +15,11 @@ exports['sub-main'] = {
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab',
 					id: 'business-process-official-form',
-					href: '/official/business-process-official-details/' },
+					href: '/' + this.businessProcess.__id__ + '/' },
 				this.processingStep.label),
 			a({ class: 'section-tab-nav-tab',
 					id: 'business-process-official-details',
-					href: '/official/business-process-official-form/document/' },
+					href: '/' + this.businessProcess.__id__ + '/documents-and-data/' },
 				_("Documents and data")),
 			div({ id: 'tab' }));
 	}
