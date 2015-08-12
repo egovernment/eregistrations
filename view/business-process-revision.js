@@ -47,6 +47,6 @@ exports['sub-main'] = {
 				_("Reject application"))
 		]));
 
-		renderDocumentsAndData(this.businessProcess);
+		renderDocumentsAndData(this.businessProcess, { urlPrefix: '/' + this.businessProcess.__id__ });
 	}
 };
