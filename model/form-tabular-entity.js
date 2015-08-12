@@ -9,6 +9,7 @@ module.exports = memoize(function (db) {
 	validDb(db);
 	StringLine = defineStringLine(db);
 	return db.Object.extend('FormTabularEntity', {
+		label: { type: StringLine },
 		propertyName: { type: StringLine, required: true },
 		desktopOnly: { type: db.Boolean, value: false },
 		mobileOnly: { type: db.Boolean, value: false }
