@@ -8,6 +8,7 @@ exports._parent = require('./business-process-official');
 
 exports.tab = {
 	content: function () {
-		businessProcessData(this.businessProcess, { urlPrefix: this.businessProcess.__id__ });
+		businessProcessData(this.businessProcess,
+			{ urlPrefix: '/' + this.businessProcess.__id__ + '/' });
 	}
 };
