@@ -113,7 +113,7 @@ module.exports = function (businessProcess/*, options*/) {
 			h2({ class: 'container-with-nav' }, _("Form data"),
 				a(
 					{ class: 'hint-optional hint-optional-left',
-						'data-hint': 'Print your application form', href: urlPrefix + 'data-print/',
+						'data-hint': _("Print your application form"), href: urlPrefix + 'data-print/',
 						target: '_blank' },
 					span({ class: 'fa fa-print' }, _("Print"))
 				)),
