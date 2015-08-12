@@ -1,6 +1,6 @@
 'use strict';
 
-var document = require('./_document');
+var document = require('./_business-process-document');
 
 exports._parent = require('./user-base');
 exports._match = 'document';

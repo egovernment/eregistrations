@@ -107,7 +107,7 @@ module.exports = function (businessProcess) {
 					)
 				)])),
 		section({ class: 'section-primary entity-data-section-side' },
-			h2({ class: 'container-with-nav' }, _("Date"),
+			h2({ class: 'container-with-nav' }, _("Form data"),
 				a(
 					{ class: 'hint-optional hint-optional-left',
 						'data-hint': 'Print your application form',

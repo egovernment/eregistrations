@@ -5,7 +5,7 @@
 var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen'),
 _  = require('mano').i18n.bind('Registration');
 
-exports._parent = require('./user-registration-base');
+exports._parent = require('./business-process-base');
 
 exports['step-guide'] = { class: { 'step-active': true } };
 

@@ -2,7 +2,7 @@
 
 'use strict';
 
-module.exports = exports = require('../../view/documents');
+module.exports = exports = require('../../view/business-process-documents');
 
 exports._documentsHeading = function () {
 	return div(

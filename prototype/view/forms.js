@@ -2,7 +2,7 @@
 
 'use strict';
 
-module.exports = exports = require('../../view/forms');
+module.exports = exports = require('../../view/business-process-data-forms');
 
 exports._formsHeading = function () {
 	return div(

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = exports = require('../../view/guide');
+module.exports = exports = require('../../view/business-process-guide');
 
 require('./_inventory');
 
