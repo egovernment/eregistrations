@@ -46,6 +46,7 @@
 	font-weight: bold;
 	display: block;
 	text-align: center;
+	padding: 0 10px;
 }
 
 .entities-overview-table .completed .status-complete {
