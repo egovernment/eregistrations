@@ -16,7 +16,7 @@ exports['sub-main'] = {
 
 		renderMainInfo(this.businessProcess);
 
-		insert(_if(revisionStep._isPending, [
+		insert(_if(revisionStep._isPending, section({ class: 'official-submission-toolbar' },
 			// show buttons only if step is pending
 
 			_if(eq(revisionStep._revisionProgress, 1),
@@ -33,8 +33,8 @@ exports['sub-main'] = {
 						{ action: url('revision', this.businessProcess.__id__, 'return'),
 							buttonClass: 'button-main',
 							class: 'hint-optional hint-optional-bottom',
-							'data-hint': _("You can reject the registration when documents and/or data that is" +
-								" sent can be determined as not real."),
+							'data-hint': _("You can reject the registration when documents and/or " +
+								"data that is sent can be determined as not real."),
 							value: _("Return for corrections") }
 					))),
 					// show reject button at all times when revision is pending
@@ -45,7 +45,7 @@ exports['sub-main'] = {
 					" a notification with information on the changes that must be done in his form or" +
 					" in the documents that your request.") },
 				_("Reject application"))
-		]));
+			)));
 
 		renderDocumentsAndData(this.businessProcess,
 			{ urlPrefix: '/' + this.businessProcess.__id__ + '/' });
