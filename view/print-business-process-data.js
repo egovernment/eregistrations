@@ -2,14 +2,15 @@
 'use strict';
 
 var _      = require('mano').i18n.bind('User')
-  , format = require('es5-ext/date/#/format')
+  , db = require('mano').db
   , generateSections = require('eregistrations/view/components/generate-sections');
 
 exports._parent = require('./print-base');
 
 exports['print-page-title'] = function () {
-	h2(_("Data of"), " ", this.businessProcess._businessName);
-	p(format.call(new Date(), '%d/%m/%Y'));
+	h2(_("Data of ${ businessProcessName }",
+		{ businessProcessName: this.businessProcess._businessName }));
+	p(new db.Date());
 };
 
 exports.main = function () {
