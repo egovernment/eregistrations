@@ -42,6 +42,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.approvalProgress, 0);
+	a(step.revisionProgress, 0);
 
 	a.h1("Submitted");
 	businessProcess.requirementUploads.map.req.document.files.map.newUniq().path = '/elo.png';
@@ -54,6 +56,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.approvalProgress, 0);
+	a(step.revisionProgress, 0);
 
 	a.h2("Not applicable");
 	step.isApplicable = false;
@@ -65,6 +69,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.approvalProgress, 0);
+	a(step.revisionProgress, 0);
 	step.isApplicable = true;
 
 	a.h2("Paused");
@@ -77,6 +83,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.approvalProgress, 0);
+	a(step.revisionProgress, 0);
 
 	a.h2("Sent back");
 	step.status = 'sentBack';
@@ -90,6 +98,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.approvalProgress, 0);
+	a(step.revisionProgress, 0);
 
 	a.h3("Complete");
 	businessProcess.requirementUploads.map.req.status = 'invalid';
@@ -102,6 +112,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.approvalProgress, 0);
+	a(step.revisionProgress, 1);
 
 	a.h2("Rejected");
 	step.status = 'rejected';
@@ -115,6 +127,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.approvalProgress, 0);
+	a(step.revisionProgress, 1);
 
 	a.h3("Complete");
 	step.rejectionReason = "Whateever ..";
@@ -126,6 +140,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, true);
 	a(step.isApproved, false);
 	a(step.isClosed, true);
+	a(step.approvalProgress, 0);
+	a(step.revisionProgress, 1);
 
 	a.h2("Approved");
 	step.status = 'approved';
@@ -139,6 +155,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.approvalProgress, 0);
+	a(step.revisionProgress, 1);
 
 	a.h3("Complete");
 	businessProcess.requirementUploads.map.req.status = 'valid';
@@ -150,4 +168,6 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, true);
 	a(step.isClosed, true);
+	a(step.approvalProgress, 1);
+	a(step.revisionProgress, 1);
 };

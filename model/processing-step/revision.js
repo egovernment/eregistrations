@@ -3,12 +3,15 @@
 'use strict';
 
 var memoize                  = require('memoizee/plain')
+  , definePercentage         = require('dbjs-ext/number/percentage')
   , _                        = require('mano').i18n.bind('Model')
   , defineProcessingStep     = require('../processing-step')
   , defineRequirementUploads = require('../business-process-new/requirement-uploads')
   , defineProcessingSteps    = require('../business-process-new/processing-steps');
 
 module.exports = memoize(function (db) {
+	var Percentage = definePercentage(db);
+
 	defineRequirementUploads(db);
 	defineProcessingSteps(db);
 	return defineProcessingStep(db).extend('RevisionProcessingStep', {
@@ -27,10 +30,10 @@ module.exports = memoize(function (db) {
 
 		// Progress of revision
 		// All applicable requirement uploads must be revised
-		revisionProgress: { value: function (_observe) {
+		revisionProgress: { type: Percentage, value: function (_observe) {
 			var weight = 0, progress = 0, itemWeight;
 			weight += itemWeight = _observe(this.master.requirementUploads.applicable).size;
-			progress += _observe(this.master.requirementUploads._revsionProgress) * itemWeight;
+			progress += _observe(this.master.requirementUploads._revisionProgress) * itemWeight;
 			weight += itemWeight = _observe(this.master.paymentReceiptUploads.applicable).size;
 			progress += _observe(this.master.paymentReceiptUploads._revisionProgress) * itemWeight;
 			return weight ? (progress / weight) : 1;
