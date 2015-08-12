@@ -6,7 +6,9 @@ var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
   , _                = require('mano').i18n.bind('User Submitted')
   , generateSections = require('./components/generate-sections');
 
-module.exports = function (businessProcess) {
+module.exports = function (businessProcess/*, options*/) {
+	var options = Object(arguments[1])
+	  , urlPrefix = options.urlPrefix || '/';
 
 	return [section({ class: 'section-primary' },
 		h2(_("Documents")),
@@ -38,7 +40,7 @@ module.exports = function (businessProcess) {
 								td({ class: 'submitted-user-data-table-issue-date' },
 										requirementUpload.document._issueDate);
 								td({ class: 'submitted-user-data-table-link' },
-									a({ href: '/document/' +
+									a({ href: urlPrefix + 'document/' +
 										camelToHyphen.call(requirementUpload.document.uniqueKey) + "/" },
 										span({ class: 'fa fa-search' }, _("Go to"))));
 							}
@@ -69,7 +71,7 @@ module.exports = function (businessProcess) {
 								td(receipt.document.label);
 								td({ class: 'submitted-user-data-table-issue-date' }, receipt.document._issueDate);
 								td({ class: 'submitted-user-data-table-link' },
-									a({ href: '/receipt/' + camelToHyphen.call(receipt.key) + "/" },
+									a({ href: urlPrefix + 'receipt/' + camelToHyphen.call(receipt.key) + "/" },
 										span({ class: 'fa fa-search' }, _("Go to"))));
 							}
 						)
@@ -100,7 +102,8 @@ module.exports = function (businessProcess) {
 								td(certificate._issuedBy);
 								td({ class: 'submitted-user-data-table-issue-date' }, certificate._issueDate);
 								td({ class: 'submitted-user-data-table-link' },
-									a({ href: '/certificate/' + camelToHyphen.call(certificate.key) + "/" },
+									a({ href: urlPrefix + 'certificate/' +
+										camelToHyphen.call(certificate.key) + '/' },
 										span({ class: 'fa fa-search' }, _("Go to"))));
 							}
 						)
@@ -110,8 +113,7 @@ module.exports = function (businessProcess) {
 			h2({ class: 'container-with-nav' }, _("Form data"),
 				a(
 					{ class: 'hint-optional hint-optional-left',
-						'data-hint': 'Print your application form',
-						href: '/data-print/',
+						'data-hint': _("Print your application form"), href: urlPrefix + 'data-print/',
 						target: '_blank' },
 					span({ class: 'fa fa-print' }, _("Print"))
 				)),
