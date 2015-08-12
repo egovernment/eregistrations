@@ -85,10 +85,10 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 						ns.tr(ns.list(this.entities, function (entity) {
 							return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
 										ns._if(entity._mobileOnly, 'mobile-only')) },
-									resolvePropertyPath(
+									or(entity._label, resolvePropertyPath(
 									collectionType.prototype,
 									entity.propertyName
-								).descriptor.label);
+								).descriptor.label));
 						}), ns.th(),
 							ns.th({ class: 'actions' }))
 					),
