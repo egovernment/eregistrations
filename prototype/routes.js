@@ -68,9 +68,15 @@ module.exports = {
 		},
 		view: require('./view/business-process-revision-payment')
 	},
-	'official/user-id': require('./view/business-process-official'),
+	'official/business-process-official-details': require('./view/business-process-official-form'),
 	'official/user-id/certificates': require('./view/_certificates-form'),
-	'official/user-id/document': require('./view/official-document'),
+	'official/business-process-official-form/(document)': {
+		match: function () {
+			this.document = this.businessProcess.requirementUploads.applicable.first.document;
+			return true;
+		},
+		view: require('./view/business-process-official-data')
+	},
 	'print-business-processes-list': require('./view/print-business-processes-table'),
 
 	// Part-B routes - front-desk
