@@ -6,6 +6,7 @@ var _      = require('mano').i18n.bind('User')
   , generateSections = require('eregistrations/view/components/generate-sections');
 
 exports._parent = require('./print-base');
+exports._match = 'businessProcess';
 
 exports['print-page-title'] = function () {
 	h2(_("Data of ${ businessProcessName }",
