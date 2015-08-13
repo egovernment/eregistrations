@@ -3,8 +3,8 @@
 'use strict';
 
 var generateSections = require('./components/generate-form-sections')
-  , errorMsg = require('./_business-process-error-info').errorMsg
-  , _  = require('mano').i18n.bind('Registration');
+  , errorMsg         = require('./_business-process-error-info').errorMsg
+  , _                = require('mano').i18n.bind('Registration');
 
 exports._parent = require('./business-process-base');
 
@@ -13,7 +13,7 @@ exports['step-submission'] = { class: { 'step-active': true } };
 exports.step = function () {
 	exports._submissionHeading();
 
-	insert(errorMsg(this, exports._sentBackInformation));
+	insert(errorMsg(this));
 
 	div({ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
 				'disabler-active')], id: 'forms-disabler-range' },

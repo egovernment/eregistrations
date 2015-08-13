@@ -2,9 +2,10 @@
 
 'use strict';
 
-var _  = require('mano').i18n.bind('Registration'),
-errorMsg = require('./_business-process-error-info').errorMsg,
-_d = _;
+var _        = require('mano').i18n.bind('Registration')
+  , errorMsg = require('./_business-process-error-info').errorMsg
+
+  , _d = _;
 
 exports._parent = require('./business-process-base');
 
@@ -13,7 +14,7 @@ exports['step-documents'] = { class: { 'step-active': true } };
 exports.step = function () {
 	exports._documentsHeading();
 
-	insert(errorMsg(this, exports._sentBackInformation));
+	insert(errorMsg(this));
 
 	div(
 		{ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),

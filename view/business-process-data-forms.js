@@ -15,7 +15,7 @@ exports['step-guide'] = { class: { 'step-form': true } };
 exports.step = function () {
 	exports._formsHeading();
 
-	insert(errorMsg(this, exports._sentBackInformation));
+	insert(errorMsg(this));
 
 	div({ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
 				'disabler-active')], id: 'forms-disabler-range' },
