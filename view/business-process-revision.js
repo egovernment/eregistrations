@@ -37,7 +37,7 @@ exports['sub-main'] = {
 							value: _("Return for corrections") }
 					))),
 					// show reject button at all times when revision is pending
-			dialog({ id: 'reject-reason', class: 'dialog-reject dialog-modal' },
+			[dialog({ id: 'reject-reason', class: 'dialog-reject dialog-modal' },
 				header(
 					label({ for: 'revision-reject-reason' }, h3(_("Reason for rejection of the file")))
 				),
@@ -47,13 +47,13 @@ exports['sub-main'] = {
 								dbjs: this.processingStep._rejectionReason })),
 						p(input({ type: 'submit', value: _("Reject") })))),
 				footer(p(a({ href: '' }, _("Cancel"))))),
-			a({ href: '#reject-reason',
-				class: 'button-main button-main-error hint-optional' +
-				' hint-optional-right hint-optional-multiline',
-				'data-hint': _("When returning the application for corrections, the user will receive" +
-					" a notification with information on the changes that must be done in his form or" +
-					" in the documents that your request.") },
-				_("Reject application"))
+				a({ href: '#reject-reason',
+					class: 'button-main button-main-error hint-optional' +
+					' hint-optional-right hint-optional-multiline',
+					'data-hint': _("When returning the application for corrections, the user will receive" +
+						" a notification with information on the changes that must be done in his form or" +
+						" in the documents that your request.") },
+					_("Reject application"))]
 			)));
 
 		renderDocumentsAndData(this.businessProcess,
