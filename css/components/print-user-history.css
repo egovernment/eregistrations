@@ -8,3 +8,7 @@
 	line-height: 22px;
 	text-align: left;
 }
+
+.print-user-history-time {
+	white-space: nowrap;
+}

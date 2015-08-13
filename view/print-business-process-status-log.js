@@ -1,7 +1,6 @@
 'use strict';
 
-var _      = require('mano').i18n.bind('User')
-  , format = require('es5-ext/date/#/format');
+var _ = require('mano').i18n.bind('User')
 
 exports._parent = require('./print-base');
 exports._match = 'businessProcess';
@@ -14,10 +13,10 @@ exports.main = function () {
 		{ class: 'print-user-history' },
 		tbody(this.businessProcess.statusLog.ordered,
 			function (log) {
-				th(div(log.label));
-				td(div(format.call(log.time, '%d/%m/%Y %H:%M')));
-				td(div(log.text));
-				td(div(log.official));
+				th(log.label);
+				td({ class: 'print-user-history-time' }, log._time);
+				td(log.text);
+				td(log.official);
 			})
 	);
 };
