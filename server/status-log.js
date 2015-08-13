@@ -51,6 +51,7 @@ exports.forEach(function (conf) {
 			statusLog = businessProcess.statusLog.map.newUniq();
 			if (conf.official) {
 				official = businessProcess.resolveSKeyPath(conf.official);
+				if (official) official = official.value;
 			}
 			statusLog.setProperties({
 				label: conf.label,
