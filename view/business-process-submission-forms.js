@@ -44,21 +44,21 @@ exports.step = function () {
 				p(_("Before sending, you must accept that the information entered into the system, " +
 					"would be saved and processed by the involved institutions")),
 				hr(),
-				field(
-					{ dbjs: this.businessProcess.submissionForms._isAffidavitSigned,
-						type: 'checkbox',
-						control: { id: 'input-certified-truth' },
-						label: _("I declare under oath that the information entered into the system " +
-											"is absolute and faithfully to the reality."),
-						render: function (input, options) {
-							return label({ class: 'input-aside' },
-								input,
-								span(" ", options.label),
-								span({ class: 'status-missing' }, '*'),
-								span({ class: 'status-ok' }, '✓'),
-								span({ class: 'status-error' }, '✕'));
-						} }
-				)
+				label({ class: 'input-aside' }, input({
+					id: 'input-certified-truth',
+					name: this.businessProcess.submissionForms.__id__ + '/isAffidavitSigned',
+					type: 'checkbox',
+					'data-type': 'boolean',
+					checked: and(this.businessProcess.submissionForms._isAffidavitSigned,
+						not(this.businessProcess._isSentBack)),
+					value: '1'
+				}), input({
+					type: 'hidden',
+					name: this.businessProcess.submissionForms.__id__ + '/isAffidavitSigned',
+					'data-type': 'boolean',
+					value: '0'
+				}), " ", span(_("I declare under oath that the information entered into the system is " +
+					"correct, and I accept that it would be saved and processed by involved institutions.")))
 			),
 			div(p({ id: 'application-submit-button' },
 				button({ type: 'submit', class: 'user-submission-button' }, _("Send request")))),
