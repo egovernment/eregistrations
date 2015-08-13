@@ -15,7 +15,7 @@ exports.step = function () {
 	exports._guideHeading();
 
 	insert(_if(this.businessProcess._isSentBack,
-		function () { return div({ class: 'error-main free-form' }, sentBackInfo(this)); }));
+		function () { return div({ class: 'error-main free-form' }, sentBackInfo(this)); }.bind(this)));
 
 	div(
 		{ class: ['disabler-range', _if(this.businessProcess._isSentBack, 'disabler-active')] },
