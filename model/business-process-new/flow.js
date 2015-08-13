@@ -43,7 +43,7 @@ module.exports = memoize(function (db/*, options*/) {
 				return _observe(step._isSentBack);
 			});
 		} },
-		// Whether business process is as draft stage (Part A)
+		// Whether business process is at draft stage (Part A)
 		isAtDraft: { type: db.Boolean, value: function () {
 			return !this.isSubmitted || this.isSentBack;
 		} },
