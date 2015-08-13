@@ -24,8 +24,8 @@ module.exports = exports = function (context) {
 							p(paymentReceiptUpload._rejectReasonMemo)];
 					})))))
 		]), exports._otherInfo()),
-		p(mdi(_("After all issues are cleared, please [submit](/submission/#submit-form) application " +
-			"again")))];
+		p(mdi(_("After all issues are cleared, please [re-submit](/submission/#submit-form) " +
+			"application")))];
 };
 
 exports._otherInfo = Function.prototype;
