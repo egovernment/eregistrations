@@ -33,7 +33,7 @@ module.exports = memoize(function (db) {
 		// Document which we upload
 		document: { type: Document, nested: true },
 		// Verification status of upload
-		status: { type: RequirementUploadStatus, required: true },
+		status: { type: RequirementUploadStatus },
 
 		// Eventual rejection details
 		rejectReasonTypes: { type: RequirementUploadRejectReason, multiple: true, required: true },
