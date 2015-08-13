@@ -41,7 +41,7 @@ module.exports = memoize(function (db) {
 		// Eventual reason of rejection
 		rejectionReason: { type: db.String, required: true  },
 		// Status of step
-		status: { type: ProcessingStepStatus, required: true },
+		status: { type: ProcessingStepStatus },
 
 		// Progress of individual step statuses
 		// "approved" status progress
