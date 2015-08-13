@@ -11,6 +11,7 @@
 	cursor: not-allowed;
 	opacity: 0.5;
 	background: var(--white-background);
+	z-index: 2;
 }
 .disabler-range.disabler-active .disabler {
 	display: block;
