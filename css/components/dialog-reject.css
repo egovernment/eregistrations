@@ -1,5 +1,6 @@
 .dialog-reject textarea {
-	width: 320px;
+	width: 500px;
+	height: 130px;
 }
 
 .dialog-reject footer p {
