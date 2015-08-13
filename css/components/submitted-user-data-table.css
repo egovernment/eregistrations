@@ -93,6 +93,14 @@
 	background-color: var(--light-background);
 }
 
+.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-status .fa-check {
+	color: var(--success-text);
+}
+
+.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-status .fa-exclamation {
+	color: var(--error-text);
+}
+
 .submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-status,
 .submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-link {
 	width: 40px;
