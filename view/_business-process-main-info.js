@@ -8,8 +8,10 @@ var _  = require('mano').i18n.bind('User Submitted')
 , curry              = require('es5-ext/function/#/curry')
 , nextTick = require('next-tick');
 
-module.exports = function (businessProcess) {
-	var scrollableElem;
+module.exports = function (businessProcess/*, options */) {
+	var options = Object(arguments[1])
+	  , urlPrefix = options.urlPrefix || '/', scrollableElem;
+
 	return [section(
 		{ class: 'submitted-main table-responsive-container' },
 		table(
@@ -45,7 +47,7 @@ module.exports = function (businessProcess) {
 				a(
 					{ class: 'hint-optional hint-optional-left',
 						'data-hint': _("Print history of your request"),
-						href: '/print-request-history/',
+						href: urlPrefix + 'print-request-history/',
 						target: '_blank' },
 					span({ class: 'fa fa-print' }, _("Print"))
 				)),

@@ -14,7 +14,7 @@ exports['sub-main'] = {
 	content: function () {
 		var revisionStep = this.processingStep;
 
-		renderMainInfo(this.businessProcess);
+		renderMainInfo(this.businessProcess, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
 
 		insert(_if(revisionStep._isPending, section({ class: 'official-submission-toolbar' },
 			// show buttons only if step is pending
