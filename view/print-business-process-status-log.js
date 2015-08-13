@@ -16,6 +16,6 @@ exports.main = function () {
 				th(log.label);
 				td({ class: 'print-user-history-time' }, log._time);
 				td(log.text && log.text.split('\n').filter(Boolean).map(curry.call(p, 1)));
-				td(log.official);
-			}));
+				if (this.processingStep) td(log.official);
+			}, this));
 };

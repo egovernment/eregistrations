@@ -11,7 +11,7 @@ exports._match = 'businessProcess';
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		renderMainInfo(this.businessProcess, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
+		renderMainInfo(this, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab',
 					id: 'business-process-official-form',

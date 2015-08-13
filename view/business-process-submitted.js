@@ -9,7 +9,7 @@ exports._match = 'businessProcess';
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		userData(this.businessProcess);
+		userData(this);
 		documentsAndData(this.businessProcess);
 	}
 };

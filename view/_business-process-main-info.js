@@ -8,8 +8,9 @@ var curry              = require('es5-ext/function/#/curry')
   , formatLastModified = require('./utils/last-modified')
   , scrollBottom       = require('./utils/scroll-to-bottom');
 
-module.exports = function (businessProcess/*, options */) {
+module.exports = function (context/*, options */) {
 	var options = Object(arguments[1])
+	  , businessProcess = context.businessProcess
 	  , urlPrefix = options.urlPrefix || '/', scrollableElem;
 
 	return [section(
@@ -61,6 +62,7 @@ module.exports = function (businessProcess/*, options */) {
 							th(log.label);
 							td({ class: 'submitted-user-history-time' }, log.time);
 							td(log.text && log.text.split('\n').filter(Boolean).map(curry.call(p, 1)));
+							if (context.processingStep) td(log.official);
 						}
 					)
 				)
