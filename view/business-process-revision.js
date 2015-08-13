@@ -12,9 +12,20 @@ exports._match = 'businessProcess';
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var revisionStep = this.businessProcess.processingSteps.map.revision;
+		var revisionStep = this.processingStep;
 
 		renderMainInfo(this.businessProcess);
+
+		section(dialog({ id: 'reject-reason', class: 'dialog-reject dialog-modal' },
+			header(
+				label({ for: 'revision-reject-reason' }, h3(_("Reason for rejection of the file")))
+			),
+			section({ class: 'dialog-body' },
+				form({ method: 'post', action: '/revision/' + this.businessProcess.__id__ + '/reject/' },
+					p({ class: 'input' }, input({ id: 'revision-reject-reason',
+							dbjs: this.processingStep._rejectionReason })),
+					p(input({ type: 'submit', value: _("Reject") })))),
+			footer(p(a({ href: '' }, _("Cancel"))))));
 
 		insert(_if(revisionStep._isPending, section({ class: 'official-submission-toolbar' },
 			// show buttons only if step is pending
@@ -38,7 +49,7 @@ exports['sub-main'] = {
 							value: _("Return for corrections") }
 					))),
 					// show reject button at all times when revision is pending
-			a({ href: '#rechazar-expediente',
+			a({ href: '#reject-reason',
 				class: 'button-main button-main-error hint-optional' +
 				' hint-optional-right hint-optional-multiline',
 				'data-hint': _("When returning the application for corrections, the user will receive" +
