@@ -28,14 +28,14 @@ exports['sub-main'] = {
 							class: 'hint-optional hint-optional-bottom',
 							value: _("Validate revision") }
 					),
-					postButton(
+					_if(eq(revisionStep._sendBackProgress, 1), postButton(
 						{ action: url('revision', this.businessProcess.__id__, 'return'),
 							buttonClass: 'button-main',
 							class: 'hint-optional hint-optional-bottom',
 							'data-hint': _("You can reject the registration when documents and/or " +
 								"data that is sent can be determined as not real."),
 							value: _("Return for corrections") }
-					))),
+					)))),
 					// show reject button at all times when revision is pending
 			[dialog({ id: 'reject-reason', class: 'dialog-reject dialog-modal' },
 				header(
