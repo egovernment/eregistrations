@@ -24,3 +24,7 @@
 	overflow: auto;
 	border: 1px solid var(--light-inner-border);
 }
+
+.submitted-user-history-time {
+	white-space: nowrap;
+}

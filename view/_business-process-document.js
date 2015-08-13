@@ -29,7 +29,7 @@ module.exports = function (doc, sideContent) {
 						doc.statusLog.ordered,
 						function (log) {
 							th(log.label);
-							td(log.time);
+							td({ class: 'submitted-user-history-time' }, log.time);
 							td(log.text && log.text.split('\n').filter(Boolean).map(curry.call(p, 1)));
 						}
 					)

@@ -59,7 +59,7 @@ module.exports = function (businessProcess/*, options */) {
 						businessProcess.statusLog.ordered,
 						function (log) {
 							th(log.label);
-							td(log.time);
+							td({ class: 'submitted-user-history-time' }, log.time);
 							td(log.text && log.text.split('\n').filter(Boolean).map(curry.call(p, 1)));
 						}
 					)
