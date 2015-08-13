@@ -2,8 +2,9 @@
 
 'use strict';
 
-var _        = require('mano').i18n.bind('Registration')
-  , errorMsg = require('./_business-process-error-info').errorMsg
+var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
+  , _             = require('mano').i18n.bind('Registration')
+  , errorMsg      = require('./_business-process-error-info').errorMsg
 
   , _d = _;
 
@@ -25,8 +26,8 @@ exports.step = function () {
 				this.businessProcess.paymentReceiptUploads.applicable,
 				function (paymentUpload) {
 					return li({ class: 'section-primary' },
-						form({ action: '/payment-receipt-upload/', method: 'post',
-								enctype: 'multipart/form-data', autoSubmit: true },
+						form({ action: '/payment-receipt-upload/' + camelToHyphen.call(paymentUpload.key) + '/',
+							method: 'post', enctype: 'multipart/form-data', autoSubmit: true },
 							div(
 								h2(_d(paymentUpload.document.label, { user: paymentUpload.master })),
 								paymentUpload.document.legend &&
