@@ -2,11 +2,11 @@
 
 'use strict';
 
-var _  = require('mano').i18n.bind('User Submitted')
-, formatLastModified = require('./utils/last-modified')
-, scrollBottom     = require('./utils/scroll-to-bottom')
-, curry              = require('es5-ext/function/#/curry')
-, nextTick = require('next-tick');
+var curry              = require('es5-ext/function/#/curry')
+  , nextTick           = require('next-tick')
+  , _                  = require('mano').i18n.bind('User Submitted')
+  , formatLastModified = require('./utils/last-modified')
+  , scrollBottom       = require('./utils/scroll-to-bottom');
 
 module.exports = function (businessProcess/*, options */) {
 	var options = Object(arguments[1])
