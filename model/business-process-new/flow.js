@@ -22,7 +22,7 @@ module.exports = memoize(function (db/*, options*/) {
 	defineProcessingSteps(db);
 
 	BusinessProcess.prototype.defineProperties({
-		// Whether business process is submitted to Part B
+		// Whether business process was submitted to Part B
 		isSubmitted: { type: db.Boolean, value: function (_observe) {
 			// 0. Guide
 			if (this.guideProgress !== 1) return false;
@@ -42,6 +42,10 @@ module.exports = memoize(function (db/*, options*/) {
 			return _observe(this.processingSteps.applicable).some(function (step) {
 				return _observe(step._isSentBack);
 			});
+		} },
+		// Whether business process is as draft stage (Part A)
+		isAtDraft: { type: db.Boolean, value: function () {
+			return !this.isSubmitted || this.isSentBack;
 		} },
 		// Whether business process was rejected
 		isRejected: { type: db.Boolean, value: function (_observe) {
