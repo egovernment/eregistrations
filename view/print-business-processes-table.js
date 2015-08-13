@@ -34,9 +34,7 @@ exports.main = {
 	}
 };
 
-exports['print-page-title'] = function () {
-	h2(this.processingStep.label);
-};
+exports['print-page-title'] = function () { insert(this.processingStep.label); };
 
 exports._businessProcessesTable = Function.prototype;
 exports._statusMap = Function.prototype;

@@ -1,17 +1,15 @@
 // Basic business process print data view
 'use strict';
 
-var _      = require('mano').i18n.bind('User')
-  , db = require('mano').db
+var _                = require('mano').i18n.bind('User')
   , generateSections = require('eregistrations/view/components/generate-sections');
 
 exports._parent = require('./print-base');
 exports._match = 'businessProcess';
 
 exports['print-page-title'] = function () {
-	h2(_("Data of ${ businessProcessName }",
+	insert(_("Data of ${ businessProcessName }",
 		{ businessProcessName: this.businessProcess._businessName }));
-	p(new db.Date());
 };
 
 exports.main = function () {

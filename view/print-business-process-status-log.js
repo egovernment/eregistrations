@@ -6,10 +6,7 @@ var _      = require('mano').i18n.bind('User')
 exports._parent = require('./print-base');
 exports._match = 'businessProcess';
 
-exports['print-page-title'] = function () {
-	h2(_("Registration history"));
-	p(format.call(new Date(), '%d/%m/%Y'));
-};
+exports['print-page-title'] = _("Registration history");
 
 exports.main = function () {
 	h2(this.businessProcess._businessName);

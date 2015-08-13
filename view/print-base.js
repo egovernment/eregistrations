@@ -6,12 +6,14 @@
 
 'use strict';
 
+var db = require('mano').db;
+
 exports.body = function () {
-	header(
-		{ class: 'print-header' },
+	header({ class: 'print-header' },
 		exports._logo(),
-		div({ class: 'print-header-title', id: 'print-page-title' })
-	);
+		div({ class: 'print-header-title' },
+			h2({ id: 'print-page-title' }),
+			p(new db.DateTime())));
 	hr();
 	section({ id: 'main' });
 };
