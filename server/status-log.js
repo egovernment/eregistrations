@@ -36,21 +36,21 @@ exports.forEach(function (conf) {
 	if (conf.variables) assign(defaultContext, conf.variables);
 	setupTriggers(conf, function (target) {
 		nextTick(function () {
-			var text, user, context = create(defaultContext), prop, statusLog;
-			if (conf.resolveUser) user = conf.resolveUser(target);
-			else user = target;
+			var text, businessProcess, context = create(defaultContext), prop, statusLog;
+			if (conf.resolveUser) businessProcess = conf.resolveUser(target);
+			else businessProcess = target;
 			context.target = target;
-			context.user = context.businessProcess = user;
+			context.user = context.businessProcess = businessProcess;
 			if (conf.resolveGetters) {
 				for (prop in context) {
 					if (typeof context[prop] === 'function') context[prop] = context[prop]();
 				}
 			}
 			text = compact.call(resolveTpl(conf.text, context)).join('');
-			statusLog = user.statusLog.map.newUniq();
+			statusLog = businessProcess.statusLog.map.newUniq();
 			statusLog.setProperties({
 				label: conf.label,
-				official: (conf.official && user[conf.official]) || null,
+				official: (conf.official && businessProcess[conf.official]) || null,
 				time: new Date(Date.now() +
 						(conf.timeShift ? (conf.timeShift * 100) : 0)),
 				text: text
