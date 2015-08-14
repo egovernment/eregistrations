@@ -45,7 +45,7 @@ exports.filenameResetService = function (db, data) {
 				oldFilename = resolve(uploadsPath, bp.filesArchiveUrl.slice(1));
 				unlink(oldFilename).done(null, function (err) {
 					if (err.code === 'ENOENT') return;
-					debug("Could not remove file %s %s", oldFilename, err.stack);
+					debug("Could not remove old file %s %s", oldFilename, err.stack);
 				});
 			}
 			bp.filesArchiveUrl = url;
