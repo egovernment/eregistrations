@@ -46,6 +46,15 @@ module.exports = memoize(function (db/*, options*/) {
 			});
 			return result;
 		} },
+		// Subset of recently rejected  uploads
+		// Those for which last status was rejected, but possibly with already cleared status value
+		recentlyRejected: { type: RequirementUpload, multiple: true, value: function (_observe) {
+			var result = [];
+			this.applicable.forEach(function (upload) {
+				if (_observe(upload._isRecentlyRejected)) result.push(upload);
+			});
+			return result;
+		} },
 		// Progress for "approved" status
 		approvalProgress: { value: function (_observe) {
 			if (!this.applicable.size) return 1;

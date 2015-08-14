@@ -64,6 +64,14 @@ module.exports = memoize(function (db) {
 			return Boolean(this.rejectReasons.size);
 		} },
 
+		// Whether document upload was rejected recently
+		// Needed for part A, where status for document might already have been cleared
+		// due to changes made to uploads, but we still need to show rejection info
+		isRecentlyRejected: { type: db.Boolean, value: function () {
+			if ((this.status !== 'invalid') && (this.status != null)) return false;
+			return Boolean(this.rejectReasons.size);
+		} },
+
 		// Whether document upload was validated and all required properties
 		// where provided
 		isApproved: { type: db.Boolean, value: function (_observe) {
