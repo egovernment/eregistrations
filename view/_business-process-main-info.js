@@ -43,6 +43,7 @@ module.exports = function (context/*, options */) {
 						a({ class: 'hint-optional hint-optional-left', target: "_blank",
 							'data-hint': _("Download the electronic file"),
 							download: businessProcess._filesArchiveUrl.map(function (name) {
+								if (!name) return;
 								return name.slice(1);
 							}),
 							href: businessProcess._filesArchiveUrl }, i({ class: 'fa fa-download' }))))
