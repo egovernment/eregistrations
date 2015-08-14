@@ -2,13 +2,14 @@
 
 'use strict';
 
-var syncHeight = require('./utils/sync-height')
-  , _          = require('mano').i18n.bind('User: Submitted')
-  , scrollBottom     = require('./utils/scroll-to-bottom')
-  , nextTick = require('next-tick')
-  , curry = require('es5-ext/function/#/curry')
-  , _d = _
-  , db = require('mano').db;
+var curry              = require('es5-ext/function/#/curry')
+  , nextTick           = require('next-tick')
+  , _                  = require('mano').i18n.bind('User: Submitted')
+  , resolveArchivePath = require('../utils/resolve-document-archive-path')
+  , syncHeight         = require('./utils/sync-height')
+  , scrollBottom       = require('./utils/scroll-to-bottom')
+
+  , _d = _, db = require('mano').db;
 
 module.exports = function (doc, sideContent) {
 	var elem, scrollableElem, master;
@@ -80,8 +81,16 @@ module.exports = function (doc, sideContent) {
 						)))),
 
 				syncHeight(elem)),
+
 				div({ class: 'section-primary submitted-preview-new-side-data' },
-					a({ class: 'button-main' }, "Download document"),
+					a({ class: 'button-main', href: _if(doc.files.ordered._size,
+						_if(eq(doc.files.ordered._size, 1),
+							resolve(doc.files.ordered._first, 'url'),  '/' + resolveArchivePath(doc)
+						)),
+						download: _if(doc.files.ordered._size, _if(eq(doc.files.ordered._size, 1),
+							resolve(doc.files.ordered._first, 'path'),  resolveArchivePath(doc)
+						))
+					}, "Download document"),
 					sideContent)
 			)];
 };

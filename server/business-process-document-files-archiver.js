@@ -1,0 +1,114 @@
+'use strict';
+
+var hyphenToCamel      = require('es5-ext/string/#/hyphen-to-camel')
+  , endsWith           = require('es5-ext/string/#/ends-with')
+  , ensureCallable     = require('es5-ext/object/valid-callable')
+  , ensureObject       = require('es5-ext/object/valid-object')
+  , ensureString       = require('es5-ext/object/validate-stringifiable-value')
+  , debug              = require('debug-ext')('zip-archiver')
+  , ensureDatabase     = require('dbjs/valid-dbjs')
+  , createWriteStream  = require('fs').createWriteStream
+  , unlink             = require('fs2/unlink')
+  , path               = require('path')
+  , archiver           = require('archiver')
+  , resolveArchivePath = require('../utils/resolve-document-archive-path')
+
+  , resolve = path.resolve;
+
+var re = new RegExp('^\\/business-process-document-archive-([0-9][0-9a-z]+)-' +
+	'(requirement|receipt|certificate)-([a-z][a-z0-9-]*)\\.zip$');
+
+var unlinkDocumentFiles = function (uploadsPath, document) {
+	var filename = resolve(uploadsPath, resolveArchivePath(document));
+	unlink(filename).done(null, function (err) {
+		if (err.code === 'ENOENT') return;
+		debug("Could not remove file %s %s", filename, err.stack);
+	});
+};
+
+exports.filenameResetService = function (db, data) {
+	var uploadsPath;
+	ensureDatabase(db);
+	ensureObject(data);
+	uploadsPath = ensureString(data.uploadsPath);
+	db.objects.on('update', function (event) {
+		var id = event.object.__valueId__, bp = event.object.master;
+		if (!(bp instanceof db.BusinessProcessBase)) return;
+		if (!bp.dataForms || !bp.dataForms.map) return;
+		if (!endsWith.call(id, '/submissionForms/isAffidavitSigned')) return;
+		bp.requirementUploads.applicable.forEach(function (upload) {
+			unlinkDocumentFiles(uploadsPath, upload.document);
+		});
+		bp.paymentReceiptUploads.applicable.forEach(function (upload) {
+			unlinkDocumentFiles(uploadsPath, upload.document);
+		});
+		bp.certificates.applicable.forEach(function (document) {
+			unlinkDocumentFiles(uploadsPath, document);
+		});
+	});
+};
+
+exports.archiveServer = function (db, data) {
+	var uploadsPath, isDev, stMiddleware;
+	ensureDatabase(db);
+	ensureObject(data);
+	uploadsPath = ensureString(data.uploadsPath);
+	isDev = ensureObject(data.env).dev;
+	stMiddleware = ensureCallable(data.stMiddleware);
+	return function (req, res, next) {
+		var url = req._parsedUrl.pathname, match = url.match(re), bp, archive, archiveFile
+		  , onError, key, target;
+		if (!match) {
+			next();
+			return;
+		}
+		bp = db.BusinessProcessBase.getById(match[1]);
+		if (!bp || !bp.isSubmitted) {
+			res.statusCode = 404;
+			res.end('Not Found');
+			return;
+		}
+		key = hyphenToCamel.call(match[3]);
+		if (match[2] === 'requirement') {
+			bp.requirementUploads.applicable.some(function (upload) {
+				if (upload.document.uniqueKey === key) {
+					target = upload.document;
+					return true;
+				}
+			});
+		} else if (match[2] === 'receipt') {
+			target = bp.paymentReceiptUploads.map.get(key);
+			if (target && !bp.paymentReceiptUploads.applicable.has(target)) target = null;
+			if (target) target = target.document;
+		} else {
+			target = bp.certificates.map.get(key);
+			if (target && !bp.certificates.applicable.has(target)) target = null;
+		}
+		if (!target || (target.files.ordered <= 1)) {
+			res.statusCode = 404;
+			res.end('Not Found');
+			return;
+		}
+		debug("generate archive for %s", target.__id__);
+		archive = archiver('zip', { level: 0 });
+		archiveFile = createWriteStream(resolve(uploadsPath, url.slice(1)));
+		archiveFile.on('error', onError = function (error) {
+			if (!error) return;
+			if (isDev) throw error;
+			debug("cannot produce archive for %s %s", target.__id__, error.stack);
+			res.statusCode = 500;
+			res.end('Server error');
+		});
+		archive.pipe(archiveFile);
+		target.files.ordered.forEach(function (file) {
+			archive.file(resolve(uploadsPath, file.path), { name: file.path });
+		});
+		archive.finalize(onError);
+		archive.on('error', onError);
+		archiveFile.on('error', onError);
+		archiveFile.on('close', function () {
+			debug("finalised generation of archive for %s", target.__id__);
+			stMiddleware(req, res, next);
+		});
+	};
+};
