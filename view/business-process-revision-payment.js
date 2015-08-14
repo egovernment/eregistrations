@@ -18,9 +18,9 @@ paymentForm = function (paymentReceiptUpload) {
 				'/' + camelToHyphen.call(paymentReceiptUpload.key) + '/',
 			method: 'post', class: 'submitted-preview-form' },
 		p(_("Uploaded payment receipt applies to following costs:")),
-		ul({ class: 'user-guide-costs-list' },
+		ul({ class: 'business-process-costs-list' },
 				paymentReceiptUpload.costs, function (cost) {
-				li(span({ class: 'user-guide-costs-list-label' }, cost._label),
+				li(span({ class: 'business-process-costs-list-label' }, cost._label),
 					span(cost._amount));
 			}),
 		ul(

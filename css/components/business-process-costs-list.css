@@ -1,0 +1,28 @@
+.business-process-costs-list {
+	padding-left: 0;
+	list-style-type: none;
+}
+
+.business-process-costs-list li {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: nowrap;
+}
+
+.business-process-total-costs {
+	background-color: var(--light-background);
+	border-bottom: 1px solid black;
+	border-top: 1px solid black;
+	padding: 10px 5px 11px;
+	margin-top: 20px;
+	margin-bottom: 22px;
+	font-weight: bolder;
+}
+
+.business-process-costs-list-label {
+	max-width: 85%;
+}
+
+.business-process-costs-list li span > small {
+	display: block;
+}
