@@ -44,7 +44,7 @@ module.exports = function (db) {
 						text: (upload.owner.owner.key === 'paymentReceiptUploads')
 							? _("Payment confirmed") : _("Uploaded files approved as valid")
 					});
-				} else if (upload.status === 'valid') {
+				} else if (upload.status === 'invalid') {
 					upload.document.statusLog.map.newUniq().setProperties({
 						label: _("Rejected"),
 						time: new Date(),
