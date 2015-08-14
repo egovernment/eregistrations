@@ -28,7 +28,7 @@ exports.filenameResetService = function (db, data) {
 		keys(pending).forEach(function (id) {
 			var bp = db.BusinessProcessBase.getById(id), url, filenames, oldFilename;
 			delete pending[id];
-			if (bp.isAtDraft) {
+			if (!bp.isSubmitted) {
 				if (bp.filesArchiveUrl) bp.delete('filesArchiveUrl');
 				return;
 			}
@@ -53,7 +53,7 @@ exports.filenameResetService = function (db, data) {
 		--db._postponed_;
 	});
 	db.BusinessProcessBase.instances.forEach(function (bp) {
-		if (!bp.dataForms || !bp.dataForms.map || bp.isAtDraft) return;
+		if (!bp.dataForms || !bp.dataForms.map || !bp.isSubmitted) return;
 		pending[bp.__id__] = true;
 	});
 	immediateUpdate();
