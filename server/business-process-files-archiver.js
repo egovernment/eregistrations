@@ -9,6 +9,7 @@ var endsWith          = require('es5-ext/string/#/ends-with')
   , ensureDatabase    = require('dbjs/valid-dbjs')
   , generateHash      = require('murmurhash-js/murmurhash3_gc')
   , createWriteStream = require('fs').createWriteStream
+  , unlink            = require('fs2/unlink')
   , path              = require('path')
   , archiver          = require('archiver')
   , getFilenames      = require('./lib/get-business-process-filenames')
@@ -17,13 +18,15 @@ var endsWith          = require('es5-ext/string/#/ends-with')
   , re = /^\/business-process-archive-([0-9][0-9a-z]+)-([0-9]+)\.zip$/
   , create = Object.create, keys = Object.keys;
 
-exports.filenameResetService = function (db) {
-	var pending = create(null), immediateUpdate;
+exports.filenameResetService = function (db, data) {
+	var uploadsPath, pending = create(null), immediateUpdate;
 	ensureDatabase(db);
+	ensureObject(data);
+	uploadsPath = ensureString(data.uploadsPath);
 	var update = once(immediateUpdate = function () {
 		++db._postponed_;
 		keys(pending).forEach(function (id) {
-			var bp = db.BusinessProcessBase.getById(id), url, filenames;
+			var bp = db.BusinessProcessBase.getById(id), url, filenames, oldFilename;
 			delete pending[id];
 			if (bp.isAtDraft) {
 				if (bp.filesArchiveUrl) bp.delete('filesArchiveUrl');
@@ -38,6 +41,13 @@ exports.filenameResetService = function (db) {
 				String(generateHash(filenames.map(function (file) { return file.path; })
 					.sort().join('\n'))) + '.zip';
 			if (bp.filesArchiveUrl === url) return;
+			if (bp.filesArchiveUrl) {
+				oldFilename = resolve(uploadsPath, bp.filesArchiveUrl.slice(1));
+				unlink(oldFilename).done(null, function (err) {
+					if (err.code === 'ENOENT') return;
+					debug("Could not remove file %s %s", oldFilename, err.stack);
+				});
+			}
 			bp.filesArchiveUrl = url;
 		});
 		--db._postponed_;
