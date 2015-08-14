@@ -25,6 +25,10 @@ exports.filenameResetService = function (db) {
 		keys(pending).forEach(function (id) {
 			var bp = db.BusinessProcessBase.getById(id), url, filenames;
 			delete pending[id];
+			if (bp.isAtDraft) {
+				if (bp.filesArchiveUrl) bp.delete('filesArchiveUrl');
+				return;
+			}
 			filenames = getFilenames(bp);
 			if (!filenames.length) {
 				if (bp.filesArchiveUrl) bp.delete('filesArchiveUrl');
@@ -46,7 +50,7 @@ exports.filenameResetService = function (db) {
 	db.objects.on('update', function (event) {
 		var id = event.object.__valueId__, bp = event.object.master;
 		if (!(bp instanceof db.BusinessProcessBase)) return;
-		if (!bp.dataForms || !bp.dataForms.map || bp.isAtDraft) return;
+		if (!bp.dataForms || !bp.dataForms.map) return;
 		if (!endsWith.call(id, '/path') && !endsWith.call(id, '/submissionForms/isAffidavitSigned')) {
 			return;
 		}
