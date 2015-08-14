@@ -28,7 +28,7 @@ exports['sub-main'] = {
 							class: 'hint-optional hint-optional-bottom',
 							value: _("Validate revision") }
 					),
-					_if(eq(revisionStep._sendBackProgress, 1), postButton(
+					_if(eq(revisionStep._sendBackStatusesProgress, 1), postButton(
 						{ action: url('revision', this.businessProcess.__id__, 'return'),
 							buttonClass: 'button-main',
 							class: 'hint-optional hint-optional-bottom',
