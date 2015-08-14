@@ -39,14 +39,14 @@ exports.filenameResetService = function (db) {
 		--db._postponed_;
 	});
 	db.BusinessProcessBase.instances.forEach(function (bp) {
-		if (!bp.dataForms || !bp.dataForms.map || !bp.isSubmitted) return;
+		if (!bp.dataForms || !bp.dataForms.map || bp.isAtDraft) return;
 		pending[bp.__id__] = true;
 	});
 	immediateUpdate();
 	db.objects.on('update', function (event) {
 		var id = event.object.__valueId__, bp = event.object.master;
 		if (!(bp instanceof db.BusinessProcessBase)) return;
-		if (!bp.isSubmitted) return;
+		if (!bp.dataForms || !bp.dataForms.map || bp.isAtDraft) return;
 		if (!endsWith.call(id, '/path') && !endsWith.call(id, '/submissionForms/isAffidavitSigned')) {
 			return;
 		}
