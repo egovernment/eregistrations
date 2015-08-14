@@ -18,7 +18,7 @@ module.exports = exports = function (context) {
 								ul(requirementUpload.rejectReasons, identity))];
 					})))),
 			_if(businessProcess.paymentReceiptUploads.rejected._size,
-				li(h4(_("Issues with payment receipts:"), div({ class: 'free-form' },
+				li(h4(_("Issues with uploaded payment receipts:"), div({ class: 'free-form' },
 					ul(businessProcess.paymentReceiptUploads.rejected, function (paymentReceiptUpload) {
 						return [h4(paymentReceiptUpload.document.label),
 							p(paymentReceiptUpload._rejectReasonMemo)];
