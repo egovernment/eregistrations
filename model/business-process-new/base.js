@@ -4,6 +4,7 @@
 
 var memoize                   = require('memoizee/plain')
   , defineStringLine          = require('dbjs-ext/string/string-line')
+  , defineUrl                 = require('dbjs-ext/string/string-line/url')
   , _                         = require('mano').i18n.bind("Model: Business Process")
   , defineBusinessProcessBase = require('../lib/business-process-base')
   , defineNestedMap           = require('../lib/nested-map')
@@ -11,6 +12,7 @@ var memoize                   = require('memoizee/plain')
 
 module.exports = memoize(function (db/*, options*/) {
 	var StringLine = defineStringLine(db)
+	  , Url = defineUrl(db)
 	  , StatusLog = defineStatusLog(db)
 	  , BusinessProcessBase = defineBusinessProcessBase(db)
 	  , BusinessProcess
@@ -27,6 +29,10 @@ module.exports = memoize(function (db/*, options*/) {
 		// Name of businessProcess
 		// Usually computed from other properties
 		businessName: { type: StringLine },
+
+		// URL at which archive of files related to given business process
+		// is accessible
+		filesArchiveUrl: { type: Url },
 
 		// Whether registration is made online
 		// It may be overriden to false in case we import businessProces

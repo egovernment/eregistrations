@@ -23,7 +23,8 @@ module.exports = function (context/*, options */) {
 					th(_("Service")),
 					th(_("Submission date")),
 					th(_("Withdraw date")),
-					th(_("Inscriptions and controls"))
+					th(_("Inscriptions and controls")),
+					th()
 				)
 			),
 			tbody(
@@ -37,7 +38,14 @@ module.exports = function (context/*, options */) {
 						list(businessProcess.registrations.requested, function (reg) {
 							return span({ class: 'label-reg' }, reg.abbr);
 						})
-					)
+					),
+					td(_if(businessProcess._filesArchiveUrl,
+						a({ class: 'hint-optional hint-optional-left', target: "_blank",
+							'data-hint': _("Download the electronic file"),
+							download: businessProcess._filesArchiveUrl.map(function (name) {
+								return name.slice(1);
+							}),
+							href: businessProcess._filesArchiveUrl }, i({ class: 'fa fa-download' }))))
 				)
 			)
 		)
