@@ -19,6 +19,11 @@ module.exports = memoize(function (db/*, options*/) {
 	defineNestedMap(db);
 
 	BusinessProcess = BusinessProcessBase.extend(options.className || 'BusinessProcess', {
+		// General label of business process type
+		// It's not specific per business process, but should provide general info as:
+		// "Merchant registration", "Company registration" etc.
+		label: { type: StringLine },
+
 		// Name of businessProcess
 		// Usually computed from other properties
 		businessName: { type: StringLine },
