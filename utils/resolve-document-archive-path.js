@@ -17,5 +17,5 @@ module.exports  = function (doc) {
 			throw new Error("Unrecognized document " + JSON.stringify(doc.__id__));
 		}
 	}
-	return name;
+	return name + '.zip';
 };
