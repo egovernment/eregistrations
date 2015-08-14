@@ -79,7 +79,7 @@ module.exports = {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;
 			return true;
 		},
-		view: require('./view/business-process-official-data')
+		view: require('../view/business-process-official-data')
 	},
 	'print-business-processes-list': require('./view/print-business-processes-table'),
 

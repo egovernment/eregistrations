@@ -5,8 +5,6 @@ var db = require('mano').db,
 
 module.exports = exports = require('../../view/business-process-official-form');
 
-exports['business-process-official-form'] = { class: { active: true } };
-
 exports._officialForm = function () {
 	return div(
 		{ class: 'section-primary official-form', id: 'certificates' },
