@@ -108,10 +108,19 @@ module.exports = memoize(function (db) {
 			}
 		},
 		isPropertyExcludedFromStatus: { type: db.Function, value: function (resolved, _observe) {
+
+			// Not required, then not validated
 			if (!resolved.descriptor.required) return true;
+
+			// Forced to be excluded
 			if (this.excludedFromStatusIfFilled.has(resolved.key) ||
+
+			// or excluded by fact of having a default value on prototype
 					(!resolved.descriptor.multiple &&
-					Object.getPrototypeOf(resolved.object).get(resolved.key) != null)) {
+						Object.getPrototypeOf(resolved.object).get(resolved.key) != null)) {
+
+				// In that case we just validate that it's not shadowed by null
+				// or in case of multiple that it has at least one item
 				if (resolved.descriptor.multiple) {
 					if (_observe(resolved.observable).size) return true;
 				} else {
