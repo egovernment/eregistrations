@@ -24,7 +24,7 @@ module.exports = function (context/*, options */) {
 					th(_("Submission date")),
 					th(_("Withdraw date")),
 					th(_("Inscriptions and controls")),
-					th()
+					th({ class: 'submitted-user-data-table-action' })
 				)
 			),
 			tbody(

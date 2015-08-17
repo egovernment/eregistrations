@@ -114,7 +114,16 @@
 }
 
 .submitted-user-data-table .submitted-user-data-table-action {
+	padding-left: 0;
+	padding-right: 0;
 	text-align: center;
+	width: 40px;
+}
+
+.submitted-user-data-table .submitted-user-data-table-action a,
+.submitted-user-data-table.submitted-current-user-data-table tbody tr .submitted-user-data-table-action {
+	padding-left: 0;
+	padding-right: 0;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
