@@ -1,5 +1,6 @@
 ::root {
 	--desktop-width: 1070px;
+	--light-inner-border: #e3e3e3;
 
 	/* Theme colors virables */
 	--white-background: #ffffff;
