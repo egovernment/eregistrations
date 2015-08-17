@@ -2,6 +2,8 @@
 
 'use strict';
 
+var isReadOnlyRender = require('mano/client/utils/is-read-only-render');
+
 Error.stackTraceLimit = Infinity;
 
 if (window.performance && window.performance.now) {
@@ -47,6 +49,8 @@ var appLocation    = window.appLocation = require('mano/lib/client/location')
 
 // Supress form submissions, but do not provide any form controllers
 postRouter({});
+
+if (isReadOnlyRender) require('site-tree/lib/assure-seamless-styles').enabled = false;
 
 var siteTree = new DomjsSiteTree(require('mano/lib/client/domjs'));
 router = new SiteTreeRouter(require('../routes'), siteTree, {
