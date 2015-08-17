@@ -119,7 +119,7 @@ module.exports = memoize(function (db) {
 			// or excluded by fact of having a default value on prototype
 					(!resolved.descriptor.multiple &&
 						(Object.getPrototypeOf(resolved.object).get(resolved.key) != null) &&
-						(File && !(resolved.value instanceof File)))) {
+						(!File || !(resolved.value instanceof File)))) {
 
 				// In that case we just validate that it's not shadowed by null
 				// or in case of multiple that it has at least one item
