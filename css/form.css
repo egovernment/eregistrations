@@ -204,11 +204,6 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	white-space: nowrap;
 }
 
-.input-prepend > *,
-.input-append > * {
-	vertical-align: middle;
-}
-
 .input-prepend input {
 	border-radius: 0 4px 4px 0;
 	border-left: none;
