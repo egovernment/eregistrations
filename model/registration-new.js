@@ -72,6 +72,15 @@ module.exports = memoize(function (db/*, options*/) {
 		// Requirements needed to obtain registration
 		requirements: { type: Requirement, multiple: true },
 		// Costs that are need to be covered to obtain registration
-		costs: { type: Cost, multiple: true }
+		costs: { type: Cost, multiple: true },
+		// True if and only if every certificate (item of certificates) has isElectronic === true
+		isElectronicOnly: {
+			type: db.Boolean,
+			value: function (_observe) {
+				return this.certificates.every(function (certificate) {
+					return _observe(certificate._isElectronic);
+				});
+			}
+		}
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
