@@ -14,7 +14,7 @@ module.exports = function (t, a) {
 	TestFormSection = FormSection.extend('TestFormSection', {
 		actionUrl: { value: 'action' },
 		propertyNames: { value: ['prop1', 'prop2', 'prop3', 'partner/name',
-			'partner/hasSameLastName', 'partner/lastName', 'otherObject/foo'] },
+			'partner/hasSameLastName', 'partner/lastName', 'otherObj/foo'] },
 		resolventProperty: { value: 'prop0' },
 		resolventValue: { value: true }
 	});
@@ -51,14 +51,14 @@ module.exports = function (t, a) {
 		}
 	);
 	businessProcess = new BusinessProcess();
-	businessProcess.otherObject = new db.Object({ foo: 'bar' });
+	businessProcess.otherObj = new db.Object({ foo: 'bar' });
 	section = businessProcess.section;
 	a.deep(aFrom(section.resolvedPropertyNames),
 		['prop1', 'prop2', 'prop3',
 			'partner/name', 'partner/hasSameLastName',
-			'partner/lastName', 'otherObject/foo']);
+			'partner/lastName', 'otherObj/foo']);
 	a.deep(aFrom(section.formApplicablePropertyNames),
-		['prop1', 'prop2', 'prop3', 'otherObject/foo']);
+		['prop1', 'prop2', 'prop3', 'otherObj/foo']);
 	a(section.actionUrl, 'action');
 	a(section.weight, 0); // default value is setup on prototype, so ignore (weight 0)
 	businessProcess.prop0 = true;
