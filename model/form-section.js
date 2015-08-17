@@ -79,7 +79,8 @@ module.exports = memoize(function (db) {
 			return props;
 		} },
 		status: { value: function (_observe) {
-			var resolved, valid = 0, total = 0, isResolventExcluded, isOwn;
+			var resolved, valid = 0, total = 0, isResolventExcluded, isOwn
+			  , File = this.database.File;
 			if (this.resolventProperty) {
 				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
 				if (!resolved) {
@@ -102,6 +103,7 @@ module.exports = memoize(function (db) {
 			}
 
 			this.applicablePropertyNames.forEach(function (name) {
+				var value;
 				resolved = this.master.resolveSKeyPath(name, _observe);
 				if (!resolved) {
 					++total;
@@ -123,7 +125,17 @@ module.exports = memoize(function (db) {
 				if (resolved.descriptor.multiple && !_observe(resolved.observable).size) {
 					return;
 				}
-				if (_observe(resolved.observable) != null) valid++;
+				value = _observe(resolved.observable);
+				if (value != null) {
+					// We need to check special case of File instance
+					// This is an ugly hack, for what should be sorted out more naturally
+					// when dbjs-dom (and dbjs) is revisited for improvements
+					if (File && (value instanceof File)) {
+						value = _observe(value._path);
+						if (value == null) return;
+					}
+					++valid;
+				}
 			}, this);
 			return total === 0 ? 1 : valid / total;
 		} },
