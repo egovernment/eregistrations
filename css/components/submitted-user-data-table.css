@@ -112,6 +112,11 @@
 .submitted-user-data-table-issue-date {
 	width: 130px;
 }
+
+.submitted-user-data-table .submitted-user-data-table-action {
+	text-align: center;
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 
 	.submitted-user-data-table.table-responsive tr {

@@ -24,7 +24,7 @@ module.exports = function (context/*, options */) {
 					th(_("Submission date")),
 					th(_("Withdraw date")),
 					th(_("Inscriptions and controls")),
-					th()
+					_if(businessProcess._filesArchiveUrl, th())
 				)
 			),
 			tbody(
@@ -39,14 +39,15 @@ module.exports = function (context/*, options */) {
 							return span({ class: 'label-reg' }, reg.abbr);
 						})
 					),
-					td(_if(businessProcess._filesArchiveUrl,
-						a({ class: 'hint-optional hint-optional-left', target: "_blank",
-							'data-hint': _("Download the electronic file"),
-							download: businessProcess._filesArchiveUrl.map(function (name) {
-								if (!name) return;
-								return name.slice(1);
-							}),
-							href: businessProcess._filesArchiveUrl }, i({ class: 'fa fa-download' }))))
+					_if(businessProcess._filesArchiveUrl,
+						td({ class: 'submitted-user-data-table-action' },
+							a({ class: 'hint-optional hint-optional-left', target: "_blank",
+								'data-hint': _("Download the electronic file"),
+								download: businessProcess._filesArchiveUrl.map(function (name) {
+									if (!name) return;
+									return name.slice(1);
+								}),
+								href: businessProcess._filesArchiveUrl }, i({ class: 'fa fa-download' }))))
 				)
 			)
 		)
