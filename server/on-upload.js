@@ -6,17 +6,12 @@ var customError = require('es5-ext/error/custom')
   , deferred    = require('deferred')
   , mano        = require('mano')
   , unlink      = require('fs2/unlink')
-  , descHandler = require('fs2/descriptors-handler')
-  , gm          = require('gm')
+  , gm          = require('./gm')
   , path        = require('path')
   , replace     = require('es5-ext/string/#/plain-replace-all')
 
-  , promisify = deferred.promisify
   , resolve = path.resolve
   , db = mano.db, _ = mano.i18n.bind('Controller'), uploadsPath = mano.uploadsPath;
-
-if (descHandler.initialized) gm.prototype.write = descHandler.wrap(gm.prototype.write);
-gm.prototype.writeP = promisify(gm.prototype.write);
 
 Object.defineProperty(db.File.prototype, 'onUpload', d(function () {
 	var path = uploadsPath, thumb, preview, processFullPath, thumbFullPath, previewFullPath, errMsg
