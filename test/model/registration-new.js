@@ -30,4 +30,7 @@ module.exports = function (t, a) {
 	a.deep(aFrom(registration.certificates), [businessProcess.certificates.map.test]);
 	a.deep(aFrom(registration.requirements), []);
 	a.deep(aFrom(registration.costs), []);
+	a(registration.isElectronicOnly, false);
+	registration.certificates.first.isElectronic = true;
+	a(registration.isElectronicOnly, true);
 };

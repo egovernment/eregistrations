@@ -37,7 +37,9 @@ module.exports = memoize(function (db) {
 		// Document fields sections
 		// It's about fields we want officials to fill either at revision (document upload) or
 		// processing step (certificate upload)
-		dataForm: { type: FormSectionBase, nested: true }
+		dataForm: { type: FormSectionBase, nested: true },
+		// True when a given document is electronic, false otherwise
+		isElectronic: { type: db.Boolean, value: false }
 	}, {
 		// Document label
 		label: { type: StringLine },
