@@ -29,7 +29,7 @@ var db = require('mano').db
   , defineRequirements = require('../../model/business-process-new/utils/define-requirements')
   , defineRequirementUploads =
 			require('../../model/business-process-new/utils/define-requirement-uploads')
-  , RevisionProcessingStep = require('../../model/processing-step/revision')(db)
+  , RevisionProcessingStep = require('../../model/processing-steps/revision')(db)
   , DocA
   , DocB
   , IdDoc
