@@ -150,4 +150,8 @@
 	.submitted-user-data-table.table-responsive tbody tr td {
 		padding: 0;
 	}
+
+	.submitted-user-data-table .submitted-user-data-table-action {
+		width: auto;
+	}
 }
