@@ -2,29 +2,23 @@
 
 var memoize          = require('memoizee/plain')
   , ensureDb          = require('dbjs/valid-dbjs')
-  , ensureType       = require('dbjs/valid-dbjs-type')
-  , _                = require('mano').i18n.bind('Model: FormUpToDateConfirmation')
+  , _                = require('mano').i18n.bind('Model: SignedDataForms')
   , defineDocument   = require('../document');
 
-module.exports = memoize(function (db/*, options */) {
-	var options, Parent;
-	ensureDb(db);
-	options = Object(arguments[1]);
-	if (options.parent) {
-		Parent = ensureType(options.parent);
-	} else {
-		Parent = defineDocument(db);
-	}
+module.exports = memoize(function (db) {
+	var Document = defineDocument(ensureDb(db));
 
-	return Parent.extend('FormUpToDateConfirmation', {
+	return Document.extend('SignedDataForms', {
 		isSignedFormFilesUpToDate: {
 			type: db.Boolean,
 			value: function (_observe) {
+				var sections, lastEditStamp;
 				if (!this.isSignedFormFilesUpToDateUserValue) return false;
+				sections = _observe(this.master.dataForms.applicable).copy().add(this.master.determinants);
+				lastEditStamp = 0;
 
-				var lastEditStamp = 0;
 				// Find out the last edit date of the form sections.
-				this.master.dataForms.map.forEach(function (section) {
+				sections.forEach(function (section) {
 					lastEditStamp = Math.max(lastEditStamp, _observe(section._lastEditStamp));
 				}, this);
 
@@ -37,9 +31,7 @@ module.exports = memoize(function (db/*, options */) {
 		isSignedFormFilesUpToDateUserValue: {
 			type: db.Boolean,
 			value: false,
-			label: _('Is signed application form up to date?'),
-			trueLabel: _('Yes'),
-			falseLabel: _('No')
+			label: _('Is signed application form up to date?')
 		}
 	}, {
 		// Document label
