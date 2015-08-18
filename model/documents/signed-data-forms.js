@@ -9,11 +9,11 @@ module.exports = memoize(function (db) {
 	var Document = defineDocument(ensureDb(db));
 
 	return Document.extend('SignedDataForms', {
-		isSignedFormFilesUpToDate: {
+		isUpToDate: {
 			type: db.Boolean,
 			value: function (_observe) {
 				var sections, lastEditStamp;
-				if (!this.isSignedFormFilesUpToDateUserValue) return false;
+				if (!this.isUpToDateByUser) return false;
 				sections = _observe(this.master.dataForms.applicable).copy().add(this.master.determinants);
 				lastEditStamp = 0;
 
@@ -23,12 +23,12 @@ module.exports = memoize(function (db) {
 				}, this);
 
 				// If any section has been modified later than
-				// isSignedFormFilesUpToDateUserValue, the user value must be invalidated.
-				return lastEditStamp < _observe(this._isSignedFormFilesUpToDateUserValue._lastModified);
+				// isUpToDateByUser, the user value must be invalidated.
+				return lastEditStamp < _observe(this._isUpToDateByUser._lastModified);
 			}
 		},
 
-		isSignedFormFilesUpToDateUserValue: {
+		isUpToDateByUser: {
 			type: db.Boolean,
 			value: false,
 			label: _('Is signed application form up to date?')

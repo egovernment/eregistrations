@@ -37,12 +37,12 @@ module.exports = function (t, a) {
 	bp.guideProp = 'Test';
 	signedDataForms = bp.requirementUploads.map.signedDataForms.document;
 
-	a(signedDataForms.isSignedFormFilesUpToDate, false);
-	a(signedDataForms.isSignedFormFilesUpToDateUserValue, false);
-	signedDataForms.isSignedFormFilesUpToDateUserValue = true;
-	a(signedDataForms.isSignedFormFilesUpToDate, true);
+	a(signedDataForms.isUpToDate, false);
+	a(signedDataForms.isUpToDateByUser, false);
+	signedDataForms.isUpToDateByUser = true;
+	a(signedDataForms.isUpToDate, true);
 	bp.testBoolean = true;
-	a(signedDataForms.isSignedFormFilesUpToDate, false);
-	signedDataForms.isSignedFormFilesUpToDateUserValue = true;
-	a(signedDataForms.isSignedFormFilesUpToDate, true);
+	a(signedDataForms.isUpToDate, false);
+	signedDataForms.isUpToDateByUser = true;
+	a(signedDataForms.isUpToDate, true);
 };
