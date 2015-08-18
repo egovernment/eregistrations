@@ -1,12 +1,14 @@
 'use strict';
 
 var memoize          = require('memoizee/plain')
+  , ensureDb          = require('dbjs/valid-dbjs')
   , ensureType       = require('dbjs/valid-dbjs-type')
   , _                = require('mano').i18n.bind('Model: FormUpToDateConfirmation')
   , defineDocument   = require('../document');
 
 module.exports = memoize(function (db/*, options */) {
 	var options, Parent;
+	ensureDb(db);
 	options = Object(arguments[1]);
 	if (options.parent) {
 		Parent = ensureType(options.parent);
