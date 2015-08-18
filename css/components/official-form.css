@@ -27,6 +27,19 @@
 	width: 100%;
 }
 
+.official-form > .section-primary {
+	border: none;
+	padding: 0;
+}
+
+.official-form > .section-primary .section-primary-scroll-top {
+	display: none;
+}
+
+.official-form img {
+	width: 100%;
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 	.official-form-upload {
 		flex-wrap: wrap;
