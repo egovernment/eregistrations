@@ -14,7 +14,7 @@ exports.main = function () {
 	ul(
 		{ class: 'print-costs-list' },
 		list(this.businessProcess.costs.payable, function (cost) {
-			return li(span(cost.label), " ", span(cost._amount));
+			return li(span(cost._label), " ", span(cost._amount));
 		}),
 		li({ class: 'print-costs-list-total' }, span(_("Total Costs:")),
 			" ", span(this.businessProcess.costs._totalAmount))
