@@ -187,8 +187,8 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 		businessProcess.costs.payable.forEach(function (cost) {
 			costsPrintLink.search += (costsPrintLink.search.length) ?
-				'&' + cost.key + '=' + cost.amount.toFixed(2) :
-				'?' + cost.key + '=' + cost.amount.toFixed(2);
+					'&' + cost.key + '=' + cost.amount.toFixed(2) :
+					'?' + cost.key + '=' + cost.amount.toFixed(2);
 		});
 	});
 };
