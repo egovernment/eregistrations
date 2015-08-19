@@ -55,7 +55,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 	  , mandatoryRegistrationsSection, mandatoryRegistrationsListElements
 	  , optionalRegistrationsSection, optionalRegistrationsListElements
 	  , requirementsListElements
-	  , costsListElements, costsAmountsElements = {}, costsTotalElement;
+	  , costsListElements, costsAmountsElements = {}, costsTotalElement, costsPrintLink;
 
 	// Create mock BusinessProcess
 	var BusinessProcess = function () {};
@@ -69,6 +69,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 	optionalRegistrationsListElements = getNamedListElements('optional-registrations-list');
 	requirementsListElements = getNamedListElements('requirements-list');
 	costsListElements = getNamedListElements('costs-list');
+	costsPrintLink = $('print-costs-link');
 
 	$.forIn(costsListElements, function (li, name) {
 		costsAmountsElements[name] = $.getTextChild('cost-amount-' + camelToHyphen.call(name));
@@ -180,5 +181,14 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		});
 
 		costsTotalElement.data = formatCurrency(businessProcess.costs.totalAmount);
+
+		// Build costs print link
+		costsPrintLink.search = '';
+
+		businessProcess.costs.payable.forEach(function (cost) {
+			costsPrintLink.search += (costsPrintLink.search.length) ?
+				'&' + cost.key + '=' + cost.amount.toFixed(2) :
+				'?' + cost.key + '=' + cost.amount.toFixed(2);
+		});
 	});
 };
