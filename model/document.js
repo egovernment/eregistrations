@@ -34,6 +34,8 @@ module.exports = memoize(function (db) {
 		issuedBy: { type: db.Object, value: function () { return this.master.user; } },
 		// Issue date. It's inputted by hand official issuance date
 		issueDate: { type: DateType, required: true, label: _("Date of issuance") },
+		// Eventual expiration date
+		expirationDate: { type: DateType, label: _("Date of expiration") },
 		// Document fields sections
 		// It's about fields we want officials to fill either at revision (document upload) or
 		// processing step (certificate upload)
