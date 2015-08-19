@@ -67,10 +67,10 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 			ns._if(gtOrEq(self.progressRules.invalid._size, 1),
 				div({ class: 'entities-overview-info' },
 					ns._if(eq(self.progressRules.invalid._size, 1),
-						self.progressRules.invalid._first.map(function (rule) {
+						p(self.progressRules.invalid._first.map(function (rule) {
 							if (!rule) return;
-							return p(_d(rule.message, translationInserts));
-						}),
+							return _d(rule.message, translationInserts);
+						})),
 						ul(self.progressRules.invalid,
 							function (rule) {
 								return ns.li(_d(rule.message, translationInserts));
