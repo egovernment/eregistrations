@@ -38,6 +38,7 @@
 
 .official-form-certificate-preview img {
 	width: 100%;
+	border: 1px solid var(--normal-background);
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
