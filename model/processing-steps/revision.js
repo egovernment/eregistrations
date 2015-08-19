@@ -7,10 +7,11 @@ var memoize                  = require('memoizee/plain')
   , _                        = require('mano').i18n.bind('Model')
   , defineProcessingStep     = require('../processing-step')
   , defineRequirementUploads = require('../business-process-new/requirement-uploads')
-  , defineProcessingSteps    = require('../business-process-new/processing-steps');
+  , defineProcessingSteps    = require('../business-process-new/processing-steps')
+  , ensureDb                 = require('dbjs/valid-dbjs');
 
 module.exports = memoize(function (db) {
-	var Percentage = definePercentage(db);
+	var Percentage = definePercentage(ensureDb(db));
 
 	defineRequirementUploads(db);
 	defineProcessingSteps(db);
