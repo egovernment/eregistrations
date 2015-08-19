@@ -1,38 +1,26 @@
 "use strict";
 
-var memoize             = require('memoizee/plain')
-  , defineFormSection   = require('../../form-section')
-  , ensureDb            = require('dbjs/valid-dbjs')
-  , defineFrontDeskStep = require('../../processing-steps/front-desk')
-  , _                   = require('mano').i18n.bind('Business Process: Model: Submission forms');
+var memoize               = require('memoizee/plain')
+  , defineFormSection     = require('../../form-section')
+  , ensureDb              = require('dbjs/valid-dbjs')
+  , defineFrontDeskStep   = require('../../processing-steps/front-desk')
+  , _                     = require('mano').i18n.bind('Business Process: Model: Submission forms');
 
 module.exports = memoize(function (db) {
-	var FormSection;
+	var FormSection, FrontDeskStep;
 	ensureDb(db);
-	FormSection = defineFormSection(db);
+	FormSection   = defineFormSection(db);
+	FrontDeskStep = defineFrontDeskStep(db);
+	FrontDeskStep.prototype.set('isChosenInstitutionFormApplicable', function (_observe) {
+		return _observe(this.possibleInstitutions._size) > 1;
+	});
 	return FormSection.extend('PickupInstitutionFormSection', {
 		label: { value: _("Where do you want to collect your registrations?") },
 		actionUrl: { value: 'pickup-institution' },
-		propertyMasterType: { value:  defineFrontDeskStep(db) },
-		propertyNames: { value: ['chosenInstitution'] },
+		propertyNames: { value: ['processingSteps/map/frontDesk/chosenInstitution'] },
 		isApplicable: {
 			value: function (_observe) {
-				var processingSteps = this.master.processingSteps;
-				return _observe(processingSteps.applicable).has(processingSteps.map.frontDesk);
-			}
-		},
-		status: {
-			value: function (_observe) {
-				var total = 0, valid = 0, frontDesk;
-				frontDesk = this.master.processingSteps.map.frontDesk;
-
-				if (_observe(frontDesk.possibleInstitutions._size)) {
-					++total;
-					if (_observe(frontDesk._institution)) ++valid;
-
-					return valid / total;
-				}
-				return 1;
+				return _observe(this.master.processingSteps.map.frontDesk._isApplicable);
 			}
 		}
 	});

@@ -12,10 +12,10 @@ module.exports = function (t, a) {
 	  , BusinessProcess = defineBusinessProcess(db)
 	  , PickupInstitutionFormSection = t(db)
 
-	  , businessProcess = new BusinessProcess(), institutionA, institutionB;
+	  , businessProcess = new BusinessProcess();
 
-	institutionA = Institution.newNamed('institutionA');
-	institutionB = Institution.newNamed('institutionB');
+	Institution.newNamed('institutionA');
+	Institution.newNamed('institutionB');
 	businessProcess.processingSteps.map.define('frontDesk', {
 		nested: true,
 		type: FrontDeskStep
@@ -25,15 +25,15 @@ module.exports = function (t, a) {
 		type: PickupInstitutionFormSection
 	});
 
+	a(businessProcess.submissionForms.map.pickupInstitution.isApplicable, false);
+	a(businessProcess.submissionForms.map.pickupInstitution.status, 1);
+	businessProcess.processingSteps.map.frontDesk.possibleInstitutions.add(db.institutionA);
 	a(businessProcess.submissionForms.map.pickupInstitution.isApplicable, true);
-	a(businessProcess.submissionForms.map.pickupInstitution.status, 1);
-	businessProcess.processingSteps.map.frontDesk.possibleInstitutions.add(institutionA);
-	businessProcess.processingSteps.map.frontDesk.possibleInstitutions.add(institutionB);
+	businessProcess.processingSteps.map.frontDesk.possibleInstitutions.add(db.institutionB);
 	a(businessProcess.submissionForms.map.pickupInstitution.status, 0);
-	businessProcess.processingSteps.map.frontDesk.chosenInstitution = institutionB;
+	businessProcess.processingSteps.map.frontDesk.chosenInstitution = db.institutionB;
 	a(businessProcess.submissionForms.map.pickupInstitution.status, 1);
-	businessProcess.processingSteps.map.frontDesk.chosenInstitution = null;
-	a(businessProcess.submissionForms.map.pickupInstitution.status, 0);
-	businessProcess.processingSteps.map.frontDesk.possibleInstitutions.delete(institutionB);
+	businessProcess.processingSteps.map.frontDesk.possibleInstitutions.delete(db.institutionB);
 	a(businessProcess.submissionForms.map.pickupInstitution.status, 1);
+	a(businessProcess.processingSteps.map.frontDesk.institution, db.institutionA);
 };
