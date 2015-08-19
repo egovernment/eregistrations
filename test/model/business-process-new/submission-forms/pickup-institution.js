@@ -3,7 +3,7 @@
 var Database = require('dbjs')
   , defineBusinessProcess = require('../../../../model/business-process-new')
   , defineFrontDeskStep = require('../../../../model/processing-steps/front-desk')
-	, defineInstitution   = require('../../../../model/institution');
+  , defineInstitution   = require('../../../../model/institution');
 
 module.exports = function (t, a) {
 	var db = new Database()
