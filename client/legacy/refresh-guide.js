@@ -190,5 +190,9 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 					'&' + cost.key + '=' + cost.amount.toFixed(2) :
 					'?' + cost.key + '=' + cost.amount.toFixed(2);
 		});
+
+		if (costsPrintLink.search.length) {
+			costsPrintLink.search += '&total=' + businessProcess.costs.totalAmount.toFixed(2);
+		}
 	});
 };
