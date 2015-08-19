@@ -13,7 +13,7 @@ exports._parent = require('./business-process-base');
 exports['step-pay'] = { class: { 'step-active': true } };
 
 exports.step = function () {
-	exports._paymentHeading();
+	exports._paymentHeading(this);
 
 	insert(errorMsg(this));
 
@@ -44,7 +44,7 @@ exports.step = function () {
 				}
 			)
 		),
-		exports.__onlinePayments(),
+		exports.__onlinePayments(this),
 		div({ class: 'disabler' })
 	);
 	insert(_if(eq(this.businessProcess.costs._paymentProgress, 1),
