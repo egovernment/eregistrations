@@ -75,10 +75,11 @@ module.exports = memoize(function (db/* options */) {
 		// Payment weight
 		// Indicates number of step user needs to take to complete payment step in Part A
 		// e.g. one step per each payment receipt, and one step for one online payment
-		// As for now we assume there is at most online payment
 		// If it's zero, that means we should not show payment step at all
 		paymentWeight: { type: Percentage, value: function (_observe) {
 			var weight = 0;
+			// We assume that there will be at most one online payment
+			// that will cover all electronic costs
 			if (this.electronic.size) ++weight;
 			weight += _observe(this.master.paymentReceiptUploads.applicable._size);
 			return weight;
