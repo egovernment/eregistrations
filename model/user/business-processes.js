@@ -2,22 +2,22 @@
 
 var memoize               = require('memoizee/plain')
   , ensureType            = require('dbjs/valid-dbjs-type')
-  , defineBusinessProcess = require('../business-process/base');
+  , defineBusinessProcess = require('../lib/business-process-base');
 
 module.exports = memoize(function (User/* options */) {
-	var db = ensureType(User).database;
+	var db = ensureType(User).database, BusinessProcessBase;
 
-	defineBusinessProcess(db, arguments[1]);
+	BusinessProcessBase = defineBusinessProcess(db);
 
 	return User.prototype.defineProperties({
 		initialBusinessProcesses: {
-			type: db.BusinessProcessBase,
+			type: BusinessProcessBase,
 			unique: true,
 			multiple: true,
 			reverse: 'user'
 		},
 		businessProcesses: {
-			type: db.BusinessProcessBase,
+			type: BusinessProcessBase,
 			multiple: true,
 			value: function (_observe) {
 				var processes = [];
