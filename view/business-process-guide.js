@@ -23,13 +23,14 @@ exports.step = function () {
 			{ id: 'guide-form', class: 'user-guide', action: '/guide/', method: 'post' },
 			div({ class: 'section-primary' }, h2(_("Questions")),
 				hr(),
+				exports._determinantsIntro(),
 				this.businessProcess.determinants.toDOMFieldset(document, { formId: 'guide-form' })),
 
 			div({ class: 'section-primary' },
-				exports._registrationIntro(),
 				div({ id: 'mandatory-registrations-section', class: 'section-primary-wrapper' },
 					h2(_("Mandatory Registrations")),
 					hr(),
+					exports._mandatoryRegistrationIntro(),
 					ul({ id: 'mandatory-registrations-list' }, this.businessProcess.registrations.map,
 						function (registration) {
 							li({ 'data-key': registration.key },
@@ -40,6 +41,7 @@ exports.step = function () {
 				div({ id: 'optional-registrations-section', class: 'section-primary-wrapper' },
 					h2(_("Optional Registrations")),
 					hr(),
+					exports._optionalRegistrationIntro(),
 					ul({ id: 'optional-registrations-list' }, this.businessProcess.registrations.map,
 						function (registration) {
 							li({ 'data-key': registration.key },
@@ -86,6 +88,8 @@ exports.step = function () {
 };
 
 exports._guideHeading = Function.prototype;
-exports._registrationIntro = Function.prototype;
+exports._determinantsIntro = Function.prototype;
+exports._mandatoryRegistrationIntro = Function.prototype;
+exports._optionalRegistrationIntro  = Function.prototype;
 exports._requirementsIntro = Function.prototype;
 exports._costsIntro = Function.prototype;
