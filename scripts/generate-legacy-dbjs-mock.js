@@ -7,7 +7,8 @@ var ensureType = require('dbjs/valid-dbjs-type')
   , writeFile = require('fs2/write-file')
   , db        = require('mano').db
   , Currency  = require('dbjs-ext/number/currency')(db)
-  , Cost      = require('eregistrations/model/cost')(db);
+  , Cost      = require('eregistrations/model/cost')(db)
+  , toArray   = require('es5-ext/array/to-array');
 
 var defineForEach = function (object) {
 	object.forEach = new Function('cb, thisArg', '$.dbjsMapForEach(this, cb, thisArg);');
@@ -28,7 +29,7 @@ module.exports = function (businessProcessType, filename/*, options*/) {
 	};
 
 	var copyMapEntities = function (propertyName, entitiesPropertyNames) {
-		var result = {};
+		var result = {}, value;
 
 		// To allow copying 'empty' entities.
 		if (!entitiesPropertyNames) entitiesPropertyNames = [];
@@ -37,7 +38,11 @@ module.exports = function (businessProcessType, filename/*, options*/) {
 			var entity = {};
 
 			entitiesPropertyNames.forEach(function (entityPropertyName) {
-				entity[entityPropertyName] = item.getDescriptor(entityPropertyName)._value_;
+				value = item.getDescriptor(entityPropertyName)._value_;
+				if (item.getDescriptor(entityPropertyName).multiple) {
+					value = typeof value === 'function' ? value : toArray(item[entityPropertyName]);
+				}
+				entity[entityPropertyName] = value;
 			});
 
 			result[key] = entity;

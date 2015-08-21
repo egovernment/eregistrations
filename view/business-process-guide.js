@@ -23,7 +23,7 @@ exports.step = function () {
 			{ id: 'guide-form', class: 'user-guide', action: '/guide/', method: 'post' },
 			div({ class: 'section-primary' }, h2(_("Questions")),
 				hr(),
-				this.businessProcess.determinants.toDOMFieldset(document)),
+				this.businessProcess.determinants.toDOMFieldset(document, { formId: 'guide-form' })),
 
 			div({ class: 'section-primary' },
 				exports._registrationIntro(),
