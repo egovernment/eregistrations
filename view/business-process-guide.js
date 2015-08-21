@@ -23,7 +23,7 @@ exports.step = function () {
 			{ id: 'guide-form', class: 'user-guide', action: '/guide/', method: 'post' },
 			div({ class: 'section-primary' }, h2(_("Questions")),
 				hr(),
-				exports._determinantsIntro(),
+				exports._questionsIntro(),
 				this.businessProcess.determinants.toDOMFieldset(document, { formId: 'guide-form' })),
 
 			div({ class: 'section-primary' },
@@ -88,7 +88,7 @@ exports.step = function () {
 };
 
 exports._guideHeading = Function.prototype;
-exports._determinantsIntro = Function.prototype;
+exports._questionsIntro = Function.prototype;
 exports._mandatoryRegistrationIntro = Function.prototype;
 exports._optionalRegistrationIntro  = Function.prototype;
 exports._requirementsIntro = Function.prototype;
