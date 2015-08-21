@@ -142,7 +142,9 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		businessProcess.registrations.map.forEach(function (registration) {
 			registration.certificates = $.setify(registration.certificates($.dbjsObserveMock));
 			registration.requirements = $.setify(registration.requirements($.dbjsObserveMock));
-			registration.costs = $.setify(registration.costs($.dbjsObserveMock));
+			registration.costs =
+					typeof registration.costs === 'function' ?
+						$.setify(registration.costs($.dbjsObserveMock)) : registration.costs;
 		});
 
 		// Resolve requirements, costs and certificates
