@@ -55,11 +55,11 @@ exports.forEach(function (conf) {
 			}
 			statusLog.setProperties({
 				label: conf.label,
-				official: official,
 				time: new Date(Date.now() +
 						(conf.timeShift ? (conf.timeShift * 100) : 0)),
 				text: text
 			});
+			if (official) statusLog.official = official;
 		});
 	});
 });
