@@ -2,10 +2,9 @@
 
 'use strict';
 
-var $             = require('mano-legacy')
-  , camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
-  , Currency      = $.legacyDb.Currency
-  , Cost          = $.legacyDb.Cost;
+var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
+  , $              = require('mano-legacy')
+  , formatCurrency = require('./format-currency');
 
 require('mano-legacy/get-text-child');
 
@@ -27,25 +26,6 @@ var getPropertyValue = function (target, property) {
 	return typeof target[property] === 'function' ? target[property]($.dbjsObserveMock)
 		: target[property];
 };
-
-var formatCurrency = (function () {
-	var formatOptions = { fractionDigits: 0 };
-
-	if (Cost.step) {
-		while (Cost.step < 1) {
-			++formatOptions.fractionDigits;
-			Cost.step *= 10;
-		}
-	}
-
-	if (Currency.symbol) formatOptions.prefix = Currency.symbol;
-	else if (Currency.isoCode) formatOptions.prefix = Currency.isoCode + ' ';
-	else formatOptions.prefix = '';
-
-	return function (amount) {
-		return Currency.format(amount, formatOptions);
-	};
-}());
 
 // A legacy refreshGuide method for Part A Guide page.
 // Used in: /view/guide.js
