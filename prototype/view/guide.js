@@ -2,8 +2,6 @@
 
 module.exports = exports = require('../../view/business-process-guide');
 
-require('./_inventory');
-
 exports._guideHeading = function () {
 	return div({ class: 'capital-first' }, div("1"),
 		div(h1("Individual registration guide for companies"),

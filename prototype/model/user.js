@@ -21,7 +21,6 @@ var Map          = require('es6-map')
   , user = User.prototype
   , BusinessActivity, BusinessActivityCategory, Partner, bcAgencyBusiness, bcInsurance
   , file, props
-  , InventoryValue
   , StreetTypeChoice
   , EnumTripleOption = require('./enum-triple-option');
 
@@ -30,11 +29,6 @@ require('./business-process');
 require('dbjs-ext/create-enum')(db);
 
 StreetTypeChoice = db.StreetTypeChoice; // defined in address
-
-InventoryValue = db.Object.extend('InventoryValue', {
-	description: { type: StringLine },
-	value: { type: UsDollar, step: 1, min: 0 }
-});
 
 Role.members.add('user');
 Role.meta.get('user').setProperties({
@@ -164,15 +158,6 @@ user.defineProperties({
 	registeredArticlesFile: { type: File, nested: true,
 		label: "Registered articles of association" },
 
-	inventoryShelves: { type: InventoryValue, multiple: true,
-		label: "Shelves", inputPlaceholder: "Shelves #1",
-		description: "Add lines necessary to mention the cost and source" +
-		" of each element. Leave empty if no item." },
-	inventoryCounters: { type: InventoryValue, multiple: true,
-		label: "Counters", inputPlaceholder: "Counters #1",
-		description: "Enter other lines necessary to mention the cost and source" +
-		" of each element. Leave empty if no item.",
-		addLabel: "Add counter" },
 	streetType: { type: StreetTypeChoice, value: 'street', required: true },
 	streetName: { type: StringLine, required: true },
 	street: { type: StringLine, label: "Type of street", required: true,

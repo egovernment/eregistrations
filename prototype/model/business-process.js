@@ -40,6 +40,7 @@ var db = require('mano').db
 		'utils/define-payment-receipt-uploads')
   , User = require('../../model/user/base')(db);
 
+require('./inventory');
 User.newNamed('userOfficialMinistry');
 require('../../model/lib/nested-map');
 BusinessProcessNew.newNamed('emptyBusinessProcess');
@@ -90,6 +91,10 @@ BusinessProcessNew.prototype.defineProperties({
 		type: UInteger,
 		required: true,
 		label: "How many branches?"
+	},
+	inventoryTotalAmount: {
+		isInventoryTotal: true,
+		type: UInteger
 	},
 	//dataForms
 	companyType: {
