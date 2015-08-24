@@ -17,7 +17,6 @@ require('mano-legacy/checkbox-toggle');
 
 require('../../client/legacy/form-section-state-helper');
 require('../../common/legacy/date-controls');
-require('../../client/legacy/format-currency');
 
 // Assure empty mock
 $.refreshGuide = Function.prototype;
@@ -39,3 +38,5 @@ $.legacyDb = { Currency: { format: function (value/*, options*/) {
 	}
 	return (options.prefix || '') + result + (options.postfix || '');
 }, symbol: "$", isoCode: "USD" }, Cost: { step: 0.01 } };
+
+require('../../client/legacy/format-currency');

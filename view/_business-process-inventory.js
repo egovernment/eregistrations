@@ -43,7 +43,7 @@ module.exports = function (businessProcess) {
 									if (el.getAttribute('type') !== 'number') return;
 									total += Number(el.value) || 0;
 								});
-								totalTxt.data = '$' + Math.round(total);
+								totalTxt.data = $.formatCurrency(total);
 							});
 						}, list.getId(), 'span-total-' + name)
 					);
@@ -52,7 +52,7 @@ module.exports = function (businessProcess) {
 						p(
 							{ class: 'dialog-inventory-total-section-costs' },
 							span("Total: "),
-							span({ id: 'span-total-' + name, class: 'dialog-inventory-total' }, "$0")
+							span({ id: 'span-total-' + name, class: 'dialog-inventory-total' }, "0")
 						)
 					);
 
@@ -80,9 +80,7 @@ module.exports = function (businessProcess) {
 					{ class: 'dialog-inventory-total-value-section' },
 					p(
 						_("Value of the inventory to the date") + ":",
-						span("$",
-							totalTxt = span({ class: 'dialog-inventory-total-value' }, "0")
-							)
+						span(totalTxt = span({ class: 'dialog-inventory-total-value' }, "0"))
 					),
 					p(
 						{ class: 'dialog-inventory-value-save input' },
@@ -110,7 +108,7 @@ module.exports = function (businessProcess) {
 							$.forEach(container.getByClass('span', 'dialog-inventory-total'), function (p) {
 								total += Number(p.firstChild.data.slice(1)) || 0;
 							});
-							totalTxt.data = Math.round(total);
+							totalTxt.data = $.formatCurrency(total);
 						});
 					}, container.getId(), resetBtn.getId(), totalTxt.getId())
 				)
