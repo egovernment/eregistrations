@@ -3,15 +3,15 @@
 var _  = require('mano').i18n.bind('User')
   , forEach = Array.prototype.forEach;
 
-module.exports = function (url) {
-	var container, resetBtn, totalTxt, businessProcess = this.businessProcess;
+module.exports = function (businessProcess) {
+	var container, resetBtn, totalTxt;
 	return dialog(
 		{ id: 'inventory', class: 'dialog-inventory dialog-modal' },
 		header(
 			h3(_("Inventory of your business"))
 		),
 		form(
-			{ action: url('inventory'), method: 'post' },
+			{ action: '/inventory', method: 'post' },
 			container = ul(
 				businessProcess.inventory,
 				function (item, name) {

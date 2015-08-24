@@ -41,7 +41,9 @@ require('../../view/dbjs/section-group-to-dom');
 require('../../view/dbjs/section-entities-table-to-dom');
 require('../../view/dbjs/multiple');
 require('../../view/dbjs/section-sides-to-dom');
-require('../../view/dbjs/determinants-to-dom-fieldset')({ target: db.BusinessProcessNew });
+require('../../view/dbjs/determinants-to-dom-fieldset')(
+	db.BusinessProcessNew.prototype.determinants
+);
 
 requirementUpload.$status.DOMInput = require('../../view/dbjs/_enum-inline-button-group');
 

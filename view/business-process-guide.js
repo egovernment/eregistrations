@@ -4,7 +4,8 @@
 
 var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
   , sentBackInfo  = require('./_business-process-sent-back-info')
-  , _             = require('mano').i18n.bind('Registration');
+  , _             = require('mano').i18n.bind('Registration')
+  , inventoryModal = require('./_business-process-inventory');
 
 exports._parent = require('./business-process-base');
 
@@ -19,6 +20,7 @@ exports.step = function () {
 
 	div(
 		{ class: ['disabler-range', _if(this.businessProcess._isSentBack, 'disabler-active')] },
+		insert(inventoryModal(this.businessProcess)),
 		form(
 			{ id: 'guide-form', class: 'user-guide', action: '/guide/', method: 'post' },
 			div({ class: 'section-primary' }, h2(_("Questions")),
