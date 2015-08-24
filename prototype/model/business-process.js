@@ -40,6 +40,7 @@ var db = require('mano').db
 		'utils/define-payment-receipt-uploads')
   , User = require('../../model/user/base')(db);
 
+require('./inventory');
 User.newNamed('userOfficialMinistry');
 require('../../model/lib/nested-map');
 BusinessProcessNew.newNamed('emptyBusinessProcess');
@@ -90,6 +91,11 @@ BusinessProcessNew.prototype.defineProperties({
 		type: UInteger,
 		required: true,
 		label: "How many branches?"
+	},
+	inventoryTotalAmount: {
+		label: "Value of inventory",
+		isInventoryTotal: true,
+		type: UInteger
 	},
 	//dataForms
 	companyType: {
@@ -209,7 +215,8 @@ BusinessProcessNew.prototype.registrations.map.get('b').setProperties({
 
 DeterminantSection = FormSection.extend('DeterminantSection', {
 	label: { value: "Determinants" },
-	propertyNames: { value: ['isCompany', 'needsSpecialCommittee', 'branchCount'] }
+	propertyNames: { value: ['isCompany', 'inventoryTotalAmount',
+		'needsSpecialCommittee', 'branchCount'] }
 });
 
 BusinessProcessNew.prototype.getDescriptor('determinants').type = DeterminantSection;

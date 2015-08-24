@@ -6,8 +6,6 @@ exports._parent = require('./_user-main');
 
 exports['step-guide'] = { class: { 'step-active': true } };
 
-require('./_inventory');
-
 exports.step = function () {
 	h1("1. Individual registration guide for companies - lomas like");
 
