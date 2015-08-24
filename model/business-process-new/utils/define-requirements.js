@@ -31,11 +31,17 @@ module.exports = function (BusinessProcess, data) {
 			throw new TypeError(RequiredDocument.__id__ + " must extend Document.");
 		}
 		definitions[name] = { nested: true };
-		typesMap[name] = RequiredDocument;
+		typesMap[name] = { Document: RequiredDocument, label: conf.label, legend: conf.legend };
 	});
 	BusinessProcess.prototype.requirements.map.defineProperties(definitions);
-	forEach(typesMap, function (RequiredDocument, name) {
-		this[name].Document = RequiredDocument;
+	forEach(typesMap, function (configItem, name) {
+		this[name].Document = configItem.Document;
+		if (configItem.label) {
+			this[name].label = configItem.label;
+		}
+		if (configItem.legend) {
+			this[name].legend = configItem.legend;
+		}
 	}, BusinessProcess.prototype.requirements.map);
 	return BusinessProcess;
 };
