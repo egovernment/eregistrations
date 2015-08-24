@@ -93,6 +93,7 @@ BusinessProcessNew.prototype.defineProperties({
 		label: "How many branches?"
 	},
 	inventoryTotalAmount: {
+		label: 'test',
 		isInventoryTotal: true,
 		type: UInteger
 	},
@@ -214,7 +215,8 @@ BusinessProcessNew.prototype.registrations.map.get('b').setProperties({
 
 DeterminantSection = FormSection.extend('DeterminantSection', {
 	label: { value: "Determinants" },
-	propertyNames: { value: ['isCompany', 'needsSpecialCommittee', 'branchCount'] }
+	propertyNames: { value: ['isCompany', 'inventoryTotalAmount',
+		'needsSpecialCommittee', 'branchCount'] }
 });
 
 BusinessProcessNew.prototype.getDescriptor('determinants').type = DeterminantSection;

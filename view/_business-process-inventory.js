@@ -6,7 +6,7 @@ var _  = require('mano').i18n.bind('User')
 module.exports = function (url) {
 	var container, resetBtn, totalTxt, businessProcess = this.businessProcess;
 	return dialog(
-		{ id: 'inventario', class: 'dialog-inventory dialog-modal' },
+		{ id: 'inventory', class: 'dialog-inventory dialog-modal' },
 		header(
 			h3(_("Inventory of your business"))
 		),
