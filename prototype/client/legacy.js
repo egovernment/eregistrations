@@ -17,6 +17,25 @@ require('mano-legacy/checkbox-toggle');
 
 require('../../client/legacy/form-section-state-helper');
 require('../../common/legacy/date-controls');
+require('../../client/legacy/format-currency');
 
 // Assure empty mock
 $.refreshGuide = Function.prototype;
+
+$.legacyDb = { Currency: { format: function (value/*, options*/) {
+	var options = Object(arguments[1]), intPart, numSep, result;
+	if (isNaN(value)) return 'Invalid value';
+	value = Number(value);
+	if (!isFinite(value)) return String(value);
+	value = value.toFixed(isNaN(options.fractionDigits) ? 2 : options.fractionDigits).split('.');
+	intPart = value[0];
+	result = value[1] || '';
+	if (result) result = (options.decSep || '.') + result;
+	numSep = options.numSep || '\'';
+	while (intPart) {
+		result = intPart.slice(-3) + result;
+		intPart = intPart.slice(0, -3);
+		if (intPart) result = numSep + result;
+	}
+	return (options.prefix || '') + result + (options.postfix || '');
+}, symbol: "$", isoCode: "USD" }, Cost: { step: 0.01 } };
