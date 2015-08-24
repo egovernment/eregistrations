@@ -93,7 +93,7 @@ BusinessProcessNew.prototype.defineProperties({
 		label: "How many branches?"
 	},
 	inventoryTotalAmount: {
-		label: 'test',
+		label: "Value of inventory",
 		isInventoryTotal: true,
 		type: UInteger
 	},
