@@ -10,32 +10,42 @@ var ensureArray         = require('es5-ext/array/valid-array')
   , isType              = require('dbjs/is-dbjs-type')
   , ensureType          = require('dbjs/valid-dbjs-type')
   , defineDocument      = require('../../document')
+  , defineRequirement   = require('../../requirement')
   , defineRequirements  = require('../requirements')
 
   , create = Object.create;
 
 module.exports = function (BusinessProcess, data) {
 	var db = ensureType(BusinessProcess).database, Document = defineDocument(db)
-	  , definitions = create(null), typesMap = create(null);
+	  , Requirement = defineRequirement(db), definitions = create(null), typesMap = create(null);
 	defineRequirements(db);
 	ensureArray(data).forEach(function (conf) {
-		var RequiredDocument, name;
+		//Required is either a Document or a Requirement
+		var Required, name;
 		if (!isType(ensureObject(conf))) {
-			RequiredDocument = ensureType(conf.class);
+			Required = ensureType(conf.class);
 			name = ensureStringifiable(conf.name);
 		} else {
-			RequiredDocument = conf;
-			name = uncapitalize.call(RequiredDocument.__id__);
+			Required = conf;
+			name = uncapitalize.call(Required.__id__);
 		}
-		if (!Document.isPrototypeOf(RequiredDocument)) {
-			throw new TypeError(RequiredDocument.__id__ + " must extend Document.");
+		if (!Document.isPrototypeOf(Required) && !Requirement.isPrototypeOf(Required)) {
+			throw new TypeError(Required.__id__ + " must extend Document or Requirement.");
 		}
 		definitions[name] = { nested: true };
-		typesMap[name] = { Document: RequiredDocument, label: conf.label, legend: conf.legend };
+		typesMap[name] = { label: conf.label, legend: conf.legend };
+		if (Requirement.isPrototypeOf(Required)) {
+			definitions[name].type = Required;
+		} else {
+			typesMap[name].Document = Required;
+		}
 	});
 	BusinessProcess.prototype.requirements.map.defineProperties(definitions);
 	forEach(typesMap, function (configItem, name) {
-		this[name].Document = configItem.Document;
+		// When no configItem.Document, than the requirement has been set by Requirement class
+		if (configItem.Document) {
+			this[name].Document = configItem.Document;
+		}
 		if (configItem.label) {
 			this[name].label = configItem.label;
 		}
