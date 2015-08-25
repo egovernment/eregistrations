@@ -20,7 +20,7 @@ exports.step = function () {
 
 	div(
 		{ class: ['disabler-range', _if(this.businessProcess._isSentBack, 'disabler-active')] },
-		this.businessProcess.inventory ? insert(inventoryModal(this.businessProcess)) : "",
+		this.businessProcess.inventory ? insert(inventoryModal(this.businessProcess)) : null,
 		form(
 			{ id: 'guide-form', class: 'user-guide', action: '/guide/', method: 'post' },
 			div({ class: 'section-primary' }, h2(_("Questions")),
