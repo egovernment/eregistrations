@@ -14,5 +14,19 @@ exports['sub-main'] = {
 			ol(li(_("start a new service online")),
 				li(_("see your draft, in process or processed applications")),
 				li(_("see and modify the data and documents linked to your applications"))));
+
+		section({ class: 'section-primary' },
+			h1(_("1. Online Services")),
+			hr(),
+			ul({ class: 'registration-init-actions' },
+				exports._servicesBoxList(),
+				function (item) {
+					return _if(item.condition, li(
+						item.button,
+						div({ class: 'free-form' }, md(item.content))
+					));
+				}));
 	}
 };
+
+exports._servicesBoxList = Function.prototype;
