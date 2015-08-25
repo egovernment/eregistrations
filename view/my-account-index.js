@@ -20,7 +20,7 @@ exports['sub-main'] = {
 				li(_("see and modify the data and documents linked to your applications"))));
 
 		section({ class: 'section-primary' },
-			h1(_("1. Online Services")),
+			h1("1. ", _("Online Services")),
 			hr(),
 			ul({ class: 'registration-init-actions' },
 				exports._servicesBoxList(),
@@ -32,7 +32,7 @@ exports['sub-main'] = {
 				}));
 
 		section({ class: 'section-primary' },
-			h1(_("My requests")),
+			h1("2. ", _("My requests")),
 			hr(),
 			section(
 				{ class: 'submitted-main table-responsive-container' },
@@ -76,7 +76,7 @@ exports['sub-main'] = {
 			));
 
 		section({ class: "section-primary user-doc-data" },
-			h2(_("3. Documents and data")),
+			h2("3. ", _("Documents and data")),
 			hr(),
 			businessSelect = select({ id: 'business-process-select' },
 				option({ value: '/', selected: eq(loc._pathname, '/') },
