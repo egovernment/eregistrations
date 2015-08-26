@@ -12,12 +12,12 @@ exports['sub-main'] = {
 		var businessSelect;
 
 		section({ class: 'section-primary free-form' },
-			h1(_("Welcome to your account")),
-			hr(),
-			p(_("From here, you can"), ":"),
-			ol(li(_("start a new service online")),
-				li(_("see your draft, in process or processed applications")),
-				li(_("see and modify the data and documents linked to your applications"))));
+			md(_("# Welcome to Your Account #" +
+				"\n ---" +
+				"\n\n From here you can:" +
+				"\n 1. Start Process A" +
+				"\n 2. Start Process B"))
+			);
 
 		section({ class: 'section-primary' },
 			h1("1. ", _("Online Services")),
@@ -25,7 +25,7 @@ exports['sub-main'] = {
 			ul({ class: 'registration-init-actions' },
 				exports._servicesBoxList(),
 				function (item) {
-					return _if(item.condition, li(
+					return _if(item.condition || true, li(
 						item.button,
 						div({ class: 'free-form' }, md(item.content))
 					));

@@ -33,7 +33,7 @@ module.exports = {
 	'forms/partner-id': require('./view/partner'),
 
 	// My-account
-	'my-account': require('./view/my-account-index'),
+	'my-account': require('./view/user'),
 	'my-account/data': require('./view/my-account-data'),
 	'my-account/print': require('../view/print-business-process-my-account'),
 

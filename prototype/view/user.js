@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = exports = require('../../view/my-account-index');
+module.exports = exports = require('../../view/user');
 
 exports['submitted-menu'] = function () {
 	li(a({ class: 'submitted-menu-item-active' }, "My account"));
