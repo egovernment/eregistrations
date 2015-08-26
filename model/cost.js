@@ -28,6 +28,11 @@ module.exports = memoize(function (db) {
 			return _observe(this.owner.owner._isOnlinePaymentInitialized);
 		} },
 		// Whether payment is made online
-		isElectronic: { type: db.Boolean, value: false }
+		// Common case is that cost can be paid both physically and online
+		// In this scenario we mark it as electronic as soon as we detect
+		// an online payment beeing initialized
+		isElectronic: { type: db.Boolean, value: function () {
+			return this.isPaidOnline || this.isOnlinePaymentInitialized;
+		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
