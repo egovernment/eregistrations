@@ -4,8 +4,8 @@
 
 var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
   , sentBackInfo  = require('./_business-process-sent-back-info')
-  , inventoryModal = require('./_business-process-inventory')
-  , _             = require('mano').i18n.bind('Registration');
+  , _             = require('mano').i18n.bind('Registration')
+  , inventoryModal = require('./_business-process-inventory');
 
 exports._parent = require('./business-process-base');
 
