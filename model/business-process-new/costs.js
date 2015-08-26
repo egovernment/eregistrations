@@ -65,6 +65,10 @@ module.exports = memoize(function (db/* options */) {
 				++total;
 				if (this.electronic.every(function (cost) { return _observe(cost._isPaid); })) {
 					++valid;
+				} else if (this.electronic.some(function (cost) {
+						return _observe(cost._isOnlinePaymentInitialized);
+					})) {
+					valid += 0.5;
 				}
 			}
 			total += _observe(paymentReceiptUploads.applicable._size);
