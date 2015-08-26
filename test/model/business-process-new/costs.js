@@ -47,4 +47,17 @@ module.exports = function (t, a) {
 	businessProcess.costs.applicable.last.isPaidOnline = true;
 	a(businessProcess.costs.paymentWeight, 1);
 	a(businessProcess.costs.paymentProgress, 1);
+
+	businessProcess.costs.applicable.last.delete('isOnlinePaymentInitialized');
+	businessProcess.costs.applicable.last.delete('isPaidOnline');
+	a(businessProcess.costs.paymentWeight, 1);
+	a(businessProcess.costs.paymentProgress, 0);
+
+	businessProcess.costs.isOnlinePaymentInitialized = true;
+	a(businessProcess.costs.paymentWeight, 1);
+	a(businessProcess.costs.paymentProgress, 0.5);
+
+	businessProcess.costs.isPaidOnline = true;
+	a(businessProcess.costs.paymentWeight, 1);
+	a(businessProcess.costs.paymentProgress, 1);
 };
