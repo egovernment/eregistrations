@@ -44,6 +44,7 @@ require('../../view/dbjs/section-sides-to-dom');
 require('../../view/dbjs/determinants-to-dom-fieldset')(
 	db.BusinessProcessNew.prototype.determinants
 );
+require('../../view/dbjs/requirement-to-guide-dom');
 
 requirementUpload.$status.DOMInput = require('../../view/dbjs/_enum-inline-button-group');
 

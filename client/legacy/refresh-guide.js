@@ -6,6 +6,12 @@ var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
   , $              = require('mano-legacy')
   , formatCurrency = require('./format-currency');
 
+/**
+ * Each hook is an array of functions which are executed in corresponding parts of refresh guide.
+ * Every executed hook receives businessProcess param.
+ */
+$.refreshGuideHooks = { afterEnd: [], beforeRequirementsResolution: [] };
+
 require('mano-legacy/get-text-child');
 
 var getNamedListElements = function (listId) {
@@ -134,8 +140,6 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 			$.setify(businessProcess.certificates.applicable($.dbjsObserveMock));
 		businessProcess.requirements.resolved =
 			$.setify(businessProcess.requirements.resolved($.dbjsObserveMock));
-		businessProcess.requirements.applicable =
-			$.setify(businessProcess.requirements.applicable($.dbjsObserveMock));
 
 		businessProcess.costs.map.forEach(function (cost) {
 			cost.amount = getPropertyValue(cost, 'amount');
@@ -146,6 +150,17 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		businessProcess.costs.totalAmount = typeof businessProcess.costs.totalAmount === 'function'
 			? businessProcess.costs.totalAmount($.dbjsObserveMock) : businessProcess.costs.totalAmount;
 
+		$.refreshGuideHooks.beforeRequirementsResolution.forEach(function (hook) {
+			hook(businessProcess);
+		});
+
+		// Resolve applicable requirements
+		businessProcess.requirements.map.forEach(function (requirement) {
+			requirement.isApplicable = getPropertyValue(requirement, 'isApplicable');
+		});
+
+		businessProcess.requirements.applicable =
+			$.setify(businessProcess.requirements.applicable($.dbjsObserveMock));
 		// Filter requirements and costs lists
 		$.forIn(requirementsListElements, function (li, name) {
 			li.toggle(businessProcess.requirements.applicable.has(
@@ -176,5 +191,8 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		if (costsPrintLink.search.length) {
 			costsPrintLink.search += '&total=' + businessProcess.costs.totalAmount.toFixed(2);
 		}
+		$.refreshGuideHooks.afterEnd.forEach(function (hook) {
+			hook(businessProcess);
+		});
 	});
 };
