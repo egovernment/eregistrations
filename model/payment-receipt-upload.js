@@ -30,7 +30,7 @@ module.exports = memoize(function (db) {
 			var result = [], payable = _observe(this.master.costs.payable);
 			this.costs.forEach(function (cost) {
 				if (!payable.has(cost)) return;
-				if (_observe(cost._isPaidOnline)) return;
+				if (_observe(cost._isPaidOnline) || _observe(cost._isOnlinePaymentInitialized)) return;
 				result.push(cost);
 			});
 			return result;
