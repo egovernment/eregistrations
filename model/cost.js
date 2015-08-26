@@ -20,7 +20,13 @@ module.exports = memoize(function (db) {
 		// Whether cost have been paid
 		isPaid: { type: db.Boolean, value: function () { return this.isPaidOnline; } },
 		// Whether cost have been paid online (in Part A)
-		isPaidOnline: { type: db.Boolean, value: false },
+		isPaidOnline: { type: db.Boolean, value: function (_observe) {
+			return _observe(this.owner.owner._isPaidOnline);
+		} },
+		// Whether payment was initialized online
+		isOnlinePaymentInitialized: { type: db.Boolean, value: function (_observe) {
+			return _observe(this.owner.owner._isOnlinePaymentInitialized);
+		} },
 		// Whether payment is made online
 		isElectronic: { type: db.Boolean, value: false }
 	});

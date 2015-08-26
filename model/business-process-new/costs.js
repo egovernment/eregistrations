@@ -57,6 +57,14 @@ module.exports = memoize(function (db/* options */) {
 			});
 			return result;
 		} },
+		// Global isPaidOnline indication
+		// Should be used when we use one online payment for all costs (and that's default)
+		// Otherwise there's a isPaidOnline on each cost to which we can refer
+		isPaidOnline: { type: db.Boolean, value: false },
+		// Global isOnlinePaymentInitialized indication
+		// Should be used when we use one online payment for all costs (and that's default)
+		// Otherwise there's a isOnlinePaymentInitialized on each cost to which we can refer
+		isOnlinePaymentInitialized: { type: db.Boolean, value: false },
 		// Payment progress
 		paymentProgress: { type: Percentage, value: function (_observe) {
 			var valid = 0, total = 0, paymentReceiptUploads = this.master.paymentReceiptUploads;
@@ -65,6 +73,10 @@ module.exports = memoize(function (db/* options */) {
 				++total;
 				if (this.electronic.every(function (cost) { return _observe(cost._isPaid); })) {
 					++valid;
+				} else if (this.electronic.some(function (cost) {
+						return _observe(cost._isOnlinePaymentInitialized);
+					})) {
+					valid += 0.5;
 				}
 			}
 			total += _observe(paymentReceiptUploads.applicable._size);
