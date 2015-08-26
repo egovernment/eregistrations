@@ -6,6 +6,9 @@ var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
   , $              = require('mano-legacy')
   , formatCurrency = require('./format-currency');
 
+// Each hook is an array of scripts which are executed in corresponding parts of refresh guide
+$.refreshGuideHooks = { atEnd: [], beforeRequirementsApplicable: [] };
+
 require('mano-legacy/get-text-child');
 
 var getNamedListElements = function (listId) {
@@ -126,16 +129,28 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 					typeof registration.costs === 'function' ?
 						$.setify(registration.costs($.dbjsObserveMock)) : registration.costs;
 		});
-
-		// Resolve requirements, costs and certificates
-		businessProcess.costs.applicable =
-			$.setify(businessProcess.costs.applicable($.dbjsObserveMock));
+		// Resolve certificates
 		businessProcess.certificates.applicable =
 			$.setify(businessProcess.certificates.applicable($.dbjsObserveMock));
+
+		// Resolve requirements
 		businessProcess.requirements.resolved =
 			$.setify(businessProcess.requirements.resolved($.dbjsObserveMock));
+
+		$.refreshGuideHooks.beforeRequirementsApplicable.forEach(function (hook) {
+			hook(businessProcess);
+		});
+		// Resolve applicable requirements
+		businessProcess.requirements.map.forEach(function (requirement) {
+			requirement.isApplicable = getPropertyValue(requirement, 'isApplicable');
+		});
+
 		businessProcess.requirements.applicable =
 			$.setify(businessProcess.requirements.applicable($.dbjsObserveMock));
+
+		//Resolve costs
+		businessProcess.costs.applicable =
+			$.setify(businessProcess.costs.applicable($.dbjsObserveMock));
 
 		businessProcess.costs.map.forEach(function (cost) {
 			cost.amount = getPropertyValue(cost, 'amount');
@@ -176,5 +191,8 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		if (costsPrintLink.search.length) {
 			costsPrintLink.search += '&total=' + businessProcess.costs.totalAmount.toFixed(2);
 		}
+		$.refreshGuideHooks.atEnd.forEach(function (hook) {
+			hook(businessProcess);
+		});
 	});
 };

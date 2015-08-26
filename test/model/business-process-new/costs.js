@@ -25,13 +25,15 @@ module.exports = function (t, a) {
 	businessProcess.costs.applicable.first.isPaid = true;
 	a.deep(aFrom(businessProcess.costs.paid), [businessProcess.costs.map.test1]);
 
-	a(businessProcess.costs.paymentProgress, 1);
 	a(businessProcess.costs.paymentWeight, 0);
+	a(businessProcess.costs.paymentProgress, 1);
+
 	businessProcess.costs.applicable.last.isElectronic = true;
 	a(businessProcess.costs.paymentWeight, 1);
 	a(businessProcess.costs.paymentProgress, 0);
+
 	businessProcess.costs.applicable.last.isPaid = true;
-	a(businessProcess.costs.paymentProgress, 1);
+	a(businessProcess.costs.paymentWeight, 1);
 	a(businessProcess.costs.paymentProgress, 1);
 	a(businessProcess.costs.totalAmount, 51);
 };
