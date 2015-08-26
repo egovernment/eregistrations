@@ -95,7 +95,7 @@ exports['sub-main'] = {
 					_("Select an entity to display its documents and data")),
 				list(this.user.initialBusinessProcesses, function (process) {
 					option({
-						value: '/summary/' + process.__id__ + '/',
+						value: '/business-process/' + process.__id__ + '/',
 						selected: eq(loc._pathname, '/summary/' + process.__id__ + '/')
 					},
 						process._businessName);

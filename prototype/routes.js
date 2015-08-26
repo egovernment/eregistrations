@@ -34,8 +34,8 @@ module.exports = {
 
 	// My-account
 	'my-account': require('./view/user'),
-	'my-account/data': require('./view/my-account-data'),
-	'my-account/print': require('../view/print-business-process-my-account'),
+	'my-account/data': require('./view/user-business-process-data'),
+	'my-account/print': require('../view/print-business-process-chain-data'),
 
 	// Part-B routes - user submitted
 	'user-submitted': require('./view/user-submitted'),
