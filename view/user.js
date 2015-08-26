@@ -46,6 +46,7 @@ exports['sub-main'] = {
 							th(_("Submission date")),
 							th(_("Withdraw date")),
 							th(_("Inscriptions and controls")),
+							th({ class: 'submitted-user-data-table-action' }),
 							th({ class: 'submitted-user-data-table-action' })
 						)
 					),
@@ -63,6 +64,15 @@ exports['sub-main'] = {
 										return span({ class: 'label-reg' }, reg.abbr);
 									})
 								),
+								td({ class: 'submitted-user-data-table-action' },
+									_if(and(businessProcess._isFromEregistrations,
+											eq(businessProcess._status, 'draft')),
+										postButton({
+											action: url('business-process', businessProcess.__id__, 'delete'),
+											class: 'fa fa-trash-o',
+											confirm: _("Are you sure?")
+										})
+										)),
 								td({ class: 'submitted-user-data-table-action' },
 									_if(businessProcess._isFromEregistrations,
 										a({ href: url(businessProcess.__id__), rel: "server" },
