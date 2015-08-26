@@ -6,11 +6,8 @@ var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
   , $              = require('mano-legacy')
   , formatCurrency = require('./format-currency');
 
-/**
- * Each hook is an array of functions which are executed in corresponding parts of refresh guide.
- * Every executed hook receives businessProcess param.
- */
-$.refreshGuideHooks = { afterEnd: [], beforeRequirementsResolution: [] };
+// Each hook is an array of scripts which are executed in corresponding parts of refresh guide
+$.refreshGuideHooks = { atEnd: [], beforeRequirementsApplicable: [] };
 
 require('mano-legacy/get-text-child');
 
@@ -133,27 +130,16 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 						$.setify(registration.costs($.dbjsObserveMock)) : registration.costs;
 		});
 
-		// Resolve requirements, costs and certificates
-		businessProcess.costs.applicable =
-			$.setify(businessProcess.costs.applicable($.dbjsObserveMock));
+		// Resolve requirements
 		businessProcess.certificates.applicable =
 			$.setify(businessProcess.certificates.applicable($.dbjsObserveMock));
+
 		businessProcess.requirements.resolved =
 			$.setify(businessProcess.requirements.resolved($.dbjsObserveMock));
 
-		businessProcess.costs.map.forEach(function (cost) {
-			cost.amount = getPropertyValue(cost, 'amount');
-		});
-
-		businessProcess.costs.payable =
-			$.setify(businessProcess.costs.payable($.dbjsObserveMock));
-		businessProcess.costs.totalAmount = typeof businessProcess.costs.totalAmount === 'function'
-			? businessProcess.costs.totalAmount($.dbjsObserveMock) : businessProcess.costs.totalAmount;
-
-		$.refreshGuideHooks.beforeRequirementsResolution.forEach(function (hook) {
+		$.refreshGuideHooks.beforeRequirementsApplicable.forEach(function (hook) {
 			hook(businessProcess);
 		});
-
 		// Resolve applicable requirements
 		businessProcess.requirements.map.forEach(function (requirement) {
 			requirement.isApplicable = getPropertyValue(requirement, 'isApplicable');
@@ -167,6 +153,19 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 				businessProcess.requirements.map[name]
 			));
 		});
+
+		//Resolve costs and certificates
+		businessProcess.costs.applicable =
+			$.setify(businessProcess.costs.applicable($.dbjsObserveMock));
+
+		businessProcess.costs.map.forEach(function (cost) {
+			cost.amount = getPropertyValue(cost, 'amount');
+		});
+
+		businessProcess.costs.payable =
+			$.setify(businessProcess.costs.payable($.dbjsObserveMock));
+		businessProcess.costs.totalAmount = typeof businessProcess.costs.totalAmount === 'function'
+			? businessProcess.costs.totalAmount($.dbjsObserveMock) : businessProcess.costs.totalAmount;
 
 		$.forIn(costsListElements, function (li, name) {
 			var enabled = businessProcess.costs.payable.has(businessProcess.costs.map[name]);
@@ -191,7 +190,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		if (costsPrintLink.search.length) {
 			costsPrintLink.search += '&total=' + businessProcess.costs.totalAmount.toFixed(2);
 		}
-		$.refreshGuideHooks.afterEnd.forEach(function (hook) {
+		$.refreshGuideHooks.atEnd.forEach(function (hook) {
 			hook(businessProcess);
 		});
 	});
