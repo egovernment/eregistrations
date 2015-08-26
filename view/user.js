@@ -1,3 +1,5 @@
+// User: Basic data for business processes
+
 'use strict';
 
 var _ = require('mano').i18n.bind('User'),

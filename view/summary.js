@@ -1,3 +1,5 @@
+// User: Chosen business process main display
+
 'use strict';
 
 var _ = require('mano').i18n.bind('View: Business process summary')

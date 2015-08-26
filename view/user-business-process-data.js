@@ -1,3 +1,5 @@
+// User: Form sections data for chosen business process
+
 'use strict';
 
 var _ = require('mano').i18n.bind("View: business data")

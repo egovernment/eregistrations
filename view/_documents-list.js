@@ -1,3 +1,5 @@
+// User: Chosen business process main display documents
+
 'use strict';
 
 var _ = require('mano').i18n.bind('View: Documents list')

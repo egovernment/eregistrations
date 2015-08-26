@@ -1,4 +1,5 @@
-// Basic business process print data view
+// User: Basic business process print data
+
 'use strict';
 
 var _                = require('mano').i18n.bind('User')
