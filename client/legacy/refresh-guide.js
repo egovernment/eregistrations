@@ -129,6 +129,9 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 					typeof registration.costs === 'function' ?
 						$.setify(registration.costs($.dbjsObserveMock)) : registration.costs;
 		});
+		// Resolve certificates
+		businessProcess.certificates.applicable =
+			$.setify(businessProcess.certificates.applicable($.dbjsObserveMock));
 
 		// Resolve requirements
 		businessProcess.requirements.resolved =
@@ -151,9 +154,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 			));
 		});
 
-		//Resolve costs and certificates
-		businessProcess.certificates.applicable =
-			$.setify(businessProcess.certificates.applicable($.dbjsObserveMock));
+		//Resolve costs
 		businessProcess.costs.applicable =
 			$.setify(businessProcess.costs.applicable($.dbjsObserveMock));
 
