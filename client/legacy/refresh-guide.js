@@ -7,7 +7,8 @@ var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
   , formatCurrency = require('./format-currency');
 
 // Each hook is an array of scripts which are executed in corresponding parts of refresh guide
-$.refreshGuideHooks = { atEnd: [], beforeRequirementsApplicable: [], afterSecondFormFill: [] };
+$.refreshGuideHooks = { atEnd: [], beforeRequirementsApplicable: [],
+	beforeRegistrationsRequested: [] };
 
 require('mano-legacy/get-text-child');
 
@@ -116,7 +117,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		// Perform dbjsFormFill
 		$.dbjsFormFill(businessProcess, guideForm);
 
-		$.refreshGuideHooks.afterSecondFormFill.forEach(function (hook) {
+		$.refreshGuideHooks.beforeRegistrationsRequested.forEach(function (hook) {
 			hook(businessProcess, guideForm);
 		});
 		// Resolve requested registrations
