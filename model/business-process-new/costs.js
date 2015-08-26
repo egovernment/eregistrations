@@ -53,7 +53,7 @@ module.exports = memoize(function (db/* options */) {
 		electronic: { type: Cost, multiple: true, value: function (_observe) {
 			var result = [];
 			this.payable.forEach(function (cost) {
-				if (cost.isElectronic) result.push(cost);
+				if (_observe(cost._isElectronic)) result.push(cost);
 			});
 			return result;
 		} },
