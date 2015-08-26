@@ -147,12 +147,6 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 		businessProcess.requirements.applicable =
 			$.setify(businessProcess.requirements.applicable($.dbjsObserveMock));
-		// Filter requirements and costs lists
-		$.forIn(requirementsListElements, function (li, name) {
-			li.toggle(businessProcess.requirements.applicable.has(
-				businessProcess.requirements.map[name]
-			));
-		});
 
 		//Resolve costs
 		businessProcess.costs.applicable =
@@ -166,6 +160,13 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 			$.setify(businessProcess.costs.payable($.dbjsObserveMock));
 		businessProcess.costs.totalAmount = typeof businessProcess.costs.totalAmount === 'function'
 			? businessProcess.costs.totalAmount($.dbjsObserveMock) : businessProcess.costs.totalAmount;
+
+		// Filter requirements and costs lists
+		$.forIn(requirementsListElements, function (li, name) {
+			li.toggle(businessProcess.requirements.applicable.has(
+				businessProcess.requirements.map[name]
+			));
+		});
 
 		$.forIn(costsListElements, function (li, name) {
 			var enabled = businessProcess.costs.payable.has(businessProcess.costs.map[name]);
