@@ -19,7 +19,9 @@ exports.step = function () {
 		function () { return div({ class: 'info-main' }, sentBackInfo(this)); }.bind(this)));
 
 	div(
-		{ class: ['disabler-range', _if(this.businessProcess._isSentBack, 'disabler-active')] },
+		{ class: ['disabler-range',
+			_if(or(this.businessProcess._isSentBack, this.businessProcess.costs._paymentProgress),
+				'disabler-active')] },
 		this.businessProcess.inventory ? insert(inventoryModal(this.businessProcess)) : null,
 		form(
 			{ id: 'guide-form', class: 'user-guide', action: '/guide/', method: 'post' },
