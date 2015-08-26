@@ -27,9 +27,11 @@ module.exports = function (t, a) {
 
 	a(businessProcess.costs.paymentWeight, 0);
 	a(businessProcess.costs.paymentProgress, 1);
+
 	businessProcess.costs.applicable.last.isElectronic = true;
 	a(businessProcess.costs.paymentWeight, 1);
 	a(businessProcess.costs.paymentProgress, 0);
+
 	businessProcess.costs.applicable.last.isPaid = true;
 	a(businessProcess.costs.paymentWeight, 1);
 	a(businessProcess.costs.paymentProgress, 1);
