@@ -131,9 +131,6 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		});
 
 		// Resolve requirements
-		businessProcess.certificates.applicable =
-			$.setify(businessProcess.certificates.applicable($.dbjsObserveMock));
-
 		businessProcess.requirements.resolved =
 			$.setify(businessProcess.requirements.resolved($.dbjsObserveMock));
 
@@ -155,6 +152,8 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		});
 
 		//Resolve costs and certificates
+		businessProcess.certificates.applicable =
+			$.setify(businessProcess.certificates.applicable($.dbjsObserveMock));
 		businessProcess.costs.applicable =
 			$.setify(businessProcess.costs.applicable($.dbjsObserveMock));
 
