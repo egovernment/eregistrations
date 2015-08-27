@@ -74,7 +74,9 @@ exports.step = function () {
 					list(this.businessProcess.costs.map,
 						function (cost) {
 							li({ 'data-key': cost.key },
-								span({ class: 'user-guide-costs-list-label' }, cost.label, small(cost.legend)),
+								span({ class: 'user-guide-costs-list-label' },
+									span({ id: 'cost-label-' + camelToHyphen.call(cost.key) }, cost.label),
+									small(cost.legend)),
 								span({ id: 'cost-amount-' + camelToHyphen.call(cost.key) }));
 						}),
 					li({ class: 'user-guide-total-costs' },
@@ -82,7 +84,7 @@ exports.step = function () {
 						span({ id: 'costs-total' }))
 					),
 				p(a({ id: 'print-costs-link', class: 'button-resource-link', href: '/costs-print/',
-					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print costs list")))),
+					target: '_blank' }, span({ class: 'fa fa-print' }), " ", "Print costs list"))),
 			p({ class: 'user-next-step-button' },
 				button({ type: 'submit' },
 					_("Save and continue")))
