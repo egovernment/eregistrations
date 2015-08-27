@@ -21,7 +21,7 @@ module.exports = function (documents) {
 						td(doc._issuedBy.map(resolveIssuer)),
 						td(doc._issueDate),
 						td({ class: 'user-doc-data-table-actions' },
-							a({ href: '/business-process/' + doc.master.__id__ + doc.docUrl() },
+							a({ href: '/business-process/' + doc.master.__id__ + doc.docUrl },
 								span({ class: 'fa fa-search' }, _("Go to"))))
 					);
 				})));
