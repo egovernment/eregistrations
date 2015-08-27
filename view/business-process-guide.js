@@ -82,7 +82,7 @@ exports.step = function () {
 						span({ id: 'costs-total' }))
 					),
 				p(a({ id: 'print-costs-link', class: 'button-resource-link', href: '/costs-print/',
-					target: '_blank' }, span({ class: 'fa fa-print' }), " ", "Print costs list"))),
+					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print costs list")))),
 			p({ class: 'user-next-step-button' },
 				button({ type: 'submit' },
 					_("Save and continue")))
