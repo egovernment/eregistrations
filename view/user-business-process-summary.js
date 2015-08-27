@@ -13,7 +13,7 @@ exports.preview = function () {
 		div({ class: "section-primary-sub" },
 			h3(_("Documents")),
 			require('./_user-business-process-documents-list')(
-				businessProcess.cumulatedDocuments.toArray().slice(0, 5)
+				businessProcess.documents.processChainUploaded.toArray().slice(0, 5)
 			),
 			p(a({ href: '/business-process/' + businessProcess.__id__ + '/documents/',
 					class: 'button-regular' },
