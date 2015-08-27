@@ -67,7 +67,7 @@ exports.step = function () {
 							requirement.toGuideDOM ? requirement.toGuideDOM() : requirement.label);
 					})),
 
-			div({ class: 'section-primary' }, h2(_("Costs")),
+			div({ id: 'costs-section', class: 'section-primary' }, h2(_("Costs")),
 				hr(),
 				exports._costsIntro(this),
 				ul({ id: 'costs-list', class: 'user-guide-costs-list' },
