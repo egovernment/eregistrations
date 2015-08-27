@@ -55,14 +55,8 @@
 }
 /* :not(:required) hides this rule from IE9 and below */
 .spinner-loader:not(:required) {
-	-moz-animation: spinner-loader 1500ms infinite linear;
-	-webkit-animation: spinner-loader 1500ms infinite linear;
 	animation: spinner-loader 1500ms infinite linear;
-	-moz-border-radius: 0.5em;
-	-webkit-border-radius: 0.5em;
 	border-radius: 0.5em;
-	-moz-box-shadow: rgb(255, 255, 255) 1.5em 0 0 0, rgb(255, 255, 255) 1.1em 1.1em 0 0, rgb(255, 255, 255) 0 1.5em 0 0, rgb(255, 255, 255) -1.1em 1.1em 0 0, rgb(255, 255, 255) -1.5em 0 0 0, rgb(255, 255, 255) -1.1em -1.1em 0 0, rgb(255, 255, 255) 0 -1.5em 0 0, rgb(255, 255, 255) 1.1em -1.1em 0 0;
-	-webkit-box-shadow: rgb(255, 255, 255) 1.5em 0 0 0, rgb(255, 255, 255) 1.1em 1.1em 0 0, rgb(255, 255, 255) 0 1.5em 0 0, rgb(255, 255, 255) -1.1em 1.1em 0 0, rgb(255, 255, 255) -1.5em 0 0 0, rgb(255, 255, 255) -1.1em -1.1em 0 0, rgb(255, 255, 255) 0 -1.5em 0 0, rgb(255, 255, 255) 1.1em -1.1em 0 0;
 	box-shadow: rgb(255, 255, 255) 1.5em 0 0 0, rgb(255, 255, 255) 1.1em 1.1em 0 0, rgb(255, 255, 255) 0 1.5em 0 0, rgb(255, 255, 255) -1.1em 1.1em 0 0, rgb(255, 255, 255) -1.5em 0 0 0, rgb(255, 255, 255) -1.1em -1.1em 0 0, rgb(255, 255, 255) 0 -1.5em 0 0, rgb(255, 255, 255) 1.1em -1.1em 0 0;
 	display: inline-block;
 	font-size: 20px;
