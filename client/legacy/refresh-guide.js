@@ -6,6 +6,8 @@ var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
   , $              = require('mano-legacy')
   , formatCurrency = require('./format-currency');
 
+require('es3-ext/array/#/for-each/implement');
+
 // Each hook is an array of scripts which are executed in corresponding parts of refresh guide
 $.refreshGuideHooks = { atEnd: [], beforeRequirementsApplicable: [],
 	beforeRegistrationsRequested: [] };
@@ -39,7 +41,8 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 	  , mandatoryRegistrationsSection, mandatoryRegistrationsListElements
 	  , optionalRegistrationsSection, optionalRegistrationsListElements
 	  , requirementsListElements
-	  , costsListElements, costsAmountsElements = {}, costsTotalElement, costsPrintLink;
+	  , costsListElements, costsAmountsElements = {}, costsTotalElement, costsPrintLink
+	  , costsSection, zeroCostsClass;
 
 	// Create mock BusinessProcess
 	var BusinessProcess = function () {};
@@ -54,6 +57,8 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 	requirementsListElements = getNamedListElements('requirements-list');
 	costsListElements = getNamedListElements('costs-list');
 	costsPrintLink = $('print-costs-link');
+	costsSection   = $('costs-section');
+	zeroCostsClass = 'user-guide-zero-costs-amount';
 
 	$.forIn(costsListElements, function (li, name) {
 		costsAmountsElements[name] = $.getTextChild('cost-amount-' + camelToHyphen.call(name));
@@ -193,6 +198,12 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 		if (costsPrintLink.search.length) {
 			costsPrintLink.search += '&total=' + businessProcess.costs.totalAmount.toFixed(2);
+		}
+
+		if (businessProcess.costs.totalAmount) {
+			costsSection.removeClass(zeroCostsClass);
+		} else {
+			costsSection.addClass(zeroCostsClass);
 		}
 		$.refreshGuideHooks.atEnd.forEach(function (hook) {
 			hook(businessProcess, guideForm);
