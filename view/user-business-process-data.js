@@ -6,6 +6,7 @@ var _ = require('mano').i18n.bind("View: business data")
   , generateSections = require('./components/generate-sections');
 
 exports._parent = require('./user-base');
+exports._match = 'businessProcess';
 
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },

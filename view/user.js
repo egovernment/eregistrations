@@ -98,7 +98,7 @@ exports['sub-main'] = {
 				list(this.user.initialBusinessProcesses, function (process) {
 					option({
 						value: '/business-process/' + process.__id__ + '/',
-						selected: eq(loc._pathname, '/summary/' + process.__id__ + '/')
+						selected: eq(loc._pathname, '/business-process/' + process.__id__ + '/')
 					},
 						process._businessName);
 				})),
