@@ -72,8 +72,8 @@ exports['sub-main'] = {
 												eq(businessProcess._status, 'draft')),
 											postButton({
 												action: url('business-process', businessProcess.__id__, 'delete'),
-												class: 'fa fa-trash-o',
-												confirm: _("Are you sure?")
+												confirm: _("Are you sure?"),
+												value: span({ class: 'fa fa-trash-o' })
 											})
 											)),
 									td({ class: 'submitted-user-data-table-action' },
