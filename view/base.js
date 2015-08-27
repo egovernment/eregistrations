@@ -6,7 +6,8 @@
 
 'use strict';
 
-var modalContainer = require('./_modal-container');
+var modalContainer = require('./_modal-container'),
+_ = require('mano').i18n.bind('Registration');
 
 exports.body = function () {
 	var modalCurtain, logoAnchorOptions;
@@ -31,6 +32,9 @@ exports.body = function () {
 		exports._footerContent(this));
 
 	insert(modalContainer);
+	div({ class: 'throbber' },
+		div({ class: 'throbber-courtain' }),
+		div({ class: 'spinner-loader' }, _("Loading...")));
 
 	// iOS fix, without that modals don't get closed
 	modalCurtain.addEventListener('click', Function.prototype, false);
