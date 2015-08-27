@@ -7,7 +7,8 @@ var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
   , formatCurrency = require('./format-currency');
 
 // Each hook is an array of scripts which are executed in corresponding parts of refresh guide
-$.refreshGuideHooks = { atEnd: [], beforeRequirementsApplicable: [] };
+$.refreshGuideHooks = { atEnd: [], beforeRequirementsApplicable: [],
+	beforeRegistrationsRequested: [] };
 
 require('mano-legacy/get-text-child');
 
@@ -105,7 +106,6 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 				));
 			});
 		}
-
 		// -- Second FormFill pass --
 
 		// Clear each registration isRequested
@@ -117,6 +117,9 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		// Perform dbjsFormFill
 		$.dbjsFormFill(businessProcess, guideForm);
 
+		$.refreshGuideHooks.beforeRegistrationsRequested.forEach(function (hook) {
+			hook(businessProcess, guideForm);
+		});
 		// Resolve requested registrations
 		businessProcess.registrations.requested =
 			$.setify(businessProcess.registrations.requested($.dbjsObserveMock));
@@ -138,7 +141,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 			$.setify(businessProcess.requirements.resolved($.dbjsObserveMock));
 
 		$.refreshGuideHooks.beforeRequirementsApplicable.forEach(function (hook) {
-			hook(businessProcess);
+			hook(businessProcess, guideForm);
 		});
 		// Resolve applicable requirements
 		businessProcess.requirements.map.forEach(function (requirement) {
@@ -192,7 +195,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 			costsPrintLink.search += '&total=' + businessProcess.costs.totalAmount.toFixed(2);
 		}
 		$.refreshGuideHooks.atEnd.forEach(function (hook) {
-			hook(businessProcess);
+			hook(businessProcess, guideForm);
 		});
 	});
 };
