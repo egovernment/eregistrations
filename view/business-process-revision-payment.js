@@ -19,7 +19,7 @@ paymentForm = function (paymentReceiptUpload) {
 			method: 'post', class: 'submitted-preview-form' },
 		p(_("Uploaded payment receipt applies to following costs:")),
 		ul({ class: 'business-process-costs-list' },
-				paymentReceiptUpload.costs, function (cost) {
+				paymentReceiptUpload.applicableCosts, function (cost) {
 				li(span({ class: 'business-process-costs-list-label' }, cost._label),
 					span(cost._amount));
 			}),
