@@ -4,7 +4,7 @@
 
 var _ = require('mano').i18n.bind('View: Documents list')
   , Institution = require('mano').db.Institution
-  , resolveIssuer = require('../utils/issuer-resolver');
+  , resolveIssuer = require('./utils/issuer-resolver');
 
 module.exports = function (documents) {
 	return div({ class: "table-responsive-container" },
