@@ -10,7 +10,7 @@ var assign             = require('es5-ext/object/assign')
   , _                  = require('mano').i18n.bind('Registration: Controller')
   , submit             = require('mano/utils/save')
 
-  , re = /Requested$/;
+  , re = /\/isRequested$/;
 
 // Common controller - login and password change.
 module.exports = exports = assign(exports, require('../user'));
@@ -21,7 +21,7 @@ exports.guide = {
 	validate: function (data) {
 		var normalizedData = validate.apply(this, arguments);
 		var isRegistrationSelected = some(data, function (value, name) {
-			return re.test(name) && value;
+			return re.test(name) && Array.isArray(value);
 		});
 		if (!isRegistrationSelected) {
 			throw customError(_("You must select at least one request document"),
@@ -61,7 +61,7 @@ exports['payment-receipt-upload/[a-z][a-z0-9-]*'] = {
 		  , uploads = businessProcess.paymentReceiptUploads
 		  , paymentReceiptUpload = uploads.map.get(hyphenToCamel.call(key));
 		if (!paymentReceiptUpload) return false;
-		if (!uploads.applicable.has(paymentReceiptUpload)) return;
+		if (!uploads.applicable.has(paymentReceiptUpload)) return false;
 		this.paymentReceiptUpload = paymentReceiptUpload;
 		return true;
 	},
