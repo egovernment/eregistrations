@@ -37,4 +37,6 @@ exports.step  = function () {
 	}
 };
 
-exports._entitiesTableRootUrl = Function.prototype;
+exports._entitiesTableRootUrl = function (context) {
+	return '/forms/';
+};
