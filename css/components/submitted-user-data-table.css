@@ -50,6 +50,7 @@
 
 .submitted-user-data-table tr .actions {
 	padding: 10px 25px 9px;
+	text-align: center;
 }
 
 .submitted-user-data-table-basic > a {
