@@ -41,7 +41,8 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 	  , mandatoryRegistrationsSection, mandatoryRegistrationsListElements
 	  , optionalRegistrationsSection, optionalRegistrationsListElements
 	  , requirementsListElements
-	  , costsListElements, costsAmountsElements = {}, costsTotalElement, costsPrintLink
+	  , costsListElements, costsAmountsElements = {}, costsLabelElements = {}
+	  , costsTotalElement, costsPrintLink
 	  , costsSection, zeroCostsClass;
 
 	// Create mock BusinessProcess
@@ -62,6 +63,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 	$.forIn(costsListElements, function (li, name) {
 		costsAmountsElements[name] = $.getTextChild('cost-amount-' + camelToHyphen.call(name));
+		costsLabelElements[name] = $.getTextChild('cost-label-' + camelToHyphen.call(name));
 	});
 
 	costsTotalElement = $.getTextChild('costs-total');
@@ -162,6 +164,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 		businessProcess.costs.map.forEach(function (cost) {
 			cost.amount = getPropertyValue(cost, 'amount');
+			cost.label  = getPropertyValue(cost, 'label');
 		});
 
 		businessProcess.costs.payable =
@@ -180,8 +183,13 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 			var enabled = businessProcess.costs.payable.has(businessProcess.costs.map[name]);
 
 			li.toggle(enabled);
-			if (enabled && costsAmountsElements[name]) {
-				costsAmountsElements[name].data = formatCurrency(businessProcess.costs.map[name].amount);
+			if (enabled) {
+				if (costsAmountsElements[name]) {
+					costsAmountsElements[name].data = formatCurrency(businessProcess.costs.map[name].amount);
+				}
+				if (costsLabelElements[name]) {
+					costsLabelElements[name].data = businessProcess.costs.map[name].label;
+				}
 			}
 		});
 

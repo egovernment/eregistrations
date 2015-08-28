@@ -53,7 +53,7 @@ module.exports = function (businessProcessType, filename/*, options*/) {
 
 	// Copy maps.
 	certificates.map  = copyMapEntities('certificates');
-	costs.map         = copyMapEntities('costs', ['amount']);
+	costs.map         = copyMapEntities('costs', ['amount', 'label']);
 	registrations.map = copyMapEntities('registrations', ['isApplicable', 'isMandatory',
 		'isRequested', 'certificates', 'requirements', 'costs']);
 	requirements.map  = copyMapEntities('requirements', ['isApplicable']);
