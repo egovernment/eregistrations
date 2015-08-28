@@ -22,16 +22,24 @@ exports.preview = function () {
 			div({ class: "section-primary-sub" },
 				h3(_("Data")),
 				div({ class: "table-responsive-container" },
-					table({ class: "submitted-user-data-table submitted-current-user-data-table" },
-						thead(tr(th(_("Section")), th(_("Edit date")), th())),
+					table({ class: 'submitted-user-data-table ' +
+							'submitted-current-user-data-table user-request-table' },
+						thead(
+							tr(
+								th(_("Section")),
+								th({ class: 'submitted-user-data-table-issue-date' }, _("Edit date")),
+								th({ class: 'submitted-user-data-table-link' })
+							)
+						),
 						tbody({ onEmpty: tr({ class: 'empty' }, td({ colspan: 3 }, _("No data"))) },
 							businessProcess.dataForms.processChainApplicable, function (section) {
 								tr(
 									td(section._label),
-									td(section._lastEditDate.map(function (date) {
-										return date.toLocaleDateString();
-									})),
-									td({ class: 'user-doc-data-table-actions' },
+									td({ class: 'submitted-user-data-table-issue-date' },
+										section._lastEditDate.map(function (date) {
+											return date.toLocaleDateString();
+										})),
+									td({ class: 'submitted-user-data-table-link' },
 										a({ href: '/business-process/' + businessProcess.__id__ + '/data/' },
 											span({ class: 'fa fa-search' }, _("Go to"))))
 								);
