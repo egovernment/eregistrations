@@ -3,8 +3,8 @@
 'use strict';
 
 var _ = require('mano').i18n.bind('User'),
-formatLastModified = require('./utils/last-modified'),
-loc     = require('mano/lib/client/location');
+loc     = require('mano/lib/client/location'),
+columns = require('./_business-process-columns');
 
 exports._parent = require('./user-base');
 
@@ -40,51 +40,16 @@ exports['sub-main'] = {
 				section(
 					{ class: 'submitted-main table-responsive-container' },
 					table(
-						{ class: 'submitted-user-data-table submitted-current-user-data-table',
-							responsive: true },
-						thead(
-							tr(
-								th(_("Entity")),
-								th(_("Service")),
-								th(_("Submission date")),
-								th(_("Withdraw date")),
-								th(_("Inscriptions and controls")),
-								th({ class: 'actions' })
-							)
-						),
+						{ class: 'submitted-user-data-table submitted-current-user-data-table' },
+						thead(tr(list(columns,
+							function (column) { return th({ class: column.class }, column.head); }))),
 						tbody(
 							this.user.businessProcesses,
 							function (businessProcess) {
-								tr(
-									td(businessProcess._businessName),
-									td(businessProcess._label),
-									td(businessProcess.submissionForms
-										._isAffidavitSigned._lastModified.map(formatLastModified)),
-									td(businessProcess._isApproved._lastModified.map(formatLastModified)),
-									td(
-										list(businessProcess.registrations.requested, function (reg) {
-											return span({ class: 'label-reg' }, reg.abbr);
-										})
-									),
-									td({ class: 'actions' },
-										_if(businessProcess._isFromEregistrations,
-											_if(and(businessProcess._isFromEregistrations,
-												eq(businessProcess._status, 'draft')),
-												[a({ class: 'actions-edit',
-													href: url(businessProcess.__id__), rel: "server" },
-													span({ class: 'fa fa-edit' },
-														_("Go to"))),
-													postButton({ buttonClass: 'actions-delete',
-														action: url('business-process', businessProcess.__id__, 'delete'),
-														confirm: _("Are you sure?"),
-														value: span({ class: 'fa fa-trash-o' })
-														})],
-												[a({ class: 'actions-edit',
-													href: url(businessProcess.__id__), rel: "server" },
-													span({ class: 'fa fa-search' },
-														_("Go to")))]
-												)))
-								);
+								return tr(list(columns,
+									function (column) {
+										return td({ class: column.class }, column.data(businessProcess));
+									}));
 							}
 						)
 					)
