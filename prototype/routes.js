@@ -36,8 +36,8 @@ module.exports = {
 	'my-account': require('./view/user'),
 	'my-account/data': require('./view/user-business-process-data'),
 	'my-account/print': require('../view/print-business-process-chain-data'),
-	'my-account/business-rocess/documents': require('./view/user-business-process-documents-list'),
-	'my-account/business-rocess/summary': require('../view/user-business-process-summary'),
+	'my-account/documents': require('./view/user-business-process-documents-list'),
+	'my-account/summary': require('../view/user-business-process-summary'),
 
 	// Part-B routes - user submitted
 	'user-submitted': require('./view/user-submitted'),
