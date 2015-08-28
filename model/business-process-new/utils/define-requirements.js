@@ -6,6 +6,7 @@ var ensureArray         = require('es5-ext/array/valid-array')
   , forEach             = require('es5-ext/object/for-each')
   , ensureObject        = require('es5-ext/object/valid-object')
   , ensureStringifiable = require('es5-ext/object/validate-stringifiable-value')
+  , endsWith            = require('es5-ext/string/#/ends-with')
   , uncapitalize        = require('es5-ext/string/#/uncapitalize')
   , isType              = require('dbjs/is-dbjs-type')
   , ensureType          = require('dbjs/valid-dbjs-type')
@@ -31,6 +32,12 @@ module.exports = function (BusinessProcess, data) {
 		}
 		if (!Document.isPrototypeOf(Required) && !Requirement.isPrototypeOf(Required)) {
 			throw new TypeError(Required.__id__ + " must extend Document or Requirement.");
+		}
+		if (Requirement.isPrototypeOf(Required)) {
+			if (!endsWith.call(name, 'Requirement')) {
+				throw new TypeError(Required.__id__ + " Requirement class misses \'Requirement\' postfix.");
+			}
+			name = name.slice(0, -'Requirement'.length);
 		}
 		definitions[name] = { nested: true };
 		typesMap[name] = { label: conf.label, legend: conf.legend };
