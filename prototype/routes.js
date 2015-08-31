@@ -32,6 +32,13 @@ module.exports = {
 	'partner-add': require('./view/partner-add'),
 	'forms/partner-id': require('./view/partner'),
 
+	// My-account
+	'my-account': require('./view/user'),
+	'my-account/data': require('./view/user-business-process-data'),
+	'my-account/print': require('../view/print-business-process-chain-data'),
+	'my-account/documents': require('./view/user-business-process-documents-list'),
+	'my-account/summary': require('../view/user-business-process-summary'),
+
 	// Part-B routes - user submitted
 	'user-submitted': require('./view/user-submitted'),
 	'user-submitted/(document)': {

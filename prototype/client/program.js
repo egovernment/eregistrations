@@ -55,7 +55,7 @@ if (isReadOnlyRender) require('site-tree/lib/assure-seamless-styles').enabled = 
 var siteTree = new DomjsSiteTree(require('mano/lib/client/domjs'));
 router = new SiteTreeRouter(require('../routes'), siteTree, {
 	notFound: require('../../view/404'),
-	eventProto: { user: db.User.prototype, businessProcess: db.firstBusinessProcess,
+	eventProto: { user: db.userVianney, businessProcess: db.firstBusinessProcess,
 		processingStep: db.firstBusinessProcess.processingSteps.map.revision  }
 });
 appLocation.on('change', function () {

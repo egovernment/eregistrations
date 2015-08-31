@@ -38,10 +38,10 @@ var db = require('mano').db
   , processes = [first, second, third, fourth, fifth]
   , paymentReceipt = require('../../model/business-process-new/' +
 		'utils/define-payment-receipt-uploads')
-  , User = require('../../model/user/base')(db);
+  , Institution = require('../../model/institution')(db);
 
 require('./inventory');
-User.newNamed('userOfficialMinistry');
+Institution.newNamed('institutionOfficialMinistry');
 require('../../model/lib/nested-map');
 BusinessProcessNew.newNamed('emptyBusinessProcess');
 
@@ -296,7 +296,7 @@ processes.forEach(function (businessProcess) {
 
 	businessProcess.certificates.applicable.forEach(function (certificate, index) {
 		certificate.label = 'Certyficate label';
-		certificate.issuedBy = db.userOfficialMinistry;
+		certificate.issuedBy = db.institutionOfficialMinistry;
 		certificate.issueDate = new Date(2015, 23, 7);
 		certificate.files.map.get('cert' + index).setProperties({
 			name: 'idoc.jpg',
