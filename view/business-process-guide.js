@@ -20,7 +20,9 @@ exports.step = function () {
 
 	div(
 		{ class: ['disabler-range',
-			_if(or(this.businessProcess._isSentBack, this.businessProcess.costs._paymentProgress),
+			_if(or(this.businessProcess._isSentBack,
+					and(this.businessProcess.costs._paymentWeight,
+						this.businessProcess.costs._paymentProgress)),
 				'disabler-active')] },
 		this.businessProcess.inventory ? insert(inventoryModal(this.businessProcess)) : null,
 		form(
