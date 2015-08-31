@@ -4,7 +4,7 @@
 
 var _ = require('mano').i18n.bind('User'),
 loc     = require('mano/lib/client/location'),
-columns = require('./_business-process-columns');
+columns = require('./_business-process-table-columns');
 
 exports._parent = require('./user-base');
 

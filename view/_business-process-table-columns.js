@@ -5,49 +5,41 @@ _ = require('mano').i18n.bind('User');
 
 module.exports = [{
 	head: _("Entity"),
-	class: '',
 	data: function (businessProcess) { return businessProcess._businessName; }
 }, {
 	head: _("Service"),
-	class: '',
 	data: function (businessProcess) { return businessProcess._label; }
 }, {
 	head: _("Submission date"),
-	class: '',
 	data: function (businessProcess) { return businessProcess.submissionForms.
 		_isAffidavitSigned._lastModified.map(formatLastModified); }
 }, {
 	head: _("Withdraw date"),
-	class: '',
 	data: function (businessProcess) { return businessProcess.
 		_isApproved._lastModified.map(formatLastModified); }
 }, {
 	head: _("Inscriptions and controls"),
-	class: '',
 	data: function (businessProcess) { return list(businessProcess.registrations.requested,
 		function (reg) {
 			return span({ class: 'label-reg' }, reg.abbr);
 		}); }
 }, {
-	head: "",
 	class: 'actions',
 	data: function (businessProcess) {
 		return _if(businessProcess._isFromEregistrations,
-			_if(and(businessProcess._isFromEregistrations,
-				eq(businessProcess._status, 'draft')),
-				[a({ class: 'actions-edit',
-					href: url(businessProcess.__id__), rel: "server" },
+			_if(eq(businessProcess._status, 'draft'),
+				function () { return [a({ href: url(businessProcess.__id__), rel: "server" },
 					span({ class: 'fa fa-edit' },
 						_("Go to"))),
 					postButton({ buttonClass: 'actions-delete',
 						action: url('business-process', businessProcess.__id__, 'delete'),
 						confirm: _("Are you sure?"),
 						value: span({ class: 'fa fa-trash-o' })
-						})],
-				[a({ class: 'actions-edit',
+						})]; },
+				function () { return a({ class: 'actions-edit',
 					href: url(businessProcess.__id__), rel: "server" },
 					span({ class: 'fa fa-search' },
-						_("Go to")))]
+						_("Go to"))); }
 				));
 	}
 }];
