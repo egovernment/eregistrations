@@ -25,7 +25,7 @@ module.exports = function (businessProcess/*, options*/) {
 								th({ class: 'submitted-user-data-table-status' }),
 								th(_("Name")),
 								th(_("Issuer")),
-								th({ class: 'submitted-user-data-table-issue-date' }, _("Issue date")),
+								th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
 								th({ class: 'submitted-user-data-table-link' })
 							)
 						),
@@ -37,7 +37,7 @@ module.exports = function (businessProcess/*, options*/) {
 										_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' })));
 								td(requirementUpload.document._label);
 								td(requirementUpload.document._issuedBy);
-								td({ class: 'submitted-user-data-table-issue-date' },
+								td({ class: 'submitted-user-data-table-date' },
 										requirementUpload.document._issueDate);
 								td({ class: 'submitted-user-data-table-link' },
 									a({ href: urlPrefix + 'document/' +
@@ -58,7 +58,7 @@ module.exports = function (businessProcess/*, options*/) {
 							tr(
 								th({ class: 'submitted-user-data-table-status' }),
 								th(_("Name")),
-								th({ class: 'submitted-user-data-table-issue-date' }, _("Issue date")),
+								th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
 								th({ class: 'submitted-user-data-table-link' })
 							)
 						),
@@ -69,7 +69,7 @@ module.exports = function (businessProcess/*, options*/) {
 									_if(receipt._isApproved, span({ class: 'fa fa-check' })),
 										_if(receipt._isRejected, span({ class: 'fa fa-exclamation' })));
 								td(receipt.document.label);
-								td({ class: 'submitted-user-data-table-issue-date' }, receipt.document._issueDate);
+								td({ class: 'submitted-user-data-table-date' }, receipt.document._issueDate);
 								td({ class: 'submitted-user-data-table-link' },
 									a({ href: urlPrefix + 'receipt/' + camelToHyphen.call(receipt.key) + "/" },
 										span({ class: 'fa fa-search' }, _("Go to"))));
@@ -89,7 +89,7 @@ module.exports = function (businessProcess/*, options*/) {
 								th({ class: 'submitted-user-data-table-status' }),
 								th(_("Name")),
 								th(_("Issuer")),
-								th({ class: 'submitted-user-data-table-issue-date' }, _("Issue date")),
+								th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
 								th({ class: 'submitted-user-data-table-link' })
 							)
 						),
@@ -100,7 +100,7 @@ module.exports = function (businessProcess/*, options*/) {
 									span({ class: 'fa fa-certificate' }));
 								td(certificate.label);
 								td(certificate._issuedBy);
-								td({ class: 'submitted-user-data-table-issue-date' }, certificate._issueDate);
+								td({ class: 'submitted-user-data-table-date' }, certificate._issueDate);
 								td({ class: 'submitted-user-data-table-link' },
 									a({ href: urlPrefix + 'certificate/' +
 										camelToHyphen.call(certificate.key) + '/' },

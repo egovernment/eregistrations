@@ -11,10 +11,12 @@ module.exports = [{
 	data: function (businessProcess) { return businessProcess._label; }
 }, {
 	head: _("Submission date"),
+	class: 'submitted-user-data-table-date',
 	data: function (businessProcess) { return businessProcess.submissionForms.
 		_isAffidavitSigned._lastModified.map(formatLastModified); }
 }, {
 	head: _("Withdraw date"),
+	class: 'submitted-user-data-table-date',
 	data: function (businessProcess) { return businessProcess.
 		_isApproved._lastModified.map(formatLastModified); }
 }, {

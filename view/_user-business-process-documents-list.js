@@ -15,7 +15,7 @@ module.exports = function (documents) {
 					th({ class: 'submitted-user-data-table-status' }),
 					th(_("Name")),
 					th(_("Issuer")),
-					th({ class: 'submitted-user-data-table-issue-date' }, _("Issue date")),
+					th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
 					th({ class: 'submitted-user-data-table-link' })
 				)
 			),
@@ -29,7 +29,7 @@ module.exports = function (documents) {
 							})),
 						td(doc._label),
 						td(doc._issuedBy.map(resolveIssuer)),
-						td({ class: 'submitted-user-data-table-issue-date' }, doc._issueDate),
+						td({ class: 'submitted-user-data-table-date' }, doc._issueDate),
 						td({ class: 'submitted-user-data-table-link' },
 							a({ href: '/business-process/' + doc.master.__id__ + doc.docUrl },
 								span({ class: 'fa fa-search' }, _("Go to"))))

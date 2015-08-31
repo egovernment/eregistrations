@@ -48,6 +48,11 @@
 
 }
 
+.submitted-user-data-table.submitted-current-user-data-table tbody tr .actions {
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
 .submitted-user-data-table tr .actions {
 	padding: 10px 25px 9px;
 	text-align: center;
@@ -92,7 +97,7 @@
 	padding-right: 0;
 }
 
-.submitted-user-data-table-issue-date {
+.submitted-user-data-table-date {
 	width: 130px;
 }
 

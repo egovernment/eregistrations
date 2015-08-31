@@ -27,7 +27,7 @@ exports.preview = function () {
 						thead(
 							tr(
 								th(_("Section")),
-								th({ class: 'submitted-user-data-table-issue-date' }, _("Edit date")),
+								th({ class: 'submitted-user-data-table-date' }, _("Edit date")),
 								th({ class: 'submitted-user-data-table-link' })
 							)
 						),
@@ -35,7 +35,7 @@ exports.preview = function () {
 							businessProcess.dataForms.processChainApplicable, function (section) {
 								tr(
 									td(section._label),
-									td({ class: 'submitted-user-data-table-issue-date' },
+									td({ class: 'submitted-user-data-table-date' },
 										section._lastEditDate.map(function (date) {
 											return date.toLocaleDateString();
 										})),
