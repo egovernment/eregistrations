@@ -38,10 +38,17 @@ var db = require('mano').db
   , processes = [first, second, third, fourth, fifth]
   , paymentReceipt = require('../../model/business-process-new/' +
 		'utils/define-payment-receipt-uploads')
-  , Institution = require('../../model/institution')(db);
+  , Institution = require('../../model/institution')(db)
+  , FrontDeskProcessingStep = require('../../model/processing-steps/front-desk')(db);
 
 require('./inventory');
+require('../../model/business-process-new/submission-forms');
 Institution.newNamed('institutionOfficialMinistry');
+Institution.newNamed('institutionCommerceMinistry');
+db.institutionOfficialMinistry.name = "Official Ministry";
+db.institutionCommerceMinistry.name = "Commerce Ministry";
+FrontDeskProcessingStep.prototype.possibleInstitutions.add(db.institutionOfficialMinistry);
+FrontDeskProcessingStep.prototype.possibleInstitutions.add(db.institutionCommerceMinistry);
 require('../../model/lib/nested-map');
 BusinessProcessNew.newNamed('emptyBusinessProcess');
 
@@ -386,16 +393,18 @@ processes.forEach(function (businessProcess) {
 		nested: true,
 		type: RevisionProcessingStep
 	});
+
+	businessProcess.processingSteps.map.define('frontDesk', {
+		nested: true,
+		type: require('../../model/processing-steps/front-desk')(db)
+	});
 });
 
 // Submision sections
-BusinessProcessNew.prototype.submissionForms.map.define('withdraw', {
-	type: FormSection,
-	nested: true
-});
-BusinessProcessNew.prototype.submissionForms.map.get('withdraw').setProperties({
-	propertyNames: ['placeOfWithdraw'],
-	label: "Where do you want to withdraw your documents?"
+
+BusinessProcessNew.prototype.submissionForms.map.define('pickupInstitution', {
+	nested: true,
+	type: require('../../model/business-process-new/submission-forms/pickup-institution')(db)
 });
 
 BusinessProcessNew.prototype.submissionForms.map.define('certificates', {

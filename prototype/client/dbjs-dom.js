@@ -45,6 +45,7 @@ require('../../view/dbjs/document-url');
 require('../../view/dbjs/determinants-to-dom-fieldset')(
 	db.BusinessProcessNew.prototype.determinants
 );
+require('../../view/dbjs/pickup-institution-form-section');
 
 requirementUpload.$status.DOMInput = require('../../view/dbjs/_enum-inline-button-group');
 
