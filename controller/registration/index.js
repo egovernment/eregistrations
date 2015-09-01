@@ -47,6 +47,14 @@ exports['requirement-upload/[a-z][a-z0-9-]*'] = {
 			}
 		}, this);
 	},
+	validate: function (data) {
+		/**
+		 * We have a use case for providing together with
+		 * default file controls a field that requires such setting
+		 * (e.g. signedDocument.isUpToDateByUser)
+		 */
+		return validate(data, { changedOnly: false });
+	},
 	submit: function (data) {
 		if (this.requirementUpload.status) this.requirementUpload.status = null;
 		return submit.apply(this, arguments);

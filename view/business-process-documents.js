@@ -2,11 +2,8 @@
 
 'use strict';
 
-var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
-  , _             = require('mano').i18n.bind('Registration')
-  , errorMsg      = require('./_business-process-error-info').errorMsg
-
-  , _d = _;
+var _             = require('mano').i18n.bind('Registration')
+  , errorMsg      = require('./_business-process-error-info').errorMsg;
 
 exports._parent = require('./business-process-base');
 
@@ -25,23 +22,7 @@ exports.step = function () {
 				{ class: 'sections-primary-list user-documents-upload' },
 				this.businessProcess.requirementUploads.applicable,
 				function (requirementUpload) {
-					return li({ class: 'section-primary' },
-						form({ action: '/requirement-upload/' +
-							camelToHyphen.call(requirementUpload.document.uniqueKey) + '/', method: 'post',
-								enctype: 'multipart/form-data', autoSubmit: true },
-							div(
-								h2(_d(requirementUpload.document.label, { user: requirementUpload.master })),
-								requirementUpload.document.legend &&
-									small(mdi(_d(requirementUpload.document.legend,
-										{ user: requirementUpload.master }))),
-								hr(),
-								input({ dbjs: requirementUpload.document.files._map, label: true }),
-								p({ class: 'submit' }, input({ type: 'submit', value: _("Submit") })),
-								p({ class: 'section-primary-scroll-top' },
-										a({ onclick: 'window.scroll(0, 0)' },
-											span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
-							))
-						);
+					return li({ class: 'section-primary' }, requirementUpload.toDOMForm(document));
 				}
 			)
 		),

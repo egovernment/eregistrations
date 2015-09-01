@@ -26,8 +26,12 @@ module.exports = memoize(function (db/*, options*/) {
 		} },
 		// Progress of uploads
 		progress: { type: Percentage, value: function (_observe) {
+			var totalProgress = 0;
 			if (!this.applicable.size) return 1;
-			return this.uploaded.size / this.applicable.size;
+			this.applicable.forEach(function (requirementUpload) {
+				totalProgress += _observe(requirementUpload._progress);
+			});
+			return totalProgress / this.applicable.size;
 		} },
 
 		// Subset of approved uploads
