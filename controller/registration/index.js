@@ -48,8 +48,11 @@ exports['requirement-upload/[a-z][a-z0-9-]*'] = {
 		}, this);
 	},
 	validate: function (data) {
-		// The isSignedFormFilesUpToDateUserValue checkbox state
-		// must be always saved, even if not changed.
+		/**
+		 * We have a use case for providing together with
+		 * default file controls a field that requires such setting
+		 * (e.g. signedDocument.isUpToDateByUser)
+		 */
 		return validate(data, { changedOnly: false });
 	},
 	submit: function (data) {

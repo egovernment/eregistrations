@@ -72,9 +72,7 @@ module.exports = function (BusinessProcess, data) {
 			uploadProps = copy(conf);
 			delete uploadProps.name;
 			delete uploadProps.class;
-			if (Document.isPrototypeOf(Upload)) {
-				documentProperties[name] = uploadProps;
-			}
+			documentProperties[name] = uploadProps;
 		} else {
 			Upload = conf;
 			name = sanitizeClassName(Upload);
@@ -85,14 +83,16 @@ module.exports = function (BusinessProcess, data) {
 		definitions[name] = { nested: true };
 		if (RequirementUpload.isPrototypeOf(Upload)) {
 			definitions[name].type = Upload;
-			typesMap[name] = Upload.prototype.document.constructor;
+			typesMap[name] = true;
 		} else {
 			typesMap[name] = Upload;
 		}
 	});
 	BusinessProcess.prototype.requirementUploads.map.defineProperties(definitions);
 	forEach(typesMap, function (Upload, name) {
-		this[name].define('document', { type: Upload });
+		if (Upload !== true) {
+			this[name].define('document', { type: Upload });
+		}
 		this[name].document.defineProperties(documentDefinitions);
 		if (documentProperties[name]) {
 			this[name].document.setProperties(documentProperties[name]);
