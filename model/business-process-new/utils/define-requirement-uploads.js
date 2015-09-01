@@ -44,14 +44,20 @@ var documentDefinitions = {
 module.exports = function (BusinessProcess, data) {
 	var db = ensureType(BusinessProcess).database, Document = defineDocument(db),
 		RequirementUpload = defineRequirementUpload(db), uploadProps, definitions = create(null),
-		typesMap = create(null), documentProperties = create(null), sanitizeRequirementName;
+		typesMap = create(null), documentProperties = create(null), sanitizeClassName;
 	defineRequirementUploads(db);
-	sanitizeRequirementName = function (Upload) {
-		if (!endsWith.call(Upload.__id__, 'RequirementUpload')) {
-			throw new TypeError(Upload.__id__ + " RequirementUpload " +
-				"class misses \'RequirementUpload\' postfix.");
+	sanitizeClassName = function (Upload) {
+		var name;
+		if (RequirementUpload.isPrototypeOf(Upload)) {
+			if (!endsWith.call(Upload.__id__, 'RequirementUpload')) {
+				throw new TypeError(Upload.__id__ + " RequirementUpload " +
+					"class misses \'RequirementUpload\' postfix.");
+			}
+			name = uncapitalize.call(Upload.__id__).slice(0, -'RequirementUpload'.length);
+		} else {
+			name = uncapitalize.call(Upload.__id__);
 		}
-		return uncapitalize.call(Upload.__id__).slice(0, -'RequirementUpload'.length);
+		return ensureStringifiable(name);
 	};
 	ensureArray(data).forEach(function (conf) {
 		var Upload, name;
@@ -59,12 +65,10 @@ module.exports = function (BusinessProcess, data) {
 			Upload = ensureType(conf.class);
 			if (conf.name) {
 				name = conf.name;
-			} else if (RequirementUpload.isPrototypeOf(Upload)) {
-				name = sanitizeRequirementName(Upload);
+				name = ensureStringifiable(name);
 			} else {
-				name = uncapitalize.call(Upload.__id__);
+				name = sanitizeClassName(Upload);
 			}
-			name = ensureStringifiable(name);
 			uploadProps = copy(conf);
 			delete uploadProps.name;
 			delete uploadProps.class;
@@ -73,11 +77,7 @@ module.exports = function (BusinessProcess, data) {
 			}
 		} else {
 			Upload = conf;
-			if (RequirementUpload.isPrototypeOf(Upload)) {
-				name = sanitizeRequirementName(Upload);
-			} else {
-				name = uncapitalize.call(Upload.__id__);
-			}
+			name = sanitizeClassName(Upload);
 		}
 		if (!Document.isPrototypeOf(Upload) && !RequirementUpload.isPrototypeOf(Upload)) {
 			throw new TypeError(Upload.__id__ + " must extend Document or RequirementUplad.");
