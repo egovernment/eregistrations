@@ -6,7 +6,7 @@ var normalizeOptions = require('es5-ext/object/normalize-options')
   , _                = require('mano').i18n.bind('View: Signed Data Forms');
 
 module.exports = Object.defineProperty(
-	db.BusinessProcessMerchant.prototype.requirementUploads.map.get('signedDataForms'),
+	db.SignedDataFormsRequirementUpload.prototype,
 	'toDOMForm',
 	d(function (document/*, options */) {
 		var opts = normalizeOptions(arguments[1]);
@@ -31,6 +31,7 @@ module.exports = Object.defineProperty(
 						)
 					))];
 		};
-		return this.constructor.prototype.toDOMForm.call(this, document, opts);
+
+		return db.RequirementUpload.prototype.toDOMForm.call(this, document, opts);
 	})
 );
