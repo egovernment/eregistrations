@@ -7,11 +7,13 @@ var Map              = require('es6-map')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineCreateEnum = require('dbjs-ext/create-enum')
   , _                = require('mano').i18n.bind('Model')
-  , defineDocument   = require('./document');
+  , defineDocument   = require('./document')
+  , definePercentage = require('dbjs-ext/number/percentage');
 
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(db)
-	  , Document = defineDocument(db);
+	  , Document   = defineDocument(db)
+	  , Percentage = definePercentage(db);
 
 	defineCreateEnum(db);
 
@@ -34,6 +36,13 @@ module.exports = memoize(function (db) {
 		document: { type: Document, nested: true },
 		// Verification status of upload
 		status: { type: RequirementUploadStatus },
+		progress: {
+			type: Percentage,
+			// By default we require at least one file uploaded
+			value: function (_observe) {
+				return _observe(this.document.files.ordered._size) ? 1 : 0;
+			}
+		},
 
 		// Eventual rejection details
 		rejectReasonTypes: { type: RequirementUploadRejectReason, multiple: true, required: true },

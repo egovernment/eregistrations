@@ -8,9 +8,11 @@ var ensureArray              = require('es5-ext/array/valid-array')
   , ensureObject             = require('es5-ext/object/valid-object')
   , ensureStringifiable      = require('es5-ext/object/validate-stringifiable-value')
   , uncapitalize             = require('es5-ext/string/#/uncapitalize')
+  , endsWith                 = require('es5-ext/string/#/ends-with')
   , isType                   = require('dbjs/is-dbjs-type')
   , ensureType               = require('dbjs/valid-dbjs-type')
   , defineDocument           = require('../../document')
+  , defineRequirementUpload  = require('../../requirement-upload')
   , defineRequirementUploads = require('../requirement-uploads')
 
   , create = Object.create;
@@ -40,32 +42,57 @@ var documentDefinitions = {
 };
 
 module.exports = function (BusinessProcess, data) {
-	var db = ensureType(BusinessProcess).database, Document = defineDocument(db), docProps
-	  , definitions = create(null), typesMap = create(null), documentProperties = create(null);
+	var db = ensureType(BusinessProcess).database, Document = defineDocument(db),
+		RequirementUpload = defineRequirementUpload(db), uploadProps, definitions = create(null),
+		typesMap = create(null), documentProperties = create(null), sanitizeRequirementName;
 	defineRequirementUploads(db);
-	ensureArray(data).forEach(function (conf) {
-		var UploadDocument, name;
-		if (!isType(ensureObject(conf))) {
-			UploadDocument = ensureType(conf.class);
-			name = conf.name || uncapitalize.call(UploadDocument.__id__);
-			name = ensureStringifiable(name);
-			docProps = copy(conf);
-			delete docProps.name;
-			delete docProps.class;
-			documentProperties[name] = docProps;
-		} else {
-			UploadDocument = conf;
-			name = uncapitalize.call(UploadDocument.__id__);
+	sanitizeRequirementName = function (Upload) {
+		if (!endsWith.call(Upload.__id__, 'RequirementUpload')) {
+			throw new TypeError(Upload.__id__ + " RequirementUpload " +
+				"class misses \'RequirementUpload\' postfix.");
 		}
-		if (!Document.isPrototypeOf(UploadDocument)) {
-			throw new TypeError(UploadDocument.__id__ + " must extend Document.");
+		return uncapitalize.call(Upload.__id__).slice(0, -'RequirementUpload'.length);
+	};
+	ensureArray(data).forEach(function (conf) {
+		var Upload, name;
+		if (!isType(ensureObject(conf))) {
+			Upload = ensureType(conf.class);
+			if (conf.name) {
+				name = conf.name;
+			} else if (RequirementUpload.isPrototypeOf(Upload)) {
+				name = sanitizeRequirementName(Upload);
+			} else {
+				name = uncapitalize.call(Upload.__id__);
+			}
+			name = ensureStringifiable(name);
+			uploadProps = copy(conf);
+			delete uploadProps.name;
+			delete uploadProps.class;
+			if (Document.isPrototypeOf(Upload)) {
+				documentProperties[name] = uploadProps;
+			}
+		} else {
+			Upload = conf;
+			if (RequirementUpload.isPrototypeOf(Upload)) {
+				name = sanitizeRequirementName(Upload);
+			} else {
+				name = uncapitalize.call(Upload.__id__);
+			}
+		}
+		if (!Document.isPrototypeOf(Upload) && !RequirementUpload.isPrototypeOf(Upload)) {
+			throw new TypeError(Upload.__id__ + " must extend Document or RequirementUplad.");
 		}
 		definitions[name] = { nested: true };
-		typesMap[name] = UploadDocument;
+		if (RequirementUpload.isPrototypeOf(Upload)) {
+			definitions[name].type = Upload;
+			typesMap[name] = Upload.prototype.document.constructor;
+		} else {
+			typesMap[name] = Upload;
+		}
 	});
 	BusinessProcess.prototype.requirementUploads.map.defineProperties(definitions);
-	forEach(typesMap, function (UploadDocument, name) {
-		this[name].define('document', { type: UploadDocument });
+	forEach(typesMap, function (Upload, name) {
+		this[name].define('document', { type: Upload });
 		this[name].document.defineProperties(documentDefinitions);
 		if (documentProperties[name]) {
 			this[name].document.setProperties(documentProperties[name]);

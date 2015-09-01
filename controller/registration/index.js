@@ -47,6 +47,11 @@ exports['requirement-upload/[a-z][a-z0-9-]*'] = {
 			}
 		}, this);
 	},
+	validate: function (data) {
+		// The isSignedFormFilesUpToDateUserValue checkbox state
+		// must be always saved, even if not changed.
+		return validate(data, { changedOnly: false });
+	},
 	submit: function (data) {
 		if (this.requirementUpload.status) this.requirementUpload.status = null;
 		return submit.apply(this, arguments);
