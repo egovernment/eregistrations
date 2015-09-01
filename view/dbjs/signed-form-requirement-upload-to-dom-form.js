@@ -12,7 +12,7 @@ module.exports = Object.defineProperty(
 		var opts = normalizeOptions(arguments[1]);
 		opts.afterHeader = function (requirementUpload) {
 			return [
-				div(a({ href: '/imprimir-usuario-data/', target: '_blank' },
+				div(a({ href: '/print-forms-data/', target: '_blank' },
 					_("Print your application form"))),
 				// If the printed form is uploaded and might not be up to date,
 				// the user should check the confirmation checkbox.
