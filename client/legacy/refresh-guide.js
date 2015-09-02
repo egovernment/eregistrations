@@ -9,7 +9,8 @@ var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
 require('es3-ext/array/#/for-each/implement');
 
 // Each hook is an array of scripts which are executed in corresponding parts of refresh guide
-$.refreshGuideHooks = { atEnd: [], beforeRequirementsApplicable: [],
+$.refreshGuideHooks = { atEnd: [],
+	beforeRegistrationsApplicable: [], beforeRequirementsApplicable: [],
 	beforeRegistrationsRequested: [] };
 
 require('mano-legacy/get-text-child');
@@ -78,13 +79,14 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 		// Perform dbjsFormFill
 		$.dbjsFormFill(businessProcess, guideForm);
-
+		$.refreshGuideHooks.beforeRegistrationsApplicable.forEach(function (hook) {
+			hook(businessProcess, guideForm);
+		});
 		// Resolve applicable, mandatory and optional registrations
 		businessProcess.registrations.map.forEach(function (registration) {
 			registration.isApplicable = getPropertyValue(registration, 'isApplicable');
 			registration.isMandatory = getPropertyValue(registration, 'isMandatory');
 		});
-
 		businessProcess.registrations.applicable =
 			$.setify(businessProcess.registrations.applicable($.dbjsObserveMock));
 		businessProcess.registrations.mandatory =
