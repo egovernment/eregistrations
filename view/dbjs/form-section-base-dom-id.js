@@ -5,7 +5,7 @@ var d = require('d')
   , toIdString = require('dom-ext/html-document/to-id-string');
 
 Object.defineProperties(db.FormSectionBase.prototype, {
-	formHtmlId: d.gs(function () {
+	domId: d.gs(function () {
 		return toIdString(this.label);
 	})
 });
