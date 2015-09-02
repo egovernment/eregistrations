@@ -1,18 +1,12 @@
 'use strict';
 
 var d = require('d')
-  , db = require('mano').db
-  , lazy = require('d/lazy')
-  , assign = require('es5-ext/object/assign')
-  , generateId = require('dom-ext/html-document/generate-id');
+  , db = require('mano').db;
 
 require('./form-section-base-get-resolvent');
 require('./form-section-base-get-legacy');
+require('./form-section-base-dom-id');
 
-Object.defineProperties(db.FormSectionBase.prototype, assign({
+Object.defineProperties(db.FormSectionBase.prototype, {
 	forceRequiredInput: d(false)
-}, lazy({
-	domId: d(function () {
-		return generateId(this.label);
-	})
-})));
+});
