@@ -79,6 +79,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 		// Perform dbjsFormFill
 		$.dbjsFormFill(businessProcess, guideForm);
+
 		$.refreshGuideHooks.beforeRegistrationsApplicable.forEach(function (hook) {
 			hook(businessProcess, guideForm);
 		});
@@ -87,6 +88,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 			registration.isApplicable = getPropertyValue(registration, 'isApplicable');
 			registration.isMandatory = getPropertyValue(registration, 'isMandatory');
 		});
+
 		businessProcess.registrations.applicable =
 			$.setify(businessProcess.registrations.applicable($.dbjsObserveMock));
 		businessProcess.registrations.mandatory =
