@@ -1,0 +1,11 @@
+'use strict';
+
+var d = require('d')
+  , db = require('mano').db
+  , toIdString = require('dom-ext/html-document/to-id-string');
+
+Object.defineProperties(db.FormSectionBase.prototype, {
+	formHtmlId: d.gs(function () {
+		return toIdString(this.label);
+	})
+});
