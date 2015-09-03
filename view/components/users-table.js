@@ -200,7 +200,7 @@ module.exports = function (snapshots, options) {
 	window.addEventListener('focus', update, false);
 	snapshots.on('change', function () {
 		if (document.hasFocus && !document.hasFocus()) return;
-		if (!snapshots.has(snapshotKey)) snapshots.add(snapshotKey);
+		if (snapshotKey && !snapshots.has(snapshotKey)) snapshots.add(snapshotKey);
 	});
 
 	update();
