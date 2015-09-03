@@ -14,8 +14,9 @@
 	margin-right: 2%;
 	vertical-align: top;
 }
-.registration-init-actions li > *:first-child.disabled {
+.registration-init-actions li > :first-child.disabled {
 	opacity: 1;
+	background-color: rgb(218,76,59);
 	background-color: rgba(218,76,59, 0.4);
 }
 
