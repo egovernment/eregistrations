@@ -7,6 +7,39 @@ var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
   , _             = require('mano').i18n.bind('Registration')
   , inventoryModal = require('./_business-process-inventory');
 
+/**
+ * getRegistrationGroupContent
+ *
+ * @param registration to check for groups
+ * @returns {*}
+ * - {Array} spanContent is the dom of the group
+ * - {Boolean} false when group was already rendered
+ * - {Object} null when no group found for the registration
+ */
+var getRegistrationGroupContent = function (registration) {
+	var spanContent = null;
+	registration.master.registrations.groups.forEach(function (group) {
+		if (group.has(registration)) {
+			/**
+			 * by convention first in registration in group set is
+			 * the one for which the checkbox will be created
+			 */
+			if (group.first === registration) {
+				spanContent = [];
+				group.forEach(function (groupedReg) {
+					spanContent.push(groupedReg.label);
+					if (groupedReg !== group.last) {
+						spanContent.push(br());
+					}
+				});
+			} else {
+				spanContent = false;
+			}
+		}
+	});
+	return spanContent;
+};
+
 exports._parent = require('./business-process-base');
 
 exports['step-guide'] = { class: { 'step-active': true } };
@@ -39,13 +72,19 @@ exports.step = function () {
 					exports._mandatoryRegistrationIntro(this),
 					ul({ id: 'mandatory-registrations-list' }, this.businessProcess.registrations.map,
 						function (registration) {
+							var spanContent;
+							spanContent = getRegistrationGroupContent(registration);
+							// false means the group has already been rendered
+							if (spanContent === false) return;
+							// null means, that no grouping was found
+							if (!spanContent) spanContent = registration.label;
 							li({ id: 'registration-mandatory-li-' + camelToHyphen.call(registration.key),
 									'data-key': registration.key },
 								label({ class: 'input-aside' },
 									input({ id: 'registration-mandatory-input-' +
 										camelToHyphen.call(registration.key),
 										dbjs: registration._isRequested, type: 'checkbox' }), " ",
-									span(registration.label)));
+									span(spanContent)));
 						})),
 				div({ id: 'optional-registrations-section', class: 'section-primary-wrapper' },
 					h2(_("Optional Registrations")),
@@ -53,12 +92,18 @@ exports.step = function () {
 					exports._optionalRegistrationIntro(this),
 					ul({ id: 'optional-registrations-list' }, this.businessProcess.registrations.map,
 						function (registration) {
+							var spanContent;
+							spanContent = getRegistrationGroupContent(registration);
+							// false means the group has already been rendered
+							if (spanContent === false) return;
+							// null means, that no grouping was found
+							if (!spanContent) spanContent = registration.label;
 							li({ id: 'registration-optional-li-' + camelToHyphen.call(registration.key),
 									'data-key': registration.key },
 								label({ class: 'input-aside' },
 									input({ id: 'registration-optional-input-' + camelToHyphen.call(registration.key),
 										dbjs: registration._isRequested, type: 'checkbox' }), " ",
-									span(registration.label)));
+									span(spanContent)));
 						}))),
 
 			div({ class: 'section-primary' }, h2(_("Requirements")),

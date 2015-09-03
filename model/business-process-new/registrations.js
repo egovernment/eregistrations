@@ -51,7 +51,11 @@ module.exports = memoize(function (db/* options */) {
 		} },
 		// Indicates whether some registrations were chosen by user
 		// It's one of the sub calculations that are needed to calcualate guide progress
-		guideProgress: { type: Percentage, value: function () { return this.requested.size ? 1 : 0; } }
+		guideProgress: { type: Percentage, value: function () { return this.requested.size ? 1 : 0; } },
+		groups: { type: db.Object, nested: true }
 	});
+
+	BusinessProcess.prototype.registrations.groups._descriptorPrototype_.type = Registration;
+
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
