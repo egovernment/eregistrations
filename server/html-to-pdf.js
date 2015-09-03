@@ -6,6 +6,7 @@ var ensureString     = require('es5-ext/object/validate-stringifiable-value')
   , compileTemplate  = require('es6-template-strings/compile')
   , resolveTemplate  = require('es6-template-strings/resolve-to-string')
   , readFile         = require('fs2/read-file')
+  , writeFile        = require('fs2/write-file')
   , dirname          = require('path').dirname
   , memoize          = require('memoizee/plain')
   , htmlToPdf        = require('html-pdf')
@@ -34,7 +35,12 @@ module.exports = function (htmlPath, pdfPath/*, options*/) {
 			md: function (str) { return md2Html(String(str)); }
 		});
 		delete options.templateInserts;
-		return htmlToPdf.create(resolveTemplate(htmlTemplate, inserts),
-			normalizeOptions(defaultRenderOptions, options)).toFilePromise(pdfPath);
+
+		var resolvedTemplate = resolveTemplate(htmlTemplate, inserts);
+
+		return deferred(htmlToPdf.create(resolvedTemplate,
+			normalizeOptions(defaultRenderOptions, options)).toFilePromise(pdfPath),
+			options.writeHtml ? writeFile(pdfPath + '.html', resolvedTemplate) : false
+			);
 	});
 };
