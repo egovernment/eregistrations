@@ -31,7 +31,7 @@ module.exports = function (htmlPath, pdfPath/*, options*/) {
 			root: 'file://' + dirname(htmlPath) + '/',
 			_: _,
 			e: encode,
-			md: md2Html
+			md: function (str) { return md2Html(String(str)); }
 		});
 		delete options.templateInserts;
 		return htmlToPdf.create(resolveTemplate(htmlTemplate, inserts),
