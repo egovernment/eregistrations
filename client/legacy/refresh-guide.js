@@ -131,7 +131,12 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		$.refreshGuideHooks.beforeRegistrationsRequested.forEach(function (hook) {
 			hook(businessProcess, guideForm);
 		});
+
 		// Resolve requested registrations
+		businessProcess.registrations.map.forEach(function (registration) {
+			registration.isRequested = getPropertyValue(registration, 'isRequested');
+		});
+
 		businessProcess.registrations.requested =
 			$.setify(businessProcess.registrations.requested($.dbjsObserveMock));
 
