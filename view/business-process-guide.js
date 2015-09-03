@@ -109,7 +109,8 @@ exports.step = function () {
 					this.businessProcess.requirements.map,
 					function (requirement) {
 						li({ 'data-key': requirement.key },
-							requirement.toGuideDOM ? requirement.toGuideDOM() : requirement.label);
+							requirement.toGuideDOM ? requirement.toGuideDOM() : [requirement.label,
+									requirement.legend && [br(), small(mdi(requirement.legend))]]);
 					})),
 
 			div({ id: 'costs-section', class: 'section-primary' }, h2(_("Costs")),
