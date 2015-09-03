@@ -8,16 +8,16 @@ var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
   , inventoryModal = require('./_business-process-inventory');
 
 /**
- * getRegistrationGroupContent
+ * getRegistrationSpanContent
  *
  * @param registration to check for groups
  * @returns {*}
  * - {Array} spanContent is the dom of the group
  * - {Boolean} false when group was already rendered
- * - {Object} null when no group found for the registration
+ * - {String} label when no group found for the registration
  */
-var getRegistrationGroupContent = function (registration) {
-	var spanContent = null;
+var getRegistrationSpanContent = function (registration) {
+	var spanContent = registration.label;
 	registration.master.registrations.groups.forEach(function (group) {
 		if (group.has(registration)) {
 			/**
@@ -73,11 +73,9 @@ exports.step = function () {
 					ul({ id: 'mandatory-registrations-list' }, this.businessProcess.registrations.map,
 						function (registration) {
 							var spanContent;
-							spanContent = getRegistrationGroupContent(registration);
+							spanContent = getRegistrationSpanContent(registration);
 							// false means the group has already been rendered
 							if (spanContent === false) return;
-							// null means, that no grouping was found
-							if (!spanContent) spanContent = registration.label;
 							li({ id: 'registration-mandatory-li-' + camelToHyphen.call(registration.key),
 									'data-key': registration.key },
 								label({ class: 'input-aside' },
@@ -93,11 +91,9 @@ exports.step = function () {
 					ul({ id: 'optional-registrations-list' }, this.businessProcess.registrations.map,
 						function (registration) {
 							var spanContent;
-							spanContent = getRegistrationGroupContent(registration);
+							spanContent = getRegistrationSpanContent(registration);
 							// false means the group has already been rendered
 							if (spanContent === false) return;
-							// null means, that no grouping was found
-							if (!spanContent) spanContent = registration.label;
 							li({ id: 'registration-optional-li-' + camelToHyphen.call(registration.key),
 									'data-key': registration.key },
 								label({ class: 'input-aside' },
