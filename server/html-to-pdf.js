@@ -10,6 +10,9 @@ var ensureString     = require('es5-ext/object/validate-stringifiable-value')
   , memoize          = require('memoizee/plain')
   , htmlToPdf        = require('html-pdf')
   , PDF              = require('html-pdf/lib/pdf')
+  , _                = require('mano').i18n.bind('PDF Generation')
+  , encode           = require('ent').encode
+  , md2Html          = require('i18n2-md-to-dom/lib/md-to-html')
 
   , defaultRenderOptions = { format: "A4", orientation: "portrait", border: 0 };
 
@@ -24,8 +27,12 @@ module.exports = function (htmlPath, pdfPath/*, options*/) {
 	ensureString(htmlPath);
 	ensureString(pdfPath);
 	return getTemplate(htmlPath)(function (htmlTemplate) {
-		var inserts = normalizeOptions(options.templateInserts,
-			{ root: 'file://' + dirname(htmlPath) + '/' });
+		var inserts = normalizeOptions(options.templateInserts, {
+			root: 'file://' + dirname(htmlPath) + '/',
+			_: _,
+			e: encode,
+			md: md2Html
+		});
 		delete options.templateInserts;
 		return htmlToPdf.create(resolveTemplate(htmlTemplate, inserts),
 			normalizeOptions(defaultRenderOptions, options)).toFilePromise(pdfPath);
