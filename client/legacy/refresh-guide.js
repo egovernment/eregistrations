@@ -128,6 +128,10 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		// Perform dbjsFormFill
 		$.dbjsFormFill(businessProcess, guideForm);
 
+		businessProcess.registrations.map.forEach(function (registration) {
+			registration.isRequested = getPropertyValue(registration, 'isRequested');
+		});
+
 		$.refreshGuideHooks.beforeRegistrationsRequested.forEach(function (hook) {
 			hook(businessProcess, guideForm);
 		});
