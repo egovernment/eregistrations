@@ -50,7 +50,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 				), 'completed form-elements', 'form-elements')
 				},
 				ns._if(this._label,
-					[ns.h2(this._label),
+					[ns.h2(this._label), ns._if(this._legend, ns.p(this._legend)),
 						ns.hr()]),
 				options.prepend,
 				mainFormResolvent.formResolvent,
