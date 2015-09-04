@@ -119,13 +119,13 @@ exports.step = function () {
 				ul({ id: 'costs-list', class: 'user-guide-costs-list' },
 					list(this.businessProcess.costs.map,
 						function (cost) {
-							li({ 'data-key': cost.key },
+							li({ id: 'cost-li-' + camelToHyphen.call(cost.key), 'data-key': cost.key },
 								span({ class: 'user-guide-costs-list-label' },
 									span({ id: 'cost-label-' + camelToHyphen.call(cost.key) }, cost.label),
 									small(cost.legend)),
 								span({ id: 'cost-amount-' + camelToHyphen.call(cost.key) }));
 						}),
-					li({ class: 'user-guide-total-costs' },
+					li({ id: 'cost-li-total', class: 'user-guide-total-costs' },
 						span({ class: 'user-guide-costs-list-label' }, _("Total Costs:")), " ",
 						span({ id: 'costs-total' }))
 					),
