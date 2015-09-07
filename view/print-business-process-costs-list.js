@@ -20,7 +20,6 @@ var getCostsList = function (field, prefix) {
 		return _if(costAmount, li(span(cost._label), " ",
 			span(costAmount.map(function (costAmountValue) {
 				if (!costAmountValue) return;
-				console.log(amountDescriptor.type.__id__);
 
 				return (new amountDescriptor.type(costAmountValue)).toString(amountDescriptor);
 			}))));
