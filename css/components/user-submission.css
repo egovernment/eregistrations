@@ -2,6 +2,7 @@
 	padding-bottom: 22px;
 }
 
+a.user-submission-button,
 [type="submit"].user-submission-button {
 	background-color: var(--normal-background);
 	border-radius: 6px;
@@ -20,6 +21,9 @@
 	width: 100%;
 }
 
+a.user-submission-button:hover,
+a.user-submission-button:focus,
+a.user-submission-button:active,
 [type="submit"].user-submission-button:hover,
 [type="submit"].user-submission-button:focus,
 [type="submit"].user-submission-button:active {
