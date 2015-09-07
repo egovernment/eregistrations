@@ -34,6 +34,15 @@ var getPropertyValue = function (target, property) {
 		: target[property];
 };
 
+var buildCostsPrintLink = function (currentLink, cost, field, prefix) {
+	if (!prefix) prefix = '';
+	currentLink.search += (currentLink.search.length) ?
+			'&' + prefix + cost.key + '=' + cost[field].toFixed(2) :
+			'?' + prefix + cost.key + '=' + cost[field].toFixed(2);
+
+	return currentLink;
+};
+
 // A legacy refreshGuide method for Part A Guide page.
 // Used in: /view/guide.js
 module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
@@ -172,8 +181,9 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 			$.setify(businessProcess.costs.applicable($.dbjsObserveMock));
 
 		businessProcess.costs.map.forEach(function (cost) {
-			cost.amount = getPropertyValue(cost, 'amount');
-			cost.label  = getPropertyValue(cost, 'label');
+			cost.amount     = getPropertyValue(cost, 'amount');
+			cost.sideAmount = getPropertyValue(cost, 'sideAmount');
+			cost.label      = getPropertyValue(cost, 'label');
 		});
 
 		businessProcess.costs.payable =
@@ -208,14 +218,17 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		costsPrintLink.search = '';
 
 		businessProcess.costs.payable.forEach(function (cost) {
-			costsPrintLink.search += (costsPrintLink.search.length) ?
-					'&' + cost.key + '=' + cost.amount.toFixed(2) :
-					'?' + cost.key + '=' + cost.amount.toFixed(2);
+			buildCostsPrintLink(costsPrintLink, cost, 'amount');
 		});
 
 		if (costsPrintLink.search.length) {
 			costsPrintLink.search += '&total=' + businessProcess.costs.totalAmount.toFixed(2);
 		}
+
+		businessProcess.costs.applicable.forEach(function (cost) {
+			if (!cost.sideAmount) return;
+			buildCostsPrintLink(costsPrintLink, cost, 'sideAmount', 'side-');
+		});
 
 		if (businessProcess.costs.totalAmount) {
 			costsSection.removeClass(zeroCostsClass);

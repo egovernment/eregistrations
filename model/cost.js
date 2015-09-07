@@ -17,6 +17,8 @@ module.exports = memoize(function (db) {
 		legend: { type: StringLine },
 		// Cost amount
 		amount: { type: Currency, step: 1 },
+		// Cost's sideAmount is not taken into account in payable costs, nor in total.
+		sideAmount: { type: Currency, step: 1 },
 		// Whether cost have been paid
 		isPaid: { type: db.Boolean, value: function () { return this.isPaidOnline; } },
 		// Whether cost have been paid online (in Part A)
