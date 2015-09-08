@@ -44,7 +44,7 @@ exports.step = function () {
 				}
 			)
 		),
-		exports.__onlinePayments(this),
+		exports._onlinePayments(this),
 		div({ class: 'disabler' })
 	);
 	insert(_if(eq(this.businessProcess.costs._paymentProgress, 1),
@@ -53,4 +53,4 @@ exports.step = function () {
 };
 
 exports._paymentHeading = Function.prototype;
-exports.__onlinePayments = Function.prototype;
+exports._onlinePayments = Function.prototype;
