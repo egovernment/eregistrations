@@ -36,6 +36,7 @@ require('../../view/dbjs/partners-table');
 require('../../view/dbjs/form-section-to-dom');
 require('../../view/dbjs/form-section-group-to-dom');
 require('../../view/dbjs/form-entities-table-to-dom');
+require('../../view/dbjs/requirement-upload-to-dom-form');
 require('../../view/dbjs/section-to-dom');
 require('../../view/dbjs/section-group-to-dom');
 require('../../view/dbjs/section-entities-table-to-dom');
