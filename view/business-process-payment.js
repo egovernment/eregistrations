@@ -16,7 +16,7 @@ exports.step = function () {
 	exports._paymentHeading(this);
 
 	insert(errorMsg(this));
-	insert(div({ class: 'payment-total-amount' }, h2(_d("Your fee is: ${ feeAmount }", {
+	insert(div({ class: 'payment-total-amount' }, h2(_("Your fee is: ${ feeAmount }", {
 		feeAmount: this.businessProcess.costs._totalAmount
 	}))));
 
