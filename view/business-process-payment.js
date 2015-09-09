@@ -16,8 +16,9 @@ exports.step = function () {
 	exports._paymentHeading(this);
 
 	insert(errorMsg(this));
-	insert(div({ class: 'payment-total-amount' }, h2(_("Your fee is"), ': ',
-		this.businessProcess.costs._totalAmount)));
+	insert(div({ class: 'payment-total-amount' }, h2(_d("Your fee is: ${ feeAmount }", {
+		feeAmount: this.businessProcess.costs._totalAmount
+	}))));
 
 	div(
 		{ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
