@@ -23,21 +23,22 @@ module.exports = function (BusinessProcess, data) {
 	ensureArray(data).forEach(function (conf) {
 		//Required is either a Document or a Requirement
 		var Required, name;
-		if (!isType(ensureObject(conf))) {
-			Required = ensureType(conf.class);
-			name = ensureStringifiable(conf.name);
-		} else {
-			Required = conf;
-			name = uncapitalize.call(Required.__id__);
-		}
-		if (!Document.isPrototypeOf(Required) && !Requirement.isPrototypeOf(Required)) {
-			throw new TypeError(Required.__id__ + " must extend Document or Requirement.");
-		}
+		if (!isType(ensureObject(conf))) Required = ensureType(conf.class);
+		else Required = conf;
 		if (Requirement.isPrototypeOf(Required)) {
-			if (!endsWith.call(name, 'Requirement')) {
+			if (!endsWith.call(Required.__id__, 'Requirement')) {
 				throw new TypeError(Required.__id__ + " Requirement class misses \'Requirement\' postfix.");
 			}
-			name = name.slice(0, -'Requirement'.length);
+		} else if (!Document.isPrototypeOf(Required)) {
+			throw new TypeError(Required.__id__ + " must extend Document or Requirement.");
+		}
+		if (!isType(conf) && (conf.name != null)) {
+			name = ensureStringifiable(conf.name);
+		} else {
+			name = uncapitalize.call(Required.__id__);
+			if (Requirement.isPrototypeOf(Required)) {
+				name = uncapitalize.call(Required.__id__).slice(0, -'Requirement'.length);
+			}
 		}
 		definitions[name] = { nested: true };
 		typesMap[name] = { label: conf.label, legend: conf.legend };
