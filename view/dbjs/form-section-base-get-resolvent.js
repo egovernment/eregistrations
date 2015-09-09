@@ -19,7 +19,7 @@ var generateId = require('time-uuid')
 module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormResolvent',
 	d(function (/*options*/) {
 		var result, match, options = Object(arguments[0])
-		  , master = options.master || this.master;
+		  , master = options.master || this.master, dbjsInput;
 		result = {};
 		match = {};
 		if (this.resolventProperty) {
@@ -34,13 +34,17 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 			result.formResolvent = ns.field({ dbjs: resolvePropertyPath(master,
 				this.resolventProperty
 				).observable });
-			if (result.formResolvent._dbjsInput instanceof db.Base.DOMSelect) {
-				result.formResolvent._dbjsInput.control.id = 'select-' + generateId();
+			dbjsInput = result.formResolvent._dbjsInput;
+			if (dbjsInput instanceof db.Base.DOMSelect) {
+				dbjsInput.control.id = 'select-' + generateId();
 				result.legacyScript = ns.legacy('selectMatch',
-					result.formResolvent._dbjsInput.control.id,
+					dbjsInput.control.id,
 					match);
 			} else {
-				result.formResolvent._dbjsInput.dom.classList.add('multiline');
+				if (!(dbjsInput.observable.descriptor.inputOptions &&
+					(dbjsInput.observable.descriptor.inputOptions.multiline === false))) {
+					dbjsInput.dom.classList.add('multiline');
+				}
 				result.legacyScript = ns.legacy('radioMatch', this.domId,
 						master.__id__ + '/' + this.resolventProperty,
 					match);
