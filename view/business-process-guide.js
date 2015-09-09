@@ -49,7 +49,10 @@ exports.step = function () {
 	exports._guideHeading(this);
 
 	insert(_if(this.businessProcess._isSentBack,
-		function () { return div({ class: 'info-main' }, sentBackInfo(this)); }.bind(this)));
+		function () { return div({ class: 'info-main' }, sentBackInfo(this)); }.bind(this),
+		_if(and(this.businessProcess.costs._paymentWeight,
+			this.businessProcess.costs._paymentProgress), div({ class: 'info-main' },
+				_("The guide is disabled as you have already processed your payment.")))));
 
 	div(
 		{ class: ['disabler-range',
