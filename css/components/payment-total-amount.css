@@ -1,0 +1,10 @@
+.payment-total-amount {
+	background-color: var(--normal-dark-background);
+	border-radius: 5px;
+	border: 1px solid #e3e3e3;
+	padding: 10px 20px;
+}
+
+.payment-total-amount h2 {
+	color: var(--white-text);
+}
