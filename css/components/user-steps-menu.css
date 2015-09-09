@@ -7,7 +7,7 @@
 	padding: 11px 0;
 	/* Below rules needed for fixed view */
 	width: 100%;
-	z-index: 2;
+	z-index: 3;
 }
 .user-steps-menu a {
 	color: var(--white-text);
