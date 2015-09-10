@@ -48,9 +48,12 @@ module.exports = memoize(function (db/*, options*/) {
 	});
 
 	BusinessProcess.prototype.submissionNumber.defineProperties({
+		value: { type: StringLine, value: function () {
+			return this.number;
+		} },
 		number: { type: UInteger, value: 0 },
 		toString: { value: function (opts) {
-			return String(this.number);
+			return this.value;
 		} }
 	});
 
