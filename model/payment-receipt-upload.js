@@ -30,6 +30,14 @@ module.exports = memoize(function (db) {
 			var result = [], payable = _observe(this.master.costs.payable);
 			this.costs.forEach(function (cost) {
 				if (!payable.has(cost)) return;
+				result.push(cost);
+			});
+			return result;
+		} },
+		// Applicable costs that are not paid online
+		applicableCostsForUserUpload: { type: Cost, multiple: true, value: function (_observe) {
+			var result = [];
+			this.applicableCosts.forEach(function (cost) {
 				if (_observe(cost._isPaidOnline) || _observe(cost._isOnlinePaymentInitialized)) return;
 				result.push(cost);
 			});

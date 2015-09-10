@@ -28,6 +28,16 @@ module.exports = memoize(function (db/* options */) {
 			});
 			return result;
 		} },
+		// Payment receipt uploads that should be uploaded
+		uploadable: { type: PaymentReceiptUpload, multiple: true, value: function (_observe) {
+			var result = [];
+			this.map.forEach(function (paymentReceiptUpload) {
+				if (_observe(paymentReceiptUpload.applicableCostsForUserUpload._size)) {
+					result.push(paymentReceiptUpload);
+				}
+			});
+			return result;
+		} },
 
 		uploaded: { type: PaymentReceiptUpload },
 		approved: { type: PaymentReceiptUpload },

@@ -48,15 +48,20 @@ module.exports = function (t, a) {
 	a.deep(aFrom(paymentReceiptUpload.applicableCosts),
 		[businessProcess.costs.map.test, businessProcess.costs.map.test3]);
 
-	businessProcess.costs.map.test.isOnlinePaymentInitialized = true;
-	a.deep(aFrom(paymentReceiptUpload.applicableCosts), [businessProcess.costs.map.test3]);
-	businessProcess.costs.map.test.delete('isOnlinePaymentInitialized');
 	a.deep(aFrom(paymentReceiptUpload.applicableCosts),
 		[businessProcess.costs.map.test, businessProcess.costs.map.test3]);
+
+	businessProcess.costs.map.test.isOnlinePaymentInitialized = true;
+	a.deep(aFrom(paymentReceiptUpload.applicableCostsForUserUpload),
+		[businessProcess.costs.map.test3]);
+	businessProcess.costs.map.test.delete('isOnlinePaymentInitialized');
+	a.deep(aFrom(paymentReceiptUpload.applicableCostsForUserUpload),
+		[businessProcess.costs.map.test, businessProcess.costs.map.test3]);
 	businessProcess.costs.map.test.isPaidOnline = true;
-	a.deep(aFrom(paymentReceiptUpload.applicableCosts), [businessProcess.costs.map.test3]);
+	a.deep(aFrom(paymentReceiptUpload.applicableCostsForUserUpload),
+		[businessProcess.costs.map.test3]);
 	businessProcess.costs.map.test.delete('isPaidOnline');
-	a.deep(aFrom(paymentReceiptUpload.applicableCosts),
+	a.deep(aFrom(paymentReceiptUpload.applicableCostsForUserUpload),
 		[businessProcess.costs.map.test, businessProcess.costs.map.test3]);
 
 	a.h2("Initial");

@@ -26,7 +26,7 @@ exports.step = function () {
 		section(
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
-				this.businessProcess.paymentReceiptUploads.applicable,
+				this.businessProcess.paymentReceiptUploads.uploadable,
 				function (paymentUpload) {
 					return li({ class: 'section-primary' },
 						form({ action: '/payment-receipt-upload/' + camelToHyphen.call(paymentUpload.key) + '/',
