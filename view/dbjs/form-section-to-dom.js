@@ -49,10 +49,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 					1
 				), 'completed form-elements', 'form-elements') },
 				ns._if(this._label,
-					[ns.h2(this._label), ns._if(this._legend, this._legend.map(function (legend) {
-						return legend && ns.md(legend);
-					})),
-						ns.hr()]),
+					[ns.h2(this._label), ns._if(this._legend, ns.md(this._legend)), ns.hr()]),
 				fieldsetResult = this.toDOMFieldset(document, fieldsetOptions),
 				ns.p({ class: 'submit-placeholder input' },
 					ns.input({ type: 'submit', value: _("Submit") })),

@@ -4,6 +4,7 @@
 
 var assign           = require('es5-ext/object/assign')
   , callable         = require('es5-ext/object/valid-callable')
+  , isObservable     = require('observable-value/is-observable-value')
   , elementExt       = require('domjs/ext/_element')
   , mano             = require('mano')
   , isReadOnlyRender = require('mano/client/utils/is-read-only-render')
@@ -16,7 +17,7 @@ assign(elementExt, {
 });
 
 module.exports = function (domjs) {
-	var RelValue, ns = domjs.ns, md;
+	var RelValue, ns = domjs.ns, md, mdToDom;
 
 	// Elements
 	require('domjs-ext/_if')(domjs);
@@ -37,7 +38,15 @@ module.exports = function (domjs) {
 	require('domjs-ext/list')(domjs);
 	require('domjs-ext/lt')(domjs);
 	require('domjs-ext/lt-or-eq')(domjs);
-	md = ns.md = require('i18n2-md-to-dom')(domjs.document);
+	mdToDom = require('i18n2-md-to-dom')(domjs.document);
+	md = ns.md = function (message/*, options*/) {
+		var options = arguments[1];
+		if (!isObservable(message)) return mdToDom(message, options);
+		return message.map(function (message) {
+			if (message == null) return message;
+			return mdToDom(message, options);
+		});
+	};
 	ns.mdi = function (message) { return md(message, mdiOptions); };
 	require('domjs-ext/mmap')(domjs);
 	require('domjs-ext/modal')(domjs);
