@@ -7,10 +7,28 @@ var assign             = require('es5-ext/object/assign')
   , some               = require('es5-ext/object/some')
   , validate           = require('mano/utils/validate')
   , customError        = require('es5-ext/error/custom')
-  , _                  = require('mano').i18n.bind('Registration: Controller')
+  , mano               = require('mano')
   , submit             = require('mano/utils/save')
 
+  , _ = mano.i18n.bind('Registration: Controller'), db = mano.db
   , re = /\/isRequested$/;
+
+var validateFiles = function (data, upload) {
+	var files = upload.document.files.map;
+	// We have a use case for providing together with
+	// default file controls a field that requires such setting
+	// (e.g. signedDocument.isUpToDateByUser)
+	data = validate(data, { changedOnly: false });
+	if (data[files.__id__]) {
+		data[files.__id__].forEach(function (file) {
+			if (file.owner === files) return;
+			if (!db.File.accept.has(file.type)) {
+				throw new Error(_("Uploaded file must be in either JPG, PNG or PDF format"));
+			}
+		});
+	}
+	return data;
+};
 
 // Common controller - login and password change.
 module.exports = exports = assign(exports, require('../user'));
@@ -48,12 +66,7 @@ exports['requirement-upload/[a-z][a-z0-9-]*'] = {
 		}, this);
 	},
 	validate: function (data) {
-		/**
-		 * We have a use case for providing together with
-		 * default file controls a field that requires such setting
-		 * (e.g. signedDocument.isUpToDateByUser)
-		 */
-		return validate(data, { changedOnly: false });
+		return validateFiles(data, this.requirementUpload);
 	},
 	submit: function (data) {
 		if (this.requirementUpload.status) this.requirementUpload.status = null;
@@ -72,6 +85,9 @@ exports['payment-receipt-upload/[a-z][a-z0-9-]*'] = {
 		if (!uploads.applicable.has(paymentReceiptUpload)) return false;
 		this.paymentReceiptUpload = paymentReceiptUpload;
 		return true;
+	},
+	validate: function (data) {
+		return validateFiles(data, this.paymentReceiptUpload);
 	},
 	submit: function (data) {
 		if (this.paymentReceiptUpload.status) this.paymentReceiptUpload.status = null;
