@@ -15,11 +15,9 @@ var assign             = require('es5-ext/object/assign')
 
 var validateFiles = function (data, upload) {
 	var files = upload.document.files.map;
-	/**
-		* We have a use case for providing together with
-		* default file controls a field that requires such setting
-		* (e.g. signedDocument.isUpToDateByUser)
-	*/
+	// We have a use case for providing together with
+	// default file controls a field that requires such setting
+	// (e.g. signedDocument.isUpToDateByUser)
 	data = validate(data, { changedOnly: false });
 	if (data[files.__id__]) {
 		data[files.__id__].forEach(function (file) {
