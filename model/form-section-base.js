@@ -25,7 +25,7 @@ module.exports = memoize(function (db) {
 	return db.Object.extend('FormSectionBase', {
 		label: { type: StringLine, required: true },
 		// Optional explanation text.
-		legend: { type: StringLine },
+		legend: { type: db.String },
 		// When isApplicable !== true the section will not be visible in the view
 		// (rendered with default generator)
 		isApplicable: { type: db.Boolean, required: true, value: true },

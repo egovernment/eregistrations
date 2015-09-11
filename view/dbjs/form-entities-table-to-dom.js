@@ -54,7 +54,9 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 				1
 			), 'section-primary completed entities-overview', 'section-primary entities-overview') },
 			ns._if(this._label,
-				[ns.h2(this._label), ns._if(this._legend, ns.p(this._legend)),
+				[ns.h2(this._label), ns._if(this._legend, this._legend.map(function (legend) {
+					return legend && ns.md(legend);
+				})),
 					ns.hr()]),
 			options.prepend,
 			resolvent.formResolvent ? ns.form({
