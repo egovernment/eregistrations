@@ -2,18 +2,26 @@
 
 'use strict';
 
-var assign             = require('es5-ext/object/assign')
-  , hyphenToCamel      = require('es5-ext/string/#/hyphen-to-camel')
-  , some               = require('es5-ext/object/some')
-  , validate           = require('mano/utils/validate')
-  , customError        = require('es5-ext/error/custom')
-  , _                  = require('mano').i18n.bind('Registration: Controller')
-  , submit             = require('mano/utils/save')
+var assign        = require('es5-ext/object/assign')
+  , hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
+  , some          = require('es5-ext/object/some')
+  , validate      = require('mano/utils/validate')
+  , customError   = require('es5-ext/error/custom')
+  , _             = require('mano').i18n.bind('Registration: Controller')
+  , submit        = require('mano/utils/save')
+  , db            = require('mano').db
 
-  , re = /\/isRequested$/;
+  , re = /\/isRequested$/
+  , resetSendBackStatus;
 
 // Common controller - login and password change.
 module.exports = exports = assign(exports, require('../user'));
+
+resetSendBackStatus = function (step) {
+	if (step.status === 'sentBack') {
+		step.status = null;
+	}
+};
 
 // Guide
 exports.guide = {
@@ -85,7 +93,13 @@ exports['application-submit'] = {
 	validate: function (data) { return validate.call(this, data, { changedOnly: false }); },
 	submit: function () {
 		this.user.currentBusinessProcess.processingSteps.applicable.forEach(function (step) {
-			if (step.status === 'sentBack') step.status = null;
+			if (db.ProcessingStepGroup && (step instanceof db.ProcessingStepGroup)) {
+				step.steps.applicable.forEach(function (subStep) {
+					resetSendBackStatus(subStep);
+				});
+			} else {
+				resetSendBackStatus(step);
+			}
 		});
 		submit.apply(this, arguments);
 	}
