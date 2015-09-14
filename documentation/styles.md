@@ -165,7 +165,7 @@ It's also ok, to ignore eventual browser bugs which cause small deviations from 
 
 At this point eRegistrations application layout is configured for both desktop and mobile views. Switch to mobile version occurs when screen resolution is less than 640px.
 
-Styles specific to mobile view, can be applied via [media-queries](https://github.com/egovernment/eregistrations/blob/master/css/form.css#L388).
+Styles specific to mobile view, can be applied via [media-queries](https://github.com/egovernment/eregistrations/blob/e18d7068362e6109923871f49c6079ee396e7b60/css/form.css#L455).
 
 Minimum mobile resolution is set to 320px.
 
