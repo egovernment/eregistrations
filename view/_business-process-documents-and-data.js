@@ -4,7 +4,8 @@
 
 var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
   , _                = require('mano').i18n.bind('User Submitted')
-  , generateSections = require('./components/generate-sections');
+  , generateSections = require('./components/generate-sections')
+  , _d = _;
 
 module.exports = function (businessProcess/*, options*/) {
 	var options = Object(arguments[1])
@@ -35,7 +36,7 @@ module.exports = function (businessProcess/*, options*/) {
 								td({ class: 'submitted-user-data-table-status' },
 									_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
 										_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' })));
-								td(requirementUpload.document._label);
+								td(_d(requirementUpload.document._label, { user: requirementUpload.master }));
 								td(requirementUpload.document._issuedBy);
 								td({ class: 'submitted-user-data-table-date' },
 										requirementUpload.document._issueDate);
