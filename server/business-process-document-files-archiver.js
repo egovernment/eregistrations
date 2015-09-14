@@ -13,7 +13,7 @@ var hyphenToCamel      = require('es5-ext/string/#/hyphen-to-camel')
   , archiver           = require('archiver')
   , resolveArchivePath = require('../utils/resolve-document-archive-path')
 
-  , resolve = path.resolve;
+  , resolve = path.resolve, basename = path.basename;
 
 var re = new RegExp('^\\/business-process-document-archive-([0-9][0-9a-z]+)-' +
 	'(requirement|receipt|certificate)-([a-z][a-z0-9-]*)\\.zip$');
@@ -57,7 +57,7 @@ exports.archiveServer = function (db, data) {
 	stMiddleware = ensureCallable(data.stMiddleware);
 	return function (req, res, next) {
 		var url = req._parsedUrl.pathname, match = url.match(re), bp, archive, archiveFile
-		  , onError, key, target;
+		  , onError, key, target, fileIdx = 0;
 		if (!match) {
 			next();
 			return;
@@ -101,7 +101,12 @@ exports.archiveServer = function (db, data) {
 		});
 		archive.pipe(archiveFile);
 		target.files.ordered.forEach(function (file) {
-			archive.file(resolve(uploadsPath, file.path), { name: file.path });
+			var name = basename(file.path).replace(/^[\d\w]+-/, '').split('.');
+			name[0] += '-' + String(++fileIdx);
+
+			archive.file(resolve(uploadsPath, file.path), {
+				name: name.join('.')
+			});
 		});
 		archive.finalize(onError);
 		archive.on('error', onError);
