@@ -10,7 +10,7 @@ module.exports = memoize(function (db) {
 	validDb(db);
 	File               = defineFile(db);
 	File.prototype.url = function () {
-		return this.path ? '/' + encodeURIComponent(this.path) : null;
+		return this.path ? '/' + this.path.split('/').map(encodeURIComponent).join('/') : null;
 	};
 	JpegFile = defineJpegFile(db);
 	File.prototype.defineProperties({
