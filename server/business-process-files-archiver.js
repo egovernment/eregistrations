@@ -102,6 +102,8 @@ exports.archiveServer = function (db, data) {
 		archive.pipe(archiveFile);
 		paths = getFilenames(bp).map(function (file) { return resolve(uploadsPath, file.path); });
 		paths.forEach(function (path) {
+			// Change filename from form 'file-skey-buniness-name-document-label.xxx' to
+			// 'buniness-name-document-label-index.xxx' for ux reasons.
 			var name = basename(path).replace(/^[\d\w]+-/, '').split('.');
 
 			if (!fileNameUseCount[name]) fileNameUseCount[name] = 0;

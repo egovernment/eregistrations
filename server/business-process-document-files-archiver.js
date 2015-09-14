@@ -101,6 +101,8 @@ exports.archiveServer = function (db, data) {
 		});
 		archive.pipe(archiveFile);
 		target.files.ordered.forEach(function (file) {
+			// Change filename from form 'file-skey-buniness-name-document-label.xxx' to
+			// 'buniness-name-document-label-index.xxx' for ux reasons.
 			var name = basename(file.path).replace(/^[\d\w]+-/, '').split('.');
 			name[0] += '-' + String(++fileIdx);
 
