@@ -43,7 +43,11 @@ module.exports = memoize(function (db) {
 		// Progress for "sentBack" state
 		// All applicable requirement uploads which are invalidated, must come with rejection reasoning
 		sendBackProgress: { value: function (_observe) {
-			return _observe(this.master.requirementUploads.applicable).some(function (reqUpload) {
+			var reqUploadsWithReceipts = _observe(this.master.requirementUploads.applicable).or(
+				_observe(this.master.paymentReceiptUploads.applicable)
+			);
+
+			return reqUploadsWithReceipts.some(function (reqUpload) {
 				return _observe(reqUpload._isRecentlyRejected);
 			}) ? 1 : 0;
 		} },
@@ -53,8 +57,11 @@ module.exports = memoize(function (db) {
 		// and invalid status must be explicitely state.
 		// This needs to be complete for official to be able to send file back for corrections
 		sendBackStatusesProgress: { value: function (_observe) {
-			var total = 0, valid = 0;
-			_observe(this.master.requirementUploads.applicable).forEach(function (reqUpload) {
+			var total = 0, valid = 0, reqUploadsWithReceipts;
+			reqUploadsWithReceipts = _observe(this.master.requirementUploads.applicable).or(
+				_observe(this.master.paymentReceiptUploads.applicable)
+			);
+			reqUploadsWithReceipts.forEach(function (reqUpload) {
 				if (_observe(reqUpload._status) !== 'invalid') return;
 				++total;
 				if (_observe(reqUpload._isRejected)) ++valid;
