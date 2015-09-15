@@ -7,7 +7,7 @@ var memoize                  = require('memoizee/plain')
   , _                        = require('mano').i18n.bind('Model')
   , defineProcessingStep     = require('../processing-step')
   , defineRequirementUploads = require('../business-process-new/requirement-uploads')
-	, defineUserUploads        = require('../business-process-new/user-uploads')
+  , defineUserUploads        = require('../business-process-new/user-uploads')
   , defineProcessingSteps    = require('../business-process-new/processing-steps')
   , ensureDb                 = require('dbjs/valid-dbjs');
 
