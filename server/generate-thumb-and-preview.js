@@ -8,18 +8,16 @@ var mano     = require('mano')
   , deferred = require('deferred')
 
   , resolve = path.resolve
+  , extname = path.extname
   , uploadsPath = mano.uploadsPath;
 
 module.exports = function (file) {
 	var path        = uploadsPath
 	  , previewPath = file.path
 	  , processPath = file.path
-	  , thumbPath, thumb, preview, processFullPath, thumbFullPath, previewFullPath;
-
-	// Prepend '.thumb' before file extension.
-	thumbPath = file.path.split('.');
-	thumbPath[0] += '.thumb';
-	thumbPath = thumbPath.join('.');
+	  , extension   = extname(file.path)
+	  , thumbPath   = file.path.slice(0, -extension.length) + '.thumb' + extension
+	  , thumb, preview, processFullPath, thumbFullPath, previewFullPath;
 
 	if (file.type !== 'image/jpeg') {
 		thumbPath += '.jpg';
