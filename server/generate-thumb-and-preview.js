@@ -5,7 +5,6 @@ var mano     = require('mano')
   , path     = require('path')
   , unlink   = require('fs2/unlink')
   , contains = require('es5-ext/string/#/contains')
-  , replace  = require('es5-ext/string/#/plain-replace-all')
   , deferred = require('deferred')
 
   , resolve = path.resolve
@@ -15,9 +14,12 @@ module.exports = function (file) {
 	var path        = uploadsPath
 	  , previewPath = file.path
 	  , processPath = file.path
-	  , thumbPath   = replace.call(file.__id__, '/', '-')
-			+ '.thumb.' + file.name
-	  , thumb, preview, processFullPath, thumbFullPath, previewFullPath;
+	  , thumbPath, thumb, preview, processFullPath, thumbFullPath, previewFullPath;
+
+	// Prepend '.thumb' before file extension.
+	thumbPath = file.path.split('.');
+	thumbPath[0] += '.thumb';
+	thumbPath = thumbPath.join('.');
 
 	if (file.type !== 'image/jpeg') {
 		thumbPath += '.jpg';
