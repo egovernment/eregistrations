@@ -4,12 +4,16 @@ var Database = require('dbjs')
   , defineFlow = require('../../../model/business-process-new/flow')
   , defineMapCertificates = require('../../../model/business-process-new/utils/define-certificates')
   , defineMapUploads
-	= require('../../../model/business-process-new/utils/define-requirement-uploads');
+	= require('../../../model/business-process-new/utils/define-requirement-uploads')
+  , defineCost = require('../../../model/cost')
+  , definePaymentReceiptUploads =
+		require('../../../model/business-process-new/utils/define-payment-receipt-uploads');
 
 module.exports = function (t, a) {
 	var db = new Database()
 	  , Step = t(db)
 	  , BusinessProcess = db.BusinessProcess
+	  , Cost = defineCost(db)
 	  , businessProcess, step;
 
 	var TestDocument = db.Document.extend('Test', {}, {
@@ -25,6 +29,19 @@ module.exports = function (t, a) {
 	BusinessProcess.prototype.registrations.map.define('test', { nested: true });
 	BusinessProcess.prototype.registrations.map.test.define('requirements',
 		{ value: function () { return [this.master.requirements.map.req]; } });
+
+	BusinessProcess.prototype.costs.map.define('test', {
+		type: Cost,
+		nested: true
+	});
+	BusinessProcess.prototype.costs.map.test.setProperties({
+		amount: 10
+	});
+	BusinessProcess.prototype.registrations.map.test.setProperties({
+		costs: function () { return [this.master.costs.map.test]; }
+	});
+
+	definePaymentReceiptUploads(BusinessProcess, { test: { label: 'Test cost receipt' } });
 
 	BusinessProcess.prototype.processingSteps.map.define('revision', {
 		nested: true,
@@ -47,6 +64,7 @@ module.exports = function (t, a) {
 
 	a.h1("Submitted");
 	businessProcess.requirementUploads.map.req.document.files.map.newUniq().path = '/elo.png';
+	businessProcess.paymentReceiptUploads.map.test.document.files.map.newUniq().path = '/elo.png';
 	businessProcess.isSubmitted = true;
 	a(step.isApplicable, true);
 	a(step.isReady, true);
@@ -104,6 +122,8 @@ module.exports = function (t, a) {
 	a.h3("Complete");
 	businessProcess.requirementUploads.map.req.status = 'invalid';
 	businessProcess.requirementUploads.map.req.rejectReasonTypes.add('illegible');
+	businessProcess.paymentReceiptUploads.map.test.status = 'invalid';
+	businessProcess.paymentReceiptUploads.map.test.rejectReasonMemo = 'Wrong amount';
 	a(step.isApplicable, true);
 	a(step.isReady, true);
 	a(step.isPending, false);
@@ -114,6 +134,7 @@ module.exports = function (t, a) {
 	a(step.isClosed, false);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 1);
+	businessProcess.paymentReceiptUploads.map.test.status = 'valid';
 
 	a.h2("Rejected");
 	step.status = 'rejected';
@@ -127,7 +148,7 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
-	a(step.approvalProgress, 0);
+	a(step.approvalProgress, 0.5);
 	a(step.revisionProgress, 1);
 
 	a.h3("Complete");
@@ -140,7 +161,7 @@ module.exports = function (t, a) {
 	a(step.isRejected, true);
 	a(step.isApproved, false);
 	a(step.isClosed, true);
-	a(step.approvalProgress, 0);
+	a(step.approvalProgress, 0.5);
 	a(step.revisionProgress, 1);
 
 	a.h2("Approved");
@@ -155,7 +176,7 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
-	a(step.approvalProgress, 0);
+	a(step.approvalProgress, 0.5);
 	a(step.revisionProgress, 1);
 
 	a.h3("Complete");
