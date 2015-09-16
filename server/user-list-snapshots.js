@@ -47,6 +47,7 @@ var resolveSnapshot = memoize(function (key, customFilter) {
 	  , map = dataMap[data.appName], users;
 	if (map) {
 		users = map[data.status || ''];
+		if (!users) users = new ObservableSet();
 		if (customFilter && data[customFilter.name]) {
 			users = users.filter(customFilter.filters[data[customFilter.name]]);
 		}
