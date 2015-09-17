@@ -13,7 +13,7 @@ module.exports = function (Type/*, options*/) {
 	  , filter;
 
 	ensureType(Type);
-	if (options.filter != null) filter = ensureCallable(filter);
+	if (options.filter != null) filter = ensureCallable(options.filter);
 	return function (id) {
 		var fragment = fragments[id], object;
 		if (fragment) return fragment;
