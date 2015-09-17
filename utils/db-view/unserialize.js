@@ -1,3 +1,5 @@
+// Unserialize view string into array of objects
+
 'use strict';
 
 module.exports = function (view, type) {

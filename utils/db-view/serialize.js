@@ -1,3 +1,5 @@
+// Serialize database collection into view string representation
+
 'use strict';
 
 module.exports = function (collection, getIndex) {
