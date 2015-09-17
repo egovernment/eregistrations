@@ -31,7 +31,8 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 			prepend: options.prepend,
 			append: options.append,
 			master: master,
-			formId: this.domId
+			formId: this.domId,
+			fieldsetOptions: options.fieldsetOptions
 		};
 		url = options.url || ns.url;
 		actionUrl = url(this.actionUrl);
