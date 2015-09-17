@@ -1,3 +1,5 @@
+// Resolves key path for given object into an event and adds it to provided fragment
+
 'use strict';
 
 var resolvePath = require('dbjs/_setup/resolve-property-path')

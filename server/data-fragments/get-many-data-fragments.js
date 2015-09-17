@@ -1,3 +1,6 @@
+// Returns group fragment which contains all data fragments for objects found in provided
+// collection
+
 'use strict';
 
 var ensureCallable       = require('es5-ext/object/valid-callable')

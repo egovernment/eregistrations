@@ -1,4 +1,4 @@
-// Returns fragment that emits all data for specified object
+// Returns fragment generator, where each returned fragment emits all data for specified object
 
 'use strict';
 
