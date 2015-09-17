@@ -8,11 +8,13 @@ var resolvePath = require('dbjs/_setup/utils/resolve-property-path')
   , tokenize = resolvePath.tokenize, resolveObject = resolvePath.resolveObject;
 
 module.exports = function (fragment, obj, path) {
-	var names = tokenize(path), desc, propertyObj, event;
-	propertyObj = resolveObject(obj, names);
-	desc = propertyObj._getDescriptor_(names[names.length - 1]);
+	var names = tokenize(path), event
+	  , propertyObj = resolveObject(obj, names)
+	  , sKey = names[names.length - 1]
+	  , desc = propertyObj._getDescriptor_(sKey);
 	if (desc.master !== obj.master) return;
 	event = desc._lastOwnEvent_;
-	if (!event) return;
-	fragment.update(obj.__id__ + '/' + path, { value: serialize(event.value), stamp: event.stamp });
+	if (event) {
+		fragment.update(obj.__id__ + '/' + path, { value: serialize(event.value), stamp: event.stamp });
+	}
 };
