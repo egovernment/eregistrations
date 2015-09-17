@@ -25,13 +25,14 @@ require('./form-section-base');
 module.exports = Object.defineProperties(db.FormSection.prototype, {
 	toDOMForm: d(function (document/*, options */) {
 		var actionUrl, options = Object(arguments[1]), url, customizeData
-		  , master = options.master || this.master, fieldsetOptions, fieldsetResult;
+		  , master = options.master || this.master, sectionFieldsetOptions, fieldsetResult;
 		customizeData = { master: master };
-		fieldsetOptions = {
+		sectionFieldsetOptions = {
 			prepend: options.prepend,
 			append: options.append,
 			master: master,
-			formId: this.domId
+			formId: this.domId,
+			fieldsetOptions: options.fieldsetOptions
 		};
 		url = options.url || ns.url;
 		actionUrl = url(this.actionUrl);
@@ -50,7 +51,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 				), 'completed form-elements', 'form-elements') },
 				ns._if(this._label,
 					[ns.h2(this._label), ns._if(this._legend, ns.md(this._legend)), ns.hr()]),
-				fieldsetResult = this.toDOMFieldset(document, fieldsetOptions),
+				fieldsetResult = this.toDOMFieldset(document, sectionFieldsetOptions),
 				ns.p({ class: 'submit-placeholder input' },
 					ns.input({ type: 'submit', value: _("Submit") })),
 				ns.p({ class: 'section-primary-scroll-top' },
