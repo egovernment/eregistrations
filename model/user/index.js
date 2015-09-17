@@ -10,6 +10,7 @@ module.exports = function (db/* options */) {
 	User = defineUser(db, options);
 	require('./business-processes')(User, options);
 	require('./documents')(User, options);
+	require('./visited-business-processes')(db);
 
 	return User;
 };
