@@ -27,7 +27,7 @@ module.exports = memoize(function (db/* options */) {
 			return result;
 		} },
 		// Requirement uploads applicable for front desk verification
-		frontDeskApplicable: { type: RequirementUpload, value: function (_observe) {
+		frontDeskApplicable: { type: RequirementUpload, multiple: true, value: function (_observe) {
 			var result = [];
 			this.applicable.forEach(function (requirementUpload) {
 				if (requirementUpload.validateWithOriginal) result.push(requirementUpload);
@@ -35,9 +35,9 @@ module.exports = memoize(function (db/* options */) {
 			return result;
 		} },
 		// Requirement uploads approved at front desk
-		frontDeskApproved: { type: RequirementUpload, value: function (_observe) {
+		frontDeskApproved: { type: RequirementUpload, multiple: true, value: function (_observe) {
 			var result = [];
-			this.frontDeskApproved.forEach(function (requirementUpload) {
+			this.frontDeskApplicable.forEach(function (requirementUpload) {
 				if (_observe(requirementUpload._matchesOriginal)) result.push(requirementUpload);
 			});
 			return result;
