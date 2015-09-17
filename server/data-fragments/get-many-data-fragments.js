@@ -15,7 +15,7 @@ module.exports = function (collection/*, getFragment*/) {
 	var getFragment = arguments[1], fragment, current;
 
 	ensureObservable(ensureIterable(collection));
-	if (getFragment != null) getFragment = getFullDataFragments(db.Object);
+	if (getFragment == null) getFragment = getFullDataFragments(db.Object);
 	else ensureCallable(getFragment);
 
 	fragment = new DataFragmentGroup();
