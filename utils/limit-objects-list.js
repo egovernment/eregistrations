@@ -4,10 +4,10 @@
 
 'use strict';
 
-var memoize        = require('memoizee/weak-plain')
-  , ensureIterable = require('es5-ext/iterable/validate-object')
-  , ensureSet      = require('es6-set/valid-set')
-  , once           = require('timers-ext/once')
+var memoize     = require('memoizee/weak-plain')
+  , ensureArray = require('es5-ext/array/valid-array')
+  , ensureSet   = require('es6-set/valid-set')
+  , once        = require('timers-ext/once')
 
   , max = Math.max;
 
@@ -45,7 +45,7 @@ var normalize = function (list, applicable, preferred, limit) {
 module.exports = memoize(function (list, applicable, preferred/*, limit*/) {
 	var limit = Number(arguments[3]);
 	if (isNaN(limit)) limit = 10;
-	normalize(ensureSet(list), ensureIterable(applicable), ensureIterable(preferred), limit);
+	normalize(ensureSet(list), ensureSet(applicable), ensureArray(preferred), limit);
 	list.on('change', once(function () { normalize(list, applicable, preferred, limit); }));
 	return list;
 }, { length: 1 });
