@@ -8,7 +8,7 @@ module.exports = memoize(function (db) {
 	var NaturalNumber = defineNaturalNumber(validDb(db));
 
 	var DataSnapshots = db.Object.extend('DataSnapshots', {
-		totalSize: { type: NaturalNumber, multiple: false }
+		totalSize: { type: NaturalNumber }
 	});
 
 	DataSnapshots.prototype._descriptorPrototype_.setProperties({ type: db.String });
