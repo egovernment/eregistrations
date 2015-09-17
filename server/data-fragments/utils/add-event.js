@@ -2,7 +2,7 @@
 
 'use strict';
 
-var resolvePath = require('dbjs/_setup/resolve-property-path')
+var resolvePath = require('dbjs/_setup/utils/resolve-property-path')
   , serialize   = require('dbjs/_setup/serialize/value')
 
   , tokenize = resolvePath.tokenize, resolveObject = resolvePath.resolveObject;
