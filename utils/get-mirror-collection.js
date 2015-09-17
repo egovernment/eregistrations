@@ -4,7 +4,7 @@
 'use strict';
 
 var ensureIterable   = require('es5-ext/iterable/validate-object')
-  , ensureObservable = require('obsevable-value/valid-observable')
+  , ensureObservable = require('observable-value/valid-observable')
   , ensureDatabase   = require('dbjs/valid-dbjs')
   , ObservableSet    = require('observable-set');
 
