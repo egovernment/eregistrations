@@ -5,7 +5,7 @@
 
 var ensureCallable       = require('es5-ext/object/valid-callable')
   , ensureIterable       = require('es5-ext/iterable/validate-object')
-  , ensureObservable     = require('obsevable-value/valid-observable')
+  , ensureObservable     = require('observable-value/valid-observable')
   , Set                  = require('es6-set/primitive')
   , DataFragmentGroup    = require('data-fragment/group')
   , getFullDataFragments = require('./get-full-data-fragments')
