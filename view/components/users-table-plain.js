@@ -4,7 +4,6 @@ var toNatural            = require('es5-ext/number/to-pos-integer')
   , forEach              = require('es5-ext/object/for-each')
   , object               = require('es5-ext/object/valid-object')
   , callable             = require('es5-ext/object/valid-callable')
-  , value                = require('es5-ext/object/valid-value')
   , stringifiable        = require('es5-ext/object/validate-stringifiable-value')
   , once                 = require('timers-ext/once')
   , ReactiveTable        = require('reactive-table')
@@ -29,8 +28,8 @@ module.exports = function (options) {
 	object(options);
 	columns = object(options.columns);
 	i18n = options.i18n ? object(options.i18n) : create(null);
-	pathname = value(options.pathname);
-	pageLimit = options.cacheLimits.usersPerPage;
+	pathname = (options.pathname != null) ? options.pathname : '/';
+	pageLimit = (options.itemsPerPage != null) ? options.itemsPerPage : 50;
 	statusMap = object(options.users);
 	if (options.customFilter != null) {
 		customFilter = object(options.customFilter);
