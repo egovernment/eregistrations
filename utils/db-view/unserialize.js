@@ -5,6 +5,7 @@
 var stringify = JSON.stringify;
 
 module.exports = function (view, type) {
+	if (!view) return [];
 	return view.split('\n').map(function (data) {
 		var id = data.slice(data.indexOf('.') + 1)
 		  , obj = type.getById(id);
