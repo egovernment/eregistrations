@@ -1,6 +1,6 @@
 'use strict';
 
-var memoize          = require('memoizee/plain')
+var memoize          = require('memoizee')
   , promisify        = require('deferred').promisify
   , soap             = require('soap')
   , debug            = require('debug-ext')('soap')
