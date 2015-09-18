@@ -13,6 +13,7 @@ module.exports = function (Type, paths) {
 
 	ensureType(Type);
 	ensureSet(paths);
+
 	return function (id) {
 		var fragment = fragments[id], object, event;
 		if (fragment) return fragment;
