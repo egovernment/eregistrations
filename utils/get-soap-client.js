@@ -1,3 +1,7 @@
+// Creates memoized soap client using provided wsdl for endpoint url.
+// Promisifies each wsdl defined method on client, eg. for client.connect method it provides
+// client.connectP promisified methos.
+
 'use strict';
 
 var memoize          = require('memoizee')
