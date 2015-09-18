@@ -9,6 +9,7 @@ module.exports = function (t, a) {
 
 	a(processingStep.isApplicable, true);
 	a(processingStep.isClosed, false);
+	a(processingStep.isSatisfied, false);
 
 	processingStep.isRejected = true;
 	a(processingStep.isClosed, true);
@@ -17,5 +18,8 @@ module.exports = function (t, a) {
 	a(processingStep.isClosed, false);
 
 	processingStep.isApproved = true;
+	a(processingStep.isSatisfied, true);
 	a(processingStep.isClosed, true);
+	processingStep.isApplicable = false;
+	a(processingStep.isSatisfied, true);
 };

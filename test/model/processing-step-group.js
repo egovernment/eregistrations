@@ -141,4 +141,7 @@ module.exports = function (t, a) {
 	a(groupStep.isRejected, false);
 	a(groupStep.isApproved, true);
 	a(groupStep.isClosed, true);
+
+	a.h3("Parent check");
+	a(step.parentGroup, groupStep);
 };
