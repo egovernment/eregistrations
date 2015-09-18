@@ -22,6 +22,21 @@ module.exports = memoize(function (db) {
 		// then instution should be exposed here
 		institution: { type: Institution },
 
+		// Can be used in subStep of a group to retrieve parent
+		parentGroup: { type: db.Object, value: function () {
+			var ProcessingStepGroup, parentGroup;
+			ProcessingStepGroup = this.database.ProcessingStepGroup;
+			if (!ProcessingStepGroup) {
+				throw new Error("The ProcessingStepGroup is not defined in db!");
+			}
+				// we take first owner who is a person
+			parentGroup = this.owner;
+			while (parentGroup && !ProcessingStepGroup.is(parentGroup)) {
+				parentGroup = parentGroup.owner;
+			}
+			return parentGroup;
+		} },
+
 		// Whether given step applies at all
 		isApplicable: { type: db.Boolean, value: true },
 
@@ -48,6 +63,11 @@ module.exports = memoize(function (db) {
 		// Whether processing of this step has ended
 		isClosed: { type: db.Boolean, value: function (_observe) {
 			return this.isApproved || this.isRejected || false;
+		} },
+
+		// Often helps in resolution of isReady
+		isSatisfied: { type: db.Boolean, value: function () {
+			return Boolean(!this.isApplicable || this.isApproved);
 		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
