@@ -107,6 +107,26 @@ exports._bodyAppend = function () {
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
+				a({ href: '/my-account/' }, span("My account"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
+				a({ href: '/my-account/summary/' }, span("My account: Business process summary"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
+				a({ href: '/my-account/documents/' }, span("My account: Business process documents"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
+				a({ href: '/my-account/data/' }, span("My account: Business process data"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
+				a({ href: '/my-account/print/' }, span("My account: Print Business process data"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
 				a({ href: '/official/' }, span("Official"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
