@@ -2,16 +2,13 @@
 
 'use strict';
 
-var _ = require('mano').i18n.bind('User'),
-loc     = require('mano/lib/client/location'),
-columns = require('./_business-process-table-columns');
+var _ = require('mano').i18n.bind('User');
 
 exports._parent = require('./user-base');
 
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var businessSelect;
 
 		section({ class: 'section-primary free-form' },
 			md(_("# Welcome to Your Account #" +
@@ -20,6 +17,17 @@ exports['sub-main'] = {
 				"\n 1. Start Process A" +
 				"\n 2. Start Process B"))
 			);
+
+		section({ class: 'section-tab-nav' },
+			a({ class: 'section-tab-nav-tab',
+					id: 'user-account-requests',
+					href: '/my-account/' },
+				_("My requests")),
+			a({ class: 'section-tab-nav-tab',
+					id: 'user-account-data',
+					href: '/my-account/documents-and-data/' },
+				_("My documents and data")),
+			div({ id: 'user-account-content' }));
 
 		section({ class: 'section-primary' },
 			h1("1. ", _("Online Services")),
@@ -32,49 +40,6 @@ exports['sub-main'] = {
 						div({ class: 'free-form' }, md(item.content))
 					));
 				}));
-
-		insert(_if(this.user.businessProcesses._size, function () {
-			section({ class: 'section-primary' },
-				h1("2. ", _("My requests")),
-				hr(),
-				section(
-					{ class: 'submitted-main table-responsive-container' },
-					table(
-						{ class: 'submitted-user-data-table submitted-current-user-data-table' },
-						thead(tr(list(columns,
-							function (column) { return th({ class: column.class }, column.head); }))),
-						tbody(
-							this.user.businessProcesses,
-							function (businessProcess) {
-								return tr(list(columns,
-									function (column) {
-										return td({ class: column.class }, column.data(businessProcess));
-									}));
-							}
-						)
-					)
-				));
-		}.bind(this)));
-
-		section({ class: "section-primary user-doc-data" },
-			h2("3. ", _("Documents and data")),
-			hr(),
-			businessSelect = select({ id: 'business-process-select' },
-				option({ value: '/', selected: eq(loc._pathname, '/') },
-					_("Select an entity to display its documents and data")),
-				list(this.user.initialBusinessProcesses, function (process) {
-					option({
-						value: '/business-process/' + process.__id__ + '/',
-						selected: eq(loc._pathname, '/business-process/' + process.__id__ + '/')
-					},
-						process._businessName);
-				})),
-			div({ id: 'preview' }));
-		businessSelect.setAttribute('onchange', 'location.href = this.value + ' +
-			'\'#business-process-summary\'');
-		businessSelect.onchange = function (ev) {
-			loc.goto(ev.target.value);
-		};
 	}
 };
 

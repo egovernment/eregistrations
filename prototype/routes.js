@@ -38,6 +38,7 @@ module.exports = {
 	'my-account/print': require('../view/print-business-process-chain-data'),
 	'my-account/documents': require('./view/user-business-process-documents-list'),
 	'my-account/summary': require('../view/user-business-process-summary'),
+	'my-account/documents-and-data': require('../view/user-account-data'),
 
 	// Part-B routes - user submitted
 	'user-submitted': require('./view/user-submitted'),
