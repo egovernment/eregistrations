@@ -32,13 +32,14 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 		});
 	}),
 	_isItemApplicable: d(function (item, query) {
-		if (!this._statusMap[query.status].data.has(item)) return false;
+		if (!this._statusMap[query.status || 'all'].data.has(item)) return false;
 		if (!query.search) return true;
 		return this._getSearchFilter(query.search)(item);
 	}),
 	_modifiers: d([
 		{
 			name: 'status',
+			required: true,
 			process: function (ignore, query) {
 				var view = this._statusViews[query.status || 'all']
 				  , list = this._resolveList({ view: view.get(1), size: view.totalSize }, query);
