@@ -23,7 +23,7 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 
 	_isExternalQuery: d(function (query) {
 		// When we have all the items, we don't need to query server
-		if (this._statusViews[query.status].totalSize <= 50) return false;
+		if (this._statusViews[query.status || 'all'].totalSize <= 50) return false;
 		// If it's not about first page, it's only server that knows
 		if (query.page > 1) return true;
 		// If it's purely a first page of a status, we know
