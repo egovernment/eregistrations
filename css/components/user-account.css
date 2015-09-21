@@ -3,7 +3,7 @@
 }
 
 .user-account-boxes > section {
-	display: inline-block;
+	display: block;
 }
 
 .user-account-boxes > section h3,
@@ -27,6 +27,22 @@ h3.section-title {
 	color: var(--light-text);
 }
 
+@media only screen and (max-width: 640px) {
+	.user-account-boxes {
+		display: block;
+	}
+
+	.user-account-id-block {
+		width:100%;
+		margin-bottom: 22px;
+	}
+
+	.section-primary.user-account-welcome {
+		width: 100%;
+		margin-left: 0;
+	}
+}
+
 .user-account-welcome header {
 	display: flex;
 	justify-content: space-between;
@@ -35,4 +51,9 @@ h3.section-title {
 h3.section-title {
 	text-transform: uppercase;
 	margin-left: 11px;
+}
+
+.user-doc-data table,
+.user-doc-data hr {
+	margin:22px 0;
 }

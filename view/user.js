@@ -13,9 +13,12 @@ exports['sub-main'] = {
 		div({ class: 'user-account-boxes' },
 			section({ class: 'section-primary user-account-id-block' },
 				h3("Vianney Lesaffre"),
-				ul(li(a(i({ class: 'fa fa-angle-right' }), _('Personal informations'))),
-					li(a(i({ class: 'fa fa-angle-right' }), _('Change your password'))),
-					li(a(i({ class: 'fa fa-angle-right' }), _('Log out'))))
+				ul(li(a({ href: '/profile/' },
+					i({ class: 'fa fa-angle-right' }), _('Personal informations'))),
+					li(a({ href: '/profile/' },
+						i({ class: 'fa fa-angle-right' }), _('Change your password'))),
+					li(a({ href: '/logout/' },
+						i({ class: 'fa fa-angle-right' }), _('Log out'))))
 				),
 			section({ id: 'welcome-box', open: true, class: 'section-primary user-account-welcome' },
 				header(
