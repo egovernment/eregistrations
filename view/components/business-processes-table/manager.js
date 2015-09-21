@@ -52,7 +52,6 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 			name: 'search',
 			process: function (data, query) {
 				var list = data.list.filter(this._getSearchFilter(query.search));
-				console.log("SEARCH", data.list.length, list.length);
 				return { list: list, size: list.length };
 			}
 		}
