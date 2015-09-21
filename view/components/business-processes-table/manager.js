@@ -57,8 +57,5 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 			}
 		}
 	]),
-	_resolveList: d(resolveList),
-	_queryExternal: d(function (query) {
-		console.log("Query external", query);
-	})
+	_resolveList: d(resolveList)
 });

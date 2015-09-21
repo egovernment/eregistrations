@@ -9,6 +9,7 @@ var ensureCallable = require('es5-ext/object/valid-callable')
   , ensureString   = require('es5-ext/object/validate-stringifiable-value')
   , d              = require('d')
   , db             = require('mano').db
+  , getData        = require('mano/lib/client/xhr-driver').get
   , ReactiveTable  = require('reactive-table')
   , Manager        = require('./manager')
   , QueryHandler   = require('./query-handler')
@@ -29,7 +30,8 @@ module.exports = function (conf) {
 		_statusViews: d(db.views.pendingBusinessProcesses[roleName]),
 		_statusMap: d(statusMap),
 		_getItemOrderIndex: d(getOrderIndex),
-		_getSearchFilter: d(searchFilter)
+		_getSearchFilter: d(searchFilter),
+		_queryExternal: d(function (query) { return getData('/get-business-processes-data/', query); })
 	});
 	var queryHandler = new QueryHandler(statusMap, listManager)
 	  , pagination = new Pagination('/')
