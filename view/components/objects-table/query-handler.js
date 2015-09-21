@@ -43,32 +43,28 @@ var QueryHandler = module.exports = function (handlersList, appLocation, pathnam
 ee(Object.defineProperties(QueryHandler.prototype, assign({
 	_processHandler: d(function (handler, query) {
 		var value = handler.observable.value;
-		if (value == null) {
-			if (handler.resolve) {
-				value = handler.resolve.call(this, value);
-				if (value != null) query[handler.name] = value;
+		if (value != null) {
+			if (value !== value.trim()) {
+				value = value.trim();
+				fixLocationQuery(handler.name, value || null);
+				return false;
 			}
-			return true;
-		}
-		if (value !== value.trim()) {
-			fixLocationQuery(handler.name, value.trim());
-			return false;
-		}
-		if (!value) {
-			fixLocationQuery(handler.name);
-			return false;
-		}
-		if (handler.ensure) {
-			try {
-				value = handler.ensure.call(this, value) || value;
-			} catch (e) {
-				console.error(e.stack);
+			if (!value) {
 				fixLocationQuery(handler.name);
 				return false;
 			}
+			if (handler.ensure) {
+				try {
+					value = handler.ensure.call(this, value) || value;
+				} catch (e) {
+					console.error(e.stack);
+					fixLocationQuery(handler.name);
+					return false;
+				}
+			}
 		}
-		if (!handler.resolve) query[handler.name] = value;
-		else query[handler.name] = handler.resolve.call(this, value);
+		if (handler.resolve) value = handler.resolve.call(this, value);
+		if (value != null) query[handler.name] = value;
 		return true;
 	})
 }, lazy({
