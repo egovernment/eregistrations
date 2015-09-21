@@ -24,7 +24,6 @@ var QueryHandler = module.exports = function (handlersList) {
 		if (takenNames[handler.name]) throw new Error("Query name must be unique");
 		takenNames[handler.name] = true;
 		if (conf.ensure != null) handler.ensure = ensureCallable(conf.ensure);
-		if (conf.resolve != null) handler.resolve = ensureCallable(conf.resolve);
 		return handler;
 	});
 };
@@ -37,16 +36,16 @@ ee(Object.defineProperties(QueryHandler.prototype, {
 					{ queryHandler: handler, fixedQueryValue: value.trim() || null });
 			}
 			if (!value) throw customError("Empty value", { queryHandler: handler });
-			if (handler.ensure) {
-				try {
-					handler.ensure.call(this, value);
-				} catch (e) {
-					e.queryHandler = handler;
-					throw e;
-				}
+		}
+		if (handler.ensure) {
+			try {
+				value = handler.ensure.call(this, value);
+			} catch (e) {
+				e.queryHandler = handler;
+				throw e;
 			}
 		}
-		return handler.resolve ? handler.resolve.call(this, value) : value;
+		return value;
 	}),
 	resolve: d(function (query) {
 		return this._handlers.reduce(function (resolvedQuery, handler) {
