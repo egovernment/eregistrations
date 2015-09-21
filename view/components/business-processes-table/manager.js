@@ -40,7 +40,7 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 		{
 			name: 'status',
 			process: function (ignore, query) {
-				var view = this._statusViews[query.status]
+				var view = this._statusViews[query.status || 'all']
 				  , list = this._resolveList({ view: view.get(1), size: view.totalSize }, query);
 				return {
 					list: list,
