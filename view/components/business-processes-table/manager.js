@@ -25,7 +25,7 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 		// When we have all the items, we don't need to query server
 		if (this._statusViews[query.status || 'all'].totalSize <= 50) return false;
 		// If it's not about first page, it's only server that knows
-		if (query.page > 1) return true;
+		if (Number(query.page) > 1) return true;
 		// If it's purely a first page of a status, we know
 		return this._modifiers.some(function (mod) {
 			return (mod.name !== 'status') && query[mod.name];

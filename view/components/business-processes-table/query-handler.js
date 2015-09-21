@@ -23,32 +23,25 @@ var BusinessProcessTableQueryHandler = Object.defineProperties(function (statusM
 		{
 			name: 'status',
 			ensure: function (value) {
+				if (!value) return this._statusMapDefaultKey;
 				if (!this._statusMap[value]) {
 					throw new Error("Unreconized status value " + stringify(value));
 				}
-				if (value === this._statusMapDefaultKey) {
-					throw new Error("Unexpected default key status");
-				}
-			},
-			resolve: function (value) {
-				if (value == null) return this._statusMapDefaultKey;
-				if (value === 'all') return null;
-				return value;
+				return (value === 'all') ? null : value;
 			}
 		},
 		{ name: 'search' },
 		{
 			name: 'page',
 			ensure: function (value) {
-				if (isNaN(value)) throw new Error("Unreconized page value " + stringify(value));
-				value = Number(value);
-				if (!isNaturalNumber(value)) throw new Error("Unreconized page value " + stringify(value));
-				if (value === 1) throw new Error("Unexpected default page value");
-				if (value > this._listManager.pageCount) throw new Error("Page value overflow");
-			},
-			resolve: function (value) {
-				if (value == null) return 1;
-				return Number(value);
+				var num;
+				if (value == null) return '1';
+				if (isNaN(value)) throw new Error("Unrecognized page value " + stringify(value));
+				num = Number(value);
+				if (!isNaturalNumber(num)) throw new Error("Unreconized page value " + stringify(value));
+				if (num === 1) throw new Error("Unexpected default page value");
+				if (num > this._listManager.pageCount) throw new Error("Page value overflow");
+				return value;
 			}
 		}
 	])
