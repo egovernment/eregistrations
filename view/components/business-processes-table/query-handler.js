@@ -28,10 +28,10 @@ var BusinessProcessTableQueryHandler = Object.defineProperties(function (statusM
 				if (value === this._statusMapDefaultKey) {
 					throw new Error("Unexpected default key status");
 				}
-				return value;
 			},
 			resolve: function (value) {
 				if (value == null) return this._statusMapDefaultKey;
+				if (value === 'all') return null;
 				return value;
 			}
 		},
@@ -43,8 +43,7 @@ var BusinessProcessTableQueryHandler = Object.defineProperties(function (statusM
 				value = Number(value);
 				if (!isNaturalNumber(value)) throw new Error("Unreconized page value " + stringify(value));
 				if (value === 1) throw new Error("Unexpected default page value");
-				if (value < this._pageCount) throw new Error("Page value overflow");
-				return value;
+				if (value > this._listManager.pageCount) throw new Error("Page value overflow");
 			},
 			resolve: function (value) {
 				if (value == null) return 1;
