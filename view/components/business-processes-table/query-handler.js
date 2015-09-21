@@ -13,9 +13,10 @@ var isNaturalNumber = require('es5-ext/number/is-natural')
 
 var BusinessProcessTableQueryHandler = Object.defineProperties(function (statusMap, listManager) {
 	QueryHandler.call(this, this.constructor._handlersConf, appLocation, '/');
-	this._statusMap = statusMap;
-	this._statusMapDefaultKey = findKey(statusMap, function (data) { return data.default; });
-	this._listManager = listManager;
+	this._queryHandler._statusMap = statusMap;
+	this._queryHandler._statusMapDefaultKey =
+		findKey(statusMap, function (data) { return data.default; });
+	this._queryHandler._listManager = listManager;
 	this.on('query', function (query) { listManager.update(query); });
 }, {
 	_handlersConf: d([

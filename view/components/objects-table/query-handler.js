@@ -5,80 +5,38 @@
 
 'use strict';
 
-var ensureArray      = require('es5-ext/array/valid-array')
-  , assign           = require('es5-ext/object/assign')
-  , ensureObject     = require('es5-ext/object/valid-object')
-  , ensureCallable   = require('es5-ext/object/valid-callable')
+var ensureObject     = require('es5-ext/object/valid-object')
   , ensureString     = require('es5-ext/object/validate-stringifiable-value')
   , d                = require('d')
   , lazy             = require('d/lazy')
   , ee               = require('event-emitter')
   , once             = require('timers-ext/once')
   , fixLocationQuery = require('../../../utils/fix-location-query')
+  , QueryHandler     = require('../../../utils/query-handler');
 
-  , create = Object.create;
-
-var QueryHandler = module.exports = function (handlersList, appLocation, pathname) {
-	var takenNames = create(null);
+var QueryClientHandler = module.exports = function (handlersList, appLocation, pathname) {
+	this._queryHandler = new QueryHandler(handlersList);
 	this._appLocation = ensureObject(appLocation);
 	this._pathname = ensureString(pathname);
-	this._handlers = ensureArray(handlersList).map(function (conf) {
-		var handler = {};
-		ensureObject(conf);
-		handler.name = ensureString(conf.name);
-		if (!handler.name) throw new Error("Query name must not be empty");
-		if (takenNames[handler.name]) throw new Error("Query name must be unique");
-		takenNames[handler.name] = true;
-		if (conf.ensure != null) handler.ensure = ensureCallable(conf.ensure);
-		if (conf.resolve != null) handler.resolve = ensureCallable(conf.resolve);
-		return handler;
-	});
-	this._handlers.forEach(function (handler) {
-		handler.observable = appLocation.query.get(handler.name);
-		handler.observable.on('change', this.update);
+	this._queryHandler._handlers.forEach(function (handler) {
+		appLocation.query.get(handler.name).on('change', this.update);
 	}, this);
 	this._appLocation.on('change', this.update);
 };
 
-ee(Object.defineProperties(QueryHandler.prototype, assign({
-	_processHandler: d(function (handler, query) {
-		var value = handler.observable.value;
-		if (value != null) {
-			if (value !== value.trim()) {
-				value = value.trim();
-				fixLocationQuery(handler.name, value || null);
-				return false;
-			}
-			if (!value) {
-				fixLocationQuery(handler.name);
-				return false;
-			}
-			if (handler.ensure) {
-				try {
-					value = handler.ensure.call(this, value) || value;
-				} catch (e) {
-					console.error(e.stack);
-					fixLocationQuery(handler.name);
-					return false;
-				}
-			}
-		}
-		if (handler.resolve) value = handler.resolve.call(this, value);
-		if (value != null) query[handler.name] = value;
-		return true;
-	})
-}, lazy({
+ee(Object.defineProperties(QueryClientHandler.prototype, lazy({
 	update: d(function () {
 		return once(function () {
 			var query;
 			if (this._pathname !== this._appLocation.pathname) return;
-			query = create(null);
-			if (!this._handlers.every(function (handler) {
-					return this._processHandler(handler, query);
-				}, this)) {
+			try {
+				query = this._queryHandler.resolve(this._appLocation.query);
+			} catch (e) {
+				if (!e.queryHandler) throw e;
+				fixLocationQuery(e.queryHandler.name, e.fixedQueryValue);
 				return;
 			}
 			this.emit('query', query);
 		}.bind(this));
 	})
-}))));
+})));
