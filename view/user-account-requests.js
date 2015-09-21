@@ -8,7 +8,7 @@ exports._parent = require('./user');
 
 exports['user-account-requests'] = { class: { active: true } };
 exports['user-account-content'] = function () {
-	_if(this.user.businessProcesses._size, function () {
+	insert(_if(this.user.businessProcesses._size, function () {
 		section({ class: 'section-primary' },
 			section(
 				{ class: 'submitted-main table-responsive-container' },
@@ -27,5 +27,5 @@ exports['user-account-content'] = function () {
 					)
 				)
 			));
-	}.bind(this));
+	}.bind(this)));
 };

@@ -4,6 +4,7 @@
 
 // Assure prototype specific print base customisations
 require('./view/print-base');
+require('./view/user');
 
 module.exports = {
 	// Public routes
@@ -33,7 +34,7 @@ module.exports = {
 	'forms/partner-id': require('./view/partner'),
 
 	// My-account
-	'my-account': require('./view/user'),
+	'my-account': require('../view/user-account-requests'),
 	'my-account/data': require('./view/user-business-process-data'),
 	'my-account/print': require('../view/print-business-process-chain-data'),
 	'my-account/documents': require('./view/user-business-process-documents-list'),
