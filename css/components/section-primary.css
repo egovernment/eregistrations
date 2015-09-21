@@ -34,13 +34,6 @@
 	color: var(--normal-dark-background);
 }
 
-.section-primary-sub > * {
-	margin-top: 22px;
-}
-.section-primary-sub > *:first-child {
-	margin-top: 0;
-}
-
 .section-primary .dbjs-input-component > label,
 .section-primary .dbjs-input-component > .input {
 	padding: 0 10px;

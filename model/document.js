@@ -48,7 +48,9 @@ module.exports = memoize(function (db) {
 		// Document legend
 		legend: { type: StringLine },
 		// Document abbrevation
-		abbr: { type: StringLine }
+		abbr: { type: StringLine },
+		// Document number
+		number: { type: StringLine, label: _("Number") }
 	});
 
 	defineNestedMap(db);
