@@ -239,3 +239,11 @@ e.g.:
 	content: "\f0a3";
 	color: var(--main-color);
 }
+
+.fa-angle-right {
+	width: 1em;
+}
+
+.fa-angle-right:before {
+	content: "\f105";
+}

@@ -1,0 +1,38 @@
+.user-account-boxes {
+	display: flex;
+}
+
+.user-account-boxes > section {
+	display: inline-block;
+}
+
+.user-account-boxes > section h3,
+h3.section-title {
+	font-size: 22px;
+	font-weight: 300;
+}
+
+.user-account-boxes > section a {
+	text-decoration: none;
+}
+
+.user-account-id-block {
+	width:320px;
+}
+
+.section-primary.user-account-welcome {
+	width: calc(100% - 340px);
+	margin-left: 20px;
+	background-color: var(--normal-light-medium-background);
+	color: var(--light-text);
+}
+
+.user-account-welcome header {
+	display: flex;
+	justify-content: space-between;
+}
+
+h3.section-title {
+	text-transform: uppercase;
+	margin-left: 11px;
+}

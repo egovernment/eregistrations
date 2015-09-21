@@ -10,20 +10,25 @@ exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
 
-		section({ class: 'section-primary identity-panel' },
-			h3("Vianney Lesaffre"),
-			ul(li(a('> Personal informations')),
-				li(a('> Change your password')),
-				li(a('> Log out')))
-			);
-
-		section({ class: 'section-primary free-form' },
-			md(_("# Welcome to Your Account #" +
-				"\n ---" +
-				"\n\n From here you can:" +
-				"\n 1. Start Process A" +
-				"\n 2. Start Process B"))
-			);
+		div({ class: 'user-account-boxes' },
+			section({ class: 'section-primary user-account-id-block' },
+				h3("Vianney Lesaffre"),
+				ul(li(a(i({ class: 'fa fa-angle-right' }), _('Personal informations'))),
+					li(a(i({ class: 'fa fa-angle-right' }), _('Change your password'))),
+					li(a(i({ class: 'fa fa-angle-right' }), _('Log out'))))
+				),
+			section({ id: 'welcome-box', open: true, class: 'section-primary user-account-welcome' },
+				header(
+					h3("Welcome to your account. From here you can:"),
+					a({ onclick: '$(\'welcome-box\').exclude()' }, span({ class: 'fa fa-close' }, "Close"))
+				),
+				ul(li(a("1.",
+					_('Access all your requests in draft, in process, finished'))),
+					li(a("2.",
+						_('Access and edit your documents and data'))),
+					li(a("3.",
+						_('Start a new service related to your company'))))
+				));
 
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab',
@@ -36,7 +41,7 @@ exports['sub-main'] = {
 				_("My documents and data")),
 			div({ id: 'user-account-content' }));
 
-		h3(_("Services available"));
+		h3({ class: 'section-title' }, _("Available services"));
 		section({ class: 'section-primary' },
 			ul({ class: 'registration-init-actions' },
 				exports._servicesBoxList(),
