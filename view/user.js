@@ -34,7 +34,7 @@ exports['sub-main'] = {
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab',
 					id: 'user-account-requests',
-					href: '/my-account/' },
+					href: '/my-account/requests/' },
 				_("My requests")),
 			a({ class: 'section-tab-nav-tab',
 					id: 'user-account-data',
@@ -50,11 +50,11 @@ exports['sub-main'] = {
 					return li(_if(item.condition || true, _if(
 						item.actionUrl,
 						form({ class: 'service-box', action: item.actionUrl, method: 'post' },
-							button({ type: 'submit' }, item.mainButton),
+							button({ type: 'submit' }, item.buttonContent),
 							div(div({ class: 'free-form' }, item.content), p(button({ type: 'submit' },
 									i({ class: 'fa fa-angle-right' }), _('Click to start'))))),
 						div({ class: 'service-box' },
-							a({ href: item.hrefUrl }, item.mainButton),
+							a({ href: item.hrefUrl }, item.buttonContent),
 							div(div({ class: 'free-form' }, item.content), p(a({ href: item.hrefUrl },
 								i({ class: 'fa fa-angle-right' }), _('Click to start')))))
 					)));
