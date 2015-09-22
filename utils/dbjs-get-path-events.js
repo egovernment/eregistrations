@@ -1,4 +1,4 @@
-// Resolves key path for given object into an event and adds it to provided fragment
+// Resolves events for specifiec key path on given object
 
 'use strict';
 
