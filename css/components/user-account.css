@@ -57,3 +57,77 @@ h3.section-title {
 .user-doc-data hr {
 	margin:22px 0;
 }
+
+.service-boxes li {
+	margin-top: 22px;
+	padding-top:22px;
+	border-top:1px solid #d7d7d7;
+}
+.service-boxes li:first-child {
+	margin-top: 0;
+	padding-top:0;
+	border:none;
+}
+
+.service-box {
+	display: flex;
+}
+
+.service-box > button,
+.service-box > a {
+	width: 300px;
+	font-size: 15px;
+	text-align: center;
+	color: var(--normal-text);
+	vertical-align: middle;
+	text-decoration: none;
+}
+
+.service-box > button:hover,
+.service-box > a:hover {
+	color: var(--light-normal-text);
+}
+
+.service-box > div {
+	width: calc(100% - 300px);
+	margin-left: 20px;
+	vertical-align: middle;
+	color: var(--light-normal-text);
+}
+
+.service-box > div > a {
+	text-decoration: none;
+	color:var(--dark-text);
+}
+
+.service-box > div > a:hover {
+	color: var(--light-normal-text);
+}
+
+@media only screen and (max-width: 640px) {
+	.service-box {
+		display: block;
+	}
+
+	.service-box > button,
+	.service-box > a {
+		width:100%;
+	}
+
+	.service-box > div {
+		width: 100%;
+		margin-left: 0;
+	}
+}
+
+.service-box .service-button .fa,
+.service-box .service-button .fa {
+	font-size: 48px;
+	width:100%;
+	color:var(--dark-text);
+}
+
+.service-box > button:hover .fa,
+.service-box > a:hover .fa {
+	color: var(--light-normal-text);
+}

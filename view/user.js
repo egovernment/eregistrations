@@ -46,12 +46,17 @@ exports['sub-main'] = {
 
 		h3({ class: 'section-title' }, _("Available services"));
 		section({ class: 'section-primary' },
-			ul({ class: 'registration-init-actions' },
+			ul({ class: 'service-boxes' },
 				exports._servicesBoxList(),
 				function (item) {
-					return _if(item.condition || true, li(
-						item.button,
-						div({ class: 'free-form' }, md(item.content))
+					return li(_if(
+						item.actionUrl,
+						form({ class: 'service-box', action: item.actionUrl },
+							button({ type: 'submit' }, item.button), div(item.content, br(),
+								input({ type: 'submit' }, i({ class: 'fa fa-angle-right' }), _('Click to start')))),
+						div({ class: 'service-box' },
+							a({ href: item.hrefUrl }, item.button), div(item.content, br(),
+								a({ href: item.hrefUrl }, i({ class: 'fa fa-angle-right' }), _('Click to start'))))
 					));
 				}));
 	}
