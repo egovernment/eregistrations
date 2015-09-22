@@ -6,7 +6,7 @@ var ensureSet  = require('es6-set/valid-set')
   , ensureType = require('dbjs/valid-dbjs-type')
   , serialize  = require('dbjs/_setup/serialize/value')
   , Fragment   = require('data-fragment')
-  , getEvents  = require('../../dbjs-get-path-events');
+  , getEvents  = require('../../utils/dbjs-get-path-events');
 
 module.exports = function (Type, paths) {
 	var fragments = Object.create(null);
