@@ -7,9 +7,10 @@ var _ = require('mano').i18n.bind('View: Business process summary');
 exports._parent = require('./user');
 exports._match = 'businessProcess';
 
-exports.preview = function () {
+exports['user-account-data'] = { class: { active: true } };
+exports['user-account-content'] = function () {
 	var businessProcess = this.businessProcess;
-	return div(
+	return section({ class: "section-primary user-doc-data" },
 		div({ class: "section-primary-sub" },
 			h3(_("Documents")),
 			require('./_user-business-process-documents-list')(
@@ -47,5 +48,5 @@ exports.preview = function () {
 				p(a({ href: '/business-process/' + businessProcess.__id__ + '/data/',
 						class: 'button-regular' },
 						_("See all data")))))
-	);
+		);
 };
