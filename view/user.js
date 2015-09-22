@@ -49,15 +49,17 @@ exports['sub-main'] = {
 			ul({ class: 'service-boxes' },
 				exports._servicesBoxList(),
 				function (item) {
-					return li(_if(
+					return li(_if(item.condition, _if(
 						item.actionUrl,
 						form({ class: 'service-box', action: item.actionUrl },
-							button({ type: 'submit' }, item.button), div(item.content, br(),
-								input({ type: 'submit' }, i({ class: 'fa fa-angle-right' }), _('Click to start')))),
+							button({ type: 'submit' }, item.button),
+							div(div({ class: 'free-form' }, item.content), p(input({ type: 'submit' },
+									i({ class: 'fa fa-angle-right' }), _('Click to start'))))),
 						div({ class: 'service-box' },
-							a({ href: item.hrefUrl }, item.button), div(item.content, br(),
-								a({ href: item.hrefUrl }, i({ class: 'fa fa-angle-right' }), _('Click to start'))))
-					));
+							a({ href: item.hrefUrl }, item.button),
+							div(div({ class: 'free-form' }, item.content), p(a({ href: item.hrefUrl },
+								i({ class: 'fa fa-angle-right' }), _('Click to start')))))
+					)));
 				}));
 	}
 };
