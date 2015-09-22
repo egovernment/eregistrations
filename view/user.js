@@ -12,7 +12,7 @@ exports['sub-main'] = {
 
 		div({ class: 'user-account-boxes' },
 			section({ class: 'section-primary user-account-id-block' },
-				h3("Vianney Lesaffre"),
+				h3(this.user._fullName),
 				ul(li(a({ href: '/profile/' },
 					i({ class: 'fa fa-angle-right' }), _('Personal informations'))),
 					li(a({ href: '/profile/' },
@@ -20,17 +20,15 @@ exports['sub-main'] = {
 					li(a({ href: '/logout/' },
 						i({ class: 'fa fa-angle-right' }), _('Log out'))))
 				),
-			section({ id: 'welcome-box', open: true, class: 'section-primary user-account-welcome' },
+			section({ id: 'welcome-box', class: 'section-primary user-account-welcome' },
 				header(
-					h3("Welcome to your account. From here you can:"),
+					h3(_("Welcome to your account. From here you can:")),
 					a({ onclick: '$(\'welcome-box\').exclude()' }, span({ class: 'fa fa-close' }, "Close"))
 				),
-				ul(li(a("1.",
-					_('Access all your requests in draft, in process, finished'))),
-					li(a("2.",
-						_('Access and edit your documents and data'))),
-					li(a("3.",
-						_('Start a new service related to your company'))))
+				div({ class: 'free-form' },
+					md(_("1. Access all your requests in draft, in process, finished\n" +
+						"2. Access and edit your documents and data\n" +
+						"3. Start a new service related to your company")))
 				));
 
 		section({ class: 'section-tab-nav' },
@@ -40,7 +38,7 @@ exports['sub-main'] = {
 				_("My requests")),
 			a({ class: 'section-tab-nav-tab',
 					id: 'user-account-data',
-					href: '/my-account/documents-and-data/' },
+					href: '/my-account/summary/' },
 				_("My documents and data")),
 			div({ id: 'user-account-content' }));
 
@@ -49,14 +47,14 @@ exports['sub-main'] = {
 			ul({ class: 'service-boxes' },
 				exports._servicesBoxList(),
 				function (item) {
-					return li(_if(item.condition, _if(
+					return li(_if(item.condition || true, _if(
 						item.actionUrl,
-						form({ class: 'service-box', action: item.actionUrl },
-							button({ type: 'submit' }, item.button),
-							div(div({ class: 'free-form' }, item.content), p(input({ type: 'submit' },
+						form({ class: 'service-box', action: item.actionUrl, method: 'post' },
+							button({ type: 'submit' }, item.mainButton),
+							div(div({ class: 'free-form' }, item.content), p(button({ type: 'submit' },
 									i({ class: 'fa fa-angle-right' }), _('Click to start'))))),
 						div({ class: 'service-box' },
-							a({ href: item.hrefUrl }, item.button),
+							a({ href: item.hrefUrl }, item.mainButton),
 							div(div({ class: 'free-form' }, item.content), p(a({ href: item.hrefUrl },
 								i({ class: 'fa fa-angle-right' }), _('Click to start')))))
 					)));

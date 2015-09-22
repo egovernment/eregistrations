@@ -95,10 +95,6 @@ exports._bodyAppend = function () {
 				a({ href: '/profile/' }, span("User - profile"), span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
-				a({ href: '/my-account/' }, span("User - My account"),
-					span({ class: 'label-reg' }, "Part A"))
-			),
-			li(
 				a({ href: '/user-submitted/' }, span("User submitted"),
 					span({ class: 'label-reg' }, "Part B"))
 			),

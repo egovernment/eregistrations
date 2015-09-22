@@ -14,7 +14,7 @@ exports['user-account-content'] = function () {
 	var businessSelect;
 	section({ class: "section-primary user-doc-data" },
 		div({ class: "section-primary-sub" },
-			p(_("Please select an entity in the selector below to display it documents and data")),
+			process(_("Please select an entity in the selector below to display it documents and data")),
 			businessSelect = select({ id: 'business-process-select' },
 				option({ value: '/', selected: eq(loc._pathname, '/') },
 					_("Select an entity to display its documents and data")),

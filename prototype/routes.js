@@ -34,12 +34,11 @@ module.exports = {
 	'forms/partner-id': require('./view/partner'),
 
 	// My-account
-	'my-account': require('../view/user-account-requests'),
+	'my-account': require('../view/user-home'),
 	'my-account/data': require('./view/user-business-process-data'),
 	'my-account/print': require('../view/print-business-process-chain-data'),
 	'my-account/documents': require('./view/user-business-process-documents-list'),
 	'my-account/summary': require('../view/user-business-process-summary'),
-	'my-account/documents-and-data': require('../view/user-business-process-summary'),
 
 	// Part-B routes - user submitted
 	'user-submitted': require('./view/user-submitted'),

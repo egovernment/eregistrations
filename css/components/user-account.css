@@ -24,7 +24,7 @@ h3.section-title {
 	width: calc(100% - 340px);
 	margin-left: 20px;
 	background-color: var(--normal-light-medium-background);
-	color: var(--light-text);
+	color: var(--normal-text);
 }
 
 @media only screen and (max-width: 640px) {
