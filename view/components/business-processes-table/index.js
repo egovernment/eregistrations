@@ -31,7 +31,14 @@ module.exports = function (conf) {
 		_statusMap: d(statusMap),
 		_getItemOrderIndex: d(getOrderIndex),
 		_getSearchFilter: d(searchFilter),
-		_queryExternal: d(function (query) { return getData('/get-business-processes-data/', query); })
+		_queryExternal: d(function (query) {
+			return getData('/get-business-processes-data/', query).aside(function (result) {
+				if (!result.data) return;
+				result.data.forEach(function (eventStr) {
+					db.unserializeEvent(eventStr, 'server-temporary');
+				});
+			});
+		})
 	});
 	var queryHandler = new QueryHandler(statusMap, listManager)
 	  , pagination = new Pagination('/')
