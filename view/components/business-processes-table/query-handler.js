@@ -39,7 +39,7 @@ var BusinessProcessTableQueryHandler = Object.defineProperties(function (statusM
 				if (isNaN(value)) throw new Error("Unrecognized page value " + stringify(value));
 				num = Number(value);
 				if (!isNaturalNumber(num)) throw new Error("Unreconized page value " + stringify(value));
-				if (num === 1) throw new Error("Unexpected default page value");
+				if (num <= 1) throw new Error("Unexpected page value " + stringify(value));
 				if (num > this._listManager.pageCount) throw new Error("Page value overflow");
 				return value;
 			}
