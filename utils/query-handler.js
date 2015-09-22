@@ -4,13 +4,13 @@
 
 'use strict';
 
-var ensureArray      = require('es5-ext/array/valid-array')
-  , customError      = require('es5-ext/error/custom')
-  , ensureObject     = require('es5-ext/object/valid-object')
-  , ensureCallable   = require('es5-ext/object/valid-callable')
-  , ensureString     = require('es5-ext/object/validate-stringifiable-value')
-  , d                = require('d')
-  , ee               = require('event-emitter')
+var ensureArray    = require('es5-ext/array/valid-array')
+  , customError    = require('es5-ext/error/custom')
+  , ensureObject   = require('es5-ext/object/valid-object')
+  , ensureCallable = require('es5-ext/object/valid-callable')
+  , ensureString   = require('es5-ext/object/validate-stringifiable-value')
+  , d              = require('d')
+  , ee             = require('event-emitter')
 
   , create = Object.create;
 
