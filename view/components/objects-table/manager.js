@@ -14,7 +14,7 @@ var assign           = require('es5-ext/object/assign')
   , ee               = require('event-emitter')
   , unserializeView  = require('../../../utils/db-view/unserialize')
 
-  , ceil = Math.ceil, create = null, stringify = JSON.stringify;
+  , ceil = Math.ceil, create = Object.create, stringify = JSON.stringify;
 
 var ListManager = module.exports = function () {};
 
