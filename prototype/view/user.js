@@ -10,7 +10,7 @@ exports._servicesBoxList = function () {
 	return [
 		{ actionUrl: '/action-path-for-form/',
 			buttonContent:  div({ class: 'service-button' },
-				i({ class: 'fa fa-building' }), 'Register as individual trader'),
+				i({ class: 'fa fa-user' }), 'Register as individual trader'),
 			content: span('Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
 				' Maecenas mollis ac nisl at ultricies. Praesent porta pretium nisl at consequat.'),
 			condition: true },

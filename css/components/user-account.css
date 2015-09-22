@@ -81,11 +81,13 @@ h3.section-title {
 	color: var(--normal-text);
 	vertical-align: middle;
 	text-decoration: none;
+	background:none;
 }
 
 .service-box > button:hover,
 .service-box > a:hover {
 	color: var(--light-normal-text);
+	background:none;
 }
 
 .service-box > div {
@@ -95,13 +97,30 @@ h3.section-title {
 	color: var(--light-normal-text);
 }
 
-.service-box > div > a {
+.service-box > div button {
+	background: none;
+	padding: 0;
+	color:var(--dark-text);
+}
+
+.service-box > div button:hover {
+	color: var(--light-normal-text);
+	background: none;
+}
+
+.service-box > div a {
 	text-decoration: none;
 	color:var(--dark-text);
 }
 
-.service-box > div > a:hover {
+.service-box > div a:hover {
 	color: var(--light-normal-text);
+}
+
+.service-box > div button .fa,
+.service-box > div a .fa {
+	text-align: left;
+	margin-top:2px;
 }
 
 @media only screen and (max-width: 640px) {

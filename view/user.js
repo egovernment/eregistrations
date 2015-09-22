@@ -50,13 +50,15 @@ exports['sub-main'] = {
 					return li(_if(item.condition || true, _if(
 						item.actionUrl,
 						form({ class: 'service-box', action: item.actionUrl, method: 'post' },
-							button({ type: 'submit' }, item.buttonContent),
-							div(div({ class: 'free-form' }, item.content), p(button({ type: 'submit' },
+							button({ type: 'submit' }, _if(item.actionUrl, item.buttonContent)),
+							div(div({ class: 'free-form' }, _if(item.actionUrl, item.content)),
+								p(button({ type: 'submit' },
 									i({ class: 'fa fa-angle-right' }), _('Click to start'))))),
 						div({ class: 'service-box' },
-							a({ href: item.hrefUrl }, item.buttonContent),
-							div(div({ class: 'free-form' }, item.content), p(a({ href: item.hrefUrl },
-								i({ class: 'fa fa-angle-right' }), _('Click to start')))))
+							a({ href: item.hrefUrl }, _if(item.hrefUrl, item.buttonContent)),
+							div(div({ class: 'free-form' }, _if(item.hrefUrl, item.content)),
+								p(a({ href: item.hrefUrl },
+									i({ class: 'fa fa-angle-right' }), _('Click to start')))))
 					)));
 				}));
 	}
