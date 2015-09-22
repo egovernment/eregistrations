@@ -15,6 +15,7 @@ module.exports = function (statusMap) {
 					throw new Error("Unreconized status value " + stringify(value));
 				}
 				if (value === 'all') throw new Error("Unexpected default key status");
+				return value;
 			}
 		},
 		{ name: 'search' },
@@ -26,6 +27,7 @@ module.exports = function (statusMap) {
 				num = Number(value);
 				if (!isNaturalNumber(num)) throw new Error("Unreconized page value " + stringify(value));
 				if (!num) throw new Error("Unexpected page value " + stringify(value));
+				return value;
 			}
 		}
 	]);
