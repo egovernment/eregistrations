@@ -14,7 +14,7 @@ exports['sub-main'] = {
 			section({ class: 'section-primary user-account-id-block' },
 				h3(this.user._fullName),
 				ul(li(a({ href: '/profile/' },
-					i({ class: 'fa fa-angle-right' }), _('Personal informations'))),
+					i({ class: 'fa fa-angle-right' }), _('Personal information'))),
 					li(a({ href: '/profile/' },
 						i({ class: 'fa fa-angle-right' }), _('Change your password'))),
 					li(a({ href: '/logout/' },
@@ -34,11 +34,11 @@ exports['sub-main'] = {
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab',
 					id: 'user-account-requests',
-					href: '/my-account/requests/' },
+					href: '/' },
 				_("My requests")),
 			a({ class: 'section-tab-nav-tab',
 					id: 'user-account-data',
-					href: '/my-account/summary/' },
+					href: '/requests/' },
 				_("My documents and data")),
 			div({ id: 'user-account-content' }));
 
