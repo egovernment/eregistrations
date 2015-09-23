@@ -21,9 +21,7 @@ require('memoizee/ext/max-age');
 var getViewData = memoize(function (query) {
 	return getData('/get-business-processes-view/', query).aside(function (result) {
 		if (!result.data) return;
-		result.data.forEach(function (eventStr) {
-			db.unserializeEvent(eventStr, 'server-temporary');
-		});
+		result.data.forEach(function (eventStr) { db.unserializeEvent(eventStr, 'server-temporary'); });
 	});
 }, {
 	normalizer: function (args) { return String(toArray(args[0], null, null, true)); },
