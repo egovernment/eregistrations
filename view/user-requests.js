@@ -11,10 +11,9 @@ exports._match = 'businessProcess';
 exports['user-account-data'] = { class: { active: true } };
 exports['user-account-content'] = function () {
 	var businessSelect;
-
-	insert(_if(gt(this.user.initialBusinessProcesses._size, 1),
-		section({ class: "section-primary user-doc-data" },
-			div({ class: "section-primary-sub" },
+	section({ class: "section-primary user-doc-data" },
+		_if(gt(this.user.initialBusinessProcesses._size, 1),
+			[div({ class: "section-primary-sub" },
 				p(_("Please select an entity in the selector below to display it documents and data")),
 				businessSelect = select({ id: 'business-process-select' },
 					option({ value: '/', selected: eq(loc._pathname, '/') },
@@ -27,13 +26,13 @@ exports['user-account-content'] = function () {
 							process._businessName);
 					}))
 				),
-			div({ id: 'user-requests-preview' })),
-		_if(eq(this.user.initialBusinessProcesses._size, 1),
-			insert(require('./_business-process-documents-and-data-brief.js')(
-				this.user.initialBusinessProcesses.first
-			)),
-				_('No requests started')
-			)));
+				div({ id: 'user-requests-preview' })],
+			_if(eq(this.user.initialBusinessProcesses._size, 1),
+				insert(require('./_business-process-documents-and-data-brief.js')(
+					this.user.initialBusinessProcesses.first
+				)),
+					p(_('No requests started'))
+				)));
 
 	businessSelect.setAttribute('onchange', 'location.href = this.value + ' +
 		'\'#business-process-summary\'');
