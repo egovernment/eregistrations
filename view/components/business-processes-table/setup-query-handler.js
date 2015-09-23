@@ -10,8 +10,8 @@ var isNaturalNumber   = require('es5-ext/number/is-natural')
 
   , stringify = JSON.stringify;
 
-module.exports = exports = function (statusMap, listManager) {
-	var queryHandler = setupQueryHandler(exports.conf, appLocation, '/');
+module.exports = exports = function (statusMap, listManager/*, pathname*/) {
+	var queryHandler = setupQueryHandler(exports.conf, appLocation, arguments[2] || '/');
 	queryHandler._statusMap = statusMap;
 	queryHandler._statusMapDefaultKey = findKey(statusMap, function (data) { return data.default; });
 	queryHandler._listManager = listManager;
