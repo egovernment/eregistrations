@@ -6,6 +6,5 @@ exports._parent = require('./user-requests');
 
 exports['user-account-data'] = { class: { active: true } };
 exports['user-requests-preview'] = function () {
-	insert('_business-process-documents-and-data-brief.js',
-		{ businessProcess: this.businessProcess });
+	insert(require('./_business-process-documents-and-data-brief.js')(this.businessProcess));
 };

@@ -29,8 +29,9 @@ exports['user-account-content'] = function () {
 				),
 			div({ id: 'user-requests-preview' })),
 		_if(eq(this.user.initialBusinessProcesses._size, 1),
-				insert('_business-process-documents-and-data-brief.js',
-					{ businessProcess: this.user.initialBusinessProcesses.first }),
+			insert(require('./_business-process-documents-and-data-brief.js')(
+				this.user.initialBusinessProcesses.first
+			)),
 				_('No requests started')
 			)));
 
