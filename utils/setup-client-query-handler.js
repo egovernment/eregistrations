@@ -22,6 +22,7 @@ module.exports = function (handlersList, appLocation, pathname) {
 			queryHandler.resolve(appLocation.query);
 		} catch (e) {
 			if (!e.queryHandler) throw e;
+			console.error("Invalid query value: " + e.message);
 			fixLocationQuery(e.queryHandler.name, e.fixedQueryValue);
 			return;
 		}
