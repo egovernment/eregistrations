@@ -9,7 +9,7 @@ var ensureObject     = require('es5-ext/object/valid-object')
   , ensureString     = require('es5-ext/object/validate-stringifiable-value')
   , once             = require('timers-ext/once')
   , fixLocationQuery = require('./fix-location-query')
-  , QueryHandler     = require('./utils/query-handler');
+  , QueryHandler     = require('./query-handler');
 
 module.exports = function (handlersList, appLocation, pathname) {
 	var queryHandler, update;
