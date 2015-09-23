@@ -31,7 +31,7 @@ var getViewData = memoize(function (query) {
 });
 
 var BusinessProcessesManager = module.exports = function (conf) {
-	var user = db.User.validate(conf.user)
+	var user = db.User.validate(ensureObject(conf).user)
 	  , roleName = ensureString(conf.roleName)
 	  , statusMap = ensureObject(conf.statusMap)
 	  , getOrderIndex = ensureCallable(conf.getOrderIndex)
