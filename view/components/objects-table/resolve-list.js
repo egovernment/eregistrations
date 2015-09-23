@@ -8,7 +8,7 @@ var Set = require('es6-set')
   , unserializeView = require('../../../utils/db-view/unserialize-raw')
 
   , ceil = Math.ceil
-  , byIndex = function (a, b) { return a.stamp - b.stamp; }
+  , byIndex = function (a, b) { return a.index - b.index; }
   , getItem = function (data) { return data.item; };
 
 module.exports = function (data, query) {
