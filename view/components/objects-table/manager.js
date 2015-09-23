@@ -36,7 +36,7 @@ ee(Object.defineProperties(ListManager.prototype, assign({
 			delete this._cache[queryId];
 			return normalizeOptions(query, { page: ceil(this.size / this.itemsPerPage) });
 		}
-		this._processResult({ list: list, size: data.size }, query);
+		this._processResult({ list: list, size: data.size, serverResult: data }, query);
 	}),
 	update: d(function (query) {
 		var queryId;
@@ -66,6 +66,7 @@ ee(Object.defineProperties(ListManager.prototype, assign({
 	_processResult: d(function (result, query) {
 		this.list = result.list;
 		this.size = result.size;
+		this.serverResult = result.serverResult;
 		this.pageCount = ceil(this.size / this.itemsPerPage);
 		this.page = (query.page > this.pageCount) ? this.pageCount : query.page;
 		this.emit('change');
