@@ -11,8 +11,7 @@ var ensureObject      = require('es5-ext/object/valid-object')
   , Pagination        = require('../pagination');
 
 module.exports = function (conf) {
-	var statusMap = ensureObject(conf.statusMap)
-	  , columns = ensureObject(conf.columns)
+	var columns = ensureObject(conf.columns)
 	  , listManager = new Manager(conf)
 	  , pagination = new Pagination('/')
 	  , table = new ReactiveTable(document, null, columns);
@@ -27,6 +26,6 @@ module.exports = function (conf) {
 		table.reload(listManager.list);
 	});
 
-	setupQueryHandler(statusMap, listManager);
+	setupQueryHandler(listManager);
 	return table;
 };
