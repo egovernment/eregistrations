@@ -4,18 +4,16 @@
 
 'use strict';
 
-var ensureObject  = require('es5-ext/object/valid-object')
-  , ReactiveTable = require('reactive-table')
-  , Manager       = require('./manager')
-  , QueryHandler  = require('./query-handler')
-  , Pagination    = require('../pagination');
+var ensureObject      = require('es5-ext/object/valid-object')
+  , ReactiveTable     = require('reactive-table')
+  , Manager           = require('./manager')
+  , setupQueryHandler = require('./setup-query-handler')
+  , Pagination        = require('../pagination');
 
 module.exports = function (conf) {
 	var statusMap = ensureObject(conf.statusMap)
 	  , columns = ensureObject(conf.columns)
-	  , listManager = new Manager(conf);
-
-	var queryHandler = new QueryHandler(statusMap, listManager)
+	  , listManager = new Manager(conf)
 	  , pagination = new Pagination('/')
 	  , table = new ReactiveTable(document, null, columns);
 
@@ -29,6 +27,6 @@ module.exports = function (conf) {
 		table.reload(listManager.list);
 	});
 
-	queryHandler.update();
+	setupQueryHandler(statusMap, listManager);
 	return table;
 };
