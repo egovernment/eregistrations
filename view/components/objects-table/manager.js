@@ -42,6 +42,7 @@ ee(Object.defineProperties(ListManager.prototype, assign({
 		var queryId;
 		query = normalizeOptions(query);
 		query.page = Number(query.page);
+		this.query = query;
 		if (this._isExternalQuery(query)) {
 			queryId = stringify(toArray(query, null, null, true));
 			if (this._currentQueryId === queryId) return;
