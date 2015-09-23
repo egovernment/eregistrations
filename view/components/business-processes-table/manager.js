@@ -3,12 +3,49 @@
 
 'use strict';
 
-var d               = require('d')
-  , ListManager     = require('../objects-table/manager')
-  , resolveList     = require('../objects-table/resolve-list')
-  , BusinessProcess = require('mano').db.BusinessProcess;
+var toArray        = require('es5-ext/object/to-array')
+  , ensureObject   = require('es5-ext/object/valid-object')
+  , ensureCallable = require('es5-ext/object/valid-callable')
+  , ensureString   = require('es5-ext/object/validate-stringifiable-value')
+  , d              = require('d')
+  , memoize        = require('memoizee/plain')
+  , db             = require('mano').db
+  , getData        = require('mano/lib/client/xhr-driver').get
+  , ListManager    = require('../objects-table/manager')
+  , resolveList    = require('../objects-table/resolve-list')
 
-var BusinessProcessesManager = module.exports = function () {};
+  , defineProperties = Object.defineProperties, BusinessProcess = db.BusinessProcess;
+
+require('memoizee/ext/max-age');
+
+var getViewData = memoize(function (query) {
+	return getData('/get-business-processes-view/', query).aside(function (result) {
+		if (!result.data) return;
+		result.data.forEach(function (eventStr) {
+			db.unserializeEvent(eventStr, 'server-temporary');
+		});
+	});
+}, {
+	normalizer: function (args) { return String(toArray(args[0], null, null, true)); },
+	maxAge: 10 * 1000
+});
+
+var BusinessProcessesManager = module.exports = function (conf) {
+	var user = db.User.validate(conf.user)
+	  , roleName = ensureString(conf.roleName)
+	  , statusMap = ensureObject(conf.statusMap)
+	  , getOrderIndex = ensureCallable(conf.getOrderIndex)
+	  , searchFilter = ensureCallable(conf.searchFilter);
+
+	defineProperties(this, {
+		_fullItems: d(user.visitedBusinessProcesses[roleName]),
+		_statusViews: d(db.views.pendingBusinessProcesses[roleName]),
+		_statusMap: d(statusMap),
+		_getItemOrderIndex: d(getOrderIndex),
+		_getSearchFilter: d(searchFilter),
+		_queryExternal: d(getViewData)
+	});
+};
 
 BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 	constructor: d(BusinessProcessesManager),
