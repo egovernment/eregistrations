@@ -48,10 +48,12 @@ ee(Object.defineProperties(QueryHandler.prototype, {
 		return value;
 	}),
 	resolve: d(function (query) {
-		return this._handlers.reduce(function (resolvedQuery, handler) {
+		var resolvedQuery = this._handlers.reduce(function (resolvedQuery, handler) {
 			var value = this._resolveQueryValue(handler, query[handler.name]);
 			if (value != null) resolvedQuery[handler.name] = value;
 			return resolvedQuery;
 		}.bind(this), create(null));
+		this.emit('query', resolvedQuery);
+		return resolvedQuery;
 	})
 }));
