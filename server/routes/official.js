@@ -99,6 +99,7 @@ module.exports = function (data) {
 				data: flatten.call(map.call(list, function (object) {
 					var subObject
 					  , events = bpListProps.map(function (path) { return getEvents(object, path); });
+					events.unshift(object._lastOwnEvent_);
 					if (!dbSubmitted) return events;
 					subObject = dbSubmitted.BusinessProcess.getById(object.__id__);
 					return [
