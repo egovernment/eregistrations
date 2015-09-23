@@ -2,17 +2,17 @@
 
 'use strict';
 
-var aFrom           = require('es5-ext/array/from')
-  , ensureArray     = require('es5-ext/array/valid-array')
-  , flatten         = require('es5-ext/array/#/flatten')
-  , ensureObject    = require('es5-ext/object/valid-object')
-  , ensureCallable  = require('es5-ext/object/valid-callable')
-  , ensureDatabase  = require('dbjs/valid-dbjs')
-  , getCompare      = require('../../utils/get-compare')
-  , getSearchFilter = require('../../utils/get-search-filter')
-  , serializeView   = require('../../utils/db-view/serialize')
-  , getEvents       = require('../../utils/dbjs-get-path-events')
-  , getQueryHandler = require('../business-processes-table/get-query-handler')
+var aFrom                = require('es5-ext/array/from')
+  , ensureArray          = require('es5-ext/array/valid-array')
+  , flatten              = require('es5-ext/array/#/flatten')
+  , ensureObject         = require('es5-ext/object/valid-object')
+  , ensureCallable       = require('es5-ext/object/valid-callable')
+  , ensureDatabase       = require('dbjs/valid-dbjs')
+  , getCompare           = require('../../utils/get-compare')
+  , getSearchFilter      = require('../../utils/get-search-filter')
+  , serializeView        = require('../../utils/db-view/serialize')
+  , getEvents            = require('../../utils/dbjs-get-path-events')
+  , getTableQueryHandler = require('../business-processes-table/get-query-handler')
 
   , map = Array.prototype.map, ceil = Math.ceil
   , itemsPerPage = 50;
@@ -23,14 +23,14 @@ module.exports = function (data) {
 	  , bpListProps = aFrom(data.listProperties)
 	  , bpListComputedProps = data.listComputedProperties && aFrom(data.listComputedProperties)
 	  , searchFilter = getSearchFilter(ensureArray(data.searchablePropertyNames))
-	  , queryHandler = getQueryHandler(statusMap)
+	  , tableQueryHandler = getTableQueryHandler(statusMap)
 	  , dbSubmitted = bpListComputedProps ? ensureDatabase(data.dbSubmitted) : null
 	  , getOrderIndex = ensureCallable(data.getOrderIndex);
 
 	return {
 		'get-business-processes-view': function (query) {
 			var list, pageCount, offset, size;
-			query = queryHandler.resolve(query);
+			query = tableQueryHandler.resolve(query);
 			// Status
 			list = statusMap[query.status || 'all'].data;
 			// Search
