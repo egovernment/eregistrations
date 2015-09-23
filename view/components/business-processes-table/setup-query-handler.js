@@ -11,7 +11,7 @@ var isNaturalNumber   = require('es5-ext/number/is-natural')
   , ceil = Math.ceil, stringify = JSON.stringify;
 
 module.exports = exports = function (listManager/*, pathname*/) {
-	var queryHandler = setupQueryHandler(exports.conf, appLocation, arguments[2] || '/')
+	var queryHandler = setupQueryHandler(exports.conf, appLocation, arguments[1] || '/')
 	  , statusMap = listManager._statusMap;
 	queryHandler._statusMap = statusMap;
 	queryHandler._statusViews = listManager._statusViews;
