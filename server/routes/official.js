@@ -6,9 +6,11 @@ var aFrom           = require('es5-ext/array/from')
   , ensureArray     = require('es5-ext/array/valid-array')
   , flatten         = require('es5-ext/array/#/flatten')
   , isNaturalNumber = require('es5-ext/number/is-natural')
+  , toArray         = require('es5-ext/object/to-array')
   , ensureObject    = require('es5-ext/object/valid-object')
   , ensureCallable  = require('es5-ext/object/valid-callable')
   , ensureString    = require('es5-ext/object/validate-stringifiable-value')
+  , memoize         = require('memoizee/plain')
   , ensureDatabase  = require('dbjs/valid-dbjs')
   , db              = require('mano').db
   , getCompare      = require('../../utils/get-compare')
@@ -19,6 +21,8 @@ var aFrom           = require('es5-ext/array/from')
 
   , map = Array.prototype.map, ceil = Math.ceil, stringify = JSON.stringify
   , itemsPerPage = 50;
+
+require('memoizee/ext/max-age');
 
 var getTableQueryHandler = function (statusMap) {
 	return new QueryHandler([
@@ -76,38 +80,44 @@ module.exports = function (data) {
 	  , dbSubmitted = bpListComputedProps ? ensureDatabase(data.dbSubmitted) : null
 	  , getOrderIndex = ensureCallable(data.getOrderIndex);
 
+	var getTableData = memoize(function (query) {
+		var list, pageCount, offset, size;
+		// Status
+		list = statusMap[query.status || 'all'].data;
+		// Search
+		if (query.search) list = list.filter(searchFilter(query.search));
+		size = list.size;
+		if (!size) return { size: size };
+		pageCount = ceil(size / itemsPerPage);
+		if (query.page > pageCount) return { size: size };
+		// Sort
+		list = list.toArray(getCompare(getOrderIndex));
+		// Pagination
+		offset = (query.page - 1) * itemsPerPage;
+		list = list.slice(offset, offset + itemsPerPage);
+		return {
+			view: serializeView(list, getOrderIndex),
+			size: size,
+			data: flatten.call(map.call(list, function (object) {
+				var subObject
+				  , events = bpListProps.map(function (path) { return getEvents(object, path); });
+				events.unshift(object._lastOwnEvent_);
+				if (!dbSubmitted) return events;
+				subObject = dbSubmitted.BusinessProcess.getById(object.__id__);
+				return [
+					events,
+					bpListComputedProps.map(function (path) { return getEvents(subObject, path); })
+				];
+			})).map(String)
+		};
+	}, {
+		normalizer: function (args) { return String(toArray(args[0], null, null, true)); },
+		maxAge: 10 * 1000
+	});
+
 	return {
 		'get-business-processes-view': function (query) {
-			var list, pageCount, offset, size;
-			query = tableQueryHandler.resolve(query);
-			// Status
-			list = statusMap[query.status || 'all'].data;
-			// Search
-			if (query.search) list = list.filter(searchFilter(query.search));
-			size = list.size;
-			if (!size) return { size: size };
-			pageCount = ceil(size / itemsPerPage);
-			if (query.page > pageCount) return { size: size };
-			// Sort
-			list = list.toArray(getCompare(getOrderIndex));
-			// Pagination
-			offset = (query.page - 1) * itemsPerPage;
-			list = list.slice(offset, offset + itemsPerPage);
-			return {
-				view: serializeView(list, getOrderIndex),
-				size: size,
-				data: flatten.call(map.call(list, function (object) {
-					var subObject
-					  , events = bpListProps.map(function (path) { return getEvents(object, path); });
-					events.unshift(object._lastOwnEvent_);
-					if (!dbSubmitted) return events;
-					subObject = dbSubmitted.BusinessProcess.getById(object.__id__);
-					return [
-						events,
-						bpListComputedProps.map(function (path) { return getEvents(subObject, path); })
-					];
-				})).map(String)
-			};
+			return getTableData(tableQueryHandler.resolve(query));
 		},
 		'get-business-process-data': function (query) {
 			query = businessProcessQueryHandler.resolve(query);
