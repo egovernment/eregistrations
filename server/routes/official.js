@@ -4,6 +4,7 @@
 
 var aFrom           = require('es5-ext/array/from')
   , ensureArray     = require('es5-ext/array/valid-array')
+  , find            = require('es5-ext/array/#/find')
   , flatten         = require('es5-ext/array/#/flatten')
   , isNaturalNumber = require('es5-ext/number/is-natural')
   , toArray         = require('es5-ext/object/to-array')
@@ -19,7 +20,7 @@ var aFrom           = require('es5-ext/array/from')
   , getEvents       = require('../../utils/dbjs-get-path-events')
   , QueryHandler    = require('../../utils/query-handler')
 
-  , map = Array.prototype.map, ceil = Math.ceil, stringify = JSON.stringify
+  , map = Array.prototype.map, ceil = Math.ceil, keys = Object.keys, stringify = JSON.stringify
   , itemsPerPage = 50;
 
 require('memoizee/ext/max-age');
@@ -56,10 +57,11 @@ module.exports = exports = function (data) {
 	  , tableQueryHandler = getTableQueryHandler(statusMap)
 	  , businessProcessQueryHandler = getBusinessProcessQueryHandler(statusMap)
 	  , dbSubmitted = bpListComputedProps ? ensureDatabase(data.dbSubmitted) : null
-	  , getOrderIndex = ensureCallable(data.getOrderIndex);
+	  , getOrderIndex = ensureCallable(data.getOrderIndex)
+	  , statuses = keys(statusMap).filter(function (name) { return (name !== 'all'); });
 
 	var getTableData = memoize(function (query) {
-		var list, pageCount, offset, size;
+		var list, pageCount, offset, size, result;
 		// Status
 		list = statusMap[query.status || 'all'].data;
 		// Search
@@ -73,7 +75,7 @@ module.exports = exports = function (data) {
 		// Pagination
 		offset = (query.page - 1) * itemsPerPage;
 		list = list.slice(offset, offset + itemsPerPage);
-		return {
+		result = {
 			view: serializeView(list, getOrderIndex),
 			size: size,
 			data: flatten.call(map.call(list, function (object) {
@@ -88,6 +90,13 @@ module.exports = exports = function (data) {
 				];
 			})).map(String)
 		};
+		if (!query.status) {
+			list.forEach(function (bp) {
+				this[bp.__id__] = find.call(statuses,
+					function (status) { return statusMap[status].data.has(bp); });
+			}, result.statusMap = {});
+		}
+		return result;
 	}, {
 		normalizer: function (args) { return String(toArray(args[0], null, null, true)); },
 		maxAge: 10 * 1000
