@@ -11,7 +11,7 @@ exports._match = 'businessProcess';
 exports['user-account-data'] = { class: { active: true } };
 exports['user-account-content'] = function () {
 	var businessSelect;
-	section({ class: "section-primary user-doc-data" },
+	section({ class: "section-primary user-account-doc-data" },
 		_if(gt(this.user.initialBusinessProcesses._size, 1),
 			[div({ class: "section-primary-sub" },
 				p(_("Please select an entity in the selector below to display it documents and data")),

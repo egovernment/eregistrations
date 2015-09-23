@@ -9,19 +9,19 @@ exports['submitted-menu'] = function () {
 exports._servicesBoxList = function () {
 	return [
 		{ actionUrl: '/action-path-for-form/',
-			buttonContent:  div({ class: 'service-button' },
+			buttonContent:  div({ class: 'user-account-service-button' },
 				i({ class: 'fa fa-user' }), 'Register as individual trader'),
 			content: span('Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
 				' Maecenas mollis ac nisl at ultricies. Praesent porta pretium nisl at consequat.'),
 			condition: true },
 		{ actionUrl: '/action-path-for-form/',
-			buttonContent: div({ class: 'service-button' },
+			buttonContent: div({ class: 'user-account-service-button' },
 				i({ class: 'fa fa-building' }), 'Register as company trader'),
 			content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
 				' Maecenas mollis ac nisl at ultricies. Praesent porta pretium nisl at consequat.',
 			condition: true },
 		{ hrefUrl: '/action-path-for-form/',
-			buttonContent: div({ class: 'service-button' },
+			buttonContent: div({ class: 'user-account-service-button' },
 				i({ class: 'fa fa-check-circle-o' }), 'Pay your anual solvency'),
 			content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.' +
 				' Maecenas mollis ac nisl at ultricies. Praesent porta pretium nisl at consequat.',

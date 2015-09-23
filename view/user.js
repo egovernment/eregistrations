@@ -42,19 +42,19 @@ exports['sub-main'] = {
 				_("My documents and data")),
 			div({ id: 'user-account-content' }));
 
-		h3({ class: 'section-title' }, _("Available services"));
+		h3({ class: 'user-account-section-title' }, _("Available services"));
 		section({ class: 'section-primary' },
-			ul({ class: 'service-boxes' },
+			ul({ class: 'user-account-service-boxes' },
 				exports._servicesBoxList(),
 				function (item) {
 					return li(_if(item.condition || true, _if(
 						item.actionUrl,
-						form({ class: 'service-box', action: item.actionUrl, method: 'post' },
+						form({ class: 'user-account-service-box', action: item.actionUrl, method: 'post' },
 							button({ type: 'submit' }, _if(item.actionUrl, item.buttonContent)),
 							div(div({ class: 'free-form' }, _if(item.actionUrl, item.content)),
 								p(button({ type: 'submit' },
 									i({ class: 'fa fa-angle-right' }), _('Click to start'))))),
-						div({ class: 'service-box' },
+						div({ class: 'user-account-service-box' },
 							a({ href: item.hrefUrl }, _if(item.hrefUrl, item.buttonContent)),
 							div(div({ class: 'free-form' }, _if(item.hrefUrl, item.content)),
 								p(a({ href: item.hrefUrl },

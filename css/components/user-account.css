@@ -7,7 +7,7 @@
 }
 
 .user-account-boxes > section h3,
-h3.section-title {
+h3.user-account-section-title {
 	font-size: 22px;
 	font-weight: 300;
 }
@@ -20,7 +20,7 @@ h3.section-title {
 	width:320px;
 }
 
-.section-primary.user-account-welcome {
+.user-account-boxes > section.user-account-welcome {
 	width: calc(100% - 340px);
 	margin-left: 20px;
 	background-color: var(--normal-light-medium-background);
@@ -37,7 +37,7 @@ h3.section-title {
 		margin-bottom: 22px;
 	}
 
-	.section-primary.user-account-welcome {
+	.user-account-boxes > section.user-account-welcome {
 		width: 100%;
 		margin-left: 0;
 	}
@@ -48,33 +48,33 @@ h3.section-title {
 	justify-content: space-between;
 }
 
-h3.section-title {
+h3.user-account-section-title {
 	text-transform: uppercase;
 	margin-left: 11px;
 }
 
-.user-doc-data table,
-.user-doc-data hr {
+.user-account-doc-data table,
+.user-account-doc-data hr {
 	margin:22px 0;
 }
 
-.service-boxes li {
+.user-account-service-boxes li {
 	margin-top: 22px;
 	padding-top:22px;
 	border-top:1px solid #d7d7d7;
 }
-.service-boxes li:first-child {
+.user-account-service-boxes li:first-child {
 	margin-top: 0;
 	padding-top:0;
 	border:none;
 }
 
-.service-box {
+.user-account-service-box {
 	display: flex;
 }
 
-.service-box > button,
-.service-box > a {
+.user-account-service-box > button,
+.user-account-service-box > a {
 	width: 300px;
 	font-size: 15px;
 	text-align: center;
@@ -84,70 +84,70 @@ h3.section-title {
 	background:none;
 }
 
-.service-box > button:hover,
-.service-box > a:hover {
+.user-account-service-box > button:hover,
+.user-account-service-box > a:hover {
 	color: var(--light-normal-text);
 	background:none;
 }
 
-.service-box > div {
+.user-account-service-box > div {
 	width: calc(100% - 300px);
 	margin-left: 20px;
 	vertical-align: middle;
 	color: var(--light-normal-text);
 }
 
-.service-box > div button {
+.user-account-service-box > div button {
 	background: none;
 	padding: 0;
 	color:var(--dark-text);
 }
 
-.service-box > div button:hover {
+.user-account-service-box > div button:hover {
 	color: var(--light-normal-text);
 	background: none;
 }
 
-.service-box > div a {
+.user-account-service-box > div a {
 	text-decoration: none;
 	color:var(--dark-text);
 }
 
-.service-box > div a:hover {
+.user-account-service-box > div a:hover {
 	color: var(--light-normal-text);
 }
 
-.service-box > div button .fa,
-.service-box > div a .fa {
+.user-account-service-box > div button .fa,
+.user-account-service-box > div a .fa {
 	text-align: left;
 	margin-top:2px;
 }
 
 @media only screen and (max-width: 640px) {
-	.service-box {
+	.user-account-service-box {
 		display: block;
 	}
 
-	.service-box > button,
-	.service-box > a {
+	.user-account-service-box > button,
+	.user-account-service-box > a {
 		width:100%;
 	}
 
-	.service-box > div {
+	.user-account-service-box > div {
 		width: 100%;
 		margin-left: 0;
 		margin-top:22px;
 	}
 }
 
-.service-box .service-button .fa,
-.service-box .service-button .fa {
+.user-account-service-box .user-account-service-button .fa,
+.user-account-service-box .user-account-service-button .fa {
 	font-size: 48px;
 	width:100%;
 	color:var(--dark-text);
 }
 
-.service-box > button:hover .fa,
-.service-box > a:hover .fa {
+.user-account-service-box > button:hover .fa,
+.user-account-service-box > a:hover .fa {
 	color: var(--light-normal-text);
 }
