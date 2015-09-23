@@ -28,7 +28,7 @@ module.exports = function (data) {
 	  , getOrderIndex = ensureCallable(data.getOrderIndex);
 
 	return {
-		'get-business-processes-data': function (query) {
+		'get-business-processes-view': function (query) {
 			var list, pageCount, offset, size;
 			query = queryHandler.resolve(query);
 			// Status
