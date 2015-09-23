@@ -11,7 +11,7 @@ exports['user-account-requests'] = { class: { active: true } };
 exports['user-account-content'] = function () {
 	section({ class: 'section-primary' },
 		_if(this.user.businessProcesses._size, function () {
-			section(
+			return section(
 				{ class: 'submitted-main table-responsive-container' },
 				table(
 					{ class: 'submitted-user-data-table submitted-current-user-data-table' },
