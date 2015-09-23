@@ -25,31 +25,9 @@ var aFrom           = require('es5-ext/array/from')
 require('memoizee/ext/max-age');
 
 var getTableQueryHandler = function (statusMap) {
-	return new QueryHandler([
-		{
-			name: 'status',
-			ensure: function (value) {
-				if (!value) return;
-				if (!statusMap[value]) {
-					throw new Error("Unreconized status value " + stringify(value));
-				}
-				if (value === 'all') throw new Error("Unexpected default key status");
-				return value;
-			}
-		},
-		{ name: 'search' },
-		{
-			name: 'page',
-			ensure: function (value) {
-				var num;
-				if (isNaN(value)) throw new Error("Unrecognized page value " + stringify(value));
-				num = Number(value);
-				if (!isNaturalNumber(num)) throw new Error("Unreconized page value " + stringify(value));
-				if (!num) throw new Error("Unexpected page value " + stringify(value));
-				return value;
-			}
-		}
-	]);
+	var queryHandler = new QueryHandler(exports.tableQueryConf);
+	queryHandler._statusMap = statusMap;
+	return queryHandler;
 };
 
 var getBusinessProcessQueryHandler = function (statusMap) {
@@ -68,7 +46,7 @@ var getBusinessProcessQueryHandler = function (statusMap) {
 	]);
 };
 
-module.exports = function (data) {
+module.exports = exports = function (data) {
 	ensureObject(data);
 	var roleName = ensureString(data.roleName)
 	  , statusMap = ensureObject(data.statusMap)
@@ -128,3 +106,25 @@ module.exports = function (data) {
 		}
 	};
 };
+
+exports.tableQueryConf = [{
+	name: 'status',
+	ensure: function (value) {
+		if (!value) return;
+		if (!this._statusMap[value]) {
+			throw new Error("Unreconized status value " + stringify(value));
+		}
+		if (value === 'all') throw new Error("Unexpected default key status");
+		return value;
+	}
+}, { name: 'search' }, {
+	name: 'page',
+	ensure: function (value) {
+		var num;
+		if (isNaN(value)) throw new Error("Unrecognized page value " + stringify(value));
+		num = Number(value);
+		if (!isNaturalNumber(num)) throw new Error("Unreconized page value " + stringify(value));
+		if (!num) throw new Error("Unexpected page value " + stringify(value));
+		return value;
+	}
+}];
