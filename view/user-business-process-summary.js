@@ -2,7 +2,7 @@
 
 'use strict';
 
-exports._parent = require('./user_requests');
+exports._parent = require('./user-requests');
 
 exports['user-account-data'] = { class: { active: true } };
 exports['user-requests-preview'] = function () {
