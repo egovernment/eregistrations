@@ -12,7 +12,7 @@ exports['user-account-data'] = { class: { active: true } };
 exports['user-account-content'] = function () {
 	var businessSelect;
 
-	_if(gt(this.user.initialBusinessProcesses._size, 1),
+	insert(_if(gt(this.user.initialBusinessProcesses._size, 1),
 		section({ class: "section-primary user-doc-data" },
 			div({ class: "section-primary-sub" },
 				p(_("Please select an entity in the selector below to display it documents and data")),
@@ -32,7 +32,7 @@ exports['user-account-content'] = function () {
 				insert('_business-process-documents-and-data-brief.js',
 					{ businessProcess: this.user.initialBusinessProcesses.first }),
 				_('No requests started')
-			));
+			)));
 
 	businessSelect.setAttribute('onchange', 'location.href = this.value + ' +
 		'\'#business-process-summary\'');
