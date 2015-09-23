@@ -5,14 +5,14 @@
 var _ = require('mano').i18n.bind('View: Business process summary');
 
 module.exports = function (businessProcess) {
-	return div({ class: "section-primary-sub" },
-			h3(_("Documents")),
+	return [div({ class: "section-primary-sub" },
+				h3(_("Documents")),
 			require('./_user-business-process-documents-list')(
 			businessProcess.documents.processChainUploaded.toArray().slice(0, 5)
 		),
 		p(a({ href: '/business-process/' + businessProcess.__id__ + '/documents/',
 				class: 'button-regular' },
-			_("See all documents"))),
+			_("See all documents")))),
 
 		div({ class: "section-primary-sub" },
 			h3(_("Data")),
@@ -41,5 +41,5 @@ module.exports = function (businessProcess) {
 						}))),
 			p(a({ href: '/business-process/' + businessProcess.__id__ + '/data/',
 					class: 'button-regular' },
-					_("See all data")))));
+					_("See all data"))))];
 };
