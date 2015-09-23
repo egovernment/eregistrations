@@ -8,7 +8,9 @@ var aFrom           = require('es5-ext/array/from')
   , isNaturalNumber = require('es5-ext/number/is-natural')
   , ensureObject    = require('es5-ext/object/valid-object')
   , ensureCallable  = require('es5-ext/object/valid-callable')
+  , ensureString    = require('es5-ext/object/validate-stringifiable-value')
   , ensureDatabase  = require('dbjs/valid-dbjs')
+  , db              = require('mano').db
   , getCompare      = require('../../utils/get-compare')
   , getSearchFilter = require('../../utils/get-search-filter')
   , serializeView   = require('../../utils/db-view/serialize')
@@ -46,13 +48,31 @@ var getTableQueryHandler = function (statusMap) {
 	]);
 };
 
+var getBusinessProcessQueryHandler = function (statusMap) {
+	return new QueryHandler([
+		{
+			name: 'id',
+			ensure: function (value) {
+				var bp;
+				if (!value) throw new Error("Missing id");
+				bp = db.BusinessProcess.getById(value);
+				if (!bp) return null;
+				if (!statusMap.all.data.has(bp)) return null;
+				return value;
+			}
+		}
+	]);
+};
+
 module.exports = function (data) {
 	ensureObject(data);
-	var statusMap = ensureObject(data.statusMap)
+	var roleName = ensureString(data.roleName)
+	  , statusMap = ensureObject(data.statusMap)
 	  , bpListProps = aFrom(data.listProperties)
 	  , bpListComputedProps = data.listComputedProperties && aFrom(data.listComputedProperties)
 	  , searchFilter = getSearchFilter(ensureArray(data.searchablePropertyNames))
 	  , tableQueryHandler = getTableQueryHandler(statusMap)
+	  , businessProcessQueryHandler = getBusinessProcessQueryHandler(statusMap)
 	  , dbSubmitted = bpListComputedProps ? ensureDatabase(data.dbSubmitted) : null
 	  , getOrderIndex = ensureCallable(data.getOrderIndex);
 
@@ -87,6 +107,13 @@ module.exports = function (data) {
 					];
 				})).map(String)
 			};
+		},
+		'get-business-process-data': function (query) {
+			query = businessProcessQueryHandler.resolve(query);
+			if (!query.id) return { passed: false };
+			db.User.getById(this.req.$user).visitedBusinessProcesses[roleName]
+				.add(db.BusinessProcess.getById(query.id));
+			return { passed: true };
 		}
 	};
 };
