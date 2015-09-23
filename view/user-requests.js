@@ -21,16 +21,17 @@ exports['user-account-content'] = function () {
 						_("Select an entity to display its documents and data")),
 					list(this.user.initialBusinessProcesses, function (process) {
 						option({
-							value: '/business-process/' + process.__id__ + '/',
-							selected: eq(loc._pathname, '/business-process/' + process.__id__ + '/')
+							value: '/requests/' + process.__id__ + '/',
+							selected: eq(loc._pathname, '/requests/' + process.__id__ + '/')
 						},
 							process._businessName);
 					}))
 				),
 			div({ id: 'user-requests-preview' })),
 		_if(eq(this.user.initialBusinessProcesses._size, 1),
-				require('_business-process-documents-and-data-brief.js'),
-				_('No request started')
+				insert('_business-process-documents-and-data-brief.js',
+					{ businessProcess: this.user.initialBusinessProcesses.first }),
+				_('No requests started')
 			));
 
 	businessSelect.setAttribute('onchange', 'location.href = this.value + ' +

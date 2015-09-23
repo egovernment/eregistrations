@@ -4,8 +4,7 @@
 
 var _ = require('mano').i18n.bind('View: Business process summary');
 
-module.exports = function () {
-	var businessProcess = this.businessProcess;
+module.exports = function (businessProcess) {
 	return div({ class: "section-primary-sub" },
 			h3(_("Documents")),
 			require('./_user-business-process-documents-list')(
