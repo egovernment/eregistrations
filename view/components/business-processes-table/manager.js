@@ -71,6 +71,7 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 		if (!query.search) return true;
 		return this._getSearchFilter(query.search)(item);
 	}),
+	// Modifiers (used only in case of non-external list resolution)
 	_modifiers: d([
 		{
 			name: 'status',
