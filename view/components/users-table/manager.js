@@ -29,6 +29,7 @@ var UsersManager = module.exports = function (conf) {
 	var getOrderIndex = ensureCallable(conf.getOrderIndex);
 
 	defineProperties(this, {
+		_type: d(db.User),
 		_view: d(db.views.usersAdmin),
 		_getItemOrderIndex: d(getOrderIndex),
 		_queryExternal: d(getViewData)
@@ -49,7 +50,7 @@ UsersManager.prototype = Object.create(ListManager.prototype, {
 	}),
 	_modifiers: d([{
 		process: function (ignore, query) {
-			var list = this._resolveList(this._view, query);
+			var list = this._resolveList({ view: this._view.get(1), size: this._view.totalSize }, query);
 			return { list: list, size: this._view.totalSize };
 		}
 	}])
