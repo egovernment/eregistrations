@@ -59,7 +59,7 @@ ee(Object.defineProperties(ListManager.prototype, assign({
 		}
 		this._currentQueryId = null;
 		this._processResult(this._modifiers.reduce(function (result, mod) {
-			if ((query[mod.name] == null) && !mod.required) return result;
+			if (mod.name && (query[mod.name] == null) && !mod.required) return result;
 			return mod.process.call(this, result, query);
 		}.bind(this), this), query);
 	}),
