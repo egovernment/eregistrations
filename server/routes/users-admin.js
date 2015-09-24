@@ -79,6 +79,7 @@ module.exports = exports = function (data) {
 			user = db.User.getById(query.id);
 			events = flatten.call(listProps.map(function (path) { return getEvents(user, path); }));
 			events.unshift(user._lastOwnEvent_);
+			db.User.getById(this.req.$user).visitedUsers.add(user);
 			return { data: events.map(String), passed: true };
 		}
 	};
