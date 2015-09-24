@@ -6,6 +6,7 @@
 
 var ensureObject      = require('es5-ext/object/valid-object')
   , ReactiveTable     = require('reactive-table')
+  , db                = require('mano').db
   , Manager           = require('./manager')
   , setupQueryHandler = require('./setup-query-handler')
   , Pagination        = require('../pagination');
@@ -26,6 +27,6 @@ module.exports = function (conf) {
 		table.reload(listManager.list);
 	});
 
-	setupQueryHandler(listManager);
+	db.views.on('update', setupQueryHandler(listManager).update);
 	return table;
 };
