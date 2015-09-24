@@ -29,7 +29,7 @@ ee(Object.defineProperties(ListManager.prototype, assign({
 
 	_currentQueryId: d(null),
 	_isExternalQuery: d(function (query) { return false; }),
-	_resolveList: d(function (data, query) { return unserializeView(data.view); }),
+	_resolveList: d(function (data, query) { return unserializeView(data.view, this._type); }),
 	_resolveExternalResult: d(function (data, query, queryId) {
 		var list = this._resolveList(data, query);
 		if (!list.length && (query.page > 1)) {
