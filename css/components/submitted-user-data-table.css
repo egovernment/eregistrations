@@ -106,6 +106,10 @@
 	padding-right: 0;
 }
 
+.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-link {
+	padding:0;
+}
+
 .submitted-user-data-table-date {
 	width: 130px;
 }

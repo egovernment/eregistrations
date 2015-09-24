@@ -13,7 +13,6 @@ module.exports = function (businessProcess) {
 		p(a({ href: '/business-process/' + businessProcess.__id__ + '/documents/',
 				class: 'button-regular' },
 			_("See all documents")))),
-		hr(),
 		div({ class: "section-primary-sub" },
 			h3(_("Data")),
 			div({ class: "table-responsive-container" },
