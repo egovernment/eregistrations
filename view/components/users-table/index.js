@@ -1,4 +1,4 @@
-// Business process table handler
+// Users table handler
 // Setups dedicated list manager and query handler
 // (used to handle business processes table in official roles)
 
@@ -27,6 +27,6 @@ module.exports = function (conf) {
 		table.reload(listManager.list);
 	});
 
-	db.objects.on('update', setupQueryHandler(listManager).update);
+	db.views.on('update', setupQueryHandler(listManager).update);
 	return table;
 };

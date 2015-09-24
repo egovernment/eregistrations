@@ -29,7 +29,7 @@ var QueryHandler = module.exports = function (handlersList) {
 };
 
 ee(Object.defineProperties(QueryHandler.prototype, {
-	_resolveQueryValue: d(function (handler, value) {
+	_resolveQueryValue: d(function (handler, value, resolvedQuery, query) {
 		if (value != null) {
 			if (value !== value.trim()) {
 				throw customError("Query value with edge whitespace",
@@ -39,7 +39,7 @@ ee(Object.defineProperties(QueryHandler.prototype, {
 		}
 		if (handler.ensure) {
 			try {
-				value = handler.ensure.call(this, value);
+				value = handler.ensure.call(this, value, resolvedQuery, query);
 			} catch (e) {
 				e.queryHandler = handler;
 				throw e;
@@ -49,7 +49,7 @@ ee(Object.defineProperties(QueryHandler.prototype, {
 	}),
 	resolve: d(function (query) {
 		var resolvedQuery = this._handlers.reduce(function (resolvedQuery, handler) {
-			var value = this._resolveQueryValue(handler, query[handler.name]);
+			var value = this._resolveQueryValue(handler, query[handler.name], resolvedQuery, query);
 			if (value != null) resolvedQuery[handler.name] = value;
 			return resolvedQuery;
 		}.bind(this), create(null));
