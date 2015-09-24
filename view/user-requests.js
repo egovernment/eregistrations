@@ -14,17 +14,19 @@ exports['user-account-content'] = function () {
 	section({ class: "section-primary user-account-doc-data" },
 		_if(gt(this.user.initialBusinessProcesses._size, 1),
 			[div({ class: "section-primary-sub" },
-				p(_("Please select an entity in the selector below to display it documents and data")),
-				businessSelect = select({ id: 'business-process-select' },
-					option({ value: '/', selected: eq(loc._pathname, '/') },
-						_("Select an entity to display its documents and data")),
-					list(this.user.initialBusinessProcesses, function (process) {
-						option({
-							value: '/requests/' + process.__id__ + '/',
-							selected: eq(loc._pathname, '/requests/' + process.__id__ + '/')
-						},
-							process._businessName);
-					}))
+				p(label({ for: 'business-process-select' },
+					_("Please select an entity in the selector below to display it documents and data"))),
+					p({ class: 'user-account-selector' },
+					businessSelect = select({ id: 'business-process-select' },
+						option({ value: '/', selected: eq(loc._pathname, '/') },
+							_("Select an entity to display its documents and data")),
+						list(this.user.initialBusinessProcesses, function (process) {
+							option({
+								value: '/requests/' + process.__id__ + '/',
+								selected: eq(loc._pathname, '/requests/' + process.__id__ + '/')
+							},
+								process._businessName);
+						})))
 				),
 				div({ id: 'user-requests-preview' })],
 			_if(eq(this.user.initialBusinessProcesses._size, 1),

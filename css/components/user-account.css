@@ -60,7 +60,7 @@ h3.user-account-section-title {
 
 .user-account-service-boxes li {
 	margin-top: 22px;
-	padding-top:22px;
+	padding-top:21px;
 	border-top:1px solid #d7d7d7;
 }
 .user-account-service-boxes li:first-child {
@@ -76,7 +76,7 @@ h3.user-account-section-title {
 .user-account-service-box > button,
 .user-account-service-box > a {
 	width: 300px;
-	font-size: 15px;
+	font-size: 14px;
 	text-align: center;
 	color: var(--normal-text);
 	vertical-align: middle;
@@ -142,7 +142,8 @@ h3.user-account-section-title {
 
 .user-account-service-box .user-account-service-button .fa,
 .user-account-service-box .user-account-service-button .fa {
-	font-size: 48px;
+	font-size: 44px;
+	line-height: 44px;
 	width:100%;
 	color:var(--dark-text);
 }
@@ -150,4 +151,8 @@ h3.user-account-section-title {
 .user-account-service-box > button:hover .fa,
 .user-account-service-box > a:hover .fa {
 	color: var(--light-normal-text);
+}
+
+.user-account-selector {
+	line-height: 44px;
 }
