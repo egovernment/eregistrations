@@ -34,7 +34,7 @@
 	color: var(--normal-dark-background);
 }
 
-p.section-primary-sub-action {
+.section-primary-sub-action {
 	line-height: 44px;
 }
 
