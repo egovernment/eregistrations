@@ -11,6 +11,7 @@ module.exports = function (db/* options */) {
 	require('./business-processes')(User, options);
 	require('./documents')(User, options);
 	require('./visited-business-processes')(db);
+	require('./visited-users')(db);
 
 	return User;
 };
