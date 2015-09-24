@@ -9,6 +9,7 @@
 var assign           = require('es5-ext/object/assign')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , toArray          = require('es5-ext/object/to-array')
+  , ensureString     = require('es5-ext/object/validate-stringifiable-value')
   , d                = require('d')
   , lazy             = require('d/lazy')
   , ee               = require('event-emitter')
@@ -50,6 +51,7 @@ ee(Object.defineProperties(ListManager.prototype, assign({
 			if (this._cache[queryId]) this._resolveExternalResult(this._cache[queryId], query, queryId);
 			this._queryExternal(query).done(function (data) {
 				var fixedQuery;
+				ensureString(data.view);
 				this._cache[queryId] = data;
 				if (this._currentQueryId !== queryId) return;
 				fixedQuery = this._resolveExternalResult(data, query, queryId);
