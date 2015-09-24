@@ -27,6 +27,6 @@ module.exports = function (conf) {
 		table.reload(listManager.list);
 	});
 
-	db.views.on('update', setupQueryHandler(listManager).update);
+	db.objects.on('update', setupQueryHandler(listManager).update);
 	return table;
 };
