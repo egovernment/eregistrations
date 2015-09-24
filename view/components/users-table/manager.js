@@ -48,6 +48,9 @@ UsersManager.prototype = Object.create(ListManager.prototype, {
 		return (query.page > 1);
 	}),
 	_modifiers: d([{
-		process: function (ignore, query) { return this._resolveList(this._view, query); }
+		process: function (ignore, query) {
+			var list = this._resolveList(this._view, query);
+			return { list: list, size: this._view.totalSize };
+		}
 	}])
 });
