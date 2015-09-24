@@ -50,7 +50,7 @@ module.exports = memoize(function (list, applicable/*, options*/) {
 	  , preferred;
 	if (isNaN(limit)) limit = 10;
 	applicable = ensureSet(applicable);
-	if (options.preferred != null) preferred = ensureArray(preferred);
+	if (options.preferred != null) preferred = ensureArray(options.preferred);
 	normalize(ensureSet(list), applicable, preferred, limit);
 	list.on('change', once(function () { normalize(list, applicable, preferred, limit); }));
 	return list;
