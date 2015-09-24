@@ -15,6 +15,7 @@ var normalize = function (list, applicable, preferred, limit) {
 	var gap;
 
 	list._postponed_ += 1;
+
 	// Remove ones which do not belong
 	list.forEach(function (object) {
 		if (!applicable.has(object)) list.delete(object);
@@ -23,29 +24,34 @@ var normalize = function (list, applicable, preferred, limit) {
 	// Remove eventual oversize
 	while (list.size > limit) list.delete(list.first);
 
-	// Fill if possible
-	gap = max(limit - list.size, 0);
-	if (gap) {
-		preferred.some(function (object) {
-			if (list.has(object)) return;
-			list.add(object);
-			if (!--gap) return true;
-		});
+	if (preferred) {
+		// Fill if possible
+		gap = max(limit - list.size, 0);
 		if (gap) {
-			applicable.some(function (object) {
+			preferred.some(function (object) {
 				if (list.has(object)) return;
 				list.add(object);
 				if (!--gap) return true;
 			});
+			if (gap) {
+				applicable.some(function (object) {
+					if (list.has(object)) return;
+					list.add(object);
+					if (!--gap) return true;
+				});
+			}
 		}
 	}
 	list._postponed_ -= 1;
 };
 
-module.exports = memoize(function (list, applicable, preferred/*, limit*/) {
-	var limit = Number(arguments[3]);
+module.exports = memoize(function (list, applicable/*, options*/) {
+	var options = Object(arguments[1]), limit = Number(options.limit)
+	  , preferred;
 	if (isNaN(limit)) limit = 10;
-	normalize(ensureSet(list), ensureSet(applicable), ensureArray(preferred), limit);
+	applicable = ensureSet(applicable);
+	if (options.preferred != null) preferred = ensureArray(preferred);
+	normalize(ensureSet(list), applicable, preferred, limit);
 	list.on('change', once(function () { normalize(list, applicable, preferred, limit); }));
 	return list;
 }, { length: 1 });
