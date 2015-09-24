@@ -8,6 +8,7 @@ var toArray        = require('es5-ext/object/to-array')
   , ensureCallable = require('es5-ext/object/valid-callable')
   , ensureString   = require('es5-ext/object/validate-stringifiable-value')
   , d              = require('d')
+  , once           = require('timers-ext/once')
   , memoize        = require('memoizee/plain')
   , db             = require('mano').db
   , getData        = require('mano/lib/client/xhr-driver').get
@@ -43,6 +44,7 @@ var BusinessProcessesManager = module.exports = function (conf) {
 		_getSearchFilter: d(searchFilter),
 		_queryExternal: d(getViewData)
 	});
+	db.views.on('update', once(function () { this.update(this.query); }.bind(this)));
 };
 
 BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
