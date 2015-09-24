@@ -10,9 +10,10 @@ module.exports = function (businessProcess) {
 			require('./_user-business-process-documents-list')(
 			businessProcess.documents.processChainUploaded.toArray().slice(0, 5)
 		),
-		p(a({ href: '/business-process/' + businessProcess.__id__ + '/documents/',
+		p({ class: 'section-primary-sub-action' },
+			a({ href: '/business-process/' + businessProcess.__id__ + '/documents/',
 				class: 'button-regular' },
-			_("See all documents")))),
+				_("See all documents")))),
 		div({ class: "section-primary-sub" },
 			h3(_("Data")),
 			div({ class: "table-responsive-container" },
@@ -38,7 +39,8 @@ module.exports = function (businessProcess) {
 										span({ class: 'fa fa-search' }, _("Go to"))))
 							);
 						}))),
-			p(a({ href: '/business-process/' + businessProcess.__id__ + '/data/',
+			p({ class: 'section-primary-sub-action' },
+				a({ href: '/business-process/' + businessProcess.__id__ + '/data/',
 					class: 'button-regular' },
 					_("See all data"))))];
 };
