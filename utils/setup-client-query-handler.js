@@ -16,7 +16,7 @@ module.exports = function (handlersList, appLocation, pathname) {
 	appLocation = ensureObject(appLocation);
 	pathname = ensureString(pathname);
 	queryHandler = new QueryHandler(handlersList);
-	update = once(function () {
+	queryHandler.update = update = once(function () {
 		if (pathname !== appLocation.pathname) return;
 		try {
 			queryHandler.resolve(appLocation.query);
