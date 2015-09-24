@@ -34,6 +34,10 @@
 	color: var(--normal-dark-background);
 }
 
+.section-primary-sub-action {
+	line-height: 44px;
+}
+
 .section-primary .dbjs-input-component > label,
 .section-primary .dbjs-input-component > .input {
 	padding: 0 10px;

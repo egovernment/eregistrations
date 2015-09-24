@@ -1,0 +1,27 @@
+.user-account-boxes,
+.user-account-box,
+.user-account-service-box {
+	display: block;
+}
+
+.user-account-boxes > section,
+.user-account-service-box > button,
+.user-account-service-box > div,
+.user-account-service-box > a {
+	display: inline-block;
+	vertical-align: top;
+	margin-left:0;
+	margin-right:0;
+}
+
+section.user-account-welcome > header > h3 {
+	width:95%;
+	display: inline-block;
+}
+
+section.user-account-welcome > header > a {
+	width:5%;
+	display: inline-block;
+	text-align: right;
+	vertical-align: top;
+}

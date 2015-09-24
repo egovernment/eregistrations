@@ -239,3 +239,28 @@ e.g.:
 	content: "\f0a3";
 	color: var(--main-color);
 }
+
+.fa-angle-right {
+	width: 0.74em;
+	vertical-align: text-top;
+}
+
+.fa-angle-right:before {
+	content: "\f105";
+}
+
+.fa-check-circle-o {
+	width:1em;
+}
+
+.fa-check-circle-o:before {
+	content: "\f05d";
+}
+
+.fa-building {
+	width:1em;
+}
+
+.fa-building:before {
+	content: "\f1ad";
+}
