@@ -18,6 +18,7 @@ module.exports = exports = function (listManager/*, pathname*/) {
 	queryHandler._statusMapDefaultKey = findKey(statusMap, function (data) { return data.default; });
 	queryHandler._listManager = listManager;
 	queryHandler.on('query', function (query) { listManager.update(query); });
+	return queryHandler;
 };
 exports.conf = [
 	{
