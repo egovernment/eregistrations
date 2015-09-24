@@ -45,7 +45,7 @@ module.exports = exports = function (data) {
 		var list, pageCount, offset, size;
 		list = exports.listModifiers.reduce(function (list, modifier) {
 			if (modifier.name && (query[modifier.name] == null) && !modifier.required) return list;
-			return modifier(list, query[modifier.name], data);
+			return modifier.process(list, query[modifier.name], data);
 		}, null);
 		size = list.size;
 		if (!size) return { size: size };
