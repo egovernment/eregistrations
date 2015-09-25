@@ -74,7 +74,9 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 	_isItemApplicable: d(function (item, query) {
 		if (!this._statusMap[query.status || 'all'].data.has(item)) return false;
 		if (!query.search) return true;
-		return this._getSearchFilter(query.search)(item);
+		return query.search.split(/\s+/).every(function (value) {
+			return this._getSearchFilter(value)(item);
+		}, this);
 	}),
 	// Modifiers (used only in case of non-external list resolution)
 	_modifiers: d([
@@ -93,12 +95,11 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 		{
 			name: 'search',
 			process: function (data, query) {
-				var value = query.search.split(/\s+/), list, result, indexMap;
+				var value = query.search.split(/\s+/), list = data.list, result, indexMap;
 				if (value.length === 1) {
-					result = data.list.filter(this._getSearchFilter(value[0]));
+					result = list.filter(this._getSearchFilter(value[0]));
 				} else {
 					result = [];
-					list = data.list;
 					indexMap = {};
 					list.forEach(function (item, index) { indexMap[item.__id__] = index; });
 					value.forEach(function (value) {
