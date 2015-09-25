@@ -5,6 +5,7 @@
 var aFrom               = require('es5-ext/array/from')
   , flatten             = require('es5-ext/array/#/flatten')
   , isNaturalNumber     = require('es5-ext/number/is-natural')
+  , toNaturalNumber     = require('es5-ext/number/to-pos-integer')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
   , toArray             = require('es5-ext/object/to-array')
   , ensureObject        = require('es5-ext/object/valid-object')
@@ -16,9 +17,9 @@ var aFrom               = require('es5-ext/array/from')
   , serializeView       = require('../../utils/db-view/serialize')
   , getEvents           = require('../../utils/dbjs-get-path-events')
   , QueryHandler        = require('../../utils/query-handler')
+  , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
 
-  , map = Array.prototype.map, ceil = Math.ceil, stringify = JSON.stringify
-  , itemsPerPage = 50;
+  , map = Array.prototype.map, ceil = Math.ceil, stringify = JSON.stringify;
 
 require('memoizee/ext/max-age');
 
@@ -39,7 +40,8 @@ module.exports = exports = function (data) {
 	var listProps = aFrom(data.listProperties)
 	  , tableQueryHandler = new QueryHandler(exports.tableQueryConf)
 	  , getOrderIndex = ensureCallable(data.getOrderIndex)
-	  , compare = getCompare(getOrderIndex);
+	  , compare = getCompare(getOrderIndex)
+	  , itemsPerPage = toNaturalNumber(data.itemsPerPage) || defaultItemsPerPage;
 
 	var getTableData = memoize(function (query) {
 		var list, pageCount, offset, size;

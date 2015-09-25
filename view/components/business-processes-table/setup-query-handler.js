@@ -16,6 +16,7 @@ module.exports = exports = function (listManager/*, pathname*/) {
 	queryHandler._statusMap = statusMap;
 	queryHandler._statusViews = listManager._statusViews;
 	queryHandler._statusMapDefaultKey = findKey(statusMap, function (data) { return data.default; });
+	queryHandler._itemsPerPage = listManager.itemsPerPage;
 	queryHandler._listManager = listManager;
 	queryHandler.on('query', function (query) { listManager.update(query); });
 	return queryHandler;
@@ -39,7 +40,7 @@ exports.conf = [
 			num = Number(value);
 			if (!isNaturalNumber(num)) throw new Error("Unreconized page value " + stringify(value));
 			if (num <= 1) throw new Error("Unexpected page value " + stringify(value));
-			pageCount = ceil(this._statusViews[query.status || 'all'].totalSize / 50);
+			pageCount = ceil(this._statusViews[query.status || 'all'].totalSize / this._itemsPerPage);
 			if (num > pageCount) throw new Error("Page value overflow");
 			return value;
 		}

@@ -2,27 +2,28 @@
 
 'use strict';
 
-var aFrom            = require('es5-ext/array/from')
-  , ensureArray      = require('es5-ext/array/valid-array')
-  , find             = require('es5-ext/array/#/find')
-  , flatten          = require('es5-ext/array/#/flatten')
-  , isNaturalNumber  = require('es5-ext/number/is-natural')
-  , normalizeOptions = require('es5-ext/object/normalize-options')
-  , toArray          = require('es5-ext/object/to-array')
-  , ensureObject     = require('es5-ext/object/valid-object')
-  , ensureCallable   = require('es5-ext/object/valid-callable')
-  , ensureString     = require('es5-ext/object/validate-stringifiable-value')
-  , memoize          = require('memoizee/plain')
-  , ensureDatabase   = require('dbjs/valid-dbjs')
-  , db               = require('mano').db
-  , getCompare       = require('../../utils/get-compare')
-  , getSearchFilter  = require('../../utils/get-search-filter')
-  , serializeView    = require('../../utils/db-view/serialize')
-  , getEvents        = require('../../utils/dbjs-get-path-events')
-  , QueryHandler     = require('../../utils/query-handler')
+var aFrom               = require('es5-ext/array/from')
+  , ensureArray         = require('es5-ext/array/valid-array')
+  , find                = require('es5-ext/array/#/find')
+  , flatten             = require('es5-ext/array/#/flatten')
+  , isNaturalNumber     = require('es5-ext/number/is-natural')
+  , toNaturalNumber     = require('es5-ext/number/to-pos-integer')
+  , normalizeOptions    = require('es5-ext/object/normalize-options')
+  , toArray             = require('es5-ext/object/to-array')
+  , ensureObject        = require('es5-ext/object/valid-object')
+  , ensureCallable      = require('es5-ext/object/valid-callable')
+  , ensureString        = require('es5-ext/object/validate-stringifiable-value')
+  , memoize             = require('memoizee/plain')
+  , ensureDatabase      = require('dbjs/valid-dbjs')
+  , db                  = require('mano').db
+  , getCompare          = require('../../utils/get-compare')
+  , getSearchFilter     = require('../../utils/get-search-filter')
+  , serializeView       = require('../../utils/db-view/serialize')
+  , getEvents           = require('../../utils/dbjs-get-path-events')
+  , QueryHandler        = require('../../utils/query-handler')
+  , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
 
-  , map = Array.prototype.map, ceil = Math.ceil, keys = Object.keys, stringify = JSON.stringify
-  , itemsPerPage = 50;
+  , map = Array.prototype.map, ceil = Math.ceil, keys = Object.keys, stringify = JSON.stringify;
 
 require('memoizee/ext/max-age');
 
@@ -59,7 +60,8 @@ module.exports = exports = function (data) {
 	  , dbSubmitted = bpListComputedProps ? ensureDatabase(data.dbSubmitted) : null
 	  , getOrderIndex = ensureCallable(data.getOrderIndex)
 	  , compare = getCompare(getOrderIndex)
-	  , statuses = keys(statusMap).filter(function (name) { return (name !== 'all'); });
+	  , statuses = keys(statusMap).filter(function (name) { return (name !== 'all'); })
+	  , itemsPerPage = toNaturalNumber(data.itemsPerPage) || defaultItemsPerPage;
 
 	data.searchFilter = getSearchFilter(ensureArray(data.searchablePropertyNames));
 	var getTableData = memoize(function (query) {

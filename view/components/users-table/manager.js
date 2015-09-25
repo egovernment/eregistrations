@@ -3,13 +3,14 @@
 
 'use strict';
 
-var toArray        = require('es5-ext/object/to-array')
-  , ensureCallable = require('es5-ext/object/valid-callable')
-  , d              = require('d')
-  , memoize        = require('memoizee/plain')
-  , db             = require('mano').db
-  , getData        = require('mano/lib/client/xhr-driver').get
-  , ListManager    = require('../objects-table/manager')
+var toNaturalNumber = require('es5-ext/number/to-pos-integer')
+  , toArray         = require('es5-ext/object/to-array')
+  , ensureCallable  = require('es5-ext/object/valid-callable')
+  , d               = require('d')
+  , memoize         = require('memoizee/plain')
+  , db              = require('mano').db
+  , getData         = require('mano/lib/client/xhr-driver').get
+  , ListManager     = require('../objects-table/manager')
 
   , defineProperties = Object.defineProperties, User = db.User;
 
@@ -26,8 +27,10 @@ var getViewData = memoize(function (query) {
 });
 
 var UsersManager = module.exports = function (conf) {
-	var getOrderIndex = ensureCallable(conf.getOrderIndex);
+	var getOrderIndex = ensureCallable(conf.getOrderIndex)
+	  , itemsPerPage = toNaturalNumber(data.itemsPerPage);
 
+	if (itemsPerPage) this.itemsPerPage = itemsPerPage;
 	defineProperties(this, {
 		_type: d(db.User),
 		_view: d(db.views.usersAdmin),

@@ -13,6 +13,7 @@ module.exports = exports = function (listManager/*, pathname*/) {
 	var queryHandler = setupQueryHandler(exports.conf, appLocation, arguments[1] || '/');
 	queryHandler._view = listManager._view;
 	queryHandler._listManager = listManager;
+	queryHandler._itemsPerPage = listManager.itemsPerPage;
 	queryHandler.on('query', function (query) { listManager.update(query); });
 	return queryHandler;
 };
@@ -26,7 +27,7 @@ exports.conf = [
 			num = Number(value);
 			if (!isNaturalNumber(num)) throw new Error("Unreconized page value " + stringify(value));
 			if (num <= 1) throw new Error("Unexpected page value " + stringify(value));
-			pageCount = ceil(this._view.totalSize / 50);
+			pageCount = ceil(this._view.totalSize / this._itemsPerPage);
 			if (num > pageCount) throw new Error("Page value overflow");
 			return value;
 		}

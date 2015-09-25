@@ -3,16 +3,17 @@
 
 'use strict';
 
-var toArray        = require('es5-ext/object/to-array')
-  , ensureObject   = require('es5-ext/object/valid-object')
-  , ensureCallable = require('es5-ext/object/valid-callable')
-  , ensureString   = require('es5-ext/object/validate-stringifiable-value')
-  , d              = require('d')
-  , memoize        = require('memoizee/plain')
-  , db             = require('mano').db
-  , getData        = require('mano/lib/client/xhr-driver').get
-  , ListManager    = require('../objects-table/manager')
-  , resolveList    = require('../objects-table/resolve-list')
+var toNaturalNumber     = require('es5-ext/number/to-pos-integer')
+  , toArray             = require('es5-ext/object/to-array')
+  , ensureObject        = require('es5-ext/object/valid-object')
+  , ensureCallable      = require('es5-ext/object/valid-callable')
+  , ensureString        = require('es5-ext/object/validate-stringifiable-value')
+  , d                   = require('d')
+  , memoize             = require('memoizee/plain')
+  , db                  = require('mano').db
+  , getData             = require('mano/lib/client/xhr-driver').get
+  , ListManager         = require('../objects-table/manager')
+  , resolveList         = require('../objects-table/resolve-list')
 
   , defineProperties = Object.defineProperties, BusinessProcess = db.BusinessProcess;
 
@@ -33,8 +34,10 @@ var BusinessProcessesManager = module.exports = function (conf) {
 	  , roleName = ensureString(conf.roleName)
 	  , statusMap = ensureObject(conf.statusMap)
 	  , getOrderIndex = ensureCallable(conf.getOrderIndex)
-	  , searchFilter = ensureCallable(conf.searchFilter);
+	  , searchFilter = ensureCallable(conf.searchFilter)
+	  , itemsPerPage = toNaturalNumber(data.itemsPerPage);
 
+	if (itemsPerPage) this.itemsPerPage = itemsPerPage;
 	defineProperties(this, {
 		_fullItems: d(user.visitedBusinessProcesses[roleName]),
 		_statusViews: d(db.views.pendingBusinessProcesses[roleName]),
@@ -58,7 +61,7 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 
 	_isExternalQuery: d(function (query) {
 		// When we have all the items, we don't need to query server
-		if (this._statusViews[query.status || 'all'].totalSize <= 50) return false;
+		if (this._statusViews[query.status || 'all'].totalSize <= this.itemsPerPage) return false;
 		// If it's not about first page, it's only server that knows
 		if (query.page > 1) return true;
 		// If it's purely a first page of a status, we know

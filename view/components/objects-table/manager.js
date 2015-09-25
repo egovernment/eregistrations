@@ -6,14 +6,15 @@
 
 'use strict';
 
-var assign           = require('es5-ext/object/assign')
-  , normalizeOptions = require('es5-ext/object/normalize-options')
-  , toArray          = require('es5-ext/object/to-array')
-  , ensureString     = require('es5-ext/object/validate-stringifiable-value')
-  , d                = require('d')
-  , lazy             = require('d/lazy')
-  , ee               = require('event-emitter')
-  , unserializeView  = require('../../../utils/db-view/unserialize')
+var assign              = require('es5-ext/object/assign')
+  , normalizeOptions    = require('es5-ext/object/normalize-options')
+  , toArray             = require('es5-ext/object/to-array')
+  , ensureString        = require('es5-ext/object/validate-stringifiable-value')
+  , d                   = require('d')
+  , lazy                = require('d/lazy')
+  , ee                  = require('event-emitter')
+  , unserializeView     = require('../../../utils/db-view/unserialize')
+  , defaultItemsPerPage = require('../../../conf/objects-list-items-per-page')
 
   , ceil = Math.ceil, create = Object.create, stringify = JSON.stringify;
 
@@ -23,7 +24,7 @@ ee(Object.defineProperties(ListManager.prototype, assign({
 	page: d(1),
 	pageCount: d(1),
 	itemsPerPage: d(50),
-	size: d(0),
+	size: d(defaultItemsPerPage),
 	list: d(null),
 
 	_modifiers: d([]),
