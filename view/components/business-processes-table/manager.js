@@ -3,18 +3,20 @@
 
 'use strict';
 
-var toNaturalNumber     = require('es5-ext/number/to-pos-integer')
-  , toArray             = require('es5-ext/object/to-array')
-  , ensureObject        = require('es5-ext/object/valid-object')
-  , ensureCallable      = require('es5-ext/object/valid-callable')
-  , ensureString        = require('es5-ext/object/validate-stringifiable-value')
-  , d                   = require('d')
-  , memoize             = require('memoizee/plain')
-  , db                  = require('mano').db
-  , getData             = require('mano/lib/client/xhr-driver').get
-  , ListManager         = require('../objects-table/manager')
-  , resolveList         = require('../objects-table/resolve-list')
+var uniq            = require('es5-ext/array/#/uniq')
+  , toNaturalNumber = require('es5-ext/number/to-pos-integer')
+  , toArray         = require('es5-ext/object/to-array')
+  , ensureObject    = require('es5-ext/object/valid-object')
+  , ensureCallable  = require('es5-ext/object/valid-callable')
+  , ensureString    = require('es5-ext/object/validate-stringifiable-value')
+  , d               = require('d')
+  , memoize         = require('memoizee/plain')
+  , db              = require('mano').db
+  , getData         = require('mano/lib/client/xhr-driver').get
+  , ListManager     = require('../objects-table/manager')
+  , resolveList     = require('../objects-table/resolve-list')
 
+  , push = Array.prototype.push
   , defineProperties = Object.defineProperties, BusinessProcess = db.BusinessProcess;
 
 require('memoizee/ext/max-age');
@@ -91,8 +93,22 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 		{
 			name: 'search',
 			process: function (data, query) {
-				var list = data.list.filter(this._getSearchFilter(query.search));
-				return { list: list, size: list.length };
+				var value = query.search.split(/\s+/), list, result, indexMap;
+				if (value.length === 1) {
+					result = data.list.filter(this._getSearchFilter(value[0]));
+				} else {
+					result = [];
+					list = data.list;
+					indexMap = {};
+					list.forEach(function (item, index) { indexMap[item.__id__] = index; });
+					value.forEach(function (value) {
+						push.apply(result, list.filter(this._getSearchFilter(value)));
+					}, this);
+					result = uniq.call(result).sort(function (a, b) {
+						return indexMap[a.__id__] - indexMap[b.__id__];
+					});
+				}
+				return { list: result, size: result.length };
 			}
 		}
 	]),

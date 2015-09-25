@@ -3,6 +3,7 @@
 'use strict';
 
 var aFrom               = require('es5-ext/array/from')
+  , arrayToArray        = require('es5-ext/array/to-array')
   , ensureArray         = require('es5-ext/array/valid-array')
   , find                = require('es5-ext/array/#/find')
   , flatten             = require('es5-ext/array/#/flatten')
@@ -14,14 +15,17 @@ var aFrom               = require('es5-ext/array/from')
   , ensureObject        = require('es5-ext/object/valid-object')
   , ensureCallable      = require('es5-ext/object/valid-callable')
   , ensureString        = require('es5-ext/object/validate-stringifiable-value')
+  , Set                 = require('es6-set')
   , memoize             = require('memoizee/plain')
   , ensureDatabase      = require('dbjs/valid-dbjs')
+  , isObservableSet     = require('observable-set/is-observable-set')
   , db                  = require('mano').db
   , getCompare          = require('../../utils/get-compare')
   , getSearchFilter     = require('../../utils/get-search-filter')
   , serializeView       = require('../../utils/db-view/serialize')
   , getEvents           = require('../../utils/dbjs-get-path-events')
   , QueryHandler        = require('../../utils/query-handler')
+  , smartSearchFilter   = require('../../utils/smart-search-filter')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
@@ -77,7 +81,7 @@ module.exports = exports = function (data) {
 		pageCount = ceil(size / itemsPerPage);
 		if (query.page > pageCount) return { size: size };
 		// Sort
-		list = list.toArray(compare);
+		list = isObservableSet(list) ? list.toArray(compare) : arrayToArray(list).sort(compare);
 		// Pagination
 		offset = (query.page - 1) * itemsPerPage;
 		list = list.slice(offset, offset + itemsPerPage);
@@ -127,7 +131,16 @@ exports.listModifiers = [{
 	process: function (ignore, value, data) { return data.statusMap[value || 'all'].data; }
 }, {
 	name: 'search',
-	process: function (list, value, data) { return list.filter(data.searchFilter(value)); }
+	process: function (list, value, data) {
+		var result;
+		value = value.split(/\s+/);
+		if (value.length === 1) return smartSearchFilter(list, data.searchFilter, value[0]);
+		result = new Set();
+		value.forEach(function (value) {
+			smartSearchFilter(list, data.searchFilter, value).forEach(result.add, result);
+		});
+		return result;
+	}
 }];
 
 exports.tableQueryConf = [{
