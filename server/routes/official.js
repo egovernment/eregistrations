@@ -134,12 +134,14 @@ exports.listModifiers = [{
 	process: function (list, value, data) {
 		var result;
 		value = value.split(/\s+/);
-		if (value.length === 1) return smartSearchFilter(list, data.searchFilter, value[0]);
-		result = new Set();
-		value.forEach(function (value) {
-			smartSearchFilter(list, data.searchFilter, value).forEach(result.add, result);
-		});
-		return result;
+		result = smartSearchFilter(list, data.searchFilter, value.shift());
+		if (!value.length) return result;
+		return value.reduce(function (result, value) {
+			result.forEach(function (item) {
+				if (!this.has(item)) result.delete(item);
+			}, smartSearchFilter(list, data.searchFilter, value));
+			return result;
+		}, new Set(result));
 	}
 }];
 

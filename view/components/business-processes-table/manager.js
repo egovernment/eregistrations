@@ -3,7 +3,7 @@
 
 'use strict';
 
-var uniq            = require('es5-ext/array/#/uniq')
+var includes        = require('es5-ext/array/#/contains')
   , toNaturalNumber = require('es5-ext/number/to-pos-integer')
   , toArray         = require('es5-ext/object/to-array')
   , ensureObject    = require('es5-ext/object/valid-object')
@@ -16,7 +16,6 @@ var uniq            = require('es5-ext/array/#/uniq')
   , ListManager     = require('../objects-table/manager')
   , resolveList     = require('../objects-table/resolve-list')
 
-  , push = Array.prototype.push
   , defineProperties = Object.defineProperties, BusinessProcess = db.BusinessProcess;
 
 require('memoizee/ext/max-age');
@@ -95,19 +94,14 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 		{
 			name: 'search',
 			process: function (data, query) {
-				var value = query.search.split(/\s+/), list = data.list, result, indexMap;
-				if (value.length === 1) {
-					result = list.filter(this._getSearchFilter(value[0]));
-				} else {
-					result = [];
-					indexMap = {};
-					list.forEach(function (item, index) { indexMap[item.__id__] = index; });
-					value.forEach(function (value) {
-						push.apply(result, list.filter(this._getSearchFilter(value)));
-					}, this);
-					result = uniq.call(result).sort(function (a, b) {
-						return indexMap[a.__id__] - indexMap[b.__id__];
-					});
+				var value = query.search.split(/\s+/), list = data.list, result;
+				result = list.filter(this._getSearchFilter(value.shift()));
+				if (value.length) {
+					result = value.reduce(function (result, value) {
+						return result.filter(function (item) {
+							return includes.call(this, item);
+						}, list.filter(this._getSearchFilter(value)));
+					}.bind(this), result);
 				}
 				return { list: result, size: result.length };
 			}
