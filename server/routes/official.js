@@ -23,6 +23,7 @@ var aFrom               = require('es5-ext/array/from')
   , QueryHandler        = require('../../utils/query-handler')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
 
+  , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , map = Array.prototype.map, ceil = Math.ceil, keys = Object.keys, stringify = JSON.stringify;
 
 require('memoizee/ext/max-age');
@@ -143,6 +144,7 @@ exports.tableQueryConf = [{
 	ensure: function (value) {
 		if (!value) return;
 		if (value.toLowerCase() !== value) throw new Error("Unexpected search value");
+		if (hasBadWs(value)) throw new Error("Unexpected search value");
 		return value;
 	}
 }, {

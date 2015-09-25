@@ -3,11 +3,13 @@
 
 'use strict';
 
-var isNaturalNumber   = require('es5-ext/number/is-natural')
+var customError       = require('es5-ext/error/custom')
+  , isNaturalNumber   = require('es5-ext/number/is-natural')
   , findKey           = require('es5-ext/object/find-key')
   , appLocation       = require('mano/lib/client/location')
   , setupQueryHandler = require('../../../utils/setup-client-query-handler')
 
+  , wsRe = /\s{2,}/g
   , ceil = Math.ceil, stringify = JSON.stringify;
 
 module.exports = exports = function (listManager/*, pathname*/) {
@@ -33,8 +35,13 @@ exports.conf = [
 	{
 		name: 'search',
 		ensure: function (value) {
+			var expected;
 			if (!value) return;
-			return value.toLowerCase();
+			expected = value.toLowerCase().replace(wsRe, ' ');
+			if (value !== expected) {
+				throw customError("Non normative search value", { fixedQueryValue: expected });
+			}
+			return value;
 		}
 	},
 	{
