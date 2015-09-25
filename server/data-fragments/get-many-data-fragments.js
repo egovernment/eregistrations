@@ -3,16 +3,19 @@
 
 'use strict';
 
-var ensureCallable       = require('es5-ext/object/valid-callable')
+var includes             = require('es5-ext/array/#/contains')
+  , ensureCallable       = require('es5-ext/object/valid-callable')
   , ensureIterable       = require('es5-ext/iterable/validate-object')
   , ensureObservable     = require('observable-value/valid-observable')
   , Set                  = require('es6-set/primitive')
   , DataFragmentGroup    = require('data-fragment/group')
   , getFullDataFragments = require('./get-full-data-fragments')
-  , db                   = require('mano').db;
+  , db                   = require('mano').db
+
+  , isArray = Array.isArray;
 
 module.exports = function (collection/*, getFragment*/) {
-	var getFragment = arguments[1], fragment, current;
+	var getFragment = arguments[1], fragment, current, isArrayMode = isArray(collection);
 
 	ensureObservable(ensureIterable(collection));
 	if (getFragment == null) getFragment = getFullDataFragments(db.Object);
@@ -28,7 +31,11 @@ module.exports = function (collection/*, getFragment*/) {
 	});
 	collection.on('change', function (event) {
 		current.forEach(function (object) {
-			if (collection.has(object)) return;
+			if (isArrayMode) {
+				if (includes.call(collection, object)) return;
+			} else {
+				if (collection.has(object)) return;
+			}
 			fragment.deleteFragment(getFragment(object.__id__));
 			current.delete(object);
 		});
