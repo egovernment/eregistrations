@@ -3,7 +3,8 @@
 
 'use strict';
 
-var customError       = require('es5-ext/error/custom')
+var uniq              = require('es5-ext/array/#/uniq')
+  , customError       = require('es5-ext/error/custom')
   , isNaturalNumber   = require('es5-ext/number/is-natural')
   , findKey           = require('es5-ext/object/find-key')
   , appLocation       = require('mano/lib/client/location')
@@ -38,6 +39,10 @@ exports.conf = [
 			var expected;
 			if (!value) return;
 			expected = value.toLowerCase().replace(wsRe, ' ');
+			if (value !== expected) {
+				throw customError("Non normative search value", { fixedQueryValue: expected });
+			}
+			expected = uniq.call(expected.split(/\s/)).join(' ');
 			if (value !== expected) {
 				throw customError("Non normative search value", { fixedQueryValue: expected });
 			}

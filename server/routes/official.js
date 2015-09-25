@@ -6,6 +6,7 @@ var aFrom               = require('es5-ext/array/from')
   , ensureArray         = require('es5-ext/array/valid-array')
   , find                = require('es5-ext/array/#/find')
   , flatten             = require('es5-ext/array/#/flatten')
+  , uniq                = require('es5-ext/array/#/uniq')
   , isNaturalNumber     = require('es5-ext/number/is-natural')
   , toNaturalNumber     = require('es5-ext/number/to-pos-integer')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
@@ -145,6 +146,9 @@ exports.tableQueryConf = [{
 		if (!value) return;
 		if (value.toLowerCase() !== value) throw new Error("Unexpected search value");
 		if (hasBadWs(value)) throw new Error("Unexpected search value");
+		if (value !== uniq.call(value.split(/\s/)).join(' ')) {
+			throw new Error("Unexpected search value");
+		}
 		return value;
 	}
 }, {
