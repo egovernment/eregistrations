@@ -138,7 +138,14 @@ exports.tableQueryConf = [{
 		if (value === 'all') throw new Error("Unexpected default key status");
 		return value;
 	}
-}, { name: 'search' }, {
+}, {
+	name: 'search',
+	ensure: function (value) {
+		if (!value) return;
+		if (value.toLowerCase() !== value) throw new Error("Unexpected search value");
+		return value;
+	}
+}, {
 	name: 'page',
 	ensure: function (value) {
 		var num;

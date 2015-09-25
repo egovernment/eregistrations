@@ -30,7 +30,13 @@ exports.conf = [
 			return (value === 'all') ? null : value;
 		}
 	},
-	{ name: 'search' },
+	{
+		name: 'search',
+		ensure: function (value) {
+			if (!value) return;
+			return value.toLowerCase();
+		}
+	},
 	{
 		name: 'page',
 		ensure: function (value, query) {
