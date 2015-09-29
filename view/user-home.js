@@ -9,8 +9,10 @@ exports._parent = require('./user');
 
 exports['user-account-requests'] = { class: { active: true } };
 exports['user-account-content'] = function () {
+	var businessProcesses = this.user.businessProcesses.filterByKey('isFromEregistrations', true);
+
 	section({ class: 'section-primary' },
-		_if(this.user.businessProcesses._size, function () {
+		_if(businessProcesses._size, function () {
 			return section(
 				{ class: 'submitted-main table-responsive-container' },
 				table(
@@ -18,7 +20,7 @@ exports['user-account-content'] = function () {
 					thead(tr(list(columns,
 						function (column) { return th({ class: column.class }, column.head); }))),
 					tbody(
-						this.user.businessProcesses,
+						businessProcesses,
 						function (businessProcess) {
 							return tr(list(columns,
 								function (column) {

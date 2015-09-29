@@ -28,8 +28,7 @@ module.exports = [{
 }, {
 	class: 'actions',
 	data: function (businessProcess) {
-		return _if(businessProcess._isFromEregistrations,
-			_if(eq(businessProcess._status, 'draft'),
+		return _if(eq(businessProcess._status, 'draft'),
 				function () { return [a({ href: url(businessProcess.__id__), rel: "server" },
 					span({ class: 'fa fa-edit' },
 						_("Go to"))),
@@ -42,6 +41,6 @@ module.exports = [{
 					href: url(businessProcess.__id__), rel: "server" },
 					span({ class: 'fa fa-search' },
 						_("Go to"))); }
-				));
+				);
 	}
 }];
