@@ -41,16 +41,16 @@ module.exports = memoize(function (db) {
 		// processing step (certificate upload)
 		dataForm: { type: FormSectionBase, nested: true },
 		// True when a given document is electronic, false otherwise
-		isElectronic: { type: db.Boolean, value: false }
+		isElectronic: { type: db.Boolean, value: false },
+		// Document number
+		number: { type: StringLine, label: _("Number") }
 	}, {
 		// Document label
 		label: { type: StringLine },
 		// Document legend
 		legend: { type: StringLine },
 		// Document abbrevation
-		abbr: { type: StringLine },
-		// Document number
-		number: { type: StringLine, label: _("Number") }
+		abbr: { type: StringLine }
 	});
 
 	defineNestedMap(db);
