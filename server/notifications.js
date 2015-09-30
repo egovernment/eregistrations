@@ -27,11 +27,20 @@ getFrom = function (user, from) {
 };
 
 getTo = function (user, to) {
+	var previousBusinessProcess = user.previousBusinessProcess;
+
 	if (to != null) {
 		if (typeof to === 'function') return to(user);
 		return to;
 	}
-	if (user.user) return user.user.email; // Fix in case of businessProcesses
+	if (user.user) return user.user.email;
+	while (previousBusinessProcess) {
+		if (previousBusinessProcess.previousBusinessProcess) {
+			previousBusinessProcess = previousBusinessProcess.previousBusinessProcess;
+		} else {
+			return previousBusinessProcess.user.email;
+		}
+	}
 	if (user.email) return user.email;
 	if (user.manager) return user.manager.email;
 };
