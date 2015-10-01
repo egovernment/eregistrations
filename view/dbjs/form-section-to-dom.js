@@ -41,7 +41,9 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 					url(this.actionUrl + '-add') :
 					url(this.actionUrl, master.__id__);
 		}
-		customizeData.arrayResult = [customizeData.container = ns.section({ class: 'section-primary' },
+		customizeData.arrayResult = [customizeData.container = ns.section({
+			class: options.cssSectionClass || 'section-primary'
+		},
 			customizeData.form = ns.form(
 				{ id: this.domId,
 					method: 'post',
@@ -50,7 +52,8 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 					1
 				), 'completed form-elements', 'form-elements') },
 				ns._if(this._label,
-					[ns.h2(this._label), ns._if(this._legend, ns.md(this._legend)), ns.hr()]),
+					[options.htmlHeader ? options.htmlHeader(this._label) : ns.h2(this._label),
+						ns._if(this._legend, ns.md(this._legend)), ns.hr()]),
 				fieldsetResult = this.toDOMFieldset(document, sectionFieldsetOptions),
 				ns.p({ class: 'submit-placeholder input' },
 					ns.input({ type: 'submit', value: _("Submit") })),
