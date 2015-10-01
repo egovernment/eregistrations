@@ -121,8 +121,8 @@ module.exports = memoize(function (db) {
 			// or excluded by fact of having a default value on prototype
 					(!resolved.descriptor.multiple &&
 						(Object.getPrototypeOf(resolved.object).get(resolved.key) != null) &&
-						(!File || !NestedMap ||
-							!((resolved.value instanceof File) || (resolved.object instanceof NestedMap))
+						((!File || !(resolved.value instanceof File)) &&
+						(!NestedMap || (resolved.key !== 'map') || !(resolved.object instanceof NestedMap))
 							))) {
 
 				// In that case we just validate that it's not shadowed by null
