@@ -51,7 +51,7 @@ exports._stepsMenu = function (context) {
 			div({ class: 'user-steps-menu-item-progress',
 				style: mmap(context.businessProcess.requirementUploads._progress, setProgressWidth) })
 		),
-		_if(not(eq(context.businessProcess._paymentWeight, 0)), li(
+		_if(not(eq(context.businessProcess.costs._paymentWeight, 0)), li(
 			a({ href: '/pay/', id: 'step-pay' },
 				_("Pay")
 				),
