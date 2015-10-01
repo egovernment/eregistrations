@@ -79,8 +79,9 @@ module.exports = memoize(function (db) {
 			return props;
 		} },
 		status: { value: function (_observe) {
-			var resolved, valid = 0, total = 0, isResolventExcluded, isOwn
-			  , File = this.database.File;
+			var resolved, valid = 0, total = 0, isResolventExcluded, isOwn, db = this.database
+			  , File = db.File;
+
 			if (this.resolventProperty) {
 				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
 				if (!resolved) {
@@ -109,10 +110,16 @@ module.exports = memoize(function (db) {
 					++total;
 					return;
 				}
+
 				if (this.isPropertyExcludedFromStatus(resolved, _observe)) {
 					return;
 				}
 				++total;
+				if (resolved.object && db.NestedMap &&  (resolved.key === 'map')
+						&& (resolved.object instanceof db.NestedMap)) {
+					if (_observe(resolved.object.ordered._size)) ++valid;
+					return;
+				}
 				if (resolved.descriptor.requireOwn) {
 					_observe(resolved.observable);
 					if (resolved.descriptor.multiple) {

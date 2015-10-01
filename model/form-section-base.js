@@ -110,7 +110,7 @@ module.exports = memoize(function (db) {
 			}
 		},
 		isPropertyExcludedFromStatus: { type: db.Function, value: function (resolved, _observe) {
-			var File = this.database.File;
+			var File = this.database.File, NestedMap = this.database.NestedMap;
 
 			// Not required, then not validated
 			if (!resolved.descriptor.required) return true;
@@ -121,7 +121,9 @@ module.exports = memoize(function (db) {
 			// or excluded by fact of having a default value on prototype
 					(!resolved.descriptor.multiple &&
 						(Object.getPrototypeOf(resolved.object).get(resolved.key) != null) &&
-						(!File || !(resolved.value instanceof File)))) {
+						(!File || !NestedMap ||
+							!((resolved.value instanceof File) || (resolved.object instanceof NestedMap))
+							))) {
 
 				// In that case we just validate that it's not shadowed by null
 				// or in case of multiple that it has at least one item
