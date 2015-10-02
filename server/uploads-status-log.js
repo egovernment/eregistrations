@@ -14,6 +14,8 @@ module.exports = function (db) {
 		if (endsWith.call(id, 'submissionForms/isAffidavitSigned')) {
 			bp = event.object.master;
 			nextTick(function () {
+				if (!bp.requirementUploads || !bp.paymentReceiptUploads) return;
+
 				++db._postponed_;
 				bp.requirementUploads.applicable.forEach(function (ru) {
 					if (ru.status) return;
