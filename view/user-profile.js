@@ -43,9 +43,9 @@ exports['sub-main'] = {
 					p({ class: 'dbjs-component-message success-message' }),
 					p({ class: 'submit-placeholder input' },
 						input({ type: 'submit', value: _("Save") })))
-			),
-			exports._extraProfileForms(this)
+			)
 		);
+		insert(exports._extraProfileForms(this));
 	}
 };
 
