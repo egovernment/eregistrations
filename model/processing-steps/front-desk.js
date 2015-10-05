@@ -23,7 +23,7 @@ module.exports = memoize(function (db/*, options */) {
 		Parent = defineProcessingStep(db);
 	}
 	return Parent.extend('FrontDeskProcessingStep', {
-		label: { value: _("Front desk") },
+		label: { value: _("Front Desk") },
 		isApplicable: {
 			value: function (_observe) {
 				return _observe(this.possibleInstitutions._size) > 0;
