@@ -30,8 +30,8 @@ exports.step = function () {
 	);
 	insert(_if(eq(this.businessProcess.requirementUploads._progress, 1),
 		div({ class: 'user-next-step-button' },
-			a({ href: _if(not(eq(this.businessProcess.costs._paymentWeight, 0)), '/pay/', '/submission/') },
-				_("Continue to next step")))));
+			a({ href: _if(not(eq(this.businessProcess.costs._paymentWeight, 0)), '/pay/',
+				'/submission/') }, _("Continue to next step")))));
 };
 
 exports._documentsHeading = Function.prototype;
