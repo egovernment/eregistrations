@@ -22,7 +22,7 @@ module.exports = function (documents) {
 				documents, function (doc) {
 					tr(
 						td({ class: 'submitted-user-data-table-status' },
-							_if(doc._isCertificate, span({ class: 'fa fa-certificate' }))),
+							doc.isCertificate ? span({ class: 'fa fa-certificate' }) : null),
 						td(doc._label),
 						td(doc._issuedBy.map(resolveIssuer)),
 						td({ class: 'submitted-user-data-table-date' }, doc._issueDate),

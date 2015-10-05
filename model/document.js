@@ -46,7 +46,7 @@ module.exports = memoize(function (db) {
 		number: { type: StringLine, label: _("Number") },
 		// True if this document is used as a certificate
 		isCertificate: { type: db.Boolean, value: function (_observe) {
-			return _observe(this.master.certificates.applicable).has(this);
+			return this.owner === this.master.certificates.map;
 		} }
 	}, {
 		// Document label
