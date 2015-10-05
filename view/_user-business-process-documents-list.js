@@ -3,7 +3,6 @@
 'use strict';
 
 var _ = require('mano').i18n.bind('View: Documents list')
-, Institution = require('mano').db.Institution
 , resolveIssuer = require('./utils/issuer-resolver');
 
 module.exports = function (documents) {
@@ -23,10 +22,7 @@ module.exports = function (documents) {
 				documents, function (doc) {
 					tr(
 						td({ class: 'submitted-user-data-table-status' },
-							doc._issuedBy.map(function (val) {
-								if (!val) return;
-								if (val.constructor === Institution) return span({ class: 'fa fa-certificate' });
-							})),
+							doc.isCertificate ? span({ class: 'fa fa-certificate' }) : null),
 						td(doc._label),
 						td(doc._issuedBy.map(resolveIssuer)),
 						td({ class: 'submitted-user-data-table-date' }, doc._issueDate),

@@ -43,7 +43,11 @@ module.exports = memoize(function (db) {
 		// True when a given document is electronic, false otherwise
 		isElectronic: { type: db.Boolean, value: false },
 		// Document number
-		number: { type: StringLine, label: _("Number") }
+		number: { type: StringLine, label: _("Number") },
+		// True if this document is used as a certificate
+		isCertificate: { type: db.Boolean, value: function (_observe) {
+			return this.owner === this.master.certificates.map;
+		} }
 	}, {
 		// Document label
 		label: { type: StringLine },
