@@ -45,7 +45,7 @@ exports['sub-main'] = {
 		h3({ class: 'user-account-section-title' }, _("Available services"));
 		section({ class: 'section-primary' },
 			ul({ class: 'user-account-service-boxes' },
-				exports._servicesBoxList(),
+				exports._servicesBoxList(this),
 				function (item) {
 					return li(_if(item.condition || true, _if(
 						item.actionUrl,
