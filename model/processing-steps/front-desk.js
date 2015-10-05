@@ -7,7 +7,8 @@ var memoize               = require('memoizee/plain')
   , defineProcessingStep  = require('../processing-step')
   , defineProcessingSteps = require('../business-process-new/processing-steps')
   , defineInstitution     = require('../institution')
-  , ensureDb              = require('dbjs/valid-dbjs');
+  , ensureDb              = require('dbjs/valid-dbjs')
+  , ensureType            = require('dbjs/valid-dbjs-type');
 
 module.exports = memoize(function (db/*, options */) {
 	var Institution, Parent, options;
@@ -16,9 +17,10 @@ module.exports = memoize(function (db/*, options */) {
 
 	Institution = defineInstitution(db);
 	defineProcessingSteps(db);
-	Parent = defineProcessingStep(db);
 	if (options.parent) {
-		Parent = options.parent;
+		Parent = ensureType(options.parent);
+	} else {
+		Parent = defineProcessingStep(db);
 	}
 	return Parent.extend('FrontDeskProcessingStep', {
 		label: { value: _("Front desk") },
@@ -48,8 +50,8 @@ module.exports = memoize(function (db/*, options */) {
 		approvalProgress: {
 			value: function (_observe) {
 				var requirementUploads = this.master.requirementUploads;
-				return _observe(requirementUploads._frontDeskApplicable)
-					=== _observe(requirementUploads._frontDeskApproved) ? 1 : 0;
+				return _observe(requirementUploads.frontDeskApplicable._size)
+					=== _observe(requirementUploads.frontDeskApproved._size) ? 1 : 0;
 			}
 		}
 	});
