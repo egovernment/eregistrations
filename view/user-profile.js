@@ -14,7 +14,7 @@ exports['sub-main'] = {
 		h1(_("User Profile"));
 		div(
 			{ class: 'section-primary' },
-			h3(_("Account Information")),
+			h2(_("Account Information")),
 			hr(),
 			section(
 				form({ action: url('profile'), method: 'post' },
@@ -22,7 +22,6 @@ exports['sub-main'] = {
 						class: 'form-elements',
 						dbjs: this.user,
 						names: ['firstName', 'lastName'],
-						control: { required: false },
 						append: [
 							li(field({ dbjs: this.user._email, disabled: true })),
 							li(field({ dbjs: db.Password,
