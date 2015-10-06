@@ -22,6 +22,11 @@ module.exports = memoize(function (db) {
 					lastEditStamp = Math.max(lastEditStamp, _observe(section._lastEditStamp));
 				}, this);
 
+				_observe(this.files.ordered).forEach(function (file) {
+					lastEditStamp = Math.max(lastEditStamp,
+						_observe(file.getDescriptor('path').lastModified));
+				});
+
 				// If any section has been modified later than
 				// isUpToDateByUser, the user value must be invalidated.
 				return lastEditStamp < _observe(this._isUpToDateByUser._lastModified);
