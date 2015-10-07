@@ -127,7 +127,6 @@ h3.user-account-section-title {
 	color: var(--error-text);
 }
 
-.user-account-service-box.disabled > div a:hover,
 .user-account-service-box.disabled > a:hover {
 	color: var(--normal-text);
 }
