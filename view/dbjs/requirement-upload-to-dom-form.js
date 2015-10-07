@@ -27,7 +27,7 @@ module.exports = Object.defineProperty(db.RequirementUpload.prototype, 'toDOMFor
 						{ user: this.master }))),
 				typeof options.afterHeader === 'function' ? options.afterHeader(this) : null,
 				hr(),
-				input({ dbjs: this.document.files._map, label: true }),
+				input({ dbjs: this.document.files._map, label: _("Select file") }),
 				p({ class: 'submit' }, input({ type: 'submit', value: _("Submit") })),
 				p({ class: 'section-primary-scroll-top' },
 						a({ onclick: 'window.scroll(0, 0)' },
