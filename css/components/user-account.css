@@ -123,6 +123,10 @@ h3.user-account-section-title {
 	margin-top:2px;
 }
 
+.user-account-service-box.disabled > div a {
+	color: var(--error-text);
+}
+
 @media only screen and (max-width: 640px) {
 	.user-account-service-box {
 		display: block;
