@@ -24,7 +24,7 @@ require('dbjs-dom/input/string/string-line/password')(db);
 require('dbjs-dom/input/utils/fieldset')(db);
 require('dbjs-dom-bootstrap/number/currency')(db);
 require('dbjs-dom-bootstrap/number/square-meters')(db);
-require('eregistrations/view/dbjs/submission-file');
+require('../../view/dbjs/submission-file');
 require('../../view/dbjs/business-activity');
 require('../../view/dbjs/user-register-ids');
 require('../../view/dbjs/user-lomas-activity');
