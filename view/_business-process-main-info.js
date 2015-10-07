@@ -5,9 +5,8 @@
 var curry              = require('es5-ext/function/#/curry')
   , nextTick           = require('next-tick')
   , _                  = require('mano').i18n.bind('User Submitted')
-  , formatLastModified = require('./utils/last-modified')
   , scrollBottom       = require('./utils/scroll-to-bottom')
-	, tableCols;
+  , tableCols;
 
 tableCols = require('./_business-process-table-columns');
 
@@ -32,9 +31,10 @@ module.exports = function (context/*, options */) {
 					list(tableCols, function (col) {
 						td(typeof col.data === 'function' ? col.data(businessProcess) : col.data);
 					})
+				)
 			)
 		)
-	)),
+	),
 		section(
 			{ class: 'section-primary' },
 			h2({ class: 'container-with-nav' }, _("History of your request"),
