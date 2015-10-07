@@ -29,6 +29,7 @@ exports['sub-main'] = function () {
 };
 
 exports._stepsMenu = function (context) {
+	var ensureGuide = _if(eq(context.businessProcess._guideProgress, 1), 1, 0);
 	return [
 		li(
 			{ class: 'user-steps-menu-start-step' },
@@ -42,27 +43,31 @@ exports._stepsMenu = function (context) {
 				_("Fill the form")
 				),
 			div({ class: 'user-steps-menu-item-progress',
-				style: mmap(context.businessProcess.dataForms._progress, setProgressWidth) })
+				style: mmap(and(ensureGuide, context.businessProcess.dataForms._progress),
+					setProgressWidth) })
 		),
 		li(
 			a({ href: '/documents/', id: 'step-documents' },
 				_("Upload docs")
 				),
 			div({ class: 'user-steps-menu-item-progress',
-				style: mmap(context.businessProcess.requirementUploads._progress, setProgressWidth) })
+				style: mmap(and(ensureGuide, context.businessProcess.requirementUploads._progress),
+					setProgressWidth) })
 		),
 		_if(context.businessProcess.costs._paymentWeight, li(
 			a({ href: '/pay/', id: 'step-pay' },
 				_("Pay")
 				),
 			div({ class: 'user-steps-menu-item-progress',
-				style: mmap(context.businessProcess.costs._paymentProgress, setProgressWidth) })
+				style: mmap(and(ensureGuide, context.businessProcess.costs._paymentProgress),
+					setProgressWidth) })
 		)),
 		li(
 			a({ href: '/submission/', id: 'step-submission' },
 				_("Send file")
 				),
 			div({ class: 'user-steps-menu-item-progress',
-				style: mmap(context.businessProcess.submissionForms._progress, setProgressWidth) })
+				style: mmap(and(ensureGuide, context.businessProcess.submissionForms._progress),
+					setProgressWidth) })
 		)];
 };
