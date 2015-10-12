@@ -29,7 +29,8 @@ module.exports = function (context/*, options */) {
 			tbody(
 				tr(
 					list(tableCols, function (col) {
-						td(typeof col.data === 'function' ? col.data(businessProcess) : col.data);
+						td({ class: col.class },
+							typeof col.data === 'function' ? col.data(businessProcess) : col.data);
 					})
 				)
 			)
