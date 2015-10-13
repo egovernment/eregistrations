@@ -85,8 +85,7 @@ module.exports = memoize(function (db) {
 		// where provided
 		isApproved: { type: db.Boolean, value: function (_observe) {
 			if (this.status == null) return false;
-			if (this.status !== 'valid') return false;
-			return (_observe(this.document.dataForm._status) === 1);
+			return this.status === 'valid';
 		} },
 
 		// Whether uploaded documents should be verified at front-desk at certificates reception
