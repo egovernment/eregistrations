@@ -27,7 +27,6 @@
 
 .submitted-user-data-table tbody tr td {
 	border: 1px solid var(--light-inner-border);
-	padding: 0;
 	text-align: left;
 }
 .submitted-user-data-table tbody tr:hover,
@@ -43,11 +42,15 @@
 	text-decoration: none;
 }
 
-.submitted-user-data-table td a,
-.submitted-user-data-table.submitted-current-user-data-table tbody tr td {
+.submitted-user-data-table td.submitted-user-data-table-link a,
+.submitted-user-data-table td {
 	padding: 11px 25px 10px;
-
 }
+
+.submitted-user-data-table td.submitted-user-data-table-link {
+	padding: 0;
+}
+
 .submitted-user-data-table td a {
 	display: block;
 }

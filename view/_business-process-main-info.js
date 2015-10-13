@@ -10,6 +10,19 @@ var curry              = require('es5-ext/function/#/curry')
 
 tableCols = require('./_business-process-table-columns');
 
+// Creates actions column cell with 'archive download' action.
+var createActionsCell = function (businessProcess) {
+	return td({ class: 'submitted-user-data-table-link' }, _if(businessProcess._filesArchiveUrl,
+		a({ class: 'hint-optional hint-optional-left', target: "_blank",
+			'data-hint': _("Download the electronic file"),
+			download: businessProcess._filesArchiveUrl.map(function (name) {
+				if (!name) return;
+				return name.slice(1);
+			}),
+			href: businessProcess._filesArchiveUrl },
+			span({ class: 'fa fa-download' }, _("Download")))));
+};
+
 module.exports = function (context/*, options */) {
 	var options = Object(arguments[1])
 	  , businessProcess = context.businessProcess
@@ -23,7 +36,8 @@ module.exports = function (context/*, options */) {
 				tr(
 					list(tableCols, function (col) {
 						th(typeof col.head === 'function' ? col.head(businessProcess) : col.head);
-					})
+					}),
+					th()
 				)
 			),
 			tbody(
@@ -31,7 +45,8 @@ module.exports = function (context/*, options */) {
 					list(tableCols, function (col) {
 						td({ class: col.class },
 							typeof col.data === 'function' ? col.data(businessProcess) : col.data);
-					})
+					}),
+					createActionsCell(businessProcess)
 				)
 			)
 		)
