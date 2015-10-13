@@ -84,7 +84,6 @@ module.exports = memoize(function (db) {
 		// Whether document upload was validated and all required properties
 		// where provided
 		isApproved: { type: db.Boolean, value: function (_observe) {
-			if (this.status == null) return false;
 			return this.status === 'valid';
 		} },
 
