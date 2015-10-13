@@ -29,8 +29,6 @@ exports['sub-main'] = {
 			form(
 				{ method: 'post', action: '/user/' + user.__id__ + '/' },
 				fieldset(
-					{ class: 'section-primary' },
-					hr(),
 					ul(
 						{ class: 'form-elements' },
 						li(field({ dbjs: user._firstName })),
