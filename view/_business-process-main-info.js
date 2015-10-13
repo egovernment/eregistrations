@@ -12,14 +12,15 @@ tableCols = require('./_business-process-table-columns');
 
 // Creates actions column cell with 'archive download' action.
 var createActionsCell = function (businessProcess) {
-	return a({ class: 'hint-optional hint-optional-left', target: "_blank",
-		'data-hint': _("Download the electronic file"),
-		download: businessProcess._filesArchiveUrl.map(function (name) {
-			if (!name) return;
-			return name.slice(1);
-		}),
-		href: businessProcess._filesArchiveUrl },
-		span({ class: 'fa fa-download' }, _("Download")));
+	return _if(businessProcess._filesArchiveUrl,
+		a({ class: 'hint-optional hint-optional-left', target: "_blank",
+			'data-hint': _("Download the electronic file"),
+			download: businessProcess._filesArchiveUrl.map(function (name) {
+				if (!name) return;
+				return name.slice(1);
+			}),
+			href: businessProcess._filesArchiveUrl },
+			span({ class: 'fa fa-download' }, _("Download"))));
 };
 
 module.exports = function (context/*, options */) {
@@ -36,7 +37,7 @@ module.exports = function (context/*, options */) {
 					list(tableCols, function (col) {
 						th(typeof col.head === 'function' ? col.head(businessProcess) : col.head);
 					}),
-					_if(businessProcess._filesArchiveUrl, th())
+					th()
 				)
 			),
 			tbody(
@@ -45,8 +46,7 @@ module.exports = function (context/*, options */) {
 						td({ class: col.class },
 							typeof col.data === 'function' ? col.data(businessProcess) : col.data);
 					}),
-					_if(businessProcess._filesArchiveUrl, td({ class: 'actions' },
-						createActionsCell(businessProcess)))
+					td({ class: 'actions' }, createActionsCell(businessProcess))
 				)
 			)
 		)
