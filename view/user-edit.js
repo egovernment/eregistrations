@@ -8,7 +8,7 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		var user = this.user;
+		var user = this.editedUser;
 		section(
 			{ class: 'section-primary' },
 			div(
