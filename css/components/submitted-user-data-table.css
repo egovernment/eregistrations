@@ -60,16 +60,6 @@
 	font-size: 12px;
 }
 
-.submitted-user-data-table.submitted-current-user-data-table tbody tr .actions {
-	padding-left: 5px;
-	padding-right: 5px;
-}
-
-.submitted-user-data-table tr .actions {
-	padding: 10px 25px 9px;
-	text-align: center;
-}
-
 .submitted-user-data-table-basic > a {
 		font-weight: bold;
 }
