@@ -16,8 +16,9 @@ var createActionsCell = function (businessProcess) {
 					confirm: _("Are you sure?"),
 					value: span({ class: 'fa fa-trash-o' })
 					})),
-			td(a({ class: 'actions-edit', href: url(businessProcess.__id__), rel: "server" },
-				span({ class: 'fa fa-search' }, _("Go to"))))
+			td({ class: 'submitted-user-data-table-link' }, a({ class: 'actions-edit',
+				href: url(businessProcess.__id__), rel: "server" },
+					span({ class: 'fa fa-search' }, _("Go to"))))
 			);
 };
 
