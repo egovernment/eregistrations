@@ -159,10 +159,6 @@ exports._bodyAppend = function () {
 				a({ href: '/users-admin/' }, span("Users admin"), span({ class: 'label-reg' }, "Admin"))
 			),
 			li(
-				a({ href: '/users-admin/user-id/' }, span("Users admin - user"),
-					span({ class: 'label-reg' }, "Admin"))
-			),
-			li(
 				a({ href: '/users-admin/add-user/' }, span("Users admin - add user"),
 					span({ class: 'label-reg' }, "Admin"))
 			),
