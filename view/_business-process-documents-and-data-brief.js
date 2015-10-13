@@ -32,7 +32,7 @@ module.exports = function (businessProcess) {
 								td(section._label),
 								td({ class: 'submitted-user-data-table-date' },
 									section._lastEditDate.map(function (date) {
-										return date.toLocaleDateString();
+										return date.valueOf() ? date.toLocaleDateString() : null;
 									})),
 								td({ class: 'submitted-user-data-table-link' },
 									a({ href: '/business-process/' + businessProcess.__id__ + '/data/' },
