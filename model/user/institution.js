@@ -10,10 +10,12 @@ module.exports = memoize(function (User/* options */) {
 
 	Institution = defineInstitution(db);
 
-	return User.prototype.defineProperties({
+	User.prototype.defineProperties({
 		institution: {
 			type: Institution,
 			label: _("Institution")
 		}
 	});
+
+	return User;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
