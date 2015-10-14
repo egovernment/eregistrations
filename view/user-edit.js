@@ -32,6 +32,7 @@ exports['sub-main'] = {
 					li(field({ dbjs: user._firstName })),
 					li(field({ dbjs: user._lastName })),
 					li(field({ dbjs: user._roles })),
+					li(field({ dbjs: user._institution })),
 					li(field({ dbjs: user._email, disabled: true })),
 					li(
 						div(
