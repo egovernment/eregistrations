@@ -2,18 +2,18 @@
 
 'use strict';
 
-var _ = require('mano').i18n.bind('View: Business process summary');
+var _ = require('mano').i18n.bind('View: Business process summary')
+  , renderDocumentsList = require('./_user-business-process-documents-list');
 
 module.exports = function (businessProcess) {
-	return [div({ class: "section-primary-sub" },
-				h3(_("Documents")),
-			require('./_user-business-process-documents-list')(
-			businessProcess.documents.processChainUploaded.toArray().slice(0, 5)
-		),
-		p({ class: 'section-primary-sub-action' },
-			a({ href: '/business-process/' + businessProcess.__id__ + '/documents/',
-				class: 'button-regular' },
-				_("See all documents")))),
+	return [
+		div({ class: "section-primary-sub" },
+			h3(_("Documents")),
+			renderDocumentsList(businessProcess.documents.processChainUploaded.toArray().slice(0, 5)),
+			p({ class: 'section-primary-sub-action' },
+				a({ href: '/business-process/' + businessProcess.__id__ + '/documents/',
+					class: 'button-regular' },
+					_("See all documents")))),
 		div({ class: "section-primary-sub" },
 			h3(_("Data")),
 			div({ class: "table-responsive-container" },

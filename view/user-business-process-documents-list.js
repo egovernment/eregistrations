@@ -1,6 +1,7 @@
 'use strict';
 
-var _ = require('mano').i18n.bind("View: Documents");
+var _ = require('mano').i18n.bind("View: Documents")
+  , renderDocumentsList = require('./_user-business-process-documents-list');
 
 exports._parent = require('./user-base');
 exports._match = 'businessProcess';
@@ -12,7 +13,5 @@ exports['sub-main'] = function () {
 			h2(_("Documents of ${businessName}",
 					{ businessName: businessProcess._businessName })),
 			hr(),
-			require('./_user-business-process-documents-list')(
-				businessProcess.documents.processChainUploaded
-			)));
+			renderDocumentsList(businessProcess.documents.processChainUploaded)));
 };
