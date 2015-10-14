@@ -38,6 +38,10 @@
 	text-decoration: underline;
 }
 
+.submitted-user-data-table .actions {
+	padding: 10px 25px 9px;
+}
+
 .submitted-user-data-table tr:hover .actions a {
 	text-decoration: none;
 }
