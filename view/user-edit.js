@@ -24,37 +24,34 @@ exports['sub-main'] = {
 					)
 				)
 			),
-			h4(db.Role.meta[user._currentRoleResolved].label),
 			hr(),
 			form(
 				{ method: 'post', action: '/user/' + user.__id__ + '/' },
-				fieldset(
-					ul(
-						{ class: 'form-elements' },
-						li(field({ dbjs: user._firstName })),
-						li(field({ dbjs: user._lastName })),
-						li(field({ dbjs: user._roles })),
-						li(field({ dbjs: user._email, disabled: true })),
-						li(
+				ul(
+					{ class: 'form-elements' },
+					li(field({ dbjs: user._firstName })),
+					li(field({ dbjs: user._lastName })),
+					li(field({ dbjs: user._roles })),
+					li(field({ dbjs: user._email, disabled: true })),
+					li(
+						div(
+							{ class: 'dbjs-input-component' },
+							label({ for: 'new-password' }, _("New password")),
 							div(
-								{ class: 'dbjs-input-component' },
-								label({ for: 'new-password' }, _("New password")),
-								div(
-									{ class: 'input' },
-									input({ dbjs: user._password, required: false, id: 'new-password' }),
-									span(
-										{ class: 'success-message empty' },
-										span({ class: 'message-text' })
-									)
+								{ class: 'input' },
+								input({ dbjs: user._password, required: false, id: 'new-password' }),
+								span(
+									{ class: 'success-message empty' },
+									span({ class: 'message-text' })
 								)
 							)
-						),
-						li(field({ label: _("Repeat new password"), dbjs: db.Password,
-							name: 'password-repeat' }))
+						)
 					),
-					p({ class: 'submit-placeholder' },
-						input({ type: 'submit', value: _("Save") }))
-				)
+					li(field({ label: _("Repeat new password"), dbjs: db.Password,
+						name: 'password-repeat' }))
+				),
+				p({ class: 'submit-placeholder' },
+					input({ type: 'submit', value: _("Save") }))
 			)
 		);
 	}

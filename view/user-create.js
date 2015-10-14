@@ -14,20 +14,18 @@ exports['sub-main'] = {
 			hr(),
 			form(
 				{ method: 'post', action: '/user-add/' },
-				fieldset(
-					ul(
-						li(field({ dbjs: user._firstName })),
-						li(field({ dbjs: user._lastName })),
-						li(field({ dbjs: user._roles })),
-						li(field({ dbjs: user._institution })),
-						li(field({ dbjs: user._email })),
-						li(field({ dbjs: user._password })),
-						li(field({ label: _("Repeat password"), dbjs: db.Password,
-							required: true, name: 'password-repeat' }))
-					),
-					p({ class: 'submit-placeholder' },
-						input({ type: 'submit', value: _("Save") }))
-				)
+				ul(
+					li(field({ dbjs: user._firstName })),
+					li(field({ dbjs: user._lastName })),
+					li(field({ dbjs: user._roles })),
+					li(field({ dbjs: user._institution })),
+					li(field({ dbjs: user._email })),
+					li(field({ dbjs: user._password })),
+					li(field({ label: _("Repeat password"), dbjs: db.Password,
+						required: true, name: 'password-repeat' }))
+				),
+				p({ class: 'submit-placeholder' },
+					input({ type: 'submit', value: _("Save") }))
 			));
 	}
 };

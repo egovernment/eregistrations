@@ -19,7 +19,7 @@ exports['sub-main'] = {
 	content: function () {
 		var users = db.User.instances.filterByKey('email');
 
-		section(a({ href: '/new-user/', class: 'button-main' }, _("New user")));
+		p(a({ href: '/new-user/', class: 'button-main' }, _("New user")));
 		section({ class: 'table-responsive-container' },
 			table({ class: "submitted-user-data-table" },
 				thead(
@@ -33,11 +33,9 @@ exports['sub-main'] = {
 					return tr(
 						td(strong(user._fullName), br(), user._email),
 						td(
-							ul(user.roles.map(mapRolesToLabels), function (name) {
-								return name;
-							})
+							ul(user.roles, mapRolesToLabels)
 						),
-						td(resolve(user._institution, 'name')),
+						td(user._institution),
 						td(String(new db.DateTime(user.lastModified / 1000))),
 						td({ class: 'actions' }, a({ href: url('user', user.__id__) },
 								span({ class: 'fa fa-edit' },

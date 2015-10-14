@@ -41,6 +41,7 @@
 .submitted-user-data-table .actions {
 	padding-left: 5px;
 	padding-right: 5px;
+	text-align: center;
 }
 
 .submitted-user-data-table tr:hover .actions a {
