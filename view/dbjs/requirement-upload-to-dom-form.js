@@ -15,13 +15,15 @@ var db = require('mano').db
 
 module.exports = Object.defineProperty(db.RequirementUpload.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var options = Object(arguments[1]), self = this;
+		var options = Object(arguments[1]);
 
 		return form({ action: '/requirement-upload/' +
 				camelToHyphen.call(this.document.uniqueKey) + '/', method: 'post',
 				enctype: 'multipart/form-data', autoSubmit: true },
 			div(
-				h2(this.document._label.map(function (label) { return _d(label, { user: self.master }); })),
+				h2(this.document._label.map(function (label) {
+					return _d(label, { user: this.master });
+				}.bind(this))),
 				this.document.legend &&
 					small(mdi(_d(this.document.legend,
 						{ user: this.master }))),
