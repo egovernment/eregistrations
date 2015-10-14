@@ -1,4 +1,8 @@
+#!/usr/bin/env node
+
 'use strict';
+
+Error.stackTraceLimit = Infinity;
 
 var runCi = require('../utils/run-ci-process');
 
