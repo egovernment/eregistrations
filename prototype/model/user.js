@@ -4,6 +4,7 @@
 
 var Map          = require('es6-map')
   , db           = require('mano').db
+  , d  = require('d')
   , User         = require('../../model/user')(db)
   , Role         = require('mano-auth/model/role')(db)
   , DateType     = require('dbjs-ext/date-time/date')(db)
@@ -24,6 +25,7 @@ var Map          = require('es6-map')
   , StreetTypeChoice
   , EnumTripleOption = require('./enum-triple-option');
 
+db.Base.define('chooseLabel', d("Choose:"));
 require('./address');
 require('./business-process');
 require('dbjs-ext/create-enum')(db);
