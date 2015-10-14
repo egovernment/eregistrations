@@ -23,7 +23,7 @@ exports.head = function () {
 				return;
 			}
 			if (document.cookie.indexOf('legacy=1') !== -1) return;
-			document.write('<scr' + 'ipt async src="' + appUrl + '"></sc' + 'ript>');
+			document.write('<scr' + 'ipt defer src="' + appUrl + '"></sc' + 'ript>');
 		}, stUrl('prototype.js'));
 	}
 

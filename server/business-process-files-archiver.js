@@ -28,6 +28,7 @@ exports.filenameResetService = function (db, data) {
 		keys(pending).forEach(function (id) {
 			var bp = db.BusinessProcessBase.getById(id), url, filenames, oldFilename;
 			delete pending[id];
+			if (!bp) return;
 			if (!bp.isSubmitted) {
 				if (bp.filesArchiveUrl) bp.delete('filesArchiveUrl');
 				return;

@@ -18,7 +18,7 @@ module.exports = function (doc, sideContent) {
 	} else {
 		master = doc.owner.owner.owner.owner;
 	}
-	return [h2(_d(doc.label, { entity: master })),
+	return [h2(doc._label.map(function (label) { return _d(label, { user: master }); })),
 		section(
 			{ class: 'section-primary' },
 			h2(_("Documents history")),

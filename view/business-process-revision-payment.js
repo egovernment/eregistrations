@@ -2,10 +2,11 @@
 
 'use strict';
 
-var document = require('./_business-process-document'),
-paymentForm,
-_ = require('mano').i18n.bind('Official: Revision'),
-camelToHyphen = require('es5-ext/string/#/camel-to-hyphen');
+var _              = require('mano').i18n.bind('Official: Revision')
+  , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
+  , renderDocument = require('./_business-process-document')
+
+  , paymentForm;
 
 exports._parent = require('./user-base');
 exports._match = 'document';
@@ -40,6 +41,6 @@ paymentForm = function (paymentReceiptUpload) {
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		document(this.document, paymentForm(this.document.owner));
+		renderDocument(this.document, paymentForm(this.document.owner));
 	}
 };
