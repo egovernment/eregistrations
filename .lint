@@ -34,6 +34,7 @@ predef+ console
 ./lib
 ./server
 ./prototype/scripts
+./utils
 predef+ process, __dirname
 
 ./controller/client
