@@ -39,7 +39,7 @@ exports['sub-main'] = {
 						),
 						td(resolve(user._institution, 'name')),
 						td(String(new db.DateTime(user.lastModified / 1000))),
-						td({ class: 'actions' }, a({ href: url('user', user.__id__), rel: "server" },
+						td({ class: 'actions' }, a({ href: url('user', user.__id__) },
 								span({ class: 'fa fa-edit' },
 									_("Go to"))),
 							postButton({ buttonClass: 'actions-delete',
