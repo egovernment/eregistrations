@@ -4,6 +4,7 @@ var _  = require('mano').i18n.bind('Users Admin')
   , db = require('mano').db;
 
 exports._parent = require('./user-base');
+exports._match  = 'editedUser';
 
 exports['sub-main'] = {
 	class: { content: true },
