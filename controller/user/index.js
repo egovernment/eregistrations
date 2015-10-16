@@ -21,6 +21,4 @@ exports.profile = {
 exports['set-role'] = true;
 
 // Active Business Process change
-exports['change-business-process'] = {
-	redirectUrl: '/'
-};
+exports['change-business-process'] = true;

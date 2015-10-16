@@ -13,3 +13,8 @@ exports.profile = {
 		return submit.apply(this, arguments);
 	}
 };
+
+// Active Business Process change
+exports['change-business-process'] = {
+	redirectUrl: '/'
+};
