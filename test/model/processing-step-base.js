@@ -21,5 +21,5 @@ module.exports = function (t, a) {
 	a(processingStep.isSatisfied, true);
 	a(processingStep.isClosed, true);
 	processingStep.isApplicable = false;
-	a(processingStep.isSatisfied, true);
+	a(processingStep.isSatisfied, false);
 };

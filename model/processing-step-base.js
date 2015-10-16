@@ -11,11 +11,12 @@ var memoize           = require('memoizee/plain')
 
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(db)
-	  , Institution = defineInstitution(db);
+	  , Institution = defineInstitution(db)
+	  , ProcessingStepBase;
 
 	defineCreateEnum(db);
 
-	return db.Object.extend('ProcessingStepBase', {
+	ProcessingStepBase = db.Object.extend('ProcessingStepBase', {
 		// Label (name) of processing step
 		label: { type: StringLine },
 		// If step is processed by single institution
@@ -42,7 +43,7 @@ module.exports = memoize(function (db) {
 
 		// Whether business process is at given step or have passed it
 		isReady: { type: db.Boolean, value: function (_observe) {
-			return Boolean(_observe(this.master._isSubmitted) && this.isApplicable);
+			return Boolean(this.isApplicable && this.isPreviousStepsSatisfied);
 		} },
 
 		// Whether process is pending at step
@@ -65,9 +66,24 @@ module.exports = memoize(function (db) {
 			return this.isApproved || this.isRejected || false;
 		} },
 
-		// Often helps in resolution of isReady
+		isPreviousStepsSatisfied: { type: db.Boolean, value: function (_observe) {
+			if (!_observe(this.previousSteps._size)) {
+				return Boolean(_observe(this.master._isSubmitted));
+			}
+			return this.previousSteps.every(function (step) {
+				return _observe(step._isSatisfied);
+			});
+		} },
+
 		isSatisfied: { type: db.Boolean, value: function () {
-			return Boolean(!this.isApplicable || this.isApproved);
+			return this.isApplicable ? Boolean(this.isApproved) : this.isPreviousStepsSatisfied;
 		} }
 	});
+
+	ProcessingStepBase.prototype.define('previousSteps', {
+		type: ProcessingStepBase,
+		multiple: true
+	});
+
+	return ProcessingStepBase;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
