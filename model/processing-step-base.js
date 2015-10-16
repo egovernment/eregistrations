@@ -67,8 +67,8 @@ module.exports = memoize(function (db) {
 		} },
 
 		isPreviousStepsSatisfied: { type: db.Boolean, value: function (_observe) {
-			if (!_observe(this.previousSteps._size)) {
-				return Boolean(_observe(this.master._isSubmitted));
+			if (!this.previousSteps.size) {
+				return _observe(this.master._isSubmitted);
 			}
 			return this.previousSteps.every(function (step) {
 				return _observe(step._isSatisfied);
