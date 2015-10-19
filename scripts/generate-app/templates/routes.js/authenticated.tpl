@@ -3,6 +3,6 @@
 'use strict';
 
 module.exports = {
-	'/': require('../../view/${appNameHyphen}'),
+	'/': require('../../view/${appName}'),
 	profile: require('eregistrations/view/${appName}')
 };
