@@ -8,9 +8,5 @@
 ../../../node_modules/eregistrations/css/components/user-forms.css
 ../../../node_modules/eregistrations/css/components/error-main.css
 ../../../node_modules/eregistrations/css/components/error-page.css
-../../../node_modules/eregistrations/css/components/label-reg.css
 ../../../node_modules/eregistrations/css/components/throbber.css
-../../../node_modules/eregistrations/css/components/user-forms.css
-../../../node_modules/eregistrations/css/components/free-form.css
 ../../../css/theme.css
-../../../css/theme-part-b.css
