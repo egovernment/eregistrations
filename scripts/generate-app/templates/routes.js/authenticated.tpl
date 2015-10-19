@@ -1,4 +1,4 @@
-// Routes for the ${ appName } application.
+// Routes for the views.
 
 'use strict';
 

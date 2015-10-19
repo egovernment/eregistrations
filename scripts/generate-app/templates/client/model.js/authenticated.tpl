@@ -1,4 +1,4 @@
-// User model definition for client side.
+// Model definition for client side.
 
 'use strict';
 
