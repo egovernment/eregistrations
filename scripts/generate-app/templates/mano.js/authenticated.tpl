@@ -12,4 +12,4 @@ exports.route = function (req) {
 	return true;
 };
 exports.forceLegacyFullRender = true;
-exports.viewPath = '../../view/${appName}';
+exports.viewPath = '../../view/${ appName }';
