@@ -13,10 +13,10 @@ exports['business-process/[0-9][a-z0-9]+/delete'] = {
 		var businessProcess = db.BusinessProcess.getById(businessProcessId);
 		if (!businessProcess) return false;
 		if (businessProcess.isSubmitted) return false;
-		this.target = businessProcess;
+		this.businessProcess = businessProcess;
 		return true;
 	},
 	submit: function () {
-		db.objects.delete(this.target);
+		db.objects.delete(this.businessProcess);
 	}
 };
