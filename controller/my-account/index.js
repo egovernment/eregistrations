@@ -1,4 +1,4 @@
-// Controller for My Account application (applies for both server and client).
+// Controller for both server and client.
 
 'use strict';
 
