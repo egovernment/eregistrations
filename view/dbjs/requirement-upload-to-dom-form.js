@@ -21,13 +21,15 @@ module.exports = Object.defineProperty(db.RequirementUpload.prototype, 'toDOMFor
 				camelToHyphen.call(this.document.uniqueKey) + '/', method: 'post',
 				enctype: 'multipart/form-data', autoSubmit: true },
 			div(
-				h2(_d(this.document.label, { user: this.master })),
+				h2(this.document._label.map(function (label) {
+					return _d(label, { user: this.master });
+				}.bind(this))),
 				this.document.legend &&
 					small(mdi(_d(this.document.legend,
 						{ user: this.master }))),
 				typeof options.afterHeader === 'function' ? options.afterHeader(this) : null,
 				hr(),
-				input({ dbjs: this.document.files._map, label: true }),
+				input({ dbjs: this.document.files._map, label: _("Select file") }),
 				p({ class: 'submit' }, input({ type: 'submit', value: _("Submit") })),
 				p({ class: 'section-primary-scroll-top' },
 						a({ onclick: 'window.scroll(0, 0)' },

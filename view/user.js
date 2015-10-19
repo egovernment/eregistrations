@@ -47,18 +47,25 @@ exports['sub-main'] = {
 			ul({ class: 'user-account-service-boxes' },
 				exports._servicesBoxList(this),
 				function (item) {
+					var disabled = item.disabledCondition
+					  , renderAsForm = and(item.actionUrl, not(disabled))
+					  , renderAsDiv = or(item.hrefUrl, disabled)
+					  , boxClasses = [ 'user-account-service-box', _if(disabled, 'disabled') ];
+
 					return li(_if(item.condition || true, _if(
-						item.actionUrl,
-						form({ class: 'user-account-service-box', action: item.actionUrl, method: 'post' },
-							button({ type: 'submit' }, _if(item.actionUrl, item.buttonContent)),
-							div(div({ class: 'free-form' }, _if(item.actionUrl, item.content)),
+						renderAsForm,
+						form({ class: boxClasses, action: item.actionUrl, method: 'post' },
+							button({ type: 'submit' }, _if(renderAsForm, item.buttonContent)),
+							div(div({ class: 'free-form' }, _if(renderAsForm, item.content)),
 								p(button({ type: 'submit' },
 									i({ class: 'fa fa-angle-right' }), _('Click to start'))))),
-						div({ class: 'user-account-service-box' },
-							a({ href: item.hrefUrl }, _if(item.hrefUrl, item.buttonContent)),
-							div(div({ class: 'free-form' }, _if(item.hrefUrl, item.content)),
-								p(a({ href: item.hrefUrl },
-									i({ class: 'fa fa-angle-right' }), _('Click to start')))))
+						div({ class: boxClasses },
+							a({ href: _if(disabled, null, item.hrefUrl) }, _if(renderAsDiv, item.buttonContent)),
+							div(div({ class: 'free-form' }, _if(renderAsDiv, item.content)),
+								p(a({ href: _if(disabled, null, item.hrefUrl) },
+									i({ class: 'fa fa-angle-right' }), _if(disabled,
+										_('You have reached the draft limit for this service'),
+										_('Click to start'))))))
 					)));
 				}));
 	}

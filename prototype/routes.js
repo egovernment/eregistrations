@@ -56,10 +56,15 @@ module.exports = {
 	'print-business-processes-data': require('../view/print-business-process-data'),
 
 	// Part-B routes - users admin
-	'users-admin': require('./view/users-admin'),
-	'users-admin/add-user': require('./view/add-user'),
-	'users-admin/edit-user-id': require('./view/edit-user'),
-	'users-admin/user-id': require('./view/users-admin-user'),
+	'users-admin': require('../view/users-table'),
+	'users-admin/add-user': require('../view/user-create'),
+	'users-admin/(edit-user-id)': {
+		match: function () {
+			this.editedUser = this.user.database.userVianney;
+			return true;
+		},
+		view: require('../view/user-edit')
+	},
 
 	// Part-B routes - official user
 	official: require('./view/business-processes-table'),

@@ -23,7 +23,7 @@ exports.head = function () {
 				return;
 			}
 			if (document.cookie.indexOf('legacy=1') !== -1) return;
-			document.write('<scr' + 'ipt async src="' + appUrl + '"></sc' + 'ript>');
+			document.write('<scr' + 'ipt defer src="' + appUrl + '"></sc' + 'ript>');
 		}, stUrl('prototype.js'));
 	}
 
@@ -157,10 +157,6 @@ exports._bodyAppend = function () {
 			),
 			li(
 				a({ href: '/users-admin/' }, span("Users admin"), span({ class: 'label-reg' }, "Admin"))
-			),
-			li(
-				a({ href: '/users-admin/user-id/' }, span("Users admin - user"),
-					span({ class: 'label-reg' }, "Admin"))
 			),
 			li(
 				a({ href: '/users-admin/add-user/' }, span("Users admin - add user"),

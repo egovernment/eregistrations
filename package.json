@@ -33,6 +33,7 @@
     "client-make": "node node_modules/mano/bin/generate-client-files",
     "webmake": "node node_modules/mano/bin/generate-client-programs",
     "clean": "node node_modules/mano/bin/clear-generated",
+    "ci": "node bin/ci",
     "lint": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js",
     "lint-ci": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js --no-cache --no-stream",
     "lint-console": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-jslint-medikoo/index.js --watch",

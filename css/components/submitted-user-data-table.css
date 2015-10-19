@@ -27,7 +27,6 @@
 
 .submitted-user-data-table tbody tr td {
 	border: 1px solid var(--light-inner-border);
-	padding: 0;
 	text-align: left;
 }
 .submitted-user-data-table tbody tr:hover,
@@ -39,15 +38,25 @@
 	text-decoration: underline;
 }
 
+.submitted-user-data-table .actions {
+	padding-left: 5px;
+	padding-right: 5px;
+	text-align: center;
+}
+
 .submitted-user-data-table tr:hover .actions a {
 	text-decoration: none;
 }
 
-.submitted-user-data-table td a,
-.submitted-user-data-table.submitted-current-user-data-table tbody tr td {
+.submitted-user-data-table td.submitted-user-data-table-link a,
+.submitted-user-data-table td {
 	padding: 11px 25px 10px;
-
 }
+
+.submitted-user-data-table td.submitted-user-data-table-link {
+	padding: 0;
+}
+
 .submitted-user-data-table td a {
 	display: block;
 }
@@ -55,16 +64,6 @@
 	display: inline;
 	padding: 3px 6px 4px;
 	font-size: 12px;
-}
-
-.submitted-user-data-table.submitted-current-user-data-table tbody tr .actions {
-	padding-left: 5px;
-	padding-right: 5px;
-}
-
-.submitted-user-data-table tr .actions {
-	padding: 10px 25px 9px;
-	text-align: center;
 }
 
 .submitted-user-data-table-basic > a {

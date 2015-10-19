@@ -10,17 +10,11 @@ var modalContainer = require('./_modal-container'),
 _ = require('mano').i18n.bind('Registration');
 
 exports.body = function () {
-	var modalCurtain, logoAnchorOptions;
-
-	if (this.businessProcess) {
-		logoAnchorOptions = { href: '/my-account/', rel: 'server' };
-	} else {
-		logoAnchorOptions = { href: '/' };
-	}
+	var modalCurtain;
 
 	header({ class: 'header-top' },
 		div({ class: 'content header-top-wrapper' },
-			div({ class: 'header-top-logo' }, a(logoAnchorOptions, exports._logo(this))),
+			div({ class: 'header-top-logo' }, a({ href: '/' }, exports._logo(this))),
 			nav(ul({ class: 'header-top-menu', id: 'menu' }))
 			)
 		);

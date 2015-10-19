@@ -8,6 +8,7 @@ var assign        = require('es5-ext/object/assign')
   , nest          = require('mano/utils/nest-post-controllers')
   , db            = require('mano').db
 
+  , commonPaths = Object.keys(require('./user'))
   , keys = Object.keys;
 
 var matchBusinessProcess = function (id) {
@@ -26,7 +27,7 @@ module.exports = function (routes, data) {
 	constraint = (data.constraint != null) && callable(data.constraint);
 
 	// Cleanup
-	keys(routes).forEach(function (key) {
+	commonPaths.forEach(function (key) {
 		delete partA[key];
 		delete partB[key];
 	});

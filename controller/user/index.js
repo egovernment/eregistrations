@@ -16,3 +16,9 @@ exports.profile = {
 		return validate.call(this, data, { partial: true });
 	}
 };
+
+// Role switch
+exports['set-role'] = true;
+
+// Active Business Process change
+exports['change-business-process'] = true;

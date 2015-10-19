@@ -5,8 +5,23 @@
 var curry              = require('es5-ext/function/#/curry')
   , nextTick           = require('next-tick')
   , _                  = require('mano').i18n.bind('User Submitted')
-  , formatLastModified = require('./utils/last-modified')
-  , scrollBottom       = require('./utils/scroll-to-bottom');
+  , scrollBottom       = require('./utils/scroll-to-bottom')
+  , tableCols;
+
+tableCols = require('./_business-process-table-columns');
+
+// Creates actions column cell with 'archive download' action.
+var createActionsCell = function (businessProcess) {
+	return td({ class: 'submitted-user-data-table-link' }, _if(businessProcess._filesArchiveUrl,
+		a({ class: 'hint-optional hint-optional-left', target: "_blank",
+			'data-hint': _("Download the electronic file"),
+			download: businessProcess._filesArchiveUrl.map(function (name) {
+				if (!name) return;
+				return name.slice(1);
+			}),
+			href: businessProcess._filesArchiveUrl },
+			span({ class: 'fa fa-download' }, _("Download")))));
+};
 
 module.exports = function (context/*, options */) {
 	var options = Object(arguments[1])
@@ -19,35 +34,19 @@ module.exports = function (context/*, options */) {
 			{ class: 'submitted-user-data-table submitted-current-user-data-table', responsive: true },
 			thead(
 				tr(
-					th(_("Entity")),
-					th(_("Service")),
-					th(_("Submission date")),
-					th(_("Withdraw date")),
-					th(_("Inscriptions and controls")),
-					th({ class: 'submitted-user-data-table-action' })
+					list(tableCols, function (col) {
+						th(typeof col.head === 'function' ? col.head(businessProcess) : col.head);
+					}),
+					th()
 				)
 			),
 			tbody(
 				tr(
-					td(businessProcess._businessName),
-					td(businessProcess._label),
-					td(businessProcess.submissionForms
-						._isAffidavitSigned._lastModified.map(formatLastModified)),
-					td(businessProcess._isApproved._lastModified.map(formatLastModified)),
-					td(
-						list(businessProcess.registrations.requested, function (reg) {
-							return span({ class: 'label-reg' }, reg.abbr);
-						})
-					),
-					td({ class: 'submitted-user-data-table-action' },
-						_if(businessProcess._filesArchiveUrl,
-							a({ class: 'hint-optional hint-optional-left', target: "_blank",
-								'data-hint': _("Download the electronic file"),
-								download: businessProcess._filesArchiveUrl.map(function (name) {
-									if (!name) return;
-									return name.slice(1);
-								}),
-								href: businessProcess._filesArchiveUrl }, i({ class: 'fa fa-download' }))))
+					list(tableCols, function (col) {
+						td({ class: col.class },
+							typeof col.data === 'function' ? col.data(businessProcess) : col.data);
+					}),
+					createActionsCell(businessProcess)
 				)
 			)
 		)

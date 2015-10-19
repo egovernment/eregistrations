@@ -52,7 +52,7 @@ module.exports = function (t, a) {
 	a.h2("Approval");
 	requirementUpload.status = 'valid';
 	a(requirementUpload.isRejected, false);
-	a(requirementUpload.isApproved, false);
+	a(requirementUpload.isApproved, true);
 	businessProcess.foo = 'bar';
 	a(requirementUpload.isRejected, false);
 	a(requirementUpload.isApproved, true);

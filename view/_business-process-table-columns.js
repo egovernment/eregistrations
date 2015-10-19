@@ -25,22 +25,4 @@ module.exports = [{
 		function (reg) {
 			return span({ class: 'label-reg' }, reg.abbr);
 		}); }
-}, {
-	class: 'actions',
-	data: function (businessProcess) {
-		return _if(eq(businessProcess._status, 'draft'),
-				function () { return [a({ href: url(businessProcess.__id__), rel: "server" },
-					span({ class: 'fa fa-edit' },
-						_("Go to"))),
-					postButton({ buttonClass: 'actions-delete',
-						action: url('business-process', businessProcess.__id__, 'delete'),
-						confirm: _("Are you sure?"),
-						value: span({ class: 'fa fa-trash-o' })
-						})]; },
-				function () { return a({ class: 'actions-edit',
-					href: url(businessProcess.__id__), rel: "server" },
-					span({ class: 'fa fa-search' },
-						_("Go to"))); }
-				);
-	}
 }];
