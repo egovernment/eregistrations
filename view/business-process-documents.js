@@ -23,7 +23,7 @@ exports.step = function () {
 				this.businessProcess.requirementUploads.applicable,
 				function (requirementUpload) {
 					return li({ class: 'section-primary' }, requirementUpload.toDOMForm(document));
-				}.bind(this)
+				}
 			)
 		),
 		div({ class: 'disabler' })
