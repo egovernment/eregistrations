@@ -22,7 +22,8 @@ exports['sub-main'] = {
 					href: '/business-process/' + this.businessProcess.__id__ + '/print-data/'
 					}, span({ class: "fa fa-print" }, _("Print")))),
 			_if(cumulatedSections._size, generateSections(cumulatedSections, {
-				cssClass: ["section-primary", "entity-data-section-primary", "entity-data-section"]
+				cssClass: ["section-primary", "entity-data-section-primary", "entity-data-section"],
+				viewContext: this
 			}), p(_('No data to display')))
 			);
 	}
