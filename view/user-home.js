@@ -7,15 +7,16 @@ var _       = require('mano').i18n.bind('View: Documents list')
 
 // Creates actions column cell with 'goto', 'edit' and 'delete' actions.
 var createActionsCell = function (businessProcess) {
-	return _if(eq(businessProcess._status, 'draft'),
+	return _if(businessProcess._isAtDraft,
 			td({ class: 'actions' }, a({ href: url(businessProcess.__id__), rel: "server" },
 				span({ class: 'fa fa-edit' },
 					_("Go to"))),
-				postButton({ buttonClass: 'actions-delete',
+			_if(businessProcess._isSentBack, null, postButton({ buttonClass: 'actions-delete',
 					action: url('business-process', businessProcess.__id__, 'delete'),
 					confirm: _("Are you sure?"),
 					value: span({ class: 'fa fa-trash-o' })
-					})),
+					}))
+				),
 			td({ class: 'submitted-user-data-table-link' }, a({ class: 'actions-edit',
 				href: url(businessProcess.__id__), rel: "server" },
 					span({ class: 'fa fa-search' }, _("Go to"))))
