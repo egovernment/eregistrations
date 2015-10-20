@@ -1,4 +1,4 @@
-// Configuration of URL routes.
+// Routes for the views.
 
 'use strict';
 

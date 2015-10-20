@@ -1,4 +1,4 @@
-// Routes for the application view.
+// Routes for the views.
 
 'use strict';
 
