@@ -18,6 +18,9 @@ module.exports = function (t, a) {
 		resolventProperty: { value: 'prop0' },
 		resolventValue: { value: true }
 	});
+	var BadlyConfiguredFormSection = FormSection.extend('BadlyConfiguredFormSection', {
+		propertyNames: { value: ['nonExistentProperty'] }
+	});
 	Partner = db.Object.extend('Partner', {
 		name: { type: db.String, required: true },
 		hasSameLastName: { type: db.Boolean, required: true },
@@ -47,7 +50,8 @@ module.exports = function (t, a) {
 			prop3: { type: db.Boolean, required: true },
 			partner: { type: Partner, nested: true },
 			section: { type: TestFormSection, nested: true },
-			otherObj: { type: db.Object }
+			otherObj: { type: db.Object },
+			badSection: { type: BadlyConfiguredFormSection, nested: true }
 		}
 	);
 	businessProcess = new BusinessProcess();
@@ -95,4 +99,7 @@ module.exports = function (t, a) {
 		return partnerSection.propertyMaster;
 	},
 		new RegExp("Could not find propertyMaster of type"), "errorTest");
+	a.throws(function () {
+		return businessProcess.badSection.resolvedPropertyNames;
+	}, new RegExp("Could not find property: nonExistentProperty"), "errorTest");
 };
