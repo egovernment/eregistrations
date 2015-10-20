@@ -66,6 +66,7 @@ module.exports = memoize(function (db/*, options*/) {
 		status: { type: BusinessProcessStatus, value: function (_observe) {
 			var frontDesk;
 			if (!this.isSubmitted) return 'draft';
+			if (this.isSentBack) return 'sentBack';
 			if (this.isClosed) return 'closed';
 			frontDesk = this.processingSteps.map.frontDesk;
 			if (frontDesk && _observe(frontDesk._isPending)) return 'pickup';

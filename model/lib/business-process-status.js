@@ -16,6 +16,9 @@ module.exports = memoize(function (db) {
 		["draft", {
 			label: _("Draft")
 		}],
+		["sentBack", {
+			label: _("Pending for correction")
+		}],
 		["process", {
 			label: _("In process")
 		}],
