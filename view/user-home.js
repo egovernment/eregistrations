@@ -11,7 +11,7 @@ var createActionsCell = function (businessProcess) {
 			td({ class: 'actions' }, a({ href: url(businessProcess.__id__), rel: "server" },
 				span({ class: 'fa fa-edit' },
 					_("Go to"))),
-			_if(businessProcess._isSentBack, null, postButton({ buttonClass: 'actions-delete',
+			_if(not(businessProcess._isSubmitted), postButton({ buttonClass: 'actions-delete',
 					action: url('business-process', businessProcess.__id__, 'delete'),
 					confirm: _("Are you sure?"),
 					value: span({ class: 'fa fa-trash-o' })
