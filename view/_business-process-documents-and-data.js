@@ -119,5 +119,5 @@ module.exports = function (businessProcess/*, options*/) {
 					span({ class: 'fa fa-print' }, _("Print"))
 				)),
 
-			generateSections(businessProcess.dataForms.applicable))];
+			generateSections(businessProcess.dataForms.applicable, { viewContext: this }))];
 };

@@ -34,6 +34,14 @@
 	color: var(--normal-dark-background);
 }
 
+.section-primary-sub > * {
+	margin-bottom: 22px;
+}
+
+.section-primary-sub > :last-child {
+	margin-bottom: 0;
+}
+
 .section-primary-sub-action {
 	line-height: 44px;
 }
