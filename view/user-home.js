@@ -31,7 +31,8 @@ exports['user-account-content'] = function () {
 
 	section({ class: 'section-primary' },
 		_if(businessProcesses._size, function () {
-			return section(
+			return [p(_("Here you can modify not yet submitted requests, follow the process of the " +
+				"ongoing procedures and view already concluded records.")), section(
 				{ class: 'submitted-main table-responsive-container' },
 				table(
 					{ class: 'submitted-user-data-table submitted-current-user-data-table' },
@@ -47,7 +48,7 @@ exports['user-account-content'] = function () {
 						}
 					)
 				)
-			);
+			)];
 		}.bind(this),
 			md(_('You have not started any services yet.' +
 				' Please choose a service in the list below' +
