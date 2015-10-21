@@ -15,6 +15,7 @@ exports['print-page-title'] = function () {
 
 exports.main = function () {
 	insert(generateSections(this.businessProcess.dataForms.processChainApplicable, {
-		cssClass: ["section-primary", "entity-data-section-primary", "entity-data-section"]
+		cssClass: ["section-primary", "entity-data-section-primary", "entity-data-section"],
+		viewContext: this
 	}));
 };

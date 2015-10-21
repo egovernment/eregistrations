@@ -22,7 +22,7 @@ exports.step = function () {
 	);
 
 	div({ class: 'section-primary entity-data-section-primary' },
-		generateSections(user.formSections));
+		generateSections(user.formSections), { viewContext: this });
 
 	div({ class: 'user-next-step-button' },
 		a({ href: '/forms/' }, "Back to forms")
