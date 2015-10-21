@@ -21,8 +21,7 @@ h3.user-account-section-title {
 }
 
 .user-account-boxes > section.user-account-welcome {
-	width: calc(100% - 340px);
-	margin-left: 20px;
+	width: 100%;
 	background-color: var(--normal-light-medium-background);
 	color: var(--normal-text);
 }
