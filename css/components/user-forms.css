@@ -19,3 +19,7 @@
 .user-forms > .pagination {
 	margin-bottom: 17px;
 }
+
+.user-forms h2 {
+	font-weight: 300;
+}

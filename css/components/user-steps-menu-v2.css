@@ -41,7 +41,8 @@
 	background: linear-gradient(to top, var(--normal-background), var(--white-background));
 	position: absolute;
 	border-radius: 5px 0 0 5px;
-	border-right: 1px solid var(--normal-dark-background);
+	border-right: none;
+	opacity: .9;
 }
 
 .user-steps-menu-list li.user-steps-menu-start-step {

@@ -35,6 +35,8 @@ Component describing basic elements styles - reusable
 	--success-text: #5CB85C;
 	--error-text: #D9534F;
 	--progress-text: #f89406;
+
+	
 }
 
 @font-face {

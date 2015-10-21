@@ -37,6 +37,8 @@
 
 .user-steps-menu-list li {
 	margin: 0 2px;
+	border-radius:5px 0 0 5px;
+	border:none;
 }
 
 .user-steps-menu-show,
@@ -44,6 +46,11 @@
 	width: 100%;
 	display: inline-block;
 	white-space: nowrap;
+	font-weight: 500;
+	font-size: 21px;
+	text-shadow: none;
+	padding-top:10px;
+	padding-bottom:10px;
 }
 
 label.user-steps-menu-show {
