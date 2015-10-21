@@ -31,7 +31,7 @@ Component describing basic elements styles - reusable
 	--hint-text: #b3b3b3;
 	--light-normal-text: #909090;
 	--normal-text: #666666;
-	--dark-text: #333333;
+	--dark-text: #2E2E2E;
 	--success-text: #5CB85C;
 	--error-text: #D9534F;
 	--progress-text: #f89406;
@@ -111,7 +111,7 @@ html {
 }
 h1, h2, h3, h4, h5, p {
 	color: var(--dark-text);
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: "Roboto", "Segoe UI Normal", Arial, Helvetica, sans-serif;
 }
 
 h1 {
