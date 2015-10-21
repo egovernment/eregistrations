@@ -1,10 +1,11 @@
 "use strict";
 
-var db = require('mano').db
+var db            = require('mano').db
+  , _             = require('mano').i18n.bind('View: Requirement Upload')
+  , identity      = require('es5-ext/function/identity')
   , camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
-  , _  = require('mano').i18n.bind('View: Requirement Upload')
-  , _d = _
-  , d = require('d');
+  , d             = require('d')
+  , _d            = _;
 
 /**
  * @param {object} document
@@ -24,6 +25,10 @@ module.exports = Object.defineProperty(db.RequirementUpload.prototype, 'toDOMFor
 				h2(this.document._label.map(function (label) {
 					return _d(label, { user: this.master });
 				}.bind(this))),
+				_if(this._isRecentlyRejected, div({ class: 'info-main' },
+						_if(eq(this.rejectReasons._size, 1),
+								p(this.rejectReasons._first),
+								ul(this.rejectReasons, identity)))),
 				this.document.legend &&
 					small(mdi(_d(this.document.legend,
 						{ user: this.master }))),

@@ -22,7 +22,8 @@ exports.step = function () {
 				{ class: 'sections-primary-list user-documents-upload' },
 				this.businessProcess.requirementUploads.applicable,
 				function (requirementUpload) {
-					return li({ class: 'section-primary' }, requirementUpload.toDOMForm(document));
+					return li({ class: ['section-primary', _if(requirementUpload._isRecentlyRejected,
+						'requirement-upload-rejected')] }, requirementUpload.toDOMForm(document));
 				}
 			)
 		),

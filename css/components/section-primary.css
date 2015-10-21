@@ -140,6 +140,8 @@
 	background: var(--normal-light-background);
 	padding-top: 10px;
 	padding-bottom: 10px;
+	margin-top: 11px;
+	margin-bottom: 11px;
 }
 
 .section-primary .dbjs-input-component > .input .multiple ul {
@@ -158,4 +160,8 @@
 	.section-primary .dbjs-input-component > .input:first-child {
 		margin-left: 0;
 	}
+}
+
+.section-primary.requirement-upload-rejected {
+	border-color: var(--error-background);
 }
