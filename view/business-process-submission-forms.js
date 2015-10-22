@@ -17,7 +17,7 @@ exports.step = function () {
 
 	div({ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
 				'disabler-active')], id: 'forms-disabler-range' },
-		generateSections(this.businessProcess.submissionForms.applicable),
+		generateSections(this.businessProcess.submissionForms.applicable, { viewContext: this }),
 		div({ class: 'disabler' }));
 
 	insert(_if(or(lt(this.businessProcess.dataForms._progress, 1),

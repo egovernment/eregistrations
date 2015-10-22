@@ -29,7 +29,7 @@ exports.step  = function () {
 		_("Add ${ entityLabel }", { entityLabel: this.entity.label }),
 		_("Edit ${ entityName }", { entityName: this.entity._name })));
 	insert(generateFormSections(entity.dataForms.applicable,
-		{ url: url }));
+		{ viewContext: this, url: url }));
 	if (this.entity.dataForms.map.size > 1) {
 		div({ class: 'user-next-step-button' },
 			a({ href: exports._entitiesTableRootUrl(this) + '#' + entitiesTableId },
