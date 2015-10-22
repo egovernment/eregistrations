@@ -8,7 +8,7 @@ var matchBusinessProcess = function (businessProcessId) {
 	this.businessProcess = db.BusinessProcess.getById(businessProcessId);
 
 	if (this.businessProcess) {
-		this.processingStep = this.businessProcess.processingSteps.map['hyphenToCamel.call("${ appName }".replace("official-")')];
+		this.processingStep = this.businessProcess.processingSteps.map.${ appNameSuffix };
 		if (!this.processingStep.isReady) return false;
 		if (this.processingStep.steps) {
 			this.processingStep = this.processingStep.steps.applicable.first;

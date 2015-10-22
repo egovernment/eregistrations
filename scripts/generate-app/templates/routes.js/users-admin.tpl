@@ -2,4 +2,4 @@
 
 var assign = require('es5-ext/object/assign');
 
-assign(exports, require('../../../../routes/users-admin'));
+assign(exports, require('eregistrations/routes/users-admin'));

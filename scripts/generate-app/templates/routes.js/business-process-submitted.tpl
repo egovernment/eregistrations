@@ -2,4 +2,4 @@
 
 var assign = require('es5-ext/object/assign');
 
-assign(exports, require('../../../../routes/business-process-submitted'));
+assign(exports, require('eregistrations/routes/business-process-submitted'));
