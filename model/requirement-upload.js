@@ -40,7 +40,7 @@ module.exports = memoize(function (db) {
 			type: Percentage,
 			// By default we require at least one file uploaded
 			value: function (_observe) {
-				return _observe(this.document.files.ordered._size) ? 1 : 0;
+				return (!this.isRejected && _observe(this.document.files.ordered._size)) ? 1 : 0;
 			}
 		},
 

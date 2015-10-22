@@ -46,7 +46,7 @@ module.exports = function (t, a) {
 
 	process.map.test.status = 'invalid';
 	process.map.test.rejectReasonTypes.add('illegible');
-	a(process.progress, 1);
+	a(process.progress, 0);
 	a.deep(aFrom(process.applicable), [process.map.test]);
 	a.deep(aFrom(process.uploaded), [process.map.test]);
 	a.deep(aFrom(process.approved), []);
