@@ -21,7 +21,8 @@ exports._requirementsIntro = function () {
 
 exports._costsIntro = function () {
 	return [div({ class: 'free-form' },
-		p({ class: "intro" }, "LoLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat aliquet massa," +
+		p({ class: "intro" },
+			"LoLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat aliquet massa," +
 			" quis vulputate diam. Morbi non dolor ac tellus finibus commodo. Donec convallis" +
 			" tortor felis, et sodales quam vulputate ac."),
 		ul(
