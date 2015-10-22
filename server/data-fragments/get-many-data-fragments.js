@@ -45,5 +45,5 @@ module.exports = function (collection/*, getFragment*/) {
 			current.add(object);
 		});
 	});
-	return fragment;
+	return fragment.flush();
 };
