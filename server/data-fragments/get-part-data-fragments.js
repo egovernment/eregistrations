@@ -36,6 +36,6 @@ module.exports = function (Type, paths) {
 			if (!paths.has(path)) return;
 			fragment.update(id, { value: serialize(event.value), stamp: event.stamp });
 		});
-		return fragment;
+		return fragment.flush();
 	};
 };

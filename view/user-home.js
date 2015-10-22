@@ -7,15 +7,16 @@ var _       = require('mano').i18n.bind('View: Documents list')
 
 // Creates actions column cell with 'goto', 'edit' and 'delete' actions.
 var createActionsCell = function (businessProcess) {
-	return _if(eq(businessProcess._status, 'draft'),
+	return _if(businessProcess._isAtDraft,
 			td({ class: 'actions' }, a({ href: url(businessProcess.__id__), rel: "server" },
 				span({ class: 'fa fa-edit' },
 					_("Go to"))),
-				postButton({ buttonClass: 'actions-delete',
+			_if(not(businessProcess._isSubmitted), postButton({ buttonClass: 'actions-delete',
 					action: url('business-process', businessProcess.__id__, 'delete'),
 					confirm: _("Are you sure?"),
 					value: span({ class: 'fa fa-trash-o' })
-					})),
+					}))
+				),
 			td({ class: 'submitted-user-data-table-link' }, a({ class: 'actions-edit',
 				href: url(businessProcess.__id__), rel: "server" },
 					span({ class: 'fa fa-search' }, _("Go to"))))
@@ -30,7 +31,8 @@ exports['user-account-content'] = function () {
 
 	section({ class: 'section-primary' },
 		_if(businessProcesses._size, function () {
-			return section(
+			return [p(_("Here you can modify not yet submitted requests, follow the process of the " +
+				"ongoing procedures and view already concluded records.")), section(
 				{ class: 'submitted-main table-responsive-container' },
 				table(
 					{ class: 'submitted-user-data-table submitted-current-user-data-table' },
@@ -46,7 +48,7 @@ exports['user-account-content'] = function () {
 						}
 					)
 				)
-			);
+			)];
 		}.bind(this),
 			md(_('You have not started any services yet.' +
 				' Please choose a service in the list below' +
