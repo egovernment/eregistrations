@@ -22,7 +22,8 @@ h3.user-account-section-title {
 
 .user-account-boxes > section.user-account-welcome {
 	width: 100%;
-	background-color: var(--normal-light-medium-background);
+	background-color: transparent;
+	border:none;
 	color: var(--normal-text);
 }
 
