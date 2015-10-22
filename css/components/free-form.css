@@ -27,7 +27,7 @@
 	list-style-type: lower-latin;
 }
 
-.free-form > p:not(.intro) + ul,
-.free-form > p:not(.intro) + ol {
+.free-form > p + ul,
+.free-form > p + ol {
 	margin-top: -22px;
 }
