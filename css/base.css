@@ -31,10 +31,55 @@ Component describing basic elements styles - reusable
 	--hint-text: #b3b3b3;
 	--light-normal-text: #909090;
 	--normal-text: #666666;
-	--dark-text: #333333;
+	--dark-text: #2E2E2E;
 	--success-text: #5CB85C;
 	--error-text: #D9534F;
 	--progress-text: #f89406;
+
+}
+
+@font-face {
+	font-family: 'Roboto';
+	src: url('/fonts/roboto/roboto-regular-webfont.eot');
+	src: url('/fonts/roboto/roboto-regular-webfont.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/roboto/roboto-regular-webfont.woff') format('woff'),
+		url('/fonts/roboto/roboto-regular-webfont.ttf') format('truetype'),
+		url('/fonts/roboto/roboto-regular-webfont.svg#roboto') format('svg');
+	font-weight: 400;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Roboto';
+	src: url('/fonts/roboto/roboto-italic-webfont.eot');
+	src: url('/fonts/roboto/roboto-italic-webfont.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/roboto/roboto-italic-webfont.woff') format('woff'),
+		url('/fonts/roboto/roboto-italic-webfont.ttf') format('truetype'),
+		url('/fonts/roboto/roboto-italic-webfont.svg#roboto') format('svg');
+	font-weight: 400;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'Roboto';
+	src: url('/fonts/roboto/roboto-bold-webfont.eot');
+	src: url('/fonts/roboto/roboto-bold-webfont.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/roboto/roboto-bold-webfont.woff') format('woff'),
+		url('/fonts/roboto/roboto-bold-webfont.ttf') format('truetype'),
+		url('/fonts/roboto/roboto-bold-webfont.svg#roboto') format('svg');
+	font-weight: 700;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Roboto';
+	src: url('/fonts/roboto/roboto-bold-italic-webfont.eot');
+	src: url('/fonts/roboto/roboto-bold-italic-webfont.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/roboto/roboto-bold-italic-webfont.woff') format('woff'),
+		url('/fonts/roboto/roboto-bold-italic-webfont.ttf') format('truetype'),
+		url('/fonts/roboto/roboto-bold-italic-webfont.svg#roboto') format('svg');
+	font-weight: 700;
+	font-style: italic;
 }
 
 html {
@@ -48,7 +93,7 @@ body {
 	color: var(--dark-text);
 	margin: 0;
 	font-size: 14px;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: "Roboto", Arial, Helvetica, sans-serif;
 	line-height: 22px;
 }
 
@@ -67,7 +112,7 @@ html {
 }
 h1, h2, h3, h4, h5, p {
 	color: var(--dark-text);
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-family: "Roboto", Arial, Helvetica, sans-serif;
 }
 
 h1 {
