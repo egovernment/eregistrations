@@ -11,7 +11,7 @@ exports['sub-main'] = {
 	content: function () {
 
 		div({ class: 'user-account-boxes' },
-			section({ id: 'welcome-box', class: 'section-primary user-account-welcome' },
+			section({ id: 'welcome-box', class: 'user-account-welcome' },
 				header(
 					h3(_("Welcome to your account. From here you can:"))
 				),

@@ -25,6 +25,7 @@ h3.user-account-section-title {
 	background-color: transparent;
 	border:none;
 	color: var(--normal-text);
+	padding: 21px 20px;
 }
 
 @media only screen and (max-width: 640px) {
@@ -46,6 +47,7 @@ h3.user-account-section-title {
 .user-account-welcome header {
 	display: flex;
 	justify-content: space-between;
+	margin-bottom:22px;
 }
 
 h3.user-account-section-title {
