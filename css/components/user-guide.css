@@ -17,7 +17,7 @@
 .user-guide > .section-primary > .section-primary-wrapper > h2,
 .user-guide > .section-primary > h2 + hr,
 .user-guide > .section-primary > .section-primary-wrapper > h2 + hr {
-	margin-bottom: 10px;
+	margin-bottom: 11px;
 }
 
 .user-guide-requirements-list {
@@ -45,7 +45,7 @@
 	border-bottom: 1px solid var(--normal-background);
 	border-top: none;
 	padding: 10px 5px 11px;
-	margin-top: 20px;
+	margin-top: 22px;
 	margin-bottom: 22px;
 	font-weight: bolder;
 	font-size:16px;

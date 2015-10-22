@@ -7,7 +7,7 @@
 .section-primary > *,
 .section-primary > form > *,
 .section-primary > .section-primary-wrapper > * {
-	margin-bottom: 10px;
+	margin-bottom: 11px;
 }
 .section-primary > *:last-child,
 .section-primary > form > *:last-child,
@@ -151,8 +151,8 @@
 	border-left:3px solid var(--normal-background);
 	background-color: var(--light-background);
 	font-weight: 400;
-	margin-top:15px;
-	padding: 5px 15px;
+	margin:11px 0;
+	padding: 6px 16px 5px;
 	display: block;
 }
 

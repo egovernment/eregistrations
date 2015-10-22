@@ -93,7 +93,7 @@ body {
 	color: var(--dark-text);
 	margin: 0;
 	font-size: 14px;
-	font-family: "Roboto", "Segoe UI Normal", Arial, Helvetica, sans-serif;
+	font-family: "Roboto", Arial, Helvetica, sans-serif;
 	line-height: 22px;
 }
 
@@ -112,7 +112,7 @@ html {
 }
 h1, h2, h3, h4, h5, p {
 	color: var(--dark-text);
-	font-family: "Roboto", "Segoe UI Normal", Arial, Helvetica, sans-serif;
+	font-family: "Roboto", Arial, Helvetica, sans-serif;
 }
 
 h1 {
