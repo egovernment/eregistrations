@@ -1,15 +1,16 @@
 'use strict';
 
-var memoize      = require('memoizee/plain')
-  , validDbjs    = require('dbjs/valid-dbjs')
-  , normalizeOpts = require('es5-ext/object/normalize-options')
-  , definePerson = require('../person')
-  , defineUser   = require('mano-auth/model/user');
+var normalizeOpts  = require('es5-ext/object/normalize-options')
+  , memoize        = require('memoizee/plain')
+  , ensureDatabase = require('dbjs/valid-dbjs')
+  , defineUser     = require('mano-auth/model/user')
+  , defineRole     = require('mano-auth/model/role')
+  , definePerson   = require('../person');
 
 module.exports = memoize(function (db/*, options */) {
-	var options, Person;
-	validDbjs(db);
-	options = Object(arguments[1]);
-	Person = definePerson(db, options);
-	return defineUser(db, normalizeOpts(options, { Parent: Person }));
+	var options = Object(arguments[1])
+	  , Person = definePerson(ensureDatabase(db), options)
+	  , User = defineUser(db, normalizeOpts(options, { Parent: Person }));
+	defineRole(db);
+	return User;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
