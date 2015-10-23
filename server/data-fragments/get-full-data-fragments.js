@@ -40,6 +40,6 @@ module.exports = function (Type/*, options*/) {
 				fragment.update(id, { value: serialize(event.value), stamp: event.stamp });
 			});
 		}
-		return fragment;
+		return fragment.flush();
 	};
 };
