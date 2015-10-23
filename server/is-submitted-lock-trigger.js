@@ -1,14 +1,15 @@
 'use strict';
 
 var db      = require('mano').db
-  , debug   = require('debug-ext')('sent-back-trigger')
-  , verbose = require('debug-ext')('sent-back-trigger:verbose');
+  , debug   = require('debug-ext')('is-submitted-lock-trigger')
+  , verbose = require('debug-ext')('is-submitted-lock-trigger:verbose');
 
 var lockIsSubmitted = function (businessProcess) {
 	debug('%s locking isSubmitted', businessProcess.__id__);
 
 	if (businessProcess.getDescriptor('isSubmitted')._value_ !== true) {
 		businessProcess.isSubmitted = true;
+		businessProcess.isSubmittedLocked = true;
 	}
 };
 
@@ -17,6 +18,7 @@ var unlockIsSubmitted = function (businessProcess) {
 
 	if (businessProcess.getDescriptor('isSubmitted')._value_ === true) {
 		businessProcess.delete('isSubmitted');
+		businessProcess.isSubmittedLocked = false;
 	}
 };
 

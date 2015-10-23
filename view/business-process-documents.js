@@ -10,6 +10,8 @@ exports._parent = require('./business-process-base');
 exports['step-documents'] = { class: { 'step-active': true } };
 
 exports.step = function () {
+	var requirementUploads = this.businessProcess.requirementUploads;
+
 	exports._documentsHeading();
 
 	insert(errorMsg(this));
@@ -20,16 +22,23 @@ exports.step = function () {
 		section(
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
-				this.businessProcess.requirementUploads.applicable,
+				requirementUploads.recentlyRejected,
 				function (requirementUpload) {
-					return li({ class: ['section-primary', _if(requirementUpload._isRecentlyRejected,
-						'requirement-upload-rejected')] }, requirementUpload.toDOMForm(document));
+					return li({ class: ['section-primary', 'requirement-upload-rejected'] },
+						requirementUpload.toDOMForm(document));
+				}
+			),
+			ul(
+				{ class: 'sections-primary-list user-documents-upload' },
+				requirementUploads.applicable.not(requirementUploads.recentlyRejected),
+				function (requirementUpload) {
+					return li({ class: 'section-primary' }, requirementUpload.toDOMForm(document));
 				}
 			)
 		),
 		div({ class: 'disabler' })
 	);
-	insert(_if(eq(this.businessProcess.requirementUploads._progress, 1),
+	insert(_if(eq(requirementUploads._progress, 1),
 		div({ class: 'user-next-step-button' },
 			a({ href: _if(not(eq(this.businessProcess.costs._paymentWeight, 0)), '/pay/',
 				'/submission/') }, _("Continue to next step")))));
