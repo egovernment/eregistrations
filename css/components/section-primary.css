@@ -169,7 +169,3 @@
 		margin-left: 0;
 	}
 }
-
-.section-primary.requirement-upload-rejected {
-	border-color: var(--error-background);
-}

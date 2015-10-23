@@ -8,7 +8,6 @@ var lockIsSubmitted = function (businessProcess) {
 	debug('%s locking isSubmitted', businessProcess.__id__);
 
 	if (businessProcess.getDescriptor('isSubmitted')._value_ !== true) {
-		businessProcess.isSubmitted = true;
 		businessProcess.isSubmittedLocked = true;
 	}
 };
@@ -17,8 +16,7 @@ var unlockIsSubmitted = function (businessProcess) {
 	debug('%s unlocking isSubmitted', businessProcess.__id__);
 
 	if (businessProcess.getDescriptor('isSubmitted')._value_ === true) {
-		businessProcess.delete('isSubmitted');
-		businessProcess.isSubmittedLocked = false;
+		businessProcess.delete('isSubmittedLocked');
 	}
 };
 

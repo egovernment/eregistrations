@@ -40,10 +40,9 @@ module.exports = memoize(function (db) {
 			type: Percentage,
 			// By default we require at least one file uploaded
 			value: function (_observe) {
+				// Handle sent back state
 				if (_observe(this.master._isSubmittedLocked)) {
-					var isRejected = _observe(this.master._isSentBack) && this.isRejected;
-
-					return (!isRejected && _observe(this.document.files.ordered._size)) ? 1 : 0;
+					return (!this.isRejected && _observe(this.document.files.ordered._size)) ? 1 : 0;
 				}
 
 				return _observe(this.document.files.ordered._size) ? 1 : 0;

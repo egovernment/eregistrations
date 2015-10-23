@@ -24,7 +24,7 @@ exports.step = function () {
 				{ class: 'sections-primary-list user-documents-upload' },
 				requirementUploads.recentlyRejected,
 				function (requirementUpload) {
-					return li({ class: ['section-primary', 'requirement-upload-rejected'] },
+					return li({ class: ['section-primary', 'user-documents-upload-rejected'] },
 						requirementUpload.toDOMForm(document));
 				}
 			),
