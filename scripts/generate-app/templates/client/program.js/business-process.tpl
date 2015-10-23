@@ -102,7 +102,7 @@ loadView = function () {
 
 	var siteTree = new DomjsSiteTree(require('mano/lib/client/domjs'));
 	var siteTreeRouter = new SiteTreeRouter(require('../routes'), siteTree, {
-		eventProto: { appName: ${ appName }, user: user,
+		eventProto: { appName: '${ appName }', user: user,
 			businessProcess: user.currentBusinessProcess },
 		notFound: require('eregistrations/view/404')
 	});

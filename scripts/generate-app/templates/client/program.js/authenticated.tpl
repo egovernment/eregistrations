@@ -102,13 +102,12 @@ loadView = function () {
 
 	var siteTree = new DomjsSiteTree(require('mano/lib/client/domjs'));
 	var siteTreeRouter = new SiteTreeRouter(require('../routes'), siteTree, {
-		eventProto: { appName: ${ appName }, user: user },
+		eventProto: { appName: '${ appName }', user: user },
 		notFound: require('eregistrations/view/404')
 	});
 
 	postRouter(joinControllers(require('../controller'), require('../controller/client')),
 		user);
-
 
 	appLocation.on('change', refresh = function () {
 		if (last.call(appLocation.pathname) !== '/') {
