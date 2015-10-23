@@ -113,8 +113,7 @@ loadView = function () {
 	if (!isReadOnlyRender) {
 		require('eregistrations/client/reload-on-role-switch')(user);
 		require('eregistrations/client/reload-on-current-business-process-change')(user);
-		require('eregistrations/client/reload-on-is-at-draft-change')(
-			user, '${ appName }' === 'business-process-submitted' ? true : false);
+		require('eregistrations/client/reload-on-is-at-draft-change')(user, ${ isBusinessProcessSubmitted });
 	}
 
 	appLocation.on('change', refresh = function () {

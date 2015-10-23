@@ -5,7 +5,9 @@ var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
   , fs            = require('fs')
   , path          = require('path')
   , startsWith    = require('es5-ext/string/#/starts-with')
+  , endsWith      = require('es5-ext/string/#/ends-with')
   , template      = require('es6-template-strings')
+  , forEach       = require('es5-ext/object/for-each')
   , appName
   , hyphenedAppName
   , appTypes
@@ -16,8 +18,15 @@ var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
   , isPathToFile
   , appRootPath;
 
-appTypes = ['users-admin', 'meta-dmin', 'user', 'public', 'official',
-	'business-process-submitted', 'business-process'];
+appTypes = {
+	'users-admin': null,
+	'meta-dmin': null,
+	user: null,
+	public: null,
+	official: null,
+	'business-process-submitted': { 'client/program.js': 'client/program.js/business-process.tpl' },
+	'business-process': null
+};
 
 appName = process.argv[2];
 
@@ -29,15 +38,15 @@ hyphenedAppName   = camelToHyphen.call(appName);
 
 templateVars.appName       = hyphenedAppName;
 templateVars.appNameSuffix = hyphenedAppName;
+templateVars.isBusinessProcessSubmitted = hyphenedAppName === 'business-process-submitted';
 
-appTypes.some(function (typeName) {
+forEach(appTypes, function (config, typeName) {
+	if (templateType) return;
 	if (hyphenedAppName === typeName) {
 		templateType = typeName;
-		return true;
 	}
 	if (startsWith.call(hyphenedAppName, typeName)) {
 		templateType = typeName;
-		return true;
 	}
 });
 
@@ -118,6 +127,14 @@ createFromTemplates = function (templatePath) {
 						fPath.split('generate-app' + path.sep + 'templates')[1].slice(0, -(file.length + 1)));
 					createAppDirectories(dirPath, function (dirPath) {
 						if (isPathToFile(dirPath)) {
+							// check if we override template path
+							if (appTypes[templateType]) {
+								forEach(appTypes[templateType], function (templatePath, key) {
+									if (endsWith.call(dirPath, key)) {
+										fPath = path.join(fPath.split('/templates/')[0], 'templates', templatePath);
+									}
+								});
+							}
 							fs.readFile(fPath, function (err, fContent) {
 								if (err) throw err;
 								fContent = template(fContent, templateVars, { partial: true });
