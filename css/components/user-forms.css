@@ -3,7 +3,7 @@
 	width: 100%;
 }
 .user-forms > *:first-child {
-	margin-top: 22px;
+	margin-top: 44px;
 }
 .user-forms > form,
 .user-forms > .disabler-range,
@@ -18,4 +18,8 @@
 
 .user-forms > .pagination {
 	margin-bottom: 17px;
+}
+
+.user-forms h2 {
+	font-weight: 300;
 }

@@ -11,19 +11,9 @@ exports['sub-main'] = {
 	content: function () {
 
 		div({ class: 'user-account-boxes' },
-			section({ class: 'section-primary user-account-id-block' },
-				h3(this.user._fullName),
-				ul(li(a({ href: '/profile/' },
-					i({ class: 'fa fa-angle-right' }), _('Personal information'))),
-					li(a({ href: '/profile/' },
-						i({ class: 'fa fa-angle-right' }), _('Change your password'))),
-					li(a({ href: '/logout/' },
-						i({ class: 'fa fa-angle-right' }), _('Log out'))))
-				),
-			section({ id: 'welcome-box', class: 'section-primary user-account-welcome' },
+			section({ id: 'welcome-box', class: 'user-account-welcome' },
 				header(
-					h3(_("Welcome to your account. From here you can:")),
-					a({ onclick: '$(\'welcome-box\').exclude()' }, span({ class: 'fa fa-close' }, "Close"))
+					h3(_("Welcome to your account. From here you can:"))
 				),
 				div({ class: 'free-form' },
 					md(_("1. Access all your requests in draft, in process, finished\n" +

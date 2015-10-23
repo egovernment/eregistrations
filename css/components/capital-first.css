@@ -4,7 +4,10 @@
 
 .capital-first > div > h1 {
 	text-transform: uppercase;
-	font-weight: bold;
+	font-weight: 400;
+	color: var(--dark-text);
+	font-size:32px;
+
 }
 
 .capital-first > div:first-child {
@@ -12,7 +15,7 @@
 	font-size: 80px;
 	line-height: 66px;
 	vertical-align: top;
-	margin-right: 10px;
+	margin-right: 5px;
 	min-width: 55px;
 }
 
