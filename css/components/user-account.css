@@ -2,6 +2,10 @@
 	display: flex;
 }
 
+.user-forms .user-account-boxes {
+	margin-bottom: 44px;
+}
+
 .user-account-boxes > section {
 	display: block;
 }
@@ -22,7 +26,6 @@ h3.user-account-section-title {
 
 .user-account-boxes > section.user-account-welcome {
 	color: var(--normal-text);
-	padding: 21px 20px;
 }
 
 @media only screen and (max-width: 640px) {
@@ -44,12 +47,11 @@ h3.user-account-section-title {
 .user-account-welcome header {
 	display: flex;
 	justify-content: space-between;
-	margin-bottom:22px;
+	margin-bottom:11px;
 }
 
 h3.user-account-section-title {
 	text-transform: uppercase;
-	margin-left: 11px;
 }
 
 .user-account-doc-data hr {
@@ -166,4 +168,9 @@ h3.user-account-section-title {
 
 .user-account-selector {
 	line-height: 44px;
+}
+
+.user-account-tab.section-tab-nav-tab {
+	font-size:22px;
+	bottom: 5px;
 }
