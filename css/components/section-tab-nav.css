@@ -22,11 +22,13 @@
 .section-tab-nav .active > .section-tab-nav-tab,
 .section-tab-nav-tab.active {
 	background: var(--white-background);
-	border-bottom: none;
-	top: 2px;
+	border-bottom: 1px solid var(--white-background);
 }
 .section-tab-nav > div {
 	width: 100%;
+}
+.section-tab-nav > .section-primary {
+	border-radius: 0 5px 5px 5px;
 }
 .section-tab-nav > li {
 	display: inline-block;
