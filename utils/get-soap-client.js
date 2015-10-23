@@ -41,6 +41,6 @@ var getSoapClientImpl = memoize(function (wsdlUrl, soapUrl) {
 
 module.exports = function (wsdlUrl, soapUrl) {
 	return getSoapClientImpl(wsdlUrl, soapUrl).aside(null, function (err) {
-		getSoapClientImpl.clear();
+		getSoapClientImpl.clear(wsdlUrl, soapUrl);
 	});
 };
