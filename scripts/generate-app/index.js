@@ -3,7 +3,7 @@
 
 var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
   , hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
-  , fs            = require('fs')
+  , fs            = require('fs2')
   , path          = require('path')
   , startsWith    = require('es5-ext/string/#/starts-with')
   , endsWith      = require('es5-ext/string/#/ends-with')
@@ -73,7 +73,7 @@ createAppDirectories = function (dirPath, callback) {
 			fs.stat(subPath, function (err) {
 				if (err == null) {
 					if (isPathToFile(dirPath)) {
-						fs.open(dirPath, 'w+', function (err) {
+						fs.writeFile(dirPath, '', function (err) {
 							if (err) {
 								throw err;
 							}
@@ -102,7 +102,7 @@ createAppDirectories = function (dirPath, callback) {
 		}
 	});
 };
-var t = 1;
+
 createFromTemplates = function (templatePath) {
 	if (!templatePath) {
 		templatePath = 'templates';
@@ -136,16 +136,13 @@ createFromTemplates = function (templatePath) {
 									}
 								});
 							}
-							setTimeout(function () {
-								fs.readFile(fPath, function (err, fContent) {
-										if (err) throw err;
-									fContent = template(fContent, templateVars, { partial: true });
-									fs.writeFile(dirPath, fContent, function (err) {
-											if (err) throw err;
-									});
+							fs.readFile(fPath, function (err, fContent) {
+								if (err) throw err;
+								fContent = template(fContent, templateVars, { partial: true });
+								fs.writeFile(dirPath, fContent, function (err) {
+									if (err) throw err;
 								});
-							}, t += 10
-						);
+							});
 						}
 					});
 				}
