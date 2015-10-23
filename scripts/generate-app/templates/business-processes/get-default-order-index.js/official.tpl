@@ -3,5 +3,5 @@
 'use strict';
 
 module.exports = function (businessProcess) {
-	return businessProcess.processingSteps.map.{ $appNameSuffix }._isReady.lastModified;
+	return businessProcess.processingSteps.map.${ appNameSuffix }._isReady.lastModified;
 };

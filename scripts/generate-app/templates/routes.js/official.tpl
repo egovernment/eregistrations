@@ -1,4 +1,5 @@
 // Routes for the views.
+
 'use strict';
 
 var db            = require('mano').db
