@@ -15,7 +15,7 @@ module.exports = memoize(function (db/* options */) {
 	var User = ensureDatabase(db).User || defineUser(db, arguments[1])
 	  , StringLine = defineStringLine(db);
 
-	defineUserBusinessProcesses(User);
+	defineUserBusinessProcesses(User, arguments[1]);
 
 	User.prototype.defineProperties({
 		appAccessId: {
