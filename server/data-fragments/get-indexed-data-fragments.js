@@ -42,7 +42,7 @@ module.exports = function (driver, keyPaths) {
 		});
 		driver.on('object:' + objId, function (event) {
 			if (keyPaths.has(event.keyPath)) {
-				emitEvent(fragment, objId, event.keyPath, event.data, event.old);
+				emitEvent(fragment, objId, event.keyPath, event.data);
 			}
 		});
 		return fragment;
