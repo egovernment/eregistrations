@@ -83,7 +83,7 @@ module.exports = exports = function (data) {
 
 	data.searchFilter = getSearchFilter(ensureArray(data.searchablePropertyNames));
 	var getTableData = memoize(function (query) {
-		var list, pageCount, offset, size, result;
+		var list, pageCount, offset, size, result, computedEvents;
 		list = exports.listModifiers.reduce(function (list, modifier) {
 			if (modifier.name && (query[modifier.name] == null) && !modifier.required) return list;
 			return modifier.process(list, query[modifier.name], data);
@@ -97,37 +97,43 @@ module.exports = exports = function (data) {
 		// Pagination
 		offset = (query.page - 1) * itemsPerPage;
 		list = list.slice(offset, offset + itemsPerPage);
-		result = {
-			view: serializeView(list, getOrderIndex),
-			size: size,
-			data: flatten.call(map.call(list, function (object) {
-				var objId = object.__id__
-				  , events = bpListProps.map(function (path) { return getEvents(object, path); });
-				events.unshift(object._lastOwnEvent_);
-				if (!indexes) return events;
-				return [
-					events,
-					indexes.map(function (index) {
-						var data = index.map[objId];
-						if (!data) return;
+		if (bpListComputedProps) {
+			computedEvents = deferred.map(list, function (obj) {
+				var objId = obj.__id__;
+				return deferred.map(bpListComputedProps, function (keyPath) {
+					return dbDriver.getIndexedValue(objId, keyPath)(function (data) {
 						if (isArray(data.value)) {
 							return data.value.map(function (data) {
 								var key = data.key ? '*' + data.key : '';
-								return data.stamp + '.' + objId + '/' + index.keyPath + key + '.' + data.value;
+								return data.stamp + '.' + objId + '/' + keyPath + key + '.' + data.value;
 							});
 						}
-						return data.stamp + '.' + objId + '/' + index.keyPath + '.' + data.value;
-					})
-				];
-			})).map(String)
-		};
-		if (!query.status) {
-			list.forEach(function (bp) {
-				this[bp.__id__] = find.call(statuses,
-					function (status) { return statusMap[status].data.has(bp); });
-			}, result.statusMap = {});
+						return data.stamp + '.' + objId + '/' + keyPath + '.' + data.value;
+					});
+				});
+			});
+		} else {
+			computedEvents = deferred();
 		}
-		return result;
+		return computedEvents(function (computedEvents) {
+			result = {
+				view: serializeView(list, getOrderIndex),
+				size: size,
+				data: flatten.call(map.call(list, function (object) {
+					var events = bpListProps.map(function (path) { return getEvents(object, path); });
+					events.unshift(object._lastOwnEvent_);
+					if (!computedEvents) return events;
+					return [events, computedEvents];
+				})).map(String)
+			};
+			if (!query.status) {
+				list.forEach(function (bp) {
+					this[bp.__id__] = find.call(statuses,
+						function (status) { return statusMap[status].data.has(bp); });
+				}, result.statusMap = {});
+			}
+			return result;
+		});
 	}, {
 		normalizer: function (args) { return String(toArray(args[0], null, null, true)); },
 		maxAge: 10 * 1000
