@@ -35,8 +35,8 @@ module.exports = function (driver, keyPaths) {
 		fragment.promise = driver.getValue(objId)(function (data) {
 			if (data) fragment.update(objId, data);
 			return deferred.map(keyPaths, function (keyPath) {
-				return driver.indexKeyPath(keyPath)(function (map) {
-					if (map[objId]) emitEvent(fragment, objId, keyPath, map[objId]);
+				return driver.getIndexedValue(objId, keyPath)(function (data) {
+					if (data) emitEvent(fragment, objId, keyPath, data);
 				});
 			});
 		});
