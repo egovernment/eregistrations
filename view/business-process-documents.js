@@ -22,18 +22,14 @@ exports.step = function () {
 		section(
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
-				requirementUploads.recentlyRejected,
-				function (requirementUpload) {
+				list(requirementUploads.recentlyRejected, function (requirementUpload) {
 					return li({ class: ['section-primary', 'user-documents-upload-rejected'] },
 						requirementUpload.toDOMForm(document));
-				}
-			),
-			ul(
-				{ class: 'sections-primary-list user-documents-upload' },
-				requirementUploads.applicable.not(requirementUploads.recentlyRejected),
-				function (requirementUpload) {
-					return li({ class: 'section-primary' }, requirementUpload.toDOMForm(document));
-				}
+				}),
+				list(requirementUploads.applicable.not(requirementUploads.recentlyRejected),
+					function (requirementUpload) {
+						return li({ class: 'section-primary' }, requirementUpload.toDOMForm(document));
+					})
 			)
 		),
 		div({ class: 'disabler' })
