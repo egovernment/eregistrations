@@ -106,5 +106,14 @@ fs.readdir(path.join(__dirname, 'templates'),
 		return generator(projectRoot, appsList);
 	});
 }).done(function () {
-	console.log("Successfully created " + appName + " application. It's located in: " + appRootPath);
+	console.log("Successfully created " + hyphenedAppName + " application." +
+		"\nIt's located in: " + appRootPath + "." +
+		"\n\nIn order to setup application you need to: \n" +
+			"\n1. Setup main config in apps/" + hyphenedAppName + "/mano.js" +
+			"\n2. Setup view paths in apps/" + hyphenedAppName + "/routes.js" +
+			"\n3. Setup data access for client in apps/" + hyphenedAppName + "/server/access.js" +
+			"\n4. Setup dbjs dom bindings in apps/" + hyphenedAppName + "/client/dbjs-dom.js" +
+			"\n5. Require needed server models in apps/" + hyphenedAppName + "/client/model.js" +
+			"\n6. (optional) Customize views for the app in view/" + hyphenedAppName,
+			"\n7. (optional) Customize controllers in apps/" + hyphenedAppName + "/controller");
 });
