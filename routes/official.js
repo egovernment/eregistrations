@@ -4,11 +4,11 @@
 var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
   , matchBusinessProcess = require('./utils/official-match-business-process');
 
-module.exports = function (stepName) {
-	if (!stepName) {
-		throw new Error('No stepName provided for official route');
+module.exports = function (step) {
+	if (!step) {
+		throw new Error('No step provided for official route');
 	}
-	var match = matchBusinessProcess(stepName);
+	var match = matchBusinessProcess(step);
 	return {
 		profile: require('eregistrations/view/user-profile'),
 		'/': require('eregistrations/view/business-processes-table'),

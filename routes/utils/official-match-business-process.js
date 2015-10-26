@@ -3,17 +3,17 @@
 
 var db = require('mano').db;
 
-module.exports = function (stepName) {
+module.exports = function (step) {
 	return function (businessProcessId) {
 		this.businessProcess = db.BusinessProcess.getById(businessProcessId);
 
 		if (this.businessProcess) {
-			this.processingStep = this.businessProcess.processingSteps.map[stepName];
-			if (!this.processingStep.isReady) return false;
-			if (this.processingStep.steps) {
-				this.processingStep = this.processingStep.steps.applicable.first;
+			if (typeof step === 'function') {
+				this.processingStep = step.call(this);
+			} else {
+				this.processingStep = this.businessProcess.processingSteps.map[step];
 			}
-			return true;
+			return this.processingStep && this.processingStep.isReady;
 		}
 
 		return false;
