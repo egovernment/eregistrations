@@ -20,8 +20,7 @@ var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
   , templateType
   , templateVars = {}
   , projectRoot
-  , appRootPath
-  , appsList;
+  , appRootPath;
 
 appTypes = {
 	'users-admin': null,
@@ -100,13 +99,12 @@ fs.readdir(path.join(__dirname, 'templates'),
 			{ env: process.env, cwd: projectRoot });
 }).then(function () {
 	return generateAppsList(projectRoot)(function () {
-		appsList = getApps(projectRoot);
-		return appsList;
+		return getApps(projectRoot);
 	});
-}).then(function () {
-	return generateAppsConf(projectRoot, appsList.value);
-}).then(function () {
-	return generateAppsCtrls(projectRoot, appsList.value);
+}).then(function (appsList) {
+	return deferred.map([generateAppsConf, generateAppsCtrls], function (generator) {
+		return generator(projectRoot, appsList);
+	});
 }).done(function () {
 	console.log("Successfully created " + appName + " application. It's located in: " + appRootPath);
 });
