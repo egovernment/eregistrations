@@ -36,11 +36,11 @@ var generateMissingPropertiesList = function (section) {
 var generateMissingList = function (section, level) {
 	level = level || 3;
 
-	if (section instanceof db.FormSection) {
+	if (db.FormSection && (section instanceof db.FormSection)) {
 		return ns.p(_("Missing required fields:"), generateMissingPropertiesList(section));
 	}
 
-	if (section instanceof db.FormSectionGroup) {
+	if (db.FormSectionGroup && (section instanceof db.FormSectionGroup)) {
 		return ns.ul(
 			section.sections,
 			function (subSection) {
@@ -53,7 +53,7 @@ var generateMissingList = function (section, level) {
 		);
 	}
 
-	if (section instanceof db.FormEntitiesTable) {
+	if (db.FormEntitiesTable && (section instanceof db.FormEntitiesTable)) {
 		return ns.list(section.entitiesSet, function (entity) {
 			var entitySections = entity.resolveSKeyPath(section.sectionProperty).value;
 
