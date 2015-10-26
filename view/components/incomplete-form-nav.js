@@ -37,7 +37,7 @@ var generateMissingList = function (section, level) {
 	level = level || 3;
 
 	if (db.FormSection && (section instanceof db.FormSection)) {
-		return ns.p(_("Missing required fields:"), generateMissingPropertiesList(section));
+		return ns.div(_("Missing required fields:"), generateMissingPropertiesList(section));
 	}
 
 	if (db.FormSectionGroup && (section instanceof db.FormSectionGroup)) {
@@ -46,7 +46,7 @@ var generateMissingList = function (section, level) {
 			function (subSection) {
 				if (!subSection.missingRequiredPropertyNames.size) return;
 
-				return ns.p(_("Missing required fields for the '${sectionLabel}' sub-section:", {
+				return ns.div(_("Missing required fields for the '${sectionLabel}' sub-section:", {
 					sectionLabel: subSection.label
 				}), generateMissingPropertiesList(subSection));
 			}
