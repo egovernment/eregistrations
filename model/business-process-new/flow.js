@@ -24,6 +24,7 @@ module.exports = memoize(function (db/*, options*/) {
 	BusinessProcess.prototype.defineProperties({
 		// Whether business process was submitted to Part B
 		isSubmitted: { type: db.Boolean, value: function (_observe) {
+			if (this.isSubmittedLocked) return true;
 			// 0. Guide
 			if (this.guideProgress !== 1) return false;
 			// 1. Forms
@@ -36,6 +37,8 @@ module.exports = memoize(function (db/*, options*/) {
 			if (_observe(this.submissionForms._progress) !== 1) return false;
 			return true;
 		} },
+		// Whether isSubmitted was locked due to bp being sent for correction
+		isSubmittedLocked: { type: db.Boolean, value: false },
 		// Whether business process was sent back to Part A
 		isSentBack: { type: db.Boolean, value: function (_observe) {
 			if (!this.isSubmitted) return false;
