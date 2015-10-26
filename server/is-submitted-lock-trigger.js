@@ -7,7 +7,7 @@ var db      = require('mano').db
 var lockIsSubmitted = function (businessProcess) {
 	debug('%s locking isSubmitted', businessProcess.__id__);
 
-	if (businessProcess.getDescriptor('isSubmitted')._value_ !== true) {
+	if (businessProcess.isSubmittedLocked !== true) {
 		businessProcess.isSubmittedLocked = true;
 	}
 };
@@ -15,7 +15,7 @@ var lockIsSubmitted = function (businessProcess) {
 var unlockIsSubmitted = function (businessProcess) {
 	debug('%s unlocking isSubmitted', businessProcess.__id__);
 
-	if (businessProcess.getDescriptor('isSubmitted')._value_ === true) {
+	if (businessProcess.isSubmittedLocked === true) {
 		businessProcess.delete('isSubmittedLocked');
 	}
 };
