@@ -72,7 +72,6 @@ module.exports = function (sections) {
 
 		return ns._if(ns.not(ns.eq(section._status, 1)),
 			ns.section(
-				{ class: 'prev-empty-alert' },
 				generateSectionLink(section),
 				generateMissingList(section)
 			));
