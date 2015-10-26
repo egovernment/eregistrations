@@ -23,7 +23,7 @@ var generateSectionLink = function (section) {
 	);
 };
 
-var genereteMissingPropertiesList = function (section) {
+var generateMissingPropertiesList = function (section) {
 	return ns.ul(
 		{ class: 'missing-field-list' },
 		section.missingRequiredPropertyNames,
@@ -37,7 +37,7 @@ var generateMissingList = function (section, level) {
 	level = level || 3;
 
 	if (section instanceof db.FormSection) {
-		return ns.p(_("Missing required fields:"), genereteMissingPropertiesList(section));
+		return ns.p(_("Missing required fields:"), generateMissingPropertiesList(section));
 	}
 
 	if (section instanceof db.FormSectionGroup) {
@@ -48,7 +48,7 @@ var generateMissingList = function (section, level) {
 
 				return ns.p(_("Missing required fields for the '${sectionLabel}' sub-section:", {
 					sectionLabel: subSection.label
-				}), genereteMissingPropertiesList(subSection));
+				}), generateMissingPropertiesList(subSection));
 			}
 		);
 	}
