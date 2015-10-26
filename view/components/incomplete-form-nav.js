@@ -1,16 +1,80 @@
-/** @param {array} statusesToCheck - Array of objects of the form:
- * {status: dataStatus, msg: '', url: ''}
- * where dataStatus is a status Observable
- * @returns a domjs list with links to incomplete items
- */
+// Draw list of not completed sections and their missing fields.
 
 'use strict';
 
-var ns = require('mano').domjs.ns;
+var db = require('mano').db
+  , ns = require('mano').domjs.ns
+  , _  = require('mano').i18n.bind('Incomplete Sections Navigation')
+  , headersMap = require('../utils/headers-map');
 
-module.exports = function (statusesToCheck) {
-	return ns.ul(statusesToCheck, function (item) {
-		return ns._if(ns.not(ns.eq(item.status, 1)),
-			ns.section({ class: 'prev-empty-alert' }, ns.a({ href: item.url }, item.msg)));
+var getPropertyLabel = function (section, propertyName) {
+	return section.master.resolveSKeyPath(propertyName).ownDescriptor.label;
+};
+
+var getEntityTitle = function (section, entity) {
+	return entity.resolveSKeyPath(section.entityTitleProperty).observable;
+};
+
+var generateSectionLink = function (section) {
+	return ns.a(
+		{ href: '#' + section.domId },
+		section.onIncompleteMessage || _("${sectionLabel} is incomplete",
+			{ sectionLabel: section.label })
+	);
+};
+
+var genereteMissingPropertiesList = function (section) {
+	return ns.ul(
+		{ class: 'missing-field-list' },
+		section.missingRequiredPropertyNames,
+		function (propertyName) {
+			return getPropertyLabel(section, propertyName);
+		}
+	);
+};
+
+var generateMissingList = function (section, level) {
+	level = level || 3;
+
+	if (section instanceof db.FormSection) {
+		return ns.p(_("Missing required fields:"), genereteMissingPropertiesList(section));
+	}
+
+	if (section instanceof db.FormSectionGroup) {
+		return ns.ul(
+			section.sections,
+			function (subSection) {
+				if (!subSection.missingRequiredPropertyNames.size) return;
+
+				return ns.p(_("Missing required fields for the '${sectionLabel}' sub-section:", {
+					sectionLabel: subSection.label
+				}), genereteMissingPropertiesList(subSection));
+			}
+		);
+	}
+
+	if (section instanceof db.FormEntitiesTable) {
+		return ns.list(section.entitiesSet, function (entity) {
+			var entitySections = entity.resolveSKeyPath(section.sectionProperty).value;
+
+			return ns._if(ns.not(ns.eq(entitySections._progress, 1)), [
+				headersMap[level](getEntityTitle(section, entity)),
+				ns.list(entitySections.applicable, function (entitySection) {
+					return generateMissingList(entitySection, level + 1);
+				})
+			]);
+		});
+	}
+};
+
+module.exports = function (sections) {
+	return ns.ul(sections, function (section) {
+
+		return ns._if(ns.not(ns.eq(section._status, 1)),
+			ns.section(
+				{ class: 'prev-empty-alert' },
+				generateSectionLink(section),
+				generateMissingList(section)
+			));
 	});
 };

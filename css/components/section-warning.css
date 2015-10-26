@@ -1,9 +1,9 @@
-.section-warning ul {
+.section-warning > ul {
 	list-style-type: none;
 	padding-left: 0;
 }
 
-.section-warning li {
+.section-warning > ul > li {
 	background-color: var(--white-background);
 	border: none;
 	border-left: 3px solid var(--dark-background);
@@ -12,14 +12,23 @@
 	margin-bottom: 22px;
 }
 
-.section-warning li > a {
+.section-warning > ul > li > a {
 	text-decoration: none;
 	color: var(--dark-text);
 }
-.section-warning li > a:hover,
-.section-warning li > a:focus,
-.section-warning li > a:active {
+.section-warning > ul > li > a:hover,
+.section-warning > ul > li > a:focus,
+.section-warning > ul > li > a:active {
 	text-decoration: underline;
+}
+
+.section-warning .prev-empty-alert .missing-field-list {
+	display: inline;
+}
+
+.section-warning .prev-empty-alert .missing-field-list li {
+	display: inline-block;
+	text-indent: 11px;
 }
 
 /*
