@@ -30,6 +30,9 @@ module.exports = memoize(function (User/* options */) {
 
 				return processes;
 			}
+		},
+		currentBusinessProcess: {
+			type: BusinessProcessBase
 		}
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
