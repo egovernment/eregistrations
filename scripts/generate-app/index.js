@@ -9,11 +9,13 @@ var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
   , forEach       = require('es5-ext/object/for-each')
   , template      = require('es6-template-strings')
   , deferred      = require('deferred')
+  , exec          = deferred.promisify(require('child_process').execFile)
   , appName
   , hyphenedAppName
   , appTypes
   , templateType
   , templateVars = {}
+  , projectRoot
   , appRootPath;
 
 appTypes = {
@@ -26,13 +28,20 @@ appTypes = {
 	'business-process': null
 };
 
-appName = process.argv[2];
+projectRoot = process.argv[2];
+appName = process.argv[3];
 
 if (!appName) {
 	throw new Error('No appName argument provided');
 }
 
-hyphenedAppName   = camelToHyphen.call(appName);
+if (!projectRoot) {
+	throw new Error('No projectRoot argument provided');
+}
+
+hyphenedAppName = camelToHyphen.call(appName);
+
+appRootPath = path.resolve(projectRoot, 'apps', hyphenedAppName);
 
 templateVars.appName       = hyphenedAppName;
 templateVars.appNameSuffix = hyphenToCamel.call(hyphenedAppName.split('-').slice(1).join('-'));
@@ -51,8 +60,6 @@ forEach(appTypes, function (config, typeName) {
 if (!templateType) {
 	templateType = 'authenticated';
 }
-
-appRootPath = path.join(process.cwd(), hyphenedAppName);
 
 var templates = {};
 
@@ -82,6 +89,10 @@ fs.readdir(path.join(__dirname, 'templates'),
 			return fs.writeFile(appPath, fContent, { intermediate: true });
 		})();
 	});
+}).then(function () {
+	return exec('node',
+		[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + 'user'],
+			{ env: process.env, cwd: projectRoot });
 }).done(function () {
 	console.log("Successfully created " + appName + " application. It's located in: " + appRootPath);
 });
