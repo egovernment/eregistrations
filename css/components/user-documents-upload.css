@@ -8,3 +8,12 @@
 .user-documents-upload .file-uploader {
 	margin-top: 22px;
 }
+
+.user-documents-upload .info-main {
+	margin-top: 11px;
+	margin-bottom: 11px;
+}
+
+.section-primary.user-documents-upload-rejected {
+	border-color: var(--error-background);
+}
