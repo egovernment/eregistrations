@@ -14,12 +14,9 @@ var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
   , generateAppsConf  = require('mano/scripts/generate-apps-conf')
   , generateAppsCtrls = require('mano/scripts/generate-apps-controllers')
   , getApps           = require('mano/server/utils/resolve-apps')
-  , appName
-  , hyphenedAppName
   , appTypes
   , templateType
   , templateVars = {}
-  , projectRoot
   , appRootPath;
 
 appTypes = {
@@ -32,88 +29,68 @@ appTypes = {
 	'business-process': null
 };
 
-projectRoot = process.argv[2];
-appName = process.argv[3];
+module.exports = function (projectRoot, appName) {
+	appName = camelToHyphen.call(appName);
 
-if (!appName) {
-	throw new Error('No appName argument provided');
-}
+	appRootPath = path.resolve(projectRoot, 'apps', appName);
 
-if (!projectRoot) {
-	throw new Error('No projectRoot argument provided');
-}
+	templateVars.appName       = appName;
+	templateVars.appNameSuffix = hyphenToCamel.call(appName.split('-').slice(1).join('-'));
+	templateVars.isBusinessProcessSubmitted = appName === 'business-process-submitted';
 
-hyphenedAppName = camelToHyphen.call(appName);
+	forEach(appTypes, function (config, typeName) {
+		if (templateType) return;
+		if (appName === typeName) {
+			templateType = typeName;
+		}
+		if (startsWith.call(appName, typeName)) {
+			templateType = typeName;
+		}
+	});
 
-appRootPath = path.resolve(projectRoot, 'apps', hyphenedAppName);
-
-templateVars.appName       = hyphenedAppName;
-templateVars.appNameSuffix = hyphenToCamel.call(hyphenedAppName.split('-').slice(1).join('-'));
-templateVars.isBusinessProcessSubmitted = hyphenedAppName === 'business-process-submitted';
-
-forEach(appTypes, function (config, typeName) {
-	if (templateType) return;
-	if (hyphenedAppName === typeName) {
-		templateType = typeName;
+	if (!templateType) {
+		templateType = 'authenticated';
 	}
-	if (startsWith.call(hyphenedAppName, typeName)) {
-		templateType = typeName;
-	}
-});
 
-if (!templateType) {
-	templateType = 'authenticated';
-}
+	var templates = {};
 
-var templates = {};
-
-fs.readdir(path.join(__dirname, 'templates'),
-	{ depth: Infinity, type: { file: true } }).map(
-	function (templatePath) {
-		var fName = path.basename(templatePath, '.tpl')
+	return fs.readdir(path.join(__dirname, 'templates'),
+		{ depth: Infinity, type: { file: true } }).map(
+		function (templatePath) {
+			var fName = path.basename(templatePath, '.tpl')
 		  , appPathRel = templatePath.split(path.sep).slice(0, -1).join(path.sep)
 		  , appPath = path.join(appRootPath, appPathRel);
 
-		if (appTypes[hyphenedAppName] && appTypes[hyphenedAppName][appPathRel] === templatePath) {
-			templates[appPath] = path.join(__dirname, 'templates', templatePath);
-			return;
+			if (appTypes[appName] && appTypes[appName][appPathRel] === templatePath) {
+				templates[appPath] = path.join(__dirname, 'templates', templatePath);
+				return;
+			}
+			if (fName === templateType) {
+				templates[appPath] = path.join(__dirname, 'templates', templatePath);
+				return;
+			}
+			if (fName === 'authenticated' && !templates[appPath]) {
+				templates[appPath] = path.join(__dirname, 'templates', templatePath);
+			}
 		}
-		if (fName === templateType) {
-			templates[appPath] = path.join(__dirname, 'templates', templatePath);
-			return;
-		}
-		if (fName === 'authenticated' && !templates[appPath]) {
-			templates[appPath] = path.join(__dirname, 'templates', templatePath);
-		}
-	}
-).then(function () {
-	return deferred.map(Object.keys(templates), function (appPath) {
-		return fs.readFile(templates[appPath])(function (fContent) {
-			fContent = template(fContent, templateVars, { partial: true });
-			return fs.writeFile(appPath, fContent, { intermediate: true });
-		})();
+	).then(function () {
+		return deferred.map(Object.keys(templates), function (appPath) {
+			return fs.readFile(templates[appPath])(function (fContent) {
+				fContent = template(fContent, templateVars, { partial: true });
+				return fs.writeFile(appPath, fContent, { intermediate: true });
+			})();
+		});
+	}).then(function () {
+		return exec('node',
+			[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + 'user'],
+				{ env: process.env, cwd: projectRoot });
+	}).then(function () {
+		return generateAppsList(projectRoot)(function () {
+			return getApps(projectRoot);
+		});
+	}).then(function (appsList) {
+		return deferred.map([generateAppsConf, generateAppsCtrls], function (generator) {
+			return generator(projectRoot, appsList);
+		});
 	});
-}).then(function () {
-	return exec('node',
-		[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + 'user'],
-			{ env: process.env, cwd: projectRoot });
-}).then(function () {
-	return generateAppsList(projectRoot)(function () {
-		return getApps(projectRoot);
-	});
-}).then(function (appsList) {
-	return deferred.map([generateAppsConf, generateAppsCtrls], function (generator) {
-		return generator(projectRoot, appsList);
-	});
-}).done(function () {
-	console.log("Successfully created " + hyphenedAppName + " application." +
-		"\nIt's located in: " + appRootPath + "." +
-		"\n\nIn order to setup application you need to: \n" +
-			"\n1. Setup main config in apps/" + hyphenedAppName + "/mano.js" +
-			"\n2. Setup view paths in apps/" + hyphenedAppName + "/routes.js" +
-			"\n3. Setup data access for client in apps/" + hyphenedAppName + "/server/access.js" +
-			"\n4. Setup dbjs dom bindings in apps/" + hyphenedAppName + "/client/dbjs-dom.js" +
-			"\n5. Require needed server models in apps/" + hyphenedAppName + "/client/model.js" +
-			"\n6. (optional) Customize views for the app in view/" + hyphenedAppName,
-			"\n7. (optional) Customize controllers in apps/" + hyphenedAppName + "/controller");
-});
+};

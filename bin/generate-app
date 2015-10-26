@@ -1,0 +1,31 @@
+#!/usr/bin/env node
+
+var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
+  , path          = require('path')
+  , projectRoot = process.argv[2]
+  , appName = process.argv[3]
+  , appRootPath;
+
+if (!appName) {
+	throw new Error('No appName argument provided');
+}
+
+if (!projectRoot) {
+	throw new Error('No projectRoot argument provided');
+}
+
+appName     = camelToHyphen.call(appName);
+appRootPath = path.resolve(projectRoot, 'apps', appName);
+
+require('../scripts/generate-app')(projectRoot, appName).done(function () {
+	console.log("Successfully created " + appName + " application." +
+			"\nIt's located in: " + appRootPath + "." +
+			"\n\nIn order to setup application you need to: \n" +
+			"\n1. Setup main config in apps/" + appName + "/mano.js" +
+			"\n2. Setup view paths in apps/" + appName + "/routes.js" +
+			"\n3. Setup data access for client in apps/" + appName + "/server/access.js" +
+			"\n4. Setup dbjs dom bindings in apps/" + appName + "/client/dbjs-dom.js" +
+			"\n5. Require needed server models in apps/" + appName + "/client/model.js" +
+			"\n6. (optional) Customize views for the app in view/" + appName,
+			"\n7. (optional) Customize controllers in apps/" + appName + "/controller");
+});
