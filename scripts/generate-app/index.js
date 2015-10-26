@@ -10,13 +10,18 @@ var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
   , template      = require('es6-template-strings')
   , deferred      = require('deferred')
   , exec          = deferred.promisify(require('child_process').execFile)
+  , generateAppsList  = require('mano/scripts/generate-apps-list')
+  , generateAppsConf  = require('mano/scripts/generate-apps-conf')
+  , generateAppsCtrls = require('mano/scripts/generate-apps-controllers')
+  , getApps           = require('mano/server/utils/resolve-apps')
   , appName
   , hyphenedAppName
   , appTypes
   , templateType
   , templateVars = {}
   , projectRoot
-  , appRootPath;
+  , appRootPath
+  , appsList;
 
 appTypes = {
 	'users-admin': null,
@@ -93,6 +98,15 @@ fs.readdir(path.join(__dirname, 'templates'),
 	return exec('node',
 		[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + 'user'],
 			{ env: process.env, cwd: projectRoot });
+}).then(function () {
+	return generateAppsList(projectRoot)(function () {
+		appsList = getApps(projectRoot);
+		return appsList;
+	});
+}).then(function () {
+	return generateAppsConf(projectRoot, appsList.value);
+}).then(function () {
+	return generateAppsCtrls(projectRoot, appsList.value);
 }).done(function () {
 	console.log("Successfully created " + appName + " application. It's located in: " + appRootPath);
 });
