@@ -31,7 +31,6 @@ appTypes = {
 
 module.exports = function (projectRoot, appName) {
 	appName = camelToHyphen.call(appName);
-
 	appRootPath = path.resolve(projectRoot, 'apps', appName);
 
 	templateVars.appName       = appName;
@@ -82,8 +81,7 @@ module.exports = function (projectRoot, appName) {
 		});
 	}).then(function () {
 		return exec('node',
-			[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + 'user'],
-				{ env: process.env, cwd: projectRoot });
+			[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + appName]);
 	}).then(function () {
 		return generateAppsList(projectRoot)(function () {
 			return getApps(projectRoot);
