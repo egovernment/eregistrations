@@ -8,6 +8,7 @@ var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
   , startsWith    = require('es5-ext/string/#/starts-with')
   , forEach       = require('es5-ext/object/for-each')
   , template      = require('es6-template-strings')
+  , deferred      = require('deferred')
   , appName
   , hyphenedAppName
   , appTypes
@@ -56,29 +57,31 @@ appRootPath = path.join(process.cwd(), hyphenedAppName);
 var templates = {};
 
 fs.readdir(path.join(__dirname, 'templates'),
-	{ depth: Infinity, type: { file: true } }).then(function (files) {
-	files.forEach(function (templatePath) {
+	{ depth: Infinity, type: { file: true } }).map(
+	function (templatePath) {
 		var fName = path.basename(templatePath, '.tpl')
-		  , appPath = path.join(appRootPath, templatePath.split(path.sep).slice(0,
-				-1).join(path.sep));
+		  , appPathRel = templatePath.split(path.sep).slice(0, -1).join(path.sep)
+		  , appPath = path.join(appRootPath, appPathRel);
 
+		if (appTypes[hyphenedAppName] && appTypes[hyphenedAppName][appPathRel] === templatePath) {
+			templates[appPath] = path.join(__dirname, 'templates', templatePath);
+			return;
+		}
 		if (fName === templateType) {
 			templates[appPath] = path.join(__dirname, 'templates', templatePath);
-		} else if (fName === 'authenticated' && !templates[appPath]) {
+			return;
+		}
+		if (fName === 'authenticated' && !templates[appPath]) {
 			templates[appPath] = path.join(__dirname, 'templates', templatePath);
 		}
-	});
-	forEach(templates, function (templatePath, appPath) {
-		fs.readFile(templatePath).then(function (fContent) {
+	}
+).then(function () {
+	return deferred.map(Object.keys(templates), function (appPath) {
+		return fs.readFile(templates[appPath])(function (fContent) {
 			fContent = template(fContent, templateVars, { partial: true });
-			fs.writeFile(appPath, fContent, { intermediate: true }).done(function (err) {
-				if (err) throw err;
-			});
-		})().done(function (err) {
-			if (err) throw err;
-		});
+			return fs.writeFile(appPath, fContent, { intermediate: true });
+		})();
 	});
-})().done(function (err) {
-	if (err) throw err;
+}).done(function () {
 	console.log("Successfully created " + appName + " application. It's located in: " + appRootPath);
 });
