@@ -29,11 +29,10 @@ exports['user-account-requests'] = { class: { active: true } };
 exports['user-account-content'] = function () {
 	var businessProcesses = this.user.businessProcesses.filterByKey('isFromEregistrations', true);
 
-	section({ class: 'section-primary' },
-		_if(businessProcesses._size, function () {
-			return [p(_("Here you can modify not yet submitted requests, follow the process of the " +
-				"ongoing procedures and view already concluded records.")), section(
-				{ class: 'submitted-main table-responsive-container' },
+	insert(_if(businessProcesses._size, function () {
+		return [p(_("Here you can modify not yet submitted requests, follow the process of the " +
+			"ongoing procedures and view already concluded records.")),
+			section({ class: 'submitted-main table-responsive-container' },
 				table(
 					{ class: 'submitted-user-data-table submitted-current-user-data-table' },
 					thead(tr(list(columns, function (column) {
@@ -47,12 +46,10 @@ exports['user-account-content'] = function () {
 							}), createActionsCell(businessProcess));
 						}
 					)
-				)
-			)];
-		}.bind(this),
-			md(_('You have not started any services yet.' +
-				' Please choose a service in the list below' +
-				' and click on "Click to start" to launch the service. After the first save,' +
-				' you will see your file here and will be able to edit it.'))
-			));
+				))];
+	}.bind(this),
+		md(_('You have not started any services yet.' +
+			' Please choose a service in the list below' +
+			' and click on "Click to start" to launch the service. After the first save,' +
+			' you will see your file here and will be able to edit it.'))));
 };

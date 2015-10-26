@@ -30,7 +30,7 @@ exports['sub-main'] = {
 					id: 'user-account-data',
 					href: '/requests/' },
 				_("My documents and data")),
-			div({ id: 'user-account-content' }));
+			div({ id: 'user-account-content', class: 'section-primary' }));
 
 		h3({ class: 'user-account-section-title' }, _("Available services"));
 		section({ class: 'section-primary' },
