@@ -12,3 +12,8 @@
 .section-primary.user-documents-upload-rejected {
 	border-color: var(--error-background);
 }
+
+.user-documents-upload-rejected .info-main {
+	margin-top: 11px;
+	margin-bottom: 11px;
+}
