@@ -25,7 +25,7 @@ var generateSectionLink = function (section) {
 
 var generateMissingPropertiesList = function (section) {
 	return ns.ul(
-		{ class: 'missing-field-list' },
+		{ class: 'section-warning-missing-fields' },
 		section.missingRequiredPropertyNames,
 		function (propertyName) {
 			return getPropertyLabel(section, propertyName);

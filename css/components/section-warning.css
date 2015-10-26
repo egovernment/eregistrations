@@ -22,11 +22,11 @@
 	text-decoration: underline;
 }
 
-.section-warning .prev-empty-alert .missing-field-list {
+.section-warning-missing-fields {
 	display: inline;
 }
 
-.section-warning .prev-empty-alert .missing-field-list li {
+.section-warning-missing-fields li {
 	display: inline-block;
 	text-indent: 11px;
 }
