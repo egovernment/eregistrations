@@ -35,14 +35,14 @@ module.exports = function (driver, keyPaths) {
 		fragment.promise = driver.getValue(objId)(function (data) {
 			if (data) fragment.update(objId, data);
 			return deferred.map(keyPaths, function (keyPath) {
-				return driver.indexKeyPath(keyPath)(function (map) {
-					if (map[objId]) emitEvent(fragment, objId, keyPath, map[objId]);
+				return driver.getIndexedValue(objId, keyPath)(function (data) {
+					if (data) emitEvent(fragment, objId, keyPath, data);
 				});
 			});
 		});
 		driver.on('object:' + objId, function (event) {
 			if (keyPaths.has(event.keyPath)) {
-				emitEvent(fragment, objId, event.keyPath, event.data, event.old);
+				emitEvent(fragment, objId, event.keyPath, event.data);
 			}
 		});
 		return fragment;

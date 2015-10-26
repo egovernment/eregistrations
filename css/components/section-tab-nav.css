@@ -3,11 +3,12 @@
 	border: 1px solid var(--light-inner-border);
 	border-radius: 4px 4px 0 0;
 	color: var(--dark-text);
-	line-height: 44px;
-	padding: 13px;
+	display: inline-block;
+	line-height: 42px;
+	padding: 0 13px;
 	margin-right: 1px;
 	position: relative;
-	bottom: 1px;
+	top: 1px;;
 	cursor: pointer;
 	font-size: 17px;
 	text-decoration: none;
@@ -18,19 +19,16 @@
 	background: var(--white-background);
 	text-decoration: none;
 }
-@-moz-document url-prefix() {
-	.section-tab-nav .section-tab-nav-tab {
-		bottom: 2px;
-	}
-}
 .section-tab-nav .active > .section-tab-nav-tab,
 .section-tab-nav-tab.active {
 	background: var(--white-background);
-	border-bottom: none;
-	padding-bottom: 14px;
+	border-bottom: 1px solid var(--white-background);
 }
 .section-tab-nav > div {
 	width: 100%;
+}
+.section-tab-nav > .section-primary {
+	border-radius: 0 5px 5px 5px;
 }
 .section-tab-nav > li {
 	display: inline-block;
