@@ -26,7 +26,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		master = options.master || this.master;
 		customizeData = { master: master };
 		if (!this.disablePartialSubmit) {
-			control = { required: this.disablePartialSubmit };
+			control = { required: false };
 		}
 
 		resolvent = this.getFormResolvent(options);
