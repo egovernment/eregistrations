@@ -2,78 +2,125 @@
 
 'use strict';
 
-var db = require('mano').db
-  , ns = require('mano').domjs.ns
-  , _  = require('mano').i18n.bind('Incomplete Sections Navigation')
-  , headersMap = require('../utils/headers-map');
+var db         = require('mano').db
+  , _          = require('mano').i18n.bind('Incomplete Sections Navigation')
 
-var getPropertyLabel = function (section, propertyName) {
-	return section.master.resolveSKeyPath(propertyName).ownDescriptor.label;
+  , _d = _
+  , generateMissingList;
+
+var propertyLabel = function (formSection, propertyName) {
+	return JSON.stringify(formSection.master.resolveSKeyPath(propertyName).ownDescriptor.label);
 };
 
-var getEntityTitle = function (section, entity) {
-	return entity.resolveSKeyPath(section.entityTitleProperty).observable;
+var entityLabel = function (tableSection, entity) {
+	return entity.resolveSKeyPath(tableSection.entityTitleProperty).observable;
 };
 
-var generateSectionLink = function (section) {
-	return ns.a(
-		{ href: '#' + section.domId },
-		section.onIncompleteMessage || _("${sectionLabel} is incomplete",
-			{ sectionLabel: section.label })
-	);
+var missingFieldsLabel = function () {
+	return p(_("Missing required fields:"));
 };
 
-var generateMissingPropertiesList = function (section) {
-	return ns.ul(
-		{ class: 'section-warning-missing-fields' },
-		section.missingRequiredPropertyNames,
+var sectionLabel = function (formSection, level) {
+	if (level === 0) return missingFieldsLabel();
+
+	return p({ class: 'section-warning-missing-fields-sub-' + 1 },
+		mdi(_("In _\"${ sectionLabel }\"_ section:", { sectionLabel: formSection.label })));
+};
+
+var missingPropertiesList = function (formSection) {
+	return ul(
+		{ class: 'section-warning-missing-fields-list' },
+		formSection.missingRequiredPropertyNames,
 		function (propertyName) {
-			return getPropertyLabel(section, propertyName);
+			return propertyLabel(formSection, propertyName);
 		}
 	);
 };
 
-var generateMissingList = function (section, level) {
-	level = level || 3;
+var invalidProgressRulesList = function (formSection, level) {
+	var translationInserts = { max: formSection._max, min: formSection._min };
 
-	if (db.FormSection && (section instanceof db.FormSection)) {
-		return ns.div(_("Missing required fields:"), generateMissingPropertiesList(section));
-	}
+	return ul(
+		{ class: 'section-warning-missing-fields-sub-' + level },
+		formSection.progressRules.invalid,
+		function (progressRule) {
+			return li(_d(progressRule.message, translationInserts));
+		}
+	);
+};
 
-	if (db.FormSectionGroup && (section instanceof db.FormSectionGroup)) {
-		return ns.ul(
-			section.sections,
-			function (subSection) {
-				if (!subSection.missingRequiredPropertyNames.size) return;
+var drawFormSection = function (formSection, level) {
+	return div(
+		{ class: 'section-warning-missing-fields' },
+		sectionLabel(formSection, level),
+		missingPropertiesList(formSection)
+	);
+};
 
-				return ns.div(_("Missing required fields for the '${sectionLabel}' sub-section:", {
-					sectionLabel: subSection.label
-				}), generateMissingPropertiesList(subSection));
-			}
-		);
-	}
+var drawFormSectionGroup = function (groupSection, level) {
+	return div(
+		{ class: 'section-warning-missing-fields-sub-' + level },
+		sectionLabel(groupSection, level),
+		ul(groupSection.sections, function (subSection) {
+			return generateMissingList(subSection, level + 1);
+		})
+	);
+};
 
-	if (db.FormEntitiesTable && (section instanceof db.FormEntitiesTable)) {
-		return ns.list(section.entitiesSet, function (entity) {
-			var entitySections = entity.resolveSKeyPath(section.sectionProperty).value;
+var drawFormEntitiesTable = function (tableSection, level) {
+	return div(
+		level === 0 ? [
+			invalidProgressRulesList(tableSection, level),
+			_if(lt(tableSection.progressRules.map.entities._progress, 1), missingFieldsLabel())
+		] : [
+			sectionLabel(tableSection, level),
+			invalidProgressRulesList(tableSection, level + 1)
+		],
+		ul(tableSection.entitiesSet, function (entity) {
+			var entitySections = entity.resolveSKeyPath(tableSection.sectionProperty).value;
 
-			return ns._if(ns.not(ns.eq(entitySections._progress, 1)), [
-				headersMap[level](getEntityTitle(section, entity)),
-				ns.list(entitySections.applicable, function (entitySection) {
+			return _if(lt(entitySections._progress, 1), li(
+				{ class: 'section-warning-missing-fields-sub-' + (level + 1) },
+				p(mdi(_("In \"**${ entityTitle }**\" entity:",
+					{ entityTitle: entityLabel(tableSection, entity) }))),
+				ul(entitySections.applicable, function (entitySection) {
 					return generateMissingList(entitySection, level + 1);
 				})
-			]);
-		});
-	}
+			));
+		})
+	);
+};
+
+generateMissingList = function (formSection, level) {
+	level = level || 0;
+
+	return _if(lt(formSection._status, 1), function () {
+		if (db.FormSection && (formSection instanceof db.FormSection)) {
+			return drawFormSection(formSection, level);
+		}
+
+		if (db.FormSectionGroup && (formSection instanceof db.FormSectionGroup)) {
+			return drawFormSectionGroup(formSection, level);
+		}
+
+		if (db.FormEntitiesTable && (formSection instanceof db.FormEntitiesTable)) {
+			return drawFormEntitiesTable(formSection, level);
+		}
+	});
+
 };
 
 module.exports = function (sections) {
-	return ns.ul(sections, function (section) {
+	return ul(sections, function (formSection) {
 
-		return ns._if(ns.not(ns.eq(section._status, 1)),
-			ns.section(
-				generateSectionLink(section),
-				generateMissingList(section)
+		return _if(not(eq(formSection._status, 1)),
+			section(
+				a(
+					{ href: '#' + formSection.domId },
+					formSection.onIncompleteMessage || _("${sectionLabel} is incomplete",
+						{ sectionLabel: formSection.label })
+				),
+				generateMissingList(formSection)
 			));
 	});
 };

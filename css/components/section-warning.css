@@ -23,12 +23,47 @@
 }
 
 .section-warning-missing-fields {
+	display: flex;
+}
+.section-warning-missing-fields p {
+	white-space: nowrap;
+	padding-right: 5px;
+}
+.section-warning-missing-fields-list {
 	display: inline;
+	font-style: italic;
 }
 
-.section-warning-missing-fields li {
-	display: inline-block;
-	text-indent: 11px;
+.section-warning-missing-fields-list li {
+	display: inline;
+	white-space: nowrap;
+}
+.section-warning-missing-fields-list li::before {
+	content: ", ";
+	white-space: normal;
+}
+.section-warning-missing-fields-list li:first-child::before {
+	content: normal;
+}
+
+.section-warning-missing-fields-sub-1 {
+	padding-left: 10px;
+}
+
+.section-warning-missing-fields-sub-2 {
+	padding-left: 20px;
+}
+
+.section-warning-missing-fields-sub-3 {
+	padding-left: 30px;
+}
+
+.section-warning-missing-fields-sub-4 {
+	padding-left: 40px;
+}
+
+.section-warning-missing-fields-sub-5 {
+	padding-left: 50px;
 }
 
 /*
