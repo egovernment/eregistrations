@@ -49,7 +49,7 @@ var generateMissingList = function (formSection, level) {
 
 					return li(
 						{ class: 'section-warning-missing-fields section-warning-missing-fields-sub-1' },
-						p(mdi(_("In _\"${ sectionLabel }\"_ section:", {
+						p(mdi(_("In _\"${ sectionLabel }\"_ sub section:", {
 							sectionLabel: subSection.label
 						}))),
 						generateMissingPropertiesList(subSection)
