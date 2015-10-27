@@ -43,7 +43,6 @@
 ../../../node_modules/eregistrations/css/components/document-download.css
 ../../../node_modules/eregistrations/css/components/user-doc-data.css
 ../../../node_modules/eregistrations/css/components/table-responsive-container.css
-../../../css/components/payment-certificate.css
 ../../../node_modules/eregistrations/css/components/throbber.css
 ../../../node_modules/eregistrations/css/components/user-account.css
 ../../../css/theme.css

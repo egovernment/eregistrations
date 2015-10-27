@@ -2,7 +2,5 @@
 
 'use strict';
 
-var isFalsy = require('eregistrations/utils/is-falsy');
-
-module.exports = require('mano').db.BusinessProcess.instances.filterByKey('isDemo',
-	isFalsy).filterByKeyPath('processingSteps/map/${ appNameSuffix }/isReady', true);
+module.exports = require('eregistrations/business-processes/submitted')
+	.filterByKeyPath('processingSteps/map/${ appNameSuffix }/isReady', true);
