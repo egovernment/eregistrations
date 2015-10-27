@@ -1,8 +1,7 @@
 #!/usr/bin/env node
 'use strict';
 
-var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
-  , hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
+var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
   , fs            = require('fs2')
   , path          = require('path')
   , startsWith    = require('es5-ext/string/#/starts-with')
@@ -30,7 +29,6 @@ appTypes = {
 };
 
 module.exports = function (projectRoot, appName) {
-	appName = camelToHyphen.call(appName);
 	appRootPath = path.resolve(projectRoot, 'apps', appName);
 
 	templateVars.appName       = appName;
