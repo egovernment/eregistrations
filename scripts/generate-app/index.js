@@ -59,7 +59,7 @@ module.exports = function (projectRoot, appName) {
 		{ depth: Infinity, type: { file: true } }).map(
 		function (templatePath) {
 			var fName = path.basename(templatePath, '.tpl')
-		  , appPathRel = templatePath.split(path.sep).slice(0, -1).join(path.sep)
+		  , appPathRel = path.dirname(templatePath)
 		  , appPath = path.join(appRootPath, appPathRel);
 
 			if (appTypes[appName] && appTypes[appName][appPathRel] === templatePath) {
