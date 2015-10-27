@@ -29,21 +29,25 @@
 	white-space: nowrap;
 	padding-right: 5px;
 }
-.section-warning-missing-fields ul {
+.section-warning-missing-fields-list {
 	display: inline;
 	font-style: italic;
 }
 
-.section-warning-missing-fields li {
+.section-warning-missing-fields-list li {
 	display: inline;
 	white-space: nowrap;
 }
-.section-warning-missing-fields li::before {
+.section-warning-missing-fields-list li::before {
 	content: ", ";
 	white-space: normal;
 }
-.section-warning-missing-fields li:first-child::before {
+.section-warning-missing-fields-list li:first-child::before {
 	content: normal;
+}
+
+.section-warning-missing-fields-sub-1 {
+	padding-left: 10px;
 }
 
 /*

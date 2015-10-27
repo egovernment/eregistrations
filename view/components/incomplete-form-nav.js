@@ -23,7 +23,7 @@ var generateSectionLink = function (formSection) {
 };
 
 var generateMissingPropertiesList = function (formSection) {
-	return ul(
+	return ul({ class: 'section-warning-missing-fields-list' },
 		formSection.missingRequiredPropertyNames,
 		function (propertyName) {
 			return getPropertyLabel(formSection, propertyName);
@@ -40,16 +40,22 @@ var generateMissingList = function (formSection, level) {
 	}
 
 	if (db.FormSectionGroup && (formSection instanceof db.FormSectionGroup)) {
-		return ul(
-			formSection.sections,
-			function (subSection) {
-				if (!subSection.missingRequiredPropertyNames.size) return;
+		return div(
+			p(_("Missing required fields:")),
+			ul(
+				formSection.sections,
+				function (subSection) {
+					if (!subSection.missingRequiredPropertyNames.size) return;
 
-				return div({ class: 'section-warning-missing-fields' },
-					p(_("Missing required fields for the '${sectionLabel}' sub-section:", {
-						sectionLabel: subSection.label
-					})), generateMissingPropertiesList(subSection));
-			}
+					return li(
+						{ class: 'section-warning-missing-fields section-warning-missing-fields-sub-1' },
+						p(mdi(_("In _\"${ sectionLabel }\"_ section:", {
+							sectionLabel: subSection.label
+						}))),
+						generateMissingPropertiesList(subSection)
+					);
+				}
+			)
 		);
 	}
 
