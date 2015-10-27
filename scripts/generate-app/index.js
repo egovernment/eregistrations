@@ -35,7 +35,7 @@ module.exports = function (projectRoot, appName) {
 	templateVars.isBusinessProcessSubmitted = appName === 'business-process-submitted';
 
 	if (appTypes[appName]) {
-		templateType = appTypes[appName];
+		templateType = appName;
 	} else {
 		var i = 0;
 		do {
@@ -50,6 +50,7 @@ module.exports = function (projectRoot, appName) {
 			templateType = 'authenticated';
 		}
 	}
+	console.log('templateType', templateType);
 
 	var templates = {};
 
