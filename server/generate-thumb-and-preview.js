@@ -29,11 +29,11 @@ module.exports = function (file) {
 
 	processFullPath = resolve(path, processPath);
 	thumbFullPath = resolve(path, thumbPath);
-	thumb = gm(processFullPath).density(300, 300).resize(500, 500).writeP(thumbFullPath);
+	thumb = gm(processFullPath).density(300, 300).resize(500, 500, '>').writeP(thumbFullPath);
 
 	if (file.path !== previewPath) {
 		previewFullPath = resolve(path, previewPath);
-		preview = gm(processFullPath).density(300, 300).resize(1500, 1500).writeP(previewFullPath);
+		preview = gm(processFullPath).density(300, 300).resize(1500, 1500, '>').writeP(previewFullPath);
 	}
 
 	return deferred(thumb, preview)(function () {

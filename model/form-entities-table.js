@@ -78,7 +78,7 @@ module.exports = memoize(function (db) {
 		entitiesSet: {
 			multiple: true,
 			value: function (_observe) {
-				var entityObjects = this.master.resolveSKeyPath(this.propertyName, _observe);
+				var entityObjects = this.propertyMaster.resolveSKeyPath(this.propertyName, _observe);
 				if (!entityObjects) {
 					return;
 				}

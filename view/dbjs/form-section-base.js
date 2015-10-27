@@ -8,5 +8,5 @@ require('./form-section-base-get-legacy');
 require('./form-section-base-dom-id');
 
 Object.defineProperties(db.FormSectionBase.prototype, {
-	forceRequiredInput: d(false)
+	disablePartialSubmit: d(false)
 });
