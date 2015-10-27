@@ -24,7 +24,6 @@ var generateSectionLink = function (formSection) {
 
 var generateMissingPropertiesList = function (formSection) {
 	return ul(
-		{ class: 'section-warning-missing-fields' },
 		formSection.missingRequiredPropertyNames,
 		function (propertyName) {
 			return getPropertyLabel(formSection, propertyName);
@@ -36,7 +35,8 @@ var generateMissingList = function (formSection, level) {
 	level = level || 3;
 
 	if (db.FormSection && (formSection instanceof db.FormSection)) {
-		return div(_("Missing required fields:"), " ", generateMissingPropertiesList(formSection));
+		return div({ class: 'section-warning-missing-fields' },
+			p(_("Missing required fields:")), generateMissingPropertiesList(formSection));
 	}
 
 	if (db.FormFormSectionGroup && (formSection instanceof db.FormSectionGroup)) {
@@ -45,9 +45,10 @@ var generateMissingList = function (formSection, level) {
 			function (subSection) {
 				if (!subSection.missingRequiredPropertyNames.size) return;
 
-				return div(_("Missing required fields for the '${sectionLabel}' sub-section:", {
-					sectionLabel: subSection.label
-				}), " ", generateMissingPropertiesList(subSection));
+				return div({ class: 'section-warning-missing-fields' },
+					p(_("Missing required fields for the '${sectionLabel}' sub-section:", {
+						sectionLabel: subSection.label
+					})), generateMissingPropertiesList(subSection));
 			}
 		);
 	}

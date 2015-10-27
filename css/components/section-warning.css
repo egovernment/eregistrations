@@ -23,15 +23,24 @@
 }
 
 .section-warning-missing-fields {
+	display: flex;
+}
+.section-warning-missing-fields p {
+	white-space: nowrap;
+	padding-right: 5px;
+}
+.section-warning-missing-fields ul {
 	display: inline;
 	font-style: italic;
 }
 
 .section-warning-missing-fields li {
 	display: inline;
+	white-space: nowrap;
 }
 .section-warning-missing-fields li::before {
 	content: ", ";
+	white-space: normal;
 }
 .section-warning-missing-fields li:first-child::before {
 	content: normal;
