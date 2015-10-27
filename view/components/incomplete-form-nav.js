@@ -39,7 +39,7 @@ var generateMissingList = function (formSection, level) {
 			p(_("Missing required fields:")), generateMissingPropertiesList(formSection));
 	}
 
-	if (db.FormFormSectionGroup && (formSection instanceof db.FormSectionGroup)) {
+	if (db.FormSectionGroup && (formSection instanceof db.FormSectionGroup)) {
 		return ul(
 			formSection.sections,
 			function (subSection) {
