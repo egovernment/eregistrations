@@ -4,8 +4,6 @@
 var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
   , fs            = require('fs2')
   , path          = require('path')
-  , startsWith    = require('es5-ext/string/#/starts-with')
-  , forEach       = require('es5-ext/object/for-each')
   , template      = require('es6-template-strings')
   , deferred      = require('deferred')
   , exec          = deferred.promisify(require('child_process').execFile)
@@ -13,19 +11,20 @@ var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
   , generateAppsConf  = require('mano/scripts/generate-apps-conf')
   , generateAppsCtrls = require('mano/scripts/generate-apps-controllers')
   , getApps           = require('mano/server/utils/resolve-apps')
+  , partialAppName
   , appTypes
   , templateType
   , templateVars = {}
   , appRootPath;
 
 appTypes = {
-	'users-admin': null,
-	'meta-dmin': null,
-	user: null,
-	public: null,
-	official: null,
+	'users-admin': true,
+	'meta-dmin': true,
+	user: true,
+	public: true,
+	official: true,
 	'business-process-submitted': { 'client/program.js': 'client/program.js/business-process.tpl' },
-	'business-process': null
+	'business-process': true
 };
 
 module.exports = function (projectRoot, appName) {
@@ -35,18 +34,21 @@ module.exports = function (projectRoot, appName) {
 	templateVars.appNameSuffix = hyphenToCamel.call(appName.split('-').slice(1).join('-'));
 	templateVars.isBusinessProcessSubmitted = appName === 'business-process-submitted';
 
-	forEach(appTypes, function (config, typeName) {
-		if (templateType) return;
-		if (appName === typeName) {
-			templateType = typeName;
+	if (appTypes[appName]) {
+		templateType = appTypes[appName];
+	} else {
+		var i = 0;
+		do {
+			--i;
+			partialAppName = appName.split('-').slice(0, i).join('-');
+			if (appTypes[partialAppName]) {
+				templateType = partialAppName;
+				break;
+			}
+		} while (partialAppName);
+		if (!templateType) {
+			templateType = 'authenticated';
 		}
-		if (startsWith.call(appName, typeName)) {
-			templateType = typeName;
-		}
-	});
-
-	if (!templateType) {
-		templateType = 'authenticated';
 	}
 
 	var templates = {};
