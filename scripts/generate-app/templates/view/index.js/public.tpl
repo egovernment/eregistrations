@@ -35,9 +35,6 @@ exports.notFound = {
 exports.contact = {
 	_parent: exports.extrapages,
 	main: require('./html/contact'),
-	'btn-contact': {
-		class: { active: true }
-	},
 	'btn-reset': {
 		class: { hidden: true }
 	}
@@ -46,12 +43,6 @@ exports.contact = {
 exports.resetpswd = {
 	_parent: exports.extrapages,
 	main: require('./html/reset-password'),
-	'btn-quienes': {
-		class: { hidden: true }
-	},
-	'btn-contact': {
-		class: { hidden: true }
-	},
 	'btn-reset': {
 		class: { active: true }
 	}
