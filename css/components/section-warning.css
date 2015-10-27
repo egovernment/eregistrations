@@ -24,11 +24,17 @@
 
 .section-warning-missing-fields {
 	display: inline;
+	font-style: italic;
 }
 
 .section-warning-missing-fields li {
-	display: inline-block;
-	text-indent: 11px;
+	display: inline;
+}
+.section-warning-missing-fields li::before {
+	content: ", ";
+}
+.section-warning-missing-fields li:first-child::before {
+	content: normal;
 }
 
 /*
