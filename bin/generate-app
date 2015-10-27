@@ -1,21 +1,21 @@
 #!/usr/bin/env node
 
-var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
-  , path          = require('path')
+var path          = require('path')
   , resolveProjectRoot = require('cjs-module/resolve-project-root')
-  , projectRoot = process.argv[2]
-  , appName = process.argv[3]
+  , projectRoot = process.cwd()
+  , appName = process.argv[2]
+  , allowedPattern = /[0-9a-z\-]+/
+  , match
   , appRootPath;
 
 if (!appName) {
 	throw new Error('No appName argument provided');
 }
 
-if (!projectRoot) {
-	throw new Error('No projectRoot argument provided');
+match = appName.match(allowedPattern);
+if (!match || (match[0].length !== appName.length)) {
+	throw new Error('Illegal characters in app name, use only: [0-9a-z-]');
 }
-
-appName = camelToHyphen.call(appName);
 
 resolveProjectRoot(projectRoot).done(function (root) {
 	if (!root) {

@@ -81,7 +81,8 @@ module.exports = function (projectRoot, appName) {
 		});
 	}).then(function () {
 		return exec('node',
-			[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + appName]);
+			[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + appName],
+			{ cwd: projectRoot });
 	}).then(function () {
 		return generateAppsList(projectRoot)(function () {
 			return getApps(projectRoot);
