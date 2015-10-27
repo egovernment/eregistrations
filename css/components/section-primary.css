@@ -167,3 +167,7 @@
 		margin-left: 0;
 	}
 }
+
+.section-primary > form > .submit-placeholder {
+	margin-bottom: 0;
+}
