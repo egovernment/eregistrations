@@ -4,80 +4,110 @@
 
 var db         = require('mano').db
   , _          = require('mano').i18n.bind('Incomplete Sections Navigation')
-  , headersMap = require('../utils/headers-map')
 
-  , _d = _;
+  , _d = _
+  , generateMissingList;
 
-var getPropertyLabel = function (formSection, propertyName) {
+var propertyLabel = function (formSection, propertyName) {
 	return JSON.stringify(formSection.master.resolveSKeyPath(propertyName).ownDescriptor.label);
 };
 
-var getEntityTitle = function (formSection, entity) {
-	return entity.resolveSKeyPath(formSection.entityTitleProperty).observable;
+var entityLabel = function (tableSection, entity) {
+	return entity.resolveSKeyPath(tableSection.entityTitleProperty).observable;
 };
 
-var generateSectionLink = function (formSection) {
-	return a(
-		{ href: '#' + formSection.domId },
-		formSection.onIncompleteMessage || _("${sectionLabel} is incomplete",
-			{ sectionLabel: formSection.label })
+var missingFieldsLabel = function () {
+	return p(_("Missing required fields:"));
+};
+
+var sectionLabel = function (formSection, level) {
+	if (level === 0) return missingFieldsLabel();
+
+	return p({ class: 'section-warning-missing-fields-sub-' + 1 },
+		mdi(_("In _\"${ sectionLabel }\"_ section:", { sectionLabel: formSection.label })));
+};
+
+var missingPropertiesList = function (formSection) {
+	return ul(
+		{ class: 'section-warning-missing-fields-list' },
+		formSection.missingRequiredPropertyNames,
+		function (propertyName) {
+			return propertyLabel(formSection, propertyName);
+		}
 	);
 };
 
-var generateMissingPropertiesList = function (formSection) {
-	return ul({ class: 'section-warning-missing-fields-list' },
-		formSection.missingRequiredPropertyNames,
-		function (propertyName) {
-			return getPropertyLabel(formSection, propertyName);
-		});
+var invalidProgressRulesList = function (formSection, level) {
+	var translationInserts = { max: formSection._max, min: formSection._min };
+
+	return ul(
+		{ class: 'section-warning-missing-fields-sub-' + level },
+		formSection.progressRules.invalid,
+		function (progressRule) {
+			return li(_d(progressRule.message, translationInserts));
+		}
+	);
 };
 
-var generateMissingList = function (formSection, level) {
-	level = level || 3;
+var drawFormSection = function (formSection, level) {
+	return div(
+		{ class: 'section-warning-missing-fields' },
+		sectionLabel(formSection, level),
+		missingPropertiesList(formSection)
+	);
+};
 
-	if (db.FormSection && (formSection instanceof db.FormSection)) {
-		return _if(formSection.missingRequiredPropertyNames._size,
-			div({ class: 'section-warning-missing-fields' },
-				p(_("Missing required fields:")), generateMissingPropertiesList(formSection)));
-	}
+var drawFormSectionGroup = function (groupSection, level) {
+	return div(
+		{ class: 'section-warning-missing-fields-sub-' + level },
+		sectionLabel(groupSection, level),
+		ul(groupSection.sections, function (subSection) {
+			return generateMissingList(subSection, level + 1);
+		})
+	);
+};
 
-	if (db.FormSectionGroup && (formSection instanceof db.FormSectionGroup)) {
-		return div(
-			p(_("Missing required fields:")),
-			ul(
-				formSection.sections,
-				function (subSection) {
-					return _if(subSection.missingRequiredPropertyNames._size, li(
-						{ class: 'section-warning-missing-fields section-warning-missing-fields-sub-1' },
-						p(mdi(_("In _\"${ sectionLabel }\"_ sub section:", {
-							sectionLabel: subSection.label
-						}))),
-						generateMissingPropertiesList(subSection)
-					));
-				}
-			)
-		);
-	}
+var drawFormEntitiesTable = function (tableSection, level) {
+	return div(
+		level === 0 ? [
+			invalidProgressRulesList(tableSection, level),
+			_if(lt(tableSection.progressRules.map.entities._progress, 1), missingFieldsLabel())
+		] : [
+			sectionLabel(tableSection, level),
+			invalidProgressRulesList(tableSection, level + 1)
+		],
+		ul(tableSection.entitiesSet, function (entity) {
+			var entitySections = entity.resolveSKeyPath(tableSection.sectionProperty).value;
 
-	if (db.FormEntitiesTable && (formSection instanceof db.FormEntitiesTable)) {
-		var translationInserts = { max: formSection._max, min: formSection._min };
+			return _if(lt(entitySections._progress, 1), li(
+				{ class: 'section-warning-missing-fields-sub-' + (level + 1) },
+				p(mdi(_("In \"**${ entityTitle }**\" entity:",
+					{ entityTitle: entityLabel(tableSection, entity) }))),
+				ul(entitySections.applicable, function (entitySection) {
+					return generateMissingList(entitySection, level + 1);
+				})
+			));
+		})
+	);
+};
 
-		return [
-			list(formSection.progressRules.invalid, function (progressRule) {
-				return li(_d(progressRule.message, translationInserts));
-			}),
-			list(formSection.entitiesSet, function (entity) {
-				var entitySections = entity.resolveSKeyPath(formSection.sectionProperty).value;
+generateMissingList = function (formSection, level) {
+	level = level || 0;
 
-				return _if(not(eq(entitySections._progress, 1)), [
-					headersMap[level](getEntityTitle(formSection, entity)),
-					list(entitySections.applicable, function (entitySection) {
-						return generateMissingList(entitySection, level + 1);
-					})
-				]);
-			})
-		];
-	}
+	return _if(lt(formSection._status, 1), function () {
+		if (db.FormSection && (formSection instanceof db.FormSection)) {
+			return drawFormSection(formSection, level);
+		}
+
+		if (db.FormSectionGroup && (formSection instanceof db.FormSectionGroup)) {
+			return drawFormSectionGroup(formSection, level);
+		}
+
+		if (db.FormEntitiesTable && (formSection instanceof db.FormEntitiesTable)) {
+			return drawFormEntitiesTable(formSection, level);
+		}
+	});
+
 };
 
 module.exports = function (sections) {
@@ -85,7 +115,11 @@ module.exports = function (sections) {
 
 		return _if(not(eq(formSection._status, 1)),
 			section(
-				generateSectionLink(formSection),
+				a(
+					{ href: '#' + formSection.domId },
+					formSection.onIncompleteMessage || _("${sectionLabel} is incomplete",
+						{ sectionLabel: formSection.label })
+				),
 				generateMissingList(formSection)
 			));
 	});
