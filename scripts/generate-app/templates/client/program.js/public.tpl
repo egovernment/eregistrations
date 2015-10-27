@@ -63,6 +63,9 @@ mano.env = env;
 // Intialize POST router & controller
 postRouter(joinControllers(require('../controller'), require('../controller/client')));
 
+// Clear localStorage
+delete localStorage._authenticated;
+
 // Gather loaded scripts
 var loadedScripts = [];
 Array.prototype.forEach.call(document.scripts, function (script) {

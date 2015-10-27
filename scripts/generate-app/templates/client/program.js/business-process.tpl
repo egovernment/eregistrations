@@ -75,7 +75,8 @@ userId = require('dom-ext/html-document/#/get-cookie')
 if (userId) {
 	localStorage._authenticated = userId;
 } else {
-	delete localStorage._authenticated;
+	throw new Error('No data on authenticated user found. ' +
+			'Make sure that url port matches one provided into url setting in env.js(on)');
 }
 
 loadView = function () {
