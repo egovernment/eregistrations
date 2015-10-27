@@ -22,11 +22,11 @@ exports['sub-main'] = {
 				));
 
 		section({ class: 'section-tab-nav' },
-			a({ class: 'section-tab-nav-tab',
+			a({ class: 'section-tab-nav-tab user-account-tab',
 					id: 'user-account-requests',
 					href: '/' },
 				_("My requests")),
-			a({ class: 'section-tab-nav-tab',
+			a({ class: 'section-tab-nav-tab user-account-tab',
 					id: 'user-account-data',
 					href: '/requests/' },
 				_("My documents and data")),
