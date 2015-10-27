@@ -32,14 +32,6 @@ exports.notFound = {
 	main: require('./html/404')
 };
 
-exports.contact = {
-	_parent: exports.extrapages,
-	main: require('./html/contact'),
-	'btn-reset': {
-		class: { hidden: true }
-	}
-};
-
 exports.resetpswd = {
 	_parent: exports.extrapages,
 	main: require('./html/reset-password'),

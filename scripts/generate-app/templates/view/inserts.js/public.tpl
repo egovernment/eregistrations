@@ -34,6 +34,8 @@ if (isReadOnlyRender) {
 	exports.spaTakeOver = null;
 }
 
+exports.title = 'Title';
+
 exports.passwordPattern = db.Password.pattern.source.slice(1, -1);
 
 exports.resetPasswordToken = location.query.get('token');
