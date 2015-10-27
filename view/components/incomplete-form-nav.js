@@ -7,7 +7,7 @@ var db         = require('mano').db
   , headersMap = require('../utils/headers-map');
 
 var getPropertyLabel = function (formSection, propertyName) {
-	return formSection.master.resolveSKeyPath(propertyName).ownDescriptor.label;
+	return JSON.stringify(formSection.master.resolveSKeyPath(propertyName).ownDescriptor.label);
 };
 
 var getEntityTitle = function (formSection, entity) {
