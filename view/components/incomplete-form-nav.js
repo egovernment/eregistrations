@@ -27,8 +27,7 @@ var generateMissingPropertiesList = function (formSection) {
 		formSection.missingRequiredPropertyNames,
 		function (propertyName) {
 			return getPropertyLabel(formSection, propertyName);
-		}
-	);
+		});
 };
 
 var generateMissingList = function (formSection, level) {
