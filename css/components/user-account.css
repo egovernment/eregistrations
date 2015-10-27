@@ -3,7 +3,7 @@
 }
 
 .user-forms .user-account-boxes {
-	margin-bottom: 44px;
+	margin-bottom: 22px;
 }
 
 .user-account-boxes > section {
@@ -176,4 +176,5 @@ h3.user-account-section-title {
 
 .user-account-tab.section-tab-nav-tab {
 	font-size:22px;
+	padding: 11px 15px;
 }
