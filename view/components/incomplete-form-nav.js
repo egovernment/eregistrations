@@ -6,42 +6,42 @@ var db         = require('mano').db
   , _          = require('mano').i18n.bind('Incomplete Sections Navigation')
   , headersMap = require('../utils/headers-map');
 
-var getPropertyLabel = function (section, propertyName) {
-	return section.master.resolveSKeyPath(propertyName).ownDescriptor.label;
+var getPropertyLabel = function (formSection, propertyName) {
+	return formSection.master.resolveSKeyPath(propertyName).ownDescriptor.label;
 };
 
-var getEntityTitle = function (section, entity) {
-	return entity.resolveSKeyPath(section.entityTitleProperty).observable;
+var getEntityTitle = function (formSection, entity) {
+	return entity.resolveSKeyPath(formSection.entityTitleProperty).observable;
 };
 
-var generateSectionLink = function (section) {
+var generateSectionLink = function (formSection) {
 	return a(
-		{ href: '#' + section.domId },
-		section.onIncompleteMessage || _("${sectionLabel} is incomplete",
-			{ sectionLabel: section.label })
+		{ href: '#' + formSection.domId },
+		formSection.onIncompleteMessage || _("${sectionLabel} is incomplete",
+			{ sectionLabel: formSection.label })
 	);
 };
 
-var generateMissingPropertiesList = function (section) {
+var generateMissingPropertiesList = function (formSection) {
 	return ul(
 		{ class: 'section-warning-missing-fields' },
-		section.missingRequiredPropertyNames,
+		formSection.missingRequiredPropertyNames,
 		function (propertyName) {
-			return getPropertyLabel(section, propertyName);
+			return getPropertyLabel(formSection, propertyName);
 		}
 	);
 };
 
-var generateMissingList = function (section, level) {
+var generateMissingList = function (formSection, level) {
 	level = level || 3;
 
-	if (db.FormSection && (section instanceof db.FormSection)) {
-		return div(_("Missing required fields:"), " ", generateMissingPropertiesList(section));
+	if (db.FormSection && (formSection instanceof db.FormSection)) {
+		return div(_("Missing required fields:"), " ", generateMissingPropertiesList(formSection));
 	}
 
-	if (db.FormSectionGroup && (section instanceof db.FormSectionGroup)) {
+	if (db.FormFormSectionGroup && (formSection instanceof db.FormSectionGroup)) {
 		return ul(
-			section.sections,
+			formSection.sections,
 			function (subSection) {
 				if (!subSection.missingRequiredPropertyNames.size) return;
 
@@ -52,12 +52,12 @@ var generateMissingList = function (section, level) {
 		);
 	}
 
-	if (db.FormEntitiesTable && (section instanceof db.FormEntitiesTable)) {
-		return list(section.entitiesSet, function (entity) {
-			var entitySections = entity.resolveSKeyPath(section.sectionProperty).value;
+	if (db.FormEntitiesTable && (formSection instanceof db.FormEntitiesTable)) {
+		return list(formSection.entitiesSet, function (entity) {
+			var entitySections = entity.resolveSKeyPath(formSection.sectionProperty).value;
 
 			return _if(not(eq(entitySections._progress, 1)), [
-				headersMap[level](getEntityTitle(section, entity)),
+				headersMap[level](getEntityTitle(formSection, entity)),
 				list(entitySections.applicable, function (entitySection) {
 					return generateMissingList(entitySection, level + 1);
 				})
@@ -67,12 +67,12 @@ var generateMissingList = function (section, level) {
 };
 
 module.exports = function (sections) {
-	return ul(sections, function (section) {
+	return ul(sections, function (formSection) {
 
-		return _if(not(eq(section._status, 1)),
+		return _if(not(eq(formSection._status, 1)),
 			section(
-				generateSectionLink(section),
-				generateMissingList(section)
+				generateSectionLink(formSection),
+				generateMissingList(formSection)
 			));
 	});
 };
