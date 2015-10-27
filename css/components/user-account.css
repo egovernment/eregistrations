@@ -47,7 +47,11 @@ h3.user-account-section-title {
 .user-account-welcome header {
 	display: flex;
 	justify-content: space-between;
-	margin-bottom:11px;
+	margin:0;
+}
+
+.user-account-welcome .free-form {
+	padding:11px 0;
 }
 
 h3.user-account-section-title {
@@ -172,5 +176,5 @@ h3.user-account-section-title {
 
 .user-account-tab.section-tab-nav-tab {
 	font-size:22px;
-	bottom: 5px;
+	padding: 10px 15px;
 }
