@@ -36,7 +36,7 @@ var generateMissingList = function (section, level) {
 	level = level || 3;
 
 	if (db.FormSection && (section instanceof db.FormSection)) {
-		return div(_("Missing required fields:"), generateMissingPropertiesList(section));
+		return div(_("Missing required fields:"), " ", generateMissingPropertiesList(section));
 	}
 
 	if (db.FormSectionGroup && (section instanceof db.FormSectionGroup)) {
@@ -47,7 +47,7 @@ var generateMissingList = function (section, level) {
 
 				return div(_("Missing required fields for the '${sectionLabel}' sub-section:", {
 					sectionLabel: subSection.label
-				}), generateMissingPropertiesList(subSection));
+				}), " ", generateMissingPropertiesList(subSection));
 			}
 		);
 	}
