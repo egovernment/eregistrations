@@ -11,6 +11,7 @@ var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
   , generateAppsConf  = require('mano/scripts/generate-apps-conf')
   , generateAppsCtrls = require('mano/scripts/generate-apps-controllers')
   , getApps           = require('mano/server/utils/resolve-apps')
+  , staticsPath
   , partialAppName
   , appTypes
   , templateType
@@ -29,6 +30,7 @@ appTypes = {
 
 module.exports = function (projectRoot, appName) {
 	appRootPath = path.resolve(projectRoot, 'apps', appName);
+	staticsPath = path.join(__dirname, 'public-statics');
 
 	templateVars.appName       = appName;
 	templateVars.appNameSuffix = hyphenToCamel.call(appName.split('-').slice(1).join('-'));
@@ -50,7 +52,6 @@ module.exports = function (projectRoot, appName) {
 			templateType = 'authenticated';
 		}
 	}
-	console.log('templateType', templateType);
 
 	var templates = {};
 
@@ -74,23 +75,33 @@ module.exports = function (projectRoot, appName) {
 			}
 		}
 	).then(function () {
-		return deferred.map(Object.keys(templates), function (appPath) {
+		var toResolve = [deferred.map(Object.keys(templates), function (appPath) {
 			return fs.readFile(templates[appPath])(function (fContent) {
 				fContent = template(fContent, templateVars, { partial: true });
 				return fs.writeFile(appPath, fContent, { intermediate: true });
 			})();
-		});
+		})];
+		if (appName === 'public') {
+			toResolve.push(fs.readdir(staticsPath,
+					{ depth: Infinity, type: { file: true } }).map(function (staticFilePath) {
+				return fs.copy(path.join(staticsPath, staticFilePath),
+							path.join(appRootPath, staticFilePath.split('public-statics/').slice(-1)[0]),
+							{ intermediate: true });
+			}));
+		}
+		return deferred.map(toResolve);
 	}).then(function () {
-		return exec('node',
-			[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + appName],
-			{ cwd: projectRoot });
-	}).then(function () {
-		return generateAppsList(projectRoot)(function () {
-			return getApps(projectRoot);
-		});
-	}).then(function (appsList) {
-		return deferred.map([generateAppsConf, generateAppsCtrls], function (generator) {
-			return generator(projectRoot, appsList);
-		});
+		return deferred(
+			exec('node',
+				[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + appName],
+				{ cwd: projectRoot }),
+			generateAppsList(projectRoot)(function () {
+				return getApps(projectRoot).then(function (appsList) {
+					return deferred(generateAppsConf(projectRoot, appsList),
+						generateAppsCtrls(projectRoot, appsList));
+				}
+					);
+			})
+		);
 	});
 };

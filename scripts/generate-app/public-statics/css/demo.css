@@ -1,0 +1,17 @@
+.user-forms {
+	padding-top: 22px;
+}
+.user-forms > * {
+	margin-bottom: 22px;
+}
+.pills-nav {
+	margin-bottom: 0;
+}
+
+.pills-nav-active > a,
+.pills-nav-active > a:hover,
+.pills-nav-active > a:focus,
+.pills-nav-active > a:active {
+	background: var(--normal-background);
+	color: var(--white-text);
+}
