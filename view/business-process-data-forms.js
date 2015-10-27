@@ -3,7 +3,6 @@
 'use strict';
 
 var generateSections      = require('./components/generate-form-sections')
-, sectionsToFormNavConfig = require('./components/utils/sections-to-form-nav-config')
 , incompleteFormNav       = require('./components/incomplete-form-nav')
 , _                       = require('mano').i18n.bind('Registration')
 , errorMsg                = require('./_business-process-error-info').errorMsg;
@@ -26,7 +25,7 @@ exports.step = function () {
 		div({ class: 'user-next-step-button' },
 			a({ href: '/documents/' }, _("Continue to next step"))),
 		section({ class: 'section-warning' },
-			incompleteFormNav(sectionsToFormNavConfig(this.businessProcess.dataForms.applicable)))));
+			incompleteFormNav(this.businessProcess.dataForms.applicable))));
 
 };
 
