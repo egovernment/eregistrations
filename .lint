@@ -35,6 +35,7 @@ predef+ console
 ./server
 ./prototype/scripts
 ./utils
+./scripts/generate-app
 predef+ process, __dirname
 
 ./controller/client

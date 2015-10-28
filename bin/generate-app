@@ -1,0 +1,50 @@
+#!/usr/bin/env node
+
+var path          = require('path')
+  , resolveProjectRoot = require('cjs-module/resolve-project-root')
+  , projectRoot = process.cwd()
+  , startsWith  = require('es5-ext/string/#/starts-with')
+  , appName     = process.argv[2]
+  , allowedPattern = /[0-9a-z\-]+/
+  , match
+  , appRootPath;
+
+if (!appName) {
+	throw new Error('No appName argument provided');
+}
+
+match = appName.match(allowedPattern);
+if (!match || (match[0].length !== appName.length)) {
+	throw new Error('Illegal characters in app name, use only: [0-9a-z-]');
+}
+
+resolveProjectRoot(projectRoot).done(function (root) {
+	if (!root) {
+		throw new Error('Could not located project in projectRoot: ' + projectRoot);
+	}
+	appRootPath = 'apps' + path.sep + appName;
+	require('../scripts/generate-app')(root, appName).done(function () {
+		var msg = ["\nSuccessfully created " + appName + " application." +
+				"\nIt's located in: " + appRootPath + "." +
+				"\n\nIn order to setup application you need to: \n"], msgItems = [];
+		msgItems.push("Expose app in apps/routes.js configuration");
+		msgItems.push("Configure application url tree in apps/" + appName + "/routes.js");
+		msgItems.push("Provide app configuration for data access rules in apps/access.js");
+		msgItems.push("Setup dbjs dom bindings in apps/" + appName + "/client/dbjs-dom.js");
+		msgItems.push("Configure model needed for application client in apps/"
+			+ appName + "/client/model.js");
+		msgItems.push("Ensure POST (form submissions) controllers " +
+			"configuration is complete in apps/" + appName + "/controller");
+
+		if (startsWith.call(appName, 'official-')) {
+			msgItems.push("Ensure that views model is updated with added status maps in model/views.js");
+		}
+
+		if (startsWith.call(appName, 'official-') || appName === 'users-admin') {
+			msgItems.push("Ensure that views population for added " +
+				"status maps is configured in server/db/views.js");
+		}
+
+		console.log(msg + msgItems.join('\n- '));
+	});
+});
