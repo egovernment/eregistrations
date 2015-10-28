@@ -38,6 +38,9 @@ predef+ console
 ./scripts/generate-app
 predef+ process, __dirname
 
+./scripts/create-users-admin
+predef+ setTimeout
+
 ./controller/client
 ./client
 ./prototype/client
