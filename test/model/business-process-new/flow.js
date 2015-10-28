@@ -76,7 +76,7 @@ module.exports = function (t, a) {
 	a(businessProcess.isSentBack, true);
 	a(businessProcess.isRejected, false);
 	a(businessProcess.isClosed, false);
-	a(businessProcess.status, 'process');
+	a(businessProcess.status, 'sentBack');
 
 	step.status = 'rejected';
 	step.rejectionReason = "Whateever ..";

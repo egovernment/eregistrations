@@ -16,8 +16,9 @@ var aFrom               = require('es5-ext/array/from')
   , ensureCallable      = require('es5-ext/object/valid-callable')
   , ensureString        = require('es5-ext/object/validate-stringifiable-value')
   , Set                 = require('es6-set')
+  , deferred            = require('deferred')
   , memoize             = require('memoizee/plain')
-  , ensureDatabase      = require('dbjs/valid-dbjs')
+  , ensureDriver        = require('dbjs-persistence/ensure')
   , isObservableSet     = require('observable-set/is-observable-set')
   , db                  = require('mano').db
   , getCompare          = require('../../utils/get-compare')
@@ -29,7 +30,8 @@ var aFrom               = require('es5-ext/array/from')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
-  , map = Array.prototype.map, ceil = Math.ceil, keys = Object.keys, stringify = JSON.stringify;
+  , isArray = Array.isArray, map = Array.prototype.map, ceil = Math.ceil, keys = Object.keys
+  , stringify = JSON.stringify;
 
 require('memoizee/ext/max-age');
 
@@ -63,15 +65,25 @@ module.exports = exports = function (data) {
 	  , bpListComputedProps = data.listComputedProperties && aFrom(data.listComputedProperties)
 	  , tableQueryHandler = getTableQueryHandler(statusMap)
 	  , businessProcessQueryHandler = getBusinessProcessQueryHandler(statusMap)
-	  , dbSubmitted = bpListComputedProps ? ensureDatabase(data.dbSubmitted) : null
+	  , dbDriver = bpListComputedProps ? ensureDriver(data.dbDriver) : null
 	  , getOrderIndex = ensureCallable(data.getOrderIndex)
 	  , compare = getCompare(getOrderIndex)
 	  , statuses = keys(statusMap).filter(function (name) { return (name !== 'all'); })
-	  , itemsPerPage = toNaturalNumber(data.itemsPerPage) || defaultItemsPerPage;
+	  , itemsPerPage = toNaturalNumber(data.itemsPerPage) || defaultItemsPerPage
+	  , indexes;
+
+	if (bpListComputedProps) {
+		indexes = [];
+		deferred.map(bpListComputedProps, function (keyPath) {
+			return dbDriver.indexKeyPath(keyPath)(function (map) {
+				indexes.push({ keyPath: keyPath, map: map });
+			});
+		});
+	}
 
 	data.searchFilter = getSearchFilter(ensureArray(data.searchablePropertyNames));
 	var getTableData = memoize(function (query) {
-		var list, pageCount, offset, size, result;
+		var list, pageCount, offset, size, result, computedEvents;
 		list = exports.listModifiers.reduce(function (list, modifier) {
 			if (modifier.name && (query[modifier.name] == null) && !modifier.required) return list;
 			return modifier.process(list, query[modifier.name], data);
@@ -85,28 +97,43 @@ module.exports = exports = function (data) {
 		// Pagination
 		offset = (query.page - 1) * itemsPerPage;
 		list = list.slice(offset, offset + itemsPerPage);
-		result = {
-			view: serializeView(list, getOrderIndex),
-			size: size,
-			data: flatten.call(map.call(list, function (object) {
-				var subObject
-				  , events = bpListProps.map(function (path) { return getEvents(object, path); });
-				events.unshift(object._lastOwnEvent_);
-				if (!dbSubmitted) return events;
-				subObject = dbSubmitted.BusinessProcess.getById(object.__id__);
-				return [
-					events,
-					bpListComputedProps.map(function (path) { return getEvents(subObject, path); })
-				];
-			})).map(String)
-		};
-		if (!query.status) {
-			list.forEach(function (bp) {
-				this[bp.__id__] = find.call(statuses,
-					function (status) { return statusMap[status].data.has(bp); });
-			}, result.statusMap = {});
+		if (bpListComputedProps) {
+			computedEvents = deferred.map(list, function (obj) {
+				var objId = obj.__id__;
+				return deferred.map(bpListComputedProps, function (keyPath) {
+					return dbDriver.getIndexedValue(objId, keyPath)(function (data) {
+						if (isArray(data.value)) {
+							return data.value.map(function (data) {
+								var key = data.key ? '*' + data.key : '';
+								return data.stamp + '.' + objId + '/' + keyPath + key + '.' + data.value;
+							});
+						}
+						return data.stamp + '.' + objId + '/' + keyPath + '.' + data.value;
+					});
+				});
+			});
+		} else {
+			computedEvents = deferred();
 		}
-		return result;
+		return computedEvents(function (computedEvents) {
+			result = {
+				view: serializeView(list, getOrderIndex),
+				size: size,
+				data: flatten.call(map.call(list, function (object) {
+					var events = bpListProps.map(function (path) { return getEvents(object, path); });
+					events.unshift(object._lastOwnEvent_);
+					if (!computedEvents) return events;
+					return [events, computedEvents];
+				})).map(String)
+			};
+			if (!query.status) {
+				list.forEach(function (bp) {
+					this[bp.__id__] = find.call(statuses,
+						function (status) { return statusMap[status].data.has(bp); });
+				}, result.statusMap = {});
+			}
+			return result;
+		});
 	}, {
 		normalizer: function (args) { return String(toArray(args[0], null, null, true)); },
 		maxAge: 10 * 1000

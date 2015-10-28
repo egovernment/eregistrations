@@ -21,6 +21,7 @@ module.exports = function (Type/*, options*/) {
 		fragment = fragments[id] = new Fragment();
 		if (!object) return fragment;
 		object.getAllEvents().forEach(function (event) {
+			if (event.object._kind_ === 'sub-descriptor') return;
 			if (filter && !filter(event)) return;
 			fragment.update(event.object.__valueId__,
 				{ value: serialize(event.value), stamp: event.stamp });
@@ -28,6 +29,7 @@ module.exports = function (Type/*, options*/) {
 		if (object.master === object) {
 			object.on('update', function (event) {
 				var id;
+				if (event.object._kind_ === 'sub-descriptor') return;
 				if (filter && !filter(event)) return;
 				id = event.object.__valueId__;
 				fragment.update(id, { value: serialize(event.value), stamp: event.stamp });
@@ -36,10 +38,11 @@ module.exports = function (Type/*, options*/) {
 			object.master.on('update', function (event) {
 				var id = event.object.__valueId__;
 				if (!startsWith.call(id, object.__id__ + '/')) return;
+				if (event.object._kind_ === 'sub-descriptor') return;
 				if (filter && !filter(event)) return;
 				fragment.update(id, { value: serialize(event.value), stamp: event.stamp });
 			});
 		}
-		return fragment;
+		return fragment.flush();
 	};
 };

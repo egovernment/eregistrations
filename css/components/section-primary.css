@@ -34,6 +34,14 @@
 	color: var(--normal-dark-background);
 }
 
+.section-primary-sub > * {
+	margin-bottom: 22px;
+}
+
+.section-primary-sub > :last-child {
+	margin-bottom: 0;
+}
+
 .section-primary-sub-action {
 	line-height: 44px;
 }
@@ -51,7 +59,7 @@
 .section-primary .dbjs-input-component > label {
 	width: 40%;
 	text-align: right;
-	font-weight: bold;
+	font-weight: 500;
 	margin: 11px 0;
 }
 .section-primary .dbjs-input-component > .input {
@@ -136,6 +144,14 @@
 
 .section-primary .dbjs-input-component > .input .multiple ul {
 	max-width: 96%;
+}
+
+.section-primary-intro {
+	border-left:3px solid var(--normal-background);
+	background-color: var(--light-background);
+	font-weight: 400;
+	padding: 11px 16px;
+	display: block;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {

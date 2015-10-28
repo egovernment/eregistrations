@@ -2,6 +2,10 @@
 	display: flex;
 }
 
+.user-forms .user-account-boxes {
+	margin-bottom: 22px;
+}
+
 .user-account-boxes > section {
 	display: block;
 }
@@ -21,9 +25,6 @@ h3.user-account-section-title {
 }
 
 .user-account-boxes > section.user-account-welcome {
-	width: calc(100% - 340px);
-	margin-left: 20px;
-	background-color: var(--normal-light-medium-background);
 	color: var(--normal-text);
 }
 
@@ -46,11 +47,15 @@ h3.user-account-section-title {
 .user-account-welcome header {
 	display: flex;
 	justify-content: space-between;
+	margin:0;
+}
+
+.user-account-welcome .free-form {
+	padding:11px 0;
 }
 
 h3.user-account-section-title {
 	text-transform: uppercase;
-	margin-left: 11px;
 }
 
 .user-account-doc-data hr {
@@ -167,4 +172,9 @@ h3.user-account-section-title {
 
 .user-account-selector {
 	line-height: 44px;
+}
+
+.user-account-tab.section-tab-nav-tab {
+	font-size:22px;
+	padding: 11px 15px;
 }

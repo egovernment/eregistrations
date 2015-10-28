@@ -9,6 +9,8 @@ module.exports = function (businessProcess) {
 	return [
 		div({ class: "section-primary-sub" },
 			h3(_("Documents")),
+			p(_("Here you can see documents that you uploaded as part of the application and the " +
+				"certificates issued in the process.")),
 			renderDocumentsList(businessProcess.documents.processChainUploaded.toArray().slice(0, 5)),
 			p({ class: 'section-primary-sub-action' },
 				a({ href: '/business-process/' + businessProcess.__id__ + '/documents/',
@@ -16,6 +18,7 @@ module.exports = function (businessProcess) {
 					_("See all documents")))),
 		div({ class: "section-primary-sub" },
 			h3(_("Data")),
+			p(_("You can see here all the information you have provided for the application.")),
 			div({ class: "table-responsive-container" },
 				table({ class: 'submitted-user-data-table ' +
 						'submitted-current-user-data-table user-request-table' },

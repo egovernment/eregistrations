@@ -11,7 +11,7 @@ var memoize          = require('memoizee')
 
   , createSoapClient = promisify(soap.createClient);
 
-module.exports = memoize(function (wsdlUrl, soapUrl) {
+var getSoapClientImpl = memoize(function (wsdlUrl, soapUrl) {
 	debug('creating soap client (%s)', soapUrl);
 
 	return createSoapClient(wsdlUrl, { endpoint: soapUrl })(function (client) {
@@ -38,3 +38,9 @@ module.exports = memoize(function (wsdlUrl, soapUrl) {
 		return client;
 	});
 }, { primitive: true });
+
+module.exports = function (wsdlUrl, soapUrl) {
+	return getSoapClientImpl(wsdlUrl, soapUrl).aside(null, function (err) {
+		getSoapClientImpl.clear(wsdlUrl, soapUrl);
+	});
+};

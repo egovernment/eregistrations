@@ -79,73 +79,110 @@ module.exports = memoize(function (db) {
 			return props;
 		} },
 		status: { value: function (_observe) {
-			var resolved, valid = 0, total = 0, isResolventExcluded, isOwn, db = this.database
-			  , File = db.File;
+			var resolved, invalid = _observe(this.missingRequiredPropertyNames).size, total = 0;
 
 			if (this.resolventProperty) {
 				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
 				if (!resolved) {
-					return total;
-				}
-				isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
-				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-					if (isResolventExcluded) return 1;
-					if (resolved.descriptor.multiple) {
-						if (_observe(resolved.observable).size) return 1;
-					} else {
-						if (_observe(resolved.observable) != null) return 1;
-					}
 					return 0;
 				}
-				if (!isResolventExcluded) {
-					++total;
-					++valid;
+				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
+					return invalid === 0 ? 1 : 0;
 				}
 			}
 
 			this.applicablePropertyNames.forEach(function (name) {
-				var value;
 				resolved = this.master.resolveSKeyPath(name, _observe);
+
 				if (!resolved) {
 					++total;
 					return;
 				}
 
-				if (this.isPropertyExcludedFromStatus(resolved, _observe)) {
-					return;
-				}
+				if (this.isPropertyExcludedFromStatus(resolved, _observe)) return;
+
 				++total;
-				if (resolved.object && db.NestedMap &&  (resolved.key === 'map')
-						&& (resolved.object instanceof db.NestedMap)) {
-					if (_observe(resolved.object.ordered._size)) ++valid;
-					return;
-				}
-				if (resolved.descriptor.requireOwn) {
-					_observe(resolved.observable);
-					if (resolved.descriptor.multiple) {
-						isOwn = typeof resolved.descriptor._value_ !== 'function';
-					} else {
-						isOwn = resolved.descriptor._hasOwnValue_(resolved.object);
-					}
-					if (!isOwn) return;
-				}
-				if (resolved.descriptor.multiple && !_observe(resolved.observable).size) {
-					return;
-				}
-				value = _observe(resolved.observable);
-				if (value != null) {
-					// We need to check special case of File instance
-					// This is an ugly hack, for what should be sorted out more naturally
-					// when dbjs-dom (and dbjs) is revisited for improvements
-					if (File && (value instanceof File)) {
-						value = _observe(value._path);
-						if (value == null) return;
-					}
-					++valid;
-				}
 			}, this);
-			return total === 0 ? 1 : valid / total;
+
+			return total === 0 ? 1 : (total - invalid) / total;
 		} },
+		missingRequiredPropertyNames: {
+			type: StringLine,
+			multiple: true,
+			value: function (_observe) {
+				var resolved, isResolventExcluded, isOwn, db = this.database, File = db.File,
+					NestedMap = db.NestedMap, result = [];
+
+				if (this.resolventProperty) {
+					resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
+
+					if (!resolved) return result;
+
+					isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
+
+					if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
+						if (isResolventExcluded) return result;
+
+						if (resolved.descriptor.multiple) {
+							if (_observe(resolved.observable).size) return result;
+						} else {
+							if (_observe(resolved.observable) != null) return result;
+						}
+
+						return [this.resolventProperty];
+					}
+				}
+
+				this.applicablePropertyNames.forEach(function (name) {
+					var value;
+					resolved = this.master.resolveSKeyPath(name, _observe);
+
+					if (!resolved) return;
+					if (this.isPropertyExcludedFromStatus(resolved, _observe)) return;
+
+					if (resolved.object && NestedMap && (resolved.key === 'map')
+							&& (resolved.object instanceof NestedMap)) {
+						if (!_observe(resolved.object.ordered._size)) result.push(name);
+
+						return;
+					}
+
+					if (resolved.descriptor.requireOwn) {
+						_observe(resolved.observable);
+
+						if (resolved.descriptor.multiple) {
+							isOwn = typeof resolved.descriptor._value_ !== 'function';
+						} else {
+							isOwn = resolved.descriptor._hasOwnValue_(resolved.object);
+						}
+
+						if (!isOwn) {
+							result.push(name);
+							return;
+						}
+					}
+
+					if (resolved.descriptor.multiple && !_observe(resolved.observable).size) {
+						result.push(name);
+						return;
+					}
+
+					value = _observe(resolved.observable);
+
+					if (value != null) {
+						if (File && (value instanceof File)) {
+							value = _observe(value._path);
+
+							if (value == null) result.push(name);
+						}
+					} else {
+						result.push(name);
+					}
+				}, this);
+
+				return result;
+			}
+		},
 		weight: { value: function (_observe) {
 			var resolved, total = 0, isResolventExcluded;
 			if (this.resolventProperty) {

@@ -14,28 +14,25 @@ exports['user-account-content'] = function () {
 	var businessSelect
 	  , initialBusinessProcesses = this.user.initialBusinessProcesses;
 
-	section({ class: "section-primary user-account-doc-data" },
-		_if(gt(initialBusinessProcesses._size, 1),
-			[div({ class: "section-primary-sub" },
-				p(label({ for: 'business-process-select' },
-					_("Please select an entity in the selector below to display it documents and data"))),
-					p({ class: 'user-account-selector' },
-					businessSelect = select({ id: 'business-process-select' },
-						option({ value: '/', selected: eq(loc._pathname, '/') },
-							_("Select an entity to display its documents and data")),
-						list(initialBusinessProcesses, function (process) {
-							option({
-								value: '/requests/' + process.__id__ + '/',
-								selected: eq(loc._pathname, '/requests/' + process.__id__ + '/')
-							},
-								process._businessName);
-						})))
-				),
-				div({ id: 'user-requests-preview' })],
-			_if(eq(initialBusinessProcesses._size, 1),
-				function () { return documentsAndDataBrief(initialBusinessProcesses.first); },
-				p(_('No requests started'))
-				)));
+	insert(_if(gt(initialBusinessProcesses._size, 1),
+		[div({ class: "section-primary-sub" },
+			p(label({ for: 'business-process-select' },
+				_("Please select an entity in the selector below to display it documents and data"))),
+			p({ class: 'user-account-selector' },
+				businessSelect = select({ id: 'business-process-select' },
+					option({ value: '/', selected: eq(loc._pathname, '/') },
+						_("Select an entity to display its documents and data")),
+					list(initialBusinessProcesses, function (process) {
+						option({
+							value: '/requests/' + process.__id__ + '/',
+							selected: eq(loc._pathname, '/requests/' + process.__id__ + '/')
+						},
+							process._businessName);
+					})))),
+			div({ id: 'user-requests-preview' })],
+		_if(eq(initialBusinessProcesses._size, 1),
+			function () { return documentsAndDataBrief(initialBusinessProcesses.first); },
+			p(_('No requests started')))));
 
 	businessSelect.setAttribute('onchange', 'location.href = this.value + ' +
 		'\'#business-process-summary\'');
