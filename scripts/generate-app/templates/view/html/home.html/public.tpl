@@ -9,7 +9,6 @@
 			<a class="button-main" href="#register">${ _("Create account") }</a>
 		</div>
 		<div class="public-baner-box-img">
-			<img src="${ stRoot }img/home-hero.png">
 		</div>
 	</div>
 </div>

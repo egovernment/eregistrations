@@ -109,7 +109,7 @@ public pages (e.g. header, footer, login/register/request-password modals -->
 <!-- Top header -->
 <header class="header-top">
 	<div class="content header-top-wrapper">
-		<div class="header-top-logo"><a href="/"><img src="${ stRoot }img/milomas-logo.png"></a></div>
+		<div class="header-top-logo"><a href="/"><img src="${ stRoot }img/logo-2.png"></a></div>
 		<nav>
 			<ul class="header-top-menu" id="menu">
 				<li><a>en</a></li>
@@ -137,6 +137,6 @@ public pages (e.g. header, footer, login/register/request-password modals -->
 <footer class="footer-logos">
 	<div class="content">
 		<div class="footer-logos-container">
-			<img src="${ stRoot }img/logo_unctad.jpg"><img src="${ stRoot }img/logo_lomas_bnw.jpg">
+			<img src="${ stRoot }img/logo_unctad.jpg">
 		</div>
 	</div>
