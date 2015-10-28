@@ -1,19 +1,18 @@
 'use strict';
 
-var Database              = require('dbjs')
-  , defineBusinessProcess = require('../../model/business-process/base');
+var Database = require('dbjs');
 
 module.exports = function (t, a) {
-	var db = new Database()
+	var db              = new Database()
 	  , FormSectionBase = t(db)
-	  , BusinessProcess = defineBusinessProcess(db)
-	  , TestFormSection
-	  , MasterType
-	  , master, businessProcess, section;
+	  , TestFormSection = FormSectionBase.extend('TestFormSection')
+	  , NestedType      = db.Object.extend('NestedType')
+	  , MasterType      = db.Object.extend('MasterType')
+	  , masterObject, nestedObject, section;
 
 	// ------------------ Setup ------------------
 
-	TestFormSection = FormSectionBase.extend('TestFormSection', {
+	TestFormSection.prototype.defineProperties({
 		label: {
 			value: 'Test Label'
 		},
@@ -24,7 +23,7 @@ module.exports = function (t, a) {
 			value: false
 		},
 		propertyMasterType: {
-			value: BusinessProcess
+			value: NestedType
 		},
 		status: {
 			value: 0.5
@@ -52,7 +51,7 @@ module.exports = function (t, a) {
 		}
 	});
 
-	BusinessProcess.prototype.defineProperties({
+	NestedType.prototype.defineProperties({
 		sectionWithDefaultValues: {
 			type: FormSectionBase,
 			nested: true
@@ -63,9 +62,9 @@ module.exports = function (t, a) {
 		}
 	});
 
-	MasterType = db.Object.extend('MasterType', {
-		businessProcess: {
-			type: BusinessProcess,
+	MasterType.prototype.defineProperties({
+		nestedObject: {
+			type: NestedType,
 			nested: true
 		},
 
@@ -83,8 +82,8 @@ module.exports = function (t, a) {
 		}
 	});
 
-	master = new MasterType();
-	businessProcess = master.businessProcess;
+	masterObject = new MasterType();
+	nestedObject = masterObject.nestedObject;
 
 	// ------------------ Tests ------------------
 
@@ -95,7 +94,7 @@ module.exports = function (t, a) {
 	// classes derived from FormSectionBase to have a default status of 1 will be broken. We would
 	// like to have a test showing that simple default value change can bring big impact on code.
 	a.h2('Default values');
-	section = businessProcess.sectionWithDefaultValues;
+	section = nestedObject.sectionWithDefaultValues;
 
 	a(section.label, undefined);
 	a(section.legend, undefined);
@@ -111,12 +110,12 @@ module.exports = function (t, a) {
 	a(section.resolventProperty, undefined);
 
 	a.h2('Properties overridden in derived class');
-	section = businessProcess.sectionOfDerivedType;
+	section = nestedObject.sectionOfDerivedType;
 
 	a(section.label, 'Test Label');
 	a(section.legend, 'Test Legend');
 	a(section.isApplicable, false);
-	a(section.propertyMasterType, BusinessProcess);
+	a(section.propertyMasterType, NestedType);
 	a(section.status, 0.5);
 	a(section.weight, 2);
 	a(section.resolventValue, true);
@@ -130,32 +129,32 @@ module.exports = function (t, a) {
 	a.h1('Getters');
 
 	a.h2('With default values for other properties');
-	section = businessProcess.sectionWithDefaultValues;
+	section = nestedObject.sectionWithDefaultValues;
 
-	a(section.propertyMaster, master);
+	a(section.propertyMaster, masterObject);
 	a(section.isUnresolved, false);
 	a(section.resolventStatus, 1);
 	a(section.resolventWeight, 0);
 	a(String(section.lastEditDate), String(new db.DateTime(0)));
 
 	a.h2('With overridden properties in derived class');
-	section = businessProcess.sectionOfDerivedType;
+	section = nestedObject.sectionOfDerivedType;
 
 	a.h3('propertyMaster');
-	a(section.propertyMaster, businessProcess);
+	a(section.propertyMaster, nestedObject);
 	section.propertyMasterType = db.Number;
 	a.throws(function () {
 		return section.propertyMaster;
 	}, new RegExp('Could not find propertyMaster of type Number'),
 		'throws when given wrong propertyMasterType');
 	section.propertyMasterType = MasterType;
-	a(section.propertyMaster, master);
+	a(section.propertyMaster, masterObject);
 
 	a.h3('isUnresolved');
 	a(section.isUnresolved, true);
-	master.testResolventProperty = false;
+	masterObject.testResolventProperty = false;
 	a(section.isUnresolved, true);
-	master.testResolventProperty = true;
+	masterObject.testResolventProperty = true;
 	a(section.isUnresolved, false);
 	section.resolventProperty = 'nonExistentPropertyName';
 	a.throws(function () {
@@ -172,23 +171,23 @@ module.exports = function (t, a) {
 	a.h4('With not required resolventProperty');
 	section.resolventProperty = 'testResolventProperty';
 	a(section.resolventStatus, 1);
-	master.testResolventProperty = false;
+	masterObject.testResolventProperty = false;
 	a(section.resolventStatus, 1);
-	master.testResolventProperty = true;
+	masterObject.testResolventProperty = true;
 	a(section.resolventStatus, 1);
 	a.h4('With required resolventProperty');
 	section.resolventProperty = 'testRequiredResolventProperty';
 	a(section.resolventStatus, 0);
-	master.testRequiredResolventProperty = false;
+	masterObject.testRequiredResolventProperty = false;
 	a(section.resolventStatus, 1);
-	master.testRequiredResolventProperty = true;
+	masterObject.testRequiredResolventProperty = true;
 	a(section.resolventStatus, 1);
 	a.h4('With required resolventProperty with default value');
 	section.resolventProperty = 'testRequiredWithDefaultValueResolventProperty';
 	a(section.resolventStatus, 1);
-	master.testRequiredWithDefaultValueResolventProperty = false;
+	masterObject.testRequiredWithDefaultValueResolventProperty = false;
 	a(section.resolventStatus, 1);
-	master.testRequiredWithDefaultValueResolventProperty = true;
+	masterObject.testRequiredWithDefaultValueResolventProperty = true;
 	a(section.resolventStatus, 1);
 
 	a.h3('resolventWeight');
@@ -200,22 +199,22 @@ module.exports = function (t, a) {
 	a.h4('With not required resolventProperty');
 	section.resolventProperty = 'testResolventProperty';
 	a(section.resolventWeight, 0);
-	master.testResolventProperty = false;
+	masterObject.testResolventProperty = false;
 	a(section.resolventWeight, 0);
-	master.testResolventProperty = true;
+	masterObject.testResolventProperty = true;
 	a(section.resolventWeight, 0);
 	a.h4('With required resolventProperty');
 	section.resolventProperty = 'testRequiredResolventProperty';
 	a(section.resolventWeight, 1);
-	master.testRequiredResolventProperty = false;
+	masterObject.testRequiredResolventProperty = false;
 	a(section.resolventWeight, 1);
-	master.testRequiredResolventProperty = true;
+	masterObject.testRequiredResolventProperty = true;
 	a(section.resolventWeight, 1);
 	a.h4('With required resolventProperty with default value');
 	section.resolventProperty = 'testRequiredWithDefaultValueResolventProperty';
 	a(section.resolventWeight, 0);
-	master.testRequiredWithDefaultValueResolventProperty = false;
+	masterObject.testRequiredWithDefaultValueResolventProperty = false;
 	a(section.resolventWeight, 0);
-	master.testRequiredWithDefaultValueResolventProperty = true;
+	masterObject.testRequiredWithDefaultValueResolventProperty = true;
 	a(section.resolventWeight, 0);
 };
