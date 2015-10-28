@@ -62,51 +62,60 @@ module.exports = memoize(function (db) {
 		// Used to overwrite default message which is shown through view/components/incomplete-form-nav.
 		onIncompleteMessage: { type: StringLine },
 		isUnresolved: { type: db.Boolean, value: function (_observe) {
-			var resolved;
+			var resolvedResolvent;
+
 			if (!this.resolventProperty) return false;
-			resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
-			return _observe(resolved.observable) !== this.resolventValue;
+
+			resolvedResolvent = this.ensureResolvent(_observe);
+			if (!resolvedResolvent) {
+				return false;
+			}
+
+			return _observe(resolvedResolvent.observable) !== this.resolventValue;
 		} },
 		resolventStatus: {
 			type: UInteger,
 			value: function (_observe) {
-				var isResolventExcluded, resolved;
-				if (this.resolventProperty) {
-					resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
-					if (!resolved) {
-						return 0;
-					}
-					isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
-					if (isResolventExcluded) return 1;
-					if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-						if (resolved.descriptor.multiple) {
-							if (_observe(resolved.observable).size) return 1;
-						} else {
-							if (_observe(resolved.observable) != null) return 1;
-						}
-						return 0;
-					}
-					if (!isResolventExcluded) {
-						return 1;
-					}
+				var isResolventExcluded, resolvedResolvent;
+
+				if (!this.resolventProperty) return 1;
+
+				resolvedResolvent = this.ensureResolvent(_observe);
+				if (!resolvedResolvent) {
+					return 0;
 				}
+
+				isResolventExcluded = this.isPropertyExcludedFromStatus(resolvedResolvent, _observe);
+				if (isResolventExcluded) return 1;
+
+				if (_observe(resolvedResolvent.observable) !== _observe(this.resolventValue)) {
+					if (resolvedResolvent.descriptor.multiple) {
+						if (_observe(resolvedResolvent.observable).size) return 1;
+					} else {
+						if (_observe(resolvedResolvent.observable) != null) return 1;
+					}
+					return 0;
+				}
+
 				return 1;
 			}
 		},
 		resolventWeight: {
 			type: UInteger,
 			value: function (_observe) {
-				var isResolventExcluded, resolved;
-				if (this.resolventProperty) {
-					resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
-					if (!resolved) {
-						return 0;
-					}
-					isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
-					if (isResolventExcluded) return 0;
-					return 1;
+				var isResolventExcluded, resolvedResolvent;
+
+				if (!this.resolventProperty) return 0;
+
+				resolvedResolvent = this.ensureResolvent(_observe);
+				if (!resolvedResolvent) {
+					return 0;
 				}
-				return 0;
+
+				isResolventExcluded = this.isPropertyExcludedFromStatus(resolvedResolvent, _observe);
+				if (isResolventExcluded) return 0;
+
+				return 1;
 			}
 		},
 		isPropertyExcludedFromStatus: { type: db.Function, value: function (resolved, _observe) {
@@ -135,6 +144,17 @@ module.exports = memoize(function (db) {
 			}
 
 			return false;
+		} },
+		ensureResolvent: { type: db.Function, value: function (observeFunction) {
+			var resolved = this.master.resolveSKeyPath(this.resolventProperty, observeFunction);
+			if (!resolved) {
+				return;
+			}
+			if (!resolved.object.hasPropertyDefined(resolved.key)) {
+				throw new Error('Could not find resolventProperty: ' + this.resolventProperty);
+			}
+
+			return resolved;
 		} },
 		lastEditStamp: { type: UInteger, value: 0 },
 		lastEditDate: { type: db.DateTime, value: function () {
