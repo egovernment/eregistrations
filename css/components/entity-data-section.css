@@ -42,3 +42,11 @@
 	color: var(--hint-text);
 	font-style: italic;
 }
+
+.entity-data-section-entities li {
+	padding-bottom:22px;
+}
+
+.entity-data-section-entities li:last-child {
+	padding-bottom:0;
+}

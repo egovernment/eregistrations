@@ -39,11 +39,3 @@
 	text-align: center;
 	background-color: var(--light-background);
 }
-
-.entity-data-section-primary .entity-data-section-entities li {
-	padding-bottom:22px;
-}
-
-.entity-data-section-primary .entity-data-section-entities li:last-child {
-	padding-bottom:0;
-}
