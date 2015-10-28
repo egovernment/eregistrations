@@ -36,7 +36,7 @@ module.exports = memoize(function (db) {
 					if (!resolved) {
 						return;
 					}
-					if (resolved.object.getDescriptor(resolved.key).__id__ === '$') {
+					if (!resolved.object.hasPropertyDefined(resolved.key)) {
 						throw new Error('Could not find property: ' + name);
 					}
 					props.push(masterPrefix + name);
