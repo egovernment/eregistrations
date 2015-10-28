@@ -21,16 +21,18 @@ resolveProjectRoot(projectRoot).done(function (root) {
 	if (!root) {
 		throw new Error('Could not located project in projectRoot: ' + projectRoot);
 	}
-	appRootPath = path.resolve(root, 'apps', appName);
+	appRootPath = 'apps' + path.sep + appName;
 	require('../scripts/generate-app')(root, appName).done(function () {
 		console.log("Successfully created " + appName + " application." +
 				"\nIt's located in: " + appRootPath + "." +
 				"\n\nIn order to setup application you need to: \n" +
-				"\n1. Setup main config in apps/routes.js (common for all apps)" +
-				"\n2. Setup view paths in apps/" + appName + "/routes.js" +
-				"\n3. Setup data access for client in apps/access.js (common for all apps)" +
+				"\n1. Expose app in apps/routes.js configuration" +
+				"\n2. Configure application url tree in apps/" + appName + "/routes.js" +
+				"\n3. Provide app configuration for data access rules in apps/access.js" +
 				"\n4. Setup dbjs dom bindings in apps/" + appName + "/client/dbjs-dom.js" +
-				"\n5. Require needed models in client model apps/" + appName + "/client/model.js" +
-				"\n6. (optional) Customize controllers in apps/" + appName + "/controller");
+				"\n5. Configure model needed for application client in apps/" +
+			appName + "/client/model.js" +
+				"\n6. Ensure POST (form submissions) controllers " +
+			"configuration is complete in apps/" + appName + "/controller");
 	});
 });
