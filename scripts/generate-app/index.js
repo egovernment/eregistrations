@@ -95,12 +95,10 @@ module.exports = function (projectRoot, appName) {
 			exec('node',
 				[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + appName],
 				{ cwd: projectRoot }),
-			generateAppsList(projectRoot)(function () {
-				return getApps(projectRoot).then(function (appsList) {
-					return deferred(generateAppsConf(projectRoot, appsList),
-						generateAppsCtrls(projectRoot, appsList));
-				}
-					);
+			generateAppsList(projectRoot),
+			getApps(projectRoot).then(function (appsList) {
+				return deferred(generateAppsConf(projectRoot, appsList),
+					generateAppsCtrls(projectRoot, appsList));
 			})
 		);
 	});
