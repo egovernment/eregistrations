@@ -18,10 +18,7 @@ exports.home = {
 	// Extends base view...
 	_parent: exports.base,
 	// ...changes content of <main> element to:
-	main: require('./html/home'),
-	body: {
-		class: { inpage: true, homepage: true }
-	}
+	main: require('./html/home')
 };
 
 // 404 page
@@ -32,10 +29,7 @@ exports.notFound = {
 	main: require('./html/404')
 };
 
-exports.resetpswd = {
-	_parent: exports.extrapages,
-	main: require('./html/reset-password'),
-	'btn-reset': {
-		class: { active: true }
-	}
+exports['reset-password'] = {
+	_parent: exports.base,
+	main: require('./html/reset-password')
 };

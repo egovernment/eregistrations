@@ -6,5 +6,5 @@ var viewTree = require('./view');
 
 module.exports = {
 	'/': viewTree.home,
-	'reset-password': viewTree.resetpswd,
+	'reset-password': viewTree['reset-password']
 };

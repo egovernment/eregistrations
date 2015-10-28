@@ -93,12 +93,12 @@ public pages (e.g. header, footer, login/register/request-password modals -->
 <dialog id="reset-password" class="dialog-reset-password dialog-modal">
 	<header><h3>${ _("Reset password") }</h3></header>
 	<section class="dialog-body">
-		<form id="reset-password-form" method="post">
+		<form action="/request-reset-password/" id="reset-password-form" method="post">
 			<p class="success-message">${ _("Password reset email has been sent.") }</p>
 			<p>
 				<label>
 					<span class="placeholder-fallback">${ _("Email") }</span>
-					<input type="email" required="" name="email" placeholder="${ _("Email") }">
+					<input type="email" required name="email" placeholder="${ _("Email") }">
 				</label>
 			</p>
 			<p><input type="submit" value="${ _("Reset") }"></p>

@@ -63,7 +63,7 @@ mano.env = env;
 // Intialize POST router & controller
 postRouter(joinControllers(require('../controller'), require('../controller/client')));
 
-// Clear localStorage
+// Clear 'authenticated' record
 delete localStorage._authenticated;
 
 // Gather loaded scripts
