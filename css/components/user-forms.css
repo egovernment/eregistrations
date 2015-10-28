@@ -23,3 +23,7 @@
 .user-forms h2 {
 	font-weight: 300;
 }
+
+.user-forms .form-elements h2 {
+	font-size: 25px;
+}

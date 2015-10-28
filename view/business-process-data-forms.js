@@ -24,8 +24,9 @@ exports.step = function () {
 	insert(_if(eq(this.businessProcess.dataForms._progress, 1),
 		div({ class: 'user-next-step-button' },
 			a({ href: '/documents/' }, _("Continue to next step"))),
-		section({ class: 'section-warning' },
-			incompleteFormNav(this.businessProcess.dataForms.applicable))));
+		_if(gt(this.businessProcess.dataForms._progress, 0), section({ class: 'section-warning' },
+			incompleteFormNav(this.businessProcess.dataForms.applicable)))
+		));
 
 };
 
