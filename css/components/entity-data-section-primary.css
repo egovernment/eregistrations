@@ -1,6 +1,9 @@
 .entity-data-section-primary h3 {
-	margin-bottom: 22px;
+	margin-bottom: 18px;
+	margin-top: 4px;
+	font-weight: 300;
 }
+
 .entity-data-section-primary .entity-data-section-sub h4,
 .entity-data-section-primary .entity-data-section-sub h6  {
 	background: var(--light-background);
