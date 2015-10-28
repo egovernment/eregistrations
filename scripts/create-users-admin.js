@@ -30,7 +30,7 @@ module.exports = function (dbServer) {
 			}
 			hash(value, genSalt())(function (password) {
 				return dbServer.db.User({ email: email, password:
-					password, roles: ['users-admin'] });
+					password, roles: ['usersAdmin'] });
 			}).done(function () {
 				setTimeout(function () {
 					dbServer.close().done(function () {
