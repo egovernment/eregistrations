@@ -1,6 +1,5 @@
 <!--
 <head> element contents, affect all public pages.
-
 Important notes:
 - Do not set <title> here, it's decided in view configuration: /public/view/index.js
 - Do not add here extra CSS files, they should be listed in /public/client/css.index list
@@ -10,17 +9,11 @@ Important notes:
   /public/legacy.js
 -->
 
-<meta name="viewport" content="width=device-width" />
-<link href='//fonts.googleapis.com/css?family=Roboto:300,300italic,400,400italic,500,500italic' rel='stylesheet' type='text/css'>
-<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+<!-- Below line assures that SPA style rendering takes over in modern browsers -->
+${ spaTakeOver }
+
 <link href="${ stRoot }public.css" rel="stylesheet" />
 
 <!-- Script needed for login/register modals to work properly. Additionally assures some hacks for
 IE8 so HTML5 elements and custom fonts render properly -->
 <script src="${ stRoot }public.legacy.js"></script>
-
-<script src="${ stRoot }libs/jquery.js"></script>
-<script src="${ stRoot }libs/bootstrap-min.js"></script>
-
-<!-- Below line assures that SPA style rendering takes over in modern browsers -->
-${ spaTakeOver }
