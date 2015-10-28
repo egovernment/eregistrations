@@ -119,6 +119,7 @@ input[type="search"] {
 	color: var(--hint-text);
 	line-height: 16px;
 	margin-bottom: 11px;
+	min-height: 22px;
 }
 
 input[type="submit"],

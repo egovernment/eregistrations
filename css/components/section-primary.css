@@ -168,6 +168,14 @@
 	}
 }
 
-.section-primary > form > .submit-placeholder {
+.section-primary > .submit-placeholder,
+.section-primary > form > .submit-placeholder,
+.section-primary > .section-primary-wrapper > .submit-placeholder {
 	margin-bottom: 0;
+}
+
+.section-primary h2, .section-primary > form > h2,
+.section-primary > .section-primary-wrapper > h2 {
+	margin-top: -10px;
+	margin-bottom: 10px;
 }
