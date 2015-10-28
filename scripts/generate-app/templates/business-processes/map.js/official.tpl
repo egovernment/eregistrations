@@ -9,6 +9,6 @@ module.exports = meta;
 
 meta.all.data      = all;
 meta.pending.data  = all.filterByKeyPath('processingSteps/map/${ appNameSuffix }/isPending', true);
-meta.sentBack.data = all.filterByKey('processingSteps/map/${ appNameSuffix }/isSentBack', true);
-meta.rejected.data = all.filterByKey('processingSteps/map/${ appNameSuffix }/isRejected', true);
-meta.approved.data = all.filterByKey('processingSteps/map/${ appNameSuffix }/isApproved', true);
+meta.sentBack.data = all.filterByKeyPath('processingSteps/map/${ appNameSuffix }/isSentBack', true);
+meta.rejected.data = all.filterByKeyPath('processingSteps/map/${ appNameSuffix }/isRejected', true);
+meta.approved.data = all.filterByKeyPath('processingSteps/map/${ appNameSuffix }/isApproved', true);

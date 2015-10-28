@@ -3,7 +3,8 @@
 var path          = require('path')
   , resolveProjectRoot = require('cjs-module/resolve-project-root')
   , projectRoot = process.cwd()
-  , appName = process.argv[2]
+  , startsWith  = require('es5-ext/string/#/starts-with')
+  , appName     = process.argv[2]
   , allowedPattern = /[0-9a-z\-]+/
   , match
   , appRootPath;
@@ -23,16 +24,27 @@ resolveProjectRoot(projectRoot).done(function (root) {
 	}
 	appRootPath = 'apps' + path.sep + appName;
 	require('../scripts/generate-app')(root, appName).done(function () {
-		console.log("Successfully created " + appName + " application." +
+		var msg = ["\nSuccessfully created " + appName + " application." +
 				"\nIt's located in: " + appRootPath + "." +
-				"\n\nIn order to setup application you need to: \n" +
-				"\n1. Expose app in apps/routes.js configuration" +
-				"\n2. Configure application url tree in apps/" + appName + "/routes.js" +
-				"\n3. Provide app configuration for data access rules in apps/access.js" +
-				"\n4. Setup dbjs dom bindings in apps/" + appName + "/client/dbjs-dom.js" +
-				"\n5. Configure model needed for application client in apps/" +
-			appName + "/client/model.js" +
-				"\n6. Ensure POST (form submissions) controllers " +
+				"\n\nIn order to setup application you need to: \n"], msgItems = [];
+		msgItems.push("Expose app in apps/routes.js configuration");
+		msgItems.push("Configure application url tree in apps/" + appName + "/routes.js");
+		msgItems.push("Provide app configuration for data access rules in apps/access.js");
+		msgItems.push("Setup dbjs dom bindings in apps/" + appName + "/client/dbjs-dom.js");
+		msgItems.push("Configure model needed for application client in apps/"
+			+ appName + "/client/model.js");
+		msgItems.push("Ensure POST (form submissions) controllers " +
 			"configuration is complete in apps/" + appName + "/controller");
+
+		if (startsWith.call(appName, 'official-')) {
+			msgItems.push("Ensure that views model is updated with added status maps in model/views.js");
+		}
+
+		if (startsWith.call(appName, 'official-') || appName === 'users-admin') {
+			msgItems.push("Ensure that views population for added " +
+				"status maps is configured in server/db/views.js");
+		}
+
+		console.log(msg + msgItems.join('\n- '));
 	});
 });
