@@ -3,9 +3,7 @@
 	margin-top: 4px;
 	font-weight: 300;
 }
-.entity-data-section-primary hr {
-	margin-bottom:22px;
-}
+
 .entity-data-section-primary .entity-data-section-sub h4,
 .entity-data-section-primary .entity-data-section-sub h6  {
 	background: var(--light-background);
