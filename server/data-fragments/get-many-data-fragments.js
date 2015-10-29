@@ -25,23 +25,27 @@ module.exports = function (collection/*, getFragment*/) {
 	current = new Set();
 
 	collection.forEach(function (object) {
-		var id = object.__id__;
-		fragment.addFragment(getFragment(id));
+		var id = object.__id__, objFragment = getFragment(id);
+		if (objFragment) fragment.addFragment(objFragment);
 		current.add(object);
 	});
 	collection.on('change', function (event) {
 		current.forEach(function (object) {
+			var objFragment;
 			if (isArrayMode) {
 				if (includes.call(collection, object)) return;
 			} else {
 				if (collection.has(object)) return;
 			}
-			fragment.deleteFragment(getFragment(object.__id__));
+			objFragment = getFragment(object.__id__);
+			if (objFragment) fragment.deleteFragment(objFragment);
 			current.delete(object);
 		});
 		collection.forEach(function (object) {
+			var objFragment;
 			if (current.has(object)) return;
-			fragment.addFragment(getFragment(object.__id__));
+			objFragment = getFragment(object.__id__);
+			if (objFragment) fragment.addFragment(objFragment);
 			current.add(object);
 		});
 	});
