@@ -50,6 +50,8 @@ exports['sub-main'] = {
 		);
 		usersTable.table.classList.add('submitted-user-data-table');
 		p(a({ href: '/new-user/', class: 'button-main' }, _("New user")));
+		insert(usersTable.pagination);
 		section({ class: 'table-responsive-container' }, usersTable);
+		insert(usersTable.pagination);
 	}
 };
