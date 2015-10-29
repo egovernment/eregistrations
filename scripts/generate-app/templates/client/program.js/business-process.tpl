@@ -31,6 +31,7 @@ mano.env = require('../../../apps-common/client/env');
 mano.i18n = require('i18n2')(require('mano/client/utils/resolve-locale')(mano.env,
 	require('../../../i18n')));
 
+require('../../../db');
 require('./model.generated');
 
 // Expose for dev purposes
