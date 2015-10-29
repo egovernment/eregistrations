@@ -12,6 +12,7 @@ var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
   , generateAppsCtrls = require('mano/scripts/generate-apps-controllers')
   , getApps           = require('mano/server/utils/resolve-apps')
   , staticsPath
+  , viewPath
   , partialAppName
   , appTypes
   , templateType
@@ -31,6 +32,7 @@ appTypes = {
 module.exports = function (projectRoot, appName) {
 	appRootPath = path.resolve(projectRoot, 'apps', appName);
 	staticsPath = path.join(__dirname, 'public-statics');
+	viewPath    = path.join(__dirname, 'view');
 
 	templateVars.appName       = appName;
 	templateVars.appNameSuffix = hyphenToCamel.call(appName.split('-').slice(1).join('-'));
@@ -87,6 +89,13 @@ module.exports = function (projectRoot, appName) {
 				return fs.copy(path.join(staticsPath, staticFilePath),
 							path.join(appRootPath, staticFilePath.split('public-statics/').slice(-1)[0]),
 							{ intermediate: true });
+			}));
+		} else {
+			toResolve.push(fs.readdir(viewPath,
+				{ depth: Infinity, type: { file: true } }).map(function (viewFilePath) {
+				return fs.copy(path.join(viewPath, viewFilePath),
+						path.join(projectRoot, 'view', viewFilePath.split('generate-app/').slice(-1)[0]),
+						{ intermediate: true });
 			}));
 		}
 		return deferred.map(toResolve);
