@@ -6,7 +6,6 @@ var d  = require('d')
   , _  = require('mano').i18n.bind("Public")
   , db = require('mano').db;
 
-db.locale = 'es-SV';
 Object.defineProperty(db.Base, 'chooseLabel', d(_("Choose:")));
 Object.defineProperties(db.Boolean, {
 	trueLabel: d(_("Yes")),

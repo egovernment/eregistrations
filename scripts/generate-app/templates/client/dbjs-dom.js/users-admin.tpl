@@ -4,8 +4,6 @@
 
 var db = require('mano').db;
 
-db.locale = 'es-SV';
-
 require('dbjs-dom/text')(db);
 require('dbjs-dom/text/utils/table')(db);
 require('dbjs-dom/ext/domjs/table-cell-render');
