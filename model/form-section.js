@@ -84,15 +84,7 @@ module.exports = memoize(function (db) {
 		status: { value: function (_observe) {
 			var resolved, invalid = _observe(this.missingRequiredPropertyNames).size, total = 0;
 
-			if (this.resolventProperty) {
-				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
-				if (!resolved) {
-					return 0;
-				}
-				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-					return invalid === 0 ? 1 : 0;
-				}
-			}
+			if (!this.resolventStatus) return 0;
 
 			this.applicablePropertyNames.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name, _observe);
@@ -117,7 +109,7 @@ module.exports = memoize(function (db) {
 					NestedMap = db.NestedMap, result = [];
 
 				if (this.resolventProperty) {
-					resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
+					resolved = this.ensureResolvent(_observe);
 
 					if (!resolved) return result;
 
