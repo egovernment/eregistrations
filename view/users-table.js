@@ -2,12 +2,13 @@
 
 var ReactiveTable     = require('reactive-table')
   , ReactiveTableList = require('reactive-table/list')
+  , mano              = require('mano')
   , _                 = require('mano').i18n.bind('Users Admin')
-  , db                = require('mano').db
   , getOrderIndex     = require('../users/get-default-order-index')
   , compareUsers      = require('../utils/get-compare')(getOrderIndex)
+  , getUsersTable     = require('../view/components/users-table/')
 
-  , roleMeta = db.Role.meta;
+  , db = mano.db, env = mano.env, roleMeta = db.Role.meta;
 
 exports._parent = require('./user-base');
 
@@ -43,12 +44,24 @@ var columns = [{
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		var usersTable = new ReactiveTable(
-			document,
-			new ReactiveTableList(db.User.instances.filterByKey('email'), compareUsers),
-			columns
-		);
-		usersTable.table.classList.add('submitted-user-data-table');
+		var usersTable;
+
+		if (db.views && db.views.usersAdmin) {
+			getUsersTable({
+				getOrderIndex: getOrderIndex,
+				itemsPerPage: env.objectsListItemsPerPage,
+				class: 'submitted-user-data-table',
+				columns: columns
+			});
+		} else {
+			usersTable = new ReactiveTable(
+				document,
+				new ReactiveTableList(db.User.instances.filterByKey('email'), compareUsers),
+				columns
+			);
+			usersTable.table.classList.add('submitted-user-data-table');
+		}
+
 		p(a({ href: '/new-user/', class: 'button-main' }, _("New user")));
 		insert(usersTable.pagination);
 		section({ class: 'table-responsive-container' }, usersTable);
