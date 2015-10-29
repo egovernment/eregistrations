@@ -29,15 +29,14 @@ module.exports = function (dbServer) {
 				return;
 			}
 			hash(value, genSalt())(function (password) {
-				return dbServer.db.User({ email: email, password:
-					password, roles: ['usersAdmin'] });
+				return dbServer.db.User({ email: email, password: password,
+					firstName: "Users", lastName: "Admin",
+					roles: ['usersAdmin'] });
 			}).done(function () {
-				setTimeout(function () {
-					dbServer.close().done(function () {
-						console.log("Usersadmin user succesfully created. To be able to" +
-							" login with usersadmin, server needs to be restarted");
-					});
-				}, 500);
+				dbServer.close().done(function () {
+					console.log("Usersadmin user succesfully created. To be able to" +
+						" login with usersadmin, server needs to be restarted");
+				});
 			});
 		});
 	};
