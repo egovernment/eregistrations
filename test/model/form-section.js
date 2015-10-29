@@ -260,11 +260,11 @@ module.exports = function (t, a) {
 
 	a.h3('lastEditStamp');
 	masterObject.property = 1;
-	a(String(section.lastEditDate),
-		String(new db.DateTime(masterObject.$property.lastModified / 1000)));
-	masterObject.thirdProperty = 1;
-	a(String(section.lastEditDate),
-		String(new db.DateTime(masterObject.$thirdProperty.lastModified / 1000)));
+	a(section.lastEditStamp, masterObject.$property.lastModified);
+	masterObject.resolventProperty = false;
+	a(section.lastEditStamp, masterObject.$resolventProperty.lastModified);
+	masterObject.secondProperty = 1;
+	a(section.lastEditStamp, masterObject.$secondProperty.lastModified);
 
 	a.h2('For section on nested object');
 	section = nestedObject.section;
