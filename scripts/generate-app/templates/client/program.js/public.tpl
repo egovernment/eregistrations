@@ -30,6 +30,7 @@ mano.i18n = require('i18n2')(require('mano/client/utils/resolve-locale')(env,
 	require('../../../i18n')));
 
 // DB Model
+require('../../../db');
 require('./model.generated');
 
 // DB DOM bindings
