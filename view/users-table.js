@@ -47,7 +47,7 @@ exports['sub-main'] = {
 		var usersTable;
 
 		if (db.views && db.views.usersAdmin) {
-			getUsersTable({
+			usersTable = getUsersTable({
 				getOrderIndex: getOrderIndex,
 				itemsPerPage: env.objectsListItemsPerPage,
 				class: 'submitted-user-data-table',
