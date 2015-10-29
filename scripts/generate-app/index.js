@@ -20,7 +20,7 @@ var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
 
 appTypes = {
 	'users-admin': true,
-	'meta-dmin': true,
+	'meta-admin': true,
 	user: true,
 	public: true,
 	official: true,
