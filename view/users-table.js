@@ -43,12 +43,13 @@ var columns = [{
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
+		var usersTable = new ReactiveTable(
+			document,
+			new ReactiveTableList(db.User.instances.filterByKey('email'), compareUsers),
+			columns
+		);
+		usersTable.table.classList.add('submitted-user-data-table');
 		p(a({ href: '/new-user/', class: 'button-main' }, _("New user")));
-		section({ class: 'table-responsive-container' },
-			normalize((new ReactiveTable(
-				document,
-				new ReactiveTableList(db.User.instances.filterByKey('email'), compareUsers),
-				columns
-			)).toDOM(document)).extend({ class: "submitted-user-data-table" }));
+		section({ class: 'table-responsive-container' }, usersTable);
 	}
 };
