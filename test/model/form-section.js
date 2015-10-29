@@ -1,105 +1,276 @@
 'use strict';
 
-var aFrom                 = require('es5-ext/array/from')
-  , Database              = require('dbjs')
-  , defineBusinessProcess = require('../../model/business-process/base');
+var aFrom    = require('es5-ext/array/from')
+  , Database = require('dbjs');
 
 module.exports = function (t, a) {
 	var db = new Database()
 	  , FormSection = t(db)
-	  , TestFormSection
-	  , BusinessProcess = defineBusinessProcess(db)
-	  , businessProcess, section, Partner, partnerSection;
+	  , MasterTestFormSection = FormSection.extend('MasterTestFormSection')
+	  , NestedTestFormSection = FormSection.extend('NestedTestFormSection')
+	  , NestedType  = db.Object.extend('NestedType')
+	  , MasterType  = db.Object.extend('MasterType')
 
-	TestFormSection = FormSection.extend('TestFormSection', {
-		actionUrl: { value: 'action' },
-		propertyNames: { value: ['prop1', 'prop2', 'prop3', 'partner/name',
-			'partner/hasSameLastName', 'partner/lastName', 'otherObj/foo'] },
-		resolventProperty: { value: 'prop0' },
-		resolventValue: { value: true }
-	});
-	var BadlyConfiguredFormSection = FormSection.extend('BadlyConfiguredFormSection', {
-		propertyNames: { value: ['nonExistentProperty'] }
-	});
-	Partner = db.Object.extend('Partner', {
-		name: { type: db.String, required: true },
-		hasSameLastName: { type: db.Boolean, required: true },
-		lastName: { type: db.String, required: true },
-		isLastNameApplicable: { type: db.Boolean, value: function () {
-			return this.hasSameLastName === false;
-		} },
-		section: { type: TestFormSection, nested: true }
-	});
-	['isNameFormApplicable', 'isLastNameFormApplicable',
-		'isHasSameLastNameFormApplicable'].forEach(function (name) {
-		Partner.prototype.define(name, { type: db.Boolean, value: function (_observe) {
-			return _observe(this.master._hasPartner);
-		} });
-	});
-	//section's resolvent
-	BusinessProcess.prototype.defineProperties(
-		{
-			hasPartner: { type: db.Boolean, value: false },
-			prop0: {
-				type: db.Boolean,
-				required: true,
-				value: false
-			},
-			prop1: { type: db.String, required: true },
-			prop2: { type: db.Number },
-			prop3: { type: db.Boolean, required: true },
-			partner: { type: Partner, nested: true },
-			section: { type: TestFormSection, nested: true },
-			otherObj: { type: db.Object },
-			badSection: { type: BadlyConfiguredFormSection, nested: true }
+	  , masterObject, nestedObject, section;
+
+	// ------------------ Setup ------------------
+
+	MasterTestFormSection.prototype.defineProperties({
+		resolventProperty: {
+			value: 'resolventProperty'
+		},
+		resolventValue: {
+			value: true
+		},
+		propertyNames: {
+			value: [
+				'notRequiredProperty',
+				'property',
+				'secondProperty',
+				'thirdProperty',
+				'propertyWithDefaultValue',
+				'propertyNotApplicable',
+				'propertyNotFormApplicable',
+				'nestedObject/notRequiredProperty',
+				'nonExistentNestedObject/notRequiredProperty'
+			]
 		}
-	);
-	businessProcess = new BusinessProcess();
-	businessProcess.otherObj = new db.Object({ foo: 'bar' });
-	section = businessProcess.section;
-	a.deep(aFrom(section.resolvedPropertyNames),
-		['prop1', 'prop2', 'prop3',
-			'partner/name', 'partner/hasSameLastName',
-			'partner/lastName', 'otherObj/foo']);
-	a.deep(aFrom(section.formApplicablePropertyNames),
-		['prop1', 'prop2', 'prop3', 'otherObj/foo']);
-	a(section.actionUrl, 'action');
-	a(section.weight, 0); // default value is setup on prototype, so ignore (weight 0)
-	businessProcess.prop0 = true;
-	a(section.weight, 2);
-	a(section.status, 0);
-	businessProcess.prop1 = "test";
-	a(section.status, 0.5);
-	businessProcess.prop0 = false;
+	});
+
+	NestedTestFormSection.prototype.defineProperties({
+		propertyMasterType: {
+			value: NestedType
+		},
+		propertyNames: {
+			value: [
+				'notRequiredProperty'
+			]
+		}
+	});
+
+	NestedType.prototype.defineProperties({
+		section: {
+			type: NestedTestFormSection,
+			nested: true
+		},
+
+		notRequiredProperty: {
+			type: db.Object
+		}
+	});
+
+	MasterType.prototype.defineProperties({
+		nestedObject: {
+			type: NestedType,
+			nested: true
+		},
+		sectionWithDefaultValues: {
+			type: FormSection,
+			nested: true
+		},
+		sectionOfDerivedType: {
+			type: MasterTestFormSection,
+			nested: true
+		},
+
+		resolventProperty: {
+			type: db.Boolean,
+			required: true,
+			value: false
+		},
+		notRequiredProperty: {
+			type: db.Object
+		},
+		property: {
+			type: db.Number,
+			required: true
+		},
+		secondProperty: {
+			type: db.Number,
+			required: true
+		},
+		thirdProperty: {
+			type: db.Number,
+			required: true
+		},
+		propertyWithDefaultValue: {
+			type: db.String,
+			required: true,
+			value: 'test value'
+		},
+		propertyNotApplicable: {
+			type: db.Number,
+			required: true
+		},
+		propertyNotFormApplicable: {
+			type: db.Number,
+			required: true
+		},
+
+		isPropertyNotApplicableApplicable: {
+			type: db.Boolean,
+			value: false
+		},
+		isPropertyNotFormApplicableFormApplicable: {
+			type: db.Boolean,
+			value: false
+		},
+		isThirdPropertyApplicable: {
+			type: db.Boolean,
+			value: true
+		}
+	});
+
+	masterObject = new MasterType();
+	nestedObject = masterObject.nestedObject;
+
+	// ------------------ Tests ------------------
+
+	a.h1('Basic properties');
+
+	a.h2('Default values');
+	section = masterObject.sectionWithDefaultValues;
+
+	a(section.propertyNames.size, 0);
+
+	a.h2('Properties overridden in derived class');
+	section = masterObject.sectionOfDerivedType;
+
+	a(section.propertyNames.size, 9);
+	a.deep(aFrom(section.propertyNames), [
+		'notRequiredProperty',
+		'property',
+		'secondProperty',
+		'thirdProperty',
+		'propertyWithDefaultValue',
+		'propertyNotApplicable',
+		'propertyNotFormApplicable',
+		'nestedObject/notRequiredProperty',
+		'nonExistentNestedObject/notRequiredProperty'
+	]);
+
+	a.h1('Getters');
+
+	a.h2('With default values for other properties');
+	section = masterObject.sectionWithDefaultValues;
+
+	a(section.resolvedPropertyNames.size, 0);
+	a(section.formApplicablePropertyNames.size, 0);
+	a(section.applicablePropertyNames.size, 0);
 	a(section.status, 1);
-	businessProcess.prop0 = true;
-	businessProcess.prop3 = true;
-	a(section.status, 1);
-	a(String(section.lastEditDate),
-		String(new db.DateTime(businessProcess.$prop3.lastModified / 1000)));
-	businessProcess.hasPartner = true;
-	a(section.weight, 4);
-	a(section.status, 0.5);
-	businessProcess.partner.name = 'test';
-	a(section.weight, 4);
-	a(section.status, 0.75);
-	businessProcess.partner.hasSameLastName = true;
-	a(section.weight, 4);
-	a(section.status, 1);
-	businessProcess.partner.hasSameLastName = false;
-	a(section.status, 0.8);
-	businessProcess.partner.lastName = 'test';
-	a(section.status, 1);
-	partnerSection = businessProcess.partner.section;
-	a(partnerSection.propertyMaster, businessProcess);
-	businessProcess.partner.section.propertyMasterType = Partner;
-	a(partnerSection.propertyMaster, businessProcess.partner);
-	businessProcess.partner.section.propertyMasterType = TestFormSection;
+	a(section.missingRequiredPropertyNames.size, 0);
+	a(section.weight, 0);
+	a(section.lastEditStamp, 0);
+
+	a.h2('With overridden properties in derived class');
+	section = masterObject.sectionOfDerivedType;
+
+	a.h3('resolvedPropertyNames');
+	a(section.resolvedPropertyNames.size, 8);
+	a.deep(aFrom(section.resolvedPropertyNames), [
+		'notRequiredProperty',
+		'property',
+		'secondProperty',
+		'thirdProperty',
+		'propertyWithDefaultValue',
+		'propertyNotApplicable',
+		'propertyNotFormApplicable',
+		'nestedObject/notRequiredProperty'
+	]);
+	var savedPropertyNames = aFrom(section.propertyNames);
+	section.propertyNames = ['nonExistentProperty'];
 	a.throws(function () {
-		return partnerSection.propertyMaster;
-	},
-		new RegExp("Could not find propertyMaster of type"), "errorTest");
-	a.throws(function () {
-		return businessProcess.badSection.resolvedPropertyNames;
+		return section.resolvedPropertyNames;
 	}, new RegExp("Could not find property: nonExistentProperty"), "errorTest");
+	section.propertyNames = savedPropertyNames;
+
+	a.h3('formApplicablePropertyNames');
+	a(section.formApplicablePropertyNames.size, 7);
+	a.deep(aFrom(section.formApplicablePropertyNames), [
+		'notRequiredProperty',
+		'property',
+		'secondProperty',
+		'thirdProperty',
+		'propertyWithDefaultValue',
+		'propertyNotApplicable',
+		'nestedObject/notRequiredProperty'
+	]);
+
+	a.h3('applicablePropertyNames');
+	a(section.applicablePropertyNames.size, 6);
+	a.deep(aFrom(section.applicablePropertyNames), [
+		'notRequiredProperty',
+		'property',
+		'secondProperty',
+		'thirdProperty',
+		'propertyWithDefaultValue',
+		'nestedObject/notRequiredProperty'
+	]);
+
+	a.h3('status & missingRequiredPropertyNames');
+	a(section.status, 1);
+	a(section.missingRequiredPropertyNames.size, 0);
+
+	masterObject.resolventProperty = true;
+	a(section.status, 0);
+	a(section.missingRequiredPropertyNames.size, 3);
+	a.deep(aFrom(section.missingRequiredPropertyNames), [
+		'property',
+		'secondProperty',
+		'thirdProperty'
+	]);
+
+	masterObject.property = 1;
+	a(section.status, 0.33);
+	a(section.missingRequiredPropertyNames.size, 2);
+	a.deep(aFrom(section.missingRequiredPropertyNames), [
+		'secondProperty',
+		'thirdProperty'
+	]);
+
+	masterObject.resolventProperty = false;
+	a(section.status, 1);
+	a(section.missingRequiredPropertyNames.size, 0);
+
+	masterObject.resolventProperty = true;
+	masterObject.secondProperty = 1;
+	a(section.status, 0.66);
+	a(section.missingRequiredPropertyNames.size, 1);
+	a.deep(aFrom(section.missingRequiredPropertyNames), [
+		'thirdProperty'
+	]);
+
+	masterObject.isThirdPropertyApplicable = false;
+	a(section.status, 1);
+	a(section.missingRequiredPropertyNames.size, 0);
+	masterObject.isThirdPropertyApplicable = true;
+	a(section.status, 0.66);
+
+	masterObject.thirdProperty = 1;
+	a(section.status, 1);
+	a(section.missingRequiredPropertyNames.size, 0);
+
+	a.h3('weight');
+	masterObject.resolventProperty = false;
+	a(section.weight, 0);
+	masterObject.resolventProperty = true;
+	a(section.weight, 3);
+	masterObject.isThirdPropertyApplicable = false;
+	a(section.weight, 2);
+
+	a.h3('lastEditStamp');
+	masterObject.property = 1;
+	a(String(section.lastEditDate),
+		String(new db.DateTime(masterObject.$property.lastModified / 1000)));
+	masterObject.thirdProperty = 1;
+	a(String(section.lastEditDate),
+		String(new db.DateTime(masterObject.$thirdProperty.lastModified / 1000)));
+
+	a.h2('For section on nested object');
+	section = nestedObject.section;
+
+	a(section.resolvedPropertyNames.size, 1);
+	a.deep(aFrom(section.resolvedPropertyNames), [
+		'nestedObject/notRequiredProperty'
+	]);
 };

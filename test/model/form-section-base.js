@@ -8,6 +8,7 @@ module.exports = function (t, a) {
 	  , TestFormSection = FormSectionBase.extend('TestFormSection')
 	  , NestedType      = db.Object.extend('NestedType')
 	  , MasterType      = db.Object.extend('MasterType')
+
 	  , masterObject, nestedObject, section;
 
 	// ------------------ Setup ------------------
