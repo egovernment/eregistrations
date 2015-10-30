@@ -6,6 +6,9 @@
 	width: 100%;
 	line-height: 44px;
 }
+.submitted-menu button, .submitted-menu input[type=submit] {
+	line-height: inherit;
+}
 
 .submitted-menu-bar {
 	display: flex;
