@@ -8,7 +8,7 @@ var  _       = require('mano').i18n.bind('Official: Revision')
 module.exports = exports = require('../../view/business-processes-table');
 
 exports['submitted-menu'] = function () {
-	li(a({ class: 'submitted-menu-item-active' }, "Official"));
+	li({ class: 'submitted-menu-item-active' }, a("Official"));
 	li(postButton({ value: "Role" }));
 };
 

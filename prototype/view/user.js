@@ -3,7 +3,7 @@
 module.exports = exports = require('../../view/user');
 
 exports['submitted-menu'] = function () {
-	li(a({ class: 'submitted-menu-item-active' }, "My account"));
+	li({ class: 'submitted-menu-item-active' }, a("My account"));
 };
 
 exports._servicesBoxList = function () {

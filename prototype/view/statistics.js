@@ -3,7 +3,7 @@
 exports._parent = require('../../view/user-base');
 
 exports['submitted-menu'] = function () {
-	li(a({ class: 'submitted-menu-item-active', href: '/statistics/' }, "Statistics"));
+	li({ class: 'submitted-menu-item-active' }, a({ href: '/statistics/' }, "Statistics"));
 };
 
 exports['sub-main'] = {

@@ -3,5 +3,5 @@
 module.exports = exports = require('../../view/user-business-process-data');
 
 exports['submitted-menu'] = function () {
-	li(a({ class: 'submitted-menu-item-active' }, "My account"));
+	li({ class: 'submitted-menu-item-active' }, a("My account"));
 };
