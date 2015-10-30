@@ -184,3 +184,13 @@
 	margin-top: -10px;
 	margin-bottom: 10px;
 }
+
+.section-primary-legend {
+	border-left: 3px solid var(--dark-background);
+	padding-left: 15px;
+	font-weight: 400;
+	margin-top: 15px;
+	background-color: var(--light-background);
+	padding: 5px 15px;
+	display: block;
+}
