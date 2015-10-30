@@ -36,6 +36,9 @@ module.exports = memoize(function (db) {
 					if (!resolved) {
 						return;
 					}
+					if (!resolved.object.hasPropertyDefined(resolved.key)) {
+						throw new Error('Could not find property: ' + name);
+					}
 					props.push(masterPrefix + name);
 				}, this);
 
@@ -81,15 +84,7 @@ module.exports = memoize(function (db) {
 		status: { value: function (_observe) {
 			var resolved, invalid = _observe(this.missingRequiredPropertyNames).size, total = 0;
 
-			if (this.resolventProperty) {
-				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
-				if (!resolved) {
-					return 0;
-				}
-				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
-					return invalid === 0 ? 1 : 0;
-				}
-			}
+			if (!this.resolventStatus) return 0;
 
 			this.applicablePropertyNames.forEach(function (name) {
 				resolved = this.master.resolveSKeyPath(name, _observe);
@@ -110,23 +105,23 @@ module.exports = memoize(function (db) {
 			type: StringLine,
 			multiple: true,
 			value: function (_observe) {
-				var resolved, isResolventExcluded, isOwn, db = this.database, File = db.File,
-					NestedMap = db.NestedMap, result = [];
+				var resolved, resolvedResolvent, isResolventExcluded, isOwn, db = this.database,
+					File = db.File, NestedMap = db.NestedMap, result = [];
 
 				if (this.resolventProperty) {
-					resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
+					resolvedResolvent = this.ensureResolvent(_observe);
 
-					if (!resolved) return result;
+					if (!resolvedResolvent) return result;
 
-					isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
+					isResolventExcluded = this.isPropertyExcludedFromStatus(resolvedResolvent, _observe);
 
-					if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
+					if (_observe(resolvedResolvent.observable) !== _observe(this.resolventValue)) {
 						if (isResolventExcluded) return result;
 
-						if (resolved.descriptor.multiple) {
-							if (_observe(resolved.observable).size) return result;
+						if (resolvedResolvent.descriptor.multiple) {
+							if (_observe(resolvedResolvent.observable).size) return result;
 						} else {
-							if (_observe(resolved.observable) != null) return result;
+							if (_observe(resolvedResolvent.observable) != null) return result;
 						}
 
 						return [this.resolventProperty];
