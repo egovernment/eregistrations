@@ -99,6 +99,11 @@ Flexible basic menu button positioning
 	font-size: 17px;
 }
 
+.header-top-menu a span {
+	vertical-align: middle;
+	line-height: 22px;
+}
+
 /*
 Styles applied while screen size is less than 640px
 */
