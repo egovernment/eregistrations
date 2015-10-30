@@ -148,6 +148,7 @@ button[type="submit"]:focus,
 button[type="submit"]:active {
 	color: var(--white-text);
 	background-color: var(--normal-dark-background);
+	outline: none;
 }
 
 .completed input[type="submit"] {
