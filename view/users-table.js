@@ -1,51 +1,70 @@
 'use strict';
 
-var _     = require('mano').i18n.bind('Users Admin')
-  , db    = require('mano').db
-  , roleMeta = db.Role.meta
-  , mapRolesToLabels;
+var ReactiveTable     = require('reactive-table')
+  , ReactiveTableList = require('reactive-table/list')
+  , mano              = require('mano')
+  , _                 = require('mano').i18n.bind('Users Admin')
+  , getOrderIndex     = require('../users/get-default-order-index')
+  , compareUsers      = require('../utils/get-compare')(getOrderIndex)
+  , getUsersTable     = require('../view/components/users-table/')
+
+  , db = mano.db, env = mano.env, roleMeta = db.Role.meta;
 
 exports._parent = require('./user-base');
 
-mapRolesToLabels = function (role) {
+var mapRolesToLabels = function (role) {
 	if (!role) return 'N/A';
 	if (role === 'user') return;
 	if (roleMeta[role].label) return roleMeta[role].label;
 	return '';
 };
 
+var columns = [{
+	head: _("Email"),
+	data: function (user) { return [strong(user._fullName), br(), user._email]; }
+}, {
+	head: _("Role"),
+	data: function (user) { return ul(user.roles, mapRolesToLabels); }
+}, {
+	head: _("Institution"),
+	data: function (user) { return user._institution; }
+}, {
+	head: _("Creation date"),
+	data: function (user) { return new db.DateTime(user.lastModified / 1000); }
+}, {
+	head: th({ class: 'actions' }),
+	data: function (user) {
+		return td({ class: 'actions' },
+			a({ href: url('user', user.__id__) }, span({ class: 'fa fa-edit' }, _("Go to"))),
+			postButton({ buttonClass: 'actions-delete', action: url('user', user.__id__, 'delete'),
+				confirm: _("Are you sure?"), value: span({ class: 'fa fa-trash-o' }) }));
+	}
+}];
+
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		var users = db.User.instances.filterByKey('email');
+		var usersTable;
+
+		if (db.views && db.views.usersAdmin) {
+			usersTable = getUsersTable({
+				getOrderIndex: getOrderIndex,
+				itemsPerPage: env.objectsListItemsPerPage,
+				class: 'submitted-user-data-table',
+				columns: columns
+			});
+		} else {
+			usersTable = new ReactiveTable(
+				document,
+				new ReactiveTableList(db.User.instances.filterByKey('email'), compareUsers),
+				columns
+			);
+			usersTable.table.classList.add('submitted-user-data-table');
+		}
 
 		p(a({ href: '/new-user/', class: 'button-main' }, _("New user")));
-		section({ class: 'table-responsive-container' },
-			table({ class: "submitted-user-data-table" },
-				thead(
-					th(_("Email")),
-					th(_("Role")),
-					th(_("Institution")),
-					th(_("Creation date")),
-					th()
-				),
-				tbody(users, function (user) {
-					return tr(
-						td(strong(user._fullName), br(), user._email),
-						td(
-							ul(user.roles, mapRolesToLabels)
-						),
-						td(user._institution),
-						td(String(new db.DateTime(user.lastModified / 1000))),
-						td({ class: 'actions' }, a({ href: url('user', user.__id__) },
-								span({ class: 'fa fa-edit' },
-									_("Go to"))),
-							postButton({ buttonClass: 'actions-delete',
-								action: url('user', user.__id__, 'delete'),
-								confirm: _("Are you sure?"),
-								value: span({ class: 'fa fa-trash-o' })
-								}))
-					);
-				})));
+		insert(usersTable.pagination);
+		section({ class: 'table-responsive-container' }, usersTable);
+		insert(usersTable.pagination);
 	}
 };

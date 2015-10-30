@@ -2,16 +2,7 @@
 
 'use strict';
 
-var d  = require('d')
-  , _  = require('mano').i18n.bind("Public")
-  , db = require('mano').db;
-
-db.locale = 'es-SV';
-Object.defineProperty(db.Base, 'chooseLabel', d(_("Choose:")));
-Object.defineProperties(db.Boolean, {
-	trueLabel: d(_("Yes")),
-	falseLabel: d(_("No"))
-});
+var db = require('mano').db;
 
 require('dbjs-dom/text')(db);
 require('dbjs-dom/input')(db);
