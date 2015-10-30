@@ -179,3 +179,8 @@ h3.user-account-section-title {
 	font-size:22px;
 	padding: 11px 15px;
 }
+
+.user-forms > .user-account-section-title {
+	text-transform: uppercase;
+	padding-top:22px;
+}
