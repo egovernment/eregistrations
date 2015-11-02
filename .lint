@@ -41,8 +41,6 @@ predef+ process, __dirname
 ./controller/client
 ./client
 ./prototype/client
-./view
-./scripts/generate-app/view
 predef+ window, document, location, $, setTimeout
 
 ./prototype/view
