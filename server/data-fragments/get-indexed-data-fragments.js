@@ -3,7 +3,8 @@
 
 'use strict';
 
-var aFrom        = require('es5-ext/array/from')
+var includes     = require('es5-ext/array/#/contains')
+  , aFrom        = require('es5-ext/array/from')
   , deferred     = require('deferred')
   , ensureSet    = require('es6-set/valid-set')
   , ensureDriver = require('dbjs-persistence/ensure')
@@ -41,7 +42,7 @@ module.exports = function (driver, keyPaths) {
 			});
 		});
 		driver.on('object:' + objId, function (event) {
-			if (keyPaths.has(event.keyPath)) {
+			if (includes.call(keyPaths, event.keyPath)) {
 				emitEvent(fragment, objId, event.keyPath, event.data);
 			}
 		});
