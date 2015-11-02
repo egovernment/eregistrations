@@ -87,6 +87,7 @@ loadView = function () {
 	  , SiteTreeRouter   = require('site-tree-router')
 	  , postRouter       = require('mano/client/post-router')
 	  , joinControllers  = require('mano/utils/join-controllers')
+	  , isReadOnlyRender = require('mano/client/utils/is-read-only-render')
 
 	  , user, refresh;
 
@@ -110,6 +111,10 @@ loadView = function () {
 
 	postRouter(joinControllers(require('../controller'), require('../controller/client')),
 		user);
+
+	if (!isReadOnlyRender) {
+		require('eregistrations/client/reload-on-role-switch')(user);
+	}
 
 	appLocation.on('change', refresh = function () {
 		if (last.call(appLocation.pathname) !== '/') {
