@@ -22,7 +22,7 @@ var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
 appTypes = {
 	'users-admin': true,
 	'meta-admin': true,
-	user: true,
+	user: { genericViews: ['user.js'] },
 	public: true,
 	official: true,
 	'business-process-submitted': { 'client/program.js': 'client/program.js/business-process.tpl' },
@@ -97,6 +97,15 @@ module.exports = function (projectRoot, appName) {
 		} else {
 			toResolve.push(fs.readdir(viewPath,
 				{ depth: Infinity, type: { file: true } }).map(function (viewFilePath) {
+					// path.dirname(path.join(viewPath, viewFilePath))
+				if (
+					path.resolve(viewPath) === path.dirname(path.join(viewPath, viewFilePath))
+						&& (!appTypes[templateType] ||
+						!appTypes[templateType].genericViews ||
+						(appTypes[templateType].genericViews.indexOf(viewFilePath) === -1))
+				) {
+					return;
+				}
 				return fs.copy(path.join(viewPath, viewFilePath),
 						path.join(projectRoot, 'view', viewFilePath.split('generate-app/').slice(-1)[0]),
 						{ intermediate: true });
