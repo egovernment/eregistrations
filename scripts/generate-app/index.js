@@ -97,7 +97,6 @@ module.exports = function (projectRoot, appName) {
 		} else {
 			toResolve.push(fs.readdir(viewPath,
 				{ depth: Infinity, type: { file: true } }).map(function (viewFilePath) {
-					// path.dirname(path.join(viewPath, viewFilePath))
 				if (
 					path.resolve(viewPath) === path.dirname(path.join(viewPath, viewFilePath))
 						&& (!appTypes[templateType] ||
