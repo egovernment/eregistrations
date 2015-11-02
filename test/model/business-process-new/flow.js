@@ -28,7 +28,8 @@ module.exports = function (t, a) {
 
 	BusinessProcess.prototype.defineProperties({
 		foo: { required: true },
-		bar: { required: true }
+		bar: { required: true },
+		lorem: {}
 	});
 
 	BusinessProcess.prototype.requirements.map.define('req', { nested: true });

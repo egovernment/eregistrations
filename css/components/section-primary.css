@@ -6,11 +6,13 @@
 }
 .section-primary > *,
 .section-primary > form > *,
+.section-primary > .disabler-range > *,
 .section-primary > .section-primary-wrapper > * {
 	margin-bottom: 22px;
 }
 .section-primary > *:last-child,
 .section-primary > form > *:last-child,
+.section-primary > .disabler-range > *:last-child,
 .section-primary > .section-primary-wrapper > *:last-child {
 	margin-bottom: 0;
 }
@@ -170,11 +172,14 @@
 
 .section-primary > .submit-placeholder,
 .section-primary > form > .submit-placeholder,
+.section-primary > .disabler-range > .submit-placeholder,
 .section-primary > .section-primary-wrapper > .submit-placeholder {
 	margin-bottom: 0;
 }
 
-.section-primary h2, .section-primary > form > h2,
+.section-primary > h2,
+.section-primary > form > h2,
+.section-primary > .disabler-range > h2,
 .section-primary > .section-primary-wrapper > h2 {
 	margin-top: -10px;
 	margin-bottom: 10px;

@@ -24,20 +24,20 @@ module.exports = memoize(function (db) {
 			nested: true
 		},
 		status: { value: function (_observe) {
-			var sum = 0, resolved, isResolventExcluded, weightModifier;
+			var sum = 0, resolvedResolvent, isResolventExcluded, weightModifier;
 			weightModifier = 0;
 			if (this.resolventProperty) {
-				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
-				if (!resolved) {
+				resolvedResolvent = this.ensureResolvent(_observe);
+				if (!resolvedResolvent) {
 					return 0;
 				}
-				isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
-				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
+				isResolventExcluded = this.isPropertyExcludedFromStatus(resolvedResolvent, _observe);
+				if (_observe(resolvedResolvent.observable) !== _observe(this.resolventValue)) {
 					if (isResolventExcluded) return 1;
-					if (resolved.descriptor.multiple) {
-						if (_observe(resolved.observable).size) return 1;
+					if (resolvedResolvent.descriptor.multiple) {
+						if (_observe(resolvedResolvent.observable).size) return 1;
 					} else {
-						if (_observe(resolved.observable) != null) return 1;
+						if (_observe(resolvedResolvent.observable) != null) return 1;
 					}
 					return 0;
 				}
@@ -53,14 +53,14 @@ module.exports = memoize(function (db) {
 			return sum / (this.weight + weightModifier);
 		} },
 		weight: { value: function (_observe) {
-			var weightTotal = 0, resolved, isResolventExcluded;
+			var weightTotal = 0, resolvedResolvent, isResolventExcluded;
 			if (this.resolventProperty) {
-				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
-				if (!resolved) {
+				resolvedResolvent = this.ensureResolvent(_observe);
+				if (!resolvedResolvent) {
 					return 0;
 				}
-				isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
-				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
+				isResolventExcluded = this.isPropertyExcludedFromStatus(resolvedResolvent, _observe);
+				if (_observe(resolvedResolvent.observable) !== _observe(this.resolventValue)) {
 					return isResolventExcluded ? 0 : 1;
 				}
 				if (!isResolventExcluded) {

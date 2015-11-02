@@ -118,7 +118,6 @@ input[type="search"] {
 	width: 100%;
 	color: var(--hint-text);
 	line-height: 16px;
-	margin-bottom: 11px;
 	min-height: 22px;
 }
 
