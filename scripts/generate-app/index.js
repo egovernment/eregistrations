@@ -11,8 +11,8 @@ var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
   , generateAppsConf  = require('mano/scripts/generate-apps-conf')
   , generateAppsCtrls = require('mano/scripts/generate-apps-controllers')
   , getApps           = require('mano/server/utils/resolve-apps')
-  , staticsPath
-  , viewPath
+  , extraFilesPath
+  , copyExtraFile
   , partialAppName
   , appTypes
   , templateType
@@ -21,18 +21,23 @@ var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
 
 appTypes = {
 	'users-admin': true,
-	'meta-admin': true,
-	user: { genericViews: ['user.js'] },
-	public: true,
+	'meta-admin': { extraFiles: ['view/meta-admin'] },
+	user: { extraFiles: ['view/user.js'] },
+	public: { extraFiles: ['apps/public'] },
 	official: true,
 	'business-process-submitted': { 'client/program.js': 'client/program.js/business-process.tpl' },
 	'business-process': true
 };
 
+copyExtraFile = function (projectRoot, extraPath) {
+	return fs.copy(path.resolve(extraPath),
+		path.join(projectRoot, extraPath.split('extra-files/').slice(-1)[0]),
+		{ intermediate: true });
+};
+
 module.exports = function (projectRoot, appName) {
 	appRootPath = path.resolve(projectRoot, 'apps', appName);
-	staticsPath = path.join(__dirname, 'public-statics');
-	viewPath    = path.join(__dirname, 'view');
+	extraFilesPath    = path.join(__dirname, 'extra-files');
 
 	templateVars.appName       = appName;
 	templateVars.appNameSuffix = hyphenToCamel.call(appName.split('-').slice(1).join('-'));
@@ -87,27 +92,20 @@ module.exports = function (projectRoot, appName) {
 				return fs.writeFile(appPath, fContent, { intermediate: true });
 			})();
 		})];
-		if (appName === 'public') {
-			toResolve.push(fs.readdir(staticsPath,
-					{ depth: Infinity, type: { file: true } }).map(function (staticFilePath) {
-				return fs.copy(path.join(staticsPath, staticFilePath),
-							path.join(appRootPath, staticFilePath.split('public-statics/').slice(-1)[0]),
-							{ intermediate: true });
-			}));
-		} else {
-			toResolve.push(fs.readdir(viewPath,
-				{ depth: Infinity, type: { file: true } }).map(function (viewFilePath) {
-				if (
-					path.resolve(viewPath) === path.dirname(path.join(viewPath, viewFilePath))
-						&& (!appTypes[templateType] ||
-						!appTypes[templateType].genericViews ||
-						(appTypes[templateType].genericViews.indexOf(viewFilePath) === -1))
-				) {
-					return;
-				}
-				return fs.copy(path.join(viewPath, viewFilePath),
-						path.join(projectRoot, 'view', viewFilePath.split('generate-app/').slice(-1)[0]),
-						{ intermediate: true });
+		if (appTypes[templateType] && appTypes[templateType].extraFiles) {
+			var paths = appTypes[templateType].extraFiles.map(function (extraFile) {
+				return path.join(extraFilesPath, extraFile);
+			});
+			toResolve.push(deferred.map(paths, function (extraPath) {
+				return fs.stat(extraPath).then(function (stat) {
+					if (stat.isDirectory()) {
+						return fs.readdir(extraPath,
+							{ depth: Infinity, type: { file: true } }).map(function (extraFile) {
+							return copyExtraFile(projectRoot, path.join(extraPath, extraFile));
+						});
+					}
+					return copyExtraFile(projectRoot, extraPath);
+				});
 			}));
 		}
 		return deferred.map(toResolve);
