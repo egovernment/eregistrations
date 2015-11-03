@@ -9,14 +9,14 @@ exports._guideHeading = function () {
 };
 
 exports._registrationIntro = function () {
-	return p({ class: "section-primary-intro" },
+	return p({ class: "section-primary-legend" },
 		"Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 		" Etiam vestibulum dui mi, nec ultrices diam ultricies id. " +
 		" Etiam vestibulum dui mi, nec ultrices diam ultricies id. ");
 };
 
 exports._requirementsIntro = function () {
-	return p({ class: "section-primary-intro" },
+	return p({ class: "section-primary-legend" },
 		"Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 		" Etiam vestibulum dui mi, nec ultrices diam ultricies id. ");
 };

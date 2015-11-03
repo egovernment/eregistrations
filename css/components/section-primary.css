@@ -148,14 +148,6 @@
 	max-width: 96%;
 }
 
-.section-primary-intro {
-	border-left:3px solid var(--normal-background);
-	background-color: var(--light-background);
-	font-weight: 400;
-	padding: 11px 16px;
-	display: block;
-}
-
 @media only screen and (max-width: var(--mobile-width)) {
 	.section-primary .dbjs-input-component > label {
 		text-align: left;
