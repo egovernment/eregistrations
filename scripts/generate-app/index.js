@@ -94,7 +94,7 @@ module.exports = function (projectRoot, appName) {
 			function (templatePath) {
 				var fName = path.basename(templatePath, '.tpl')
 				  , projectPath = path.dirname(path.join(projectRoot,
-						templatePath.replace('appnamesuffix',
+						templatePath.replace('appnamehyphenedsuffix',
 							templateVars.appNameHyphenedSuffix).replace('appname', templateVars.appName)));
 				if (fName === templateType) {
 					templates[projectPath] = path.join(__dirname, 'extra-templates', templatePath);
@@ -104,8 +104,13 @@ module.exports = function (projectRoot, appName) {
 	}).then(function () {
 		var toResolve = [deferred.map(Object.keys(templates), function (appPath) {
 			return fs.readFile(templates[appPath])(function (fContent) {
+				var opts = { intermediate: true };
 				fContent = template(fContent, templateVars, { partial: true });
-				return fs.writeFile(appPath, fContent, { intermediate: true });
+				if (path.basename(path.dirname(appPath)) === 'bin') {
+					console.log('OK');
+					opts.mode = 511;
+				}
+				return fs.writeFile(appPath, fContent, opts);
 			})();
 		})];
 		if (appTypes[templateType] && appTypes[templateType].extraFiles) {

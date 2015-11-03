@@ -10,7 +10,7 @@ var resolve          = require('path').resolve
   , BusinessProcess  = require('../model/${ appName }');
 
 module.exports = function () {
-	debug('generate-coi-legacy-dbjs-mock');
+	debug('generate-${ appNameHyphenedSuffix }-legacy-dbjs-mock');
 
 	return generateDbjsMock(BusinessProcess,
 		resolve(__dirname, '../apps/${ appName }/client/legacy/${ appNameHyphenedSuffix }-legacy-proto.js'), {

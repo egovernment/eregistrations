@@ -1,6 +1,6 @@
-/public/business-process-coi.js
-/public/business-process-coi.css
-/public/business-process-coi.legacy.js
-/public/business-process-coi-legacy.css
-/public/business-process-coi-print.css
+/public/${ appName }.js
+/public/${ appName }.css
+/public/${ appName }.legacy.js
+/public/${ appName }-legacy.css
+/public/${ appName }-print.css
 /client/legacy/${ appNameSuffix }-legacy-proto.js
