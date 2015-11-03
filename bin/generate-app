@@ -37,7 +37,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			"configuration is complete in apps/" + appName + "/controller");
 
 		clientModelReminder = "Ensure that the models of handled businessProcesses are" +
-			" required in client/model.js";
+			" required in apps/" + appName + "/client/model.js";
 
 		if (appName === 'user') {
 			msgItems.push(clientModelReminder);
