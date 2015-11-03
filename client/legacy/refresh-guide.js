@@ -7,6 +7,9 @@ var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
   , formatCurrency = require('./format-currency');
 
 require('es3-ext/array/#/for-each/implement');
+require('mano-legacy/for-each');
+require('mano-legacy/on-env-update');
+require('mano-legacy/dbjs-form-fill');
 
 // Each hook is an array of scripts which are executed in corresponding parts of refresh guide
 $.refreshGuideHooks = { atEnd: [],
