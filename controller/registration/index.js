@@ -104,3 +104,6 @@ exports['application-submit'] = {
 		submit.apply(this, arguments);
 	}
 };
+
+// Registration controller used by Demo users.
+exports.register = require('../my-account').register;
