@@ -186,3 +186,9 @@
 	padding: 5px 15px;
 	display: block;
 }
+
+.section-primary > .section-primary-legend, .section-primary > form > .section-primary-legend,
+.section-primary > .disabler-range > .section-primary-legend,
+.section-primary > .section-primary-wrapper > .section-primary-legend {
+	margin-bottom: 12px;
+}
