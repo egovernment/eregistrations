@@ -47,7 +47,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push(clientModelReminder);
 		} else if (startsWith.call(appName, 'business-process-')) {
 			msgItems.push("Ensure that the " +
-				"underlying business-process model is required in server/model.js");
+				"underlying businessProcess model is required in server/model.js");
 		}
 
 		if (startsWith.call(appName, 'official-')) {
