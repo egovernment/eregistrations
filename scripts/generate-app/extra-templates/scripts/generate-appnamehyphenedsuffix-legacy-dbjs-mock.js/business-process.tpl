@@ -13,7 +13,5 @@ module.exports = function () {
 	debug('generate-${ appNameHyphenedSuffix }-legacy-dbjs-mock');
 
 	return generateDbjsMock(BusinessProcess,
-		resolve(__dirname, '../apps/${ appName }/client/legacy/${ appNameHyphenedSuffix }-legacy-proto.js'), {
-			customizeCb: function (legacyDb) {}
-		});
+		resolve(__dirname, '../apps/${ appName }/client/legacy/${ appNameHyphenedSuffix }-legacy-proto.js'));
 };

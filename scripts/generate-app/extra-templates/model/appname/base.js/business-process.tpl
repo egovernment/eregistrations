@@ -1,4 +1,4 @@
-// Extension to BusinessProcess (${ className }) model.
+//Initialisation of ${ className } class (a business process service)
 
 'use strict';
 

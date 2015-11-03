@@ -3,4 +3,4 @@
 /public/${ appName }.legacy.js
 /public/${ appName }-legacy.css
 /public/${ appName }-print.css
-/client/legacy/${ appNameSuffix }-legacy-proto.js
+/client/legacy/${ appNameHyphenedSuffix }-legacy-proto.js
