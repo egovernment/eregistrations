@@ -50,7 +50,9 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 				), 'completed form-elements', 'form-elements')
 				},
 				ns._if(this._label,
-					[ns.h2(this._label), ns._if(this._legend, ns.md(this._legend)), ns.hr()]),
+					[ns.h2(this._label), ns.hr(),
+						ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
+							ns.md(this._legend)))]),
 				options.prepend,
 				mainFormResolvent.formResolvent,
 				ns.div({ id: mainFormResolvent.affectedSectionId }, ns.list(this.sections,
