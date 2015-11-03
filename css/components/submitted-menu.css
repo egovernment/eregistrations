@@ -34,6 +34,15 @@
 	background: var(--normal-dark-background);
 }
 
+.submitted-menu a:hover,
+.submitted-menu a:focus,
+.submitted-menu a:active,
+.submitted-menu button:hover,
+.submitted-menu button:focus,
+.submitted-menu button:active {
+	color:#fff;
+}
+
 .submitted-menu a,
 .submitted-menu button {
 	color: var(--white-text);
@@ -46,6 +55,12 @@
 .submitted-menu button {
 	border-radius: 0;
 	background-color: transparent;
+}
+
+.submitted-menu-items > li {
+	border-top:1px solid var(--normal-dark-background);
+	border-bottom:1px solid var(--normal-dark-background);
+	background-color: #FFF;
 }
 
 .submitted-menu-role-select {
