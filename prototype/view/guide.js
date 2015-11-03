@@ -9,20 +9,20 @@ exports._guideHeading = function () {
 };
 
 exports._registrationIntro = function () {
-	return p({ class: "section-primary-intro" },
+	return p({ class: "section-primary-legend" },
 		"Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 		" Etiam vestibulum dui mi, nec ultrices diam ultricies id. " +
 		" Etiam vestibulum dui mi, nec ultrices diam ultricies id. ");
 };
 
 exports._requirementsIntro = function () {
-	return p({ class: "section-primary-intro" },
+	return p({ class: "section-primary-legend" },
 		"Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
 		" Etiam vestibulum dui mi, nec ultrices diam ultricies id. ");
 };
 
 exports._costsIntro = function () {
-	return [div({ class: 'free-form section-primary-intro' },
+	return [div({ class: 'free-form section-primary-legend' },
 		p("LoLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat aliquet massa," +
 			" quis vulputate diam. Morbi non dolor ac tellus finibus commodo. Donec convallis" +
 			" tortor felis, et sodales quam vulputate ac."),
@@ -49,7 +49,7 @@ exports._costsIntro = function () {
 		),
 		p("LoLorem ipsum dolor sit amet, consectetur adipiscing elit. Sed feugiat aliquet massa," +
 			" quis vulputate diam. Morbi non dolor ac tellus finibus commodo. Donec convallis" +
-			" tortor felis, et sodales quam vulputate ac.")),
+			" tortor felis, et sodales quam vulputate ac."),
 		p("Lorem ipsum dolor sit amet, consectetur adipiscing elit." +
-			" Etiam vestibulum dui mi, nec ultrices diam ultricies id. ")];
+			" Etiam vestibulum dui mi, nec ultrices diam ultricies id. "))];
 };
