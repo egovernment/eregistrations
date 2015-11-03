@@ -14,6 +14,7 @@ module.exports = function (db/* options */) {
 	require('./institution')(User, options);
 	require('./visited-business-processes')(db);
 	require('./visited-users')(db);
+	require('./demo')(User);
 
 	return User;
 };
