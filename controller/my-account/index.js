@@ -20,3 +20,15 @@ exports['business-process/[0-9][a-z0-9]+/delete'] = {
 		db.objects.delete(this.businessProcess);
 	}
 };
+
+exports['business-process/[0-9][a-z0-9]+'] = {
+	match: function (businessProcessId) {
+		this.businessProcess = db.BusinessProcess.getById(businessProcessId);
+		if (!this.businessProcess) return false;
+		if (!this.businessProcess.isFromEregistrations) return false;
+		return this.user.businessProcesses.has(this.businessProcess);
+	},
+	submit: function () {
+		this.user.currentBusinessProcess = this.businessProcess;
+	}
+};

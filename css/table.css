@@ -21,8 +21,11 @@ td a {
 table .actions {
 	text-align: center;
 }
-table .actions a:first-child {
-	margin-right: 5px;
+table .actions > * {
+	margin-left: 5px;
+}
+table .actions > :first-child {
+	margin-left: 0;
 }
 table .actions a,
 table .actions button {
