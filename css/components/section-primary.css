@@ -148,14 +148,6 @@
 	max-width: 96%;
 }
 
-.section-primary-intro {
-	border-left:3px solid var(--normal-background);
-	background-color: var(--light-background);
-	font-weight: 400;
-	padding: 11px 16px;
-	display: block;
-}
-
 @media only screen and (max-width: var(--mobile-width)) {
 	.section-primary .dbjs-input-component > label {
 		text-align: left;
@@ -183,4 +175,19 @@
 .section-primary > .section-primary-wrapper > h2 {
 	margin-top: -10px;
 	margin-bottom: 10px;
+}
+
+.section-primary-legend {
+	border-left: 3px solid var(--dark-background);
+	padding-left: 15px;
+	font-weight: 400;
+	background-color: var(--light-background);
+	padding: 5px 15px;
+	display: block;
+}
+
+.section-primary > .section-primary-legend, .section-primary > form > .section-primary-legend,
+.section-primary > .disabler-range > .section-primary-legend,
+.section-primary > .section-primary-wrapper > .section-primary-legend {
+	margin-bottom: 12px;
 }

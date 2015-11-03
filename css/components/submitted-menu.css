@@ -32,11 +32,17 @@
 .submitted-menu a:active,
 .submitted-menu .submitted-menu-item-active {
 	background: var(--normal-dark-background);
+	color:var(--white-text);
+}
+
+.submitted-menu .submitted-menu-item-active a,
+.submitted-menu .submitted-menu-item-active button {
+	color:var(--white-text);
 }
 
 .submitted-menu a,
 .submitted-menu button {
-	color: var(--white-text);
+	color: var(--normal-dark-background);
 	font-size: 16px;
 	text-decoration: none;
 	padding: 0 17px;
@@ -48,8 +54,15 @@
 	background-color: transparent;
 }
 
+.submitted-menu-items > li {
+	border-top:1px solid var(--normal-dark-background);
+	border-bottom:1px solid var(--normal-dark-background);
+	background-color: var(--light-background);
+	line-height: 42px;
+}
+
 .submitted-menu-role-select {
-		line-height: 44px;
+	line-height: 44px;
 }
 
 .submitted-menu-role-select > p {
