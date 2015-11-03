@@ -36,7 +36,7 @@ predef+ console
 ./prototype/scripts
 ./utils
 ./scripts/generate-app
-predef+ process, __dirname
+predef+ process, __dirname, setInterval
 
 ./controller/client
 ./client
