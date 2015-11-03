@@ -107,7 +107,6 @@ module.exports = function (projectRoot, appName) {
 				var opts = { intermediate: true };
 				fContent = template(fContent, templateVars, { partial: true });
 				if (path.basename(path.dirname(appPath)) === 'bin') {
-					console.log('OK');
 					opts.mode = 511;
 				}
 				return fs.writeFile(appPath, fContent, opts);
