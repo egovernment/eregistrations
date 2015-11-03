@@ -88,9 +88,7 @@ module.exports = function (t, a) {
 	businessProcess.tableResolver = false;
 	a(section.weight, 0);
 	a(section.status, 1);
-	a(String(section.lastEditDate), String(
-		new db.DateTime(businessProcess.getDescriptor('tableResolver').lastModified / 1000)
-	));
+	a(section.lastEditStamp, businessProcess.getDescriptor('tableResolver').lastModified);
 	businessProcess.tableResolver = true;
 	section.max = 2;
 	a(section.weight, 6);
