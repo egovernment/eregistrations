@@ -102,7 +102,6 @@ select {
 		line-height 22px, paddins 3ps and border 1px */
 	height: 30px;
 	font-size: 14px;
-	font-family: "Robot";
 	padding: 3px 5px;
 }
 
@@ -170,7 +169,6 @@ textarea {
 	margin-bottom: -8px; /* To assure it doesn't expand line-height of element in which textarea is placed */
 	font-size: 14px;
 	padding: 0 5px;
-	font-family: "Roboto";
 }
 @-moz-document url-prefix() {
 	textarea {

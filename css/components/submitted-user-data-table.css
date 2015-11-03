@@ -12,8 +12,6 @@
 
 .submitted-user-data-table thead {
 	background-color: transparent;
-	text-align: left;
-	border:none;
 }
 .submitted-user-data-table thead th {
 	color: var(--dark-text);
