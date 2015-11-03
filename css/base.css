@@ -40,6 +40,17 @@ Component describing basic elements styles - reusable
 
 @font-face {
 	font-family: 'Roboto';
+	src: url('/fonts/roboto/roboto-light-webfont.eot');
+	src: url('/fonts/roboto/roboto-light-webfont.eot?#iefix') format('embedded-opentype'),
+		url('/fonts/roboto/roboto-light-webfont.woff') format('woff'),
+		url('/fonts/roboto/roboto-light-webfont.ttf') format('truetype'),
+		url('/fonts/roboto/roboto-light-webfont.svg#roboto') format('svg');
+	font-weight: 300;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'Roboto';
 	src: url('/fonts/roboto/roboto-regular-webfont.eot');
 	src: url('/fonts/roboto/roboto-regular-webfont.eot?#iefix') format('embedded-opentype'),
 		url('/fonts/roboto/roboto-regular-webfont.woff') format('woff'),
@@ -51,17 +62,6 @@ Component describing basic elements styles - reusable
 
 @font-face {
 	font-family: 'Roboto';
-	src: url('/fonts/roboto/roboto-italic-webfont.eot');
-	src: url('/fonts/roboto/roboto-italic-webfont.eot?#iefix') format('embedded-opentype'),
-		url('/fonts/roboto/roboto-italic-webfont.woff') format('woff'),
-		url('/fonts/roboto/roboto-italic-webfont.ttf') format('truetype'),
-		url('/fonts/roboto/roboto-italic-webfont.svg#roboto') format('svg');
-	font-weight: 400;
-	font-style: italic;
-}
-
-@font-face {
-	font-family: 'Roboto';
 	src: url('/fonts/roboto/roboto-bold-webfont.eot');
 	src: url('/fonts/roboto/roboto-bold-webfont.eot?#iefix') format('embedded-opentype'),
 		url('/fonts/roboto/roboto-bold-webfont.woff') format('woff'),
@@ -69,17 +69,6 @@ Component describing basic elements styles - reusable
 		url('/fonts/roboto/roboto-bold-webfont.svg#roboto') format('svg');
 	font-weight: 700;
 	font-style: normal;
-}
-
-@font-face {
-	font-family: 'Roboto';
-	src: url('/fonts/roboto/roboto-bold-italic-webfont.eot');
-	src: url('/fonts/roboto/roboto-bold-italic-webfont.eot?#iefix') format('embedded-opentype'),
-		url('/fonts/roboto/roboto-bold-italic-webfont.woff') format('woff'),
-		url('/fonts/roboto/roboto-bold-italic-webfont.ttf') format('truetype'),
-		url('/fonts/roboto/roboto-bold-italic-webfont.svg#roboto') format('svg');
-	font-weight: 700;
-	font-style: italic;
 }
 
 html {
