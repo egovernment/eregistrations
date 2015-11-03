@@ -5,7 +5,7 @@
 module.exports = exports = require('../../view/business-process-base');
 
 exports['submitted-menu'] = function () {
-	li(a({ href: '/guide/', class: 'submitted-menu-item-active' }, "Process"));
+	li({ class: 'submitted-menu-item-active' }, a({ href: '/guide/' }, "Process"));
 };
 
 exports._stepsMenu = function () {

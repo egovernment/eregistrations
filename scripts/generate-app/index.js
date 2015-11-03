@@ -11,7 +11,8 @@ var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
   , generateAppsConf  = require('mano/scripts/generate-apps-conf')
   , generateAppsCtrls = require('mano/scripts/generate-apps-controllers')
   , getApps           = require('mano/server/utils/resolve-apps')
-  , staticsPath
+  , extraFilesPath
+  , copyExtraFile
   , partialAppName
   , appTypes
   , templateType
@@ -20,17 +21,23 @@ var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
 
 appTypes = {
 	'users-admin': true,
-	'meta-dmin': true,
-	user: true,
-	public: true,
+	'meta-admin': { extraFiles: ['view/meta-admin'] },
+	user: { extraFiles: ['view/user.js'] },
+	public: { extraFiles: ['apps/public'] },
 	official: true,
 	'business-process-submitted': { 'client/program.js': 'client/program.js/business-process.tpl' },
 	'business-process': true
 };
 
+copyExtraFile = function (projectRoot, extraPath) {
+	return fs.copy(path.resolve(extraPath),
+		path.join(projectRoot, extraPath.split('extra-files/').slice(-1)[0]),
+		{ intermediate: true });
+};
+
 module.exports = function (projectRoot, appName) {
 	appRootPath = path.resolve(projectRoot, 'apps', appName);
-	staticsPath = path.join(__dirname, 'public-statics');
+	extraFilesPath    = path.join(__dirname, 'extra-files');
 
 	templateVars.appName       = appName;
 	templateVars.appNameSuffix = hyphenToCamel.call(appName.split('-').slice(1).join('-'));
@@ -55,46 +62,55 @@ module.exports = function (projectRoot, appName) {
 
 	var templates = {};
 
-	return fs.readdir(path.join(__dirname, 'templates'),
-		{ depth: Infinity, type: { file: true } }).map(
-		function (templatePath) {
-			var fName = path.basename(templatePath, '.tpl')
-		  , appPathRel = path.dirname(templatePath)
-		  , appPath = path.join(appRootPath, appPathRel);
+	return exec('node',
+		[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + appName],
+		{ cwd: projectRoot }).then(function () {
+		return fs.readdir(path.join(__dirname, 'templates'),
+				{ depth: Infinity, type: { file: true } }).map(
+			function (templatePath) {
+				var fName = path.basename(templatePath, '.tpl')
+			  , appPathRel = path.dirname(templatePath)
+			  , appPath = path.join(appRootPath, appPathRel);
 
-			if (appTypes[appName] && appTypes[appName][appPathRel] === templatePath) {
-				templates[appPath] = path.join(__dirname, 'templates', templatePath);
-				return;
+				if (appTypes[appName] && appTypes[appName][appPathRel] === templatePath) {
+					templates[appPath] = path.join(__dirname, 'templates', templatePath);
+					return;
+				}
+				if (fName === templateType) {
+					templates[appPath] = path.join(__dirname, 'templates', templatePath);
+					return;
+				}
+				if (fName === 'authenticated' && !templates[appPath]) {
+					templates[appPath] = path.join(__dirname, 'templates', templatePath);
+				}
 			}
-			if (fName === templateType) {
-				templates[appPath] = path.join(__dirname, 'templates', templatePath);
-				return;
-			}
-			if (fName === 'authenticated' && !templates[appPath]) {
-				templates[appPath] = path.join(__dirname, 'templates', templatePath);
-			}
-		}
-	).then(function () {
+		);
+	}).then(function () {
 		var toResolve = [deferred.map(Object.keys(templates), function (appPath) {
 			return fs.readFile(templates[appPath])(function (fContent) {
 				fContent = template(fContent, templateVars, { partial: true });
 				return fs.writeFile(appPath, fContent, { intermediate: true });
 			})();
 		})];
-		if (appName === 'public') {
-			toResolve.push(fs.readdir(staticsPath,
-					{ depth: Infinity, type: { file: true } }).map(function (staticFilePath) {
-				return fs.copy(path.join(staticsPath, staticFilePath),
-							path.join(appRootPath, staticFilePath.split('public-statics/').slice(-1)[0]),
-							{ intermediate: true });
+		if (appTypes[templateType] && appTypes[templateType].extraFiles) {
+			var paths = appTypes[templateType].extraFiles.map(function (extraFile) {
+				return path.join(extraFilesPath, extraFile);
+			});
+			toResolve.push(deferred.map(paths, function (extraPath) {
+				return fs.stat(extraPath).then(function (stat) {
+					if (stat.isDirectory()) {
+						return fs.readdir(extraPath,
+							{ depth: Infinity, type: { file: true } }).map(function (extraFile) {
+							return copyExtraFile(projectRoot, path.join(extraPath, extraFile));
+						});
+					}
+					return copyExtraFile(projectRoot, extraPath);
+				});
 			}));
 		}
 		return deferred.map(toResolve);
 	}).then(function () {
 		return deferred(
-			exec('node',
-				[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + appName],
-				{ cwd: projectRoot }),
 			generateAppsList(projectRoot),
 			getApps(projectRoot).then(function (appsList) {
 				return deferred(generateAppsConf(projectRoot, appsList),

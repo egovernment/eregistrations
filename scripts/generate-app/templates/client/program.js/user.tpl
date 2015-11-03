@@ -114,6 +114,7 @@ loadView = function () {
 
 	if (!isReadOnlyRender) {
 		require('eregistrations/client/reload-on-role-switch')(user);
+		require('eregistrations/client/reload-on-current-business-process-change')(user);
 	}
 
 	appLocation.on('change', refresh = function () {
