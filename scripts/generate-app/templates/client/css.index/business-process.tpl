@@ -30,6 +30,5 @@
 ../../../node_modules/eregistrations/css/components/info-main.css
 ../../../node_modules/eregistrations/css/components/hint-optional.css
 ../../../node_modules/eregistrations/css/components/throbber.css
-../../../node_modules/vanilla-chosen/Source/chosen.css
 ../../../css/theme.css
 ../../../css/theme-part-a.css
