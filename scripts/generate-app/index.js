@@ -27,7 +27,7 @@ appTypes = {
 	public: { extraFiles: ['apps/public'] },
 	official: true,
 	'business-process-submitted': { 'client/program.js': 'client/program.js/business-process.tpl' },
-	'business-process': { 'client/legacy.js': false }
+	'business-process': true
 };
 
 copyExtraFile = function (projectRoot, extraPath) {
@@ -83,8 +83,7 @@ module.exports = function (projectRoot, appName) {
 					templates[appPath] = path.join(__dirname, 'templates', templatePath);
 					return;
 				}
-				if (fName === 'authenticated' && !templates[appPath] &&
-						appTypes[templateType][appPathRel] !== false) {
+				if (fName === 'authenticated' && !templates[appPath]) {
 					templates[appPath] = path.join(__dirname, 'templates', templatePath);
 				}
 			}
