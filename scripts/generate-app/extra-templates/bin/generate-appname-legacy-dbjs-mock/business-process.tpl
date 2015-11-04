@@ -6,4 +6,4 @@
 
 Error.stackTraceLimit = Infinity;
 
-require('../scripts/generate-${ appNameHyphenedSuffix }-legacy-dbjs-mock')().done();
+require('../scripts/generate-${ appName }-legacy-dbjs-mock')().done();

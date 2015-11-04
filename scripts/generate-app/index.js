@@ -60,8 +60,7 @@ module.exports = function (projectRoot, appName) {
 			templateType = 'authenticated';
 		}
 	}
-	templateVars.appNameHyphenedSuffix = appName.replace(templateType + '-', '');
-	templateVars.appNameSuffix = hyphenToCamel.call(templateVars.appNameHyphenedSuffix);
+	templateVars.appNameSuffix = hyphenToCamel.call(appName.replace(templateType + '-', ''));
 
 	var templates = {};
 
@@ -94,8 +93,7 @@ module.exports = function (projectRoot, appName) {
 			function (templatePath) {
 				var fName = path.basename(templatePath, '.tpl')
 				  , projectPath = path.dirname(path.join(projectRoot,
-						templatePath.replace('appnamehyphenedsuffix',
-							templateVars.appNameHyphenedSuffix).replace('appname', templateVars.appName)));
+						templatePath.replace('appname', templateVars.appName)));
 				if (fName === templateType) {
 					templates[projectPath] = path.join(__dirname, 'extra-templates', templatePath);
 				}
