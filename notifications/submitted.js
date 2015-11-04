@@ -1,12 +1,6 @@
 'use strict';
 
-var db = require('mano').db
-  , _  = require('mano').i18n.bind('User: Notifications');
-
-var businessProcessInstances = db.BusinessProcess.instances
-	.filterByKey('isFromEregistrations', true);
-
-exports.trigger = businessProcessInstances.filterByKeyPath('isSubmitted', true);
+var _ = require('mano').i18n.bind('User: Notifications');
 
 exports.subject = _("M02 Your application for registration has been received");
 exports.text = _("Email message greeting ${ fullName }") + "\n\n"
