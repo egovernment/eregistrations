@@ -116,24 +116,7 @@ exports.step = function () {
 									requirement.legend && [br(), small(mdi(requirement.legend))]]);
 					})),
 
-			div({ id: 'costs-section', class: 'section-primary' }, h2(_("Costs")),
-				hr(),
-				exports._costsIntro(this),
-				ul({ id: 'costs-list', class: 'user-guide-costs-list' },
-					list(this.businessProcess.costs.map,
-						function (cost) {
-							li({ id: 'cost-li-' + camelToHyphen.call(cost.key), 'data-key': cost.key },
-								span({ class: 'user-guide-costs-list-label' },
-									span({ id: 'cost-label-' + camelToHyphen.call(cost.key) }, cost.label),
-									small(cost.legend)),
-								span({ id: 'cost-amount-' + camelToHyphen.call(cost.key) }));
-						}),
-					li({ id: 'cost-li-total', class: 'user-guide-total-costs' },
-						span({ class: 'user-guide-costs-list-label' }, _("Total Costs:")), " ",
-						span({ id: 'costs-total' }))
-					),
-				p(a({ id: 'print-costs-link', class: 'button-resource-link', href: '/costs-print/',
-					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print costs list")))),
+			exports._costsBox(this),
 			p({ class: 'user-next-step-button' },
 				button({ type: 'submit' },
 					_("Save and continue")))
@@ -146,6 +129,26 @@ exports.step = function () {
 		this.businessProcess.constructor.__id__);
 };
 
+exports._costsBox = function (context) {
+	return div({ id: 'costs-section', class: 'section-primary' }, h2(_("Costs")),
+		hr(),
+		exports._costsIntro(context),
+		ul({ id: 'costs-list', class: 'user-guide-costs-list' },
+			list(context.businessProcess.costs.map,
+				function (cost) {
+					li({ id: 'cost-li-' + camelToHyphen.call(cost.key), 'data-key': cost.key },
+						span({ class: 'user-guide-costs-list-label' },
+							span({ id: 'cost-label-' + camelToHyphen.call(cost.key) }, cost.label),
+							small(cost.legend)),
+						span({ id: 'cost-amount-' + camelToHyphen.call(cost.key) }));
+				}),
+			li({ id: 'cost-li-total', class: 'user-guide-total-costs' },
+				span({ class: 'user-guide-costs-list-label' }, _("Total Costs:")), " ",
+				span({ id: 'costs-total' }))
+			),
+		p(a({ id: 'print-costs-link', class: 'button-resource-link', href: '/costs-print/',
+			target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print costs list"))));
+};
 exports._guideHeading               = Function.prototype;
 exports._questionsIntro             = Function.prototype;
 exports._mandatoryRegistrationIntro = Function.prototype;

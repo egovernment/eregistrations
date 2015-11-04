@@ -38,6 +38,7 @@ var getPropertyValue = function (target, property) {
 };
 
 var buildCostsPrintLink = function (currentLink, cost, field, prefix) {
+	if (!currentLink) return;
 	if (!prefix) prefix = '';
 	currentLink.search += (currentLink.search.length) ?
 			'&' + prefix + cost.key + '=' + cost[field].toFixed(2) :
@@ -79,7 +80,9 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		costsLabelElements[name] = $.getTextChild('cost-label-' + camelToHyphen.call(name));
 	});
 
-	costsTotalElement = $.getTextChild('costs-total');
+	if ($('costs-total')) {
+		costsTotalElement = $.getTextChild('costs-total');
+	}
 
 	// Crazy train...
 	$.onEnvUpdate(guideForm, function () {
@@ -215,16 +218,20 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 			}
 		});
 
-		costsTotalElement.data = formatCurrency(businessProcess.costs.totalAmount);
+		if (costsTotalElement) {
+			costsTotalElement.data = formatCurrency(businessProcess.costs.totalAmount);
+		}
 
 		// Build costs print link
-		costsPrintLink.search = '';
+		if (costsPrintLink) {
+			costsPrintLink.search = '';
+		}
 
 		businessProcess.costs.payable.forEach(function (cost) {
 			buildCostsPrintLink(costsPrintLink, cost, 'amount');
 		});
 
-		if (costsPrintLink.search.length) {
+		if (costsPrintLink && costsPrintLink.search.length) {
 			costsPrintLink.search += '&total=' + businessProcess.costs.totalAmount.toFixed(2);
 		}
 
