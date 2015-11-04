@@ -75,7 +75,7 @@ module.exports = function (projectRoot, appName) {
 			  , appPathRel = path.dirname(templatePath)
 			  , appPath = path.join(appRootPath, appPathRel);
 
-				if (appTypes[appName] && appTypes[appName][appPathRel] === templatePath) {
+				if (appTypes[templateType][appPathRel] === templatePath) {
 					templates[appPath] = path.join(__dirname, 'templates', templatePath);
 					return;
 				}
