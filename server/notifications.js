@@ -97,7 +97,16 @@ setup = function (path) {
 		localContext.user = localContext.businessProcess = user;
 		if (conf.resolveGetters) {
 			for (prop in localContext) {
-				if (typeof localContext[prop] === 'function') localContext[prop] = localContext[prop]();
+				if (typeof localContext[prop] === 'function') {
+					try {
+						localContext[prop] = localContext[prop]();
+					} catch (e) {
+						console.log("Error: Resolution of notification crashed\n\tpath: " + path);
+						if (mano.env && mano.env.dev) throw e;
+						console.error("Cannot generate email message!:\n" + e.stack);
+						return;
+					}
+				}
 			}
 		}
 		if (!resolvedText) text = getText(user, localContext);
