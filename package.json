@@ -41,6 +41,8 @@
     "css-lint": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css",
     "css-lint-console": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css --watch",
     "css-lint-ci": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css --no-cache --no-stream",
+    "ensure-eol": "node node_modules/mano/bin/ensure-eol",
+    "ensure-valid-filenames": "node node_modules/mano/bin/ensure-valid-filenames",
     "test": "node node_modules/tad/bin/tad stats server/populate.js model"
   },
   "engines": {
