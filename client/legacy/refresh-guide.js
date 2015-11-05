@@ -51,11 +51,12 @@ var buildCostsPrintLink = function (currentLink, cost, field, prefix) {
 module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		businessProcessTypeName) {
 	var guideForm = $(guideFormId)
-	  , mandatoryRegistrationsSection, mandatoryRegistrationsListElements
+	  , noRequstedRegistrationsSection, mandatoryRegistrationsSection
+	  , mandatoryRegistrationsListElements
 	  , optionalRegistrationsSection, optionalRegistrationsListElements
-	  , requirementsListElements
+	  , requirementsSection, requirementsListElements
 	  , costsListElements, costsAmountsElements = {}, costsLabelElements = {}
-	  , costsTotalElement, costsPrintLink
+	  , costsTotalElement, costsPrintLink, guideSaveButton
 	  , costsSection, zeroCostsClass;
 
 	// Create mock BusinessProcess
@@ -64,22 +65,27 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 	// Gather required list elements
 
+	noRequstedRegistrationsSection = $('no-requested-registrations-section');
 	mandatoryRegistrationsSection = $('mandatory-registrations-section');
 	mandatoryRegistrationsListElements = getNamedListElements('mandatory-registrations-list');
 	optionalRegistrationsSection = $('optional-registrations-section');
 	optionalRegistrationsListElements = getNamedListElements('optional-registrations-list');
+	requirementsSection      = $('requirements-section');
 	requirementsListElements = getNamedListElements('requirements-list');
 	costsListElements = getNamedListElements('costs-list');
-	costsPrintLink = $('print-costs-link');
-	costsSection   = $('costs-section');
-	zeroCostsClass = 'user-guide-zero-costs-amount';
+	costsPrintLink  = $('print-costs-link');
+	costsSection    = $('costs-section');
+	zeroCostsClass  = 'user-guide-zero-costs-amount';
+	guideSaveButton = $('guide-save-button');
 
 	$.forIn(costsListElements, function (li, name) {
 		costsAmountsElements[name] = $.getTextChild('cost-amount-' + camelToHyphen.call(name));
 		costsLabelElements[name] = $.getTextChild('cost-label-' + camelToHyphen.call(name));
 	});
 
-	costsTotalElement = $.getTextChild('costs-total');
+	if ($('costs-total')) {
+		costsTotalElement = $.getTextChild('costs-total');
+	}
 
 	// Crazy train...
 	$.onEnvUpdate(guideForm, function () {
@@ -215,7 +221,9 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 			}
 		});
 
-		costsTotalElement.data = formatCurrency(businessProcess.costs.totalAmount);
+		if (costsTotalElement) {
+			costsTotalElement.data = formatCurrency(businessProcess.costs.totalAmount);
+		}
 
 		// Build costs print link
 		costsPrintLink.search = '';
@@ -238,6 +246,12 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		} else {
 			costsSection.addClass(zeroCostsClass);
 		}
+
+		noRequstedRegistrationsSection.toggle(!businessProcess.registrations.requested.size);
+		costsSection.toggle(businessProcess.registrations.requested.size);
+		requirementsSection.toggle(businessProcess.registrations.requested.size);
+		guideSaveButton.toggle(businessProcess.registrations.requested.size);
+
 		$.refreshGuideHooks.atEnd.forEach(function (hook) {
 			hook(businessProcess, guideForm);
 		});

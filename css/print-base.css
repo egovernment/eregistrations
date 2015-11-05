@@ -74,3 +74,9 @@ ul,
 ol {
 	list-style: none;
 }
+
+.disabled,
+[disabled] {
+	background-color: #fff;
+	opacity: 0.4;
+}

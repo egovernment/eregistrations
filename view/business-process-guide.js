@@ -104,8 +104,7 @@ exports.step = function () {
 										dbjs: registration._isRequested, type: 'checkbox' }), " ",
 									span(spanContent)));
 						}))),
-
-			div({ class: 'section-primary' }, h2(_("Requirements")),
+			div({ id: 'requirements-section', class: 'section-primary' }, h2(_("Requirements")),
 				hr(),
 				exports._requirementsIntro(this),
 				ul({ id: 'requirements-list', class: 'user-guide-requirements-list' },
@@ -119,24 +118,15 @@ exports.step = function () {
 			div({ id: 'costs-section', class: 'section-primary' }, h2(_("Costs")),
 				hr(),
 				exports._costsIntro(this),
-				ul({ id: 'costs-list', class: 'user-guide-costs-list' },
-					list(this.businessProcess.costs.map,
-						function (cost) {
-							li({ id: 'cost-li-' + camelToHyphen.call(cost.key), 'data-key': cost.key },
-								span({ class: 'user-guide-costs-list-label' },
-									span({ id: 'cost-label-' + camelToHyphen.call(cost.key) }, cost.label),
-									small(cost.legend)),
-								span({ id: 'cost-amount-' + camelToHyphen.call(cost.key) }));
-						}),
-					li({ id: 'cost-li-total', class: 'user-guide-total-costs' },
-						span({ class: 'user-guide-costs-list-label' }, _("Total Costs:")), " ",
-						span({ id: 'costs-total' }))
-					),
+				ul({ id: 'costs-list', class: 'user-guide-costs-list' }, exports._costsList(this)),
 				p(a({ id: 'print-costs-link', class: 'button-resource-link', href: '/costs-print/',
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print costs list")))),
-			p({ class: 'user-next-step-button' },
+			p({ id: 'guide-save-button', class: 'user-next-step-button' },
 				button({ type: 'submit' },
-					_("Save and continue")))
+					_("Save and continue"))),
+			div({ id: 'no-requested-registrations-section',
+					class: 'section-primary user-guide-no-requested-registrations-info' },
+				p(_("You need to select at least one registration to continue with the process")))
 		),
 		div({ class: 'disabler' })
 	);
@@ -146,6 +136,19 @@ exports.step = function () {
 		this.businessProcess.constructor.__id__);
 };
 
+exports._costsList = function (context) {
+	return [list(context.businessProcess.costs.map,
+		function (cost) {
+			li({ id: 'cost-li-' + camelToHyphen.call(cost.key), 'data-key': cost.key },
+				span({ class: 'user-guide-costs-list-label' },
+					span({ id: 'cost-label-' + camelToHyphen.call(cost.key) }, cost.label),
+					small(cost.legend)),
+				span({ id: 'cost-amount-' + camelToHyphen.call(cost.key) }));
+		}),
+		li({ id: 'cost-li-total', class: 'user-guide-total-costs' },
+			span({ class: 'user-guide-costs-list-label' }, _("Total Costs:")), " ",
+			span({ id: 'costs-total' }))];
+};
 exports._guideHeading               = Function.prototype;
 exports._questionsIntro             = Function.prototype;
 exports._mandatoryRegistrationIntro = Function.prototype;
