@@ -149,10 +149,29 @@ exports._costsList = function (context) {
 			span({ class: 'user-guide-costs-list-label' }, _("Total Costs:")), " ",
 			span({ id: 'costs-total' }))];
 };
-exports._guideHeading               = Function.prototype;
-exports._questionsIntro             = Function.prototype;
+exports._guideHeading = Function.prototype;
+
+exports._questionsIntro = function (context) {
+	return p(_("These questions allow you to determine what " +
+		"requirements are needed and what are the costs of the registrations:"));
+};
+
 exports._mandatoryRegistrationIntro = Function.prototype;
-exports._optionalRegistrationIntro  = Function.prototype;
-exports._requirementsIntro          = Function.prototype;
-exports._costsIntro                 = Function.prototype;
-exports._customScripts              = Function.prototype;
+
+exports._optionalRegistrationIntro = function (context) {
+	return p(_("You have the possibility to additionally request following registrations:"));
+};
+
+exports._requirementsIntro = function (context) {
+	return p(
+		_("These are the documents you have to upload and send with your application:")
+	);
+};
+
+exports._costsIntro = function (context) {
+	return p(
+		_("These are the fees you will need to pay before obtaining your certificates:")
+	);
+};
+
+exports._customScripts = Function.prototype;
