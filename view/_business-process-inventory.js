@@ -35,7 +35,7 @@ module.exports = function (businessProcess) {
 						script(function (list, totalTxt) {
 
 							list = $(list);
-							totalTxt = $(totalTxt).firstChild;
+							totalTxt = $(totalTxt);
 
 							$.onEnvUpdate(list, function () {
 								var total = 0;
@@ -43,7 +43,8 @@ module.exports = function (businessProcess) {
 									if (el.getAttribute('type') !== 'number') return;
 									total += Number(el.value) || 0;
 								});
-								totalTxt.data = $.formatCurrency(total);
+								totalTxt.firstChild.data = $.formatCurrency(total);
+								totalTxt.setAttribute('totalvalue', total);
 							});
 						}, list.getId(), 'span-total-' + name)
 					);
@@ -106,7 +107,8 @@ module.exports = function (businessProcess) {
 						$.onEnvUpdate(container, function () {
 							var total = 0;
 							$.forEach(container.getByClass('span', 'dialog-inventory-total'), function (p) {
-								total += Number(p.firstChild.data.slice(1)) || 0;
+								var n = Number(p.getAttribute('totalvalue')) || 0;
+								total += n;
 							});
 							totalTxt.data = $.formatCurrency(total);
 						});
