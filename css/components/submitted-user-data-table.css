@@ -101,15 +101,18 @@
 	color: var(--error-text);
 }
 
-.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-status,
-.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-link {
+.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-status {
 	width: 40px;
+}
+
+.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-link {
+	width: 80px;
 	text-align: center;
 	padding:0;
 }
 
 .submitted-user-data-table-date {
-	width: 230px;
+	width: 140px;
 }
 
 .submitted-user-data-table .submitted-user-data-table-action {
