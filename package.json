@@ -16,7 +16,7 @@
     "dbjs-reduce": "git://github.com/medikoo/dbjs-reduce.git#cb53e789d96503d777fd9d197ca01dffafc",
     "es5-ext": "^0.10.8",
     "es6-map": "git://github.com/medikoo/es6-map.git#919d4a74e6922de146c246505b095ad45e5e83f5",
-    "mano": "0.0.2",
+    "mano": "0.0.3",
     "mano-auth": "0.0.2",
     "memoizee": "^0.3.8",
     "time-uuid": "^0.2.1",
