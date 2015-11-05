@@ -91,28 +91,35 @@ module.exports = memoize(function (db) {
 		},
 		lastEditStamp: {
 			value: function (_observe) {
-				var res = 0, entityObjects, sectionKey, resolvent, resolventLastModified;
-				entityObjects = this.entitiesSet;
-				sectionKey = this.sectionProperty;
+				var res = 0
+				  , sectionProperty = this.sectionProperty
+				  , entitiesSet  = this.entitiesSet
+				  , resolvedResolvent;
+
 				if (this.resolventProperty) {
-					resolvent = _observe(this.master.resolveSKeyPath(this.resolventProperty).observable);
-					resolventLastModified = resolvent ? resolvent.lastModified : 0;
+					resolvedResolvent = this.ensureResolvent(_observe);
+
+					if (!resolvedResolvent) return;
+
+					res = _observe(resolvedResolvent.object['_' + resolvedResolvent.key]._lastModified);
 				}
-				if (!entityObjects) {
-					return resolventLastModified;
-				}
-				entityObjects.forEach(function (entityObject) {
-					var sections;
-					sections = entityObject.resolveSKeyPath(sectionKey, _observe);
-					sections = sections.object[sections.key];
-					if (sectionKey === 'dataForms') {
-						sections = sections.applicable;
-					}
-					sections.forEach(function (section) {
-						if (_observe(section._lastEditStamp) > res) res = section.lastEditStamp;
+
+				if (entitiesSet) {
+					entitiesSet.forEach(function (entityObject) {
+						var sections;
+
+						sections = entityObject.resolveSKeyPath(sectionProperty, _observe);
+						sections = sections.object[sections.key];
+
+						if (sectionProperty === 'dataForms') {
+							sections = sections.applicable;
+						}
+
+						sections.forEach(function (section) {
+							if (_observe(section._lastEditStamp) > res) res = section.lastEditStamp;
+						});
 					});
-				});
-				if (resolventLastModified > res) res = resolventLastModified;
+				}
 
 				return res;
 			}
