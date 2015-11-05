@@ -56,7 +56,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 	  , optionalRegistrationsSection, optionalRegistrationsListElements
 	  , requirementsSection, requirementsListElements
 	  , costsListElements, costsAmountsElements = {}, costsLabelElements = {}
-	  , costsTotalElement, costsPrintLink, saveButton
+	  , costsTotalElement, costsPrintLink, guideSaveButton
 	  , costsSection, zeroCostsClass;
 
 	// Create mock BusinessProcess
@@ -73,10 +73,10 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 	requirementsSection      = $('requirements-section');
 	requirementsListElements = getNamedListElements('requirements-list');
 	costsListElements = getNamedListElements('costs-list');
-	costsPrintLink = $('print-costs-link');
-	costsSection   = $('costs-section');
-	zeroCostsClass = 'user-guide-zero-costs-amount';
-	saveButton     = $('save-button');
+	costsPrintLink  = $('print-costs-link');
+	costsSection    = $('costs-section');
+	zeroCostsClass  = 'user-guide-zero-costs-amount';
+	guideSaveButton = $('guide-save-button');
 
 	$.forIn(costsListElements, function (li, name) {
 		costsAmountsElements[name] = $.getTextChild('cost-amount-' + camelToHyphen.call(name));
@@ -250,7 +250,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		noRequstedRegistrationsSection.toggle(!businessProcess.registrations.requested.size);
 		costsSection.toggle(businessProcess.registrations.requested.size);
 		requirementsSection.toggle(businessProcess.registrations.requested.size);
-		saveButton.toggle(businessProcess.registrations.requested.size);
+		guideSaveButton.toggle(businessProcess.registrations.requested.size);
 
 		$.refreshGuideHooks.atEnd.forEach(function (hook) {
 			hook(businessProcess, guideForm);

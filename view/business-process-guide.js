@@ -104,9 +104,6 @@ exports.step = function () {
 										dbjs: registration._isRequested, type: 'checkbox' }), " ",
 									span(spanContent)));
 						}))),
-			div({ id: 'no-requested-registrations-section',
-					class: 'section-primary user-guide-no-requested-registrations-info' },
-					p(_("You need to select at least one registration to continue with the process"))),
 			div({ id: 'requirements-section', class: 'section-primary' }, h2(_("Requirements")),
 				hr(),
 				exports._requirementsIntro(this),
@@ -124,9 +121,12 @@ exports.step = function () {
 				ul({ id: 'costs-list', class: 'user-guide-costs-list' }, exports._costsList(this)),
 				p(a({ id: 'print-costs-link', class: 'button-resource-link', href: '/costs-print/',
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print costs list")))),
-			p({ id: 'save-button', class: 'user-next-step-button' },
+			p({ id: 'guide-save-button', class: 'user-next-step-button' },
 				button({ type: 'submit' },
-					_("Save and continue")))
+					_("Save and continue"))),
+			div({ id: 'no-requested-registrations-section',
+					class: 'section-primary user-guide-no-requested-registrations-info' },
+				p(_("You need to select at least one registration to continue with the process")))
 		),
 		div({ class: 'disabler' })
 	);
