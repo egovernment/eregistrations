@@ -52,6 +52,11 @@
 	display: block;
 }
 
+.user-guide-no-requested-registrations-info {
+	width: 100%;
+	text-align: center;
+}
+
 .user-guide-inventory-button {
 	padding-left: 40%;
 	padding-top: 11px;

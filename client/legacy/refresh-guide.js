@@ -52,9 +52,9 @@ var buildCostsPrintLink = function (currentLink, cost, field, prefix) {
 module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		businessProcessTypeName) {
 	var guideForm = $(guideFormId)
-	  , mandatoryRegistrationsSection, mandatoryRegistrationsListElements
+	  , noRequstedRegistrations, mandatoryRegistrationsSection, mandatoryRegistrationsListElements
 	  , optionalRegistrationsSection, optionalRegistrationsListElements
-	  , requirementsListElements
+	  , requirementsSection, requirementsListElements
 	  , costsListElements, costsAmountsElements = {}, costsLabelElements = {}
 	  , costsTotalElement, costsPrintLink
 	  , costsSection, zeroCostsClass;
@@ -65,10 +65,12 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 	// Gather required list elements
 
+	noRequstedRegistrations = $('no-requsted-registrations');
 	mandatoryRegistrationsSection = $('mandatory-registrations-section');
 	mandatoryRegistrationsListElements = getNamedListElements('mandatory-registrations-list');
 	optionalRegistrationsSection = $('optional-registrations-section');
 	optionalRegistrationsListElements = getNamedListElements('optional-registrations-list');
+	requirementsSection      = $('requirements-section');
 	requirementsListElements = getNamedListElements('requirements-list');
 	costsListElements = getNamedListElements('costs-list');
 	costsPrintLink = $('print-costs-link');
@@ -245,6 +247,11 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		} else {
 			costsSection.addClass(zeroCostsClass);
 		}
+
+		noRequstedRegistrations.toggle(!businessProcess.registrations.requested.size);
+		costsSection.toggle(businessProcess.registrations.requested.size);
+		requirementsSection.toggle(businessProcess.registrations.requested.size);
+
 		$.refreshGuideHooks.atEnd.forEach(function (hook) {
 			hook(businessProcess, guideForm);
 		});
