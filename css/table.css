@@ -33,7 +33,7 @@ table .actions button {
 	border-radius: 3px;
 	color: var(--normal-text);
 	font-size: 15px;
-	line-height: 22px;
+	height: 22px;
 	padding: 0 4px;
 	text-align: center;
 	text-decoration: none;
@@ -56,8 +56,8 @@ table .actions button > span {
 	vertical-align: middle;
 }
 
-table .actions .actions-delete {
-	padding-bottom:1px;
+table .actions .fa {
+	line-height: inherit;
 }
 
 @media all and (-ms-high-contrast:none) {
