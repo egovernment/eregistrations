@@ -16,3 +16,4 @@ require('eregistrations/view/dbjs/submission-file');
 db.StringLine.DOMInput.prototype.dbAttributes.inputMask = 'data-mask';
 
 require('eregistrations/view/dbjs/form-section-to-dom');
+require('eregistrations/view/dbjs/requirement-upload-to-dom-form');
