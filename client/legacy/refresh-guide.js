@@ -38,7 +38,6 @@ var getPropertyValue = function (target, property) {
 };
 
 var buildCostsPrintLink = function (currentLink, cost, field, prefix) {
-	if (!currentLink) return;
 	if (!prefix) prefix = '';
 	currentLink.search += (currentLink.search.length) ?
 			'&' + prefix + cost.key + '=' + cost[field].toFixed(2) :
@@ -52,11 +51,12 @@ var buildCostsPrintLink = function (currentLink, cost, field, prefix) {
 module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		businessProcessTypeName) {
 	var guideForm = $(guideFormId)
-	  , noRequstedRegistrations, mandatoryRegistrationsSection, mandatoryRegistrationsListElements
+	  , noRequstedRegistrationsSection, mandatoryRegistrationsSection
+	  , mandatoryRegistrationsListElements
 	  , optionalRegistrationsSection, optionalRegistrationsListElements
 	  , requirementsSection, requirementsListElements
 	  , costsListElements, costsAmountsElements = {}, costsLabelElements = {}
-	  , costsTotalElement, costsPrintLink
+	  , costsTotalElement, costsPrintLink, saveButton
 	  , costsSection, zeroCostsClass;
 
 	// Create mock BusinessProcess
@@ -65,7 +65,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 	// Gather required list elements
 
-	noRequstedRegistrations = $('no-requsted-registrations');
+	noRequstedRegistrationsSection = $('no-requested-registrations-section');
 	mandatoryRegistrationsSection = $('mandatory-registrations-section');
 	mandatoryRegistrationsListElements = getNamedListElements('mandatory-registrations-list');
 	optionalRegistrationsSection = $('optional-registrations-section');
@@ -76,6 +76,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 	costsPrintLink = $('print-costs-link');
 	costsSection   = $('costs-section');
 	zeroCostsClass = 'user-guide-zero-costs-amount';
+	saveButton     = $('save-button');
 
 	$.forIn(costsListElements, function (li, name) {
 		costsAmountsElements[name] = $.getTextChild('cost-amount-' + camelToHyphen.call(name));
@@ -225,15 +226,13 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		}
 
 		// Build costs print link
-		if (costsPrintLink) {
-			costsPrintLink.search = '';
-		}
+		costsPrintLink.search = '';
 
 		businessProcess.costs.payable.forEach(function (cost) {
 			buildCostsPrintLink(costsPrintLink, cost, 'amount');
 		});
 
-		if (costsPrintLink && costsPrintLink.search.length) {
+		if (costsPrintLink.search.length) {
 			costsPrintLink.search += '&total=' + businessProcess.costs.totalAmount.toFixed(2);
 		}
 
@@ -248,9 +247,10 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 			costsSection.addClass(zeroCostsClass);
 		}
 
-		noRequstedRegistrations.toggle(!businessProcess.registrations.requested.size);
+		noRequstedRegistrationsSection.toggle(!businessProcess.registrations.requested.size);
 		costsSection.toggle(businessProcess.registrations.requested.size);
 		requirementsSection.toggle(businessProcess.registrations.requested.size);
+		saveButton.toggle(businessProcess.registrations.requested.size);
 
 		$.refreshGuideHooks.atEnd.forEach(function (hook) {
 			hook(businessProcess, guideForm);
