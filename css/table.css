@@ -33,14 +33,13 @@ table .actions button {
 	border-radius: 3px;
 	color: var(--normal-text);
 	font-size: 15px;
-	line-height: 18px;
+	line-height: 22px;
 	padding: 0 4px;
 	text-align: center;
 	text-decoration: none;
 	vertical-align: text-bottom;
 	white-space: nowrap;
 	cursor: pointer;
-	position: relative;
 }
 table .actions a:hover,
 table .actions a:focus,
