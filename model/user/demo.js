@@ -1,14 +1,15 @@
 'use strict';
 
-var db         = require('mano').db
-  , UInteger   = require('dbjs-ext/number/integer/u-integer')(db)
-  , memoize    = require('memoizee/plain')
-  , ensureType = require('dbjs/valid-dbjs-type');
+var db             = require('mano').db
+  , defineUInteger = require('dbjs-ext/number/integer/u-integer')
+  , memoize        = require('memoizee/plain')
+  , ensureType     = require('dbjs/valid-dbjs-type');
 
 module.exports = memoize(function (User/* options */) {
-	var db = ensureType(User).database;
+	var db       = ensureType(User).database
+	  , UInteger = defineUInteger(db);
 
-	User.prototype.defineProperties({
+	return User.prototype.defineProperties({
 		isDemo: {
 			type: db.Boolean
 		},
@@ -17,6 +18,4 @@ module.exports = memoize(function (User/* options */) {
 			type: UInteger
 		}
 	});
-
-	return User;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

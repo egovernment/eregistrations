@@ -12,9 +12,9 @@ module.exports = function (db/* options */) {
 	require('./business-processes')(User, options);
 	require('./documents')(User, options);
 	require('./institution')(User, options);
+	require('./demo')(User, options);
 	require('./visited-business-processes')(db);
 	require('./visited-users')(db);
-	require('./demo')(User);
 
 	return User;
 };
