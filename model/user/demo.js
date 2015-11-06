@@ -1,7 +1,6 @@
 'use strict';
 
-var db             = require('mano').db
-  , defineUInteger = require('dbjs-ext/number/integer/u-integer')
+var defineUInteger = require('dbjs-ext/number/integer/u-integer')
   , memoize        = require('memoizee/plain')
   , ensureType     = require('dbjs/valid-dbjs-type');
 
