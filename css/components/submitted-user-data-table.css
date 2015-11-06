@@ -11,14 +11,15 @@
 }
 
 .submitted-user-data-table thead {
-	background-color: var(--normal-background);
-	text-align: left;
+	background-color: transparent;
 }
 .submitted-user-data-table thead th {
-	color: var(--white-text);
-	padding: 11px 25px 10px;
+	color: var(--dark-text);
+	padding: 11px 11px;
 	text-align: left;
-	font-weight: normal;
+	font-weight: 700;
+	font-size: 15px;
+	border:none;
 }
 
 .submitted-user-data-table tbody tr,
@@ -29,6 +30,7 @@
 .submitted-user-data-table tbody tr td {
 	border: 1px solid var(--light-inner-border);
 	text-align: left;
+	font-weight: 400;
 }
 .submitted-user-data-table tbody tr:hover,
 .submitted-user-data-table tbody tr:nth-of-type(even):hover {
@@ -51,7 +53,8 @@
 
 .submitted-user-data-table td.submitted-user-data-table-link a,
 .submitted-user-data-table td {
-	padding: 11px 25px 10px;
+	padding: 10px 10px;
+	font-size: 15px;
 }
 
 .submitted-user-data-table td.submitted-user-data-table-link {
@@ -98,15 +101,18 @@
 	color: var(--error-text);
 }
 
-.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-status,
-.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-link {
+.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-status {
 	width: 40px;
+}
+
+.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-link {
+	width: 80px;
 	text-align: center;
 	padding:0;
 }
 
 .submitted-user-data-table-date {
-	width: 230px;
+	width: 140px;
 }
 
 .submitted-user-data-table .submitted-user-data-table-action {

@@ -32,11 +32,12 @@
 .submitted-menu a:active,
 .submitted-menu .submitted-menu-item-active {
 	background: var(--normal-dark-background);
+	color:var(--white-text);
 }
 
 .submitted-menu a,
 .submitted-menu button {
-	color: var(--white-text);
+	color:var(--white-text);
 	font-size: 16px;
 	text-decoration: none;
 	padding: 0 17px;
@@ -48,8 +49,13 @@
 	background-color: transparent;
 }
 
+.submitted-menu-items > li {
+	background-color: transparent;
+	line-height: 44px;
+}
+
 .submitted-menu-role-select {
-		line-height: 44px;
+	line-height: 44px;
 }
 
 .submitted-menu-role-select > p {

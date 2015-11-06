@@ -31,8 +31,9 @@ exports['user-account-content'] = function () {
 	var businessProcesses = this.user.businessProcesses.filterByKey('isFromEregistrations', true);
 
 	insert(_if(businessProcesses._size, function () {
-		return [p(_("Here you can modify not yet submitted requests, follow the process of the " +
-			"ongoing procedures and view already concluded records.")),
+		return [p({ class: 'section-primary-legend' },
+			_("Here you can modify not yet submitted requests, follow the process of the " +
+				"ongoing procedures and view already concluded records.")),
 			section({ class: 'submitted-main table-responsive-container' },
 				table(
 					{ class: 'submitted-user-data-table submitted-current-user-data-table' },

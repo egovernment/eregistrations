@@ -20,6 +20,10 @@ http://stackoverflow.com/a/17863685/1484847 */
 	}
 }
 
+input, textarea, button {
+	font-family: "Roboto", Arial, Helvetica, sans-serif;
+}
+
 .form-elements {
 	list-style: none;
 	padding-left: 0;
@@ -98,7 +102,6 @@ select {
 		line-height 22px, paddins 3ps and border 1px */
 	height: 30px;
 	font-size: 14px;
-	font-family: "Helvetica";
 	padding: 3px 5px;
 }
 
@@ -148,6 +151,7 @@ button[type="submit"]:focus,
 button[type="submit"]:active {
 	color: var(--white-text);
 	background-color: var(--normal-dark-background);
+	outline: none;
 }
 
 .completed input[type="submit"] {
@@ -165,7 +169,6 @@ textarea {
 	margin-bottom: -8px; /* To assure it doesn't expand line-height of element in which textarea is placed */
 	font-size: 14px;
 	padding: 0 5px;
-	font-family: "Helvetica";
 }
 @-moz-document url-prefix() {
 	textarea {

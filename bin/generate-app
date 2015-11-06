@@ -24,7 +24,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 	}
 	appRootPath = 'apps' + path.sep + appName;
 	require('../scripts/generate-app')(root, appName).done(function () {
-		var msg = ["\nSuccessfully created " + appName + " application." +
+		var otherClientsModelReminder, clientModelReminder, msg = ["\nSuccessfully created " + appName + " application." +
 				"\nIt's located in: " + appRootPath + "." +
 				"\n\nIn order to setup application you need to: \n"], msgItems = [];
 		msgItems.push("Expose app in apps/routes.js configuration");
@@ -36,7 +36,27 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		msgItems.push("Ensure POST (form submissions) controllers " +
 			"configuration is complete in apps/" + appName + "/controller");
 
+		clientModelReminder = "Ensure that the models of handled businessProcesses are" +
+			" required in apps/" + appName + "/client/model.js";
+
+		otherClientsModelReminder = "Ensure that the model/" + appName +
+			" is required in: apps/official-*/client/model.js, apps/user/client/model.js," +
+			" apps/business-process-submitted/client/model.js";
+
+		if (appName === 'user') {
+			msgItems.push(clientModelReminder);
+		}
+
+		if (appName === 'business-process-submitted') {
+			msgItems.push(clientModelReminder);
+		} else if (startsWith.call(appName, 'business-process-')) {
+			msgItems.push("Ensure that the " +
+				"underlying businessProcess model is required in server/model.js");
+			msgItems.push(otherClientsModelReminder);
+		}
+
 		if (startsWith.call(appName, 'official-')) {
+			msgItems.push(clientModelReminder);
 			msgItems.push("Ensure that views model is updated with added status maps in model/views.js");
 		}
 

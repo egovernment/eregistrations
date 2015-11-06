@@ -179,14 +179,14 @@ module.exports = memoize(function (db) {
 			}
 		},
 		weight: { value: function (_observe) {
-			var resolved, total = 0, isResolventExcluded;
+			var resolved, resolvedResolvent, total = 0, isResolventExcluded;
 			if (this.resolventProperty) {
-				resolved = this.master.resolveSKeyPath(this.resolventProperty, _observe);
-				if (!resolved) {
-					return 0;
-				}
-				isResolventExcluded = this.isPropertyExcludedFromStatus(resolved, _observe);
-				if (_observe(resolved.observable) !== _observe(this.resolventValue)) {
+				resolvedResolvent = this.ensureResolvent(_observe);
+
+				if (!resolvedResolvent) return 0;
+
+				isResolventExcluded = this.isPropertyExcludedFromStatus(resolvedResolvent, _observe);
+				if (_observe(resolvedResolvent.observable) !== _observe(this.resolventValue)) {
 					return isResolventExcluded ? 0 : 1;
 				}
 				if (!isResolventExcluded) {
