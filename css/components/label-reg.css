@@ -1,17 +1,18 @@
 .label-reg {
 	background: var(--normal-background);
-	border-radius: 5px;
+	border-radius: 3px;
 	color: var(--white-text);
-	font-weight: bold;
 	display: inline-block;
-	margin: 0 4px 0 0;
-	padding: 0 4px;
+	margin: 0 3px 0 0;
+	padding: 0 3px;
 	font-size: 12px;
 	text-transform: uppercase;
-	height: 20px;
+	height: 22px;
 	line-height: 22px;
 	white-space: nowrap;
+	font-weight: 300;
 }
+
 .label-reg:after {
 	text-transform: none;
 }

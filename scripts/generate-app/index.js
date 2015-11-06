@@ -7,6 +7,7 @@ var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
   , template      = require('es6-template-strings')
   , deferred      = require('deferred')
   , exec          = deferred.promisify(require('child_process').execFile)
+  , capitalize    = require('es5-ext/string/#/capitalize')
   , generateAppsList  = require('mano/scripts/generate-apps-list')
   , generateAppsConf  = require('mano/scripts/generate-apps-conf')
   , generateAppsCtrls = require('mano/scripts/generate-apps-controllers')
@@ -40,7 +41,7 @@ module.exports = function (projectRoot, appName) {
 	extraFilesPath    = path.join(__dirname, 'extra-files');
 
 	templateVars.appName       = appName;
-	templateVars.appNameSuffix = hyphenToCamel.call(appName.split('-').slice(1).join('-'));
+	templateVars.className     = capitalize.call(hyphenToCamel.call(appName));
 	templateVars.isBusinessProcessSubmitted = appName === 'business-process-submitted';
 
 	if (appTypes[appName]) {
@@ -59,6 +60,7 @@ module.exports = function (projectRoot, appName) {
 			templateType = 'authenticated';
 		}
 	}
+	templateVars.appNameSuffix = hyphenToCamel.call(appName.replace(templateType + '-', ''));
 
 	var templates = {};
 
@@ -72,7 +74,7 @@ module.exports = function (projectRoot, appName) {
 			  , appPathRel = path.dirname(templatePath)
 			  , appPath = path.join(appRootPath, appPathRel);
 
-				if (appTypes[appName] && appTypes[appName][appPathRel] === templatePath) {
+				if (appTypes[templateType][appPathRel] === templatePath) {
 					templates[appPath] = path.join(__dirname, 'templates', templatePath);
 					return;
 				}
@@ -86,10 +88,26 @@ module.exports = function (projectRoot, appName) {
 			}
 		);
 	}).then(function () {
+		return fs.readdir(path.join(__dirname, 'extra-templates'),
+				{ depth: Infinity, type: { file: true } }).map(
+			function (templatePath) {
+				var fName = path.basename(templatePath, '.tpl')
+				  , projectPath = path.dirname(path.join(projectRoot,
+						templatePath.replace('appname', templateVars.appName)));
+				if (fName === templateType) {
+					templates[projectPath] = path.join(__dirname, 'extra-templates', templatePath);
+				}
+			}
+		);
+	}).then(function () {
 		var toResolve = [deferred.map(Object.keys(templates), function (appPath) {
 			return fs.readFile(templates[appPath])(function (fContent) {
+				var opts = { intermediate: true };
 				fContent = template(fContent, templateVars, { partial: true });
-				return fs.writeFile(appPath, fContent, { intermediate: true });
+				if (path.basename(path.dirname(appPath)) === 'bin') {
+					opts.mode = 511;
+				}
+				return fs.writeFile(appPath, fContent, opts);
 			})();
 		})];
 		if (appTypes[templateType] && appTypes[templateType].extraFiles) {

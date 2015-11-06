@@ -36,7 +36,7 @@ exports.step = function () {
 					_("Some mandatory fields on tab 'Send' have not been completed"))))
 		)
 	),
-		form(
+		_if(eq(this.businessProcess._guideProgress, 1), form(
 			{ action: '/application-submit/', method: 'post', id: 'submit-form' },
 			section(
 				{ class: 'section-primary user-submission-sworn-declaration' },
@@ -72,7 +72,7 @@ exports.step = function () {
 					});
 				}
 			)
-		)));
+		))));
 };
 
 exports._submissionHeading = Function.prototype;
