@@ -1,10 +1,16 @@
 'use strict';
 
-var _  = require('mano').i18n.bind('User');
+var _              = require('mano').i18n.bind('User')
+  , loginDialog    = require('./_login-dialog')
+  , registerDialog = require('./_register-dialog')
+  , modalContainer = require('./_modal-container');
 
 exports._parent = require('./base');
 
 exports.menu = function () {
+	modalContainer.append(loginDialog);
+	modalContainer.append(registerDialog);
+
 	insert(_if(this.user._isDemo,
 		div(
 			{ class: 'submitted-menu-demo-info-wrapper' },
@@ -13,7 +19,7 @@ exports.menu = function () {
 				li(a({ class: 'demo-public-login', href: '#login' }, _("Login")))),
 			div({ class: 'submitted-menu-demo-info' },
 				p(_("Did this demo convinced you?")),
-				a({ href: '#create-account' }, _("Create account")))
+				a({ href: '#register' }, _("Create account")))
 		),
 		ul(
 			{ class: 'header-top-menu' },
