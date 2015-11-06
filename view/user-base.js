@@ -9,7 +9,7 @@ exports._parent = require('./base');
 
 exports.menu = function () {
 	modalContainer.append(loginDialog);
-	modalContainer.append(registerDialog);
+	modalContainer.append(registerDialog.call(this));
 
 	insert(_if(this.user._isDemo,
 		div(

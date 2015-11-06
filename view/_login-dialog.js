@@ -37,9 +37,6 @@ module.exports = dialog(
 		)
 	),
 	footer(
-		p(_("No account?"), ' ',
-			a({ href: '#register' }, _("Create an account")),
-			span(" | "),
-			a({ href: "#reset-password" }, _("Reset password")))
+		p(_("No account?"), ' ', a({ href: '#register' }, _("Create an account")))
 	)
 );
