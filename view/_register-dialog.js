@@ -16,27 +16,27 @@ module.exports = dialog(
 		form(
 			{ action: '/register/', method: 'post' },
 			ul({ class: 'form-elements' }, registrationInputNames.map(function (name) {
-                var rel = user._get(name), labelElement;
+				var rel = user._get(name), labelElement;
 
-                if (name === 'password-repeat') {
-                    labelElement = label(
-                        input({
-                            dbjs: db.Password,
-                            name: name,
-                            required: true,
-                            placeholder: _("Repeat password")
-                        })
-                    );
-                } else {
-                    labelElement = label(
-                        span({ class: 'placeholder-fallback' }, rel.descriptor.label),
-                        input({ dbjs: rel, placeholder: rel.descriptor.label })
-                    );
-                }
+				if (name === 'password-repeat') {
+					labelElement = label(
+						input({
+							dbjs: db.Password,
+							name: name,
+							required: true,
+							placeholder: _("Repeat password")
+						})
+					);
+				} else {
+					labelElement = label(
+						span({ class: 'placeholder-fallback' }, rel.descriptor.label),
+						input({ dbjs: rel, placeholder: rel.descriptor.label })
+					);
+				}
 
-                return li({ class: 'dbjs-input-component input' },
-                    labelElement,
-                    span({ class: 'error-message' }));
+				return li({ class: 'dbjs-input-component input' },
+					labelElement,
+					span({ class: 'error-message' }));
 			})),
 			p(input({ type: 'submit', value: _("Create an account") }))
 		)

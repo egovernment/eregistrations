@@ -21,17 +21,18 @@ module.exports = dialog(
 						span({ class: 'placeholder-fallback' }, user.getDescriptor('email').label),
 						input({ dbjs: db.Email, required: true, name: 'email',
 							placeholder: user.getDescriptor('email').label })
-						)
-					),
+					)
+				),
 				li(
 					{ class: 'dbjs-input-component input' },
 					label(
 						span({ class: 'placeholder-fallback' }, user.getDescriptor('password').label),
 						input({ dbjs: db.Password, required: true, name: 'password',
 							placeholder: user.getDescriptor('password').label })
-						),
-					span({ class: 'error-message' }))
-				),
+					),
+					span({ class: 'error-message' })
+				)
+			),
 			p(input({ type: 'submit', value: _("Sign In") }))
 		)
 	),
