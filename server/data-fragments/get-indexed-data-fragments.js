@@ -25,13 +25,13 @@ module.exports = function (driver, keyPaths) {
 			if (data) fragment.update(objId, data);
 			return deferred.map(keyPaths, function (keyPath) {
 				return driver.getIndexedValue(objId, keyPath)(function (data) {
-					if (data) assimilateEvent(fragment, objId, keyPath, data);
+					if (data) assimilateEvent(fragment, objId + '/' + keyPath, data);
 				});
 			});
 		});
 		driver.on('object:' + objId, function (event) {
 			if (includes.call(keyPaths, event.keyPath)) {
-				assimilateEvent(fragment, objId, event.keyPath, event.data);
+				assimilateEvent(fragment, objId + '/' + event.keyPath, event.data);
 			}
 		});
 		return fragment;
