@@ -106,4 +106,4 @@ exports['application-submit'] = {
 };
 
 // Registration controller used by Demo users.
-exports.register = require('../my-account').register;
+require('../utils/demo-user-controller')(exports);

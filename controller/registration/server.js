@@ -11,5 +11,4 @@ exports['application-submit'] = {
 	redirectUrl: '/'
 };
 
-// Registration controller used by Demo users.
-exports.register = require('../my-account/server').register;
+require('../utils/demo-user-server-controller')(exports);
