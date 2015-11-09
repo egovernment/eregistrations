@@ -6,8 +6,8 @@ var db        = require('mano').db
 
   , registrationInputNames = ['firstName', 'lastName', 'email', 'password', 'password-repeat'];
 
-module.exports = function () {
-	var user = this.user || userProto;
+module.exports = function (context) {
+	var user = context.user || userProto;
 
 	return dialog(
 		{ id: 'register', class: 'dialog-register dialog-modal' },
