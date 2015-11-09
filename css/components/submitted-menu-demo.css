@@ -1,16 +1,6 @@
-.header-top-wrapper {
-	padding: 0;
-}
-
-.header-top-wrapper > * {
-	padding: 11px 0;
-}
 .header-top-wrapper > .submitted-menu-demo-info-wrapper {
 	padding: 0 11px 0 0;
 	overflow: hidden;
-}
-.header-top-wrapper div {
-	max-height: 88px;
 }
 
 .submitted-menu-demo {
