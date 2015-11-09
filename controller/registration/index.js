@@ -90,7 +90,13 @@ exports['payment-receipt-upload/[a-z][a-z0-9-]*'] = {
 // Submission
 
 exports['application-submit'] = {
-	validate: function (data) { return validate.call(this, data, { changedOnly: false }); },
+	validate: function (data) {
+		if(this.user.isDemo) {
+			throw new Error('Cannot submit in demo mode', 'INVALID_MODE');
+		}
+
+		return validate.call(this, data, { changedOnly: false });
+	},
 	submit: function () {
 		this.user.currentBusinessProcess.processingSteps.applicable.forEach(function (step) {
 			if (db.ProcessingStepGroup && (step instanceof db.ProcessingStepGroup)) {
