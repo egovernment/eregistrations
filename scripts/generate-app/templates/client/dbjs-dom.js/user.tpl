@@ -1,4 +1,4 @@
-// dbjs-dom setup.
+// Database DOM bindings
 
 'use strict';
 
