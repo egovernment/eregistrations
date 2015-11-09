@@ -2,10 +2,12 @@
 
 var defineUInteger = require('dbjs-ext/number/integer/u-integer')
   , memoize        = require('memoizee/plain')
-  , ensureType     = require('dbjs/valid-dbjs-type');
+  , ensureDatabase = require('dbjs/valid-dbjs')
+  , defineUser     = require('./base');
 
-module.exports = memoize(function (User/* options */) {
-	var db       = ensureType(User).database
+module.exports = memoize(function (db/* options */) {
+	var options  = arguments[1]
+	  , User     = ensureDatabase(db).User || defineUser(db, options)
 	  , UInteger = defineUInteger(db);
 
 	return User.prototype.defineProperties({
