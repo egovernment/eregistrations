@@ -16,7 +16,7 @@ exports['user-account-content'] = function () {
 
 	insert(_if(gt(initialBusinessProcesses._size, 1),
 		[div({ class: "section-primary-sub" },
-			p(label({ for: 'business-process-select' },
+			p({ class: 'section-primary-legend' }, label({ for: 'business-process-select' },
 				_("Please select an entity in the selector below to display it documents and data"))),
 			p({ class: 'user-account-selector' },
 				businessSelect = select({ id: 'business-process-select' },

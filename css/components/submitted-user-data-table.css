@@ -70,6 +70,13 @@
 	font-size: 12px;
 }
 
+.submitted-user-data-table td.actions a,
+.submitted-user-data-table td.actions button,
+.submitted-user-data-table td.submitted-user-data-table-link a,
+.submitted-user-data-table td.submitted-user-data-table-link button {
+	color:var(--normal-text);
+}
+
 .submitted-user-data-table-basic > a {
 		font-weight: bold;
 }
