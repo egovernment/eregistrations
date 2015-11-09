@@ -92,7 +92,7 @@ exports['payment-receipt-upload/[a-z][a-z0-9-]*'] = {
 exports['application-submit'] = {
 	validate: function (data) {
 		if (this.user.isDemo) {
-			throw new Error('Cannot submit in demo mode', 'INVALID_MODE');
+			throw customError('Cannot submit in demo mode', 'DEMO_MODE_SUBMISSION');
 		}
 
 		return validate.call(this, data, { changedOnly: false });
