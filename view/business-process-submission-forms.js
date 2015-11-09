@@ -61,7 +61,9 @@ exports.step = function () {
 					"correct, and I accept that it would be saved and processed by involved institutions.")))
 			),
 			div(p({ id: 'application-submit-button' },
-				button({ type: 'submit', class: 'user-submission-button' }, _("Send request")))),
+				_if(this.user._isDemo,
+					a({ class: 'user-submission-button', href: '#register' }, _("Send request")),
+					button({ type: 'submit', class: 'user-submission-button' }, _("Send request"))))),
 			script(
 				function () {
 					var checkbox = $('input-certified-truth')

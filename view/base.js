@@ -15,7 +15,7 @@ exports.body = function () {
 	header({ class: 'header-top' },
 		div({ class: 'content header-top-wrapper' },
 			div({ class: 'header-top-logo' }, a({ href: '/' }, exports._logo(this))),
-			nav(ul({ class: 'header-top-menu', id: 'menu' }))
+			nav({ id: 'menu' })
 			)
 		);
 	modalCurtain = div({ class: 'modal-courtain' });

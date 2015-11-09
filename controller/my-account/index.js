@@ -2,8 +2,8 @@
 
 'use strict';
 
-var assign = require('es5-ext/object/assign')
-  , db     = require('mano').db;
+var db     = require('mano').db
+  , assign = require('es5-ext/object/assign');
 
 // Common controller.
 module.exports = assign(exports, require('../user'));
@@ -32,3 +32,5 @@ exports['business-process/[0-9][a-z0-9]+'] = {
 		this.user.currentBusinessProcess = this.businessProcess;
 	}
 };
+
+require('../utils/demo-user-controller')(exports);

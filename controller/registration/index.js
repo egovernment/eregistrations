@@ -90,7 +90,13 @@ exports['payment-receipt-upload/[a-z][a-z0-9-]*'] = {
 // Submission
 
 exports['application-submit'] = {
-	validate: function (data) { return validate.call(this, data, { changedOnly: false }); },
+	validate: function (data) {
+		if (this.user.isDemo) {
+			throw customError('Cannot submit in demo mode', 'DEMO_MODE_SUBMISSION');
+		}
+
+		return validate.call(this, data, { changedOnly: false });
+	},
 	submit: function () {
 		this.user.currentBusinessProcess.processingSteps.applicable.forEach(function (step) {
 			if (db.ProcessingStepGroup && (step instanceof db.ProcessingStepGroup)) {
@@ -104,3 +110,6 @@ exports['application-submit'] = {
 		submit.apply(this, arguments);
 	}
 };
+
+// Registration controller used by Demo users.
+require('../utils/demo-user-controller')(exports);
