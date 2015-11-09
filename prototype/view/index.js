@@ -10,15 +10,18 @@ var db = require('mano').db
 exports._parent = require('./base');
 
 exports.menu = function () {
-	li(a('en'));
-	li(a('sw'));
-	li(a('link one'));
-	li(a('link two'));
-	li(a({ onclick: '$(\'dialog-app-nav\').include()' }, 'nav dialog'));
-	li({ class: 'header-top-login-inactive' },
-		span({ class: 'header-top-login-hint' }, ('Do you have an account?')),
-		a({ class: 'header-top-login', href: '#login' },
-			"Log in"));
+	ul(
+		{ class: 'header-top-menu' },
+		li(a('en')),
+		li(a('sw')),
+		li(a('link one')),
+		li(a('link two')),
+		li(a({ onclick: '$(\'dialog-app-nav\').include()' }, 'nav dialog')),
+		li({ class: 'header-top-login-inactive' },
+			span({ class: 'header-top-login-hint' }, ('Do you have an account?')),
+			a({ class: 'header-top-login', href: '#login' },
+				"Log in"))
+	);
 };
 
 exports.main = function () {
