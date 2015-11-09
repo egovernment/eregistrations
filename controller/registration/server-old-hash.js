@@ -11,4 +11,4 @@ exports['application-submit'] = {
 	redirectUrl: '/'
 };
 
-require('../utils/demo-user-server-old-hash-controller')(exports);
+require('../utils/demo-user-server-controller')(exports);
