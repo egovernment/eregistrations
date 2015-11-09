@@ -3,25 +3,13 @@
 
 'use strict';
 
-var includes     = require('es5-ext/array/#/contains')
-  , aFrom        = require('es5-ext/array/from')
-  , deferred     = require('deferred')
-  , ensureSet    = require('es6-set/valid-set')
-  , ensureDriver = require('dbjs-persistence/ensure')
-  , Fragment     = require('data-fragment')
-
-  , isArray = Array.isArray;
-
-var emitEvent = function (fragment, objId, keyPath, data) {
-	if (!isArray(data.value)) {
-		fragment.update(objId + '/' + keyPath, data);
-		return;
-	}
-	data.value.forEach(function (data) {
-		var key = data.key ? '*' + data.key : '';
-		fragment.update(objId + '/' + keyPath + key, data);
-	});
-};
+var includes        = require('es5-ext/array/#/contains')
+  , aFrom           = require('es5-ext/array/from')
+  , deferred        = require('deferred')
+  , ensureSet       = require('es6-set/valid-set')
+  , ensureDriver    = require('dbjs-persistence/ensure')
+  , Fragment        = require('data-fragment')
+  , assimilateEvent = require('./lib/assimilate-driver-event');
 
 module.exports = function (driver, keyPaths) {
 	var fragments = Object.create(null);
@@ -37,13 +25,13 @@ module.exports = function (driver, keyPaths) {
 			if (data) fragment.update(objId, data);
 			return deferred.map(keyPaths, function (keyPath) {
 				return driver.getIndexedValue(objId, keyPath)(function (data) {
-					if (data) emitEvent(fragment, objId, keyPath, data);
+					if (data) assimilateEvent(fragment, objId + '/' + keyPath, data);
 				});
 			});
 		});
 		driver.on('object:' + objId, function (event) {
 			if (includes.call(keyPaths, event.keyPath)) {
-				emitEvent(fragment, objId, event.keyPath, event.data);
+				assimilateEvent(fragment, objId + '/' + event.keyPath, event.data);
 			}
 		});
 		return fragment;
