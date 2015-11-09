@@ -35,12 +35,14 @@ var aFrom               = require('es5-ext/array/from')
 
 require('memoizee/ext/max-age');
 
+// Business processes table query handler
 var getTableQueryHandler = function (statusMap) {
 	var queryHandler = new QueryHandler(exports.tableQueryConf);
 	queryHandler._statusMap = statusMap;
 	return queryHandler;
 };
 
+// Single business process full data query handler
 var getBusinessProcessQueryHandler = function (statusMap) {
 	return new QueryHandler([
 		{
