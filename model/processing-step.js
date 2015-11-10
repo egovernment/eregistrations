@@ -24,6 +24,7 @@ module.exports = memoize(function (db) {
 
 	// Enum for processing step status
 	var ProcessingStepStatus = StringLine.createEnum('ProcessingStepStatus', new Map([
+		['pending', { label: _("Pending") }],
 		['paused', { label: _("Paused") }],
 		['sentBack', { label: _("Sent back") }],
 		['rejected', { label: _("Rejected") }],
@@ -40,7 +41,9 @@ module.exports = memoize(function (db) {
 		sendBackReason: { type: db.String, required: true  },
 		// Eventual reason of rejection
 		rejectionReason: { type: db.String, required: true  },
-		// Status of step
+		// Resolution status of a step
+		// Note: 'pending' option doesn't apply here, as this one is intended for direct resolution
+		// of processing step. For dynamically computed status, see `resolvedStatus` below
 		status: { type: ProcessingStepStatus },
 
 		// Progress of individual step statuses
@@ -108,6 +111,16 @@ module.exports = memoize(function (db) {
 			if (this.status !== 'approved') return false;
 			// Completed form confirms step completion
 			return this.approvalProgress === 1;
+		} },
+
+		// Dynamically resolved processing step status
+		resolvedStatus: { type: ProcessingStepStatus, value: function (_observe) {
+			if (!this.isReady) return null;
+			if (this.isPending) return 'pending';
+			if (this.isApproved) return 'approved';
+			if (this.isRejected) return 'rejected';
+			if (this.isSentBack) return 'sentBack';
+			if (this.isPaused) return 'paused';
 		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

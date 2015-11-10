@@ -1,0 +1,111 @@
+.header-top-wrapper > .submitted-menu-demo-info-wrapper {
+	padding: 0 11px 0 0;
+	overflow: hidden;
+}
+
+.submitted-menu-demo {
+	margin-right: 75px;
+	width: 80px;
+	position: relative;
+}
+
+.submitted-menu-demo > a {
+	color: var(--dark-text);
+	background-color: var(--info-background);
+	text-transform: uppercase;
+	text-align: center;
+	font-size: 16px;
+	letter-spacing: 1px;
+}
+
+.submitted-menu-demo > a:hover {
+	color: var(--dark-text);
+	background-color: var(--info-background);
+}
+
+.submitted-menu-demo-ribon {
+	display: block;
+}
+
+.submitted-menu-demo-info-wrapper {
+	margin: -11px 0;
+}
+.submitted-menu-demo-info-wrapper > * {
+	display: inline-block;
+	vertical-align: middle;
+}
+.submitted-menu-demo-info-wrapper .header-top-menu-demo {
+	margin-right: 30px;
+}
+
+.submitted-menu-demo-info-wrapper .header-top-menu-demo li {
+	display: inline-block;
+}
+
+.submitted-menu-demo-info {
+	width: 220px;
+	height: 88px;
+	padding: 11px 20px 0 20px;
+	text-align: center;
+	border-width: 2px;
+	border-style: none solid;
+	border-color: var(--normal-light-background);
+}
+
+.submitted-menu-demo-info p {
+	color: #333;
+	font-size: 16px;
+}
+
+.submitted-menu-demo-info a {
+	color: var(--error-text);
+	text-decoration: none;
+	font-size: 16px;
+}
+
+.submitted-menu-demo-msg {
+	background-color: #1e1e1e;
+	padding: 11px 0 1px;
+}
+
+.submitted-menu-demo-msg > .content > * {
+	margin-bottom: 11px;
+}
+
+.submitted-menu-demo-msg h3 {
+	font-weight: normal;
+}
+.submitted-menu-demo-msg h3,
+.submitted-menu-demo-msg p {
+	color: var(--white-text);
+}
+
+.submitted-menu-demo-info-wrapper .demo-public-out {
+	color: #fff;
+	background: #44B7E3;
+	border: 2px solid var(--normal-light-background);
+	padding: 7px 16px 7px;
+	border-radius: 4px;
+	font-size: 11px;
+	line-height: 1;
+	text-transform: uppercase;
+	text-decoration: none;
+}
+
+.submitted-menu-demo-info-wrapper .demo-public-login {
+	color: #fff;
+	background: #686868;
+	border: 2px solid var(--normal-light-background);
+	padding: 7px 16px 7px;
+	border-radius: 4px;
+	font-size: 11px;
+	line-height: 1;
+	text-transform: uppercase;
+	text-decoration: none;
+	margin-left:8px;
+}
+.submitted-menu-demo-info-wrapper .demo-public-login:hover,
+.submitted-menu-demo-info-wrapper .demo-public-login:active,
+.submitted-menu-demo-info-wrapper .demo-public-login:focus {
+	color: #fff;
+}

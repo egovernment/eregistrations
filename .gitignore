@@ -5,6 +5,7 @@ model.generated.js
 model-tags.generated.js
 Thumbs.db
 /env.json
+/env.js
 /i18n-scan-map.generated.json
 /common/client/env.json
 /.idea

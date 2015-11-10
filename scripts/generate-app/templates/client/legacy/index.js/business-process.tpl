@@ -11,3 +11,4 @@ $.legacyDb = require('./${ appName }-legacy-proto');
 require('mano-legacy/live/input-mask');
 require('eregistrations/client/legacy/refresh-guide');
 require('mano-legacy/dbjs-observe-mock');
+require('mano-legacy/hash-nav-modal');
