@@ -3,7 +3,7 @@
 
 'use strict';
 
-var ensureString    = require('es5-ext/object/validate-string-value')
+var ensureString    = require('es5-ext/object/validate-stringifiable-value')
   , ensureDriver    = require('dbjs-persistence/ensure')
   , Fragment        = require('data-fragment')
   , assimilateEvent = require('./lib/assimilate-driver-event');
