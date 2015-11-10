@@ -7,7 +7,7 @@ var _ = require('mano').i18n.bind('View: Business process summary')
 
 module.exports = function (businessProcess) {
 	return [
-		div({ class: "section-primary-sub" },
+		div({ class: "section-primary-sub user-account-content-selector" },
 			h2(_("Documents")),
 			hr(),
 			p({ class: 'section-primary-legend' },

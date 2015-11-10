@@ -35,6 +35,10 @@
 	margin-bottom: 22px;
 }
 
+.section-primary-sub > .section-primary-legend {
+	margin-bottom:12px;
+}
+
 .section-primary-sub > :last-child {
 	margin-bottom: 0;
 }
