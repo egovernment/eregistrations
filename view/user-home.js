@@ -5,10 +5,6 @@
 var _       = require('mano').i18n.bind('View: Documents list')
   , columns = require('./_business-process-table-columns');
 
-var createStatusCell = function (businessProcess) {
-	return td(businessProcess._status);
-};
-
 // Creates actions column cell with 'goto', 'edit' and 'delete' actions.
 var createActionsCell = function (businessProcess) {
 	return _if(businessProcess._isAtDraft,
@@ -49,7 +45,7 @@ exports['user-account-content'] = function () {
 						function (businessProcess) {
 							return tr(list(columns, function (column) {
 								return td({ class: column.class }, column.data(businessProcess));
-							}), createStatusCell(businessProcess),
+							}), td(businessProcess._status),
 								createActionsCell(businessProcess));
 						}
 					)
