@@ -39,13 +39,14 @@ exports['user-account-content'] = function () {
 					{ class: 'submitted-user-data-table submitted-current-user-data-table' },
 					thead(tr(list(columns, function (column) {
 						return th({ class: column.class }, column.head);
-					}), th())),
+					}), th(_("Status")), th())),
 					tbody(
 						businessProcesses,
 						function (businessProcess) {
 							return tr(list(columns, function (column) {
 								return td({ class: column.class }, column.data(businessProcess));
-							}), createActionsCell(businessProcess));
+							}), td(businessProcess._status),
+								createActionsCell(businessProcess));
 						}
 					)
 				))];
