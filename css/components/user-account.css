@@ -171,6 +171,10 @@ h3.user-account-section-title {
 	line-height: 44px;
 }
 
+.user-account-content-selector {
+	margin-bottom: 11px;
+}
+
 .user-account-tab.section-tab-nav-tab {
 	font-size:18px;
 	padding: 11px 15px;
