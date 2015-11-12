@@ -15,6 +15,7 @@ exports['sub-main'] = {
 			form(
 				{ method: 'post', action: '/user-add/' },
 				ul(
+					{ class: 'form-elements' },
 					li(field({ dbjs: user._firstName })),
 					li(field({ dbjs: user._lastName })),
 					li(field({ dbjs: user._roles })),
