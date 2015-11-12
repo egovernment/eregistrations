@@ -13,10 +13,7 @@ var normalizeOptions  = require('es5-ext/object/normalize-options')
   , generateAppsList  = require('mano/scripts/generate-apps-list')
   , generateAppsConf  = require('mano/scripts/generate-apps-conf')
   , generateAppsCtrls = require('mano/scripts/generate-apps-controllers')
-  , getApps           = require('mano/server/utils/resolve-apps')
-
-  , templateVars = {}
-  , extraFilesPath, partialAppName, templateType, appRootPath;
+  , getApps           = require('mano/server/utils/resolve-apps');
 
 var appTypes = {
 	'users-admin': true,
@@ -35,7 +32,8 @@ var copyExtraFile = function (projectRoot, extraPath) {
 };
 
 module.exports = function (projectRoot, appName/*, options*/) {
-	var options = normalizeOptions(arguments[2]);
+	var options = normalizeOptions(arguments[2]), extraFilesPath, partialAppName, templateType
+	  , appRootPath, templateVars = {};
 
 	appRootPath = path.resolve(projectRoot, 'apps', appName);
 	extraFilesPath    = path.join(__dirname, 'extra-files');
