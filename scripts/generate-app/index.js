@@ -1,26 +1,24 @@
 #!/usr/bin/env node
+
 'use strict';
 
-var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
-  , fs            = require('fs2')
-  , path          = require('path')
-  , template      = require('es6-template-strings')
-  , deferred      = require('deferred')
-  , exec          = deferred.promisify(require('child_process').execFile)
-  , capitalize    = require('es5-ext/string/#/capitalize')
+var normalizeOptions  = require('es5-ext/object/normalize-options')
+  , capitalize        = require('es5-ext/string/#/capitalize')
+  , hyphenToCamel     = require('es5-ext/string/#/hyphen-to-camel')
+  , template          = require('es6-template-strings')
+  , deferred          = require('deferred')
+  , fs                = require('fs2')
+  , path              = require('path')
+  , exec              = deferred.promisify(require('child_process').execFile)
   , generateAppsList  = require('mano/scripts/generate-apps-list')
   , generateAppsConf  = require('mano/scripts/generate-apps-conf')
   , generateAppsCtrls = require('mano/scripts/generate-apps-controllers')
   , getApps           = require('mano/server/utils/resolve-apps')
-  , extraFilesPath
-  , copyExtraFile
-  , partialAppName
-  , appTypes
-  , templateType
-  , templateVars = {}
-  , appRootPath;
 
-appTypes = {
+  , templateVars = {}
+  , extraFilesPath, partialAppName, templateType, appRootPath;
+
+var appTypes = {
 	'users-admin': true,
 	'meta-admin': { extraFiles: ['view/meta-admin'] },
 	user: { extraFiles: ['view/user.js'] },
@@ -30,13 +28,15 @@ appTypes = {
 	'business-process': true
 };
 
-copyExtraFile = function (projectRoot, extraPath) {
+var copyExtraFile = function (projectRoot, extraPath) {
 	return fs.copy(path.resolve(extraPath),
 		path.join(projectRoot, extraPath.split('extra-files/').slice(-1)[0]),
 		{ intermediate: true });
 };
 
-module.exports = function (projectRoot, appName) {
+module.exports = function (projectRoot, appName/*, options*/) {
+	var options = normalizeOptions(arguments[2]);
+
 	appRootPath = path.resolve(projectRoot, 'apps', appName);
 	extraFilesPath    = path.join(__dirname, 'extra-files');
 
@@ -128,6 +128,7 @@ module.exports = function (projectRoot, appName) {
 		}
 		return deferred.map(toResolve);
 	}).then(function () {
+		if (options.appFilesOnly) return;
 		return deferred(
 			generateAppsList(projectRoot),
 			getApps(projectRoot).then(function (appsList) {
