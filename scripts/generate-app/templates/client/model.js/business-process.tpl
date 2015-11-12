@@ -2,7 +2,7 @@
 
 'use strict';
 
-var db       = require('mano').db
+var db       = require('../../../db')
   , User     = require('../../../model/user/roles')
   , Password = require('dbjs-ext/string/string-line/password')(db)
 
