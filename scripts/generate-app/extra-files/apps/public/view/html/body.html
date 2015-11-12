@@ -64,7 +64,7 @@ public pages (e.g. header, footer, login/register/request-password modals -->
 										</label>
 										<span class="error-message"></span>
 								</li>
-								<div class="form-group">
+								<li class="dbjs-input-component input">
 										<label>
 												<span class="placeholder-fallback">${ _("Repeat password") }</span>
 												<input type="password" class="form-control" name="password-repeat" required
@@ -72,13 +72,6 @@ public pages (e.g. header, footer, login/register/request-password modals -->
 															 pattern="${ passwordPattern }"/>
 										</label>
 										<span class="error-message"></span>
-								</div>
-								<li class="dbjs-input-component input">
-										<label>
-												<input name="isManager" type="checkbox">
-												<span>${ _("Manager account") }</span>
-										</label>
-										<span class="hint">${ _("Manager account allows you to create multiple requests on behalf of others.") }</span>
 								</li>
 						</ul>
 						<p><input type="submit" value="${ _(" Create account") }"></p>
@@ -115,10 +108,6 @@ public pages (e.g. header, footer, login/register/request-password modals -->
 				<div class="header-top-logo"><a href="/"><img src="${ stRoot }img/logo-2.png"></a></div>
 				<nav>
 						<ul class="header-top-menu" id="menu">
-								<li><a>en</a></li>
-								<li><a>sw</a></li>
-								<li><a>link one</a></li>
-								<li><a>link two</a></li>
 								<li id="header-top-menu-login">
 										<span class="header-top-login-hint">${ _("Do you have an account?") }</span>
 										<a class="header-top-login" href="#login">${ _("Log in") }</a>
