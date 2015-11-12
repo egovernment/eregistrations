@@ -26,18 +26,17 @@
 	padding: 0;
 }
 
+.section-primary-sub h2,
 .section-primary-sub h3 {
-	background: var(--light-background);
-	padding-top: 5px;
-	padding-bottom: 5px;
-	padding-left: 5px;
-	margin: 28px 0;
-	border-left: 3px solid var(--normal-dark-background);
-	color: var(--normal-dark-background);
+	margin: 11px 0;
 }
 
 .section-primary-sub > * {
 	margin-bottom: 22px;
+}
+
+.section-primary-sub > .section-primary-legend {
+	margin-bottom:12px;
 }
 
 .section-primary-sub > :last-child {
