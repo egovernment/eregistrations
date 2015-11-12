@@ -41,28 +41,29 @@ public pages (e.g. header, footer, login/register/request-password modals -->
 												<span class="placeholder-fallback">${ _("First name") }</span>
 												<input name="User#/firstName" type="text" placeholder="${ _(" First name") }">
 										</label>
-										<span class="error-message"></span>
+										<span class="error-message-User--firstName"></span>
 								</li>
 								<li class="dbjs-input-component input">
 										<label>
 												<span class="placeholder-fallback">${ _("Last name") }</span>
 												<input name="User#/lastName" type="text" placeholder="${ _(" Last name") }">
 										</label>
-										<span class="error-message"></span>
+										<span class="error-message-User--lastName"></span>
 								</li>
 								<li class="dbjs-input-component input">
 										<label>
 												<span class="placeholder-fallback">${ _("Email") }</span>
 												<input name="User#/email" type="email" placeholder="${ _(" Email") }">
 										</label>
-										<span class="error-message"></span>
+										<span class="error-message-User--email"></span>
 								</li>
 								<li class="dbjs-input-component input">
 										<label>
 												<span class="placeholder-fallback">${ _("Password") }</span>
-												<input name="User#/password" type="password" placeholder="${ _(" Password") }">
+												<input name="User#/password" type="password" placeholder="${ _(" Password") }" pattern="${ passwordPattern }" oninvalid="$.displayPasswordInputHint(this, '${ passwordFormatHint }');">
 										</label>
-										<span class="error-message"></span>
+										<span class="hint">${ passwordFormatHint }</span>
+										<span class="error-message-User--password"></span>
 								</li>
 								<li class="dbjs-input-component input">
 										<label>
@@ -71,7 +72,7 @@ public pages (e.g. header, footer, login/register/request-password modals -->
 															 placeholder="Repeat password"
 															 pattern="${ passwordPattern }"/>
 										</label>
-										<span class="error-message"></span>
+										<span class="error-message-password-repeat"></span>
 								</li>
 						</ul>
 						<p><input type="submit" value="${ _(" Create account") }"></p>
