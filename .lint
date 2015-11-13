@@ -28,20 +28,20 @@ vars
 todo
 evil
 
-predef+ console
+predef+ console, setTimeout
 
 ./bin
 ./lib
 ./server
 ./prototype/scripts
 ./utils
-./scripts/generate-app
+./scripts
 predef+ process, __dirname, setInterval
 
 ./controller/client
 ./client
 ./prototype/client
-predef+ window, document, location, $, setTimeout
+predef+ window, document, location, $
 
 ./prototype/view
 ./view/prototype
@@ -49,10 +49,10 @@ predef+ window, document, location, $, setTimeout
 ./view
 ./scripts/generate-app/extra-files/view
 ./scripts/generate-app/extra-files/apps/public/view
-predef+ confirm, FormData, document, location, localStorage, window, Option, XMLHttpRequest, clearTimeout, setTimeout, a, abbr, address, area, article, aside, audio, b, bdi, bdo, blockquote, br, button, canvas, caption, cite, code, col, colgroup, command, content, data, datalist, dd, del, details, dfn, dialog, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hr, i, iframe, img, input, ins, kbd, keygen, label, legend, li, link, main, map, mark, menu, menuitem, meta, meter, nav, noscript, object, ol, optgroup, option, output, p, param, pre, progress, q, rp, rt, ruby, s, samp, script, section, select, small, source, span, strong, style, sub, summary, sup, table, tbody, td, template, textarea, tfoot, th, thead, time, tr, track, ul, _var, video, wbr, comment, text, element, insert, normalize, _if, and, browser, eq, eqSome, field, gt, gtOrEq, html, legacy, list, lt, ltOrEq, mmap, modal, not, or, postButton, resolve, stUrl, thumb, uploadButton, url, $, mdi, md, eqSloppy
+predef+ confirm, FormData, document, location, localStorage, window, Option, XMLHttpRequest, clearTimeout, a, abbr, address, area, article, aside, audio, b, bdi, bdo, blockquote, br, button, canvas, caption, cite, code, col, colgroup, command, content, data, datalist, dd, del, details, dfn, dialog, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hr, i, iframe, img, input, ins, kbd, keygen, label, legend, li, link, main, map, mark, menu, menuitem, meta, meter, nav, noscript, object, ol, optgroup, option, output, p, param, pre, progress, q, rp, rt, ruby, s, samp, script, section, select, small, source, span, strong, style, sub, summary, sup, table, tbody, td, template, textarea, tfoot, th, thead, time, tr, track, ul, _var, video, wbr, comment, text, element, insert, normalize, _if, and, browser, eq, eqSome, field, gt, gtOrEq, html, legacy, list, lt, ltOrEq, mmap, modal, not, or, postButton, resolve, stUrl, thumb, uploadButton, url, $, mdi, md, eqSloppy
 
 ./view/prototype/_routes.js
-predef- confirm, FormData, document, location, localStorage, window, Option, XMLHttpRequest, clearTimeout, setTimeout, a, abbr, address, area, article, aside, audio, b, bdi, bdo, blockquote, br, button, canvas, caption, cite, code, col, colgroup, command, content, data, datalist, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hr, i, iframe, img, input, ins, kbd, keygen, label, legend, li, link, main, map, mark, menu, menuitem, meta, meter, nav, noscript, object, ol, optgroup, option, output, p, param, pre, progress, q, rp, rt, ruby, s, samp, script, section, select, small, source, span, strong, style, sub, summary, sup, table, tbody, td, template, textarea, tfoot, th, thead, time, tr, track, ul, _var, video, wbr, comment, text, element, insert, normalize, _if, and, browser, eq, eqSome, field, gt, gtOrEq, html, legacy, list, lt, ltOrEq, mmap, modal, not, or, postButton, resolve, stUrl, thumb, uploadButton, url
+predef- confirm, FormData, document, location, localStorage, window, Option, XMLHttpRequest, clearTimeout, a, abbr, address, area, article, aside, audio, b, bdi, bdo, blockquote, br, button, canvas, caption, cite, code, col, colgroup, command, content, data, datalist, dd, del, details, dfn, div, dl, dt, em, embed, fieldset, figcaption, figure, footer, form, h1, h2, h3, h4, h5, h6, header, hr, i, iframe, img, input, ins, kbd, keygen, label, legend, li, link, main, map, mark, menu, menuitem, meta, meter, nav, noscript, object, ol, optgroup, option, output, p, param, pre, progress, q, rp, rt, ruby, s, samp, script, section, select, small, source, span, strong, style, sub, summary, sup, table, tbody, td, template, textarea, tfoot, th, thead, time, tr, track, ul, _var, video, wbr, comment, text, element, insert, normalize, _if, and, browser, eq, eqSome, field, gt, gtOrEq, html, legacy, list, lt, ltOrEq, mmap, modal, not, or, postButton, resolve, stUrl, thumb, uploadButton, url
 
 ./view/directives
 predef+ MutationObserver
