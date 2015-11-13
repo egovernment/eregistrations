@@ -16,7 +16,7 @@ exports.menu = function () {
 			{ class: 'submitted-menu-demo-info-wrapper' },
 			ul({ class: 'header-top-menu-demo' },
 				li(a({ class: 'demo-public-out', href: '/logout/', rel: 'server' }, _("Out of demo mode"))),
-				li(a({ class: 'demo-public-login', href: '#login' }, _("Login")))),
+				li(a({ class: 'demo-public-login', href: '#login' }, _("Log in")))),
 			div({ class: 'submitted-menu-demo-info' },
 				p(_("Did this demo convinced you?")),
 				a({ href: '#register' }, _("Create account")))
