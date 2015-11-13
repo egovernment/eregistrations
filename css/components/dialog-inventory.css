@@ -6,6 +6,8 @@
 	width: var(--mobile-width);
 	padding: 0 20px;
 	margin-bottom: 0;
+	max-height: 500px;
+	overflow: scroll;
 }
 .dialog-inventory form > ul > li {
 	margin-top: 22px;

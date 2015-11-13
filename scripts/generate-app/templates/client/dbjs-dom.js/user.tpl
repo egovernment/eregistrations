@@ -1,8 +1,9 @@
-// dbjs-dom setup.
+// Database DOM bindings
 
 'use strict';
 
-var db = require('./model.generated');
+var db      = require('./model.generated')
+  , domEnum = require('dbjs-dom/enum');
 
 require('dbjs-dom/text')(db);
 require('dbjs-dom/input')(db);
@@ -18,5 +19,7 @@ require('eregistrations/view/dbjs/document-url');
 
 require('dbjs-dom/text/utils/table')(db);
 require('dbjs-dom/ext/domjs/table-cell-render');
+
+domEnum(db.BusinessProcessStatus);
 
 db.StringLine.DOMInput.prototype.dbAttributes.inputMask = 'data-mask';

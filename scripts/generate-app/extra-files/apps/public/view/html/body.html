@@ -3,129 +3,119 @@ public pages (e.g. header, footer, login/register/request-password modals -->
 
 <!-- Login modal dialog -->
 <dialog id="login" class="dialog-login dialog-modal">
-    <header><h3>Login</h3></header>
-    <section class="dialog-body">
-        <form id="login-form" method="post" action="/login/">
-            <ul class="form-elements">
-                <li class="dbjs-input-component input">
-                    <label>
-                        <span class="placeholder-fallback">${ _("Email") }</span>
-                        <input type="email" required name="email" placeholder="${ _(" Email") }" />
-                    </label>
-                </li>
-                <li class="dbjs-input-component input">
-                    <label>
-                        <span class="placeholder-fallback">${ _("Password") }</span>
-                        <input type="password" required name="password" placeholder="${ _(" Password") }" />
-                        <span class="error-message"></span>
-                    </label>
-                </li>
-            </ul>
-            <p><input type="submit" value="${ _(" Sign in") }"></p>
-        </form>
-    </section>
-    <footer>
-        <p>${ _("No account?") } <a href="#register">${ _("Create an account") }</a><span> | </span>
-            <a href="#reset-password">${ _("Reset password") }</a></p>
-    </footer>
+		<header><h3>Login</h3></header>
+		<section class="dialog-body">
+				<form id="login-form" method="post" action="/login/">
+						<ul class="form-elements">
+								<li class="dbjs-input-component input">
+										<label>
+												<span class="placeholder-fallback">${ _("Email") }</span>
+												<input type="email" required name="email" placeholder="${ _(" Email") }" />
+										</label>
+								</li>
+								<li class="dbjs-input-component input">
+										<label>
+												<span class="placeholder-fallback">${ _("Password") }</span>
+												<input type="password" required name="password" placeholder="${ _(" Password") }" />
+												<span class="error-message"></span>
+										</label>
+								</li>
+						</ul>
+						<p><input type="submit" value="${ _(" Sign in") }"></p>
+				</form>
+		</section>
+		<footer>
+				<p>${ _("No account?") } <a href="#register">${ _("Create an account") }</a><span> | </span>
+						<a href="#reset-password">${ _("Reset password") }</a></p>
+		</footer>
 </dialog>
 
 <!-- Register modal dialog -->
 <dialog id="register" class="dialog-register dialog-modal">
-    <header><h3>${ _("Create your account") }</h3></header>
-    <section class="dialog-body">
-        <form action="/register/" method="post">
-            <ul class="form-elements">
-                <li class="dbjs-input-component input">
-                    <label>
-                        <span class="placeholder-fallback">${ _("First name") }</span>
-                        <input name="User#/firstName" type="text" placeholder="${ _(" First name") }">
-                    </label>
-                    <span class="error-message"></span>
-                </li>
-                <li class="dbjs-input-component input">
-                    <label>
-                        <span class="placeholder-fallback">${ _("Last name") }</span>
-                        <input name="User#/lastName" type="text" placeholder="${ _(" Last name") }">
-                    </label>
-                    <span class="error-message"></span>
-                </li>
-                <li class="dbjs-input-component input">
-                    <label>
-                        <span class="placeholder-fallback">${ _("Email") }</span>
-                        <input name="User#/email" type="email" placeholder="${ _(" Email") }">
-                    </label>
-                    <span class="error-message"></span>
-                </li>
-                <li class="dbjs-input-component input">
-                    <label>
-                        <span class="placeholder-fallback">${ _("Password") }</span>
-                        <input name="User#/password" type="password" placeholder="${ _(" Password") }">
-                    </label>
-                    <span class="error-message"></span>
-                </li>
-                <div class="form-group">
-                    <label>
-                        <span class="placeholder-fallback">${ _("Repeat password") }</span>
-                        <input type="password" class="form-control" name="password-repeat" required
-                               placeholder="Repeat password"
-                               pattern="${ passwordPattern }"/>
-                    </label>
-                    <span class="error-message"></span>
-                </div>
-                <li class="dbjs-input-component input">
-                    <label>
-                        <input name="isManager" type="checkbox">
-                        <span>${ _("Manager account") }</span>
-                    </label>
-                    <span class="hint">${ _("Manager account allows you to create multiple requests on behalf of others.") }</span>
-                </li>
-            </ul>
-            <p><input type="submit" value="${ _(" Create account") }"></p>
-        </form>
-    </section>
-    <footer>
-        <p>${ _("Already has account?") } <a href="#login">${ _("Log in") }</a><span> | </span>
-            <a href="#reset-password"> ${ _("Reset password") }</a></p>
-    </footer>
+		<header><h3>${ _("Create your account") }</h3></header>
+		<section class="dialog-body">
+				<form action="/register/" method="post">
+						<ul class="form-elements">
+								<li class="dbjs-input-component input">
+										<label>
+												<span class="placeholder-fallback">${ _("First name") }</span>
+												<input name="User#/firstName" type="text" placeholder="${ _(" First name") }">
+										</label>
+										<span class="error-message-User--firstName"></span>
+								</li>
+								<li class="dbjs-input-component input">
+										<label>
+												<span class="placeholder-fallback">${ _("Last name") }</span>
+												<input name="User#/lastName" type="text" placeholder="${ _(" Last name") }">
+										</label>
+										<span class="error-message-User--lastName"></span>
+								</li>
+								<li class="dbjs-input-component input">
+										<label>
+												<span class="placeholder-fallback">${ _("Email") }</span>
+												<input name="User#/email" type="email" placeholder="${ _(" Email") }">
+										</label>
+										<span class="error-message-User--email"></span>
+								</li>
+								<li class="dbjs-input-component input">
+										<label>
+												<span class="placeholder-fallback">${ _("Password") }</span>
+												<input name="User#/password" type="password" placeholder="${ _(" Password") }" pattern="${ passwordPattern }" oninvalid="$.displayPasswordInputHint(this, '${ passwordFormatHint }');">
+										</label>
+										<span class="hint">${ passwordFormatHint }</span>
+										<span class="error-message-User--password"></span>
+								</li>
+								<li class="dbjs-input-component input">
+										<label>
+												<span class="placeholder-fallback">${ _("Repeat password") }</span>
+												<input type="password" class="form-control" name="password-repeat" required
+															 placeholder="Repeat password"
+															 pattern="${ passwordPattern }"/>
+										</label>
+										<span class="error-message-password-repeat"></span>
+								</li>
+						</ul>
+						<p><input type="submit" value="${ _(" Create account") }"></p>
+				</form>
+		</section>
+		<footer>
+				<p>${ _("Already has account?") } <a href="#login">${ _("Log in") }</a><span> | </span>
+						<a href="#reset-password"> ${ _("Reset password") }</a></p>
+		</footer>
 </dialog>
 
 <!-- Reset password modal dialog -->
 <dialog id="reset-password" class="dialog-reset-password dialog-modal">
-    <header><h3>${ _("Reset password") }</h3></header>
-    <section class="dialog-body">
-        <form action="/request-reset-password/" id="reset-password-form" method="post">
-            <p class="success-message">${ _("Password reset email has been sent.") }</p>
+		<header><h3>${ _("Reset password") }</h3></header>
+		<section class="dialog-body">
+				<form action="/request-reset-password/" id="reset-password-form" method="post">
+						<p class="success-message">${ _("Password reset email has been sent.") }</p>
 
-            <p>
-                <label>
-                    <span class="placeholder-fallback">${ _("Email") }</span>
-                    <input type="email" required name="email" placeholder="${ _(" Email") }">
-                </label>
-            </p>
+						<p>
+								<label>
+										<span class="placeholder-fallback">${ _("Email") }</span>
+										<input type="email" required name="email" placeholder="${ _(" Email") }">
+								</label>
+						</p>
 
-            <p><input type="submit" value="${ _(" Reset") }"></p>
-        </form>
-    </section>
+						<p><input type="submit" value="${ _(" Reset") }"></p>
+				</form>
+		</section>
 </dialog>
 
 <!-- Top header -->
 <header class="header-top">
-    <div class="content header-top-wrapper">
-        <div class="header-top-logo"><a href="/"><img src="${ stRoot }img/logo-2.png"></a></div>
-        <nav>
-            <ul class="header-top-menu" id="menu">
-                <li><a>en</a></li>
-                <li><a>sw</a></li>
-                <li><a>link one</a></li>
-                <li><a>link two</a></li>
-                <li id="header-top-menu-login">
-                    <span class="header-top-login-hint">${ _("Do you have an account?") }</span>
-                    <a class="header-top-login" href="#login">${ _("Log in") }</a>
-                </li>
-            </ul>
-        </nav>
-    </div>
+		<div class="content header-top-wrapper">
+				<div class="header-top-logo"><a href="/"><img src="${ stRoot }img/logo-2.png"></a></div>
+				<nav>
+						<ul class="header-top-menu" id="menu">
+								<li id="header-top-menu-login">
+										<span class="header-top-login-hint">${ _("Do you have an account?") }</span>
+										<a class="header-top-login" href="#login">${ _("Log in") }</a>
+								</li>
+						</ul>
+				</nav>
+		</div>
 </header>
 
 <!-- Black curtain behind modal dialoges -->
@@ -133,13 +123,13 @@ public pages (e.g. header, footer, login/register/request-password modals -->
 
 <!-- Main container -->
 <main>
-    <!-- To be filled by child views -->
+		<!-- To be filled by child views -->
 </main>
 
 <!-- Footer -->
 <footer class="footer-logos">
-    <div class="content">
-        <div class="footer-logos-container">
-            <img src="${ stRoot }img/logo-unctad.jpg">
-        </div>
-    </div>
+		<div class="content">
+				<div class="footer-logos-container">
+						<img src="${ stRoot }img/logo-unctad.jpg">
+				</div>
+		</div>

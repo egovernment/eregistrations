@@ -11,8 +11,11 @@
 ../../../node_modules/eregistrations/css/components/section-warning.css
 ../../../node_modules/eregistrations/css/components/dialog.css
 ../../../node_modules/eregistrations/css/components/dialog-inventory.css
+../../../node_modules/eregistrations/css/components/dialog-register.css
+../../../node_modules/eregistrations/css/components/dialog-login.css
 ../../../node_modules/eregistrations/css/components/header-top.css
 ../../../node_modules/eregistrations/css/components/submitted-menu.css
+../../../node_modules/eregistrations/css/components/submitted-menu-demo.css
 ../../../node_modules/eregistrations/css/components/user-steps-menu.css
 ../../../node_modules/eregistrations/css/components/user-steps-menu-v2.css
 ../../../node_modules/eregistrations/css/components/user-guide.css
