@@ -22,8 +22,7 @@
 	border:none;
 }
 
-.submitted-user-data-table tbody tr,
-.submitted-user-data-table.submitted-current-user-data-table tbody tr:hover {
+.submitted-user-data-table tbody tr {
 	background-color: var(--white-text);
 }
 
@@ -32,23 +31,11 @@
 	text-align: left;
 	font-weight: 400;
 }
-.submitted-user-data-table tbody tr:hover,
-.submitted-user-data-table tbody tr:nth-of-type(even):hover {
-	background-color: var(--normal-light-background);
-}
-
-.submitted-user-data-table tr:hover a {
-	text-decoration: underline;
-}
 
 .submitted-user-data-table .actions {
 	padding-left: 5px;
 	padding-right: 5px;
 	text-align: center;
-}
-
-.submitted-user-data-table tr:hover .actions a {
-	text-decoration: none;
 }
 
 .submitted-user-data-table td.submitted-user-data-table-link a,
@@ -95,24 +82,23 @@
 	border: 1px solid var(--light-inner-border);
 }
 
-.submitted-user-data-table tbody tr:nth-of-type(even),
-.submitted-user-data-table.submitted-current-user-data-table tbody tr:nth-of-type(even):hover {
+.submitted-user-data-table tbody tr:nth-of-type(even) {
 	background-color: var(--light-background);
 }
 
-.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-status .fa-check {
+.submitted-user-data-table .submitted-user-data-table-status .fa-check {
 	color: var(--success-text);
 }
 
-.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-status .fa-exclamation {
+.submitted-user-data-table .submitted-user-data-table-status .fa-exclamation {
 	color: var(--error-text);
 }
 
-.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-status {
+.submitted-user-data-table .submitted-user-data-table-status {
 	width: 40px;
 }
 
-.submitted-user-data-table.submitted-current-user-data-table .submitted-user-data-table-link {
+.submitted-user-data-table .submitted-user-data-table-link {
 	width: 80px;
 	text-align: center;
 	padding:0;
@@ -135,7 +121,7 @@
 }
 
 .submitted-user-data-table .submitted-user-data-table-action a,
-.submitted-user-data-table.submitted-current-user-data-table tbody tr .submitted-user-data-table-action {
+.submitted-user-data-table tbody tr .submitted-user-data-table-action {
 	padding-left: 0;
 	padding-right: 0;
 }
@@ -165,7 +151,10 @@
 		padding: 0;
 	}
 
-	.submitted-user-data-table .submitted-user-data-table-action {
+	.submitted-user-data-table .submitted-user-data-table-action,
+	.submitted-user-data-table .submitted-user-data-table-service,
+	.submitted-user-data-table .submitted-user-data-table-link,
+	.submitted-user-data-table-date {
 		width: auto;
 	}
 }
