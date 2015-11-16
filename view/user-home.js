@@ -3,7 +3,7 @@
 'use strict';
 
 var _       = require('mano').i18n.bind('View: Documents list')
-  , columns = require('./_business-process-table-columns');
+  , columns = require('./_business-process-table-columns').columns;
 
 // Creates actions column cell with 'goto', 'edit' and 'delete' actions.
 var createActionsCell = function (businessProcess) {
@@ -36,7 +36,7 @@ exports['user-account-content'] = function () {
 				"ongoing procedures and view already concluded records.")),
 			section({ class: 'submitted-main table-responsive-container' },
 				table(
-					{ class: 'submitted-user-data-table submitted-current-user-data-table' },
+					{ class: 'submitted-user-data-table' },
 					thead(tr(list(columns, function (column) {
 						return th({ class: column.class }, column.head);
 					}), th(_("Status")), th())),

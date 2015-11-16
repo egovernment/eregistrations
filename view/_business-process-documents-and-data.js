@@ -19,8 +19,7 @@ module.exports = function (businessProcess/*, options*/) {
 				div(
 					{ class: 'table-responsive-container' },
 					table(
-						{ class: 'submitted-user-data-table ' +
-							'submitted-current-user-data-table user-request-table' },
+						{ class: 'submitted-user-data-table user-request-table' },
 						thead(
 							tr(
 								th({ class: 'submitted-user-data-table-status' }),
@@ -53,8 +52,7 @@ module.exports = function (businessProcess/*, options*/) {
 				div(
 					{ class: 'table-responsive-container' },
 					table(
-						{ class: 'submitted-user-data-table ' +
-							'submitted-current-user-data-table user-request-table' },
+						{ class: 'submitted-user-data-table user-request-table' },
 						thead(
 							tr(
 								th({ class: 'submitted-user-data-table-status' }),
@@ -83,8 +81,7 @@ module.exports = function (businessProcess/*, options*/) {
 				div(
 					{ class: 'table-responsive-container' },
 					table(
-						{ class: 'submitted-user-data-table ' +
-							'submitted-current-user-data-table user-request-table' },
+						{ class: 'submitted-user-data-table user-request-table' },
 						thead(
 							tr(
 								th({ class: 'submitted-user-data-table-status' }),

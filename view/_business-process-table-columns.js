@@ -3,12 +3,20 @@
 var formatLastModified = require('./utils/last-modified'),
 _ = require('mano').i18n.bind('User');
 
-module.exports = [{
+exports.getServiceIcon = function (businessProcess) {
+	return i({ class: "fa fa-user" });
+};
+
+exports.columns = [{
+	head: _("Service"),
+	class: 'submitted-user-data-table-service',
+	data: function (businessProcess) {
+		return span({ class: 'hint-optional hint-optional-right', 'data-hint': businessProcess._label },
+			exports.getServiceIcon(businessProcess));
+	}
+}, {
 	head: _("Entity"),
 	data: function (businessProcess) { return businessProcess._businessName; }
-}, {
-	head: _("Service"),
-	data: function (businessProcess) { return businessProcess._label; }
 }, {
 	head: _("Submission date"),
 	class: 'submitted-user-data-table-date',
