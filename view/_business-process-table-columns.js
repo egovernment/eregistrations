@@ -7,7 +7,7 @@ exports._getServiceIcon = function (businessProcess) {
 	return i({ class: "fa fa-user" });
 };
 
-module.exports = [{
+module.exports.columns = [{
 	head: _("Service"),
 	class: 'submitted-user-data-table-service',
 	data: function (businessProcess) {

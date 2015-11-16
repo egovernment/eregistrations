@@ -3,7 +3,7 @@
 'use strict';
 
 var _       = require('mano').i18n.bind('View: Documents list')
-  , columns = require('./_business-process-table-columns');
+  , columns = require('./_business-process-table-columns').columns;
 
 // Creates actions column cell with 'goto', 'edit' and 'delete' actions.
 var createActionsCell = function (businessProcess) {
