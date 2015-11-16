@@ -31,7 +31,7 @@ module.exports = function (context/*, options */) {
 	return [section(
 		{ class: 'submitted-main table-responsive-container' },
 		table(
-			{ class: 'submitted-user-data-table submitted-current-user-data-table', responsive: true },
+			{ class: 'submitted-user-data-table', responsive: true },
 			thead(
 				tr(
 					list(tableCols, function (col) {

@@ -36,7 +36,7 @@ exports['user-account-content'] = function () {
 				"ongoing procedures and view already concluded records.")),
 			section({ class: 'submitted-main table-responsive-container' },
 				table(
-					{ class: 'submitted-user-data-table submitted-current-user-data-table' },
+					{ class: 'submitted-user-data-table' },
 					thead(tr(list(columns, function (column) {
 						return th({ class: column.class }, column.head);
 					}), th(_("Status")), th())),
