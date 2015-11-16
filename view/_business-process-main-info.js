@@ -8,7 +8,7 @@ var curry              = require('es5-ext/function/#/curry')
   , scrollBottom       = require('./utils/scroll-to-bottom')
   , tableCols;
 
-tableCols = require('./_business-process-table-columns');
+tableCols = require('./_business-process-table-columns').columns;
 
 // Creates actions column cell with 'archive download' action.
 var createActionsCell = function (businessProcess) {
