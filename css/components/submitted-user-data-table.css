@@ -27,7 +27,7 @@
 	background-color: var(--white-text);
 }
 
-.submitted-user-data-table tbody tr td {
+.submitted-user-data-table tbody td {
 	border: 1px solid var(--light-inner-border);
 	text-align: left;
 	font-weight: 400;
@@ -131,7 +131,7 @@
 
 .submitted-user-data-table .submitted-user-data-table-service {
 	text-align: center;
-	width: 73px;
+	width: 40px;
 }
 
 .submitted-user-data-table .submitted-user-data-table-action a,
