@@ -129,6 +129,10 @@
 	width: 40px;
 }
 
+.submitted-user-data-table .submitted-user-data-table-service {
+	text-align: center;
+}
+
 .submitted-user-data-table .submitted-user-data-table-action a,
 .submitted-user-data-table.submitted-current-user-data-table tbody tr .submitted-user-data-table-action {
 	padding-left: 0;
