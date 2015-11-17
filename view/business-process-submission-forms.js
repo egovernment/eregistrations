@@ -60,7 +60,7 @@ exports.step = function () {
 				})), " ", span(_("I ${ fullName } ${ businessName } " +
 						"declare under oath that the information entered into the system is " +
 					"correct, and I accept that it would be saved and processed by involved institutions.",
-					{ fullName: this.user.fullName, businessName: this.businessProcess.businessName })))
+					{ fullName: this.user._fullName, businessName: this.businessProcess._businessName })))
 			),
 			div(p({ id: 'application-submit-button' },
 				_if(this.user._isDemo,
