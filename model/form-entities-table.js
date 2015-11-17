@@ -11,21 +11,17 @@ var _                       = require('mano').i18n.bind("Model: Form Entities Ta
   , defineFormSectionBase   = require('./form-section-base')
   , defineFormTabularEntity = require('./form-tabular-entity')
   , defineUInteger          = require('dbjs-ext/number/integer/u-integer')
-  , defineProgressRule      = require('./lib/progress-rule')
-  , defineProgressRules     = require('./lib/progress-rules');
+  , defineProgressRule      = require('./lib/progress-rule');
 
 module.exports = memoize(function (db) {
-	var FormEntitiesTable, StringLine, FormSectionBase, FormTabularEntity, UInteger
-	  , ProgressRule, ProgressRules;
+	var FormEntitiesTable, StringLine, FormSectionBase, FormTabularEntity, UInteger, ProgressRule;
 	validDb(db);
 	StringLine        = defineStringLine(db);
 	FormSectionBase   = defineFormSectionBase(db);
 	FormTabularEntity = defineFormTabularEntity(db);
 	UInteger          = defineUInteger(db);
 	ProgressRule      = defineProgressRule(db);
-	ProgressRules     = defineProgressRules(db);
 	FormEntitiesTable = FormSectionBase.extend('FormEntitiesTable', {
-		progressRules: { type: ProgressRules, nested: true },
 		min: { type: UInteger },
 		max: { type: UInteger },
 		status: {

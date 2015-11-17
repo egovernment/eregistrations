@@ -6,11 +6,13 @@ var memoize          = require('memoizee/plain')
   , validDb          = require('dbjs/valid-dbjs')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineUInteger   = require('dbjs-ext/number/integer/u-integer')
-  , definePercentage = require('dbjs-ext/number/percentage');
+  , definePercentage = require('dbjs-ext/number/percentage')
+  , defineProgressRules     = require('./lib/progress-rules');
 
 module.exports = memoize(function (db) {
-	var StringLine, Percentage, UInteger;
+	var StringLine, Percentage, UInteger, ProgressRules;
 	validDb(db);
+	ProgressRules = defineProgressRules(db);
 	db.Object.defineProperties({
 		getFormApplicablePropName: { type: db.Function, value: function (prop) {
 			return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'FormApplicable';
@@ -23,6 +25,7 @@ module.exports = memoize(function (db) {
 	StringLine = defineStringLine(db);
 	Percentage = definePercentage(db);
 	return db.Object.extend('FormSectionBase', {
+		progressRules: { type: ProgressRules, nested: true },
 		label: { type: StringLine, required: true },
 		// Optional explanation text.
 		legend: { type: db.String },
