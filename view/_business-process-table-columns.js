@@ -29,8 +29,23 @@ exports.columns = [{
 		_isApproved._lastModified.map(formatLastModified); }
 }, {
 	head: _("Inscriptions and controls"),
-	data: function (businessProcess) { return list(businessProcess.registrations.requested,
-		function (reg) {
-			return span({ class: 'label-reg' }, reg.abbr);
-		}); }
+	data: function (businessProcess) {
+		return list(businessProcess.certificates.applicable, function (cert) {
+			var processingStep = cert.processingStep;
+			if (!processingStep) return;
+
+			return span({ class: 'hint-optional hint-optional-left',
+					'data-hint': processingStep._status.map(function (status) {
+					var result = cert.constructor.label;
+					if (status) {
+						result += ' - ' + status;
+					}
+					return result;
+				}) },
+				span({ class: ['label-reg',
+					_if(businessProcess._isRejected, "rejected",
+						_if(processingStep._isApproved, "approved",
+							_if(processingStep._isReady, "ready")))] }, cert.constructor.abbr));
+		});
+	}
 }];
