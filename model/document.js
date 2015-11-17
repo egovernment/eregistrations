@@ -50,6 +50,7 @@ module.exports = memoize(function (db) {
 		isCertificate: { type: db.Boolean, value: function (_observe) {
 			return this.owner === this.master.certificates.map;
 		} },
+		// Returns processing ProcessingStep if it exists on a certificate
 		processingStep: {
 			type: ProcessingStep,
 			value: function () {
