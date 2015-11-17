@@ -57,8 +57,10 @@ exports.step = function () {
 					name: this.businessProcess.submissionForms.__id__ + '/isAffidavitSigned',
 					'data-type': 'boolean',
 					value: '0'
-				})), " ", span(_("I declare under oath that the information entered into the system is " +
-					"correct, and I accept that it would be saved and processed by involved institutions.")))
+				})), " ", span(_("I, ${ fullName }, declare under oath that the information, " +
+						"regarding registration of \"${ businessName }\", entered into the system is " +
+					"correct, and I accept that it would be saved and processed by involved institutions.",
+					{ fullName: this.user._fullName, businessName: this.businessProcess._businessName })))
 			),
 			div(p({ id: 'application-submit-button' },
 				_if(this.user._isDemo,
