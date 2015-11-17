@@ -31,11 +31,10 @@ exports.columns = [{
 	head: _("Inscriptions and controls"),
 	data: function (businessProcess) {
 		return list(businessProcess.certificates.applicable, function (cert) {
-			var processingStep;
-			processingStep = cert.processingStep;
+			var processingStep = cert.processingStep;
 			if (!processingStep) return;
 
-			span({ class: 'hint-optional hint-optional-left',
+			return span({ class: 'hint-optional hint-optional-left',
 					'data-hint': processingStep._status.map(function (status) {
 					var result = cert.constructor.label;
 					if (status) {
@@ -45,8 +44,8 @@ exports.columns = [{
 				}) },
 				span({ class: ['label-reg',
 					_if(businessProcess._isRejected, "rejected",
-						_if(processingStep, '_isApproved'), "approved",
-							_if(processingStep, '_isReady'), "ready")] }, cert.constructor.abbr));
+						_if(processingStep._isApproved, "approved",
+							_if(processingStep._isReady, "ready")))] }, cert.constructor.abbr));
 		});
 	}
 }];
