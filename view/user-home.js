@@ -37,15 +37,15 @@ exports['user-account-content'] = function () {
 			section({ class: 'submitted-main table-responsive-container' },
 				table(
 					{ class: 'submitted-user-data-table' },
-					thead(tr(list(columns, function (column) {
+					thead(tr(th(_("Status")), list(columns, function (column) {
 						return th({ class: column.class }, column.head);
-					}), th(_("Status")), th())),
+					}), th())),
 					tbody(
 						businessProcesses,
 						function (businessProcess) {
-							return tr(list(columns, function (column) {
+							return tr(td(businessProcess._status), list(columns, function (column) {
 								return td({ class: column.class }, column.data(businessProcess));
-							}), td(businessProcess._status),
+							}),
 								createActionsCell(businessProcess));
 						}
 					)
