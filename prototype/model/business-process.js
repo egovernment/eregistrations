@@ -162,11 +162,13 @@ BusinessProcessNew.prototype.defineNestedMap('branches', {
 });
 
 DocA = Document.extend('DocA', {}, {
+	abbr: { value: "DOC-A" },
 	label: { value: "Document A" },
 	legend: { value: "This document is issued as a result of Registration A" }
 });
 
 DocB = Document.extend('DocB', {}, {
+	abbr: { value: "DOC-B" },
 	label: { value: "Document B" },
 	legend: { value: "This document is issued as a result of Registration B" }
 });
@@ -406,6 +408,11 @@ processes.forEach(function (businessProcess) {
 	businessProcess.processingSteps.map.define('frontDesk', {
 		nested: true,
 		type: require('../../model/processing-steps/front-desk')(db)
+	});
+
+	businessProcess.processingSteps.map.define('processing', {
+		nested: true,
+		type: require('../../model/processing-step')(db)
 	});
 });
 
