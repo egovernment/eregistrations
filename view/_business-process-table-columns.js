@@ -7,13 +7,6 @@ exports.getServiceIcon = function (businessProcess) {
 	return i({ class: "fa fa-user" });
 };
 
-exports.getCertificateProcessingStatus = function (businessProcess, cert) {
-	var processingStep = businessProcess.processingSteps.map.processing;
-	return _if(businessProcess._isRejected, "rejected",
-		_if(resolve(processingStep, '_isApproved'), "approved",
-			_if(resolve(processingStep, '_isReady'), "ready")));
-};
-
 exports.columns = [{
 	head: _("Service"),
 	class: 'submitted-user-data-table-service',
