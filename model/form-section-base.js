@@ -2,12 +2,12 @@
 
 'use strict';
 
-var memoize          = require('memoizee/plain')
-  , validDb          = require('dbjs/valid-dbjs')
-  , defineStringLine = require('dbjs-ext/string/string-line')
-  , defineUInteger   = require('dbjs-ext/number/integer/u-integer')
-  , definePercentage = require('dbjs-ext/number/percentage')
-  , defineProgressRules     = require('./lib/progress-rules');
+var memoize             = require('memoizee/plain')
+  , validDb             = require('dbjs/valid-dbjs')
+  , defineStringLine    = require('dbjs-ext/string/string-line')
+  , defineUInteger      = require('dbjs-ext/number/integer/u-integer')
+  , definePercentage    = require('dbjs-ext/number/percentage')
+  , defineProgressRules = require('./lib/progress-rules');
 
 module.exports = memoize(function (db) {
 	var StringLine, Percentage, UInteger, ProgressRules;

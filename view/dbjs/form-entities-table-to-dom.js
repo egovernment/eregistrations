@@ -20,7 +20,8 @@ var _                   = require('mano').i18n.bind('Sections')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
   , generateId          = require('time-uuid')
   , loc                 = require('mano/lib/client/location')
-  , ns                  = require('mano').domjs.ns;
+  , ns                  = require('mano').domjs.ns
+  , progressRules       = require('../components/progress-rules');
 
 require('./form-section-base');
 
@@ -64,7 +65,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 				method: 'post'
 			}, resolvent.formResolvent, ns.p({ class: 'submit' },
 				ns.input({ type: 'submit', value: _("Submit") }))) : undefined,
-			require('../components/progress-rules')(this, { translationInserts: translationInserts }),
+			progressRules(this, { translationInserts: translationInserts }),
 			ns.div({ class: 'entities-overview-table-wrapper', id: resolvent.affectedSectionId },
 				ns.table(
 					{ class: ns._if(ns.not(ns.eq(tableData._size, 0)),

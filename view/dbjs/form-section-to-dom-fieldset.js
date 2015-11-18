@@ -15,7 +15,8 @@
 var d  = require('d')
   , db = require('mano').db
   , ns = require('mano').domjs.ns
-  , normalizeOptions = require('es5-ext/object/normalize-options');
+  , normalizeOptions = require('es5-ext/object/normalize-options')
+  , progressRules    = require('../components/progress-rules');
 
 require('./form-section-base');
 
@@ -33,7 +34,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		legacy = this.getLegacy(options.formId, options);
 		customizeData.arrayResult = [options.prepend,
 			resolvent.formResolvent,
-			require('../components/progress-rules')(this),
+			progressRules(this),
 			customizeData.fieldset = ns.fieldset(normalizeOptions({
 				id: resolvent.affectedSectionId,
 				class: 'form-elements',

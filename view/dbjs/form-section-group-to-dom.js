@@ -18,7 +18,8 @@ var _  = require('mano').i18n.bind('Sections')
   , db = require('mano').db
   , ns = require('mano').domjs.ns
   , find = require('es5-ext/array/#/find')
-  , forEach = require('es5-ext/object/for-each');
+  , forEach = require('es5-ext/object/for-each')
+  , progressRules = require('../components/progress-rules');
 
 require('./form-section-to-dom-fieldset');
 require('./form-section-base');
@@ -55,7 +56,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 							ns.md(this._legend)))]),
 				options.prepend,
 				mainFormResolvent.formResolvent,
-				require('../components/progress-rules')(this),
+				progressRules(this),
 				ns.div({ id: mainFormResolvent.affectedSectionId }, ns.list(this.sections,
 					function (subSection, subSectionName) {
 						customizeData.subSections[subSectionName] = {};
