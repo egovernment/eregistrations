@@ -24,7 +24,7 @@ module.exports = function (driver, keyPaths) {
 		fragment.promise = driver.getDirect(objId)(function (data) {
 			if (data) fragment.update(objId, data);
 			return deferred.map(keyPaths, function (keyPath) {
-				return driver.getComputed(objId, keyPath)(function (data) {
+				return driver.getComputed(objId + '/' + keyPath)(function (data) {
 					if (data) assimilateEvent(fragment, objId + '/' + keyPath, data);
 				});
 			});
