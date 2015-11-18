@@ -14,10 +14,10 @@ module.exports = function (driver, ns) {
 	ensureDriver(driver);
 	ns = ensureString(ns);
 	fragment = new Fragment();
-	fragment.promise = driver.getCustomNs(ns)(function (data) {
+	fragment.promise = driver.getReducedNs(ns)(function (data) {
 		data.forEach(function (data) { assimilateEvent(fragment, data.id, data.data); });
 	});
-	driver.on('custom:' + ns, function (event) {
+	driver.on('reduced:' + ns, function (event) {
 		assimilateEvent(fragment, event.id, event.data);
 	});
 	return fragment;

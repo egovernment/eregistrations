@@ -21,10 +21,10 @@ module.exports = function (driver, keyPaths) {
 		var fragment = fragments[objId];
 		if (fragment) return fragment;
 		fragment = fragments[objId] = new Fragment();
-		fragment.promise = driver.getValue(objId)(function (data) {
+		fragment.promise = driver.getDirect(objId)(function (data) {
 			if (data) fragment.update(objId, data);
 			return deferred.map(keyPaths, function (keyPath) {
-				return driver.getIndexedValue(objId, keyPath)(function (data) {
+				return driver.getComputed(objId + '/' + keyPath)(function (data) {
 					if (data) assimilateEvent(fragment, objId + '/' + keyPath, data);
 				});
 			});

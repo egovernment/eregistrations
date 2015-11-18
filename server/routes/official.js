@@ -103,7 +103,7 @@ module.exports = exports = function (data) {
 			computedEvents = deferred.map(list, function (obj) {
 				var objId = obj.__id__;
 				return deferred.map(bpListComputedProps, function (keyPath) {
-					return dbDriver.getIndexedValue(objId, keyPath)(function (data) {
+					return dbDriver.getComputed(objId + '/' + keyPath)(function (data) {
 						if (isArray(data.value)) {
 							return data.value.map(function (data) {
 								var key = data.key ? '*' + data.key : '';
