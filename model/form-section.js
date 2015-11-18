@@ -208,7 +208,7 @@ module.exports = memoize(function (db) {
 
 			if (!section.resolventStatus) return 0;
 
-			section.applicablePropertyNames.forEach(function (name) {
+			_observe(section.applicablePropertyNames).forEach(function (name) {
 				resolved = section.master.resolveSKeyPath(name, _observe);
 
 				if (!resolved) {
@@ -232,7 +232,7 @@ module.exports = memoize(function (db) {
 				if (!resolvedResolvent) return 0;
 
 				isResolventExcluded = section.isPropertyExcludedFromStatus(resolvedResolvent, _observe);
-				if (_observe(resolvedResolvent.observable) !== _observe(section.resolventValue)) {
+				if (_observe(resolvedResolvent.observable) !== _observe(section._resolventValue)) {
 					return isResolventExcluded ? 0 : 1;
 				}
 				if (!isResolventExcluded) {

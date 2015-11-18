@@ -64,7 +64,7 @@ module.exports = memoize(function (db) {
 				if (!resolvedResolvent) return 0;
 
 				isResolventExcluded = section.isPropertyExcludedFromStatus(resolvedResolvent, _observe);
-				if (_observe(resolvedResolvent.observable) !== _observe(section.resolventValue)) {
+				if (_observe(resolvedResolvent.observable) !== _observe(section._resolventValue)) {
 					if (isResolventExcluded) return 1;
 
 					if (resolvedResolvent.descriptor.multiple) {
@@ -99,7 +99,7 @@ module.exports = memoize(function (db) {
 				if (!resolvedResolvent) return 0;
 
 				isResolventExcluded = section.isPropertyExcludedFromStatus(resolvedResolvent, _observe);
-				if (_observe(resolvedResolvent.observable) !== _observe(section.resolventValue)) {
+				if (_observe(resolvedResolvent.observable) !== _observe(section._resolventValue)) {
 					return isResolventExcluded ? 0 : 1;
 				}
 
