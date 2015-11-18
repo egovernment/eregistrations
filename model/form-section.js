@@ -206,7 +206,7 @@ module.exports = memoize(function (db) {
 			section = this.owner.owner.owner;
 			invalid = _observe(section.missingRequiredPropertyNames).size;
 
-			if (!section.resolventStatus) return 0;
+			if (!_observe(section._resolventStatus)) return 0;
 
 			_observe(section.applicablePropertyNames).forEach(function (name) {
 				resolved = section.master.resolveSKeyPath(name, _observe);
