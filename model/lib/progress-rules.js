@@ -39,6 +39,17 @@ module.exports = memoize(function (db/*, options*/) {
 				return weightSum;
 			}
 		},
+		displayable: {
+			type: ProgressRule,
+			multiple: true,
+			value: function (_observe) {
+				var result = [];
+				this.invalid.forEach(function (rule) {
+					if (rule.message) result.push(rule);
+				});
+				return result;
+			}
+		},
 		invalid: {
 			type: ProgressRule,
 			multiple: true,

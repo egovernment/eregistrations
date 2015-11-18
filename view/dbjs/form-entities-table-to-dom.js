@@ -20,14 +20,15 @@ var _                   = require('mano').i18n.bind('Sections')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
   , generateId          = require('time-uuid')
   , loc                 = require('mano/lib/client/location')
-  , ns                  = require('mano').domjs.ns;
+  , ns                  = require('mano').domjs.ns
+  , progressRules       = require('../components/progress-rules');
 
 require('./form-section-base');
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
 		var self = this, options, url, customizeData, resolvent, tableData, resolved, getAddUrl,
-			collectionType, addButton, isMapMode, _d = _, translationInserts;
+			collectionType, addButton, isMapMode, translationInserts;
 		options = Object(arguments[1]);
 		customizeData = { master: options.master || this.master };
 		url = options.url || ns.url;
@@ -64,19 +65,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 				method: 'post'
 			}, resolvent.formResolvent, ns.p({ class: 'submit' },
 				ns.input({ type: 'submit', value: _("Submit") }))) : undefined,
-			ns._if(not(self._isUnresolved),
-				ns._if(gtOrEq(self.progressRules.invalid._size, 1),
-					div({ class: 'entities-overview-info' },
-						ns._if(eq(self.progressRules.invalid._size, 1),
-							p(self.progressRules.invalid._first.map(function (rule) {
-								if (!rule) return;
-								return _d(rule.message, translationInserts);
-							})),
-							ul(self.progressRules.invalid,
-								function (rule) {
-									return ns.li(_d(rule.message, translationInserts));
-								}))))),
-
+			progressRules(this, { translationInserts: translationInserts }),
 			ns.div({ class: 'entities-overview-table-wrapper', id: resolvent.affectedSectionId },
 				ns.table(
 					{ class: ns._if(ns.not(ns.eq(tableData._size, 0)),
