@@ -1,7 +1,8 @@
 'use strict';
 
-var formatLastModified = require('./utils/last-modified'),
-_ = require('mano').i18n.bind('User');
+var formatLastModified = require('./utils/last-modified')
+  , _ = require('mano').i18n.bind('User')
+  , ProcessingStepStatus = require('mano').db.ProcessingStepStatus;
 
 exports.getServiceIcon = function (businessProcess) {
 	return i({ class: "fa fa-user" });
@@ -35,13 +36,15 @@ exports.columns = [{
 			if (!processingStep) return;
 
 			return span({ class: 'hint-optional hint-optional-left',
-					'data-hint': processingStep._status.map(function (status) {
-					var result = cert.constructor.label;
-					if (status) {
-						result += ' - ' + status;
-					}
-					return result;
-				}) },
+					'data-hint': _if(businessProcess._isRejected,
+							cert.constructor.label + ' - ' + ProcessingStepStatus.meta.rejected.label,
+						processingStep._resolvedStatus.map(function (status) {
+						var result = cert.constructor.label;
+						if (status) {
+							result += ' - ' + ProcessingStepStatus.meta[status].label;
+						}
+						return result;
+					})) },
 				span({ class: ['label-reg',
 					_if(businessProcess._isRejected, "rejected",
 						_if(processingStep._isApproved, "approved",
