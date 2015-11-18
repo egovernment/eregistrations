@@ -31,9 +31,9 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 
 		resolvent = this.getFormResolvent(options);
 		legacy = this.getLegacy(options.formId, options);
-
 		customizeData.arrayResult = [options.prepend,
 			resolvent.formResolvent,
+			require('../components/progress-rules')(this),
 			customizeData.fieldset = ns.fieldset(normalizeOptions({
 				id: resolvent.affectedSectionId,
 				class: 'form-elements',

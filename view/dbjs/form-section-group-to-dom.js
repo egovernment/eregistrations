@@ -55,6 +55,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 							ns.md(this._legend)))]),
 				options.prepend,
 				mainFormResolvent.formResolvent,
+				require('../components/progress-rules')(this),
 				ns.div({ id: mainFormResolvent.affectedSectionId }, ns.list(this.sections,
 					function (subSection, subSectionName) {
 						customizeData.subSections[subSectionName] = {};
