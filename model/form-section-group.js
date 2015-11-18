@@ -25,6 +25,17 @@ module.exports = memoize(function (db) {
 			type: db.Object,
 			nested: true
 		},
+		applicableSections: {
+			multiple: true,
+			type: FormSectionBase,
+			value: function (_observe) {
+				var result = [];
+				this.sections.forEach(function (section) {
+					if (_observe(section._isApplicable)) result.push(section);
+				});
+				return result;
+			}
+		},
 		lastEditStamp: {
 			value: function (_observe) {
 				var res = 0, resolvedResolvent;
@@ -37,7 +48,7 @@ module.exports = memoize(function (db) {
 					res = _observe(resolvedResolvent.object['_' + resolvedResolvent.key]._lastModified);
 				}
 
-				this.sections.forEach(function (section) {
+				this.applicableSections.forEach(function (section) {
 					if (_observe(section._lastEditStamp) > res) res = section.lastEditStamp;
 				});
 
@@ -81,7 +92,7 @@ module.exports = memoize(function (db) {
 				}
 			}
 
-			section.sections.forEach(function (section) {
+			_observe(section._applicableSections).forEach(function (section) {
 				sum += (_observe(section._status) * _observe(section._weight));
 			});
 
@@ -108,7 +119,7 @@ module.exports = memoize(function (db) {
 				}
 			}
 
-			section.sections.forEach(function (section) {
+			_observe(section._applicableSections).forEach(function (section) {
 				weightTotal += _observe(section._weight);
 			});
 
