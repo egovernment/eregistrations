@@ -22,7 +22,7 @@ exports['meta-admin-main'] = {
 				fieldset(
 					{ class: 'form-elements i18n-panel' },
 					ul(
-						toArray(exports._i18n()),
+						toArray(exports._i18n(), null, null, true),
 						function (translation) {
 							if (isPluralKey(translation[0])) {
 								plural = resolvePluralKey(translation[0]);
