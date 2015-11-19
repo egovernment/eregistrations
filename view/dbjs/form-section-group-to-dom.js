@@ -13,11 +13,10 @@
  */
 'use strict';
 
-var _       = require('mano').i18n.bind('Sections')
-  , d       = require('d')
-  , db      = require('mano').db
-  , ns      = require('mano').domjs.ns
-  , forEach = require('es5-ext/object/for-each');
+var _  = require('mano').i18n.bind('Sections')
+  , d  = require('d')
+  , db = require('mano').db
+  , ns = require('mano').domjs.ns;
 
 require('./form-section-group-to-dom-fieldset');
 require('./form-section-base');
@@ -70,10 +69,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		), resolvent.legacyScript];
 
 		if (typeof options.customize === 'function') {
-			forEach(this.sections, function (subSection, subSectionName) {
-				customizeData.subSections[subSectionName] = fieldsetResult.subSections[subSectionName];
-			});
-
+			customizeData.subSections = fieldsetResult.subSections;
 			options.customize.call(this, customizeData);
 		}
 
