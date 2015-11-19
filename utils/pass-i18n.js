@@ -4,7 +4,7 @@
 
 'use strict';
 
-var ensureObject = require('es5-ext/object/ensure-object')
+var ensureObject = require('es5-ext/object/valid-object')
   , re           = /(?:\?|&)i18n=(0|1)(?:&|$)/;
 
 module.exports = function (env, locale) {
