@@ -48,6 +48,8 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 					return ns.div(
 						{ class: 'section-primary-sub', id: subSection.domId },
 						ns._if(subSection.label, ns.h3(subSection.label)),
+						ns._if(subSection._legend, ns.div({ class: 'section-primary-legend' },
+							ns.md(subSection._legend))),
 						customizeData.subSections[subSectionName].arrayResult
 							= subSection.toDOMFieldset(document, fieldsetOptions)
 					);
