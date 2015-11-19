@@ -30,7 +30,7 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 		  , customizeData   = { master: master }
 		  , fieldsetOptions = {
 			master: master,
-			formId: this.domId
+			formId: options.formId
 		};
 
 		customizeData.arrayResult = [

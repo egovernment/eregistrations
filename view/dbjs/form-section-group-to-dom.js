@@ -33,7 +33,8 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		  , sectionFieldsetOptions = {
 			prepend: options.prepend,
 			append: options.append,
-			master: master
+			master: master,
+			formId: this.domId
 		};
 
 		if (options.isChildEntity) {
