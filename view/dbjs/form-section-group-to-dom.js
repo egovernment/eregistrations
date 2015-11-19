@@ -16,71 +16,60 @@
 var _  = require('mano').i18n.bind('Sections')
   , d  = require('d')
   , db = require('mano').db
-  , ns = require('mano').domjs.ns
-  , find = require('es5-ext/array/#/find')
-  , forEach = require('es5-ext/object/for-each')
-  , progressRules = require('../components/progress-rules');
+  , ns = require('mano').domjs.ns;
 
-require('./form-section-to-dom-fieldset');
+require('./form-section-group-to-dom-fieldset');
 require('./form-section-base');
 
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var mainFormResolvent, actionUrl, options = Object(arguments[1]), url
-		  , customizeData, master = options.master || this.master, fieldsetOptions;
-		customizeData = { subSections: {}, master: master };
-		mainFormResolvent = this.getFormResolvent(options);
-		url = options.url || ns.url;
-		actionUrl = url(this.actionUrl);
+		var options         = Object(arguments[1])
+		  , url             = options.url || ns.url
+		  , actionUrl       = url(this.actionUrl)
+		  , master          = options.master || this.master
+		  , resolvent       = this.getFormResolvent(options)
+		  , customizeData   = { subSections: {}, master: master }
+		  , fieldsetResult
+		  , sectionFieldsetOptions = {
+			prepend: options.prepend,
+			append: options.append,
+			master: master
+		};
+
 		if (options.isChildEntity) {
 			actionUrl = master.constructor.prototype === master ?
 					url(this.actionUrl + '-add') :
 					url(this.actionUrl, master.__id__);
 		}
-		fieldsetOptions = {
-			master: master,
-			formId: this.domId
-		};
+
 		customizeData.arrayResult = [customizeData.container = ns.section(
 			{ class: 'section-primary' },
-			customizeData.form = ns.form({ id: this.domId, method: 'post',
+			customizeData.form = ns.form(
+				{
+					id: this.domId,
+					method: 'post',
 					action: actionUrl,
 					class: ns._if(ns.eq(
-					this._status,
-					1
-				), 'completed form-elements', 'form-elements')
+						this._status,
+						1
+					), 'completed form-elements', 'form-elements')
 				},
-				ns._if(this._label,
-					[ns.h2(this._label), ns.hr(),
-						ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
-							ns.md(this._legend)))]),
-				options.prepend,
-				mainFormResolvent.formResolvent,
-				progressRules(this),
-				ns.div({ id: mainFormResolvent.affectedSectionId }, ns.list(this.sections,
-					function (subSection, subSectionName) {
-						customizeData.subSections[subSectionName] = {};
-						return ns.div({ class: 'section-primary-sub', id: subSection.domId },
-							ns._if(subSection.label, ns.h3(subSection.label)),
-							customizeData.subSections[subSectionName].arrayResult =
-								subSection.toDOMFieldset(document, fieldsetOptions));
-					}, this)).extend(options.append),
+				ns._if(this._label, [
+					ns.h2(this._label),
+					ns.hr(),
+					ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
+						ns.md(this._legend)))]),
+				fieldsetResult = this.toDOMFieldset(document, sectionFieldsetOptions),
 				ns.p({ class: 'submit-placeholder input' },
 					ns.input({ type: 'submit', value: _("Submit") })),
-				ns.p(
-					{ class: 'section-primary-scroll-top' },
+				ns.p({ class: 'section-primary-scroll-top' },
 					ns.a({ onclick: 'window.scroll(0, 0)' },
-						ns.span({ class: 'fa fa-arrow-up' }, "Back to top"))
-				)
-				)
-		), mainFormResolvent.legacyScript];
+						ns.span({ class: 'fa fa-arrow-up' }, "Back to top")))
+			)
+		), resolvent.legacyScript];
 
 		if (typeof options.customize === 'function') {
-			forEach(customizeData.subSections, function (subSection) {
-				subSection.fieldset = find.call(subSection.arrayResult, function (el) {
-					return el && el.nodeName === 'FIELDSET';
-				})._dbjsFieldset;
-			});
+			customizeData.subSections = fieldsetResult.subSections;
 			options.customize.call(this, customizeData);
 		}
 
