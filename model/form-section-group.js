@@ -7,14 +7,12 @@
 var memoize               = require('memoizee/plain')
   , validDb               = require('dbjs/valid-dbjs')
   , defineFormSectionBase = require('./form-section-base')
-  , defineFormSection     = require('./form-section')
   , defineProgressRule    = require('./lib/progress-rule');
 
 module.exports = memoize(function (db) {
-	var FormSectionGroup, FormSectionBase, FormSection, ProgressRule;
+	var FormSectionGroup, FormSectionBase, ProgressRule;
 	validDb(db);
 	FormSectionBase = defineFormSectionBase(db);
-	FormSection     = defineFormSection(db);
 	ProgressRule    = defineProgressRule(db);
 	FormSectionGroup = FormSectionBase.extend('FormSectionGroup', {
 		// A map of child sections.
@@ -56,7 +54,7 @@ module.exports = memoize(function (db) {
 			}
 		}
 	});
-	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSection;
+	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSectionBase;
 	FormSectionGroup.prototype.sections._descriptorPrototype_.nested = true;
 
 	FormSectionGroup.prototype.progressRules.map.define('subSections', {
