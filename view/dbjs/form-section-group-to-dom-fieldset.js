@@ -45,6 +45,7 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 			ns.div({ id: resolvent.affectedSectionId }, ns.list(this.sections,
 				function (subSection, subSectionName) {
 					customizeData.subSections[subSectionName] = {};
+					customizeData.subSections[subSectionName].object = subSection;
 					return ns.div(
 						{ class: 'section-primary-sub', id: subSection.domId },
 						ns._if(subSection.label, ns.h3(subSection.label)),
