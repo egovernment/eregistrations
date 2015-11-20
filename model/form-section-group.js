@@ -59,12 +59,12 @@ module.exports = memoize(function (db) {
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSection;
 	FormSectionGroup.prototype.sections._descriptorPrototype_.nested = true;
 
-	FormSectionGroup.prototype.progressRules.map.define('missingFields', {
+	FormSectionGroup.prototype.progressRules.map.define('subSections', {
 		type: ProgressRule,
 		nested: true
 	});
 
-	FormSectionGroup.prototype.progressRules.map.missingFields.setProperties({
+	FormSectionGroup.prototype.progressRules.map.subSections.setProperties({
 		progress: function (_observe) {
 			var sum = 0, resolvedResolvent, isResolventExcluded, weightModifier = 0, section;
 			section = this.owner.owner.owner;
@@ -96,9 +96,9 @@ module.exports = memoize(function (db) {
 				sum += (_observe(section._status) * _observe(section._weight));
 			});
 
-			if (!(_observe(section._weight) + weightModifier)) return 1;
+			if (!(this.weight + weightModifier)) return 1;
 
-			return sum / (_observe(section._weight) + weightModifier);
+			return sum / (this.weight + weightModifier);
 		},
 		weight: function (_observe) {
 			var weightTotal = 0, resolvedResolvent, isResolventExcluded, section;
