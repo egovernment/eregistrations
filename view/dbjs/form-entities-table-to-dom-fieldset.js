@@ -35,7 +35,8 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFie
 		url = options.url || ns.url;
 		resolvent = this.getFormResolvent(options);
 		resolved = resolvePropertyPath(customizeData.master, this.propertyName);
-		translationInserts = { max: self._max, min: self._min };
+		translationInserts = normalizeOptions({ max: self._max, min: self._min },
+				options.translationInserts);
 		tableData = resolved.value;
 		if (tableData instanceof db.NestedMap) {
 			isMapMode = true;

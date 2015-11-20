@@ -36,7 +36,7 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 		customizeData.arrayResult = [
 			options.prepend,
 			resolvent.formResolvent,
-			progressRules(this)
+			progressRules(this, { translationInserts: options.translationInserts })
 		];
 
 		customizeData.subSections = customizeData.arrayResult.subSections = {};
