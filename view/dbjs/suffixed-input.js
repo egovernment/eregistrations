@@ -2,8 +2,8 @@
 // Use like this:
 //
 // var db              = require('../../db')
-//   , StringLintInput = require('dbjs-dom/input/string/string-line').Input
-//   , SufixedInput    = require('eregistrations/view/dbjs/suffixed-input')(StringLintInput);
+//   , StringLineInput = require('dbjs-dom/input/string/string-line').Input
+//   , SufixedInput    = require('eregistrations/view/dbjs/suffixed-input')(StringLineInput);
 //
 // db.BusinessProcess.prototype.getOwnDescriptor('property').DOMInput = SufixedInput.Input;
 //
