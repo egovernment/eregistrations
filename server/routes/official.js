@@ -21,6 +21,7 @@ var aFrom               = require('es5-ext/array/from')
   , memoize             = require('memoizee')
   , serializeValue      = require('dbjs/_setup/serialize/value')
   , unserializeValue    = require('dbjs/_setup/unserialize/value')
+  , resolveFilter       = require('dbjs-persistence/lib/resolve-filter')
   , ObservableSet       = require('observable-set/primitive')
   , mano                = require('mano')
   , QueryHandler        = require('../../utils/query-handler')
@@ -32,6 +33,10 @@ var aFrom               = require('es5-ext/array/from')
   , isArray = Array.isArray, slice = Array.prototype.slice, push = Array.prototype.push
   , ceil = Math.ceil, create = Object.create
   , defineProperty = Object.defineProperty, stringify = JSON.stringify;
+
+var compareIndexMeta = function (meta1, meta2) {
+	return meta1.name.localeCompare(meta2.name) || meta1.value.localeCompare(meta2.value);
+};
 
 // Business processes table query handler
 var getTableQueryHandler = function (statusMap) {
@@ -59,11 +64,11 @@ var getBusinessProcessQueryHandler = function (indexName) {
 var getBaseSet = memoize(function (indexName, value) {
 	var set = new ObservableSet();
 	mano.dbDriver.on('computed:' + indexName, function (event) {
-		if (event.data.value === value) set.add(event.ownerId);
+		if (resolveFilter(value, event.data.value)) set.add(event.ownerId);
 		else set.delete(event.ownerId);
 	});
 	return mano.dbDriver.searchComputed(indexName, function (ownerId, data) {
-		if (data.value === value) set.add(ownerId);
+		if (resolveFilter(value, data.value)) set.add(ownerId);
 	})(set);
 }, { primitive: true });
 
@@ -173,8 +178,17 @@ module.exports = exports = function (conf) {
 	}
 
 	var getTableData = memoize(function (query) {
-		var indexMeta = exports.getIndexMeta(query, conf);
-		return getBaseSet(indexMeta.name, indexMeta.value)(function (baseSet) {
+		var indexMeta = exports.getIndexMeta(query, conf), promise;
+		if (isArray(indexMeta)) {
+			promise = deferred.map(indexMeta.sort(compareIndexMeta), function (indexMeta) {
+				return getBaseSet(indexMeta.name, indexMeta.value);
+			})(function (sets) {
+				return aFrom(sets).reduce(function (set1, set2) { return set1.and(set2); });
+			});
+		} else {
+			promise = getBaseSet(indexMeta.name, indexMeta.value);
+		}
+		return promise(function (baseSet) {
 			if (!query.search) return getSortedArray(baseSet, allIndexName);
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
 				return getFilteredSet(baseSet, value)(function (set) {
