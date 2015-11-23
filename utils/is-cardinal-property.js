@@ -2,7 +2,12 @@
 
 var db                  = require('mano').db
   , ensureStringifiable = require('es5-ext/object/validate-stringifiable-value');
-
+/**
+ * Test if given property of a given object is cardinalPropertyKey of NestedMap
+ * @param object
+ * @param property - expected cardinal propery
+ * @returns {boolean}
+ */
 module.exports = function (object, property) {
 	var isCardinal = false, keyPath = [property];
 	ensureStringifiable(property);
