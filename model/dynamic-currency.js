@@ -18,11 +18,11 @@
 // BusinessProcess.prototype.defineProperties({
 //     sharesCapital: {
 //         type: CapitalCurrency
-//         required: true
+//         nested: true
 //     },
 //     investmentCapital: {
 //         type: CapitalCurrency
-//         required: true
+//         nested: true
 //     }
 // });
 
