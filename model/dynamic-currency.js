@@ -30,7 +30,6 @@
 
 var validDbType      = require('dbjs/valid-dbjs-type')
   , endsWith         = require('es5-ext/string/#/ends-with')
-  , defineCurrency   = require('dbjs-ext/number/currency')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineCreateEnum = require('dbjs-ext/create-enum')
   , uncapitalize     = require('es5-ext/string/#/uncapitalize')
@@ -39,17 +38,25 @@ var validDbType      = require('dbjs/valid-dbjs-type')
   , Map              = require('es6-map');
 
 module.exports = function (Target, typeName, currencies) {
-	var db = validDbType(Target).database, currenciesMap = []
-	  , Currency, StringLine, currencyChoiceTypeName, currencyChoicePropertyName;
+	var db            = validDbType(Target).database
+	  , currenciesMap = []
+	  , Currency      = db.Currency
+	  , StringLine, currencyChoiceTypeName, currencyChoicePropertyName;
 
 	// Validate typeName ends with Currency
 	if (!endsWith.call(typeName, 'Currency')) {
 		throw new TypeError(typeName + " dynamic currency class misses \'Currency\' postfix.");
 	}
 
+	if (!Currency) {
+		throw new TypeError("Currency type not defined. Did you include currencies array?");
+	}
+
 	// Prepare currenciesMap
 	aFrom(ensureIterable(currencies)).forEach(function (CurrencyType) {
-		validDbType(CurrencyType);
+		if (!Currency.isPrototypeOf(validDbType(CurrencyType))) {
+			throw new TypeError(CurrencyType + " is not a Currency.");
+		}
 
 		currenciesMap.push([
 			uncapitalize.call(CurrencyType.__id__),
@@ -57,7 +64,6 @@ module.exports = function (Target, typeName, currencies) {
 		]);
 	});
 
-	Currency = defineCurrency(db);
 	StringLine = defineStringLine(db);
 	defineCreateEnum(db);
 
