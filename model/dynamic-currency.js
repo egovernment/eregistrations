@@ -34,33 +34,36 @@ var validDbType      = require('dbjs/valid-dbjs-type')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineCreateEnum = require('dbjs-ext/create-enum')
   , uncapitalize     = require('es5-ext/string/#/uncapitalize')
+  , ensureIterable   = require('es5-ext/iterable/validate-object')
+  , aFrom            = require('es5-ext/array/from')
   , Map              = require('es6-map');
 
 module.exports = function (Target, typeName, currencies) {
-	var db            = validDbType(Target).database
-	  , Currency      = defineCurrency(db)
-	  , StringLine    = defineStringLine(db)
-	  , currenciesMap = []
-	  , currencyChoiceTypeName, currencyChoicePropertyName;
+	var db = validDbType(Target).database, currenciesMap = []
+	  , Currency, StringLine, currencyChoiceTypeName, currencyChoicePropertyName;
 
 	// Validate typeName ends with Currency
 	if (!endsWith.call(typeName, 'Currency')) {
 		throw new TypeError(typeName + " dynamic currency class misses \'Currency\' postfix.");
 	}
 
-	defineCreateEnum(db);
-
-	// Prepare currency choice type and property name
-	currencyChoiceTypeName = typeName + 'TypeChoice';
-	currencyChoicePropertyName = uncapitalize.call(typeName) + 'Type';
-
 	// Prepare currenciesMap
-	currencies.forEach(function (CurrencyType) {
+	aFrom(ensureIterable(currencies)).forEach(function (CurrencyType) {
+		validDbType(CurrencyType);
+
 		currenciesMap.push([
 			uncapitalize.call(CurrencyType.__id__),
 			{ label: CurrencyType.symbol }
 		]);
 	});
+
+	Currency = defineCurrency(db);
+	StringLine = defineStringLine(db);
+	defineCreateEnum(db);
+
+	// Prepare currency choice type and property name
+	currencyChoiceTypeName = typeName + 'TypeChoice';
+	currencyChoicePropertyName = uncapitalize.call(typeName) + 'Type';
 
 	// Define enum for currency choice property
 	var CurrencyTypeChoice = StringLine.createEnum(currencyChoiceTypeName, new Map(currenciesMap));
@@ -70,6 +73,7 @@ module.exports = function (Target, typeName, currencies) {
 		type: CurrencyTypeChoice,
 		required: true
 	});
+
 
 	// Create new type for use by target.
 	return db.Object.extend(typeName, {
