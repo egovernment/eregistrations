@@ -74,7 +74,6 @@ module.exports = function (Target, typeName, currencies) {
 		required: true
 	});
 
-
 	// Create new type for use by target.
 	return db.Object.extend(typeName, {
 		amount: { type: Currency },
