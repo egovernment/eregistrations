@@ -44,7 +44,17 @@ module.exports = memoize(function (db/*, options*/) {
 		// It has its use in "business update" applications where we allow updates
 		// of old registrations done at the counter
 		isFromEregistrations: { type: db.Boolean, value: true,
-			label: _("Has registration been made online?") }
+			label: _("Has registration been made online?") },
+
+		// String over which business processes can be searched
+		// through interface panel (computed value is later indexed by persistence engine)
+		// Below implementation just provides businessName, but it also shows
+		// how many properties can be reliably grouped into one result string for search
+		searchString: { type: db.String, value: function () {
+			var arr = [];
+			if (this.businessName) arr.push(this.businessName.toLowerCase());
+			return arr.join('\x02');
+		} }
 	});
 
 	BusinessProcess.prototype.submissionNumber.defineProperties({
