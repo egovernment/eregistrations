@@ -31,12 +31,12 @@ module.exports = memoize(function (db/*, options*/) {
 			var objects = [], cardinalPropertyKey = this.cardinalPropertyKey;
 			if (!cardinalPropertyKey) return;
 			_observe(this.map, true).forEach(function (object) {
-				if (_observe(object.getObservable(cardinalPropertyKey)) == null) return;
+				if (_observe(object.resolveSKeyPath(cardinalPropertyKey).observable) == null) return;
 				objects.push(object);
 			});
 			return objects.sort(function (a, b) {
-				return a.getDescriptor(cardinalPropertyKey)._lastOwnModified_ -
-					b.getDescriptor(cardinalPropertyKey)._lastOwnModified_;
+				return a.resolveSKeyPath(cardinalPropertyKey).descriptor._lastOwnModified_ -
+					b.resolveSKeyPath(cardinalPropertyKey).descriptor._lastOwnModified_;
 			});
 		} }
 	});

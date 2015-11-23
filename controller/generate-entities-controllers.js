@@ -108,7 +108,7 @@ module.exports = function (routes, data) {
 		if (targetMap) {
 			cardinalPropertyKey = call.call(targetMap, this).cardinalPropertyKey;
 			forEach(data, function (field, key) {
-				if (key.endsWith(cardinalPropertyKey) && (field == null)) {
+				if (key.endsWith('/' + cardinalPropertyKey) && !field) {
 					throw new Error('Missing required property: ' + cardinalPropertyKey,
 						'INVALID_INPUT');
 				}

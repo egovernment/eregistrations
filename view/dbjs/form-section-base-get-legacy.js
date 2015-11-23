@@ -12,8 +12,8 @@ var forEach             = require('es5-ext/object/for-each')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
   , d                   = require('d')
   , generateId          = require('time-uuid')
-  , isNested            = require('dbjs/is-dbjs-nested-object')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
+  , isCardinalProperty  = require('../../utils/is-cardinal-property')
 
   , db = require('mano').db
   , ns = require('mano').domjs.ns;
@@ -33,15 +33,9 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 					master.constructor.__id__ + ". Check your model.");
 			}
 			formFieldPath = resolved.id;
-			if (isNested(this.propertyMaster) &&
-					// Ensure it's really instance of NestedMap
-					(this.propertyMaster.owner.owner instanceof db.NestedMap) &&
-					// Ensure it's not about nested property in propertyMaster, otherwise resolved.key
-					// may accidentally match
-					(resolved.object === this.propertyMaster)) {
-				if (this.propertyMaster.owner.owner.cardinalPropertyKey === resolved.key) {
-					defaultOptions = { required: true };
-				}
+
+			if (isCardinalProperty(resolved.object, resolved.key)) {
+				defaultOptions = { required: true };
 			}
 			propOptions = defaultOptions;
 			if (this.inputOptions.has(propName)) {
