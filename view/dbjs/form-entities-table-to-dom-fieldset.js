@@ -131,7 +131,8 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFie
 				ns.p(
 					customizeData.addButton = addButton = ns.a(
 						{ class: 'button-regular', href: getAddUrl() },
-						options.addButtonLabel || _("Add new")
+						options.addButtonLabel || _("Add ${ entityLabel }",
+							{ entityLabel: collectionType.prototype.label })
 					)
 				))
 		)];
