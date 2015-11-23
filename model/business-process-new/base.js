@@ -48,23 +48,18 @@ module.exports = memoize(function (db/*, options*/) {
 
 		// String over which business processes can be searched
 		// through interface panel (computed value is later indexed by persistence engine)
-		// Below implementation just provides businessName, but it also shows
-		// how many properties can be reliably grouped into one result string for search
 		searchString: { type: db.String, value: function () {
-			var arr = [];
+			var arr = [], submissionNumber = String(this.submissionNumber);
 			if (this.businessName) arr.push(this.businessName.toLowerCase());
+			if (submissionNumber) arr.push(this.submissionNumber.toLowerCase());
 			return arr.join('\x02');
 		} }
 	});
 
 	BusinessProcess.prototype.submissionNumber.defineProperties({
-		value: { type: StringLine, value: function () {
-			return this.number;
-		} },
+		value: { type: StringLine, value: function () { return this.number; } },
 		number: { type: UInteger, value: 0 },
-		toString: { value: function (opts) {
-			return this.value;
-		} }
+		toString: { value: function (opts) { return this.value; } }
 	});
 
 	BusinessProcess.prototype.defineNestedMap('statusLog',
