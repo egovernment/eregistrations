@@ -33,6 +33,7 @@ var validDbType      = require('dbjs/valid-dbjs-type')
   , defineCurrency   = require('dbjs-ext/number/currency')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineCreateEnum = require('dbjs-ext/create-enum')
+  , uncapitalize     = require('es5-ext/string/#/uncapitalize')
   , Map              = require('es6-map');
 
 module.exports = function (Target, typeName, currencies) {
@@ -51,12 +52,12 @@ module.exports = function (Target, typeName, currencies) {
 
 	// Prepare currency choice type and property name
 	currencyChoiceTypeName = typeName + 'TypeChoice';
-	currencyChoicePropertyName = typeName[0].toLowerCase() + typeName.slice(1) + 'Type';
+	currencyChoicePropertyName = uncapitalize.call(typeName) + 'Type';
 
 	// Prepare currenciesMap
 	currencies.forEach(function (CurrencyType) {
 		currenciesMap.push([
-			CurrencyType.__id__[0].toLowerCase() + CurrencyType.__id__.slice(1),
+			uncapitalize.call(CurrencyType.__id__),
 			{ label: CurrencyType.symbol }
 		]);
 	});
