@@ -5,7 +5,7 @@ var db                  = require('mano').db
 /**
  * Tests if given property of a given object is cardinalPropertyKey of NestedMap
  * @param object
- * @param property - expected cardinal propery
+ * @param property - expected cardinal property
  * @returns {boolean}
  */
 module.exports = function (object, property) {
