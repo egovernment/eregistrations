@@ -32,6 +32,7 @@ var validDbType      = require('dbjs/valid-dbjs-type')
   , endsWith         = require('es5-ext/string/#/ends-with')
   , defineCurrency   = require('dbjs-ext/number/currency')
   , defineStringLine = require('dbjs-ext/string/string-line')
+  , defineCreateEnum = require('dbjs-ext/create-enum')
   , Map              = require('es6-map');
 
 module.exports = function (Target, typeName, currencies) {
@@ -45,6 +46,8 @@ module.exports = function (Target, typeName, currencies) {
 	if (!endsWith.call(typeName, 'Currency')) {
 		throw new TypeError(typeName + " dynamic currency class misses \'Currency\' postfix.");
 	}
+
+	defineCreateEnum(db);
 
 	// Prepare currency choice type and property name
 	currencyChoiceTypeName = typeName + 'TypeChoice';
@@ -73,8 +76,14 @@ module.exports = function (Target, typeName, currencies) {
 		toString: { value: function (value) {
 			var choicePropName = this.constructor.currencyChoicePropertyName
 			  , typeName       = this.master.resolveSKeyPath(choicePropName).value
-			  , Type           = this.database[typeName[0].toUpperCase() + typeName.slice(1)]
-			  , amount         = this.amount || 0;
+			  , amount         = this.amount || 0
+			  , Type;
+
+			if (typeName) {
+				Type = this.database[typeName[0].toUpperCase() + typeName.slice(1)];
+			} else {
+				Type = this.database.Currency;
+			}
 
 			return (new Type(amount)).toString(this.object.getDescriptor(this.key));
 		} }
