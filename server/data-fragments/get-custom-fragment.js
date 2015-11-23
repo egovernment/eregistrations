@@ -17,8 +17,6 @@ module.exports = function (driver, ns) {
 	fragment.promise = driver.getReducedNs(ns)(function (data) {
 		data.forEach(function (data) { assimilateEvent(fragment, data.id, data.data); });
 	});
-	driver.on('reduced:' + ns, function (event) {
-		assimilateEvent(fragment, event.id, event.data);
-	});
+	driver.on('object:' + ns, function (event) { assimilateEvent(fragment, event.id, event.data); });
 	return fragment;
 };
