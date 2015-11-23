@@ -1,7 +1,6 @@
 'use strict';
 
-var aFrom    = require('es5-ext/array/from')
-  , Database = require('dbjs');
+var Database = require('dbjs');
 
 module.exports = function (t, a) {
 	var db         = new Database()
@@ -12,7 +11,7 @@ module.exports = function (t, a) {
 	// ------------------ Setup ------------------
 
 	var DynamicCurrency = t(MasterType, 'DynamicCurrency', [
-		 require('dbjs-ext/number/currency/us-dollar')(db)
+		require('dbjs-ext/number/currency/us-dollar')(db)
 	]);
 
 	MasterType.prototype.defineProperties({
