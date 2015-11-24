@@ -93,7 +93,7 @@ module.exports = memoize(function (db) {
 				sum += (_observe(section._status) * _observe(section._weight));
 			});
 
-			if (!(this.weight)) return 1;
+			if (!this.weight) return 1;
 
 			return sum / this.weight;
 		},
@@ -116,7 +116,7 @@ module.exports = memoize(function (db) {
 				}
 			}
 
-			_observe(section._applicableSections).forEach(function (section) {
+			_observe(section.applicableSections).forEach(function (section) {
 				weightTotal += _observe(section._weight);
 			});
 
