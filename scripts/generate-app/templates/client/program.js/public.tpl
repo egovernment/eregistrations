@@ -24,10 +24,11 @@ mano = require('mano');
 // TODO: Expose only in dev environments
 window.db = mano.db;
 
+// Env settings
+require('../../../apps-common/client/env');
+
 // i18n2
-var env = mano.env = require('../../../apps-common/client/env');
-mano.i18n = require('i18n2')(require('mano/client/utils/resolve-locale')(env,
-	require('../../../i18n-messages')));
+require('../../../i18n');
 
 // DB Model
 require('../../../db');
@@ -58,8 +59,6 @@ var appLocation     = window.appLocation = require('mano/lib/client/location')
   , SiteTreeRouter  = require('site-tree-router')
 
   , viewTree, router, refresh;
-
-mano.env = env;
 
 // Intialize POST router & controller
 postRouter(joinControllers(require('../controller'), require('../controller/client')));
