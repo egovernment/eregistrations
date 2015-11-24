@@ -82,7 +82,7 @@ module.exports = function (Target, typeName, currencies) {
 
 	// Create new type for use by target.
 	return db.Object.extend(typeName, {
-		amount: { type: Currency },
+		amount: { type: Currency, step: 1 },
 		toString: { value: function (value) {
 			var choicePropName = this.constructor.currencyChoicePropertyName
 			  , typeName       = this.master.resolveSKeyPath(choicePropName).value
