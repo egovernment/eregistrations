@@ -85,7 +85,6 @@ module.exports = memoize(function (db) {
 					return 0;
 				}
 				if (!isResolventExcluded) {
-					++weightModifier;
 					++sum;
 				}
 			}
@@ -94,9 +93,9 @@ module.exports = memoize(function (db) {
 				sum += (_observe(section._status) * _observe(section._weight));
 			});
 
-			if (!(this.weight + weightModifier)) return 1;
+			if (!(this.weight)) return 1;
 
-			return sum / (this.weight + weightModifier);
+			return sum / this.weight;
 		},
 		weight: function (_observe) {
 			var weightTotal = 0, resolvedResolvent, isResolventExcluded, section;

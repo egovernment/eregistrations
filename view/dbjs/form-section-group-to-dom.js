@@ -48,6 +48,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		  , master          = options.master || this.master
 		  , resolvent       = this.getFormResolvent(options)
 		  , customizeData   = { subSections: {}, master: master }
+		  , contentContainer
 		  , fieldsetResult
 		  , sectionFieldsetOptions = {
 			prepend: options.prepend,
@@ -62,9 +63,26 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 					url(this.actionUrl, master.__id__);
 		}
 
+		fieldsetResult = this.toDOMFieldset(document, sectionFieldsetOptions);
+		contentContainer = [
+			ns._if(this._label, [
+				ns.h2(this._label),
+				ns.hr(),
+				ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
+					ns.md(this._legend)))]),
+			fieldsetResult,
+			hasOnlyTabularChildren(fieldsetResult.subSections) ? null :
+					ns.p({ class: 'submit-placeholder input' },
+						ns.input({ type: 'submit', value: _("Submit") })),
+			ns.p({ class: 'section-primary-scroll-top' },
+				ns.a({ onclick: 'window.scroll(0, 0)' },
+					ns.span({ class: 'fa fa-arrow-up' }, "Back to top")))
+		];
+
 		customizeData.arrayResult = [customizeData.container = ns.section(
 			{ class: 'section-primary' },
-			customizeData.form = ns.form(
+			hasOnlyTabularChildren(fieldsetResult.subSections) ?
+					contentContainer : customizeData.form = ns.form(
 				{
 					id: this.domId,
 					method: 'post',
@@ -74,20 +92,9 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 						1
 					), 'completed form-elements', 'form-elements')
 				},
-				ns._if(this._label, [
-					ns.h2(this._label),
-					ns.hr(),
-					ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
-						ns.md(this._legend)))]),
-				fieldsetResult = this.toDOMFieldset(document, sectionFieldsetOptions),
-				hasOnlyTabularChildren(fieldsetResult.subSections) ? null :
-						ns.p({ class: 'submit-placeholder input' },
-							ns.input({ type: 'submit', value: _("Submit") })),
-				ns.p({ class: 'section-primary-scroll-top' },
-					ns.a({ onclick: 'window.scroll(0, 0)' },
-						ns.span({ class: 'fa fa-arrow-up' }, "Back to top")))
+				contentContainer
 			)
-		), resolvent.legacyScript];
+		)];
 
 		if (typeof options.customize === 'function') {
 			customizeData.subSections = fieldsetResult.subSections;

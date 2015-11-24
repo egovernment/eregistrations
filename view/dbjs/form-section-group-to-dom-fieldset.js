@@ -54,7 +54,7 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 						customizeData.subSections[subSectionName].arrayResult
 							= subSection.toDOMFieldset(document, fieldsetOptions)
 					);
-				}, this)).extend(options.append)
+				}, this), resolvent.legacyScript).extend(options.append)
 		);
 
 		if (typeof options.customize === 'function') {
