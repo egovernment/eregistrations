@@ -64,7 +64,7 @@ module.exports = memoize(function (db) {
 
 	FormSectionGroup.prototype.progressRules.map.subSections.setProperties({
 		progress: function (_observe) {
-			var sum = 0, resolvedResolvent, isResolventExcluded, weightModifier = 0, section;
+			var sum = 0, resolvedResolvent, isResolventExcluded, section;
 			section = this.owner.owner.owner;
 
 			if (section.resolventProperty) {
@@ -89,7 +89,7 @@ module.exports = memoize(function (db) {
 				}
 			}
 
-			_observe(section._applicableSections).forEach(function (section) {
+			_observe(section.applicableSections).forEach(function (section) {
 				sum += (_observe(section._status) * _observe(section._weight));
 			});
 

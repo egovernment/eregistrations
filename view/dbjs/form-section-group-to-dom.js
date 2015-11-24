@@ -46,7 +46,6 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		  , url             = options.url || ns.url
 		  , actionUrl       = url(this.actionUrl)
 		  , master          = options.master || this.master
-		  , resolvent       = this.getFormResolvent(options)
 		  , customizeData   = { subSections: {}, master: master }
 		  , contentContainer
 		  , fieldsetResult
