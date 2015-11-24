@@ -10,6 +10,7 @@ var includes        = require('es5-ext/array/#/contains')
   , ensureCallable  = require('es5-ext/object/valid-callable')
   , ensureString    = require('es5-ext/object/validate-stringifiable-value')
   , d               = require('d')
+  , getSearchFilter = require('eregistrations/utils/get-search-filter')
   , memoize         = require('memoizee/plain')
   , db              = require('mano').db
   , getData         = require('mano/lib/client/xhr-driver').get
@@ -35,7 +36,7 @@ var BusinessProcessesManager = module.exports = function (conf) {
 	  , roleName = ensureString(conf.roleName)
 	  , statusMap = ensureObject(conf.statusMap)
 	  , getOrderIndex = ensureCallable(conf.getOrderIndex)
-	  , searchFilter = ensureCallable(conf.searchFilter)
+	  , searchFilter = getSearchFilter
 	  , itemsPerPage = toNaturalNumber(data.itemsPerPage);
 
 	if (itemsPerPage) this.itemsPerPage = itemsPerPage;

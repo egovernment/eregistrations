@@ -7,14 +7,12 @@
 var memoize               = require('memoizee/plain')
   , validDb               = require('dbjs/valid-dbjs')
   , defineFormSectionBase = require('./form-section-base')
-  , defineFormSection     = require('./form-section')
   , defineProgressRule    = require('./lib/progress-rule');
 
 module.exports = memoize(function (db) {
-	var FormSectionGroup, FormSectionBase, FormSection, ProgressRule;
+	var FormSectionGroup, FormSectionBase, ProgressRule;
 	validDb(db);
 	FormSectionBase = defineFormSectionBase(db);
-	FormSection     = defineFormSection(db);
 	ProgressRule    = defineProgressRule(db);
 	FormSectionGroup = FormSectionBase.extend('FormSectionGroup', {
 		// A map of child sections.
@@ -56,7 +54,7 @@ module.exports = memoize(function (db) {
 			}
 		}
 	});
-	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSection;
+	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSectionBase;
 	FormSectionGroup.prototype.sections._descriptorPrototype_.nested = true;
 
 	FormSectionGroup.prototype.progressRules.map.define('subSections', {
@@ -66,7 +64,7 @@ module.exports = memoize(function (db) {
 
 	FormSectionGroup.prototype.progressRules.map.subSections.setProperties({
 		progress: function (_observe) {
-			var sum = 0, resolvedResolvent, isResolventExcluded, weightModifier = 0, section;
+			var sum = 0, resolvedResolvent, isResolventExcluded, section;
 			section = this.owner.owner.owner;
 
 			if (section.resolventProperty) {
@@ -87,18 +85,17 @@ module.exports = memoize(function (db) {
 					return 0;
 				}
 				if (!isResolventExcluded) {
-					++weightModifier;
 					++sum;
 				}
 			}
 
-			_observe(section._applicableSections).forEach(function (section) {
+			_observe(section.applicableSections).forEach(function (section) {
 				sum += (_observe(section._status) * _observe(section._weight));
 			});
 
-			if (!(this.weight + weightModifier)) return 1;
+			if (!this.weight) return 1;
 
-			return sum / (this.weight + weightModifier);
+			return sum / this.weight;
 		},
 		weight: function (_observe) {
 			var weightTotal = 0, resolvedResolvent, isResolventExcluded, section;
@@ -119,7 +116,7 @@ module.exports = memoize(function (db) {
 				}
 			}
 
-			_observe(section._applicableSections).forEach(function (section) {
+			_observe(section.applicableSections).forEach(function (section) {
 				weightTotal += _observe(section._weight);
 			});
 

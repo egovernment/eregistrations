@@ -13,13 +13,32 @@
  */
 'use strict';
 
-var _  = require('mano').i18n.bind('Sections')
-  , d  = require('d')
-  , db = require('mano').db
-  , ns = require('mano').domjs.ns;
+var _       = require('mano').i18n.bind('Sections')
+  , d       = require('d')
+  , forEach = require('es5-ext/object/for-each')
+  , db      = require('mano').db
+  , ns      = require('mano').domjs.ns
+  , hasOnlyTabularChildren;
 
 require('./form-section-group-to-dom-fieldset');
 require('./form-section-base');
+
+hasOnlyTabularChildren = function (subSections) {
+	var res = false, hasOtherChildren = false;
+	if (!db.FormEntitiesTable) return false;
+	forEach(subSections, function (result) {
+		if (result.object instanceof db.FormEntitiesTable) {
+			res = true;
+		} else {
+			hasOtherChildren = true;
+		}
+		if (res && hasOtherChildren) {
+			throw new Error("You cannot mix tabular and non tabular sections in a group section!");
+		}
+	});
+
+	return res;
+};
 
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
@@ -27,8 +46,8 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		  , url             = options.url || ns.url
 		  , actionUrl       = url(this.actionUrl)
 		  , master          = options.master || this.master
-		  , resolvent       = this.getFormResolvent(options)
 		  , customizeData   = { subSections: {}, master: master }
+		  , contentContainer
 		  , fieldsetResult
 		  , sectionFieldsetOptions = {
 			prepend: options.prepend,
@@ -43,9 +62,26 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 					url(this.actionUrl, master.__id__);
 		}
 
+		fieldsetResult = this.toDOMFieldset(document, sectionFieldsetOptions);
+		contentContainer = [
+			ns._if(this._label, [
+				ns.h2(this._label),
+				ns.hr(),
+				ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
+					ns.md(this._legend)))]),
+			fieldsetResult,
+			hasOnlyTabularChildren(fieldsetResult.subSections) ? null :
+					ns.p({ class: 'submit-placeholder input' },
+						ns.input({ type: 'submit', value: _("Submit") })),
+			ns.p({ class: 'section-primary-scroll-top' },
+				ns.a({ onclick: 'window.scroll(0, 0)' },
+					ns.span({ class: 'fa fa-arrow-up' }, "Back to top")))
+		];
+
 		customizeData.arrayResult = [customizeData.container = ns.section(
 			{ class: 'section-primary' },
-			customizeData.form = ns.form(
+			hasOnlyTabularChildren(fieldsetResult.subSections) ?
+					contentContainer : customizeData.form = ns.form(
 				{
 					id: this.domId,
 					method: 'post',
@@ -55,19 +91,9 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 						1
 					), 'completed form-elements', 'form-elements')
 				},
-				ns._if(this._label, [
-					ns.h2(this._label),
-					ns.hr(),
-					ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
-						ns.md(this._legend)))]),
-				fieldsetResult = this.toDOMFieldset(document, sectionFieldsetOptions),
-				ns.p({ class: 'submit-placeholder input' },
-					ns.input({ type: 'submit', value: _("Submit") })),
-				ns.p({ class: 'section-primary-scroll-top' },
-					ns.a({ onclick: 'window.scroll(0, 0)' },
-						ns.span({ class: 'fa fa-arrow-up' }, "Back to top")))
+				contentContainer
 			)
-		), resolvent.legacyScript];
+		)];
 
 		if (typeof options.customize === 'function') {
 			customizeData.subSections = fieldsetResult.subSections;

@@ -36,7 +36,7 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 		customizeData.arrayResult = [
 			options.prepend,
 			resolvent.formResolvent,
-			progressRules(this)
+			progressRules(this, { translationInserts: options.translationInserts })
 		];
 
 		customizeData.subSections = customizeData.arrayResult.subSections = {};
@@ -45,6 +45,7 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 			ns.div({ id: resolvent.affectedSectionId }, ns.list(this.sections,
 				function (subSection, subSectionName) {
 					customizeData.subSections[subSectionName] = {};
+					customizeData.subSections[subSectionName].object = subSection;
 					return ns.div(
 						{ class: 'section-primary-sub', id: subSection.domId },
 						ns._if(subSection.label, ns.h3(subSection.label)),
@@ -53,7 +54,7 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 						customizeData.subSections[subSectionName].arrayResult
 							= subSection.toDOMFieldset(document, fieldsetOptions)
 					);
-				}, this)).extend(options.append)
+				}, this), resolvent.legacyScript).extend(options.append)
 		);
 
 		if (typeof options.customize === 'function') {

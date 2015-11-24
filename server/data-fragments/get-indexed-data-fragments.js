@@ -30,6 +30,7 @@ module.exports = function (driver, keyPaths) {
 			});
 		});
 		driver.on('object:' + objId, function (event) {
+			if (event.type === 'direct') return;
 			if (includes.call(keyPaths, event.keyPath)) {
 				assimilateEvent(fragment, objId + '/' + event.keyPath, event.data);
 			}

@@ -18,14 +18,12 @@ module.exports = function (handlersList, appLocation, pathname) {
 	queryHandler = new QueryHandler(handlersList);
 	queryHandler.update = update = once(function () {
 		if (pathname !== appLocation.pathname) return;
-		try {
-			queryHandler.resolve(appLocation.query);
-		} catch (e) {
+		queryHandler.resolve(appLocation.query).catch(function (e) {
 			if (!e.queryHandler) throw e;
 			console.error("Invalid query value: " + e.message);
 			fixLocationQuery(e.queryHandler.name, e.fixedQueryValue);
 			return;
-		}
+		});
 	});
 	queryHandler._handlers.forEach(function (handler) {
 		appLocation.query.get(handler.name).on('change', update);
