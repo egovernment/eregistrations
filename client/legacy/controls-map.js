@@ -93,7 +93,7 @@ module.exports = function (config) {
 			var child, parent;
 
 			child = event.newValue && event.newValue.__id__;
-			parent = deptMap[child];
+			parent = child ? deptMap[child] : '';
 
 			if (selectedParentOption) {
 				selectedParentOption.removeAttribute('selected');
@@ -103,7 +103,7 @@ module.exports = function (config) {
 				selectedParentOption.setAttribute('selected', 'selected');
 			}
 			parentSelect.value = parent;
-			updateSelect(parent);
+			updateSelect();
 
 			if (selectedDeptOption) selectedDeptOption.removeAttribute('selected');
 			selectedDeptOption = options[child];
