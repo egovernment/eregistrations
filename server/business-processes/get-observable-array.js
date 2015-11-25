@@ -7,7 +7,7 @@ var remove      = require('es5-ext/array/#/remove')
   , memoize     = require('memoizee')
   , once        = require('timers-ext/once')
   , dbDriver    = require('mano').dbDriver
-  , getIndexMap = require('./get-observable-index-map')
+  , getIndexMap = require('./get-observable-sort-index-map')
 
   , defineProperty = Object.defineProperty
   , compareStamps = function (a, b) { return a.stamp - b.stamp; };
