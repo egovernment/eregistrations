@@ -2,8 +2,8 @@
 
 'use strict';
 
-module.exports = function (collection, getIndex) {
+module.exports = function (collection) {
 	var result = [];
-	collection.forEach(function (bp) { result.push(getIndex(bp) + '.' + bp.__id__); });
+	collection.forEach(function (data) { result.push(data.stamp + '.' + data.id); });
 	return result.join('\n');
 };
