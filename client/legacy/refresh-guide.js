@@ -160,8 +160,14 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 		// Resolve each registration certificates, requirements and costs
 		businessProcess.registrations.map.forEach(function (registration) {
-			registration.certificates = $.setify(registration.certificates($.dbjsObserveMock));
-			registration.requirements = $.setify(registration.requirements($.dbjsObserveMock));
+			registration.certificates =
+					typeof registration.certificates === 'function' ?
+						$.setify(registration.certificates($.dbjsObserveMock))
+							: registration.certificates;
+			registration.requirements =
+					typeof registration.requirements === 'function' ?
+						$.setify(registration.requirements($.dbjsObserveMock))
+							: registration.requirements;
 			registration.costs =
 					typeof registration.costs === 'function' ?
 						$.setify(registration.costs($.dbjsObserveMock)) : registration.costs;
