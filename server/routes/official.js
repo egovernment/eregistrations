@@ -16,7 +16,6 @@ var aFrom               = require('es5-ext/array/from')
   , includes            = require('es5-ext/string/#/contains')
   , d                   = require('d')
   , ensureSet           = require('es6-set/valid-set')
-  , ee                  = require('event-emitter')
   , deferred            = require('deferred')
   , memoize             = require('memoizee')
   , serializeValue      = require('dbjs/_setup/serialize/value')
@@ -26,6 +25,7 @@ var aFrom               = require('es5-ext/array/from')
   , QueryHandler        = require('../../utils/query-handler')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
   , getBaseSet          = require('../business-processes/get-observable-set')
+  , getIndexMap         = require('../business-processes/get-observable-sort-index-map')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }
@@ -98,18 +98,8 @@ var getFilteredSet = memoize(function (baseSet, filterString) {
 	return def.promise;
 }, { max: 1000, dispose: function (set) { set._dispose(); } });
 
-var getItemsMap = memoize(function (sortIndexName) {
-	var itemsMap = ee();
-	mano.dbDriver.on('computed:' + sortIndexName, function (event) {
-		if (!itemsMap[event.ownerId]) return;
-		itemsMap[event.ownerId].stamp = event.data.stamp;
-		itemsMap.emit('update', event);
-	});
-	return itemsMap;
-}, { primitive: true });
-
 var getSortedArray = memoize(function (set, sortIndexName) {
-	var arr = [], itemsMap = getItemsMap(sortIndexName)
+	var arr = [], itemsMap = getIndexMap(sortIndexName)
 	  , count = 0, isInitialized = false, def = deferred(), setListener, itemsListener;
 	var add = function (ownerId) {
 		return deferred(itemsMap[ownerId] || mano.dbDriver.getComputed(ownerId + '/' + sortIndexName))
