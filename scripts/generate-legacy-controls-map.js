@@ -1,17 +1,15 @@
 'use strict';
 
 var debug               = require('debug-ext')('setup')
-  , deferred            = require('deferred')
-  , resolveProjectRoot  = require('cjs-module/resolve-project-root')
   , ensureType          = require('dbjs/valid-dbjs-type')
   , ensureStringifiable = require('es5-ext/object/validate-stringifiable-value')
-  , projectRoot         = process.cwd()
   , resolve             = require('path').resolve
   , writeFile           = require('fs2/write-file')
   , serialize           = require('es5-ext/object/serialize')
   , savePath            = 'apps-common/client/legacy/generated';
 /**
  * Generates map for controls-map.js legacy (responsible for parent-child select interaction).
+ * @param projectRoot {string}
  * @param config {object}
  * config.child {constructor}         - Class of the child
  * config.parent {constructor}        - Class of the parent
@@ -22,7 +20,7 @@ var debug               = require('debug-ext')('setup')
  * @returns promise
  */
 
-module.exports = function (config) {
+module.exports = function (projectRoot, config) {
 	var result = {
 		map: {}
 	};
@@ -32,26 +30,18 @@ module.exports = function (config) {
 	result.parentTypeLabel = ensureType(config.parent).label;
 	ensureStringifiable(config.linkingPropertyName);
 
-	return resolveProjectRoot(projectRoot).done(function (root) {
-		if (!root) {
-			throw new Error('Could not located project in projectRoot: ' + projectRoot);
+	ensureType(config.child).instances.forEach(function (child) {
+		var parentId = child[config.linkingPropertyName].__id__;
+		if (!result.map[parentId]) {
+			result.map[parentId] = {
+				label: child[config.linkingPropertyName].label,
+				items: []
+			};
 		}
-
-		ensureType(config.child).instances.forEach(function (child) {
-			var parentId = child[config.linkingPropertyName].__id__;
-			if (!result.map[parentId]) {
-				result.map[parentId] = {
-					label: child[config.linkingPropertyName].label,
-					items: []
-				};
-			}
-			result.map[parentId].items.push(child.__id__);
-		});
-
-		return deferred(
-			writeFile(resolve(savePath, config.fileNamePrefix + '-map.generated.js'),
-					'\'use strict\';\n\nmodule.exports = ' + serialize(result) + ';\n',
-				{ intermediate: true })
-		);
+		result.map[parentId].items.push(child.__id__);
 	});
+
+	return writeFile(resolve(projectRoot, savePath, config.fileNamePrefix + '-map.js'),
+				'\'use strict\';\n\nmodule.exports = ' + serialize(result) + ';\n',
+			{ intermediate: true });
 };
