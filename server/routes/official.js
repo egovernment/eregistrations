@@ -25,6 +25,7 @@ var aFrom               = require('es5-ext/array/from')
   , QueryHandler        = require('../../utils/query-handler')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
   , getBaseSet          = require('../business-processes/get-observable-set')
+  , getSortedArray      = require('../business-processes/get-observable-array')
   , getIndexMap         = require('../business-processes/get-observable-sort-index-map')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
@@ -98,7 +99,7 @@ var getFilteredSet = memoize(function (baseSet, filterString) {
 	return def.promise;
 }, { max: 1000, dispose: function (set) { set._dispose(); } });
 
-var getSortedArray = memoize(function (set, sortIndexName) {
+var getSortedArrayLru = memoize(function (set, sortIndexName) {
 	var arr = [], itemsMap = getIndexMap(sortIndexName)
 	  , count = 0, isInitialized = false, def = deferred(), setListener, itemsListener;
 	var add = function (ownerId) {
@@ -171,7 +172,7 @@ module.exports = exports = function (conf) {
 			if (!query.search) return getSortedArray(baseSet, allIndexName);
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
 				return getFilteredSet(baseSet, value)(function (set) {
-					return getSortedArray(set, allIndexName);
+					return getSortedArrayLru(set, allIndexName);
 				});
 			})(function (arrays) {
 				if (arrays.length === 1) return arrays[0];
