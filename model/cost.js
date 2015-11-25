@@ -30,15 +30,15 @@ module.exports = memoize(function (db) {
 			return _observe(this.owner.owner._isPaidOnline);
 		} },
 		// Whether payment was initialized online
-		isOnlinePaymentInitialized: { type: db.Boolean, value: function (_observe) {
-			return _observe(this.owner.owner._isOnlinePaymentInitialized);
+		isOnlinePaymentInProgress: { type: db.Boolean, value: function (_observe) {
+			return _observe(this.owner.owner._isOnlinePaymentInProgress);
 		} },
 		// Whether payment is made online
 		// Common case is that cost can be paid both physically and online
 		// In this scenario we mark it as electronic as soon as we detect
 		// an online payment beeing initialized
 		isElectronic: { type: db.Boolean, value: function () {
-			return this.isPaidOnline || this.isOnlinePaymentInitialized;
+			return this.isPaidOnline || this.isOnlinePaymentInProgress;
 		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

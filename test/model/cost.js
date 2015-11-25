@@ -15,9 +15,9 @@ module.exports = function (t, a) {
 	cost.amount = 109;
 
 	a(cost.isElectronic, false);
-	cost.isOnlinePaymentInitialized = true;
+	cost.isOnlinePaymentInProgress = true;
 	a(cost.isElectronic, true);
-	cost.delete('isOnlinePaymentInitialized');
+	cost.delete('isOnlinePaymentInProgress');
 	a(cost.isElectronic, false);
 	cost.isPaidOnline = true;
 	a(cost.isElectronic, true);

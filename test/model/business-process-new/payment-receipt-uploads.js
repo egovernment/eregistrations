@@ -49,12 +49,12 @@ module.exports = function (t, a) {
 	a.deep(aFrom(businessProcess.paymentReceiptUploads.uploaded), []);
 	a(businessProcess.paymentReceiptUploads.progress, 0);
 
-	businessProcess.costs.map.test.isOnlinePaymentInitialized = true;
-	businessProcess.costs.map.test2.isOnlinePaymentInitialized = true;
+	businessProcess.costs.map.test.isOnlinePaymentInProgress = true;
+	businessProcess.costs.map.test2.isOnlinePaymentInProgress = true;
 	a.deep(aFrom(businessProcess.paymentReceiptUploads.uploadable),
 		[businessProcess.paymentReceiptUploads.map.test2]);
-	businessProcess.costs.map.test.delete('isOnlinePaymentInitialized');
-	businessProcess.costs.map.test2.delete('isOnlinePaymentInitialized');
+	businessProcess.costs.map.test.delete('isOnlinePaymentInProgress');
+	businessProcess.costs.map.test2.delete('isOnlinePaymentInProgress');
 
 	businessProcess.costs.map.test.isPaidOnline = true;
 	businessProcess.costs.map.test2.isPaidOnline = true;
@@ -63,11 +63,11 @@ module.exports = function (t, a) {
 	businessProcess.costs.map.test.delete('isPaidOnline');
 	businessProcess.costs.map.test2.delete('isPaidOnline');
 
-	businessProcess.costs.map.test.isOnlinePaymentInitialized = true;
+	businessProcess.costs.map.test.isOnlinePaymentInProgress = true;
 	businessProcess.costs.map.test2.isPaidOnline = true;
 	a.deep(aFrom(businessProcess.paymentReceiptUploads.uploadable),
 		[businessProcess.paymentReceiptUploads.map.test2]);
-	businessProcess.costs.map.test.delete('isOnlinePaymentInitialized');
+	businessProcess.costs.map.test.delete('isOnlinePaymentInProgress');
 	businessProcess.costs.map.test2.delete('isPaidOnline');
 
 	businessProcess.paymentReceiptUploads.map.test2.document.files.map.newUniq().path = '/elo.png';

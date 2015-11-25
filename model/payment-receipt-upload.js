@@ -38,7 +38,7 @@ module.exports = memoize(function (db) {
 		applicableCostsForUserUpload: { type: Cost, multiple: true, value: function (_observe) {
 			var result = [];
 			this.applicableCosts.forEach(function (cost) {
-				if (_observe(cost._isPaidOnline) || _observe(cost._isOnlinePaymentInitialized)) return;
+				if (_observe(cost._isPaidOnline) || _observe(cost._isOnlinePaymentInProgress)) return;
 				result.push(cost);
 			});
 			return result;

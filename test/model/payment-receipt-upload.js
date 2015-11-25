@@ -51,10 +51,10 @@ module.exports = function (t, a) {
 	a.deep(aFrom(paymentReceiptUpload.applicableCosts),
 		[businessProcess.costs.map.test, businessProcess.costs.map.test3]);
 
-	businessProcess.costs.map.test.isOnlinePaymentInitialized = true;
+	businessProcess.costs.map.test.isOnlinePaymentInProgress = true;
 	a.deep(aFrom(paymentReceiptUpload.applicableCostsForUserUpload),
 		[businessProcess.costs.map.test3]);
-	businessProcess.costs.map.test.delete('isOnlinePaymentInitialized');
+	businessProcess.costs.map.test.delete('isOnlinePaymentInProgress');
 	a.deep(aFrom(paymentReceiptUpload.applicableCostsForUserUpload),
 		[businessProcess.costs.map.test, businessProcess.costs.map.test3]);
 	businessProcess.costs.map.test.isPaidOnline = true;
