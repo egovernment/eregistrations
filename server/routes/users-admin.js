@@ -14,7 +14,7 @@ var flatten             = require('es5-ext/array/#/flatten')
   , mano                = require('mano')
   , QueryHandler        = require('../../utils/query-handler')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
-  , getSortedArray      = require('../users/get-sorted-array')
+  , getSortedArray      = require('../users/get-observable-array')
 
   , slice = Array.prototype.slice, ceil = Math.ceil
   , stringify = JSON.stringify;
