@@ -1,12 +1,12 @@
 'use strict';
 
-var debug               = require('debug-ext')('setup')
-  , ensureType          = require('dbjs/valid-dbjs-type')
-  , ensureStringifiable = require('es5-ext/object/validate-stringifiable-value')
-  , resolve             = require('path').resolve
-  , writeFile           = require('fs2/write-file')
-  , serialize           = require('es5-ext/object/serialize')
-  , savePath            = 'apps-common/client/legacy/generated';
+var debug        = require('debug-ext')('setup')
+  , ensureType   = require('dbjs/valid-dbjs-type')
+  , ensureString = require('es5-ext/object/validate-stringifiable-value')
+  , resolve      = require('path').resolve
+  , writeFile    = require('fs2/write-file')
+  , serialize    = require('es5-ext/object/serialize')
+  , savePath     = 'apps-common/client/legacy/generated';
 /**
  * Generates map for controls-map.js legacy (responsible for parent-child select interaction).
  * @param projectRoot {string}
@@ -25,10 +25,11 @@ module.exports = function (projectRoot, config) {
 		map: {}
 	};
 
-	debug('generate-legacy-' + ensureStringifiable(config.fileNamePrefix) + '-data');
-	result.htmlClass       = ensureStringifiable(config.htmlClass);
+	ensureString(projectRoot);
+	debug('generate-legacy-' + ensureString(config.fileNamePrefix) + '-data');
+	result.htmlClass       = ensureString(config.htmlClass);
 	result.parentTypeLabel = ensureType(config.parent).label;
-	ensureStringifiable(config.linkingPropertyName);
+	ensureString(config.linkingPropertyName);
 
 	ensureType(config.child).instances.forEach(function (child) {
 		var parentId = child[config.linkingPropertyName].__id__;
