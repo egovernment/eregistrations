@@ -91,8 +91,8 @@ module.exports = function (config) {
 		document.on('dbupdate', function () { parentSelect.disabled = childSelect.disabled; });
 		childSelect._dbjsInput.observable.on('change', function (event) {
 			var child, parent;
-			if (!event.newValue) return;
-			child = event.newValue.__id__;
+
+			child = event.newValue && event.newValue.__id__;
 			parent = deptMap[child];
 
 			if (selectedParentOption) {
