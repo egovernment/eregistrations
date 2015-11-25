@@ -21,11 +21,11 @@ var aFrom               = require('es5-ext/array/from')
   , memoize             = require('memoizee')
   , serializeValue      = require('dbjs/_setup/serialize/value')
   , unserializeValue    = require('dbjs/_setup/unserialize/value')
-  , resolveFilter       = require('dbjs-persistence/lib/resolve-filter')
   , ObservableSet       = require('observable-set/primitive')
   , mano                = require('mano')
   , QueryHandler        = require('../../utils/query-handler')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
+  , getBaseSet          = require('../business-processes/get-observable-set')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }
@@ -60,17 +60,6 @@ var getBusinessProcessQueryHandler = function (indexName) {
 		}
 	]);
 };
-
-var getBaseSet = memoize(function (indexName, value) {
-	var set = new ObservableSet();
-	mano.dbDriver.on('computed:' + indexName, function (event) {
-		if (resolveFilter(value, event.data.value)) set.add(event.ownerId);
-		else set.delete(event.ownerId);
-	});
-	return mano.dbDriver.searchComputed(indexName, function (ownerId, data) {
-		if (resolveFilter(value, data.value)) set.add(ownerId);
-	})(set);
-}, { primitive: true });
 
 var getFilteredSet = memoize(function (baseSet, filterString) {
 	var set = new ObservableSet(), baseSetListener, indexListener
