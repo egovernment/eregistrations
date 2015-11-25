@@ -13,10 +13,10 @@ var flatten             = require('es5-ext/array/#/flatten')
   , ensureSet           = require('es6-set/valid-set')
   , deferred            = require('deferred')
   , memoize             = require('memoizee/plain')
-  , ObservableSet       = require('observable-set/primitive')
   , mano                = require('mano')
   , QueryHandler        = require('../../utils/query-handler')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
+  , getBaseSet          = require('../users/get-observable-set')
 
   , slice = Array.prototype.slice, ceil = Math.ceil
   , create = Object.create, defineProperty = Object.defineProperty, stringify = JSON.stringify
@@ -34,17 +34,6 @@ var userQueryHandler = new QueryHandler([{
 		});
 	}
 }]);
-
-var getBaseSet = memoize(function () {
-	var set = new ObservableSet();
-	mano.dbDriver.on('computed:isActiveAccount', function (event) {
-		if (event.data.value === '11') set.add(event.ownerId);
-		else set.delete(event.ownerId);
-	});
-	return mano.dbDriver.searchComputed('isActiveAccount', function (ownerId, data) {
-		if (data.value === '11') set.add(ownerId);
-	})(set);
-});
 
 var getSortedArray = memoize(function () {
 	return getBaseSet()(function (set) {
