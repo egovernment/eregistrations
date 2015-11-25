@@ -12,9 +12,31 @@ require('mano-legacy/make-element');
 require('mano-legacy/select-match');
 
 require('mano-legacy/element#/parent-by-name');
-
+/**
+ * Establishes an interaction between two selects
+ * (one which holds parent and second which holds children)
+ * i.e. businessActivityCategory and businessActivity
+ * So when user selects a parent, only this parent's children will be shown in the children select
+ * For this to work you must:
+ * 1. Generate a map with help of scripts/generate-legacy-controls-map.js
+ * 2. Create a binding to specified htmlClass
+ *    (you pass the htmlClass name to scripts/generate-legacy-controls-map.js)
+ *    binding may look like this:
+ *    var d  = require('d')
+ *      , db = require('mano').db;
+ *    Object.defineProperties(db.BusinessActivity, {
+ *      inputOptions: d({ class: 'business-activity-control' })
+ *    });
+ * 3. call this util from your app's client/legacy/index and pass the generated file as param
+ *    i.e:
+ *    require('eregistrations/client/legacy/controls-map')
+ *    (require('../../../../apps-common/client/legacy/generated/
+ *    business-activity-category-map.generated'));
+ *
+ * @param config {object} - The generated map (don't pass anything manually)
+ */
 module.exports = function (config) {
-	live.add('select', 'class', 'dept-control', function (childSelect) {
+	live.add('select', 'class', config.htmlClass, function (childSelect) {
 		var childRow, parentSelect, options = {}, child, parent, parentMap
 		  , map = {}, parentOptions = {}, selectedParentOption, updateSelect
 		  , selectedDeptOption, deptMap = {}, parentSelectId;
@@ -43,9 +65,9 @@ module.exports = function (config) {
 
 		// Generate row
 		parentSelectId = genParentSelectId();
-		childRow.insertBefore($.makeElement('div', { class: 'input' },
+		childRow.insertBefore($.makeElement('div', { 'class': 'input' },
 			parentSelect = $.makeElement('select', { id: parentSelectId })), childRow.firstChild);
-		childRow.insertBefore($.makeElement('label', { for: parentSelectId },
+		childRow.insertBefore($.makeElement('label', { 'for': parentSelectId },
 				config.parentTypeLabel),
 			childRow.firstChild);
 
