@@ -41,13 +41,14 @@ module.exports = memoize(function (db/* options */) {
 				return sections;
 			}
 		},
-		onlinePaymentDependents: {
+		incompleteOnlineDependents: {
 			type: FormSectionBase,
 			multiple: true,
 			value: function (_observe) {
 				var result = [];
 				this.applicable.forEach(function (section) {
-					if (_observe(section._isOnlinePaymentDependent)) {
+					if (_observe(section._isOnlinePaymentDependent) &&
+							_observe(section._status) < 1) {
 						result.push(section);
 					}
 				});
