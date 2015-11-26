@@ -41,7 +41,7 @@ module.exports = memoize(function (db/* options */) {
 				return sections;
 			}
 		},
-		incompleteOnlineDependents: {
+		incompleteOnlinePaymentsDependents: {
 			type: FormSectionBase,
 			multiple: true,
 			value: function (_observe) {
