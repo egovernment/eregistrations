@@ -80,19 +80,23 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 
 		customizeData.arrayResult = [customizeData.container = ns.section(
 			{ class: 'section-primary' },
-			hasOnlyTabularChildren(fieldsetResult.subSections) ?
-					contentContainer : customizeData.form = ns.form(
-				{
-					id: this.domId,
-					method: 'post',
-					action: actionUrl,
-					class: ns._if(ns.eq(
-						this._status,
-						1
-					), 'completed form-elements', 'form-elements')
-				},
-				contentContainer
-			)
+			_if(this._isDisabled, div({ class: 'entities-overview-info' }, this._disabledMessage)),
+			div({ class: ['disabler-range',
+					_if(this._isDisabled, 'disabler-active')] },
+				hasOnlyTabularChildren(fieldsetResult.subSections) ?
+						contentContainer : customizeData.form = ns.form(
+					{
+						id: this.domId,
+						method: 'post',
+						action: actionUrl,
+						class: ns._if(ns.eq(
+							this._status,
+							1
+						), 'completed form-elements', 'form-elements')
+					},
+					contentContainer
+				),
+				div({ class: 'disabler' }))
 		)];
 
 		if (typeof options.customize === 'function') {

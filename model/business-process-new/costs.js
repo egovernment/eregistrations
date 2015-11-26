@@ -57,6 +57,12 @@ module.exports = memoize(function (db/* options */) {
 			});
 			return result;
 		} },
+		// Global isOnlinePaymentInitialized indication
+		// Should be used when we use one online payment for all costs (and that's default)
+		// Otherwise there's a isOnlinePaymentInitialized on each cost to which we can refer
+		isOnlinePaymentInitialized: { type: db.Boolean, value: function () {
+			return this.isOnlinePaymentInProgress || this.isPaidOnline;
+		} },
 		// Global isPaidOnline indication
 		// Should be used when we use one online payment for all costs (and that's default)
 		// Otherwise there's a isPaidOnline on each cost to which we can refer

@@ -7,7 +7,8 @@ var memoize             = require('memoizee/plain')
   , defineStringLine    = require('dbjs-ext/string/string-line')
   , defineUInteger      = require('dbjs-ext/number/integer/u-integer')
   , definePercentage    = require('dbjs-ext/number/percentage')
-  , defineProgressRules = require('./lib/progress-rules');
+  , defineProgressRules = require('./lib/progress-rules')
+  , _                   = require('mano').i18n.bind('Model: FormSectionBase');
 
 module.exports = memoize(function (db) {
 	var StringLine, Percentage, UInteger, ProgressRules;
@@ -196,6 +197,19 @@ module.exports = memoize(function (db) {
 		// Used to hide and show section depending on a value of certain property.
 		// Set name of the property as value of resolventProperty.
 		// Section is visible when section.master[section.resolventProperty] === section.resolventValue
-		resolventProperty: { type: StringLine }
+		resolventProperty: { type: StringLine },
+		// Sometimes we need to react to payment state
+		isOnlinePaymentDependent: { type: db.Boolean, value: false },
+		// Disables a payment dependent section when there is/was an online payment
+		isDisabled: { type: db.Boolean, value: function (_observe) {
+			return this.isOnlinePaymentDependent &&
+				_observe(this.master.costs._isOnlinePaymentInitialized);
+		} },
+		// Message to be shown when the section has been disabled
+		disabledMessage: {
+			type: db.String,
+			value: _("Section is disabled because online payment transaction has " +
+				"already been made or it's in progress")
+		}
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
