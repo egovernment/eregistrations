@@ -199,10 +199,11 @@ module.exports = memoize(function (db) {
 		// Section is visible when section.master[section.resolventProperty] === section.resolventValue
 		resolventProperty: { type: StringLine },
 		// Sometimes we need to react to payment state
-		isPaymentDependent: { type: db.Boolean, value: false },
+		isOnlinePaymentDependent: { type: db.Boolean, value: false },
 		// Disables a payment dependent section when there is/was an online payment
 		isDisabled: { type: db.Boolean, value: function (_observe) {
-			return this.isPaymentDependent && _observe(this.master.costs._isOnlinePaymentInitialized);
+			return this.isOnlinePaymentDependent &&
+				_observe(this.master.costs._isOnlinePaymentInitialized);
 		} },
 		// Message to be shown when the section has been disabled
 		disabledMessage: {
