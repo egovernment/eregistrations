@@ -7,11 +7,13 @@
 }
 .user-forms > form,
 .user-forms > .disabler-range,
+.user-forms > .disabler-range > .disabler-range,
 .user-forms > .disabler-range > form  {
 	margin-bottom: 0;
 }
 .user-forms > form > *,
 .user-forms > .disabler-range > *,
+.user-forms > .disabler-range > .disabler-range > *,
 .user-forms > .disabler-range > form > * {
 	margin-bottom: 22px;
 }
