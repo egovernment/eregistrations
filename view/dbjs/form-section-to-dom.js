@@ -45,31 +45,36 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 					url(this.actionUrl, master.__id__);
 		}
 
-		customizeData.arrayResult = [customizeData.container = ns.section(
-			{ class: options.cssSectionClass || 'section-primary' },
-			customizeData.form = ns.form(
-				{
-					id: this.domId,
-					method: 'post',
-					action: actionUrl,
-					class: ns._if(ns.eq(
-						this._status,
-						1
-					), 'completed form-elements', 'form-elements')
-				},
-				ns._if(this._label, [
-					options.htmlHeader ? options.htmlHeader(this._label) : ns.h2(this._label),
-					ns.hr(),
-					ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
-						ns.md(this._legend)))]),
-				fieldsetResult = this.toDOMFieldset(document, sectionFieldsetOptions),
-				ns.p({ class: 'submit-placeholder input' },
-					ns.input({ type: 'submit', value: _("Submit") })),
-				ns.p({ class: 'section-primary-scroll-top' },
-					ns.a({ onclick: 'window.scroll(0, 0)' },
-						ns.span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
-			)
-		)];
+		customizeData.arrayResult = [
+			customizeData.container = ns.section(
+				{ class: options.cssSectionClass || 'section-primary' },
+				_if(this._isDisabled, div({ class: 'entities-overview-info' }, this._disabledMessage)),
+				div({ class: ['disabler-range',
+						_if(this._isDisabled, 'disabler-active')] },
+					customizeData.form = ns.form(
+						{
+							id: this.domId,
+							method: 'post',
+							action: actionUrl,
+							class: ns._if(ns.eq(
+								this._status,
+								1
+							), 'completed form-elements', 'form-elements')
+						},
+						ns._if(this._label, [
+							options.htmlHeader ? options.htmlHeader(this._label) : ns.h2(this._label),
+							ns.hr(),
+							ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
+								ns.md(this._legend)))]),
+						fieldsetResult = this.toDOMFieldset(document, sectionFieldsetOptions),
+						ns.p({ class: 'submit-placeholder input' },
+							ns.input({ type: 'submit', value: _("Submit") })),
+						ns.p({ class: 'section-primary-scroll-top' },
+							ns.a({ onclick: 'window.scroll(0, 0)' },
+								ns.span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
+					),
+					div({ class: 'disabler' }))
+			)];
 		if (typeof options.customize === 'function') {
 			customizeData.fieldset = find.call(fieldsetResult, function (el) {
 				return el && el.nodeName === 'FIELDSET';
