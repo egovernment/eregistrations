@@ -38,7 +38,7 @@ module.exports = function (BusinessProcess, data) {
 			name = uncapitalize.call(CertificateDocument.__id__);
 
 			if (endsWith.call(name, 'Certificate')) {
-				name = uncapitalize.call(CertificateDocument.__id__).slice(0, -'Certificate'.length);
+				name = name.slice(0, -'Certificate'.length);
 			}
 		}
 
