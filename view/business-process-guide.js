@@ -63,12 +63,12 @@ exports.step = function () {
 		this.businessProcess.inventory ? insert(inventoryModal(this.businessProcess)) : null,
 		form(
 			{ id: 'guide-form', class: 'user-guide', action: '/guide/', method: 'post' },
-			div({ class: ['section-primary', 'guide-form-section'] }, h2(_("Questions")),
+			div({ class: ['section-primary', 'user-guide-questions-section'] }, h2(_("Questions")),
 				hr(),
 				exports._questionsIntro(this),
 				this.businessProcess.determinants.toDOMFieldset(document, { formId: 'guide-form' })),
 
-			div({ class: ['section-primary', 'guide-registrations-section'] },
+			div({ class: ['section-primary', 'user-guide-registrations-section'] },
 				div({ id: 'mandatory-registrations-section', class: 'section-primary-wrapper' },
 					h2(_("Mandatory Registrations")),
 					hr(),
@@ -105,7 +105,8 @@ exports.step = function () {
 									span(spanContent)));
 						}))),
 			div(
-				{ id: 'requirements-section', class: ['section-primary', 'guide-requirements-section'] },
+				{ id: 'requirements-section', class: ['section-primary',
+					'user-guide-requirements-section'] },
 				h2(_("Requirements")),
 				hr(),
 				exports._requirementsIntro(this),
@@ -118,7 +119,7 @@ exports.step = function () {
 					})
 			),
 			div(
-				{ id: 'costs-section', class: ['section-primary', 'guide-costs-section'] },
+				{ id: 'costs-section', class: ['section-primary', 'user-guide-costs-section'] },
 				h2(_("Costs")),
 				hr(),
 				exports._costsIntro(this),
