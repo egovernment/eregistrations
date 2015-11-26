@@ -40,6 +40,20 @@ module.exports = memoize(function (db/* options */) {
 
 				return sections;
 			}
+		},
+		onlinePaymentDependents: {
+			type: FormSectionBase,
+			multiple: true,
+			value: function (_observe) {
+				var result = [];
+				this.applicable.forEach(function (section) {
+					if (_observe(section._isOnlinePaymentDependent)) {
+						result.push(section);
+					}
+				});
+
+				return result;
+			}
 		}
 	});
 
