@@ -63,12 +63,12 @@ exports.step = function () {
 		this.businessProcess.inventory ? insert(inventoryModal(this.businessProcess)) : null,
 		form(
 			{ id: 'guide-form', class: 'user-guide', action: '/guide/', method: 'post' },
-			div({ class: 'section-primary' }, h2(_("Questions")),
+			div({ class: ['section-primary', 'user-guide-questions-section'] }, h2(_("Questions")),
 				hr(),
 				exports._questionsIntro(this),
 				this.businessProcess.determinants.toDOMFieldset(document, { formId: 'guide-form' })),
 
-			div({ class: 'section-primary' },
+			div({ class: ['section-primary', 'user-guide-registrations-section'] },
 				div({ id: 'mandatory-registrations-section', class: 'section-primary-wrapper' },
 					h2(_("Mandatory Registrations")),
 					hr(),
@@ -104,7 +104,10 @@ exports.step = function () {
 										dbjs: registration._isRequested, type: 'checkbox' }), " ",
 									span(spanContent)));
 						}))),
-			div({ id: 'requirements-section', class: 'section-primary' }, h2(_("Requirements")),
+			div(
+				{ id: 'requirements-section', class: ['section-primary',
+					'user-guide-requirements-section'] },
+				h2(_("Requirements")),
 				hr(),
 				exports._requirementsIntro(this),
 				ul({ id: 'requirements-list', class: 'user-guide-requirements-list' },
@@ -113,14 +116,17 @@ exports.step = function () {
 						li({ 'data-key': requirement.key },
 							requirement.toGuideDOM ? requirement.toGuideDOM() : [requirement.label,
 									requirement.legend && [br(), small(mdi(requirement.legend))]]);
-					})),
-
-			div({ id: 'costs-section', class: 'section-primary' }, h2(_("Costs")),
+					})
+			),
+			div(
+				{ id: 'costs-section', class: ['section-primary', 'user-guide-costs-section'] },
+				h2(_("Costs")),
 				hr(),
 				exports._costsIntro(this),
 				ul({ id: 'costs-list', class: 'user-guide-costs-list' }, exports._costsList(this)),
 				p(a({ id: 'print-costs-link', class: 'button-resource-link', href: '/costs-print/',
-					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print costs list")))),
+					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print costs list")))
+			),
 			p({ id: 'guide-save-button', class: 'user-next-step-button' },
 				button({ type: 'submit' },
 					_("Save and continue"))),
