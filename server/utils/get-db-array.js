@@ -1,32 +1,36 @@
 'use strict';
 
 var remove      = require('es5-ext/array/#/remove')
+  , capitalize  = require('es5-ext/string/#/capitalize')
   , d           = require('d')
   , ee          = require('event-emitter')
   , deferred    = require('deferred')
   , memoize     = require('memoizee')
   , once        = require('timers-ext/once')
   , dbDriver    = require('mano').dbDriver
-  , getIndexMap = require('./get-observable-sort-index-map')
+  , getIndexMap = require('../utils/get-db-sort-index-map')
 
   , defineProperty = Object.defineProperty
   , compareStamps = function (a, b) { return a.stamp - b.stamp; };
 
-module.exports = memoize(function (set, sortIndexName) {
-	var arr = ee([]), itemsMap = getIndexMap(sortIndexName)
-	  , count = 0, isInitialized = false, def = deferred(), setListener, itemsListener;
+module.exports = memoize(function (set, recordType, sortKeyPath) {
+	var arr = ee([]), itemsMap = getIndexMap(recordType, sortKeyPath)
+	  , count = 0, isInitialized = false, def = deferred(), setListener, itemsListener
+	  , methodName = 'get' + capitalize.call(recordType);
 	arr.emitChange = once(arr.emit.bind(arr, 'change'));
 	var add = function (ownerId) {
-		return deferred(itemsMap[ownerId] || dbDriver.getComputed(ownerId + '/' + sortIndexName))
-			.aside(function (data) {
-				if (!set.has(ownerId)) return;
-				if (!itemsMap[ownerId]) itemsMap[ownerId] = { id: ownerId, stamp: data.stamp };
-				arr.push(itemsMap[ownerId]);
-				if (def.resolved) {
-					arr.sort(compareStamps);
-					arr.emitChange();
-				}
-			});
+		var promise;
+		if (itemsMap[ownerId]) promise = deferred(itemsMap[ownerId]);
+		else promise = dbDriver[methodName](ownerId + (sortKeyPath ? ('/' + sortKeyPath) : ''));
+		return promise.aside(function (data) {
+			if (!set.has(ownerId)) return;
+			if (!itemsMap[ownerId]) itemsMap[ownerId] = { id: ownerId, stamp: data.stamp };
+			arr.push(itemsMap[ownerId]);
+			if (def.resolved) {
+				arr.sort(compareStamps);
+				arr.emitChange();
+			}
+		});
 	};
 	set.on('change', setListener = function (event) {
 		if (event.type === 'add') {

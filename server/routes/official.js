@@ -24,9 +24,9 @@ var aFrom               = require('es5-ext/array/from')
   , mano                = require('mano')
   , QueryHandler        = require('../../utils/query-handler')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
-  , getBaseSet          = require('../business-processes/get-observable-set')
-  , getSortedArray      = require('../business-processes/get-observable-array')
-  , getIndexMap         = require('../business-processes/get-observable-sort-index-map')
+  , getDbSet            = require('../utils/get-db-set')
+  , getDbArray          = require('../utils/get-db-array')
+  , getIndexMap         = require('../utils/get-db-sort-index-map')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }
@@ -99,7 +99,7 @@ var getFilteredSet = memoize(function (baseSet, filterString) {
 	return def.promise;
 }, { max: 1000, dispose: function (set) { set._dispose(); } });
 
-var getSortedArrayLru = memoize(function (set, sortIndexName) {
+var getDbArrayLru = memoize(function (set, sortIndexName) {
 	var arr = [], itemsMap = getIndexMap(sortIndexName)
 	  , count = 0, isInitialized = false, def = deferred(), setListener, itemsListener;
 	var add = function (ownerId) {
@@ -161,18 +161,18 @@ module.exports = exports = function (conf) {
 		var indexMeta = exports.getIndexMeta(query, conf), promise;
 		if (isArray(indexMeta)) {
 			promise = deferred.map(indexMeta.sort(compareIndexMeta), function (indexMeta) {
-				return getBaseSet(indexMeta.name, indexMeta.value);
+				return getDbSet('computed', indexMeta.name, indexMeta.value);
 			})(function (sets) {
 				return aFrom(sets).reduce(function (set1, set2) { return set1.and(set2); });
 			});
 		} else {
-			promise = getBaseSet(indexMeta.name, indexMeta.value);
+			promise = getDbSet('computed', indexMeta.name, indexMeta.value);
 		}
 		return promise(function (baseSet) {
-			if (!query.search) return getSortedArray(baseSet, allIndexName);
+			if (!query.search) return getDbArray(baseSet, 'computed', allIndexName);
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
 				return getFilteredSet(baseSet, value)(function (set) {
-					return getSortedArrayLru(set, allIndexName);
+					return getDbArrayLru(set, allIndexName);
 				});
 			})(function (arrays) {
 				if (arrays.length === 1) return arrays[0];

@@ -14,8 +14,8 @@ var flatten             = require('es5-ext/array/#/flatten')
   , mano                = require('mano')
   , QueryHandler        = require('../../utils/query-handler')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
-  , getSortedArray      = require('../users/get-observable-array')
-
+  , getDbSet            = require('../utils/get-db-set')
+  , getDbArray          = require('../utils/get-db-array')
   , slice = Array.prototype.slice, ceil = Math.ceil
   , stringify = JSON.stringify;
 
@@ -39,27 +39,29 @@ module.exports = exports = function (data) {
 	  , itemsPerPage = toNaturalNumber(data.itemsPerPage) || defaultItemsPerPage;
 
 	var getTableData = memoize(function (query) {
-		return getSortedArray()(function (arr) {
-			var pageCount, offset, size = arr.length;
-			if (!size) return { size: size };
-			pageCount = ceil(size / itemsPerPage);
-			if (query.page > pageCount) return { size: size };
+		return getDbSet('computed', 'isActiveAccount', '11')(function (set) {
+			return getDbArray(set, 'direct', null)(function (arr) {
+				var pageCount, offset, size = arr.length;
+				if (!size) return { size: size };
+				pageCount = ceil(size / itemsPerPage);
+				if (query.page > pageCount) return { size: size };
 
-			// Pagination
-			offset = (query.page - 1) * itemsPerPage;
-			arr = slice.call(arr, offset, offset + itemsPerPage);
-			return deferred.map(arr, function (data) {
-				return mano.dbDriver.getDirectObject(data.id, { keyPaths: listProps })(function (datas) {
-					return datas.map(function (data) {
-						return data.data.stamp + '.' + data.id + '.' + data.data.value;
+				// Pagination
+				offset = (query.page - 1) * itemsPerPage;
+				arr = slice.call(arr, offset, offset + itemsPerPage);
+				return deferred.map(arr, function (data) {
+					return mano.dbDriver.getDirectObject(data.id, { keyPaths: listProps })(function (datas) {
+						return datas.map(function (data) {
+							return data.data.stamp + '.' + data.id + '.' + data.data.value;
+						});
 					});
+				})(function (directEvents) {
+					return {
+						view: arr.map(function (data) { return data.stamp + '.' + data.id; }).join('\n'),
+						size: size,
+						data: flatten.call(directEvents)
+					};
 				});
-			})(function (directEvents) {
-				return {
-					view: arr.map(function (data) { return data.stamp + '.' + data.id; }).join('\n'),
-					size: size,
-					data: flatten.call(directEvents)
-				};
 			});
 		});
 	}, {
