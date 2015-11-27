@@ -18,10 +18,11 @@ var createActionsCell = function (businessProcess) {
 					value: span({ class: 'fa fa-trash-o' })
 					}))
 				),
-			td({ class: 'submitted-user-data-table-link' }, a({ class: 'actions-edit',
-				href: url(businessProcess.__id__), rel: "server" },
-					span({ class: 'fa fa-search' }, _("Go to"))))
-			);
+
+		td({ class: 'actions' }, postButton({ buttonClass: 'actions-edit',
+			action: url('business-process', businessProcess.__id__),
+			value: span({ class: 'fa fa-search' }, _("Go to"))
+			})));
 };
 
 exports._parent = require('./user');
