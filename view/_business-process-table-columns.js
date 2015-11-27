@@ -33,22 +33,17 @@ exports.columns = [{
 	data: function (businessProcess) {
 		return list(businessProcess.certificates.applicable, function (cert) {
 			var processingStep = cert.processingStep;
-			if (!processingStep) return;
 
 			return span({ class: 'hint-optional hint-optional-left',
-					'data-hint': _if(businessProcess._isRejected,
-							cert.constructor.label + ' - ' + ProcessingStepStatus.meta.rejected.label,
-						processingStep._resolvedStatus.map(function (status) {
-						var result = cert.constructor.label;
-						if (status) {
-							result += ' - ' + ProcessingStepStatus.meta[status].label;
-						}
-						return result;
-					})) },
+				'data-hint': [cert.constructor.label, _if(businessProcess._isRejected,
+					'- ' + ProcessingStepStatus.meta.rejected.label,
+					processingStep && processingStep._resolvedStatus.map(function (status) {
+						return '- ' + ProcessingStepStatus.meta[status].label;
+					}))] },
 				span({ class: ['label-reg',
 					_if(businessProcess._isRejected, "rejected",
-						_if(processingStep._isApproved, "approved",
-							_if(processingStep._isReady, "ready")))] }, cert.constructor.abbr));
+						_if(processingStep && processingStep._isApproved, "approved",
+							_if(processingStep && processingStep._isReady, "ready")))] }, cert.constructor.abbr));
 		});
 	}
 }];
