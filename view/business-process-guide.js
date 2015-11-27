@@ -155,7 +155,15 @@ exports._costsList = function (context) {
 			span({ class: 'user-guide-costs-list-label' }, _("Total Costs:")), " ",
 			span({ id: 'costs-total' }))];
 };
-exports._guideHeading = Function.prototype;
+exports._guideHeading = function (context) {
+	var headingText = _("Obtain your certificates");
+	return div({ class: "capital-first" },
+		div(headingText[0]),
+		div(
+			h1(headingText.slice(1)),
+			p(_("Answer the following questions to determine required documents and registration fees."))
+		));
+};
 
 exports._questionsIntro = function (context) {
 	return p({ class: "section-primary-legend" },
