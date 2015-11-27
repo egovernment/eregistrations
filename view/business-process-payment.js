@@ -56,5 +56,14 @@ exports.step = function () {
 			a({ href: '/submission/' }, _("Continue to next step")))));
 };
 
-exports._paymentHeading = Function.prototype;
+exports._paymentHeading = function (context) {
+	return div(
+		{ class: 'capital-first' },
+		div("3"),
+		div(
+			h1(_("Pay the fees")),
+			p(_("Provide a proof of payment if you have paid at the bank or pay online directly here."))
+		)
+	);
+};
 exports._onlinePayments = Function.prototype;

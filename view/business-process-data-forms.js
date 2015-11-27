@@ -12,7 +12,7 @@ exports._parent = require('./business-process-base');
 exports['step-guide'] = { class: { 'step-form': true } };
 
 exports.step = function () {
-	exports._formsHeading();
+	exports._formsHeading(this);
 
 	insert(errorMsg(this));
 
@@ -31,4 +31,13 @@ exports.step = function () {
 
 };
 
-exports._formsHeading = Function.prototype;
+exports._formsHeading = function (context) {
+	return div(
+		{ class: 'capital-first' },
+		div("1"),
+		div(
+			h1(_("Fill the form")),
+			p(_("Answer all mandatory questions."))
+		)
+	);
+};

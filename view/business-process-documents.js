@@ -12,7 +12,7 @@ exports['step-documents'] = { class: { 'step-active': true } };
 exports.step = function () {
 	var requirementUploads = this.businessProcess.requirementUploads;
 
-	exports._documentsHeading();
+	exports._documentsHeading(this);
 
 	insert(errorMsg(this));
 
@@ -41,4 +41,15 @@ exports.step = function () {
 				'/submission/') }, _("Continue to next step")))));
 };
 
-exports._documentsHeading = Function.prototype;
+exports._documentsHeading = function (context) {
+	return [
+		div(
+			{ class: 'capital-first' },
+			div("2"),
+			div(
+				h1(_("Upload the documents")),
+				p(_("Upload all the mandatory documents."))
+			)
+		)
+	];
+};

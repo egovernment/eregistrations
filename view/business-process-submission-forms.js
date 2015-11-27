@@ -11,7 +11,7 @@ exports._parent = require('./business-process-base');
 exports['step-submission'] = { class: { 'step-active': true } };
 
 exports.step = function () {
-	exports._submissionHeading();
+	exports._submissionHeading(this);
 
 	insert(errorMsg(this));
 
@@ -79,4 +79,13 @@ exports.step = function () {
 			))));
 };
 
-exports._submissionHeading = Function.prototype;
+exports._submissionHeading = function (context) {
+	return div(
+		{ class: 'capital-first' },
+		div("4"),
+		div(
+			h1(_("Send your files")),
+			p(_("Approve the sworn declaration and submit your application."))
+		)
+	);
+};

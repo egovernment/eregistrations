@@ -82,7 +82,19 @@ exports.step = function () {
 		this.businessProcess.constructor.__id__);
 };
 
-exports._guideHeading = Function.prototype;
+exports._guideHeading = function (context) {
+	var headingText = _("Obtain your certificates");
+
+	return div(
+		{ class: "capital-first" },
+		div(headingText[0]),
+		div(
+			h1(headingText.slice(1)),
+			p(_("Answer the following questions to determine required documents and registration fees."))
+		)
+	);
+};
+
 exports._customScripts = Function.prototype;
 
 // Questions
