@@ -187,10 +187,20 @@ module.exports = memoize(function (db) {
 				return res;
 			}
 		},
+		isPropertyExcludedFromStatus: {
+			value: function (resolved, _observe) {
+				return FormSectionBase.prototype.isPropertyExcludedFromStatus.call(this,
+					resolved, _observe) || this.readOnlyPropertyNames.has(resolved.key);
+			}
+		},
 		// The names of the model fields which should be handled by this section.
 		// Remember to write full property paths relative to the section's master object.
 		// value example: ["name", "lastName", "address/street"]
-		propertyNames: { type: StringLine, multiple: true }
+		propertyNames: { type: StringLine, multiple: true },
+		// The names of the model fields that should be treated as read only in this section.
+		// It should contain the same elements as in propertyNames list. Listed properties will
+		// not count towards progress and rendered not as inputs.
+		readOnlyPropertyNames: { type: StringLine, multiple: true }
 	});
 	db.FormSection.prototype.inputOptions._descriptorPrototype_.nested = true;
 	db.FormSection.prototype.inputOptions._descriptorPrototype_.type   = db.Object;
