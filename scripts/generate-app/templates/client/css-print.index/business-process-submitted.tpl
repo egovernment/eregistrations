@@ -4,3 +4,6 @@
 ../../../node_modules/eregistrations/css/components/print-costs-list.css
 ../../../node_modules/eregistrations/css/components/print-user-history.css
 ../../../node_modules/eregistrations/css/components/print-user-data.css
+../../../node_modules/eregistrations/css/components/section-primary.css
+../../../node_modules/eregistrations/css/components/entity-data-section-primary.css
+../../../node_modules/eregistrations/css/components/entities-overview.css
