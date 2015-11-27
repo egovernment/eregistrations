@@ -38,7 +38,7 @@ exports.columns = [{
 				'data-hint': [cert.constructor.label, _if(businessProcess._isRejected,
 					"- " + ProcessingStepStatus.meta.rejected.label,
 					processingStep && processingStep._resolvedStatus.map(function (status) {
-						return "- " + ProcessingStepStatus.meta[status].label;
+						if (status) return "- " + ProcessingStepStatus.meta[status].label;
 					}))] },
 				span({ class: ['label-reg',
 					_if(businessProcess._isRejected, "rejected",
