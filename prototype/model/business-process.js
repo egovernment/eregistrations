@@ -467,6 +467,10 @@ BusinessProcessNew.prototype.dataForms.map.get('company').sections.define('detai
 	type: FormSection,
 	nested: true
 });
+BusinessProcessNew.prototype.dataForms.map.get('company').sections.define('address', {
+	type: FormSection,
+	nested: true
+});
 
 BusinessProcessNew.prototype.dataForms.map.get('company').sections.get('details').setProperties({
 	label: "Company details",
@@ -476,9 +480,10 @@ BusinessProcessNew.prototype.dataForms.map.get('company').sections.get('details'
 BusinessProcessNew.prototype.dataForms.map.get('company').sections.get('address').setProperties({
 	label: "Company address",
 	resolventProperty: "isAddressSameAsPersonal",
-	propertyNames: ['address/city', 'address/streetType',
-		'address/streetType', 'address/streetName', 'address/street', 'address/streetNumber',
-		'address/apartmentNumber']
+	propertyNames: ['businessAddress/city', 'businessAddress/streetType',
+		'businessAddress/streetType', 'businessAddress/streetName',
+		'businessAddress/street', 'businessAddress/streetNumber',
+		'businessAddress/apartmentNumber']
 });
 
 // Forms sides section
