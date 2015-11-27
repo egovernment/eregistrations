@@ -32,7 +32,13 @@ module.exports = function (t, a) {
 				'propertyNotApplicable',
 				'propertyNotFormApplicable',
 				'nestedObject/notRequiredProperty',
-				'nonExistentNestedObject/notRequiredProperty'
+				'nonExistentNestedObject/notRequiredProperty',
+				'readOnlyPropertyName'
+			]
+		},
+		readOnlyPropertyNames: {
+			value: [
+				'readOnlyPropertyName'
 			]
 		}
 	});
@@ -106,6 +112,10 @@ module.exports = function (t, a) {
 			type: db.Number,
 			required: true
 		},
+		readOnlyPropertyName: {
+			type: db.Number,
+			required: true
+		},
 
 		isPropertyNotApplicableApplicable: {
 			type: db.Boolean,
@@ -132,11 +142,12 @@ module.exports = function (t, a) {
 	section = masterObject.sectionWithDefaultValues;
 
 	a(section.propertyNames.size, 0);
+	a(section.readOnlyPropertyNames.size, 0);
 
 	a.h2('Properties overridden in derived class');
 	section = masterObject.sectionOfDerivedType;
 
-	a(section.propertyNames.size, 9);
+	a(section.propertyNames.size, 10);
 	a.deep(aFrom(section.propertyNames), [
 		'notRequiredProperty',
 		'property',
@@ -146,7 +157,12 @@ module.exports = function (t, a) {
 		'propertyNotApplicable',
 		'propertyNotFormApplicable',
 		'nestedObject/notRequiredProperty',
-		'nonExistentNestedObject/notRequiredProperty'
+		'nonExistentNestedObject/notRequiredProperty',
+		'readOnlyPropertyName'
+	]);
+	a(section.readOnlyPropertyNames.size, 1);
+	a.deep(aFrom(section.readOnlyPropertyNames), [
+		'readOnlyPropertyName'
 	]);
 
 	a.h1('Getters');
@@ -166,7 +182,7 @@ module.exports = function (t, a) {
 	section = masterObject.sectionOfDerivedType;
 
 	a.h3('resolvedPropertyNames');
-	a(section.resolvedPropertyNames.size, 8);
+	a(section.resolvedPropertyNames.size, 9);
 	a.deep(aFrom(section.resolvedPropertyNames), [
 		'notRequiredProperty',
 		'property',
@@ -175,7 +191,8 @@ module.exports = function (t, a) {
 		'propertyWithDefaultValue',
 		'propertyNotApplicable',
 		'propertyNotFormApplicable',
-		'nestedObject/notRequiredProperty'
+		'nestedObject/notRequiredProperty',
+		'readOnlyPropertyName'
 	]);
 	var savedPropertyNames = aFrom(section.propertyNames);
 	section.propertyNames = ['nonExistentProperty'];
@@ -185,7 +202,7 @@ module.exports = function (t, a) {
 	section.propertyNames = savedPropertyNames;
 
 	a.h3('formApplicablePropertyNames');
-	a(section.formApplicablePropertyNames.size, 7);
+	a(section.formApplicablePropertyNames.size, 8);
 	a.deep(aFrom(section.formApplicablePropertyNames), [
 		'notRequiredProperty',
 		'property',
@@ -193,18 +210,20 @@ module.exports = function (t, a) {
 		'thirdProperty',
 		'propertyWithDefaultValue',
 		'propertyNotApplicable',
-		'nestedObject/notRequiredProperty'
+		'nestedObject/notRequiredProperty',
+		'readOnlyPropertyName'
 	]);
 
 	a.h3('applicablePropertyNames');
-	a(section.applicablePropertyNames.size, 6);
+	a(section.applicablePropertyNames.size, 7);
 	a.deep(aFrom(section.applicablePropertyNames), [
 		'notRequiredProperty',
 		'property',
 		'secondProperty',
 		'thirdProperty',
 		'propertyWithDefaultValue',
-		'nestedObject/notRequiredProperty'
+		'nestedObject/notRequiredProperty',
+		'readOnlyPropertyName'
 	]);
 
 	a.h3('status & missingRequiredPropertyNames');

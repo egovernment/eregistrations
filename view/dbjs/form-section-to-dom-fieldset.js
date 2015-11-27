@@ -12,13 +12,22 @@
  */
 'use strict';
 
-var d                = require('d')
-  , db               = require('mano').db
-  , ns               = require('mano').domjs.ns
-  , normalizeOptions = require('es5-ext/object/normalize-options')
-  , progressRules    = require('../components/progress-rules');
+var d                   = require('d')
+  , db                  = require('mano').db
+  , ns                  = require('mano').domjs.ns
+  , normalizeOptions    = require('es5-ext/object/normalize-options')
+  , progressRules       = require('../components/progress-rules')
+  , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path');
 
 require('./form-section-base');
+
+var readOnlyRender = function (input, options) {
+	return div(
+		{ class: 'dbjs-input-component' },
+		label(options.label),
+		div({ class: 'input' }, input.observable)
+	);
+};
 
 module.exports = Object.defineProperties(db.FormSection.prototype, {
 	toDOMFieldset: d(function (document/*, options */) {
@@ -27,6 +36,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		  , customizeData = { master: master }
 		  , resolvent     = this.getFormResolvent(options)
 		  , legacy        = this.getLegacy(options.formId, options)
+		  , controls      = legacy.controls
 		  , control, disablePartialSubmit;
 
 		disablePartialSubmit = options.disablePartialSubmit != null ? options.disablePartialSubmit
@@ -35,6 +45,12 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		if (!disablePartialSubmit) {
 			control = { required: false };
 		}
+
+		this.readOnlyPropertyNames.forEach(function (propName) {
+			propName = resolvePropertyPath(master, propName).id;
+
+			controls[propName].render = readOnlyRender;
+		});
 
 		customizeData.arrayResult = [
 			options.prepend,
@@ -46,7 +62,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 				dbjs: master,
 				names: this.formApplicablePropertyNames,
 				control: control,
-				controls: legacy.controls
+				controls: controls
 			}, options.fieldsetOptions)),
 			options.append,
 			resolvent.legacyScript,
