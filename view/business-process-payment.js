@@ -50,7 +50,8 @@ exports.step = function () {
 		exports._onlinePayments(this),
 		div({ class: 'disabler' })
 	);
-	insert(_if(eq(this.businessProcess.costs._paymentProgress, 1),
+	insert(_if(and(eq(this.businessProcess._guideProgress, 1),
+		eq(this.businessProcess.costs._paymentProgress, 1)),
 		div({ class: 'user-next-step-button' },
 			a({ href: '/submission/' }, _("Continue to next step")))));
 };

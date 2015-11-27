@@ -21,7 +21,8 @@ exports.step = function () {
 		generateSections(this.businessProcess.dataForms.applicable, { viewContext: this }),
 		div({ class: 'disabler' }));
 
-	insert(_if(eq(this.businessProcess.dataForms._progress, 1),
+	insert(_if(and(eq(this.businessProcess._guideProgress, 1),
+		eq(this.businessProcess.dataForms._progress, 1)),
 		div({ class: 'user-next-step-button' },
 			a({ href: '/documents/' }, _("Continue to next step"))),
 		_if(gt(this.businessProcess.dataForms._progress, 0), section({ class: 'section-warning' },

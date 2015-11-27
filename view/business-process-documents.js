@@ -35,7 +35,7 @@ exports.step = function () {
 		),
 		div({ class: 'disabler' })
 	);
-	insert(_if(eq(requirementUploads._progress, 1),
+	insert(_if(and(eq(this.businessProcess._guideProgress, 1), eq(requirementUploads._progress, 1)),
 		div({ class: 'user-next-step-button' },
 			a({ href: _if(not(eq(this.businessProcess.costs._paymentWeight, 0)), '/pay/',
 				'/submission/') }, _("Continue to next step")))));
