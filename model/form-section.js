@@ -189,7 +189,7 @@ module.exports = memoize(function (db) {
 		},
 		isPropertyExcludedFromStatus: {
 			value: function (resolved, _observe) {
-				return FormSectionBase.prototype.isPropertyExcludedFromStatus.call(this,
+				return this.database.FormSectionBase.prototype.isPropertyExcludedFromStatus.call(this,
 					resolved, _observe) || this.readOnlyPropertyNames.has(resolved.key);
 			}
 		},
