@@ -1,4 +1,4 @@
-//Application top configuration.
+// Application configuration (to be deprecated)
 
 'use strict';
 
