@@ -2,7 +2,7 @@
 
 var _ = require('mano').i18n.bind('User: Notifications');
 
-exports.trigger = require('eregistrations/users/users');
+exports.trigger = require('../users/users');
 exports.subject = _("M01 Your account in the service has been created");
 
 exports.text = _("Email message greeting ${ fullName }") + "\n\n"
