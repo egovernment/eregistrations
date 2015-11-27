@@ -51,7 +51,7 @@ module.exports = memoize(function (db/*, options*/) {
 		searchString: { type: db.String, value: function () {
 			var arr = [], submissionNumber = String(this.submissionNumber);
 			if (this.businessName) arr.push(this.businessName.toLowerCase());
-			if (submissionNumber) arr.push(this.submissionNumber.toLowerCase());
+			if (submissionNumber) arr.push(submissionNumber.toLowerCase());
 			return arr.join('\x02');
 		} }
 	});
