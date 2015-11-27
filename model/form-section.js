@@ -189,8 +189,9 @@ module.exports = memoize(function (db) {
 		},
 		isPropertyExcludedFromStatus: {
 			value: function (resolved, _observe) {
-				return this.database.FormSectionBase.prototype.isPropertyExcludedFromStatus.call(this,
-					resolved, _observe) || this.readOnlyPropertyNames.has(resolved.key);
+				return this.readOnlyPropertyNames.has(resolved.key) ||
+					this.database.FormSectionBase.prototype.isPropertyExcludedFromStatus.call(this,
+						resolved, _observe);
 			}
 		},
 		// The names of the model fields which should be handled by this section.
