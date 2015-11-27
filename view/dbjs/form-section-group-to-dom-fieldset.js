@@ -30,7 +30,9 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 		  , customizeData   = { master: master }
 		  , fieldsetOptions = {
 			master: master,
-			formId: options.formId
+			formId: options.formId,
+			disablePartialSubmit: options.disablePartialSubmit != null ? options.disablePartialSubmit
+				: this.disablePartialSubmit
 		};
 
 		customizeData.arrayResult = [
