@@ -2,10 +2,10 @@
 
 'use strict';
 
-var generateSections      = require('./components/generate-form-sections')
-, incompleteFormNav       = require('./components/incomplete-form-nav')
-, _                       = require('mano').i18n.bind('Registration')
-, errorMsg                = require('./_business-process-error-info').errorMsg;
+var generateSections  = require('./components/generate-form-sections')
+  , incompleteFormNav = require('./components/incomplete-form-nav')
+  , _                 = require('mano').i18n.bind('Registration')
+  , errorMsg          = require('./_business-process-error-info').errorMsg;
 
 exports._parent = require('./business-process-base');
 
@@ -18,7 +18,7 @@ exports.step = function () {
 
 	div({ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
 				'disabler-active')], id: 'forms-disabler-range' },
-		generateSections(this.businessProcess.dataForms.applicable, { viewContext: this }),
+		exports._forms(this),
 		div({ class: 'disabler' }));
 
 	insert(_if(and(eq(this.businessProcess._guideProgress, 1),
@@ -40,4 +40,8 @@ exports._formsHeading = function (context) {
 			p(_("Answer all mandatory questions."))
 		)
 	);
+};
+
+exports._forms = function (context) {
+	return generateSections(context.businessProcess.dataForms.applicable, { viewContext: context });
 };
