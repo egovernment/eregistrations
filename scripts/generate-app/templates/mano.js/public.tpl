@@ -2,5 +2,5 @@
 
 'use strict';
 
-exports.forceLegacyFullRender = true;
+exports.forceLegacy = true;
 exports.viewPath = '../../view/${ appName }';
