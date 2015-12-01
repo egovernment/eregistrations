@@ -7,13 +7,14 @@ var _            = require('mano').i18n.bind('View: Documents list')
   , tableColumns = require('eregistrations/view/_business-process-table-columns')
   , columns      = from(tableColumns.columns);
 
+columns.push(tableColumns.actionsColumn);
+
 exports._parent = require('./user');
 
 exports['user-account-requests'] = { class: { active: true } };
 exports['user-account-content'] = function () {
 	var businessProcesses = this.user.businessProcesses.filterByKey('isFromEregistrations', true);
 
-	columns.push(tableColumns.actionsColumn);
 	insert(_if(businessProcesses._size, function () {
 		return [p({ class: 'section-primary-legend' },
 			_("Here you can modify not yet submitted requests, follow the process of the " +

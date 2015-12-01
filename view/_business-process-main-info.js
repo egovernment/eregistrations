@@ -10,12 +10,13 @@ var curry        = require('es5-ext/function/#/curry')
   , tableCols    = require('./_business-process-table-columns')
   , columns      = from(tableCols.columns);
 
+columns.push(tableCols.archiverColumn);
+
 module.exports = function (context/*, options */) {
 	var options = Object(arguments[1])
 	  , businessProcess = context.businessProcess
 	  , urlPrefix = options.urlPrefix || '/', scrollableElem;
 
-	columns.push(tableCols.archiverColumn);
 	return [section(
 		{ class: 'submitted-main table-responsive-container' },
 		table(
