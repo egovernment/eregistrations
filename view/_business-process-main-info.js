@@ -15,7 +15,7 @@ module.exports = function (context/*, options */) {
 	  , businessProcess = context.businessProcess
 	  , urlPrefix = options.urlPrefix || '/', scrollableElem;
 
-	columns.push(tableCols.archiverColumn(businessProcess));
+	columns.push(tableCols.archiverColumn);
 	return [section(
 		{ class: 'submitted-main table-responsive-container' },
 		table(

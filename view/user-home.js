@@ -13,6 +13,7 @@ exports['user-account-requests'] = { class: { active: true } };
 exports['user-account-content'] = function () {
 	var businessProcesses = this.user.businessProcesses.filterByKey('isFromEregistrations', true);
 
+	columns.push(tableColumns.actionsColumn);
 	insert(_if(businessProcesses._size, function () {
 		return [p({ class: 'section-primary-legend' },
 			_("Here you can modify not yet submitted requests, follow the process of the " +
@@ -22,13 +23,13 @@ exports['user-account-content'] = function () {
 					{ class: 'submitted-user-data-table' },
 					thead(tr(th(_("Status")), list(columns, function (column) {
 						return th({ class: column.class }, column.head);
-					}), th())),
+					}))),
 					tbody(
 						businessProcesses,
 						function (businessProcess) {
 							return tr(td(businessProcess._status), list(columns, function (column) {
 								return td({ class: column.class }, column.data(businessProcess));
-							}), tableColumns.actionsColumn(businessProcess));
+							}));
 						}
 					)
 				))];
