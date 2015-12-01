@@ -44,7 +44,7 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 		customizeData.subSections = customizeData.arrayResult.subSections = {};
 
 		customizeData.arrayResult.push(
-			ns.div({ id: resolvent.affectedSectionId }, ns.list(this.sections,
+			ns.div({ id: resolvent.affectedSectionId }, ns.list(this.applicableSections,
 				function (subSection, subSectionName) {
 					customizeData.subSections[subSectionName] = {};
 					customizeData.subSections[subSectionName].object = subSection;
