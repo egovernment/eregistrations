@@ -8,7 +8,7 @@ exports.getServiceIcon = function (businessProcess) {
 	return i({ class: "fa fa-user" });
 };
 
-exports._actionsColumn = function (businessProcess) {
+exports.actionsColumn = function (businessProcess) {
 	return _if(businessProcess._isAtDraft,
 		td({ class: 'actions' }, postButton({ buttonClass: 'actions-edit',
 				action: url('business-process', businessProcess.__id__),
@@ -26,7 +26,7 @@ exports._actionsColumn = function (businessProcess) {
 			})));
 };
 
-exports._archiverColumn = function (businessProcess) {
+exports.archiverColumn = function (businessProcess) {
 	return td({ class: 'submitted-user-data-table-link' }, _if(businessProcess._filesArchiveUrl,
 		a({ class: 'hint-optional hint-optional-left', target: "_blank",
 				'data-hint': _("Download the electronic file"),
@@ -38,7 +38,7 @@ exports._archiverColumn = function (businessProcess) {
 			span({ class: 'fa fa-download' }, _("Download")))));
 };
 
-exports._goToColumn = function (businessProcess) {
+exports.goToColumn = function (businessProcess) {
 	return td({ class: 'submitted-user-data-table-link' }, a({ class: 'actions-edit',
 			href: url(businessProcess.__id__), rel: "server" },
 		span({ class: 'fa fa-search' }, _("Go to"))));

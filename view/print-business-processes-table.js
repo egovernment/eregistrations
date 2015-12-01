@@ -4,6 +4,7 @@ var toNatural  = require('es5-ext/number/to-pos-integer')
   , location   = require('mano/lib/client/location')
   , _          = require('mano').i18n.bind('Print')
   , arrayToSet = require('../utils/array-to-set')
+  , findKey    = require('es5-ext/object/find-key')
 
   , keys = Object.keys, ceil = Math.ceil;
 
@@ -29,10 +30,14 @@ exports.main = {
 			mmap(location.query.get('status'), function (value) {
 				var status, businessProcesses, pageCount;
 				if (value == null) {
-					if (statusMap.all) {
-						value = 'all';
+					if (statusMap['']) {
+						status = '';
+					} else {
+						status = findKey(statusMap, function (item) { return item.default; });
+						if (!status) {
+							return;
+						}
 					}
-					value = '';
 				} else if (value && statusMap[value]) {
 					status = value;
 				} else {

@@ -28,7 +28,7 @@ exports['user-account-content'] = function () {
 						function (businessProcess) {
 							return tr(td(businessProcess._status), list(columns, function (column) {
 								return td({ class: column.class }, column.data(businessProcess));
-							}), tableColumns._actionsColumn(businessProcess));
+							}), tableColumns.actionsColumn(businessProcess));
 						}
 					)
 				))];
