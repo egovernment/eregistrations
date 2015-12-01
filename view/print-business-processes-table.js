@@ -28,9 +28,16 @@ exports.main = {
 		return section({ id: 'main' },
 			mmap(location.query.get('status'), function (value) {
 				var status, businessProcesses, pageCount;
-				if (value == null) status = '';
-				else if (value && statusMap[value]) status = value;
-				else return;
+				if (value == null) {
+					if (statusMap.all) {
+						value = 'all';
+					}
+					value = '';
+				} else if (value && statusMap[value]) {
+					status = value;
+				} else {
+					return;
+				}
 				businessProcesses = statusMap[status].data;
 				pageCount = businessProcesses._size.map(getPageCount);
 				return mmap(location.query.get('page'), function (value) {

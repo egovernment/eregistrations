@@ -9,11 +9,11 @@ var curry              = require('es5-ext/function/#/curry')
   , syncHeight         = require('./utils/sync-height')
   , scrollBottom       = require('./utils/scroll-to-bottom')
 
-  , _d = _, db = require('mano').db;
+  , _d = _;
 
 module.exports = function (doc, sideContent) {
 	var elem, scrollableElem, master;
-	if (doc.issuedBy.constructor === db.Institution) {
+	if (doc.isCertificate) {
 		master = doc.master;
 	} else {
 		master = doc.owner.owner.owner.owner;
