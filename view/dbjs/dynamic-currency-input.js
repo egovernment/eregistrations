@@ -43,13 +43,19 @@ module.exports = memoize(function (Currency, currencyTypeKeyPath/* options */) {
 	});
 
 	var Text = function (document, ns/*, options*/) {
+		var updateValue, currencyType, amount;
+
 		DOMText.apply(this, arguments);
 
-		var currencyType = this.observable.value.master.resolveSKeyPath(currencyTypeKeyPath).observable;
-
-		currencyType.on('change', function (event) {
+		updateValue = function (event) {
 			this.value = this.observable.value;
-		}.bind(this));
+		}.bind(this);
+
+		currencyType = this.observable.value.master.resolveSKeyPath(currencyTypeKeyPath).observable;
+		amount = this.observable.value.resolveSKeyPath('amount').observable;
+
+		currencyType.on('change', updateValue);
+		amount.on('change', updateValue);
 	};
 
 	Text.prototype = Object.create(DOMText.prototype, {
