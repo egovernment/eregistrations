@@ -2,21 +2,30 @@
 
 'use strict';
 
-var ensureType = require('dbjs/valid-dbjs-type')
-  , serialize = require('es5-ext/object/serialize')
-  , writeFile = require('fs2/write-file')
-  , db        = require('mano').db
-  , Currency  = require('dbjs-ext/number/currency')(db)
-  , Cost      = require('eregistrations/model/cost')(db)
-  , toArray   = require('es5-ext/array/to-array');
+var ensureType     = require('dbjs/valid-dbjs-type')
+  , serialize      = require('es5-ext/object/serialize')
+  , writeFile      = require('fs2/write-file')
+  , defineCurrency = require('dbjs-ext/number/currency')
+  , defineCost     = require('eregistrations/model/cost')
+  , toArray        = require('es5-ext/array/to-array');
 
 var defineForEach = function (object) {
 	object.forEach = new Function('cb, thisArg', '$.dbjsMapForEach(this, cb, thisArg);');
 };
 
 module.exports = function (businessProcessType, filename/*, options*/) {
-	var options = Object(arguments[2]), legacyDb = {}, businessProcessProto, certificates = {}
-	  , costs = {}, registrations = {}, requirements = {}, currencyType = {}, costType = {};
+	var options       = Object(arguments[2])
+	  , db            = businessProcessType.database
+	  , Cost          = defineCost(db)
+	  , Currency      = defineCurrency(db)
+	  , legacyDb      = {}
+	  , certificates  = {}
+	  , costs         = {}
+	  , registrations = {}
+	  , requirements  = {}
+	  , currencyType  = {}
+	  , costType      = {}
+	  , businessProcessProto;
 
 	ensureType(businessProcessType);
 
@@ -75,8 +84,8 @@ module.exports = function (businessProcessType, filename/*, options*/) {
 
 	// Copy less interesting (support) stuff also.
 	currencyType.format = Currency.format;
-	currencyType.symbol = db.Cost.prototype.getDescriptor('amount').type.symbol;
-	currencyType.isoCode = db.Cost.prototype.getDescriptor('amount').type.isoCode;
+	currencyType.symbol = Cost.prototype.getDescriptor('amount').type.symbol;
+	currencyType.isoCode = Cost.prototype.getDescriptor('amount').type.isoCode;
 	costType.step = Cost.prototype.getDescriptor('amount').step;
 
 	// Add everything to legacyDb
