@@ -61,7 +61,8 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		if (startsWith.call(appName, 'official-')) {
 			msgItems.push(clientModelReminder);
 			msgItems.push(appsRoutersReminder);
-			msgItems.push("Replace all occurences of BusinessProcessCHANGEME with proper class names");
+			msgItems.push("Replace all occurences of BusinessProcessCHANGEME with proper " +
+				"class names in: apps/" + appName + "/client/program.js");
 			msgItems.push("Ensure that views model is updated with added status maps in model/views.js");
 		}
 
