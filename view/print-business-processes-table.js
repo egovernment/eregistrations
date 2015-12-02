@@ -1,15 +1,16 @@
 'use strict';
 
-var ensureArray   = require('es5-ext/array/valid-array')
-  , toNatural     = require('es5-ext/number/to-pos-integer')
-  , ensureObject  = require('es5-ext/object/valid-object')
-  , hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
+var ensureArray    = require('es5-ext/array/valid-array')
+  , toNatural      = require('es5-ext/number/to-pos-integer')
+  , ensureCallable = require('es5-ext/object/valid-callable')
+  , ensureObject   = require('es5-ext/object/valid-object')
+  , hyphenToCamel  = require('es5-ext/string/#/hyphen-to-camel')
   , replaceContent = require('dom-ext/element/#/replace-content')
-  , mano       = require('mano')
-  , location   = require('mano/lib/client/location')
-  , Manager = require('./components/business-processes-table/manager')
-  , arrayToSet = require('../utils/array-to-set')
-  , findKey    = require('es5-ext/object/find-key')
+  , mano           = require('mano')
+  , location       = require('mano/lib/client/location')
+  , Manager        = require('./components/business-processes-table/manager')
+  , arrayToSet     = require('../utils/array-to-set')
+  , findKey        = require('es5-ext/object/find-key')
 
   , keys = Object.keys, ceil = Math.ceil
   , env = mano.env, _ = mano.i18n;
@@ -23,13 +24,14 @@ var generateMainContent = function () {
 	var statusMap = ensureObject(exports._statusMap())
 	  , columns = ensureArray(exports._columns())
 	  , roleName = hyphenToCamel.call(this.appName.slice('official-'.length))
+	  , getOrderIndex = ensureCallable(exports._getOrderIndex())
 	  , container, superIsExernalQuery;
 
 	var listManager = new Manager({
 		user: this.user,
 		roleName: roleName,
 		statusMap: statusMap,
-		getOrderIndex: exports._getOrderIndex,
+		getOrderIndex: getOrderIndex,
 		itemsPerPage: env.objectsListItemsPerPage
 	});
 	superIsExernalQuery = listManager._isExternalQuery;
