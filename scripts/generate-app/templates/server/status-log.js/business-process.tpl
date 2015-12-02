@@ -1,7 +1,7 @@
 'use strict';
 
-var _ = require('mano').i18n.bind('User')
-  , ${ className } = require('mano').db.${ className };
+var _ = require('../../../i18n').bind('User')
+  , ${ className } = require('../../../db').${ className };
 
 module.exports = [{
 	BusinessProcessType: ${ className },
