@@ -64,7 +64,7 @@ module.exports = function (projectRoot, appName/*, options*/) {
 
 	findTemplate = function (appPath, fName, templates, templatePath) {
 		var partialAppName = appName, i = 0;
-		if (templates[appPath] && path.basename(templates[appPath]) !== 'authenticated') return;
+		if (templates[appPath] && path.basename(templates[appPath]) !== 'authenticated.tpl') return;
 		while (partialAppName) {
 			if (fName === partialAppName) {
 				templates[appPath] = path.join(__dirname, 'templates', templatePath);
@@ -89,15 +89,15 @@ module.exports = function (projectRoot, appName/*, options*/) {
 					templates[appPath] = path.join(__dirname, 'templates', templatePath);
 					return;
 				}
+				if (fName === 'authenticated' && !templates[appPath]) {
+					templates[appPath] = path.join(__dirname, 'templates', templatePath);
+					return;
+				}
 				if (templateType === 'official') {
 					findTemplate(appPath, fName, templates, templatePath);
 					return;
 				}
 				if (fName === templateType) {
-					templates[appPath] = path.join(__dirname, 'templates', templatePath);
-					return;
-				}
-				if (fName === 'authenticated' && !templates[appPath]) {
 					templates[appPath] = path.join(__dirname, 'templates', templatePath);
 				}
 			}
