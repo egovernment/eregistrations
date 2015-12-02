@@ -37,7 +37,7 @@ var BusinessProcessesManager = module.exports = function (conf) {
 	  , statusMap = ensureObject(conf.statusMap)
 	  , getOrderIndex = ensureCallable(conf.getOrderIndex)
 	  , searchFilter = getSearchFilter
-	  , itemsPerPage = toNaturalNumber(data.itemsPerPage);
+	  , itemsPerPage = toNaturalNumber(conf.itemsPerPage);
 
 	if (itemsPerPage) this.itemsPerPage = itemsPerPage;
 	defineProperties(this, {
