@@ -13,3 +13,7 @@ require('../../view/print-base');
 require('../../view/user-base');
 
 assign(exports, require('eregistrations/routes/official')('${ appNameSuffix }'));
+
+exports['/'] = require('../../view/${ appName }/business-processes-table');
+exports['print-business-processes-list'] =
+	require('../../view/${ appName }/print-business-processes-table');
