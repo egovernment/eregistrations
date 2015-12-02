@@ -48,7 +48,7 @@ exports.goToColumn = {
 	class: 'submitted-user-data-table-link',
 	data: function (businessProcess) {
 		return a({ class: 'actions-edit',
-				href: url(businessProcess.__id__), rel: "server" },
+				href: url(businessProcess.__id__) },
 			span({ class: 'fa fa-search' }, _("Go to")));
 	}
 };
