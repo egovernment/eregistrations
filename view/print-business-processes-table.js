@@ -48,7 +48,7 @@ var generateMainContent = function () {
 	var getSection  = function (url, businessProcesses, data) {
 		return [div({ class: 'print-users-list-caption' },
 			data.label, span(" (", businessProcesses.length, ")")),
-			table({ class: 'print-users-list' },
+			table({ class: 'print-users-list submitted-user-data-table' },
 				thead(columns.map(function (column) { return th({ class: column.class }, column.head); })),
 				tbody({ onEmpty: tr({ class: 'empty' }, td({ colspan: columns.length },
 					_("There are no items"))) }, businessProcesses,
