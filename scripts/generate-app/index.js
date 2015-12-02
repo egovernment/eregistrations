@@ -33,7 +33,7 @@ var copyExtraFile = function (projectRoot, extraPath) {
 
 module.exports = function (projectRoot, appName/*, options*/) {
 	var options = normalizeOptions(arguments[2]), extraFilesPath, partialAppName, templateType
-	  , appRootPath, templateVars = {};
+	  , appRootPath, templateVars = {}, findTemplate;
 
 	appRootPath = path.resolve(projectRoot, 'apps', appName);
 	extraFilesPath    = path.join(__dirname, 'extra-files');
@@ -62,6 +62,18 @@ module.exports = function (projectRoot, appName/*, options*/) {
 
 	var templates = {};
 
+	findTemplate = function (appPath, fName, templates, templatePath) {
+		var partialAppName = appName, i = 0;
+		while (partialAppName) {
+			if (fName === partialAppName) {
+				templates[appPath] = path.join(__dirname, 'templates', templatePath);
+				return;
+			}
+			--i;
+			partialAppName = appName.split('-').slice(0, i).join('-');
+		}
+	};
+
 	return exec('node',
 		[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + appName],
 		{ cwd: projectRoot }).then(function () {
@@ -76,7 +88,9 @@ module.exports = function (projectRoot, appName/*, options*/) {
 					templates[appPath] = path.join(__dirname, 'templates', templatePath);
 					return;
 				}
-				if (fName === templateType) {
+				if (templateType === 'official') {
+					if (findTemplate(appPath, fName, templates, templatePath)) return;
+				} else if (fName === templateType) {
 					templates[appPath] = path.join(__dirname, 'templates', templatePath);
 					return;
 				}

@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _ = require('mano').i18n.bind('Official');
+var _ = require('../../../i18n').i18n.bind('Official');
 
 module.exports = {
 	all: {
