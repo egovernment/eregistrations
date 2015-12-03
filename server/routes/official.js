@@ -6,6 +6,7 @@ var aFrom               = require('es5-ext/array/from')
   , flatten             = require('es5-ext/array/#/flatten')
   , remove              = require('es5-ext/array/#/remove')
   , uniq                = require('es5-ext/array/#/uniq')
+  , constant            = require('es5-ext/function/constant')
   , isNaturalNumber     = require('es5-ext/number/is-natural')
   , toNaturalNumber     = require('es5-ext/number/to-pos-integer')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
@@ -14,6 +15,7 @@ var aFrom               = require('es5-ext/array/from')
   , ensureObject        = require('es5-ext/object/valid-object')
   , ensureString        = require('es5-ext/object/validate-stringifiable-value')
   , includes            = require('es5-ext/string/#/contains')
+  , uncapitalize        = require('es5-ext/string/#/uncapitalize')
   , d                   = require('d')
   , ensureSet           = require('es6-set/valid-set')
   , deferred            = require('deferred')
@@ -134,10 +136,9 @@ var getDbArrayLru = memoize(function (set, sortIndexName) {
 	return def.promise;
 }, { max: 1000, dispose: function (arr) { arr._dispose(); } });
 
-module.exports = exports = function (conf) {
+var initializeHandler = function (conf) {
 	conf = normalizeOptions(ensureObject(conf));
-	var roleName = ensureString(conf.roleName)
-	  , statusIndexName = ensureString(conf.statusIndexName)
+	var statusIndexName = ensureString(conf.statusIndexName)
 	  , allIndexName = ensureString(conf.allIndexName)
 	  , bpListProps = ensureSet(conf.listProperties)
 	  , bpListComputedProps = conf.listComputedProperties && aFrom(conf.listComputedProperties)
@@ -146,6 +147,7 @@ module.exports = exports = function (conf) {
 	  , itemsPerPage = toNaturalNumber(conf.itemsPerPage) || defaultItemsPerPage
 	  , indexes;
 
+	ensureString(conf.roleName);
 	if (conf.resolveCollectionMeta != null) ensureCallable(conf.resolveCollectionMeta);
 
 	if (bpListComputedProps) {
@@ -241,16 +243,45 @@ module.exports = exports = function (conf) {
 	});
 
 	return {
+		tableQueryHandler: tableQueryHandler,
+		getTableData: getTableData,
+		businessProcessQueryHandler: businessProcessQueryHandler
+	};
+};
+
+module.exports = exports = function (mainConf) {
+	var resolveHandler;
+	if (isArray(mainConf)) {
+		resolveHandler = (function () {
+			var map = mainConf.reduce(function (map, conf) {
+				map[conf.roleName] = initializeHandler(conf);
+			}, create(null));
+			return function (userId) {
+				var handler, roleName = uncapitalize.call(db.User.getById(userId)
+					.currentRoleResolved.slice('official'.length));
+				handler = map[roleName];
+				if (!handler) throw new Error("Cannot resolve conf for role name: " + stringify(roleName));
+				return handler;
+			};
+		}());
+	} else {
+		resolveHandler = constant(initializeHandler(mainConf));
+	}
+	return {
 		'get-business-processes-view': function (query) {
+			var handler = resolveHandler(this.req.$user);
 			// Get snapshot of business processes table page
-			return tableQueryHandler.resolve(query)(function (query) { return getTableData(query); });
+			return handler.tableQueryHandler.resolve(query)(function (query) {
+				return handler.getTableData(query);
+			});
 		},
 		'get-business-process-data': function (query) {
+			var handler = resolveHandler(this.req.$user);
 			// Get full data of one of the business processeses
-			return businessProcessQueryHandler.resolve(query)(function (query) {
+			return handler.businessProcessQueryHandler.resolve(query)(function (query) {
 				if (!query.id) return { passed: false };
 				// Put business process to top in visitedBusinessProcesses LRU queue
-				db.User.getById(this.req.$user).visitedBusinessProcesses[roleName]
+				db.User.getById(this.req.$user).visitedBusinessProcesses[handler.roleName]
 					.add(db.BusinessProcess.getById(query.id));
 				return { passed: true };
 			}.bind(this));
