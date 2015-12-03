@@ -22,10 +22,10 @@ var ComputedEmitter = module.exports = function (dbName, keyPath) {
 };
 
 ee(Object.defineProperties(ComputedEmitter.prototype, assign({
-	get: function (ownerId) {
+	get: d(function (ownerId) {
 		if (this._map.has(ownerId)) return deferred(this._map.get(ownerId));
 		return this._getData(ownerId);
-	}
+	})
 }, memoizeMethods({
 	_getData: d(function (ownerId) {
 		return dbDriver.getComputed(ownerId + '/' + this._keyPath)(function (data) {
