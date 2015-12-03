@@ -10,7 +10,8 @@ var memoize               = require('memoizee/plain')
   , defineFile            = require('./file')
   , defineStatusLog       = require('./lib/status-log')
   , defineFormSectionBase = require('./form-section-base')
-  , defineNestedMap       = require('./lib/nested-map');
+  , defineNestedMap       = require('./lib/nested-map')
+  , defineProcessingStep  = require('./processing-step');
 
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(db)
@@ -18,6 +19,7 @@ module.exports = memoize(function (db) {
 	  , DateType   = defineDate(db)
 	  , StatusLog  = defineStatusLog(db)
 	  , FormSectionBase = defineFormSectionBase(db)
+	  , ProcessingStep  = defineProcessingStep(db)
 	  , Document;
 
 	Document = db.Object.extend('Document', {
@@ -47,7 +49,15 @@ module.exports = memoize(function (db) {
 		// True if this document is used as a certificate
 		isCertificate: { type: db.Boolean, value: function (_observe) {
 			return this.owner === this.master.certificates.map;
-		} }
+		} },
+		// Returns processing ProcessingStep if it exists on a certificate
+		processingStep: {
+			type: ProcessingStep,
+			value: function () {
+				if (!this.isCertificate) return;
+				return this.master.processingSteps.map.processing;
+			}
+		}
 	}, {
 		// Document label
 		label: { type: StringLine },

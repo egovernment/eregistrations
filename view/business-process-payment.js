@@ -50,10 +50,20 @@ exports.step = function () {
 		exports._onlinePayments(this),
 		div({ class: 'disabler' })
 	);
-	insert(_if(eq(this.businessProcess.costs._paymentProgress, 1),
+	insert(_if(and(eq(this.businessProcess._guideProgress, 1),
+		eq(this.businessProcess.costs._paymentProgress, 1)),
 		div({ class: 'user-next-step-button' },
 			a({ href: '/submission/' }, _("Continue to next step")))));
 };
 
-exports._paymentHeading = Function.prototype;
+exports._paymentHeading = function (context) {
+	return div(
+		{ class: 'capital-first' },
+		div("3"),
+		div(
+			h1(_("Pay the fees")),
+			p(_("Provide a proof of payment if you have paid at the bank or pay online directly here."))
+		)
+	);
+};
 exports._onlinePayments = Function.prototype;

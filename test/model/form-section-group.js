@@ -1,12 +1,14 @@
 'use strict';
 
-var Database              = require('dbjs')
-  , defineFormSection     = require('../../model/form-section');
+var Database           = require('dbjs')
+  , defineFormSection  = require('../../model/form-section')
+  , defineProgressRule = require('../../model/lib/progress-rule');
 
 module.exports = function (t, a) {
 	var db = new Database()
 	  , FormSectionGroup      = t(db)
 	  , FormSection           = defineFormSection(db)
+	  , ProgressRule          = defineProgressRule(db)
 	  , TestFormSectionGroup  = FormSectionGroup.extend('TestFormSectionGroup')
 	  , FirstTestFormSection  = FormSection.extend('FirstTestFormSection')
 	  , SecondTestFormSection = FormSection.extend('SecondTestFormSection')
@@ -51,6 +53,16 @@ module.exports = function (t, a) {
 			type: SecondTestFormSection,
 			nested: true
 		}
+	});
+
+	TestFormSectionGroup.prototype.progressRules.map.define('testRule', {
+		type: ProgressRule,
+		nested: true
+	});
+	TestFormSectionGroup.prototype.progressRules.map.testRule.setProperties({
+		message: 'message',
+		progress: 0,
+		weight: 0
 	});
 
 	MasterType.prototype.defineProperties({
@@ -135,4 +147,16 @@ module.exports = function (t, a) {
 	a(section.lastEditStamp, masterObject.$resolventProperty.lastModified);
 	masterObject.secondPropertyForSecondSection = 1;
 	a(section.lastEditStamp, masterObject.$secondPropertyForSecondSection.lastModified);
+
+	a.h3('subSections progress rule');
+	masterObject.resolventProperty = true;
+	masterObject.propertyForFirstSection = 1;
+	masterObject.propertyForSecondSection = 1;
+	masterObject.secondPropertyForSecondSection = 1;
+	section.progressRules.map.testRule.weight = 2;
+	a(section.status, 3 / 5);
+	section.progressRules.map.testRule.progress = 0.5;
+	a(section.status, 4 / 5);
+	section.progressRules.map.testRule.progress = 1;
+	a(section.status, 1);
 };

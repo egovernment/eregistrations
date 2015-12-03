@@ -31,14 +31,10 @@
 ../../../node_modules/eregistrations/css/components/table-responsive.css
 ../../../node_modules/eregistrations/css/components/table-responsive-container.css
 ../../../node_modules/eregistrations/css/components/official-form.css
-../../../node_modules/eregistrations/css/components/button-main.css
 ../../../node_modules/eregistrations/css/components/dialog.css
 ../../../node_modules/eregistrations/css/components/dialog-reject.css
 ../../../node_modules/eregistrations/css/components/official-submission-toolbar.css
-../../../node_modules/eregistrations/css/components/table-responsive-container.css
-../../../node_modules/eregistrations/css/components/label-reg.css
 ../../../node_modules/eregistrations/css/components/pagination.css
 ../../../node_modules/eregistrations/css/components/throbber.css
 ../../../css/theme.css
 ../../../css/theme-part-b.css
-../../../css/components/submitted-preview-new.css

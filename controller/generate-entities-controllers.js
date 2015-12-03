@@ -108,7 +108,7 @@ module.exports = function (routes, data) {
 		if (targetMap) {
 			cardinalPropertyKey = call.call(targetMap, this).cardinalPropertyKey;
 			forEach(data, function (field, key) {
-				if (key.endsWith(cardinalPropertyKey) && (field == null)) {
+				if (key.endsWith('/' + cardinalPropertyKey) && !field) {
 					throw new Error('Missing required property: ' + cardinalPropertyKey,
 						'INVALID_INPUT');
 				}
@@ -138,7 +138,7 @@ module.exports = function (routes, data) {
 			}
 			db.objects.delete(this.target);
 		},
-		formHtmlId: '#' + tableHtmlId
+		formHtmlId: tableHtmlId
 	};
 
 	if (targetEntityDataFormsMap && targetEntityDataFormsMap.size > 1) {
@@ -148,7 +148,7 @@ module.exports = function (routes, data) {
 			routes[name + '/[a-z0-9]+/' + camelToHyphen.call(dataForm.key)] = {
 				validate: commonValidator,
 				match: commonMatcher,
-				formHtmlId: '#' + toIdString(dataForm.label)
+				formHtmlId: toIdString(dataForm.label)
 			};
 		});
 	} else {

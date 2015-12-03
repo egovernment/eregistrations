@@ -5,7 +5,7 @@
 
 var isObject = require('es5-ext/object/is-object')
   , db       = require('mano').db
-  , users    = require('../users');
+  , users    = require('../users/users');
 
 module.exports = function (trigger, value, BusinessProcessType) {
 	BusinessProcessType = BusinessProcessType || db.BusinessProcess;

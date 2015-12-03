@@ -21,13 +21,15 @@ require('mano-legacy/get-text-child');
 var getNamedListElements = function (listId) {
 	var listElement = $(listId), result = {};
 
-	$.forEach(listElement.getElementsByTagName('li'), function (element) {
-		var elementDataKey = element.getAttribute('data-key');
+	if (listElement) {
+		$.forEach(listElement.getElementsByTagName('li'), function (element) {
+			var elementDataKey = element.getAttribute('data-key');
 
-		if (element.parentNode !== listElement || !elementDataKey) return;
+			if (element.parentNode !== listElement || !elementDataKey) return;
 
-		result[elementDataKey] = $(element);
-	});
+			result[elementDataKey] = $(element);
+		});
+	}
 
 	return result;
 };
@@ -44,6 +46,12 @@ var buildCostsPrintLink = function (currentLink, cost, field, prefix) {
 			'?' + prefix + cost.key + '=' + cost[field].toFixed(2);
 
 	return currentLink;
+};
+
+var toggleConditionally = function (element, condition) {
+	if (element) {
+		element.toggle(condition);
+	}
 };
 
 // A legacy refreshGuide method for Part A Guide page.
@@ -116,9 +124,9 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 		// Filter mandatory and optional registration lists
 		if (businessProcess.registrations.mandatory.size === 0) {
-			mandatoryRegistrationsSection.toggle(false);
+			toggleConditionally(mandatoryRegistrationsSection, false);
 		} else {
-			mandatoryRegistrationsSection.toggle(true);
+			toggleConditionally(mandatoryRegistrationsSection, true);
 			$.forIn(mandatoryRegistrationsListElements, function (li, name) {
 				li.toggle(businessProcess.registrations.mandatory.has(
 					businessProcess.registrations.map[name]
@@ -127,7 +135,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		}
 
 		if (businessProcess.registrations.optional.size === 0) {
-			optionalRegistrationsSection.toggle(false);
+			toggleConditionally(optionalRegistrationsSection, false);
 		} else {
 			$.forIn(optionalRegistrationsListElements, function (li, name) {
 				li.toggle(businessProcess.registrations.optional.has(
@@ -160,8 +168,14 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 		// Resolve each registration certificates, requirements and costs
 		businessProcess.registrations.map.forEach(function (registration) {
-			registration.certificates = $.setify(registration.certificates($.dbjsObserveMock));
-			registration.requirements = $.setify(registration.requirements($.dbjsObserveMock));
+			registration.certificates =
+					typeof registration.certificates === 'function' ?
+						$.setify(registration.certificates($.dbjsObserveMock))
+							: registration.certificates;
+			registration.requirements =
+					typeof registration.requirements === 'function' ?
+						$.setify(registration.requirements($.dbjsObserveMock))
+							: registration.requirements;
 			registration.costs =
 					typeof registration.costs === 'function' ?
 						$.setify(registration.costs($.dbjsObserveMock)) : registration.costs;
@@ -226,31 +240,36 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		}
 
 		// Build costs print link
-		costsPrintLink.search = '';
+		if (costsPrintLink) {
+			costsPrintLink.search = '';
 
-		businessProcess.costs.payable.forEach(function (cost) {
-			buildCostsPrintLink(costsPrintLink, cost, 'amount');
-		});
+			businessProcess.costs.payable.forEach(function (cost) {
+				buildCostsPrintLink(costsPrintLink, cost, 'amount');
+			});
 
-		if (costsPrintLink.search.length) {
-			costsPrintLink.search += '&total=' + businessProcess.costs.totalAmount.toFixed(2);
+			if (costsPrintLink.search.length) {
+				costsPrintLink.search += '&total=' + businessProcess.costs.totalAmount.toFixed(2);
+			}
+
+			businessProcess.costs.applicable.forEach(function (cost) {
+				if (!cost.sideAmount) return;
+				buildCostsPrintLink(costsPrintLink, cost, 'sideAmount', 'side-');
+			});
 		}
 
-		businessProcess.costs.applicable.forEach(function (cost) {
-			if (!cost.sideAmount) return;
-			buildCostsPrintLink(costsPrintLink, cost, 'sideAmount', 'side-');
-		});
-
-		if (businessProcess.costs.totalAmount) {
-			costsSection.removeClass(zeroCostsClass);
-		} else {
-			costsSection.addClass(zeroCostsClass);
+		if (costsSection) {
+			if (businessProcess.costs.totalAmount) {
+				costsSection.removeClass(zeroCostsClass);
+			} else {
+				costsSection.addClass(zeroCostsClass);
+			}
 		}
 
-		noRequstedRegistrationsSection.toggle(!businessProcess.registrations.requested.size);
-		costsSection.toggle(businessProcess.registrations.requested.size);
-		requirementsSection.toggle(businessProcess.registrations.requested.size);
-		guideSaveButton.toggle(businessProcess.registrations.requested.size);
+		toggleConditionally(noRequstedRegistrationsSection,
+			!businessProcess.registrations.requested.size);
+		toggleConditionally(costsSection, businessProcess.registrations.requested.size);
+		toggleConditionally(requirementsSection, businessProcess.registrations.requested.size);
+		toggleConditionally(guideSaveButton, businessProcess.registrations.requested.size);
 
 		$.refreshGuideHooks.atEnd.forEach(function (hook) {
 			hook(businessProcess, guideForm);

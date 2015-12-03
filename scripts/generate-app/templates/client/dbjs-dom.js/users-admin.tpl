@@ -2,7 +2,7 @@
 
 'use strict';
 
-var db = require('mano').db;
+var db = require('./model.generated');
 
 require('dbjs-dom/text')(db);
 require('dbjs-dom/text/utils/table')(db);

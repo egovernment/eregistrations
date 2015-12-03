@@ -12,9 +12,9 @@ module.exports = function (t, a) {
 
 	map.cardinalPropertyKey = 'name';
 	a.deep(aFrom(map.ordered), []);
-	obj3.name = 'foo';
+	obj3.set('name', 'foo');
 	a.deep(aFrom(map.ordered), [obj3]);
-	obj1.name = 'bar';
+	obj1.set('name', 'bar');
 	a.deep(aFrom(map.ordered), [obj3, obj1]);
 	obj2.set('bar', 'elo');
 	a.deep(aFrom(map.ordered), [obj3, obj1]);

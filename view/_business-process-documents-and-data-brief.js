@@ -24,8 +24,7 @@ module.exports = function (businessProcess) {
 			p({ class: 'section-primary-legend' },
 				_("You can see here all the information you have provided for the application.")),
 			div({ class: "table-responsive-container" },
-				table({ class: 'submitted-user-data-table ' +
-						'submitted-current-user-data-table user-request-table' },
+				table({ class: 'submitted-user-data-table user-request-table' },
 					thead(
 						tr(
 							th(_("Section")),

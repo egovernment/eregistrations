@@ -29,16 +29,19 @@ module.exports = memoize(function (db) {
 		isPaidOnline: { type: db.Boolean, value: function (_observe) {
 			return _observe(this.owner.owner._isPaidOnline);
 		} },
-		// Whether payment was initialized online
 		isOnlinePaymentInitialized: { type: db.Boolean, value: function (_observe) {
-			return _observe(this.owner.owner._isOnlinePaymentInitialized);
+			return this.isPaidOnline || this.isOnlinePaymentInProgress;
+		} },
+		// Whether payment was initialized online
+		isOnlinePaymentInProgress: { type: db.Boolean, value: function (_observe) {
+			return _observe(this.owner.owner._isOnlinePaymentInProgress);
 		} },
 		// Whether payment is made online
 		// Common case is that cost can be paid both physically and online
 		// In this scenario we mark it as electronic as soon as we detect
 		// an online payment beeing initialized
 		isElectronic: { type: db.Boolean, value: function () {
-			return this.isPaidOnline || this.isOnlinePaymentInitialized;
+			return this.isOnlinePaymentInitialized;
 		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

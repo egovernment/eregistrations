@@ -44,17 +44,22 @@ module.exports = memoize(function (db/*, options*/) {
 		// It has its use in "business update" applications where we allow updates
 		// of old registrations done at the counter
 		isFromEregistrations: { type: db.Boolean, value: true,
-			label: _("Has registration been made online?") }
+			label: _("Has registration been made online?") },
+
+		// String over which business processes can be searched
+		// through interface panel (computed value is later indexed by persistence engine)
+		searchString: { type: db.String, value: function () {
+			var arr = [], submissionNumber = String(this.submissionNumber);
+			if (this.businessName) arr.push(this.businessName.toLowerCase());
+			if (submissionNumber) arr.push(submissionNumber.toLowerCase());
+			return arr.join('\x02');
+		} }
 	});
 
 	BusinessProcess.prototype.submissionNumber.defineProperties({
-		value: { type: StringLine, value: function () {
-			return this.number;
-		} },
+		value: { type: StringLine, value: function () { return this.number; } },
 		number: { type: UInteger, value: 0 },
-		toString: { value: function (opts) {
-			return this.value;
-		} }
+		toString: { value: function (opts) { return this.value; } }
 	});
 
 	BusinessProcess.prototype.defineNestedMap('statusLog',

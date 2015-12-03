@@ -2,7 +2,7 @@
 
 'use strict';
 
-var db          = require('mano').db
+var db          = require('../../db')
   , FormSection = require('eregistrations/model/form-section')(db)
   , ${ className } = require('./fields');
 

@@ -2,15 +2,18 @@
 
 'use strict';
 
-var memoize          = require('memoizee/plain')
-  , validDb          = require('dbjs/valid-dbjs')
-  , defineStringLine = require('dbjs-ext/string/string-line')
-  , defineUInteger   = require('dbjs-ext/number/integer/u-integer')
-  , definePercentage = require('dbjs-ext/number/percentage');
+var memoize             = require('memoizee/plain')
+  , validDb             = require('dbjs/valid-dbjs')
+  , defineStringLine    = require('dbjs-ext/string/string-line')
+  , defineUInteger      = require('dbjs-ext/number/integer/u-integer')
+  , definePercentage    = require('dbjs-ext/number/percentage')
+  , defineProgressRules = require('./lib/progress-rules')
+  , _                   = require('mano').i18n.bind('Model: FormSectionBase');
 
 module.exports = memoize(function (db) {
-	var StringLine, Percentage, UInteger;
+	var StringLine, Percentage, UInteger, ProgressRules;
 	validDb(db);
+	ProgressRules = defineProgressRules(db);
 	db.Object.defineProperties({
 		getFormApplicablePropName: { type: db.Function, value: function (prop) {
 			return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'FormApplicable';
@@ -23,6 +26,7 @@ module.exports = memoize(function (db) {
 	StringLine = defineStringLine(db);
 	Percentage = definePercentage(db);
 	return db.Object.extend('FormSectionBase', {
+		progressRules: { type: ProgressRules, nested: true },
 		label: { type: StringLine, required: true },
 		// Optional explanation text.
 		legend: { type: db.String },
@@ -51,10 +55,34 @@ module.exports = memoize(function (db) {
 		// Setup for type to check against in propertyMaster's owner search
 		propertyMasterType: { type: db.Base },
 		// A percentage of completion of fields covered by the section
-		status: { type: Percentage, required: true, value: 1 },
+		status: { type: Percentage, required: true, value: function (_observe) {
+			var weight = 0, progress = 0;
+
+			// Take into account resolvent
+			progress += this.resolventStatus * this.resolventWeight;
+			weight += this.resolventWeight;
+
+			// If section is unresolved, exit just with resolvent
+			if (this.isUnresolved) {
+				if (!weight) return 1;
+				return progress / weight;
+			}
+
+			// Take into account all rules
+			progress += _observe(this.progressRules._progress) * _observe(this.progressRules._weight);
+			weight += this.progressRules.weight;
+
+			if (!weight) return 1;
+			return progress / weight;
+		} },
 		// The weight of the section status. It is used to determine weighed status across sections.
 		// It is usually equal to number of fields covered by the section.
-		weight: { type: UInteger, required: true, value: 0 },
+		weight: { type: UInteger, required: true, value: function (_observe) {
+			if (this.isUnresolved) {
+				return this.resolventWeight;
+			}
+			return _observe(this.progressRules._weight) + this.resolventWeight;
+		} },
 		// The value upon which resolventProperty is resolved.
 		// Section is visible when section.master[section.resolventProperty] === section.resolventValue
 		// See also resolventProperty.
@@ -169,6 +197,19 @@ module.exports = memoize(function (db) {
 		// Used to hide and show section depending on a value of certain property.
 		// Set name of the property as value of resolventProperty.
 		// Section is visible when section.master[section.resolventProperty] === section.resolventValue
-		resolventProperty: { type: StringLine }
+		resolventProperty: { type: StringLine },
+		// Sometimes we need to react to payment state
+		isOnlinePaymentDependent: { type: db.Boolean, value: false },
+		// Disables a payment dependent section when there is/was an online payment
+		isDisabled: { type: db.Boolean, value: function (_observe) {
+			return this.isOnlinePaymentDependent &&
+				_observe(this.master.costs._isOnlinePaymentInitialized);
+		} },
+		// Message to be shown when the section has been disabled
+		disabledMessage: {
+			type: db.String,
+			value: _("Section is disabled because online payment transaction has " +
+				"already been made or it's in progress")
+		}
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

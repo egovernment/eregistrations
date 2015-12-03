@@ -12,36 +12,63 @@
  */
 'use strict';
 
-var d  = require('d')
-  , db = require('mano').db
-  , ns = require('mano').domjs.ns
-  , normalizeOptions = require('es5-ext/object/normalize-options');
+var d                   = require('d')
+  , db                  = require('mano').db
+  , ns                  = require('mano').domjs.ns
+  , normalizeOptions    = require('es5-ext/object/normalize-options')
+  , progressRules       = require('../components/progress-rules')
+  , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path');
 
 require('./form-section-base');
 
+var readOnlyRender = function (input, options) {
+	return div(
+		{ class: 'dbjs-input-component' },
+		label(options.label),
+		div({ class: 'input' }, input.observable)
+	);
+};
+
 module.exports = Object.defineProperties(db.FormSection.prototype, {
 	toDOMFieldset: d(function (document/*, options */) {
-		var resolvent, legacy, control, options = normalizeOptions(arguments[1]),
-			customizeData, master;
-		master = options.master || this.master;
-		customizeData = { master: master };
-		if (!this.disablePartialSubmit) {
+		var options       = normalizeOptions(arguments[1])
+		  , master        = options.master || this.master
+		  , customizeData = { master: master }
+		  , resolvent     = this.getFormResolvent(options)
+		  , legacy        = this.getLegacy(options.formId, options)
+		  , controls      = legacy.controls
+		  , control, disablePartialSubmit;
+
+		disablePartialSubmit = options.disablePartialSubmit != null ? options.disablePartialSubmit
+			: this.disablePartialSubmit;
+
+		if (!disablePartialSubmit) {
 			control = { required: false };
 		}
 
-		resolvent = this.getFormResolvent(options);
-		legacy = this.getLegacy(options.formId, options);
+		this.readOnlyPropertyNames.forEach(function (propName) {
+			propName = resolvePropertyPath(master, propName).id;
 
-		customizeData.arrayResult = [options.prepend,
+			controls[propName].render = readOnlyRender;
+		});
+
+		customizeData.arrayResult = [
+			options.prepend,
 			resolvent.formResolvent,
+			progressRules(this, { translationInserts: options.translationInserts }),
 			customizeData.fieldset = ns.fieldset(normalizeOptions({
 				id: resolvent.affectedSectionId,
 				class: 'form-elements',
 				dbjs: master,
 				names: this.formApplicablePropertyNames,
 				control: control,
-				controls: legacy.controls
-			}, options.fieldsetOptions)), options.append, resolvent.legacyScript, legacy.legacy];
+				controls: controls
+			}, options.fieldsetOptions)),
+			options.append,
+			resolvent.legacyScript,
+			legacy.legacy
+		];
+
 		if (typeof options.customize === 'function') {
 			customizeData.fieldset = customizeData.fieldset._dbjsFieldset;
 			options.customize.call(this, customizeData);
