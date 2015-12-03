@@ -138,7 +138,8 @@ var getDbArrayLru = memoize(function (set, sortIndexName) {
 
 var initializeHandler = function (conf) {
 	conf = normalizeOptions(ensureObject(conf));
-	var statusIndexName = ensureString(conf.statusIndexName)
+	var roleName = ensureString(conf.roleName)
+	  , statusIndexName = ensureString(conf.statusIndexName)
 	  , allIndexName = ensureString(conf.allIndexName)
 	  , bpListProps = ensureSet(conf.listProperties)
 	  , bpListComputedProps = conf.listComputedProperties && aFrom(conf.listComputedProperties)
@@ -147,7 +148,6 @@ var initializeHandler = function (conf) {
 	  , itemsPerPage = toNaturalNumber(conf.itemsPerPage) || defaultItemsPerPage
 	  , indexes;
 
-	ensureString(conf.roleName);
 	if (conf.resolveCollectionMeta != null) ensureCallable(conf.resolveCollectionMeta);
 
 	if (bpListComputedProps) {
@@ -245,7 +245,8 @@ var initializeHandler = function (conf) {
 	return {
 		tableQueryHandler: tableQueryHandler,
 		getTableData: getTableData,
-		businessProcessQueryHandler: businessProcessQueryHandler
+		businessProcessQueryHandler: businessProcessQueryHandler,
+		roleName: roleName
 	};
 };
 
