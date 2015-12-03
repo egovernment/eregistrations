@@ -1,10 +1,7 @@
 'use strict';
 
 var $    = require('mano-legacy')
-  , live = require('mano-legacy/live')
-
-  , count = 0
-  , genParentSelectId = function () { return 'input-parent-' + String(++count); };
+  , live = require('mano-legacy/live');
 
 require('mano-legacy/for-each');
 require('mano-legacy/for-in');
@@ -37,23 +34,23 @@ require('mano-legacy/element#/parent-by-name');
  */
 module.exports = function (config) {
 	live.add('select', 'class', config.htmlClass, function (childSelect) {
-		var childRow, parentSelect, options = {}, child, parent, parentMap
-		  , map = {}, parentOptions = {}, selectedParentOption, updateSelect
-		  , selectedDeptOption, deptMap = {}, parentSelectId, modelParent;
+		var parentSelect, options = {}, child, parentMap
+		  , map = {}, selectedParentOption, updateSelect
+		  , selectedDeptOption, deptMap = {};
 
 		parentMap = config.map;
 
 		childSelect = $(childSelect);
-		modelParent = childSelect.parentByName('li').previousSibling;
-		modelParent.style.display = 'none';
-		$(modelParent.getElementsByTagName('select')[0]).toggle(false);
-		childRow = childSelect.parentByName('li').firstChild;
+		parentSelect = childSelect.parentByName('li').previousSibling.getElementsByTagName('select')[0];
+		parentSelect.removeAttribute('name');
+
 		child = childSelect.value;
 
 		// Gather options
 		$.forEach(childSelect.getElementsByTagName('option'), function (option) {
 			options[option.value] = option;
 		});
+
 		$.forIn(parentMap, function (parentItem, parentId) {
 			var list = map[parentId] = [];
 			$.forEach(parentItem.items, function (childId, i) {
@@ -61,33 +58,13 @@ module.exports = function (config) {
 				deptMap[childId] = parentId;
 				if (childId === child) {
 					selectedDeptOption = options[childId];
-					parent = parentId;
 				}
 			});
 		});
 
-		// Generate row
-		parentSelectId = genParentSelectId();
-		childRow.insertBefore($.makeElement('div', { 'class': 'input' },
-			parentSelect = $.makeElement('select', { id: parentSelectId })), childRow.firstChild);
-		childRow.insertBefore($.makeElement('label', { 'for': parentSelectId },
-				config.parentTypeLabel),
-			childRow.firstChild);
-
-		// Add parentSelect options
-		parentSelect.appendChild(childSelect.firstChild.cloneNode(true));
-		$.forIn(parentMap, function (parentItem, id) {
-			var option;
-			parentSelect.add(option = new Option(parentItem.label, id), undefined);
-			parentOptions[id] = option;
-			if (id === parent) {
-				selectedParentOption = option;
-				option.setAttribute('selected', 'selected');
-			}
-		});
-
 		// Invoke match
 		updateSelect = $.selectMatch(parentSelect, map);
+		selectedParentOption = parentSelect.options[parentSelect.selectedIndex];
 		parentSelect.disabled = childSelect.disabled;
 
 		if (!childSelect._dbjsInput) return;
@@ -101,7 +78,11 @@ module.exports = function (config) {
 			if (selectedParentOption) {
 				selectedParentOption.removeAttribute('selected');
 			}
-			selectedParentOption = parentOptions[parent];
+			$.forEach(parentSelect.options, function (option) {
+				if (option.value === parent) {
+					selectedParentOption = option;
+				}
+			});
 			if (selectedParentOption) {
 				selectedParentOption.setAttribute('selected', 'selected');
 			}
