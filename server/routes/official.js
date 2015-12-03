@@ -256,6 +256,7 @@ module.exports = exports = function (mainConf) {
 		resolveHandler = (function () {
 			var map = mainConf.reduce(function (map, conf) {
 				map[conf.roleName] = initializeHandler(conf);
+				return map;
 			}, create(null));
 			return function (userId) {
 				var handler, roleName = uncapitalize.call(db.User.getById(userId)
