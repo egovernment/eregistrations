@@ -1,3 +1,7 @@
+// Server process service
+// Once per day removes stale (not acceessed for more than one week)
+// demo user instances with all corresponding business processes that were created
+
 'use strict';
 
 var debug    = require('debug-ext')('clear-demo-users')
