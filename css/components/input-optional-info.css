@@ -1,0 +1,43 @@
+.input-optional-info {
+	display: inline-block;
+	position: relative;
+	margin-left: 5px;
+}
+
+.input-optional-info > .fa {
+	vertical-align: middle;
+	cursor: pointer;
+}
+
+.input-optional-info-content:after {
+	content: "";
+	position: absolute;
+	width: 0;
+	height: 0;
+	border-width: 6px;
+	border-style: solid;
+	border-color: transparent transparent transparent #000;
+	top: 5px;
+	right: -12px;
+}
+
+.input-optional-info-content {
+	display: none;
+	top: 11px;
+	right: 18px;
+	padding: 4px 8px;
+	width: 160px;
+	background-color: #000;
+	border-radius: 3px;
+}
+
+.input-optional-info-content p {
+	font-size: 12px;
+	color: #FFF;
+	line-height: 1.2;
+}
+
+.input-optional-info:hover .input-optional-info-content {
+	display: inline;
+	position: absolute;
+}
