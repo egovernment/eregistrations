@@ -8,5 +8,6 @@
 ../../../node_modules/eregistrations/css/components/label-reg.css
 
 ../../../node_modules/eregistrations/css/components/section-primary.css
-../../../node_modules/eregistrations/css/components/entities-overview.css
+../../../node_modules/eregistrations/css/components/submitted-user-data-table.css
+../../../node_modules/eregistrations/css/components/entity-data-section-primary.css
 ../../../css/theme.css

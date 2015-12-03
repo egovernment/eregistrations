@@ -1,6 +1,6 @@
 'use strict';
 
-var _ = require('mano').i18n.bind('View: Meta Admin');
+var _ = require('../../i18n').bind('View: Meta Admin');
 
 module.exports = exports = require('eregistrations/view/meta-admin-base');
 

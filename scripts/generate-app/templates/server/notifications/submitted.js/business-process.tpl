@@ -1,6 +1,6 @@
 'use strict';
 
-var db = require('mano').db
+var db = require('../../../../db')
   , assign = require('es5-ext/object/assign');
 
 module.exports = assign(exports,
