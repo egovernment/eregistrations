@@ -39,11 +39,14 @@ module.exports = function (config) {
 	live.add('select', 'class', config.htmlClass, function (childSelect) {
 		var childRow, parentSelect, options = {}, child, parent, parentMap
 		  , map = {}, parentOptions = {}, selectedParentOption, updateSelect
-		  , selectedDeptOption, deptMap = {}, parentSelectId;
+		  , selectedDeptOption, deptMap = {}, parentSelectId, modelParent;
 
 		parentMap = config.map;
 
 		childSelect = $(childSelect);
+		modelParent = childSelect.parentByName('li').previousSibling;
+		modelParent.style.display = 'none';
+		$(modelParent.getElementsByTagName('select')[0]).toggle(false);
 		childRow = childSelect.parentByName('li').firstChild;
 		child = childSelect.value;
 
