@@ -34,7 +34,7 @@ require('mano-legacy/element#/parent-by-name');
  */
 module.exports = function (config) {
 	live.add('select', 'class', config.htmlClass, function (childSelect) {
-		var parentSelect, options = {}, child, parentMap
+		var parentSelect, parentOptions = {}, options = {}, child, parentMap
 		  , map = {}, selectedParentOption, updateSelect
 		  , selectedDeptOption, deptMap = {};
 
@@ -51,6 +51,13 @@ module.exports = function (config) {
 			options[option.value] = option;
 		});
 
+		$.forEach(parentSelect.getElementsByTagName('option'), function (option) {
+			parentOptions[option.value] = option;
+			if (option.selected) {
+				selectedParentOption = option;
+			}
+		});
+
 		$.forIn(parentMap, function (parentItem, parentId) {
 			var list = map[parentId] = [];
 			$.forEach(parentItem.items, function (childId, i) {
@@ -64,7 +71,6 @@ module.exports = function (config) {
 
 		// Invoke match
 		updateSelect = $.selectMatch(parentSelect, map);
-		selectedParentOption = parentSelect.options[parentSelect.selectedIndex];
 		parentSelect.disabled = childSelect.disabled;
 
 		if (!childSelect._dbjsInput) return;
@@ -78,11 +84,8 @@ module.exports = function (config) {
 			if (selectedParentOption) {
 				selectedParentOption.removeAttribute('selected');
 			}
-			$.forEach(parentSelect.options, function (option) {
-				if (option.value === parent) {
-					selectedParentOption = option;
-				}
-			});
+			selectedParentOption = parentOptions[parent];
+
 			if (selectedParentOption) {
 				selectedParentOption.setAttribute('selected', 'selected');
 			}
