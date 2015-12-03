@@ -10,7 +10,7 @@ var assign         = require('es5-ext/object/assign')
   , memoizeMethods = require('memoizee/methods-plain')
   , dbDriver       = require('mano').dbDriver;
 
-var ComputedEmitter = function (dbName, keyPath) {
+var ComputedEmitter = module.exports = function (dbName, keyPath) {
 	if (!(this instanceof ComputedEmitter)) return new ComputedEmitter(dbName, keyPath);
 	this._dbName = ensureString(dbName);
 	this._keyPath = ensureString(keyPath);
