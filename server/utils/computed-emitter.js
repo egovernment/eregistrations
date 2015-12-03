@@ -29,9 +29,9 @@ ee(Object.defineProperties(ComputedEmitter.prototype, assign({
 }, memoizeMethods({
 	_getData: d(function (ownerId) {
 		return dbDriver.getComputed(ownerId + '/' + this._keyPath)(function (data) {
-			if (!data || !data.value) return '';
-			this._map.set(ownerId, data.value);
-			return data.value;
+			var value = data ? data.value : '';
+			this._map.set(ownerId, value);
+			return value;
 		}.bind(this));
 	})
 }), lazy({
