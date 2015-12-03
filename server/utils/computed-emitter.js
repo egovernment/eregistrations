@@ -10,8 +10,8 @@ var assign         = require('es5-ext/object/assign')
   , memoizeMethods = require('memoizee/methods-plain')
   , dbDriver       = require('mano').dbDriver;
 
-var EmitterMap = function (dbName, keyPath) {
-	if (!(this instanceof EmitterMap)) return new EmitterMap(dbName, keyPath);
+var ComputedEmitter = function (dbName, keyPath) {
+	if (!(this instanceof ComputedEmitter)) return new ComputedEmitter(dbName, keyPath);
 	this._dbName = ensureString(dbName);
 	this._keyPath = ensureString(keyPath);
 
@@ -21,7 +21,7 @@ var EmitterMap = function (dbName, keyPath) {
 	}.bind(this));
 };
 
-ee(Object.defineProperties(EmitterMap.prototype, assign({
+ee(Object.defineProperties(ComputedEmitter.prototype, assign({
 	get: function (ownerId) {
 		if (this._map.has(ownerId)) return deferred(this._map.get(ownerId));
 		return this._getData(ownerId);
