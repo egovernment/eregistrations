@@ -12,7 +12,6 @@ var debug        = require('debug-ext')('setup')
  * @param projectRoot {string}
  * @param config {object}
  * config.child {constructor}         - Class of the child
- * config.parent {constructor}        - Class of the parent
  * config.htmlClass {string}          - The class for html control (should be uniq in DOM)
  * config.linkingProperyName {string} - The name of child's property which points to parent
  *                                      i.e 'category'
@@ -28,14 +27,12 @@ module.exports = function (projectRoot, config) {
 	ensureString(projectRoot);
 	debug('generate-legacy-' + ensureString(config.fileNamePrefix) + '-data');
 	result.htmlClass       = ensureString(config.htmlClass);
-	result.parentTypeLabel = ensureType(config.parent).label;
 	ensureString(config.linkingPropertyName);
 
 	ensureType(config.child).instances.forEach(function (child) {
 		var parentId = child[config.linkingPropertyName].__id__;
 		if (!result.map[parentId]) {
 			result.map[parentId] = {
-				label: child[config.linkingPropertyName].label,
 				items: []
 			};
 		}
