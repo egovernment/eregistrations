@@ -28,7 +28,8 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msg = ["\nSuccessfully created " + appName + " application." +
 				"\nIt's located in: " + appRootPath + "." +
 				"\n\nIn order to setup application you need to: \n"], msgItems = [];
-		msgItems.push("Expose app in apps/routes.js configuration");
+		msgItems.push("If appName resolution for created app is not straightfoward, " +
+			" be sure to expose it model/user/app-resolvers.js");
 		msgItems.push("Configure application url tree in apps/" + appName + "/routes.js");
 		msgItems.push("Provide app configuration for data access rules in apps/access.js");
 		msgItems.push("Setup dbjs dom bindings in apps/" + appName + "/client/dbjs-dom.js");
