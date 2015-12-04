@@ -44,7 +44,7 @@ module.exports = memoize(function (db/* options */) {
 					return 'business-process-' +
 						businessProcess.constructor.__id__.slice('BusinessProcess'.length).toLowerCase();
 				}
-				if (role.indexOf('official-') === 0) return this.appNameOfficial;
+				if (/^official[A-Z]/.test(role)) return this.appNameOfficial;
 				return role.replace(/([A-Z])/g, '-$1').toLowerCase();
 			}
 		},
@@ -56,7 +56,7 @@ module.exports = memoize(function (db/* options */) {
 			type: StringLine,
 			value: function () {
 				var role = this.currentRoleResolved;
-				if (!role || (role.indexOf('official-') !== 0)) return;
+				if (!role || !/^official[A-Z]/.test(role)) return;
 				// Replace with role.camelToHyphen() when it'll be possible
 				return role.replace(/([A-Z])/g, '-$1').toLowerCase();
 			}
