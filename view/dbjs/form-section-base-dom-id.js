@@ -6,6 +6,6 @@ var d          = require('d')
 
 Object.defineProperties(db.FormSectionBase.prototype, {
 	domId: d.gs(function () {
-		return toIdString(this.label || this.__sKey__);
+		return toIdString(this.label || this.key);
 	})
 });
