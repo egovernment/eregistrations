@@ -502,9 +502,19 @@ BusinessProcessNew.prototype.dataForms.map.get('sides').setProperties({
 	label: "Business Owner sides informations"
 });
 
-BusinessProcessNew.prototype.dataForms.map.get('sides').sections.define('details', {
-	type: FormSection,
-	nested: true
+BusinessProcessNew.prototype.dataForms.map.get('sides').sections.defineProperties({
+	details: {
+		type: FormSection,
+		nested: true
+	},
+	first: {
+		type: FormSection,
+		nested: true
+	},
+	second: {
+		type: FormSection,
+		nested: true
+	}
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('sides').sections.get('first').setProperties({
