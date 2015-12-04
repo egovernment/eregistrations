@@ -24,6 +24,7 @@ var aFrom               = require('es5-ext/array/from')
   , unserializeValue    = require('dbjs/_setup/unserialize/value')
   , ObservableSet       = require('observable-set/primitive')
   , mano                = require('mano')
+  , roleNameMap         = require('mano/lib/server/user-role-name-map')
   , QueryHandler        = require('../../utils/query-handler')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
   , getDbSet            = require('../utils/get-db-set')
@@ -32,7 +33,6 @@ var aFrom               = require('es5-ext/array/from')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }
-  , db = mano.db
   , isArray = Array.isArray, slice = Array.prototype.slice, push = Array.prototype.push
   , ceil = Math.ceil, create = Object.create
   , defineProperty = Object.defineProperty, stringify = JSON.stringify;
@@ -259,33 +259,41 @@ module.exports = exports = function (mainConf) {
 				return map;
 			}, create(null));
 			return function (userId) {
-				var handler, roleName = uncapitalize.call(db.User.getById(userId)
-					.currentRoleResolved.slice('official'.length));
-				handler = map[roleName];
-				if (!handler) throw new Error("Cannot resolve conf for role name: " + stringify(roleName));
-				return handler;
+				return roleNameMap.get(userId)(function (roleName) {
+					var handler;
+					if (roleName) {
+						roleName = uncapitalize.call(roleName.slice('official'.length));
+						handler = map[roleName];
+					}
+					if (!handler) {
+						throw new Error("Cannot resolve conf for role name: " +  stringify(roleName));
+					}
+					return handler;
+				});
 			};
 		}());
 	} else {
-		resolveHandler = constant(initializeHandler(mainConf));
+		resolveHandler = constant(deferred(initializeHandler(mainConf)));
 	}
 	return {
 		'get-business-processes-view': function (query) {
-			var handler = resolveHandler(this.req.$user);
-			// Get snapshot of business processes table page
-			return handler.tableQueryHandler.resolve(query)(function (query) {
-				return handler.getTableData(query);
+			return resolveHandler(this.req.$user)(function (handler) {
+				// Get snapshot of business processes table page
+				return handler.tableQueryHandler.resolve(query)(function (query) {
+					return handler.getTableData(query);
+				});
 			});
 		},
 		'get-business-process-data': function (query) {
-			var handler = resolveHandler(this.req.$user);
-			// Get full data of one of the business processeses
-			return handler.businessProcessQueryHandler.resolve(query)(function (query) {
-				if (!query.id) return { passed: false };
-				// Put business process to top in visitedBusinessProcesses LRU queue
-				db.User.getById(this.req.$user).visitedBusinessProcesses[handler.roleName]
-					.add(db.BusinessProcess.getById(query.id));
-				return { passed: true };
+			return resolveHandler(this.req.$user)(function (handler) {
+				// Get full data of one of the business processeses
+				return handler.businessProcessQueryHandler.resolve(query)(function (query) {
+					var recordId;
+					if (!query.id) return { passed: false };
+					recordId = this.req.$user + '/visitedBusinessProcesses/' + handler.roleName + '*7' +
+						query.id;
+					return mano.dbDriver.storeDirect(recordId, '11')({ passed: true });
+				}.bind(this));
 			}.bind(this));
 		}
 	};
