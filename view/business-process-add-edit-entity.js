@@ -12,15 +12,21 @@ exports._match = 'entity';
 exports['step-guide'] = { class: { 'step-form': true } };
 
 exports.step  = function () {
-	var entity = this.entity, url = baseUrl.bind(this.root)
-	  , entitiesNestedMap = entity.owner.owner, entitiesTableId;
+	var entity            = this.entity
+	  , url               = baseUrl.bind(this.root)
+	  , entitiesNestedMap = entity.owner.owner
+	  , entitiesTableId;
 
-	entitiesNestedMap.owner.dataForms.map.some(function (section) {
-		if (section.propertyName === entitiesNestedMap.key) {
-			entitiesTableId = section.domId;
-			return true;
-		}
-	});
+	if (this.entitiesTable) {
+		entitiesTableId = this.entitiesTable.domId;
+	} else {
+		entitiesNestedMap.owner.dataForms.map.some(function (section) {
+			if (section.propertyName === entitiesNestedMap.key) {
+				entitiesTableId = section.domId;
+				return true;
+			}
+		});
+	}
 
 	h1(_if(eqSloppy(entity.getObservable(
 		entity.owner.owner.cardinalPropertyKey
