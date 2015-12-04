@@ -75,16 +75,11 @@ module.exports = exports = function (data) {
 		},
 		'get-user-data': function (query) {
 			return userQueryHandler.resolve(query)(function (query) {
-				if (!query.id) return { passed: false };
-				return mano.dbDriver.getDirectObject(query.id, { keyPaths: listProps })(function (datas) {
-					return {
-						passed: true,
-						data: datas.map(function (data) {
-							return data.data.stamp + '.' + data.id + '.' + data.data.value;
-						})
-					};
-				});
-			});
+				var recordId;
+				if (!query.id || (this.req.$user === query.id)) return { passed: false };
+				recordId = this.req.$user + '/visitedUsers*7' + query.id;
+				return mano.dbDriver.storeDirect(recordId, '11')({ passed: true });
+			}.bind(this));
 		}
 	};
 };
