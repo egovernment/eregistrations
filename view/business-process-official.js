@@ -21,6 +21,6 @@ exports['sub-main'] = {
 					id: 'business-process-official-details',
 					href: '/' + this.businessProcess.__id__ + '/documents-and-data/' },
 				_("Documents and data")),
-			div({ id: 'business-process-official-content' }));
+			div({ id: 'business-process-official-content', class: 'business-process-official-content' }));
 	}
 };
