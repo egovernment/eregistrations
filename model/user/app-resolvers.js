@@ -45,7 +45,7 @@ module.exports = memoize(function (db/* options */) {
 						businessProcess.constructor.__id__.slice('BusinessProcess'.length).toLowerCase();
 				}
 				if (role.indexOf('official-') === 0) return this.appNameOfficial;
-				return role.replace(/([A-Z])/g, '-$1');
+				return role.replace(/([A-Z])/g, '-$1').toLowerCase();
 			}
 		},
 		appNameUser: {
@@ -58,7 +58,7 @@ module.exports = memoize(function (db/* options */) {
 				var role = this.currentRoleResolved;
 				if (!role || (role.indexOf('official-') !== 0)) return;
 				// Replace with role.camelToHyphen() when it'll be possible
-				return role.replace(/([A-Z])/g, '-$1');
+				return role.replace(/([A-Z])/g, '-$1').toLowerCase();
 			}
 		}
 	});
