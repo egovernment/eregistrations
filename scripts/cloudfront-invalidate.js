@@ -44,7 +44,7 @@ module.exports = function (root, conf) {
 				fd.on('error', def.reject);
 				fd.on('end', function () {
 					hash.end();
-					hash = hash.read();
+					nu[path] = hash.read();
 					def.resolve();
 				});
 				fd.pipe(hash);
