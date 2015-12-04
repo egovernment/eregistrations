@@ -44,10 +44,8 @@ module.exports = memoize(function (db/* options */) {
 					return 'business-process-' +
 						businessProcess.constructor.__id__.slice('BusinessProcess'.length).toLowerCase();
 				}
-				if (role === 'metaAdmin') return 'meta-admin';
-				if (role === 'usersAdmin') return 'users-admin';
-				if (role.indexOf('official-') !== 0) return 'public';
-				return this.appNameOfficial;
+				if (role.indexOf('official-') === 0) return this.appNameOfficial;
+				return role.replace(/([A-Z])/g, '-$1');
 			}
 		},
 		appNameUser: {
