@@ -2,7 +2,8 @@
 
 'use strict';
 
-var _                    = require('mano').i18n.bind('User')
+var db                   = require('mano').db
+  , _                    = require('mano').i18n.bind('User')
   , generateFormSections = require('./components/generate-form-sections')
   , baseUrl              = url;
 
@@ -11,16 +12,32 @@ exports._match = 'entity';
 
 exports['step-guide'] = { class: { 'step-form': true } };
 
-exports.step  = function () {
-	var entity = this.entity, url = baseUrl.bind(this.root)
-	  , entitiesNestedMap = entity.owner.owner, entitiesTableId;
+var findEntitiesTableId = function (sections, entitiesKey) {
+	var entitiesTableId;
 
-	entitiesNestedMap.owner.dataForms.map.some(function (section) {
-		if (section.propertyName === entitiesNestedMap.key) {
+	sections.some(function (section) {
+		if (section.propertyName === entitiesKey) {
 			entitiesTableId = section.domId;
 			return true;
 		}
+
+		if (section instanceof db.FormSectionGroup) {
+			entitiesTableId = findEntitiesTableId(section.sections, entitiesKey);
+			return entitiesTableId;
+		}
 	});
+
+	return entitiesTableId;
+};
+
+exports.step  = function () {
+	var entity            = this.entity
+	  , url               = baseUrl.bind(this.root)
+	  , entitiesNestedMap = entity.owner.owner
+	  , entitiesTableId;
+
+	entitiesTableId = findEntitiesTableId(entitiesNestedMap.owner.dataForms.map,
+		entitiesNestedMap.key);
 
 	h1(_if(eqSloppy(entity.getObservable(
 		entity.owner.owner.cardinalPropertyKey
