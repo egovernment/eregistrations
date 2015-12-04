@@ -42,6 +42,8 @@
 ../../css/components/user-guide-lomas.css
 ../../css/components/user-documents-upload.css
 ../../css/components/user-submission.css
+../../css/components/business-process-costs-list.css
+../../css/components/business-process-official.css
 ../../css/components/file-uploader.css
 ../../css/components/file-thumb.css
 ../../css/components/labelled-inputs-component.css

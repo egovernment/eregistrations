@@ -12,6 +12,7 @@ var db = require('mano').db
   , fifth       = BusinessProcessNew.newNamed('fifthBusinessProcess')
   , UInteger    = require('dbjs-ext/number/integer/u-integer')(db)
   , StringLine  = require('dbjs-ext/string/string-line')(db)
+  , USDollar  = require('dbjs-ext/number/currency/us-dollar')(db)
   , Person      = require('../../model/person')(db)
   , DateType    = require('dbjs-ext/date-time/date')(db)
   , FormSection = require('../../model/form-section')(db)
@@ -40,6 +41,10 @@ var db = require('mano').db
 		'utils/define-payment-receipt-uploads')
   , Institution = require('../../model/institution')(db)
   , FrontDeskProcessingStep = require('../../model/processing-steps/front-desk')(db);
+
+db.Cost.prototype.getDescriptor('amount').type = USDollar;
+db.Cost.prototype.getDescriptor('sideAmount').type = USDollar;
+db.BusinessProcessNew.prototype.costs.getDescriptor('totalAmount').type = USDollar;
 
 require('./inventory');
 require('../../model/business-process-new/submission-forms');
@@ -499,9 +504,19 @@ BusinessProcessNew.prototype.dataForms.map.get('sides').setProperties({
 	label: "Business Owner sides informations"
 });
 
-BusinessProcessNew.prototype.dataForms.map.get('sides').sections.define('details', {
-	type: FormSection,
-	nested: true
+BusinessProcessNew.prototype.dataForms.map.get('sides').sections.defineProperties({
+	details: {
+		type: FormSection,
+		nested: true
+	},
+	first: {
+		type: FormSection,
+		nested: true
+	},
+	second: {
+		type: FormSection,
+		nested: true
+	}
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('sides').sections.get('first').setProperties({

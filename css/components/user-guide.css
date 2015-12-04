@@ -102,6 +102,14 @@ a:active .user-guide-inventory-label {
 	background: var(--normal-dark-background);
 }
 
+.user-guide .section-primary-wrapper {
+	margin-bottom: 44px;
+}
+
+.user-guide .section-primary-wrapper:last-child {
+	margin-bottom: 0;
+}
+
 /* IE11 fixes for input aside in .user-guide-requirements-list */
 _:-ms-fullscreen, :root .user-guide-requirements-list .input-aside > span {
 	display: inline-block;

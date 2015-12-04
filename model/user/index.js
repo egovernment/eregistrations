@@ -8,7 +8,7 @@ module.exports = function (db/* options */) {
 	validDb(db);
 	options = Object(arguments[1]);
 	User = defineUser(db, options);
-	require('./app-access-id')(db, options);
+	require('./app-resolvers')(db, options);
 	require('./business-processes')(User, options);
 	require('./demo')(db);
 	require('./documents')(User, options);

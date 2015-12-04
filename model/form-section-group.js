@@ -55,7 +55,6 @@ module.exports = memoize(function (db) {
 		}
 	});
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSectionBase;
-	FormSectionGroup.prototype.sections._descriptorPrototype_.nested = true;
 
 	FormSectionGroup.prototype.progressRules.map.define('subSections', {
 		type: ProgressRule,
