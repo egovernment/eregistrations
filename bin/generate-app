@@ -64,6 +64,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push("Replace all occurences of BusinessProcessCHANGEME with proper " +
 				"class names in: apps/" + appName + "/client/program.js");
 			msgItems.push("Ensure that views model is updated with added status maps in model/views.js");
+			msgItems.push("Ensure entry in server/db/indexes.js");
 		}
 
 		if (appName === 'meta-admin') {
