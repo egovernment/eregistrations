@@ -102,12 +102,14 @@ BusinessProcessNew.prototype.defineProperties({
 	branchCount: {
 		type: UInteger,
 		required: true,
-		label: "How many branches?"
+		label: "How many branches?",
+		inputOptionalInfo: "Only branches in the same country"
 	},
 	inventoryTotalAmount: {
 		label: "Value of inventory",
 		isInventoryTotal: true,
-		type: UInteger
+		type: UInteger,
+		inputOptionalInfo: "Enter total amount of all owned products"
 	},
 	//dataForms
 	companyType: {
