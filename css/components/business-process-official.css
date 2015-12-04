@@ -1,0 +1,11 @@
+.business-process-official-content > :first-child {
+	margin-top: 0;
+	border-top-left-radius: 0;
+}
+
+.business-process-official-content > * {
+	margin-bottom: 22px;
+}
+.business-process-official-content > *:last-child {
+	margin-bottom: 0;
+}
