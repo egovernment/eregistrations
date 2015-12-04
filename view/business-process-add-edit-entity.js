@@ -2,10 +2,9 @@
 
 'use strict';
 
-var _  = require('mano').i18n.bind('User')
+var _                    = require('mano').i18n.bind('User')
   , generateFormSections = require('./components/generate-form-sections')
-  , toIdString = require('dom-ext/html-document/to-id-string')
-  , baseUrl = url;
+  , baseUrl              = url;
 
 exports._parent = require('./business-process-base');
 exports._match = 'entity';
@@ -18,7 +17,7 @@ exports.step  = function () {
 
 	entitiesNestedMap.owner.dataForms.map.some(function (section) {
 		if (section.propertyName === entitiesNestedMap.key) {
-			entitiesTableId = toIdString(section.label);
+			entitiesTableId = section.domId;
 			return true;
 		}
 	});
