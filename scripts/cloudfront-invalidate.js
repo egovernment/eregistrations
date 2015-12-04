@@ -31,26 +31,31 @@ module.exports = function (root, conf) {
 	debug("cloudfront refresh");
 	return deferred(
 		readFile(cachePath)(parse).catch({}).aside(function (data) { old = data; }),
-		deferred.reduce(publicPaths, function (ignore, dirPath) {
-			return readdir(resolve(root, dirPath), publicScanOpts).map(function (path) {
-				var hash, def, fd;
-				if (path === '.gitignore') return;
-				if (nu[path]) return;
-				nu[path] = true;
-				hash = createHash('sha1');
-				def = deferred();
-				fd = createReadStream(resolve(root, dirPath, path));
-				hash.setEncoding('hex');
-				fd.on('error', def.reject);
-				fd.on('end', function () {
-					hash.end();
-					nu[path] = hash.read();
-					def.resolve();
+		readdir(resolve(root, 'apps'), { type: { directory: true } })(function (names) {
+			var paths = publicPaths.concat(names.map(function (path) {
+				return resolve(root, 'apps', path, 'public');
+			}));
+			return deferred.reduce(paths, function (ignore, dirPath) {
+				return readdir(resolve(root, dirPath), publicScanOpts).map(function (path) {
+					var hash, def, fd;
+					if (path === '.gitignore') return;
+					if (nu[path]) return;
+					nu[path] = true;
+					hash = createHash('sha1');
+					def = deferred();
+					fd = createReadStream(resolve(root, dirPath, path));
+					hash.setEncoding('hex');
+					fd.on('error', def.reject);
+					fd.on('end', function () {
+						hash.end();
+						nu[path] = hash.read();
+						def.resolve();
+					});
+					fd.pipe(hash);
+					return def.promise;
 				});
-				fd.pipe(hash);
-				return def.promise;
-			});
-		}, null)
+			}, null);
+		})
 	)(function () {
 		forEach(nu, function (hash, path) {
 			if (old[path] !== hash) result.push('/' + path);
