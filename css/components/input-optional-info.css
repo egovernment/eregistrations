@@ -7,6 +7,7 @@
 .input-optional-info > .fa {
 	vertical-align: middle;
 	cursor: pointer;
+	color: #3986ac;
 }
 
 .input-optional-info-content {
@@ -27,8 +28,8 @@
 	font-size: 12px;
 	line-height: 12px;
 	white-space: nowrap;
-	right: 80%;
-	top: 15%;
+	bottom: 70%;
+	left: -240%;
 }
 
 .input-optional-info-content:after {
@@ -38,9 +39,9 @@
 	height: 0;
 	border-width: 6px;
 	border-style: solid;
-	border-color: transparent transparent transparent #383838;
-	top: 5px;
-	right: -18px;
+	border-color: #383838 transparent transparent transparent;
+	bottom: -18px;
+	left: 28px;
 }
 
 .input-optional-info-content p {
@@ -52,7 +53,7 @@
 	visibility: visible;
 	opacity: 1;
 	transition-delay: 100ms;
-	transform: translateX(-8px);
+	transform: translateY(-8px);
 }
 
 .input-optional-info-multiline .input-optional-info-content {
