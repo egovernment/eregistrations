@@ -4,7 +4,7 @@
 
 var _            = require('mano').i18n.bind('View: Documents list')
   , from         = require('es5-ext/array/from')
-  , tableColumns = require('eregistrations/view/_business-process-table-columns')
+  , tableColumns = require('./_business-process-table-columns')
   , columns      = from(tableColumns.columns);
 
 columns.push(tableColumns.actionsColumn);
