@@ -137,6 +137,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		if (businessProcess.registrations.optional.size === 0) {
 			toggleConditionally(optionalRegistrationsSection, false);
 		} else {
+			toggleConditionally(optionalRegistrationsSection, true);
 			$.forIn(optionalRegistrationsListElements, function (li, name) {
 				li.toggle(businessProcess.registrations.optional.has(
 					businessProcess.registrations.map[name]
