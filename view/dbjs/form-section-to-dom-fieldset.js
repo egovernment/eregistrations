@@ -31,12 +31,13 @@ var readOnlyRender = function (input, options) {
 
 module.exports = Object.defineProperties(db.FormSection.prototype, {
 	toDOMFieldset: d(function (document/*, options */) {
-		var options       = normalizeOptions(arguments[1])
-		  , master        = options.master || this.master
-		  , customizeData = { master: master }
-		  , resolvent     = this.getFormResolvent(options)
-		  , legacy        = this.getLegacy(options.formId, options)
-		  , controls      = legacy.controls
+		var options        = normalizeOptions(arguments[1])
+		  , master         = options.master || this.master
+		  , propertyMaster = this.propertyMaster
+		  , customizeData  = { master: master }
+		  , resolvent      = this.getFormResolvent(options)
+		  , legacy         = this.getLegacy(options.formId, options)
+		  , controls       = legacy.controls
 		  , control, disablePartialSubmit;
 
 		disablePartialSubmit = options.disablePartialSubmit != null ? options.disablePartialSubmit
@@ -47,7 +48,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		}
 
 		this.readOnlyPropertyNames.forEach(function (propName) {
-			propName = resolvePropertyPath(master, propName).id;
+			propName = resolvePropertyPath(propertyMaster, propName).id;
 
 			controls[propName].render = readOnlyRender;
 		});
