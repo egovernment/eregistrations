@@ -21,7 +21,7 @@ var findEntitiesTableId = function (sections, entitiesKey) {
 			return true;
 		}
 
-		if (section instanceof db.FormSectionGroup) {
+		if (db.FormSectionGroup && (section instanceof db.FormSectionGroup)) {
 			entitiesTableId = findEntitiesTableId(section.sections, entitiesKey);
 			return entitiesTableId;
 		}
