@@ -8,7 +8,7 @@ var remove      = require('es5-ext/array/#/remove')
   , memoize     = require('memoizee')
   , once        = require('timers-ext/once')
   , dbDriver    = require('mano').dbDriver
-  , getIndexMap = require('../utils/get-db-sort-index-map')
+  , getIndexMap = require('./get-db-sort-index-map')
 
   , defineProperty = Object.defineProperty
   , compareStamps = function (a, b) { return a.stamp - b.stamp; };
@@ -24,7 +24,7 @@ module.exports = memoize(function (set, recordType, sortKeyPath) {
 		else promise = dbDriver[methodName](ownerId + (sortKeyPath ? ('/' + sortKeyPath) : ''));
 		return promise.aside(function (data) {
 			if (!set.has(ownerId)) return;
-			if (!itemsMap[ownerId]) itemsMap[ownerId] = { id: ownerId, stamp: data.stamp };
+			if (!itemsMap[ownerId]) itemsMap[ownerId] = { id: ownerId, stamp: data ? data.stamp : 0 };
 			arr.push(itemsMap[ownerId]);
 			if (def.resolved) {
 				arr.sort(compareStamps);
