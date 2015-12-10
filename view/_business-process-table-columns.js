@@ -14,13 +14,20 @@ exports.actionsColumn = {
 		return _if(businessProcess._isAtDraft,
 			[postButton({ buttonClass: 'actions-edit',
 					action: url('business-process', businessProcess.__id__),
-					value: span({ class: 'fa fa-edit' }, _("Go to"))
+					value: span({
+					class: 'hint-optional hint-optional-left',
+					'data-hint': 'Edit'
+				}, i({ class: 'fa fa-edit' }))
 				}),
-				_if(not(businessProcess._isSubmitted), postButton({ buttonClass: 'actions-delete',
+				_if(not(businessProcess._isSubmitted), postButton({
+					buttonClass: 'actions-delete',
 					action: url('business-process', businessProcess.__id__, 'delete'),
 					confirm: _("Are you sure?"),
-					value: span({ class: 'fa fa-trash-o' })
-					}))],
+					value: span({
+						class: 'hint-optional hint-optional-left',
+						'data-hint': 'Delete'
+					}, i({ class: 'fa fa-trash-o' }))
+				}))],
 
 			postButton({ buttonClass: 'actions-edit',
 				action: url('business-process', businessProcess.__id__),
