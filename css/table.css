@@ -58,6 +58,7 @@ table .actions button > span {
 
 table .actions .fa {
 	line-height: inherit;
+	vertical-align: middle;
 }
 
 @media all and (-ms-high-contrast:none) {
