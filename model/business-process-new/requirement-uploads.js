@@ -17,14 +17,21 @@ module.exports = memoize(function (db/* options */) {
 	});
 	BusinessProcess.prototype.requirementUploads.defineProperties({
 		// Applicable requirement uploads resolved out of applicable requirements
-		applicable: { type: RequirementUpload, value: function (_observe) {
-			var result = [];
-			_observe(this.master.requirements.applicable).forEach(function (requirement) {
-				_observe(requirement.uploads).forEach(function (requirementUpload) {
-					result.push(requirementUpload);
+		applicableByRequirements: { type: RequirementUpload,
+			multiple: true,
+			value: function (_observe) {
+				var result = [];
+				_observe(this.master.requirements.applicable).forEach(function (requirement) {
+					_observe(requirement.uploads).forEach(function (requirementUpload) {
+						result.push(requirementUpload);
+					});
 				});
-			});
-			return result;
+				return result;
+			} },
+		// By default this returns applicableByRequirements.
+		// It should be overriden if there are some extra requirementUploads not from requirements.
+		applicable: { type: RequirementUpload, value: function (_observe) {
+			return this.applicableByRequirements;
 		} },
 		// Requirement uploads applicable for front desk verification
 		frontDeskApplicable: { type: RequirementUpload, multiple: true, value: function (_observe) {
