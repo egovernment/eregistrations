@@ -2,6 +2,7 @@
 
 var assign         = require('es5-ext/object/assign')
   , ensureString   = require('es5-ext/object/validate-stringifiable-value')
+  , capitalize     = require('es5-ext/string/#/capitalize')
   , Map            = require('es6-map')
   , d              = require('d')
   , lazy           = require('d/lazy')
@@ -40,7 +41,7 @@ ee(Object.defineProperties(ComputedEmitter.prototype, assign({
 	})
 }, memoizeMethods({
 	_getData: d(function (ownerId) {
-		var methodName = 'get' + this._type.toUpperCase();
+		var methodName = 'get' + capitalize.call(this._type);
 		return dbDriver[methodName](ownerId + '/' + this._keyPath)(function (data) {
 			var value = data ? data.value : '';
 			this._map.set(ownerId, value);
