@@ -7,8 +7,11 @@ var ee       = require('event-emitter')
 module.exports = memoize(function (recordType, sortKeyPath) {
 	var itemsMap = ee();
 	dbDriver.on(recordType + ':' + (sortKeyPath + '&'), function (event) {
-		if (!itemsMap[event.ownerId]) return;
-		itemsMap[event.ownerId].stamp = event.data.stamp;
+		if (!itemsMap[event.ownerId]) {
+			itemsMap[event.ownerId] = { id: event.ownerId, stamp: event.data.stamp };
+		} else {
+			itemsMap[event.ownerId].stamp = event.data.stamp;
+		}
 		itemsMap.emit('update', event);
 	});
 	return itemsMap;
