@@ -27,10 +27,10 @@ module.exports = function (t, a) {
 
 	a.h1('Dynamic fields');
 	a(masterObject.hasPropertyDefined('dynamicCurrencyType'), true);
-	a(masterObject.currencyField.hasPropertyDefined('amount'), true);
-	a(masterObject.currencyField.toString(), '0.00');
-	masterObject.currencyField.amount = 42;
-	a(masterObject.currencyField.toString(), '42.00');
+	a(masterObject.currencyField.hasPropertyDefined('value'), true);
+	a(masterObject.currencyField.toString(), '0');
+	masterObject.currencyField.value = 42;
+	a(masterObject.currencyField.toString(), '42');
 	masterObject.dynamicCurrencyType = 'usDollar';
-	a(masterObject.currencyField.toString(), '$42.00');
+	a(masterObject.currencyField.toString(), '$42');
 };
