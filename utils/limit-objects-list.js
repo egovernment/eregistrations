@@ -46,7 +46,7 @@ var normalize = function (list, applicable, preferred, limit) {
 };
 
 module.exports = memoize(function (list, applicable/*, options*/) {
-	var options = Object(arguments[1]), limit = Number(options.limit)
+	var options = Object(arguments[2]), limit = Number(options.limit)
 	  , preferred;
 	if (isNaN(limit)) limit = 10;
 	applicable = ensureSet(applicable);
