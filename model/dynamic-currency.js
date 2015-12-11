@@ -100,7 +100,7 @@ module.exports = function (Target, typeName, currencies) {
 					Type = this.database.Currency;
 				}
 
-				return (new Type(resolvedValue)).toString(this.object.getDescriptor(this.key));
+				return Type.getObjectValue(resolvedValue, this).toString(this);
 			}
 		},
 		staticConstraints: {
