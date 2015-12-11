@@ -83,6 +83,13 @@ module.exports = {
 		},
 		view: require('./view/business-process-revision-payment')
 	},
+	'official/user-id/(document)': {
+		match: function () {
+			this.document = this.businessProcess.requirementUploads.applicable.first.document;
+			return true;
+		},
+		view: require('../view/business-process-document')
+	},
 	firstBusinessProcess: {
 		match: function () { return true; },
 		view: require('./view/business-process-official-form')
