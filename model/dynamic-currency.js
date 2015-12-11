@@ -28,14 +28,15 @@
 
 'use strict';
 
-var validDbType      = require('dbjs/valid-dbjs-type')
-  , endsWith         = require('es5-ext/string/#/ends-with')
-  , defineStringLine = require('dbjs-ext/string/string-line')
-  , defineCreateEnum = require('dbjs-ext/create-enum')
-  , uncapitalize     = require('es5-ext/string/#/uncapitalize')
-  , ensureIterable   = require('es5-ext/iterable/validate-object')
-  , aFrom            = require('es5-ext/array/from')
-  , Map              = require('es6-map');
+var validDbType       = require('dbjs/valid-dbjs-type')
+  , endsWith          = require('es5-ext/string/#/ends-with')
+  , defineStringLine  = require('dbjs-ext/string/string-line')
+  , defineCreateEnum  = require('dbjs-ext/create-enum')
+  , defineConstrained = require('./constrained-value')
+  , uncapitalize      = require('es5-ext/string/#/uncapitalize')
+  , ensureIterable    = require('es5-ext/iterable/validate-object')
+  , aFrom             = require('es5-ext/array/from')
+  , Map               = require('es6-map');
 
 module.exports = function (Target, typeName, currencies) {
 	var db            = validDbType(Target).database
@@ -81,23 +82,31 @@ module.exports = function (Target, typeName, currencies) {
 	});
 
 	// Create new type for use by target.
-	return db.Object.extend(typeName, {
-		amount: { type: Currency, step: 1 },
-		toString: { value: function (value) {
-			var choicePropName = this.constructor.currencyChoicePropertyName
-			  , typeName       = this.master.resolveSKeyPath(choicePropName).value
-			  , amount         = this.amount || 0
-			  , Type;
-
-			if (typeName) {
-				Type = this.database[typeName[0].toUpperCase() + typeName.slice(1)];
-			} else {
-				Type = this.database.Currency;
-			}
-
-			return (new Type(amount)).toString(this.object.getDescriptor(this.key));
-		} }
-	}, {
+	var CurrencyType = db.Object.extend(typeName, {}, {
 		currencyChoicePropertyName: { value: currencyChoicePropertyName }
 	});
+
+	defineConstrained(CurrencyType.prototype, Currency, {
+		dynamicConstraints: {
+			toString: function (value) {
+				var choicePropName = this.constructor.currencyChoicePropertyName
+				  , typeName       = this.master.resolveSKeyPath(choicePropName).value
+				  , currencyValue  = this.value || 0
+				  , Type;
+
+				if (typeName) {
+					Type = this.database[typeName[0].toUpperCase() + typeName.slice(1)];
+				} else {
+					Type = this.database.Currency;
+				}
+
+				return (new Type(currencyValue)).toString(this.object.getDescriptor(this.key));
+			}
+		},
+		staticConstraints: {
+			step: 1
+		}
+	});
+
+	return CurrencyType;
 };

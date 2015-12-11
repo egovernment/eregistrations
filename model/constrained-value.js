@@ -34,13 +34,12 @@
 
 'use strict';
 
-var validateDbjsType     = require('dbjs/valid-dbjs-type')
-  , validateDbjsObject   = require('dbjs/valid-dbjs-object')
-  , validateDbjsDatabase = require('dbjs/valid-dbjs');
+var validateDbjsType   = require('dbjs/valid-dbjs-type')
+  , validateDbjsObject = require('dbjs/valid-dbjs-object');
 
 module.exports = function (target, ValueType/*, options*/) {
 	var options = Object(arguments[2])
-	  , db      = validateDbjsDatabase(validateDbjsType(ValueType).database);
+	  , db      = validateDbjsType(ValueType).database;
 
 	validateDbjsObject(target);
 
@@ -62,13 +61,6 @@ module.exports = function (target, ValueType/*, options*/) {
 			value: function () {
 				return this.getDescriptor('value').step;
 			}
-		}
-	});
-
-	target.defineProperties({
-		value: {
-			type: ValueType,
-			nested: options.nested || false
 		},
 		resolvedValue: {
 			type: ValueType,
@@ -78,15 +70,8 @@ module.exports = function (target, ValueType/*, options*/) {
 
 				return this.value;
 			}
-		}
-	});
-
-	if (options.dynamicConstraints != null) {
-		target.setProperties(options.dynamicConstraints);
-	}
-
-	if (!target.hasPropertyDefined('toString')) {
-		target.define('toString', {
+		},
+		toString: {
 			value: function (ignore) {
 				var value = this.resolvedValue
 				  , type;
@@ -96,6 +81,21 @@ module.exports = function (target, ValueType/*, options*/) {
 
 				return type.getObjectValue(value, this).toString(this);
 			}
+		}
+	});
+
+	if (options.dynamicConstraints != null) {
+		target.setProperties(options.dynamicConstraints);
+	}
+
+	target.defineProperties({
+		value: {
+			type: ValueType
+		}
+	});
+
+	if (!target.hasPropertyDefined('toString')) {
+		target.define('toString', {
 		});
 	}
 
