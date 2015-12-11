@@ -9,7 +9,7 @@ module.exports = function (/* options */) {
 	onLockIsSubmitted =
 		(typeof options.onLockIsSubmitted === 'function') && options.onLockIsSubmitted;
 	onUnlockIsSubmitted =
-		(typeof options.onIsLockSubmitted === 'function') && options.onIsLockSubmitted;
+		(typeof options.onUnlockIsSubmitted === 'function') && options.onUnlockIsSubmitted;
 
 	var lockIsSubmitted = function (businessProcess) {
 		debug('%s locking isSubmitted', businessProcess.__id__);
