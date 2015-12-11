@@ -21,9 +21,7 @@ td a {
 table .actions {
 	text-align: center;
 }
-table .actions > * {
-	margin-left: 5px;
-}
+
 table .actions > :first-child {
 	margin-left: 0;
 }
