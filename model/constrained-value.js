@@ -94,11 +94,6 @@ module.exports = function (target, ValueType/*, options*/) {
 		}
 	});
 
-	if (!target.hasPropertyDefined('toString')) {
-		target.define('toString', {
-		});
-	}
-
 	if (options.staticConstraints != null) {
 		target.getDescriptor('value').setProperties(options.staticConstraints);
 	}

@@ -91,7 +91,7 @@ module.exports = function (Target, typeName, currencies) {
 			toString: function (value) {
 				var choicePropName = this.constructor.currencyChoicePropertyName
 				  , typeName       = this.master.resolveSKeyPath(choicePropName).value
-				  , currencyValue  = this.value || 0
+				  , resolvedValue  = this.resolvedValue || 0
 				  , Type;
 
 				if (typeName) {
@@ -100,7 +100,7 @@ module.exports = function (Target, typeName, currencies) {
 					Type = this.database.Currency;
 				}
 
-				return (new Type(currencyValue)).toString(this.object.getDescriptor(this.key));
+				return (new Type(resolvedValue)).toString(this.object.getDescriptor(this.key));
 			}
 		},
 		staticConstraints: {
