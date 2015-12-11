@@ -22,8 +22,13 @@ module.exports = function (t, a) {
 	});
 
 	t(MasterType.prototype.constrainedProperty, UsDollar, {
-		min: function () {
-			return this.master.someProperty + 1;
+		dynamicConstraints: {
+			min: function () {
+				return this.master.someProperty + 1;
+			}
+		},
+		staticConstraints: {
+			max: 5
 		}
 	});
 
@@ -32,10 +37,12 @@ module.exports = function (t, a) {
 	// ------------------ Tests ------------------
 
 	a.h1('Dynamic fields');
+	a(masterObject.constrainedProperty.hasPropertyDefined('toString'), true);
 	a(masterObject.constrainedProperty.hasPropertyDefined('value'), true);
 	a(masterObject.constrainedProperty.hasPropertyDefined('resolvedValue'), true);
 	a(masterObject.constrainedProperty.hasPropertyDefined('min'), true);
-	a(masterObject.constrainedProperty.hasPropertyDefined('max'), false);
+	a(masterObject.constrainedProperty.hasPropertyDefined('max'), true);
+	a(masterObject.constrainedProperty.hasPropertyDefined('step'), true);
 
 	a(masterObject.constrainedProperty.value, undefined);
 	a(masterObject.constrainedProperty.resolvedValue, null);
@@ -46,4 +53,9 @@ module.exports = function (t, a) {
 
 	masterObject.constrainedProperty.value = 2;
 	a(masterObject.constrainedProperty.resolvedValue, 2);
+
+	a.throws(function () {
+		masterObject.constrainedProperty.value = 6;
+	}, new RegExp('Value cannot be greater than 5'),
+		'throws when static constrain is not met');
 };
