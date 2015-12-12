@@ -20,7 +20,7 @@ var getKeyPathFilter = function (keyPath) {
 module.exports = memoize(function (dbName) {
 	dbName = ensureString(dbName);
 	return memoize(function (ownerId/*, options*/) {
-		var fragment, options = Object(arguments[2]), filter, index, customFilter, keyPathFilter;
+		var fragment, options = Object(arguments[1]), filter, index, customFilter, keyPathFilter;
 
 		ownerId = ensureString(ownerId);
 		if (options.filter != null) customFilter = ensureCallable(options.filter);
