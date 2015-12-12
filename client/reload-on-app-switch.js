@@ -6,7 +6,7 @@ var server = require('mano/lib/client/server-sync')
 
 module.exports = function (user) {
 	if (isReadOnlyRender) return;
-	user._appName.on('change', function (event) {
+	user._appAccessId.on('change', function (event) {
 		if (server.isSync) reload();
 		else server.once('sync', reload);
 	});
