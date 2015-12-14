@@ -11,9 +11,9 @@ Input = function (document, type/*, options*/) {
 	DOMSelect.apply(this, arguments);
 
 	if (!isReadOnlyRender) {
-		setTimeout(function (control) {
-			chosen(control);
-		}, 0, this.control);
+		setTimeout(function () {
+			chosen(this);
+		}.bind(this.control), 0);
 	}
 };
 
