@@ -152,26 +152,31 @@ module.exports = memoize(function (db) {
 			// Not required, then not validated
 			if (!resolved.descriptor.required) return true;
 
-			// Forced to be excluded
-			if (this.excludedFromStatusIfFilled.has(resolved.key) ||
-
-			// or excluded by fact of having a default value on prototype
-					(!resolved.descriptor.multiple &&
-						(Object.getPrototypeOf(resolved.object).get(resolved.key) != null) &&
-						((!File || !(resolved.value instanceof File)) &&
-						(!NestedMap || (resolved.key !== 'map') || !(resolved.object instanceof NestedMap))
-							))) {
-
-				// In that case we just validate that it's not shadowed by null
-				// or in case of multiple that it has at least one item
-				if (resolved.descriptor.multiple) {
-					if (_observe(resolved.observable).size) return true;
-				} else {
-					if (_observe(resolved.observable) != null) return true;
+			if (!this.excludedFromStatusIfFilled.has(resolved.key)) {
+				// Multiple value: not excluded
+				if (resolved.descriptor.multiple) return false;
+				// No underlying value on prototype: not excluded
+				if (Object.getPrototypeOf(resolved.object).get(resolved.key) == null) return false;
+				// Nested file: not excluded
+				if (File && (resolved.value instanceof File)) return false;
+				// Nested map: not excluded
+				if (NestedMap && (resolved.key !== 'map') && (resolved.object instanceof NestedMap)) {
+					return false;
+				}
+				// Constrained value: not excluded
+				if (resolved.value && (typeof resolved.value === 'object') && resolved.value.__id__ &&
+						(typeof resolved.value.getDescriptor('resolvedValue')._value_ === 'function')) {
+					return false;
 				}
 			}
 
-			return false;
+			// In that case we just validate that it's not shadowed by null
+			// or in case of multiple that it has at least one item
+			if (resolved.descriptor.multiple) {
+				if (_observe(resolved.observable).size) return true;
+			} else {
+				if (_observe(resolved.observable) != null) return true;
+			}
 		} },
 		ensureResolvent: { type: db.Function, value: function (observeFunction) {
 			var resolved = this.master.resolveSKeyPath(this.resolventProperty, observeFunction);
