@@ -12,7 +12,7 @@ exports['reset-password'] = require('mano-auth/controller/server/reset-password'
 exports['request-reset-password'] = require('mano-auth/controller/server/request-reset-password');
 
 exports.register.submit = function (normalizedData, data) {
-	normalizedData['User#/roles'] = ['user'];
+	if (!normalizedData['User#/roles']) normalizedData['User#/roles'] = ['user'];
 	return registerSubmit.apply(this, arguments);
 };
 

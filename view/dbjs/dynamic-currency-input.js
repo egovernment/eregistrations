@@ -37,13 +37,13 @@ module.exports = memoize(function (Currency, currencyTypeKeyPath/* options */) {
 					{ class: 'add-on' },
 					Currency
 				)),
-				this.observable.value._amount.toDOMInput(document, { DOMInput: db.Number.DOMInput })
+				this.observable.value._value.toDOMInput(document, { DOMInput: db.Number.DOMInput })
 			);
 		})
 	});
 
 	var Text = function (document, ns/*, options*/) {
-		var updateValue, currencyType, amount;
+		var updateValue, currencyType, value;
 
 		DOMText.apply(this, arguments);
 
@@ -52,10 +52,10 @@ module.exports = memoize(function (Currency, currencyTypeKeyPath/* options */) {
 		}.bind(this);
 
 		currencyType = this.observable.value.master.resolveSKeyPath(currencyTypeKeyPath).observable;
-		amount = this.observable.value.resolveSKeyPath('amount').observable;
+		value = this.observable.value.resolveSKeyPath('value').observable;
 
 		currencyType.on('change', updateValue);
-		amount.on('change', updateValue);
+		value.on('change', updateValue);
 	};
 
 	Text.prototype = Object.create(DOMText.prototype, {
