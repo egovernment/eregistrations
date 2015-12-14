@@ -124,6 +124,14 @@ module.exports = memoize(function (db) {
 						return;
 					}
 
+					if (resolved.value && (typeof resolved.value === 'object') && resolved.value.__id__ &&
+							(typeof resolved.value.getDescriptor('resolvedValue')._value_ === 'function')) {
+						// Constrained Value
+						if (!_observe(resolved.value._resolvedValue)) result.push(name);
+
+						return;
+					}
+
 					if (resolved.descriptor.requireOwn) {
 						_observe(resolved.observable);
 
