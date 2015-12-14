@@ -91,8 +91,10 @@ module.exports = function (Target, typeName, currencies) {
 			toString: function (value) {
 				var choicePropName = this.constructor.currencyChoicePropertyName
 				  , typeName       = this.master.resolveSKeyPath(choicePropName).value
-				  , resolvedValue  = this.resolvedValue || 0
+				  , resolvedValue  = this.resolvedValue
 				  , Type;
+
+				if (resolvedValue == null) return '';
 
 				if (typeName) {
 					Type = this.database[typeName[0].toUpperCase() + typeName.slice(1)];
