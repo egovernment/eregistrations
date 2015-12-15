@@ -36,7 +36,6 @@ module.exports = [{
 	label: _("Review"),
 	text: _("Necessary corrections in the file")
 }, {
-	id: 'sentToCorrections',
 	BusinessProcessType: BusinessProcess,
 	trigger: correctedBusinessProcesses,
 	preTrigger: sentBackBusinessProcesses,
