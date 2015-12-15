@@ -2,8 +2,7 @@
 
 'use strict';
 
-var renderDocumentsAndData = require('./_business-process-documents-and-data')
-, renderMainInfo = require('./_business-process-main-info')
+var renderMainInfo = require('./_business-process-main-info')
 , _       = require('mano').i18n.bind('Official: Revision');
 
 exports._parent = require('./user-base');
@@ -56,7 +55,19 @@ exports['sub-main'] = {
 					_("Reject application"))]
 			)));
 
-		renderDocumentsAndData(this.businessProcess,
-			{ urlPrefix: '/' + this.businessProcess.__id__ + '/' });
+		section({ class: 'section-tab-nav' },
+			a({ class: 'section-tab-nav-tab user-account-tab',
+					id: 'oficial-revision-documents',
+					href: '/revision/user-id/documents/' },
+				_("Revision of the documents")),
+			a({ class: 'section-tab-nav-tab user-account-tab',
+					id: 'oficial-revision-payments',
+					href: '/revision/user-id/payments/' },
+				_("revision of payments")),
+			a({ class: 'section-tab-nav-tab',
+					id: 'oficial-revision-certificates',
+					href: '/revision/user-id/certificates/' },
+				_("Revision of data")),
+			div({ id: 'official-revision-content', class: 'section-primary' }));
 	}
 };
