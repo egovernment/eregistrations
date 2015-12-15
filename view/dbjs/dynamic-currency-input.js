@@ -7,21 +7,22 @@
 
 'use strict';
 
-var db          = require('mano').db
-  , d           = require('d')
-  , memoize     = require('memoizee/plain')
-  , makeElement = require('dom-ext/document/#/make-element')
-  , DOMInput    = require('dbjs-dom/input/3.number').Input
-  , DOMText        = require('dbjs-dom/text/1.base').Text
-
-  , _render = DOMInput.prototype._render;
+var d                      = require('d')
+  , memoize                = require('memoizee/plain')
+  , defineConstrainedInput = require('./constrained-value-input')
+  , makeElement            = require('dom-ext/document/#/make-element')
+  , DOMInput               = require('dbjs-dom/input/3.number').Input
+  , DOMText                = require('dbjs-dom/text/1.base').Text;
 
 module.exports = memoize(function (Currency, currencyTypeKeyPath/* options */) {
+	var ConstrainedInput = defineConstrainedInput(DOMInput)
+	  , _render          = ConstrainedInput.prototype._render;
+
 	var Input = function (document, ns/*, options*/) {
-		DOMInput.apply(this, arguments);
+		ConstrainedInput.apply(this, arguments);
 	};
 
-	Input.prototype = Object.create(DOMInput.prototype, {
+	Input.prototype = Object.create(ConstrainedInput.prototype, {
 		constructor: d(Input),
 		_render: d(function () {
 			var el       = makeElement.bind(this.document)
@@ -37,7 +38,7 @@ module.exports = memoize(function (Currency, currencyTypeKeyPath/* options */) {
 					{ class: 'add-on' },
 					Currency
 				)),
-				this.observable.value._value.toDOMInput(document, { DOMInput: db.Number.DOMInput })
+				this.control
 			);
 		})
 	});
