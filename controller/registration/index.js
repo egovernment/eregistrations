@@ -18,7 +18,9 @@ var assign        = require('es5-ext/object/assign')
 module.exports = exports = assign(exports, require('../user'));
 
 resetStatus = function (step) {
-	step.status = null;
+	if (step != null) {
+		step.status = null;
+	}
 };
 
 // Guide
