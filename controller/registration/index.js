@@ -12,15 +12,13 @@ var assign        = require('es5-ext/object/assign')
   , db            = require('mano').db
 
   , re = /\/isRequested$/
-  , resetSendBackStatus;
+  , resetStatus;
 
 // Common controller - login and password change.
 module.exports = exports = assign(exports, require('../user'));
 
-resetSendBackStatus = function (step) {
-	if (step.status === 'sentBack') {
-		step.status = null;
-	}
+resetStatus = function (step) {
+	step.status = null;
 };
 
 // Guide
@@ -101,10 +99,10 @@ exports['application-submit'] = {
 		this.user.currentBusinessProcess.processingSteps.applicable.forEach(function (step) {
 			if (db.ProcessingStepGroup && (step instanceof db.ProcessingStepGroup)) {
 				step.steps.applicable.forEach(function (subStep) {
-					resetSendBackStatus(subStep);
+					resetStatus(subStep);
 				});
 			} else {
-				resetSendBackStatus(step);
+				resetStatus(step);
 			}
 		});
 		submit.apply(this, arguments);
