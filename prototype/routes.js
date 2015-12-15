@@ -69,6 +69,9 @@ module.exports = {
 	// Part-B routes - official user
 	official: require('./view/business-processes-table'),
 	'revision/user-id': require('./view/business-process-revision'),
+	'revision/user-id/documents': require('./view/business-process-revision-documents'),
+	'revision/user-id/payments': require('./view/business-process-revision-payments'),
+	'revision/user-id/certificates': require('./view/business-process-revision-certificates'),
 	'revision/user-id/(document)': {
 		match: function () {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;
@@ -90,9 +93,6 @@ module.exports = {
 		},
 		view: require('../view/business-process-document')
 	},
-	'revision/user-id/documents': require('./view/business-process-revision-documents'),
-	'revision/user-id/payments': require('./view/business-process-revision-payments'),
-	'revision/user-id/certificates': require('./view/business-process-revision-certificates'),
 	firstBusinessProcess: {
 		match: function () { return true; },
 		view: require('./view/business-process-official-form')
