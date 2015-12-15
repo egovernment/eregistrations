@@ -90,6 +90,9 @@ module.exports = {
 		},
 		view: require('../view/business-process-document')
 	},
+	'revision/user-id/documents': require('./view/business-process-revision-documents'),
+	'revision/user-id/payments': require('./view/business-process-revision-payments'),
+	'revision/user-id/certificates': require('./view/business-process-revision-certificates'),
 	firstBusinessProcess: {
 		match: function () { return true; },
 		view: require('./view/business-process-official-form')

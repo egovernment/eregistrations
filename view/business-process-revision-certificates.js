@@ -5,6 +5,8 @@
 var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
   , _                = require('mano').i18n.bind('User Submitted');
 
+exports._parent = require('./business-process-revision');
+
 exports['official-revision-certificates'] = { class: { active: true } };
 exports['official-revision-content'] = function (businessProcess/*, options*/) {
 	var options = Object(arguments[1])
