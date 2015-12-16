@@ -45,6 +45,15 @@ module.exports = memoize(function (db) {
 			});
 		} },
 
+		// Whether process group was re delegated at some sub step
+		isreDelegated: { value: function (_observe) {
+			if (!this.isReady) return false;
+			if (this.isRejected) return false;
+			return _observe(this.steps.applicable).some(function (step) {
+				return _observe(step._isRedelegated);
+			});
+		} },
+
 		// Whether process group was rejected at some step
 		isRejected: { value: function (_observe) {
 			if (!this.isReady) return false;

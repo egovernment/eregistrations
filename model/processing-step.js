@@ -28,7 +28,8 @@ module.exports = memoize(function (db) {
 		['paused', { label: _("Paused") }],
 		['sentBack', { label: _("Sent back") }],
 		['rejected', { label: _("Rejected") }],
-		['approved', { label: _("Approved") }]
+		['approved', { label: _("Approved") }],
+		['redelegated', { label: _("Redelegated") }]
 	]));
 
 	return ProcessingStepBase.extend('ProcessingStep', {
@@ -55,6 +56,8 @@ module.exports = memoize(function (db) {
 		sendBackProgress: { type: Percentage, value: function (_observe) {
 			return this.sendBackReason ? 1 : 0;
 		} },
+		// "reDelegate" status progress
+		redelegationProgress: { type: Percentage, value: 1 },
 		// "rejected" status progress
 		rejectionProgress: { type: Percentage, value: function (_observe) {
 			return this.rejectionReason ? 1 : 0;
@@ -72,6 +75,8 @@ module.exports = memoize(function (db) {
 			if (this.status === 'sentBack') return (this.sendBackProgress !== 1);
 			// If rejected, but no reason provided, it's still pending
 			if (this.status === 'rejected') return (this.rejectionProgress !== 1);
+			// If re delegated, but no reason provided, it's still pending
+			if (this.status === 'redelegated') return (this.redelegationProgress !== 1);
 			// 'paused' is the only option left, that's not pending
 			return false;
 		} },
@@ -91,6 +96,14 @@ module.exports = memoize(function (db) {
 			if (this.status !== 'sentBack') return false;
 			// Provided reason confirms complete sent back
 			return this.sendBackProgress === 1;
+		} },
+
+		// Whether process was re delegated from this step
+		isRedelegated: { value: function (_observe) {
+			// If not ready, then obviously not isRedelegated
+			if (!this.isReady) return false;
+			if (this.status !== 'redelegated') return false;
+			return this.redelegationProgress === 1;
 		} },
 
 		// Whether process was rejected at this step
@@ -116,6 +129,7 @@ module.exports = memoize(function (db) {
 		// Dynamically resolved processing step status
 		resolvedStatus: { type: ProcessingStepStatus, value: function (_observe) {
 			if (!this.isReady) return null;
+			if (this.isRedelegated) return 'redelegated';
 			if (this.isPending) return 'pending';
 			if (this.isApproved) return 'approved';
 			if (this.isRejected) return 'rejected';
