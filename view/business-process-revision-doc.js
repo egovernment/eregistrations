@@ -49,8 +49,7 @@ revisionForm = function (requirementUpload) {
 	);
 };
 
-exports['revision-box'] = { class: { hidden: false } };
-exports['document-box'] = { class: { hidden: false } };
+exports['revision-document'] = { class: { hidden: false } };
 
 exports['document-preview'] = function () {
 	renderDocument(this.document);

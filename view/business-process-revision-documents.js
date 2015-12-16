@@ -32,11 +32,13 @@ exports['official-revision-content'] = function () {
 						}
 						)
 				),
-				div({ id: 'revision-box', class: 'business-process-revision-box hidden' }),
-				div({ id: 'document-box', class: 'submitted-preview hidden' },
-					div({ id: 'document-preview', class: 'submitted-preview-document' }),
-					div({ class: 'submitted-preview-user-data  entity-data-section-side' },
-						generateSections(businessProcess.dataForms.applicable, { viewContext: this })
+				div({ id: 'revision-document', class: 'hidden' },
+					div({ id: 'revision-box', class: 'business-process-revision-box' }),
+					div({ class: 'submitted-preview' },
+						div({ id: 'document-preview', class: 'submitted-preview-document' }),
+						div({ class: 'submitted-preview-user-data  entity-data-section-side' },
+							generateSections(businessProcess.dataForms.applicable, { viewContext: this })
+							)
 						)
 					)
 				]
