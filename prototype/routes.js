@@ -78,7 +78,7 @@ module.exports = {
 		view: require('../view/business-process-revision-doc')
 	},
 	'revision/user-id/payments': require('../view/business-process-revision-payments'),
-	'revision/user-id/certificates': require('../view/business-process-revision-certificates'),
+	'revision/user-id/datas': require('../view/business-process-revision-datas'),
 	'revision/user-id/(document)': {
 		match: function () {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;

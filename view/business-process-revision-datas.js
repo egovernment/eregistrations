@@ -7,7 +7,7 @@ var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
 
 exports._parent = require('./business-process-revision');
 
-exports['official-revision-certificates'] = { class: { active: true } };
+exports['official-revision-datas'] = { class: { active: true } };
 exports['official-revision-content'] = function () {
 	var options = Object(arguments[1])
 	  , urlPrefix = options.urlPrefix || '/'
@@ -15,7 +15,7 @@ exports['official-revision-content'] = function () {
 
 	return [section({ class: 'section-primary' },
 		_if(businessProcess.certificates.uploaded._size,
-			[h3(_("Certificates")),
+			[h3(_("Datas")),
 				div(
 					{ class: 'table-responsive-container' },
 					table(

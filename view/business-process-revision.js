@@ -65,8 +65,8 @@ exports['sub-main'] = {
 					href: '/revision/user-id/payments/' },
 				_("Revision of payments")),
 			a({ class: 'section-tab-nav-tab',
-					id: 'official-revision-certificates',
-					href: '/revision/user-id/certificates/' },
+					id: 'official-revision-datas',
+					href: '/revision/user-id/datas/' },
 				_("Revision of data")),
 			div({ id: 'official-revision-content', class: 'business-process-revision' }));
 	}
