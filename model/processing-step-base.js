@@ -55,6 +55,9 @@ module.exports = memoize(function (db) {
 		// Whether process was sent back from this step
 		isSentBack: { type: db.Boolean },
 
+		// Whether process was redelegated from this step
+		isRedelegated: { type: db.Boolean },
+
 		// Whether process was rejected at this step
 		isRejected: { type: db.Boolean },
 
@@ -76,7 +79,10 @@ module.exports = memoize(function (db) {
 		} },
 
 		isSatisfied: { type: db.Boolean, value: function () {
-			return this.isApplicable ? Boolean(this.isApproved) : this.isPreviousStepsSatisfied;
+			if (this.isApplicable) {
+				return Boolean(this.isApproved || this.delegatedFrom);
+			}
+			return this.isPreviousStepsSatisfied;
 		} }
 	});
 
