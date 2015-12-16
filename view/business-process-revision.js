@@ -56,18 +56,18 @@ exports['sub-main'] = {
 			)));
 
 		section({ class: 'section-tab-nav' },
-			a({ class: 'section-tab-nav-tab user-account-tab',
-					id: 'oficial-revision-documents',
+			a({ class: 'section-tab-nav-tab',
+					id: 'official-revision-documents',
 					href: '/revision/user-id/documents/' },
 				_("Revision of the documents")),
-			a({ class: 'section-tab-nav-tab user-account-tab',
-					id: 'oficial-revision-payments',
-					href: '/revision/user-id/payments/' },
-				_("revision of payments")),
 			a({ class: 'section-tab-nav-tab',
-					id: 'oficial-revision-certificates',
+					id: 'official-revision-payments',
+					href: '/revision/user-id/payments/' },
+				_("Revision of payments")),
+			a({ class: 'section-tab-nav-tab',
+					id: 'official-revision-certificates',
 					href: '/revision/user-id/certificates/' },
 				_("Revision of data")),
-			div({ id: 'official-revision-content', class: 'section-primary' }));
+			div({ id: 'official-revision-content', class: 'business-process-revision' }));
 	}
 };

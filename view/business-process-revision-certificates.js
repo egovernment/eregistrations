@@ -8,9 +8,10 @@ var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
 exports._parent = require('./business-process-revision');
 
 exports['official-revision-certificates'] = { class: { active: true } };
-exports['official-revision-content'] = function (businessProcess/*, options*/) {
+exports['official-revision-content'] = function () {
 	var options = Object(arguments[1])
-	  , urlPrefix = options.urlPrefix || '/';
+	  , urlPrefix = options.urlPrefix || '/'
+	  , businessProcess = this.businessProcess;
 
 	return [section({ class: 'section-primary' },
 		_if(businessProcess.certificates.uploaded._size,
