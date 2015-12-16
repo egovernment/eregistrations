@@ -6,10 +6,6 @@
 	border-bottom: 1px solid var(--light-text);
 }
 
-/*.business-process-revision-box.hidden {
-	display: none;
-}*/
-
 .business-process-revision-box-header {
 	display: flex;
 	justify-content: space-between;
