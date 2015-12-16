@@ -43,6 +43,8 @@ module.exports = memoize(function (db) {
 		sendBackReason: { type: db.String, required: true  },
 		// Eventual reason of rejection
 		rejectionReason: { type: db.String, required: true  },
+		// Reason of redelegation
+		redelegationReason: { type: db.String, required: true  },
 		// Resolution status of a step
 		// Note: 'pending' option doesn't apply here, as this one is intended for direct resolution
 		// of processing step. For dynamically computed status, see `resolvedStatus` below
@@ -57,8 +59,24 @@ module.exports = memoize(function (db) {
 		sendBackProgress: { type: Percentage, value: function (_observe) {
 			return this.sendBackReason ? 1 : 0;
 		} },
+
+		hasRedelegationTarget: { type: db.Boolean, value: function (_observe) {
+			if (!this.previousSteps) return false;
+			return this.previousSteps.some(function (step) {
+				return _observe(step._delegatedFrom) === this;
+			}, this);
+		} },
+
 		// "redelegate" status progress
-		redelegationProgress: { type: Percentage, value: 1 },
+		redelegationProgress: { type: Percentage, value: function (_observe) {
+			var total = 0, status = 0;
+			total++;
+			if (this.hasRedelegationTarget) status++;
+			total++;
+			if (this.redelegationReason) status++;
+			return status / total;
+		} },
+
 		// "rejected" status progress
 		rejectionProgress: { type: Percentage, value: function (_observe) {
 			return this.rejectionReason ? 1 : 0;
@@ -99,12 +117,7 @@ module.exports = memoize(function (db) {
 			return this.sendBackProgress === 1;
 		} },
 
-		// Whether some other (later in chain) process re delegated to this step
-		isDelegated: { type: db.Boolean, value: function (_observe) {
-			return this.delegatedFrom;
-		} },
-
-		// Whether process was re delegated from this step
+		// Whether process was redelegated from this step
 		isRedelegated: { value: function (_observe) {
 			// If not ready, then obviously not isRedelegated
 			if (!this.isReady) return false;
@@ -112,6 +125,7 @@ module.exports = memoize(function (db) {
 			return this.redelegationProgress === 1;
 		} },
 
+		// Use it to redelegate from this step to previousStep
 		redelegate: {
 			type: db.Function,
 			value: function (previousStep, _observe) {
@@ -121,6 +135,7 @@ module.exports = memoize(function (db) {
 			}
 		},
 
+		// Should be called once the delegated step has finished it's job
 		undelegate: {
 			type: db.Function,
 			value: function (observeFunction) {
@@ -153,11 +168,11 @@ module.exports = memoize(function (db) {
 		// Dynamically resolved processing step status
 		resolvedStatus: { type: ProcessingStepStatus, value: function (_observe) {
 			if (!this.isReady) return null;
-			if (this.isRedelegated) return 'redelegated';
 			if (this.isPending) return 'pending';
 			if (this.isApproved) return 'approved';
 			if (this.isRejected) return 'rejected';
 			if (this.isSentBack) return 'sentBack';
+			if (this.isRedelegated) return 'redelegated';
 			if (this.isPaused) return 'paused';
 		} }
 	});
