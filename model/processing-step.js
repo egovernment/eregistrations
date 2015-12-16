@@ -60,6 +60,7 @@ module.exports = memoize(function (db) {
 			return this.sendBackReason ? 1 : 0;
 		} },
 
+		// Used in redelegationProgress, ensures model sanity
 		hasRedelegationTarget: { type: db.Boolean, value: function (_observe) {
 			var done = Object.create(null);
 			return this.previousSteps.some(function self(step) {
@@ -97,7 +98,7 @@ module.exports = memoize(function (db) {
 			if (this.status === 'sentBack') return (this.sendBackProgress !== 1);
 			// If rejected, but no reason provided, it's still pending
 			if (this.status === 'rejected') return (this.rejectionProgress !== 1);
-			// If re delegated, but no reason provided, it's still pending
+			// If redelegated, but no reason provided, it's still pending
 			if (this.status === 'redelegated') return (this.redelegationProgress !== 1);
 			// 'paused' is the only option left, that's not pending
 			return false;

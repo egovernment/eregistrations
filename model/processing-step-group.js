@@ -54,7 +54,7 @@ module.exports = memoize(function (db) {
 			});
 		} },
 
-		// Whether process group was re delegated at some sub step
+		// Whether process group was redelegated at some sub step
 		isRedelegated: { value: function (_observe) {
 			if (!this.isReady) return false;
 			if (this.isRejected) return false;

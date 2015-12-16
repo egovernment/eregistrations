@@ -55,7 +55,7 @@ module.exports = memoize(function (db) {
 		// Whether process was sent back from this step
 		isSentBack: { type: db.Boolean },
 
-		// Whether process was re delegated from this step
+		// Whether process was redelegated from this step
 		isRedelegated: { type: db.Boolean },
 
 		// Whether process was rejected at this step
