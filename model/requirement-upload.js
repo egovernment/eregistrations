@@ -32,6 +32,9 @@ module.exports = memoize(function (db) {
 		]));
 
 	return db.Object.extend('RequirementUpload', {
+		toString: { value: function (options) {
+			return this.document.label;
+		} },
 		// Document which we upload
 		document: { type: Document, nested: true },
 		// Verification status of upload
