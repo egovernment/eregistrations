@@ -56,12 +56,10 @@ module.exports = memoize(function (db) {
 		isSentBack: { type: db.Boolean },
 
 		// Whether some other (later in chain) process re delegated to this step
-		isDelegated: { type: db.Boolean, value: function (_observe) {
-			return this.delegatedFrom;
-		} },
+		isDelegated: { type: db.Boolean },
 
 		// Whether process was re delegated from this step
-		isReDelegated: { type: db.Boolean },
+		isRedelegated: { type: db.Boolean },
 
 		// Whether process was rejected at this step
 		isRejected: { type: db.Boolean },
@@ -73,24 +71,6 @@ module.exports = memoize(function (db) {
 		isClosed: { type: db.Boolean, value: function (_observe) {
 			return this.isApproved || this.isRejected || false;
 		} },
-
-		redelegate: {
-			type: db.Function,
-			value: function (previousStep, _observe) {
-				this.status = 'redelegated';
-				previousStep.delegatedFrom = this;
-				previousStep.status = null;
-			}
-		},
-
-		undelegate: {
-			type: db.Function,
-			value: function (observeFunction) {
-				if (!this.delegatedFrom) return;
-				this.delegatedFrom.status = null;
-				this.delegatedFrom = null;
-			}
-		},
 
 		isPreviousStepsSatisfied: { type: db.Boolean, value: function (_observe) {
 			if (!this.previousSteps.size) {
@@ -112,11 +92,6 @@ module.exports = memoize(function (db) {
 	ProcessingStepBase.prototype.define('previousSteps', {
 		type: ProcessingStepBase,
 		multiple: true
-	});
-
-	// Step which redelegated to this step
-	ProcessingStepBase.prototype.define('delegatedFrom', {
-		type: ProcessingStepBase
 	});
 
 	return ProcessingStepBase;

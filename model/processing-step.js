@@ -18,7 +18,8 @@ module.exports = memoize(function (db) {
 	  , StringLine = defineStringLine(db)
 	  , User = defineUser(db)
 	  , FormSectionBase = defineFormSectionBase(db)
-	  , ProcessingStepBase = defineProcessingStepBase(db);
+	  , ProcessingStepBase = defineProcessingStepBase(db)
+	  , ProcessingStep;
 
 	defineCreateEnum(db);
 
@@ -32,7 +33,7 @@ module.exports = memoize(function (db) {
 		['redelegated', { label: _("Redelegated") }]
 	]));
 
-	return ProcessingStepBase.extend('ProcessingStep', {
+	ProcessingStep = ProcessingStepBase.extend('ProcessingStep', {
 		// Official that processed request at given processing step
 		processor: { type: User },
 
@@ -56,7 +57,7 @@ module.exports = memoize(function (db) {
 		sendBackProgress: { type: Percentage, value: function (_observe) {
 			return this.sendBackReason ? 1 : 0;
 		} },
-		// "reDelegate" status progress
+		// "redelegate" status progress
 		redelegationProgress: { type: Percentage, value: 1 },
 		// "rejected" status progress
 		rejectionProgress: { type: Percentage, value: function (_observe) {
@@ -98,6 +99,11 @@ module.exports = memoize(function (db) {
 			return this.sendBackProgress === 1;
 		} },
 
+		// Whether some other (later in chain) process re delegated to this step
+		isDelegated: { type: db.Boolean, value: function (_observe) {
+			return this.delegatedFrom;
+		} },
+
 		// Whether process was re delegated from this step
 		isRedelegated: { value: function (_observe) {
 			// If not ready, then obviously not isRedelegated
@@ -105,6 +111,24 @@ module.exports = memoize(function (db) {
 			if (this.status !== 'redelegated') return false;
 			return this.redelegationProgress === 1;
 		} },
+
+		redelegate: {
+			type: db.Function,
+			value: function (previousStep, _observe) {
+				this.status = 'redelegated';
+				previousStep.delegatedFrom = this;
+				previousStep.status = null;
+			}
+		},
+
+		undelegate: {
+			type: db.Function,
+			value: function (observeFunction) {
+				if (!this.delegatedFrom) return;
+				this.delegatedFrom.status = null;
+				this.delegatedFrom = null;
+			}
+		},
 
 		// Whether process was rejected at this step
 		isRejected: { value: function (_observe) {
@@ -137,4 +161,11 @@ module.exports = memoize(function (db) {
 			if (this.isPaused) return 'paused';
 		} }
 	});
+
+	// Step which redelegated to this step
+	ProcessingStep.prototype.define('delegatedFrom', {
+		type: ProcessingStep
+	});
+
+	return ProcessingStep;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
