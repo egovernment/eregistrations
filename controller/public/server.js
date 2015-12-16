@@ -1,9 +1,12 @@
 'use strict';
 
-var db             = require('mano').db
+var emptyPromise   = require('deferred')(undefined)
+  , genId          = require('time-uuid')
   , registerSubmit = require('mano-auth/controller/server/register-and-login').submit
   , login          = require('mano-auth/server/authentication').login
+  , mano           = require('mano')
 
+  , db = mano.db, dbDriver = mano.dbDriver
   , maxage = 1000 * 60 * 60 * 24 * 7;
 
 exports.login = require('mano-auth/controller/server/login');
@@ -21,8 +24,32 @@ exports['init-demo'] = {
 	submit: function () {
 		var cookieName = 'demoUser'
 		  , userId     = this.res.cookies.get(cookieName)
-		  , demoUser;
+		  , demoUser, promise;
 
+		if (dbDriver) {
+			if (userId) promise = dbDriver.getDirect(userId + '/isDemo');
+			else promise = emptyPromise;
+			return promise(function (data) {
+				var records, promise;
+				if (!data || (data.value !== '11')) {
+					userId = genId();
+					records = [
+						{ id: userId, data: { value: '7User#' } },
+						{ id: userId + '/isDemo', data: { value: '11' } },
+						{ id: userId + '/roles*user', data: { value: '11' } }
+					];
+					promise = dbDriver.storeDirectMany(records);
+				} else {
+					promise = emptyPromise;
+				}
+				return promise(function () {
+					this.res.cookies.set(cookieName, userId, { maxage: maxage });
+					login(userId, this.req, this.res);
+				});
+			});
+		}
+
+		// TODO: Legacy logic to be removed, when all systems stand on persistent driver
 		if (userId) {
 			demoUser = db.User.getById(userId);
 		}
@@ -35,7 +62,6 @@ exports['init-demo'] = {
 
 		this.res.cookies.set(cookieName, demoUser.__id__, { maxage: maxage });
 		login(demoUser.__id__, this.req, this.res);
-		this.user = demoUser;
 	},
 	redirectUrl: '/'
 };

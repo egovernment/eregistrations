@@ -28,7 +28,7 @@ module.exports = function (t, a) {
 	a.h1('Dynamic fields');
 	a(masterObject.hasPropertyDefined('dynamicCurrencyType'), true);
 	a(masterObject.currencyField.hasPropertyDefined('value'), true);
-	a(masterObject.currencyField.toString(), '0');
+	a(masterObject.currencyField.toString(), '');
 	masterObject.currencyField.value = 42;
 	a(masterObject.currencyField.toString(), '42');
 	masterObject.dynamicCurrencyType = 'usDollar';
