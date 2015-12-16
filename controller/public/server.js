@@ -2,7 +2,6 @@
 
 var emptyPromise   = require('deferred')(undefined)
   , genId          = require('time-uuid')
-  , registerSubmit = require('mano-auth/controller/server/register-and-login').submit
   , login          = require('mano-auth/server/authentication').login
   , mano           = require('mano')
 
@@ -11,13 +10,9 @@ var emptyPromise   = require('deferred')(undefined)
 
 exports.login = require('mano-auth/controller/server/login');
 exports.register = require('mano-auth/controller/server/register-and-login');
+exports['add-user'] = require('mano-auth/controller/server/register');
 exports['reset-password'] = require('mano-auth/controller/server/reset-password');
 exports['request-reset-password'] = require('mano-auth/controller/server/request-reset-password');
-
-exports.register.submit = function (normalizedData, data) {
-	if (!normalizedData['User#/roles']) normalizedData['User#/roles'] = ['user'];
-	return registerSubmit.apply(this, arguments);
-};
 
 exports['init-demo'] = {
 	validate: Function.prototype,
