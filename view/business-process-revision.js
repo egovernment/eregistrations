@@ -57,15 +57,15 @@ exports['sub-main'] = {
 
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab',
-					id: 'official-revision-documents',
+					id: 'business-process-documents',
 					href: '/revision/user-id/documents/' },
 				_("Revision of the documents")),
 			a({ class: 'section-tab-nav-tab',
-					id: 'official-revision-payments',
+					id: 'business-process-payments',
 					href: '/revision/user-id/payments/' },
 				_("Revision of payments")),
 			a({ class: 'section-tab-nav-tab',
-					id: 'official-revision-datas',
+					id: 'business-process-datas',
 					href: '/revision/user-id/datas/' },
 				_("Revision of data")),
 			div({ id: 'official-revision-content', class: 'business-process-revision' }));

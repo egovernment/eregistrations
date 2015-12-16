@@ -10,8 +10,8 @@ var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
 exports._parent = require('./business-process-revision');
 exports._match = 'businessProcess';
 
-exports['official-revision-documents'] = { class: { active: true } };
-exports['official-revision-content'] = function () {
+exports['business-process-documents'] = { class: { active: true } };
+exports['official-revision-content'] = function (/*options*/) {
 	var options = Object(arguments[1])
 	  , urlPrefix = options.urlPrefix || '/'
 	  , businessProcess = this.businessProcess;
