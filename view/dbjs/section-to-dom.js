@@ -31,14 +31,21 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 							return observable.value != null;
 						}), function (name) {
 							var resolved = resolvePropertyPath(self.master, name), cond;
-							cond = resolved.observable;
 							if (!resolved.descriptor.required) {
 								if ((typeof resolved.value === 'object') && resolved.value.__id__) {
-									if (resolved.value instanceof File) cond = resolved.value._path;
-									if (typeof resolved.value.getDescriptor('resolvedValue')._value_ === 'function') {
-										cond = resolved.value._resolvedValue;
+									if (resolved.value instanceof File) {
+										cond = resolved.value._path;
+									} else if (typeof resolved.value.getDescriptor('resolvedValue')._value_
+											=== 'function') {
+										cond = not(eqSloppy(resolved.value._resolvedValue, null));
+									} else {
+										cond = not(eqSloppy(resolved.observable, null));
 									}
+								} else {
+									cond = not(eqSloppy(resolved.observable, null));
 								}
+							} else {
+								cond = true;
 							}
 							return _if(cond, ns.tr(ns.th(resolved.descriptor.label),
 								td(resolved.value instanceof File ? _if(resolved.value._path, thumb(resolved.value))
