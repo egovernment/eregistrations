@@ -1,6 +1,7 @@
 .file-thumb {
 	display: flex;
 	flex-direction: column;
+	width: 110px;
 }
 
 .file-thumb-actions {
@@ -13,7 +14,7 @@
 
 .file-thumb-image {
 	height: 132px;
-	width: 110px;
+	width: 100%;
 	border: 1px solid var(--light-inner-border);
 	border-radius: 5px;
 	padding: 8px;

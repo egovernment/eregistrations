@@ -36,6 +36,7 @@ var db = require('mano').db
   , IdDoc
   , RequiredUploadA
   , Representative
+  , File = require('../../model/file')(db)
   , processes = [first, second, third, fourth, fifth]
   , paymentReceipt = require('../../model/business-process-new/' +
 		'utils/define-payment-receipt-uploads')
@@ -84,8 +85,23 @@ Representative = Person.extend('Representative', {
 		type: StringLine,
 		required: true,
 		label: "Spouse last name"
+	},
+	idPhoto: {
+		type: File,
+		nested: true,
+		label: "Photo file"
 	}
 });
+
+Representative.prototype.idPhoto.setProperties({
+	name: 'idoc.jpg',
+	type: 'image/jpeg',
+	diskSize: 376306,
+	path: 'doc-a-sub-file1.idoc.jpg',
+	url: '/uploads/doc-a-sub-file1.idoc.jpg'
+});
+
+Representative.prototype.idPhoto.thumb.url = '/uploads/doc-a-sub-file1.idoc.jpg';
 
 BusinessProcessNew.prototype.defineProperties({
 	//guide
@@ -451,7 +467,7 @@ BusinessProcessNew.prototype.dataForms.map.get('personal').setProperties({
 		'representative/spouseName', 'representative/spouseLastName',
 		'representative/address/city', 'representative/address/streetType',
 		'representative/address/streetName', 'representative/address/streetNumber',
-		'representative/address/apartmentNumber'],
+		'representative/address/apartmentNumber', 'representative/idPhoto'],
 	label: "Company's representative information",
 	legend: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
 		"incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud " +
