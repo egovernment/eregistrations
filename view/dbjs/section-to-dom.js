@@ -31,10 +31,8 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 							return observable.value != null;
 						}), function (name) {
 							var resolved = resolvePropertyPath(self.master, name);
-							if (resolved.value instanceof File) {
-								return ns.tr(ns.th(resolved.descriptor.label), ns.td(thumb(resolved.value)));
-							}
-							return ns.tr(ns.th(resolved.descriptor.label), ns.td(resolved.observable));
+							ns.tr(ns.th(resolved.descriptor.label),
+								td(resolved.value instanceof File ? thumb(resolved.value) : resolved.observable));
 						});
 					})
 				)
