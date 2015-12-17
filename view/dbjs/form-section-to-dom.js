@@ -47,7 +47,8 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 
 		customizeData.arrayResult = [
 			customizeData.container = ns.section(
-				{ class: options.cssSectionClass || 'section-primary' },
+				{ class: options.cssSectionClass === false ?
+						null : options.cssSectionClass || 'section-primary' },
 				_if(this._isDisabled, div({ class: 'entities-overview-info' }, this._disabledMessage)),
 				div({ class: ['disabler-range',
 						_if(this._isDisabled, 'disabler-active')] },
