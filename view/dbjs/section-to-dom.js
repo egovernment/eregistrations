@@ -31,8 +31,19 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 							return observable.value != null;
 						}), function (name) {
 							var resolved = resolvePropertyPath(self.master, name);
+							if (!resolved.descriptor.required) {
+								if (resolved.value == null) return;
+								if ((typeof resolved.value === 'object') && resolved.value.__id__) {
+									if (resolved.value instanceof File && !resolved.value.path) return;
+									if (resolved.value.__id__ &&
+										(typeof resolved.value.getDescriptor('resolvedValue')._value_ === 'function')) {
+										return;
+									}
+								}
+							}
 							ns.tr(ns.th(resolved.descriptor.label),
-								td(resolved.value instanceof File ? thumb(resolved.value) : resolved.observable));
+								td(resolved.value instanceof File ? _if(resolved.value._path, thumb(resolved.value))
+									: resolved.observable));
 						});
 					})
 				)
