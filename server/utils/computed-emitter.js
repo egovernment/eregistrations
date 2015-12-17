@@ -18,7 +18,6 @@ var ComputedEmitter = module.exports = function (dbName, keyPath/*, options*/) {
 	if (!(this instanceof ComputedEmitter)) return new ComputedEmitter(dbName, keyPath, arguments[2]);
 	options = Object(arguments[2]);
 	this._dbName = ensureString(dbName);
-	this._keyPath = ensureString(keyPath);
 	if (options.type != null) {
 		if (options.type === 'direct') {
 			this._type = 'direct';
@@ -26,8 +25,11 @@ var ComputedEmitter = module.exports = function (dbName, keyPath/*, options*/) {
 			throw new Error("Unrecognized type option: " + stringify(options.type));
 		}
 	}
+	if ((keyPath != null) || (options.type !== 'direct')) {
+		this._keyPath = ensureString(keyPath);
+	}
 
-	dbDriver.on(this._type + ':' + keyPath, function (event) {
+	dbDriver.on(this._type + ':' + keyPath || '&', function (event) {
 		this._map.set(event.ownerId, event.data.value);
 		this.emit(event.ownerId, event.data.value);
 	}.bind(this));
@@ -41,8 +43,9 @@ ee(Object.defineProperties(ComputedEmitter.prototype, assign({
 	})
 }, memoizeMethods({
 	_getData: d(function (ownerId) {
-		var methodName = 'get' + capitalize.call(this._type);
-		return dbDriver[methodName](ownerId + '/' + this._keyPath)(function (data) {
+		var methodName = 'get' + capitalize.call(this._type)
+		  , id = ownerId + (this._keyPath ? '/' + this._keyPath : '');
+		return dbDriver[methodName](id)(function (data) {
 			var value = data ? data.value : '';
 			this._map.set(ownerId, value);
 			return value;
