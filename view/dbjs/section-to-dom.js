@@ -35,9 +35,7 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 								if (resolved.value == null) return;
 								if ((typeof resolved.value === 'object') && resolved.value.__id__) {
 									if (resolved.value instanceof File && !resolved.value.path) return;
-									if (resolved.value.__id__ &&
-											(typeof resolved.value.getDescriptor('resolvedValue')._value_ === 'function')
-										) {
+									if (typeof resolved.value.getDescriptor('resolvedValue')._value_ === 'function') {
 										return;
 									}
 								}
