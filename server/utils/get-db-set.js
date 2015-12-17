@@ -10,7 +10,7 @@ var memoize             = require('memoizee')
 
 module.exports = memoize(function (recordType, keyPath, value) {
 	var set = new ObservableSet();
-	dbDriver.on(recordType + ':' + keyPath, function (event) {
+	dbDriver.on(recordType + ':' + keyPath || '&', function (event) {
 		if (resolveFilter(value, event.data.value)) set.add(event.ownerId);
 		else set.delete(event.ownerId);
 	});
