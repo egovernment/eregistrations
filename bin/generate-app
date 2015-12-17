@@ -66,6 +66,8 @@ resolveProjectRoot(projectRoot).done(function (root) {
 				"class names in: apps/" + appName + "/client/program.js");
 			msgItems.push("Ensure that views model is updated with added status maps in model/views.js");
 			msgItems.push("Ensure entry in server/db/indexes.js");
+			msgItems.push("Add new role in model/user/roles.js");
+			msgItems.push("Ensure entry in model/user/visited-business-processes");
 		}
 
 		if (appName === 'meta-admin') {
