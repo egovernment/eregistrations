@@ -62,13 +62,14 @@ module.exports = memoize(function (db) {
 
 		// Used in redelegationProgress, ensures model sanity
 		hasRedelegationTarget: { type: db.Boolean, value: function (_observe) {
-			var done = Object.create(null);
+			var done = Object.create(null), that;
+			that = this;
 			return this.previousSteps.some(function self(step) {
 				if (done[step.__id__]) return;
 				done[step.__id__] = true;
-				if (_observe(step._delegatedFrom) === this) return true;
+				if (_observe(step._delegatedFrom) === that) return true;
 				return step.previousSteps.some(self);
-			}, this);
+			});
 		} },
 
 		// "redelegate" status progress
