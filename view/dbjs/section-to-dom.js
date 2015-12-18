@@ -49,8 +49,8 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 							}
 							return _if(cond, ns.tr(ns.th(resolved.descriptor.label),
 								td(resolved.value instanceof File ? _if(resolved.value._path, thumb(resolved.value))
-									: (resolved.value && resolved.value._resolvedValue ?
-											resolved.value._resolvedValue : resolved.observable))));
+									: _if(and(resolved.value, resolved.value._resolvedValue),
+										resolved.value._resolvedValue, resolved.observable))));
 						});
 					})
 				)
