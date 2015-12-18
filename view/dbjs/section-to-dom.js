@@ -35,16 +35,26 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 							observable.once('change', function (event) { filteredNames.refresh(name); });
 							return observable.value != null;
 						}), function (name) {
-							var resolved = resolvePropertyPath(self.master, name), cond, specialCase;
+							var resolved = resolvePropertyPath(self.master, name)
+							  , isNested = (typeof resolved.value === 'object')
+								&& resolved.value.__id__
+							  , cond, specialCase;
+
+							if (isNested) {
+								if (resolved.value instanceof File) {
+									specialCase = 'file';
+								} else if (typeof resolved.value.getDescriptor('resolvedValue')
+										._value_ === 'function') {
+									specialCase = 'constrainedValue';
+								}
+							}
+
 							if (!resolved.descriptor.required) {
-								if ((typeof resolved.value === 'object') && resolved.value.__id__) {
-									if (resolved.value instanceof File) {
+								if (isNested) {
+									if (specialCase === 'file') {
 										cond = resolved.value._path;
-										specialCase = 'file';
-									} else if (typeof resolved.value.getDescriptor('resolvedValue')._value_
-											=== 'function') {
+									} else if (specialCase === 'constrainedValue') {
 										cond = not(eqSloppy(resolved.value._resolvedValue, null));
-										specialCase = 'constrainedValue';
 									} else {
 										cond = not(eqSloppy(resolved.observable, null));
 									}
