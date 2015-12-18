@@ -67,7 +67,7 @@ module.exports = memoize(function (db) {
 				if (done[step.__id__]) return;
 				done[step.__id__] = true;
 				if (_observe(step._delegatedFrom) === this) return true;
-				return step.previousSteps.some(self);
+				return step.previousSteps.some(self, this);
 			}, this);
 		} },
 
