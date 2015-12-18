@@ -21,10 +21,10 @@ var setupQueryHandler =
 exports._parent = require('./print-base');
 
 var generateMainContent = function () {
-	var statusMap     = ensureObject(exports._statusMap())
-	  , columns       = ensureArray(exports._columns())
+	var statusMap     = ensureObject(exports._statusMap(this))
+	  , columns       = ensureArray(exports._columns(this))
 	  , shortRoleName = uncapitalize.call(this.user.currentRoleResolved.slice('official'.length))
-	  , getOrderIndex = ensureCallable(exports._getOrderIndex())
+	  , getOrderIndex = ensureCallable(exports._getOrderIndex(this))
 	  , container, superIsExernalQuery;
 
 	var listManager = new Manager({
