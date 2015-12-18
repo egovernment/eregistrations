@@ -14,7 +14,10 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOM',
 		return ns.section({ class: cssClass },
 			ns._if(this._label, [headersMap[headerRank](this._label), ns.hr()]),
 			ns.list(this.sections, function (section) {
-				return section.toDOM(document, { headerRank: headerRank + 1,
-							cssClass: 'entity-data-section-sub', viewContext: options.viewContext });
+				return _if(section._status, section.toDOM(document, {
+					headerRank: headerRank + 1,
+					cssClass: 'entity-data-section-sub',
+					viewContext: options.viewContext
+				}));
 			}));
 	}));

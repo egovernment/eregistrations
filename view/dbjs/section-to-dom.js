@@ -24,11 +24,10 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 			ns._if(self._label, [headersMap[headerRank](self._label), ns.hr()]),
 			ns.table(
 				ns.tbody(
-					ns._if(self._isUnresolved, function () {
-						return ns.tr(ns.th(resolvePropertyPath(self.master,
-							self.resolventProperty).descriptor.label),
-							ns.td(resolvePropertyPath(self.master,
-								self.resolventProperty).observable));
+					ns._if(self._resolventProperty, function () {
+						var resolvent = resolvePropertyPath(self.master, self.resolventProperty);
+
+						return ns.tr(ns.th(resolvent.descriptor.label), ns.td(resolvent.observable));
 					}),
 					ns._if(ns.eq(self._isUnresolved, false), function () {
 						return ns.list(filteredNames = self.applicablePropertyNames.filter(function (name) {
