@@ -57,6 +57,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push("Ensure that the " +
 				"underlying businessProcess model is required in server/model.js");
 			msgItems.push(otherClientsModelReminder);
+			msgItems.push("Ensure that the apps/user/client/dbjs-dom.js is up to date");
 		}
 
 		if (startsWith.call(appName, 'official-')) {
