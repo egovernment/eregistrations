@@ -4,12 +4,11 @@ var assign         = require('es5-ext/object/assign')
   , promisify      = require('deferred').promisify
   , bcrypt         = require('bcrypt')
   , dbjsCreate     = require('mano/lib/utils/dbjs-form-create')
-  , router         = require('mano/server/post-router')
+  , submit         = require('mano/utils/save')
   , changePassword = require('mano-auth/controller/server/change-password').submit
   , dbObjects      = require('mano').db.objects
 
-  , genSalt = promisify(bcrypt.genSalt), hash = promisify(bcrypt.hash)
-  , submit  = router.submit;
+  , genSalt = promisify(bcrypt.genSalt), hash = promisify(bcrypt.hash);
 
 // Common
 assign(exports, require('../user/server'));
