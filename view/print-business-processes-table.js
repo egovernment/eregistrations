@@ -4,7 +4,6 @@ var ensureArray    = require('es5-ext/array/valid-array')
   , toNatural      = require('es5-ext/number/to-pos-integer')
   , ensureCallable = require('es5-ext/object/valid-callable')
   , ensureObject   = require('es5-ext/object/valid-object')
-  , hyphenToCamel  = require('es5-ext/string/#/hyphen-to-camel')
   , uncapitalize   = require('es5-ext/string/#/uncapitalize')
   , replaceContent = require('dom-ext/element/#/replace-content')
   , mano           = require('mano')
@@ -22,17 +21,15 @@ var setupQueryHandler =
 exports._parent = require('./print-base');
 
 var generateMainContent = function () {
-	var statusMap = ensureObject(exports._statusMap())
-	  , columns = ensureArray(exports._columns())
-	  , roleName = hyphenToCamel.call(
-		uncapitalize.call(this.user.currentRoleResolved.slice('official'.length))
-	)
+	var statusMap     = ensureObject(exports._statusMap())
+	  , columns       = ensureArray(exports._columns())
+	  , shortRoleName = uncapitalize.call(this.user.currentRoleResolved.slice('official'.length))
 	  , getOrderIndex = ensureCallable(exports._getOrderIndex())
 	  , container, superIsExernalQuery;
 
 	var listManager = new Manager({
 		user: this.user,
-		roleName: roleName,
+		roleName: shortRoleName,
 		statusMap: statusMap,
 		getOrderIndex: getOrderIndex,
 		itemsPerPage: env.objectsListItemsPerPage
