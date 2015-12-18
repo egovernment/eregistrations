@@ -17,7 +17,7 @@ module.exports = function (dbName, keyPath/*, options*/) {
 			if (data.value && (data.value !== '0')) map.set(data.value, id.split('/', 1)[0]);
 		} else {
 			ownerId = id.split('/', 1)[0];
-			if (data.value === '11') map.set(id.slice(ownerId + keyPath.length + 2), ownerId);
+			if (data.value === '11') map.set(id.slice(ownerId.length + keyPath.length + 2), ownerId);
 		}
 	});
 	dbDriver.on('direct:' + keyPath, function (event) {
