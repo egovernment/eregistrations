@@ -4,4 +4,4 @@
 
 var assign = require('es5-ext/object/assign');
 
-assign(exports, require('eregistrations/controller/official-revision'));
+assign(exports, require('eregistrations/controller/official-revision')());
