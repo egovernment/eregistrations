@@ -57,6 +57,9 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push("Ensure that the " +
 				"underlying businessProcess model is required in server/model.js");
 			msgItems.push(otherClientsModelReminder);
+			msgItems.push("After model for new BusinessProcess is complete," +
+				" make sure to provide necessary DOM bindings (for sections and properties (e.g. enum)) " +
+				"in client/dbjs-dom.js for user and official applications.");
 		}
 
 		if (startsWith.call(appName, 'official-')) {
