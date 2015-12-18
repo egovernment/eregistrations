@@ -43,7 +43,7 @@ button[type='submit'].button-main-success {
 input[type='submit'].button-main-success:hover,
 button[type='submit'].button-main-success:hover,
 .button-main-success:focus,
-input[type='submit'].button-main-success:focus
+input[type='submit'].button-main-success:focus,
 button[type='submit'].button-main-success:focus,
 .button-main-success:active,
 input[type='submit'].button-main-success:active,
