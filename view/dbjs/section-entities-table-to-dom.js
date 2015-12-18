@@ -44,8 +44,10 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 									resolvePropertyPath(entityObject, self.entityTitleProperty).observable
 								), ns.list(sectionsContainer,
 									function (section) {
-										return section.toDOM(document, { headerRank: headerRank + 1,
-											viewContext: options.viewContext });
+										return _if(section._status, section.toDOM(document, {
+											headerRank: headerRank + 1,
+											viewContext: options.viewContext
+										}));
 									}));
 							}),
 						ns.p({ class: 'entity-data-section-empty' }, self.onEmptyMessage));
