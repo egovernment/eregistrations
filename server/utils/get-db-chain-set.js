@@ -11,7 +11,7 @@ var observe = function (set, dbName, ownerId, keyPath) {
 	var id = ownerId + '/' + keyPath, listener, child, promise;
 	var handler = function (data) {
 		var value = data && data.value
-		  , nu = (value[0] === '7') ? value.slice(1) : null
+		  , nu = (value && (value[0] === '7')) ? value.slice(1) : null
 		  , old = child ? child.id : null;
 		if (nu === old) return;
 		if (old) {
