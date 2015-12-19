@@ -1,7 +1,7 @@
 .file-thumb {
 	display: flex;
 	flex-direction: column;
-	width: 110px;
+	width: 115px;
 }
 
 .file-thumb-actions {
