@@ -45,5 +45,6 @@ module.exports = function (collection/*, getFragment*/) {
 			current.add(id);
 		});
 	});
+	if (!fragment.promise || fragment.promise.resolved) fragment.flush();
 	return fragment;
 };
