@@ -19,4 +19,11 @@ module.exports = function (t, a) {
 	businessProcess.processingSteps.map.test2.isApplicable = true;
 	a.deep(aFrom(businessProcess.processingSteps.applicable),
 		[businessProcess.processingSteps.map.test, businessProcess.processingSteps.map.test2]);
+
+	a.deep(aFrom(businessProcess.processingSteps.revisions), []);
+	BusinessProcess.prototype.processingSteps.map.define('revision', { nested: true });
+	a.deep(aFrom(businessProcess.processingSteps.revisions), [
+		businessProcess.processingSteps.map.revision]);
+	BusinessProcess.prototype.processingSteps.map.revision.define('isApplicable', { value: false });
+	a.deep(aFrom(businessProcess.processingSteps.revisions), []);
 };
