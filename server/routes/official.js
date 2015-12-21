@@ -75,6 +75,7 @@ var getFilteredSet = memoize(function (baseSet, filterString) {
 	var findAndFilter = function (ownerId) {
 		return mano.dbDriver.getComputed(ownerId + '/searchString').aside(function (data) {
 			if (!baseSet.has(ownerId)) return;
+			if (!data) return false;
 			filter(ownerId, data);
 		});
 	};
