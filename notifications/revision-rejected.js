@@ -2,30 +2,38 @@
 
 var _ = require('mano').i18n.bind('Official: Revision: Notifications');
 
-var businessProcessInstances = require('mano').db.BusinessProcess.instances
-	.filterByKey('isFromEregistrations', true);
+module.exports = function (stepName) {
+	var businessProcessInstances = require('mano').db.BusinessProcess.instances
+		.filterByKey('isFromEregistrations', true)
+	  , notification = {};
 
-exports.trigger = businessProcessInstances
-	.filterByKeyPath('processingSteps/map/revision/isRejected', true);
-exports.preTrigger = businessProcessInstances
-	.filterByKeyPath('processingSteps/map/revision/isReady', true);
+	stepName = stepName || 'revision';
 
-exports.resolveGetters = true;
+	notification.trigger = businessProcessInstances
+		.filterByKeyPath('processingSteps/map/' + stepName + '/isRejected', true);
+	notification.preTrigger = businessProcessInstances
+		.filterByKeyPath('processingSteps/map/' + stepName + '/isReady', true);
 
-exports.variables = {
-	fullName: function () {
-		return this.businessProcess.user.fullName;
-	},
-	businessName: function () {
-		return this.businessProcess.businessName;
-	},
-	rejectionReason: function () {
-		return this.businessProcess.processingSteps.map.revision.rejectionReason;
-	}
+	notification.resolveGetters = true;
+
+	notification.variables = {
+		fullName: function () {
+			return this.businessProcess.user.fullName;
+		},
+		businessName: function () {
+			return this.businessProcess.businessName;
+		},
+		rejectionReason: function () {
+			return this.businessProcess.processingSteps.map[stepName].rejectionReason;
+		}
+	};
+
+	notification.subject = _("M19 Your request has been rejected");
+	notification.text = _("Email message greeting ${ fullName }\n\n")
+		+ _("M19 Revision rejected\n\n"
+			+ "Name of company: ${ businessName }\n\n"
+			+ "${ rejectionReason }") + "\n\n"
+		+ _("Email message signature") + "\n";
+
+	return notification;
 };
-
-exports.subject = _("M19 Your request has been rejected");
-exports.text = _("Email message greeting ${ fullName }") + "\n\n"
-	+ _("M19 Revision rejected\n\n" + "Name of company: ${ businessName }\n\n${ rejectionReason }")
-	+ "\n\n" +
-	_("Email message signature") + "\n";
