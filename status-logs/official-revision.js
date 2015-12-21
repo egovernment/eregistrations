@@ -24,7 +24,7 @@ module.exports = function (stepName) {
 	var rejectedBusinessProcesses = businessProcessInstances
 		.filterByKeyPath('processingSteps/map/' + stepName + '/isRejected', true);
 
-	module.exports = [{
+	return [{
 		BusinessProcessType: BusinessProcess,
 		trigger: approvedBusinessProcesses,
 		preTrigger: readyBusinessProcesses,
