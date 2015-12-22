@@ -12,7 +12,7 @@ var Map                     = require('es6-map')
 
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(db)
-	  , RequirementUpload = defineRequirementUpload(db)
+	  , RequirementUpload = db.RequirementUpload || defineRequirementUpload(db)
 	  , Cost = defineCost(db);
 
 	defineCreateEnum(db);

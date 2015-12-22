@@ -12,6 +12,7 @@ var Map                      = require('es6-map')
   , defineUser               = require('./user/base')
   , defineFormSectionBase    = require('./form-section-base')
   , defineProcessingStepBase = require('./processing-step-base')
+  , definePaymentReceiptUpload = require('./payment-receipt-upload')
   , defineRequirementUpload;
 
 module.exports = memoize(function (db) {
@@ -22,7 +23,8 @@ module.exports = memoize(function (db) {
 	  , ProcessingStepBase = defineProcessingStepBase(db)
 
 	  , ProcessingStep     = ProcessingStepBase.extend('ProcessingStep')
-	  , RequirementUpload  = db.RequirementUpload || defineRequirementUpload(db);
+	  , PaymentReceiptUpload = db.PaymentReceiptUpload || definePaymentReceiptUpload(db)
+	  , RequirementUpload  = db.RequirementUpload || defineRequirementUpload(db)
 
 	defineCreateEnum(db);
 
@@ -183,12 +185,19 @@ module.exports = memoize(function (db) {
 			if (this.isPaused) return 'paused';
 		} },
 
-		requirementUploads: { type: db.Object, nested: true }
+		requirementUploads: { type: db.Object, nested: true },
+		payementReceiptUploads: { type: db.Object, nested: true }
 	});
 
 	ProcessingStep.prototype.requirementUploads.defineProperties({
 		applicable: { type: RequirementUpload, multiple: true, value: function (_observe) {
 			return _observe(this.master.requirementUploads._applicable);
+		} }
+	});
+
+	ProcessingStep.prototype.payementReceiptUploads.defineProperties({
+		applicable: { type: PaymentReceiptUpload, multiple: true, value: function (_observe) {
+			return _observe(this.master.payementReceiptUploads._applicable);
 		} }
 	});
 
