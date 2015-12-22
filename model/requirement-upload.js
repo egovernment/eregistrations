@@ -7,13 +7,15 @@ var Map              = require('es6-map')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineCreateEnum = require('dbjs-ext/create-enum')
   , _                = require('mano').i18n.bind('Model')
-  , defineDocument   = require('./document')
-  , definePercentage = require('dbjs-ext/number/percentage');
+  , definePercentage = require('dbjs-ext/number/percentage')
+  , defineDocument;
 
 module.exports = memoize(function (db) {
-	var StringLine = defineStringLine(db)
-	  , Document   = defineDocument(db)
-	  , Percentage = definePercentage(db);
+	var StringLine        = defineStringLine(db)
+	  , Percentage        = definePercentage(db)
+
+	  , RequirementUpload = db.Object.extend('RequirementUpload')
+	  , Document          = db.Document || defineDocument(db);
 
 	defineCreateEnum(db);
 
@@ -31,7 +33,7 @@ module.exports = memoize(function (db) {
 			['other', { label: _("Other...") }]
 		]));
 
-	return db.Object.extend('RequirementUpload', {
+	RequirementUpload.prototype.defineProperties({
 		toString: { value: function (options) {
 			return this.document.label;
 		} },
@@ -101,4 +103,8 @@ module.exports = memoize(function (db) {
 		// Whether uploaded files matches original document (decided at last front-desk processing step)
 		matchesOriginal: { type: db.Boolean, required: true }
 	});
+
+	return RequirementUpload;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
+
+defineDocument = require('./document');

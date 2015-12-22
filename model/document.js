@@ -11,18 +11,18 @@ var memoize               = require('memoizee/plain')
   , defineStatusLog       = require('./lib/status-log')
   , defineFormSectionBase = require('./form-section-base')
   , defineNestedMap       = require('./lib/nested-map')
-  , defineProcessingStep  = require('./processing-step');
+  , defineProcessingStep;
 
 module.exports = memoize(function (db) {
-	var StringLine = defineStringLine(db)
-	  , File       = defineFile(db)
-	  , DateType   = defineDate(db)
-	  , StatusLog  = defineStatusLog(db)
+	var StringLine      = defineStringLine(db)
+	  , File            = defineFile(db)
+	  , DateType        = defineDate(db)
+	  , StatusLog       = defineStatusLog(db)
 	  , FormSectionBase = defineFormSectionBase(db)
-	  , ProcessingStep  = defineProcessingStep(db)
-	  , Document;
+	  , Document        = db.Object.extend('Document')
+	  , ProcessingStep  = db.ProcessingStep || defineProcessingStep(db);
 
-	Document = db.Object.extend('Document', {
+	Document.prototype.defineProperties({
 		// Document label, fallbacks to label as decided on constructor
 		label: { type: StringLine, value: function () { return this.constructor.label; } },
 		// Document legend, fallbacks to legend as decided on constructor
@@ -79,3 +79,5 @@ module.exports = memoize(function (db) {
 
 	return Document;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
+
+defineProcessingStep = require('./processing-step');

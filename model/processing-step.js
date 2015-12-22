@@ -12,7 +12,7 @@ var Map                      = require('es6-map')
   , defineUser               = require('./user/base')
   , defineFormSectionBase    = require('./form-section-base')
   , defineProcessingStepBase = require('./processing-step-base')
-  , defineRequirementUpload  = require('./requirement-upload');
+  , defineRequirementUpload;
 
 module.exports = memoize(function (db) {
 	var Percentage         = definePercentage(db)
@@ -20,8 +20,9 @@ module.exports = memoize(function (db) {
 	  , User               = defineUser(db)
 	  , FormSectionBase    = defineFormSectionBase(db)
 	  , ProcessingStepBase = defineProcessingStepBase(db)
-	  , RequirementUpload  = defineRequirementUpload(db)
-	  , ProcessingStep;
+
+	  , ProcessingStep     = ProcessingStepBase.extend('ProcessingStep')
+	  , RequirementUpload  = db.RequirementUpload || defineRequirementUpload(db);
 
 	defineCreateEnum(db);
 
@@ -35,7 +36,7 @@ module.exports = memoize(function (db) {
 		['redelegated', { label: _("Redelegated") }]
 	]));
 
-	ProcessingStep = ProcessingStepBase.extend('ProcessingStep', {
+	ProcessingStep.prototype.defineProperties({
 		// Official that processed request at given processing step
 		processor: { type: User },
 
@@ -198,3 +199,5 @@ module.exports = memoize(function (db) {
 
 	return ProcessingStep;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
+
+defineRequirementUpload = require('./requirement-upload');
