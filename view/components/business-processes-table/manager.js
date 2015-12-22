@@ -41,7 +41,7 @@ var BusinessProcessesManager = module.exports = function (conf) {
 
 	if (itemsPerPage) this.itemsPerPage = itemsPerPage;
 	defineProperties(this, {
-		_fullItems: d(user.visitedBusinessProcesses[roleName]),
+		_fullItems: d(user.recentlyVisited.businessProcesses[roleName]),
 		_statusViews: d(db.views.pendingBusinessProcesses[roleName]),
 		_statusMap: d(statusMap),
 		_getItemOrderIndex: d(getOrderIndex),
