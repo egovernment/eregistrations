@@ -13,8 +13,8 @@ module.exports = function (db/* options */) {
 	require('./demo')(db);
 	require('./documents')(User, options);
 	require('./institution')(User, options);
-	require('./visited-business-processes')(db);
-	require('./visited-users')(db);
+	require('./least-recently-visited/business-processes')(db);
+	require('./least-recently-visited/users')(db);
 
 	return User;
 };

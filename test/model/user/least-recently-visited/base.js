@@ -7,5 +7,5 @@ module.exports = function (t, a) {
 	  , obj;
 	t(db);
 	obj = db.User.prototype;
-	a(obj.getDescriptor('visitedUsers').type, db.User);
+	a(obj.leastRecentlyVisited.constructor, db.Object);
 };
