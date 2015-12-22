@@ -4,14 +4,14 @@
 
 'use strict';
 
-var memoize                    = require('memoizee/plain')
-  , ensureDatabase             = require('dbjs/valid-dbjs')
-  , defineLeastRecentlyVisited = require('./base')
-  , defineBusinessProcess      = require('../../lib/business-process-base');
+var memoize               = require('memoizee/plain')
+  , ensureDatabase        = require('dbjs/valid-dbjs')
+  , defineRecentlyVisited = require('./base')
+  , defineBusinessProcess = require('../../lib/business-process-base');
 
 module.exports = memoize(function (db/* options */) {
 	var options = arguments[1]
-	  , User = defineLeastRecentlyVisited(ensureDatabase(db), options)
+	  , User = defineRecentlyVisited(ensureDatabase(db), options)
 	  , BusinessProcess = defineBusinessProcess(db);
 
 	User.prototype.recentlyVisited.define('businessProcesses', {

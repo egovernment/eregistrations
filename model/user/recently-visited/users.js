@@ -4,13 +4,13 @@
 
 'use strict';
 
-var memoize                    = require('memoizee/plain')
-  , ensureDatabase             = require('dbjs/valid-dbjs')
-  , defineLeastRecentlyVisited = require('./base');
+var memoize               = require('memoizee/plain')
+  , ensureDatabase        = require('dbjs/valid-dbjs')
+  , defineRecentlyVisited = require('./base');
 
 module.exports = memoize(function (db/* options */) {
 	var options = arguments[1]
-	  , User = defineLeastRecentlyVisited(ensureDatabase(db), options);
+	  , User = defineRecentlyVisited(ensureDatabase(db), options);
 
 	User.prototype.recentlyVisited.define('users', {
 		type: db.User,
