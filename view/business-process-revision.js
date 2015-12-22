@@ -58,7 +58,7 @@ exports['sub-main'] = {
 
 		renderDocumentsAndData(this.businessProcess, {
 			urlPrefix: '/' + this.businessProcess.__id__ + '/',
-			uploadsOwner: revisionStep
+			uploadsResolver: revisionStep
 		});
 	}
 };

@@ -10,6 +10,6 @@ exports['business-process-official-details'] = { class: { active: true } };
 exports['business-process-official-content'] = function () {
 	businessProcessData(this.businessProcess, {
 		urlPrefix: '/' + this.businessProcess.__id__ + '/',
-		uploadsOwner: this.processingStep
+		uploadsResolver: this.processingStep
 	});
 };

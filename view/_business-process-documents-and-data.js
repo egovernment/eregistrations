@@ -116,18 +116,18 @@ var drawCertificatesPart = function (target, urlPrefix) {
 };
 
 module.exports = function (businessProcess/*, options*/) {
-	var options      = Object(arguments[1])
-	  , urlPrefix    = options.urlPrefix || '/'
-	  , uploadsOwner = options.uploadsOwner || businessProcess;
+	var options         = Object(arguments[1])
+	  , urlPrefix       = options.urlPrefix || '/'
+	  , uploadsResolver = options.uploadsResolver || businessProcess;
 
 	return [
 		section(
 			{ class: 'section-primary' },
 			h2(_("Documents")),
 			hr(),
-			drawDocumentsPart(uploadsOwner, urlPrefix),
-			drawPaymentReceiptsPart(uploadsOwner, urlPrefix),
-			drawCertificatesPart(uploadsOwner, urlPrefix)
+			drawDocumentsPart(uploadsResolver, urlPrefix),
+			drawPaymentReceiptsPart(uploadsResolver, urlPrefix),
+			drawCertificatesPart(uploadsResolver, urlPrefix)
 		),
 		section(
 			{ class: 'section-primary entity-data-section-side' },
