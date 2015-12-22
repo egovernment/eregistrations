@@ -10,6 +10,6 @@ var db       = require('../../../db')
 
 user.$password.type = Password;
 require('../../../model/views');
-require('../../../model/user/visited-business-processes');
+require('../../../model/user/least-recently-visited/business-processes');
 
 module.exports = db;
