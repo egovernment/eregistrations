@@ -21,8 +21,8 @@ module.exports = function (/*options*/) {
 	// Approve revision.
 	controller['revision/[0-9][a-z0-9]+/approve'] = {
 		match: function (businessProcessId) {
-			matcher.call(this, businessProcessId, stepName);
-			if (!this.businessProcess) return false;
+			if (!matcher.call(this, businessProcessId, stepName)) return false;
+
 			return this.processingStep.approvalProgress === 1;
 		},
 		validate: Function.prototype,
@@ -36,8 +36,8 @@ module.exports = function (/*options*/) {
 	// Send for corrections
 	controller['revision/[0-9][a-z0-9]+/return'] = {
 		match: function (businessProcessId) {
-			matcher.call(this, businessProcessId, stepName);
-			if (!this.businessProcess) return false;
+			if (!matcher.call(this, businessProcessId, stepName)) return false;
+
 			return this.processingStep.sendBackStatusesProgress === 1 &&
 				this.processingStep.revisionProgress === 1;
 		},
@@ -52,8 +52,7 @@ module.exports = function (/*options*/) {
 	// Reject revision.
 	controller['revision/[0-9][a-z0-9]+/reject'] = {
 		match: function (businessProcessId) {
-			matcher.call(this, businessProcessId, stepName);
-			return this.businessProcess ? true : false;
+			return matcher.call(this, businessProcessId, stepName);
 		},
 		submit: function () {
 			this.processingStep.processor = this.user;
@@ -66,8 +65,7 @@ module.exports = function (/*options*/) {
 	// Requirement upload revision.
 	controller['revision-requirement-upload/[0-9][a-z0-9]+/[0-9a-z-]+'] = {
 		match: function (businessProcessId, documentUniqueKey) {
-			matcher.call(this, businessProcessId, stepName);
-			if (!this.businessProcess) return false;
+			if (!matcher.call(this, businessProcessId, stepName)) return false;
 
 			documentUniqueKey = hyphenToCamel.call(documentUniqueKey);
 			return this.businessProcess.requirementUploads.applicable.some(function (requirementUpload) {
@@ -85,8 +83,7 @@ module.exports = function (/*options*/) {
 	// Payment receipt revision.
 	controller['form-revision-payment-receipt-upload/[0-9][a-z0-9]+/[0-9a-z-]+'] = {
 		match: function (businessProcessId, receiptKey) {
-			matcher.call(this, businessProcessId, stepName);
-			if (!this.businessProcess) return false;
+			if (!matcher.call(this, businessProcessId, stepName)) return false;
 
 			var paymentReceiptUpload =
 				this.businessProcess.paymentReceiptUploads.map.get(hyphenToCamel.call(receiptKey));
