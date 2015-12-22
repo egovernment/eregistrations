@@ -59,11 +59,13 @@ router = new SiteTreeRouter(require('../routes'), siteTree, {
 		processingStep: db.firstBusinessProcess.processingSteps.map.revision  }
 });
 appLocation.on('change', function () {
+	var result;
 	if (last.call(appLocation.pathname) !== '/') {
 		appLocation.goto(appLocation.pathname + '/' + appLocation.search + appLocation.hash);
 		return;
 	}
-	router.route(appLocation.pathname);
+	result = router.route(appLocation.pathname);
+	if (result && (typeof result.done === 'function')) result.done();
 });
 appLocation.onchange();
 
