@@ -11,14 +11,16 @@ var Map                      = require('es6-map')
   , _                        = require('mano').i18n.bind('Model')
   , defineUser               = require('./user/base')
   , defineFormSectionBase    = require('./form-section-base')
-  , defineProcessingStepBase = require('./processing-step-base');
+  , defineProcessingStepBase = require('./processing-step-base')
+  , defineRequirementUpload  = require('./requirement-upload');
 
 module.exports = memoize(function (db) {
-	var Percentage = definePercentage(db)
-	  , StringLine = defineStringLine(db)
-	  , User = defineUser(db)
-	  , FormSectionBase = defineFormSectionBase(db)
+	var Percentage         = definePercentage(db)
+	  , StringLine         = defineStringLine(db)
+	  , User               = defineUser(db)
+	  , FormSectionBase    = defineFormSectionBase(db)
 	  , ProcessingStepBase = defineProcessingStepBase(db)
+	  , RequirementUpload  = defineRequirementUpload(db)
 	  , ProcessingStep;
 
 	defineCreateEnum(db);
@@ -178,6 +180,14 @@ module.exports = memoize(function (db) {
 			if (this.isSentBack) return 'sentBack';
 			if (this.isRedelegated) return 'redelegated';
 			if (this.isPaused) return 'paused';
+		} },
+
+		requirementUploads: { type: db.Object, nested: true }
+	});
+
+	ProcessingStep.prototype.requirementUploads.defineProperties({
+		applicable: { type: RequirementUpload, multiple: true, value: function (_observe) {
+			return _observe(this.master.requirementUploads._applicable);
 		} }
 	});
 
