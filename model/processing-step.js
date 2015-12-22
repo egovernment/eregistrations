@@ -12,19 +12,19 @@ var Map                      = require('es6-map')
   , defineUser               = require('./user/base')
   , defineFormSectionBase    = require('./form-section-base')
   , defineProcessingStepBase = require('./processing-step-base')
-  , definePaymentReceiptUpload = require('./payment-receipt-upload')
-  , defineRequirementUpload;
+  , definePaymentReceiptUpload, defineRequirementUpload, defineDocument;
 
 module.exports = memoize(function (db) {
-	var Percentage         = definePercentage(db)
-	  , StringLine         = defineStringLine(db)
-	  , User               = defineUser(db)
-	  , FormSectionBase    = defineFormSectionBase(db)
-	  , ProcessingStepBase = defineProcessingStepBase(db)
+	var Percentage           = definePercentage(db)
+	  , StringLine           = defineStringLine(db)
+	  , User                 = defineUser(db)
+	  , FormSectionBase      = defineFormSectionBase(db)
+	  , ProcessingStepBase   = defineProcessingStepBase(db)
 
-	  , ProcessingStep     = ProcessingStepBase.extend('ProcessingStep')
+	  , ProcessingStep       = ProcessingStepBase.extend('ProcessingStep')
 	  , PaymentReceiptUpload = db.PaymentReceiptUpload || definePaymentReceiptUpload(db)
-	  , RequirementUpload  = db.RequirementUpload || defineRequirementUpload(db)
+	  , RequirementUpload    = db.RequirementUpload || defineRequirementUpload(db)
+	  , Document             = db.Document || defineDocument(db);
 
 	defineCreateEnum(db);
 
@@ -186,7 +186,8 @@ module.exports = memoize(function (db) {
 		} },
 
 		requirementUploads: { type: db.Object, nested: true },
-		payementReceiptUploads: { type: db.Object, nested: true }
+		payementReceiptUploads: { type: db.Object, nested: true },
+		certificates: { type: db.Object, nested: true }
 	});
 
 	ProcessingStep.prototype.requirementUploads.defineProperties({
@@ -201,6 +202,12 @@ module.exports = memoize(function (db) {
 		} }
 	});
 
+	ProcessingStep.prototype.certificates.defineProperties({
+		uploaded: { type: Document, multiple: true, value: function (_observe) {
+			return _observe(this.master.certificates._uploaded);
+		} }
+	});
+
 	// Step which redelegated to this step
 	ProcessingStep.prototype.define('delegatedFrom', {
 		type: ProcessingStep
@@ -209,4 +216,6 @@ module.exports = memoize(function (db) {
 	return ProcessingStep;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
 
+definePaymentReceiptUpload = require('./payment-receipt-upload');
 defineRequirementUpload = require('./requirement-upload');
+defineDocument = require('./document');
