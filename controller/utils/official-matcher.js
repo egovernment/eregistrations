@@ -3,13 +3,17 @@
 var db = require('mano').db;
 
 module.exports = function (businessProcessId, stepName) {
-	var businessProcess = db.BusinessProcess.getById(businessProcessId);
+	this.businessProcess = db.BusinessProcess.getById(businessProcessId);
 
-	if (!businessProcess) return;
-	if (!businessProcess.processingSteps.map[stepName].isPending) return;
+	if (!this.businessProcess) return false;
 
-	this.businessProcess = businessProcess;
-	if (this.businessProcess) {
+	if (typeof stepName === 'function') {
+		this.processingStep = stepName.call(this, this.businessProcess);
+	} else {
 		this.processingStep = this.businessProcess.processingSteps.map[stepName];
 	}
+
+	if (this.processingStep && this.processingStep.isPending) return true;
+
+	return false;
 };
