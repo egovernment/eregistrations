@@ -291,7 +291,7 @@ module.exports = exports = function (mainConf) {
 				return handler.businessProcessQueryHandler.resolve(query)(function (query) {
 					var recordId;
 					if (!query.id) return { passed: false };
-					recordId = this.req.$user + '/leastRecentlyVisited/businessProcesses/' +
+					recordId = this.req.$user + '/recentlyVisited/businessProcesses/' +
 						handler.roleName + '*7' + query.id;
 					return mano.dbDriver.storeDirect(recordId, '11')({ passed: true });
 				}.bind(this));

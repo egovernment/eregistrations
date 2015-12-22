@@ -45,12 +45,12 @@ module.exports = function (step) {
 		}
 		if (db.ProcessingStepGroup && this.processingStep.parentGroup) {
 			visitedBusinessProcesses =
-				this.user.leastRecentlyVisited.businessProcesses[this.processingStep.parentGroup.key][
+				this.user.recentlyVisited.businessProcesses[this.processingStep.parentGroup.key][
 					this.processingStep.key
 				];
 		} else {
 			visitedBusinessProcesses =
-				this.user.leastRecentlyVisited.businessProcesses[this.processingStep.key];
+				this.user.recentlyVisited.businessProcesses[this.processingStep.key];
 		}
 
 		if (visitedBusinessProcesses.last !== this.businessProcess) {

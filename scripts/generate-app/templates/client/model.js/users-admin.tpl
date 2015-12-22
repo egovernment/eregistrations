@@ -11,6 +11,6 @@ var db       = require('../../../db')
 user.$password.type = Password;
 
 require('../../../model/institutions');
-require('eregistrations/model/user/least-recently-visited/users')(db);
+require('eregistrations/model/user/recently-visited/users')(db);
 
 module.exports = db;

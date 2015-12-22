@@ -15,8 +15,8 @@ module.exports = {
 			this.editedUser = db.User.getById(userId);
 			if (this.editedUser === this.user) return false;
 			if (this.editedUser && this.editedUser.email) {
-				if (this.user.leastRecentlyVisited.users.last !== this.editedUser) {
-					this.user.leastRecentlyVisited.users.add(this.editedUser);
+				if (this.user.recentlyVisited.users.last !== this.editedUser) {
+					this.user.recentlyVisited.users.add(this.editedUser);
 				}
 				return true;
 			}

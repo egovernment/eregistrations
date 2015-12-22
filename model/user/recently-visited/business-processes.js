@@ -6,15 +6,18 @@
 
 var memoize                    = require('memoizee/plain')
   , ensureDatabase             = require('dbjs/valid-dbjs')
-  , defineLeastRecentlyVisited = require('./base');
+  , defineLeastRecentlyVisited = require('./base')
+  , defineBusinessProcess      = require('../../lib/business-process-base');
 
 module.exports = memoize(function (db/* options */) {
 	var options = arguments[1]
-	  , User = defineLeastRecentlyVisited(ensureDatabase(db), options);
+	  , User = defineLeastRecentlyVisited(ensureDatabase(db), options)
+	  , BusinessProcess = defineBusinessProcess(db);
 
-	User.prototype.leastRecentlyVisited.define('users', {
-		type: db.User,
-		multiple: true
+	User.prototype.recentlyVisited.define('businessProcesses', {
+		type: db.Object,
+		nested: true
 	});
+	User.prototype.recentlyVisited.businessProcesses._descriptorPrototype_.type = BusinessProcess;
 	return User;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

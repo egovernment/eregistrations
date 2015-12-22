@@ -11,7 +11,7 @@ module.exports = memoize(function (db/* options */) {
 	  , User = ensureDatabase(db).User || defineUser(db, options);
 
 	User.prototype.defineProperties({
-		leastRecentlyVisited: {
+		recentlyVisited: {
 			type: db.Object,
 			nested: true
 		}
