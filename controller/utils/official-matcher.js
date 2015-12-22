@@ -8,10 +8,10 @@ module.exports = function (businessProcessId, stepName) {
 	if (!this.businessProcess) return false;
 
 	if (typeof stepName === 'function') {
-		stepName = stepName.call(this, this.businessProcess);
+		this.processingStep = stepName.call(this, this.businessProcess);
+	} else {
+		this.processingStep = this.businessProcess.processingSteps.map[stepName];
 	}
-
-	this.processingStep = this.businessProcess.processingSteps.map[stepName];
 
 	if (this.processingStep && this.processingStep.isPending) return true;
 
