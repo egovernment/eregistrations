@@ -57,7 +57,6 @@ module.exports = memoize(function (db) {
 			// Type of this property is fixed in ProcessingStep definition
 			// This hack will be removed after we introduce Certificate type (which will work analogously
 			// as RequirementUpload) as then this property will land on Certificate and not Document
-			// and it would be possible to safely require ProcessingStep
 			type: db.Object,
 			value: function () {
 				if (!this.isCertificate) return;
