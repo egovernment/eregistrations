@@ -33,7 +33,8 @@ exports['init-demo'] = {
 						{ id: userId + '/isDemo', data: { value: '11' } },
 						{ id: userId + '/roles*user', data: { value: '11' } }
 					];
-					promise = dbDriver.storeDirectMany(records);
+					dbDriver.storeDirectMany(records).done();
+					promise = mano.registerUserAccess(userId);
 				} else {
 					promise = emptyPromise;
 				}
