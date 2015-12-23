@@ -11,13 +11,15 @@ var Map                      = require('es6-map')
   , _                        = require('mano').i18n.bind('Model')
   , defineUser               = require('./user/base')
   , defineFormSectionBase    = require('./form-section-base')
-  , defineProcessingStepBase = require('./processing-step-base');
+  , defineProcessingStepBase = require('./processing-step-base')
+  , defineUploadsProcess     = require('./lib/uploads-process');
 
 module.exports = memoize(function (db) {
 	var Percentage = definePercentage(db)
 	  , StringLine = defineStringLine(db)
 	  , User = defineUser(db)
 	  , FormSectionBase = defineFormSectionBase(db)
+	  , UploadsProcess  = defineUploadsProcess(db)
 	  , ProcessingStepBase = defineProcessingStepBase(db)
 	  , ProcessingStep;
 
@@ -178,13 +180,19 @@ module.exports = memoize(function (db) {
 			if (this.isSentBack) return 'sentBack';
 			if (this.isRedelegated) return 'redelegated';
 			if (this.isPaused) return 'paused';
-		} }
+		} },
+
+		requirementUploads: { type: UploadsProcess }
 	});
 
 	// Step which redelegated to this step
 	ProcessingStep.prototype.define('delegatedFrom', {
 		type: ProcessingStep
 	});
+
+	// Fix type of Document.prototype.processingStep
+	// See it's definition for explanation why it is done here
+	db.Document.prototype.getOwnDescriptor('processingStep').type = ProcessingStep;
 
 	return ProcessingStep;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
