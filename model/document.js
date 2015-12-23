@@ -53,7 +53,7 @@ module.exports = memoize(function (db) {
 			// Type should be ProcessingStep,
 			// Still ProcessingStep invokes circular resolution to Document by using UploadsProcess
 			// to avoid circluar requires hell (as Document is low-level type and it's required by
-			// many classes), we do not require here ProcessingStep, there for we can't set it as type.
+			// many classes), we do not require here ProcessingStep, therefore we can't set it as type.
 			// Type of this property is fixed in ProcessingStep definition
 			// This hack will be removed after we introduce Certificate type (which will work analogously
 			// as RequirementUpload) as then this property will land on Certificate and not Document
