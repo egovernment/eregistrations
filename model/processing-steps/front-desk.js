@@ -49,7 +49,7 @@ module.exports = memoize(function (db/*, options */) {
 		},
 		approvalProgress: {
 			value: function (_observe) {
-				var requirementUploads = this.master.requirementUploads;
+				var requirementUploads = this.requirementUploads;
 				return _observe(requirementUploads.frontDeskApplicable._size)
 					=== _observe(requirementUploads.frontDeskApproved._size) ? 1 : 0;
 			}

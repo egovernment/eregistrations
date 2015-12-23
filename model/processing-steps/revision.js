@@ -25,10 +25,10 @@ module.exports = memoize(function (db) {
 		approvalProgress: { value: function (_observe) {
 			var weight = 0, progress = 0, itemWeight;
 			if (_observe(this.master._isSubmittedLocked)) return 1;
-			weight += itemWeight = _observe(this.master.requirementUploads.applicable).size;
-			progress += _observe(this.master.requirementUploads._approvalProgress) * itemWeight;
-			weight += itemWeight = _observe(this.master.paymentReceiptUploads.applicable).size;
-			progress += _observe(this.master.paymentReceiptUploads._approvalProgress) * itemWeight;
+			weight += itemWeight = _observe(this.requirementUploads.applicable).size;
+			progress += _observe(this.requirementUploads._approvalProgress) * itemWeight;
+			weight += itemWeight = _observe(this.paymentReceiptUploads.applicable).size;
+			progress += _observe(this.paymentReceiptUploads._approvalProgress) * itemWeight;
 			return weight ? (progress / weight) : 1;
 		} },
 
@@ -36,10 +36,10 @@ module.exports = memoize(function (db) {
 		// All applicable requirement uploads must be revised
 		revisionProgress: { type: Percentage, value: function (_observe) {
 			var weight = 0, progress = 0, itemWeight;
-			weight += itemWeight = _observe(this.master.requirementUploads.applicable).size;
-			progress += _observe(this.master.requirementUploads._revisionProgress) * itemWeight;
-			weight += itemWeight = _observe(this.master.paymentReceiptUploads.applicable).size;
-			progress += _observe(this.master.paymentReceiptUploads._revisionProgress) * itemWeight;
+			weight += itemWeight = _observe(this.requirementUploads.applicable).size;
+			progress += _observe(this.requirementUploads._revisionProgress) * itemWeight;
+			weight += itemWeight = _observe(this.paymentReceiptUploads.applicable).size;
+			progress += _observe(this.paymentReceiptUploads._revisionProgress) * itemWeight;
 			return weight ? (progress / weight) : 1;
 		} },
 

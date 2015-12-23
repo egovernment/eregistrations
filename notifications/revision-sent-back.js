@@ -31,8 +31,8 @@ module.exports = function (stepName) {
 			return this.businessProcess.businessName;
 		},
 		rejectedUploads: function () {
-			var paymentReceiptUploads = this.businessProcess.paymentReceiptUploads
-			  , requirementUploads    = this.businessProcess.requirementUploads
+			var paymentReceiptUploads = this.paymentReceiptUploads
+			  , requirementUploads    = this.requirementUploads
 			  , result                = [];
 
 			if (requirementUploads.rejected.size) {

@@ -188,7 +188,7 @@ module.exports = memoize(function (db) {
 		} },
 
 		requirementUploads: { type: UploadsProcess, nested: true },
-		paymentReceiptUploads: { type: db.Object, nested: true },
+		paymentReceiptUploads: { type: UploadsProcess, nested: true },
 		certificates: { type: db.Object, nested: true }
 	});
 
@@ -201,7 +201,11 @@ module.exports = memoize(function (db) {
 	ProcessingStep.prototype.paymentReceiptUploads.defineProperties({
 		applicable: { type: PaymentReceiptUpload, multiple: true, value: function (_observe) {
 			return _observe(this.master.paymentReceiptUploads._applicable);
-		} }
+		} },
+		uploaded: { type: PaymentReceiptUpload },
+		approved: { type: PaymentReceiptUpload },
+		rejected: { type: PaymentReceiptUpload },
+		recentlyRejected: { type: PaymentReceiptUpload }
 	});
 
 	ProcessingStep.prototype.certificates.defineProperties({
