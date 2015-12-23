@@ -17,7 +17,6 @@ module.exports = memoize(function (db/*, opts */) {
 	require('./processing-steps')(db, opts);
 	require('./registrations')(db, opts);
 	require('./requirement-uploads')(db, opts);
-	require('./user-uploads')(db, opts);
 	require('./requirements')(db, opts);
 	require('./submission-forms')(db, opts);
 	require('./representative')(db, opts);
