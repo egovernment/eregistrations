@@ -40,8 +40,8 @@ exports['init-demo'] = {
 				return promise(function () {
 					this.res.cookies.set(cookieName, userId, { maxage: maxage });
 					login(userId, this.req, this.res);
-				});
-			});
+				}.bind(this));
+			}.bind(this));
 		}
 
 		// TODO: Legacy logic to be removed, when all systems stand on persistent driver
