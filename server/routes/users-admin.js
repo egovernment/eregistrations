@@ -77,7 +77,7 @@ module.exports = exports = function (data) {
 			return userQueryHandler.resolve(query)(function (query) {
 				var recordId;
 				if (!query.id || (this.req.$user === query.id)) return { passed: false };
-				recordId = this.req.$user + '/visitedUsers*7' + query.id;
+				recordId = this.req.$user + '/recentlyVisited/users*7' + query.id;
 				return mano.dbDriver.storeDirect(recordId, '11')({ passed: true });
 			}.bind(this));
 		}

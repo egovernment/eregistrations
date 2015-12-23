@@ -10,8 +10,7 @@ var memoize               = require('memoizee/plain')
   , defineFile            = require('./file')
   , defineStatusLog       = require('./lib/status-log')
   , defineFormSectionBase = require('./form-section-base')
-  , defineNestedMap       = require('./lib/nested-map')
-  , defineProcessingStep;
+  , defineNestedMap       = require('./lib/nested-map');
 
 module.exports = memoize(function (db) {
 	var StringLine      = defineStringLine(db)
@@ -19,10 +18,9 @@ module.exports = memoize(function (db) {
 	  , DateType        = defineDate(db)
 	  , StatusLog       = defineStatusLog(db)
 	  , FormSectionBase = defineFormSectionBase(db)
-	  , Document        = db.Object.extend('Document')
-	  , ProcessingStep  = db.ProcessingStep || defineProcessingStep(db);
+	  , Document;
 
-	Document.prototype.defineProperties({
+	Document = db.Object.extend('Document', {
 		// Document label, fallbacks to label as decided on constructor
 		label: { type: StringLine, value: function () { return this.constructor.label; } },
 		// Document legend, fallbacks to legend as decided on constructor
@@ -52,7 +50,14 @@ module.exports = memoize(function (db) {
 		} },
 		// Returns processing ProcessingStep if it exists on a certificate
 		processingStep: {
-			type: ProcessingStep,
+			// Type should be ProcessingStep,
+			// Still ProcessingStep invokes circular resolution to Document by using UploadsProcess
+			// to avoid circluar requires hell (as Document is low-level type and it's required by
+			// many classes), we do not require here ProcessingStep, therefore we can't set it as type.
+			// Type of this property is fixed in ProcessingStep definition
+			// This hack will be removed after we introduce Certificate type (which will work analogously
+			// as RequirementUpload) as then this property will land on Certificate and not Document
+			type: db.Object,
 			value: function () {
 				if (!this.isCertificate) return;
 				return this.master.processingSteps.map.processing;
@@ -79,5 +84,3 @@ module.exports = memoize(function (db) {
 
 	return Document;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
-
-defineProcessingStep = require('./processing-step');

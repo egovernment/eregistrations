@@ -12,6 +12,7 @@ var Map                      = require('es6-map')
   , defineUser               = require('./user/base')
   , defineFormSectionBase    = require('./form-section-base')
   , defineProcessingStepBase = require('./processing-step-base')
+  , defineUploadsProcess     = require('./lib/uploads-process')
   , definePaymentReceiptUpload, defineRequirementUpload, defineDocument;
 
 module.exports = memoize(function (db) {
@@ -20,6 +21,7 @@ module.exports = memoize(function (db) {
 	  , User                 = defineUser(db)
 	  , FormSectionBase      = defineFormSectionBase(db)
 	  , ProcessingStepBase   = defineProcessingStepBase(db)
+	  , UploadsProcess       = defineUploadsProcess(db)
 
 	  , ProcessingStep       = ProcessingStepBase.extend('ProcessingStep')
 	  , PaymentReceiptUpload = db.PaymentReceiptUpload || definePaymentReceiptUpload(db)
@@ -185,7 +187,7 @@ module.exports = memoize(function (db) {
 			if (this.isPaused) return 'paused';
 		} },
 
-		requirementUploads: { type: db.Object, nested: true },
+		requirementUploads: { type: UploadsProcess, nested: true },
 		paymentReceiptUploads: { type: db.Object, nested: true },
 		certificates: { type: db.Object, nested: true }
 	});
@@ -212,6 +214,10 @@ module.exports = memoize(function (db) {
 	ProcessingStep.prototype.define('delegatedFrom', {
 		type: ProcessingStep
 	});
+
+	// Fix type of Document.prototype.processingStep
+	// See it's definition for explanation why it is done here
+	db.Document.prototype.getOwnDescriptor('processingStep').type = ProcessingStep;
 
 	return ProcessingStep;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

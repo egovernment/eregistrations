@@ -33,15 +33,16 @@ exports['init-demo'] = {
 						{ id: userId + '/isDemo', data: { value: '11' } },
 						{ id: userId + '/roles*user', data: { value: '11' } }
 					];
-					promise = dbDriver.storeDirectMany(records);
+					dbDriver.storeDirectMany(records).done();
+					promise = mano.registerUserAccess(userId);
 				} else {
 					promise = emptyPromise;
 				}
 				return promise(function () {
 					this.res.cookies.set(cookieName, userId, { maxage: maxage });
 					login(userId, this.req, this.res);
-				});
-			});
+				}.bind(this));
+			}.bind(this));
 		}
 
 		// TODO: Legacy logic to be removed, when all systems stand on persistent driver

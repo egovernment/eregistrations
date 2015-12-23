@@ -79,11 +79,13 @@ viewTree = new SiteTree(document, require('../view/inserts'),
 router = new SiteTreeRouter(require('../routes'), viewTree,
 	{ notFound: require('../view').notFound });
 appLocation.on('change', refresh = function () {
+	var result;
 	if (last.call(appLocation.pathname) !== '/') {
 		appLocation.goto(appLocation.pathname + '/' + appLocation.search + appLocation.hash);
 		return;
 	}
-	router.route(appLocation.pathname);
+	result = router.route(appLocation.pathname);
+	if (result && (typeof result.done === 'function')) result.done();
 });
 if (appLocation.pathname) refresh();
 else appLocation.onchange();
