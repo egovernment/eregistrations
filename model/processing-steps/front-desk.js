@@ -2,27 +2,30 @@
 
 'use strict';
 
-var memoize               = require('memoizee/plain')
-  , _                     = require('mano').i18n.bind('Model')
-  , defineProcessingStep  = require('../processing-step')
-  , defineProcessingSteps = require('../business-process-new/processing-steps')
-  , defineInstitution     = require('../institution')
-  , ensureDb              = require('dbjs/valid-dbjs')
-  , ensureType            = require('dbjs/valid-dbjs-type');
+var memoize                 = require('memoizee/plain')
+  , _                       = require('mano').i18n.bind('Model')
+  , defineProcessingStep    = require('../processing-step')
+  , defineRequirementUpload = require('../requirement-upload')
+  , defineInstitution       = require('../institution')
+  , ensureDb                = require('dbjs/valid-dbjs')
+  , ensureType              = require('dbjs/valid-dbjs-type');
 
 module.exports = memoize(function (db/*, options */) {
-	var Institution, Parent, options;
-	ensureDb(db);
-	options = Object(arguments[1]);
+	var Institution, Parent, options, FrontDeskProcessingStep, RequirementUpload;
 
+	ensureDb(db);
+
+	options = Object(arguments[1]);
 	Institution = defineInstitution(db);
-	defineProcessingSteps(db);
+	RequirementUpload = defineRequirementUpload(db);
+
 	if (options.parent) {
 		Parent = ensureType(options.parent);
 	} else {
 		Parent = defineProcessingStep(db);
 	}
-	return Parent.extend('FrontDeskProcessingStep', {
+
+	FrontDeskProcessingStep = Parent.extend('FrontDeskProcessingStep', {
 		label: { value: _("Front Desk") },
 		isApplicable: {
 			value: function (_observe) {
@@ -55,4 +58,25 @@ module.exports = memoize(function (db/*, options */) {
 			}
 		}
 	});
+
+	FrontDeskProcessingStep.prototype.requirementUploads.defineProperties({
+		// Requirement uploads applicable for front desk verification
+		frontDeskApplicable: { type: RequirementUpload, multiple: true, value: function (_observe) {
+			var result = [];
+			this.applicable.forEach(function (requirementUpload) {
+				if (requirementUpload.validateWithOriginal) result.push(requirementUpload);
+			});
+			return result;
+		} },
+		// Requirement uploads approved at front desk
+		frontDeskApproved: { type: RequirementUpload, multiple: true, value: function (_observe) {
+			var result = [];
+			this.frontDeskApplicable.forEach(function (requirementUpload) {
+				if (_observe(requirementUpload._matchesOriginal)) result.push(requirementUpload);
+			});
+			return result;
+		} }
+	});
+
+	return FrontDeskProcessingStep;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
