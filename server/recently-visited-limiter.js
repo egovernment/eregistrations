@@ -10,7 +10,9 @@ module.exports = function (dbDriver/*, options*/) {
 	var options = Object(arguments[1])
 	  , limit = (options.limit != null) ? ensureNaturalNumber(options.limit) : 10;
 	dbDriver.on('update', function (event) {
-		if (!startsWith.call(event.keyPath, 'recentlyVisited/')) return; // No recentlyVisited record
+		if (!event.keyPath || !startsWith.call(event.keyPath, 'recentlyVisited/')) {
+			return; // No recentlyVisited record
+		}
 		if (event.keyPath === event.path) return; // No multiple item update
 		if (event.data.value !== '11') return; // Not expected value
 		dbDriver.getDirectObjectKeyPath(event.ownerId + '/' + event.keyPath)(function (events) {
