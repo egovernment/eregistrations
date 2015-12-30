@@ -240,6 +240,15 @@ e.g.:
 	color: var(--main-color);
 }
 
+.fa-angle-left {
+	width: 0.74em;
+	vertical-align: text-top;
+}
+
+.fa-angle-left:before {
+	content: "\f104";
+}
+
 .fa-angle-right {
 	width: 0.74em;
 	vertical-align: text-top;
