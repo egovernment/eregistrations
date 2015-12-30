@@ -15,7 +15,7 @@ var ensureCallable = require('es5-ext/object/valid-callable')
 var getKeyPathFilter = function (keyPath) {
 	var matches = RegExp.prototype.test.bind(new RegExp('^[a-z0-9][a-z0-9A-Z]*/' +
 		escape(keyPath) + '(?:/.+|$)'));
-	return function (id) { return matches(id); };
+	return function (data) { return matches(data.id); };
 };
 
 module.exports = memoize(function (dbName) {
@@ -32,9 +32,9 @@ module.exports = memoize(function (dbName) {
 		}
 		if (keyPathFilter) {
 			if (customFilter) {
-				filter = function (id, data) { return keyPathFilter(id, data) && customFilter(id, data); };
+				filter = function (data) { return keyPathFilter(data) && customFilter(data); };
 			} else {
-				filter = customFilter;
+				filter = keyPathFilter;
 			}
 		} else if (customFilter) {
 			filter = customFilter;
