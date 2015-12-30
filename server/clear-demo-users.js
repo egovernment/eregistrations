@@ -9,7 +9,7 @@ var debug    = require('debug-ext')('clear-demo-users')
   , now      = require('microtime-x')
   , dbDriver = require('mano').dbDriver
 
-  , matchObjectId = RegExp.prototype.test.bind(/\*7([0-9][a-z0-9]+)$/)
+  , objectIdRe = /\*7([0-9][a-z0-9]+)$/
   , day = 24 * 60 * 60 * 1000; // in milliseconds
 
 var getDerived = function (businessProcessId, ids) {
@@ -39,7 +39,7 @@ var clearDemoUsers = function () {
 				.map(function (event) {
 					var match, businessProcessId;
 					if (event.data.value !== '11') return;
-					match = matchObjectId(event.id);
+					match = event.id.match(objectIdRe);
 					if (!match) return;
 					businessProcessId = match[1];
 					ids.push(businessProcessId);
