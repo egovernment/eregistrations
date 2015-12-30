@@ -19,7 +19,7 @@ module.exports = memoize(function (recordType, keyPath, value) {
 			if (resolveFilter(value, data.value)) set.add(ownerId);
 		})(set);
 	}
-	return dbDriver.searchDirect(keyPath, function (id, data) {
+	return dbDriver.search(keyPath, function (id, data) {
 		var index;
 		if (!resolveDirectFilter(value, data.value, id)) return;
 		index = id.indexOf('/');

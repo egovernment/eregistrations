@@ -31,15 +31,16 @@ var observe = function (set, dbName, ownerId, keyPath) {
 			return child.promise;
 		}
 	};
-	dbDriver.on('direct:' + keyPath, listener = function (event) {
+	dbDriver.on('key:' + keyPath, listener = function (event) {
+		if (event.type !== 'direct') return;
 		handler(event.id, event.data, event.old);
 	});
-	promise = dbDriver.searchDirect(keyPath, handler);
+	promise = dbDriver.search(keyPath, handler);
 	return {
 		id: ownerId,
 		promise: promise,
 		clear: function () {
-			dbDriver.off('record:' + id, listener);
+			dbDriver.off('keyid:' + id, listener);
 			if (child) {
 				set.delete(child.id);
 				child.clear();

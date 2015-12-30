@@ -83,7 +83,7 @@ var getFilteredSet = memoize(function (baseSet, filterString) {
 		if (event.type === 'add') findAndFilter(event.value).done();
 		else set.delete(event.value);
 	});
-	mano.dbDriver.on('computed:searchString', indexListener = function (event) {
+	mano.dbDriver.on('key:searchString', indexListener = function (event) {
 		if (!baseSet.has(event.ownerId)) return;
 		filter(event.ownerId, event.data);
 	});
@@ -97,7 +97,7 @@ var getFilteredSet = memoize(function (baseSet, filterString) {
 	if (!count) def.resolve(set);
 	defineProperty(set, '_dispose', d(function () {
 		baseSet.off(baseSetListener);
-		mano.dbDriver.off('computed:searchString', indexListener);
+		mano.dbDriver.off('key:searchString', indexListener);
 	}));
 	return def.promise;
 }, { max: 1000, dispose: function (set) { set._dispose(); } });
@@ -213,7 +213,7 @@ var initializeHandler = function (conf) {
 				computedEvents = [];
 			}
 			directEvents = deferred.map(arr, function (data) {
-				return mano.dbDriver.getDirectObject(data.id, { keyPaths: bpListProps })(function (datas) {
+				return mano.dbDriver.getObject(data.id, { keyPaths: bpListProps })(function (datas) {
 					return datas.map(function (data) {
 						return data.data.stamp + '.' + data.id + '.' + data.data.value;
 					});
@@ -293,7 +293,7 @@ module.exports = exports = function (mainConf) {
 					if (!query.id) return { passed: false };
 					recordId = this.req.$user + '/recentlyVisited/businessProcesses/' +
 						handler.roleName + '*7' + query.id;
-					return mano.dbDriver.storeDirect(recordId, '11')({ passed: true });
+					return mano.dbDriver.store(recordId, '11')({ passed: true });
 				}.bind(this));
 			}.bind(this));
 		}

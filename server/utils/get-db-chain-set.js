@@ -24,13 +24,13 @@ var observe = function (set, dbName, ownerId, keyPath) {
 			return child.promise;
 		}
 	};
-	dbDriver.on('record:' + id, listener = function (event) { handler(event.data); });
-	promise = dbDriver.getDirect(id)(handler);
+	dbDriver.on('keyid:' + id, listener = function (event) { handler(event.data); });
+	promise = dbDriver.get(id)(handler);
 	return {
 		id: ownerId,
 		promise: promise,
 		clear: function () {
-			dbDriver.off('record:' + id, listener);
+			dbDriver.off('keyid:' + id, listener);
 			if (child) {
 				set.delete(child.id);
 				child.clear();

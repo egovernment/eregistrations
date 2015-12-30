@@ -45,7 +45,7 @@ module.exports = memoize(function (dbName) {
 				if (!filter || filter(data)) assimilateEvent(fragment, data.id, data.data);
 			});
 		});
-		driver.on('object:' + ownerId, function (event) {
+		driver.on('owner:' + ownerId, function (event) {
 			if (event.type !== 'reduced') return;
 			if (!filter || filter(event)) assimilateEvent(fragment, event.id, event.data);
 		});

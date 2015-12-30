@@ -39,12 +39,12 @@ module.exports = memoize(function (dbName) {
 			filter = customFilter;
 		}
 		fragment = new Fragment();
-		fragment.promise = driver.getDirectObject(ownerId)(function (data) {
+		fragment.promise = driver.getObject(ownerId)(function (data) {
 			data.forEach(function (data) {
 				if (!filter || filter(data)) fragment.update(data.id, data.data);
 			});
 		});
-		driver.on('object:' + ownerId, function (event) {
+		driver.on('owner:' + ownerId, function (event) {
 			if (event.type !== 'direct') return;
 			if (!filter || filter(event)) fragment.update(event.id, event.data);
 		});

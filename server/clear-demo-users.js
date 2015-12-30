@@ -13,7 +13,7 @@ var debug    = require('debug-ext')('clear-demo-users')
   , day = 24 * 60 * 60 * 1000; // in milliseconds
 
 var getDerived = function (businessProcessId, ids) {
-	return dbDriver.getDirect(businessProcessId + '/derivedBusinessProcess')(function (data) {
+	return dbDriver.get(businessProcessId + '/derivedBusinessProcess')(function (data) {
 		var derivedBusinessProcessId;
 		if (!data) return;
 		if (data.value[0] !== '7') return;
@@ -28,14 +28,14 @@ var clearDemoUsers = function () {
 
 	debug('deleting demo users inactive since %s', lastWeek);
 
-	dbDriver.searchDirect('isDemo', function (id, data) {
+	dbDriver.search('isDemo', function (id, data) {
 		var ownerId;
 		if (data.value !== '11') return;
 		ownerId = id.split('/', 1)[0];
-		promises.push(dbDriver.getDirect(ownerId + '/demoLastAccessed')(function (data) {
+		promises.push(dbDriver.get(ownerId + '/demoLastAccessed')(function (data) {
 			if (!data || (data.stamp > lastWeek)) return;
 			ids.push(ownerId);
-			return dbDriver.getDirectObjectKeyPath(ownerId + '/initialBusinessProcesses')
+			return dbDriver.getObjectKeyPath(ownerId + '/initialBusinessProcesses')
 				.map(function (event) {
 					var match, businessProcessId;
 					if (event.data.value !== '11') return;
@@ -47,7 +47,7 @@ var clearDemoUsers = function () {
 				});
 		}));
 	})(function () { return deferred.map(promises); })(function () {
-		return dbDriver.deleteDirectManyObjects(ids);
+		return dbDriver.deleteManyObjects(ids);
 	}).done();
 };
 
