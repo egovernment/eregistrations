@@ -31,7 +31,7 @@ module.exports = memoize(function (dbName) {
 		}
 		if (keyPathFilter) {
 			if (customFilter) {
-				filter = function (id, data) { return keyPathFilter(id, data) && customFilter(id, data); };
+				filter = function (data) { return keyPathFilter(data) && customFilter(data); };
 			} else {
 				filter = keyPathFilter;
 			}
