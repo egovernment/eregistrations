@@ -10,20 +10,20 @@ var memoize                     = require('memoizee/plain')
   , defineCosts                 = require('./costs')
   , defineSubmissionForms       = require('./submission-forms')
   , defineProcessingSteps       = require('./processing-steps')
-  , defineProcessingStep        = require('../processing-step');
+  , defineProcessingStepBase    = require('../processing-step-base');
 
 module.exports = memoize(function (db/*, options*/) {
 	var options               = Object(arguments[1])
 	  , BusinessProcess       = defineBusinessProcess(db, options)
 	  , BusinessProcessStatus = defineBusinessProcessStatus(db)
-	  , ProcessingStep;
+	  , ProcessingStepBase;
 
 	defineDataForms(db, options);
 	defineRequirementUploads(db, options);
 	defineCosts(db, options);
 	defineSubmissionForms(db, options);
 	defineProcessingSteps(db, options);
-	ProcessingStep = defineProcessingStep(db);
+	ProcessingStepBase = defineProcessingStepBase(db);
 
 	BusinessProcess.prototype.defineProperties({
 		// Whether business process was submitted to Part B
@@ -44,7 +44,7 @@ module.exports = memoize(function (db/*, options*/) {
 		// Whether business process was sent back to Part A
 		isSentBack: { type: db.Boolean, value: false },
 		sentBackSteps: {
-			type: ProcessingStep,
+			type: ProcessingStepBase,
 			multiple: true,
 			value: function (_observe) {
 				var res = [];
