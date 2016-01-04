@@ -97,9 +97,9 @@ exports.columns = [{
 			return span({ class: 'hint-optional hint-optional-left',
 				'data-hint': [cert.constructor.label,
 					_if(eq(certStatus, "rejected"), "- " + ProcessingStepStatus.meta.rejected.label,
-						_if(certStatus, certStatus.map(function (status) {
+						certStatus.map(function (status) {
 							if (status) return "- " + ProcessingStepStatus.meta[status].label;
-						})))] },
+						}))] },
 				span({ class: ['label-reg',
 					_if(eq(certStatus, "rejected"), "rejected",
 						_if(eq(certStatus, 'approved'), "approved",
