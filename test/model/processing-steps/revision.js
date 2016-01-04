@@ -10,17 +10,15 @@ var Database = require('dbjs')
 		require('../../../model/business-process-new/utils/define-payment-receipt-uploads');
 
 module.exports = function (t, a) {
-	var db = new Database()
-	  , Step = t(db)
-	  , BusinessProcess = db.BusinessProcess
-	  , Cost = defineCost(db)
+	var db              = new Database()
+	  , Step            = t(db)
+	  , BusinessProcess = defineFlow(db)
+	  , Cost            = defineCost(db)
 	  , businessProcess, step;
 
 	var TestDocument = db.Document.extend('Test', {}, {
 		label: { value: "Test document" }
 	});
-
-	defineFlow(db);
 	BusinessProcess.prototype.requirements.map.define('req', { nested: true });
 	BusinessProcess.prototype.requirements.map.req.Document = TestDocument;
 	defineMapCertificates(BusinessProcess, [TestDocument]);

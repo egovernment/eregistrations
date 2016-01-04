@@ -6,17 +6,18 @@ var memoize               = require('memoizee/plain')
   , definePercentage      = require('dbjs-ext/number/percentage')
   , defineRegistration    = require('../registration-new')
   , defineMultipleProcess = require('../lib/multiple-process')
-  , defineInitial         = require('./base');
+  , defineBusinessProcess = require('./base');
 
 module.exports = memoize(function (db/* options */) {
-	var BusinessProcess = defineInitial(db, arguments[1])
-	  , Percentage = definePercentage(db)
+	var BusinessProcess = defineBusinessProcess(db, arguments[1])
+	  , Percentage      = definePercentage(db)
 	  , MultipleProcess = defineMultipleProcess(db)
-	  , Registration = defineRegistration(db);
+	  , Registration    = defineRegistration(db);
 
 	BusinessProcess.prototype.defineProperties({
 		registrations: { type: MultipleProcess, nested: true }
 	});
+
 	BusinessProcess.prototype.registrations.map._descriptorPrototype_.type = Registration;
 	BusinessProcess.prototype.registrations.defineProperties({
 		// Applicable registrations (resolved out of registration.isApplicable on each registration)
