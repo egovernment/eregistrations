@@ -2,15 +2,14 @@
 
 'use strict';
 
-var memoize       = require('memoizee/plain')
-  , defineInitial = require('./base')
-  , definePerson  = require('../person');
+var memoize               = require('memoizee/plain')
+  , defineBusinessProcess = require('./base')
+  , definePerson          = require('../person');
 
 module.exports = memoize(function (db/*, options*/) {
-	var BusinessProcess, Person, options;
-	options = Object(arguments[1]);
-	BusinessProcess = defineInitial(db, options);
-	Person  = definePerson(db, options);
+	var options         = Object(arguments[1])
+	  , BusinessProcess = defineBusinessProcess(db, options)
+	  , Person          = definePerson(db, options);
 
 	BusinessProcess.prototype.define('representative', {
 		type: Person,

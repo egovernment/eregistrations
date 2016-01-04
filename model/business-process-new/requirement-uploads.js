@@ -5,16 +5,17 @@
 var memoize                 = require('memoizee/plain')
   , defineUploadsProcess    = require('../lib/uploads-process')
   , defineRequirementUpload = require('../requirement-upload')
-  , defineRequirements      = require('./requirements');
+  , defineBusinessProcess   = require('./requirements');
 
 module.exports = memoize(function (db/* options */) {
-	var BusinessProcess = defineRequirements(db, arguments[1])
-	  , UploadsProcess = defineUploadsProcess(db)
+	var BusinessProcess   = defineBusinessProcess(db, arguments[1])
+	  , UploadsProcess    = defineUploadsProcess(db)
 	  , RequirementUpload = defineRequirementUpload(db);
 
 	BusinessProcess.prototype.defineProperties({
 		requirementUploads: { type: UploadsProcess, nested: true }
 	});
+
 	BusinessProcess.prototype.requirementUploads.defineProperties({
 		// Applicable requirement uploads resolved out of applicable requirements
 		applicableByRequirements: { type: RequirementUpload,
@@ -34,5 +35,6 @@ module.exports = memoize(function (db/* options */) {
 			return this.applicableByRequirements;
 		} }
 	});
+
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

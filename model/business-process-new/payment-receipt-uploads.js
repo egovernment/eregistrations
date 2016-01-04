@@ -10,8 +10,9 @@ var memoize                    = require('memoizee/plain')
   , defineCosts;
 
 module.exports = memoize(function (db/* options */) {
-	var BusinessProcess = defineBusinessProcess(db, arguments[1])
-	  , UploadsProcess = defineUploadsProcess(db)
+	var options              = Object(arguments[1])
+	  , BusinessProcess      = defineBusinessProcess(db, options)
+	  , UploadsProcess       = defineUploadsProcess(db)
 	  , PaymentReceiptUpload = definePaymentReceiptUpload(db);
 
 	BusinessProcess.prototype.defineProperties({
@@ -44,7 +45,8 @@ module.exports = memoize(function (db/* options */) {
 		rejected: { type: PaymentReceiptUpload }
 	});
 
-	if (!BusinessProcess.prototype.costs) defineCosts(db);
+	if (!BusinessProcess.prototype.costs) defineCosts(db, options);
+
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
 

@@ -6,17 +6,18 @@ var memoize               = require('memoizee/plain')
   , definePercentage      = require('dbjs-ext/number/percentage')
   , defineMultipleProcess = require('../lib/multiple-process')
   , defineRequirement     = require('../requirement')
-  , defineCertificates    = require('./certificates');
+  , defineBusinessProcess = require('./certificates');
 
 module.exports = memoize(function (db/* options */) {
-	var BusinessProcess = defineCertificates(db, arguments[1])
-	  , Percentage = definePercentage(db)
+	var BusinessProcess = defineBusinessProcess(db, arguments[1])
+	  , Percentage      = definePercentage(db)
 	  , MultipleProcess = defineMultipleProcess(db)
-	  , Requirement = defineRequirement(db);
+	  , Requirement     = defineRequirement(db);
 
 	BusinessProcess.prototype.defineProperties({
 		requirements: { type: MultipleProcess, nested: true }
 	});
+
 	BusinessProcess.prototype.requirements.map._descriptorPrototype_.type = Requirement;
 	BusinessProcess.prototype.requirements.defineProperties({
 		// Resolved requirements out of requested registrations
@@ -73,5 +74,6 @@ module.exports = memoize(function (db/* options */) {
 			return valid / total;
 		} }
 	});
+
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
