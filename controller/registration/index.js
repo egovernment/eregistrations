@@ -18,7 +18,7 @@ var assign        = require('es5-ext/object/assign')
 module.exports = exports = assign(exports, require('../user'));
 
 resetStatus = function (step) {
-	if (step != null) {
+	if (step.status != null) {
 		step.status = null;
 	}
 };
@@ -99,14 +99,17 @@ exports['application-submit'] = {
 	},
 	submit: function () {
 		this.user.currentBusinessProcess.processingSteps.applicable.forEach(function (step) {
-			if (db.ProcessingStepGroup && (step instanceof db.ProcessingStepGroup)) {
-				step.steps.applicable.forEach(function (subStep) {
-					resetStatus(subStep);
-				});
-			} else {
-				resetStatus(step);
+			if (!step.previousSteps.size) {
+				if (db.ProcessingStepGroup && (step instanceof db.ProcessingStepGroup)) {
+					step.steps.applicable.forEach(function (subStep) {
+						resetStatus(subStep);
+					});
+				} else {
+					resetStatus(step);
+				}
 			}
 		});
+		this.user.currentBusinessProcess.isSentBack = false;
 		submit.apply(this, arguments);
 	}
 };
