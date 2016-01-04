@@ -29,8 +29,10 @@ module.exports = function () {
 		throw new Error("Unsupported event: " + event.type);
 	};
 
-	db.ProcessingStep.instances
+	var processingSteps = db.ProcessingStep.instances
 		.filterByKeyPath('isSentBack', true)
 		.filterByKeyPath('isPreviousStepsSatisfied', false)
 		.on('change', eventHandler);
+
+	processingSteps.forEach(resetSentBack);
 };
