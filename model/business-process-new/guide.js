@@ -5,12 +5,12 @@
 var memoize               = require('memoizee/plain')
   , definePercentage      = require('dbjs-ext/number/percentage')
   , defineFormSectionBase = require('../form-section-base')
-  , defineRequirements    = require('./requirements');
+  , defineBusinessProcess = require('./requirements');
 
 module.exports = memoize(function (db/*, options*/) {
-	var BusinessProcess = defineRequirements(db, arguments[1])
+	var BusinessProcess = defineBusinessProcess(db, arguments[1])
 	  , FormSectionBase = defineFormSectionBase(db)
-	  , Percentage = definePercentage(db);
+	  , Percentage      = definePercentage(db);
 
 	BusinessProcess.prototype.defineProperties({
 		// Determinants form section
@@ -27,5 +27,6 @@ module.exports = memoize(function (db/*, options*/) {
 			return valid / total;
 		} }
 	});
+
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

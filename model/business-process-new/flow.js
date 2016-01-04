@@ -4,7 +4,7 @@
 
 var memoize                     = require('memoizee/plain')
   , defineBusinessProcessStatus = require('../lib/business-process-status')
-  , defineGuide                 = require('./guide')
+  , defineBusinessProcess       = require('./guide')
   , defineDataForms             = require('./data-forms')
   , defineRequirementUploads    = require('./requirement-uploads')
   , defineCosts                 = require('./costs')
@@ -13,15 +13,16 @@ var memoize                     = require('memoizee/plain')
   , defineProcessingStep        = require('../processing-step');
 
 module.exports = memoize(function (db/*, options*/) {
-	var BusinessProcess = defineGuide(db, arguments[1])
+	var options               = Object(arguments[1])
+	  , BusinessProcess       = defineBusinessProcess(db, options)
 	  , BusinessProcessStatus = defineBusinessProcessStatus(db)
 	  , ProcessingStep;
 
-	defineDataForms(db);
-	defineRequirementUploads(db);
-	defineCosts(db);
-	defineSubmissionForms(db);
-	defineProcessingSteps(db);
+	defineDataForms(db, options);
+	defineRequirementUploads(db, options);
+	defineCosts(db, options);
+	defineSubmissionForms(db, options);
+	defineProcessingSteps(db, options);
 	ProcessingStep = defineProcessingStep(db);
 
 	BusinessProcess.prototype.defineProperties({
@@ -86,5 +87,6 @@ module.exports = memoize(function (db/*, options*/) {
 			return 'process';
 		} }
 	});
+
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

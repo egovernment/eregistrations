@@ -4,12 +4,13 @@
 
 'use strict';
 
-var memoize        = require('memoizee/plain')
-  , defineDocument = require('../document')
-  , defineDerived  = require('./derived');
+var memoize               = require('memoizee/plain')
+  , defineDocument        = require('../document')
+  , defineBusinessProcess = require('./derived');
 
 module.exports = memoize(function (db/*, options*/) {
-	var Document = defineDocument(db), BusinessProcess = defineDerived(db, arguments[1]);
+	var BusinessProcess = defineBusinessProcess(db, arguments[1])
+	  , Document        = defineDocument(db);
 
 	BusinessProcess.prototype.defineProperties({ documents: { type: db.Object, nested: true } });
 	BusinessProcess.prototype.documents.defineProperties({
@@ -50,5 +51,6 @@ module.exports = memoize(function (db/*, options*/) {
 			});
 		} }
 	});
+
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

@@ -68,7 +68,7 @@ module.exports = function (/*options*/) {
 			if (!matcher.call(this, businessProcessId, stepName)) return false;
 
 			documentUniqueKey = hyphenToCamel.call(documentUniqueKey);
-			return this.businessProcess.requirementUploads.applicable.some(function (requirementUpload) {
+			return this.processingStep.requirementUploads.applicable.some(function (requirementUpload) {
 				if (requirementUpload.document.uniqueKey === documentUniqueKey) {
 					return true;
 				}
@@ -89,7 +89,7 @@ module.exports = function (/*options*/) {
 				this.businessProcess.paymentReceiptUploads.map.get(hyphenToCamel.call(receiptKey));
 			if (!paymentReceiptUpload) return false;
 
-			return this.businessProcess.paymentReceiptUploads.applicable.has(paymentReceiptUpload);
+			return this.processingStep.paymentReceiptUploads.applicable.has(paymentReceiptUpload);
 		},
 		redirectUrl: function () {
 			return '/' + this.businessProcess.__id__ + '/';

@@ -4,15 +4,16 @@
 
 var memoize                     = require('memoizee/plain')
   , definePropertyGroupsProcess = require('../lib/property-groups-process')
-  , defineInitial               = require('./base');
+  , defineBusinessProcess       = require('./base');
 
 module.exports = memoize(function (db/* options */) {
-	var BusinessProcess       = defineInitial(db, arguments[1])
+	var BusinessProcess       = defineBusinessProcess(db, arguments[1])
 	  , PropertyGroupsProcess = definePropertyGroupsProcess(db);
 
 	BusinessProcess.prototype.defineProperties({
 		submissionForms: { type: PropertyGroupsProcess, nested: true }
 	});
+
 	BusinessProcess.prototype.submissionForms.defineProperties({
 		// Required confirmation from user, presented as last step before file submission
 		isAffidavitSigned: { type: db.Boolean, required: true },
@@ -34,5 +35,6 @@ module.exports = memoize(function (db/* options */) {
 			return superGetter.call(this, _observe) + 1;
 		} }
 	});
+
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

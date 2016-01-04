@@ -12,14 +12,15 @@ var memoize                   = require('memoizee/plain')
   , defineStatusLog           = require('../lib/status-log');
 
 module.exports = memoize(function (db/*, options*/) {
-	var StringLine = defineStringLine(db)
-	  , Url = defineUrl(db)
-	  , UInteger  = defineUInteger(db)
-	  , StatusLog = defineStatusLog(db)
+	var options             = Object(arguments[1])
 	  , BusinessProcessBase = defineBusinessProcessBase(db)
-	  , BusinessProcess
+	  , StringLine          = defineStringLine(db)
+	  , UInteger            = defineUInteger(db)
+	  , Url                 = defineUrl(db)
+	  , StatusLog           = defineStatusLog(db)
 
-	  , options = Object(arguments[1]);
+	  , BusinessProcess;
+
 	defineNestedMap(db);
 
 	BusinessProcess = BusinessProcessBase.extend(options.className || 'BusinessProcess', {
