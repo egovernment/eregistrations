@@ -31,8 +31,9 @@ module.exports = function (stepName) {
 			return this.businessProcess.businessName;
 		},
 		rejectedUploads: function () {
-			var paymentReceiptUploads = this.paymentReceiptUploads
-			  , requirementUploads    = this.requirementUploads
+			var processingStep        = this.businessProcess.processingSteps.map[stepName]
+			  , paymentReceiptUploads = processingStep.paymentReceiptUploads
+			  , requirementUploads    = processingStep.requirementUploads
 			  , result                = [];
 
 			if (requirementUploads.rejected.size) {
