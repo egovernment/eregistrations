@@ -15,10 +15,10 @@ module.exports = function (dbDriver/*, options*/) {
 		}
 		if (event.keyPath === event.path) return; // No multiple item update
 		if (event.data.value !== '11') return; // Not expected value
-		dbDriver.getDirectObjectKeyPath(event.ownerId + '/' + event.keyPath)(function (events) {
+		dbDriver.getObjectKeyPath(event.ownerId + '/' + event.keyPath)(function (events) {
 			events = events.filter(function (event) { return (event.data.value === '11'); });
 			if (events.length <= limit) return;
-			return dbDriver.storeDirectMany(events.slice(0, events.length - limit).map(function (event) {
+			return dbDriver.storeMany(events.slice(0, events.length - limit).map(function (event) {
 				return { id: event.id, data: { value: '' } };
 			})).aside(function () {
 				debug("cleared %s out of %s", events.length - limit, event.ownerId + '/' + event.keyPath);
