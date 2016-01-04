@@ -73,6 +73,7 @@ module.exports = function (t, a) {
 	step = businessProcess.processingSteps.map.test;
 	step.status = 'sentBack';
 	step.sendBackReason = "Whateever ..";
+	businessProcess.isSentBack = true;
 	a(businessProcess.isSubmitted, true);
 	a(businessProcess.isSentBack, true);
 	a(businessProcess.isRejected, false);
@@ -81,6 +82,7 @@ module.exports = function (t, a) {
 
 	step.status = 'rejected';
 	step.rejectionReason = "Whateever ..";
+	businessProcess.isSentBack = false;
 	a(businessProcess.isSubmitted, true);
 	a(businessProcess.isSentBack, false);
 	a(businessProcess.isRejected, true);
