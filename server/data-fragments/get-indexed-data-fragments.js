@@ -21,7 +21,7 @@ module.exports = function (driver, keyPaths) {
 		var fragment = fragments[objId];
 		if (fragment) return fragment;
 		fragment = fragments[objId] = new Fragment();
-		fragment.promise = driver.getDirect(objId)(function (data) {
+		fragment.promise = driver.get(objId)(function (data) {
 			if (data) fragment.update(objId, data);
 			return deferred.map(keyPaths, function (keyPath) {
 				return driver.getComputed(objId + '/' + keyPath)(function (data) {
@@ -29,7 +29,7 @@ module.exports = function (driver, keyPaths) {
 				});
 			});
 		});
-		driver.on('object:' + objId, function (event) {
+		driver.on('owner:' + objId, function (event) {
 			if (event.type === 'direct') return;
 			if (includes.call(keyPaths, event.keyPath)) {
 				assimilateEvent(fragment, objId + '/' + event.keyPath, event.data);

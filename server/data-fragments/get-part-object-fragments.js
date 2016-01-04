@@ -25,10 +25,10 @@ module.exports = function (dbName, keyPaths) {
 		ownerId = ensureString(ownerId);
 		fragment = new Fragment();
 		fragment.promise = deferred(
-			driver.getDirect(ownerId)(function (data) {
+			driver.get(ownerId)(function (data) {
 				if (data) fragment.update(ownerId, data);
 			}),
-			driver.getDirectObject(ownerId, { keyPaths: keyPaths })(function (data) {
+			driver.getObject(ownerId, { keyPaths: keyPaths })(function (data) {
 				data.forEach(function (data) { fragment.update(data.id, data.data); });
 			}),
 			deferred.map(keyPathsArray, function (keyPath) {
@@ -39,7 +39,7 @@ module.exports = function (dbName, keyPaths) {
 				});
 			})
 		);
-		driver.on('object:' + ownerId, function (event) {
+		driver.on('owner:' + ownerId, function (event) {
 			if (event.type === 'reduced') return;
 			if (!event.keyPath || keyPaths.has(event.keyPath)) {
 				if (event.type === 'direct') fragment.update(event.id, event.data);
