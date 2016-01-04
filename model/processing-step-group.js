@@ -38,8 +38,6 @@ module.exports = memoize(function (db) {
 
 		// Whether process group was sent back at some sub step
 		isSentBack: { value: function (_observe) {
-			if (!this.isReady) return false;
-			if (this.isRejected) return false;
 			return _observe(this.steps.applicable).some(function (step) {
 				return _observe(step._isSentBack);
 			});
