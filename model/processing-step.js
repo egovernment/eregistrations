@@ -3,17 +3,19 @@
 
 'use strict';
 
-var Map                      = require('es6-map')
-  , memoize                  = require('memoizee/plain')
-  , definePercentage         = require('dbjs-ext/number/percentage')
-  , defineStringLine         = require('dbjs-ext/string/string-line')
-  , defineCreateEnum         = require('dbjs-ext/create-enum')
-  , _                        = require('mano').i18n.bind('Model')
-  , defineUser               = require('./user/base')
-  , defineFormSectionBase    = require('./form-section-base')
-  , defineProcessingStepBase = require('./processing-step-base')
-  , defineUploadsProcess     = require('./lib/uploads-process')
-  , definePaymentReceiptUpload, defineRequirementUpload, defineDocument;
+var Map                        = require('es6-map')
+  , memoize                    = require('memoizee/plain')
+  , definePercentage           = require('dbjs-ext/number/percentage')
+  , defineStringLine           = require('dbjs-ext/string/string-line')
+  , defineCreateEnum           = require('dbjs-ext/create-enum')
+  , _                          = require('mano').i18n.bind('Model')
+  , defineUser                 = require('./user/base')
+  , defineFormSectionBase      = require('./form-section-base')
+  , defineProcessingStepBase   = require('./processing-step-base')
+  , defineUploadsProcess       = require('./lib/uploads-process')
+  , definePaymentReceiptUpload = require('./payment-receipt-upload')
+  , defineRequirementUpload    = require('./requirement-upload')
+  , defineDocument             = require('./document');
 
 module.exports = memoize(function (db) {
 	var Percentage           = definePercentage(db)
@@ -22,11 +24,11 @@ module.exports = memoize(function (db) {
 	  , FormSectionBase      = defineFormSectionBase(db)
 	  , ProcessingStepBase   = defineProcessingStepBase(db)
 	  , UploadsProcess       = defineUploadsProcess(db)
+	  , PaymentReceiptUpload = definePaymentReceiptUpload(db)
+	  , RequirementUpload    = defineRequirementUpload(db)
+	  , Document             = defineDocument(db)
 
-	  , ProcessingStep       = ProcessingStepBase.extend('ProcessingStep')
-	  , PaymentReceiptUpload = db.PaymentReceiptUpload || definePaymentReceiptUpload(db)
-	  , RequirementUpload    = db.RequirementUpload || defineRequirementUpload(db)
-	  , Document             = db.Document || defineDocument(db);
+	  , ProcessingStep       = ProcessingStepBase.extend('ProcessingStep');
 
 	defineCreateEnum(db);
 
@@ -241,7 +243,3 @@ module.exports = memoize(function (db) {
 
 	return ProcessingStep;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
-
-definePaymentReceiptUpload = require('./payment-receipt-upload');
-defineRequirementUpload = require('./requirement-upload');
-defineDocument = require('./document');

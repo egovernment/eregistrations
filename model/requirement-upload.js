@@ -8,14 +8,14 @@ var Map              = require('es6-map')
   , defineCreateEnum = require('dbjs-ext/create-enum')
   , _                = require('mano').i18n.bind('Model')
   , definePercentage = require('dbjs-ext/number/percentage')
-  , defineDocument;
+  , defineDocument   = require('./document');
 
 module.exports = memoize(function (db) {
 	var StringLine        = defineStringLine(db)
 	  , Percentage        = definePercentage(db)
+	  , Document          = defineDocument(db)
 
-	  , RequirementUpload = db.Object.extend('RequirementUpload')
-	  , Document          = db.Document || defineDocument(db);
+	  , RequirementUpload = db.Object.extend('RequirementUpload');
 
 	defineCreateEnum(db);
 
@@ -106,5 +106,3 @@ module.exports = memoize(function (db) {
 
 	return RequirementUpload;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
-
-defineDocument = require('./document');
