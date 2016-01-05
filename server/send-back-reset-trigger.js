@@ -1,16 +1,15 @@
 'use strict';
 
-var db      = require('mano').db
-  , debug   = require('debug-ext')('send-back-reset-trigger')
-  , verbose = require('debug-ext')('send-back-reset-trigger:verbose');
+var db    = require('mano').db
+  , debug = require('debug-ext')('send-back-reset-trigger');
 
 module.exports = function () {
 	var resetSentBack = function (processingStep) {
+		if (processingStep.master.isSentBack) return;
+		if (!processingStep.isSentBack) return;
+		if (!processingStep.isPreviousStepsSatisfied) return;
 		debug('%s resetting sentBack of', processingStep.__id__);
-
-		if (processingStep.isSentBack && processingStep.isPreviousStepsSatisfied) {
-			processingStep.status = null;
-		}
+		processingStep.status = null;
 	};
 
 	var eventHandler = function (event) {
@@ -25,7 +24,6 @@ module.exports = function () {
 			return;
 		}
 
-		verbose('Wrong event type: %s', event.type);
 		throw new Error("Unsupported event: " + event.type);
 	};
 
