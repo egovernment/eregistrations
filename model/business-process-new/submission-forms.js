@@ -23,9 +23,9 @@ module.exports = memoize(function (db/* options */) {
 			superGetter = this.database.resolveGetterObservables(superGetter);
 			return superGetter.call(this, _observe);
 		} },
-		progress: { value: function () {
+		progress: { value: function (_observe) {
 			var total = this.weight, valid = this.formsProgress * (total - 1);
-			if (this.isAffidavitSigned && !this.isSentBack) ++valid;
+			if (this.isAffidavitSigned && !_observe(this.master._isSentBack)) ++valid;
 			return valid / total;
 		} },
 		weight: { value: function (_observe) {
