@@ -14,6 +14,14 @@ var assign         = require('es5-ext/object/assign')
 assign(exports, require('../user/server'));
 
 // Add User
+exports['add-user'] = {
+	submit: function (data) {
+		// This POST request should be handled in main (not db process)
+		throw new Error("Not applicable");
+	}
+};
+
+// TODO: Remove after all apps use new split processes POST router
 exports['user-add'] = {
 	submit: function (data) {
 		return hash(data['User#/password'], genSalt())(function (password) {
