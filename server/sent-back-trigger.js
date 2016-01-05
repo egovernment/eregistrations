@@ -5,9 +5,8 @@ var db      = require('mano').db
 
 module.exports = function (/* options */) {
 	var sendBack = function (businessProcess) {
-		debug('on %s sentBack', businessProcess.__id__);
-
-		if (businessProcess.isSentBack !== true) {
+		if (businessProcess.isSentBack !== true && businessProcess.sentBackSteps.size > 0) {
+			debug('on for %s', businessProcess.__id__);
 			businessProcess.isSentBack = true;
 		}
 	};

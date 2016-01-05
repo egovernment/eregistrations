@@ -106,9 +106,7 @@ exports['application-submit'] = {
 				function self(step) {
 					step.previousSteps.forEach(self);
 					if (db.ProcessingStepGroup && (step instanceof db.ProcessingStepGroup)) {
-						step.steps.applicable.forEach(function (subStep) {
-							resetStatus(subStep);
-						});
+						step.steps.applicable.forEach(self);
 					} else {
 						resetStatus(step);
 					}

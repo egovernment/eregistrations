@@ -8,7 +8,7 @@ module.exports = function () {
 		if (processingStep.master.isSentBack) return;
 		if (!processingStep.isSentBack) return;
 		if (!processingStep.isPreviousStepsSatisfied) return;
-		debug('%s resetting sentBack of', processingStep.__id__);
+		debug('clear for %s');
 		processingStep.status = null;
 	};
 
