@@ -18,11 +18,13 @@ module.exports = memoize(function (db) {
 		// All applicable requirement uploads must be approved
 		approvalProgress: { value: function (_observe) {
 			var weight = 0, progress = 0, itemWeight;
-			if (_observe(this.master._isSubmittedLocked)) return 1;
+
+			if (_observe(this.master._isSentBack)) return 1;
 			weight += itemWeight = _observe(this.requirementUploads.applicable).size;
 			progress += _observe(this.requirementUploads._approvalProgress) * itemWeight;
 			weight += itemWeight = _observe(this.paymentReceiptUploads.applicable).size;
 			progress += _observe(this.paymentReceiptUploads._approvalProgress) * itemWeight;
+
 			return weight ? (progress / weight) : 1;
 		} },
 

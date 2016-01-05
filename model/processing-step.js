@@ -122,8 +122,7 @@ module.exports = memoize(function (db) {
 
 		// Whether process was sent back from this step
 		isSentBack: { value: function (_observe) {
-			// If not ready, then obviously not sent back
-			if (!this.isReady) return false;
+			// We don't check isReady as this is used in isReady
 			// No sentBack status, means no sent back
 			if (this.status !== 'sentBack') return false;
 			// Provided reason confirms complete sent back
