@@ -1,7 +1,7 @@
 'use strict';
 
 var db    = require('mano').db
-  , debug = require('debug-ext')('send-back-reset-trigger');
+  , debug = require('debug-ext')('sent-back-reset-trigger');
 
 module.exports = function () {
 	var resetSentBack = function (processingStep) {
