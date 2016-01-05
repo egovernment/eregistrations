@@ -100,16 +100,20 @@ exports['application-submit'] = {
 	},
 	submit: function () {
 		if (this.user.currentBusinessProcess.isSentBack) {
-			this.user.currentBusinessProcess.processingSteps.applicable.forEach(function (step) {
-				if (db.ProcessingStepGroup && (step instanceof db.ProcessingStepGroup)) {
-					step.steps.applicable.forEach(function (subStep) {
-						resetStatus(subStep);
-					});
-				} else {
-					resetStatus(step);
-				}
-			});
 			this.user.currentBusinessProcess.delete('isSentBack');
+			this.dbRelease();
+			this.user.currentBusinessProcess.processingSteps.applicable.forEach(
+				function self(step) {
+					step.previousSteps.forEach(self);
+					if (db.ProcessingStepGroup && (step instanceof db.ProcessingStepGroup)) {
+						step.steps.applicable.forEach(function (subStep) {
+							resetStatus(subStep);
+						});
+					} else {
+						resetStatus(step);
+					}
+				}
+			);
 		}
 		submit.apply(this, arguments);
 	}
