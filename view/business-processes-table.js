@@ -35,7 +35,7 @@ exports['sub-main'] = {
 						span({ class: 'add-on' }, span({ class: 'fa fa-search' })))
 				),
 				div(
-					input({ type: 'submit', value: _("Search") })
+					input({ type: 'submit', class: 'button-search', value: _("Search") })
 				)),
 			div(
 				a({ href: mmap(location.query.get('status'), function (status) {
