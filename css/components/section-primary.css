@@ -142,7 +142,6 @@
 .section-primary .dbjs-input-component > .input input[type="email"],
 .section-primary .dbjs-input-component > .input input[type="password"],
 .section-primary .dbjs-input-component > .input input[type="search"],
-.section-primary .dbjs-input-component > .input input[type="email"],
 .section-primary .dbjs-input-component > .input input[type="url"],
 .section-primary .dbjs-input-component > .input textarea {
 	min-width: 60%;
