@@ -37,7 +37,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 			_if(this._isDisabled, div({ class: 'entities-overview-info' }, this._disabledMessage)),
 			div({ class: ['disabler-range',
 					_if(this._isDisabled, 'disabler-active')] },
-
+				div({ class: 'disabler' }),
 				ns._if(this._label,
 					[ns.h2(this._label), ns.hr(),
 						ns._if(this._legend,
@@ -45,8 +45,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 				this.toDOMFieldset(document, options),
 				ns.p({ class: 'section-primary-scroll-top' },
 					ns.a({ onclick: 'window.scroll(0, 0)' }, ns.span({ class: 'fa fa-arrow-up' },
-						_("Back to top")))),
-				div({ class: 'disabler' }))
+						_("Back to top")))))
 		)];
 		if (typeof options.customize === 'function') {
 			options.customize.call(this, customizeData);

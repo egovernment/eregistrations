@@ -52,6 +52,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 				_if(this._isDisabled, div({ class: 'entities-overview-info' }, this._disabledMessage)),
 				div({ class: ['disabler-range',
 						_if(this._isDisabled, 'disabler-active')] },
+					div({ class: 'disabler' }),
 					customizeData.form = ns.form(
 						{
 							id: this.domId,
@@ -73,8 +74,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 						ns.p({ class: 'section-primary-scroll-top' },
 							ns.a({ onclick: 'window.scroll(0, 0)' },
 								ns.span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
-					),
-					div({ class: 'disabler' }))
+					))
 			)];
 		if (typeof options.customize === 'function') {
 			customizeData.fieldset = find.call(fieldsetResult, function (el) {
