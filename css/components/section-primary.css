@@ -3,11 +3,12 @@
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
 	padding: 21px 20px;
+	position: relative;
 }
 .section-primary > *,
 .section-primary > form > *,
-.section-primary > .disabler-range > *,
-.section-primary > .disabler-range > form > *,
+/*.section-primary > .disabler-range > *,
+.section-primary > .disabler-range > form > *,*/
 .section-primary > .section-primary-wrapper > * {
 	margin-bottom: 22px;
 }
@@ -145,6 +146,9 @@
 
 .section-primary-scroll-top {
 	text-align: right;
+	position: absolute;
+	bottom: 22px;
+	right: 20px;
 }
 
 .section-primary-scroll-top a {
