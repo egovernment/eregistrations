@@ -100,7 +100,6 @@
 
 .section-primary .dbjs-input-component > .input input[type="text"],
 .section-primary .dbjs-input-component > .input input[type="number"],
-.section-primary .dbjs-input-component > .input input[type="email"],
 .section-primary .dbjs-input-component > .input input[type="password"],
 .section-primary .dbjs-input-component > .input input[type="date"],
 .section-primary .dbjs-input-component > .input input[type="month"],
@@ -129,7 +128,6 @@
 .section-primary .dbjs-input-component .multiple input[type="datetime"],
 .section-primary .dbjs-input-component .multiple input[type="datetime-local"],
 .section-primary .dbjs-input-component .multiple input[type="search"],
-.section-primary .dbjs-input-component .multiple input[type="email"],
 .section-primary .dbjs-input-component .multiple input[type="url"],
 .section-primary .dbjs-input-component .multiple input[type="tel"],
 .section-primary .dbjs-input-component .multiple input[type="color"],
