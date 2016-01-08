@@ -127,11 +127,15 @@ module.exports = function (t, a) {
 
 	masterObject.resolventProperty = true;
 	a(section.status, 0);
+	a(section.hasMissingRequiredPropertyNamesDeep, true);
 	masterObject.propertyForFirstSection = 1;
 	a(section.status, 0.33);
+	a(section.hasMissingRequiredPropertyNamesDeep, true);
 	masterObject.propertyForSecondSection = 1;
 	a(section.status, 0.66);
+	a(section.hasMissingRequiredPropertyNamesDeep, true);
 	masterObject.secondPropertyForSecondSection = 1;
+	a(section.hasMissingRequiredPropertyNamesDeep, false);
 	a(section.status, 1);
 
 	a.h3('weight');

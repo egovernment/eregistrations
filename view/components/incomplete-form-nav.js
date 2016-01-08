@@ -94,7 +94,7 @@ var drawFormEntitiesTable = function (tableSection, level) {
 generateMissingList = function (formSection, level) {
 	level = level || 0;
 
-	return _if(lt(formSection._status, 1), function () {
+	return _if(formSection._hasMissingRequiredPropertyNamesDeep, function () {
 		if (db.FormSection && (formSection instanceof db.FormSection)) {
 			return drawFormSection(formSection, level);
 		}
@@ -113,7 +113,7 @@ generateMissingList = function (formSection, level) {
 module.exports = function (sections) {
 	return ul(sections, function (formSection) {
 
-		return _if(not(eq(formSection._status, 1)),
+		return _if(formSection._hasMissingRequiredPropertyNamesDeep,
 			section(
 				a(
 					{ href: '#' + formSection.domId },
