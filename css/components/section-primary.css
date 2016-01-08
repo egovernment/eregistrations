@@ -7,8 +7,8 @@
 }
 .section-primary > *,
 .section-primary > form > *,
-/*.section-primary > .disabler-range > *,
-.section-primary > .disabler-range > form > *,*/
+.section-primary > .disabler-range > *,
+.section-primary > .disabler-range > form > *,
 .section-primary > .section-primary-wrapper > * {
 	margin-bottom: 22px;
 }
