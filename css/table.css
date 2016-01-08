@@ -5,17 +5,18 @@ table {
 
 th, td {
 	text-align: center;
+	vertical-align: top;
 }
 thead {
 	background-color: var(--light-background);
 }
 
-th {
-	color: var(--dark-text);
+thead th {
+	vertical-align: bottom;
 }
 
-td {
-	vertical-align: top;
+th {
+	color: var(--dark-text);
 }
 
 td a {
