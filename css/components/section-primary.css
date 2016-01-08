@@ -136,15 +136,6 @@
 	max-width: 100%;
 }
 
-.section-primary .dbjs-input-component > .input input[type="text"],
-.section-primary .dbjs-input-component > .input input[type="email"],
-.section-primary .dbjs-input-component > .input input[type="password"],
-.section-primary .dbjs-input-component > .input input[type="search"],
-.section-primary .dbjs-input-component > .input input[type="url"],
-.section-primary .dbjs-input-component > .input textarea {
-	min-width: 60%;
-}
-
 .section-primary .dbjs-input-component > .input .input {
 	width: auto;
 	margin-left: 0;
