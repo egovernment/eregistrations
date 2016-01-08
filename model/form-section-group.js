@@ -52,6 +52,17 @@ module.exports = memoize(function (db) {
 
 				return res;
 			}
+		},
+		hasMissingRequiredPropertyNamesDeep: {
+			value: function (_observe) {
+				if (this.isUnresolved) {
+					return this.resolventStatus < 1;
+				}
+
+				return this.applicableSections.some(function (child) {
+					return _observe(child._hasMissingRequiredPropertyNamesDeep);
+				});
+			}
 		}
 	});
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSectionBase;

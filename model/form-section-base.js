@@ -216,57 +216,10 @@ module.exports = memoize(function (db) {
 			value: _("Section is disabled because online payment transaction has " +
 				"already been made or it's in progress")
 		},
+		// Checks weather at least one of fields of this section or it's children
+		// has a missing value in this
 		hasMissingRequiredPropertyNamesDeep: {
-			type: db.Boolean,
-			value: function (_observe) {
-				var db = this.database, isResolventExcluded;
-				if (db.FormSection && (this instanceof db.FormSection)) {
-					return _observe(this.missingRequiredPropertyNames._size) > 0;
-				}
-
-				if (this.resolventProperty) {
-					var resolvedResolvent = this.ensureResolvent(_observe);
-
-					if (!resolvedResolvent) return false;
-
-					isResolventExcluded = this.isPropertyExcludedFromStatus(resolvedResolvent, _observe);
-
-					if (_observe(resolvedResolvent.observable) !== _observe(this.resolventValue)) {
-						if (isResolventExcluded) return false;
-
-						if (resolvedResolvent.descriptor.multiple) {
-							if (_observe(resolvedResolvent.observable).size) return false;
-						} else {
-							if (_observe(resolvedResolvent.observable) != null) return false;
-						}
-
-						return true;
-					}
-				}
-
-				if (db.FormSectionGroup && (this instanceof db.FormSectionGroup)) {
-					return this.applicableSections.some(function (child) {
-						return _observe(child._hasMissingRequiredPropertyNamesDeep);
-					});
-				}
-				if (db.FormEntitiesTable && (this instanceof db.FormEntitiesTable)) {
-					return this.entitiesSet.some(function (child) {
-						var sections;
-
-						sections = child.resolveSKeyPath(this.sectionProperty, _observe);
-						sections = sections.object[sections.key];
-
-						if (this.sectionProperty === 'dataForms') {
-							sections = sections.applicable;
-						}
-
-						return sections.some(function (section) {
-							return (_observe(section._hasMissingRequiredPropertyNamesDeep));
-						});
-					}, this);
-				}
-				return false;
-			}
+			type: db.Boolean
 		}
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
