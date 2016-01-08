@@ -105,17 +105,6 @@ select {
 	padding: 3px 5px;
 }
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-input[type="search"],
-input[type="email"],
-input[type="url"],
-input[type="tel"],
-textarea {
-	min-width: 60%;
-}
-
 select[multiple] {
 	height: auto;
 }
