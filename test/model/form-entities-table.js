@@ -52,20 +52,25 @@ module.exports = function (t, a) {
 	a(section.isUnresolved, true);
 	a(section.status, 0);
 	a(section.weight, 1);
+	a(section.hasMissingRequiredPropertyNamesDeep, true);
 	businessProcess.tableResolver = true;
 	a(section.isUnresolved, false);
 	a(section.weight, 3);
 	a(section.status, 0.33);
+	a(section.hasMissingRequiredPropertyNamesDeep, false);
 	section.excludedFromStatusIfFilled = ['tableResolver'];
 	a(section.weight, 2);
 	a(section.status, 0);
+	a(section.hasMissingRequiredPropertyNamesDeep, false);
 	a(section.progressRules.invalid.first.message,
 		"At least ${ min } and no more than ${ max } items should be added");
 	businessProcess.partners.add(new Partner());
 	businessProcess.partners.first.prop1 = 'test';
 	a(section.status, 0.5);
+	a(section.hasMissingRequiredPropertyNamesDeep, true);
 	businessProcess.partners.first.prop3 = true;
 	a(section.status, 1);
+	a(section.hasMissingRequiredPropertyNamesDeep, false);
 	a(String(section.lastEditDate), String(
 		new db.DateTime(businessProcess.partners.first.getDescriptor('prop3').lastModified / 1000)
 	));
@@ -74,22 +79,29 @@ module.exports = function (t, a) {
 	businessProcess.partners.add(new Partner());
 	businessProcess.partners.last.prop1 = 'test';
 	a(section.status, 0.75);
+	a(section.hasMissingRequiredPropertyNamesDeep, true);
 	businessProcess.partners.last.prop3 = false;
 	a(section.status, 1);
+	a(section.hasMissingRequiredPropertyNamesDeep, false);
 	businessProcess.partners.add(new Partner());
+	a(section.hasMissingRequiredPropertyNamesDeep, true);
 	businessProcess.partners.last.prop1 = 'test';
 	a(section.status, 0.8300000000000001);
 	a(section.weight, 6);
 	businessProcess.partners.last.prop3 = false;
 	a(section.status, 1);
+	a(section.hasMissingRequiredPropertyNamesDeep, false);
 	businessProcess.partners.add(new Partner());
 	a(section.weight, 7);
 	a(section.status, 0.85);
+	a(section.hasMissingRequiredPropertyNamesDeep, true);
 	businessProcess.tableResolver = false;
 	a(section.weight, 0);
 	a(section.status, 1);
+	a(section.hasMissingRequiredPropertyNamesDeep, false);
 	a(section.lastEditStamp, businessProcess.getDescriptor('tableResolver').lastModified);
 	businessProcess.tableResolver = true;
+	a(section.hasMissingRequiredPropertyNamesDeep, true);
 	section.max = 2;
 	a(section.weight, 6);
 	a(section.progressRules.invalid.first.message, "Exactly ${ max } items should be added");
