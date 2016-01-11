@@ -119,6 +119,7 @@ module.exports = function (t, a) {
 	a(section.excludedFromStatusIfFilled.size, 0);
 	a(section.actionUrl, undefined);
 	a(section.resolventProperty, undefined);
+	a(section.hasMissingRequiredPropertyNamesDeep, undefined);
 
 	a.h2('Properties overridden in derived class');
 	section = nestedObject.sectionOfDerivedType;
