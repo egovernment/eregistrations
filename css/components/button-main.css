@@ -34,20 +34,20 @@ button[type='submit'].button-main:active {
 	right: 3px;
 }
 
-.button-main-success,
-input[type='submit'].button-main-success,
-button[type='submit'].button-main-success {
+.button-main.button-main-success,
+input[type='submit'].button-main.button-main-success,
+button[type='submit'].button-main.button-main-success {
 	background-color: var(--success-background);
 }
-.button-main-success:hover,
-input[type='submit'].button-main-success:hover,
-button[type='submit'].button-main-success:hover,
-.button-main-success:focus,
-input[type='submit'].button-main-success:focus,
-button[type='submit'].button-main-success:focus,
-.button-main-success:active,
-input[type='submit'].button-main-success:active,
-button[type='submit'].button-main-success:active {
+.button-main.button-main-success:hover,
+input[type='submit'].button-main.button-main-success:hover,
+button[type='submit'].button-main.button-main-success:hover,
+.button-main.button-main-success:focus,
+input[type='submit'].button-main.button-main-success:focus,
+button[type='submit'].button-main.button-main-success:focus,
+.button-main.button-main-success:active,
+input[type='submit'].button-main.button-main-success:active,
+button[type='submit'].button-main.button-main-success:active {
 	background-color: var(--success-dark-background);
 }
 
