@@ -83,6 +83,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 			_if(this._isDisabled, div({ class: 'entities-overview-info' }, this._disabledMessage)),
 			div({ class: ['disabler-range',
 					_if(this._isDisabled, 'disabler-active')] },
+				div({ class: 'disabler' }),
 				hasOnlyTabularChildren(fieldsetResult.subSections) ?
 						contentContainer : customizeData.form = ns.form(
 					{
@@ -95,8 +96,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 						), 'completed form-elements', 'form-elements')
 					},
 					contentContainer
-				),
-				div({ class: 'disabler' }))
+				))
 		)];
 
 		if (typeof options.customize === 'function') {

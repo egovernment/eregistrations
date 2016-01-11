@@ -19,6 +19,7 @@ exports.step = function () {
 	div(
 		{ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
 				'disabler-active')], id: 'documents-disabler-range' },
+		div({ class: 'disabler' }),
 		section(
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
@@ -32,8 +33,7 @@ exports.step = function () {
 						return li({ class: 'section-primary' }, requirementUpload.toDOMForm(document));
 					})
 			)
-		),
-		div({ class: 'disabler' })
+		)
 	);
 	insert(_if(and(eq(this.businessProcess._guideProgress, 1), eq(requirementUploads._progress, 1)),
 		div({ class: 'user-next-step-button' },
