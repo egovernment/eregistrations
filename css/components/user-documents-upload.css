@@ -5,9 +5,6 @@
 	color: var(--normal-text);
 	display:block;
 }
-.user-documents-upload .file-uploader {
-	margin-top: 0;
-}
 
 .user-documents-upload .info-main {
 	margin-top: 11px;
