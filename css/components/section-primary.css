@@ -52,6 +52,11 @@
 .section-primary-sub {
 	border: none;
 	padding: 0;
+	margin-bottom: 44px;
+}
+
+.section-primary-sub:last-child {
+	margin-bottom: 0;
 }
 
 .section-primary-sub h2,
