@@ -1,4 +1,6 @@
-// Returns observable set of objects for given constraints
+// Returns resolved reactive set of values for given 'direct' property
+
+// So e.g. we may have reactive set of initialBusinessProcesses for specified user
 
 'use strict';
 

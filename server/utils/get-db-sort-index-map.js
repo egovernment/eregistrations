@@ -1,3 +1,5 @@
+// Returns primitive { ownerId: sortIndexValue } map for provided sortKeyPath
+
 'use strict';
 
 var ee       = require('event-emitter')

@@ -1,4 +1,9 @@
-// Returns observable set of objects for given constraints
+// It's about reverse chain of linked objects
+//
+// e.g. we may have
+// businessProcess -> derivedBusinessProcess -> (last) derivedBusinessProcess
+//
+// Now this util for provided (last) derivedBusinessProcess will retrieve whole chain up to top
 
 'use strict';
 

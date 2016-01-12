@@ -1,3 +1,5 @@
+// For input set, returns reactive sorted array (against provided index)
+
 'use strict';
 
 var remove      = require('es5-ext/array/#/remove')
