@@ -80,7 +80,7 @@ module.exports = function (target, ValueType/*, options*/) {
 				var value = observeFunction(this._value)
 				  , min, max;
 
-				if (!value) return;
+				if (value == null) return;
 
 				min = observeFunction(this._min);
 				if ((min != null) && (value < min)) {
