@@ -34,7 +34,8 @@
 
 'use strict';
 
-var validateDbjsType   = require('dbjs/valid-dbjs-type')
+var _                  = require('mano').i18n
+  , validateDbjsType   = require('dbjs/valid-dbjs-type')
   , validateDbjsObject = require('dbjs/valid-dbjs-object');
 
 module.exports = function (target, ValueType/*, options*/) {
@@ -64,12 +65,39 @@ module.exports = function (target, ValueType/*, options*/) {
 		},
 		resolvedValue: {
 			type: ValueType,
-			value: function () {
-				if ((this.min != null) && (this.value < this.min)) return null;
-				if ((this.max != null) && (this.value > this.max)) return null;
+			value: function (_observe) {
+				try {
+					this.validate(_observe);
+				} catch (e) {
+					return null;
+				}
 
 				return this.value;
 			}
+		},
+		validate: {
+			value: function (observeFunction) {
+				var value = observeFunction(this._value)
+				  , min, max;
+
+				if (!value) return;
+
+				min = observeFunction(this._min);
+				if ((min != null) && (value < min)) {
+					throw new Error(this.errorValueTooSmall);
+				}
+
+				max = observeFunction(this._max);
+				if ((max != null) && (value > max)) {
+					throw new Error(this.errorValueTooLarge);
+				}
+			}
+		},
+		errorValueTooSmall: {
+			value: _("Value cannot be less than ${ min }")
+		},
+		errorValueTooLarge: {
+			value: _("Value cannot be greater than ${ max }")
 		},
 		toString: {
 			value: function (ignore) {
