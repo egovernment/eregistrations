@@ -19,10 +19,11 @@ exports['init-demo'] = {
 	submit: function () {
 		var cookieName = 'demoUser'
 		  , userId     = this.res.cookies.get(cookieName)
-		  , demoUser, promise;
+		  , demoUser, promise, storage;
 
 		if (dbDriver) {
-			if (userId) promise = dbDriver.get(userId + '/isDemo');
+			storage = dbDriver.getStorage('user');
+			if (userId) promise = storage.get(userId + '/isDemo');
 			else promise = emptyPromise;
 			return promise(function (data) {
 				var records, promise;
@@ -33,7 +34,7 @@ exports['init-demo'] = {
 						{ id: userId + '/isDemo', data: { value: '11' } },
 						{ id: userId + '/roles*user', data: { value: '11' } }
 					];
-					dbDriver.storeMany(records).done();
+					storage.storeMany(records).done();
 					promise = mano.registerUserAccess(userId);
 				} else {
 					promise = emptyPromise;
