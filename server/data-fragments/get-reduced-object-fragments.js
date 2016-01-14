@@ -18,8 +18,8 @@ var getKeyPathFilter = function (keyPath) {
 	return function (data) { return matches(data.id); };
 };
 
-module.exports = memoize(function (dbName) {
-	dbName = ensureString(dbName);
+module.exports = memoize(function (storageName) {
+	var storage  = driver.getStorage(ensureString(storageName));
 	return memoize(function (ownerId/*, options*/) {
 		var fragment, options = Object(arguments[2]), filter, index, customFilter, keyPathFilter;
 
@@ -40,12 +40,12 @@ module.exports = memoize(function (dbName) {
 			filter = customFilter;
 		}
 		fragment = new Fragment();
-		fragment.promise = driver.getReducedObject(ownerId)(function (data) {
+		fragment.promise = storage.getReducedObject(ownerId)(function (data) {
 			data.forEach(function (data) {
 				if (!filter || filter(data)) assimilateEvent(fragment, data.id, data.data);
 			});
 		});
-		driver.on('owner:' + ownerId, function (event) {
+		storage.on('owner:' + ownerId, function (event) {
 			if (event.type !== 'reduced') return;
 			if (!filter || filter(event)) assimilateEvent(fragment, event.id, event.data);
 		});

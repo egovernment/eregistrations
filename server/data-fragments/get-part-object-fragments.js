@@ -12,10 +12,9 @@ var aFrom           = require('es5-ext/array/from')
 
   , driver = require('mano').dbDriver;
 
-module.exports = function (dbName, keyPaths) {
-	var keyPathsArray;
+module.exports = function (storageName, keyPaths) {
+	var keyPathsArray, storage = driver.getStorage(ensureString(storageName));
 
-	dbName = ensureString(dbName);
 	ensureSet(keyPaths);
 
 	keyPathsArray = aFrom(keyPaths);
@@ -25,21 +24,21 @@ module.exports = function (dbName, keyPaths) {
 		ownerId = ensureString(ownerId);
 		fragment = new Fragment();
 		fragment.promise = deferred(
-			driver.get(ownerId)(function (data) {
+			storage.get(ownerId)(function (data) {
 				if (data) fragment.update(ownerId, data);
 			}),
-			driver.getObject(ownerId, { keyPaths: keyPaths })(function (data) {
+			storage.getObject(ownerId, { keyPaths: keyPaths })(function (data) {
 				data.forEach(function (data) { fragment.update(data.id, data.data); });
 			}),
 			deferred.map(keyPathsArray, function (keyPath) {
 				var id = ownerId + '/' + keyPath;
-				return driver.getComputed(id)(function (data) {
+				return storage.getComputed(id)(function (data) {
 					if (!data) return;
 					assimilateEvent(fragment, id, data);
 				});
 			})
 		);
-		driver.on('owner:' + ownerId, function (event) {
+		storage.on('owner:' + ownerId, function (event) {
 			if (event.type === 'reduced') return;
 			if (!event.keyPath || keyPaths.has(event.keyPath)) {
 				if (event.type === 'direct') fragment.update(event.id, event.data);
