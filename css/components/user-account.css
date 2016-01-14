@@ -7,6 +7,10 @@
 	display: block;
 }
 
+.user-account-boxes > section h3 {
+	font-size: 25px;
+}
+
 .user-account-boxes > section h3,
 .user-account-section-title {
 	font-size: 18px;
@@ -50,15 +54,13 @@
 .user-account-welcome .free-form {
 	padding:11px 0;
 	font-size: 17px;
-}
-
-.user-account-welcome .free-form ol li {
 	line-height: 33px;
 }
 
 h3.user-account-section-title {
 	text-transform: uppercase;
 	padding-top:22px;
+	font-size: 22px;
 }
 
 .user-account-doc-data hr {
