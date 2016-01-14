@@ -18,7 +18,8 @@ exports.step = function () {
 	div({ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
 				'disabler-active')], id: 'forms-disabler-range' },
 		div({ class: 'disabler' }),
-		exports._formstabs(this),
+		section({ class: 'forms-tab-nav' },
+			exports._formstabs(this)),
 		div({ id: 'forms-sections-content' }));
 
 	insert(_if(and(eq(this.businessProcess._guideProgress, 1),
