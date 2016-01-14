@@ -190,7 +190,9 @@ module.exports = memoize(function (db) {
 
 		requirementUploads: { type: UploadsProcess, nested: true },
 		paymentReceiptUploads: { type: UploadsProcess, nested: true },
-		certificates: { type: db.Object, nested: true }
+		certificates: { type: db.Object, nested: true },
+		assignee: { type: User },
+		isAssignable: { type: db.Boolean }
 	});
 
 	ProcessingStep.prototype.requirementUploads.defineProperties({
