@@ -260,7 +260,6 @@ var initializeHandler = function (conf) {
 
 module.exports = exports = function (mainConf) {
 	var resolveHandler;
-	console.log('mainConf~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~', mainConf);
 	if (isArray(mainConf)) {
 		resolveHandler = (function () {
 			var map = mainConf.reduce(function (map, conf) {
