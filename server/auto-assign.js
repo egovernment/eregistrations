@@ -6,7 +6,7 @@ var unserializeValue = require('dbjs/_setup/unserialize/value')
 
 module.exports = function (storage, officials, step) {
 	var id = step.shortPath, officialsArray,
-		path = step.__id__.replace(/^[a-zA-Z0-9]+?\/(processingSteps\/map\/[a-zA-Z0-9]+)$/, '$1');
+		path = step.__id__.replace(/^.+?\/(processingSteps\/map\/.+)$/, '$1');
 
 	officialsArray = officials.toArray();
 
