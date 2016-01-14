@@ -13,10 +13,6 @@
 	font-weight: 300;
 }
 
-.user-account-boxes > section h3 {
-	font-size: 25px;
-}
-
 .user-account-boxes > section a {
 	text-decoration: none;
 }
@@ -49,6 +45,7 @@
 	display: flex;
 	justify-content: space-between;
 	margin:0;
+	font-size: 25px;
 }
 
 .user-account-welcome .free-form {
