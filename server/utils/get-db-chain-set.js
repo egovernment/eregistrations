@@ -16,7 +16,7 @@ var ensureString  = require('es5-ext/object/validate-stringifiable-value')
   , isArray = Array.isArray;
 
 var observe = function (set, storages, ownerId, keyPath) {
-	var id = ownerId + '/' + keyPath, listener, child, promise, initData;
+	var id = ownerId + '/' + keyPath, listener, child, promise;
 	var handler = function (data) {
 		var value = data && data.value
 		  , nu = (value && (value[0] === '7')) ? value.slice(1) : null
@@ -36,11 +36,9 @@ var observe = function (set, storages, ownerId, keyPath) {
 	storages.forEach(function (storage) { storage.on('keyid:' + id, listener); });
 	promise = deferred.some(storages, function (storage) {
 		return storage.get(id)(function (data) {
-			if (!data) return;
-			initData = data;
-			return true;
+			if (data) handler(data)(true);
 		});
-	})(function () { return initData; });
+	});
 	return {
 		id: ownerId,
 		promise: promise,
