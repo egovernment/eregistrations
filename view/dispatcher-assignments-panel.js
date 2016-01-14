@@ -27,7 +27,7 @@ var assignmentColumn = {
 			p({ class: 'submit' }, input({ type: 'submit' })));
 	}
 };
-var assignmentColumnData = tableColumns.assignmentColumn.data;
+var assignmentColumnData = assignmentColumn.data;
 columns.push(assignmentColumn);
 
 var businessProcessTable = function (context) {
