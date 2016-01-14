@@ -146,19 +146,9 @@ var initializeHandler = function (conf) {
 	  , bpListComputedProps = conf.listComputedProperties && aFrom(conf.listComputedProperties)
 	  , tableQueryHandler = getTableQueryHandler(ensureObject(conf.statusMap))
 	  , businessProcessQueryHandler = getBusinessProcessQueryHandler(conf.allIndexName)
-	  , itemsPerPage = toNaturalNumber(conf.itemsPerPage) || defaultItemsPerPage
-	  , indexes;
+	  , itemsPerPage = toNaturalNumber(conf.itemsPerPage) || defaultItemsPerPage;
 
 	if (conf.resolveCollectionMeta != null) ensureCallable(conf.resolveCollectionMeta);
-
-	if (bpListComputedProps) {
-		indexes = [];
-		deferred.map(bpListComputedProps, function (keyPath) {
-			return mano.dbDriver.indexKeyPath(keyPath)(function (map) {
-				indexes.push({ keyPath: keyPath, map: map });
-			});
-		});
-	}
 
 	var getTableData = memoize(function (query) {
 		var indexMeta = exports.getIndexMeta(query, conf), promise;
