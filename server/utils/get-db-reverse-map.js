@@ -1,3 +1,5 @@
+// Creates reverse { value: master } map for provided keyPath
+
 'use strict';
 
 var ensureString   = require('es5-ext/object/validate-stringifiable-value')

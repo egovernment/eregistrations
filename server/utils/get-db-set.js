@@ -1,4 +1,4 @@
-// Returns observable set of objects for given constraints
+// Returns observable set of all master ids that for given keyPath have saved provided value
 
 'use strict';
 

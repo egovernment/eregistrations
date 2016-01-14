@@ -5,14 +5,9 @@ table {
 
 th, td {
 	text-align: center;
-	vertical-align: top;
 }
 thead {
 	background-color: var(--light-background);
-}
-
-thead th {
-	vertical-align: bottom;
 }
 
 th {

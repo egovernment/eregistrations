@@ -1,4 +1,9 @@
-// Returns observable set of objects for given constraints
+// It's about chain linked objects as e.g.:
+//
+// businessProcess -> derivedBusinessProcess -> derivedBusinessProcess
+//
+// So e.g. if we want whole chain we provide initial business process and then whole chain down
+// to last derived (if any exist) is also resolved.
 
 'use strict';
 
