@@ -90,11 +90,9 @@ module.exports = memoize(function (db) {
 		shortPath: {
 			type: StringLine,
 			value: function () {
-				var res = [];
-				this.__id__.split('map').slice(1).forEach(function (part) {
-					res.push(part.replace(/\//g, '').replace('steps', ''));
-				});
-				return res.join('/');
+				return this.__id__.split('/map/').slice(1).map(function (part) {
+					return part.replace(/\/steps$/, '');
+				}).join('/');
 			}
 		}
 	});

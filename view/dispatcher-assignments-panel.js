@@ -16,8 +16,19 @@ exports._match  = 'processingStep';
 
 columns.push(tableColumns.archiverColumn);
 columns.push(tableColumns.goToColumn);
+
+var assignmentColumn = {
+	data: function (processingStep, assignableUsers) {
+		return form({ method: 'post',
+				action: url('assign-business-process'), class: 'submitted-menu-role-select',
+				id: 'form-current-role', autoSubmit: true },
+			p(input({ id: 'assignee-select',
+				dbjs: processingStep._assignee, list: assignableUsers })),
+			p({ class: 'submit' }, input({ type: 'submit' })));
+	}
+};
 var assignmentColumnData = tableColumns.assignmentColumn.data;
-columns.push(tableColumns.assignmentColumn);
+columns.push(assignmentColumn);
 
 var businessProcessTable = function (context) {
 	var assignableUsers = db.User.instances.filterByKey('roles', function (roles) {

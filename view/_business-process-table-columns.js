@@ -4,17 +4,6 @@ var formatLastModified = require('./utils/last-modified')
   , _ = require('mano').i18n.bind('User')
   , ProcessingStepStatus = require('mano').db.ProcessingStepStatus;
 
-exports.assignmentColumn = {
-	data: function (processingStep, assignableUsers) {
-		return form({ method: 'post',
-				action: url('assign-business-process'), class: 'submitted-menu-role-select',
-				id: 'form-current-role', autoSubmit: true },
-			p(input({ id: 'assignee-select',
-				dbjs: processingStep._assignee, list: assignableUsers })),
-			p({ class: 'submit' }, input({ type: 'submit' })));
-	}
-};
-
 exports.getServiceIcon = function (businessProcess) {
 	return i({ class: "fa fa-user" });
 };
