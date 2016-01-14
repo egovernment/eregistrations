@@ -8,12 +8,15 @@
 'use strict';
 
 var ensureString  = require('es5-ext/object/validate-stringifiable-value')
+  , deferred      = require('deferred')
   , memoize       = require('memoizee')
   , ObservableSet = require('observable-set/primitive')
-  , dbDriver      = require('mano').dbDriver;
+  , dbDriver      = require('mano').dbDriver
 
-var observe = function (set, storage, ownerId, keyPath) {
-	var id = ownerId + '/' + keyPath, listener, child, promise;
+  , isArray = Array.isArray;
+
+var observe = function (set, storages, ownerId, keyPath) {
+	var id = ownerId + '/' + keyPath, listener, child, promise, initData;
 	var handler = function (data) {
 		var value = data && data.value
 		  , nu = (value && (value[0] === '7')) ? value.slice(1) : null
@@ -25,17 +28,24 @@ var observe = function (set, storage, ownerId, keyPath) {
 		}
 		if (nu) {
 			set.add(nu);
-			child = observe(set, storage, nu, keyPath);
+			child = observe(set, storages, nu, keyPath);
 			return child.promise;
 		}
 	};
-	storage.on('keyid:' + id, listener = function (event) { handler(event.data); });
-	promise = storage.get(id)(handler);
+	listener = function (event) { handler(event.data); };
+	storages.forEach(function (storage) { storage.on('keyid:' + id, listener); });
+	promise = deferred.some(storages, function (storage) {
+		return storage.get(id)(function (data) {
+			if (!data) return;
+			initData = data;
+			return true;
+		});
+	})(function () { return initData; });
 	return {
 		id: ownerId,
 		promise: promise,
 		clear: function () {
-			storage.off('keyid:' + id, listener);
+			storages.forEach(function (storage) { storage.off('keyid:' + id, listener); });
 			if (child) {
 				set.delete(child.id);
 				child.clear();
@@ -45,10 +55,17 @@ var observe = function (set, storage, ownerId, keyPath) {
 };
 
 module.exports = memoize(function (storageName, ownerId, keyPath) {
-	var set, storage = dbDriver.getStorage(storageName);
+	var set, storages = [];
+	if (isArray(storageName)) {
+		storageName.forEach(function (storageName) {
+			storages.push(dbDriver.getStorage(ensureString(storageName)));
+		});
+	} else {
+		storages.push(dbDriver.getStorage(ensureString(storageName)));
+	}
 	ownerId = ensureString(ownerId);
 	keyPath = ensureString(keyPath);
 	set = new ObservableSet();
-	set.promise = observe(set, storage, ownerId, keyPath).promise;
+	set.promise = observe(set, storages, ownerId, keyPath).promise;
 	return set;
 }, { primitive: true });
