@@ -35,7 +35,7 @@ var businessProcessTable = function (context) {
 		getOrderIndex: context.getOrderIndex,
 		itemsPerPage: env.objectsListItemsPerPage,
 		columns: columns,
-		tableUrl: url(context.path),
+		tableUrl: location.pathname,
 		class: 'submitted-user-data-table'
 	});
 };
@@ -46,7 +46,7 @@ exports['dispatcher-main'] = {
 		var searchForm, searchInput, businessProcessesTable;
 
 		section({ class: 'section-primary users-table-filter-bar' },
-			searchForm = form({ action: url(this.path), autoSubmit: true },
+			searchForm = form({ action: location.pathname, autoSubmit: true },
 				div(
 					label({ for: 'search-input' }, _("Search")),
 					span({ class: 'input-append' },
