@@ -13,10 +13,11 @@ module.exports = function (storage, officials, step) {
 	var addAssignee = function (businessProcessId) {
 		return storage.get(businessProcessId + '/' + path + '/assignee')(function (data) {
 			if (data && data.value[0] === '7') return;
-			var officialId, nextIndex;
-			nextIndex = officialsArray[lastIndex + 1] ? lastIndex + 1 : 0;
+			var officialId, nextIndex, businessProcess;
+			lastIndex = nextIndex = officialsArray[lastIndex + 1] ? lastIndex + 1 : 0;
 			officialId = officialsArray[nextIndex];
-			storage.db.ProcessingStep.resolveSKeyPath(businessProcessId + '/' + path).value.assignee =
+			businessProcess = storage.db.BusinessProcess.getById(businessProcessId);
+			businessProcess.resolveSKeyPath(path).value.assignee =
 				storage.db.User.getById(officialId);
 			storage.store('processingStepAutoAssignLastIndex/' + id, serializeValue(nextIndex));
 //      Use the below two lines once dbjs listens to storage changes
