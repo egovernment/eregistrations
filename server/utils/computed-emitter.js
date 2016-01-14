@@ -13,11 +13,14 @@ var assign         = require('es5-ext/object/assign')
 
   , stringify = JSON.stringify;
 
-var ComputedEmitter = module.exports = function (dbName, keyPath/*, options*/) {
+var ComputedEmitter = module.exports = function (storageName, keyPath/*, options*/) {
 	var options;
-	if (!(this instanceof ComputedEmitter)) return new ComputedEmitter(dbName, keyPath, arguments[2]);
+	if (!(this instanceof ComputedEmitter)) {
+		return new ComputedEmitter(storageName, keyPath, arguments[2]);
+	}
 	options = Object(arguments[2]);
-	this._dbName = ensureString(dbName);
+	this._storageName = ensureString(storageName);
+	this._storage = dbDriver.getStorage(this._storageName);
 	if (options.type != null) {
 		if (options.type === 'direct') {
 			this._type = 'direct';
@@ -29,7 +32,7 @@ var ComputedEmitter = module.exports = function (dbName, keyPath/*, options*/) {
 		this._keyPath = ensureString(keyPath);
 	}
 
-	dbDriver.on('key:' + keyPath || '&', function (event) {
+	this._storage.on('key:' + keyPath || '&', function (event) {
 		this._map.set(event.ownerId, event.data.value);
 		this.emit(event.ownerId, event.data.value);
 	}.bind(this));
@@ -45,7 +48,7 @@ ee(Object.defineProperties(ComputedEmitter.prototype, assign({
 	_getData: d(function (ownerId) {
 		var methodName = 'get' + ((this._type === 'direct') ? '' : capitalize.call(this._type))
 		  , id = ownerId + (this._keyPath ? '/' + this._keyPath : '');
-		return dbDriver[methodName](id)(function (data) {
+		return this._storage[methodName](id)(function (data) {
 			var value = data ? data.value : '';
 			this._map.set(ownerId, value);
 			return value;

@@ -15,15 +15,16 @@ var remove      = require('es5-ext/array/#/remove')
   , defineProperty = Object.defineProperty
   , compareStamps = function (a, b) { return a.stamp - b.stamp; };
 
-module.exports = memoize(function (set, recordType, sortKeyPath) {
+module.exports = memoize(function (set, storageName, recordType, sortKeyPath) {
 	var arr = ee([]), itemsMap = getIndexMap(recordType, sortKeyPath)
 	  , count = 0, isInitialized = false, def = deferred(), setListener, itemsListener
-	  , methodName = 'get' + ((recordType === 'direct') ? '' : capitalize.call(recordType));
+	  , methodName = 'get' + ((recordType === 'direct') ? '' : capitalize.call(recordType))
+	  , storage = dbDriver.getStorage(storageName);
 	arr.emitChange = once(arr.emit.bind(arr, 'change'));
 	var add = function (ownerId) {
 		var promise;
 		if (itemsMap[ownerId]) promise = deferred(itemsMap[ownerId]);
-		else promise = dbDriver[methodName](ownerId + (sortKeyPath ? ('/' + sortKeyPath) : ''));
+		else promise = storage[methodName](ownerId + (sortKeyPath ? ('/' + sortKeyPath) : ''));
 		return promise.aside(function (data) {
 			if (!set.has(ownerId)) return;
 			if (!itemsMap[ownerId]) itemsMap[ownerId] = { id: ownerId, stamp: data ? data.stamp : 0 };

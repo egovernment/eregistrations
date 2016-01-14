@@ -8,18 +8,18 @@ var memoize             = require('memoizee')
   , ObservableSet       = require('observable-set/primitive')
   , dbDriver            = require('mano').dbDriver;
 
-module.exports = memoize(function (recordType, keyPath, value) {
-	var set = new ObservableSet();
-	dbDriver.on('key:' + keyPath || '&', function (event) {
+module.exports = memoize(function (storageName, recordType, keyPath, value) {
+	var set = new ObservableSet(), storage = dbDriver.getStorage(storageName);
+	storage.on('key:' + keyPath || '&', function (event) {
 		if (resolveFilter(value, event.data.value)) set.add(event.ownerId);
 		else set.delete(event.ownerId);
 	});
 	if (recordType === 'computed') {
-		return dbDriver.searchComputed(keyPath, function (ownerId, data) {
+		return storage.searchComputed(keyPath, function (ownerId, data) {
 			if (resolveFilter(value, data.value)) set.add(ownerId);
 		})(set);
 	}
-	return dbDriver.search(keyPath, function (id, data) {
+	return storage.search(keyPath, function (id, data) {
 		var index;
 		if (!resolveDirectFilter(value, data.value, id)) return;
 		index = id.indexOf('/');

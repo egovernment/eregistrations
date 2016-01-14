@@ -2,13 +2,14 @@
 
 'use strict';
 
-var ee       = require('event-emitter')
-  , memoize  = require('memoizee')
-  , dbDriver = require('mano').dbDriver;
+var ensureString = require('es5-ext/object/validate-stringifiable-value')
+  , ee           = require('event-emitter')
+  , memoize      = require('memoizee')
+  , dbDriver     = require('mano').dbDriver;
 
-module.exports = memoize(function (recordType, sortKeyPath) {
+module.exports = memoize(function (storageName, sortKeyPath) {
 	var itemsMap = ee();
-	dbDriver.on('key:' + (sortKeyPath + '&'), function (event) {
+	dbDriver.getStorage(storageName).on('key:' + (sortKeyPath + '&'), function (event) {
 		if (!itemsMap[event.ownerId]) {
 			itemsMap[event.ownerId] = { id: event.ownerId, stamp: event.data.stamp };
 		} else {
@@ -17,6 +18,6 @@ module.exports = memoize(function (recordType, sortKeyPath) {
 		itemsMap.emit('update', event);
 	});
 	return itemsMap;
-}, { primitive: true, resolvers: [String, function (sortKeyPath) {
+}, { primitive: true, resolvers: [ensureString, function (sortKeyPath) {
 	return (sortKeyPath == null) ? '' : String(sortKeyPath);
 }] });

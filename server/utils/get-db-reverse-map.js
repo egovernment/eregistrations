@@ -7,13 +7,12 @@ var ensureString   = require('es5-ext/object/validate-stringifiable-value')
   , Map            = require('es6-map')
   , dbDriver       = require('mano').dbDriver;
 
-module.exports = function (dbName, keyPath/*, options*/) {
-	var map, promise;
-	ensureString(dbName);
+module.exports = function (storageName, keyPath/*, options*/) {
+	var map, promise, storage = dbDriver.getStorage(ensureString(storageName));
 	ensureString(keyPath);
 
 	map = new Map();
-	promise = dbDriver.search(keyPath, function (id, data) {
+	promise = storage.search(keyPath, function (id, data) {
 		var ownerId;
 		if (endsWith.call(id, '/' + keyPath)) {
 			if (data.value && (data.value !== '0')) map.set(data.value, id.split('/', 1)[0]);
@@ -22,7 +21,7 @@ module.exports = function (dbName, keyPath/*, options*/) {
 			if (data.value === '11') map.set(id.slice(ownerId.length + keyPath.length + 2), ownerId);
 		}
 	});
-	dbDriver.on('key:' + keyPath, function (event) {
+	storage.on('key:' + keyPath, function (event) {
 		var old, nu;
 		if (event.type !== 'direct') return;
 		if (event.old && event.old.value && (event.old.value !== '0')) {

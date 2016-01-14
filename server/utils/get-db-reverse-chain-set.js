@@ -12,7 +12,7 @@ var ensureString  = require('es5-ext/object/validate-stringifiable-value')
   , ObservableSet = require('observable-set/primitive')
   , dbDriver      = require('mano').dbDriver;
 
-var observe = function (set, dbName, ownerId, keyPath) {
+var observe = function (set, storage, ownerId, keyPath) {
 	var id = ownerId + '/' + keyPath, listener, child, promise;
 	var handler = function (id, data, oldData) {
 		var nu, old;
@@ -32,20 +32,20 @@ var observe = function (set, dbName, ownerId, keyPath) {
 		}
 		if (nu) {
 			set.add(nu);
-			child = observe(set, dbName, nu, keyPath);
+			child = observe(set, storage, nu, keyPath);
 			return child.promise;
 		}
 	};
-	dbDriver.on('key:' + keyPath, listener = function (event) {
+	storage.on('key:' + keyPath, listener = function (event) {
 		if (event.type !== 'direct') return;
 		handler(event.id, event.data, event.old);
 	});
-	promise = dbDriver.search(keyPath, handler);
+	promise = storage.search(keyPath, handler);
 	return {
 		id: ownerId,
 		promise: promise,
 		clear: function () {
-			dbDriver.off('keyid:' + id, listener);
+			storage.off('keyid:' + id, listener);
 			if (child) {
 				set.delete(child.id);
 				child.clear();
@@ -54,12 +54,11 @@ var observe = function (set, dbName, ownerId, keyPath) {
 	};
 };
 
-module.exports = memoize(function (dbName, ownerId, keyPath) {
-	var set;
-	dbName = ensureString(dbName);
+module.exports = memoize(function (storageName, ownerId, keyPath) {
+	var set, storage = dbDriver.getStorage(ensureString(storageName));
 	ownerId = ensureString(ownerId);
 	keyPath = ensureString(keyPath);
 	set = new ObservableSet();
-	set.promise = observe(set, dbName, ownerId, keyPath).promise;
+	set.promise = observe(set, storage, ownerId, keyPath).promise;
 	return set;
 }, { primitive: true });
