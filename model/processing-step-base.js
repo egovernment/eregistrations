@@ -83,7 +83,18 @@ module.exports = memoize(function (db) {
 				return Boolean(this.isApproved || this.delegatedFrom);
 			}
 			return this.isPreviousStepsSatisfied;
-		} }
+		} },
+
+		// maps key to shorter version e.g. processingSteps/map/revision/steps/map/oni -> revision/oni
+		//                                  processingSteps/map/revision               -> revision
+		shortPath: {
+			type: StringLine,
+			value: function () {
+				return this.__id__.split('/map/').slice(1).map(function (part) {
+					return part.replace(/\/steps$/, '');
+				}).join('/');
+			}
+		}
 	});
 
 	ProcessingStepBase.prototype.define('previousSteps', {
