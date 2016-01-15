@@ -35,11 +35,9 @@ module.exports = memoize(function (storages) {
 			}, def.reject);
 		return def.promise;
 	};
-	return {
-		get: function (id) {
-			id = ensureString(id);
-			return map.get(id) || resolve(id);
-		}
+	return function (id) {
+		id = ensureString(id);
+		return map.get(id) || resolve(id);
 	};
 }, { primitive: true, normalizer: function (args) {
 	return ensureArray(args[0]).map(function (storage) {
