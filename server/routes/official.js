@@ -183,7 +183,7 @@ var initializeHandler = function (conf) {
 			promise = getDbSet('computed', indexMeta.name, indexMeta.value);
 		}
 		return promise(function (baseSet) {
-			if (!query.search) return getDbArray(baseSet, 'computed', allIndexName);
+			if (!query.search) return getDbArray(baseSet, idToStorage, 'computed', allIndexName);
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
 				return getFilteredSet(baseSet, value)(function (set) {
 					return getDbArrayLru(set, allIndexName);

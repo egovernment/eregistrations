@@ -41,8 +41,8 @@ module.exports = exports = function (data) {
 
 	var getTableData = memoize(function (query) {
 		var storage = mano.dbDriver.getStorage('user');
-		return getDbSet('computed', 'isActiveAccount', '11')(function (set) {
-			return getDbArray(set, 'direct', null)(function (arr) {
+		return getDbSet('user', 'computed', 'isActiveAccount', '11')(function (set) {
+			return getDbArray(set, 'user', 'direct', null)(function (arr) {
 				var pageCount, offset, size = arr.length;
 				if (!size) return { size: size };
 				pageCount = ceil(size / itemsPerPage);
