@@ -12,6 +12,6 @@ forEach(meta, function (conf, name) {
 	if (name === 'all') {
 		conf.data = all;
 	} else {
-		conf.data = all.filterByKeyPath(conf.indexName, name);
+		conf.data = all.filterByKeyPath(conf.indexName, conf.indexValue);
 	}
 });
