@@ -34,7 +34,7 @@ module.exports = function (storage, officials, step) {
 		return (data && unserializeValue(data.value)) || 0;
 	}).then(function (index) {
 		lastIndex = index;
-		return getDbSet('computed', path + '/resolvedStatus',
+		return getDbSet(storage.name, 'computed', path + '/resolvedStatus',
 			serializeValue('pending'))(function (businessProcesses) {
 			businessProcesses.on('change', function (ev) {
 				if (ev.type === 'delete') return;
