@@ -33,7 +33,7 @@ module.exports = meta = {
 forEach(meta, function (conf, name) {
 	if (name === 'all') {
 		conf.indexName = 'processingSteps/map/${ appNameSuffix }/isReady';
-		conf.indexValue = '11';
+		conf.indexValue = true;
 	} else {
 		conf.indexName = 'processingSteps/map/${ appNameSuffix }/resolvedStatus';
 		conf.indexValue = name;

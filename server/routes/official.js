@@ -304,18 +304,11 @@ module.exports = exports = function (mainConf) {
 };
 
 exports.getIndexMeta = function (query, meta) {
-	var status = query.status;
-
-	if (status) {
-		return {
-			name: meta[status].indexName,
-			value: serializeValue(meta[status].indexValue)
-		};
-	}
+	var status = query.status || 'all';
 
 	return {
-		name: meta.all.indexName,
-		value: meta.all.indexValue
+		name: meta[status].indexName,
+		value: serializeValue(meta[status].indexValue)
 	};
 };
 
