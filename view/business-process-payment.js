@@ -32,7 +32,6 @@ exports.step = function () {
 					return li({ class: 'section-primary' },
 						form({ action: '/payment-receipt-upload/' + camelToHyphen.call(paymentUpload.key) + '/',
 							method: 'post', enctype: 'multipart/form-data', autoSubmit: true },
-							div(
 								h2(_d(paymentUpload.document.label, { user: paymentUpload.master })),
 								paymentUpload.document.legend &&
 									small(mdi(_d(paymentUpload.document.legend,
@@ -43,7 +42,7 @@ exports.step = function () {
 								p({ class: 'section-primary-scroll-top' },
 										a({ onclick: 'window.scroll(0, 0)' },
 											span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
-							))
+							)
 						);
 				}
 			)
