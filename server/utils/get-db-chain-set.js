@@ -36,7 +36,7 @@ var observe = function (set, storages, ownerId, keyPath) {
 	storages.forEach(function (storage) { storage.on('keyid:' + id, listener); });
 	promise = deferred.some(storages, function (storage) {
 		return storage.get(id)(function (data) {
-			if (data) handler(data)(true);
+			if (data) return handler(data)(true);
 		});
 	});
 	return {
