@@ -17,6 +17,7 @@ module.exports = function (env, root) {
 	clientEnv = {
 		static: { host: (env.static && env.static.host) || '/' },
 		url: env.url,
+		objectsListItemsPerPage: env.objectsListItemsPerPage,
 		i18n: (env.i18n !== false)
 	};
 	if (env.googleAnalytics) clientEnv.googleAnalytics = env.googleAnalytics;
