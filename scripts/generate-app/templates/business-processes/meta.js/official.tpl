@@ -2,9 +2,11 @@
 
 'use strict';
 
-var _ = require('../../../i18n').bind('Official');
+var _       = require('../../../i18n').bind('Official')
+  , forEach = require('es5-ext/object/for-each')
+  , meta;
 
-module.exports = {
+module.exports = meta = {
 	all: {
 		label: _("All"),
 		order: 5
@@ -27,3 +29,13 @@ module.exports = {
 		order: 4
 	}
 };
+
+forEach(meta, function (conf, name) {
+	if (name === 'all') {
+		conf.indexName = 'processingSteps/map/${ appNameSuffix }/isReady';
+		conf.indexValue = '11';
+	} else {
+		conf.indexName = 'processingSteps/map/${ appNameSuffix }/resolvedStatus';
+		conf.indexValue = name;
+	}
+});
