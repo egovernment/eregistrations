@@ -182,6 +182,13 @@ var initializeHandler = function (conf) {
 		} else {
 			promise = getDbSet('computed', indexMeta.name, indexMeta.value);
 		}
+		if (query.assignedTo) {
+			promise = promise.then(function (baseSet) {
+				return getDbSet('direct', conf.assigneePath, '7' + query.assignedTo)(function (set) {
+					return baseSet.and(set);
+				});
+			});
+		}
 		return promise(function (baseSet) {
 			if (!query.search) return getDbArray(baseSet, idToStorage, 'computed', allIndexName);
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
@@ -298,9 +305,13 @@ module.exports = exports = function (mainConf) {
 	}
 	return {
 		'get-business-processes-view': function (query) {
-			return resolveHandler(this.req.$user)(function (handler) {
+			var userId = this.req.$user;
+			return resolveHandler(userId)(function (handler) {
 				// Get snapshot of business processes table page
 				return handler.tableQueryHandler.resolve(query)(function (query) {
+					if (mainConf.assigneePath) {
+						query.assignedTo = userId;
+					}
 					return handler.getTableData(query);
 				});
 			});

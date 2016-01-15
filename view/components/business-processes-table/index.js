@@ -14,7 +14,7 @@ var ensureObject      = require('es5-ext/object/valid-object')
 module.exports = function (conf) {
 	var columns = ensureObject(conf.columns)
 	  , listManager = new Manager(conf)
-	  , pagination = new Pagination('/')
+	  , pagination = new Pagination(conf.tableUrl || '/')
 	  , table = new ReactiveTable(document, null, columns);
 
 	if (conf.id) table.table.id = conf.id;
@@ -27,6 +27,6 @@ module.exports = function (conf) {
 		table.reload(listManager.list);
 	});
 
-	db.objects.on('update', setupQueryHandler(listManager).update);
+	db.objects.on('update', setupQueryHandler(listManager, conf.tableUrl).update);
 	return table;
 };
