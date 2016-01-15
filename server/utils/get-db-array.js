@@ -2,32 +2,34 @@
 
 'use strict';
 
-var remove       = require('es5-ext/array/#/remove')
-  , constant     = require('es5-ext/function/constant')
-  , ensureString = require('es5-ext/object/validate-stringifiable-value')
-  , capitalize   = require('es5-ext/string/#/capitalize')
-  , d            = require('d')
-  , ee           = require('event-emitter')
-  , deferred     = require('deferred')
-  , memoize      = require('memoizee')
-  , once         = require('timers-ext/once')
-  , dbDriver     = require('mano').dbDriver
-  , getIndexMap  = require('./get-db-sort-index-map')
+var remove         = require('es5-ext/array/#/remove')
+  , capitalize     = require('es5-ext/string/#/capitalize')
+  , d              = require('d')
+  , ee             = require('event-emitter')
+  , deferred       = require('deferred')
+  , memoize        = require('memoizee')
+  , once           = require('timers-ext/once')
+  , dbDriver       = require('mano').dbDriver
+  , getIndexMap    = require('./get-db-sort-index-map')
+  , getIdToStorage = require('./get-id-to-storage')
 
-  , defineProperty = Object.defineProperty
+  , isArray = Array.isArray, defineProperty = Object.defineProperty
   , compareStamps = function (a, b) { return a.stamp - b.stamp; };
 
 module.exports = memoize(function (set, storageName, recordType, sortKeyPath) {
 	var arr = ee([]), itemsMap = getIndexMap(recordType, sortKeyPath)
 	  , count = 0, isInitialized = false, def = deferred(), setListener, itemsListener
 	  , methodName = 'get' + ((recordType === 'direct') ? '' : capitalize.call(recordType))
-	  , getStorage;
+	  , getStorage, storages;
 
-	if (typeof storageName === 'function') {
-		getStorage = storageName;
+	if (isArray(storageName)) {
+		storages = storageName.map(function (storageName) {
+			return dbDriver.getStorage(storageName);
+		});
 	} else {
-		getStorage = constant(deferred(dbDriver.getStorage(ensureString(storageName))));
+		storages = [dbDriver.getStorage(storageName)];
 	}
+	getStorage = getIdToStorage(storages);
 	arr.emitChange = once(arr.emit.bind(arr, 'change'));
 	var add = function (ownerId) {
 		var promise;
