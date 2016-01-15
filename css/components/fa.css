@@ -96,6 +96,13 @@ e.g.:
 	content: '\f085';
 }
 
+.fa-cog {
+	width: 0.89em;
+}
+.fa-cog:before {
+	content: '\f013';
+}
+
 .fa-user {
 	width: 0.84em;
 }
