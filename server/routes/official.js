@@ -2,32 +2,32 @@
 
 'use strict';
 
-var aFrom                   = require('es5-ext/array/from')
-  , flatten                 = require('es5-ext/array/#/flatten')
-  , remove                  = require('es5-ext/array/#/remove')
-  , uniq                    = require('es5-ext/array/#/uniq')
-  , constant                = require('es5-ext/function/constant')
-  , isNaturalNumber         = require('es5-ext/number/is-natural')
-  , toNaturalNumber         = require('es5-ext/number/to-pos-integer')
-  , normalizeOptions        = require('es5-ext/object/normalize-options')
-  , toArray                 = require('es5-ext/object/to-array')
-  , ensureCallable          = require('es5-ext/object/valid-callable')
-  , ensureObject            = require('es5-ext/object/valid-object')
-  , ensureString            = require('es5-ext/object/validate-stringifiable-value')
-  , includes                = require('es5-ext/string/#/contains')
-  , uncapitalize            = require('es5-ext/string/#/uncapitalize')
-  , d                       = require('d')
-  , ensureSet               = require('es6-set/valid-set')
-  , deferred                = require('deferred')
-  , memoize                 = require('memoizee')
-  , serializeValue          = require('dbjs/_setup/serialize/value')
-  , unserializeValue        = require('dbjs/_setup/unserialize/value')
-  , ObservableSet           = require('observable-set/primitive')
-  , mano                    = require('mano')
-  , roleNameMap             = require('mano/lib/server/user-role-name-map')
-  , QueryHandler            = require('../../utils/query-handler')
-  , defaultItemsPerPage     = require('../../conf/objects-list-items-per-page')
-  , getDbSet                = require('../utils/get-db-set')
+var aFrom                          = require('es5-ext/array/from')
+  , flatten                        = require('es5-ext/array/#/flatten')
+  , remove                         = require('es5-ext/array/#/remove')
+  , uniq                           = require('es5-ext/array/#/uniq')
+  , constant                       = require('es5-ext/function/constant')
+  , isNaturalNumber                = require('es5-ext/number/is-natural')
+  , toNaturalNumber                = require('es5-ext/number/to-pos-integer')
+  , normalizeOptions               = require('es5-ext/object/normalize-options')
+  , toArray                        = require('es5-ext/object/to-array')
+  , ensureCallable                 = require('es5-ext/object/valid-callable')
+  , ensureObject                   = require('es5-ext/object/valid-object')
+  , ensureString                   = require('es5-ext/object/validate-stringifiable-value')
+  , includes                       = require('es5-ext/string/#/contains')
+  , uncapitalize                   = require('es5-ext/string/#/uncapitalize')
+  , d                              = require('d')
+  , ensureSet                      = require('es6-set/valid-set')
+  , deferred                       = require('deferred')
+  , memoize                        = require('memoizee')
+  , serializeValue                 = require('dbjs/_setup/serialize/value')
+  , unserializeValue               = require('dbjs/_setup/unserialize/value')
+  , ObservableSet                  = require('observable-set/primitive')
+  , mano                           = require('mano')
+  , roleNameMap                    = require('mano/lib/server/user-role-name-map')
+  , QueryHandler                   = require('../../utils/query-handler')
+  , defaultItemsPerPage            = require('../../conf/objects-list-items-per-page')
+  , getDbSet                       = require('../utils/get-db-set')
   , getDbArray                     = require('../utils/get-db-array')
   , getIndexMap                    = require('../utils/get-db-sort-index-map')
   , businessProcessStoragesPromise = require('../utils/business-process-storages')
@@ -38,7 +38,7 @@ var aFrom                   = require('es5-ext/array/from')
   , isArray = Array.isArray, slice = Array.prototype.slice, push = Array.prototype.push
   , ceil = Math.ceil, create = Object.create
   , defineProperty = Object.defineProperty, stringify = JSON.stringify
-  , businessProcessStorages. businessProcessStorageNames;
+  , businessProcessStorages, businessProcessStorageNames;
 
 businessProcessStoragesPromise.done(function (storages) {
 	businessProcessStorages = storages;
@@ -75,7 +75,7 @@ var getBusinessProcessQueryHandler = function (indexName) {
 	]);
 };
 
-var getFilteredSet = memoize(function (baseSet, filterString) {
+var getFilteredSet = memoize(function (baseSet, filterString, storages) {
 	var set = new ObservableSet(), baseSetListener, indexListener
 	  , def = deferred(), count = 0, isInitialized = false;
 	var filter = function (ownerId, data) {
@@ -101,7 +101,7 @@ var getFilteredSet = memoize(function (baseSet, filterString) {
 		if (!baseSet.has(event.ownerId)) return;
 		filter(event.ownerId, event.data);
 	};
-	businessProcessStorages.forEach(function (storage) {
+	storages.forEach(function (storage) {
 		storage.on('key:searchString', indexListener);
 	});
 	baseSet.forEach(function (ownerId) {
@@ -114,12 +114,12 @@ var getFilteredSet = memoize(function (baseSet, filterString) {
 	if (!count) def.resolve(set);
 	defineProperty(set, '_dispose', d(function () {
 		baseSet.off(baseSetListener);
-		businessProcessStorages.forEach(function (storage) {
+		storages.forEach(function (storage) {
 			storage.off('key:searchString', indexListener);
 		});
 	}));
 	return def.promise;
-}, { max: 1000, dispose: function (set) { set._dispose(); } });
+}, { length: 2, max: 1000, dispose: function (set) { set._dispose(); } });
 
 var getDbArrayLru = memoize(function (set, sortIndexName) {
 	var arr = [], itemsMap = getIndexMap(sortIndexName)
@@ -173,32 +173,45 @@ var initializeHandler = function (conf) {
 	  , bpListComputedProps = conf.listComputedProperties && aFrom(conf.listComputedProperties)
 	  , tableQueryHandler = getTableQueryHandler(ensureObject(conf.statusMap))
 	  , businessProcessQueryHandler = getBusinessProcessQueryHandler(conf.allIndexName)
-	  , itemsPerPage = toNaturalNumber(conf.itemsPerPage) || defaultItemsPerPage;
+	  , itemsPerPage = toNaturalNumber(conf.itemsPerPage) || defaultItemsPerPage
+	  , storageName, storages;
 
 	if (conf.resolveCollectionMeta != null) ensureCallable(conf.resolveCollectionMeta);
+	if (conf.storageName != null) {
+		storageName = conf.storageName;
+		if (isArray(storageName)) {
+			storages = storageName.map(function (storageName) {
+				return mano.dbDriver.getStorage(ensureString(storageName));
+			});
+		} else {
+			storages = [mano.dbDriver.getStorage(storageName)];
+		}
+	} else {
+		storageName = businessProcessStorageNames;
+		storages = businessProcessStorages;
+	}
 
 	var getTableData = memoize(function (query) {
 		var indexMeta = exports.getIndexMeta(query, conf), promise;
 		if (isArray(indexMeta)) {
 			promise = deferred.map(indexMeta.sort(compareIndexMeta), function (indexMeta) {
-				return getDbSet('computed', indexMeta.name, indexMeta.value);
+				return getDbSet(storageName, 'computed', indexMeta.name, indexMeta.value);
 			})(function (sets) {
 				return aFrom(sets).reduce(function (set1, set2) { return set1.and(set2); });
 			});
 		} else {
-			promise = getDbSet('computed', indexMeta.name, indexMeta.value);
+			promise = getDbSet(storageName, 'computed', indexMeta.name, indexMeta.value);
 		}
 		if (query.assignedTo) {
 			promise = promise.then(function (baseSet) {
-				return getDbSet('direct', conf.assigneePath, '7' + query.assignedTo)(function (set) {
-					return baseSet.and(set);
-				});
+				return getDbSet(storageName, 'direct', conf.assigneePath, '7' +
+					query.assignedTo)(function (set) { return baseSet.and(set); });
 			});
 		}
 		return promise(function (baseSet) {
 			if (!query.search) return getDbArray(baseSet, idToStorage, 'computed', allIndexName);
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
-				return getFilteredSet(baseSet, value)(function (set) {
+				return getFilteredSet(baseSet, value, storages)(function (set) {
 					return getDbArrayLru(set, allIndexName);
 				});
 			})(function (arrays) {
@@ -293,7 +306,7 @@ module.exports = exports = function (mainConf) {
 				return map;
 			}, create(null));
 			return function (userId) {
-				return businessProcessStorages(function )( {
+				return businessProcessStorages(function () {
 					return roleNameMap.get(userId)(function (roleName) {
 						var handler;
 						if (roleName) {
