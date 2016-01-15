@@ -121,8 +121,8 @@ var getFilteredSet = memoize(function (baseSet, filterString, storages) {
 	return def.promise;
 }, { length: 2, max: 1000, dispose: function (set) { set._dispose(); } });
 
-var getDbArrayLru = memoize(function (set, sortIndexName) {
-	var arr = [], itemsMap = getIndexMap(sortIndexName)
+var getDbArrayLru = memoize(function (set, sortIndexName, storageName) {
+	var arr = [], itemsMap = getIndexMap(storageName, sortIndexName)
 	  , count = 0, isInitialized = false, def = deferred(), setListener, itemsListener;
 	var add = function (ownerId) {
 		var promise;
@@ -162,7 +162,7 @@ var getDbArrayLru = memoize(function (set, sortIndexName) {
 		itemsMap.off(itemsListener);
 	}));
 	return def.promise;
-}, { max: 1000, dispose: function (arr) { arr._dispose(); } });
+}, { length: 2, max: 1000, dispose: function (arr) { arr._dispose(); } });
 
 var initializeHandler = function (conf) {
 	conf = normalizeOptions(ensureObject(conf));
@@ -212,7 +212,7 @@ var initializeHandler = function (conf) {
 			if (!query.search) return getDbArray(baseSet, idToStorage, 'computed', allIndexName);
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
 				return getFilteredSet(baseSet, value, storages)(function (set) {
-					return getDbArrayLru(set, allIndexName);
+					return getDbArrayLru(set, allIndexName, storageName);
 				});
 			})(function (arrays) {
 				if (arrays.length === 1) return arrays[0];
