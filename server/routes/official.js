@@ -209,7 +209,7 @@ var initializeHandler = function (conf) {
 			});
 		}
 		return promise(function (baseSet) {
-			if (!query.search) return getDbArray(baseSet, idToStorage, 'computed', allIndexName);
+			if (!query.search) return getDbArray(baseSet, storageName, 'computed', allIndexName);
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
 				return getFilteredSet(baseSet, value, storages)(function (set) {
 					return getDbArrayLru(set, allIndexName, storageName);
