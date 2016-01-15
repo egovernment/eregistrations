@@ -20,13 +20,13 @@ module.exports = {
 	'forms-tabbed': require('../view/business-process-data-forms-tabbed'),
 	'forms/company-informations': {
 		decorateContext: function () {
-			this.section = this.businessProcess.dataFroms.map.company;
+			this.section = this.businessProcess.dataForms.map.company;
 		},
 		view: require('../view/business-process-data-forms-section-tab')
 	},
-	'forms/representative': {
+	'forms/sides': {
 		decorateContext: function () {
-			this.section = this.businessProcess.dataFroms.map.personal;
+			this.section = this.businessProcess.dataForms.map.sides;
 		},
 		view: require('../view/business-process-data-forms-section-tab')
 	},

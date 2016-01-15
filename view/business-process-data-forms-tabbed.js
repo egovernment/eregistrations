@@ -11,16 +11,15 @@ exports['step-guide'] = { class: { 'step-form': true } };
 exports.step = function () {
 	nav({ class: 'forms-tab-nav' },
 		ul(exports._formstabs(this)));
-	div({ id: 'forms-sections-content' });
+	div({ id: 'forms-sections-content', class: 'user-forms' });
 
 };
 
 exports._formstabs = function (context) {
 	return context.businessProcess.dataForms.applicable.map(function (section) {
-		return li(a({ href: "/forms/" + section.pageUrl + '/',
-			class: ['forms-tab-nav-tab',
-				_if(eq(appLocation._pathname, '/forms/' + section.pageUrl + '/'),
-					'forms-tab-nav-tab-active')] },
+		return li({ class: ['forms-tab-nav-tab',
+			_if(eq(appLocation._pathname, '/forms/' + section.pageUrl + '/'),
+					'forms-tab-nav-tab-active')] }, a({ href: "/forms/" + section.pageUrl + '/' },
 			section._label));
 	});
 };

@@ -474,8 +474,7 @@ BusinessProcessNew.prototype.dataForms.map.get('personal').setProperties({
 		"exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor " +
 		"in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur " +
 		"sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est " +
-		"laborum",
-	pageUrl: 'representative'
+		"laborum"
 });
 
 BusinessProcessNew.prototype.dataForms.map.define('company', {
@@ -519,7 +518,9 @@ BusinessProcessNew.prototype.dataForms.map.define('sides', {
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('sides').setProperties({
-	label: "Business Owner sides informations"
+	label: "Business Owner sides informations",
+	legend: "All sides informations requested",
+	pageUrl: 'sides'
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('sides').sections.defineProperties({
