@@ -13,8 +13,8 @@ var includes            = require('es5-ext/array/#/contains')
 
   , isArray = Array.isArray;
 
-module.exports = function (collection/*, getFragment*/) {
-	var getFragment = arguments[1], fragment, current, isArrayMode = isArray(collection);
+module.exports = function (collection, getFragment) {
+	var fragment, current, isArrayMode = isArray(collection);
 
 	ensureObservable(ensureIterable(collection));
 	if (typeof getFragment !== 'function') {
