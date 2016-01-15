@@ -48,7 +48,6 @@ var clearDemoUsers = function () {
 	debug('deleting demo users inactive since %s', lastWeek);
 
 	resolveStorages(function (bpStorages) {
-		if (!bpStorages.length) return;
 		return userStorage.search('isDemo', function (id, data) {
 			var ownerId;
 			if (data.value !== '11') return;
