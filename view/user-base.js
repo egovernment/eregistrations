@@ -38,7 +38,7 @@ exports.menu = function () {
 			li(
 				a(
 					{ href: '/profile/' },
-					span({ class: 'fa fa-cogs' }, "Preferences")
+					span({ class: 'fa fa-cog' }, "Preferences")
 				)
 			),
 			li(
