@@ -17,7 +17,7 @@ var remove         = require('es5-ext/array/#/remove')
   , compareStamps = function (a, b) { return a.stamp - b.stamp; };
 
 module.exports = memoize(function (set, storageName, recordType, sortKeyPath) {
-	var arr = ee([]), itemsMap = getIndexMap(recordType, sortKeyPath)
+	var arr = ee([]), itemsMap = getIndexMap(storageName, sortKeyPath)
 	  , count = 0, isInitialized = false, def = deferred(), setListener, itemsListener
 	  , methodName = 'get' + ((recordType === 'direct') ? '' : capitalize.call(recordType))
 	  , getStorage, storages;
