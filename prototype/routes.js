@@ -18,8 +18,18 @@ module.exports = {
 	'guide/costs-print': require('../view/print-business-process-costs-list'),
 	forms: require('./view/forms'),
 	'forms-tabbed': require('../view/business-process-data-forms-tabbed'),
-	'forms/company-informations': require('../view/business-process-data-forms-section-tab'),
-	'forms/representative': require('../view/business-process-data-forms-section-tab'),
+	'forms/company-informations': {
+		decorateContext: function () {
+			this.section = this.businessProcess.dataFroms.map.company;
+		},
+		view: require('../view/business-process-data-forms-section-tab')
+	},
+	'forms/representative': {
+		decorateContext: function () {
+			this.section = this.businessProcess.dataFroms.map.personal;
+		},
+		view: require('../view/business-process-data-forms-section-tab')
+	},
 	'forms/disabled': require('./view/disabled-forms'),
 	documents: require('./view/documents'),
 	pay: require('./view/payment'),

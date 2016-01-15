@@ -16,8 +16,8 @@ exports.step = function () {
 };
 
 exports._formstabs = function (context) {
-	context.businessProcess.dataForms.applicable.forEach(function (section) {
-		return li(a({ href: "/forms/" + section.pageUrl,
+	return context.businessProcess.dataForms.applicable.map(function (section) {
+		return li(a({ href: "/forms/" + section.pageUrl + '/',
 			class: ['forms-tab-nav-tab',
 				_if(eq(appLocation._pathname, '/forms/' + section.pageUrl + '/'),
 					'forms-tab-nav-tab-active')] },
