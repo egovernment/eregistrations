@@ -101,9 +101,7 @@ var getFilteredSet = memoize(function (baseSet, filterString, storages) {
 		if (!baseSet.has(event.ownerId)) return;
 		filter(event.ownerId, event.data);
 	};
-	storages.forEach(function (storage) {
-		storage.on('key:searchString', indexListener);
-	});
+	storages.forEach(function (storage) { storage.on('key:searchString', indexListener); });
 	baseSet.forEach(function (ownerId) {
 		++count;
 		findAndFilter(ownerId).done(function () {
@@ -114,9 +112,7 @@ var getFilteredSet = memoize(function (baseSet, filterString, storages) {
 	if (!count) def.resolve(set);
 	defineProperty(set, '_dispose', d(function () {
 		baseSet.off(baseSetListener);
-		storages.forEach(function (storage) {
-			storage.off('key:searchString', indexListener);
-		});
+		storages.forEach(function (storage) { storage.off('key:searchString', indexListener); });
 	}));
 	return def.promise;
 }, { length: 2, max: 1000, dispose: function (set) { set._dispose(); } });
