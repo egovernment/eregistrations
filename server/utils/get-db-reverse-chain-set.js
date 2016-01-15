@@ -44,7 +44,12 @@ var observe = function (set, storages, ownerId, keyPath) {
 	};
 	storages.forEach(function (storage) { storage.on('key:' + keyPath, listener); });
 	promise = deferred.some(storages, function (storage) {
-		return storage.search(keyPath, handler);
+		var promises = [];
+		return storage.search(keyPath, function (id, data) {
+			var result = handler(id, data);
+			promises.push(handler(result));
+			return result;
+		})(function () { return deferred.map(promises); });
 	});
 	return {
 		id: ownerId,
