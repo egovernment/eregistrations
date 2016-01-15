@@ -28,16 +28,22 @@ var aFrom                   = require('es5-ext/array/from')
   , QueryHandler            = require('../../utils/query-handler')
   , defaultItemsPerPage     = require('../../conf/objects-list-items-per-page')
   , getDbSet                = require('../utils/get-db-set')
-  , getDbArray              = require('../utils/get-db-array')
-  , getIndexMap             = require('../utils/get-db-sort-index-map')
-  , businessProcessStorages = require('../utils/business-process-storages')
-  , idToStorage             = require('../utils/business-process-id-to-storage')
+  , getDbArray                     = require('../utils/get-db-array')
+  , getIndexMap                    = require('../utils/get-db-sort-index-map')
+  , businessProcessStoragesPromise = require('../utils/business-process-storages')
+  , idToStorage                    = require('../utils/business-process-id-to-storage')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }
   , isArray = Array.isArray, slice = Array.prototype.slice, push = Array.prototype.push
   , ceil = Math.ceil, create = Object.create
-  , defineProperty = Object.defineProperty, stringify = JSON.stringify;
+  , defineProperty = Object.defineProperty, stringify = JSON.stringify
+  , businessProcessStorages. businessProcessStorageNames;
+
+businessProcessStoragesPromise.done(function (storages) {
+	businessProcessStorages = storages;
+	businessProcessStorageNames = storages.map(function (storage) { return storage.name; });
+});
 
 var compareIndexMeta = function (meta1, meta2) {
 	return meta1.name.localeCompare(meta2.name) || meta1.value.localeCompare(meta2.value);
@@ -95,8 +101,8 @@ var getFilteredSet = memoize(function (baseSet, filterString) {
 		if (!baseSet.has(event.ownerId)) return;
 		filter(event.ownerId, event.data);
 	};
-	businessProcessStorages.done(function (storages) {
-		storages.forEach(function (storage) { storage.on('key:searchString', indexListener); });
+	businessProcessStorages.forEach(function (storage) {
+		storage.on('key:searchString', indexListener);
 	});
 	baseSet.forEach(function (ownerId) {
 		++count;
@@ -108,8 +114,8 @@ var getFilteredSet = memoize(function (baseSet, filterString) {
 	if (!count) def.resolve(set);
 	defineProperty(set, '_dispose', d(function () {
 		baseSet.off(baseSetListener);
-		businessProcessStorages.done(function (storages) {
-			storages.forEach(function (storage) { storage.off('key:searchString', indexListener); });
+		businessProcessStorages.forEach(function (storage) {
+			storage.off('key:searchString', indexListener);
 		});
 	}));
 	return def.promise;
@@ -287,21 +293,23 @@ module.exports = exports = function (mainConf) {
 				return map;
 			}, create(null));
 			return function (userId) {
-				return roleNameMap.get(userId)(function (roleName) {
-					var handler;
-					if (roleName) {
-						roleName = uncapitalize.call(roleName.slice('official'.length));
-						handler = map[roleName];
-					}
-					if (!handler) {
-						throw new Error("Cannot resolve conf for role name: " +  stringify(roleName));
-					}
-					return handler;
+				return businessProcessStorages(function )( {
+					return roleNameMap.get(userId)(function (roleName) {
+						var handler;
+						if (roleName) {
+							roleName = uncapitalize.call(roleName.slice('official'.length));
+							handler = map[roleName];
+						}
+						if (!handler) {
+							throw new Error("Cannot resolve conf for role name: " +  stringify(roleName));
+						}
+						return handler;
+					});
 				});
 			};
 		}());
 	} else {
-		resolveHandler = constant(deferred(initializeHandler(mainConf)));
+		resolveHandler = constant(businessProcessStorages(initializeHandler(mainConf)));
 	}
 	return {
 		'get-business-processes-view': function (query) {
