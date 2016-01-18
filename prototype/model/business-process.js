@@ -483,7 +483,8 @@ BusinessProcessNew.prototype.dataForms.map.define('company', {
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('company').setProperties({
-	label: "Company information"
+	label: "Company information",
+	pageUrl: 'company-informations'
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('company').sections.define('details', {
@@ -517,7 +518,9 @@ BusinessProcessNew.prototype.dataForms.map.define('sides', {
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('sides').setProperties({
-	label: "Business Owner sides informations"
+	label: "Business Owner sides informations",
+	legend: "All sides informations requested",
+	pageUrl: 'sides'
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('sides').sections.defineProperties({

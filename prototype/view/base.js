@@ -64,6 +64,16 @@ exports._bodyAppend = function () {
 				a({ href: '/forms/' }, span("User - forms"), span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
+				a({ href: '/form-tabbed/sides/' },
+					span("User - tabbed forms - Sides"),
+					span({ class: 'label-reg' }, "Part A"))
+			),
+			li(
+				a({ href: '/form-tabbed/company-informations/' },
+					span("User - tabbed forms - Company informations"),
+					span({ class: 'label-reg' }, "Part A"))
+			),
+			li(
 				a({ href: '/forms/disabled/' }, span("User - forms (disabled)"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
