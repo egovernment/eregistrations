@@ -19,6 +19,7 @@
 	width: 100%;
 	display: block;
 	background-color: var(--dark-background);
+	padding: 0 8px;
 }
 
 .forms-tab-nav-tab a > span {
@@ -49,9 +50,5 @@ Styles applied while screen size is less than 640px
 	.forms-tab-nav-tab {
 		display: block;
 		text-align: left;
-	}
-
-	.forms-tab-nav-tab a {
-		padding: 0 8px;
 	}
 }
