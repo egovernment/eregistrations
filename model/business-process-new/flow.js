@@ -61,6 +61,13 @@ module.exports = memoize(function (db/*, options*/) {
 		isAtDraft: { type: db.Boolean, value: function () {
 			return !this.isSubmitted || this.isSentBack;
 		} },
+		// Whether business is approved
+		isApproved: { type: db.Boolean, value: function (_observe) {
+			if (!this.isSubmitted) return false;
+			return _observe(this.processingSteps.applicable).every(function (step) {
+				return _observe(step._isApproved);
+			});
+		} },
 		// Whether business process was rejected
 		isRejected: { type: db.Boolean, value: function (_observe) {
 			if (!this.isSubmitted) return false;
