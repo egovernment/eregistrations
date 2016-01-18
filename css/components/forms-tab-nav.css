@@ -43,6 +43,14 @@
 	font-size: 10px;
 }
 
+.forms-tab-nav-tab-active .forms-tab-nav-tab-status.fa-check {
+	color: var(--success-text);
+}
+
+.forms-tab-nav-tab-active .forms-tab-nav-tab-status.fa-close {
+	color: var(--error-text);
+}
+
 /*
 Styles applied while screen size is less than 640px
 */
