@@ -4,20 +4,20 @@
 
 var memoize               = require('memoizee/plain')
   , ensureDatabase        = require('dbjs/valid-dbjs')
+  , _                     = require('mano').i18n.bind('Model')
   , defineUser            = require('./base')
   , defineBusinessProcess = require('../lib/business-process-base');
 
 module.exports = memoize(function (db/* options */) {
 	var options             = arguments[1]
 	  , User                = ensureDatabase(db).User || defineUser(db, options)
-	  , BusinessProcessBase = defineBusinessProcess(db);
+	  , BusinessProcessBase = defineBusinessProcess(db)
+	  , Role                = db.Role;
+
+	Role.members.add('manager');
+	Role.meta.get('manager').label = _("User Manager");
 
 	User.prototype.defineProperties({
-		// Whether account is user manager account
-		isManager: {
-			type: db.Boolean,
-			value: false
-		},
 		// Clients (users) of user manager
 		clients: {
 			type: User,
