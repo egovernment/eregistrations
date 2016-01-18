@@ -260,7 +260,7 @@ var initializeHandler = function (conf) {
 };
 
 module.exports = exports = function (mainConf/*, options */) {
-	var resolveHandler, options, roleNameResolve;
+	var resolveHandler, options, roleNameResolve, getHandlerByRole;
 	options = Object(arguments[1]);
 	if (isArray(mainConf)) {
 		resolveHandler = (function () {
@@ -268,27 +268,31 @@ module.exports = exports = function (mainConf/*, options */) {
 				map[conf.roleName] = initializeHandler(conf);
 				return map;
 			}, create(null));
-			roleNameResolve = function (req) {
-				if (options.resolveConf && (typeof options.resolveConf === 'function')) {
-					return deferred(options.resolveConf(req));
+			getHandlerByRole = function (roleName) {
+				var handler;
+				if (roleName) {
+					handler = map[roleName];
 				}
-				return roleNameMap.get(req.$user)(function (roleName) {
-					roleName = unserializeValue(roleName);
-					return uncapitalize.call(roleName.slice('official'.length));
-				});
+				if (!handler) {
+					throw new Error("Cannot resolve conf for role name: " + stringify(roleName));
+				}
+				return handler;
 			};
-			return function (req) {
-				return roleNameResolve(req)(function (roleName) {
-					var handler;
-					if (roleName) {
-						handler = map[roleName];
-					}
-					if (!handler) {
-						throw new Error("Cannot resolve conf for role name: " + stringify(roleName));
-					}
-					return handler;
-				});
-			};
+			if (options.resolveConf && (typeof options.resolveConf === 'function')) {
+				roleNameResolve = function (req) {
+					return deferred(options.resolveConf(req)).then(getHandlerByRole);
+				};
+			} else {
+				roleNameResolve = function (req) {
+					return roleNameMap.get(req.$user)(function (roleName) {
+						if (!roleName) return;
+						roleName = unserializeValue(roleName);
+						return getHandlerByRole(uncapitalize.call(roleName.slice('official'.length)));
+					});
+				};
+			}
+
+			return roleNameResolve;
 		}());
 	} else {
 		resolveHandler = constant(deferred(initializeHandler(mainConf)));
