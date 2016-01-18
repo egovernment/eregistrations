@@ -161,7 +161,12 @@ var initializeHandler = function (conf) {
 	}
 
 	var getTableData = memoize(function (query) {
-		var indexMeta = exports.getIndexMeta(query, conf), promise;
+		var indexMeta = exports.getIndexMeta(query, conf), promise, intersectWithAssignee;
+		intersectWithAssignee = function (baseSet) {
+			return getDbSet('direct', this.assigneePath, '7' + query.assignedTo)(function (set) {
+				return baseSet.and(set);
+			});
+		}.bind(this);
 		if (isArray(indexMeta)) {
 			promise = deferred.map(indexMeta.sort(compareIndexMeta), function (indexMeta) {
 				return getDbSet('computed', indexMeta.name, indexMeta.value);
@@ -172,11 +177,7 @@ var initializeHandler = function (conf) {
 			promise = getDbSet('computed', indexMeta.name, indexMeta.value);
 		}
 		if (query.assignedTo) {
-			promise = promise.then(function (baseSet) {
-				return getDbSet('direct', conf.assigneePath, '7' + query.assignedTo)(function (set) {
-					return baseSet.and(set);
-				});
-			});
+			promise = promise.then(intersectWithAssignee);
 		}
 		return promise(function (baseSet) {
 			if (!query.search) return getDbArray(baseSet, 'computed', allIndexName);
@@ -254,7 +255,8 @@ var initializeHandler = function (conf) {
 		tableQueryHandler: tableQueryHandler,
 		getTableData: getTableData,
 		businessProcessQueryHandler: businessProcessQueryHandler,
-		roleName: roleName
+		roleName: roleName,
+		assigneePath: conf.assigneePath
 	};
 };
 
@@ -269,6 +271,7 @@ module.exports = exports = function (mainConf) {
 			return function (userId) {
 				return roleNameMap.get(userId)(function (roleName) {
 					var handler;
+					roleName = unserializeValue(roleName);
 					if (roleName) {
 						roleName = uncapitalize.call(roleName.slice('official'.length));
 						handler = map[roleName];
@@ -289,7 +292,7 @@ module.exports = exports = function (mainConf) {
 			return resolveHandler(userId)(function (handler) {
 				// Get snapshot of business processes table page
 				return handler.tableQueryHandler.resolve(query)(function (query) {
-					if (mainConf.assigneePath) {
+					if (handler.assigneePath) {
 						query.assignedTo = userId;
 					}
 					return handler.getTableData(query);
