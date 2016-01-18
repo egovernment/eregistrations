@@ -41,3 +41,17 @@
 	vertical-align: middle;
 	font-size: 10px;
 }
+
+/*
+Styles applied while screen size is less than 640px
+*/
+@media only screen and (max-width: 640px) {
+	.forms-tab-nav-tab {
+		display: block;
+		text-align: left;
+	}
+
+	.forms-tab-nav-tab a {
+		padding: 0 8px;
+	}
+}
