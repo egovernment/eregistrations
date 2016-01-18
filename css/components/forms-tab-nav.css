@@ -1,0 +1,62 @@
+.forms-tab-nav ul{
+	display: table;
+	width: 100%;
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.forms-tab-nav-tab {
+	display: table-cell;
+	text-align: center;
+	overflow: hidden;
+	line-height: 44px;
+}
+
+.forms-tab-nav-tab a {
+	color: var(--white-text);
+	text-decoration: none;
+	line-height: 44px;
+	width: 100%;
+	display: block;
+	background-color: var(--dark-background);
+	padding: 0 8px;
+}
+
+.forms-tab-nav-tab a > span {
+	line-height: 22px;
+	display: inline-block;
+	vertical-align: middle;
+}
+
+.forms-tab-nav-tab-active a,
+.forms-tab-nav-tab a:hover,
+.forms-tab-nav-tab a:focus,
+.forms-tab-nav-tab a:active {
+	background-color: var(--normal-dark-background);
+	color: var(--light-text);
+}
+
+.forms-tab-nav-tab-status {
+	margin-right: 4px;
+	font-weight: 300;
+	vertical-align: middle;
+	font-size: 10px;
+}
+
+.forms-tab-nav-tab-status.fa-check {
+	color: var(--success-text);
+}
+
+.forms-tab-nav-tab-active .forms-tab-nav-tab-status.fa-close {
+	color: var(--error-text);
+}
+
+/*
+Styles applied while screen size is less than 640px
+*/
+@media only screen and (max-width: 640px) {
+	.forms-tab-nav-tab {
+		display: block;
+		text-align: left;
+	}
+}

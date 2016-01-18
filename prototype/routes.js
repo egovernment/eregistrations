@@ -17,6 +17,18 @@ module.exports = {
 	'guide-lomas/form-complement': require('./view/guide-lomas-form-complement'),
 	'guide/costs-print': require('../view/print-business-process-costs-list'),
 	forms: require('./view/forms'),
+	'form-tabbed/company-informations': {
+		decorateContext: function () {
+			this.section = this.businessProcess.dataForms.map.company;
+		},
+		view: require('../view/business-process-data-forms-section-tab')
+	},
+	'form-tabbed/sides': {
+		decorateContext: function () {
+			this.section = this.businessProcess.dataForms.map.sides;
+		},
+		view: require('../view/business-process-data-forms-section-tab')
+	},
 	'forms/disabled': require('./view/disabled-forms'),
 	documents: require('./view/documents'),
 	pay: require('./view/payment'),

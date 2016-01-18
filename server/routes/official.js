@@ -289,7 +289,8 @@ var initializeHandler = function (conf) {
 		tableQueryHandler: tableQueryHandler,
 		getTableData: getTableData,
 		businessProcessQueryHandler: businessProcessQueryHandler,
-		roleName: roleName
+		roleName: roleName,
+		assigneePath: conf.assigneePath
 	};
 };
 
@@ -306,6 +307,7 @@ module.exports = exports = function (mainConf) {
 					return roleNameMap.get(userId)(function (roleName) {
 						var handler;
 						if (roleName) {
+							roleName = unserializeValue(roleName);
 							roleName = uncapitalize.call(roleName.slice('official'.length));
 							handler = map[roleName];
 						}
@@ -326,7 +328,7 @@ module.exports = exports = function (mainConf) {
 			return resolveHandler(userId)(function (handler) {
 				// Get snapshot of business processes table page
 				return handler.tableQueryHandler.resolve(query)(function (query) {
-					if (mainConf.assigneePath) {
+					if (handler.assigneePath) {
 						query.assignedTo = userId;
 					}
 					return handler.getTableData(query);
