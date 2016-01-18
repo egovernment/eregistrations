@@ -11,6 +11,7 @@
 	overflow: hidden;
 	line-height: 44px;
 	background-color: var(--dark-background);
+	cursor: pointer;
 }
 
 .forms-tab-nav-tab a {

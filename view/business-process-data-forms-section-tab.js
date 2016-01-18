@@ -8,9 +8,10 @@ exports._parent = require('./business-process-data-forms-tabbed');
 
 exports['forms-sections-content'] = function () {
 
-	div({ class: 'disabler-range' },
-		[_if(this.section._legend, div({ class: 'info-main' },
+	insert(
+		_if(this.section._legend, div({ class: 'info-main' },
 			md(this.section._legend))),
-			generateSections(this.section.applicableSections, { viewContext: this })]);
+		generateSections(this.section.applicableSections, { viewContext: this })
+	);
 
 };
