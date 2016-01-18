@@ -2,13 +2,15 @@
 
 'use strict';
 
-var memoize        = require('memoizee/plain')
-  , ensureDatabase = require('dbjs/valid-dbjs')
-  , defineUser     = require('./base');
+var memoize               = require('memoizee/plain')
+  , ensureDatabase        = require('dbjs/valid-dbjs')
+  , defineUser            = require('./base')
+  , defineBusinessProcess = require('../lib/business-process-base');
 
 module.exports = memoize(function (db/* options */) {
-	var options  = arguments[1]
-	  , User     = ensureDatabase(db).User || defineUser(db, options);
+	var options             = arguments[1]
+	  , User                = ensureDatabase(db).User || defineUser(db, options)
+	  , BusinessProcessBase = defineBusinessProcess(db);
 
 	User.prototype.defineProperties({
 		// Whether account is user manager account
@@ -20,6 +22,19 @@ module.exports = memoize(function (db/* options */) {
 		clients: {
 			type: User,
 			multiple: true
+		},
+		clientsBusinessProcesses: {
+			type: BusinessProcessBase,
+			multiple: true,
+			value: function (_observe) {
+				var result = [];
+				this.clients.forEach(function (client) {
+					_observe(client.businessProcesses).forEach(function (businessProcess) {
+						result.push(businessProcess);
+					});
+				});
+				return result.sort(function (a, b) { return a._lastOwnModified - b._lastOwnModified_; });
+			}
 		}
 	});
 
