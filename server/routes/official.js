@@ -260,7 +260,7 @@ var initializeHandler = function (conf) {
 };
 
 module.exports = exports = function (mainConf/*, options */) {
-	var resolveHandler, options, mapResolver;
+	var resolveHandler, options, roleNameResolve;
 	options = Object(arguments[1]);
 	if (isArray(mainConf)) {
 		resolveHandler = (function () {
@@ -268,27 +268,27 @@ module.exports = exports = function (mainConf/*, options */) {
 				map[conf.roleName] = initializeHandler(conf);
 				return map;
 			}, create(null));
-			if (options.resolveConf && (typeof options.resolveConf === 'function')) {
-				mapResolver = function (req) {
-					return deferred(map[options.resolveConf(req)]);
-				};
-			} else {
-				mapResolver = function (req) {
-					return roleNameMap.get(req.$user)(function (roleName) {
-						var handler;
-						if (roleName) {
-							roleName = unserializeValue(roleName);
-							roleName = uncapitalize.call(roleName.slice('official'.length));
-							handler = map[roleName];
-						}
-						if (!handler) {
-							throw new Error("Cannot resolve conf for role name: " +  stringify(roleName));
-						}
-						return handler;
-					});
-				};
-			}
-			return mapResolver;
+			roleNameResolve = function (req) {
+				if (options.resolveConf && (typeof options.resolveConf === 'function')) {
+					return deferred(options.resolveConf(req));
+				}
+				return roleNameMap.get(req.$user)(function (roleName) {
+					roleName = unserializeValue(roleName);
+					return uncapitalize.call(roleName.slice('official'.length));
+				});
+			};
+			return function (req) {
+				return roleNameResolve(req)(function (roleName) {
+					var handler;
+					if (roleName) {
+						handler = map[roleName];
+					}
+					if (!handler) {
+						throw new Error("Cannot resolve conf for role name: " + stringify(roleName));
+					}
+					return handler;
+				});
+			};
 		}());
 	} else {
 		resolveHandler = constant(deferred(initializeHandler(mainConf)));
