@@ -53,5 +53,5 @@ module.exports = function (storageName, keyPath/*, options*/) {
 				if (data.value === '11') map.set(id.slice(ownerId.length + keyPath.length + 2), ownerId);
 			}
 		});
-	});
+	})(map);
 };
