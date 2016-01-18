@@ -259,28 +259,36 @@ var initializeHandler = function (conf) {
 	};
 };
 
-module.exports = exports = function (mainConf) {
-	var resolveHandler;
+module.exports = exports = function (mainConf/*, options */) {
+	var resolveHandler, options, mapResolver;
+	options = Object(arguments[1]);
 	if (isArray(mainConf)) {
 		resolveHandler = (function () {
 			var map = mainConf.reduce(function (map, conf) {
 				map[conf.roleName] = initializeHandler(conf);
 				return map;
 			}, create(null));
-			return function (userId) {
-				return roleNameMap.get(userId)(function (roleName) {
-					var handler;
-					if (roleName) {
-						roleName = unserializeValue(roleName);
-						roleName = uncapitalize.call(roleName.slice('official'.length));
-						handler = map[roleName];
-					}
-					if (!handler) {
-						throw new Error("Cannot resolve conf for role name: " +  stringify(roleName));
-					}
-					return handler;
-				});
-			};
+			if (options.resolveConf && (typeof options.resolveConf === 'function')) {
+				mapResolver = function (req) {
+					return deferred(map[options.resolveConf(req)]);
+				};
+			} else {
+				mapResolver = function (req) {
+					return roleNameMap.get(req.$user)(function (roleName) {
+						var handler;
+						if (roleName) {
+							roleName = unserializeValue(roleName);
+							roleName = uncapitalize.call(roleName.slice('official'.length));
+							handler = map[roleName];
+						}
+						if (!handler) {
+							throw new Error("Cannot resolve conf for role name: " +  stringify(roleName));
+						}
+						return handler;
+					});
+				};
+			}
+			return mapResolver;
 		}());
 	} else {
 		resolveHandler = constant(deferred(initializeHandler(mainConf)));
@@ -288,7 +296,7 @@ module.exports = exports = function (mainConf) {
 	return {
 		'get-business-processes-view': function (query) {
 			var userId = this.req.$user;
-			return resolveHandler(userId)(function (handler) {
+			return resolveHandler(this.req)(function (handler) {
 				// Get snapshot of business processes table page
 				return handler.tableQueryHandler.resolve(query)(function (query) {
 					if (handler.assigneePath) {
@@ -299,7 +307,7 @@ module.exports = exports = function (mainConf) {
 			});
 		},
 		'get-business-process-data': function (query) {
-			return resolveHandler(this.req.$user)(function (handler) {
+			return resolveHandler(this.req)(function (handler) {
 				// Get full data of one of the business processeses
 				return handler.businessProcessQueryHandler.resolve(query)(function (query) {
 					var recordId;

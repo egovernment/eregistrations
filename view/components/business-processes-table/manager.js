@@ -21,15 +21,12 @@ var includes        = require('es5-ext/array/#/contains')
 
 require('memoizee/ext/max-age');
 
-var getViewData = memoize(function (query) {
+var getViewData = function (query) {
 	return getData('/get-business-processes-view/', query).aside(function (result) {
 		if (!result.data) return;
 		result.data.forEach(function (eventStr) { db.unserializeEvent(eventStr, 'server-temporary'); });
 	});
-}, {
-	normalizer: function (args) { return String(toArray(args[0], null, null, true)); },
-	maxAge: 10 * 1000
-});
+};
 
 var BusinessProcessesManager = module.exports = function (conf) {
 	var user = db.User.validate(ensureObject(conf).user)
@@ -54,7 +51,10 @@ var BusinessProcessesManager = module.exports = function (conf) {
 		_statusMap: d(statusMap),
 		_getItemOrderIndex: d(getOrderIndex),
 		_getSearchFilter: d(searchFilter),
-		_queryExternal: d(getViewData)
+		_queryExternal: d(memoize(getViewData, {
+			normalizer: function (args) { return String(toArray(args[0], null, null, true)); },
+			maxAge: 10 * 1000
+		}))
 	});
 };
 
