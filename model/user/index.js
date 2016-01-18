@@ -13,6 +13,7 @@ module.exports = function (db/* options */) {
 	require('./demo')(db);
 	require('./documents')(User, options);
 	require('./institution')(User, options);
+	require('./manager')(db);
 	require('./recently-visited/business-processes')(db);
 	require('./recently-visited/users')(db);
 
