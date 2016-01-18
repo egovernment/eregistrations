@@ -33,3 +33,10 @@
 .forms-tab-nav-tab:active a {
 	color: var(--light-text);
 }
+
+.forms-tab-nav-tab-status {
+	margin-right: 4px;
+	font-weight: 300;
+	vertical-align: middle;
+	font-size: 10px;
+}

@@ -18,8 +18,10 @@ exports.step = function () {
 exports._tabs = function (context) {
 	return context.businessProcess.dataForms.applicable.map(function (section) {
 		return li({ class: ['forms-tab-nav-tab',
-			_if(eq(appLocation._pathname, '/forms/' + section.pageUrl + '/'),
-					'forms-tab-nav-tab-active')] }, a({ href: "/forms/" + section.pageUrl + '/' },
+			_if(eq(appLocation._pathname, '/form-tabbed/' + section.pageUrl + '/'),
+					'forms-tab-nav-tab-active')] }, a({ href: "/form-tabbed/" + section.pageUrl + '/' },
+			i({ class: ['forms-tab-nav-tab-status fa',
+				_if(eq(section._status, 1), 'fa-check', 'fa-close')] }),
 			section._label));
 	});
 };

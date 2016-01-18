@@ -17,14 +17,13 @@ module.exports = {
 	'guide-lomas/form-complement': require('./view/guide-lomas-form-complement'),
 	'guide/costs-print': require('../view/print-business-process-costs-list'),
 	forms: require('./view/forms'),
-	'forms-tabbed': require('../view/business-process-data-forms-tabbed'),
-	'forms/company-informations': {
+	'form-tabbed/company-informations': {
 		decorateContext: function () {
 			this.section = this.businessProcess.dataForms.map.company;
 		},
 		view: require('../view/business-process-data-forms-section-tab')
 	},
-	'forms/sides': {
+	'form-tabbed/sides': {
 		decorateContext: function () {
 			this.section = this.businessProcess.dataForms.map.sides;
 		},
