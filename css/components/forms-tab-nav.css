@@ -10,27 +10,28 @@
 	text-align: center;
 	overflow: hidden;
 	line-height: 44px;
-	background-color: var(--dark-background);
-	cursor: pointer;
 }
 
 .forms-tab-nav-tab a {
 	color: var(--white-text);
 	text-decoration: none;
-	line-height: 22px;
+	line-height: 44px;
+	width: 100%;
+	display: block;
+	background-color: var(--dark-background);
 }
 
-.forms-tab-nav-tab-active,
-.forms-tab-nav-tab:hover,
-.forms-tab-nav-tab:focus,
-.forms-tab-nav-tab:active {
-	background-color: var(--normal-dark-background);
+.forms-tab-nav-tab a > span {
+	line-height: 22px;
+	display: inline-block;
+	vertical-align: middle;
 }
 
 .forms-tab-nav-tab-active a,
-.forms-tab-nav-tab:hover a,
-.forms-tab-nav-tab:focus a,
-.forms-tab-nav-tab:active a {
+.forms-tab-nav-tab a:hover,
+.forms-tab-nav-tab a:focus,
+.forms-tab-nav-tab a:active {
+	background-color: var(--normal-dark-background);
 	color: var(--light-text);
 }
 
