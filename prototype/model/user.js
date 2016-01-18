@@ -178,12 +178,27 @@ user.defineProperties({
 
 module.exports = User;
 
+User.newNamed('notary', {
+	firstName: 'User',
+	lastName: 'Manager',
+	email: 'notary@eregistraions.com',
+	roles: ['user'],
+	isManager: true
+});
+
 User.newNamed('userVianney', {
 	firstName: 'Vianney',
 	lastName: 'Lesaffre',
 	email: 'vianney@lesaffre.com',
 	roles: ['users-admin']
 });
+db.notary.clients.add(db.userVianney);
+User.newNamed('otherGuy', {
+	firstName: 'Other',
+	lastName: 'Not linked',
+	email: 'other-guy@lesaffre.com'
+});
+db.notary.clients.add(db.otherGuy);
 
 db.BusinessProcessNew.instances.forEach(function (businessProcess) {
 	db.userVianney.initialBusinessProcesses.add(businessProcess);
