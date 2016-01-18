@@ -23,6 +23,7 @@ module.exports = memoize(function (db/* options */) {
 			type: User,
 			multiple: true
 		},
+		// Returns all business processes handled by manager
 		clientsBusinessProcesses: {
 			type: BusinessProcessBase,
 			multiple: true,
