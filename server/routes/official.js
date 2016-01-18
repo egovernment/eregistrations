@@ -161,12 +161,7 @@ var initializeHandler = function (conf) {
 	}
 
 	var getTableData = memoize(function (query) {
-		var indexMeta = exports.getIndexMeta(query, conf), promise, intersectWithAssignee;
-		intersectWithAssignee = function (baseSet) {
-			return getDbSet('direct', this.assigneePath, '7' + query.assignedTo)(function (set) {
-				return baseSet.and(set);
-			});
-		}.bind(this);
+		var indexMeta = exports.getIndexMeta(query, conf), promise;
 		if (isArray(indexMeta)) {
 			promise = deferred.map(indexMeta.sort(compareIndexMeta), function (indexMeta) {
 				return getDbSet('computed', indexMeta.name, indexMeta.value);
@@ -177,7 +172,11 @@ var initializeHandler = function (conf) {
 			promise = getDbSet('computed', indexMeta.name, indexMeta.value);
 		}
 		if (query.assignedTo) {
-			promise = promise.then(intersectWithAssignee);
+			promise = promise.then(function (baseSet) {
+				return getDbSet('direct', conf.assigneePath, '7' + query.assignedTo)(function (set) {
+					return baseSet.and(set);
+				});
+			});
 		}
 		return promise(function (baseSet) {
 			if (!query.search) return getDbArray(baseSet, 'computed', allIndexName);
@@ -271,8 +270,8 @@ module.exports = exports = function (mainConf) {
 			return function (userId) {
 				return roleNameMap.get(userId)(function (roleName) {
 					var handler;
-					roleName = unserializeValue(roleName);
 					if (roleName) {
+						roleName = unserializeValue(roleName);
 						roleName = uncapitalize.call(roleName.slice('official'.length));
 						handler = map[roleName];
 					}
