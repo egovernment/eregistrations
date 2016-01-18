@@ -10,7 +10,7 @@ var ensureString = require('es5-ext/object/validate-stringifiable-value')
 
   , isArray = Array.isArray;
 
-module.exports = function (storageName, keyPath/*, options*/) {
+module.exports = function (storageName, keyPath) {
 	var map, storages = [];
 	if (isArray(storageName)) {
 		storageName.forEach(function (storageName) {
