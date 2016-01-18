@@ -80,13 +80,19 @@ exports.columns = [{
 }, {
 	head: _("Submission date"),
 	class: 'submitted-user-data-table-date',
-	data: function (businessProcess) { return businessProcess.submissionForms.
-		_isAffidavitSigned._lastModified.map(formatLastModified); }
+	data: function (businessProcess) {
+		var isSubmitted = businessProcess._isSubmitted;
+
+		return _if(isSubmitted, isSubmitted._lastModified.map(formatLastModified));
+	}
 }, {
 	head: _("Withdraw date"),
 	class: 'submitted-user-data-table-date',
-	data: function (businessProcess) { return businessProcess.
-		_isApproved._lastModified.map(formatLastModified); }
+	data: function (businessProcess) {
+		var isApproved = businessProcess._isApproved;
+
+		return _if(isApproved, isApproved._lastModified.map(formatLastModified));
+	}
 }, {
 	head: _("Inscriptions and controls"),
 	data: function (businessProcess) {
