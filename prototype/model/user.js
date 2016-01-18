@@ -125,7 +125,6 @@ user.defineProperties({
 		label: "Lorem ipsum dolor sit amet"
 	},
 	isDebtContinusStatus: { type: EnumTripleOption, required: true },
-	isManager: { type: db.Boolean, label: "I am manager" },
 	inventory: { type: UsDollar, label: "Inventory value", required: true, step: 1,
 		inputHint: "Etiam vestibulum dui mi, nec ultrices diam ultricies id " },
 	surfaceArea: { type: SquareMeters, label: "Area used for the activity", required: true,
@@ -175,6 +174,8 @@ user.defineProperties({
 			return this.shareholdersNumber + this.shareholderAmount;
 		} }
 });
+
+user.getOwnDescriptor('isManager').label = "I am manager";
 
 module.exports = User;
 
