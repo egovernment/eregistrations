@@ -43,7 +43,7 @@
 	font-size: 10px;
 }
 
-.forms-tab-nav-tab-active .forms-tab-nav-tab-status.fa-check {
+.forms-tab-nav-tab-status.fa-check {
 	color: var(--success-text);
 }
 
