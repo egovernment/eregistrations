@@ -2,11 +2,10 @@
 
 'use strict';
 
-var db     = require('../../db')
-  , assign = require('es5-ext/object/assign');
+var assign = require('es5-ext/object/assign');
 
 module.exports = exports = assign(exports, require('eregistrations/routes/official')(function () {
-    //CHANGEME - this function should return step
+//CHANGEME - this function should return step
 }));
 
 require('../../view/print-base');
@@ -17,14 +16,13 @@ exports['[0-9][a-z0-9]*'].view = require('eregistrations/view/business-process-o
 
 exports['/'] = {
 	decorateContext: function () {
-	    /* Example setup
+	/* Example setup
 		this.processingStep = db.BusinessProcessCoi.prototype.processingSteps.map.revision;
 		this.statusMap = revisionStatusMap;
 		this.roleName = 'officialRevision';
 		this.shortRoleName = 'revision';
 		this.getOrderIndex = revisionGetOrderIndex;
 		*/
-		return true;
 	},
 	view: require('eregistrations/view/dispatcher-assignments-panel')
 };
