@@ -23,8 +23,7 @@ module.exports = function (storage, officials, step) {
 			businessProcess = storage.db.BusinessProcess.getById(businessProcessId);
 			businessProcess.resolveSKeyPath(path).value.assignee =
 				storage.db.User.getById(officialId);
-			debug('%s added assignee id: ' + officialId + ' to businessProcess: '
-				+ businessProcessId + ' for path: ' + path);
+			debug('for %s assigned id: %s, to %s', id, officialId, businessProcessId);
 //		Use the below once dbjs listens to storage changes
 //    return storage.store(businessProcessId + '/'
 //    + path + '/assignee', 7 + officialId)(function () {
