@@ -326,10 +326,10 @@ module.exports = exports = function (mainConf/*, options */) {
 					});
 				};
 			}
-			return businessProcessStorages(function () { return roleNameResolve; });
+			return businessProcessStoragesPromise(function () { return roleNameResolve; });
 		}());
 	} else {
-		resolveHandler = constant(businessProcessStorages(initializeHandler(mainConf)));
+		resolveHandler = constant(businessProcessStoragesPromise(initializeHandler(mainConf)));
 	}
 	return {
 		'get-business-processes-view': function (query) {
