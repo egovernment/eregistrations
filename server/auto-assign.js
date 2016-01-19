@@ -4,7 +4,8 @@ var unserializeValue = require('dbjs/_setup/unserialize/value')
   , serializeValue   = require('dbjs/_setup/serialize/value')
   , getDbSet         = require('eregistrations/server/utils/get-db-set')
   , deferred         = require('deferred')
-  , aFrom            = require('es5-ext/array/from');
+  , aFrom            = require('es5-ext/array/from')
+  , debug            = require('debug-ext')('auto-assign');
 
 module.exports = function (storage, officials, step) {
 	var id = step.shortPath, officialsArray, lastIndex,
@@ -22,6 +23,8 @@ module.exports = function (storage, officials, step) {
 			businessProcess = storage.db.BusinessProcess.getById(businessProcessId);
 			businessProcess.resolveSKeyPath(path).value.assignee =
 				storage.db.User.getById(officialId);
+			debug('%s added assignee id: ' + officialId + ' to businessProcess: '
+				+ businessProcessId + ' for path: ' + path);
 //		Use the below once dbjs listens to storage changes
 //    return storage.store(businessProcessId + '/'
 //    + path + '/assignee', 7 + officialId)(function () {
