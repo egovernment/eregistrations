@@ -18,6 +18,9 @@ var normalizeOptions  = require('es5-ext/object/normalize-options')
 var appTypes = {
 	'users-admin': true,
 	'meta-admin': { extraFiles: ['view/meta-admin'] },
+	dispatcher: { extraFiles: ['view/dispatcher'],
+		'client/model.js': 'client/model.js/official.tpl'
+		},
 	user: { extraFiles: ['view/user.js'] },
 	public: { extraFiles: ['apps/public'] },
 	official: true,
