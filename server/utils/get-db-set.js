@@ -23,7 +23,10 @@ module.exports = memoize(function (storageName, recordType, keyPath, value) {
 	}
 	return deferred.map(storages, function (storage) {
 		storage.on('key:' + keyPath || '&', function (event) {
-			if (resolveFilter(value, event.data.value)) set.add(event.ownerId);
+			var result;
+			if (recordType === 'computed') result = resolveFilter(value, event.data.value);
+			else result = resolveDirectFilter(value, event.data.value, event.id);
+			if (result) set.add(event.ownerId);
 			else set.delete(event.ownerId);
 		});
 		if (recordType === 'computed') {
