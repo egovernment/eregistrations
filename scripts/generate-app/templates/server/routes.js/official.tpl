@@ -8,6 +8,5 @@ module.exports = require('eregistrations/server/routes/official')({
 	listProperties: require('../../../apps-common/business-process-list-properties'),
 	listComputedProperties: require('../../../apps-common/business-process-list-computed-properties'),
 	itemsPerPage: require('../../../env').objectsListItemsPerPage,
-	allIndexName: 'processingSteps/map/${ appNameSuffix }/isReady',
 	statusIndexName: 'processingSteps/map/${ appNameSuffix }/resolvedStatus'
 });
