@@ -11,7 +11,6 @@ var aFrom               = require('es5-ext/array/from')
   , toNaturalNumber     = require('es5-ext/number/to-pos-integer')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
   , toArray             = require('es5-ext/object/to-array')
-  , ensureCallable      = require('es5-ext/object/valid-callable')
   , ensureObject        = require('es5-ext/object/valid-object')
   , ensureString        = require('es5-ext/object/validate-stringifiable-value')
   , includes            = require('es5-ext/string/#/contains')
@@ -31,10 +30,10 @@ var aFrom               = require('es5-ext/array/from')
   , getDbArray          = require('../utils/get-db-array')
   , getIndexMap         = require('../utils/get-db-sort-index-map')
 
-  , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
-  , compareStamps = function (a, b) { return a.stamp - b.stamp; }
-  , isArray = Array.isArray, slice = Array.prototype.slice, push = Array.prototype.push
-  , ceil = Math.ceil, create = Object.create
+  , hasBadWs       = RegExp.prototype.test.bind(/\s{2,}/)
+  , compareStamps  = function (a, b) { return a.stamp - b.stamp; }
+  , isArray        = Array.isArray, slice = Array.prototype.slice, push = Array.prototype.push
+  , ceil           = Math.ceil, create = Object.create
   , defineProperty = Object.defineProperty, stringify = JSON.stringify;
 
 var compareIndexMeta = function (meta1, meta2) {
@@ -139,17 +138,17 @@ var getDbArrayLru = memoize(function (set, sortIndexName) {
 
 var initializeHandler = function (conf) {
 	conf = normalizeOptions(ensureObject(conf));
-	var roleName = ensureString(conf.roleName)
-	  , statusIndexName = ensureString(conf.statusIndexName)
-	  , allIndexName = ensureString(conf.allIndexName)
-	  , bpListProps = ensureSet(conf.listProperties)
-	  , bpListComputedProps = conf.listComputedProperties && aFrom(conf.listComputedProperties)
-	  , tableQueryHandler = getTableQueryHandler(ensureObject(conf.statusMap))
-	  , businessProcessQueryHandler = getBusinessProcessQueryHandler(conf.allIndexName)
-	  , itemsPerPage = toNaturalNumber(conf.itemsPerPage) || defaultItemsPerPage
-	  , indexes;
 
-	if (conf.resolveCollectionMeta != null) ensureCallable(conf.resolveCollectionMeta);
+	var roleName            = ensureString(conf.roleName)
+	  , statusMap           = ensureObject(conf.statusMap)
+	  , statusIndexName     = ensureString(conf.statusIndexName)
+	  , allIndexName        = statusMap.all.indexName
+	  , bpListProps         = ensureSet(conf.listProperties)
+	  , bpListComputedProps = conf.listComputedProperties && aFrom(conf.listComputedProperties)
+	  , tableQueryHandler   = getTableQueryHandler(statusMap)
+	  , itemsPerPage        = toNaturalNumber(conf.itemsPerPage) || defaultItemsPerPage
+	  , businessProcessQueryHandler = getBusinessProcessQueryHandler(allIndexName)
+	  , indexes;
 
 	if (bpListComputedProps) {
 		indexes = [];
@@ -161,7 +160,8 @@ var initializeHandler = function (conf) {
 	}
 
 	var getTableData = memoize(function (query) {
-		var indexMeta = exports.getIndexMeta(query, conf), promise;
+		var indexMeta = exports.getIndexMeta(query, statusMap), promise;
+
 		if (isArray(indexMeta)) {
 			promise = deferred.map(indexMeta.sort(compareIndexMeta), function (indexMeta) {
 				return getDbSet('computed', indexMeta.name, indexMeta.value);
@@ -171,6 +171,7 @@ var initializeHandler = function (conf) {
 		} else {
 			promise = getDbSet('computed', indexMeta.name, indexMeta.value);
 		}
+
 		if (query.assignedTo) {
 			promise = promise.then(function (baseSet) {
 				return getDbSet('direct', conf.assigneePath, '7' + query.assignedTo)(function (set) {
@@ -178,14 +179,17 @@ var initializeHandler = function (conf) {
 				});
 			});
 		}
+
 		return promise(function (baseSet) {
 			if (!query.search) return getDbArray(baseSet, 'computed', allIndexName);
+
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
 				return getFilteredSet(baseSet, value)(function (set) {
 					return getDbArrayLru(set, allIndexName);
 				});
 			})(function (arrays) {
 				if (arrays.length === 1) return arrays[0];
+
 				return uniq.call(arrays.reduce(function (current, next, index) {
 					if (index === 1) current = aFrom(current);
 					push.apply(current, next);
@@ -325,16 +329,13 @@ module.exports = exports = function (mainConf/*, options */) {
 	};
 };
 
-exports.getIndexMeta = function (query, conf) {
-	var meta;
-	if (query.status) {
-		if (conf.resolveCollectionMeta) {
-			meta = conf.resolveCollectionMeta(query.status);
-			return { name: meta.name, value: serializeValue(meta.value) };
-		}
-		return { name: conf.statusIndexName, value: serializeValue(query.status) };
-	}
-	return { name: conf.allIndexName, value: '11' };
+exports.getIndexMeta = function (query, meta) {
+	var status = query.status || 'all';
+
+	return {
+		name: meta[status].indexName,
+		value: serializeValue(meta[status].indexValue)
+	};
 };
 
 exports.tableQueryConf = [{
