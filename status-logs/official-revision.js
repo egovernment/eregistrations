@@ -25,6 +25,7 @@ module.exports = function (stepName) {
 		.filterByKeyPath('processingSteps/map/' + stepName + '/isRejected', true);
 
 	return [{
+		id: 'approved',
 		BusinessProcessType: BusinessProcess,
 		trigger: approvedBusinessProcesses,
 		preTrigger: readyBusinessProcesses,
@@ -32,6 +33,7 @@ module.exports = function (stepName) {
 		label: _("Review"),
 		text: _("Review successful")
 	}, {
+		id: 'sentBack',
 		BusinessProcessType: BusinessProcess,
 		trigger: sentBackBusinessProcesses,
 		preTrigger: readyBusinessProcesses,
@@ -39,6 +41,7 @@ module.exports = function (stepName) {
 		label: _("Review"),
 		text: _("Necessary corrections in the file")
 	}, {
+		id: 'correction',
 		BusinessProcessType: BusinessProcess,
 		trigger: correctedBusinessProcesses,
 		preTrigger: sentBackBusinessProcesses,
@@ -46,6 +49,7 @@ module.exports = function (stepName) {
 		label: _("Correction of documents"),
 		text: _("Corrected documents sent to review")
 	}, {
+		id: 'rejected',
 		BusinessProcessType: BusinessProcess,
 		trigger: rejectedBusinessProcesses,
 		preTrigger: readyBusinessProcesses,
