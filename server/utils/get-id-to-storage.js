@@ -1,7 +1,7 @@
 'use strict';
 
 var ensureArray   = require('es5-ext/array/valid-array')
-  , ensureString  = require('es5-ext/object/validate-strigifiable-value')
+  , ensureString  = require('es5-ext/object/validate-stringifiable-value')
   , memoize       = require('memoizee')
   , Map           = require('es6-map')
   , deferred      = require('deferred')
