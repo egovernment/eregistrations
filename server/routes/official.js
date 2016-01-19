@@ -11,7 +11,6 @@ var aFrom                          = require('es5-ext/array/from')
   , toNaturalNumber                = require('es5-ext/number/to-pos-integer')
   , normalizeOptions               = require('es5-ext/object/normalize-options')
   , toArray                        = require('es5-ext/object/to-array')
-  , ensureCallable                 = require('es5-ext/object/valid-callable')
   , ensureObject                   = require('es5-ext/object/valid-object')
   , ensureString                   = require('es5-ext/object/validate-stringifiable-value')
   , includes                       = require('es5-ext/string/#/contains')
@@ -162,17 +161,18 @@ var getDbArrayLru = memoize(function (set, sortIndexName, storageName) {
 
 var initializeHandler = function (conf) {
 	conf = normalizeOptions(ensureObject(conf));
-	var roleName = ensureString(conf.roleName)
-	  , statusIndexName = ensureString(conf.statusIndexName)
-	  , allIndexName = ensureString(conf.allIndexName)
-	  , bpListProps = ensureSet(conf.listProperties)
+
+	var roleName            = ensureString(conf.roleName)
+	  , statusMap           = ensureObject(conf.statusMap)
+	  , statusIndexName     = ensureString(conf.statusIndexName)
+	  , allIndexName        = statusMap.all.indexName
+	  , bpListProps         = ensureSet(conf.listProperties)
 	  , bpListComputedProps = conf.listComputedProperties && aFrom(conf.listComputedProperties)
-	  , tableQueryHandler = getTableQueryHandler(ensureObject(conf.statusMap))
-	  , businessProcessQueryHandler = getBusinessProcessQueryHandler(conf.allIndexName)
-	  , itemsPerPage = toNaturalNumber(conf.itemsPerPage) || defaultItemsPerPage
+	  , tableQueryHandler   = getTableQueryHandler(statusMap)
+	  , itemsPerPage        = toNaturalNumber(conf.itemsPerPage) || defaultItemsPerPage
+	  , businessProcessQueryHandler = getBusinessProcessQueryHandler(allIndexName)
 	  , storageName, storages;
 
-	if (conf.resolveCollectionMeta != null) ensureCallable(conf.resolveCollectionMeta);
 	if (conf.storageName != null) {
 		storageName = conf.storageName;
 		if (isArray(storageName)) {
@@ -188,7 +188,8 @@ var initializeHandler = function (conf) {
 	}
 
 	var getTableData = memoize(function (query) {
-		var indexMeta = exports.getIndexMeta(query, conf), promise;
+		var indexMeta = exports.getIndexMeta(query, statusMap), promise;
+
 		if (isArray(indexMeta)) {
 			promise = deferred.map(indexMeta.sort(compareIndexMeta), function (indexMeta) {
 				return getDbSet(storageName, 'computed', indexMeta.name, indexMeta.value);
@@ -198,12 +199,14 @@ var initializeHandler = function (conf) {
 		} else {
 			promise = getDbSet(storageName, 'computed', indexMeta.name, indexMeta.value);
 		}
+
 		if (query.assignedTo) {
 			promise = promise.then(function (baseSet) {
 				return getDbSet(storageName, 'direct', conf.assigneePath, '7' +
 					query.assignedTo)(function (set) { return baseSet.and(set); });
 			});
 		}
+
 		return promise(function (baseSet) {
 			if (!query.search) return getDbArray(baseSet, storageName, 'computed', allIndexName);
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
@@ -212,6 +215,7 @@ var initializeHandler = function (conf) {
 				});
 			})(function (arrays) {
 				if (arrays.length === 1) return arrays[0];
+
 				return uniq.call(arrays.reduce(function (current, next, index) {
 					if (index === 1) current = aFrom(current);
 					push.apply(current, next);
@@ -359,16 +363,13 @@ module.exports = exports = function (mainConf/*, options */) {
 	};
 };
 
-exports.getIndexMeta = function (query, conf) {
-	var meta;
-	if (query.status) {
-		if (conf.resolveCollectionMeta) {
-			meta = conf.resolveCollectionMeta(query.status);
-			return { name: meta.name, value: serializeValue(meta.value) };
-		}
-		return { name: conf.statusIndexName, value: serializeValue(query.status) };
-	}
-	return { name: conf.allIndexName, value: '11' };
+exports.getIndexMeta = function (query, meta) {
+	var status = query.status || 'all';
+
+	return {
+		name: meta[status].indexName,
+		value: serializeValue(meta[status].indexValue)
+	};
 };
 
 exports.tableQueryConf = [{
