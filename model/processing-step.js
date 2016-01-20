@@ -230,7 +230,7 @@ module.exports = memoize(function (db) {
 	});
 
 	ProcessingStep.prototype.certificates.defineProperties({
-		applicable: { type: RequirementUpload, multiple: true, value: function (_observe) {
+		applicable: { type: Document, multiple: true, value: function (_observe) {
 			return _observe(this.master.certificates._applicable);
 		} },
 		uploaded: { type: Document, multiple: true, value: function (_observe) {
