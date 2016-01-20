@@ -13,6 +13,7 @@ var Map                        = require('es6-map')
   , defineFormSectionBase      = require('./form-section-base')
   , defineProcessingStepBase   = require('./processing-step-base')
   , defineUploadsProcess       = require('./lib/uploads-process')
+  , defineMultipleProcess      = require('./lib/multiple-process')
   , definePaymentReceiptUpload = require('./payment-receipt-upload')
   , defineRequirementUpload    = require('./requirement-upload')
   , defineDocument             = require('./document');
@@ -20,6 +21,7 @@ var Map                        = require('es6-map')
 module.exports = memoize(function (db) {
 	var Percentage           = definePercentage(db)
 	  , StringLine           = defineStringLine(db)
+	  , MultipleProcess      = defineMultipleProcess(db)
 	  , User                 = defineUser(db)
 	  , FormSectionBase      = defineFormSectionBase(db)
 	  , ProcessingStepBase   = defineProcessingStepBase(db)
@@ -190,7 +192,7 @@ module.exports = memoize(function (db) {
 
 		requirementUploads: { type: UploadsProcess, nested: true },
 		paymentReceiptUploads: { type: UploadsProcess, nested: true },
-		certificates: { type: db.Object, nested: true },
+		certificates: { type: MultipleProcess, nested: true },
 		assignee: { type: User },
 		isAssignable: { type: db.Boolean }
 	});
@@ -228,6 +230,9 @@ module.exports = memoize(function (db) {
 	});
 
 	ProcessingStep.prototype.certificates.defineProperties({
+		applicable: { type: RequirementUpload, multiple: true, value: function (_observe) {
+			return _observe(this.master.certificates._applicable);
+		} },
 		uploaded: { type: Document, multiple: true, value: function (_observe) {
 			return _observe(this.master.certificates._uploaded);
 		} }
