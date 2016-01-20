@@ -3,7 +3,7 @@
 	width: 100%;
 }
 .user-forms > *:first-child {
-	margin-top: 22px;
+	margin-top: 44px;
 }
 .user-forms > form,
 .user-forms > .disabler-range,
@@ -24,6 +24,7 @@
 
 .user-forms h2 {
 	font-weight: 300;
+	font-size:36px;
 }
 
 .user-forms .form-elements h2 {
