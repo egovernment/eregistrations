@@ -33,7 +33,7 @@
 .section-primary > .disabler-range > h2,
 .section-primary > .disabler-range > form > h2,
 .section-primary > .section-primary-wrapper > h2 {
-	margin-top: 0;
+	margin-top: -10px;
 	margin-bottom: 10px;
 }
 
