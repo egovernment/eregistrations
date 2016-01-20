@@ -2,18 +2,11 @@
 
 'use strict';
 
-var stringify = JSON.stringify;
+var unserializeId = require('./unserialize-id');
 
 module.exports = function (view, type) {
 	if (!view) return [];
 	return view.split('\n').map(function (data) {
-		var item;
-		data = data.split('.');
-		item = type.getById(data[1]);
-		if (!item) {
-			throw new Error("Not object found for " + stringify(data[1]) +
-				" (full data: " + stringify(data) + ") by type: " + stringify(type.__id__));
-		}
-		return { item: item, index: Number(data[0]) };
+		return { item: unserializeId(data, type), index: Number(data.split('.')[0]) };
 	});
 };
