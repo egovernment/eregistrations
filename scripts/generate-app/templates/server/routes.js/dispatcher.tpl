@@ -13,7 +13,6 @@ module.exports = require('eregistrations/server/routes/official')([{
 	listProperties: require('../../../apps-common/business-process-list-properties'),
 	listComputedProperties: require('../../../apps-common/business-process-list-computed-properties'),
 	itemsPerPage: require('../../../env').objectsListItemsPerPage,
-	allIndexName: 'processingSteps/map/officer/isReady',
 	statusIndexName: 'processingSteps/map/officer/resolvedStatus'
 }, {
 	roleName: 'revision',
@@ -21,7 +20,6 @@ module.exports = require('eregistrations/server/routes/official')([{
 	listProperties: require('../../../apps-common/business-process-list-properties'),
 	listComputedProperties: require('../../../apps-common/business-process-list-computed-properties'),
 	itemsPerPage: require('../../../env').objectsListItemsPerPage,
-	allIndexName: 'processingSteps/map/revision/isReady',
 	statusIndexName: 'processingSteps/map/revision/resolvedStatus'
 }], {
 	resolveConf: function (req) {

@@ -5,7 +5,11 @@
 var assign = require('es5-ext/object/assign');
 
 module.exports = exports = assign(exports, require('eregistrations/routes/official')(function () {
-//CHANGEME - this function should return step
+/* Example setup
+var stepsMap = this.businessProcess.processingSteps.map;
+if (stepsMap.officer.isPending) return stepsMap.officer;
+if (stepsMap.revision.isPending) return stepsMap.revision;
+*/
 }));
 
 require('../../view/print-base');
