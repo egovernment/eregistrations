@@ -61,7 +61,10 @@
 
 .section-primary-sub h2,
 .section-primary-sub h3 {
-	margin: 11px 0;
+	font-weight: 400;
+	border-bottom: 1px dashed var(--normal-light-medium-background);
+	padding:5px;
+	margin-bottom: 11px;
 }
 
 .section-primary-sub > * {

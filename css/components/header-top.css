@@ -50,6 +50,8 @@ Flexible basic menu - used on home page and can be reused elsewhere
 	padding-left: 8px;
 	cursor: pointer;
 	display: block;
+	text-decoration: none;
+	text-transform: uppercase;
 }
 .header-top-menu a:hover,
 .header-top-menu a:focus,

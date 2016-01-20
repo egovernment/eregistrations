@@ -7,10 +7,13 @@
 	display: block;
 }
 
-.user-account-boxes > section h3,
 .user-account-section-title {
 	font-size: 18px;
 	font-weight: 300;
+}
+
+.user-account-welcome header {
+	font-size: 30px;
 }
 
 .user-account-boxes > section a {
