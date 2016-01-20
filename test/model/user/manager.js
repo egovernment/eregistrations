@@ -16,6 +16,7 @@ module.exports = function (t, a) {
 	a(manager.roles.has('manager'), false);
 	a.deep(aFrom(manager.clients), []);
 	a.deep(aFrom(manager.clientBusinessProcesses), []);
+	a(manager.managerDataForms instanceof db.PropertyGroupsProcess, true);
 
 	manager.roles.add('manager');
 

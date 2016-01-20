@@ -5,13 +5,15 @@
 var memoize                     = require('memoizee/plain')
   , ensureDatabase              = require('dbjs/valid-dbjs')
   , _                           = require('mano').i18n.bind('Model')
+  , definePropertyGroupsProcess = require('../lib/property-groups-process')
   , defineUser                  = require('./base')
   , defineUserBusinessProcesses = require('./business-processes');
 
 module.exports = memoize(function (db/* options */) {
 	var options = arguments[1]
-	  , User    = ensureDatabase(db).User || defineUser(db, options)
-	  , Role    = db.Role;
+	  , User = ensureDatabase(db).User || defineUser(db, options)
+	  , PropertyGroupsProcess = definePropertyGroupsProcess(db)
+	  , Role = db.Role;
 
 	defineUserBusinessProcesses(User);
 	Role.members.add('manager');
@@ -23,7 +25,9 @@ module.exports = memoize(function (db/* options */) {
 			type: User,
 			reverse: 'createdClients'
 		},
-		// All manager clients (resolved from businessProcesses assinged to manager)
+
+		// All manager clients (resolved from list of users created by manager and
+		// businessProcesses assinged to manager)
 		clients: {
 			type: User,
 			multiple: true,
@@ -40,6 +44,12 @@ module.exports = memoize(function (db/* options */) {
 
 				return clients;
 			}
+		},
+
+		// Manager form sections
+		managerDataForms: {
+			type: PropertyGroupsProcess,
+			nested: true
 		}
 	});
 
