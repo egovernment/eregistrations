@@ -1,40 +1,44 @@
-// User manager (notary) related properties
+// User manager (aka notary) related properties
 
 'use strict';
 
-var memoize               = require('memoizee/plain')
-  , ensureDatabase        = require('dbjs/valid-dbjs')
-  , _                     = require('mano').i18n.bind('Model')
-  , defineUser            = require('./base')
-  , defineBusinessProcess = require('../lib/business-process-base');
+var memoize                     = require('memoizee/plain')
+  , ensureDatabase              = require('dbjs/valid-dbjs')
+  , _                           = require('mano').i18n.bind('Model')
+  , defineUser                  = require('./base')
+  , defineUserBusinessProcesses = require('./business-processes');
 
 module.exports = memoize(function (db/* options */) {
-	var options             = arguments[1]
-	  , User                = ensureDatabase(db).User || defineUser(db, options)
-	  , BusinessProcessBase = defineBusinessProcess(db)
-	  , Role                = db.Role;
+	var options = arguments[1]
+	  , User    = ensureDatabase(db).User || defineUser(db, options)
+	  , Role    = db.Role;
 
+	defineUserBusinessProcesses(User);
 	Role.members.add('manager');
 	Role.meta.get('manager').label = _("User Manager");
 
 	User.prototype.defineProperties({
-		// Clients (users) of user manager
+		// If user was created by a manager, then its manager is assigned here
+		manager: {
+			type: User,
+			reverse: 'createdClients'
+		},
+		// All manager clients (resolved from businessProcesses assinged to manager)
 		clients: {
 			type: User,
-			multiple: true
-		},
-		// Returns all business processes handled by manager
-		clientsBusinessProcesses: {
-			type: BusinessProcessBase,
 			multiple: true,
 			value: function (_observe) {
-				var result = [];
-				this.clients.forEach(function (client) {
-					_observe(client.businessProcesses).forEach(function (businessProcess) {
-						result.push(businessProcess);
-					});
+				var clients = [];
+
+				// Users created by manager
+				this.createdClients.forEach(function (client) { clients.push(client); });
+
+				// Users that handle business processes assigned to manager
+				this.clientBusinessProcesses.forEach(function (businessProcess) {
+					if (_observe(businessProcess._user)) clients.push(businessProcess.user);
 				});
-				return result.sort(function (a, b) { return a._lastOwnModified - b._lastOwnModified_; });
+
+				return clients;
 			}
 		}
 	});
