@@ -17,7 +17,7 @@ exports.step = function () {
 
 exports._tabs = function (context) {
 	return context.businessProcess.dataForms.applicable.map(function (section) {
-		var sectionTabAddress = '/forms/' + section.pageUrl + '/';
+		var sectionTabAddress = section.pageUrl ? ('/forms/' + section.pageUrl + '/') : '/forms/';
 
 		return li({ class: ['forms-tab-nav-tab',
 			_if(eq(appLocation._pathname, sectionTabAddress),
