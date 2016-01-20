@@ -1,5 +1,4 @@
-// Relations between business processes
-// Derived business process is an update to already closed business process
+// Relation between BusinessProcess and User manager
 
 'use strict';
 
