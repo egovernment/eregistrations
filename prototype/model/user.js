@@ -125,6 +125,7 @@ user.defineProperties({
 		label: "Lorem ipsum dolor sit amet"
 	},
 	isDebtContinusStatus: { type: EnumTripleOption, required: true },
+	isManager: { type: db.Boolean, label: "I am manager" },
 	inventory: { type: UsDollar, label: "Inventory value", required: true, step: 1,
 		inputHint: "Etiam vestibulum dui mi, nec ultrices diam ultricies id " },
 	surfaceArea: { type: SquareMeters, label: "Area used for the activity", required: true,
@@ -175,16 +176,13 @@ user.defineProperties({
 		} }
 });
 
-user.getOwnDescriptor('isManager').label = "I am manager";
-
 module.exports = User;
 
 User.newNamed('notary', {
 	firstName: 'User',
 	lastName: 'Manager',
 	email: 'notary@eregistraions.com',
-	roles: ['user'],
-	isManager: true
+	roles: ['manager']
 });
 
 User.newNamed('userVianney', {
@@ -193,16 +191,16 @@ User.newNamed('userVianney', {
 	email: 'vianney@lesaffre.com',
 	roles: ['users-admin']
 });
-db.notary.clients.add(db.userVianney);
 User.newNamed('otherGuy', {
 	firstName: 'Other',
 	lastName: 'Not linked',
 	email: 'other-guy@lesaffre.com'
 });
-db.notary.clients.add(db.otherGuy);
+db.otherGuy.manager = db.notary;
 
 db.BusinessProcessNew.instances.forEach(function (businessProcess) {
 	db.userVianney.initialBusinessProcesses.add(businessProcess);
+	businessProcess.manager = db.notary;
 });
 
 Partner = db.User.extend('Partner', {
