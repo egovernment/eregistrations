@@ -160,7 +160,7 @@ module.exports = memoize(function (db) {
 				// Nested file: not excluded
 				if (File && (resolved.value instanceof File)) return false;
 				// Nested map: not excluded
-				if (NestedMap && (resolved.key !== 'map') && (resolved.object instanceof NestedMap)) {
+				if (NestedMap && (resolved.key === 'map') && (resolved.object instanceof NestedMap)) {
 					return false;
 				}
 				// Constrained value: not excluded
