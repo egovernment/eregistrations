@@ -15,7 +15,7 @@ module.exports = memoize(function (db/*, options */) {
 	  , Role = defineRole(db);
 
 	Role.members.add('user');
-	Role.meta.get('user').label = _("User");
+	Role.meta.get('user').set('label', _("User"));
 
 	return User;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

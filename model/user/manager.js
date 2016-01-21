@@ -17,7 +17,7 @@ module.exports = memoize(function (db/* options */) {
 
 	defineUserBusinessProcesses(User);
 	Role.members.add('manager');
-	Role.meta.get('manager').label = _("User Manager");
+	Role.meta.get('manager').set('label', _("User Manager"));
 
 	User.prototype.defineProperties({
 		// 1. Normal user properties
