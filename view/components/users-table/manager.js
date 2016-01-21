@@ -28,7 +28,7 @@ var getViewData = memoize(function (query) {
 
 var UsersManager = module.exports = function (conf) {
 	var getOrderIndex = ensureCallable(conf.getOrderIndex)
-	  , itemsPerPage = toNaturalNumber(data.itemsPerPage);
+	  , itemsPerPage = toNaturalNumber(conf.itemsPerPage);
 
 	if (itemsPerPage) this.itemsPerPage = itemsPerPage;
 	defineProperties(this, {

@@ -18,6 +18,9 @@ var normalizeOptions  = require('es5-ext/object/normalize-options')
 var appTypes = {
 	'users-admin': true,
 	'meta-admin': { extraFiles: ['view/meta-admin'] },
+	dispatcher: { extraFiles: ['view/dispatcher'],
+		'client/model.js': 'client/model.js/official.tpl'
+		},
 	user: { extraFiles: ['view/user.js'] },
 	public: { extraFiles: ['apps/public'] },
 	official: true,
@@ -85,7 +88,7 @@ module.exports = function (projectRoot, appName/*, options*/) {
 			  , appPathRel = path.dirname(templatePath)
 			  , appPath = path.join(appRootPath, appPathRel);
 
-				if (appTypes[templateType][appPathRel] === templatePath) {
+				if (appTypes[templateType] && appTypes[templateType][appPathRel] === templatePath) {
 					templates[appPath] = path.join(__dirname, 'templates', templatePath);
 					return;
 				}
