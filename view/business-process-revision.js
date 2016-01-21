@@ -2,12 +2,14 @@
 
 'use strict';
 
-var _ = require('mano').i18n.bind('Official: Revision');
+var _                = require('mano').i18n.bind('Official: Revision')
+  , normalizeOptions = require('es5-ext/object/normalize-options');
 
 module.exports = exports = require('./business-process-official-preview');
 
-exports._customPreviewInfo = function (context) {
-	var businessProcess = context.businessProcess
+exports._customPreviewInfo = function (context/*, options*/) {
+	var options         = normalizeOptions(arguments[1])
+	  , businessProcess = context.businessProcess
 	  , revisionStep    = context.processingStep;
 
 	return insert(_if(revisionStep._isPending, section({ class: 'official-submission-toolbar' },
@@ -20,7 +22,7 @@ exports._customPreviewInfo = function (context) {
 					buttonClass: 'button-main button-main-success',
 					'data-hint': _("Enables the processing of the application."),
 					class: 'hint-optional hint-optional-bottom',
-					value: _("Validate revision")
+					value: options.acceptLabel || _("Validate revision")
 				}),
 				_if(eq(revisionStep._sendBackStatusesProgress, 1), postButton({
 					action: url('revision', businessProcess.__id__, 'return'),
@@ -28,7 +30,7 @@ exports._customPreviewInfo = function (context) {
 					class: 'hint-optional hint-optional-bottom',
 					'data-hint': _("You can reject the registration when documents and/or " +
 						"data that is sent can be determined as not real."),
-					value: _("Return for corrections")
+					value: options.sendBackLabel || _("Return for corrections")
 				})))),
 				// show reject button at all times when revision is pending
 		[dialog(
@@ -40,7 +42,7 @@ exports._customPreviewInfo = function (context) {
 				form({ method: 'post', action: '/revision/' + businessProcess.__id__ + '/reject/' },
 					p({ class: 'input' }, input({ id: 'revision-reject-reason',
 							dbjs: revisionStep._rejectionReason })),
-					p(input({ type: 'submit', value: _("Reject") })))),
+					p(input({ type: 'submit', value: options.rejectLabel || _("Reject") })))),
 			footer(p(a({ href: '' }, _("Cancel"))))
 		), a({
 			href: '#reject-reason',
