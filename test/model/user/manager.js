@@ -14,8 +14,8 @@ module.exports = function (t, a) {
 	manager = new User();
 
 	a(manager.roles.has('manager'), false);
-	a.deep(aFrom(manager.clients), []);
-	a.deep(aFrom(manager.clientBusinessProcesses), []);
+	a.deep(aFrom(manager.managedUsers), []);
+	a.deep(aFrom(manager.managedBusinessProcesses), []);
 	a(manager.managerDataForms instanceof db.PropertyGroupsProcess, true);
 
 	manager.roles.add('manager');
@@ -26,13 +26,13 @@ module.exports = function (t, a) {
 	bp.manager = manager;
 
 	a(manager.roles.has('manager'), true);
-	a.deep(aFrom(manager.clients), [user]);
-	a.deep(aFrom(manager.clientBusinessProcesses), [bp]);
+	a.deep(aFrom(manager.managedUsers), [user]);
+	a.deep(aFrom(manager.managedBusinessProcesses), [bp]);
 
 	createdUser = new User();
 	createdUser.manager = manager;
 
 	a(manager.roles.has('manager'), true);
-	a.deep(aFrom(manager.clients), [createdUser, user]);
-	a.deep(aFrom(manager.clientBusinessProcesses), [bp]);
+	a.deep(aFrom(manager.managedUsers), [createdUser, user]);
+	a.deep(aFrom(manager.managedBusinessProcesses), [bp]);
 };

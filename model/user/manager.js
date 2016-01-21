@@ -20,36 +20,38 @@ module.exports = memoize(function (db/* options */) {
 	Role.meta.get('manager').label = _("User Manager");
 
 	User.prototype.defineProperties({
-		// If user was created by a manager, then its manager is assigned here
+		// 1. Normal user properties
+		// If user was created by a manager, then its manager is assigned to this property
 		manager: {
 			type: User,
-			reverse: 'createdClients'
+			reverse: 'managedCreatedUsers'
+		},
+
+		// 2. Manager user properties
+		// Manager form sections
+		managerDataForms: {
+			type: PropertyGroupsProcess,
+			nested: true
 		},
 
 		// All manager clients (resolved from list of users created by manager and
 		// businessProcesses assinged to manager)
-		clients: {
+		managedUsers: {
 			type: User,
 			multiple: true,
 			value: function (_observe) {
 				var clients = [];
 
 				// Users created by manager
-				this.createdClients.forEach(function (client) { clients.push(client); });
+				this.managedCreatedUsers.forEach(function (client) { clients.push(client); });
 
 				// Users that handle business processes assigned to manager
-				this.clientBusinessProcesses.forEach(function (businessProcess) {
+				this.managedBusinessProcesses.forEach(function (businessProcess) {
 					if (_observe(businessProcess._user)) clients.push(businessProcess.user);
 				});
 
 				return clients;
 			}
-		},
-
-		// Manager form sections
-		managerDataForms: {
-			type: PropertyGroupsProcess,
-			nested: true
 		}
 	});
 

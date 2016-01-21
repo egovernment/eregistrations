@@ -15,7 +15,7 @@ module.exports = memoize(function (db/*, options*/) {
 		// Manager account that can handle that request as well
 		manager: {
 			type: User,
-			reverse: 'clientBusinessProcesses'
+			reverse: 'managedBusinessProcesses'
 		}
 	});
 
