@@ -21,6 +21,7 @@
 	margin: 0 11px;
 	line-height: 44px;
 	border-radius: 5px;
+	font-size: 16px;
 	text-decoration: none;
 }
 .pills-nav-pill:hover,
@@ -33,6 +34,6 @@
 .pills-nav-active > a:hover,
 .pills-nav-active > a:focus,
 .pills-nav-active > a:active {
-	background: var(--normal-background);
-	color: var(--white-text);
+	background: var(--normal-dark-background);
+	color:var(--white-text);
 }
