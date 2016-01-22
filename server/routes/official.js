@@ -333,7 +333,9 @@ module.exports = exports = function (mainConf/*, options */) {
 			return businessProcessStoragesPromise(function () { return roleNameResolve; });
 		}());
 	} else {
-		resolveHandler = constant(businessProcessStoragesPromise(initializeHandler(mainConf)));
+		resolveHandler = constant(businessProcessStoragesPromise(function () {
+			return initializeHandler(mainConf);
+		}));
 	}
 	return {
 		'get-business-processes-view': function (query) {
