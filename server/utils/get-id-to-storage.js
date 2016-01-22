@@ -29,7 +29,7 @@ module.exports = memoize(function (storages) {
 		deferred.find(storages, function (storage) { return storage.get(id); })
 			.done(function (storage) {
 				if (!storage) return;
-				map.set(id, storage);
+				map.set(id, deferred(storage));
 				unresolved.delete(def);
 				def.resolve(storage);
 			}, def.reject);
