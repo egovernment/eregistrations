@@ -18,6 +18,7 @@ columns.push(tableColumns.archiverColumn);
 columns.push(tableColumns.goToColumn);
 
 var assignmentColumn = {
+	head: _("Assignee"),
 	data: function (processingStep, assignableUsers) {
 		return form({ method: 'post',
 				action: url('assign-business-process'), class: 'submitted-menu-role-select',
