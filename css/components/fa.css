@@ -271,3 +271,19 @@ e.g.:
 .fa-building:before {
 	content: "\f1ad";
 }
+
+.fa-star {
+	width:1em;
+}
+
+.fa-star:before {
+	content: "\f005";
+}
+
+.fa-star-o {
+	width:1em;
+}
+
+.fa-star-o:before {
+	content: "\f006";
+}
