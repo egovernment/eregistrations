@@ -10,7 +10,7 @@ exports['step-guide'] = { class: { 'step-form': true } };
 //exports['step'] = { class: { 'content': false, 'user-forms': false } };
 
 exports.step = {
-	class: { 'content': false, 'user-forms': false },
+	class: { content: false, 'user-forms': false },
 	content: function () {
 		nav({ class: 'forms-tab-nav' },
 			ul({ class: 'content' }, exports._tabs(this)));
