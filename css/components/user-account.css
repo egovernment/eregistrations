@@ -184,12 +184,23 @@ h3.user-account-section-title {
 }
 
 .user-account-tab.section-tab-nav-tab {
-	font-size:18px;
-	padding: 11px 15px;
+	font-size: 18px;
+	padding: 21px 30px;
 	text-transform: uppercase;
-	line-height: 20px;
-	font-weight: normal;
-	color:var(--dark-text);
+	line-height: 22px;
+	font-weight: 700;
+	letter-spacing: 1px;
+	margin-right: 5px;
+	background: var(--lighter-medium-background);
+	border-color: var(--light-medium-background);
+	color: var(--medium-text);
+}
+
+.user-account-tab.section-tab-nav-tab:focus,
+.user-account-tab.section-tab-nav-tab:active,
+.user-account-tab.section-tab-nav-tab:hover,
+.user-account-tab.section-tab-nav-tab.active {
+	color: var(--normal-text);
 }
 
 .user-forms > .user-account-section-title {
