@@ -110,6 +110,12 @@ module.exports = function (t, a) {
 
 	a(section.sections.size, 2);
 
+	a.h1("Neighbourhood");
+	a(section.sections.firstSection.previousSection, null);
+	a(section.sections.firstSection.nextSection, section.sections.secondSection);
+	a(section.sections.secondSection.previousSection, section.sections.firstSection);
+	a(section.sections.secondSection.nextSection, null);
+
 	a.h1('Getters');
 
 	a.h2('With default values for other properties');
