@@ -221,6 +221,7 @@ module.exports = memoize(function (db) {
 		hasMissingRequiredPropertyNamesDeep: {
 			type: db.Boolean
 		},
+		// Resolves collection of which section is part of
 		resolveParentCollection: {
 			type: db.Function,
 			value: function (ignore) {
