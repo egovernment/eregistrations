@@ -1,25 +1,22 @@
-.forms-tab-nav ul{
-	display: table;
-	width: 100%;
-	border-radius: 4px;
-	overflow: hidden;
+.forms-tab-nav {
+	background-color: var(--white-background);
+	margin-top: -22px;
+	padding-top: 22px;
 }
 
 .forms-tab-nav-tab {
-	display: table-cell;
+	display: inline-block;
 	text-align: center;
-	overflow: hidden;
 	line-height: 44px;
 }
 
 .forms-tab-nav-tab a {
-	color: var(--white-text);
+	color: var(--light-normal-text);
 	text-decoration: none;
 	line-height: 44px;
-	width: 100%;
 	display: block;
-	background-color: var(--dark-background);
-	padding: 0 8px;
+	padding: 0 12px;
+	border-radius: 3px 3px 0 0;
 }
 
 .forms-tab-nav-tab a > span {
@@ -32,8 +29,8 @@
 .forms-tab-nav-tab a:hover,
 .forms-tab-nav-tab a:focus,
 .forms-tab-nav-tab a:active {
-	background-color: var(--normal-dark-background);
-	color: var(--light-text);
+	background-color: var(--light-background);
+	color: var(--normal-text);
 }
 
 .forms-tab-nav-tab-status {
@@ -47,16 +44,26 @@
 	color: var(--success-text);
 }
 
-.forms-tab-nav-tab-active .forms-tab-nav-tab-status.fa-close {
+.forms-tab-nav-tab-active .forms-tab-nav-tab-status.fa-star {
 	color: var(--error-text);
+}
+
+.forms-tab-content.user-forms > *:first-child {
+	margin-top: 22px;
 }
 
 /*
 Styles applied while screen size is less than 640px
 */
 @media only screen and (max-width: 640px) {
+	.forms-tab-nav {
+		padding: 11px 0;
+	}
 	.forms-tab-nav-tab {
 		display: block;
 		text-align: left;
+	}
+	.forms-tab-nav-tab a {
+		border-radius: 3px;
 	}
 }
