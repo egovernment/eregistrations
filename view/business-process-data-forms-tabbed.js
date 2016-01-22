@@ -16,7 +16,7 @@ exports.step = function () {
 };
 
 exports._tabs = function (context) {
-	return context.businessProcess.dataForms.applicable.map(function (section) {
+	return list(context.businessProcess.dataForms.applicable, function (section) {
 		var sectionTabAddress = section.pageUrl ? ('/forms/' + section.pageUrl + '/') : '/forms/';
 
 		return li({ class: ['forms-tab-nav-tab',
