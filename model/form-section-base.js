@@ -236,7 +236,7 @@ module.exports = memoize(function (db) {
 	});
 
 	FormSectionBase.prototype.defineProperties({
-		// Next section (applicable only if section is one of sub-sections on section group
+		// Next section (applicable only if section is one of sub-sections on section group)
 		nextSection: {
 			type: FormSectionBase,
 			value: function (_observe) {
@@ -253,7 +253,7 @@ module.exports = memoize(function (db) {
 				return nextSection;
 			}
 		},
-		// Previous section (applicable only if section is one of sub-sections on section group
+		// Previous section (applicable only if section is one of sub-sections on section group)
 		previousSection: {
 			type: FormSectionBase,
 			value: function (_observe) {
