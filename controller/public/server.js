@@ -1,18 +1,25 @@
 'use strict';
 
-var emptyPromise   = require('deferred')(undefined)
-  , genId          = require('time-uuid')
-  , login          = require('mano-auth/server/authentication').login
-  , mano           = require('mano')
+var emptyPromise = require('deferred')(undefined)
+  , genId        = require('time-uuid')
+  , login        = require('mano-auth/server/authentication').login
+  , mano         = require('mano')
+  , register     = require('mano-auth/controller/server/register').submit
 
   , db = mano.db, dbDriver = mano.dbDriver
   , maxage = 1000 * 60 * 60 * 24 * 7;
 
 exports.login = require('mano-auth/controller/server/login');
 exports.register = require('mano-auth/controller/server/register-and-login');
-exports['add-user'] = require('mano-auth/controller/server/register');
 exports['reset-password'] = require('mano-auth/controller/server/reset-password');
 exports['request-reset-password'] = require('mano-auth/controller/server/request-reset-password');
+
+exports['add-user'] =  {
+	submit: function (data) {
+		if (!data['User#/roles']) data['User#/roles'] = ['user'];
+		return register.apply(this, arguments);
+	}
+};
 
 exports['init-demo'] = {
 	validate: Function.prototype,

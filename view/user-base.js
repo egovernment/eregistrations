@@ -26,12 +26,6 @@ exports.menu = function () {
 			li(
 				a(
 					{ href: '/profile/' },
-					span({ class: 'fa fa-user' }, "Preferences")
-				)
-			),
-			li(
-				a(
-					{ href: '/profile/' },
 					span({ class: 'header-top-user-name' }, this.user._fullName)
 				)
 			),
