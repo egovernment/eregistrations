@@ -5,11 +5,12 @@
 var stringify = JSON.stringify;
 
 module.exports = function (data, type) {
-	var id = data.split('.')[1], path, obj;
+	var id = data.split('.')[1], path, obj, masterId;
 
 	if (id.indexOf('/') !== -1) {
 		path = id.slice(id.indexOf('/') + 1);
-		obj = type.getById(id);
+		masterId = id.slice(0, id.indexOf('/'));
+		obj = type.getById(masterId);
 		if (obj) {
 			obj = obj.resolveSKeyPath(path).value;
 		}
