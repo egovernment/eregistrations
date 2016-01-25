@@ -8,6 +8,7 @@ var ensureCallable = require('es5-ext/object/valid-callable')
   , escape         = require('es5-ext/reg-exp/escape')
   , memoize        = require('memoizee')
   , Fragment       = require('data-fragment')
+  , anyIdToStorage = require('../utils/any-id-to-storage')
 
   , driver = require('mano').dbDriver;
 
@@ -18,9 +19,11 @@ var getKeyPathFilter = function (keyPath) {
 };
 
 module.exports = memoize(function (storageName) {
-	var storage = driver.getStorage(ensureString(storageName));
+	var storage;
+	if (storageName != null) storage = driver.getStorage(storageName);
 	return memoize(function (ownerId/*, options*/) {
-		var fragment, options = Object(arguments[1]), filter, index, customFilter, keyPathFilter;
+		var fragment, options = Object(arguments[1]), filter, index, customFilter, keyPathFilter
+		  , promise, setupListener;
 
 		ownerId = ensureString(ownerId);
 		if (options.filter != null) customFilter = ensureCallable(options.filter);
@@ -39,15 +42,29 @@ module.exports = memoize(function (storageName) {
 			filter = customFilter;
 		}
 		fragment = new Fragment();
-		fragment.promise = storage.getObject(ownerId)(function (data) {
+		setupListener = function (storage) {
+			storage.on('owner:' + ownerId, function (event) {
+				if (event.type !== 'direct') return;
+				if (!filter || filter(event)) fragment.update(event.id, event.data);
+			});
+		};
+		if (storage) {
+			promise = storage.getObject(ownerId);
+			setupListener(storage);
+		} else {
+			promise = anyIdToStorage(ownerId)(function (storage) {
+				setupListener(storage);
+				return storage.getObject(ownerId);
+			});
+		}
+		fragment.promise = promise(function (data) {
 			data.forEach(function (data) {
 				if (!filter || filter(data)) fragment.update(data.id, data.data);
 			});
 		});
-		storage.on('owner:' + ownerId, function (event) {
-			if (event.type !== 'direct') return;
-			if (!filter || filter(event)) fragment.update(event.id, event.data);
-		});
 		return fragment;
 	}, { primitive: true });
-}, { primitive: true });
+}, { primitive: true, resolvers: [function (storageName) {
+	if (storageName == null) return '';
+	return ensureString(storageName);
+}] });
