@@ -45,7 +45,6 @@ module.exports = function (stepName) {
 		BusinessProcessType: BusinessProcess,
 		trigger: correctedBusinessProcesses,
 		preTrigger: sentBackBusinessProcesses,
-		official: 'processingSteps/map/' + stepName + '/processor',
 		label: _("Correction of documents"),
 		text: _("Corrected documents sent to review")
 	}, {
