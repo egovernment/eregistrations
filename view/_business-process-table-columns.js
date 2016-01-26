@@ -83,7 +83,9 @@ exports.columns = [{
 	data: function (businessProcess) {
 		var isSubmitted = businessProcess._isSubmitted;
 
-		return _if(isSubmitted, isSubmitted._lastModified.map(formatLastModified));
+		return _if(isSubmitted, function () {
+			return isSubmitted._lastModified.map(formatLastModified);
+		});
 	}
 }, {
 	head: _("Withdraw date"),
@@ -91,7 +93,9 @@ exports.columns = [{
 	data: function (businessProcess) {
 		var isApproved = businessProcess._isApproved;
 
-		return _if(isApproved, isApproved._lastModified.map(formatLastModified));
+		return _if(isApproved, function () {
+			return isApproved._lastModified.map(formatLastModified);
+		});
 	}
 }, {
 	head: _("Inscriptions and controls"),
