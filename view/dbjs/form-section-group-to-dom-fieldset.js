@@ -18,17 +18,19 @@ var d                = require('d')
   , find             = require('es5-ext/array/#/find')
   , forEach          = require('es5-ext/object/for-each')
   , progressRules    = require('../components/progress-rules')
-  , normalizeOptions = require('es5-ext/object/normalize-options');
+  , normalizeOptions = require('es5-ext/object/normalize-options')
+  , headersMap       = require('../utils/headers-map');
 
 require('./form-section-base');
 
 module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 	toDOMFieldset: d(function (document/*, options */) {
-		var options         = normalizeOptions(arguments[1])
-		  , master          = options.master || this.master
-		  , resolvent       = this.getFormResolvent(options)
-		  , customizeData   = { master: master }
-		  , fieldsetOptions = {
+		var options              = normalizeOptions(arguments[1])
+		  , master               = options.master || this.master
+		  , resolvent            = this.getFormResolvent(options)
+		  , customizeData        = { master: master }
+		  , subSectionHeaderRank = options.subSectionHeaderRank || 3
+		  , fieldsetOptions      = {
 			master: master,
 			formId: options.formId,
 			disablePartialSubmit: options.disablePartialSubmit != null ? options.disablePartialSubmit
@@ -50,7 +52,7 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 					customizeData.subSections[subSectionName].object = subSection;
 					return ns.div(
 						{ class: 'section-primary-sub', id: subSection.domId },
-						ns._if(subSection.label, ns.h3(subSection.label)),
+						ns._if(subSection.label, headersMap[subSectionHeaderRank](subSection.label)),
 						ns._if(subSection._legend, ns.div({ class: 'section-primary-legend' },
 							ns.md(subSection._legend))),
 						customizeData.subSections[subSectionName].arrayResult

@@ -14,19 +14,20 @@
 
 'use strict';
 
-var _  = require('mano').i18n.bind('Sections')
-  , d  = require('d')
-  , db = require('mano').db
-  , ns = require('mano').domjs.ns;
+var _          = require('mano').i18n.bind('Sections')
+  , d          = require('d')
+  , db         = require('mano').db
+  , ns         = require('mano').domjs.ns
+  , headersMap = require('../utils/headers-map');
 
 require('./form-entities-table-to-dom-fieldset');
 require('./form-section-base');
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var options, customizeData;
-		options = Object(arguments[1]);
-		customizeData = { master: options.master || this.master };
+		var options       = Object(arguments[1])
+		  , headerRank    = options.headerRank || 2
+		  , customizeData = { master: options.master || this.master };
 
 		customizeData.arrayResult = [customizeData.container = ns.section(
 			{ id: this.domId, class: ns._if(ns.eq(
@@ -38,10 +39,11 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 			div({ class: ['disabler-range',
 					_if(this._isDisabled, 'disabler-active')] },
 				div({ class: 'disabler' }),
-				ns._if(this._label,
-					[ns.h2(this._label), ns.hr(),
-						ns._if(this._legend,
-							ns.div({ class: 'section-primary-legend' }, ns.md(this._legend)))]),
+				ns._if(this._label, [
+					headersMap[headerRank](this._label),
+					ns.hr(),
+					ns._if(this._legend,
+						ns.div({ class: 'section-primary-legend' }, ns.md(this._legend)))]),
 				this.toDOMFieldset(document, options),
 				ns.p({ class: 'section-primary-scroll-top' },
 					ns.a({ onclick: 'window.scroll(0, 0)' }, ns.span({ class: 'fa fa-arrow-up' },
