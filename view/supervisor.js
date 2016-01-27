@@ -1,26 +1,33 @@
 'use strict';
 
-var _        = require('mano').i18n.bind('View: Supervisor')
-  , toArray       = require('es5-ext/object/to-array')
-  , byOrder = function (a, b) { return this[a].order - this[b].order; }
-  , once     = require('timers-ext/once')
-  , dispatch = require('dom-ext/html-element/#/dispatch-event-2')
-  , location = require('mano/lib/client/location')
-  , timeRanges = require('../utils/supervisor-time-ranges');
+var _                  = require('mano').i18n.bind('View: Supervisor')
+  , toArray            = require('es5-ext/object/to-array')
+  , byOrder            = function (a, b) { return this[a].order - this[b].order; }
+  , once               = require('timers-ext/once')
+  , dispatch           = require('dom-ext/html-element/#/dispatch-event-2')
+  , location           = require('mano/lib/client/location')
+  , timeRanges         = require('../utils/supervisor-time-ranges')
+  , assign             = require('es5-ext/object/assign')
+  , stepsMap           = assign(require('../utils/processing-steps-map'))
+  , getSupervisorTable = require('eregistrations/view/components/supervisor-table')
+  , from               = require('es5-ext/array/from')
+  , tableColumns       = require('eregistrations/view/_supervisor-table-columns.js')
+  , columns            = from(tableColumns.columns)
+  , env                = require('mano').env;
 
 exports._parent = require('./user-base');
 
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		var searchForm, searchInput, processingStepsTable;
+		var searchForm, searchInput, supervisorTable;
 
 		section({ class: 'section-primary users-table-filter-bar' },
 			searchForm = form({ action: '/', autoSubmit: true },
 				div({ class: 'users-table-filter-bar-status' },
 					label({ for: 'state-select' }, _("Role"), ":"),
 					select({ id: 'state-select', name: 'step' },
-						toArray(exports._stepsMap(this), function (data, name) {
+						toArray(stepsMap, function (data, name) {
 							return option({ value: name, selected:
 									location.query.get('step').map(function (value) {
 									var selected = (name ? (value === name) : (value == null));
@@ -67,10 +74,16 @@ exports['sub-main'] = {
 
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
 
-		processingStepsTable = exports._supervisorTable(this);
+		supervisorTable = getSupervisorTable({
+			user: this.user,
+			stepsMap: stepsMap,
+			itemsPerPage: env.objectsListItemsPerPage,
+			columns: columns,
+			class: 'submitted-user-data-table'
+		});
 
-		insert(processingStepsTable.pagination,
-			section({ class: 'table-responsive-container' }, processingStepsTable),
-			processingStepsTable.pagination);
+		insert(supervisorTable.pagination,
+			section({ class: 'table-responsive-container' }, supervisorTable),
+			supervisorTable.pagination);
 	}
 };
