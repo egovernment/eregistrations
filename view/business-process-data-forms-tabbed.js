@@ -2,7 +2,8 @@
 
 'use strict';
 
-var appLocation = require('mano/lib/client/location');
+var appLocation = require('mano/lib/client/location')
+  , errorMsg    = require('./_business-process-error-info').errorMsg;
 
 exports._parent = require('./business-process-base');
 
@@ -12,6 +13,7 @@ exports.step = {
 	class: { content: false, 'user-forms': false },
 	content: function () {
 		nav({ class: 'forms-tab-nav' },
+			div({ class: 'content' }, errorMsg(this)),
 			ul({ class: 'content' }, exports._tabs(this)));
 		div({ id: 'forms-sections-content', class: 'content user-forms forms-tab-content' });
 	}
