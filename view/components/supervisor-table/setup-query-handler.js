@@ -1,5 +1,5 @@
-// Business process dedicated search query handler
-// (used to handle business processes table in official roles)
+// Supervisor dedicated search query handler
+// (used to handle processing steps table in supervisor role)
 
 'use strict';
 
@@ -9,6 +9,7 @@ var uniq              = require('es5-ext/array/#/uniq')
   , findKey           = require('es5-ext/object/find-key')
   , appLocation       = require('mano/lib/client/location')
   , setupQueryHandler = require('../../../utils/setup-client-query-handler')
+  , timeRanges        = require('../../../utils/supervisor-time-ranges')
 
   , wsRe = /\s{2,}/g
   , ceil = Math.ceil, stringify = JSON.stringify;
@@ -26,14 +27,25 @@ module.exports = exports = function (listManager/*, pathname*/) {
 };
 exports.conf = [
 	{
-		name: 'status',
+		name: 'step',
 		ensure: function (value) {
-			if (!value) return this._statusMapDefaultKey;
+			if (!value) return;
 			if (!this._statusMap[value]) throw new Error("Unreconized status value " + stringify(value));
-			return (value === 'all') ? null : value;
+			return value;
 		}
 	}, {
-		name: 'time'
+		name: 'time',
+		ensure: function (value) {
+			var result;
+			if (!value) return;
+			result = timeRanges.some(function (item) {
+				if (item.name === value) {
+					return true;
+				}
+			});
+			if (!result) throw new Error("Unreconized time value " + stringify(value));
+			return value;
+		}
 	},
 	{
 		name: 'search',

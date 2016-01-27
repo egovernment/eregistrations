@@ -1,5 +1,5 @@
-// Business process dedicated list manager
-// (used to handle business processes table in official roles)
+// Supervisor dedicated list manager
+// (used to handle processing steps table in supervisor role)
 
 'use strict';
 
@@ -58,12 +58,11 @@ SupervisorManager.prototype = Object.create(ListManager.prototype, {
 
 	_isExternalQuery: d(function (query) {
 		var views;
-		console.log('_isExternalQuery');
 		// When we have all the items, we don't need to query server
-		if (!query.status || (query.status === 'all')) {
+		if (!query.step) {
 			views = db.views.supervisor.all;
 		} else {
-			views = db.views.pendingBusinessProcesses[query.status].pending;
+			views = db.views.pendingBusinessProcesses[query.step].pending;
 		}
 		if (views.totalSize <= this.itemsPerPage) return false;
 		// If it's not about first page, it's only server that knows
@@ -73,50 +72,40 @@ SupervisorManager.prototype = Object.create(ListManager.prototype, {
 			return (mod.name !== 'status') && query[mod.name];
 		});
 	}),
-	_isItemApplicable: d(function (item, query) {
-		console.log('_isItemApplicable');
-		if (!this._statusMap[query.status || 'all'].data.has(item)) return false;
-		if (!query.search) return true;
-		return query.search.split(/\s+/).every(function (value) {
-			return this._getSearchFilter(value)(item);
-		}, this);
-	}),
 	// Modifiers (used only in case of non-external list resolution)
 	_modifiers: d([
 		{
-			name: 'status',
+			name: 'step',
 			required: true,
 			process: function (ignore, query) {
 				var views, list = [], stepViews;
-				if (!query.status || (query.status === 'all')) {
+				if (!query.step) {
 					views = db.views.supervisor.all;
 					list = unserializeView(views.get(1), this._type);
 				} else {
-					views = db.views.pendingBusinessProcesses[query.status].pending;
+					views = db.views.pendingBusinessProcesses[query.step].pending;
 					stepViews = unserializeView(views.get(1), this._type);
-					stepViews.forEach(function (businessProcess) {
-						list.push(businessProcess.processingSteps.map[query.status]);
+					list = stepViews.map(function (businessProcess) {
+						return businessProcess.processingSteps.map[query.step];
 					});
 				}
 
 				return {
 					list: list,
-					size: (views.totalSize < this.itemsPerPage) ? list.length : views.totalSize
+					size: views.totalSize
 				};
 			}
 		},
 		{
 			name: 'time',
-			required: true,
 			process: function (data, query) {
 				var list = data.list, result, threshold;
 				timeRanges.some(function (item) {
-					if (item.token === query.time) {
+					if (item.name === query.time) {
 						threshold = item.value;
 						return true;
 					}
 				});
-				if (!threshold) return { list: list, size: list.length };
 				result = list.filter(function (processingStep) {
 					var value = new db.DateTime() -
 						(new db.DateTime(processingStep._resolvedStatus.lastModified / 1000));
