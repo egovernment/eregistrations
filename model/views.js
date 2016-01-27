@@ -4,9 +4,10 @@
 'use strict';
 
 var ensureDatabase      = require('dbjs/valid-dbjs')
-  , defineDataSnapshots = require('./lib/data-snapshots');
+  , defineDataSnapshots = require('./lib/data-snapshots')
+  , memoize             = require('memoizee/plain');
 
-module.exports = function (db) {
+module.exports = memoize(function (db) {
 	defineDataSnapshots(db);
 	return ensureDatabase(db).Object.newNamed('views');
-};
+},  { normalizer: require('memoizee/normalizers/get-1')() });
