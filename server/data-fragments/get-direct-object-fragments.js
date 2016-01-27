@@ -10,7 +10,6 @@ var ensureCallable = require('es5-ext/object/valid-callable')
   , Fragment       = require('data-fragment')
   , anyIdToStorage = require('../utils/any-id-to-storage')
 
-  , stringify = JSON.stringify
   , driver = require('mano').dbDriver;
 
 var getKeyPathFilter = function (keyPath) {
@@ -54,7 +53,7 @@ module.exports = memoize(function (storageName) {
 			setupListener(storage);
 		} else {
 			promise = anyIdToStorage(ownerId)(function (storage) {
-				if (!storage) throw new Error("Object " + stringify(ownerId) + " not found in database");
+				if (!storage) return [];
 				setupListener(storage);
 				return storage.getObject(ownerId);
 			});
