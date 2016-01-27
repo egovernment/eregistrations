@@ -6,7 +6,6 @@
 var uniq              = require('es5-ext/array/#/uniq')
   , customError       = require('es5-ext/error/custom')
   , isNaturalNumber   = require('es5-ext/number/is-natural')
-  , findKey           = require('es5-ext/object/find-key')
   , appLocation       = require('mano/lib/client/location')
   , setupQueryHandler = require('../../../utils/setup-client-query-handler')
   , timeRanges        = require('../../../utils/supervisor-time-ranges')
@@ -15,11 +14,9 @@ var uniq              = require('es5-ext/array/#/uniq')
   , ceil = Math.ceil, stringify = JSON.stringify;
 
 module.exports = exports = function (listManager/*, pathname*/) {
-	var queryHandler = setupQueryHandler(exports.conf, appLocation, arguments[1] || '/')
-	  , statusMap = listManager._statusMap;
-	queryHandler._statusMap = statusMap;
+	var queryHandler = setupQueryHandler(exports.conf, appLocation, arguments[1] || '/');
+	queryHandler._stepsMap = listManager._stepsMap;
 	queryHandler._statusViews = listManager._statusViews;
-	queryHandler._statusMapDefaultKey = findKey(statusMap, function (data) { return data.default; });
 	queryHandler._itemsPerPage = listManager.itemsPerPage;
 	queryHandler._listManager = listManager;
 	queryHandler.on('query', function (query) { listManager.update(query); });
@@ -30,7 +27,7 @@ exports.conf = [
 		name: 'step',
 		ensure: function (value) {
 			if (!value) return;
-			if (!this._statusMap[value]) throw new Error("Unreconized status value " + stringify(value));
+			if (!this._stepsMap[value]) throw new Error("Unreconized step value " + stringify(value));
 			return value;
 		}
 	}, {

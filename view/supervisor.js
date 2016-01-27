@@ -20,7 +20,7 @@ exports['sub-main'] = {
 				div({ class: 'users-table-filter-bar-status' },
 					label({ for: 'state-select' }, _("Role"), ":"),
 					select({ id: 'state-select', name: 'step' },
-						toArray(exports._statusMap(this), function (data, name) {
+						toArray(exports._stepsMap(this), function (data, name) {
 							return option({ value: name, selected:
 									location.query.get('step').map(function (value) {
 									var selected = (name ? (value === name) : (value == null));

@@ -7,7 +7,6 @@ var includes        = require('es5-ext/array/#/contains')
   , toNaturalNumber = require('es5-ext/number/to-pos-integer')
   , toArray         = require('es5-ext/object/to-array')
   , ensureObject    = require('es5-ext/object/valid-object')
-  , ensureCallable  = require('es5-ext/object/valid-callable')
   , d               = require('d')
   , getSearchFilter = require('eregistrations/utils/get-search-filter')
   , memoize         = require('memoizee/plain')
@@ -29,16 +28,14 @@ var getViewData = function (query) {
 };
 
 var SupervisorManager = module.exports = function (conf) {
-	var statusMap = ensureObject(conf.statusMap)
-	  , getOrderIndex = ensureCallable(conf.getOrderIndex)
+	var stepsMap = ensureObject(conf.stepsMap)
 	  , searchFilter = getSearchFilter
 	  , itemsPerPage = toNaturalNumber(conf.itemsPerPage);
 
 	if (itemsPerPage) this.itemsPerPage = itemsPerPage;
 
 	defineProperties(this, {
-		_statusMap: d(statusMap),
-		_getItemOrderIndex: d(getOrderIndex),
+		_stepsMap: d(stepsMap),
 		_getSearchFilter: d(searchFilter),
 		_queryExternal: d(memoize(getViewData, {
 			normalizer: function (args) { return String(toArray(args[0], null, null, true)); },
@@ -52,8 +49,7 @@ SupervisorManager.prototype = Object.create(ListManager.prototype, {
 	_type: d(db.BusinessProcess),
 
 	// Characterics that needs to be provided per system/user:
-	_statusMap: d(null),
-	_getItemOrderIndex: d(null),
+	_stepsMap: d(null),
 	_getSearchFilter: d(null),
 
 	_isExternalQuery: d(function (query) {
