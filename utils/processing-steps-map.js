@@ -3,7 +3,6 @@
 'use strict';
 
 var db      = require('mano').db
-  , forEach = require('es5-ext/object/for-each')
   , meta;
 
 module.exports = meta = {};
@@ -14,11 +13,10 @@ db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
 			step.steps.map.forEach(self);
 			return;
 		}
-		meta[step.shortPath] = { label: step.label };
+		meta[step.shortPath] = {
+			label: step.label,
+			indexName: step.__id__.slice(step.master.__id__.length + 1) + '/resolvedStatus',
+			indexValue: 'pending'
+		};
 	});
-});
-
-forEach(meta, function (conf, name) {
-	conf.indexName = 'processingSteps/map/' + name + '/resolvedStatus';
-	conf.indexValue = 'pending';
 });
