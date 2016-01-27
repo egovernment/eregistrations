@@ -47,7 +47,7 @@ var observe = function (set, storages, ownerId, keyPath) {
 		var promises = [];
 		return storage.search(keyPath, function (id, data) {
 			var result = handler(id, data);
-			promises.push(handler(result));
+			promises.push(result);
 			return result;
 		})(function () { return deferred.map(promises); });
 	});
