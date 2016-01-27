@@ -11,7 +11,7 @@ var memoize             = require('memoizee/plain')
   , _                   = require('mano').i18n.bind('Model: FormSectionBase');
 
 module.exports = memoize(function (db) {
-	var StringLine, Percentage, UInteger, ProgressRules;
+	var StringLine, Percentage, UInteger, ProgressRules, FormSectionBase;
 	validDb(db);
 	ProgressRules = defineProgressRules(db);
 	db.Object.defineProperties({
@@ -25,7 +25,7 @@ module.exports = memoize(function (db) {
 	UInteger   = defineUInteger(db);
 	StringLine = defineStringLine(db);
 	Percentage = definePercentage(db);
-	return db.Object.extend('FormSectionBase', {
+	FormSectionBase = db.Object.extend('FormSectionBase', {
 		progressRules: { type: ProgressRules, nested: true },
 		label: { type: StringLine, required: true },
 		// Optional explanation text.
@@ -220,6 +220,55 @@ module.exports = memoize(function (db) {
 		// has a missing value in this
 		hasMissingRequiredPropertyNamesDeep: {
 			type: db.Boolean
+		},
+		// Resolves collection of which section is part of
+		resolveParentCollection: {
+			type: db.Function,
+			value: function (ignore) {
+				if (!this.owner || !this.owner.owner) return null;
+				if ((this.owner.key === 'sections') && this.owner.owner.applicableSections) {
+					return this.owner.owner.applicableSections;
+				}
+				if ((this.owner.key === 'map') && this.owner.owner.applicable) {
+					return this.owner.owner.applicable;
+				}
+			}
 		}
 	});
+
+	FormSectionBase.prototype.defineProperties({
+		// Next section (applicable only if section is one of sub-sections on section group)
+		nextSection: {
+			type: FormSectionBase,
+			value: function (_observe) {
+				var sections = this.resolveParentCollection(), nextSection, seen;
+				if (!sections) return null;
+				if (!_observe(sections).has(this)) return null;
+				sections.some(function (section) {
+					if (seen) {
+						nextSection = section;
+						return true;
+					}
+					if (this === section) seen = true;
+				}, this);
+				return nextSection;
+			}
+		},
+		// Previous section (applicable only if section is one of sub-sections on section group)
+		previousSection: {
+			type: FormSectionBase,
+			value: function (_observe) {
+				var sections = this.resolveParentCollection(), previousSection;
+				if (!sections) return null;
+				if (!_observe(sections).has(this)) return null;
+				sections.some(function (section) {
+					if (this === section) return true;
+					previousSection = section;
+				}, this);
+				return previousSection;
+			}
+		}
+	});
+
+	return FormSectionBase;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

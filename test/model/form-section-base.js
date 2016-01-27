@@ -261,4 +261,8 @@ module.exports = function (t, a) {
 	a(section.status, 0);
 	masterObject.testRequiredResolventProperty2 = true;
 	a(section.status, 0.6);
+
+	a.h1('Neighbourhood');
+	a(section.nextSection, null);
+	a(section.previousSection, null);
 };
