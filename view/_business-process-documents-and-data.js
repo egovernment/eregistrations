@@ -115,7 +115,7 @@ var drawCertificatesPart = function (target, urlPrefix) {
 	]);
 };
 
-module.exports = function (businessProcess/*, options*/) {
+module.exports = exports = function (businessProcess/*, options*/) {
 	var options         = Object(arguments[1])
 	  , urlPrefix       = options.urlPrefix || '/'
 	  , uploadsResolver = options.uploadsResolver || businessProcess;
@@ -125,9 +125,9 @@ module.exports = function (businessProcess/*, options*/) {
 			{ class: 'section-primary' },
 			h2(_("Documents")),
 			hr(),
-			drawDocumentsPart(uploadsResolver, urlPrefix),
-			drawPaymentReceiptsPart(uploadsResolver, urlPrefix),
-			drawCertificatesPart(uploadsResolver, urlPrefix)
+			exports._drawDocumentsPart(uploadsResolver, urlPrefix),
+			exports._drawPaymentReceiptsPart(uploadsResolver, urlPrefix),
+			exports._drawCertificatesPart(uploadsResolver, urlPrefix)
 		),
 		section(
 			{ class: 'section-primary entity-data-section-side' },
@@ -145,3 +145,7 @@ module.exports = function (businessProcess/*, options*/) {
 		)
 	];
 };
+
+exports._drawDocumentsPart = drawDocumentsPart;
+exports._drawPaymentReceiptsPart = drawPaymentReceiptsPart;
+exports._drawCertificatesPart = drawCertificatesPart;
