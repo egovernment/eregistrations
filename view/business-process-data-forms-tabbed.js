@@ -12,8 +12,8 @@ exports['step-guide'] = { class: { 'step-form': true } };
 exports.step = {
 	class: { content: false, 'user-forms': false },
 	content: function () {
-		insert(errorMsg(this));
 		nav({ class: 'forms-tab-nav' },
+			div({ class: 'content' }, errorMsg(this)),
 			ul({ class: 'content' }, exports._tabs(this)));
 		div({ id: 'forms-sections-content', class: 'content user-forms forms-tab-content' });
 	}
