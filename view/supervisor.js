@@ -18,26 +18,28 @@ exports['sub-main'] = {
 		section({ class: 'section-primary users-table-filter-bar' },
 			searchForm = form({ action: '/', autoSubmit: true },
 				div({ class: 'users-table-filter-bar-status' },
-					label({ for: 'state-select' }, _("Status"), ":"),
-					select({ id: 'state-select', name: 'status' },
+					label({ for: 'state-select' }, _("Role"), ":"),
+					select({ id: 'state-select', name: 'step' },
 						toArray(exports._statusMap(this), function (data, name) {
-							return option({ value: name,
-									selected: location.query.get('status').map(function (value) {
+							return option({ value: name, selected:
+									location.query.get('step').map(function (value) {
 									var selected = (name ? (value === name) : (value == null));
 									return selected ? 'selected' : null;
 								}) },
 								data.label);
 						}, null, byOrder))),
-				div({ class: 'users-table-filter-bar-status' },
+				div(
 					label({ for: 'time-select' }, _("Time"), ":"),
 					select({ id: 'time-select', name: 'time' },
 						list(timeRanges, function (data) {
-							return option({ value: data.token,
-									selected: location.query.get('time').map(function (token) {
-									return data.token === token ? 'selected' : null;
+							return option({ value: data.name || '', selected:
+									location.query.get('time').map(function (name) {
+									var selected = (data.name ? (data.name === name) : (name == null));
+									return selected ? 'selected' : null;
 								}) },
-								data.label);
-						}))),
+									data.label);
+						}))
+				),
 				div(
 					label({ for: 'search-input' }, _("Search")),
 					span({ class: 'input-append' },
@@ -49,10 +51,10 @@ exports['sub-main'] = {
 					input({ type: 'submit', value: _("Search") })
 				)),
 			div(
-				a({ href: mmap(location.query.get('status'), function (status) {
+				a({ href: mmap(location.query.get('step'), function (step) {
 					return mmap(location.query.get('page'), function (page) {
 						var search = [];
-							if (status) search.push('status=' + status);
+							if (step) search.push('step=' + step);
 							if (page) search.push('page=' + page);
 							if (search.length) search = '?' + search.join('&');
 							else search = null;

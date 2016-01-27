@@ -6,42 +6,41 @@ var _ = require('mano').i18n.bind('View: Supervisor');
 
 module.exports = [{
 	label: _("All"),
-	value: 0,
-	token: 'all'
+	value: 0
 }, {
 	label: _("30 minutes +"),
 	value: 1000 * 60 * 30,
-	token: '30min'
+	name: '30M'
 }, {
 	label: _("1 hour +"),
 	value: 1000 * 60 * 60,
-	token: '1h'
+	name: '1H'
 }, {
 	label: _("2 hours +"),
 	value: 1000 * 60 * 60 * 2,
-	token: '2h'
+	name: '2H'
 }, {
 	label: _("6 hours +"),
 	value: 1000 * 60 * 60 * 6,
-	token: '6h'
+	name: '6H'
 }, {
 	label: _("1 day +"),
 	value: 1000 * 60 * 60 * 24,
-	token: '1d'
+	name: '1d'
 }, {
 	label: _("3 days +"),
 	value: 1000 * 60 * 60 * 24 * 3,
-	token: '3d'
+	name: '3d'
 }, {
 	label: _("1 week +"),
 	value: 1000 * 60 * 60 * 24 * 7,
-	token: '1w'
+	name: '1w'
 }, {
 	label: _("2 weeks +"),
 	value: 1000 * 60 * 60 * 24 * 7 * 2,
-	token: '2w'
+	name: '2w'
 }, {
 	label: _("1 month +"),
 	value: 1000 * 60 * 60 * 24 * 30,
-	token: '1m'
+	name: '1m'
 }];
