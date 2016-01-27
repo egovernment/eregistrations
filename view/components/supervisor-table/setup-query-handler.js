@@ -27,7 +27,7 @@ exports.conf = [
 		name: 'step',
 		ensure: function (value) {
 			if (!value) return;
-			if (!this._stepsMap[value]) throw new Error("Unreconized step value " + stringify(value));
+			if (!this._stepsMap[value]) throw new Error("Unrecognized step value " + stringify(value));
 			return value;
 		}
 	}, {
@@ -40,7 +40,7 @@ exports.conf = [
 					return true;
 				}
 			});
-			if (!result) throw new Error("Unreconized time value " + stringify(value));
+			if (!result) throw new Error("Unrecognized time value " + stringify(value));
 			return value;
 		}
 	},

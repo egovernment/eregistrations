@@ -27,11 +27,15 @@ exports['sub-main'] = {
 				div({ class: 'users-table-filter-bar-status' },
 					label({ for: 'state-select' }, _("Role"), ":"),
 					select({ id: 'state-select', name: 'step' },
+						option({ value: '', selected:
+								location.query.get('step').map(function (value) {
+								return value ? null : 'selected';
+							}) },
+							_("All")),
 						toArray(stepsMap, function (data, name) {
 							return option({ value: name, selected:
 									location.query.get('step').map(function (value) {
-									var selected = (name ? (value === name) : (value == null));
-									return selected ? 'selected' : null;
+									return value === name ? 'selected' : null;
 								}) },
 								data.label);
 						}, null, byOrder))),
@@ -59,13 +63,16 @@ exports['sub-main'] = {
 				)),
 			div(
 				a({ href: mmap(location.query.get('step'), function (step) {
-					return mmap(location.query.get('page'), function (page) {
-						var search = [];
-							if (step) search.push('step=' + step);
-							if (page) search.push('page=' + page);
-							if (search.length) search = '?' + search.join('&');
-							else search = null;
-						return url('print-business-processes-list', search);
+					return mmap(location.query.get('time'), function (time) {
+						return mmap(location.query.get('page'), function (page) {
+							var search = [];
+								if (step) search.push('step=' + step);
+								if (time) search.push('time=' + time);
+								if (page) search.push('page=' + page);
+								if (search.length) search = '?' + search.join('&');
+								else search = null;
+							return url('print-business-processes-list', search);
+						});
 					});
 				}), class: 'users-table-filter-bar-print', target: '_blank' },
 					span({ class: 'fa fa-print' },

@@ -1,7 +1,6 @@
 'use strict';
 
 var _           = require('mano').i18n.bind('User')
-  , db          = require('mano').db
   , timeRanges  = require('../utils/supervisor-time-ranges')
   , someRight   = require('es5-ext/array/#/some-right');
 
@@ -21,7 +20,7 @@ exports.columns = [{
 	data: function (processingStep) {
 		var result, value;
 		return processingStep._resolvedStatus._lastModified.map(function (modDate) {
-			value = new db.DateTime() - (new db.DateTime(modDate / 1000));
+			value = Date.now() - (modDate / 1000);
 			someRight.call(timeRanges, function (item) {
 				if (value >= item.value) {
 					result = item.label;

@@ -2,21 +2,11 @@
 
 'use strict';
 
-var _       = require('mano').i18n.bind('Official')
-  , db      = require('mano').db
+var db      = require('mano').db
   , forEach = require('es5-ext/object/for-each')
   , meta;
 
-if (!db.BusinessProcess) {
-	require('../model/business-process-new')(db);
-}
-
-module.exports = meta = {
-	'': {
-		label: _("All"),
-		default: true
-	}
-};
+module.exports = meta = {};
 
 db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
 	BusinessProcess.prototype.processingSteps.map.forEach(function self(step) {
@@ -29,7 +19,6 @@ db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
 });
 
 forEach(meta, function (conf, name) {
-	if (name === '') return;
 	conf.indexName = 'processingSteps/map/' + name + '/resolvedStatus';
 	conf.indexValue = 'pending';
 });

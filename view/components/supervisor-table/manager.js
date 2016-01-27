@@ -103,8 +103,7 @@ SupervisorManager.prototype = Object.create(ListManager.prototype, {
 					}
 				});
 				result = list.filter(function (processingStep) {
-					var value = new db.DateTime() -
-						(new db.DateTime(processingStep._resolvedStatus.lastModified / 1000));
+					var value = Date.now() - (processingStep._resolvedStatus.lastModified / 1000);
 					return value >= threshold;
 				});
 				return { list: result, size: result.length };
