@@ -28,7 +28,10 @@ module.exports = memoize(function (storages) {
 		unresolved.set(id, def);
 		deferred.find(storages, function (storage) { return storage.get(id); })
 			.done(function (storage) {
-				if (!storage) return;
+				if (!storage) {
+					def.resolve(null);
+					return;
+				}
 				map.set(id, deferred(storage));
 				unresolved.delete(def);
 				def.resolve(storage);
