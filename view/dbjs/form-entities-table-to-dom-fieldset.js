@@ -51,11 +51,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFie
 				return url(self.baseUrl + '-add');
 			};
 		}
-		customizeData.arrayResult = [customizeData.container = ns.section(
-			{ id: this.domId, class: ns._if(ns.eq(
-				this._status,
-				1
-			)) },
+		customizeData.arrayResult = [
 			options.prepend,
 			resolvent.formResolvent ? ns.form({
 				action: url(self.baseUrl + '-resolvent'),
@@ -135,7 +131,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFie
 							{ entityLabel: collectionType.prototype.label })
 					)
 				))
-		)];
+		];
 		if (isMapMode) {
 			loc.on('change', function (ev) {
 				if (loc.pathname !== addButton.pathname) return;
