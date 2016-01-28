@@ -48,6 +48,8 @@ module.exports = function (t, a) {
 	a.deep(aFrom(paymentReceiptUpload.applicableCosts),
 		[businessProcess.costs.map.test, businessProcess.costs.map.test3]);
 
+	a(paymentReceiptUpload.totalAmount, 50);
+
 	a.deep(aFrom(paymentReceiptUpload.applicableCosts),
 		[businessProcess.costs.map.test, businessProcess.costs.map.test3]);
 
