@@ -14,18 +14,13 @@ var setupQueryHandler =
 exports._parent = require('./print-base');
 
 exports.main = function () {
-	var container, superIsExernalQuery, listManager;
+	var container, listManager;
 
 	listManager = new Manager({
 		user: this.user,
 		stepsMap: stepsMap,
 		itemsPerPage: env.objectsListItemsPerPage
 	});
-	superIsExernalQuery = listManager._isExternalQuery;
-	listManager._isExternalQuery = function (query) {
-		return superIsExernalQuery.call(this, query);
-	};
-
 	setupQueryHandler(listManager, '/print-supervisor-list/');
 
 	var getSection  = function (url, processingSteps, dataLabel) {
@@ -35,9 +30,9 @@ exports.main = function () {
 				thead(columns.map(function (column) { return th({ class: column.class }, column.head); })),
 				tbody({ onEmpty: tr({ class: 'empty' }, td({ colspan: columns.length },
 						_("There are no items"))) }, processingSteps,
-					function (businessProcess) {
+					function (processingStep) {
 						return tr(columns.map(function (column) {
-							return td({ class: column.class }, column.data(businessProcess));
+							return td({ class: column.class }, column.data(processingStep));
 						}));
 					}))];
 	};
