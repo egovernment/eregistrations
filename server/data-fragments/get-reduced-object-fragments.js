@@ -19,7 +19,8 @@ var getKeyPathFilter = function (keyPath) {
 };
 
 module.exports = memoize(function (storageName) {
-	var storage  = driver.getStorage(ensureString(storageName));
+	var storage = (storageName != null)
+		? driver.getStorage(ensureString(storageName)) : driver.getReducedStorage();
 	return memoize(function (ownerId/*, options*/) {
 		var fragment, options = Object(arguments[2]), filter, index, customFilter, keyPathFilter;
 
