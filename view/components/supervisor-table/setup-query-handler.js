@@ -9,6 +9,7 @@ var uniq              = require('es5-ext/array/#/uniq')
   , appLocation       = require('mano/lib/client/location')
   , setupQueryHandler = require('../../../utils/setup-client-query-handler')
   , timeRanges        = require('../../../utils/supervisor-time-ranges')
+  , db                = require('mano').db
 
   , wsRe = /\s{2,}/g
   , ceil = Math.ceil, stringify = JSON.stringify;
@@ -63,13 +64,15 @@ exports.conf = [
 	{
 		name: 'page',
 		ensure: function (value, query) {
-			var num, pageCount;
+			var num, pageCount, totalSize;
 			if (value == null) return '1';
 			if (isNaN(value)) throw new Error("Unrecognized page value " + stringify(value));
 			num = Number(value);
 			if (!isNaturalNumber(num)) throw new Error("Unreconized page value " + stringify(value));
 			if (num <= 1) throw new Error("Unexpected page value " + stringify(value));
-			pageCount = ceil(this._statusViews[query.status || 'all'].totalSize / this._itemsPerPage);
+			totalSize = query.step ? this._stepsMap[query.step].totalSize :
+					db.views.supervisor.all.totalSize;
+			pageCount = ceil(totalSize / this._itemsPerPage);
 			if (num > pageCount) throw new Error("Page value overflow");
 			return value;
 		}
