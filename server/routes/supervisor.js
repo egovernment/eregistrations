@@ -4,7 +4,6 @@
 
 var aFrom               = require('es5-ext/array/from')
   , flatten             = require('es5-ext/array/#/flatten')
-  , remove              = require('es5-ext/array/#/remove')
   , uniq                = require('es5-ext/array/#/uniq')
   , isNaturalNumber     = require('es5-ext/number/is-natural')
   , toNaturalNumber     = require('es5-ext/number/to-pos-integer')
@@ -13,18 +12,15 @@ var aFrom               = require('es5-ext/array/from')
   , ensureObject        = require('es5-ext/object/valid-object')
   , ensureString        = require('es5-ext/object/validate-stringifiable-value')
   , includes            = require('es5-ext/string/#/contains')
-  , d                   = require('d')
   , deferred            = require('deferred')
   , memoize             = require('memoizee')
   , serializeValue      = require('dbjs/_setup/serialize/value')
   , unserializeValue    = require('dbjs/_setup/unserialize/value')
-  , ObservableSet       = require('observable-set/primitive')
   , mano                = require('mano')
   , QueryHandler        = require('../../utils/query-handler')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
   , getDbSet            = require('../utils/get-db-set')
   , getDbArray          = require('../utils/get-db-array')
-  , getIndexMap         = require('../utils/get-db-sort-index-map')
   , stepsMap            = require('../../utils/processing-steps-map')
   , listItemsPerPage    = require('mano').env.objectsListItemsPerPage
   , timeRanges          = require('../../utils/supervisor-time-ranges')
@@ -34,7 +30,7 @@ var aFrom               = require('es5-ext/array/from')
   , compareStamps  = function (a, b) { return a.stamp - b.stamp; }
   , isArray        = Array.isArray, slice = Array.prototype.slice, push = Array.prototype.push
   , ceil           = Math.ceil, create = Object.create
-  , defineProperty = Object.defineProperty, stringify = JSON.stringify;
+  , stringify = JSON.stringify;
 
 // Business processes table query handler
 var getTableQueryHandler = function (stepsMap) {
@@ -60,79 +56,23 @@ var getBusinessProcessQueryHandler = function () {
 	]);
 };
 
-var getFilteredSet = memoize(function (baseSet, filterString) {
-	var set = new ObservableSet(), baseSetListener, indexListener
-	  , def = deferred(), count = 0, isInitialized = false;
-	var filter = function (ownerId, data) {
-		var value = unserializeValue(data.value);
-		if (value && includes.call(value, filterString)) set.add(ownerId);
-		else set.delete(ownerId);
-	};
-	var findAndFilter = function (ownerId) {
-		return mano.dbDriver.getComputed(ownerId + '/searchString').aside(function (data) {
-			if (!baseSet.has(ownerId)) return;
-			if (!data) return;
-			filter(ownerId, data);
-		});
-	};
-	baseSet.on('change', baseSetListener = function (event) {
-		if (event.type === 'add') findAndFilter(event.value).done();
-		else set.delete(event.value);
-	});
-	mano.dbDriver.on('key:searchString', indexListener = function (event) {
-		if (!baseSet.has(event.ownerId)) return;
-		filter(event.ownerId, event.data);
-	});
-	baseSet.forEach(function (ownerId) {
-		++count;
-		findAndFilter(ownerId).done(function () {
-			if (!--count && isInitialized) def.resolve(set);
-		});
-	});
-	isInitialized = true;
-	if (!count) def.resolve(set);
-	defineProperty(set, '_dispose', d(function () {
-		baseSet.off(baseSetListener);
-		mano.dbDriver.off('key:searchString', indexListener);
-	}));
-	return def.promise;
-}, { max: 1000, dispose: function (set) { set._dispose(); } });
+var getFilteredArray = function (arr, filterString) {
+	var result = [];
 
-var getDbArrayLru = memoize(function (set, sortIndexName) {
-	var arr = [], itemsMap = getIndexMap(sortIndexName)
-	  , count = 0, isInitialized = false, def = deferred(), setListener, itemsListener;
-	var add = function (ownerId) {
-		return deferred(itemsMap[ownerId] || mano.dbDriver.getComputed(ownerId + '/' + sortIndexName))
-			.aside(function (data) {
-				if (!set.has(ownerId)) return;
-				if (!itemsMap[ownerId]) itemsMap[ownerId] = { id: ownerId, stamp: data.stamp };
-				arr.push(itemsMap[ownerId]);
-				if (def.resolved) arr.sort(compareStamps);
-			});
+	var filter = function (data, searchData) {
+		var value = unserializeValue(searchData.value);
+		if (value && includes.call(value, filterString)) result.push(data);
 	};
-	set.on('change', setListener = function (event) {
-		if (event.type === 'add') add(event.value).done();
-		else remove.call(arr, itemsMap[event.value]);
-	});
-	itemsMap.on('update', itemsListener = function (event) {
-		if (!set.has(event.ownerId)) return;
-		if (def.resolved) arr.sort(compareStamps);
-	});
-	set.forEach(function (ownerId) {
-		++count;
-		add(ownerId).done(function () {
-			if (!--count && isInitialized) def.resolve(arr.sort(compareStamps));
+	var findAndFilter = function (data) {
+		return mano.dbDriver.getComputed(data.id + '/searchString').done(function (searchData) {
+			filter(data, searchData);
 		});
+	};
+	return deferred.map(arr, findAndFilter).then(function () {
+		return deferred(result);
 	});
-	isInitialized = true;
-	if (!count) def.resolve(arr.sort(compareStamps));
-	defineProperty(set, '_dispose', d(function () {
-		set.off(setListener);
-		itemsMap.off(itemsListener);
-	}));
-	return def.promise;
-}, { max: 1000, dispose: function (arr) { arr._dispose(); } });
-//TODO: No conf needed, we do everything in place
+};
+
 var initializeHandler = function (conf) {
 	conf = normalizeOptions(ensureObject(conf));
 
@@ -164,10 +104,8 @@ var initializeHandler = function (conf) {
 		});
 		// In case of !query.step we should take value from db.views.supervisor.all
 		promise = getDbSet('computed', stepsMap[query.step].indexName,
-			serializeValue(stepsMap[query.step].indexValue));
-
-		return promise(function (baseSet) {
-			if (!query.search) {
+			serializeValue(stepsMap[query.step].indexValue)).then(
+			function (baseSet) {
 				return getDbArray(baseSet, 'computed', stepsMap[query.step].indexName).then(function (arr) {
 					var result = [];
 					if (!timeThreshold) return arr;
@@ -180,11 +118,12 @@ var initializeHandler = function (conf) {
 					return result;
 				});
 			}
+		);
 
+		return promise(function (arr) {
+			if (!query.search) return arr;
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
-				return getFilteredSet(baseSet, value)(function (set) {
-					return getDbArrayLru(set);
-				});
+				return getFilteredArray(arr, value);
 			})(function (arrays) {
 				if (arrays.length === 1) return arrays[0];
 
@@ -285,10 +224,8 @@ module.exports = exports = function (/*, options */) {
 	}());
 
 	return {
-		// we query processing steps instead of businessProcesses
 		'get-processing-steps-view': function (query) {
 			return resolveHandler(this.req)(function (handler) {
-				// Get snapshot of business processes table page
 				return handler.tableQueryHandler.resolve(query)(function (query) {
 					return handler.getTableData(query);
 				});
