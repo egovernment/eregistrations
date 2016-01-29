@@ -21,7 +21,6 @@ var includes        = require('es5-ext/array/#/contains')
 require('memoizee/ext/max-age');
 
 var getViewData = function (query) {
-	console.log('EXEC');
 	return getData('/get-processing-steps-view/', query).aside(function (result) {
 		if (!result.data) return;
 		result.data.forEach(function (eventStr) { db.unserializeEvent(eventStr, 'server-temporary'); });
@@ -66,7 +65,7 @@ SupervisorManager.prototype = Object.create(ListManager.prototype, {
 		if (query.page > 1) return true;
 		// If it's purely a first page of a status, we know
 		return this._modifiers.some(function (mod) {
-			return (mod.name !== 'status') && query[mod.name];
+			return (mod.name !== 'step') && query[mod.name];
 		});
 	}),
 	// Modifiers (used only in case of non-external list resolution)

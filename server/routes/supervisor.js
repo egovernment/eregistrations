@@ -7,10 +7,7 @@ var aFrom               = require('es5-ext/array/from')
   , uniq                = require('es5-ext/array/#/uniq')
   , isNaturalNumber     = require('es5-ext/number/is-natural')
   , toNaturalNumber     = require('es5-ext/number/to-pos-integer')
-  , normalizeOptions    = require('es5-ext/object/normalize-options')
   , toArray             = require('es5-ext/object/to-array')
-  , ensureObject        = require('es5-ext/object/valid-object')
-  , ensureString        = require('es5-ext/object/validate-stringifiable-value')
   , includes            = require('es5-ext/string/#/contains')
   , deferred            = require('deferred')
   , memoize             = require('memoizee')
@@ -25,12 +22,16 @@ var aFrom               = require('es5-ext/array/from')
   , listItemsPerPage    = require('mano').env.objectsListItemsPerPage
   , timeRanges          = require('../../utils/supervisor-time-ranges')
   , someRight           = require('es5-ext/array/#/some-right')
+  , forEach             = require('es5-ext/object/for-each')
+  , allSupervisorSteps  = require('../utils/supervisor-steps-array')()
+  , bpListProps         = require('../../utils/supervisor-list-properties')
+  , bpListComputedProps = require('../../utils/supervisor-list-computed-properties')
 
   , hasBadWs       = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps  = function (a, b) { return a.stamp - b.stamp; }
   , isArray        = Array.isArray, slice = Array.prototype.slice, push = Array.prototype.push
-  , ceil           = Math.ceil, create = Object.create
-  , stringify = JSON.stringify;
+  , ceil           = Math.ceil
+  , stringify      = JSON.stringify;
 
 // Business processes table query handler
 var getTableQueryHandler = function (stepsMap) {
@@ -60,11 +61,13 @@ var getFilteredArray = function (arr, filterString) {
 	var result = [];
 
 	var filter = function (data, searchData) {
+		if (!searchData) return;
 		var value = unserializeValue(searchData.value);
 		if (value && includes.call(value, filterString)) result.push(data);
 	};
 	var findAndFilter = function (data) {
-		return mano.dbDriver.getComputed(data.id + '/searchString').done(function (searchData) {
+		var dataId = data.id.slice(0, data.id.indexOf('/'));
+		return mano.dbDriver.getComputed(dataId + '/searchString').done(function (searchData) {
 			filter(data, searchData);
 		});
 	};
@@ -73,14 +76,8 @@ var getFilteredArray = function (arr, filterString) {
 	});
 };
 
-var initializeHandler = function (conf) {
-	conf = normalizeOptions(ensureObject(conf));
-
-	var statusIndexName     = ensureString(conf.indexName)
-	//TODO: We define the properties for the lists in eregistrations
-	  , bpListProps         = null
-	  , bpListComputedProps = null
-	  , tableQueryHandler   = getTableQueryHandler(stepsMap)
+var initializeHandler = function () {
+	var tableQueryHandler   = getTableQueryHandler(stepsMap)
 	  , itemsPerPage        = toNaturalNumber(listItemsPerPage) || defaultItemsPerPage
 	  , businessProcessQueryHandler = getBusinessProcessQueryHandler()
 	  , indexes;
@@ -102,23 +99,40 @@ var initializeHandler = function (conf) {
 				return true;
 			}
 		});
-		// In case of !query.step we should take value from db.views.supervisor.all
-		promise = getDbSet('computed', stepsMap[query.step].indexName,
-			serializeValue(stepsMap[query.step].indexValue)).then(
-			function (baseSet) {
-				return getDbArray(baseSet, 'computed', stepsMap[query.step].indexName).then(function (arr) {
-					var result = [];
-					if (!timeThreshold) return arr;
-					arr.forEach(function (item) {
-						var timeValue = Date.now() - (item.stamp / 1000);
-						if (timeValue >= timeThreshold) {
-							result.push(item);
+		if (query.step) {
+			promise = getDbSet('computed', stepsMap[query.step].indexName,
+				serializeValue(stepsMap[query.step].indexValue)).then(
+				function (baseSet) {
+					return getDbArray(baseSet, 'computed', stepsMap[query.step].indexName).then(
+						function (arr) {
+							var result = [];
+							arr.forEach(function (bp) {
+								var timeValue = Date.now() - (bp.stamp / 1000);
+								if (!timeThreshold || (timeValue >= timeThreshold)) {
+									result.push({ id: bp.id + '/processingSteps/map/' + query.step,
+										stamp: bp.stamp });
+								}
+							});
+							return result;
+						}
+					);
+				}
+			);
+		} else {
+			promise = allSupervisorSteps.then(function (supervisorResults) {
+				var result = [];
+				forEach(supervisorResults, function (subArray, keyPath) {
+					subArray.forEach(function (bp) {
+						var timeValue = Date.now() - (bp.stamp / 1000);
+						if (!timeThreshold || (timeValue >= timeThreshold)) {
+							result.push({ id: bp.id + '/' + keyPath, stamp: bp.stamp });
 						}
 					});
-					return result;
 				});
-			}
-		);
+				result.sort(compareStamps);
+				return result;
+			});
+		}
 
 		return promise(function (arr) {
 			if (!query.search) return arr;
@@ -134,7 +148,7 @@ var initializeHandler = function (conf) {
 				})).sort(compareStamps);
 			});
 		})(function (arr) {
-			var size = arr.length, pageCount, offset, computedEvents, directEvents, statuses, stepsMap;
+			var size = arr.length, pageCount, offset, computedEvents, directEvents;
 			if (!size) return { size: size };
 			pageCount = ceil(size / itemsPerPage);
 			if (query.page > pageCount) return { size: size };
@@ -161,30 +175,22 @@ var initializeHandler = function (conf) {
 				computedEvents = [];
 			}
 			directEvents = deferred.map(arr, function (data) {
-				return mano.dbDriver.getObject(data.id, { keyPaths: bpListProps })(function (datas) {
+				var dataId = data.id.slice(0, data.id.indexOf('/'));
+				return mano.dbDriver.getObject(dataId, { keyPaths: bpListProps })(function (datas) {
 					return datas.map(function (data) {
 						return data.data.stamp + '.' + data.id + '.' + data.data.value;
 					});
 				});
 			});
-			if (!query.step) {
-				stepsMap = create(null);
-				statuses = deferred.map(arr, function (data) {
-					return mano.dbDriver.getComputed(data.id + '/' + statusIndexName)
-						.aside(function (record) {
-							stepsMap[data.id] = record ? unserializeValue(record.value) : null;
-						});
-				})(stepsMap);
-			}
-			return deferred(directEvents, computedEvents, statuses)
-				.spread(function (directEvents, computedEvents, stepsMap) {
+
+			return deferred(directEvents, computedEvents)
+				.spread(function (directEvents, computedEvents) {
 					return {
 						view: arr.map(function (data) {
-							return data.stamp + '.' + data.id + '/processingSteps/map/' + query.step;
+							return data.stamp + '.' + data.id;
 						}).join('\n'),
 						size: size,
-						data: flatten.call([directEvents, computedEvents]),
-						statusMap: stepsMap
+						data: flatten.call([directEvents, computedEvents])
 					};
 				});
 		});
@@ -199,27 +205,14 @@ var initializeHandler = function (conf) {
 		businessProcessQueryHandler: businessProcessQueryHandler
 	};
 };
-//TODO: No conf, we can figure everything internally
-module.exports = exports = function (/*, options */) {
-	var resolveHandler, getHandlerByRole;
+
+module.exports = exports = function () {
+	var resolveHandler;
 	resolveHandler = (function () {
-		var map = {};
-		Object.keys(stepsMap).forEach(function (key) {
-			map[key] = initializeHandler(stepsMap[key]);
-		});
-		getHandlerByRole = function (stepName) {
-			var handler;
-			if (stepName) {
-				handler = map[stepName];
-			}
-			if (!handler) {
-				throw new Error("Cannot resolve stepName for: " + stringify(stepName));
-			}
-			return handler;
-		};
+		var handler = initializeHandler();
 
 		return function (req) {
-			return deferred(getHandlerByRole(req.query.step));
+			return deferred(handler);
 		};
 	}());
 
