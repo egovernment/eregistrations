@@ -6,12 +6,13 @@ var aFrom           = require('es5-ext/array/from')
   , ensureString    = require('es5-ext/object/validate-stringifiable-value')
   , ensureSet       = require('es6-set/valid-set')
   , deferred        = require('deferred')
-  , assimilateEvent = require('./lib/assimilate-driver-event')
+  , ensureStorage   = require('dbjs-persistence/ensure-storage')
+  , assimilateEvent = require('./lib/assimilate-driver-event');
 
-  , driver = require('mano').dbDriver;
+module.exports = function (storage, keyPaths) {
+	var keyPathsArray;
 
-module.exports = function (storageName, keyPaths) {
-	var keyPathsArray, storage = driver.getStorage(ensureString(storageName));
+	ensureStorage(storage);
 	ensureSet(keyPaths);
 
 	keyPathsArray = aFrom(keyPaths);
