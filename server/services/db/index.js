@@ -47,7 +47,7 @@ module.exports = function (root, data) {
 		}
 
 		// Pair master and db-memory process
-		receiver(driver, emitter);
+		receiver(driver.getStorage.bind(driver), emitter);
 		emitter.send({ type: 'continue' });
 		emitAccess = registerReceiver('dbAccessData', emitter);
 		mano.emitPostRequest = registerReceiver('postRequest', emitter);

@@ -1,11 +1,12 @@
 'use strict';
 
 var ensureDatabase = require('dbjs/valid-dbjs')
-  , EmitterDriver  = require('dbjs-persistence/emitter')
+  , EmitterHandler  = require('dbjs-persistence/emitter')
   , mano           = require('mano');
 
 module.exports = function (db) {
-	var driver = new EmitterDriver(ensureDatabase(db));
+	var handler = new EmitterHandler(ensureDatabase(db))
+	  , driver = handler.getDriver('local');
 	mano.dbDriver = driver;
 	return driver;
 };
