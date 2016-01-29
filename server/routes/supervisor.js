@@ -25,7 +25,8 @@ var aFrom               = require('es5-ext/array/from')
   , forEach             = require('es5-ext/object/for-each')
   , allSupervisorSteps  = require('../utils/supervisor-steps-array')()
   , bpListProps         = require('../../utils/supervisor-list-properties')
-  , bpListComputedProps = require('../../utils/supervisor-list-computed-properties')
+  , bpListComputedProps = aFrom(require('../../utils/supervisor-list-computed-properties'))
+  , serializeView       = require('../../utils/db-view/serialize')
 
   , hasBadWs       = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps  = function (a, b) { return a.stamp - b.stamp; }
@@ -79,17 +80,7 @@ var getFilteredArray = function (arr, filterString) {
 var initializeHandler = function () {
 	var tableQueryHandler   = getTableQueryHandler(stepsMap)
 	  , itemsPerPage        = toNaturalNumber(listItemsPerPage) || defaultItemsPerPage
-	  , businessProcessQueryHandler = getBusinessProcessQueryHandler()
-	  , indexes;
-
-	if (bpListComputedProps) {
-		indexes = [];
-		deferred.map(bpListComputedProps, function (keyPath) {
-			return mano.dbDriver.indexKeyPath(keyPath)(function (map) {
-				indexes.push({ keyPath: keyPath, map: map });
-			});
-		});
-	}
+	  , businessProcessQueryHandler = getBusinessProcessQueryHandler();
 
 	var getTableData = memoize(function (query) {
 		var promise, timeThreshold;
@@ -158,8 +149,14 @@ var initializeHandler = function () {
 			arr = slice.call(arr, offset, offset + itemsPerPage);
 			if (bpListComputedProps) {
 				computedEvents = deferred.map(arr, function (data) {
-					var objId = data.id;
-					return deferred.map(bpListComputedProps, function (keyPath) {
+					var listProps, objId, step;
+					objId = data.id.slice(0, data.id.indexOf('/'));
+					step  = data.id.split('/').slice(-1);
+
+					listProps = bpListComputedProps.filter(function (prop) {
+						return prop.indexOf(step) !== -1;
+					});
+					return deferred.map(listProps, function (keyPath) {
 						return mano.dbDriver.getComputed(objId + '/' + keyPath)(function (data) {
 							if (isArray(data.value)) {
 								return data.value.map(function (data) {
@@ -186,9 +183,7 @@ var initializeHandler = function () {
 			return deferred(directEvents, computedEvents)
 				.spread(function (directEvents, computedEvents) {
 					return {
-						view: arr.map(function (data) {
-							return data.stamp + '.' + data.id;
-						}).join('\n'),
+						view: serializeView(arr),
 						size: size,
 						data: flatten.call([directEvents, computedEvents])
 					};
@@ -223,18 +218,6 @@ module.exports = exports = function () {
 					return handler.getTableData(query);
 				});
 			});
-		},
-		'get-business-process-data': function (query) {
-			return resolveHandler(this.req)(function (handler) {
-				// Get full data of one of the business processeses
-				return handler.businessProcessQueryHandler.resolve(query)(function (query) {
-					var recordId;
-					if (!query.id) return { passed: false };
-					recordId = this.req.$user + '/recentlyVisited/businessProcesses/' +
-						handler.roleName + '*7' + query.id;
-					return mano.dbDriver.store(recordId, '11')({ passed: true });
-				}.bind(this));
-			}.bind(this));
 		}
 	};
 };
