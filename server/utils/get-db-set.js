@@ -2,25 +2,20 @@
 
 'use strict';
 
-var ensureString        = require('es5-ext/object/validate-stringifiable-value')
-  , deferred            = require('deferred')
+var deferred            = require('deferred')
   , memoize             = require('memoizee')
+  , ensureStorage       = require('dbjs-persistence/ensure-storage')
   , resolveFilter       = require('dbjs-persistence/lib/resolve-filter')
   , resolveDirectFilter = require('dbjs-persistence/lib/resolve-direct-filter')
   , ObservableSet       = require('observable-set/primitive')
-  , dbDriver            = require('mano').dbDriver
 
   , isArray = Array.isArray;
 
-module.exports = memoize(function (storageName, recordType, keyPath, value) {
+module.exports = memoize(function (storage, recordType, keyPath, value) {
 	var set = new ObservableSet(), storages;
-	if (isArray(storageName)) {
-		storages = storageName.map(function (storageName) {
-			return dbDriver.getStorage(ensureString(storageName));
-		});
-	} else {
-		storages = [dbDriver.getStorage(ensureString(storageName))];
-	}
+	if (isArray(storage)) storages = storage.map(ensureStorage);
+	else storages = ensureStorage(storage);
+
 	return deferred.map(storages, function (storage) {
 		storage.on('key:' + keyPath || '&', function (event) {
 			var result;

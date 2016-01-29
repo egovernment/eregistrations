@@ -192,17 +192,17 @@ var initializeHandler = function (conf) {
 
 		if (isArray(indexMeta)) {
 			promise = deferred.map(indexMeta.sort(compareIndexMeta), function (indexMeta) {
-				return getDbSet(storageName, 'computed', indexMeta.name, indexMeta.value);
+				return getDbSet(storages, 'computed', indexMeta.name, indexMeta.value);
 			})(function (sets) {
 				return aFrom(sets).reduce(function (set1, set2) { return set1.and(set2); });
 			});
 		} else {
-			promise = getDbSet(storageName, 'computed', indexMeta.name, indexMeta.value);
+			promise = getDbSet(storages, 'computed', indexMeta.name, indexMeta.value);
 		}
 
 		if (query.assignedTo) {
 			promise = promise.then(function (baseSet) {
-				return getDbSet(storageName, 'direct', conf.assigneePath, '7' +
+				return getDbSet(storages, 'direct', conf.assigneePath, '7' +
 					query.assignedTo)(function (set) { return baseSet.and(set); });
 			});
 		}
