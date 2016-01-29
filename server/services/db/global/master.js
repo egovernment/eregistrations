@@ -5,7 +5,7 @@ var resolve = require('path').resolve
   , mano    = require('mano');
 
 module.exports = function (root) {
-	var driver = new Driver({ path: resolve(root, 'data-global') });
+	var driver = new Driver({ path: resolve(root, 'data-global'), name: 'global' });
 
 	mano.dbDriverGlobal = driver;
 	driver.isReceiver = true;
