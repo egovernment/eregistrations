@@ -14,7 +14,7 @@ var deferred            = require('deferred')
 module.exports = memoize(function (storage, recordType, keyPath, value) {
 	var set = new ObservableSet(), storages;
 	if (isArray(storage)) storages = storage.map(ensureStorage);
-	else storages = ensureStorage(storage);
+	else storages = [ensureStorage(storage)];
 
 	return deferred.map(storages, function (storage) {
 		storage.on('key:' + keyPath || '&', function (event) {
