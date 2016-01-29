@@ -1,8 +1,10 @@
 'use strict';
 
-var toArray          = require('es5-ext/object/to-array')
+var aFrom            = require('es5-ext/array/from')
+  , toArray          = require('es5-ext/object/to-array')
   , ensureCallable   = require('es5-ext/object/valid-callable')
   , ensureObject     = require('es5-ext/object/valid-object')
+  , ensureIterable   = require('es5-ext/iterable/validate-object')
   , ensureString     = require('es5-ext/object/validate-stringifiable-value')
   , Set              = require('es6-set')
   , deferred         = require('deferred')
@@ -16,19 +18,24 @@ var toArray          = require('es5-ext/object/to-array')
   , mano             = require('mano')
   , getAddRecords    = require('../../data-fragments/get-add-records-to-fragment')
   , getDriver        = require('./local/master')
+  , getDriverGlobal  = require('./global/master')
 
   , byStamp = function (a, b) { return this[a].stamp - this[b].stamp; };
 
 module.exports = function (root, data) {
-	var getFragment, driver, emitter, def, userStorage;
+	var getFragment, driver, driverGlobal, emitter, def, userStorage, storageNamesGlobal;
 	root = ensureString(root);
 
 	ensureObject(data);
 	getFragment = ensureCallable(data.getMemoryUserFragment);
+	if (data.storageNamesGlobal != null) {
+		storageNamesGlobal = new Set(aFrom(ensureIterable(data.storageNamesGlobal), ensureString));
+	}
 
 	// Initialize master driver
 	driver = getDriver(root, data.dbDriverConf);
 	userStorage = driver.getStorage('user');
+	if (storageNamesGlobal) driverGlobal = getDriverGlobal(root);
 
 	// Initialize db-memory process
 	emitter = fork(resolve(root, 'server/processes/memory-db'));
@@ -39,7 +46,7 @@ module.exports = function (root, data) {
 	emitter.once('message', function (message) {
 		var emitAccess, accessFragment, emitDeleted, deletedPending, registerDeferreds = [], lastPromise
 		  , addPassword = getAddRecords(userStorage, new Set(['password']))
-		  , done = Object.create(null), pendingIds;
+		  , done = Object.create(null), pendingIds, getStorage;
 
 		if (message.type !== 'init') {
 			console.log(message);
@@ -47,7 +54,15 @@ module.exports = function (root, data) {
 		}
 
 		// Pair master and db-memory process
-		receiver(driver.getStorage.bind(driver), emitter);
+		if (driverGlobal) {
+			getStorage = function (storageName) {
+				if (storageNamesGlobal.has(storageName)) return driverGlobal.getStorage(storageName);
+				return driver.getStorage(storageName);
+			};
+		} else {
+			getStorage = driver.getStorage.bind(driver);
+		}
+		receiver(getStorage, emitter);
 		emitter.send({ type: 'continue' });
 		emitAccess = registerReceiver('dbAccessData', emitter);
 		mano.emitPostRequest = registerReceiver('postRequest', emitter);
