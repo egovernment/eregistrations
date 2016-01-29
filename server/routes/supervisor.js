@@ -37,25 +37,8 @@ var aFrom               = require('es5-ext/array/from')
 // Business processes table query handler
 var getTableQueryHandler = function (stepsMap) {
 	var queryHandler = new QueryHandler(exports.tableQueryConf);
-	queryHandler._statusMap = stepsMap;
+	queryHandler._stepsMap = stepsMap;
 	return queryHandler;
-};
-
-// Single business process full data query handler
-var getBusinessProcessQueryHandler = function () {
-	return new QueryHandler([
-		{
-			name: 'id',
-			ensure: function (value) {
-				if (!value) throw new Error("Missing id");
-
-				return mano.dbDriver.getComputed(value)(function (data) {
-					if (!data || (data.value !== '11')) return null;
-					return value;
-				});
-			}
-		}
-	]);
 };
 
 var getFilteredArray = function (arr, filterString) {
@@ -77,10 +60,21 @@ var getFilteredArray = function (arr, filterString) {
 	});
 };
 
+var getStepsByTime = function (threshold, businessProcessesArr, keyPath) {
+	var result = [];
+	businessProcessesArr.forEach(function (bp) {
+		var timeValue = Date.now() - (bp.stamp / 1000);
+		if (!threshold || (timeValue >= threshold)) {
+			result.push({ id: bp.id + '/' + keyPath,
+				stamp: bp.stamp });
+		}
+	});
+	return result;
+};
+
 var initializeHandler = function () {
-	var tableQueryHandler   = getTableQueryHandler(stepsMap)
-	  , itemsPerPage        = toNaturalNumber(listItemsPerPage) || defaultItemsPerPage
-	  , businessProcessQueryHandler = getBusinessProcessQueryHandler();
+	var tableQueryHandler = getTableQueryHandler(stepsMap)
+	  , itemsPerPage      = toNaturalNumber(listItemsPerPage) || defaultItemsPerPage;
 
 	var getTableData = memoize(function (query) {
 		var promise, timeThreshold;
@@ -96,15 +90,7 @@ var initializeHandler = function () {
 				function (baseSet) {
 					return getDbArray(baseSet, 'computed', stepsMap[query.step].indexName).then(
 						function (arr) {
-							var result = [];
-							arr.forEach(function (bp) {
-								var timeValue = Date.now() - (bp.stamp / 1000);
-								if (!timeThreshold || (timeValue >= timeThreshold)) {
-									result.push({ id: bp.id + '/processingSteps/map/' + query.step,
-										stamp: bp.stamp });
-								}
-							});
-							return result;
+							return getStepsByTime(timeThreshold, arr, 'processingSteps/map/' + query.step);
 						}
 					);
 				}
@@ -113,12 +99,7 @@ var initializeHandler = function () {
 			promise = allSupervisorSteps.then(function (supervisorResults) {
 				var result = [];
 				forEach(supervisorResults, function (subArray, keyPath) {
-					subArray.forEach(function (bp) {
-						var timeValue = Date.now() - (bp.stamp / 1000);
-						if (!timeThreshold || (timeValue >= timeThreshold)) {
-							result.push({ id: bp.id + '/' + keyPath, stamp: bp.stamp });
-						}
-					});
+					result = result.concat(getStepsByTime(timeThreshold, subArray, keyPath));
 				});
 				result.sort(compareStamps);
 				return result;
@@ -196,8 +177,7 @@ var initializeHandler = function () {
 
 	return {
 		tableQueryHandler: tableQueryHandler,
-		getTableData: getTableData,
-		businessProcessQueryHandler: businessProcessQueryHandler
+		getTableData: getTableData
 	};
 };
 
@@ -226,7 +206,7 @@ exports.tableQueryConf = [{
 	name: 'step',
 	ensure: function (value) {
 		if (!value) return;
-		if (!this._statusMap[value]) {
+		if (!this._stepsMap[value]) {
 			throw new Error("Unreconized status value " + stringify(value));
 		}
 		return value;
