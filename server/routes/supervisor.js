@@ -166,9 +166,23 @@ var initializeHandler = function () {
 		maxAge: 10 * 1000
 	});
 
+	var businessProcessQueryHandler = new QueryHandler([
+		{
+			name: 'id',
+			ensure: function (value) {
+				if (!value) throw new Error("Missing id");
+				return mano.dbDriver.getComputed(value + '/isSubmitted')(function (data) {
+					if (!data || (data.value !== '11')) return null;
+					return value;
+				});
+			}
+		}
+	]);
+
 	return {
 		tableQueryHandler: tableQueryHandler,
-		getTableData: getTableData
+		getTableData: getTableData,
+		businessProcessQueryHandler: businessProcessQueryHandler
 	};
 };
 
@@ -180,6 +194,20 @@ module.exports = exports = function () {
 			return handler.tableQueryHandler.resolve(query)(function (query) {
 				return handler.getTableData(query);
 			});
+		},
+		'get-business-process-data': function (query) {
+			// Get full data of one of the business processeses
+			return handler.businessProcessQueryHandler.resolve(query)(function (query) {
+				if (!query.id) return { passed: false };
+				mano.db.User.getById(this.req.$user).recentlyVisited.businessProcesses.revision.add(
+					mano.db.BusinessProcess.getById(query.id)
+				);
+				return { passed: true };
+				//Use below persistent version when possible
+				//var recordId = this.req.$user + '/recentlyVisited/businessProcesses/revision*7'
+				// + query.id;
+				//return mano.dbDriver.store(recordId, '11')({ passed: true });
+			}.bind(this));
 		}
 	};
 };
