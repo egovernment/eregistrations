@@ -2,22 +2,18 @@
 
 'use strict';
 
-var ensureString = require('es5-ext/object/validate-stringifiable-value')
-  , ee           = require('event-emitter')
-  , memoize      = require('memoizee')
-  , dbDriver     = require('mano').dbDriver
+var ensureString  = require('es5-ext/object/validate-stringifiable-value')
+  , ee            = require('event-emitter')
+  , memoize       = require('memoizee')
+  , ensureStorage = require('dbjs-persistence/ensure-storage')
 
   , isArray = Array.isArray;
 
-module.exports = memoize(function (storageName, sortKeyPath) {
+module.exports = memoize(function (storage, sortKeyPath) {
 	var itemsMap = ee(), storages;
-	if (isArray(storageName)) {
-		storages = storageName.map(function (storageName) {
-			return dbDriver.getStorage(storageName);
-		});
-	} else {
-		storages = [dbDriver.getStorage(storageName)];
-	}
+	if (isArray(storage)) storages = storage.map(ensureStorage);
+	else storages = [ensureStorage(storage)];
+
 	storages.forEach(function (storage) {
 		storage.on('key:' + (sortKeyPath + '&'), function (event) {
 			if (!itemsMap[event.ownerId]) {

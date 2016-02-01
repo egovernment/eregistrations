@@ -9,26 +9,22 @@ var remove         = require('es5-ext/array/#/remove')
   , deferred       = require('deferred')
   , memoize        = require('memoizee')
   , once           = require('timers-ext/once')
-  , dbDriver       = require('mano').dbDriver
+  , ensureStorage  = require('dbjs-persistence/ensure-storage')
   , getIndexMap    = require('./get-db-sort-index-map')
   , getIdToStorage = require('./get-id-to-storage')
 
   , isArray = Array.isArray, defineProperty = Object.defineProperty
   , compareStamps = function (a, b) { return a.stamp - b.stamp; };
 
-module.exports = memoize(function (set, storageName, recordType, sortKeyPath) {
-	var arr = ee([]), itemsMap = getIndexMap(storageName, sortKeyPath)
+module.exports = memoize(function (set, storage, recordType, sortKeyPath) {
+	var arr = ee([]), itemsMap = getIndexMap(storage, sortKeyPath)
 	  , count = 0, isInitialized = false, def = deferred(), setListener, itemsListener
 	  , methodName = 'get' + ((recordType === 'direct') ? '' : capitalize.call(recordType))
 	  , getStorage, storages;
 
-	if (isArray(storageName)) {
-		storages = storageName.map(function (storageName) {
-			return dbDriver.getStorage(storageName);
-		});
-	} else {
-		storages = [dbDriver.getStorage(storageName)];
-	}
+	if (isArray(storage)) storages = storage.map(ensureStorage);
+	else storages = [ensureStorage(storage)];
+
 	getStorage = getIdToStorage(storages);
 	arr.emitChange = once(arr.emit.bind(arr, 'change'));
 	var add = function (ownerId) {
