@@ -8,9 +8,8 @@ var ensureCallable = require('es5-ext/object/valid-callable')
   , escape         = require('es5-ext/reg-exp/escape')
   , memoize        = require('memoizee')
   , Fragment       = require('data-fragment')
-  , anyIdToStorage = require('../utils/any-id-to-storage')
-
-  , driver = require('mano').dbDriver;
+  , ensureStorage  = require('dbjs-persistence/ensure-storage')
+  , anyIdToStorage = require('../utils/any-id-to-storage');
 
 var getKeyPathFilter = function (keyPath) {
 	var matches = RegExp.prototype.test.bind(new RegExp('^[a-z0-9][a-z0-9A-Z]*/' +
@@ -18,9 +17,8 @@ var getKeyPathFilter = function (keyPath) {
 	return function (data) { return matches(data.id); };
 };
 
-module.exports = memoize(function (storageName) {
-	var storage;
-	if (storageName) storage = driver.getStorage(storageName);
+module.exports = memoize(function (storage) {
+	if (storage != null) ensureStorage(storage);
 	return memoize(function (ownerId/*, options*/) {
 		var fragment, options = Object(arguments[1]), filter, index, customFilter, keyPathFilter
 		  , promise, setupListener;
@@ -65,7 +63,4 @@ module.exports = memoize(function (storageName) {
 		});
 		return fragment;
 	}, { primitive: true });
-}, { primitive: true, resolvers: [function (storageName) {
-	if (storageName == null) return '';
-	return ensureString(storageName);
-}] });
+}, { primitive: true });
