@@ -2,23 +2,19 @@
 
 'use strict';
 
-var ensureString = require('es5-ext/object/validate-stringifiable-value')
-  , endsWith     = require('es5-ext/string/#/ends-with')
-  , deferred     = require('deferred')
-  , Map          = require('es6-map')
-  , dbDriver     = require('mano').dbDriver
+var ensureString  = require('es5-ext/object/validate-stringifiable-value')
+  , endsWith      = require('es5-ext/string/#/ends-with')
+  , deferred      = require('deferred')
+  , Map           = require('es6-map')
+  , ensureStorage = require('dbjs-persistence/ensure-storage')
 
   , isArray = Array.isArray;
 
-module.exports = function (storageName, keyPath) {
-	var map, storages = [];
-	if (isArray(storageName)) {
-		storageName.forEach(function (storageName) {
-			storages.push(dbDriver.getStorage(ensureString(storageName)));
-		});
-	} else {
-		storages.push(dbDriver.getStorage(ensureString(storageName)));
-	}
+module.exports = function (storage, keyPath) {
+	var map, storages;
+
+	if (isArray(storage)) storages = storage.map(ensureStorage);
+	else storages = [ensureStorage(storage)];
 	ensureString(keyPath);
 
 	map = new Map();
