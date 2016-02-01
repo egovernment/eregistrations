@@ -2,8 +2,7 @@
 
 'use strict';
 
-var ensureString  = require('es5-ext/object/validate-stringifiable-value')
-  , ee            = require('event-emitter')
+var ee            = require('event-emitter')
   , memoize       = require('memoizee')
   , ensureStorage = require('dbjs-persistence/ensure-storage')
 
@@ -11,8 +10,8 @@ var ensureString  = require('es5-ext/object/validate-stringifiable-value')
 
 module.exports = memoize(function (storage, sortKeyPath) {
 	var itemsMap = ee(), storages;
-	if (isArray(storage)) storages = storage.map(ensureStorage);
-	else storages = [ensureStorage(storage)];
+	if (isArray(storage)) storages = storage;
+	else storages = [storage];
 
 	storages.forEach(function (storage) {
 		storage.on('key:' + (sortKeyPath + '&'), function (event) {
@@ -25,9 +24,9 @@ module.exports = memoize(function (storage, sortKeyPath) {
 		});
 	});
 	return itemsMap;
-}, { primitive: true, resolvers: [function (storageName) {
-	if (isArray(storageName)) return storageName.map(ensureString).sort();
-	return ensureString(storageName);
+}, { primitive: true, resolvers: [function (storage) {
+	if (isArray(storage)) return storage.map(ensureStorage).sort();
+	return ensureStorage(storage);
 }, function (sortKeyPath) {
 	return (sortKeyPath == null) ? '' : String(sortKeyPath);
 }] });
