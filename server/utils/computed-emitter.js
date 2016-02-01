@@ -19,7 +19,7 @@ var ComputedEmitter = module.exports = function (storage, keyPath/*, options*/) 
 		return new ComputedEmitter(storage, keyPath, arguments[2]);
 	}
 	options = Object(arguments[2]);
-	this._storage = ensureStorage(this._storageName);
+	this._storage = ensureStorage(storage);
 	if (options.type != null) {
 		if (options.type === 'direct') {
 			this._type = 'direct';
