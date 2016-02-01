@@ -21,7 +21,6 @@ var aFrom               = require('es5-ext/array/from')
   , stepsMap            = require('../../utils/processing-steps-map')
   , listItemsPerPage    = require('mano').env.objectsListItemsPerPage
   , timeRanges          = require('../../utils/supervisor-time-ranges')
-  , someRight           = require('es5-ext/array/#/some-right')
   , forEach             = require('es5-ext/object/for-each')
   , allSupervisorSteps  = require('../utils/supervisor-steps-array')()
   , bpListProps         = require('../../utils/supervisor-list-properties')
@@ -54,7 +53,6 @@ var getFilteredArray = function (arr, filterString) {
 };
 
 var filterByTime = function (threshold, arr) {
-	if (!threshold) return arr;
 	return arr.filter(function (processingStep) {
 		var timeValue = Date.now() - (processingStep.stamp / 1000);
 		return timeValue >= threshold;
@@ -72,23 +70,15 @@ var initializeHandler = function () {
 	  , itemsPerPage      = toNaturalNumber(listItemsPerPage) || defaultItemsPerPage;
 
 	var getTableData = memoize(function (query) {
-		var promise, timeThreshold;
-		if (query.time) {
-			someRight.call(timeRanges, function (item) {
-				if (query.time === item.name) {
-					timeThreshold = item.value;
-					return true;
-				}
-			});
-		}
+		var promise;
+
 		if (query.step) {
 			promise = getDbSet('computed', stepsMap[query.step].indexName,
 				serializeValue(stepsMap[query.step].indexValue)).then(
 				function (baseSet) {
 					return getDbArray(baseSet, 'computed', stepsMap[query.step].indexName).then(
 						function (arr) {
-							return filterByTime(timeThreshold,
-								getStepsFromBps(arr, 'processingSteps/map/' + query.step));
+							return getStepsFromBps(arr, 'processingSteps/map/' + query.step);
 						}
 					);
 				}
@@ -97,7 +87,7 @@ var initializeHandler = function () {
 			promise = allSupervisorSteps.then(function (supervisorResults) {
 				var result = [];
 				forEach(supervisorResults, function (subArray, keyPath) {
-					result = result.concat(filterByTime(timeThreshold, getStepsFromBps(subArray, keyPath)));
+					result = result.concat(getStepsFromBps(subArray, keyPath));
 				});
 				result.sort(compareStamps);
 				return result;
@@ -105,6 +95,9 @@ var initializeHandler = function () {
 		}
 
 		return promise(function (arr) {
+			if (query.time) {
+				arr = filterByTime(query.time, arr);
+			}
 			if (!query.search) return arr;
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
 				return getFilteredArray(arr, value);
@@ -205,13 +198,14 @@ exports.tableQueryConf = [{
 	ensure: function (value) {
 		var result;
 		if (!value) return;
-		result = timeRanges.some(function (item) {
+		timeRanges.some(function (item) {
 			if (item.name === value) {
+				result = item.value;
 				return true;
 			}
 		});
 		if (!result) throw new Error("Unrecognized time value " + stringify(value));
-		return value;
+		return result;
 	}
 }, {
 	name: 'search',
