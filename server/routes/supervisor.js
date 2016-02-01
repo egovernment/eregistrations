@@ -188,7 +188,7 @@ exports.tableQueryConf = [{
 	name: 'step',
 	ensure: function (value) {
 		if (!value) return;
-		if (!this._stepsMap[value]) {
+		if (!stepsMap[value]) {
 			throw new Error("Unreconized status value " + stringify(value));
 		}
 		return value;
