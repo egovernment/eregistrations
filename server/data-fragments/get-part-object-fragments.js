@@ -8,17 +8,13 @@ var aFrom           = require('es5-ext/array/from')
   , deferred        = require('deferred')
   , memoize         = require('memoizee/plain')
   , Fragment        = require('data-fragment')
+  , ensureStorage   = require('dbjs-persistence/ensure-storage')
   , assimilateEvent = require('./lib/assimilate-driver-event')
-  , anyIdToStorage  = require('../utils/any-id-to-storage')
+  , anyIdToStorage  = require('../utils/any-id-to-storage');
 
-  , driver = require('mano').dbDriver;
-
-module.exports = function (storageName, keyPaths) {
-	var keyPathsArray, storage, storagePromise;
-	if (storageName != null) {
-		storage = driver.getStorage(ensureString(storageName));
-		storagePromise = deferred(storage);
-	}
+module.exports = function (storage, keyPaths) {
+	var keyPathsArray, storagePromise;
+	if (storage != null) storagePromise = deferred(ensureStorage(storage));
 
 	ensureSet(keyPaths);
 
