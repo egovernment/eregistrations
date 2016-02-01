@@ -21,12 +21,16 @@ exports.columns = [{
 		var result, value;
 		return processingStep._resolvedStatus._lastModified.map(function (modDate) {
 			value = Date.now() - (modDate / 1000);
-			someRight.call(timeRanges, function (item) {
-				if (value >= item.value) {
-					result = item.label;
-					return true;
-				}
-			});
+			if (!timeRanges[1] || value < timeRanges[1].value) {
+				result = _("Recent");
+			} else {
+				someRight.call(timeRanges, function (item) {
+					if (value >= item.value) {
+						result = item.label;
+						return true;
+					}
+				});
+			}
 
 			return result;
 		});
