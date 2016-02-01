@@ -11,7 +11,7 @@ var ensureString  = require('es5-ext/object/validate-stringifiable-value')
   , deferred      = require('deferred')
   , memoize       = require('memoizee')
   , ObservableSet = require('observable-set/primitive')
-  , dbDriver      = require('mano').dbDriver
+  , ensureStorage = require('dbjs-persistence/ensure-storage')
 
   , isArray = Array.isArray;
 
@@ -64,15 +64,11 @@ var observe = function (set, storages, ownerId, keyPath) {
 	};
 };
 
-module.exports = memoize(function (storageName, ownerId, keyPath) {
-	var set, storages = [];
-	if (isArray(storageName)) {
-		storageName.forEach(function (storageName) {
-			storages.push(dbDriver.getStorage(ensureString(storageName)));
-		});
-	} else {
-		storages.push(dbDriver.getStorage(ensureString(storageName)));
-	}
+module.exports = memoize(function (storage, ownerId, keyPath) {
+	var set, storages;
+	if (isArray(storage)) storages = storage.map(ensureStorage);
+	else storages = [ensureStorage(storage)];
+
 	ownerId = ensureString(ownerId);
 	keyPath = ensureString(keyPath);
 	set = new ObservableSet();
