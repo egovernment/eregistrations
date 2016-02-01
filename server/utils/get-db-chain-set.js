@@ -53,7 +53,7 @@ var observe = function (set, storages, ownerId, keyPath) {
 };
 
 module.exports = memoize(function (storage, ownerId, keyPath) {
-	var set, storages = [];
+	var set, storages;
 
 	if (isArray(storage)) storages = storage.map(ensureStorage);
 	else storages = [ensureStorage(storage)];
