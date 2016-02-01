@@ -9,18 +9,17 @@ var assign         = require('es5-ext/object/assign')
   , ee             = require('event-emitter')
   , deferred       = require('deferred')
   , memoizeMethods = require('memoizee/methods-plain')
-  , dbDriver       = require('mano').dbDriver
+  , ensureStorage  = require('dbjs-persistence/ensure-storage')
 
   , stringify = JSON.stringify;
 
-var ComputedEmitter = module.exports = function (storageName, keyPath/*, options*/) {
+var ComputedEmitter = module.exports = function (storage, keyPath/*, options*/) {
 	var options;
 	if (!(this instanceof ComputedEmitter)) {
-		return new ComputedEmitter(storageName, keyPath, arguments[2]);
+		return new ComputedEmitter(storage, keyPath, arguments[2]);
 	}
 	options = Object(arguments[2]);
-	this._storageName = ensureString(storageName);
-	this._storage = dbDriver.getStorage(this._storageName);
+	this._storage = ensureStorage(this._storageName);
 	if (options.type != null) {
 		if (options.type === 'direct') {
 			this._type = 'direct';
