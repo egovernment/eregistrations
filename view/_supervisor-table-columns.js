@@ -22,7 +22,7 @@ exports.columns = [{
 		return processingStep._resolvedStatus._lastModified.map(function (modDate) {
 			value = Date.now() - (modDate / 1000);
 			if (!timeRanges[1] || value < timeRanges[1].value) {
-				result = _("recent");
+				result = _("Recent");
 			} else {
 				someRight.call(timeRanges, function (item) {
 					if (value >= item.value) {

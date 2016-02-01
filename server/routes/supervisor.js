@@ -34,13 +34,6 @@ var aFrom               = require('es5-ext/array/from')
   , ceil           = Math.ceil
   , stringify      = JSON.stringify;
 
-// Business processes table query handler
-var getTableQueryHandler = function (stepsMap) {
-	var queryHandler = new QueryHandler(exports.tableQueryConf);
-	queryHandler._stepsMap = stepsMap;
-	return queryHandler;
-};
-
 var getFilteredArray = function (arr, filterString) {
 	var result = [];
 
@@ -60,37 +53,42 @@ var getFilteredArray = function (arr, filterString) {
 	});
 };
 
-var getStepsByTime = function (threshold, businessProcessesArr, keyPath) {
-	var result = [];
-	businessProcessesArr.forEach(function (bp) {
-		var timeValue = Date.now() - (bp.stamp / 1000);
-		if (!threshold || (timeValue >= threshold)) {
-			result.push({ id: bp.id + '/' + keyPath,
-				stamp: bp.stamp });
-		}
+var filterByTime = function (threshold, arr) {
+	if (!threshold) return arr;
+	return arr.filter(function (processingStep) {
+		var timeValue = Date.now() - (processingStep.stamp / 1000);
+		return timeValue >= threshold;
 	});
-	return result;
+};
+
+var getStepsFromBps = function (businessProcessesArr, keyPath) {
+	return businessProcessesArr.map(function (bp) {
+		return { id: bp.id + '/' + keyPath, stamp: bp.stamp };
+	});
 };
 
 var initializeHandler = function () {
-	var tableQueryHandler = getTableQueryHandler(stepsMap)
+	var tableQueryHandler = new QueryHandler(exports.tableQueryConf)
 	  , itemsPerPage      = toNaturalNumber(listItemsPerPage) || defaultItemsPerPage;
 
 	var getTableData = memoize(function (query) {
 		var promise, timeThreshold;
-		someRight.call(timeRanges, function (item) {
-			if (query.time === item.name) {
-				timeThreshold = item.value;
-				return true;
-			}
-		});
+		if (query.time) {
+			someRight.call(timeRanges, function (item) {
+				if (query.time === item.name) {
+					timeThreshold = item.value;
+					return true;
+				}
+			});
+		}
 		if (query.step) {
 			promise = getDbSet('computed', stepsMap[query.step].indexName,
 				serializeValue(stepsMap[query.step].indexValue)).then(
 				function (baseSet) {
 					return getDbArray(baseSet, 'computed', stepsMap[query.step].indexName).then(
 						function (arr) {
-							return getStepsByTime(timeThreshold, arr, 'processingSteps/map/' + query.step);
+							return filterByTime(timeThreshold,
+								getStepsFromBps(arr, 'processingSteps/map/' + query.step));
 						}
 					);
 				}
@@ -99,7 +97,7 @@ var initializeHandler = function () {
 			promise = allSupervisorSteps.then(function (supervisorResults) {
 				var result = [];
 				forEach(supervisorResults, function (subArray, keyPath) {
-					result = result.concat(getStepsByTime(timeThreshold, subArray, keyPath));
+					result = result.concat(filterByTime(timeThreshold, getStepsFromBps(subArray, keyPath)));
 				});
 				result.sort(compareStamps);
 				return result;
@@ -182,21 +180,12 @@ var initializeHandler = function () {
 };
 
 module.exports = exports = function () {
-	var resolveHandler;
-	resolveHandler = (function () {
-		var handler = initializeHandler();
-
-		return function (req) {
-			return deferred(handler);
-		};
-	}());
+	var handler = initializeHandler();
 
 	return {
 		'get-processing-steps-view': function (query) {
-			return resolveHandler(this.req)(function (handler) {
-				return handler.tableQueryHandler.resolve(query)(function (query) {
-					return handler.getTableData(query);
-				});
+			return handler.tableQueryHandler.resolve(query)(function (query) {
+				return handler.getTableData(query);
 			});
 		}
 	};

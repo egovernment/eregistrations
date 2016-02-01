@@ -6,9 +6,8 @@ var supervisorMeta = require('../../utils/processing-steps-map')
   , getDbArray     = require('./get-db-array')
   , serializeValue = require('dbjs/_setup/serialize/value');
 
-var supervisorResults = {};
-
 module.exports = function (onProcessingStepsChange) {
+	var supervisorResults = {};
 	return deferred.map(Object.keys(supervisorMeta),
 		function (name) {
 			var keyPath = supervisorMeta[name].indexName;

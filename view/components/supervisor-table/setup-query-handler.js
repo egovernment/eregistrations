@@ -17,7 +17,6 @@ var uniq              = require('es5-ext/array/#/uniq')
 module.exports = exports = function (listManager/*, pathname*/) {
 	var queryHandler = setupQueryHandler(exports.conf, appLocation, arguments[1] || '/');
 	queryHandler._stepsMap = listManager._stepsMap;
-	queryHandler._statusViews = listManager._statusViews;
 	queryHandler._itemsPerPage = listManager.itemsPerPage;
 	queryHandler._listManager = listManager;
 	queryHandler.on('query', function (query) { listManager.update(query); });
@@ -70,7 +69,7 @@ exports.conf = [
 			num = Number(value);
 			if (!isNaturalNumber(num)) throw new Error("Unreconized page value " + stringify(value));
 			if (num <= 1) throw new Error("Unexpected page value " + stringify(value));
-			totalSize = query.step ? this._stepsMap[query.step].totalSize :
+			totalSize = query.step ? db.views.pendingBusinessProcesses[query.step].totalSize :
 					db.views.supervisor.all.totalSize;
 			pageCount = ceil(totalSize / this._itemsPerPage);
 			if (num > pageCount) throw new Error("Page value overflow");
