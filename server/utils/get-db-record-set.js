@@ -7,12 +7,13 @@
 var ensureString  = require('es5-ext/object/validate-stringifiable-value')
   , memoize       = require('memoizee')
   , ObservableSet = require('observable-set/primitive')
-  , dbDriver      = require('mano').dbDriver
+  , ensureStorage = require('dbjs-persistence/ensure-storage')
 
   , isDigit = RegExp.prototype.test.bind(/[0-9]/);
 
-module.exports = memoize(function (storageName, id) {
-	var set, handleEvent, storage = dbDriver.getStorage(ensureString(storageName));
+module.exports = memoize(function (storage, id) {
+	var set, handleEvent;
+	ensureStorage(storage);
 	id = ensureString(id);
 	set = new ObservableSet();
 	storage.on('keyid:' + id, handleEvent = function (event) {
