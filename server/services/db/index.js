@@ -23,11 +23,13 @@ var aFrom            = require('es5-ext/array/from')
   , byStamp = function (a, b) { return this[a].stamp - this[b].stamp; };
 
 module.exports = function (root, data) {
-	var getFragment, driver, driverGlobal, emitter, def, userStorage, storageNamesGlobal;
+	var getFragment, driver, driverGlobal, emitter, def, userStorage, storageNamesGlobal
+	  , getInitialFragment;
 	root = ensureString(root);
 
 	ensureObject(data);
 	getFragment = ensureCallable(data.getMemoryUserFragment);
+	if (data.getInitialFragment != null) getInitialFragment = ensureCallable(data.getInitialFragment);
 	if (data.storageNamesGlobal != null) {
 		storageNamesGlobal = new Set(aFrom(ensureIterable(data.storageNamesGlobal), ensureString));
 	}
@@ -113,6 +115,7 @@ module.exports = function (root, data) {
 			while ((def = registerDeferreds.shift())) def.resolve(promise);
 			mano.registerUserPromise = promise;
 		});
+		if (getInitialFragment) accessFragment.addFragment(getInitialFragment());
 
 		// Emits events of deletes to slave process
 		emitDeleted = once(function () {
