@@ -9,7 +9,8 @@ var db       = require('../../../db')
   , user = User.prototype;
 
 user.$password.type = Password;
-require('../../../model/views');
 require('../../../model/user/recently-visited/business-processes');
+//Warning: ../../../model/views must be required after all business processes models
+require('../../../model/views');
 
 module.exports = db;
