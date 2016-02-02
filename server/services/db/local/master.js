@@ -1,15 +1,9 @@
 'use strict';
 
-var resolve = require('path').resolve
-  , Driver  = require('dbjs-persistence')
-  , mano    = require('mano');
+var initDriver = require('../../../utils/init-driver');
 
-module.exports = function (root/*, dbDriverConf*/) {
-	var dbDriverConf = arguments[1], driver;
-	if (dbDriverConf && dbDriverConf.driver) driver = new dbDriverConf.driver(dbDriverConf);
-	else driver = new Driver({ path: resolve(root, 'data-local') });
-	driver.name = 'local';
-	mano.dbDriver = driver;
+module.exports = function (root, storageNames/*, dbDriverConf*/) {
+	var driver = initDriver(root, storageNames, arguments[2]);
 	driver.isReceiver = true;
 	return driver;
 };
