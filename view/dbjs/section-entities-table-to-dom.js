@@ -24,10 +24,13 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 			}()),
 			ns._if(self._isUnresolved,
 				function () {
-					return ns.table(ns.tbody(ns.tr(ns.th(resolvePropertyPath(self.master,
-							self.resolventProperty).descriptor.label),
-						ns.td(resolvePropertyPath(self.master,
-							self.resolventProperty).observable))));
+					var resolvedResolvent = resolvePropertyPath(self.master, self.resolventProperty)
+					  , descriptor        = resolvedResolvent.descriptor
+					  , dynamicLabelKey   = descriptor.dynamicLabelKey
+					  , label             = dynamicLabelKey ?
+							descriptor.object.getObservable(dynamicLabelKey) : descriptor.label;
+
+					return ns.table(ns.tbody(ns.tr(ns.th(label), ns.td(resolvedResolvent.observable))));
 				}, function () {
 					return ns._if(resolved._size,
 						ns.ul({ class: 'entity-data-section-entities' },
