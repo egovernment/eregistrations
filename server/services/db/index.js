@@ -37,9 +37,9 @@ module.exports = function (root, data) {
 	}
 
 	// Initialize master driver
-	driver = getDriver(root, data.dbDriverConf);
+	driver = getDriver(root, ensureIterable(data.storageNames), data.dbDriverConf);
 	userStorage = driver.getStorage('user');
-	if (storageNamesGlobal) driverGlobal = getDriverGlobal(root);
+	if (storageNamesGlobal) driverGlobal = getDriverGlobal(root, storageNamesGlobal);
 
 	// Initialize db-memory process
 	emitter = fork(resolve(root, 'server/processes/memory-db'));
