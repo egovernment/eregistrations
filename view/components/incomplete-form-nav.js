@@ -2,19 +2,15 @@
 
 'use strict';
 
-var db         = require('mano').db
-  , _          = require('mano').i18n.bind('Incomplete Sections Navigation')
+var db               = require('mano').db
+  , _                = require('mano').i18n.bind('Incomplete Sections Navigation')
+  , getPropertyLabel = require('../utils/get-property-label')
 
   , _d = _
   , generateMissingList;
 
 var propertyLabel = function (formSection, propertyName) {
-	var descriptor      = formSection.master.resolveSKeyPath(propertyName).ownDescriptor
-	  , dynamicLabelKey = descriptor.dynamicLabelKey
-	  , label           = dynamicLabelKey ?
-			descriptor.object.getObservable(dynamicLabelKey) : descriptor.label;
-
-	return JSON.stringify(label);
+	return JSON.stringify(getPropertyLabel(formSection.master.resolveSKeyPath(propertyName)));
 };
 
 var entityLabel = function (tableSection, entity) {
