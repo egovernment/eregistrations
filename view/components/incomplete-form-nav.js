@@ -9,7 +9,12 @@ var db         = require('mano').db
   , generateMissingList;
 
 var propertyLabel = function (formSection, propertyName) {
-	return JSON.stringify(formSection.master.resolveSKeyPath(propertyName).ownDescriptor.label);
+	var descriptor      = formSection.master.resolveSKeyPath(propertyName).ownDescriptor
+	  , dynamicLabelKey = descriptor.dynamicLabelKey
+	  , label           = dynamicLabelKey ?
+			descriptor.object.getObservable(dynamicLabelKey) : descriptor.label;
+
+	return JSON.stringify(label);
 };
 
 var entityLabel = function (tableSection, entity) {
