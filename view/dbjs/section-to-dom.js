@@ -24,9 +24,13 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 			ns.table(
 				ns.tbody(
 					ns._if(self._resolventProperty, function () {
-						var resolvent = resolvePropertyPath(self.master, self.resolventProperty);
+						var resolvent       = resolvePropertyPath(self.master, self.resolventProperty)
+						  , descriptor      = resolvent.descriptor
+						  , dynamicLabelKey = descriptor.dynamicLabelKey
+						  , label           = dynamicLabelKey ?
+								descriptor.object.getObservable(dynamicLabelKey) : descriptor.label;
 
-						return ns.tr(ns.th(resolvent.descriptor.label), ns.td(resolvent.observable));
+						return ns.tr(ns.th(label), ns.td(resolvent.observable));
 					}),
 					ns._if(ns.eq(self._isUnresolved, false), function () {
 						return ns.list(filteredNames = self.applicablePropertyNames.filter(function (name) {
@@ -34,9 +38,12 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 							observable.once('change', function (event) { filteredNames.refresh(name); });
 							return observable.value != null;
 						}), function (name) {
-							var resolved = resolvePropertyPath(self.master, name)
-							  , isNested = (typeof resolved.value === 'object')
-								&& resolved.value.__id__
+							var resolved        = resolvePropertyPath(self.master, name)
+							  , descriptor      = resolved.descriptor
+							  , dynamicLabelKey = descriptor.dynamicLabelKey
+							  , label           = dynamicLabelKey ?
+									descriptor.object.getObservable(dynamicLabelKey) : descriptor.label
+							  , isNested        = (typeof resolved.value === 'object') && resolved.value.__id__
 							  , cond, specialCase;
 
 							if (isNested) {
@@ -48,7 +55,7 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 								}
 							}
 
-							if (!resolved.descriptor.required) {
+							if (!descriptor.required) {
 								if (isNested) {
 									if (specialCase === 'file') {
 										cond = resolved.value._path;
@@ -64,7 +71,7 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 								cond = true;
 							}
 							return _if(cond, function () {
-								return ns.tr(ns.th(resolved.descriptor.label),
+								return ns.tr(ns.th(label),
 									td(resolveValue(resolved, specialCase)));
 							});
 						});
