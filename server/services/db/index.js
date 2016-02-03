@@ -29,7 +29,9 @@ module.exports = function (root, data) {
 
 	ensureObject(data);
 	getFragment = ensureCallable(data.getMemoryUserFragment);
-	if (data.getInitialFragment != null) getInitialFragment = ensureCallable(data.getInitialFragment);
+	if (data.getMemoryInitialFragment != null) {
+		getInitialFragment = ensureCallable(data.getMemoryInitialFragment);
+	}
 	if (data.storageNamesGlobal != null) {
 		storageNamesGlobal = new Set(aFrom(ensureIterable(data.storageNamesGlobal), ensureString));
 	}
