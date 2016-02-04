@@ -1,18 +1,26 @@
 'use strict';
 
-var _ = require('mano').i18n.bind('Official: Revision: Notifications');
+var _                = require('mano').i18n.bind('Official: Revision: Notifications')
+  , normalizeOptions = require('es5-ext/object/normalize-options')
+  , ensureType       = require('dbjs/valid-dbjs-type');
 
-module.exports = function (stepName) {
-	var businessProcessInstances = require('mano').db.BusinessProcess.instances
-		.filterByKey('isFromEregistrations', true)
-	  , notification = {};
+module.exports = function (BusinessProcessClass/*, options*/) {
+	var options           = normalizeOptions(arguments[1])
+	  , stepName          = options.stepName || 'revision'
+	  , stepKeyPath       = 'processingSteps/map/' + stepName
+	  , notification      = {}
+	  , businessProcesses;
 
-	stepName = stepName || 'revision';
+	ensureType(BusinessProcessClass);
 
-	notification.trigger = businessProcessInstances
-		.filterByKeyPath('processingSteps/map/' + stepName + '/isSentBack', true);
-	notification.preTrigger = businessProcessInstances
-		.filterByKeyPath('processingSteps/map/' + stepName + '/isReady', true);
+	if (!BusinessProcessClass.database.BusinessProcess.isPrototypeOf(BusinessProcessClass)) {
+		throw new Error(BusinessProcessClass + ' is expected to extend BusinessProcess');
+	}
+
+	businessProcesses = BusinessProcessClass.instances.filterByKey('isFromEregistrations', true);
+
+	notification.trigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isSentBack', true);
+	notification.preTrigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);
 
 	notification.subject = _("M05 You must correct some elements in your application");
 	notification.text = _("Email message greeting ${ fullName }\n\n")
