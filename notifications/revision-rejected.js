@@ -2,17 +2,14 @@
 
 var _ = require('mano').i18n.bind('Official: Revision: Notifications');
 
-module.exports = function (stepName) {
-	var businessProcessInstances = require('mano').db.BusinessProcess.instances
-		.filterByKey('isFromEregistrations', true)
-	  , notification = {};
+module.exports = function (stepName, businessProcesses) {
+	var stepKeyPath, notification = {};
 
 	stepName = stepName || 'revision';
+	stepKeyPath = 'processingSteps/map/' + stepName;
 
-	notification.trigger = businessProcessInstances
-		.filterByKeyPath('processingSteps/map/' + stepName + '/isRejected', true);
-	notification.preTrigger = businessProcessInstances
-		.filterByKeyPath('processingSteps/map/' + stepName + '/isReady', true);
+	notification.trigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isRejected', true);
+	notification.preTrigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);
 
 	notification.resolveGetters = true;
 

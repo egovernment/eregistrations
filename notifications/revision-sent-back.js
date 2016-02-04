@@ -2,17 +2,14 @@
 
 var _ = require('mano').i18n.bind('Official: Revision: Notifications');
 
-module.exports = function (stepName) {
-	var businessProcessInstances = require('mano').db.BusinessProcess.instances
-		.filterByKey('isFromEregistrations', true)
-	  , notification = {};
+module.exports = function (stepName, businessProcesses) {
+	var stepKeyPath, notification = {};
 
 	stepName = stepName || 'revision';
+	stepKeyPath = 'processingSteps/map/' + stepName;
 
-	notification.trigger = businessProcessInstances
-		.filterByKeyPath('processingSteps/map/' + stepName + '/isSentBack', true);
-	notification.preTrigger = businessProcessInstances
-		.filterByKeyPath('processingSteps/map/' + stepName + '/isReady', true);
+	notification.trigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isSentBack', true);
+	notification.preTrigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);
 
 	notification.subject = _("M05 You must correct some elements in your application");
 	notification.text = _("Email message greeting ${ fullName }\n\n")
