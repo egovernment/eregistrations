@@ -54,5 +54,8 @@ module.exports = function (driver, slavePath) {
 	}).on('progress', function (event) {
 		if (event.type === 'nextObject') debug.progress();
 		if (event.type === 'nextPool') debug.progress('↻');
+	})(function () {
+		debug.progress();
+		return driver.recalculateAllSizes();
 	})(debug.close);
 };
