@@ -32,7 +32,7 @@ module.exports = function (root, appsList, conf) {
 		return resolve(root, appName, 'public');
 	}));
 	ensureObject(conf);
-	debug("cloudfront refresh");
+	debug("cloudfront-invalidate");
 	return deferred(
 		readFile(cachePath)(parse).catch({}).aside(function (data) { old = data; }),
 		deferred.reduce(paths, function (ignore, dirPath) {
