@@ -1,3 +1,5 @@
+// Recomputes all computed indexes and reduced records
+
 'use strict';
 
 var flatten      = require('es5-ext/array/#/flatten')
