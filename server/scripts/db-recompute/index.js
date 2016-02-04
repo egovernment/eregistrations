@@ -6,7 +6,7 @@ var flatten      = require('es5-ext/array/#/flatten')
   , ensureString = require('es5-ext/object/validate-stringifiable-value')
   , startsWith   = require('es5-ext/string/#/starts-with')
   , deferred     = require('deferred')
-  , debug        = require('debug-ext')('setup')
+  , debug        = require('debug-ext')('setup', 4)
   , ensureDriver = require('dbjs-persistence/ensure-driver')
   , recompute    = require('dbjs-persistence/recompute');
 
