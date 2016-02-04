@@ -1,12 +1,14 @@
 'use strict';
 
-var _ = require('mano').i18n.bind('Official: Revision: Notifications');
+var _                = require('mano').i18n.bind('Official: Revision: Notifications')
+  , normalizeOptions = require('es5-ext/object/normalize-options');
 
-module.exports = function (stepName, businessProcesses) {
-	var stepKeyPath, notification = {};
-
-	stepName = stepName || 'revision';
-	stepKeyPath = 'processingSteps/map/' + stepName;
+module.exports = function (/*options*/) {
+	var options           = normalizeOptions(arguments[0])
+	  , businessProcesses = options.businessProcesses
+	  , stepName          = options.stepName || 'revision'
+	  , stepKeyPath       = 'processingSteps/map/' + stepName
+	  , notification      = {};
 
 	notification.trigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isRejected', true);
 	notification.preTrigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);

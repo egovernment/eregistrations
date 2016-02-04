@@ -1,14 +1,14 @@
 'use strict';
 
-var _ = require('mano').i18n.bind('Official: Revision: Status Log')
-  , BusinessProcess = require('../../../model/business-process/base');
+var _                = require('mano').i18n.bind('Official: Revision: Status Log')
+  , normalizeOptions = require('es5-ext/object/normalize-options');
 
-module.exports = function (stepName, businessProcesses) {
-	var stepKeyPath, processorKeyPath;
-
-	stepName = stepName || 'revision';
-	stepKeyPath = 'processingSteps/map/' + stepName;
-	processorKeyPath =  stepKeyPath + '/processor';
+module.exports = function (/*options*/) {
+	var options           = normalizeOptions(arguments[0])
+	  , businessProcesses = options.businessProcesses
+	  , stepName          = options.stepName || 'revision'
+	  , stepKeyPath       = 'processingSteps/map/' + stepName
+	  , processorKeyPath  = stepKeyPath + '/processor';
 
 	var readyProcesses = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);
 	var approvedProcesses = businessProcesses.filterByKeyPath(stepKeyPath + '/isApproved', true);
@@ -18,7 +18,6 @@ module.exports = function (stepName, businessProcesses) {
 
 	return [{
 		id: 'approved',
-		BusinessProcessType: BusinessProcess,
 		trigger: approvedProcesses,
 		preTrigger: readyProcesses,
 		official: processorKeyPath,
@@ -26,7 +25,6 @@ module.exports = function (stepName, businessProcesses) {
 		text: _("Review successful")
 	}, {
 		id: 'sentBack',
-		BusinessProcessType: BusinessProcess,
 		trigger: sentBackProcesses,
 		preTrigger: readyProcesses,
 		official: processorKeyPath,
@@ -34,14 +32,12 @@ module.exports = function (stepName, businessProcesses) {
 		text: _("Necessary corrections in the file")
 	}, {
 		id: 'correction',
-		BusinessProcessType: BusinessProcess,
 		trigger: correctedProcesses,
 		preTrigger: sentBackProcesses,
 		label: _("Correction of documents"),
 		text: _("Corrected documents sent to review")
 	}, {
 		id: 'rejected',
-		BusinessProcessType: BusinessProcess,
 		trigger: rejectedProcesses,
 		preTrigger: readyProcesses,
 		official: processorKeyPath,
