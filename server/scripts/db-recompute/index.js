@@ -15,7 +15,17 @@ module.exports = function (driver, slavePath) {
 	var getBusinessProcessData = function (bpId) {
 		return anyIdToStorage(bpId)(function (storage) {
 			if (!storage) return [];
-			return storage.getObject(bpId);
+			return storage.getObject(bpId)(function (bpData) {
+				var id = bpId + '/derivedBusinessProcess';
+				return deferred.map(bpData, function (data) {
+					if (data.id !== id) return data;
+					if (data.data.value[0] !== '7') return data;
+					return getBusinessProcessData(data.data.value.slice(1))(function (result) {
+						result.push(data);
+						return result;
+					});
+				});
+			});
 		});
 	};
 
