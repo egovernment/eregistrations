@@ -31,7 +31,7 @@ module.exports = function (driver, slavePath) {
 		});
 	};
 
-	debug.open("recompute db indexes");
+	debug.open("db-recompute");
 	return recompute(driver, {
 		slaveScriptPath: ensureString(slavePath),
 		ids: (function () {
