@@ -5,7 +5,7 @@ var _                = require('mano').i18n.bind('Official: Revision: Notificati
   , ensureType       = require('dbjs/valid-dbjs-type');
 
 module.exports = function (BusinessProcessClass/*, options*/) {
-	var options           = normalizeOptions(arguments[0])
+	var options           = normalizeOptions(arguments[1])
 	  , stepName          = options.stepName || 'revision'
 	  , stepKeyPath       = 'processingSteps/map/' + stepName
 	  , notification      = {}
