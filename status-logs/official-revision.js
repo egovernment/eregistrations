@@ -12,8 +12,8 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 
 	ensureType(BusinessProcessClass);
 
-	if (!BusinessProcessClass.database.BusinessProcess.isProtototypeOf(BusinessProcessClass)) {
-		throw new Error(BusinessProcessClass + ' is not a BusinessProcess');
+	if (!BusinessProcessClass.database.BusinessProcess.isPrototypeOf(BusinessProcessClass)) {
+		throw new Error(BusinessProcessClass + ' is expected to extend BusinessProcess');
 	}
 
 	var businessProcesses = BusinessProcessClass.instances.filterByKey('isFromEregistrations', true);
