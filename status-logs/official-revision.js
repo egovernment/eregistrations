@@ -1,11 +1,12 @@
 'use strict';
 
 var _                = require('mano').i18n.bind('Official: Revision: Status Log')
-  , normalizeOptions = require('es5-ext/object/normalize-options');
+  , normalizeOptions = require('es5-ext/object/normalize-options')
+  , isValidSet       = require('observable-set/valid-observable-set');
 
 module.exports = function (/*options*/) {
 	var options           = normalizeOptions(arguments[0])
-	  , businessProcesses = options.businessProcesses
+	  , businessProcesses = isValidSet(options.businessProcesses)
 	  , stepName          = options.stepName || 'revision'
 	  , stepKeyPath       = 'processingSteps/map/' + stepName
 	  , processorKeyPath  = stepKeyPath + '/processor';
