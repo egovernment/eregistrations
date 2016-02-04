@@ -2,15 +2,21 @@
 
 var _                = require('mano').i18n.bind('Official: Revision: Status Log')
   , normalizeOptions = require('es5-ext/object/normalize-options')
-  , ensureSet        = require('observable-set/valid-observable-set');
+  , ensureType       = require('dbjs/valid-dbjs-type');
 
-module.exports = function (/*options*/) {
-	var options           = normalizeOptions(arguments[0])
-	  , businessProcesses = ensureSet(options.businessProcesses)
+module.exports = function (BusinessProcessClass/*, options*/) {
+	var options           = normalizeOptions(arguments[1])
 	  , stepName          = options.stepName || 'revision'
 	  , stepKeyPath       = 'processingSteps/map/' + stepName
 	  , processorKeyPath  = stepKeyPath + '/processor';
 
+	ensureType(BusinessProcessClass);
+
+	if (!BusinessProcessClass.database.BusinessProcess.isProtototypeOf(BusinessProcessClass)) {
+		throw new Error(BusinessProcessClass + ' is not a BusinessProcess');
+	}
+
+	var businessProcesses = BusinessProcessClass.instances.filterByKey('isFromEregistrations', true);
 	var readyProcesses = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);
 	var approvedProcesses = businessProcesses.filterByKeyPath(stepKeyPath + '/isApproved', true);
 	var sentBackProcesses = businessProcesses.filterByKeyPath(stepKeyPath + '/isSentBack', true);
