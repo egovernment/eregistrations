@@ -6,6 +6,7 @@ var generateDocumentPrev = require('../utils/generate-pdf')
   , setupTriggers        = require('../_setup-triggers')
   , ensureCallable       = require('es5-ext/object/valid-callable')
   , ensureString         = require('es5-ext/object/validate-stringifiable-value')
+  , ensureObservableSet  = require('observable-set/valid-observable-set')
   , ensureObject         = require('es5-ext/object/valid-object');
 
 /**
@@ -27,11 +28,14 @@ module.exports = function (mainConfig) {
 	var onUpdate, entryCollection, config;
 
 	config = normalizeOptions(ensureObject(mainConfig));
-	entryCollection = config.entryCollection;
+	entryCollection = ensureObservableSet(config.entryCollection);
 	ensureString(config.fileKeyPath);
 	if (config.insertsResolver != null) {
 		ensureCallable(config.insertsResolver);
 	}
+	ensureString(config.name);
+	ensureString(config.templatePath);
+	ensureString(config.dirpath);
 
 	onUpdate = function (resolutionObject) {
 		return deferred(
