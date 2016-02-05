@@ -21,9 +21,7 @@ module.exports = function (config) {
 	var onUpdate, entryCollection;
 	entryCollection = config.entryCollection;
 
-	onUpdate = function (bp) {
-		var resolutionObject = bp;
-
+	onUpdate = function (resolutionObject) {
 		return deferred(
 			(function () {
 				var localConfig = normalizeOptions(config, { resolutionObject: resolutionObject });
