@@ -9,6 +9,19 @@ var path                    = require('path')
 
   , resolve = path.resolve;
 
+/**
+ *
+ * @param {object} config
+ * nameSuffix       {string} - suffix of preview file name i.e '-my-cert.pdf',
+ * businessProcess  {object} - relative to bp i.e. 'certificates/map/myCert/dataForm/lastEditStamp',
+ * previewFile      {object} - certificate's previewFile
+ * previewFilePath  {string} - path to certificates preview file relative to bp
+ *                             i.e. 'certificates/map/my-cert/previewFile',
+ *                             you can specify this instead of previewFile
+ * uploadsPath               - absolute path to project's uploads folder
+ * templatePath              - absolute path to html template of the preview
+ */
+
 module.exports = function (config) {
 	var filePath, fullFilePath, nameSuffix, businessProcess, previewFile
 	  , templatePath, uploadsPath;
