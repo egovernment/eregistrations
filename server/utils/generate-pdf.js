@@ -27,7 +27,7 @@ module.exports = function (config) {
 	var filePath, fullFilePath, name, fileObj
 	  , templatePath, dirpath, inserts;
 
-	config       = Object(config);
+	config       = ensureObject(config);
 	name         = ensureString(config.name);
 	dirpath      = resolve(ensureString(config.dirpath));
 	templatePath = resolve(ensureString(config.templatePath));
