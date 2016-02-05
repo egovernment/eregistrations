@@ -1,31 +1,51 @@
 'use strict';
 
-var generateCertficatePrev = require('./utils/generate-certificate-pdf')
-  , normalizeOptions       = require('es5-ext/object/normalize-options')
-  , deferred               = require('deferred')
-  , setupTriggers          = require('./_setup-triggers');
+var generateDocumentPrev = require('./utils/generate-document-pdf')
+  , normalizeOptions     = require('es5-ext/object/normalize-options')
+  , deferred             = require('deferred')
+  , setupTriggers        = require('./_setup-triggers')
+  , ensureCallable       = require('es5-ext/object/valid-callable')
+  , ensureString         = require('es5-ext/object/validate-stringifiable-value');
 
 /**
  *
  * @param {object} config
- * entryCollection   {set}    - the collection of businessProcesses filtered by entry condition
- *                              (which objects are to be taken into account)
- * nameSuffix        {string} - suffix of preview file name i.e '-my-cert.pdf',
- * previewFilePath   {string} - path to certificates preview file relative to bp
- *                              i.e. 'certificates/map/my-cert/previewFile',
- * uploadsPath       {string} - absolute path to project's uploads folder
- * templatePath      {string} - absolute path to html template of the preview
+ * entryCollection   {set}      - the collection of businessProcesses filtered by entry condition
+ *                                (which objects are to be taken into account)
+ * nameSuffix        {string}   - suffix of preview file name i.e '-my-file.pdf',
+ * previewFilePath   {string}   - path to document's preview file relative to resolution object
+ *                                i.e. 'certificates/map/my-cert/previewFile',
+ *                                you can specify this instead of previewFile
+ * insertsResolver   {function} - optional, receives resolutionObject and
+ *                                returns template variables hash
+ * uploadsPath       {string}   - absolute path to project's uploads folder
+ * templatePath      {string}   - absolute path to html template of the preview
  */
 
 module.exports = function (config) {
 	var onUpdate, entryCollection;
 	entryCollection = config.entryCollection;
+	ensureString(config.previewFilePath);
+	if (config.insertsResolver) {
+		ensureCallable(config.insertsResolver);
+	}
 
 	onUpdate = function (resolutionObject) {
 		return deferred(
 			(function () {
-				var localConfig = normalizeOptions(config, { resolutionObject: resolutionObject });
-				return generateCertficatePrev(localConfig);
+				var previewFile, inserts, localConfig;
+				previewFile = resolutionObject.resolveSKeyPath(
+					config.previewFilePath
+				).value;
+				localConfig = normalizeOptions(config, { previewFile: previewFile });
+				if (config.insertsResolver) {
+					inserts = config.insertsResolver(resolutionObject);
+				} else {
+					inserts = resolutionObject;
+				}
+				localConfig.inserts = inserts;
+
+				return generateDocumentPrev(localConfig);
 			}())
 		).done();
 	};
