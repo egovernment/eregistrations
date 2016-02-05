@@ -1,9 +1,9 @@
 'use strict';
 
-var generateDocumentPrev = require('./utils/generate-document-pdf')
+var generateDocumentPrev = require('../utils/generate-pdf')
   , normalizeOptions     = require('es5-ext/object/normalize-options')
   , deferred             = require('deferred')
-  , setupTriggers        = require('./_setup-triggers')
+  , setupTriggers        = require('../_setup-triggers')
   , ensureCallable       = require('es5-ext/object/valid-callable')
   , ensureString         = require('es5-ext/object/validate-stringifiable-value');
 
