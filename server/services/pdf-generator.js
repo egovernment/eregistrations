@@ -17,7 +17,8 @@ var generateDocumentPrev = require('../utils/generate-pdf')
  *                                i.e. 'certificates/map/my-cert/previewFile',
  * insertsResolver   {function} - optional, receives resolutionObject and
  *                                returns template variables hash
- * uploadsPath       {string}   - absolute path to project's uploads folder
+ * dirpath           {string}   - absolute path to directory in which
+ *                                generated files will be stored
  * templatePath      {string}   - absolute path to html template of the preview
  */
 
