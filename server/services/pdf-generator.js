@@ -12,8 +12,8 @@ var generateDocumentPrev = require('../utils/generate-pdf')
  * @param {object} config
  * entryCollection   {set}      - the collection of businessProcesses filtered by entry condition
  *                                (which objects are to be taken into account)
- * nameSuffix        {string}   - suffix of preview file name i.e '-my-file.pdf',
- * fileKeyPath       {string}   - path to file, relative to resolution object
+ * name              {string}   - name i.e 'my-file',
+ * fileKeyPath       {string}   - keyPath to file property, relative to resolution object
  *                                i.e. 'certificates/map/my-cert/previewFile',
  * insertsResolver   {function} - optional, receives resolutionObject and
  *                                returns template variables hash
