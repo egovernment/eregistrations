@@ -33,11 +33,11 @@ module.exports = function (config) {
 	onUpdate = function (resolutionObject) {
 		return deferred(
 			(function () {
-				var previewFile, inserts, localConfig;
-				previewFile = resolutionObject.resolveSKeyPath(
+				var fileObj, inserts, localConfig;
+				fileObj = resolutionObject.resolveSKeyPath(
 					config.previewFilePath
 				).value;
-				localConfig = normalizeOptions(config, { previewFile: previewFile });
+				localConfig = normalizeOptions(config, { fileObj: fileObj });
 				if (config.insertsResolver) {
 					inserts = config.insertsResolver(resolutionObject);
 				} else {
