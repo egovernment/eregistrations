@@ -13,9 +13,8 @@ var generateDocumentPrev = require('../utils/generate-pdf')
  * entryCollection   {set}      - the collection of businessProcesses filtered by entry condition
  *                                (which objects are to be taken into account)
  * nameSuffix        {string}   - suffix of preview file name i.e '-my-file.pdf',
- * previewFilePath   {string}   - path to document's preview file relative to resolution object
+ * fileKeyPath       {string}   - path to file, relative to resolution object
  *                                i.e. 'certificates/map/my-cert/previewFile',
- *                                you can specify this instead of previewFile
  * insertsResolver   {function} - optional, receives resolutionObject and
  *                                returns template variables hash
  * uploadsPath       {string}   - absolute path to project's uploads folder
@@ -25,7 +24,7 @@ var generateDocumentPrev = require('../utils/generate-pdf')
 module.exports = function (config) {
 	var onUpdate, entryCollection;
 	entryCollection = config.entryCollection;
-	ensureString(config.previewFilePath);
+	ensureString(config.fileKeyPath);
 	if (config.insertsResolver) {
 		ensureCallable(config.insertsResolver);
 	}
@@ -35,7 +34,7 @@ module.exports = function (config) {
 			(function () {
 				var fileObj, inserts, localConfig;
 				fileObj = resolutionObject.resolveSKeyPath(
-					config.previewFilePath
+					config.fileKeyPath
 				).value;
 				localConfig = normalizeOptions(config, { fileObj: fileObj });
 				if (config.insertsResolver) {
