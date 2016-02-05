@@ -34,7 +34,7 @@ module.exports = function (config) {
 	fileObj      = ensureDbjsObject(config.fileObj);
 	inserts      = ensureObject(config.inserts);
 
-	filePath     = config.disableRandomPostfix ? name : name + generateId() + '.pdf';
+	filePath     = config.disableRandomPostfix ? name : name + '-' + generateId() + '.pdf';
 	fullFilePath = resolve(dirpath, filePath);
 
 	return htmlToPdf(templatePath, fullFilePath, {
