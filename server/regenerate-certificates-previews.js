@@ -2,15 +2,14 @@
 
 var generateCertficatePrev = require('./utils/generate-certificate-pdf')
   , normalizeOptions       = require('es5-ext/object/normalize-options')
-  , deferred               = require('deferred');
+  , deferred               = require('deferred')
+  , setupTriggers          = require('./_setup-triggers');
 
 /**
  *
  * @param {object} config
  * entryCollection   {set}    - the collection of businessProcesses filtered by entry condition
- *                              (which bps are to be taken into account)
- * updateTriggerPath {string} - relative to bp
- *                              i.e. 'certificates/map/myCert/dataForm/lastEditStamp',
+ *                              (which objects are to be taken into account)
  * nameSuffix        {string} - suffix of preview file name i.e '-my-cert.pdf',
  * previewFilePath   {string} - path to certificates preview file relative to bp
  *                              i.e. 'certificates/map/my-cert/previewFile',
@@ -19,47 +18,19 @@ var generateCertficatePrev = require('./utils/generate-certificate-pdf')
  */
 
 module.exports = function (config) {
-	var onUpdate, register, unregister, entryCollection, updateTriggerPath;
-	entryCollection   = config.entryCollection;
-	updateTriggerPath = config.updateTriggerPath;
+	var onUpdate, entryCollection;
+	entryCollection = config.entryCollection;
 
-	onUpdate = function () {
-		var bp = this.object.master, value = this.value;
+	onUpdate = function (bp) {
+		var resolutionObject = bp;
+
 		return deferred(
 			(function () {
-				var localConfig = normalizeOptions(config, { businessProcess: bp });
-				if (bp.resolveSKeyPath(localConfig.previewFilePath).value._path.lastModified < value) {
-					return generateCertficatePrev(localConfig);
-				}
+				var localConfig = normalizeOptions(config, { resolutionObject: resolutionObject });
+				return generateCertficatePrev(localConfig);
 			}())
 		).done();
 	};
 
-	register = function (bp) {
-		var observable = bp.resolveSKeyPath(updateTriggerPath).observable;
-		observable.on('change', onUpdate);
-		onUpdate.call(observable);
-	};
-
-	unregister = function (bp) {
-		bp.resolveSKeyPath(updateTriggerPath).observable.off('change', onUpdate);
-	};
-	entryCollection.forEach(register);
-
-	entryCollection.on('change', function (event) {
-		var bp = event.value;
-
-		if (event.type === 'add') {
-			register(bp);
-		} else if (event.type === 'delete') {
-			unregister(bp);
-		} else if (event.type === 'batch') {
-			if (event.added) {
-				event.added.forEach(register);
-			}
-			if (event.deleted) {
-				event.deleted.forEach(unregister);
-			}
-		}
-	});
+	setupTriggers({ trigger: entryCollection }, onUpdate);
 };
