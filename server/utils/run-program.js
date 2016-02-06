@@ -5,7 +5,7 @@
 var deferred = require('deferred')
   , fork     = require('child_process').fork;
 
-module.exports = function (program/*,args, options*/) {
+module.exports = function (program/*, args, options*/) {
 	var def = deferred();
 	var child = fork.apply(null, arguments);
 	child.on('exit', function () { def.resolve(); });
