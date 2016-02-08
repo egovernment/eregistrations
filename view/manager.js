@@ -1,4 +1,4 @@
-// User: Account documents and data view
+// User Manager: Base view
 
 'use strict';
 
