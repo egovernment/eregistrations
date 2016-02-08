@@ -46,7 +46,7 @@ module.exports = function (mainConfig) {
 		if (config.insertsResolver) {
 			inserts = config.insertsResolver(resolutionObject);
 		} else {
-			inserts = resolutionObject;
+			inserts = { context: resolutionObject };
 		}
 		localConfig.inserts = inserts;
 
