@@ -10,7 +10,7 @@ module.exports = db.Object.extend('DocumentSubmission', {
 	files: { type: File, multiple: true, unique: true, reverse: 'submission' },
 	approved: { type: db.Boolean, required: true, trueLabel: "Validate document",
 		falseLabel: "Reject document" },
-	isFrontDeskApproved: { type: db.Boolean, required: true },
+	matchesOriginal: { type: db.Boolean, required: true },
 	rejectReasonType: { type: RejectReason, required: true,
 		label: "Reject document" },
 	rejectReasonMemo: { type: db.String, required: true, label: "Reason" },
@@ -32,5 +32,5 @@ module.exports = db.Object.extend('DocumentSubmission', {
 	} },
 	uniqueKey: { value: function () { return this.key; } }
 }, {
-	isFrontDeskApplicable: { type: db.Boolean, required: true, value: false }
+	validateWithOriginal: { type: db.Boolean, required: true, value: false }
 });
