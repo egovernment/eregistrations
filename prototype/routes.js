@@ -2,6 +2,8 @@
 
 'use strict';
 
+var db           = require('mano').db;
+
 // Assure prototype specific print base customisations
 require('./view/print-base');
 require('./view/user');
@@ -52,6 +54,20 @@ module.exports = {
 	'my-account/documents': require('./view/user-business-process-documents-list'),
 	'my-account/requests': require('../view/user-requests'),
 	'my-account/summary': require('../view/user-business-process-summary'),
+
+	// Manager
+	manager: {
+		decorateContext: function () {
+			this.user = db.notary;
+		},
+		view: require('../view/manager-home')
+	},
+	'manager/requests': {
+		decorateContext: function () {
+			this.user = db.notary;
+		},
+		view: require('../view/manager-requests')
+	},
 
 	// Part-B routes - user submitted
 	'user-submitted': require('./view/user-submitted'),
