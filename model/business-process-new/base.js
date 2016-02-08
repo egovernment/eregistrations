@@ -29,6 +29,10 @@ module.exports = memoize(function (db/*, options*/) {
 		// "Merchant registration", "Company registration" etc.
 		label: { type: StringLine },
 
+		// General abbreviation of business process type
+		// e.g. IT (Individual trader), C (Company), COI (Certificate of incentives)
+		abbr: { type: StringLine },
+
 		// Name of businessProcess
 		// Usually computed from other properties
 		businessName: { type: StringLine },
