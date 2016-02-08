@@ -56,6 +56,16 @@ module.exports = memoize(function (db/* options */) {
 				}
 			});
 			return result;
+		} },
+		// Subset of uploaded certificates that can be handed out
+		handoverApplicable: { type: Document, multiple: true, value: function (_observe) {
+			var result = [];
+			this.uploaded.forEach(function (certificate) {
+				if (_observe(certificate._isToBeHandedOver)) {
+					result.push(certificate);
+				}
+			});
+			return result;
 		} }
 	});
 
