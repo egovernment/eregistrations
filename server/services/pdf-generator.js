@@ -2,7 +2,6 @@
 
 var generateDocumentPrev = require('../utils/generate-pdf')
   , normalizeOptions     = require('es5-ext/object/normalize-options')
-  , deferred             = require('deferred')
   , setupTriggers        = require('../_setup-triggers')
   , ensureCallable       = require('es5-ext/object/valid-callable')
   , ensureString         = require('es5-ext/object/validate-stringifiable-value')
@@ -38,23 +37,20 @@ module.exports = function (mainConfig) {
 	ensureString(config.dirpath);
 
 	onUpdate = function (resolutionObject) {
-		return deferred(
-			(function () {
-				var fileObj, inserts, localConfig;
-				fileObj = resolutionObject.resolveSKeyPath(
-					config.fileKeyPath
-				).value;
-				localConfig = normalizeOptions(config, { fileObj: fileObj });
-				if (config.insertsResolver) {
-					inserts = config.insertsResolver(resolutionObject);
-				} else {
-					inserts = resolutionObject;
-				}
-				localConfig.inserts = inserts;
+		var fileObj, inserts, localConfig;
 
-				return generateDocumentPrev(localConfig);
-			}())
-		).done();
+		fileObj = resolutionObject.resolveSKeyPath(
+			config.fileKeyPath
+		).value;
+		localConfig = normalizeOptions(config, { fileObj: fileObj });
+		if (config.insertsResolver) {
+			inserts = config.insertsResolver(resolutionObject);
+		} else {
+			inserts = resolutionObject;
+		}
+		localConfig.inserts = inserts;
+
+		generateDocumentPrev(localConfig).done();
 	};
 
 	setupTriggers({ trigger: entryCollection }, onUpdate);
