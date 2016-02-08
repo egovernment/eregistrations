@@ -29,9 +29,7 @@ exports['manager-account-content'] = function () {
 					th()
 				)),
 				tbody(
-					clients.toArray(function (client1, client2) {
-						return client1.fullName.localeCompare(client2.fullName);
-					}),
+					clients,
 					function (client) {
 						return tr(
 							td(client._fullName),

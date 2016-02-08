@@ -26,9 +26,7 @@ exports['manager-account-content'] = function () {
 					th()
 				)),
 				tbody(
-					requests.toArray(function (req1, req2) {
-						return req1.lastModified - req2.lastModified;
-					}),
+					requests,
 					function (request) {
 						return tr(
 							td(request._label),
