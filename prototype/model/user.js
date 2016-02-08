@@ -25,6 +25,7 @@ var Map          = require('es6-map')
   , StreetTypeChoice
   , EnumTripleOption = require('./enum-triple-option')
   , index = 0;
+
 db.Base.define('chooseLabel', d("Choose:"));
 require('./address');
 require('./business-process');
@@ -214,7 +215,7 @@ db.BusinessProcessNew.instances.forEach(function (businessProcess) {
 		businessProcess.manager = db.notary;
 	} else {
 		db.myself.initialBusinessProcesses.add(businessProcess);
-		if (index == 0) businessProcess.manager = db.notary;
+		if (index === 0) businessProcess.manager = db.notary;
 	}
 	index++;
 });
