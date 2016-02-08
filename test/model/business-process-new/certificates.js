@@ -9,7 +9,7 @@ var aFrom                 = require('es5-ext/array/from')
 module.exports = function (t, a) {
 	var db = new Database()
 	  , Document = defineDocument(db)
-	  , TestDocument  = Document.extend('Test', { isToBeHandedOver: { value: true } },
+	  , TestDocument  = Document.extend('Test', { isToBeHanded: { value: true } },
 			{ label: { value: "Test document" } })
 	  , TestDocument2 = Document.extend('Test2', { isElectronic: { value: true } },
 			{ label: { value: "Test document 2" } })
@@ -38,6 +38,6 @@ module.exports = function (t, a) {
 		businessProcess.certificates.map.test2]);
 	a.deep(aFrom(businessProcess.certificates.physical), [businessProcess.certificates.map.test]);
 	a.deep(aFrom(businessProcess.certificates.electronic), [businessProcess.certificates.map.test2]);
-	a.deep(aFrom(businessProcess.certificates.handoverApplicable),
+	a.deep(aFrom(businessProcess.certificates.toBeHanded),
 		[businessProcess.certificates.map.test]);
 };

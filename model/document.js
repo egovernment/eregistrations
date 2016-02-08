@@ -49,9 +49,9 @@ module.exports = memoize(function (db) {
 			return this.owner === this.master.certificates.map;
 		} },
 		// True if this document is a certificate that is supposed to be handed over at front desk
-		isToBeHandedOver: { type: db.Boolean, value: false },
+		isToBeHanded: { type: db.Boolean, value: false },
 		// Whether certificate was handed over (at front desk)
-		handedOver: { type: db.Boolean },
+		wasHanded: { type: db.Boolean },
 		// Returns processing ProcessingStep if it exists on a certificate
 		processingStep: {
 			// Type should be ProcessingStep,

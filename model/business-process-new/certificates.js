@@ -58,10 +58,10 @@ module.exports = memoize(function (db/* options */) {
 			return result;
 		} },
 		// Subset of uploaded certificates that can be handed out
-		handoverApplicable: { type: Document, multiple: true, value: function (_observe) {
+		toBeHanded: { type: Document, multiple: true, value: function (_observe) {
 			var result = [];
 			this.uploaded.forEach(function (certificate) {
-				if (_observe(certificate._isToBeHandedOver)) {
+				if (_observe(certificate._isToBeHanded)) {
 					result.push(certificate);
 				}
 			});
