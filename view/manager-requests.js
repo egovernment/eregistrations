@@ -44,5 +44,5 @@ exports['manager-account-content'] = function () {
 				)
 			));
 	}.bind(this),
-		md(_('You have no requests yet.'))));
+		p(_('You have no requests yet.'))));
 };
