@@ -58,6 +58,9 @@ FrontDeskProcessingStep.prototype.possibleInstitutions.add(db.institutionCommerc
 require('../../model/lib/nested-map');
 BusinessProcessNew.newNamed('emptyBusinessProcess');
 
+// if this is service name indeed, all requests must have one
+db.emptyBusinessProcess.label = "Service 2";
+
 module.exports = BusinessProcessNew;
 
 Representative = Person.extend('Representative', {
@@ -297,7 +300,7 @@ processes.forEach(function (businessProcess) {
 	businessProcess.employeesCount = 3;
 	businessProcess.isAddressSameAsPersonal = true;
 	// new
-	businessProcess.label = 'Revision';
+	businessProcess.label = 'Service 1';
 	businessProcess.submissionForms.isAffidavitSigned = true;
 	// status logs
 	businessProcess.statusLog.map.get('received').setProperties({
