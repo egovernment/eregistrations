@@ -2,43 +2,20 @@
 
 'use strict';
 
-var _            = require('mano').i18n.bind('View: Client')
-  , location     = require('mano/lib/client/location')
-  , once          = require('timers-ext/once')
-  , dispatch      = require('dom-ext/html-element/#/dispatch-event-2');
+var _            = require('mano').i18n.bind('View: Client');
 
 exports._parent = require('./manager');
 
 exports['manager-account-clients'] = { class: { active: true } };
 
 exports['manager-account-content'] = function () {
-	var searchForm, searchInput
-	  , clients = this.user.managedUsers;
+	var clients = this.user.managedUsers;
 
-	section({ class: 'section-primary users-table-filter-bar' },
-		searchForm = form({ action: '/', autoSubmit: true },
-			div(
-				label({ for: 'search-input' }, _("Search")),
-				span({ class: 'input-append' },
-					searchInput = input({ id: 'search-input', name: 'search', type: 'search',
-						value: location.query.get('search') }),
-					span({ class: 'add-on' }, span({ class: 'fa fa-search' })))
-			),
-			div(
-				input({ type: 'submit', value: _("Search") })
-			)),
-			div(
-			a({ href: url('new-client'), class: 'users-table-filter-bar-add', target: '_blank' },
+	section({ class: 'section-primary' },
+		a({ href: url('new-client'), class: 'users-table-filter-bar-add', target: '_blank' },
 				_("Add client")
-				),
-			a({ href: url('print-clients'), class: 'users-table-filter-bar-print', target: '_blank' },
-				span({ class: 'fa fa-print' },
-					_("Print list of clients")), _("Print the list")
 				)
-		)
 		);
-
-	searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
 
 	insert(_if(clients._size, function () {
 		return section({ class: 'submitted-main table-responsive-container' },
