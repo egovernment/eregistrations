@@ -297,7 +297,8 @@ processes.forEach(function (businessProcess) {
 	businessProcess.employeesCount = 3;
 	businessProcess.isAddressSameAsPersonal = true;
 	// new
-	businessProcess.label = 'Revision';
+	businessProcess.label = 'Service 1';
+	businessProcess.abbr = 'REG';
 	businessProcess.submissionForms.isAffidavitSigned = true;
 	// status logs
 	businessProcess.statusLog.map.get('received').setProperties({
