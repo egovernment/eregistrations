@@ -28,8 +28,9 @@ exports._customPreviewInfo = function (context/*, options*/) {
 					action: url('revision', businessProcess.__id__, 'return'),
 					buttonClass: 'button-main',
 					class: 'hint-optional hint-optional-bottom',
-					'data-hint': _("You can reject the registration when documents and/or " +
-						"data that is sent can be determined as not real."),
+					'data-hint': _("When returning the application for corrections, the user will " +
+						"receive a notification with information on the changes that must be done " +
+						"in his form or in the documents that your request."),
 					value: options.sendBackLabel || _("Return for corrections")
 				})))),
 				// show reject button at all times when revision is pending
@@ -48,9 +49,8 @@ exports._customPreviewInfo = function (context/*, options*/) {
 			href: '#reject-reason',
 			class: 'button-main button-main-error hint-optional' +
 				' hint-optional-right hint-optional-multiline',
-			'data-hint': _("When returning the application for corrections, the user will receive" +
-				" a notification with information on the changes that must be done in his form or" +
-				" in the documents that your request.")
+			'data-hint': _("You can reject the registration when documents and/or data that is " +
+				"sent can be determined as not real.")
 		}, _("Reject application"))]
 		)));
 };

@@ -205,7 +205,9 @@ module.exports = memoize(function (db) {
 		frontDeskApplicable: { type: RequirementUpload, multiple: true, value: function (_observe) {
 			var result = [];
 			this.applicable.forEach(function (requirementUpload) {
-				if (requirementUpload.validateWithOriginal) result.push(requirementUpload);
+				if (_observe(requirementUpload._isFrontDeskApplicable)) {
+					result.push(requirementUpload);
+				}
 			});
 			return result;
 		} },
@@ -213,7 +215,7 @@ module.exports = memoize(function (db) {
 		frontDeskApproved: { type: RequirementUpload, multiple: true, value: function (_observe) {
 			var result = [];
 			this.frontDeskApplicable.forEach(function (requirementUpload) {
-				if (_observe(requirementUpload._matchesOriginal)) result.push(requirementUpload);
+				if (_observe(requirementUpload._isFrontDeskApproved)) result.push(requirementUpload);
 			});
 			return result;
 		} }

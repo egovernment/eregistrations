@@ -21,6 +21,9 @@ var appTypes = {
 	dispatcher: { extraFiles: ['view/dispatcher'],
 		'client/model.js': 'client/model.js/official.tpl'
 		},
+	supervisor: {
+		'client/model.js': 'client/model.js/official.tpl'
+	},
 	user: { extraFiles: ['view/user.js'] },
 	public: { extraFiles: ['apps/public'] },
 	official: true,

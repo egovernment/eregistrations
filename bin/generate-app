@@ -31,8 +31,10 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		msgItems.push("If appName resolution for created app is not straightfoward, " +
 			" be sure to expose it model/user/app-resolvers.js");
 		msgItems.push("Configure application url tree in apps/" + appName + "/routes.js");
-		msgItems.push("Provide app configuration for data access rules in apps/access.js");
-		msgItems.push("Setup dbjs dom bindings in apps/" + appName + "/client/dbjs-dom.js");
+		var accessMsg = "Provide app configuration for data access rules in apps/access.js";
+		msgItems.push(accessMsg);
+		var domBindings = "Setup dbjs dom bindings in apps/" + appName + "/client/dbjs-dom.js";
+		msgItems.push(domBindings);
 		msgItems.push("Configure model needed for application client in apps/"
 			+ appName + "/client/model.js");
 		msgItems.push("Ensure POST (form submissions) controllers " +
@@ -46,6 +48,9 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			" apps/business-process-submitted/client/model.js";
 
 		appsRoutersReminder = "Ensure configuration entry in server/apps/routers.js";
+		var addRole = "Add new role in model/user/roles.js";
+		var modelViews = "Ensure that views model is updated with " +
+			"added status maps in model/views.js";
 
 		if (appName === 'user') {
 			msgItems.push(clientModelReminder);
@@ -68,12 +73,11 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			if (startsWith.call(appName, 'official-')) {
 				msgItems.push("Replace all occurences of BusinessProcessCHANGEME with proper " +
 					"class names in: apps/" + appName + "/client/program.js");
-				msgItems.push("Ensure that views model is updated with " +
-					"added status maps in model/views.js");
+				msgItems.push(modelViews);
 
 				msgItems.push("Ensure entry in server/db/indexes.js");
 			}
-			msgItems.push("Add new role in model/user/roles.js");
+			msgItems.push(addRole);
 			msgItems.push("Ensure entry in model/user/recently-visited/business-processes");
 		}
 
@@ -95,6 +99,12 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		if (startsWith.call(appName, 'official-') || appName === 'users-admin') {
 			msgItems.push("Ensure that views population for added " +
 				"status maps is configured in server/db/views.js");
+		}
+
+		if (appName === 'supervisor') {
+			msgItems = [accessMsg, clientModelReminder, domBindings, addRole, modelViews,
+					"Ensure that views populations for supervisor 'all' is configured in server/db/views.js",
+				appsRoutersReminder];
 		}
 
 		console.log(msg + msgItems.join('\n- '));

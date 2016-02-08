@@ -9,7 +9,7 @@ var includes = require('es5-ext/string/#/contains')
 
 module.exports = memoize(function (query) {
 	return function (object) {
-		var searchString = object.searchString;
+		var searchString = object.master.searchString;
 		if (!searchString) return false;
 		return includes.call(searchString, query);
 	};

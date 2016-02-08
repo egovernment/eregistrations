@@ -1,9 +1,9 @@
 'use strict';
 
 var d                   = require('d')
-  , db = require('mano').db
-  , ns = require('mano').domjs.ns
-  , headersMap = require('../utils/headers-map')
+  , db                  = require('mano').db
+  , headersMap          = require('../utils/headers-map')
+  , getPropertyLabel    = require('../utils/get-property-label')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path');
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
@@ -15,22 +15,21 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 		cssClass   = options.cssClass || 'entity-data-section';
 		resolved = resolvePropertyPath(this.propertyMaster, this.propertyName).value;
 		if (resolved instanceof db.NestedMap) resolved = resolved.ordered;
-		return ns.section({ class: cssClass },
+		return section({ class: cssClass },
 			(function () {
 				if (self.label) {
-					return [headersMap[headerRank++](self._label), ns.hr()];
+					return [headersMap[headerRank++](self._label), hr()];
 				}
 				headerRank++;
 			}()),
-			ns._if(self._isUnresolved,
+			_if(self._isUnresolved,
 				function () {
-					return ns.table(ns.tbody(ns.tr(ns.th(resolvePropertyPath(self.master,
-							self.resolventProperty).descriptor.label),
-						ns.td(resolvePropertyPath(self.master,
-							self.resolventProperty).observable))));
+					var resolvent = resolvePropertyPath(self.master, self.resolventProperty);
+
+					return table(tbody(tr(th(getPropertyLabel(resolvent)), td(resolvent.observable))));
 				}, function () {
-					return ns._if(resolved._size,
-						ns.ul({ class: 'entity-data-section-entities' },
+					return _if(resolved._size,
+						ul({ class: 'entity-data-section-entities' },
 							resolved,
 							function (entityObject) {
 								var sectionsContainer;
@@ -40,9 +39,9 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 								} else {
 									sectionsContainer = resolvePropertyPath(entityObject, self.sectionProperty).value;
 								}
-								return ns.li(headersMap[headerRank](
+								return li(headersMap[headerRank](
 									resolvePropertyPath(entityObject, self.entityTitleProperty).observable
-								), ns.list(sectionsContainer,
+								), list(sectionsContainer,
 									function (section) {
 										return _if(section._status, section.toDOM(document, {
 											headerRank: headerRank + 1,
@@ -50,6 +49,6 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 										}));
 									}));
 							}),
-						ns.p({ class: 'entity-data-section-empty' }, self.onEmptyMessage));
+						p({ class: 'entity-data-section-empty' }, self.onEmptyMessage));
 				}));
 	}));

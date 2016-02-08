@@ -60,6 +60,7 @@ BusinessProcessNew.newNamed('emptyBusinessProcess');
 
 // if this is service name indeed, all requests must have one
 db.emptyBusinessProcess.label = "Service 2";
+db.emptyBusinessProcess.label.abbr = 'COI';
 
 module.exports = BusinessProcessNew;
 
@@ -301,6 +302,8 @@ processes.forEach(function (businessProcess) {
 	businessProcess.isAddressSameAsPersonal = true;
 	// new
 	businessProcess.label = 'Service 1';
+	businessProcess.abbr = 'REG';
+
 	businessProcess.submissionForms.isAffidavitSigned = true;
 	// status logs
 	businessProcess.statusLog.map.get('received').setProperties({

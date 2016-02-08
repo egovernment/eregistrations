@@ -1,6 +1,8 @@
 'use strict';
 
-var forEach          = require('es5-ext/object/for-each')
+var aFrom            = require('es5-ext/array/from')
+  , ensureIterable   = require('es5-ext/iterable/validate-object')
+  , forEach          = require('es5-ext/object/for-each')
   , ensureObject     = require('es5-ext/object/valid-object')
   , ensureString     = require('es5-ext/object/validate-stringifiable-value')
   , deferred         = require('deferred')
@@ -21,22 +23,21 @@ var forEach          = require('es5-ext/object/for-each')
 
 var publicPaths = [
 	'public',
-	'node_modules/eregistrations/public',
-	'apps/public/public'
+	'node_modules/eregistrations/public'
 ];
 
-module.exports = function (root, conf) {
+module.exports = function (root, appsList, conf) {
 	var old, nu = create(null), result = [], cachePath = resolve(ensureString(root), '.cloudfront');
+	var paths = publicPaths.concat(aFrom(ensureIterable(appsList), function (appName) {
+		return resolve(root, appName, 'public');
+	}));
 	ensureObject(conf);
-	debug("cloudfront refresh");
+	debug("cloudfront-invalidate");
 	return deferred(
 		readFile(cachePath)(parse).catch({}).aside(function (data) { old = data; }),
-		readdir(resolve(root, 'apps'), { type: { directory: true } })(function (names) {
-			var paths = publicPaths.concat(names.map(function (path) {
-				return resolve(root, 'apps', path, 'public');
-			}));
-			return deferred.reduce(paths, function (ignore, dirPath) {
-				return readdir(resolve(root, dirPath), publicScanOpts).map(function (path) {
+		deferred.reduce(paths, function (ignore, dirPath) {
+			return readdir(resolve(root, dirPath), publicScanOpts)(function (paths) {
+				return deferred.map(paths, function (path) {
 					var hash, def, fd;
 					if (path === '.gitignore') return;
 					if (nu[path]) return;
@@ -54,8 +55,11 @@ module.exports = function (root, conf) {
 					fd.pipe(hash);
 					return def.promise;
 				});
-			}, null);
-		})
+			}, function (err) {
+				if (err.code === 'ENOENT') return;
+				throw err;
+			});
+		}, null)
 	)(function () {
 		forEach(nu, function (hash, path) {
 			if (old[path] !== hash) result.push('/' + path);
