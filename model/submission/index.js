@@ -31,7 +31,7 @@ module.exports = memoize(function (db) {
 		approved: { type: db.Boolean, required: true, trueLabel: _("Valid"), falseLabel: _("Invalid") },
 		// If upload concerns payment receipt, this links cost it corresponds
 		correspondingCost: { type: Cost },
-		matchesOriginal: { type: db.Boolean, required: true },
+		isFrontDeskApproved: { type: db.Boolean, required: true },
 		rejectReasonType: { type: db.RejectReason, required: true, label: _("Reject document") },
 		rejectReasonMemo: { type: db.String, required: true, label: _("Explanation") },
 		rejectReason: { type: db.String, label: _("Reject document"), required: true,
@@ -52,6 +52,6 @@ module.exports = memoize(function (db) {
 			if (this.rejectReason == null) return null;
 			return false;
 		} },
-		validateWithOriginal: { type: db.Boolean, required: true, value: false }
+		isFrontDeskApplicable: { type: db.Boolean, required: true, value: false }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

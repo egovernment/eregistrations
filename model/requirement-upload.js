@@ -98,10 +98,10 @@ module.exports = memoize(function (db) {
 		} },
 
 		// Whether uploaded documents should be verified at front-desk at certificates reception
-		validateWithOriginal: { type: db.Boolean, value: true },
+		isFrontDeskApplicable: { type: db.Boolean, value: true },
 
-		// Whether uploaded files matches original document (decided at last front-desk processing step)
-		matchesOriginal: { type: db.Boolean, required: true }
+		// Whether uploaded files were validated by front-desk processing step
+		isFrontDeskApproved: { type: db.Boolean, required: true }
 	});
 
 	return RequirementUpload;
