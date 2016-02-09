@@ -1,15 +1,23 @@
 'use strict';
 
-var emptyPromise = require('deferred')(null)
-  , genId        = require('time-uuid')
-  , login        = require('mano-auth/server/authentication').login
-  , mano         = require('mano')
+var emptyPromise     = require('deferred')(null)
+  , genId            = require('time-uuid')
+  , login            = require('mano-auth/server/authentication').login
+  , registerSubmit   = require('mano-auth/controller/server-master/register-and-login').submit
+  , mano             = require('mano')
+  , sendNotification = require('../../server/email-notifications/create-account')
 
   , dbDriver = mano.dbDriver
   , maxage = 1000 * 60 * 60 * 24 * 7;
 
 exports.login = require('mano-auth/controller/server-master/login');
-exports.register = require('mano-auth/controller/server-master/register-and-login');
+exports.register = {
+	submit: function (data) {
+		return registerSubmit.apply(this, arguments)(function (result) {
+			dbDriver.onDrain(function () { sendNotification(data).done(); });
+		});
+	}
+};
 exports['reset-password'] = require('mano-auth/controller/server-master/reset-password');
 exports['request-reset-password'] =
 	require('mano-auth/controller/server-master/request-reset-password');
