@@ -8,10 +8,11 @@ var emptyPromise = require('deferred')(null)
   , dbDriver = mano.dbDriver
   , maxage = 1000 * 60 * 60 * 24 * 7;
 
-exports.login = require('mano-auth/controller/server/login');
-exports.register = require('mano-auth/controller/server/register-and-login');
-exports['reset-password'] = require('mano-auth/controller/server/reset-password');
-exports['request-reset-password'] = require('mano-auth/controller/server/request-reset-password');
+exports.login = require('mano-auth/controller/server-master/login');
+exports.register = require('mano-auth/controller/server-master/register-and-login');
+exports['reset-password'] = require('mano-auth/controller/server-master/reset-password');
+exports['request-reset-password'] =
+	require('mano-auth/controller/server-master/request-reset-password');
 
 exports['init-demo'] = {
 	validate: Function.prototype,
