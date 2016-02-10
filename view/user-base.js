@@ -63,11 +63,11 @@ exports.main = function () {
 		div({ class: 'breadcrumb' },
 			div({ class: 'breadcrumb-content' },
 				a({ href: '/', class: 'breadcrumb-item' }, _('Notary dashboard')),
-				span({ class: 'breacrumb-separator' }, '>'),
+				span({ class: 'breadcrumb-separator' }, '>'),
 				a({ href: url('clients', resolve(this, 'managedUser', '__id__')),
 					class: 'breadcrumb-item' }, resolve(this, 'managedUser', '_fullName')),
 				_if(this.businessProcess,
-					[span({ class: 'breacrumb-separator' }, '>'),
+					[span({ class: 'breadcrumb-separator' }, '>'),
 						a({ href: url('business-process', resolve(this, 'businessProcess', '__id__')),
 							class: 'breadcrumb-item' }, resolve(this, 'businessProcess', '_businessName'))])))));
 
