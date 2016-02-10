@@ -59,7 +59,7 @@
 	background-color: var(--normal-dark-background);
 }
 
-.users-table-filter-bar-print .fa, .users-table-filter-bar-add .fa {
+.users-table-filter-bar-print .fa {
 	margin-right: 5px;
 	position: relative;
 	top: 2px;
