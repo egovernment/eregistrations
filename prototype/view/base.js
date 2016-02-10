@@ -201,6 +201,10 @@ exports._bodyAppend = function () {
 						span("Notary Requests"), span({ class: 'label-reg' }, "Notary"))
 			),
 			li(
+				a({ href: '/manager/requests/firstrequest' },
+						span("Notary Requests - Guide view"), span({ class: 'label-reg' }, "Notary"))
+			),
+			li(
 				a({ href: '/i18n/' },
 						span("Translations"), span({ class: 'label-reg' }, "Meta"))
 			)
