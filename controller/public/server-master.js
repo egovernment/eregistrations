@@ -41,8 +41,7 @@ exports['init-demo'] = {
 					{ id: userId + '/isDemo', data: { value: '11' } },
 					{ id: userId + '/roles*user', data: { value: '11' } }
 				];
-				storage.storeMany(records).done();
-				promise = mano.registerUserAccess(userId);
+				promise = storage.storeMany(records);
 			} else {
 				promise = emptyPromise;
 			}
