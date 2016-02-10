@@ -68,7 +68,14 @@ module.exports = {
 		},
 		view: require('../view/manager-requests')
 	},
-
+	'manager/requests/firstrequest': {
+		decorateContext: function () {
+			this.user = db.notary;
+			this.managedUser = db.userVianney;
+			this.businessProcess = db.firstBusinessProcess;
+		},
+		view: require('./view/guide')
+	},
 	// Part-B routes - user submitted
 	'user-submitted': require('./view/user-submitted'),
 	'user-submitted/(document)': {
