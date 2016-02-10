@@ -44,7 +44,7 @@
 	margin-right: 5px;
 }
 
-.users-table-filter-bar-print, .users-table-filter-bar-add {
+.users-table-filter-bar-print {
 	border-radius: 4px;
 	color: var(--white-text);
 	background-color: var(--normal-background);
@@ -53,17 +53,10 @@
 	text-decoration: none;
 }
 .users-table-filter-bar-print:hover,
-.users-table-filter-bar-add:hover,
 .users-table-filter-bar-print:focus,
-.users-table-filter-bar-add:focus
-.users-table-filter-bar-print:active,
-.users-table-filter-bar-add:active {
+.users-table-filter-bar-print:active {
 	color: var(--white-text);
 	background-color: var(--normal-dark-background);
-}
-
-.users-table-filter-bar-add {
-	margin-right: 10px;
 }
 
 .users-table-filter-bar-print .fa, .users-table-filter-bar-add .fa {
