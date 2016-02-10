@@ -58,9 +58,8 @@ FrontDeskProcessingStep.prototype.possibleInstitutions.add(db.institutionCommerc
 require('../../model/lib/nested-map');
 BusinessProcessNew.newNamed('emptyBusinessProcess');
 
-// if this is service name indeed, all requests must have one
-db.emptyBusinessProcess.label = "Service 2";
-db.emptyBusinessProcess.abbr = 'COI';
+BusinessProcessNew.prototype.label = "Service 2";
+BusinessProcessNew.prototype.abbr = 'COI';
 
 module.exports = BusinessProcessNew;
 
