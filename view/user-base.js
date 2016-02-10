@@ -3,8 +3,24 @@
 var _              = require('mano').i18n.bind('User')
   , loginDialog    = require('./_user-login-dialog')
   , registerDialog = require('./_user-register-dialog')
-  , modalContainer = require('./_modal-container');
+  , modalContainer = require('./_modal-container')
+  , displayManagerBar;
 
+displayManagerBar = function () {
+	return div({ class: 'manager-bar' },
+			div({ class: 'manager-bar-content' },
+				div({ class: 'client-info' },
+					span(_('Client:')),
+					span({ class: 'manager-bar-client-name' }, this.managedUser._fullName)
+					),
+				div({ class: 'client-actions' },
+					_if(not(this.managedUser.roles._has('user')),
+					postButton({ buttonClass: 'actions-create',
+						action: url('clients', this.managedUser.__id__, 'create'),
+						value: span(_('Create account for this client')) })
+					))
+				));
+};
 exports._parent = require('./base');
 
 exports.menu = function () {
@@ -59,17 +75,7 @@ exports.main = function () {
 				h3(_("Demo version")),
 				p(_("Introduction to demo version"))))));
 
-	insert(_if(and(this.user.roles._has('manager'), this.managedUser),
-		div({ class: 'breadcrumb' },
-			div({ class: 'breadcrumb-content' },
-				a({ href: '/', class: 'breadcrumb-item' }, _('Notary dashboard')),
-				span({ class: 'breadcrumb-separator' }, '>'),
-				a({ href: url('clients', resolve(this, 'managedUser', '__id__')),
-					class: 'breadcrumb-item' }, resolve(this, 'managedUser', '_fullName')),
-				_if(this.businessProcess,
-					[span({ class: 'breadcrumb-separator' }, '>'),
-						a({ href: url('business-process', resolve(this, 'businessProcess', '__id__')),
-							class: 'breadcrumb-item' }, resolve(this, 'businessProcess', '_businessName'))])))));
+	insert(_if(and(this.user.roles._has('manager'), this.managedUser), displayManagerBar.bind(this)));
 
 	div({ class: 'user-forms', id: 'sub-main' });
 };
