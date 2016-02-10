@@ -12,7 +12,7 @@ exports['manager-account-content'] = function () {
 	var clients = this.user.managedUsers;
 
 	section({ class: 'section-primary' },
-		a({ href: url('new-client'), class: 'users-table-filter-bar-add', target: '_blank' },
+		a({ href: url('new-client'), class: 'button-main', target: '_blank' },
 				_("Add client")
 				)
 		);
@@ -31,36 +31,33 @@ exports['manager-account-content'] = function () {
 				tbody(
 					clients,
 					function (client) {
-						var bpSet = client.initialBusinessProcesses.and(this.user.managedBusinessProcesses);
+						var bpSet = client.initialBusinessProcesses.and(this.user.managedBusinessProcesses)
+									.filterByKey('businessName');
 						return tr(
 							td(client._fullName),
 
 							td(ul(bpSet,
 								function (bp) {
-									return insert(_if(bp._businessName, [bp._businessName, " (", bp.label, ")"]));
+									return [bp._businessName, " (", bp.label, ")"];
 								})),
 
-							td(mmap(bpSet._size, function (size) {
-								return bpSet.filter(function (bp) {
-									return bp.businessName;
-								}).map(function (bp) {
-									return bp.abbr;
-								}).toArray().join(', ');
-							})),
+							td(bpSet.map(function (bp) { return bp.constructor; })._size),
 
 							td(span(client._email),
 								_if(client.roles._has('user'), span('✅'))),
 
 							td({ class: 'actions' },
 								_if(eq(client._manager, this.user),
-									[a({ href:  url('clients', client.__id__) },
-										span({ class: 'fa fa-edit' })),
+									[
+										a({ href:  url('clients', client.__id__) },
+											span({ class: 'fa fa-edit' })),
 										_if(eq(client.initialBusinessProcesses
-												.filterByKey('isSubmitted', true)._size, 0),
-												postButton({ buttonClass: 'actions-delete',
-													action: url('clients', client.__id__, 'delete'),
-													confirm: _("Are you sure?"), value: span({ class: 'fa fa-trash-o' }) })
-												)]
+											.filterByKey('isSubmitted', true)._size, 0),
+											postButton({ buttonClass: 'actions-delete',
+												action: url('clients', client.__id__, 'delete'),
+												confirm: _("Are you sure?"), value: span({ class: 'fa fa-trash-o' }) })
+											)
+									]
 									)
 								)
 						);
