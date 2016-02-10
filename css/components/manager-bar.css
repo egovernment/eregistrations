@@ -1,0 +1,27 @@
+.manager-bar {
+	background-color: var(--normal-light-background);
+	background-position: center center;
+	background-size: cover;
+	display: flex;
+	width: 100%;
+	line-height: 44px;
+}
+.manager-bar-content {
+	max-width: 1070px;
+	padding: 0 10px;
+	margin: 0 auto;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+/*
+Styles applied while screen size is less than 640px
+*/
+@media only screen and (max-width: var(--mobile-width)) {
+	.header-top-wrapper {
+		flex-wrap: wrap;
+		min-width: var(--min-mobile-width);
+	}
+}
+
