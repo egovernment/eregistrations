@@ -60,7 +60,7 @@ BusinessProcessNew.newNamed('emptyBusinessProcess');
 
 // if this is service name indeed, all requests must have one
 db.emptyBusinessProcess.label = "Service 2";
-db.emptyBusinessProcess.label.abbr = 'COI';
+db.emptyBusinessProcess.abbr = 'COI';
 
 module.exports = BusinessProcessNew;
 
