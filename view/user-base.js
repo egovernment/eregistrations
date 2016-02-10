@@ -45,17 +45,32 @@ exports.menu = function () {
 };
 
 exports.main = function () {
+
 	div({ class: 'submitted-menu' },
 		div({ class: 'submitted-menu-bar content' },
 			nav(ul({ class: 'submitted-menu-items', id: 'submitted-menu' },
 				exports._submittedMenu(this))),
 			_if(this.user._isDemo, div({ class: 'submitted-menu-demo' },
 				a({ class: 'submitted-menu-demo-ribon' }, _("Demo"))))));
+
 	insert(_if(this.user._isDemo,
 		div({ class: 'submitted-menu-demo-msg' },
 			div({ class: 'content' },
 				h3(_("Demo version")),
 				p(_("Introduction to demo version"))))));
+
+	insert(_if(and(this.user.roles._has('manager'), this.managedUser),
+		div({ class: 'breadcrumb' },
+			div({ class: 'breadcrumb-content' },
+				a({ href: '/', class: 'breadcrumb-item' }, _('Notary dashboard')),
+				span({ class: 'breacrumb-separator' }, '>'),
+				a({ href: url('clients', resolve(this, 'managedUser', '__id__')),
+					class: 'breadcrumb-item' }, resolve(this, 'managedUser', '_fullName')),
+				_if(this.businessProcess,
+					[span({ class: 'breacrumb-separator' }, '>'),
+						a({ href: url('business-process', resolve(this, 'businessProcess', '__id__')),
+							class: 'breadcrumb-item' }, resolve(this, 'businessProcess', '_businessName'))])))));
+
 	div({ class: 'user-forms', id: 'sub-main' });
 };
 
