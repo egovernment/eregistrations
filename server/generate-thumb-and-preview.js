@@ -9,7 +9,8 @@ var mano     = require('mano')
 
   , resolve = path.resolve
   , extname = path.extname
-  , uploadsPath = mano.uploadsPath;
+  , uploadsPath = mano.uploadsPath
+  , docMimeTypes = require('../utils/microsoft-doc-mime-types');
 
 module.exports = function (file) {
 	var path        = uploadsPath
@@ -18,6 +19,9 @@ module.exports = function (file) {
 	  , extension   = extname(file.path)
 	  , thumbPath   = file.path.slice(0, -extension.length) + '.thumb' + extension
 	  , thumb, preview, processFullPath, thumbFullPath, previewFullPath;
+
+	//Skip for word doc
+	if (docMimeTypes.indexOf(file.type) !== -1) return deferred(true);
 
 	if (file.type !== 'image/jpeg') {
 		thumbPath += '.jpg';
