@@ -8,6 +8,8 @@ var curry              = require('es5-ext/function/#/curry')
   , resolveArchivePath = require('../utils/resolve-document-archive-path')
   , syncHeight         = require('./utils/sync-height')
   , scrollBottom       = require('./utils/scroll-to-bottom')
+  , isReadOnlyRender   = require('mano/client/utils/is-read-only-render')
+  , docMimeTypes       = require('../utils/microsoft-doc-mime-types')
 
   , _d = _;
 
@@ -18,6 +20,7 @@ module.exports = function (doc, sideContent) {
 	} else {
 		master = doc.owner.owner.owner.owner;
 	}
+
 	return [h2(doc._label.map(function (label) { return _d(label, { user: master }); })),
 		section(
 			{ class: 'section-primary' },
@@ -59,8 +62,20 @@ module.exports = function (doc, sideContent) {
 				elem = ul({ id: 'doc-previews', class: 'submitted-preview-new-image-placeholder' },
 					doc.files.ordered, function (file) {
 						li({ class: _if(eq(file, doc.files.ordered._first), 'active') },
-							img({ zoomOnHover: true, src: or(resolve(file._preview, '_url'),
-								resolve(file._thumb, '_url')) }));
+							_if(file._type.map(function (type) {
+								return docMimeTypes.indexOf(type) !== -1;
+							}), img({ width: '150px', src: '/img/word-doc-icon.png' }),
+								_if(and(not(isReadOnlyRender), eq(file._type, 'application/pdf')),
+									function () {
+										return iframe({
+											width: '100%',
+											height: '100%',
+											src: url('pdfjs-1.3.91-dist/web/viewer.html?file=') + file.path
+										});
+									}, function () {
+										return img({ zoomOnHover: true, src: or(resolve(file._preview, '_url'),
+											resolve(file._thumb, '_url')) });
+									})));
 					}, doc),
 
 				insert(_if(gt(doc.files.ordered._size, 1),

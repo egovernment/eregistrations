@@ -3,7 +3,8 @@
 var memoize        = require('memoizee/plain')
   , validDb        = require('dbjs/valid-dbjs')
   , defineFile     = require('dbjs-ext/object/file')
-  , defineJpegFile = require('dbjs-ext/object/file/image-file/jpeg-file');
+  , defineJpegFile = require('dbjs-ext/object/file/image-file/jpeg-file')
+  , docMimeTypes   = require('../utils/microsoft-doc-mime-types');
 
 module.exports = memoize(function (db) {
 	var File, JpegFile;
@@ -21,7 +22,7 @@ module.exports = memoize(function (db) {
 		generatedPreview: { type: File, nested: true },
 		thumb: { type: JpegFile, nested: true }
 	});
-	File.accept = ['image/jpeg', 'application/pdf', 'image/png'];
+	File.accept = ['image/jpeg', 'application/pdf', 'image/png'].concat(docMimeTypes);
 
 	return File;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
