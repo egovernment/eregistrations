@@ -1,6 +1,6 @@
 'use strict';
 
-var registerSubmit   = require('mano-auth/controller/server-master/register')
+var registerSubmit   = require('mano-auth/controller/server-master/register').submit
   , sendNotification = require('../../server/email-notifications/create-account');
 
 // Add user
