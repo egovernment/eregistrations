@@ -8,11 +8,10 @@
 }
 .breadcrumb-content {
 	max-width: 1070px;
-    padding: 0 10px;
-    margin: 0 auto;
-    width: 100%;
+	padding: 0 10px;
+	margin: 0 auto;
+	width: 100%;
 }
-
 .breadcrumb-item {
 	padding: 0 10px;
 	text-decoration: none
