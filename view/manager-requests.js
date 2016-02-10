@@ -27,16 +27,16 @@ exports['manager-account-content'] = function () {
 				)),
 				tbody(
 					requests,
-					function (request) {
+					function (businessProcess) {
 						return tr(
-							td(request._label),
-							td(request.user._fullName),
-							td(request._businessName),
-							td(_if(request._isSubmitted, function () {
-								return request._isSubmitted._lastModified.map(formatLastModified);
+							td(businessProcess._abbr),
+							td(businessProcess.user._fullName),
+							td(businessProcess._businessName),
+							td(_if(businessProcess._isSubmitted, function () {
+								return businessProcess._isSubmitted._lastModified.map(formatLastModified);
 							})),
-							td(request._status),
-							td({ class: 'actions' }, actionsColumn.data(request))
+							td(businessProcess._status),
+							td({ class: 'actions' }, actionsColumn.data(businessProcess))
 						);
 					}
 				)

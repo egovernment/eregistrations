@@ -31,33 +31,38 @@ exports['manager-account-content'] = function () {
 				tbody(
 					clients,
 					function (client) {
+						var bpSet = client.initialBusinessProcesses.and(this.user.managedBusinessProcesses);
 						return tr(
 							td(client._fullName),
 
-							td(mmap(client._businessProcesses, function (bpSet) {
-								//check if they are managed by current user
-								var currentManager = this.user;
-								return bpSet.filter(function (bp) {
-									return bp.manager && bp.manager.__id__ === currentManager.__id__;
-								}).toArray().map(function (bp) {
-									return bp.businessName;
-								}).filter(function (bpName) {
-									return bpName;
-								}).join(', ');
-							}, this)),
+							td(ul(bpSet,
+								function (bp) {
+									return insert(_if(bp._businessName, [bp._businessName, " (", bp.label, ")"]));
+								})),
 
-							td(mmap(client._businessProcesses, function (bpSet) {
-								return bpSet.map(function (bp) {
-									return bp.label;
+							td(mmap(bpSet._size, function (size) {
+								return bpSet.filter(function (bp) {
+									return bp.businessName;
+								}).map(function (bp) {
+									return bp.abbr;
 								}).toArray().join(', ');
 							})),
 
 							td(span(client._email),
-								_if(client.roles._size, span('✅'))),
+								_if(client.roles._has('user'), span('✅'))),
 
 							td({ class: 'actions' },
-								a({ href:  url('clients', client.__id__) },
-									span({ class: 'fa fa-edit' })))
+								_if(eq(client._manager, this.user),
+									[a({ href:  url('clients', client.__id__) },
+										span({ class: 'fa fa-edit' })),
+										_if(eq(client.initialBusinessProcesses
+												.filterByKey('isSubmitted', true)._size, 0),
+												postButton({ buttonClass: 'actions-delete',
+													action: url('clients', client.__id__, 'delete'),
+													confirm: _("Are you sure?"), value: span({ class: 'fa fa-trash-o' }) })
+												)]
+									)
+								)
 						);
 					},
 					this
