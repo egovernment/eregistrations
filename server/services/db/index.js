@@ -128,6 +128,10 @@ module.exports = function (root, data) {
 
 		driver.on('update', function (event) {
 			var ownerId = event.id.split('/', 1)[0];
+			if ((ownerId === event.id) && (event.data.value === '7User#')) {
+				driver.onDrain.done(function () { mano.registerUserAccess(ownerId).done(); });
+				return;
+			}
 			if (!pendingIds) {
 				pendingIds = new Set();
 				ensureAccess();
