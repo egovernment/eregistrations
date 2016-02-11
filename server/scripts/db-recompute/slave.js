@@ -16,4 +16,5 @@ module.exports = function (data) {
 	mano.dbDriver = slave.driver;
 	setupIndexes();
 	slave.initialize();
+	return slave;
 };
