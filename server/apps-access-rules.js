@@ -180,20 +180,21 @@ module.exports = function (dbDriver, data) {
 
 		fragment = new FragmentGroup();
 
-		// In all cases: User profile data
-		fragment.addFragment(getUserFragment(userId));
-
 		if (!roleName) return fragment; // Temporary inconsistent state (client migration)
 
+		// User profile data
+		fragment.addFragment(getUserFragment(userId));
 		// Sizes of pending files in official roles of user
 		addOfficialStepsPendingSizes(userId, fragment);
 
 		if (roleName === 'user') {
-			// User role:
-			// - Business process data
 			if (custom) {
+				// Business process application
+				// Business process data
 				fragment.addFragment(getBusinessProcessData(custom));
 			} else {
+				// My account
+				// All businesss processes (full data)
 				initialBusinessProcesses = getDbRecordSet(userStorage,
 					userId + '/initialBusinessProcesses');
 				promise = initialBusinessProcesses.promise;
