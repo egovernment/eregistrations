@@ -10,7 +10,7 @@ var mano     = require('mano')
   , resolve = path.resolve
   , extname = path.extname
   , uploadsPath = mano.uploadsPath
-  , docMimeTypes = require('../utils/doc-mime-types');
+  , docMimeTypes = require('../utils/microsoft-word-doc-mime-types');
 
 module.exports = function (file) {
 	var path        = uploadsPath

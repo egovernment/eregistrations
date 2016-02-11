@@ -9,13 +9,14 @@ var curry              = require('es5-ext/function/#/curry')
   , syncHeight         = require('./utils/sync-height')
   , scrollBottom       = require('./utils/scroll-to-bottom')
   , isReadOnlyRender   = require('mano/client/utils/is-read-only-render')
-  , docMimeTypes       = require('../utils/doc-mime-types')
+  , docMimeTypes       = require('../utils/microsoft-word-doc-mime-types')
+  , includes           = require('es5-ext/array/#/contains')
 
   , _d = _;
 
 var getFilePreview = function (file) {
 	var type = file.type;
-	if (docMimeTypes.indexOf(type) !== -1) {
+	if (includes.call(docMimeTypes, type)) {
 		return img({ class: 'word-document', src: '/img/word-doc-icon.png' });
 	}
 	if (!isReadOnlyRender && (type === 'application/pdf')) {

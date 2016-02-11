@@ -4,7 +4,7 @@ var memoize        = require('memoizee/plain')
   , validDb        = require('dbjs/valid-dbjs')
   , defineFile     = require('dbjs-ext/object/file')
   , defineJpegFile = require('dbjs-ext/object/file/image-file/jpeg-file')
-  , docMimeTypes   = require('../utils/doc-mime-types');
+  , docMimeTypes   = require('../utils/microsoft-word-doc-mime-types');
 
 module.exports = memoize(function (db) {
 	var File, JpegFile;
