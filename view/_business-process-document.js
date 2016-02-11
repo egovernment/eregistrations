@@ -16,12 +16,10 @@ var curry              = require('es5-ext/function/#/curry')
 var getFilePreview = function (file) {
 	var type = file.type;
 	if (docMimeTypes.indexOf(type) !== -1) {
-		return img({ width: '150px', src: '/img/word-doc-icon.png' });
+		return img({ class: 'word-document', src: '/img/word-doc-icon.png' });
 	}
-	if (isReadOnlyRender && (type === 'application/pdf')) {
+	if (!isReadOnlyRender && (type === 'application/pdf')) {
 		return iframe({
-			width: '100%',
-			height: '100%',
 			src: url('pdfjs/web/viewer.html?file=') + file.path
 		});
 	}
