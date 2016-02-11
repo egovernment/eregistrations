@@ -3,24 +3,8 @@
 var _              = require('mano').i18n.bind('User')
   , loginDialog    = require('./_user-login-dialog')
   , registerDialog = require('./_user-register-dialog')
-  , modalContainer = require('./_modal-container')
-  , displayManagerBar;
+  , modalContainer = require('./_modal-container');
 
-displayManagerBar = function () {
-	return div({ class: 'manager-bar' },
-			div({ class: 'manager-bar-content' },
-				div({ class: 'client-info' },
-					span(_('Client:')),
-					span({ class: 'manager-bar-client-name' }, this.managedUser._fullName)
-					),
-				div({ class: 'client-actions' },
-					_if(not(this.managedUser.roles._has('user')),
-					postButton({ buttonClass: 'actions-create',
-						action: url('clients', this.managedUser.__id__, 'create'),
-						value: span(_('Create account for this client')) })
-					))
-				));
-};
 exports._parent = require('./base');
 
 exports.menu = function () {
@@ -75,7 +59,19 @@ exports.main = function () {
 				h3(_("Demo version")),
 				p(_("Introduction to demo version"))))));
 
-	insert(_if(and(this.user.roles._has('manager'), this.managedUser), displayManagerBar.bind(this)));
+	insert(_if(this.managedUser, function () {
+		return div({ class: 'manager-bar' },
+			div({ class: 'content' },
+				div(
+					span(_('Client:')),
+					span(this.managedUser._fullName)
+				),
+				div(_if(not(this.managedUser.roles._has('user')),
+						postButton({ buttonClass: 'actions-create',
+							action: url('clients', this.managedUser.__id__, 'create'),
+							value: span(_('Create account for this client')) })))
+				));
+	}.bind(this)));
 
 	div({ class: 'user-forms', id: 'sub-main' });
 };
