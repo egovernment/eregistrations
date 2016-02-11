@@ -9,9 +9,25 @@ var curry              = require('es5-ext/function/#/curry')
   , syncHeight         = require('./utils/sync-height')
   , scrollBottom       = require('./utils/scroll-to-bottom')
   , isReadOnlyRender   = require('mano/client/utils/is-read-only-render')
-  , docMimeTypes       = require('../utils/microsoft-doc-mime-types')
+  , docMimeTypes       = require('../utils/doc-mime-types')
 
   , _d = _;
+
+var getFilePreview = function (file) {
+	var type = file.type;
+	if (docMimeTypes.indexOf(type) !== -1) {
+		return img({ width: '150px', src: '/img/word-doc-icon.png' });
+	}
+	if (isReadOnlyRender && (type === 'application/pdf')) {
+		return iframe({
+			width: '100%',
+			height: '100%',
+			src: url('pdfjs/web/viewer.html?file=') + file.path
+		});
+	}
+	return img({ zoomOnHover: true, src: or(resolve(file._preview, '_url'),
+		resolve(file._thumb, '_url')) });
+};
 
 module.exports = function (doc, sideContent) {
 	var elem, scrollableElem, master;
@@ -62,20 +78,7 @@ module.exports = function (doc, sideContent) {
 				elem = ul({ id: 'doc-previews', class: 'submitted-preview-new-image-placeholder' },
 					doc.files.ordered, function (file) {
 						li({ class: _if(eq(file, doc.files.ordered._first), 'active') },
-							_if(file._type.map(function (type) {
-								return docMimeTypes.indexOf(type) !== -1;
-							}), img({ width: '150px', src: '/img/word-doc-icon.png' }),
-								_if(and(not(isReadOnlyRender), eq(file._type, 'application/pdf')),
-									function () {
-										return iframe({
-											width: '100%',
-											height: '100%',
-											src: url('pdfjs/web/viewer.html?file=') + file.path
-										});
-									}, function () {
-										return img({ zoomOnHover: true, src: or(resolve(file._preview, '_url'),
-											resolve(file._thumb, '_url')) });
-									})));
+							getFilePreview(file));
 					}, doc),
 
 				insert(_if(gt(doc.files.ordered._size, 1),
