@@ -17,6 +17,7 @@ var aFrom            = require('es5-ext/array/from')
   , ObservableSet    = require('observable-set')
   , ObservableMulti  = require('observable-multi-set')
   , Fragment         = require('data-fragment')
+  , ensureFragment   = require('data-fragment/ensure')
   , FragmentGroup    = require('data-fragment/group')
   , ensureDriver     = require('dbjs-persistence/ensure-driver')
   , unserializeView  = require('../utils/db-view/unserialize-ids')
@@ -46,10 +47,14 @@ module.exports = function (dbDriver, data) {
 	  , getBusinessProcessData = getObjFragment()
 	  , getUserReducedData = getReducedFrag(userStorage)
 	  , getReducedData = getReducedFrag(reducedStorage)
-	  , resolveOfficialSteps, processingStepsMeta, processingStepsDefaultMap = create(null);
+	  , resolveOfficialSteps, processingStepsMeta, processingStepsDefaultMap = create(null)
+	  , globalFragment;
 
 	ensureObject(data);
 	processingStepsMeta = ensureObject(data.processingStepsMeta);
+
+	// Eventual fragment that should be passed to all clients
+	if (data.globalFragment != null) globalFragment = ensureFragment(data.globalFragment);
 
 	// Configure official steps (per user) resolver
 	var defaultOfficialStepsResolver = function (userId) {
@@ -178,14 +183,16 @@ module.exports = function (dbDriver, data) {
 		roleName = appId[1];
 		custom = appId[2];
 
-		fragment = new FragmentGroup();
+		if (!roleName) return emptyFragment; // Temporary inconsistent state (client migration)
 
-		if (!roleName) return fragment; // Temporary inconsistent state (client migration)
+		fragment = new FragmentGroup();
 
 		// User profile data
 		fragment.addFragment(getUserFragment(userId));
 		// Sizes of pending files in official roles of user
 		addOfficialStepsPendingSizes(userId, fragment);
+		// Eventual global fragment
+		if (globalFragment) fragment.addFragment(globalFragment);
 
 		if (roleName === 'user') {
 			if (custom) {
