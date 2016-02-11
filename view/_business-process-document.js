@@ -17,7 +17,7 @@ var curry              = require('es5-ext/function/#/curry')
 var getFilePreview = function (file) {
 	var type = file.type;
 	if (includes.call(docMimeTypes, type)) {
-		return img({ class: 'word-document', src: '/img/word-doc-icon.png' });
+		return img({ class: 'submitted-preview-new-word-document', src: '/img/word-doc-icon.png' });
 	}
 	if (!isReadOnlyRender && (type === 'application/pdf')) {
 		return iframe({
