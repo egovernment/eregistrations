@@ -29,6 +29,7 @@ module.exports = memoize(function (db/*, options*/) {
 		// Whether business process was submitted to Part B
 		isSubmitted: { type: db.Boolean, value: function (_observe) {
 			if (this.isSentBack) return true;
+			if (this.isUserProcessing) return true;
 			// 0. Guide
 			if (this.guideProgress !== 1) return false;
 			// 1. Forms
