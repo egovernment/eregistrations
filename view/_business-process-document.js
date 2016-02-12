@@ -8,8 +8,25 @@ var curry              = require('es5-ext/function/#/curry')
   , resolveArchivePath = require('../utils/resolve-document-archive-path')
   , syncHeight         = require('./utils/sync-height')
   , scrollBottom       = require('./utils/scroll-to-bottom')
+  , isReadOnlyRender   = require('mano/client/utils/is-read-only-render')
+  , docMimeTypes       = require('../utils/microsoft-word-doc-mime-types')
+  , includes           = require('es5-ext/array/#/contains')
 
   , _d = _;
+
+var getFilePreview = function (file) {
+	var type = file.type;
+	if (includes.call(docMimeTypes, type)) {
+		return img({ class: 'submitted-preview-new-word-document', src: '/img/word-doc-icon.png' });
+	}
+	if (!isReadOnlyRender && (type === 'application/pdf')) {
+		return iframe({
+			src: url('pdfjs/web/viewer.html?file=') + file.path
+		});
+	}
+	return img({ zoomOnHover: true, src: or(resolve(file._preview, '_url'),
+		resolve(file._thumb, '_url')) });
+};
 
 module.exports = function (doc, sideContent) {
 	var elem, scrollableElem, master;
@@ -18,6 +35,7 @@ module.exports = function (doc, sideContent) {
 	} else {
 		master = doc.owner.owner.owner.owner;
 	}
+
 	return [h2(doc._label.map(function (label) { return _d(label, { user: master }); })),
 		section(
 			{ class: 'section-primary' },
@@ -59,8 +77,7 @@ module.exports = function (doc, sideContent) {
 				elem = ul({ id: 'doc-previews', class: 'submitted-preview-new-image-placeholder' },
 					doc.files.ordered, function (file) {
 						li({ class: _if(eq(file, doc.files.ordered._first), 'active') },
-							img({ zoomOnHover: true, src: or(resolve(file._preview, '_url'),
-								resolve(file._thumb, '_url')) }));
+							getFilePreview(file));
 					}, doc),
 
 				insert(_if(gt(doc.files.ordered._size, 1),
