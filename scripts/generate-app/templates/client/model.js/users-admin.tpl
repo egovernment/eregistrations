@@ -12,5 +12,7 @@ user.$password.type = Password;
 
 require('../../../model/institutions');
 require('eregistrations/model/user/recently-visited/users')(db);
+// Warning: ../../../model/views must be required after all business processes models
+require('../../../model/views');
 
 module.exports = db;

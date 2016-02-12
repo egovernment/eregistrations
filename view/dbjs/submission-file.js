@@ -7,6 +7,8 @@ var d        = require('d')
   , resolve  = require('observable-value/resolve')
   , _        = require('mano').i18n.bind("Documents")
   , db       = require('mano').db
+  , docMimeTypes = require('../../utils/microsoft-word-doc-mime-types')
+  , includes     = require('es5-ext/array/#/contains')
 
   , normRe = /[$#:\/]/g;
 
@@ -46,7 +48,12 @@ module.exports = Object.defineProperties(db.File, {
 
 			itemDom = _if(isValid, el('div', { class: 'file-thumb' },
 				el('a', { href: file._url, target: '_blank', class: 'file-thumb-image' },
-					el('img', { src: resolve(file._thumb, '_url') })),
+					el('img', { src: (function () {
+						if (includes.call(docMimeTypes, file.type)) {
+							return '/img/word-doc-icon.png';
+						}
+						return resolve(file, '_thumb', '_url');
+					}()) })),
 				el('div', { class: 'file-thumb-actions' },
 					el('span', { class: 'file-thumb-document-size' },
 						map(file._diskSize, function (size) {
