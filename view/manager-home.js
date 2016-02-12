@@ -42,7 +42,7 @@ exports['manager-account-content'] = function () {
 							td(bpSet.map(function (bp) { return bp.constructor; })._size),
 
 							td(span(client._email),
-								_if(client.roles._has('user'), span('✅'))),
+								_if(client.roles._has('user'), span({ class: 'fa fa-check' }))),
 
 							td({ class: 'actions' },
 								_if(eq(client._manager, this.user),
