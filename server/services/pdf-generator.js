@@ -21,6 +21,7 @@ var generateDocumentPrev = require('../utils/generate-pdf')
  * dirpath           {string}   - absolute path to directory in which
  *                                generated files will be stored
  * templatePath      {string}   - absolute path to html template of the preview
+ * registerPromise   {function} - optional
  */
 
 module.exports = function (mainConfig) {
@@ -31,6 +32,9 @@ module.exports = function (mainConfig) {
 	ensureString(config.fileKeyPath);
 	if (config.insertsResolver != null) {
 		ensureCallable(config.insertsResolver);
+	}
+	if (config.registerPromise != null) {
+		ensureCallable(config.registerPromise);
 	}
 	ensureString(config.name);
 	ensureString(config.templatePath);
@@ -46,11 +50,16 @@ module.exports = function (mainConfig) {
 		if (config.insertsResolver) {
 			inserts = config.insertsResolver(resolutionObject);
 		} else {
-			inserts = resolutionObject;
+			inserts = { context: resolutionObject };
 		}
 		localConfig.inserts = inserts;
 
-		generateDocumentPrev(localConfig).done();
+		var promise = generateDocumentPrev(localConfig);
+		if (config.registerPromise) {
+			config.registerPromise(promise);
+		} else {
+			promise.done();
+		}
 	};
 
 	setupTriggers({ trigger: entryCollection }, onUpdate);

@@ -26,7 +26,7 @@ module.exports = Object.defineProperty(db.RequirementUpload.prototype, 'toDOMFor
 			h2(this.document._label.map(function (label) {
 				return _d(label, { user: uploadsOwner });
 			}.bind(this))),
-			_if(this._isRecentlyRejected, div({ class: 'info-main' },
+			_if(and(this._isRecentlyRejected, this.master._isSentBack), div({ class: 'info-main' },
 					_if(eq(this.rejectReasons._size, 1),
 							p(this.rejectReasons._first),
 							ul(this.rejectReasons, identity)))),
