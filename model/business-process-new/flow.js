@@ -57,9 +57,11 @@ module.exports = memoize(function (db/*, options*/) {
 				return res;
 			}
 		},
+		// Whether business process in being processed by the User after submission
+		isUserProcessing: { type: db.Boolean, value: false },
 		// Whether business process is at draft stage (Part A)
 		isAtDraft: { type: db.Boolean, value: function () {
-			return !this.isSubmitted || this.isSentBack;
+			return !this.isSubmitted || this.isSentBack || this.isUserProcessing;
 		} },
 		// Whether business is approved
 		isApproved: { type: db.Boolean, value: function (_observe) {
