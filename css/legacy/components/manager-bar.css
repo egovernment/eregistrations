@@ -1,4 +1,4 @@
-.manager-bar > * {
+.manager-bar .content > * {
 	display: inline-block;
 	vertical-align: top;
 }
