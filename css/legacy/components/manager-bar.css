@@ -1,0 +1,8 @@
+.manager-bar > * {
+	display: inline-block;
+	vertical-align: top;
+}
+.manager-bar-actions {
+	float: right;
+	position: relative;
+}
