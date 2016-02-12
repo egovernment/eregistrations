@@ -66,7 +66,7 @@ module.exports = {
 		decorateContext: function () {
 			this.user = db.notary;
 		},
-		view: require('../view/manager-requests')
+		view: require('../view/manager-business-processes')
 	},
 	'manager/requests/firstrequest': {
 		decorateContext: function () {
