@@ -17,7 +17,7 @@ if (!Object.getPrototypeOf || !Object.defineProperty || !window.history ||
 } else {
 	document.write('<link href="${ stRoot }meta-admin.css" rel="stylesheet" />');
 	document.write('<scr' + 'ipt src="${ stRoot }meta-admin.legacy.js"></sc' + 'ript>');
-	document.write('<scr' + 'ipt src="/i18n.js"></sc' + 'ript>');
+	document.write('<scr' + 'ipt data-spa src="/i18n.js"></sc' + 'ript>');
 	document.write('<scr' + 'ipt data-spa src="${ stRoot }meta-admin.js"></sc' + 'ript>');
 }
 	</script>
