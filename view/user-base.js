@@ -62,7 +62,7 @@ exports.main = function () {
 	insert(_if(this.managedUser, function () {
 		return div({ class: 'manager-bar' },
 			div({ class: 'content' },
-				div(
+				div({ class: 'manager-bar-info' },
 					span(_("Client"), ": "),
 					span(this.managedUser._fullName)
 				),
