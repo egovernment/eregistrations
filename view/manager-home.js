@@ -11,10 +11,8 @@ exports['manager-account-clients'] = { class: { active: true } };
 exports['manager-account-content'] = function () {
 	var clients = this.user.managedUsers;
 
-	section({ class: 'section-primary' },
-		a({ href: url('new-client'), class: 'button-main', target: '_blank' },
-				_("Add client")
-				)
+	section(a({ href: url('new-client'), class: 'button-main' },
+				_("Add client"))
 		);
 
 	insert(_if(clients._size, function () {
