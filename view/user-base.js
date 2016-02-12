@@ -66,7 +66,8 @@ exports.main = function () {
 					span(_('Client:')),
 					span(this.managedUser._fullName)
 				),
-				div(_if(not(this.managedUser.roles._has('user')),
+				div({ class: 'manager-bar-actions' },
+					_if(not(this.managedUser.roles._has('user')),
 						postButton({ buttonClass: 'actions-create',
 							action: url('clients', this.managedUser.__id__, 'create'),
 							value: span(_('Create account for this client')) })))
