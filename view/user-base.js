@@ -64,8 +64,7 @@ exports.main = function () {
 			div({ class: 'content' },
 				div({ class: 'manager-bar-info' },
 					span(_("Client"), ": "),
-					span(this.managedUser._fullName)
-				),
+					span(this.managedUser._fullName)),
 				div({ class: 'manager-bar-actions' },
 					_if(not(this.managedUser.roles._has('user')),
 						postButton({ buttonClass: 'actions-create',
