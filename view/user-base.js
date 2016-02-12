@@ -63,7 +63,7 @@ exports.main = function () {
 		return div({ class: 'manager-bar' },
 			div({ class: 'content' },
 				div(
-					span(_('Client:')),
+					span(_("Client:")),
 					span(this.managedUser._fullName)
 				),
 				div({ class: 'manager-bar-actions' },
