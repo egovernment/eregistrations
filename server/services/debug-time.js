@@ -9,10 +9,10 @@ module.exports = function (ns) {
 
 	debug.color = 5;
 
-	debug("%sMB", (process.memoryUsage().rss / 1048576).toFixed(3));
+	debug("%sMB\n", (process.memoryUsage().rss / 1048576).toFixed(3));
 
 	setInterval(function () {
-		debug("%s %s %sMB", (new Date()).toISOString(), now(),
-			(process.memoryUsage().rss / 1048576).toFixed(3) + "\n");
+		debug("%s %s %sMB\n", (new Date()).toISOString(), now(),
+			(process.memoryUsage().rss / 1048576).toFixed(3));
 	}, 1000 * 60);
 };
