@@ -32,11 +32,13 @@ exports.step = function () {
 };
 
 exports._formsHeading = function (context) {
+	var headingText = _("1 Fill the form");
+
 	return div(
 		{ class: 'capital-first' },
-		div("1"),
+		div(headingText[0]),
 		div(
-			h1(_("Fill the form")),
+			h1(headingText.slice(1).trim()),
 			p(_("Answer all mandatory questions."))
 		)
 	);
