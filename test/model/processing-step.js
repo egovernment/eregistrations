@@ -63,6 +63,9 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	step.pauseProgress = 0;
+	a(step.isPending, true);
+	a(step.isPaused, false);
 
 	a.h2("Sent back");
 	step.status = 'sentBack';
