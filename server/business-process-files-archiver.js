@@ -13,17 +13,18 @@ var endsWith          = require('es5-ext/string/#/ends-with')
   , path              = require('path')
   , archiver          = require('archiver')
   , getFilenames      = require('./lib/get-business-process-filenames')
+  , setupTrigger      = require('./setup-triggers')
 
   , basename = path.basename, resolve = path.resolve
   , re = /^\/business-process-archive-([0-9][0-9a-z]+)-([0-9]+)\.zip$/
   , create = Object.create, keys = Object.keys;
 
 exports.filenameResetService = function (db, data) {
-	var uploadsPath, pending = create(null), immediateUpdate;
+	var uploadsPath, pending = create(null);
 	ensureDatabase(db);
 	ensureObject(data);
 	uploadsPath = ensureString(data.uploadsPath);
-	var update = once(immediateUpdate = function () {
+	var update = once(function () {
 		++db._postponed_;
 		keys(pending).forEach(function (id) {
 			var bp = db.BusinessProcessBase.getById(id), url, filenames, oldFilename;
@@ -53,12 +54,14 @@ exports.filenameResetService = function (db, data) {
 		});
 		--db._postponed_;
 	});
-	db.BusinessProcessBase.instances.forEach(function (bp) {
-		if (!bp.dataForms || !bp.dataForms.map || !bp.isSubmitted) return;
+	setupTrigger({
+		trigger: db.BusinessProcess.instances.filterByKey('isFromEregistrations', true)
+	}, function (bp) {
 		pending[bp.__id__] = true;
+		update();
 	});
-	immediateUpdate();
 	db.objects.on('update', function (event) {
+		if (event.sourceId === 'persistentLayer') return;
 		var id = event.object.__valueId__, bp = event.object.master;
 		if (!(bp instanceof db.BusinessProcessBase)) return;
 		if (!bp.dataForms || !bp.dataForms.map) return;
