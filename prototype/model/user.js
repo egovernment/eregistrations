@@ -23,11 +23,13 @@ var Map          = require('es6-map')
   , BusinessActivity, BusinessActivityCategory, Partner, bcAgencyBusiness, bcInsurance
   , file, props
   , StreetTypeChoice
-  , EnumTripleOption = require('./enum-triple-option');
+  , EnumTripleOption = require('./enum-triple-option')
+  , index = 0;
 
 db.Base.define('chooseLabel', d("Choose:"));
 require('./address');
 require('./business-process');
+
 require('dbjs-ext/create-enum')(db);
 
 StreetTypeChoice = db.StreetTypeChoice; // defined in address
@@ -196,11 +198,26 @@ User.newNamed('otherGuy', {
 	lastName: 'Not linked',
 	email: 'other-guy@lesaffre.com'
 });
+
+User.newNamed('myself', {
+	firstName: 'Me',
+	lastName: 'Yes me',
+	email: 'me@moi.com',
+	roles: ['user']
+});
+
 db.otherGuy.manager = db.notary;
+db.myself.manager = db.notary;
 
 db.BusinessProcessNew.instances.forEach(function (businessProcess) {
-	db.userVianney.initialBusinessProcesses.add(businessProcess);
-	businessProcess.manager = db.notary;
+	if (index % 2 === 1) {
+		db.userVianney.initialBusinessProcesses.add(businessProcess);
+		businessProcess.manager = db.notary;
+	} else {
+		db.myself.initialBusinessProcesses.add(businessProcess);
+		if (index === 0) businessProcess.manager = db.notary;
+	}
+	index++;
 });
 
 Partner = db.User.extend('Partner', {
