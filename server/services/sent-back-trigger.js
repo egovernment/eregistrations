@@ -2,7 +2,7 @@
 
 var ensureDatabase = require('dbjs/valid-dbjs')
   , debug          = require('debug-ext')('sent-back-trigger')
-  , setupTriggers  = require('./_setup-triggers');
+  , setupTriggers  = require('../_setup-triggers');
 
 module.exports = function (db) {
 	var businessProcesses = ensureDatabase(db).BusinessProcess.instances
