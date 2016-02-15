@@ -11,8 +11,8 @@ var aFrom            = require('es5-ext/array/from')
   , once             = require('timers-ext/once')
   , debug            = require('debug-ext')('db-process')
   , FragmentGroup    = require('data-fragment/group')
-  , receiver         = require('dbjs-persistence/receiver')
-  , registerReceiver = require('dbjs-persistence/lib/emitter')
+  , registerReceiver = require('dbjs-persistence/receiver')
+  , registerEmitter  = require('dbjs-persistence/lib/emitter')
   , resolve          = require('path').resolve
   , fork             = require('child_process').fork
   , mano             = require('mano')
@@ -66,10 +66,10 @@ module.exports = function (root, data) {
 		} else {
 			getStorage = driver.getStorage.bind(driver);
 		}
-		receiver(getStorage, emitter);
+		registerReceiver(getStorage, emitter);
 		emitter.send({ type: 'continue' });
-		emitAccess = registerReceiver('dbAccessData', emitter);
-		mano.emitPostRequest = registerReceiver('postRequest', emitter);
+		emitAccess = registerEmitter('dbAccessData', emitter);
+		mano.emitPostRequest = registerEmitter('postRequest', emitter);
 
 		// Configure db data propagation (to memory process) means
 		mano.slaveAccessFragment = accessFragment = new FragmentGroup();
