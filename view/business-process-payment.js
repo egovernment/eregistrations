@@ -54,13 +54,16 @@ exports.step = function () {
 };
 
 exports._paymentHeading = function (context) {
+	var headingText = _("3 Pay the fees");
+
 	return div(
 		{ class: 'capital-first' },
-		div("3"),
+		div(headingText[0]),
 		div(
-			h1(_("Pay the fees")),
+			h1(headingText.slice(1).trim()),
 			p(_("Provide a proof of payment if you have paid at the bank or pay online directly here."))
 		)
 	);
 };
+
 exports._onlinePayments = Function.prototype;

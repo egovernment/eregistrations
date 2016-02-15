@@ -89,7 +89,7 @@ exports._guideHeading = function (context) {
 		{ class: "capital-first" },
 		div(headingText[0]),
 		div(
-			h1(headingText.slice(1)),
+			h1(headingText.slice(1).trim()),
 			p(_("Answer the following questions to determine required documents and registration fees."))
 		)
 	);
