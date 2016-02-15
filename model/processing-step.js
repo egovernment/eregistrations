@@ -62,6 +62,8 @@ module.exports = memoize(function (db) {
 		status: { type: ProcessingStepStatus },
 
 		// Progress of individual step statuses
+		// "paused" status progress
+		pauseProgress: { type: Percentage, value: 1 },
 		// "approved" status progress
 		approvalProgress: { type: Percentage, value: function (_observe) {
 			return _observe(this.dataForm._status);
@@ -111,15 +113,16 @@ module.exports = memoize(function (db) {
 			if (this.status === 'rejected') return (this.rejectionProgress !== 1);
 			// If redelegated, but no reason provided, it's still pending
 			if (this.status === 'redelegated') return (this.redelegationProgress !== 1);
-			// 'paused' is the only option left, that's not pending
-			return false;
+			// 'paused' is the only option left, if it's not done waiting, it's still pending
+			return (this.pauseProgress !== 1);
 		} },
 
 		// Whether process is paused at step
 		isPaused: { value: function (_observe) {
 			// If not ready, then obviously not paused
 			if (!this.isReady) return false;
-			return (this.status === 'paused');
+			if (this.status !== 'paused') return false;
+			return this.pauseProgress === 1;
 		} },
 
 		// Whether process was sent back from this step
