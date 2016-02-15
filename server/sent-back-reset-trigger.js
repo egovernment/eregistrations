@@ -1,36 +1,18 @@
 'use strict';
 
-var db    = require('mano').db
-  , debug = require('debug-ext')('sent-back-reset-trigger');
+var ensureDatabase = require('dbjs/valid-dbjs')
+  , debug          = require('debug-ext')('sent-back-reset-trigger')
+  , setupTriggers  = require('./_setup-triggers');
 
-module.exports = function () {
-	var resetSentBack = function (processingStep) {
-		if (processingStep.master.isSentBack) return;
-		if (!processingStep.isSentBack) return;
-		if (!processingStep.isPreviousStepsSatisfied) return;
+module.exports = function (db) {
+	var processingSteps = ensureDatabase(db).ProcessingStep.instances
+		.filterByKeyPath('isSentBack', true);
+
+	setupTriggers({
+		preTrigger: processingSteps.filterByKeyPath('isPreviousStepsSatisfied', false),
+		trigger: processingSteps.filterByKeyPath('isPreviousStepsSatisfied', true)
+	}, function (processingStep) {
 		debug('clear for %s', processingStep.__id__);
 		processingStep.status = null;
-	};
-
-	var eventHandler = function (event) {
-		if (event.type === 'add') return;
-		if (event.type === 'delete') {
-			resetSentBack(event.value);
-			return;
-		}
-		if (event.type === 'batch') {
-			if (!event.deleted) return;
-			event.deleted.forEach(resetSentBack);
-			return;
-		}
-
-		throw new Error("Unsupported event: " + event.type);
-	};
-
-	var processingSteps = db.ProcessingStep.instances
-		.filterByKeyPath('isSentBack', true)
-		.filterByKeyPath('isPreviousStepsSatisfied', false)
-		.on('change', eventHandler);
-
-	processingSteps.forEach(resetSentBack);
+	});
 };
