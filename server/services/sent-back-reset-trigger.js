@@ -2,7 +2,7 @@
 
 var ensureDatabase = require('dbjs/valid-dbjs')
   , debug          = require('debug-ext')('sent-back-reset-trigger')
-  , setupTriggers  = require('./_setup-triggers');
+  , setupTriggers  = require('../_setup-triggers');
 
 module.exports = function (db) {
 	var processingSteps = ensureDatabase(db).ProcessingStep.instances
