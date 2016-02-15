@@ -24,7 +24,7 @@ var aFrom            = require('es5-ext/array/from')
 
 module.exports = function (root, data) {
 	var getFragment, driver, driverGlobal, emitter, def, userStorage, storageNamesGlobal
-	  , getInitialFragment;
+	  , getInitialFragment, registerSlaveProcess;
 	root = ensureString(root);
 
 	ensureObject(data);
@@ -34,6 +34,9 @@ module.exports = function (root, data) {
 	}
 	if (data.storageNamesGlobal != null) {
 		storageNamesGlobal = new Set(aFrom(ensureIterable(data.storageNamesGlobal), ensureString));
+	}
+	if (data.registerSlaveProcess != null) {
+		registerSlaveProcess = ensureCallable(data.registerSlaveProcess);
 	}
 
 	// Initialize master driver
@@ -145,6 +148,9 @@ module.exports = function (root, data) {
 			}
 			deletedPending.push({ id: event.id, data: event.data });
 		});
+
+		if (registerSlaveProcess) registerSlaveProcess(emitter);
+
 		def.resolve();
 	});
 	return def.promise;
