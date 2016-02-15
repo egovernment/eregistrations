@@ -80,11 +80,13 @@ exports.step = function () {
 };
 
 exports._submissionHeading = function (context) {
+	var headingText = _("4 Send your files");
+
 	return div(
 		{ class: 'capital-first' },
-		div("4"),
+		div(headingText[0]),
 		div(
-			h1(_("Send your files")),
+			h1(headingText.slice(1).trim()),
 			p(_("Approve the sworn declaration and submit your application."))
 		)
 	);
