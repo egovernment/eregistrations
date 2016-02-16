@@ -13,7 +13,7 @@ var endsWith          = require('es5-ext/string/#/ends-with')
   , path              = require('path')
   , archiver          = require('archiver')
   , getFilenames      = require('./lib/get-business-process-filenames')
-  , setupTrigger      = require('./setup-triggers')
+  , setupTrigger      = require('./_setup-triggers')
 
   , basename = path.basename, resolve = path.resolve
   , re = /^\/business-process-archive-([0-9][0-9a-z]+)-([0-9]+)\.zip$/
