@@ -53,6 +53,7 @@
 	border: none;
 	padding: 0;
 	margin-bottom: 44px;
+	position: relative;
 }
 
 .section-primary-sub:last-child {
