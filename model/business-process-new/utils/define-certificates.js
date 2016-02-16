@@ -8,7 +8,6 @@ var ensureArray         = require('es5-ext/array/valid-array')
   , ensureType          = require('dbjs/valid-dbjs-type')
   , isType              = require('dbjs/is-dbjs-type')
   , uncapitalize        = require('es5-ext/string/#/uncapitalize')
-  , endsWith            = require('es5-ext/string/#/ends-with')
   , defineDocument      = require('../../document')
   , defineCertificates  = require('../certificates');
 
@@ -34,13 +33,7 @@ module.exports = function (BusinessProcess, data) {
 			throw new TypeError(CertificateDocument.__id__ + " must extend Document.");
 		}
 
-		if (!name) {
-			name = uncapitalize.call(CertificateDocument.__id__);
-
-			if (endsWith.call(name, 'Certificate')) {
-				name = name.slice(0, -'Certificate'.length);
-			}
-		}
+		if (!name) name = uncapitalize.call(CertificateDocument.__id__);
 
 		definitions[name] = {
 			nested: true,
