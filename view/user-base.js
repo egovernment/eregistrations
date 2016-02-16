@@ -45,17 +45,34 @@ exports.menu = function () {
 };
 
 exports.main = function () {
+
 	div({ class: 'submitted-menu' },
 		div({ class: 'submitted-menu-bar content' },
 			nav(ul({ class: 'submitted-menu-items', id: 'submitted-menu' },
 				exports._submittedMenu(this))),
 			_if(this.user._isDemo, div({ class: 'submitted-menu-demo' },
 				a({ class: 'submitted-menu-demo-ribon' }, _("Demo"))))));
+
 	insert(_if(this.user._isDemo,
 		div({ class: 'submitted-menu-demo-msg' },
 			div({ class: 'content' },
 				h3(_("Demo version")),
 				p(_("Introduction to demo version"))))));
+
+	insert(_if(this.managedUser, function () {
+		return div({ class: 'manager-bar' },
+			div({ class: 'content' },
+				div({ class: 'manager-bar-info' },
+					span(_("Client"), ": "),
+					span(this.managedUser._fullName)),
+				div({ class: 'manager-bar-actions' },
+					_if(not(this.managedUser.roles._has('user')),
+						postButton({ buttonClass: 'actions-create',
+							action: url('clients', this.managedUser.__id__, 'create'),
+							value: span(_('Create account for this client')) })))
+				));
+	}.bind(this)));
+
 	div({ class: 'user-forms', id: 'sub-main' });
 };
 
