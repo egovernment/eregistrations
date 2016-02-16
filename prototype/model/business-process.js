@@ -58,6 +58,9 @@ FrontDeskProcessingStep.prototype.possibleInstitutions.add(db.institutionCommerc
 require('../../model/lib/nested-map');
 BusinessProcessNew.newNamed('emptyBusinessProcess');
 
+BusinessProcessNew.prototype.label = "Service 2";
+BusinessProcessNew.prototype.abbr = 'COI';
+
 module.exports = BusinessProcessNew;
 
 Representative = Person.extend('Representative', {
@@ -299,6 +302,7 @@ processes.forEach(function (businessProcess) {
 	// new
 	businessProcess.label = 'Service 1';
 	businessProcess.abbr = 'REG';
+
 	businessProcess.submissionForms.isAffidavitSigned = true;
 	// status logs
 	businessProcess.statusLog.map.get('received').setProperties({
