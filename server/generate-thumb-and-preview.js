@@ -55,6 +55,10 @@ module.exports = function (file) {
 		if (!file.path && contains.call(e.message, 'Unable to open file')) {
 			return deferred(unlink(thumbFullPath), preview && unlink(previewFullPath))(null, false);
 		}
+		if (contains.call(e.message, "Improper image header")) {
+			console.log("Cannot generate previews", e.stack);
+			return;
+		}
 		throw e;
 	});
 };
