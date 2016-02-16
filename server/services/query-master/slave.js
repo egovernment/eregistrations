@@ -1,6 +1,6 @@
 'use strict';
 
-var ensureString    = require('es5-ext/object/valid-stringifiable-value')
+var ensureString    = require('es5-ext/object/validate-stringifiable-value')
   , registerEmitter = require('dbjs-persistence/lib/emitter');
 
 module.exports = function () {
