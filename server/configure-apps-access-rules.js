@@ -4,6 +4,7 @@
 
 var aFrom            = require('es5-ext/array/from')
   , compose          = require('es5-ext/function/#/compose')
+  , ensureIterable   = require('es5-ext/iterable/validate-object')
   , findKey          = require('es5-ext/object/find-key')
   , forEach          = require('es5-ext/object/for-each')
   , ensureCallable   = require('es5-ext/object/valid-callable')
@@ -27,8 +28,6 @@ var aFrom            = require('es5-ext/array/from')
   , getColFragments  = require('./data-fragments/get-collection-fragments')
   , getPartFragments = require('./data-fragments/get-part-object-fragments')
   , getDbRecordSet   = require('./utils/get-db-record-set')
-  , bpListProps      = require('../apps-common/business-process-list-properties')
-  , bpListCompProps  = require('../apps-common/business-process-list-computed-properties')
   , userListProps    = require('../apps/users-admin/user-list-properties')
 
   , create = Object.create, keys = Object.keys, stringify = JSON.stringify
@@ -48,13 +47,15 @@ module.exports = function (dbDriver, data) {
 	  , getUserReducedData = getReducedFrag(userStorage)
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , resolveOfficialSteps, processingStepsMeta, processingStepsDefaultMap = create(null)
-	  , globalFragment;
+	  , bpListProps, bpListCompProps, globalFragment;
 
 	ensureObject(data);
 	processingStepsMeta = ensureObject(data.processingStepsMeta);
 
 	// Eventual fragment that should be passed to all clients
 	if (data.globalFragment != null) globalFragment = ensureFragment(data.globalFragment);
+	bpListProps = new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
+	bpListCompProps = new Set(aFrom(ensureIterable(data.businessProcessListComputedProperties)));
 
 	// Configure official steps (per user) resolver
 	var defaultOfficialStepsResolver = function (userId) {
