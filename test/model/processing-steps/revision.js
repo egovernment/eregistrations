@@ -57,6 +57,9 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.isRevisionApproved, false);
+	a(step.isRevisionPending, false);
+	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
 
@@ -72,6 +75,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.isRevisionPending, true);
+	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
 
@@ -85,6 +90,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.isRevisionPending, false);
+	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
 	step.isApplicable = true;
@@ -99,6 +106,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.isRevisionPending, false);
+	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
 
@@ -114,6 +123,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.isRevisionPending, true);
+	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
 
@@ -130,6 +141,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.isRevisionPending, false);
+	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 1);
 	businessProcess.paymentReceiptUploads.map.test.status = 'valid';
@@ -146,6 +159,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.isRevisionPending, true);
+	a(step.revisionApprovalProgress, 0.5);
 	a(step.approvalProgress, 0.5);
 	a(step.revisionProgress, 1);
 
@@ -159,6 +174,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, true);
 	a(step.isApproved, false);
 	a(step.isClosed, true);
+	a(step.isRevisionPending, false);
+	a(step.revisionApprovalProgress, 0.5);
 	a(step.approvalProgress, 0.5);
 	a(step.revisionProgress, 1);
 
@@ -174,6 +191,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, false);
 	a(step.isClosed, false);
+	a(step.isRevisionPending, true);
+	a(step.revisionApprovalProgress, 0.5);
 	a(step.approvalProgress, 0.5);
 	a(step.revisionProgress, 1);
 
@@ -187,6 +206,8 @@ module.exports = function (t, a) {
 	a(step.isRejected, false);
 	a(step.isApproved, true);
 	a(step.isClosed, true);
+	a(step.isRevisionPending, false);
+	a(step.revisionApprovalProgress, 1);
 	a(step.approvalProgress, 1);
 	a(step.revisionProgress, 1);
 };

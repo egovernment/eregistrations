@@ -23,12 +23,13 @@ module.exports = function (/*options*/) {
 		match: function (businessProcessId) {
 			if (!matcher.call(this, businessProcessId, stepName)) return false;
 
-			return this.processingStep.approvalProgress === 1;
+			return this.processingStep.revisionApprovalProgress === 1;
 		},
 		validate: Function.prototype,
 		submit: function () {
 			this.processingStep.processor = this.user;
 			this.processingStep.status = 'approved';
+			this.processingStep.isRevisionApproved = true;
 		},
 		redirectUrl: '/'
 	};
