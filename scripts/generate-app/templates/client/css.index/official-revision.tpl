@@ -3,6 +3,7 @@
 ../../../node_modules/eregistrations/css/table.css
 ../../../node_modules/eregistrations/css/components/fa.css
 ../../../node_modules/eregistrations/css/components/button-main.css
+../../../node_modules/eregistrations/css/components/disabler.css
 ../../../node_modules/eregistrations/css/components/container-with-nav.css
 ../../../node_modules/eregistrations/css/components/button-resource-link.css
 ../../../node_modules/eregistrations/css/components/section-primary.css
