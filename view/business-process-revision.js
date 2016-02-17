@@ -11,7 +11,8 @@ exports._customPreviewInfo = function (context/*, options*/) {
 	var options      = arguments[1]
 	  , revisionStep = context.processingStep;
 
-	return insert(_if(revisionStep._isRevisionPending, section({ class: 'official-submission-toolbar' },
+	return insert(_if(revisionStep._isRevisionPending, section(
+		{ class: 'official-submission-toolbar' },
 		// show buttons only if step is pending
 		_if(eq(revisionStep._revisionProgress, 1),
 			// show "approve" or "sent back" buttons only, when revision was finalized
@@ -20,7 +21,8 @@ exports._customPreviewInfo = function (context/*, options*/) {
 				_if(eq(revisionStep._sendBackStatusesProgress, 1),
 					exports._returnButton.call(context, options)))),
 				// show reject button at all times when revision is pending
-		exports._rejectButton.call(context, options))));
+		exports._rejectButton.call(context, options)
+	)));
 };
 
 exports._approveButton = function (/*options*/) {
