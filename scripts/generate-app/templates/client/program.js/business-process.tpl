@@ -113,11 +113,7 @@ loadView = function () {
 	postRouter(joinControllers(require('../controller'), require('../controller/client')),
 		user);
 
-	if (!isReadOnlyRender) {
-		require('eregistrations/client/reload-on-role-switch')(user);
-		require('eregistrations/client/reload-on-current-business-process-change')(user);
-		require('eregistrations/client/reload-on-is-at-draft-change')(user, ${ isBusinessProcessSubmitted });
-	}
+	if (!isReadOnlyRender) require('eregistrations/client/reload-on-app-switch')(user);
 
 	appLocation.on('change', refresh = function () {
 		var result;
