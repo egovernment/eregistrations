@@ -23,7 +23,7 @@ module.exports = memoize(function (storage, ids) {
 	});
 	storage.on('update', function (event) {
 		if (idsSet.has(event.ownerId + (event.keyPath ? ('/' + event.keyPath) : ''))) {
-			event.update(event.id, event.data);
+			fragment.update(event.id, event.data);
 		}
 	});
 	return fragment;
