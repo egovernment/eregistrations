@@ -116,12 +116,12 @@ module.exports = function (dbDriver, data) {
 			return getRedRecFrag(reducedStorage, ids);
 		};
 		return function (userId, fragment) {
-			var stepShortPaths = resolveOfficialSteps(userId)
+			var stepsShortPaths = resolveOfficialSteps(userId)
 			  , current;
-			current = resolveFragment(stepShortPaths);
+			current = resolveFragment(stepsShortPaths);
 			fragment.addFragment(current);
-			stepShortPaths.on('change', function () {
-				var nu = resolveFragment(stepShortPaths);
+			stepsShortPaths.on('change', function () {
+				var nu = resolveFragment(stepsShortPaths);
 				if (nu === current) return;
 				fragment.addFragment(nu);
 				fragment.deleteFragment(current);
