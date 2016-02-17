@@ -163,8 +163,9 @@ module.exports = function (dbDriver, data) {
 		  , defaultStatusName = resolveDefaultStatus(stepShortPath);
 
 		// To be visited (recently pending) business processes (full data)
-		fragment.add(getColFragments(getFirstPageItems(reducedStorage, 'pendingBusinessProcesses/' +
-			stepShortPath + '/' + defaultStatusName).toArray().slice(0, 10), getBusinessProcessData));
+		fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
+			'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName).toArray().slice(0, 10),
+			getBusinessProcessData));
 		// First page snapshot for each status
 		fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath));
 		// First page list data for each status
