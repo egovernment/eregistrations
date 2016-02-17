@@ -26,12 +26,12 @@ var sectionLabel = function (formSection, level) {
 	if (level === 0) return missingFieldsLabel();
 
 	if (formSection.label) {
-		title = "In _\"${ sectionLabel }\"_ section:";
+		title = _("In _\"${ sectionLabel }\"_ section:", { sectionLabel: formSection.label });
 	} else {
-		title = "In main section:";
+		title = _("In main section:");
 	}
 	return p({ class: 'section-warning-missing-fields-sub-' + 1 },
-		mdi(_d(title, { sectionLabel: formSection.label })));
+		mdi(title));
 };
 
 var missingPropertiesList = function (formSection) {
