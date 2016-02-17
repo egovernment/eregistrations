@@ -6,6 +6,7 @@ if (!process.env.DEBUG) {
 		'compression',
 		'connect:dispatcher',
 		'node-soap',
+		'soap',
 		'time'
 	].join(',-');
 }
