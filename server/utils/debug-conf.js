@@ -7,6 +7,7 @@ if (!process.env.DEBUG) {
 		'connect:dispatcher',
 		'node-soap',
 		'soap',
-		'time'
+		'time',
+		'zombie'
 	].join(',-');
 }
