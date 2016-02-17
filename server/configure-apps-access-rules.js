@@ -111,7 +111,8 @@ module.exports = function (dbDriver, data) {
 			ids = [];
 			stepsShortPaths.forEach(function (stepShortPath) {
 				var defaultKey = resolveDefaultStatus(stepShortPath);
-				ids.push('pendingBusinessProcesses/' + stepShortPath + '/' + defaultKey + '/totalSize');
+				ids.push('views/pendingBusinessProcesses/' + stepShortPath + '/' + defaultKey +
+					'/totalSize');
 			});
 			return getRedRecFrag(reducedStorage, ids);
 		};
