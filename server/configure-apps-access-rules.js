@@ -61,7 +61,8 @@ module.exports = function (dbDriver, data) {
 	var defaultOfficialStepsResolver = function (userId) {
 		var rolesSet = getDbRecordSet(userStorage, userId + '/roles');
 		var resultSet = rolesSet.map(unserializeValue).filter(isOfficialRoleName)
-			.map(function (roleName) { return uncapitalize.call(roleName.slice('official'.length)); });
+			.map(function (roleName) { return uncapitalize.call(roleName.slice('official'.length)); })
+			.filter(function (stepShortPath) { return processingStepsMeta[stepShortPath]; });
 		resultSet.promise = rolesSet.promise;
 		return resultSet;
 	};
