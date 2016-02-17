@@ -73,7 +73,7 @@ module.exports = function (dbDriver, data) {
 	}
 
 	// Resolve default step statuses (in most cases 'pending')
-	forEach(data.processingStepsMeta, function (meta, stepShortPath) {
+	forEach(processingStepsMeta, function (meta, stepShortPath) {
 		var defaultKey = findKey(meta, function (conf) {
 			return conf.default;
 		});
