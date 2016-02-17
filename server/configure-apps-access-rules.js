@@ -72,6 +72,7 @@ module.exports = function (dbDriver, data) {
 	} else {
 		resolveOfficialSteps = defaultOfficialStepsResolver;
 	}
+	resolveOfficialSteps = memoize(resolveOfficialSteps, { length: 1, primitive: true });
 
 	// Resolve default step statuses (in most cases 'pending')
 	forEach(processingStepsMeta, function (meta, stepShortPath) {
