@@ -10,9 +10,10 @@ var flatten      = require('es5-ext/array/#/flatten')
   , ensureDriver = require('dbjs-persistence/ensure-driver')
   , recompute    = require('dbjs-persistence/recompute');
 
-module.exports = function (driver, slavePath) {
+module.exports = function (driver, slavePath/*, options*/) {
 	var userStorage = ensureDriver(driver).getStorage('user')
-	  , anyIdToStorage = require('../../utils/any-id-to-storage');
+	  , anyIdToStorage = require('../../utils/any-id-to-storage')
+	  , options = Object(arguments[2]);
 
 	var getBusinessProcessData = function (bpId) {
 		return anyIdToStorage(bpId)(function (storage) {
@@ -52,7 +53,8 @@ module.exports = function (driver, slavePath) {
 					});
 				});
 			}).invoke(flatten);
-		}
+		},
+		initialData: options.initialData
 	}).on('progress', function (event) {
 		if (event.type === 'nextObject') debug.progress();
 		if (event.type === 'nextPool') debug.progress('↻');
