@@ -93,6 +93,7 @@ var drawCertificatesPart = function (target, urlPrefix) {
 						th(_("Name")),
 						th(_("Issuer")),
 						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
+						th(_("Number")),
 						th({ class: 'submitted-user-data-table-link' })
 					)
 				),
@@ -104,6 +105,7 @@ var drawCertificatesPart = function (target, urlPrefix) {
 						td(certificate.label);
 						td(certificate._issuedBy);
 						td({ class: 'submitted-user-data-table-date' }, certificate._issueDate);
+						td(certificate._number);
 						td({ class: 'submitted-user-data-table-link' },
 							a({ href: urlPrefix + 'certificate/' +
 								camelToHyphen.call(certificate.key) + '/' },
