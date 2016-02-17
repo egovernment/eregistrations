@@ -14,9 +14,19 @@ module.exports = memoize(function (db) {
 	return defineProcessingStep(db).extend('RevisionProcessingStep', {
 		label: { value: _("Revision") },
 
-		// Progress for "approved" status
+		// Whether the revision was successfull
+		isRevisionPending: { type: db.Boolean, value: function (_observe) {
+			// If the whole step is not pending, then obviously not pending
+			if (!this.isPending) return false;
+
+			return !(this.isRevisionApproved && this.revisionApprovalProgress === 1);
+		} },
+
+		isRevisionApproved: { type: db.Boolean, value: false },
+
+		// Progress of revision approval
 		// All applicable requirement uploads must be approved
-		approvalProgress: { value: function (_observe) {
+		revisionApprovalProgress: { type: Percentage, value: function (_observe) {
 			var weight = 0, progress = 0, itemWeight;
 
 			if (_observe(this.master._isSentBack)) return 1;
@@ -26,6 +36,12 @@ module.exports = memoize(function (db) {
 			progress += _observe(this.paymentReceiptUploads._approvalProgress) * itemWeight;
 
 			return weight ? (progress / weight) : 1;
+		} },
+
+		// Progress for "approved" status
+		// Defaults to revisionApprovalProgress
+		approvalProgress: { value: function (_observe) {
+			return this.revisionApprovalProgress;
 		} },
 
 		// Progress of revision

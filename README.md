@@ -39,7 +39,7 @@ eRegistrations is full-stack JavaScript project, that means both client and serv
 
 Base for our code is ECMAScript 5 edition. It's very important distinction from popular tools of web today, which (in due to provide support for IE6-8 browsers) are based on ECMAScript 3.
 
-We provide [Single-page application](http://en.wikipedia.org/wiki/Single-page_application) for modern browsers, and having Node.js we generate static pages on server-side _(currently WIP)_ for browsers of old web (or spiders).
+We provide [Single-page application](http://en.wikipedia.org/wiki/Single-page_application) for modern browsers, and having Node.js we generate static pages on server-side for browsers of old web (or search engine spiders).
 
 Ideally our full stack JavaScript application can be fully functional in a browser with JavaScript support turned off.
 
