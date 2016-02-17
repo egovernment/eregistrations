@@ -5,5 +5,7 @@ var ensureString    = require('es5-ext/object/validate-stringifiable-value')
 
 module.exports = function () {
 	var send = registerEmitter('queryMaster');
-	return function (action/*, query*/) { return send(ensureString(action), arguments[1]); };
+	return function (action/*, query*/) {
+		return send({ action: ensureString(action), query: arguments[1] });
+	};
 };
