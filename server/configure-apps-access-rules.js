@@ -107,7 +107,7 @@ module.exports = function (dbDriver, data) {
 	var addOfficialStepsPendingSizes = (function () {
 		var resolveFragment = function (stepsShortPaths) {
 			var ids;
-			if (stepsShortPaths.size <= 1) return emptyFragment;
+			if (!stepsShortPaths.size) return emptyFragment;
 			ids = [];
 			stepsShortPaths.forEach(function (stepShortPath) {
 				var defaultKey = resolveDefaultStatus(stepShortPath);
