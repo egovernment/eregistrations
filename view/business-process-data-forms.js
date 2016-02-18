@@ -4,7 +4,6 @@
 
 var generateSections  = require('./components/generate-form-sections')
   , incompleteFormNav = require('./components/incomplete-form-nav')
-  , incompleteFormNavRules = require('./components/incomplete-form-nav-rules')
   , _                 = require('mano').i18n.bind('Registration')
   , errorMsg          = require('./_business-process-error-info').errorMsg;
 
@@ -27,8 +26,7 @@ exports.step = function () {
 		div({ class: 'user-next-step-button' },
 			a({ href: '/documents/' }, _("Continue to next step"))),
 		_if(gt(this.businessProcess.dataForms._progress, 0), section({ class: 'section-warning' },
-			incompleteFormNav(this.businessProcess.dataForms.applicable),
-			incompleteFormNavRules(this.businessProcess.dataForms.applicable)))
+			incompleteFormNav(this.businessProcess.dataForms.applicable)))
 		));
 
 };

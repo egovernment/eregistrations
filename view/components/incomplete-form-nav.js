@@ -2,9 +2,10 @@
 
 'use strict';
 
-var db               = require('mano').db
-  , _                = require('mano').i18n.bind('Incomplete Sections Navigation')
-  , getPropertyLabel = require('../utils/get-property-label')
+var db                 = require('mano').db
+  , _                  = require('mano').i18n.bind('Incomplete Sections Navigation')
+  , getPropertyLabel   = require('../utils/get-property-label')
+  , incompleteNavRules = require('./incomplete-form-nav-rules')
 
   , _d = _
   , generateMissingList;
@@ -118,7 +119,7 @@ generateMissingList = function (formSection, level) {
 };
 
 module.exports = function (sections) {
-	return ul(sections, function (formSection) {
+	return [ul(sections, function (formSection) {
 
 		return _if(formSection._hasMissingRequiredPropertyNamesDeep,
 			section(
@@ -129,5 +130,5 @@ module.exports = function (sections) {
 				),
 				generateMissingList(formSection)
 			));
-	});
+	}, incompleteNavRules(sections))];
 };
