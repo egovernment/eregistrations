@@ -34,7 +34,6 @@ var invalidProgressRulesList = function (formSection, level) {
 		{ class: 'section-warning-missing-fields-sub-' + level },
 		formSection.progressRules.displayable,
 		function (rule) {
-			console.log('RULE', rule.__id__, rule.message);
 			if (!rule.message) return;
 			return li(_d(rule.message, rule.getTranslations()));
 		}
@@ -61,11 +60,10 @@ var drawFormSectionGroup = function (groupSection, level) {
 };
 
 var drawFormEntitiesTable = function (tableSection, level) {
-	console.log('TABULAR', tableSection.__id__);
 	return div(
 		level === 0 ? [
-			invalidProgressRulesList(tableSection, level),
-			_if(tableSection._hasDisplayableRuleDeep, displayableRulesLabel())
+			displayableRulesLabel(),
+			invalidProgressRulesList(tableSection, level)
 		] : [
 			sectionLabel(tableSection, level),
 			invalidProgressRulesList(tableSection, level + 1)
