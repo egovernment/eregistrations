@@ -7,9 +7,12 @@ var ensureDatabase = require('dbjs/valid-dbjs')
 module.exports = function (db) {
 	var businessProcesses = ensureDatabase(db).BusinessProcess.instances
 		.filterByKey('isFromEregistrations', true)
+		.filterByKey('isSubmitted', true)
 		.filterByKey('isSentBack', false);
 
 	setupTriggers({
+		preTrigger: businessProcesses.filterByKey('sentBackSteps',
+			function (steps) { return !steps.size; }),
 		trigger: businessProcesses.filterByKey('sentBackSteps',
 			function (steps) { return steps.size > 0; })
 	}, function (businessProcess) {
