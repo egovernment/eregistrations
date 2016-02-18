@@ -22,7 +22,7 @@ module.exports = memoize(function (storage, ids) {
 			if (data) assimilateEvent(fragment, id, data);
 		});
 	});
-	storage.on('update', function (event) {
+	storage.on('update:reduced', function (event) {
 		if (idsSet.has(event.id)) assimilateEvent(fragment, event.id, event.data);
 	});
 	return fragment;
