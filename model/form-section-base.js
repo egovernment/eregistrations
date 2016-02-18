@@ -216,6 +216,11 @@ module.exports = memoize(function (db) {
 			value: _("Section is disabled because online payment transaction has " +
 				"already been made or it's in progress")
 		},
+		// Checks weather at least one progress rule of this section or it's children
+		// is displayable (invalid and has a message)
+		hasDisplayableRuleDeep: {
+			type: db.Boolean
+		},
 		// Checks weather at least one of fields of this section or it's children
 		// has a missing value in this
 		hasMissingRequiredPropertyNamesDeep: {
