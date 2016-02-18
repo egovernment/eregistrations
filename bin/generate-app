@@ -31,8 +31,8 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		msgItems.push("If appName resolution for created app is not straightfoward, " +
 			" be sure to expose it model/user/app-resolvers.js");
 		msgItems.push("Configure application url tree in apps/" + appName + "/routes.js");
-		var accessMsg = "Provide app configuration for data access rules in apps/access.js";
-		msgItems.push(accessMsg);
+		var accessMsg = "Provide processing step configuration for data access rules in " +
+			"server/processes/master/apps-access-rulles.js";
 		var domBindings = "Setup dbjs dom bindings in apps/" + appName + "/client/dbjs-dom.js";
 		msgItems.push(domBindings);
 		msgItems.push("Configure model needed for application client in apps/"
@@ -48,6 +48,9 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			" apps/business-process-submitted/client/model.js";
 
 		appsRoutersReminder = "Ensure configuration entry in server/apps/routers.js";
+		msgItems.push("Esnure app configuration added in POST controllers configuration at: "
+			+ "server/processes/master/apps-post-controllers and " +
+			"server/processes/memory-db/apps-post-controllers");
 		var addRole = "Add new role in model/user/roles.js";
 		var modelViews = "Ensure that views model is updated with " +
 			"added status maps in model/views.js";
@@ -68,6 +71,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		}
 
 		if (startsWith.call(appName, 'official-') || appName === 'dispatcher') {
+			msgItems.push(accessMsg);
 			msgItems.push(clientModelReminder);
 			msgItems.push(appsRoutersReminder);
 			if (startsWith.call(appName, 'official-')) {
