@@ -121,9 +121,6 @@ module.exports = memoize(function (db) {
 		onEmptyMessage: { type: StringLine, value: _("There are no elements added at the moment.") },
 		hasDisplayableRuleDeep: {
 			value: function (_observe) {
-				if (this.isUnresolved) {
-					return this.resolventStatus < 1;
-				}
 				if (_observe(this.progressRules.displayable._size) > 0) return true;
 
 				return this.entitiesSet.some(function (child) {

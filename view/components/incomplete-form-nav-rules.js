@@ -2,8 +2,8 @@
 
 'use strict';
 
-var db               = require('mano').db
-  , _                = require('mano').i18n.bind('Incomplete Sections Navigation')
+var db = require('mano').db
+  , _  = require('mano').i18n.bind('Incomplete Sections Navigation')
 
   , _d = _
   , generateMissingList;
