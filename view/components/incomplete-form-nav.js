@@ -130,5 +130,5 @@ module.exports = function (sections) {
 				),
 				generateMissingList(formSection)
 			));
-	}, incompleteNavRules(sections))];
+	}), incompleteNavRules(sections)];
 };

@@ -71,7 +71,7 @@ var drawFormEntitiesTable = function (tableSection, level) {
 		ul(tableSection.entitiesSet, function (entity) {
 			var entitySections = entity.resolveSKeyPath(tableSection.sectionProperty).value;
 
-			return _if(lt(entitySections._hasDisplayableRuleDeep, 1), li(
+			return _if(entitySections._hasDisplayableRuleDeep, li(
 				{ class: 'section-warning-missing-fields-sub-' + (level + 1) },
 				p(mdi(_("In \"**${ entityTitle }**\" entity:",
 					{ entityTitle: entityLabel(tableSection, entity) }))),
