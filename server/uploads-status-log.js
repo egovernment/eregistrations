@@ -11,6 +11,7 @@ var isStatusKeyPath = RegExp.prototype.test
 module.exports = function (db) {
 	db.objects.on('update', function (event) {
 		var id = event.object.__valueId__, bp, upload;
+		if (event.sourceId === 'persistentLayer') return;
 		if (endsWith.call(id, 'submissionForms/isAffidavitSigned')) {
 			bp = event.object.master;
 			nextTick(function () {
