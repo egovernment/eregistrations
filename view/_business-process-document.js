@@ -11,6 +11,8 @@ var curry              = require('es5-ext/function/#/curry')
   , isReadOnlyRender   = require('mano/client/utils/is-read-only-render')
   , docMimeTypes       = require('../utils/microsoft-word-doc-mime-types')
   , includes           = require('es5-ext/array/#/contains')
+  , endsWith           = require('es5-ext/string/#/ends-with')
+  , db                 = require('mano').db
 
   , _d = _;
 
@@ -55,6 +57,19 @@ module.exports = function (doc, sideContent) {
 				)
 			)
 		),
+		doc.isCertificate ?
+				section(
+					{ class: 'section-primary' },
+					h2(_("Data of certificate")),
+					doc.dataForm.constructor !== db.FormSectionBase ?
+							doc.dataForm.toDOM(document, {
+								customFilter: function (resolved) {
+									if (endsWith.call(resolved.observable.dbId, 'files/map')) return false;
+									return resolved.value != null;
+								}
+							}) : null,
+					doc.overviewSection.toDOM(document)
+				) : null,
 		nextTick(function () { scrollBottom(scrollableElem); }),
 		section({ class: 'submitted-preview-new' },
 			div({ class: 'section-primary submitted-preview-new-document' },
