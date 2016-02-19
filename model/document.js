@@ -11,7 +11,8 @@ var memoize               = require('memoizee/plain')
   , defineStatusLog       = require('./lib/status-log')
   , defineFormSectionBase = require('./form-section-base')
   , defineFormSection     = require('./form-section')
-  , defineNestedMap       = require('./lib/nested-map');
+  , defineNestedMap       = require('./lib/nested-map')
+  , definePerson          = require('./person');
 
 module.exports = memoize(function (db) {
 	var StringLine      = defineStringLine(db)
@@ -20,6 +21,7 @@ module.exports = memoize(function (db) {
 	  , StatusLog       = defineStatusLog(db)
 	  , FormSectionBase = defineFormSectionBase(db)
 	  , FormSection     = defineFormSection(db)
+	  , Person          = definePerson(db)
 	  , Document;
 
 	Document = db.Object.extend('Document', {
@@ -39,7 +41,7 @@ module.exports = memoize(function (db) {
 			label: _("Emissor institution")
 		},
 		issuedByOfficer: {
-			type: db.Object,
+			type: Person,
 			value: function () {
 				if (!this.processingStep) return;
 				return this.processingStep.processor;
