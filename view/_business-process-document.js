@@ -65,8 +65,7 @@ module.exports = function (doc, sideContent) {
 					doc.dataForm.constructor !== db.FormSectionBase ?
 							doc.dataForm.toDOM(document, {
 								customFilter: function (resolved) {
-									if (endsWith.call(resolved.observable.dbId, 'files/map')) return false;
-									return resolved.value != null;
+									return !endsWith.call(resolved.observable.dbId, 'files/map');
 								}
 							}) : null,
 					doc.overviewSection.toDOM(document)
