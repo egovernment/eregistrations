@@ -5,6 +5,7 @@
 var _              = require('mano').i18n.bind('Official: Revision')
   , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
   , renderDocument = require('./_business-process-document')
+  , disableStep    = require('./components/disable-processing-step')
 
   , revisionForm;
 
@@ -42,6 +43,7 @@ revisionForm = function (requirementUpload) {
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		renderDocument(this.document, revisionForm(this.document.owner));
+		renderDocument(this.document,
+			disableStep(this.processingStep, revisionForm(this.document.owner)));
 	}
 };

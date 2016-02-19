@@ -5,6 +5,8 @@ var resolve   = require('path').resolve
   , stringify = require('eregistrations/utils/i18n-stringify')
   , root      = require('mano').env.root;
 
+if (!root) throw new Error("`env.root` not defined");
+
 exports.submit = function (data) {
-	return writeFile(resolve(root, 'i18n.json'), stringify(data));
+	return writeFile(resolve(root, 'i18n-messages.json'), stringify(data));
 };

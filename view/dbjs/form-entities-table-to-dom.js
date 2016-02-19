@@ -14,147 +14,41 @@
 
 'use strict';
 
-var _                   = require('mano').i18n.bind('Sections')
-  , d                   = require('d')
-  , db                  = require('mano').db
-  , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
-  , generateId          = require('time-uuid')
-  , loc                 = require('mano/lib/client/location')
-  , ns                  = require('mano').domjs.ns;
+var _          = require('mano').i18n.bind('Sections')
+  , d          = require('d')
+  , db         = require('mano').db
+  , ns         = require('mano').domjs.ns
+  , headersMap = require('../utils/headers-map');
 
+require('./form-entities-table-to-dom-fieldset');
 require('./form-section-base');
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var self = this, options, url, customizeData, resolvent, tableData, resolved, getAddUrl,
-			collectionType, addButton, isMapMode, _d = _, translationInserts;
-		options = Object(arguments[1]);
-		customizeData = { master: options.master || this.master };
-		url = options.url || ns.url;
-		resolvent = this.getFormResolvent(options);
-		resolved = resolvePropertyPath(customizeData.master, this.propertyName);
-		translationInserts = { max: self._max, min: self._min };
-		tableData = resolved.value;
-		if (tableData instanceof db.NestedMap) {
-			isMapMode = true;
-			tableData = tableData.ordered;
-			collectionType = resolved.value.getDescriptor('ordered').type;
-			getAddUrl = function () {
-				return url(self.baseUrl, 'p' + generateId());
-			};
-		} else {
-			collectionType = resolved.descriptor.type;
-			getAddUrl = function () {
-				return url(self.baseUrl + '-add');
-			};
-		}
+		var options       = Object(arguments[1])
+		  , headerRank    = options.headerRank || 2
+		  , customizeData = { master: options.master || this.master };
+
 		customizeData.arrayResult = [customizeData.container = ns.section(
 			{ id: this.domId, class: ns._if(ns.eq(
 				this._status,
 				1
 			), 'section-primary completed entities-overview', 'section-primary entities-overview') },
-			ns._if(this._label,
-				[ns.h2(this._label), ns.hr(),
-					ns._if(this._legend, ns.div({ class: 'section-primary-legend' }, ns.md(this._legend)))]),
-			options.prepend,
-			resolvent.formResolvent ? ns.form({
-				action: url(self.baseUrl + '-resolvent'),
-				autoSubmit: true,
-				method: 'post'
-			}, resolvent.formResolvent, ns.p({ class: 'submit' },
-				ns.input({ type: 'submit', value: _("Submit") }))) : undefined,
-			ns._if(not(self._isUnresolved),
-				ns._if(gtOrEq(self.progressRules.invalid._size, 1),
-					div({ class: 'entities-overview-info' },
-						ns._if(eq(self.progressRules.invalid._size, 1),
-							p(self.progressRules.invalid._first.map(function (rule) {
-								if (!rule) return;
-								return _d(rule.message, translationInserts);
-							})),
-							ul(self.progressRules.invalid,
-								function (rule) {
-									return ns.li(_d(rule.message, translationInserts));
-								}))))),
 
-			ns.div({ class: 'entities-overview-table-wrapper', id: resolvent.affectedSectionId },
-				ns.table(
-					{ class: ns._if(ns.not(ns.eq(tableData._size, 0)),
-						'entities-overview-table',
-						'entities-overview-table entities-overview-table-empty') },
-					ns.thead(
-						ns.tr(ns.list(this.entities, function (entity) {
-							return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
-										ns._if(entity._mobileOnly, 'mobile-only')) },
-									or(entity._label, resolvePropertyPath(
-									collectionType.prototype,
-									entity.propertyName
-								).descriptor.label));
-						}), ns.th(),
-							ns.th({ class: 'actions' }))
-					),
-					ns.tbody({ onEmpty: ns.tr(ns.td({ colspan: this.entities.size + 2 },
-								this.onEmptyMessage)
-						) },
-						tableData,
-						function (entityObject) {
-							var editUrl, deleteUrl, status;
-							if (isMapMode) {
-								editUrl = url(self.baseUrl, entityObject.key);
-								deleteUrl = url(self.baseUrl, entityObject.key, 'delete');
-							} else {
-								editUrl = url(self.baseUrl, entityObject.__id__);
-								deleteUrl = url(self.baseUrl, entityObject.__id__, 'delete');
-							}
-							if (self.sectionProperty === 'dataForms') {
-								status = entityObject.dataForms._progress;
-							} else {
-								status = resolvePropertyPath(entityObject,
-										self.sectionProperty + 'Status').observable;
-							}
-							return ns.tr(ns.list(self.entities, function (entity) {
-								return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
-											ns._if(entity._mobileOnly, 'mobile-only')) },
-										ns.a({ href: editUrl },
-											resolvePropertyPath(entityObject, entity.propertyName).observable));
-							}),
-								ns.td({ class: ns._if(ns.eq(status, 1),
-										'completed') },
-									ns.span({ class: 'status-complete' }, "✓"),
-									ns.span({ class: 'hint-optional hint-optional-left status-incomplete',
-											'data-hint': _("Some required fields are not filled") },
-										"!")),
-								ns.td({ class: 'actions' },
-									ns.a({ class: 'actions-edit',
-											href: editUrl },
-										ns.span({ class: 'fa fa-edit' }, _("Edit"))),
-									ns.postButton({ buttonClass: 'actions-delete',
-										action: deleteUrl,
-										value: ns.span({ class: 'fa fa-trash-o' },
-											_("Delete")) })));
-						}),
-					this.generateFooter &&
-						ns.tfoot(this.generateFooter(
-							resolvePropertyPath(customizeData.master, this.propertyName).value
-						))
-				),
-				options.append,
-				resolvent.legacyScript,
-				ns.p(
-					customizeData.addButton = addButton = ns.a(
-						{ class: 'button-regular', href: getAddUrl() },
-						options.addButtonLabel || _("Add new")
-					)
-				)),
-			ns.p({ class: 'section-primary-scroll-top' },
+			_if(this._isDisabled, div({ class: 'entities-overview-info' }, this._disabledMessage)),
+			div({ class: ['disabler-range',
+					_if(this._isDisabled, 'disabler-active')] },
+				div({ class: 'disabler' }),
+				ns._if(this._label, [
+					headersMap[headerRank](this._label),
+					ns.hr(),
+					ns._if(this._legend,
+						ns.div({ class: 'section-primary-legend' }, ns.md(this._legend)))]),
+				this.toDOMFieldset(document, options),
+				ns.p({ class: 'section-primary-scroll-top' },
 					ns.a({ onclick: 'window.scroll(0, 0)' }, ns.span({ class: 'fa fa-arrow-up' },
-						_("Back to top"))))
+						_("Back to top")))))
 		)];
-		if (isMapMode) {
-			loc.on('change', function (ev) {
-				if (loc.pathname !== addButton.pathname) return;
-				addButton.href = getAddUrl();
-			});
-		}
 		if (typeof options.customize === 'function') {
 			options.customize.call(this, customizeData);
 		}

@@ -2,6 +2,8 @@
 
 'use strict';
 
+var db           = require('mano').db;
+
 // Assure prototype specific print base customisations
 require('./view/print-base');
 require('./view/user');
@@ -17,6 +19,18 @@ module.exports = {
 	'guide-lomas/form-complement': require('./view/guide-lomas-form-complement'),
 	'guide/costs-print': require('../view/print-business-process-costs-list'),
 	forms: require('./view/forms'),
+	'forms/company-informations': {
+		decorateContext: function () {
+			this.section = this.businessProcess.dataForms.map.company;
+		},
+		view: require('../view/business-process-data-forms-section-tab')
+	},
+	'forms/sides': {
+		decorateContext: function () {
+			this.section = this.businessProcess.dataForms.map.sides;
+		},
+		view: require('../view/business-process-data-forms-section-tab')
+	},
 	'forms/disabled': require('./view/disabled-forms'),
 	documents: require('./view/documents'),
 	pay: require('./view/payment'),
@@ -41,6 +55,27 @@ module.exports = {
 	'my-account/requests': require('../view/user-requests'),
 	'my-account/summary': require('../view/user-business-process-summary'),
 
+	// Manager
+	manager: {
+		decorateContext: function () {
+			this.user = db.notary;
+		},
+		view: require('../view/manager-home')
+	},
+	'manager/requests': {
+		decorateContext: function () {
+			this.user = db.notary;
+		},
+		view: require('../view/manager-business-processes')
+	},
+	'manager/requests/firstrequest': {
+		decorateContext: function () {
+			this.user = db.notary;
+			this.managedUser = db.userVianney;
+			this.businessProcess = db.firstBusinessProcess;
+		},
+		view: require('./view/guide')
+	},
 	// Part-B routes - user submitted
 	'user-submitted': require('./view/user-submitted'),
 	'user-submitted/(document)': {
@@ -82,6 +117,13 @@ module.exports = {
 			return true;
 		},
 		view: require('./view/business-process-revision-payment')
+	},
+	'official/user-id/(document)': {
+		match: function () {
+			this.document = this.businessProcess.requirementUploads.applicable.first.document;
+			return true;
+		},
+		view: require('../view/business-process-document')
 	},
 	firstBusinessProcess: {
 		match: function () { return true; },

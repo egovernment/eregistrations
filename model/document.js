@@ -13,10 +13,10 @@ var memoize               = require('memoizee/plain')
   , defineNestedMap       = require('./lib/nested-map');
 
 module.exports = memoize(function (db) {
-	var StringLine = defineStringLine(db)
-	  , File       = defineFile(db)
-	  , DateType   = defineDate(db)
-	  , StatusLog  = defineStatusLog(db)
+	var StringLine      = defineStringLine(db)
+	  , File            = defineFile(db)
+	  , DateType        = defineDate(db)
+	  , StatusLog       = defineStatusLog(db)
 	  , FormSectionBase = defineFormSectionBase(db)
 	  , Document;
 
@@ -47,7 +47,26 @@ module.exports = memoize(function (db) {
 		// True if this document is used as a certificate
 		isCertificate: { type: db.Boolean, value: function (_observe) {
 			return this.owner === this.master.certificates.map;
-		} }
+		} },
+		// True if this document is a certificate that is supposed to be handed over at front desk
+		isToBeHanded: { type: db.Boolean, value: false },
+		// Whether certificate was handed over (at front desk)
+		wasHanded: { type: db.Boolean },
+		// Returns processing ProcessingStep if it exists on a certificate
+		processingStep: {
+			// Type should be ProcessingStep,
+			// Still ProcessingStep invokes circular resolution to Document by using UploadsProcess
+			// to avoid circluar requires hell (as Document is low-level type and it's required by
+			// many classes), we do not require here ProcessingStep, therefore we can't set it as type.
+			// Type of this property is fixed in ProcessingStep definition
+			// This hack will be removed after we introduce Certificate type (which will work analogously
+			// as RequirementUpload) as then this property will land on Certificate and not Document
+			type: db.Object,
+			value: function () {
+				if (!this.isCertificate) return;
+				return this.master.processingSteps.map.processing;
+			}
+		}
 	}, {
 		// Document label
 		label: { type: StringLine },

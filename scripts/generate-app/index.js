@@ -1,28 +1,29 @@
 #!/usr/bin/env node
+
 'use strict';
 
-var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
-  , fs            = require('fs2')
-  , path          = require('path')
-  , template      = require('es6-template-strings')
-  , deferred      = require('deferred')
-  , exec          = deferred.promisify(require('child_process').execFile)
-  , capitalize    = require('es5-ext/string/#/capitalize')
+var normalizeOptions  = require('es5-ext/object/normalize-options')
+  , capitalize        = require('es5-ext/string/#/capitalize')
+  , hyphenToCamel     = require('es5-ext/string/#/hyphen-to-camel')
+  , template          = require('es6-template-strings')
+  , deferred          = require('deferred')
+  , fs                = require('fs2')
+  , path              = require('path')
+  , exec              = deferred.promisify(require('child_process').execFile)
   , generateAppsList  = require('mano/scripts/generate-apps-list')
   , generateAppsConf  = require('mano/scripts/generate-apps-conf')
   , generateAppsCtrls = require('mano/scripts/generate-apps-controllers')
-  , getApps           = require('mano/server/utils/resolve-apps')
-  , extraFilesPath
-  , copyExtraFile
-  , partialAppName
-  , appTypes
-  , templateType
-  , templateVars = {}
-  , appRootPath;
+  , getApps           = require('mano/server/utils/resolve-apps');
 
-appTypes = {
+var appTypes = {
 	'users-admin': true,
 	'meta-admin': { extraFiles: ['view/meta-admin'] },
+	dispatcher: { extraFiles: ['view/dispatcher'],
+		'client/model.js': 'client/model.js/official.tpl'
+		},
+	supervisor: {
+		'client/model.js': 'client/model.js/official.tpl'
+	},
 	user: { extraFiles: ['view/user.js'] },
 	public: { extraFiles: ['apps/public'] },
 	official: true,
@@ -30,13 +31,16 @@ appTypes = {
 	'business-process': true
 };
 
-copyExtraFile = function (projectRoot, extraPath) {
+var copyExtraFile = function (projectRoot, extraPath) {
 	return fs.copy(path.resolve(extraPath),
 		path.join(projectRoot, extraPath.split('extra-files/').slice(-1)[0]),
 		{ intermediate: true });
 };
 
-module.exports = function (projectRoot, appName) {
+module.exports = function (projectRoot, appName/*, options*/) {
+	var options = normalizeOptions(arguments[2]), extraFilesPath, partialAppName, templateType
+	  , appRootPath, templateVars = {}, findTemplate;
+
 	appRootPath = path.resolve(projectRoot, 'apps', appName);
 	extraFilesPath    = path.join(__dirname, 'extra-files');
 
@@ -64,6 +68,19 @@ module.exports = function (projectRoot, appName) {
 
 	var templates = {};
 
+	findTemplate = function (appPath, fName, templates, templatePath) {
+		var partialAppName = appName, i = 0;
+		if (templates[appPath] && path.basename(templates[appPath]) !== 'authenticated.tpl') return;
+		while (partialAppName) {
+			if (fName === partialAppName) {
+				templates[appPath] = path.join(__dirname, 'templates', templatePath);
+				return;
+			}
+			--i;
+			partialAppName = appName.split('-').slice(0, i).join('-');
+		}
+	};
+
 	return exec('node',
 		[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + appName],
 		{ cwd: projectRoot }).then(function () {
@@ -74,15 +91,19 @@ module.exports = function (projectRoot, appName) {
 			  , appPathRel = path.dirname(templatePath)
 			  , appPath = path.join(appRootPath, appPathRel);
 
-				if (appTypes[templateType][appPathRel] === templatePath) {
-					templates[appPath] = path.join(__dirname, 'templates', templatePath);
-					return;
-				}
-				if (fName === templateType) {
+				if (appTypes[templateType] && appTypes[templateType][appPathRel] === templatePath) {
 					templates[appPath] = path.join(__dirname, 'templates', templatePath);
 					return;
 				}
 				if (fName === 'authenticated' && !templates[appPath]) {
+					templates[appPath] = path.join(__dirname, 'templates', templatePath);
+					return;
+				}
+				if (templateType === 'official') {
+					findTemplate(appPath, fName, templates, templatePath);
+					return;
+				}
+				if (fName === templateType) {
 					templates[appPath] = path.join(__dirname, 'templates', templatePath);
 				}
 			}
@@ -128,6 +149,7 @@ module.exports = function (projectRoot, appName) {
 		}
 		return deferred.map(toResolve);
 	}).then(function () {
+		if (options.appFilesOnly) return;
 		return deferred(
 			generateAppsList(projectRoot),
 			getApps(projectRoot).then(function (appsList) {

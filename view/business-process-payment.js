@@ -22,7 +22,8 @@ exports.step = function () {
 
 	div(
 		{ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
-				'disabler-active')], id: 'documents-disabler-range' },
+			'disabler-active')], id: 'documents-disabler-range' },
+		div({ class: 'disabler' }),
 		section(
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
@@ -31,29 +32,38 @@ exports.step = function () {
 					return li({ class: 'section-primary' },
 						form({ action: '/payment-receipt-upload/' + camelToHyphen.call(paymentUpload.key) + '/',
 							method: 'post', enctype: 'multipart/form-data', autoSubmit: true },
-							div(
-								h2(_d(paymentUpload.document.label, { user: paymentUpload.master })),
-								paymentUpload.document.legend &&
-									small(mdi(_d(paymentUpload.document.legend,
-										{ user: paymentUpload.master }))),
-								hr(),
-								input({ dbjs: paymentUpload.document.files._map, label: true }),
-								p({ class: 'submit' }, input({ type: 'submit', value: _("Submit") })),
-								p({ class: 'section-primary-scroll-top' },
-										a({ onclick: 'window.scroll(0, 0)' },
-											span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
-							))
-						);
+							h2(_d(paymentUpload.document.label, { user: paymentUpload.master })),
+							paymentUpload.document.legend &&
+							small(mdi(_d(paymentUpload.document.legend,
+								{ user: paymentUpload.master }))),
+							hr(),
+							input({ dbjs: paymentUpload.document.files._map, label: true }),
+							p({ class: 'submit' }, input({ type: 'submit', value: _("Submit") })),
+							p({ class: 'section-primary-scroll-top' },
+								a({ onclick: 'window.scroll(0, 0)' },
+									span({ class: 'fa fa-arrow-up' }, _("Back to top"))))));
 				}
 			)
 		),
-		exports._onlinePayments(this),
-		div({ class: 'disabler' })
+		exports._onlinePayments(this)
 	);
-	insert(_if(eq(this.businessProcess.costs._paymentProgress, 1),
+	insert(_if(and(eq(this.businessProcess._guideProgress, 1),
+		eq(this.businessProcess.costs._paymentProgress, 1)),
 		div({ class: 'user-next-step-button' },
 			a({ href: '/submission/' }, _("Continue to next step")))));
 };
 
-exports._paymentHeading = Function.prototype;
+exports._paymentHeading = function (context) {
+	var headingText = _("3 Pay the fees");
+
+	return div(
+		{ class: 'capital-first' },
+		div(headingText[0]),
+		div(
+			h1(headingText.slice(1).trim()),
+			p(_("Provide a proof of payment if you have paid at the bank or pay online directly here."))
+		)
+	);
+};
+
 exports._onlinePayments = Function.prototype;

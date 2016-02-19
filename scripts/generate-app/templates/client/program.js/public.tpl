@@ -24,10 +24,11 @@ mano = require('mano');
 // TODO: Expose only in dev environments
 window.db = mano.db;
 
+// Env settings
+require('../../../apps-common/client/env');
+
 // i18n2
-var env = require('../../../apps-common/client/env');
-mano.i18n = require('i18n2')(require('mano/client/utils/resolve-locale')(env,
-	require('../../../i18n')));
+require('../../../i18n');
 
 // DB Model
 require('../../../db');
@@ -59,8 +60,6 @@ var appLocation     = window.appLocation = require('mano/lib/client/location')
 
   , viewTree, router, refresh;
 
-mano.env = env;
-
 // Intialize POST router & controller
 postRouter(joinControllers(require('../controller'), require('../controller/client')));
 
@@ -80,11 +79,13 @@ viewTree = new SiteTree(document, require('../view/inserts'),
 router = new SiteTreeRouter(require('../routes'), viewTree,
 	{ notFound: require('../view').notFound });
 appLocation.on('change', refresh = function () {
+	var result;
 	if (last.call(appLocation.pathname) !== '/') {
 		appLocation.goto(appLocation.pathname + '/' + appLocation.search + appLocation.hash);
 		return;
 	}
-	router.route(appLocation.pathname);
+	result = router.route(appLocation.pathname);
+	if (result && (typeof result.done === 'function')) result.done();
 });
 if (appLocation.pathname) refresh();
 else appLocation.onchange();

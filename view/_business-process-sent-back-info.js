@@ -5,10 +5,10 @@ var identity = require('es5-ext/function/identity')
 
 module.exports = exports = function (context) {
 	var businessProcess = context.businessProcess
-	  , revision = businessProcess.processingSteps.map.revision;
+	  , revisions = businessProcess.processingSteps.revisions;
 	return [h3(_("Remark")),
 		p(_("We have made following comments to your application:")),
-		ul(_if(revision && revision._isSentBack, [
+		ul(_if(revisions.filterByKey('isSentBack', true)._size, [
 			_if(businessProcess.requirementUploads.recentlyRejected._size,
 				li(h4(_("Issues with uploaded documents:")), div({ class: 'free-form' },
 					ul(businessProcess.requirementUploads.recentlyRejected, function (requirementUpload) {

@@ -6,18 +6,19 @@ var ensureCallable = require('es5-ext/object/valid-callable')
   , startsWith     = require('es5-ext/string/#/starts-with')
   , ensureType     = require('dbjs/valid-dbjs-type')
   , serialize      = require('dbjs/_setup/serialize/value')
-  , Fragment       = require('data-fragment');
+  , Fragment       = require('data-fragment')
+  , db             = require('mano').db;
 
 module.exports = function (Type/*, options*/) {
 	var fragments = Object.create(null), options = Object(arguments[1])
 	  , filter;
 
-	ensureType(Type);
+	if (Type != null) ensureType(Type);
 	if (options.filter != null) filter = ensureCallable(options.filter);
 	return function (id) {
 		var fragment = fragments[id], object;
 		if (fragment) return fragment;
-		object = Type.getById(id);
+		object = Type ? Type.getById(id) : db.objects.getById(id);
 		fragment = fragments[id] = new Fragment();
 		if (!object) return fragment;
 		object.getAllEvents().forEach(function (event) {

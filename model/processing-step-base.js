@@ -43,7 +43,7 @@ module.exports = memoize(function (db) {
 
 		// Whether business process is at given step or have passed it
 		isReady: { type: db.Boolean, value: function (_observe) {
-			return Boolean(this.isApplicable && this.isPreviousStepsSatisfied);
+			return Boolean(this.isApplicable && (this.isSentBack || this.isPreviousStepsSatisfied));
 		} },
 
 		// Whether process is pending at step
@@ -54,6 +54,9 @@ module.exports = memoize(function (db) {
 
 		// Whether process was sent back from this step
 		isSentBack: { type: db.Boolean },
+
+		// Whether process was redelegated from this step
+		isRedelegated: { type: db.Boolean },
 
 		// Whether process was rejected at this step
 		isRejected: { type: db.Boolean },
@@ -76,8 +79,22 @@ module.exports = memoize(function (db) {
 		} },
 
 		isSatisfied: { type: db.Boolean, value: function () {
-			return this.isApplicable ? Boolean(this.isApproved) : this.isPreviousStepsSatisfied;
-		} }
+			if (this.isApplicable) {
+				return Boolean(this.isApproved || this.delegatedFrom);
+			}
+			return this.isPreviousStepsSatisfied;
+		} },
+
+		// maps key to shorter version e.g. processingSteps/map/revision/steps/map/oni -> revision/oni
+		//                                  processingSteps/map/revision               -> revision
+		shortPath: {
+			type: StringLine,
+			value: function () {
+				return this.__id__.split('/map/').slice(1).map(function (part) {
+					return part.replace(/\/steps$/, '');
+				}).join('/');
+			}
+		}
 	});
 
 	ProcessingStepBase.prototype.define('previousSteps', {

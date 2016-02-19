@@ -18,13 +18,12 @@ module.exports = Object.defineProperty(
 				// the user should check the confirmation checkbox.
 				insert(_if(and(requirementUpload.document.files.ordered._size,
 						not(requirementUpload.document._isUpToDate)),
-					p(
+					p({ class: 'entities-overview-info' },
 						requirementUpload.document.getDescriptor('isUpToDateByUser').label,
 						' ',
 						label({ class: 'signed-data-form-requirement-label' },
 							input({ name: requirementUpload.document.__id__ + '/isUpToDateByUser',
-								type: 'checkbox', value: 1, checked: false }), ' ', _("Yes"))
-					)
+								type: 'checkbox', value: 1, checked: false }), ' ', _("Yes")))
 					))];
 		};
 

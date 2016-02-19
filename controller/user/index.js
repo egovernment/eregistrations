@@ -3,9 +3,6 @@
 var changeOwnPassword = require('mano-auth/controller/change-own-password').validate
   , validate          = require('mano/utils/validate');
 
-// Login
-exports.login = require('mano-auth/controller/login');
-
 // Profile
 exports.profile = {
 	validate: function (data) {

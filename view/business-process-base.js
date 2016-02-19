@@ -35,14 +35,18 @@ exports._stepsMenu = function (context) {
 			{ class: 'user-steps-menu-start-step' },
 			a({ href: '/', id: 'step-guide' },
 				_("Guide")),
-			div({ class: 'user-steps-menu-item-progress',
+			div({ class: ['user-steps-menu-item-progress',
+				_if(eq(context.businessProcess._guideProgress, 1),
+					'user-steps-menu-step-completed')],
 				style: mmap(context.businessProcess._guideProgress, setProgressWidth) })
 		),
 		li(
 			a({ href: '/forms/', id: 'step-form' },
 				_("Fill the form")
 				),
-			div({ class: 'user-steps-menu-item-progress',
+			div({ class: ['user-steps-menu-item-progress',
+				_if(eq(context.businessProcess.dataForms._progress, 1),
+					'user-steps-menu-step-completed')],
 				style: mmap(and(ensureGuide, context.businessProcess.dataForms._progress),
 					setProgressWidth) })
 		),
@@ -50,7 +54,9 @@ exports._stepsMenu = function (context) {
 			a({ href: '/documents/', id: 'step-documents' },
 				_("Upload docs")
 				),
-			div({ class: 'user-steps-menu-item-progress',
+			div({ class: ['user-steps-menu-item-progress',
+				_if(eq(context.businessProcess.requirementUploads._progress, 1),
+					'user-steps-menu-step-completed')],
 				style: mmap(and(ensureGuide, context.businessProcess.requirementUploads._progress),
 					setProgressWidth) })
 		),
@@ -58,7 +64,9 @@ exports._stepsMenu = function (context) {
 			a({ href: '/pay/', id: 'step-pay' },
 				_("Pay")
 				),
-			div({ class: 'user-steps-menu-item-progress',
+			div({ class: ['user-steps-menu-item-progress',
+				_if(eq(context.businessProcess.costs._paymentProgress, 1),
+					'user-steps-menu-step-completed')],
 				style: mmap(and(ensureGuide, context.businessProcess.costs._paymentProgress),
 					setProgressWidth) })
 		)),
@@ -66,7 +74,9 @@ exports._stepsMenu = function (context) {
 			a({ href: '/submission/', id: 'step-submission' },
 				_("Send file")
 				),
-			div({ class: 'user-steps-menu-item-progress',
+			div({ class: ['user-steps-menu-item-progress',
+				_if(eq(context.businessProcess.submissionForms._progress, 1),
+					'user-steps-menu-step-completed')],
 				style: mmap(and(ensureGuide, context.businessProcess.submissionForms._progress),
 					setProgressWidth) })
 		)];

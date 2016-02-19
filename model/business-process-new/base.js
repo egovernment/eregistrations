@@ -12,14 +12,15 @@ var memoize                   = require('memoizee/plain')
   , defineStatusLog           = require('../lib/status-log');
 
 module.exports = memoize(function (db/*, options*/) {
-	var StringLine = defineStringLine(db)
-	  , Url = defineUrl(db)
-	  , UInteger  = defineUInteger(db)
-	  , StatusLog = defineStatusLog(db)
+	var options             = Object(arguments[1])
 	  , BusinessProcessBase = defineBusinessProcessBase(db)
-	  , BusinessProcess
+	  , StringLine          = defineStringLine(db)
+	  , UInteger            = defineUInteger(db)
+	  , Url                 = defineUrl(db)
+	  , StatusLog           = defineStatusLog(db)
 
-	  , options = Object(arguments[1]);
+	  , BusinessProcess;
+
 	defineNestedMap(db);
 
 	BusinessProcess = BusinessProcessBase.extend(options.className || 'BusinessProcess', {
@@ -27,6 +28,10 @@ module.exports = memoize(function (db/*, options*/) {
 		// It's not specific per business process, but should provide general info as:
 		// "Merchant registration", "Company registration" etc.
 		label: { type: StringLine },
+
+		// General abbreviation of business process type
+		// e.g. IT (Individual trader), C (Company), COI (Certificate of incentives)
+		abbr: { type: StringLine },
 
 		// Name of businessProcess
 		// Usually computed from other properties
@@ -44,17 +49,22 @@ module.exports = memoize(function (db/*, options*/) {
 		// It has its use in "business update" applications where we allow updates
 		// of old registrations done at the counter
 		isFromEregistrations: { type: db.Boolean, value: true,
-			label: _("Has registration been made online?") }
+			label: _("Has registration been made online?") },
+
+		// String over which business processes can be searched
+		// through interface panel (computed value is later indexed by persistence engine)
+		searchString: { type: db.String, value: function () {
+			var arr = [], submissionNumber = String(this.submissionNumber);
+			if (this.businessName) arr.push(this.businessName.toLowerCase());
+			if (submissionNumber) arr.push(submissionNumber.toLowerCase());
+			return arr.join('\x02');
+		} }
 	});
 
 	BusinessProcess.prototype.submissionNumber.defineProperties({
-		value: { type: StringLine, value: function () {
-			return this.number;
-		} },
+		value: { type: StringLine, value: function () { return this.number; } },
 		number: { type: UInteger, value: 0 },
-		toString: { value: function (opts) {
-			return this.value;
-		} }
+		toString: { value: function (opts) { return this.value; } }
 	});
 
 	BusinessProcess.prototype.defineNestedMap('statusLog',

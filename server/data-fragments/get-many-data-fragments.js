@@ -10,7 +10,6 @@ var includes             = require('es5-ext/array/#/contains')
   , Set                  = require('es6-set/primitive')
   , DataFragmentGroup    = require('data-fragment/group')
   , getFullDataFragments = require('./get-full-data-fragments')
-  , db                   = require('mano').db
 
   , isArray = Array.isArray;
 
@@ -18,7 +17,7 @@ module.exports = function (collection/*, getFragment*/) {
 	var getFragment = arguments[1], fragment, current, isArrayMode = isArray(collection);
 
 	ensureObservable(ensureIterable(collection));
-	if (getFragment == null) getFragment = getFullDataFragments(db.Object);
+	if (getFragment == null) getFragment = getFullDataFragments();
 	else ensureCallable(getFragment);
 
 	fragment = new DataFragmentGroup();

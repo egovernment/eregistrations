@@ -7,20 +7,22 @@ var memoize               = require('memoizee/plain')
   , defineCurrency        = require('dbjs-ext/number/currency')
   , defineMultipleProcess = require('../lib/multiple-process')
   , defineCost            = require('../cost')
-  , defineRegistrations   = require('./registrations')
+  , defineBusinessProcess = require('./registrations')
 
   , definePaymentReceiptUploads;
 
 module.exports = memoize(function (db/* options */) {
-	var BusinessProcess = defineRegistrations(db, arguments[1])
-	  , Percentage = definePercentage(db)
+	var options         = Object(arguments[1])
+	  , BusinessProcess = defineBusinessProcess(db, options)
+	  , Percentage      = definePercentage(db)
 	  , MultipleProcess = defineMultipleProcess(db)
-	  , Currency = defineCurrency(db)
-	  , Cost = defineCost(db);
+	  , Currency        = defineCurrency(db)
+	  , Cost            = defineCost(db);
 
 	BusinessProcess.prototype.defineProperties({
 		costs: { type: MultipleProcess, nested: true }
 	});
+
 	BusinessProcess.prototype.costs.map._descriptorPrototype_.type = Cost;
 	BusinessProcess.prototype.costs.defineProperties({
 		// Applicable costs resolved out of requested registrations
@@ -57,14 +59,20 @@ module.exports = memoize(function (db/* options */) {
 			});
 			return result;
 		} },
+		// Global isOnlinePaymentInitialized indication
+		// Should be used when we use one online payment for all costs (and that's default)
+		// Otherwise there's a isOnlinePaymentInitialized on each cost to which we can refer
+		isOnlinePaymentInitialized: { type: db.Boolean, value: function () {
+			return this.isOnlinePaymentInProgress || this.isPaidOnline;
+		} },
 		// Global isPaidOnline indication
 		// Should be used when we use one online payment for all costs (and that's default)
 		// Otherwise there's a isPaidOnline on each cost to which we can refer
 		isPaidOnline: { type: db.Boolean, value: false },
-		// Global isOnlinePaymentInitialized indication
+		// Global isOnlinePaymentInProgress indication
 		// Should be used when we use one online payment for all costs (and that's default)
-		// Otherwise there's a isOnlinePaymentInitialized on each cost to which we can refer
-		isOnlinePaymentInitialized: { type: db.Boolean, value: false },
+		// Otherwise there's a isOnlinePaymentInProgress on each cost to which we can refer
+		isOnlinePaymentInProgress: { type: db.Boolean, value: false },
 		// Payment progress
 		paymentProgress: { type: Percentage, value: function (_observe) {
 			var valid = 0, total = 0, paymentReceiptUploads = this.master.paymentReceiptUploads;
@@ -74,7 +82,7 @@ module.exports = memoize(function (db/* options */) {
 				if (this.electronic.every(function (cost) { return _observe(cost._isPaid); })) {
 					++valid;
 				} else if (this.electronic.some(function (cost) {
-						return _observe(cost._isOnlinePaymentInitialized);
+						return _observe(cost._isOnlinePaymentInProgress);
 					})) {
 					valid += 0.5;
 				}
@@ -107,7 +115,10 @@ module.exports = memoize(function (db/* options */) {
 		} }
 	});
 
-	if (!BusinessProcess.prototype.paymentReceiptUploads) definePaymentReceiptUploads(db);
+	if (!BusinessProcess.prototype.paymentReceiptUploads) {
+		definePaymentReceiptUploads(db, options);
+	}
+
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
 

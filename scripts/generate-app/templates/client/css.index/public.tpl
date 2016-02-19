@@ -8,8 +8,5 @@
 ../../../node_modules/eregistrations/css/components/dialog-reset-password.css
 ../../../node_modules/eregistrations/css/components/header-top.css
 ../../../node_modules/eregistrations/css/components/footer-logos.css
-../../../node_modules/eregistrations/css/components/public-banner.css
-../../../node_modules/eregistrations/css/components/public-steps.css
-../../../node_modules/eregistrations/css/components/public-institutions.css
 ../../../node_modules/eregistrations/css/components/pills-nav.css
 ../css/demo.css

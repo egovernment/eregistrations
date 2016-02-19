@@ -5,13 +5,18 @@
 .user-forms > *:first-child {
 	margin-top: 44px;
 }
+.user-forms > .pills-nav {
+	margin-top: 22px;
+}
 .user-forms > form,
 .user-forms > .disabler-range,
+.user-forms > .disabler-range > .disabler-range,
 .user-forms > .disabler-range > form  {
 	margin-bottom: 0;
 }
 .user-forms > form > *,
 .user-forms > .disabler-range > *,
+.user-forms > .disabler-range > .disabler-range > *,
 .user-forms > .disabler-range > form > * {
 	margin-bottom: 22px;
 }

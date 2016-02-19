@@ -35,6 +35,16 @@
 	max-height: 100%;
 }
 
+.submitted-preview-new-image-placeholder iframe {
+	width: 100%;
+	height: 100%;
+}
+
+.submitted-preview-new-image-placeholder .submitted-preview-new-word-document {
+	margin: 30% 10%;
+	width: 80%;
+}
+
 .submitted-preview-new-document .container-with-nav h3 {
 	display: flex;
 }

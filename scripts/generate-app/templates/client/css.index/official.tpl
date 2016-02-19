@@ -3,6 +3,7 @@
 ../../../node_modules/eregistrations/css/table.css
 ../../../node_modules/eregistrations/css/components/fa.css
 ../../../node_modules/eregistrations/css/components/button-main.css
+../../../node_modules/eregistrations/css/components/disabler.css
 ../../../node_modules/eregistrations/css/components/container-with-nav.css
 ../../../node_modules/eregistrations/css/components/button-resource-link.css
 ../../../node_modules/eregistrations/css/components/section-primary.css
@@ -31,14 +32,11 @@
 ../../../node_modules/eregistrations/css/components/table-responsive.css
 ../../../node_modules/eregistrations/css/components/table-responsive-container.css
 ../../../node_modules/eregistrations/css/components/official-form.css
-../../../node_modules/eregistrations/css/components/button-main.css
 ../../../node_modules/eregistrations/css/components/dialog.css
 ../../../node_modules/eregistrations/css/components/dialog-reject.css
 ../../../node_modules/eregistrations/css/components/official-submission-toolbar.css
-../../../node_modules/eregistrations/css/components/table-responsive-container.css
-../../../node_modules/eregistrations/css/components/label-reg.css
 ../../../node_modules/eregistrations/css/components/pagination.css
 ../../../node_modules/eregistrations/css/components/throbber.css
+../../../node_modules/eregistrations/css/components/business-process-official.css
 ../../../css/theme.css
 ../../../css/theme-part-b.css
-../../../css/components/submitted-preview-new.css

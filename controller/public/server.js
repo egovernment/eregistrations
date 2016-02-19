@@ -1,9 +1,12 @@
 'use strict';
 
-var db             = require('mano').db
-  , registerSubmit = require('mano-auth/controller/server/register-and-login').submit
-  , login          = require('mano-auth/server/authentication').login
+var emptyPromise = require('deferred')(undefined)
+  , genId        = require('time-uuid')
+  , login        = require('mano-auth/server/authentication').login
+  , mano         = require('mano')
+  , register     = require('mano-auth/controller/server/register').submit
 
+  , db = mano.db, dbDriver = mano.dbDriver
   , maxage = 1000 * 60 * 60 * 24 * 7;
 
 exports.login = require('mano-auth/controller/server/login');
@@ -11,9 +14,11 @@ exports.register = require('mano-auth/controller/server/register-and-login');
 exports['reset-password'] = require('mano-auth/controller/server/reset-password');
 exports['request-reset-password'] = require('mano-auth/controller/server/request-reset-password');
 
-exports.register.submit = function (normalizedData, data) {
-	normalizedData['User#/roles'] = ['user'];
-	return registerSubmit.apply(this, arguments);
+exports['add-user'] =  {
+	submit: function (data) {
+		if (!data['User#/roles']) data['User#/roles'] = ['user'];
+		return register.apply(this, arguments);
+	}
 };
 
 exports['init-demo'] = {
@@ -21,8 +26,33 @@ exports['init-demo'] = {
 	submit: function () {
 		var cookieName = 'demoUser'
 		  , userId     = this.res.cookies.get(cookieName)
-		  , demoUser;
+		  , demoUser, promise;
 
+		if (dbDriver) {
+			if (userId) promise = dbDriver.get(userId + '/isDemo');
+			else promise = emptyPromise;
+			return promise(function (data) {
+				var records, promise;
+				if (!data || (data.value !== '11')) {
+					userId = genId();
+					records = [
+						{ id: userId, data: { value: '7User#' } },
+						{ id: userId + '/isDemo', data: { value: '11' } },
+						{ id: userId + '/roles*user', data: { value: '11' } }
+					];
+					dbDriver.storeMany(records).done();
+					promise = mano.registerUserAccess(userId);
+				} else {
+					promise = emptyPromise;
+				}
+				return promise(function () {
+					this.res.cookies.set(cookieName, userId, { maxage: maxage });
+					login(userId, this.req, this.res);
+				}.bind(this));
+			}.bind(this));
+		}
+
+		// TODO: Legacy logic to be removed, when all systems stand on persistent driver
 		if (userId) {
 			demoUser = db.User.getById(userId);
 		}
@@ -35,7 +65,6 @@ exports['init-demo'] = {
 
 		this.res.cookies.set(cookieName, demoUser.__id__, { maxage: maxage });
 		login(demoUser.__id__, this.req, this.res);
-		this.user = demoUser;
 	},
 	redirectUrl: '/'
 };

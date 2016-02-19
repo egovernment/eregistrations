@@ -12,6 +12,7 @@ Component describing basic elements styles - reusable
 	--white-background: #ffffff;
 	--light-background: #f5f5f5;
 	--light-medium-background: #e3e3e3;
+	--lighter-medium-background: #ebebeb;
 	--normal-light-background: #ddd;
 	--normal-light-medium-background: #BEBDBD;
 	--normal-background: #999;
@@ -28,6 +29,7 @@ Component describing basic elements styles - reusable
 	/* Text colors */
 	--white-text: #ffffff;
 	--light-text: #e3e3e3;
+	--medium-text: #bbbbbb;
 	--hint-text: #b3b3b3;
 	--light-normal-text: #909090;
 	--normal-text: #666666;
@@ -113,7 +115,7 @@ h2 {
 	line-height: 44px;
 }
 h3 {
-	font-size: 19px;
+	font-size: 22px;
 	font-weight: 300;
 }
 h5 {

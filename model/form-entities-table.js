@@ -11,51 +11,19 @@ var _                       = require('mano').i18n.bind("Model: Form Entities Ta
   , defineFormSectionBase   = require('./form-section-base')
   , defineFormTabularEntity = require('./form-tabular-entity')
   , defineUInteger          = require('dbjs-ext/number/integer/u-integer')
-  , defineProgressRule      = require('./lib/progress-rule')
-  , defineProgressRules     = require('./lib/progress-rules');
+  , defineProgressRule      = require('./lib/progress-rule');
 
 module.exports = memoize(function (db) {
-	var FormEntitiesTable, StringLine, FormSectionBase, FormTabularEntity, UInteger
-	  , ProgressRule, ProgressRules;
+	var FormEntitiesTable, StringLine, FormSectionBase, FormTabularEntity, UInteger, ProgressRule;
 	validDb(db);
 	StringLine        = defineStringLine(db);
 	FormSectionBase   = defineFormSectionBase(db);
 	FormTabularEntity = defineFormTabularEntity(db);
 	UInteger          = defineUInteger(db);
 	ProgressRule      = defineProgressRule(db);
-	ProgressRules     = defineProgressRules(db);
 	FormEntitiesTable = FormSectionBase.extend('FormEntitiesTable', {
-		progressRules: { type: ProgressRules, nested: true },
 		min: { type: UInteger },
 		max: { type: UInteger },
-		status: {
-			value: function (_observe) {
-				var weight = 0, progress = 0;
-
-				// Take into account resolvent
-				progress += this.resolventStatus * this.resolventWeight;
-				weight += this.resolventWeight;
-
-				// If section is unresolved, exit just with resolvent
-				if (this.isUnresolved) {
-					if (!weight) return 1;
-					return progress / weight;
-				}
-
-				// Take into account all rules
-				progress += _observe(this.progressRules._progress) * _observe(this.progressRules._weight);
-				weight += this.progressRules.weight;
-
-				if (!weight) return 1;
-				return progress / weight;
-			}
-		},
-		weight: { value: function (_observe) {
-			if (this.isUnresolved) {
-				return this.resolventWeight;
-			}
-			return _observe(this.progressRules._weight) + this.resolventWeight;
-		} },
 		getWeightByEntity: {
 			type: db.Function,
 			value: function (entityObject, _observe) {
@@ -150,7 +118,50 @@ module.exports = memoize(function (db) {
 		// For example formSections.
 		sectionProperty: { type: StringLine, required: true },
 		// The text of message displayed when there are no entities.
-		onEmptyMessage: { type: StringLine, value: _("There are no elements added at the moment.") }
+		onEmptyMessage: { type: StringLine, value: _("There are no elements added at the moment.") },
+		hasDisplayableRuleDeep: {
+			value: function (_observe) {
+				if (_observe(this.progressRules.displayable._size) > 0) return true;
+
+				return this.entitiesSet.some(function (child) {
+					var sections;
+
+					sections = child.resolveSKeyPath(this.sectionProperty, _observe);
+					sections = sections.object[sections.key];
+
+					if (this.sectionProperty === 'dataForms') {
+						sections = sections.applicable;
+					}
+
+					return sections.some(function (section) {
+						return (_observe(section._hasDisplayableRuleDeep));
+					});
+				}, this);
+			}
+		},
+		hasMissingRequiredPropertyNamesDeep: {
+			type: db.Boolean,
+			value: function (_observe) {
+				if (this.isUnresolved) {
+					return this.resolventStatus < 1;
+				}
+
+				return this.entitiesSet.some(function (child) {
+					var sections;
+
+					sections = child.resolveSKeyPath(this.sectionProperty, _observe);
+					sections = sections.object[sections.key];
+
+					if (this.sectionProperty === 'dataForms') {
+						sections = sections.applicable;
+					}
+
+					return sections.some(function (section) {
+						return (_observe(section._hasMissingRequiredPropertyNamesDeep));
+					});
+				}, this);
+			}
+		}
 	});
 
 	FormEntitiesTable.prototype.progressRules.map.define('entities', {
@@ -226,6 +237,10 @@ module.exports = memoize(function (db) {
 		maxMessage: _("No more than ${ max } items should be added"),
 		minMaxDiffMessage: _("At least ${ min } and no more than ${ max } items should be added"),
 		minMaxSameMessage: _("Exactly ${ max } items should be added"),
+		getTranslations: function (options) {
+			var tabularSection = this.owner.owner.owner;
+			return { min: tabularSection.min, max: tabularSection.max };
+		},
 		message: function (_observe) {
 			var tabularSection = this.owner.owner.owner, min, max;
 			min = _observe(tabularSection._min);

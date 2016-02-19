@@ -2,7 +2,8 @@
 
 'use strict';
 
-require('../server/utils/ensure-i18n');
+// Ensure mano.env
+require('../env');
 
 var resolve          = require('path').resolve
   , debug            = require('debug-ext')('setup')

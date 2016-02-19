@@ -29,6 +29,7 @@ module.exports = function (t, a) {
 	a(businessProcess.submissionForms.map.pickupInstitution.status, 1);
 	businessProcess.processingSteps.map.frontDesk.possibleInstitutions.add(db.institutionA);
 	a(businessProcess.submissionForms.map.pickupInstitution.isApplicable, true);
+	a(businessProcess.submissionForms.map.pickupInstitution.status, 1);
 	businessProcess.processingSteps.map.frontDesk.possibleInstitutions.add(db.institutionB);
 	a(businessProcess.submissionForms.map.pickupInstitution.status, 0);
 	businessProcess.processingSteps.map.frontDesk.chosenInstitution = db.institutionB;

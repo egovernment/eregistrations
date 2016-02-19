@@ -2,13 +2,16 @@
 
 'use strict';
 
-var all  = require('./')
-  , meta = require('./meta');
+var forEach = require('es5-ext/object/for-each')
+  , all     = require('./')
+  , meta    = require('./meta');
 
 module.exports = meta;
 
-meta.all.data      = all;
-meta.pending.data  = all.filterByKeyPath('processingSteps/map/${ appNameSuffix }/isPending', true);
-meta.sentBack.data = all.filterByKeyPath('processingSteps/map/${ appNameSuffix }/isSentBack', true);
-meta.rejected.data = all.filterByKeyPath('processingSteps/map/${ appNameSuffix }/isRejected', true);
-meta.approved.data = all.filterByKeyPath('processingSteps/map/${ appNameSuffix }/isApproved', true);
+forEach(meta, function (conf, name) {
+	if (name === 'all') {
+		conf.data = all;
+	} else {
+		conf.data = all.filterByKeyPath(conf.indexName, conf.indexValue);
+	}
+});

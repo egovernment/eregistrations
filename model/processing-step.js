@@ -3,22 +3,34 @@
 
 'use strict';
 
-var Map                      = require('es6-map')
-  , memoize                  = require('memoizee/plain')
-  , definePercentage         = require('dbjs-ext/number/percentage')
-  , defineStringLine         = require('dbjs-ext/string/string-line')
-  , defineCreateEnum         = require('dbjs-ext/create-enum')
-  , _                        = require('mano').i18n.bind('Model')
-  , defineUser               = require('./user/base')
-  , defineFormSectionBase    = require('./form-section-base')
-  , defineProcessingStepBase = require('./processing-step-base');
+var Map                        = require('es6-map')
+  , memoize                    = require('memoizee/plain')
+  , definePercentage           = require('dbjs-ext/number/percentage')
+  , defineStringLine           = require('dbjs-ext/string/string-line')
+  , defineCreateEnum           = require('dbjs-ext/create-enum')
+  , _                          = require('mano').i18n.bind('Model')
+  , defineUser                 = require('./user/base')
+  , defineFormSectionBase      = require('./form-section-base')
+  , defineProcessingStepBase   = require('./processing-step-base')
+  , defineUploadsProcess       = require('./lib/uploads-process')
+  , defineMultipleProcess      = require('./lib/multiple-process')
+  , definePaymentReceiptUpload = require('./payment-receipt-upload')
+  , defineRequirementUpload    = require('./requirement-upload')
+  , defineDocument             = require('./document');
 
 module.exports = memoize(function (db) {
-	var Percentage = definePercentage(db)
-	  , StringLine = defineStringLine(db)
-	  , User = defineUser(db)
-	  , FormSectionBase = defineFormSectionBase(db)
-	  , ProcessingStepBase = defineProcessingStepBase(db);
+	var Percentage           = definePercentage(db)
+	  , StringLine           = defineStringLine(db)
+	  , MultipleProcess      = defineMultipleProcess(db)
+	  , User                 = defineUser(db)
+	  , FormSectionBase      = defineFormSectionBase(db)
+	  , ProcessingStepBase   = defineProcessingStepBase(db)
+	  , UploadsProcess       = defineUploadsProcess(db)
+	  , PaymentReceiptUpload = definePaymentReceiptUpload(db)
+	  , RequirementUpload    = defineRequirementUpload(db)
+	  , Document             = defineDocument(db)
+
+	  , ProcessingStep       = ProcessingStepBase.extend('ProcessingStep');
 
 	defineCreateEnum(db);
 
@@ -28,10 +40,11 @@ module.exports = memoize(function (db) {
 		['paused', { label: _("Paused") }],
 		['sentBack', { label: _("Sent back") }],
 		['rejected', { label: _("Rejected") }],
-		['approved', { label: _("Approved") }]
+		['approved', { label: _("Approved") }],
+		['redelegated', { label: _("Redelegated") }]
 	]));
 
-	return ProcessingStepBase.extend('ProcessingStep', {
+	ProcessingStep.prototype.defineProperties({
 		// Official that processed request at given processing step
 		processor: { type: User },
 
@@ -41,12 +54,16 @@ module.exports = memoize(function (db) {
 		sendBackReason: { type: db.String, required: true  },
 		// Eventual reason of rejection
 		rejectionReason: { type: db.String, required: true  },
+		// Reason of redelegation
+		redelegationReason: { type: db.String, required: true  },
 		// Resolution status of a step
 		// Note: 'pending' option doesn't apply here, as this one is intended for direct resolution
 		// of processing step. For dynamically computed status, see `resolvedStatus` below
 		status: { type: ProcessingStepStatus },
 
 		// Progress of individual step statuses
+		// "paused" status progress
+		pauseProgress: { type: Percentage, value: 1 },
 		// "approved" status progress
 		approvalProgress: { type: Percentage, value: function (_observe) {
 			return _observe(this.dataForm._status);
@@ -55,6 +72,28 @@ module.exports = memoize(function (db) {
 		sendBackProgress: { type: Percentage, value: function (_observe) {
 			return this.sendBackReason ? 1 : 0;
 		} },
+
+		// Used in redelegationProgress, ensures model sanity
+		hasRedelegationTarget: { type: db.Boolean, value: function (_observe) {
+			var done = Object.create(null);
+			return this.previousSteps.some(function self(step) {
+				if (done[step.__id__]) return;
+				done[step.__id__] = true;
+				if (_observe(step._delegatedFrom) === this) return true;
+				return step.previousSteps.some(self, this);
+			}, this);
+		} },
+
+		// "redelegate" status progress
+		redelegationProgress: { type: Percentage, value: function (_observe) {
+			var total = 0, status = 0;
+			total++;
+			if (this.hasRedelegationTarget) status++;
+			total++;
+			if (this.redelegationReason) status++;
+			return status / total;
+		} },
+
 		// "rejected" status progress
 		rejectionProgress: { type: Percentage, value: function (_observe) {
 			return this.rejectionReason ? 1 : 0;
@@ -72,26 +111,56 @@ module.exports = memoize(function (db) {
 			if (this.status === 'sentBack') return (this.sendBackProgress !== 1);
 			// If rejected, but no reason provided, it's still pending
 			if (this.status === 'rejected') return (this.rejectionProgress !== 1);
-			// 'paused' is the only option left, that's not pending
-			return false;
+			// If redelegated, but no reason provided, it's still pending
+			if (this.status === 'redelegated') return (this.redelegationProgress !== 1);
+			// 'paused' is the only option left, if it's not done waiting, it's still pending
+			return (this.pauseProgress !== 1);
 		} },
 
 		// Whether process is paused at step
 		isPaused: { value: function (_observe) {
 			// If not ready, then obviously not paused
 			if (!this.isReady) return false;
-			return (this.status === 'paused');
+			if (this.status !== 'paused') return false;
+			return this.pauseProgress === 1;
 		} },
 
 		// Whether process was sent back from this step
 		isSentBack: { value: function (_observe) {
-			// If not ready, then obviously not sent back
-			if (!this.isReady) return false;
+			// We don't check isReady as this is used in isReady
 			// No sentBack status, means no sent back
 			if (this.status !== 'sentBack') return false;
 			// Provided reason confirms complete sent back
 			return this.sendBackProgress === 1;
 		} },
+
+		// Whether process was redelegated from this step
+		isRedelegated: { value: function (_observe) {
+			// If not ready, then obviously not isRedelegated
+			if (!this.isReady) return false;
+			if (this.status !== 'redelegated') return false;
+			return this.redelegationProgress === 1;
+		} },
+
+		// Use it to redelegate from this step to previousStep
+		redelegate: {
+			type: db.Function,
+			value: function (previousStep, _observe) {
+				this.status = 'redelegated';
+				previousStep.delegatedFrom = this;
+				previousStep.status = null;
+			}
+		},
+
+		// Should be called once the delegated step has finished it's job
+		undelegate: {
+			type: db.Function,
+			value: function (observeFunction) {
+				if (!this.delegatedFrom) return;
+				this.delegatedFrom.status = null;
+				this.delegatedFrom = null;
+			}
+		},
 
 		// Whether process was rejected at this step
 		isRejected: { value: function (_observe) {
@@ -120,7 +189,68 @@ module.exports = memoize(function (db) {
 			if (this.isApproved) return 'approved';
 			if (this.isRejected) return 'rejected';
 			if (this.isSentBack) return 'sentBack';
+			if (this.isRedelegated) return 'redelegated';
 			if (this.isPaused) return 'paused';
+		} },
+
+		requirementUploads: { type: UploadsProcess, nested: true },
+		paymentReceiptUploads: { type: UploadsProcess, nested: true },
+		certificates: { type: MultipleProcess, nested: true },
+		assignee: { type: User },
+		isAssignable: { type: db.Boolean }
+	});
+
+	ProcessingStep.prototype.requirementUploads.defineProperties({
+		applicable: { type: RequirementUpload, multiple: true, value: function (_observe) {
+			return _observe(this.master.requirementUploads._applicable);
+		} },
+		// Requirement uploads applicable for front desk verification
+		frontDeskApplicable: { type: RequirementUpload, multiple: true, value: function (_observe) {
+			var result = [];
+			this.applicable.forEach(function (requirementUpload) {
+				if (_observe(requirementUpload._isFrontDeskApplicable)) {
+					result.push(requirementUpload);
+				}
+			});
+			return result;
+		} },
+		// Requirement uploads approved at front desk
+		frontDeskApproved: { type: RequirementUpload, multiple: true, value: function (_observe) {
+			var result = [];
+			this.frontDeskApplicable.forEach(function (requirementUpload) {
+				if (_observe(requirementUpload._isFrontDeskApproved)) result.push(requirementUpload);
+			});
+			return result;
 		} }
 	});
+
+	ProcessingStep.prototype.paymentReceiptUploads.defineProperties({
+		applicable: { type: PaymentReceiptUpload, multiple: true, value: function (_observe) {
+			return _observe(this.master.paymentReceiptUploads._applicable);
+		} },
+		uploaded: { type: PaymentReceiptUpload },
+		approved: { type: PaymentReceiptUpload },
+		rejected: { type: PaymentReceiptUpload },
+		recentlyRejected: { type: PaymentReceiptUpload }
+	});
+
+	ProcessingStep.prototype.certificates.defineProperties({
+		applicable: { type: Document, multiple: true, value: function (_observe) {
+			return _observe(this.master.certificates._applicable);
+		} },
+		uploaded: { type: Document, multiple: true, value: function (_observe) {
+			return _observe(this.master.certificates._uploaded);
+		} }
+	});
+
+	// Step which redelegated to this step
+	ProcessingStep.prototype.define('delegatedFrom', {
+		type: ProcessingStep
+	});
+
+	// Fix type of Document.prototype.processingStep
+	// See it's definition for explanation why it is done here
+	db.Document.prototype.getOwnDescriptor('processingStep').type = ProcessingStep;
+
+	return ProcessingStep;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

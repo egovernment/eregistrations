@@ -10,6 +10,8 @@ var ensureArray    = require('es5-ext/array/valid-array')
   , ensureCallable = require('es5-ext/object/valid-callable')
   , ensureString   = require('es5-ext/object/validate-stringifiable-value')
   , d              = require('d')
+  , deferred       = require('deferred/deferred')
+  , defReduce      = require('deferred/ext/array/reduce')
   , ee             = require('event-emitter')
 
   , create = Object.create;
@@ -45,15 +47,17 @@ ee(Object.defineProperties(QueryHandler.prototype, {
 				throw e;
 			}
 		}
-		return value;
+		return deferred(value).aside(null, function (err) { err.queryHandler = handler; });
 	}),
 	resolve: d(function (query) {
-		var resolvedQuery = this._handlers.reduce(function (resolvedQuery, handler) {
-			var value = this._resolveQueryValue(handler, query[handler.name], resolvedQuery, query);
-			if (value != null) resolvedQuery[handler.name] = value;
-			return resolvedQuery;
-		}.bind(this), create(null));
-		this.emit('query', resolvedQuery);
-		return resolvedQuery;
+		return defReduce.call(this._handlers, function (resolvedQuery, handler) {
+			var result = this._resolveQueryValue(handler, query[handler.name], resolvedQuery, query);
+			return result(function (value) {
+				if (value != null) resolvedQuery[handler.name] = value;
+				return resolvedQuery;
+			});
+		}.bind(this), create(null)).aside(function (resolvedQuery) {
+			this.emit('query', resolvedQuery);
+		}.bind(this));
 	})
 }));

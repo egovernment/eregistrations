@@ -40,7 +40,7 @@ module.exports = function (t, a) {
 	a(businessProcess.costs.paymentWeight, 1);
 	a(businessProcess.costs.paymentProgress, 0);
 
-	businessProcess.costs.applicable.last.isOnlinePaymentInitialized = true;
+	businessProcess.costs.applicable.last.isOnlinePaymentInProgress = true;
 	a(businessProcess.costs.paymentWeight, 1);
 	a(businessProcess.costs.paymentProgress, 0.5);
 
@@ -48,12 +48,12 @@ module.exports = function (t, a) {
 	a(businessProcess.costs.paymentWeight, 1);
 	a(businessProcess.costs.paymentProgress, 1);
 
-	businessProcess.costs.applicable.last.delete('isOnlinePaymentInitialized');
+	businessProcess.costs.applicable.last.delete('isOnlinePaymentInProgress');
 	businessProcess.costs.applicable.last.delete('isPaidOnline');
 	a(businessProcess.costs.paymentWeight, 1);
 	a(businessProcess.costs.paymentProgress, 0);
 
-	businessProcess.costs.isOnlinePaymentInitialized = true;
+	businessProcess.costs.isOnlinePaymentInProgress = true;
 	a(businessProcess.costs.paymentWeight, 1);
 	a(businessProcess.costs.paymentProgress, 0.5);
 

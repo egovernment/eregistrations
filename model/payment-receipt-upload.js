@@ -8,12 +8,14 @@ var Map                     = require('es6-map')
   , defineCreateEnum        = require('dbjs-ext/create-enum')
   , _                       = require('mano').i18n.bind('Model')
   , defineRequirementUpload = require('./requirement-upload')
-  , defineCost              = require('./cost');
+  , defineCost              = require('./cost')
+  , defineCurrency          = require('dbjs-ext/number/currency');
 
 module.exports = memoize(function (db) {
-	var StringLine = defineStringLine(db)
-	  , RequirementUpload = defineRequirementUpload(db)
-	  , Cost = defineCost(db);
+	var StringLine        = defineStringLine(db)
+	  , RequirementUpload = db.RequirementUpload || defineRequirementUpload(db)
+	  , Cost              = defineCost(db)
+	  , Currency          = defineCurrency(db);
 
 	defineCreateEnum(db);
 
@@ -26,6 +28,16 @@ module.exports = memoize(function (db) {
 	return RequirementUpload.extend('PaymentReceiptUpload', {
 		// Costs which are covered by the payment receipt
 		costs: { type: Cost, multiple: true },
+		// Total amount of this payment receipt applicable costs
+		totalAmount: { type: Currency, value: function (_observe) {
+			var result = 0;
+
+			this.applicableCosts.forEach(function (cost) {
+				result += _observe(cost._amount);
+			});
+
+			return result;
+		} },
 		applicableCosts: { type: Cost, multiple: true, value: function (_observe) {
 			var result = [], payable = _observe(this.master.costs.payable);
 			this.costs.forEach(function (cost) {
@@ -38,7 +50,7 @@ module.exports = memoize(function (db) {
 		applicableCostsForUserUpload: { type: Cost, multiple: true, value: function (_observe) {
 			var result = [];
 			this.applicableCosts.forEach(function (cost) {
-				if (_observe(cost._isPaidOnline) || _observe(cost._isOnlinePaymentInitialized)) return;
+				if (_observe(cost._isOnlinePaymentInitialized)) return;
 				result.push(cost);
 			});
 			return result;

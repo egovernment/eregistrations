@@ -1,7 +1,8 @@
 'use strict';
 
-var aFrom    = require('es5-ext/array/from')
-  , Database = require('dbjs');
+var aFrom                  = require('es5-ext/array/from')
+  , Database               = require('dbjs')
+  , defineConstrainedValue = require('../../model/constrained-value');
 
 module.exports = function (t, a) {
 	var db = new Database()
@@ -32,7 +33,14 @@ module.exports = function (t, a) {
 				'propertyNotApplicable',
 				'propertyNotFormApplicable',
 				'nestedObject/notRequiredProperty',
-				'nonExistentNestedObject/notRequiredProperty'
+				'nonExistentNestedObject/notRequiredProperty',
+				'readOnlyPropertyName',
+				'constrainedProperty'
+			]
+		},
+		readOnlyPropertyNames: {
+			value: [
+				'readOnlyPropertyName'
 			]
 		}
 	});
@@ -106,6 +114,15 @@ module.exports = function (t, a) {
 			type: db.Number,
 			required: true
 		},
+		readOnlyPropertyName: {
+			type: db.Number,
+			required: true
+		},
+		constrainedProperty: {
+			type: db.Object,
+			nested: true,
+			required: true
+		},
 
 		isPropertyNotApplicableApplicable: {
 			type: db.Boolean,
@@ -121,6 +138,12 @@ module.exports = function (t, a) {
 		}
 	});
 
+	defineConstrainedValue(MasterType.prototype.constrainedProperty, db.Number, {
+		dynamicConstraints: {
+			min: function () { return 1000; }
+		}
+	});
+
 	masterObject = new MasterType();
 	nestedObject = masterObject.nestedObject;
 
@@ -132,11 +155,12 @@ module.exports = function (t, a) {
 	section = masterObject.sectionWithDefaultValues;
 
 	a(section.propertyNames.size, 0);
+	a(section.readOnlyPropertyNames.size, 0);
 
 	a.h2('Properties overridden in derived class');
 	section = masterObject.sectionOfDerivedType;
 
-	a(section.propertyNames.size, 9);
+	a(section.propertyNames.size, 11);
 	a.deep(aFrom(section.propertyNames), [
 		'notRequiredProperty',
 		'property',
@@ -146,7 +170,13 @@ module.exports = function (t, a) {
 		'propertyNotApplicable',
 		'propertyNotFormApplicable',
 		'nestedObject/notRequiredProperty',
-		'nonExistentNestedObject/notRequiredProperty'
+		'nonExistentNestedObject/notRequiredProperty',
+		'readOnlyPropertyName',
+		'constrainedProperty'
+	]);
+	a(section.readOnlyPropertyNames.size, 1);
+	a.deep(aFrom(section.readOnlyPropertyNames), [
+		'readOnlyPropertyName'
 	]);
 
 	a.h1('Getters');
@@ -159,6 +189,7 @@ module.exports = function (t, a) {
 	a(section.applicablePropertyNames.size, 0);
 	a(section.status, 1);
 	a(section.missingRequiredPropertyNames.size, 0);
+	a(section.hasMissingRequiredPropertyNamesDeep, false);
 	a(section.weight, 0);
 	a(section.lastEditStamp, 0);
 
@@ -166,7 +197,7 @@ module.exports = function (t, a) {
 	section = masterObject.sectionOfDerivedType;
 
 	a.h3('resolvedPropertyNames');
-	a(section.resolvedPropertyNames.size, 8);
+	a(section.resolvedPropertyNames.size, 10);
 	a.deep(aFrom(section.resolvedPropertyNames), [
 		'notRequiredProperty',
 		'property',
@@ -175,7 +206,9 @@ module.exports = function (t, a) {
 		'propertyWithDefaultValue',
 		'propertyNotApplicable',
 		'propertyNotFormApplicable',
-		'nestedObject/notRequiredProperty'
+		'nestedObject/notRequiredProperty',
+		'readOnlyPropertyName',
+		'constrainedProperty'
 	]);
 	var savedPropertyNames = aFrom(section.propertyNames);
 	section.propertyNames = ['nonExistentProperty'];
@@ -185,7 +218,7 @@ module.exports = function (t, a) {
 	section.propertyNames = savedPropertyNames;
 
 	a.h3('formApplicablePropertyNames');
-	a(section.formApplicablePropertyNames.size, 7);
+	a(section.formApplicablePropertyNames.size, 9);
 	a.deep(aFrom(section.formApplicablePropertyNames), [
 		'notRequiredProperty',
 		'property',
@@ -193,70 +226,93 @@ module.exports = function (t, a) {
 		'thirdProperty',
 		'propertyWithDefaultValue',
 		'propertyNotApplicable',
-		'nestedObject/notRequiredProperty'
+		'nestedObject/notRequiredProperty',
+		'readOnlyPropertyName',
+		'constrainedProperty'
 	]);
 
 	a.h3('applicablePropertyNames');
-	a(section.applicablePropertyNames.size, 6);
+	a(section.applicablePropertyNames.size, 8);
 	a.deep(aFrom(section.applicablePropertyNames), [
 		'notRequiredProperty',
 		'property',
 		'secondProperty',
 		'thirdProperty',
 		'propertyWithDefaultValue',
-		'nestedObject/notRequiredProperty'
+		'nestedObject/notRequiredProperty',
+		'readOnlyPropertyName',
+		'constrainedProperty'
 	]);
 
 	a.h3('status & missingRequiredPropertyNames');
 	a(section.status, 1);
 	a(section.missingRequiredPropertyNames.size, 0);
+	a(section.hasMissingRequiredPropertyNamesDeep, false);
 
 	masterObject.resolventProperty = true;
 	a(section.status, 0);
-	a(section.missingRequiredPropertyNames.size, 3);
+	a(section.missingRequiredPropertyNames.size, 4);
+	a(section.hasMissingRequiredPropertyNamesDeep, true);
 	a.deep(aFrom(section.missingRequiredPropertyNames), [
 		'property',
 		'secondProperty',
-		'thirdProperty'
+		'thirdProperty',
+		'constrainedProperty'
 	]);
 
 	masterObject.property = 1;
-	a(section.status, 0.33);
-	a(section.missingRequiredPropertyNames.size, 2);
+	a(section.status, 0.25);
+	a(section.missingRequiredPropertyNames.size, 3);
+	a(section.hasMissingRequiredPropertyNamesDeep, true);
 	a.deep(aFrom(section.missingRequiredPropertyNames), [
 		'secondProperty',
-		'thirdProperty'
+		'thirdProperty',
+		'constrainedProperty'
 	]);
 
 	masterObject.resolventProperty = false;
 	a(section.status, 1);
 	a(section.missingRequiredPropertyNames.size, 0);
+	a(section.hasMissingRequiredPropertyNamesDeep, false);
 
 	masterObject.resolventProperty = true;
 	masterObject.secondProperty = 1;
-	a(section.status, 0.66);
-	a(section.missingRequiredPropertyNames.size, 1);
+	a(section.status, 0.5);
+	a(section.missingRequiredPropertyNames.size, 2);
+	a(section.hasMissingRequiredPropertyNamesDeep, true);
 	a.deep(aFrom(section.missingRequiredPropertyNames), [
-		'thirdProperty'
+		'thirdProperty',
+		'constrainedProperty'
 	]);
 
 	masterObject.isThirdPropertyApplicable = false;
-	a(section.status, 1);
-	a(section.missingRequiredPropertyNames.size, 0);
-	masterObject.isThirdPropertyApplicable = true;
 	a(section.status, 0.66);
+	a(section.missingRequiredPropertyNames.size, 1);
+	a(section.hasMissingRequiredPropertyNamesDeep, true);
+	masterObject.isThirdPropertyApplicable = true;
 
+	a(section.status, 0.5);
 	masterObject.thirdProperty = 1;
+
+	a(section.status, 0.75);
+	a(section.missingRequiredPropertyNames.size, 1);
+	a(section.hasMissingRequiredPropertyNamesDeep, true);
+	a.deep(aFrom(section.missingRequiredPropertyNames), [
+		'constrainedProperty'
+	]);
+	masterObject.constrainedProperty.value = 1500;
+
 	a(section.status, 1);
 	a(section.missingRequiredPropertyNames.size, 0);
+	a(section.hasMissingRequiredPropertyNamesDeep, false);
 
 	a.h3('weight');
 	masterObject.resolventProperty = false;
 	a(section.weight, 0);
 	masterObject.resolventProperty = true;
-	a(section.weight, 3);
+	a(section.weight, 4);
 	masterObject.isThirdPropertyApplicable = false;
-	a(section.weight, 2);
+	a(section.weight, 3);
 
 	a.h3('lastEditStamp');
 	masterObject.property = 1;

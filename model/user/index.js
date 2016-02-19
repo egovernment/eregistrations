@@ -8,13 +8,14 @@ module.exports = function (db/* options */) {
 	validDb(db);
 	options = Object(arguments[1]);
 	User = defineUser(db, options);
-	require('./app-access-id')(db, options);
+	require('./app-resolvers')(db, options);
 	require('./business-processes')(User, options);
 	require('./demo')(db);
 	require('./documents')(User, options);
 	require('./institution')(User, options);
-	require('./visited-business-processes')(db);
-	require('./visited-users')(db);
+	require('./manager')(db);
+	require('./recently-visited/business-processes')(db);
+	require('./recently-visited/users')(db);
 
 	return User;
 };

@@ -2,15 +2,18 @@
 
 'use strict';
 
-var memoize          = require('memoizee/plain')
-  , validDb          = require('dbjs/valid-dbjs')
-  , defineStringLine = require('dbjs-ext/string/string-line')
-  , defineUInteger   = require('dbjs-ext/number/integer/u-integer')
-  , definePercentage = require('dbjs-ext/number/percentage');
+var memoize             = require('memoizee/plain')
+  , validDb             = require('dbjs/valid-dbjs')
+  , defineStringLine    = require('dbjs-ext/string/string-line')
+  , defineUInteger      = require('dbjs-ext/number/integer/u-integer')
+  , definePercentage    = require('dbjs-ext/number/percentage')
+  , defineProgressRules = require('./lib/progress-rules')
+  , _                   = require('mano').i18n.bind('Model: FormSectionBase');
 
 module.exports = memoize(function (db) {
-	var StringLine, Percentage, UInteger;
+	var StringLine, Percentage, UInteger, ProgressRules, FormSectionBase;
 	validDb(db);
+	ProgressRules = defineProgressRules(db);
 	db.Object.defineProperties({
 		getFormApplicablePropName: { type: db.Function, value: function (prop) {
 			return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'FormApplicable';
@@ -22,7 +25,8 @@ module.exports = memoize(function (db) {
 	UInteger   = defineUInteger(db);
 	StringLine = defineStringLine(db);
 	Percentage = definePercentage(db);
-	return db.Object.extend('FormSectionBase', {
+	FormSectionBase = db.Object.extend('FormSectionBase', {
+		progressRules: { type: ProgressRules, nested: true },
 		label: { type: StringLine, required: true },
 		// Optional explanation text.
 		legend: { type: db.String },
@@ -51,10 +55,34 @@ module.exports = memoize(function (db) {
 		// Setup for type to check against in propertyMaster's owner search
 		propertyMasterType: { type: db.Base },
 		// A percentage of completion of fields covered by the section
-		status: { type: Percentage, required: true, value: 1 },
+		status: { type: Percentage, required: true, value: function (_observe) {
+			var weight = 0, progress = 0;
+
+			// Take into account resolvent
+			progress += this.resolventStatus * this.resolventWeight;
+			weight += this.resolventWeight;
+
+			// If section is unresolved, exit just with resolvent
+			if (this.isUnresolved) {
+				if (!weight) return 1;
+				return progress / weight;
+			}
+
+			// Take into account all rules
+			progress += _observe(this.progressRules._progress) * _observe(this.progressRules._weight);
+			weight += this.progressRules.weight;
+
+			if (!weight) return 1;
+			return progress / weight;
+		} },
 		// The weight of the section status. It is used to determine weighed status across sections.
 		// It is usually equal to number of fields covered by the section.
-		weight: { type: UInteger, required: true, value: 0 },
+		weight: { type: UInteger, required: true, value: function (_observe) {
+			if (this.isUnresolved) {
+				return this.resolventWeight;
+			}
+			return _observe(this.progressRules._weight) + this.resolventWeight;
+		} },
 		// The value upon which resolventProperty is resolved.
 		// Section is visible when section.master[section.resolventProperty] === section.resolventValue
 		// See also resolventProperty.
@@ -124,26 +152,31 @@ module.exports = memoize(function (db) {
 			// Not required, then not validated
 			if (!resolved.descriptor.required) return true;
 
-			// Forced to be excluded
-			if (this.excludedFromStatusIfFilled.has(resolved.key) ||
-
-			// or excluded by fact of having a default value on prototype
-					(!resolved.descriptor.multiple &&
-						(Object.getPrototypeOf(resolved.object).get(resolved.key) != null) &&
-						((!File || !(resolved.value instanceof File)) &&
-						(!NestedMap || (resolved.key !== 'map') || !(resolved.object instanceof NestedMap))
-							))) {
-
-				// In that case we just validate that it's not shadowed by null
-				// or in case of multiple that it has at least one item
-				if (resolved.descriptor.multiple) {
-					if (_observe(resolved.observable).size) return true;
-				} else {
-					if (_observe(resolved.observable) != null) return true;
+			if (!this.excludedFromStatusIfFilled.has(resolved.key)) {
+				// Multiple value: not excluded
+				if (resolved.descriptor.multiple) return false;
+				// No underlying value on prototype: not excluded
+				if (Object.getPrototypeOf(resolved.object).get(resolved.key) == null) return false;
+				// Nested file: not excluded
+				if (File && (resolved.value instanceof File)) return false;
+				// Nested map: not excluded
+				if (NestedMap && (resolved.key === 'map') && (resolved.object instanceof NestedMap)) {
+					return false;
+				}
+				// Constrained value: not excluded
+				if (resolved.value && (typeof resolved.value === 'object') && resolved.value.__id__ &&
+						(typeof resolved.value.getDescriptor('resolvedValue')._value_ === 'function')) {
+					return false;
 				}
 			}
 
-			return false;
+			// In that case we just validate that it's not shadowed by null
+			// or in case of multiple that it has at least one item
+			if (resolved.descriptor.multiple) {
+				if (_observe(resolved.observable).size) return true;
+			} else {
+				if (_observe(resolved.observable) != null) return true;
+			}
 		} },
 		ensureResolvent: { type: db.Function, value: function (observeFunction) {
 			var resolved = this.master.resolveSKeyPath(this.resolventProperty, observeFunction);
@@ -169,6 +202,78 @@ module.exports = memoize(function (db) {
 		// Used to hide and show section depending on a value of certain property.
 		// Set name of the property as value of resolventProperty.
 		// Section is visible when section.master[section.resolventProperty] === section.resolventValue
-		resolventProperty: { type: StringLine }
+		resolventProperty: { type: StringLine },
+		// Sometimes we need to react to payment state
+		isOnlinePaymentDependent: { type: db.Boolean, value: false },
+		// Disables a payment dependent section when there is/was an online payment
+		isDisabled: { type: db.Boolean, value: function (_observe) {
+			return this.isOnlinePaymentDependent &&
+				_observe(this.master.costs._isOnlinePaymentInitialized);
+		} },
+		// Message to be shown when the section has been disabled
+		disabledMessage: {
+			type: db.String,
+			value: _("Section is disabled because online payment transaction has " +
+				"already been made or it's in progress")
+		},
+		// Checks weather at least one progress rule of this section or it's children
+		// is displayable (invalid and has a message)
+		hasDisplayableRuleDeep: {
+			type: db.Boolean
+		},
+		// Checks weather at least one of fields of this section or it's children
+		// has a missing value in this
+		hasMissingRequiredPropertyNamesDeep: {
+			type: db.Boolean
+		},
+		// Resolves collection of which section is part of
+		resolveParentCollection: {
+			type: db.Function,
+			value: function (ignore) {
+				if (!this.owner || !this.owner.owner) return null;
+				if ((this.owner.key === 'sections') && this.owner.owner.applicableSections) {
+					return this.owner.owner.applicableSections;
+				}
+				if ((this.owner.key === 'map') && this.owner.owner.applicable) {
+					return this.owner.owner.applicable;
+				}
+			}
+		}
 	});
+
+	FormSectionBase.prototype.defineProperties({
+		// Next section (applicable only if section is one of sub-sections on section group)
+		nextSection: {
+			type: FormSectionBase,
+			value: function (_observe) {
+				var sections = this.resolveParentCollection(), nextSection, seen;
+				if (!sections) return null;
+				if (!_observe(sections).has(this)) return null;
+				sections.some(function (section) {
+					if (seen) {
+						nextSection = section;
+						return true;
+					}
+					if (this === section) seen = true;
+				}, this);
+				return nextSection;
+			}
+		},
+		// Previous section (applicable only if section is one of sub-sections on section group)
+		previousSection: {
+			type: FormSectionBase,
+			value: function (_observe) {
+				var sections = this.resolveParentCollection(), previousSection;
+				if (!sections) return null;
+				if (!_observe(sections).has(this)) return null;
+				sections.some(function (section) {
+					if (this === section) return true;
+					previousSection = section;
+				}, this);
+				return previousSection;
+			}
+		}
+	});
+
+	return FormSectionBase;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

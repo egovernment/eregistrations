@@ -50,11 +50,4 @@ module.exports = function (t, a) {
 	a.deep(aFrom(businessProcess.requirementUploads.uploaded),
 		[businessProcess.requirementUploads.map.req]);
 	a(businessProcess.requirementUploads.progress, 1);
-
-	a.deep(aFrom(businessProcess.requirementUploads.frontDeskApplicable),
-		[businessProcess.requirementUploads.map.req]);
-
-	businessProcess.requirementUploads.map.req.matchesOriginal = true;
-	a.deep(aFrom(businessProcess.requirementUploads.frontDeskApproved),
-		[businessProcess.requirementUploads.map.req]);
 };

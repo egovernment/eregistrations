@@ -2,26 +2,31 @@
 
 'use strict';
 
-var ensureType = require('dbjs/valid-dbjs-type')
-  , serialize = require('es5-ext/object/serialize')
-  , writeFile = require('fs2/write-file')
-  , db        = require('mano').db
-  , Currency  = require('dbjs-ext/number/currency')(db)
-  , Cost      = require('eregistrations/model/cost')(db)
-  , toArray   = require('es5-ext/array/to-array');
+var ensureType     = require('dbjs/valid-dbjs-type')
+  , serialize      = require('es5-ext/object/serialize')
+  , writeFile      = require('fs2/write-file')
+  , toArray        = require('es5-ext/array/to-array');
 
 var defineForEach = function (object) {
 	object.forEach = new Function('cb, thisArg', '$.dbjsMapForEach(this, cb, thisArg);');
 };
 
-module.exports = function (businessProcessType, filename/*, options*/) {
-	var options = Object(arguments[2]), legacyDb = {}, businessProcessProto, certificates = {}
-	  , costs = {}, registrations = {}, requirements = {}, currencyType = {}, costType = {};
+module.exports = function (BusinessProcessType, filename/*, options*/) {
+	var options       = Object(arguments[2])
+	  , db            = BusinessProcessType.database
+	  , legacyDb      = {}
+	  , certificates  = {}
+	  , costs         = {}
+	  , registrations = {}
+	  , requirements  = {}
+	  , currencyType  = {}
+	  , costType      = {}
+	  , businessProcessProto;
 
-	ensureType(businessProcessType);
+	ensureType(BusinessProcessType);
 
 	// Get BusinessProcess prototype.
-	businessProcessProto = businessProcessType.prototype;
+	businessProcessProto = BusinessProcessType.prototype;
 
 	// Get all interesting fields from BusinessProcess prototype.
 	var getPropertyValue = function (multipleProcessName, propertyName) {
@@ -74,13 +79,13 @@ module.exports = function (businessProcessType, filename/*, options*/) {
 	requirements.applicable  = getPropertyValue('requirements', 'applicable');
 
 	// Copy less interesting (support) stuff also.
-	currencyType.format = Currency.format;
+	currencyType.format = db.Currency.format;
 	currencyType.symbol = db.Cost.prototype.getDescriptor('amount').type.symbol;
 	currencyType.isoCode = db.Cost.prototype.getDescriptor('amount').type.isoCode;
-	costType.step = Cost.prototype.getDescriptor('amount').step;
+	costType.step = db.Cost.prototype.getDescriptor('amount').step;
 
 	// Add everything to legacyDb
-	legacyDb[businessProcessType.__id__] = {
+	legacyDb[BusinessProcessType.__id__] = {
 		prototype: {
 			certificates: certificates,
 			costs: costs,

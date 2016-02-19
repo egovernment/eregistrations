@@ -1,6 +1,7 @@
 'use strict';
 
-var ReactiveTable     = require('reactive-table')
+var copy              = require('es5-ext/object/copy')
+  , ReactiveTable     = require('reactive-table')
   , ReactiveTableList = require('reactive-table/list')
   , mano              = require('mano')
   , _                 = require('mano').i18n.bind('Users Admin')
@@ -19,7 +20,7 @@ var mapRolesToLabels = function (role) {
 	return '';
 };
 
-var columns = [{
+var baseColumns = [{
 	head: _("Email"),
 	data: function (user) { return [strong(user._fullName), br(), user._email]; }
 }, {
@@ -34,10 +35,13 @@ var columns = [{
 }, {
 	head: th({ class: 'actions' }),
 	data: function (user) {
+		var isSelfUser = (user === this.user);
 		return td({ class: 'actions' },
-			a({ href: url('user', user.__id__) }, span({ class: 'fa fa-edit' }, _("Go to"))),
-			postButton({ buttonClass: 'actions-delete', action: url('user', user.__id__, 'delete'),
-				confirm: _("Are you sure?"), value: span({ class: 'fa fa-trash-o' }) }));
+			a({ href: isSelfUser ? '/profile/' : url('user', user.__id__) },
+				span({ class: 'fa fa-edit' }, _("Go to"))),
+			!isSelfUser ? postButton({ buttonClass: 'actions-delete',
+				action: url('user', user.__id__, 'delete'),
+				confirm: _("Are you sure?"), value: span({ class: 'fa fa-trash-o' }) }) : null);
 	}
 }];
 
@@ -45,6 +49,11 @@ exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
 		var usersTable;
+		var columns = baseColumns.map(function (conf) {
+			conf = copy(conf);
+			conf.data = conf.data.bind(this);
+			return conf;
+		}, this);
 
 		if (db.views && db.views.usersAdmin) {
 			usersTable = getUsersTable({

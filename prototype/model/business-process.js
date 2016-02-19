@@ -12,6 +12,7 @@ var db = require('mano').db
   , fifth       = BusinessProcessNew.newNamed('fifthBusinessProcess')
   , UInteger    = require('dbjs-ext/number/integer/u-integer')(db)
   , StringLine  = require('dbjs-ext/string/string-line')(db)
+  , USDollar  = require('dbjs-ext/number/currency/us-dollar')(db)
   , Person      = require('../../model/person')(db)
   , DateType    = require('dbjs-ext/date-time/date')(db)
   , FormSection = require('../../model/form-section')(db)
@@ -35,11 +36,16 @@ var db = require('mano').db
   , IdDoc
   , RequiredUploadA
   , Representative
+  , File = require('../../model/file')(db)
   , processes = [first, second, third, fourth, fifth]
   , paymentReceipt = require('../../model/business-process-new/' +
 		'utils/define-payment-receipt-uploads')
   , Institution = require('../../model/institution')(db)
   , FrontDeskProcessingStep = require('../../model/processing-steps/front-desk')(db);
+
+db.Cost.prototype.getDescriptor('amount').type = USDollar;
+db.Cost.prototype.getDescriptor('sideAmount').type = USDollar;
+db.BusinessProcessNew.prototype.costs.getDescriptor('totalAmount').type = USDollar;
 
 require('./inventory');
 require('../../model/business-process-new/submission-forms');
@@ -51,6 +57,9 @@ FrontDeskProcessingStep.prototype.possibleInstitutions.add(db.institutionOfficia
 FrontDeskProcessingStep.prototype.possibleInstitutions.add(db.institutionCommerceMinistry);
 require('../../model/lib/nested-map');
 BusinessProcessNew.newNamed('emptyBusinessProcess');
+
+BusinessProcessNew.prototype.label = "Service 2";
+BusinessProcessNew.prototype.abbr = 'COI';
 
 module.exports = BusinessProcessNew;
 
@@ -79,8 +88,23 @@ Representative = Person.extend('Representative', {
 		type: StringLine,
 		required: true,
 		label: "Spouse last name"
+	},
+	idPhoto: {
+		type: File,
+		nested: true,
+		label: "Photo file"
 	}
 });
+
+Representative.prototype.idPhoto.setProperties({
+	name: 'idoc.jpg',
+	type: 'image/jpeg',
+	diskSize: 376306,
+	path: 'doc-a-sub-file1.idoc.jpg',
+	url: '/uploads/doc-a-sub-file1.idoc.jpg'
+});
+
+Representative.prototype.idPhoto.thumb.url = '/uploads/doc-a-sub-file1.idoc.jpg';
 
 BusinessProcessNew.prototype.defineProperties({
 	//guide
@@ -97,12 +121,14 @@ BusinessProcessNew.prototype.defineProperties({
 	branchCount: {
 		type: UInteger,
 		required: true,
-		label: "How many branches?"
+		label: "How many branches?",
+		inputOptionalInfo: "Only branches in the same country"
 	},
 	inventoryTotalAmount: {
 		label: "Value of inventory",
 		isInventoryTotal: true,
-		type: UInteger
+		type: UInteger,
+		inputOptionalInfo: "Enter total amount of all owned products"
 	},
 	//dataForms
 	companyType: {
@@ -162,11 +188,13 @@ BusinessProcessNew.prototype.defineNestedMap('branches', {
 });
 
 DocA = Document.extend('DocA', {}, {
+	abbr: { value: "DOC-A" },
 	label: { value: "Document A" },
 	legend: { value: "This document is issued as a result of Registration A" }
 });
 
 DocB = Document.extend('DocB', {}, {
+	abbr: { value: "DOC-B" },
 	label: { value: "Document B" },
 	legend: { value: "This document is issued as a result of Registration B" }
 });
@@ -272,7 +300,9 @@ processes.forEach(function (businessProcess) {
 	businessProcess.employeesCount = 3;
 	businessProcess.isAddressSameAsPersonal = true;
 	// new
-	businessProcess.label = 'Revision';
+	businessProcess.label = 'Service 1';
+	businessProcess.abbr = 'REG';
+
 	businessProcess.submissionForms.isAffidavitSigned = true;
 	// status logs
 	businessProcess.statusLog.map.get('received').setProperties({
@@ -407,6 +437,11 @@ processes.forEach(function (businessProcess) {
 		nested: true,
 		type: require('../../model/processing-steps/front-desk')(db)
 	});
+
+	businessProcess.processingSteps.map.define('processing', {
+		nested: true,
+		type: require('../../model/processing-step')(db)
+	});
 });
 
 // Submision sections
@@ -437,7 +472,7 @@ BusinessProcessNew.prototype.dataForms.map.get('personal').setProperties({
 		'representative/spouseName', 'representative/spouseLastName',
 		'representative/address/city', 'representative/address/streetType',
 		'representative/address/streetName', 'representative/address/streetNumber',
-		'representative/address/apartmentNumber'],
+		'representative/address/apartmentNumber', 'representative/idPhoto'],
 	label: "Company's representative information",
 	legend: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
 		"incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud " +
@@ -453,10 +488,15 @@ BusinessProcessNew.prototype.dataForms.map.define('company', {
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('company').setProperties({
-	label: "Company information"
+	label: "Company information",
+	pageUrl: 'company-informations'
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('company').sections.define('details', {
+	type: FormSection,
+	nested: true
+});
+BusinessProcessNew.prototype.dataForms.map.get('company').sections.define('address', {
 	type: FormSection,
 	nested: true
 });
@@ -469,9 +509,10 @@ BusinessProcessNew.prototype.dataForms.map.get('company').sections.get('details'
 BusinessProcessNew.prototype.dataForms.map.get('company').sections.get('address').setProperties({
 	label: "Company address",
 	resolventProperty: "isAddressSameAsPersonal",
-	propertyNames: ['address/city', 'address/streetType',
-		'address/streetType', 'address/streetName', 'address/street', 'address/streetNumber',
-		'address/apartmentNumber']
+	propertyNames: ['businessAddress/city', 'businessAddress/streetType',
+		'businessAddress/streetType', 'businessAddress/streetName',
+		'businessAddress/street', 'businessAddress/streetNumber',
+		'businessAddress/apartmentNumber']
 });
 
 // Forms sides section
@@ -482,12 +523,24 @@ BusinessProcessNew.prototype.dataForms.map.define('sides', {
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('sides').setProperties({
-	label: "Business Owner sides informations"
+	label: "Business Owner sides informations",
+	legend: "All sides informations requested",
+	pageUrl: 'sides'
 });
 
-BusinessProcessNew.prototype.dataForms.map.get('sides').sections.define('details', {
-	type: FormSection,
-	nested: true
+BusinessProcessNew.prototype.dataForms.map.get('sides').sections.defineProperties({
+	details: {
+		type: FormSection,
+		nested: true
+	},
+	first: {
+		type: FormSection,
+		nested: true
+	},
+	second: {
+		type: FormSection,
+		nested: true
+	}
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('sides').sections.get('first').setProperties({

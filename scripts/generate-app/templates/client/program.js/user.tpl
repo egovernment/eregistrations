@@ -26,10 +26,11 @@ require('mano/lib/observable-dom');
 
 mano = require('mano');
 
-mano.env = require('../../../apps-common/client/env');
+// Env settings
+require('../../../apps-common/client/env');
 
-mano.i18n = require('i18n2')(require('mano/client/utils/resolve-locale')(mano.env,
-	require('../../../i18n')));
+// i18n2
+require('../../../i18n');
 
 require('../../../db');
 require('./model.generated');
@@ -118,11 +119,13 @@ loadView = function () {
 	}
 
 	appLocation.on('change', refresh = function () {
+		var result;
 		if (last.call(appLocation.pathname) !== '/') {
 			appLocation.goto(appLocation.pathname + '/' + appLocation.search + appLocation.hash);
 			return;
 		}
-		siteTreeRouter.route(appLocation.pathname);
+		result = siteTreeRouter.route(appLocation.pathname);
+		if (result && (typeof result.done === 'function')) result.done();
 	});
 	if (appLocation.pathname) refresh();
 	else appLocation.onchange();

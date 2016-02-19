@@ -8,13 +8,15 @@
 var memoize               = require('memoizee/plain')
   , validDb               = require('dbjs/valid-dbjs')
   , defineStringLine      = require('dbjs-ext/string/string-line')
-  , defineFormSectionBase = require('./form-section-base');
+  , defineFormSectionBase = require('./form-section-base')
+  , defineProgressRule      = require('./lib/progress-rule');
 
 module.exports = memoize(function (db) {
-	var StringLine, FormSectionBase;
+	var StringLine, FormSectionBase, ProgressRule;
 	validDb(db);
 	StringLine      = defineStringLine(db);
 	FormSectionBase = defineFormSectionBase(db);
+	ProgressRule    = defineProgressRule(db);
 	FormSectionBase.extend('FormSection', {
 		// Only for internal usage
 		resolvedPropertyNames: {
@@ -81,51 +83,15 @@ module.exports = memoize(function (db) {
 
 			return props;
 		} },
-		status: { value: function (_observe) {
-			var resolved, invalid = _observe(this.missingRequiredPropertyNames).size, total = 0;
-
-			if (!this.resolventStatus) return 0;
-
-			this.applicablePropertyNames.forEach(function (name) {
-				resolved = this.master.resolveSKeyPath(name, _observe);
-
-				if (!resolved) {
-					++total;
-					return;
-				}
-
-				if (this.isPropertyExcludedFromStatus(resolved, _observe)) return;
-
-				++total;
-			}, this);
-
-			return total === 0 ? 1 : (total - invalid) / total;
-		} },
 		missingRequiredPropertyNames: {
 			type: StringLine,
 			multiple: true,
 			value: function (_observe) {
-				var resolved, resolvedResolvent, isResolventExcluded, isOwn, db = this.database,
+				var resolved, isOwn, db = this.database,
 					File = db.File, NestedMap = db.NestedMap, result = [];
 
-				if (this.resolventProperty) {
-					resolvedResolvent = this.ensureResolvent(_observe);
-
-					if (!resolvedResolvent) return result;
-
-					isResolventExcluded = this.isPropertyExcludedFromStatus(resolvedResolvent, _observe);
-
-					if (_observe(resolvedResolvent.observable) !== _observe(this.resolventValue)) {
-						if (isResolventExcluded) return result;
-
-						if (resolvedResolvent.descriptor.multiple) {
-							if (_observe(resolvedResolvent.observable).size) return result;
-						} else {
-							if (_observe(resolvedResolvent.observable) != null) return result;
-						}
-
-						return [this.resolventProperty];
-					}
+				if (this.isUnresolved) {
+					return this.resolventStatus < 1 ? [this.resolventProperty] : [];
 				}
 
 				this.applicablePropertyNames.forEach(function (name) {
@@ -138,6 +104,14 @@ module.exports = memoize(function (db) {
 					if (resolved.object && NestedMap && (resolved.key === 'map')
 							&& (resolved.object instanceof NestedMap)) {
 						if (!_observe(resolved.object.ordered._size)) result.push(name);
+
+						return;
+					}
+
+					if (resolved.value && (typeof resolved.value === 'object') && resolved.value.__id__ &&
+							(typeof resolved.value.getDescriptor('resolvedValue')._value_ === 'function')) {
+						// Constrained Value
+						if (!_observe(resolved.value._resolvedValue)) result.push(name);
 
 						return;
 					}
@@ -178,34 +152,16 @@ module.exports = memoize(function (db) {
 				return result;
 			}
 		},
-		weight: { value: function (_observe) {
-			var resolved, resolvedResolvent, total = 0, isResolventExcluded;
-			if (this.resolventProperty) {
-				resolvedResolvent = this.ensureResolvent(_observe);
-
-				if (!resolvedResolvent) return 0;
-
-				isResolventExcluded = this.isPropertyExcludedFromStatus(resolvedResolvent, _observe);
-				if (_observe(resolvedResolvent.observable) !== _observe(this.resolventValue)) {
-					return isResolventExcluded ? 0 : 1;
-				}
-				if (!isResolventExcluded) {
-					++total;
-				}
+		hasDisplayableRuleDeep: {
+			value: function (_observe) {
+				return _observe(this.progressRules.displayable._size) > 0;
 			}
-			this.applicablePropertyNames.forEach(function (name) {
-				resolved = this.master.resolveSKeyPath(name, _observe);
-				if (!resolved) {
-					++total;
-					return;
-				}
-				if (this.isPropertyExcludedFromStatus(resolved, _observe)) {
-					return;
-				}
-				++total;
-			}, this);
-			return total;
-		} },
+		},
+		hasMissingRequiredPropertyNamesDeep: {
+			value: function (_observe) {
+				return _observe(this.missingRequiredPropertyNames._size) > 0;
+			}
+		},
 		// Used to set input options for form.
 		// Note that in order to use it, you need to set every option separately i.e:
 		// db.SomeFormClass.prototype.inputOptions.get('someProperty').set('disabled', true)
@@ -233,13 +189,83 @@ module.exports = memoize(function (db) {
 				return res;
 			}
 		},
+		isPropertyExcludedFromStatus: {
+			value: function (resolved, _observe) {
+				return this.readOnlyPropertyNames.has(resolved.key) ||
+					this.database.FormSectionBase.prototype.isPropertyExcludedFromStatus.call(this,
+						resolved, _observe);
+			}
+		},
 		// The names of the model fields which should be handled by this section.
 		// Remember to write full property paths relative to the section's master object.
 		// value example: ["name", "lastName", "address/street"]
-		propertyNames: { type: StringLine, multiple: true }
+		propertyNames: { type: StringLine, multiple: true },
+		// The names of the model fields that should be treated as read only in this section.
+		// It should contain the same elements as in propertyNames list. Listed properties will
+		// not count towards progress and rendered not as inputs.
+		readOnlyPropertyNames: { type: StringLine, multiple: true }
 	});
 	db.FormSection.prototype.inputOptions._descriptorPrototype_.nested = true;
 	db.FormSection.prototype.inputOptions._descriptorPrototype_.type   = db.Object;
+
+	db.FormSection.prototype.progressRules.map.define('missingFields', {
+		type: ProgressRule,
+		nested: true
+	});
+
+	db.FormSection.prototype.progressRules.map.missingFields.setProperties({
+		progress: function (_observe) {
+			var resolved, section, invalid, total = 0;
+			section = this.owner.owner.owner;
+			invalid = _observe(section.missingRequiredPropertyNames).size;
+
+			if (!_observe(section._resolventStatus)) return 0;
+
+			_observe(section.applicablePropertyNames).forEach(function (name) {
+				resolved = section.master.resolveSKeyPath(name, _observe);
+
+				if (!resolved) {
+					++total;
+					return;
+				}
+
+				if (section.isPropertyExcludedFromStatus(resolved, _observe)) return;
+
+				++total;
+			});
+
+			return total === 0 ? 1 : (total - invalid) / total;
+		},
+		weight: function (_observe) {
+			var resolved, section, resolvedResolvent, total = 0, isResolventExcluded;
+			section = this.owner.owner.owner;
+			if (section.resolventProperty) {
+				resolvedResolvent = section.ensureResolvent(_observe);
+
+				if (!resolvedResolvent) return 0;
+
+				isResolventExcluded = section.isPropertyExcludedFromStatus(resolvedResolvent, _observe);
+				if (_observe(resolvedResolvent.observable) !== _observe(section._resolventValue)) {
+					return isResolventExcluded ? 0 : 1;
+				}
+				if (!isResolventExcluded) {
+					++total;
+				}
+			}
+			_observe(section.applicablePropertyNames).forEach(function (name) {
+				resolved = section.master.resolveSKeyPath(name, _observe);
+				if (!resolved) {
+					++total;
+					return;
+				}
+				if (section.isPropertyExcludedFromStatus(resolved, _observe)) {
+					return;
+				}
+				++total;
+			});
+			return total;
+		}
+	});
 
 	return db.FormSection;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
