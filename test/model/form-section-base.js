@@ -1,13 +1,15 @@
 'use strict';
 
-var Database = require('dbjs')
-  , defineProgressRule = require('../../model/lib/progress-rule');
+var Database           = require('dbjs')
+  , defineProgressRule = require('../../model/lib/progress-rule')
+  , defineNestedMap    = require('../../model/lib/nested-map');
 
 module.exports = function (t, a) {
 	var db              = new Database()
 	  , FormSectionBase = t(db)
 	  , TestFormSection = FormSectionBase.extend('TestFormSection')
 	  , ProgressRule    = defineProgressRule(db)
+	  , NestedMap       = defineNestedMap(db)
 	  , NestedType      = db.Object.extend('NestedType')
 	  , MasterType      = db.Object.extend('MasterType')
 
@@ -90,8 +92,14 @@ module.exports = function (t, a) {
 			type: db.Boolean,
 			required: true,
 			value: false
+		},
+		testNestedMapProperty: {
+			type: NestedMap,
+			nested: true
 		}
 	});
+
+	MasterType.prototype.testNestedMapProperty.getOwnDescriptor('map').required = true;
 
 	masterObject = new MasterType();
 	nestedObject = masterObject.nestedObject;
@@ -119,6 +127,7 @@ module.exports = function (t, a) {
 	a(section.excludedFromStatusIfFilled.size, 0);
 	a(section.actionUrl, undefined);
 	a(section.resolventProperty, undefined);
+	a(section.hasMissingRequiredPropertyNamesDeep, undefined);
 
 	a.h2('Properties overridden in derived class');
 	section = nestedObject.sectionOfDerivedType;
@@ -227,6 +236,9 @@ module.exports = function (t, a) {
 	a(section.resolventWeight, 0);
 	masterObject.testRequiredWithDefaultValueResolventProperty = true;
 	a(section.resolventWeight, 0);
+	a.h4('With nested map property');
+	section.resolventProperty = 'testNestedMapProperty/map';
+	a(section.resolventWeight, 1);
 
 	a.h3('weight');
 	section.resolventProperty = 'testResolventProperty';
@@ -249,4 +261,8 @@ module.exports = function (t, a) {
 	a(section.status, 0);
 	masterObject.testRequiredResolventProperty2 = true;
 	a(section.status, 0.6);
+
+	a.h1('Neighbourhood');
+	a(section.nextSection, null);
+	a(section.previousSection, null);
 };

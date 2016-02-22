@@ -13,11 +13,12 @@
  */
 'use strict';
 
-var _       = require('mano').i18n.bind('Sections')
-  , d       = require('d')
-  , forEach = require('es5-ext/object/for-each')
-  , db      = require('mano').db
-  , ns      = require('mano').domjs.ns
+var _          = require('mano').i18n.bind('Sections')
+  , d          = require('d')
+  , forEach    = require('es5-ext/object/for-each')
+  , db         = require('mano').db
+  , ns         = require('mano').domjs.ns
+  , headersMap = require('../utils/headers-map')
   , hasOnlyTabularChildren;
 
 require('./form-section-group-to-dom-fieldset');
@@ -47,13 +48,15 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		  , actionUrl       = url(this.actionUrl)
 		  , master          = options.master || this.master
 		  , customizeData   = { subSections: {}, master: master }
+		  , headerRank      = options.headerRank || 2
 		  , contentContainer
 		  , fieldsetResult
 		  , sectionFieldsetOptions = {
 			prepend: options.prepend,
 			append: options.append,
 			master: master,
-			formId: this.domId
+			formId: this.domId,
+			subSectionHeaderRank: headerRank + 1
 		};
 
 		if (options.isChildEntity) {
@@ -65,7 +68,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		fieldsetResult = this.toDOMFieldset(document, sectionFieldsetOptions);
 		contentContainer = [
 			ns._if(this._label, [
-				ns.h2(this._label),
+				headersMap[headerRank](this._label),
 				ns.hr(),
 				ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
 					ns.md(this._legend)))]),
@@ -79,10 +82,12 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		];
 
 		customizeData.arrayResult = [customizeData.container = ns.section(
-			{ class: 'section-primary' },
+			{ class: options.cssSectionClass === false ?
+					null : options.cssSectionClass || 'section-primary' },
 			_if(this._isDisabled, div({ class: 'entities-overview-info' }, this._disabledMessage)),
 			div({ class: ['disabler-range',
 					_if(this._isDisabled, 'disabler-active')] },
+				div({ class: 'disabler' }),
 				hasOnlyTabularChildren(fieldsetResult.subSections) ?
 						contentContainer : customizeData.form = ns.form(
 					{
@@ -95,8 +100,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 						), 'completed form-elements', 'form-elements')
 					},
 					contentContainer
-				),
-				div({ class: 'disabler' }))
+				))
 		)];
 
 		if (typeof options.customize === 'function') {

@@ -18,8 +18,8 @@ exports.step = function () {
 
 	div({ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
 				'disabler-active')], id: 'forms-disabler-range' },
-		exports._forms(this),
-		div({ class: 'disabler' }));
+		div({ class: 'disabler' }),
+		exports._forms(this));
 
 	insert(_if(and(eq(this.businessProcess._guideProgress, 1),
 		eq(this.businessProcess.dataForms._progress, 1)),
@@ -32,11 +32,13 @@ exports.step = function () {
 };
 
 exports._formsHeading = function (context) {
+	var headingText = _("1 Fill the form");
+
 	return div(
 		{ class: 'capital-first' },
-		div("1"),
+		div(headingText[0]),
 		div(
-			h1(_("Fill the form")),
+			h1(headingText.slice(1).trim()),
 			p(_("Answer all mandatory questions."))
 		)
 	);

@@ -3,23 +3,34 @@
 
 'use strict';
 
-var Map                      = require('es6-map')
-  , memoize                  = require('memoizee/plain')
-  , definePercentage         = require('dbjs-ext/number/percentage')
-  , defineStringLine         = require('dbjs-ext/string/string-line')
-  , defineCreateEnum         = require('dbjs-ext/create-enum')
-  , _                        = require('mano').i18n.bind('Model')
-  , defineUser               = require('./user/base')
-  , defineFormSectionBase    = require('./form-section-base')
-  , defineProcessingStepBase = require('./processing-step-base');
+var Map                        = require('es6-map')
+  , memoize                    = require('memoizee/plain')
+  , definePercentage           = require('dbjs-ext/number/percentage')
+  , defineStringLine           = require('dbjs-ext/string/string-line')
+  , defineCreateEnum           = require('dbjs-ext/create-enum')
+  , _                          = require('mano').i18n.bind('Model')
+  , defineUser                 = require('./user/base')
+  , defineFormSectionBase      = require('./form-section-base')
+  , defineProcessingStepBase   = require('./processing-step-base')
+  , defineUploadsProcess       = require('./lib/uploads-process')
+  , defineMultipleProcess      = require('./lib/multiple-process')
+  , definePaymentReceiptUpload = require('./payment-receipt-upload')
+  , defineRequirementUpload    = require('./requirement-upload')
+  , defineDocument             = require('./document');
 
 module.exports = memoize(function (db) {
-	var Percentage = definePercentage(db)
-	  , StringLine = defineStringLine(db)
-	  , User = defineUser(db)
-	  , FormSectionBase = defineFormSectionBase(db)
-	  , ProcessingStepBase = defineProcessingStepBase(db)
-	  , ProcessingStep;
+	var Percentage           = definePercentage(db)
+	  , StringLine           = defineStringLine(db)
+	  , MultipleProcess      = defineMultipleProcess(db)
+	  , User                 = defineUser(db)
+	  , FormSectionBase      = defineFormSectionBase(db)
+	  , ProcessingStepBase   = defineProcessingStepBase(db)
+	  , UploadsProcess       = defineUploadsProcess(db)
+	  , PaymentReceiptUpload = definePaymentReceiptUpload(db)
+	  , RequirementUpload    = defineRequirementUpload(db)
+	  , Document             = defineDocument(db)
+
+	  , ProcessingStep       = ProcessingStepBase.extend('ProcessingStep');
 
 	defineCreateEnum(db);
 
@@ -33,7 +44,7 @@ module.exports = memoize(function (db) {
 		['redelegated', { label: _("Redelegated") }]
 	]));
 
-	ProcessingStep = ProcessingStepBase.extend('ProcessingStep', {
+	ProcessingStep.prototype.defineProperties({
 		// Official that processed request at given processing step
 		processor: { type: User },
 
@@ -51,6 +62,8 @@ module.exports = memoize(function (db) {
 		status: { type: ProcessingStepStatus },
 
 		// Progress of individual step statuses
+		// "paused" status progress
+		pauseProgress: { type: Percentage, value: 1 },
 		// "approved" status progress
 		approvalProgress: { type: Percentage, value: function (_observe) {
 			return _observe(this.dataForm._status);
@@ -67,7 +80,7 @@ module.exports = memoize(function (db) {
 				if (done[step.__id__]) return;
 				done[step.__id__] = true;
 				if (_observe(step._delegatedFrom) === this) return true;
-				return step.previousSteps.some(self);
+				return step.previousSteps.some(self, this);
 			}, this);
 		} },
 
@@ -100,21 +113,21 @@ module.exports = memoize(function (db) {
 			if (this.status === 'rejected') return (this.rejectionProgress !== 1);
 			// If redelegated, but no reason provided, it's still pending
 			if (this.status === 'redelegated') return (this.redelegationProgress !== 1);
-			// 'paused' is the only option left, that's not pending
-			return false;
+			// 'paused' is the only option left, if it's not done waiting, it's still pending
+			return (this.pauseProgress !== 1);
 		} },
 
 		// Whether process is paused at step
 		isPaused: { value: function (_observe) {
 			// If not ready, then obviously not paused
 			if (!this.isReady) return false;
-			return (this.status === 'paused');
+			if (this.status !== 'paused') return false;
+			return this.pauseProgress === 1;
 		} },
 
 		// Whether process was sent back from this step
 		isSentBack: { value: function (_observe) {
-			// If not ready, then obviously not sent back
-			if (!this.isReady) return false;
+			// We don't check isReady as this is used in isReady
 			// No sentBack status, means no sent back
 			if (this.status !== 'sentBack') return false;
 			// Provided reason confirms complete sent back
@@ -178,6 +191,55 @@ module.exports = memoize(function (db) {
 			if (this.isSentBack) return 'sentBack';
 			if (this.isRedelegated) return 'redelegated';
 			if (this.isPaused) return 'paused';
+		} },
+
+		requirementUploads: { type: UploadsProcess, nested: true },
+		paymentReceiptUploads: { type: UploadsProcess, nested: true },
+		certificates: { type: MultipleProcess, nested: true },
+		assignee: { type: User },
+		isAssignable: { type: db.Boolean }
+	});
+
+	ProcessingStep.prototype.requirementUploads.defineProperties({
+		applicable: { type: RequirementUpload, multiple: true, value: function (_observe) {
+			return _observe(this.master.requirementUploads._applicable);
+		} },
+		// Requirement uploads applicable for front desk verification
+		frontDeskApplicable: { type: RequirementUpload, multiple: true, value: function (_observe) {
+			var result = [];
+			this.applicable.forEach(function (requirementUpload) {
+				if (_observe(requirementUpload._isFrontDeskApplicable)) {
+					result.push(requirementUpload);
+				}
+			});
+			return result;
+		} },
+		// Requirement uploads approved at front desk
+		frontDeskApproved: { type: RequirementUpload, multiple: true, value: function (_observe) {
+			var result = [];
+			this.frontDeskApplicable.forEach(function (requirementUpload) {
+				if (_observe(requirementUpload._isFrontDeskApproved)) result.push(requirementUpload);
+			});
+			return result;
+		} }
+	});
+
+	ProcessingStep.prototype.paymentReceiptUploads.defineProperties({
+		applicable: { type: PaymentReceiptUpload, multiple: true, value: function (_observe) {
+			return _observe(this.master.paymentReceiptUploads._applicable);
+		} },
+		uploaded: { type: PaymentReceiptUpload },
+		approved: { type: PaymentReceiptUpload },
+		rejected: { type: PaymentReceiptUpload },
+		recentlyRejected: { type: PaymentReceiptUpload }
+	});
+
+	ProcessingStep.prototype.certificates.defineProperties({
+		applicable: { type: Document, multiple: true, value: function (_observe) {
+			return _observe(this.master.certificates._applicable);
+		} },
+		uploaded: { type: Document, multiple: true, value: function (_observe) {
+			return _observe(this.master.certificates._uploaded);
 		} }
 	});
 
@@ -185,6 +247,15 @@ module.exports = memoize(function (db) {
 	ProcessingStep.prototype.define('delegatedFrom', {
 		type: ProcessingStep
 	});
+
+	ProcessingStep.prototype.dataForm.setProperties({
+		disabledMessage:
+			_("Below form was already processed, and cannot be re-submitted at this point.")
+	});
+
+	// Fix type of Document.prototype.processingStep
+	// See it's definition for explanation why it is done here
+	db.Document.prototype.getOwnDescriptor('processingStep').type = ProcessingStep;
 
 	return ProcessingStep;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

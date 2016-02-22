@@ -3,24 +3,24 @@
 
 var memoize = require('memoizee/plain');
 
-module.exports = memoize(function (db/*, opts */) {
-	var BusinessProcess, opts;
-	opts = Object(arguments[1]);
-	BusinessProcess = require('./base')(db, opts);
-	require('./certificates')(db, opts);
-	require('./costs')(db, opts);
-	require('./data-forms')(db, opts);
-	require('./derived')(db, opts);
-	require('./documents')(db, opts);
-	require('./flow')(db, opts);
-	require('./guide')(db, opts);
-	require('./processing-steps')(db, opts);
-	require('./registrations')(db, opts);
-	require('./requirement-uploads')(db, opts);
-	require('./user-uploads')(db, opts);
-	require('./requirements')(db, opts);
-	require('./submission-forms')(db, opts);
-	require('./representative')(db, opts);
+module.exports = memoize(function (db/*, options */) {
+	var options         = Object(arguments[1])
+	  , BusinessProcess = require('./base')(db, options);
+
+	require('./certificates')(db, options);
+	require('./costs')(db, options);
+	require('./data-forms')(db, options);
+	require('./derived')(db, options);
+	require('./documents')(db, options);
+	require('./flow')(db, options);
+	require('./guide')(db, options);
+	require('./manager')(db, options);
+	require('./processing-steps')(db, options);
+	require('./registrations')(db, options);
+	require('./requirement-uploads')(db, options);
+	require('./requirements')(db, options);
+	require('./submission-forms')(db, options);
+	require('./representative')(db, options);
 
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

@@ -1,3 +1,5 @@
+// For input set, returns reactive sorted array (against provided index)
+
 'use strict';
 
 var remove      = require('es5-ext/array/#/remove')
@@ -16,7 +18,7 @@ var remove      = require('es5-ext/array/#/remove')
 module.exports = memoize(function (set, recordType, sortKeyPath) {
 	var arr = ee([]), itemsMap = getIndexMap(recordType, sortKeyPath)
 	  , count = 0, isInitialized = false, def = deferred(), setListener, itemsListener
-	  , methodName = 'get' + capitalize.call(recordType);
+	  , methodName = 'get' + ((recordType === 'direct') ? '' : capitalize.call(recordType));
 	arr.emitChange = once(arr.emit.bind(arr, 'change'));
 	var add = function (ownerId) {
 		var promise;

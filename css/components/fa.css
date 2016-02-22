@@ -96,6 +96,13 @@ e.g.:
 	content: '\f085';
 }
 
+.fa-cog {
+	width: 0.89em;
+}
+.fa-cog:before {
+	content: '\f013';
+}
+
 .fa-user {
 	width: 0.84em;
 }
@@ -272,4 +279,20 @@ e.g.:
 
 .fa-building:before {
 	content: "\f1ad";
+}
+
+.fa-star {
+	width:1em;
+}
+
+.fa-star:before {
+	content: "\f005";
+}
+
+.fa-star-o {
+	width:1em;
+}
+
+.fa-star-o:before {
+	content: "\f006";
 }

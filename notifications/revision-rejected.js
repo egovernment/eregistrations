@@ -1,31 +1,47 @@
 'use strict';
 
-var _ = require('mano').i18n.bind('Official: Revision: Notifications');
+var _                = require('mano').i18n.bind('Official: Revision: Notifications')
+  , normalizeOptions = require('es5-ext/object/normalize-options')
+  , ensureType       = require('dbjs/valid-dbjs-type');
 
-var businessProcessInstances = require('mano').db.BusinessProcess.instances
-	.filterByKey('isFromEregistrations', true);
+module.exports = function (BusinessProcessClass/*, options*/) {
+	var options           = normalizeOptions(arguments[1])
+	  , stepName          = options.stepName || 'revision'
+	  , stepKeyPath       = 'processingSteps/map/' + stepName
+	  , notification      = {}
+	  , businessProcesses;
 
-exports.trigger = businessProcessInstances
-	.filterByKeyPath('processingSteps/map/revision/isRejected', true);
-exports.preTrigger = businessProcessInstances
-	.filterByKeyPath('processingSteps/map/revision/isReady', true);
+	ensureType(BusinessProcessClass);
 
-exports.resolveGetters = true;
-
-exports.variables = {
-	fullName: function () {
-		return this.businessProcess.user.fullName;
-	},
-	businessName: function () {
-		return this.businessProcess.businessName;
-	},
-	rejectionReason: function () {
-		return this.businessProcess.processingSteps.map.revision.rejectionReason;
+	if (!BusinessProcessClass.database.BusinessProcess.isPrototypeOf(BusinessProcessClass)) {
+		throw new Error(BusinessProcessClass + ' is expected to extend BusinessProcess');
 	}
-};
 
-exports.subject = _("M19 Your request has been rejected");
-exports.text = _("Email message greeting ${ fullName }") + "\n\n"
-	+ _("M19 Revision rejected\n\n" + "Name of company: ${ businessName }\n\n${ rejectionReason }")
-	+ "\n\n" +
-	_("Email message signature") + "\n";
+	businessProcesses = BusinessProcessClass.instances.filterByKey('isFromEregistrations', true);
+
+	notification.trigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isRejected', true);
+	notification.preTrigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);
+
+	notification.resolveGetters = true;
+
+	notification.variables = {
+		fullName: function () {
+			return this.businessProcess.user.fullName;
+		},
+		businessName: function () {
+			return this.businessProcess.businessName;
+		},
+		rejectionReason: function () {
+			return this.businessProcess.processingSteps.map[stepName].rejectionReason;
+		}
+	};
+
+	notification.subject = _("M19 Your request has been rejected");
+	notification.text = _("Email message greeting ${ fullName }\n\n")
+		+ _("M19 Revision rejected\n\n"
+			+ "Name of company: ${ businessName }\n\n"
+			+ "${ rejectionReason }") + "\n\n"
+		+ _("Email message signature") + "\n";
+
+	return notification;
+};

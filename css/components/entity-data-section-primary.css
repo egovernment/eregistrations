@@ -30,6 +30,9 @@
 	text-align: right;
 	padding: 11px 10px 11px 0;
 }
+.entity-data-section-primary table td {
+	width: 60%;
+}
 
 .entity-data-section-primary .entity-data-section-entities .entity-data-section-sub table th {
 	font-weight: bold;

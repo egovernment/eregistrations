@@ -4,17 +4,24 @@ var assign         = require('es5-ext/object/assign')
   , promisify      = require('deferred').promisify
   , bcrypt         = require('bcrypt')
   , dbjsCreate     = require('mano/lib/utils/dbjs-form-create')
-  , router         = require('mano/server/post-router')
+  , submit         = require('mano/utils/save')
   , changePassword = require('mano-auth/controller/server/change-password').submit
   , dbObjects      = require('mano').db.objects
 
-  , genSalt = promisify(bcrypt.genSalt), hash = promisify(bcrypt.hash)
-  , submit  = router.submit;
+  , genSalt = promisify(bcrypt.genSalt), hash = promisify(bcrypt.hash);
 
 // Common
 assign(exports, require('../user/server'));
 
 // Add User
+exports['add-user'] = {
+	submit: function (data) {
+		// This POST request should be handled in main (not db process)
+		throw new Error("Not applicable");
+	}
+};
+
+// TODO: Remove after all apps use new split processes POST router
 exports['user-add'] = {
 	submit: function (data) {
 		return hash(data['User#/password'], genSalt())(function (password) {

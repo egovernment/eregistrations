@@ -4,7 +4,7 @@ var ensureString     = require('es5-ext/object/validate-stringifiable-value')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , deferred         = require('deferred')
   , compileTemplate  = require('es6-template-strings/compile')
-  , resolveTemplate  = require('es6-template-strings/resolve-to-string')
+  , resolveTemplate  = require('es6-template-strings/resolve-to-array')
   , readFile         = require('fs2/read-file')
   , writeFile        = require('fs2/write-file')
   , dirname          = require('path').dirname
@@ -36,7 +36,9 @@ module.exports = function (htmlPath, pdfPath/*, options*/) {
 		});
 		delete options.templateInserts;
 
-		var resolvedTemplate = resolveTemplate(htmlTemplate, inserts);
+		var resolvedTemplate = resolveTemplate(htmlTemplate, inserts).map(function (token) {
+			return (token == null) ? '' : String(token);
+		}).join('');
 
 		return deferred(htmlToPdf.create(resolvedTemplate,
 			normalizeOptions(defaultRenderOptions, options)).toFilePromise(pdfPath),

@@ -5,16 +5,17 @@
 var memoize               = require('memoizee/plain')
   , defineMultipleProcess = require('../lib/multiple-process')
   , defineDocument        = require('../document')
-  , defineRegistrations   = require('./registrations');
+  , defineBusinessProcess = require('./registrations');
 
 module.exports = memoize(function (db/* options */) {
-	var BusinessProcess = defineRegistrations(db, arguments[1])
+	var BusinessProcess = defineBusinessProcess(db, arguments[1])
 	  , MultipleProcess = defineMultipleProcess(db)
-	  , Document = defineDocument(db);
+	  , Document        = defineDocument(db);
 
 	BusinessProcess.prototype.defineProperties({
 		certificates: { type: MultipleProcess, nested: true }
 	});
+
 	BusinessProcess.prototype.certificates.map._descriptorPrototype_.type = Document;
 	BusinessProcess.prototype.certificates.defineProperties({
 		// Applicable certificates resolved out of requested registrations
@@ -55,7 +56,18 @@ module.exports = memoize(function (db/* options */) {
 				}
 			});
 			return result;
+		} },
+		// Subset of uploaded certificates that can be handed out
+		toBeHanded: { type: Document, multiple: true, value: function (_observe) {
+			var result = [];
+			this.uploaded.forEach(function (certificate) {
+				if (_observe(certificate._isToBeHanded)) {
+					result.push(certificate);
+				}
+			});
+			return result;
 		} }
 	});
+
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

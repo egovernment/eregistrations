@@ -31,8 +31,10 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		msgItems.push("If appName resolution for created app is not straightfoward, " +
 			" be sure to expose it model/user/app-resolvers.js");
 		msgItems.push("Configure application url tree in apps/" + appName + "/routes.js");
-		msgItems.push("Provide app configuration for data access rules in apps/access.js");
-		msgItems.push("Setup dbjs dom bindings in apps/" + appName + "/client/dbjs-dom.js");
+		var accessMsg = "Provide app configuration for data access rules in apps/access.js";
+		msgItems.push(accessMsg);
+		var domBindings = "Setup dbjs dom bindings in apps/" + appName + "/client/dbjs-dom.js";
+		msgItems.push(domBindings);
 		msgItems.push("Configure model needed for application client in apps/"
 			+ appName + "/client/model.js");
 		msgItems.push("Ensure POST (form submissions) controllers " +
@@ -46,6 +48,9 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			" apps/business-process-submitted/client/model.js";
 
 		appsRoutersReminder = "Ensure configuration entry in server/apps/routers.js";
+		var addRole = "Add new role in model/user/roles.js";
+		var modelViews = "Ensure that views model is updated with " +
+			"added status maps in model/views.js";
 
 		if (appName === 'user') {
 			msgItems.push(clientModelReminder);
@@ -57,24 +62,49 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push("Ensure that the " +
 				"underlying businessProcess model is required in server/model.js");
 			msgItems.push(otherClientsModelReminder);
+			msgItems.push("After model for new BusinessProcess is complete," +
+				" make sure to provide necessary DOM bindings (for sections and properties (e.g. enum)) " +
+				"in client/dbjs-dom.js for user and official applications.");
 		}
 
-		if (startsWith.call(appName, 'official-')) {
+		if (startsWith.call(appName, 'official-') || appName === 'dispatcher') {
 			msgItems.push(clientModelReminder);
 			msgItems.push(appsRoutersReminder);
-			msgItems.push("Replace all occurences of BusinessProcessCHANGEME with proper " +
-				"class names in: apps/" + appName + "/client/program.js");
-			msgItems.push("Ensure that views model is updated with added status maps in model/views.js");
-			msgItems.push("Ensure entry in server/db/indexes.js");
+			if (startsWith.call(appName, 'official-')) {
+				msgItems.push("Replace all occurences of BusinessProcessCHANGEME with proper " +
+					"class names in: apps/" + appName + "/client/program.js");
+				msgItems.push(modelViews);
+
+				msgItems.push("Ensure entry in server/db/indexes.js");
+			}
+			msgItems.push(addRole);
+			msgItems.push("Ensure entry in model/user/recently-visited/business-processes");
+		}
+
+		if (appName === 'dispatcher') {
+			msgItems.push("Ensure that views populations for assignees from " +
+				"relevant roles is configured in server/db/views.js");
+			msgItems.push("Ensure that views model is updated with proper " +
+				"assignees map in model/views.js");
+			msgItems.push("Setup apps/" + appName + "/server/routes.js");
 		}
 
 		if (appName === 'meta-admin') {
+			msgItems.push(appsRoutersReminder);
+		}
+		if (appName === 'users-admin') {
 			msgItems.push(appsRoutersReminder);
 		}
 
 		if (startsWith.call(appName, 'official-') || appName === 'users-admin') {
 			msgItems.push("Ensure that views population for added " +
 				"status maps is configured in server/db/views.js");
+		}
+
+		if (appName === 'supervisor') {
+			msgItems = [accessMsg, clientModelReminder, domBindings, addRole, modelViews,
+					"Ensure that views populations for supervisor 'all' is configured in server/db/views.js",
+				appsRoutersReminder];
 		}
 
 		console.log(msg + msgItems.join('\n- '));

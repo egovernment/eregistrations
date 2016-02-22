@@ -19,6 +19,7 @@ exports.step = function () {
 	div(
 		{ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
 				'disabler-active')], id: 'documents-disabler-range' },
+		div({ class: 'disabler' }),
 		section(
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
@@ -32,8 +33,7 @@ exports.step = function () {
 						return li({ class: 'section-primary' }, requirementUpload.toDOMForm(document));
 					})
 			)
-		),
-		div({ class: 'disabler' })
+		)
 	);
 	insert(_if(and(eq(this.businessProcess._guideProgress, 1), eq(requirementUploads._progress, 1)),
 		div({ class: 'user-next-step-button' },
@@ -42,14 +42,14 @@ exports.step = function () {
 };
 
 exports._documentsHeading = function (context) {
-	return [
+	var headingText = _("2 Upload the documents");
+
+	return div(
+		{ class: 'capital-first' },
+		div(headingText[0]),
 		div(
-			{ class: 'capital-first' },
-			div("2"),
-			div(
-				h1(_("Upload the documents")),
-				p(_("Upload all the mandatory documents."))
-			)
+			h1(headingText.slice(1).trim()),
+			p(_("Upload all the mandatory documents."))
 		)
-	];
+	);
 };

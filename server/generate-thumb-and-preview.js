@@ -9,7 +9,8 @@ var mano     = require('mano')
 
   , resolve = path.resolve
   , extname = path.extname
-  , uploadsPath = mano.uploadsPath;
+  , uploadsPath = mano.uploadsPath
+  , docMimeTypes = require('../utils/microsoft-word-doc-mime-types');
 
 module.exports = function (file) {
 	var path        = uploadsPath
@@ -18,6 +19,9 @@ module.exports = function (file) {
 	  , extension   = extname(file.path)
 	  , thumbPath   = file.path.slice(0, -extension.length) + '.thumb' + extension
 	  , thumb, preview, processFullPath, thumbFullPath, previewFullPath;
+
+	//Skip for word doc
+	if (docMimeTypes.indexOf(file.type) !== -1) return deferred(null);
 
 	if (file.type !== 'image/jpeg') {
 		thumbPath += '.jpg';
@@ -50,6 +54,10 @@ module.exports = function (file) {
 	}, function (e) {
 		if (!file.path && contains.call(e.message, 'Unable to open file')) {
 			return deferred(unlink(thumbFullPath), preview && unlink(previewFullPath))(null, false);
+		}
+		if (contains.call(e.message, "Improper image header")) {
+			console.log("Cannot generate previews", e.stack);
+			return;
 		}
 		throw e;
 	});

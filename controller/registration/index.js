@@ -18,7 +18,8 @@ var assign        = require('es5-ext/object/assign')
 module.exports = exports = assign(exports, require('../user'));
 
 resetStatus = function (step) {
-	if (step != null) {
+	if (!step.isPreviousStepsSatisfied) return;
+	if (step.status === 'sentBack' || step.isPending) {
 		step.status = null;
 	}
 };
@@ -98,15 +99,20 @@ exports['application-submit'] = {
 		return validate.call(this, data, { changedOnly: false });
 	},
 	submit: function () {
-		this.user.currentBusinessProcess.processingSteps.applicable.forEach(function (step) {
-			if (db.ProcessingStepGroup && (step instanceof db.ProcessingStepGroup)) {
-				step.steps.applicable.forEach(function (subStep) {
-					resetStatus(subStep);
-				});
-			} else {
-				resetStatus(step);
-			}
-		});
+		if (this.user.currentBusinessProcess.isSentBack) {
+			this.user.currentBusinessProcess.delete('isSentBack');
+			this.dbRelease();
+			this.user.currentBusinessProcess.processingSteps.applicable.forEach(
+				function self(step) {
+					step.previousSteps.forEach(self);
+					if (db.ProcessingStepGroup && (step instanceof db.ProcessingStepGroup)) {
+						step.steps.applicable.forEach(self);
+					} else {
+						resetStatus(step);
+					}
+				}
+			);
+		}
 		submit.apply(this, arguments);
 	}
 };

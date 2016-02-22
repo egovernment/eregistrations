@@ -50,7 +50,7 @@ module.exports = exports = function (data) {
 				offset = (query.page - 1) * itemsPerPage;
 				arr = slice.call(arr, offset, offset + itemsPerPage);
 				return deferred.map(arr, function (data) {
-					return mano.dbDriver.getDirectObject(data.id, { keyPaths: listProps })(function (datas) {
+					return mano.dbDriver.getObject(data.id, { keyPaths: listProps })(function (datas) {
 						return datas.map(function (data) {
 							return data.data.stamp + '.' + data.id + '.' + data.data.value;
 						});
@@ -77,8 +77,8 @@ module.exports = exports = function (data) {
 			return userQueryHandler.resolve(query)(function (query) {
 				var recordId;
 				if (!query.id || (this.req.$user === query.id)) return { passed: false };
-				recordId = this.req.$user + '/visitedUsers*7' + query.id;
-				return mano.dbDriver.storeDirect(recordId, '11')({ passed: true });
+				recordId = this.req.$user + '/recentlyVisited/users*7' + query.id;
+				return mano.dbDriver.store(recordId, '11')({ passed: true });
 			}.bind(this));
 		}
 	};

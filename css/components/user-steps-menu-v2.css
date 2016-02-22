@@ -45,18 +45,18 @@
 	opacity: .9;
 }
 
-.user-steps-menu-list li.user-steps-menu-start-step {
+.user-steps-menu-list .user-steps-menu-start-step {
 	background: var(--normal-background);
 	border-radius: 5px;
 	border-color: #e3e3e3;
 	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 	flex-grow: 1;
 }
-.user-steps-menu-list li.user-steps-menu-start-step:after {
+.user-steps-menu-list .user-steps-menu-start-step:after {
 	content: none;
 }
 
-.user-steps-menu-list li.user-steps-menu-start-step > a {
+.user-steps-menu-list .user-steps-menu-start-step > a {
 	color: var(--white-text);
 	text-align: center;
 	padding-right: 10px;
@@ -64,6 +64,11 @@
 
 .user-steps-menu-start-step .user-steps-menu-item-progress {
 	visibility: hidden;
+}
+
+.user-steps-menu-step-completed .user-steps-menu-item-progress {
+	background: none;
+	background-color: var(--success-background);
 }
 
 @media only screen and (max-width: 780px) {

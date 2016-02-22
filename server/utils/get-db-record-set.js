@@ -1,4 +1,6 @@
-// Returns observable set of objects for given constraints
+// Returns resolved reactive set of values for given 'direct' property
+
+// So e.g. we may have reactive set of initialBusinessProcesses for specified user
 
 'use strict';
 
@@ -14,13 +16,13 @@ module.exports = memoize(function (dbName, id) {
 	dbName = ensureString(dbName);
 	id = ensureString(id);
 	set = new ObservableSet();
-	dbDriver.on('record:' + id, handleEvent = function (event) {
+	dbDriver.on('keyid:' + id, handleEvent = function (event) {
 		var key = event.id.slice(id.length + 1);
 		if (!key) return;
 		if (!isDigit(key[0])) key = '3' + key;
 		if (event.data.value === '11') set.add(key);
 		else set.delete(key);
 	});
-	set.promise = dbDriver.getDirectObjectKeyPath(id).map(handleEvent)(set);
+	set.promise = dbDriver.getObjectKeyPath(id).map(handleEvent)(set);
 	return set;
 }, { primitive: true });

@@ -87,27 +87,11 @@ module.exports = memoize(function (db) {
 			type: StringLine,
 			multiple: true,
 			value: function (_observe) {
-				var resolved, resolvedResolvent, isResolventExcluded, isOwn, db = this.database,
+				var resolved, isOwn, db = this.database,
 					File = db.File, NestedMap = db.NestedMap, result = [];
 
-				if (this.resolventProperty) {
-					resolvedResolvent = this.ensureResolvent(_observe);
-
-					if (!resolvedResolvent) return result;
-
-					isResolventExcluded = this.isPropertyExcludedFromStatus(resolvedResolvent, _observe);
-
-					if (_observe(resolvedResolvent.observable) !== _observe(this.resolventValue)) {
-						if (isResolventExcluded) return result;
-
-						if (resolvedResolvent.descriptor.multiple) {
-							if (_observe(resolvedResolvent.observable).size) return result;
-						} else {
-							if (_observe(resolvedResolvent.observable) != null) return result;
-						}
-
-						return [this.resolventProperty];
-					}
+				if (this.isUnresolved) {
+					return this.resolventStatus < 1 ? [this.resolventProperty] : [];
 				}
 
 				this.applicablePropertyNames.forEach(function (name) {
@@ -166,6 +150,16 @@ module.exports = memoize(function (db) {
 				}, this);
 
 				return result;
+			}
+		},
+		hasDisplayableRuleDeep: {
+			value: function (_observe) {
+				return _observe(this.progressRules.displayable._size) > 0;
+			}
+		},
+		hasMissingRequiredPropertyNamesDeep: {
+			value: function (_observe) {
+				return _observe(this.missingRequiredPropertyNames._size) > 0;
 			}
 		},
 		// Used to set input options for form.

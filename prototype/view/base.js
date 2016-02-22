@@ -64,6 +64,16 @@ exports._bodyAppend = function () {
 				a({ href: '/forms/' }, span("User - forms"), span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
+				a({ href: '/forms/sides/' },
+					span("User - tabbed forms - Sides"),
+					span({ class: 'label-reg' }, "Part A"))
+			),
+			li(
+				a({ href: '/forms/company-informations/' },
+					span("User - tabbed forms - Company informations"),
+					span({ class: 'label-reg' }, "Part A"))
+			),
+			li(
 				a({ href: '/forms/disabled/' }, span("User - forms (disabled)"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
@@ -181,6 +191,18 @@ exports._bodyAppend = function () {
 			li(
 				a({ href: '/filtered-statistics/' },
 						span("Filtered statistics"), span({ class: 'label-reg' }, "Statistics"))
+			),
+			li(
+				a({ href: '/manager/' },
+						span("Notary"), span({ class: 'label-reg' }, "Notary"))
+			),
+			li(
+				a({ href: '/manager/requests/' },
+						span("Notary Requests"), span({ class: 'label-reg' }, "Notary"))
+			),
+			li(
+				a({ href: '/manager/requests/firstrequest' },
+						span("Notary Requests - Guide view"), span({ class: 'label-reg' }, "Notary"))
 			),
 			li(
 				a({ href: '/i18n/' },

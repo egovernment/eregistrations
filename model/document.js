@@ -10,16 +10,18 @@ var memoize               = require('memoizee/plain')
   , defineFile            = require('./file')
   , defineStatusLog       = require('./lib/status-log')
   , defineFormSectionBase = require('./form-section-base')
+  , defineFormSection     = require('./form-section')
   , defineNestedMap       = require('./lib/nested-map')
-  , defineProcessingStep  = require('./processing-step');
+  , definePerson          = require('./person');
 
 module.exports = memoize(function (db) {
-	var StringLine = defineStringLine(db)
-	  , File       = defineFile(db)
-	  , DateType   = defineDate(db)
-	  , StatusLog  = defineStatusLog(db)
+	var StringLine      = defineStringLine(db)
+	  , File            = defineFile(db)
+	  , DateType        = defineDate(db)
+	  , StatusLog       = defineStatusLog(db)
 	  , FormSectionBase = defineFormSectionBase(db)
-	  , ProcessingStep  = defineProcessingStep(db)
+	  , FormSection     = defineFormSection(db)
+	  , Person          = definePerson(db)
 	  , Document;
 
 	Document = db.Object.extend('Document', {
@@ -33,7 +35,34 @@ module.exports = memoize(function (db) {
 		uniqueKey: { type: StringLine, value: function () { return this.key; } },
 		// Which entity issued the document. In case of certificates it's an issuing institution,
 		// in case of user uploads, it's a user that uploaded files (and that's the default)
-		issuedBy: { type: db.Object, value: function () { return this.master.user; } },
+		issuedBy: {
+			type: db.Object,
+			value: function () { return this.master.user; },
+			label: _("Emissor institution")
+		},
+		issuedByOfficer: {
+			type: Person,
+			value: function () {
+				if (!this.processingStep) return;
+				return this.processingStep.processor;
+			},
+			label: _("Emissor officer")
+		},
+		registration: {
+			type: db.Object,
+			value: function () {
+				var res;
+				this.master.registrations.applicable.some(function (reg) {
+					if (reg.certificates.has(this)) {
+						res = reg;
+						return true;
+					}
+				}, this);
+
+				return res;
+			},
+			label: _("Related Inscription")
+		},
 		// Issue date. It's inputted by hand official issuance date
 		issueDate: { type: DateType, required: true, label: _("Date of issuance") },
 		// Eventual expiration date
@@ -42,6 +71,7 @@ module.exports = memoize(function (db) {
 		// It's about fields we want officials to fill either at revision (document upload) or
 		// processing step (certificate upload)
 		dataForm: { type: FormSectionBase, nested: true },
+		overviewSection: { type: FormSection, nested: true },
 		// True when a given document is electronic, false otherwise
 		isElectronic: { type: db.Boolean, value: false },
 		// Document number
@@ -50,9 +80,20 @@ module.exports = memoize(function (db) {
 		isCertificate: { type: db.Boolean, value: function (_observe) {
 			return this.owner === this.master.certificates.map;
 		} },
+		// True if this document is a certificate that is supposed to be handed over at front desk
+		isToBeHanded: { type: db.Boolean, value: false },
+		// Whether certificate was handed over (at front desk)
+		wasHanded: { type: db.Boolean },
 		// Returns processing ProcessingStep if it exists on a certificate
 		processingStep: {
-			type: ProcessingStep,
+			// Type should be ProcessingStep,
+			// Still ProcessingStep invokes circular resolution to Document by using UploadsProcess
+			// to avoid circluar requires hell (as Document is low-level type and it's required by
+			// many classes), we do not require here ProcessingStep, therefore we can't set it as type.
+			// Type of this property is fixed in ProcessingStep definition
+			// This hack will be removed after we introduce Certificate type (which will work analogously
+			// as RequirementUpload) as then this property will land on Certificate and not Document
+			type: db.Object,
 			value: function () {
 				if (!this.isCertificate) return;
 				return this.master.processingSteps.map.processing;
@@ -76,6 +117,12 @@ module.exports = memoize(function (db) {
 	// History of document processing
 	Document.prototype.defineNestedMap('statusLog',
 		{ itemType: StatusLog, cardinalPropertyKey: 'label' });
+
+	Document.prototype.overviewSection.setProperties({
+		label: _("Emission data"),
+		propertyMasterType: Document,
+		propertyNames: ['issuedBy', 'issuedByOfficer', 'registration']
+	});
 
 	return Document;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

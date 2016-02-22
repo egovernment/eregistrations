@@ -119,11 +119,13 @@ loadView = function () {
 	}
 
 	appLocation.on('change', refresh = function () {
+		var result;
 		if (last.call(appLocation.pathname) !== '/') {
 			appLocation.goto(appLocation.pathname + '/' + appLocation.search + appLocation.hash);
 			return;
 		}
-		siteTreeRouter.route(appLocation.pathname);
+		result = siteTreeRouter.route(appLocation.pathname);
+		if (result && (typeof result.done === 'function')) result.done();
 	});
 	if (appLocation.pathname) refresh();
 	else appLocation.onchange();

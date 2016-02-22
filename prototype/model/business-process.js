@@ -36,6 +36,7 @@ var db = require('mano').db
   , IdDoc
   , RequiredUploadA
   , Representative
+  , File = require('../../model/file')(db)
   , processes = [first, second, third, fourth, fifth]
   , paymentReceipt = require('../../model/business-process-new/' +
 		'utils/define-payment-receipt-uploads')
@@ -56,6 +57,9 @@ FrontDeskProcessingStep.prototype.possibleInstitutions.add(db.institutionOfficia
 FrontDeskProcessingStep.prototype.possibleInstitutions.add(db.institutionCommerceMinistry);
 require('../../model/lib/nested-map');
 BusinessProcessNew.newNamed('emptyBusinessProcess');
+
+BusinessProcessNew.prototype.label = "Service 2";
+BusinessProcessNew.prototype.abbr = 'COI';
 
 module.exports = BusinessProcessNew;
 
@@ -84,8 +88,23 @@ Representative = Person.extend('Representative', {
 		type: StringLine,
 		required: true,
 		label: "Spouse last name"
+	},
+	idPhoto: {
+		type: File,
+		nested: true,
+		label: "Photo file"
 	}
 });
+
+Representative.prototype.idPhoto.setProperties({
+	name: 'idoc.jpg',
+	type: 'image/jpeg',
+	diskSize: 376306,
+	path: 'doc-a-sub-file1.idoc.jpg',
+	url: '/uploads/doc-a-sub-file1.idoc.jpg'
+});
+
+Representative.prototype.idPhoto.thumb.url = '/uploads/doc-a-sub-file1.idoc.jpg';
 
 BusinessProcessNew.prototype.defineProperties({
 	//guide
@@ -281,7 +300,9 @@ processes.forEach(function (businessProcess) {
 	businessProcess.employeesCount = 3;
 	businessProcess.isAddressSameAsPersonal = true;
 	// new
-	businessProcess.label = 'Revision';
+	businessProcess.label = 'Service 1';
+	businessProcess.abbr = 'REG';
+
 	businessProcess.submissionForms.isAffidavitSigned = true;
 	// status logs
 	businessProcess.statusLog.map.get('received').setProperties({
@@ -451,7 +472,7 @@ BusinessProcessNew.prototype.dataForms.map.get('personal').setProperties({
 		'representative/spouseName', 'representative/spouseLastName',
 		'representative/address/city', 'representative/address/streetType',
 		'representative/address/streetName', 'representative/address/streetNumber',
-		'representative/address/apartmentNumber'],
+		'representative/address/apartmentNumber', 'representative/idPhoto'],
 	label: "Company's representative information",
 	legend: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor " +
 		"incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud " +
@@ -467,7 +488,8 @@ BusinessProcessNew.prototype.dataForms.map.define('company', {
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('company').setProperties({
-	label: "Company information"
+	label: "Company information",
+	pageUrl: 'company-informations'
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('company').sections.define('details', {
@@ -501,7 +523,9 @@ BusinessProcessNew.prototype.dataForms.map.define('sides', {
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('sides').setProperties({
-	label: "Business Owner sides informations"
+	label: "Business Owner sides informations",
+	legend: "All sides informations requested",
+	pageUrl: 'sides'
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('sides').sections.defineProperties({

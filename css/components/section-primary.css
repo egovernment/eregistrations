@@ -3,6 +3,7 @@
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
 	padding: 21px 20px;
+	position: relative;
 }
 .section-primary > *,
 .section-primary > form > *,
@@ -51,11 +52,20 @@
 .section-primary-sub {
 	border: none;
 	padding: 0;
+	margin-bottom: 44px;
+	position: relative;
+}
+
+.section-primary-sub:last-child {
+	margin-bottom: 0;
 }
 
 .section-primary-sub h2,
 .section-primary-sub h3 {
-	margin: 11px 0;
+	font-weight: 400;
+	border-bottom: 1px dashed var(--normal-light-medium-background);
+	padding:5px;
+	margin-bottom: 11px;
 }
 
 .section-primary-sub > * {
@@ -99,7 +109,6 @@
 
 .section-primary .dbjs-input-component > .input input[type="text"],
 .section-primary .dbjs-input-component > .input input[type="number"],
-.section-primary .dbjs-input-component > .input input[type="email"],
 .section-primary .dbjs-input-component > .input input[type="password"],
 .section-primary .dbjs-input-component > .input input[type="date"],
 .section-primary .dbjs-input-component > .input input[type="month"],
@@ -128,7 +137,6 @@
 .section-primary .dbjs-input-component .multiple input[type="datetime"],
 .section-primary .dbjs-input-component .multiple input[type="datetime-local"],
 .section-primary .dbjs-input-component .multiple input[type="search"],
-.section-primary .dbjs-input-component .multiple input[type="email"],
 .section-primary .dbjs-input-component .multiple input[type="url"],
 .section-primary .dbjs-input-component .multiple input[type="tel"],
 .section-primary .dbjs-input-component .multiple input[type="color"],
@@ -145,6 +153,9 @@
 
 .section-primary-scroll-top {
 	text-align: right;
+	position: absolute;
+	bottom: 22px;
+	right: 20px;
 }
 
 .section-primary-scroll-top a {

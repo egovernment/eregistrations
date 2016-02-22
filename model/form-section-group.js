@@ -52,6 +52,26 @@ module.exports = memoize(function (db) {
 
 				return res;
 			}
+		},
+		hasDisplayableRuleDeep: {
+			value: function (_observe) {
+				if (_observe(this.progressRules.displayable._size) > 0) return true;
+
+				return this.applicableSections.some(function (child) {
+					return _observe(child._hasDisplayableRuleDeep);
+				});
+			}
+		},
+		hasMissingRequiredPropertyNamesDeep: {
+			value: function (_observe) {
+				if (this.isUnresolved) {
+					return this.resolventStatus < 1;
+				}
+
+				return this.applicableSections.some(function (child) {
+					return _observe(child._hasMissingRequiredPropertyNamesDeep);
+				});
+			}
 		}
 	});
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSectionBase;

@@ -13,6 +13,7 @@ thead {
 th {
 	color: var(--dark-text);
 }
+
 td a {
 	text-decoration: none;
 	color: var(--dark-text);

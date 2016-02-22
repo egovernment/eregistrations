@@ -8,7 +8,8 @@
 	padding: 0 13px;
 	margin-right: 1px;
 	position: relative;
-	top: 1px;;
+	z-index: 2;
+	top: 1px;
 	cursor: pointer;
 	font-size: 17px;
 	text-decoration: none;

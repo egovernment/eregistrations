@@ -7,13 +7,15 @@ var Map              = require('es6-map')
   , defineStringLine = require('dbjs-ext/string/string-line')
   , defineCreateEnum = require('dbjs-ext/create-enum')
   , _                = require('mano').i18n.bind('Model')
-  , defineDocument   = require('./document')
-  , definePercentage = require('dbjs-ext/number/percentage');
+  , definePercentage = require('dbjs-ext/number/percentage')
+  , defineDocument   = require('./document');
 
 module.exports = memoize(function (db) {
-	var StringLine = defineStringLine(db)
-	  , Document   = defineDocument(db)
-	  , Percentage = definePercentage(db);
+	var StringLine        = defineStringLine(db)
+	  , Percentage        = definePercentage(db)
+	  , Document          = defineDocument(db)
+
+	  , RequirementUpload = db.Object.extend('RequirementUpload');
 
 	defineCreateEnum(db);
 
@@ -31,7 +33,7 @@ module.exports = memoize(function (db) {
 			['other', { label: _("Other...") }]
 		]));
 
-	return db.Object.extend('RequirementUpload', {
+	RequirementUpload.prototype.defineProperties({
 		toString: { value: function (options) {
 			return this.document.label;
 		} },
@@ -44,7 +46,7 @@ module.exports = memoize(function (db) {
 			// By default we require at least one file uploaded
 			value: function (_observe) {
 				// Handle sent back state
-				if (_observe(this.master._isSubmittedLocked)) {
+				if (_observe(this.master._isSentBack)) {
 					return (!this.isRejected && _observe(this.document.files.ordered._size)) ? 1 : 0;
 				}
 
@@ -96,9 +98,11 @@ module.exports = memoize(function (db) {
 		} },
 
 		// Whether uploaded documents should be verified at front-desk at certificates reception
-		validateWithOriginal: { type: db.Boolean, value: true },
+		isFrontDeskApplicable: { type: db.Boolean, value: true },
 
-		// Whether uploaded files matches original document (decided at last front-desk processing step)
-		matchesOriginal: { type: db.Boolean, required: true }
+		// Whether uploaded files were validated by front-desk processing step
+		isFrontDeskApproved: { type: db.Boolean, required: true }
 	});
+
+	return RequirementUpload;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

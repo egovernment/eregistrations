@@ -1,4 +1,9 @@
-// Returns observable set of objects for given constraints
+// It's about reverse chain of linked objects
+//
+// e.g. we may have
+// businessProcess -> derivedBusinessProcess -> (last) derivedBusinessProcess
+//
+// Now this util for provided (last) derivedBusinessProcess will retrieve whole chain up to top
 
 'use strict';
 
@@ -31,15 +36,16 @@ var observe = function (set, dbName, ownerId, keyPath) {
 			return child.promise;
 		}
 	};
-	dbDriver.on('direct:' + keyPath, listener = function (event) {
+	dbDriver.on('key:' + keyPath, listener = function (event) {
+		if (event.type !== 'direct') return;
 		handler(event.id, event.data, event.old);
 	});
-	promise = dbDriver.searchDirect(keyPath, handler);
+	promise = dbDriver.search(keyPath, handler);
 	return {
 		id: ownerId,
 		promise: promise,
 		clear: function () {
-			dbDriver.off('record:' + id, listener);
+			dbDriver.off('keyid:' + id, listener);
 			if (child) {
 				set.delete(child.id);
 				child.clear();

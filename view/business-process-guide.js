@@ -61,6 +61,7 @@ exports.step = function () {
 						this.businessProcess.costs._paymentProgress)),
 				'disabler-active')] },
 		this.businessProcess.inventory ? insert(inventoryModal(this.businessProcess)) : null,
+		div({ class: 'disabler' }),
 		form(
 			{ id: 'guide-form', class: 'user-guide', action: '/guide/', method: 'post' },
 			exports._questionsSection(this),
@@ -73,8 +74,7 @@ exports.step = function () {
 			div({ id: 'no-requested-registrations-section',
 					class: 'section-primary user-guide-no-requested-registrations-info' },
 				p(_("You need to select at least one registration to continue with the process")))
-		),
-		div({ class: 'disabler' })
+		)
 	);
 
 	exports._customScripts(this);
@@ -89,7 +89,7 @@ exports._guideHeading = function (context) {
 		{ class: "capital-first" },
 		div(headingText[0]),
 		div(
-			h1(headingText.slice(1)),
+			h1(headingText.slice(1).trim()),
 			p(_("Answer the following questions to determine required documents and registration fees."))
 		)
 	);

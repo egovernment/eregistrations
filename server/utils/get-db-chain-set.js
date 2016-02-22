@@ -1,4 +1,9 @@
-// Returns observable set of objects for given constraints
+// It's about chain linked objects as e.g.:
+//
+// businessProcess -> derivedBusinessProcess -> derivedBusinessProcess
+//
+// So e.g. if we want whole chain we provide initial business process and then whole chain down
+// to last derived (if any exist) is also resolved.
 
 'use strict';
 
@@ -11,7 +16,7 @@ var observe = function (set, dbName, ownerId, keyPath) {
 	var id = ownerId + '/' + keyPath, listener, child, promise;
 	var handler = function (data) {
 		var value = data && data.value
-		  , nu = (value[0] === '7') ? value.slice(1) : null
+		  , nu = (value && (value[0] === '7')) ? value.slice(1) : null
 		  , old = child ? child.id : null;
 		if (nu === old) return;
 		if (old) {
@@ -24,13 +29,13 @@ var observe = function (set, dbName, ownerId, keyPath) {
 			return child.promise;
 		}
 	};
-	dbDriver.on('record:' + id, listener = function (event) { handler(event.data); });
-	promise = dbDriver.getDirect(id)(handler);
+	dbDriver.on('keyid:' + id, listener = function (event) { handler(event.data); });
+	promise = dbDriver.get(id)(handler);
 	return {
 		id: ownerId,
 		promise: promise,
 		clear: function () {
-			dbDriver.off('record:' + id, listener);
+			dbDriver.off('keyid:' + id, listener);
 			if (child) {
 				set.delete(child.id);
 				child.clear();

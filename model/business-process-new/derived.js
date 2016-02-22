@@ -3,11 +3,11 @@
 
 'use strict';
 
-var memoize    = require('memoizee/plain')
-  , defineFlow = require('./flow');
+var memoize               = require('memoizee/plain')
+  , defineBusinessProcess = require('./flow');
 
 module.exports = memoize(function (db/*, options*/) {
-	var BusinessProcess = defineFlow(db, arguments[1]);
+	var BusinessProcess = defineBusinessProcess(db, arguments[1]);
 
 	BusinessProcess.prototype.defineProperties({
 		// Chain of all derived business process
@@ -44,5 +44,6 @@ module.exports = memoize(function (db/*, options*/) {
 		derivedBusinessProcess: { type: BusinessProcess, unique: true,
 			reverse: 'previousBusinessProcess' }
 	});
+
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

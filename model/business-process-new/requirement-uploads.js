@@ -5,16 +5,17 @@
 var memoize                 = require('memoizee/plain')
   , defineUploadsProcess    = require('../lib/uploads-process')
   , defineRequirementUpload = require('../requirement-upload')
-  , defineRequirements      = require('./requirements');
+  , defineBusinessProcess   = require('./requirements');
 
 module.exports = memoize(function (db/* options */) {
-	var BusinessProcess = defineRequirements(db, arguments[1])
-	  , UploadsProcess = defineUploadsProcess(db)
+	var BusinessProcess   = defineBusinessProcess(db, arguments[1])
+	  , UploadsProcess    = defineUploadsProcess(db)
 	  , RequirementUpload = defineRequirementUpload(db);
 
 	BusinessProcess.prototype.defineProperties({
 		requirementUploads: { type: UploadsProcess, nested: true }
 	});
+
 	BusinessProcess.prototype.requirementUploads.defineProperties({
 		// Applicable requirement uploads resolved out of applicable requirements
 		applicableByRequirements: { type: RequirementUpload,
@@ -32,23 +33,8 @@ module.exports = memoize(function (db/* options */) {
 		// It should be overriden if there are some extra requirementUploads not from requirements.
 		applicable: { type: RequirementUpload, value: function (_observe) {
 			return this.applicableByRequirements;
-		} },
-		// Requirement uploads applicable for front desk verification
-		frontDeskApplicable: { type: RequirementUpload, multiple: true, value: function (_observe) {
-			var result = [];
-			this.applicable.forEach(function (requirementUpload) {
-				if (requirementUpload.validateWithOriginal) result.push(requirementUpload);
-			});
-			return result;
-		} },
-		// Requirement uploads approved at front desk
-		frontDeskApproved: { type: RequirementUpload, multiple: true, value: function (_observe) {
-			var result = [];
-			this.frontDeskApplicable.forEach(function (requirementUpload) {
-				if (_observe(requirementUpload._matchesOriginal)) result.push(requirementUpload);
-			});
-			return result;
 		} }
 	});
+
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

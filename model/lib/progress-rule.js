@@ -31,6 +31,12 @@ module.exports = memoize(function (db/*, options*/) {
 		isApplicable: {
 			type: db.Boolean,
 			value: true
+		},
+		getTranslations: {
+			type: db.Function,
+			value: function (options) {
+				return {};
+			}
 		}
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

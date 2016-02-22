@@ -2,14 +2,16 @@
 
 'use strict';
 
-var db         = require('mano').db
-  , _          = require('mano').i18n.bind('Incomplete Sections Navigation')
+var db                 = require('mano').db
+  , _                  = require('mano').i18n.bind('Incomplete Sections Navigation')
+  , getPropertyLabel   = require('../utils/get-property-label')
+  , incompleteNavRules = require('./incomplete-form-nav-rules')
 
   , _d = _
   , generateMissingList;
 
 var propertyLabel = function (formSection, propertyName) {
-	return JSON.stringify(formSection.master.resolveSKeyPath(propertyName).ownDescriptor.label);
+	return JSON.stringify(getPropertyLabel(formSection.master.resolveSKeyPath(propertyName)));
 };
 
 var entityLabel = function (tableSection, entity) {
@@ -21,10 +23,16 @@ var missingFieldsLabel = function () {
 };
 
 var sectionLabel = function (formSection, level) {
+	var title;
 	if (level === 0) return missingFieldsLabel();
 
+	if (formSection.label) {
+		title = _("In _\"${ sectionLabel }\"_ section:", { sectionLabel: formSection.label });
+	} else {
+		title = _("In main section:");
+	}
 	return p({ class: 'section-warning-missing-fields-sub-' + 1 },
-		mdi(_("In _\"${ sectionLabel }\"_ section:", { sectionLabel: formSection.label })));
+		mdi(title));
 };
 
 var missingPropertiesList = function (formSection) {
@@ -94,7 +102,7 @@ var drawFormEntitiesTable = function (tableSection, level) {
 generateMissingList = function (formSection, level) {
 	level = level || 0;
 
-	return _if(lt(formSection._status, 1), function () {
+	return _if(formSection._hasMissingRequiredPropertyNamesDeep, function () {
 		if (db.FormSection && (formSection instanceof db.FormSection)) {
 			return drawFormSection(formSection, level);
 		}
@@ -111,9 +119,9 @@ generateMissingList = function (formSection, level) {
 };
 
 module.exports = function (sections) {
-	return ul(sections, function (formSection) {
+	return [ul(sections, function (formSection) {
 
-		return _if(not(eq(formSection._status, 1)),
+		return _if(formSection._hasMissingRequiredPropertyNamesDeep,
 			section(
 				a(
 					{ href: '#' + formSection.domId },
@@ -122,5 +130,5 @@ module.exports = function (sections) {
 				),
 				generateMissingList(formSection)
 			));
-	});
+	}), incompleteNavRules(sections)];
 };

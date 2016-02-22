@@ -4,27 +4,32 @@
 
 var memoize                     = require('memoizee/plain')
   , defineBusinessProcessStatus = require('../lib/business-process-status')
-  , defineGuide                 = require('./guide')
+  , defineBusinessProcess       = require('./guide')
   , defineDataForms             = require('./data-forms')
   , defineRequirementUploads    = require('./requirement-uploads')
   , defineCosts                 = require('./costs')
   , defineSubmissionForms       = require('./submission-forms')
-  , defineProcessingSteps       = require('./processing-steps');
+  , defineProcessingSteps       = require('./processing-steps')
+  , defineProcessingStepBase    = require('../processing-step-base');
 
 module.exports = memoize(function (db/*, options*/) {
-	var BusinessProcess = defineGuide(db, arguments[1])
-	  , BusinessProcessStatus = defineBusinessProcessStatus(db);
+	var options               = Object(arguments[1])
+	  , BusinessProcess       = defineBusinessProcess(db, options)
+	  , BusinessProcessStatus = defineBusinessProcessStatus(db)
+	  , ProcessingStepBase;
 
-	defineDataForms(db);
-	defineRequirementUploads(db);
-	defineCosts(db);
-	defineSubmissionForms(db);
-	defineProcessingSteps(db);
+	defineDataForms(db, options);
+	defineRequirementUploads(db, options);
+	defineCosts(db, options);
+	defineSubmissionForms(db, options);
+	defineProcessingSteps(db, options);
+	ProcessingStepBase = defineProcessingStepBase(db);
 
 	BusinessProcess.prototype.defineProperties({
 		// Whether business process was submitted to Part B
 		isSubmitted: { type: db.Boolean, value: function (_observe) {
-			if (this.isSubmittedLocked) return true;
+			if (this.isSentBack) return true;
+			if (this.isUserProcessing) return true;
 			// 0. Guide
 			if (this.guideProgress !== 1) return false;
 			// 1. Forms
@@ -37,18 +42,34 @@ module.exports = memoize(function (db/*, options*/) {
 			if (_observe(this.submissionForms._progress) !== 1) return false;
 			return true;
 		} },
-		// Whether isSubmitted was locked due to bp being sent for correction
-		isSubmittedLocked: { type: db.Boolean, value: false },
 		// Whether business process was sent back to Part A
-		isSentBack: { type: db.Boolean, value: function (_observe) {
-			if (!this.isSubmitted) return false;
-			return _observe(this.processingSteps.applicable).some(function (step) {
-				return _observe(step._isSentBack);
-			});
-		} },
+		isSentBack: { type: db.Boolean, value: false },
+		sentBackSteps: {
+			type: ProcessingStepBase,
+			multiple: true,
+			value: function (_observe) {
+				var res = [];
+				if (!this.isSubmitted) return res;
+
+				_observe(this.processingSteps.applicable).forEach(function (step) {
+					if (_observe(step._isSentBack)) res.push(step);
+				});
+
+				return res;
+			}
+		},
+		// Whether business process in being processed by the User after submission
+		isUserProcessing: { type: db.Boolean, value: false },
 		// Whether business process is at draft stage (Part A)
 		isAtDraft: { type: db.Boolean, value: function () {
-			return !this.isSubmitted || this.isSentBack;
+			return !this.isSubmitted || this.isSentBack || this.isUserProcessing;
+		} },
+		// Whether business is approved
+		isApproved: { type: db.Boolean, value: function (_observe) {
+			if (!this.isSubmitted) return false;
+			return _observe(this.processingSteps.applicable).every(function (step) {
+				return _observe(step._isApproved);
+			});
 		} },
 		// Whether business process was rejected
 		isRejected: { type: db.Boolean, value: function (_observe) {
@@ -60,8 +81,8 @@ module.exports = memoize(function (db/*, options*/) {
 		// Whether business process is closed
 		isClosed: { type: db.Boolean, value: function (_observe) {
 			if (!this.isSubmitted) return false;
-			if (this.isRejected) return true;
 			return _observe(this.processingSteps.applicable).every(function (step) {
+				if (!_observe(step._isReady)) return true;
 				return _observe(step._isClosed);
 			});
 		} },
@@ -76,5 +97,6 @@ module.exports = memoize(function (db/*, options*/) {
 			return 'process';
 		} }
 	});
+
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

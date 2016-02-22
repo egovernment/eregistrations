@@ -16,7 +16,7 @@ module.exports = memoize(function (db) {
 			value: function (_observe) {
 				var valid = 0, total = 2;
 				// Handle sent back state
-				if (_observe(this.master._isSubmittedLocked) && this.isRejected) return 0;
+				if (_observe(this.master._isSentBack) && this.isRejected) return 0;
 				if (_observe(this.document._isUpToDate)) valid++;
 				if (_observe(this.document.files.ordered._size)) valid++;
 				return valid / total;

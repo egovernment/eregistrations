@@ -60,6 +60,13 @@ exports.goToColumn = {
 	}
 };
 
+exports.getCertStatus = function (cert) {
+	var processingStep = cert.processingStep, businessProcess = cert.master;
+
+	return _if(businessProcess._isRejected,
+		"rejected", processingStep && processingStep._resolvedStatus);
+};
+
 exports.columns = [{
 	head: _("Service"),
 	class: 'submitted-user-data-table-service',
@@ -73,29 +80,40 @@ exports.columns = [{
 }, {
 	head: _("Submission date"),
 	class: 'submitted-user-data-table-date',
-	data: function (businessProcess) { return businessProcess.submissionForms.
-		_isAffidavitSigned._lastModified.map(formatLastModified); }
+	data: function (businessProcess) {
+		var isSubmitted = businessProcess._isSubmitted;
+
+		return _if(isSubmitted, function () {
+			return isSubmitted._lastModified.map(formatLastModified);
+		});
+	}
 }, {
 	head: _("Withdraw date"),
 	class: 'submitted-user-data-table-date',
-	data: function (businessProcess) { return businessProcess.
-		_isApproved._lastModified.map(formatLastModified); }
+	data: function (businessProcess) {
+		var isApproved = businessProcess._isApproved;
+
+		return _if(isApproved, function () {
+			return isApproved._lastModified.map(formatLastModified);
+		});
+	}
 }, {
 	head: _("Inscriptions and controls"),
 	data: function (businessProcess) {
 		return list(businessProcess.certificates.applicable, function (cert) {
-			var processingStep = cert.processingStep;
+			var certStatus;
 
+			certStatus = exports.getCertStatus(cert);
 			return span({ class: 'hint-optional hint-optional-left',
-				'data-hint': [cert.constructor.label, _if(businessProcess._isRejected,
-					"- " + ProcessingStepStatus.meta.rejected.label,
-					processingStep && processingStep._resolvedStatus.map(function (status) {
-						if (status) return "- " + ProcessingStepStatus.meta[status].label;
-					}))] },
+				'data-hint': [cert.constructor.label,
+					_if(eq(certStatus, "rejected"), "- " + ProcessingStepStatus.meta.rejected.label,
+						certStatus.map(function (status) {
+							if (status) return "- " + ProcessingStepStatus.meta[status].label;
+						}))] },
 				span({ class: ['label-reg',
-					_if(businessProcess._isRejected, "rejected",
-						_if(processingStep && processingStep._isApproved, "approved",
-							_if(processingStep && processingStep._isReady, "ready")))] }, cert.constructor.abbr));
+					_if(eq(certStatus, "rejected"), "rejected",
+						_if(eq(certStatus, 'approved'), "approved",
+							_if(not(eqSloppy(certStatus, null)), "ready")))]  }, cert.constructor.abbr));
 		});
 	}
 }];

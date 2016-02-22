@@ -21,32 +21,40 @@ var includes        = require('es5-ext/array/#/contains')
 
 require('memoizee/ext/max-age');
 
-var getViewData = memoize(function (query) {
+var getViewData = function (query) {
 	return getData('/get-business-processes-view/', query).aside(function (result) {
 		if (!result.data) return;
 		result.data.forEach(function (eventStr) { db.unserializeEvent(eventStr, 'server-temporary'); });
 	});
-}, {
-	normalizer: function (args) { return String(toArray(args[0], null, null, true)); },
-	maxAge: 10 * 1000
-});
+};
 
 var BusinessProcessesManager = module.exports = function (conf) {
 	var user = db.User.validate(ensureObject(conf).user)
 	  , roleName = ensureString(conf.roleName)
+	  , viewKeyPath = conf.viewKeyPath
 	  , statusMap = ensureObject(conf.statusMap)
 	  , getOrderIndex = ensureCallable(conf.getOrderIndex)
 	  , searchFilter = getSearchFilter
-	  , itemsPerPage = toNaturalNumber(conf.itemsPerPage);
+	  , itemsPerPage = toNaturalNumber(conf.itemsPerPage)
+	  , pendingBusinessProcesses;
 
 	if (itemsPerPage) this.itemsPerPage = itemsPerPage;
+	if (viewKeyPath) {
+		pendingBusinessProcesses = db.views.pendingBusinessProcesses.resolveSKeyPath(viewKeyPath).value;
+	} else {
+		pendingBusinessProcesses = db.views.pendingBusinessProcesses[roleName];
+	}
+
 	defineProperties(this, {
-		_fullItems: d(user.visitedBusinessProcesses[roleName]),
-		_statusViews: d(db.views.pendingBusinessProcesses[roleName]),
+		_fullItems: d(user.recentlyVisited.businessProcesses[roleName]),
+		_statusViews: d(pendingBusinessProcesses),
 		_statusMap: d(statusMap),
 		_getItemOrderIndex: d(getOrderIndex),
 		_getSearchFilter: d(searchFilter),
-		_queryExternal: d(getViewData)
+		_queryExternal: d(memoize(getViewData, {
+			normalizer: function (args) { return String(toArray(args[0], null, null, true)); },
+			maxAge: 10 * 1000
+		}))
 	});
 };
 
@@ -86,6 +94,7 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 			process: function (ignore, query) {
 				var view = this._statusViews[query.status || 'all']
 				  , list = this._resolveList({ view: view.get(1), size: view.totalSize }, query);
+
 				return {
 					list: list,
 					size: (view.totalSize < this.itemsPerPage) ? list.length : view.totalSize

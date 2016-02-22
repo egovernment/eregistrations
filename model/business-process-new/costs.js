@@ -7,20 +7,22 @@ var memoize               = require('memoizee/plain')
   , defineCurrency        = require('dbjs-ext/number/currency')
   , defineMultipleProcess = require('../lib/multiple-process')
   , defineCost            = require('../cost')
-  , defineRegistrations   = require('./registrations')
+  , defineBusinessProcess = require('./registrations')
 
   , definePaymentReceiptUploads;
 
 module.exports = memoize(function (db/* options */) {
-	var BusinessProcess = defineRegistrations(db, arguments[1])
-	  , Percentage = definePercentage(db)
+	var options         = Object(arguments[1])
+	  , BusinessProcess = defineBusinessProcess(db, options)
+	  , Percentage      = definePercentage(db)
 	  , MultipleProcess = defineMultipleProcess(db)
-	  , Currency = defineCurrency(db)
-	  , Cost = defineCost(db);
+	  , Currency        = defineCurrency(db)
+	  , Cost            = defineCost(db);
 
 	BusinessProcess.prototype.defineProperties({
 		costs: { type: MultipleProcess, nested: true }
 	});
+
 	BusinessProcess.prototype.costs.map._descriptorPrototype_.type = Cost;
 	BusinessProcess.prototype.costs.defineProperties({
 		// Applicable costs resolved out of requested registrations
@@ -113,7 +115,10 @@ module.exports = memoize(function (db/* options */) {
 		} }
 	});
 
-	if (!BusinessProcess.prototype.paymentReceiptUploads) definePaymentReceiptUploads(db);
+	if (!BusinessProcess.prototype.paymentReceiptUploads) {
+		definePaymentReceiptUploads(db, options);
+	}
+
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
 

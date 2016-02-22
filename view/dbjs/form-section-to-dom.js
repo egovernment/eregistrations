@@ -13,11 +13,12 @@
  */
 'use strict';
 
-var _    = require('mano').i18n.bind('Sections')
-  , d    = require('d')
-  , db   = require('mano').db
-  , find = require('es5-ext/array/#/find')
-  , ns   = require('mano').domjs.ns;
+var _          = require('mano').i18n.bind('Sections')
+  , d          = require('d')
+  , db         = require('mano').db
+  , find       = require('es5-ext/array/#/find')
+  , ns         = require('mano').domjs.ns
+  , headersMap = require('../utils/headers-map');
 
 require('./form-section-to-dom-fieldset');
 require('./form-section-base');
@@ -28,6 +29,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		  , url                    = options.url || ns.url
 		  , actionUrl              = url(this.actionUrl)
 		  , master                 = options.master || this.master
+		  , headerRank             = options.headerRank || 2
 		  , customizeData          = { master: master }
 		  , fieldsetResult
 		  , sectionFieldsetOptions = {
@@ -47,10 +49,12 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 
 		customizeData.arrayResult = [
 			customizeData.container = ns.section(
-				{ class: options.cssSectionClass || 'section-primary' },
+				{ class: options.cssSectionClass === false ?
+						null : options.cssSectionClass || 'section-primary' },
 				_if(this._isDisabled, div({ class: 'entities-overview-info' }, this._disabledMessage)),
 				div({ class: ['disabler-range',
 						_if(this._isDisabled, 'disabler-active')] },
+					div({ class: 'disabler' }),
 					customizeData.form = ns.form(
 						{
 							id: this.domId,
@@ -62,7 +66,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 							), 'completed form-elements', 'form-elements')
 						},
 						ns._if(this._label, [
-							options.htmlHeader ? options.htmlHeader(this._label) : ns.h2(this._label),
+							headersMap[headerRank](this._label),
 							ns.hr(),
 							ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
 								ns.md(this._legend)))]),
@@ -72,8 +76,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 						ns.p({ class: 'section-primary-scroll-top' },
 							ns.a({ onclick: 'window.scroll(0, 0)' },
 								ns.span({ class: 'fa fa-arrow-up' }, _("Back to top"))))
-					),
-					div({ class: 'disabler' }))
+					))
 			)];
 		if (typeof options.customize === 'function') {
 			customizeData.fieldset = find.call(fieldsetResult, function (el) {

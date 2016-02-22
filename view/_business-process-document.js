@@ -8,8 +8,27 @@ var curry              = require('es5-ext/function/#/curry')
   , resolveArchivePath = require('../utils/resolve-document-archive-path')
   , syncHeight         = require('./utils/sync-height')
   , scrollBottom       = require('./utils/scroll-to-bottom')
+  , isReadOnlyRender   = require('mano/client/utils/is-read-only-render')
+  , docMimeTypes       = require('../utils/microsoft-word-doc-mime-types')
+  , includes           = require('es5-ext/array/#/contains')
+  , endsWith           = require('es5-ext/string/#/ends-with')
+  , db                 = require('mano').db
 
   , _d = _;
+
+var getFilePreview = function (file) {
+	var type = file.type;
+	if (includes.call(docMimeTypes, type)) {
+		return img({ class: 'submitted-preview-new-word-document', src: '/img/word-doc-icon.png' });
+	}
+	if (!isReadOnlyRender && (type === 'application/pdf')) {
+		return iframe({
+			src: url('pdfjs/web/viewer.html?file=') + file.path
+		});
+	}
+	return img({ zoomOnHover: true, src: or(resolve(file._preview, '_url'),
+		resolve(file._thumb, '_url')) });
+};
 
 module.exports = function (doc, sideContent) {
 	var elem, scrollableElem, master;
@@ -18,79 +37,96 @@ module.exports = function (doc, sideContent) {
 	} else {
 		master = doc.owner.owner.owner.owner;
 	}
+
 	return [h2(doc._label.map(function (label) { return _d(label, { user: master }); })),
-		section(
-			{ class: 'section-primary' },
-			h2(_("Documents history")),
-			scrollableElem = div(
-				{ class: 'submitted-user-history-wrapper' },
-				table(
-					{ class: 'submitted-user-history' },
-					tbody(
-						doc.statusLog.ordered,
-						function (log) {
-							th(log.label);
-							td({ class: 'submitted-user-history-time' }, log.time);
-							td(log.text && log.text.split('\n').filter(Boolean).map(curry.call(p, 1)));
-						}
+		insert(_if(doc.statusLog.ordered._size,
+			section(
+				{ class: 'section-primary' },
+				h2(_("Documents history")),
+				scrollableElem = div(
+					{ class: 'submitted-user-history-wrapper' },
+					table(
+						{ class: 'submitted-user-history' },
+						tbody(
+							doc.statusLog.ordered,
+							function (log) {
+								th(log.label);
+								td({ class: 'submitted-user-history-time' }, log.time);
+								td(log.text && log.text.split('\n').filter(Boolean).map(curry.call(p, 1)));
+							}
+						)
 					)
 				)
-			)
-		),
+			))),
+		doc.isCertificate ?
+				section(
+					{ class: 'section-primary' },
+					h2(_("Data of certificate")),
+					doc.dataForm.constructor !== db.FormSectionBase ?
+							doc.dataForm.toDOM(document, {
+								customFilter: function (resolved) {
+									return !endsWith.call(resolved.observable.dbId, 'files/map');
+								}
+							}) : null,
+					doc.overviewSection.toDOM(document)
+				) : null,
 		nextTick(function () { scrollBottom(scrollableElem); }),
-		section({ class: 'submitted-preview-new' },
-			div({ class: 'section-primary submitted-preview-new-document' },
-				div({ class: 'container-with-nav' },
-					h3(span({ class: 'submitted-preview-new-item-number' })),
+		insert(_if(doc.files.ordered._size,
+			section({ class: 'submitted-preview-new' },
+				div({ class: 'section-primary submitted-preview-new-document' },
+					div({ class: 'container-with-nav' },
+						h3(span({ class: 'submitted-preview-new-item-number' })),
 
-					_if(gt(doc.files.ordered._size, 1),
+						_if(gt(doc.files.ordered._size, 1),
+							div({ class: 'submitted-preview-new-documents-navigation' },
+								div(
+									{ id: 'submitted-preview-new-navigation-top' },
+									a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' },
+										_("Previous"))),
+									span(span({ class: 'current-index' }, "1"), " / ",
+										doc.files.ordered._size),
+									a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, _("Next")))
+								))
+							)
+						),
+
+					elem = ul({ id: 'doc-previews', class: 'submitted-preview-new-image-placeholder' },
+						doc.files.ordered, function (file) {
+							li({ class: _if(eq(file, doc.files.ordered._first), 'active') },
+								getFilePreview(file));
+						}, doc),
+
+					insert(_if(gt(doc.files.ordered._size, 1),
 						div({ class: 'submitted-preview-new-documents-navigation' },
 							div(
-								{ id: 'submitted-preview-new-navigation-top' },
+								{ id: 'submitted-preview-new-navigation-bottom' },
 								a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' },
-										_("Previous"))),
+									_("Previous"))),
 								span(span({ class: 'current-index' }, "1"), " / ",
 									doc.files.ordered._size),
-								a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, _("Next")))
-							))
-						)
-					),
-
-				elem = ul({ id: 'doc-previews', class: 'submitted-preview-new-image-placeholder' },
-					doc.files.ordered, function (file) {
-						li({ class: _if(eq(file, doc.files.ordered._first), 'active') },
-							img({ zoomOnHover: true, src: or(resolve(file._preview, '_url'),
-								resolve(file._thumb, '_url')) }));
-					}, doc),
-
-				insert(_if(gt(doc.files.ordered._size, 1),
-					div({ class: 'submitted-preview-new-documents-navigation' },
-						div(
-							{ id: 'submitted-preview-new-navigation-bottom' },
-							a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' }, _("Previous"))),
-							span(span({ class: 'current-index' }, "1"), " / ",
-								doc.files.ordered._size),
-							a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, _("Next"))),
-							legacy('hashNavOrderedListControls',
-								'submitted-preview-new-navigation-top', 'doc-previews',
+								a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, _("Next"))),
+								legacy('hashNavOrderedListControls',
+									'submitted-preview-new-navigation-top', 'doc-previews',
 									'doc-preview'),
-							legacy('hashNavOrderedListControls',
+								legacy('hashNavOrderedListControls',
 									'submitted-preview-new-navigation-bottom', 'doc-previews',
 									'doc-preview'),
-							legacy('hashNavOrderedList', 'doc-previews', 'doc-preview')
-						)))),
+								legacy('hashNavOrderedList', 'doc-previews', 'doc-preview')
+							)))),
 
-				syncHeight(elem)),
+					syncHeight(elem)),
 
 				div({ class: 'section-primary submitted-preview-new-side-data' },
 					a({ class: 'button-main', href: _if(doc.files.ordered._size,
 						_if(eq(doc.files.ordered._size, 1),
-							resolve(doc.files.ordered._first, 'url'),  '/' + resolveArchivePath(doc)
-						)),
+							resolve(doc.files.ordered._first, 'url'), '/' + resolveArchivePath(doc)
+							)),
 						download: _if(doc.files.ordered._size, _if(eq(doc.files.ordered._size, 1),
-							resolve(doc.files.ordered._first, 'path'),  resolveArchivePath(doc)
-						))
-					}, "Download document"),
+							resolve(doc.files.ordered._first, 'path'), resolveArchivePath(doc)
+							))
+						}, "Download document"),
 					sideContent)
-			)];
+				),
+			p(_("This certificate does not have any physical file attached to it."))
+			))];
 };

@@ -18,7 +18,7 @@ module.exports = memoize(function (Currency, currencyTypeKeyPath/* options */) {
 	var ConstrainedInput = defineConstrainedInput(DOMInput)
 	  , _render          = ConstrainedInput.prototype._render;
 
-	var Input = function (document, ns/*, options*/) {
+	var Input = function (document, type/*, options*/) {
 		ConstrainedInput.apply(this, arguments);
 	};
 
@@ -26,7 +26,7 @@ module.exports = memoize(function (Currency, currencyTypeKeyPath/* options */) {
 		constructor: d(Input),
 		_render: d(function () {
 			var el       = makeElement.bind(this.document)
-			  , master   = this.observable.value.master
+			  , master   = this.observable.object.master
 			  , Currency = master.resolveSKeyPath(currencyTypeKeyPath).observable;
 
 			_render.call(this);

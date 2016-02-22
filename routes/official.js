@@ -35,13 +35,13 @@ module.exports = function (step) {
 					if (!result) return false;
 					documentUniqueKey = hyphenToCamel.call(documentUniqueKey);
 
-					return this.businessProcess.requirementUploads
-						.applicable.some(function (requirementUpload) {
+					return this.processingStep.requirementUploads.applicable
+						.some(function (requirementUpload) {
 							if (requirementUpload.document.uniqueKey === documentUniqueKey) {
 								this.document = requirementUpload.document;
 								return true;
 							}
-						}.bind(this));
+						}, this);
 				}.bind(this));
 			},
 			view: require('eregistrations/view/business-process-document')
@@ -53,7 +53,7 @@ module.exports = function (step) {
 					var paymentReceiptUpload =
 						this.businessProcess.paymentReceiptUploads.map.get(hyphenToCamel.call(receiptKey));
 					if (!paymentReceiptUpload) return false;
-					if (!this.businessProcess.paymentReceiptUploads.applicable.has(paymentReceiptUpload)) {
+					if (!this.processingStep.paymentReceiptUploads.applicable.has(paymentReceiptUpload)) {
 						return false;
 					}
 
@@ -72,7 +72,7 @@ module.exports = function (step) {
 					var certificate =
 						this.businessProcess.certificates.map.get(hyphenToCamel.call(certificateKey));
 					if (!certificate) return false;
-					if (!this.businessProcess.certificates.applicable.has(certificate)) {
+					if (!this.processingStep.certificates.uploaded.has(certificate)) {
 						return false;
 					}
 

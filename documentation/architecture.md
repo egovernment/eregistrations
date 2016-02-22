@@ -19,7 +19,7 @@ Application server-side process runs on [Node.js](http://nodejs.org/) platform. 
 
 ##### Persistent DB
 
-Persistently we save data in very low-level state, exactly just _key: value_ pairs. Any database engine could be used for that, for development purposes we currently we use [mongoDB](https://www.mongodb.org/) but it is planned to be replaced with [levelDB](https://code.google.com/p/leveldb/) which seems to be most dedicated storage for key/value pairs.
+Persistently we save data in very low-level state, exactly just _key: value_ pairs. Any database engine (SQL and NoSQL) could be adapted to be used as physical storage.
 
 For relational level handling of data like: joins, configuration of filters and other compositions, we use in-memory [DBJS](https://github.com/medikoo/dbjs#dbjs) engine. It allows us to compose and work with data in same language as we program application, it provides all means of access, that normally SQL databases provide, and it goes far beyond that.
 

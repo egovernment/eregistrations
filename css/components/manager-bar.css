@@ -1,0 +1,18 @@
+.manager-bar {
+	background-color: var(--normal-light-background);
+	background-position: center center;
+	background-size: cover;
+}
+.manager-bar > .content {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.manager-bar-info {
+	padding-top: 11px;
+	padding-bottom: 11px;
+}
+.manager-bar-actions {
+	line-height: 44px;
+}

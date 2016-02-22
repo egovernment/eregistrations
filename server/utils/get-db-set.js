@@ -1,4 +1,4 @@
-// Returns observable set of objects for given constraints
+// Returns observable set of all master ids that for given keyPath have saved provided value
 
 'use strict';
 
@@ -10,8 +10,11 @@ var memoize             = require('memoizee')
 
 module.exports = memoize(function (recordType, keyPath, value) {
 	var set = new ObservableSet();
-	dbDriver.on(recordType + ':' + keyPath, function (event) {
-		if (resolveFilter(value, event.data.value)) set.add(event.ownerId);
+	dbDriver.on('key:' + keyPath || '&', function (event) {
+		var result;
+		if (recordType === 'computed') result = resolveFilter(value, event.data.value);
+		else result = resolveDirectFilter(value, event.data.value, event.id);
+		if (result) set.add(event.ownerId);
 		else set.delete(event.ownerId);
 	});
 	if (recordType === 'computed') {
@@ -19,7 +22,7 @@ module.exports = memoize(function (recordType, keyPath, value) {
 			if (resolveFilter(value, data.value)) set.add(ownerId);
 		})(set);
 	}
-	return dbDriver.searchDirect(keyPath, function (id, data) {
+	return dbDriver.search(keyPath, function (id, data) {
 		var index;
 		if (!resolveDirectFilter(value, data.value, id)) return;
 		index = id.indexOf('/');
