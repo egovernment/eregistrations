@@ -20,6 +20,11 @@ module.exports = memoize(function (db/*, options*/) {
 	  , options = Object(arguments[1]);
 
 	return db.Object.extend(options.className || 'Registration', {
+		toString: {
+			value: function (options) {
+				return this.label;
+			}
+		},
 		// Label (name) of registration
 		label: { type: StringLine, value: function () {
 			var Document = this.Document;
