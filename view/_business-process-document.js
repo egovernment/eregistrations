@@ -127,6 +127,6 @@ module.exports = function (doc, sideContent) {
 						}, "Download document"),
 					sideContent)
 				),
-			_("This certificate does not have any physical file attached to it.")
+			p(_("This certificate does not have any physical file attached to it."))
 			))];
 };
