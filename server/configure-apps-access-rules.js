@@ -48,8 +48,7 @@ module.exports = function (dbDriver, data) {
 	  , getUserReducedData = getReducedFrag(userStorage)
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , resolveOfficialSteps, processingStepsMeta, processingStepsDefaultMap = create(null)
-	  , bpListProps, bpListCompProps, globalFragment, getMetaAdminFragment
-	  , assignableProcessingSteps;
+	  , bpListProps, globalFragment, getMetaAdminFragment, assignableProcessingSteps;
 
 	ensureObject(data);
 	processingStepsMeta = ensureObject(data.processingStepsMeta);
@@ -70,7 +69,6 @@ module.exports = function (dbDriver, data) {
 			}));
 	}
 	bpListProps = new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
-	bpListCompProps = new Set(aFrom(ensureIterable(data.businessProcessListComputedProperties)));
 
 	// Configure official steps (per user) resolver
 	var defaultOfficialStepsResolver = function (userId) {
@@ -172,8 +170,7 @@ module.exports = function (dbDriver, data) {
 
 		return getColFragments(list, getBusinessProcessData);
 	};
-	var getBusinessProcessListFragment = getPartFragments(null,
-		new Set(aFrom(bpListProps).concat(aFrom(bpListCompProps))));
+	var getBusinessProcessListFragment = getPartFragments(null, bpListProps);
 
 	var getOfficialFragment = memoize(function (stepShortPath) {
 		var fragment = new FragmentGroup()
