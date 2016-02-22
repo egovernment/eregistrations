@@ -65,6 +65,7 @@ exports['init-demo'] = {
 
 		this.res.cookies.set(cookieName, demoUser.__id__, { maxage: maxage });
 		login(demoUser.__id__, this.req, this.res);
+		this.user = demoUser;
 	},
 	redirectUrl: '/'
 };
