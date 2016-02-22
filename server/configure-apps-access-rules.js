@@ -172,7 +172,8 @@ module.exports = function (dbDriver, data) {
 
 		return getColFragments(list, getBusinessProcessData);
 	};
-	var getBusinessProcessListFragment = getPartFragments(null, businessProcessListProperties);
+	var getBusinessProcessOfficialListFragment =
+		getPartFragments(null, businessProcessListProperties);
 
 	var getOfficialFragment = memoize(function (stepShortPath) {
 		var fragment = new FragmentGroup()
@@ -190,9 +191,18 @@ module.exports = function (dbDriver, data) {
 				return getFirstPageItems(reducedStorage,
 					'pendingBusinessProcesses/' + stepShortPath + '/' + status);
 			})
-		), getBusinessProcessListFragment));
+		), getBusinessProcessOfficialListFragment));
 		return fragment;
 	}, { primitive: true });
+
+	var getBusinessProcessDispatcherListFragment = getPartFragments(null, (function (props) {
+		var set = new Set(props);
+		assignableProcessingSteps.forEach(function (stepShortPath) {
+			// TODO: Fix for deep paths
+			set.add('processingSteps/map/' + stepShortPath + '/assignee');
+		});
+		return set;
+	}(businessProcessListProperties)));
 
 	var getDispatcherFragment = memoize(function () {
 		var fragment = new FragmentGroup();
@@ -205,7 +215,7 @@ module.exports = function (dbDriver, data) {
 			// First page list data
 			fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
 				'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName),
-				getBusinessProcessListFragment));
+				getBusinessProcessDispatcherListFragment));
 		});
 		return fragment;
 	});
@@ -280,9 +290,11 @@ module.exports = function (dbDriver, data) {
 				console.error("\n\nError: Missing assignableProcessingSteps setting for dispatcher");
 				return fragment;
 			}
+			// Assignable roles data
 			fragment.addFragment(getDispatcherFragment());
 			return fragment;
 		}
+
 		console.error("\n\nError: Unrecognized role " + roleName + "\n\n");
 		return fragment;
 	}, { primitive: true });
