@@ -47,13 +47,16 @@ module.exports = function (dbDriver, data) {
 	  , getUserReducedData = getReducedFrag(userStorage)
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , resolveOfficialSteps, processingStepsMeta, processingStepsDefaultMap = create(null)
-	  , bpListProps, bpListCompProps, globalFragment;
+	  , bpListProps, bpListCompProps, globalFragment, getMetaAdminFragment;
 
 	ensureObject(data);
 	processingStepsMeta = ensureObject(data.processingStepsMeta);
 
 	// Eventual fragment that should be passed to all clients
 	if (data.globalFragment != null) globalFragment = ensureFragment(data.globalFragment);
+	if (data.getMetaAdminFragment != null) {
+		getMetaAdminFragment = ensureCallable(data.getMetaAdminFragment);
+	}
 	bpListProps = new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
 	bpListCompProps = new Set(aFrom(ensureIterable(data.businessProcessListComputedProperties)));
 
@@ -225,7 +228,10 @@ module.exports = function (dbDriver, data) {
 			fragment.addFragment(getUsersAdminFragment());
 			return fragment;
 		}
-		if (roleName === 'metaAdmin') return fragment;
+		if (roleName === 'metaAdmin') {
+			if (getMetaAdminFragment) fragment.addFragment(getMetaAdminFragment());
+			return fragment;
+		}
 
 		if (isOfficialRoleName(roleName)) {
 			shortRoleName = uncapitalize.call(roleName.slice('official'.length));
