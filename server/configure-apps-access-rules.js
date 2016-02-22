@@ -55,7 +55,7 @@ module.exports = function (dbDriver, data) {
 	// Eventual fragment that should be passed to all clients
 	if (data.globalFragment != null) globalFragment = ensureFragment(data.globalFragment);
 	if (data.getMetaAdminFragment != null) {
-		getMetaAdminFragment = ensureCallable(data.getMetaAdminFragment);
+		getMetaAdminFragment = memoize(ensureCallable(data.getMetaAdminFragment), { length: 0 });
 	}
 	bpListProps = new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
 	bpListCompProps = new Set(aFrom(ensureIterable(data.businessProcessListComputedProperties)));
