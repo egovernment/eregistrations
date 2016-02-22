@@ -248,6 +248,11 @@ module.exports = memoize(function (db) {
 		type: ProcessingStep
 	});
 
+	ProcessingStep.prototype.dataForm.setProperties({
+		disabledMessage:
+			_("Below form was already processed, and cannot be re-submitted at this point.")
+	});
+
 	// Fix type of Document.prototype.processingStep
 	// See it's definition for explanation why it is done here
 	db.Document.prototype.getOwnDescriptor('processingStep').type = ProcessingStep;
