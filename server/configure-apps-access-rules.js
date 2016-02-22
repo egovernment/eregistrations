@@ -109,14 +109,17 @@ module.exports = function (dbDriver, data) {
 		return getUserData(id,
 			{ filter: function (data) { return !endsWith.call(data.id, '/password'); } });
 	};
+	var resolveViewData = function (data) {
+		return unserializeView(unserializeValue(data.value)).map(function (id) {
+			return id.split('/', 1)[0];
+		});
+	};
 	var getFirstPageItems = memoize(function (storage, viewName) {
 		var objects = new ObservableSet(), id = 'views/' + viewName + '/21';
 		objects.promise = storage.getReduced(id)(function (data) {
-			if (data) objects.reload(unserializeView(unserializeValue(data.value)));
+			if (data) objects.reload(resolveViewData(data));
 		});
-		storage.on('keyid:' + id, function (event) {
-			objects.reload(unserializeView(unserializeValue(event.data.value)));
-		});
+		storage.on('keyid:' + id, function (event) { objects.reload(resolveViewData(event.data)); });
 		return objects;
 	}, { primitive: true });
 	var addOfficialStepsPendingSizes = (function () {
@@ -195,6 +198,7 @@ module.exports = function (dbDriver, data) {
 		return fragment;
 	}, { primitive: true });
 
+	// Dispatcher resolvers
 	var getBusinessProcessDispatcherListFragment = getPartFragments(null, (function (props) {
 		var set = new Set(props);
 		assignableProcessingSteps.forEach(function (stepShortPath) {
@@ -203,7 +207,6 @@ module.exports = function (dbDriver, data) {
 		});
 		return set;
 	}(businessProcessListProperties)));
-
 	var getDispatcherFragment = memoize(function () {
 		var fragment = new FragmentGroup();
 
@@ -216,6 +219,36 @@ module.exports = function (dbDriver, data) {
 			fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
 				'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName),
 				getBusinessProcessDispatcherListFragment));
+		});
+		return fragment;
+	});
+
+	// Supervisor resolvers
+	var getBusinessProcessSupervisorListFragment = getPartFragments(null, (function () {
+		var set = new Set(['businessName']);
+		forEach(processingStepsMeta, function (data, stepShortPath) {
+			// TODO: Fix for deep paths
+			set.add('processingSteps/map/' + stepShortPath + '/resolvedStatus');
+		});
+		return set;
+	}()));
+	var getSupervisorFragment = memoize(function () {
+		var fragment = new FragmentGroup();
+		// "All roles" first page snapshot
+		fragment.addFragment(getReducedData('views/supervisor'));
+		fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage, 'supervisor'),
+			getBusinessProcessSupervisorListFragment));
+
+		// Per role first page snapshots
+		forEach(processingStepsMeta, function (data, stepShortPath) {
+			var defaultStatusName = resolveDefaultStatus(stepShortPath);
+			// First page snapshot
+			fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath + '/' +
+				defaultStatusName));
+			// First page list data
+			fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
+				'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName),
+				getBusinessProcessSupervisorListFragment));
 		});
 		return fragment;
 	});
@@ -295,6 +328,13 @@ module.exports = function (dbDriver, data) {
 			return fragment;
 		}
 
+		if (roleName === 'supervisor') {
+			// Recently visited business processes (full data)
+			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, 'supervisor'));
+			// Supervisor specific data
+			fragment.addFragment(getSupervisorFragment());
+			return fragment;
+		}
 		console.error("\n\nError: Unrecognized role " + roleName + "\n\n");
 		return fragment;
 	}, { primitive: true });
