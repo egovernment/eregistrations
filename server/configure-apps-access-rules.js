@@ -9,6 +9,7 @@ var aFrom            = require('es5-ext/array/from')
   , forEach          = require('es5-ext/object/for-each')
   , ensureCallable   = require('es5-ext/object/valid-callable')
   , ensureObject     = require('es5-ext/object/valid-object')
+  , ensureString     = require('es5-ext/object/validate-stringifiable-value')
   , endsWith         = require('es5-ext/string/#/ends-with')
   , uncapitalize     = require('es5-ext/string/#/uncapitalize')
   , memoize          = require('memoizee')
@@ -47,7 +48,8 @@ module.exports = function (dbDriver, data) {
 	  , getUserReducedData = getReducedFrag(userStorage)
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , resolveOfficialSteps, processingStepsMeta, processingStepsDefaultMap = create(null)
-	  , bpListProps, bpListCompProps, globalFragment, getMetaAdminFragment;
+	  , bpListProps, bpListCompProps, globalFragment, getMetaAdminFragment
+	  , assignableProcessingSteps;
 
 	ensureObject(data);
 	processingStepsMeta = ensureObject(data.processingStepsMeta);
@@ -56,6 +58,16 @@ module.exports = function (dbDriver, data) {
 	if (data.globalFragment != null) globalFragment = ensureFragment(data.globalFragment);
 	if (data.getMetaAdminFragment != null) {
 		getMetaAdminFragment = memoize(ensureCallable(data.getMetaAdminFragment), { length: 0 });
+	}
+	if (data.assignableProcessingSteps != null) {
+		assignableProcessingSteps = new Set(aFrom(ensureIterable(data.assignableProcessingSteps),
+			function (stepShortPath) {
+				stepShortPath = ensureString(stepShortPath);
+				if (!processingStepsMeta[stepShortPath]) {
+					throw new Error("Unrecognized step short path " + stringify(stepShortPath));
+				}
+				return stepShortPath;
+			}));
 	}
 	bpListProps = new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
 	bpListCompProps = new Set(aFrom(ensureIterable(data.businessProcessListComputedProperties)));
@@ -183,8 +195,24 @@ module.exports = function (dbDriver, data) {
 		return fragment;
 	}, { primitive: true });
 
+	var getDispatcherFragment = memoize(function () {
+		var fragment = new FragmentGroup();
+
+		assignableProcessingSteps.forEach(function (stepShortPath) {
+			var defaultStatusName = resolveDefaultStatus(stepShortPath);
+			// First page snapshot
+			fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath + '/' +
+				defaultStatusName));
+			// First page list data
+			fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
+				'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName),
+				getBusinessProcessListFragment));
+		});
+		return fragment;
+	});
+
 	return memoize(function (appId) {
-		var userId, roleName, shortRoleName, custom, fragment, initialBusinessProcesses, promise;
+		var userId, roleName, stepShortPath, custom, fragment, initialBusinessProcesses, promise;
 
 		appId = appId.split('.');
 		userId = appId[0];
@@ -234,11 +262,26 @@ module.exports = function (dbDriver, data) {
 		}
 
 		if (isOfficialRoleName(roleName)) {
-			shortRoleName = uncapitalize.call(roleName.slice('official'.length));
+			stepShortPath = uncapitalize.call(roleName.slice('official'.length));
 			// Recently visited business processes (full data)
-			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, shortRoleName));
+			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, stepShortPath));
 			// Official role specific data
-			fragment.addFragment(getOfficialFragment(shortRoleName));
+			if (assignableProcessingSteps && assignableProcessingSteps.has(stepShortPath)) {
+				fragment.addFragment(getOfficialFragment('assigned/7' + userId + '/' + stepShortPath));
+			} else {
+				fragment.addFragment(getOfficialFragment(stepShortPath));
+			}
+			return fragment;
+		}
+
+		if (roleName === 'dispatcher') {
+			// Recently visited business processes (full data)
+			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, 'dispatcher'));
+			if (!assignableProcessingSteps) {
+				console.error("\n\nError: Missing assignableProcessingSteps setting for dispatcher");
+				return fragment;
+			}
+			fragment.addFragment(getDispatcherFragment());
 			return fragment;
 		}
 		console.error("\n\nError: Unrecognized role " + roleName + "\n\n");
