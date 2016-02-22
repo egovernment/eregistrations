@@ -119,6 +119,26 @@ module.exports = memoize(function (db) {
 		sectionProperty: { type: StringLine, required: true },
 		// The text of message displayed when there are no entities.
 		onEmptyMessage: { type: StringLine, value: _("There are no elements added at the moment.") },
+		hasDisplayableRuleDeep: {
+			value: function (_observe) {
+				if (_observe(this.progressRules.displayable._size) > 0) return true;
+
+				return this.entitiesSet.some(function (child) {
+					var sections;
+
+					sections = child.resolveSKeyPath(this.sectionProperty, _observe);
+					sections = sections.object[sections.key];
+
+					if (this.sectionProperty === 'dataForms') {
+						sections = sections.applicable;
+					}
+
+					return sections.some(function (section) {
+						return (_observe(section._hasDisplayableRuleDeep));
+					});
+				}, this);
+			}
+		},
 		hasMissingRequiredPropertyNamesDeep: {
 			type: db.Boolean,
 			value: function (_observe) {
@@ -217,6 +237,10 @@ module.exports = memoize(function (db) {
 		maxMessage: _("No more than ${ max } items should be added"),
 		minMaxDiffMessage: _("At least ${ min } and no more than ${ max } items should be added"),
 		minMaxSameMessage: _("Exactly ${ max } items should be added"),
+		getTranslations: function (options) {
+			var tabularSection = this.owner.owner.owner;
+			return { min: tabularSection.min, max: tabularSection.max };
+		},
 		message: function (_observe) {
 			var tabularSection = this.owner.owner.owner, min, max;
 			min = _observe(tabularSection._min);

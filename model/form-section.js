@@ -152,6 +152,11 @@ module.exports = memoize(function (db) {
 				return result;
 			}
 		},
+		hasDisplayableRuleDeep: {
+			value: function (_observe) {
+				return _observe(this.progressRules.displayable._size) > 0;
+			}
+		},
 		hasMissingRequiredPropertyNamesDeep: {
 			value: function (_observe) {
 				return _observe(this.missingRequiredPropertyNames._size) > 0;

@@ -31,8 +31,13 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 					}),
 					_if(eq(self._isUnresolved, false), function () {
 						return list(filteredNames = self.applicablePropertyNames.filter(function (name) {
-							var observable = resolvePropertyPath(self.master, name).observable;
+							var resolved   = resolvePropertyPath(self.master, name)
+							  , observable = resolved.observable;
+
 							observable.once('change', function (event) { filteredNames.refresh(name); });
+							if (options.customFilter) {
+								if (!options.customFilter(resolved)) return false;
+							}
 							return observable.value != null;
 						}), function (name) {
 							var resolved = resolvePropertyPath(self.master, name)
