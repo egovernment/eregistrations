@@ -17,25 +17,16 @@ module.exports = memoize(function (db/* options */) {
 	});
 
 	BusinessProcess.prototype.dataForms.defineProperties({
-		// Applicable form sections across all derivedProcesses
+		// Applicable, touched (at least partially filled) form sections
 		processChainApplicable: {
 			type: FormSectionBase,
 			multiple: true,
 			value: function (_observe) {
-				var processes = [this.master], sections = [], taken = Object.create(null);
+				var sections = [];
 
-				// Gather all business processes in chain
-				_observe(this.master.derivedBusinessProcesses).forEach(function (process) {
-					processes.push(process);
-				});
-				// Iterate processes in reverse order (latest one should be considered first);
-				processes.reverse().forEach(function (process) {
-					_observe(process.dataForms.applicable).forEach(function (section, name) {
-						if (_observe(section._status) === 0) return;
-						if (taken[name]) return;
-						taken[name] = true;
-						sections.push(section);
-					});
+				this.applicable.forEach(function (section) {
+					if (_observe(section._status) === 0) return;
+					sections.push(section);
 				});
 
 				return sections;
