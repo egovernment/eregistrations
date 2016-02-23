@@ -23,9 +23,8 @@ module.exports = function (t, a) {
 	a.deep(aFrom(businessProcess.dataForms.applicable),
 		aFrom(businessProcess.dataForms.processChainApplicable));
 	businessProcess.derivedBusinessProcess = new BusinessProcess();
-	a.deep(aFrom(businessProcess.dataForms.applicable).concat(
-		aFrom(businessProcess.derivedBusinessProcess.dataForms.applicable)
-	), aFrom(businessProcess.dataForms.processChainApplicable));
+	a.deep(aFrom(businessProcess.dataForms.applicable),
+		aFrom(businessProcess.dataForms.processChainApplicable));
 	businessProcess.dataForms.map.test1.isApplicable = false;
-	a(businessProcess.dataForms.processChainApplicable.size, 3);
+	a(businessProcess.dataForms.processChainApplicable.size, 1);
 };
