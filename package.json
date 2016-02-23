@@ -20,6 +20,7 @@
     "mano-auth": "0.0.4",
     "memoizee": "^0.3.9",
     "time-uuid": "1",
+    "jsdom": "^8.0.4",
 
     "tad": "^0.2.4",
     "xlint": "^0.2.2",
@@ -43,7 +44,7 @@
     "css-lint-ci": "node node_modules/xlint/bin/xlint --linter=node_modules/xlint-csslint-next/index.js --fileExt=css --no-cache --no-stream",
     "ensure-eol": "node node_modules/mano/bin/ensure-eol",
     "ensure-valid-filenames": "node node_modules/mano/bin/ensure-valid-filenames",
-    "test": "node node_modules/tad/bin/tad stats server/populate.js model controller/utils"
+    "test": "node node_modules/tad/bin/tad stats server/populate.js model controller/utils utils"
   },
   "engines": {
     "node": ">=0.8"
