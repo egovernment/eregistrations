@@ -240,8 +240,8 @@ module.exports = function (dbDriver, data) {
 	var getSupervisorFragment = memoize(function () {
 		var fragment = new FragmentGroup();
 		// "All roles" first page snapshot
-		fragment.addFragment(getReducedData('views/supervisor'));
-		fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage, 'supervisor'),
+		fragment.addFragment(getReducedData('views/supervisor/all'));
+		fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage, 'supervisor/all'),
 			getBusinessProcessSupervisorListFragment));
 
 		// Per role first page snapshots
