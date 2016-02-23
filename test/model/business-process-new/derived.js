@@ -11,7 +11,7 @@ module.exports = function (t, a) {
 	a(businessProcess.canBeDerivationSource, false);
 	a(derivedBusinessProcess.derivedFrom, undefined);
 
-	businessProcess.isClosed = true;
+	businessProcess.isApproved = true;
 	a(businessProcess.canBeDerivationSource, true);
 	a.throws(function () { businessProcess.derive(null); },
 		new RegExp('null cannot be derived, instance of BusinessProcess is expected'),

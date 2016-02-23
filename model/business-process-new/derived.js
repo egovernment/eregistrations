@@ -12,8 +12,7 @@ module.exports = memoize(function (db/*, options*/) {
 	BusinessProcess.prototype.defineProperties({
 		// Whether given businessProcess can be a derivation source
 		canBeDerivationSource: { type: db.Boolean, value: function (_observe) {
-			if (!this.isClosed) return false;
-			return !this.isRejected;
+			return this.isApproved;
 		} },
 		derivedFrom: {
 			type: BusinessProcess,
@@ -21,7 +20,7 @@ module.exports = memoize(function (db/*, options*/) {
 		},
 		/**
 		 * @param {BusinessProcess} businessProcess
-		 * @returns {Boolean} - true on success, false otherwise
+		 * @returns {Boolean} - true on success
 		 */
 		derive: {
 			type: db.Function,
@@ -30,7 +29,10 @@ module.exports = memoize(function (db/*, options*/) {
 					throw new Error((businessProcess ? businessProcess.__id__ : businessProcess) +
 						' cannot be derived, instance of BusinessProcess is expected');
 				}
-				if (!this.canBeDerivationSource) return false;
+				if (!this.canBeDerivationSource) {
+					throw new Error(this.__id__ +
+						' Cannot have derivatives');
+				}
 				businessProcess.derivedFrom = this;
 				return true;
 			}
