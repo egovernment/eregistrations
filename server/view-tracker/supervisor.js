@@ -1,8 +1,10 @@
 'use strict';
 
-var toNaturalNumber     = require('es5-ext/number/to-pos-integer')
+var aFrom               = require('es5-ext/array/from')
+  , toNaturalNumber     = require('es5-ext/number/to-pos-integer')
   , findKey             = require('es5-ext/object/find-key')
   , forEach             = require('es5-ext/object/for-each')
+  , ensureIterable      = require('es5-ext/iterable/validate-object')
   , ensureObject        = require('es5-ext/object/valid-object')
   , deferred            = require('deferred')
   , serializeValue      = require('dbjs/_setup/serialize/value')
@@ -17,11 +19,11 @@ var toNaturalNumber     = require('es5-ext/number/to-pos-integer')
 
   , keys = Object.keys;
 
-module.exports = function (data) {
+module.exports = function (steps, data) {
 	var businessProcessStorage, reducedStorage, stepArrays, itemsPerPage
 	  , assignableStepsPromise;
+	steps = aFrom(ensureIterable(steps));
 	ensureObject(data);
-	ensureObject(data.steps);
 	businessProcessStorage = ensureStorage(data.businessProcessStorage);
 	reducedStorage = ensureStorage(data.reducedStorage);
 	if (data.itemsPerPage != null) itemsPerPage = toNaturalNumber(data.itemsPerPage);
@@ -46,7 +48,7 @@ module.exports = function (data) {
 	stepArrays = {};
 	return deferred(
 		assignableStepsPromise,
-		deferred.map(keys(data.steps), function (stepPath) {
+		deferred.map(steps, function (stepPath) {
 			// TODO: Fix for deep paths
 			var keyPath = 'processingSteps/map/' + stepPath + '/resolvedStatus';
 			var setPromise = getDbSet(businessProcessStorage, 'computed', keyPath,
