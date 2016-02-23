@@ -7,4 +7,10 @@ try {
 	window = document.defaultView;
 } catch (ignore) {}
 
-exports.context = document ? { document: document, window: window, process: process } : {};
+exports.context = document ? {
+	document: document,
+	window: window,
+	process: process,
+	Buffer: Buffer,
+	global: global
+} : {};

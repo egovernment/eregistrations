@@ -68,7 +68,7 @@ predef+ MutationObserver
 ./test
 todo
 ./test/utils/__tad.js
-predef+ process
+predef+ process, Buffer, global
 
 ./client/legacy/controls-map.js
 sub
