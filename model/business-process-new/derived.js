@@ -31,7 +31,7 @@ module.exports = memoize(function (db/*, options*/) {
 				}
 				if (!this.canBeDerivationSource) {
 					throw new Error(this.__id__ +
-						' Cannot have derivatives');
+						' cannot have derivatives');
 				}
 				businessProcess.derivedFrom = this;
 				return true;
