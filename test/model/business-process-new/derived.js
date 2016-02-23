@@ -16,6 +16,6 @@ module.exports = function (t, a) {
 	a.throws(function () { businessProcess.derive(null); },
 		new RegExp('null cannot be derived, instance of BusinessProcess is expected'),
 		'throws when bad businessProcess param');
-	a(businessProcess.derive(derivedBusinessProcess), true);
+	a(businessProcess.derive(derivedBusinessProcess), undefined);
 	a(derivedBusinessProcess.derivedFrom, businessProcess);
 };

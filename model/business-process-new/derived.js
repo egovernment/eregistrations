@@ -20,13 +20,13 @@ module.exports = memoize(function (db/*, options*/) {
 		},
 		/**
 		 * @param {BusinessProcess} businessProcess
-		 * @returns {Boolean} - true on success
+		 * @returns undefined
 		 */
 		derive: {
 			type: db.Function,
 			value: function (businessProcess) {
 				if (!(businessProcess instanceof this.database.BusinessProcess)) {
-					throw new Error((businessProcess ? businessProcess.__id__ : businessProcess) +
+					throw new TypeError((businessProcess ? businessProcess.__id__ : businessProcess) +
 						' cannot be derived, instance of BusinessProcess is expected');
 				}
 				if (!this.canBeDerivationSource) {
@@ -34,7 +34,6 @@ module.exports = memoize(function (db/*, options*/) {
 						' cannot have derivatives');
 				}
 				businessProcess.derivedFrom = this;
-				return true;
 			}
 		}
 	});
