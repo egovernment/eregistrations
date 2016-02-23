@@ -123,24 +123,29 @@ module.exports = function (dbDriver, data) {
 		return objects;
 	}, { primitive: true });
 	var addOfficialStepsPendingSizes = (function () {
-		var resolveFragment = function (stepsShortPaths) {
+		var resolveFragment = function (stepsShortPaths, userId) {
 			var ids;
 			if (!stepsShortPaths.size) return emptyFragment;
 			ids = [];
 			stepsShortPaths.forEach(function (stepShortPath) {
 				var defaultKey = resolveDefaultStatus(stepShortPath);
-				ids.push('views/pendingBusinessProcesses/' + stepShortPath + '/' + defaultKey +
-					'/totalSize');
+				if (assignableProcessingSteps && assignableProcessingSteps.has(stepShortPath)) {
+					ids.push('views/pendingBusinessProcesses/assigned/7' + userId + '/' + stepShortPath +
+						'/' + defaultKey + '/totalSize');
+				} else {
+					ids.push('views/pendingBusinessProcesses/' + stepShortPath + '/' + defaultKey +
+						'/totalSize');
+				}
 			});
 			return getRedRecFrag(reducedStorage, ids);
 		};
 		return function (userId, fragment) {
 			var stepsShortPaths = resolveOfficialSteps(userId)
 			  , current;
-			current = resolveFragment(stepsShortPaths);
+			current = resolveFragment(stepsShortPaths, userId);
 			fragment.addFragment(current);
 			stepsShortPaths.on('change', function () {
-				var nu = resolveFragment(stepsShortPaths);
+				var nu = resolveFragment(stepsShortPaths, userId);
 				if (nu === current) return;
 				fragment.addFragment(nu);
 				fragment.deleteFragment(current);
