@@ -23,11 +23,12 @@ module.exports = memoize(function (db/*, options*/) {
 			type: db.Function,
 			value: function (businessProcess) {
 				if (!(businessProcess instanceof this.database.BusinessProcess)) {
-					throw new Error(businessProcess.__id__ +
+					throw new Error((businessProcess ? businessProcess.__id__ : businessProcess) +
 						' cannot be derived, instance of BusinessProcess is expected');
 				}
 				if (!this.canBeDerivationSource) return false;
 				businessProcess.derivedFrom = this;
+				return true;
 			}
 		}
 	});
