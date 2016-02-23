@@ -20,15 +20,7 @@ module.exports = memoize(function (User/* options */) {
 			type: BusinessProcessBase,
 			multiple: true,
 			value: function (_observe) {
-				var processes = [];
-				this.initialBusinessProcesses.forEach(function (initialProcess) {
-					processes.push(initialProcess);
-					_observe(initialProcess.derivedBusinessProcesses).forEach(function (derivedProcess) {
-						processes.push(derivedProcess);
-					});
-				});
-
-				return processes;
+				return this.initialBusinessProcesses;
 			}
 		},
 		currentBusinessProcess: {

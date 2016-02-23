@@ -55,8 +55,7 @@ module.exports = function (t, a) {
 	a.deep(aFrom(businessProcess.documents.uploaded), [businessProcess.certificates.map.test,
 		businessProcess.requirementUploads.map.test2.document]);
 	a.deep(aFrom(businessProcess.documents.processChainUploaded),
-		[businessProcessUpdate.certificates.map.test,
-			businessProcess.requirementUploads.map.test2.document]);
+		aFrom(businessProcess.documents.uploaded));
 	a.deep(aFrom(businessProcessUpdate.documents.uploaded),
 		[businessProcessUpdate.certificates.map.test]);
 	a.deep(aFrom(businessProcessUpdate.documents.processChainUploaded),
@@ -66,8 +65,7 @@ module.exports = function (t, a) {
 	a.deep(aFrom(businessProcess.documents.uploaded), [businessProcess.certificates.map.test,
 		businessProcess.requirementUploads.map.test2.document]);
 	a.deep(aFrom(businessProcess.documents.processChainUploaded),
-		[businessProcessUpdate.certificates.map.test,
-			businessProcessUpdate.requirementUploads.map.test2.document]);
+		aFrom(businessProcess.documents.uploaded));
 	a.deep(aFrom(businessProcessUpdate.documents.uploaded),
 		[businessProcessUpdate.certificates.map.test,
 			businessProcessUpdate.requirementUploads.map.test2.document]);
