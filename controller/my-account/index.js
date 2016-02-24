@@ -45,7 +45,7 @@ var validateDerive = function (data) {
 	}
 	if (data.initialProcess === 'notRegistered') {
 		this.derivationSource = null;
-		return;
+		return true;
 	}
 
 	businessProcess = db.BusinessProcess.getById(data.initialProcess);
