@@ -191,8 +191,6 @@ h3.user-account-section-title {
 	font-weight: 700;
 	letter-spacing: 1px;
 	margin-right: 5px;
-	background: var(--lighter-medium-background);
-	border-color: var(--light-medium-background);
 	color: var(--medium-text);
 }
 
@@ -206,4 +204,18 @@ h3.user-account-section-title {
 .user-forms > .user-account-section-title {
 	text-transform: uppercase;
 	padding-top:22px;
+}
+
+@media only screen and (max-width: 640px) {
+	.user-account-tab.section-tab-nav-tab {
+		margin-right: 0;
+	}
+
+	.user-account-tab.section-tab-nav-tab:focus,
+	.user-account-tab.section-tab-nav-tab:active,
+	.user-account-tab.section-tab-nav-tab:hover,
+	.user-account-tab.section-tab-nav-tab.active {
+		background-color: var(--white-background);
+		padding-bottom: 21px;
+	}
 }
