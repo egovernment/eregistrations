@@ -20,6 +20,7 @@ exports['sub-main'] = {
 						"2. Access and edit your documents and data\n" +
 						"3. Start a new service related to your company")))
 				));
+		div(require('./_business-process-derive-dialog')(this));
 
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab user-account-tab',
