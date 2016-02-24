@@ -99,6 +99,9 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		if (appName === 'users-admin') {
 			msgItems.push(appsRoutersReminder);
 		}
+		if (appName === 'manager-registration') {
+			msgItems.push("Ensure manager model is configured with its managerDataForms");
+		}
 
 		if (startsWith.call(appName, 'official-') || appName === 'users-admin') {
 			msgItems.push("Ensure that views population for added " +
