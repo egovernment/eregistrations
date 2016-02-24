@@ -3,8 +3,7 @@
 'use strict';
 
 var db          = require('mano').db
-  , assign      = require('es5-ext/object/assign')
-  , customError = require('es5-ext/error/custom');
+  , assign      = require('es5-ext/object/assign');
 
 // Common controller.
 module.exports = assign(exports, require('../user'));
@@ -36,30 +35,6 @@ exports['business-process/[0-9][a-z0-9]+'] = {
 	submit: function () {
 		this.user.currentBusinessProcess = this.businessProcess;
 	}
-};
-
-var validateDerive = function (data) {
-	var businessProcess;
-	if (!data.initialProcess) {
-		throw customError("Wrong post data", 'WRONG_POST_DATA');
-	}
-	if (data.initialProcess === 'notRegistered') {
-		this.derivationSource = null;
-		return true;
-	}
-
-	businessProcess = db.BusinessProcess.getById(data.initialProcess);
-	if (!businessProcess.canBeDerivationSource) {
-		throw customError("This business process cannot be a derivation source",
-			'CANNOT_BE_DERIVATION_SOURCE');
-	}
-	this.derivationSource = businessProcess;
-	return true;
-};
-
-exports['business-process-derive'] = {
-	validate: validateDerive,
-	redirectUrl: '/'
 };
 
 require('../utils/demo-user-controller')(exports);
