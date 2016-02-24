@@ -225,6 +225,7 @@ module.exports = function (dbDriver, data) {
 			fragment.addFragment(getUsersAdminFragment());
 			return fragment;
 		}
+		if (roleName === 'manager') return fragment;
 		if (roleName === 'metaAdmin') return fragment;
 
 		if (isOfficialRoleName(roleName)) {

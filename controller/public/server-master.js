@@ -13,6 +13,8 @@ var emptyPromise     = require('deferred')(null)
 exports.login = require('mano-auth/controller/server-master/login');
 exports.register = {
 	submit: function (data) {
+		if (data.isManager) data['User#/roles'] = ['manager'];
+
 		return registerSubmit.apply(this, arguments)(function (result) {
 			dbDriver.onDrain(function () { sendNotification(data).done(null, function (err) {
 				console.log("Cannot send email", err.stack);
