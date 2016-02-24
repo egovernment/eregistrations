@@ -2,8 +2,8 @@
 
 'use strict';
 
-var db          = require('mano').db
-  , assign      = require('es5-ext/object/assign');
+var db     = require('mano').db
+  , assign = require('es5-ext/object/assign');
 
 // Common controller.
 module.exports = assign(exports, require('../user'));
