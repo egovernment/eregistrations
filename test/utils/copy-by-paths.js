@@ -19,7 +19,6 @@ module.exports = function (t, a) {
 	BusinessProcess.prototype.dataForms.map.main.setProperties({
 		propertyNames: ['businessName', 'representative/email', 'submissionNumber/number']
 	});
-
 	businessProcess.dataForms.map.forEach(function (section) {
 		if (section.propertyNames) {
 			cumulatedSectionPaths = cumulatedSectionPaths.concat(section.propertyNames.toArray());

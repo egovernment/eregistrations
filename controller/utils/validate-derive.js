@@ -9,8 +9,7 @@ module.exports = function (data) {
 		throw customError("Wrong post data", 'WRONG_POST_DATA');
 	}
 	if (data.initialProcess === 'notRegistered') {
-		this.derivationSource = null;
-		return true;
+		return null;
 	}
 
 	businessProcess = db.BusinessProcess.getById(data.initialProcess);
@@ -18,6 +17,5 @@ module.exports = function (data) {
 		throw customError("This business process cannot be a derivation source",
 			'CANNOT_BE_DERIVATION_SOURCE');
 	}
-	this.derivationSource = businessProcess;
-	return true;
+	return businessProcess;
 };

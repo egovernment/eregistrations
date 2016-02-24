@@ -30,6 +30,13 @@ module.exports = function (from, to, paths) {
 		if (!resolvedTo || !resolvedTo.object.hasPropertyDefined(resolvedTo.key)) {
 			throw new Error('Could not resolve path: ' + pathTo + ', on object: ' + to.__id__);
 		}
-		resolvedTo.descriptor._value_ = resolvedFrom.value;
+		if (resolvedFrom.value === resolvedTo.value) {
+			return;
+		}
+		if (resolvedFrom.value === undefined) {
+			resolvedTo.object.delete(resolvedTo.key);
+			return;
+		}
+		resolvedTo.object.set(resolvedTo.key, resolvedFrom.value);
 	});
 };

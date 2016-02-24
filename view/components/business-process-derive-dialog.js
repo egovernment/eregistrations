@@ -14,7 +14,7 @@ module.exports = function (params) {
 		{ id: params.id || 'derive',
 			class: 'dialog-modal dialog-business-process-derive' },
 		header(
-			params.header || h3(_("Select a business to modify"))
+			h3(params.headerText || _("Select a business to modify"))
 		),
 		section(
 			{ class: 'dialog-body' },
