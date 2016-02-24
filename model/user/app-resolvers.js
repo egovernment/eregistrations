@@ -35,7 +35,9 @@ module.exports = memoize(function (db/* options */) {
 			type: StringLine,
 			value: function (_observe) {
 				var role = this.currentRoleResolved, businessProcess;
+
 				if (!role) return 'public';
+
 				if (role === 'user') {
 					businessProcess = this.currentBusinessProcess;
 					if (!businessProcess) return this.appNameUser || 'public';
@@ -44,7 +46,15 @@ module.exports = memoize(function (db/* options */) {
 					return 'business-process-' +
 						businessProcess.constructor.__id__.slice('BusinessProcess'.length).toLowerCase();
 				}
+
+				if (role === 'manager') {
+					if (_observe(this.managerDataForms._progress) !== 1) return 'manager-registration';
+
+					return 'manager';
+				}
+
 				if (/^official[A-Z]/.test(role)) return this.appNameOfficial;
+
 				return role.replace(/([A-Z])/g, '-$1').toLowerCase();
 			}
 		},
