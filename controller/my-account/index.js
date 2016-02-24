@@ -44,7 +44,8 @@ var validateDerive = function (data) {
 		throw customError("Wrong post data", 'WRONG_POST_DATA');
 	}
 	if (data.initialProcess === 'notRegistered') {
-		return null;
+		this.derivationSource = null;
+		return;
 	}
 
 	businessProcess = db.BusinessProcess.getById(data.initialProcess);
