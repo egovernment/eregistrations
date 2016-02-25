@@ -11,4 +11,4 @@ exports['user-add'] = {
 };
 
 // Delete User
-exports['user/[0-9][a-z0-9]+/delete'] = { remoteSubmit: true };
+exports['clients/[0-9][a-z0-9]+/delete'] = { remoteSubmit: true };
