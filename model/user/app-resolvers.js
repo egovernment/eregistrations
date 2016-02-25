@@ -21,13 +21,22 @@ module.exports = memoize(function (db/* options */) {
 		appAccessId: {
 			type: StringLine,
 			value: function (_observe) {
-				var appId = this.__id__, role = this.currentRoleResolved, businessProcess;
+				var appId = this.__id__, role = this.currentRoleResolved, businessProcess, user;
 				if (!role) return appId;
 				appId += '.' + role;
-				if (role !== 'user') return appId;
-				businessProcess = this.currentBusinessProcess;
-				if (!businessProcess) return appId;
-				appId += '.' + businessProcess.__id__;
+				if (role === 'manager') {
+					if (_observe(this.managerDataForms._progress) !== 1) {
+						appId += '.registration';
+						return appId;
+					}
+					user = this.currentUser;
+					if (!user) return appId;
+					appId += '.' + user.__id__;
+				}
+				if ((role === 'user') || (role === 'manager')) {
+					businessProcess = this.currentBusinessProcess;
+					if (businessProcess) appId += '.' + businessProcess.__id__;
+				}
 				return appId;
 			}
 		},
@@ -38,19 +47,19 @@ module.exports = memoize(function (db/* options */) {
 
 				if (!role) return 'public';
 
-				if (role === 'user') {
+				if ((role === 'user') || (role === 'manager')) {
+					if (role === 'manager') {
+						if (_observe(this.managerDataForms._progress) !== 1) return 'manager-registration';
+						if (!this.currentUser) return 'manager';
+					}
 					businessProcess = this.currentBusinessProcess;
-					if (!businessProcess) return this.appNameUser || 'public';
+					if (!businessProcess) {
+						return this.appNameUser || 'public';
+					}
 					if (!_observe(businessProcess._isAtDraft)) return 'business-process-submitted';
 					// Replace with camelToHyphen() when it'll be possible
 					return 'business-process-' +
 						businessProcess.constructor.__id__.slice('BusinessProcess'.length).toLowerCase();
-				}
-
-				if (role === 'manager') {
-					if (_observe(this.managerDataForms._progress) !== 1) return 'manager-registration';
-
-					return 'manager';
 				}
 
 				if (/^official[A-Z]/.test(role)) return this.appNameOfficial;
