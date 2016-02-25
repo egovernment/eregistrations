@@ -12,6 +12,8 @@ exports['user-add'] = {
 		return userEmailMap.ensureUniq(data['User#/email']).then(function (value) {
 			var result = resolveRecords(data, 'User#');
 			this.targetId = result.id;
+			result.records.push({ id: this.targetId + '/manager',
+				data: { value: '7' + this.req.$user } });
 			return userStorage.storeMany(result.records)(true);
 		}.bind(this));
 	}

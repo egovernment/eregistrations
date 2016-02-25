@@ -6,13 +6,6 @@ var assign   = require('es5-ext/object/assign')
 
   , db = mano.db;
 
-var matchUser = function (id) {
-	var target = db.User.getById(id);
-	if (!target) return false;
-	this.target = target;
-	return true;
-};
-
 // Common
 assign(exports, require('../user'));
 
@@ -22,9 +15,17 @@ exports['user-add'] = {
 	redirectUrl: '/'
 };
 
-// Delete User
-exports['user/[0-9][a-z0-9]+/delete'] = {
-	match: matchUser,
-	validate: Function.prototype,
-	redirectUrl: '/'
+exports['clients/[0-9][a-z0-9]+/delete'] = {
+	match: function (clientId) {
+		this.client = db.User.getById(clientId);
+		if (!this.client) return false;
+		if (this.client.manager !== this.user) return false;
+		return this.client.initialBusinessProcesses.filterByKey('isSubmitted', true).size === 0;
+	},
+	submit: function () {
+		this.client.initialBusinessProcesses.forEach(function (bp) {
+			db.objects.delete(bp);
+		});
+		db.objects.delete(this.client);
+	}
 };
