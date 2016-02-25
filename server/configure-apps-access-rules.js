@@ -28,6 +28,8 @@ var aFrom            = require('es5-ext/array/from')
   , getColFragments  = require('./data-fragments/get-collection-fragments')
   , getPartFragments = require('./data-fragments/get-part-object-fragments')
   , getDbRecordSet   = require('./utils/get-db-record-set')
+  , getDbSet         = require('./utils/get-db-set')
+  , mapDbSet         = require('./utils/map-db-set')
   , userListProps    = require('../apps/users-admin/user-list-properties')
 
   , create = Object.create, keys = Object.keys, stringify = JSON.stringify
@@ -41,13 +43,19 @@ var joinSets = function (sets) {
 };
 module.exports = function (dbDriver, data) {
 	var userStorage = ensureDriver(dbDriver).getStorage('user')
+	  , getBusinessProcessData = getObjFragment()
 	  , reducedStorage = dbDriver.getReducedStorage()
 	  , getUserData = getObjFragment(userStorage)
-	  , getBusinessProcessData = getObjFragment()
 	  , getUserReducedData = getReducedFrag(userStorage)
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , resolveOfficialSteps, processingStepsMeta, processingStepsDefaultMap = create(null)
-	  , bpListProps, bpListCompProps, globalFragment;
+	  , bpListProps, bpListCompProps, globalFragment, getAccessRules;
+
+	var getBusinessProcessStorages = require('./utils/business-process-storages');
+	var getManagerUserData = getPartFragments(userStorage, new Set(['email', 'firstName',
+		'initialBusinessProcesses', 'lastName']));
+	var getManagerBusinessProcessData = getPartFragments(null, new Set(['businessName', 'isSubmitted',
+		'status']));
 
 	ensureObject(data);
 	processingStepsMeta = ensureObject(data.processingStepsMeta);
@@ -180,7 +188,12 @@ module.exports = function (dbDriver, data) {
 		return fragment;
 	}, { primitive: true });
 
-	return memoize(function (appId) {
+	var resolveManagerUserAppId = function (data) {
+		var appId = data.split('.'), userId = appId[0], custom = appId[1];
+		return userId + '.user' + (custom ? '.' + custom : '');
+	};
+
+	getAccessRules = memoize(function (appId) {
 		var userId, roleName, shortRoleName, custom, fragment, initialBusinessProcesses, promise;
 
 		appId = appId.split('.');
@@ -218,6 +231,36 @@ module.exports = function (dbDriver, data) {
 			}
 			return fragment;
 		}
+		if (roleName === 'manager') {
+			if (custom === 'registration') return fragment;
+
+			if (!custom) {
+				// Directly created users
+				fragment.promise =
+					getDbSet(userStorage, 'direct', 'manager', '7' + userId)(function (users) {
+						fragment.addFragment(getColFragments(users, getManagerUserData));
+					});
+				// Business processes
+				fragment.promise = getBusinessProcessStorages(function (storages) {
+					return getDbSet(storages, 'direct', 'manager', '7' + userId)(function (bps) {
+						fragment.addFragment(getColFragments(bps, getManagerBusinessProcessData));
+						// Users that come out of business processes
+						fragment.addFragment(getColFragments(mapDbSet(bps, function (bpId) {
+							var userId;
+							return userStorage.search('initialBusinessProcesses', function (id, data) {
+								if ((data.value === '11') && endsWith.call(id, '*7' + bpId)) {
+									userId = id.split('/', 1)[0];
+									return true;
+								}
+							})(function () { return userId; });
+						}), getManagerUserData));
+					});
+				});
+				return fragment;
+			}
+			fragment.addFragment(getAccessRules(resolveManagerUserAppId(custom)));
+			return fragment;
+		}
 		if (roleName === 'usersAdmin') {
 			// Recently visited users (full data)
 			fragment.addFragment(getRecentlyVisitedUsersFragment(userId));
@@ -225,7 +268,6 @@ module.exports = function (dbDriver, data) {
 			fragment.addFragment(getUsersAdminFragment());
 			return fragment;
 		}
-		if (roleName === 'manager') return fragment;
 		if (roleName === 'metaAdmin') return fragment;
 
 		if (isOfficialRoleName(roleName)) {
@@ -239,4 +281,5 @@ module.exports = function (dbDriver, data) {
 		console.error("\n\nError: Unrecognized role " + roleName + "\n\n");
 		return fragment;
 	}, { primitive: true });
+	return getAccessRules;
 };
