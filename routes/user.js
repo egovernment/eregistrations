@@ -20,6 +20,7 @@ module.exports = {
 			}
 		}
 	},
+	'managed-user-profile': require('../view/managed-user-profile'),
 	requests: require('../view/user-requests'),
 	'requests/[0-9][a-z0-9]+': {
 		match: function (businessProcessId) {
