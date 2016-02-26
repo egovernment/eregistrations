@@ -9,7 +9,7 @@ var compact       = require('es5-ext/array/#/compact')
   , mano          = require('mano')
   , tryRequire    = require('mano/lib/utils/try-require').bind(require)
   , resolve       = require('path').resolve
-  , setupTriggers = require('./_setup-triggers')
+  , setupTriggers = require('../_setup-triggers')
 
   , forEach = Array.prototype.forEach, create = Object.create
   , nextTick = process.nextTick

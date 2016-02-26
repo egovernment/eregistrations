@@ -2,28 +2,41 @@
 
 'use strict';
 
-var remove      = require('es5-ext/array/#/remove')
-  , capitalize  = require('es5-ext/string/#/capitalize')
-  , d           = require('d')
-  , ee          = require('event-emitter')
-  , deferred    = require('deferred')
-  , memoize     = require('memoizee')
-  , once        = require('timers-ext/once')
-  , dbDriver    = require('mano').dbDriver
-  , getIndexMap = require('./get-db-sort-index-map')
+var remove         = require('es5-ext/array/#/remove')
+  , capitalize     = require('es5-ext/string/#/capitalize')
+  , d              = require('d')
+  , ee             = require('event-emitter')
+  , deferred       = require('deferred')
+  , memoize        = require('memoizee')
+  , once           = require('timers-ext/once')
+  , ensureStorage  = require('dbjs-persistence/ensure-storage')
+  , getIndexMap    = require('./get-db-sort-index-map')
+  , getIdToStorage = require('./get-id-to-storage')
 
-  , defineProperty = Object.defineProperty
+  , isArray = Array.isArray, defineProperty = Object.defineProperty
   , compareStamps = function (a, b) { return a.stamp - b.stamp; };
 
-module.exports = memoize(function (set, recordType, sortKeyPath) {
-	var arr = ee([]), itemsMap = getIndexMap(recordType, sortKeyPath)
+module.exports = memoize(function (set, storage, recordType, sortKeyPath) {
+	var arr = ee([]), itemsMap = getIndexMap(storage, sortKeyPath)
 	  , count = 0, isInitialized = false, def = deferred(), setListener, itemsListener
-	  , methodName = 'get' + ((recordType === 'direct') ? '' : capitalize.call(recordType));
+	  , methodName = 'get' + ((recordType === 'direct') ? '' : capitalize.call(recordType))
+	  , getStorage, storages;
+
+	if (isArray(storage)) storages = storage.map(ensureStorage);
+	else storages = [ensureStorage(storage)];
+
+	getStorage = getIdToStorage(storages);
 	arr.emitChange = once(arr.emit.bind(arr, 'change'));
 	var add = function (ownerId) {
 		var promise;
-		if (itemsMap[ownerId]) promise = deferred(itemsMap[ownerId]);
-		else promise = dbDriver[methodName](ownerId + (sortKeyPath ? ('/' + sortKeyPath) : ''));
+		if (itemsMap[ownerId]) {
+			promise = deferred(itemsMap[ownerId]);
+		} else {
+			promise = getStorage(ownerId)(function (storage) {
+				if (!storage) return;
+				return storage[methodName](ownerId + (sortKeyPath ? ('/' + sortKeyPath) : ''));
+			});
+		}
 		return promise.aside(function (data) {
 			if (!set.has(ownerId)) return;
 			if (!itemsMap[ownerId]) itemsMap[ownerId] = { id: ownerId, stamp: data ? data.stamp : 0 };

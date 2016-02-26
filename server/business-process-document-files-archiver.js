@@ -26,25 +26,33 @@ var unlinkDocumentFiles = function (uploadsPath, document) {
 	});
 };
 
+var isArchivable = function (document) {
+	var owner = document.owner && document.owner.owner;
+	if (!owner) return false;
+	if (owner.key === 'certificates') return true;
+	owner = owner.owner;
+	if (!owner) return false;
+	if (owner.key === 'requirementUploads') return true;
+	if (owner.key === 'paymentReceiptUploads') return true;
+};
+
 exports.filenameResetService = function (db, data) {
 	var uploadsPath;
 	ensureDatabase(db);
 	ensureObject(data);
 	uploadsPath = ensureString(data.uploadsPath);
 	db.objects.on('update', function (event) {
-		var id = event.object.__valueId__, bp = event.object.master;
-		if (!(bp instanceof db.BusinessProcessBase)) return;
-		if (!bp.dataForms || !bp.dataForms.map) return;
-		if (!endsWith.call(id, '/submissionForms/isAffidavitSigned')) return;
-		bp.requirementUploads.applicable.forEach(function (upload) {
-			unlinkDocumentFiles(uploadsPath, upload.document);
-		});
-		bp.paymentReceiptUploads.applicable.forEach(function (upload) {
-			unlinkDocumentFiles(uploadsPath, upload.document);
-		});
-		bp.certificates.applicable.forEach(function (document) {
-			unlinkDocumentFiles(uploadsPath, document);
-		});
+		if (event.sourceId === 'persistentLayer') return;
+		var id = event.object.__valueId__, bp = event.object.master, document, file;
+		if (!(bp instanceof db.BusinessProcess)) return;
+		if (!bp.isSubmitted) return;
+		if (!endsWith.call(id, '/path')) return;
+		if (endsWith.call(id, '/thumb/path')) return;
+		if (endsWith.call(id, '/preview/path')) return;
+		file = event.object.object;
+		document = file.owner && file.owner.owner && file.owner.owner.owner;
+		if (!(document instanceof db.Document) || !isArchivable(document)) return;
+		unlinkDocumentFiles(uploadsPath, document);
 	});
 };
 

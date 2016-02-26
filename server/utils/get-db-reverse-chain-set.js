@@ -8,12 +8,15 @@
 'use strict';
 
 var ensureString  = require('es5-ext/object/validate-stringifiable-value')
+  , deferred      = require('deferred')
   , memoize       = require('memoizee')
   , ObservableSet = require('observable-set/primitive')
-  , dbDriver      = require('mano').dbDriver;
+  , ensureStorage = require('dbjs-persistence/ensure-storage')
 
-var observe = function (set, dbName, ownerId, keyPath) {
-	var id = ownerId + '/' + keyPath, listener, child, promise;
+  , isArray = Array.isArray;
+
+var observe = function (set, storages, ownerId, keyPath) {
+	var listener, child, promise;
 	var handler = function (id, data, oldData) {
 		var nu, old;
 		if (oldData && (data.value === oldData.value)) return;
@@ -25,27 +28,34 @@ var observe = function (set, dbName, ownerId, keyPath) {
 			nu = id.split('/', 1)[0];
 		}
 		old = child ? child.id : null;
-		if (nu === old) return;
+		if (nu === old) return true;
 		if (old) {
 			set.delete(old);
 			child.clear();
 		}
-		if (nu) {
-			set.add(nu);
-			child = observe(set, dbName, nu, keyPath);
-			return child.promise;
-		}
+		if (!nu) return true;
+		set.add(nu);
+		child = observe(set, storages, nu, keyPath);
+		return child.promise(true);
 	};
-	dbDriver.on('key:' + keyPath, listener = function (event) {
+	listener = function (event) {
 		if (event.type !== 'direct') return;
 		handler(event.id, event.data, event.old);
+	};
+	storages.forEach(function (storage) { storage.on('key:' + keyPath, listener); });
+	promise = deferred.some(storages, function (storage) {
+		var promises = [];
+		return storage.search(keyPath, function (id, data) {
+			var result = handler(id, data);
+			promises.push(result);
+			return result;
+		})(function () { return deferred.map(promises); });
 	});
-	promise = dbDriver.search(keyPath, handler);
 	return {
 		id: ownerId,
 		promise: promise,
 		clear: function () {
-			dbDriver.off('keyid:' + id, listener);
+			storages.forEach(function (storage) { storage.off('key:' + keyPath, listener); });
 			if (child) {
 				set.delete(child.id);
 				child.clear();
@@ -54,12 +64,14 @@ var observe = function (set, dbName, ownerId, keyPath) {
 	};
 };
 
-module.exports = memoize(function (dbName, ownerId, keyPath) {
-	var set;
-	dbName = ensureString(dbName);
+module.exports = memoize(function (storage, ownerId, keyPath) {
+	var set, storages;
+	if (isArray(storage)) storages = storage.map(ensureStorage);
+	else storages = [ensureStorage(storage)];
+
 	ownerId = ensureString(ownerId);
 	keyPath = ensureString(keyPath);
 	set = new ObservableSet();
-	set.promise = observe(set, dbName, ownerId, keyPath).promise;
+	set.promise = observe(set, storages, ownerId, keyPath).promise;
 	return set;
 }, { primitive: true });

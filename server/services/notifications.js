@@ -12,7 +12,7 @@ var compact       = require('es5-ext/array/#/compact')
   , readdir       = require('fs2/readdir')
   , urlParse      = require('url').parse
   , mano          = require('mano')
-  , setupTriggers = require('./_setup-triggers')
+  , setupTriggers = require('../_setup-triggers')
 
   , create = Object.create
   , basename = path.basename, dirname = path.dirname, resolve = path.resolve
