@@ -12,7 +12,14 @@ var matchBusinessProcess = function (businessProcessId) {
 
 module.exports = {
 	'/': require('../view/user-home'),
-	profile: require('../view/user-profile'),
+	profile: {
+		view: require('../view/user-profile'),
+		decorateContext: function () {
+			if (this.manager) {
+				this.user = this.manager;
+			}
+		}
+	},
 	requests: require('../view/user-requests'),
 	'requests/[0-9][a-z0-9]+': {
 		match: function (businessProcessId) {

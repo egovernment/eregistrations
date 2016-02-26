@@ -59,16 +59,16 @@ exports.main = function () {
 				h3(_("Demo version")),
 				p(_("Introduction to demo version"))))));
 
-	insert(_if(this.managedUser, function () {
+	insert(_if(this.manager, function () {
 		return div({ class: 'manager-bar' },
 			div({ class: 'content' },
 				div({ class: 'manager-bar-info' },
 					span(_("Client"), ": "),
-					span(this.managedUser._fullName)),
+					span(this.manager.currentlyManagedUser._fullName)),
 				div({ class: 'manager-bar-actions' },
-					_if(not(this.managedUser.roles._has('user')),
+					_if(not(this.manager.currentlyManagedUser.roles._has('user')),
 						postButton({ buttonClass: 'actions-create',
-							action: url('clients', this.managedUser.__id__, 'create'),
+							action: url('clients', this.manager.currentlyManagedUser.__id__, 'create'),
 							value: span(_('Create account for this client')) })))
 				));
 	}.bind(this)));
@@ -77,3 +77,12 @@ exports.main = function () {
 };
 
 exports._submittedMenu = Function.prototype;
+
+exports._getGoToManager = function (user, roleTitle) {
+	return form({ method: 'post', action: '/change-currently-managed-user/' },
+		input({ type: 'hidden',
+			name: user.__id__ + '/currentBusinessProcess', value: null }),
+		input({ type: 'hidden',
+			name: user.__id__ + '/currentlyManagedUser', value: null }),
+		button({ type: 'submit' }, roleTitle));
+};
