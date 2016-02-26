@@ -12,6 +12,15 @@ var clientMatcher = function (clientId) {
 	return this.client.manager === this.user;
 };
 
+var businessProcessMatcher = function (businessProcessId) {
+	var businessProcess = db.BusinessProcess.getById(businessProcessId);
+	if (!businessProcess) return false;
+	if (businessProcess.isSubmitted) return false;
+	if (!clientMatcher.call(this, businessProcess.user.__id__)) return false;
+	this.businessProcess = businessProcess;
+	return true;
+};
+
 // Common
 assign(exports, require('../user'));
 
@@ -19,6 +28,21 @@ assign(exports, require('../user'));
 exports['user-add'] = {
 	validate: validate,
 	redirectUrl: '/'
+};
+
+exports['business-process/[0-9][a-z0-9]+/delete'] = {
+	match: businessProcessMatcher,
+	submit: function () {
+		db.objects.delete(this.businessProcess);
+	}
+};
+
+exports['business-process/[0-9][a-z0-9]+'] = {
+	match: businessProcessMatcher,
+	submit: function () {
+		this.user.currentlyManagedUser   = this.client;
+		this.user.currentBusinessProcess = this.businessProcess;
+	}
 };
 
 exports['clients/[0-9][a-z0-9]+'] = {
