@@ -13,5 +13,6 @@ exports['clients/[0-9][a-z0-9]+/delete'] = {
 			dbObjects.delete(bp);
 		});
 		dbObjects.delete(this.client);
+		return true;
 	}
 };
