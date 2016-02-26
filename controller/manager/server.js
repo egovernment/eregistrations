@@ -12,7 +12,7 @@ exports['clients/[0-9][a-z0-9]+/delete'] = {
 		this.managedUser.initialBusinessProcesses.forEach(function (bp) {
 			dbObjects.delete(bp);
 		});
-		dbObjects.delete(this.client);
+		dbObjects.delete(this.managedUser);
 		return true;
 	}
 };
