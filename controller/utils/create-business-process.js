@@ -9,8 +9,8 @@ module.exports = function (BusinessProcess) {
 		if (this.user.isDemo) businessProcess.isDemo = true;
 		this.user.initialBusinessProcesses.add(businessProcess);
 		if (this.manager) {
-			this.manager.currentBusinessProcess = businessProcess;
 			businessProcess.manager = this.manager;
+			this.manager.currentBusinessProcess = businessProcess;
 		} else {
 			this.user.currentBusinessProcess = businessProcess;
 		}
