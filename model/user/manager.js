@@ -52,6 +52,9 @@ module.exports = memoize(function (db/* options */) {
 
 				return clients;
 			}
+		},
+		currentlyManagedUser: {
+			type: User
 		}
 	});
 

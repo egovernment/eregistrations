@@ -9,10 +9,7 @@ var assign = require('es5-ext/object/assign')
 assign(exports, require('../user/client'));
 
 // Add User
-exports['add-user'] = require('mano-auth/controller/client/register');
-
-// TODO: Remove after all apps use new split processes POST router
-exports['user-add'] = exports['add-user'];
+exports['user-add'] = require('mano-auth/controller/client/register');
 
 // Edit User
 exports['user/[0-9][a-z0-9]+'] = {

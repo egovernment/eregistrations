@@ -19,3 +19,6 @@ exports['set-role'] = true;
 
 // Active Business Process change
 exports['change-business-process'] = true;
+
+// Active Managed User change
+exports['change-currently-managed-user'] = true;

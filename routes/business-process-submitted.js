@@ -6,7 +6,14 @@ var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel');
 
 module.exports = {
 	'/': require('../view/business-process-submitted'),
-	profile: require('../view/user-profile'),
+	profile: {
+		view: require('../view/user-profile'),
+		decorateContext: function () {
+			if (this.manager) {
+				this.user = this.manager;
+			}
+		}
+	},
 	'data-print': require('../view/print-business-process-data'),
 	'document/[a-z][a-z0-9-]*': {
 		match: function (uniqueKey) {
