@@ -4,6 +4,7 @@
 
 var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
   , generateSections = require('./components/generate-sections')
+  , renderDocumentsList = require('./_business-process-draw-document-list')
   , _                = require('mano').i18n.bind('User Submitted')
   , _d = _;
 
@@ -17,31 +18,6 @@ exports['official-revision-content'] = function (/*options*/) {
 	  , businessProcess = this.businessProcess;
 
 	return [section({ class: 'section-primary' },
-		_if(businessProcess.requirementUploads.applicable._size,
-			[h4(_("Documents of the petitioner")),
-				div(
-					ol({ class: 'submitted-documents-list' },
-						businessProcess.requirementUploads.applicable,
-						function (requirementUpload) {
-							li(a({ href: urlPrefix + 'revision/user-id/documents/' +
-									camelToHyphen.call(requirementUpload.document.uniqueKey) + "/" },
-									_d(requirementUpload.document._label, { user: requirementUpload.master })),
-								_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
-									_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' }))
-								);
-						}
-						)
-				),
-				div({ id: 'revision-document', class: 'hidden' },
-					div({ id: 'revision-box', class: 'business-process-revision-box' }),
-					div({ class: 'submitted-preview' },
-						div({ id: 'document-preview', class: 'submitted-preview-document' }),
-						div({ class: 'submitted-preview-user-data  entity-data-section-side' },
-							generateSections(businessProcess.dataForms.applicable, { viewContext: this })
-							)
-						)
-					)
-				]
-			)
+			renderDocumentsList(businessProcess, urlPrefix)
 		)];
 };
