@@ -48,7 +48,7 @@ exports.guide = {
 
 exports['requirement-upload/[a-z][a-z0-9-]*'] = {
 	match: function (uniqueKey) {
-		var businessProcess = this.user.currentBusinessProcess;
+		var businessProcess = this.businessProcess;
 		uniqueKey = hyphenToCamel.call(uniqueKey);
 		return businessProcess.requirementUploads.applicable.some(function (requirementUpload) {
 			if (requirementUpload.document.uniqueKey === uniqueKey) {
@@ -75,7 +75,7 @@ exports['requirement-upload/[a-z][a-z0-9-]*'] = {
 
 exports['payment-receipt-upload/[a-z][a-z0-9-]*'] = {
 	match: function (key) {
-		var businessProcess = this.user.currentBusinessProcess
+		var businessProcess = this.businessProcess
 		  , uploads = businessProcess.paymentReceiptUploads
 		  , paymentReceiptUpload = uploads.map.get(hyphenToCamel.call(key));
 		if (!paymentReceiptUpload) return false;
@@ -100,10 +100,10 @@ exports['application-submit'] = {
 		return validate.call(this, data, { changedOnly: false });
 	},
 	submit: function () {
-		if (this.user.currentBusinessProcess.isSentBack) {
-			this.user.currentBusinessProcess.delete('isSentBack');
+		if (this.businessProcess.isSentBack) {
+			this.businessProcess.delete('isSentBack');
 			this.dbRelease();
-			this.user.currentBusinessProcess.processingSteps.applicable.forEach(
+			this.businessProcess.processingSteps.applicable.forEach(
 				function self(step) {
 					step.previousSteps.forEach(self);
 					if (db.ProcessingStepGroup && (step instanceof db.ProcessingStepGroup)) {
