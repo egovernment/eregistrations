@@ -15,8 +15,8 @@ var clientMatcher = function (clientId) {
 var businessProcessMatcher = function (businessProcessId) {
 	var businessProcess = db.BusinessProcess.getById(businessProcessId);
 	if (!businessProcess) return false;
-	if (businessProcess.isSubmitted) return false;
 	if (!clientMatcher.call(this, businessProcess.user.__id__)) return false;
+	if (businessProcess.manager !== this.user) return false;
 	this.businessProcess = businessProcess;
 	return true;
 };
@@ -31,7 +31,10 @@ exports['user-add'] = {
 };
 
 exports['business-process/[0-9][a-z0-9]+/delete'] = {
-	match: businessProcessMatcher,
+	match: function (businessProcessId) {
+		if (!businessProcessMatcher.call(this, businessProcessId)) return false;
+		return !this.businessProcess.isSubmitted;
+	},
 	submit: function () {
 		db.objects.delete(this.businessProcess);
 	}
