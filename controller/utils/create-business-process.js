@@ -8,7 +8,12 @@ module.exports = function (BusinessProcess) {
 		var businessProcess = new BusinessProcess();
 		if (this.user.isDemo) businessProcess.isDemo = true;
 		this.user.initialBusinessProcesses.add(businessProcess);
-		this.user.currentBusinessProcess = businessProcess;
+		if (this.manager) {
+			this.manager.currentBusinessProcess = businessProcess;
+			businessProcess.manager = this.manager;
+		} else {
+			this.user.currentBusinessProcess = businessProcess;
+		}
 		db._postponed_ -= 1;
 	};
 };
