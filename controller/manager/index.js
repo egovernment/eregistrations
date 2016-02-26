@@ -34,9 +34,6 @@ exports['business-process/[0-9][a-z0-9]+/delete'] = {
 	match: function (businessProcessId) {
 		if (!businessProcessMatcher.call(this, businessProcessId)) return false;
 		return !this.businessProcess.isSubmitted;
-	},
-	submit: function () {
-		db.objects.delete(this.businessProcess);
 	}
 };
 

@@ -53,6 +53,8 @@ module.exports = memoize(function (db/* options */) {
 				return clients;
 			}
 		},
+		// Holds the client user currently managed by the manager
+		// it's used to switch to given client's my-account
 		currentlyManagedUser: {
 			type: User
 		}

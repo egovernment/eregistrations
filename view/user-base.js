@@ -78,7 +78,7 @@ exports.main = function () {
 
 exports._submittedMenu = Function.prototype;
 
-exports._getGoToManager = function (user, roleTitle) {
+exports._getManagerButton = function (user, roleTitle) {
 	return form({ method: 'post', action: '/change-currently-managed-user/' },
 		input({ type: 'hidden',
 			name: user.__id__ + '/currentBusinessProcess', value: null }),
