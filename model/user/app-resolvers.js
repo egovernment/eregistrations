@@ -29,7 +29,7 @@ module.exports = memoize(function (db/* options */) {
 						appId += '.registration';
 						return appId;
 					}
-					user = this.currentUser;
+					user = this.currentlyManagedUser;
 					if (!user) return appId;
 					appId += '.' + user.__id__;
 				}
@@ -50,7 +50,7 @@ module.exports = memoize(function (db/* options */) {
 				if ((role === 'user') || (role === 'manager')) {
 					if (role === 'manager') {
 						if (_observe(this.managerDataForms._progress) !== 1) return 'manager-registration';
-						if (!this.currentUser) return 'manager';
+						if (!this.currentlyManagedUser) return 'manager';
 					}
 					businessProcess = this.currentBusinessProcess;
 					if (!businessProcess) {

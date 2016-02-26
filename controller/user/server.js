@@ -14,3 +14,7 @@ exports.profile = {
 exports['change-business-process'] = {
 	redirectUrl: '/'
 };
+
+exports['change-currently-managed-user'] = {
+	redirectUrl: '/'
+};
