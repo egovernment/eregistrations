@@ -35,12 +35,7 @@ module.exports = function (driver, slavePath/*, options*/) {
 	debug.open("db-recompute");
 	return recompute(driver, {
 		slaveScriptPath: ensureString(slavePath),
-		ids: (function () {
-			var ids = [];
-			return userStorage.search(null, function (id, data) {
-				if (data.value === '7User#') ids.push(id);
-			})(ids);
-		}()),
+		ids: userStorage.getAllObjectIds(),
 		getData: function (userId) {
 			return userStorage.getObject(userId)(function (userData) {
 				var prefix = userId + '/initialBusinessProcesses*7';
