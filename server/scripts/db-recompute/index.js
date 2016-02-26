@@ -32,23 +32,25 @@ module.exports = function (driver, slavePath/*, options*/) {
 		});
 	};
 
+	var getUserData = function (userId) {
+		return userStorage.getObject(userId)(function (userData) {
+			var prefix = userId + '/initialBusinessProcesses*7';
+			return deferred.map(userData, function (data) {
+				if (!startsWith.call(data.id, prefix)) return data;
+				if (data.data.value !== '11') return data;
+				return getBusinessProcessData(data.id.slice(prefix.length))(function (result) {
+					result.push(data);
+					return result;
+				});
+			});
+		});
+	};
+
 	debug.open("db-recompute");
 	return recompute(driver, {
 		slaveScriptPath: ensureString(slavePath),
 		ids: userStorage.getAllObjectIds(),
-		getData: function (userId) {
-			return userStorage.getObject(userId)(function (userData) {
-				var prefix = userId + '/initialBusinessProcesses*7';
-				return deferred.map(userData, function (data) {
-					if (!startsWith.call(data.id, prefix)) return data;
-					if (data.data.value !== '11') return data;
-					return getBusinessProcessData(data.id.slice(prefix.length))(function (result) {
-						result.push(data);
-						return result;
-					});
-				});
-			}).invoke(flatten);
-		},
+		getData: function (userId) { return getUserData(userId).invoke(flatten); },
 		initialData: options.initialData
 	}).on('progress', function (event) {
 		if (event.type === 'nextObject') debug.progress();
