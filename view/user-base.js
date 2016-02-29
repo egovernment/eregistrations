@@ -26,7 +26,8 @@ exports.menu = function () {
 			li(
 				a(
 					{ href: '/profile/' },
-					span({ class: 'header-top-user-name' }, this.user._fullName)
+					span({ class: 'header-top-user-name' },
+						this.manager ? this.manager._fullName : this.user._fullName)
 				)
 			),
 			li(
@@ -64,7 +65,10 @@ exports.main = function () {
 			div({ class: 'content' },
 				div({ class: 'manager-bar-info' },
 					span(_("Client"), ": "),
-					span(this.manager.currentlyManagedUser._fullName)),
+					exports._getMyAccountButton(this.manager, this.manager.currentlyManagedUser._fullName),
+					" ",
+					a({ href: '/managed-user-profile/' }, _("edit user details"))
+					),
 				div({ class: 'manager-bar-actions' },
 					_if(not(this.manager.currentlyManagedUser.roles._has('user')),
 						postButton({ buttonClass: 'actions-create',
@@ -77,6 +81,13 @@ exports.main = function () {
 };
 
 exports._submittedMenu = Function.prototype;
+
+exports._getMyAccountButton = function (user, fullName) {
+	return form({ method: 'post', action: '/change-business-process/' },
+		input({ type: 'hidden',
+			name: user.__id__ + '/currentBusinessProcess', value: null }),
+		button({ type: 'submit' }, fullName));
+};
 
 exports._getManagerButton = function (user, roleTitle) {
 	return form({ method: 'post', action: '/change-currently-managed-user/' },

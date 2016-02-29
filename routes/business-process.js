@@ -13,6 +13,7 @@ module.exports = {
 			}
 		}
 	},
+	'managed-user-profile': require('../view/managed-user-profile'),
 	documents: require('eregistrations/view/business-process-documents'),
 	pay: require('eregistrations/view/business-process-payment'),
 	submission: require('eregistrations/view/business-process-submission-forms'),
