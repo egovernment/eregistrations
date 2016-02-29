@@ -82,11 +82,11 @@ exports.main = function () {
 
 exports._submittedMenu = Function.prototype;
 
-exports._getMyAccountButton = function (user, roleTitle) {
+exports._getMyAccountButton = function (user, fullName) {
 	return form({ method: 'post', action: '/change-business-process/' },
 		input({ type: 'hidden',
 			name: user.__id__ + '/currentBusinessProcess', value: null }),
-		button({ type: 'submit' }, roleTitle));
+		button({ type: 'submit' }, fullName));
 };
 
 exports._getManagerButton = function (user, roleTitle) {
