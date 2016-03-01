@@ -214,6 +214,7 @@ module.exports = function (dbDriver, data) {
 	// Dispatcher resolvers
 	var getBusinessProcessDispatcherListFragment = getPartFragments(null, (function (props) {
 		var set = new Set(props);
+		if (!assignableProcessingSteps) return set;
 		assignableProcessingSteps.forEach(function (stepShortPath) {
 			// TODO: Fix for deep paths
 			set.add('processingSteps/map/' + stepShortPath + '/assignee');
@@ -223,16 +224,18 @@ module.exports = function (dbDriver, data) {
 	var getDispatcherFragment = memoize(function () {
 		var fragment = new FragmentGroup();
 
-		assignableProcessingSteps.forEach(function (stepShortPath) {
-			var defaultStatusName = resolveDefaultStatus(stepShortPath);
-			// First page snapshot
-			fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath + '/' +
-				defaultStatusName));
-			// First page list data
-			fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
-				'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName),
-				getBusinessProcessDispatcherListFragment));
-		});
+		if (assignableProcessingSteps) {
+			assignableProcessingSteps.forEach(function (stepShortPath) {
+				var defaultStatusName = resolveDefaultStatus(stepShortPath);
+				// First page snapshot
+				fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath +
+					'/' + defaultStatusName));
+				// First page list data
+				fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
+					'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName),
+					getBusinessProcessDispatcherListFragment));
+			});
+		}
 		return fragment;
 	});
 
