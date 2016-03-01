@@ -8,34 +8,42 @@
 'use strict';
 
 var ensureString  = require('es5-ext/object/validate-stringifiable-value')
+  , deferred      = require('deferred')
   , memoize       = require('memoizee')
   , ObservableSet = require('observable-set/primitive')
-  , dbDriver      = require('mano').dbDriver;
+  , ensureStorage = require('dbjs-persistence/ensure-storage')
 
-var observe = function (set, dbName, ownerId, keyPath) {
+  , resolved = deferred(null)
+  , isArray = Array.isArray;
+
+var observe = function (set, storages, ownerId, keyPath) {
 	var id = ownerId + '/' + keyPath, listener, child, promise;
 	var handler = function (data) {
 		var value = data && data.value
 		  , nu = (value && (value[0] === '7')) ? value.slice(1) : null
 		  , old = child ? child.id : null;
-		if (nu === old) return;
+		if (nu === old) return resolved;
 		if (old) {
 			set.delete(old);
 			child.clear();
 		}
-		if (nu) {
-			set.add(nu);
-			child = observe(set, dbName, nu, keyPath);
-			return child.promise;
-		}
+		if (!nu) return resolved;
+		set.add(nu);
+		child = observe(set, storages, nu, keyPath);
+		return child.promise;
 	};
-	dbDriver.on('keyid:' + id, listener = function (event) { handler(event.data); });
-	promise = dbDriver.get(id)(handler);
+	listener = function (event) { handler(event.data).done(); };
+	storages.forEach(function (storage) { storage.on('keyid:' + id, listener); });
+	promise = deferred.some(storages, function (storage) {
+		return storage.get(id)(function (data) {
+			if (data) return handler(data)(true);
+		});
+	});
 	return {
 		id: ownerId,
 		promise: promise,
 		clear: function () {
-			dbDriver.off('keyid:' + id, listener);
+			storages.forEach(function (storage) { storage.off('keyid:' + id, listener); });
 			if (child) {
 				set.delete(child.id);
 				child.clear();
@@ -44,12 +52,15 @@ var observe = function (set, dbName, ownerId, keyPath) {
 	};
 };
 
-module.exports = memoize(function (dbName, ownerId, keyPath) {
-	var set;
-	dbName = ensureString(dbName);
+module.exports = memoize(function (storage, ownerId, keyPath) {
+	var set, storages;
+
+	if (isArray(storage)) storages = storage.map(ensureStorage);
+	else storages = [ensureStorage(storage)];
+
 	ownerId = ensureString(ownerId);
 	keyPath = ensureString(keyPath);
 	set = new ObservableSet();
-	set.promise = observe(set, dbName, ownerId, keyPath).promise;
+	set.promise = observe(set, storages, ownerId, keyPath).promise;
 	return set;
 }, { primitive: true });

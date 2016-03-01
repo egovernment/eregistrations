@@ -17,3 +17,11 @@ exports['clients/[0-9][a-z0-9]+/delete'] = {
 		location.reload();
 	}
 };
+
+// Delete BusinessProcess
+exports['business-process/[0-9][a-z0-9]+/delete'] = {
+	remoteSubmit: true,
+	processResponse: function () {
+		location.reload();
+	}
+};

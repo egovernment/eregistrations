@@ -22,13 +22,10 @@ var matchUser = function (id) {
 assign(exports, require('../user'));
 
 // Add User
-exports['add-user'] = {
+exports['user-add'] = {
 	validate: register,
 	redirectUrl: '/'
 };
-
-// TODO: Remove after all apps use new split processes POST router
-exports['user-add'] = exports['add-user'];
 
 // Edit User
 exports['user/[0-9][a-z0-9]+'] = {
