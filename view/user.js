@@ -38,7 +38,7 @@ exports['sub-main'] = {
 				exports._servicesBoxList(this),
 				function (item) {
 					var disabled = item.disabledCondition
-					  , renderAsForm = and(item.actionUrl, not(disabled))
+					  , renderAsForm = item.actionUrl != null ? and(item.actionUrl, not(disabled)) : false
 					  , renderAsDiv = or(item.hrefUrl, disabled)
 					  , boxClasses = [ 'user-account-service-box', _if(disabled, 'disabled') ];
 

@@ -1,8 +1,9 @@
 'use strict';
 
-var _  = require('mano').i18n.bind('Registration'),
-	db = require('mano').db,
-	baseUrl = url;
+var _  = require('mano').i18n.bind('Registration')
+  , db = require('mano').db
+  , generateFormSections = require('./components/generate-form-sections')
+  , baseUrl = url;
 
 exports._parent = require('./user-base');
 
@@ -48,4 +49,8 @@ exports['sub-main'] = {
 	}
 };
 
-exports._extraProfileForms = Function.prototype;
+exports._extraProfileForms = function (context) {
+	return _if(eq(context.user._currentRoleResolved, 'manager'), function () {
+		return generateFormSections(context.user.managerDataForms.applicable);
+	});
+};

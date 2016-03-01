@@ -13,6 +13,7 @@ var flatten      = require('es5-ext/array/#/flatten')
 module.exports = function (driver, slavePath/*, options*/) {
 	var userStorage = ensureDriver(driver).getStorage('user')
 	  , anyIdToStorage = require('../../utils/any-id-to-storage')
+	  , businessProcessStorages = require('../../utils/business-process-storages')
 	  , options = Object(arguments[2]);
 
 	var getBusinessProcessData = function (bpId) {
@@ -32,27 +33,54 @@ module.exports = function (driver, slavePath/*, options*/) {
 		});
 	};
 
+	var getUserData = function (userId) {
+		return userStorage.getObject(userId)(function (userData) {
+			var prefix = userId + '/initialBusinessProcesses*7';
+			return deferred.map(userData, function (data) {
+				if (!startsWith.call(data.id, prefix)) return data;
+				if (data.data.value !== '11') return data;
+				return getBusinessProcessData(data.id.slice(prefix.length))(function (result) {
+					result.push(data);
+					return result;
+				});
+			});
+		});
+	};
+
+	var getManagerData = function (userId) {
+		var users = [];
+		return deferred(
+			userStorage.find('manager', '7' + userId, function (id, data) {
+				users.push(id.split('/', 1)[0]);
+			})(function () {
+				return deferred.map(users, getUserData);
+			}),
+			businessProcessStorages.map(function (storage) {
+				var businessProcesses = [];
+				return storage.find('manager', '7' + userId, function (id, data) {
+					businessProcesses.push(id.split('/', 1)[0]);
+				})(function () {
+					return deferred.map(businessProcesses, function (bpId) {
+						var userId;
+						return userStorage.find('initialBusinessProcesses', '7' + bpId, function (id, data) {
+							userId = id.split('/', 1)[0];
+							return true;
+						})(function () { return getUserData(userId); });
+					});
+				});
+			})
+		);
+	};
+
 	debug.open("db-recompute");
 	return recompute(driver, {
 		slaveScriptPath: ensureString(slavePath),
-		ids: (function () {
-			var ids = [];
-			return userStorage.search(null, function (id, data) {
-				if (data.value === '7User#') ids.push(id);
-			})(ids);
-		}()),
+		ids: userStorage.getAllObjectIds(),
 		getData: function (userId) {
-			return userStorage.getObject(userId)(function (userData) {
-				var prefix = userId + '/initialBusinessProcesses*7';
-				return deferred.map(userData, function (data) {
-					if (!startsWith.call(data.id, prefix)) return data;
-					if (data.data.value !== '11') return data;
-					return getBusinessProcessData(data.id.slice(prefix.length))(function (result) {
-						result.push(data);
-						return result;
-					});
-				});
-			}).invoke(flatten);
+			return deferred(
+				getUserData(userId),
+				getManagerData(userId)
+			).invoke(flatten);
 		},
 		initialData: options.initialData
 	}).on('progress', function (event) {

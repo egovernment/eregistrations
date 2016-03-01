@@ -31,24 +31,7 @@ module.exports = memoize(function (db/*, options*/) {
 		} },
 		// All documents (requirements and certificates) uploaded in this business process chain
 		processChainUploaded: { type: Document, multiple: true, value: function (_observe) {
-			var processes = [this.master], documents = [], taken = Object.create(null);
-
-			// Gather all business processes in chain
-			_observe(this.master.derivedBusinessProcesses).forEach(function (process) {
-				processes.push(process);
-			});
-			// Iterate processes in reverse order (latest one should be considered first);
-			processes.reverse().forEach(function (process) {
-				_observe(process.documents.uploaded).forEach(function (document) {
-					if (taken[document.uniqueKey]) return;
-					taken[document.uniqueKey] = true;
-					documents.push(document);
-				});
-			});
-
-			return documents.sort(function (a, b) {
-				return a.label.toLowerCase().localeCompare(b.label.toLowerCase());
-			});
+			return this.uploaded;
 		} }
 	});
 
