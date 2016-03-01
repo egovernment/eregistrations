@@ -39,10 +39,10 @@ exports['request-reset-password'] =
 exports['create-managed-account'] = {
 	submit: function (data) {
 		var that = this;
-		userStorage.searchOne({ keyPath: 'createManagedAccountToken',
+		return userStorage.searchOne({ keyPath: 'createManagedAccountToken',
 			value: serializeValue(data['create-managed-account-token']) }, function (id) {
 			return id.split('/')[0];
-		})(function (userId) {
+		}).then(function (userId) {
 			if (!userId) {
 				throw customError("Cannot process request", "MALFORMED_EMAIL", { statusCode: 400 });
 			}
