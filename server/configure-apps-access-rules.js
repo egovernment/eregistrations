@@ -9,6 +9,7 @@ var aFrom            = require('es5-ext/array/from')
   , forEach          = require('es5-ext/object/for-each')
   , ensureCallable   = require('es5-ext/object/valid-callable')
   , ensureObject     = require('es5-ext/object/valid-object')
+  , ensureString     = require('es5-ext/object/validate-stringifiable-value')
   , endsWith         = require('es5-ext/string/#/ends-with')
   , uncapitalize     = require('es5-ext/string/#/uncapitalize')
   , memoize          = require('memoizee')
@@ -49,7 +50,8 @@ module.exports = function (dbDriver, data) {
 	  , getUserReducedData = getReducedFrag(userStorage)
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , resolveOfficialSteps, processingStepsMeta, processingStepsDefaultMap = create(null)
-	  , bpListProps, bpListCompProps, globalFragment, getAccessRules;
+	  , businessProcessListProperties, globalFragment, getMetaAdminFragment, getAccessRules
+	  , assignableProcessingSteps;
 
 	var getBusinessProcessStorages = require('./utils/business-process-storages');
 	var getManagerUserData = getPartFragments(userStorage, new Set(['email', 'firstName',
@@ -62,8 +64,21 @@ module.exports = function (dbDriver, data) {
 
 	// Eventual fragment that should be passed to all clients
 	if (data.globalFragment != null) globalFragment = ensureFragment(data.globalFragment);
-	bpListProps = new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
-	bpListCompProps = new Set(aFrom(ensureIterable(data.businessProcessListComputedProperties)));
+	if (data.getMetaAdminFragment != null) {
+		getMetaAdminFragment = memoize(ensureCallable(data.getMetaAdminFragment), { length: 0 });
+	}
+	if (data.assignableProcessingSteps != null) {
+		assignableProcessingSteps = new Set(aFrom(ensureIterable(data.assignableProcessingSteps),
+			function (stepShortPath) {
+				stepShortPath = ensureString(stepShortPath);
+				if (!processingStepsMeta[stepShortPath]) {
+					throw new Error("Unrecognized step short path " + stringify(stepShortPath));
+				}
+				return stepShortPath;
+			}));
+	}
+	businessProcessListProperties =
+		new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
 
 	// Configure official steps (per user) resolver
 	var defaultOfficialStepsResolver = function (userId) {
@@ -102,35 +117,43 @@ module.exports = function (dbDriver, data) {
 		return getUserData(id,
 			{ filter: function (data) { return !endsWith.call(data.id, '/password'); } });
 	};
+	var resolveViewData = function (data) {
+		return unserializeView(unserializeValue(data.value)).map(function (id) {
+			return id.split('/', 1)[0];
+		});
+	};
 	var getFirstPageItems = memoize(function (storage, viewName) {
 		var objects = new ObservableSet(), id = 'views/' + viewName + '/21';
 		objects.promise = storage.getReduced(id)(function (data) {
-			if (data) objects.reload(unserializeView(unserializeValue(data.value)));
+			if (data) objects.reload(resolveViewData(data));
 		});
-		storage.on('keyid:' + id, function (event) {
-			objects.reload(unserializeView(unserializeValue(event.data.value)));
-		});
+		storage.on('keyid:' + id, function (event) { objects.reload(resolveViewData(event.data)); });
 		return objects;
 	}, { primitive: true });
 	var addOfficialStepsPendingSizes = (function () {
-		var resolveFragment = function (stepsShortPaths) {
+		var resolveFragment = function (stepsShortPaths, userId) {
 			var ids;
 			if (!stepsShortPaths.size) return emptyFragment;
 			ids = [];
 			stepsShortPaths.forEach(function (stepShortPath) {
 				var defaultKey = resolveDefaultStatus(stepShortPath);
-				ids.push('views/pendingBusinessProcesses/' + stepShortPath + '/' + defaultKey +
-					'/totalSize');
+				if (assignableProcessingSteps && assignableProcessingSteps.has(stepShortPath)) {
+					ids.push('views/pendingBusinessProcesses/assigned/7' + userId + '/' + stepShortPath +
+						'/' + defaultKey + '/totalSize');
+				} else {
+					ids.push('views/pendingBusinessProcesses/' + stepShortPath + '/' + defaultKey +
+						'/totalSize');
+				}
 			});
 			return getRedRecFrag(reducedStorage, ids);
 		};
 		return function (userId, fragment) {
 			var stepsShortPaths = resolveOfficialSteps(userId)
 			  , current;
-			current = resolveFragment(stepsShortPaths);
+			current = resolveFragment(stepsShortPaths, userId);
 			fragment.addFragment(current);
 			stepsShortPaths.on('change', function () {
-				var nu = resolveFragment(stepsShortPaths);
+				var nu = resolveFragment(stepsShortPaths, userId);
 				if (nu === current) return;
 				fragment.addFragment(nu);
 				fragment.deleteFragment(current);
@@ -165,8 +188,8 @@ module.exports = function (dbDriver, data) {
 
 		return getColFragments(list, getBusinessProcessData);
 	};
-	var getBusinessProcessListFragment = getPartFragments(null,
-		new Set(aFrom(bpListProps).concat(aFrom(bpListCompProps))));
+	var getBusinessProcessOfficialListFragment =
+		getPartFragments(null, businessProcessListProperties);
 
 	var getOfficialFragment = memoize(function (stepShortPath) {
 		var fragment = new FragmentGroup()
@@ -184,9 +207,67 @@ module.exports = function (dbDriver, data) {
 				return getFirstPageItems(reducedStorage,
 					'pendingBusinessProcesses/' + stepShortPath + '/' + status);
 			})
-		), getBusinessProcessListFragment));
+		), getBusinessProcessOfficialListFragment));
 		return fragment;
 	}, { primitive: true });
+
+	// Dispatcher resolvers
+	var getBusinessProcessDispatcherListFragment = getPartFragments(null, (function (props) {
+		var set = new Set(props);
+		if (!assignableProcessingSteps) return set;
+		assignableProcessingSteps.forEach(function (stepShortPath) {
+			// TODO: Fix for deep paths
+			set.add('processingSteps/map/' + stepShortPath + '/assignee');
+		});
+		return set;
+	}(businessProcessListProperties)));
+	var getDispatcherFragment = memoize(function () {
+		var fragment = new FragmentGroup();
+
+		if (assignableProcessingSteps) {
+			assignableProcessingSteps.forEach(function (stepShortPath) {
+				var defaultStatusName = resolveDefaultStatus(stepShortPath);
+				// First page snapshot
+				fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath +
+					'/' + defaultStatusName));
+				// First page list data
+				fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
+					'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName),
+					getBusinessProcessDispatcherListFragment));
+			});
+		}
+		return fragment;
+	});
+
+	// Supervisor resolvers
+	var getBusinessProcessSupervisorListFragment = getPartFragments(null, (function () {
+		var set = new Set(['businessName']);
+		forEach(processingStepsMeta, function (data, stepShortPath) {
+			// TODO: Fix for deep paths
+			set.add('processingSteps/map/' + stepShortPath + '/resolvedStatus');
+		});
+		return set;
+	}()));
+	var getSupervisorFragment = memoize(function () {
+		var fragment = new FragmentGroup();
+		// "All roles" first page snapshot
+		fragment.addFragment(getReducedData('views/supervisor/all'));
+		fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage, 'supervisor/all'),
+			getBusinessProcessSupervisorListFragment));
+
+		// Per role first page snapshots
+		forEach(processingStepsMeta, function (data, stepShortPath) {
+			var defaultStatusName = resolveDefaultStatus(stepShortPath);
+			// First page snapshot
+			fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath + '/' +
+				defaultStatusName));
+			// First page list data
+			fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
+				'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName),
+				getBusinessProcessSupervisorListFragment));
+		});
+		return fragment;
+	});
 
 	var resolveManagerUserAppId = function (data) {
 		var appId = data.split('.'), userId = appId[0], custom = appId[1];
@@ -194,7 +275,7 @@ module.exports = function (dbDriver, data) {
 	};
 
 	getAccessRules = memoize(function (appId) {
-		var userId, roleName, shortRoleName, custom, fragment, initialBusinessProcesses, promise;
+		var userId, roleName, stepShortPath, custom, fragment, initialBusinessProcesses, promise;
 
 		appId = appId.split('.');
 		userId = appId[0];
@@ -246,11 +327,11 @@ module.exports = function (dbDriver, data) {
 						fragment.addFragment(getColFragments(bps, getManagerBusinessProcessData));
 						// Users that come out of business processes
 						fragment.addFragment(getColFragments(mapDbSet(bps, function (bpId) {
-							var userId;
-							return userStorage.search('initialBusinessProcesses', function (id, data) {
+							var userId, query = { keyPath: 'initialBusinessProcesses' };
+							return userStorage.search(query, function (id, data, stream) {
 								if ((data.value === '11') && endsWith.call(id, '*7' + bpId)) {
 									userId = id.split('/', 1)[0];
-									return true;
+									stream.destroy();
 								}
 							})(function () { return userId; });
 						}), getManagerUserData));
@@ -268,14 +349,41 @@ module.exports = function (dbDriver, data) {
 			fragment.addFragment(getUsersAdminFragment());
 			return fragment;
 		}
-		if (roleName === 'metaAdmin') return fragment;
+		if (roleName === 'metaAdmin') {
+			if (getMetaAdminFragment) fragment.addFragment(getMetaAdminFragment());
+			return fragment;
+		}
 
 		if (isOfficialRoleName(roleName)) {
-			shortRoleName = uncapitalize.call(roleName.slice('official'.length));
+			stepShortPath = uncapitalize.call(roleName.slice('official'.length));
 			// Recently visited business processes (full data)
-			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, shortRoleName));
+			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, stepShortPath));
 			// Official role specific data
-			fragment.addFragment(getOfficialFragment(shortRoleName));
+			if (assignableProcessingSteps && assignableProcessingSteps.has(stepShortPath)) {
+				fragment.addFragment(getOfficialFragment('assigned/7' + userId + '/' + stepShortPath));
+			} else {
+				fragment.addFragment(getOfficialFragment(stepShortPath));
+			}
+			return fragment;
+		}
+
+		if (roleName === 'dispatcher') {
+			// Recently visited business processes (full data)
+			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, 'dispatcher'));
+			if (!assignableProcessingSteps) {
+				console.error("\n\nError: Missing assignableProcessingSteps setting for dispatcher");
+				return fragment;
+			}
+			// Assignable roles data
+			fragment.addFragment(getDispatcherFragment());
+			return fragment;
+		}
+
+		if (roleName === 'supervisor') {
+			// Recently visited business processes (full data)
+			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, 'supervisor'));
+			// Supervisor specific data
+			fragment.addFragment(getSupervisorFragment());
 			return fragment;
 		}
 		console.error("\n\nError: Unrecognized role " + roleName + "\n\n");

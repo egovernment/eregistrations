@@ -16,7 +16,7 @@ module.exports = function (storage, snapshotPath, set, array/*, options*/) {
 	ensureObservableSet(set);
 	ensureArray(array);
 	ensureStorage(storage);
-	if (options.itemsPerPage != null) itemsPerPage = toNaturalNumber(itemsPerPage);
+	if (options.itemsPerPage != null) itemsPerPage = toNaturalNumber(options.itemsPerPage);
 	if (!itemsPerPage) itemsPerPage = defaultItemsPerPage;
 
 	sizeRecordId = 'views/' + snapshotPath + '/totalSize';

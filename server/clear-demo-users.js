@@ -43,16 +43,16 @@ var getDerived = function (baseStorage, updateStorage, businessProcessId, ids) {
 };
 
 var clearDemoUsers = function () {
-	var promises = [], ids = {}, lastWeek = now() - 7 * day * 1000; // in microseconds
+	var ids = {}, lastWeek = now() - 7 * day * 1000; // in microseconds
 
 	debug('deleting demo users inactive since %s', lastWeek);
 
 	resolveStorages(function (bpStorages) {
-		return userStorage.search('isDemo', function (id, data) {
+		return userStorage.search({ keyPath: 'isDemo' }, function (id, data) {
 			var ownerId;
 			if (data.value !== '11') return;
 			ownerId = id.split('/', 1)[0];
-			promises.push(userStorage.get(ownerId + '/demoLastAccessed')(function (data) {
+			return userStorage.get(ownerId + '/demoLastAccessed')(function (data) {
 				if (!data || (data.stamp > lastWeek)) return;
 				ids.push(ownerId);
 				return userStorage.getObjectKeyPath(ownerId + '/initialBusinessProcesses')
@@ -72,8 +72,8 @@ var clearDemoUsers = function () {
 							});
 						});
 					});
-			}));
-		})(function () { return deferred.map(promises); })(function () {
+			});
+		})(function () {
 			return deferred.map(keys(ids), function (name) {
 				return dbDriver.getStorage(name).deleteManyObjects(ids[name]);
 			});

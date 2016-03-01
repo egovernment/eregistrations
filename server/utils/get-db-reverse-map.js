@@ -52,7 +52,7 @@ module.exports = function (storage, keyPath/*, options*/) {
 			if (nu) map.set(nu, event.ownerId);
 		}.bind(this));
 		if (recordType === 'direct') {
-			return storage.search(keyPath, function (id, data) {
+			return storage.search({ keyPath: keyPath }, function (id, data) {
 				var ownerId;
 				if (endsWith.call(id, '/' + keyPath)) {
 					if (data.value && (data.value !== '0')) map.set(data.value, id.split('/', 1)[0]);
