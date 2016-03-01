@@ -29,7 +29,7 @@ module.exports = memoize(function (storage, recordType, keyPath, value) {
 				if (resolveFilter(value, data.value)) set.add(ownerId);
 			})(set);
 		}
-		return storage.search(keyPath, function (id, data) {
+		return storage.search({ keyPath: keyPath }, function (id, data) {
 			var index;
 			if (!resolveDirectFilter(value, data.value, id)) return;
 			index = id.indexOf('/');

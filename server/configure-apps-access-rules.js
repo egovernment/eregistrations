@@ -324,11 +324,11 @@ module.exports = function (dbDriver, data) {
 						fragment.addFragment(getColFragments(bps, getManagerBusinessProcessData));
 						// Users that come out of business processes
 						fragment.addFragment(getColFragments(mapDbSet(bps, function (bpId) {
-							var userId;
-							return userStorage.search('initialBusinessProcesses', function (id, data) {
+							var userId, query = { keyPath: 'initialBusinessProcesses' };
+							return userStorage.search(query, function (id, data, stream) {
 								if ((data.value === '11') && endsWith.call(id, '*7' + bpId)) {
 									userId = id.split('/', 1)[0];
-									return true;
+									stream.destroy();
 								}
 							})(function () { return userId; });
 						}), getManagerUserData));

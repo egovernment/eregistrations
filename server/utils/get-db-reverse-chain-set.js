@@ -44,12 +44,11 @@ var observe = function (set, storages, ownerId, keyPath) {
 	};
 	storages.forEach(function (storage) { storage.on('key:' + keyPath, listener); });
 	promise = deferred.some(storages, function (storage) {
-		var promises = [];
-		return storage.search(keyPath, function (id, data) {
+		return storage.search({ keyPath: keyPath }, function (id, data, stream) {
 			var result = handler(id, data);
-			promises.push(result);
+			if (result) stream.destroy();
 			return result;
-		})(function () { return deferred.map(promises); });
+		});
 	});
 	return {
 		id: ownerId,

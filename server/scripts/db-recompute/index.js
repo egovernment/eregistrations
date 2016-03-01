@@ -48,24 +48,16 @@ module.exports = function (driver, slavePath/*, options*/) {
 	};
 
 	var getManagerData = function (userId) {
-		var users = [];
 		return deferred(
-			userStorage.find('manager', '7' + userId, function (id, data) {
-				users.push(id.split('/', 1)[0]);
-			})(function () {
-				return deferred.map(users, getUserData);
+			userStorage.search({ keyPath: 'manager', value: '7' + userId }, function (id, data) {
+				return getUserData(id.split('/', 1)[0]);
 			}),
 			businessProcessStorages.map(function (storage) {
-				var businessProcesses = [];
-				return storage.find('manager', '7' + userId, function (id, data) {
-					businessProcesses.push(id.split('/', 1)[0]);
-				})(function () {
-					return deferred.map(businessProcesses, function (bpId) {
-						var userId;
-						return userStorage.find('initialBusinessProcesses', '7' + bpId, function (id, data) {
-							userId = id.split('/', 1)[0];
-							return true;
-						})(function () { return getUserData(userId); });
+				return storage.search({ keyPath: 'manager', value: '7' + userId }, function (id, data) {
+					return userStorage.search({ keyPath: 'initialBusinessProcesses',
+						value: '7' + id.split('/', 1)[0] }, function (id, data, stream) {
+						stream.destroy();
+						return getUserData(id.split('/', 1)[0]);
 					});
 				});
 			})
