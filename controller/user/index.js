@@ -21,8 +21,9 @@ exports.profile = {
 	}
 };
 
-exports['request-create-managed-account/[0-9][a-z0-9]+'] = {
-	match: function (managedUserId) {
+exports['request-create-managed-account'] = {
+	match: function () {
+		var managedUserId = this.user.__id__;
 		if (!this.manager) return false;
 		if (!managedUserMatcher.call(this, managedUserId)) return false;
 		return !this.managedUser.roles.has('user');

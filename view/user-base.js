@@ -73,7 +73,7 @@ exports.main = function () {
 				div({ class: 'manager-bar-actions' },
 					_if(not(managedUser.roles._has('user')),
 						postButton({ buttonClass: 'actions-create',
-							action: url('request-create-managed-account', managedUser.__id__),
+							action: url('request-create-managed-account'),
 							confirm: _if(managedUser._isInvitationSent,
 								_("Invitation was already send to user. Are you sure you want to send it again?")),
 							value: span(_('Create account for this client')) })))

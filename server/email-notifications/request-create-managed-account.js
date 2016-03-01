@@ -2,7 +2,6 @@
 
 var last     = require('es5-ext/string/#/last')
   , template = require('es6-template-strings')
-  , genId    = require('time-uuid')
   , mailer   = require('mano/lib/server/mailer')
   , mano     = require('mano')
 
@@ -14,19 +13,14 @@ if (origin == null) throw new Error("Url not set in env.json");
 if (last.call(origin) === '/') origin = String(origin).slice(0, -1);
 
 getUrl = function (url, token, email) {
-	return origin + url + '?token=' + token + '&email=' + email;
+	return origin + url + '?token=' + token;
 };
 
-module.exports = function () {
-	var token = genId();
-	this.user.createManagedAccountToken = token;
-	this.user.isInvitationSent          = true;
-
-	mailer({
-		to: this.user.email,
+module.exports = function (data) {
+	return mailer({
+		to: data.email,
 		subject: _("Create account request"),
 		text: template(_("To create account please visit: ${url}"),
-			{ url: getUrl('/create-managed-account/', token, this.user.email) })
+			{ url: getUrl('/create-managed-account/', data.token) })
 	});
-	return { message: _("The account creation request has been sent.") };
 };

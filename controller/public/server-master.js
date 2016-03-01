@@ -12,9 +12,7 @@ var emptyPromise     = require('deferred')(null)
   , customError      = require('es5-ext/error/custom')
   , promisify        = require('deferred').promisify
   , bcrypt           = require('bcrypt')
-  , userEmailMap     = require('mano/lib/server/user-email-map')
   , serializeValue   = require('dbjs/_setup/serialize/value')
-  , unserializeValue = require('dbjs/_setup/unserialize/value')
 
   , genSalt = promisify(bcrypt.genSalt), hash = promisify(bcrypt.hash)
   , userStorage = mano.dbDriver.getStorage('user');
@@ -41,25 +39,20 @@ exports['request-reset-password'] =
 exports['create-managed-account'] = {
 	submit: function (data) {
 		var that = this;
-		return userEmailMap(function (map) {
-			var userId = map.get(serializeValue(data.email));
+		userStorage.searchOne({ keyPath: 'createManagedAccountToken',
+			value: serializeValue(data['create-managed-account-token']) }, function (id) {
+			return id.split('/')[0];
+		})(function (userId) {
 			if (!userId) {
 				throw customError("Cannot process request", "MALFORMED_EMAIL", { statusCode: 400 });
 			}
-			return userStorage.get(userId + '/createManagedAccountToken')(function (record) {
-				var value = record ? unserializeValue(record.value) : undefined;
-
-				if (data['create-managed-account-token'] !== value) {
-					throw customError("Cannot process request", "MALFORMED_TOKEN", { statusCode: 400 });
-				}
-				return hash(data.password, genSalt())(function (password) {
-					return userStorage.storeMany([
-						{ id: userId + '/createManagedAccountToken', data: { value: '' } },
-						{ id: userId + '/roles*user', data: { value: serializeValue(true) } },
-						{ id: userId + '/password', data: { value: serializeValue(password) } }
-					]).then(function () {
-						login(userId, that.req, that.res);
-					});
+			return hash(data.password, genSalt())(function (password) {
+				return userStorage.storeMany([
+					{ id: userId + '/createManagedAccountToken', data: { value: '' } },
+					{ id: userId + '/roles*user', data: { value: serializeValue(true) } },
+					{ id: userId + '/password', data: { value: serializeValue(password) } }
+				]).then(function () {
+					login(userId, that.req, that.res);
 				});
 			});
 		});

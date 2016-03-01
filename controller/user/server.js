@@ -2,7 +2,12 @@
 
 var submit            = require('mano/utils/save')
   , changeOwnPassword = require('mano-auth/controller/server/change-own-password').submit
-  , requestCreateManagedAccount = require('../utils/request-create-managed-account');
+  , genId    = require('time-uuid')
+  , mano     = require('mano')
+  , requestCreateManagedAccountMail =
+		require('../../server/email-notifications/request-create-managed-account')
+
+  , _ = mano.i18n.bind("Authentication");
 
 exports.profile = {
 	submit: function (normalizedData, data) {
@@ -11,8 +16,16 @@ exports.profile = {
 	}
 };
 
-exports['request-create-managed-account/[0-9][a-z0-9]+'] = {
-	submit: requestCreateManagedAccount
+exports['request-create-managed-account'] = {
+	submit: function () {
+		var data = { token: genId() };
+		this.user.createManagedAccountToken = data.token;
+		this.user.isInvitationSent          = true;
+		data.email                          = this.user.email;
+
+		requestCreateManagedAccountMail(data);
+		return { message: _("The account creation request has been sent.") };
+	}
 };
 
 // Active Business Process change

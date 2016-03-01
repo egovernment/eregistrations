@@ -11,6 +11,6 @@ exports.profile = {
 	}
 };
 
-exports['request-create-managed-account/[0-9][a-z0-9]+'] = {
+exports['request-create-managed-account'] = {
 	remoteSubmit: true
 };
