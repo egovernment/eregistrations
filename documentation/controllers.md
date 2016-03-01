@@ -1,10 +1,10 @@
-# New POST submissions controllers
+# POST submissions controllers
 
 ## Introduction
 
 Handling of POST submissions is configured with help of two generic utilities: [controller-router](https://github.com/medikoo/controller-router), [post-controller-router](https://github.com/medikoo/post-controller-router) and two handler modules, configured in mano, one for [client](https://github.com/egovernment/eregistrations-lomas/blob/master/node_modules/mano/client/post-router.js) and one for [server](https://github.com/egovernment/eregistrations-lomas/blob/master/node_modules/mano/server/post-router.js).
 
-Due to tight timeframe above utilities don't have their own documentation, yet. Until that's the case this document should provide all information that's needed to configure controllers in eregistration applications.
+This document should complement documentation of above utilities, with information that's needed to configure controllers in eregistration applications.
 
 ## How to configure controllers
 
