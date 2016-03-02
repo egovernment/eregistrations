@@ -66,7 +66,8 @@ exports.main = function () {
 			div({ class: 'content' },
 				div({ class: 'manager-bar-info' },
 					span(_("Client"), ": "),
-					exports._getMyAccountButton(this.manager, managedUser._fullName),
+						this.appName === 'user' ? a({ href: '/' }, managedUser._fullName) :
+							exports._getMyAccountButton(this.manager, managedUser._fullName),
 					" ",
 					a({ href: '/managed-user-profile/' }, _("edit user details"))
 					),
