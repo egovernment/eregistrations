@@ -1,7 +1,8 @@
 'use strict';
 
 var changeOwnPassword = require('mano-auth/controller/change-own-password').validate
-  , validate          = require('mano/utils/validate');
+  , validate          = require('mano/utils/validate')
+  , customError       = require('es5-ext/error/custom');
 
 // Profile
 exports.profile = {
@@ -11,6 +12,16 @@ exports.profile = {
 		delete data['password-new'];
 		delete data['password-repeat'];
 		return validate.call(this, data, { partial: true });
+	}
+};
+
+exports['request-create-managed-account'] = {
+	validate: function (data) {
+		// This should not happen in normal application flow
+		if (!this.manager) {
+			throw customError('Invalid request', 'INVALID_REQUEST');
+		}
+		return validate.call(this, data);
 	}
 };
 

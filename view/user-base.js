@@ -61,18 +61,21 @@ exports.main = function () {
 				p(_("Introduction to demo version"))))));
 
 	insert(_if(this.manager, function () {
+		var managedUser = this.manager.currentlyManagedUser;
 		return div({ class: 'manager-bar' },
 			div({ class: 'content' },
 				div({ class: 'manager-bar-info' },
 					span(_("Client"), ": "),
-					exports._getMyAccountButton(this.manager, this.manager.currentlyManagedUser._fullName),
+					exports._getMyAccountButton(this.manager, managedUser._fullName),
 					" ",
 					a({ href: '/managed-user-profile/' }, _("edit user details"))
 					),
 				div({ class: 'manager-bar-actions' },
-					_if(not(this.manager.currentlyManagedUser.roles._has('user')),
+					_if(not(managedUser.roles._has('user')),
 						postButton({ buttonClass: 'actions-create',
-							action: url('clients', this.manager.currentlyManagedUser.__id__, 'create'),
+							action: url('request-create-managed-account'),
+							confirm: _if(managedUser._isInvitationSent,
+								_("Invitation was already send to user. Are you sure you want to send it again?")),
 							value: span(_('Create account for this client')) })))
 				));
 	}.bind(this)));
