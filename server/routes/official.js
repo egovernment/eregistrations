@@ -2,39 +2,47 @@
 
 'use strict';
 
-var aFrom               = require('es5-ext/array/from')
-  , flatten             = require('es5-ext/array/#/flatten')
-  , remove              = require('es5-ext/array/#/remove')
-  , uniq                = require('es5-ext/array/#/uniq')
-  , constant            = require('es5-ext/function/constant')
-  , isNaturalNumber     = require('es5-ext/number/is-natural')
-  , toNaturalNumber     = require('es5-ext/number/to-pos-integer')
-  , normalizeOptions    = require('es5-ext/object/normalize-options')
-  , toArray             = require('es5-ext/object/to-array')
-  , ensureObject        = require('es5-ext/object/valid-object')
-  , ensureString        = require('es5-ext/object/validate-stringifiable-value')
-  , includes            = require('es5-ext/string/#/contains')
-  , uncapitalize        = require('es5-ext/string/#/uncapitalize')
-  , d                   = require('d')
-  , ensureSet           = require('es6-set/valid-set')
-  , deferred            = require('deferred')
-  , memoize             = require('memoizee')
-  , serializeValue      = require('dbjs/_setup/serialize/value')
-  , unserializeValue    = require('dbjs/_setup/unserialize/value')
-  , ObservableSet       = require('observable-set/primitive')
-  , mano                = require('mano')
-  , roleNameMap         = require('mano/lib/server/user-role-name-map')
-  , QueryHandler        = require('../../utils/query-handler')
-  , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
-  , getDbSet            = require('../utils/get-db-set')
-  , getDbArray          = require('../utils/get-db-array')
-  , getIndexMap         = require('../utils/get-db-sort-index-map')
+var aFrom                          = require('es5-ext/array/from')
+  , flatten                        = require('es5-ext/array/#/flatten')
+  , remove                         = require('es5-ext/array/#/remove')
+  , uniq                           = require('es5-ext/array/#/uniq')
+  , constant                       = require('es5-ext/function/constant')
+  , isNaturalNumber                = require('es5-ext/number/is-natural')
+  , toNaturalNumber                = require('es5-ext/number/to-pos-integer')
+  , normalizeOptions               = require('es5-ext/object/normalize-options')
+  , toArray                        = require('es5-ext/object/to-array')
+  , ensureObject                   = require('es5-ext/object/valid-object')
+  , ensureString                   = require('es5-ext/object/validate-stringifiable-value')
+  , includes                       = require('es5-ext/string/#/contains')
+  , uncapitalize                   = require('es5-ext/string/#/uncapitalize')
+  , d                              = require('d')
+  , ensureSet                      = require('es6-set/valid-set')
+  , deferred                       = require('deferred')
+  , memoize                        = require('memoizee')
+  , serializeValue                 = require('dbjs/_setup/serialize/value')
+  , unserializeValue               = require('dbjs/_setup/unserialize/value')
+  , ObservableSet                  = require('observable-set/primitive')
+  , mano                           = require('mano')
+  , roleNameMap                    = require('mano/lib/server/user-role-name-map')
+  , QueryHandler                   = require('../../utils/query-handler')
+  , defaultItemsPerPage            = require('../../conf/objects-list-items-per-page')
+  , getDbSet                       = require('../utils/get-db-set')
+  , getDbArray                     = require('../utils/get-db-array')
+  , getIndexMap                    = require('../utils/get-db-sort-index-map')
+  , businessProcessStoragesPromise = require('../utils/business-process-storages')
+  , idToStorage                    = require('../utils/business-process-id-to-storage')
 
-  , hasBadWs       = RegExp.prototype.test.bind(/\s{2,}/)
-  , compareStamps  = function (a, b) { return a.stamp - b.stamp; }
-  , isArray        = Array.isArray, slice = Array.prototype.slice, push = Array.prototype.push
-  , ceil           = Math.ceil, create = Object.create
-  , defineProperty = Object.defineProperty, stringify = JSON.stringify;
+  , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
+  , compareStamps = function (a, b) { return a.stamp - b.stamp; }
+  , isArray = Array.isArray, slice = Array.prototype.slice, push = Array.prototype.push
+  , ceil = Math.ceil, create = Object.create
+  , defineProperty = Object.defineProperty, stringify = JSON.stringify
+  , businessProcessStorages, businessProcessStorageNames;
+
+businessProcessStoragesPromise.done(function (storages) {
+	businessProcessStorages = storages;
+	businessProcessStorageNames = storages.map(function (storage) { return storage.name; });
+});
 
 var compareIndexMeta = function (meta1, meta2) {
 	return meta1.name.localeCompare(meta2.name) || meta1.value.localeCompare(meta2.value);
@@ -52,18 +60,21 @@ var getBusinessProcessQueryHandler = function (indexName) {
 	return new QueryHandler([
 		{
 			name: 'id',
-			ensure: function (value) {
-				if (!value) throw new Error("Missing id");
-				return mano.dbDriver.getComputed(value + '/' + indexName)(function (data) {
-					if (!data || (data.value !== '11')) return null;
-					return value;
+			ensure: function (ownerId) {
+				if (!ownerId) throw new Error("Missing id");
+				return idToStorage(ownerId)(function (storage) {
+					if (!storage) return null;
+					return storage.getComputed(ownerId + '/' + indexName)(function (data) {
+						if (!data || (data.value !== '11')) return null;
+						return ownerId;
+					});
 				});
 			}
 		}
 	]);
 };
 
-var getFilteredSet = memoize(function (baseSet, filterString) {
+var getFilteredSet = memoize(function (baseSet, filterString, storages) {
 	var set = new ObservableSet(), baseSetListener, indexListener
 	  , def = deferred(), count = 0, isInitialized = false;
 	var filter = function (ownerId, data) {
@@ -72,20 +83,24 @@ var getFilteredSet = memoize(function (baseSet, filterString) {
 		else set.delete(ownerId);
 	};
 	var findAndFilter = function (ownerId) {
-		return mano.dbDriver.getComputed(ownerId + '/searchString').aside(function (data) {
-			if (!baseSet.has(ownerId)) return;
-			if (!data) return;
-			filter(ownerId, data);
+		return idToStorage(ownerId)(function (storage) {
+			if (!storage) return;
+			return storage.getComputed(ownerId + '/searchString').aside(function (data) {
+				if (!baseSet.has(ownerId)) return;
+				if (!data) return;
+				filter(ownerId, data);
+			});
 		});
 	};
 	baseSet.on('change', baseSetListener = function (event) {
 		if (event.type === 'add') findAndFilter(event.value).done();
 		else set.delete(event.value);
 	});
-	mano.dbDriver.on('key:searchString', indexListener = function (event) {
+	indexListener = function (event) {
 		if (!baseSet.has(event.ownerId)) return;
 		filter(event.ownerId, event.data);
-	});
+	};
+	storages.forEach(function (storage) { storage.on('key:searchString', indexListener); });
 	baseSet.forEach(function (ownerId) {
 		++count;
 		findAndFilter(ownerId).done(function () {
@@ -96,22 +111,30 @@ var getFilteredSet = memoize(function (baseSet, filterString) {
 	if (!count) def.resolve(set);
 	defineProperty(set, '_dispose', d(function () {
 		baseSet.off(baseSetListener);
-		mano.dbDriver.off('key:searchString', indexListener);
+		storages.forEach(function (storage) { storage.off('key:searchString', indexListener); });
 	}));
 	return def.promise;
-}, { max: 1000, dispose: function (set) { set._dispose(); } });
+}, { length: 2, max: 1000, dispose: function (set) { set._dispose(); } });
 
-var getDbArrayLru = memoize(function (set, sortIndexName) {
-	var arr = [], itemsMap = getIndexMap(sortIndexName)
+var getDbArrayLru = memoize(function (set, sortIndexName, storages) {
+	var arr = [], itemsMap = getIndexMap(storages, sortIndexName)
 	  , count = 0, isInitialized = false, def = deferred(), setListener, itemsListener;
 	var add = function (ownerId) {
-		return deferred(itemsMap[ownerId] || mano.dbDriver.getComputed(ownerId + '/' + sortIndexName))
-			.aside(function (data) {
-				if (!set.has(ownerId)) return;
-				if (!itemsMap[ownerId]) itemsMap[ownerId] = { id: ownerId, stamp: data.stamp };
-				arr.push(itemsMap[ownerId]);
-				if (def.resolved) arr.sort(compareStamps);
+		var promise;
+		if (itemsMap[ownerId]) {
+			promise = deferred(itemsMap[ownerId]);
+		} else {
+			promise = idToStorage(ownerId)(function (storage) {
+				if (!storage) return;
+				return storage.getComputed(ownerId + '/' + sortIndexName);
 			});
+		}
+		return promise.aside(function (data) {
+			if (!set.has(ownerId)) return;
+			if (!itemsMap[ownerId]) itemsMap[ownerId] = { id: ownerId, stamp: data ? data.stamp : 0 };
+			arr.push(itemsMap[ownerId]);
+			if (def.resolved) arr.sort(compareStamps);
+		});
 	};
 	set.on('change', setListener = function (event) {
 		if (event.type === 'add') add(event.value).done();
@@ -134,7 +157,7 @@ var getDbArrayLru = memoize(function (set, sortIndexName) {
 		itemsMap.off(itemsListener);
 	}));
 	return def.promise;
-}, { max: 1000, dispose: function (arr) { arr._dispose(); } });
+}, { length: 2, max: 1000, dispose: function (arr) { arr._dispose(); } });
 
 var initializeHandler = function (conf) {
 	conf = normalizeOptions(ensureObject(conf));
@@ -148,15 +171,20 @@ var initializeHandler = function (conf) {
 	  , tableQueryHandler   = getTableQueryHandler(statusMap)
 	  , itemsPerPage        = toNaturalNumber(conf.itemsPerPage) || defaultItemsPerPage
 	  , businessProcessQueryHandler = getBusinessProcessQueryHandler(allIndexName)
-	  , indexes;
+	  , storageName, storages;
 
-	if (bpListComputedProps) {
-		indexes = [];
-		deferred.map(bpListComputedProps, function (keyPath) {
-			return mano.dbDriver.indexKeyPath(keyPath)(function (map) {
-				indexes.push({ keyPath: keyPath, map: map });
+	if (conf.storageName != null) {
+		storageName = conf.storageName;
+		if (isArray(storageName)) {
+			storages = storageName.map(function (storageName) {
+				return mano.dbDriver.getStorage(ensureString(storageName));
 			});
-		});
+		} else {
+			storages = [mano.dbDriver.getStorage(storageName)];
+		}
+	} else {
+		storageName = businessProcessStorageNames;
+		storages = businessProcessStorages;
 	}
 
 	var getTableData = memoize(function (query) {
@@ -164,28 +192,26 @@ var initializeHandler = function (conf) {
 
 		if (isArray(indexMeta)) {
 			promise = deferred.map(indexMeta.sort(compareIndexMeta), function (indexMeta) {
-				return getDbSet('computed', indexMeta.name, indexMeta.value);
+				return getDbSet(storages, 'computed', indexMeta.name, indexMeta.value);
 			})(function (sets) {
 				return aFrom(sets).reduce(function (set1, set2) { return set1.and(set2); });
 			});
 		} else {
-			promise = getDbSet('computed', indexMeta.name, indexMeta.value);
+			promise = getDbSet(storages, 'computed', indexMeta.name, indexMeta.value);
 		}
 
 		if (query.assignedTo) {
 			promise = promise.then(function (baseSet) {
-				return getDbSet('direct', conf.assigneePath, '7' + query.assignedTo)(function (set) {
-					return baseSet.and(set);
-				});
+				return getDbSet(storages, 'direct', conf.assigneePath, '7' +
+					query.assignedTo)(function (set) { return baseSet.and(set); });
 			});
 		}
 
 		return promise(function (baseSet) {
-			if (!query.search) return getDbArray(baseSet, 'computed', allIndexName);
-
+			if (!query.search) return getDbArray(baseSet, storages, 'computed', allIndexName);
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
-				return getFilteredSet(baseSet, value)(function (set) {
-					return getDbArrayLru(set, allIndexName);
+				return getFilteredSet(baseSet, value, storages)(function (set) {
+					return getDbArrayLru(set, allIndexName, storages);
 				});
 			})(function (arrays) {
 				if (arrays.length === 1) return arrays[0];
@@ -209,14 +235,18 @@ var initializeHandler = function (conf) {
 				computedEvents = deferred.map(arr, function (data) {
 					var objId = data.id;
 					return deferred.map(bpListComputedProps, function (keyPath) {
-						return mano.dbDriver.getComputed(objId + '/' + keyPath)(function (data) {
-							if (isArray(data.value)) {
-								return data.value.map(function (data) {
-									var key = data.key ? '*' + data.key : '';
-									return data.stamp + '.' + objId + '/' + keyPath + key + '.' + data.value;
-								});
-							}
-							return data.stamp + '.' + objId + '/' + keyPath + '.' + data.value;
+						return idToStorage(objId)(function (storage) {
+							if (!storage) return;
+							return storage.getComputed(objId + '/' + keyPath)(function (data) {
+								if (!data) return;
+								if (isArray(data.value)) {
+									return data.value.map(function (data) {
+										var key = data.key ? '*' + data.key : '';
+										return data.stamp + '.' + objId + '/' + keyPath + key + '.' + data.value;
+									});
+								}
+								return data.stamp + '.' + objId + '/' + keyPath + '.' + data.value;
+							});
 						});
 					});
 				});
@@ -224,19 +254,24 @@ var initializeHandler = function (conf) {
 				computedEvents = [];
 			}
 			directEvents = deferred.map(arr, function (data) {
-				return mano.dbDriver.getObject(data.id, { keyPaths: bpListProps })(function (datas) {
-					return datas.map(function (data) {
-						return data.data.stamp + '.' + data.id + '.' + data.data.value;
+				return idToStorage(data.id)(function (storage) {
+					if (!storage) return null;
+					return storage.getObject(data.id, { keyPaths: bpListProps })(function (datas) {
+						return datas.map(function (data) {
+							return data.data.stamp + '.' + data.id + '.' + data.data.value;
+						});
 					});
 				});
 			});
 			if (!query.status) {
 				statusMap = create(null);
 				statuses = deferred.map(arr, function (data) {
-					return mano.dbDriver.getComputed(data.id + '/' + statusIndexName)
-						.aside(function (record) {
+					return idToStorage(data.id)(function (storage) {
+						if (!storage) return null;
+						return storage.getComputed(data.id + '/' + statusIndexName).aside(function (record) {
 							statusMap[data.id] = record ? unserializeValue(record.value) : null;
 						});
+					});
 				})(statusMap);
 			}
 			return deferred(directEvents, computedEvents, statuses)
@@ -295,11 +330,12 @@ module.exports = exports = function (mainConf/*, options */) {
 					});
 				};
 			}
-
-			return roleNameResolve;
+			return businessProcessStoragesPromise(function () { return roleNameResolve; });
 		}());
 	} else {
-		resolveHandler = constant(deferred(initializeHandler(mainConf)));
+		resolveHandler = constant(businessProcessStoragesPromise(function () {
+			return initializeHandler(mainConf);
+		}));
 	}
 	return {
 		'get-business-processes-view': function (query) {
@@ -322,7 +358,7 @@ module.exports = exports = function (mainConf/*, options */) {
 					if (!query.id) return { passed: false };
 					recordId = this.req.$user + '/recentlyVisited/businessProcesses/' +
 						handler.roleName + '*7' + query.id;
-					return mano.dbDriver.store(recordId, '11')({ passed: true });
+					return mano.dbDriver.getStorage('user').store(recordId, '11')({ passed: true });
 				}.bind(this));
 			}.bind(this));
 		}

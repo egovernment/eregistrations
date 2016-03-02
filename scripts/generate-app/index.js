@@ -12,7 +12,6 @@ var normalizeOptions  = require('es5-ext/object/normalize-options')
   , exec              = deferred.promisify(require('child_process').execFile)
   , generateAppsList  = require('mano/scripts/generate-apps-list')
   , generateAppsConf  = require('mano/scripts/generate-apps-conf')
-  , generateAppsCtrls = require('mano/scripts/generate-apps-controllers')
   , getApps           = require('mano/server/utils/resolve-apps');
 
 var appTypes = {
@@ -153,8 +152,7 @@ module.exports = function (projectRoot, appName/*, options*/) {
 		return deferred(
 			generateAppsList(projectRoot),
 			getApps(projectRoot).then(function (appsList) {
-				return deferred(generateAppsConf(projectRoot, appsList),
-					generateAppsCtrls(projectRoot, appsList));
+				return generateAppsConf(projectRoot, appsList);
 			})
 		);
 	});
