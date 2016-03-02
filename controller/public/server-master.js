@@ -55,7 +55,7 @@ exports['create-managed-account'] = {
 				]).then(function () {
 					userStorage.getObject(userId,
 						{ keyPaths: ['firstName', 'lastName', 'email'] }
-						).then(function (resultRaw) {
+						).done(function (resultRaw) {
 						sendNotification(unserializeObjectRecord(resultRaw)).done(null, function (err) {
 							console.log("Cannot send email", err.stack);
 						});
