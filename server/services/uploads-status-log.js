@@ -1,7 +1,8 @@
 'use strict';
 
-var endsWith = require('es5-ext/string/#/ends-with')
-  , _        = require('mano').i18n.bind("Document status log")
+var endsWith    = require('es5-ext/string/#/ends-with')
+  , _           = require('mano').i18n.bind("Document status log")
+  , isPastEvent = require('../../utils/is-past-record-event')
 
   , nextTick = process.nextTick;
 
@@ -11,6 +12,7 @@ var isStatusKeyPath = RegExp.prototype.test
 module.exports = function (db) {
 	db.objects.on('update', function (event) {
 		var id = event.object.__valueId__, bp, upload;
+		if (isPastEvent(event)) return;
 		if (endsWith.call(id, 'submissionForms/isAffidavitSigned')) {
 			bp = event.object.master;
 			nextTick(function () {

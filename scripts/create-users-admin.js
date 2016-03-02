@@ -8,10 +8,11 @@ var promisify  = require('deferred').promisify
   , promptEmail, promptPassword;
 
 module.exports = function (dbServer) {
+	var database = dbServer.database;
 	promptEmail = function () {
 		program.prompt('UsersAdmin email: ', function (value) {
 			value = value.trim();
-			try { dbServer.db.Email.validate(value); } catch (error) {
+			try { database.Email.validate(value); } catch (error) {
 				console.log(error.message);
 				promptEmail();
 				return;
@@ -23,13 +24,13 @@ module.exports = function (dbServer) {
 	promptPassword = function (email) {
 		program.prompt(email + ' password: ', function (value) {
 			value = value.trim();
-			try { dbServer.db.Password.validate(value); } catch (error) {
+			try { database.Password.validate(value); } catch (error) {
 				console.log(error.message);
 				promptPassword(email);
 				return;
 			}
 			hash(value, genSalt())(function (password) {
-				return dbServer.db.User({ email: email, password: password,
+				return database.User({ email: email, password: password,
 					firstName: "Users", lastName: "Admin",
 					roles: ['usersAdmin'] });
 			}).done(function () {

@@ -6,7 +6,7 @@ var customError = require('es5-ext/error/custom')
   , mano        = require('mano')
   , unlink      = require('fs2/unlink')
   , path        = require('path')
-  , generateThumbAndPreview = require('./generate-thumb-and-preview')
+  , generateThumbAndPreview = require('../generate-thumb-and-preview')
 
   , resolve = path.resolve
   , db = mano.db, _ = mano.i18n.bind('Controller'), uploadsPath = mano.uploadsPath;

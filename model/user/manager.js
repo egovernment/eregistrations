@@ -7,12 +7,14 @@ var memoize                     = require('memoizee/plain')
   , _                           = require('mano').i18n.bind('Model')
   , definePropertyGroupsProcess = require('../lib/property-groups-process')
   , defineUser                  = require('./base')
-  , defineUserBusinessProcesses = require('./business-processes');
+  , defineUserBusinessProcesses = require('./business-processes')
+  , defineStringLine            = require('dbjs-ext/string/string-line');
 
 module.exports = memoize(function (db/* options */) {
 	var options = arguments[1]
 	  , User = ensureDatabase(db).User || defineUser(db, options)
 	  , PropertyGroupsProcess = definePropertyGroupsProcess(db)
+	  , StringLine = defineStringLine(db)
 	  , Role = db.Role;
 
 	defineUserBusinessProcesses(User);
@@ -52,6 +54,19 @@ module.exports = memoize(function (db/* options */) {
 
 				return clients;
 			}
+		},
+		// Holds the client user currently managed by the manager
+		// it's used to switch to given client's my-account
+		currentlyManagedUser: {
+			type: User
+		},
+		// Used to validate account creation initialized by manager
+		createManagedAccountToken: {
+			type: StringLine
+		},
+		// equals true after manager requested account creation
+		isInvitationSent: {
+			type: db.Boolean
 		}
 	});
 

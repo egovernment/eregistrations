@@ -47,8 +47,9 @@ exports['manager-account-content'] = function () {
 							td({ class: 'actions' },
 								_if(eq(client._manager, this.user),
 									[
-										a({ href:  url('clients', client.__id__) },
-											span({ class: 'fa fa-edit' })),
+										postButton({ buttonClass: 'actions-edit',
+											action: url('clients', client.__id__),
+											value: span({ class: 'fa fa-edit' }) }),
 										_if(eq(client.initialBusinessProcesses
 											.filterByKey('isSubmitted', true)._size, 0),
 											postButton({ buttonClass: 'actions-delete',
