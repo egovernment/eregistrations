@@ -50,7 +50,8 @@ exports['sub-main'] = {
 };
 
 exports._extraProfileForms = function (context) {
-	return _if(eq(context.user._currentRoleResolved, 'manager'), function () {
+	return _if(and(eq(context.user._currentRoleResolved, 'manager'),
+			context.appName !== 'manager-registration'), function () {
 		return generateFormSections(context.user.managerDataForms.applicable);
 	});
 };
