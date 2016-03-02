@@ -6,6 +6,7 @@ var emptyPromise     = require('deferred')(null)
   , registerSubmit   = require('mano-auth/controller/server-master/register-and-login').submit
   , mano             = require('mano')
   , sendNotification = require('../../server/email-notifications/create-account')
+  , unserializeObjectRecord = require('../../server/utils/unserialize-object-record')
 
   , dbDriver = mano.dbDriver
   , maxage = 1000 * 60 * 60 * 24 * 7
@@ -52,6 +53,13 @@ exports['create-managed-account'] = {
 					{ id: userId + '/roles*user', data: { value: serializeValue(true) } },
 					{ id: userId + '/password', data: { value: serializeValue(password) } }
 				]).then(function () {
+					userStorage.getObject(userId,
+						{ keyPaths: ['firstName', 'lastName', 'email'] }
+						).then(function (resultRaw) {
+						sendNotification(unserializeObjectRecord(resultRaw)).done(null, function (err) {
+							console.log("Cannot send email", err.stack);
+						});
+					});
 					login(userId, that.req, that.res);
 				});
 			});
