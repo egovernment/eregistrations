@@ -8,7 +8,7 @@ exports['user-add'] = {
 	submit: function (data) {
 		return registerSubmit.apply(this, arguments)(function (result) {
 			sendNotification(data).done(null, function (err) {
-				console.log("Cannot send email", err.stack);
+				console.log("Cannot send email", err, err.stack);
 			});
 			return result;
 		});

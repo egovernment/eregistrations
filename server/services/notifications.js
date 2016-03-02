@@ -127,7 +127,7 @@ setup = function (path) {
 		};
 		mailOpts.text = text;
 		mano.mail(mailOpts).done(null, function (err) {
-			console.log("Cannot send email", err.stack);
+			console.log("Cannot send email", err, err.stack);
 		});
 	}, 500));
 };

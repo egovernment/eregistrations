@@ -28,7 +28,7 @@ exports.register = {
 
 		return registerSubmit.apply(this, arguments)(function (result) {
 			dbDriver.onDrain(function () { sendNotification(data).done(null, function (err) {
-				console.log("Cannot send email", err.stack);
+				console.log("Cannot send email", err, err.stack);
 			}); });
 		});
 	}
