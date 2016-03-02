@@ -20,10 +20,15 @@ exports['request-create-managed-account'] = {
 	submit: function () {
 		var data = { token: genId() };
 		this.user.createManagedAccountToken = data.token;
-		this.user.isInvitationSent          = true;
 		data.email                          = this.user.email;
+		if (!this.user.isInvitationSent) {
+			this.user.isInvitationSent = true;
+		}
 
-		requestCreateManagedAccountMail(data);
+		requestCreateManagedAccountMail(data).done(null, function (err) {
+			console.log(err.stack);
+			console.error("Cannot send email");
+		});
 		return { message: _("The account creation request has been sent.") };
 	}
 };

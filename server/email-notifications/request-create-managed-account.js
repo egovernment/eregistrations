@@ -19,8 +19,8 @@ getUrl = function (url, token, email) {
 module.exports = function (data) {
 	return mailer({
 		to: data.email,
-		subject: _("Create account request"),
-		text: template(_("To create account please visit: ${url}"),
+		subject: _("Invitation to create an account"),
+		text: template(_("To create an account, please setup a password at ${url}"),
 			{ url: getUrl('/create-managed-account/', data.token) })
 	});
 };

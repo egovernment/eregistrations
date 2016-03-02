@@ -1,14 +1,8 @@
 'use strict';
 
 var changeOwnPassword = require('mano-auth/controller/change-own-password').validate
-  , db                = require('mano').db
-  , validate          = require('mano/utils/validate');
-
-var managedUserMatcher = function (managedUserId) {
-	this.managedUser = db.User.getById(managedUserId);
-	if (!this.managedUser) return false;
-	return this.managedUser.manager === this.manager;
-};
+  , validate          = require('mano/utils/validate')
+  , customError       = require('es5-ext/error/custom');
 
 // Profile
 exports.profile = {
@@ -22,11 +16,11 @@ exports.profile = {
 };
 
 exports['request-create-managed-account'] = {
-	match: function () {
-		var managedUserId = this.user.__id__;
-		if (!this.manager) return false;
-		if (!managedUserMatcher.call(this, managedUserId)) return false;
-		return !this.managedUser.roles.has('user');
+	validate: function (data) {
+		if (!this.manager) {
+			throw customError('Not a manager', 'PERMISSION_DENIED');
+		}
+		return validate.call(this, data);
 	}
 };
 
