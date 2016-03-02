@@ -17,8 +17,9 @@ exports.profile = {
 
 exports['request-create-managed-account'] = {
 	validate: function (data) {
+		// This should not happen in normal application flow
 		if (!this.manager) {
-			throw customError('Not a manager', 'PERMISSION_DENIED');
+			throw customError('Invalid request', 'INVALID_REQUEST');
 		}
 		return validate.call(this, data);
 	}
