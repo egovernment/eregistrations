@@ -7,38 +7,39 @@ var unserializeValue = require('dbjs/_setup/unserialize/value')
   , aFrom            = require('es5-ext/array/from')
   , debug            = require('debug-ext')('auto-assign');
 
-module.exports = function (storage, officials, step) {
+module.exports = function (businessProcessStorage, counterStorage, officials, step) {
 	var id = step.shortPath, officialsArray, lastIndex,
-		path = step.__id__.slice(step.master.__id__.length + 1);
+	path = step.__id__.slice(step.master.__id__.length + 1);
 
 	officialsArray = officials.toArray();
 
 	var addAssignee = function (businessProcessId) {
-		return storage.get(businessProcessId + '/' + path + '/assignee')(function (data) {
+		var recordId = businessProcessId + '/' + path + '/assignee';
+		return businessProcessStorage.get(recordId)(function (data) {
+			var officialId;
 			if (data && data.value[0] === '7') return;
-			if (!officialsArray.length) return;
-			var officialId, businessProcess;
 			lastIndex = officialsArray[lastIndex + 1] ? lastIndex + 1 : 0;
 			officialId = officialsArray[lastIndex];
-			businessProcess = storage.db.BusinessProcess.getById(businessProcessId);
-			businessProcess.resolveSKeyPath(path).value.assignee =
-				storage.db.User.getById(officialId);
 			debug('for %s assigned id: %s, to %s', id, officialId, businessProcessId);
-//		Use the below once dbjs listens to storage changes
-//    return storage.store(businessProcessId + '/'
-//    + path + '/assignee', 7 + officialId)(function () {
-			return storage.store('processingStepAutoAssignLastIndex/' + id, serializeValue(lastIndex));
-//		});
+			return deferred(
+				businessProcessStorage.store(businessProcessId + '/' + path + '/assignee',
+					'7' + officialId),
+				counterStorage.store('processingStepAutoAssignLastIndex/' + id, serializeValue(lastIndex))
+			);
 		});
 	};
 
-	return storage.get('processingStepAutoAssignLastIndex/' + id)(function (data) {
+	return counterStorage.get('processingStepAutoAssignLastIndex/' + id)(function (data) {
 		return (data && unserializeValue(data.value)) || 0;
 	}).then(function (index) {
 		lastIndex = index;
-		return getDbSet(storage, 'computed', path + '/resolvedStatus',
-			serializeValue('pending'))(function (businessProcesses) {
-			businessProcesses.on('change', function (ev) {
+		return getDbSet(
+			businessProcessStorage,
+			'computed',
+			path + '/resolvedStatus',
+			serializeValue('pending')
+		)(function (businessProcesses) {
+			var listener = function (ev) {
 				if (ev.type === 'delete') return;
 				if (ev.type === 'add') {
 					addAssignee(ev.value).done();
@@ -51,8 +52,22 @@ module.exports = function (storage, officials, step) {
 				}
 
 				throw new Error("Unsupported event: " + ev.type);
+			};
+			var activate = function () {
+				businessProcesses.on('change', listener);
+				return deferred.map(aFrom(businessProcesses), addAssignee);
+			};
+			var deactivate = function () {
+				businessProcesses.off('change', listener);
+			};
+			if (officials.size) return activate();
+			officials._size(function (event) {
+				if (event.newValue) {
+					if (!event.oldValue) activate().done();
+				} else if (event.oldValue) {
+					deactivate();
+				}
 			});
-			return deferred.map(aFrom(businessProcesses), addAssignee);
 		});
 	});
 };
