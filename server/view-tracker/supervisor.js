@@ -10,7 +10,7 @@ var aFrom               = require('es5-ext/array/from')
   , serializeValue      = require('dbjs/_setup/serialize/value')
   , ensureStorage       = require('dbjs-persistence/ensure-storage')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
-  , serializeView       = require('../utils/db-view/serialize')
+  , serializeView       = require('../../utils/db-view/serialize')
   , getDbSet            = require('../utils/get-db-set')
   , getDbArray          = require('../utils/get-db-array')
   , trackStepStatus     = require('./processing-step-status')
@@ -54,7 +54,7 @@ module.exports = function (steps, data) {
 			var setPromise = getDbSet(businessProcessStorage, 'computed', keyPath,
 				serializeValue('pending'));
 			return setPromise(function (set) {
-				return getDbArray(set, 'computed', keyPath)(function (array) {
+				return getDbArray(set, businessProcessStorage, 'computed', keyPath)(function (array) {
 					stepArrays['processingSteps/map/' + stepPath] = array;
 				});
 			});
@@ -67,7 +67,7 @@ module.exports = function (steps, data) {
 					});
 				});
 				result.sort(compareStamps);
-				return reducedStorage.storeMany([
+				return reducedStorage.storeManyReduced([
 					{ id: 'views/supervisor/all/totalSize', data: { value: serializeValue(result.length) } },
 					{ id: 'views/supervisor/all/21',
 						data: { value: serializeValue(serializeView(result.slice(0, itemsPerPage))) } }
