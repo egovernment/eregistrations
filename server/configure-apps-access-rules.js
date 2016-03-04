@@ -191,21 +191,21 @@ module.exports = function (dbDriver, data) {
 	var getBusinessProcessOfficialListFragment =
 		getPartFragments(null, businessProcessListProperties);
 
-	var getOfficialFragment = memoize(function (stepShortPath) {
+	var getOfficialFragment = memoize(function (stepShortPath, viewPath) {
 		var fragment = new FragmentGroup()
 		  , defaultStatusName = resolveDefaultStatus(stepShortPath);
 
 		// To be visited (recently pending) business processes (full data)
 		fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
-			'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName).toArray().slice(0, 10),
+			'pendingBusinessProcesses/' + viewPath + '/' + defaultStatusName).toArray().slice(0, 10),
 			getBusinessProcessData));
 		// First page snapshot for each status
-		fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath));
+		fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + viewPath));
 		// First page list data for each status
 		fragment.addFragment(getColFragments(joinSets(
 			keys(processingStepsMeta[stepShortPath]).map(function (status) {
 				return getFirstPageItems(reducedStorage,
-					'pendingBusinessProcesses/' + stepShortPath + '/' + status);
+					'pendingBusinessProcesses/' + viewPath + '/' + status);
 			})
 		), getBusinessProcessOfficialListFragment));
 		return fragment;
@@ -360,9 +360,10 @@ module.exports = function (dbDriver, data) {
 			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, stepShortPath));
 			// Official role specific data
 			if (assignableProcessingSteps && assignableProcessingSteps.has(stepShortPath)) {
-				fragment.addFragment(getOfficialFragment('assigned/7' + userId + '/' + stepShortPath));
+				fragment.addFragment(getOfficialFragment(stepShortPath,
+					'assigned/7' + userId + '/' + stepShortPath));
 			} else {
-				fragment.addFragment(getOfficialFragment(stepShortPath));
+				fragment.addFragment(getOfficialFragment(stepShortPath, stepShortPath));
 			}
 			return fragment;
 		}
