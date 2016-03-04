@@ -13,10 +13,9 @@ var userEmailMap   = require('mano/lib/server/user-email-map')
 exports['user-add'] = {
 	validate: function () {
 		var userId = this.req.$user, args = arguments;
+
 		return userStorage.get(userId + '/isManagerActive')(function (data) {
-			return data && (unserializeValue(data.value) === true);
-		}).then(function (res) {
-			if (!res) {
+			if (!data || (!unserializeValue(data.value))) {
 				throw customError("Cannot process request", "INVALID_REQUEST", { statusCode: 400 });
 			}
 			return validate.apply(this, args);
