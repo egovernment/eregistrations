@@ -44,7 +44,7 @@ var getFilteredArray = function (storage, arr, filterString) {
 	};
 	var findAndFilter = function (data) {
 		var dataId = data.id.slice(0, data.id.indexOf('/'));
-		return storage.getComputed(dataId + '/searchString').done(function (searchData) {
+		return storage.getComputed(dataId + '/searchString')(function (searchData) {
 			filter(data, searchData);
 		});
 	};
