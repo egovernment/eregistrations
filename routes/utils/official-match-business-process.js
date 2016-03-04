@@ -43,7 +43,11 @@ module.exports = function (step) {
 				return def.promise;
 			}.bind(this));
 		}
-		if (db.ProcessingStepGroup && this.processingStep.parentGroup) {
+		if (this.user.currentRoleResolved === 'dispatcher') {
+			visitedBusinessProcesses = this.user.recentlyVisited.businessProcesses.dispatcher;
+		} else if (this.user.currentRoleResolved === 'supervisor') {
+			visitedBusinessProcesses = this.user.recentlyVisited.businessProcesses.supervisor;
+		} else if (db.ProcessingStepGroup && this.processingStep.parentGroup) {
 			visitedBusinessProcesses =
 				this.user.recentlyVisited.businessProcesses[this.processingStep.parentGroup.key][
 					this.processingStep.key
