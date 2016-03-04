@@ -9,7 +9,6 @@ var endsWith          = require('es5-ext/string/#/ends-with')
   , once              = require('timers-ext/once')
   , ensureDatabase    = require('dbjs/valid-dbjs')
   , unserializeValue  = require('dbjs/_setup/unserialize/value')
-  , ensureStorage     = require('dbjs-persistence/ensure-storage')
   , generateHash      = require('murmurhash-js/murmurhash3_gc')
   , createWriteStream = require('fs').createWriteStream
   , unlink            = require('fs2/unlink')
@@ -19,7 +18,7 @@ var endsWith          = require('es5-ext/string/#/ends-with')
   , setupTrigger      = require('./_setup-triggers')
   , isPastRecordEvent = require('../utils/is-past-record-event')
 
-  , isArray = Array.isArray, basename = path.basename, resolve = path.resolve
+  , basename = path.basename, resolve = path.resolve
   , re = /^\/business-process-archive-([0-9][0-9a-z]+)-([0-9]+)\.zip$/
 	  , create = Object.create, keys = Object.keys;
 
@@ -77,10 +76,8 @@ exports.filenameResetService = function (db, data) {
 	});
 };
 
-exports.archiveServer = function (storages, data) {
+exports.archiveServer = function (data) {
 	var uploadsPath, isDev, stMiddleware;
-	if (isArray(storages)) storages.forEach(ensureStorage);
-	else storages = [ensureStorage(storages)];
 
 	ensureObject(data);
 	uploadsPath = ensureString(data.uploadsPath);
@@ -94,58 +91,60 @@ exports.archiveServer = function (storages, data) {
 			return;
 		}
 		businessProcessId = match[1];
-		deferred.some(storages, function (storage) {
-			return storage.getObject(businessProcessId)(function (records) {
-				if (!records.length) return;
-				return storage.getComputed(businessProcessId + '/isSubmitted')(function (data) {
-					var businessName, paths = [];
-					if (!data || (data.value !== '11')) {
-						res.statusCode = 404;
-						res.end('Not Found');
-						return;
-					}
-					records.forEach(function (record) {
-						if (record.id === (businessProcessId + '/businessName')) {
-							businessName = unserializeValue(record.data.value);
-						} else if (endsWith.call(record.id, '/path')) {
-							if (record.data.value[0] === '3') {
-								paths.push(resolve(uploadsPath, unserializeValue(record.data.value)));
-							}
+		require('./utils/business-process-storages')(function (storages) {
+			return deferred.some(storages, function (storage) {
+				return storage.getObject(businessProcessId)(function (records) {
+					if (!records.length) return;
+					return storage.getComputed(businessProcessId + '/isSubmitted')(function (data) {
+						var businessName, paths = [];
+						if (!data || (data.value !== '11')) {
+							res.statusCode = 404;
+							res.end('Not Found');
+							return;
 						}
-					});
-
-					debug("generate archive for %s %s", businessProcessId, businessName);
-					archive = archiver('zip', { level: 0 });
-					archiveFile = createWriteStream(resolve(uploadsPath, url.slice(1)));
-					archiveFile.on('error', onError = function (error) {
-						if (!error) return;
-						if (isDev) throw error;
-						debug("cannot produce archive %s", error.stack);
-						res.statusCode = 500;
-						res.end('Server error');
-					});
-					archive.pipe(archiveFile);
-					paths.forEach(function (path) {
-						// Change filename from form 'file-skey-buniness-name-document-label.xxx' to
-						// 'buniness-name-document-label-index.xxx' for ux reasons.
-						var name = basename(path).replace(/^[\d\w]+-/, '').split('.');
-
-						if (!fileNameUseCount[name]) fileNameUseCount[name] = 0;
-
-						name[0] += '-' + String(++fileNameUseCount[name]);
-
-						archive.file(path, {
-							name: name.join('.')
+						records.forEach(function (record) {
+							if (record.id === (businessProcessId + '/businessName')) {
+								businessName = unserializeValue(record.data.value);
+							} else if (endsWith.call(record.id, '/path')) {
+								if (record.data.value[0] === '3') {
+									paths.push(resolve(uploadsPath, unserializeValue(record.data.value)));
+								}
+							}
 						});
-					});
-					archive.finalize(onError);
-					archive.on('error', onError);
-					archiveFile.on('error', onError);
-					archiveFile.on('close', function () {
-						debug("finalised generation of archive for %s %s", businessProcessId, businessName);
-						stMiddleware(req, res, next);
-					});
-				})(true);
+
+						debug("generate archive for %s %s", businessProcessId, businessName);
+						archive = archiver('zip', { level: 0 });
+						archiveFile = createWriteStream(resolve(uploadsPath, url.slice(1)));
+						archiveFile.on('error', onError = function (error) {
+							if (!error) return;
+							if (isDev) throw error;
+							debug("cannot produce archive %s", error.stack);
+							res.statusCode = 500;
+							res.end('Server error');
+						});
+						archive.pipe(archiveFile);
+						paths.forEach(function (path) {
+							// Change filename from form 'file-skey-buniness-name-document-label.xxx' to
+							// 'buniness-name-document-label-index.xxx' for ux reasons.
+							var name = basename(path).replace(/^[\d\w]+-/, '').split('.');
+
+							if (!fileNameUseCount[name]) fileNameUseCount[name] = 0;
+
+							name[0] += '-' + String(++fileNameUseCount[name]);
+
+							archive.file(path, {
+								name: name.join('.')
+							});
+						});
+						archive.finalize(onError);
+						archive.on('error', onError);
+						archiveFile.on('error', onError);
+						archiveFile.on('close', function () {
+							debug("finalised generation of archive for %s %s", businessProcessId, businessName);
+							stMiddleware(req, res, next);
+						});
+					})(true);
+				});
 			});
 		}).done(function (isFound) {
 			if (isFound) return;
