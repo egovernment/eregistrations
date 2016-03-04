@@ -330,7 +330,9 @@ module.exports = exports = function (mainConf/*, options */) {
 					});
 				};
 			}
-			return businessProcessStoragesPromise(function () { return roleNameResolve; });
+			return function (req) {
+				return businessProcessStoragesPromise(function () { return roleNameResolve(req); });
+			};
 		}());
 	} else {
 		resolveHandler = constant(businessProcessStoragesPromise(function () {
