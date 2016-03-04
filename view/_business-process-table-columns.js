@@ -84,7 +84,12 @@ exports.columns = [{
 		var isSubmitted = businessProcess._isSubmitted;
 
 		return _if(isSubmitted, function () {
-			return isSubmitted._lastModified.map(formatLastModified);
+			if (!businessProcess.submissionForms.isAffidavitSigned) {
+				return isSubmitted._lastModified.map(formatLastModified);
+			}
+			// TODO: After introduction of static flow propagation revert back isSubmitted
+			return businessProcess.submissionForms._isAffidavitSigned
+				._lastModified.map(formatLastModified);
 		});
 	}
 }, {
@@ -94,7 +99,11 @@ exports.columns = [{
 		var isApproved = businessProcess._isApproved;
 
 		return _if(isApproved, function () {
-			return isApproved._lastModified.map(formatLastModified);
+			// TODO: After introduction of static flow propagation revert back isSubmitted
+			return formatLastModified(businessProcess.getAllEvents().reduce(function (latest, event) {
+				if (latest.stamp) latest = latest.stamp;
+				return event.stamp > (latest || 0) ? event.stamp : latest;
+			}));
 		});
 	}
 }, {
