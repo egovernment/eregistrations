@@ -38,16 +38,24 @@ module.exports = function (t, a) {
 	a.deep(aFrom(manager.managedBusinessProcesses), [bp]);
 
 	user = new User();
+	var destroyManagedErr = new RegExp('Cannot destroy user');
+	var destroyManagerErr = new RegExp('Cannot destroy manager');
+
 	// not a managed user
-	a(manager.destroyManagedUser(user), false);
+	a.throws(function () {
+		return manager.destroyManagedUser(user);
+	}, destroyManagedErr, 'throws when no not a manager');
+	a(db.User.instances.has(user), true);
 	user.manager = manager;
-	a(manager.destroyManagedUser(user), true);
+	manager.destroyManagedUser(user);
+	a(db.User.instances.has(user), false);
 
 	user = new User();
 	user.manager = manager;
 	user.roles.add('user');
-	a(manager.destroyManagedUser(user), false);
-
+	a.throws(function () {
+		return manager.destroyManagedUser(user);
+	}, destroyManagedErr, 'throws when no not a manager');
 	user = new User();
 	user.manager = manager;
 	a(db.User.instances.has(user), true);
@@ -55,21 +63,28 @@ module.exports = function (t, a) {
 	user.initialBusinessProcesses.add(bp);
 	a(db.BusinessProcess.instances.has(bp), true);
 	bp.isSubmitted = true;
-	a(manager.destroyManagedUser(user), false);
+	a.throws(function () {
+		return manager.destroyManagedUser(user);
+	}, destroyManagedErr, 'throws when has submitted process');
 	a(db.BusinessProcess.instances.has(bp), true);
 	bp.isSubmitted = false;
-	a(manager.destroyManagedUser(user), true);
+	a(manager.canManagedUserBeDestroyed(user), true);
+	manager.destroyManagedUser(user);
 	a(db.BusinessProcess.instances.has(bp), false);
 	a(db.User.instances.has(user), false);
 
 	user = new User();
-	user.manager = manager;
+	manager = new User();
+	manager.roles.add('manager');
 	managerValidation = new User();
 	a(db.User.instances.has(manager), true);
-	a(managerValidation.destroyManager(manager), false);
+	a(managerValidation.canManagerBeDestroyed(manager), false);
+	a.throws(function () {
+		return managerValidation.destroyManager(manager);
+	}, destroyManagerErr, 'throws when managerValidation role not set');
 	a(db.User.instances.has(manager), true);
 	managerValidation.roles.add('managerValidation');
-	a(managerValidation.destroyManager(manager), true);
+	managerValidation.destroyManager(manager);
 	a(db.User.instances.has(manager), false);
 
 	user = new User();
@@ -82,11 +97,16 @@ module.exports = function (t, a) {
 	a(db.BusinessProcess.instances.has(bp), true);
 	a(db.User.instances.has(user), true);
 	a(db.User.instances.has(manager), true);
-	a(managerValidation.destroyManager(manager), false);
+	a.throws(function () {
+		return managerValidation.destroyManager(manager);
+	}, destroyManagerErr, 'throws when unable to remove some managers user');
 	a(db.User.instances.has(manager), true);
 	a(db.BusinessProcess.instances.has(bp), true);
 	a(db.User.instances.has(user), true);
-	a(managerValidation.destroyManager(manager), false);
-	a(db.BusinessProcess.instances.has(bp), true);
-	a(db.User.instances.has(user), true);
+	a(managerValidation.canManagerBeDestroyed(manager), false);
+	bp.isSubmitted = false;
+	a(managerValidation.canManagerBeDestroyed(manager), true);
+	managerValidation.destroyManager(manager);
+	a(db.BusinessProcess.instances.has(bp), false);
+	a(db.User.instances.has(user), false);
 };
