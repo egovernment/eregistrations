@@ -31,6 +31,7 @@ exports['manager-account-content'] = function () {
 					function (client) {
 						var bpSet = client.initialBusinessProcesses.and(this.user.managedBusinessProcesses)
 									.filterByKey('businessName');
+
 						return tr(
 							td(client._fullName),
 
@@ -43,20 +44,19 @@ exports['manager-account-content'] = function () {
 
 							td(span(client._email),
 								_if(client.roles._has('user'), [" ", span({ class: 'fa fa-check' })])),
-
 							td({ class: 'actions' },
-								_if(and(this.user._isManagerActive, eq(client._manager, this.user), _("N/A")),
+								_if(and(this.user._isManagerActive,
+										eq(client._manager, this.user)),
 									[
 										postButton({ buttonClass: 'actions-edit',
 											action: url('clients', client.__id__),
 											value: span({ class: 'fa fa-edit' }) }),
-										_if(eq(client.initialBusinessProcesses
-											.filterByKey('isSubmitted', true)._size, 0),
+										_if(client._canManagedUserBeDestroyed,
 											postButton({ buttonClass: 'actions-delete',
 												action: url('clients', client.__id__, 'delete'),
 												confirm: _("Are you sure?"), value: span({ class: 'fa fa-trash-o' }) })
 											)
-									]
+									], _("N/A")
 									)
 								)
 						);

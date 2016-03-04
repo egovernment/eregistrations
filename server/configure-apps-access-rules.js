@@ -56,7 +56,7 @@ module.exports = function (dbDriver, data) {
 
 	var getBusinessProcessStorages = require('./utils/business-process-storages');
 	var getManagerUserData = getPartFragments(userStorage, new Set(['email', 'firstName',
-		'initialBusinessProcesses', 'lastName', 'manager']));
+		'initialBusinessProcesses', 'lastName', 'manager', 'canManagedUserBeDestroyed']));
 	var getManagerBusinessProcessData = getPartFragments(null, new Set(['businessName', 'isSubmitted',
 		'manager', 'status']));
 
