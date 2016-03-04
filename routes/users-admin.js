@@ -13,7 +13,6 @@ module.exports = {
 	'user/[0-9][0-9a-z-]+': {
 		match: function (userId) {
 			this.editedUser = db.User.getById(userId);
-			console.log('this.editedUser', this.editedUser);
 			if (this.editedUser === this.user) return false;
 			if (this.editedUser && this.editedUser.email) {
 				if (this.user.recentlyVisited.users.last !== this.editedUser) {
