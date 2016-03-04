@@ -67,6 +67,46 @@ module.exports = memoize(function (db/* options */) {
 		// equals true after manager requested account creation
 		isInvitationSent: {
 			type: db.Boolean
+		},
+		isManagerActive: {
+			type: db.Boolean
+		},
+		destroyManagedUser: {
+			type: db.Function,
+			value: function (user) {
+				var dbObjects = this.database.objects;
+				if (!this.managedUsers.has(user)) return false;
+				if (user.roles.size) return false;
+				if (user.initialBusinessProcesses.filter(function (bp) {
+						return bp.isSubmitted;
+					}).size !== 0) {
+					return false;
+				}
+				user.initialBusinessProcesses.forEach(function (bp) {
+					dbObjects.delete(bp);
+				});
+				dbObjects.delete(user);
+				return true;
+			}
+		},
+		destroyManager: {
+			type: db.Function,
+			value: function (manager) {
+				var dbObjects = this.database.objects, cannotRemove;
+				if (!this.roles.has('managerValidation') && !(this.roles.has('usersAdmin'))) {
+					return false;
+				}
+				if (!manager.roles.has('manager')) return false;
+				manager.managedUsers.forEach(manager.destroyManagedUser, manager);
+				cannotRemove = manager.managedUsers.some(function (user) {
+					return !user.roles.size && user.initialBusinessProcesses.some(function (bp) {
+						return bp.isSubmitted;
+					});
+				});
+				if (cannotRemove) return false;
+				dbObjects.delete(manager);
+				return true;
+			}
 		}
 	});
 
