@@ -2,7 +2,7 @@
 
 var aFrom                 = require('es5-ext/array/from')
   , Database              = require('dbjs')
-  , defineBusinessProcess = require('../../../model/business-process-new/manager');
+  , defineBusinessProcess = require('../../../model/business-process-new');
 
 module.exports = function (t, a) {
 	var db = new Database()
@@ -68,7 +68,7 @@ module.exports = function (t, a) {
 	}, destroyManagedErr, 'throws when has submitted process');
 	a(db.BusinessProcess.instances.has(bp), true);
 	bp.isSubmitted = false;
-	a(manager.canManagedUserBeDestroyed(user), true);
+	a(user.canManagedUserBeDestroyed, true);
 	manager.destroyManagedUser(user);
 	a(db.BusinessProcess.instances.has(bp), false);
 	a(db.User.instances.has(user), false);
@@ -78,7 +78,7 @@ module.exports = function (t, a) {
 	manager.roles.add('manager');
 	managerValidation = new User();
 	a(db.User.instances.has(manager), true);
-	a(managerValidation.canManagerBeDestroyed(manager), false);
+	a(manager.canManagerBeDestroyed, true);
 	a.throws(function () {
 		return managerValidation.destroyManager(manager);
 	}, destroyManagerErr, 'throws when managerValidation role not set');
@@ -103,9 +103,9 @@ module.exports = function (t, a) {
 	a(db.User.instances.has(manager), true);
 	a(db.BusinessProcess.instances.has(bp), true);
 	a(db.User.instances.has(user), true);
-	a(managerValidation.canManagerBeDestroyed(manager), false);
+	a(manager.canManagerBeDestroyed, false);
 	bp.isSubmitted = false;
-	a(managerValidation.canManagerBeDestroyed(manager), true);
+	a(manager.canManagerBeDestroyed, true);
 	managerValidation.destroyManager(manager);
 	a(db.BusinessProcess.instances.has(bp), false);
 	a(db.User.instances.has(user), false);

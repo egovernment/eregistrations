@@ -72,35 +72,35 @@ module.exports = memoize(function (db/* options */) {
 			type: db.Boolean
 		},
 		canManagedUserBeDestroyed: {
-			type: db.Function,
-			value: function (user) {
-				if (!this.managedUsers.has(user)) return false;
-				if (user.roles.size) return false;
-				return (user.initialBusinessProcesses.filter(function (bp) {
-					return bp.isSubmitted;
-				}).size === 0);
+			type: db.Boolean,
+			value: function (_observe) {
+				if (this.roles.size) return false;
+				return this.initialBusinessProcesses.every(function (bp) {
+					return !_observe(bp._isSubmitted);
+				});
 			}
 		},
 		canManagerBeDestroyed: {
-			type: db.Function,
-			value: function (manager) {
-				if (!this.roles.has('managerValidation') && !(this.roles.has('usersAdmin'))) {
-					return false;
-				}
-				if (!manager.roles.has('manager')) return false;
-				return manager.managedUsers.every(function (user) {
-					return user.roles.size || user.initialBusinessProcesses.every(function (bp) {
-						return !bp.isSubmitted;
-					});
+			type: db.Boolean,
+			value: function (_observe) {
+				if (!this.roles.has('manager')) return false;
+				return this.managedUsers.every(function (user) {
+					return _observe(user.roles._size) ||
+						_observe(user.initialBusinessProcesses).every(function (bp) {
+							return !_observe(bp._isSubmitted);
+						});
 				});
 			}
 		},
 		destroyManagedUser: {
 			type: db.Function,
 			value: function (user) {
-				var dbObjects = this.database.objects;
-				if (!this.canManagedUserBeDestroyed(user)) {
-					throw new Error('Cannot destroy user', user.__id__);
+				var dbObjects = this.database.objects, err = new Error('Cannot destroy user', user.__id__);
+				if (!this.managedUsers.has(user)) {
+					throw err;
+				}
+				if (!user.canManagedUserBeDestroyed) {
+					throw err;
 				}
 				user.initialBusinessProcesses.forEach(function (bp) {
 					dbObjects.delete(bp);
@@ -111,9 +111,13 @@ module.exports = memoize(function (db/* options */) {
 		destroyManager: {
 			type: db.Function,
 			value: function (manager) {
-				var dbObjects = this.database.objects;
-				if (!this.canManagerBeDestroyed(manager)) {
-					throw new Error('Cannot destroy manager', manager.__id__);
+				var dbObjects = this.database.objects
+				  , err = new Error('Cannot destroy manager', manager.__id__);
+				if (!this.roles.has('managerValidation') && !(this.roles.has('usersAdmin'))) {
+					throw err;
+				}
+				if (!manager.canManagerBeDestroyed) {
+					throw err;
 				}
 				manager.managedUsers.forEach(manager.destroyManagedUser, manager);
 				dbObjects.delete(manager);
