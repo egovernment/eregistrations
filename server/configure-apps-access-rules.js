@@ -3,19 +3,20 @@
 'use strict';
 
 var aFrom            = require('es5-ext/array/from')
-  , compose          = require('es5-ext/function/#/compose')
   , ensureIterable   = require('es5-ext/iterable/validate-object')
   , findKey          = require('es5-ext/object/find-key')
   , forEach          = require('es5-ext/object/for-each')
   , ensureCallable   = require('es5-ext/object/valid-callable')
   , ensureObject     = require('es5-ext/object/valid-object')
   , ensureString     = require('es5-ext/object/validate-stringifiable-value')
+  , capitalize       = require('es5-ext/string/#/capitalize')
   , endsWith         = require('es5-ext/string/#/ends-with')
   , uncapitalize     = require('es5-ext/string/#/uncapitalize')
   , memoize          = require('memoizee')
   , Set              = require('es6-set')
   , deferred         = require('deferred')
   , unserializeValue = require('dbjs/_setup/unserialize/value')
+  , serializeValue   = require('dbjs/_setup/serialize/value')
   , ObservableSet    = require('observable-set')
   , ObservableMulti  = require('observable-multi-set')
   , Fragment         = require('data-fragment')
@@ -224,7 +225,7 @@ module.exports = function (dbDriver, data) {
 
 		if (assignableProcessingSteps) {
 			assignableProcessingSteps.forEach(function (stepShortPath) {
-				var defaultStatusName = resolveDefaultStatus(stepShortPath);
+				var defaultStatusName = resolveDefaultStatus(stepShortPath), roleName, getOfficialFragment;
 				// First page snapshot
 				fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath +
 					'/' + defaultStatusName));
@@ -232,6 +233,14 @@ module.exports = function (dbDriver, data) {
 				fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
 					'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName),
 					getBusinessProcessDispatcherListFragment));
+				// Officials
+				// TODO: Support deep processing steps
+				roleName = 'official' + capitalize.call(stepShortPath);
+				getOfficialFragment = getPartFragments(null, new Set(['fullName', 'roles*' + roleName]));
+				fragment.promise =
+					getDbSet(userStorage, 'direct', 'roles', serializeValue(roleName))(function (set) {
+						fragment.addFragment(getColFragments(set, getOfficialFragment));
+					});
 			});
 		}
 		return fragment;
