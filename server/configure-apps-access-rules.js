@@ -32,6 +32,7 @@ var aFrom            = require('es5-ext/array/from')
   , getDbSet         = require('./utils/get-db-set')
   , mapDbSet         = require('./utils/map-db-set')
   , userListProps    = require('../apps/users-admin/user-list-properties')
+  , managerValidationUserListProps = require('../apps/manager-validation/user-list-properties')
 
   , create = Object.create, keys = Object.keys, stringify = JSON.stringify
   , emptyFragment = new Fragment()
@@ -177,6 +178,20 @@ module.exports = function (dbDriver, data) {
 		// First page list data
 		fragment.addFragment(getColFragments(getFirstPageItems(userStorage, 'usersAdmin'),
 			getUserListFragment));
+		return fragment;
+	});
+
+	// Manager validation resolvers
+	var getManagerValidationUserListFragment =
+		getPartFragments(userStorage, managerValidationUserListProps);
+
+	var getManagerValidationFragment = memoize(function () {
+		var fragment = new FragmentGroup();
+		// First page snapshot
+		fragment.addFragment(getUserReducedData('views/managerValidation'));
+		// First page list data
+		fragment.addFragment(getColFragments(getFirstPageItems(userStorage, 'managerValidation'),
+			getManagerValidationUserListFragment));
 		return fragment;
 	});
 
@@ -347,6 +362,13 @@ module.exports = function (dbDriver, data) {
 			fragment.addFragment(getRecentlyVisitedUsersFragment(userId));
 			// Users Admin specific data
 			fragment.addFragment(getUsersAdminFragment());
+			return fragment;
+		}
+		if (roleName === 'managerValidation') {
+			// Recently visited users (full data)
+			fragment.addFragment(getRecentlyVisitedUsersFragment(userId));
+			// Users Admin specific data
+			fragment.addFragment(getManagerValidationFragment());
 			return fragment;
 		}
 		if (roleName === 'metaAdmin') {
