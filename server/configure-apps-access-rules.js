@@ -84,14 +84,12 @@ module.exports = function (dbDriver, data) {
 	var defaultOfficialStepsResolver = function (userId) {
 		var rolesSet = getDbRecordSet(userStorage, userId + '/roles');
 		var resultSet = rolesSet.map(unserializeValue).filter(isOfficialRoleName)
-			.map(function (roleName) { return uncapitalize.call(roleName.slice('official'.length)); })
-			.filter(function (stepShortPath) { return processingStepsMeta[stepShortPath]; });
+			.map(function (roleName) { return uncapitalize.call(roleName.slice('official'.length)); });
 		resultSet.promise = rolesSet.promise;
 		return resultSet;
 	};
-	if (data.normalizeOfficialStepsPaths != null) {
-		resolveOfficialSteps = compose.bind(ensureCallable(data.resolveOfficialSteps),
-			defaultOfficialStepsResolver);
+	if (data.officialStepsResolver != null) {
+		resolveOfficialSteps = ensureCallable(data.officialStepsResolver);
 	} else {
 		resolveOfficialSteps = defaultOfficialStepsResolver;
 	}
