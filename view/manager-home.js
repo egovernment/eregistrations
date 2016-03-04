@@ -11,9 +11,9 @@ exports['manager-account-clients'] = { class: { active: true } };
 exports['manager-account-content'] = function () {
 	var clients = this.user.managedUsers;
 
-	section(a({ href: url('new-client'), class: 'button-main' },
-				_("Add client"))
-		);
+	section(_if(this.user._isManagerActive,
+		a({ href: url('new-client'), class: 'button-main' },
+			_("Add client")), h3(_("Your account is currently inactive"))));
 
 	insert(_if(clients._size, function () {
 		return section({ class: 'submitted-main table-responsive-container' },
@@ -45,7 +45,7 @@ exports['manager-account-content'] = function () {
 								_if(client.roles._has('user'), [" ", span({ class: 'fa fa-check' })])),
 
 							td({ class: 'actions' },
-								_if(eq(client._manager, this.user),
+								_if(and(this.user._isManagerActive, eq(client._manager, this.user), _("N/A")),
 									[
 										postButton({ buttonClass: 'actions-edit',
 											action: url('clients', client.__id__),
