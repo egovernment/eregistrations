@@ -182,6 +182,12 @@ module.exports = function (dbDriver, data) {
 	});
 
 	// Manager validation resolvers
+	var getRecentlyVisitedManagerValidationUsersFragment = function (userId) {
+		var list = getDbRecordSet(userStorage, userId + '/recentlyVisited/users')
+			.map(function (value) { return value.slice(1); });
+
+		return getColFragments(list, getUserFragment);
+	};
 	var getManagerValidationUserListFragment =
 		getPartFragments(userStorage, managerValidationUserListProps);
 
@@ -366,7 +372,7 @@ module.exports = function (dbDriver, data) {
 		}
 		if (roleName === 'managerValidation') {
 			// Recently visited users (full data)
-			fragment.addFragment(getRecentlyVisitedUsersFragment(userId));
+			fragment.addFragment(getRecentlyVisitedManagerValidationUsersFragment(userId));
 			// Users Admin specific data
 			fragment.addFragment(getManagerValidationFragment());
 			return fragment;
