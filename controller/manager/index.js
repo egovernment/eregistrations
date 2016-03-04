@@ -1,13 +1,13 @@
 'use strict';
 
 var assign   = require('es5-ext/object/assign')
-  , validate = require('mano/utils/validate')
   , mano     = require('mano')
 
   , db = mano.db;
 
 var managedUserMatcher = function (managedUserId) {
 	this.managedUser = db.User.getById(managedUserId);
+	if (!this.user.isManagerActive) return false;
 	if (!this.managedUser) return false;
 	return this.managedUser.manager === this.user;
 };
@@ -26,7 +26,6 @@ assign(exports, require('../user'));
 
 // Add User
 exports['user-add'] = {
-	validate: validate,
 	redirectUrl: '/'
 };
 
@@ -53,8 +52,5 @@ exports['clients/[0-9][a-z0-9]+'] = {
 };
 
 exports['clients/[0-9][a-z0-9]+/delete'] = {
-	match: function (managedUserId) {
-		if (!managedUserMatcher.call(this, managedUserId)) return false;
-		return this.managedUser.initialBusinessProcesses.filterByKey('isSubmitted', true).size === 0;
-	}
+	match: managedUserMatcher
 };
