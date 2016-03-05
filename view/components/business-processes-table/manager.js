@@ -46,7 +46,7 @@ var BusinessProcessesManager = module.exports = function (conf) {
 	}
 
 	defineProperties(this, {
-		_fullItems: d(user.recentlyVisited.businessProcesses[roleName]),
+		_fullItems: d(user.recentlyVisited.businessProcesses[conf.fullItemsRoleName || roleName]),
 		_canItemBeApplicable: d((conf.canItemBeApplicable != null)
 			? ensureCallable(conf.canItemBeApplicable) : null),
 		_statusViews: d(pendingBusinessProcesses),
