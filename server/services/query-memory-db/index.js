@@ -8,14 +8,13 @@ var forEach          = require('es5-ext/object/for-each')
 
   , stringify = JSON.stringify;
 
-module.exports = function (actions, slave) {
+module.exports = function (actions) {
 	forEach(ensureObject(actions), ensureCallable);
-	ensureObject(slave);
 	registerReceiver('queryMemoryDb', function (data) {
 		var action = ensureString(data.action);
 		if (!actions[action]) {
 			throw new Error("Not supported queryMaster action: " + stringify(action));
 		}
 		return actions[action](data.query);
-	}, slave);
+	});
 };
