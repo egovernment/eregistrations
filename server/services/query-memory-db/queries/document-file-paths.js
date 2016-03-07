@@ -30,10 +30,10 @@ module.exports = function (db) {
 			document = businessProcess.certificates.map.get(key);
 			if (document && !businessProcess.certificates.applicable.has(document)) document = null;
 		}
-		if (!target || (target.files.ordered <= 1)) return;
+		if (!document || (document.files.ordered <= 1)) return false;
 		fileIdx = 0;
 		result = {};
-		target.files.ordered.forEach(function (file) {
+		document.files.ordered.forEach(function (file) {
 			// Change filename from form 'file-skey-buniness-name-document-label.xxx' to
 			// 'business-name-document-label-index.xxx' for ux reasons.
 			var name = basename(file.path).replace(/^[\d\w]+-/, '').split('.');
