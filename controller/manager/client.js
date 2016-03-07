@@ -14,7 +14,7 @@ exports['user-add'] = {
 exports['clients/[0-9][a-z0-9]+/delete'] = {
 	remoteSubmit: true,
 	processResponse: function () {
-		if (this.managedUser) this.managedUser._setValue_();
+		this.managedUser._setValue_();
 	}
 };
 
@@ -22,6 +22,6 @@ exports['clients/[0-9][a-z0-9]+/delete'] = {
 exports['business-process/[0-9][a-z0-9]+/delete'] = {
 	remoteSubmit: true,
 	processResponse: function () {
-		if (this.businessProcess) this.businessProcess._setValue_();
+		this.businessProcess._setValue_();
 	}
 };

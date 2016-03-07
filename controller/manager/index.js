@@ -51,6 +51,7 @@ exports['clients/[0-9][a-z0-9]+'] = {
 	}
 };
 
+// The validation is currently handled in submit by destroyManagedUser
 exports['clients/[0-9][a-z0-9]+/delete'] = {
 	match: managedUserMatcher
 };
