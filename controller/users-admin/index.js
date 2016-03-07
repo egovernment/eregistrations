@@ -6,17 +6,9 @@ var find           = require('es5-ext/array/#/find')
   , changePassword = require('mano-auth/controller/change-password').validate
   , register       = require('mano-auth/controller/register').validate
   , validate       = require('mano/utils/validate')
-  , mano           = require('mano')
+  , matchUser      = require('../utils/user-matcher')
 
-  , keys = Object.keys
-  , db = mano.db;
-
-var matchUser = function (id) {
-	var target = db.User.getById(id);
-	if (!target) return false;
-	this.target = target;
-	return true;
-};
+  , keys = Object.keys;
 
 // Common
 assign(exports, require('../user'));
