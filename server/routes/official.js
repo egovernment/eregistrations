@@ -56,7 +56,7 @@ var getTableQueryHandler = function (statusMap) {
 };
 
 // Single business process full data query handler
-var getBusinessProcessQueryHandler = function (indexName) {
+var getBusinessProcessQueryHandler = function (indexName, indexValue) {
 	return new QueryHandler([
 		{
 			name: 'id',
@@ -65,7 +65,7 @@ var getBusinessProcessQueryHandler = function (indexName) {
 				return idToStorage(ownerId)(function (storage) {
 					if (!storage) return null;
 					return storage.getComputed(ownerId + '/' + indexName)(function (data) {
-						if (!data || (data.value !== '11')) return null;
+						if (!data || (data.value !== (indexValue || '11'))) return null;
 						return ownerId;
 					});
 				});
@@ -165,12 +165,12 @@ var initializeHandler = function (conf) {
 	var roleName            = ensureString(conf.roleName)
 	  , statusMap           = ensureObject(conf.statusMap)
 	  , statusIndexName     = ensureString(conf.statusIndexName)
-	  , allIndexName        = statusMap.all.indexName
+	  , allIndexName        = conf.allIndexName || statusMap.all.indexName
 	  , bpListProps         = ensureSet(conf.listProperties)
 	  , bpListComputedProps = conf.listComputedProperties && aFrom(conf.listComputedProperties)
 	  , tableQueryHandler   = getTableQueryHandler(statusMap)
 	  , itemsPerPage        = toNaturalNumber(conf.itemsPerPage) || defaultItemsPerPage
-	  , businessProcessQueryHandler = getBusinessProcessQueryHandler(allIndexName)
+	  , businessProcessQueryHandler = getBusinessProcessQueryHandler(allIndexName, conf.allIndexValue)
 	  , storageName, storages;
 
 	if (conf.storageName != null) {
@@ -299,8 +299,10 @@ var initializeHandler = function (conf) {
 };
 
 module.exports = exports = function (mainConf/*, options */) {
-	var resolveHandler, options, roleNameResolve, getHandlerByRole;
+	var resolveHandler, options, roleNameResolve, getHandlerByRole
+	  , recentlyVisitedContextName;
 	options = Object(arguments[1]);
+	recentlyVisitedContextName = options.recentlyVisitedContextName;
 	if (isArray(mainConf)) {
 		resolveHandler = (function () {
 			var map = mainConf.reduce(function (map, conf) {
@@ -330,7 +332,9 @@ module.exports = exports = function (mainConf/*, options */) {
 					});
 				};
 			}
-			return businessProcessStoragesPromise(function () { return roleNameResolve; });
+			return function (req) {
+				return businessProcessStoragesPromise(function () { return roleNameResolve(req); });
+			};
 		}());
 	} else {
 		resolveHandler = constant(businessProcessStoragesPromise(function () {
@@ -357,7 +361,7 @@ module.exports = exports = function (mainConf/*, options */) {
 					var recordId;
 					if (!query.id) return { passed: false };
 					recordId = this.req.$user + '/recentlyVisited/businessProcesses/' +
-						handler.roleName + '*7' + query.id;
+						(recentlyVisitedContextName || handler.roleName) + '*7' + query.id;
 					return mano.dbDriver.getStorage('user').store(recordId, '11')({ passed: true });
 				}.bind(this));
 			}.bind(this));

@@ -8,6 +8,7 @@ var aFrom           = require('es5-ext/array/from')
   , deferred        = require('deferred')
   , memoize         = require('memoizee/plain')
   , Fragment        = require('data-fragment')
+  , resolveKeyPath  = require('dbjs/_setup/utils/resolve-key-path')
   , ensureStorage   = require('dbjs-persistence/ensure-storage')
   , assimilateEvent = require('./lib/assimilate-driver-event')
   , anyIdToStorage  = require('../utils/any-id-to-storage');
@@ -29,17 +30,19 @@ module.exports = function (storage, keyPaths) {
 		fragment.promise = promise(function (storage) {
 			storage.on('owner:' + ownerId, function (event) {
 				if (event.type === 'reduced') return;
-				if (!event.keyPath || keyPaths.has(event.keyPath)) {
+				if (!event.keyPath || keyPaths.has(event.path) || keyPaths.has(event.keyPath)) {
 					if (event.type === 'direct') fragment.update(event.id, event.data);
 					else assimilateEvent(fragment, event.id, event.data);
 				}
 			});
 			return deferred(
-				storage.get(ownerId)(function (data) {
-					if (data) fragment.update(ownerId, data);
-				}),
-				storage.getObject(ownerId, { keyPaths: keyPaths })(function (data) {
-					data.forEach(function (data) { fragment.update(data.id, data.data); });
+				storage.getObject(ownerId)(function (data) {
+					data.forEach(function (data) {
+						var path = (data.id === ownerId) ? null : data.id.slice(data.id.indexOf('/') + 1)
+						  , keyPath = path ? resolveKeyPath(data.id) : null;
+						if (path && !keyPaths.has(path) && !keyPaths.has(keyPath)) return;
+						fragment.update(data.id, data.data);
+					});
 				}),
 				deferred.map(keyPathsArray, function (keyPath) {
 					var id = ownerId + '/' + keyPath;

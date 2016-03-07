@@ -112,6 +112,8 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems = [accessMsg, clientModelReminder, domBindings, addRole, modelViews,
 					"Ensure that views populations for supervisor 'all' is configured in server/db/views.js",
 				appsRoutersReminder];
+			msgItems.push("Ensure proper businessProcsss storage in  apps/" + appName +
+				"/server/routes.js");
 		}
 
 		console.log(msg + msgItems.join('\n- '));

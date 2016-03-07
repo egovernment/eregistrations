@@ -3,19 +3,20 @@
 'use strict';
 
 var aFrom            = require('es5-ext/array/from')
-  , compose          = require('es5-ext/function/#/compose')
   , ensureIterable   = require('es5-ext/iterable/validate-object')
   , findKey          = require('es5-ext/object/find-key')
   , forEach          = require('es5-ext/object/for-each')
   , ensureCallable   = require('es5-ext/object/valid-callable')
   , ensureObject     = require('es5-ext/object/valid-object')
   , ensureString     = require('es5-ext/object/validate-stringifiable-value')
+  , capitalize       = require('es5-ext/string/#/capitalize')
   , endsWith         = require('es5-ext/string/#/ends-with')
   , uncapitalize     = require('es5-ext/string/#/uncapitalize')
   , memoize          = require('memoizee')
   , Set              = require('es6-set')
   , deferred         = require('deferred')
   , unserializeValue = require('dbjs/_setup/unserialize/value')
+  , serializeValue   = require('dbjs/_setup/serialize/value')
   , ObservableSet    = require('observable-set')
   , ObservableMulti  = require('observable-multi-set')
   , Fragment         = require('data-fragment')
@@ -85,14 +86,12 @@ module.exports = function (dbDriver, data) {
 	var defaultOfficialStepsResolver = function (userId) {
 		var rolesSet = getDbRecordSet(userStorage, userId + '/roles');
 		var resultSet = rolesSet.map(unserializeValue).filter(isOfficialRoleName)
-			.map(function (roleName) { return uncapitalize.call(roleName.slice('official'.length)); })
-			.filter(function (stepShortPath) { return processingStepsMeta[stepShortPath]; });
+			.map(function (roleName) { return uncapitalize.call(roleName.slice('official'.length)); });
 		resultSet.promise = rolesSet.promise;
 		return resultSet;
 	};
-	if (data.normalizeOfficialStepsPaths != null) {
-		resolveOfficialSteps = compose.bind(ensureCallable(data.resolveOfficialSteps),
-			defaultOfficialStepsResolver);
+	if (data.officialStepsResolver != null) {
+		resolveOfficialSteps = ensureCallable(data.officialStepsResolver);
 	} else {
 		resolveOfficialSteps = defaultOfficialStepsResolver;
 	}
@@ -212,21 +211,21 @@ module.exports = function (dbDriver, data) {
 	var getBusinessProcessOfficialListFragment =
 		getPartFragments(null, businessProcessListProperties);
 
-	var getOfficialFragment = memoize(function (stepShortPath) {
+	var getOfficialFragment = memoize(function (stepShortPath, viewPath) {
 		var fragment = new FragmentGroup()
 		  , defaultStatusName = resolveDefaultStatus(stepShortPath);
 
 		// To be visited (recently pending) business processes (full data)
 		fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
-			'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName).toArray().slice(0, 10),
+			'pendingBusinessProcesses/' + viewPath + '/' + defaultStatusName).toArray().slice(0, 10),
 			getBusinessProcessData));
 		// First page snapshot for each status
-		fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath));
+		fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + viewPath));
 		// First page list data for each status
 		fragment.addFragment(getColFragments(joinSets(
 			keys(processingStepsMeta[stepShortPath]).map(function (status) {
 				return getFirstPageItems(reducedStorage,
-					'pendingBusinessProcesses/' + stepShortPath + '/' + status);
+					'pendingBusinessProcesses/' + viewPath + '/' + status);
 			})
 		), getBusinessProcessOfficialListFragment));
 		return fragment;
@@ -247,7 +246,7 @@ module.exports = function (dbDriver, data) {
 
 		if (assignableProcessingSteps) {
 			assignableProcessingSteps.forEach(function (stepShortPath) {
-				var defaultStatusName = resolveDefaultStatus(stepShortPath);
+				var defaultStatusName = resolveDefaultStatus(stepShortPath), roleName, getOfficialFragment;
 				// First page snapshot
 				fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath +
 					'/' + defaultStatusName));
@@ -255,6 +254,14 @@ module.exports = function (dbDriver, data) {
 				fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
 					'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName),
 					getBusinessProcessDispatcherListFragment));
+				// Officials
+				// TODO: Support deep processing steps
+				roleName = 'official' + capitalize.call(stepShortPath);
+				getOfficialFragment = getPartFragments(null, new Set(['fullName', 'roles*' + roleName]));
+				fragment.promise =
+					getDbSet(userStorage, 'direct', 'roles', serializeValue(roleName))(function (set) {
+						fragment.addFragment(getColFragments(set, getOfficialFragment));
+					});
 			});
 		}
 		return fragment;
@@ -388,9 +395,10 @@ module.exports = function (dbDriver, data) {
 			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, stepShortPath));
 			// Official role specific data
 			if (assignableProcessingSteps && assignableProcessingSteps.has(stepShortPath)) {
-				fragment.addFragment(getOfficialFragment('assigned/7' + userId + '/' + stepShortPath));
+				fragment.addFragment(getOfficialFragment(stepShortPath,
+					'assigned/7' + userId + '/' + stepShortPath));
 			} else {
-				fragment.addFragment(getOfficialFragment(stepShortPath));
+				fragment.addFragment(getOfficialFragment(stepShortPath, stepShortPath));
 			}
 			return fragment;
 		}
