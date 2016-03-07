@@ -28,9 +28,9 @@ exports['request-create-manager-account/[0-9][a-z0-9]+'] = {
 		}.bind(this));
 	},
 	validate: function (data) {
-		return userEmailMap(data[this.targetId + '/email']).then(function (value) {
+		return userEmailMap().then(function (resultMap) {
 			var result = resolveRecords(data, this.targetId);
-			if (value) {
+			if (resultMap.has(serializeValue(data[this.targetId + '/email']))) {
 				this.sendOnly = true;
 			}
 			return result.records;
