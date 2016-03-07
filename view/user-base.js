@@ -67,9 +67,7 @@ exports.main = function () {
 				div({ class: 'manager-bar-info' },
 					span(_("Client"), ": "),
 						this.appName === 'user' ? a({ href: '/' }, managedUser._fullName) :
-							exports._getMyAccountButton(this.manager, managedUser._fullName),
-					" ",
-					a({ href: '/managed-user-profile/' }, _("edit user details"))
+							exports._getMyAccountButton(this.manager, managedUser._fullName)
 					),
 				div({ class: 'manager-bar-actions' },
 					_if(not(managedUser.roles._has('user')),
@@ -77,7 +75,11 @@ exports.main = function () {
 							action: url('request-create-managed-account'),
 							confirm: _if(managedUser._isInvitationSent,
 								_("Invitation was already send to user. Are you sure you want to send it again?")),
-							value: span(_('Create account for this client')) })))
+							value: span(_('Create account for this client')) }),
+						a({ href: '/managed-user-profile/' },
+							span({ class: 'hint-optional hint-optional-left',
+								'data-hint': _('edit user details') },
+								i({ class: 'fa fa-cog' })))))
 				));
 	}.bind(this)));
 
