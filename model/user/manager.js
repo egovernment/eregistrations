@@ -69,6 +69,7 @@ module.exports = memoize(function (db/* options */) {
 			type: db.Boolean
 		},
 		isManagerActive: {
+			label: _("Is manager active?"),
 			type: db.Boolean
 		},
 		canManagedUserBeDestroyed: {
