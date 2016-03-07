@@ -3,8 +3,9 @@
 'use strict';
 
 var aFrom           = require('es5-ext/array/from')
+  , ensureIterable  = require('es5-ext/iterable/validate-object')
   , ensureString    = require('es5-ext/object/validate-stringifiable-value')
-  , ensureSet       = require('es6-set/valid-set')
+  , Set             = require('es6-set')
   , deferred        = require('deferred')
   , ensureStorage   = require('dbjs-persistence/ensure-storage')
   , assimilateEvent = require('./lib/assimilate-driver-event');
@@ -13,7 +14,7 @@ module.exports = function (storage, keyPaths) {
 	var keyPathsArray;
 
 	ensureStorage(storage);
-	ensureSet(keyPaths);
+	keyPaths = new Set(aFrom(ensureIterable(keyPaths)));
 
 	keyPathsArray = aFrom(keyPaths);
 
