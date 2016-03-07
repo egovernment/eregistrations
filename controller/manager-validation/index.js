@@ -26,7 +26,7 @@ exports['user/[0-9][a-z0-9]+'] = {
 exports['request-create-manager-account/[0-9][a-z0-9]+'] = {
 	match: matchUser,
 	redirectUrl: function () {
-		return '/user/' + this.target.__id__ + '/';
+		return '/user/' + this.targetId + '/';
 	}
 };
 

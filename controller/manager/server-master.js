@@ -22,6 +22,7 @@ exports['user-add'] = {
 		}.bind(this));
 	},
 	submit: function (data) {
+		data['User#/roles'] = ['user'];
 		return userEmailMap.ensureUniq(data['User#/email']).then(function (value) {
 			var result = resolveRecords(data, 'User#');
 			this.targetId = result.id;
