@@ -19,6 +19,10 @@ exports['user-add'] = {
 	}
 };
 
+exports['user/[0-9][a-z0-9]+'] = {
+	match: matchUser
+};
+
 exports['user/[0-9][a-z0-9]+/set-activation'] = {
 	match: matchUser
 };

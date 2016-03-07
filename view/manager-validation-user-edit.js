@@ -35,7 +35,7 @@ exports['sub-main'] = {
 					fieldset({
 						class: 'form-elements',
 						dbjs: user,
-						names: ['firstName', 'lastName', 'email', 'institution'],
+						names: ['isManagerActive', 'firstName', 'lastName', 'email', 'institution'],
 						controls: controls
 					})
 				),
