@@ -33,11 +33,12 @@ var aFrom            = require('es5-ext/array/from')
   , getDbSet         = require('./utils/get-db-set')
   , mapDbSet         = require('./utils/map-db-set')
   , userListProps    = require('../apps/users-admin/user-list-properties')
-  , managerValidationUserListProps = require('../apps/manager-validation/user-list-properties')
 
   , create = Object.create, keys = Object.keys, stringify = JSON.stringify
   , emptyFragment = new Fragment()
   , isOfficialRoleName = RegExp.prototype.test.bind(/^official[A-Z]/);
+
+var managerValidationUserListProps = require('../apps/manager-validation/user-list-properties');
 
 var joinSets = function (sets) {
 	var set = new ObservableMulti(sets);
