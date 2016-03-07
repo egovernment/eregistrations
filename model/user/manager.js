@@ -67,6 +67,61 @@ module.exports = memoize(function (db/* options */) {
 		// equals true after manager requested account creation
 		isInvitationSent: {
 			type: db.Boolean
+		},
+		isManagerActive: {
+			type: db.Boolean
+		},
+		canManagedUserBeDestroyed: {
+			type: db.Boolean,
+			value: function (_observe) {
+				if (this.roles.size) return false;
+				return this.initialBusinessProcesses.every(function (bp) {
+					return !_observe(bp._isSubmitted);
+				});
+			}
+		},
+		canManagerBeDestroyed: {
+			type: db.Boolean,
+			value: function (_observe) {
+				if (!this.roles.has('manager')) return false;
+				return this.managedUsers.every(function (user) {
+					return _observe(user.roles._size) ||
+						_observe(user.initialBusinessProcesses).every(function (bp) {
+							return !_observe(bp._isSubmitted);
+						});
+				});
+			}
+		},
+		destroyManagedUser: {
+			type: db.Function,
+			value: function (user) {
+				var dbObjects = this.database.objects, err = new Error('Cannot destroy user', user.__id__);
+				if (!this.managedUsers.has(user)) {
+					throw err;
+				}
+				if (!user.canManagedUserBeDestroyed) {
+					throw err;
+				}
+				user.initialBusinessProcesses.forEach(function (bp) {
+					dbObjects.delete(bp);
+				});
+				dbObjects.delete(user);
+			}
+		},
+		destroyManager: {
+			type: db.Function,
+			value: function (manager) {
+				var dbObjects = this.database.objects
+				  , err = new Error('Cannot destroy manager', manager.__id__);
+				if (!this.roles.has('managerValidation') && !(this.roles.has('usersAdmin'))) {
+					throw err;
+				}
+				if (!manager.canManagerBeDestroyed) {
+					throw err;
+				}
+				manager.managedUsers.forEach(manager.destroyManagedUser, manager);
+				dbObjects.delete(manager);
+			}
 		}
 	});
 
