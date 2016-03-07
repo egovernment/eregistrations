@@ -50,12 +50,12 @@ exports['sub-main'] = {
 				h3([_("User"), ": ", user._fullName]),
 				div(
 					{ class: 'entity-header-actions' },
-					_if(not(user._email), a({
+					p(_if(not(user._isActiveAccount), a({
 						class: 'actions-create',
 						href: '#request-create-manager-account',
 						confirm: _if(user._isInvitationSent,
 							_("Invitation was already send to user. Are you sure you want to send it again?"))
-					}, span(_('Create account for this client')))),
+					}, span(_('Create account for this client'))))),
 					postButton(
 						{ action: url('user', user.__id__, 'delete'),
 							buttonClass: 'entity-header-actions-remove-button',
