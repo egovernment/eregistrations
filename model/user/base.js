@@ -17,5 +17,16 @@ module.exports = memoize(function (db/*, options */) {
 	Role.members.add('user');
 	Role.meta.get('user').set('label', _("User"));
 
+	User.prototype.defineProperties({
+		isActiveAccount: {
+			type: db.Boolean,
+			value: function () {
+				if (this.isDemo) return false;
+				if (!this.email) return false;
+				return this.password;
+			}
+		}
+	});
+
 	return User;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
