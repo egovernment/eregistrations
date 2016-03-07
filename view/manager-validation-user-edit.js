@@ -66,7 +66,7 @@ exports['sub-main'] = {
 				)
 			),
 			hr(),
-			activateManagerForm(user),
+			activateManagerForm(user, true),
 			form(
 				{ method: 'post', action: '/user/' + user.__id__ + '/' },
 				ul(
