@@ -3,7 +3,8 @@
 var _  = require('mano').i18n.bind('Users Admin')
   , readOnlyRender = require('./utils/read-only-render')
   , generateFormSections = require('./components/generate-form-sections')
-  , modalContainer       = require('eregistrations/view/_modal-container');
+  , modalContainer       = require('eregistrations/view/_modal-container')
+  , activateManagerForm  = require('./components/activate-manager-form');
 
 exports._parent = require('./user-base');
 exports._match  = 'editedUser';
@@ -65,6 +66,7 @@ exports['sub-main'] = {
 				)
 			),
 			hr(),
+			activateManagerForm(user),
 			form(
 				{ method: 'post', action: '/user/' + user.__id__ + '/' },
 				ul(
@@ -72,7 +74,7 @@ exports['sub-main'] = {
 					fieldset({
 						class: 'form-elements',
 						dbjs: user,
-						names: ['isManagerActive', 'firstName', 'lastName', 'email', 'institution'],
+						names: ['firstName', 'lastName', 'email', 'institution'],
 						controls: controls
 					})
 				),
