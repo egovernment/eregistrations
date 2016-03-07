@@ -26,6 +26,7 @@ var aFrom            = require('es5-ext/array/from')
   , unserializeView  = require('../utils/db-view/unserialize-ids')
   , getReducedFrag   = require('./data-fragments/get-reduced-object-fragments')
   , getRedRecFrag    = require('./data-fragments/get-reduced-records-fragment')
+  , getAddRecFrag    = require('./data-fragments/get-add-records-to-fragment')
   , getObjFragment   = require('./data-fragments/get-direct-object-fragments')
   , getColFragments  = require('./data-fragments/get-collection-fragments')
   , getPartFragments = require('./data-fragments/get-part-object-fragments')
@@ -114,9 +115,10 @@ module.exports = function (dbDriver, data) {
 
 	// Configure fragment resolvers
 	// Non role specific
+	var addIsAccountToFragment = getAddRecFrag(userStorage, ['isActiveAccount']);
 	var getUserFragment = function (id) {
-		return getUserData(id,
-			{ filter: function (data) { return !endsWith.call(data.id, '/password'); } });
+		return addIsAccountToFragment(id, getUserData(id,
+			{ filter: function (data) { return !endsWith.call(data.id, '/password'); } }));
 	};
 	var resolveViewData = function (data) {
 		return unserializeView(unserializeValue(data.value)).map(function (id) {
