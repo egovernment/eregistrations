@@ -1,10 +1,11 @@
 'use strict';
 
-var hyphenToCamel      = require('es5-ext/string/#/hyphen-to-camel')
-  , endsWith           = require('es5-ext/string/#/ends-with')
+var forEach            = require('es5-ext/object/for-each')
   , ensureCallable     = require('es5-ext/object/valid-callable')
   , ensureObject       = require('es5-ext/object/valid-object')
   , ensureString       = require('es5-ext/object/validate-stringifiable-value')
+  , hyphenToCamel      = require('es5-ext/string/#/hyphen-to-camel')
+  , endsWith           = require('es5-ext/string/#/ends-with')
   , debug              = require('debug-ext')('zip-archiver')
   , ensureDatabase     = require('dbjs/valid-dbjs')
   , createWriteStream  = require('fs').createWriteStream
@@ -13,7 +14,7 @@ var hyphenToCamel      = require('es5-ext/string/#/hyphen-to-camel')
   , archiver           = require('archiver')
   , resolveArchivePath = require('../utils/resolve-document-archive-path')
 
-  , resolve = path.resolve, basename = path.basename;
+  , resolve = path.resolve;
 
 var re = new RegExp('^\\/business-process-document-archive-([0-9][0-9a-z]+)-' +
 	'(requirement|receipt|certificate)-([a-z][a-z0-9-]*)\\.zip$');
@@ -56,74 +57,59 @@ exports.filenameResetService = function (db, data) {
 	});
 };
 
-exports.archiveServer = function (db, data) {
+exports.archiveServer = function (queryHandler, data) {
 	var uploadsPath, isDev, stMiddleware;
-	ensureDatabase(db);
+	ensureCallable(queryHandler);
 	ensureObject(data);
 	uploadsPath = ensureString(data.uploadsPath);
 	isDev = ensureObject(data.env).dev;
 	stMiddleware = ensureCallable(data.stMiddleware);
 	return function (req, res, next) {
-		var url = req._parsedUrl.pathname, match = url.match(re), bp, archive, archiveFile
-		  , onError, key, target, fileIdx = 0;
+		var url = req._parsedUrl.pathname, match = url.match(re), archive, archiveFile, onError
+		  , businessProcessId, documentType, key;
 		if (!match) {
 			next();
 			return;
 		}
-		bp = db.BusinessProcessBase.getById(match[1]);
-		if (!bp || !bp.isSubmitted) {
-			res.statusCode = 404;
-			res.end('Not Found');
-			return;
-		}
-		key = hyphenToCamel.call(match[3]);
-		if (match[2] === 'requirement') {
-			bp.requirementUploads.applicable.some(function (upload) {
-				if (upload.document.uniqueKey === key) {
-					target = upload.document;
-					return true;
-				}
+		businessProcessId = match[1];
+		documentType = match[2];
+		key = match[3];
+		queryHandler([businessProcessId], 'documentFilePaths', {
+			businessProcessId: businessProcessId,
+			documentType: match[2],
+			key: hyphenToCamel.call(match[3])
+		}).done(function (filesMap) {
+			if (!filesMap) {
+				res.statusCode = 404;
+				res.end('Not Found');
+				return;
+			}
+			debug("generate archive for %s %s %s", businessProcessId, documentType, key);
+			archive = archiver('zip', { level: 0 });
+			archiveFile = createWriteStream(resolve(uploadsPath, url.slice(1)));
+			archiveFile.on('error', onError = function (error) {
+				if (!error) return;
+				if (isDev) throw error;
+				debug("cannot produce archive for %s %s %s %s", businessProcessId, documentType, key,
+					error.stack);
+				res.statusCode = 500;
+				res.end('Server error');
 			});
-		} else if (match[2] === 'receipt') {
-			target = bp.paymentReceiptUploads.map.get(key);
-			if (target && !bp.paymentReceiptUploads.applicable.has(target)) target = null;
-			if (target) target = target.document;
-		} else {
-			target = bp.certificates.map.get(key);
-			if (target && !bp.certificates.applicable.has(target)) target = null;
-		}
-		if (!target || (target.files.ordered <= 1)) {
-			res.statusCode = 404;
-			res.end('Not Found');
-			return;
-		}
-		debug("generate archive for %s", target.__id__);
-		archive = archiver('zip', { level: 0 });
-		archiveFile = createWriteStream(resolve(uploadsPath, url.slice(1)));
-		archiveFile.on('error', onError = function (error) {
-			if (!error) return;
-			if (isDev) throw error;
-			debug("cannot produce archive for %s %s", target.__id__, error.stack);
+			archive.pipe(archiveFile);
+			forEach(filesMap, function (path, name) {
+				archive.file(resolve(uploadsPath, path), { name: name });
+			});
+			archive.finalize(onError);
+			archive.on('error', onError);
+			archiveFile.on('error', onError);
+			archiveFile.on('close', function () {
+				debug("finalised generation of archive for %s %s %s", businessProcessId, documentType, key);
+				stMiddleware(req, res, next);
+			});
+		}, function (err) {
+			console.error(err.stack);
 			res.statusCode = 500;
 			res.end('Server error');
-		});
-		archive.pipe(archiveFile);
-		target.files.ordered.forEach(function (file) {
-			// Change filename from form 'file-skey-buniness-name-document-label.xxx' to
-			// 'buniness-name-document-label-index.xxx' for ux reasons.
-			var name = basename(file.path).replace(/^[\d\w]+-/, '').split('.');
-			name[0] += '-' + String(++fileIdx);
-
-			archive.file(resolve(uploadsPath, file.path), {
-				name: name.join('.')
-			});
-		});
-		archive.finalize(onError);
-		archive.on('error', onError);
-		archiveFile.on('error', onError);
-		archiveFile.on('close', function () {
-			debug("finalised generation of archive for %s", target.__id__);
-			stMiddleware(req, res, next);
 		});
 	};
 };
