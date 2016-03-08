@@ -1,4 +1,5 @@
-// Replaces all require('mano').db with require to base db setup e.g. require('../../db');
+// Replaces typical role names written with hyphen notation to camelCase, e.g.:
+// 'users-admin' -> 'userAdmin'
 
 'use strict';
 
