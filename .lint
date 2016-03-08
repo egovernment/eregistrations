@@ -37,7 +37,7 @@ predef+ console, setTimeout
 ./prototype/scripts
 ./utils
 ./scripts
-predef+ process, __dirname, setInterval
+predef+ process, __dirname, setInterval, Buffer
 
 ./controller/client
 ./controller/manager/client.js
