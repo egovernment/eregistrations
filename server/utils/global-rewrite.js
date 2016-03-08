@@ -4,7 +4,7 @@
 
 'use strict';
 
-var ensureCallable = require('es5-ext/object/valid-function')
+var ensureCallable = require('es5-ext/object/valid-callable')
   , ensureString   = require('es5-ext/object/validate-stringifiable-value')
   , escape         = require('es5-ext/reg-exp/escape')
   , debug          = require('debug-ext')('fix-db-require')
