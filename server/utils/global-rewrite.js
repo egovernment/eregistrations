@@ -35,7 +35,9 @@ module.exports = function (path, replace) {
 				return isModule(filePath)(function (is) {
 					if (!is) return;
 					return readFile(filePath, 'utf8')(function (content) {
-						var updated = ensureString(replace(content, file));
+						var updated = replace(content, file);
+						if (updated == null) return;
+						updated = ensureString(updated);
 						if (content !== updated) {
 							debug('rewrite %s', file);
 							return writeFile(filePath, updated);
