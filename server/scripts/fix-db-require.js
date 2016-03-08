@@ -9,7 +9,7 @@ var repeat        = require('es5-ext/string/#/repeat')
 module.exports = function (path) {
 	return globalRewrite(path, function (content, path) {
 		var nest = repeat.call('../', path.split('/').length - 1);
-		replaceAll.call(content, 'require(\'mano\').db',
+		return replaceAll.call(content, 'require(\'mano\').db',
 			'require(\'./' + nest + 'db\')');
 	});
 };
