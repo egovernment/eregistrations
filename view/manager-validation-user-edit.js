@@ -23,7 +23,7 @@ exports['sub-main'] = {
 				h3([_("Manager"), ": ", user._fullName]),
 				ul(
 					{ class: 'entity-header-actions' },
-					li(_if(not(user._isActiveAccount), a({
+					_if(not(user._isActiveAccount), li(a({
 						class: 'actions-create',
 						href: '#request-create-manager-account'
 					}, span(_('Create account for this client'))))),
