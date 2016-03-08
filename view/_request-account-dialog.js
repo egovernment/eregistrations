@@ -16,7 +16,7 @@ module.exports = function (user) {
 				action: url('request-create-manager-account', user.__id__)
 			},
 			h4(_if(user._isInvitationSent,
-				_("Mind that to this user invitation was already sent." +
+				_("Mind that to this user invitation was already sent. " +
 					"Submission of this form will result in sending another email message " +
 					"with different access token (one previously sent will be invalidated"))),
 			ul(
