@@ -61,7 +61,7 @@ module.exports = function (businessProcessStorage, counterStorage, officials, st
 				businessProcesses.off('change', listener);
 			};
 			if (officials.size) return activate();
-			officials._size(function (event) {
+			officials._size.on('change', function (event) {
 				if (event.newValue) {
 					if (!event.oldValue) activate().done();
 				} else if (event.oldValue) {
