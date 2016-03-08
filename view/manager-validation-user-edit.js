@@ -18,9 +18,7 @@ exports['sub-main'] = {
 		modalContainer.append(dialog(
 			{ id: 'request-create-manager-account', class: 'dialog-modal' },
 			header(
-				h3(_('Create account for this client')),
-				_if(user._isInvitationSent,
-					_("Invitation was already send to user. Are you sure you want to send it again?"))
+				h3(_('Create account for this client'))
 			),
 			form(
 				{
@@ -29,6 +27,8 @@ exports['sub-main'] = {
 					method: 'post',
 					action: url('request-create-manager-account', user.__id__)
 				},
+				h4(_if(user._isInvitationSent,
+					_("Invitation was already send to user. Are you sure you want to send it again?"))),
 				ul(
 					{ class: 'form-elements' },
 					fieldset({
