@@ -127,14 +127,15 @@ input[type="search"] {
 input[type="submit"],
 button[type="submit"] {
 	line-height: 22px;
-	border-radius: 4px;
+	border-radius: 2px;
 	color: var(--white-text);
 	background-color: var(--normal-background);
 	border: none;
-	box-shadow: none;
+	box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
 	font-size: 14px;
 	padding: 4px 10px;
 	cursor: pointer;
+	transition: all .3s ease-out;
 }
 @-moz-document url-prefix() {
 	input[type="submit"],
@@ -152,10 +153,17 @@ button[type="submit"]:active {
 	color: var(--white-text);
 	background-color: var(--normal-dark-background);
 	outline: none;
+	box-shadow: 0 5px 11px 0 rgba(0,0,0,0.18),0 4px 15px 0 rgba(0,0,0,0.15);
 }
 
 .completed input[type="submit"] {
-	background-color: var(--success-text);
+	background-color: var(--success-background);
+}
+
+.completed input[type="submit"]:hover,
+.completed input[type="submit"]:focus
+.completed input[type="submit"]:active {
+	background-color: var(--success-light-background);
 }
 
 textarea {

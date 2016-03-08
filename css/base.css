@@ -20,6 +20,7 @@ Component describing basic elements styles - reusable
 	--dark-background: #333;
 	--light-error-background: #D69592;
 	--success-background: #5CB85C;
+	--success-light-background: #71C171;
 	--success-dark-background: #3A733A;
 	--error-background: #D9534F;
 	--error-dark-background: #9B3E3B;

@@ -39,6 +39,7 @@ table .actions button {
 	vertical-align: text-bottom;
 	white-space: nowrap;
 	cursor: pointer;
+	box-shadow: none;
 }
 table .actions a:hover,
 table .actions a:focus,
@@ -48,6 +49,7 @@ table .actions button:focus,
 table .actions button:active {
 	color: var(--dark-text);
 	background-color: transparent;
+	box-shadow: none;
 }
 
 table .actions a > span,
