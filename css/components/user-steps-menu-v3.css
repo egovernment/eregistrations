@@ -1,20 +1,20 @@
 .user-steps-menu-list li {
 	background: white;
 	box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
-	border-radius: 2px 0 0 2px;
+	border-radius: 2px;
 	transition: box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);
 }
 
 .user-steps-menu-list li:after {
 	content: " ";
-	width:0;
+	/*width:0;
 	right:0;
 	border-top: 22px solid transparent;
 	border-bottom: 22px solid transparent;
 	border-left: 22px solid white;
 	transition: box-shadow .2s cubic-bezier(.4,0,1,1),background-color .2s cubic-bezier(.4,0,.2,1),color .2s cubic-bezier(.4,0,.2,1);
 	box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
-	background-color: red;
+	background-color: red;*/
 }
 
 .user-steps-menu-list li:hover {

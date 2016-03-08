@@ -40,14 +40,18 @@
 	width: 0;
 	background: linear-gradient(to top, var(--normal-background), var(--white-background));
 	position: absolute;
-	border-radius: 5px 0 0 5px;
+	border-radius: 2px 0 0 2px;
 	border-right: none;
+	opacity: .6;
+}
+
+.user-steps-menu-list li > .step-active + .user-steps-menu-item-progress {
 	opacity: .9;
 }
 
 .user-steps-menu-list .user-steps-menu-start-step {
 	background: var(--normal-background);
-	border-radius: 5px;
+	border-radius: 2px;
 	border-color: #e3e3e3;
 	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 	flex-grow: 1;
