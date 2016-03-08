@@ -6,6 +6,6 @@ module.exports = function (user, wrapped) {
 			class: 'submitted-menu-role-select',
 			id: 'activation-deactivation', autoSubmit: true },
 		wrapped ?
-				p({ class: 'form-elements' }, field({ dbjs: user._isManagerActive }))
+				div({ class: 'form-elements' }, field({ dbjs: user._isManagerActive }))
 				: p(input({ dbjs: user._isManagerActive }))));
 };

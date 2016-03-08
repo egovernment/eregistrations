@@ -37,19 +37,18 @@ exports['request-create-manager-account/[0-9][a-z0-9]+'] = {
 		}.bind(this));
 	},
 	submit: function (recordsRaw) {
-		var data;
+		var data, saveData;
 		data       = unserializeObjectRecord(recordsRaw);
 		data.token = genId();
+		saveData = [{ id: this.targetId + '/createManagedAccountToken',
+			data: { value: serializeValue(data.token) } }];
 
-		if (this.sendOnly) {
-			return sendCreateRequest(data);
+		if (!this.sendOnly) {
+			saveData.push({ id: this.targetId + '/email', data: { value: serializeValue(data.email) } });
+			saveData.push({ id: this.targetId + '/isInvitationSent',
+				data: { value: serializeValue(true) } });
 		}
-		return userStorage.storeMany([
-			{ id: this.targetId + '/createManagedAccountToken',
-				data: { value: serializeValue(data.token) } },
-			{ id: this.targetId + '/email', data: { value: serializeValue(data.email) } },
-			{ id: this.targetId + '/isInvitationSent', data: { value: serializeValue(true) } }
-		]).then(function () {
+		return userStorage.storeMany(saveData).then(function () {
 			return sendCreateRequest(data);
 		});
 

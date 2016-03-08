@@ -1,10 +1,10 @@
 'use strict';
 
-var _  = require('mano').i18n.bind('Users Admin')
+var _  = require('mano').i18n.bind('Manager Validation')
   , readOnlyRender = require('./utils/read-only-render')
   , generateFormSections = require('./components/generate-form-sections')
-  , modalContainer       = require('eregistrations/view/_modal-container')
-  , activateManagerForm  = require('./components/activate-manager-form');
+  , activateManagerForm  = require('./components/activate-manager-form')
+  , requestCreateAccDialog = require('./_request-create-account-dialog');
 
 exports._parent = require('./user-base');
 exports._match  = 'editedUser';
@@ -15,37 +15,7 @@ exports['sub-main'] = {
 		var user = this.editedUser;
 		var controls = { email: { render: readOnlyRender } };
 
-		modalContainer.append(dialog(
-			{ id: 'request-create-manager-account', class: 'dialog-modal' },
-			header(
-				h3(_('Create account for this client'))
-			),
-			form(
-				{
-					id: 'request-create-manager-account-form',
-					class: 'dialog-body',
-					method: 'post',
-					action: url('request-create-manager-account', user.__id__)
-				},
-				h4(_if(user._isInvitationSent,
-					_("Invitation was already send to user. Are you sure you want to send it again?"))),
-				ul(
-					{ class: 'form-elements' },
-					fieldset({
-						class: 'form-elements',
-						dbjs: user,
-						names: ['email']
-					})
-				),
-				footer(
-					p(
-						{ class: 'submit-placeholder' },
-						input({ class: 'button-regular', type: 'submit', value: _("Send") })
-					)
-				)
-			)
-		));
-
+		requestCreateAccDialog(user);
 		section(
 			{ class: 'section-primary' },
 			div(
