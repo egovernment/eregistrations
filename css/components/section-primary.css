@@ -159,20 +159,28 @@
 }
 
 .section-primary-scroll-top a {
-	background: var(--normal-background);
-	border-radius: 3px;
+	background: var(--normal-light-background);
+	border-radius: 13px;
 	color: var(--white-text);
 	display: inline-block;
 	padding: 0 5px;
 	text-decoration: none;
+	transition: all .1s ease-out;
 }
 .section-primary-scroll-top a:hover,
 .section-primary-scroll-top a:focus,
 .section-primary-scroll-top a:active {
-	background: var(--normal-dark-background);
+	background: var(--normal-background);
 }
 .section-primary-scroll-top a span {
 	vertical-align: middle;
+	transition: all .1s ease-out;
+}
+
+.section-primary-scroll-top a:hover span,
+.section-primary-scroll-top a:focus span,
+.section-primary-scroll-top a:active span {
+	margin-top: -3px;
 }
 
 .section-primary .info-main {
