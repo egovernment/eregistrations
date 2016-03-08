@@ -92,12 +92,14 @@ h3.user-account-section-title {
 	text-decoration: none;
 	background:none;
 	padding: 8px 20px;
+	box-shadow: none;
 }
 
 .user-account-service-box > button:hover,
 .user-account-service-box > a:hover {
 	color: var(--light-normal-text);
 	background:none;
+	box-shadow: none;
 }
 
 .user-account-service-box > div {
@@ -111,20 +113,24 @@ h3.user-account-section-title {
 	background: none;
 	padding: 0;
 	color:var(--dark-text);
+	box-shadow: none;
 }
 
 .user-account-service-box > div button:hover {
 	color: var(--light-normal-text);
 	background: none;
+	box-shadow: none;
 }
 
 .user-account-service-box > div a {
 	text-decoration: none;
 	color:var(--dark-text);
+	box-shadow: none;
 }
 
 .user-account-service-box > div a:hover {
 	color: var(--light-normal-text);
+	box-shadow: none;
 }
 
 .user-account-service-box > div button .fa,
