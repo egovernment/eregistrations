@@ -1,3 +1,5 @@
+// Replaces all require('mano').db with require to base db setup e.g. require('../../db');
+
 'use strict';
 
 var repeat        = require('es5-ext/string/#/repeat')
