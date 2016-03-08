@@ -4,7 +4,7 @@ var _  = require('mano').i18n.bind('Manager Validation')
   , readOnlyRender = require('./utils/read-only-render')
   , generateFormSections = require('./components/generate-form-sections')
   , activateManagerForm  = require('./components/activate-manager-form')
-  , requestCreateAccDialog = require('./_request-create-account-dialog');
+  , requestAccountDialog = require('./_request-account-dialog');
 
 exports._parent = require('./user-base');
 exports._match  = 'editedUser';
@@ -15,7 +15,7 @@ exports['sub-main'] = {
 		var user = this.editedUser;
 		var controls = { email: { render: readOnlyRender } };
 
-		requestCreateAccDialog(user);
+		requestAccountDialog(user);
 		section(
 			{ class: 'section-primary' },
 			div(
