@@ -20,19 +20,19 @@ exports['sub-main'] = {
 			{ class: 'section-primary' },
 			div(
 				{ class: 'entity-header' },
-				h3([_("User"), ": ", user._fullName]),
-				div(
+				h3([_("Manager"), ": ", user._fullName]),
+				ul(
 					{ class: 'entity-header-actions' },
-					p(_if(not(user._isActiveAccount), a({
+					_if(not(user._isActiveAccount), li(a({
 						class: 'actions-create',
 						href: '#request-create-manager-account'
 					}, span(_('Create account for this client'))))),
-					postButton(
+					li(postButton(
 						{ action: url('user', user.__id__, 'delete'),
 							buttonClass: 'entity-header-actions-remove-button',
 							value: [i({ class: 'icon-trash' }), " ", _("Delete user")],
 							confirm: _("Are you sure?") }
-					)
+					))
 				)
 			),
 			hr(),
