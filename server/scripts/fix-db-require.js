@@ -10,6 +10,6 @@ module.exports = function (path) {
 	return globalRewrite(path, function (content, path) {
 		var nest = repeat.call('../', path.split('/').length - 1);
 		return replaceAll.call(content, 'require(\'mano\').db',
-			'require(\'./' + nest + 'db\')');
+			'require(\'' + (nest || './') + 'db\')');
 	});
 };
