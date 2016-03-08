@@ -2,34 +2,46 @@
 
 'use strict';
 
-var _ = require('mano').i18n.bind('User');
+var _  = require('mano').i18n.bind('User')
+  , _d = _;
 
 exports._parent = require('./user-base');
 
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-
 		div({ class: 'user-account-boxes' },
 			section({ id: 'welcome-box', class: 'user-account-welcome' },
-				header(
-					h3(_("Welcome to your account. From here you can:"))
-				),
-				div({ class: 'free-form' },
-					md(_("1. Access all your requests in draft, in process, finished\n" +
-						"2. Access and edit your documents and data\n" +
-						"3. Start a new service related to your company")))
-				));
+				_if(this.manager, function () {
+					var managedUser = this.manager.currentlyManagedUser;
+
+					header(
+						h3(_d("View for client: ${ user }", { user: managedUser }))
+					);
+					div({ class: 'free-form' },
+						md(_("1. From here you can access all the requests of this client in draft, " +
+								"in process, finished\n" +
+							"2. Start a new service for this client\n" +
+							"3. Create an account for this client if not done already")));
+				}.bind(this), function () {
+					header(
+						h3(_("Welcome to your account. From here you can:"))
+					);
+					div({ class: 'free-form' },
+						md(_("1. Access all your requests in draft, in process, finished\n" +
+							"2. Access and edit your documents and data\n" +
+							"3. Start a new service related to your company")));
+				})));
 
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab user-account-tab',
 					id: 'user-account-requests',
 					href: '/' },
-				_("My requests")),
+				_if(this.manager, _("Requests"), _("My requests"))),
 			a({ class: 'section-tab-nav-tab user-account-tab',
 					id: 'user-account-data',
 					href: '/requests/' },
-				_("My documents and data")),
+				_if(this.manager, _("Documents and data"), _("My documents and data"))),
 			div({ id: 'user-account-content', class: 'section-primary' }));
 
 		h3({ class: 'user-account-section-title' }, _("Available services"));
