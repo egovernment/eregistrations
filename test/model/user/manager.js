@@ -52,7 +52,8 @@ module.exports = function (t, a) {
 
 	user = new User();
 	user.manager = manager;
-	user.isActiveAccount = true;
+	user.password = 'abc123';
+	user.email    = 'asd@asd.com';
 	a.throws(function () {
 		return manager.destroyManagedUser(user);
 	}, destroyManagedErr, 'throws when not a manager');

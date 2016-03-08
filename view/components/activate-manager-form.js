@@ -5,8 +5,7 @@ module.exports = function (user, wrapped) {
 			action: url('user', user.__id__, 'set-activation'),
 			class: 'submitted-menu-role-select',
 			id: 'activation-deactivation', autoSubmit: true },
-		wrapped ? ul(
-			{ class: 'form-elements' },
-			p(field({ dbjs: user._isManagerActive }))
-		) : p(input({ dbjs: user._isManagerActive }))));
+		wrapped ?
+				p({ class: 'form-elements' }, field({ dbjs: user._isManagerActive }))
+				: p(input({ dbjs: user._isManagerActive }))));
 };

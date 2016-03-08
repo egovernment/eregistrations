@@ -18,7 +18,9 @@ exports['sub-main'] = {
 		modalContainer.append(dialog(
 			{ id: 'request-create-manager-account', class: 'dialog-modal' },
 			header(
-				h3(_('Create account for this client'))
+				h3(_('Create account for this client')),
+				_if(user._isInvitationSent,
+					_("Invitation was already send to user. Are you sure you want to send it again?"))
 			),
 			form(
 				{
@@ -53,9 +55,7 @@ exports['sub-main'] = {
 					{ class: 'entity-header-actions' },
 					p(_if(not(user._isActiveAccount), a({
 						class: 'actions-create',
-						href: '#request-create-manager-account',
-						confirm: _if(user._isInvitationSent,
-							_("Invitation was already send to user. Are you sure you want to send it again?"))
+						href: '#request-create-manager-account'
 					}, span(_('Create account for this client'))))),
 					postButton(
 						{ action: url('user', user.__id__, 'delete'),
