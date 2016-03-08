@@ -1,4 +1,4 @@
-// Replaces all require('mano').db with require to base db setup e.g. require('../../db');
+// Replaces all require('mano').i18n with require to base i18n setup e.g. require('../../i18n')
 
 'use strict';
 
