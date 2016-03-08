@@ -8,6 +8,7 @@ var copy              = require('es5-ext/object/copy')
   , getOrderIndex     = require('../users/get-default-order-index')
   , compareUsers      = require('../utils/get-compare')(getOrderIndex)
   , getUsersTable     = require('../view/components/users-table/')
+  , activateManagerForm = require('./components/activate-manager-form')
 
   , db = mano.db, env = mano.env, roleMeta = db.Role.meta;
 
@@ -34,14 +35,7 @@ var baseColumns = [{
 	data: function (user) { return new db.DateTime(user.lastModified / 1000); }
 }, {
 	head: _("Activate/Disable"),
-	data: function (user) {
-		return form({ method: 'post',
-				action: url('user', user.__id__, 'set-activation'),
-				class: 'submitted-menu-role-select',
-				id: 'activation-deactivation', autoSubmit: true },
-			p(input({ dbjs: user._isManagerActive })),
-			p({ class: 'submit' }, input({ type: 'submit' })));
-	}
+	data: activateManagerForm
 }, {
 	head: th({ class: 'actions' }),
 	data: function (user) {
@@ -81,7 +75,7 @@ exports['sub-main'] = {
 			usersTable.table.classList.add('submitted-user-data-table');
 		}
 
-		p(a({ href: '/new-user/', class: 'button-main' }, _("New user")));
+		p(a({ href: '/new-user/', class: 'button-main' }, _("Add manager")));
 		insert(usersTable.pagination);
 		section({ class: 'table-responsive-container' }, usersTable);
 		insert(usersTable.pagination);

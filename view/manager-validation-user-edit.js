@@ -1,8 +1,10 @@
 'use strict';
 
-var _  = require('mano').i18n.bind('Users Admin')
+var _  = require('mano').i18n.bind('Manager Validation')
   , readOnlyRender = require('./utils/read-only-render')
-  , generateFormSections = require('./components/generate-form-sections');
+  , generateFormSections = require('./components/generate-form-sections')
+  , activateManagerForm  = require('./components/activate-manager-form')
+  , requestAccountDialog = require('./_request-account-dialog');
 
 exports._parent = require('./user-base');
 exports._match  = 'editedUser';
@@ -12,6 +14,8 @@ exports['sub-main'] = {
 	content: function () {
 		var user = this.editedUser;
 		var controls = { email: { render: readOnlyRender } };
+
+		requestAccountDialog(user);
 		section(
 			{ class: 'section-primary' },
 			div(
@@ -19,6 +23,10 @@ exports['sub-main'] = {
 				h3([_("User"), ": ", user._fullName]),
 				div(
 					{ class: 'entity-header-actions' },
+					p(_if(not(user._isActiveAccount), a({
+						class: 'actions-create',
+						href: '#request-create-manager-account'
+					}, span(_('Create account for this client'))))),
 					postButton(
 						{ action: url('user', user.__id__, 'delete'),
 							buttonClass: 'entity-header-actions-remove-button',
@@ -28,6 +36,7 @@ exports['sub-main'] = {
 				)
 			),
 			hr(),
+			activateManagerForm(user, true),
 			form(
 				{ method: 'post', action: '/user/' + user.__id__ + '/' },
 				ul(
@@ -35,7 +44,7 @@ exports['sub-main'] = {
 					fieldset({
 						class: 'form-elements',
 						dbjs: user,
-						names: ['isManagerActive', 'firstName', 'lastName', 'email', 'institution'],
+						names: ['firstName', 'lastName', 'email', 'institution'],
 						controls: controls
 					})
 				),

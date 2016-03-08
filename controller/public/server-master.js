@@ -50,7 +50,6 @@ exports['create-managed-account'] = {
 			return hash(data.password, genSalt())(function (password) {
 				return userStorage.storeMany([
 					{ id: userId + '/createManagedAccountToken', data: { value: '' } },
-					{ id: userId + '/roles*user', data: { value: serializeValue(true) } },
 					{ id: userId + '/password', data: { value: serializeValue(password) } }
 				]).then(function () {
 					userStorage.getObject(userId,

@@ -44,7 +44,7 @@ module.exports = function (t, a) {
 	// not a managed user
 	a.throws(function () {
 		return manager.destroyManagedUser(user);
-	}, destroyManagedErr, 'throws when no not a manager');
+	}, destroyManagedErr, 'throws when not a manged user');
 	a(db.User.instances.has(user), true);
 	user.manager = manager;
 	manager.destroyManagedUser(user);
@@ -52,10 +52,11 @@ module.exports = function (t, a) {
 
 	user = new User();
 	user.manager = manager;
-	user.roles.add('user');
+	user.password = 'abc123';
+	user.email    = 'asd@asd.com';
 	a.throws(function () {
 		return manager.destroyManagedUser(user);
-	}, destroyManagedErr, 'throws when no not a manager');
+	}, destroyManagedErr, 'throws when not a manager');
 	user = new User();
 	user.manager = manager;
 	a(db.User.instances.has(user), true);

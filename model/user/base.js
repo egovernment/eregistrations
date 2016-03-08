@@ -17,5 +17,18 @@ module.exports = memoize(function (db/*, options */) {
 	Role.members.add('user');
 	Role.meta.get('user').set('label', _("User"));
 
+	User.prototype.defineProperties({
+		// This is resolved on server and propagated (in resolved form to client)
+		// The client will never have a password so it needs to rely on server
+		isActiveAccount: {
+			type: db.Boolean,
+			value: function () {
+				if (this.isDemo) return false;
+				if (!this.email) return false;
+				return this.password;
+			}
+		}
+	});
+
 	return User;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
