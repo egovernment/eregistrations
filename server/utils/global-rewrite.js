@@ -7,7 +7,7 @@
 var ensureCallable = require('es5-ext/object/valid-callable')
   , ensureString   = require('es5-ext/object/validate-stringifiable-value')
   , escape         = require('es5-ext/reg-exp/escape')
-  , debug          = require('debug-ext')('fix-db-require')
+  , debug          = require('debug-ext')('global-rewrite')
   , path           = require('path')
   , readdir        = require('fs2/readdir')
   , readFile       = require('fs2/read-file')
@@ -39,7 +39,7 @@ module.exports = function (path, replace) {
 						if (updated == null) return;
 						updated = ensureString(updated);
 						if (content !== updated) {
-							debug('rewrite %s', file);
+							debug(file);
 							return writeFile(filePath, updated);
 						}
 					});
