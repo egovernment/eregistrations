@@ -20,6 +20,7 @@ var aFrom            = require('es5-ext/array/from')
   , getDriver        = require('./local/master')
   , getDriverGlobal  = require('./global/master')
 
+  , stringify = JSON.stringify
   , byStamp = function (a, b) { return this[a].stamp - this[b].stamp; };
 
 module.exports = function (root, data) {
@@ -53,7 +54,7 @@ module.exports = function (root, data) {
 	emitter.once('message', function (message) {
 		var emitAccess, accessFragment, emitDeleted, deletedPending, registerDeferreds = [], lastPromise
 		  , addPassword = getAddRecords(userStorage, new Set(['password']))
-		  , done = Object.create(null), pendingIds, getStorage;
+		  , done = Object.create(null), pendingIds;
 
 		if (message.type !== 'init') {
 			console.log(message);
@@ -61,15 +62,13 @@ module.exports = function (root, data) {
 		}
 
 		// Pair master and db-memory process
-		if (driverGlobal) {
-			getStorage = function (storageName) {
-				if (storageNamesGlobal.has(storageName)) return driverGlobal.getStorage(storageName);
-				return driver.getStorage(storageName);
-			};
-		} else {
-			getStorage = driver.getStorage.bind(driver);
-		}
-		registerReceiver(getStorage, emitter);
+		registerReceiver(function (driverName, storageName) {
+			if (driverName === 'local') return driver.getStorage(storageName);
+			if (!driverGlobal || (driverName !== 'global')) {
+				throw new Error("Record directed to unknown driver " + stringify(driverName));
+			}
+			return driverGlobal.getStorage(storageName);
+		}, emitter);
 		emitter.send({ type: 'continue' });
 		emitAccess = registerEmitter('dbAccessData', emitter);
 		mano.emitPostRequest = registerEmitter('postRequest', emitter);
