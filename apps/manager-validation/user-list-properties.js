@@ -1,8 +1,11 @@
-// List of static properties used in users table columns
-
 'use strict';
 
-var Set = require('es6-set');
+var staticList   = require('./user-list-properties-static')
+  , computedList = require('./user-list-properties-computed')
+  , Set = require('es6-set')
+  , combinedList = new Set([]);
 
-module.exports = new Set(['firstName', 'lastName', 'email', 'roles',
-	'institution', 'isManagerActive', 'canManagerBeDestroyed', 'managerDataForms/progress']);
+module.exports = combinedList;
+
+staticList.forEach(combinedList.add, combinedList);
+computedList.forEach(combinedList.add, combinedList);

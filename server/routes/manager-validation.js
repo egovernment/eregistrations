@@ -7,6 +7,7 @@ var flatten             = require('es5-ext/array/#/flatten')
   , toNaturalNumber     = require('es5-ext/number/to-pos-integer')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
   , toArray             = require('es5-ext/object/to-array')
+  , aFrom               = require('es5-ext/array/from')
   , ensureObject        = require('es5-ext/object/valid-object')
   , ensureSet           = require('es6-set/valid-set')
   , deferred            = require('deferred')
@@ -35,6 +36,7 @@ var userQueryHandler = new QueryHandler([{
 module.exports = exports = function (data) {
 	data = normalizeOptions(ensureObject(data));
 	var listProps = ensureSet(data.listProperties)
+	  , listComputedProperties = data.listComputedProperties && aFrom(data.listComputedProperties)
 	  , tableQueryHandler = new QueryHandler(exports.tableQueryConf)
 	  , itemsPerPage = toNaturalNumber(data.itemsPerPage) || defaultItemsPerPage;
 
@@ -42,7 +44,7 @@ module.exports = exports = function (data) {
 		var storage = mano.dbDriver.getStorage('user');
 		return getDbSet(storage, 'direct', 'roles', '3manager')(function (set) {
 			return getDbArray(set, storage, 'direct', null)(function (arr) {
-				var pageCount, offset, size = arr.length;
+				var pageCount, offset, size = arr.length, computedEvents, directEvents;
 				if (!size) return { size: size };
 				pageCount = ceil(size / itemsPerPage);
 				if (query.page > pageCount) return { size: size };
@@ -50,19 +52,41 @@ module.exports = exports = function (data) {
 				// Pagination
 				offset = (query.page - 1) * itemsPerPage;
 				arr = slice.call(arr, offset, offset + itemsPerPage);
-				return deferred.map(arr, function (data) {
+
+				if (listComputedProperties) {
+					computedEvents = deferred.map(arr, function (data) {
+						var objId = data.id;
+						return deferred.map(listComputedProperties, function (keyPath) {
+							return storage.getComputed(objId + '/' + keyPath)(function (data) {
+								if (!data) return;
+								if (Array.isArray(data.value)) {
+									return data.value.map(function (data) {
+										var key = data.key ? '*' + data.key : '';
+										return data.stamp + '.' + objId + '/' + keyPath + key + '.' + data.value;
+									});
+								}
+								return data.stamp + '.' + objId + '/' + keyPath + '.' + data.value;
+							});
+						});
+					});
+				} else {
+					computedEvents = [];
+				}
+				directEvents = deferred.map(arr, function (data) {
 					return storage.getObject(data.id, { keyPaths: listProps })(function (datas) {
 						return datas.map(function (data) {
 							return data.data.stamp + '.' + data.id + '.' + data.data.value;
 						});
 					});
-				})(function (directEvents) {
-					return {
-						view: arr.map(function (data) { return data.stamp + '.' + data.id; }).join('\n'),
-						size: size,
-						data: flatten.call(directEvents)
-					};
 				});
+				return deferred(directEvents, computedEvents)
+					.spread(function (directEvents, computedEvents) {
+						return {
+							view: arr.map(function (data) { return data.stamp + '.' + data.id; }).join('\n'),
+							size: size,
+							data: flatten.call([directEvents, computedEvents]).filter(Boolean)
+						};
+					});
 			});
 		});
 	}, {

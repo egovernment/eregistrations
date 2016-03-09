@@ -279,7 +279,7 @@ var initializeHandler = function (conf) {
 					return {
 						view: arr.map(function (data) { return data.stamp + '.' + data.id; }).join('\n'),
 						size: size,
-						data: flatten.call([directEvents, computedEvents]),
+						data: flatten.call([directEvents, computedEvents]).filter(Boolean),
 						statusMap: statusMap
 					};
 				});
