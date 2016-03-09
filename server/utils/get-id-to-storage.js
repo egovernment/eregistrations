@@ -26,16 +26,17 @@ module.exports = memoize(function (storages) {
 		if (unresolved.has(id)) return unresolved.get(id).promise;
 		def = deferred();
 		unresolved.set(id, def);
-		deferred.find(storages, function (storage) { return storage.get(id); })
-			.done(function (storage) {
-				if (!storage) {
-					def.resolve(null);
-					return;
-				}
-				map.set(id, deferred(storage));
-				unresolved.delete(def);
-				def.resolve(storage);
-			}, def.reject);
+		deferred.find(storages, function (storage) {
+			return storage.get(id);
+		}).done(function (storage) {
+			if (!storage) {
+				def.resolve(null);
+				return;
+			}
+			map.set(id, deferred(storage));
+			unresolved.delete(def);
+			def.resolve(storage);
+		}, def.reject);
 		return def.promise;
 	};
 	return function (id) {
