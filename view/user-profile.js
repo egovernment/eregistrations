@@ -29,6 +29,8 @@ exports['sub-main'] = {
 								required: false })),
 							li(field({ dbjs: db.Password,
 								label: _("New password"),
+								min: 0,
+								pattern: false,
 								name: 'password-new', id: 'user-password-new',
 								hint: _("Enter a new password (minimum 6 characters)."),
 								required: false })),
