@@ -11,3 +11,7 @@ exports['user-add'] = { remoteSubmit: true };
 
 // Delete User
 exports['user/[0-9][a-z0-9]+/delete'] = { remoteSubmit: true };
+
+exports['request-create-manager-account/[0-9][a-z0-9]+'] = {
+	remoteSubmit: true
+};

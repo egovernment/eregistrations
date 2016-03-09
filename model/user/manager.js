@@ -69,12 +69,13 @@ module.exports = memoize(function (db/* options */) {
 			type: db.Boolean
 		},
 		isManagerActive: {
+			label: _("Is manager active?"),
 			type: db.Boolean
 		},
 		canManagedUserBeDestroyed: {
 			type: db.Boolean,
 			value: function (_observe) {
-				if (this.roles.size) return false;
+				if (this.isActiveAccount) return false;
 				return this.initialBusinessProcesses.every(function (bp) {
 					return !_observe(bp._isSubmitted);
 				});
@@ -85,7 +86,7 @@ module.exports = memoize(function (db/* options */) {
 			value: function (_observe) {
 				if (!this.roles.has('manager')) return false;
 				return this.managedUsers.every(function (user) {
-					return _observe(user.roles._size) ||
+					return _observe(user._isActiveAccount) ||
 						_observe(user.initialBusinessProcesses).every(function (bp) {
 							return !_observe(bp._isSubmitted);
 						});

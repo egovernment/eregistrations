@@ -70,7 +70,7 @@ exports.main = function () {
 							exports._getMyAccountButton(this.manager, managedUser._fullName)
 					),
 				div({ class: 'manager-bar-actions' },
-					_if(not(managedUser.roles._has('user')),
+					_if(not(managedUser._isActiveAccount),
 						postButton({ buttonClass: 'actions-create',
 							action: url('request-create-managed-account'),
 							confirm: _if(managedUser._isInvitationSent,
