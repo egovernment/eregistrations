@@ -196,7 +196,6 @@ h3.user-account-section-title {
 	line-height: 22px;
 	font-weight: 700;
 	letter-spacing: 1px;
-	color: var(--medium-text);
 }
 
 .user-account-tab.section-tab-nav-tab:focus,

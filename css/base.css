@@ -43,7 +43,7 @@ Component describing basic elements styles - reusable
 
 	/* Theme colors virables */
 	--white-background: #ffffff;
-	--light-background: #FFFCF9;
+	--light-background: #F3F3F3;
 	--light-medium-background: #e3e3e3;
 	--lighter-medium-background: #ebebeb;
 	--normal-light-background: #ddd;
@@ -72,7 +72,11 @@ Component describing basic elements styles - reusable
 	--error-text: #D9534F;
 	--progress-text: #f89406;
 
-	--third-color:#FF6A56;
+	--third-color: #D73B02;
+
+	--info-light-color: #fcf8e3;
+	--info-medium-color: #fbeed5;
+	--info-dark-color: #c09853;
 
 }
 
