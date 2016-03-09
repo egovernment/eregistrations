@@ -2,8 +2,7 @@
 
 'use strict';
 
-var _  = require('mano').i18n.bind('User')
-  , _d = _;
+var _  = require('mano').i18n.bind('User');
 
 exports._parent = require('./user-base');
 
@@ -16,7 +15,7 @@ exports['sub-main'] = {
 					var managedUser = this.manager.currentlyManagedUser;
 
 					header(
-						h3(_d("View for client: ${ user }", { user: managedUser }))
+						h3(_("View for client: ${ clientFullName }", { clientFullName: managedUser._fullName }))
 					);
 					div({ class: 'free-form' },
 						md(_("1. From here you can access all the requests of this client in draft, " +
