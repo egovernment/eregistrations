@@ -3,8 +3,9 @@
 'use strict';
 
 var aFrom           = require('es5-ext/array/from')
+  , ensureIterable  = require('es5-ext/iterable/validate-object')
   , ensureString    = require('es5-ext/object/validate-stringifiable-value')
-  , ensureSet       = require('es6-set/valid-set')
+  , Set             = require('es6-set')
   , deferred        = require('deferred')
   , memoize         = require('memoizee/plain')
   , Fragment        = require('data-fragment')
@@ -17,8 +18,7 @@ module.exports = function (storage, keyPaths) {
 	var keyPathsArray, storagePromise;
 	if (storage != null) storagePromise = deferred(ensureStorage(storage));
 
-	ensureSet(keyPaths);
-
+	keyPaths = new Set(aFrom(ensureIterable(keyPaths)));
 	keyPathsArray = aFrom(keyPaths);
 
 	return memoize(function (ownerId) {
