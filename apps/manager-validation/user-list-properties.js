@@ -5,4 +5,4 @@
 var Set = require('es6-set');
 
 module.exports = new Set(['firstName', 'lastName', 'email', 'roles',
-	'institution', 'isManagerActive', 'canManagerBeDestroyed']);
+	'institution', 'isManagerActive', 'canManagerBeDestroyed', 'managerDataForms/progress']);

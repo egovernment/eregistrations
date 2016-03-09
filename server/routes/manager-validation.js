@@ -25,11 +25,10 @@ var userQueryHandler = new QueryHandler([{
 	name: 'id',
 	ensure: function (value) {
 		if (!value) throw new Error("Missing id");
-		return mano.dbDriver.getStorage('user')
-			.getComputed(value + '/roles')(function (data) {
-			if (!data || (data.value !== '3manager')) return null;
-				return value;
-			});
+		mano.dbDriver.getStorage('user').get(value + '/roles*manager')(function (data) {
+			if (!data || (data.value !== '11')) return;
+			return value;
+		});
 	}
 }]);
 
