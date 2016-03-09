@@ -38,6 +38,17 @@
 	color: var(--third-color);
 }
 
+.section-primary > h3,
+.section-primary > form > h3,
+.section-primary > .disabler-range > h3,
+.section-primary > .disabler-range > form > h3,
+.section-primary > .section-primary-wrapper > h3 {
+	font-weight: 400;
+	border-bottom: 1px dashed var(--normal-dark-background);
+	padding: 5px;
+	margin-bottom: 11px;
+}
+
 .section-primary > .section-primary-legend,
 .section-primary > form > .section-primary-legend,
 .section-primary > .disabler-range > .section-primary-legend,
