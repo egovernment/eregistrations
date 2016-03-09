@@ -41,7 +41,6 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 				div({ class: 'disabler' }),
 				ns._if(this._label, [
 					headersMap[headerRank](this._label),
-					ns.hr(),
 					ns._if(this._legend,
 						ns.div({ class: 'section-primary-legend' }, ns.md(this._legend)))]),
 				this.toDOMFieldset(document, options),
