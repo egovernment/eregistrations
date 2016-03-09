@@ -50,7 +50,6 @@
 }
 
 .user-steps-menu-list .user-steps-menu-start-step {
-	background: var(--normal-background);
 	border-radius: 2px;
 	border-color: #e3e3e3;
 	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
@@ -61,9 +60,17 @@
 }
 
 .user-steps-menu-list .user-steps-menu-start-step > a {
-	color: var(--white-text);
 	text-align: center;
 	padding-right: 10px;
+	border-radius: 2px;
+}
+
+.user-steps-menu-list .user-steps-menu-start-step > a:hover,
+.user-steps-menu-list .user-steps-menu-start-step > a:focus,
+.user-steps-menu-list .user-steps-menu-start-step > a:active,
+.user-steps-menu-list .user-steps-menu-start-step > .step-active {
+	background: var(--normal-background);
+	color: var(--white-text);
 }
 
 .user-steps-menu-start-step .user-steps-menu-item-progress {
