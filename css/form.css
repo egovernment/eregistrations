@@ -398,6 +398,7 @@ ul.multiple {
 
 .inline-button-radio  {
 	line-height: 44px;
+	display: inline-block;
 }
 .inline-button-radio input[type="radio"] {
 	display: none;
@@ -406,7 +407,7 @@ ul.multiple {
 .inline-button-radio label {
 	border: 1px solid var(--light-inner-border);
 	border-left: none;
-	padding: 11px;
+	padding: 3px 11px;
 	cursor: pointer;
 	font-size: 14px;
 }
