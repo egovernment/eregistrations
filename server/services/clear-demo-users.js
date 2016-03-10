@@ -4,19 +4,20 @@
 
 'use strict';
 
-var forEach    = require('es5-ext/object/for-each')
-  , endsWith   = require('es5-ext/string/#/ends-with')
-  , startsWith = require('es5-ext/string/#/ends-with')
-  , debug      = require('debug-ext')('clear-demo-users')
-  , deferred   = require('deferred')
-  , now        = require('microtime-x')
+var forEach      = require('es5-ext/object/for-each')
+  , endsWith     = require('es5-ext/string/#/ends-with')
+  , startsWith   = require('es5-ext/string/#/ends-with')
+  , debug        = require('debug-ext')('clear-demo-users')
+  , deferred     = require('deferred')
+  , now          = require('microtime-x')
+  , ensureDriver = require('dbjs-persistence/ensure-driver')
 
   , keys = Object.keys
   , objectIdRe = /\*7([0-9][a-z0-9]+)$/
   , day = 24 * 60 * 60 * 1000; // in milliseconds
 
 module.exports = function (dbDriver) {
-	var userStorage = dbDriver.getStorage('user');
+	var userStorage = ensureDriver(dbDriver).getStorage('user');
 
 	var resolveStorages = function () {
 		return dbDriver.getStorages(function (storages) {
