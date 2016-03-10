@@ -5,8 +5,7 @@
 var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
   , _                = require('mano').i18n.bind('User Submitted')
   , drawDocumentsPart = require('./_business-process-draw-document-list')
-  , generateSections = require('./components/generate-sections')
-  , _d = _;
+  , generateSections = require('./components/generate-sections');
 
 var drawPaymentReceiptsPart = function (target, urlPrefix) {
 	return _if(target.paymentReceiptUploads.applicable._size, [
