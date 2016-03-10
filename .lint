@@ -40,6 +40,7 @@ predef+ console, setTimeout
 predef+ process, __dirname, setInterval
 
 ./controller/client
+./controller/manager/client.js
 ./client
 ./prototype/client
 predef+ window, document, location, $
@@ -67,6 +68,8 @@ predef+ MutationObserver
 
 ./test
 todo
+./test/utils/__tad.js
+predef+ process, Buffer, global
 
 ./client/legacy/controls-map.js
 sub

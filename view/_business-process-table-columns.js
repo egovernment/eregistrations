@@ -16,7 +16,7 @@ exports.actionsColumn = {
 					action: url('business-process', businessProcess.__id__),
 					value: span({
 					class: 'hint-optional hint-optional-left',
-					'data-hint': 'Edit'
+					'data-hint': _('Edit')
 				}, i({ class: 'fa fa-edit' }))
 				}),
 				_if(not(businessProcess._isSubmitted), postButton({
@@ -25,7 +25,7 @@ exports.actionsColumn = {
 					confirm: _("Are you sure?"),
 					value: span({
 						class: 'hint-optional hint-optional-left',
-						'data-hint': 'Delete'
+						'data-hint': _('Delete')
 					}, i({ class: 'fa fa-trash-o' }))
 				}))],
 
