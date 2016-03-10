@@ -4,7 +4,7 @@
 
 var _             = require('mano').i18n.bind('Registration')
   , errorMsg      = require('./_business-process-error-info').errorMsg
-  , renderCostDocUploadForm = require('./_business-process-payment');
+  , renderPaymentReceiptUploadForm = require('./_business-process-payment');
 
 exports._parent = require('./business-process-base');
 
@@ -28,7 +28,7 @@ exports.step = function () {
 				this.businessProcess.paymentReceiptUploads.uploadable,
 				function (paymentUpload) {
 					return li({ class: 'section-primary' },
-						renderCostDocUploadForm(paymentUpload));
+						renderPaymentReceiptUploadForm(paymentUpload));
 				}
 			)
 		),
