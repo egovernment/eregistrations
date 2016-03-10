@@ -26,6 +26,8 @@ exports['sub-main'] = {
 							li(field({ dbjs: this.user._email, disabled: true })),
 							li(field({ dbjs: db.Password,
 								label: _("Current password"), name: 'password',
+								min: 0,
+								pattern: false,
 								required: false })),
 							li(field({ dbjs: db.Password,
 								label: _("New password"),

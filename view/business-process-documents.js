@@ -31,7 +31,8 @@ exports.step = function () {
 				list(requirementUploads.applicable.not(requirementUploads.recentlyRejected),
 					function (requirementUpload) {
 						return li({ class: 'section-primary' }, requirementUpload.toDOMForm(document));
-					})
+					}),
+				exports._extraDocuments(this)
 			)
 		)
 	);
@@ -53,3 +54,5 @@ exports._documentsHeading = function (context) {
 		)
 	);
 };
+
+exports._extraDocuments = Function.prototype;

@@ -2,11 +2,9 @@
 
 'use strict';
 
-var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
-  , _             = require('mano').i18n.bind('Registration')
+var _             = require('mano').i18n.bind('Registration')
   , errorMsg      = require('./_business-process-error-info').errorMsg
-
-  , _d = _;
+  , renderPaymentReceiptUploadForm = require('./_payment-receipt-upload-form');
 
 exports._parent = require('./business-process-base');
 
@@ -30,18 +28,7 @@ exports.step = function () {
 				this.businessProcess.paymentReceiptUploads.uploadable,
 				function (paymentUpload) {
 					return li({ class: 'section-primary' },
-						form({ action: '/payment-receipt-upload/' + camelToHyphen.call(paymentUpload.key) + '/',
-							method: 'post', enctype: 'multipart/form-data', autoSubmit: true },
-							h2(_d(paymentUpload.document.label, { user: paymentUpload.master })),
-							paymentUpload.document.legend &&
-							small(mdi(_d(paymentUpload.document.legend,
-								{ user: paymentUpload.master }))),
-							hr(),
-							input({ dbjs: paymentUpload.document.files._map, label: true }),
-							p({ class: 'submit' }, input({ type: 'submit', value: _("Submit") })),
-							p({ class: 'section-primary-scroll-top' },
-								a({ onclick: 'window.scroll(0, 0)' },
-									span({ class: 'fa fa-arrow-up' }, _("Back to top"))))));
+						renderPaymentReceiptUploadForm(paymentUpload));
 				}
 			)
 		),
