@@ -124,7 +124,7 @@ module.exports = function (doc, sideContent) {
 						download: _if(doc.files.ordered._size, _if(eq(doc.files.ordered._size, 1),
 							resolve(doc.files.ordered._first, 'path'), resolveArchivePath(doc)
 							))
-						}, "Download document"),
+						}, _("Download document")),
 					sideContent)
 				),
 			p(_("This certificate does not have any physical file attached to it."))
