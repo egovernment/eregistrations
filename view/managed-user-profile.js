@@ -15,7 +15,6 @@ exports['sub-main'] = {
 		div(
 			{ class: 'section-primary' },
 			h2(_("Managed Account Information")),
-			hr(),
 			section(
 				form({ action: url('profile'), method: 'post' },
 					fieldset({
