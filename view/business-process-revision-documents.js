@@ -2,11 +2,8 @@
 
 'use strict';
 
-var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
-  , generateSections = require('./components/generate-sections')
-  , renderDocumentsList = require('./_business-process-draw-document-list')
-  , _                = require('mano').i18n.bind('User Submitted')
-  , _d = _;
+var generateSections = require('./components/generate-sections')
+  , renderDocumentsList = require('./_business-process-draw-document-list');
 
 exports._parent = require('./business-process-revision');
 exports._match = 'businessProcess';
@@ -18,6 +15,15 @@ exports['official-revision-content'] = function (/*options*/) {
 	  , businessProcess = this.businessProcess;
 
 	return [section({ class: 'section-primary' },
-			renderDocumentsList(businessProcess, urlPrefix)
+			renderDocumentsList(businessProcess, urlPrefix),
+			div({ id: 'revision-document', class: 'business-process-revision-selected-document' },
+				div({ id: 'revision-box', class: 'business-process-revision-box' }),
+				div({ class: 'submitted-preview' },
+					div({ id: 'document-preview', class: 'submitted-preview-document' }),
+					div({ class: 'submitted-preview-user-data  entity-data-section-side' },
+						generateSections(businessProcess.dataForms.applicable, { viewContext: this })
+						)
+					)
+				)
 		)];
 };
