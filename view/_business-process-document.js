@@ -66,9 +66,10 @@ module.exports = function (doc, sideContent) {
 							doc.dataForm.toDOM(document, {
 								customFilter: function (resolved) {
 									return !endsWith.call(resolved.observable.dbId, 'files/map');
-								}
+								},
+								disableHeader: true
 							}) : null,
-					doc.overviewSection.toDOM(document)
+					doc.overviewSection.toDOM(document, { disableHeader: true })
 				) : null,
 		nextTick(function () { scrollBottom(scrollableElem); }),
 		insert(_if(doc.files.ordered._size,
