@@ -11,9 +11,9 @@ exports['manager-account-clients'] = { class: { active: true } };
 exports['manager-account-content'] = function () {
 	var clients = this.user.managedUsers;
 
-	section(a({ href: url('new-client'), class: 'button-main' },
-				_("Add client"))
-		);
+	section(_if(this.user._isManagerActive,
+		a({ href: url('new-client'), class: 'button-main' },
+			_("Add client")), h3(_("Your account is currently inactive"))));
 
 	insert(_if(clients._size, function () {
 		return section({ class: 'submitted-main table-responsive-container' },
@@ -31,6 +31,7 @@ exports['manager-account-content'] = function () {
 					function (client) {
 						var bpSet = client.initialBusinessProcesses.and(this.user.managedBusinessProcesses)
 									.filterByKey('businessName');
+
 						return tr(
 							td(client._fullName),
 
@@ -43,19 +44,19 @@ exports['manager-account-content'] = function () {
 
 							td(span(client._email),
 								_if(client.roles._has('user'), [" ", span({ class: 'fa fa-check' })])),
-
 							td({ class: 'actions' },
-								_if(eq(client._manager, this.user),
+								_if(and(this.user._isManagerActive,
+										eq(client._manager, this.user)),
 									[
-										a({ href:  url('clients', client.__id__) },
-											span({ class: 'fa fa-edit' })),
-										_if(eq(client.initialBusinessProcesses
-											.filterByKey('isSubmitted', true)._size, 0),
+										postButton({ buttonClass: 'actions-edit',
+											action: url('clients', client.__id__),
+											value: span({ class: 'fa fa-edit' }) }),
+										_if(client._canManagedUserBeDestroyed,
 											postButton({ buttonClass: 'actions-delete',
 												action: url('clients', client.__id__, 'delete'),
 												confirm: _("Are you sure?"), value: span({ class: 'fa fa-trash-o' }) })
 											)
-									]
+									], _("N/A")
 									)
 								)
 						);

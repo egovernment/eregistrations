@@ -25,10 +25,11 @@ var userQueryHandler = new QueryHandler([{
 	name: 'id',
 	ensure: function (value) {
 		if (!value) throw new Error("Missing id");
-		return mano.dbDriver.getComputed(value + '/isActiveAccount')(function (data) {
-			if (!data || (data.value !== '11')) return null;
-			return value;
-		});
+		return mano.dbDriver.getStorage('user')
+			.getComputed(value + '/isActiveAccount')(function (data) {
+				if (!data || (data.value !== '11')) return null;
+				return value;
+			});
 	}
 }]);
 
@@ -39,8 +40,9 @@ module.exports = exports = function (data) {
 	  , itemsPerPage = toNaturalNumber(data.itemsPerPage) || defaultItemsPerPage;
 
 	var getTableData = memoize(function (query) {
-		return getDbSet('computed', 'isActiveAccount', '11')(function (set) {
-			return getDbArray(set, 'direct', null)(function (arr) {
+		var storage = mano.dbDriver.getStorage('user');
+		return getDbSet(storage, 'computed', 'isActiveAccount', '11')(function (set) {
+			return getDbArray(set, storage, 'direct', null)(function (arr) {
 				var pageCount, offset, size = arr.length;
 				if (!size) return { size: size };
 				pageCount = ceil(size / itemsPerPage);
@@ -50,7 +52,7 @@ module.exports = exports = function (data) {
 				offset = (query.page - 1) * itemsPerPage;
 				arr = slice.call(arr, offset, offset + itemsPerPage);
 				return deferred.map(arr, function (data) {
-					return mano.dbDriver.getObject(data.id, { keyPaths: listProps })(function (datas) {
+					return storage.getObject(data.id, { keyPaths: listProps })(function (datas) {
 						return datas.map(function (data) {
 							return data.data.stamp + '.' + data.id + '.' + data.data.value;
 						});
@@ -78,7 +80,7 @@ module.exports = exports = function (data) {
 				var recordId;
 				if (!query.id || (this.req.$user === query.id)) return { passed: false };
 				recordId = this.req.$user + '/recentlyVisited/users*7' + query.id;
-				return mano.dbDriver.store(recordId, '11')({ passed: true });
+				return mano.dbDriver.getStorage('user').store(recordId, '11')({ passed: true });
 			}.bind(this));
 		}
 	};

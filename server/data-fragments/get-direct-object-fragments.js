@@ -8,8 +8,8 @@ var ensureCallable = require('es5-ext/object/valid-callable')
   , escape         = require('es5-ext/reg-exp/escape')
   , memoize        = require('memoizee')
   , Fragment       = require('data-fragment')
-
-  , driver = require('mano').dbDriver;
+  , ensureStorage  = require('dbjs-persistence/ensure-storage')
+  , anyIdToStorage = require('../utils/any-id-to-storage');
 
 var getKeyPathFilter = function (keyPath) {
 	var matches = RegExp.prototype.test.bind(new RegExp('^[a-z0-9][a-z0-9A-Z]*/' +
@@ -17,10 +17,11 @@ var getKeyPathFilter = function (keyPath) {
 	return function (data) { return matches(data.id); };
 };
 
-module.exports = memoize(function (dbName) {
-	dbName = ensureString(dbName);
+module.exports = memoize(function (storage) {
+	if (storage != null) ensureStorage(storage);
 	return memoize(function (ownerId/*, options*/) {
-		var fragment, options = Object(arguments[1]), filter, index, customFilter, keyPathFilter;
+		var fragment, options = Object(arguments[1]), filter, index, customFilter, keyPathFilter
+		  , promise, setupListener;
 
 		ownerId = ensureString(ownerId);
 		if (options.filter != null) customFilter = ensureCallable(options.filter);
@@ -39,14 +40,26 @@ module.exports = memoize(function (dbName) {
 			filter = customFilter;
 		}
 		fragment = new Fragment();
-		fragment.promise = driver.getObject(ownerId)(function (data) {
+		setupListener = function (storage) {
+			storage.on('owner:' + ownerId, function (event) {
+				if (event.type !== 'direct') return;
+				if (!filter || filter(event)) fragment.update(event.id, event.data);
+			});
+		};
+		if (storage) {
+			promise = storage.getObject(ownerId);
+			setupListener(storage);
+		} else {
+			promise = anyIdToStorage(ownerId)(function (storage) {
+				if (!storage) return [];
+				setupListener(storage);
+				return storage.getObject(ownerId);
+			});
+		}
+		fragment.promise = promise(function (data) {
 			data.forEach(function (data) {
 				if (!filter || filter(data)) fragment.update(data.id, data.data);
 			});
-		});
-		driver.on('owner:' + ownerId, function (event) {
-			if (event.type !== 'direct') return;
-			if (!filter || filter(event)) fragment.update(event.id, event.data);
 		});
 		return fragment;
 	}, { primitive: true });

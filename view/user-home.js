@@ -35,8 +35,11 @@ exports['user-account-content'] = function () {
 					)
 				))];
 	}.bind(this),
-		md(_('You have not started any services yet.' +
-			' Please choose a service in the list below' +
-			' and click on "Click to start" to launch the service. After the first save,' +
-			' you will see your file here and will be able to edit it.'))));
+		_if(this.manager, md(_('No service has been started for this client yet. Please choose a ' +
+			'service in the list below and click on "Click to start" to launch the service. ' +
+			'After the first save, you will see the file here and will be able to edit it.')),
+			md(_('You have not started any services yet.' +
+				' Please choose a service in the list below' +
+				' and click on "Click to start" to launch the service. After the first save,' +
+				' you will see your file here and will be able to edit it.')))));
 };
