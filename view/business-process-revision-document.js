@@ -5,6 +5,7 @@
 var _              = require('mano').i18n.bind('Official: Revision')
   , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
   , renderDocument = require('./_business-process-revision-document')
+  , renderDocumentHistory = require('./_business-process-revision-document-history')
 
   , revisionForm;
 
@@ -53,6 +54,10 @@ exports['revision-document'] = { class: { active: true } };
 
 exports['document-preview'] = function () {
 	renderDocument(this.document);
+};
+
+exports['document-history'] = function () {
+	renderDocumentHistory(this.document);
 };
 
 exports['revision-box'] = function () {

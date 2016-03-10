@@ -7,7 +7,6 @@ var _                = require('mano').i18n.bind('User Submitted')
 
 module.exports = function (target, urlPrefix) {
 	return _if(target.requirementUploads.applicable._size, [
-		h3(_("Documents required")),
 		div(
 			{ class: 'table-responsive-container' },
 			table(
