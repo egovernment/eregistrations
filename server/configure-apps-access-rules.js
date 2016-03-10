@@ -300,13 +300,9 @@ module.exports = function (dbDriver, data) {
 		return fragment;
 	});
 
-	var resolveManagerUserAppId = function (data) {
-		var appId = data.split('.'), userId = appId[0], custom = appId[1];
-		return userId + '.user' + (custom ? '.' + custom : '');
-	};
-
 	getAccessRules = memoize(function (appId) {
-		var userId, roleName, stepShortPath, custom, fragment, initialBusinessProcesses, promise;
+		var userId, roleName, stepShortPath, custom, fragment, initialBusinessProcesses, promise
+		  , clientId, businessProcessId;
 
 		appId = appId.split('.');
 		userId = appId[0];
@@ -370,7 +366,23 @@ module.exports = function (dbDriver, data) {
 				});
 				return fragment;
 			}
-			fragment.addFragment(getAccessRules(resolveManagerUserAppId(custom)));
+			clientId = custom;
+			businessProcessId = appId[3];
+			fragment.addFragment(getManagerUserData(clientId));
+			if (businessProcessId) {
+				fragment.addFragment(getBusinessProcessData(businessProcessId));
+			} else {
+				fragment.promise = getBusinessProcessStorages(function (storages) {
+					return getDbSet(storages, 'direct', 'manager', '7' + userId)(function (managerBps) {
+						var clientBps = getDbRecordSet(userStorage, clientId + '/initialBusinessProcesses')
+						  , promise = clientBps.promise;
+						clientBps = clientBps.map(function (value) { return value.slice(1); });
+						fragment.addFragment(getColFragments(managerBps.and(clientBps),
+							getBusinessProcessData));
+						return promise;
+					});
+				});
+			}
 			return fragment;
 		}
 		if (roleName === 'usersAdmin') {
