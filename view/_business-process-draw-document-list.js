@@ -2,8 +2,7 @@
 
 'use strict';
 
-var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
-  , _                = require('mano').i18n.bind('User Submitted')
+var _                = require('mano').i18n.bind('User Submitted')
   , _d = _;
 
 module.exports = function (target, urlPrefix) {
@@ -34,8 +33,7 @@ module.exports = function (target, urlPrefix) {
 						td(requirementUpload.document._issuedBy);
 						td({ class: 'submitted-user-data-table-date' }, requirementUpload.document._issueDate);
 						td({ class: 'submitted-user-data-table-link' },
-							a({ href: urlPrefix + 'document/' +
-								camelToHyphen.call(requirementUpload.document.uniqueKey) + "/" },
+							a({ href: urlPrefix + requirementUpload.document.docUrl },
 								span({ class: 'fa fa-search' }, _("Go to"))));
 					}
 				)

@@ -110,7 +110,7 @@ module.exports = {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;
 			return true;
 		},
-		view: require('../view/business-process-revision-doc')
+		view: require('../view/business-process-revision-document')
 	},
 	'revision/user-id/payments': require('../view/business-process-revision-payments'),
 	'revision/user-id/datas': require('../view/business-process-revision-datas'),
