@@ -4,7 +4,7 @@
 
 var _             = require('mano').i18n.bind('Registration')
   , errorMsg      = require('./_business-process-error-info').errorMsg
-  , renderPaymentReceiptUploadForm = require('./_business-process-payment');
+  , renderPaymentReceiptUploadForm = require('./_payment-receipt-upload-form');
 
 exports._parent = require('./business-process-base');
 
