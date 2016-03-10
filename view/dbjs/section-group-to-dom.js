@@ -12,7 +12,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOM',
 		headerRank = options.headerRank || 3;
 		cssClass   = options.cssClass || 'entity-data-section';
 		return ns.section({ class: cssClass },
-			ns._if(this._label, [headersMap[headerRank](this._label), ns.hr()]),
+			ns._if(this._label, [headersMap[headerRank](this._label)]),
 			ns.list(this.sections, function (section) {
 				return _if(section._status, section.toDOM(document, {
 					headerRank: headerRank + 1,

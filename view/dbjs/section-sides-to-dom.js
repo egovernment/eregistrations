@@ -14,7 +14,6 @@ module.exports = Object.defineProperty(db.BusinessProcessNew.prototype.dataForms
 			{ class: 'section-primary' },
 			form(
 				h2(this.label),
-				hr(),
 				div(
 					{ class: 'section-primary-sub' },
 					h3(this.sections.first.label),

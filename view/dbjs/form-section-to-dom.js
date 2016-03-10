@@ -67,7 +67,6 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 						},
 						ns._if(this._label, [
 							headersMap[headerRank](this._label),
-							ns.hr(),
 							ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
 								ns.md(this._legend)))]),
 						fieldsetResult = this.toDOMFieldset(document, sectionFieldsetOptions),
