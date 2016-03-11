@@ -23,13 +23,16 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	notification.preTrigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);
 
 	notification.subject = _("M05 You must correct some elements in your application");
-	notification.text = _("Email message greeting ${ fullName }\n\n")
-		+ _("M05 Revision sent back\n\n"
+	notification.text = _("M05 Revision sent back\n\n"
 			+ "Name of company: ${ businessName }\n\n"
 			+ "${ rejectedUploads }");
 
+	if (options.greeting == null) notification.text = _("Email message greeting ${ fullName }")
+		+ "\n\n" + notification.text;
+	if (options.greeting) notification.text = options.greeting + "\n\n" + notification.text;
+
 	if (options.signature == null) notification.text += "\n\n" + _("Email message signature") + "\n";
-	if (options.signature) notification.text += options.signature;
+	if (options.signature) notification.text += "\n\n" + options.signature + "\n";
 
 	notification.resolveGetters = true;
 

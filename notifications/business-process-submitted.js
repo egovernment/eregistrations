@@ -48,13 +48,16 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	};
 
 	notification.subject = _("M02 Your application for registration has been received");
-	notification.text = _("Email message greeting ${ fullName }") + "\n\n"
-		+ _("M02 Application send\n\n" + "Name of company: ${ nameOfCompany }\n\n"
+	notification.text = _("M02 Application send\n\n" + "Name of company: ${ nameOfCompany }\n\n"
 			+ "Registrations: ${ registrations }\n\n"
 			+ "Requirements: ${ requirements }");
 
+	if (options.greeting == null) notification.text = _("Email message greeting ${ fullName }")
+		+ "\n\n" + notification.text;
+	if (options.greeting) notification.text = options.greeting + "\n\n" + notification.text;
+
 	if (options.signature == null) notification.text += "\n\n" + _("Email message signature") + "\n";
-	if (options.signature) notification.text += options.signature;
+	if (options.signature) notification.text += "\n\n" + options.signature + "\n";
 
 	return notification;
 };

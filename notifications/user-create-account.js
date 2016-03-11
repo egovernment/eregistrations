@@ -11,11 +11,14 @@ module.exports = function (/*options*/) {
 	notification.trigger = users;
 
 	notification.subject = _("M01 Your account in the service has been created");
-	notification.text = _("Email message greeting ${ fullName }") + "\n\n"
-		+ _("M01 Account registration\n\n" + "Email: ${ email }");
+	notification.text = _("M01 Account registration\n\n" + "Email: ${ email }");
+
+	if (options.greeting == null) notification.text = _("Email message greeting ${ fullName }")
+		+ "\n\n" + notification.text;
+	if (options.greeting) notification.text = options.greeting + "\n\n" + notification.text;
 
 	if (options.signature == null) notification.text += "\n\n" + _("Email message signature") + "\n";
-	if (options.signature) notification.text += options.signature;
+	if (options.signature) notification.text += "\n\n" + options.signature + "\n";
 
 	notification.resolveGetters = true;
 	notification.variables = {
