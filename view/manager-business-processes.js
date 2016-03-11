@@ -14,7 +14,7 @@ exports['manager-account-content'] = function () {
 	var requests = this.user.managedBusinessProcesses, user = this.user;
 
 	section(_if(not(this.user._isManagerActive),
-		h3(_("Your account is currently inactive"))));
+		p({ class: 'entities-overview-info' }, _("Your account is currently inactive"))));
 
 	insert(_if(requests._size, function () {
 		return section({ class: 'submitted-main table-responsive-container' },

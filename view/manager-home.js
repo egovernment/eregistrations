@@ -13,7 +13,8 @@ exports['manager-account-content'] = function () {
 
 	section(_if(this.user._isManagerActive,
 		a({ href: url('new-client'), class: 'button-main' },
-			_("Add client")), h3(_("Your account is currently inactive"))));
+			_("Add client")), p({ class: 'entities-overview-info' },
+			_("Your account is currently inactive"))));
 
 	insert(_if(clients._size, function () {
 		return section({ class: 'submitted-main table-responsive-container' },
