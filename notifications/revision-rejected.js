@@ -41,8 +41,9 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 			+ "Name of company: ${ businessName }\n\n"
 			+ "${ rejectionReason }");
 
-	if (options.greeting == null) notification.text = _("Email message greeting ${ fullName }")
-		+ "\n\n" + notification.text;
+	if (options.greeting == null) {
+		notification.text = _("Email message greeting ${ fullName }") + "\n\n" + notification.text;
+	}
 	if (options.greeting) notification.text = options.greeting + "\n\n" + notification.text;
 
 	if (options.signature == null) notification.text += "\n\n" + _("Email message signature") + "\n";
