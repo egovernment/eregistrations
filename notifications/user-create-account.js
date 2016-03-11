@@ -1,20 +1,35 @@
 'use strict';
 
-var _ = require('mano').i18n.bind('User: Notifications');
+var _                = require('mano').i18n.bind('User: Notifications')
+  , normalizeOptions = require('es5-ext/object/normalize-options')
+  , users            = require('../users/users');
 
-exports.trigger = require('../users/users');
-exports.subject = _("M01 Your account in the service has been created");
+module.exports = function (/*options*/) {
+	var options      = normalizeOptions(arguments[1])
+	  , notification = {};
 
-exports.text = _("Email message greeting ${ fullName }") + "\n\n"
-	+ _("M01 Account registration\n\n" + "Email: ${ email }") + "\n\n" +
-	_("Email message signature") + "\n";
+	notification.trigger = users;
 
-exports.resolveGetters = true;
-exports.variables = {
-	fullName: function () {
-		return this.user.fullName;
-	},
-	email: function () {
-		return this.user.email;
+	notification.subject = _("M01 Your account in the service has been created");
+	notification.text = _("M01 Account registration\n\n" + "Email: ${ email }");
+
+	if (options.greeting == null) {
+		notification.text = _("Email message greeting ${ fullName }") + "\n\n" + notification.text;
 	}
+	if (options.greeting) notification.text = options.greeting + "\n\n" + notification.text;
+
+	if (options.signature == null) notification.text += "\n\n" + _("Email message signature") + "\n";
+	if (options.signature) notification.text += "\n\n" + options.signature + "\n";
+
+	notification.resolveGetters = true;
+	notification.variables = {
+		fullName: function () {
+			return this.user.fullName;
+		},
+		email: function () {
+			return this.user.email;
+		}
+	};
+
+	return notification;
 };

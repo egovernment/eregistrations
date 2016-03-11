@@ -27,7 +27,9 @@ var appTypes = {
 	public: { extraFiles: ['apps/public'] },
 	official: true,
 	'business-process-submitted': { 'client/program.js': 'client/program.js/business-process.tpl' },
-	'business-process': true
+	'business-process': true,
+	'manager-registration': true,
+	manager: true
 };
 
 var copyExtraFile = function (projectRoot, extraPath) {

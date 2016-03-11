@@ -13,6 +13,9 @@ exports['manager-account-requests'] = { class: { active: true } };
 exports['manager-account-content'] = function () {
 	var requests = this.user.managedBusinessProcesses, user = this.user;
 
+	insert(_if(not(this.user._isManagerActive),
+		section(p({ class: 'entities-overview-info' }, _("Your account is currently inactive")))));
+
 	insert(_if(requests._size, function () {
 		return section({ class: 'submitted-main table-responsive-container' },
 			table(
@@ -43,5 +46,5 @@ exports['manager-account-content'] = function () {
 				)
 			));
 	}.bind(this),
-		p(_('You have no requests yet.'))));
+		_if(this.user._isManagerActive, p(_('You have no requests yet.')))));
 };
