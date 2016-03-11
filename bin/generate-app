@@ -24,8 +24,9 @@ resolveProjectRoot(projectRoot).done(function (root) {
 	}
 	appRootPath = 'apps' + path.sep + appName;
 	require('../scripts/generate-app')(root, appName).done(function () {
-		var otherClientsModelReminder, clientModelReminder, appsRoutersReminder,
-			msg = ["\nSuccessfully created " + appName + " application." +
+		var otherClientsModelReminder, clientModelReminder, appsRoutersReminder
+		  , serverIndexes
+		  , msg = ["\nSuccessfully created " + appName + " application." +
 				"\nIt's located in: " + appRootPath + "." +
 				"\n\nIn order to setup application you need to: \n"], msgItems = [];
 		msgItems.push("If appName resolution for created app is not straightfoward, " +
@@ -39,6 +40,8 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			+ appName + "/client/model.js");
 		msgItems.push("Ensure POST (form submissions) controllers " +
 			"configuration is complete in apps/" + appName + "/controller");
+
+		serverIndexes = "Ensure entry in server/db/indexes.js";
 
 		clientModelReminder = "Ensure that the models of handled businessProcesses are" +
 			" required in apps/" + appName + "/client/model.js";
@@ -79,10 +82,16 @@ resolveProjectRoot(projectRoot).done(function (root) {
 					"class names in: apps/" + appName + "/client/program.js");
 				msgItems.push(modelViews);
 
-				msgItems.push("Ensure entry in server/db/indexes.js");
+				msgItems.push(serverIndexes);
 			}
 			msgItems.push(addRole);
 			msgItems.push("Ensure entry in model/user/recently-visited/business-processes");
+		}
+
+		if (appName === 'manager') {
+			msgItems.push(clientModelReminder);
+			msgItems.push(serverIndexes);
+			msgItems.push(addRole);
 		}
 
 		if (appName === 'dispatcher') {

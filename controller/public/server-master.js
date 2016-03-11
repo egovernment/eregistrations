@@ -89,6 +89,7 @@ exports['init-demo'] = {
 			} else {
 				promise = emptyPromise;
 			}
+			this.userId = userId;
 			return promise(function () {
 				this.res.cookies.set(cookieName, userId, { maxage: maxage });
 				login(userId, this.req, this.res);
