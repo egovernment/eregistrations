@@ -75,11 +75,11 @@ exports.main = function () {
 							action: url('request-create-managed-account'),
 							confirm: _if(managedUser._isInvitationSent,
 								_("Invitation was already send to user. Are you sure you want to send it again?")),
-							value: span(_('Create account for this client')) }),
+							value: span(_('Create account for this client')) })),
 						a({ href: '/managed-user-profile/' },
 							span({ class: 'hint-optional hint-optional-left',
 								'data-hint': _('edit user details') },
-								i({ class: 'fa fa-cog' })))))
+								i({ class: 'fa fa-cog' }))))
 				));
 	}.bind(this)));
 
