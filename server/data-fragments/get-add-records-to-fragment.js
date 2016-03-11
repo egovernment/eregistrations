@@ -3,36 +3,36 @@
 'use strict';
 
 var aFrom           = require('es5-ext/array/from')
+  , ensureIterable  = require('es5-ext/iterable/validate-object')
   , ensureString    = require('es5-ext/object/validate-stringifiable-value')
-  , ensureSet       = require('es6-set/valid-set')
+  , Set             = require('es6-set')
   , deferred        = require('deferred')
-  , assimilateEvent = require('./lib/assimilate-driver-event')
+  , ensureStorage   = require('dbjs-persistence/ensure-storage')
+  , assimilateEvent = require('./lib/assimilate-driver-event');
 
-  , driver = require('mano').dbDriver;
-
-module.exports = function (dbName, keyPaths) {
+module.exports = function (storage, keyPaths) {
 	var keyPathsArray;
 
-	dbName = ensureString(dbName);
-	ensureSet(keyPaths);
+	ensureStorage(storage);
+	keyPaths = new Set(aFrom(ensureIterable(keyPaths)));
 
 	keyPathsArray = aFrom(keyPaths);
 
 	return function (ownerId, fragment) {
 		ownerId = ensureString(ownerId);
 		fragment.promise = deferred(
-			driver.getObject(ownerId, { keyPaths: keyPaths })(function (data) {
+			storage.getObject(ownerId, { keyPaths: keyPaths })(function (data) {
 				data.forEach(function (data) { fragment.update(data.id, data.data); });
 			}),
 			deferred.map(keyPathsArray, function (keyPath) {
 				var id = ownerId + '/' + keyPath;
-				return driver.getComputed(id)(function (data) {
+				return storage.getComputed(id)(function (data) {
 					if (!data) return;
 					assimilateEvent(fragment, id, data);
 				});
 			})
 		);
-		driver.on('owner:' + ownerId, function (event) {
+		storage.on('owner:' + ownerId, function (event) {
 			if (event.type === 'reduced') return;
 			if (keyPaths.has(event.keyPath)) {
 				if (event.type === 'direct') fragment.update(event.id, event.data);

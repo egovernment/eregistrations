@@ -26,7 +26,8 @@ exports.menu = function () {
 			li(
 				a(
 					{ href: '/profile/' },
-					span({ class: 'header-top-user-name' }, this.user._fullName)
+					span({ class: 'header-top-user-name' },
+						this.manager ? this.manager._fullName : this.user._fullName)
 				)
 			),
 			li(
@@ -59,17 +60,26 @@ exports.main = function () {
 				h3(_("Demo version")),
 				p(_("Introduction to demo version"))))));
 
-	insert(_if(this.managedUser, function () {
+	insert(_if(this.manager, function () {
+		var managedUser = this.manager.currentlyManagedUser;
 		return div({ class: 'manager-bar' },
 			div({ class: 'content' },
 				div({ class: 'manager-bar-info' },
 					span(_("Client"), ": "),
-					span(this.managedUser._fullName)),
+						this.appName === 'user' ? a({ href: '/' }, managedUser._fullName) :
+							exports._getMyAccountButton(this.manager, managedUser._fullName)
+					),
 				div({ class: 'manager-bar-actions' },
-					_if(not(this.managedUser.roles._has('user')),
+					_if(not(managedUser._isActiveAccount),
 						postButton({ buttonClass: 'actions-create',
-							action: url('clients', this.managedUser.__id__, 'create'),
-							value: span(_('Create account for this client')) })))
+							action: url('request-create-managed-account'),
+							confirm: _if(managedUser._isInvitationSent,
+								_("Invitation was already send to user. Are you sure you want to send it again?")),
+							value: span(_('Create account for this client')) }),
+						a({ href: '/managed-user-profile/' },
+							span({ class: 'hint-optional hint-optional-left',
+								'data-hint': _('edit user details') },
+								i({ class: 'fa fa-cog' })))))
 				));
 	}.bind(this)));
 
@@ -77,3 +87,19 @@ exports.main = function () {
 };
 
 exports._submittedMenu = Function.prototype;
+
+exports._getMyAccountButton = function (user, fullName) {
+	return form({ method: 'post', action: '/change-business-process/' },
+		input({ type: 'hidden',
+			name: user.__id__ + '/currentBusinessProcess', value: null }),
+		button({ type: 'submit' }, fullName));
+};
+
+exports._getManagerButton = function (user, roleTitle) {
+	return form({ method: 'post', action: '/change-currently-managed-user/' },
+		input({ type: 'hidden',
+			name: user.__id__ + '/currentBusinessProcess', value: null }),
+		input({ type: 'hidden',
+			name: user.__id__ + '/currentlyManagedUser', value: null }),
+		button({ type: 'submit' }, roleTitle));
+};

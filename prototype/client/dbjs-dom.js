@@ -6,6 +6,8 @@ var domEnum = require('dbjs-dom/enum')
 
   , user = db.User.prototype;
 
+db.locale = 'en_GB';
+
 require('dbjs-dom/text')(db);
 require('dbjs-dom/input')(db);
 if (db.StringLine && db.StringLine.DOMInput) {
@@ -26,13 +28,13 @@ require('dbjs-dom-bootstrap/number/currency')(db);
 require('dbjs-dom-bootstrap/number/square-meters')(db);
 require('../../view/dbjs/submission-file');
 require('../../view/dbjs/business-activity');
-require('../../view/dbjs/user-register-ids');
-require('../../view/dbjs/user-lomas-activity');
-require('../../view/dbjs/user-is-validated');
-require('../../view/dbjs/notification');
-require('../../view/dbjs/is-shopping-gallery');
-require('../../view/dbjs/company-info-shares');
-require('../../view/dbjs/partners-table');
+require('../view/dbjs/user-register-ids');
+require('../view/dbjs/user-lomas-activity');
+require('../view/dbjs/user-is-validated');
+require('../view/dbjs/notification');
+require('../view/dbjs/is-shopping-gallery');
+require('../view/dbjs/company-info-shares');
+require('../view/dbjs/partners-table');
 require('../../view/dbjs/form-section-to-dom');
 require('../../view/dbjs/form-section-group-to-dom');
 require('../../view/dbjs/form-entities-table-to-dom');

@@ -90,7 +90,7 @@ loadView = function () {
 	  , joinControllers  = require('mano/utils/join-controllers')
 	  , isReadOnlyRender = require('mano/client/utils/is-read-only-render')
 
-	  , user, refresh;
+	  , user, refresh, viewContext;
 
 	if (!document.body) {
 		setTimeout(loadView, 0);
@@ -103,20 +103,23 @@ loadView = function () {
 		return;
 	}
 	Object.defineProperty(db, '$user', { configurable: true, value: user });
-
+	viewContext = { appName: '${ appName }' };
+	if (user.currentRoleResolved === 'manager') {
+		viewContext.manager = user;
+		viewContext.user = user.currentlyManagedUser;
+	} else {
+		viewContext.user = user;
+	}
 	var siteTree = new DomjsSiteTree(require('mano/lib/client/domjs'));
 	var siteTreeRouter = new SiteTreeRouter(require('../routes'), siteTree, {
-		eventProto: { appName: '${ appName }', user: user },
+		eventProto: viewContext,
 		notFound: require('eregistrations/view/404')
 	});
 
 	postRouter(joinControllers(require('../controller'), require('../controller/client')),
 		user);
 
-	if (!isReadOnlyRender) {
-		require('eregistrations/client/reload-on-role-switch')(user);
-		require('eregistrations/client/reload-on-current-business-process-change')(user);
-	}
+	if (!isReadOnlyRender) require('eregistrations/client/reload-on-app-switch')(user);
 
 	appLocation.on('change', refresh = function () {
 		var result;
