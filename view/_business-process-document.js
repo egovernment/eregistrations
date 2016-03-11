@@ -66,9 +66,10 @@ module.exports = function (doc, sideContent) {
 							doc.dataForm.toDOM(document, {
 								customFilter: function (resolved) {
 									return !endsWith.call(resolved.observable.dbId, 'files/map');
-								}
+								},
+								disableHeader: true
 							}) : null,
-					doc.overviewSection.toDOM(document)
+					doc.overviewSection.toDOM(document, { disableHeader: true })
 				) : null,
 		nextTick(function () { scrollBottom(scrollableElem); }),
 		insert(_if(doc.files.ordered._size,
@@ -124,7 +125,7 @@ module.exports = function (doc, sideContent) {
 						download: _if(doc.files.ordered._size, _if(eq(doc.files.ordered._size, 1),
 							resolve(doc.files.ordered._first, 'path'), resolveArchivePath(doc)
 							))
-						}, "Download document"),
+						}, _("Download document")),
 					sideContent)
 				),
 			p(_("This certificate does not have any physical file attached to it."))

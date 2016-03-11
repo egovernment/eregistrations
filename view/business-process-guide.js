@@ -213,6 +213,11 @@ exports._costsList = function (context) {
 			li({ id: 'cost-li-' + camelToHyphen.call(cost.key), 'data-key': cost.key },
 				span({ class: 'user-guide-costs-list-label' },
 					span({ id: 'cost-label-' + camelToHyphen.call(cost.key) }, cost.label),
+					cost.optionalInfo && span({ class: 'input-optional-info' },
+						span({ class: 'fa fa-info-circle' }, "Info"),
+						span({ class: 'input-optional-info-content' },
+							typeof cost.optionalInfo === 'string' ? md(cost.optionalInfo)
+								: cost.optionalInfo)),
 					small(cost.legend)),
 				span({ id: 'cost-amount-' + camelToHyphen.call(cost.key) }));
 		}),

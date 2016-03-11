@@ -34,7 +34,8 @@
 .section-primary > .disabler-range > form > h2,
 .section-primary > .section-primary-wrapper > h2 {
 	margin-top: -10px;
-	margin-bottom: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid var(--light-background);
 }
 
 .section-primary > .section-primary-legend,
