@@ -65,5 +65,5 @@ exports['manager-account-content'] = function () {
 				)
 			));
 	}.bind(this),
-		p(_('You have no clients yet.'))));
+		_if(this.user._isManagerActive, p(_('You have no clients yet.')))));
 };
