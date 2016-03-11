@@ -175,6 +175,12 @@
 	vertical-align: middle;
 }
 
+.section-primary .info-main {
+	background: var(--normal-light-background);
+	padding-top: 10px;
+	padding-bottom: 10px;
+}
+
 .section-primary .dbjs-input-component > .input .multiple ul {
 	max-width: 96%;
 }
