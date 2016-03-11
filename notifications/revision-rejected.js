@@ -40,8 +40,10 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	notification.text = _("Email message greeting ${ fullName }\n\n")
 		+ _("M19 Revision rejected\n\n"
 			+ "Name of company: ${ businessName }\n\n"
-			+ "${ rejectionReason }") + "\n\n"
-		+ _("Email message signature") + "\n";
+			+ "${ rejectionReason }");
+
+	if (options.signature == null) notification.text += "\n\n" + _("Email message signature") + "\n";
+	if (options.signature) notification.text += options.signature;
 
 	return notification;
 };

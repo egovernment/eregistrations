@@ -26,8 +26,10 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	notification.text = _("Email message greeting ${ fullName }\n\n")
 		+ _("M05 Revision sent back\n\n"
 			+ "Name of company: ${ businessName }\n\n"
-			+ "${ rejectedUploads }\n\n")
-		+ _("Email message signature") + "\n";
+			+ "${ rejectedUploads }");
+
+	if (options.signature == null) notification.text += "\n\n" + _("Email message signature") + "\n";
+	if (options.signature) notification.text += options.signature;
 
 	notification.resolveGetters = true;
 
