@@ -4,7 +4,6 @@
 
 var normalizeOptions  = require('es5-ext/object/normalize-options')
   , capitalize        = require('es5-ext/string/#/capitalize')
-  , forEach           = require('es5-ext/object/for-each')
   , hyphenToCamel     = require('es5-ext/string/#/hyphen-to-camel')
   , template          = require('es6-template-strings')
   , deferred          = require('deferred')
@@ -29,14 +28,8 @@ var appTypes = {
 	official: true,
 	'business-process-submitted': { 'client/program.js': 'client/program.js/business-process.tpl' },
 	'business-process': true,
-	'manager-registration': {
-		'model/user/manager/base.js': 'model/user/appname/base.js/manager.tpl',
-		'model/user/manager/index.js': 'model/user/appname/index.js/manager.tpl'
-	},
-	manager: {
-		'model/user/manager/base.js': false,
-		'model/user/manager/index.js': false
-	}
+	'manager-registration': true,
+	manager: true
 };
 
 var copyExtraFile = function (projectRoot, extraPath) {
@@ -121,27 +114,9 @@ module.exports = function (projectRoot, appName/*, options*/) {
 				{ depth: Infinity, type: { file: true } }).map(
 			function (templatePath) {
 				var fName = path.basename(templatePath, '.tpl')
-				  , isTemplateOverwritten = false
-				  , projectPath;
-
-				if (appTypes[templateType] && typeof appTypes[templateType] === 'object') {
-					forEach(appTypes[templateType], function (templatePathConfig, key) {
-						if (!templatePathConfig) {
-							isTemplateOverwritten = true;
-							return;
-						}
-						if (templatePathConfig === templatePath) {
-							projectPath = path.join(projectRoot, key);
-							isTemplateOverwritten = true;
-						}
-					});
-				}
-
-				if (!isTemplateOverwritten) {
-					projectPath = path.dirname(path.join(projectRoot,
+				  , projectPath = path.dirname(path.join(projectRoot,
 						templatePath.replace('appname', templateVars.appName)));
-				}
-				if (fName === templateType || (isTemplateOverwritten && projectPath)) {
+				if (fName === templateType) {
 					templates[projectPath] = path.join(__dirname, 'extra-templates', templatePath);
 				}
 			}
