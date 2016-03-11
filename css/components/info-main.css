@@ -1,12 +1,12 @@
 .info-main {
-	background-color: var(--white-background);
+	background: var(--normal-light-background);
 	border-radius: 5px;
 	border: 1px solid var(--light-inner-border);
-	padding: 21px 15px 21px 15px;
+	padding: 10px 15px 10px 15px;
 }
 
 .info-main > * {
-	margin-bottom: 22px;
+	margin-bottom: 11px;
 }
 .info-main > :last-child {
 	margin-bottom: 0;

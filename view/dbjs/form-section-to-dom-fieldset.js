@@ -17,17 +17,10 @@ var d                   = require('d')
   , ns                  = require('mano').domjs.ns
   , normalizeOptions    = require('es5-ext/object/normalize-options')
   , progressRules       = require('../components/progress-rules')
-  , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path');
+  , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
+  , readOnlyRender      = require('../utils/read-only-render');
 
 require('./form-section-base');
-
-var readOnlyRender = function (input, options) {
-	return div(
-		{ class: 'dbjs-input-component' },
-		label(options.label),
-		div({ class: 'input' }, input.observable)
-	);
-};
 
 module.exports = Object.defineProperties(db.FormSection.prototype, {
 	toDOMFieldset: d(function (document/*, options */) {

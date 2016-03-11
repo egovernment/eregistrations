@@ -2,17 +2,19 @@
 
 'use strict';
 
-var ensureSet  = require('es6-set/valid-set')
-  , ensureType = require('dbjs/valid-dbjs-type')
-  , serialize  = require('dbjs/_setup/serialize/value')
-  , Fragment   = require('data-fragment')
-  , getEvents  = require('../../utils/dbjs-get-path-events');
+var aFrom          = require('es5-ext/array/from')
+  , ensureIterable = require('es5-ext/iterable/validate-object')
+  , Set            = require('es6-set')
+  , ensureType     = require('dbjs/valid-dbjs-type')
+  , serialize      = require('dbjs/_setup/serialize/value')
+  , Fragment       = require('data-fragment')
+  , getEvents      = require('../../utils/dbjs-get-path-events');
 
 module.exports = function (Type, paths) {
 	var fragments = Object.create(null);
 
 	ensureType(Type);
-	ensureSet(paths);
+	paths = new Set(aFrom(ensureIterable(paths)));
 
 	return function (id) {
 		var fragment = fragments[id], object, event;
