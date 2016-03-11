@@ -50,6 +50,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		this.readOnlyPropertyNames.forEach(function (propName) {
 			propName = resolvePropertyPath(propertyMaster, propName).id;
 
+			controls[propName].readOnlyRender = true;
 			controls[propName].render = readOnlyRender;
 		});
 
