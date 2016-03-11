@@ -50,8 +50,6 @@ revisionForm = function (requirementUpload) {
 	);
 };
 
-exports['revision-document'] = { class: { active: true } };
-
 exports['document-preview'] = function () {
 	renderDocument(this.document);
 };

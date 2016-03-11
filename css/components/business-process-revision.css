@@ -30,9 +30,5 @@
 }
 
 .business-process-revision-selected-document {
-	display: none;
-}
-
-.business-process-revision-selected-document.active {
 	display: block;
 }
