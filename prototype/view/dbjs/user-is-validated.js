@@ -6,5 +6,5 @@ var d = require('d'),
 Object.defineProperty(
 	db.User.prototype.getDescriptor('isValidated'),
 	'DOMInput',
-	d(require('./_boolean-inline-button-group'))
+	d(require('../../../view/dbjs/_boolean-inline-button-group'))
 );
