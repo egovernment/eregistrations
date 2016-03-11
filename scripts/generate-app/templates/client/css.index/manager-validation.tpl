@@ -5,6 +5,7 @@
 ../../../node_modules/eregistrations/css/components/file-thumb.css
 ../../../node_modules/eregistrations/css/components/file-uploader.css
 ../../../node_modules/eregistrations/css/components/dialog.css
+../../../node_modules/eregistrations/css/components/disabler.css
 ../../../node_modules/eregistrations/css/components/button-regular.css
 ../../../node_modules/eregistrations/css/components/container-with-nav.css
 ../../../node_modules/eregistrations/css/components/section-primary.css
