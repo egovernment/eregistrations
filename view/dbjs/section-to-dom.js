@@ -21,7 +21,7 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 		headerRank = options.headerRank || 3;
 		cssClass   = options.cssClass || 'entity-data-section';
 		return section({ class: cssClass },
-			_if(self._label, [headersMap[headerRank](self._label), hr()]),
+			options.disableHeader ? null : _if(self._label, [headersMap[headerRank](self._label), hr()]),
 			table(
 				tbody(
 					_if(self._resolventProperty, function () {

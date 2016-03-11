@@ -6,10 +6,6 @@ var _ = require('mano').i18n.bind('User-manager');
 
 exports._parent = require('./user-base');
 
-exports['submitted-menu'] = function () {
-	li({ class: 'submitted-menu-item-active' }, a(_("Notary dashboard")));
-};
-
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {

@@ -43,6 +43,7 @@ var businessProcessTable = function (context) {
 	return getBusinessProcessesTable({
 		user: context.user,
 		roleName: context.shortRoleName,
+		fullItemsRoleName: 'dispatcher',
 		statusMap: context.statusMap,
 		getOrderIndex: context.getOrderIndex,
 		itemsPerPage: env.objectsListItemsPerPage,

@@ -33,7 +33,11 @@ exports['business-process/[0-9][a-z0-9]+'] = {
 		return this.user.businessProcesses.has(this.businessProcess);
 	},
 	submit: function () {
-		this.user.currentBusinessProcess = this.businessProcess;
+		if (this.manager) {
+			this.manager.currentBusinessProcess = this.businessProcess;
+		} else {
+			this.user.currentBusinessProcess = this.businessProcess;
+		}
 	}
 };
 

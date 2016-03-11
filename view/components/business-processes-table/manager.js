@@ -46,7 +46,9 @@ var BusinessProcessesManager = module.exports = function (conf) {
 	}
 
 	defineProperties(this, {
-		_fullItems: d(user.recentlyVisited.businessProcesses[roleName]),
+		_fullItems: d(user.recentlyVisited.businessProcesses[conf.fullItemsRoleName || roleName]),
+		_canItemBeApplicable: d((conf.canItemBeApplicable != null)
+			? ensureCallable(conf.canItemBeApplicable) : null),
 		_statusViews: d(pendingBusinessProcesses),
 		_statusMap: d(statusMap),
 		_getItemOrderIndex: d(getOrderIndex),
@@ -80,6 +82,7 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 		});
 	}),
 	_isItemApplicable: d(function (item, query) {
+		if (this._canItemBeApplicable && !this._canItemBeApplicable(item, query)) return false;
 		if (!this._statusMap[query.status || 'all'].data.has(item)) return false;
 		if (!query.search) return true;
 		return query.search.split(/\s+/).every(function (value) {

@@ -33,7 +33,7 @@ var UsersManager = module.exports = function (conf) {
 	if (itemsPerPage) this.itemsPerPage = itemsPerPage;
 	defineProperties(this, {
 		_type: d(db.User),
-		_view: d(db.views.usersAdmin),
+		_view: d(conf.views || db.views.usersAdmin),
 		_getItemOrderIndex: d(getOrderIndex),
 		_queryExternal: d(getViewData)
 	});
