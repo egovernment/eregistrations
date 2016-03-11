@@ -6,7 +6,7 @@ var domEnum = require('dbjs-dom/enum')
 
   , user = db.User.prototype;
 
-db.locale = 'en_GB';
+db.locale = 'en-GB';
 
 require('dbjs-dom/text')(db);
 require('dbjs-dom/input')(db);
