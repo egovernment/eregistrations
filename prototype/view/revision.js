@@ -123,7 +123,6 @@ exports['sub-main'] = {
 				postButton({ buttonClass: 'button-main button-main-success', value: "Approve file" }),
 				postButton({ buttonClass: 'button-main', value: "Send for corrections" }),
 				a({ href: '#reject', class: 'button-main button-main-error' }, "Reject file")),
-			hr(),
 			h3("Required documents"),
 			ol({ class: 'submitted-documents-list' },
 				li(

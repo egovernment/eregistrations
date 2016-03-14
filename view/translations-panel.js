@@ -18,7 +18,6 @@ exports['meta-admin-main'] = {
 			form(
 				{ id: 'form-translate', action: url('save-translations'), method: 'post' },
 				h2(_("Translations")),
-				hr(),
 				fieldset(
 					{ class: 'form-elements i18n-panel' },
 					ul(

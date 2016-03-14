@@ -103,7 +103,6 @@ exports._questionsSection = function (context) {
 	return div(
 		{ class: ['section-primary', 'user-guide-questions-section'] },
 		h2(_("Questions")),
-		hr(),
 		exports._questionsIntro(context),
 		context.businessProcess.determinants.toDOMFieldset(document, { formId: 'guide-form' })
 	);
@@ -123,7 +122,6 @@ exports._registrationsSection = function (context) {
 		div(
 			{ id: 'mandatory-registrations-section', class: 'section-primary-wrapper' },
 			h2(_("Mandatory Registrations")),
-			hr(),
 			exports._mandatoryRegistrationIntro(context),
 			ul({ id: 'mandatory-registrations-list' }, context.businessProcess.registrations.map,
 				function (registration) {
@@ -143,7 +141,6 @@ exports._registrationsSection = function (context) {
 		div(
 			{ id: 'optional-registrations-section', class: 'section-primary-wrapper' },
 			h2(_("Optional Registrations")),
-			hr(),
 			exports._optionalRegistrationIntro(context),
 			ul({ id: 'optional-registrations-list' }, context.businessProcess.registrations.map,
 				function (registration) {
@@ -176,7 +173,6 @@ exports._requirementsSection = function (context) {
 		{ id: 'requirements-section', class: ['section-primary',
 			'user-guide-requirements-section'] },
 		h2(_("Requirements")),
-		hr(),
 		exports._requirementsIntro(context),
 		ul({ id: 'requirements-list', class: 'user-guide-requirements-list' },
 			context.businessProcess.requirements.map,
@@ -199,7 +195,6 @@ exports._costsSection = function (context) {
 	return div(
 		{ id: 'costs-section', class: ['section-primary', 'user-guide-costs-section'] },
 		h2(_("Costs")),
-		hr(),
 		exports._costsIntro(context),
 		ul({ id: 'costs-list', class: 'user-guide-costs-list' }, exports._costsList(context)),
 		p(a({ id: 'print-costs-link', class: 'button-resource-link', href: '/costs-print/',

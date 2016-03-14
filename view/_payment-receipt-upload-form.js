@@ -11,7 +11,6 @@ module.exports = function (paymentUpload) {
 		paymentUpload.document.legend &&
 		small(mdi(_d(paymentUpload.document.legend,
 			{ user: paymentUpload.master }))),
-		hr(),
 		input({ dbjs: paymentUpload.document.files._map, label: true }),
 		p({ class: 'submit' }, input({ type: 'submit', value: _("Submit") })),
 		p({ class: 'section-primary-scroll-top' },

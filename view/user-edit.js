@@ -25,7 +25,6 @@ exports['sub-main'] = {
 					)
 				)
 			),
-			hr(),
 			form(
 				{ method: 'post', action: '/user/' + user.__id__ + '/' },
 				ul(

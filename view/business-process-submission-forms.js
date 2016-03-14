@@ -43,7 +43,6 @@ exports.step = function () {
 					h2(_("Acceptance")),
 					p(_("Before sending, you must accept that the information entered into the system, " +
 						"would be saved and processed by the involved institutions")),
-					hr(),
 					label({ class: 'input-aside' }, span(input({
 						id: 'input-certified-truth',
 						name: this.businessProcess.submissionForms.__id__ + '/isAffidavitSigned',
