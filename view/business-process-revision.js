@@ -11,7 +11,7 @@ exports._customPreviewInfo = function (context/*, options*/) {
 	var options      = arguments[1]
 	  , revisionStep = context.processingStep;
 
-	return insert(_if(revisionStep._isRevisionPending, section(
+	insert(_if(revisionStep._isRevisionPending, [ exports._customAlert(context), section(
 		{ class: 'official-submission-toolbar' },
 		// show buttons only if step is pending
 		_if(eq(revisionStep._revisionProgress, 1),
@@ -22,7 +22,7 @@ exports._customPreviewInfo = function (context/*, options*/) {
 					exports._returnButton.call(context, options)))),
 				// show reject button at all times when revision is pending
 		exports._rejectButton.call(context, options)
-	)));
+	)]));
 };
 
 exports._approveButton = function (/*options*/) {
@@ -75,3 +75,5 @@ exports._rejectButton = function (/*options*/) {
 			"sent can be determined as not real.")
 	}, _("Reject application"))];
 };
+
+exports._customAlert = Function.prototype;
