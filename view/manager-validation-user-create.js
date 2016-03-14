@@ -10,7 +10,6 @@ exports['sub-main'] = {
 	content: function () {
 		section({ class: 'section-primary' },
 			h3(_("New manager")),
-			hr(),
 			form(
 				{ method: 'post', action: '/user-add/' },
 				fieldset({
