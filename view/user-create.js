@@ -11,7 +11,6 @@ exports['sub-main'] = {
 	content: function () {
 		section({ class: 'section-primary' },
 			h3(_("New user")),
-			hr(),
 			form(
 				{ method: 'post', action: '/user-add/' },
 				ul(

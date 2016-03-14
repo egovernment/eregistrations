@@ -12,6 +12,5 @@ exports['sub-main'] = function () {
 		div({ class: "section-primary" },
 			h2(_("Documents of ${businessName}",
 					{ businessName: businessProcess._businessName })),
-			hr(),
 			renderDocumentsList(businessProcess.documents.processChainUploaded)));
 };

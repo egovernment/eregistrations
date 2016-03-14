@@ -12,7 +12,6 @@ exports.main = function () {
 		div(
 			{ class: 'section-primary' },
 			h3("Reset Password"),
-			hr(),
 			ul(
 				{ class: 'form-elements' },
 				li(

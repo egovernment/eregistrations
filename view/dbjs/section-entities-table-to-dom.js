@@ -18,7 +18,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 		return section({ class: cssClass },
 			(function () {
 				if (self.label) {
-					return [headersMap[headerRank++](self._label), hr()];
+					return [headersMap[headerRank++](self._label)];
 				}
 				headerRank++;
 			}()),

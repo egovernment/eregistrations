@@ -9,7 +9,6 @@ module.exports = function (businessProcess) {
 	return [
 		div({ class: "section-primary-sub user-account-content-selector" },
 			h2(_("Documents")),
-			hr(),
 			p({ class: 'section-primary-legend' },
 				_("Here you can see documents that you uploaded as part of the application and the " +
 					"certificates issued in the process.")),
@@ -20,7 +19,6 @@ module.exports = function (businessProcess) {
 					_("See all documents")))),
 		div({ class: "section-primary-sub" },
 			h2(_("Data")),
-			hr(),
 			p({ class: 'section-primary-legend' },
 				_("You can see here all the information you have provided for the application.")),
 			div({ class: "table-responsive-container" },

@@ -31,7 +31,6 @@ module.exports = Object.defineProperty(db.RequirementUpload.prototype, 'toDOMFor
 							p(this.rejectReasons._first),
 							ul(this.rejectReasons, identity)))),
 			typeof options.afterHeader === 'function' ? options.afterHeader(this) : null,
-			hr(),
 			this.document.legend &&
 				p({ class: 'section-primary-legend' }, mdi(_d(this.document.legend,
 					{ user: uploadsOwner }))),
