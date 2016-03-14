@@ -26,6 +26,11 @@
 	content: ':';
 }
 
+.info-main-rejection-lists > li > span {
+	display: inline-block;
+	padding-left: 8px;
+}
+
 .info-main-rejection-list-reasons {
 	display: inline-block;
 	list-style-type: none;
