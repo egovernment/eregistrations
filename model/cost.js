@@ -18,7 +18,7 @@ module.exports = memoize(function (db) {
 		// Cost legend
 		legend: { type: StringLine },
 		// Cost optional info
-		optionalInfo: { type: StringLine },
+		optionalInfo: { type: db.String },
 		// Cost amount
 		amount: { type: Currency, step: 1 },
 		// Cost's sideAmount is not taken into account in payable costs, nor in total.

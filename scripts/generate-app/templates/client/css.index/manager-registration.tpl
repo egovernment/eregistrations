@@ -3,6 +3,7 @@
 ../../../node_modules/eregistrations/css/table.css
 ../../../node_modules/eregistrations/css/components/fa.css
 ../../../node_modules/eregistrations/css/components/dialog.css
+../../../node_modules/eregistrations/css/components/disabler.css
 ../../../node_modules/eregistrations/css/components/section-primary.css
 ../../../node_modules/eregistrations/css/components/header-top.css
 ../../../node_modules/eregistrations/css/components/submitted-menu.css

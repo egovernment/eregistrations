@@ -62,7 +62,8 @@ module.exports = function (storage, keyPath/*, options*/) {
 				}
 			});
 		}
-		return storage.searchComputed(keyPath, function (ownerId, data) {
+		return storage.searchComputed({ keyPath: keyPath }, function (id, data) {
+			var ownerId = id.split('/', 1)[0];
 			if (isArray(data.value)) {
 				resolveEventKeys(data.value).forEach(function (nu) { map.set(nu, ownerId); });
 			} else {
