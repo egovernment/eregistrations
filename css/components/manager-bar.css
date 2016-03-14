@@ -16,6 +16,11 @@
 	line-height: 44px;
 }
 
+.manager-bar-actions > * {
+	display: inline-block;
+	margin-left: 4px;
+}
+
 .manager-bar-info > * {
 	display: inline-block;
 	margin-left: 4px;
