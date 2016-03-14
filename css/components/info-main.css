@@ -12,35 +12,3 @@
 .info-main > :last-child {
 	margin-bottom: 0;
 }
-
-.info-main-rejection > li > h4 {
-	font-weight: 300;
-	text-decoration: underline;
-}
-
-.info-main-rejection-lists > li > h4 {
-	display: inline-block;
-}
-
-.info-main-rejection-lists > li > h4::after {
-	content: ':';
-}
-
-.info-main-rejection-lists > li > span {
-	display: inline-block;
-	padding-left: 8px;
-}
-
-.info-main-rejection-list-reasons {
-	display: inline-block;
-	list-style-type: none;
-	padding: 0;
-}
-
-.info-main-rejection-list-reasons > li {
-	padding-left: 8px;
-}
-
-.info-main-rejection-list-reasons > li:first-child::after {
-	content: ',';
-}

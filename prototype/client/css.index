@@ -12,6 +12,7 @@
 ../../css/components/button-resource-link.css
 ../../css/components/error-main.css
 ../../css/components/info-main.css
+../../css/components/info-main-documents-sent-back.css
 ../../css/components/demo-user-app-navigation.css
 ../../css/components/disabler.css
 ../../css/components/nested-user.css
