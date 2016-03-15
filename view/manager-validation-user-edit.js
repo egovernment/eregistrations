@@ -35,7 +35,6 @@ exports['sub-main'] = {
 					))
 				)
 			),
-			hr(),
 			activateManagerForm(user, true),
 			form(
 				{ method: 'post', action: '/user/' + user.__id__ + '/' },

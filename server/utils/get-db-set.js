@@ -25,8 +25,8 @@ module.exports = memoize(function (storage, recordType, keyPath, value) {
 			else set.delete(event.ownerId);
 		});
 		if (recordType === 'computed') {
-			return storage.searchComputed(keyPath, function (ownerId, data) {
-				if (resolveFilter(value, data.value)) set.add(ownerId);
+			return storage.searchComputed({ keyPath: keyPath }, function (id, data) {
+				if (resolveFilter(value, data.value)) set.add(id.split('/', 1)[0]);
 			})(set);
 		}
 		return storage.search({ keyPath: keyPath }, function (id, data) {

@@ -25,7 +25,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 	appRootPath = 'apps' + path.sep + appName;
 	require('../scripts/generate-app')(root, appName).done(function () {
 		var otherClientsModelReminder, clientModelReminder, appsRoutersReminder
-		  , serverIndexes
+		  , serverIndexes, appServerRoutes
 		  , msg = ["\nSuccessfully created " + appName + " application." +
 				"\nIt's located in: " + appRootPath + "." +
 				"\n\nIn order to setup application you need to: \n"], msgItems = [];
@@ -42,6 +42,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			"configuration is complete in apps/" + appName + "/controller");
 
 		serverIndexes = "Ensure entry in server/db/indexes.js";
+		appServerRoutes = "Setup apps/" + appName + "/server/routes.js";
 
 		clientModelReminder = "Ensure that the models of handled businessProcesses are" +
 			" required in apps/" + appName + "/client/model.js";
@@ -51,7 +52,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			" apps/business-process-submitted/client/model.js";
 
 		appsRoutersReminder = "Ensure configuration entry in server/apps/routers.js";
-		msgItems.push("Esnure app configuration added in POST controllers configuration at: "
+		msgItems.push("Ensure app configuration added in POST controllers configuration at: "
 			+ "server/processes/master/apps-post-controllers and " +
 			"server/processes/memory-db/apps-post-controllers");
 		var addRole = "Add new role in model/user/roles.js";
@@ -94,12 +95,21 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push(addRole);
 		}
 
+		if (appName === 'manager-validation') {
+			msgItems.push(clientModelReminder);
+			msgItems.push(serverIndexes);
+			msgItems.push(addRole);
+			msgItems.push(appServerRoutes);
+			msgItems.push(modelViews);
+			msgItems.push("Ensure that managerValidation views are configured in server/db/views.js");
+		}
+
 		if (appName === 'dispatcher') {
 			msgItems.push("Ensure that views populations for assignees from " +
 				"relevant roles is configured in server/db/views.js");
 			msgItems.push("Ensure that views model is updated with proper " +
 				"assignees map in model/views.js");
-			msgItems.push("Setup apps/" + appName + "/server/routes.js");
+			msgItems.push(appServerRoutes);
 		}
 
 		if (appName === 'meta-admin') {

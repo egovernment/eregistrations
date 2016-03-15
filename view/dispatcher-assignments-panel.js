@@ -54,7 +54,6 @@ var businessProcessTable = function (context) {
 };
 
 exports['dispatcher-main'] = {
-	class: { content: true, 'user-forms': true },
 	content: function () {
 		var searchForm, searchInput, businessProcessesTable;
 
