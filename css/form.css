@@ -306,6 +306,11 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	}
 }
 
+.dbjs-input-component-read-only {
+	line-height: 22px;
+	margin: 11px 0;
+}
+
 /* Do not show statuses for disabled controls */
 .dbjs-input-component *:disabled ~ span.status-ok {
 	display: none;
