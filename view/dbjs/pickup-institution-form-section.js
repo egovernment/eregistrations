@@ -18,7 +18,6 @@ module.exports = Object.defineProperty(db.PickupInstitutionFormSection.prototype
 					{ institutionName: resolve(frontDeskStep._institution, 'name') })),
 				[ns.form({ method: 'post', action: url('pickup-institution'),
 						class: ns._if(ns.eq(this._status, 1), 'completed') },
-					ns.hr(),
 					ns.ul({ class: 'form-elements' },
 						ns.li(
 							ns.field({

@@ -2,6 +2,11 @@
 	padding-bottom: 22px;
 }
 
+.user-submission-sworn-declaration label {
+	font-size: 18px;
+	font-weight: 300;
+}
+
 a.user-submission-button,
 [type="submit"].user-submission-button {
 	background-color: var(--normal-background);
