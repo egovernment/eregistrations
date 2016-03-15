@@ -19,8 +19,8 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	businessProcesses = BusinessProcessClass.instances.filterByKey('isFromEregistrations', true)
 		.filterByKey('isDemo', isFalsy);
 
-	notification.trigger = businessProcesses.filterByKey('guideProgress', 1);
-	notification.preTrigger = businessProcesses.filterByKey('isSubmitted', true);
+	notification.preTrigger = businessProcesses.filterByKey('guideProgress', 1);
+	notification.trigger = businessProcesses.filterByKey('isSubmitted', true);
 
 	notification.resolveGetters = true;
 
