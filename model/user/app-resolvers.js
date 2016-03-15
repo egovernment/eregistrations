@@ -37,8 +37,13 @@ module.exports = memoize(function (db/* options */) {
 					businessProcess = this.currentBusinessProcess;
 					if (businessProcess) appId += '.' + businessProcess.__id__;
 				}
+				if (/^official[A-Z]/.test(role)) appId += this.appAccessIdOfficialPostfix;
 				return appId;
 			}
+		},
+		appAccessIdOfficialPostfix: {
+			type: StringLine,
+			value: ''
 		},
 		appName: {
 			type: StringLine,
