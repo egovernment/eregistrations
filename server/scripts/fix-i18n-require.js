@@ -3,17 +3,17 @@
 'use strict';
 
 var repeat        = require('es5-ext/string/#/repeat')
-  , replaceAll    = require('es5-ext/string/#/plain-replace-all')
-  , globalRewrite = require('../utils/global-rewrite');
+  , globalRewrite = require('../utils/global-rewrite')
+
+  , re1 = /require\('mano'\)\.i18n(?!S)/g
+  , re2 = /mano\.i18n(?!S)/g;
 
 module.exports = function (path) {
 	return globalRewrite(path, function (content, path) {
-		var nest;
+		var nest, replaceString;
 		if (path === 'i18n.js') return;
 		nest = repeat.call('../', path.split('/').length - 1);
-		content = replaceAll.call(content, 'require(\'mano\').i18n',
-			'require(\'' + (nest || './') + 'i18n\')');
-		return replaceAll.call(content, 'mano.i18n',
-			'require(\'' + (nest || './') + 'i18n\')');
+		replaceString = 'require(\'' + (nest || './') + 'db\')';
+		return content.replace(re1, replaceString).replace(re2, replaceString);
 	});
 };
