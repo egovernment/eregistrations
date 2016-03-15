@@ -11,7 +11,9 @@ module.exports = function (path) {
 		var nest;
 		if (path === 'i18n.js') return;
 		nest = repeat.call('../', path.split('/').length - 1);
-		return replaceAll.call(content, 'require(\'mano\').i18n',
+		content = replaceAll.call(content, 'require(\'mano\').i18n',
+			'require(\'' + (nest || './') + 'i18n\')');
+		return replaceAll.call(content, 'mano.i18n',
 			'require(\'' + (nest || './') + 'i18n\')');
 	});
 };

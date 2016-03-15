@@ -11,7 +11,9 @@ module.exports = function (path) {
 		var nest;
 		if (path === 'db.js') return;
 		nest = repeat.call('../', path.split('/').length - 1);
-		return replaceAll.call(content, 'require(\'mano\').db',
+		content = replaceAll.call(content, 'require(\'mano\').db',
+			'require(\'' + (nest || './') + 'db\')');
+		return replaceAll.call(content, 'mano.db',
 			'require(\'' + (nest || './') + 'db\')');
 	});
 };
