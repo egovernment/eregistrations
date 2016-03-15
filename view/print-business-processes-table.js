@@ -59,7 +59,7 @@ var generateMainContent = function () {
 					}))];
 	};
 
-	container = div();
+	container = section({ class: 'section-primary' });
 
 	listManager.on('change', function () {
 		var result = [];
@@ -99,7 +99,7 @@ var legacyGenerateMainContent = function () {
 				exports._businessProcessesTable(businessProcesses))];
 	};
 
-	return section({ id: 'main' },
+	return section({ id: 'main', class: 'section-primary' },
 		mmap(location.query.get('status'), function (value) {
 			var status, businessProcesses, pageCount;
 			if (value == null) {
