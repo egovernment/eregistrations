@@ -10,9 +10,23 @@
 	align-items: center;
 }
 .manager-bar-info {
-	padding-top: 11px;
-	padding-bottom: 11px;
+	line-height: 44px;
 }
 .manager-bar-actions {
 	line-height: 44px;
+}
+
+.manager-bar-actions > * {
+	display: inline-block;
+	margin-left: 4px;
+}
+
+.manager-bar-info > * {
+	display: inline-block;
+	margin-left: 4px;
+}
+
+.manager-bar-info .button-regular {
+	color: var(--white-text);
+	background-color: var(--normal-dark-background);
 }

@@ -6,14 +6,14 @@ var supervisorMeta = require('../../utils/processing-steps-map')
   , getDbArray     = require('./get-db-array')
   , serializeValue = require('dbjs/_setup/serialize/value');
 
-module.exports = function (onProcessingStepsChange) {
+module.exports = function (storage, onProcessingStepsChange) {
 	var supervisorResults = {};
 	return deferred.map(Object.keys(supervisorMeta),
 		function (name) {
-			var keyPath = supervisorMeta[name].indexName;
-			return getDbSet('computed', keyPath,
-				serializeValue(supervisorMeta[name].indexValue))(function (set) {
-				return getDbArray(set, 'computed', keyPath)(function (array) {
+			var keyPath = supervisorMeta[name].indexName
+			  , value = serializeValue(supervisorMeta[name].indexValue);
+			return getDbSet(storage, 'computed', keyPath, value)(function (set) {
+				return getDbArray(set, storage, 'computed', keyPath)(function (array) {
 					var processingStepKeyPath = 'processingSteps/map/' + name;
 					supervisorResults[processingStepKeyPath] = array;
 					if (typeof onProcessingStepsChange === 'function') {
@@ -22,7 +22,5 @@ module.exports = function (onProcessingStepsChange) {
 					return supervisorResults[processingStepKeyPath];
 				});
 			});
-		}).then(function () {
-		return supervisorResults;
-	});
+		})(supervisorResults);
 };

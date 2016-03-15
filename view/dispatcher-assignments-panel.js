@@ -43,6 +43,7 @@ var businessProcessTable = function (context) {
 	return getBusinessProcessesTable({
 		user: context.user,
 		roleName: context.shortRoleName,
+		fullItemsRoleName: 'dispatcher',
 		statusMap: context.statusMap,
 		getOrderIndex: context.getOrderIndex,
 		itemsPerPage: env.objectsListItemsPerPage,
@@ -53,7 +54,6 @@ var businessProcessTable = function (context) {
 };
 
 exports['dispatcher-main'] = {
-	class: { content: true, 'user-forms': true },
 	content: function () {
 		var searchForm, searchInput, businessProcessesTable;
 

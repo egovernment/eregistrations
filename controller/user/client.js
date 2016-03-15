@@ -10,3 +10,7 @@ exports.profile = {
 		return submit.apply(this, arguments);
 	}
 };
+
+exports['request-create-managed-account'] = {
+	remoteSubmit: true
+};
