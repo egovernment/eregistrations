@@ -11,7 +11,6 @@ exports['forms-sections-content'] = function () {
 	insert(
 		_if(this.section._legend, div({ class: 'info-main' },
 			md(this.section._legend))),
-
 		this.section.applicableSections ?
 				generateSections(this.section.applicableSections, { viewContext: this }) :
 				this.section.toDOMForm(document),
