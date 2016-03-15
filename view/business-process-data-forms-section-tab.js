@@ -11,7 +11,9 @@ exports['forms-sections-content'] = function () {
 	insert(
 		_if(this.section._legend, div({ class: 'info-main' },
 			md(this.section._legend))),
-		generateSections(this.section.applicableSections, { viewContext: this }),
+		this.section.applicableSections ?
+				generateSections(this.section.applicableSections, { viewContext: this }) :
+				this.section.toDOMForm(document),
 		p({ class: 'user-next-step-button' },
 			a({ href: this.section._nextSection.map(function (nextSection) {
 				if (!nextSection) return '/documents/';
