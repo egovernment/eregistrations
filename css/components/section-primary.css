@@ -123,7 +123,8 @@
 .section-primary .dbjs-input-component > .input input[type="tel"],
 .section-primary .dbjs-input-component > .input input[type="color"],
 .section-primary .dbjs-input-component > .input select,
-.section-primary .dbjs-input-component > .input textarea  {
+.section-primary .dbjs-input-component > .input textarea,
+.section-primary .dbjs-input-component > .input ul.radio  {
 	max-width: 90%;
 }
 
