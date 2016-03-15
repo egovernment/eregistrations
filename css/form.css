@@ -66,6 +66,10 @@ ul.form-elements li {
 	padding-left: 0;
 }
 
+.form-elements .radio {
+	max-width: 90%;
+}
+
 .form-elements .radio,
 .form-elements .radio li {
 	display: inline-block;
