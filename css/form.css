@@ -41,6 +41,12 @@ ul.form-elements li {
 .inputs {
 	line-height: 44px;
 }
+
+.dbjs-input-component-read-only .input {
+	line-height: 22px;
+	margin: 11px 0;
+}
+
 .input .file-thumb {
 	line-height: 22px;
 }
@@ -304,11 +310,6 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	.dbjs-input-component .status-error {
 		line-height: 21px;
 	}
-}
-
-.dbjs-input-component-read-only .input {
-	line-height: 22px;
-	margin: 11px 0;
 }
 
 /* Do not show statuses for disabled controls */
