@@ -204,9 +204,9 @@ module.exports = function (dbDriver, data) {
 	});
 
 	// Official roles resolvers
-	var getRecentlyVisitedBusinessProcessesFragment = function (userId, roleName) {
+	var getRecentlyVisitedBusinessProcessesFragment = function (userId, stepShortPath) {
 		var list = getDbRecordSet(userStorage,
-			userId + '/recentlyVisited/businessProcesses/' + roleName)
+			userId + '/recentlyVisited/businessProcesses/' + stepShortPath)
 			.map(function (value) { return value.slice(1); });
 
 		return getColFragments(list, getBusinessProcessData);
