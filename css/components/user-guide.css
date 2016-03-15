@@ -48,8 +48,10 @@
 	max-width: 85%;
 }
 
+.user-guide-requirements-list small,
 .user-guide-costs-list li span > small {
 	display: block;
+	line-height: 16px;
 }
 
 .user-guide-no-requested-registrations-info {
