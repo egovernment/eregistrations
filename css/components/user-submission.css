@@ -1,5 +1,8 @@
 .user-submission-sworn-declaration {
 	padding-bottom: 22px;
+}
+
+.user-submission-sworn-declaration label {
 	font-size: 18px;
 	font-weight: 300;
 }
