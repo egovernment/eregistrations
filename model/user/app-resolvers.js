@@ -42,8 +42,7 @@ module.exports = memoize(function (db/* options */) {
 			}
 		},
 		appAccessIdOfficialPostfix: {
-			type: StringLine,
-			value: ''
+			type: StringLine
 		},
 		appName: {
 			type: StringLine,
