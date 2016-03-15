@@ -306,7 +306,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 	}
 }
 
-.dbjs-input-component-read-only {
+.dbjs-input-component-read-only .input {
 	line-height: 22px;
 	margin: 11px 0;
 }
