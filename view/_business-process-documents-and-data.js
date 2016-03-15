@@ -31,7 +31,7 @@ var drawDocumentsPart = function (target, urlPrefix) {
 							_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
 							_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' }))
 						);
-						td(_d(requirementUpload.document._label, { user: requirementUpload.master }));
+						td(_d(requirementUpload.document._label, requirementUpload.document.getTranslations()));
 						td(requirementUpload.document._issuedBy);
 						td({ class: 'submitted-user-data-table-date' }, requirementUpload.document._issueDate);
 						td({ class: 'submitted-user-data-table-link' },

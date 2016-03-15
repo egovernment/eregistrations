@@ -12,7 +12,8 @@ var memoize               = require('memoizee/plain')
   , defineFormSectionBase = require('./form-section-base')
   , defineFormSection     = require('./form-section')
   , defineNestedMap       = require('./lib/nested-map')
-  , definePerson          = require('./person');
+  , definePerson          = require('./person')
+  , defineGetTranslations = require('./lib/define-get-translations');
 
 module.exports = memoize(function (db) {
 	var StringLine      = defineStringLine(db)
@@ -123,6 +124,8 @@ module.exports = memoize(function (db) {
 		propertyMasterType: Document,
 		propertyNames: ['issuedBy', 'issuedByOfficer', 'registration']
 	});
+
+	defineGetTranslations(Document);
 
 	return Document;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

@@ -38,7 +38,7 @@ module.exports = function (doc, sideContent) {
 		master = doc.owner.owner.owner.owner;
 	}
 
-	return [h2(doc._label.map(function (label) { return _d(label, { user: master }); })),
+	return [h2(doc._label.map(function (label) { return _d(label, doc.getTranslations()); })),
 		insert(_if(doc.statusLog.ordered._size,
 			section(
 				{ class: 'section-primary' },

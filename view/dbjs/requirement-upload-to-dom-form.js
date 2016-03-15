@@ -24,7 +24,7 @@ module.exports = Object.defineProperty(db.RequirementUpload.prototype, 'toDOMFor
 				enctype: 'multipart/form-data', autoSubmit: true },
 
 			h2(this.document._label.map(function (label) {
-				return _d(label, { user: uploadsOwner });
+				return _d(label, this.document.getTranslations());
 			}.bind(this))),
 			_if(and(this._isRecentlyRejected, this.master._isSentBack), div({ class: 'info-main' },
 					_if(eq(this.rejectReasons._size, 1),
@@ -33,7 +33,7 @@ module.exports = Object.defineProperty(db.RequirementUpload.prototype, 'toDOMFor
 			typeof options.afterHeader === 'function' ? options.afterHeader(this) : null,
 			this.document.legend &&
 				p({ class: 'section-primary-legend' }, mdi(_d(this.document.legend,
-					{ user: uploadsOwner }))),
+					this.document.getTranslations()))),
 			input({ dbjs: this.document.files._map, label: _("Select file") }),
 			p({ class: 'submit' }, input({ type: 'submit', value: _("Submit") })),
 			p({ class: 'section-primary-scroll-top' },
