@@ -28,6 +28,10 @@ module.exports = memoize(function (db) {
 	FormSectionBase = db.Object.extend('FormSectionBase', {
 		progressRules: { type: ProgressRules, nested: true },
 		label: { type: StringLine, required: true },
+		// Usege example: tabs
+		shortLabel: { type: StringLine, value: function () {
+			return this.label;
+		} },
 		// Optional explanation text.
 		legend: { type: db.String },
 		// When isApplicable !== true the section will not be visible in the view
