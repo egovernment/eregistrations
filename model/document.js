@@ -125,7 +125,7 @@ module.exports = memoize(function (db) {
 		propertyNames: ['issuedBy', 'issuedByOfficer', 'registration']
 	});
 
-	defineGetTranslations(Document);
+	defineGetTranslations(Document.prototype);
 
 	return Document;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

@@ -37,5 +37,7 @@ module.exports = memoize(function (db/*, options*/) {
 		}
 	});
 
-	return defineGetTranslations(ProgressRule);
+	defineGetTranslations(ProgressRule.prototype);
+
+	return ProgressRule;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
