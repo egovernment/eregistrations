@@ -8,12 +8,13 @@ var aFrom               = require('es5-ext/array/from')
   , isNaturalNumber     = require('es5-ext/number/is-natural')
   , toNaturalNumber     = require('es5-ext/number/to-pos-integer')
   , toArray             = require('es5-ext/object/to-array')
+  , ensureObject        = require('es5-ext/object/valid-object')
   , includes            = require('es5-ext/string/#/contains')
   , deferred            = require('deferred')
   , memoize             = require('memoizee')
   , serializeValue      = require('dbjs/_setup/serialize/value')
   , unserializeValue    = require('dbjs/_setup/unserialize/value')
-  , mano                = require('mano')
+  , ensureStorage       = require('dbjs-persistence/ensure-storage')
   , QueryHandler        = require('../../utils/query-handler')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
   , getDbSet            = require('../utils/get-db-set')
@@ -22,7 +23,7 @@ var aFrom               = require('es5-ext/array/from')
   , listItemsPerPage    = require('mano').env.objectsListItemsPerPage
   , timeRanges          = require('../../utils/supervisor-time-ranges')
   , forEach             = require('es5-ext/object/for-each')
-  , allSupervisorSteps  = require('../utils/supervisor-steps-array')()
+  , getSupervisorSteps  = require('../utils/supervisor-steps-array')
   , bpListProps         = require('../../utils/supervisor-list-properties')
   , bpListComputedProps = aFrom(require('../../utils/supervisor-list-computed-properties'))
   , serializeView       = require('../../utils/db-view/serialize')
@@ -33,7 +34,7 @@ var aFrom               = require('es5-ext/array/from')
   , ceil           = Math.ceil
   , stringify      = JSON.stringify;
 
-var getFilteredArray = function (arr, filterString) {
+var getFilteredArray = function (storage, arr, filterString) {
 	var result = [];
 
 	var filter = function (data, searchData) {
@@ -43,7 +44,7 @@ var getFilteredArray = function (arr, filterString) {
 	};
 	var findAndFilter = function (data) {
 		var dataId = data.id.slice(0, data.id.indexOf('/'));
-		return mano.dbDriver.getComputed(dataId + '/searchString').done(function (searchData) {
+		return storage.getComputed(dataId + '/searchString')(function (searchData) {
 			filter(data, searchData);
 		});
 	};
@@ -65,18 +66,20 @@ var getStepsFromBps = function (businessProcessesArr, keyPath) {
 	});
 };
 
-var initializeHandler = function () {
+var initializeHandler = function (conf) {
 	var tableQueryHandler = new QueryHandler(exports.tableQueryConf)
-	  , itemsPerPage      = toNaturalNumber(listItemsPerPage) || defaultItemsPerPage;
+	  , itemsPerPage = toNaturalNumber(listItemsPerPage) || defaultItemsPerPage
+	  , storage = ensureStorage(conf.storage)
+	  , allSupervisorSteps = getSupervisorSteps(storage);
 
 	var getTableData = memoize(function (query) {
 		var promise;
 
 		if (query.step) {
-			promise = getDbSet('computed', stepsMap[query.step].indexName,
+			promise = getDbSet(storage, 'computed', stepsMap[query.step].indexName,
 				serializeValue(stepsMap[query.step].indexValue)).then(
 				function (baseSet) {
-					return getDbArray(baseSet, 'computed', stepsMap[query.step].indexName).then(
+					return getDbArray(baseSet, storage, 'computed', stepsMap[query.step].indexName).then(
 						function (arr) {
 							return getStepsFromBps(arr, 'processingSteps/map/' + query.step);
 						}
@@ -100,7 +103,7 @@ var initializeHandler = function () {
 			}
 			if (!query.search) return arr;
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
-				return getFilteredArray(arr, value);
+				return getFilteredArray(storage, arr, value);
 			})(function (arrays) {
 				if (arrays.length === 1) return arrays[0];
 
@@ -129,7 +132,7 @@ var initializeHandler = function () {
 						return prop.indexOf(step) !== -1;
 					});
 					return deferred.map(listProps, function (keyPath) {
-						return mano.dbDriver.getComputed(objId + '/' + keyPath)(function (data) {
+						return storage.getComputed(objId + '/' + keyPath)(function (data) {
 							if (isArray(data.value)) {
 								return data.value.map(function (data) {
 									var key = data.key ? '*' + data.key : '';
@@ -145,7 +148,7 @@ var initializeHandler = function () {
 			}
 			directEvents = deferred.map(arr, function (data) {
 				var dataId = data.id.slice(0, data.id.indexOf('/'));
-				return mano.dbDriver.getObject(dataId, { keyPaths: bpListProps })(function (datas) {
+				return storage.getObject(dataId, { keyPaths: bpListProps })(function (datas) {
 					return datas.map(function (data) {
 						return data.data.stamp + '.' + data.id + '.' + data.data.value;
 					});
@@ -171,7 +174,7 @@ var initializeHandler = function () {
 			name: 'id',
 			ensure: function (value) {
 				if (!value) throw new Error("Missing id");
-				return mano.dbDriver.getComputed(value + '/isSubmitted')(function (data) {
+				return storage.getComputed(value + '/isSubmitted')(function (data) {
 					if (!data || (data.value !== '11')) return null;
 					return value;
 				});
@@ -186,8 +189,8 @@ var initializeHandler = function () {
 	};
 };
 
-module.exports = exports = function () {
-	var handler = initializeHandler();
+module.exports = exports = function (conf) {
+	var handler = initializeHandler(ensureObject(conf));
 
 	return {
 		'get-processing-steps-view': function (query) {
@@ -198,15 +201,10 @@ module.exports = exports = function () {
 		'get-business-process-data': function (query) {
 			// Get full data of one of the business processeses
 			return handler.businessProcessQueryHandler.resolve(query)(function (query) {
+				var recordId;
 				if (!query.id) return { passed: false };
-				mano.db.User.getById(this.req.$user).recentlyVisited.businessProcesses.revision.add(
-					mano.db.BusinessProcess.getById(query.id)
-				);
-				return { passed: true };
-				//Use below persistent version when possible
-				//var recordId = this.req.$user + '/recentlyVisited/businessProcesses/revision*7'
-				// + query.id;
-				//return mano.dbDriver.store(recordId, '11')({ passed: true });
+				recordId = this.req.$user + '/recentlyVisited/businessProcesses/supervisor*7' + query.id;
+				return conf.storage.driver.getStorage('user').store(recordId, '11')({ passed: true });
 			}.bind(this));
 		}
 	};

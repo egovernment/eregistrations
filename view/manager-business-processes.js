@@ -11,7 +11,10 @@ exports._parent = require('./manager');
 exports['manager-account-requests'] = { class: { active: true } };
 
 exports['manager-account-content'] = function () {
-	var requests = this.user.managedBusinessProcesses;
+	var requests = this.user.managedBusinessProcesses, user = this.user;
+
+	insert(_if(not(this.user._isManagerActive),
+		section(p({ class: 'entities-overview-info' }, _("Your account is currently inactive")))));
 
 	insert(_if(requests._size, function () {
 		return section({ class: 'submitted-main table-responsive-container' },
@@ -36,11 +39,12 @@ exports['manager-account-content'] = function () {
 								return businessProcess._isSubmitted._lastModified.map(formatLastModified);
 							})),
 							td(businessProcess._status),
-							td({ class: 'actions' }, actionsColumn.data(businessProcess))
+							td({ class: 'actions' }, _if(user._isManagerActive,
+								actionsColumn.data(businessProcess), _("N/A")))
 						);
 					}
 				)
 			));
 	}.bind(this),
-		p(_('You have no requests yet.'))));
+		_if(this.user._isManagerActive, p(_('You have no requests yet.')))));
 };
