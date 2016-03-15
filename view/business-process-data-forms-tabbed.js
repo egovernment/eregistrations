@@ -28,6 +28,6 @@ exports._tabs = function (context) {
 					'forms-tab-nav-tab-active')] }, a({ href: sectionTabAddress },
 			span(i({ class: ['forms-tab-nav-tab-status fa',
 				_if(eq(section._status, 1), 'fa-check', 'fa-star')] }),
-				section._label)));
+				section._shortLabel)));
 	});
 };
