@@ -46,7 +46,17 @@ var joinSets = function (sets) {
 	set.promise = deferred.map(sets, function (set) { return set.promise; });
 	return set;
 };
-module.exports = function (dbDriver, data) {
+var getDefaultOfficialStepsResolver = function (userStorage) {
+	return function (userId) {
+		var rolesSet = getDbRecordSet(userStorage, userId + '/roles');
+		var resultSet = rolesSet.map(unserializeValue).filter(isOfficialRoleName)
+			.map(function (roleName) { return uncapitalize.call(roleName.slice('official'.length)); });
+		resultSet.promise = rolesSet.promise;
+		return resultSet;
+	};
+};
+
+module.exports = exports = function (dbDriver, data) {
 	var userStorage = ensureDriver(dbDriver).getStorage('user')
 	  , getBusinessProcessData = getObjFragment()
 	  , reducedStorage = dbDriver.getReducedStorage()
@@ -85,17 +95,10 @@ module.exports = function (dbDriver, data) {
 		new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
 
 	// Configure official steps (per user) resolver
-	var defaultOfficialStepsResolver = function (userId) {
-		var rolesSet = getDbRecordSet(userStorage, userId + '/roles');
-		var resultSet = rolesSet.map(unserializeValue).filter(isOfficialRoleName)
-			.map(function (roleName) { return uncapitalize.call(roleName.slice('official'.length)); });
-		resultSet.promise = rolesSet.promise;
-		return resultSet;
-	};
 	if (data.officialStepsResolver != null) {
 		resolveOfficialSteps = ensureCallable(data.officialStepsResolver);
 	} else {
-		resolveOfficialSteps = defaultOfficialStepsResolver;
+		resolveOfficialSteps = getDefaultOfficialStepsResolver(userStorage);
 	}
 	resolveOfficialSteps = memoize(resolveOfficialSteps, { length: 1, primitive: true });
 
@@ -442,3 +445,4 @@ module.exports = function (dbDriver, data) {
 	}, { primitive: true });
 	return getAccessRules;
 };
+exports.getDefaultOfficialStepsResolver = getDefaultOfficialStepsResolver;
