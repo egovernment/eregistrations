@@ -28,7 +28,7 @@ module.exports = memoize(function (db) {
 	FormSectionBase = db.Object.extend('FormSectionBase', {
 		progressRules: { type: ProgressRules, nested: true },
 		label: { type: StringLine, required: true },
-		// Usege example: tabs
+		// Usage example: tabs
 		shortLabel: { type: StringLine, value: function () {
 			return this.label;
 		} },
