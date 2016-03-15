@@ -30,17 +30,17 @@ var getCostsList = function (field, prefix) {
 exports.main = function () {
 	var amountDescriptor = db.Cost.prototype.getDescriptor('amount');
 	var totalCostAmount  = location.query.get('total');
+	section({ class: 'section-primary' },
+		h2(this.businessProcess._businessName),
+		ul(
+			{ class: 'print-costs-list' },
+			getCostsList.call(this, 'amount'),
+			_if(totalCostAmount, li({ class: 'print-costs-list-total' }, span(_("Total Costs:")),
+				" ", span(totalCostAmount.map(function (totalCostAmountValue) {
+					if (!totalCostAmountValue) return;
 
-	h2(this.businessProcess._businessName);
-	ul(
-		{ class: 'print-costs-list' },
-		getCostsList.call(this, 'amount'),
-		_if(totalCostAmount, li({ class: 'print-costs-list-total' }, span(_("Total Costs:")),
-			" ", span(totalCostAmount.map(function (totalCostAmountValue) {
-				if (!totalCostAmountValue) return;
-
-				return (new amountDescriptor.type(totalCostAmountValue)).toString(amountDescriptor);
-			})))),
-		getCostsList.call(this, 'sideAmount', 'side-')
-	);
+					return (new amountDescriptor.type(totalCostAmountValue)).toString(amountDescriptor);
+				})))),
+			getCostsList.call(this, 'sideAmount', 'side-')
+		));
 };
