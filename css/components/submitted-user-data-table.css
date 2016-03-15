@@ -30,6 +30,7 @@
 	border: 1px solid var(--light-inner-border);
 	text-align: left;
 	font-weight: 400;
+	vertical-align: top;
 }
 
 .submitted-user-data-table .actions {
