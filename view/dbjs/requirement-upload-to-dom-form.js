@@ -16,8 +16,7 @@ var db            = require('mano').db
 
 module.exports = Object.defineProperty(db.RequirementUpload.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var options      = Object(arguments[1])
-		  , uploadsOwner = this.owner.owner.owner;
+		var options = Object(arguments[1]);
 
 		return form({ action: '/requirement-upload/' +
 				camelToHyphen.call(this.document.uniqueKey) + '/', method: 'post',
