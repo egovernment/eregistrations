@@ -11,27 +11,8 @@ exports['sub-main'] = {
 	content: function () {
 		div({ class: 'user-account-boxes' },
 			section({ id: 'welcome-box', class: 'user-account-welcome' },
-				_if(this.manager, function () {
-					var managedUser = this.manager.currentlyManagedUser;
-
-					header(
-						h3(_("View for client: ${ clientFullName }", { clientFullName: managedUser._fullName }))
-					);
-					div({ class: 'free-form' },
-						md(_("1. From here you can access all the requests of this client in draft, " +
-								"in process, finished\n" +
-							"2. Start a new service for this client\n" +
-							"3. Create an account for this client if not done already")));
-				}.bind(this), function () {
-					header(
-						h3(_("Welcome to your account. From here you can:"))
-					);
-					div({ class: 'free-form' },
-						md(_("1. Access all your requests in draft, in process, finished\n" +
-							"2. Access and edit your documents and data\n" +
-							"3. Start a new service related to your company")));
-				})));
-
+				insert(exports._welcomeBoxHeader(this))
+				));
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab user-account-tab',
 					id: 'user-account-requests',
@@ -73,3 +54,26 @@ exports['sub-main'] = {
 };
 
 exports._servicesBoxList = Function.prototype;
+
+exports._welcomeBoxHeader = function (context) {
+	return _if(context.manager, function () {
+		var managedUser = context.manager.currentlyManagedUser;
+
+		return [header(
+			h3(_("View for client: ${ clientFullName }", { clientFullName: managedUser._fullName }))
+		),
+			div({ class: 'free-form' },
+				md(_("1. From here you can access all the requests of this client in draft, " +
+						"in process, finished\n" +
+					"2. Start a new service for this client\n" +
+					"3. Create an account for this client if not done already")))];
+	}.bind(context), function () {
+		return [header(
+			h3(_("Welcome to your account. From here you can:"))
+		),
+			div({ class: 'free-form' },
+				md(_("1. Access all your requests in draft, in process, finished\n" +
+					"2. Access and edit your documents and data\n" +
+					"3. Start a new service related to your company")))];
+	});
+};
