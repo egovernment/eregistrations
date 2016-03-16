@@ -40,7 +40,12 @@ exports.guide = {
 		}
 		return normalizedData;
 	},
-	redirectUrl: '/forms/'
+	redirectUrl: function () {
+		if (this.businessProcess.guideProgress < 1) {
+			return '/';
+		}
+		return '/forms/';
+	}
 };
 
 // Documents
