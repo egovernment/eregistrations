@@ -9,14 +9,17 @@
 var memoize               = require('memoizee/plain')
   , ensureDb              = require('dbjs/valid-dbjs')
   , defineUInteger        = require('dbjs-ext/number/integer/u-integer')
-  , definePercentage      = require('dbjs-ext/number/percentage');
+  , definePercentage      = require('dbjs-ext/number/percentage')
+  , defineGetTranslations = require('./define-get-translations');
 
 module.exports = memoize(function (db/*, options*/) {
-	var Percentage, UInteger;
+	var Percentage, UInteger, ProgressRule;
+
 	ensureDb(db);
 	Percentage = definePercentage(db);
 	UInteger   = defineUInteger(db);
-	return db.Object.extend('ProgressRule', {
+
+	ProgressRule = db.Object.extend('ProgressRule', {
 		progress: { type: Percentage },
 		weight: { type:  UInteger },
 		isValid: {
@@ -31,12 +34,10 @@ module.exports = memoize(function (db/*, options*/) {
 		isApplicable: {
 			type: db.Boolean,
 			value: true
-		},
-		getTranslations: {
-			type: db.Function,
-			value: function (options) {
-				return {};
-			}
 		}
 	});
+
+	defineGetTranslations(ProgressRule.prototype);
+
+	return ProgressRule;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
