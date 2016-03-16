@@ -30,7 +30,7 @@ var getViewData = function (query) {
 
 var BusinessProcessesManager = module.exports = function (conf) {
 	var user = db.User.validate(ensureObject(conf).user)
-	  , roleName = ensureString(conf.roleName)
+	  , stepShortPath = ensureString(conf.roleName)
 	  , viewKeyPath = conf.viewKeyPath
 	  , statusMap = ensureObject(conf.statusMap)
 	  , getOrderIndex = ensureCallable(conf.getOrderIndex)
@@ -42,11 +42,12 @@ var BusinessProcessesManager = module.exports = function (conf) {
 	if (viewKeyPath) {
 		pendingBusinessProcesses = db.views.pendingBusinessProcesses.resolveSKeyPath(viewKeyPath).value;
 	} else {
-		pendingBusinessProcesses = db.views.pendingBusinessProcesses[roleName];
+		pendingBusinessProcesses = db.views.pendingBusinessProcesses.getBySKeyPath(stepShortPath);
 	}
 
 	defineProperties(this, {
-		_fullItems: d(user.recentlyVisited.businessProcesses[conf.fullItemsRoleName || roleName]),
+		_fullItems: d(user.recentlyVisited.businessProcesses
+			.getBySKeyPath(conf.fullItemsRoleName || stepShortPath)),
 		_canItemBeApplicable: d((conf.canItemBeApplicable != null)
 			? ensureCallable(conf.canItemBeApplicable) : null),
 		_statusViews: d(pendingBusinessProcesses),
