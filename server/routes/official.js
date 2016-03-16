@@ -299,7 +299,7 @@ var initializeHandler = function (conf) {
 };
 
 module.exports = exports = function (mainConf/*, options */) {
-	var resolveHandler, options, roleNameResolve, getHandlerByRole
+	var resolveHandler, options, stepShortPathResolve, getHandlerByRole
 	  , recentlyVisitedContextName;
 	options = Object(arguments[1]);
 	recentlyVisitedContextName = options.recentlyVisitedContextName;
@@ -320,11 +320,11 @@ module.exports = exports = function (mainConf/*, options */) {
 				return handler;
 			};
 			if (options.resolveConf && (typeof options.resolveConf === 'function')) {
-				roleNameResolve = function (req) {
+				stepShortPathResolve = function (req) {
 					return deferred(options.resolveConf(req)).then(getHandlerByRole);
 				};
 			} else {
-				roleNameResolve = function (req) {
+				stepShortPathResolve = function (req) {
 					return roleNameMap.get(req.$user)(function (roleName) {
 						if (!roleName) return;
 						roleName = unserializeValue(roleName);
@@ -333,7 +333,7 @@ module.exports = exports = function (mainConf/*, options */) {
 				};
 			}
 			return function (req) {
-				return businessProcessStoragesPromise(function () { return roleNameResolve(req); });
+				return businessProcessStoragesPromise(function () { return stepShortPathResolve(req); });
 			};
 		}());
 	} else {
