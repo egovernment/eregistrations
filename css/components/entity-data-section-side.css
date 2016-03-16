@@ -22,8 +22,7 @@
 
 .entity-data-section-side h5 {
 	font-size: 14px;
-	padding-left: 10px;
-	margin-top: 10px;
+	padding: 18px 0 3px 10px;
 	font-weight: 500;
 	border-bottom: 1px dashed #E3E3E3;
 }
