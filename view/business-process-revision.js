@@ -2,27 +2,48 @@
 
 'use strict';
 
-var _                = require('mano').i18n.bind('Official: Revision')
+var renderMainInfo = require('./_business-process-main-info')
+  , _       = require('mano').i18n.bind('Official: Revision')
   , normalizeOptions = require('es5-ext/object/normalize-options');
 
-module.exports = exports = require('./business-process-official-preview');
+exports._parent = require('./user-base');
+exports._match = 'businessProcess';
 
-exports._customPreviewInfo = function (context/*, options*/) {
-	var options      = arguments[1]
-	  , revisionStep = context.processingStep;
+exports['sub-main'] = {
+	class: { content: true, 'user-forms': true },
+	content: function () {
+		var revisionStep = this.processingStep;
 
-	insert(_if(revisionStep._isRevisionPending, [ exports._customAlert(context), section(
-		{ class: 'official-submission-toolbar' },
-		// show buttons only if step is pending
-		_if(eq(revisionStep._revisionProgress, 1),
-			// show "approve" or "sent back" buttons only, when revision was finalized
-			_if(eq(revisionStep._revisionApprovalProgress, 1),
-				exports._approveButton.call(context, options),
-				_if(eq(revisionStep._sendBackStatusesProgress, 1),
-					exports._returnButton.call(context, options)))),
-				// show reject button at all times when revision is pending
-		exports._rejectButton.call(context, options)
-	)]));
+		renderMainInfo(this, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
+
+		insert(_if(revisionStep._isRevisionPending, section(
+			{ class: 'official-submission-toolbar' },
+			// show buttons only if step is pending
+			_if(eq(revisionStep._revisionProgress, 1),
+				// show "approve" or "sent back" buttons only, when revision was finalized
+				_if(eq(revisionStep._revisionApprovalProgress, 1),
+					exports._approveButton.call(this),
+					_if(eq(revisionStep._sendBackStatusesProgress, 1),
+						exports._returnButton.call(this)))),
+					// show reject button at all times when revision is pending
+			exports._rejectButton.call(this)
+		)));
+
+		section({ class: 'section-tab-nav' },
+			a({ class: 'section-tab-nav-tab',
+					id: 'business-process-documents',
+					href: '/revision/user-id/documents/' },
+				_("Revision of the documents")),
+			a({ class: 'section-tab-nav-tab',
+					id: 'business-process-payments',
+					href: '/revision/user-id/payments/' },
+				_("Revision of payments")),
+			a({ class: 'section-tab-nav-tab',
+					id: 'business-process-datas',
+					href: '/revision/user-id/datas/' },
+				_("Revision of data")),
+			div({ id: 'official-revision-content', class: 'business-process-revision' }));
+	}
 };
 
 exports._approveButton = function (/*options*/) {
@@ -75,5 +96,3 @@ exports._rejectButton = function (/*options*/) {
 			"sent can be determined as not real.")
 	}, _("Reject application"))];
 };
-
-exports._customAlert = Function.prototype;

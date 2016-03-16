@@ -103,21 +103,22 @@ module.exports = {
 
 	// Part-B routes - official user
 	official: require('./view/business-processes-table'),
-	'revision/user-id': require('./view/business-process-revision'),
-	'revision/user-id/(document)': {
+	'revision/user-id': {
+		ensureContext: function () {
+			this.document = this.businessProcess.requirementUploads.applicable.first.document;
+			return true;
+		},
+		view: require('../view/business-process-revision-document')
+	},
+	'revision/user-id/documents/(document)': {
 		match: function () {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;
 			return true;
 		},
-		view: require('./view/business-process-revision-document')
+		view: require('../view/business-process-revision-document')
 	},
-	'revision/user-id/(payment)': {
-		match: function () {
-			this.document = this.businessProcess.paymentReceiptUploads.applicable.first.document;
-			return true;
-		},
-		view: require('./view/business-process-revision-payment')
-	},
+	'revision/user-id/payments': require('../view/business-process-revision-payments'),
+	'revision/user-id/datas': require('../view/business-process-revision-datas'),
 	'official/user-id/(document)': {
 		match: function () {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;
