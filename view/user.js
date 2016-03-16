@@ -13,23 +13,27 @@ exports['sub-main'] = {
 			section({ id: 'welcome-box', class: 'user-account-welcome' },
 				_if(this.manager, function () {
 					var managedUser = this.manager.currentlyManagedUser;
-
-					header(
-						h3(_("View for client: ${ clientFullName }", { clientFullName: managedUser._fullName }))
-					);
-					div({ class: 'free-form' },
-						md(_("1. From here you can access all the requests of this client in draft, " +
-								"in process, finished\n" +
-							"2. Start a new service for this client\n" +
-							"3. Create an account for this client if not done already")));
+					return [
+						header(
+							h3(_("View for client: ${ clientFullName }",
+								{ clientFullName: managedUser._fullName }))
+						),
+						div({ class: 'free-form' },
+							md(_("1. From here you can access all the requests of this client in draft, " +
+									"in process, finished\n" +
+								"2. Start a new service for this client\n" +
+								"3. Create an account for this client if not done already")))
+					];
 				}.bind(this), function () {
-					header(
-						h3(_("Welcome to your account. From here you can:"))
-					);
-					div({ class: 'free-form' },
-						md(_("1. Access all your requests in draft, in process, finished\n" +
-							"2. Access and edit your documents and data\n" +
-							"3. Start a new service related to your company")));
+					return [
+						header(
+							h3(_("Welcome to your account. From here you can:"))
+						),
+						div({ class: 'free-form' },
+							md(_("1. Access all your requests in draft, in process, finished\n" +
+								"2. Access and edit your documents and data\n" +
+								"3. Start a new service related to your company")))
+					];
 				})));
 
 		section({ class: 'section-tab-nav' },
