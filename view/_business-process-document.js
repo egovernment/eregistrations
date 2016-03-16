@@ -31,14 +31,9 @@ var getFilePreview = function (file) {
 };
 
 module.exports = function (doc, sideContent) {
-	var elem, scrollableElem, master;
-	if (doc.isCertificate) {
-		master = doc.master;
-	} else {
-		master = doc.owner.owner.owner.owner;
-	}
+	var elem, scrollableElem;
 
-	return [h2(doc._label.map(function (label) { return _d(label, { user: master }); })),
+	return [h2(doc._label.map(function (label) { return _d(label, doc.getTranslations()); })),
 		insert(_if(doc.statusLog.ordered._size,
 			section(
 				{ class: 'section-primary' },

@@ -50,7 +50,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		customizeData.arrayResult = [
 			options.prepend,
 			resolvent.formResolvent,
-			progressRules(this, { translationInserts: options.translationInserts }),
+			progressRules(this),
 			customizeData.fieldset = ns.fieldset(normalizeOptions({
 				id: resolvent.affectedSectionId,
 				class: 'form-elements',
