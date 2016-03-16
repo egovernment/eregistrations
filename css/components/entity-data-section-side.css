@@ -12,15 +12,19 @@
 }
 
 .entity-data-section-side h4 {
-	margin: 22px 0;
-	padding-left: 10px;
+	margin:0;
+	padding:11px 10px 10px 10px;
+	border-bottom: 1px solid var(--light-medium-background);
 	font-size: 15px;
+	font-weight: 300;
+	background: var(--light-medium-background);
 }
 
 .entity-data-section-side h5 {
-	font-size: 13px;
-	padding-left: 10px;
-	margin-top: 22px;
+	font-size: 14px;
+	padding: 18px 0 3px 10px;
+	font-weight: 500;
+	border-bottom: 1px dashed #E3E3E3;
 }
 
 .entity-data-section-side .entity-data-section table tr:nth-child(even) {
