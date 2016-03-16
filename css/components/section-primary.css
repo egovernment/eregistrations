@@ -57,6 +57,7 @@
 	position: relative;
 }
 
+.section-primary-sub.section-primary-sub-small,
 .section-primary-sub:last-child {
 	margin-bottom: 0;
 }

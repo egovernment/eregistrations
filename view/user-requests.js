@@ -15,7 +15,7 @@ exports['user-account-content'] = function () {
 	  , initialBusinessProcesses = this.user.initialBusinessProcesses;
 
 	insert(_if(gt(initialBusinessProcesses._size, 1),
-		[div({ class: "section-primary-sub" },
+		[div({ class: "section-primary-sub section-primary-sub-small" },
 			p({ class: 'section-primary-legend' }, label({ for: 'business-process-select' },
 				_("Please select an entity in the selector below to display it documents and data"))),
 			p({ class: 'user-account-selector' },
