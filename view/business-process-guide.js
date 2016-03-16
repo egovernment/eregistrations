@@ -197,7 +197,7 @@ exports._costsSection = function (context) {
 		h2(_("Costs")),
 		exports._costsIntro(context),
 		ul({ id: 'costs-list', class: 'user-guide-costs-list' }, exports._costsList(context)),
-		div({ class: 'user-guide-costs-footer' }, exports._costsPrintLink(context))
+		div({ class: 'user-guide-costs-footer' }, exports._costsFooter(context))
 	);
 };
 
@@ -225,7 +225,7 @@ exports._costsList = function (context) {
 			span({ id: 'costs-total' }))];
 };
 
-exports._costsPrintLink = function (context) {
+exports._costsFooter = function (context) {
 	return a({ id: 'print-costs-link', class: 'button-resource-link', href: '/costs-print/',
 		target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print costs list"));
 };
