@@ -23,7 +23,7 @@ module.exports = function (documents) {
 					tr(
 						td({ class: 'submitted-user-data-table-status' },
 							doc.isCertificate ? span({ class: 'fa fa-certificate' }) : null),
-						td(doc._label.map(function (label) { return _d(label, { user: doc.master }); })),
+						td(doc._label.map(function (label) { return _d(label, doc.getTranslations()); })),
 						td(doc._issuedBy.map(resolveIssuer)),
 						td({ class: 'submitted-user-data-table-date' }, doc._issueDate),
 						td({ class: 'submitted-user-data-table-link' },

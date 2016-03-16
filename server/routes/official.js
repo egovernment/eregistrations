@@ -299,7 +299,7 @@ var initializeHandler = function (conf) {
 };
 
 module.exports = exports = function (mainConf/*, options */) {
-	var resolveHandler, options, roleNameResolve, getHandlerByRole
+	var resolveHandler, options, stepShortPathResolve, getHandlerByRole
 	  , recentlyVisitedContextName;
 	options = Object(arguments[1]);
 	recentlyVisitedContextName = options.recentlyVisitedContextName;
@@ -309,22 +309,22 @@ module.exports = exports = function (mainConf/*, options */) {
 				map[conf.roleName] = initializeHandler(conf);
 				return map;
 			}, create(null));
-			getHandlerByRole = function (roleName) {
+			getHandlerByRole = function (stepShortPath) {
 				var handler;
-				if (roleName) {
-					handler = map[roleName];
+				if (stepShortPath) {
+					handler = map[stepShortPath];
 				}
 				if (!handler) {
-					throw new Error("Cannot resolve conf for role name: " + stringify(roleName));
+					throw new Error("Cannot resolve conf for step path: " + stringify(stepShortPath));
 				}
 				return handler;
 			};
 			if (options.resolveConf && (typeof options.resolveConf === 'function')) {
-				roleNameResolve = function (req) {
+				stepShortPathResolve = function (req) {
 					return deferred(options.resolveConf(req)).then(getHandlerByRole);
 				};
 			} else {
-				roleNameResolve = function (req) {
+				stepShortPathResolve = function (req) {
 					return roleNameMap.get(req.$user)(function (roleName) {
 						if (!roleName) return;
 						roleName = unserializeValue(roleName);
@@ -333,7 +333,7 @@ module.exports = exports = function (mainConf/*, options */) {
 				};
 			}
 			return function (req) {
-				return businessProcessStoragesPromise(function () { return roleNameResolve(req); });
+				return businessProcessStoragesPromise(function () { return stepShortPathResolve(req); });
 			};
 		}());
 	} else {
