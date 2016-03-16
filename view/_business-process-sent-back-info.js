@@ -1,7 +1,8 @@
 'use strict';
 
 var identity = require('es5-ext/function/identity')
-  , _        = require('mano').i18n.bind('Registration');
+  , _        = require('mano').i18n.bind('Registration')
+  , _d       = _;
 
 module.exports = exports = function (context) {
 	var businessProcess = context.businessProcess
@@ -12,7 +13,8 @@ module.exports = exports = function (context) {
 			_if(businessProcess.requirementUploads.recentlyRejected._size,
 				li(h4(_("Issues with uploaded documents:")), div({ class: 'free-form' },
 					ul(businessProcess.requirementUploads.recentlyRejected, function (requirementUpload) {
-						return [h4(requirementUpload.document.label),
+						return [h4(_d(requirementUpload.document.label,
+							requirementUpload.document.getTranslations())),
 							_if(eq(requirementUpload.rejectReasons._size, 1),
 								p(requirementUpload.rejectReasons._first),
 								ul(requirementUpload.rejectReasons, identity))];
