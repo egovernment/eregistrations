@@ -309,13 +309,13 @@ module.exports = exports = function (mainConf/*, options */) {
 				map[conf.roleName] = initializeHandler(conf);
 				return map;
 			}, create(null));
-			getHandlerByRole = function (roleName) {
+			getHandlerByRole = function (stepShortPath) {
 				var handler;
-				if (roleName) {
-					handler = map[roleName];
+				if (stepShortPath) {
+					handler = map[stepShortPath];
 				}
 				if (!handler) {
-					throw new Error("Cannot resolve conf for role name: " + stringify(roleName));
+					throw new Error("Cannot resolve conf for step path: " + stringify(stepShortPath));
 				}
 				return handler;
 			};
