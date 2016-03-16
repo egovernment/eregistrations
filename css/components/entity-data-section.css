@@ -1,17 +1,14 @@
+.entity-data-section-side .entity-data-section-entities .entity-data-section,
 .entity-data-section-entities .entity-data-section {
 	border-left: none;
 	border-right: none;
 	border-bottom: none;
 }
 
-.entity-data-section-entities h5 {
-	margin-bottom: 22px;
-}
-
 .entity-data-section h6 {
 	font-size: 12px;
 	padding-left: 10px;
-	margin-top: 22px;
+	margin-top: 11px;
 }
 
 .entity-data-section-entities {
@@ -20,6 +17,10 @@
 
 .entity-data-section table {
 	margin: 0;
+}
+
+.entity-data-section table th {
+	font-weight: 300;
 }
 
 .entity-data-section table th,
@@ -37,6 +38,12 @@
 	font-size: 12px;
 	padding: 0 0 0 10px;
 }
+
+.entity-data-section-entities .entity-data-section-sub table th,
+.entity-data-section-entities .entity-data-section table th {
+	font-weight: 300;
+}
+
 .entity-data-section .entity-data-section-empty {
 	padding: 11px 0 11px 8px;
 	color: var(--hint-text);
@@ -44,9 +51,5 @@
 }
 
 .entity-data-section-entities li {
-	padding-bottom:22px;
-}
-
-.entity-data-section-entities li:last-child {
-	padding-bottom:0;
+	padding-bottom:11px;
 }
