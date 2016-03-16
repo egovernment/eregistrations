@@ -50,14 +50,18 @@
 	list-style-type: none;
 }
 
-.section-primary-sub {
+.section-primary-sub,
+.section-primary-sub-small {
 	border: none;
 	padding: 0;
 	margin-bottom: 44px;
 	position: relative;
 }
 
-.section-primary-sub.section-primary-sub-small,
+.section-primary-sub-small {
+	margin-bottom: 0;
+}
+
 .section-primary-sub:last-child {
 	margin-bottom: 0;
 }
