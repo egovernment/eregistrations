@@ -42,6 +42,10 @@ exports['sub-main'] = {
 					id: 'business-process-datas',
 					href: '/revision/user-id/datas/' },
 				_("Revision of data")),
+			a({ class: 'section-tab-nav-tab',
+					id: 'business-process-processing',
+					href: '/revision/user-id/processing/' },
+				_("Processing")),
 			div({ id: 'official-revision-content', class: 'business-process-revision' }));
 	}
 };
