@@ -18,11 +18,14 @@
 	padding: 11px 11px 10px;
 	text-align: left;
 }
+.submitted-user-history tr:first-child td {
+	padding-bottom: 11px;
+}
 
 .submitted-user-history-wrapper {
 	max-height: 220px;
 	overflow: auto;
-	border: 1px solid var(--light-inner-border);
+	outline: 1px solid var(--light-inner-border); /* outline not border to keep VR */
 }
 
 .submitted-user-history-time {
