@@ -111,6 +111,10 @@ select {
 	padding: 3px 5px;
 }
 
+.day-of-year-type-field .year {
+	display: none;
+}
+
 select[multiple] {
 	height: auto;
 }
