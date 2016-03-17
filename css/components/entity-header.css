@@ -24,10 +24,9 @@
 	display: inline-block;
 }
 .entity-header-actions button {
-	padding: 3px 7px;
+	padding: 0 7px;
 	cursor: pointer;
 	border-radius: 3px;
-	line-height: normal;
 }
 
 .entity-header-actions a {
@@ -40,7 +39,7 @@
 	cursor: pointer;
 	margin: 0;
 	margin-right: 12px;
-	padding: 3px 7px 3px;
+	padding: 1px 7px 2px;
 	text-align: center;
 	text-decoration: none;
 	white-space: nowrap;
