@@ -20,9 +20,6 @@ require('mano/lib/client/implement-es');
 require('mano/lib/client/client-id');
 
 mano = require('mano');
-// Expose for dev purposes
-// TODO: Expose only in dev environments
-window.db = mano.db;
 
 // Env settings
 require('../../../apps-common/client/env');
@@ -31,7 +28,9 @@ require('../../../apps-common/client/env');
 require('../../../i18n');
 
 // DB Model
-require('../../../db');
+// Expose for dev purposes
+// TODO: Expose only in dev environments
+window.db = require('../../../db');
 require('./model.generated');
 
 // DB DOM bindings
