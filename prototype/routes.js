@@ -76,6 +76,12 @@ module.exports = {
 		},
 		view: require('./view/guide')
 	},
+	'manager-validation/edit-user': {
+		decorateContext: function () {
+			this.editedUser = db.notary;
+		},
+		view: require('../view/manager-validation-user-edit')
+	},
 	// Part-B routes - user submitted
 	'user-submitted': require('./view/user-submitted'),
 	'user-submitted/(document)': {
