@@ -15,7 +15,7 @@ module.exports = function (stepPath, status, data) {
 	status = ensureString(status);
 	data = ensureObject(data);
 	meta = ensureObject(data.meta);
-	businessProcessStorage = ensureStorage(data.businessProcessStorage);
+	businessProcessStorage = data.businessProcessStorage;
 	reducedStorage = ensureStorage(data.reducedStorage);
 	if (data.officialId != null) officialId = ensureString(data.officialId);
 	if (data.itemsPerPage != null) trackerOptions = { itemsPerPage: data.itemsPerPage };
