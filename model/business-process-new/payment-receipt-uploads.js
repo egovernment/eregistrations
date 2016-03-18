@@ -56,7 +56,16 @@ module.exports = memoize(function (db/* options */) {
 			}
 		},
 
-		uploaded: { type: PaymentReceiptUpload },
+		uploaded: {
+			type: PaymentReceiptUpload,
+			value: function (_observe) {
+				var result = [];
+				this.uploadable.forEach(function (upload) {
+					if (_observe(upload.document.files.ordered._size)) result.push(upload);
+				});
+				return result;
+			}
+		},
 		approved: { type: PaymentReceiptUpload },
 		rejected: { type: PaymentReceiptUpload }
 	});
