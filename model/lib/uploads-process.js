@@ -27,12 +27,17 @@ module.exports = memoize(function (db/*, options*/) {
 			return result;
 		} },
 		// Progress of uploads
-		progress: { type: Percentage, value: function () {
+		progress: { type: Percentage, value: function (_observe) {
+			var totalProgress = 0;
 			if (!this.weight) return 1;
-			return this.uploaded.size / this.weight;
+			this.applicable.forEach(function (upload) {
+				totalProgress += _observe(upload._progress);
+			});
+
+			return totalProgress / this.weight;
 		} },
-		weight: { type: UInteger, value: function (_observe) {
-			return _observe(this.applicable._size);
+		weight: { type: UInteger, value: function () {
+			return this.applicable.size;
 		} },
 
 		// Subset of approved uploads
