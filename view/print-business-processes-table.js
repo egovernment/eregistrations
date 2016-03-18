@@ -19,13 +19,13 @@ exports._parent = require('./print-base');
 exports.main = function () {
 	var statusMap     = ensureObject(exports._statusMap(this))
 	  , columns       = ensureArray(exports._columns(this))
-	  , shortRoleName = uncapitalize.call(this.user.currentRoleResolved.slice('official'.length))
+	  , stepShortPath = uncapitalize.call(this.user.currentRoleResolved.slice('official'.length))
 	  , getOrderIndex = ensureCallable(exports._getOrderIndex(this))
 	  , container, superIsExernalQuery;
 
 	var listManager = new Manager({
 		user: this.user,
-		roleName: shortRoleName,
+		roleName: stepShortPath,
 		statusMap: statusMap,
 		getOrderIndex: getOrderIndex,
 		itemsPerPage: env.objectsListItemsPerPage
