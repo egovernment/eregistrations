@@ -8,15 +8,39 @@ module.exports = function (user) {
 	var inReload;
 	if (isReadOnlyRender) return;
 	user._appAccessId.on('change', function (event) {
-		if (inReload) return;
+		if (inReload) {
+			console.log("App access id change ", event.oldValue, " -> ", event.newValue, ", ignored");
+			return;
+		}
 		inReload = true;
-		if (server.isSync) reload();
-		else server.once('sync', reload);
+		if (server.isSync) {
+			console.log("App access id change ", event.oldValue, " -> ", event.newValue, ", immediate");
+			reload();
+		} else {
+			console.log("App access id change ", event.oldValue, " -> ", event.newValue,
+				", wait for sync");
+			server.once('sync', function () {
+				console.log("App access id: reload after sync");
+				reload();
+			});
+		}
 	});
 	user._appName.on('change', function (event) {
-		if (inReload) return;
+		if (inReload) {
+			console.log("App name change ", event.oldValue, " -> ", event.newValue, ", ignored");
+			return;
+		}
 		inReload = true;
-		if (server.isSync) reload();
-		else server.once('sync', reload);
+		if (server.isSync) {
+			console.log("App name change ", event.oldValue, " -> ", event.newValue, ", immediate");
+			reload();
+		} else {
+			console.log("App name change ", event.oldValue, " -> ", event.newValue,
+				", wait for sync");
+			server.once('sync', function () {
+				console.log("App name: reload after sync");
+				reload();
+			});
+		}
 	});
 };

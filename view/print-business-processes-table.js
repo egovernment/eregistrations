@@ -3,6 +3,7 @@
 var ensureArray    = require('es5-ext/array/valid-array')
   , ensureCallable = require('es5-ext/object/valid-callable')
   , ensureObject   = require('es5-ext/object/valid-object')
+  , ensureString   = require('es5-ext/object/validate-stringifiable-value')
   , uncapitalize   = require('es5-ext/string/#/uncapitalize')
   , replaceContent = require('dom-ext/element/#/replace-content')
   , mano           = require('mano')
@@ -19,13 +20,13 @@ exports._parent = require('./print-base');
 exports.main = function () {
 	var statusMap     = ensureObject(exports._statusMap(this))
 	  , columns       = ensureArray(exports._columns(this))
-	  , shortRoleName = uncapitalize.call(this.user.currentRoleResolved.slice('official'.length))
 	  , getOrderIndex = ensureCallable(exports._getOrderIndex(this))
+	  , stepShortPath = ensureString(exports._stepShortPath(this))
 	  , container, superIsExernalQuery;
 
 	var listManager = new Manager({
 		user: this.user,
-		roleName: shortRoleName,
+		roleName: stepShortPath,
 		statusMap: statusMap,
 		getOrderIndex: getOrderIndex,
 		itemsPerPage: env.objectsListItemsPerPage
@@ -84,8 +85,6 @@ exports['print-page-title'] = function () { insert(this.processingStep.label); }
 exports._statusMap = Function.prototype;
 exports._getOrderIndex = Function.prototype;
 exports._columns = Function.prototype;
-
-// Legacy extensions (to be removed once ELS is migrated to new data handling)
-exports._businessProcessesTable = Function.prototype;
-exports._defaultSort = Function.prototype;
-exports._cacheLimits = Function.prototype;
+exports._stepShortPath = function (context) {
+	return uncapitalize.call(context.user.currentRoleResolved.slice('official'.length));
+};
