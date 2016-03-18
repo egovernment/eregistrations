@@ -20,7 +20,7 @@ exports['sub-main'] = {
 					label({ for: 'state-select' }, _("Status"), ":"),
 					select({ id: 'state-select', name: 'status' },
 						toArray(exports._statusMap(this), function (data, name) {
-							return option({ value: data.default ? null : name, selected:
+							return option({ value: data.default ? '' : name, selected:
 								location.query.get('status').map(function (value) {
 									var selected = (name ? (value === name) : (value == null));
 									return selected ? 'selected' : null;
