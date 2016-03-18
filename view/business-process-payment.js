@@ -3,14 +3,14 @@
 'use strict';
 
 var _             = require('mano').i18n.bind('Registration')
-  , errorMsg      = require('./_business-process-error-info').errorMsg
-  , renderPaymentReceiptUploadForm = require('./_payment-receipt-upload-form');
+  , errorMsg      = require('./_business-process-error-info').errorMsg;
 
 exports._parent = require('./business-process-base');
 
 exports['step-pay'] = { class: { 'step-active': true } };
 
 exports.step = function () {
+	var paymentReceiptUploads = this.businessProcess.paymentReceiptUploads;
 	exports._paymentHeading(this);
 
 	insert(errorMsg(this));
@@ -25,11 +25,17 @@ exports.step = function () {
 		section(
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
-				this.businessProcess.paymentReceiptUploads.uploadable,
-				function (paymentUpload) {
-					return li({ class: 'section-primary' },
-						renderPaymentReceiptUploadForm(paymentUpload));
-				}
+				list(paymentReceiptUploads.recentlyRejected,
+					function (paymentUpload) {
+						return li({ class: ['section-primary', _if(paymentUpload._isRejected,
+								'user-documents-upload-rejected')] },
+							paymentUpload.toDOMForm(document));
+					}),
+				list(paymentReceiptUploads.uploadable.not(paymentReceiptUploads.recentlyRejected),
+					function (paymentUpload) {
+						return li({ class: 'section-primary' },
+							paymentUpload.toDOMForm(document));
+					})
 			)
 		),
 		exports._onlinePayments(this)
