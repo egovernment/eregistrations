@@ -10,7 +10,7 @@ var _              = require('mano').i18n.bind('Official: Revision')
   , paymentForm;
 
 exports._parent = require('./business-process-revision-payments');
-exports._match = 'payment';
+exports._match = 'document';
 
 paymentForm = function (paymentReceiptUpload) {
 	var revFail;
