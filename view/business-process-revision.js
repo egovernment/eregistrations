@@ -32,7 +32,7 @@ exports['sub-main'] = {
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab',
 					id: 'business-process-documents',
-					href: '/revision/user-id/documents/' },
+					href: '/revision/user-id/' },
 				_("Revision of the documents")),
 			a({ class: 'section-tab-nav-tab',
 					id: 'business-process-payments',
