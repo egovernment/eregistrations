@@ -123,7 +123,13 @@ module.exports = {
 		},
 		view: require('../view/business-process-revision-document')
 	},
-	'revision/user-id/payments': require('../view/business-process-revision-payments'),
+	'revision/user-id/payments': {
+		ensureContext: function () {
+			this.document = this.businessProcess.paymentReceiptUploads.applicable.first.document;
+			return true;
+		},
+		view: require('../view/business-process-revision-payment')
+	},
 	'revision/user-id/datas': require('../view/business-process-revision-datas'),
 	'official/user-id/(document)': {
 		match: function () {

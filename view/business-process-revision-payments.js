@@ -1,46 +1,30 @@
-// Documents list and user data
+// Payments list and user data
 
 'use strict';
 
-var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
-  , _                = require('mano').i18n.bind('User Submitted');
+var generateSections = require('./components/generate-sections')
+  , renderPaymentList = require('./_business-process-draw-payment-list');
 
 exports._parent = require('./business-process-revision');
+exports._match = 'businessProcess';
 
 exports['business-process-payments'] = { class: { active: true } };
-exports['official-revision-content'] = function () {
+exports['official-revision-content'] = function (/*options*/) {
 	var options = Object(arguments[1])
 	  , urlPrefix = options.urlPrefix || '/'
 	  , businessProcess = this.businessProcess;
 
 	return [section({ class: 'section-primary' },
-		_if(businessProcess.paymentReceiptUploads.applicable._size,
-			[h3(_("Payment receipts")),
-				div(
-					{ class: 'table-responsive-container' },
-					table(
-						{ class: 'submitted-user-data-table user-request-table' },
-						thead(
-							tr(
-								th({ class: 'submitted-user-data-table-status' }),
-								th(_("Name")),
-								th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
-								th({ class: 'submitted-user-data-table-link' })
-							)
+			renderPaymentList(businessProcess, urlPrefix),
+			div({ id: 'revision-document', class: 'business-process-revision-selected-document' },
+				div({ id: 'revision-box', class: 'business-process-revision-box' }),
+				div({ class: 'submitted-preview' },
+					div({ id: 'document-preview', class: 'submitted-preview-document' }),
+					div({ class: 'submitted-preview-user-data  entity-data-section-side' },
+						generateSections(businessProcess.dataForms.applicable, { viewContext: this })
 						),
-						tbody(
-							businessProcess.paymentReceiptUploads.applicable,
-							function (receipt) {
-								td({ class: 'submitted-user-data-table-status' },
-									_if(receipt._isApproved, span({ class: 'fa fa-check' })),
-										_if(receipt._isRejected, span({ class: 'fa fa-exclamation' })));
-								td(receipt.document.label);
-								td({ class: 'submitted-user-data-table-date' }, receipt.document._issueDate);
-								td({ class: 'submitted-user-data-table-link' },
-									a({ href: urlPrefix + 'receipt/' + camelToHyphen.call(receipt.key) + "/" },
-										span({ class: 'fa fa-search' }, _("Go to"))));
-							}
-						)
+					div({ id: 'document-history', class: 'submitted-preview-document-history' })
 					)
-				)]))];
+				)
+		)];
 };
