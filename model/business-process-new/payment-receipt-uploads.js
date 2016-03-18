@@ -39,6 +39,22 @@ module.exports = memoize(function (db/* options */) {
 			});
 			return result;
 		} },
+		progress: {
+			value: function (_observe) {
+				var totalProgress = 0;
+				if (!this.weight) return 1;
+				this.uploaded.forEach(function (paymentReceipt) {
+					totalProgress += _observe(paymentReceipt._progress);
+				});
+
+				return totalProgress / this.weight;
+			}
+		},
+		weight: {
+			value: function (_observe) {
+				return _observe(this.uploadable._size);
+			}
+		},
 
 		uploaded: { type: PaymentReceiptUpload },
 		approved: { type: PaymentReceiptUpload },

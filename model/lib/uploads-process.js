@@ -6,12 +6,14 @@
 var memoize                 = require('memoizee/plain')
   , definePercentage        = require('dbjs-ext/number/percentage')
   , defineMultipleProcess   = require('./multiple-process')
-  , defineRequirementUpload = require('../requirement-upload');
+  , defineRequirementUpload = require('../requirement-upload')
+  , defineUInteger          = require('dbjs-ext/number/integer/u-integer');
 
 module.exports = memoize(function (db/*, options*/) {
 	var Percentage        = definePercentage(db)
 	  , MultipleProcess   = defineMultipleProcess(db)
-	  , RequirementUpload = defineRequirementUpload(db);
+	  , RequirementUpload = defineRequirementUpload(db)
+	  , UInteger          = defineUInteger(db);
 
 	var UploadsProcess = MultipleProcess.extend('UploadsProcess', {
 		// Applicable uploads
@@ -25,13 +27,12 @@ module.exports = memoize(function (db/*, options*/) {
 			return result;
 		} },
 		// Progress of uploads
-		progress: { type: Percentage, value: function (_observe) {
-			var totalProgress = 0;
-			if (!this.applicable.size) return 1;
-			this.applicable.forEach(function (requirementUpload) {
-				totalProgress += _observe(requirementUpload._progress);
-			});
-			return totalProgress / this.applicable.size;
+		progress: { type: Percentage, value: function () {
+			if (!this.weight) return 1;
+			return this.uploaded.size / this.weight;
+		} },
+		weight: { type: UInteger, value: function (_observe) {
+			return _observe(this.applicable._size);
 		} },
 
 		// Subset of approved uploads

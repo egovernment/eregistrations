@@ -87,8 +87,8 @@ module.exports = memoize(function (db/* options */) {
 					valid += 0.5;
 				}
 			}
-			total += _observe(paymentReceiptUploads.applicable._size);
-			valid += _observe(paymentReceiptUploads.uploaded._size);
+			total += _observe(paymentReceiptUploads._weight);
+			valid += (_observe(paymentReceiptUploads._progress) * paymentReceiptUploads.weight);
 			if (!total) return 1;
 			return valid / total;
 		} },
