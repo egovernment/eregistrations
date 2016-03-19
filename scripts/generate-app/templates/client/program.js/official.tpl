@@ -32,12 +32,10 @@ require('../../../apps-common/client/env');
 // i18n2
 require('../../../i18n');
 
-require('../../../db');
-require('./model.generated');
-
 // Expose for dev purposes
 // TODO: Expose only in dev environments
-var db = window.db = mano.db;
+var db = window.db = require('../../../db');
+require('./model.generated');
 
 var formClear = require('mano/lib/client/utils/form-status').clear.bind(document)
   , loadView, userId, server, inSync, isViewGenerated;
@@ -114,9 +112,7 @@ loadView = function () {
 	postRouter(joinControllers(require('../controller'), require('../controller/client')),
 		user);
 
-	if (!isReadOnlyRender) {
-		require('eregistrations/client/reload-on-role-switch')(user);
-	}
+	if (!isReadOnlyRender) require('eregistrations/client/reload-on-app-switch')(user);
 
 	appLocation.on('change', refresh = function () {
 		var result;

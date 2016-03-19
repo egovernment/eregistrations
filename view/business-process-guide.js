@@ -50,15 +50,15 @@ exports.step = function () {
 
 	insert(_if(this.businessProcess._isSentBack,
 		function () { return div({ class: 'info-main' }, sentBackInfo(this)); }.bind(this),
-		_if(and(this.businessProcess.costs._paymentWeight,
+		_if(and(eq(this.businessProcess._guideProgress, 1), this.businessProcess.costs._paymentWeight,
 			this.businessProcess.costs._paymentProgress), div({ class: 'info-main' },
 				_("The guide is disabled as you have already processed your payment.")))));
 
 	div(
 		{ class: ['disabler-range',
-			_if(or(this.businessProcess._isSentBack,
+			_if(and(eq(this.businessProcess._guideProgress, 1), or(this.businessProcess._isSentBack,
 					and(this.businessProcess.costs._paymentWeight,
-						this.businessProcess.costs._paymentProgress)),
+						this.businessProcess.costs._paymentProgress))),
 				'disabler-active')] },
 		this.businessProcess.inventory ? insert(inventoryModal(this.businessProcess)) : null,
 		div({ class: 'disabler' }),

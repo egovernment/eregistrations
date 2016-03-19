@@ -4,7 +4,6 @@
 'use strict';
 
 var includes            = require('es5-ext/array/#/contains')
-  , ensureString        = require('es5-ext/object/validate-stringifiable-value')
   , ensureIterable      = require('es5-ext/iterable/validate-object')
   , ensureObservable    = require('observable-value/valid-observable')
   , Set                 = require('es6-set')
@@ -13,13 +12,11 @@ var includes            = require('es5-ext/array/#/contains')
 
   , isArray = Array.isArray;
 
-module.exports = function (collection/*, getFragment*/) {
-	var getFragment = arguments[1], fragment, current, isArrayMode = isArray(collection);
+module.exports = function (collection, getFragment) {
+	var fragment, current, isArrayMode = isArray(collection);
 
 	ensureObservable(ensureIterable(collection));
-	if (typeof getFragment !== 'function') {
-		getFragment = defaultGetFragments(ensureString(getFragment));
-	}
+	if (typeof getFragment !== 'function') getFragment = defaultGetFragments(getFragment);
 
 	fragment = new DataFragmentGroup();
 	current = new Set();

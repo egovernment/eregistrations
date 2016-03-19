@@ -30,6 +30,7 @@
 	border: 1px solid var(--light-inner-border);
 	text-align: left;
 	font-weight: 400;
+	vertical-align: top;
 }
 
 .submitted-user-data-table .actions {
@@ -40,10 +41,9 @@
 
 .submitted-user-data-table td.submitted-user-data-table-link a,
 .submitted-user-data-table td {
-	padding: 10px 10px;
+	padding: 11px 10px 10px;
 	font-size: 15px;
 }
-
 .submitted-user-data-table td.submitted-user-data-table-link {
 	padding: 0;
 }

@@ -50,11 +50,15 @@
 	list-style-type: none;
 }
 
-.section-primary-sub {
+.section-primary-sub,
+.section-primary-sub-small {
 	border: none;
 	padding: 0;
-	margin-bottom: 44px;
 	position: relative;
+}
+
+.section-primary-sub {
+	margin-bottom: 44px;
 }
 
 .section-primary-sub:last-child {
@@ -123,7 +127,8 @@
 .section-primary .dbjs-input-component > .input input[type="tel"],
 .section-primary .dbjs-input-component > .input input[type="color"],
 .section-primary .dbjs-input-component > .input select,
-.section-primary .dbjs-input-component > .input textarea  {
+.section-primary .dbjs-input-component > .input textarea,
+.section-primary .dbjs-input-component > .input > .radio  {
 	max-width: 90%;
 }
 
@@ -174,12 +179,6 @@
 }
 .section-primary-scroll-top a span {
 	vertical-align: middle;
-}
-
-.section-primary .info-main {
-	background: var(--normal-light-background);
-	padding-top: 10px;
-	padding-bottom: 10px;
 }
 
 .section-primary .dbjs-input-component > .input .multiple ul {

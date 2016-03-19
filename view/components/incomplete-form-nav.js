@@ -46,13 +46,11 @@ var missingPropertiesList = function (formSection) {
 };
 
 var invalidProgressRulesList = function (formSection, level) {
-	var translationInserts = { max: formSection._max, min: formSection._min };
-
 	return ul(
 		{ class: 'section-warning-missing-fields-sub-' + level },
 		formSection.progressRules.invalid,
 		function (progressRule) {
-			return li(_d(progressRule.message, translationInserts));
+			return li(_d(progressRule.message, progressRule.getTranslations()));
 		}
 	);
 };

@@ -14,6 +14,14 @@ exports['user-add'] = {
 exports['clients/[0-9][a-z0-9]+/delete'] = {
 	remoteSubmit: true,
 	processResponse: function () {
-		location.reload();
+		this.managedUser._setValue_();
+	}
+};
+
+// Delete BusinessProcess
+exports['business-process/[0-9][a-z0-9]+/delete'] = {
+	remoteSubmit: true,
+	processResponse: function () {
+		this.businessProcess._setValue_();
 	}
 };

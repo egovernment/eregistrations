@@ -2,6 +2,11 @@
 	display: inline-block;
 	vertical-align: top;
 }
+
+.print-header > img {
+	max-width: 32%;
+}
+
 .print-header-title {
 	text-align: right;
 	width: 68%;
