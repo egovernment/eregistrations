@@ -1,0 +1,8 @@
+.holidays-add-holiday label:first-child {
+	display: inline-block;
+	margin-right: 15px;
+}
+
+.holidays-list-table {
+	text-align: center;
+}
