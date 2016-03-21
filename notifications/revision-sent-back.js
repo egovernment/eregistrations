@@ -2,7 +2,8 @@
 
 var _                = require('mano').i18n.bind('Official: Revision: Notifications')
   , normalizeOptions = require('es5-ext/object/normalize-options')
-  , ensureType       = require('dbjs/valid-dbjs-type');
+  , ensureType       = require('dbjs/valid-dbjs-type')
+  , _d               = _;
 
 module.exports = function (BusinessProcessClass/*, options*/) {
 	var options           = normalizeOptions(arguments[1])
@@ -22,8 +23,9 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	notification.trigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isSentBack', true);
 	notification.preTrigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);
 
-	notification.subject = _("M05 You must correct some elements in your application");
-	notification.text = _("M05 Revision sent back\n\n"
+	notification.subject = options.subject ||
+		_("M05 You must correct some elements in your application");
+	notification.text = options.text || _("M05 Revision sent back\n\n"
 			+ "Name of company: ${ businessName }\n\n"
 			+ "${ rejectedUploads }");
 
@@ -53,13 +55,16 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 			if (requirementUploads.rejected.size) {
 				result.push(_("Issues with uploaded documents:"));
 				requirementUploads.rejected.forEach(function (requirementUpload) {
-					result.push("- " + requirementUpload.document.label);
-					if (requirementUpload.rejectReasons.size > 1) {
-						requirementUpload.rejectReasons.forEach(function (reason) {
+					var rejectReasons = requirementUpload.rejectReasons
+					  , doc           = requirementUpload.document;
+
+					result.push("- " + _d(doc.label, doc.getTranslations()));
+					if (rejectReasons.size > 1) {
+						rejectReasons.forEach(function (reason) {
 							result.push("    - " + reason);
 						});
 					} else {
-						result.push("    " + requirementUpload.rejectReasons.first);
+						result.push("    " + rejectReasons.first);
 					}
 				});
 			}
