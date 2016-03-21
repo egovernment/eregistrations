@@ -22,8 +22,9 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	notification.trigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isSentBack', true);
 	notification.preTrigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);
 
-	notification.subject = _("M05 You must correct some elements in your application");
-	notification.text = _("M05 Revision sent back\n\n"
+	notification.subject = options.subject ||
+		_("M05 You must correct some elements in your application");
+	notification.text = options.text || _("M05 Revision sent back\n\n"
 			+ "Name of company: ${ businessName }\n\n"
 			+ "${ rejectedUploads }");
 
