@@ -223,3 +223,7 @@ Styles applied while screen size is less than 640px
 		min-width: var(--min-mobile-width);
 	}
 }
+
+/*csslint important: false*/
+script { display: none !important; }
+/*csslint important: true*/
