@@ -3,7 +3,8 @@
 var _                = require('mano').i18n.bind('User: Notifications')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , ensureType       = require('dbjs/valid-dbjs-type')
-  , isFalsy          = require('eregistrations/utils/is-falsy');
+  , isFalsy          = require('eregistrations/utils/is-falsy')
+  , _d               = _;
 
 module.exports = function (BusinessProcessClass/*, options*/) {
 	var options      = normalizeOptions(arguments[1])
@@ -38,7 +39,9 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 		requirements: function () {
 			var result = [];
 			this.businessProcess.requirementUploads.applicable.forEach(function (requirementUpload) {
-				result.push("- " + requirementUpload.document.label);
+				var doc = requirementUpload.document;
+
+				result.push("- " + _d(doc.label, doc.getTranslations()));
 			});
 			return result.join("\n");
 		},
