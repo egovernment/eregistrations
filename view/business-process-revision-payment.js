@@ -5,11 +5,11 @@
 var _              = require('mano').i18n.bind('Official: Revision')
   , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
   , renderDocument = require('./_business-process-document')
-  , disableStep    = require('./components/disable-processing-step')
+  , renderDocumentHistory = require('./_business-process-revision-document-history')
 
   , paymentForm;
 
-exports._parent = require('./user-base');
+exports._parent = require('./business-process-revision-payments');
 exports._match = 'document';
 
 paymentForm = function (paymentReceiptUpload) {
@@ -39,10 +39,14 @@ paymentForm = function (paymentReceiptUpload) {
 	);
 };
 
-exports['sub-main'] = {
-	class: { content: true, 'user-forms': true },
-	content: function () {
-		renderDocument(this.document, disableStep(this.processingStep,
-			paymentForm(this.document.owner)));
-	}
+exports['document-preview'] = function () {
+	renderDocument(this.document);
+};
+
+exports['document-history'] = function () {
+	renderDocumentHistory(this.document);
+};
+
+exports['revision-box'] = function () {
+	paymentForm(this.document.owner);
 };
