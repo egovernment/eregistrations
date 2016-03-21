@@ -36,8 +36,8 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 		}
 	};
 
-	notification.subject = _("M19 Your request has been rejected");
-	notification.text = _("M19 Revision rejected\n\n"
+	notification.subject = options.subject || _("M19 Your request has been rejected");
+	notification.text = options.text || _("M19 Revision rejected\n\n"
 			+ "Name of company: ${ businessName }\n\n"
 			+ "${ rejectionReason }");
 
