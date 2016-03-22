@@ -10,6 +10,8 @@ exports['sub-main'] = {
 	content: function () {
 		section({ class: 'section-primary' },
 			h3(_("New client")),
+			div({ class: 'section-primary-legend' }, md(_("Please fill the form below to create " +
+				"the account of your client where all the requests, documents and data will be stored."))),
 			form(
 				{ method: 'post', action: '/user-add/' },
 				ul(
