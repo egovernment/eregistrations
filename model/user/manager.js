@@ -86,6 +86,7 @@ module.exports = memoize(function (db/* options */) {
 			value: function (_observe) {
 				if (!this.roles.has('manager')) return false;
 				return this.managedUsers.every(function (user) {
+					if (!user.initialBusinessProcesses) return;
 					return _observe(user._isActiveAccount) ||
 						_observe(user.initialBusinessProcesses).every(function (bp) {
 							return !_observe(bp._isSubmitted);
