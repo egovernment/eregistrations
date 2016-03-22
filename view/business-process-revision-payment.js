@@ -4,7 +4,7 @@
 
 var _              = require('mano').i18n.bind('Official: Revision')
   , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
-  , renderDocument = require('./_business-process-document')
+  , renderDocument = require('./_business-process-revision-document')
   , renderDocumentHistory = require('./_business-process-revision-document-history')
 
   , paymentForm;
@@ -19,21 +19,30 @@ paymentForm = function (paymentReceiptUpload) {
 			action: '/form-revision-payment-receipt-upload/' + paymentReceiptUpload.master.__id__ +
 				'/' + camelToHyphen.call(paymentReceiptUpload.key) + '/',
 			method: 'post', class: 'submitted-preview-form' },
-		p(_("Uploaded payment receipt applies to following costs:")),
-		ul({ class: 'business-process-costs-list' },
-				paymentReceiptUpload.applicableCosts, function (cost) {
-				li(span({ class: 'business-process-costs-list-label' }, cost._label),
-					span(cost._amount));
-			}),
+		div({ class: 'business-process-revision-box-header' },
+			div(span(_("Uploaded payment receipt applies to following costs:")),
+				br(),
+				ul({ class: 'business-process-costs-list' },
+					paymentReceiptUpload.applicableCosts, function (cost) {
+						li(span({ class: 'business-process-costs-list-label' }, cost._label),
+							span(cost._amount));
+					})),
+			div({ class: 'business-process-revision-box-controls' },
+				a({ href: '#', class: 'hint-optional hint-optional-left',
+					'data-hint': _('Previous document') },
+					i({ class: 'fa fa-angle-left' })),
+				a({ href: '#', class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
+					i({ class: 'fa fa-angle-right' }))
+				)),
 		ul(
 			{ class: 'form-elements' },
 			li(div({ class: 'input' }, input({ dbjs: paymentReceiptUpload._status }))),
 			li(
 				revFail = div({ class: 'official-form-document-revision-reject-reason' },
 					field({ dbjs: paymentReceiptUpload._rejectReasonMemo }))
-			)
+			),
+			li(input({ type: 'submit', value: _("Save") }))
 		),
-		p(input({ type: 'submit', value: _("Save") })),
 		legacy('radioMatch', 'form-revision-payment-receipt-upload',
 			paymentReceiptUpload.__id__ + '/status', { invalid: revFail.getId() })
 	);

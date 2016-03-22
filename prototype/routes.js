@@ -110,7 +110,7 @@ module.exports = {
 	// Part-B routes - official user
 	official: require('./view/business-processes-table'),
 	'revision/user-id': {
-		ensureContext: function () {
+		decorateContext: function () {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;
 			return true;
 		},
@@ -124,7 +124,7 @@ module.exports = {
 		view: require('../view/business-process-revision-document')
 	},
 	'revision/user-id/payments': {
-		ensureContext: function () {
+		decorateContext: function () {
 			this.document = this.businessProcess.paymentReceiptUploads.applicable.first.document;
 			return true;
 		},

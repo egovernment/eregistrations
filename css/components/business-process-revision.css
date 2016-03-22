@@ -32,3 +32,8 @@
 .business-process-revision-selected-document {
 	display: block;
 }
+
+.business-process-revision-box .business-process-costs-list {
+	display: block;
+	width: 100%;
+}

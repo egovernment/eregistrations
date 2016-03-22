@@ -35,9 +35,7 @@ revisionForm = function (requirementUpload) {
 			li(
 				revFail = div({ class: 'input' },
 					revFailInput = input({ dbjs: requirementUpload._rejectReasonTypes, type: 'checkbox' })
-						._dbjsInput)
-			),
-			li(
+						._dbjsInput),
 				revFailOther = div({ class: 'official-form-document-revision-reject-reason' },
 					field({ dbjs: requirementUpload._rejectReasonMemo }))
 			),
