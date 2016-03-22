@@ -76,6 +76,7 @@ module.exports = memoize(function (db/* options */) {
 			type: db.Boolean,
 			value: function (_observe) {
 				if (this.isActiveAccount) return false;
+				if (!this.initialBusinessProcesses) return;
 				return this.initialBusinessProcesses.every(function (bp) {
 					return !_observe(bp._isSubmitted);
 				});
@@ -103,10 +104,13 @@ module.exports = memoize(function (db/* options */) {
 				if (!user.canManagedUserBeDestroyed) {
 					throw err;
 				}
+				console.log('TUTAJ');
 				user.initialBusinessProcesses.forEach(function (bp) {
 					dbObjects.delete(bp);
 				});
+				console.log('NO I KONIEC PAREW');
 				dbObjects.delete(user);
+				console.log('KONIEC');
 			}
 		},
 		destroyManager: {

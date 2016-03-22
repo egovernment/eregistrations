@@ -22,13 +22,20 @@ exports['user-add'] = {
 		}.bind(this));
 	},
 	submit: function (data) {
+		var save;
 		data['User#/roles'] = ['user'];
-		return userEmailMap.ensureUniq(data['User#/email']).then(function (value) {
+
+		save = function () {
 			var result = resolveRecords(data, 'User#');
 			this.targetId = result.id;
 			result.records.push({ id: this.targetId + '/manager',
 				data: { value: '7' + this.req.$user } });
 			return userStorage.storeMany(result.records)(true);
-		}.bind(this));
+		}.bind(this);
+
+		if (data['User#/email']) {
+			return userEmailMap.ensureUniq(data['User#/email']).then(save);
+		}
+		return save();
 	}
 };

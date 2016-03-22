@@ -1,6 +1,7 @@
 'use strict';
 
 var submit            = require('mano/utils/save')
+  , assign            = require('es5-ext/object/assign')
   , changeOwnPassword = require('mano-auth/controller/server/change-own-password').submit
   , genId    = require('time-uuid')
   , mano     = require('mano')
@@ -8,6 +9,8 @@ var submit            = require('mano/utils/save')
 		require('../../server/email-notifications/request-create-managed-account')
 
   , _ = mano.i18n.bind("Authentication");
+
+assign(exports, require('../common/managed-profile/server'));
 
 exports.profile = {
 	submit: function (normalizedData, data) {

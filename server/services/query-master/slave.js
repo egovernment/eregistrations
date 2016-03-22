@@ -1,11 +1,9 @@
 'use strict';
 
 var ensureString    = require('es5-ext/object/validate-stringifiable-value')
-  , registerEmitter = require('dbjs-persistence/lib/emitter');
+  , registerEmitter = require('dbjs-persistence/lib/emitter')
+	, send = registerEmitter('queryMaster');
 
-module.exports = function () {
-	var send = registerEmitter('queryMaster');
-	return function (action/*, query*/) {
-		return send({ action: ensureString(action), query: arguments[1] });
-	};
+module.exports = function (action/*, query*/) {
+	return send({ action: ensureString(action), query: arguments[1] });
 };
