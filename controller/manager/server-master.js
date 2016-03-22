@@ -14,7 +14,7 @@ exports['user-add'] = {
 	validate: function () {
 		var userId = this.req.$user, args = arguments;
 
-		return userStorage.get(userId + '/isManagerActive')(function (data) {
+		return userStorage.getComputed(userId + '/isManagerActive')(function (data) {
 			if (!data || (!unserializeValue(data.value))) {
 				throw customError("Cannot process request", "INVALID_REQUEST", { statusCode: 400 });
 			}
