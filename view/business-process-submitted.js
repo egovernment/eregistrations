@@ -1,6 +1,6 @@
 'use strict';
 
-var documentsAndData = require('./_business-process-documents-and-data')
+var _              = require('mano').i18n.bind('Official: Revision')
   , mainInfo = require('./_business-process-main-info');
 
 exports._parent = require('./user-base');
@@ -10,6 +10,15 @@ exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
 		mainInfo(this);
-		documentsAndData(this.businessProcess);
+		section({ class: 'section-tab-nav' },
+			a({ class: 'section-tab-nav-tab',
+					id: 'tab-documents',
+					href: '/user-submitted/' },
+				_("Documents")),
+			a({ class: 'section-tab-nav-tab',
+					id: 'tab-datas',
+					href: '/user-submitted/datas/' },
+				_("Data")),
+			div({ id: 'user-content', class: 'business-process-revision' }));
 	}
 };

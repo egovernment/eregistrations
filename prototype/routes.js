@@ -83,14 +83,14 @@ module.exports = {
 		view: require('../view/manager-validation-user-edit')
 	},
 	// Part-B routes - user submitted
-	'user-submitted': require('./view/user-submitted'),
-	'user-submitted/(document)': {
-		match: function () {
+	'user-submitted': {
+		decorateContext: function () {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;
 			return true;
 		},
-		view: require('./view/document')
+		view: require('../view/business-process-submitted-document')
 	},
+	'user-submitted/datas': require('../view/business-process-submitted-datas'),
 	'print-request-history': require('../view/print-business-process-status-log'),
 	'data-print': require('./view/print-user-data'),
 	'user-submitted/print-user-data-alternative': require('./view/print-user-data-alternative'),
