@@ -1,7 +1,7 @@
 'use strict';
 
 var _    = require('mano').i18n.bind('Users Admin')
-	, db   = require('mano').db
+  , db   = require('mano').db
   , user = db.User.prototype;
 
 exports._parent = require('./user-base');

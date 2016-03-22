@@ -77,12 +77,11 @@ exports.main = function () {
 							class: 'actions-create',
 							href: '#request-create-manager-account'
 						}, span(_('Create account for this client')))
-					),
+						),
 					a({ href: '/managed-user-profile/' },
 						span({ class: 'hint-optional hint-optional-left',
 								'data-hint': _('edit user details') },
-							i({ class: 'fa fa-cog' }))))
-			));
+							i({ class: 'fa fa-cog' }))))));
 	}.bind(this)));
 
 	div({ class: 'user-forms', id: 'sub-main' });
