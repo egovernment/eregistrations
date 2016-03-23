@@ -1,13 +1,11 @@
 'use strict';
 
 var memoize    = require('memoizee/plain')
-  , validDb    = require('dbjs/valid-dbjs')
-  , defineDate = require('dbjs-ext/date-time/date');
+  , validDb    = require('dbjs/valid-dbjs');
 
 // Convert any date to db.Date in specified time zone.
 module.exports = memoize(function (db) {
 	validDb(db);
-	defineDate(db);
 
 	return function (date, timeZone) {
 		try {
