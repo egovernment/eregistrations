@@ -15,7 +15,7 @@ exports['manager-account-content'] = function () {
 
 	insert(_if(not(this.user._isManagerActive),
 		section(p({ class: 'entities-overview-info' }, _("Your account is currently inactive"))),
-		p(_("Here is the list of " +
+		p({ class: 'section-primary-legend' }, _("Here is the list of " +
 			"requests that you have started " +
 			"in the name of your client. " +
 			"Click on the pen to modify the request or on the " +
