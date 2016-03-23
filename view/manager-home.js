@@ -26,17 +26,20 @@ exports['manager-account-content'] = function () {
 				{ class: 'submitted-user-data-table' },
 				thead(tr(
 					th(_("Client")),
-					th(_('Email')),
+					th(_('Services')),
 					th()
 				)),
 				tbody(
 					clients,
 					function (client) {
+						var bpSet = client.initialBusinessProcesses.and(this.user.managedBusinessProcesses)
+									.filterByKey('businessName');
+
 						return tr(
 							td(client._fullName),
 
-							td(span(client._email),
-								_if(client.roles._has('user'), [" ", span({ class: 'fa fa-check' })])),
+							td(bpSet.map(function (bp) { return bp.constructor; })._size),
+
 							td({ class: 'actions' },
 								_if(and(this.user._isManagerActive,
 										eq(client._manager, this.user)),
