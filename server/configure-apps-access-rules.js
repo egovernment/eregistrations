@@ -279,7 +279,7 @@ module.exports = exports = function (dbDriver, data) {
 		var set = new Set(['businessName']);
 		forEach(processingStepsMeta, function (data, stepShortPath) {
 			// TODO: Fix for deep paths
-			set.add('processingSteps/map/' + stepShortPath + '/resolvedStatus');
+			set.add('processingSteps/map/' + stepShortPath + '/status');
 		});
 		return set;
 	}()));

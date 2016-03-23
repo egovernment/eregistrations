@@ -56,10 +56,9 @@ module.exports = memoize(function (db) {
 		rejectionReason: { type: db.String, required: true  },
 		// Reason of redelegation
 		redelegationReason: { type: db.String, required: true  },
-		// Resolution status of a step
-		// Note: 'pending' option doesn't apply here, as this one is intended for direct resolution
-		// of processing step. For dynamically computed status, see `resolvedStatus` below
-		status: { type: ProcessingStepStatus },
+		// Final status as decided by official
+		// Note: 'pending' option doesn't apply here, as it's not a final status
+		officialStatus: { type: ProcessingStepStatus },
 
 		// Progress of individual step statuses
 		// "paused" status progress
@@ -104,15 +103,15 @@ module.exports = memoize(function (db) {
 			// If not ready, then obviously not pending
 			if (!this.isReady) return false;
 			// If status not decided then clearly pending
-			if (!this.status) return true;
+			if (!this.officialStatus) return true;
 			// If approved, but form data is complete, it's still pending
-			if (this.status === 'approved') return (this.approvalProgress !== 1);
+			if (this.officialStatus === 'approved') return (this.approvalProgress !== 1);
 			// If sent back, but no reason provided, it's still pending
-			if (this.status === 'sentBack') return (this.sendBackProgress !== 1);
+			if (this.officialStatus === 'sentBack') return (this.sendBackProgress !== 1);
 			// If rejected, but no reason provided, it's still pending
-			if (this.status === 'rejected') return (this.rejectionProgress !== 1);
+			if (this.officialStatus === 'rejected') return (this.rejectionProgress !== 1);
 			// If redelegated, but no reason provided, it's still pending
-			if (this.status === 'redelegated') return (this.redelegationProgress !== 1);
+			if (this.officialStatus === 'redelegated') return (this.redelegationProgress !== 1);
 			// 'paused' is the only option left, if it's not done waiting, it's still pending
 			return (this.pauseProgress !== 1);
 		} },
@@ -121,7 +120,7 @@ module.exports = memoize(function (db) {
 		isPaused: { value: function (_observe) {
 			// If not ready, then obviously not paused
 			if (!this.isReady) return false;
-			if (this.status !== 'paused') return false;
+			if (this.officialStatus !== 'paused') return false;
 			return this.pauseProgress === 1;
 		} },
 
@@ -129,7 +128,7 @@ module.exports = memoize(function (db) {
 		isSentBack: { value: function (_observe) {
 			// We don't check isReady as this is used in isReady
 			// No sentBack status, means no sent back
-			if (this.status !== 'sentBack') return false;
+			if (this.officialStatus !== 'sentBack') return false;
 			// Provided reason confirms complete sent back
 			return this.sendBackProgress === 1;
 		} },
@@ -138,7 +137,7 @@ module.exports = memoize(function (db) {
 		isRedelegated: { value: function (_observe) {
 			// If not ready, then obviously not isRedelegated
 			if (!this.isReady) return false;
-			if (this.status !== 'redelegated') return false;
+			if (this.officialStatus !== 'redelegated') return false;
 			return this.redelegationProgress === 1;
 		} },
 
@@ -146,9 +145,9 @@ module.exports = memoize(function (db) {
 		redelegate: {
 			type: db.Function,
 			value: function (previousStep, _observe) {
-				this.status = 'redelegated';
+				this.officialStatus = 'redelegated';
 				previousStep.delegatedFrom = this;
-				previousStep.status = null;
+				previousStep.officialStatus = null;
 			}
 		},
 
@@ -157,7 +156,7 @@ module.exports = memoize(function (db) {
 			type: db.Function,
 			value: function (observeFunction) {
 				if (!this.delegatedFrom) return;
-				this.delegatedFrom.status = null;
+				this.delegatedFrom.officialStatus = null;
 				this.delegatedFrom = null;
 			}
 		},
@@ -167,7 +166,7 @@ module.exports = memoize(function (db) {
 			// If not ready, then obviously not rejected
 			if (!this.isReady) return false;
 			// No rejected status, means no it's not rejected
-			if (this.status !== 'rejected') return false;
+			if (this.officialStatus !== 'rejected') return false;
 			// Provided reason confirms complete rejection
 			return this.rejectionProgress === 1;
 		} },
@@ -177,13 +176,14 @@ module.exports = memoize(function (db) {
 			// If not ready, then obviously not approved
 			if (!this.isReady) return false;
 			// No approved status, means no it's not approved
-			if (this.status !== 'approved') return false;
+			if (this.officialStatus !== 'approved') return false;
 			// Completed form confirms step completion
 			return this.approvalProgress === 1;
 		} },
 
-		// Dynamically resolved processing step status
-		resolvedStatus: { type: ProcessingStepStatus, value: function (_observe) {
+		// Computed processing step status. Resolves to final (not 'pending') status
+		// only if all constraints are met, otherwise 'pending' status is resolved
+		statusComputed: { type: ProcessingStepStatus, value: function () {
 			if (!this.isReady) return null;
 			if (this.isPending) return 'pending';
 			if (this.isApproved) return 'approved';
@@ -191,6 +191,15 @@ module.exports = memoize(function (db) {
 			if (this.isSentBack) return 'sentBack';
 			if (this.isRedelegated) return 'redelegated';
 			if (this.isPaused) return 'paused';
+		} },
+		// In initial phase it's proxy of `statusComputed` result
+		// However when final status is reached below getter is shadowed
+		// with direct value (so any further model changes do not invalidate
+		// once decided status).
+		// `statusComputed` is kept separetely as we need access to computed
+		// status also after final status is met (it's to gently handle eventual valid returns to step)
+		status: { type: ProcessingStepStatus, value: function () {
+			return this.statusComputed;
 		} },
 
 		requirementUploads: { type: UploadsProcess, nested: true },

@@ -28,7 +28,7 @@ module.exports = function (/*options*/) {
 		validate: Function.prototype,
 		submit: function () {
 			this.processingStep.processor = this.user;
-			this.processingStep.status = 'approved';
+			this.processingStep.officialStatus = 'approved';
 			this.processingStep.isRevisionApproved = true;
 		},
 		redirectUrl: '/'
@@ -45,7 +45,7 @@ module.exports = function (/*options*/) {
 		validate: Function.prototype,
 		submit: function () {
 			this.processingStep.processor = this.user;
-			this.processingStep.status = 'sentBack';
+			this.processingStep.officialStatus = 'sentBack';
 		},
 		redirectUrl: '/'
 	};
@@ -58,7 +58,7 @@ module.exports = function (/*options*/) {
 		submit: function () {
 			this.processingStep.processor = this.user;
 			save.apply(this, arguments);
-			this.processingStep.status = 'rejected';
+			this.processingStep.officialStatus = 'rejected';
 		},
 		redirectUrl: '/'
 	};

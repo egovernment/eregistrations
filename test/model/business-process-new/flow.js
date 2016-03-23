@@ -71,7 +71,7 @@ module.exports = function (t, a) {
 	a(businessProcess.status, 'process');
 
 	step = businessProcess.processingSteps.map.test;
-	step.status = 'sentBack';
+	step.officialStatus = 'sentBack';
 	step.sendBackReason = "Whateever ..";
 	businessProcess.isSentBack = true;
 	a(businessProcess.isSubmitted, true);
@@ -80,7 +80,7 @@ module.exports = function (t, a) {
 	a(businessProcess.isClosed, false);
 	a(businessProcess.status, 'sentBack');
 
-	step.status = 'rejected';
+	step.officialStatus = 'rejected';
 	step.rejectionReason = "Whateever ..";
 	businessProcess.isSentBack = false;
 	a(businessProcess.isSubmitted, true);
@@ -89,7 +89,7 @@ module.exports = function (t, a) {
 	a(businessProcess.isClosed, true);
 	a(businessProcess.status, 'closed');
 
-	step.status = 'approved';
+	step.officialStatus = 'approved';
 	businessProcess.foo = true;
 	a(businessProcess.isSubmitted, true);
 	a(businessProcess.isSentBack, false);
@@ -98,7 +98,7 @@ module.exports = function (t, a) {
 	a(businessProcess.status, 'pickup');
 
 	step = businessProcess.processingSteps.map.frontDesk;
-	step.status = 'approved';
+	step.officialStatus = 'approved';
 	businessProcess.lorem = true;
 	a(businessProcess.isSubmitted, true);
 	a(businessProcess.isSentBack, false);
