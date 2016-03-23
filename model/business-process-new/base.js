@@ -61,9 +61,14 @@ module.exports = memoize(function (db/*, options*/) {
 		} },
 
 		// An array of email addresses used as notification recipients (to field).
-		// Resolves to user email by default.
+		// Uses user and manager emails, if the exist, by default.
 		notificationEmails: { type: StringLine, multiple: true, value: function (_observe) {
-			if (this.user) return [ _observe(this.user._email) ];
+			var result = [];
+
+			if (this.user) result.push(_observe(this.user._email));
+			if (this.manager) result.push(_observe(this.manager._email));
+
+			return result;
 		} }
 	});
 
