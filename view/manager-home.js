@@ -12,8 +12,12 @@ exports['manager-account-content'] = function () {
 	var clients = this.user.managedUsers;
 
 	section(_if(this.user._isManagerActive,
-		a({ href: url('new-client'), class: 'button-main' },
-			_("Add client")), p({ class: 'entities-overview-info' },
+		[p(_("Here is your list of clients. " +
+			"By clicking on the pen, you will arrive in their Client " +
+			"Account where you will be able to start a service on their " +
+			"name and see all their documents and data")),
+			a({ href: url('new-client'), class: 'button-main' },
+				_("Add client"))], p({ class: 'entities-overview-info' },
 			_("Your account is currently inactive"))));
 
 	insert(_if(clients._size, function () {
