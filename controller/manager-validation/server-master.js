@@ -20,7 +20,7 @@ var sendCreateRequest = function (data) {
 	return { message: _("The account creation request has been sent.") };
 };
 
-exports['request-create-manager-account/[0-9][a-z0-9]+'] = {
+exports['request-create-account/[0-9][a-z0-9]+'] = {
 	match: function (userId) {
 		return userStorage.get(userId)(function (data) {
 			this.targetId = userId;
@@ -51,6 +51,5 @@ exports['request-create-manager-account/[0-9][a-z0-9]+'] = {
 		return userStorage.storeMany(saveData).then(function () {
 			return sendCreateRequest(data);
 		});
-
 	}
 };

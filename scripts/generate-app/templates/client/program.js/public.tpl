@@ -9,7 +9,7 @@ if (window.performance && window.performance.now) {
 }
 console.log("Build timestamp: ${BUILD_TIMESTAMP}");
 
-var startTime = Date.now(), mano;
+var startTime = Date.now();
 
 // JavaScript polyfills and shims
 // TODO: autodetect, generate and import from: './shims.generated'
@@ -18,8 +18,6 @@ require('mano/lib/client/implement-es');
 // Assure Client id
 // TODO: Require here strictly to log (there should be no log in imported module)
 require('mano/lib/client/client-id');
-
-mano = require('mano');
 
 // Env settings
 require('../../../apps-common/client/env');
