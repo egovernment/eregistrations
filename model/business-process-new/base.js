@@ -58,6 +58,17 @@ module.exports = memoize(function (db/*, options*/) {
 			if (this.businessName) arr.push(this.businessName.toLowerCase());
 			if (submissionNumber) arr.push(submissionNumber.toLowerCase());
 			return arr.join('\x02');
+		} },
+
+		// An array of email addresses used as notification recipients (to field).
+		// Uses user and manager emails, if the exist, by default.
+		notificationEmails: { type: StringLine, multiple: true, value: function (_observe) {
+			var result = [];
+
+			if (this.user) result.push(_observe(this.user._email));
+			if (this.manager) result.push(_observe(this.manager._email));
+
+			return result;
 		} }
 	});
 
