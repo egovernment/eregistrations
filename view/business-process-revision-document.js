@@ -14,6 +14,7 @@ exports._match = 'document';
 
 revisionForm = function (requirementUpload) {
 	var revFail, revFailOther, revFailInput;
+
 	return form(
 		{ id: 'form-revision-requirement-upload',
 			action: '/revision-requirement-upload/' + requirementUpload.master.__id__ +
@@ -57,5 +58,32 @@ exports['document-history'] = function () {
 };
 
 exports['revision-box'] = function () {
+	var prevDoc, nextDoc
+	  , currentDoc = this.document
+	  , bp = this.document.master;
+
+	if (bp.requirementUploads.applicable.size > 1) {
+			var it = bp.requirementUploads.applicable.values();
+
+			var result = it.next();
+			while (result !== undefined && !nextDoc) {
+				var nextInSet = it.next();
+				if (result.value.document === currentDoc) {
+					nextDoc = nextInSet.value.document;
+				}
+				if (nextInSet.value.document === currentDoc) {
+					prevDoc = result.value.document;
+				}
+				result = nextInSet;
+			};
+	}
+
+	div({ class: 'business-process-revision-box-controls' },
+		a({ href: '#', class: 'hint-optional hint-optional-left',
+			'data-hint': _('Previous document') },
+			i({ class: 'fa fa-angle-left' })),
+		a({ href: '#', class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
+			i({ class: 'fa fa-angle-right' }))
+		);
 	revisionForm(this.document.owner);
 };
