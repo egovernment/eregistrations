@@ -21,7 +21,8 @@ exports['request-create-account/[0-9][a-z0-9]+'] = {
 		this.target = db.User.getById(userId);
 		if (!this.manager) return false;
 		if (!this.target) return false;
-		return (this.manager.currentlyManagedUser !== this.target);
+
+		return (this.manager.currentlyManagedUser === this.target);
 	},
 	submit: function (data, normalizedData) {
 		var mailerData = {}, targetId = this.target.__id__
