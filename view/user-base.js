@@ -26,7 +26,7 @@ exports.menu = function () {
 			{ class: 'header-top-menu' },
 			_if(this.manager, li(
 				span(
-					{ class: 'label-manager label-manager-type' },
+					{ class: 'manager-label' },
 					_("Notary")
 				)
 			)),
