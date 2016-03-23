@@ -14,7 +14,12 @@ exports['manager-account-content'] = function () {
 	var requests = this.user.managedBusinessProcesses, user = this.user;
 
 	insert(_if(not(this.user._isManagerActive),
-		section(p({ class: 'entities-overview-info' }, _("Your account is currently inactive")))));
+		p({ class: 'section-primary-legend' }, _("Your account is currently inactive")),
+		p({ class: 'section-primary-legend' }, _("Here is the list of " +
+			"requests that you have started " +
+			"in the name of your client. " +
+			"Click on the pen to modify the request or on the " +
+			"magnifying glass to see the status of the registration."))));
 
 	insert(_if(requests._size, function () {
 		return section({ class: 'submitted-main table-responsive-container' },
