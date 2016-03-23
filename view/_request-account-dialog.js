@@ -15,7 +15,7 @@ module.exports = function (user) {
 				method: 'post',
 				action: url('request-create-account', user.__id__)
 			},
-			h4(_if(user._isInvitationSent,
+			p(_if(user._isInvitationSent,
 				_("Mind that to this user invitation was already sent. " +
 					"Submission of this form will result in sending another email message " +
 					"with different access token (one previously sent will be invalidated")),
