@@ -18,7 +18,10 @@ module.exports = function (user) {
 			h4(_if(user._isInvitationSent,
 				_("Mind that to this user invitation was already sent. " +
 					"Submission of this form will result in sending another email message " +
-					"with different access token (one previously sent will be invalidated"))),
+					"with different access token (one previously sent will be invalidated")),
+				_("Please insert here the email of your client to which the " +
+					"notification of the creation of the account will be sent.")
+				),
 			ul(
 				{ class: 'form-elements' },
 				fieldset({
