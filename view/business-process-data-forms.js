@@ -12,23 +12,27 @@ exports._parent = require('./business-process-base');
 exports['step-guide'] = { class: { 'step-form': true } };
 
 exports.step = function () {
+	var businessProcess = this.businessProcess
+	  , dataForms       = businessProcess.dataForms
+	  , guideProgress   = businessProcess._guideProgress;
+
 	exports._formsHeading(this);
 
 	insert(errorMsg(this));
 	exports._parent._optionalInfo(this);
 	exports._formsOptionalInfo(this);
 
-	div({ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
+	div({ class: ['disabler-range', _if(not(eq(guideProgress, 1)),
 				'disabler-active')], id: 'forms-disabler-range' },
 		div({ class: 'disabler' }),
 		exports._forms(this));
 
-	insert(_if(and(eq(this.businessProcess._guideProgress, 1),
-		eq(this.businessProcess.dataForms._progress, 1)),
+	insert(_if(and(eq(guideProgress, 1),
+		eq(dataForms._progress, 1)),
 		div({ class: 'user-next-step-button' },
 			a({ href: '/documents/' }, _("Continue to next step"))),
-		_if(gt(this.businessProcess.dataForms._progress, 0), section({ class: 'section-warning' },
-			incompleteFormNav(this.businessProcess.dataForms.applicable)))
+		_if(gt(dataForms._progress, 0), section({ class: 'section-warning' },
+			incompleteFormNav(dataForms.applicable)))
 		));
 
 };

@@ -10,7 +10,9 @@ exports._parent = require('./business-process-base');
 exports['step-documents'] = { class: { 'step-active': true } };
 
 exports.step = function () {
-	var requirementUploads = this.businessProcess.requirementUploads;
+	var businessProcess    = this.businessProcess
+	  , requirementUploads = businessProcess.requirementUploads
+	  , guideProgress      = businessProcess._guideProgress;
 
 	exports._documentsHeading(this);
 
@@ -19,7 +21,7 @@ exports.step = function () {
 	exports._documentsOptionalInfo(this);
 
 	div(
-		{ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
+		{ class: ['disabler-range', _if(not(eq(guideProgress, 1)),
 				'disabler-active')], id: 'documents-disabler-range' },
 		div({ class: 'disabler' }),
 		section(
@@ -38,9 +40,9 @@ exports.step = function () {
 			)
 		)
 	);
-	insert(_if(and(eq(this.businessProcess._guideProgress, 1), eq(requirementUploads._progress, 1)),
+	insert(_if(and(eq(guideProgress, 1), eq(requirementUploads._progress, 1)),
 		div({ class: 'user-next-step-button' },
-			a({ href: _if(not(eq(this.businessProcess.costs._paymentWeight, 0)), '/pay/',
+			a({ href: _if(not(eq(businessProcess.costs._paymentWeight, 0)), '/pay/',
 				'/submission/') }, _("Continue to next step")))));
 };
 
