@@ -20,7 +20,9 @@ exports['sub-main'] = {
 					li(field({ dbjs: user._firstName, label: _("Client's first name") })),
 					li(field({ dbjs: user._lastName, label: _("Client's last name") })),
 					li(field({ dbjs: db.Email, name: user._email.dbId,
-						label: _("Client's email") }))
+						label: _("Client's email"), hint: _("This email is optional. " +
+							"If you fill it, the client will not receive any notifications until your decide," +
+							" later, to create his/her account.") }))
 				),
 				p({ class: 'submit-placeholder' },
 					input({ type: 'submit', value: _("Save") }))
