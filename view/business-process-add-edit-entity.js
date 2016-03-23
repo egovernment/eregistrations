@@ -42,11 +42,11 @@ exports.step  = function () {
 	h1(_if(eqSloppy(entity.getObservable(
 		entity.owner.owner.cardinalPropertyKey
 	), null),
-		_("Add ${ entityLabel }", { entityLabel: this.entity.label }),
-		_("Edit ${ entityName }", { entityName: this.entity._name })));
+		_("Add ${ entityLabel }", { entityLabel: entity.label }),
+		_("Edit ${ entityName }", { entityName: entity._name })));
 	insert(generateFormSections(entity.dataForms.applicable,
 		{ viewContext: this, url: url }));
-	if (this.entity.dataForms.map.size > 1) {
+	if (entity.dataForms.map.size > 1) {
 		div({ class: 'user-next-step-button' },
 			a({ href: exports._entitiesTableRootUrl(this) + '#' + entitiesTableId },
 				_("Back to form")));
