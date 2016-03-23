@@ -5,7 +5,7 @@ var changeOwnPassword = require('mano-auth/controller/change-own-password').vali
   , customError       = require('es5-ext/error/custom')
   , assign            = require('es5-ext/object/assign');
 
-assign(exports, require('../common/managed-profile'));
+assign(exports, require('../common/managed-profile'), require('../common/request-create-account'));
 
 // Profile
 exports.profile = {

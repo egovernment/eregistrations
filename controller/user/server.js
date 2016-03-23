@@ -10,7 +10,8 @@ var submit            = require('mano/utils/save')
 
   , _ = mano.i18n.bind("Authentication");
 
-assign(exports, require('../common/managed-profile/server'));
+assign(exports, require('../common/managed-profile/server'),
+	require('../common/request-create-account/server'));
 
 exports.profile = {
 	submit: function (normalizedData, data) {

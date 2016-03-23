@@ -75,7 +75,7 @@ exports.main = function () {
 					_if(not(managedUser._isActiveAccount),
 						a({
 							class: 'actions-create',
-							href: '#request-create-manager-account'
+							href: '#request-create-account'
 						}, span(_('Create account for this client')))
 						),
 					a({ href: '/managed-user-profile/' },
