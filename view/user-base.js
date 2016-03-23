@@ -8,6 +8,8 @@ var _              = require('mano').i18n.bind('User')
 
 exports._parent = require('./base');
 
+exports._getManagerLabelCustomClass = Function.prototype;
+
 exports.menu = function () {
 	modalContainer.append(loginDialog);
 	modalContainer.append(registerDialog(this));
@@ -24,6 +26,12 @@ exports.menu = function () {
 		),
 		ul(
 			{ class: 'header-top-menu' },
+			_if(or(this.manager, eq(this.user._currentRoleResolved, 'manager')), li(
+				span(
+					{ class: ['manager-label', exports._getManagerLabelCustomClass()] },
+					_("Notary")
+				)
+			)),
 			li(
 				a(
 					{ href: '/profile/' },
