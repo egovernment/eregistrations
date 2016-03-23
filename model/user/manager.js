@@ -108,13 +108,10 @@ module.exports = memoize(function (db/* options */) {
 				if (!user.canManagedUserBeDestroyed) {
 					throw err;
 				}
-				console.log('TUTAJ');
 				user.initialBusinessProcesses.forEach(function (bp) {
 					dbObjects.delete(bp);
 				});
-				console.log('NO I KONIEC PAREW');
 				dbObjects.delete(user);
-				console.log('KONIEC');
 			}
 		},
 		destroyManager: {

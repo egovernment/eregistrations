@@ -10,7 +10,6 @@ assign(exports, require('../user/client'));
 exports['user-add'] = {
 	remoteSubmit: true,
 	processResponse: function (targetId) {
-		console.log('targetId', targetId);
 		this.manager.currentlyManagedUser = db.User.getById(targetId);
 	}
 };
