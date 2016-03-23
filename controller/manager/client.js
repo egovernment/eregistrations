@@ -1,13 +1,18 @@
 'use strict';
 
-var assign = require('es5-ext/object/assign');
+var assign = require('es5-ext/object/assign')
+  , db     = require('mano').db;
 
 // Common
 assign(exports, require('../user/client'));
 
 // Add User
 exports['user-add'] = {
-	remoteSubmit: true
+	remoteSubmit: true,
+	processResponse: function (targetId) {
+		console.log('targetId', targetId);
+		this.manager.currentlyManagedUser = db.User.getById(targetId);
+	}
 };
 
 // Delete User

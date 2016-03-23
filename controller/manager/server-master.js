@@ -30,7 +30,9 @@ exports['user-add'] = {
 			this.targetId = result.id;
 			result.records.push({ id: this.targetId + '/manager',
 				data: { value: '7' + this.req.$user } });
-			return userStorage.storeMany(result.records)(true);
+			return userStorage.storeMany(result.records).then(function () {
+				return this.targetId;
+			}.bind(this));
 		}.bind(this);
 
 		if (data['User#/email']) {
