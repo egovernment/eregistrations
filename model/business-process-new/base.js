@@ -63,7 +63,7 @@ module.exports = memoize(function (db/*, options*/) {
 		// An array of email addresses used as notification recipients (to field).
 		// Resolves to user email by default.
 		notificationEmails: { type: StringLine, multiple: true, value: function (_observe) {
-			return [ _observe(this.user.email) ];
+			return [ _observe(this.user._email) ];
 		} }
 	});
 
