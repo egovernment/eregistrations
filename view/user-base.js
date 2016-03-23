@@ -3,7 +3,8 @@
 var _              = require('mano').i18n.bind('User')
   , loginDialog    = require('./_user-login-dialog')
   , registerDialog = require('./_user-register-dialog')
-  , modalContainer = require('./_modal-container');
+  , modalContainer = require('./_modal-container')
+  , requestAccountDialog = require('./_request-account-dialog');
 
 exports._parent = require('./base');
 
@@ -62,6 +63,7 @@ exports.main = function () {
 
 	insert(_if(this.manager, function () {
 		var managedUser = this.manager.currentlyManagedUser;
+		requestAccountDialog(managedUser);
 		return div({ class: 'manager-bar' },
 			div({ class: 'content' },
 				div({ class: 'manager-bar-info' },
@@ -71,16 +73,15 @@ exports.main = function () {
 					),
 				div({ class: 'manager-bar-actions' },
 					_if(not(managedUser._isActiveAccount),
-						postButton({ buttonClass: 'actions-create',
-							action: url('request-create-managed-account'),
-							confirm: _if(managedUser._isInvitationSent,
-								_("Invitation was already send to user. Are you sure you want to send it again?")),
-							value: span(_('Create account for this client')) })),
-						a({ href: '/managed-user-profile/' },
-							span({ class: 'hint-optional hint-optional-left',
+						a({
+							class: 'actions-create',
+							href: '#request-create-account'
+						}, span(_('Create account for this client')))
+						),
+					a({ href: '/managed-user-profile/' },
+						span({ class: 'hint-optional hint-optional-left',
 								'data-hint': _('edit user details') },
-								i({ class: 'fa fa-cog' }))))
-				));
+							i({ class: 'fa fa-cog' }))))));
 	}.bind(this)));
 
 	div({ class: 'user-forms', id: 'sub-main' });
