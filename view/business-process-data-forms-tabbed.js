@@ -14,6 +14,8 @@ exports.step = {
 	content: function () {
 		nav({ class: 'forms-tab-nav' },
 			div({ class: 'content' }, errorMsg(this)),
+			div({ class: 'content' }, exports._parent._optionalInfo(this)),
+			div({ class: 'content' }, exports._formsOptionalInfo(this)),
 			ul({ class: 'content' }, exports._tabs(this)));
 		div({ id: 'forms-sections-content', class: 'content user-forms forms-tab-content' });
 	}
@@ -31,3 +33,6 @@ exports._tabs = function (context) {
 				section._shortLabel)));
 	});
 };
+
+// Displayed together with error info and 'global' optional info
+exports._formsOptionalInfo = Function.prototype;

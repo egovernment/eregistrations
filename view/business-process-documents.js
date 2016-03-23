@@ -15,6 +15,8 @@ exports.step = function () {
 	exports._documentsHeading(this);
 
 	insert(errorMsg(this));
+	exports._parent._optionalInfo(this);
+	exports._documentsOptionalInfo(this);
 
 	div(
 		{ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
@@ -55,4 +57,6 @@ exports._documentsHeading = function (context) {
 	);
 };
 
+// Displayed together with error info and 'global' optional info
+exports._documentsOptionalInfo = Function.prototype;
 exports._extraDocuments = Function.prototype;

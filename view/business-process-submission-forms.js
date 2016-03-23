@@ -14,6 +14,8 @@ exports.step = function () {
 	exports._submissionHeading(this);
 
 	insert(errorMsg(this));
+	exports._parent._optionalInfo(this);
+	exports._submissionOptionalInfo(this);
 
 	div({ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
 		'disabler-active')], id: 'forms-disabler-range' },
@@ -90,3 +92,6 @@ exports._submissionHeading = function (context) {
 		)
 	);
 };
+
+// Displayed together with error info and 'global' optional info
+exports._submissionOptionalInfo = Function.prototype;

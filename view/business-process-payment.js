@@ -14,6 +14,8 @@ exports.step = function () {
 	exports._paymentHeading(this);
 
 	insert(errorMsg(this));
+	exports._parent._optionalInfo(this);
+	exports._paymentOptionalInfo(this);
 	insert(div({ class: 'payment-total-amount' }, h2(_("Your fee is: ${ feeAmount }", {
 		feeAmount: this.businessProcess.costs._totalAmount
 	}))));
@@ -59,4 +61,6 @@ exports._paymentHeading = function (context) {
 	);
 };
 
+// Displayed together with error info and 'global' optional info
+exports._paymentOptionalInfo = Function.prototype;
 exports._onlinePayments = Function.prototype;
