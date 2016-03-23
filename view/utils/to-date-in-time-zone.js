@@ -2,10 +2,11 @@
 
 var db = require('mano').db;
 
-module.exports = function (date) {
+// Convert any date to db.Date in specified time zone.
+module.exports = function (date, timeZone) {
 	try {
 		var res = new Date(date).toLocaleDateString('en', {
-			timeZone: 'America/Guatemala',
+			timeZone: timeZone,
 			year: 'numeric',
 			month: '2-digit',
 			day: '2-digit'
