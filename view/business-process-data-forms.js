@@ -5,7 +5,8 @@
 var generateSections  = require('./components/generate-form-sections')
   , incompleteFormNav = require('./components/incomplete-form-nav')
   , _                 = require('mano').i18n.bind('Registration')
-  , errorMsg          = require('./_business-process-error-info').errorMsg;
+  , errorMsg          = require('./_business-process-error-info').errorMsg
+  , infoMsg           = require('./_business-process-optional-info').infoMsg;
 
 exports._parent = require('./business-process-base');
 
@@ -19,8 +20,8 @@ exports.step = function () {
 	exports._formsHeading(this);
 
 	insert(errorMsg(this));
-	exports._parent._optionalInfo(this);
-	exports._formsOptionalInfo(this);
+	insert(infoMsg(this));
+	insert(exports._optionalInfo(this));
 
 	div({ class: ['disabler-range', _if(not(eq(guideProgress, 1)),
 				'disabler-active')], id: 'forms-disabler-range' },
@@ -51,7 +52,7 @@ exports._formsHeading = function (context) {
 };
 
 // Displayed together with error info and 'global' optional info
-exports._formsOptionalInfo = Function.prototype;
+exports._optionalInfo = Function.prototype;
 
 exports._forms = function (context) {
 	return generateSections(context.businessProcess.dataForms.applicable, { viewContext: context });

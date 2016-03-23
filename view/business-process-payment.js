@@ -2,8 +2,9 @@
 
 'use strict';
 
-var _             = require('mano').i18n.bind('Registration')
-  , errorMsg      = require('./_business-process-error-info').errorMsg;
+var _        = require('mano').i18n.bind('Registration')
+  , errorMsg = require('./_business-process-error-info').errorMsg
+  , infoMsg  = require('./_business-process-optional-info').infoMsg;
 
 exports._parent = require('./business-process-base');
 
@@ -17,8 +18,8 @@ exports.step = function () {
 	exports._paymentHeading(this);
 
 	insert(errorMsg(this));
-	exports._parent._optionalInfo(this);
-	exports._paymentOptionalInfo(this);
+	insert(infoMsg(this));
+	insert(exports._optionalInfo(this));
 
 	insert(div({ class: 'payment-total-amount' }, h2(_("Your fee is: ${ feeAmount }", {
 		feeAmount: businessProcess.costs._totalAmount
@@ -66,5 +67,5 @@ exports._paymentHeading = function (context) {
 };
 
 // Displayed together with error info and 'global' optional info
-exports._paymentOptionalInfo = Function.prototype;
+exports._optionalInfo = Function.prototype;
 exports._onlinePayments = Function.prototype;

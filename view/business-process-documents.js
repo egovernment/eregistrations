@@ -3,7 +3,8 @@
 'use strict';
 
 var _             = require('mano').i18n.bind('Registration')
-  , errorMsg      = require('./_business-process-error-info').errorMsg;
+  , errorMsg      = require('./_business-process-error-info').errorMsg
+  , infoMsg       = require('./_business-process-optional-info').infoMsg;
 
 exports._parent = require('./business-process-base');
 
@@ -17,8 +18,8 @@ exports.step = function () {
 	exports._documentsHeading(this);
 
 	insert(errorMsg(this));
-	exports._parent._optionalInfo(this);
-	exports._documentsOptionalInfo(this);
+	insert(infoMsg(this));
+	insert(exports._optionalInfo(this));
 
 	div(
 		{ class: ['disabler-range', _if(not(eq(guideProgress, 1)),
@@ -60,5 +61,5 @@ exports._documentsHeading = function (context) {
 };
 
 // Displayed together with error info and 'global' optional info
-exports._documentsOptionalInfo = Function.prototype;
+exports._optionalInfo = Function.prototype;
 exports._extraDocuments = Function.prototype;

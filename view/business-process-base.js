@@ -81,5 +81,3 @@ exports._stepsMenu = function (context) {
 					setProgressWidth) })
 		)];
 };
-
-exports._optionalInfo = Function.prototype;

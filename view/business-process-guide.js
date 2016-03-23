@@ -2,10 +2,11 @@
 
 'use strict';
 
-var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
-  , sentBackInfo  = require('./_business-process-sent-back-info')
-  , _             = require('mano').i18n.bind('Registration')
-  , inventoryModal = require('./_business-process-inventory');
+var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
+  , sentBackInfo   = require('./_business-process-sent-back-info')
+  , _              = require('mano').i18n.bind('Registration')
+  , inventoryModal = require('./_business-process-inventory')
+  , infoMsg        = require('./_business-process-optional-info').infoMsg;
 
 /**
  * getRegistrationSpanContent
@@ -58,8 +59,8 @@ exports.step = function () {
 		function () { return div({ class: 'info-main' }, sentBackInfo(this)); }.bind(this),
 		_if(and(eq(guideProgress, 1), paymentWeight, paymentProgress), div({ class: 'info-main' },
 				_("The guide is disabled as you have already processed your payment.")))));
-	exports._parent._optionalInfo(this);
-	exports._guideOptionalInfo(this);
+	insert(infoMsg(this));
+	insert(exports._optionalInfo(this));
 
 	div(
 		{ class: ['disabler-range',
@@ -100,7 +101,7 @@ exports._guideHeading = function (context) {
 };
 
 // Displayed together with sent back info and 'global' optional info
-exports._guideOptionalInfo = Function.prototype;
+exports._optionalInfo = Function.prototype;
 exports._customScripts = Function.prototype;
 
 // Questions
