@@ -86,6 +86,10 @@ module.exports = memoize(function (db/* options */) {
 			value: function (_observe) {
 				if (!this.roles.has('manager')) return false;
 				return this.managedUsers.every(function (user) {
+					// There's a possible race condition where object coming
+					// from managedUsers set is no longer a user (was destroyed),
+					// this prevents crash in such case
+					if (!user.initialBusinessProcesses) return;
 					return _observe(user._isActiveAccount) ||
 						_observe(user.initialBusinessProcesses).every(function (bp) {
 							return !_observe(bp._isSubmitted);
