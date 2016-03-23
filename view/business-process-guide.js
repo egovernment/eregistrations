@@ -58,6 +58,8 @@ exports.step = function () {
 		function () { return div({ class: 'info-main' }, sentBackInfo(this)); }.bind(this),
 		_if(and(eq(guideProgress, 1), paymentWeight, paymentProgress), div({ class: 'info-main' },
 				_("The guide is disabled as you have already processed your payment.")))));
+	exports._parent._optionalInfo(this);
+	exports._guideOptionalInfo(this);
 
 	div(
 		{ class: ['disabler-range',
@@ -97,6 +99,8 @@ exports._guideHeading = function (context) {
 	);
 };
 
+// Displayed together with sent back info and 'global' optional info
+exports._guideOptionalInfo = Function.prototype;
 exports._customScripts = Function.prototype;
 
 // Questions
