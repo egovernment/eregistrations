@@ -208,6 +208,7 @@ User.newNamed('myself', {
 
 db.otherGuy.manager = db.notary;
 db.myself.manager = db.notary;
+db.notary.currentlyManagedUser = db.userVianney;
 
 db.BusinessProcessNew.instances.forEach(function (businessProcess) {
 	if (index % 2 === 1) {
