@@ -12,6 +12,7 @@ var compact       = require('es5-ext/array/#/compact')
   , readdir       = require('fs2/readdir')
   , urlParse      = require('url').parse
   , mano          = require('mano')
+  , isSet         = require('es6-set/is-set')
   , setupTriggers = require('../_setup-triggers')
 
   , create = Object.create
@@ -37,7 +38,7 @@ getTo = function (target, to) {
 
 	// New BusinessProcess model
 	// TODO: Add notificationEmails set resolution
-	if (target.user) return target.user.email;
+	if (isSet(target.notificationEmails)) return target.notificationEmails;
 
 	// If we have an instance of derived BusinessProcess, find original one
 	while (previousBusinessProcess) {
