@@ -23,6 +23,12 @@ exports.menu = function () {
 		),
 		ul(
 			{ class: 'header-top-menu' },
+			_if(this.manager, li(
+				span(
+					{ class: 'label-manager label-manager-type' },
+					_("Notary")
+				)
+			)),
 			li(
 				a(
 					{ href: '/profile/' },

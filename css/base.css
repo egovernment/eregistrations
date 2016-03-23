@@ -38,6 +38,8 @@ Component describing basic elements styles - reusable
 	--error-text: #D9534F;
 	--progress-text: #f89406;
 
+	--label-manager-base: #569C65;
+
 }
 
 @font-face {
