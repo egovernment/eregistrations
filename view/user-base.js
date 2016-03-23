@@ -26,7 +26,7 @@ exports.menu = function () {
 		),
 		ul(
 			{ class: 'header-top-menu' },
-			_if(eq(this.user._currentRoleResolved, 'manager'), li(
+			_if(or(this.manager, eq(this.user._currentRoleResolved, 'manager')), li(
 				span(
 					{ class: ['manager-label', exports._getManagerLabelCustomClass()] },
 					_("Notary")
