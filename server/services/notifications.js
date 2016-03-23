@@ -38,7 +38,7 @@ getTo = function (target, to) {
 	}
 
 	// New BusinessProcess model
-	if (isSet(target.notificationEmails)) return target.notificationEmails;
+	if (isSet(target.notificationEmails)) return aFrom(target.notificationEmails);
 
 	// If we have an instance of derived BusinessProcess, find original one
 	while (previousBusinessProcess) {
@@ -130,7 +130,7 @@ setup = function (path) {
 		text = compact.call(text).join('');
 		mailOpts = {
 			from: getFrom(target, conf.from),
-			to: aFrom(to),
+			to: to,
 			cc: getCc(target, conf.cc),
 			subject: compact.call(resolveTpl(subject, localContext)).join(''),
 			attachments: getAttachments(target, conf.attachments)
