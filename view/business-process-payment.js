@@ -2,24 +2,31 @@
 
 'use strict';
 
-var _             = require('mano').i18n.bind('Registration')
-  , errorMsg      = require('./_business-process-error-info').errorMsg;
+var _        = require('mano').i18n.bind('Registration')
+  , errorMsg = require('./_business-process-error-info').errorMsg
+  , infoMsg  = require('./_business-process-optional-info').infoMsg;
 
 exports._parent = require('./business-process-base');
 
 exports['step-pay'] = { class: { 'step-active': true } };
 
 exports.step = function () {
-	var paymentReceiptUploads = this.businessProcess.paymentReceiptUploads;
+	var businessProcess       = this.businessProcess
+	  , paymentReceiptUploads = businessProcess.paymentReceiptUploads
+	  , guideProgress         = businessProcess._guideProgress;
+
 	exports._paymentHeading(this);
 
 	insert(errorMsg(this));
+	insert(infoMsg(this));
+	insert(exports._optionalInfo(this));
+
 	insert(div({ class: 'payment-total-amount' }, h2(_("Your fee is: ${ feeAmount }", {
-		feeAmount: this.businessProcess.costs._totalAmount
+		feeAmount: businessProcess.costs._totalAmount
 	}))));
 
 	div(
-		{ class: ['disabler-range', _if(not(eq(this.businessProcess._guideProgress, 1)),
+		{ class: ['disabler-range', _if(not(eq(guideProgress, 1)),
 			'disabler-active')], id: 'documents-disabler-range' },
 		div({ class: 'disabler' }),
 		section(
@@ -40,8 +47,8 @@ exports.step = function () {
 		),
 		exports._onlinePayments(this)
 	);
-	insert(_if(and(eq(this.businessProcess._guideProgress, 1),
-		eq(this.businessProcess.costs._paymentProgress, 1)),
+	insert(_if(and(eq(guideProgress, 1),
+		eq(businessProcess.costs._paymentProgress, 1)),
 		div({ class: 'user-next-step-button' },
 			a({ href: '/submission/' }, _("Continue to next step")))));
 };
@@ -59,4 +66,6 @@ exports._paymentHeading = function (context) {
 	);
 };
 
+// Displayed together with error info and 'global' optional info
+exports._optionalInfo = Function.prototype;
 exports._onlinePayments = Function.prototype;

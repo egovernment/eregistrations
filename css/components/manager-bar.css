@@ -3,15 +3,18 @@
 	background-position: center center;
 	background-size: cover;
 }
+
 .manager-bar > .content {
 	width: 100%;
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
 }
+
 .manager-bar-info {
 	line-height: 44px;
 }
+
 .manager-bar-actions {
 	line-height: 44px;
 }
@@ -28,5 +31,20 @@
 
 .manager-bar-info .button-regular {
 	color: var(--white-text);
+	background-color: var(--normal-dark-background);
+}
+
+.manager-bar .actions-create {
+	border-radius: 4px;
+	color: var(--white-text);
+	background-color: var(--normal-background);
+	text-decoration: none;
+	padding: 4px 10px;
+	line-height: 22px;
+}
+
+.manager-bar .actions-create:active,
+.manager-bar .actions-create:focus,
+.manager-bar .actions-create:hover {
 	background-color: var(--normal-dark-background);
 }

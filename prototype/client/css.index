@@ -68,6 +68,7 @@
 ../../css/components/submitted-documents-thumbs.css
 ../../css/components/official-submission-toolbar.css
 ../../css/components/label-reg.css
+../../css/components/manager-label.css
 ../../css/components/table-responsive.css
 ../../css/components/table-responsive-container.css
 ../../css/components/submitted-preview-form.css
