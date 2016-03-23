@@ -13,6 +13,7 @@ var compact       = require('es5-ext/array/#/compact')
   , urlParse      = require('url').parse
   , mano          = require('mano')
   , isSet         = require('es6-set/is-set')
+  , aFrom         = require('es5-ext/array/from')
   , setupTriggers = require('../_setup-triggers')
 
   , create = Object.create
@@ -37,7 +38,6 @@ getTo = function (target, to) {
 	}
 
 	// New BusinessProcess model
-	// TODO: Add notificationEmails set resolution
 	if (isSet(target.notificationEmails)) return target.notificationEmails;
 
 	// If we have an instance of derived BusinessProcess, find original one
@@ -130,7 +130,7 @@ setup = function (path) {
 		text = compact.call(text).join('');
 		mailOpts = {
 			from: getFrom(target, conf.from),
-			to: to,
+			to: aFrom(to),
 			cc: getCc(target, conf.cc),
 			subject: compact.call(resolveTpl(subject, localContext)).join(''),
 			attachments: getAttachments(target, conf.attachments)
