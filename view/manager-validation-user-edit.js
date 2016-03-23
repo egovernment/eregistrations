@@ -25,7 +25,7 @@ exports['sub-main'] = {
 					{ class: 'entity-header-actions' },
 					_if(not(user._isActiveAccount), li(a({
 						class: 'actions-create',
-						href: '#request-create-manager-account'
+						href: '#request-create-account'
 					}, span(_('Create account for this client'))))),
 					li(postButton(
 						{ action: url('user', user.__id__, 'delete'),
