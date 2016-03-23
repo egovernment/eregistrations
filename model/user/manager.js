@@ -76,7 +76,6 @@ module.exports = memoize(function (db/* options */) {
 			type: db.Boolean,
 			value: function (_observe) {
 				if (this.isActiveAccount) return false;
-				if (!this.initialBusinessProcesses) return;
 				return this.initialBusinessProcesses.every(function (bp) {
 					return !_observe(bp._isSubmitted);
 				});

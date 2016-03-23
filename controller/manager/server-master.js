@@ -29,10 +29,12 @@ exports['user-add'] = {
 			var result = resolveRecords(data, 'User#');
 			this.targetId = result.id;
 			result.records.push({ id: this.targetId + '/manager',
-				data: { value: '7' + this.req.$user } });
-			return userStorage.storeMany(result.records).then(function () {
-				return this.targetId;
-			}.bind(this));
+				data: { value: '7' + this.req.$user }
+				});
+			result.records.push({ id: this.req.$user + '/currentlyManagedUser',
+				data: { value: '7' + this.targetId }
+				});
+			return userStorage.storeMany(result.records)(true);
 		}.bind(this);
 
 		if (data['User#/email']) {

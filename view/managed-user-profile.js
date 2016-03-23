@@ -19,13 +19,13 @@ exports['sub-main'] = {
 				form({ action: url('managed-profile'), method: 'post' },
 					ul(
 						{ class: 'form-elements' },
-						li(field({ dbjs: this.user._firstName, label: _("clientFirstName") })),
-						li(field({ dbjs: this.user._lastName, label: _("clientLastName") })),
+						li(field({ dbjs: this.user._firstName, label: _("Client's first name") })),
+						li(field({ dbjs: this.user._lastName, label: _("Client's last name") })),
 						li(_if(this.user._isActiveAccount,
-							field({ dbjs: this.user._email, label: _("clientEmail")
+							field({ dbjs: this.user._email, label: _("Client's email")
 							  , modelRequired: false,
 								render: readOnlyRender }),
-							field({ dbjs: this.user._email, label: _("clientEmail")
+							field({ dbjs: this.user._email, label: _("Client's email")
 							  , modelRequired: false  })))
 					),
 					p({ class: 'dbjs-component-message success-message' }),

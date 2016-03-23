@@ -4,23 +4,17 @@ var queryMaster = require('eregistrations/server/services/query-master/slave')
   , submit      = require('mano/utils/save');
 
 exports['managed-profile'] = {
-	submit: function () {
+	submit: function (data, normalizedData) {
 		var args = arguments, userId, currentEmail;
-		if (!this.manager || !this.manager.currentlyManagedUser) {
-			throw new Error("Access Forbidden");
-		}
-		userId = this.manager.currentlyManagedUser.__id__;
+		userId       = this.manager.currentlyManagedUser.__id__;
 		currentEmail = this.manager.currentlyManagedUser.email;
 
-		if (!currentEmail || (args[1][userId + '/email'] !== currentEmail)) {
+		if (!currentEmail || (normalizedData[userId + '/email'] !== currentEmail)) {
 			return queryMaster('ensureEmailNotTaken', {
-				email: args[1][userId + '/email']
+				email: normalizedData[userId + '/email']
 			}).then(function () {
 				return submit.apply(this, args);
-			}.bind(this), function (err) {
-				console.log('ERROR');
-				throw err;
-			});
+			}.bind(this));
 		}
 
 		return submit.apply(this, args);

@@ -15,10 +15,10 @@ exports['sub-main'] = {
 				{ method: 'post', action: '/user-add/' },
 				ul(
 					{ class: 'form-elements' },
-					li(field({ dbjs: user._firstName, label: _("clientFirstName") })),
-					li(field({ dbjs: user._lastName, label: _("clientLastName") })),
+					li(field({ dbjs: user._firstName, label: _("Client's first name") })),
+					li(field({ dbjs: user._lastName, label: _("Client's last name") })),
 					li(field({ dbjs: db.Email, name: user._email.dbId,
-						label: _("clientEmail") }))
+						label: _("Client's email") }))
 				),
 				p({ class: 'submit-placeholder' },
 					input({ type: 'submit', value: _("Save") }))

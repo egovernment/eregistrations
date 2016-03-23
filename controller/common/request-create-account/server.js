@@ -19,33 +19,35 @@ var sendCreateRequest = function (data) {
 exports['request-create-account/[0-9][a-z0-9]+'] = {
 	match: function (userId) {
 		this.target = db.User.getById(userId);
-		if (!this.manager) return;
-		if (this.manager.currentlyManagedUser !== this.target) return;
-		return this.target;
+		if (!this.manager) return false;
+		if (!this.target) return false;
+		return (this.manager.currentlyManagedUser !== this.target);
 	},
 	submit: function (data, normalizedData) {
-		var mailerData = {}, targetId = this.target.__id__, currentEmail = this.target.email;
+		var mailerData = {}, targetId = this.target.__id__
+		  , currentEmail = this.target.email, setupInvitationData;
 
 		mailerData       = {};
 		mailerData.token = genId();
 		mailerData.email = normalizedData[targetId + '/email'];
 
+		setupInvitationData = function () {
+			this.target.createManagedAccountToken = mailerData.token;
+			if (!this.target.isInvitationSent) {
+				this.target.isInvitationSent = true;
+			}
+		}.bind(this);
+
 		if (!currentEmail || (normalizedData[targetId + '/email'] !== currentEmail)) {
 			return queryMaster('ensureEmailNotTaken', {
 				email: normalizedData[targetId + '/email']
 			}).then(function () {
-				this.target.email                     = normalizedData[targetId + '/email'];
-				this.target.createManagedAccountToken = mailerData.token;
-				if (!this.target.isInvitationSent) {
-					this.target.isInvitationSent = true;
-				}
+				this.target.email = normalizedData[targetId + '/email'];
+				setupInvitationData();
 				return sendCreateRequest(mailerData);
 			}.bind(this));
 		}
-		this.target.createManagedAccountToken = mailerData.token;
-		if (!this.target.isInvitationSent) {
-			this.target.isInvitationSent = true;
-		}
+		setupInvitationData();
 
 		return sendCreateRequest(mailerData);
 	}
