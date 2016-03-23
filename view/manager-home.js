@@ -17,7 +17,7 @@ exports['manager-account-content'] = function () {
 			"Account where you will be able to start a service on their " +
 			"name and see all their documents and data")),
 			a({ href: url('new-client'), class: 'button-main' },
-				_("Add client"))], p({ class: 'entities-overview-info' },
+				_("Add client"))], p({ class: 'section-primary-legend' },
 			_("Your account is currently inactive"))));
 
 	insert(_if(clients._size, function () {
