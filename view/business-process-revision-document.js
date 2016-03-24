@@ -62,15 +62,18 @@ exports['revision-box'] = function () {
 	  , currentDoc = this.document
 	  , bp = this.document.master;
 
+	var urlPrefix = '/' + bp.__id__;
+
 	if (bp.requirementUploads.applicable.size > 1) {
 		var it = bp.requirementUploads.applicable.values();
 		var result = it.next();
-		while (result !== undefined && !nextDoc) {
+
+		while (!result.done && !nextDoc) {
 			nextInSet = it.next();
 			if (result.value.document === currentDoc) {
-				nextDoc = nextInSet.value.document;
+				nextDoc = nextInSet.done ? undefined : nextInSet.value.document;
 			}
-			if (nextInSet.value.document === currentDoc) {
+			if (!nextInSet.done && nextInSet.value.document === currentDoc) {
 				prevDoc = result.value.document;
 			}
 			result = nextInSet;
@@ -78,12 +81,14 @@ exports['revision-box'] = function () {
 	}
 
 	div({ class: 'business-process-revision-box-controls' },
-		_if(prevDoc !== undefined,
-			a({ href: '#', class: 'hint-optional hint-optional-left',
+		_if(prevDoc,
+			a({ href: urlPrefix + resolve(prevDoc, 'docUrl'),
+				class: 'hint-optional hint-optional-left',
 				'data-hint': _('Previous document') },
 				i({ class: 'fa fa-angle-left' }))),
-		_if(nextDoc !== undefined,
-			a({ href: '#', class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
+		_if(nextDoc,
+			a({ href: urlPrefix + resolve(nextDoc, 'docUrl'),
+				class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
 				i({ class: 'fa fa-angle-right' })))
 		);
 	revisionForm(this.document.owner);
