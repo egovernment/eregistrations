@@ -12,10 +12,11 @@ exports['business-process-payments'] = { class: { active: true } };
 exports['official-revision-content'] = function (/*options*/) {
 	var options = Object(arguments[1])
 	  , urlPrefix = options.urlPrefix || '/'
-	  , businessProcess = this.businessProcess;
+	  , businessProcess = this.businessProcess
+	  , selectedDocumentId = this.document ?  this.document.__id__ : null;
 
 	return [section({ class: 'section-primary' },
-			renderPaymentList(businessProcess, urlPrefix),
+			renderPaymentList(businessProcess, urlPrefix, selectedDocumentId),
 			div({ id: 'revision-document', class: 'business-process-revision-selected-document' },
 				div({ id: 'revision-box', class: 'business-process-revision-box' }),
 				div({ class: 'submitted-preview' },

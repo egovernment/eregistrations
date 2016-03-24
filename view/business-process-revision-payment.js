@@ -4,6 +4,7 @@
 
 var _              = require('mano').i18n.bind('Official: Revision')
   , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
+  , getPrevNext = require('../utils/get-prev-next-set')
   , renderDocument = require('./_business-process-revision-document')
   , renderDocumentHistory = require('./_business-process-revision-document-history')
 
@@ -19,16 +20,6 @@ paymentForm = function (paymentReceiptUpload) {
 			action: '/form-revision-payment-receipt-upload/' + paymentReceiptUpload.master.__id__ +
 				'/' + camelToHyphen.call(paymentReceiptUpload.key) + '/',
 			method: 'post', class: 'submitted-preview-form' },
-		div({ class: 'business-process-revision-box-header' },
-			ol({ class: 'submitted-documents-list' },
-				li(paymentReceiptUpload.document._label)),
-			div({ class: 'business-process-revision-box-controls' },
-				a({ href: '#', class: 'hint-optional hint-optional-left',
-					'data-hint': _('Previous document') },
-					i({ class: 'fa fa-angle-left' })),
-				a({ href: '#', class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
-					i({ class: 'fa fa-angle-right' }))
-				)),
 		ul(
 			{ class: 'form-elements' },
 			li(div({ class: 'input' }, input({ dbjs: paymentReceiptUpload._status }))),
@@ -52,6 +43,37 @@ exports['document-history'] = function () {
 };
 
 exports['revision-box'] = function () {
+	var currentDoc = this.document.owner
+	  , bp = this.document.master
+	  , prevNextPair, prevDoc, nextDoc
+	  , docSet;
+
+	var urlPrefix = '/' + bp.__id__;
+
+	docSet = bp.requirementUploads.applicable.or(bp.certificates.applicable);
+
+	prevNextPair = getPrevNext(docSet, currentDoc);
+	// because diff type of objects in the set
+	prevDoc = prevNextPair.prev || undefined;
+	prevDoc = (prevDoc && prevDoc.document) ? prevDoc.document : prevDoc;
+	// because diff type of objects in the set
+	nextDoc = prevNextPair.next || undefined;
+	nextDoc = (nextDoc && nextDoc.document) ? nextDoc.document : nextDoc;
+
+	div({ class: 'business-process-revision-box-header' },
+		ol({ class: 'submitted-documents-list' },
+				li(this.document._label)),
+		div({ class: 'business-process-revision-box-controls' },
+			_if(prevDoc,
+				a({ href: urlPrefix + resolve(prevDoc, 'docUrl'),
+					class: 'hint-optional hint-optional-left',
+					'data-hint': _('Previous document') },
+					i({ class: 'fa fa-angle-left' }))),
+			_if(nextDoc,
+				a({ href: urlPrefix + resolve(nextDoc, 'docUrl'),
+					class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
+					i({ class: 'fa fa-angle-right' })))
+				));
 	paymentForm(this.document.owner);
 };
 
