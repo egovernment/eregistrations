@@ -3,7 +3,8 @@
 'use strict';
 
 var generateSections = require('./components/generate-sections')
-  , renderDocumentsList = require('./_business-process-draw-document-list');
+  , renderDocumentsList = require('./_business-process-draw-document-list')
+  , renderCertificateList =  require('./_business-process-draw-certificate-list');
 
 exports._parent = require('./business-process-revision');
 exports._match = 'businessProcess';
@@ -17,6 +18,7 @@ exports['official-revision-content'] = function (/*options*/) {
 
 	return [section({ class: 'section-primary' },
 			renderDocumentsList(businessProcess, urlPrefix, selectedDocumentId),
+			renderCertificateList(businessProcess, urlPrefix, selectedDocumentId),
 			div({ id: 'revision-document', class: 'business-process-revision-selected-document' },
 				div({ id: 'revision-box', class: 'business-process-revision-box' }),
 				div({ class: 'submitted-preview' },
