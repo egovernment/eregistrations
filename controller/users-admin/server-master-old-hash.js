@@ -14,8 +14,10 @@ var addUserSubmit = function (data) {
 };
 
 // Add User
-exports['user-add'].submit = function (normalizedData, data) {
-	normalizedData['User#/password'] =
-		oldClientHash(normalizedData['User#/email'], normalizedData['User#/password']);
-	return addUserSubmit.apply(this, arguments);
+exports['user-add'] = {
+	submit: function (normalizedData, data) {
+		normalizedData['User#/password'] =
+			oldClientHash(normalizedData['User#/email'], normalizedData['User#/password']);
+		return addUserSubmit.apply(this, arguments);
+	}
 };
