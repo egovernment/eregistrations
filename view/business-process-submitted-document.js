@@ -9,11 +9,11 @@ var renderDocument = require('./_business-process-revision-document')
 exports._parent = require('./business-process-submitted-documents');
 exports._match = 'document';
 
-exports['revision-box'] = function () {
-	div({ class: 'business-process-revision-box-header' },
+exports['submitted-box'] = function () {
+	div({ class: 'business-process-submitted-box-header' },
 			ol({ class: 'submitted-documents-list' },
 				li(this.document._label)),
-			div({ class: 'business-process-revision-box-controls' },
+			div({ class: 'business-process-submitted-box-controls' },
 				a({ href: '#', class: 'hint-optional hint-optional-left',
 					'data-hint': _('Previous document') },
 					i({ class: 'fa fa-angle-left' })),

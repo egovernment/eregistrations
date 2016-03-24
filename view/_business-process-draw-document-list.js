@@ -14,7 +14,7 @@ module.exports = function (target, urlPrefix) {
 				thead(
 					tr(
 						th({ class: 'submitted-user-data-table-status' }),
-						th(_("Name")),
+						th(_("Documents")),
 						th(_("Issuer")),
 						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
 						th({ class: 'submitted-user-data-table-link' })
