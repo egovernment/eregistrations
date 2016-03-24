@@ -20,16 +20,6 @@ revisionForm = function (requirementUpload) {
 			action: '/revision-requirement-upload/' + requirementUpload.master.__id__ +
 				'/' + camelToHyphen.call(requirementUpload.document.uniqueKey) + '/',
 			method: 'post', class: 'submitted-preview-form' },
-		div({ class: 'business-process-revision-box-header' },
-			ol({ class: 'submitted-documents-list' },
-				li(requirementUpload.document._label)),
-			div({ class: 'business-process-revision-box-controls' },
-				a({ href: '#', class: 'hint-optional hint-optional-left',
-					'data-hint': _('Previous document') },
-					i({ class: 'fa fa-angle-left' })),
-				a({ href: '#', class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
-					i({ class: 'fa fa-angle-right' }))
-				)),
 		ul(
 			{ class: 'form-elements' },
 			li(div({ class: 'input' }, input({ dbjs: requirementUpload._status }))),
@@ -80,16 +70,20 @@ exports['revision-box'] = function () {
 		}
 	}
 
-	div({ class: 'business-process-revision-box-controls' },
-		_if(prevDoc,
-			a({ href: urlPrefix + resolve(prevDoc, 'docUrl'),
-				class: 'hint-optional hint-optional-left',
-				'data-hint': _('Previous document') },
-				i({ class: 'fa fa-angle-left' }))),
-		_if(nextDoc,
-			a({ href: urlPrefix + resolve(nextDoc, 'docUrl'),
-				class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
-				i({ class: 'fa fa-angle-right' })))
-		);
-	revisionForm(this.document.owner);
+	div({ class: 'business-process-revision-box-header' },
+		ol({ class: 'submitted-documents-list' },
+				li(this.document._label)),
+		div({ class: 'business-process-revision-box-controls' },
+			_if(prevDoc,
+				a({ href: urlPrefix + resolve(prevDoc, 'docUrl'),
+					class: 'hint-optional hint-optional-left',
+					'data-hint': _('Previous document') },
+					i({ class: 'fa fa-angle-left' }))),
+			_if(nextDoc,
+				a({ href: urlPrefix + resolve(nextDoc, 'docUrl'),
+					class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
+					i({ class: 'fa fa-angle-right' })))
+				));
+		revisionForm(this.document.owner);
+		
 };
