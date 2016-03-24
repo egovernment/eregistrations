@@ -35,6 +35,27 @@
 }
 
 .manager-bar-info a,
+.manager-bar-info button {
+	background: none;
+	text-decoration: underline;
+	color:var(--normal-text);
+	font-size: 14px;
+	padding: 4px 10px;
+}
+
+.manager-bar-info a:hover,
+.manager-bar-info a:active,
+.manager-bar-info a:focus,
+.manager-bar-info button:hover,
+.manager-bar-info button:active,
+.manager-bar-info button:focus {
+	background: none;
+	text-decoration: underline;
+	color:var(--dark-text);
+	font-size: 14px;
+	padding: 4px 10px;
+}
+
 .manager-bar .actions-create {
 	border-radius: 4px;
 	color: var(--white-text);
@@ -44,9 +65,6 @@
 	line-height: 22px;
 }
 
-.manager-bar-info a:active,
-.manager-bar-info a:focus,
-.manager-bar-info a:hover,
 .manager-bar .actions-create:active,
 .manager-bar .actions-create:focus,
 .manager-bar .actions-create:hover {
