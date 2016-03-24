@@ -2,7 +2,7 @@
 
 'use strict';
 
-var renderDocument = require('./_business-process-revision-document')
+var renderDocument = require('./_business-process-submitted-document')
   , renderDocumentHistory = require('./_business-process-revision-document-history')
   , _                = require('mano').i18n.bind('User Submitted');
 

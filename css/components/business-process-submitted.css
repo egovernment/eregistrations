@@ -30,6 +30,17 @@
 	display: block;
 }
 
+.business-process-submitted-selected-document .submitted-preview-document {
+	width:49%;
+	margin-right: 2%;
+	display: inline-block;
+}
+
+.business-process-submitted-selected-document .submitted-preview-document-history {
+	width:49%;
+	display: inline-block;
+}
+
 .business-process-submitted-box .business-process-submitted-list {
 	display: block;
 	width: 100%;
