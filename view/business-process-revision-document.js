@@ -4,6 +4,7 @@
 
 var _              = require('mano').i18n.bind('Official: Revision')
   , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
+  , getPrevNext = require('../utils/get-prev-next-set')
   , renderDocument = require('./_business-process-revision-document')
   , renderDocumentHistory = require('./_business-process-revision-document-history')
 
@@ -48,27 +49,20 @@ exports['document-history'] = function () {
 };
 
 exports['revision-box'] = function () {
-	var prevDoc, nextDoc, nextInSet
-	  , currentDoc = this.document
-	  , bp = this.document.master;
+	var currentDoc = this.document.owner
+	  , bp = this.document.master
+	  , docSet;
 
 	var urlPrefix = '/' + bp.__id__;
 
-	if (bp.requirementUploads.applicable.size > 1) {
-		var it = bp.requirementUploads.applicable.values();
-		var result = it.next();
+	docSet = bp.requirementUploads.applicable.or(bp.certificates.applicable);
+	var prevNextPair = getPrevNext(docSet, currentDoc);
 
-		while (!result.done && !nextDoc) {
-			nextInSet = it.next();
-			if (result.value.document === currentDoc) {
-				nextDoc = nextInSet.done ? undefined : nextInSet.value.document;
-			}
-			if (!nextInSet.done && nextInSet.value.document === currentDoc) {
-				prevDoc = result.value.document;
-			}
-			result = nextInSet;
-		}
-	}
+	var prevDoc = prevNextPair.prev || undefined;
+	prevDoc = (prevDoc && prevDoc.document) ? prevDoc.document : prevDoc;
+
+	var nextDoc = prevNextPair.next || undefined;
+	nextDoc = (nextDoc && nextDoc.document) ? nextDoc.document : nextDoc;
 
 	div({ class: 'business-process-revision-box-header' },
 		ol({ class: 'submitted-documents-list' },
@@ -84,6 +78,5 @@ exports['revision-box'] = function () {
 					class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
 					i({ class: 'fa fa-angle-right' })))
 				));
-		revisionForm(this.document.owner);
-		
+	revisionForm(currentDoc);
 };

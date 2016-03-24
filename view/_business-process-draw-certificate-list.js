@@ -5,7 +5,7 @@
 var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
   , _                = require('mano').i18n.bind('User Submitted');
 
-module.exports = function (target, urlPrefix) {
+module.exports = function (target, urlPrefix, selectedDocumentId) {
 	return _if(target.certificates.uploaded._size, [
 		div(
 			{ class: 'table-responsive-container' },
@@ -24,16 +24,21 @@ module.exports = function (target, urlPrefix) {
 				tbody(
 					target.certificates.uploaded,
 					function (certificate) {
-						td({ class: 'submitted-user-data-table-status' },
-							span({ class: 'fa fa-certificate' }));
-						td(certificate.label);
-						td(certificate._issuedBy);
-						td({ class: 'submitted-user-data-table-date' }, certificate._issueDate);
-						td(certificate._number);
-						td({ class: 'submitted-user-data-table-link' },
-							a({ href: urlPrefix + 'certificate/' +
-								camelToHyphen.call(certificate.key) + '/' },
-								span({ class: 'fa fa-search' }, _("Go to"))));
+						var rowClass = (selectedDocumentId
+								&& certificate.__id__ === selectedDocumentId) ?
+									'active' : '';
+						return tr({ class: rowClass },
+							td({ class: 'submitted-user-data-table-status' },
+								span({ class: 'fa fa-certificate' })),
+							td(certificate.label),
+							td(certificate._issuedBy),
+							td({ class: 'submitted-user-data-table-date' }, certificate._issueDate),
+							td(certificate._number),
+							td({ class: 'submitted-user-data-table-link' },
+								a({ href: urlPrefix + 'certificate/' +
+									camelToHyphen.call(certificate.key) + '/' },
+									span({ class: 'fa fa-search' }, _("Go to"))))
+							);
 					}
 				)
 			)
