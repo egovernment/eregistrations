@@ -51,17 +51,19 @@ exports['document-history'] = function () {
 exports['revision-box'] = function () {
 	var currentDoc = this.document.owner
 	  , bp = this.document.master
+	  , prevNextPair, prevDoc, nextDoc
 	  , docSet;
 
 	var urlPrefix = '/' + bp.__id__;
-
+	
 	docSet = bp.requirementUploads.applicable.or(bp.certificates.applicable);
-	var prevNextPair = getPrevNext(docSet, currentDoc);
 
-	var prevDoc = prevNextPair.prev || undefined;
+	prevNextPair = getPrevNext(docSet, currentDoc);
+	// because diff type of objects in the set
+	prevDoc = prevNextPair.prev || undefined;
 	prevDoc = (prevDoc && prevDoc.document) ? prevDoc.document : prevDoc;
-
-	var nextDoc = prevNextPair.next || undefined;
+	// because diff type of objects in the set
+	nextDoc = prevNextPair.next || undefined;
 	nextDoc = (nextDoc && nextDoc.document) ? nextDoc.document : nextDoc;
 
 	div({ class: 'business-process-revision-box-header' },
