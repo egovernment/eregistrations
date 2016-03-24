@@ -1,10 +1,17 @@
 'use strict';
 
 var oldClientHash = require('mano-auth/utils/client-hash')
-  , addUserSubmit = require('./server-master')['user-add'].submit;
+  , registerSubmit   = require('mano-auth/controller/server-master/register').submit
+  , sendNotification = require('../../server/email-notifications/create-account');
 
-// Common
-module.exports = exports = require('./server-master');
+var addUserSubmit = function (data) {
+	return registerSubmit.apply(this, arguments)(function (result) {
+		sendNotification(data).done(null, function (err) {
+			console.log("Cannot send email", err, err.stack);
+		});
+		return result;
+	});
+};
 
 // Add User
 exports['user-add'].submit = function (normalizedData, data) {
