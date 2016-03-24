@@ -116,9 +116,9 @@ module.exports = {
 		},
 		view: require('../view/business-process-revision-document')
 	},
-	'revision/user-id/documents/(document)': {
+	'revision/user-id/document/(document)': {
 		match: function () {
-			this.document = this.businessProcess.requirementUploads.applicable.first.document;
+			this.document = this.businessProcess.requirementUploads.applicable.last.document;
 			return true;
 		},
 		view: require('../view/business-process-revision-document')
