@@ -20,13 +20,8 @@ paymentForm = function (paymentReceiptUpload) {
 				'/' + camelToHyphen.call(paymentReceiptUpload.key) + '/',
 			method: 'post', class: 'submitted-preview-form' },
 		div({ class: 'business-process-revision-box-header' },
-			div(span(_("Uploaded payment receipt applies to following costs:")),
-				br(),
-				ul({ class: 'business-process-costs-list' },
-					paymentReceiptUpload.applicableCosts, function (cost) {
-						li(span({ class: 'business-process-costs-list-label' }, cost._label),
-							span(cost._amount));
-					})),
+			ol({ class: 'submitted-documents-list' },
+				li(paymentReceiptUpload.document._label)),
 			div({ class: 'business-process-revision-box-controls' },
 				a({ href: '#', class: 'hint-optional hint-optional-left',
 					'data-hint': _('Previous document') },
@@ -58,4 +53,14 @@ exports['document-history'] = function () {
 
 exports['revision-box'] = function () {
 	paymentForm(this.document.owner);
+};
+
+exports['revision-documents-payments-table'] = function () {
+	return div(span(_("Uploaded payment receipt applies to following costs:")),
+		br(),
+		ul({ class: 'business-process-costs-list' },
+			this.document.owner.applicableCosts, function (cost) {
+				li(span({ class: 'business-process-costs-list-label' }, cost._label),
+					span(cost._amount));
+			}));
 };

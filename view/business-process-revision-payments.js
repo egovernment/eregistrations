@@ -21,6 +21,7 @@ exports['official-revision-content'] = function (/*options*/) {
 				div({ class: 'submitted-preview' },
 					div({ id: 'document-preview', class: 'submitted-preview-document' }),
 					div({ class: 'submitted-preview-user-data  entity-data-section-side' },
+						div({ id: 'revision-documents-payments-table' }),
 						generateSections(businessProcess.dataForms.applicable, { viewContext: this })
 						),
 					div({ id: 'document-history', class: 'submitted-preview-document-history' })
