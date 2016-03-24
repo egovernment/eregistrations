@@ -55,7 +55,7 @@ exports['revision-box'] = function () {
 	  , docSet;
 
 	var urlPrefix = '/' + bp.__id__;
-	
+
 	docSet = bp.requirementUploads.applicable.or(bp.certificates.applicable);
 
 	prevNextPair = getPrevNext(docSet, currentDoc);
