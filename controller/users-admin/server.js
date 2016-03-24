@@ -37,8 +37,20 @@ exports['user-add'] = {
 // Edit User
 exports['user/[0-9][a-z0-9]+'] = {
 	submit: function (normalizedData, data) {
-		if (this.propertyKey) return changePassword.apply(this, arguments);
-		return submit.apply(this, arguments);
+		var currentEmail = this.target.email, email = data[this.target.__id__ + '/email']
+		  , save, args = arguments;
+
+		save = function () {
+			if (this.propertyKey) return changePassword.apply(this, args);
+			return submit.apply(this, args);
+		}.bind(this);
+
+		if (!currentEmail || (currentEmail !== email)) {
+			return queryMaster('ensureEmailNotTaken', {
+				email: email
+			}).then(save);
+		}
+		return save();
 	}
 };
 
