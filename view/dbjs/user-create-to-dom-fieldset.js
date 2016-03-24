@@ -10,7 +10,7 @@ module.exports = Object.defineProperty(db.User.prototype.dataForm.sections.profi
 	'toDOMFieldset', d(function (document/*, options*/) {
 		var options = normalizeOptions(arguments[1]);
 		options.fieldsetAppend = [li(field({ label: _("Repeat password"), dbjs: db.Password,
-			required: true, name: 'password-repeat' }))];
+			required: this.master === db.User.prototype ? true : false, name: 'password-repeat' }))];
 
 		return SectionType.prototype.toDOMFieldset.call(this, document, options);
 	}));
