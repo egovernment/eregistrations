@@ -12,7 +12,6 @@ exports._match = 'businessProcess';
 
 var drawPaymentReceiptsPart = function (target, urlPrefix) {
 	return _if(target.paymentReceiptUploads.applicable._size, [
-		h3(_("Payment receipts")),
 		div(
 			{ class: 'table-responsive-container' },
 			table(
@@ -20,7 +19,7 @@ var drawPaymentReceiptsPart = function (target, urlPrefix) {
 				thead(
 					tr(
 						th({ class: 'submitted-user-data-table-status' }),
-						th(_("Name")),
+						th(_("Payment receipts")),
 						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
 						th({ class: 'submitted-user-data-table-link' })
 					)
@@ -47,7 +46,6 @@ var drawPaymentReceiptsPart = function (target, urlPrefix) {
 
 var drawCertificatesPart = function (target, urlPrefix) {
 	return _if(target.certificates.uploaded._size, [
-		h3(_("Certificates")),
 		div(
 			{ class: 'table-responsive-container' },
 			table(
@@ -55,7 +53,7 @@ var drawCertificatesPart = function (target, urlPrefix) {
 				thead(
 					tr(
 						th({ class: 'submitted-user-data-table-status' }),
-						th(_("Name")),
+						th(_("Certificates")),
 						th(_("Issuer")),
 						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
 						th(_("Number")),
@@ -90,14 +88,11 @@ exports['user-content'] = function (/*options*/) {
 	  , uploadsResolver = options.uploadsResolver || businessProcess;
 
 	return [section({ class: 'section-primary' },
-			div({ class: 'section-primary-sub' },
-				h3(_('Documents')),
-				renderDocumentsList(businessProcess, urlPrefix)),
-			div({ class: 'section-primary-sub' },
-				drawPaymentReceiptsPart(uploadsResolver, urlPrefix)),
-			div({ class: 'section-primary-sub' },
-				drawCertificatesPart(uploadsResolver, urlPrefix)),
-			div({ id: 'revision-box', class: 'business-process-revision-box' }),
+			div({ class: "section-primary-sub all-documents-table" },
+				div(renderDocumentsList(businessProcess, urlPrefix)),
+				div(drawPaymentReceiptsPart(uploadsResolver, urlPrefix)),
+				div(drawCertificatesPart(uploadsResolver, urlPrefix))),
+			div({ id: 'submitted-box', class: 'business-process-submitted-box' }),
 			div({ id: 'user-document', class: 'business-process-revision-selected-document' },
 				div({ class: 'submitted-preview' },
 					div({ id: 'document-preview', class: 'submitted-preview-document' }),

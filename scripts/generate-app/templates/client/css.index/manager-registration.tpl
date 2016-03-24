@@ -12,4 +12,5 @@
 ../../../node_modules/eregistrations/css/components/error-page.css
 ../../../node_modules/eregistrations/css/components/info-main.css
 ../../../node_modules/eregistrations/css/components/throbber.css
+../../../node_modules/eregistrations/css/components/manager-label.css
 ../../../css/theme.css
