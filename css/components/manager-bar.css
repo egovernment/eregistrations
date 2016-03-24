@@ -34,6 +34,7 @@
 	background-color: var(--normal-dark-background);
 }
 
+.manager-bar-info a,
 .manager-bar .actions-create {
 	border-radius: 4px;
 	color: var(--white-text);
@@ -43,6 +44,9 @@
 	line-height: 22px;
 }
 
+.manager-bar-info a:active,
+.manager-bar-info a:focus,
+.manager-bar-info a:hover,
 .manager-bar .actions-create:active,
 .manager-bar .actions-create:focus,
 .manager-bar .actions-create:hover {
