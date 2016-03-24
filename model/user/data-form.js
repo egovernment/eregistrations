@@ -20,7 +20,14 @@ module.exports = memoize(function (db/*, options*/) {
 
 	User.prototype.dataForm.setProperties({
 		label: _("New User"),
-		actionUrl: 'user-add'
+		actionUrl: function () {
+			// We're adding new user
+			if (this.master === this.database.User.prototype) {
+				return 'user-add';
+			}
+			// We're editing existing user
+			return 'user/' + this.master.__id__;
+		}
 	});
 
 	User.prototype.dataForm.sections.defineProperties({
