@@ -1,14 +1,12 @@
 'use strict';
 
 var ensureDatabase = require('dbjs/valid-dbjs')
-  , notifyAssigned = require('../../../email-notifications/business-process-assigned')
-  , deferred       = require('deferred')
-  , aFrom          = require('es5-ext/array/from');
+  , notifyAssigned = require('../../../email-notifications/business-process-assigned');
 
 module.exports = function (db) {
 	ensureDatabase(db);
 
-	return function (officialId) {
+	return function (officialId, stepName) {
 		var assignedOfficial = db.User.getById(officialId)
 		  , dispatchers      = db.User.filterByKey('roles', function (roles) {
 			return roles.has('dispatcher');
@@ -16,8 +14,8 @@ module.exports = function (db) {
 
 		if (!assignedOfficial) throw new Error("Official not found");
 
-		return deferred.map(aFrom(dispatchers), function (dispatcher) {
-			return notifyAssigned(dispatcher, assignedOfficial);
-		});
+		return notifyAssigned(dispatchers.toArray().map(function (dispatcher) {
+			return dispatcher.email;
+		}), assignedOfficial, stepName);
 	};
 };
