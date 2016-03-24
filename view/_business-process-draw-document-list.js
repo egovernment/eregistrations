@@ -5,7 +5,7 @@
 var _                = require('mano').i18n.bind('User Submitted')
   , _d = _;
 
-module.exports = function (target, urlPrefix) {
+module.exports = function (target, urlPrefix, selectedDocumentId) {
 	return _if(target.requirementUploads.applicable._size, [
 		div(
 			{ class: 'table-responsive-container' },
@@ -23,17 +23,22 @@ module.exports = function (target, urlPrefix) {
 				tbody(
 					target.requirementUploads.applicable,
 					function (requirementUpload) {
-						td(
-							{ class: 'submitted-user-data-table-status' },
-							_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
-							_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' }))
-						);
-						td(_d(requirementUpload.document._label, { user: requirementUpload.master }));
-						td(requirementUpload.document._issuedBy);
-						td({ class: 'submitted-user-data-table-date' }, requirementUpload.document._issueDate);
-						td({ class: 'submitted-user-data-table-link' },
-							a({ href: urlPrefix + requirementUpload.document.docUrl },
-								span({ class: 'fa fa-search' }, _("Go to"))));
+						var rowClass = (selectedDocumentId
+								&& requirementUpload.document.__id__ === selectedDocumentId) ?
+									'active' : '';
+						return tr({ class: rowClass },
+								td({ class: 'submitted-user-data-table-status' },
+									_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
+									_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' }))
+								),
+								td(_d(requirementUpload.document._label, { user: requirementUpload.master })),
+								td(requirementUpload.document._issuedBy),
+								td({ class: 'submitted-user-data-table-date' },
+									requirementUpload.document._issueDate),
+								td({ class: 'submitted-user-data-table-link' },
+									a({ href: urlPrefix + requirementUpload.document.docUrl },
+										span({ class: 'fa fa-search' }, _("Go to"))))
+							);
 					}
 				)
 			)
