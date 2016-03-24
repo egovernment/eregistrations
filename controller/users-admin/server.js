@@ -17,20 +17,20 @@ assign(exports, require('../user/server'));
 
 // Add user
 exports['user-add'] = {
-	submit: function (data, normalizedData) {
-		var email = normalizedData['User#/email'], args = arguments;
+	submit: function (data) {
+		var email = data['User#/email'], args = arguments;
 
 		return queryMaster('ensureEmailNotTaken', {
 			email: email
 		}).then(function () {
 			return hash(email, genSalt()).then(function (password) {
-				normalizedData['User#/password'] = password;
-				return submit.apply(this, args).then(function (result) {
-					console.log('result OF SAVE', result);
-					return result;
-				});
+				data['User#/password'] = password;
+
+				submit.apply(this, args);
+				sendNotification(this.target).done();
+				return true;
 			}.bind(this));
-		});
+		}.bind(this));
 	}
 };
 
