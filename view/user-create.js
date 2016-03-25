@@ -8,12 +8,6 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		return section(
-			div(
-				{ class: 'entity-header' },
-				h3(_("New User")),
-				user.dataForm.toDOMForm(document)
-			)
-		);
+		return user.dataForm.toDOMForm(document, { prepend: h3(_("New User")) });
 	}
 };
