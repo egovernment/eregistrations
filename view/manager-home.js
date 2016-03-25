@@ -11,7 +11,7 @@ exports['manager-account-clients'] = { class: { active: true } };
 exports['manager-account-content'] = function () {
 	var clients = this.user.managedUsers;
 
-	section(_if(this.user._isManagerActive,
+	insert(_if(this.user._isManagerActive,
 		[p({ class: 'section-primary-legend' }, _("Here is your list of clients. " +
 			"By clicking on the pen, you will arrive in their Client " +
 			"Account where you will be able to start a service on their " +

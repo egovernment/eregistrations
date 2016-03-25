@@ -53,8 +53,8 @@ module.exports = memoize(function (db/*, options*/) {
 
 		// String over which business processes can be searched
 		// through interface panel (computed value is later indexed by persistence engine)
-		searchString: { type: db.String, value: function () {
-			var arr = [], submissionNumber = String(this.submissionNumber);
+		searchString: { type: db.String, value: function (_observe) {
+			var arr = [], submissionNumber = _observe(this.submissionNumber._value);
 			if (this.businessName) arr.push(this.businessName.toLowerCase());
 			if (submissionNumber) arr.push(submissionNumber.toLowerCase());
 			return arr.join('\x02');
@@ -73,8 +73,11 @@ module.exports = memoize(function (db/*, options*/) {
 	});
 
 	BusinessProcess.prototype.submissionNumber.defineProperties({
+		// Stringified complete representation of number
 		value: { type: StringLine, value: function () { return this.number; } },
+		// Numeric part of number (usually incremented for each file)
 		number: { type: UInteger, value: 0 },
+		// Convinient stringification
 		toString: { value: function (opts) { return this.value; } }
 	});
 
