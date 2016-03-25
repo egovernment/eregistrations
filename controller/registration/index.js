@@ -20,7 +20,7 @@ module.exports = exports = assign(exports, require('../user'));
 resetStatus = function (step) {
 	if (!step.isPreviousStepsSatisfied) return;
 	if (step.officialStatus === 'sentBack' || step.isPending) {
-		if (step.officialStatus) step.delete('status');
+		if (step.officialStatus) step.delete('officialStatus');
 		if (step.isRevisionApproved) step.delete('isRevisionApproved');
 	}
 };
