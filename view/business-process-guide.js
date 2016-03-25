@@ -190,7 +190,8 @@ exports._requirementsSection = function (context) {
 				li({ 'data-key': requirement.key },
 					requirement.toGuideDOM ? requirement.toGuideDOM() : [requirement.label,
 							requirement.legend && [br(), small(mdi(requirement.legend))]]);
-			})
+			}),
+		exports._requirementsFooter(context)
 	);
 };
 
@@ -198,6 +199,8 @@ exports._requirementsIntro = function (context) {
 	return p({ class: "section-primary-legend" },
 		_("These are the documents you have to upload and send with your application:"));
 };
+
+exports._requirementsFooter = Function.prototype;
 
 // Costs
 
