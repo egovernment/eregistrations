@@ -139,6 +139,21 @@ module.exports = {
 		},
 		view: require('../view/business-process-document')
 	},
+	'official/business-process-id/documents': {
+		decorateContext: function () {
+			this.document = this.businessProcess.requirementUploads.applicable.first.document;
+			return true;
+		},
+		view: require('../view/business-process-official-document')
+	},
+	'official/business-process-id/documents/(document)': {
+		match: function () {
+			this.document = this.businessProcess.requirementUploads.applicable.last.document;
+			return true;
+		},
+		view: require('../view/business-process-official-document')
+	},
+	'official/business-process-id/data': require('../view/business-process-official-data'),
 	firstBusinessProcess: {
 		match: function () { return true; },
 		view: require('./view/business-process-official-form')

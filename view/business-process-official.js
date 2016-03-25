@@ -18,9 +18,13 @@ exports['sub-main'] = {
 					href: '/' + this.businessProcess.__id__ + '/' },
 				this.processingStep.label),
 			a({ class: 'section-tab-nav-tab',
-					id: 'business-process-official-details',
-					href: '/' + this.businessProcess.__id__ + '/documents-and-data/' },
-				_("Documents and data")),
+					id: 'business-process-official-documents',
+					href: '/' + this.businessProcess.__id__ + '/documents/' },
+				_("Documents")),
+			a({ class: 'section-tab-nav-tab',
+					id: 'business-process-official-data',
+					href: '/' + this.businessProcess.__id__ + '/data/' },
+				_("Data")),
 			div({ id: 'business-process-official-content', class: 'business-process-official-content' }));
 	}
 };
