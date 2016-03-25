@@ -6,8 +6,8 @@ var assign   = require('es5-ext/object/assign')
   , db = mano.db;
 
 var managedUserMatcher = function (managedUserId) {
-	this.managedUser = db.User.getById(managedUserId);
 	if (!this.user.isManagerActive) return false;
+	this.managedUser = db.User.getById(managedUserId);
 	return this.managedUser != null;
 };
 
