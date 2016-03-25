@@ -6,8 +6,8 @@ var ensureDatabase = require('dbjs/valid-dbjs')
 module.exports = function (db) {
 	ensureDatabase(db);
 
-	return function (officialId, stepName) {
-		var assignedOfficial = db.User.getById(officialId)
+	return function (options) {
+		var assignedOfficial = db.User.getById(options.officialId)
 		  , dispatchers      = db.User.filterByKey('roles', function (roles) {
 			return roles.has('dispatcher');
 		});
@@ -16,6 +16,6 @@ module.exports = function (db) {
 
 		return notifyAssigned(dispatchers.toArray().map(function (dispatcher) {
 			return dispatcher.email;
-		}), assignedOfficial, stepName);
+		}), assignedOfficial, options.stepName);
 	};
 };
