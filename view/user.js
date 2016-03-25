@@ -9,10 +9,13 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
+		var manager = this.manager;
+
 		div({ class: 'user-account-boxes' },
 			section({ id: 'welcome-box', class: 'user-account-welcome' },
-				_if(this.manager, function () {
-					var managedUser = this.manager.currentlyManagedUser;
+				_if(manager, function () {
+					var managedUser = manager.currentlyManagedUser;
+
 					return [
 						header(
 							h3(_("View for client: ${ clientFullName }",
@@ -40,39 +43,47 @@ exports['sub-main'] = {
 			a({ class: 'section-tab-nav-tab user-account-tab',
 					id: 'user-account-requests',
 					href: '/' },
-				_if(this.manager, _("Requests"), _("My requests"))),
+				_if(manager, _("Requests"), _("My requests"))),
 			a({ class: 'section-tab-nav-tab user-account-tab',
 					id: 'user-account-data',
 					href: '/requests/' },
-				_if(this.manager, _("Documents and data"), _("My documents and data"))),
+				_if(manager, _("Documents and data"), _("My documents and data"))),
 			div({ id: 'user-account-content', class: 'section-primary' }));
 
-		h3({ class: 'user-account-section-title' }, _("Available services"));
-		section({ class: 'section-primary' },
-			ul({ class: 'user-account-service-boxes' },
-				exports._servicesBoxList(this),
-				function (item) {
-					var disabled = item.disabledCondition
-					  , renderAsForm = item.actionUrl != null ? and(item.actionUrl, not(disabled)) : false
-					  , renderAsDiv = or(item.hrefUrl, disabled)
-					  , boxClasses = [ 'user-account-service-box', _if(disabled, 'disabled') ];
+		insert(_if(mmap(manager, function (manager) {
+			if (!manager) return true;
 
-					return li(_if(item.condition || true, _if(
-						renderAsForm,
-						form({ class: boxClasses, action: item.actionUrl, method: 'post' },
-							button({ type: 'submit' }, _if(renderAsForm, item.buttonContent)),
-							div(div({ class: 'free-form' }, _if(renderAsForm, item.content)),
-								p(button({ type: 'submit' },
-									i({ class: 'fa fa-angle-right' }), _('Click to start'))))),
-						div({ class: boxClasses },
-							a({ href: _if(disabled, null, item.hrefUrl) }, _if(renderAsDiv, item.buttonContent)),
-							div(div({ class: 'free-form' }, _if(renderAsDiv, item.content)),
-								p(a({ href: _if(disabled, null, item.hrefUrl) },
-									i({ class: 'fa fa-angle-right' }), _if(disabled,
-										_('You have reached the draft limit for this service'),
-										_('Click to start'))))))
-					)));
-				}));
+			return eq(manager, manager.currentlyManagedUser._manager);
+		}), [
+			h3({ class: 'user-account-section-title' }, _("Available services")),
+			section({ class: 'section-primary' },
+				ul({ class: 'user-account-service-boxes' },
+					exports._servicesBoxList(this),
+					function (item) {
+						var disabled = item.disabledCondition
+						  , renderAsForm = item.actionUrl != null ? and(item.actionUrl, not(disabled)) : false
+						  , renderAsDiv = or(item.hrefUrl, disabled)
+						  , boxClasses = [ 'user-account-service-box', _if(disabled, 'disabled') ];
+
+						return li(_if(item.condition || true, _if(
+							renderAsForm,
+							form({ class: boxClasses, action: item.actionUrl, method: 'post' },
+								button({ type: 'submit' }, _if(renderAsForm, item.buttonContent)),
+								div(div({ class: 'free-form' }, _if(renderAsForm, item.content)),
+									p(button({ type: 'submit' },
+										i({ class: 'fa fa-angle-right' }), _('Click to start'))))),
+							div({ class: boxClasses },
+								a({ href: _if(disabled, null, item.hrefUrl) },
+									_if(renderAsDiv, item.buttonContent)),
+								div(div({ class: 'free-form' }, _if(renderAsDiv, item.content)),
+									p(a({ href: _if(disabled, null, item.hrefUrl) },
+										i({ class: 'fa fa-angle-right' }), _if(disabled,
+											_('You have reached the draft limit for this service'),
+											_('Click to start'))))))
+						)));
+					}))
+		]));
+
 	}
 };
 

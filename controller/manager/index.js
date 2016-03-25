@@ -8,8 +8,7 @@ var assign   = require('es5-ext/object/assign')
 var managedUserMatcher = function (managedUserId) {
 	this.managedUser = db.User.getById(managedUserId);
 	if (!this.user.isManagerActive) return false;
-	if (!this.managedUser) return false;
-	return this.managedUser.manager === this.user;
+	return this.managedUser != null;
 };
 
 var businessProcessMatcher = function (businessProcessId) {
