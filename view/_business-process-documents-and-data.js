@@ -88,7 +88,6 @@ module.exports = function (businessProcess/*, options*/) {
 		section(
 			{ class: 'section-primary' },
 			h2(_("Documents")),
-			hr(),
 			drawDocumentsPart(uploadsResolver, urlPrefix),
 			drawPaymentReceiptsPart(uploadsResolver, urlPrefix),
 			drawCertificatesPart(uploadsResolver, urlPrefix)
