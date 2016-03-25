@@ -53,8 +53,8 @@ module.exports = memoize(function (db/*, options*/) {
 
 		// String over which business processes can be searched
 		// through interface panel (computed value is later indexed by persistence engine)
-		searchString: { type: db.String, value: function () {
-			var arr = [], submissionNumber = String(this.submissionNumber);
+		searchString: { type: db.String, value: function (_observe) {
+			var arr = [], submissionNumber = _observe(this.submissionNumber._value);
 			if (this.businessName) arr.push(this.businessName.toLowerCase());
 			if (submissionNumber) arr.push(submissionNumber.toLowerCase());
 			return arr.join('\x02');
