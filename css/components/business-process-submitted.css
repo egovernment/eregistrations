@@ -31,13 +31,13 @@
 }
 
 .business-process-submitted-selected-document .submitted-preview-document {
-	width:49%;
+	width:59%;
 	margin-right: 2%;
 	display: inline-block;
 }
 
 .business-process-submitted-selected-document .submitted-preview-document-history {
-	width:49%;
+	width:39%;
 	display: inline-block;
 }
 

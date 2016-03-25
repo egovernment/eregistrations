@@ -141,15 +141,26 @@ exports._bodyAppend = function () {
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/revision/user-id/' }, span("Official: Revision"),
+				a({ href: '/revision/business-process-id/' }, span("Official: Revision"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/revision/user-id/document' }, span("Official: Revision: Requirement"),
+				a({ href: '/revision/business-process-id/documents' },
+					span("Official: Revision: Requirement"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/revision/user-id/payment' }, span("Official: Revision: Payment"),
+				a({ href: '/revision/business-process-id/payment-receipts' },
+					span("Official: Revision: Payment"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
+				a({ href: '/revision/business-process-id/data' }, span("Official: Revision: Data"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
+				a({ href: '/revision/business-process-id/processing' },
+					span("Official: Revision: Processing"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
