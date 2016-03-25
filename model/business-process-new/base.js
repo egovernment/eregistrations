@@ -78,7 +78,7 @@ module.exports = memoize(function (db/*, options*/) {
 		// Numeric part of number (usually incremented for each file)
 		number: { type: UInteger, value: 0 },
 		// Convinient stringification
-		toString: { value: function (opts) { return this.stringified; } }
+		toString: { value: function (opts) { return this.value; } }
 	});
 
 	BusinessProcess.prototype.defineNestedMap('statusLog',
