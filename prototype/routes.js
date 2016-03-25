@@ -116,13 +116,6 @@ module.exports = {
 		},
 		view: require('../view/business-process-revision-document')
 	},
-	'revision/business-process-id/documents/(document)': {
-		match: function () {
-			this.document = this.businessProcess.requirementUploads.applicable.last.document;
-			return true;
-		},
-		view: require('../view/business-process-revision-document')
-	},
 	'revision/business-process-id/payment-receipts': {
 		decorateContext: function () {
 			this.document = this.businessProcess.paymentReceiptUploads.applicable.first.document;
@@ -132,23 +125,9 @@ module.exports = {
 	},
 	'revision/business-process-id/data': require('../view/business-process-revision-data'),
 	'revision/business-process-id/processing': require('../view/business-process-revision-form'),
-	'official/user-id/(document)': {
-		match: function () {
-			this.document = this.businessProcess.requirementUploads.applicable.first.document;
-			return true;
-		},
-		view: require('../view/business-process-document')
-	},
 	'official/business-process-id/documents': {
 		decorateContext: function () {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;
-			return true;
-		},
-		view: require('../view/business-process-official-document')
-	},
-	'official/business-process-id/documents/(document)': {
-		match: function () {
-			this.document = this.businessProcess.requirementUploads.applicable.last.document;
 			return true;
 		},
 		view: require('../view/business-process-official-document')
