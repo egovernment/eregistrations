@@ -3,7 +3,6 @@
 'use strict';
 
 var memoize                = require('memoizee/plain')
-  , _                      = require('mano').i18n.bind("Model: User")
   , defineUser             = require('./base')
   , defineFormSection      = require('../form-section')
   , defineFormSectionGroup = require('../form-section-group');
@@ -19,7 +18,6 @@ module.exports = memoize(function (db/*, options*/) {
 	});
 
 	User.prototype.dataForm.setProperties({
-		label: _("New User"),
 		actionUrl: function () {
 			// We're adding new user
 			if (this.master === this.database.User.prototype) {

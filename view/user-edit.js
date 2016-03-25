@@ -10,7 +10,6 @@ exports['sub-main'] = {
 	content: function () {
 		var user = this.editedUser;
 		section(
-			{ class: 'section-primary' },
 			div(
 				{ class: 'entity-header' },
 				h3([_("User"), ": ", user._fullName]),
@@ -22,9 +21,9 @@ exports['sub-main'] = {
 							value: [i({ class: 'icon-trash' }), " ", _("Delete user")],
 							confirm: _("Are you sure?") }
 					)
-				)
-			),
-			user.dataForm.toDOMForm(document)
+				),
+				user.dataForm.toDOMForm(document)
+			)
 		);
 	}
 };

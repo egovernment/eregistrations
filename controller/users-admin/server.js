@@ -23,7 +23,7 @@ exports['user-add'] = {
 		return queryMaster('ensureEmailNotTaken', {
 			email: email
 		}).then(function () {
-			return hash(email, genSalt()).then(function (password) {
+			return hash(data['User#/password'], genSalt()).then(function (password) {
 				data['User#/password'] = password;
 
 				submit.apply(this, args);
