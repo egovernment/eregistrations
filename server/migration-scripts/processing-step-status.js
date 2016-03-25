@@ -19,7 +19,8 @@ module.exports = function () {
 				return storage.storeMany(flatten.call(records.map(function (record) {
 					return [
 						{ id: record.id, data: { value: '' } },
-						{ id: record.id.replace(/status$/, 'officialStatus'), data: record.data }
+						{ id: record.id.replace(/status$/, 'officialStatus'),
+							data: { value: record.data.value } }
 					];
 				})));
 			});
