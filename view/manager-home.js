@@ -9,9 +9,10 @@ exports._parent = require('./manager');
 exports['manager-account-clients'] = { class: { active: true } };
 
 exports['manager-account-content'] = function () {
-	var clients = this.user.managedUsers;
+	var manager = this.user
+	  , clients = manager.managedUsers;
 
-	insert(_if(this.user._isManagerActive,
+	insert(_if(manager._isManagerActive,
 		[p({ class: 'section-primary-legend' }, _("Here is your list of clients. " +
 			"By clicking on the pen, you will arrive in their Client " +
 			"Account where you will be able to start a service on their " +
@@ -32,7 +33,7 @@ exports['manager-account-content'] = function () {
 				tbody(
 					clients,
 					function (client) {
-						var bpSet = client.initialBusinessProcesses.and(this.user.managedBusinessProcesses)
+						var bpSet = client.initialBusinessProcesses.and(manager.managedBusinessProcesses)
 									.filterByKey('businessName');
 
 						return tr(
@@ -41,12 +42,13 @@ exports['manager-account-content'] = function () {
 							td(bpSet.map(function (bp) { return bp.constructor; })._size),
 
 							td({ class: 'actions' },
-								_if(and(this.user._isManagerActive,
-										eq(client._manager, this.user)),
+								_if(manager._isManagerActive,
 									[
 										postButton({ buttonClass: 'actions-edit',
 											action: url('clients', client.__id__),
-											value: span({ class: 'fa fa-edit' }) }),
+											value: span({
+												class: ['fa', _if(eq(client._manager, manager), 'fa-edit', 'fa-search')]
+											}) }),
 										_if(client._canManagedUserBeDestroyed,
 											postButton({ buttonClass: 'actions-delete',
 												action: url('clients', client.__id__, 'delete'),
@@ -61,5 +63,5 @@ exports['manager-account-content'] = function () {
 				)
 			));
 	}.bind(this),
-		_if(this.user._isManagerActive, p(_('You have no clients yet.')))));
+		_if(manager._isManagerActive, p(_('You have no clients yet.')))));
 };

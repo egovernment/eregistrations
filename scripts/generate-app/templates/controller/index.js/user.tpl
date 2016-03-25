@@ -2,12 +2,12 @@
  * Controller for for both server and client.
  * Usage example for adding a new businessProcess:
  * var createBusinessProcess = require('eregistrations/controller/utils/create-business-process');
- * var validateDraftLimit = require('eregistrations/controller/utils/validate-draft-limit');
+ * var validateCreateProcess = require('eregistrations/controller/utils/validate-create-business-process');
  *
  * exports['register-as-merchant'] = {
  *  submit: createBusinessProcess(db.BusinessProcessMerchant),
  *  redirectUrl: '/',
- *  validate: validateDraftLimit(db.BusinessProcessMerchant)};
+ *  validate: validateCreateProcess(db.BusinessProcessMerchant)};
  * }
  *
  */
