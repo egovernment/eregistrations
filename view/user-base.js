@@ -70,8 +70,11 @@ exports.main = function () {
 				p(_("Introduction to demo version"))))));
 
 	insert(_if(this.manager, function () {
-		var managedUser = this.manager.currentlyManagedUser;
+		var managedUser         = this.manager.currentlyManagedUser
+		  , isUserReallyManaged = eq(this.manager, managedUser._manager);
+
 		requestAccountDialog(managedUser);
+
 		return div({ class: 'manager-bar' },
 			div({ class: 'content' },
 				div({ class: 'manager-bar-info' },
@@ -79,7 +82,7 @@ exports.main = function () {
 						this.appName === 'user' ? a({ href: '/' }, managedUser._fullName) :
 							exports._getMyAccountButton(this.manager, managedUser._fullName)
 					),
-				div({ class: 'manager-bar-actions' },
+				_if(isUserReallyManaged, div({ class: 'manager-bar-actions' },
 					_if(not(managedUser._isActiveAccount),
 						a({
 							class: 'actions-create',
@@ -89,7 +92,8 @@ exports.main = function () {
 					a({ href: '/managed-user-profile/' },
 						span({ class: 'hint-optional hint-optional-left',
 								'data-hint': _('edit user details') },
-							i({ class: 'fa fa-cog' }))))));
+							i({ class: 'fa fa-cog' })))))
+				));
 	}.bind(this)));
 
 	div({ class: 'user-forms', id: 'sub-main' });
