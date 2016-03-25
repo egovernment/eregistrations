@@ -10,5 +10,9 @@ module.exports = function (bpType) {
 			})) {
 			throw customError("Too many draft business processes", "TOO_MANY_DRAFT_BUSINESS_PROCESSES");
 		}
+
+		if (this.manager && this.manager !== this.user.manager) {
+			throw customError("Cannot create a business process for this user", "USER_NOT_MANAGED");
+		}
 	};
 };
