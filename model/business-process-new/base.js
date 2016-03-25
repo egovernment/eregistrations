@@ -73,9 +73,12 @@ module.exports = memoize(function (db/*, options*/) {
 	});
 
 	BusinessProcess.prototype.submissionNumber.defineProperties({
+		// Stringified complete representation of number
 		value: { type: StringLine, value: function () { return this.number; } },
+		// Numeric part of number (usually incremented for each file)
 		number: { type: UInteger, value: 0 },
-		toString: { value: function (opts) { return this.value; } }
+		// Convinient stringification
+		toString: { value: function (opts) { return this.stringified; } }
 	});
 
 	BusinessProcess.prototype.defineNestedMap('statusLog',
