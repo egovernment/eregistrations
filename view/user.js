@@ -50,11 +50,7 @@ exports['sub-main'] = {
 				_if(manager, _("Documents and data"), _("My documents and data"))),
 			div({ id: 'user-account-content', class: 'section-primary' }));
 
-		insert(_if(mmap(manager, function (manager) {
-			if (!manager) return true;
-
-			return eq(manager, manager.currentlyManagedUser._manager);
-		}), [
+		insert(_if(!manager || eq(this.user._manager, manager), [
 			h3({ class: 'user-account-section-title' }, _("Available services")),
 			section({ class: 'section-primary' },
 				ul({ class: 'user-account-service-boxes' },
