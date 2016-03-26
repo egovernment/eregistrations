@@ -109,6 +109,16 @@ exports._bodyAppend = function () {
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
+				a({ href: '/business-process-submitted/payment-receipts/payment' },
+					span("User submitted: Payment receipts"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
+				a({ href: '/business-process-submitted/certificates/certificate' },
+					span("User submitted: Certificates"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
 				a({ href: '/business-process-submitted/data' }, span("User submitted: Data"),
 					span({ class: 'label-reg' }, "Part B"))
 			),

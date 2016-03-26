@@ -9,8 +9,9 @@ var renderDocument = require('./_business-process-submitted-document')
 exports._parent = require('./business-process-submitted-documents');
 exports._match = 'document';
 
-exports['submitted-box'] = function () {
-	div({ class: 'business-process-submitted-box-header' },
+exports['selection-preview'] = function () {
+	return [div({ id: 'submitted-box', class: 'business-process-submitted-box' },
+		div({ class: 'business-process-submitted-box-header' },
 			ol({ class: 'submitted-documents-list' },
 				li(this.document._label)),
 			div({ class: 'business-process-submitted-box-controls' },
@@ -19,13 +20,11 @@ exports['submitted-box'] = function () {
 					i({ class: 'fa fa-angle-left' })),
 				a({ href: '#', class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
 					i({ class: 'fa fa-angle-right' }))
-				));
-};
-
-exports['document-preview'] = function () {
-	renderDocument(this.document);
-};
-
-exports['document-history'] = function () {
-	renderDocumentHistory(this.document);
+				))),
+		div({ id: 'user-document', class: 'business-process-submitted-selected-document' },
+			div({ class: 'submitted-preview' },
+				div({ id: 'document-preview', class: 'submitted-preview-document' },
+					renderDocument(this.document)),
+				div({ id: 'document-history', class: 'submitted-preview-document-history' },
+					renderDocumentHistory(this.document))))];
 };

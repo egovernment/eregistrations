@@ -90,6 +90,20 @@ module.exports = {
 		},
 		view: require('../view/business-process-submitted-document')
 	},
+	'business-process-submitted/payment-receipts/(payment)': {
+		match: function () {
+			this.document = this.businessProcess.paymentReceiptUploads.applicable.first.document;
+			return true;
+		},
+		view: require('../view/business-process-submitted-document')
+	},
+	'business-process-submitted/certificates/(certificate)': {
+		match: function () {
+			this.document = this.businessProcess.certificates.uploaded.first.document;
+			return true;
+		},
+		view: require('../view/business-process-submitted-document')
+	},
 	'business-process-submitted/data': require('../view/business-process-submitted-data'),
 	'print-request-history': require('../view/print-business-process-status-log'),
 	'data-print': require('./view/print-user-data'),
