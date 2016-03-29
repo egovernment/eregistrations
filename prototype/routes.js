@@ -139,6 +139,7 @@ module.exports = {
 	},
 	'revision/business-process-id/data': require('../view/business-process-revision-data'),
 	'revision/business-process-id/processing': require('../view/business-process-revision-form'),
+	'official/business-process-id': require('./view/business-process-official-form'),
 	'official/business-process-id/documents': {
 		decorateContext: function () {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;
