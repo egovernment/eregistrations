@@ -12,7 +12,7 @@ exports['sub-main'] = {
 
 		prepend = div(
 			{ class: 'entity-header' },
-			h3([_("User"), ": ", user._fullName]),
+			h3(_("Edit user: ${ fullName }", { fullName: user._fullName })),
 			div(
 				{ class: 'entity-header-actions' },
 				postButton(

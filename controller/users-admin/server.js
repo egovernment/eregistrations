@@ -27,7 +27,10 @@ exports['user-add'] = {
 				data['User#/password'] = password;
 
 				submit.apply(this, args);
-				sendNotification(this.target).done();
+				sendNotification(this.target).done(null, function (err) {
+					console.log(err.stack);
+					console.error("Cannot send email");
+				});
 				return true;
 			}.bind(this));
 		}.bind(this));
