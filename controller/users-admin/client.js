@@ -9,7 +9,7 @@ var assign = require('es5-ext/object/assign')
 assign(exports, require('../user/client'));
 
 // Add User
-exports['user-add'] = require('mano-auth/controller/client/register');
+exports['user-add'] = { remoteSubmit: true };
 
 // Edit User
 exports['user/[0-9][a-z0-9]+'] = {
