@@ -10,7 +10,7 @@ exports._parent = require('./business-process-submitted');
 exports._match = 'businessProcess';
 
 exports['tab-documents'] = { class: { active: true } };
-exports['user-content'] = function (/*options*/) {
+exports['tab-content'] = function (/*options*/) {
 	var options = Object(arguments[1])
 	  , urlPrefix = options.urlPrefix || '/'
 	  , businessProcess = this.businessProcess

@@ -16,9 +16,9 @@ exports['sub-main'] = {
 					href: '/' },
 				_("Documents")),
 			a({ class: 'section-tab-nav-tab',
-					id: 'tab-datas',
+					id: 'tab-data',
 					href: '/data/' },
 				_("Data")),
-			div({ id: 'user-content', class: 'business-process-revision' }));
+			div({ id: 'tab-content', class: 'business-process-revision' }));
 	}
 };
