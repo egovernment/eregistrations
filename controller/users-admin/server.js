@@ -48,7 +48,7 @@ exports['user/[0-9][a-z0-9]+'] = {
 			return submit.apply(this, args);
 		}.bind(this);
 
-		if (!currentEmail || (currentEmail !== email)) {
+		if (email && (currentEmail !== email)) {
 			return queryMaster('ensureEmailNotTaken', {
 				email: email
 			}).then(save);
