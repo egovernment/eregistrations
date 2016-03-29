@@ -13,6 +13,7 @@ module.exports = function (db) {
 		var assignedOfficial = db.User.getById(options.officialId);
 
 		if (!assignedOfficial) throw new Error("Official not found");
+		if (!dispatcherEmails.size) return; // No dispatchers, then no email to send
 
 		return notifyAssigned(dispatcherEmails, assignedOfficial, options.stepName);
 	};
