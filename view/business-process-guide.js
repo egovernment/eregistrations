@@ -2,10 +2,11 @@
 
 'use strict';
 
-var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
-  , sentBackInfo  = require('./_business-process-sent-back-info')
-  , _             = require('mano').i18n.bind('Registration')
-  , inventoryModal = require('./_business-process-inventory');
+var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
+  , sentBackInfo   = require('./_business-process-sent-back-info')
+  , _              = require('mano').i18n.bind('Registration')
+  , inventoryModal = require('./_business-process-inventory')
+  , infoMsg        = require('./_business-process-optional-info').infoMsg;
 
 /**
  * getRegistrationSpanContent
@@ -18,6 +19,7 @@ var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
  */
 var getRegistrationSpanContent = function (registration) {
 	var spanContent = registration.label;
+
 	registration.master.registrations.groups.forEach(function (group) {
 		if (group.has(registration)) {
 			/**
@@ -45,22 +47,26 @@ exports._parent = require('./business-process-base');
 exports['step-guide'] = { class: { 'step-active': true } };
 
 exports.step = function () {
+	var businessProcess = this.businessProcess
+	  , isSentBack      = businessProcess._isSentBack
+	  , guideProgress   = businessProcess._guideProgress
+	  , paymentWeight   = businessProcess.costs._paymentWeight
+	  , paymentProgress = businessProcess.costs._paymentProgress;
 
 	exports._guideHeading(this);
 
-	insert(_if(this.businessProcess._isSentBack,
+	insert(_if(isSentBack,
 		function () { return div({ class: 'info-main' }, sentBackInfo(this)); }.bind(this),
-		_if(and(eq(this.businessProcess._guideProgress, 1), this.businessProcess.costs._paymentWeight,
-			this.businessProcess.costs._paymentProgress), div({ class: 'info-main' },
+		_if(and(eq(guideProgress, 1), paymentWeight, paymentProgress), div({ class: 'info-main' },
 				_("The guide is disabled as you have already processed your payment.")))));
+	insert(infoMsg(this));
+	insert(exports._optionalInfo(this));
 
 	div(
 		{ class: ['disabler-range',
-			_if(and(eq(this.businessProcess._guideProgress, 1), or(this.businessProcess._isSentBack,
-					and(this.businessProcess.costs._paymentWeight,
-						this.businessProcess.costs._paymentProgress))),
+			_if(and(eq(guideProgress, 1), or(isSentBack, and(paymentWeight, paymentProgress))),
 				'disabler-active')] },
-		this.businessProcess.inventory ? insert(inventoryModal(this.businessProcess)) : null,
+		businessProcess.inventory ? insert(inventoryModal(businessProcess)) : null,
 		div({ class: 'disabler' }),
 		form(
 			{ id: 'guide-form', class: 'user-guide', action: '/guide/', method: 'post' },
@@ -78,8 +84,7 @@ exports.step = function () {
 	);
 
 	exports._customScripts(this);
-	legacy('refreshGuide', 'guide-form', this.businessProcess.__id__,
-		this.businessProcess.constructor.__id__);
+	legacy('refreshGuide', 'guide-form', businessProcess.__id__, businessProcess.constructor.__id__);
 };
 
 exports._guideHeading = function (context) {
@@ -95,6 +100,8 @@ exports._guideHeading = function (context) {
 	);
 };
 
+// Displayed together with sent back info and 'global' optional info
+exports._optionalInfo = Function.prototype;
 exports._customScripts = Function.prototype;
 
 // Questions
@@ -117,44 +124,47 @@ exports._questionsIntro = function (context) {
 // Registrations
 
 exports._registrationsSection = function (context) {
+	var registrationsMap = context.businessProcess.registrations.map;
+
 	return div(
 		{ class: ['section-primary', 'user-guide-registrations-section'] },
 		div(
 			{ id: 'mandatory-registrations-section', class: 'section-primary-wrapper' },
 			h2(_("Mandatory Registrations")),
 			exports._mandatoryRegistrationIntro(context),
-			ul({ id: 'mandatory-registrations-list' }, context.businessProcess.registrations.map,
-				function (registration) {
-					var spanContent;
-					spanContent = getRegistrationSpanContent(registration);
-					// false means the group has already been rendered
-					if (spanContent === false) return;
-					li({ id: 'registration-mandatory-li-' + camelToHyphen.call(registration.key),
-							'data-key': registration.key },
-						label({ class: 'input-aside' },
-							input({ id: 'registration-mandatory-input-' +
-								camelToHyphen.call(registration.key),
-								dbjs: registration._isRequested, type: 'checkbox' }), " ",
-							span(spanContent)));
-				})
+			ul({ id: 'mandatory-registrations-list' }, registrationsMap, function (registration) {
+				var key   = registration.key
+				  , idKey = camelToHyphen.call(registration.key)
+				  , spanContent;
+
+				spanContent = getRegistrationSpanContent(registration);
+				// false means the group has already been rendered
+				if (spanContent === false) return;
+				li({ id: 'registration-mandatory-li-' + idKey, 'data-key': key },
+					label({ class: 'input-aside' },
+						input({ id: 'registration-mandatory-input-' + idKey,
+							dbjs: registration._isRequested, type: 'checkbox' }), " ",
+						span(spanContent)));
+			})
 		),
 		div(
 			{ id: 'optional-registrations-section', class: 'section-primary-wrapper' },
 			h2(_("Optional Registrations")),
 			exports._optionalRegistrationIntro(context),
-			ul({ id: 'optional-registrations-list' }, context.businessProcess.registrations.map,
-				function (registration) {
-					var spanContent;
-					spanContent = getRegistrationSpanContent(registration);
-					// false means the group has already been rendered
-					if (spanContent === false) return;
-					li({ id: 'registration-optional-li-' + camelToHyphen.call(registration.key),
-							'data-key': registration.key },
-						label({ class: 'input-aside' },
-							input({ id: 'registration-optional-input-' + camelToHyphen.call(registration.key),
-								dbjs: registration._isRequested, type: 'checkbox' }), " ",
-							span(spanContent)));
-				})
+			ul({ id: 'optional-registrations-list' }, registrationsMap, function (registration) {
+				var key   = registration.key
+				  , idKey = camelToHyphen.call(registration.key)
+				  , spanContent;
+
+				spanContent = getRegistrationSpanContent(registration);
+				// false means the group has already been rendered
+				if (spanContent === false) return;
+				li({ id: 'registration-optional-li-' + idKey, 'data-key': key },
+					label({ class: 'input-aside' },
+						input({ id: 'registration-optional-input-' + idKey,
+							dbjs: registration._isRequested, type: 'checkbox' }), " ",
+						span(spanContent)));
+			})
 		)
 	);
 };
@@ -180,7 +190,8 @@ exports._requirementsSection = function (context) {
 				li({ 'data-key': requirement.key },
 					requirement.toGuideDOM ? requirement.toGuideDOM() : [requirement.label,
 							requirement.legend && [br(), small(mdi(requirement.legend))]]);
-			})
+			}),
+		exports._requirementsFooter(context)
 	);
 };
 
@@ -188,6 +199,8 @@ exports._requirementsIntro = function (context) {
 	return p({ class: "section-primary-legend" },
 		_("These are the documents you have to upload and send with your application:"));
 };
+
+exports._requirementsFooter = Function.prototype;
 
 // Costs
 
@@ -209,16 +222,19 @@ exports._costsIntro = function (context) {
 exports._costsList = function (context) {
 	return [list(context.businessProcess.costs.map,
 		function (cost) {
-			li({ id: 'cost-li-' + camelToHyphen.call(cost.key), 'data-key': cost.key },
+			var key          = cost.key
+			  , idKey        = camelToHyphen.call(cost.key)
+			  , optionalInfo = cost.optionalInfo;
+
+			li({ id: 'cost-li-' + idKey, 'data-key': key },
 				span({ class: 'user-guide-costs-list-label' },
-					span({ id: 'cost-label-' + camelToHyphen.call(cost.key) }, cost.label),
-					cost.optionalInfo && span({ class: 'input-optional-info' },
+					span({ id: 'cost-label-' + idKey }, cost.label),
+					optionalInfo && span({ class: 'input-optional-info' },
 						span({ class: 'fa fa-info-circle' }, "Info"),
 						span({ class: 'input-optional-info-content' },
-							typeof cost.optionalInfo === 'string' ? md(cost.optionalInfo)
-								: cost.optionalInfo)),
+							typeof optionalInfo === 'string' ? md(optionalInfo) : optionalInfo)),
 					small(cost.legend)),
-				span({ id: 'cost-amount-' + camelToHyphen.call(cost.key) }));
+				span({ id: 'cost-amount-' + idKey }));
 		}),
 		li({ id: 'cost-li-total', class: 'user-guide-total-costs' },
 			span({ class: 'user-guide-costs-list-label' }, _("Total Costs:")), " ",

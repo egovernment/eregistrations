@@ -3,9 +3,12 @@
 var _              = require('mano').i18n.bind('User')
   , loginDialog    = require('./_user-login-dialog')
   , registerDialog = require('./_user-register-dialog')
-  , modalContainer = require('./_modal-container');
+  , modalContainer = require('./_modal-container')
+  , requestAccountDialog = require('./_request-account-dialog');
 
 exports._parent = require('./base');
+
+exports._getManagerLabelCustomClass = Function.prototype;
 
 exports.menu = function () {
 	modalContainer.append(loginDialog);
@@ -23,6 +26,12 @@ exports.menu = function () {
 		),
 		ul(
 			{ class: 'header-top-menu' },
+			_if(or(this.manager, eq(this.user._currentRoleResolved, 'manager')), li(
+				span(
+					{ class: ['manager-label', exports._getManagerLabelCustomClass()] },
+					_("Notary")
+				)
+			)),
 			li(
 				a(
 					{ href: '/profile/' },
@@ -61,7 +70,11 @@ exports.main = function () {
 				p(_("Introduction to demo version"))))));
 
 	insert(_if(this.manager, function () {
-		var managedUser = this.manager.currentlyManagedUser;
+		var managedUser         = this.manager.currentlyManagedUser
+		  , isUserReallyManaged = eq(this.manager, managedUser._manager);
+
+		requestAccountDialog(managedUser);
+
 		return div({ class: 'manager-bar' },
 			div({ class: 'content' },
 				div({ class: 'manager-bar-info' },
@@ -69,17 +82,17 @@ exports.main = function () {
 						this.appName === 'user' ? a({ href: '/' }, managedUser._fullName) :
 							exports._getMyAccountButton(this.manager, managedUser._fullName)
 					),
-				div({ class: 'manager-bar-actions' },
+				_if(isUserReallyManaged, div({ class: 'manager-bar-actions' },
 					_if(not(managedUser._isActiveAccount),
-						postButton({ buttonClass: 'actions-create',
-							action: url('request-create-managed-account'),
-							confirm: _if(managedUser._isInvitationSent,
-								_("Invitation was already send to user. Are you sure you want to send it again?")),
-							value: span(_('Create account for this client')) })),
-						a({ href: '/managed-user-profile/' },
-							span({ class: 'hint-optional hint-optional-left',
+						a({
+							class: 'actions-create',
+							href: '#request-create-account'
+						}, span(_('Create account for this client')))
+						),
+					a({ href: '/managed-user-profile/' },
+						span({ class: 'hint-optional hint-optional-left',
 								'data-hint': _('edit user details') },
-								i({ class: 'fa fa-cog' }))))
+							i({ class: 'fa fa-cog' })))))
 				));
 	}.bind(this)));
 

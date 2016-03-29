@@ -70,8 +70,8 @@ module.exports = {
 	},
 	'manager/requests/firstrequest': {
 		decorateContext: function () {
-			this.user = db.notary;
-			this.managedUser = db.userVianney;
+			this.manager = db.notary;
+			this.user = db.userVianney;
 			this.businessProcess = db.firstBusinessProcess;
 		},
 		view: require('./view/guide')

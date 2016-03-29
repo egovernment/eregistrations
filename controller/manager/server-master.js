@@ -14,7 +14,7 @@ exports['user-add'] = {
 	validate: function () {
 		var userId = this.req.$user, args = arguments;
 
-		return userStorage.get(userId + '/isManagerActive')(function (data) {
+		return userStorage.getComputed(userId + '/isManagerActive')(function (data) {
 			if (!data || (!unserializeValue(data.value))) {
 				throw customError("Cannot process request", "INVALID_REQUEST", { statusCode: 400 });
 			}
@@ -22,13 +22,24 @@ exports['user-add'] = {
 		}.bind(this));
 	},
 	submit: function (data) {
+		var save;
 		data['User#/roles'] = ['user'];
-		return userEmailMap.ensureUniq(data['User#/email']).then(function (value) {
+
+		save = function () {
 			var result = resolveRecords(data, 'User#');
 			this.targetId = result.id;
 			result.records.push({ id: this.targetId + '/manager',
-				data: { value: '7' + this.req.$user } });
+				data: { value: '7' + this.req.$user }
+				});
+			result.records.push({ id: this.req.$user + '/currentlyManagedUser',
+				data: { value: '7' + this.targetId }
+				});
 			return userStorage.storeMany(result.records)(true);
-		}.bind(this));
+		}.bind(this);
+
+		if (data['User#/email']) {
+			return userEmailMap.ensureUniq(data['User#/email']).then(save);
+		}
+		return save();
 	}
 };

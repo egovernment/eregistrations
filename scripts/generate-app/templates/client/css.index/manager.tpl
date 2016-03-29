@@ -43,6 +43,7 @@
 ../../../node_modules/eregistrations/css/components/user-steps-menu-v2.css
 ../../../node_modules/eregistrations/css/components/user-steps-menu.css
 ../../../node_modules/eregistrations/css/components/user-submission.css
+../../../node_modules/eregistrations/css/components/manager-label.css
 ../../../css/theme.css
 ../../../css/theme-part-a.css
 ../../../css/theme-part-b.css
