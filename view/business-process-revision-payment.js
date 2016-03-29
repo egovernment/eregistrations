@@ -62,7 +62,10 @@ exports['revision-box'] = function () {
 
 	div({ class: 'business-process-revision-box-header' },
 		ol({ class: 'submitted-documents-list' },
-				li(this.document._label)),
+				li(this.document._label,
+					a({ class: 'hint-optional hint-optional-right', 'data-hint': _('Open in new tab'),
+						href: this.document.docUrl, target: '_blank' },
+						i({ class: 'fa fa-external-link' })))),
 		div({ class: 'business-process-revision-box-controls' },
 			_if(prevDoc,
 				a({ href: urlPrefix + resolve(prevDoc, 'docUrl'),

@@ -11,8 +11,6 @@ module.exports = function (doc, sideContent) {
 	return [
 		div({ class: 'submitted-preview-revision-document' },
 			div({ class: 'container-with-nav' },
-				h3(span({ class: 'submitted-preview-new-item-number' })),
-
 				_if(gt(doc.files.ordered._size, 1),
 					div({ class: 'submitted-preview-new-documents-navigation' },
 						div(

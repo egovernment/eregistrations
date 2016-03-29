@@ -296,3 +296,11 @@ e.g.:
 .fa-star-o:before {
 	content: "\f006";
 }
+
+.fa-external-link {
+	width:1em;
+}
+
+.fa-external-link:before {
+	content: "\f08e";
+}
