@@ -22,12 +22,6 @@ exports['business-process-official-content'] = function (/*options*/) {
 				div(renderDocumentsList(businessProcess, urlPrefix, selectedDocumentId)),
 				div(renderPaymentList(uploadsResolver, urlPrefix, selectedDocumentId)),
 				div(renderCertificateList(uploadsResolver, urlPrefix, selectedDocumentId))),
-			div({ id: 'submitted-box', class: 'business-process-submitted-box' }),
-			div({ id: 'user-document', class: 'business-process-submitted-selected-document' },
-				div({ class: 'submitted-preview' },
-					div({ id: 'document-preview', class: 'submitted-preview-document' }),
-					div({ id: 'document-history', class: 'submitted-preview-document-history' })
-					)
-				)
+			div({ id: 'selection-preview' })
 		)];
 };
