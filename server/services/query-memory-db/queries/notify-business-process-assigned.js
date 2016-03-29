@@ -7,8 +7,9 @@ module.exports = function (db) {
 	ensureDatabase(db);
 
 	return function (options) {
-		var assignedOfficial = db.User.getById(options.officialId)
-		  , dispatchers      = db.User.filterByKey('roles', function (roles) {
+		var assignedOfficial = db.User.getById(options.officialId);
+		var dispatchers      = db.User.filterByKey('roles', function (roles) {
+			if (!roles) return false;
 			return roles.has('dispatcher');
 		});
 
