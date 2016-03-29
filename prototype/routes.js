@@ -99,7 +99,7 @@ module.exports = {
 	},
 	'business-process-submitted/certificates/(certificate)': {
 		match: function () {
-			this.document = this.businessProcess.certificates.uploaded.first.document;
+			this.document = this.businessProcess.certificates.uploaded.first;
 			return true;
 		},
 		view: require('../view/business-process-submitted-document')
@@ -142,6 +142,20 @@ module.exports = {
 	'official/business-process-id/documents': {
 		decorateContext: function () {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;
+			return true;
+		},
+		view: require('../view/business-process-official-document')
+	},
+	'official/business-process-id/payment-receipts/(payment)': {
+		match: function () {
+			this.document = this.businessProcess.paymentReceiptUploads.applicable.first.document;
+			return true;
+		},
+		view: require('../view/business-process-official-document')
+	},
+	'official/business-process-id/certificates/(certificate)': {
+		match: function () {
+			this.document = this.businessProcess.certificates.uploaded.first;
 			return true;
 		},
 		view: require('../view/business-process-official-document')
