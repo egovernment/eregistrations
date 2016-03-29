@@ -7,7 +7,9 @@ var d = require('d')
 module.exports = function (descriptor) {
 	Object.defineProperties(descriptor, {
 		inputOptions: d({
-			list: db.User.instances.filterByKey('isManagerActive'),
+			list: db.User.instances.filterByKey('isManagerActive').toArray(function (a, b) {
+				return a.fullName.localeCompare(b.fullName);
+			}),
 			property: 'fullName',
 			chooseLabel: _("Select manager:")
 		})
