@@ -95,14 +95,14 @@ module.exports = {
 			this.document = this.businessProcess.paymentReceiptUploads.applicable.first.document;
 			return true;
 		},
-		view: require('../view/business-process-submitted-document')
+		view: require('../view/business-process-submitted-payment')
 	},
 	'business-process-submitted/certificates/(certificate)': {
 		match: function () {
 			this.document = this.businessProcess.certificates.uploaded.first;
 			return true;
 		},
-		view: require('../view/business-process-submitted-document')
+		view: require('../view/business-process-submitted-certificate')
 	},
 	'business-process-submitted/data': require('../view/business-process-submitted-data'),
 	'print-request-history': require('../view/print-business-process-status-log'),
