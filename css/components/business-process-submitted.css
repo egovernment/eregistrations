@@ -11,9 +11,14 @@
 	justify-content: space-between;
 }
 
+.business-process-submitted-box-header-document-title .fa-external-link {
+	margin-left: 8px;
+	vertical-align: middle;
+}
+
 .business-process-submitted-box-controls {
 	vertical-align: middle;
-	line-height: 33px;
+	line-height: 22px;
 }
 
 .business-process-submitted-box-controls a {
