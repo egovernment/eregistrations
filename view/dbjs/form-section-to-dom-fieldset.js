@@ -7,6 +7,7 @@
  *  formId {string} - the id of the parent form
  *  master {object} - by default section's master object
  *  prepend {object} - domjs object to prepend
+ *  fieldsetAppend {array} - array of custom domjs fields to include
  * }
  * @returns {array} - array of constructed domjs elements
  */
@@ -57,7 +58,8 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 				dbjs: master,
 				names: this.formApplicablePropertyNames,
 				control: control,
-				controls: controls
+				controls: controls,
+				append: options.fieldsetAppend
 			}, options.fieldsetOptions)),
 			options.append,
 			resolvent.legacyScript,
