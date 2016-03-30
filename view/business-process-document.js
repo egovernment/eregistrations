@@ -13,7 +13,12 @@ exports['sub-main'] = {
 		var rejectReasonDescription = insert(_if(eq(this.document.owner._status, 'invalid'),
 			div({ class: 'info-main' },
 				p(_('This document was rejected for following reasons:'), ' '),
-				p(this.document.owner.rejectReasonMemo))));
+				_if(eq(this.document.owner.constructor.__id__, 'PaymentReceiptUpload'),
+					p(this.document.owner._rejectReasonMemo),
+					_if(eq(this.document.owner.rejectReasons._size, 1),
+						p(this.document.owner.rejectReasons._first),
+						ul(this.document.owner.rejectReasons, identity))))));
+
 		renderDocument(this.document, rejectReasonDescription);
 	}
 };
