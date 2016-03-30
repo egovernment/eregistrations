@@ -186,11 +186,19 @@ exports._bodyAppend = function () {
 						span("Official - user documents"), span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
+				a({ href: '/official/business-process-id/certificates/certificate' },
+						span("Official - user certificates"), span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
+				a({ href: '/official/business-process-id/payment-receipts/payment/' },
+						span("Official - user payments"), span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
 				a({ href: '/official/business-process-id/data/' },
 						span("Official - user data"), span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/official/user-id/certificates/' },
+				a({ href: '/official/business-process-id/certificates-process/' },
 						span("Official - user at certificate process"),
 						span({ class: 'label-reg' }, "Part B"))
 			),

@@ -152,21 +152,21 @@ module.exports = {
 			this.document = this.businessProcess.paymentReceiptUploads.applicable.first.document;
 			return true;
 		},
-		view: require('../view/business-process-official-document')
+		view: require('../view/business-process-official-payment')
 	},
 	'official/business-process-id/certificates/(certificate)': {
 		match: function () {
 			this.document = this.businessProcess.certificates.uploaded.first;
 			return true;
 		},
-		view: require('../view/business-process-official-document')
+		view: require('../view/business-process-official-certificate')
 	},
 	'official/business-process-id/data': require('../view/business-process-official-data'),
+	'official/business-process-id/certificates-process': require('./view/_certificates-form'),
 	firstBusinessProcess: {
 		match: function () { return true; },
 		view: require('./view/business-process-official-form')
 	},
-	'official/user-id/certificates': require('./view/_certificates-form'),
 	'firstBusinessProcess/documents-and-data': {
 		match: function () {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;
