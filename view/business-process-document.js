@@ -1,7 +1,7 @@
 'use strict';
 
 var renderDocument = require('./_business-process-document')
-  , _ = require('../../i18n').bind('View: Official');
+  , _ = require('mano').i18n.bind('View: Official');
 
 exports._parent = require('./user-base');
 exports._match = 'document';
