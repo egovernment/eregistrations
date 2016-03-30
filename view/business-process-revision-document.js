@@ -4,9 +4,10 @@
 
 var _              = require('mano').i18n.bind('Official: Revision')
   , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
-  , getPrevNext = require('../utils/get-prev-next-set')
+  , reactiveSibling = require('../utils/reactive-sibling')
   , renderDocument = require('./_business-process-revision-document')
   , renderDocumentHistory = require('./_business-process-revision-document-history')
+  , disableStep    = require('./components/disable-processing-step')
 
   , revisionForm;
 
@@ -41,7 +42,11 @@ revisionForm = function (requirementUpload) {
 };
 
 exports['document-preview'] = function () {
-	renderDocument(this.document);
+	var processingStep = this.processingStep
+		  , doc            = this.document;
+
+	renderDocument(doc, _if(processingStep.processableUploads.has(doc.owner),
+		disableStep(this.processingStep, revisionForm(doc.owner))));
 };
 
 exports['document-history'] = function () {
@@ -49,36 +54,31 @@ exports['document-history'] = function () {
 };
 
 exports['revision-box'] = function () {
-	var currentDoc = this.document.owner
-	  , bp = this.document.master
-	  , prevNextPair, prevDoc, nextDoc
-	  , docSet;
-
-	var urlPrefix = '/' + bp.__id__;
-
-	docSet = bp.requirementUploads.applicable.or(bp.certificates.applicable);
-
-	prevNextPair = getPrevNext(docSet, currentDoc);
-	// because diff type of objects in the set
-	prevDoc = prevNextPair.prev || undefined;
-	prevDoc = (prevDoc && prevDoc.document) ? prevDoc.document : prevDoc;
-	// because diff type of objects in the set
-	nextDoc = prevNextPair.next || undefined;
-	nextDoc = (nextDoc && nextDoc.document) ? nextDoc.document : nextDoc;
+	var reqUploads = this.processingStep.requirementUploads.applicable;
+	var nextReqUpload = reactiveSibling.next(reqUploads, this.document.owner);
+	var nextReqUploadUrl = nextReqUpload.map(function (nextReqUpload) {
+		if (!nextReqUpload) return null;
+		return nextReqUpload.docUrl;
+	});
+	var prevReqUpload = reactiveSibling.previous(reqUploads, this.document.owner);
+	var prevReqUploadUrl = prevReqUpload.map(function (nextReqUpload) {
+		if (!prevReqUpload) return null;
+		return prevReqUpload.docUrl;
+	});
 
 	div({ class: 'business-process-revision-box-header' },
 		div({ class: 'business-process-submitted-box-header-document-title' },
 			this.document._label),
 		div({ class: 'business-process-revision-box-controls' },
-			_if(prevDoc,
-				a({ href: urlPrefix + resolve(prevDoc, 'docUrl'),
+			_if(prevReqUpload,
+				a({ href: prevReqUploadUrl,
 					class: 'hint-optional hint-optional-left',
 					'data-hint': _('Previous document') },
 					i({ class: 'fa fa-angle-left' }))),
-			_if(nextDoc,
-				a({ href: urlPrefix + resolve(nextDoc, 'docUrl'),
+			_if(nextReqUpload,
+				a({ href: nextReqUploadUrl,
 					class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
 					i({ class: 'fa fa-angle-right' })))
 				));
-	revisionForm(currentDoc);
+	revisionForm(this.document);
 };

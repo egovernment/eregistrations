@@ -19,9 +19,9 @@ exports['tab-content'] = function (/*options*/) {
 
 	return [section({ class: 'section-primary' },
 			div({ class: "section-primary-sub all-documents-table" },
-				div(renderCertificateList(uploadsResolver, urlPrefix, selectedDocumentId))),
+				div(renderCertificateList(uploadsResolver, urlPrefix, selectedDocumentId)),
 				div(renderDocumentsList(businessProcess, urlPrefix, selectedDocumentId)),
-				div(renderPaymentList(uploadsResolver, urlPrefix, selectedDocumentId)),
+				div(renderPaymentList(uploadsResolver, urlPrefix, selectedDocumentId))),
 			div({ id: 'selection-preview' })
 		)];
 };
