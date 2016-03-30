@@ -26,7 +26,17 @@
 .business-process-revision-box .form-elements > li {
 	display: inline-block;
 	padding: 0 8px;
-	vertical-align: middle;
+	vertical-align: top;
+}
+
+.business-process-revision-box .form-elements > li > input[type="submit"],
+.business-process-revision-box .form-elements > li > button[type="submit"] {
+	margin-top: 6px;
+}
+
+.business-process-revision-box .form-elements > li .dbjs-input-component .input {
+	width: auto;
+	max-width: 260px;
 }
 
 .business-process-revision-selected-document {
