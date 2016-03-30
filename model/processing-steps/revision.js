@@ -14,7 +14,7 @@ module.exports = memoize(function (db) {
 	var RevisionProcessingStep = defineProcessingStep(db).extend('RevisionProcessingStep', {
 		label: { value: _("Revision") },
 
-		// Whether the revision was successfull
+		// Whether the revision was successful
 		isRevisionPending: { type: db.Boolean, value: function (_observe) {
 			// If the whole step is not pending, then obviously not pending
 			if (!this.isPending) return false;
@@ -114,17 +114,33 @@ module.exports = memoize(function (db) {
 	// Adapt approvalProgress and revisionProgress (from UploadsProcess) to use 'processable'
 	// collection instead of applicable.
 	['requirementUploads', 'paymentReceiptUploads'].forEach(function (uploadsProcess) {
-		RevisionProcessingStep.prototype.requirementUploads.defineProperties({
+		RevisionProcessingStep.prototype[uploadsProcess].setProperties({
+			// Subset of approved uploads
+			approved: function (_observe) {
+				var result = [];
+				this.processable.forEach(function (upload) {
+					if (_observe(upload._isApproved)) result.push(upload);
+				});
+				return result;
+			},
+			// Subset of rejected  uploads
+			rejected: function (_observe) {
+				var result = [];
+				this.processable.forEach(function (upload) {
+					if (_observe(upload._isRejected)) result.push(upload);
+				});
+				return result;
+			},
 			// Progress for "approved" status
-			approvalProgress: { value: function (_observe) {
+			approvalProgress: function (_observe) {
 				if (!this.processable.size) return 1;
 				return this.approved.size / this.processable.size;
-			} },
+			},
 			// Progress of revision
-			revisionProgress: { value: function (_observe) {
+			revisionProgress: function (_observe) {
 				if (!this.processable.size) return 1;
 				return (this.approved.size + this.rejected.size) / this.processable.size;
-			} }
+			}
 		});
 	});
 
