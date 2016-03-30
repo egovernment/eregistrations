@@ -322,9 +322,9 @@ module.exports = exports = function (dbDriver, data) {
 		// Sizes of pending files in official roles of user
 		addOfficialStepsPendingSizes(userId, fragment);
 		// Eventual global fragment
-		if (globalFragment) fragment.addFragment(globalFragment);
+		if (globalFragment && (roleName !== 'memoryDb')) fragment.addFragment(globalFragment);
 
-		if (roleName === 'user') {
+		if ((roleName === 'user') || (roleName === 'memoryDb')) {
 			if (custom) {
 				// Business process application
 				// Business process data
