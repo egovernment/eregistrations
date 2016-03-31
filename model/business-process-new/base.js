@@ -51,6 +51,9 @@ module.exports = memoize(function (db/*, options*/) {
 		isFromEregistrations: { type: db.Boolean, value: true,
 			label: _("Has registration been made online?") },
 
+		// Whether business process was created for demo purposes
+		isDemo: { type: db.Boolean, value: false },
+
 		// String over which business processes can be searched
 		// through interface panel (computed value is later indexed by persistence engine)
 		searchString: { type: db.String, value: function (_observe) {
