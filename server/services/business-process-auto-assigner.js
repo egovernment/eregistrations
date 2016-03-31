@@ -41,7 +41,7 @@ module.exports = function (businessProcessStorage, counterStorage, officials, st
 		return getDbSet(
 			businessProcessStorage,
 			'computed',
-			path + '/resolvedStatus',
+			path + '/status',
 			serializeValue('pending')
 		)(function (businessProcesses) {
 			var listener = function (ev) {

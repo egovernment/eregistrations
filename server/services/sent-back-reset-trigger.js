@@ -13,6 +13,6 @@ module.exports = function (db) {
 		trigger: processingSteps.filterByKeyPath('isPreviousStepsSatisfied', true)
 	}, function (processingStep) {
 		debug('clear for %s', processingStep.__id__);
-		processingStep.status = null;
+		processingStep.officialStatus = null;
 	});
 };

@@ -15,7 +15,7 @@ db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
 		}
 		meta[step.shortPath] = {
 			label: step.label,
-			indexName: step.__id__.slice(step.master.__id__.length + 1) + '/resolvedStatus',
+			indexName: step.__id__.slice(step.master.__id__.length + 1) + '/status',
 			indexValue: 'pending'
 		};
 	});

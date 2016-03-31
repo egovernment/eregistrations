@@ -35,7 +35,7 @@ forEach(meta, function (conf, name) {
 		conf.indexName = 'processingSteps/map/${ appNameSuffix }/isReady';
 		conf.indexValue = true;
 	} else {
-		conf.indexName = 'processingSteps/map/${ appNameSuffix }/resolvedStatus';
+		conf.indexName = 'processingSteps/map/${ appNameSuffix }/status';
 		conf.indexValue = name;
 	}
 });
