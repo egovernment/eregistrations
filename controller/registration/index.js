@@ -103,23 +103,6 @@ exports['application-submit'] = {
 		}
 
 		return validate.call(this, data, { changedOnly: false });
-	},
-	submit: function () {
-		if (this.businessProcess.isSentBack) {
-			this.businessProcess.delete('isSentBack');
-			this.dbRelease();
-			this.businessProcess.processingSteps.applicable.forEach(
-				function self(step) {
-					step.previousSteps.forEach(self);
-					if (db.ProcessingStepGroup && (step instanceof db.ProcessingStepGroup)) {
-						step.steps.applicable.forEach(self);
-					} else {
-						resetStatus(step);
-					}
-				}
-			);
-		}
-		submit.apply(this, arguments);
 	}
 };
 
