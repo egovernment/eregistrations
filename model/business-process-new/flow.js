@@ -44,7 +44,7 @@ module.exports = memoize(function (db/*, options*/) {
 
 		// Whether file was submitted to Part B
 		// Set to true by server service on first successful request submission
-		// (technically: whenever isSubmittedReady turns true for first time)
+		// (technically: whenever isSubmittedReady turns true for very first time)
 		isSubmitted: { type: db.Boolean, value: false },
 
 		// Whether business process was sent back to Part A
