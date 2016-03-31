@@ -1,8 +1,12 @@
 'use strict';
 
 var server = require('mano/lib/client/server-sync')
-  , isReadOnlyRender = require('mano/client/utils/is-read-only-render')
-  , reload = function () { window.location.href = '/'; };
+  , isReadOnlyRender = require('mano/client/utils/is-read-only-render');
+
+var reload = function () {
+	localStorage._reload = '1';
+	window.location.href = '/';
+};
 
 module.exports = function (user) {
 	var inReload;
