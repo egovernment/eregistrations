@@ -1,3 +1,3 @@
 'use strict';
 
-module.exports = require('./').filterByKey('isSubmitted');
+module.exports = require('./').filterByKey('isSubmitted', true);
