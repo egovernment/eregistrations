@@ -29,9 +29,7 @@ module.exports = memoize(function (db) {
 			value: function (_observe) {
 				var result = [];
 				this.sections.forEach(function (section) {
-					if (_observe(section._isApplicable)) {
-						result.push(section);
-					}
+					if (_observe(section._isApplicable)) result.push(section);
 				});
 				return result;
 			}
@@ -42,9 +40,7 @@ module.exports = memoize(function (db) {
 			value: function (_observe) {
 				var result = [];
 				this.applicableSections.forEach(function (section) {
-					if (_observe(section._isInternallyApplicable)) {
-						result.push(section);
-					}
+					if (_observe(section._isInternallyApplicable)) result.push(section);
 				});
 				return result;
 			}
