@@ -48,6 +48,12 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 			controls[propName].render = readOnlyRender;
 		});
 
+		//We want finegrained controle over controls option for fieldset
+		if (options.fieldsetOptions && options.fieldsetOptions.controls) {
+			options.fieldsetOptions.controls =
+				normalizeOptions(options.fieldsetOptions.controls, controls);
+		}
+
 		customizeData.arrayResult = [
 			options.prepend,
 			resolvent.formResolvent,
