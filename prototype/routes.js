@@ -130,6 +130,13 @@ module.exports = {
 		},
 		view: require('../view/business-process-revision-document')
 	},
+	'revision/business-process-id/certificates/(certificate)': {
+		match: function () {
+			this.document = this.businessProcess.certificates.uploaded.first;
+			return true;
+		},
+		view: require('../view/business-process-revision-certificate')
+	},
 	'revision/business-process-id/payment-receipts': {
 		decorateContext: function () {
 			this.document = this.businessProcess.paymentReceiptUploads.applicable.first.document;

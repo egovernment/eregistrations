@@ -175,7 +175,7 @@ module.exports = exports = function (dbDriver, data) {
 		var list = getDbRecordSet(userStorage, userId + '/recentlyVisited/users')
 			.map(function (value) { return value.slice(1); });
 
-		return getColFragments(list, getUserListFragment);
+		return getColFragments(list, getUserFragment);
 	};
 	var getUsersAdminFragment = memoize(function () {
 		var fragment = new FragmentGroup();
@@ -279,7 +279,7 @@ module.exports = exports = function (dbDriver, data) {
 		var set = new Set(['businessName']);
 		forEach(processingStepsMeta, function (data, stepShortPath) {
 			// TODO: Fix for deep paths
-			set.add('processingSteps/map/' + stepShortPath + '/resolvedStatus');
+			set.add('processingSteps/map/' + stepShortPath + '/status');
 		});
 		return set;
 	}()));

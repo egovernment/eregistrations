@@ -19,7 +19,7 @@ exports.columns = [{
 	head: _("Time"),
 	data: function (processingStep) {
 		var result, value;
-		return processingStep._resolvedStatus._lastModified.map(function (modDate) {
+		return processingStep._status._lastModified.map(function (modDate) {
 			value = Date.now() - (modDate / 1000);
 			if (!timeRanges[1] || value < timeRanges[1].value) {
 				result = _("Recent");

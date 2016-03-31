@@ -164,6 +164,11 @@ exports._bodyAppend = function () {
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
+				a({ href: '/revision/business-process-id/certificates/certificate' },
+					span("Official: Revision: Certificates"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
 				a({ href: '/revision/business-process-id/payment-receipts' },
 					span("Official: Revision: Payment"),
 					span({ class: 'label-reg' }, "Part B"))
