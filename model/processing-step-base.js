@@ -71,6 +71,7 @@ module.exports = memoize(function (db) {
 			return this.isApproved || this.isRejected || false;
 		} },
 
+		// Whether all previous steps are satisfied (not applicable or successfully passed)
 		isPreviousStepsSatisfied: { type: db.Boolean, value: function (_observe) {
 			if (!this.previousSteps.size) {
 				return _observe(this.master._isSubmitted);
@@ -80,12 +81,15 @@ module.exports = memoize(function (db) {
 			});
 		} },
 
-		isSatisfied: { type: db.Boolean, value: function () {
-			if (this.isApplicable) {
-				return Boolean(this.isApproved || this.delegatedFrom);
-			}
+		// Whether this step is complete (not applicable or fully and successfully passed)
+		isSatisfiedReady: { type: db.Boolean, value: function () {
+			if (this.isApplicable) return Boolean(this.isApproved);
 			return this.isPreviousStepsSatisfied;
 		} },
+
+		// Whether this step was succesfully passed
+		// Set to true by server service when isSatisfiedReady turns true
+		isSatisified: { type: db.Boolean, value: false },
 
 		// maps key to shorter version e.g. processingSteps/map/revision/steps/map/oni -> revision/oni
 		//                                  processingSteps/map/revision               -> revision

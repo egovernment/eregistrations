@@ -39,5 +39,16 @@ module.exports = function (BusinessProcessType, stepShortPaths) {
 				stepShortPaths[index], step.status);
 			step.set('status', step.status);
 		});
+
+		// isSatisfiedReady
+		setupTriggers({
+			preTrigger: businessProcesses.filterByKey('guideProgress', 1),
+			trigger: businessProcessesSubmitted.filterByKeyPath(stepPath + '/isSatisfiedReady', true)
+		}, function (businessProcess) {
+			var step = businessProcess.getBySKeyPath(stepPath);
+			debug('%s processing step (%s) was satisified', businessProcess.__id__,
+				stepShortPaths[index]);
+			step.isSatisfied = true;
+		});
 	});
 };
