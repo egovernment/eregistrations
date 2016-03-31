@@ -26,10 +26,9 @@ module.exports = memoize(function (db/*, options*/) {
 	ProcessingStepBase = defineProcessingStepBase(db);
 
 	BusinessProcess.prototype.defineProperties({
-		// Whether business process was submitted to Part B
-		isSubmitted: { type: db.Boolean, value: function (_observe) {
-			if (this.isSentBack) return true;
-			if (this.isUserProcessing) return true;
+
+		// Whether file is complete at Part A and submitted to Part B
+		isSubmittedReady: { type: db.Boolean, value: function (_observe) {
 			// 0. Guide
 			if (this.guideProgress !== 1) return false;
 			// 1. Forms
@@ -42,6 +41,12 @@ module.exports = memoize(function (db/*, options*/) {
 			if (_observe(this.submissionForms._progress) !== 1) return false;
 			return true;
 		} },
+
+		// Whether file was submitted to Part B
+		// Set to true by server service on first successful request submission
+		// (technically: whenever isSubmittedReady turns true for first time)
+		isSubmitted: { type: db.Boolean, value: false },
+
 		// Whether business process was sent back to Part A
 		isSentBack: { type: db.Boolean, value: false },
 		sentBackSteps: {
