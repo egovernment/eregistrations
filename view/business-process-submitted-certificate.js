@@ -5,6 +5,8 @@
 var renderDocument = require('./_business-process-submitted-document')
   , renderDocumentHistory = require('./_business-process-revision-document-history')
   , getPrevNext = require('../utils/get-prev-next-set')
+  , endsWith           = require('es5-ext/string/#/ends-with')
+  , db                 = require('mano').db
   , _                = require('mano').i18n.bind('User Submitted');
 
 exports._parent = require('./business-process-submitted-documents');
@@ -48,5 +50,16 @@ exports['selection-preview'] = function () {
 				div({ id: 'document-preview', class: 'submitted-preview-document' },
 					renderDocument(this.document)),
 				div({ id: 'document-history', class: 'submitted-preview-document-history' },
+					section(
+						{ class: 'section-primary' },
+						this.document.dataForm.constructor !== db.FormSectionBase ?
+								this.document.dataForm.toDOM(document, {
+									customFilter: function (resolved) {
+										return !endsWith.call(resolved.observable.dbId, 'files/map');
+									},
+									disableHeader: true
+								}) : null,
+						this.document.overviewSection.toDOM(document, { disableHeader: true })
+					),
 					renderDocumentHistory(this.document))))];
 };
