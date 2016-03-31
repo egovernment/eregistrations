@@ -64,7 +64,7 @@ exports.getCertStatus = function (cert) {
 	var processingStep = cert.processingStep, businessProcess = cert.master;
 
 	return _if(businessProcess._isRejected,
-		"rejected", processingStep && processingStep._resolvedStatus);
+		"rejected", processingStep && processingStep._status);
 };
 
 exports.columns = [{

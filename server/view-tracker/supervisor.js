@@ -28,7 +28,7 @@ module.exports = function (steps, data) {
 	stepArrays = {};
 	return deferred.map(steps, function (stepPath) {
 		// TODO: Fix for deep paths
-		var keyPath = 'processingSteps/map/' + stepPath + '/resolvedStatus';
+		var keyPath = 'processingSteps/map/' + stepPath + '/status';
 		var setPromise = getDbSet(businessProcessStorage, 'computed', keyPath,
 			serializeValue('pending'));
 		return setPromise(function (set) {
