@@ -51,7 +51,7 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 		//We want finegrained controle over controls option for fieldset
 		if (options.fieldsetOptions && options.fieldsetOptions.controls) {
 			options.fieldsetOptions.controls =
-				normalizeOptions(options.fieldsetOptions.controls, controls);
+				normalizeOptions(controls, options.fieldsetOptions.controls);
 		}
 
 		customizeData.arrayResult = [
