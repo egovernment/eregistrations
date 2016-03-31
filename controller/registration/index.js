@@ -9,21 +9,11 @@ var assign        = require('es5-ext/object/assign')
   , customError   = require('es5-ext/error/custom')
   , _             = require('mano').i18n.bind('Registration: Controller')
   , submit        = require('mano/utils/save')
-  , db            = require('mano').db
 
-  , re = /\/isRequested$/
-  , resetStatus;
+  , re = /\/isRequested$/;
 
 // Common controller - login and password change.
 module.exports = exports = assign(exports, require('../user'));
-
-resetStatus = function (step) {
-	if (!step.isPreviousStepsSatisfied) return;
-	if (step.officialStatus === 'sentBack' || step.isPending) {
-		if (step.officialStatus) step.delete('officialStatus');
-		if (step.isRevisionApproved) step.delete('isRevisionApproved');
-	}
-};
 
 // Guide
 exports.guide = {
