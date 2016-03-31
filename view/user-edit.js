@@ -24,6 +24,7 @@ exports['sub-main'] = {
 			)
 		);
 
+		options.inputOptions = { password: { modelRequired: false } };
 		options.customize = function (customizeData) {
 			customizeData.container.insertBefore(prepend, customizeData.container.firstChild);
 		};

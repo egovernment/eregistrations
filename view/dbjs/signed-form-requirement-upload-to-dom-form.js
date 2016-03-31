@@ -10,6 +10,7 @@ module.exports = Object.defineProperty(
 	'toDOMForm',
 	d(function (document/*, options */) {
 		var opts = normalizeOptions(arguments[1]);
+
 		opts.afterHeader = function (requirementUpload) {
 			var checkbox;
 			var needsConfirmation = and(requirementUpload.document.files.ordered._size,

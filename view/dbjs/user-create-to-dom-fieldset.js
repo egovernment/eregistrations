@@ -9,6 +9,9 @@ var db = require('mano').db
 module.exports = Object.defineProperty(db.User.prototype.dataForm.sections.profile,
 	'toDOMFieldset', d(function (document/*, options*/) {
 		var options = normalizeOptions(arguments[1]);
+		if (this.master !== db.User.prototype) {
+			options.fieldsetOptions = { controls: { password: { modelRequired: false } } };
+		}
 		options.fieldsetAppend = [li(field({ label: _("Repeat password"), dbjs: db.Password,
 			required: this.master === db.User.prototype ? true : false, name: 'password-repeat' }))];
 
