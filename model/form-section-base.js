@@ -37,6 +37,7 @@ module.exports = memoize(function (db) {
 		// When isApplicable !== true the section will not be visible in the view
 		// (rendered with default generator)
 		isApplicable: { type: db.Boolean, required: true, value: true },
+		isInternallyApplicable: { type: db.Boolean, value: true },
 		// The master for property paths resolution
 		propertyMaster: { type: db.Object, value: function () {
 			var owner;

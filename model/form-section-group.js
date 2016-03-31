@@ -17,8 +17,8 @@ module.exports = memoize(function (db) {
 	FormSectionGroup = FormSectionBase.extend('FormSectionGroup', {
 		// A map of child sections.
 		// Note: to add a child section you should define a type on sections map.
-		// Example: BusinessProcess.prototype.formSections.groupSection.sections.define('myChild', {
-		// type: db.ChildClass })
+		// Example: BusinessProcess.prototype.dataForms.map.groupSection.sections.define('myChild', {
+		// type: db.ChildClass, nested: true })
 		sections: {
 			type: db.Object,
 			nested: true
@@ -29,7 +29,9 @@ module.exports = memoize(function (db) {
 			value: function (_observe) {
 				var result = [];
 				this.sections.forEach(function (section) {
-					if (_observe(section._isApplicable)) result.push(section);
+					if (_observe(section._isApplicable) && _observe(section._isInternallyApplicable)) {
+						result.push(section);
+					}
 				});
 				return result;
 			}
