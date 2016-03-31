@@ -17,8 +17,8 @@ module.exports = memoize(function (db) {
 	FormSectionGroup = FormSectionBase.extend('FormSectionGroup', {
 		// A map of child sections.
 		// Note: to add a child section you should define a type on sections map.
-		// Example: BusinessProcess.prototype.formSections.groupSection.sections.define('myChild', {
-		// type: db.ChildClass })
+		// Example: BusinessProcess.prototype.dataForms.map.groupSection.sections.define('myChild', {
+		// type: db.ChildClass, nested: true })
 		sections: {
 			type: db.Object,
 			nested: true
@@ -30,6 +30,17 @@ module.exports = memoize(function (db) {
 				var result = [];
 				this.sections.forEach(function (section) {
 					if (_observe(section._isApplicable)) result.push(section);
+				});
+				return result;
+			}
+		},
+		internallyApplicableSections: {
+			multiple: true,
+			type: FormSectionBase,
+			value: function (_observe) {
+				var result = [];
+				this.applicableSections.forEach(function (section) {
+					if (_observe(section._isInternallyApplicable)) result.push(section);
 				});
 				return result;
 			}
@@ -46,7 +57,7 @@ module.exports = memoize(function (db) {
 					res = _observe(resolvedResolvent.object['_' + resolvedResolvent.key]._lastModified);
 				}
 
-				this.applicableSections.forEach(function (section) {
+				this.internallyApplicableSections.forEach(function (section) {
 					if (_observe(section._lastEditStamp) > res) res = section.lastEditStamp;
 				});
 
@@ -57,7 +68,7 @@ module.exports = memoize(function (db) {
 			value: function (_observe) {
 				if (_observe(this.progressRules.displayable._size) > 0) return true;
 
-				return this.applicableSections.some(function (child) {
+				return this.internallyApplicableSections.some(function (child) {
 					return _observe(child._hasDisplayableRuleDeep);
 				});
 			}
@@ -68,7 +79,7 @@ module.exports = memoize(function (db) {
 					return this.resolventStatus < 1;
 				}
 
-				return this.applicableSections.some(function (child) {
+				return this.internallyApplicableSections.some(function (child) {
 					return _observe(child._hasMissingRequiredPropertyNamesDeep);
 				});
 			}
@@ -108,7 +119,7 @@ module.exports = memoize(function (db) {
 				}
 			}
 
-			_observe(section.applicableSections).forEach(function (section) {
+			_observe(section.internallyApplicableSections).forEach(function (section) {
 				sum += (_observe(section._status) * _observe(section._weight));
 			});
 
@@ -135,7 +146,7 @@ module.exports = memoize(function (db) {
 				}
 			}
 
-			_observe(section.applicableSections).forEach(function (section) {
+			_observe(section.internallyApplicableSections).forEach(function (section) {
 				weightTotal += _observe(section._weight);
 			});
 
