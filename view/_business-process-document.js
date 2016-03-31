@@ -8,27 +8,12 @@ var curry              = require('es5-ext/function/#/curry')
   , resolveArchivePath = require('../utils/resolve-document-archive-path')
   , syncHeight         = require('./utils/sync-height')
   , scrollBottom       = require('./utils/scroll-to-bottom')
-  , isReadOnlyRender   = require('mano/client/utils/is-read-only-render')
-  , docMimeTypes       = require('../utils/microsoft-word-doc-mime-types')
-  , includes           = require('es5-ext/array/#/contains')
   , endsWith           = require('es5-ext/string/#/ends-with')
   , db                 = require('mano').db
 
-  , _d = _;
+  , _d = _
 
-var getFilePreview = function (file) {
-	var type = file.type;
-	if (includes.call(docMimeTypes, type)) {
-		return img({ class: 'submitted-preview-new-word-document', src: '/img/word-doc-icon.png' });
-	}
-	if (!isReadOnlyRender && (type === 'application/pdf')) {
-		return iframe({
-			src: url('pdfjs/web/viewer.html?file=') + file.path
-		});
-	}
-	return img({ zoomOnHover: true, src: or(resolve(file._preview, '_url'),
-		resolve(file._thumb, '_url')) });
-};
+  , getFilePreview = require('./utils/get-file-preview');
 
 module.exports = function (doc, sideContent) {
 	var elem, scrollableElem;
