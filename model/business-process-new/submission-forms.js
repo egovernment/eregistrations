@@ -25,7 +25,7 @@ module.exports = memoize(function (db/* options */) {
 		} },
 		progress: { value: function (_observe) {
 			var total = this.weight, valid = this.formsProgress * (total - 1);
-			if (this.isAffidavitSigned && !_observe(this.master._isSentBack)) ++valid;
+			if (this.isAffidavitSigned) ++valid;
 			return valid / total;
 		} },
 		weight: { value: function (_observe) {
