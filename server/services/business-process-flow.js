@@ -6,7 +6,7 @@ var ensureDatabase = require('dbjs/valid-dbjs')
 
 module.exports = function (db) {
 	var businessProcesses = ensureDatabase(db).BusinessProcess.instances
-		.filterByKey('isFromEregistrations', true);
+		.filterByKey('isFromEregistrations', true).filterByKey('isDemo', false);
 
 	// isSubmitted
 	setupTriggers({
