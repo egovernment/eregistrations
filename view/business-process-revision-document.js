@@ -78,6 +78,6 @@ exports['revision-box'] = function () {
 					class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
 					i({ class: 'fa fa-angle-right' })))
 				));
-	_if(processingStep.processableUploads.has(this.document.owner),
-		disableStep(this.processingStep, revisionForm(this.document.owner)));
+	insert(_if(processingStep.processableUploads.has(this.document.owner),
+		disableStep(this.processingStep, revisionForm(this.document.owner))));
 };
