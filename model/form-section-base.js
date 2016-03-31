@@ -154,7 +154,9 @@ module.exports = memoize(function (db) {
 			var File = this.database.File, NestedMap = this.database.NestedMap;
 
 			// Not required, then not validated
-			if (!resolved.descriptor.required) return true;
+			if (!resolved.descriptor.required || this.excludedFromStatus.has(resolved.key)) {
+				return true;
+			}
 
 			if (!this.excludedFromStatusIfFilled.has(resolved.key)) {
 				// Multiple value: not excluded
@@ -198,6 +200,7 @@ module.exports = memoize(function (db) {
 		lastEditDate: { type: db.DateTime, value: function () {
 			return this.lastEditStamp / 1000;
 		} },
+		excludedFromStatus: { type: StringLine, multiple: true },
 		// A multiple for which you can pass names of the properties you want excluded from
 		// status calculation if they were already provided for the form (for example from guide).
 		excludedFromStatusIfFilled: { type: StringLine, multiple: true },
