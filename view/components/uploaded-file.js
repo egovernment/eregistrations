@@ -15,7 +15,7 @@ module.exports = function (observable/*, options*/) {
 	return ns._if(ns.resolve(observable, '_name'),
 		ns.div({ class: 'file-thumb' },
 			ns.a({ href: ns.resolve(observable, '_url'), target: '_blank', class: 'file-thumb-image' },
-				ns.img({ src: ns.resolve(observable, '_thumb', '_url') })),
+				ns.img({ src: stUrl(ns.resolve(observable, '_thumb', '_url')) })),
 			ns.div({ class: 'file-thumb-actions' },
 				ns.span({ class: 'file-thumb-document-size' },
 					ns.mmap(ns.resolve(observable, '_diskSize'), resolveSize)),

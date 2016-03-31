@@ -8,7 +8,7 @@ module.exports = function (domjs/*, options*/) {
 	domjs.ns.thumb = function (file) {
 		return div({ class: 'file-thumb' },
 			a({ href: file._url, target: '_blank', class: 'file-thumb-image' },
-				img({ src: resolve(file._thumb, '_url') })),
+				img({ src: stUrl(resolve(file._thumb, '_url')) })),
 			div({ class: 'file-thumb-actions' }, map(file._diskSize, function (size) {
 				if (size == null) return null;
 				return span({ class: 'file-thumb-document-size' }, (size / 1000000).toFixed(2) + ' Mo');

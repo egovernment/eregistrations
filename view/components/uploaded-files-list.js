@@ -15,7 +15,7 @@ module.exports = function (files/*, options*/) {
 	return ns.ul({ class: 'file-uploader-items' }, files, function (file) {
 		return ns.li(ns.div({ class: 'file-thumb' },
 			ns.a({ href: file._url, target: '_blank', class: 'file-thumb-image' },
-				ns.img({ src: ns.resolve(file._thumb, '_url') })),
+				ns.img({ src: stUrl(ns.resolve(file._thumb, '_url')) })),
 			ns.div({ class: 'file-thumb-actions' },
 				ns.span({ class: 'file-thumb-document-size' },
 					ns.mmap(file._diskSize, resolveSize)),

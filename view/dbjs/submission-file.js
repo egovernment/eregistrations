@@ -48,12 +48,12 @@ module.exports = Object.defineProperties(db.File, {
 
 			itemDom = _if(isValid, el('div', { class: 'file-thumb' },
 				el('a', { href: file._url, target: '_blank', class: 'file-thumb-image' },
-					el('img', { src: (function () {
+					el('img', { src: stUrl((function () {
 						if (includes.call(docMimeTypes, file.type)) {
 							return '/img/word-doc-icon.png';
 						}
 						return resolve(file, '_thumb', '_url');
-					}()) })),
+					}())) })),
 				el('div', { class: 'file-thumb-actions' },
 					el('span', { class: 'file-thumb-document-size' },
 						map(file._diskSize, function (size) {
