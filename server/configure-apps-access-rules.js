@@ -175,7 +175,7 @@ module.exports = exports = function (dbDriver, data) {
 		var list = getDbRecordSet(userStorage, userId + '/recentlyVisited/users')
 			.map(function (value) { return value.slice(1); });
 
-		return getColFragments(list, getUserListFragment);
+		return getColFragments(list, getUserFragment);
 	};
 	var getUsersAdminFragment = memoize(function () {
 		var fragment = new FragmentGroup();

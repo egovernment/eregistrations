@@ -31,12 +31,13 @@ exports.step = function () {
 				list(requirementUploads.recentlyRejected, function (requirementUpload) {
 					return li({ class: ['section-primary', _if(requirementUpload._isRejected,
 						'user-documents-upload-rejected')] },
-						requirementUpload.toDOMForm(document));
-				}),
+						requirementUpload.toDOMForm(document, { viewContext: this }));
+				}.bind(this)),
 				list(requirementUploads.applicable.not(requirementUploads.recentlyRejected),
 					function (requirementUpload) {
-						return li({ class: 'section-primary' }, requirementUpload.toDOMForm(document));
-					}),
+						return li({ class: 'section-primary' }, requirementUpload.toDOMForm(document,
+							{ viewContext: this }));
+					}.bind(this)),
 				exports._extraDocuments(this)
 			)
 		)
