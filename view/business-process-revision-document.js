@@ -42,11 +42,8 @@ revisionForm = function (requirementUpload) {
 };
 
 exports['document-preview'] = function () {
-	var processingStep = this.processingStep
-		  , doc            = this.document;
-
-	renderDocument(doc, _if(processingStep.processableUploads.has(doc.owner),
-		disableStep(this.processingStep, revisionForm(doc.owner))));
+	var doc = this.document;
+	renderDocument(doc);
 };
 
 exports['document-history'] = function () {
@@ -54,6 +51,7 @@ exports['document-history'] = function () {
 };
 
 exports['revision-box'] = function () {
+	var processingStep = this.processingStep;
 	var reqUploads = this.processingStep.requirementUploads.applicable;
 	var nextReqUpload = reactiveSibling.next(reqUploads, this.document.owner);
 	var nextReqUploadUrl = nextReqUpload.map(function (nextReqUpload) {
@@ -80,5 +78,6 @@ exports['revision-box'] = function () {
 					class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
 					i({ class: 'fa fa-angle-right' })))
 				));
-	revisionForm(this.document);
+	_if(processingStep.processableUploads.has(this.document.owner),
+		disableStep(this.processingStep, revisionForm(this.document.owner)));
 };
