@@ -36,12 +36,12 @@ exports.step = function () {
 					function (paymentUpload) {
 						return li({ class: ['section-primary', _if(paymentUpload._isRejected,
 								'user-documents-upload-rejected')] },
-							paymentUpload.toDOMForm(document));
+							paymentUpload.toDOMForm(document, { viewContext: this }));
 					}),
 				list(paymentReceiptUploads.uploadable.not(paymentReceiptUploads.recentlyRejected),
 					function (paymentUpload) {
 						return li({ class: 'section-primary' },
-							paymentUpload.toDOMForm(document));
+							paymentUpload.toDOMForm(document, { viewContext: this }));
 					})
 			)
 		),
