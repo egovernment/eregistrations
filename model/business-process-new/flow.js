@@ -65,11 +65,7 @@ module.exports = memoize(function (db/*, options*/) {
 
 		// Whether business process is closed
 		isClosed: { type: db.Boolean, value: function (_observe) {
-			if (!this.isSubmitted) return false;
-			return _observe(this.processingSteps.applicable).every(function (step) {
-				if (!_observe(step._isReady)) return true;
-				return _observe(step._isClosed);
-			});
+			return this.isRejected || this.isApproved;
 		} },
 		// Computed status of registration
 		status: { type: BusinessProcessStatus, value: function (_observe) {
