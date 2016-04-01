@@ -18,6 +18,19 @@ module.exports = memoize(function (db) {
 		// Sub steps of processingStepGroup
 		steps: { type: MultipleProcess, nested: true },
 
+		// Whether business process is at given step or have passed it
+		isReady: { type: db.Boolean, value: function (_observe) {
+			if (!this.isApplicable) return false;
+			if (!this.isPreviousStepsSatisfied) return false;
+			// If step was not yet processed but file was rejected do not provide it
+			if (_observe(this.steps.applicable).some(function (step) {
+					return _observe(step._officialStatus);
+				})) {
+				return true;
+			}
+			return !_observe(this.master._isRejected);
+		} },
+
 		// Whether process group is pending at some sub step
 		isPending: { value: function (_observe) {
 			if (!this.isReady) return false;
