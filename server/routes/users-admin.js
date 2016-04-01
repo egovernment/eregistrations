@@ -54,7 +54,6 @@ var getFilteredArray = function (storage, arr, filterString) {
 		});
 	};
 	return deferred.map(arr, findAndFilter).then(function () {
-		console.log('result!!!!!!!!!!!!!!!!!!!!', result);
 		return deferred(result);
 	});
 };
