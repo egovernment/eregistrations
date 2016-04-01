@@ -86,15 +86,7 @@ module.exports = memoize(function (db) {
 		},
 		hasFilledPropertyNamesDeep: {
 			value: function (_observe) {
-				var resolved;
-
-				if (this.resolventProperty) {
-					resolved = this.ensureResolvent(_observe);
-
-					if (resolved && _observe(resolved.observable) != null) {
-						return true;
-					}
-				}
+				if (this.isResolventFilled(_observe)) return true;
 
 				return this.internallyApplicableSections.some(function (child) {
 					return _observe(child._hasFilledPropertyNamesDeep);

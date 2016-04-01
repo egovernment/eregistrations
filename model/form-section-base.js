@@ -197,6 +197,19 @@ module.exports = memoize(function (db) {
 
 			return resolved;
 		} },
+		isResolventFilled: { type: db.Boolean, value: function (observeFunction) {
+			var resolved;
+
+			if (this.resolventProperty) {
+				resolved = this.ensureResolvent(observeFunction);
+
+				if (resolved && observeFunction(resolved.observable) != null) {
+					return true;
+				}
+			}
+
+			return false;
+		} },
 		lastEditStamp: { type: UInteger, value: 0 },
 		lastEditDate: { type: db.DateTime, value: function () {
 			return this.lastEditStamp / 1000;

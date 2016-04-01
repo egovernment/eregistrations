@@ -165,14 +165,7 @@ module.exports = memoize(function (db) {
 				var result = []
 				  , resolved;
 
-				if (this.resolventProperty) {
-					resolved = this.ensureResolvent(_observe);
-
-					// Add resolventProperty if it have any value
-					if (resolved && _observe(resolved.observable) != null) {
-						result.push(this.resolventProperty);
-					}
-				}
+				if (this.isResolventFilled(_observe)) result.push(this.resolventProperty);
 
 				if (this.isUnresolved) return result;
 
