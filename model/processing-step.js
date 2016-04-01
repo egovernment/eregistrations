@@ -53,7 +53,7 @@ module.exports = memoize(function (db) {
 		// Eventual reason of file been sent back
 		sendBackReason: { type: db.String, required: true },
 		// Eventual reason of rejection
-		rejectionReason: { type: db.String, required: true },
+		rejectionReason: { type: db.String, required: true, label: _("Rejection reason") },
 		// Reason of redelegation
 		redelegationReason: { type: db.String, required: true },
 		// Final status as decided by official
