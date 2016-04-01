@@ -14,11 +14,12 @@ var aFrom           = require('es5-ext/array/from')
 module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	var businessProcesses = ensureType(BusinessProcessType).instances
 		.filterByKey('isFromEregistrations', true).filterByKey('isDemo', false);
-	var options = Object(arguments[2]), customStepReturnHandler, onStepRedelegate;
+	var options = Object(arguments[2]), customStepReturnHandler, onStepRedelegate, onStepStatus;
 	if (options.customStepReturnHandler != null) {
 		customStepReturnHandler = ensureCallable(options.customStepReturnHandler);
 	}
 	if (options.onStepRedelegate != null) onStepRedelegate = ensureCallable(options.onStepRedelegate);
+	if (options.onStepStatus != null) onStepStatus = ensureCallable(options.onStepStatus);
 
 	var stepPaths = aFrom(ensureIterable(stepShortPaths)).map(resolveStepPath);
 
@@ -63,6 +64,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			if (step.getOwnDescriptor('status').hasOwnProperty('_value_')) return;
 			debug('%s processing step (%s) status set to %s', businessProcess.__id__,
 				step.shortPath, step.status);
+			if (onStepStatus) onStepStatus(step);
 			step.set('status', step.status);
 
 			if (step.status === 'sentBack') {
