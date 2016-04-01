@@ -9,21 +9,18 @@ var memoize                     = require('memoizee/plain')
   , defineRequirementUploads    = require('./requirement-uploads')
   , defineCosts                 = require('./costs')
   , defineSubmissionForms       = require('./submission-forms')
-  , defineProcessingSteps       = require('./processing-steps')
-  , defineProcessingStepBase    = require('../processing-step-base');
+  , defineProcessingSteps       = require('./processing-steps');
 
 module.exports = memoize(function (db/*, options*/) {
 	var options               = Object(arguments[1])
 	  , BusinessProcess       = defineBusinessProcess(db, options)
-	  , BusinessProcessStatus = defineBusinessProcessStatus(db)
-	  , ProcessingStepBase;
+	  , BusinessProcessStatus = defineBusinessProcessStatus(db);
 
 	defineDataForms(db, options);
 	defineRequirementUploads(db, options);
 	defineCosts(db, options);
 	defineSubmissionForms(db, options);
 	defineProcessingSteps(db, options);
-	ProcessingStepBase = defineProcessingStepBase(db);
 
 	BusinessProcess.prototype.defineProperties({
 
