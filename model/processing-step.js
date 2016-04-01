@@ -72,24 +72,13 @@ module.exports = memoize(function (db) {
 			return this.sendBackReason ? 1 : 0;
 		} },
 
-		// Used in redelegationProgress, ensures model sanity
-		hasRedelegationTarget: { type: db.Boolean, value: function (_observe) {
-			var done = Object.create(null);
-			return this.previousSteps.some(function self(step) {
-				if (done[step.__id__]) return;
-				done[step.__id__] = true;
-				if (_observe(step._delegatedFrom) === this) return true;
-				return step.previousSteps.some(self, this);
-			}, this);
-		} },
-
 		// "redelegate" status progress
 		redelegationProgress: { type: Percentage, value: function (_observe) {
 			var total = 0, status = 0;
 			total++;
-			if (this.hasRedelegationTarget) status++;
-			total++;
 			if (this.redelegationReason) status++;
+			total++;
+			if (this.redelegatedTo) status++;
 			return status / total;
 		} },
 
@@ -101,20 +90,9 @@ module.exports = memoize(function (db) {
 		// Use it to redelegate from this step to previousStep
 		redelegate: {
 			type: db.Function,
-			value: function (previousStep, _observe) {
+			value: function (targetStep, _observe) {
+				this.redelegatedTo = this;
 				this.officialStatus = 'redelegated';
-				previousStep.delegatedFrom = this;
-				previousStep.officialStatus = null;
-			}
-		},
-
-		// Should be called once the delegated step has finished it's job
-		undelegate: {
-			type: db.Function,
-			value: function (observeFunction) {
-				if (!this.delegatedFrom) return;
-				this.delegatedFrom.officialStatus = null;
-				this.delegatedFrom = null;
 			}
 		},
 
@@ -223,7 +201,7 @@ module.exports = memoize(function (db) {
 	});
 
 	// Step which redelegated to this step
-	ProcessingStep.prototype.define('delegatedFrom', {
+	ProcessingStep.prototype.define('redelegatedTo', {
 		type: ProcessingStep
 	});
 

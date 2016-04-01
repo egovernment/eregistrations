@@ -43,15 +43,6 @@ module.exports = memoize(function (db) {
 			});
 		} },
 
-		// Whether process group was delegated at some sub step
-		delegatedFrom: { value: function (_observe) {
-			if (!this.isReady) return;
-			if (this.isRejected) return;
-			return _observe(this.steps.applicable).some(function (step) {
-				return _observe(step._delegatedFrom);
-			});
-		} },
-
 		// Whether process group was redelegated at some sub step
 		isRedelegated: { value: function (_observe) {
 			if (!this.isReady) return false;
