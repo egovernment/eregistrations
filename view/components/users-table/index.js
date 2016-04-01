@@ -19,7 +19,6 @@ module.exports = function (conf) {
 
 	if (conf.id) table.table.id = conf.id;
 	if (conf.class) table.table.className = conf.class;
-	console.log('listManager.pageCount', listManager.pageCount);
 	table.pagination = pagination;
 
 	listManager.on('change', function () {
