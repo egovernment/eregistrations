@@ -43,45 +43,24 @@ var userQueryHandler = new QueryHandler([{
 	}
 }]);
 
-var getFilteredSet = memoize(function (baseSet, filterString, storage) {
-	var set = new ObservableSet(), baseSetListener, indexListener
-		, def = deferred(), count = 0, isInitialized = false;
-	var filter = function (ownerId, data) {
-		var value = unserializeValue(data.value);
-		if (value && includes.call(value, filterString)) set.add(ownerId);
-		else set.delete(ownerId);
+var getFilteredArray = function (storage, arr, filterString) {
+	var result = [];
+
+	var filter = function (data, searchData) {
+		if (!searchData) return;
+		var value = unserializeValue(searchData.value);
+		if (value && includes.call(value, filterString)) result.push(data);
 	};
-	var findAndFilter = function (ownerId) {
-		if (!storage) return;
-		return storage.getComputed(ownerId + '/searchString').aside(function (data) {
-			if (!baseSet.has(ownerId)) return;
-			if (!data) return;
-			filter(ownerId, data);
+	var findAndFilter = function (data) {
+		return storage.getComputed(data.id + '/searchString')(function (searchData) {
+			filter(data, searchData);
 		});
 	};
-	baseSet.on('change', baseSetListener = function (event) {
-		if (event.type === 'add') findAndFilter(event.value).done();
-		else set.delete(event.value);
+	return deferred.map(arr, findAndFilter).then(function () {
+		console.log('result!!!!!!!!!!!!!!!!!!!!', result);
+		return deferred(result);
 	});
-	indexListener = function (event) {
-		if (!baseSet.has(event.ownerId)) return;
-		filter(event.ownerId, event.data);
-	};
-	storage.on('key:searchString', indexListener);
-	baseSet.forEach(function (ownerId) {
-		++count;
-		findAndFilter(ownerId).done(function () {
-			if (!--count && isInitialized) def.resolve(set);
-		});
-	});
-	isInitialized = true;
-	if (!count) def.resolve(set);
-	defineProperty(set, '_dispose', d(function () {
-		baseSet.off(baseSetListener);
-		storage.off('key:searchString', indexListener);
-	}));
-	return def.promise;
-}, { length: 2, max: 1000, dispose: function (set) { set._dispose(); } });
+};
 
 module.exports = exports = function (data) {
 	data = normalizeOptions(ensureObject(data));
@@ -91,11 +70,15 @@ module.exports = exports = function (data) {
 
 	var getTableData = memoize(function (query) {
 		var storage = mano.dbDriver.getStorage('user');
-		return getDbSet(storage, 'computed', 'isActiveAccount', '11')(function (set) {
-			if (!query.search) return getDbArray(set, storage, 'direct', null);
+		return getDbSet(storage, 'computed', 'isActiveAccount', '11')
+		(function (set) {
+			return getDbArray(set, storage, 'direct', null);
+		})(function (arr) {
+			if (!query.search) return arr;
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
-				return getFilteredSet(set, value, storage);
+				return getFilteredArray(storage, arr, value);
 			})(function (arrays) {
+				console.log('arrays.length', arrays.length);
 				if (arrays.length === 1) return arrays[0];
 
 				return uniq.call(arrays.reduce(function (current, next, index) {
@@ -105,6 +88,7 @@ module.exports = exports = function (data) {
 				})).sort(compareStamps);
 			});
 		})(function (arr) {
+			console.log('arr!!!!!!!!!!!!!!!!!', arr);
 				var pageCount, offset, size = arr.length;
 				if (!size) return { size: size };
 				pageCount = ceil(size / itemsPerPage);
