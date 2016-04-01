@@ -51,11 +51,11 @@ module.exports = memoize(function (db) {
 		// Processing step form fields section (applies only to approved status)
 		dataForm: { type: FormSectionBase, nested: true },
 		// Eventual reason of file been sent back
-		sendBackReason: { type: db.String, required: true  },
+		sendBackReason: { type: db.String, required: true },
 		// Eventual reason of rejection
-		rejectionReason: { type: db.String, required: true  },
+		rejectionReason: { type: db.String, required: true },
 		// Reason of redelegation
-		redelegationReason: { type: db.String, required: true  },
+		redelegationReason: { type: db.String, required: true },
 		// Final status as decided by official
 		// Note: 'pending' option doesn't apply here, as it's not a final status
 		officialStatus: { type: ProcessingStepStatus },
