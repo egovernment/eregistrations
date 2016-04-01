@@ -37,7 +37,7 @@ module.exports = memoize(function (db/*, options */) {
 			if (this.email) arr.push(this.email.toLowerCase());
 
 			return arr.join('\x02');
-		} },
+		} }
 	});
 
 	return User;

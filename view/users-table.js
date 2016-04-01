@@ -61,12 +61,9 @@ exports['sub-main'] = {
 				),
 				div(
 					input({ type: 'submit', value: _("Search") })
-				))
-		);
+				)));
 
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
-
-
 
 		var columns = baseColumns.map(function (conf) {
 			conf = copy(conf);

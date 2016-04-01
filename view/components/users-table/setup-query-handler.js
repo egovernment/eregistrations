@@ -7,7 +7,8 @@ var isNaturalNumber   = require('es5-ext/number/is-natural')
   , appLocation       = require('mano/lib/client/location')
   , setupQueryHandler = require('../../../utils/setup-client-query-handler')
   , wsRe              = /\s{2,}/g
-	, uniq              = require('es5-ext/array/#/uniq')
+  , customError       = require('es5-ext/error/custom')
+  , uniq              = require('es5-ext/array/#/uniq')
   , ceil = Math.ceil, stringify = JSON.stringify;
 
 module.exports = exports = function (listManager/*, pathname*/) {

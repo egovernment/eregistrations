@@ -3,7 +3,8 @@
 
 'use strict';
 
-var toNaturalNumber = require('es5-ext/number/to-pos-integer')
+var includes        = require('es5-ext/array/#/contains')
+  , toNaturalNumber = require('es5-ext/number/to-pos-integer')
   , toArray         = require('es5-ext/object/to-array')
   , ensureCallable  = require('es5-ext/object/valid-callable')
   , d               = require('d')
@@ -64,7 +65,7 @@ UsersManager.prototype = Object.create(ListManager.prototype, {
 		process: function (ignore, query) {
 			var list = this._resolveList({ view: this._view.get(1), size: this._view.totalSize }, query);
 			return { list: list, size: this._view.totalSize };
-		},
+		}
 	}, {
 		name: 'search',
 		process: function (data, query) {

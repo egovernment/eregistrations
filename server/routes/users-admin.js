@@ -3,20 +3,18 @@
 'use strict';
 
 var aFrom               = require('es5-ext/array/from')
-	, flatten             = require('es5-ext/array/#/flatten')
+  , flatten             = require('es5-ext/array/#/flatten')
   , isNaturalNumber     = require('es5-ext/number/is-natural')
   , toNaturalNumber     = require('es5-ext/number/to-pos-integer')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
   , toArray             = require('es5-ext/object/to-array')
   , ensureObject        = require('es5-ext/object/valid-object')
   , ensureSet           = require('es6-set/valid-set')
-	, includes            = require('es5-ext/string/#/contains')
+  , includes            = require('es5-ext/string/#/contains')
   , deferred            = require('deferred')
   , memoize             = require('memoizee/plain')
-  , ObservableSet       = require('observable-set/primitive')
   , mano                = require('mano')
   , QueryHandler        = require('../../utils/query-handler')
-  , d                   = require('d')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
   , getDbSet            = require('../utils/get-db-set')
   , getDbArray          = require('../utils/get-db-array')
@@ -24,8 +22,7 @@ var aFrom               = require('es5-ext/array/from')
   , uniq                = require('es5-ext/array/#/uniq')
   , unserializeValue    = require('dbjs/_setup/unserialize/value')
   , slice = Array.prototype.slice, ceil = Math.ceil
-	, push  = Array.prototype.push
-  , defineProperty = Object.defineProperty
+  , push  = Array.prototype.push
   , stringify = JSON.stringify
   , compareStamps = function (a, b) { return a.stamp - b.stamp; };
 
@@ -70,15 +67,13 @@ module.exports = exports = function (data) {
 
 	var getTableData = memoize(function (query) {
 		var storage = mano.dbDriver.getStorage('user');
-		return getDbSet(storage, 'computed', 'isActiveAccount', '11')
-		(function (set) {
+		return getDbSet(storage, 'computed', 'isActiveAccount', '11')(function (set) {
 			return getDbArray(set, storage, 'direct', null);
 		})(function (arr) {
 			if (!query.search) return arr;
 			return deferred.map(query.search.split(/\s+/).sort(), function (value) {
 				return getFilteredArray(storage, arr, value);
 			})(function (arrays) {
-				console.log('arrays.length', arrays.length);
 				if (arrays.length === 1) return arrays[0];
 
 				return uniq.call(arrays.reduce(function (current, next, index) {
@@ -88,28 +83,29 @@ module.exports = exports = function (data) {
 				})).sort(compareStamps);
 			});
 		})(function (arr) {
-			console.log('arr!!!!!!!!!!!!!!!!!', arr);
-				var pageCount, offset, size = arr.length;
-				if (!size) return { size: size };
-				pageCount = ceil(size / itemsPerPage);
-				if (query.page > pageCount) return { size: size };
+			var pageCount, offset, size = arr.length;
+			if (!size) return { size: size };
+			pageCount = ceil(size / itemsPerPage);
+			if (query.page > pageCount) return { size: size };
 
-				// Pagination
-				offset = (query.page - 1) * itemsPerPage;
-				arr = slice.call(arr, offset, offset + itemsPerPage);
-				return deferred.map(arr, function (data) {
-					return storage.getObject(data.id, { keyPaths: listProps })(function (datas) {
-						return datas.map(function (data) {
-							return data.data.stamp + '.' + data.id + '.' + data.data.value;
-						});
+			// Pagination
+			offset = (query.page - 1) * itemsPerPage;
+			arr = slice.call(arr, offset, offset + itemsPerPage);
+			return deferred.map(arr, function (data) {
+				return storage.getObject(data.id, { keyPaths: listProps })(function (datas) {
+					return datas.map(function (data) {
+						return data.data.stamp + '.' + data.id + '.' + data.data.value;
 					});
-				})(function (directEvents) {
-					return {
-						view: arr.map(function (data) { return data.stamp + '.' + data.id; }).join('\n'),
-						size: size,
-						data: flatten.call(directEvents)
-					};
 				});
+			})(function (directEvents) {
+				return {
+					view: arr.map(function (data) {
+						return data.stamp + '.' + data.id;
+					}).join('\n'),
+					size: size,
+					data: flatten.call(directEvents)
+				};
+			});
 		});
 	}, {
 		normalizer: function (args) { return String(toArray(args[0], null, null, true)); },
