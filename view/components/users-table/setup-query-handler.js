@@ -6,7 +6,8 @@
 var isNaturalNumber   = require('es5-ext/number/is-natural')
   , appLocation       = require('mano/lib/client/location')
   , setupQueryHandler = require('../../../utils/setup-client-query-handler')
-
+  , wsRe              = /\s{2,}/g
+	, uniq              = require('es5-ext/array/#/uniq')
   , ceil = Math.ceil, stringify = JSON.stringify;
 
 module.exports = exports = function (listManager/*, pathname*/) {
@@ -29,6 +30,21 @@ exports.conf = [
 			if (num <= 1) throw new Error("Unexpected page value " + stringify(value));
 			pageCount = ceil(this._view.totalSize / this._itemsPerPage);
 			if (num > pageCount) throw new Error("Page value overflow");
+			return value;
+		}
+	}, {
+		name: 'search',
+		ensure: function (value) {
+			var expected;
+			if (!value) return;
+			expected = value.toLowerCase().replace(wsRe, ' ');
+			if (value !== expected) {
+				throw customError("Non normative search value", { fixedQueryValue: expected });
+			}
+			expected = uniq.call(expected.split(/\s/)).join(' ');
+			if (value !== expected) {
+				throw customError("Non normative search value", { fixedQueryValue: expected });
+			}
 			return value;
 		}
 	}

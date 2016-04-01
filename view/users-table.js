@@ -5,6 +5,9 @@ var copy          = require('es5-ext/object/copy')
   , _             = require('mano').i18n.bind('Users Admin')
   , getOrderIndex = require('../users/get-default-order-index')
   , getUsersTable = require('../view/components/users-table/')
+  , once          = require('timers-ext/once')
+  , location      = require('mano/lib/client/location')
+  , dispatch      = require('dom-ext/html-element/#/dispatch-event-2')
 
   , db = mano.db, env = mano.env, roleMeta = db.Role.meta;
 
@@ -45,7 +48,26 @@ var baseColumns = [{
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		var usersTable;
+		var usersTable, searchForm, searchInput;
+
+		section({ class: 'section-primary users-table-filter-bar' },
+			searchForm = form({ action: '/', autoSubmit: true },
+				div(
+					label({ for: 'search-input' }, _("Search")),
+					span({ class: 'input-append' },
+						searchInput = input({ id: 'search-input', name: 'search', type: 'search',
+							value: location.query.get('search') }),
+						span({ class: 'add-on' }, span({ class: 'fa fa-search' })))
+				),
+				div(
+					input({ type: 'submit', value: _("Search") })
+				))
+		);
+
+		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
+
+
+
 		var columns = baseColumns.map(function (conf) {
 			conf = copy(conf);
 			conf.data = conf.data.bind(this);
@@ -58,7 +80,6 @@ exports['sub-main'] = {
 			class: 'submitted-user-data-table',
 			columns: columns
 		});
-
 		p(a({ href: '/new-user/', class: 'button-main' }, _("New user")));
 		insert(usersTable.pagination);
 		section({ class: 'table-responsive-container' }, usersTable);
