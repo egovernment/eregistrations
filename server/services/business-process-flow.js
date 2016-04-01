@@ -14,7 +14,7 @@ module.exports = function (BusinessProcessType, stepShortPaths) {
 	stepShortPaths = aFrom(ensureIterable(stepShortPaths));
 	var stepPaths = stepShortPaths.map(resolveStepPath);
 
-	// isSubmitted
+	// Business process: isSubmitted
 	setupTriggers({
 		trigger: businessProcesses.filterByKey('isSubmittedReady', true)
 			.filterByKey('isSubmitted', false)
@@ -25,7 +25,7 @@ module.exports = function (BusinessProcessType, stepShortPaths) {
 
 	var businessProcessesSubmitted = businessProcesses.filterByKey('isSubmitted', true);
 
-	// Processing step statuses
+	// Processing steps:
 	stepPaths.forEach(function (stepPath, index) {
 		// status
 		setupTriggers({
@@ -46,7 +46,7 @@ module.exports = function (BusinessProcessType, stepShortPaths) {
 				.filterByKeyPath(stepPath + '/isSatisfied', false)
 		}, function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath);
-			debug('%s processing step (%s) was satisified', businessProcess.__id__,
+			debug('%s processing step (%s) was satisfied', businessProcess.__id__,
 				stepShortPaths[index]);
 			step.isSatisfied = true;
 		});
