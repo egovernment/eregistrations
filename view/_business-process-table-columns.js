@@ -84,12 +84,7 @@ exports.columns = [{
 		var isSubmitted = businessProcess._isSubmitted;
 
 		return _if(isSubmitted, function () {
-			if (!businessProcess.submissionForms.isAffidavitSigned) {
-				return isSubmitted._lastModified.map(formatLastModified);
-			}
-			// TODO: After introduction of static flow propagation revert back isSubmitted
-			return businessProcess.submissionForms._isAffidavitSigned
-				._lastModified.map(formatLastModified);
+			return isSubmitted._lastModified.map(formatLastModified);
 		});
 	}
 }, {
