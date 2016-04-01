@@ -56,21 +56,29 @@ module.exports = function (BusinessProcessType, stepShortPaths) {
 			debug('%s processing step (%s) status set to %s', businessProcess.__id__,
 				step.shortPath, step.status);
 			step.set('status', step.status);
+
 			if (step.status === 'sentBack') {
 				if (businessProcess.isSentBack) return;
+
 				// Sent back initialization
 				debug('%s sent back by %s step', businessProcess.__id__, step.shortPath);
 				businessProcess.submissionForms.delete('isAffidavitSigned');
 				businessProcess.isSentBack = true;
-				return;
-			}
-			if (step.status === 'redelegated') {
+
+			} else if (step.status === 'redelegated') {
+
 				// Regelegation initialization
 				debug('%s redelegated to %s from %s', businessProcess.__id__,
 					step.redelegatedTo.shortPath, step.shortPath);
 				step.redelegatedTo.delete('officialStatus');
 				step.redelegatedTo.delete('status');
 				step.redelegatedTo.delete('isSatisfied');
+
+			} else if (step.status === 'rejected') {
+
+				// Business process rejection
+				debug('%s rejected at %s', businessProcess.__id__, step.shortPath);
+				businessProcess.isRejected = true;
 			}
 		});
 

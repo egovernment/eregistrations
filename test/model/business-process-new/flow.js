@@ -118,6 +118,7 @@ module.exports = function (t, a) {
 
 	step.officialStatus = 'rejected';
 	step.rejectionReason = "Whateever ..";
+	businessProcess.isRejected = true;
 	a(businessProcess.isSubmittedReady, true);
 	a(businessProcess.isSubmitted, true);
 	a(businessProcess.isSentBack, false);
@@ -127,6 +128,7 @@ module.exports = function (t, a) {
 
 	step.officialStatus = 'approved';
 	businessProcess.foo = true;
+	businessProcess.isRejected = false;
 	a(businessProcess.isSubmittedReady, true);
 	a(businessProcess.isSubmitted, true);
 	a(businessProcess.isSentBack, false);

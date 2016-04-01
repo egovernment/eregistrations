@@ -44,8 +44,10 @@ module.exports = memoize(function (db) {
 		// Whether business process is at given step or have passed it
 		isReady: { type: db.Boolean, value: function (_observe) {
 			if (!this.isApplicable) return false;
-			if (this.isPreviousStepsSatisfied) return true;
-			return (this.officialStatus === 'sentBack');
+			if (!this.isPreviousStepsSatisfied) return false;
+			// If step was not yet processed but file was rejected do not provide it
+			if (this.officialStatus) return true;
+			return !_observe(this.master._isRejected);
 		} },
 
 		// Whether process is pending at step
