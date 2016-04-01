@@ -16,8 +16,8 @@ module.exports = function (BusinessProcessType, stepShortPaths) {
 
 	// isSubmitted
 	setupTriggers({
-		preTrigger: businessProcesses.filterByKey('guideProgress', 1).filterByKey('isSubmitted', false),
 		trigger: businessProcesses.filterByKey('isSubmittedReady', true)
+			.filterByKey('isSubmitted', false)
 	}, function (businessProcess) {
 		debug('%s submitted', businessProcess.__id__);
 		businessProcess.isSubmitted = true;
@@ -29,21 +29,21 @@ module.exports = function (BusinessProcessType, stepShortPaths) {
 	stepPaths.forEach(function (stepPath, index) {
 		// status
 		setupTriggers({
-			preTrigger: businessProcessesSubmitted.filterByKeyPath(stepPath + '/status', 'pending'),
 			trigger: businessProcessesSubmitted.filterByKeyPath(stepPath + '/status', function (value) {
 				return value && (value !== 'pending');
 			})
 		}, function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath);
+			if (step.getOwnDescriptor('status').hasOwnProperty('_value')) return;
 			debug('%s processing step (%s) status set to %s', businessProcess.__id__,
 				stepShortPaths[index], step.status);
 			step.set('status', step.status);
 		});
 
-		// isSatisfiedReady
+		// isSatisfied
 		setupTriggers({
-			preTrigger: businessProcesses.filterByKey('guideProgress', 1),
 			trigger: businessProcessesSubmitted.filterByKeyPath(stepPath + '/isSatisfiedReady', true)
+				.filterByKeyPath(stepPath + '/isSatisfied', false)
 		}, function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath);
 			debug('%s processing step (%s) was satisified', businessProcess.__id__,
