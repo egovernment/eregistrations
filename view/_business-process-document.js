@@ -12,7 +12,6 @@ var curry              = require('es5-ext/function/#/curry')
   , db                 = require('mano').db
 
   , _d = _
-
   , getFilePreview = require('./utils/get-file-preview');
 
 module.exports = function (doc, sideContent) {
