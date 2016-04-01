@@ -47,8 +47,20 @@ module.exports = memoize(function (db/*, options*/) {
 		// Whether business process was sent back to Part A
 		isSentBack: { type: db.Boolean, value: false },
 
-		// Whether business process in being processed by the User after submission
+		// Whether business process is ready for being processed by the User (in scope of Part B)
+		// To be replaced with proper logic at end system
+		//
+		// As user processing resembles steps like 'sentBack' or 'redelegated',
+		// this property (not like isSubmitted) should switch resolution value to *false*
+		// when user processing is finalized.
+		// Technically (with help of locker properties that are out of scope of base model)
+		// it can be configured to handle more than one user processing step.
+		isUserProcessingReady: { type: db.Boolean, value: false },
+
+		// Whether business process is being process by User (in scope of Part B)
+		// Set to true by server service whenever isUserProcessingReady turns true
 		isUserProcessing: { type: db.Boolean, value: false },
+
 		// Whether business process is at draft stage (Part A)
 		isAtDraft: { type: db.Boolean, value: function () {
 			return !this.isSubmitted || this.isSentBack || this.isUserProcessing;
