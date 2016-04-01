@@ -94,11 +94,7 @@ exports.columns = [{
 		var isApproved = businessProcess._isApproved;
 
 		return _if(isApproved, function () {
-			// TODO: After introduction of static flow propagation revert back isSubmitted
-			return formatLastModified(businessProcess.getAllEvents().reduce(function (latest, event) {
-				if (latest.stamp) latest = latest.stamp;
-				return event.stamp > (latest || 0) ? event.stamp : latest;
-			}));
+			return isApproved._lastModified.map(formatLastModified);
 		});
 	}
 }, {
