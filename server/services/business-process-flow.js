@@ -14,10 +14,11 @@ var aFrom           = require('es5-ext/array/from')
 module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	var businessProcesses = ensureType(BusinessProcessType).instances
 		.filterByKey('isFromEregistrations', true).filterByKey('isDemo', false);
-	var options = Object(arguments[2]), customReturnHandler;
+	var options = Object(arguments[2]), customReturnHandler, onRedelegate;
 	if (options.customReturnHandler != null) {
 		customReturnHandler = ensureCallable(options.customReturnHandler);
 	}
+	if (options.onRedelegate != null) onRedelegate = ensureCallable(options.onRedelegate);
 
 	var stepPaths = aFrom(ensureIterable(stepShortPaths)).map(resolveStepPath);
 
@@ -77,6 +78,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 				// Redelegation initialization
 				debug('%s redelegated to %s from %s', businessProcess.__id__,
 					step.redelegatedTo.shortPath, step.shortPath);
+				if (onRedelegate) onRedelegate(step);
 				step.redelegatedTo.delete('officialStatus');
 				step.redelegatedTo.delete('status');
 				step.redelegatedTo.delete('isSatisfied');
