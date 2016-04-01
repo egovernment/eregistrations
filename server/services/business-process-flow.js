@@ -1,3 +1,5 @@
+// Service that propagates business process flow changes
+
 'use strict';
 
 var aFrom           = require('es5-ext/array/from')
