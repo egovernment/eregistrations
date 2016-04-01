@@ -2,7 +2,7 @@
 
 'use strict';
 
-var renderDocument = require('./_business-process-submitted-document')
+var renderDocument = require('./_business-process-document-preview')
   , renderDocumentHistory = require('./_business-process-revision-document-history')
   , reactiveSibling = require('../utils/reactive-sibling')
   , _                = require('mano').i18n.bind('Official');
@@ -42,6 +42,6 @@ exports['selection-preview'] = function () {
 			div({ class: 'submitted-preview' },
 				div({ id: 'document-preview', class: 'submitted-preview-document' },
 					renderDocument(this.document)),
-				div({ id: 'document-history', class: 'submitted-preview-document-history' },
+				div({ class: 'submitted-preview-user-data  entity-data-section-side' },
 					renderDocumentHistory(this.document))))];
 };

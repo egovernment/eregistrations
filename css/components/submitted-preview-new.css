@@ -53,6 +53,10 @@
 	min-width: inherit;
 }
 
+.submitted-preview-revision-document .container-with-nav div:last-child {
+	margin-bottom:inherit;
+}
+
 .submitted-preview-new-document .container-with-nav div:last-child span {
 	font-size: 14px;
 	font-weight: normal;
@@ -89,6 +93,7 @@
 	align-self: flex-end;
 }
 
+.submitted-preview-new-documents-external-links a,
 .submitted-preview-new-documents-navigation a {
 	margin-left: 5px;
 }
@@ -97,9 +102,6 @@
 	position: relative;
 	top: 2px;
 	right: 2px;
-}
-.submitted-preview-new-documents-navigation {
-	margin-top: -22px;
 }
 
 .submitted-preview-new-item-number {

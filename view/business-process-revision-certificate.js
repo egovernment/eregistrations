@@ -4,7 +4,7 @@
 
 var _              = require('mano').i18n.bind('Official: Revision')
   , reactiveSibling = require('../utils/reactive-sibling')
-  , renderDocument = require('./_business-process-revision-document')
+  , renderDocument = require('./_business-process-document-preview')
   , renderDocumentHistory = require('./_business-process-revision-document-history')
   , generateSections = require('./components/generate-sections')
   , endsWith           = require('es5-ext/string/#/ends-with')

@@ -44,6 +44,12 @@
 .business-process-submitted-selected-document .submitted-preview-document-history {
 	width:39%;
 	display: inline-block;
+	margin: 0;
+}
+
+.business-process-submitted-selected-document .submitted-preview-document-history h3 {
+	margin: 0;
+	line-height: 44px;
 }
 
 .business-process-submitted-box .business-process-submitted-list {
@@ -56,4 +62,20 @@
 	overflow: hidden;
 	overflow-y: scroll;
 	border: 1px solid var(--light-medium-background);
+}
+
+.business-process-submitted-selected-document .entity-data-section {
+	margin-bottom: 22px;
+}
+
+.business-process-submitted-selected-document .entity-data-section h3 {
+	margin-top: 0;
+}
+
+.business-process-submitted-selected-document .entity-data-section-side {
+	margin-top: 44px;
+}
+
+.business-process-submitted-selected-document .entity-data-section-side h3 {
+	margin-top: 0;
 }

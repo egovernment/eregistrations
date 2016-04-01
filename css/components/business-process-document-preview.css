@@ -1,0 +1,64 @@
+.business-process-document-preview {
+	width: 100%;
+	margin-right: 0;
+}
+
+.business-process-document-preview > * {
+	margin-bottom: 0;
+}
+
+.business-process-document-preview-external-links a {
+	margin-left: 5px;
+}
+
+.business-process-document-preview > .container-with-nav > div > * {
+	margin: 0 2px;
+}
+
+.business-process-document-preview > .container-with-nav > div:last-child {
+	margin-bottom: 0;
+}
+
+.business-process-document-preview-navigation {
+	display: flex;
+	min-width: 63px;
+	text-align: right;
+	line-height: 44px;
+	white-space: nowrap;
+}
+
+.business-process-document-preview-navigation div {
+	align-self: flex-end;
+}
+
+.business-process-document-preview-navigation a {
+	margin-left: 5px;
+}
+
+.business-process-document-preview-navigation a span {
+	position: relative;
+	top: 2px;
+	right: 2px;
+}
+
+.business-process-document-preview-image-placeholder {
+	border: 1px solid #e3e3e3;
+	text-align: center;
+	list-style: none;
+	overflow: hidden;
+}
+
+.business-process-document-preview-image-placeholder > li {
+	height: 100%;
+	display: none;
+}
+
+.business-process-document-preview-image-placeholder > .active {
+	display: block;
+}
+
+.business-process-document-preview-image-placeholder img {
+	margin-bottom: 0;
+	max-width: 100%;
+	max-height: 100%;
+}

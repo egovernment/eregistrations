@@ -5,7 +5,7 @@
 var _              = require('mano').i18n.bind('Official: Revision')
   , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
   , reactiveSibling = require('../utils/reactive-sibling')
-  , renderDocument = require('./_business-process-revision-document')
+  , renderDocument = require('./_business-process-document-preview')
   , renderDocumentHistory = require('./_business-process-revision-document-history')
   , generateSections = require('./components/generate-sections')
   , disableStep    = require('./components/disable-processing-step')
@@ -74,13 +74,14 @@ exports['revision-document'] = function () {
 					)),
 		insert(_if(processingStep.processableUploads.has(doc.owner),
 			disableStep(this.processingStep, revisionForm(doc.owner))))),
-		div({ class: 'submitted-preview' },
-			div({ id: 'document-preview', class: 'submitted-preview-document' },
-				renderDocument(doc)),
-			div({ class: 'submitted-preview-user-data  entity-data-section-side' },
-				generateSections(this.businessProcess.dataForms.applicable, { viewContext: this })
-				),
-			div({ id: 'document-history', class: 'submitted-preview-document-history' },
-				renderDocumentHistory(doc))
-			)];
+		div({ id: 'user-document', class: 'business-process-submitted-selected-document' },
+			div({ class: 'submitted-preview' },
+				div({ id: 'document-preview', class: 'submitted-preview-document' },
+					renderDocument(doc)),
+				div({ class: 'submitted-preview-user-data  entity-data-section-side' },
+					generateSections(this.businessProcess.dataForms.applicable, { viewContext: this })
+					),
+				div({ id: 'document-history', class: 'submitted-preview-document-history' },
+					renderDocumentHistory(doc))
+				))];
 };

@@ -2,7 +2,7 @@
 
 'use strict';
 
-var renderDocument = require('./_business-process-submitted-document')
+var renderDocument = require('./_business-process-document-preview')
   , renderDocumentHistory = require('./_business-process-revision-document-history')
   , reactiveSibling = require('../utils/reactive-sibling')
   , endsWith           = require('es5-ext/string/#/ends-with')
@@ -44,17 +44,16 @@ exports['selection-preview'] = function () {
 			div({ class: 'submitted-preview' },
 				div({ id: 'document-preview', class: 'submitted-preview-document' },
 					renderDocument(this.document)),
-				div({ id: 'document-history', class: 'submitted-preview-document-history' },
-					section(
-						{ class: 'section-primary' },
-						this.document.dataForm.constructor !== db.FormSectionBase ?
-								this.document.dataForm.toDOM(document, {
-									customFilter: function (resolved) {
-										return !endsWith.call(resolved.observable.dbId, 'files/map');
-									},
-									disableHeader: true
-								}) : null,
-						this.document.overviewSection.toDOM(document, { disableHeader: true })
+				div({ class: 'submitted-preview-user-data  entity-data-section-side' },
+					this.document.dataForm.constructor !== db.FormSectionBase ?
+							this.document.dataForm.toDOM(document, {
+								customFilter: function (resolved) {
+									return !endsWith.call(resolved.observable.dbId, 'files/map');
+								},
+								disableHeader: false
+							}) : null,
+					this.document.overviewSection.toDOM(document, { disableHeader: false })
 					),
+				div({ class: 'submitted-preview-user-data  entity-data-section-side' },
 					renderDocumentHistory(this.document))))];
 };
