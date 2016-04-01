@@ -49,20 +49,7 @@ module.exports = memoize(function (db/*, options*/) {
 
 		// Whether business process was sent back to Part A
 		isSentBack: { type: db.Boolean, value: false },
-		sentBackSteps: {
-			type: ProcessingStepBase,
-			multiple: true,
-			value: function (_observe) {
-				var res = [];
-				if (!this.isSubmitted) return res;
 
-				_observe(this.processingSteps.applicable).forEach(function (step) {
-					if (_observe(step._isSentBack)) res.push(step);
-				});
-
-				return res;
-			}
-		},
 		// Whether business process in being processed by the User after submission
 		isUserProcessing: { type: db.Boolean, value: false },
 		// Whether business process is at draft stage (Part A)

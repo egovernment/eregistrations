@@ -29,7 +29,6 @@ module.exports = memoize(function (db) {
 		revisionApprovalProgress: { type: Percentage, value: function (_observe) {
 			var weight = 0, progress = 0, itemWeight;
 
-			if (_observe(this.master._isSentBack)) return 1;
 			weight += itemWeight = _observe(this.requirementUploads.processable).size;
 			progress += _observe(this.requirementUploads._approvalProgress) * itemWeight;
 			weight += itemWeight = _observe(this.paymentReceiptUploads.processable).size;
