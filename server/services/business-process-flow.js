@@ -3,16 +3,21 @@
 'use strict';
 
 var aFrom           = require('es5-ext/array/from')
-  , ensureIterable  = require('es5-ext/itrable/validate-object')
+  , ensureIterable  = require('es5-ext/iterable/validate-object')
+  , ensureCallable  = require('es5-ext/object/valid-callable')
   , Set             = require('es6-set')
   , ensureType      = require('dbjs/valid-dbjs-type')
   , debug           = require('debug-ext')('business-process-flow')
   , resolveStepPath = require('../../utils/resolve-processing-step-full-path')
   , setupTriggers   = require('../_setup-triggers');
 
-module.exports = function (BusinessProcessType, stepShortPaths) {
+module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	var businessProcesses = ensureType(BusinessProcessType).instances
 		.filterByKey('isFromEregistrations', true).filterByKey('isDemo', false);
+	var options = Object(arguments[2]), customReturnHandler;
+	if (options.customReturnHandler != null) {
+		customReturnHandler = ensureCallable(options.customReturnHandler);
+	}
 
 	var stepPaths = aFrom(ensureIterable(stepShortPaths)).map(resolveStepPath);
 
@@ -105,8 +110,12 @@ module.exports = function (BusinessProcessType, stepShortPaths) {
 		}, function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath);
 			if (!step.isApplicable) return;
-			if (step.status === 'pending') return;
-			if ((step.statusComputed !== 'pending') && !returnStatuses.has(step.status)) return;
+			if (!step.status || (step.status === 'pending')) return;
+			if (customReturnHandler) customReturnHandler(step);
+			if (step.statusComputed && (step.statusComputed !== 'pending') &&
+					!returnStatuses.has(step.status)) {
+				return;
+			}
 			debug('%s processing step (%s) reset from %s to pending state', businessProcess.__id__,
 				step.shortPath, step.status);
 			step.delete('officialStatus');
