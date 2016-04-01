@@ -124,34 +124,20 @@ module.exports = memoize(function (db) {
 			type: StringLine,
 			multiple: true,
 			value: function (_observe) {
-				var resolved, isOwn, db = this.database,
-					File = db.File, NestedMap = db.NestedMap, result = [];
+				var result = []
+				  , resolved, isOwn;
 
 				if (this.isUnresolved) {
 					return this.resolventStatus < 1 ? [this.resolventProperty] : [];
 				}
 
 				this.applicablePropertyNames.forEach(function (name) {
-					var value;
 					resolved = this.master.resolveSKeyPath(name, _observe);
 
 					if (!resolved) return;
 					if (this.isPropertyExcludedFromStatus(resolved, _observe)) return;
 
-					if (resolved.object && NestedMap && (resolved.key === 'map')
-							&& (resolved.object instanceof NestedMap)) {
-						if (!_observe(resolved.object.ordered._size)) result.push(name);
-
-						return;
-					}
-
-					if (resolved.value && (typeof resolved.value === 'object') && resolved.value.__id__ &&
-							(typeof resolved.value.getDescriptor('resolvedValue')._value_ === 'function')) {
-						// Constrained Value
-						if (!_observe(resolved.value._resolvedValue)) result.push(name);
-
-						return;
-					}
+					if (!this.isPropertyFilled(resolved, _observe)) result.push(name);
 
 					if (resolved.descriptor.requireOwn) {
 						_observe(resolved.observable);
@@ -167,23 +153,35 @@ module.exports = memoize(function (db) {
 							return;
 						}
 					}
+				}, this);
 
-					if (resolved.descriptor.multiple && !_observe(resolved.observable).size) {
-						result.push(name);
-						return;
+				return result;
+			}
+		},
+		filledPropertyNames: {
+			type: StringLine,
+			multiple: true,
+			value: function (_observe) {
+				var result = []
+				  , resolved;
+
+				if (this.resolventProperty) {
+					resolved = this.ensureResolvent(_observe);
+
+					// Add resolventProperty if it have any value
+					if (resolved && _observe(resolved.observable) != null) {
+						result.push(this.resolventProperty);
 					}
+				}
 
-					value = _observe(resolved.observable);
+				if (this.isUnresolved) return result;
 
-					if (value != null) {
-						if (File && (value instanceof File)) {
-							value = _observe(value._path);
+				this.applicablePropertyNames.forEach(function (name) {
+					resolved = this.master.resolveSKeyPath(name, _observe);
 
-							if (value == null) result.push(name);
-						}
-					} else {
-						result.push(name);
-					}
+					if (!resolved) return;
+
+					if (this.isPropertyFilled(resolved, _observe)) result.push(name);
 				}, this);
 
 				return result;
