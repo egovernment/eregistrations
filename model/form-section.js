@@ -137,7 +137,10 @@ module.exports = memoize(function (db) {
 					if (!resolved) return;
 					if (this.isPropertyExcludedFromStatus(resolved, _observe)) return;
 
-					if (!this.isPropertyFilled(resolved, _observe)) result.push(name);
+					if (!this.isPropertyFilled(resolved, _observe)) {
+						result.push(name);
+						return;
+					}
 
 					if (resolved.descriptor.requireOwn) {
 						_observe(resolved.observable);
