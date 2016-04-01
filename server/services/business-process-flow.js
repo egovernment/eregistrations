@@ -34,7 +34,7 @@ module.exports = function (BusinessProcessType, stepShortPaths) {
 			})
 		}, function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath);
-			if (step.getOwnDescriptor('status').hasOwnProperty('_value')) return;
+			if (step.getOwnDescriptor('status').hasOwnProperty('_value_')) return;
 			debug('%s processing step (%s) status set to %s', businessProcess.__id__,
 				stepShortPaths[index], step.status);
 			step.set('status', step.status);
