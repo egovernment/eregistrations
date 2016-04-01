@@ -34,6 +34,15 @@ module.exports = function (BusinessProcessType, stepShortPaths) {
 		businessProcess.delete('isSentBack');
 	});
 
+	// Business process: isUserProcessing finalization
+	setupTriggers({
+		trigger: businessProcessesSubmitted.filterByKey('isSubmittedReady', true)
+			.filterByKey('isUserProcessing', true)
+	}, function (businessProcess) {
+		debug('%s finalize user processing', businessProcess.__id__);
+		businessProcess.delete('isUserProcessing');
+	});
+
 	// Processing steps:
 	stepPaths.forEach(function (stepPath, index) {
 		// status
