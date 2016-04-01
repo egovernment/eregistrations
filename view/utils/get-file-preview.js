@@ -1,7 +1,7 @@
 'use strict';
 
 var includes = require('es5-ext/array/#/contains')
-  , docMimeTypes = require('../utils/microsoft-word-doc-mime-types')
+  , docMimeTypes = require('../../utils/microsoft-word-doc-mime-types')
   , isReadOnlyRender = require('mano/client/utils/is-read-only-render');
 
 module.exports = function (file) {

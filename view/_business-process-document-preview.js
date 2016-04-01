@@ -4,7 +4,8 @@
 
 var _                  = require('mano').i18n.bind('Document: preview')
   , resolveArchivePath = require('../utils/resolve-document-archive-path')
-  , syncHeight         = require('./utils/sync-height');
+  , syncHeight         = require('./utils/sync-height')
+  , getFilePreview = require('./utils/get-file-preview');
 
 module.exports = function (doc) {
 	var elem;
@@ -39,12 +40,10 @@ module.exports = function (doc) {
 					)
 				),
 
-			elem = ul({ id: 'doc-previews',
-				class: 'business-process-document-preview-image-placeholder' },
+			elem = ul({ id: 'doc-previews', class: 'submitted-preview-new-image-placeholder' },
 				doc.files.ordered, function (file) {
 					li({ class: _if(eq(file, doc.files.ordered._first), 'active') },
-						img({ zoomOnHover: true, src: or(resolve(file._preview, '_url'),
-							resolve(file._thumb, '_url')) }));
+						getFilePreview(file));
 				}, doc),
 
 			insert(_if(gt(doc.files.ordered._size, 1),
