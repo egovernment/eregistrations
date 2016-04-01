@@ -83,6 +83,43 @@ module.exports = memoize(function (db) {
 
 			return props;
 		} },
+		isPropertyFilled: {
+			type: db.Function,
+			value: function (resolved, _observe) {
+				var owner     = resolved.object
+				  , value     = resolved.value
+				  , db        = this.database
+				  , NestedMap = db.NestedMap
+				  , File      = db.File;
+
+				// NestedMap
+				if (owner && NestedMap && (resolved.key === 'map') && (owner instanceof NestedMap)) {
+					return Boolean(_observe(owner.ordered._size));
+				}
+
+				// Constrained Value
+				if (value && (typeof value === 'object') && value.__id__ &&
+						(typeof value.getDescriptor('resolvedValue')._value_ === 'function')) {
+					return Boolean(_observe(value._resolvedValue));
+				}
+
+				// Simple multiple
+				if (resolved.descriptor.multiple) return Boolean(_observe(resolved.observable).size);
+
+				value = _observe(resolved.observable);
+				if (value != null) {
+					// File
+					if (File && (value instanceof File)) {
+						return Boolean(_observe(value._path));
+					}
+
+					// Simple value
+					return true;
+				}
+
+				return false;
+			}
+		},
 		missingRequiredPropertyNames: {
 			type: StringLine,
 			multiple: true,
