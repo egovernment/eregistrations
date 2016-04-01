@@ -19,7 +19,8 @@ var curry              = require('es5-ext/function/#/curry')
 var getFilePreview = function (file) {
 	var type = file.type;
 	if (includes.call(docMimeTypes, type)) {
-		return img({ class: 'submitted-preview-new-word-document', src: '/img/word-doc-icon.png' });
+		return img({ class: 'submitted-preview-new-word-document',
+			src: stUrl('/img/word-doc-icon.png') });
 	}
 	if (!isReadOnlyRender && (type === 'application/pdf')) {
 		return iframe({
@@ -27,7 +28,10 @@ var getFilePreview = function (file) {
 		});
 	}
 	return img({ zoomOnHover: true, src: or(resolve(file._preview, '_url'),
-		resolve(file._thumb, '_url')) });
+		file.thumb._url.map(function (thumbUrl) {
+			if (!thumbUrl) return;
+			return stUrl(thumbUrl);
+		})) });
 };
 
 module.exports = function (doc, sideContent) {
