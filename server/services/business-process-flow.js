@@ -14,12 +14,16 @@ var aFrom           = require('es5-ext/array/from')
 module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	var businessProcesses = ensureType(BusinessProcessType).instances
 		.filterByKey('isFromEregistrations', true).filterByKey('isDemo', false);
-	var options = Object(arguments[2]), customStepReturnHandler, onStepRedelegate, onStepStatus;
+	var options = Object(arguments[2]), customStepReturnHandler, onStepRedelegate, onStepStatus
+	  , onUserProcessingEnd;
 	if (options.customStepReturnHandler != null) {
 		customStepReturnHandler = ensureCallable(options.customStepReturnHandler);
 	}
 	if (options.onStepRedelegate != null) onStepRedelegate = ensureCallable(options.onStepRedelegate);
 	if (options.onStepStatus != null) onStepStatus = ensureCallable(options.onStepStatus);
+	if (options.onUserProcessingEnd != null) {
+		onUserProcessingEnd = ensureCallable(options.onUserProcessingEnd);
+	}
 
 	var stepPaths = aFrom(ensureIterable(stepShortPaths)).map(resolveStepPath);
 
@@ -59,6 +63,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			.filterByKey('isUserProcessing', true)
 	}, function (businessProcess) {
 		debug('%s finalize user processing', businessProcess.__id__);
+		if (onUserProcessingEnd) onUserProcessingEnd(businessProcess);
 		businessProcess.delete('isUserProcessing');
 	});
 
@@ -71,7 +76,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			})
 		}, function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath);
-			if (step.getOwnDescriptor('status').hasOwnProperty('_value_')) return;
+			if (step.getOwnDescriptor('status').hasOwnProperty('_value_')) return; // Already shadowed
 			debug('%s processing step (%s) status set to %s', businessProcess.__id__,
 				step.shortPath, step.status);
 			if (onStepStatus) onStepStatus(step);
