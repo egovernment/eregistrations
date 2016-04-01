@@ -87,7 +87,7 @@ module.exports = memoize(function (db) {
 		// (either from 'sentBack' or 'redelegated' states)
 		isPreviousStepsSatisfiedDeep: { type: db.Boolean, value: function (_observe) {
 			if (!this.previousSteps.size) {
-				return _observe(this.master._isSubmittedReady);
+				return _observe(this.master._isAtDraft);
 			}
 			return this.previousSteps.every(function (step) {
 				return _observe(step._isSatisfied) && _observe(step._isPreviousStepsSatisfiedDeep);
