@@ -197,7 +197,7 @@ module.exports = memoize(function (db) {
 
 			return resolved;
 		} },
-		isResolventFilled: { type: db.Boolean, value: function (observeFunction) {
+		isResolventFilled: { type: db.Function, value: function (observeFunction) {
 			var resolved;
 
 			if (this.resolventProperty) {
