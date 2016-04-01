@@ -14,7 +14,7 @@ module.exports = memoize(function (db) {
 	var RevisionProcessingStep = defineProcessingStep(db).extend('RevisionProcessingStep', {
 		label: { value: _("Revision") },
 
-		// Whether the revision was successful
+		// Whether the revision is pending
 		isRevisionPending: { type: db.Boolean, value: function (_observe) {
 			// If the whole step is not pending, then obviously not pending
 			if (!this.isPending) return false;
