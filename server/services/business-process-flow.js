@@ -43,6 +43,16 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		businessProcess.delete('isSentBack');
 	});
 
+	// Business process: isUserProcessing initialization
+	setupTriggers({
+		trigger: businessProcessesSubmitted.filterByKey('isUserProcessingReady', true)
+			.filterByKey('isUserProcessing', false)
+	}, function (businessProcess) {
+		debug('%s initialize user processing', businessProcess.__id__);
+		businessProcess.submissionForms.delete('isAffidavitSigned');
+		businessProcess.isUserProcessing = true;
+	});
+
 	// Business process: isUserProcessing finalization
 	setupTriggers({
 		trigger: businessProcessesSubmitted.filterByKey('isSubmittedReady', true)
