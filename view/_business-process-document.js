@@ -27,8 +27,11 @@ var getFilePreview = function (file) {
 			src: url('pdfjs/web/viewer.html?file=') + file.path
 		});
 	}
-	return img({ zoomOnHover: true, src: stUrl(or(resolve(file._preview, '_url'),
-		resolve(file._thumb, '_url'))) });
+	return img({ zoomOnHover: true, src: or(resolve(file._preview, '_url'),
+		file.thumb._url.map(function (thumbUrl) {
+			if (!thumbUrl) return;
+			return stUrl(thumbUrl);
+		})) });
 };
 
 module.exports = function (doc, sideContent) {
