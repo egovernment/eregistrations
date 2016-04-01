@@ -9,20 +9,34 @@ var memoize                  = require('memoizee/plain')
   , ensureDb                 = require('dbjs/valid-dbjs');
 
 module.exports = memoize(function (db) {
-	var Percentage = definePercentage(ensureDb(db));
+	var Percentage = definePercentage(ensureDb(db))
+	  , ProcessingStep = defineProcessingStep(db);
 
-	var RevisionProcessingStep = defineProcessingStep(db).extend('RevisionProcessingStep', {
+	var RevisionProcessingStep = ProcessingStep.extend('RevisionProcessingStep', {
 		label: { value: _("Revision") },
 
-		// Whether the revision is pending
-		isRevisionPending: { type: db.Boolean, value: function (_observe) {
-			// If the whole step is not pending, then obviously not pending
-			if (!this.isPending) return false;
-
-			return !(this.isRevisionApproved && this.revisionApprovalProgress === 1);
+		// Final revision status as decided by official
+		revisionOfficialStatus: { type: db.ProcessingStepStatus, value: function () {
+			return this.officialStatus;
+		} },
+		// Computed revision status. Resolves to final (not 'pending') status
+		// only if all constraints are met
+		revisionStatus: { type: db.ProcessingStepStatus, value: function () {
+			if (this.revisionOfficialStatus === 'approved') {
+				return (this.revisionApprovalProgress === 1) ? 'approved' : 'pending';
+			}
+			return this.status;
 		} },
 
-		isRevisionApproved: { type: db.Boolean, value: false },
+		// Whether step is pending at revision
+		isRevisionPending: { type: db.Boolean, value: function () {
+			return (this.revisionStatus === 'pending');
+		} },
+
+		// Whether step was approved at revision
+		isRevisionApproved: { type: db.Boolean, value: function () {
+			return (this.revisionStatus === 'approved');
+		} },
 
 		// Progress of revision approval
 		// All processable requirement uploads must be approved
