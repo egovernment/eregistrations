@@ -27,7 +27,17 @@ module.exports = memoize(function (db/*, options */) {
 				if (!this.email) return false;
 				return this.password;
 			}
-		}
+		},
+		// String over which users can be searched
+		// through interface panel (computed value is later indexed by persistence engine)
+		searchString: { type: db.String, value: function (_observe) {
+			var arr = [];
+			if (this.firstName) arr.push(this.firstName.toLowerCase());
+			if (this.lastName) arr.push(this.lastName.toLowerCase());
+			if (this.email) arr.push(this.email.toLowerCase());
+
+			return arr.join('\x02');
+		} }
 	});
 
 	return User;
