@@ -69,7 +69,7 @@ module.exports = function (BusinessProcessType, stepShortPaths) {
 
 			} else if (step.status === 'redelegated') {
 
-				// Regelegation initialization
+				// Redelegation initialization
 				debug('%s redelegated to %s from %s', businessProcess.__id__,
 					step.redelegatedTo.shortPath, step.shortPath);
 				step.redelegatedTo.delete('officialStatus');
