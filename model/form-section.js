@@ -197,6 +197,11 @@ module.exports = memoize(function (db) {
 				return _observe(this.missingRequiredPropertyNames._size) > 0;
 			}
 		},
+		hasFilledPropertyNamesDeep: {
+			value: function (_observe) {
+				return _observe(this.filledPropertyNames._size) > 0;
+			}
+		},
 		// Used to set input options for form.
 		// Note that in order to use it, you need to set every option separately i.e:
 		// db.SomeFormClass.prototype.inputOptions.get('someProperty').set('disabled', true)
