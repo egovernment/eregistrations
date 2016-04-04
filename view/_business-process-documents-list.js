@@ -3,6 +3,7 @@
 'use strict';
 
 var _                = require('mano').i18n.bind('User Submitted')
+  , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
   , _d = _;
 
 module.exports = function (doc, options) {
@@ -23,7 +24,8 @@ module.exports = function (doc, options) {
 				tbody(
 					options.documentsTarget.requirementUploads.applicable,
 					function (requirementUpload) {
-						return tr({ id: requirementUpload.__id__ },
+						return tr({ id: 'document-item' +
+							camelToHyphen.call(requirementUpload.document.uniqueKey) },
 							td({ class: 'submitted-user-data-table-status' },
 								_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
 								_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' }))
