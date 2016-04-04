@@ -24,7 +24,7 @@ module.exports = function (doc, options) {
 				tbody(
 					options.documentsTarget.requirementUploads.applicable,
 					function (requirementUpload) {
-						return tr({ id: 'document-item' +
+						return tr({ id: 'document-item-' +
 							camelToHyphen.call(requirementUpload.document.uniqueKey) },
 							td({ class: 'submitted-user-data-table-status' },
 								_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
