@@ -96,6 +96,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 				debug('%s redelegated to %s from %s', businessProcess.__id__,
 					step.redelegatedTo.shortPath, step.shortPath);
 				if (onStepRedelegate) onStepRedelegate(step);
+				step.redelegatedTo.delete('revisionOfficialStatus');
 				step.redelegatedTo.delete('officialStatus');
 				step.redelegatedTo.delete('status');
 				step.redelegatedTo.delete('isSatisfied');
@@ -137,6 +138,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			}
 			debug('%s processing step (%s) reset from %s to pending state', businessProcess.__id__,
 				step.shortPath, step.status);
+			step.delete('revisionOfficialStatus');
 			step.delete('officialStatus');
 			step.delete('status');
 			step.delete('isSatisfied');
