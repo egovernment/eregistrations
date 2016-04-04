@@ -2,7 +2,7 @@
 
 'use strict';
 
-var renderDocumentsList = require('./_business-process-draw-document-list');
+var renderDocumentsList = require('./_business-process-documents-list');
 
 exports._parent = require('./business-process-revision');
 exports._match = 'businessProcess';
