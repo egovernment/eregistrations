@@ -5,8 +5,8 @@
 var _                = require('mano').i18n.bind('User Submitted')
   , _d = _;
 
-module.exports = function (target, urlPrefix, selectedDocumentId) {
-	return _if(target.requirementUploads.applicable._size, [
+module.exports = function (doc, options) {
+	return _if(options.target.requirementUploads.applicable._size, [
 		div(
 			{ class: 'table-responsive-container' },
 			table(
@@ -21,10 +21,10 @@ module.exports = function (target, urlPrefix, selectedDocumentId) {
 					)
 				),
 				tbody(
-					target.requirementUploads.applicable,
+					options.target.requirementUploads.applicable,
 					function (requirementUpload) {
-						var rowClass = (selectedDocumentId
-								&& requirementUpload.document.__id__ === selectedDocumentId) ?
+						var rowClass = (options.selectedDocumentId
+								&& requirementUpload.document.__id__ === options.selectedDocumentId) ?
 									'active' : '';
 						return tr({ class: rowClass },
 								td({ class: 'submitted-user-data-table-status' },
@@ -36,7 +36,7 @@ module.exports = function (target, urlPrefix, selectedDocumentId) {
 								td({ class: 'submitted-user-data-table-date' },
 									requirementUpload.document._issueDate),
 								td({ class: 'submitted-user-data-table-link' },
-									a({ href: urlPrefix + requirementUpload.document.docUrl },
+									a({ href: options.urlPrefix + requirementUpload.document.docUrl },
 										span({ class: 'fa fa-search' }, _("Go to"))))
 							);
 					}

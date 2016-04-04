@@ -15,12 +15,16 @@ exports['tab-content'] = function (/*options*/) {
 	  , urlPrefix = options.urlPrefix || '/'
 	  , businessProcess = this.businessProcess
 	  , uploadsResolver = options.uploadsResolver || businessProcess
-	  , selectedDocumentId = this.document ?  this.document.__id__ : null;
+	  , selectedDocumentId = this.document ?  this.document.__id__ : null
+	  , options.urlPrefix = urlPrefix
+	  , options.uploadsResolver = uploadsResolver
+	  , options.selectedDocumentId = selectedDocumentId
+	  , options.businessProcess = businessProcess;
 
 	return [section({ class: 'section-primary' },
 			div({ class: "section-primary-sub all-documents-table" },
 				div(renderCertificateList(uploadsResolver, urlPrefix, selectedDocumentId)),
-				div(renderDocumentsList(businessProcess, urlPrefix, selectedDocumentId)),
+				div(renderDocumentsList(this, options)),
 				div(renderPaymentList(uploadsResolver, urlPrefix, selectedDocumentId))),
 			div({ id: 'selection-preview' })
 		)];
