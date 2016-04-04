@@ -25,7 +25,9 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		onUserProcessingEnd = ensureCallable(options.onUserProcessingEnd);
 	}
 
-	var stepPaths = aFrom(ensureIterable(stepShortPaths)).map(resolveStepPath);
+	var stepPaths = aFrom(ensureIterable(stepShortPaths)).map(function (shortPath) {
+		return 'processingSteps/map/' + resolveStepPath(shortPath);
+	});
 
 	// Business process: isSubmitted
 	setupTriggers({
