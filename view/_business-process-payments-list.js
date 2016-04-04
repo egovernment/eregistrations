@@ -2,7 +2,8 @@
 
 'use strict';
 
-var _                = require('mano').i18n.bind('User Submitted');
+var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
+  , _                = require('mano').i18n.bind('User Submitted');
 
 module.exports = function (doc, options) {
 	return _if(options.paymentsTarget.paymentReceiptUploads.applicable._size, [
@@ -21,10 +22,8 @@ module.exports = function (doc, options) {
 				tbody(
 					options.paymentsTarget.paymentReceiptUploads.applicable,
 					function (receipt) {
-						var rowClass = (options.selectedDocumentId
-								&& receipt.document.__id__ === options.selectedDocumentId) ?
-									'active' : '';
-						return tr({ class: rowClass },
+						return tr({ id: 'document-item-' +
+							camelToHyphen.call(receipt.document.uniqueKey) },
 								td(
 								{ class: 'submitted-user-data-table-status' },
 								_if(receipt._isApproved, span({ class: 'fa fa-check' })),

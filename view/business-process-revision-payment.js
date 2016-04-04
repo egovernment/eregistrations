@@ -14,6 +14,13 @@ var _              = require('mano').i18n.bind('Official: Revision')
 exports._parent = require('./business-process-revision-payments');
 exports._match = 'document';
 
+exports._dynamic = function () {
+	var listItemId = 'document-item-' + camelToHyphen.call(this.document.uniqueKey);
+	var conf = {};
+	conf[listItemId] = { class: { active: true } };
+	return conf;
+};
+
 paymentForm = function (paymentReceiptUpload) {
 	var revFail;
 	return form(

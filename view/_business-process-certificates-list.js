@@ -24,10 +24,8 @@ module.exports = function (doc, options) {
 				tbody(
 					options.certificatesTarget.certificates.uploaded,
 					function (certificate) {
-						var rowClass = (options.selectedDocumentId
-								&& certificate.__id__ === options.selectedDocumentId) ?
-									'active' : '';
-						return tr({ class: rowClass },
+						return tr({ id: 'document-item-' +
+							camelToHyphen.call(certificate.key) },
 							td({ class: 'submitted-user-data-table-status' },
 								span({ class: 'fa fa-certificate' })),
 							td(certificate.label),

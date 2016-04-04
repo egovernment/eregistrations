@@ -5,10 +5,18 @@
 var renderDocument = require('./_business-process-document-preview')
   , renderDocumentHistory = require('./_business-process-revision-document-history')
   , reactiveSibling = require('../utils/reactive-sibling')
-  , _                = require('mano').i18n.bind('User Submitted');
+  , _                = require('mano').i18n.bind('User Submitted')
+  , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen');
 
 exports._parent = require('./business-process-submitted-documents');
 exports._match = 'document';
+
+exports._dynamic = function () {
+	var listItemId = 'document-item-' + camelToHyphen.call(this.document.uniqueKey);
+	var conf = {};
+	conf[listItemId] = { class: { active: true } };
+	return conf;
+};
 
 exports['selection-preview'] = function () {
 	var reqUploads = this.processingStep.requirementUploads.applicable;
