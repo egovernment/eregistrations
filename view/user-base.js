@@ -9,6 +9,9 @@ var _              = require('mano').i18n.bind('User')
 exports._parent = require('./base');
 
 exports._getManagerLabelCustomClass = Function.prototype;
+exports._getManagerLabelCustomText  = function (context) {
+	return _("Notary");
+};
 
 exports.menu = function () {
 	modalContainer.append(loginDialog);
@@ -28,8 +31,8 @@ exports.menu = function () {
 			{ class: 'header-top-menu' },
 			_if(or(this.manager, eq(this.user._currentRoleResolved, 'manager')), li(
 				span(
-					{ class: ['manager-label', exports._getManagerLabelCustomClass()] },
-					_("Notary")
+					{ class: ['manager-label', exports._getManagerLabelCustomClass(this)] },
+					exports._getManagerLabelCustomText(this)
 				)
 			)),
 			li(
