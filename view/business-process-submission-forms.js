@@ -55,7 +55,7 @@ exports.step = function () {
 					label({ class: 'input-aside' }, span(input({
 						dbjs: submissionForms._isAffidavitSigned,
 						type: 'checkbox',
-						id: 'input-certified-truth'
+						control: { id: 'input-certified-truth' }
 					})), " ", span(_("I, ${ fullName }, declare under oath that the information, " +
 						"regarding registration of \"${ businessName }\", entered into the system is " +
 						"correct, and I accept that it would be saved and processed by involved institutions.",
