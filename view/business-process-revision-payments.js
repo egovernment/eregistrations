@@ -14,7 +14,11 @@ exports['official-revision-content'] = function (/*options*/) {
 	  , businessProcess = this.businessProcess
 	  , selectedDocumentId = this.document ?  this.document.__id__ : null;
 
+	options.paymentsTarget = businessProcess;
+	options.urlPrefix = urlPrefix;
+	options.selectedDocumentId = selectedDocumentId;
+
 	return [section({ class: 'section-primary' },
-			renderPaymentList(businessProcess, urlPrefix, selectedDocumentId),
+			renderPaymentList(this, options),
 			div({ id: 'revision-document', class: 'business-process-revision-selected-document' }))];
 };
