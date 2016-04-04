@@ -42,7 +42,11 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			"added status maps in model/views.js"
 		  , serverIndexes = "Ensure entry in server/db/indexes.js"
 		  , addRole = "Add new role in model/user/roles.js"
-		  , appServerRoutes = "Setup apps/" + appName + "/server/routes.js";
+		  , appServerRoutes = "Setup apps/" + appName + "/server/routes.js"
+		  , appsPostControllers = "Ensure app configuration added in POST controllers " +
+			"configuration at: server/processes/master/apps-post-controllers and " +
+			"server/processes/memory-db/apps-post-controllers"
+		  , recentlyVisitedProcesses = "Ensure entry in model/user/recently-visited/business-processes";
 
 		// Default messages
 
@@ -54,9 +58,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			+ appName + "/client/model.js");
 		msgItems.push("Ensure POST (form submissions) controllers " +
 			"configuration is complete in apps/" + appName + "/controller");
-		msgItems.push("Ensure app configuration added in POST controllers configuration at: "
-			+ "server/processes/master/apps-post-controllers and " +
-			"server/processes/memory-db/apps-post-controllers");
+		msgItems.push(appsPostControllers);
 
 		// Application specifics
 
@@ -87,7 +89,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 				msgItems.push(serverIndexes);
 			}
 			msgItems.push(addRole);
-			msgItems.push("Ensure entry in model/user/recently-visited/business-processes");
+			msgItems.push(recentlyVisitedProcesses);
 		}
 
 		if (appName === 'manager') {
@@ -130,8 +132,8 @@ resolveProjectRoot(projectRoot).done(function (root) {
 
 		if (appName === 'supervisor') {
 			msgItems = [accessMsg, clientModelReminder, domBindings, addRole, modelViews,
-					"Ensure that views populations for supervisor 'all' is configured in server/db/views.js",
-				appsRoutersReminder];
+				"Ensure that views populations for supervisor 'all' is configured in server/db/views.js",
+				appsPostControllers, recentlyVisitedProcesses, appsRoutersReminder];
 			msgItems.push("Ensure proper businessProcsss storage in  apps/" + appName +
 				"/server/routes.js");
 		}
