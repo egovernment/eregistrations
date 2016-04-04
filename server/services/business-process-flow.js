@@ -91,7 +91,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		// status
 		setupTriggers({
 			trigger: businessProcessesSubmitted.filterByKeyPath(stepPath + '/status', function (value) {
-				return value && (value !== 'pending');
+				return value && (value !== 'pending') && (value !== 'paused');
 			})
 		}, function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath);
