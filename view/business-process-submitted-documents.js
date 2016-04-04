@@ -4,10 +4,19 @@
 
 var renderDocumentsList = require('./_business-process-documents-list')
   , renderCertificateList = require('./_business-process-certificates-list')
-  , renderPaymentList = require('./_business-process-payments-list');
+  , renderPaymentList = require('./_business-process-payments-list')
+  , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen');
 
 exports._parent = require('./business-process-submitted');
 exports._match = 'businessProcess';
+
+exports._dynamic = function () {
+	var listItemId = camelToHyphen.call(this.document.__id__);
+	var conf = {};
+	conf[listItemId] = { class: { active: true } };
+	console.log(listItemId);
+	return conf;
+};
 
 exports['tab-documents'] = { class: { active: true } };
 exports['tab-content'] = function (/*options*/) {

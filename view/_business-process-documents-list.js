@@ -23,25 +23,23 @@ module.exports = function (doc, options) {
 				tbody(
 					options.documentsTarget.requirementUploads.applicable,
 					function (requirementUpload) {
-						var rowClass = (options.selectedDocumentId
-								&& requirementUpload.document.__id__ === options.selectedDocumentId) ?
-									'active' : '';
-						return tr({ class: rowClass },
-								td({ class: 'submitted-user-data-table-status' },
-									_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
-									_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' }))
+						return tr({ id: requirementUpload.__id__ },
+							td({ class: 'submitted-user-data-table-status' },
+								_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
+								_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' }))
 								),
-								td(_d(requirementUpload.document._label, { user: requirementUpload.master })),
-								td(requirementUpload.document._issuedBy),
-								td({ class: 'submitted-user-data-table-date' },
-									requirementUpload.document._issueDate),
-								td({ class: 'submitted-user-data-table-link' },
-									a({ href: options.urlPrefix + requirementUpload.document.docUrl },
-										span({ class: 'fa fa-search' }, _("Go to"))))
+							td(_d(requirementUpload.document._label, { user: requirementUpload.master })),
+							td(requirementUpload.document._issuedBy),
+							td({ class: 'submitted-user-data-table-date' },
+								requirementUpload.document._issueDate),
+							td({ class: 'submitted-user-data-table-link' },
+								a({ href: options.urlPrefix + requirementUpload.document.docUrl },
+									span({ class: 'fa fa-search' }, _("Go to"))))
 							);
 					}
 				)
 			)
 		)
 	]);
+
 };
