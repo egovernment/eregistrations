@@ -169,7 +169,6 @@ module.exports = {
 		view: require('../view/business-process-official-certificate')
 	},
 	'official/business-process-id/data': require('../view/business-process-official-data'),
-	'official/business-process-id/certificates-process': require('./view/_certificates-form'),
 	firstBusinessProcess: {
 		match: function () { return true; },
 		view: require('./view/business-process-official-form')
