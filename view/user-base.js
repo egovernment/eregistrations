@@ -16,9 +16,6 @@ exports._extraRoleLabel = function (context) {
 		)
 	));
 };
-exports._getManagerLabelCustomText  = function (context) {
-	return _("Notary");
-};
 
 exports.menu = function () {
 	modalContainer.append(loginDialog);
