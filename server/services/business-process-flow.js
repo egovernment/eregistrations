@@ -51,7 +51,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		trigger: businessProcesses.filterByKey('isUserProcessing', true)
 			.filterByKey('isSubmitted', false)
 	}, function (businessProcess) {
-		debug('%s submitted (through user processing', businessProcess.__id__);
+		debug('%s submitted (through user processing)', businessProcess.__id__);
 		businessProcess.isSubmitted = true;
 	});
 
@@ -96,7 +96,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		}, function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath);
 			if (step.getOwnDescriptor('status').hasOwnProperty('_value_')) return; // Already shadowed
-			debug('%s processing step (%s) status set to %s', businessProcess.__id__,
+			debug('%s %s step %s', businessProcess.__id__,
 				step.shortPath, step.status);
 			if (onStepStatus) onStepStatus(step);
 			step.set('status', step.status);
@@ -134,7 +134,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 				.filterByKeyPath(stepPath + '/isSatisfied', false)
 		}, function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath);
-			debug('%s processing step (%s) satisfied', businessProcess.__id__,
+			debug('%s %s step satisfied', businessProcess.__id__,
 				step.shortPath);
 			step.isSatisfied = true;
 		});
@@ -155,7 +155,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 					!returnStatuses.has(step.status)) {
 				return;
 			}
-			debug('%s processing step (%s) reset from %s to pending state', businessProcess.__id__,
+			debug('%s %s step reset from %s to pending state', businessProcess.__id__,
 				step.shortPath, step.status);
 			step.delete('revisionOfficialStatus');
 			step.delete('officialStatus');
