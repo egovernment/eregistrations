@@ -4,8 +4,8 @@
 
 var _                = require('mano').i18n.bind('User Submitted');
 
-module.exports = function (target, urlPrefix, selectedDocumentId) {
-	return _if(target.paymentReceiptUploads.applicable._size, [
+module.exports = function (doc, options) {
+	return _if(options.paymentsTarget.paymentReceiptUploads.applicable._size, [
 		div(
 			{ class: 'table-responsive-container' },
 			table(
@@ -19,10 +19,10 @@ module.exports = function (target, urlPrefix, selectedDocumentId) {
 					)
 				),
 				tbody(
-					target.paymentReceiptUploads.applicable,
+					options.paymentsTarget.paymentReceiptUploads.applicable,
 					function (receipt) {
-						var rowClass = (selectedDocumentId
-								&& receipt.document.__id__ === selectedDocumentId) ?
+						var rowClass = (options.selectedDocumentId
+								&& receipt.document.__id__ === options.selectedDocumentId) ?
 									'active' : '';
 						return tr({ class: rowClass },
 								td(
@@ -33,7 +33,7 @@ module.exports = function (target, urlPrefix, selectedDocumentId) {
 							td(receipt.document._label),
 							td({ class: 'submitted-user-data-table-date' }, receipt.document._issueDate),
 							td({ class: 'submitted-user-data-table-link' },
-								a({ href: urlPrefix + receipt.document.docUrl },
+								a({ href: options.urlPrefix + receipt.document.docUrl },
 									span({ class: 'fa fa-search' }, _("Go to"))))
 							);
 					}

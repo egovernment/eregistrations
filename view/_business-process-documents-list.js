@@ -6,7 +6,7 @@ var _                = require('mano').i18n.bind('User Submitted')
   , _d = _;
 
 module.exports = function (doc, options) {
-	return _if(options.target.requirementUploads.applicable._size, [
+	return _if(options.documentsTarget.requirementUploads.applicable._size, [
 		div(
 			{ class: 'table-responsive-container' },
 			table(
@@ -21,7 +21,7 @@ module.exports = function (doc, options) {
 					)
 				),
 				tbody(
-					options.target.requirementUploads.applicable,
+					options.documentsTarget.requirementUploads.applicable,
 					function (requirementUpload) {
 						var rowClass = (options.selectedDocumentId
 								&& requirementUpload.document.__id__ === options.selectedDocumentId) ?
