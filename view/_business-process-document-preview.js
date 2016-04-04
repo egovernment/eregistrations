@@ -40,7 +40,8 @@ module.exports = function (doc) {
 					)
 				),
 
-			elem = ul({ id: 'doc-previews', class: 'submitted-preview-new-image-placeholder' },
+			elem = ul({ id: 'doc-previews',
+				class: 'business-process-document-preview-image-placeholder' },
 				doc.files.ordered, function (file) {
 					li({ class: _if(eq(file, doc.files.ordered._first), 'active') },
 						getFilePreview(file));
