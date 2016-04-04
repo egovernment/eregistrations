@@ -99,6 +99,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			debug('%s %s step %s', businessProcess.__id__,
 				step.shortPath, step.status);
 			if (onStepStatus) onStepStatus(step);
+			step.set('isReady', true);
 			step.set('status', step.status);
 
 			if (step.status === 'sentBack') {
