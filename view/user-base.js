@@ -8,7 +8,14 @@ var _              = require('mano').i18n.bind('User')
 
 exports._parent = require('./base');
 
-exports._getManagerLabelCustomClass = Function.prototype;
+exports._extraRoleLabel = function (context) {
+	return _if(or(context.manager, eq(context.user._currentRoleResolved, 'manager')), li(
+		span(
+			{ class: 'manager-label' },
+			_("Notary")
+		)
+	));
+};
 exports._getManagerLabelCustomText  = function (context) {
 	return _("Notary");
 };
@@ -29,12 +36,7 @@ exports.menu = function () {
 		),
 		ul(
 			{ class: 'header-top-menu' },
-			_if(or(this.manager, eq(this.user._currentRoleResolved, 'manager')), li(
-				span(
-					{ class: ['manager-label', exports._getManagerLabelCustomClass(this)] },
-					exports._getManagerLabelCustomText(this)
-				)
-			)),
+			exports._extraRoleLabel(this),
 			li(
 				a(
 					{ href: '/profile/' },
