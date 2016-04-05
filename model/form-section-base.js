@@ -37,6 +37,7 @@ module.exports = memoize(function (db) {
 		// When isApplicable !== true the section will not be visible in the view
 		// (rendered with default generator)
 		isApplicable: { type: db.Boolean, required: true, value: true },
+		isInternallyApplicable: { type: db.Boolean, value: true },
 		// The master for property paths resolution
 		propertyMaster: { type: db.Object, value: function () {
 			var owner;
@@ -154,7 +155,9 @@ module.exports = memoize(function (db) {
 			var File = this.database.File, NestedMap = this.database.NestedMap;
 
 			// Not required, then not validated
-			if (!resolved.descriptor.required) return true;
+			if (!resolved.descriptor.required || this.excludedFromStatus.has(resolved.key)) {
+				return true;
+			}
 
 			if (!this.excludedFromStatusIfFilled.has(resolved.key)) {
 				// Multiple value: not excluded
@@ -194,10 +197,24 @@ module.exports = memoize(function (db) {
 
 			return resolved;
 		} },
+		isResolventFilled: { type: db.Function, value: function (observeFunction) {
+			var resolved;
+
+			if (this.resolventProperty) {
+				resolved = this.ensureResolvent(observeFunction);
+
+				if (resolved && observeFunction(resolved.observable) != null) {
+					return true;
+				}
+			}
+
+			return false;
+		} },
 		lastEditStamp: { type: UInteger, value: 0 },
 		lastEditDate: { type: db.DateTime, value: function () {
 			return this.lastEditStamp / 1000;
 		} },
+		excludedFromStatus: { type: StringLine, multiple: true },
 		// A multiple for which you can pass names of the properties you want excluded from
 		// status calculation if they were already provided for the form (for example from guide).
 		excludedFromStatusIfFilled: { type: StringLine, multiple: true },
@@ -220,14 +237,18 @@ module.exports = memoize(function (db) {
 			value: _("Section is disabled because online payment transaction has " +
 				"already been made or it's in progress")
 		},
-		// Checks weather at least one progress rule of this section or it's children
+		// Checks whether at least one progress rule of this section or it's children
 		// is displayable (invalid and has a message)
 		hasDisplayableRuleDeep: {
 			type: db.Boolean
 		},
-		// Checks weather at least one of fields of this section or it's children
+		// Checks whether at least one of fields of this section or it's children
 		// has a missing value in this
 		hasMissingRequiredPropertyNamesDeep: {
+			type: db.Boolean
+		},
+		// Return whether some fields have a value in this section or it's children
+		hasFilledPropertyNamesDeep: {
 			type: db.Boolean
 		},
 		// Resolves collection of which section is part of

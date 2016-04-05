@@ -4,14 +4,22 @@
 
 var _              = require('mano').i18n.bind('Official: Revision')
   , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
-  , getPrevNext = require('../utils/get-prev-next-set')
-  , renderDocument = require('./_business-process-revision-document')
+  , reactiveSibling = require('../utils/reactive-sibling')
+  , renderDocument = require('./_business-process-document-preview')
   , renderDocumentHistory = require('./_business-process-revision-document-history')
+  , generateSections = require('./components/generate-sections')
 
   , paymentForm;
 
 exports._parent = require('./business-process-revision-payments');
 exports._match = 'document';
+
+exports._dynamic = function () {
+	var listItemId = 'document-item-' + camelToHyphen.call(this.document.uniqueKey);
+	var conf = {};
+	conf[listItemId] = { class: { active: true } };
+	return conf;
+};
 
 paymentForm = function (paymentReceiptUpload) {
 	var revFail;
@@ -34,55 +42,54 @@ paymentForm = function (paymentReceiptUpload) {
 	);
 };
 
-exports['document-preview'] = function () {
-	renderDocument(this.document);
-};
+exports['revision-document'] = function () {
+	var doc = this.document;
+	var reqUploads = this.processingStep.requirementUploads.applicable;
+	var nextReqUpload = reactiveSibling.next(reqUploads, doc.owner);
+	var nextReqUploadUrl = nextReqUpload.map(function (nextReqUpload) {
+		if (!nextReqUpload) return null;
+		return nextReqUpload.docUrl;
+	});
+	var prevReqUpload = reactiveSibling.previous(reqUploads, doc.owner);
+	var prevReqUploadUrl = prevReqUpload.map(function (nextReqUpload) {
+		if (!prevReqUpload) return null;
+		return prevReqUpload.docUrl;
+	});
 
-exports['document-history'] = function () {
-	renderDocumentHistory(this.document);
-};
+	return [div({ id: 'revision-box', class: 'business-process-revision-box' },
+		div({ class: 'business-process-revision-box-header' },
+			div({ class: 'business-process-submitted-box-header-document-title' },
+					doc._label),
+			div({ class: 'business-process-revision-box-controls' },
+				_if(prevReqUpload,
+					a({ href: prevReqUploadUrl,
+						class: 'hint-optional hint-optional-left',
+						'data-hint': _('Previous document') },
+						i({ class: 'fa fa-angle-left' }))),
+				_if(nextReqUpload,
+					a({ href: nextReqUploadUrl,
+						class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
+						i({ class: 'fa fa-angle-right' })))
+					)),
+		paymentForm(doc.owner)
+		),
+		div({ class: 'submitted-preview' },
+			div({ id: 'document-preview', class: 'submitted-preview-document' },
+				renderDocument(doc)),
+			div({ class: 'submitted-preview-user-data  entity-data-section-side' },
+				div({ id: 'revision-documents-payments-table' },
+					div(span(_("Uploaded payment receipt applies to following costs:")),
+						br(),
+						ul({ class: 'business-process-costs-list' },
+							this.document.owner.applicableCosts, function (cost) {
+								li(span({ class: 'business-process-costs-list-label' }, cost._label),
+									span(cost._amount));
+							}))),
+				generateSections(this.businessProcess.dataForms.applicable, { viewContext: this })
+				),
+			div({ id: 'document-history', class: 'submitted-preview-document-history' },
+				renderDocumentHistory(doc))
+			)
+		];
 
-exports['revision-box'] = function () {
-	var currentDoc = this.document.owner
-	  , bp = this.document.master
-	  , prevNextPair, prevDoc, nextDoc
-	  , docSet;
-
-	var urlPrefix = '/' + bp.__id__;
-
-	docSet = bp.requirementUploads.applicable.or(bp.certificates.applicable);
-
-	prevNextPair = getPrevNext(docSet, currentDoc);
-	// because diff type of objects in the set
-	prevDoc = prevNextPair.prev || undefined;
-	prevDoc = (prevDoc && prevDoc.document) ? prevDoc.document : prevDoc;
-	// because diff type of objects in the set
-	nextDoc = prevNextPair.next || undefined;
-	nextDoc = (nextDoc && nextDoc.document) ? nextDoc.document : nextDoc;
-
-	div({ class: 'business-process-revision-box-header' },
-		div({ class: 'business-process-submitted-box-header-document-title' },
-				this.document._label),
-		div({ class: 'business-process-revision-box-controls' },
-			_if(prevDoc,
-				a({ href: urlPrefix + resolve(prevDoc, 'docUrl'),
-					class: 'hint-optional hint-optional-left',
-					'data-hint': _('Previous document') },
-					i({ class: 'fa fa-angle-left' }))),
-			_if(nextDoc,
-				a({ href: urlPrefix + resolve(nextDoc, 'docUrl'),
-					class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
-					i({ class: 'fa fa-angle-right' })))
-				));
-	paymentForm(this.document.owner);
-};
-
-exports['revision-documents-payments-table'] = function () {
-	return div(span(_("Uploaded payment receipt applies to following costs:")),
-		br(),
-		ul({ class: 'business-process-costs-list' },
-			this.document.owner.applicableCosts, function (cost) {
-				li(span({ class: 'business-process-costs-list-label' }, cost._label),
-					span(cost._amount));
-			}));
 };

@@ -28,7 +28,7 @@ module.exports = function (/*options*/) {
 		validate: Function.prototype,
 		submit: function () {
 			this.processingStep.processor = this.user;
-			this.processingStep.status = 'approved';
+			this.processingStep.officialStatus = 'approved';
 			this.processingStep.isRevisionApproved = true;
 		},
 		redirectUrl: '/'
@@ -45,7 +45,7 @@ module.exports = function (/*options*/) {
 		validate: Function.prototype,
 		submit: function () {
 			this.processingStep.processor = this.user;
-			this.processingStep.status = 'sentBack';
+			this.processingStep.officialStatus = 'sentBack';
 		},
 		redirectUrl: '/'
 	};
@@ -58,7 +58,7 @@ module.exports = function (/*options*/) {
 		submit: function () {
 			this.processingStep.processor = this.user;
 			save.apply(this, arguments);
-			this.processingStep.status = 'rejected';
+			this.processingStep.officialStatus = 'rejected';
 		},
 		redirectUrl: '/'
 	};
@@ -69,7 +69,7 @@ module.exports = function (/*options*/) {
 			if (!matcher.call(this, businessProcessId, stepName)) return false;
 
 			documentUniqueKey = hyphenToCamel.call(documentUniqueKey);
-			return this.processingStep.requirementUploads.applicable.some(function (requirementUpload) {
+			return this.processingStep.requirementUploads.processable.some(function (requirementUpload) {
 				if (requirementUpload.document.uniqueKey === documentUniqueKey) {
 					return true;
 				}
@@ -90,7 +90,7 @@ module.exports = function (/*options*/) {
 				this.businessProcess.paymentReceiptUploads.map.get(hyphenToCamel.call(receiptKey));
 			if (!paymentReceiptUpload) return false;
 
-			return this.processingStep.paymentReceiptUploads.applicable.has(paymentReceiptUpload);
+			return this.processingStep.paymentReceiptUploads.processable.has(paymentReceiptUpload);
 		},
 		redirectUrl: function () {
 			return '/' + this.businessProcess.__id__ + '/';

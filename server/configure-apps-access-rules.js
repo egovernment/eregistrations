@@ -175,7 +175,7 @@ module.exports = exports = function (dbDriver, data) {
 		var list = getDbRecordSet(userStorage, userId + '/recentlyVisited/users')
 			.map(function (value) { return value.slice(1); });
 
-		return getColFragments(list, getUserListFragment);
+		return getColFragments(list, getUserFragment);
 	};
 	var getUsersAdminFragment = memoize(function () {
 		var fragment = new FragmentGroup();
@@ -279,7 +279,7 @@ module.exports = exports = function (dbDriver, data) {
 		var set = new Set(['businessName']);
 		forEach(processingStepsMeta, function (data, stepShortPath) {
 			// TODO: Fix for deep paths
-			set.add('processingSteps/map/' + stepShortPath + '/resolvedStatus');
+			set.add('processingSteps/map/' + stepShortPath + '/status');
 		});
 		return set;
 	}()));
@@ -322,9 +322,9 @@ module.exports = exports = function (dbDriver, data) {
 		// Sizes of pending files in official roles of user
 		addOfficialStepsPendingSizes(userId, fragment);
 		// Eventual global fragment
-		if (globalFragment) fragment.addFragment(globalFragment);
+		if (globalFragment && (roleName !== 'memoryDb')) fragment.addFragment(globalFragment);
 
-		if (roleName === 'user') {
+		if ((roleName === 'user') || (roleName === 'memoryDb')) {
 			if (custom) {
 				// Business process application
 				// Business process data

@@ -109,17 +109,17 @@ exports._bodyAppend = function () {
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/business-process-submitted/payment-receipts/payment' },
+				a({ href: '/business-process-submitted/payment-receipts/payment/' },
 					span("User submitted: Payment receipts"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/business-process-submitted/certificates/certificate' },
+				a({ href: '/business-process-submitted/certificates/certificate/' },
 					span("User submitted: Certificates"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/business-process-submitted/data' }, span("User submitted: Data"),
+				a({ href: '/business-process-submitted/data/' }, span("User submitted: Data"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
@@ -159,21 +159,16 @@ exports._bodyAppend = function () {
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/revision/business-process-id/documents' },
-					span("Official: Revision: Requirement"),
-					span({ class: 'label-reg' }, "Part B"))
-			),
-			li(
-				a({ href: '/revision/business-process-id/payment-receipts' },
+				a({ href: '/revision/business-process-id/payment-receipts/' },
 					span("Official: Revision: Payment"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/revision/business-process-id/data' }, span("Official: Revision: Data"),
+				a({ href: '/revision/business-process-id/data/' }, span("Official: Revision: Data"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/revision/business-process-id/processing' },
+				a({ href: '/revision/business-process-id/processing/' },
 					span("Official: Revision: Processing"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
@@ -186,7 +181,7 @@ exports._bodyAppend = function () {
 						span("Official - user documents"), span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/official/business-process-id/certificates/certificate' },
+				a({ href: '/official/business-process-id/certificates/certificate/' },
 						span("Official - user certificates"), span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
@@ -196,11 +191,6 @@ exports._bodyAppend = function () {
 			li(
 				a({ href: '/official/business-process-id/data/' },
 						span("Official - user data"), span({ class: 'label-reg' }, "Part B"))
-			),
-			li(
-				a({ href: '/official/business-process-id/certificates-process/' },
-						span("Official - user at certificate process"),
-						span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
 				a({ href: '/front-desk/user-id/' },

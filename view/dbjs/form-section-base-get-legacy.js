@@ -24,6 +24,14 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 		master = options.master || this.master;
 		result = {};
 		result.controls = {};
+		if (typeof this.getDescriptor('isInternallyApplicable')._value_ === 'function') {
+			legacyData = [];
+			legacyData.push({
+				id: this.domId,
+				constraint: this.getDescriptor('isInternallyApplicable')._value_,
+				sKey: this.__id__
+			});
+		}
 		this.resolvedPropertyNames.forEach(function (item, propName) {
 			var val, id, resolved, formFieldPath, propOptions, defaultOptions = {};
 			resolved = resolvePropertyPath(master, propName);
@@ -59,6 +67,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getLegacy'
 			legacyData.push({ id: id, constraint: val, sKeyPath: propName, sKey: formFieldPath });
 			result.controls[formFieldPath] = normalizeOptions(result.controls[formFieldPath], { id: id });
 		}, this);
+
 		if (legacyData) {
 			result.legacy = ns.legacy('formSectionStateHelper', formId, master.__id__,
 				legacyData, options.legacyEntityProto);

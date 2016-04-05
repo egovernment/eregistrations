@@ -2,29 +2,54 @@
 
 'use strict';
 
-var renderDocument = require('./_business-process-submitted-document')
+var renderDocument = require('./_business-process-document-preview')
   , renderDocumentHistory = require('./_business-process-revision-document-history')
-  , _                = require('mano').i18n.bind('Official');
+  , reactiveSibling = require('../utils/reactive-sibling')
+  , _                = require('mano').i18n.bind('Official')
+  , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen');
 
 exports._parent = require('./business-process-official-documents');
 exports._match = 'document';
 
+exports._dynamic = function () {
+	var listItemId = 'document-item-' + camelToHyphen.call(this.document.uniqueKey);
+	var conf = {};
+	conf[listItemId] = { class: { active: true } };
+	return conf;
+};
+
 exports['selection-preview'] = function () {
+	var reqUploads = this.processingStep.requirementUploads.applicable;
+	var nextReqUpload = reactiveSibling.next(reqUploads, this.document);
+	var nextReqUploadUrl = nextReqUpload.map(function (nextReqUpload) {
+		if (!nextReqUpload) return null;
+		return nextReqUpload.docUrl;
+	});
+	var prevReqUpload = reactiveSibling.previous(reqUploads, this.document);
+	var prevReqUploadUrl = prevReqUpload.map(function (nextReqUpload) {
+		if (!prevReqUpload) return null;
+		return prevReqUpload.docUrl;
+	});
+
 	return [div({ id: 'submitted-box', class: 'business-process-submitted-box' },
 		div({ class: 'business-process-submitted-box-header' },
 			div({ class: 'business-process-submitted-box-header-document-title' },
 				this.document._label),
-			div({ class: 'business-process-submitted-box-controls' },
-				a({ class: 'hint-optional hint-optional-left',
-					'data-hint': _('Previous document') },
-					i({ class: 'fa fa-angle-left' })),
-				a({ class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
-					i({ class: 'fa fa-angle-right' }))
-				))),
+			div({ class: 'business-process-revision-box-controls' },
+				_if(prevReqUpload,
+					a({ href: prevReqUploadUrl,
+						class: 'hint-optional hint-optional-left',
+						'data-hint': _('Previous document') },
+						i({ class: 'fa fa-angle-left' }))),
+				_if(nextReqUpload,
+					a({ href: nextReqUploadUrl,
+						class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
+						i({ class: 'fa fa-angle-right' })))
+					))),
 		div({ id: 'user-document', class: 'business-process-submitted-selected-document' },
 			div({ class: 'submitted-preview' },
 				div({ id: 'document-preview', class: 'submitted-preview-document' },
 					renderDocument(this.document)),
-				div({ id: 'document-history', class: 'submitted-preview-document-history' },
+				div({ class: 'submitted-preview-user-data  entity-data-section-side' },
 					renderDocumentHistory(this.document))))];
 };

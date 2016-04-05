@@ -20,4 +20,9 @@ exports['user/[0-9][a-z0-9]+'] = {
 };
 
 // Delete User
-exports['user/[0-9][a-z0-9]+/delete'] = { remoteSubmit: true };
+exports['user/[0-9][a-z0-9]+/delete'] = {
+	remoteSubmit: true,
+	processResponse: function () {
+		this.target._setValue_();
+	}
+};

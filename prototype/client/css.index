@@ -46,6 +46,7 @@
 ../../css/components/business-process-official.css
 ../../css/components/business-process-revision.css
 ../../css/components/business-process-submitted.css
+../../css/components/business-process-document-preview.css
 ../../css/components/file-uploader.css
 ../../css/components/file-thumb.css
 ../../css/components/labelled-inputs-component.css

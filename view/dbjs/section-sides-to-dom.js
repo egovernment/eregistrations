@@ -9,7 +9,6 @@ var d  = require('d')
 module.exports = Object.defineProperty(db.BusinessProcessNew.prototype.dataForms.map.get('sides'),
 	'toDOMForm',
 	d(function () {
-		console.log();
 		return section(
 			{ class: 'section-primary' },
 			form(
