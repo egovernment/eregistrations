@@ -129,8 +129,9 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 					targetStep.delete('revisionStatus');
 				}
 				targetStep.delete('status');
-				targetStep.delete('isSatisfied');
-
+				if (targetStep.getOwnDescriptor('isSatisfied').hasOwnProperty('_value_')) {
+					targetStep.delete('isSatisfied');
+				}
 			} else if (step.status === 'rejected') {
 
 				// Business process rejection
@@ -176,7 +177,9 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 				step.delete('revisionStatus');
 			}
 			step.delete('status');
-			step.delete('isSatisfied');
+			if (step.getOwnDescriptor('isSatisfied').hasOwnProperty('_value_')) {
+				step.delete('isSatisfied');
+			}
 		});
 	});
 };
