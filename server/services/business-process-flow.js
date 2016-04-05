@@ -100,6 +100,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 				step.shortPath, step.status);
 			if (onStepStatus) onStepStatus(step);
 			step.set('isReady', true);
+			if (step.revisionStatus) step.set('revisionStatus', step.revisionStatus);
 			step.set('status', step.status);
 
 			if (step.status === 'sentBack') {
@@ -121,6 +122,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 					targetStep.delete('revisionOfficialStatus');
 				}
 				targetStep.delete('officialStatus');
+				if (targetStep.revisionStatus) targetStep.delete('revisionStatus');
 				targetStep.delete('status');
 				targetStep.delete('isSatisfied');
 
@@ -165,6 +167,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 				step.delete('revisionOfficialStatus');
 			}
 			step.delete('officialStatus');
+			if (step.revisionStatus) step.delete('revisionStatus');
 			step.delete('status');
 			step.delete('isSatisfied');
 		});
