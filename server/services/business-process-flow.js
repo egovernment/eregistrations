@@ -100,7 +100,9 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			debug('%s %s step %s', businessProcess.__id__,
 				step.shortPath, step.status);
 			if (onStepStatus) onStepStatus(step);
-			step.set('isReady', true);
+			if (!step.getOwnDescriptor('isReady').hasOwnProperty('_value_')) {
+				step.set('isReady', true);
+			}
 			if (step.revisionStatus && !nonFinalStatuses.has(step.revisionStatus)) {
 				step.set('revisionStatus', step.revisionStatus);
 			}
