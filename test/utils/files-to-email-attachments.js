@@ -4,16 +4,15 @@ var Database   = require('dbjs')
   , defineFile = require('dbjs-ext/object/file');
 
 module.exports = function (t, a) {
-	var db                 = new Database()
-	  , File               = defineFile(db)
-	  , filesToAttachments = t(db)
-	  , testFile           = new File();
+	var db       = new Database()
+	  , File     = defineFile(db)
+	  , testFile = new File();
 
-	a.deep(filesToAttachments(), []);
-	a.throws(function () { filesToAttachments(1); },
+	a.deep(t(), []);
+	a.throws(function () { t(1); },
 		new RegExp('1 is not a File'));
-	a.deep(filesToAttachments(testFile), []);
+	a.deep(t(testFile), []);
 	testFile.name = 'foo';
 	testFile.path = 'bar';
-	a.deep(filesToAttachments(testFile), [{ filename: 'foo', path: 'bar' }]);
+	a.deep(t(testFile), [{ filename: 'foo', path: 'bar' }]);
 };
