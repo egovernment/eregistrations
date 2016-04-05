@@ -9,13 +9,11 @@ module.exports = function (t, a) {
 	  , filesToAttachments = t(db)
 	  , testFile           = new File();
 
-	a.throws(function () { filesToAttachments(); },
-		new RegExp('undefined is not an array'));
-	a.deep(filesToAttachments([]), []);
-	a.throws(function () { filesToAttachments([ 1 ]); },
+	a.deep(filesToAttachments(), []);
+	a.throws(function () { filesToAttachments(1); },
 		new RegExp('1 is not a File'));
-	a.deep(filesToAttachments([ testFile ]), []);
+	a.deep(filesToAttachments(testFile), []);
 	testFile.name = 'foo';
 	testFile.path = 'bar';
-	a.deep(filesToAttachments([ testFile ]), [{ filename: 'foo', path: 'bar' }]);
+	a.deep(filesToAttachments(testFile), [{ filename: 'foo', path: 'bar' }]);
 };

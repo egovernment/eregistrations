@@ -3,13 +3,13 @@
 var memoize        = require('memoizee/plain')
   , ensureDatabase = require('dbjs/valid-dbjs')
   , defineFile     = require('dbjs-ext/object/file')
-  , ensureArray    = require('es5-ext/array/valid-array');
+  , toArray        = require('es5-ext/array/to-array');
 
 module.exports = memoize(function (db) {
 	var File = defineFile(ensureDatabase(db));
 
-	return function (filesList) {
-		return ensureArray(filesList).filter(function (file) {
+	return function (/*file, ..., fileN*/) {
+		return toArray(arguments).filter(function (file) {
 			File.validate(file);
 
 			return Boolean(file.name && file.path);
