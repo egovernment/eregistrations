@@ -44,7 +44,7 @@ module.exports = function (htmlPath, pdfPath/*, options*/) {
 		pdfContent = htmlToPdf.create(resolvedTemplate,
 			normalizeOptions(defaultRenderOptions, options));
 
-		if (options.streamable) return deferred(pdfContent.toStreamPromise());
+		if (options.streamable) return pdfContent.toStreamPromise();
 
 		return deferred(pdfContent.toFilePromise(pdfPath),
 			options.writeHtml ? writeFile(pdfPath + '.html', resolvedTemplate) : false);
