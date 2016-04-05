@@ -96,13 +96,11 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			})
 		}, function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath), targetStep;
-			if (step.getOwnDescriptor('status').hasOwnProperty('_value_')) return; // Already shadowed
+			if (step.hasOwnProperty('status')) return; // Already shadowed
 			debug('%s %s step %s', businessProcess.__id__,
 				step.shortPath, step.status);
 			if (onStepStatus) onStepStatus(step);
-			if (!step.getOwnDescriptor('isReady').hasOwnProperty('_value_')) {
-				step.set('isReady', true);
-			}
+			if (!step.hasOwnProperty('isReady')) step.set('isReady', true);
 			if (step.revisionStatus && !nonFinalStatuses.has(step.revisionStatus)) {
 				step.set('revisionStatus', step.revisionStatus);
 			}
@@ -123,17 +121,13 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 				debug('%s redelegated to %s from %s', businessProcess.__id__,
 					targetStep.shortPath, step.shortPath);
 				if (onStepRedelegate) onStepRedelegate(step);
-				if (targetStep.getOwnDescriptor('revisionOfficialStatus').hasOwnProperty('_value_')) {
+				if (targetStep.hasOwnProperty('revisionOfficialStatus')) {
 					targetStep.delete('revisionOfficialStatus');
 				}
 				targetStep.delete('officialStatus');
-				if (targetStep.getOwnDescriptor('revisionStatus').hasOwnProperty('_value_')) {
-					targetStep.delete('revisionStatus');
-				}
+				if (targetStep.hasOwnProperty('revisionStatus')) targetStep.delete('revisionStatus');
 				targetStep.delete('status');
-				if (targetStep.getOwnDescriptor('isSatisfied').hasOwnProperty('_value_')) {
-					targetStep.delete('isSatisfied');
-				}
+				if (targetStep.hasOwnProperty('isSatisfied')) targetStep.delete('isSatisfied');
 			} else if (step.status === 'rejected') {
 
 				// Business process rejection
@@ -171,17 +165,11 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			}
 			debug('%s %s step reset from %s to pending state', businessProcess.__id__,
 				step.shortPath, step.status);
-			if (step.getOwnDescriptor('revisionOfficialStatus').hasOwnProperty('_value_')) {
-				step.delete('revisionOfficialStatus');
-			}
+			if (step.hasOwnProperty('revisionOfficialStatus')) step.delete('revisionOfficialStatus');
 			step.delete('officialStatus');
-			if (step.getOwnDescriptor('revisionOStatus').hasOwnProperty('_value_')) {
-				step.delete('revisionStatus');
-			}
+			if (step.hasOwnProperty('revisionOStatus')) step.delete('revisionStatus');
 			step.delete('status');
-			if (step.getOwnDescriptor('isSatisfied').hasOwnProperty('_value_')) {
-				step.delete('isSatisfied');
-			}
+			if (step.hasOwnProperty('isSatisfied')) step.delete('isSatisfied');
 		});
 	});
 };
