@@ -14,6 +14,8 @@ exports['sub-main'] = {
 	content: function () {
 		var searchForm, searchInput, businessProcessesTable;
 
+		exports._optionalContent(this);
+
 		section({ class: 'section-primary users-table-filter-bar' },
 			searchForm = form({ action: '/', autoSubmit: true },
 				div({ class: 'users-table-filter-bar-status' },
@@ -51,8 +53,7 @@ exports['sub-main'] = {
 					span({ class: 'fa fa-print' },
 						_("Print list of requests")), _("Print the list")
 					)
-			)
-			);
+			));
 
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
 
@@ -64,5 +65,6 @@ exports['sub-main'] = {
 	}
 };
 
+exports._optionalContent = Function.prototype;
 exports._statusMap = Function.prototype;
 exports._businessProcessTable = Function.prototype;
