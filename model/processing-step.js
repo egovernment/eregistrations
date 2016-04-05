@@ -91,7 +91,7 @@ module.exports = memoize(function (db) {
 		redelegate: {
 			type: db.Function,
 			value: function (targetStep, _observe) {
-				this.redelegatedTo = this;
+				this.redelegatedTo = targetStep;
 				this.officialStatus = 'redelegated';
 			}
 		},
