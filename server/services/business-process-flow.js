@@ -164,7 +164,6 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			if (step.getOwnDescriptor('revisionOfficialStatus').hasOwnProperty('_value_')) {
 				step.delete('revisionOfficialStatus');
 			}
-			step.delete('revisionOfficialStatus');
 			step.delete('officialStatus');
 			step.delete('status');
 			step.delete('isSatisfied');
