@@ -87,11 +87,12 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	});
 
 	// Processing steps:
+	var nonFinalStatuses = new Set(['pending', 'paused']);
 	stepPaths.forEach(function (stepPath, index) {
 		// status
 		setupTriggers({
 			trigger: businessProcessesSubmitted.filterByKeyPath(stepPath + '/status', function (value) {
-				return value && (value !== 'pending') && (value !== 'paused');
+				return value && !nonFinalStatuses.has(value);
 			})
 		}, function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath), targetStep;
@@ -100,7 +101,9 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 				step.shortPath, step.status);
 			if (onStepStatus) onStepStatus(step);
 			step.set('isReady', true);
-			if (step.revisionStatus) step.set('revisionStatus', step.revisionStatus);
+			if (step.revisionStatus && !nonFinalStatuses.has(step.revisionStatus)) {
+				step.set('revisionStatus', step.revisionStatus);
+			}
 			step.set('status', step.status);
 
 			if (step.status === 'sentBack') {
@@ -122,7 +125,9 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 					targetStep.delete('revisionOfficialStatus');
 				}
 				targetStep.delete('officialStatus');
-				if (targetStep.revisionStatus) targetStep.delete('revisionStatus');
+				if (targetStep.getOwnDescriptor('revisionStatus').hasOwnProperty('_value_')) {
+					targetStep.delete('revisionStatus');
+				}
 				targetStep.delete('status');
 				targetStep.delete('isSatisfied');
 
@@ -167,7 +172,9 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 				step.delete('revisionOfficialStatus');
 			}
 			step.delete('officialStatus');
-			if (step.revisionStatus) step.delete('revisionStatus');
+			if (step.getOwnDescriptor('revisionOStatus').hasOwnProperty('_value_')) {
+				step.delete('revisionStatus');
+			}
 			step.delete('status');
 			step.delete('isSatisfied');
 		});
