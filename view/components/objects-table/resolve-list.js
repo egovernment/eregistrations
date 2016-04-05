@@ -13,11 +13,17 @@ var Set = require('es6-set')
 
 module.exports = function (data, query) {
 	var applicable = new Set(), notApplicable = new Set()
-	  , items = unserializeView(data.view, this._type);
-	if (!items.length) return items;
-	var entryIndex = (query.page === 1) ? -Infinity : items[0].index;
-	var exitIndex = (ceil(data.size / this.itemsPerPage) === query.page)
-		? Infinity : items[items.length - 1].index;
+	  , items = unserializeView(data.view, this._type)
+	  , entryIndex, exitIndex;
+	if (items.length) {
+		entryIndex = (query.page === 1) ? -Infinity : items[0].index;
+		exitIndex = (ceil(data.size / this.itemsPerPage) === query.page)
+			? Infinity : items[items.length - 1].index;
+	} else {
+		entryIndex = (query.page === 1) ? -Infinity : Infinity;
+		exitIndex = ((data.size ? ceil(data.size / this.itemsPerPage) : 1) === query.page)
+			? Infinity : -Infinity;
+	}
 	this._fullItems.forEach(function (item) {
 		if (this._isItemApplicable(item, query)) applicable.add(item);
 		else notApplicable.add(item);
