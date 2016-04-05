@@ -18,13 +18,14 @@ var ensureString     = require('es5-ext/object/validate-stringifiable-value')
   , defaultRenderOptions = { format: "A4", orientation: "portrait", border: 0 };
 
 PDF.prototype.toFilePromise = deferred.promisify(PDF.prototype.toFile);
+PDF.prototype.toStreamPromise = deferred.promisify(PDF.prototype.toStream);
 
 var getTemplate = memoize(function (htmlPath) {
 	return readFile(htmlPath)(function (template) { return compileTemplate(template); });
 });
 
 module.exports = function (htmlPath, pdfPath/*, options*/) {
-	var options = normalizeOptions(arguments[2]);
+	var options = normalizeOptions(arguments[2]), pdfContent;
 	ensureString(htmlPath);
 	ensureString(pdfPath);
 	return getTemplate(htmlPath)(function (htmlTemplate) {
@@ -40,9 +41,12 @@ module.exports = function (htmlPath, pdfPath/*, options*/) {
 			return (token == null) ? '' : String(token);
 		}).join('');
 
-		return deferred(htmlToPdf.create(resolvedTemplate,
-			normalizeOptions(defaultRenderOptions, options)).toFilePromise(pdfPath),
-			options.writeHtml ? writeFile(pdfPath + '.html', resolvedTemplate) : false
-			);
+		pdfContent = htmlToPdf.create(resolvedTemplate,
+			normalizeOptions(defaultRenderOptions, options));
+
+		if (options.streamable) return deferred(pdfContent.toStreamPromise());
+
+		return deferred(pdfContent.toFilePromise(pdfPath),
+			options.writeHtml ? writeFile(pdfPath + '.html', resolvedTemplate) : false);
 	});
 };
