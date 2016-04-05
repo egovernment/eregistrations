@@ -24,7 +24,7 @@ module.exports = function (t, a) {
 	barStep = businessProcess.processingSteps.map.bar;
 	miszkaStep = businessProcess.processingSteps.map.miszka;
 
-	businessProcess.set('isAtDraft', true);
+	businessProcess.set('isAtDraft', false);
 	businessProcess.set('isSubmitted', true);
 	a(fooStep.isPreviousStepsSatisfied, true);
 	a(fooStep.isPreviousStepsSatisfiedDeep, true);
@@ -77,7 +77,7 @@ module.exports = function (t, a) {
 	a(miszkaStep.isPreviousStepsSatisfied, true);
 	a(miszkaStep.isPreviousStepsSatisfiedDeep, true);
 
-	businessProcess.set('isAtDraft', false);
+	businessProcess.set('isAtDraft', true);
 	a(fooStep.isPreviousStepsSatisfied, true);
 	a(fooStep.isPreviousStepsSatisfiedDeep, false);
 	a(barStep.isPreviousStepsSatisfied, true);
@@ -85,7 +85,7 @@ module.exports = function (t, a) {
 	a(miszkaStep.isPreviousStepsSatisfied, true);
 	a(miszkaStep.isPreviousStepsSatisfiedDeep, false);
 
-	businessProcess.set('isAtDraft', true);
+	businessProcess.set('isAtDraft', false);
 	a(fooStep.isPreviousStepsSatisfied, true);
 	a(fooStep.isPreviousStepsSatisfiedDeep, true);
 	a(barStep.isPreviousStepsSatisfied, true);
