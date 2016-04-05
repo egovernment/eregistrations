@@ -94,7 +94,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 				return value && (value !== 'pending') && (value !== 'paused');
 			})
 		}, function (businessProcess) {
-			var step = businessProcess.getBySKeyPath(stepPath);
+			var step = businessProcess.getBySKeyPath(stepPath), targetStep;
 			if (step.getOwnDescriptor('status').hasOwnProperty('_value_')) return; // Already shadowed
 			debug('%s %s step %s', businessProcess.__id__,
 				step.shortPath, step.status);
@@ -113,13 +113,16 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			} else if (step.status === 'redelegated') {
 
 				// Redelegation initialization
+				targetStep = step.redelegatedTo;
 				debug('%s redelegated to %s from %s', businessProcess.__id__,
-					step.redelegatedTo.shortPath, step.shortPath);
+					targetStep.shortPath, step.shortPath);
 				if (onStepRedelegate) onStepRedelegate(step);
-				step.redelegatedTo.delete('revisionOfficialStatus');
-				step.redelegatedTo.delete('officialStatus');
-				step.redelegatedTo.delete('status');
-				step.redelegatedTo.delete('isSatisfied');
+				if (targetStep.getOwnDescriptor('revisionOfficialStatus').hasOwnProperty('_value_')) {
+					targetStep.delete('revisionOfficialStatus');
+				}
+				targetStep.delete('officialStatus');
+				targetStep.delete('status');
+				targetStep.delete('isSatisfied');
 
 			} else if (step.status === 'rejected') {
 
@@ -158,6 +161,9 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			}
 			debug('%s %s step reset from %s to pending state', businessProcess.__id__,
 				step.shortPath, step.status);
+			if (step.getOwnDescriptor('revisionOfficialStatus').hasOwnProperty('_value_')) {
+				step.delete('revisionOfficialStatus');
+			}
 			step.delete('revisionOfficialStatus');
 			step.delete('officialStatus');
 			step.delete('status');
