@@ -167,7 +167,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 				step.shortPath, step.status);
 			if (step.hasOwnProperty('revisionOfficialStatus')) step.delete('revisionOfficialStatus');
 			step.delete('officialStatus');
-			if (step.hasOwnProperty('revisionOStatus')) step.delete('revisionStatus');
+			if (step.hasOwnProperty('revisionStatus')) step.delete('revisionStatus');
 			step.delete('status');
 			if (step.hasOwnProperty('isSatisfied')) step.delete('isSatisfied');
 		});
