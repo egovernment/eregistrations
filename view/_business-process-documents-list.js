@@ -15,9 +15,9 @@ module.exports = function (doc, options) {
 				thead(
 					tr(
 						th({ class: 'submitted-user-data-table-status' }),
-						th(_("Documents")),
-						th(_("Issuer")),
+						th({ class: 'submitted-user-data-table-label' }, _("Documents")),
 						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
+						th(_("Issuer")),
 						th({ class: 'submitted-user-data-table-link' })
 					)
 				),
@@ -30,10 +30,11 @@ module.exports = function (doc, options) {
 								_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
 								_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' }))
 								),
-							td(_d(requirementUpload.document._label, { user: requirementUpload.master })),
-							td(requirementUpload.document._issuedBy),
+							td({ class: 'submitted-user-data-table-label' },
+								_d(requirementUpload.document._label, { user: requirementUpload.master })),
 							td({ class: 'submitted-user-data-table-date' },
 								requirementUpload.document._issueDate),
+							td(requirementUpload.document._issuedBy),
 							td({ class: 'submitted-user-data-table-link' },
 								a({ href: options.urlPrefix + requirementUpload.document.docUrl },
 									span({ class: 'fa fa-search' }, _("Go to"))))

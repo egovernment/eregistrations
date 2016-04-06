@@ -14,10 +14,9 @@ module.exports = function (doc, options) {
 				thead(
 					tr(
 						th({ class: 'submitted-user-data-table-status' }),
-						th(_("Certificates")),
-						th(_("Issuer")),
+						th({ class: 'submitted-user-data-table-label' }, _("Certificates")),
 						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
-						th(_("Number")),
+						th(_("Issuer")),
 						th({ class: 'submitted-user-data-table-link' })
 					)
 				),
@@ -28,10 +27,9 @@ module.exports = function (doc, options) {
 							camelToHyphen.call(certificate.key) },
 							td({ class: 'submitted-user-data-table-status' },
 								span({ class: 'fa fa-certificate' })),
-							td(certificate.label),
-							td(certificate._issuedBy),
+							td({ class: 'submitted-user-data-table-label' }, certificate.label),
 							td({ class: 'submitted-user-data-table-date' }, certificate._issueDate),
-							td(certificate._number),
+							td(certificate._issuedBy),
 							td({ class: 'submitted-user-data-table-link' },
 								a({ href: options.urlPrefix + 'certificate/' +
 									camelToHyphen.call(certificate.key) + '/' },

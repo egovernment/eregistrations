@@ -14,8 +14,9 @@ module.exports = function (doc, options) {
 				thead(
 					tr(
 						th({ class: 'submitted-user-data-table-status' }),
-						th(_("Payment receipts")),
+						th({ class: 'submitted-user-data-table-label' }, _("Payment receipts")),
 						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
+						th(_("Issuer")),
 						th({ class: 'submitted-user-data-table-link' })
 					)
 				),
@@ -29,8 +30,9 @@ module.exports = function (doc, options) {
 								_if(receipt._isApproved, span({ class: 'fa fa-check' })),
 								_if(receipt._isRejected, span({ class: 'fa fa-exclamation' }))
 							),
-							td(receipt.document._label),
+							td({ class: 'submitted-user-data-table-label' }, receipt.document._label),
 							td({ class: 'submitted-user-data-table-date' }, receipt.document._issueDate),
+							td(receipt.document._issuedBy),
 							td({ class: 'submitted-user-data-table-link' },
 								a({ href: options.urlPrefix + receipt.document.docUrl },
 									span({ class: 'fa fa-search' }, _("Go to"))))
