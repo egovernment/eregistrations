@@ -53,6 +53,7 @@ UsersManager.prototype = Object.create(ListManager.prototype, {
 	_getSearchFilter: d(null),
 
 	_isExternalQuery: d(function (query) {
+		if (query.search) return true;
 		return (query.page > 1);
 	}),
 	_isItemApplicable: d(function (item, query) {
