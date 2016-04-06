@@ -47,6 +47,9 @@ module.exports = function (t, a) {
 		},
 		resolventProperty: {
 			value: 'testResolventProperty'
+		},
+		pageUrl: {
+			value: 'test-page-url'
 		}
 	});
 
@@ -128,6 +131,7 @@ module.exports = function (t, a) {
 	a(section.actionUrl, undefined);
 	a(section.resolventProperty, undefined);
 	a(section.hasMissingRequiredPropertyNamesDeep, undefined);
+	a(section.pageUrl, undefined);
 
 	a.h2('Properties overridden in derived class');
 	section = nestedObject.sectionOfDerivedType;
@@ -143,6 +147,7 @@ module.exports = function (t, a) {
 	a(section.excludedFromStatusIfFilled.has('testExcludedIfFilledField'), true);
 	a(section.actionUrl, 'testActionUrl');
 	a(section.resolventProperty, 'testResolventProperty');
+	a(section.pageUrl, 'test-page-url');
 
 	a.h1('Getters');
 
