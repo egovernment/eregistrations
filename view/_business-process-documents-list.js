@@ -31,7 +31,8 @@ module.exports = function (doc, options) {
 								_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' }))
 								),
 							td({ class: 'submitted-user-data-table-label' },
-								_d(requirementUpload.document._label, { user: requirementUpload.master })),
+								_d(requirementUpload.document.label,
+									requirementUpload.document.getTranslations())),
 							td({ class: 'submitted-user-data-table-date' },
 								requirementUpload.document._issueDate),
 							td(requirementUpload.document._issuedBy),
