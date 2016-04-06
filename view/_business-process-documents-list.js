@@ -6,8 +6,10 @@ var _                = require('mano').i18n.bind('User Submitted')
   , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
   , _d = _;
 
-module.exports = function (doc, options) {
-	return _if(options.documentsTarget.requirementUploads.applicable._size, [
+module.exports = function (businessProcess, options) {
+	var target = options.documentsTarget || businessProcess
+	  , urlPrefix = options.urlPrefix || '/';
+	return _if(target.requirementUploads.applicable._size, [
 		div(
 			{ class: 'table-responsive-container' },
 			table(
@@ -22,7 +24,7 @@ module.exports = function (doc, options) {
 					)
 				),
 				tbody(
-					options.documentsTarget.requirementUploads.applicable,
+					target.requirementUploads.applicable,
 					function (requirementUpload) {
 						return tr({ id: 'document-item-' +
 							camelToHyphen.call(requirementUpload.document.uniqueKey) },
@@ -37,7 +39,7 @@ module.exports = function (doc, options) {
 								requirementUpload.document._issueDate),
 							td(requirementUpload.document._issuedBy),
 							td({ class: 'submitted-user-data-table-link' },
-								a({ href: options.urlPrefix + requirementUpload.document.docUrl },
+								a({ href: urlPrefix + requirementUpload.document.docUrl },
 									span({ class: 'fa fa-search' }, _("Go to"))))
 							);
 					}

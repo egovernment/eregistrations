@@ -11,15 +11,10 @@ exports._match = 'businessProcess';
 
 exports['business-process-official-documents'] = { class: { active: true } };
 exports['business-process-official-content'] = function (/*options*/) {
-	var options = Object(arguments[1])
-	  , urlPrefix = options.urlPrefix || '/'
+	var options = Object(arguments[0])
 	  , businessProcess = this.businessProcess
-	  , uploadsResolver = options.uploadsResolver || businessProcess
-	  , selectedDocumentId = this.document ?  this.document.__id__ : null;
+	  , uploadsResolver = options.uploadsResolver || businessProcess;
 
-	options.urlPrefix = urlPrefix;
-	options.uploadsResolver = uploadsResolver;
-	options.selectedDocumentId = selectedDocumentId;
 	options.documentsTarget = businessProcess;
 	options.certificatesTarget = uploadsResolver;
 	options.paymentsTarget = uploadsResolver;

@@ -5,8 +5,10 @@
 var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
   , _                = require('mano').i18n.bind('User Submitted');
 
-module.exports = function (doc, options) {
-	return _if(options.paymentsTarget.paymentReceiptUploads.applicable._size, [
+module.exports = function (businessProcess, options) {
+	var target = options.paymentsTarget || businessProcess
+	  , urlPrefix = options.urlPrefix || '/';
+	return _if(target.paymentReceiptUploads.applicable._size, [
 		div(
 			{ class: 'table-responsive-container' },
 			table(
@@ -21,7 +23,7 @@ module.exports = function (doc, options) {
 					)
 				),
 				tbody(
-					options.paymentsTarget.paymentReceiptUploads.applicable,
+					target.paymentReceiptUploads.applicable,
 					function (receipt) {
 						return tr({ id: 'document-item-' +
 							camelToHyphen.call(receipt.document.uniqueKey) },
@@ -34,7 +36,7 @@ module.exports = function (doc, options) {
 							td({ class: 'submitted-user-data-table-date' }, receipt.document._issueDate),
 							td(receipt.document._issuedBy),
 							td({ class: 'submitted-user-data-table-link' },
-								a({ href: options.urlPrefix + receipt.document.docUrl },
+								a({ href: urlPrefix + receipt.document.docUrl },
 									span({ class: 'fa fa-search' }, _("Go to"))))
 							);
 					}

@@ -9,14 +9,10 @@ exports._match = 'businessProcess';
 
 exports['business-process-documents'] = { class: { active: true } };
 exports['official-revision-content'] = function (/*options*/) {
-	var options = Object(arguments[1])
-	  , urlPrefix = options.urlPrefix || '/'
-	  , businessProcess = this.businessProcess
-	  , selectedDocumentId = this.document ?  this.document.__id__ : null;
+	var options = Object(arguments[0])
+	  , businessProcess = this.businessProcess;
 
 	options.documentsTarget = businessProcess;
-	options.urlPrefix = urlPrefix;
-	options.selectedDocumentId = selectedDocumentId;
 
 	return [section({ class: 'section-primary' },
 			renderDocumentsList(this, options),

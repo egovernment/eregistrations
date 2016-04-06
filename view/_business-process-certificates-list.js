@@ -5,8 +5,10 @@
 var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
   , _                = require('mano').i18n.bind('User Submitted');
 
-module.exports = function (doc, options) {
-	return _if(options.certificatesTarget.certificates.uploaded._size, [
+module.exports = function (businessProcess, options) {
+	var target = options.certificatesTarget || businessProcess
+	  , urlPrefix = options.urlPrefix || '/';
+	return _if(target.certificates.uploaded._size, [
 		div(
 			{ class: 'table-responsive-container' },
 			table(
@@ -21,7 +23,7 @@ module.exports = function (doc, options) {
 					)
 				),
 				tbody(
-					options.certificatesTarget.certificates.uploaded,
+					target.certificates.uploaded,
 					function (certificate) {
 						return tr({ id: 'document-item-' +
 							camelToHyphen.call(certificate.key) },
@@ -31,8 +33,7 @@ module.exports = function (doc, options) {
 							td({ class: 'submitted-user-data-table-date' }, certificate._issueDate),
 							td(certificate._issuedBy),
 							td({ class: 'submitted-user-data-table-link' },
-								a({ href: options.urlPrefix + 'certificate/' +
-									camelToHyphen.call(certificate.key) + '/' },
+								a({ href: urlPrefix + certificate.docUrl },
 									span({ class: 'fa fa-search' }, _("Go to"))))
 							);
 					}
