@@ -90,7 +90,7 @@ module.exports = memoize(function (db) {
 		// Use it to redelegate from this step to previousStep
 		redelegate: {
 			type: db.Function,
-			value: function (targetStep, _observe) {
+			value: function (targetStep) {
 				this.redelegatedTo = targetStep;
 				this.officialStatus = 'redelegated';
 			}
