@@ -9,7 +9,7 @@ var renderDocument = require('../_business-process-document-preview')
   , _d = _;
 
 module.exports = function () {
-	var reqUploads = this.processingStep.requirementUploads.applicable;
+	var reqUploads = this.businessProcess.requirementUploads.applicable;
 	var nextReqUpload = reactiveSibling.next(reqUploads, this.document);
 	var nextReqUploadUrl = nextReqUpload.map(function (nextReqUpload) {
 		if (!nextReqUpload) return null;
