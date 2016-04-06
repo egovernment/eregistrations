@@ -4,6 +4,7 @@ var object        = require('es5-ext/object/valid-object')
   , callable      = require('es5-ext/object/valid-callable')
   , array         = require('es5-ext/array/valid-array')
   , stringifiable = require('es5-ext/object/validate-stringifiable-value')
+  , endsWith      = require('es5-ext/string/#/ends-with')
   , validateType  = require('dbjs/valid-dbjs-type')
   , save          = require('mano/utils/save')
   , validate      = require('mano/utils/validate')
@@ -108,7 +109,7 @@ module.exports = function (routes, data) {
 		if (targetMap) {
 			cardinalPropertyKey = call.call(targetMap, this).cardinalPropertyKey;
 			forEach(data, function (field, key) {
-				if (key.endsWith('/' + cardinalPropertyKey) && !field) {
+				if (endsWith.call(key, '/' + cardinalPropertyKey) && !field) {
 					throw new Error('Missing required property: ' + cardinalPropertyKey,
 						'INVALID_INPUT');
 				}
