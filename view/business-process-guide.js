@@ -47,25 +47,27 @@ exports._parent = require('./business-process-base');
 exports['step-guide'] = { class: { 'step-active': true } };
 
 exports.step = function () {
-	var businessProcess = this.businessProcess
-	  , isSentBack      = businessProcess._isSentBack
-	  , guideProgress   = businessProcess._guideProgress
-	  , paymentWeight   = businessProcess.costs._paymentWeight
-	  , paymentProgress = businessProcess.costs._paymentProgress;
+	var businessProcess  = this.businessProcess
+	  , isSentBack       = businessProcess._isSentBack
+	  , guideFinished    = eq(businessProcess._guideProgress, 1)
+	  , paymentProcessed = and(businessProcess.costs._paymentWeight,
+			businessProcess.costs._paymentProgress);
 
 	exports._guideHeading(this);
 
 	insert(_if(isSentBack,
 		function () { return div({ class: 'info-main' }, sentBackInfo(this)); }.bind(this),
-		_if(and(eq(guideProgress, 1), paymentWeight, paymentProgress), div({ class: 'info-main' },
-				_("The guide is disabled as you have already processed your payment.")))));
+		_if(and(guideFinished, paymentProcessed, not(exports._forceEnabledState(this))), div(
+			{ class: 'info-main' },
+			_("The guide is disabled as you have already processed your payment.")
+		))));
 	insert(infoMsg(this));
 	insert(exports._optionalInfo(this));
 
 	div(
 		{ class: ['disabler-range',
-			_if(and(eq(guideProgress, 1), or(isSentBack, and(paymentWeight, paymentProgress))),
-				'disabler-active')] },
+			_if(and(guideFinished, or(isSentBack, paymentProcessed),
+				not(exports._forceEnabledState(this))), 'disabler-active')] },
 		businessProcess.inventory ? insert(inventoryModal(businessProcess)) : null,
 		div({ class: 'disabler' }),
 		form(
@@ -86,6 +88,8 @@ exports.step = function () {
 	exports._customScripts(this);
 	legacy('refreshGuide', 'guide-form', businessProcess.__id__, businessProcess.constructor.__id__);
 };
+
+exports._forceEnabledState = Function.prototype;
 
 exports._guideHeading = function (context) {
 	var headingText = _("Obtain your certificates");
