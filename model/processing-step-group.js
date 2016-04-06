@@ -79,6 +79,13 @@ module.exports = memoize(function (db) {
 			return _observe(this.steps.applicable).every(function (step) {
 				return _observe(step._isApproved);
 			});
+		} },
+
+		// Satisfied when all steps in group are satisfied
+		isSatisfied: { value: function (_observe) {
+			return _observe(this.steps.map).every(function (step) {
+				return _observe(step._isSatisfied);
+			});
 		} }
 	});
 
