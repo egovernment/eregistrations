@@ -263,6 +263,11 @@ module.exports = memoize(function (db) {
 					return this.owner.owner.applicable;
 				}
 			}
+		},
+		// The url under which this section should be drawn. Needs to be unique for tabbed form view.
+		// Defaults to null.
+		pageUrl: {
+			type: StringLine
 		}
 	});
 
