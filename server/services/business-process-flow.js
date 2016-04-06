@@ -86,6 +86,15 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		businessProcess.delete('isUserProcessing');
 	});
 
+	// Business process: isApproved preservation
+	setupTriggers({
+		trigger: businessProcessesSubmitted.filterByKey('isApproved', true)
+	}, function (businessProcess) {
+		if (businessProcess.hasOwnProperty('isApproved')) return;
+		debug('%s approved', businessProcess.__id__);
+		businessProcess.isApproved = true;
+	});
+
 	// Processing steps:
 	var nonFinalStatuses = new Set(['pending', 'paused']);
 	stepPaths.forEach(function (stepPath, index) {
