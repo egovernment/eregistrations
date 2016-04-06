@@ -106,8 +106,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		}, function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath), targetStep;
 			if (step.hasOwnProperty('status')) return; // Already shadowed
-			debug('%s %s step %s', businessProcess.__id__,
-				step.shortPath, step.status);
+			debug('%s %s step %s', businessProcess.__id__, step.shortPath, step.status);
 			if (onStepStatus) onStepStatus(step);
 			if (!step.hasOwnProperty('isReady')) step.isReady = true;
 			if (step.revisionStatus && !nonFinalStatuses.has(step.revisionStatus)) {
@@ -151,8 +150,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 				.filterByKeyPath(stepPath + '/isSatisfied', false)
 		}, function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath);
-			debug('%s %s step satisfied', businessProcess.__id__,
-				step.shortPath);
+			debug('%s %s step satisfied', businessProcess.__id__, step.shortPath);
 			step.isSatisfied = true;
 		});
 
