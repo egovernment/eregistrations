@@ -139,6 +139,7 @@ module.exports = function (t, a) {
 	step = businessProcess.processingSteps.map.frontDesk;
 	step.officialStatus = 'approved';
 	businessProcess.lorem = true;
+	businessProcess.isApproved = true;
 	a(businessProcess.isSubmittedReady, true);
 	a(businessProcess.isSubmitted, true);
 	a(businessProcess.isSentBack, false);

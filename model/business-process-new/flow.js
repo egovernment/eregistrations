@@ -66,13 +66,17 @@ module.exports = memoize(function (db/*, options*/) {
 			return !this.isSubmitted || this.isSentBack || this.isUserProcessing;
 		} },
 		// Whether business is approved
-		isApproved: { type: db.Boolean, value: function (_observe) {
+		isApprovedReady: { type: db.Boolean, value: function (_observe) {
 			if (!this.isSubmitted) return false;
 			return _observe(this.processingSteps.applicable).every(function (step) {
 				return _observe(step._isApproved);
 			});
 		} },
+		// Whether business process was approved
+		// Set to true by server service when isApprovedReady turns true
+		isApproved: { type: db.Boolean, value: false },
 		// Whether business process was rejected
+		// Set to true by server service when first processing step is rejected
 		isRejected: { type: db.Boolean, value: false },
 
 		// Whether business process is closed

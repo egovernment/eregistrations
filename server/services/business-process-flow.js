@@ -88,9 +88,9 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 
 	// Business process: isApproved preservation
 	setupTriggers({
-		trigger: businessProcessesSubmitted.filterByKey('isApproved', true)
+		trigger: businessProcessesSubmitted.filterByKey('isApprovedReady', true)
+			.filterByKey('isApproved', false)
 	}, function (businessProcess) {
-		if (businessProcess.hasOwnProperty('isApproved')) return;
 		debug('%s approved', businessProcess.__id__);
 		businessProcess.isApproved = true;
 	});
