@@ -251,8 +251,7 @@ module.exports = exports = function (dbDriver, data) {
 		var set = new Set(props);
 		if (!assignableProcessingSteps) return set;
 		assignableProcessingSteps.forEach(function (stepShortPath) {
-			// TODO: Fix for deep paths
-			set.add('processingSteps/map/' + stepShortPath + '/assignee');
+			set.add('processingSteps/map/' + resolveStepPath(stepShortPath) + '/assignee');
 		});
 		return set;
 	}(businessProcessListProperties)));
@@ -286,8 +285,7 @@ module.exports = exports = function (dbDriver, data) {
 	var getBusinessProcessSupervisorListFragment = getPartFragments(null, (function () {
 		var set = new Set(['businessName']);
 		forEach(processingStepsMeta, function (data, stepShortPath) {
-			// TODO: Fix for deep paths
-			set.add('processingSteps/map/' + stepShortPath + '/status');
+			set.add('processingSteps/map/' + resolveStepPath(stepShortPath) + '/status');
 		});
 		return set;
 	}()));
