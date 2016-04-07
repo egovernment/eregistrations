@@ -5,7 +5,6 @@
 var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
   , _                = require('mano').i18n.bind('User Submitted')
   , generateSections = require('./components/generate-sections')
-  , extraInfo = require('./_business-process-documents-and-data-extra-info')
   , _d = _;
 
 var drawDocumentsPart = function (target, urlPrefix) {
@@ -118,7 +117,7 @@ var drawCertificatesPart = function (target, urlPrefix) {
 	]);
 };
 
-module.exports = function (businessProcess/*, options*/) {
+module.exports = exports = function (businessProcess/*, options*/) {
 	var options         = Object(arguments[1])
 	  , urlPrefix       = options.urlPrefix || '/'
 	  , uploadsResolver = options.uploadsResolver || businessProcess;
@@ -143,8 +142,9 @@ module.exports = function (businessProcess/*, options*/) {
 					span({ class: 'fa fa-print' }, _("Print"))
 				)
 			),
-			extraInfo.pre(businessProcess),
+			exports._prependData(businessProcess),
 			generateSections(businessProcess.dataForms.applicable, { viewContext: this })
 		)
 	];
 };
+exports._prependData = Function.prototype;
