@@ -3,7 +3,8 @@
 'use strict';
 
 var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
-  , _                = require('mano').i18n.bind('User Submitted');
+  , _                = require('mano').i18n.bind('User Submitted')
+  , _d = _;
 
 module.exports = function (businessProcess, options) {
 	var target = options.paymentsTarget || businessProcess
@@ -26,13 +27,14 @@ module.exports = function (businessProcess, options) {
 					target.paymentReceiptUploads.applicable,
 					function (receipt) {
 						return tr({ id: 'document-item-' +
-							camelToHyphen.call(receipt.document.uniqueKey) },
+							camelToHyphen.call(receipt.document.key) },
 								td(
 								{ class: 'submitted-user-data-table-status' },
 								_if(receipt._isApproved, span({ class: 'fa fa-check' })),
 								_if(receipt._isRejected, span({ class: 'fa fa-exclamation' }))
 							),
-							td({ class: 'submitted-user-data-table-label' }, receipt.document._label),
+							td({ class: 'submitted-user-data-table-label' },
+								_d(receipt.document.label, receipt.document.getTranslations())),
 							td({ class: 'submitted-user-data-table-date' }, receipt.document._issueDate),
 							td(receipt.document._issuedBy),
 							td({ class: 'submitted-user-data-table-link' },

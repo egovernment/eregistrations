@@ -3,7 +3,8 @@
 'use strict';
 
 var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
-  , _                = require('mano').i18n.bind('User Submitted');
+  , _                = require('mano').i18n.bind('User Submitted')
+  , _d = _;
 
 module.exports = function (businessProcess, options) {
 	var target = options.certificatesTarget || businessProcess
@@ -29,7 +30,8 @@ module.exports = function (businessProcess, options) {
 							camelToHyphen.call(certificate.key) },
 							td({ class: 'submitted-user-data-table-status' },
 								span({ class: 'fa fa-certificate' })),
-							td({ class: 'submitted-user-data-table-label' }, certificate.label),
+							td({ class: 'submitted-user-data-table-label' },
+								_d(certificate.label, certificate.getTranslations())),
 							td({ class: 'submitted-user-data-table-date' }, certificate._issueDate),
 							td(certificate._issuedBy),
 							td({ class: 'submitted-user-data-table-link' },

@@ -10,12 +10,12 @@ var renderDocument = require('../_business-process-document-preview')
 
 module.exports = function (context) {
 	var reqUploads = context.businessProcess.requirementUploads.applicable;
-	var nextReqUpload = reactiveSibling.next(reqUploads, context.document);
+	var nextReqUpload = reactiveSibling.next(reqUploads, context.document.owner);
 	var nextReqUploadUrl = nextReqUpload.map(function (nextReqUpload) {
 		if (!nextReqUpload) return null;
 		return nextReqUpload.docUrl;
 	});
-	var prevReqUpload = reactiveSibling.previous(reqUploads, context.document);
+	var prevReqUpload = reactiveSibling.previous(reqUploads, context.document.owner);
 	var prevReqUploadUrl = prevReqUpload.map(function (nextReqUpload) {
 		if (!prevReqUpload) return null;
 		return prevReqUpload.docUrl;
