@@ -5,6 +5,7 @@
 var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
   , _                = require('mano').i18n.bind('User Submitted')
   , generateSections = require('./components/generate-sections')
+  , extraInfo = require('./_business-process-documents-and-data-extra-info').pre
   , _d = _;
 
 var drawDocumentsPart = function (target, urlPrefix) {
@@ -142,6 +143,7 @@ module.exports = function (businessProcess/*, options*/) {
 					span({ class: 'fa fa-print' }, _("Print"))
 				)
 			),
+			extraInfo(businessProcess),
 			generateSections(businessProcess.dataForms.applicable, { viewContext: this })
 		)
 	];
