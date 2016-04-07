@@ -117,7 +117,7 @@ var drawCertificatesPart = function (target, urlPrefix) {
 	]);
 };
 
-module.exports = function (businessProcess/*, options*/) {
+module.exports = exports = function (businessProcess/*, options*/) {
 	var options         = Object(arguments[1])
 	  , urlPrefix       = options.urlPrefix || '/'
 	  , uploadsResolver = options.uploadsResolver || businessProcess;
@@ -142,7 +142,9 @@ module.exports = function (businessProcess/*, options*/) {
 					span({ class: 'fa fa-print' }, _("Print"))
 				)
 			),
+			exports._prependData(businessProcess),
 			generateSections(businessProcess.dataForms.applicable, { viewContext: this })
 		)
 	];
 };
+exports._prependData = Function.prototype;
