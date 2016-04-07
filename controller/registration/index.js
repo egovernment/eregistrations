@@ -9,21 +9,11 @@ var assign        = require('es5-ext/object/assign')
   , customError   = require('es5-ext/error/custom')
   , _             = require('mano').i18n.bind('Registration: Controller')
   , submit        = require('mano/utils/save')
-  , db            = require('mano').db
 
-  , re = /\/isRequested$/
-  , resetStatus;
+  , re = /\/isRequested$/;
 
 // Common controller - login and password change.
 module.exports = exports = assign(exports, require('../user'));
-
-resetStatus = function (step) {
-	if (!step.isPreviousStepsSatisfied) return;
-	if (step.officialStatus === 'sentBack' || step.isPending) {
-		if (step.officialStatus) step.delete('officialStatus');
-		if (step.isRevisionApproved) step.delete('isRevisionApproved');
-	}
-};
 
 // Guide
 exports.guide = {
@@ -98,28 +88,8 @@ exports['payment-receipt-upload/[a-z][a-z0-9-]*'] = {
 
 exports['application-submit'] = {
 	validate: function (data) {
-		if (this.user.isDemo) {
-			throw customError('Cannot submit in demo mode', 'DEMO_MODE_SUBMISSION');
-		}
-
-		return validate.call(this, data, { changedOnly: false });
-	},
-	submit: function () {
-		if (this.businessProcess.isSentBack) {
-			this.businessProcess.delete('isSentBack');
-			this.dbRelease();
-			this.businessProcess.processingSteps.applicable.forEach(
-				function self(step) {
-					step.previousSteps.forEach(self);
-					if (db.ProcessingStepGroup && (step instanceof db.ProcessingStepGroup)) {
-						step.steps.applicable.forEach(self);
-					} else {
-						resetStatus(step);
-					}
-				}
-			);
-		}
-		submit.apply(this, arguments);
+		if (this.user.isDemo) throw customError('Cannot submit in demo mode', 'DEMO_MODE_SUBMISSION');
+		return validate.apply(this, arguments);
 	}
 };
 

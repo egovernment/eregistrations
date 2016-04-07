@@ -51,11 +51,11 @@ module.exports = memoize(function (db) {
 		// Processing step form fields section (applies only to approved status)
 		dataForm: { type: FormSectionBase, nested: true },
 		// Eventual reason of file been sent back
-		sendBackReason: { type: db.String, required: true  },
+		sendBackReason: { type: db.String, required: true },
 		// Eventual reason of rejection
-		rejectionReason: { type: db.String, required: true  },
+		rejectionReason: { type: db.String, required: true, label: _("Rejection reason") },
 		// Reason of redelegation
-		redelegationReason: { type: db.String, required: true  },
+		redelegationReason: { type: db.String, required: true },
 		// Final status as decided by official
 		// Note: 'pending' option doesn't apply here, as it's not a final status
 		officialStatus: { type: ProcessingStepStatus },
@@ -72,24 +72,13 @@ module.exports = memoize(function (db) {
 			return this.sendBackReason ? 1 : 0;
 		} },
 
-		// Used in redelegationProgress, ensures model sanity
-		hasRedelegationTarget: { type: db.Boolean, value: function (_observe) {
-			var done = Object.create(null);
-			return this.previousSteps.some(function self(step) {
-				if (done[step.__id__]) return;
-				done[step.__id__] = true;
-				if (_observe(step._delegatedFrom) === this) return true;
-				return step.previousSteps.some(self, this);
-			}, this);
-		} },
-
 		// "redelegate" status progress
 		redelegationProgress: { type: Percentage, value: function (_observe) {
 			var total = 0, status = 0;
 			total++;
-			if (this.hasRedelegationTarget) status++;
-			total++;
 			if (this.redelegationReason) status++;
+			total++;
+			if (this.redelegatedTo) status++;
 			return status / total;
 		} },
 
@@ -101,20 +90,9 @@ module.exports = memoize(function (db) {
 		// Use it to redelegate from this step to previousStep
 		redelegate: {
 			type: db.Function,
-			value: function (previousStep, _observe) {
+			value: function (targetStep) {
+				this.redelegatedTo = targetStep;
 				this.officialStatus = 'redelegated';
-				previousStep.delegatedFrom = this;
-				previousStep.officialStatus = null;
-			}
-		},
-
-		// Should be called once the delegated step has finished it's job
-		undelegate: {
-			type: db.Function,
-			value: function (observeFunction) {
-				if (!this.delegatedFrom) return;
-				this.delegatedFrom.officialStatus = null;
-				this.delegatedFrom = null;
 			}
 		},
 
@@ -223,7 +201,7 @@ module.exports = memoize(function (db) {
 	});
 
 	// Step which redelegated to this step
-	ProcessingStep.prototype.define('delegatedFrom', {
+	ProcessingStep.prototype.define('redelegatedTo', {
 		type: ProcessingStep
 	});
 

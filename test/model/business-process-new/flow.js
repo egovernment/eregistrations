@@ -55,6 +55,7 @@ module.exports = function (t, a) {
 	});
 
 	businessProcess = new BusinessProcess();
+	a(businessProcess.isSubmittedReady, false);
 	a(businessProcess.isSubmitted, false);
 	a(businessProcess.isSentBack, false);
 	a(businessProcess.isRejected, false);
@@ -64,6 +65,15 @@ module.exports = function (t, a) {
 	businessProcess.bar = true;
 	businessProcess.submissionForms.isAffidavitSigned = true;
 	businessProcess.requirementUploads.map.req.document.files.map.newUniq().path = '/elo.png';
+	a(businessProcess.isSubmittedReady, true);
+	a(businessProcess.isSubmitted, false);
+	a(businessProcess.isSentBack, false);
+	a(businessProcess.isRejected, false);
+	a(businessProcess.isClosed, false);
+	a(businessProcess.status, 'draft');
+
+	businessProcess.isSubmitted = true; // Normally done by a service
+	a(businessProcess.isSubmittedReady, true);
 	a(businessProcess.isSubmitted, true);
 	a(businessProcess.isSentBack, false);
 	a(businessProcess.isRejected, false);
@@ -73,16 +83,43 @@ module.exports = function (t, a) {
 	step = businessProcess.processingSteps.map.test;
 	step.officialStatus = 'sentBack';
 	step.sendBackReason = "Whateever ..";
-	businessProcess.isSentBack = true;
+	a(businessProcess.isSubmittedReady, true);
+	a(businessProcess.isSubmitted, true);
+	a(businessProcess.isSentBack, false);
+	a(businessProcess.isRejected, false);
+	a(businessProcess.isClosed, false);
+	a(businessProcess.status, 'process');
+
+	businessProcess.submissionForms.delete('isAffidavitSigned'); // Normally done by service
+	businessProcess.isSentBack = true; // Normally done by service
+	a(businessProcess.isSubmittedReady, false);
 	a(businessProcess.isSubmitted, true);
 	a(businessProcess.isSentBack, true);
 	a(businessProcess.isRejected, false);
 	a(businessProcess.isClosed, false);
 	a(businessProcess.status, 'sentBack');
 
+	businessProcess.submissionForms.isAffidavitSigned = true;
+	a(businessProcess.isSubmittedReady, true);
+	a(businessProcess.isSubmitted, true);
+	a(businessProcess.isSentBack, true);
+	a(businessProcess.isRejected, false);
+	a(businessProcess.isClosed, false);
+	a(businessProcess.status, 'sentBack');
+
+	businessProcess.delete('isSentBack'); // Normally done by service
+	step.delete('officialStatus'); // Normally done by service
+	a(businessProcess.isSubmittedReady, true);
+	a(businessProcess.isSubmitted, true);
+	a(businessProcess.isSentBack, false);
+	a(businessProcess.isRejected, false);
+	a(businessProcess.isClosed, false);
+	a(businessProcess.status, 'process');
+
 	step.officialStatus = 'rejected';
 	step.rejectionReason = "Whateever ..";
-	businessProcess.isSentBack = false;
+	businessProcess.isRejected = true;
+	a(businessProcess.isSubmittedReady, true);
 	a(businessProcess.isSubmitted, true);
 	a(businessProcess.isSentBack, false);
 	a(businessProcess.isRejected, true);
@@ -91,6 +128,8 @@ module.exports = function (t, a) {
 
 	step.officialStatus = 'approved';
 	businessProcess.foo = true;
+	businessProcess.isRejected = false;
+	a(businessProcess.isSubmittedReady, true);
 	a(businessProcess.isSubmitted, true);
 	a(businessProcess.isSentBack, false);
 	a(businessProcess.isRejected, false);
@@ -100,6 +139,8 @@ module.exports = function (t, a) {
 	step = businessProcess.processingSteps.map.frontDesk;
 	step.officialStatus = 'approved';
 	businessProcess.lorem = true;
+	businessProcess.isApproved = true;
+	a(businessProcess.isSubmittedReady, true);
 	a(businessProcess.isSubmitted, true);
 	a(businessProcess.isSentBack, false);
 	a(businessProcess.isRejected, false);
