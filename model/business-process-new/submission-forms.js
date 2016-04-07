@@ -16,7 +16,7 @@ module.exports = memoize(function (db/* options */) {
 
 	BusinessProcess.prototype.submissionForms.defineProperties({
 		// Required confirmation from user, presented as last step before file submission
-		isAffidavitSigned: { type: db.Boolean, required: true },
+		isAffidavitSigned: { type: db.Boolean },
 		formsProgress: { value: function (_observe) {
 			var superGetter;
 			superGetter = this.database.PropertyGroupsProcess.prototype.getDescriptor('progress')._value_;
@@ -25,7 +25,7 @@ module.exports = memoize(function (db/* options */) {
 		} },
 		progress: { value: function (_observe) {
 			var total = this.weight, valid = this.formsProgress * (total - 1);
-			if (this.isAffidavitSigned && !_observe(this.master._isSentBack)) ++valid;
+			if (this.isAffidavitSigned) ++valid;
 			return valid / total;
 		} },
 		weight: { value: function (_observe) {
