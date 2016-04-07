@@ -1,4 +1,4 @@
-// Document view
+// Certificate view
 
 'use strict';
 
@@ -6,7 +6,8 @@ var renderDocument = require('../_business-process-document-preview')
   , renderDocumentHistory = require('../_business-process-revision-document-history')
   , reactiveSibling = require('../../utils/reactive-sibling')
   , _                = require('mano').i18n.bind('User Submitted')
-  , _d = _;
+  , endsWith           = require('es5-ext/string/#/ends-with')
+  , db                 = require('mano').db;
 
 module.exports = function (context) {
 	var reqUploads = context.businessProcess.requirementUploads.applicable;
@@ -24,8 +25,7 @@ module.exports = function (context) {
 	return [div({ id: 'submitted-box', class: 'business-process-submitted-box' },
 		div({ class: 'business-process-submitted-box-header' },
 			div({ class: 'business-process-submitted-box-header-document-title' },
-				_d(context.document.label,
-					context.document.getTranslations())),
+				context.document._label),
 			div({ class: 'business-process-revision-box-controls' },
 				_if(prevReqUpload,
 					a({ href: prevReqUploadUrl,
@@ -41,6 +41,16 @@ module.exports = function (context) {
 			div({ class: 'submitted-preview' },
 				div({ id: 'document-preview', class: 'submitted-preview-document' },
 					renderDocument(context.document)),
+				div({ class: 'submitted-preview-user-data  entity-data-section-side' },
+					context.document.dataForm.constructor !== db.FormSectionBase ?
+							context.document.dataForm.toDOM(document, {
+								customFilter: function (resolved) {
+									return !endsWith.call(resolved.observable.dbId, 'files/map');
+								},
+								disableHeader: false
+							}) : null,
+					context.document.overviewSection.toDOM(document, { disableHeader: false })
+					),
 				div({ class: 'submitted-preview-user-data  entity-data-section-side' },
 					renderDocumentHistory(context.document))))];
 };

@@ -15,4 +15,6 @@ exports._dynamic = function () {
 	return conf;
 };
 
-exports['selection-preview'] = documentView;
+exports['selection-preview'] = function () {
+	documentView(this);
+};

@@ -1,12 +1,11 @@
-// Document view
+// Payment receipt view
 
 'use strict';
 
 var renderDocument = require('../_business-process-document-preview')
   , renderDocumentHistory = require('../_business-process-revision-document-history')
   , reactiveSibling = require('../../utils/reactive-sibling')
-  , _                = require('mano').i18n.bind('User Submitted')
-  , _d = _;
+  , _                = require('mano').i18n.bind('User Submitted');
 
 module.exports = function (context) {
 	var reqUploads = context.businessProcess.requirementUploads.applicable;
@@ -24,8 +23,7 @@ module.exports = function (context) {
 	return [div({ id: 'submitted-box', class: 'business-process-submitted-box' },
 		div({ class: 'business-process-submitted-box-header' },
 			div({ class: 'business-process-submitted-box-header-document-title' },
-				_d(context.document.label,
-					context.document.getTranslations())),
+				context.document._label),
 			div({ class: 'business-process-revision-box-controls' },
 				_if(prevReqUpload,
 					a({ href: prevReqUploadUrl,
