@@ -24,6 +24,7 @@ var aFrom            = require('es5-ext/array/from')
   , FragmentGroup    = require('data-fragment/group')
   , ensureDriver     = require('dbjs-persistence/ensure-driver')
   , unserializeView  = require('../utils/db-view/unserialize-ids')
+  , resolveStepPath  = require('../utils/resolve-processing-step-full-path')
   , getReducedFrag   = require('./data-fragments/get-reduced-object-fragments')
   , getRedRecFrag    = require('./data-fragments/get-reduced-records-fragment')
   , getAddRecFrag    = require('./data-fragments/get-add-records-to-fragment')
@@ -222,6 +223,9 @@ module.exports = exports = function (dbDriver, data) {
 		var fragment = new FragmentGroup()
 		  , defaultStatusName = resolveDefaultStatus(stepShortPath);
 
+		var addSortRecord = getAddRecFrag(null,
+			['processingSteps/map/' + resolveStepPath(stepShortPath) + '/isReady']);
+
 		// To be visited (recently pending) business processes (full data)
 		fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
 			'pendingBusinessProcesses/' + viewPath + '/' + defaultStatusName).toArray().slice(0, 10),
@@ -234,7 +238,11 @@ module.exports = exports = function (dbDriver, data) {
 				return getFirstPageItems(reducedStorage,
 					'pendingBusinessProcesses/' + viewPath + '/' + status);
 			})
-		), getBusinessProcessOfficialListFragment));
+		), function (businessProcessId) {
+			var fragment = new Fragment();
+			fragment.addFragment(getBusinessProcessOfficialListFragment(businessProcessId));
+			return addSortRecord(businessProcessId, fragment);
+		}));
 		return fragment;
 	}, { primitive: true });
 
