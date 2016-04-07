@@ -44,8 +44,10 @@ module.exports = memoize(function (db) {
 		// Whether business process is at given step or have passed it
 		isReady: { type: db.Boolean, value: function (_observe) {
 			if (!this.isApplicable) return false;
-			if (this.isPreviousStepsSatisfied) return true;
-			return (this.officialStatus === 'sentBack');
+			if (!this.isPreviousStepsSatisfied) return false;
+			// If step was not yet processed but file was already closed do not provide it
+			if (this.officialStatus) return true;
+			return !_observe(this.master._isClosed);
 		} },
 
 		// Whether process is pending at step
@@ -71,21 +73,34 @@ module.exports = memoize(function (db) {
 			return this.isApproved || this.isRejected || false;
 		} },
 
+		// Whether all directly previous steps are satisfied (not applicable or successfully passed)
 		isPreviousStepsSatisfied: { type: db.Boolean, value: function (_observe) {
-			if (!this.previousSteps.size) {
-				return _observe(this.master._isSubmitted);
-			}
+			if (!this.previousSteps.size) return _observe(this.master._isSubmitted);
 			return this.previousSteps.every(function (step) {
 				return _observe(step._isSatisfied);
 			});
 		} },
 
-		isSatisfied: { type: db.Boolean, value: function () {
-			if (this.isApplicable) {
-				return Boolean(this.isApproved || this.delegatedFrom);
-			}
+		// Whether all previous steps are satisfied (not applicable or successfully passed)
+		// It checks alls steps deep down in chain
+		// This resolution is used purely to detect valid returns
+		// (either from 'sentBack' or 'redelegated' states)
+		isPreviousStepsSatisfiedDeep: { type: db.Boolean, value: function (_observe) {
+			if (!this.previousSteps.size) return !_observe(this.master._isAtDraft);
+			return this.previousSteps.every(function (step) {
+				return _observe(step._isSatisfied) && _observe(step._isPreviousStepsSatisfiedDeep);
+			});
+		} },
+
+		// Whether this step is complete (not applicable or fully and successfully passed)
+		isSatisfiedReady: { type: db.Boolean, value: function () {
+			if (this.isApplicable) return Boolean(this.isApproved);
 			return this.isPreviousStepsSatisfied;
 		} },
+
+		// Whether this step was succesfully passed
+		// Set to true by server service when isSatisfiedReady turns true
+		isSatisfied: { type: db.Boolean, value: false },
 
 		// maps key to shorter version e.g. processingSteps/map/revision/steps/map/oni -> revision/oni
 		//                                  processingSteps/map/revision               -> revision

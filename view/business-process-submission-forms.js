@@ -53,17 +53,9 @@ exports.step = function () {
 					p(_("Before sending, you must accept that the information entered into the system, " +
 						"would be saved and processed by the involved institutions")),
 					label({ class: 'input-aside' }, span(input({
-						id: 'input-certified-truth',
-						name: submissionForms.__id__ + '/isAffidavitSigned',
+						dbjs: submissionForms._isAffidavitSigned,
 						type: 'checkbox',
-						'data-type': 'boolean',
-						checked: and(submissionForms._isAffidavitSigned, not(businessProcess._isSentBack)),
-						value: '1'
-					}), input({
-						type: 'hidden',
-						name: submissionForms.__id__ + '/isAffidavitSigned',
-						'data-type': 'boolean',
-						value: '0'
+						control: { id: 'input-certified-truth' }
 					})), " ", span(_("I, ${ fullName }, declare under oath that the information, " +
 						"regarding registration of \"${ businessName }\", entered into the system is " +
 						"correct, and I accept that it would be saved and processed by involved institutions.",

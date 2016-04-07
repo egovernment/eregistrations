@@ -9,27 +9,40 @@ var memoize                  = require('memoizee/plain')
   , ensureDb                 = require('dbjs/valid-dbjs');
 
 module.exports = memoize(function (db) {
-	var Percentage = definePercentage(ensureDb(db));
+	var Percentage = definePercentage(ensureDb(db))
+	  , ProcessingStep = defineProcessingStep(db);
 
-	var RevisionProcessingStep = defineProcessingStep(db).extend('RevisionProcessingStep', {
+	var RevisionProcessingStep = ProcessingStep.extend('RevisionProcessingStep', {
 		label: { value: _("Revision") },
 
-		// Whether the revision was successful
-		isRevisionPending: { type: db.Boolean, value: function (_observe) {
-			// If the whole step is not pending, then obviously not pending
-			if (!this.isPending) return false;
-
-			return !(this.isRevisionApproved && this.revisionApprovalProgress === 1);
+		// Final revision status as decided by official
+		revisionOfficialStatus: { type: db.ProcessingStepStatus, value: function () {
+			return this.officialStatus;
+		} },
+		// Computed revision status. Resolves to final (not 'pending') status
+		// only if all constraints are met
+		revisionStatus: { type: db.ProcessingStepStatus, value: function () {
+			if (this.revisionOfficialStatus === 'approved') {
+				return (this.revisionApprovalProgress === 1) ? 'approved' : 'pending';
+			}
+			return this.status;
 		} },
 
-		isRevisionApproved: { type: db.Boolean, value: false },
+		// Whether step is pending at revision
+		isRevisionPending: { type: db.Boolean, value: function () {
+			return (this.revisionStatus === 'pending');
+		} },
+
+		// Whether step was approved at revision
+		isRevisionApproved: { type: db.Boolean, value: function () {
+			return (this.revisionStatus === 'approved');
+		} },
 
 		// Progress of revision approval
 		// All processable requirement uploads must be approved
 		revisionApprovalProgress: { type: Percentage, value: function (_observe) {
 			var weight = 0, progress = 0, itemWeight;
 
-			if (_observe(this.master._isSentBack)) return 1;
 			weight += itemWeight = _observe(this.requirementUploads.processable).size;
 			progress += _observe(this.requirementUploads._approvalProgress) * itemWeight;
 			weight += itemWeight = _observe(this.paymentReceiptUploads.processable).size;

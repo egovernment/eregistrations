@@ -29,7 +29,6 @@ module.exports = function (/*options*/) {
 		submit: function () {
 			this.processingStep.processor = this.user;
 			this.processingStep.officialStatus = 'approved';
-			this.processingStep.isRevisionApproved = true;
 		},
 		redirectUrl: '/'
 	};
