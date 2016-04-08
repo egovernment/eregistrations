@@ -3,7 +3,7 @@
 var d  = require('d')
   , db = require('mano').db
   , ns = require('mano').domjs.ns
-  , copyObj = require('es5-ext/object/copy')
+  , normalizeOptions = require('es5-ext/object/normalize-options')
   , headersMap = require('../utils/headers-map');
 
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOM',
@@ -13,7 +13,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOM',
 		headerRank = options.headerRank || 3;
 		cssClass   = options.cssClass || 'entity-data-section';
 
-		var childOptions = copyObj(options);
+		var childOptions = normalizeOptions(options);
 		childOptions.headerRank++;
 		childOptions.cssClass = 'entity-data-section-sub';
 
