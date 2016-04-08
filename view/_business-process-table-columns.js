@@ -12,7 +12,8 @@ exports.actionsColumn = {
 	class: 'actions',
 	data: function (businessProcess) {
 		return _if(businessProcess._isAtDraft,
-			[postButton({ buttonClass: 'actions-edit',
+			[postButton({
+				buttonClass: 'actions-edit',
 				action: url('business-process', businessProcess.__id__),
 				value: span({
 					class: 'hint-optional hint-optional-left',
@@ -29,7 +30,8 @@ exports.actionsColumn = {
 					}, i({ class: 'fa fa-trash-o' }))
 				}))],
 
-			postButton({ buttonClass: 'actions-edit',
+			postButton({
+				buttonClass: 'actions-edit',
 				action: url('business-process', businessProcess.__id__),
 				value: span({ class: 'fa fa-search' }, _("Go to"))
 			}));
