@@ -239,7 +239,7 @@ module.exports = exports = function (dbDriver, data) {
 					'pendingBusinessProcesses/' + viewPath + '/' + status);
 			})
 		), function (businessProcessId) {
-			var fragment = new Fragment();
+			var fragment = new FragmentGroup();
 			fragment.addFragment(getBusinessProcessOfficialListFragment(businessProcessId));
 			return addSortRecord(businessProcessId, fragment);
 		}));
