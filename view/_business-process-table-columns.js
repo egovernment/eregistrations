@@ -13,12 +13,12 @@ exports.actionsColumn = {
 	data: function (businessProcess) {
 		return _if(businessProcess._isAtDraft,
 			[postButton({ buttonClass: 'actions-edit',
-					action: url('business-process', businessProcess.__id__),
-					value: span({
+				action: url('business-process', businessProcess.__id__),
+				value: span({
 					class: 'hint-optional hint-optional-left',
 					'data-hint': _('Edit')
 				}, i({ class: 'fa fa-edit' }))
-				}),
+			}),
 				_if(not(businessProcess._isSubmitted), postButton({
 					buttonClass: 'actions-delete',
 					action: url('business-process', businessProcess.__id__, 'delete'),
@@ -32,7 +32,7 @@ exports.actionsColumn = {
 			postButton({ buttonClass: 'actions-edit',
 				action: url('business-process', businessProcess.__id__),
 				value: span({ class: 'fa fa-search' }, _("Go to"))
-				}));
+			}));
 	}
 };
 
@@ -41,12 +41,12 @@ exports.archiverColumn = {
 	data: function (businessProcess) {
 		return _if(businessProcess._filesArchiveUrl,
 			a({ class: 'hint-optional hint-optional-left', target: "_blank",
-					'data-hint': _("Download the electronic file"),
-					download: businessProcess._filesArchiveUrl.map(function (name) {
-						if (!name) return;
+				'data-hint': _("Download the electronic file"),
+				download: businessProcess._filesArchiveUrl.map(function (name) {
+					if (!name) return;
 					return name.slice(1);
 				}),
-					href: businessProcess._filesArchiveUrl },
+				href: businessProcess._filesArchiveUrl },
 				span({ class: 'fa fa-download' }, _("Download"))));
 	}
 };
@@ -55,7 +55,7 @@ exports.goToColumn = {
 	class: 'submitted-user-data-table-link',
 	data: function (businessProcess) {
 		return a({ class: 'actions-edit',
-				href: url(businessProcess.__id__) },
+			href: url(businessProcess.__id__) },
 			span({ class: 'fa fa-search' }, _("Go to")));
 	}
 };
@@ -100,20 +100,22 @@ exports.columns = [{
 }, {
 	head: _("Inscriptions and controls"),
 	data: function (businessProcess) {
-		return list(businessProcess.certificates.applicable, function (cert) {
-			var certStatus;
+		return mmap(businessProcess.certificates._applicable, function (certificates) {
+			return list(businessProcess.certificates.applicable, function (cert) {
+				var certStatus;
 
-			certStatus = exports.getCertStatus(cert);
-			return span({ class: 'hint-optional hint-optional-left',
-				'data-hint': [cert.constructor.label,
-					_if(eq(certStatus, "rejected"), "- " + ProcessingStepStatus.meta.rejected.label,
-						certStatus.map(function (status) {
-							if (status) return "- " + ProcessingStepStatus.meta[status].label;
-						}))] },
-				span({ class: ['label-reg',
-					_if(eq(certStatus, "rejected"), "rejected",
-						_if(eq(certStatus, 'approved'), "approved",
-							_if(not(eqSloppy(certStatus, null)), "ready")))]  }, cert.constructor.abbr));
+				certStatus = exports.getCertStatus(cert);
+				return span({ class: 'hint-optional hint-optional-left',
+					'data-hint': [cert.constructor.label,
+						_if(eq(certStatus, "rejected"), "- " + ProcessingStepStatus.meta.rejected.label,
+							certStatus.map(function (status) {
+								if (status) return "- " + ProcessingStepStatus.meta[status].label;
+							}))] },
+					span({ class: ['label-reg',
+						_if(eq(certStatus, "rejected"), "rejected",
+							_if(eq(certStatus, 'approved'), "approved",
+								_if(not(eqSloppy(certStatus, null)), "ready")))]  }, cert.constructor.abbr));
+			});
 		});
 	}
 }];
