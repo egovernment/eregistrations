@@ -2,8 +2,9 @@
 
 'use strict';
 
-var paymentView = require('./components/business-process-view-payment-receipt')
-  , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen');
+var documentView = require('./components/business-process-document')
+  , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
+  , renderDocumentHistory = require('./_business-process-revision-document-history');
 
 exports._parent = require('./business-process-official-documents');
 exports._match = 'document';
@@ -16,5 +17,7 @@ exports._dynamic = function () {
 };
 
 exports['selection-preview'] = function () {
-	paymentView(this);
+	documentView(this.document,
+		this.businessProcess.requirementUploads.applicable,
+		renderDocumentHistory(this.document));
 };
