@@ -106,9 +106,10 @@ module.exports = exports = function (businessProcess/*, options*/) {
 			),
 			exports._prependData(businessProcess),
 			generateSections(businessProcess.dataForms.applicable, { viewContext: this,
-					customResolveValue: options.customResolveValue })
+					customResolveValue: exports._customValueResolver })
 		)
 	];
 };
 
 exports._prependData = Function.prototype;
+exports._customValueResolver = null;
