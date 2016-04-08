@@ -113,7 +113,10 @@ module.exports = exports = function (dbDriver, data) {
 	});
 	var resolveDefaultStatus = function (stepShortPath) {
 		var defaultKey = processingStepsDefaultMap[stepShortPath];
-		if (!defaultKey) throw new Error("Unrecognized step short path " + stringify(stepShortPath));
+		if (!defaultKey) {
+			console.error("\n\nUnrecognized step short path " + stringify(stepShortPath));
+			return;
+		}
 		return defaultKey;
 	};
 
@@ -144,6 +147,7 @@ module.exports = exports = function (dbDriver, data) {
 			ids = [];
 			stepsShortPaths.forEach(function (stepShortPath) {
 				var defaultKey = resolveDefaultStatus(stepShortPath);
+				if (!defaultKey) return;
 				if (assignableProcessingSteps && assignableProcessingSteps.has(stepShortPath)) {
 					ids.push('views/pendingBusinessProcesses/assigned/7' + userId + '/' + stepShortPath +
 						'/' + defaultKey + '/totalSize');
@@ -221,6 +225,7 @@ module.exports = exports = function (dbDriver, data) {
 	var getOfficialFragment = memoize(function (stepShortPath, viewPath) {
 		var fragment = new FragmentGroup()
 		  , defaultStatusName = resolveDefaultStatus(stepShortPath);
+		if (!defaultStatusName) return fragment;
 
 		// To be visited (recently pending) business processes (full data)
 		fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
@@ -254,6 +259,7 @@ module.exports = exports = function (dbDriver, data) {
 		if (assignableProcessingSteps) {
 			assignableProcessingSteps.forEach(function (stepShortPath) {
 				var defaultStatusName = resolveDefaultStatus(stepShortPath), roleName, getOfficialFragment;
+				if (!defaultStatusName) return;
 				// First page snapshot
 				fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath +
 					'/' + defaultStatusName));
@@ -293,6 +299,7 @@ module.exports = exports = function (dbDriver, data) {
 		// Per role first page snapshots
 		forEach(processingStepsMeta, function (data, stepShortPath) {
 			var defaultStatusName = resolveDefaultStatus(stepShortPath);
+			if (!defaultStatusName) return;
 			// First page snapshot
 			fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath + '/' +
 				defaultStatusName));
