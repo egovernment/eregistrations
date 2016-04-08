@@ -5,7 +5,8 @@
 var renderDocument = require('../_business-process-document-preview')
   , renderDocumentHistory = require('../_business-process-revision-document-history')
   , reactiveSibling = require('../../utils/reactive-sibling')
-  , _                = require('mano').i18n.bind('User Submitted');
+  , _                = require('mano').i18n.bind('User Submitted')
+  , _d = _;
 
 module.exports = function (context) {
 	var reqUploads = context.businessProcess.requirementUploads.applicable;
@@ -23,7 +24,8 @@ module.exports = function (context) {
 	return [div({ id: 'submitted-box', class: 'business-process-submitted-box' },
 		div({ class: 'business-process-submitted-box-header' },
 			div({ class: 'business-process-submitted-box-header-document-title' },
-				context.document._label),
+				_d(context.document.label,
+					context.document.getTranslations())),
 			div({ class: 'business-process-submitted-box-controls' },
 				div({ class: 'label-doc-type' }, _('Payment receipt')),
 				_if(prevReqUpload,
@@ -36,6 +38,7 @@ module.exports = function (context) {
 						class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
 						i({ class: 'fa fa-angle-right' })))
 					))),
+		// Place rejection reason here
 		div({ id: 'user-document', class: 'business-process-submitted-selected-document' },
 			div({ class: 'submitted-preview' },
 				div({ id: 'document-preview', class: 'submitted-preview-document' },
