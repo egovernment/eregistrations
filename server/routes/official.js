@@ -16,7 +16,7 @@ var aFrom                          = require('es5-ext/array/from')
   , includes                       = require('es5-ext/string/#/contains')
   , uncapitalize                   = require('es5-ext/string/#/uncapitalize')
   , d                              = require('d')
-  , ensureSet                      = require('es6-set/valid-set')
+  , Set                            = require('es6-set')
   , deferred                       = require('deferred')
   , memoize                        = require('memoizee')
   , serializeValue                 = require('dbjs/_setup/serialize/value')
@@ -166,12 +166,15 @@ var initializeHandler = function (conf) {
 	  , statusMap           = ensureObject(conf.statusMap)
 	  , statusIndexName     = ensureString(conf.statusIndexName)
 	  , allIndexName        = conf.allIndexName || statusMap.all.indexName
-	  , bpListProps         = ensureSet(conf.listProperties)
+	  , bpListProps         = new Set(aFrom(conf.listProperties))
 	  , bpListComputedProps = conf.listComputedProperties && aFrom(conf.listComputedProperties)
 	  , tableQueryHandler   = getTableQueryHandler(statusMap)
 	  , itemsPerPage        = toNaturalNumber(conf.itemsPerPage) || defaultItemsPerPage
 	  , businessProcessQueryHandler = getBusinessProcessQueryHandler(allIndexName, conf.allIndexValue)
 	  , storageName, storages;
+
+	if (!bpListComputedProps) bpListComputedProps = [allIndexName];
+	else bpListComputedProps.push(allIndexName);
 
 	if (conf.storageName != null) {
 		storageName = conf.storageName;
