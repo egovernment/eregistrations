@@ -19,6 +19,5 @@ exports._dynamic = function () {
 exports['selection-preview'] = function () {
 	documentView(this.document,
 		this.businessProcess.requirementUploads.applicable,
-		div({ class: 'submitted-preview-user-data  entity-data-section-side' },
-			renderDocumentHistory(this.document)));
+		renderDocumentHistory(this.document));
 };

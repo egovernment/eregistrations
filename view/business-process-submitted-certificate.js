@@ -31,6 +31,5 @@ exports['selection-preview'] = function () {
 					}) : null,
 					this.document.overviewSection.toDOM(document, { disableHeader: false })
 					),
-				div({ class: 'submitted-preview-user-data  entity-data-section-side' },
-					renderDocumentHistory(this.document))]);
+				renderDocumentHistory(this.document)]);
 };

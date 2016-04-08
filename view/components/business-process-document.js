@@ -50,5 +50,6 @@ module.exports = function (document, collection, sideContent) {
 			div({ class: 'submitted-preview' },
 				div({ id: 'document-preview', class: 'submitted-preview-document' },
 					renderDocument(document)),
-				sideContent))];
+				div({ class: 'submitted-preview-user-data  entity-data-section-side' },
+					sideContent)))];
 };
