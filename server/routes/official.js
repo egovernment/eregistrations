@@ -3,6 +3,7 @@
 'use strict';
 
 var aFrom                          = require('es5-ext/array/from')
+  , and                            = require('es5-ext/array/#/intersection')
   , flatten                        = require('es5-ext/array/#/flatten')
   , remove                         = require('es5-ext/array/#/remove')
   , uniq                           = require('es5-ext/array/#/uniq')
@@ -34,7 +35,7 @@ var aFrom                          = require('es5-ext/array/from')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }
-  , isArray = Array.isArray, slice = Array.prototype.slice, push = Array.prototype.push
+  , isArray = Array.isArray, slice = Array.prototype.slice
   , ceil = Math.ceil, create = Object.create
   , defineProperty = Object.defineProperty, stringify = JSON.stringify
   , businessProcessStorages, businessProcessStorageNames;
@@ -216,11 +217,10 @@ var initializeHandler = function (conf) {
 			})(function (arrays) {
 				if (arrays.length === 1) return arrays[0];
 
-				return uniq.call(arrays.reduce(function (current, next, index) {
+				return arrays.reduce(function (current, next, index) {
 					if (index === 1) current = aFrom(current);
-					push.apply(current, next);
-					return current;
-				})).sort(compareStamps);
+					return and.call(current, next);
+				}).sort(compareStamps);
 			});
 		})(function (arr) {
 			var size = arr.length, pageCount, offset, computedEvents, directEvents, statuses, statusMap;
