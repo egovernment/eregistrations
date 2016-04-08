@@ -21,8 +21,23 @@
 	line-height: 22px;
 }
 
-.business-process-submitted-box-controls a {
-	vertical-align: text-bottom;
+.business-process-submitted-box-controls .label-doc-type {
+	display: inline-block;
+	font-size: 12px;
+	vertical-align: middle;
+	border-radius: 3px;
+	background: var(--light-text);
+	padding: 0 6px;
+	color: var(--white-text);
+}
+
+.business-process-submitted-box-controls a .fa-angle-right,
+.business-process-submitted-box-controls a .fa-angle-left {
+	vertical-align: middle;
+}
+
+.business-process-submitted-box-controls .label-doc-type + a {
+	margin-left: 16px;
 }
 
 .business-process-submitted-box .form-elements > li {
