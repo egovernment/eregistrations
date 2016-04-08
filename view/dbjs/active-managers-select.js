@@ -1,13 +1,16 @@
 'use strict';
 
 var d = require('d')
-  , db = require('mano').db
-  , _ = require('mano').i18n.bind('View: Manager Select');
+  , _ = require('mano').i18n.bind('View: Manager Select')
+  , activeManagers = require('mano').db.User.instances.filterByKey('isManagerActive')
+  , sortedManagers = activeManagers.toArray(function (a, b) {
+	return a.fullName.toLowerCase().localeCompare(b.fullName.toLowerCase());
+});
 
 module.exports = function (descriptor) {
 	Object.defineProperties(descriptor, {
 		inputOptions: d({
-			list: db.User.instances.filterByKey('isManagerActive'),
+			list: sortedManagers,
 			property: 'fullName',
 			chooseLabel: _("Select manager:")
 		})

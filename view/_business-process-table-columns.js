@@ -64,7 +64,7 @@ exports.getCertStatus = function (cert) {
 	var processingStep = cert.processingStep, businessProcess = cert.master;
 
 	return _if(businessProcess._isRejected,
-		"rejected", processingStep && processingStep._resolvedStatus);
+		"rejected", processingStep && processingStep._status);
 };
 
 exports.columns = [{
@@ -84,12 +84,7 @@ exports.columns = [{
 		var isSubmitted = businessProcess._isSubmitted;
 
 		return _if(isSubmitted, function () {
-			if (!businessProcess.submissionForms.isAffidavitSigned) {
-				return isSubmitted._lastModified.map(formatLastModified);
-			}
-			// TODO: After introduction of static flow propagation revert back isSubmitted
-			return businessProcess.submissionForms._isAffidavitSigned
-				._lastModified.map(formatLastModified);
+			return isSubmitted._lastModified.map(formatLastModified);
 		});
 	}
 }, {
@@ -99,11 +94,7 @@ exports.columns = [{
 		var isApproved = businessProcess._isApproved;
 
 		return _if(isApproved, function () {
-			// TODO: After introduction of static flow propagation revert back isSubmitted
-			return formatLastModified(businessProcess.getAllEvents().reduce(function (latest, event) {
-				if (latest.stamp) latest = latest.stamp;
-				return event.stamp > (latest || 0) ? event.stamp : latest;
-			}));
+			return isApproved._lastModified.map(formatLastModified);
 		});
 	}
 }, {

@@ -1,13 +1,15 @@
 #!/usr/bin/env node
 
-var path          = require('path')
+'use strict';
+
+var path               = require('path')
   , resolveProjectRoot = require('cjs-module/resolve-project-root')
-  , projectRoot = process.cwd()
-  , startsWith  = require('es5-ext/string/#/starts-with')
-  , appName     = process.argv[2]
-  , allowedPattern = /[0-9a-z\-]+/
-  , match
-  , appRootPath;
+  , projectRoot        = process.cwd()
+  , startsWith         = require('es5-ext/string/#/starts-with')
+  , appName            = process.argv[2]
+  , allowedPattern     = /[0-9a-z\-]+/
+
+  , match, appRootPath;
 
 if (!appName) {
 	throw new Error('No appName argument provided');
@@ -20,44 +22,47 @@ if (!match || (match[0].length !== appName.length)) {
 
 resolveProjectRoot(projectRoot).done(function (root) {
 	if (!root) {
-		throw new Error('Could not located project in projectRoot: ' + projectRoot);
+		throw new Error('Could not locate project in projectRoot: ' + projectRoot);
 	}
 	appRootPath = 'apps' + path.sep + appName;
+
 	require('../scripts/generate-app')(root, appName).done(function () {
-		var otherClientsModelReminder, clientModelReminder, appsRoutersReminder
-		  , serverIndexes, appServerRoutes
-		  , msg = ["\nSuccessfully created " + appName + " application." +
-				"\nIt's located in: " + appRootPath + "." +
-				"\n\nIn order to setup application you need to: \n"], msgItems = [];
-		msgItems.push("If appName resolution for created app is not straightfoward, " +
+		var msgItems = []
+			// Reused messages
+		  , domBindings = "Setup dbjs dom bindings in apps/" + appName + "/client/dbjs-dom.js"
+		  , clientModelReminder = "Ensure that the models of handled businessProcesses are " +
+			"required in apps/" + appName + "/client/model.js"
+		  , otherClientsModelReminder = "Ensure that the model/" + appName +
+			" is required in: apps/official-*/client/model.js, apps/user/client/model.js," +
+			" apps/business-process-submitted/client/model.js"
+		  , processingStepsMsg =
+			"Provide processing steps configuration in apps-common/processing-steps"
+		  , accessMsg = "Provide processing step configuration for data access rules in " +
+			"server/processes/master/apps-access-rulles.js"
+		  , appsRoutersReminder = "Ensure configuration entry in server/apps/routers.js"
+		  , modelViews = "Ensure that views model is updated with " +
+			"added status maps in model/views.js"
+		  , serverIndexes = "Ensure entry in server/db/indexes.js"
+		  , addRole = "Add new role in model/user/roles.js"
+		  , appServerRoutes = "Setup apps/" + appName + "/server/routes.js"
+		  , appsPostControllers = "Ensure app configuration added in POST controllers " +
+			"configuration at: server/processes/master/apps-post-controllers and " +
+			"server/processes/memory-db/apps-post-controllers"
+		  , recentlyVisitedProcesses = "Ensure entry in model/user/recently-visited/business-processes";
+
+		// Default messages
+
+		msgItems.push("If appName resolution for created app is not straightforward, " +
 			" be sure to expose it model/user/app-resolvers.js");
-		msgItems.push("Configure application url tree in apps/" + appName + "/routes.js");
-		var accessMsg = "Provide processing step configuration for data access rules in " +
-			"server/processes/master/apps-access-rulles.js";
-		var domBindings = "Setup dbjs dom bindings in apps/" + appName + "/client/dbjs-dom.js";
+		msgItems.push("Configure application URL tree in apps/" + appName + "/routes.js");
 		msgItems.push(domBindings);
 		msgItems.push("Configure model needed for application client in apps/"
 			+ appName + "/client/model.js");
 		msgItems.push("Ensure POST (form submissions) controllers " +
 			"configuration is complete in apps/" + appName + "/controller");
+		msgItems.push(appsPostControllers);
 
-		serverIndexes = "Ensure entry in server/db/indexes.js";
-		appServerRoutes = "Setup apps/" + appName + "/server/routes.js";
-
-		clientModelReminder = "Ensure that the models of handled businessProcesses are" +
-			" required in apps/" + appName + "/client/model.js";
-
-		otherClientsModelReminder = "Ensure that the model/" + appName +
-			" is required in: apps/official-*/client/model.js, apps/user/client/model.js," +
-			" apps/business-process-submitted/client/model.js";
-
-		appsRoutersReminder = "Ensure configuration entry in server/apps/routers.js";
-		msgItems.push("Ensure app configuration added in POST controllers configuration at: "
-			+ "server/processes/master/apps-post-controllers and " +
-			"server/processes/memory-db/apps-post-controllers");
-		var addRole = "Add new role in model/user/roles.js";
-		var modelViews = "Ensure that views model is updated with " +
-			"added status maps in model/views.js";
+		// Application specifics
 
 		if (appName === 'user') {
 			msgItems.push(clientModelReminder);
@@ -75,18 +80,19 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		}
 
 		if (startsWith.call(appName, 'official-') || appName === 'dispatcher') {
-			msgItems.push(accessMsg);
 			msgItems.push(clientModelReminder);
 			msgItems.push(appsRoutersReminder);
 			if (startsWith.call(appName, 'official-')) {
-				msgItems.push("Replace all occurences of BusinessProcessCHANGEME with proper " +
+				msgItems.push(processingStepsMsg);
+				msgItems.push("Replace all occurrences of BusinessProcessCHANGEME with proper " +
 					"class names in: apps/" + appName + "/client/program.js");
 				msgItems.push(modelViews);
 
-				msgItems.push(serverIndexes);
+			} else {
+				msgItems.push(accessMsg);
 			}
 			msgItems.push(addRole);
-			msgItems.push("Ensure entry in model/user/recently-visited/business-processes");
+			msgItems.push(recentlyVisitedProcesses);
 		}
 
 		if (appName === 'manager') {
@@ -122,19 +128,22 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push("Ensure manager model is configured with its managerDataForms");
 		}
 
-		if (startsWith.call(appName, 'official-') || appName === 'users-admin') {
+		if (appName === 'users-admin') {
 			msgItems.push("Ensure that views population for added " +
 				"status maps is configured in server/db/views.js");
 		}
 
 		if (appName === 'supervisor') {
 			msgItems = [accessMsg, clientModelReminder, domBindings, addRole, modelViews,
-					"Ensure that views populations for supervisor 'all' is configured in server/db/views.js",
-				appsRoutersReminder];
+				"Ensure that views populations for supervisor 'all' is configured in server/db/views.js",
+				appsPostControllers, recentlyVisitedProcesses, appsRoutersReminder];
 			msgItems.push("Ensure proper businessProcsss storage in  apps/" + appName +
 				"/server/routes.js");
 		}
 
-		console.log(msg + msgItems.join('\n- '));
+		console.log(["\nSuccessfully created " + appName + " application." +
+			"\nIt's located in: " + appRootPath + "." +
+			"\n\nIn order to setup application you need to: \n"] +
+			msgItems.join('\n- '));
 	});
 });

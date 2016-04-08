@@ -8,18 +8,20 @@ var d                   = require('d')
 
   , db = mano.db, File = db.File;
 
-var resolveValue = function (resolved, specialCase) {
+var defaultResolveValue = function (resolved, specialCase) {
 	if (specialCase === 'file') return _if(resolved.value._path, thumb(resolved.value));
 	return resolved.observable;
 };
 
 module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 	d(function (document/*, options*/) {
-		var self, headerRank, cssClass, options, filteredNames;
-		self = this;
-		options = Object(arguments[1]);
-		headerRank = options.headerRank || 3;
-		cssClass   = options.cssClass || 'entity-data-section';
+		var self         = this
+		  , options      = Object(arguments[1])
+		  , headerRank   = options.headerRank || 3
+		  , cssClass     = options.cssClass || 'entity-data-section'
+		  , resolveValue = options.customResolveValue || defaultResolveValue
+		  , filteredNames;
+
 		return section({ class: cssClass },
 			options.disableHeader ? null : _if(self._label, [headersMap[headerRank](self._label)]),
 			table(

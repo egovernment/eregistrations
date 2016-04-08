@@ -52,6 +52,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 		  , contentContainer
 		  , fieldsetResult
 		  , sectionFieldsetOptions = {
+			fieldsetOptions: options.fieldsetOptions,
 			prepend: options.prepend,
 			append: options.append,
 			master: master,

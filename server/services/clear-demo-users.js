@@ -6,7 +6,7 @@
 
 var forEach      = require('es5-ext/object/for-each')
   , endsWith     = require('es5-ext/string/#/ends-with')
-  , startsWith   = require('es5-ext/string/#/ends-with')
+  , startsWith   = require('es5-ext/string/#/starts-with')
   , debug        = require('debug-ext')('clear-demo-users')
   , deferred     = require('deferred')
   , now          = require('microtime-x')

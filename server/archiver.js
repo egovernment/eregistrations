@@ -1,7 +1,7 @@
 'use strict';
 
 var archiver = require('archiver')
-  , replace = require('es5-ext/string/#/plain-replace-all')
+  , replaceAll = require('es5-ext/string/#/plain-replace-all')
   , deferred = require('deferred')
   , promisify = require('deferred').promisify
   , unidecode = require('unidecode')
@@ -21,16 +21,16 @@ module.exports = function (user/*, options*/) {
 	  , missingFiles = []
 	  , archDocumentName
 	  , zipTempName = user.__id__ + '.'
-			+ replace.call(user.businessName, ' ', '-') + Date.now() + '.zip'
+			+ replaceAll.call(user.businessName, ' ', '-') + Date.now() + '.zip'
 	  , zipName = user.__id__ + '.'
-			+ replace.call(user.businessName, ' ', '-') + '.zip';
+			+ replaceAll.call(user.businessName, ' ', '-') + '.zip';
 
 	if (options.uploadsPath != null) uploadsPath = options.uploadsPath;
 	else uploadsPath = envUploadsDir;
 
 	user.applicableSubmissions.forEach(function (submission) {
 		var docName = submission.document.label, zipFileName, index = 0;
-		docName = replace.call(docName, ' ', '-');
+		docName = replaceAll.call(docName, ' ', '-');
 		zipFileName = user.companyName ? toSafeFileName(user.companyName) : user.__id__;
 		zipFileName += "." + docName;
 		submission.document.files.ordered.forEach(function (file) {

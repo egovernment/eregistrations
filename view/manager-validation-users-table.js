@@ -1,14 +1,17 @@
 'use strict';
 
-var copy              = require('es5-ext/object/copy')
-  , ReactiveTable     = require('reactive-table')
-  , ReactiveTableList = require('reactive-table/list')
-  , mano              = require('mano')
-  , _                 = require('mano').i18n.bind('Users Admin')
-  , getOrderIndex     = require('../users/get-default-order-index')
-  , compareUsers      = require('../utils/get-compare')(getOrderIndex)
-  , getUsersTable     = require('../view/components/users-table/')
+var copy                = require('es5-ext/object/copy')
+  , ReactiveTable       = require('reactive-table')
+  , ReactiveTableList   = require('reactive-table/list')
+  , mano                = require('mano')
+  , _                   = require('mano').i18n.bind('Users Admin')
+  , getOrderIndex       = require('../users/get-default-order-index')
+  , compareUsers        = require('../utils/get-compare')(getOrderIndex)
+  , getUsersTable       = require('../view/components/users-table/')
   , activateManagerForm = require('./components/activate-manager-form')
+  , once                = require('timers-ext/once')
+  , location            = require('mano/lib/client/location')
+  , dispatch            = require('dom-ext/html-element/#/dispatch-event-2')
 
   , db = mano.db, env = mano.env, roleMeta = db.Role.meta;
 
@@ -52,7 +55,23 @@ var baseColumns = [{
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		var usersTable;
+		var usersTable, searchForm, searchInput;
+
+		section({ class: 'section-primary users-table-filter-bar' },
+			searchForm = form({ action: '/', autoSubmit: true },
+				div(
+					label({ for: 'search-input' }, _("Search")),
+					span({ class: 'input-append' },
+						searchInput = input({ id: 'search-input', name: 'search', type: 'search',
+							value: location.query.get('search') }),
+						span({ class: 'add-on' }, span({ class: 'fa fa-search' })))
+				),
+				div(
+					input({ type: 'submit', value: _("Search") })
+				)));
+
+		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
+
 		var columns = baseColumns.map(function (conf) {
 			conf = copy(conf);
 			conf.data = conf.data.bind(this);
