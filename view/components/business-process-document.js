@@ -46,7 +46,7 @@ module.exports = function (document, collection, sideContent) {
 						class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
 						i({ class: 'fa fa-angle-right' })))
 					))),
-		documentRevsionInfo(document),
+		insert(documentRevsionInfo(document)),
 		div({ id: 'user-document', class: 'business-process-submitted-selected-document' },
 			div({ class: 'submitted-preview' },
 				div({ id: 'document-preview', class: 'submitted-preview-document' },
