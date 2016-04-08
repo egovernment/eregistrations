@@ -115,7 +115,6 @@ module.exports = exports = function (dbDriver, data) {
 		var defaultKey = processingStepsDefaultMap[stepShortPath];
 		if (!defaultKey) {
 			console.error("\n\nUnrecognized step short path " + stringify(stepShortPath));
-			return;
 		}
 		return defaultKey;
 	};
