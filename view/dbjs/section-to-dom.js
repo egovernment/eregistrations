@@ -8,10 +8,7 @@ var d                   = require('d')
 
   , db = mano.db, File = db.File;
 
-var defaultResolveValue = function (resolved, specialCase) {
-	if (specialCase === 'file') return _if(resolved.value._path, thumb(resolved.value));
-	return resolved.observable;
-};
+var defaultResolveValue =  require('../utils/default-resolve-value');
 
 module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 	d(function (document/*, options*/) {
