@@ -9,16 +9,9 @@ exports._match = 'businessProcess';
 
 exports['business-process-payments'] = { class: { active: true } };
 exports['official-revision-content'] = function (/*options*/) {
-	var options = Object(arguments[1])
-	  , urlPrefix = options.urlPrefix || '/'
-	  , businessProcess = this.businessProcess
-	  , selectedDocumentId = this.document ?  this.document.__id__ : null;
-
-	options.paymentsTarget = businessProcess;
-	options.urlPrefix = urlPrefix;
-	options.selectedDocumentId = selectedDocumentId;
+	var options = Object(arguments[0]);
 
 	return [section({ class: 'section-primary' },
-			renderPaymentList(this, options),
+			renderPaymentList(this.businessProcess, options),
 			div({ id: 'revision-document', class: 'business-process-revision-selected-document' }))];
 };

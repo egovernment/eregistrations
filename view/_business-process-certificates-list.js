@@ -7,7 +7,7 @@ var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
   , _d = _;
 
 module.exports = function (businessProcess, options) {
-	var target = options.certificatesTarget || businessProcess
+	var target = options.uploadsResolver || businessProcess
 	  , urlPrefix = options.urlPrefix || '/';
 	return _if(target.certificates.uploaded._size, [
 		div(

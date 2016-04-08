@@ -11,19 +11,13 @@ exports._match = 'businessProcess';
 
 exports['business-process-official-documents'] = { class: { active: true } };
 exports['business-process-official-content'] = function (/*options*/) {
-	var options = Object(arguments[0])
-	  , businessProcess = this.businessProcess
-	  , uploadsResolver = options.uploadsResolver || businessProcess;
-
-	options.documentsTarget = businessProcess;
-	options.certificatesTarget = uploadsResolver;
-	options.paymentsTarget = uploadsResolver;
+	var options = Object(arguments[0]);
 
 	return [section({ class: 'section-primary' },
 			div({ class: "section-primary-sub all-documents-table" },
-				div(renderCertificateList(this, options)),
-				div(renderDocumentsList(this, options)),
-				div(renderPaymentList(this, options))),
+				div(renderCertificateList(this.businessProcess, options)),
+				div(renderDocumentsList(this.businessProcess, options)),
+				div(renderPaymentList(this.businessProcess, options))),
 			div({ id: 'selection-preview' })
 		)];
 };

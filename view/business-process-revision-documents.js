@@ -9,13 +9,10 @@ exports._match = 'businessProcess';
 
 exports['business-process-documents'] = { class: { active: true } };
 exports['official-revision-content'] = function (/*options*/) {
-	var options = Object(arguments[0])
-	  , businessProcess = this.businessProcess;
-
-	options.documentsTarget = businessProcess;
+	var options = Object(arguments[0]);
 
 	return [section({ class: 'section-primary' },
-			renderDocumentsList(this, options),
+			renderDocumentsList(this.businessProcess, options),
 			div({ id: 'revision-document', class: 'business-process-revision-selected-document' })
 		)];
 };

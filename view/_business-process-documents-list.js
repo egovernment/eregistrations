@@ -7,7 +7,7 @@ var _                = require('mano').i18n.bind('User Submitted')
   , _d = _;
 
 module.exports = function (businessProcess, options) {
-	var target = options.documentsTarget || businessProcess
+	var target =  businessProcess
 	  , urlPrefix = options.urlPrefix || '/';
 	return _if(target.requirementUploads.applicable._size, [
 		div(
