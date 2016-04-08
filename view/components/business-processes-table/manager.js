@@ -83,7 +83,9 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 		});
 	}),
 	_isItemApplicable: d(function (item, query) {
-		if (this._canItemBeApplicable && !this._canItemBeApplicable(item, query)) return false;
+		if (this._fullItems.has(item)) {
+			if (this._canItemBeApplicable && !this._canItemBeApplicable(item, query)) return false;
+		}
 		if (!this._statusMap[query.status || 'all'].data.has(item)) return false;
 		if (!query.search) return true;
 		return query.search.split(/\s+/).every(function (value) {
