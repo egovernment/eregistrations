@@ -2,10 +2,11 @@
 
 'use strict';
 
-var renderDocument = require('../_business-process-document-preview')
-  , reactiveSibling = require('../../utils/reactive-sibling')
-  , _                = require('mano').i18n.bind('User Submitted')
-  , _d = _;
+var renderDocument      = require('../_business-process-document-preview')
+  , reactiveSibling     = require('../../utils/reactive-sibling')
+  , _                   = require('mano').i18n.bind('User Submitted')
+  , documentRevsionInfo = require('../_business-process-document-review-info')
+  , _d                  = _;
 
 module.exports = function (document, collection, sideContent) {
 	var nextDocument, previousDocument, nextDocumentUrl, previousDocumentUrl;
@@ -45,7 +46,7 @@ module.exports = function (document, collection, sideContent) {
 						class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
 						i({ class: 'fa fa-angle-right' })))
 					))),
-		// Place rejection reason here
+		documentRevsionInfo(document),
 		div({ id: 'user-document', class: 'business-process-submitted-selected-document' },
 			div({ class: 'submitted-preview' },
 				div({ id: 'document-preview', class: 'submitted-preview-document' },
