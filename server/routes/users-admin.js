@@ -27,7 +27,6 @@ var aFrom               = require('es5-ext/array/from')
   , uniq                = require('es5-ext/array/#/uniq')
   , unserializeValue    = require('dbjs/_setup/unserialize/value')
   , slice = Array.prototype.slice, ceil = Math.ceil
-  , push  = Array.prototype.push
   , defineProperty = Object.defineProperty, stringify = JSON.stringify
   , compareStamps = function (a, b) { return a.stamp - b.stamp; };
 
@@ -42,24 +41,6 @@ var userQueryHandler = new QueryHandler([{
 			});
 	}
 }]);
-
-var getFilteredArray = function (storage, arr, filterString) {
-	var result = [];
-
-	var filter = function (data, searchData) {
-		if (!searchData) return;
-		var value = unserializeValue(searchData.value);
-		if (value && includes.call(value, filterString)) result.push(data);
-	};
-	var findAndFilter = function (data) {
-		return storage.getComputed(data.id + '/searchString')(function (searchData) {
-			filter(data, searchData);
-		});
-	};
-	return deferred.map(arr, findAndFilter).then(function () {
-		return deferred(result);
-	});
-};
 
 var getFilteredSet = memoize(function (baseSet, filterString, storage) {
 	var set = new ObservableSet(), baseSetListener, indexListener
