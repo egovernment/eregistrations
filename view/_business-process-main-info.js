@@ -2,8 +2,7 @@
 
 'use strict';
 
-var curry        = require('es5-ext/function/#/curry')
-  , nextTick     = require('next-tick')
+var nextTick     = require('next-tick')
   , _            = require('mano').i18n.bind('User Submitted')
   , scrollBottom = require('./utils/scroll-to-bottom')
   , from         = require('es5-ext/array/from')
@@ -57,7 +56,7 @@ module.exports = function (context/*, options */) {
 						function (log) {
 							th(log.label);
 							td({ class: 'submitted-user-history-time' }, log.time);
-							td(log.text && log.text.split('\n').filter(Boolean).map(curry.call(p, 1)));
+							td(md(log.text));
 							if (context.processingStep) td(log.official);
 						}
 					)
