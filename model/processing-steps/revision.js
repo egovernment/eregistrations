@@ -111,17 +111,13 @@ module.exports = memoize(function (db) {
 	RevisionProcessingStep.prototype.requirementUploads.defineProperties({
 		// Uploads that should be processed by this processing step (applicable for processing).
 		// Defaults to applicable requirement uploads.
-		processable: { type: db.RequirementUpload, multiple: true, value: function (_observe) {
-			return this.applicable;
-		} }
+		processable: { value: function (_observe) { return this.applicable; } }
 	});
 
 	RevisionProcessingStep.prototype.paymentReceiptUploads.defineProperties({
 		// Payment receipt uploads that should be processed by this processing step (applicable for
 		// processing). Defaults to applicable payment receipt uploads.
-		processable: { type: db.PaymentReceiptUpload, multiple: true, value: function (_observe) {
-			return this.applicable;
-		} }
+		processable: { value: function (_observe) { return this.applicable; } }
 	});
 
 	// Adapt approvalProgress and revisionProgress (from UploadsProcess) to use 'processable'
