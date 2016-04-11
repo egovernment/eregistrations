@@ -8,6 +8,8 @@ module.exports = function (doc) {
 	  , revisionStatus         = upload._status
 	  , isPaymentReceiptUpload = eq(upload.constructor.__id__, 'PaymentReceiptUpload');
 
+	if (doc.isCertificate) return;
+
 	// Don't display anything if not rejected.
 	return _if(eq(revisionStatus, 'invalid'), div({
 		class: 'section-secondary'
