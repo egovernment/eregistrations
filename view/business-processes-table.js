@@ -13,9 +13,9 @@ exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
 		var searchForm, searchInput, businessProcessesTable;
-
 		exports._optionalContent(this);
-
+		// this should not happen, but it might if we don't block illegal role dependencies
+		if (!exports._statusMap(this)) return;
 		section({ class: 'section-primary users-table-filter-bar' },
 			searchForm = form({ action: '/', autoSubmit: true },
 				div({ class: 'users-table-filter-bar-status' },
@@ -54,7 +54,6 @@ exports['sub-main'] = {
 						_("Print list of requests")), _("Print the list")
 					)
 			));
-
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
 
 		businessProcessesTable = exports._businessProcessTable(this);
