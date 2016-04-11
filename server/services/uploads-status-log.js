@@ -56,13 +56,13 @@ module.exports = function (db) {
 						statusLogProperties.text = _("Uploaded payment receipt marked as invalid") +
 							':\n\n' + upload.rejectReasonMemo;
 					} else {
-						statusLogProperties.text = _("Uploaded files marked as invalid") + ':';
+						statusLogProperties.text = _("Uploaded files marked as invalid") + ':\n';
 
 						if (upload.rejectReasons.size === 1) {
-							statusLogProperties.text += '\n\n' + upload.rejectReasons.first;
+							statusLogProperties.text += '\n' + upload.rejectReasons.first;
 						} else {
 							upload.rejectReasons.forEach(function (rejectReason) {
-								statusLogProperties.text += '\n\n' + '* ' + rejectReason;
+								statusLogProperties.text += '\n' + '* ' + rejectReason;
 							});
 						}
 					}
