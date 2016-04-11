@@ -11,6 +11,6 @@ exports['sub-main'] = {
 	content: function () {
 		var doc = this.document;
 
-		renderDocument(doc, documentRevsionInfo(doc));
+		renderDocument(doc, doc.isCertificate ? null : documentRevsionInfo(doc));
 	}
 };
