@@ -1,7 +1,6 @@
 'use strict';
 
-var curry = require('es5-ext/function/#/curry')
-  , _     = require('mano').i18n.bind('User');
+var _ = require('mano').i18n.bind('User');
 
 exports._parent = require('./print-base');
 exports._match = 'businessProcess';
@@ -16,7 +15,7 @@ exports.main = function () {
 				function (log) {
 					th(log.label);
 					td({ class: 'print-user-history-time' }, log._time);
-					td(log.text && log.text.split('\n').filter(Boolean).map(curry.call(p, 1)));
+					td(md(log.text));
 					if (this.processingStep) td(log.official);
 				}, this)));
 };
