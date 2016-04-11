@@ -57,9 +57,14 @@ module.exports = function (db) {
 							':\n\n' + upload.rejectReasonMemo;
 					} else {
 						statusLogProperties.text = _("Uploaded files marked as invalid") + ':';
-						upload.rejectReasons.forEach(function (rejectReason) {
-							statusLogProperties.text += '\n\n* ' + rejectReason;
-						});
+
+						if (upload.rejectReasons.size === 1) {
+							statusLogProperties.text += '\n\n' + upload.rejectReasons.first;
+						} else {
+							upload.rejectReasons.forEach(function (rejectReason) {
+								statusLogProperties.text += '\n\n' + '* ' + rejectReason;
+							});
+						}
 					}
 				}
 
