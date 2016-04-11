@@ -14,7 +14,7 @@ module.exports = memoize(function (storage, sortKeyPath) {
 	else storages = [storage];
 
 	storages.forEach(function (storage) {
-		storage.on('key:' + (sortKeyPath + '&'), function (event) {
+		storage.on('key:' + (sortKeyPath || '&'), function (event) {
 			if (!itemsMap[event.ownerId]) {
 				itemsMap[event.ownerId] = { id: event.ownerId, stamp: event.data.stamp };
 			} else {

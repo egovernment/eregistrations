@@ -174,7 +174,7 @@ var initializeHandler = function (conf) {
 			name: 'id',
 			ensure: function (value) {
 				if (!value) throw new Error("Missing id");
-				return storage.getComputed(value + '/isSubmitted')(function (data) {
+				return storage.get(value + '/isSubmitted')(function (data) {
 					if (!data || (data.value !== '11')) return null;
 					return value;
 				});
