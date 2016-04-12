@@ -143,12 +143,12 @@ module.exports = exports = function (dbDriver, data) {
 		return objects;
 	}, { primitive: true });
 	var addOfficialStepsPendingSizes = (function () {
-		var resolveFragment = function (stepsShortPaths, userId) {
+		var resolveFragment = function (viewPaths, userId) {
 			var ids, viewNames, fragment;
-			if (!stepsShortPaths.size) return emptyFragment;
+			if (!viewPaths.size) return emptyFragment;
 			ids = [];
 			viewNames = [];
-			stepsShortPaths.forEach(function (stepShortPath) {
+			viewPaths.forEach(function (stepShortPath) {
 				var defaultKey = resolveDefaultStatus(stepShortPath), viewName;
 				if (!defaultKey) return;
 				if (assignableProcessingSteps && assignableProcessingSteps.has(stepShortPath)) {
