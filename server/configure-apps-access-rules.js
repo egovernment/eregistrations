@@ -57,6 +57,10 @@ var getDefaultOfficialViewsResolver = function (userStorage) {
 	};
 };
 
+var defaultResolveOfficialViewPath = function (userId, roleName, stepShortPath) {
+	return stepShortPath;
+};
+
 module.exports = exports = function (dbDriver, data) {
 	var userStorage = ensureDriver(dbDriver).getStorage('user')
 	  , getBusinessProcessData = getObjFragment()
@@ -66,7 +70,7 @@ module.exports = exports = function (dbDriver, data) {
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , resolveOfficialViews, processingStepsMeta, processingStepsDefaultMap = create(null)
 	  , businessProcessListProperties, globalFragment, getMetaAdminFragment, getAccessRules
-	  , assignableProcessingSteps, initializeView;
+	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath;
 
 	var getBusinessProcessStorages = require('./utils/business-process-storages');
 	var getManagerUserData = getPartFragments(userStorage, new Set(['email', 'firstName',
@@ -97,6 +101,12 @@ module.exports = exports = function (dbDriver, data) {
 		new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
 
 	initializeView = ensureCallable(data.initializeView);
+
+	if (data.resolveOfficialViewPath != null) {
+		resolveOfficialViewPath = ensureCallable(data.resolveOfficialViewPath);
+	} else {
+		resolveOfficialViewPath = defaultResolveOfficialViewPath;
+	}
 
 	// Configure official steps (per user) resolver
 	if (data.officialViewsResolver != null) {
@@ -335,7 +345,7 @@ module.exports = exports = function (dbDriver, data) {
 
 	getAccessRules = memoize(function (appId) {
 		var userId, roleName, stepShortPath, custom, fragment, initialBusinessProcesses, promise
-		  , clientId, businessProcessId;
+		  , clientId, businessProcessId, viewPath;
 
 		appId = appId.split('.');
 		userId = appId[0];
@@ -442,11 +452,12 @@ module.exports = exports = function (dbDriver, data) {
 			// Recently visited business processes (full data)
 			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, stepShortPath));
 			// Official role specific data
+			viewPath = resolveOfficialViewPath(userId, roleName, stepShortPath);
 			if (assignableProcessingSteps && assignableProcessingSteps.has(stepShortPath)) {
 				fragment.addFragment(getOfficialFragment(stepShortPath,
-					'assigned/7' + userId + '/' + stepShortPath));
+					'assigned/7' + userId + '/' + viewPath));
 			} else {
-				fragment.addFragment(getOfficialFragment(stepShortPath, stepShortPath));
+				fragment.addFragment(getOfficialFragment(stepShortPath, viewPath));
 			}
 			return fragment;
 		}
