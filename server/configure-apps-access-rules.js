@@ -142,7 +142,7 @@ module.exports = exports = function (dbDriver, data) {
 		storage.on('keyid:' + id, function (event) { objects.reload(resolveViewData(event.data)); });
 		return objects;
 	}, { primitive: true });
-	var addOfficialStepsPendingSizes = (function () {
+	var addOfficialViewsPendingSizes = (function () {
 		var resolveFragment = function (viewPaths, userId) {
 			var ids, viewNames, fragment;
 			if (!viewPaths.size) return emptyFragment;
@@ -349,7 +349,7 @@ module.exports = exports = function (dbDriver, data) {
 		// User profile data
 		fragment.addFragment(getUserFragment(userId));
 		// Sizes of pending files in official roles of user
-		addOfficialStepsPendingSizes(userId, fragment);
+		addOfficialViewsPendingSizes(userId, fragment);
 		// Eventual global fragment
 		if (globalFragment && (roleName !== 'memoryDb')) fragment.addFragment(globalFragment);
 
