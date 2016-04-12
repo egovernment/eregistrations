@@ -66,7 +66,7 @@ module.exports = exports = function (dbDriver, data) {
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , resolveOfficialSteps, processingStepsMeta, processingStepsDefaultMap = create(null)
 	  , businessProcessListProperties, globalFragment, getMetaAdminFragment, getAccessRules
-	  , assignableProcessingSteps;
+	  , assignableProcessingSteps, initializeView;
 
 	var getBusinessProcessStorages = require('./utils/business-process-storages');
 	var getManagerUserData = getPartFragments(userStorage, new Set(['email', 'firstName',
@@ -95,6 +95,8 @@ module.exports = exports = function (dbDriver, data) {
 	}
 	businessProcessListProperties =
 		new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
+
+	initializeView = ensureCallable(data.initializeView);
 
 	// Configure official steps (per user) resolver
 	if (data.officialStepsResolver != null) {
@@ -142,21 +144,24 @@ module.exports = exports = function (dbDriver, data) {
 	}, { primitive: true });
 	var addOfficialStepsPendingSizes = (function () {
 		var resolveFragment = function (stepsShortPaths, userId) {
-			var ids;
+			var ids, viewNames, fragment;
 			if (!stepsShortPaths.size) return emptyFragment;
 			ids = [];
+			viewNames = [];
 			stepsShortPaths.forEach(function (stepShortPath) {
-				var defaultKey = resolveDefaultStatus(stepShortPath);
+				var defaultKey = resolveDefaultStatus(stepShortPath), viewName;
 				if (!defaultKey) return;
 				if (assignableProcessingSteps && assignableProcessingSteps.has(stepShortPath)) {
-					ids.push('views/pendingBusinessProcesses/assigned/7' + userId + '/' + stepShortPath +
-						'/' + defaultKey + '/totalSize');
+					viewName = 'pendingBusinessProcesses/assigned/7' + userId + '/' + stepShortPath;
 				} else {
-					ids.push('views/pendingBusinessProcesses/' + stepShortPath + '/' + defaultKey +
-						'/totalSize');
+					viewName = 'pendingBusinessProcesses/' + stepShortPath;
 				}
+				viewNames.push(viewName);
+				ids.push('views/' + viewName + '/' + defaultKey + '/totalSize');
 			});
-			return getRedRecFrag(reducedStorage, ids);
+			fragment = getRedRecFrag(reducedStorage, ids);
+			fragment.promise = fragment.promise(deferred.map(viewNames, initializeView));
+			return fragment;
 		};
 		return function (userId, fragment) {
 			var stepsShortPaths = resolveOfficialSteps(userId)
@@ -183,11 +188,13 @@ module.exports = exports = function (dbDriver, data) {
 	};
 	var getUsersAdminFragment = memoize(function () {
 		var fragment = new FragmentGroup();
-		// First page snapshot
-		fragment.addFragment(getUserReducedData('views/usersAdmin'));
-		// First page list data
-		fragment.addFragment(getColFragments(getFirstPageItems(userStorage, 'usersAdmin'),
-			getUserListFragment));
+		fragment.promise = initializeView('usersAdmin')(function () {
+			// First page snapshot
+			fragment.addFragment(getUserReducedData('views/usersAdmin'));
+			// First page list data
+			fragment.addFragment(getColFragments(getFirstPageItems(userStorage, 'usersAdmin'),
+				getUserListFragment));
+		});
 		return fragment;
 	});
 
@@ -203,11 +210,13 @@ module.exports = exports = function (dbDriver, data) {
 
 	var getManagerValidationFragment = memoize(function () {
 		var fragment = new FragmentGroup();
-		// First page snapshot
-		fragment.addFragment(getUserReducedData('views/managerValidation'));
-		// First page list data
-		fragment.addFragment(getColFragments(getFirstPageItems(userStorage, 'managerValidation'),
-			getManagerValidationUserListFragment));
+		fragment.promise = initializeView('managerValidation')(function () {
+			// First page snapshot
+			fragment.addFragment(getUserReducedData('views/managerValidation'));
+			// First page list data
+			fragment.addFragment(getColFragments(getFirstPageItems(userStorage, 'managerValidation'),
+				getManagerValidationUserListFragment));
+		});
 		return fragment;
 	});
 
@@ -230,23 +239,25 @@ module.exports = exports = function (dbDriver, data) {
 		var addSortRecord = getAddRecFrag(null,
 			['processingSteps/map/' + resolveStepPath(stepShortPath) + '/isReady']);
 
-		// To be visited (recently pending) business processes (full data)
-		fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
-			'pendingBusinessProcesses/' + viewPath + '/' + defaultStatusName).toArray().slice(0, 10),
-			getBusinessProcessData));
-		// First page snapshot for each status
-		fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + viewPath));
-		// First page list data for each status
-		fragment.addFragment(getColFragments(joinSets(
-			keys(processingStepsMeta[stepShortPath]).map(function (status) {
-				return getFirstPageItems(reducedStorage,
-					'pendingBusinessProcesses/' + viewPath + '/' + status);
-			})
-		), function (businessProcessId) {
-			var fragment = new FragmentGroup();
-			fragment.addFragment(getBusinessProcessOfficialListFragment(businessProcessId));
-			return addSortRecord(businessProcessId, fragment);
-		}));
+		fragment.promise = initializeView('pendingBusinessProcesses/' + viewPath)(function () {
+			// To be visited (recently pending) business processes (full data)
+			fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
+				'pendingBusinessProcesses/' + viewPath + '/' + defaultStatusName).toArray().slice(0, 10),
+				getBusinessProcessData));
+			// First page snapshot for each status
+			fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + viewPath));
+			// First page list data for each status
+			fragment.addFragment(getColFragments(joinSets(
+				keys(processingStepsMeta[stepShortPath]).map(function (status) {
+					return getFirstPageItems(reducedStorage,
+						'pendingBusinessProcesses/' + viewPath + '/' + status);
+				})
+			), function (businessProcessId) {
+				var fragment = new FragmentGroup();
+				fragment.addFragment(getBusinessProcessOfficialListFragment(businessProcessId));
+				return addSortRecord(businessProcessId, fragment);
+			}));
+		});
 		return fragment;
 	}, { primitive: true });
 
@@ -266,13 +277,15 @@ module.exports = exports = function (dbDriver, data) {
 			assignableProcessingSteps.forEach(function (stepShortPath) {
 				var defaultStatusName = resolveDefaultStatus(stepShortPath), roleName, getOfficialFragment;
 				if (!defaultStatusName) return;
-				// First page snapshot
-				fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath +
-					'/' + defaultStatusName));
-				// First page list data
-				fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
-					'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName),
-					getBusinessProcessDispatcherListFragment));
+				fragment.promise = initializeView('pendingBusinessProcesses/' + stepShortPath)(function () {
+					// First page snapshot
+					fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath +
+						'/' + defaultStatusName));
+					// First page list data
+					fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
+						'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName),
+						getBusinessProcessDispatcherListFragment));
+				});
 				// Officials
 				// TODO: Support deep processing steps
 				roleName = 'official' + capitalize.call(stepShortPath);
@@ -297,21 +310,25 @@ module.exports = exports = function (dbDriver, data) {
 	var getSupervisorFragment = memoize(function () {
 		var fragment = new FragmentGroup();
 		// "All roles" first page snapshot
-		fragment.addFragment(getReducedData('views/supervisor/all'));
-		fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage, 'supervisor/all'),
-			getBusinessProcessSupervisorListFragment));
+		fragment.promise = initializeView('supervisor')(function () {
+			fragment.addFragment(getReducedData('views/supervisor/all'));
+			fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage, 'supervisor/all'),
+				getBusinessProcessSupervisorListFragment));
+		});
 
 		// Per role first page snapshots
 		forEach(processingStepsMeta, function (data, stepShortPath) {
 			var defaultStatusName = resolveDefaultStatus(stepShortPath);
 			if (!defaultStatusName) return;
-			// First page snapshot
-			fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath + '/' +
-				defaultStatusName));
-			// First page list data
-			fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
-				'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName),
-				getBusinessProcessSupervisorListFragment));
+			fragment.promise = initializeView('pendingBusinessProcesses/' + stepShortPath)(function () {
+				// First page snapshot
+				fragment.addFragment(getReducedData('views/pendingBusinessProcesses/' + stepShortPath +
+					'/' + defaultStatusName));
+				// First page list data
+				fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
+					'pendingBusinessProcesses/' + stepShortPath + '/' + defaultStatusName),
+					getBusinessProcessSupervisorListFragment));
+			});
 		});
 		return fragment;
 	});
