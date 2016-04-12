@@ -164,12 +164,12 @@ module.exports = exports = function (dbDriver, data) {
 			return fragment;
 		};
 		return function (userId, fragment) {
-			var stepsShortPaths = resolveOfficialViews(userId)
+			var viewPaths = resolveOfficialViews(userId)
 			  , current;
-			current = resolveFragment(stepsShortPaths, userId);
+			current = resolveFragment(viewPaths, userId);
 			fragment.addFragment(current);
-			stepsShortPaths.on('change', function () {
-				var nu = resolveFragment(stepsShortPaths, userId);
+			viewPaths.on('change', function () {
+				var nu = resolveFragment(viewPaths, userId);
 				if (nu === current) return;
 				fragment.addFragment(nu);
 				fragment.deleteFragment(current);
