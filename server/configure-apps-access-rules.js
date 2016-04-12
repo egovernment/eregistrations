@@ -64,7 +64,7 @@ module.exports = exports = function (dbDriver, data) {
 	  , getUserData = getObjFragment(userStorage)
 	  , getUserReducedData = getReducedFrag(userStorage)
 	  , getReducedData = getReducedFrag(reducedStorage)
-	  , resolveOfficialSteps, processingStepsMeta, processingStepsDefaultMap = create(null)
+	  , resolveOfficialViews, processingStepsMeta, processingStepsDefaultMap = create(null)
 	  , businessProcessListProperties, globalFragment, getMetaAdminFragment, getAccessRules
 	  , assignableProcessingSteps, initializeView;
 
@@ -100,11 +100,11 @@ module.exports = exports = function (dbDriver, data) {
 
 	// Configure official steps (per user) resolver
 	if (data.officialStepsResolver != null) {
-		resolveOfficialSteps = ensureCallable(data.officialStepsResolver);
+		resolveOfficialViews = ensureCallable(data.officialStepsResolver);
 	} else {
-		resolveOfficialSteps = getDefaultOfficialStepsResolver(userStorage);
+		resolveOfficialViews = getDefaultOfficialStepsResolver(userStorage);
 	}
-	resolveOfficialSteps = memoize(resolveOfficialSteps, { length: 1, primitive: true });
+	resolveOfficialViews = memoize(resolveOfficialViews, { length: 1, primitive: true });
 
 	// Resolve default step statuses (in most cases 'pending')
 	forEach(processingStepsMeta, function (meta, stepShortPath) {
@@ -164,7 +164,7 @@ module.exports = exports = function (dbDriver, data) {
 			return fragment;
 		};
 		return function (userId, fragment) {
-			var stepsShortPaths = resolveOfficialSteps(userId)
+			var stepsShortPaths = resolveOfficialViews(userId)
 			  , current;
 			current = resolveFragment(stepsShortPaths, userId);
 			fragment.addFragment(current);
