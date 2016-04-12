@@ -47,7 +47,7 @@ var joinSets = function (sets) {
 	set.promise = deferred.map(sets, function (set) { return set.promise; });
 	return set;
 };
-var getDefaultOfficialStepsResolver = function (userStorage) {
+var getDefaultOfficialViewsResolver = function (userStorage) {
 	return function (userId) {
 		var rolesSet = getDbRecordSet(userStorage, userId + '/roles');
 		var resultSet = rolesSet.map(unserializeValue).filter(isOfficialRoleName)
@@ -102,7 +102,7 @@ module.exports = exports = function (dbDriver, data) {
 	if (data.officialStepsResolver != null) {
 		resolveOfficialViews = ensureCallable(data.officialStepsResolver);
 	} else {
-		resolveOfficialViews = getDefaultOfficialStepsResolver(userStorage);
+		resolveOfficialViews = getDefaultOfficialViewsResolver(userStorage);
 	}
 	resolveOfficialViews = memoize(resolveOfficialViews, { length: 1, primitive: true });
 
@@ -475,4 +475,4 @@ module.exports = exports = function (dbDriver, data) {
 	}, { primitive: true });
 	return getAccessRules;
 };
-exports.getDefaultOfficialStepsResolver = getDefaultOfficialStepsResolver;
+exports.getDefaultOfficialViewsResolver = getDefaultOfficialViewsResolver;
