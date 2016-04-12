@@ -33,11 +33,11 @@ module.exports = function (stepPath, meta, data) {
 	else roleName = 'official' + capitalize.call(stepPath);
 
 	return deferred(
+		// Default status tracking, needed for dispatcher role
 		trackStatus(stepPath, defaultStatus, {
 			meta: meta[defaultStatus],
 			businessProcessStorage: data.businessProcessStorage,
 			reducedStorage: data.reducedStorage,
-			officialId: data.officialId,
 			itemsPerPage: data.itemsPerPage
 		}),
 		getDbSet(userStorage, 'direct', 'roles', serializeValue(roleName))(function (officials) {
