@@ -22,11 +22,13 @@ exports.main = function () {
 	  , columns       = ensureArray(exports._columns(this))
 	  , getOrderIndex = ensureCallable(exports._getOrderIndex(this))
 	  , stepShortPath = ensureString(exports._stepShortPath(this))
+	  , viewKeyPath = exports._viewKeyPath(this) || stepShortPath
 	  , container, superIsExernalQuery;
 
 	var listManager = new Manager({
 		user: this.user,
 		roleName: stepShortPath,
+		viewKeyPath: viewKeyPath,
 		statusMap: statusMap,
 		getOrderIndex: getOrderIndex,
 		itemsPerPage: env.objectsListItemsPerPage
@@ -88,3 +90,4 @@ exports._columns = Function.prototype;
 exports._stepShortPath = function (context) {
 	return uncapitalize.call(context.user.currentRoleResolved.slice('official'.length));
 };
+exports._viewKeyPath = Function.prototype;
