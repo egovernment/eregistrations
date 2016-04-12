@@ -41,22 +41,34 @@ module.exports = function (db) {
 		if (event.value && isStatusKeyPath(id)) {
 			upload = event.object.object;
 			nextTick(function () {
-				if (upload.status === 'valid') {
-					upload.document.statusLog.map.newUniq().setProperties({
-						label: _("Approved"),
-						time: new Date(),
-						text: (upload.owner.owner.key === 'paymentReceiptUploads')
-							? _("Payment confirmed") : _("Uploaded files approved as valid")
-					});
-				} else if (upload.status === 'invalid') {
-					upload.document.statusLog.map.newUniq().setProperties({
-						label: _("Rejected"),
-						time: new Date(),
-						text: (upload.owner.owner.key === 'paymentReceiptUploads')
-							? _("Uploaded payment receipt marked as invalid")
-							: _("Uploaded files marked as invalid")
-					});
+				var status           = upload.status
+				  , isPaymentReceipt = upload.owner.owner.key === 'paymentReceiptUploads'
+				  , statusLogProperties = { time: new Date() };
+
+				if (status === 'valid') {
+					statusLogProperties.label = _("Approved");
+					statusLogProperties.text = isPaymentReceipt ? _("Payment confirmed")
+						: _("Uploaded files approved as valid");
+				} else if (status === 'invalid') {
+					statusLogProperties.label = _("Rejected");
+
+					if (isPaymentReceipt) {
+						statusLogProperties.text = _("Uploaded payment receipt marked as invalid") +
+							':\n\n' + upload.rejectReasonMemo;
+					} else {
+						statusLogProperties.text = _("Uploaded files marked as invalid") + ':\n';
+
+						if (upload.rejectReasons.size === 1) {
+							statusLogProperties.text += '\n' + upload.rejectReasons.first;
+						} else {
+							upload.rejectReasons.forEach(function (rejectReason) {
+								statusLogProperties.text += '\n' + '* ' + rejectReason;
+							});
+						}
+					}
 				}
+
+				upload.document.statusLog.map.newUniq().setProperties(statusLogProperties);
 			});
 		}
 	});
