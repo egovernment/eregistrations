@@ -1,15 +1,16 @@
 'use strict';
 
-var findKey        = require('es5-ext/object/find-key')
-  , ensureObject   = require('es5-ext/object/valid-object')
-  , ensureString   = require('es5-ext/object/validate-stringifiable-value')
-  , capitalize     = require('es5-ext/string/#/capitalize')
-  , deferred       = require('deferred')
-  , serializeValue = require('dbjs/_setup/serialize/value')
-  , ensureStorage  = require('dbjs-persistence/ensure-storage')
-  , getDbSet       = require('../utils/get-db-set')
-  , trackStep      = require('./processing-step')
-  , trackStatus    = require('./processing-step-status');
+var findKey         = require('es5-ext/object/find-key')
+  , ensureObject    = require('es5-ext/object/valid-object')
+  , ensureString    = require('es5-ext/object/validate-stringifiable-value')
+  , capitalize      = require('es5-ext/string/#/capitalize')
+  , deferred        = require('deferred')
+  , serializeValue  = require('dbjs/_setup/serialize/value')
+  , ensureStorage   = require('dbjs-persistence/ensure-storage')
+  , resolveFullPath = require('../../utils/resolve-processing-step-full-path')
+  , getDbSet        = require('../utils/get-db-set')
+  , trackStep       = require('./processing-step')
+  , trackStatus     = require('./processing-step-status');
 
 module.exports = function (stepPath, meta, data) {
 	var userStorage, roleName, defaultStatus;
@@ -24,7 +25,13 @@ module.exports = function (stepPath, meta, data) {
 		trackStep(stepPath, meta, {
 			businessProcessStorage: data.businessProcessStorage,
 			reducedStorage: data.reducedStorage,
-			officialId: officialId,
+			filter: function (set) {
+				return getDbSet(data.businessProcessStorage, 'direct',
+					'processingSteps/map/' + resolveFullPath(stepPath) + '/assignee', '7' + officialId)(
+					function (assignedBusinessProcesses) { return set.and(assignedBusinessProcesses); }
+				);
+			},
+			viewPath: 'assigned/7' + officialId + '/' + stepPath,
 			itemsPerPage: data.itemsPerPage
 		}).done();
 	};

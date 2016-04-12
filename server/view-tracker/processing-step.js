@@ -17,7 +17,8 @@ module.exports = function (stepPath, meta, data) {
 			meta: meta[status],
 			businessProcessStorage: data.businessProcessStorage,
 			reducedStorage: data.reducedStorage,
-			officialId: data.officialId,
+			filter: data.filter,
+			viewPath: data.viewPath,
 			itemsPerPage: data.itemsPerPage
 		});
 	});
