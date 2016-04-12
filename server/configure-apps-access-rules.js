@@ -99,8 +99,8 @@ module.exports = exports = function (dbDriver, data) {
 	initializeView = ensureCallable(data.initializeView);
 
 	// Configure official steps (per user) resolver
-	if (data.officialStepsResolver != null) {
-		resolveOfficialViews = ensureCallable(data.officialStepsResolver);
+	if (data.officialViewsResolver != null) {
+		resolveOfficialViews = ensureCallable(data.officialViewsResolver);
 	} else {
 		resolveOfficialViews = getDefaultOfficialViewsResolver(userStorage);
 	}
