@@ -350,7 +350,7 @@ module.exports = exports = function (dbDriver, data) {
 		appId = appId.split('.');
 		userId = appId[0];
 		roleName = appId[1];
-		custom = appId[2];
+		custom = appId.slice(2).join('.');
 
 		if (!roleName) return emptyFragment; // Temporary inconsistent state (client migration)
 
@@ -409,7 +409,7 @@ module.exports = exports = function (dbDriver, data) {
 				});
 				return fragment;
 			}
-			clientId = custom;
+			clientId = appId[2];
 			businessProcessId = appId[3];
 			fragment.addFragment(getManagerUserData(clientId));
 			if (businessProcessId) {
@@ -452,7 +452,7 @@ module.exports = exports = function (dbDriver, data) {
 			// Recently visited business processes (full data)
 			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, stepShortPath));
 			// Official role specific data
-			viewPath = resolveOfficialViewPath(userId, roleName, stepShortPath);
+			viewPath = resolveOfficialViewPath(userId, roleName, stepShortPath, custom);
 			if (assignableProcessingSteps && assignableProcessingSteps.has(stepShortPath)) {
 				fragment.addFragment(getOfficialFragment(stepShortPath,
 					'assigned/7' + userId + '/' + viewPath));
