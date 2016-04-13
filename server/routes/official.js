@@ -12,6 +12,7 @@ var aFrom                          = require('es5-ext/array/from')
   , toNaturalNumber                = require('es5-ext/number/to-pos-integer')
   , normalizeOptions               = require('es5-ext/object/normalize-options')
   , toArray                        = require('es5-ext/object/to-array')
+  , ensureCallable                 = require('es5-ext/object/valid-callable')
   , ensureObject                   = require('es5-ext/object/valid-object')
   , ensureString                   = require('es5-ext/object/validate-stringifiable-value')
   , includes                       = require('es5-ext/string/#/contains')
@@ -303,9 +304,10 @@ var initializeHandler = function (conf) {
 
 module.exports = exports = function (mainConf/*, options */) {
 	var resolveHandler, options, stepShortPathResolve, getHandlerByRole
-	  , recentlyVisitedContextName;
+	  , recentlyVisitedContextName, decorateQuery;
 	options = Object(arguments[1]);
 	recentlyVisitedContextName = options.recentlyVisitedContextName;
+	if (options.decorateQuery != null) decorateQuery = ensureCallable(options.decorateQuery);
 	if (isArray(mainConf)) {
 		resolveHandler = (function () {
 			var map = mainConf.reduce(function (map, conf) {
@@ -350,12 +352,13 @@ module.exports = exports = function (mainConf/*, options */) {
 			return resolveHandler(this.req)(function (handler) {
 				// Get snapshot of business processes table page
 				return handler.tableQueryHandler.resolve(query)(function (query) {
+					if (decorateQuery) decorateQuery(query, this.req);
 					if (handler.assigneePath) {
 						query.assignedTo = userId;
 					}
 					return handler.getTableData(query);
-				});
-			});
+				}.bind(this));
+			}.bind(this));
 		},
 		'get-business-process-data': function (query) {
 			return resolveHandler(this.req)(function (handler) {
