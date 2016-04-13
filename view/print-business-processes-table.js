@@ -31,7 +31,8 @@ exports.main = function () {
 		viewKeyPath: viewKeyPath,
 		statusMap: statusMap,
 		getOrderIndex: getOrderIndex,
-		itemsPerPage: env.objectsListItemsPerPage
+		itemsPerPage: env.objectsListItemsPerPage,
+		canItemBeApplicable: exports._getCanItemBeApplicable(this)
 	});
 	superIsExernalQuery = listManager._isExternalQuery;
 	listManager._isExternalQuery = function (query) {
@@ -91,3 +92,4 @@ exports._stepShortPath = function (context) {
 	return uncapitalize.call(context.user.currentRoleResolved.slice('official'.length));
 };
 exports._viewKeyPath = Function.prototype;
+exports._getCanItemBeApplicable = Function.prototype;
