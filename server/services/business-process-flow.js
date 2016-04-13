@@ -162,14 +162,26 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			trigger: businessProcessesSubmitted
 				.filterByKeyPath(stepPath + '/isPreviousStepsSatisfiedDeep', true)
 		}, function (businessProcess) {
-			var step = businessProcess.getBySKeyPath(stepPath);
+			var step = businessProcess.getBySKeyPath(stepPath)
+			  , returnHandlerResult;
+
 			if (!step.isApplicable) return;
 			if (!step.status || (step.status === 'pending')) return;
-			if (customStepReturnHandler) customStepReturnHandler(step);
-			if (step.statusComputed && (step.statusComputed !== 'pending') &&
-					!returnStatuses.has(step.status)) {
+
+			if (customStepReturnHandler) {
+				returnHandlerResult = customStepReturnHandler(step);
+			}
+
+			if (returnHandlerResult == null) {
+				if (step.statusComputed && (step.statusComputed !== 'pending') &&
+						!returnStatuses.has(step.status)) {
+					return;
+				}
+			} else if (!returnHandlerResult) {
+				// Skip if customStepReturnHandler 'explicitly' decided so
 				return;
 			}
+
 			debug('%s %s step reset from %s to pending state', businessProcess.__id__,
 				step.shortPath, step.status);
 			if (step.hasOwnProperty('revisionOfficialStatus')) step.delete('revisionOfficialStatus');
