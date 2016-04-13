@@ -57,7 +57,7 @@ var getDefaultOfficialViewsResolver = function (userStorage) {
 	};
 };
 
-var defaultResolveOfficialViewPath = function (userId, roleName, stepShortPath) {
+var defaultResolveOfficialViewPath = function (userId, roleName, stepShortPath, custom) {
 	return stepShortPath;
 };
 
