@@ -352,11 +352,12 @@ module.exports = exports = function (mainConf/*, options */) {
 			return resolveHandler(this.req)(function (handler) {
 				// Get snapshot of business processes table page
 				return handler.tableQueryHandler.resolve(query)(function (query) {
-					if (decorateQuery) decorateQuery(query, this.req);
-					if (handler.assigneePath) {
-						query.assignedTo = userId;
-					}
-					return handler.getTableData(query);
+					return deferred(decorateQuery && decorateQuery(query, this.req))(function () {
+						if (handler.assigneePath) {
+							query.assignedTo = userId;
+						}
+						return handler.getTableData(query);
+					});
 				}.bind(this));
 			}.bind(this));
 		},
