@@ -159,15 +159,14 @@ module.exports = exports = function (dbDriver, data) {
 			ids = [];
 			viewNames = [];
 			viewPaths.forEach(function (stepShortPath) {
-				var defaultKey = resolveDefaultStatus(stepShortPath), viewName;
-				if (!defaultKey) return;
+				var viewName;
 				if (assignableProcessingSteps && assignableProcessingSteps.has(stepShortPath)) {
 					viewName = 'pendingBusinessProcesses/assigned/7' + userId + '/' + stepShortPath;
 				} else {
 					viewName = 'pendingBusinessProcesses/' + stepShortPath;
 				}
 				viewNames.push(viewName);
-				ids.push('views/' + viewName + '/' + defaultKey + '/totalSize');
+				ids.push('views/' + viewName + '/pending/totalSize');
 			});
 			fragment = getRedRecFrag(reducedStorage, ids);
 			fragment.promise = fragment.promise(deferred.map(viewNames, initializeView));
