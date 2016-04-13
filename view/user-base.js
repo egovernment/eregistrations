@@ -57,7 +57,6 @@ exports.menu = function () {
 };
 
 exports.main = function () {
-
 	div({ class: 'submitted-menu' },
 		div({ class: 'submitted-menu-bar content' },
 			nav(ul({ class: 'submitted-menu-items', id: 'submitted-menu' },

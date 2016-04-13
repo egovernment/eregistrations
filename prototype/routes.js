@@ -7,6 +7,7 @@ var db           = require('mano').db;
 // Assure prototype specific print base customisations
 require('./view/print-base');
 require('./view/user');
+require('./view/business-process-submitted');
 
 module.exports = {
 	// Public routes
