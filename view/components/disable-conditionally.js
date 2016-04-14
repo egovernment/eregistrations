@@ -7,7 +7,7 @@ module.exports = function (container, disableCondition/*, options*/) {
 	  , forcedState     = options.forcedState
 	  , disablerId      = options.id;
 
-	return div({ class: ['disabler-range', _if(eq(forcedState, null),
+	return div({ class: ['disabler-range', _if(forcedState == null,
 		_if(disableCondition, 'disabler-active'), _if(not(forcedState), 'disabler-active'))],
 		id: disablerId }, div({ class: 'disabler' }), container);
 };
