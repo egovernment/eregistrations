@@ -23,7 +23,7 @@ module.exports = function (businessProcessStorage, counterStorage, officials, st
 			if (data && data.value[0] === '7') return;
 			lastIndex = officialsArray[lastIndex + 1] ? lastIndex + 1 : 0;
 			officialId = officialsArray[lastIndex];
-			debug('for %s assigned id: %s, to %s', id, officialId, businessProcessId);
+			debug('for %s assigned official: %s, to process: %s', id, officialId, businessProcessId);
 			return deferred(
 				businessProcessStorage.store(businessProcessId + '/' + path + '/assignee',
 					'7' + officialId),
