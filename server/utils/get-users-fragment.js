@@ -4,7 +4,7 @@ var getColFragments  = require('../data-fragments/get-collection-fragments')
   , getDbSet         = require('./get-db-set')
   , getPartFragments = require('../data-fragments/get-part-object-fragments');
 /**
- * Should be used when preparing initial data fragments for users
+ * Should be used when preparing data fragments for users
  * @param {string} keyPath      - path to user property
  * @param {string} value        - serialized
  * @param {array}  userKeyPaths - array of strings,
