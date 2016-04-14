@@ -25,10 +25,9 @@ exports.step = function () {
 		feeAmount: businessProcess.costs._totalAmount
 	}))));
 
-	div(
-		{ class: ['disabler-range', _if(not(eq(guideProgress, 1)),
-			'disabler-active')], id: 'documents-disabler-range' },
-		div({ class: 'disabler' }),
+	disabler(
+		{ id: 'documents-disabler-range' },
+		exports._disableCondition(this),
 		section(
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
@@ -47,10 +46,15 @@ exports.step = function () {
 		),
 		exports._onlinePayments(this)
 	);
+
 	insert(_if(and(eq(guideProgress, 1),
 		eq(businessProcess.costs._paymentProgress, 1)),
 		div({ class: 'user-next-step-button' },
 			a({ href: '/submission/' }, _("Continue to next step")))));
+};
+
+exports._disableCondition = function (context) {
+	return not(eq(context.businessProcess._guideProgress, 1));
 };
 
 exports._paymentHeading = function (context) {

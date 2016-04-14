@@ -25,10 +25,11 @@ exports.step = function () {
 	insert(infoMsg(this));
 	insert(exports._optionalInfo(this));
 
-	div({ class: ['disabler-range', _if(not(eq(guideProgress, 1)),
-		'disabler-active')], id: 'forms-disabler-range' },
-		div({ class: 'disabler' }),
-		generateSections(submissionForms.applicable, { viewContext: this }));
+	disabler(
+		{ id: 'submission-forms-disabler-range' },
+		exports._disableCondition(this),
+		generateSections(submissionForms.applicable, { viewContext: this })
+	);
 
 	insert(_if(eq(guideProgress, 1),
 		_if(or(lt(dataFormsProgress, 1), lt(requirementUploadsProgress, 1),
@@ -76,6 +77,10 @@ exports.step = function () {
 					}
 				)
 			))));
+};
+
+exports._disableCondition = function (context) {
+	return not(eq(context.businessProcess._guideProgress, 1));
 };
 
 exports._submissionHeading = function (context) {
