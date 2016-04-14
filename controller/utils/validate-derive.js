@@ -5,10 +5,7 @@ var db = require('mano').db
 
 module.exports = function (data) {
 	var businessProcess;
-	if (!data.initialProcess) {
-		throw customError("Wrong post data", 'WRONG_POST_DATA');
-	}
-	if (data.initialProcess === 'notRegistered') {
+	if (!data.initialProcess || data.initialProcess === 'notRegistered') {
 		return null;
 	}
 
