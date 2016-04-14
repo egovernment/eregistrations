@@ -2,10 +2,11 @@
 
 'use strict';
 
-var generateSections = require('./components/generate-form-sections')
-  , errorMsg         = require('./_business-process-error-info').errorMsg
-  , infoMsg          = require('./_business-process-optional-info').infoMsg
-  , _                = require('mano').i18n.bind('Registration');
+var _                    = require('mano').i18n.bind('Registration')
+  , disableConditionally = require('./components/disable-conditionally')
+  , generateSections     = require('./components/generate-form-sections')
+  , errorMsg             = require('./_business-process-error-info').errorMsg
+  , infoMsg              = require('./_business-process-optional-info').infoMsg;
 
 exports._parent = require('./business-process-base');
 
@@ -25,10 +26,14 @@ exports.step = function () {
 	insert(infoMsg(this));
 	insert(exports._optionalInfo(this));
 
-	div({ class: ['disabler-range', _if(not(eq(guideProgress, 1)),
-		'disabler-active')], id: 'forms-disabler-range' },
-		div({ class: 'disabler' }),
-		generateSections(submissionForms.applicable, { viewContext: this }));
+	insert(disableConditionally(
+		generateSections(submissionForms.applicable, { viewContext: this }),
+		not(eq(guideProgress, 1)),
+		{
+			forcedState: exports._forcedState(this),
+			id: 'submission-forms-disabler-range'
+		}
+	));
 
 	insert(_if(eq(guideProgress, 1),
 		_if(or(lt(dataFormsProgress, 1), lt(requirementUploadsProgress, 1),
@@ -77,6 +82,9 @@ exports.step = function () {
 				)
 			))));
 };
+
+// Resolves forced disabler state of the submission forms
+exports._forcedState = Function.prototype;
 
 exports._submissionHeading = function (context) {
 	var headingText = _("4 Send your files");
