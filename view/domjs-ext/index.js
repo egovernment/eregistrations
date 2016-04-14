@@ -60,6 +60,7 @@ module.exports = function (domjs) {
 	};
 	require('domjs-reactive-script')(domjs);
 	require('domjs-ext/legacy')(domjs);
+	require('./disabler')(domjs);
 	require('./thumb')(domjs);
 	require('domjs-ext/upload-button')(domjs);
 	require('domjs-ext/url')(domjs);
