@@ -31,7 +31,7 @@ module.exports = function (stepPath, status, data) {
 	)(function (set) {
 		return getDbArray(set, businessProcessStorage, 'computed', sortIndexName)(function (array) {
 			return trackFirstPage(reducedStorage,
-				'pendingBusinessProcesses/' + viewPath + '/' + status, set, array, trackerOptions);
+				'businessProcesses/' + viewPath + '/' + status, set, array, trackerOptions);
 		});
 	});
 };
