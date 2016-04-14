@@ -13,7 +13,7 @@ var copy          = require('es5-ext/object/copy')
 
 exports._parent = require('./user-base');
 
-var mapRolesToLabels = function (role) {
+exports.mapRolesToLabels = function (role) {
 	if (!role) return 'N/A';
 	if (role === 'user') return;
 	if (roleMeta[role].label) return roleMeta[role].label;
@@ -25,7 +25,7 @@ var baseColumns = [{
 	data: function (user) { return [strong(user._fullName), br(), user._email]; }
 }, {
 	head: _("Role"),
-	data: function (user) { return ul(user.roles, mapRolesToLabels); }
+	data: function (user) { return ul(user.roles, exports.mapRolesToLabels); }
 }, {
 	head: _("Institution"),
 	data: function (user) { return user._institution; }

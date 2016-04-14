@@ -96,6 +96,9 @@ module.exports = exports = function (dbDriver, data) {
 				return stepShortPath;
 			}));
 	}
+	if (data.userListProps) {
+		userListProps = new Set(aFrom(ensureIterable(data.userListProps)));
+	}
 	businessProcessListProperties =
 		new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
 
