@@ -74,9 +74,12 @@ module.exports = exports = function (dbDriver, data) {
 		'isActiveAccount', 'isInvitationSent']));
 	var getManagerBusinessProcessData = getPartFragments(null, new Set(['businessName', 'isSubmitted',
 		'manager', 'status']));
+	var addCustomBusinessProcessData;
 
 	ensureObject(data);
-	processingStepsMeta = ensureObject(data.processingStepsMeta);
+	processingStepsMeta          = ensureObject(data.processingStepsMeta);
+	addCustomBusinessProcessData = data.addCustomBusinessProcessData &&
+		ensureCallable(data.addCustomBusinessProcessData);
 
 	// Eventual fragment that should be passed to all clients
 	if (data.globalFragment != null) globalFragment = ensureFragment(data.globalFragment);
@@ -341,6 +344,9 @@ module.exports = exports = function (dbDriver, data) {
 				// Business process application
 				// Business process data
 				fragment.addFragment(getBusinessProcessData(custom));
+				if (addCustomBusinessProcessData) {
+					addCustomBusinessProcessData(custom, fragment);
+				}
 			} else {
 				// My account
 				// All businesss processes (full data)
