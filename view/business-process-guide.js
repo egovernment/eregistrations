@@ -2,11 +2,12 @@
 
 'use strict';
 
-var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
-  , sentBackInfo   = require('./_business-process-sent-back-info')
-  , _              = require('mano').i18n.bind('Registration')
-  , inventoryModal = require('./_business-process-inventory')
-  , infoMsg        = require('./_business-process-optional-info').infoMsg;
+var _                    = require('mano').i18n.bind('Registration')
+  , camelToHyphen        = require('es5-ext/string/#/camel-to-hyphen')
+  , disableConditionally = require('./components/disable-conditionally')
+  , sentBackInfo         = require('./_business-process-sent-back-info')
+  , inventoryModal       = require('./_business-process-inventory')
+  , infoMsg              = require('./_business-process-optional-info').infoMsg;
 
 /**
  * getRegistrationSpanContent
@@ -51,45 +52,50 @@ exports.step = function () {
 	  , isSentBack       = businessProcess._isSentBack
 	  , guideFinished    = eq(businessProcess._guideProgress, 1)
 	  , paymentProcessed = and(businessProcess.costs._paymentWeight,
-			businessProcess.costs._paymentProgress);
+			businessProcess.costs._paymentProgress)
+	  , forcedState      = exports._forcedState(this);
 
 	exports._guideHeading(this);
 
 	insert(_if(isSentBack,
 		function () { return div({ class: 'info-main' }, sentBackInfo(this)); }.bind(this),
-		_if(and(guideFinished, paymentProcessed, not(exports._forceEnabledState(this))), div(
+		_if(and(guideFinished, paymentProcessed, not(eq(forcedState, null))), div(
 			{ class: 'info-main' },
 			_("The guide is disabled as you have already processed your payment.")
 		))));
 	insert(infoMsg(this));
 	insert(exports._optionalInfo(this));
 
-	div(
-		{ class: ['disabler-range',
-			_if(and(guideFinished, or(isSentBack, paymentProcessed),
-				not(exports._forceEnabledState(this))), 'disabler-active')] },
-		businessProcess.inventory ? insert(inventoryModal(businessProcess)) : null,
-		div({ class: 'disabler' }),
-		form(
-			{ id: 'guide-form', class: 'user-guide', action: '/guide/', method: 'post' },
-			exports._questionsSection(this),
-			exports._registrationsSection(this),
-			exports._requirementsSection(this),
-			exports._costsSection(this),
-			p({ id: 'guide-save-button', class: 'user-next-step-button' },
-				button({ type: 'submit' },
-					_("Save and continue"))),
-			div({ id: 'no-requested-registrations-section',
-					class: 'section-primary user-guide-no-requested-registrations-info' },
-				p(_("You need to select at least one registration to continue with the process")))
-		)
-	);
+	insert(disableConditionally(
+		[
+			businessProcess.inventory ? insert(inventoryModal(businessProcess)) : null,
+			form(
+				{ id: 'guide-form', class: 'user-guide', action: '/guide/', method: 'post' },
+				exports._questionsSection(this),
+				exports._registrationsSection(this),
+				exports._requirementsSection(this),
+				exports._costsSection(this),
+				p({ id: 'guide-save-button', class: 'user-next-step-button' },
+					button({ type: 'submit' },
+						_("Save and continue"))),
+				div({ id: 'no-requested-registrations-section',
+						class: 'section-primary user-guide-no-requested-registrations-info' },
+					p(_("You need to select at least one registration to continue with the process")))
+			)
+		],
+		and(guideFinished, or(isSentBack, paymentProcessed)),
+		{
+			forcedState: forcedState,
+			id: 'guide-disabler-range'
+		}
+	));
 
 	exports._customScripts(this);
 	legacy('refreshGuide', 'guide-form', businessProcess.__id__, businessProcess.constructor.__id__);
 };
 
-exports._forceEnabledState = Function.prototype;
+// Resolves forced disabler state of the guide
+exports._forcedState = Function.prototype;
 
 exports._guideHeading = function (context) {
 	var headingText = _("Obtain your certificates");

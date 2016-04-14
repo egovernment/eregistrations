@@ -2,9 +2,10 @@
 
 'use strict';
 
-var _        = require('mano').i18n.bind('Registration')
-  , errorMsg = require('./_business-process-error-info').errorMsg
-  , infoMsg  = require('./_business-process-optional-info').infoMsg;
+var _                    = require('mano').i18n.bind('Registration')
+  , disableConditionally = require('./components/disable-conditionally')
+  , errorMsg             = require('./_business-process-error-info').errorMsg
+  , infoMsg              = require('./_business-process-optional-info').infoMsg;
 
 exports._parent = require('./business-process-base');
 
@@ -25,33 +26,41 @@ exports.step = function () {
 		feeAmount: businessProcess.costs._totalAmount
 	}))));
 
-	div(
-		{ class: ['disabler-range', _if(not(eq(guideProgress, 1)),
-			'disabler-active')], id: 'documents-disabler-range' },
-		div({ class: 'disabler' }),
-		section(
-			ul(
-				{ class: 'sections-primary-list user-documents-upload' },
-				list(paymentReceiptUploads.recentlyRejected,
-					function (paymentUpload) {
-						return li({ class: ['section-primary', _if(paymentUpload._isRejected,
-								'user-documents-upload-rejected')] },
-							paymentUpload.toDOMForm(document, { viewContext: this }));
-					}),
-				list(paymentReceiptUploads.uploadable.not(paymentReceiptUploads.recentlyRejected),
-					function (paymentUpload) {
-						return li({ class: 'section-primary' },
-							paymentUpload.toDOMForm(document, { viewContext: this }));
-					})
-			)
-		),
-		exports._onlinePayments(this)
-	);
+	insert(disableConditionally(
+		[
+			section(
+				ul(
+					{ class: 'sections-primary-list user-documents-upload' },
+					list(paymentReceiptUploads.recentlyRejected,
+						function (paymentUpload) {
+							return li({ class: ['section-primary', _if(paymentUpload._isRejected,
+									'user-documents-upload-rejected')] },
+								paymentUpload.toDOMForm(document, { viewContext: this }));
+						}),
+					list(paymentReceiptUploads.uploadable.not(paymentReceiptUploads.recentlyRejected),
+						function (paymentUpload) {
+							return li({ class: 'section-primary' },
+								paymentUpload.toDOMForm(document, { viewContext: this }));
+						})
+				)
+			),
+			exports._onlinePayments(this)
+		],
+		not(eq(guideProgress, 1)),
+		{
+			forcedState: exports._forcedState(this),
+			id: 'payment-disabler-range'
+		}
+	));
+
 	insert(_if(and(eq(guideProgress, 1),
 		eq(businessProcess.costs._paymentProgress, 1)),
 		div({ class: 'user-next-step-button' },
 			a({ href: '/submission/' }, _("Continue to next step")))));
 };
+
+// Resolves forced disabler state of the payments page
+exports._forcedState = Function.prototype;
 
 exports._paymentHeading = function (context) {
 	var headingText = _("3 Pay the fees");

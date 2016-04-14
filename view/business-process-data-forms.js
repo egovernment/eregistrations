@@ -2,11 +2,12 @@
 
 'use strict';
 
-var generateSections  = require('./components/generate-form-sections')
-  , incompleteFormNav = require('./components/incomplete-form-nav')
-  , _                 = require('mano').i18n.bind('Registration')
-  , errorMsg          = require('./_business-process-error-info').errorMsg
-  , infoMsg           = require('./_business-process-optional-info').infoMsg;
+var _                    = require('mano').i18n.bind('Registration')
+  , generateSections     = require('./components/generate-form-sections')
+  , incompleteFormNav    = require('./components/incomplete-form-nav')
+  , disableConditionally = require('./components/disable-conditionally')
+  , errorMsg             = require('./_business-process-error-info').errorMsg
+  , infoMsg              = require('./_business-process-optional-info').infoMsg;
 
 exports._parent = require('./business-process-base');
 
@@ -23,10 +24,14 @@ exports.step = function () {
 	insert(infoMsg(this));
 	insert(exports._optionalInfo(this));
 
-	div({ class: ['disabler-range', _if(not(eq(guideProgress, 1)),
-				'disabler-active')], id: 'forms-disabler-range' },
-		div({ class: 'disabler' }),
-		exports._forms(this));
+	insert(disableConditionally(
+		exports._forms(this),
+		not(eq(guideProgress, 1)),
+		{
+			forcedState: exports._forcedState(this),
+			id: 'forms-disabler-range'
+		}
+	));
 
 	insert(_if(and(eq(guideProgress, 1),
 		eq(dataForms._progress, 1)),
@@ -35,8 +40,10 @@ exports.step = function () {
 		_if(gt(dataForms._progress, 0), section({ class: 'section-warning' },
 			incompleteFormNav(dataForms.applicable)))
 		));
-
 };
+
+// Resolves forced disabler state of the forms
+exports._forcedState = Function.prototype;
 
 exports._formsHeading = function (context) {
 	var headingText = _("1 Fill the form");
