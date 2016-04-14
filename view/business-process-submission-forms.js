@@ -2,11 +2,10 @@
 
 'use strict';
 
-var _                    = require('mano').i18n.bind('Registration')
-  , disableConditionally = require('./components/disable-conditionally')
-  , generateSections     = require('./components/generate-form-sections')
-  , errorMsg             = require('./_business-process-error-info').errorMsg
-  , infoMsg              = require('./_business-process-optional-info').infoMsg;
+var generateSections = require('./components/generate-form-sections')
+  , errorMsg         = require('./_business-process-error-info').errorMsg
+  , infoMsg          = require('./_business-process-optional-info').infoMsg
+  , _                = require('mano').i18n.bind('Registration');
 
 exports._parent = require('./business-process-base');
 
@@ -26,14 +25,11 @@ exports.step = function () {
 	insert(infoMsg(this));
 	insert(exports._optionalInfo(this));
 
-	insert(disableConditionally(
-		generateSections(submissionForms.applicable, { viewContext: this }),
-		not(eq(guideProgress, 1)),
-		{
-			forcedState: exports._forcedState(this),
-			id: 'submission-forms-disabler-range'
-		}
-	));
+	disabler(
+		{ id: 'submission-forms-disabler-range' },
+		exports._disableCondition(this),
+		generateSections(submissionForms.applicable, { viewContext: this })
+	);
 
 	insert(_if(eq(guideProgress, 1),
 		_if(or(lt(dataFormsProgress, 1), lt(requirementUploadsProgress, 1),
@@ -83,8 +79,9 @@ exports.step = function () {
 			))));
 };
 
-// Resolves forced disabler state of the submission forms
-exports._forcedState = Function.prototype;
+exports._disableCondition = function (context) {
+	return not(eq(context.businessProcess._guideProgress, 1));
+};
 
 exports._submissionHeading = function (context) {
 	var headingText = _("4 Send your files");

@@ -2,10 +2,9 @@
 
 'use strict';
 
-var _                    = require('mano').i18n.bind('Registration')
-  , disableConditionally = require('./components/disable-conditionally')
-  , errorMsg             = require('./_business-process-error-info').errorMsg
-  , infoMsg              = require('./_business-process-optional-info').infoMsg;
+var _        = require('mano').i18n.bind('Registration')
+  , errorMsg = require('./_business-process-error-info').errorMsg
+  , infoMsg  = require('./_business-process-optional-info').infoMsg;
 
 exports._parent = require('./business-process-base');
 
@@ -26,32 +25,27 @@ exports.step = function () {
 		feeAmount: businessProcess.costs._totalAmount
 	}))));
 
-	insert(disableConditionally(
-		[
-			section(
-				ul(
-					{ class: 'sections-primary-list user-documents-upload' },
-					list(paymentReceiptUploads.recentlyRejected,
-						function (paymentUpload) {
-							return li({ class: ['section-primary', _if(paymentUpload._isRejected,
-									'user-documents-upload-rejected')] },
-								paymentUpload.toDOMForm(document, { viewContext: this }));
-						}),
-					list(paymentReceiptUploads.uploadable.not(paymentReceiptUploads.recentlyRejected),
-						function (paymentUpload) {
-							return li({ class: 'section-primary' },
-								paymentUpload.toDOMForm(document, { viewContext: this }));
-						})
-				)
-			),
-			exports._onlinePayments(this)
-		],
-		not(eq(guideProgress, 1)),
-		{
-			forcedState: exports._forcedState(this),
-			id: 'payment-disabler-range'
-		}
-	));
+	disabler(
+		{ id: 'documents-disabler-range' },
+		exports._disableCondition(this),
+		section(
+			ul(
+				{ class: 'sections-primary-list user-documents-upload' },
+				list(paymentReceiptUploads.recentlyRejected,
+					function (paymentUpload) {
+						return li({ class: ['section-primary', _if(paymentUpload._isRejected,
+								'user-documents-upload-rejected')] },
+							paymentUpload.toDOMForm(document, { viewContext: this }));
+					}),
+				list(paymentReceiptUploads.uploadable.not(paymentReceiptUploads.recentlyRejected),
+					function (paymentUpload) {
+						return li({ class: 'section-primary' },
+							paymentUpload.toDOMForm(document, { viewContext: this }));
+					})
+			)
+		),
+		exports._onlinePayments(this)
+	);
 
 	insert(_if(and(eq(guideProgress, 1),
 		eq(businessProcess.costs._paymentProgress, 1)),
@@ -59,8 +53,9 @@ exports.step = function () {
 			a({ href: '/submission/' }, _("Continue to next step")))));
 };
 
-// Resolves forced disabler state of the payments page
-exports._forcedState = Function.prototype;
+exports._disableCondition = function (context) {
+	return not(eq(context.businessProcess._guideProgress, 1));
+};
 
 exports._paymentHeading = function (context) {
 	var headingText = _("3 Pay the fees");

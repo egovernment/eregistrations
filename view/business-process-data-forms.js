@@ -5,7 +5,6 @@
 var _                    = require('mano').i18n.bind('Registration')
   , generateSections     = require('./components/generate-form-sections')
   , incompleteFormNav    = require('./components/incomplete-form-nav')
-  , disableConditionally = require('./components/disable-conditionally')
   , errorMsg             = require('./_business-process-error-info').errorMsg
   , infoMsg              = require('./_business-process-optional-info').infoMsg;
 
@@ -24,14 +23,11 @@ exports.step = function () {
 	insert(infoMsg(this));
 	insert(exports._optionalInfo(this));
 
-	insert(disableConditionally(
-		exports._forms(this),
-		not(eq(guideProgress, 1)),
-		{
-			forcedState: exports._forcedState(this),
-			id: 'forms-disabler-range'
-		}
-	));
+	disabler(
+		{ id: 'forms-disabler-range' },
+		exports._disableCondition(this),
+		exports._forms(this)
+	);
 
 	insert(_if(and(eq(guideProgress, 1),
 		eq(dataForms._progress, 1)),
@@ -42,8 +38,9 @@ exports.step = function () {
 		));
 };
 
-// Resolves forced disabler state of the forms
-exports._forcedState = Function.prototype;
+exports._disableCondition = function (context) {
+	return not(eq(context.businessProcess._guideProgress, 1));
+};
 
 exports._formsHeading = function (context) {
 	var headingText = _("1 Fill the form");

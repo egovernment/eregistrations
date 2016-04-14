@@ -3,7 +3,6 @@
 'use strict';
 
 var _                    = require('mano').i18n.bind('Registration')
-  , disableConditionally = require('./components/disable-conditionally')
   , errorMsg             = require('./_business-process-error-info').errorMsg
   , infoMsg              = require('./_business-process-optional-info').infoMsg;
 
@@ -22,7 +21,9 @@ exports.step = function () {
 	insert(infoMsg(this));
 	insert(exports._optionalInfo(this));
 
-	insert(disableConditionally(
+	disabler(
+		{ id: 'documents-disabler-range' },
+		exports._disableCondition(this),
 		section(
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
@@ -38,13 +39,8 @@ exports.step = function () {
 					}.bind(this)),
 				exports._extraDocuments(this)
 			)
-		),
-		not(eq(guideProgress, 1)),
-		{
-			forcedState: exports._forcedState(this),
-			id: 'documents-disabler-range'
-		}
-	));
+		)
+	);
 
 	insert(_if(and(eq(guideProgress, 1), eq(requirementUploads._progress, 1)),
 		div({ class: 'user-next-step-button' },
@@ -52,8 +48,9 @@ exports.step = function () {
 				'/submission/') }, _("Continue to next step")))));
 };
 
-// Resolves forced disabler state of the documents page
-exports._forcedState = Function.prototype;
+exports._disableCondition = function (context) {
+	return not(eq(context.businessProcess._guideProgress, 1));
+};
 
 exports._documentsHeading = function (context) {
 	var headingText = _("2 Upload the documents");
