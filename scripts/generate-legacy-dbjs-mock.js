@@ -82,6 +82,7 @@ module.exports = function (BusinessProcessType, filename/*, options*/) {
 	currencyType.format = db.Currency.format;
 	currencyType.symbol = db.Cost.prototype.getDescriptor('amount').type.symbol;
 	currencyType.isoCode = db.Cost.prototype.getDescriptor('amount').type.isoCode;
+	currencyType.currencyDisplay = db.Cost.prototype.getDescriptor('amount').type.currencyDisplay;
 	costType.step = db.Cost.prototype.getDescriptor('amount').step;
 
 	// Add everything to legacyDb
@@ -95,6 +96,7 @@ module.exports = function (BusinessProcessType, filename/*, options*/) {
 	};
 	legacyDb.Currency = currencyType;
 	legacyDb.Cost = costType;
+	legacyDb.locale = db.locale;
 
 	// Allow customizations on legacyDb.
 	if (options.customizeCb) options.customizeCb(legacyDb);

@@ -38,6 +38,6 @@ $.legacyDb = { Currency: { format: function (value/*, options*/) {
 		if (intPart) result = numSep + result;
 	}
 	return (options.prefix || '') + result + (options.postfix || '');
-}, symbol: "$", isoCode: "USD" }, Cost: { step: 0.01 } };
+}, symbol: "$", isoCode: "USD" }, Cost: { step: 0.01 }, locale: 'en' };
 
 require('../../client/legacy/format-currency');
