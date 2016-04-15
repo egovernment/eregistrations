@@ -7,7 +7,7 @@ var memoize               = require('memoizee/plain')
   , definePercentage      = require('dbjs-ext/number/percentage')
   , defineUInteger        = require('dbjs-ext/number/integer/u-integer')
   , defineMultipleProcess = require('./multiple-process')
-  , defineDataSnapshot    = require('../data-snapshot')
+  , defineDataSnapshot    = require('./data-snapshot')
   , defineFormSectionBase = require('../form-section-base');
 
 module.exports = memoize(function (db/*, options*/) {
