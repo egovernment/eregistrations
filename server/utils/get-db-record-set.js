@@ -17,7 +17,9 @@ module.exports = memoize(function (storage, id) {
 	id = ensureString(id);
 	set = new ObservableSet();
 	storage.on('keyid:' + id, handleEvent = function (event) {
-		var key = event.id.slice(id.length + 1);
+		var key;
+		if (event.type && (event.type !== 'direct')) return;
+		key = event.id.slice(id.length + 1);
 		if (!key) return;
 		if (!isDigit(key[0])) key = '3' + key;
 		if (event.data.value === '11') set.add(key);

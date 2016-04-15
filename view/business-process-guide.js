@@ -49,6 +49,7 @@ exports['step-guide'] = { class: { 'step-active': true } };
 exports.step = function () {
 	var businessProcess  = this.businessProcess
 	  , isSentBack       = businessProcess._isSentBack
+	  , isSubmitted      = businessProcess._isSubmitted
 	  , guideFinished    = eq(businessProcess._guideProgress, 1)
 	  , paymentProcessed = and(businessProcess.costs._paymentWeight,
 			businessProcess.costs._paymentProgress);
@@ -64,12 +65,10 @@ exports.step = function () {
 	insert(infoMsg(this));
 	insert(exports._optionalInfo(this));
 
-	div(
-		{ class: ['disabler-range',
-			_if(and(guideFinished, or(isSentBack, paymentProcessed),
-				not(exports._forceEnabledState(this))), 'disabler-active')] },
+	disabler(
+		{ id: 'guide-disabler-range' },
+		and(or(isSubmitted, paymentProcessed), guideFinished, not(exports._forceEnabledState(this))),
 		businessProcess.inventory ? insert(inventoryModal(businessProcess)) : null,
-		div({ class: 'disabler' }),
 		form(
 			{ id: 'guide-form', class: 'user-guide', action: '/guide/', method: 'post' },
 			exports._questionsSection(this),

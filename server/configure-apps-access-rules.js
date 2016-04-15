@@ -34,7 +34,7 @@ var aFrom            = require('es5-ext/array/from')
   , getDbRecordSet   = require('./utils/get-db-record-set')
   , getDbSet         = require('./utils/get-db-set')
   , mapDbSet         = require('./utils/map-db-set')
-  , userListProps    = require('../apps/users-admin/user-list-properties')
+  , defaultUserListProps = require('../apps/users-admin/user-list-properties')
 
   , create = Object.create, keys = Object.keys, stringify = JSON.stringify
   , emptyFragment = new Fragment()
@@ -66,7 +66,7 @@ module.exports = exports = function (dbDriver, data) {
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , resolveOfficialSteps, processingStepsMeta, processingStepsDefaultMap = create(null)
 	  , businessProcessListProperties, globalFragment, getMetaAdminFragment, getAccessRules
-	  , assignableProcessingSteps;
+	  , assignableProcessingSteps, userListProps;
 
 	var getBusinessProcessStorages = require('./utils/business-process-storages');
 	var getManagerUserData = getPartFragments(userStorage, new Set(['email', 'firstName',
@@ -74,9 +74,12 @@ module.exports = exports = function (dbDriver, data) {
 		'isActiveAccount', 'isInvitationSent']));
 	var getManagerBusinessProcessData = getPartFragments(null, new Set(['businessName', 'isSubmitted',
 		'manager', 'status']));
+	var addCustomBusinessProcessData;
 
 	ensureObject(data);
-	processingStepsMeta = ensureObject(data.processingStepsMeta);
+	processingStepsMeta          = ensureObject(data.processingStepsMeta);
+	addCustomBusinessProcessData = data.addCustomBusinessProcessData &&
+		ensureCallable(data.addCustomBusinessProcessData);
 
 	// Eventual fragment that should be passed to all clients
 	if (data.globalFragment != null) globalFragment = ensureFragment(data.globalFragment);
@@ -92,6 +95,11 @@ module.exports = exports = function (dbDriver, data) {
 				}
 				return stepShortPath;
 			}));
+	}
+	if (data.userListProps) {
+		userListProps = new Set(aFrom(ensureIterable(data.userListProps)));
+	} else {
+		userListProps = defaultUserListProps;
 	}
 	businessProcessListProperties =
 		new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
@@ -341,6 +349,9 @@ module.exports = exports = function (dbDriver, data) {
 				// Business process application
 				// Business process data
 				fragment.addFragment(getBusinessProcessData(custom));
+				if (addCustomBusinessProcessData) {
+					addCustomBusinessProcessData(custom, fragment);
+				}
 			} else {
 				// My account
 				// All businesss processes (full data)

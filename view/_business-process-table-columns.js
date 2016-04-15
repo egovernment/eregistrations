@@ -103,6 +103,8 @@ exports.columns = [{
 	head: _("Inscriptions and controls"),
 	data: function (businessProcess) {
 		return mmap(businessProcess.certificates._applicable, function (certificates) {
+			//When bp is deleted...
+			if (!certificates) return;
 			return list(businessProcess.certificates.applicable, function (cert) {
 				var certStatus;
 
