@@ -244,6 +244,21 @@ module.exports = memoize(function (db) {
 			});
 
 			return weightTotal;
+		},
+		toJSON: function (ignore) {
+			var result = { label: this.label };
+			if (this.resolventProperty) {
+				result.fields = [this.master.resolveSKeyPath(this.resolventProperty)
+					.ownDescriptor.fieldToJSON()];
+			}
+			if (this.isUnresolved) {
+				var entities = [];
+				this.propertyMaster.getBySKeyPath(this.propertyName).ordered.forEach(function (entity) {
+					entities.push(entity.getBySKeyPath(this.sectionProperty).toJSON());
+				}, this);
+				if (entities.length) result.entities = entities;
+			}
+			return result;
 		}
 	});
 

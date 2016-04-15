@@ -239,7 +239,24 @@ module.exports = memoize(function (db) {
 		// The names of the model fields that should be treated as read only in this section.
 		// It should contain the same elements as in propertyNames list. Listed properties will
 		// not count towards progress and rendered not as inputs.
-		readOnlyPropertyNames: { type: StringLine, multiple: true }
+		readOnlyPropertyNames: { type: StringLine, multiple: true },
+		toJSON: { type: db.Function, value: function (ignore) {
+			var fields = [];
+			if (this.resolventProperty) {
+				fields.push(this.master.resolveSKeyPath(this.resolventProperty)
+					.ownDescriptor.fieldToJSON());
+			}
+			if (!this.isUnresolved) {
+				this.applicablePropertyNames.forEach(function (name) {
+					var data = this.master.resolveSKeyPath(name), descriptor = data.ownDescriptor;
+					if (!descriptor.type.isValueEmpty(data.value)) fields.push(descriptor.fieldToJSON());
+				}, this);
+			}
+			return {
+				label: this.label,
+				fields: fields
+			};
+		} }
 	});
 	db.FormSection.prototype.inputOptions._descriptorPrototype_.nested = true;
 	db.FormSection.prototype.inputOptions._descriptorPrototype_.type   = db.Object;
