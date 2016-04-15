@@ -12,10 +12,13 @@ exports['forms-sections-content'] = function () {
 	insert(
 		_if(this.section._legend, div({ class: 'info-main' },
 			md(this.section._legend))),
-		this.section.applicableSections ?
-				[progressRules(this.section),
-					generateSections(this.section.applicableSections, { viewContext: this })] :
-				this.section.toDOMForm(document),
+		disabler(
+			exports._disableCondition(this),
+			this.section.applicableSections ?
+					[progressRules(this.section),
+						generateSections(this.section.applicableSections, { viewContext: this })] :
+					this.section.toDOMForm(document)
+		),
 		p({ class: 'user-next-step-button' },
 			a({ href: this.section._nextSection.map(function (nextSection) {
 				if (!nextSection) return '/documents/';
@@ -23,7 +26,10 @@ exports['forms-sections-content'] = function () {
 			})
 				}, _('Continue to next step')))
 	);
+};
 
+exports._disableCondition = function (context) {
+	return not(eq(context.businessProcess._guideProgress, 1));
 };
 
 exports._match = 'section';

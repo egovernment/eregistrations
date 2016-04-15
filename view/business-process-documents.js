@@ -2,9 +2,9 @@
 
 'use strict';
 
-var _             = require('mano').i18n.bind('Registration')
-  , errorMsg      = require('./_business-process-error-info').errorMsg
-  , infoMsg       = require('./_business-process-optional-info').infoMsg;
+var _        = require('mano').i18n.bind('Registration')
+  , errorMsg = require('./_business-process-error-info').errorMsg
+  , infoMsg  = require('./_business-process-optional-info').infoMsg;
 
 exports._parent = require('./business-process-base');
 
@@ -21,10 +21,9 @@ exports.step = function () {
 	insert(infoMsg(this));
 	insert(exports._optionalInfo(this));
 
-	div(
-		{ class: ['disabler-range', _if(not(eq(guideProgress, 1)),
-				'disabler-active')], id: 'documents-disabler-range' },
-		div({ class: 'disabler' }),
+	disabler(
+		{ id: 'documents-disabler-range' },
+		exports._disableCondition(this),
 		section(
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
@@ -42,10 +41,15 @@ exports.step = function () {
 			)
 		)
 	);
+
 	insert(_if(and(eq(guideProgress, 1), eq(requirementUploads._progress, 1)),
 		div({ class: 'user-next-step-button' },
 			a({ href: _if(not(eq(businessProcess.costs._paymentWeight, 0)), '/pay/',
 				'/submission/') }, _("Continue to next step")))));
+};
+
+exports._disableCondition = function (context) {
+	return not(eq(context.businessProcess._guideProgress, 1));
 };
 
 exports._documentsHeading = function (context) {
