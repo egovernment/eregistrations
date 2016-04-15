@@ -34,7 +34,7 @@ var aFrom            = require('es5-ext/array/from')
   , getDbRecordSet   = require('./utils/get-db-record-set')
   , getDbSet         = require('./utils/get-db-set')
   , mapDbSet         = require('./utils/map-db-set')
-  , userListProps    = require('../apps/users-admin/user-list-properties')
+  , defaultUserListProps = require('../apps/users-admin/user-list-properties')
 
   , create = Object.create, keys = Object.keys, stringify = JSON.stringify
   , emptyFragment = new Fragment()
@@ -66,7 +66,7 @@ module.exports = exports = function (dbDriver, data) {
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , resolveOfficialSteps, processingStepsMeta, processingStepsDefaultMap = create(null)
 	  , businessProcessListProperties, globalFragment, getMetaAdminFragment, getAccessRules
-	  , assignableProcessingSteps;
+	  , assignableProcessingSteps, userListProps;
 
 	var getBusinessProcessStorages = require('./utils/business-process-storages');
 	var getManagerUserData = getPartFragments(userStorage, new Set(['email', 'firstName',
@@ -98,6 +98,8 @@ module.exports = exports = function (dbDriver, data) {
 	}
 	if (data.userListProps) {
 		userListProps = new Set(aFrom(ensureIterable(data.userListProps)));
+	} else {
+		userListProps = defaultUserListProps;
 	}
 	businessProcessListProperties =
 		new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
