@@ -11,21 +11,8 @@ exports._parent = require('./user-base');
 exports._match = 'businessProcess';
 
 exports['sub-main'] = function () {
-
-	var mobileCheckbox;
-
-	div({ class: 'user-steps-menu-fixed-top-placeholder' },
-		nav({ id: 'user-steps-menu', class: 'user-steps-menu', fixed: true },
-			div({ class: 'content user-steps-menu-wrapper' },
-				label({ class: 'user-steps-menu-show', for: 'show-steps-control' }, "Steps"),
-				mobileCheckbox = input({ id: 'show-steps-control', type: 'checkbox', role: 'button' }
-					), ul({ class: 'user-steps-menu-list' }, exports._stepsMenu(this)))));
+	exports._stepsMenuContainer(this);
 	div({ class: 'content user-forms', id: 'step' });
-
-	location.on('change', function () {
-		mobileCheckbox.checked = false;
-	});
-
 };
 
 exports._stepsMenu = function (context) {
@@ -80,4 +67,18 @@ exports._stepsMenu = function (context) {
 				style: mmap(and(ensureGuide, context.businessProcess.submissionForms._progress),
 					setProgressWidth) })
 		)];
+};
+
+exports._stepsMenuContainer = function (context) {
+	var mobileCheckbox;
+	div({ class: 'user-steps-menu-fixed-top-placeholder' },
+		nav({ id: 'user-steps-menu', class: 'user-steps-menu', fixed: true },
+			div({ class: 'content user-steps-menu-wrapper' },
+				label({ class: 'user-steps-menu-show', for: 'show-steps-control' }, "Steps"),
+				mobileCheckbox = input({ id: 'show-steps-control', type: 'checkbox', role: 'button' }),
+				ul({ class: 'user-steps-menu-list' }, exports._stepsMenu(context)))));
+
+	location.on('change', function () {
+		mobileCheckbox.checked = false;
+	});
 };

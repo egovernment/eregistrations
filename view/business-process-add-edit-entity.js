@@ -10,8 +10,6 @@ var db                   = require('mano').db
 exports._parent = require('./business-process-base');
 exports._match = 'entity';
 
-exports['step-guide'] = { class: { 'step-form': true } };
-
 var findEntitiesTableId = function (sections, entitiesKey) {
 	var entitiesTableId;
 

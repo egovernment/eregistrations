@@ -10,8 +10,6 @@ var _                 = require('mano').i18n.bind('Registration')
 
 exports._parent = require('./business-process-base');
 
-exports['step-guide'] = { class: { 'step-form': true } };
-
 exports.step = function () {
 	var businessProcess = this.businessProcess
 	  , dataForms       = businessProcess.dataForms
