@@ -20,7 +20,11 @@ module.exports = memoize(function (db) {
 		} },
 		isPreviewGenerated: { type: db.Boolean, value: true },
 		generatedPreview: { type: File, nested: true },
-		thumb: { type: JpegFile, nested: true }
+		thumb: { type: JpegFile, nested: true },
+		toJSON: { value: function (descriptor) {
+			return { kind: 'file', url: this.url, thumbUrl: this.thumb.url };
+		} },
+		isEmpty: { value: function (ignore) { return !this.path; } }
 	});
 	File.accept = ['image/jpeg', 'application/pdf', 'image/png'].concat(docMimeTypes);
 
