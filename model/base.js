@@ -38,7 +38,7 @@ module.exports = memoize(function (db) {
 		// Wether provided value should be considered empty
 		isValueEmpty: { type: db.Function, value: function (value) {
 			if (value == null) return true;
-			if (typeof value.isEmpty !== 'function') return true;
+			if (typeof value.isEmpty !== 'function') return false;
 			return value.isEmpty();
 		} }
 	});

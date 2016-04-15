@@ -9,10 +9,10 @@ var d               = require('d')
   , ObservableValue = require('observable-value')
   , memoize         = require('memoizee/plain')
 
-  , parse = JSON.parse;
+  , defineProperties = Object.defineProperties, parse = JSON.parse;
 
 module.exports = memoize(function (db) {
-	return lazy(db.DataSnapshot.prototype, {
+	defineProperties(db.DataSnapshot.prototype, lazy({
 		resolved: d(function () {
 			this._json.once('change', function () { delete this.resolved; }.bind(this));
 			if (!this.json) return {};
@@ -25,5 +25,6 @@ module.exports = memoize(function (db) {
 			}.bind(this));
 			return observable;
 		})
-	});
+	}));
+	return db.DataSnapshot;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
