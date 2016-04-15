@@ -1,5 +1,6 @@
 // Evaluates stored JSON string to object
 // Provides on-demand and reactive revaluator
+// Should be loaded in processes that need to use snapshots in natural (not serialized) form
 
 'use strict';
 
