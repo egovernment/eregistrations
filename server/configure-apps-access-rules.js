@@ -2,39 +2,39 @@
 
 'use strict';
 
-var aFrom            = require('es5-ext/array/from')
-  , ensureIterable   = require('es5-ext/iterable/validate-object')
-  , findKey          = require('es5-ext/object/find-key')
-  , forEach          = require('es5-ext/object/for-each')
-  , ensureCallable   = require('es5-ext/object/valid-callable')
-  , ensureObject     = require('es5-ext/object/valid-object')
-  , ensureString     = require('es5-ext/object/validate-stringifiable-value')
-  , capitalize       = require('es5-ext/string/#/capitalize')
-  , endsWith         = require('es5-ext/string/#/ends-with')
-  , uncapitalize     = require('es5-ext/string/#/uncapitalize')
-  , memoize          = require('memoizee')
-  , Set              = require('es6-set')
-  , deferred         = require('deferred')
-  , unserializeValue = require('dbjs/_setup/unserialize/value')
-  , serializeValue   = require('dbjs/_setup/serialize/value')
-  , ObservableSet    = require('observable-set')
-  , ObservableMulti  = require('observable-multi-set')
-  , Fragment         = require('data-fragment')
-  , ensureFragment   = require('data-fragment/ensure')
-  , FragmentGroup    = require('data-fragment/group')
-  , ensureDriver     = require('dbjs-persistence/ensure-driver')
-  , unserializeView  = require('../utils/db-view/unserialize-ids')
-  , resolveStepPath  = require('../utils/resolve-processing-step-full-path')
-  , getReducedFrag   = require('./data-fragments/get-reduced-object-fragments')
-  , getRedRecFrag    = require('./data-fragments/get-reduced-records-fragment')
-  , getAddRecFrag    = require('./data-fragments/get-add-records-to-fragment')
-  , getObjFragment   = require('./data-fragments/get-direct-object-fragments')
-  , getColFragments  = require('./data-fragments/get-collection-fragments')
-  , getPartFragments = require('./data-fragments/get-part-object-fragments')
-  , getDbRecordSet   = require('./utils/get-db-record-set')
-  , getDbSet         = require('./utils/get-db-set')
-  , mapDbSet         = require('./utils/map-db-set')
-  , userListProps    = require('../apps/users-admin/user-list-properties')
+var aFrom                = require('es5-ext/array/from')
+  , ensureIterable       = require('es5-ext/iterable/validate-object')
+  , findKey              = require('es5-ext/object/find-key')
+  , forEach              = require('es5-ext/object/for-each')
+  , ensureCallable       = require('es5-ext/object/valid-callable')
+  , ensureObject         = require('es5-ext/object/valid-object')
+  , ensureString         = require('es5-ext/object/validate-stringifiable-value')
+  , capitalize           = require('es5-ext/string/#/capitalize')
+  , endsWith             = require('es5-ext/string/#/ends-with')
+  , uncapitalize         = require('es5-ext/string/#/uncapitalize')
+  , memoize              = require('memoizee')
+  , Set                  = require('es6-set')
+  , deferred             = require('deferred')
+  , unserializeValue     = require('dbjs/_setup/unserialize/value')
+  , serializeValue       = require('dbjs/_setup/serialize/value')
+  , ObservableSet        = require('observable-set')
+  , ObservableMulti      = require('observable-multi-set')
+  , Fragment             = require('data-fragment')
+  , ensureFragment       = require('data-fragment/ensure')
+  , FragmentGroup        = require('data-fragment/group')
+  , ensureDriver         = require('dbjs-persistence/ensure-driver')
+  , unserializeView      = require('../utils/db-view/unserialize-ids')
+  , resolveStepPath      = require('../utils/resolve-processing-step-full-path')
+  , getReducedFrag       = require('./data-fragments/get-reduced-object-fragments')
+  , getRedRecFrag        = require('./data-fragments/get-reduced-records-fragment')
+  , getAddRecFrag        = require('./data-fragments/get-add-records-to-fragment')
+  , getObjFragment       = require('./data-fragments/get-direct-object-fragments')
+  , getColFragments      = require('./data-fragments/get-collection-fragments')
+  , getPartFragments     = require('./data-fragments/get-part-object-fragments')
+  , getDbRecordSet       = require('./utils/get-db-record-set')
+  , getDbSet             = require('./utils/get-db-set')
+  , mapDbSet             = require('./utils/map-db-set')
+  , defaultUserListProps = require('../apps/users-admin/user-list-properties')
 
   , create = Object.create, keys = Object.keys, stringify = JSON.stringify
   , emptyFragment = new Fragment()
@@ -70,7 +70,7 @@ module.exports = exports = function (dbDriver, data) {
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , resolveOfficialViews, processingStepsMeta, processingStepsDefaultMap = create(null)
 	  , businessProcessListProperties, globalFragment, getMetaAdminFragment, getAccessRules
-	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath;
+	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, userListProps;
 
 	var getBusinessProcessStorages = require('./utils/business-process-storages');
 	var getManagerUserData = getPartFragments(userStorage, new Set(['email', 'firstName',
@@ -99,6 +99,11 @@ module.exports = exports = function (dbDriver, data) {
 				}
 				return stepShortPath;
 			}));
+	}
+	if (data.userListProps) {
+		userListProps = new Set(aFrom(ensureIterable(data.userListProps)));
+	} else {
+		userListProps = defaultUserListProps;
 	}
 	businessProcessListProperties =
 		new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
