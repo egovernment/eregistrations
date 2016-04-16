@@ -9,9 +9,17 @@ module.exports = memoize(function (db) {
 	ensureDb(db).Base.prototype.__descriptorPrototype__.setProperties({
 		// Field (label: value) JSON serializer
 		fieldToJSON: function (ignore) {
+			var value = this.object.get(this.key), result;
+			if (value.forEach && !this.nested && this.multiple) {
+				result = [];
+				value.forEach(function (value) { result.push(this.type.valueToJSON(value, this)); }, this);
+				value = result;
+			} else {
+				value = this.type.valueToJSON(value, this);
+			}
 			return {
 				label: this.dynamicLabelKey ? this.object.get(this.dynamicLabelKey) : this.label,
-				value: this.type.valueToJSON(this.object.get(this.key), this)
+				value: value
 			};
 		}
 	});
