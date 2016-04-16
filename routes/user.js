@@ -79,6 +79,6 @@ module.exports = {
 		match: function (businessProcessId) {
 			return matchBusinessProcess.call(this, businessProcessId);
 		},
-		view: require('../view/print-business-process-chain-data')
+		view: require('../view/print-business-process-data')
 	}
 };

@@ -2,9 +2,10 @@
 
 'use strict';
 
-var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
-  , _                = require('mano').i18n.bind('User Submitted')
-  , generateSections = require('./components/generate-sections')
+var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
+  , _              = require('mano').i18n.bind('User Submitted')
+  , renderSections = require('./components/render-sections-json')
+
   , _d = _;
 
 var drawDocumentsPart = function (target, urlPrefix) {
@@ -142,11 +143,7 @@ module.exports = exports = function (businessProcess/*, options*/) {
 					span({ class: 'fa fa-print' }, _("Print"))
 				)
 			),
-			exports._prependData(businessProcess),
-			generateSections(businessProcess.dataForms.applicable, { viewContext: this,
-					customResolveValue: exports._customValueResolver })
+			renderSections(businessProcess.dataForms.dataSnapshot)
 		)
 	];
 };
-exports._prependData = Function.prototype;
-exports._customValueResolver = null;
