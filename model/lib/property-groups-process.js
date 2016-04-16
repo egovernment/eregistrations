@@ -7,15 +7,13 @@ var memoize               = require('memoizee/plain')
   , definePercentage      = require('dbjs-ext/number/percentage')
   , defineUInteger        = require('dbjs-ext/number/integer/u-integer')
   , defineMultipleProcess = require('./multiple-process')
-  , defineDataSnapshot    = require('./data-snapshot')
   , defineFormSectionBase = require('../form-section-base');
 
 module.exports = memoize(function (db/*, options*/) {
 	var Percentage      = definePercentage(db)
 	  , UInteger        = defineUInteger(db)
 	  , MultipleProcess = defineMultipleProcess(db)
-	  , FormSectionBase = defineFormSectionBase(db)
-	  , DataSnapshot    = defineDataSnapshot(db);
+	  , FormSectionBase = defineFormSectionBase(db);
 
 	var PropertyGroupsProcess = MultipleProcess.extend('PropertyGroupsProcess', {
 		// Applicable form sections
@@ -42,8 +40,6 @@ module.exports = memoize(function (db/*, options*/) {
 			return weight;
 		} },
 
-		// Forms data snapshots
-		dataSnapshot: { type: DataSnapshot, nested: true },
 		toJSON: { type: db.Function, value: function (ignore) {
 			var result = [];
 			this.applicable.forEach(function (section) {
