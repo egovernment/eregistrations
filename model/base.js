@@ -12,12 +12,8 @@ module.exports = memoize(function (db) {
 			var label = this.dynamicLabelKey ? this.object.get(this.dynamicLabelKey) : this.label
 			  , value = this.object.get(this.key);
 			if (value != null) {
-				if (typeof value.toJSON === 'function') {
-					value = value.toJSON(this);
-				} else {
-					if (this.database.isObjectType(this.type)) value = value.toString(this);
-					else value = (new this.type(value)).toString(this);
-				}
+				if (typeof value.toJSON === 'function') value = value.toJSON(this);
+				else value = (new this.type(value)).toJSON(this);
 			}
 			return {
 				label: label,
@@ -31,6 +27,10 @@ module.exports = memoize(function (db) {
 		isEmpty: {
 			type: db.Function,
 			value: function (value) { return false; }
+		},
+		toJSON: {
+			type: db.Function,
+			value: function (descriptor) { return this.toString(descriptor); }
 		}
 	});
 
