@@ -11,11 +11,13 @@
 
 'use strict';
 
-var memoize  = require('memoizee/plain')
-  , ensureDb = require('dbjs/valid-dbjs');
+var memoize    = require('memoizee/plain')
+  , ensureDb   = require('dbjs/valid-dbjs')
+  , extendBase = require('../../base');
 
 module.exports = memoize(function (db) {
-	return ensureDb(db).Object.extend('DataSnapshot', {
+	extendBase(ensureDb(db));
+	return db.Object.extend('DataSnapshot', {
 		jsonString: { type: db.String }
 		// 'resolved' property evaluation is configured in ./resolve.js
 	});
