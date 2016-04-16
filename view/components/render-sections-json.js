@@ -8,15 +8,18 @@
 var normalizeOptions    = require('es5-ext/object/normalize-options')
   , ensureNaturalNumber = require('es5-ext/object/ensure-natural-number-value')
 
-  , isArray = Array.isArray, min = Math.min
+  , isArray = Array.isArray, min = Math.min, stringify = JSON.stringify
   , renderValue, renderField, renderFields, renderEntity, renderEntities
   , renderSection, renderMainSection, renderSubSection
   , renderMainSections, renderSubSections
   , defaultRenderers = {};
 
 defaultRenderers.renderValue = renderValue = function (data) {
-	if (data && data.kind && exports.customRenderers[data.kind]) {
-		return exports.customRenderers[data.kind](data, defaultRenderers);
+	if (data && data.kind) {
+		if (exports.customRenderers[data.kind]) {
+			return exports.customRenderers[data.kind](data, defaultRenderers);
+		}
+		console.error("Could not resolve " + stringify(data.kind) + " customisation renderer");
 	}
 	if (isArray(data)) return data.map(renderValue).join(", ");
 	return data;
