@@ -8,7 +8,7 @@
 var normalizeOptions    = require('es5-ext/object/normalize-options')
   , ensureNaturalNumber = require('es5-ext/object/ensure-natural-number-value')
 
-  , min = Math.min
+  , isArray = Array.isArray, min = Math.min
   , renderValue, renderField, renderFields, renderEntity, renderEntities
   , renderSection, renderMainSection, renderSubSection
   , renderMainSections, renderSubSections
@@ -18,6 +18,7 @@ defaultRenderers.renderValue = renderValue = function (data) {
 	if (data && data.kind && exports.customRenderers[data.kind]) {
 		return exports.customRenderers[data.kind](data, defaultRenderers);
 	}
+	if (isArray(data)) return data.map(renderValue).join(", ");
 	return data;
 };
 
