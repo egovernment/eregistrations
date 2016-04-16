@@ -48,23 +48,6 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			stringify(businessProcess.dataForms.toJSON());
 	});
 
-	// Below two triggers are needed just for migration phase
-	// After that there's no scenario when they may trigger, therefore should be removed
-	setupTriggers({
-		trigger: businessProcesses.filterByKey('isSentBack', true)
-			.filterByKey('isSubmitted', false)
-	}, function (businessProcess) {
-		debug('%s submitted (through sent back)', businessProcess.__id__);
-		businessProcess.isSubmitted = true;
-	});
-	setupTriggers({
-		trigger: businessProcesses.filterByKey('isUserProcessing', true)
-			.filterByKey('isSubmitted', false)
-	}, function (businessProcess) {
-		debug('%s submitted (through user processing)', businessProcess.__id__);
-		businessProcess.isSubmitted = true;
-	});
-
 	var businessProcessesSubmitted = businessProcesses.filterByKey('isSubmitted', true);
 
 	// Business process: sentBack finalization
