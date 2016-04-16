@@ -9,7 +9,9 @@ var aFrom           = require('es5-ext/array/from')
   , ensureType      = require('dbjs/valid-dbjs-type')
   , debug           = require('debug-ext')('business-process-flow')
   , resolveStepPath = require('../../utils/resolve-processing-step-full-path')
-  , setupTriggers   = require('../_setup-triggers');
+  , setupTriggers   = require('../_setup-triggers')
+
+  , stringify = JSON.stringify;
 
 module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	var businessProcesses = ensureType(BusinessProcessType).instances
@@ -36,6 +38,14 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	}, function (businessProcess) {
 		debug('%s submitted', businessProcess.__id__);
 		businessProcess.isSubmitted = true;
+	});
+	setupTriggers({
+		trigger: businessProcesses.filterByKey('isSubmitted', true)
+	}, function (businessProcess) {
+		if (businessProcess.dataForms.dataSnapshot.jsonString) return;
+		debug('%s generate initial data snapshots', businessProcess.__id__);
+		businessProcess.dataForms.dataSnapshot.jsonString =
+			stringify(businessProcess.dataForms.toJSON());
 	});
 
 	// Below two triggers are needed just for migration phase
@@ -64,6 +74,8 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	}, function (businessProcess) {
 		debug('%s finalize sentBack', businessProcess.__id__);
 		businessProcess.delete('isSentBack');
+		businessProcess.dataForms.dataSnapshot.jsonString =
+			stringify(businessProcess.dataForms.toJSON());
 	});
 
 	// Business process: isUserProcessing initialization
@@ -84,6 +96,8 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		debug('%s finalize user processing', businessProcess.__id__);
 		if (onUserProcessingEnd) onUserProcessingEnd(businessProcess);
 		businessProcess.delete('isUserProcessing');
+		businessProcess.dataForms.dataSnapshot.jsonString =
+			stringify(businessProcess.dataForms.toJSON());
 	});
 
 	// Business process: isApproved preservation
