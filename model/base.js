@@ -8,18 +8,22 @@ var memoize  = require('memoizee/plain')
 module.exports = memoize(function (db) {
 	ensureDb(db).Base.prototype.__descriptorPrototype__.setProperties({
 		// Field (label: value) JSON serializer
-		fieldToJSON: function (ignore) {
+		labelToJSON: function (ignore) {
+			return this.dynamicLabelKey ? this.object.get(this.dynamicLabelKey) : this.label;
+		},
+		valueToJSON: function (ignore) {
 			var value = this.object.get(this.key), result;
 			if (value.forEach && !this.nested && this.multiple) {
 				result = [];
 				value.forEach(function (value) { result.push(this.type.valueToJSON(value, this)); }, this);
-				value = result;
-			} else {
-				value = this.type.valueToJSON(value, this);
+				return result;
 			}
+			return this.type.valueToJSON(value, this);
+		},
+		fieldToJSON: function (ignore) {
 			return {
-				label: this.dynamicLabelKey ? this.object.get(this.dynamicLabelKey) : this.label,
-				value: value
+				label: this.labelToJSON(),
+				value: this.valueToJSON()
 			};
 		}
 	});
