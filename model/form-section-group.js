@@ -99,7 +99,7 @@ module.exports = memoize(function (db) {
 				result.fields = [this.master.resolveSKeyPath(this.resolventProperty)
 					.ownDescriptor.fieldToJSON()];
 			}
-			if (this.isUnresolved) {
+			if (!this.isUnresolved) {
 				var sections = [];
 				this.internallyApplicableSections.forEach(function (section) {
 					if (section.hasFilledPropertyNamesDeep) sections.push(section.toJSON());

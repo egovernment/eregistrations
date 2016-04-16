@@ -188,7 +188,7 @@ module.exports = memoize(function (db) {
 				result.fields = [this.master.resolveSKeyPath(this.resolventProperty)
 					.ownDescriptor.fieldToJSON()];
 			}
-			if (this.isUnresolved) {
+			if (!this.isUnresolved) {
 				var entities = [];
 				this.propertyMaster.getBySKeyPath(this.propertyName).ordered.forEach(function (entity) {
 					entities.push({
