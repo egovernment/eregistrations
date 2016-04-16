@@ -41,7 +41,7 @@ module.exports = memoize(function (db) {
 		valueToJSON: { type: db.Function, value: function (value, descriptor) {
 			if (value == null) return value;
 			if (this.database.isObjectType(this)) {
-				if (typeof value.toJSON === 'function') return value.toJSON(this);
+				if (typeof value.toJSON === 'function') return value.toJSON(descriptor);
 				return value.toString(descriptor);
 			}
 			return (new this(value)).toString(descriptor);
