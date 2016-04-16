@@ -254,7 +254,10 @@ module.exports = memoize(function (db) {
 			if (this.isUnresolved) {
 				var entities = [];
 				this.propertyMaster.getBySKeyPath(this.propertyName).ordered.forEach(function (entity) {
-					entities.push(entity.getBySKeyPath(this.sectionProperty).toJSON());
+					entities.push({
+						name: entity.resolveSKeyPath(this.entityTitleProperty),
+						sections: entity.getBySKeyPath(this.sectionProperty).toJSON()
+					});
 				}, this);
 				if (entities.length) result.entities = entities;
 			}
