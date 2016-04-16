@@ -18,14 +18,8 @@ module.exports = memoize(function (db) {
 
 	db.Base.prototype.defineProperties({
 		// Whether value should be considered as empty
-		isEmpty: {
-			type: db.Function,
-			value: function (value) { return false; }
-		},
-		toJSON: {
-			type: db.Function,
-			value: function (descriptor) { return this.toString(descriptor); }
-		}
+		isEmpty: { type: db.Function },
+		toJSON: { type: db.Function }
 	});
 
 	return db.Base.defineProperties({
@@ -39,7 +33,8 @@ module.exports = memoize(function (db) {
 		valueToJSON: { type: db.Function, value: function (value) {
 			if (value == null) return value;
 			if (typeof value.toJSON === 'function') return value.toJSON(this);
-			return (new this(value)).toJSON(this);
+			if (this.database.isObjectType(this)) value = value.toString(this);
+			return (new this(value)).toString(this);
 		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

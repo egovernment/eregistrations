@@ -16,7 +16,6 @@ module.exports = function (t, a) {
 		label: 'Foo',
 		value: 'True'
 	});
-	a(db.Object.prototype.isEmpty(), false);
 	a(db.Object.isValueEmpty({}), false);
 	a(db.Object.isValueEmpty(), true);
 	a(db.Object.isValueEmpty(null), true);
