@@ -35,6 +35,7 @@ module.exports = memoize(function (db) {
 			if (typeof value.isEmpty !== 'function') return false;
 			return value.isEmpty();
 		} },
+		// Returns JSON representation of provided value (in many cases it's same as value)
 		valueToJSON: { type: db.Function, value: function (value) {
 			if (value == null) return value;
 			if (typeof value.toJSON === 'function') return value.toJSON(this);
