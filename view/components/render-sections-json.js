@@ -8,7 +8,7 @@
 var normalizeOptions    = require('es5-ext/object/normalize-options')
   , ensureNaturalNumber = require('es5-ext/object/ensure-natural-number-value')
 
-  , max = Math.max
+  , min = Math.min
   , renderValue, renderField, renderFields, renderEntity, renderEntities
   , renderSection, renderMainSection, renderSubSection
   , renderMainSections, renderSubSections
@@ -45,8 +45,8 @@ defaultRenderers.renderSection = renderSection = function (data, className, head
 	return section({ class: className },
 		data.label && ns['h' + headerRank](data.label),
 		data.fields && renderFields(data.fields),
-		data.entities && renderEntities(data.entities, max(headerRank + 1, 6)),
-		data.sections && renderSubSections(data.sections, max(headerRank + 1, 6)));
+		data.entities && renderEntities(data.entities, min(headerRank + 1, 6)),
+		data.sections && renderSubSections(data.sections, min(headerRank + 1, 6)));
 };
 
 defaultRenderers.renderMainSection = renderMainSection = function (data, headerRank) {
@@ -65,11 +65,11 @@ defaultRenderers.renderSubSections = renderSubSections = function (data, headerR
 	return data.map(function (sectionData) { return renderSubSection(sectionData, headerRank); });
 };
 
-module.exports = exports = function (dataForms/*, options*/) {
+module.exports = exports = function (dataSnapshot/*, options*/) {
 	var options = normalizeOptions(arguments[1]), headerRank;
-	if (options.headerRank != null) headerRank = max(ensureNaturalNumber(options.headerRank), 6);
+	if (options.headerRank != null) headerRank = min(ensureNaturalNumber(options.headerRank), 6);
 	if (!headerRank) headerRank = 3;
-	return mmap(dataForms._resolved, function (json) {
+	return mmap(dataSnapshot._resolved, function (json) {
 		return renderMainSections(json, headerRank);
 	});
 };
