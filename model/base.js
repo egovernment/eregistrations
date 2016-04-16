@@ -11,7 +11,7 @@ module.exports = memoize(function (db) {
 		fieldToJSON: function (ignore) {
 			return {
 				label: this.dynamicLabelKey ? this.object.get(this.dynamicLabelKey) : this.label,
-				value: this.type.valueToJSON(this.object.get(this.key))
+				value: this.type.valueToJSON(this.object.get(this.key), this)
 			};
 		}
 	});
@@ -30,11 +30,13 @@ module.exports = memoize(function (db) {
 			return value.isEmpty();
 		} },
 		// Returns JSON representation of provided value (in many cases it's same as value)
-		valueToJSON: { type: db.Function, value: function (value) {
+		valueToJSON: { type: db.Function, value: function (value, descriptor) {
 			if (value == null) return value;
-			if (typeof value.toJSON === 'function') return value.toJSON(this);
-			if (this.database.isObjectType(this)) value = value.toString(this);
-			return (new this(value)).toString(this);
+			if (this.database.isObjectType(this)) {
+				if (typeof value.toJSON === 'function') return value.toJSON(this);
+				return value.toString(descriptor);
+			}
+			return (new this(value)).toString(descriptor);
 		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
