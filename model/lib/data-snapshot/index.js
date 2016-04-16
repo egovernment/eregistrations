@@ -16,7 +16,7 @@ var memoize  = require('memoizee/plain')
 
 module.exports = memoize(function (db) {
 	return ensureDb(db).Object.extend('DataSnapshot', {
-		json: { type: db.String }
+		jsonString: { type: db.String }
 		// 'resolved' property evaluation is configured in ./eval.js
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

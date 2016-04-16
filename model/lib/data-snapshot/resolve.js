@@ -14,14 +14,14 @@ var d               = require('d')
 module.exports = memoize(function (db) {
 	defineProperties(db.DataSnapshot.prototype, lazy({
 		resolved: d(function () {
-			this._json.once('change', function () { delete this.resolved; }.bind(this));
-			if (!this.json) return {};
-			return parse(this.json);
+			this._jsonString.once('change', function () { delete this.resolved; }.bind(this));
+			if (!this.jsonString) return {};
+			return parse(this.jsonString);
 		}),
 		_resolved: d(function () {
-			var observable = new ObservableValue(this.json ? parse(this.json) : {});
-			this._json.on('change', function () {
-				observable.value = this.json ? parse(this.json) : {};
+			var observable = new ObservableValue(this.jsonString ? parse(this.jsonString) : {});
+			this._jsonString.on('change', function () {
+				observable.value = this.jsonString ? parse(this.jsonString) : {};
 			}.bind(this));
 			return observable;
 		})

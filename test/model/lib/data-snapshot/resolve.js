@@ -8,17 +8,17 @@ module.exports = function (t, a) {
 	define(db);
 	t(db);
 	snapshot = new db.DataSnapshot();
-	a(snapshot.json, undefined);
+	a(snapshot.jsonString, undefined);
 	a.deep(snapshot.resolved, {});
 	a.deep(snapshot._resolved.value, {});
 
-	snapshot.json = '{"foo":true}';
-	a(snapshot.json, '{"foo":true}');
+	snapshot.jsonString = '{"foo":true}';
+	a(snapshot.jsonString, '{"foo":true}');
 	a.deep(snapshot.resolved, { foo: true });
 	a.deep(snapshot._resolved.value, { foo: true });
 
-	snapshot.json = '{"elo":{"bar":234}}';
-	a(snapshot.json, '{"elo":{"bar":234}}');
+	snapshot.jsonString = '{"elo":{"bar":234}}';
+	a(snapshot.jsonString, '{"elo":{"bar":234}}');
 	a.deep(snapshot.resolved, { elo: { bar: 234 } });
 	a.deep(snapshot._resolved.value, { elo: { bar: 234 } });
 };
