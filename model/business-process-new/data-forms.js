@@ -17,7 +17,6 @@ module.exports = memoize(function (db/* options */) {
 	});
 
 	BusinessProcess.prototype.dataForms.defineProperties({
-
 		// Applicable, touched (at least partially filled) form sections
 		processChainApplicable: {
 			type: FormSectionBase,
