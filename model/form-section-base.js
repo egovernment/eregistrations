@@ -268,7 +268,10 @@ module.exports = memoize(function (db) {
 		// Defaults to null.
 		pageUrl: {
 			type: StringLine
-		}
+		},
+		toJSON: { value: function (ignore) {
+			throw new Error("toJSON not implemented for " + this.__id__);
+		} }
 	});
 
 	FormSectionBase.prototype.defineProperties({
