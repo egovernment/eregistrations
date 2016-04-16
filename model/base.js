@@ -29,7 +29,7 @@ module.exports = memoize(function (db) {
 	});
 
 	return db.Base.defineProperties({
-		// Wether provided value should be considered empty
+		// Whether provided value should be considered empty
 		isValueEmpty: { type: db.Function, value: function (value) {
 			if (value == null) return true;
 			if (typeof value.isEmpty !== 'function') return false;
