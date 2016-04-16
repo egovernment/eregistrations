@@ -192,7 +192,7 @@ module.exports = memoize(function (db) {
 				var entities = [];
 				this.propertyMaster.getBySKeyPath(this.propertyName).ordered.forEach(function (entity) {
 					entities.push({
-						name: entity.resolveSKeyPath(this.entityTitleProperty),
+						name: entity.getBySKeyPath(this.entityTitleProperty),
 						sections: entity.getBySKeyPath(this.sectionProperty).toJSON()
 					});
 				}, this);
