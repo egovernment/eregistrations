@@ -9,15 +9,9 @@ module.exports = memoize(function (db) {
 	ensureDb(db).Base.prototype.__descriptorPrototype__.setProperties({
 		// Field (label: value) JSON serializer
 		fieldToJSON: function (ignore) {
-			var label = this.dynamicLabelKey ? this.object.get(this.dynamicLabelKey) : this.label
-			  , value = this.object.get(this.key);
-			if (value != null) {
-				if (typeof value.toJSON === 'function') value = value.toJSON(this);
-				else value = (new this.type(value)).toJSON(this);
-			}
 			return {
-				label: label,
-				value: value
+				label: this.dynamicLabelKey ? this.object.get(this.dynamicLabelKey) : this.label,
+				value: this.type.valueToJSON(this.object.get(this.key))
 			};
 		}
 	});
@@ -40,6 +34,11 @@ module.exports = memoize(function (db) {
 			if (value == null) return true;
 			if (typeof value.isEmpty !== 'function') return false;
 			return value.isEmpty();
+		} },
+		valueToJSON: { type: db.Function, value: function (value) {
+			if (value == null) return value;
+			if (typeof value.toJSON === 'function') return value.toJSON(this);
+			return (new this(value)).toJSON(this);
 		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
