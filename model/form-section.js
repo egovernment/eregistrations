@@ -254,6 +254,7 @@ module.exports = memoize(function (db) {
 			}
 			return {
 				label: this.label,
+				lastEditDate: this.getOwnDescriptor('lastEditDate').valueToJSON(),
 				fields: fields
 			};
 		} }

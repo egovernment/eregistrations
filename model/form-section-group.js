@@ -94,7 +94,10 @@ module.exports = memoize(function (db) {
 			}
 		},
 		toJSON: { value: function (ignore) {
-			var result = { label: this.label };
+			var result = {
+				label: this.label,
+				lastEditDate: this.getOwnDescriptor('lastEditDate').valueToJSON()
+			};
 			if (this.resolventProperty) {
 				result.fields = [this.master.resolveSKeyPath(this.resolventProperty)
 					.ownDescriptor.fieldToJSON()];
