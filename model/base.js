@@ -29,7 +29,6 @@ module.exports = memoize(function (db) {
 	});
 
 	db.Base.prototype.defineProperties({
-		// Whether value should be considered as empty
 		isEmpty: { type: db.Function },
 		toJSON: { type: db.Function }
 	});
