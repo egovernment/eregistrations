@@ -74,6 +74,7 @@ module.exports = exports = function (dataSnapshot/*, options*/) {
 	if (options.headerRank != null) headerRank = min(ensureNaturalNumber(options.headerRank), 6);
 	if (!headerRank) headerRank = 3;
 	return mmap(dataSnapshot._resolved, function (json) {
+		if (!json) return;
 		return renderMainSections(json, headerRank);
 	});
 };
