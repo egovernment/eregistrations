@@ -15,13 +15,13 @@ module.exports = memoize(function (db) {
 	defineProperties(db.DataSnapshot.prototype, lazy({
 		resolved: d(function () {
 			this._jsonString.once('change', function () { delete this.resolved; }.bind(this));
-			if (!this.jsonString) return {};
+			if (!this.jsonString) return null;
 			return parse(this.jsonString);
 		}),
 		_resolved: d(function () {
-			var observable = new ObservableValue(this.jsonString ? parse(this.jsonString) : {});
+			var observable = new ObservableValue(this.jsonString ? parse(this.jsonString) : null);
 			this._jsonString.on('change', function () {
-				observable.value = this.jsonString ? parse(this.jsonString) : {};
+				observable.value = this.jsonString ? parse(this.jsonString) : null;
 			}.bind(this));
 			return observable;
 		})

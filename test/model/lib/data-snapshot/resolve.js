@@ -9,8 +9,8 @@ module.exports = function (t, a) {
 	t(db);
 	snapshot = new db.DataSnapshot();
 	a(snapshot.jsonString, undefined);
-	a.deep(snapshot.resolved, {});
-	a.deep(snapshot._resolved.value, {});
+	a(snapshot.resolved, null);
+	a(snapshot._resolved.value, null);
 
 	snapshot.jsonString = '{"foo":true}';
 	a(snapshot.jsonString, '{"foo":true}');
