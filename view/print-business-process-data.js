@@ -12,6 +12,9 @@ exports['print-page-title'] = function () {
 		{ businessProcessName: this.businessProcess._businessName }));
 };
 
-exports.main = function () {
-	insert(renderSections(this.businessProcess.dataForms.dataSnapshot));
+exports.main = {
+	class: { 'entity-data-section-primary': true },
+	content: function () {
+		insert(renderSections(this.businessProcess.dataForms.dataSnapshot));
+	}
 };
