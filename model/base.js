@@ -6,8 +6,8 @@ var memoize  = require('memoizee/plain')
   , ensureDb = require('dbjs/valid-dbjs');
 
 module.exports = memoize(function (db) {
+	// JSON resolvers, used to retrieve serializable data snapshots
 	ensureDb(db).Base.prototype.__descriptorPrototype__.setProperties({
-		// Field (label: value) JSON serializer
 		labelToJSON: function (ignore) {
 			return this.dynamicLabelKey ? this.object.get(this.dynamicLabelKey) : this.label;
 		},
