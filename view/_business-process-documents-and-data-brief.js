@@ -30,19 +30,18 @@ module.exports = function (businessProcess) {
 							th({ class: 'submitted-user-data-table-link' })
 						)
 					),
-					tbody({ onEmpty: tr({ class: 'empty' }, td({ colspan: 3 }, _("No data"))) },
-						businessProcess.dataForms.processChainApplicable, function (section) {
-							tr(
-								td(section._label),
-								td({ class: 'submitted-user-data-table-date' },
-									section._lastEditDate.map(function (date) {
-										return date.valueOf() ? date.toLocaleDateString() : null;
-									})),
+					tbody(mmap(businessProcess.dataForms.dataSnapshot._resolved, function (data) {
+						if (!data) return tr({ class: 'empty' }, td({ colspan: 3 }, _("No data")));
+						return data.map(function (sectionData) {
+							return tr(
+								td(sectionData.label),
+								td({ class: 'submitted-user-data-table-date' }, sectionData.lastEditDate),
 								td({ class: 'submitted-user-data-table-link' },
 									a({ href: '/business-process/' + businessProcess.__id__ + '/data/' },
 										span({ class: 'fa fa-search' }, _("Go to"))))
 							);
-						}))),
+						});
+					})))),
 			p({ class: 'section-primary-sub-action' },
 				a({ href: '/business-process/' + businessProcess.__id__ + '/data/',
 					class: 'button-regular' },
