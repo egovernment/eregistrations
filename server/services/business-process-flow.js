@@ -9,9 +9,7 @@ var aFrom           = require('es5-ext/array/from')
   , ensureType      = require('dbjs/valid-dbjs-type')
   , debug           = require('debug-ext')('business-process-flow')
   , resolveStepPath = require('../../utils/resolve-processing-step-full-path')
-  , setupTriggers   = require('../_setup-triggers')
-
-  , stringify = JSON.stringify;
+  , setupTriggers   = require('../_setup-triggers');
 
 module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	var businessProcesses = ensureType(BusinessProcessType).instances
