@@ -23,7 +23,8 @@ module.exports = memoize(function (db) {
 		fieldToJSON: function (ignore) {
 			return {
 				label: this.labelToJSON(),
-				value: this.valueToJSON()
+				value: this.valueToJSON(),
+				id: this.__valueId__
 			};
 		}
 	});
