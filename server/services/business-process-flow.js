@@ -42,10 +42,19 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	setupTriggers({
 		trigger: businessProcesses.filterByKey('isSubmitted', true)
 	}, function (businessProcess) {
-		if (businessProcess.dataForms.dataSnapshot.jsonString) return;
-		debug('%s generate initial data snapshots', businessProcess.__id__);
-		businessProcess.dataForms.dataSnapshot.jsonString =
-			stringify(businessProcess.dataForms.toJSON());
+		if (!businessProcess.dataForms.dataSnapshot.jsonString) {
+			debug('%s generate initial data snapshots', businessProcess.__id__);
+			businessProcess.dataForms.dataSnapshot.jsonString =
+				stringify(businessProcess.dataForms.toJSON());
+		}
+		if (!businessProcess.requirementUploads.dataSnapshot.jsonString) {
+			businessProcess.requirementUploads.dataSnapshot.jsonString =
+				stringify(businessProcess.requirementUploads.toJSON());
+		}
+		if (!businessProcess.paymentReceiptUploads.dataSnapshot.jsonString) {
+			businessProcess.paymentReceiptUploads.dataSnapshot.jsonString =
+				stringify(businessProcess.paymentReceiptUploads.toJSON());
+		}
 	});
 
 	var businessProcessesSubmitted = businessProcesses.filterByKey('isSubmitted', true);
@@ -59,6 +68,10 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		businessProcess.delete('isSentBack');
 		businessProcess.dataForms.dataSnapshot.jsonString =
 			stringify(businessProcess.dataForms.toJSON());
+		businessProcess.requirementUploads.dataSnapshot.jsonString =
+			stringify(businessProcess.requirementUploads.toJSON());
+		businessProcess.paymentReceiptUploads.dataSnapshot.jsonString =
+			stringify(businessProcess.paymentReceiptUploads.toJSON());
 	});
 
 	// Business process: isUserProcessing initialization
@@ -81,6 +94,10 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		businessProcess.delete('isUserProcessing');
 		businessProcess.dataForms.dataSnapshot.jsonString =
 			stringify(businessProcess.dataForms.toJSON());
+		businessProcess.requirementUploads.dataSnapshot.jsonString =
+			stringify(businessProcess.requirementUploads.toJSON());
+		businessProcess.paymentReceiptUploads.dataSnapshot.jsonString =
+			stringify(businessProcess.paymentReceiptUploads.toJSON());
 	});
 
 	// Business process: isApproved preservation
@@ -90,6 +107,15 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	}, function (businessProcess) {
 		debug('%s approved', businessProcess.__id__);
 		businessProcess.isApproved = true;
+	});
+	setupTriggers({
+		trigger: businessProcesses.filterByKey('isApproved', true)
+	}, function (businessProcess) {
+		if (!businessProcess.certificates.dataSnapshot.jsonString) {
+			debug('%s generate certificates data snapshots', businessProcess.__id__);
+			businessProcess.certificates.dataSnapshot.jsonString =
+				stringify(businessProcess.certificates.toJSON());
+		}
 	});
 
 	// Processing steps:
