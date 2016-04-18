@@ -38,7 +38,6 @@ module.exports = memoize(function (db) {
 		// in case of user uploads, it's a user that uploaded files (and that's the default)
 		issuedBy: {
 			type: db.Object,
-			value: function () { return this.master.user; },
 			label: _("Emissor institution")
 		},
 		issuedByOfficer: {
