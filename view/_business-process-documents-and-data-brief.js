@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _ = require('mano').i18n.bind('View: Business process summary')
+var _                   = require('mano').i18n.bind('View: Business process summary')
   , renderDocumentsList = require('./_user-business-process-documents-list');
 
 module.exports = function (businessProcess) {
@@ -12,7 +12,7 @@ module.exports = function (businessProcess) {
 			p({ class: 'section-primary-legend' },
 				_("Here you can see documents that you uploaded as part of the application and the " +
 					"certificates issued in the process.")),
-			renderDocumentsList(businessProcess.documents.processChainUploaded.toArray().slice(0, 5)),
+			renderDocumentsList(businessProcess, { limit: 5 }),
 			p({ class: 'section-primary-sub-action' },
 				a({ href: '/business-process/' + businessProcess.__id__ + '/documents/',
 					class: 'button-regular' },
