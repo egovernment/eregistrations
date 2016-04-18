@@ -81,9 +81,31 @@ module.exports = memoize(function (db/*, options*/) {
 		dataSnapshot: { type: DataSnapshot, nested: true }
 	});
 	UploadsProcess.prototype.map._descriptorPrototype_.type = RequirementUpload;
-	UploadsProcess.prototype.dataSnapshot.define('finalize', {
-		type: db.Function,
-		value: function (ignore) {
+	UploadsProcess.prototype.dataSnapshot.defineProperties({
+		resolve: { value: function () {
+			var data = this.database.DataSnaphot.prototype.resolve.call(this);
+			if (!data) return data;
+			if (!data.length) return data; // Nothing to do
+			if (data[0].isFinalized) return data; // Already done
+			data.forEach(function (uploadData) {
+				var upload;
+				this.owner.applicable.some(function (candidate) {
+					if (candidate.document.uniqueKey === uploadData.uniqueKey) {
+						upload = candidate;
+						return true;
+					}
+				}, this);
+				if (!upload) return;
+				uploadData.status = upload._isApproved.map(function (isApproved) {
+					if (isApproved) return 'approved';
+					return upload._isRejected.map(function (isRejected) {
+						if (isRejected) return 'rejected';
+					});
+				});
+				uploadData.statusLog = upload.statusLog.ordered;
+			});
+		} },
+		finalize: { type: db.Function, value: function (ignore) {
 			var data;
 			if (!this.jsonString) this.jsonString = this.owner.toJSON();
 			data = JSON.parse(this.jsonString);
@@ -109,7 +131,7 @@ module.exports = memoize(function (db/*, options*/) {
 				});
 			});
 			this.jsonString = JSON.stringify(data);
-		}
+		} }
 	});
 	return UploadsProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
