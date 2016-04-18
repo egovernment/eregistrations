@@ -13,14 +13,16 @@ var aFrom           = require('es5-ext/array/from')
 
 module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	var businessProcesses = ensureType(BusinessProcessType).instances
-		.filterByKey('isFromEregistrations', true).filterByKey('isDemo', false);
-	var options = Object(arguments[2]), customStepReturnHandler, onStepRedelegate, onStepStatus
-	  , onUserProcessingEnd;
+		.filterByKey('isFromEregistrations', true).filterByKey('isDemo', false)
+	  , options = Object(arguments[2])
+	  , customStepReturnHandler, onSubmitted, onStepRedelegate, onStepStatus, onUserProcessingEnd;
+
 	if (options.customStepReturnHandler != null) {
 		customStepReturnHandler = ensureCallable(options.customStepReturnHandler);
 	}
 	if (options.onStepRedelegate != null) onStepRedelegate = ensureCallable(options.onStepRedelegate);
 	if (options.onStepStatus != null) onStepStatus = ensureCallable(options.onStepStatus);
+	if (options.onSubmitted != null) onSubmitted = ensureCallable(options.onSubmitted);
 	if (options.onUserProcessingEnd != null) {
 		onUserProcessingEnd = ensureCallable(options.onUserProcessingEnd);
 	}
@@ -35,6 +37,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			.filterByKey('isSubmitted', false)
 	}, function (businessProcess) {
 		debug('%s submitted', businessProcess.__id__);
+		if (onSubmitted) onSubmitted(businessProcess);
 		businessProcess.isSubmitted = true;
 	});
 
