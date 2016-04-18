@@ -18,7 +18,14 @@ var memoize    = require('memoizee/plain')
 module.exports = memoize(function (db) {
 	extendBase(ensureDb(db));
 	return db.Object.extend('DataSnapshot', {
-		jsonString: { type: db.String }
-		// 'resolved' property evaluation is configured in ./resolve.js
+		jsonString: { type: db.String },
+		// Generates snapshot (if it was not generated already)
+		generate: { type: db.Function, value: function (ignore) {
+			if (!this.jsonString) this.regenerate();
+		} },
+		// Generates snapshot (overwrites old snapshot if it exist)
+		regenerate: { type: db.Function, value: function (ignore) {
+			this.jsonString = JSON.stringify(this.owner.toJSON());
+		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
