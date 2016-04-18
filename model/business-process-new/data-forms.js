@@ -19,7 +19,7 @@ module.exports = memoize(function (db/* options */) {
 	});
 
 	BusinessProcess.prototype.dataForms.defineProperties({
-		// Forms data snapshots
+		// Forms data snapshot (saved when file is submitted to Part B)
 		dataSnapshot: { type: DataSnapshot, nested: true },
 
 		// Applicable, touched (at least partially filled) form sections

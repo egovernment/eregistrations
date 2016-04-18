@@ -4,6 +4,7 @@
 
 var memoize                    = require('memoizee/plain')
   , defineUploadsProcess       = require('../lib/uploads-process')
+  , defineDataSnapshot         = require('../lib/data-snapshot')
   , definePaymentReceiptUpload = require('../payment-receipt-upload')
   , defineBusinessProcess      = require('./base')
 
@@ -13,7 +14,8 @@ module.exports = memoize(function (db/* options */) {
 	var options              = Object(arguments[1])
 	  , BusinessProcess      = defineBusinessProcess(db, options)
 	  , UploadsProcess       = defineUploadsProcess(db)
-	  , PaymentReceiptUpload = definePaymentReceiptUpload(db);
+	  , PaymentReceiptUpload = definePaymentReceiptUpload(db)
+	  , DataSnapshot         = defineDataSnapshot(db);
 
 	BusinessProcess.prototype.defineProperties({
 		paymentReceiptUploads: { type: UploadsProcess, nested: true }
@@ -21,6 +23,8 @@ module.exports = memoize(function (db/* options */) {
 	BusinessProcess.prototype.paymentReceiptUploads.map._descriptorPrototype_.type
 		= PaymentReceiptUpload;
 	BusinessProcess.prototype.paymentReceiptUploads.defineProperties({
+		// Uploads data snapshot (saved when file is submitted to Part B)
+		dataSnapshot: { type: DataSnapshot, nested: true },
 		// Applicable payment receipt uploads
 		applicable: { type: PaymentReceiptUpload, value: function (_observe) {
 			var result = [];
@@ -67,7 +71,23 @@ module.exports = memoize(function (db/* options */) {
 			}
 		},
 		approved: { type: PaymentReceiptUpload },
-		rejected: { type: PaymentReceiptUpload }
+		rejected: { type: PaymentReceiptUpload },
+
+		toJSON: { type: db.Function, value: function (ignore) {
+			var result = [];
+			this.applicable.forEach(function (upload) {
+				var document = upload.document, data;
+				result.push(data = {
+					key: document.key,
+					label: this.database.resolveTemplate(document.label, document.getTranslations()),
+					issuedDate: document.getOwnDescriptor('issueDate').valueTOJSON()
+				});
+				var files = [];
+				document.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
+				if (files.length) data.files = files;
+			}, this);
+			return result;
+		} }
 	});
 
 	if (!BusinessProcess.prototype.costs) defineCosts(db, options);

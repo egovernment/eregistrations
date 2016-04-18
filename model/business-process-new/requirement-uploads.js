@@ -4,19 +4,23 @@
 
 var memoize                 = require('memoizee/plain')
   , defineUploadsProcess    = require('../lib/uploads-process')
+  , defineDataSnapshot      = require('../lib/data-snapshot')
   , defineRequirementUpload = require('../requirement-upload')
   , defineBusinessProcess   = require('./requirements');
 
 module.exports = memoize(function (db/* options */) {
 	var BusinessProcess   = defineBusinessProcess(db, arguments[1])
 	  , UploadsProcess    = defineUploadsProcess(db)
-	  , RequirementUpload = defineRequirementUpload(db);
+	  , RequirementUpload = defineRequirementUpload(db)
+	  , DataSnapshot      = defineDataSnapshot(db);
 
 	BusinessProcess.prototype.defineProperties({
 		requirementUploads: { type: UploadsProcess, nested: true }
 	});
 
 	BusinessProcess.prototype.requirementUploads.defineProperties({
+		// Uploads data snapshot (saved when file is submitted to Part B)
+		dataSnapshot: { type: DataSnapshot, nested: true },
 		// Applicable requirement uploads resolved out of applicable requirements
 		applicableByRequirements: { type: RequirementUpload,
 			multiple: true,
@@ -33,6 +37,23 @@ module.exports = memoize(function (db/* options */) {
 		// It should be overriden if there are some extra requirementUploads not from requirements.
 		applicable: { type: RequirementUpload, value: function (_observe) {
 			return this.applicableByRequirements;
+		} },
+
+		toJSON: { type: db.Function, value: function (ignore) {
+			var result = [];
+			this.applicable.forEach(function (upload) {
+				var document = upload.document, data;
+				result.push(data = {
+					uniqueKey: document.uniqueKey,
+					label: this.database.resolveTemplate(document.label, document.getTranslations()),
+					issuedBy: document.getOwnDescriptor('issuedBy').valueTOJSON(),
+					issuedDate: document.getOwnDescriptor('issueDate').valueTOJSON()
+				});
+				var files = [];
+				document.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
+				if (files.length) data.files = files;
+			}, this);
+			return result;
 		} }
 	});
 
