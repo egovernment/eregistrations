@@ -2,6 +2,7 @@
 
 var _                = require('mano').i18n.bind('User: Notifications')
   , normalizeOptions = require('es5-ext/object/normalize-options')
+  , assign           = require('es5-ext/object/assign')
   , users            = require('../users/users');
 
 module.exports = function (/*options*/) {
@@ -31,5 +32,8 @@ module.exports = function (/*options*/) {
 		}
 	};
 
-	return notification;
+	delete options.greeting;
+	delete options.signature;
+
+	return assign(notification, options);
 };
