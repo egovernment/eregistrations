@@ -4,23 +4,19 @@
 
 var memoize                 = require('memoizee/plain')
   , defineUploadsProcess    = require('../lib/uploads-process')
-  , defineDataSnapshot      = require('../lib/data-snapshot')
   , defineRequirementUpload = require('../requirement-upload')
   , defineBusinessProcess   = require('./requirements');
 
 module.exports = memoize(function (db/* options */) {
 	var BusinessProcess   = defineBusinessProcess(db, arguments[1])
 	  , UploadsProcess    = defineUploadsProcess(db)
-	  , RequirementUpload = defineRequirementUpload(db)
-	  , DataSnapshot      = defineDataSnapshot(db);
+	  , RequirementUpload = defineRequirementUpload(db);
 
 	BusinessProcess.prototype.defineProperties({
 		requirementUploads: { type: UploadsProcess, nested: true }
 	});
 
 	BusinessProcess.prototype.requirementUploads.defineProperties({
-		// Uploads data snapshot (saved when file is submitted to Part B)
-		dataSnapshot: { type: DataSnapshot, nested: true },
 		// Applicable requirement uploads resolved out of applicable requirements
 		applicableByRequirements: { type: RequirementUpload,
 			multiple: true,

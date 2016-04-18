@@ -6,6 +6,7 @@
 var memoize                 = require('memoizee/plain')
   , definePercentage        = require('dbjs-ext/number/percentage')
   , defineMultipleProcess   = require('./multiple-process')
+  , defineDataSnapshot      = require('./data-snapshot')
   , defineRequirementUpload = require('../requirement-upload')
   , defineUInteger          = require('dbjs-ext/number/integer/u-integer');
 
@@ -13,7 +14,8 @@ module.exports = memoize(function (db/*, options*/) {
 	var Percentage        = definePercentage(db)
 	  , MultipleProcess   = defineMultipleProcess(db)
 	  , RequirementUpload = defineRequirementUpload(db)
-	  , UInteger          = defineUInteger(db);
+	  , UInteger          = defineUInteger(db)
+	  , DataSnapshot      = defineDataSnapshot(db);
 
 	var UploadsProcess = MultipleProcess.extend('UploadsProcess', {
 		// Applicable uploads
@@ -74,8 +76,40 @@ module.exports = memoize(function (db/*, options*/) {
 		revisionProgress: { value: function (_observe) {
 			if (!this.applicable.size) return 1;
 			return (this.approved.size + this.rejected.size) / this.applicable.size;
-		} }
+		} },
+		// Uploads data snapshot (saved when file is submitted to Part B)
+		dataSnapshot: { type: DataSnapshot, nested: true }
 	});
 	UploadsProcess.prototype.map._descriptorPrototype_.type = RequirementUpload;
+	UploadsProcess.prototype.dataSnapshot.define('finalize', {
+		type: db.Function,
+		value: function (ignore) {
+			var data;
+			if (!this.jsonString) this.jsonString = this.owner.toJSON();
+			data = JSON.parse(this.jsonString);
+			if (!data.length) return; // Not applicable
+			if (data[0].isFinalized) return; // Already done
+			this.owner.applicable.forEach(function (upload) {
+				data.some(function (data) {
+					var statusLog;
+					if (data.uniqueKey !== upload.document.uniqueKey) return;
+					if (upload.isApproved) data.status = 'approved';
+					else if (upload.isRejected) data.status = 'rejected';
+					statusLog = [];
+					upload.statusLog.ordered.forEach(function (log) {
+						statusLog.push({
+							label: log.getOwnDescriptor('label').valueToJSON(),
+							time: log.getOwnDescriptor('time').valueToJSON(),
+							text: log.getOwnDescriptor('text').valueToJSON()
+						});
+					});
+					if (statusLog.length) data.statusLog = statusLog;
+					data.isFinalized = true;
+					return true;
+				});
+			});
+			this.jsonString = JSON.stringify(data);
+		}
+	});
 	return UploadsProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
