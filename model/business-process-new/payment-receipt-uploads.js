@@ -79,7 +79,8 @@ module.exports = memoize(function (db/* options */) {
 				var document = upload.document, data;
 				result.push(data = {
 					key: document.key,
-					label: this.database.resolveTemplate(document.label, document.getTranslations()),
+					label: this.database.resolveTemplate(document.label, document.getTranslations(),
+						{ partial: true }),
 					issuedDate: document.getOwnDescriptor('issueDate').valueTOJSON()
 				});
 				var files = [];
