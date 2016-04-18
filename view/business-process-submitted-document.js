@@ -17,7 +17,7 @@ exports._dynamic = function () {
 };
 
 exports['selection-preview'] = function () {
-	documentView(this.document,
-		this.businessProcess.requirementUploads.applicable,
-		renderDocumentHistory(this.document));
+	var doc = this.document;
+
+	documentView(doc, this.businessProcess.requirementUploads.applicable, renderDocumentHistory(doc));
 };

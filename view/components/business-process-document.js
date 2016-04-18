@@ -8,16 +8,16 @@ var renderDocument      = require('../_business-process-document-preview')
   , documentRevsionInfo = require('../_business-process-document-review-info')
   , _d                  = _;
 
-module.exports = function (document, collection, sideContent) {
+module.exports = function (doc, collection, sideContent) {
 	var nextDocument, previousDocument, nextDocumentUrl, previousDocumentUrl;
-	if (document.owner.owner.key === 'certificates') {
+	if (doc.owner.owner.key === 'certificates') {
 		// Certificate case
-		nextDocument = reactiveSibling.next(collection, document);
-		previousDocument = reactiveSibling.previous(collection, document);
+		nextDocument = reactiveSibling.next(collection, doc);
+		previousDocument = reactiveSibling.previous(collection, doc);
 	} else {
 		// Requirement upload or payment receipt case
-		nextDocument = reactiveSibling.next(collection, document.owner);
-		previousDocument = reactiveSibling.previous(collection, document.owner);
+		nextDocument = reactiveSibling.next(collection, doc.owner);
+		previousDocument = reactiveSibling.previous(collection, doc.owner);
 	}
 
 	nextDocumentUrl = nextDocument.map(function (nextDocument) {
@@ -33,7 +33,7 @@ module.exports = function (document, collection, sideContent) {
 	return [div({ id: 'submitted-box', class: 'business-process-submitted-box' },
 		div({ class: 'business-process-submitted-box-header' },
 			div({ class: 'business-process-submitted-box-header-document-title' },
-				_d(document.label, document.getTranslations())),
+				_d(doc.label, doc.getTranslations())),
 			div({ class: 'business-process-submitted-box-controls' },
 				div({ class: 'label-doc-type' }, _('Document')),
 				_if(previousDocument,
@@ -46,11 +46,11 @@ module.exports = function (document, collection, sideContent) {
 						class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
 						i({ class: 'fa fa-angle-right' })))
 					))),
-		insert(documentRevsionInfo(document)),
+		doc.isCertificate ? null : insert(documentRevsionInfo(doc)),
 		div({ id: 'user-document', class: 'business-process-submitted-selected-document' },
 			div({ class: 'submitted-preview' },
 				div({ id: 'document-preview', class: 'submitted-preview-document' },
-					renderDocument(document)),
+					renderDocument(doc)),
 				div({ class: 'submitted-preview-user-data  entity-data-section-side' },
 					sideContent)))];
 };
