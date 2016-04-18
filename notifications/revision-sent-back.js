@@ -2,6 +2,7 @@
 
 var _                = require('mano').i18n.bind('Official: Revision: Notifications')
   , normalizeOptions = require('es5-ext/object/normalize-options')
+  , assign           = require('es5-ext/object/assign')
   , ensureType       = require('dbjs/valid-dbjs-type')
   , _d               = _;
 
@@ -23,9 +24,8 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	notification.trigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isSentBack', true);
 	notification.preTrigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);
 
-	notification.subject = options.subject ||
-		_("M05 You must correct some elements in your application");
-	notification.text = options.text || _("M05 Revision sent back\n\n"
+	notification.subject = _("M05 You must correct some elements in your application");
+	notification.text = _("M05 Revision sent back\n\n"
 			+ "Name of company: ${ businessName }\n\n"
 			+ "${ rejectedUploads }");
 
@@ -79,5 +79,9 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 		}
 	};
 
-	return notification;
+	delete options.stepName;
+	delete options.greeting;
+	delete options.signature;
+
+	return assign(notification, options);
 };
