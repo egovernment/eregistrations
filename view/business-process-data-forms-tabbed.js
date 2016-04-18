@@ -8,8 +8,6 @@ var appLocation = require('mano/lib/client/location')
 
 exports._parent = require('./business-process-base');
 
-exports['step-guide'] = { class: { 'step-form': true } };
-
 exports.step = {
 	class: { content: false, 'user-forms': false },
 	content: function () {
