@@ -44,17 +44,10 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	}, function (businessProcess) {
 		if (!businessProcess.dataForms.dataSnapshot.jsonString) {
 			debug('%s generate initial data snapshots', businessProcess.__id__);
-			businessProcess.dataForms.dataSnapshot.jsonString =
-				stringify(businessProcess.dataForms.toJSON());
 		}
-		if (!businessProcess.requirementUploads.dataSnapshot.jsonString) {
-			businessProcess.requirementUploads.dataSnapshot.jsonString =
-				stringify(businessProcess.requirementUploads.toJSON());
-		}
-		if (!businessProcess.paymentReceiptUploads.dataSnapshot.jsonString) {
-			businessProcess.paymentReceiptUploads.dataSnapshot.jsonString =
-				stringify(businessProcess.paymentReceiptUploads.toJSON());
-		}
+		businessProcess.dataForms.dataSnapshot.generate();
+		businessProcess.requirementUploads.dataSnapshot.generate();
+		businessProcess.paymentReceiptUploads.dataSnapshot.generate();
 	});
 
 	var businessProcessesSubmitted = businessProcesses.filterByKey('isSubmitted', true);
@@ -66,12 +59,9 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	}, function (businessProcess) {
 		debug('%s finalize sentBack', businessProcess.__id__);
 		businessProcess.delete('isSentBack');
-		businessProcess.dataForms.dataSnapshot.jsonString =
-			stringify(businessProcess.dataForms.toJSON());
-		businessProcess.requirementUploads.dataSnapshot.jsonString =
-			stringify(businessProcess.requirementUploads.toJSON());
-		businessProcess.paymentReceiptUploads.dataSnapshot.jsonString =
-			stringify(businessProcess.paymentReceiptUploads.toJSON());
+		businessProcess.dataForms.dataSnapshot.regenerate();
+		businessProcess.requirementUploads.dataSnapshot.regenerate();
+		businessProcess.paymentReceiptUploads.dataSnapshot.regenerate();
 	});
 
 	// Business process: isUserProcessing initialization
@@ -92,12 +82,9 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		debug('%s finalize user processing', businessProcess.__id__);
 		if (onUserProcessingEnd) onUserProcessingEnd(businessProcess);
 		businessProcess.delete('isUserProcessing');
-		businessProcess.dataForms.dataSnapshot.jsonString =
-			stringify(businessProcess.dataForms.toJSON());
-		businessProcess.requirementUploads.dataSnapshot.jsonString =
-			stringify(businessProcess.requirementUploads.toJSON());
-		businessProcess.paymentReceiptUploads.dataSnapshot.jsonString =
-			stringify(businessProcess.paymentReceiptUploads.toJSON());
+		businessProcess.dataForms.dataSnapshot.regenerate();
+		businessProcess.requirementUploads.dataSnapshot.regenerate();
+		businessProcess.paymentReceiptUploads.dataSnapshot.regenerate();
 	});
 
 	// Business process: isApproved preservation
@@ -113,9 +100,10 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	}, function (businessProcess) {
 		if (!businessProcess.certificates.dataSnapshot.jsonString) {
 			debug('%s generate certificates data snapshots', businessProcess.__id__);
-			businessProcess.certificates.dataSnapshot.jsonString =
-				stringify(businessProcess.certificates.toJSON());
 		}
+		businessProcess.certificates.dataSnapshot.generate();
+		businessProcess.requirementUploads.dataSnapshot.finalize();
+		businessProcess.paymentReceiptUploads.dataSnapshot.finalize();
 	});
 
 	// Processing steps:
