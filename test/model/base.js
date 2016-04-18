@@ -14,7 +14,8 @@ module.exports = function (t, a) {
 	});
 	a.deep(db.Object.prototype.getOwnDescriptor('foo').fieldToJSON(), {
 		label: 'Foo',
-		value: 'True'
+		value: 'True',
+		id: db.Object.prototype.getOwnDescriptor('foo').__valueId__
 	});
 	a(db.Object.isValueEmpty({}), false);
 	a(db.Object.isValueEmpty(), true);
