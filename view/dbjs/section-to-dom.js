@@ -44,7 +44,7 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 							  , cond, specialCase;
 
 							if (isNested) {
-								if (resolved.value instanceof File) {
+								if (File && resolved.value instanceof File) {
 									specialCase = 'file';
 								} else if (typeof resolved.value.getDescriptor('resolvedValue')
 										._value_ === 'function') {
