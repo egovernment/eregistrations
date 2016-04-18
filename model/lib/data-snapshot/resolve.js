@@ -9,20 +9,17 @@ var d               = require('d')
   , ObservableValue = require('observable-value')
   , memoize         = require('memoizee/plain')
 
-  , defineProperties = Object.defineProperties, parse = JSON.parse;
+  , defineProperties = Object.defineProperties;
 
 module.exports = memoize(function (db) {
 	defineProperties(db.DataSnapshot.prototype, lazy({
 		resolved: d(function () {
 			this._jsonString.once('change', function () { delete this.resolved; }.bind(this));
-			if (!this.jsonString) return null;
-			return parse(this.jsonString);
+			return this.resolve();
 		}),
 		_resolved: d(function () {
-			var observable = new ObservableValue(this.jsonString ? parse(this.jsonString) : null);
-			this._jsonString.on('change', function () {
-				observable.value = this.jsonString ? parse(this.jsonString) : null;
-			}.bind(this));
+			var observable = new ObservableValue(this.resolve());
+			this._jsonString.on('change', function () { observable.value = this.resolve(); }.bind(this));
 			return observable;
 		})
 	}));

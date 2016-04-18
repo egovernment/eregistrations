@@ -26,6 +26,9 @@ module.exports = memoize(function (db) {
 		// Generates snapshot (overwrites old snapshot if it exist)
 		regenerate: { type: db.Function, value: function (ignore) {
 			this.jsonString = JSON.stringify(this.owner.toJSON());
+		} },
+		resolve: { type: db.Function, value: function (ignore) {
+			return this.jsonString ? JSON.parse(this.jsonString) : null;
 		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
