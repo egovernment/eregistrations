@@ -2,126 +2,157 @@
 
 'use strict';
 
-var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
-  , _              = require('mano').i18n.bind('User Submitted')
-  , renderSections = require('./components/render-sections-json')
+var find            = require('es5-ext/array/#/find')
+  , camelToHyphen   = require('es5-ext/string/#/camel-to-hyphen')
+  , ObservableValue = require('observable-value')
+  , _               = require('mano').i18n.bind('User Submitted')
+  , renderSections  = require('./components/render-sections-json');
 
-  , _d = _;
+var resolveUploads = function (targetCollection) {
+	var target = targetCollection.owner, businessProcess = target.master;
+	if (target === businessProcess) return targetCollection.dataSnapshot._resolved;
+	return targetCollection.dataSnapshot._resolved.map(function (data) {
+		var observable = new ObservableValue();
+		var update = function () {
+			var result = [];
+			targetCollection.applicable.forEach(function (upload) {
+				var uploadData = find.call(data, function (uploadData) {
+					return upload.document.uniqueKey === uploadData.uniqueKey;
+				});
+				if (uploadData) {
+					result.push(uploadData);
+					return;
+				}
+				if (!targetCollection.processable) return;
+				if (!targetCollection.processable.has(upload)) return;
+				uploadData = upload.toJSON();
+				uploadData.status = upload._isApproved.map(function (isApproved) {
+					if (isApproved) return 'approved';
+					return upload._isRejected.map(function (isRejected) {
+						if (isRejected) return 'rejected';
+					});
+				});
+				uploadData.statusLog = upload.statusLog.ordered;
+				result.push(uploadData);
+			});
+			observable.value = result;
+		};
+		targetCollection.applicable.on('change', update);
+		update();
+		return observable;
+	});
+};
+
+var resolveCertificates = function (targetCollection) {
+	var target = targetCollection.owner, businessProcess = target.master;
+	if (target === businessProcess) return targetCollection.dataSnapshot._resolved;
+	return businessProcess._isApproved.map(function (isApproved) {
+		if (!isApproved) return targetCollection.uploaded;
+		return targetCollection.dataSnapshot._resolved.map(function (data) {
+			var observable = new ObservableValue();
+			var update = function () {
+				var result = [];
+				targetCollection.uploaded.forEach(function (upload) {
+					var uploadData = find.call(data, function (certData) {
+						return upload.key === certData.uniqueKey;
+					});
+					if (uploadData) {
+						result.push(uploadData);
+						return;
+					}
+				});
+				observable.value = result;
+			};
+			targetCollection.applicable.on('change', update);
+			update();
+			return observable;
+		});
+	});
+};
 
 var drawDocumentsPart = function (target, urlPrefix) {
-	return _if(target.requirementUploads.applicable._size, function () {
+	return mmap(resolveUploads(target.requirementUploads), function (data) {
+		if (!data || !data.length) return;
 		return [
 			h3(_("Documents required")),
-			div(
-				{ class: 'table-responsive-container' },
-				table(
-					{ class: 'submitted-user-data-table user-request-table' },
-					thead(
-						tr(
-							th({ class: 'submitted-user-data-table-status' }),
+			div({ class: 'table-responsive-container' },
+				table({ class: 'submitted-user-data-table user-request-table' },
+					thead(tr(th({ class: 'submitted-user-data-table-status' }),
 							th(_("Name")),
 							th(_("Issuer")),
 							th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
-							th({ class: 'submitted-user-data-table-link' })
-						)
-					),
-					tbody(
-						target.requirementUploads.applicable,
-						function (requirementUpload) {
-							td(
-								{ class: 'submitted-user-data-table-status' },
-								_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
-								_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' }))
-							);
-							td(_d(requirementUpload.document._label,
-								requirementUpload.document.getTranslations()));
-							td(requirementUpload.document._issuedBy);
-							td({ class: 'submitted-user-data-table-date' },
-								requirementUpload.document._issueDate);
+							th({ class: 'submitted-user-data-table-link' }))),
+					tbody(data, function (uploadData) {
+						return tr(
+							td({ class: 'submitted-user-data-table-status' },
+								_if(eq(uploadData.status, 'approved'), span({ class: 'fa fa-check' })),
+								_if(eq(uploadData.status, 'rejected'), span({ class: 'fa fa-exclamation' }))),
+							td(uploadData.label),
+							td(uploadData.issuedBy),
+							td({ class: 'submitted-user-data-table-date' }, uploadData.issueDate),
 							td({ class: 'submitted-user-data-table-link' },
 								a({ href: urlPrefix + 'document/' +
-									camelToHyphen.call(requirementUpload.document.uniqueKey) + "/" },
-									span({ class: 'fa fa-search' }, _("Go to"))));
-						}
-					)
-				)
-			)
+									camelToHyphen.call(uploadData.uniqueKey) + "/" },
+									span({ class: 'fa fa-search' }, _("Go to"))))
+						);
+					})))
 		];
 	});
 };
 
 var drawPaymentReceiptsPart = function (target, urlPrefix) {
-	return _if(target.paymentReceiptUploads.applicable._size, function () {
+	return mmap(resolveUploads(target.paymentReceiptUploads), function (data) {
+		if (!data || !data.length) return;
 		return [
 			h3(_("Payment receipts")),
-			div(
-				{ class: 'table-responsive-container' },
-				table(
-					{ class: 'submitted-user-data-table user-request-table' },
-					thead(
-						tr(
-							th({ class: 'submitted-user-data-table-status' }),
-							th(_("Name")),
-							th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
-							th({ class: 'submitted-user-data-table-link' })
-						)
-					),
-					tbody(
-						target.paymentReceiptUploads.applicable,
-						function (receipt) {
-							td(
-								{ class: 'submitted-user-data-table-status' },
-								_if(receipt._isApproved, span({ class: 'fa fa-check' })),
-								_if(receipt._isRejected, span({ class: 'fa fa-exclamation' }))
-							);
-							td(receipt.document.label);
-							td({ class: 'submitted-user-data-table-date' }, receipt.document._issueDate);
+			div({ class: 'table-responsive-container' },
+				table({ class: 'submitted-user-data-table user-request-table' },
+					thead(tr(th({ class: 'submitted-user-data-table-status' }),
+						th(_("Name")),
+						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
+						th({ class: 'submitted-user-data-table-link' }))),
+					tbody(data, function (uploadData) {
+						return tr(
+							td({ class: 'submitted-user-data-table-status' },
+								_if(eq(uploadData.status, 'approved'), span({ class: 'fa fa-check' })),
+								_if(eq(uploadData.status, 'rejected'), span({ class: 'fa fa-exclamation' }))),
+							td(uploadData.label),
+							td({ class: 'submitted-user-data-table-date' }, uploadData.issueDate),
 							td({ class: 'submitted-user-data-table-link' },
-								a({ href: urlPrefix + 'receipt/' + camelToHyphen.call(receipt.key) + "/" },
-									span({ class: 'fa fa-search' }, _("Go to"))));
-						}
-					)
-				)
-			)
+								a({ href: urlPrefix + 'receipt/' + camelToHyphen.call(uploadData.key) + "/" },
+									span({ class: 'fa fa-search' }, _("Go to"))))
+						);
+					})))
 		];
 	});
 };
 
 var drawCertificatesPart = function (target, urlPrefix) {
-	return _if(target.certificates.uploaded._size, function () {
+	return mmap(resolveCertificates(target.certificates), function (data) {
+		if (!data || !data.length) return;
 		return [
 			h3(_("Certificates")),
-			div(
-				{ class: 'table-responsive-container' },
-				table(
-					{ class: 'submitted-user-data-table user-request-table' },
-					thead(
-						tr(
-							th({ class: 'submitted-user-data-table-status' }),
-							th(_("Name")),
-							th(_("Issuer")),
-							th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
-							th(_("Number")),
-							th({ class: 'submitted-user-data-table-link' })
-						)
-					),
-					tbody(
-						target.certificates.uploaded,
-						function (certificate) {
+			div({ class: 'table-responsive-container' },
+				table({ class: 'submitted-user-data-table user-request-table' },
+					thead(tr(th({ class: 'submitted-user-data-table-status' }),
+						th(_("Name")),
+						th(_("Issuer")),
+						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
+						th(_("Number")),
+						th({ class: 'submitted-user-data-table-link' }))),
+					tbody(data, function (certificate) {
+						return tr(
 							td({ class: 'submitted-user-data-table-status' },
-								span({ class: 'fa fa-certificate' }));
-							td(certificate.label);
-							td(certificate._issuedBy);
-							td({ class: 'submitted-user-data-table-date' }, certificate._issueDate);
-							td(certificate._number);
+								span({ class: 'fa fa-certificate' })),
+							td(certificate.label),
+							td(certificate.issuedBy),
+							td({ class: 'submitted-user-data-table-date' }, certificate.issueDate),
+							td(certificate.number),
 							td({ class: 'submitted-user-data-table-link' },
-								a({ href: urlPrefix + 'certificate/' +
-									camelToHyphen.call(certificate.key) + '/' },
-									span({ class: 'fa fa-search' }, _("Go to"))));
-						}
-					)
-				)
-			)
+								a({ href: urlPrefix + 'certificate/' + camelToHyphen.call(certificate.key) + '/' },
+									span({ class: 'fa fa-search' }, _("Go to"))))
+						);
+					})))
 		];
 	});
 };
