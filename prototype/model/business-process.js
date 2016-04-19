@@ -340,7 +340,7 @@ processes.forEach(function (businessProcess) {
 	businessProcess.branches.map.get('second').responsiblePerson.lastName = "Parker";
 	businessProcess.branches.map.get('second').responsiblePerson.email = "spiderman@daily-bugle.com";
 
-	businessProcess.certificates.applicable.forEach(function (certificate, index) {
+	businessProcess.certificates.applicable.toArray().forEach(function (certificate, index) {
 		certificate.label = 'Certyficate label';
 		certificate.issuedBy = db.institutionOfficialMinistry;
 		certificate.issueDate = new Date(2015, 23, 7);
@@ -351,6 +351,7 @@ processes.forEach(function (businessProcess) {
 			path: 'doc-a-sub-file1.idoc.jpg',
 			url: '/uploads/doc-a-sub-file1.idoc.jpg'
 		});
+		certificate.files.map.get('cert' + index).thumb.url = '/uploads/doc-a-sub-file1.idoc.jpg';
 	});
 
 	businessProcess.paymentReceiptUploads.applicable.first.document

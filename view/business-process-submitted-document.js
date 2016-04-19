@@ -10,7 +10,7 @@ exports._parent = require('./business-process-submitted-documents');
 exports._match = 'document';
 
 exports._dynamic = function () {
-	var listItemId = 'document-item-' + camelToHyphen.call(this.document.uniqueKey);
+	var listItemId = 'document-item-' + camelToHyphen.call(this.document.docId);
 	var conf = {};
 	conf[listItemId] = { class: { active: true } };
 	return conf;
