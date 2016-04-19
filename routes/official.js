@@ -34,14 +34,27 @@ module.exports = function (step) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
 					documentUniqueKey = hyphenToCamel.call(documentUniqueKey);
-
-					return this.processingStep.requirementUploads.applicable
-						.some(function (requirementUpload) {
-							if (requirementUpload.document.uniqueKey === documentUniqueKey) {
-								this.document = requirementUpload.document;
-								return true;
-							}
-						}, this);
+					this.processingStep.requirementUploads.applicable.some(function (requirementUpload) {
+						if (requirementUpload.document.uniqueKey === documentUniqueKey) {
+							this.document = requirementUpload.document;
+							return true;
+						}
+					}, this);
+					if (!this.document) return false;
+					this.businessProcess.requirementUploads.dataSnapshot.resolved.some(function (data) {
+						if (data.uniqueKey === documentUniqueKey) {
+							this.dataSnapshot = data;
+							return true;
+						}
+					}, this);
+					if (!this.dataSnapshot) {
+						// If no snapshot we show it only if it's issued for review
+						if (!this.processingStep.requirementUploads.processable) return false;
+						if (!this.processingStep.requirementUploads.processable.has(this.document.owner)) {
+							return false;
+						}
+					}
+					return true;
 				}.bind(this));
 			},
 			view: require('eregistrations/view/business-process-document')
@@ -58,6 +71,19 @@ module.exports = function (step) {
 					}
 
 					this.document = paymentReceiptUpload.document;
+					this.businessProcess.paymentReceiptUploads.dataSnapshot.resolved.some(function (data) {
+						if (data.uniqueKey === receiptKey) {
+							this.dataSnapshot = data;
+							return true;
+						}
+					}, this);
+					if (!this.dataSnapshot) {
+						// If no snapshot we show it only if it's issued for review
+						if (!this.processingStep.paymentReceiptUploads.processable) return false;
+						if (!this.processingStep.paymentReceiptUploads.processable.has(paymentReceiptUpload)) {
+							return false;
+						}
+					}
 					return true;
 				}.bind(this));
 			},
@@ -65,7 +91,6 @@ module.exports = function (step) {
 		},
 		'[0-9][a-z0-9]*/certificate/[a-z][a-z0-9-]*': {
 			match: function (businessProcessId, certificateKey) {
-
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
 
@@ -77,6 +102,12 @@ module.exports = function (step) {
 					}
 
 					this.document = certificate;
+					this.businessProcess.certificates.dataSnapshot.resolved.some(function (data) {
+						if (data.uniqueKey === certificateKey) {
+							this.dataSnapshot = data;
+							return true;
+						}
+					}, this);
 					return true;
 				}.bind(this));
 			},
