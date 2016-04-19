@@ -97,12 +97,12 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		businessProcess.isApproved = true;
 	});
 	setupTriggers({
-		trigger: businessProcesses.filterByKey('isApproved', true)
+		trigger: businessProcesses.filterByKey('isClosed', true)
 	}, function (businessProcess) {
 		if (!businessProcess.certificates.dataSnapshot.jsonString) {
 			debug('%s generate certificates data snapshots', businessProcess.__id__);
 		}
-		businessProcess.certificates.dataSnapshot.generate();
+		if (businessProcess.isApproved) businessProcess.certificates.dataSnapshot.generate();
 		businessProcess.requirementUploads.dataSnapshot.finalize();
 		businessProcess.paymentReceiptUploads.dataSnapshot.finalize();
 	});
