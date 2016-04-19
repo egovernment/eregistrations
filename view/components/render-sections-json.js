@@ -79,6 +79,7 @@ module.exports = exports = function (dataSnapshot/*, options*/) {
 	});
 };
 
+exports.renderers = defaultRenderers;
 exports.customRenderers = {
 	fileValue: function (data) {
 		return div({ class: 'file-thumb' },
