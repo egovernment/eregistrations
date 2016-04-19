@@ -2,7 +2,7 @@
 
 'use strict';
 
-var renderPaymentList = require('./_business-process-payments-list');
+var renderPaymentList = require('./components/business-process-payments-list');
 
 exports._parent = require('./business-process-revision');
 exports._match = 'businessProcess';

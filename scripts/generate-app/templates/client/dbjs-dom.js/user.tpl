@@ -16,6 +16,7 @@ require('dbjs-dom/input/utils/fieldset')(db);
 require('eregistrations/view/dbjs/multiple');
 require('eregistrations/view/dbjs/submission-file');
 require('eregistrations/view/dbjs/document-url');
+require('eregistrations/view/dbjs/document-id');
 
 require('dbjs-dom/text/utils/table')(db);
 require('dbjs-dom/ext/domjs/table-cell-render');

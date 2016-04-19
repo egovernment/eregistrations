@@ -1,12 +1,12 @@
 'use strict';
 
-var db = require('mano').db
-, d  = require('d')
-, camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
-, lazy = require('d/lazy');
+var db            = require('mano').db
+  , d             = require('d')
+  , camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
+  , lazy          = require('d/lazy');
 
-Object.defineProperties(db.Document.prototype, lazy({ docUrl:
-	d(function () {
+Object.defineProperties(db.Document.prototype, lazy({
+	docUrl: d(function () {
 		var url = '/';
 		if (this.owner.owner.key === 'certificates') {
 			url += 'certificate/' + camelToHyphen.call(this.key) + '/';
@@ -19,5 +19,4 @@ Object.defineProperties(db.Document.prototype, lazy({ docUrl:
 		}
 		return url;
 	})
-	})
-	);
+}));

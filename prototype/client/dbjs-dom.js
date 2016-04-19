@@ -45,6 +45,7 @@ require('../../view/dbjs/section-entities-table-to-dom');
 require('../../view/dbjs/multiple');
 require('../../view/dbjs/section-sides-to-dom');
 require('../../view/dbjs/document-url');
+require('../../view/dbjs/document-id');
 require('../../view/dbjs/determinants-to-dom-fieldset')(
 	db.BusinessProcessNew.prototype.determinants
 );

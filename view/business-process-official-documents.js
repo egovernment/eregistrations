@@ -2,9 +2,9 @@
 
 'use strict';
 
-var renderDocumentsList = require('./_business-process-documents-list')
-  , renderCertificateList = require('./_business-process-certificates-list')
-  , renderPaymentList = require('./_business-process-payments-list');
+var renderDocumentsList   = require('./components/business-process-documents-list')
+  , renderCertificateList = require('./components/business-process-certificates-list')
+  , renderPaymentList     = require('./components/business-process-payments-list');
 
 exports._parent = require('./business-process-official');
 exports._match = 'businessProcess';
