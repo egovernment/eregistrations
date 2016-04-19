@@ -87,10 +87,12 @@ module.exports = memoize(function (db/*, options*/) {
 			if (!data) return data;
 			if (!data.length) return data; // Nothing to do
 			if (data[0].isFinalized) return data; // Already done
+			var kind = (this.owner.key === 'requirementUploads')
+				? 'requirementUpload' : 'paymentReceiptUpload';
 			data.forEach(function (uploadData) {
 				var upload;
 				this.owner.applicable.some(function (candidate) {
-					var uniqueKey = (this.owner.key === 'requirementUploads')
+					var uniqueKey = (kind === 'requirementUpload')
 						? candidate.document.uniqueKey : candidate.key;
 					if (uniqueKey === uploadData.uniqueKey) {
 						upload = candidate;
@@ -105,6 +107,8 @@ module.exports = memoize(function (db/*, options*/) {
 					});
 				});
 				uploadData.statusLog = upload.statusLog.ordered.toArray();
+				if (kind === 'requirementUpload') uploadData.rejectReasons = upload.rejectReasons.toArray();
+				else uploadData.rejectReasons = [upload._rejectReasonMemo];
 			});
 		} },
 		finalize: { type: db.Function, value: function (ignore) {
@@ -113,9 +117,10 @@ module.exports = memoize(function (db/*, options*/) {
 			data = JSON.parse(this.jsonString);
 			if (!data.length) return; // Not applicable
 			if (data[0].isFinalized) return; // Already done
+			var kind = (this.owner.key === 'requirementUploads')
+				? 'requirementUpload' : 'paymentReceiptUpload';
 			this.owner.applicable.forEach(function (upload) {
-				var uniqueKey = (this.owner.key === 'requirementUploads')
-					? upload.document.uniqueKey : upload.key;
+				var uniqueKey = (kind === 'requirementUpload') ? upload.document.uniqueKey : upload.key;
 				data.some(function (data) {
 					var statusLog;
 					if (data.uniqueKey !== uniqueKey) return;
@@ -130,6 +135,13 @@ module.exports = memoize(function (db/*, options*/) {
 						});
 					});
 					if (statusLog.length) data.statusLog = statusLog;
+					if (data.status === 'rejected') {
+						if (kind === 'requirementUpload') {
+							data.rejectReasons = upload.getOwnDescriptor('rejectReasons').valueToJSON();
+						} else {
+							data.rejectReasons = [upload.getOwnDescriptor('rejectReasonMemo').valueToJSON()];
+						}
+					}
 					data.isFinalized = true;
 					return true;
 				});
