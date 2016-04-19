@@ -81,7 +81,8 @@ module.exports = memoize(function (db/* options */) {
 						{ partial: true }),
 					issuedBy: document.getOwnDescriptor('issuedBy').valueTOJSON(),
 					issuedDate: document.getOwnDescriptor('issueDate').valueTOJSON(),
-					number: document.getOwnDescriptor('issueDate').valueTOJSON()
+					number: document.getOwnDescriptor('issueDate').valueTOJSON(),
+					overviewSection: document.owerviewSection.toJSON()
 				});
 				var files = [];
 				document.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
