@@ -33,24 +33,6 @@ module.exports = memoize(function (db/* options */) {
 		// It should be overriden if there are some extra requirementUploads not from requirements.
 		applicable: { type: RequirementUpload, value: function (_observe) {
 			return this.applicableByRequirements;
-		} },
-
-		toJSON: { type: db.Function, value: function (ignore) {
-			var result = [];
-			this.applicable.forEach(function (upload) {
-				var document = upload.document, data;
-				result.push(data = {
-					uniqueKey: document.uniqueKey,
-					label: this.database.resolveTemplate(document.label, document.getTranslations(),
-						{ partial: true }),
-					issuedBy: document.getOwnDescriptor('issuedBy').valueTOJSON(),
-					issuedDate: document.getOwnDescriptor('issueDate').valueTOJSON()
-				});
-				var files = [];
-				document.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
-				if (files.length) data.files = files;
-			}, this);
-			return result;
 		} }
 	});
 

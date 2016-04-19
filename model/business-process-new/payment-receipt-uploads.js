@@ -71,24 +71,7 @@ module.exports = memoize(function (db/* options */) {
 			}
 		},
 		approved: { type: PaymentReceiptUpload },
-		rejected: { type: PaymentReceiptUpload },
-
-		toJSON: { type: db.Function, value: function (ignore) {
-			var result = [];
-			this.applicable.forEach(function (upload) {
-				var document = upload.document, data;
-				result.push(data = {
-					uniqueKey: upload.key,
-					label: this.database.resolveTemplate(document.label, document.getTranslations(),
-						{ partial: true }),
-					issuedDate: document.getOwnDescriptor('issueDate').valueTOJSON()
-				});
-				var files = [];
-				document.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
-				if (files.length) data.files = files;
-			}, this);
-			return result;
-		} }
+		rejected: { type: PaymentReceiptUpload }
 	});
 
 	if (!BusinessProcess.prototype.costs) defineCosts(db, options);

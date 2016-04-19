@@ -101,7 +101,53 @@ module.exports = memoize(function (db) {
 		isFrontDeskApplicable: { type: db.Boolean, value: true },
 
 		// Whether uploaded files were validated by front-desk processing step
-		isFrontDeskApproved: { type: db.Boolean, required: true }
+		isFrontDeskApproved: { type: db.Boolean, required: true },
+
+		toJSON: { value: function (ignore) {
+			var data = {
+				uniqueKey: this.document.uniqueKey,
+				label: this.database.resolveTemplate(this.document.label, this.document.getTranslations(),
+					{ partial: true }),
+				issuedBy: this.document.getOwnDescriptor('issuedBy').valueTOJSON(),
+				issuedDate: this.document.getOwnDescriptor('issueDate').valueTOJSON()
+			};
+			var files = [];
+			this.document.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
+			if (files.length) data.files = files;
+			return data;
+		} },
+		// Enrich snapshot JSON with reactive configuration of revision related properties
+		enrichJSON: { type: db.Function, value: function (data) {
+			if (data.isFinalized) return;
+			data.status = this._isApproved.map(function (isApproved) {
+				if (isApproved) return 'approved';
+				return this._isRejected.map(function (isRejected) {
+					if (isRejected) return 'rejected';
+				});
+			}.bind(this));
+			data.statusLog = this.statusLog.ordered.toArray();
+			data.rejectReasons = this.rejectReasons.toArray();
+		} },
+		// Finalize snapshot JSON by adding revision status properties
+		finalizeJSON: { type: db.Function, value: function (data) {
+			var statusLog;
+			if (data.isFinalized) return;
+			if (this.isApproved) data.status = 'approved';
+			else if (this.isRejected) data.status = 'rejected';
+			statusLog = [];
+			this.statusLog.ordered.forEach(function (log) {
+				statusLog.push({
+					label: log.getOwnDescriptor('label').valueToJSON(),
+					time: log.getOwnDescriptor('time').valueToJSON(),
+					text: log.getOwnDescriptor('text').valueToJSON()
+				});
+			});
+			if (statusLog.length) data.statusLog = statusLog;
+			if (data.status === 'rejected') {
+				data.rejectReasons = this.getOwnDescriptor('rejectReasons').valueToJSON();
+			}
+			data.isFinalized = true;
+		} }
 	});
 
 	return RequirementUpload;

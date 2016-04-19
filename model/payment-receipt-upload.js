@@ -71,6 +71,43 @@ module.exports = memoize(function (db) {
 		isRecentlyRejected: { type: db.Boolean, value: function () {
 			if ((this.status !== 'invalid') && (this.status != null)) return false;
 			return Boolean(this.rejectReasonMemo);
+		} },
+		toJSON: { value: function (ignore) {
+			var data = this.database.RequirementUpload.prototype.toJSON.call(this);
+			data.uniqueKey = this.key;
+			delete data.issuedBy;
+		} },
+		// Enrich snapshot JSON with reactive configuration of revision related properties
+		enrichJSON: { value: function (data) {
+			if (data.isFinalized) return;
+			data.status = this._isApproved.map(function (isApproved) {
+				if (isApproved) return 'approved';
+				return this._isRejected.map(function (isRejected) {
+					if (isRejected) return 'rejected';
+				});
+			}.bind(this));
+			data.statusLog = this.statusLog.ordered.toArray();
+			data.rejectReasons = [this._rejectReasonMemo];
+		} },
+		// Finalize snapshot JSON by adding revision status properties
+		finalizeJSON: { type: db.Function, value: function (data) {
+			var statusLog;
+			if (data.isFinalized) return;
+			if (this.isApproved) data.status = 'approved';
+			else if (this.isRejected) data.status = 'rejected';
+			statusLog = [];
+			this.statusLog.ordered.forEach(function (log) {
+				statusLog.push({
+					label: log.getOwnDescriptor('label').valueToJSON(),
+					time: log.getOwnDescriptor('time').valueToJSON(),
+					text: log.getOwnDescriptor('text').valueToJSON()
+				});
+			});
+			if (statusLog.length) data.statusLog = statusLog;
+			if (data.status === 'rejected') {
+				data.rejectReasons = [this.getOwnDescriptor('rejectReasonMemo').valueToJSON()];
+			}
+			data.isFinalized = true;
 		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

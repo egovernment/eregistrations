@@ -78,7 +78,13 @@ module.exports = memoize(function (db/*, options*/) {
 			return (this.approved.size + this.rejected.size) / this.applicable.size;
 		} },
 		// Uploads data snapshot (saved when file is submitted to Part B)
-		dataSnapshot: { type: DataSnapshot, nested: true }
+		dataSnapshot: { type: DataSnapshot, nested: true },
+
+		toJSON: { value: function (ignore) {
+			var result = [];
+			this.applicable.forEach(function (upload) { result.push(upload.toJSON()); });
+			return result;
+		} }
 	});
 	UploadsProcess.prototype.map._descriptorPrototype_.type = RequirementUpload;
 	UploadsProcess.prototype.dataSnapshot.defineProperties({
@@ -89,60 +95,33 @@ module.exports = memoize(function (db/*, options*/) {
 			if (data[0].isFinalized) return data; // Already done
 			var kind = (this.owner.key === 'requirementUploads')
 				? 'requirementUpload' : 'paymentReceiptUpload';
-			data.forEach(function (uploadData) {
-				var upload;
-				this.owner.applicable.some(function (candidate) {
-					var uniqueKey = (kind === 'requirementUpload')
-						? candidate.document.uniqueKey : candidate.key;
-					if (uniqueKey === uploadData.uniqueKey) {
-						upload = candidate;
-						return true;
-					}
-				}, this);
-				if (!upload) return;
-				uploadData.status = upload._isApproved.map(function (isApproved) {
-					if (isApproved) return 'approved';
-					return upload._isRejected.map(function (isRejected) {
-						if (isRejected) return 'rejected';
-					});
+			this.owner.applicable.forEach(function (upload) {
+				var uniqueKey = (kind === 'requirementUpload') ? upload.document.uniqueKey : upload.key;
+				data.some(function (data) {
+					if (data.uniqueKey !== uniqueKey) return;
+					upload.enrichJSON(data);
+					return true;
 				});
-				uploadData.statusLog = upload.statusLog.ordered.toArray();
-				if (kind === 'requirementUpload') uploadData.rejectReasons = upload.rejectReasons.toArray();
-				else uploadData.rejectReasons = [upload._rejectReasonMemo];
 			});
 		} },
 		finalize: { type: db.Function, value: function (ignore) {
 			var data;
-			if (!this.jsonString) this.jsonString = this.owner.toJSON();
-			data = JSON.parse(this.jsonString);
-			if (!data.length) return; // Not applicable
-			if (data[0].isFinalized) return; // Already done
+			if (this.jsonString) {
+				data = JSON.parse(this.jsonString);
+				if (!data.length && data[0].isFinalized) return; // Already done
+			}
+			data = this.owner.toJSON();
+			if (!data.length) {
+				if (!this.jsonString) this.jsonString = JSON.stringify(data);
+				return;
+			}
 			var kind = (this.owner.key === 'requirementUploads')
 				? 'requirementUpload' : 'paymentReceiptUpload';
 			this.owner.applicable.forEach(function (upload) {
 				var uniqueKey = (kind === 'requirementUpload') ? upload.document.uniqueKey : upload.key;
 				data.some(function (data) {
-					var statusLog;
 					if (data.uniqueKey !== uniqueKey) return;
-					if (upload.isApproved) data.status = 'approved';
-					else if (upload.isRejected) data.status = 'rejected';
-					statusLog = [];
-					upload.statusLog.ordered.forEach(function (log) {
-						statusLog.push({
-							label: log.getOwnDescriptor('label').valueToJSON(),
-							time: log.getOwnDescriptor('time').valueToJSON(),
-							text: log.getOwnDescriptor('text').valueToJSON()
-						});
-					});
-					if (statusLog.length) data.statusLog = statusLog;
-					if (data.status === 'rejected') {
-						if (kind === 'requirementUpload') {
-							data.rejectReasons = upload.getOwnDescriptor('rejectReasons').valueToJSON();
-						} else {
-							data.rejectReasons = [upload.getOwnDescriptor('rejectReasonMemo').valueToJSON()];
-						}
-					}
-					data.isFinalized = true;
+					upload.finalizeJSON(data);
 					return true;
 				});
 			});
