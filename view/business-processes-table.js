@@ -58,9 +58,11 @@ exports['sub-main'] = {
 
 		businessProcessesTable = exports._businessProcessTable(this);
 
-		insert(businessProcessesTable.pagination,
-			section({ class: 'table-responsive-container' }, businessProcessesTable),
-			businessProcessesTable.pagination);
+		if (businessProcessesTable) {
+			insert(businessProcessesTable.pagination,
+				section({ class: 'table-responsive-container' }, businessProcessesTable),
+				businessProcessesTable.pagination);
+		}
 	}
 };
 
