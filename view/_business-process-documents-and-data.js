@@ -2,44 +2,30 @@
 
 'use strict';
 
-var find            = require('es5-ext/array/#/find')
-  , camelToHyphen   = require('es5-ext/string/#/camel-to-hyphen')
-  , ObservableValue = require('observable-value')
-  , _               = require('mano').i18n.bind('User Submitted')
-  , renderSections  = require('./components/render-sections-json');
+var find           = require('es5-ext/array/#/find')
+  , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
+  , _              = require('mano').i18n.bind('User Submitted')
+  , renderSections = require('./components/render-sections-json')
+  , getSetProxy    = require('../utils/observables-set-proxy')
+
+  , _d = _;
 
 var resolveUploads = function (targetCollection) {
 	var target = targetCollection.owner, businessProcess = target.master;
 	if (target === businessProcess) return targetCollection.dataSnapshot._resolved;
+	var kind = (targetCollection.key === 'requirementUploads')
+		? 'requirementUpload' : 'paymentReceiptUpload';
 	return targetCollection.dataSnapshot._resolved.map(function (data) {
-		var observable = new ObservableValue();
-		var update = function () {
-			var result = [];
-			targetCollection.applicable.forEach(function (upload) {
-				var uploadData = find.call(data, function (uploadData) {
-					return upload.document.uniqueKey === uploadData.uniqueKey;
-				});
-				if (uploadData) {
-					result.push(uploadData);
-					return;
-				}
-				if (!targetCollection.processable) return;
-				if (!targetCollection.processable.has(upload)) return;
-				uploadData = upload.toJSON();
-				uploadData.status = upload._isApproved.map(function (isApproved) {
-					if (isApproved) return 'approved';
-					return upload._isRejected.map(function (isRejected) {
-						if (isRejected) return 'rejected';
-					});
-				});
-				uploadData.statusLog = upload.statusLog.ordered;
-				result.push(uploadData);
+		return getSetProxy(targetCollection.applicable).map(function (upload) {
+			var uniqueKey = (kind === 'requirementUpload') ? upload.document.uniqueKey : upload.key;
+			var snapshot = data && find.call(data, function (snapshot) {
+				return uniqueKey === snapshot.uniqueKey;
 			});
-			observable.value = result;
-		};
-		targetCollection.applicable.on('change', update);
-		update();
-		return observable;
+			if (snapshot) return snapshot;
+			if (!targetCollection.processable) return;
+			if (!targetCollection.processable.has(upload)) return;
+			return upload.enrichJSON(upload.toJSON());
+		}).filter(Boolean).toArray();
 	});
 };
 
@@ -47,25 +33,15 @@ var resolveCertificates = function (targetCollection) {
 	var target = targetCollection.owner, businessProcess = target.master;
 	if (target === businessProcess) return targetCollection.dataSnapshot._resolved;
 	return businessProcess._isApproved.map(function (isApproved) {
-		if (!isApproved) return targetCollection.uploaded;
+		if (!isApproved) return targetCollection.uploaded.toArray();
 		return targetCollection.dataSnapshot._resolved.map(function (data) {
-			var observable = new ObservableValue();
-			var update = function () {
-				var result = [];
-				targetCollection.uploaded.forEach(function (upload) {
-					var uploadData = find.call(data, function (certData) {
-						return upload.key === certData.uniqueKey;
-					});
-					if (uploadData) {
-						result.push(uploadData);
-						return;
-					}
+			if (!data) return;
+			return getSetProxy(targetCollection.uploaded).map(function (certificate) {
+				var snapshot = find.call(data, function (snapshot) {
+					return certificate.key === snapshot.uniqueKey;
 				});
-				observable.value = result;
-			};
-			targetCollection.applicable.on('change', update);
-			update();
-			return observable;
+				if (snapshot) return snapshot;
+			}).filter(Boolean).toArray();
 		});
 	});
 };
@@ -78,10 +54,10 @@ var drawDocumentsPart = function (target, urlPrefix) {
 			div({ class: 'table-responsive-container' },
 				table({ class: 'submitted-user-data-table user-request-table' },
 					thead(tr(th({ class: 'submitted-user-data-table-status' }),
-							th(_("Name")),
-							th(_("Issuer")),
-							th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
-							th({ class: 'submitted-user-data-table-link' }))),
+						th(_("Name")),
+						th(_("Issuer")),
+						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
+						th({ class: 'submitted-user-data-table-link' }))),
 					tbody(data, function (uploadData) {
 						return tr(
 							td({ class: 'submitted-user-data-table-status' },
@@ -119,7 +95,7 @@ var drawPaymentReceiptsPart = function (target, urlPrefix) {
 							td(uploadData.label),
 							td({ class: 'submitted-user-data-table-date' }, uploadData.issueDate),
 							td({ class: 'submitted-user-data-table-link' },
-								a({ href: urlPrefix + 'receipt/' + camelToHyphen.call(uploadData.key) + "/" },
+								a({ href: urlPrefix + 'receipt/' + camelToHyphen.call(uploadData.uniqueKey) + "/" },
 									span({ class: 'fa fa-search' }, _("Go to"))))
 						);
 					})))
@@ -141,15 +117,27 @@ var drawCertificatesPart = function (target, urlPrefix) {
 						th(_("Number")),
 						th({ class: 'submitted-user-data-table-link' }))),
 					tbody(data, function (certificate) {
+						var data = certificate;
+						if (certificate.__id_) {
+							data = {
+								label: certificate._label.map(function (label) {
+									return _d(label, certificate.getTranslations());
+								}),
+								issuedBy: certificate._issuedBy,
+								issueDate: certificate._issueDate,
+								number: certificate._number,
+								uniqueKey: certificate.key
+							};
+						}
 						return tr(
 							td({ class: 'submitted-user-data-table-status' },
 								span({ class: 'fa fa-certificate' })),
-							td(certificate.label),
-							td(certificate.issuedBy),
-							td({ class: 'submitted-user-data-table-date' }, certificate.issueDate),
-							td(certificate.number),
+							td(data.label),
+							td(data.issuedBy),
+							td({ class: 'submitted-user-data-table-date' }, data.issueDate),
+							td(data.number),
 							td({ class: 'submitted-user-data-table-link' },
-								a({ href: urlPrefix + 'certificate/' + camelToHyphen.call(certificate.key) + '/' },
+								a({ href: urlPrefix + 'certificate/' + camelToHyphen.call(data.uniqueKey) + '/' },
 									span({ class: 'fa fa-search' }, _("Go to"))))
 						);
 					})))
