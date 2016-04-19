@@ -102,7 +102,7 @@ module.exports = memoize(function (db/*, options*/) {
 						if (isRejected) return 'rejected';
 					});
 				});
-				uploadData.statusLog = upload.statusLog.ordered;
+				uploadData.statusLog = upload.statusLog.ordered.toArray();
 			});
 		} },
 		finalize: { type: db.Function, value: function (ignore) {
