@@ -23,7 +23,7 @@ module.exports = memoize(function (db) {
 		thumb: { type: JpegFile, nested: true },
 		toJSON: { value: function (descriptor) {
 			return { kind: 'fileValue', url: this.url, thumbUrl: this.thumb.url,
-				diskSize: this.diskSize };
+				diskSize: this.diskSize, type: this.type };
 		} },
 		isEmpty: { value: function (ignore) { return !this.path; } }
 	});
