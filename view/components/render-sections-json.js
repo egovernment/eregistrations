@@ -14,7 +14,7 @@ var normalizeOptions    = require('es5-ext/object/normalize-options')
   , renderMainSections, renderSubSections
   , defaultRenderers = {};
 
-defaultRenderers.renderValue = renderValue = function (data) {
+defaultRenderers.value = renderValue = function (data) {
 	if (data && data.kind) {
 		if (exports.customRenderers[data.kind]) {
 			return exports.customRenderers[data.kind](data, defaultRenderers);
@@ -25,24 +25,24 @@ defaultRenderers.renderValue = renderValue = function (data) {
 	return data;
 };
 
-defaultRenderers.renderField = renderField = function (data) {
+defaultRenderers.field = renderField = function (data) {
 	return tr(th(data.label), td(renderValue(data.value)));
 };
 
-defaultRenderers.renderFields = renderFields = function (data) {
+defaultRenderers.fields = renderFields = function (data) {
 	return table(tbody(data.map(renderField)));
 };
 
-defaultRenderers.renderEntity = renderEntity = function (data, headerRank) {
+defaultRenderers.entity = renderEntity = function (data, headerRank) {
 	return li(ns['h' + headerRank](data.name), renderMainSections(data.sections, headerRank));
 };
 
-defaultRenderers.renderEntities = renderEntities = function (data, headerRank) {
+defaultRenderers.entities = renderEntities = function (data, headerRank) {
 	return ul({ class: 'entity-data-section-entities' },
 		data, function (entityData) { return renderEntity(entityData, headerRank); });
 };
 
-defaultRenderers.renderSection = renderSection = function (data, className, headerRank) {
+defaultRenderers.section = renderSection = function (data, className, headerRank) {
 	if (data.kind && exports.customRenderers[data.kind]) {
 		return exports.customRenderers[data.kind](data, className, headerRank, defaultRenderers);
 	}
@@ -53,19 +53,19 @@ defaultRenderers.renderSection = renderSection = function (data, className, head
 		data.sections && renderSubSections(data.sections, min(headerRank + 1, 6)));
 };
 
-defaultRenderers.renderMainSection = renderMainSection = function (data, headerRank) {
+defaultRenderers.mainSection = renderMainSection = function (data, headerRank) {
 	return renderSection(data, 'entity-data-section', headerRank);
 };
 
-defaultRenderers.renderSubSection = renderSubSection = function (data, headerRank) {
+defaultRenderers.subSection = renderSubSection = function (data, headerRank) {
 	return renderSection(data, 'entity-data-section-sub', headerRank);
 };
 
-defaultRenderers.renderMainSections = renderMainSections = function (data, headerRank) {
+defaultRenderers.mainSections = renderMainSections = function (data, headerRank) {
 	return data.map(function (sectionData) { return renderMainSection(sectionData, headerRank); });
 };
 
-defaultRenderers.renderSubSections = renderSubSections = function (data, headerRank) {
+defaultRenderers.subSections = renderSubSections = function (data, headerRank) {
 	return data.map(function (sectionData) { return renderSubSection(sectionData, headerRank); });
 };
 
