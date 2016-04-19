@@ -1,7 +1,7 @@
 'use strict';
 
-var renderDocument      = require('./_business-process-document')
-  , documentRevsionInfo = require('./_business-process-document-review-info');
+var renderDocument       = require('./_business-process-document')
+  , documentRevisionInfo = require('./_business-process-document-review-info');
 
 exports._parent = require('./user-base');
 exports._match = 'document';
@@ -11,6 +11,6 @@ exports['sub-main'] = {
 	content: function () {
 		var doc = this.document;
 
-		renderDocument(doc, doc.isCertificate ? null : documentRevsionInfo(doc));
+		renderDocument(doc, doc.isCertificate ? null : documentRevisionInfo(doc));
 	}
 };
