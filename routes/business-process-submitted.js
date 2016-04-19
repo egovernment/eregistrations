@@ -32,6 +32,8 @@ module.exports = {
 					return true;
 				}
 			}, this);
+			this.kind = 'requirementUpload';
+			this.uniqueId = this.businessProcess.__id__ + '/' + this.kind + '/' + uniqueKey;
 			return true;
 		},
 		view: require('../view/business-process-document')
@@ -49,6 +51,8 @@ module.exports = {
 			if (!this.dataSnapshot) return false;
 			paymentReceiptUpload = this.businessProcess.paymentReceiptUploads.map[uniqueKey];
 			if (paymentReceiptUpload) this.document = paymentReceiptUpload.document;
+			this.kind = 'paymentReceiptUpload';
+			this.uniqueId = this.businessProcess.__id__ + '/' + this.kind + '/' + uniqueKey;
 			return true;
 		},
 		view: require('../view/business-process-document')
@@ -66,6 +70,8 @@ module.exports = {
 			if (!this.dataSnapshot) return false;
 
 			this.document = this.businessProcess.certificates.map[uniqueKey];
+			this.kind = 'certificate';
+			this.uniqueId = this.businessProcess.__id__ + '/' + this.kind + '/' + uniqueKey;
 			return true;
 		},
 		view: require('../view/business-process-document')
