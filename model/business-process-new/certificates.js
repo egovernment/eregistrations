@@ -78,7 +78,7 @@ module.exports = memoize(function (db/* options */) {
 		} },
 		toJSON: { type: db.Function, value: function (ignore) {
 			var result = [];
-			this.applicable.forEach(function (document) {
+			this.released.forEach(function (document) {
 				var data;
 				result.push(data = {
 					uniqueKey: document.key,
