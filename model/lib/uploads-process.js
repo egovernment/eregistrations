@@ -90,7 +90,9 @@ module.exports = memoize(function (db/*, options*/) {
 			data.forEach(function (uploadData) {
 				var upload;
 				this.owner.applicable.some(function (candidate) {
-					if (candidate.document.uniqueKey === uploadData.uniqueKey) {
+					var uniqueKey = (this.owner.key === 'requirementUploads')
+						? candidate.document.uniqueKey : candidate.key;
+					if (uniqueKey === uploadData.uniqueKey) {
 						upload = candidate;
 						return true;
 					}
@@ -112,9 +114,11 @@ module.exports = memoize(function (db/*, options*/) {
 			if (!data.length) return; // Not applicable
 			if (data[0].isFinalized) return; // Already done
 			this.owner.applicable.forEach(function (upload) {
+				var uniqueKey = (this.owner.key === 'requirementUploads')
+					? upload.document.uniqueKey : upload.key;
 				data.some(function (data) {
 					var statusLog;
-					if (data.uniqueKey !== upload.document.uniqueKey) return;
+					if (data.uniqueKey !== uniqueKey) return;
 					if (upload.isApproved) data.status = 'approved';
 					else if (upload.isRejected) data.status = 'rejected';
 					statusLog = [];
