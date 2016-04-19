@@ -4,8 +4,8 @@
 
 var _                   = require('mano').i18n.bind('User Submitted')
   , renderDocument      = require('./business-process-document-preview')
+  , documentRevsionInfo = require('./business-process-document-review-info')
   , reactiveSibling     = require('../../utils/reactive-sibling')
-  , documentRevsionInfo = require('../_business-process-document-review-info')
   , _d                  = _;
 
 module.exports = function (doc, collection, sideContent) {
