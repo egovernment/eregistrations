@@ -2,12 +2,12 @@
 
 'use strict';
 
-var _              = require('mano').i18n.bind('Official: Revision')
-  , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
-  , reactiveSibling = require('../utils/reactive-sibling')
-  , renderDocument = require('./_business-process-document-preview')
-  , renderDocumentHistory = require('./_business-process-revision-document-history')
-  , generateSections = require('./components/generate-sections')
+var _                     = require('mano').i18n.bind('Official: Revision')
+  , camelToHyphen         = require('es5-ext/string/#/camel-to-hyphen')
+  , reactiveSibling       = require('../utils/reactive-sibling')
+  , renderDocument        = require('./_business-process-document-preview')
+  , renderDocumentHistory = require('./components/business-process-document-history')
+  , generateSections      = require('./components/generate-sections')
 
   , paymentForm;
 

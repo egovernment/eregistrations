@@ -2,9 +2,9 @@
 
 'use strict';
 
-var documentView          = require('./components/business-process-document')
-  , camelToHyphen         = require('es5-ext/string/#/camel-to-hyphen')
-  , renderDocumentHistory = require('./_business-process-revision-document-history');
+var camelToHyphen         = require('es5-ext/string/#/camel-to-hyphen')
+  , documentView          = require('./components/business-process-document')
+  , renderDocumentHistory = require('./components/business-process-document-history');
 
 exports._parent = require('./business-process-submitted-documents');
 exports._match = 'document';

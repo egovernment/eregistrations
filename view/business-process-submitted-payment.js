@@ -4,7 +4,7 @@
 
 var documentView          = require('./components/business-process-document')
   , camelToHyphen         = require('es5-ext/string/#/camel-to-hyphen')
-  , renderDocumentHistory = require('./_business-process-revision-document-history');
+  , renderDocumentHistory = require('./components/business-process-document-history');
 
 exports._parent = require('./business-process-submitted-documents');
 exports._match = 'document';

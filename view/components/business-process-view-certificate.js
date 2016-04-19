@@ -2,10 +2,10 @@
 
 'use strict';
 
-var renderDocument = require('../_business-process-document-preview')
-  , renderDocumentHistory = require('../_business-process-revision-document-history')
-  , reactiveSibling = require('../../utils/reactive-sibling')
-  , _                = require('mano').i18n.bind('User Submitted')
+var renderDocument        = require('../_business-process-document-preview')
+  , renderDocumentHistory = require('../components/business-process-document-history')
+  , reactiveSibling       = require('../../utils/reactive-sibling')
+  , _                     = require('mano').i18n.bind('User Submitted')
   , _d = _
   , endsWith           = require('es5-ext/string/#/ends-with')
   , db                 = require('mano').db;
