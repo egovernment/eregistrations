@@ -30,19 +30,19 @@ module.exports = function (step) {
 			view: require('eregistrations/view/business-process-official-data')
 		},
 		'[0-9][a-z0-9]*/document/[a-z][a-z0-9-]*': {
-			match: function (businessProcessId, documentUniqueKey) {
+			match: function (businessProcessId, docUniqueKey) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
-					documentUniqueKey = hyphenToCamel.call(documentUniqueKey);
+					docUniqueKey = hyphenToCamel.call(docUniqueKey);
 					this.processingStep.requirementUploads.applicable.some(function (requirementUpload) {
-						if (requirementUpload.document.uniqueKey === documentUniqueKey) {
+						if (requirementUpload.document.uniqueKey === docUniqueKey) {
 							this.document = requirementUpload.document;
 							return true;
 						}
 					}, this);
 					if (!this.document) return false;
 					this.businessProcess.requirementUploads.dataSnapshot.resolved.some(function (data) {
-						if (data.uniqueKey === documentUniqueKey) {
+						if (data.uniqueKey === docUniqueKey) {
 							this.dataSnapshot = data;
 							return true;
 						}
@@ -60,11 +60,11 @@ module.exports = function (step) {
 			view: require('eregistrations/view/business-process-document')
 		},
 		'[0-9][a-z0-9]*/receipt/[a-z][a-z0-9-]*': {
-			match: function (businessProcessId, receiptKey) {
+			match: function (businessProcessId, docUniqueKey) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
 					var paymentReceiptUpload =
-						this.businessProcess.paymentReceiptUploads.map.get(hyphenToCamel.call(receiptKey));
+						this.businessProcess.paymentReceiptUploads.map.get(hyphenToCamel.call(docUniqueKey));
 					if (!paymentReceiptUpload) return false;
 					if (!this.processingStep.paymentReceiptUploads.applicable.has(paymentReceiptUpload)) {
 						return false;
@@ -72,7 +72,7 @@ module.exports = function (step) {
 
 					this.document = paymentReceiptUpload.document;
 					this.businessProcess.paymentReceiptUploads.dataSnapshot.resolved.some(function (data) {
-						if (data.uniqueKey === receiptKey) {
+						if (data.uniqueKey === docUniqueKey) {
 							this.dataSnapshot = data;
 							return true;
 						}
@@ -90,12 +90,12 @@ module.exports = function (step) {
 			view: require('eregistrations/view/business-process-document')
 		},
 		'[0-9][a-z0-9]*/certificate/[a-z][a-z0-9-]*': {
-			match: function (businessProcessId, certificateKey) {
+			match: function (businessProcessId, docUniqueKey) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
 
 					var certificate =
-						this.businessProcess.certificates.map.get(hyphenToCamel.call(certificateKey));
+						this.businessProcess.certificates.map.get(hyphenToCamel.call(docUniqueKey));
 					if (!certificate) return false;
 					if (!this.processingStep.certificates.uploaded.has(certificate)) {
 						return false;
@@ -103,7 +103,7 @@ module.exports = function (step) {
 
 					this.document = certificate;
 					this.businessProcess.certificates.dataSnapshot.resolved.some(function (data) {
-						if (data.uniqueKey === certificateKey) {
+						if (data.uniqueKey === docUniqueKey) {
 							this.dataSnapshot = data;
 							return true;
 						}
