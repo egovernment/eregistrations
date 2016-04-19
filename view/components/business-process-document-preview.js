@@ -3,9 +3,9 @@
 'use strict';
 
 var _                  = require('mano').i18n.bind('Document: preview')
-  , resolveArchivePath = require('../utils/resolve-document-archive-path')
-  , syncHeight         = require('./utils/sync-height')
-  , getFilePreview = require('./utils/get-file-preview');
+  , resolveArchivePath = require('../../utils/resolve-document-archive-path')
+  , syncHeight         = require('../utils/sync-height')
+  , getFilePreview     = require('../utils/get-file-preview');
 
 module.exports = function (doc) {
 	var elem;
@@ -64,22 +64,6 @@ module.exports = function (doc) {
 						legacy('hashNavOrderedList', 'doc-previews', 'doc-preview')
 					)))),
 
-			syncHeight(elem),
-
-			div({ class: "container-with-nav" },
-				div({ class: "business-process-document-preview-external-links" },
-					a({ target: '_blank', href: _if(doc.files.ordered._size,
-						_if(eq(doc.files.ordered._size, 1),
-							resolve(doc.files.ordered._first, 'url'),  '/' + resolveArchivePath(doc)
-							))
-						}, "Open document in new tab"),
-					a({ href: _if(doc.files.ordered._size,
-						_if(eq(doc.files.ordered._size, 1),
-							resolve(doc.files.ordered._first, 'url'),  '/' + resolveArchivePath(doc)
-							)),
-						download: _if(doc.files.ordered._size, _if(eq(doc.files.ordered._size, 1),
-							resolve(doc.files.ordered._first, 'path'),  resolveArchivePath(doc)
-							))
-						}, "Download document"))))
+			syncHeight(elem))
 	];
 };

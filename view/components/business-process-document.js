@@ -2,7 +2,7 @@
 
 'use strict';
 
-var renderDocument      = require('../_business-process-document-preview')
+var renderDocument      = require('./business-process-document-preview')
   , reactiveSibling     = require('../../utils/reactive-sibling')
   , _                   = require('mano').i18n.bind('User Submitted')
   , documentRevsionInfo = require('../_business-process-document-review-info')
