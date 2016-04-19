@@ -41,6 +41,11 @@ module.exports = memoize(function (db/* options */) {
 			});
 			return result;
 		} },
+		// Subset of applicable certificate that were released
+		// (its processing was approved and finalized)
+		released: { type: Document, multiple: true, value: function (_observe) {
+			return this.uploaded;
+		} },
 		// Subset of applicable certificates for which are electronic
 		electronic: { type: Document, multiple: true, value: function (_observe) {
 			var result = [];
