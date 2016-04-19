@@ -53,6 +53,7 @@ module.exports = function (step) {
 						if (!this.processingStep.requirementUploads.processable.has(this.document.owner)) {
 							return false;
 						}
+						this.dataSnapshot = this.document.owner.enrichJSON(this.document.owner.toJSON());
 					}
 					this.kind = 'requirementUpload';
 					this.documentUniqueId = this.processingStep.__id__ + '/' + this.kind + '/' + docUniqueKey;
@@ -85,6 +86,7 @@ module.exports = function (step) {
 						if (!this.processingStep.paymentReceiptUploads.processable.has(paymentReceiptUpload)) {
 							return false;
 						}
+						this.dataSnapshot = this.document.owner.enrichJSON(this.document.owner.toJSON());
 					}
 					this.kind = 'paymentReceiptUpload';
 					this.documentUniqueId = this.processingStep.__id__ + '/' + this.kind + '/' + docUniqueKey;
@@ -106,12 +108,16 @@ module.exports = function (step) {
 					}
 
 					this.document = certificate;
-					this.businessProcess.certificates.dataSnapshot.resolved.some(function (data) {
-						if (data.uniqueKey === docUniqueKey) {
-							this.dataSnapshot = data;
-							return true;
-						}
-					}, this);
+					if (this.businessProcess.isClosed) {
+						this.businessProcess.certificates.dataSnapshot.resolved.some(function (data) {
+							if (data.uniqueKey === docUniqueKey) {
+								this.dataSnapshot = data;
+								return true;
+							}
+						}, this);
+						if (!this.dataSnapshot) return false;
+					}
+
 					this.kind = 'certificate';
 					this.documentUniqueId = this.processingStep.__id__ + '/' + this.kind + '/' + docUniqueKey;
 					return true;
