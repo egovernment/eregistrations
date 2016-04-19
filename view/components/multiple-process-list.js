@@ -2,9 +2,7 @@
 
 'use strict';
 
-var _             = require('mano').i18n.bind('User Submitted')
-  , camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
-
+var _  = require('mano').i18n.bind('User Submitted')
   , _d = _;
 
 module.exports = function (collection, label, options) {
@@ -31,7 +29,7 @@ module.exports = function (collection, label, options) {
 						  , doc           = isCertificate ? upload : upload.document;
 
 						return tr(
-							{ id: 'document-item-' + camelToHyphen.call(doc.docId) },
+							{ id: 'document-item-' + doc.docId },
 							td(
 								{ class: 'submitted-user-data-table-status' },
 								isCertificate ? span({ class: 'fa fa-certificate' }) : [

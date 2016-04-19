@@ -11,15 +11,9 @@ var _                     = require('mano').i18n.bind('Official: Revision')
 
   , paymentForm;
 
-exports._parent = require('./business-process-revision-payments');
-exports._match = 'document';
-
-exports._dynamic = function () {
-	var listItemId = 'document-item-' + camelToHyphen.call(this.document.docId);
-	var conf = {};
-	conf[listItemId] = { class: { active: true } };
-	return conf;
-};
+exports._parent  = require('./business-process-revision-payments');
+exports._dynamic = require('./utils/document-dynamic-matcher');
+exports._match   = 'document';
 
 paymentForm = function (paymentReceiptUpload) {
 	var revFail;

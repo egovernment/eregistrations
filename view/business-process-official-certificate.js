@@ -2,21 +2,14 @@
 
 'use strict';
 
-var documentView          = require('./components/business-process-document')
-  , camelToHyphen         = require('es5-ext/string/#/camel-to-hyphen')
-  , renderDocumentHistory = require('./components/business-process-document-history')
+var db                    = require('mano').db
   , endsWith              = require('es5-ext/string/#/ends-with')
-  , db                    = require('mano').db;
+  , documentView          = require('./components/business-process-document')
+  , renderDocumentHistory = require('./components/business-process-document-history');
 
-exports._parent = require('./business-process-official-documents');
-exports._match = 'document';
-
-exports._dynamic = function () {
-	var listItemId = 'document-item-' + camelToHyphen.call(this.document.uniqueKey);
-	var conf = {};
-	conf[listItemId] = { class: { active: true } };
-	return conf;
-};
+exports._parent  = require('./business-process-official-documents');
+exports._dynamic = require('./utils/document-dynamic-matcher');
+exports._match   = 'document';
 
 exports['selection-preview'] = function () {
 	documentView(this.document,
