@@ -33,7 +33,7 @@ module.exports = {
 				}
 			}, this);
 			this.kind = 'requirementUpload';
-			this.uniqueId = this.businessProcess.__id__ + '/' + this.kind + '/' + uniqueKey;
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.kind + '/' + uniqueKey;
 			return true;
 		},
 		view: require('../view/business-process-document')
@@ -52,7 +52,7 @@ module.exports = {
 			paymentReceiptUpload = this.businessProcess.paymentReceiptUploads.map[uniqueKey];
 			if (paymentReceiptUpload) this.document = paymentReceiptUpload.document;
 			this.kind = 'paymentReceiptUpload';
-			this.uniqueId = this.businessProcess.__id__ + '/' + this.kind + '/' + uniqueKey;
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.kind + '/' + uniqueKey;
 			return true;
 		},
 		view: require('../view/business-process-document')
@@ -71,7 +71,7 @@ module.exports = {
 
 			this.document = this.businessProcess.certificates.map[uniqueKey];
 			this.kind = 'certificate';
-			this.uniqueId = this.businessProcess.__id__ + '/' + this.kind + '/' + uniqueKey;
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.kind + '/' + uniqueKey;
 			return true;
 		},
 		view: require('../view/business-process-document')

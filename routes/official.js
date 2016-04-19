@@ -55,7 +55,7 @@ module.exports = function (step) {
 						}
 					}
 					this.kind = 'requirementUpload';
-					this.uniqueId = this.processingStep.__id__ + '/' + this.kind + '/' + docUniqueKey;
+					this.documentUniqueId = this.processingStep.__id__ + '/' + this.kind + '/' + docUniqueKey;
 					return true;
 				}.bind(this));
 			},
@@ -87,7 +87,7 @@ module.exports = function (step) {
 						}
 					}
 					this.kind = 'paymentReceiptUpload';
-					this.uniqueId = this.processingStep.__id__ + '/' + this.kind + '/' + docUniqueKey;
+					this.documentUniqueId = this.processingStep.__id__ + '/' + this.kind + '/' + docUniqueKey;
 					return true;
 				}.bind(this));
 			},
@@ -113,7 +113,7 @@ module.exports = function (step) {
 						}
 					}, this);
 					this.kind = 'certificate';
-					this.uniqueId = this.processingStep.__id__ + '/' + this.kind + '/' + docUniqueKey;
+					this.documentUniqueId = this.processingStep.__id__ + '/' + this.kind + '/' + docUniqueKey;
 					return true;
 				}.bind(this));
 			},
