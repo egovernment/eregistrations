@@ -9,8 +9,15 @@ var _                   = require('mano').i18n.bind('User Submitted')
   , _d                  = _;
 
 module.exports = function (doc, collection, sideContent) {
-	var nextDocument, previousDocument, nextDocumentUrl, previousDocumentUrl;
-	if (doc.owner.owner.key === 'certificates') {
+	var isCertificate = doc.owner.owner.key === 'certificates'
+	  , nextDocument, previousDocument, nextDocumentUrl, previousDocumentUrl;
+
+	var resolveDocumentUrl = function (elem) {
+		if (!elem) return null;
+		return isCertificate ? elem.docUrl : elem.document.docUrl;
+	};
+
+	if (isCertificate) {
 		// Certificate case
 		nextDocument = reactiveSibling.next(collection, doc);
 		previousDocument = reactiveSibling.previous(collection, doc);
@@ -20,15 +27,8 @@ module.exports = function (doc, collection, sideContent) {
 		previousDocument = reactiveSibling.previous(collection, doc.owner);
 	}
 
-	nextDocumentUrl = nextDocument.map(function (nextDocument) {
-		if (!nextDocument) return null;
-		return nextDocument.docUrl;
-	});
-
-	previousDocumentUrl = previousDocument.map(function (previousDocument) {
-		if (!previousDocument) return null;
-		return previousDocument.docUrl;
-	});
+	nextDocumentUrl = nextDocument.map(resolveDocumentUrl);
+	previousDocumentUrl = previousDocument.map(resolveDocumentUrl);
 
 	return [div({ id: 'submitted-box', class: 'business-process-submitted-box' },
 		div({ class: 'business-process-submitted-box-header' },
@@ -46,7 +46,7 @@ module.exports = function (doc, collection, sideContent) {
 						class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
 						i({ class: 'fa fa-angle-right' })))
 					))),
-		doc.isCertificate ? null : insert(documentRevsionInfo(doc)),
+		isCertificate ? null : insert(documentRevsionInfo(doc)),
 		div({ id: 'user-document', class: 'business-process-submitted-selected-document' },
 			div({ class: 'submitted-preview' },
 				div({ id: 'document-preview', class: 'submitted-preview-document' },
