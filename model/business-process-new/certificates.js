@@ -76,7 +76,7 @@ module.exports = memoize(function (db/* options */) {
 			this.applicable.forEach(function (document) {
 				var data;
 				result.push(data = {
-					key: document.key,
+					uniqueKey: document.key,
 					label: this.database.resolveTemplate(document.label, document.getTranslations(),
 						{ partial: true }),
 					issuedBy: document.getOwnDescriptor('issuedBy').valueTOJSON(),
