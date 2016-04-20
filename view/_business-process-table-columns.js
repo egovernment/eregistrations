@@ -1,8 +1,7 @@
 'use strict';
 
-var formatLastModified = require('./utils/last-modified')
-  , _ = require('mano').i18n.bind('User')
-  , ProcessingStepStatus = require('mano').db.ProcessingStepStatus;
+var _                  = require('mano').i18n.bind('User')
+  , formatLastModified = require('./utils/last-modified');
 
 exports.getServiceIcon = function (businessProcess) {
 	return i({ class: "fa fa-user" });
@@ -62,13 +61,6 @@ exports.goToColumn = {
 	}
 };
 
-exports.getCertStatus = function (cert) {
-	var processingStep = cert.processingStep, businessProcess = cert.master;
-
-	return _if(businessProcess._isRejected,
-		"rejected", processingStep && processingStep._status);
-};
-
 exports.columns = [{
 	head: _("Service"),
 	class: 'submitted-user-data-table-service',
@@ -106,19 +98,13 @@ exports.columns = [{
 			//When bp is deleted...
 			if (!certificates) return;
 			return list(businessProcess.certificates.applicable, function (cert) {
-				var certStatus;
-
-				certStatus = exports.getCertStatus(cert);
 				return span({ class: 'hint-optional hint-optional-left',
-					'data-hint': [cert.constructor.label,
-						_if(eq(certStatus, "rejected"), "- " + ProcessingStepStatus.meta.rejected.label,
-							certStatus.map(function (status) {
-								if (status) return "- " + ProcessingStepStatus.meta[status].label;
-							}))] },
-					span({ class: ['label-reg',
-						_if(eq(certStatus, "rejected"), "rejected",
-							_if(eq(certStatus, 'approved'), "approved",
-								_if(not(eqSloppy(certStatus, null)), "ready")))]  }, cert.constructor.abbr));
+					'data-hint': [cert.label, _if(cert._status, ["- ", cert._status])] },
+					span({ class: ['label-reg', cert._status.map(function (status) {
+						if (!status) return;
+						if (status === 'pending') return 'ready';
+						return status;
+					})] }, cert.constructor.abbr));
 			});
 		});
 	}
