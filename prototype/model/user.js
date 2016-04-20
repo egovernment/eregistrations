@@ -2,10 +2,12 @@
 
 'use strict';
 
-var Map          = require('es6-map')
-  , db           = require('mano').db
-  , d  = require('d')
-  , User         = require('../../model/user')(db)
+var Map = require('es6-map')
+  , db  = require('../../db');
+
+require('../../model/base')(db);
+
+var User         = require('../../model/user')(db)
   , Role         = require('mano-auth/model/role')(db)
   , DateType     = require('dbjs-ext/date-time/date')(db)
   , StringLine   = require('dbjs-ext/string/string-line')(db)
@@ -26,7 +28,6 @@ var Map          = require('es6-map')
   , EnumTripleOption = require('./enum-triple-option')
   , index = 0;
 
-db.Base.define('chooseLabel', d("Choose:"));
 require('./address');
 require('./business-process');
 

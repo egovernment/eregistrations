@@ -63,6 +63,8 @@ BusinessProcessNew.prototype.abbr = 'COI';
 
 module.exports = BusinessProcessNew;
 
+require('../../model/lib/data-snapshot/resolved')(db);
+
 Representative = Person.extend('Representative', {
 	address: {
 		type: Address,
