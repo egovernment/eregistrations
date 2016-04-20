@@ -123,11 +123,10 @@ module.exports = memoize(function (db) {
 				label: this.database.resolveTemplate(this.label, this.getTranslations(), { partial: true }),
 				issuedBy: this.getOwnDescriptor('issuedBy').valueTOJSON(),
 				issuedDate: this.getOwnDescriptor('issueDate').valueTOJSON(),
+				status: this.status,
 				number: this.getOwnDescriptor('issueDate').valueTOJSON(),
 				overviewSection: this.owerviewSection.toJSON()
 			};
-			if (this.master.isApproved) data.status = 'approved';
-			else if (this.master.isRejected) data.status = 'rejected';
 			var files = [];
 			this.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
 			if (files.length) data.files = files;
