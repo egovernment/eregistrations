@@ -121,7 +121,7 @@ exports.columns = [{
 		return mmap(businessProcess._isClosed, function (isClosed) {
 			if (!businessProcess.certificates) return;
 			if (isClosed) {
-				return mmap(businessProcess.certificates.dataSnaphot._resolved, function (certificates) {
+				return mmap(businessProcess.certificates.dataSnapshot._resolved, function (certificates) {
 					if (!certificates) return;
 					return generateCertificatesList(certificates);
 				});
