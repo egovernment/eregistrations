@@ -101,7 +101,33 @@ module.exports = memoize(function (db) {
 				if (!this.isCertificate) return;
 				return this.master.processingSteps.map.processing;
 			}
-		}
+		},
+		toJSON: { value: function (ignore) {
+			var data = {
+				uniqueKey: this.key,
+				label: this.database.resolveTemplate(this.label, this.getTranslations(), { partial: true }),
+				issuedBy: this.getOwnDescriptor('issuedBy').valueTOJSON(),
+				issuedDate: this.getOwnDescriptor('issueDate').valueTOJSON(),
+				number: this.getOwnDescriptor('issueDate').valueTOJSON(),
+				overviewSection: this.owerviewSection.toJSON()
+			};
+			var files = [];
+			this.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
+			if (files.length) data.files = files;
+			if (this.dataForm.constructor !== this.database.FormSectionBase) {
+				data.section = this.dataForm.toJSON();
+				// Strip `files/map` property, we don't want it in overview
+				(function self(data) {
+					if (data.fields) {
+						data.fields = data.fields.filter(function (field) {
+							return !field.id.match(/\/files\/map$/);
+						});
+					}
+					if (data.sections) data.sections.forEach(self);
+				}(data.section));
+			}
+			return data;
+		} }
 	}, {
 		// Document label
 		label: { type: StringLine },

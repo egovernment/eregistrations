@@ -78,33 +78,7 @@ module.exports = memoize(function (db/* options */) {
 		} },
 		toJSON: { type: db.Function, value: function (ignore) {
 			var result = [];
-			this.released.forEach(function (document) {
-				var data;
-				result.push(data = {
-					uniqueKey: document.key,
-					label: this.database.resolveTemplate(document.label, document.getTranslations(),
-						{ partial: true }),
-					issuedBy: document.getOwnDescriptor('issuedBy').valueTOJSON(),
-					issuedDate: document.getOwnDescriptor('issueDate').valueTOJSON(),
-					number: document.getOwnDescriptor('issueDate').valueTOJSON(),
-					overviewSection: document.owerviewSection.toJSON()
-				});
-				var files = [];
-				document.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
-				if (files.length) data.files = files;
-				if (document.dataForm.constructor !== this.database.FormSectionBase) {
-					data.section = document.dataForm.toJSON();
-					// Strip `files/map` property, we don't want it in overview
-					(function self(data) {
-						if (data.fields) {
-							data.fields = data.fields.filter(function (field) {
-								return !field.id.match(/\/files\/map$/);
-							});
-						}
-						if (data.sections) data.sections.forEach(self);
-					}(data.section));
-				}
-			}, this);
+			this.released.forEach(function (document) { result.push(document.toJSON()); });
 			return result;
 		} }
 	});
