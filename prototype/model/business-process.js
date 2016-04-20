@@ -590,3 +590,10 @@ BusinessProcessNew.prototype.dataForms.map.branches.entities.add(
 		propertyName: 'isFranchise'
 	})
 );
+
+processes.forEach(function (businessProcess) {
+	businessProcess.dataForms.dataSnapshot.generate();
+	businessProcess.requirementUploads.dataSnapshot.finalize();
+	businessProcess.paymentReceiptUploads.dataSnapshot.finalize();
+	businessProcess.certificates.dataSnapshot.generate();
+});
