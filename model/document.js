@@ -111,6 +111,8 @@ module.exports = memoize(function (db) {
 				number: this.getOwnDescriptor('issueDate').valueTOJSON(),
 				overviewSection: this.owerviewSection.toJSON()
 			};
+			if (this.master.isApproved) data.status = 'approved';
+			else if (this.master.isRejected) data.status = 'rejected';
 			var files = [];
 			this.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
 			if (files.length) data.files = files;
