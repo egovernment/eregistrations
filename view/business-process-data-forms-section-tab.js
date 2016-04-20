@@ -9,6 +9,7 @@ var generateSections = require('eregistrations/view/components/generate-form-sec
 exports._parent = require('./business-process-data-forms-tabbed');
 
 exports['forms-sections-content'] = function () {
+	var nextPageLink = exports._nextPagelink(this);
 	insert(
 		_if(this.section._legend, div({ class: 'info-main' },
 			md(this.section._legend))),
@@ -19,8 +20,8 @@ exports['forms-sections-content'] = function () {
 						generateSections(this.section.applicableSections, { viewContext: this })] :
 					this.section.toDOMForm(document)
 		),
-		_if(exports._nextPagelink(this), p({ class: 'user-next-step-button' },
-			a({ href: exports._nextPagelink(this) }), _('Continue to next step')))
+		_if(nextPageLink, p({ class: 'user-next-step-button' },
+			a({ href: nextPageLink }, _('Continue to next step'))))
 	);
 };
 
