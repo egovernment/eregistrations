@@ -70,6 +70,7 @@ module.exports = function (domjs) {
 		require('domjs-ext/d/fixed')(domjs);
 		require('domjs-ext/d/form/auto-submit')(domjs);
 		require('../directives/img-zoom-on-hover')(domjs);
+		require('../directives/table-configuration')(domjs);
 		require('../directives/table-responsive')(domjs);
 	}
 
