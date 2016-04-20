@@ -3,7 +3,8 @@
 
 'use strict';
 
-var memoize               = require('memoizee/plain')
+var Map                   = require('es6-map')
+  , memoize               = require('memoizee/plain')
   , defineDate            = require('dbjs-ext/date-time/date')
   , defineStringLine      = require('dbjs-ext/string/string-line')
   , _                     = require('mano').i18n.bind('Model: Documents')
@@ -24,6 +25,13 @@ module.exports = memoize(function (db) {
 	  , FormSection     = defineFormSection(db)
 	  , Person          = definePerson(db)
 	  , Document;
+
+	// Enum for processing step status
+	var CertificateStatus = StringLine.createEnum('CertificateStatus', new Map([
+		['pending', { label: _("Pending") }],
+		['rejected', { label: _("Rejected") }],
+		['approved', { label: _("Approved") }]
+	]));
 
 	Document = db.Object.extend('Document', {
 		// Document label, fallbacks to label as decided on constructor
@@ -102,6 +110,13 @@ module.exports = memoize(function (db) {
 				return this.master.processingSteps.map.processing;
 			}
 		},
+		// Status of certificate
+		status: { type: CertificateStatus, value: function () {
+			if (this.master.isApproved) return 'approved';
+			if (this.master.isRejected) return 'rejected';
+			if (this.processingStep.status === 'approved') return 'approved';
+			if (this.processingStep.status) return 'pending';
+		} },
 		toJSON: { value: function (ignore) {
 			var data = {
 				uniqueKey: this.key,
