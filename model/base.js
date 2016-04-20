@@ -13,7 +13,7 @@ module.exports = memoize(function (db) {
 		},
 		valueToJSON: function (ignore) {
 			var value = this.object.get(this.key), result;
-			if (value.forEach && !this.nested && this.multiple) {
+			if (value && value.forEach && !this.nested && this.multiple) {
 				result = [];
 				value.forEach(function (value) { result.push(this.type.valueToJSON(value, this)); }, this);
 				return result;
