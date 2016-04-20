@@ -6,7 +6,7 @@ var find           = require('es5-ext/array/#/find')
   , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
   , _              = require('mano').i18n.bind('User Submitted')
   , renderSections = require('./components/render-sections-json')
-  , getSetProxy    = require('../utils/observables-set-proxy')
+  , getSetProxy    = require('../utils/observable-set-proxy')
 
   , _d = _;
 
