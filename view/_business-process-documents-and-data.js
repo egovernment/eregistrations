@@ -12,10 +12,12 @@ var find           = require('es5-ext/array/#/find')
 
 var resolveUploads = function (targetCollection) {
 	var target = targetCollection.owner, businessProcess = target.master;
-	if (target === businessProcess) return targetCollection.dataSnapshot._resolved;
 	var kind = (targetCollection.key === 'requirementUploads')
 		? 'requirementUpload' : 'paymentReceiptUpload';
-	return targetCollection.dataSnapshot._resolved.map(function (data) {
+	var snapshot = (kind === 'requirementUpload') ? businessProcess.requirementUploads.dataSnapshot
+		: businessProcess.paymentReceiptUploads.dataSnapshot;
+	if (target === businessProcess) return snapshot._resolved;
+	return snapshot._resolved.map(function (data) {
 		return getSetProxy(targetCollection.applicable).map(function (upload) {
 			var uniqueKey = (kind === 'requirementUpload') ? upload.document.uniqueKey : upload.key;
 			var snapshot = data && find.call(data, function (snapshot) {
@@ -31,10 +33,10 @@ var resolveUploads = function (targetCollection) {
 
 var resolveCertificates = function (targetCollection) {
 	var target = targetCollection.owner, businessProcess = target.master;
-	if (target === businessProcess) return targetCollection.dataSnapshot._resolved;
+	if (target === businessProcess) return businessProcess.certificates.dataSnapshot._resolved;
 	return businessProcess._isApproved.map(function (isApproved) {
 		if (!isApproved) return targetCollection.uploaded.toArray();
-		return targetCollection.dataSnapshot._resolved.map(function (data) {
+		return businessProcess.certificates.dataSnapshot._resolved.map(function (data) {
 			if (!data) return;
 			return getSetProxy(targetCollection.uploaded).map(function (certificate) {
 				var snapshot = find.call(data, function (snapshot) {
