@@ -7,6 +7,7 @@
 
 var normalizeOptions    = require('es5-ext/object/normalize-options')
   , ensureNaturalNumber = require('es5-ext/object/ensure-natural-number-value')
+  , pathToUrl           = require('../../utils/upload-path-to-url')
 
   , isArray = Array.isArray, min = Math.min, stringify = JSON.stringify
   , renderValue, renderField, renderFields, renderEntity, renderEntities
@@ -83,11 +84,11 @@ exports.renderers = defaultRenderers;
 exports.customRenderers = {
 	fileValue: function (data) {
 		return div({ class: 'file-thumb' },
-			a({ href: data.url, target: '_blank', class: 'file-thumb-image' },
-				img({ src: stUrl(data.thumbUrl) })),
+			a({ href: pathToUrl(data.path), target: '_blank', class: 'file-thumb-image' },
+				img({ src: stUrl(pathToUrl(data.thumbPath)) })),
 			div({ class: 'file-thumb-actions' },
 				span({ class: 'file-thumb-document-size' }, (data.diskSize / 1000000).toFixed(2) + ' Mo'),
-				a({ href: data.url, target: '_blank', class: 'file-thumb-action' },
-					span({ class: 'fa fa-download' }, "download"))));
+				a({ href: pathToUrl(data.path), target: '_blank', class: 'file-thumb-action',
+					download: data.path }, span({ class: 'fa fa-download' }, "download"))));
 	}
 };
