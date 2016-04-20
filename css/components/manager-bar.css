@@ -35,7 +35,9 @@
 }
 
 .manager-bar-info a,
-.manager-bar-info button {
+.manager-bar-info button,
+.manager-bar-info input[type="submit"],
+.manager-bar-info button[type="submit"] {
 	background: none;
 	text-decoration: underline;
 	color:var(--normal-text);
@@ -48,7 +50,13 @@
 .manager-bar-info a:focus,
 .manager-bar-info button:hover,
 .manager-bar-info button:active,
-.manager-bar-info button:focus {
+.manager-bar-info button:focus,
+.manager-bar-info input[type="submit"]:hover,
+.manager-bar-info input[type="submit"]:active,
+.manager-bar-info input[type="submit"]:focus,
+.manager-bar-info button[type="submit"]:hover,
+.manager-bar-info button[type="submit"]:active,
+.manager-bar-info button[type="submit"]:focus {
 	background: none;
 	text-decoration: underline;
 	color:var(--dark-text);

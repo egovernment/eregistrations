@@ -95,10 +95,17 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFie
 										self.sectionProperty + 'Status').observable;
 							}
 							return ns.tr(ns.list(self.entities, function (entity) {
+								var resolved = resolvePropertyPath(entityObject, entity.propertyName)
+								  , isObject = (typeof resolved.value === 'object') && resolved.value.__id__;
+
+								if (db.File && isObject && (resolved.value instanceof db.File)) {
+									return td(_if(resolved.value._url,
+											a({ href: resolved.value._url, target: '_blank' }, _("See picture"))));
+								}
 								return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
 											ns._if(entity._mobileOnly, 'mobile-only')) },
 										ns.a({ href: editUrl },
-											resolvePropertyPath(entityObject, entity.propertyName).observable));
+											resolved.observable));
 							}),
 								ns.td({ class: ns._if(ns.eq(status, 1),
 										'completed') },

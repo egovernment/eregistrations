@@ -2,6 +2,7 @@
 
 var _                = require('mano').i18n.bind('User: Notifications')
   , normalizeOptions = require('es5-ext/object/normalize-options')
+  , assign           = require('es5-ext/object/assign')
   , ensureType       = require('dbjs/valid-dbjs-type')
   , isFalsy          = require('eregistrations/utils/is-falsy')
   , _d               = _;
@@ -63,5 +64,8 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	if (options.signature == null) notification.text += "\n\n" + _("Email message signature") + "\n";
 	if (options.signature) notification.text += "\n\n" + options.signature + "\n";
 
-	return notification;
+	delete options.greeting;
+	delete options.signature;
+
+	return assign(notification, options);
 };
