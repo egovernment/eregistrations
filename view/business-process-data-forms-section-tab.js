@@ -19,7 +19,8 @@ exports['forms-sections-content'] = function () {
 						generateSections(this.section.applicableSections, { viewContext: this })] :
 					this.section.toDOMForm(document)
 		),
-		exports._nextSectionNav(this)
+		_if(exports._nextPagelink(this), p({ class: 'user-next-step-button' },
+			a({ href: exports._nextPagelink(this) }), _('Continue to next step')))
 	);
 };
 
@@ -27,12 +28,11 @@ exports._disableCondition = function (context) {
 	return not(eq(context.businessProcess._guideProgress, 1));
 };
 
-exports._nextSectionNav = function (context) {
-	return p({ class: 'user-next-step-button' },
-		a({ href: context.section._nextSection.map(function (nextSection) {
-			if (!nextSection) return '/documents/';
-			return '/forms/' + nextSection.pageUrl + '/';
-		}) }, _('Continue to next step')));
+exports._nextPagelink = function (context) {
+	return context.section._nextSection.map(function (nextSection) {
+		if (!nextSection) return '/documents/';
+		return '/forms/' + nextSection.pageUrl + '/';
+	});
 };
 
 exports._match = 'section';
