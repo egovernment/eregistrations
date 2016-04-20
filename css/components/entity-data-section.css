@@ -55,3 +55,9 @@
 .entity-data-section-entities li {
 	padding-bottom:22px;
 }
+
+.entity-data-section-entities .entity-data-section-sub .label-reg {
+	font-size: 9px;
+	height: auto;
+	line-height: normal;
+}
