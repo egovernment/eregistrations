@@ -102,11 +102,10 @@ Representative.prototype.idPhoto.setProperties({
 	name: 'idoc.jpg',
 	type: 'image/jpeg',
 	diskSize: 376306,
-	path: 'doc-a-sub-file1.idoc.jpg',
-	url: '/uploads/doc-a-sub-file1.idoc.jpg'
+	path: 'uploads/doc-a-sub-file1.idoc.jpg'
 });
 
-Representative.prototype.idPhoto.thumb.url = '/uploads/doc-a-sub-file1.idoc.jpg';
+Representative.prototype.idPhoto.thumb.path = 'uploads/doc-a-sub-file1.idoc.jpg';
 
 BusinessProcessNew.prototype.defineProperties({
 	//guide
@@ -350,8 +349,7 @@ processes.forEach(function (businessProcess) {
 			name: 'idoc.jpg',
 			type: 'image/jpeg',
 			diskSize: 376306,
-			path: 'doc-a-sub-file1.idoc.jpg',
-			url: '/uploads/doc-a-sub-file1.idoc.jpg'
+			path: 'uploads/doc-a-sub-file1.idoc.jpg'
 		});
 	});
 
@@ -403,32 +401,29 @@ processes.forEach(function (businessProcess) {
 			name: 'idoc.jpg',
 			type: 'image/jpeg',
 			diskSize: 376306,
-			path: 'doc-a-sub-file1.idoc.jpg',
-			url: '/uploads/doc-a-sub-file1.idoc.jpg'
+			path: 'uploads/doc-a-sub-file1.idoc.jpg'
 		});
 	businessProcess.paymentReceiptUploads.applicable.first.document.files.map.
-			get('idDoc').thumb.url = '/uploads/doc-a-sub-file1.idoc.jpg';
+			get('idDoc').thumb.path = 'uploads/doc-a-sub-file1.idoc.jpg';
 
 	businessProcess.requirementUploads.applicable.first.document.files.map.
 			get('idDoc').setProperties({
 			name: 'idoc.jpg',
 			type: 'image/jpeg',
 			diskSize: 376306,
-			path: 'doc-a-sub-file1.idoc.jpg',
-			url: '/uploads/doc-a-sub-file1.idoc.jpg'
+			path: 'uploads/doc-a-sub-file1.idoc.jpg'
 		});
 	businessProcess.requirementUploads.applicable.first.document.files.map.
-			get('idDoc').thumb.url = '/uploads/doc-a-sub-file1.idoc.jpg';
+			get('idDoc').thumb.path = 'uploads/doc-a-sub-file1.idoc.jpg';
 	businessProcess.requirementUploads.applicable.last.document.files.map.
 			get('idDoc').setProperties({
 			name: 'idoc.png',
 			type: 'image/png',
 			diskSize: 124998,
-			path: 'doc-a-sub-file2.idoc.png',
-			url: '/uploads/doc-a-sub-file2.idoc.png'
+			path: 'uploads/doc-a-sub-file2.idoc.png'
 		});
 	businessProcess.requirementUploads.applicable.last.document.files.map.
-			get('idDoc').thumb.url = '/uploads/doc-a-sub-file2.idoc.png';
+			get('idDoc').thumb.path = 'uploads/doc-a-sub-file2.idoc.png';
 
 	businessProcess.processingSteps.map.define('revision', {
 		nested: true,
