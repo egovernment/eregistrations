@@ -7,6 +7,7 @@ var db            = require('mano').db
 
 var matchBusinessProcess = function (businessProcessId) {
 	this.businessProcess = db.BusinessProcess.getById(businessProcessId);
+	if (!this.businessProcess.isSubmitted) return false;
 	return Boolean(this.businessProcess);
 };
 
@@ -36,35 +37,46 @@ module.exports = {
 	},
 	'business-process/[0-9][a-z0-9]+/document/[a-z][a-z0-9-]*': {
 		match: function (businessProcessId, uniqueKey) {
-			var self = this;
-
-			if (!matchBusinessProcess.call(self, businessProcessId)) return false;
+			if (!matchBusinessProcess.call(this, businessProcessId)) return false;
 
 			uniqueKey = hyphenToCamel.call(uniqueKey);
-			self.businessProcess.documents.processChainUploaded.some(function (document) {
-				if (document.uniqueKey === uniqueKey) {
-					self.document = document;
+			this.businessProcess.requirementUploads.dataSnapshot.resolved.some(function (data) {
+				if (data.uniqueKey === uniqueKey) {
+					this.dataSnapshot = data;
 					return true;
 				}
-			});
-
-			return Boolean(self.document);
+			}, this);
+			if (!this.dataSnapshot) return false;
+			this.businessProcess.requirementUploads.applicable.some(function (requirementUpload) {
+				if (requirementUpload.document.uniqueKey === uniqueKey) {
+					this.document = requirementUpload.document;
+					return true;
+				}
+			}, this);
+			this.kind = 'requirementUpload';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.kind + '/' + uniqueKey;
+			return true;
 		},
 		view: require('../view/business-process-document')
 	},
 	'business-process/[0-9][a-z0-9]+/certificate/[a-z][a-z0-9-]*': {
-		match: function (businessProcessId, key) {
+		match: function (businessProcessId, uniqueKey) {
 			var self = this;
 
 			if (!matchBusinessProcess.call(self, businessProcessId)) return false;
+			if (!this.businessProcess.isApproved) return false;
 
-			var certificate = self.businessProcess.certificates.map.get(hyphenToCamel.call(key));
-			if (!certificate) return false;
-			if (!self.businessProcess.certificates.applicable.has(certificate)) {
-				return false;
-			}
+			this.businessProcess.certificates.dataSnapshot.resolved.some(function (data) {
+				if (data.uniqueKey === uniqueKey) {
+					this.dataSnapshot = data;
+					return true;
+				}
+			}, this);
+			if (!this.dataSnapshot) return false;
 
-			self.document = certificate;
+			this.document = this.businessProcess.certificates.map[uniqueKey];
+			this.kind = 'certificate';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.kind + '/' + uniqueKey;
 			return true;
 		},
 		view: require('../view/business-process-document')
