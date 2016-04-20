@@ -89,7 +89,7 @@ module.exports = memoize(function (db/*, options*/) {
 	UploadsProcess.prototype.map._descriptorPrototype_.type = RequirementUpload;
 	UploadsProcess.prototype.dataSnapshot.defineProperties({
 		resolve: { value: function (ignore) {
-			var data = this.database.DataSnaphot.prototype.resolve.call(this);
+			var data = this.database.DataSnapshot.prototype.resolve.call(this);
 			if (!data) return data;
 			if (!data.length) return data; // Nothing to do
 			if (data[0].isFinalized) return data; // Already done
