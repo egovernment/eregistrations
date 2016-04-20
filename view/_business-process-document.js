@@ -156,7 +156,9 @@ module.exports = function (context, sideContent) {
 						class: 'button-main',
 						href: _if(data.filesSize,
 							_if(eq(data.filesSize, 1),
-								resolve(data.firstFile, 'url'), '/' + data.archiveUrl)),
+								mmap(resolve(data.firstFile, 'path'), function (path) {
+									if (path) return stUrl(pathToUrl(path));
+								}), '/' + data.archiveUrl)),
 						download: _if(data.filesSize, _if(eq(data.filesSize, 1),
 							resolve(data.firstFile, 'path'), data.archiveUrl))
 					}, _("Download document")),
