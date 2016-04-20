@@ -62,3 +62,11 @@
 	max-width: 100%;
 	max-height: 100%;
 }
+
+.business-process-document-preview-download-links > a {
+	display: none;
+}
+
+.business-process-document-preview-download-links > .active {
+	display: inline;
+}

@@ -5,65 +5,92 @@
 var _                  = require('mano').i18n.bind('Document: preview')
   , resolveArchivePath = require('../../utils/resolve-document-archive-path')
   , syncHeight         = require('../utils/sync-height')
-  , getFilePreview     = require('../utils/get-file-preview');
+  , getFilePreview     = require('../utils/get-file-preview')
+  , includes           = require('es5-ext/array/#/contains')
+  , docMimeTypes       = require('../../utils/microsoft-word-doc-mime-types')
+  , isReadOnlyRender   = require('mano/client/utils/is-read-only-render');
 
-module.exports = function (doc) {
-	var elem;
-	return [
-		div({ class: 'business-process-document-preview' },
-			div({ class: 'container-with-nav' },
-				div({ class: 'business-process-document-preview-external-links' },
-					a({ target: '_blank', href: _if(doc.files.ordered._size,
-						_if(eq(doc.files.ordered._size, 1),
-							resolve(doc.files.ordered._first, 'url'),  '/' + resolveArchivePath(doc)
-							))
-						}, "Open document in new tab"),
-					a({ href: _if(doc.files.ordered._size,
-						_if(eq(doc.files.ordered._size, 1),
-							resolve(doc.files.ordered._first, 'url'),  '/' + resolveArchivePath(doc)
-							)),
-						download: _if(doc.files.ordered._size, _if(eq(doc.files.ordered._size, 1),
-							resolve(doc.files.ordered._first, 'path'),  resolveArchivePath(doc)
-							))
-						}, "Download document")),
+module.exports = function (doc, sideContent) {
+	var files           = doc.files.ordered
+	  , moreThanOneFile = gt(files._size, 1)
+	  , docPreviewElement;
 
-				_if(gt(doc.files.ordered._size, 1),
-					div({ class: 'business-process-document-preview-navigation' },
-						div(
-							{ id: 'submitted-preview-new-navigation-top' },
-							a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' },
-									_("Previous"))),
-							span(span({ class: 'current-index' }, "1"), " / ",
-								doc.files.ordered._size),
-							a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, _("Next")))
-						))
-					)
+	return div(
+		{ class: 'submitted-preview' },
+		_if(files._size, div(
+			{ id: 'document-preview', class: ['submitted-preview-document',
+				'business-process-document-preview'] },
+			// Top links container
+			div(
+				{ class: 'container-with-nav' },
+				// Download links
+				div(
+					{ class: 'business-process-document-preview-external-links' },
+					span({
+						id: 'doc-open-links',
+						class: 'business-process-document-preview-download-links'
+					}, list(files, function (file) {
+						var type           = file.type
+						  , linkText       = _("Open document in new window")
+						  , linkAttributes = {
+							target: '_blank',
+							href: file._url,
+							class: _if(eq(file, files._first), 'active')
+						};
+
+						if (includes.call(docMimeTypes, type)) {
+							linkText = _("Download document");
+							linkAttributes.download = file._name;
+						} else if (!isReadOnlyRender && (type === 'application/pdf')) {
+							linkAttributes.href = url('pdfjs/web/viewer.html?file=') + file._path;
+						}
+
+						return a(linkAttributes, linkText);
+					})),
+					_if(moreThanOneFile, a({ target: '_blank', href: '/' + resolveArchivePath(doc),
+						download: resolveArchivePath(doc) }, _("Download documents")))
 				),
-
-			elem = ul({ id: 'doc-previews',
-				class: 'business-process-document-preview-image-placeholder' },
-				doc.files.ordered, function (file) {
-					li({ class: _if(eq(file, doc.files.ordered._first), 'active') },
-						getFilePreview(file));
-				}, doc),
-
-			insert(_if(gt(doc.files.ordered._size, 1),
-				div({ class: 'business-process-document-preview-navigation' },
-					div(
-						{ id: 'submitted-preview-new-navigation-bottom' },
+				// File navigation
+				_if(moreThanOneFile, div(
+					{ class: 'business-process-document-preview-navigation' },
+					div({ id: 'submitted-preview-new-navigation-top' },
 						a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' }, _("Previous"))),
-						span(span({ class: 'current-index' }, "1"), " / ",
-							doc.files.ordered._size),
-						a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, _("Next"))),
-						legacy('hashNavOrderedListControls',
-							'submitted-preview-new-navigation-top', 'doc-previews',
-								'doc-preview'),
-						legacy('hashNavOrderedListControls',
-								'submitted-preview-new-navigation-bottom', 'doc-previews',
-								'doc-preview'),
-						legacy('hashNavOrderedList', 'doc-previews', 'doc-preview')
-					)))),
-
-			syncHeight(elem))
-	];
+						span(span({ class: 'current-index' }, "1"), " / ", files._size),
+						a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, _("Next"))))
+				))
+			),
+			// File render
+			docPreviewElement = ul({
+				id: 'doc-previews',
+				class: 'submitted-preview-new-image-placeholder'
+			}, files, function (file) {
+				li({ class: _if(eq(file, files._first), 'active') }, getFilePreview(file));
+			}, doc),
+			// File navigation - bottom
+			_if(moreThanOneFile, div(
+				{ class: 'submitted-preview-new-documents-navigation' },
+				div({ id: 'submitted-preview-new-navigation-bottom' },
+					a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' }, _("Previous"))),
+					span(span({ class: 'current-index' }, "1"), " / ", files._size),
+					a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, _("Next"))))
+			)),
+			// Legacy scripts
+			_if(moreThanOneFile, [
+				legacy('hashNavOrderedListControls', 'submitted-preview-new-navigation-top',
+					'doc-previews', 'doc-preview'),
+				legacy('hashNavOrderedListControls', 'submitted-preview-new-navigation-bottom',
+					'doc-previews', 'doc-preview'),
+				legacy('hashNavDocumentLink', 'doc-open-links', 'doc-preview'),
+				legacy('hashNavOrderedList', 'doc-previews', 'doc-preview')
+			]),
+			syncHeight(docPreviewElement)
+		), div(
+			{ class: 'submitted-preview-document-missing' },
+			p(_("This certificate does not have any physical file attached to it."))
+		)),
+		div(
+			{ class: 'submitted-preview-user-data  entity-data-section-side' },
+			sideContent
+		)
+	);
 };

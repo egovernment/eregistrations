@@ -2,11 +2,11 @@
 
 'use strict';
 
-var _                   = require('mano').i18n.bind('User Submitted')
-  , renderDocument      = require('./business-process-document-preview')
-  , documentRevsionInfo = require('./business-process-document-review-info')
-  , reactiveSibling     = require('../../utils/reactive-sibling')
-  , _d                  = _;
+var _                     = require('mano').i18n.bind('User Submitted')
+  , renderDocumentPreview = require('./business-process-document-preview')
+  , documentRevsionInfo   = require('./business-process-document-review-info')
+  , reactiveSibling       = require('../../utils/reactive-sibling')
+  , _d                    = _;
 
 module.exports = function (doc, collection, sideContent) {
 	var isCertificate = doc.owner.owner.key === 'certificates'
@@ -48,9 +48,5 @@ module.exports = function (doc, collection, sideContent) {
 					))),
 		isCertificate ? null : insert(documentRevsionInfo(doc)),
 		div({ id: 'user-document', class: 'business-process-submitted-selected-document' },
-			div({ class: 'submitted-preview' },
-				div({ id: 'document-preview', class: 'submitted-preview-document' },
-					renderDocument(doc)),
-				div({ class: 'submitted-preview-user-data  entity-data-section-side' },
-					sideContent)))];
+			renderDocumentPreview(doc, sideContent))];
 };
