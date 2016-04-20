@@ -76,6 +76,7 @@ module.exports = memoize(function (db) {
 			var data = this.database.RequirementUpload.prototype.toJSON.call(this);
 			data.uniqueKey = this.key;
 			delete data.issuedBy;
+			return data;
 		} },
 		// Enrich snapshot JSON with reactive configuration of revision related properties
 		enrichJSON: { value: function (data) {
