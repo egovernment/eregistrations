@@ -30,16 +30,27 @@ module.exports = memoize(function (db) {
 		label: { type: StringLine, value: function () { return this.constructor.label; } },
 		// Document legend, fallbacks to legend as decided on constructor
 		legend: { type: StringLine, value: function () { return this.constructor.legend; } },
-		// Resolves unique named id (in camelCase), that's usually used to resolve human readable urls.
-		// e.g. if uniqueKey would be 'authorizedAlocoholLicence' then url token leading to document
-		// (converted via es5-ext/string/#/camel-to-hyphen) would 'authorized-alcohol-licence'
-		uniqueKey: { type: StringLine, value: function () { return this.key; } },
 		// Which entity issued the document. In case of certificates it's an issuing institution,
 		// in case of user uploads, it's a user that uploaded files (and that's the default)
 		issuedBy: {
 			type: db.Object,
 			label: _("Emissor institution")
 		},
+		// Issue date. It's inputted by hand official issuance date
+		issueDate: { type: DateType, required: true, label: _("Date of issuance") },
+		// Eventual expiration date
+		expirationDate: { type: DateType, label: _("Date of expiration") },
+		// True when a given document is electronic, false otherwise
+		isElectronic: { type: db.Boolean, value: false },
+		// Document number
+		number: { type: StringLine, label: _("Number") },
+
+		// Below properties are to be moved to Certificate class when it will be introduced
+		//
+		// Resolves unique named id (in camelCase), that's usually used to resolve human readable urls.
+		// e.g. if uniqueKey would be 'authorizedAlocoholLicence' then url token leading to document
+		// (converted via es5-ext/string/#/camel-to-hyphen) would 'authorized-alcohol-licence'
+		uniqueKey: { type: StringLine, value: function () { return this.key; } },
 		issuedByOfficer: {
 			type: Person,
 			value: function () {
@@ -63,19 +74,11 @@ module.exports = memoize(function (db) {
 			},
 			label: _("Related Inscription")
 		},
-		// Issue date. It's inputted by hand official issuance date
-		issueDate: { type: DateType, required: true, label: _("Date of issuance") },
-		// Eventual expiration date
-		expirationDate: { type: DateType, label: _("Date of expiration") },
 		// Document fields sections
 		// It's about fields we want officials to fill either at revision (document upload) or
 		// processing step (certificate upload)
 		dataForm: { type: FormSectionBase, nested: true },
 		overviewSection: { type: FormSection, nested: true },
-		// True when a given document is electronic, false otherwise
-		isElectronic: { type: db.Boolean, value: false },
-		// Document number
-		number: { type: StringLine, label: _("Number") },
 		// True if this document is used as a certificate
 		isCertificate: { type: db.Boolean, value: function (_observe) {
 			return this.owner === this.master.certificates.map;
