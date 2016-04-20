@@ -96,7 +96,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFie
 							}
 							return ns.tr(ns.list(self.entities, function (entity) {
 								var resolved = resolvePropertyPath(entityObject, entity.propertyName)
-								  , isObject = (typeof resolved.value === 'object') && resolved
+								  , isObject = (typeof resolved.value === 'object') && resolved.value
 										&& resolved.value.__id__;
 
 								if (db.File && isObject && (resolved.value instanceof db.File)) {
