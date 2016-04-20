@@ -19,17 +19,20 @@ exports['forms-sections-content'] = function () {
 						generateSections(this.section.applicableSections, { viewContext: this })] :
 					this.section.toDOMForm(document)
 		),
-		p({ class: 'user-next-step-button' },
-			a({ href: this.section._nextSection.map(function (nextSection) {
-				if (!nextSection) return '/documents/';
-				return '/forms/' + nextSection.pageUrl + '/';
-			})
-				}, _('Continue to next step')))
+		exports._nextSectionNav(this)
 	);
 };
 
 exports._disableCondition = function (context) {
 	return not(eq(context.businessProcess._guideProgress, 1));
+};
+
+exports._nextSectionNav = function (context) {
+	return p({ class: 'user-next-step-button' },
+		a({ href: context.section._nextSection.map(function (nextSection) {
+			if (!nextSection) return '/documents/';
+			return '/forms/' + nextSection.pageUrl + '/';
+		}) }, _('Continue to next step')));
 };
 
 exports._match = 'section';
