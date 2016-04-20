@@ -8,7 +8,6 @@
 }
 
 .entities-overview-table td > a:only-child {
-	text-align: center;
 	padding: 11px 6px;
 	display: block;
 	width: 100%;
@@ -62,7 +61,7 @@
 
 .entities-overview-table th,
 .entities-overview-table td,
-.entities-overview-table td a:only-child {
+.entities-overview-table td a {
 	text-align: left;
 }
 
