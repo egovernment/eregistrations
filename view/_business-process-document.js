@@ -11,6 +11,7 @@ var includes           = require('es5-ext/array/#/contains')
   , db                 = require('mano').db
   , resolveArchivePath = require('../utils/resolve-document-archive-path')
   , docMimeTypes       = require('../utils/microsoft-word-doc-mime-types')
+  , pathToUrl          = require('../../utils/upload-path-to-url')
   , renderSection      = require('./components/render-sections-json').renderers.mainSection
   , syncHeight         = require('./utils/sync-height')
   , scrollBottom       = require('./utils/scroll-to-bottom')
@@ -23,9 +24,14 @@ var getFilePreview = function (file) {
 			src: stUrl('/img/word-doc-icon.png') });
 	}
 	if (!isReadOnlyRender && (file.type === 'application/pdf')) {
-		return iframe({ src: url('pdfjs/web/viewer.html?file=') + file.url.slice(1) });
+		return iframe({ src: url('pdfjs/web/viewer.html?file=') + file.path });
 	}
-	return img({ zoomOnHover: true, src: or(file.previewUrl, file.thumbUrl) });
+	return img({
+		zoomOnHover: true,
+		src: mmap(or(file.previewPath, file.thumbPath), function (path) {
+			if (path) return stUrl(pathToUrl(path));
+		})
+	});
 };
 
 var resolveSnapshotArchivePath = function (businessProcess, snapshot, kind) {
@@ -57,15 +63,11 @@ module.exports = function (context, sideContent) {
 		data.filesSize = doc.files.ordered._size;
 		files = doc.files.ordered.map(function (file) {
 			return {
-				url: file.url,
-				thumbUrl: file.thumb._url.map(function (url) {
-					if (url) return stUrl(url);
-				}),
+				path: file.path,
+				thumbPath: file.thumb._path,
 				diskSize: file.diskSize,
 				type: file.type,
-				previewUrl: resolve(file._preview, '_url').map(function (url) {
-					if (url) return stUrl(url);
-				})
+				previewPath: resolve(file._preview, '_path')
 			};
 		});
 		data.firstFile = files._first;
