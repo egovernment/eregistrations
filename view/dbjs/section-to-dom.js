@@ -40,7 +40,8 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 							return observable.value != null;
 						}), function (name) {
 							var resolved = resolvePropertyPath(self.master, name)
-							  , isNested = (typeof resolved.value === 'object') && resolved.value.__id__
+							  , isNested = (typeof resolved.value === 'object') && resolved
+									&& resolved.value.__id__
 							  , cond, specialCase;
 
 							if (isNested) {
