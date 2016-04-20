@@ -1,7 +1,8 @@
 'use strict';
 
-var _                  = require('mano').i18n.bind('User')
-  , formatLastModified = require('./utils/last-modified');
+var _                     = require('mano').i18n.bind('User')
+  , certificateStatusMeta = require('mano').db.CertificateStatus.meta
+  , formatLastModified    = require('./utils/last-modified');
 
 exports.getServiceIcon = function (businessProcess) {
 	return i({ class: "fa fa-user" });
@@ -61,6 +62,29 @@ exports.goToColumn = {
 	}
 };
 
+var generateCertificatesList = (function () {
+	var getStatusLabel = function (cert) {
+		if (cert._status) return _if(cert._status, ["- ", cert._status]);
+		return "- " + certificateStatusMeta[cert.status];
+	};
+	var resolveStatusClass = function (status) {
+		if (!status) return;
+		if (status === 'pending') return 'ready';
+		return status;
+	};
+	var getStatusClass = function (cert) {
+		if (cert._status) return cert._status.map(resolveStatusClass);
+		return resolveStatusClass(cert.status);
+	};
+	return function (certificates) {
+		return list(certificates, function (cert) {
+			return span({ class: 'hint-optional hint-optional-left',
+				'data-hint': [cert.label, getStatusLabel(cert)] },
+				span({ class: ['label-reg', getStatusClass(cert)] }, cert.abbr));
+		});
+	};
+}());
+
 exports.columns = [{
 	head: _("Service"),
 	class: 'submitted-user-data-table-service',
@@ -94,17 +118,17 @@ exports.columns = [{
 }, {
 	head: _("Inscriptions and controls"),
 	data: function (businessProcess) {
-		return mmap(businessProcess.certificates._applicable, function (certificates) {
-			//When bp is deleted...
-			if (!certificates) return;
-			return list(businessProcess.certificates.applicable, function (cert) {
-				return span({ class: 'hint-optional hint-optional-left',
-					'data-hint': [cert.label, _if(cert._status, ["- ", cert._status])] },
-					span({ class: ['label-reg', cert._status.map(function (status) {
-						if (!status) return;
-						if (status === 'pending') return 'ready';
-						return status;
-					})] }, cert.constructor.abbr));
+		return mmap(businessProcess._isClosed, function (isClosed) {
+			if (!businessProcess.certificates) return;
+			if (isClosed) {
+				return mmap(businessProcess.certificates.dataSnaphot._resolved, function (certificates) {
+					if (!certificates) return;
+					return generateCertificatesList(certificates);
+				});
+			}
+			mmap(businessProcess.certificates._applicable, function (certificates) {
+				if (!certificates) return;
+				return generateCertificatesList(certificates);
 			});
 		});
 	}
