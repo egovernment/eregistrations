@@ -47,8 +47,8 @@ module.exports = function (doc, sideContent) {
 
 						return a(linkAttributes, linkText);
 					})),
-					_if(moreThanOneFile, a({ target: '_blank', href: '/' + resolveArchivePath(doc),
-						download: resolveArchivePath(doc) }, _("Download documents")))
+					a({ target: '_blank', href: '/' + resolveArchivePath(doc),
+						download: resolveArchivePath(doc) }, _("Download documents"))
 				),
 				// File navigation
 				_if(moreThanOneFile, div(
