@@ -60,6 +60,24 @@
 	display: none;
 }
 
+.entities-overview-table th,
+.entities-overview-table td,
+.entities-overview-table td a:only-child {
+	text-align: left;
+}
+
+.entities-overview-table .completed {
+	text-align: center;
+}
+
+.entities-overview-table .actions {
+	text-align: center;
+}
+
+.entities-overview-table.sales-table td:first-child {
+	text-align: center;
+}
+
 .entities-overview-info {
 	background-color: var(--light-background);
 	border: 1px solid  var(--normal-light-background);
