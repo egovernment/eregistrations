@@ -118,7 +118,7 @@ module.exports = memoize(function (db) {
 		} },
 		// Enrich snapshot JSON with reactive configuration of revision related properties
 		enrichJSON: { type: db.Function, value: function (data) {
-			if (data.isFinalized) return;
+			if (data.isFinalized) return data;
 			data.status = this._isApproved.map(function (isApproved) {
 				if (isApproved) return 'approved';
 				return this._isRejected.map(function (isRejected) {
@@ -127,11 +127,12 @@ module.exports = memoize(function (db) {
 			}.bind(this));
 			data.statusLog = this.document.statusLog.ordered.toArray();
 			data.rejectReasons = this.rejectReasons.toArray();
+			return data;
 		} },
 		// Finalize snapshot JSON by adding revision status properties
 		finalizeJSON: { type: db.Function, value: function (data) {
 			var statusLog;
-			if (data.isFinalized) return;
+			if (data.isFinalized) return data;
 			if (this.isApproved) data.status = 'approved';
 			else if (this.isRejected) data.status = 'rejected';
 			statusLog = [];
@@ -147,6 +148,7 @@ module.exports = memoize(function (db) {
 				data.rejectReasons = this.getOwnDescriptor('rejectReasons').valueToJSON();
 			}
 			data.isFinalized = true;
+			return data;
 		} }
 	});
 
