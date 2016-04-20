@@ -125,9 +125,9 @@ module.exports = memoize(function (db) {
 				label: this.database.resolveTemplate(this.label, this.getTranslations(), { partial: true }),
 				abbr: this.abbr,
 				issuedBy: this.getOwnDescriptor('issuedBy').valueToJSON(),
-				issuedDate: this.getOwnDescriptor('issueDate').valueToJSON(),
+				issueDate: this.getOwnDescriptor('issueDate').valueToJSON(),
 				status: this.status,
-				number: this.getOwnDescriptor('issueDate').valueToJSON(),
+				number: this.getOwnDescriptor('number').valueToJSON(),
 				overviewSection: this.overviewSection.toJSON()
 			};
 			var files = [];
