@@ -9,6 +9,8 @@ var Database        = require('dbjs')
 
 var db = module.exports = require('mano').db = new Database();
 
+db.locale = 'en-GB';
+
 Object.defineProperties(db, {
 	resolveTemplate: d(resolveTemplate)
 });
