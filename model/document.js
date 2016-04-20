@@ -128,7 +128,7 @@ module.exports = memoize(function (db) {
 				issuedDate: this.getOwnDescriptor('issueDate').valueToJSON(),
 				status: this.status,
 				number: this.getOwnDescriptor('issueDate').valueToJSON(),
-				overviewSection: this.owerviewSection.toJSON()
+				overviewSection: this.overviewSection.toJSON()
 			};
 			var files = [];
 			this.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
