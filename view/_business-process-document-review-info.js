@@ -3,21 +3,18 @@
 var _        = require('mano').i18n.bind('View: Official')
   , identity = require('es5-ext/function/identity');
 
-module.exports = function (doc) {
-	var upload                 = doc.owner
-	  , revisionStatus         = upload._status
-	  , isPaymentReceiptUpload = eq(upload.constructor.__id__, 'PaymentReceiptUpload');
+module.exports = function (context) {
+	var snapshot = context.dataSnapshot
+	  , kind = context.kind;
 
 	// Don't display anything if not rejected.
-	return _if(eq(revisionStatus, 'invalid'), div({
-		class: 'section-secondary'
-	}, _if(isPaymentReceiptUpload, [
-		h4(_("This payment receipt was rejected for the following reason(s)"), ':'),
-		p(upload._rejectReasonMemo)
-	], [
-		h4(_("This document was rejected for the following reason(s)"), ':'),
-		_if(eq(upload.rejectReasons._size, 1), p(upload.rejectReasons._first),
-			ul(upload.rejectReasons, identity))
-	])));
+	return _if(eq(snapshot.status, 'rejected'), div({ class: 'section-secondary' },
+		(kind === 'paymentReceiptUpload')
+		? [h4(_("This payment receipt was rejected for the following reason(s)"), ':'),
+			p(snapshot.rejectReasons[0])]
+		: [h4(_("This document was rejected for the following reason(s)"), ':'),
+			_if(eq(snapshot.rejectReasons._length || snapshot.rejectReasons.length, 1),
+				p(snapshot.rejectReasons._first),
+				ul(snapshot.rejectReasons, identity))]));
 
 };

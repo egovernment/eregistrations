@@ -43,10 +43,8 @@ revisionForm = function (requirementUpload) {
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var processingStep = this.processingStep
-		  , doc            = this.document;
-
-		renderDocument(doc, _if(processingStep.processableUploads.has(doc.owner),
-			disableStep(this.processingStep, revisionForm(doc.owner))));
+		renderDocument(this,
+			_if(this.processingStep.requirementUploads.processable._has(this.document.owner),
+				disableStep(this.processingStep, revisionForm(this.document.owner))));
 	}
 };

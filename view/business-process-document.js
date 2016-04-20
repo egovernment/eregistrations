@@ -9,8 +9,7 @@ exports._match = 'documentUniqueId';
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var doc = this.document;
 
-		renderDocument(doc, doc.isCertificate ? null : documentRevisionInfo(doc));
+		renderDocument(this, (this.kind !== 'certificate') ? documentRevisionInfo(this) : null);
 	}
 };
