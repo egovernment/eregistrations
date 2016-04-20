@@ -125,7 +125,7 @@ module.exports = memoize(function (db) {
 					if (isRejected) return 'rejected';
 				});
 			}.bind(this));
-			data.statusLog = this.statusLog.ordered.toArray();
+			data.statusLog = this.document.statusLog.ordered.toArray();
 			data.rejectReasons = this.rejectReasons.toArray();
 		} },
 		// Finalize snapshot JSON by adding revision status properties
@@ -135,7 +135,7 @@ module.exports = memoize(function (db) {
 			if (this.isApproved) data.status = 'approved';
 			else if (this.isRejected) data.status = 'rejected';
 			statusLog = [];
-			this.statusLog.ordered.forEach(function (log) {
+			this.document.statusLog.ordered.forEach(function (log) {
 				statusLog.push({
 					label: log.getOwnDescriptor('label').valueToJSON(),
 					time: log.getOwnDescriptor('time').valueToJSON(),
