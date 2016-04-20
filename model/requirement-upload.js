@@ -108,8 +108,8 @@ module.exports = memoize(function (db) {
 				uniqueKey: this.document.uniqueKey,
 				label: this.database.resolveTemplate(this.document.label, this.document.getTranslations(),
 					{ partial: true }),
-				issuedBy: this.document.getOwnDescriptor('issuedBy').valueTOJSON(),
-				issuedDate: this.document.getOwnDescriptor('issueDate').valueTOJSON()
+				issuedBy: this.document.getOwnDescriptor('issuedBy').valueToJSON(),
+				issuedDate: this.document.getOwnDescriptor('issueDate').valueToJSON()
 			};
 			var files = [];
 			this.document.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
