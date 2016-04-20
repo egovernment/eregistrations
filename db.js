@@ -3,7 +3,7 @@
 'use strict';
 
 var Database        = require('dbjs')
-  , _               = require('./i18n')
+  , _               = require('mano').i18n
   , d               = require('d')
   , resolveTemplate = require('es6-template-strings');
 
