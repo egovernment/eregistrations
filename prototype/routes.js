@@ -111,14 +111,22 @@ module.exports = {
 	'revision/user-id': require('./view/business-process-revision'),
 	'revision/user-id/(document)': {
 		match: function () {
-			this.document = this.businessProcess.requirementUploads.applicable.first.document;
+			var upload = this.businessProcess.requirementUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.kind = 'requirementUpload';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.kind + '/document';
 			return true;
 		},
 		view: require('./view/business-process-revision-document')
 	},
 	'revision/user-id/(payment)': {
 		match: function () {
-			this.document = this.businessProcess.paymentReceiptUploads.applicable.first.document;
+			var upload = this.businessProcess.paymentReceiptUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.kind = 'paymentReceiptUpload';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.kind + '/payment';
 			return true;
 		},
 		view: require('./view/business-process-revision-payment')
