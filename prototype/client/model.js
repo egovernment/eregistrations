@@ -1,6 +1,6 @@
 'use strict';
 
-var db       = require('mano').db
+var db       = require('../../db')
   , User     = require('../model/user');
 
 require('../model/user-sections');

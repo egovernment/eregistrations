@@ -1,7 +1,7 @@
 'use strict';
 
 var domEnum = require('dbjs-dom/enum')
-  , db      = require('mano').db
+  , db      = require('../../db')
   , requirementUpload = db.RequirementUpload.prototype
 
   , user = db.User.prototype;
