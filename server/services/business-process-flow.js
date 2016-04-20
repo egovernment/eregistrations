@@ -102,7 +102,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		if (!businessProcess.certificates.dataSnapshot.jsonString) {
 			debug('%s generate certificates data snapshots', businessProcess.__id__);
 		}
-		if (businessProcess.isApproved) businessProcess.certificates.dataSnapshot.generate();
+		businessProcess.certificates.dataSnapshot.generate();
 		businessProcess.requirementUploads.dataSnapshot.finalize();
 		businessProcess.paymentReceiptUploads.dataSnapshot.finalize();
 	});
