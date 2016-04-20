@@ -59,7 +59,7 @@ module.exports = {
 	},
 	'certificate/[a-z][a-z0-9-]*': {
 		match: function (uniqueKey) {
-			if (!this.businessProcess.isClosed) return;
+			if (!this.businessProcess.isApproved) return;
 			uniqueKey = hyphenToCamel.call(uniqueKey);
 			this.businessProcess.certificates.dataSnapshot.resolved.some(function (data) {
 				if (data.uniqueKey === uniqueKey) {
