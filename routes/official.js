@@ -103,7 +103,7 @@ module.exports = function (step) {
 					var certificate =
 						this.businessProcess.certificates.map.get(hyphenToCamel.call(docUniqueKey));
 					if (!certificate) return false;
-					if (!this.processingStep.certificates.uploaded.has(certificate)) {
+					if (!this.processingStep.certificates.released.has(certificate)) {
 						return false;
 					}
 
