@@ -9,7 +9,7 @@ var Database        = require('dbjs')
 
 var db = module.exports = require('mano').db = new Database();
 
-db.locale = 'en-GB';
+db.locale = 'en-GB'; // default locale, to be shadowed with expected one in end system
 
 Object.defineProperties(db, {
 	resolveTemplate: d(resolveTemplate)
