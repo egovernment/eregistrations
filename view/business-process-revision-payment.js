@@ -43,7 +43,7 @@ exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
 		insert(renderDocument(this,
-			_if(this.processingStep.requirementUploads.processable._has(this.document.owner),
+			_if(this.processingStep.paymentReceiptUploads.processable._has(this.document.owner),
 				disableStep(this.processingStep, paymentForm(this.document.owner)))));
 	}
 };
