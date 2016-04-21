@@ -1,7 +1,7 @@
 'use strict';
 
 var _        = require('mano').i18n.bind('Official: Revision')
-  , mainInfo = require('./_business-process-main-info');
+  , mainInfo = require('./components/business-process-main-info');
 
 exports._parent = require('./user-base');
 exports._match = 'businessProcess';

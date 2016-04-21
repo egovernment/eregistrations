@@ -2,7 +2,7 @@
 
 'use strict';
 
-var renderMainInfo = require('./_business-process-main-info')
+var renderMainInfo         = require('./components/business-process-main-info')
   , renderDocumentsAndData = require('./_business-process-documents-and-data');
 
 exports._parent = require('./user-base');

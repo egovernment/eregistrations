@@ -8,6 +8,7 @@ var db           = require('mano').db;
 require('./view/print-base');
 require('./view/user');
 require('./view/business-process-submitted');
+require('./view/business-process-revision');
 
 module.exports = {
 	// Public routes

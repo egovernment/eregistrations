@@ -5,9 +5,9 @@
 
 'use strict';
 
-var ns = require('mano').domjs.ns
+var ns               = require('mano').domjs.ns
   , normalizeOptions = require('es5-ext/object/normalize-options')
-  , document = require('mano').domjs.document;
+  , document         = require('mano').domjs.document;
 
 module.exports = function (sections/*, options */) {
 	var options = normalizeOptions(arguments[1]), result;

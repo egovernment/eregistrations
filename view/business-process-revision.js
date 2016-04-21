@@ -2,9 +2,9 @@
 
 'use strict';
 
-var renderMainInfo = require('./_business-process-main-info')
-  , _       = require('mano').i18n.bind('Official: Revision')
-  , normalizeOptions = require('es5-ext/object/normalize-options');
+var _                = require('mano').i18n.bind('Official: Revision')
+  , normalizeOptions = require('es5-ext/object/normalize-options')
+  , renderMainInfo   = require('./components/business-process-main-info');
 
 exports._parent = require('./user-base');
 exports._match = 'businessProcess';

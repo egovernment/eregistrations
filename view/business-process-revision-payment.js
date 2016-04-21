@@ -21,7 +21,7 @@ paymentForm = function (paymentReceiptUpload) {
 	return form(
 		{ id: 'form-revision-payment-receipt-upload',
 			action: '/form-revision-payment-receipt-upload/' + paymentReceiptUpload.master.__id__ +
-				'/' + camelToHyphen.call(paymentReceiptUpload.key) + '/',
+				'/' + camelToHyphen.call(paymentReceiptUpload.document.docUrl) + '/',
 			method: 'post', class: 'submitted-preview-form' },
 		ul(
 			{ class: 'form-elements' },

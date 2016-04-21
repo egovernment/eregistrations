@@ -2,8 +2,8 @@
 
 'use strict';
 
-var renderMainInfo = require('./_business-process-main-info')
-  , _  = require('mano').i18n.bind('Registration');
+var _              = require('mano').i18n.bind('Registration')
+  , renderMainInfo = require('./components/business-process-main-info');
 
 exports._parent = require('./user-base');
 exports._match = 'businessProcess';
