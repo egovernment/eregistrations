@@ -22,8 +22,8 @@ exports['selection-preview'] = function () {
 					return !endsWith.call(resolved.observable.dbId, 'files/map');
 				},
 				disableHeader: false
-			}) : null
-		],
-		appendContent: renderDocumentHistory(doc)
+			}) : null,
+			renderDocumentHistory(doc)
+		]
 	}));
 };
