@@ -136,7 +136,7 @@ module.exports = memoize(function (db) {
 			if (files.length) data.files = files;
 			if (this.dataForm.constructor !== this.database.FormSectionBase) {
 				data.section = this.dataForm.toJSON();
-				// Strip `files/map` property, we don't want it in overview
+				// Strip `files/map` property, as it's exposed directly on `snapshot.files`
 				(function self(data) {
 					if (data.fields) {
 						data.fields = data.fields.filter(function (field) {
