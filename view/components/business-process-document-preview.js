@@ -39,10 +39,11 @@ module.exports = function (doc, sideContent) {
 						};
 
 						if (includes.call(docMimeTypes, type)) {
-							linkText = _("Download document");
 							linkAttributes.download = file._name;
 						} else if (!isReadOnlyRender && (type === 'application/pdf')) {
-							linkAttributes.href = url('pdfjs/web/viewer.html?file=') + file._path;
+							linkAttributes.href = file._path.map(function (path) {
+								if (path) return url('pdfjs/web/viewer.html?file=') + path;
+							});
 						}
 
 						return a(linkAttributes, linkText);
@@ -86,7 +87,7 @@ module.exports = function (doc, sideContent) {
 			syncHeight(docPreviewElement)
 		), div(
 			{ class: 'submitted-preview-document-missing' },
-			p(_("This certificate does not have any physical file attached to it."))
+			p(_("This document does not have any physical file attached to it."))
 		)),
 		div(
 			{ class: 'submitted-preview-user-data  entity-data-section-side' },
