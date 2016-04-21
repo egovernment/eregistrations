@@ -48,7 +48,7 @@ module.exports = function (step) {
 						}
 					}, this);
 					if (!this.dataSnapshot) {
-						// If no snapshot we show it only if it's issued for review
+						// If no snapshot we show document only if it's directed for review
 						if (!this.processingStep.requirementUploads.processable) return false;
 						if (!this.processingStep.requirementUploads.processable.has(this.document.owner)) {
 							return false;
