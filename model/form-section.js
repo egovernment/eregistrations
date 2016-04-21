@@ -241,6 +241,10 @@ module.exports = memoize(function (db) {
 		// not count towards progress and rendered not as inputs.
 		readOnlyPropertyNames: { type: StringLine, multiple: true },
 		toJSON: { type: db.Function, value: function (ignore) {
+			var result = {
+				label: this.label,
+				lastEditDate: this.getOwnDescriptor('lastEditDate').valueToJSON()
+			};
 			var fields = [];
 			if (this.resolventProperty) {
 				fields.push(this.master.resolveSKeyPath(this.resolventProperty)
@@ -252,11 +256,8 @@ module.exports = memoize(function (db) {
 					if (!descriptor.type.isValueEmpty(data.value)) fields.push(descriptor.fieldToJSON());
 				}, this);
 			}
-			return {
-				label: this.label,
-				lastEditDate: this.getOwnDescriptor('lastEditDate').valueToJSON(),
-				fields: fields
-			};
+			if (fields.length) result.fields = fields;
+			return result;
 		} }
 	});
 	db.FormSection.prototype.inputOptions._descriptorPrototype_.nested = true;
