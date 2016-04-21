@@ -81,7 +81,7 @@ module.exports = function (doc, collection/*, options*/) {
 								class: 'business-process-document-preview-download-links'
 							}, list(files, function (file) {
 								var type           = file.type
-								  , linkText       = _("Open document in new window")
+								  , linkText       = _("Open file in new window")
 								  , linkAttributes = {
 									target: '_blank',
 									href: file._url,
@@ -92,14 +92,14 @@ module.exports = function (doc, collection/*, options*/) {
 									linkAttributes.download = file._name;
 								} else if (!isReadOnlyRender && (type === 'application/pdf')) {
 									linkAttributes.href = file._path.map(function (path) {
-										if (path) return url('pdfjs/web/viewer.html?file=') + path;
+										if (path) return 'pdfjs/web/viewer.html?file=' + path;
 									});
 								}
 
 								return a(linkAttributes, linkText);
 							})),
 							a({ target: '_blank', href: '/' + resolveArchivePath(doc),
-								download: resolveArchivePath(doc) }, _("Download documents"))
+								download: resolveArchivePath(doc) }, _("Download document"))
 						),
 						// File navigation
 						_if(moreThanOneFile, div(

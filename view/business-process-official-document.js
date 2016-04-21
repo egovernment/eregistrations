@@ -13,8 +13,8 @@ exports._match   = 'document';
 exports['selection-preview'] = function () {
 	var doc = this.document;
 
-	documentView(doc, this.processingStep.requirementUploads.applicable, {
+	insert(documentView(doc, this.processingStep.requirementUploads.applicable, {
 		appendContent: documentRevisionInfo(doc),
 		sideContent: renderDocumentHistory(doc)
-	});
+	}));
 };

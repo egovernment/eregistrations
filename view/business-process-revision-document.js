@@ -47,10 +47,10 @@ exports['revision-document'] = function () {
 	var doc            = this.document
 	  , processingStep = this.processingStep;
 
-	documentView(doc, this.processingStep.requirementUploads.applicable, {
+	insert(documentView(doc, this.processingStep.requirementUploads.applicable, {
 		prependContent: insert(_if(processingStep.processableUploads.has(doc.owner),
 			disableStep(this.processingStep, revisionForm(doc.owner))), documentRevisionInfo(doc)),
 		sideContent: generateSections(this.businessProcess.dataForms.applicable, { viewContext: this }),
 		appendContent: renderDocumentHistory(doc)
-	});
+	}));
 };

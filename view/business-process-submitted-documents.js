@@ -13,11 +13,14 @@ exports['tab-documents'] = { class: { active: true } };
 exports['tab-content'] = function (/*options*/) {
 	var options = Object(arguments[0]);
 
-	return [section({ class: 'section-primary' },
-			div({ class: "section-primary-sub all-documents-table" },
-				div(renderCertificateList(this.businessProcess, options)),
-				div(renderDocumentsList(this.businessProcess, options)),
-				div(renderPaymentList(this.businessProcess, options))),
-			div({ id: 'selection-preview' })
-		)];
+	section(
+		{ class: 'section-primary' },
+		div(
+			{ class: "section-primary-sub all-documents-table" },
+			div(renderCertificateList(this.businessProcess, options)),
+			div(renderDocumentsList(this.businessProcess, options)),
+			div(renderPaymentList(this.businessProcess, options))
+		),
+		div({ id: 'selection-preview' })
+	);
 };
