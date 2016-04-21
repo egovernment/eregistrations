@@ -46,11 +46,7 @@ exports.step  = function () {
 		{ viewContext: this, url: url }));
 	if (entity.dataForms.map.size > 1) {
 		div({ class: 'user-next-step-button' },
-			a({ href: exports._entitiesTableRootUrl(this) + '#' + entitiesTableId },
+			a({ href: (this.entitiesTableRootUrl || '/forms/') + '#' + entitiesTableId },
 				_("Back to form")));
 	}
-};
-
-exports._entitiesTableRootUrl = function (context) {
-	return '/forms/';
 };
