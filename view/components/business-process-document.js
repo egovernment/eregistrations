@@ -92,7 +92,7 @@ module.exports = function (doc, collection/*, options*/) {
 									linkAttributes.download = file._name;
 								} else if (!isReadOnlyRender && (type === 'application/pdf')) {
 									linkAttributes.href = file._path.map(function (path) {
-										if (path) return 'pdfjs/web/viewer.html?file=' + path;
+										if (path) return '/pdfjs/web/viewer.html?file=' + path;
 									});
 								}
 
@@ -117,7 +117,7 @@ module.exports = function (doc, collection/*, options*/) {
 						id: 'doc-previews',
 						class: 'submitted-preview-new-image-placeholder'
 					}, files, function (file) {
-						li({ class: _if(eq(file, files._first), 'active') }, getFilePreview(file));
+						return li({ class: _if(eq(file, files._first), 'active') }, getFilePreview(file));
 					}, doc),
 					// File navigation - bottom
 					_if(moreThanOneFile, div(
@@ -148,6 +148,5 @@ module.exports = function (doc, collection/*, options*/) {
 					options.sideContent
 				)
 			)
-		),
-		insert(options.appendContent)];
+		)];
 };

@@ -14,7 +14,7 @@ exports._match   = 'document';
 exports['selection-preview'] = function () {
 	var doc = this.document;
 
-	insert(documentView(doc, this.processingStep.certificates.uploaded, {
+	insert([documentView(doc, this.processingStep.certificates.uploaded, {
 		sideContent: [
 			doc.overviewSection.toDOM(document, { disableHeader: false }),
 			doc.dataForm.constructor !== db.FormSectionBase ? doc.dataForm.toDOM(document, {
@@ -23,7 +23,6 @@ exports['selection-preview'] = function () {
 				},
 				disableHeader: false
 			}) : null
-		],
-		appendContent: renderDocumentHistory(doc)
-	}));
+		]
+	}), renderDocumentHistory(doc)]);
 };
