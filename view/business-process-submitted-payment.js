@@ -6,7 +6,7 @@ var documentView          = require('./components/business-process-document')
   , renderDocumentHistory = require('./components/business-process-document-history');
 
 exports._parent  = require('./business-process-submitted-documents');
-exports._dynamic = require('./utils/document-dynamic-matcher');
+exports._dynamic = require('./utils/document-dynamic-matcher')('receipt');
 exports._match   = 'document';
 
 exports['selection-preview'] = function () {

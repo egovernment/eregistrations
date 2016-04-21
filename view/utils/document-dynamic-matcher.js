@@ -2,11 +2,13 @@
 
 'use strict';
 
-module.exports = function (doc) {
-	var listItemId = 'document-item-' + this.document.docId
-	  , conf       = {};
+module.exports = function (documentTypePrefix) {
+	return function (doc) {
+		var listItemId = documentTypePrefix + '-item-' + this.document.docId
+		  , conf       = {};
 
-	conf[listItemId] = { class: { active: true } };
+		conf[listItemId] = { class: { active: true } };
 
-	return conf;
+		return conf;
+	};
 };

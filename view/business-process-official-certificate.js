@@ -8,7 +8,7 @@ var db                    = require('mano').db
   , renderDocumentHistory = require('./components/business-process-document-history');
 
 exports._parent  = require('./business-process-official-documents');
-exports._dynamic = require('./utils/document-dynamic-matcher');
+exports._dynamic = require('./utils/document-dynamic-matcher')('certificate');
 exports._match   = 'document';
 
 exports['selection-preview'] = function () {

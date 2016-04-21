@@ -12,7 +12,7 @@ var _                     = require('mano').i18n.bind('Official: Revision')
   , paymentForm;
 
 exports._parent  = require('./business-process-revision-payments');
-exports._dynamic = require('./utils/document-dynamic-matcher');
+exports._dynamic = require('./utils/document-dynamic-matcher')('receipt');
 exports._match   = 'document';
 
 paymentForm = function (paymentReceiptUpload) {

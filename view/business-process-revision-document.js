@@ -13,7 +13,7 @@ var _                     = require('mano').i18n.bind('Official: Revision')
   , revisionForm;
 
 exports._parent  = require('./business-process-revision-documents');
-exports._dynamic = require('./utils/document-dynamic-matcher');
+exports._dynamic = require('./utils/document-dynamic-matcher')('document');
 exports._match   = 'document';
 
 revisionForm = function (requirementUpload) {
