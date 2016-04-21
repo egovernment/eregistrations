@@ -46,7 +46,7 @@ var resolveSnapshotArchivePath = function (businessProcess, snapshot, kind) {
 
 module.exports = function (context, sideContent) {
 	var businessProcess = context.businessProcess
-	  , kind = context.kind
+	  , kind = context.documentKind
 	  , doc = context.document
 	  , snapshot = context.dataSnapshot
 	  , elem, data = {}, files;

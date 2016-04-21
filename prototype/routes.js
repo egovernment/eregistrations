@@ -88,8 +88,8 @@ module.exports = {
 			var upload = this.businessProcess.requirementUploads.applicable.first;
 			this.document = upload.document;
 			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
-			this.kind = 'requirementUpload';
-			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.kind + '/document';
+			this.documentKind = 'requirementUpload';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
 			return true;
 		},
 		view: require('./view/document')
@@ -118,8 +118,8 @@ module.exports = {
 			var upload = this.businessProcess.requirementUploads.applicable.first;
 			this.document = upload.document;
 			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
-			this.kind = 'requirementUpload';
-			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.kind + '/document';
+			this.documentKind = 'requirementUpload';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
 			return true;
 		},
 		view: require('./view/business-process-revision-document')
@@ -129,8 +129,8 @@ module.exports = {
 			var upload = this.businessProcess.paymentReceiptUploads.applicable.first;
 			this.document = upload.document;
 			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
-			this.kind = 'paymentReceiptUpload';
-			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.kind + '/payment';
+			this.documentKind = 'paymentReceiptUpload';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/payment';
 			return true;
 		},
 		view: require('./view/business-process-revision-payment')
@@ -140,8 +140,8 @@ module.exports = {
 			var upload = this.businessProcess.requirementUploads.applicable.first;
 			this.document = upload.document;
 			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
-			this.kind = 'requirementUpload';
-			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.kind + '/document';
+			this.documentKind = 'requirementUpload';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
 			return true;
 		},
 		view: require('../view/business-process-document')

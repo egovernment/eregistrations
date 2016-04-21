@@ -10,6 +10,7 @@ exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
 
-		insert(renderDocument(this, (this.kind !== 'certificate') ? documentRevisionInfo(this) : null));
+		insert(renderDocument(this,
+			(this.documentKind !== 'certificate') ? documentRevisionInfo(this) : null));
 	}
 };

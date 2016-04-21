@@ -5,7 +5,7 @@ var _        = require('mano').i18n.bind('View: Official')
 
 module.exports = function (context) {
 	var snapshot = context.dataSnapshot
-	  , kind = context.kind;
+	  , kind = context.documentKind;
 
 	// Don't display anything if not rejected.
 	return _if(eq(snapshot.status, 'rejected'), div({ class: 'section-secondary' },

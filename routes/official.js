@@ -55,8 +55,9 @@ module.exports = function (step) {
 						}
 						this.dataSnapshot = this.document.owner.enrichJSON(this.document.owner.toJSON());
 					}
-					this.kind = 'requirementUpload';
-					this.documentUniqueId = this.processingStep.__id__ + '/' + this.kind + '/' + docUniqueKey;
+					this.documentKind = 'requirementUpload';
+					this.documentUniqueId =
+						this.processingStep.__id__ + '/' + this.documentKind + '/' + docUniqueKey;
 					return true;
 				}.bind(this));
 			},
@@ -88,8 +89,9 @@ module.exports = function (step) {
 						}
 						this.dataSnapshot = this.document.owner.enrichJSON(this.document.owner.toJSON());
 					}
-					this.kind = 'paymentReceiptUpload';
-					this.documentUniqueId = this.processingStep.__id__ + '/' + this.kind + '/' + docUniqueKey;
+					this.documentKind = 'paymentReceiptUpload';
+					this.documentUniqueId =
+						this.processingStep.__id__ + '/' + this.documentKind + '/' + docUniqueKey;
 					return true;
 				}.bind(this));
 			},
@@ -118,8 +120,9 @@ module.exports = function (step) {
 						if (!this.dataSnapshot) return false;
 					}
 
-					this.kind = 'certificate';
-					this.documentUniqueId = this.processingStep.__id__ + '/' + this.kind + '/' + docUniqueKey;
+					this.documentKind = 'certificate';
+					this.documentUniqueId =
+						this.processingStep.__id__ + '/' + this.documentKind + '/' + docUniqueKey;
 					return true;
 				}.bind(this));
 			},

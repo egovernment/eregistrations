@@ -32,8 +32,9 @@ module.exports = {
 					return true;
 				}
 			}, this);
-			this.kind = 'requirementUpload';
-			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.kind + '/' + uniqueKey;
+			this.documentKind = 'requirementUpload';
+			this.documentUniqueId =
+				this.businessProcess.__id__ + '/' + this.documentKind + '/' + uniqueKey;
 			return true;
 		},
 		view: require('../view/business-process-document')
@@ -51,8 +52,9 @@ module.exports = {
 			if (!this.dataSnapshot) return false;
 			paymentReceiptUpload = this.businessProcess.paymentReceiptUploads.map[uniqueKey];
 			if (paymentReceiptUpload) this.document = paymentReceiptUpload.document;
-			this.kind = 'paymentReceiptUpload';
-			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.kind + '/' + uniqueKey;
+			this.documentKind = 'paymentReceiptUpload';
+			this.documentUniqueId =
+				this.businessProcess.__id__ + '/' + this.documentKind + '/' + uniqueKey;
 			return true;
 		},
 		view: require('../view/business-process-document')
@@ -70,8 +72,9 @@ module.exports = {
 			if (!this.dataSnapshot) return false;
 
 			this.document = this.businessProcess.certificates.map[uniqueKey];
-			this.kind = 'certificate';
-			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.kind + '/' + uniqueKey;
+			this.documentKind = 'certificate';
+			this.documentUniqueId =
+				this.businessProcess.__id__ + '/' + this.documentKind + '/' + uniqueKey;
 			return true;
 		},
 		view: require('../view/business-process-document')
