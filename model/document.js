@@ -119,6 +119,7 @@ module.exports = memoize(function (db) {
 			if (this.processingStep.status === 'approved') return 'approved';
 			if (this.processingStep.status) return 'pending';
 		} },
+		// Used for preservation in data snapshots
 		toJSON: { value: function (ignore) {
 			var data = {
 				uniqueKey: this.key,
