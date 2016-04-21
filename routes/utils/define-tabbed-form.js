@@ -5,8 +5,8 @@ var camelToHyphen       = require('es5-ext/string/#/camel-to-hyphen')
 
 /**
  * @description
- * Called from routes for each section which should be displayed in form section tabs.
- * Usade example: defineTabbedForm('investmentInformation', { isDefault: true, context: exports });
+ * Called from view routes for each section which should be displayed in form section tabs.
+ * Usage example: defineTabbedForm('investmentInformation', { isDefault: true, context: exports });
  *
  * @param sectionKey                  - Name on the section's map
  * @param {Object}  options           - options
