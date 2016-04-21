@@ -36,7 +36,7 @@ module.exports = memoize(function (db) {
 	Document = db.Object.extend('Document', {
 		// Document label, fallbacks to label as decided on constructor
 		label: { type: StringLine, value: function () { return this.constructor.label; } },
-		// Document label, fallbacks to label as decided on constructor
+		// Document abbreviation, fallbacks to abbr as decided on constructor
 		abbr: { type: StringLine, value: function () { return this.constructor.abbr; } },
 		// Document legend, fallbacks to legend as decided on constructor
 		legend: { type: StringLine, value: function () { return this.constructor.legend; } },
