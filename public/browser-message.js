@@ -1,5 +1,5 @@
 'use strict';
 var _ = require('mano').i18n.bind('Public');
 
-module.exports = _("For best experience, please use "
-		+ "latest versions of Chrome, Mozilla, Internet Explorer or Edge");
+module.exports = _("For best user experience, we recommend you"
+		+ " not to use Safari. Full support will come soon.");
