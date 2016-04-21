@@ -10,7 +10,7 @@ var _              = require('mano').i18n.bind('Official: Revision')
   , paymentForm;
 
 exports._parent = require('./user-base');
-exports._match = 'document';
+exports._match = 'documentUniqueId';
 
 paymentForm = function (paymentReceiptUpload) {
 	var revFail;

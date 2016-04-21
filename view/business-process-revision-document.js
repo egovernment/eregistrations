@@ -10,7 +10,7 @@ var _              = require('mano').i18n.bind('Official: Revision')
   , revisionForm;
 
 exports._parent = require('./user-base');
-exports._match = 'document';
+exports._match = 'documentUniqueId';
 
 revisionForm = function (requirementUpload) {
 	var revFail, revFailOther, revFailInput;
