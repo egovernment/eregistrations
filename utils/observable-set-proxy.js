@@ -1,5 +1,5 @@
-// Observable set proxy needed to get out of primitive observable set mode,
-// which can't work if want to map set into values that are not serializable same way
+// Using this proxy is needed to get out of primitive observable set mode,
+// Otherwise we're not able to map set into other values that are not serializable same way
 // This unfortunate hack is needed until following serializer is in use:
 // https://github.com/medikoo/dbjs/blob/master/_setup/serialize/object.js
 
