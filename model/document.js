@@ -116,6 +116,7 @@ module.exports = memoize(function (db) {
 		status: { type: CertificateStatus, value: function () {
 			if (this.master.isApproved) return 'approved';
 			if (this.master.isRejected) return 'rejected';
+			if (!this.processingStep) return;
 			if (this.processingStep.status === 'approved') return 'approved';
 			if (this.processingStep.status) return 'pending';
 		} },
