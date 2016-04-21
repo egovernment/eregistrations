@@ -9,7 +9,11 @@ var generateSections = require('eregistrations/view/components/generate-form-sec
 exports._parent = require('./business-process-data-forms-tabbed');
 
 exports['forms-sections-content'] = function () {
-	var nextPageLink = exports._nextPagelink(this);
+	var nextPageLink = this.section._nextSection.map(function (nextSection) {
+		if (!nextSection) return exports._nextSectionUrl(this);
+		return '/forms/' + nextSection.pageUrl + '/';
+	}.bind(this));
+
 	insert(
 		_if(this.section._legend, div({ class: 'info-main' },
 			md(this.section._legend))),
@@ -29,11 +33,6 @@ exports._disableCondition = function (context) {
 	return not(eq(context.businessProcess._guideProgress, 1));
 };
 
-exports._nextPagelink = function (context) {
-	return context.section._nextSection.map(function (nextSection) {
-		if (!nextSection) return '/documents/';
-		return '/forms/' + nextSection.pageUrl + '/';
-	});
-};
+exports._nextSectionUrl = function (context) { return '/documents/'; };
 
 exports._match = 'section';
