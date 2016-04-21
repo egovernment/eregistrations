@@ -37,9 +37,9 @@ module.exports = function (businessProcess/*, options*/) {
 					return upload.document._issueDate;
 				}
 			}, {
-				head: _("User"),
+				head: _("Issuer"),
 				data: function (upload) {
-					return upload.document._issuedBy;
+					return "User";
 				}
 			}, {
 				class: 'submitted-user-data-table-link',

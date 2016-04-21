@@ -32,14 +32,14 @@ module.exports = function (businessProcess/*, options*/) {
 				}
 			}, {
 				class: 'submitted-user-data-table-date',
-				head: _("User"),
+				head: _("Issue date"),
 				data: function (upload) {
 					return upload.document._issueDate;
 				}
 			}, {
 				head: _("Issuer"),
 				data: function (upload) {
-					return upload.document._issuedBy;
+					return "User";
 				}
 			}, {
 				class: 'submitted-user-data-table-link',
