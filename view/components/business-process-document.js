@@ -92,7 +92,7 @@ module.exports = function (doc, collection/*, options*/) {
 									linkAttributes.download = file._name;
 								} else if (!isReadOnlyRender && (type === 'application/pdf')) {
 									linkAttributes.href = file._path.map(function (path) {
-										if (path) return '/pdfjs/web/viewer.html?file=' + path;
+										if (path) return '/pdfjs/web/viewer.html?file=/' + path;
 									});
 								}
 
