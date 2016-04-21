@@ -61,7 +61,7 @@ module.exports = function (doc, collection/*, options*/) {
 							i({ class: 'fa fa-angle-right' })))
 				)
 			),
-			insert(options.prependContent)
+			options.prependContent
 		),
 		div(
 			{ id: 'user-document', class: 'business-process-submitted-selected-document' },
