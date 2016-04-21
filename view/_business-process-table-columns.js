@@ -126,7 +126,7 @@ exports.columns = [{
 					return generateCertificatesList(certificates);
 				});
 			}
-			mmap(businessProcess.certificates._applicable, function (certificates) {
+			return mmap(businessProcess.certificates._applicable, function (certificates) {
 				if (!certificates) return;
 				return generateCertificatesList(certificates);
 			});
