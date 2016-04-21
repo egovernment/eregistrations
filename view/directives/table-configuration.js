@@ -11,13 +11,16 @@ module.exports = function (domjs) {
 	var directives = domjs.getDirectives('table');
 
 	directives.configuration = function (conf) {
-		var tableHeadings = tr();
+		var tableHeadings = tr()
+		  , headContent;
 
 		forEach.call(conf.columns, function (column) {
+			headContent = resolveConf(column.head);
+
 			tableHeadings.appendChild(th({ class: resolveConf(column.headClass) },
-				resolveConf(column.head)));
+				headContent));
 		});
-		this.appendChild(thead(tableHeadings));
+		if (headContent) this.appendChild(thead(tableHeadings));
 
 		this.appendChild(tbody(conf.collection, function (item) {
 			var itemRow = tr(resolveConf(conf.rowAttributes, item));

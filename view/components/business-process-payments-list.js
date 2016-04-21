@@ -37,7 +37,7 @@ module.exports = function (businessProcess/*, options*/) {
 					return upload.document._issueDate;
 				}
 			}, {
-				head: _("Issuer"),
+				head: _("User"),
 				data: function (upload) {
 					return upload.document._issuedBy;
 				}

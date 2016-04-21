@@ -32,7 +32,7 @@ module.exports = function (businessProcess/*, options*/) {
 				}
 			}, {
 				class: 'submitted-user-data-table-date',
-				head: _("Issue date"),
+				head: _("User"),
 				data: function (upload) {
 					return upload.document._issueDate;
 				}

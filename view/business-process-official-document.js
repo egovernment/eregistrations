@@ -4,7 +4,7 @@
 
 var documentView          = require('./components/business-process-document')
   , renderDocumentHistory = require('./components/business-process-document-history')
-  , documentRevsionInfo   = require('./components/business-process-document-review-info');
+  , documentRevisionInfo  = require('./components/business-process-document-review-info');
 
 exports._parent  = require('./business-process-official-documents');
 exports._dynamic = require('./utils/document-dynamic-matcher')('document');
@@ -14,7 +14,7 @@ exports['selection-preview'] = function () {
 	var doc = this.document;
 
 	documentView(doc, this.processingStep.requirementUploads.applicable, {
-		appendContent: documentRevsionInfo(doc),
+		appendContent: documentRevisionInfo(doc),
 		sideContent: renderDocumentHistory(doc)
 	});
 };
