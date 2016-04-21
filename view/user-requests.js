@@ -27,8 +27,7 @@ exports['user-account-content'] = function () {
 							value: '/requests/' + process.__id__ + '/',
 							selected: eq(loc._pathname, '/requests/' + process.__id__ + '/')
 						}, process._businessName);
-					})))),
-			div({ id: 'user-requests-preview' })];
+					}))))];
 		businessSelect.setAttribute('onchange', 'location.href = this.value + ' +
 			'\'#business-process-summary\'');
 		businessSelect.onchange = function (ev) { loc.goto(ev.target.value); };
@@ -39,4 +38,5 @@ exports['user-account-content'] = function () {
 			return documentsAndDataBrief(businessProcesses);
 		});
 	}));
+	div({ id: 'user-requests-preview' });
 };
