@@ -56,7 +56,7 @@ module.exports = function (businessProcess/*, options*/) {
 							td({ class: 'submitted-user-data-table-date' }, documentData.issueDate),
 							td({ class: 'submitted-user-data-table-link' },
 								a({ href: '/business-process/' + businessProcess.__id__ + '/certificate/' +
-									camelToHyphen.call(documentData.key) + '/' },
+									camelToHyphen.call(documentData.uniqueKey) + '/' },
 									span({ class: 'fa fa-search' }, _("Go to"))))
 						);
 					})));
