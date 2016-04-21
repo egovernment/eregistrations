@@ -80,6 +80,7 @@ module.exports = memoize(function (db/*, options*/) {
 		// Uploads data snapshot (saved when file is submitted to Part B)
 		dataSnapshot: { type: DataSnapshot, nested: true },
 
+		// Used for data snaphots preservation
 		toJSON: { value: function (ignore) {
 			var result = [];
 			this.applicable.forEach(function (upload) { result.push(upload.toJSON()); });
@@ -88,6 +89,9 @@ module.exports = memoize(function (db/*, options*/) {
 	});
 	UploadsProcess.prototype.map._descriptorPrototype_.type = RequirementUpload;
 	UploadsProcess.prototype.dataSnapshot.defineProperties({
+		// Enriches resolved JSON with reactive revision status properties
+		// It's about state when request is in processing state
+		// The state of uploaded files is frozen but it's validation statuses is subject to change
 		resolve: { value: function (ignore) {
 			var data = this.database.DataSnapshot.prototype.resolve.call(this);
 			if (!data) return data;
@@ -104,6 +108,8 @@ module.exports = memoize(function (db/*, options*/) {
 				});
 			});
 		} },
+		// After request is finalized, we finalize snapshots
+		// by extending it with revision status results
 		finalize: { type: db.Function, value: function (ignore) {
 			var data;
 			if (this.jsonString) {
