@@ -4,10 +4,10 @@
 
 var _                     = require('mano').i18n.bind('Official: Revision')
   , camelToHyphen         = require('es5-ext/string/#/camel-to-hyphen')
-  , reactiveSibling       = require('../utils/reactive-sibling')
-  , renderDocument        = require('./components/business-process-document-preview')
+  , documentView          = require('./components/business-process-document')
   , renderDocumentHistory = require('./components/business-process-document-history')
   , generateSections      = require('./components/generate-sections')
+  , disableStep           = require('./components/disable-processing-step')
 
   , paymentForm;
 
@@ -37,53 +37,13 @@ paymentForm = function (paymentReceiptUpload) {
 };
 
 exports['revision-document'] = function () {
-	var doc = this.document;
-	var reqUploads = this.processingStep.requirementUploads.applicable;
-	var nextReqUpload = reactiveSibling.next(reqUploads, doc.owner);
-	var nextReqUploadUrl = nextReqUpload.map(function (nextReqUpload) {
-		if (!nextReqUpload) return null;
-		return nextReqUpload.docUrl;
-	});
-	var prevReqUpload = reactiveSibling.previous(reqUploads, doc.owner);
-	var prevReqUploadUrl = prevReqUpload.map(function (nextReqUpload) {
-		if (!prevReqUpload) return null;
-		return prevReqUpload.docUrl;
-	});
+	var doc            = this.document
+	  , processingStep = this.processingStep;
 
-	return [div({ id: 'revision-box', class: 'business-process-revision-box' },
-		div({ class: 'business-process-revision-box-header' },
-			div({ class: 'business-process-submitted-box-header-document-title' },
-					doc._label),
-			div({ class: 'business-process-revision-box-controls' },
-				_if(prevReqUpload,
-					a({ href: prevReqUploadUrl,
-						class: 'hint-optional hint-optional-left',
-						'data-hint': _('Previous document') },
-						i({ class: 'fa fa-angle-left' }))),
-				_if(nextReqUpload,
-					a({ href: nextReqUploadUrl,
-						class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
-						i({ class: 'fa fa-angle-right' })))
-					)),
-		paymentForm(doc.owner)
-		),
-		div({ class: 'submitted-preview' },
-			div({ id: 'document-preview', class: 'submitted-preview-document' },
-				renderDocument(doc)),
-			div({ class: 'submitted-preview-user-data  entity-data-section-side' },
-				div({ id: 'revision-documents-payments-table' },
-					div(span(_("Uploaded payment receipt applies to following costs:")),
-						br(),
-						ul({ class: 'business-process-costs-list' },
-							this.document.owner.applicableCosts, function (cost) {
-								li(span({ class: 'business-process-costs-list-label' }, cost._label),
-									span(cost._amount));
-							}))),
-				generateSections(this.businessProcess.dataForms.applicable, { viewContext: this })
-				),
-			div({ id: 'document-history', class: 'submitted-preview-document-history' },
-				renderDocumentHistory(doc))
-			)
-		];
-
+	documentView(doc, this.processingStep.paymentReceiptUploads.applicable, {
+		prependContent: insert(_if(processingStep.processableUploads.has(doc.owner),
+			disableStep(this.processingStep, paymentForm(doc.owner)))),
+		sideContent: generateSections(this.businessProcess.dataForms.applicable, { viewContext: this }),
+		appendContent: renderDocumentHistory(doc)
+	});
 };

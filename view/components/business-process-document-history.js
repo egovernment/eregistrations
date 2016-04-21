@@ -2,8 +2,7 @@
 
 'use strict';
 
-var curry = require('es5-ext/function/#/curry')
-  , _     = require('mano').i18n.bind('Revision: Document history');
+var _     = require('mano').i18n.bind('Revision: Document history');
 
 module.exports = function (doc) {
 	return _if(doc.statusLog.ordered._size, [
