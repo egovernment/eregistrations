@@ -24,7 +24,7 @@ exports['forms-sections-content'] = function () {
 						generateSections(this.section.applicableSections, { viewContext: this })] :
 					this.section.toDOMForm(document)
 		),
-		_if(nextPageLink, p({ class: 'user-next-step-button' },
+		_if(and(nextPageLink, eq(this.section._status, 1)), p({ class: 'user-next-step-button' },
 			a({ href: nextPageLink }, _('Continue to next step'))))
 	);
 };
