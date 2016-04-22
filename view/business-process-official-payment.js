@@ -13,7 +13,7 @@ exports._match   = 'document';
 exports['selection-preview'] = function () {
 	var doc = this.document;
 
-	insert([documentView(doc, this.processingStep.requirementUploads.applicable, {
+	insert([documentView(doc, this.processingStep.paymentReceiptUploads.applicable, {
 		sideContent: renderDocumentHistory(doc)
 	}), documentRevisionInfo(doc)]);
 };
