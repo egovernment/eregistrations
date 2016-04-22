@@ -67,7 +67,7 @@ module.exports = function (doc, collection/*, options*/) {
 			options.prependContent
 		),
 		div(
-			{ id: 'user-document', class: 'business-process-submitted-selected-document' },
+			{ class: 'business-process-submitted-selected-document' },
 			div(
 				{ class: 'submitted-preview' },
 				_if(files._size, div(

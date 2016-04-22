@@ -12,7 +12,7 @@ exports['tab-content'] = function (/*options*/) {
 	section(
 		{ class: 'section-primary' },
 		div(
-			{ id: 'user-document', class: 'business-process-revision-selected-document' },
+			{ class: 'business-process-revision-selected-document' },
 			div(
 				{ class: 'entity-data-section-side' },
 				generateSections(businessProcess.dataForms.applicable, { viewContext: this })

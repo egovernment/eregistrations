@@ -12,7 +12,7 @@ exports['business-process-official-content'] = function () {
 	var businessProcess = this.businessProcess;
 
 	return [section({ class: 'section-primary' },
-			div({ id: 'user-document', class: 'business-process-revision-selected-document' },
+			div({ class: 'business-process-revision-selected-document' },
 				div({ class: 'entity-data-section-side' },
 					generateSections(businessProcess.dataForms.applicable, { viewContext: this })
 					)
