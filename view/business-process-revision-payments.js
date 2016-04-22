@@ -9,9 +9,11 @@ exports._match = 'businessProcess';
 
 exports['business-process-payments'] = { class: { active: true } };
 exports['official-revision-content'] = function () {
+	var options = { urlPrefix: '/' + this.businessProcess.__id__ + '/' };
+
 	return section(
 		{ class: 'section-primary' },
-		renderPaymentList(this.businessProcess, { urlPrefix: '/' + this.businessProcess.__id__ + '/' }),
+		renderPaymentList(this.businessProcess, options),
 		div({ id: 'revision-document', class: 'business-process-revision-selected-document' })
 	);
 };
