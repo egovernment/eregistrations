@@ -10,8 +10,8 @@ exports._parent = require('./business-process-official');
 exports._match = 'businessProcess';
 
 exports['business-process-official-documents'] = { class: { active: true } };
-exports['business-process-official-content'] = function (/*options*/) {
-	var options = Object(arguments[0]);
+exports['business-process-official-content'] = function () {
+	var options ={ urlPrefix: '/' + this.businessProcess.__id__ + '/' };
 
 	return [section({ class: 'section-primary' },
 			div({ class: "section-primary-sub all-documents-table" },

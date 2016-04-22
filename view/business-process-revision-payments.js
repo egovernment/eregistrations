@@ -8,12 +8,10 @@ exports._parent = require('./business-process-revision');
 exports._match = 'businessProcess';
 
 exports['business-process-payments'] = { class: { active: true } };
-exports['official-revision-content'] = function (/*options*/) {
-	var options = Object(arguments[0]);
-
+exports['official-revision-content'] = function () {
 	return section(
 		{ class: 'section-primary' },
-		renderPaymentList(this.businessProcess, options),
+		renderPaymentList(this.businessProcess, { urlPrefix: '/' + this.businessProcess.__id__ + '/' }),
 		div({ id: 'revision-document', class: 'business-process-revision-selected-document' })
 	);
 };

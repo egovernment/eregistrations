@@ -7,13 +7,13 @@ var db            = require('mano').db
 
 Object.defineProperties(db.Document.prototype, lazy({
 	docUrl: d(function () {
-		var url = '/';
+		var url = '';
 		if (this.owner.owner.key === 'certificates') {
 			url += 'certificates/' + camelToHyphen.call(this.key) + '/';
 		} else if (this.owner.owner.owner.key === 'requirementUploads') {
 			url += 'documents/' + camelToHyphen.call(this.uniqueKey) + '/';
 		} else if (this.owner.owner.owner.key === 'paymentReceiptUploads') {
-			url += 'receipts/' + camelToHyphen.call(this.owner.key) + '/';
+			url += 'payment-receipts/' + camelToHyphen.call(this.owner.key) + '/';
 		} else {
 			throw new Error("Unrecognized document");
 		}
