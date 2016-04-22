@@ -25,6 +25,15 @@ module.exports = memoize(function (User/* options */) {
 		},
 		currentBusinessProcess: {
 			type: BusinessProcessBase
+		},
+		hasPendingBusinessProcess: {
+			type: db.Boolean,
+			value: function (_observe) {
+				return this.initialBusinessProcesses.some(function (businessProcess) {
+					return _observe(businessProcess._isSentBack) ||
+						_observe(businessProcess._isUserProcessing);
+				});
+			}
 		}
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
