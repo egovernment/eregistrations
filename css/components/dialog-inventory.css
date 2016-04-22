@@ -37,6 +37,7 @@
 
 .dialog-inventory .controls a {
 	height: 22px;
+	line-height: 22px;
 }
 
 .dialog-inventory section ul li h3 {
