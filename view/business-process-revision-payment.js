@@ -43,7 +43,7 @@ exports['revision-document'] = function () {
 
 	insert([
 		documentView(doc, this.processingStep.paymentReceiptUploads.applicable, {
-			prependContent: insert(_if(processingStep.processableUploads.has(doc.owner),
+			prependContent: insert(_if(processingStep.paymentReceiptUploads.processable._has(doc.owner),
 				disableStep(this.processingStep, paymentForm(doc.owner)),
 				documentRevisionInfo(doc))),
 			sideContent: generateSections(this.businessProcess.dataForms.applicable,

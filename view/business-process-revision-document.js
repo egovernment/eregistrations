@@ -51,7 +51,7 @@ exports['revision-document'] = function () {
 
 	insert([
 		documentView(doc, this.processingStep.requirementUploads.applicable, {
-			prependContent: insert(_if(processingStep.processableUploads.has(doc.owner),
+			prependContent: insert(_if(processingStep.requirementUploads.processable._has(doc.owner),
 				disableStep(this.processingStep, revisionForm(doc.owner)),
 				documentRevisionInfo(doc))),
 			sideContent: generateSections(this.businessProcess.dataForms.applicable,
