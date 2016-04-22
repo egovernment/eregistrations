@@ -153,7 +153,9 @@ module.exports = function (doc, collection/*, options*/) {
 					{ class: 'submitted-preview-user-data  entity-data-section-side' },
 					options.sideContent
 				),
-				syncStyle.call(sideContentContainer, docPreviewContainer, 'height', isMobileView)
+				// This hack is here because unfortunately this function returns object that gets
+				// stringified by domjs into DOM.
+				syncStyle.call(sideContentContainer, docPreviewContainer, 'height', isMobileView) && null
 			)
 		)];
 };
