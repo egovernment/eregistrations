@@ -26,13 +26,19 @@ module.exports = memoize(function (User/* options */) {
 		currentBusinessProcess: {
 			type: BusinessProcessBase
 		},
-		hasPendingBusinessProcess: {
-			type: db.Boolean,
+		pendingBusinessProcesses: {
+			type: BusinessProcessBase,
+			multiple: true,
 			value: function (_observe) {
-				return this.initialBusinessProcesses.some(function (businessProcess) {
-					return _observe(businessProcess._isSentBack) ||
-						_observe(businessProcess._isUserProcessing);
+				var result = [];
+				this.initialBusinessProcesses.forEach(function (businessProcess) {
+					if (_observe(businessProcess._isSentBack) ||
+							_observe(businessProcess._isUserProcessing)) {
+						result.push(businessProcess);
+					}
 				});
+
+				return result;
 			}
 		}
 	});
