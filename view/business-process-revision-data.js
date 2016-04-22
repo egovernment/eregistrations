@@ -9,7 +9,7 @@ exports['business-process-datas'] = { class: { active: true } };
 exports['official-revision-content'] = function (/*options*/) {
 	var businessProcess = this.businessProcess;
 
-	return section(
+	section(
 		{ class: 'section-primary' },
 		div(
 			{ id: 'revision-document', class: 'business-process-revision-selected-document' },

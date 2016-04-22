@@ -47,9 +47,14 @@ exports['revision-document'] = function () {
 	var doc            = this.document
 	  , processingStep = this.processingStep;
 
-	insert([documentView(doc, this.processingStep.requirementUploads.applicable, {
-		prependContent: insert(_if(processingStep.processableUploads.has(doc.owner),
-			disableStep(this.processingStep, revisionForm(doc.owner))), documentRevisionInfo(doc)),
-		sideContent: generateSections(this.businessProcess.dataForms.applicable, { viewContext: this })
-	}), renderDocumentHistory(doc)]);
+	insert([
+		documentView(doc, this.processingStep.requirementUploads.applicable, {
+			prependContent: insert(_if(processingStep.processableUploads.has(doc.owner),
+				disableStep(this.processingStep, revisionForm(doc.owner)),
+				documentRevisionInfo(doc))),
+			sideContent: div(generateSections(this.businessProcess.dataForms.applicable,
+				{ viewContext: this }))
+		}),
+		renderDocumentHistory(doc)
+	]);
 };

@@ -6,11 +6,13 @@ var _                     = require('mano').i18n.bind('User Submitted')
   , isReadOnlyRender      = require('mano/client/utils/is-read-only-render')
   , normalizeOptions      = require('es5-ext/object/normalize-options')
   , includes              = require('es5-ext/array/#/contains')
+  , syncStyle             = require('dom-ext/html-element/#/sync-style')
   , reactiveSibling       = require('../../utils/reactive-sibling')
   , docMimeTypes          = require('../../utils/microsoft-word-doc-mime-types')
   , resolveArchivePath    = require('../../utils/resolve-document-archive-path')
   , syncHeight            = require('../utils/sync-height')
   , getFilePreview        = require('../utils/get-file-preview')
+  , isMobileView          = require('../utils/is-mobile-view')
   , _d                    = _;
 
 module.exports = function (doc, collection/*, options*/) {
@@ -18,7 +20,8 @@ module.exports = function (doc, collection/*, options*/) {
 	  , isCertificate   = doc.owner.owner.key === 'certificates'
 	  , files           = doc.files.ordered
 	  , moreThanOneFile = gt(files._size, 1)
-	  , nextDocument, previousDocument, nextDocumentUrl, previousDocumentUrl, docPreviewElement;
+	  , nextDocument, previousDocument, nextDocumentUrl, previousDocumentUrl, docPreviewElement
+	  , docPreviewContainer, sideContentContainer;
 
 	var resolveDocumentUrl = function (elem) {
 		if (!elem) return null;
@@ -67,7 +70,7 @@ module.exports = function (doc, collection/*, options*/) {
 			{ id: 'user-document', class: 'business-process-submitted-selected-document' },
 			div(
 				{ class: 'submitted-preview' },
-				_if(files._size, div(
+				_if(files._size, docPreviewContainer = div(
 					{ id: 'document-preview', class: ['submitted-preview-document',
 						'business-process-document-preview'] },
 					// Top links container
@@ -146,10 +149,11 @@ module.exports = function (doc, collection/*, options*/) {
 					{ class: 'submitted-preview-document-missing' },
 					p(_("This document does not have any physical file attached to it."))
 				)),
-				div(
+				sideContentContainer = div(
 					{ class: 'submitted-preview-user-data  entity-data-section-side' },
 					options.sideContent
-				)
+				),
+				syncStyle.call(sideContentContainer, docPreviewContainer, 'height', isMobileView)
 			)
 		)];
 };
