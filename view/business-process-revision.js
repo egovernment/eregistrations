@@ -16,7 +16,7 @@ exports['sub-main'] = {
 
 		renderMainInfo(this, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
 
-		insert(_if(revisionStep._isRevisionPending, section(
+		insert(_if(revisionStep._isRevisionPending, [exports._customAlert(this), section(
 			{ class: 'official-submission-toolbar' },
 			// show buttons only if step is pending
 			_if(eq(revisionStep._revisionProgress, 1),
@@ -27,7 +27,7 @@ exports['sub-main'] = {
 						exports._returnButton.call(this)))),
 					// show reject button at all times when revision is pending
 			exports._rejectButton.call(this)
-		)));
+		)]));
 
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab',
@@ -100,3 +100,5 @@ exports._rejectButton = function (/*options*/) {
 			"sent can be determined as not real.")
 	}, _("Reject application"))];
 };
+
+exports._customAlert = Function.prototype;
