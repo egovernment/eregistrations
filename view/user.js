@@ -39,6 +39,8 @@ exports['sub-main'] = {
 					];
 				})));
 
+		exports._notificationsBox(this);
+
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab user-account-tab',
 					id: 'user-account-requests',
@@ -84,5 +86,6 @@ exports['sub-main'] = {
 	}
 };
 
-exports._servicesBoxList = Function.prototype;
-exports._followUpsBoxes  = Function.prototype;
+exports._notificationsBox = Function.prototype;
+exports._servicesBoxList  = Function.prototype;
+exports._followUpsBoxes   = Function.prototype;
