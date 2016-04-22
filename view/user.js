@@ -51,6 +51,7 @@ exports['sub-main'] = {
 			div({ id: 'user-account-content', class: 'section-primary' }));
 
 		insert(_if(!manager || eq(this.user._manager, manager), [
+			exports._followUpsBoxes(this),
 			h3({ class: 'user-account-section-title' }, _("Available services")),
 			section({ class: 'section-primary' },
 				ul({ class: 'user-account-service-boxes' },
@@ -84,3 +85,4 @@ exports['sub-main'] = {
 };
 
 exports._servicesBoxList = Function.prototype;
+exports._followUpsBoxes  = Function.prototype;
