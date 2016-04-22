@@ -7,7 +7,6 @@ var server           = require('mano/lib/client/server-sync')
 var reload = function () {
 	localStorage._reload = '1';
 	window.location.href = '/';
-	return;
 };
 
 module.exports = function (user) {
