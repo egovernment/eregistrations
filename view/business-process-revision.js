@@ -51,7 +51,7 @@ exports['sub-main'] = {
 };
 
 exports._approveButton = function (/*options*/) {
-	var options = normalizeOptions(arguments[1]);
+	var options = normalizeOptions(arguments[0]);
 
 	return postButton({
 		action: url('revision', this.businessProcess.__id__, 'approve'),
@@ -63,7 +63,7 @@ exports._approveButton = function (/*options*/) {
 };
 
 exports._returnButton = function (/*options*/) {
-	var options = normalizeOptions(arguments[1]);
+	var options = normalizeOptions(arguments[0]);
 
 	return postButton({
 		action: url('revision', this.businessProcess.__id__, 'return'),
@@ -79,7 +79,7 @@ exports._returnButton = function (/*options*/) {
 // Technically, it's not 'just' a button that gets returned from here, but in this case it makes
 // no sense to return just the 'a' element.
 exports._rejectButton = function (/*options*/) {
-	var options = normalizeOptions(arguments[1]);
+	var options = normalizeOptions(arguments[0]);
 
 	return [dialog(
 		{ id: 'reject-reason', class: 'dialog-reject dialog-modal' },

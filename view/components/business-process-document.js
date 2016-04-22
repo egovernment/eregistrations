@@ -21,7 +21,7 @@ module.exports = function (doc, collection/*, options*/) {
 	  , files           = doc.files.ordered
 	  , moreThanOneFile = gt(files._size, 1)
 	  , nextDocument, previousDocument, nextDocumentUrl, previousDocumentUrl, docPreviewElement
-	  , docPreviewContainer, sideContentContainer;
+	  , sideContentContainer;
 
 	var resolveDocumentUrl = function (elem) {
 		if (!elem) return null;
@@ -70,7 +70,7 @@ module.exports = function (doc, collection/*, options*/) {
 			{ id: 'user-document', class: 'business-process-submitted-selected-document' },
 			div(
 				{ class: 'submitted-preview' },
-				_if(files._size, docPreviewContainer = div(
+				_if(files._size, div(
 					{ id: 'document-preview', class: ['submitted-preview-document',
 						'business-process-document-preview'] },
 					// Top links container
@@ -155,7 +155,7 @@ module.exports = function (doc, collection/*, options*/) {
 				),
 				// This hack is here because unfortunately this function returns object that gets
 				// stringified by domjs into DOM.
-				syncStyle.call(sideContentContainer, docPreviewContainer, 'height', isMobileView) && null
+				syncStyle.call(sideContentContainer, docPreviewElement, 'height', isMobileView) && null
 			)
 		)];
 };

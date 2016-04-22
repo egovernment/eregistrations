@@ -7,7 +7,7 @@ var _                = require('mano').i18n.bind('User Submitted')
   , _d = _;
 
 module.exports = function (businessProcess/*, options*/) {
-	var options      = normalizeOptions(arguments[2])
+	var options      = normalizeOptions(arguments[1])
 	  , urlPrefix    = options.urlPrefix || '/'
 	  , target       = options.uploadsResolver || businessProcess
 	  , certificates = target.certificates.uploaded;
