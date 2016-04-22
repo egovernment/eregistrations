@@ -61,7 +61,7 @@
 
 .entities-overview-table th,
 .entities-overview-table td,
-.entities-overview-table td a {
+.entities-overview-table td > a:only-child {
 	text-align: left;
 }
 
