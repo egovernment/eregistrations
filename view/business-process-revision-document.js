@@ -54,8 +54,8 @@ exports['revision-document'] = function () {
 			prependContent: insert(_if(processingStep.processableUploads.has(doc.owner),
 				disableStep(this.processingStep, revisionForm(doc.owner)),
 				documentRevisionInfo(doc))),
-			sideContent: div(generateSections(this.businessProcess.dataForms.applicable,
-				{ viewContext: this }))
+			sideContent: generateSections(this.businessProcess.dataForms.applicable,
+				{ viewContext: this })
 		}),
 		renderDocumentHistory(doc)
 	]);
