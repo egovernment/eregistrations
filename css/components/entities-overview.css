@@ -73,10 +73,6 @@
 	text-align: center;
 }
 
-.entities-overview-table.sales-table td:first-child {
-	text-align: center;
-}
-
 .entities-overview-info {
 	background-color: var(--light-background);
 	border: 1px solid  var(--normal-light-background);
