@@ -140,7 +140,7 @@ module.exports = {
 		view: require('../view/business-process-revision-payment')
 	},
 	'revision/business-process-id/data': require('../view/business-process-revision-data'),
-	'revision/business-process-id/processing': require('../view/business-process-revision-form'),
+	'revision/business-process-id/processing': require('./view/business-process-revision-form'),
 	'official/business-process-id': require('./view/business-process-official-form'),
 	'official/business-process-id/documents': {
 		decorateContext: function () {

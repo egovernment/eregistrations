@@ -13,7 +13,6 @@ exports['official-revision-content'] = function (/*options*/) {
 		{ class: 'section-primary' },
 		div(
 			{ id: 'revision-document', class: 'business-process-revision-selected-document' },
-			div({ id: 'revision-box', class: 'business-process-revision-box' }),
 			div(
 				{ class: 'entity-data-section-side' },
 				generateSections(businessProcess.dataForms.applicable, { viewContext: this })

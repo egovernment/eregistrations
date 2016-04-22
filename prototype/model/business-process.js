@@ -187,10 +187,34 @@ BusinessProcessNew.prototype.defineNestedMap('branches', {
 	itemType: Branch
 });
 
-DocA = Document.extend('DocA', {}, {
+DocA = Document.extend('DocA', {
+	nitCode: {
+		type: StringLine,
+		required: true,
+		label: "NIT"
+	},
+	satInternalCode: {
+		type: StringLine,
+		required: true,
+		label: "SAT internal code"
+	}
+}, {
 	abbr: { value: "DOC-A" },
 	label: { value: "Document A" },
 	legend: { value: "This document is issued as a result of Registration A" }
+});
+
+DocA.prototype.getDescriptor('dataForm').type = FormSection;
+DocA.prototype.dataForm.setProperties({
+	label: function () {
+		return this.propertyMaster.label;
+	},
+	disablePartialSubmit: true,
+	actionUrl: function () {
+		return this.master.__id__ + '/certificate/rtu';
+	},
+	propertyMasterType: DocA,
+	propertyNames: ['nitCode', 'satInternalCode', 'files/map', 'issueDate']
 });
 
 DocB = Document.extend('DocB', {}, {
@@ -433,6 +457,8 @@ processes.forEach(function (businessProcess) {
 		nested: true,
 		type: RevisionProcessingStep
 	});
+
+	businessProcess.processingSteps.map.revision.set('status', 'pending');
 
 	businessProcess.processingSteps.map.define('frontDesk', {
 		nested: true,
