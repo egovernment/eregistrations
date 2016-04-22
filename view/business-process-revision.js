@@ -31,22 +31,22 @@ exports['sub-main'] = {
 
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab',
-					id: 'business-process-documents',
+					id: 'tab-business-process-documents',
 					href: '/' + this.businessProcess.__id__ + '/' },
 				_("Revision of the documents")),
 			a({ class: 'section-tab-nav-tab',
-					id: 'business-process-payments',
+					id: 'tab-business-process-payments',
 					href: '/' + this.businessProcess.__id__ + '/payment-receipts/' },
 				_("Revision of payments")),
 			a({ class: 'section-tab-nav-tab',
-					id: 'business-process-datas',
+					id: 'tab-business-process-data',
 					href: '/' + this.businessProcess.__id__ + '/data/' },
 				_("Revision of data")),
 			a({ class: 'section-tab-nav-tab',
-					id: 'business-process-processing',
+					id: 'tab-business-process-processing',
 					href: '/' + this.businessProcess.__id__ + '/processing/' },
 				_("Processing")),
-			div({ id: 'official-revision-content', class: 'business-process-revision' }));
+			div({ id: 'tab-content', class: 'business-process-revision' }));
 	}
 };
 

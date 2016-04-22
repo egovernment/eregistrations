@@ -9,7 +9,7 @@ var renderDocumentsList   = require('./components/business-process-documents-lis
 exports._parent = require('./business-process-submitted');
 exports._match = 'businessProcess';
 
-exports['tab-documents'] = { class: { active: true } };
+exports['tab-business-process-documents'] = { class: { active: true } };
 exports['tab-content'] = function (/*options*/) {
 	var options = Object(arguments[0]);
 

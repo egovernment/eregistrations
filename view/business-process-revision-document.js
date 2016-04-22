@@ -45,7 +45,7 @@ revisionForm = function (requirementUpload) {
 	);
 };
 
-exports['revision-document'] = function () {
+exports['selection-preview'] = function () {
 	var doc            = this.document
 	  , processingStep = this.processingStep;
 

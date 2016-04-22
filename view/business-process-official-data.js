@@ -7,8 +7,8 @@ var generateSections = require('./components/generate-sections');
 exports._parent = require('./business-process-official');
 exports._match = 'businessProcess';
 
-exports['business-process-official-data'] = { class: { active: true } };
-exports['business-process-official-content'] = function () {
+exports['tab-business-process-data'] = { class: { active: true } };
+exports['tab-content'] = function () {
 	var businessProcess = this.businessProcess;
 
 	return [section({ class: 'section-primary' },

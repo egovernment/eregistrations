@@ -9,15 +9,18 @@ var renderDocumentsList   = require('./components/business-process-documents-lis
 exports._parent = require('./business-process-official');
 exports._match = 'businessProcess';
 
-exports['business-process-official-documents'] = { class: { active: true } };
-exports['business-process-official-content'] = function () {
+exports['tab-business-process-documents'] = { class: { active: true } };
+exports['tab-content'] = function () {
 	var options = { urlPrefix: '/' + this.businessProcess.__id__ + '/' };
 
-	return [section({ class: 'section-primary' },
-			div({ class: "section-primary-sub all-documents-table" },
-				div(renderCertificateList(this.businessProcess, options)),
-				div(renderDocumentsList(this.businessProcess, options)),
-				div(renderPaymentList(this.businessProcess, options))),
-			div({ id: 'selection-preview' })
-		)];
+	return section(
+		{ class: 'section-primary' },
+		div(
+			{ class: "section-primary-sub all-documents-table" },
+			div(renderCertificateList(this.businessProcess, options)),
+			div(renderDocumentsList(this.businessProcess, options)),
+			div(renderPaymentList(this.businessProcess, options))
+		),
+		div({ id: 'selection-preview' })
+	);
 };

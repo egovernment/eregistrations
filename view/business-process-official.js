@@ -14,17 +14,17 @@ exports['sub-main'] = {
 		renderMainInfo(this, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab',
-					id: 'business-process-official-form',
+					id: 'tab-business-process-processing',
 					href: '/' + this.businessProcess.__id__ + '/' },
 				this.processingStep.label),
 			a({ class: 'section-tab-nav-tab',
-					id: 'business-process-official-documents',
+					id: 'tab-business-process-documents',
 					href: '/' + this.businessProcess.__id__ + '/documents/' },
 				_("Documents")),
 			a({ class: 'section-tab-nav-tab',
-					id: 'business-process-official-data',
+					id: 'tab-business-process-data',
 					href: '/' + this.businessProcess.__id__ + '/data/' },
 				_("Data")),
-			div({ id: 'business-process-official-content', class: 'business-process-official-content' }));
+			div({ id: 'tab-content', class: 'business-process-official-content' }));
 	}
 };

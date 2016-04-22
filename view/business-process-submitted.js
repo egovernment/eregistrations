@@ -12,11 +12,11 @@ exports['sub-main'] = {
 		mainInfo(this);
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab',
-					id: 'tab-documents',
+					id: 'tab-business-process-documents',
 					href: '/' },
 				_("Documents")),
 			a({ class: 'section-tab-nav-tab',
-					id: 'tab-data',
+					id: 'tab-business-process-data',
 					href: '/data/' },
 				_("Data")),
 			div({ id: 'tab-content', class: 'business-process-revision' }));
