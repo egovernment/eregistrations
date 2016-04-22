@@ -2,6 +2,14 @@
 	top: 88px;
 }
 
+.dialog-inventory form h3 {
+	padding:5px 0;
+	margin-bottom: 11px;
+	border-bottom-style: dashed;
+	font-size: 22px;
+	border-width: 1px;
+}
+
 .dialog-inventory form > ul {
 	width: var(--mobile-width);
 	padding: 0 20px;
@@ -67,6 +75,7 @@
 }
 .dialog-inventory-total-value {
 	font-size: 18px;
+	margin-left: 4px;
 }
 .dialog-inventory footer {
 	display: flex;
