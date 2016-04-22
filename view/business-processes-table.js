@@ -1,11 +1,12 @@
 'use strict';
 
-var _  = require('mano').i18n.bind('User Offcial')
-, toArray       = require('es5-ext/object/to-array')
-, byOrder = function (a, b) { return this[a].order - this[b].order; }
-, once          = require('timers-ext/once')
-, dispatch      = require('dom-ext/html-element/#/dispatch-event-2')
-, location     = require('mano/lib/client/location');
+var _        = require('mano').i18n.bind('User Offcial')
+  , location = require('mano/lib/client/location')
+  , toArray  = require('es5-ext/object/to-array')
+  , once     = require('timers-ext/once')
+  , dispatch = require('dom-ext/html-element/#/dispatch-event-2')
+
+  , byOrder  = function (a, b) { return this[a].order - this[b].order; };
 
 exports._parent = require('./user-base');
 

@@ -1,8 +1,8 @@
 'use strict';
 
-var formatLastModified = require('./utils/last-modified')
-  , _ = require('mano').i18n.bind('User')
-  , ProcessingStepStatus = require('mano').db.ProcessingStepStatus;
+var _                    = require('mano').i18n.bind('User')
+  , ProcessingStepStatus = require('mano').db.ProcessingStepStatus
+  , formatLastModified   = require('./utils/last-modified');
 
 exports.getServiceIcon = function (businessProcess) {
 	return i({ class: "fa fa-user" });

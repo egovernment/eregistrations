@@ -5,7 +5,6 @@
 var renderPaymentList = require('./components/business-process-payments-list');
 
 exports._parent = require('./business-process-revision');
-exports._match = 'businessProcess';
 
 exports['tab-business-process-payments'] = { class: { active: true } };
 exports['tab-content'] = function () {

@@ -3,7 +3,6 @@
 var generateSections = require('./components/generate-sections');
 
 exports._parent = require('./business-process-submitted');
-exports._match = 'businessProcess';
 
 exports['tab-business-process-data'] = { class: { active: true } };
 exports['tab-content'] = function (/*options*/) {

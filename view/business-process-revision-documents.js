@@ -5,7 +5,6 @@
 var renderDocumentsList = require('./components/business-process-documents-list');
 
 exports._parent = require('./business-process-revision');
-exports._match = 'businessProcess';
 
 exports['tab-business-process-documents'] = { class: { active: true } };
 exports['tab-content'] = function () {
