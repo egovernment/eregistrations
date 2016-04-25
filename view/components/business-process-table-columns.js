@@ -105,7 +105,7 @@ exports.columns = [{
 		return mmap(businessProcess.certificates._applicable, function (certificates) {
 			//When bp is deleted...
 			if (!certificates) return;
-			return list(businessProcess.certificates.applicable, function (cert) {
+			return span(list(businessProcess.certificates.applicable, function (cert) {
 				var certStatus;
 
 				certStatus = exports.getCertStatus(cert);
@@ -119,7 +119,7 @@ exports.columns = [{
 						_if(eq(certStatus, "rejected"), "rejected",
 							_if(eq(certStatus, 'approved'), "approved",
 								_if(not(eqSloppy(certStatus, null)), "ready")))]  }, cert.constructor.abbr));
-			});
+			}));
 		});
 	}
 }];
