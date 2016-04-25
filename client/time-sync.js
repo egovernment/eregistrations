@@ -7,7 +7,7 @@ var microtime = require('microtime-x')
   , a, b;
 
 a = microtime();
-get('time-sync').done(function (serverTime) {
+get('/time-sync/').done(function (serverTime) {
 	var clientTime, correction;
 	b = microtime();
 	clientTime = a + round((b - a) / 2);
