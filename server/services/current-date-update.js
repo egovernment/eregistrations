@@ -4,7 +4,9 @@ var db             = require('mano').db
   , serializeValue = require('dbjs/_setup/serialize/value')
   , debug          = require('debug-ext')('current-date-update')
   , time           = require('time')
-  , key            = 'globalPrimitives/currentDate';
+  , key            = 'globalPrimitives/currentDate'
+  , ensureStorage  = require('dbjs-persistence/ensure-storage')
+  , ensureString   = require('es5-ext/object/validate-stringifiable-value');
 
 var getNextScheduleTimeout = function (tz) {
 	var now                = (new time.Date()).setTimezone(tz)
@@ -13,8 +15,15 @@ var getNextScheduleTimeout = function (tz) {
 
 	return next_schedule_date - now;
 };
-
-module.exports = function (tz, storage) {
+/**
+ * Updates currentDate once per 24 hours
+ *
+ * @param storage - the storage containing globalPrimitives/currentDate entry
+ * @param tz      - Timezone as defined in time module
+ */
+module.exports = function (storage, tz) {
+	ensureStorage(storage);
+	ensureString(tz);
 	var updateCallback = function () {
 		var currentDate = db.Date((new time.Date()).setTimezone(tz));
 
