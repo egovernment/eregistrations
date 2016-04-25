@@ -10,6 +10,7 @@ var aFrom                          = require('es5-ext/array/from')
   , constant                       = require('es5-ext/function/constant')
   , isNaturalNumber                = require('es5-ext/number/is-natural')
   , toNaturalNumber                = require('es5-ext/number/to-pos-integer')
+  , assign                         = require('es5-ext/object/assign')
   , normalizeOptions               = require('es5-ext/object/normalize-options')
   , toArray                        = require('es5-ext/object/to-array')
   , ensureCallable                 = require('es5-ext/object/valid-callable')
@@ -33,6 +34,7 @@ var aFrom                          = require('es5-ext/array/from')
   , getIndexMap                    = require('../utils/get-db-sort-index-map')
   , businessProcessStoragesPromise = require('../utils/business-process-storages')
   , idToStorage                    = require('../utils/business-process-id-to-storage')
+  , getBaseRoutes                  = require('./base')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }
@@ -346,7 +348,7 @@ module.exports = exports = function (mainConf/*, options */) {
 			return initializeHandler(mainConf);
 		}));
 	}
-	return {
+	return assign({
 		'get-business-processes-view': function (query) {
 			var userId = this.req.$user;
 			return resolveHandler(this.req)(function (handler) {
@@ -373,7 +375,7 @@ module.exports = exports = function (mainConf/*, options */) {
 				}.bind(this));
 			}.bind(this));
 		}
-	};
+	}, getBaseRoutes());
 };
 
 exports.getIndexMeta = function (query, meta) {

@@ -7,6 +7,8 @@ var aFrom               = require('es5-ext/array/from')
   , uniq                = require('es5-ext/array/#/uniq')
   , isNaturalNumber     = require('es5-ext/number/is-natural')
   , toNaturalNumber     = require('es5-ext/number/to-pos-integer')
+  , assign              = require('es5-ext/object/assign')
+  , forEach             = require('es5-ext/object/for-each')
   , toArray             = require('es5-ext/object/to-array')
   , ensureObject        = require('es5-ext/object/valid-object')
   , includes            = require('es5-ext/string/#/contains')
@@ -15,18 +17,18 @@ var aFrom               = require('es5-ext/array/from')
   , serializeValue      = require('dbjs/_setup/serialize/value')
   , unserializeValue    = require('dbjs/_setup/unserialize/value')
   , ensureStorage       = require('dbjs-persistence/ensure-storage')
+  , listItemsPerPage    = require('mano').env.objectsListItemsPerPage
   , QueryHandler        = require('../../utils/query-handler')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
-  , getDbSet            = require('../utils/get-db-set')
-  , getDbArray          = require('../utils/get-db-array')
   , stepsMap            = require('../../utils/processing-steps-map')
-  , listItemsPerPage    = require('mano').env.objectsListItemsPerPage
   , timeRanges          = require('../../utils/supervisor-time-ranges')
-  , forEach             = require('es5-ext/object/for-each')
-  , getSupervisorSteps  = require('../utils/supervisor-steps-array')
   , bpListProps         = require('../../utils/supervisor-list-properties')
   , bpListComputedProps = aFrom(require('../../utils/supervisor-list-computed-properties'))
   , serializeView       = require('../../utils/db-view/serialize')
+  , getDbSet            = require('../utils/get-db-set')
+  , getDbArray          = require('../utils/get-db-array')
+  , getSupervisorSteps  = require('../utils/supervisor-steps-array')
+  , getBaseRoutes       = require('./base')
 
   , hasBadWs       = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps  = function (a, b) { return a.stamp - b.stamp; }
@@ -192,7 +194,7 @@ var initializeHandler = function (conf) {
 module.exports = exports = function (conf) {
 	var handler = initializeHandler(ensureObject(conf));
 
-	return {
+	return assign({
 		'get-processing-steps-view': function (query) {
 			return handler.tableQueryHandler.resolve(query)(function (query) {
 				return handler.getTableData(query);
@@ -207,7 +209,7 @@ module.exports = exports = function (conf) {
 				return conf.storage.driver.getStorage('user').store(recordId, '11')({ passed: true });
 			}.bind(this));
 		}
-	};
+	}, getBaseRoutes());
 };
 
 exports.tableQueryConf = [{

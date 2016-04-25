@@ -5,8 +5,10 @@
 var and                 = require('es5-ext/array/#/intersection')
   , flatten             = require('es5-ext/array/#/flatten')
   , remove              = require('es5-ext/array/#/remove')
+  , uniq                = require('es5-ext/array/#/uniq')
   , isNaturalNumber     = require('es5-ext/number/is-natural')
   , toNaturalNumber     = require('es5-ext/number/to-pos-integer')
+  , assign              = require('es5-ext/object/assign')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
   , toArray             = require('es5-ext/object/to-array')
   , aFrom               = require('es5-ext/array/from')
@@ -17,15 +19,16 @@ var and                 = require('es5-ext/array/#/intersection')
   , deferred            = require('deferred')
   , memoize             = require('memoizee')
   , ObservableSet       = require('observable-set/primitive')
+  , unserializeValue    = require('dbjs/_setup/unserialize/value')
   , mano                = require('mano')
   , QueryHandler        = require('../../utils/query-handler')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
   , getDbSet            = require('../utils/get-db-set')
   , getDbArray          = require('../utils/get-db-array')
   , getIndexMap         = require('../utils/get-db-sort-index-map')
-  , hasBadWs            = RegExp.prototype.test.bind(/\s{2,}/)
-  , uniq                = require('es5-ext/array/#/uniq')
-  , unserializeValue    = require('dbjs/_setup/unserialize/value')
+  , getBaseRoutes       = require('./base')
+
+  , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , slice = Array.prototype.slice, ceil = Math.ceil
   , defineProperty = Object.defineProperty, stringify = JSON.stringify
   , compareStamps = function (a, b) { return a.stamp - b.stamp; };
@@ -194,7 +197,7 @@ module.exports = exports = function (data) {
 		maxAge: 10 * 1000
 	});
 
-	return {
+	return assign({
 		'get-users-view': function (query) {
 			return tableQueryHandler.resolve(query)(function (query) { return getTableData(query); });
 		},
@@ -206,7 +209,7 @@ module.exports = exports = function (data) {
 				return mano.dbDriver.getStorage('user').store(recordId, '11')({ passed: true });
 			}.bind(this));
 		}
-	};
+	}, getBaseRoutes());
 };
 
 exports.tableQueryConf = [
