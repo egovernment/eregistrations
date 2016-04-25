@@ -19,10 +19,10 @@ module.exports = function (tz) {
 	var updateCallback = function () {
 		var currentDate = db.Date((new time.Date()).setTimezone(tz));
 
-		storage.get(key).done(function (data) {
+		storage.get(key).then(function (data) {
 			if (data.value !== serializeValue(currentDate)) {
-				debug('Updating current date %s', currentDate.toISOString().slice(0, 10));
-				storage.store(key, serializeValue(currentDate));
+				debug('to %s', currentDate.toISOString().slice(0, 10));
+				storage.store(key, serializeValue(currentDate)).done();
 			}
 		});
 
