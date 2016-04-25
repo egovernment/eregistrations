@@ -1,10 +1,10 @@
 'use strict';
 
-var _  = require('mano').i18n.bind('Manager Validation')
-  , readOnlyRender = require('./utils/read-only-render')
+var _                    = require('mano').i18n.bind('Manager Validation')
+  , readOnlyRender       = require('./utils/read-only-render')
   , generateFormSections = require('./components/generate-form-sections')
   , activateManagerForm  = require('./components/activate-manager-form')
-  , requestAccountDialog = require('./_request-account-dialog');
+  , requestAccountDialog = require('./components/request-account-dialog');
 
 exports._parent = require('./user-base');
 exports._match  = 'editedUser';

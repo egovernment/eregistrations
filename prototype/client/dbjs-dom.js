@@ -1,7 +1,7 @@
 'use strict';
 
-var domEnum = require('dbjs-dom/enum')
-  , db      = require('mano').db
+var domEnum           = require('dbjs-dom/enum')
+  , db                = require('mano').db
   , requirementUpload = db.RequirementUpload.prototype
 
   , user = db.User.prototype;
@@ -26,32 +26,34 @@ require('dbjs-dom/input/string/string-line/password')(db);
 require('dbjs-dom/input/utils/fieldset')(db);
 require('dbjs-dom-bootstrap/number/currency')(db);
 require('dbjs-dom-bootstrap/number/square-meters')(db);
-require('../../view/dbjs/submission-file');
-require('../../view/dbjs/business-activity');
-require('../view/dbjs/user-register-ids');
-require('../view/dbjs/user-lomas-activity');
-require('../view/dbjs/user-is-validated');
-require('../view/dbjs/notification');
-require('../view/dbjs/is-shopping-gallery');
-require('../view/dbjs/company-info-shares');
-require('../view/dbjs/partners-table');
-require('../../view/dbjs/form-section-to-dom');
-require('../../view/dbjs/form-section-group-to-dom');
-require('../../view/dbjs/form-entities-table-to-dom');
-require('../../view/dbjs/requirement-upload-to-dom-form');
+
 require('../../view/dbjs/section-to-dom');
 require('../../view/dbjs/section-group-to-dom');
 require('../../view/dbjs/section-entities-table-to-dom');
-require('../../view/dbjs/multiple');
-require('../../view/dbjs/section-sides-to-dom');
+require('../../view/dbjs/form-section-to-dom');
+require('../../view/dbjs/form-section-group-to-dom');
+require('../../view/dbjs/form-entities-table-to-dom');
 require('../../view/dbjs/document-url');
 require('../../view/dbjs/document-id');
+require('../../view/dbjs/pickup-institution-form-section');
+require('../../view/dbjs/requirement-upload-to-dom-form');
+require('../../view/dbjs/submission-file');
+require('../../view/dbjs/multiple');
 require('../../view/dbjs/determinants-to-dom-fieldset')(
 	db.BusinessProcessNew.prototype.determinants
 );
-require('../../view/dbjs/pickup-institution-form-section');
 
-requirementUpload.$status.DOMInput = require('../../view/dbjs/_enum-inline-button-group');
+requirementUpload.$status.DOMInput = require('../../view/dbjs/enum-inline-button-group');
+
+require('../view/dbjs/business-activity');
+require('../view/dbjs/company-info-shares');
+require('../view/dbjs/is-shopping-gallery');
+require('../view/dbjs/notification');
+require('../view/dbjs/partners-table');
+require('../view/dbjs/section-sides-to-dom');
+require('../view/dbjs/user-is-validated');
+require('../view/dbjs/user-lomas-activity');
+require('../view/dbjs/user-register-ids');
 
 domEnum(db.Role);
 domEnum(db.CompanyType);
@@ -60,5 +62,4 @@ domEnum(db.StreetTypeChoice);
 domEnum(db.RequirementUploadRejectReason);
 
 user.$street.DOMInput = require('dbjs-dom/input/composites/line');
-user.$isDebtContinusStatus.DOMInput =
-	require('../../view/dbjs/continuity-btn-group');
+user.$isDebtContinusStatus.DOMInput = require('../../view/dbjs/continuity-btn-group');

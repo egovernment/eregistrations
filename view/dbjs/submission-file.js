@@ -1,13 +1,13 @@
 'use strict';
 
-var d        = require('d')
-  , isNested = require('dbjs/is-dbjs-nested-object')
-  , _if      = require('observable-value/if')
-  , map      = require('observable-value/map')
-  , _        = require('mano').i18n.bind("Documents")
-  , db       = require('mano').db
-  , docMimeTypes = require('../../utils/microsoft-word-doc-mime-types')
+var d            = require('d')
+  , isNested     = require('dbjs/is-dbjs-nested-object')
+  , _if          = require('observable-value/if')
+  , map          = require('observable-value/map')
+  , _            = require('mano').i18n.bind("Documents")
+  , db           = require('mano').db
   , includes     = require('es5-ext/array/#/contains')
+  , docMimeTypes = require('../../utils/microsoft-word-doc-mime-types')
 
   , normRe = /[$#:\/]/g;
 

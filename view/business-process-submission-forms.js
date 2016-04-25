@@ -3,8 +3,8 @@
 'use strict';
 
 var generateSections = require('./components/generate-form-sections')
-  , errorMsg         = require('./_business-process-error-info').errorMsg
-  , infoMsg          = require('./_business-process-optional-info').infoMsg
+  , errorMsg         = require('./components/business-process-error-info').errorMsg
+  , infoMsg          = require('./components/business-process-optional-info').infoMsg
   , _                = require('mano').i18n.bind('Registration');
 
 exports._parent = require('./business-process-base');

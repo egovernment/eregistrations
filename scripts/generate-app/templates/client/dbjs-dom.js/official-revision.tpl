@@ -23,4 +23,4 @@ if (!isReadOnlyRender) require('dbjs-file/client')(db, FormData, XMLHttpRequest,
 
 domEnum(db.RequirementUploadRejectReason);
 
-requirementUpload.$status.DOMInput = require('eregistrations/view/dbjs/_enum-inline-button-group');
+requirementUpload.$status.DOMInput = require('eregistrations/view/dbjs/enum-inline-button-group');

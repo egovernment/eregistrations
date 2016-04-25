@@ -4,6 +4,7 @@
 
 var _                = require('mano').i18n.bind('User Submitted')
   , normalizeOptions = require('es5-ext/object/normalize-options')
+
   , _d = _;
 
 module.exports = function (businessProcess/*, options*/) {

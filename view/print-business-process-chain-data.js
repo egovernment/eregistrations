@@ -3,7 +3,7 @@
 'use strict';
 
 var _                = require('mano').i18n.bind('User')
-  , generateSections = require('eregistrations/view/components/generate-sections');
+  , generateSections = require('./components/generate-sections');
 
 exports._parent = require('./print-base');
 exports._match = 'businessProcess';

@@ -8,13 +8,13 @@ var includes        = require('es5-ext/array/#/contains')
   , toArray         = require('es5-ext/object/to-array')
   , ensureObject    = require('es5-ext/object/valid-object')
   , d               = require('d')
-  , getSearchFilter = require('eregistrations/utils/get-search-filter')
   , memoize         = require('memoizee/plain')
   , db              = require('mano').db
   , getData         = require('mano/lib/client/xhr-driver').get
   , ListManager     = require('../objects-table/manager')
   , unserializeView = require('../../../utils/db-view/unserialize')
   , timeRanges      = require('../../../utils/supervisor-time-ranges')
+  , getSearchFilter = require('../../../utils/get-search-filter')
 
   , defineProperties = Object.defineProperties;
 

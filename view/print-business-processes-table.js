@@ -1,19 +1,17 @@
 'use strict';
 
-var ensureArray    = require('es5-ext/array/valid-array')
-  , ensureCallable = require('es5-ext/object/valid-callable')
-  , ensureObject   = require('es5-ext/object/valid-object')
-  , ensureString   = require('es5-ext/object/validate-stringifiable-value')
-  , uncapitalize   = require('es5-ext/string/#/uncapitalize')
-  , replaceContent = require('dom-ext/element/#/replace-content')
-  , mano           = require('mano')
-  , Manager        = require('./components/business-processes-table/manager')
+var ensureArray       = require('es5-ext/array/valid-array')
+  , ensureCallable    = require('es5-ext/object/valid-callable')
+  , ensureObject      = require('es5-ext/object/valid-object')
+  , ensureString      = require('es5-ext/object/validate-stringifiable-value')
+  , uncapitalize      = require('es5-ext/string/#/uncapitalize')
+  , replaceContent    = require('dom-ext/element/#/replace-content')
+  , mano              = require('mano')
+  , Manager           = require('./components/business-processes-table/manager')
+  , setupQueryHandler = require('./components/business-processes-table/setup-query-handler')
 
   , keys = Object.keys
   , env = mano.env, _ = mano.i18n;
-
-var setupQueryHandler =
-	require('eregistrations/view/components/business-processes-table/setup-query-handler');
 
 exports._parent = require('./print-base');
 
@@ -22,7 +20,7 @@ exports.main = function () {
 	  , columns       = ensureArray(exports._columns(this))
 	  , getOrderIndex = ensureCallable(exports._getOrderIndex(this))
 	  , stepShortPath = ensureString(exports._stepShortPath(this))
-	  , viewKeyPath = exports._viewKeyPath(this) || stepShortPath
+	  , viewKeyPath   = exports._viewKeyPath(this) || stepShortPath
 	  , container, superIsExernalQuery;
 
 	var listManager = new Manager({

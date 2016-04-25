@@ -2,9 +2,9 @@
 
 'use strict';
 
-var generateSections = require('eregistrations/view/components/generate-form-sections')
-  , progressRules    = require('./components/progress-rules')
-  , _                = require('mano').i18n.bind('Registration');
+var _                = require('mano').i18n.bind('Registration')
+  , generateSections = require('./components/generate-form-sections')
+  , progressRules    = require('./components/progress-rules');
 
 exports._parent = require('./business-process-data-forms-tabbed');
 

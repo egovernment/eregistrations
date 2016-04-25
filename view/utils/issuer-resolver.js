@@ -1,6 +1,6 @@
 'use strict';
 
-var _ = require('mano').i18n.bind('View: Issued by')
+var _  = require('mano').i18n.bind('View: Issued by')
   , db = require('mano').db;
 
 module.exports = function (issuedBy) {

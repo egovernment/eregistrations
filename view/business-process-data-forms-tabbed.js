@@ -3,8 +3,8 @@
 'use strict';
 
 var appLocation = require('mano/lib/client/location')
-  , errorMsg    = require('./_business-process-error-info').errorMsg
-  , infoMsg     = require('./_business-process-optional-info').infoMsg;
+  , errorMsg    = require('./components/business-process-error-info').errorMsg
+  , infoMsg     = require('./components/business-process-optional-info').infoMsg;
 
 exports._parent = require('./business-process-base');
 

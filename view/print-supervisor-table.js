@@ -1,15 +1,14 @@
 'use strict';
 
-var replaceContent = require('dom-ext/element/#/replace-content')
-  , mano           = require('mano')
-  , Manager        = require('./components/supervisor-table/manager')
-  , db             = require('mano').db
-  , stepsMap       = require('../utils/processing-steps-map')
-  , columns        = require('./_supervisor-table-columns').columns
+var replaceContent    = require('dom-ext/element/#/replace-content')
+  , mano              = require('mano')
+  , Manager           = require('./components/supervisor-table/manager')
+  , db                = require('mano').db
+  , stepsMap          = require('../utils/processing-steps-map')
+  , columns           = require('./components/supervisor-table-columns').columns
+  , setupQueryHandler =
+		require('eregistrations/view/components/supervisor-table/setup-query-handler')
   , env = mano.env, _ = mano.i18n;
-
-var setupQueryHandler =
-	require('eregistrations/view/components/supervisor-table/setup-query-handler');
 
 exports._parent = require('./print-base');
 

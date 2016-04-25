@@ -1,9 +1,9 @@
 'use strict';
 
-var _  = require('mano').i18n.bind('Registration')
-  , db = require('mano').db
+var _                    = require('mano').i18n.bind('Registration')
+  , db                   = require('mano').db
   , generateFormSections = require('./components/generate-form-sections')
-  , baseUrl = url;
+  , baseUrl              = url;
 
 exports._parent = require('./user-base');
 

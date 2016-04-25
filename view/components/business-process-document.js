@@ -2,18 +2,18 @@
 
 'use strict';
 
-var _                     = require('mano').i18n.bind('User Submitted')
-  , isReadOnlyRender      = require('mano/client/utils/is-read-only-render')
-  , normalizeOptions      = require('es5-ext/object/normalize-options')
-  , includes              = require('es5-ext/array/#/contains')
-  , syncStyle             = require('dom-ext/html-element/#/sync-style')
-  , reactiveSibling       = require('../../utils/reactive-sibling')
-  , docMimeTypes          = require('../../utils/microsoft-word-doc-mime-types')
-  , resolveArchivePath    = require('../../utils/resolve-document-archive-path')
-  , syncHeight            = require('../utils/sync-height')
-  , getFilePreview        = require('../utils/get-file-preview')
-  , isMobileView          = require('../utils/is-mobile-view')
-  , _d                    = _;
+var _                  = require('mano').i18n.bind('User Submitted')
+  , isReadOnlyRender   = require('mano/client/utils/is-read-only-render')
+  , normalizeOptions   = require('es5-ext/object/normalize-options')
+  , includes           = require('es5-ext/array/#/contains')
+  , syncStyle          = require('dom-ext/html-element/#/sync-style')
+  , reactiveSibling    = require('../../utils/reactive-sibling')
+  , docMimeTypes       = require('../../utils/microsoft-word-doc-mime-types')
+  , resolveArchivePath = require('../../utils/resolve-document-archive-path')
+  , syncHeight         = require('../utils/sync-height')
+  , getFilePreview     = require('../utils/get-file-preview')
+  , isMobileView       = require('../utils/is-mobile-view')
+  , _d                 = _;
 
 module.exports = function (doc, collection/*, options*/) {
 	var options         = normalizeOptions(arguments[2])

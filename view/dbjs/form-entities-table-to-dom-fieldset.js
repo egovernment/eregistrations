@@ -22,7 +22,7 @@ var _                   = require('mano').i18n.bind('Sections')
   , loc                 = require('mano/lib/client/location')
   , ns                  = require('mano').domjs.ns
   , progressRules       = require('../components/progress-rules')
-  , normalizeOptions = require('es5-ext/object/normalize-options');
+  , normalizeOptions    = require('es5-ext/object/normalize-options');
 
 require('./form-section-base');
 

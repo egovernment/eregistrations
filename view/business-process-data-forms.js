@@ -5,8 +5,8 @@
 var _                 = require('mano').i18n.bind('Registration')
   , generateSections  = require('./components/generate-form-sections')
   , incompleteFormNav = require('./components/incomplete-form-nav')
-  , errorMsg          = require('./_business-process-error-info').errorMsg
-  , infoMsg           = require('./_business-process-optional-info').infoMsg;
+  , errorMsg          = require('./components/business-process-error-info').errorMsg
+  , infoMsg           = require('./components/business-process-optional-info').infoMsg;
 
 exports._parent = require('./business-process-base');
 

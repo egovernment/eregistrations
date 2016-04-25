@@ -2,9 +2,9 @@
 
 'use strict';
 
-var location = require('mano/lib/client/location'),
-_  = require('mano').i18n.bind('Registration'),
-setProgressWidth = require('./utils/set-progress-width');
+var _                = require('mano').i18n.bind('Registration')
+  , location         = require('mano/lib/client/location')
+  , setProgressWidth = require('./utils/set-progress-width');
 
 exports._parent = require('./user-base');
 

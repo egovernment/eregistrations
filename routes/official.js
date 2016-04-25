@@ -10,24 +10,24 @@ module.exports = function (step) {
 	}
 	var match = matchBusinessProcess(step);
 	return {
-		profile: require('eregistrations/view/user-profile'),
-		'/': require('eregistrations/view/business-processes-table'),
-		'print-business-processes-list': require('eregistrations/view/print-business-processes-table'),
+		profile: require('../view/user-profile'),
+		'/': require('../view/business-processes-table'),
+		'print-business-processes-list': require('../view/print-business-processes-table'),
 		'[0-9][a-z0-9]*': {
 			match: match,
-			view: require('eregistrations/view/business-process-official-form')
+			view: require('../view/business-process-official-form')
 		},
 		'[0-9][a-z0-9]*/print-request-history': {
 			match: match,
-			view: require('eregistrations/view/print-business-process-status-log')
+			view: require('../view/print-business-process-status-log')
 		},
 		'[0-9][a-z0-9]*/data-print': {
 			match: match,
-			view: require('eregistrations/view/print-business-process-data')
+			view: require('../view/print-business-process-data')
 		},
 		'[0-9][a-z0-9]*/documents-and-data': {
 			match: match,
-			view: require('eregistrations/view/business-process-official-data')
+			view: require('../view/business-process-official-data')
 		},
 		'[0-9][a-z0-9]*/document/[a-z][a-z0-9-]*': {
 			match: function (businessProcessId, documentUniqueKey) {
@@ -44,7 +44,7 @@ module.exports = function (step) {
 						}, this);
 				}.bind(this));
 			},
-			view: require('eregistrations/view/business-process-document')
+			view: require('../view/business-process-document')
 		},
 		'[0-9][a-z0-9]*/receipt/[a-z][a-z0-9-]*': {
 			match: function (businessProcessId, receiptKey) {
@@ -61,7 +61,7 @@ module.exports = function (step) {
 					return true;
 				}.bind(this));
 			},
-			view: require('eregistrations/view/business-process-document')
+			view: require('../view/business-process-document')
 		},
 		'[0-9][a-z0-9]*/certificate/[a-z][a-z0-9-]*': {
 			match: function (businessProcessId, certificateKey) {
@@ -80,7 +80,7 @@ module.exports = function (step) {
 					return true;
 				}.bind(this));
 			},
-			view: require('eregistrations/view/business-process-document')
+			view: require('../view/business-process-document')
 		}
 	};
 };

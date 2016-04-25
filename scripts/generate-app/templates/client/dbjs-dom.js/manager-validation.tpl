@@ -21,7 +21,7 @@ require('dbjs-dom/input/enum')(db.Role);
 Object.defineProperty(
 	db.User.prototype.getDescriptor('isManagerActive'),
 	'DOMInput',
-	d(require('eregistrations/view/dbjs/_boolean-inline-button-group'))
+	d(require('eregistrations/view/dbjs/boolean-inline-button-group'))
 );
 
 db.StringLine.DOMInput.prototype.dbAttributes.inputMask = 'data-mask';

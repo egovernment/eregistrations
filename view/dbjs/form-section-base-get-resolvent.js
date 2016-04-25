@@ -9,12 +9,12 @@
  */
 'use strict';
 
-var generateId = require('time-uuid')
+var generateId          = require('time-uuid')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
-  , isObject = require('dbjs/is-dbjs-object')
-  , d  = require('d')
-  , db = require('mano').db
-  , ns = require('mano').domjs.ns;
+  , isObject            = require('dbjs/is-dbjs-object')
+  , d                   = require('d')
+  , db                  = require('mano').db
+  , ns                  = require('mano').domjs.ns;
 
 module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormResolvent',
 	d(function (/*options*/) {

@@ -29,7 +29,7 @@ module.exports = {
 			});
 			return Boolean(self.document);
 		},
-		view: require('../view/business-process-document')
+		view: require('../view/business-process-submitted-document')
 	},
 	'receipt/[a-z][a-z0-9-]*': {
 		match: function (key) {
@@ -43,7 +43,7 @@ module.exports = {
 			this.document = paymentReceiptUpload.document;
 			return true;
 		},
-		view: require('../view/business-process-document')
+		view: require('../view/business-process-submitted-payment')
 	},
 	'certificate/[a-z][a-z0-9-]*': {
 		match: function (key) {
@@ -56,7 +56,7 @@ module.exports = {
 			this.document = certificate;
 			return true;
 		},
-		view: require('../view/business-process-document')
+		view: require('../view/business-process-submitted-certificate')
 	},
 	'print-request-history': require('../view/print-business-process-status-log')
 };

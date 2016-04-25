@@ -5,8 +5,8 @@
 var _            = require('mano').i18n.bind('User Submitted')
   , from         = require('es5-ext/array/from')
   , nextTick     = require('next-tick')
-  , tableCols    = require('../_business-process-table-columns')
   , scrollBottom = require('../utils/scroll-to-bottom')
+  , tableCols    = require('./business-process-table-columns')
   , columns      = from(tableCols.columns);
 
 columns.push(tableCols.archiverColumn);

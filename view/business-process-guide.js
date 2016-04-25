@@ -2,11 +2,11 @@
 
 'use strict';
 
-var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
-  , sentBackInfo   = require('./_business-process-sent-back-info')
-  , _              = require('mano').i18n.bind('Registration')
-  , inventoryModal = require('./_business-process-inventory')
-  , infoMsg        = require('./_business-process-optional-info').infoMsg;
+var _              = require('mano').i18n.bind('Registration')
+  , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
+  , sentBackInfo   = require('./components/business-process-sent-back-info')
+  , inventoryModal = require('./components/business-process-inventory')
+  , infoMsg        = require('./components/business-process-optional-info').infoMsg;
 
 /**
  * getRegistrationSpanContent

@@ -1,8 +1,8 @@
 'use strict';
 
-var _ = require('mano').i18n.bind('View: Business Process Derive dialog')
+var _              = require('mano').i18n.bind('View: Business Process Derive dialog')
   , ensureObject   = require('es5-ext/object/valid-object')
-  , modalContainer = require('../_modal-container');
+  , modalContainer = require('./modal-container');
 
 module.exports = function (params) {
 	var actionUrl, businessProcesses;

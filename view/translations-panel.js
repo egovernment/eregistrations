@@ -1,11 +1,11 @@
 'use strict';
 
-var _  = require('mano').i18n.bind('Registration'),
-baseUrl = url,
-toArray = require('es5-ext/object/to-array'),
-isPluralKey = require('i18n2/is-plural-key'),
-resolvePluralKey = require('i18n2/resolve-plural-key'),
-locale = window.i18n;
+var _                = require('mano').i18n.bind('Registration')
+  , baseUrl          = url
+  , toArray          = require('es5-ext/object/to-array')
+  , isPluralKey      = require('i18n2/is-plural-key')
+  , resolvePluralKey = require('i18n2/resolve-plural-key')
+  , locale           = window.i18n;
 
 exports._parent = require('./meta-admin-base');
 

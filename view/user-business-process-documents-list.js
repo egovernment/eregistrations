@@ -1,7 +1,7 @@
 'use strict';
 
-var _ = require('mano').i18n.bind("View: Documents")
-  , renderDocumentsList = require('./_user-business-process-documents-list');
+var _                   = require('mano').i18n.bind("View: Documents")
+  , renderDocumentsList = require('./components/user-business-process-documents-list');
 
 exports._parent = require('./user-base');
 exports._match = 'businessProcess';

@@ -1,8 +1,8 @@
 'use strict';
 
-var db  = require('mano').db,
-		location = require('mano/lib/client/location'),
-		user = db.User.prototype;
+var db       = require('mano').db
+  , location = require('mano/lib/client/location')
+  , user     = db.User.prototype;
 
 exports._parent = require('./base');
 

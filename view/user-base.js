@@ -1,10 +1,10 @@
 'use strict';
 
-var _              = require('mano').i18n.bind('User')
-  , loginDialog    = require('./_user-login-dialog')
-  , registerDialog = require('./_user-register-dialog')
-  , modalContainer = require('./_modal-container')
-  , requestAccountDialog = require('./_request-account-dialog');
+var _                    = require('mano').i18n.bind('User')
+  , loginDialog          = require('./components/login-dialog')
+  , registerDialog       = require('./components/register-dialog')
+  , modalContainer       = require('./components/modal-container')
+  , requestAccountDialog = require('./components/request-account-dialog');
 
 exports._parent = require('./base');
 

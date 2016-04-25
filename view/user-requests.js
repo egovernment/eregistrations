@@ -2,9 +2,9 @@
 
 'use strict';
 
-var _ = require('mano').i18n.bind('View: Business process summary'),
-	loc = require('mano/lib/client/location'),
-	documentsAndDataBrief = require('./_business-process-documents-and-data-brief.js');
+var _                     = require('mano').i18n.bind('View: Business process summary')
+  , loc                   = require('mano/lib/client/location')
+  , documentsAndDataBrief = require('./components/business-process-documents-and-data-brief');
 
 exports._parent = require('./user');
 exports._match = 'businessProcess';
