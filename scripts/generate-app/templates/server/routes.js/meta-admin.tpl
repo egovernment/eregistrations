@@ -1,9 +1,10 @@
 'use strict';
 
-var path = require('path')
-  , fs = require('fs2');
+var assign = require('es5-ext/object/assign')
+  , path   = require('path')
+  , fs     = require('fs2');
 
-module.exports = {
+module.exports = assign(require('eregistrations/server/routes/authenticated')(), {
 	'i18n.js': {
 		match: function () { return true; },
 		headers: {
@@ -18,4 +19,4 @@ module.exports = {
 			);
 		}
 	}
-};
+});

@@ -77,11 +77,11 @@ var generateCertificatesList = (function () {
 		return resolveStatusClass(cert.status);
 	};
 	return function (certificates) {
-		return list(certificates, function (cert) {
+		return span(list(certificates, function (cert) {
 			return span({ class: 'hint-optional hint-optional-left',
 				'data-hint': [cert.label, getStatusLabel(cert)] },
 				span({ class: ['label-reg', getStatusClass(cert)] }, cert.abbr));
-		});
+		}));
 	};
 }());
 
