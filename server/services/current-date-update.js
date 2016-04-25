@@ -1,7 +1,6 @@
 'use strict';
 
 var db             = require('mano').db
-  , storage        = require('mano').dbDriver.getStorage('object')
   , serializeValue = require('dbjs/_setup/serialize/value')
   , debug          = require('debug-ext')('current-date-update')
   , time           = require('time')
@@ -15,7 +14,7 @@ var getNextScheduleTimeout = function (tz) {
 	return next_schedule_date - now;
 };
 
-module.exports = function (tz) {
+module.exports = function (tz, storage) {
 	var updateCallback = function () {
 		var currentDate = db.Date((new time.Date()).setTimezone(tz));
 
