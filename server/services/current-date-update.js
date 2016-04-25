@@ -22,9 +22,9 @@ module.exports = function (tz) {
 		storage.get(key).then(function (data) {
 			if (data.value !== serializeValue(currentDate)) {
 				debug('to %s', currentDate.toISOString().slice(0, 10));
-				storage.store(key, serializeValue(currentDate)).done();
+				return storage.store(key, serializeValue(currentDate));
 			}
-		});
+		}).done();
 
 		setTimeout(updateCallback, getNextScheduleTimeout(tz));
 	};
