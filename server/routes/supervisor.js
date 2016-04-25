@@ -28,7 +28,7 @@ var aFrom               = require('es5-ext/array/from')
   , getDbSet            = require('../utils/get-db-set')
   , getDbArray          = require('../utils/get-db-array')
   , getSupervisorSteps  = require('../utils/supervisor-steps-array')
-  , getBaseRoutes       = require('./base')
+  , getBaseRoutes       = require('./authenticated')
 
   , hasBadWs       = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps  = function (a, b) { return a.stamp - b.stamp; }

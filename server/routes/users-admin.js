@@ -26,7 +26,7 @@ var aFrom               = require('es5-ext/array/from')
   , getDbSet            = require('../utils/get-db-set')
   , getDbArray          = require('../utils/get-db-array')
   , getIndexMap         = require('../utils/get-db-sort-index-map')
-  , getBaseRoutes       = require('./base')
+  , getBaseRoutes       = require('./authenticated')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , slice = Array.prototype.slice, ceil = Math.ceil
