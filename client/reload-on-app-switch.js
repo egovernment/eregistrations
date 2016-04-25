@@ -31,7 +31,7 @@ module.exports = function (user) {
 				reload();
 			});
 		}
-	}));
+	}, 100));
 	user._appName.on('change', delay(function (event) {
 		if (inReload) {
 			console.log("App name change ", event.oldValue, " -> ", event.newValue, ", ignored");
@@ -49,5 +49,5 @@ module.exports = function (user) {
 				reload();
 			});
 		}
-	}));
+	}, 100));
 };
