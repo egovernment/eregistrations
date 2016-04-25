@@ -17,11 +17,11 @@ var getNextScheduleTimeout = function (tz) {
 
 module.exports = function (tz) {
 	var updateCallback = function () {
-		debug('Updating current date');
 		var currentDate = db.Date((new time.Date()).setTimezone(tz));
 
 		storage.get(key).done(function (data) {
 			if (data.value !== serializeValue(currentDate)) {
+				debug('Updating current date %s', currentDate.toISOString().slice(0, 10));
 				storage.store(key, serializeValue(currentDate));
 			}
 		});
