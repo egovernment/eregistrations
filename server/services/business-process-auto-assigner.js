@@ -12,28 +12,21 @@ module.exports = function (businessProcessStorage, counterStorage, officials, st
 	var options = normalizeOptions(arguments[4])
 	  , id      = step.shortPath
 	  , path    = step.__id__.slice(step.master.__id__.length + 1)
-	  , customFilterPath = options.customFilterPath
-	  , customFilterValue = options.customFilterValue
+	  , customFilter    = options.customFilter && deferred(options.customFilter)
+	  , customIndexPath = options.customIndexPath
 	  , officialsArray, lastIndex;
 
 	officialsArray = officials.toArray();
 
 	var addAssignee = function (businessProcessId) {
-		var recordId = businessProcessId + '/' + path + '/assignee', customFilterCheck;
-		if (customFilterPath) {
-			var key = businessProcessId + '/' + customFilterPath;
-			customFilterCheck = businessProcessStorage.getComputed(key)(function (data) {
-				if (!data || !data.value || (data.value.slice(1) !== customFilterValue)) return;
-				return true;
-			});
-		} else {
-			customFilterCheck = deferred(true);
-		}
+		var recordId = businessProcessId + '/' + path + '/assignee';
+
+		if (!customFilter) customFilter = deferred(true);
 
 		return businessProcessStorage.get(recordId)(function (data) {
 			if (data && data.value[0] === '7') return;
 
-			return customFilterCheck.then(function (isOK) {
+			return customFilter.then(function (isOK) {
 				var officialId;
 				if (!isOK) return;
 
@@ -43,8 +36,8 @@ module.exports = function (businessProcessStorage, counterStorage, officials, st
 				return deferred(
 					businessProcessStorage.store(businessProcessId + '/' + path + '/assignee',
 							'7' + officialId),
-					counterStorage.store('processingStepAutoAssignLastIndex/' + id +
-						(customFilterValue ? '/' + customFilterValue : ''), serializeValue(lastIndex))
+					counterStorage.store('processingStepAutoAssignLastIndex/' +
+						(customIndexPath || id), serializeValue(lastIndex))
 				)(function () {
 					if (options.onAssign) return options.onAssign(officialId);
 				});
@@ -52,8 +45,8 @@ module.exports = function (businessProcessStorage, counterStorage, officials, st
 		});
 	};
 
-	return counterStorage.get('processingStepAutoAssignLastIndex/' + id +
-		(customFilterValue ? '/' + customFilterValue : ''))(function (data) {
+	return counterStorage.get('processingStepAutoAssignLastIndex/' + (customIndexPath || id)
+		)(function (data) {
 		return (data && unserializeValue(data.value)) || 0;
 	}).then(function (index) {
 		lastIndex = index;
