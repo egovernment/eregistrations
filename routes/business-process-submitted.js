@@ -43,7 +43,7 @@ module.exports = {
 		match: function (uniqueKey) {
 			var paymentReceiptUpload;
 			uniqueKey = hyphenToCamel.call(uniqueKey);
-			this.businessProcess.requirementUploads.dataSnapshot.resolved.some(function (data) {
+			this.businessProcess.paymentReceiptUploads.dataSnapshot.resolved.some(function (data) {
 				if (data.uniqueKey === uniqueKey) {
 					this.dataSnapshot = data;
 					return true;
