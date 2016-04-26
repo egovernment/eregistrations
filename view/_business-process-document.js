@@ -85,8 +85,9 @@ module.exports = function (context, sideContent) {
 		data = {
 			label: snapshot.label,
 			statusLog: snapshot.statusLog || [], // can be dynamic
-			section: snapshot.section && renderSection(snapshot.section, 3),
-			overviewSection: snapshot.overviewSection && renderSection(snapshot.overviewSection, 3),
+			section: snapshot.section && renderSection(snapshot.section, { disableLabel: true }),
+			overviewSection: snapshot.overviewSection && renderSection(snapshot.overviewSection,
+				{ disableLabel: true }),
 			files: snapshot.files || [],
 			archiveUrl: resolveSnapshotArchivePath(businessProcess, snapshot, kind)
 		};

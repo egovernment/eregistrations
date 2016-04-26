@@ -34,49 +34,61 @@ defaultRenderers.fields = renderFields = function (data) {
 	return table(tbody(data.map(renderField)));
 };
 
-defaultRenderers.entity = renderEntity = function (data, headerRank) {
-	return li(ns['h' + headerRank](data.name), renderMainSections(data.sections, headerRank));
+defaultRenderers.entity = renderEntity = function (data/*, options*/) {
+	var options = normalizeOptions(arguments[1]), headerRank;
+	if (options.headerRank != null) headerRank = min(ensureNaturalNumber(options.headerRank), 6);
+	if (!headerRank) headerRank = 4;
+	options.headerRank = headerRank;
+	return li(ns['h' + headerRank](data.name), renderMainSections(data.sections, options));
 };
 
-defaultRenderers.entities = renderEntities = function (data, headerRank) {
+defaultRenderers.entities = renderEntities = function (data/*, options*/) {
+	var options = arguments[1];
 	return ul({ class: 'entity-data-section-entities' },
-		data, function (entityData) { return renderEntity(entityData, headerRank); });
+		data, function (entityData) { return renderEntity(entityData, options); });
 };
 
-defaultRenderers.section = renderSection = function (data, className, headerRank) {
+defaultRenderers = renderSection = function (data, className/*, options*/) {
+	var options = arguments[2], headerRank, disableLabel;
 	if (data.kind && exports.customRenderers[data.kind]) {
-		return exports.customRenderers[data.kind](data, className, headerRank, defaultRenderers);
+		return exports.customRenderers[data.kind](data, className, options, defaultRenderers);
 	}
+	options = normalizeOptions(options);
+	if (options.headerRank != null) headerRank = min(ensureNaturalNumber(options.headerRank), 6);
+	if (!headerRank) headerRank = 3;
+	options.headerRank = min(headerRank + 1, 6);
+	disableLabel = Boolean(options.disableLabel);
+	delete options.disableLabel;
 	return section({ class: className },
-		data.label && ns['h' + headerRank](data.label),
+		disableLabel ? null : (data.label && ns['h' + headerRank](data.label)),
 		data.fields && renderFields(data.fields),
-		data.entities && renderEntities(data.entities, min(headerRank + 1, 6)),
-		data.sections && renderSubSections(data.sections, min(headerRank + 1, 6)));
+		data.entities && renderEntities(data.entities, options),
+		data.sections && renderSubSections(data.sections, options));
 };
 
-defaultRenderers.mainSection = renderMainSection = function (data, headerRank) {
-	return renderSection(data, 'entity-data-section', headerRank);
+defaultRenderers.mainSection = renderMainSection = function (data/*, options*/) {
+	return renderSection(data, 'entity-data-section', arguments[1]);
 };
 
-defaultRenderers.subSection = renderSubSection = function (data, headerRank) {
-	return renderSection(data, 'entity-data-section-sub', headerRank);
+defaultRenderers.subSection = renderSubSection = function (data/*, options*/) {
+	return renderSection(data, 'entity-data-section-sub', arguments[1]);
 };
 
-defaultRenderers.mainSections = renderMainSections = function (data, headerRank) {
-	return data.map(function (sectionData) { return renderMainSection(sectionData, headerRank); });
+defaultRenderers.mainSections = renderMainSections = function (data/*, options*/) {
+	var options = arguments[1];
+	return data.map(function (sectionData) { return renderMainSection(sectionData, options); });
 };
 
-defaultRenderers.subSections = renderSubSections = function (data, headerRank) {
-	return data.map(function (sectionData) { return renderSubSection(sectionData, headerRank); });
+defaultRenderers.subSections = renderSubSections = function (data/*, options*/) {
+	var options = arguments[1];
+	return data.map(function (sectionData) { return renderSubSection(sectionData, options); });
 };
 
 module.exports = exports = function (dataSnapshot/*, options*/) {
-	var options = normalizeOptions(arguments[1]), headerRank;
-	if (options.headerRank != null) headerRank = min(ensureNaturalNumber(options.headerRank), 6);
-	if (!headerRank) headerRank = 3;
+	var options = arguments[1];
 	return mmap(dataSnapshot._resolved, function (json) {
 		if (!json) return;
-		return renderMainSections(json, headerRank);
+		return renderMainSections(json, options);
 	});
 };
 
