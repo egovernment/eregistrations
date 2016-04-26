@@ -71,7 +71,8 @@ module.exports = exports = function (dbDriver, data) {
 	  , resolveOfficialViews, processingStepsMeta, processingStepsDefaultMap = create(null)
 	  , businessProcessListProperties, myAccountBusinessProcessProperties
 	  , globalFragment, getMetaAdminFragment, getAccessRules
-	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, userListProps;
+	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, userListProps
+	  , businessProcessDispatcherListExtraProperties = [], officialDispatcherListExtraProperties = [];
 
 	var getBusinessProcessStorages = require('./utils/business-process-storages');
 	var getManagerUserData = getPartFragments(userStorage, new Set(['email', 'firstName',
@@ -115,6 +116,16 @@ module.exports = exports = function (dbDriver, data) {
 			.concat(['certificates/dataSnapshot/jsonString', 'dataForms/dataSnapshot/jsonString',
 				'paymentReceiptUploads/dataSnapshot/jsonString',
 				'requirementUploads/dataSnapshot/jsonString', 'status']));
+
+	if (data.businessProcessDispatcherListExtraProperties) {
+		businessProcessDispatcherListExtraProperties =
+			aFrom(ensureIterable(data.businessProcessListProperties));
+	}
+
+	if (data.officialDispatcherListExtraProperties) {
+		officialDispatcherListExtraProperties =
+			aFrom(ensureIterable(data.officialDispatcherListExtraProperties));
+	}
 
 	initializeView = ensureCallable(data.initializeView);
 
@@ -298,7 +309,7 @@ module.exports = exports = function (dbDriver, data) {
 			set.add('processingSteps/map/' + resolveStepPath(stepShortPath) + '/assignee');
 		});
 		return set;
-	}(businessProcessListProperties)));
+	}(aFrom(businessProcessListProperties).concat(businessProcessDispatcherListExtraProperties))));
 	var getDispatcherFragment = memoize(function () {
 		var fragment = new FragmentGroup();
 
@@ -318,7 +329,8 @@ module.exports = exports = function (dbDriver, data) {
 				// Officials
 				// TODO: Support deep processing steps
 				roleName = 'official' + capitalize.call(stepShortPath);
-				getOfficialFragment = getPartFragments(null, new Set(['fullName', 'roles*' + roleName]));
+				getOfficialFragment = getPartFragments(null, new Set(['fullName', 'roles*' + roleName]
+					.concat(officialDispatcherListExtraProperties)));
 				fragment.promise =
 					getDbSet(userStorage, 'direct', 'roles', serializeValue(roleName))(function (set) {
 						fragment.addFragment(getColFragments(set, getOfficialFragment));
