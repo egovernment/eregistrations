@@ -6,8 +6,7 @@ var replaceContent    = require('dom-ext/element/#/replace-content')
   , db                = require('mano').db
   , stepsMap          = require('../utils/processing-steps-map')
   , columns           = require('./components/supervisor-table-columns').columns
-  , setupQueryHandler =
-		require('eregistrations/view/components/supervisor-table/setup-query-handler')
+  , setupQueryHandler = require('./components/supervisor-table/setup-query-handler')
   , env = mano.env, _ = mano.i18n;
 
 exports._parent = require('./print-base');
