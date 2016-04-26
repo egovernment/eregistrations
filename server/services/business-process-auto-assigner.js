@@ -6,13 +6,14 @@ var unserializeValue = require('dbjs/_setup/unserialize/value')
   , getDbSet         = require('eregistrations/server/utils/get-db-set')
   , deferred         = require('deferred')
   , aFrom            = require('es5-ext/array/from')
+  , ensureCallable   = require('es5-ext/object/valid-callable')
   , debug            = require('debug-ext')('auto-assign');
 
 module.exports = function (businessProcessStorage, counterStorage, officials, step/*, options*/) {
 	var options = normalizeOptions(arguments[4])
 	  , id      = step.shortPath
 	  , path    = step.__id__.slice(step.master.__id__.length + 1)
-	  , customFilter    = options.customFilter && deferred(options.customFilter)
+	  , customFilter    = options.customFilter && ensureCallable(options.customFilter)
 	  , customIndexPath = options.customIndexPath
 	  , officialsArray, lastIndex;
 
@@ -21,12 +22,10 @@ module.exports = function (businessProcessStorage, counterStorage, officials, st
 	var addAssignee = function (businessProcessId) {
 		var recordId = businessProcessId + '/' + path + '/assignee';
 
-		if (!customFilter) customFilter = deferred(true);
-
 		return businessProcessStorage.get(recordId)(function (data) {
 			if (data && data.value[0] === '7') return;
 
-			return customFilter.then(function (isOK) {
+			return deferred(customFilter ? customFilter(businessProcessId) : true).then(function (isOK) {
 				var officialId;
 				if (!isOK) return;
 
