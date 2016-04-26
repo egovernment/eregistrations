@@ -28,7 +28,7 @@ module.exports = function (storage, tz) {
 		var currentDate = db.Date((new time.Date()).setTimezone(tz));
 
 		storage.get(key).then(function (data) {
-			if (data.value !== serializeValue(currentDate)) {
+			if (!data || data.value !== serializeValue(currentDate)) {
 				debug('to %s', currentDate.toISOString().slice(0, 10));
 				return storage.store(key, serializeValue(currentDate));
 			}
