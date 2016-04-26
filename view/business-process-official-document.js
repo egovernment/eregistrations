@@ -14,6 +14,7 @@ exports['selection-preview'] = function () {
 	var doc = this.document;
 
 	insert([documentView(doc, this.processingStep.requirementUploads.applicable, {
-		sideContent: renderDocumentHistory(doc)
+		sideContent: renderDocumentHistory(doc),
+		urlPrefix: '/' + this.businessProcess.__id__ + '/'
 	}), documentRevisionInfo(doc)]);
 };

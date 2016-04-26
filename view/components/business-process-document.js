@@ -17,6 +17,7 @@ var _                  = require('mano').i18n.bind('User Submitted')
 
 module.exports = function (doc, collection/*, options*/) {
 	var options         = normalizeOptions(arguments[2])
+	  , urlPrefix       = options.urlPrefix || '/'
 	  , isCertificate   = doc.owner.owner.key === 'certificates'
 	  , files           = doc.files.ordered
 	  , moreThanOneFile = gt(files._size, 1)
@@ -25,7 +26,7 @@ module.exports = function (doc, collection/*, options*/) {
 
 	var resolveDocumentUrl = function (elem) {
 		if (!elem) return null;
-		return isCertificate ? elem.docUrl : elem.document.docUrl;
+		return urlPrefix + (isCertificate ? elem.docUrl : elem.document.docUrl);
 	};
 
 	if (isCertificate) {

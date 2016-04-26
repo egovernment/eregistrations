@@ -23,6 +23,7 @@ exports['selection-preview'] = function () {
 				},
 				disableHeader: false
 			}) : null
-		]
+		],
+		urlPrefix: '/' + this.businessProcess.__id__ + '/'
 	}), renderDocumentHistory(doc)]);
 };
