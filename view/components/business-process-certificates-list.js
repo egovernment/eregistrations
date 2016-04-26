@@ -18,7 +18,7 @@ module.exports = function (businessProcess/*, options*/) {
 			collection: certificates,
 			columns: [{
 				class: 'submitted-user-data-table-status',
-				data: span({ class: 'fa fa-certificate' })
+				data: function () { return span({ class: 'fa fa-certificate' }); }
 			}, {
 				class: 'submitted-user-data-table-label',
 				head: _("Certificates"),

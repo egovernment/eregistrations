@@ -16,12 +16,10 @@ module.exports = function (step) {
 		profile: require('../view/user-profile'),
 
 		// App routes
-		'/': require('../view/business-processes-table'),
-		'[0-9][a-z0-9]*': {
-			match: match,
-			view: require('../view/business-process-official-form')
+		'/': {
+			view: require('../view/dispatcher-assignments-panel')
 		},
-		'[0-9][a-z0-9]*/documents': {
+		'[0-9][a-z0-9]*': {
 			match: match,
 			decorateContext: function () {
 				var requirementUpload = this.businessProcess.requirementUploads.applicable.first;

@@ -2,7 +2,10 @@
 
 'use strict';
 
-var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel');
+var matchRequirementUpload    = require('./utils/match-requirement-upload')('businessProcess')
+  , matchPaymentReceiptUpload = require('./utils/match-payment-receipt-upload')('businessProcess')
+  , matchCertificate          = require('./utils/match-certificate')('businessProcess',
+		'applicable');
 
 module.exports = {
 	// User routes
@@ -28,45 +31,15 @@ module.exports = {
 		view: require('../view/business-process-submitted-document')
 	},
 	'documents/[a-z][a-z0-9-]*': {
-		match: function (uniqueKey) {
-			var self = this;
-
-			uniqueKey = hyphenToCamel.call(uniqueKey);
-			self.businessProcess.requirementUploads.applicable.some(function (requirementUpload) {
-				if (requirementUpload.document.uniqueKey === uniqueKey) {
-					self.document = requirementUpload.document;
-					return true;
-				}
-			});
-			return Boolean(self.document);
-		},
+		match: matchRequirementUpload,
 		view: require('../view/business-process-submitted-document')
 	},
 	'payment-receipts/[a-z][a-z0-9-]*': {
-		match: function (key) {
-			var paymentReceiptUpload =
-				this.businessProcess.paymentReceiptUploads.map.get(hyphenToCamel.call(key));
-			if (!paymentReceiptUpload) return false;
-			if (!this.businessProcess.paymentReceiptUploads.applicable.has(paymentReceiptUpload)) {
-				return false;
-			}
-
-			this.document = paymentReceiptUpload.document;
-			return true;
-		},
+		match: matchPaymentReceiptUpload,
 		view: require('../view/business-process-submitted-payment')
 	},
 	'certificates/[a-z][a-z0-9-]*': {
-		match: function (key) {
-			var certificate =  this.businessProcess.certificates.map.get(hyphenToCamel.call(key));
-			if (!certificate) return false;
-			if (!this.businessProcess.certificates.applicable.has(certificate)) {
-				return false;
-			}
-
-			this.document = certificate;
-			return true;
-		},
+		match: matchCertificate,
 		view: require('../view/business-process-submitted-certificate')
 	},
 	data: require('../view/business-process-submitted-data'),

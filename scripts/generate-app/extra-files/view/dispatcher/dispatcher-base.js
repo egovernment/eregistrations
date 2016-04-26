@@ -1,6 +1,6 @@
 'use strict';
 
-var _ = require('mano').i18n.bind('View: Dispatcher')
+var _           = require('mano').i18n.bind('View: Dispatcher')
   , appLocation = require('mano/lib/client/location');
 
 module.exports = exports = require('eregistrations/view/dispatcher-base');

@@ -1,8 +1,9 @@
 // Routes for the views.
 'use strict';
 
-var hyphenToCamel        = require('es5-ext/string/#/hyphen-to-camel')
-  , matchBusinessProcess = require('./utils/official-match-business-process');
+var matchBusinessProcess      = require('./utils/official-match-business-process')
+  , matchRequirementUpload    = require('./utils/match-requirement-upload')('processingStep')
+  , matchPaymentReceiptUpload = require('./utils/match-payment-receipt-upload')('processingStep');
 
 module.exports = function (step) {
 	if (!step) {
@@ -30,15 +31,8 @@ module.exports = function (step) {
 			match: function (businessProcessId, documentUniqueKey) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
-					documentUniqueKey = hyphenToCamel.call(documentUniqueKey);
 
-					return this.processingStep.requirementUploads.applicable
-						.some(function (requirementUpload) {
-							if (requirementUpload.document.uniqueKey === documentUniqueKey) {
-								this.document = requirementUpload.document;
-								return true;
-							}
-						}, this);
+					return matchRequirementUpload.call(this, documentUniqueKey);
 				}.bind(this));
 			},
 			view: require('../view/business-process-revision-document')
@@ -58,15 +52,8 @@ module.exports = function (step) {
 			match: function (businessProcessId, receiptKey) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
-					var paymentReceiptUpload =
-						this.businessProcess.paymentReceiptUploads.map.get(hyphenToCamel.call(receiptKey));
-					if (!paymentReceiptUpload) return false;
-					if (!this.processingStep.paymentReceiptUploads.applicable.has(paymentReceiptUpload)) {
-						return false;
-					}
 
-					this.document = paymentReceiptUpload.document;
-					return true;
+					return matchPaymentReceiptUpload.call(this, receiptKey);
 				}.bind(this));
 			},
 			view: require('../view/business-process-revision-payment')

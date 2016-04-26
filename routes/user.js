@@ -2,8 +2,9 @@
 
 'use strict';
 
-var db            = require('mano').db
-  , hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel');
+var db               = require('mano').db
+  , hyphenToCamel    = require('es5-ext/string/#/hyphen-to-camel')
+  , matchCertificate = require('./utils/match-certificate')('businessProcess', 'applicable');
 
 var matchBusinessProcess = function (businessProcessId) {
 	this.businessProcess = db.BusinessProcess.getById(businessProcessId);
@@ -23,62 +24,43 @@ module.exports = {
 	'managed-user-profile': require('../view/managed-user-profile'),
 	requests: require('../view/user-requests'),
 	'requests/[0-9][a-z0-9]+': {
-		match: function (businessProcessId) {
-			return matchBusinessProcess.call(this, businessProcessId);
-		},
+		match: matchBusinessProcess,
 		view: require('../view/user-business-process-summary')
 	},
 	'business-process/[0-9][a-z0-9]+/documents': {
-		match: function (businessProcessId) {
-			return matchBusinessProcess.call(this, businessProcessId);
-		},
+		match: matchBusinessProcess,
 		view: require('../view/user-business-process-documents-list')
 	},
 	'business-process/[0-9][a-z0-9]+/document/[a-z][a-z0-9-]*': {
 		match: function (businessProcessId, uniqueKey) {
-			var self = this;
-
-			if (!matchBusinessProcess.call(self, businessProcessId)) return false;
+			if (!matchBusinessProcess.call(this, businessProcessId)) return false;
 
 			uniqueKey = hyphenToCamel.call(uniqueKey);
-			self.businessProcess.documents.processChainUploaded.some(function (document) {
+			this.businessProcess.documents.processChainUploaded.some(function (document) {
 				if (document.uniqueKey === uniqueKey) {
-					self.document = document;
+					this.document = document;
 					return true;
 				}
-			});
+			}, this);
 
-			return Boolean(self.document);
+			return Boolean(this.document);
 		},
 		view: require('../view/business-process-document')
 	},
 	'business-process/[0-9][a-z0-9]+/certificate/[a-z][a-z0-9-]*': {
-		match: function (businessProcessId, key) {
-			var self = this;
+		match: function (businessProcessId, certificateKey) {
+			if (!matchBusinessProcess.call(this, businessProcessId)) return false;
 
-			if (!matchBusinessProcess.call(self, businessProcessId)) return false;
-
-			var certificate = self.businessProcess.certificates.map.get(hyphenToCamel.call(key));
-			if (!certificate) return false;
-			if (!self.businessProcess.certificates.applicable.has(certificate)) {
-				return false;
-			}
-
-			self.document = certificate;
-			return true;
+			return matchCertificate.call(this, certificateKey);
 		},
 		view: require('../view/business-process-document')
 	},
 	'business-process/[0-9][a-z0-9]+/data': {
-		match: function (businessProcessId) {
-			return matchBusinessProcess.call(this, businessProcessId);
-		},
+		match: matchBusinessProcess,
 		view: require('../view/user-business-process-data')
 	},
 	'business-process/[0-9][a-z0-9]+/print-data': {
-		match: function (businessProcessId) {
-			return matchBusinessProcess.call(this, businessProcessId);
-		},
+		match: matchBusinessProcess,
 		view: require('../view/print-business-process-chain-data')
 	}
 };
