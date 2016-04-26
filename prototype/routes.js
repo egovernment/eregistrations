@@ -49,7 +49,6 @@ module.exports = {
 	'business-process-submitted': {
 		decorateContext: function () {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;
-			return true;
 		},
 		view: require('../view/business-process-submitted-document')
 	},
@@ -87,7 +86,6 @@ module.exports = {
 	'official/business-process-id/documents': {
 		decorateContext: function () {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;
-			return true;
 		},
 		view: require('../view/business-process-official-document')
 	},
@@ -112,7 +110,6 @@ module.exports = {
 		decorateContext: function () {
 			this.document = this.businessProcess.requirementUploads.applicable.first.document;
 			this.processingStep = this.businessProcess.processingSteps.map.revision;
-			return true;
 		},
 		view: require('../view/business-process-revision-document')
 	},
@@ -120,7 +117,6 @@ module.exports = {
 		decorateContext: function () {
 			this.document = this.businessProcess.paymentReceiptUploads.applicable.first.document;
 			this.processingStep = this.businessProcess.processingSteps.map.revision;
-			return true;
 		},
 		view: require('../view/business-process-revision-payment')
 	},
