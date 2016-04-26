@@ -4,7 +4,7 @@
 
 var assign = require('es5-ext/object/assign');
 
-module.exports = exports = assign(exports, require('eregistrations/routes/official')(function () {
+assign(exports, require('eregistrations/routes/official')(function () {
 /* Example setup
 var stepsMap = this.businessProcess.processingSteps.map;
 if (stepsMap.officer.isPending) return stepsMap.officer;
@@ -16,7 +16,7 @@ require('../../view/print-base');
 require('../../view/user-base');
 require('../../view/dispatcher/dispatcher-base');
 
-exports['[0-9][a-z0-9]*'].view = require('eregistrations/view/business-process-official-preview');
+exports['[0-9][a-z0-9]*'] = exports['[0-9][a-z0-9]*/documents'];
 
 exports['/'] = {
 	decorateContext: function () {
