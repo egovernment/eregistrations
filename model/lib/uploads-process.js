@@ -115,7 +115,7 @@ module.exports = memoize(function (db/*, options*/) {
 			var data;
 			if (this.jsonString) {
 				data = JSON.parse(this.jsonString);
-				if (!data.length && data[0].isFinalized) return; // Already done
+				if (!data.length || data[0].isFinalized) return; // Already done
 			}
 			data = this.owner.toJSON();
 			if (!data.length) {
