@@ -69,7 +69,8 @@ module.exports = exports = function (dbDriver, data) {
 	  , getUserReducedData = getReducedFrag(userStorage)
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , resolveOfficialViews, processingStepsMeta, processingStepsDefaultMap = create(null)
-	  , businessProcessListProperties, globalFragment, getMetaAdminFragment, getAccessRules
+	  , businessProcessListProperties, myAccountBusinessProcessProperties
+	  , globalFragment, getMetaAdminFragment, getAccessRules
 	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, userListProps;
 
 	var getBusinessProcessStorages = require('./utils/business-process-storages');
@@ -105,8 +106,15 @@ module.exports = exports = function (dbDriver, data) {
 	} else {
 		userListProps = defaultUserListProps;
 	}
+
 	businessProcessListProperties =
 		new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
+
+	myAccountBusinessProcessProperties =
+		new Set(aFrom(ensureIterable(data.businessProcessListProperties))
+			.concat(['certificates/dataSnapshot/jsonString', 'dataForms/dataSnapshot/jsonString',
+				'paymentReceiptUploads/dataSnapshot/jsonString',
+				'requirementUploads/dataSnapshot/jsonString', 'status']));
 
 	initializeView = ensureCallable(data.initializeView);
 
@@ -194,6 +202,10 @@ module.exports = exports = function (dbDriver, data) {
 			});
 		};
 	}());
+
+	// MyAccount resolvers
+	var getBusinessProcessMyAccountFragment =
+		getPartFragments(null, myAccountBusinessProcessProperties);
 
 	// Users Admin resolvers
 	var getUserListFragment = getPartFragments(userStorage, userListProps);
@@ -379,16 +391,20 @@ module.exports = exports = function (dbDriver, data) {
 					addCustomBusinessProcessData(custom, fragment);
 				}
 			} else {
-				// My account
-				// All businesss processes (full data)
 				initialBusinessProcesses = getDbRecordSet(userStorage,
 					userId + '/initialBusinessProcesses');
 				promise = initialBusinessProcesses.promise;
 				initialBusinessProcesses = initialBusinessProcesses
 					.map(function (value) { return value.slice(1); });
 				initialBusinessProcesses.promise = promise;
-				// - All initial business processes
-				fragment.addFragment(getColFragments(initialBusinessProcesses, getBusinessProcessData));
+				if (roleName === 'memoryDb') {
+					// All businesss processes (full data)
+					fragment.addFragment(getColFragments(initialBusinessProcesses, getBusinessProcessData));
+				} else {
+					// All businesss processes (partial data)
+					fragment.addFragment(getColFragments(initialBusinessProcesses,
+						getBusinessProcessMyAccountFragment));
+				}
 			}
 			return fragment;
 		}
