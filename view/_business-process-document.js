@@ -9,6 +9,7 @@ var includes           = require('es5-ext/array/#/contains')
   , isReadOnlyRender   = require('mano/client/utils/is-read-only-render')
   , _                  = require('mano').i18n.bind('User: Submitted')
   , db                 = require('mano').db
+  , getArrayIndex      = require('../utils/get-observable-array-index')
   , resolveArchivePath = require('../utils/resolve-document-archive-path')
   , docMimeTypes       = require('../utils/microsoft-word-doc-mime-types')
   , pathToUrl          = require('../utils/upload-path-to-url')
@@ -70,7 +71,6 @@ module.exports = function (context, sideContent) {
 				previewPath: resolve(file._preview, '_path')
 			};
 		});
-		data.firstFile = files._first;
 		data.files = files.toArray();
 		if (doc.dataForm.constructor !== db.FormSectionBase) {
 			data.section = doc.dataForm.toDOM(document, {
@@ -92,7 +92,6 @@ module.exports = function (context, sideContent) {
 			archiveUrl: resolveSnapshotArchivePath(businessProcess, snapshot, kind)
 		};
 		data.filesSize = data.files.length;
-		data.firstFile = data.files[0];
 	}
 	return [
 		h2(data.label),
@@ -132,7 +131,8 @@ module.exports = function (context, sideContent) {
 
 					elem = ul({ id: 'doc-previews', class: 'submitted-preview-new-image-placeholder' },
 						data.files, function (file) {
-							li({ class: _if(eq(file, data.firstFile), 'active') }, getFilePreview(file));
+							li({ class: _if(eq(file, getArrayIndex(data.files, 0)), 'active') },
+								getFilePreview(file));
 						}),
 
 					_if(gt(data.filesSize, 1),
@@ -157,7 +157,7 @@ module.exports = function (context, sideContent) {
 						class: 'button-main',
 						href: _if(data.filesSize,
 							_if(eq(data.filesSize, 1),
-								mmap(resolve(data.firstFile, 'path'), function (path) {
+								mmap(resolve(getArrayIndex(data.files, 0), 'path'), function (path) {
 									if (path) return stUrl(pathToUrl(path));
 								}), '/' + data.archiveUrl)),
 						download: _if(data.filesSize, _if(eq(data.filesSize, 1),
