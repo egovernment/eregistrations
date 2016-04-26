@@ -192,8 +192,8 @@ module.exports = memoize(function (db) {
 					.ownDescriptor.fieldToJSON()];
 			}
 			if (!this.isUnresolved) {
-				var entities = [];
-				this.propertyMaster.getBySKeyPath(this.propertyName).ordered.forEach(function (entity) {
+				var entities = [], data = this.propertyMaster.getBySKeyPath(this.propertyName);
+				(data.ordered || data).forEach(function (entity) {
 					entities.push({
 						name: entity.getBySKeyPath(this.entityTitleProperty),
 						sections: entity.getBySKeyPath(this.sectionProperty).toJSON()
