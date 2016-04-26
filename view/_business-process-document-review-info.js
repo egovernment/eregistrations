@@ -8,13 +8,14 @@ module.exports = function (context) {
 	  , kind = context.documentKind;
 
 	// Don't display anything if not rejected.
-	return _if(eq(snapshot.status, 'rejected'), div({ class: 'section-secondary' },
-		(kind === 'paymentReceiptUpload')
-		? [h4(_("This payment receipt was rejected for the following reason(s)"), ':'),
-			p(snapshot.rejectReasons[0])]
-		: [h4(_("This document was rejected for the following reason(s)"), ':'),
-			_if(eq(snapshot.rejectReasons._length || snapshot.rejectReasons.length, 1),
-				p(snapshot.rejectReasons._first),
-				ul(snapshot.rejectReasons, identity))]));
-
+	return _if(eq(snapshot.status, 'rejected'), function () {
+		return div({ class: 'section-secondary' },
+			(kind === 'paymentReceiptUpload')
+			? [h4(_("This payment receipt was rejected for the following reason(s)"), ':'),
+					p(snapshot.rejectReasons[0])]
+			: [h4(_("This document was rejected for the following reason(s)"), ':'),
+					_if(eq(snapshot.rejectReasons._length || snapshot.rejectReasons.length, 1),
+						p(snapshot.rejectReasons._first),
+						ul(snapshot.rejectReasons, identity))]);
+	});
 };
