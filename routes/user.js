@@ -67,6 +67,7 @@ module.exports = {
 			if (!matchBusinessProcess.call(self, businessProcessId)) return false;
 			if (!this.businessProcess.isApproved) return false;
 
+			uniqueKey = hyphenToCamel.call(uniqueKey);
 			this.businessProcess.certificates.dataSnapshot.resolved.some(function (data) {
 				if (data.uniqueKey === uniqueKey) {
 					this.dataSnapshot = data;
