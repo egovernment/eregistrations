@@ -16,7 +16,6 @@ module.exports = exports = require('eregistrations/routes/official')(function ()
 	return currentStep;
 });
 
-exports['[0-9][a-z0-9]*'].view = require('eregistrations/view/business-process-official-preview');
+exports['[0-9][a-z0-9]*'] = exports['[0-9][a-z0-9]*/documents'];
 exports['/'] = require('eregistrations/view/supervisor');
 exports['print-supervisor-list'] = require('eregistrations/view/print-supervisor-table');
-exports.profile = require('eregistrations/view/user-profile');
