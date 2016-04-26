@@ -55,7 +55,7 @@ var toggleConditionally = function (element, condition) {
 };
 
 // A legacy refreshGuide method for Part A Guide page.
-// Used in: /view/guide.js
+// Used in: /view/business-process-guide.js
 module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		businessProcessTypeName) {
 	var guideForm = $(guideFormId)
