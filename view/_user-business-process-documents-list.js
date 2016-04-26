@@ -37,7 +37,9 @@ module.exports = function (businessProcess/*, options*/) {
 						? tr({ class: 'empty' }, td({ colspan: 5 }, _("No documents")))
 						: data.map(function (documentData) {
 							return tr(
-								td({ class: 'submitted-user-data-table-status' }),
+								td({ class: 'submitted-user-data-table-status' },
+									(documentData.kind === 'certificate')
+									? span({ class: 'fa fa-certificate' }) : null),
 								td(documentData.label),
 								td(documentData.issuedBy),
 								td({ class: 'submitted-user-data-table-date' }, documentData.issueDate),
