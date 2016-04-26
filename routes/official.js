@@ -67,8 +67,8 @@ module.exports = function (step) {
 			match: function (businessProcessId, docUniqueKey) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
-					var paymentReceiptUpload =
-						this.businessProcess.paymentReceiptUploads.map.get(hyphenToCamel.call(docUniqueKey));
+					docUniqueKey = hyphenToCamel.call(docUniqueKey);
+					var paymentReceiptUpload = this.businessProcess.paymentReceiptUploads.map[docUniqueKey];
 					if (!paymentReceiptUpload) return false;
 					if (!this.processingStep.paymentReceiptUploads.applicable.has(paymentReceiptUpload)) {
 						return false;
@@ -101,9 +101,8 @@ module.exports = function (step) {
 			match: function (businessProcessId, docUniqueKey) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
-
-					var certificate =
-						this.businessProcess.certificates.map.get(hyphenToCamel.call(docUniqueKey));
+					docUniqueKey = hyphenToCamel.call(docUniqueKey);
+					var certificate = this.businessProcess.certificates.map[docUniqueKey];
 					if (!certificate) return false;
 					if (!this.processingStep.certificates.released.has(certificate)) {
 						return false;
