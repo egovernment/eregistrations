@@ -5,7 +5,7 @@
 var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel');
 
 module.exports = {
-	'/': require('../view/business-process-submitted'),
+	// User routes
 	profile: {
 		view: require('../view/user-profile'),
 		decorateContext: function () {
@@ -15,8 +15,19 @@ module.exports = {
 		}
 	},
 	'managed-user-profile': require('../view/managed-user-profile'),
-	'data-print': require('../view/print-business-process-data'),
-	'document/[a-z][a-z0-9-]*': {
+
+	// App routes
+	'/': {
+		decorateContext: function () {
+			var requirementUpload = this.businessProcess.requirementUploads.applicable.first;
+
+			if (requirementUpload) {
+				this.document = requirementUpload.document;
+			}
+		},
+		view: require('../view/business-process-submitted-document')
+	},
+	'documents/[a-z][a-z0-9-]*': {
 		match: function (uniqueKey) {
 			var self = this;
 
@@ -31,7 +42,7 @@ module.exports = {
 		},
 		view: require('../view/business-process-submitted-document')
 	},
-	'receipt/[a-z][a-z0-9-]*': {
+	'payment-receipts/[a-z][a-z0-9-]*': {
 		match: function (key) {
 			var paymentReceiptUpload =
 				this.businessProcess.paymentReceiptUploads.map.get(hyphenToCamel.call(key));
@@ -45,9 +56,9 @@ module.exports = {
 		},
 		view: require('../view/business-process-submitted-payment')
 	},
-	'certificate/[a-z][a-z0-9-]*': {
+	'certificates/[a-z][a-z0-9-]*': {
 		match: function (key) {
-			var certificate = this.businessProcess.certificates.map.get(hyphenToCamel.call(key));
+			var certificate =  this.businessProcess.certificates.map.get(hyphenToCamel.call(key));
 			if (!certificate) return false;
 			if (!this.businessProcess.certificates.applicable.has(certificate)) {
 				return false;
@@ -58,5 +69,9 @@ module.exports = {
 		},
 		view: require('../view/business-process-submitted-certificate')
 	},
+	data: require('../view/business-process-submitted-data'),
+
+	// Print routes
+	'data-print': require('../view/print-business-process-data'),
 	'print-request-history': require('../view/print-business-process-status-log')
 };
