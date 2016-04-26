@@ -107,6 +107,7 @@ module.exports = memoize(function (db/*, options*/) {
 					return true;
 				});
 			});
+			return data;
 		} },
 		// After request is finalized, we finalize snapshots
 		// by extending it with revision status results
