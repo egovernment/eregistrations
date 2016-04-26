@@ -113,11 +113,11 @@ module.exports = memoize(function (db) {
 			}
 		},
 		// Status of certificate
-		status: { type: CertificateStatus, value: function () {
-			if (this.master.isApproved) return 'approved';
-			if (this.master.isRejected) return 'rejected';
+		status: { type: CertificateStatus, value: function (_observe) {
+			if (_observe(this.master._isApproved)) return 'approved';
+			if (_observe(this.master._isRejected)) return 'rejected';
 			if (!this.processingStep) return;
-			if (this.processingStep.status === 'approved') return 'approved';
+			if (_observe(this.processingStep._status) === 'approved') return 'approved';
 			if (this.processingStep.status) return 'pending';
 		} },
 		// Used for preservation in data snapshots
