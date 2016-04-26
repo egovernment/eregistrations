@@ -5,24 +5,27 @@
 var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
   , _             = require('mano').i18n.bind('View: Documents list');
 
+var compareByLabel = function (a, b) {
+	return a.label.toLowerCase().localeCompare(b.label.toLowerCase());
+};
+
 module.exports = function (businessProcess/*, options*/) {
 	var options = Object(arguments[1]);
 	return div({ class: "table-responsive-container" },
 		mmap(businessProcess.requirementUploads.dataSnapshot._resolved, function (uploadsData) {
 			if (uploadsData) {
-				uploadsData = uploadsData.slice(0, options.limit || Infinity);
 				uploadsData.forEach(function (documentData) { documentData.kind = 'document'; });
 			}
 			return mmap(businessProcess.certificates.dataSnapshot._resolved, function (certsData) {
 				var data;
 				if (certsData) {
-					certsData = certsData.slice(0, options.limit || Infinity);
 					certsData.forEach(function (documentData) { documentData.kind = 'certificate'; });
 					if (uploadsData) data = uploadsData.concat(certsData);
 					else data = certsData;
 				} else {
 					data = uploadsData;
 				}
+				if (data) data = data.sort(compareByLabel).slice(0, options.limit || Infinity);
 				return table({ class: 'submitted-user-data-table user-request-table' },
 					thead(
 						tr(
