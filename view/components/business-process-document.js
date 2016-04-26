@@ -18,6 +18,7 @@ var _                  = require('mano').i18n.bind('User Submitted')
 module.exports = function (doc, collection/*, options*/) {
 	var options         = normalizeOptions(arguments[2])
 	  , urlPrefix       = options.urlPrefix || '/'
+	  , mainContent     = options.mainContent
 	  , isCertificate   = doc.owner.owner.key === 'certificates'
 	  , files           = doc.files.ordered
 	  , moreThanOneFile = gt(files._size, 1)
@@ -71,7 +72,7 @@ module.exports = function (doc, collection/*, options*/) {
 			{ class: 'business-process-submitted-selected-document' },
 			div(
 				{ class: 'submitted-preview' },
-				_if(files._size, div(
+				_if(mainContent, mainContent, _if(files._size, div(
 					{ id: 'document-preview', class: ['submitted-preview-document',
 						'business-process-document-preview'] },
 					// Top links container
@@ -149,7 +150,7 @@ module.exports = function (doc, collection/*, options*/) {
 				), div(
 					{ class: 'submitted-preview-document-missing' },
 					p(_("This document does not have any physical file attached to it."))
-				)),
+				))),
 				sideContentContainer = div(
 					{ class: 'submitted-preview-user-data  entity-data-section-side' },
 					options.sideContent

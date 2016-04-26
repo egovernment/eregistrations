@@ -13,8 +13,9 @@ exports._match   = 'document';
 exports['selection-preview'] = function () {
 	var doc = this.document;
 
-	insert([documentView(doc, this.processingStep.paymentReceiptUploads.applicable, {
+	insert(documentView(doc, this.processingStep.paymentReceiptUploads.applicable, {
+		prependContent: documentRevisionInfo(doc),
 		sideContent: renderDocumentHistory(doc),
 		urlPrefix: '/' + this.businessProcess.__id__ + '/'
-	}), documentRevisionInfo(doc)]);
+	}));
 };
