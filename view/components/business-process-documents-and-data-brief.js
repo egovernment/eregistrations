@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _                   = require('mano').i18n.bind('View: Business process summary')
+var _                   = require('mano').i18n.bind('View: Component: Documents and data')
   , renderDocumentsList = require('./user-business-process-documents-list');
 
 module.exports = function (businessProcess) {

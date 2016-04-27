@@ -1,6 +1,6 @@
 'use strict';
 
-var _                  = require('mano').i18n.bind('View: Supervisor')
+var _                  = require('mano').i18n.bind('View: Official: Supervisor')
   , toArray            = require('es5-ext/object/to-array')
   , assign             = require('es5-ext/object/assign')
   , from               = require('es5-ext/array/from')

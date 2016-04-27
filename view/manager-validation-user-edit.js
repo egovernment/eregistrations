@@ -1,6 +1,6 @@
 'use strict';
 
-var _                    = require('mano').i18n.bind('Manager Validation')
+var _                    = require('mano').i18n.bind('View: Official: Manager validation')
   , readOnlyRender       = require('./utils/read-only-render')
   , generateFormSections = require('./components/generate-form-sections')
   , activateManagerForm  = require('./components/activate-manager-form')

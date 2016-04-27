@@ -1,7 +1,7 @@
 'use strict';
 
 var db        = require('mano').db
-  , _         = require('mano').i18n.bind('Register')
+  , _         = require('mano').i18n.bind('View: Component: Register dialog')
   , userProto = db.User.prototype
 
   , registrationInputNames = ['firstName', 'lastName', 'email', 'password', 'password-repeat'];

@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _                = require('mano').i18n.bind('User Submitted')
+var _                = require('mano').i18n.bind('View: Component: Documents')
   , normalizeOptions = require('es5-ext/object/normalize-options')
 
   , _d = _;

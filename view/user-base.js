@@ -1,6 +1,6 @@
 'use strict';
 
-var _                    = require('mano').i18n.bind('User')
+var _                    = require('mano').i18n.bind('View: User')
   , loginDialog          = require('./components/login-dialog')
   , registerDialog       = require('./components/register-dialog')
   , modalContainer       = require('./components/modal-container')

@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _                = require('mano').i18n.bind("View: business data")
+var _                = require('mano').i18n.bind("View: User")
   , generateSections = require('./components/generate-sections');
 
 exports._parent = require('./user-base');

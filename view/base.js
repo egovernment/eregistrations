@@ -6,7 +6,7 @@
 
 'use strict';
 
-var _              = require('mano').i18n.bind('Registration')
+var _              = require('mano').i18n.bind('View')
   , modalContainer = require('./components/modal-container');
 
 exports.body = function () {

@@ -1,6 +1,6 @@
 'use strict';
 
-var _ = require('mano').i18n.bind('User');
+var _ = require('mano').i18n.bind('View: Print');
 
 exports._parent = require('./print-base');
 exports._match = 'businessProcess';

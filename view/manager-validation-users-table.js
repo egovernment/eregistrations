@@ -1,6 +1,6 @@
 'use strict';
 
-var _                   = require('mano').i18n.bind('Users Admin')
+var _                   = require('mano').i18n.bind('View: Official: Manager validation')
   , location            = require('mano/lib/client/location')
   , copy                = require('es5-ext/object/copy')
   , ReactiveTable       = require('reactive-table')

@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _              = require('mano').i18n.bind('Registration')
+var _              = require('mano').i18n.bind('View: Business Process')
   , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
   , sentBackInfo   = require('./components/business-process-sent-back-info')
   , inventoryModal = require('./components/business-process-inventory')

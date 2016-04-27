@@ -1,7 +1,7 @@
 "use strict";
 
 var db               = require('mano').db
-  , _                = require('mano').i18n.bind('User')
+  , _                = require('mano').i18n.bind('View: Binding: Sections: User')
   , d                = require('d')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , SectionType      = db.User.prototype.dataForm.sections.getDescriptor('profile').type;

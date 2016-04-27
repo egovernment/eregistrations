@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _        = require('mano').i18n.bind('Registration')
+var _        = require('mano').i18n.bind('View: Business Process')
   , errorMsg = require('./components/business-process-error-info').errorMsg
   , infoMsg  = require('./components/business-process-optional-info').infoMsg;
 

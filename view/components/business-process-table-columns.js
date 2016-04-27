@@ -1,6 +1,6 @@
 'use strict';
 
-var _                    = require('mano').i18n.bind('User')
+var _                    = require('mano').i18n.bind('View: Component: Business Process table')
   , ProcessingStepStatus = require('mano').db.ProcessingStepStatus
   , formatLastModified   = require('../utils/last-modified');
 

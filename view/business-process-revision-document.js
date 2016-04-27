@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _                     = require('mano').i18n.bind('Official: Revision')
+var _                     = require('mano').i18n.bind('View: Official: Revision')
   , camelToHyphen         = require('es5-ext/string/#/camel-to-hyphen')
   , documentView          = require('./components/business-process-document')
   , renderDocumentHistory = require('./components/business-process-document-history')

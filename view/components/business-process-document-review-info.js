@@ -1,6 +1,6 @@
 'use strict';
 
-var _        = require('mano').i18n.bind('View: Official')
+var _        = require('mano').i18n.bind('View: Component: Documents')
   , identity = require('es5-ext/function/identity');
 
 module.exports = function (doc) {

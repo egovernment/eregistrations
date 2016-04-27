@@ -1,6 +1,6 @@
 'use strict';
 
-var _        = require('mano').i18n.bind('User')
+var _        = require('mano').i18n.bind('View: Print')
   , db       = require('mano').db
   , location = require('mano/lib/client/location');
 

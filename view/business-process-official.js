@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _              = require('mano').i18n.bind('Registration')
+var _              = require('mano').i18n.bind('View: Official')
   , renderMainInfo = require('./components/business-process-main-info');
 
 exports._parent = require('./user-base');

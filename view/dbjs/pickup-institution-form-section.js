@@ -1,7 +1,7 @@
 "use strict";
 
 var db = require('mano').db
-  , _  = require('mano').i18n.bind('View: Pickup Institution Section')
+  , _  = require('mano').i18n.bind('View: Binding: Sections: Pickup institution')
   , ns = require('mano').domjs.ns
   , d  = require('d');
 

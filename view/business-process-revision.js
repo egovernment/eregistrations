@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _                = require('mano').i18n.bind('Official: Revision')
+var _                = require('mano').i18n.bind('View: Official: Revision')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , renderMainInfo   = require('./components/business-process-main-info');
 

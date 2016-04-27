@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _                     = require('mano').i18n.bind('View: Business process summary')
+var _                     = require('mano').i18n.bind('View: User')
   , loc                   = require('mano/lib/client/location')
   , documentsAndDataBrief = require('./components/business-process-documents-and-data-brief');
 

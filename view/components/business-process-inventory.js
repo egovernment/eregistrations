@@ -1,6 +1,6 @@
 'use strict';
 
-var _       = require('mano').i18n.bind('User')
+var _       = require('mano').i18n.bind('View: Component: Inventory')
   , forEach = Array.prototype.forEach;
 
 module.exports = function (businessProcess) {

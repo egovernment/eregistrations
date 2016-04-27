@@ -1,6 +1,6 @@
 'use strict';
 
-var _  = require('mano').i18n.bind('View: Progress rules')
+var _  = require('mano').i18n.bind('View: Component: Progress rules')
   , _d = _;
 
 module.exports = function (section/*, options */) {

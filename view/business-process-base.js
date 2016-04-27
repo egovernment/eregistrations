@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _                = require('mano').i18n.bind('Registration')
+var _                = require('mano').i18n.bind('View: Business Process')
   , location         = require('mano/lib/client/location')
   , setProgressWidth = require('./utils/set-progress-width');
 

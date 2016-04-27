@@ -1,6 +1,6 @@
 'use strict';
 
-var _                    = require('mano').i18n.bind('User Manager')
+var _                    = require('mano').i18n.bind('View: Manager')
   , generateFormSections = require('./components/generate-form-sections');
 
 exports._parent = require('./user-base');

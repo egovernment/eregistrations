@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _            = require('mano').i18n.bind('Registration')
+var _            = require('mano').i18n.bind('View: Component: Error info')
   , sentBackInfo = require('./business-process-sent-back-info');
 
 exports.errorMsg = function (context) {

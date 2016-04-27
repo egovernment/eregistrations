@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _            = require('mano').i18n.bind('User Submitted')
+var _            = require('mano').i18n.bind('View: Component: Business Process info')
   , from         = require('es5-ext/array/from')
   , nextTick     = require('next-tick')
   , scrollBottom = require('../utils/scroll-to-bottom')

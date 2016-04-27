@@ -2,7 +2,7 @@
 
 var copy          = require('es5-ext/object/copy')
   , mano          = require('mano')
-  , _             = require('mano').i18n.bind('Users Admin')
+  , _             = require('mano').i18n.bind('View: Users Admin')
   , getOrderIndex = require('../users/get-default-order-index')
   , getUsersTable = require('./components/users-table/')
   , once          = require('timers-ext/once')

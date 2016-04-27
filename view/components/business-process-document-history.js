@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _     = require('mano').i18n.bind('Revision: Document history');
+var _     = require('mano').i18n.bind('View: Component: Documents');
 
 module.exports = function (doc) {
 	return _if(doc.statusLog.ordered._size, [

@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _ = require('mano').i18n.bind('View: Client');
+var _ = require('mano').i18n.bind('View: Manager');
 
 exports._parent = require('./manager');
 

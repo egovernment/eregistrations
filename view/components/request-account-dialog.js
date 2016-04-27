@@ -1,6 +1,6 @@
 'use strict';
 
-var _ = require('mano').i18n.bind('Request Create Account');
+var _ = require('mano').i18n.bind('View: Component: Request account dialog');
 
 module.exports = function (user) {
 	return div(dialog(

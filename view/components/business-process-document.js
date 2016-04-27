@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _                  = require('mano').i18n.bind('User Submitted')
+var _                  = require('mano').i18n.bind('View: Component: Documents')
   , isReadOnlyRender   = require('mano/client/utils/is-read-only-render')
   , normalizeOptions   = require('es5-ext/object/normalize-options')
   , includes           = require('es5-ext/array/#/contains')

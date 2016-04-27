@@ -1,7 +1,7 @@
 'use strict';
 
 var db                        = require('mano').db
-  , _                         = require('mano').i18n.bind('View: Dispatcher')
+  , _                         = require('mano').i18n.bind('View: Official: Dispatcher')
   , env                       = require('mano').env
   , from                      = require('es5-ext/array/from')
   , getBusinessProcessesTable = require('./components/business-processes-table')

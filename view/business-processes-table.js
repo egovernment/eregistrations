@@ -1,6 +1,6 @@
 'use strict';
 
-var _        = require('mano').i18n.bind('User Offcial')
+var _        = require('mano').i18n.bind('View: Offcial')
   , location = require('mano/lib/client/location')
   , toArray  = require('es5-ext/object/to-array')
   , once     = require('timers-ext/once')

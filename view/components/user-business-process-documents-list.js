@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _             = require('mano').i18n.bind('View: Documents list')
+var _             = require('mano').i18n.bind('View: Component: Documents')
   , resolveIssuer = require('../utils/issuer-resolver')
 
   , _d = _;

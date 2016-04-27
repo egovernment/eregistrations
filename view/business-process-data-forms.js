@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _                 = require('mano').i18n.bind('Registration')
+var _                 = require('mano').i18n.bind('View: Business Process')
   , generateSections  = require('./components/generate-form-sections')
   , incompleteFormNav = require('./components/incomplete-form-nav')
   , errorMsg          = require('./components/business-process-error-info').errorMsg

@@ -13,7 +13,7 @@
  */
 'use strict';
 
-var _          = require('mano').i18n.bind('Sections')
+var _          = require('mano').i18n.bind('View: Binding: Sections')
   , d          = require('d')
   , forEach    = require('es5-ext/object/for-each')
   , db         = require('mano').db

@@ -1,6 +1,6 @@
 'use strict';
 
-var _        = require('mano').i18n.bind('Official: Revision')
+var _        = require('mano').i18n.bind('View: Submitted')
   , mainInfo = require('./components/business-process-main-info');
 
 exports._parent = require('./user-base');

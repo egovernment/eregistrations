@@ -2,10 +2,10 @@
 
 'use strict';
 
-var generateSections = require('./components/generate-form-sections')
+var _                = require('mano').i18n.bind('View: Business Process')
+  , generateSections = require('./components/generate-form-sections')
   , errorMsg         = require('./components/business-process-error-info').errorMsg
-  , infoMsg          = require('./components/business-process-optional-info').infoMsg
-  , _                = require('mano').i18n.bind('Registration');
+  , infoMsg          = require('./components/business-process-optional-info').infoMsg;
 
 exports._parent = require('./business-process-base');
 

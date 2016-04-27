@@ -1,6 +1,6 @@
 'use strict';
 
-var _                   = require('mano').i18n.bind("View: Documents")
+var _                   = require('mano').i18n.bind("View: User")
   , renderDocumentsList = require('./components/user-business-process-documents-list');
 
 exports._parent = require('./user-base');

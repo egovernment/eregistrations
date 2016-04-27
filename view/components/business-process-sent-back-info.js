@@ -1,6 +1,6 @@
 'use strict';
 
-var _        = require('mano').i18n.bind('Registration')
+var _        = require('mano').i18n.bind('View: Component: Sent back info')
   , identity = require('es5-ext/function/identity')
 
   , _d       = _;

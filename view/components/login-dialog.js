@@ -1,7 +1,7 @@
 'use strict';
 
 var db        = require('mano').db
-  , _         = require('mano').i18n.bind('Login')
+  , _         = require('mano').i18n.bind('View: Component: Login dialog')
   , userProto = db.User.prototype;
 
 module.exports = dialog(

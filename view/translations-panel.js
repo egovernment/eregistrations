@@ -1,6 +1,6 @@
 'use strict';
 
-var _                = require('mano').i18n.bind('Registration')
+var _                = require('mano').i18n.bind('View: Meta Admin')
   , baseUrl          = url
   , toArray          = require('es5-ext/object/to-array')
   , isPluralKey      = require('i18n2/is-plural-key')

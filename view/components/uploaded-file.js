@@ -1,7 +1,7 @@
 'use strict';
 
 var ns = require('mano').domjs.ns
-  , _  = require('mano').i18n.bind('Documents');
+  , _  = require('mano').i18n.bind('View: Component: File upload');
 
 var resolveSize = function (size) {
 	if (size == null) return null;

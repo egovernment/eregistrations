@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _                  = require('mano').i18n.bind('View: Requests')
+var _                  = require('mano').i18n.bind('View: Manager')
   , actionsColumn      = require('./components/business-process-table-columns').actionsColumn
   , getServiceIcon     = require('./components/business-process-table-columns').getServiceIcon
   , formatLastModified = require('./utils/last-modified');

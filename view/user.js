@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _  = require('mano').i18n.bind('User');
+var _  = require('mano').i18n.bind('View: User');
 
 exports._parent = require('./user-base');
 

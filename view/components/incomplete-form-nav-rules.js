@@ -3,7 +3,7 @@
 'use strict';
 
 var db = require('mano').db
-  , _  = require('mano').i18n.bind('Incomplete Sections Navigation')
+  , _  = require('mano').i18n.bind('View: Component: Incomplete sections')
 
   , _d = _
   , generateMissingList;

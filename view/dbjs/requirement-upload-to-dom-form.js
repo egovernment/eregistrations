@@ -1,7 +1,7 @@
 "use strict";
 
 var db            = require('mano').db
-  , _             = require('mano').i18n.bind('View: Requirement Upload')
+  , _             = require('mano').i18n.bind('View: Binding: Requirement uploads')
   , identity      = require('es5-ext/function/identity')
   , camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
   , d             = require('d')
