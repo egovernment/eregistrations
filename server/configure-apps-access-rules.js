@@ -72,7 +72,8 @@ module.exports = exports = function (dbDriver, data) {
 	  , businessProcessListProperties, businessProcessMyAccountProperties
 	  , globalFragment, getMetaAdminFragment, getAccessRules
 	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, userListProps
-	  , businessProcessDispatcherListExtraProperties = [], officialDispatcherListExtraProperties = [];
+	  , businessProcessDispatcherListExtraProperties = [], officialDispatcherListExtraProperties = []
+	  , businessProcessMyAccountExtraProperties = [];
 
 	var getBusinessProcessStorages = require('./utils/business-process-storages');
 	var getManagerUserData = getPartFragments(userStorage, new Set(['email', 'firstName',
@@ -111,21 +112,25 @@ module.exports = exports = function (dbDriver, data) {
 	businessProcessListProperties =
 		new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
 
-	businessProcessMyAccountProperties =
-		new Set(aFrom(ensureIterable(data.businessProcessListProperties))
-			.concat(['certificates/dataSnapshot/jsonString', 'dataForms/dataSnapshot/jsonString',
-				'paymentReceiptUploads/dataSnapshot/jsonString',
-				'requirementUploads/dataSnapshot/jsonString', 'status']));
-
 	if (data.businessProcessDispatcherListExtraProperties) {
 		businessProcessDispatcherListExtraProperties =
 			aFrom(ensureIterable(data.businessProcessListProperties));
 	}
-
 	if (data.officialDispatcherListExtraProperties) {
 		officialDispatcherListExtraProperties =
 			aFrom(ensureIterable(data.officialDispatcherListExtraProperties));
 	}
+	if (data.myAccountExtraProperties) {
+		businessProcessMyAccountExtraProperties =
+			aFrom(ensureIterable(data.myAccountExtraProperties));
+	}
+
+	businessProcessMyAccountProperties =
+		new Set(aFrom(ensureIterable(data.businessProcessListProperties))
+			.concat(['certificates/dataSnapshot/jsonString', 'dataForms/dataSnapshot/jsonString',
+				'paymentReceiptUploads/dataSnapshot/jsonString',
+				'requirementUploads/dataSnapshot/jsonString', 'status'])
+			.concat(businessProcessMyAccountExtraProperties));
 
 	initializeView = ensureCallable(data.initializeView);
 
