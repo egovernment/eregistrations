@@ -1,8 +1,8 @@
 'use strict';
 
-var _ = require('mano').i18n.bind('View: Dispatcher');
+var _ = require('mano').i18n.bind('View: Official');
 
-module.exports = exports = require('eregistrations/view/business-process-official');
+module.exports = exports = require('../business-process-official');
 
 exports._processingTabLink = Function.prototype;
 

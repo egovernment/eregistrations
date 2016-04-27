@@ -15,7 +15,7 @@ if (stepsMap.revision.isPending) return stepsMap.revision;
 require('../../view/print-base');
 require('../../view/user-base');
 require('../../view/dispatcher/dispatcher-base');
-require('../../view/dispatcher/business-process-official');
+require('eregistrations/view/customizations/business-process-official-no-form');
 
 exports['/'].decorateContext = function () {
 /* Example setup
