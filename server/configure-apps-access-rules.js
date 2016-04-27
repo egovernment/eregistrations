@@ -69,7 +69,7 @@ module.exports = exports = function (dbDriver, data) {
 	  , getUserReducedData = getReducedFrag(userStorage)
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , resolveOfficialViews, processingStepsMeta, processingStepsDefaultMap = create(null)
-	  , businessProcessListProperties, myAccountBusinessProcessProperties
+	  , businessProcessListProperties, businessProcessMyAccountProperties
 	  , globalFragment, getMetaAdminFragment, getAccessRules
 	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, userListProps
 	  , businessProcessDispatcherListExtraProperties = [], officialDispatcherListExtraProperties = [];
@@ -111,7 +111,7 @@ module.exports = exports = function (dbDriver, data) {
 	businessProcessListProperties =
 		new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
 
-	myAccountBusinessProcessProperties =
+	businessProcessMyAccountProperties =
 		new Set(aFrom(ensureIterable(data.businessProcessListProperties))
 			.concat(['certificates/dataSnapshot/jsonString', 'dataForms/dataSnapshot/jsonString',
 				'paymentReceiptUploads/dataSnapshot/jsonString',
@@ -216,7 +216,7 @@ module.exports = exports = function (dbDriver, data) {
 
 	// MyAccount resolvers
 	var getBusinessProcessMyAccountFragment =
-		getPartFragments(null, myAccountBusinessProcessProperties);
+		getPartFragments(null, businessProcessMyAccountProperties);
 
 	// Users Admin resolvers
 	var getUserListFragment = getPartFragments(userStorage, userListProps);
