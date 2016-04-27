@@ -6,7 +6,7 @@ require('../../view/print-base');
 require('../../view/user-base');
 require('eregistrations/view/customizations/business-process-official-no-form');
 
-module.exports = exports = require('eregistrations/routes/official')(function () {
+module.exports = exports = require('eregistrations/routes/supervisor')(function () {
 	var stepsMap = this.businessProcess.processingSteps.map, currentStep;
 	stepsMap.some(function (step) {
 		if (step.isPending) {
@@ -16,7 +16,3 @@ module.exports = exports = require('eregistrations/routes/official')(function ()
 	});
 	return currentStep;
 });
-
-exports['[0-9][a-z0-9]*'] = exports['[0-9][a-z0-9]*/documents'];
-exports['/'] = require('eregistrations/view/supervisor');
-exports['print-supervisor-list'] = require('eregistrations/view/print-supervisor-table');

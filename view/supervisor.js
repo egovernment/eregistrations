@@ -71,7 +71,7 @@ exports['sub-main'] = {
 								if (page) search.push('page=' + page);
 								if (search.length) search = '?' + search.join('&');
 								else search = null;
-							return url('print-supervisor-list', search);
+							return url('print-business-processes-list', search);
 						});
 					});
 				}), class: 'users-table-filter-bar-print', target: '_blank' },

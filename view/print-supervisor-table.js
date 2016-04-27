@@ -19,7 +19,7 @@ exports.main = function () {
 		stepsMap: stepsMap,
 		itemsPerPage: env.objectsListItemsPerPage
 	});
-	setupQueryHandler(listManager, '/print-supervisor-list/');
+	setupQueryHandler(listManager, '/print-business-processes-list/');
 
 	var getSection  = function (url, processingSteps, dataLabel) {
 		return [div({ class: 'print-users-list-caption' },
