@@ -30,25 +30,39 @@ exports['sub-main'] = {
 		)]));
 
 		section({ class: 'section-tab-nav' },
-			a({ class: 'section-tab-nav-tab',
-					id: 'tab-business-process-documents',
-					href: '/' + this.businessProcess.__id__ + '/' },
-				_("Revision of the documents")),
-			a({ class: 'section-tab-nav-tab',
-					id: 'tab-business-process-payments',
-					href: '/' + this.businessProcess.__id__ + '/payment-receipts/' },
-				_("Revision of payments")),
-			a({ class: 'section-tab-nav-tab',
-					id: 'tab-business-process-data',
-					href: '/' + this.businessProcess.__id__ + '/data/' },
-				_("Revision of data")),
-			a({ class: 'section-tab-nav-tab',
-					id: 'tab-business-process-processing',
-					href: '/' + this.businessProcess.__id__ + '/processing/' },
-				_("Processing")),
+			exports._documentsTabLink.call(this),
+			exports._paymentsTabLink.call(this),
+			exports._dataTabLink.call(this),
+			exports._processingTabLink.call(this),
 			div({ id: 'tab-content', class: 'business-process-revision' }));
 	}
 };
+
+exports._documentsTabLink = function () {
+	return a({
+		class: 'section-tab-nav-tab',
+		id: 'tab-business-process-documents',
+		href: '/' + this.businessProcess.__id__ + '/'
+	}, _("Revision of the documents"));
+};
+
+exports._paymentsTabLink = function () {
+	return a({
+		class: 'section-tab-nav-tab',
+		id: 'tab-business-process-payments',
+		href: '/' + this.businessProcess.__id__ + '/payment-receipts/'
+	}, _("Revision of payments"));
+};
+
+exports._dataTabLink = function () {
+	return a({
+		class: 'section-tab-nav-tab',
+		id: 'tab-business-process-data',
+		href: '/' + this.businessProcess.__id__ + '/data/'
+	}, _("Revision of data"));
+};
+
+exports._processingTabLink = Function.prototype;
 
 exports._approveButton = function (/*options*/) {
 	var options = normalizeOptions(arguments[0]);

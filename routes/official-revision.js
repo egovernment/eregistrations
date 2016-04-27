@@ -62,10 +62,6 @@ module.exports = function (step) {
 			match: match,
 			view: require('../view/business-process-revision-data')
 		},
-		'[0-9][a-z0-9]*/processing': {
-			match: match,
-			view: require('../view/business-process-revision-form')
-		},
 
 		// Print routes
 		'print-business-processes-list': require('../view/print-business-processes-table'),

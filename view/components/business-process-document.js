@@ -145,8 +145,7 @@ module.exports = function (doc, collection/*, options*/) {
 							'doc-previews', 'doc-preview'),
 						legacy('hashNavDocumentLink', 'doc-open-links', 'doc-preview'),
 						legacy('hashNavOrderedList', 'doc-previews', 'doc-preview')
-					]),
-					syncHeight(docPreviewElement)
+					])
 				), div(
 					{ class: 'submitted-preview-document-missing' },
 					p(_("This document does not have any physical file attached to it."))
@@ -155,9 +154,11 @@ module.exports = function (doc, collection/*, options*/) {
 					{ class: 'submitted-preview-user-data  entity-data-section-side' },
 					options.sideContent
 				),
+				syncHeight(mainContent || docPreviewElement),
 				// This hack is here because unfortunately this function returns object that gets
 				// stringified by domjs into DOM.
-				syncStyle.call(sideContentContainer, docPreviewElement, 'height', isMobileView) && null
+				syncStyle.call(sideContentContainer, mainContent || docPreviewElement, 'height',
+					isMobileView) && null
 			)
 		)];
 };

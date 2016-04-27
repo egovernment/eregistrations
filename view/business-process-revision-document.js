@@ -56,7 +56,8 @@ exports['selection-preview'] = function () {
 				documentRevisionInfo(doc))),
 			mainContent: exports._documentPreviewContent.call(this),
 			sideContent: generateSections(this.businessProcess.dataForms.applicable,
-				{ viewContext: this })
+				{ viewContext: this }),
+			urlPrefix: '/' + this.businessProcess.__id__ + '/'
 		}),
 		renderDocumentHistory(doc)
 	]);

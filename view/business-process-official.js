@@ -21,22 +21,25 @@ exports['sub-main'] = {
 };
 
 exports._processingTabLink = function () {
-	return a({ class: 'section-tab-nav-tab',
+	return a({
+		class: 'section-tab-nav-tab',
 		id: 'tab-business-process-processing',
-		href: '/' + this.businessProcess.__id__ + '/' },
-		this.processingStep.label);
+		href: '/' + this.businessProcess.__id__ + '/'
+	}, this.processingStep.label);
 };
 
 exports._documentsTabLink = function () {
-	return a({ class: 'section-tab-nav-tab',
+	return a({
+		class: 'section-tab-nav-tab',
 		id: 'tab-business-process-documents',
-		href: '/' + this.businessProcess.__id__ + '/documents/' },
-		_("Documents"));
+		href: '/' + this.businessProcess.__id__ + '/documents/'
+	}, _("Documents"));
 };
 
 exports._dataTabLink = function () {
-	return a({ class: 'section-tab-nav-tab',
+	return a({
+		class: 'section-tab-nav-tab',
 		id: 'tab-business-process-data',
-		href: '/' + this.businessProcess.__id__ + '/data/' },
-		_("Data"));
+		href: '/' + this.businessProcess.__id__ + '/data/'
+	}, _("Data"));
 };
