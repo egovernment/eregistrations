@@ -1,7 +1,7 @@
 'use strict';
 
 var _          = require('mano').i18n.bind('View: Component: Supervisor')
-  , timeRanges = require('../utils/supervisor-time-ranges')
+  , timeRanges = require('../../utils/supervisor-time-ranges')
   , someRight  = require('es5-ext/array/#/some-right');
 
 exports.columns = [{

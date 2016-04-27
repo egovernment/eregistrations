@@ -4,7 +4,7 @@
 var matchBusinessProcess      = require('./utils/official-match-business-process')
   , matchRequirementUpload    = require('./utils/match-requirement-upload')('processingStep')
   , matchPaymentReceiptUpload = require('./utils/match-payment-receipt-upload')('processingStep')
-  , matchCertificate          = require('./utils/match-certificate')('processingStep', 'upladed');
+  , matchCertificate          = require('./utils/match-certificate')('processingStep', 'uploaded');
 
 module.exports = function (step) {
 	if (!step) {

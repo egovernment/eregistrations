@@ -22,7 +22,8 @@ var appTypes = {
 		'client/dbjs-dom.js': 'client/dbjs-dom.js/official.tpl'
 		},
 	supervisor: {
-		'client/model.js': 'client/model.js/official.tpl'
+		'client/model.js': 'client/model.js/official.tpl',
+		'client/dbjs-dom.js': 'client/dbjs-dom.js/official.tpl'
 	},
 	user: { extraFiles: ['view/user.js'] },
 	public: { extraFiles: ['apps/public'] },
