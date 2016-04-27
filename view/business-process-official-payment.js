@@ -15,7 +15,10 @@ exports['selection-preview'] = function () {
 
 	insert(documentView(doc, this.processingStep.paymentReceiptUploads.applicable, {
 		prependContent: documentRevisionInfo(doc),
+		mainContent: exports._paymentPreviewContent.call(this),
 		sideContent: renderDocumentHistory(doc),
 		urlPrefix: '/' + this.businessProcess.__id__ + '/'
 	}));
 };
+
+exports._paymentPreviewContent = Function.prototype;
