@@ -65,8 +65,8 @@ module.exports = require('mano').env = {
 	secret: 'asdfq3132142adsfasdfa3',
 
 	// SMTP settings
-	// Set `logOnly: true`, if you do not which to send any real email but prefer to see
-	// them just in server[ log
+	// Set `logOnly: true`, if you do not wish to send real emails but prefer to see
+	// them just in server log
 	smtp: {
 		host: 'localhost',
 		from: 'eRegistrations Demo <eregistrations@eregistrations.org>',
