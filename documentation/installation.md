@@ -53,7 +53,7 @@ module.exports = require('mano').env = {
 	// URL at which application would be served
 	// Information used e.g. for email notifications, but also for cookies resolution
 	// It must be accurate, for application to work properly
-	url: 'http://els.eregistrations.local/',
+	url: 'http://localhost:3177/',
 
 	// Legacy pool functionality
 	// It's about server-side HTML rendering for legacy browsers. Leave it to 'true'
@@ -68,8 +68,8 @@ module.exports = require('mano').env = {
 	// Set `logOnly: true`, if you do not which to send any real email but prefer to see
 	// them just in server[ log
 	smtp: {
-		host: 'mail.medikoo.com',
-		from: 'MiEmpresa.gob.sv <medikoo+eregistrations-salvador@medikoo.com>',
+		host: 'localhost',
+		from: 'eRegistrations Demo <eregistrations@eregistrations.org>',
 		logOnly: true
 	}
 };
