@@ -54,9 +54,12 @@ exports['selection-preview'] = function () {
 			prependContent: insert(_if(processingStep.requirementUploads.processable._has(doc.owner),
 				disableStep(this.processingStep, revisionForm(doc.owner)),
 				documentRevisionInfo(doc))),
+			mainContent: exports._documentPreviewContent.call(this),
 			sideContent: generateSections(this.businessProcess.dataForms.applicable,
 				{ viewContext: this })
 		}),
 		renderDocumentHistory(doc)
 	]);
 };
+
+exports._documentPreviewContent = Function.prototype;

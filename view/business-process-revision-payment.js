@@ -46,9 +46,12 @@ exports['selection-preview'] = function () {
 			prependContent: insert(_if(processingStep.paymentReceiptUploads.processable._has(doc.owner),
 				disableStep(this.processingStep, paymentForm(doc.owner)),
 				documentRevisionInfo(doc))),
+			mainContent: exports._paymentPreviewContent.call(this),
 			sideContent: generateSections(this.businessProcess.dataForms.applicable,
 				{ viewContext: this })
 		}),
 		renderDocumentHistory(doc)
 	]);
 };
+
+exports._paymentPreviewContent = Function.prototype;

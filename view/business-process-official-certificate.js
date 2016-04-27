@@ -16,6 +16,7 @@ exports['selection-preview'] = function () {
 
 	insert(documentView(doc, this.processingStep.certificates.uploaded, {
 		prependContent: renderDocumentHistory(doc),
+		mainContent: exports._certificatePreviewContent.call(this),
 		sideContent: [
 			doc.overviewSection.toDOM(document, { disableHeader: false }),
 			doc.dataForm.constructor !== db.FormSectionBase ? doc.dataForm.toDOM(document, {
@@ -28,3 +29,5 @@ exports['selection-preview'] = function () {
 		urlPrefix: '/' + this.businessProcess.__id__ + '/'
 	}));
 };
+
+exports._certificatePreviewContent = Function.prototype;

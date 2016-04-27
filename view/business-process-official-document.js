@@ -15,7 +15,10 @@ exports['selection-preview'] = function () {
 
 	insert(documentView(doc, this.processingStep.requirementUploads.applicable, {
 		prependContent: documentRevisionInfo(doc),
+		mainContent: exports._documentPreviewContent.call(this),
 		sideContent: renderDocumentHistory(doc),
 		urlPrefix: '/' + this.businessProcess.__id__ + '/'
 	}));
 };
+
+exports._documentPreviewContent = Function.prototype;

@@ -14,6 +14,9 @@ exports['selection-preview'] = function () {
 	var doc = this.document;
 
 	insert([documentView(doc, this.businessProcess.paymentReceiptUploads.applicable, {
+		mainContent: exports._paymentPreviewContent.call(this),
 		sideContent: renderDocumentHistory(doc)
 	}), documentRevisionInfo(doc)]);
 };
+
+exports._paymentPreviewContent = Function.prototype;
