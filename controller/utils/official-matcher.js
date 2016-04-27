@@ -13,8 +13,8 @@ module.exports = function (businessProcessId, stepName) {
 		this.processingStep = this.businessProcess.processingSteps.map[stepName];
 	}
 
+	if (!this.processingStep) return false;
 	if (this.processingStep.assignee && (this.user !== this.processingStep.assignee)) return false;
-	if (this.processingStep && this.processingStep.isPending) return true;
 
-	return false;
+	return this.processingStep.isPending;
 };
