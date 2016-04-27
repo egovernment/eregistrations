@@ -1,4 +1,4 @@
-# Initialization of eRegistrations system
+# Installation of eRegistrations system
 
 ## Needed software
 
