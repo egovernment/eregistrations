@@ -38,5 +38,7 @@
 ../../../node_modules/eregistrations/css/components/pagination.css
 ../../../node_modules/eregistrations/css/components/throbber.css
 ../../../node_modules/eregistrations/css/components/business-process-official.css
+../../../node_modules/eregistrations/css/components/business-process-submitted.css
+../../../node_modules/eregistrations/css/components/business-process-document-preview.css
 ../../../css/theme.css
 ../../../css/theme-part-b.css

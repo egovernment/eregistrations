@@ -7,7 +7,7 @@ var _                = require('mano').i18n.bind('View: Component: Documents')
   , generateSections = require('./generate-sections');
 
 module.exports = function (sections/*, options*/) {
-	var options   = normalizeOptions(arguments[2])
+	var options   = normalizeOptions(arguments[1])
 	  , urlPrefix = options.urlPrefix || '/';
 
 	return section(
