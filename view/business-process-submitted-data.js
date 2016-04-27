@@ -1,6 +1,9 @@
+// Business Process Submitted data view
+
 'use strict';
 
-var generateSections = require('./components/generate-sections');
+var _                = require('mano').i18n.bind('View: Submitted')
+  , generateSections = require('./components/generate-sections');
 
 exports._parent = require('./business-process-submitted');
 
@@ -10,6 +13,15 @@ exports['tab-content'] = function (/*options*/) {
 
 	section(
 		{ class: 'section-primary' },
+		div(
+			{ class: 'container-with-nav' },
+			a(
+				{ class: 'hint-optional hint-optional-left',
+					'data-hint': _("Print your application form"), href: '/data-print/',
+					target: '_blank' },
+				span({ class: 'fa fa-print' }, _("Print"))
+			)
+		),
 		div(
 			{ class: 'business-process-revision-selected-document' },
 			div(
