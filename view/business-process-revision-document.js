@@ -22,7 +22,7 @@ revisionForm = function (requirementUpload) {
 	return form(
 		{ id: 'form-revision-requirement-upload',
 			action: '/revision-requirement-upload/' + requirementUpload.master.__id__ +
-				'/' + camelToHyphen.call(requirementUpload.document.docUrl) + '/',
+				'/' + camelToHyphen.call(requirementUpload.document.docId) + '/',
 			method: 'post', class: 'submitted-preview-form' },
 		ul(
 			{ class: 'form-elements' },

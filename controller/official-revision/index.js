@@ -74,9 +74,6 @@ module.exports = function (/*options*/) {
 				}
 			}, this);
 		},
-		redirectUrl: function () {
-			return '/' + this.businessProcess.__id__ + '/';
-		},
 		formHtmlId: 'form-revision-requirement-upload'
 	};
 
@@ -90,9 +87,6 @@ module.exports = function (/*options*/) {
 			if (!paymentReceiptUpload) return false;
 
 			return this.processingStep.paymentReceiptUploads.processable.has(paymentReceiptUpload);
-		},
-		redirectUrl: function () {
-			return '/' + this.businessProcess.__id__ + '/';
 		},
 		formHtmlId: 'form-revision-payment-receipt-upload'
 	};

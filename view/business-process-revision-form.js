@@ -5,6 +5,6 @@
 exports._parent = require('./business-process-revision');
 
 exports['tab-business-process-processing'] = { class: { active: true } };
-exports['tab-content'] = function () { exports._officialForm(this); };
+exports['tab-content'] = function () { exports._officialForm.call(this); };
 
 exports._officialForm = Function.prototype;
