@@ -1,10 +1,6 @@
 'use strict';
 
-var db = require('../../../../db')
-  , assign = require('es5-ext/object/assign');
+var db                 = require('../../../../db')
+  , defineNotification = require('eregistrations/notifications/business-process-submitted');
 
-module.exports = assign(exports,
-	require('eregistrations/notifications/business-process-submitted'));
-
-exports.trigger = db.${ className }
-	.instances.filterByKey('isFromEregistrations', true).filterByKeyPath('isSubmitted', true);
+module.exports = defineNotification(db.${ className });

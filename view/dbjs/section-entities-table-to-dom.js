@@ -4,15 +4,21 @@ var d                   = require('d')
   , db                  = require('mano').db
   , headersMap          = require('../utils/headers-map')
   , getPropertyLabel    = require('../utils/get-property-label')
-  , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path');
+  , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
+  , normalizeOptions = require('es5-ext/object/normalize-options');
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 	d(function (document/*, options */) {
+
 		var self, headerRank, options, resolved, cssClass;
 		self = this;
 		options = Object(arguments[1]);
 		headerRank = options.headerRank || 3;
 		cssClass   = options.cssClass || 'entity-data-section';
+
+		var childOptions = normalizeOptions(options);
+		childOptions.headerRank++;
+
 		resolved = resolvePropertyPath(this.propertyMaster, this.propertyName).value;
 		if (resolved instanceof db.NestedMap) resolved = resolved.ordered;
 		return section({ class: cssClass },
@@ -43,10 +49,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 									resolvePropertyPath(entityObject, self.entityTitleProperty).observable
 								), list(sectionsContainer,
 									function (section) {
-										return _if(section._status, section.toDOM(document, {
-											headerRank: headerRank + 1,
-											viewContext: options.viewContext
-										}));
+										return _if(section._status, section.toDOM(document, childOptions));
 									}));
 							}),
 						p({ class: 'entity-data-section-empty' }, self.onEmptyMessage));

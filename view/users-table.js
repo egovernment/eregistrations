@@ -1,19 +1,19 @@
 'use strict';
 
-var copy              = require('es5-ext/object/copy')
-  , ReactiveTable     = require('reactive-table')
-  , ReactiveTableList = require('reactive-table/list')
-  , mano              = require('mano')
-  , _                 = require('mano').i18n.bind('Users Admin')
-  , getOrderIndex     = require('../users/get-default-order-index')
-  , compareUsers      = require('../utils/get-compare')(getOrderIndex)
-  , getUsersTable     = require('../view/components/users-table/')
+var copy          = require('es5-ext/object/copy')
+  , mano          = require('mano')
+  , _             = require('mano').i18n.bind('Users Admin')
+  , getOrderIndex = require('../users/get-default-order-index')
+  , getUsersTable = require('../view/components/users-table/')
+  , once          = require('timers-ext/once')
+  , location      = require('mano/lib/client/location')
+  , dispatch      = require('dom-ext/html-element/#/dispatch-event-2')
 
   , db = mano.db, env = mano.env, roleMeta = db.Role.meta;
 
 exports._parent = require('./user-base');
 
-var mapRolesToLabels = function (role) {
+exports._mapRolesToLabels = function (role, user) {
 	if (!role) return 'N/A';
 	if (role === 'user') return;
 	if (roleMeta[role].label) return roleMeta[role].label;
@@ -25,7 +25,9 @@ var baseColumns = [{
 	data: function (user) { return [strong(user._fullName), br(), user._email]; }
 }, {
 	head: _("Role"),
-	data: function (user) { return ul(user.roles, mapRolesToLabels); }
+	data: function (user) { return ul(user.roles, function (role) {
+		return exports._mapRolesToLabels(role, user);
+	}); }
 }, {
 	head: _("Institution"),
 	data: function (user) { return user._institution; }
@@ -48,29 +50,35 @@ var baseColumns = [{
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		var usersTable;
+		var usersTable, searchForm, searchInput;
+
+		section({ class: 'section-primary users-table-filter-bar' },
+			searchForm = form({ action: '/', autoSubmit: true },
+				div(
+					label({ for: 'search-input' }, _("Search")),
+					span({ class: 'input-append' },
+						searchInput = input({ id: 'search-input', name: 'search', type: 'search',
+							value: location.query.get('search') }),
+						span({ class: 'add-on' }, span({ class: 'fa fa-search' })))
+				),
+				div(
+					input({ type: 'submit', value: _("Search") })
+				)));
+
+		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
+
 		var columns = baseColumns.map(function (conf) {
 			conf = copy(conf);
 			conf.data = conf.data.bind(this);
 			return conf;
 		}, this);
 
-		if (db.views && db.views.usersAdmin) {
-			usersTable = getUsersTable({
-				getOrderIndex: getOrderIndex,
-				itemsPerPage: env.objectsListItemsPerPage,
-				class: 'submitted-user-data-table',
-				columns: columns
-			});
-		} else {
-			usersTable = new ReactiveTable(
-				document,
-				new ReactiveTableList(db.User.instances.filterByKey('email'), compareUsers),
-				columns
-			);
-			usersTable.table.classList.add('submitted-user-data-table');
-		}
-
+		usersTable = getUsersTable({
+			getOrderIndex: getOrderIndex,
+			itemsPerPage: env.objectsListItemsPerPage,
+			class: 'submitted-user-data-table',
+			columns: columns
+		});
 		p(a({ href: '/new-user/', class: 'button-main' }, _("New user")));
 		insert(usersTable.pagination);
 		section({ class: 'table-responsive-container' }, usersTable);

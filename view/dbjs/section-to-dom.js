@@ -8,18 +8,17 @@ var d                   = require('d')
 
   , db = mano.db, File = db.File;
 
-var resolveValue = function (resolved, specialCase) {
-	if (specialCase === 'file') return _if(resolved.value._path, thumb(resolved.value));
-	return resolved.observable;
-};
+var defaultResolveValue =  require('../utils/default-resolve-value');
 
 module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 	d(function (document/*, options*/) {
-		var self, headerRank, cssClass, options, filteredNames;
-		self = this;
-		options = Object(arguments[1]);
-		headerRank = options.headerRank || 3;
-		cssClass   = options.cssClass || 'entity-data-section';
+		var self         = this
+		  , options      = Object(arguments[1])
+		  , headerRank   = options.headerRank || 3
+		  , cssClass     = options.cssClass || 'entity-data-section'
+		  , resolveValue = options.customResolveValue || defaultResolveValue
+		  , filteredNames;
+
 		return section({ class: cssClass },
 			options.disableHeader ? null : _if(self._label, [headersMap[headerRank](self._label)]),
 			table(
@@ -41,11 +40,12 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 							return observable.value != null;
 						}), function (name) {
 							var resolved = resolvePropertyPath(self.master, name)
-							  , isNested = (typeof resolved.value === 'object') && resolved.value.__id__
+							  , isNested = (typeof resolved.value === 'object') && resolved.value
+									&& resolved.value.__id__
 							  , cond, specialCase;
 
 							if (isNested) {
-								if (resolved.value instanceof File) {
+								if (File && resolved.value instanceof File) {
 									specialCase = 'file';
 								} else if (typeof resolved.value.getDescriptor('resolvedValue')
 										._value_ === 'function') {

@@ -29,14 +29,12 @@ require('./form-section-base');
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFieldset',
 	d(function (document/*, options */) {
 		var self = this, options, url, customizeData, resolvent, tableData, resolved, getAddUrl,
-			collectionType, addButton, isMapMode, translationInserts;
+			collectionType, addButton, isMapMode;
 		options = normalizeOptions(arguments[1]);
 		customizeData = { master: options.master || this.master };
 		url = options.url || ns.url;
 		resolvent = this.getFormResolvent(options);
 		resolved = resolvePropertyPath(customizeData.master, this.propertyName);
-		translationInserts = normalizeOptions({ max: self._max, min: self._min },
-				options.translationInserts);
 		tableData = resolved.value;
 		if (tableData instanceof db.NestedMap) {
 			isMapMode = true;
@@ -60,7 +58,7 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFie
 				method: 'post'
 			}, resolvent.formResolvent, ns.p({ class: 'submit' },
 				ns.input({ type: 'submit', value: _("Submit") }))) : undefined,
-			progressRules(this, { translationInserts: translationInserts }),
+			progressRules(this),
 			ns.div({ class: 'entities-overview-table-wrapper', id: resolvent.affectedSectionId },
 				ns.table(
 					{ class: ns._if(ns.not(ns.eq(tableData._size, 0)),
@@ -97,10 +95,18 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFie
 										self.sectionProperty + 'Status').observable;
 							}
 							return ns.tr(ns.list(self.entities, function (entity) {
+								var resolved = resolvePropertyPath(entityObject, entity.propertyName)
+								  , isObject = (typeof resolved.value === 'object') && resolved.value
+										&& resolved.value.__id__;
+
+								if (db.File && isObject && (resolved.value instanceof db.File)) {
+									return td(_if(resolved.value._url,
+											a({ href: resolved.value._url, target: '_blank' }, _("See picture"))));
+								}
 								return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
 											ns._if(entity._mobileOnly, 'mobile-only')) },
 										ns.a({ href: editUrl },
-											resolvePropertyPath(entityObject, entity.propertyName).observable));
+											resolved.observable));
 							}),
 								ns.td({ class: ns._if(ns.eq(status, 1),
 										'completed') },

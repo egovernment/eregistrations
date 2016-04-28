@@ -16,6 +16,7 @@ module.exports = function (db/* options */) {
 	require('./manager')(db);
 	require('./recently-visited/business-processes')(db);
 	require('./recently-visited/users')(db);
+	require('./data-form')(db);
 
 	return User;
 };

@@ -20,7 +20,7 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	var readyProcesses = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);
 	var approvedProcesses = businessProcesses.filterByKeyPath(stepKeyPath + '/isApproved', true);
 	var sentBackProcesses = businessProcesses.filterByKeyPath(stepKeyPath + '/isSentBack', true);
-	var correctedProcesses = businessProcesses.filterByKeyPath(stepKeyPath + '/status', null);
+	var correctedProcesses = businessProcesses.filterByKeyPath(stepKeyPath + '/isPending', true);
 	var rejectedProcesses = businessProcesses.filterByKeyPath(stepKeyPath + '/isRejected', true);
 
 	return [{

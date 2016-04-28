@@ -31,6 +31,7 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 		  , customizeData        = { master: master }
 		  , subSectionHeaderRank = options.subSectionHeaderRank || 3
 		  , fieldsetOptions      = {
+			fieldsetOptions: options.fieldsetOptions,
 			master: master,
 			formId: options.formId,
 			disablePartialSubmit: options.disablePartialSubmit != null ? options.disablePartialSubmit
@@ -40,7 +41,7 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 		customizeData.arrayResult = [
 			options.prepend,
 			resolvent.formResolvent,
-			progressRules(this, { translationInserts: options.translationInserts })
+			progressRules(this)
 		];
 
 		customizeData.subSections = customizeData.arrayResult.subSections = {};

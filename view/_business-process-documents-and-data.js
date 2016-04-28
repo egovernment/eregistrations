@@ -31,7 +31,7 @@ var drawDocumentsPart = function (target, urlPrefix) {
 							_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
 							_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' }))
 						);
-						td(_d(requirementUpload.document._label, { user: requirementUpload.master }));
+						td(_d(requirementUpload.document._label, requirementUpload.document.getTranslations()));
 						td(requirementUpload.document._issuedBy);
 						td({ class: 'submitted-user-data-table-date' }, requirementUpload.document._issueDate);
 						td({ class: 'submitted-user-data-table-link' },
@@ -117,7 +117,7 @@ var drawCertificatesPart = function (target, urlPrefix) {
 	]);
 };
 
-module.exports = function (businessProcess/*, options*/) {
+module.exports = exports = function (businessProcess/*, options*/) {
 	var options         = Object(arguments[1])
 	  , urlPrefix       = options.urlPrefix || '/'
 	  , uploadsResolver = options.uploadsResolver || businessProcess;
@@ -142,7 +142,11 @@ module.exports = function (businessProcess/*, options*/) {
 					span({ class: 'fa fa-print' }, _("Print"))
 				)
 			),
-			generateSections(businessProcess.dataForms.applicable, { viewContext: this })
+			exports._prependData(businessProcess),
+			generateSections(businessProcess.dataForms.applicable, { viewContext: this,
+					customResolveValue: exports._customValueResolver })
 		)
 	];
 };
+exports._prependData = Function.prototype;
+exports._customValueResolver = null;

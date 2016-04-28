@@ -39,8 +39,33 @@ module.exports = memoize(function (db/* options */) {
 			});
 			return result;
 		} },
+		progress: {
+			value: function (_observe) {
+				var totalProgress = 0;
+				if (!this.weight) return 1;
+				this.uploaded.forEach(function (paymentReceipt) {
+					totalProgress += _observe(paymentReceipt._progress);
+				});
 
-		uploaded: { type: PaymentReceiptUpload },
+				return totalProgress / this.weight;
+			}
+		},
+		weight: {
+			value: function (_observe) {
+				return _observe(this.uploadable._size);
+			}
+		},
+
+		uploaded: {
+			type: PaymentReceiptUpload,
+			value: function (_observe) {
+				var result = [];
+				this.uploadable.forEach(function (upload) {
+					if (_observe(upload.document.files.ordered._size)) result.push(upload);
+				});
+				return result;
+			}
+		},
 		approved: { type: PaymentReceiptUpload },
 		rejected: { type: PaymentReceiptUpload }
 	});

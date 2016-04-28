@@ -10,8 +10,6 @@ var db                   = require('mano').db
 exports._parent = require('./business-process-base');
 exports._match = 'entity';
 
-exports['step-guide'] = { class: { 'step-form': true } };
-
 var findEntitiesTableId = function (sections, entitiesKey) {
 	var entitiesTableId;
 
@@ -42,17 +40,13 @@ exports.step  = function () {
 	h1(_if(eqSloppy(entity.getObservable(
 		entity.owner.owner.cardinalPropertyKey
 	), null),
-		_("Add ${ entityLabel }", { entityLabel: this.entity.label }),
-		_("Edit ${ entityName }", { entityName: this.entity._name })));
+		_("Add ${ entityLabel }", { entityLabel: entity.label }),
+		_("Edit ${ entityName }", { entityName: entity._name })));
 	insert(generateFormSections(entity.dataForms.applicable,
 		{ viewContext: this, url: url }));
-	if (this.entity.dataForms.map.size > 1) {
+	if (entity.dataForms.map.size > 1) {
 		div({ class: 'user-next-step-button' },
-			a({ href: exports._entitiesTableRootUrl(this) + '#' + entitiesTableId },
+			a({ href: (this.entitiesTableRootUrl || '/forms/') + '#' + entitiesTableId },
 				_("Back to form")));
 	}
-};
-
-exports._entitiesTableRootUrl = function (context) {
-	return '/forms/';
 };

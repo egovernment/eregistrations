@@ -50,11 +50,15 @@
 	list-style-type: none;
 }
 
-.section-primary-sub {
+.section-primary-sub,
+.section-primary-sub-small {
 	border: none;
 	padding: 0;
-	margin-bottom: 44px;
 	position: relative;
+}
+
+.section-primary-sub {
+	margin-bottom: 44px;
 }
 
 .section-primary-sub:last-child {
@@ -85,73 +89,6 @@
 	line-height: 44px;
 }
 
-.section-primary .dbjs-input-component > label,
-.section-primary .dbjs-input-component > .input {
-	padding: 0 10px;
-	display: inline-block;
-	vertical-align: top;
-}
-.section-primary .dbjs-input-component.pure-value > .input {
-	padding-top: 11px;
-}
-
-.section-primary .dbjs-input-component > label {
-	width: 40%;
-	text-align: right;
-	font-weight: 500;
-	margin: 11px 0;
-}
-.section-primary .dbjs-input-component > .input {
-	width: 60%;
-}
-.section-primary .dbjs-input-component > .input:first-child {
-	margin-left: 40%;
-}
-
-.section-primary .dbjs-input-component > .input input[type="text"],
-.section-primary .dbjs-input-component > .input input[type="number"],
-.section-primary .dbjs-input-component > .input input[type="password"],
-.section-primary .dbjs-input-component > .input input[type="date"],
-.section-primary .dbjs-input-component > .input input[type="month"],
-.section-primary .dbjs-input-component > .input input[type="week"],
-.section-primary .dbjs-input-component > .input input[type="time"],
-.section-primary .dbjs-input-component > .input input[type="datetime"],
-.section-primary .dbjs-input-component > .input input[type="datetime-local"],
-.section-primary .dbjs-input-component > .input input[type="search"],
-.section-primary .dbjs-input-component > .input input[type="email"],
-.section-primary .dbjs-input-component > .input input[type="url"],
-.section-primary .dbjs-input-component > .input input[type="tel"],
-.section-primary .dbjs-input-component > .input input[type="color"],
-.section-primary .dbjs-input-component > .input select,
-.section-primary .dbjs-input-component > .input textarea  {
-	max-width: 90%;
-}
-
-.section-primary .dbjs-input-component .multiple input[type="text"],
-.section-primary .dbjs-input-component .multiple input[type="number"],
-.section-primary .dbjs-input-component .multiple input[type="email"],
-.section-primary .dbjs-input-component .multiple input[type="password"],
-.section-primary .dbjs-input-component .multiple input[type="date"],
-.section-primary .dbjs-input-component .multiple input[type="month"],
-.section-primary .dbjs-input-component .multiple input[type="week"],
-.section-primary .dbjs-input-component .multiple input[type="time"],
-.section-primary .dbjs-input-component .multiple input[type="datetime"],
-.section-primary .dbjs-input-component .multiple input[type="datetime-local"],
-.section-primary .dbjs-input-component .multiple input[type="search"],
-.section-primary .dbjs-input-component .multiple input[type="url"],
-.section-primary .dbjs-input-component .multiple input[type="tel"],
-.section-primary .dbjs-input-component .multiple input[type="color"],
-.section-primary .dbjs-input-component .multiple select,
-.section-primary .dbjs-input-component .multiple textarea  {
-	max-width: 100%;
-}
-
-.section-primary .dbjs-input-component > .input .input {
-	width: auto;
-	margin-left: 0;
-	padding-left: 0;
-}
-
 .section-primary-scroll-top {
 	text-align: right;
 	position: absolute;
@@ -174,24 +111,6 @@
 }
 .section-primary-scroll-top a span {
 	vertical-align: middle;
-}
-
-.section-primary .dbjs-input-component > .input .multiple ul {
-	max-width: 96%;
-}
-
-@media only screen and (max-width: var(--mobile-width)) {
-	.section-primary .dbjs-input-component > label {
-		text-align: left;
-		width: 100%;
-		margin: 3px 0 -3px;
-	}
-	.section-primary .dbjs-input-component > .input {
-		width: 100%;
-	}
-	.section-primary .dbjs-input-component > .input:first-child {
-		margin-left: 0;
-	}
 }
 
 .section-primary-legend {

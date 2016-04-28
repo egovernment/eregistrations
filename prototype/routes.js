@@ -70,11 +70,17 @@ module.exports = {
 	},
 	'manager/requests/firstrequest': {
 		decorateContext: function () {
-			this.user = db.notary;
-			this.managedUser = db.userVianney;
+			this.manager = db.notary;
+			this.user = db.userVianney;
 			this.businessProcess = db.firstBusinessProcess;
 		},
 		view: require('./view/guide')
+	},
+	'manager-validation/edit-user': {
+		decorateContext: function () {
+			this.editedUser = db.notary;
+		},
+		view: require('../view/manager-validation-user-edit')
 	},
 	// Part-B routes - user submitted
 	'user-submitted': require('./view/user-submitted'),

@@ -48,8 +48,9 @@ dialog:target {
 }
 
 dialog header {
-	background-color: var(--normal-background);
-	border-radius: 10px 10px 0 0;
+	background-color: var(--dark-background);
+	border-radius: 4px 4px 0 0;
+	color: var(--white-text);
 }
 dialog > .dialog-body > *,
 dialog > .dialog-body > form > * {
@@ -61,7 +62,7 @@ dialog > .dialog-body > form > *:last-child {
 }
 dialog {
 	background: #ffffff;
-	border-radius: 12px;
+	border-radius: 4px;
 	box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 

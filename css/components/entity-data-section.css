@@ -1,17 +1,15 @@
+.entity-data-section-side .entity-data-section-entities .entity-data-section,
 .entity-data-section-entities .entity-data-section {
 	border-left: none;
 	border-right: none;
 	border-bottom: none;
-}
-
-.entity-data-section-entities h5 {
-	margin-bottom: 22px;
+	outline-width: 0;
 }
 
 .entity-data-section h6 {
 	font-size: 12px;
 	padding-left: 10px;
-	margin-top: 22px;
+	margin: 2px 0 -2px;
 }
 
 .entity-data-section-entities {
@@ -22,11 +20,16 @@
 	margin: 0;
 }
 
+.entity-data-section table th {
+	font-weight: 300;
+}
+
 .entity-data-section table th,
 .entity-data-section table td {
 	width: 50%;
 	padding: 11px 0 11px 10px;
 	text-align: left;
+	vertical-align: top;
 }
 
 .entity-data-section-entities .entity-data-section-sub table th,
@@ -37,6 +40,12 @@
 	font-size: 12px;
 	padding: 0 0 0 10px;
 }
+
+.entity-data-section-entities .entity-data-section-sub table th,
+.entity-data-section-entities .entity-data-section table th {
+	font-weight: 300;
+}
+
 .entity-data-section .entity-data-section-empty {
 	padding: 11px 0 11px 8px;
 	color: var(--hint-text);
@@ -47,6 +56,8 @@
 	padding-bottom:22px;
 }
 
-.entity-data-section-entities li:last-child {
-	padding-bottom:0;
+.entity-data-section-entities .entity-data-section-sub .label-reg {
+	font-size: 9px;
+	height: auto;
+	line-height: normal;
 }

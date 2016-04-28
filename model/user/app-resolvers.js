@@ -37,8 +37,12 @@ module.exports = memoize(function (db/* options */) {
 					businessProcess = this.currentBusinessProcess;
 					if (businessProcess) appId += '.' + businessProcess.__id__;
 				}
+				if (/^official[A-Z]/.test(role)) appId += (this.appAccessIdOfficialPostfix || '');
 				return appId;
 			}
+		},
+		appAccessIdOfficialPostfix: {
+			type: StringLine
 		},
 		appName: {
 			type: StringLine,
@@ -58,8 +62,9 @@ module.exports = memoize(function (db/* options */) {
 					}
 					if (!_observe(businessProcess._isAtDraft)) return 'business-process-submitted';
 					// Replace with camelToHyphen() when it'll be possible
-					return 'business-process-' +
-						businessProcess.constructor.__id__.slice('BusinessProcess'.length).toLowerCase();
+					return 'business-process' +
+						businessProcess.constructor.__id__.slice('BusinessProcess'.length)
+							.replace(/([A-Z])/g, '-$1').toLowerCase();
 				}
 
 				if (/^official[A-Z]/.test(role)) return this.appNameOfficial;

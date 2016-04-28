@@ -9,7 +9,7 @@ if (window.performance && window.performance.now) {
 }
 console.log("Build timestamp: ${BUILD_TIMESTAMP}");
 
-var startTime = Date.now(), mano;
+var startTime = Date.now();
 
 // JavaScript polyfills and shims
 // TODO: autodetect, generate and import from: './shims.generated'
@@ -19,11 +19,6 @@ require('mano/lib/client/implement-es');
 // TODO: Require here strictly to log (there should be no log in imported module)
 require('mano/lib/client/client-id');
 
-mano = require('mano');
-// Expose for dev purposes
-// TODO: Expose only in dev environments
-window.db = mano.db;
-
 // Env settings
 require('../../../apps-common/client/env');
 
@@ -31,7 +26,9 @@ require('../../../apps-common/client/env');
 require('../../../i18n');
 
 // DB Model
-require('../../../db');
+// Expose for dev purposes
+// TODO: Expose only in dev environments
+window.db = require('../../../db');
 require('./model.generated');
 
 // DB DOM bindings

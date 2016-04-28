@@ -51,19 +51,36 @@ module.exports = memoize(function (db/*, options*/) {
 		isFromEregistrations: { type: db.Boolean, value: true,
 			label: _("Has registration been made online?") },
 
+		// Whether business process was created for demo purposes
+		isDemo: { type: db.Boolean, value: false },
+
 		// String over which business processes can be searched
 		// through interface panel (computed value is later indexed by persistence engine)
-		searchString: { type: db.String, value: function () {
-			var arr = [], submissionNumber = String(this.submissionNumber);
+		searchString: { type: db.String, value: function (_observe) {
+			var arr = [], submissionNumber = _observe(this.submissionNumber._value);
 			if (this.businessName) arr.push(this.businessName.toLowerCase());
 			if (submissionNumber) arr.push(submissionNumber.toLowerCase());
 			return arr.join('\x02');
+		} },
+
+		// An array of email addresses used as notification recipients (to field).
+		// Uses user and manager emails, if the exist, by default.
+		notificationEmails: { type: StringLine, multiple: true, value: function (_observe) {
+			var result = [];
+
+			if (this.user) result.push(_observe(this.user._email));
+			if (this.manager) result.push(_observe(this.manager._email));
+
+			return result;
 		} }
 	});
 
 	BusinessProcess.prototype.submissionNumber.defineProperties({
+		// Stringified complete representation of number
 		value: { type: StringLine, value: function () { return this.number; } },
+		// Numeric part of number (usually incremented for each file)
 		number: { type: UInteger, value: 0 },
+		// Convinient stringification
 		toString: { value: function (opts) { return this.value; } }
 	});
 

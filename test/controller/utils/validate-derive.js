@@ -5,9 +5,7 @@ var BusinessProcess = require('../../../model/business-process-new')(require('ma
 module.exports = function (t, a) {
 	var bp = new BusinessProcess(), data = {};
 
-	a.throws(function () { t(data); },
-		new RegExp('Wrong post data'),
-		'throws when no initialData');
+	a(t(data), null);
 
 	data.initialProcess = bp.__id__;
 

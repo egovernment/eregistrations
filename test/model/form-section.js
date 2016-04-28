@@ -63,7 +63,7 @@ module.exports = function (t, a) {
 		},
 
 		notRequiredProperty: {
-			type: db.Object
+			type: db.Number
 		}
 	});
 
@@ -87,7 +87,7 @@ module.exports = function (t, a) {
 			value: false
 		},
 		notRequiredProperty: {
-			type: db.Object
+			type: db.Number
 		},
 		property: {
 			type: db.Number,
@@ -244,10 +244,14 @@ module.exports = function (t, a) {
 		'constrainedProperty'
 	]);
 
-	a.h3('status & missingRequiredPropertyNames');
+	a.h3('status & property value resolution');
 	a(section.status, 1);
 	a(section.missingRequiredPropertyNames.size, 0);
 	a(section.hasMissingRequiredPropertyNamesDeep, false);
+	a(section.filledPropertyNames.size, 1);
+	a.deep(aFrom(section.filledPropertyNames), [
+		'resolventProperty'
+	]);
 
 	masterObject.resolventProperty = true;
 	a(section.status, 0);
@@ -259,6 +263,11 @@ module.exports = function (t, a) {
 		'thirdProperty',
 		'constrainedProperty'
 	]);
+	a(section.filledPropertyNames.size, 2);
+	a.deep(aFrom(section.filledPropertyNames), [
+		'resolventProperty',
+		'propertyWithDefaultValue'
+	]);
 
 	masterObject.property = 1;
 	a(section.status, 0.25);
@@ -269,11 +278,18 @@ module.exports = function (t, a) {
 		'thirdProperty',
 		'constrainedProperty'
 	]);
+	a(section.filledPropertyNames.size, 3);
+	a.deep(aFrom(section.filledPropertyNames), [
+		'resolventProperty',
+		'property',
+		'propertyWithDefaultValue'
+	]);
 
 	masterObject.resolventProperty = false;
 	a(section.status, 1);
 	a(section.missingRequiredPropertyNames.size, 0);
 	a(section.hasMissingRequiredPropertyNamesDeep, false);
+	a(section.filledPropertyNames.size, 1);
 
 	masterObject.resolventProperty = true;
 	masterObject.secondProperty = 1;
@@ -284,6 +300,13 @@ module.exports = function (t, a) {
 		'thirdProperty',
 		'constrainedProperty'
 	]);
+	a(section.filledPropertyNames.size, 4);
+	a.deep(aFrom(section.filledPropertyNames), [
+		'resolventProperty',
+		'property',
+		'secondProperty',
+		'propertyWithDefaultValue'
+	]);
 
 	masterObject.isThirdPropertyApplicable = false;
 	a(section.status, 0.66);
@@ -293,6 +316,14 @@ module.exports = function (t, a) {
 
 	a(section.status, 0.5);
 	masterObject.thirdProperty = 1;
+	a(section.filledPropertyNames.size, 5);
+	a.deep(aFrom(section.filledPropertyNames), [
+		'resolventProperty',
+		'property',
+		'secondProperty',
+		'thirdProperty',
+		'propertyWithDefaultValue'
+	]);
 
 	a(section.status, 0.75);
 	a(section.missingRequiredPropertyNames.size, 1);
@@ -305,6 +336,27 @@ module.exports = function (t, a) {
 	a(section.status, 1);
 	a(section.missingRequiredPropertyNames.size, 0);
 	a(section.hasMissingRequiredPropertyNamesDeep, false);
+	a(section.filledPropertyNames.size, 6);
+	a.deep(aFrom(section.filledPropertyNames), [
+		'resolventProperty',
+		'property',
+		'secondProperty',
+		'thirdProperty',
+		'propertyWithDefaultValue',
+		'constrainedProperty'
+	]);
+
+	masterObject.notRequiredProperty = 1;
+	a(section.filledPropertyNames.size, 7);
+	a.deep(aFrom(section.filledPropertyNames), [
+		'resolventProperty',
+		'notRequiredProperty',
+		'property',
+		'secondProperty',
+		'thirdProperty',
+		'propertyWithDefaultValue',
+		'constrainedProperty'
+	]);
 
 	a.h3('weight');
 	masterObject.resolventProperty = false;

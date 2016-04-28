@@ -18,6 +18,19 @@ module.exports = memoize(function (db) {
 		// Sub steps of processingStepGroup
 		steps: { type: MultipleProcess, nested: true },
 
+		// Whether business process is at given step or have passed it
+		isReady: { type: db.Boolean, value: function (_observe) {
+			if (!this.isApplicable) return false;
+			if (!this.isPreviousStepsSatisfied) return false;
+			// If step was not yet processed but file was rejected do not provide it
+			if (_observe(this.steps.applicable).some(function (step) {
+					return _observe(step._officialStatus);
+				})) {
+				return true;
+			}
+			return !_observe(this.master._isRejected);
+		} },
+
 		// Whether process group is pending at some sub step
 		isPending: { value: function (_observe) {
 			if (!this.isReady) return false;
@@ -43,15 +56,6 @@ module.exports = memoize(function (db) {
 			});
 		} },
 
-		// Whether process group was delegated at some sub step
-		delegatedFrom: { value: function (_observe) {
-			if (!this.isReady) return;
-			if (this.isRejected) return;
-			return _observe(this.steps.applicable).some(function (step) {
-				return _observe(step._delegatedFrom);
-			});
-		} },
-
 		// Whether process group was redelegated at some sub step
 		isRedelegated: { value: function (_observe) {
 			if (!this.isReady) return false;
@@ -74,6 +78,13 @@ module.exports = memoize(function (db) {
 			if (!this.isReady) return false;
 			return _observe(this.steps.applicable).every(function (step) {
 				return _observe(step._isApproved);
+			});
+		} },
+
+		// Satisfied when all steps in group are satisfied
+		isSatisfied: { value: function (_observe) {
+			return _observe(this.steps.map).every(function (step) {
+				return _observe(step._isSatisfied);
 			});
 		} }
 	});

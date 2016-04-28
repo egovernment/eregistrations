@@ -3,20 +3,23 @@
 'use strict';
 
 var aFrom                          = require('es5-ext/array/from')
+  , and                            = require('es5-ext/array/#/intersection')
   , flatten                        = require('es5-ext/array/#/flatten')
   , remove                         = require('es5-ext/array/#/remove')
   , uniq                           = require('es5-ext/array/#/uniq')
   , constant                       = require('es5-ext/function/constant')
   , isNaturalNumber                = require('es5-ext/number/is-natural')
   , toNaturalNumber                = require('es5-ext/number/to-pos-integer')
+  , assign                         = require('es5-ext/object/assign')
   , normalizeOptions               = require('es5-ext/object/normalize-options')
   , toArray                        = require('es5-ext/object/to-array')
+  , ensureCallable                 = require('es5-ext/object/valid-callable')
   , ensureObject                   = require('es5-ext/object/valid-object')
   , ensureString                   = require('es5-ext/object/validate-stringifiable-value')
   , includes                       = require('es5-ext/string/#/contains')
   , uncapitalize                   = require('es5-ext/string/#/uncapitalize')
   , d                              = require('d')
-  , ensureSet                      = require('es6-set/valid-set')
+  , Set                            = require('es6-set')
   , deferred                       = require('deferred')
   , memoize                        = require('memoizee')
   , serializeValue                 = require('dbjs/_setup/serialize/value')
@@ -31,10 +34,11 @@ var aFrom                          = require('es5-ext/array/from')
   , getIndexMap                    = require('../utils/get-db-sort-index-map')
   , businessProcessStoragesPromise = require('../utils/business-process-storages')
   , idToStorage                    = require('../utils/business-process-id-to-storage')
+  , getBaseRoutes                  = require('./authenticated')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }
-  , isArray = Array.isArray, slice = Array.prototype.slice, push = Array.prototype.push
+  , isArray = Array.isArray, slice = Array.prototype.slice
   , ceil = Math.ceil, create = Object.create
   , defineProperty = Object.defineProperty, stringify = JSON.stringify
   , businessProcessStorages, businessProcessStorageNames;
@@ -166,12 +170,15 @@ var initializeHandler = function (conf) {
 	  , statusMap           = ensureObject(conf.statusMap)
 	  , statusIndexName     = ensureString(conf.statusIndexName)
 	  , allIndexName        = conf.allIndexName || statusMap.all.indexName
-	  , bpListProps         = ensureSet(conf.listProperties)
+	  , bpListProps         = new Set(aFrom(conf.listProperties))
 	  , bpListComputedProps = conf.listComputedProperties && aFrom(conf.listComputedProperties)
 	  , tableQueryHandler   = getTableQueryHandler(statusMap)
 	  , itemsPerPage        = toNaturalNumber(conf.itemsPerPage) || defaultItemsPerPage
 	  , businessProcessQueryHandler = getBusinessProcessQueryHandler(allIndexName, conf.allIndexValue)
 	  , storageName, storages;
+
+	if (!bpListComputedProps) bpListComputedProps = [allIndexName];
+	else bpListComputedProps.push(allIndexName);
 
 	if (conf.storageName != null) {
 		storageName = conf.storageName;
@@ -216,11 +223,10 @@ var initializeHandler = function (conf) {
 			})(function (arrays) {
 				if (arrays.length === 1) return arrays[0];
 
-				return uniq.call(arrays.reduce(function (current, next, index) {
+				return arrays.reduce(function (current, next, index) {
 					if (index === 1) current = aFrom(current);
-					push.apply(current, next);
-					return current;
-				})).sort(compareStamps);
+					return and.call(current, next);
+				}).sort(compareStamps);
 			});
 		})(function (arr) {
 			var size = arr.length, pageCount, offset, computedEvents, directEvents, statuses, statusMap;
@@ -299,32 +305,33 @@ var initializeHandler = function (conf) {
 };
 
 module.exports = exports = function (mainConf/*, options */) {
-	var resolveHandler, options, roleNameResolve, getHandlerByRole
-	  , recentlyVisitedContextName;
+	var resolveHandler, options, stepShortPathResolve, getHandlerByRole
+	  , recentlyVisitedContextName, decorateQuery;
 	options = Object(arguments[1]);
 	recentlyVisitedContextName = options.recentlyVisitedContextName;
+	if (options.decorateQuery != null) decorateQuery = ensureCallable(options.decorateQuery);
 	if (isArray(mainConf)) {
 		resolveHandler = (function () {
 			var map = mainConf.reduce(function (map, conf) {
 				map[conf.roleName] = initializeHandler(conf);
 				return map;
 			}, create(null));
-			getHandlerByRole = function (roleName) {
+			getHandlerByRole = function (stepShortPath) {
 				var handler;
-				if (roleName) {
-					handler = map[roleName];
+				if (stepShortPath) {
+					handler = map[stepShortPath];
 				}
 				if (!handler) {
-					throw new Error("Cannot resolve conf for role name: " + stringify(roleName));
+					throw new Error("Cannot resolve conf for step path: " + stringify(stepShortPath));
 				}
 				return handler;
 			};
 			if (options.resolveConf && (typeof options.resolveConf === 'function')) {
-				roleNameResolve = function (req) {
+				stepShortPathResolve = function (req) {
 					return deferred(options.resolveConf(req)).then(getHandlerByRole);
 				};
 			} else {
-				roleNameResolve = function (req) {
+				stepShortPathResolve = function (req) {
 					return roleNameMap.get(req.$user)(function (roleName) {
 						if (!roleName) return;
 						roleName = unserializeValue(roleName);
@@ -333,7 +340,7 @@ module.exports = exports = function (mainConf/*, options */) {
 				};
 			}
 			return function (req) {
-				return businessProcessStoragesPromise(function () { return roleNameResolve(req); });
+				return businessProcessStoragesPromise(function () { return stepShortPathResolve(req); });
 			};
 		}());
 	} else {
@@ -341,18 +348,20 @@ module.exports = exports = function (mainConf/*, options */) {
 			return initializeHandler(mainConf);
 		}));
 	}
-	return {
+	return assign({
 		'get-business-processes-view': function (query) {
 			var userId = this.req.$user;
 			return resolveHandler(this.req)(function (handler) {
 				// Get snapshot of business processes table page
 				return handler.tableQueryHandler.resolve(query)(function (query) {
-					if (handler.assigneePath) {
-						query.assignedTo = userId;
-					}
-					return handler.getTableData(query);
-				});
-			});
+					return deferred(decorateQuery && decorateQuery(query, this.req))(function () {
+						if (handler.assigneePath) {
+							query.assignedTo = userId;
+						}
+						return handler.getTableData(query);
+					});
+				}.bind(this));
+			}.bind(this));
 		},
 		'get-business-process-data': function (query) {
 			return resolveHandler(this.req)(function (handler) {
@@ -366,7 +375,7 @@ module.exports = exports = function (mainConf/*, options */) {
 				}.bind(this));
 			}.bind(this));
 		}
-	};
+	}, getBaseRoutes());
 };
 
 exports.getIndexMeta = function (query, meta) {
