@@ -35,7 +35,7 @@ var resolveCertificates = function (targetMap) {
 	var target = targetMap.owner, businessProcess = target.master;
 	return businessProcess._isApproved.map(function (isApproved) {
 		if (!isApproved) {
-			if (target === businessProcess) return []; // User is viewer
+			if (target === businessProcess) return null; // User is viewer
 			return targetMap.released.toArray(); // Official is viewer
 		}
 		if (target === businessProcess) {
