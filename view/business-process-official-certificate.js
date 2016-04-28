@@ -15,7 +15,6 @@ exports['selection-preview'] = function () {
 	var doc = this.document;
 
 	insert(documentView(doc, this.processingStep.certificates.uploaded, {
-		prependContent: renderDocumentHistory(doc),
 		mainContent: exports._certificatePreviewContent.call(this),
 		sideContent: [
 			doc.overviewSection.toDOM(document, { disableHeader: false }),
@@ -24,7 +23,8 @@ exports['selection-preview'] = function () {
 					return !endsWith.call(resolved.observable.dbId, 'files/map');
 				},
 				disableHeader: false
-			}) : null
+			}) : null,
+			renderDocumentHistory(doc)
 		],
 		urlPrefix: '/' + this.businessProcess.__id__ + '/'
 	}));
