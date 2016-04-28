@@ -114,7 +114,7 @@ module.exports = exports = function (dbDriver, data) {
 
 	if (data.businessProcessDispatcherListExtraProperties) {
 		businessProcessDispatcherListExtraProperties =
-			aFrom(ensureIterable(data.businessProcessListProperties));
+			aFrom(ensureIterable(data.businessProcessDispatcherListExtraProperties));
 	}
 	if (data.officialDispatcherListExtraProperties) {
 		officialDispatcherListExtraProperties =
