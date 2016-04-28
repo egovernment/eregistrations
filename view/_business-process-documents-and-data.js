@@ -38,7 +38,7 @@ var resolveCertificates = function (targetMap) {
 		if (!isApproved) return targetMap.released.toArray();
 		return businessProcess.certificates.dataSnapshot._resolved.map(function (data) {
 			if (!data) return;
-			return getSetProxy(targetMap.uploaded).map(function (certificate) {
+			return getSetProxy(targetMap.released).map(function (certificate) {
 				var snapshot = find.call(data, function (snapshot) {
 					return certificate.key === snapshot.uniqueKey;
 				});
