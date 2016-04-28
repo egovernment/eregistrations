@@ -19,14 +19,15 @@ module.exports = memoize(function (db) {
 	extendBase(ensureDb(db));
 	return db.Object.extend('DataSnapshot', {
 		jsonString: { type: db.String },
-		// Generates snapshot (if it was not generated already)
+		// Generates snapshot (only if it was not generated already)
 		generate: { type: db.Function, value: function (ignore) {
 			if (!this.jsonString) this.regenerate();
 		} },
-		// Generates snapshot (overwrites old snapshot if it exist)
+		// Generates snapshot (in all cases, it will overwrite old snapshot if it exist)
 		regenerate: { type: db.Function, value: function (ignore) {
 			this.jsonString = JSON.stringify(this.owner.toJSON());
 		} },
+		// Resolves snapshot JSON from stringified form
 		resolve: { type: db.Function, value: function (ignore) {
 			return this.jsonString ? JSON.parse(this.jsonString) : null;
 		} }
