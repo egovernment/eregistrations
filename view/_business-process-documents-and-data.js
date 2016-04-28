@@ -57,100 +57,106 @@ var resolveCertificates = function (targetMap) {
 
 var drawDocumentsPart = function (target, urlPrefix) {
 	return mmap(resolveUploads(target.requirementUploads), function (data) {
-		if (!data || !data.length) return;
-		return [
-			h3(_("Documents required")),
-			div({ class: 'table-responsive-container' },
-				table({ class: 'submitted-user-data-table user-request-table' },
-					thead(tr(th({ class: 'submitted-user-data-table-status' }),
-						th(_("Name")),
-						th(_("Issuer")),
-						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
-						th({ class: 'submitted-user-data-table-link' }))),
-					tbody(data, function (uploadData) {
-						return tr(
-							td({ class: 'submitted-user-data-table-status' },
-								_if(eq(uploadData.status, 'approved'), span({ class: 'fa fa-check' })),
-								_if(eq(uploadData.status, 'rejected'), span({ class: 'fa fa-exclamation' }))),
-							td(uploadData.label),
-							td(uploadData.issuedBy),
-							td({ class: 'submitted-user-data-table-date' }, uploadData.issueDate),
-							td({ class: 'submitted-user-data-table-link' },
-								a({ href: urlPrefix + 'document/' +
-									camelToHyphen.call(uploadData.uniqueKey) + "/" },
-									span({ class: 'fa fa-search' }, _("Go to"))))
-						);
-					})))
-		];
+		if (!data) return;
+		return _if(data._length || data.length, function () {
+			return [
+				h3(_("Documents required")),
+				div({ class: 'table-responsive-container' },
+					table({ class: 'submitted-user-data-table user-request-table' },
+						thead(tr(th({ class: 'submitted-user-data-table-status' }),
+							th(_("Name")),
+							th(_("Issuer")),
+							th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
+							th({ class: 'submitted-user-data-table-link' }))),
+						tbody(data, function (uploadData) {
+							return tr(
+								td({ class: 'submitted-user-data-table-status' },
+									_if(eq(uploadData.status, 'approved'), span({ class: 'fa fa-check' })),
+									_if(eq(uploadData.status, 'rejected'), span({ class: 'fa fa-exclamation' }))),
+								td(uploadData.label),
+								td(uploadData.issuedBy),
+								td({ class: 'submitted-user-data-table-date' }, uploadData.issueDate),
+								td({ class: 'submitted-user-data-table-link' },
+									a({ href: urlPrefix + 'document/' +
+										camelToHyphen.call(uploadData.uniqueKey) + "/" },
+										span({ class: 'fa fa-search' }, _("Go to"))))
+							);
+						})))
+			];
+		});
 	});
 };
 
 var drawPaymentReceiptsPart = function (target, urlPrefix) {
 	return mmap(resolveUploads(target.paymentReceiptUploads), function (data) {
-		if (!data || !data.length) return;
-		return [
-			h3(_("Payment receipts")),
-			div({ class: 'table-responsive-container' },
-				table({ class: 'submitted-user-data-table user-request-table' },
-					thead(tr(th({ class: 'submitted-user-data-table-status' }),
-						th(_("Name")),
-						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
-						th({ class: 'submitted-user-data-table-link' }))),
-					tbody(data, function (uploadData) {
-						return tr(
-							td({ class: 'submitted-user-data-table-status' },
-								_if(eq(uploadData.status, 'approved'), span({ class: 'fa fa-check' })),
-								_if(eq(uploadData.status, 'rejected'), span({ class: 'fa fa-exclamation' }))),
-							td(uploadData.label),
-							td({ class: 'submitted-user-data-table-date' }, uploadData.issueDate),
-							td({ class: 'submitted-user-data-table-link' },
-								a({ href: urlPrefix + 'receipt/' + camelToHyphen.call(uploadData.uniqueKey) + "/" },
-									span({ class: 'fa fa-search' }, _("Go to"))))
-						);
-					})))
-		];
+		if (!data) return;
+		return _if(data._length || data.length, function () {
+			return [
+				h3(_("Payment receipts")),
+				div({ class: 'table-responsive-container' },
+					table({ class: 'submitted-user-data-table user-request-table' },
+						thead(tr(th({ class: 'submitted-user-data-table-status' }),
+							th(_("Name")),
+							th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
+							th({ class: 'submitted-user-data-table-link' }))),
+						tbody(data, function (uploadData) {
+							return tr(
+								td({ class: 'submitted-user-data-table-status' },
+									_if(eq(uploadData.status, 'approved'), span({ class: 'fa fa-check' })),
+									_if(eq(uploadData.status, 'rejected'), span({ class: 'fa fa-exclamation' }))),
+								td(uploadData.label),
+								td({ class: 'submitted-user-data-table-date' }, uploadData.issueDate),
+								td({ class: 'submitted-user-data-table-link' },
+									a({ href: urlPrefix + 'receipt/' + camelToHyphen.call(uploadData.uniqueKey) +
+										"/" }, span({ class: 'fa fa-search' }, _("Go to"))))
+							);
+						})))
+			];
+		});
 	});
 };
 
 var drawCertificatesPart = function (target, urlPrefix) {
 	return mmap(resolveCertificates(target.certificates), function (data) {
-		if (!data || !data.length) return;
-		return [
-			h3(_("Certificates")),
-			div({ class: 'table-responsive-container' },
-				table({ class: 'submitted-user-data-table user-request-table' },
-					thead(tr(th({ class: 'submitted-user-data-table-status' }),
-						th(_("Name")),
-						th(_("Issuer")),
-						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
-						th(_("Number")),
-						th({ class: 'submitted-user-data-table-link' }))),
-					tbody(data, function (certificate) {
-						var data = certificate;
-						if (certificate.__id_) {
-							data = {
-								label: certificate._label.map(function (label) {
-									return _d(label, certificate.getTranslations());
-								}),
-								issuedBy: certificate._issuedBy,
-								issueDate: certificate._issueDate,
-								number: certificate._number,
-								uniqueKey: certificate.key
-							};
-						}
-						return tr(
-							td({ class: 'submitted-user-data-table-status' },
-								span({ class: 'fa fa-certificate' })),
-							td(data.label),
-							td(data.issuedBy),
-							td({ class: 'submitted-user-data-table-date' }, data.issueDate),
-							td(data.number),
-							td({ class: 'submitted-user-data-table-link' },
-								a({ href: urlPrefix + 'certificate/' + camelToHyphen.call(data.uniqueKey) + '/' },
-									span({ class: 'fa fa-search' }, _("Go to"))))
-						);
-					})))
-		];
+		if (!data) return;
+		return _if(data._length || data.length, function () {
+			return [
+				h3(_("Certificates")),
+				div({ class: 'table-responsive-container' },
+					table({ class: 'submitted-user-data-table user-request-table' },
+						thead(tr(th({ class: 'submitted-user-data-table-status' }),
+							th(_("Name")),
+							th(_("Issuer")),
+							th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
+							th(_("Number")),
+							th({ class: 'submitted-user-data-table-link' }))),
+						tbody(data, function (certificate) {
+							var data = certificate;
+							if (certificate.__id_) {
+								data = {
+									label: certificate._label.map(function (label) {
+										return _d(label, certificate.getTranslations());
+									}),
+									issuedBy: certificate._issuedBy,
+									issueDate: certificate._issueDate,
+									number: certificate._number,
+									uniqueKey: certificate.key
+								};
+							}
+							return tr(
+								td({ class: 'submitted-user-data-table-status' },
+									span({ class: 'fa fa-certificate' })),
+								td(data.label),
+								td(data.issuedBy),
+								td({ class: 'submitted-user-data-table-date' }, data.issueDate),
+								td(data.number),
+								td({ class: 'submitted-user-data-table-link' },
+									a({ href: urlPrefix + 'certificate/' + camelToHyphen.call(data.uniqueKey) + '/' },
+										span({ class: 'fa fa-search' }, _("Go to"))))
+							);
+						})))
+			];
+		});
 	});
 };
 
