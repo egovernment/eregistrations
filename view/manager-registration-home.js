@@ -8,12 +8,12 @@ exports._parent = require('./user-base');
 exports['sub-main'] = function () {
 	div(
 		{ class: 'user-forms content' },
-		exports._managerSectionsHeading(this),
+		exports._managerSectionsHeading.call(this),
 		generateFormSections(this.user.managerDataForms.applicable)
 	);
 };
 
-exports._managerSectionsHeading = function (context) {
+exports._managerSectionsHeading = function () {
 	return div(
 		{ class: 'info-main' },
 		p(_("Please complete your profile to proceed."))

@@ -16,7 +16,7 @@ exports['sub-main'] = {
 
 		renderMainInfo(this, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
 
-		insert(_if(revisionStep._isRevisionPending, [exports._customAlert(this), section(
+		insert(_if(revisionStep._isRevisionPending, [exports._customAlert.call(this), section(
 			{ class: 'official-submission-toolbar' },
 			// show buttons only if step is pending
 			_if(eq(revisionStep._revisionProgress, 1),

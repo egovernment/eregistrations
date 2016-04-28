@@ -46,13 +46,13 @@ exports['sub-main'] = {
 						input({ type: 'submit', value: _("Save") })))
 			)
 		);
-		insert(exports._extraProfileForms(this));
+		insert(exports._extraProfileForms.call(this));
 	}
 };
 
-exports._extraProfileForms = function (context) {
-	return _if(and(eq(context.user._currentRoleResolved, 'manager'),
-			context.appName !== 'manager-registration'), function () {
-		return generateFormSections(context.user.managerDataForms.applicable);
+exports._extraProfileForms = function () {
+	return _if(and(eq(this.user._currentRoleResolved, 'manager'),
+			this.appName !== 'manager-registration'), function () {
+		return generateFormSections(this.user.managerDataForms.applicable);
 	});
 };

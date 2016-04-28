@@ -26,7 +26,7 @@ module.exports = exports = function (context) {
 						return [h4(paymentUpload.document.label),
 							p(paymentUpload._rejectReasonMemo)];
 					})))))
-		]), exports._otherInfo(context)),
+		]), exports._otherInfo.call(context)),
 		p(mdi(_("After all issues are cleared, please [re-submit](/submission/#submit-form) " +
 			"application")))];
 };

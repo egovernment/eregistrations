@@ -5,7 +5,7 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		ul({ class: 'pills-nav' }, exports._dispatcherNav(this));
+		ul({ class: 'pills-nav' }, exports._dispatcherNav.call(this));
 		div({ class: 'meta-admin-main', id: 'dispatcher-main' });
 	}
 };

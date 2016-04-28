@@ -19,15 +19,15 @@ exports.step = function () {
 	  , dataFormsProgress          = businessProcess.dataForms._progress
 	  , requirementUploadsProgress = businessProcess.requirementUploads._progress;
 
-	exports._submissionHeading(this);
+	exports._submissionHeading.call(this);
 
 	insert(errorMsg(this));
 	insert(infoMsg(this));
-	insert(exports._optionalInfo(this));
+	insert(exports._optionalInfo.call(this));
 
 	disabler(
 		{ id: 'submission-forms-disabler-range' },
-		exports._disableCondition(this),
+		exports._disableCondition.call(this),
 		generateSections(submissionForms.applicable, { viewContext: this })
 	);
 
@@ -79,11 +79,11 @@ exports.step = function () {
 			))));
 };
 
-exports._disableCondition = function (context) {
-	return not(eq(context.businessProcess._guideProgress, 1));
+exports._disableCondition = function () {
+	return not(eq(this.businessProcess._guideProgress, 1));
 };
 
-exports._submissionHeading = function (context) {
+exports._submissionHeading = function () {
 	var headingText = _("4 Send your files");
 
 	return div(

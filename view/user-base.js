@@ -8,8 +8,8 @@ var _                    = require('mano').i18n.bind('View: User')
 
 exports._parent = require('./base');
 
-exports._extraRoleLabel = function (context) {
-	return _if(or(context.manager, eq(context.user._currentRoleResolved, 'manager')), li(
+exports._extraRoleLabel = function () {
+	return _if(or(this.manager, eq(this.user._currentRoleResolved, 'manager')), li(
 		span(
 			{ class: 'manager-label' },
 			_("Notary")
@@ -33,7 +33,7 @@ exports.menu = function () {
 		),
 		ul(
 			{ class: 'header-top-menu' },
-			exports._extraRoleLabel(this),
+			exports._extraRoleLabel.call(this),
 			li(
 				a(
 					{ href: '/profile/' },
@@ -60,7 +60,7 @@ exports.main = function () {
 	div({ class: 'submitted-menu' },
 		div({ class: 'submitted-menu-bar content' },
 			nav(ul({ class: 'submitted-menu-items', id: 'submitted-menu' },
-				exports._submittedMenu(this))),
+				exports._submittedMenu.call(this))),
 			_if(this.user._isDemo, div({ class: 'submitted-menu-demo' },
 				a({ class: 'submitted-menu-demo-ribon' }, _("Demo"))))));
 

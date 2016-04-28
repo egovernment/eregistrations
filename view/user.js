@@ -39,7 +39,7 @@ exports['sub-main'] = {
 					];
 				})));
 
-		exports._notificationsBox(this);
+		exports._notificationsBox.call(this);
 
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab user-account-tab',
@@ -53,11 +53,11 @@ exports['sub-main'] = {
 			div({ id: 'user-account-content', class: 'section-primary' }));
 
 		insert(_if(!manager || eq(this.user._manager, manager), [
-			exports._followUpsBoxes(this),
+			exports._followUpsBoxes.call(this),
 			h3({ class: 'user-account-section-title' }, _("Available services")),
 			section({ class: 'section-primary' },
 				ul({ class: 'user-account-service-boxes' },
-					exports._servicesBoxList(this),
+					exports._servicesBoxList.call(this),
 					function (item) {
 						var disabled = item.disabledCondition
 						  , renderAsForm = item.actionUrl != null ? and(item.actionUrl, not(disabled)) : false
