@@ -35,7 +35,7 @@ var resolveCertificates = function (targetMap) {
 	var target = targetMap.owner, businessProcess = target.master;
 	if (target === businessProcess) return businessProcess.certificates.dataSnapshot._resolved;
 	return businessProcess._isApproved.map(function (isApproved) {
-		if (!isApproved) return targetMap.uploaded.toArray();
+		if (!isApproved) return targetMap.released.toArray();
 		return businessProcess.certificates.dataSnapshot._resolved.map(function (data) {
 			if (!data) return;
 			return getSetProxy(targetMap.uploaded).map(function (certificate) {
