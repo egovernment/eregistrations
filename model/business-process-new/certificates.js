@@ -76,6 +76,9 @@ module.exports = memoize(function (db/* options */) {
 			});
 			return result;
 		} },
+		// It's for data snapshots functionality
+		// Returns overview of gathered (or applied) certificates.
+		// It is run on business process closure (no matter if rejection or approval)
 		toJSON: { type: db.Function, value: function (ignore) {
 			var result = [];
 			this.applicable.forEach(function (document) { result.push(document.toJSON()); });
