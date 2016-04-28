@@ -33,9 +33,16 @@ var resolveUploads = function (targetMap) {
 
 var resolveCertificates = function (targetMap) {
 	var target = targetMap.owner, businessProcess = target.master;
-	if (target === businessProcess) return businessProcess.certificates.dataSnapshot._resolved;
 	return businessProcess._isApproved.map(function (isApproved) {
-		if (!isApproved) return targetMap.released.toArray();
+		if (!isApproved) {
+			if (target === businessProcess) return []; // User is viewer
+			return targetMap.released.toArray(); // Official is viewer
+		}
+		if (target === businessProcess) {
+			// User is viewer
+			return businessProcess.certificates.dataSnapshot._resolved;
+		}
+		// Official is viewer
 		return businessProcess.certificates.dataSnapshot._resolved.map(function (data) {
 			if (!data) return;
 			return getSetProxy(targetMap.released).map(function (certificate) {
