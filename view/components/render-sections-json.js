@@ -1,7 +1,4 @@
-/**
-	* Used to generate data overview from sections.
-	* This component should be used to display sections in part B.
-*/
+// Renders dataForms sections overview out of JSON snapshots
 
 'use strict';
 
