@@ -90,8 +90,8 @@ module.exports = memoize(function (db/*, options*/) {
 	UploadsProcess.prototype.map._descriptorPrototype_.type = RequirementUpload;
 	UploadsProcess.prototype.dataSnapshot.defineProperties({
 		// Enriches resolved JSON with reactive revision status properties
-		// It's about state when request is in processing state
-		// The state of uploaded files is frozen but it's validation statuses is subject to change
+		// It's about state when request is in processing state and state of uploaded files is frozen
+		// but it's validation statuses are subject to change
 		resolve: { value: function (ignore) {
 			var data = this.database.DataSnapshot.prototype.resolve.call(this);
 			if (!data) return data;
