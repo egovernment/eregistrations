@@ -18,9 +18,9 @@ exports._statusMap = function () {
 	return statusMap;
 };
 
-exports._businessProcessTable = function (context) {
+exports._businessProcessTable = function () {
 	return getBusinessProcessesTable({
-		user: context.user,
+		user: this.user,
 		roleName: '${ appNameSuffix }',
 		statusMap: statusMap,
 		getOrderIndex: getOrderIndex,
