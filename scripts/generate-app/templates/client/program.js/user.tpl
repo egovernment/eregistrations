@@ -103,11 +103,15 @@ loadView = function () {
 	}
 	Object.defineProperty(db, '$user', { configurable: true, value: user });
 	viewContext = { appName: '${ appName }' };
-	if (user.currentRoleResolved === 'manager') {
-		viewContext.manager = user;
-		viewContext.user = user.currentlyManagedUser;
+	if (isReadOnlyRender) {
+		require('eregistrations/client/resolve-legacy-render-view-context')(db, clientId, viewContext);
 	} else {
-		viewContext.user = user;
+		if (user.currentRoleResolved === 'manager') {
+			viewContext.manager = user;
+			viewContext.user = user.currentlyManagedUser;
+		} else {
+			viewContext.user = user;
+		}
 	}
 	var siteTree = new DomjsSiteTree(require('mano/lib/client/domjs'));
 	var siteTreeRouter = new SiteTreeRouter(require('../routes'), siteTree, {
