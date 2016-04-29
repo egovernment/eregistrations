@@ -21,7 +21,6 @@ module.exports = function (doc, collection/*, options*/) {
 	  , mainContent     = options.mainContent
 	  , isCertificate   = doc.owner.owner.key === 'certificates'
 	  , files           = doc.files.ordered
-	  , moreThanOneFile = gt(files._size, 1)
 	  , nextDocument, previousDocument, nextDocumentUrl, previousDocumentUrl, docPreviewElement
 	  , sideContentContainer;
 
@@ -43,7 +42,7 @@ module.exports = function (doc, collection/*, options*/) {
 	nextDocumentUrl = nextDocument.map(resolveDocumentUrl);
 	previousDocumentUrl = previousDocument.map(resolveDocumentUrl);
 
-	return [
+	var result = [
 		div(
 			{ id: 'submitted-box', class: 'business-process-submitted-box' },
 			div(
@@ -72,93 +71,98 @@ module.exports = function (doc, collection/*, options*/) {
 			{ class: 'business-process-submitted-selected-document' },
 			div(
 				{ class: 'submitted-preview' },
-				_if(mainContent, mainContent, _if(files._size, div(
-					{ id: 'document-preview', class: ['submitted-preview-document',
-						'business-process-document-preview'] },
-					// Top links container
-					div(
-						{ class: 'container-with-nav' },
-						// Download links
+				mainContent || _if(files._size, function () {
+					var moreThanOneFile = gt(files._size, 1);
+
+					return div(
+						{ id: 'document-preview', class: ['submitted-preview-document',
+							'business-process-document-preview'] },
+						// Top links container
 						div(
-							{ class: 'business-process-document-preview-external-links' },
-							span({
-								id: 'doc-open-links',
-								class: 'business-process-document-preview-download-links'
-							}, list(files, function (file) {
-								var type           = file.type
-								  , linkText       = _("Open file in new window")
-								  , linkAttributes = {
-									target: '_blank',
-									href: file._url,
-									class: _if(eq(file, files._first), 'active')
-								};
+							{ class: 'container-with-nav' },
+							// Download links
+							div(
+								{ class: 'business-process-document-preview-external-links' },
+								span({
+									id: 'doc-open-links',
+									class: 'business-process-document-preview-download-links'
+								}, list(files, function (file) {
+									var type           = file.type
+									  , linkText       = _("Open file in new window")
+									  , linkAttributes = {
+										target: '_blank',
+										href: file._url,
+										class: _if(eq(file, files._first), 'active')
+									};
 
-								if (includes.call(docMimeTypes, type)) {
-									linkAttributes.download = file._name;
-								} else if (!isReadOnlyRender && (type === 'application/pdf')) {
-									linkAttributes.href = file._path.map(function (path) {
-										if (path) {
-											return '/pdfjs/web/viewer.html?file=/'
-												+ encodeURIComponent(path);
-										}
-									});
-								}
+									if (includes.call(docMimeTypes, type)) {
+										linkAttributes.download = file._name;
+									} else if (!isReadOnlyRender && (type === 'application/pdf')) {
+										linkAttributes.href = file._path.map(function (path) {
+											if (path) {
+												return '/pdfjs/web/viewer.html?file=/'
+													+ encodeURIComponent(path);
+											}
+										});
+									}
 
-								return a(linkAttributes, linkText);
-							})),
-							a({ target: '_blank', href: '/' + resolveArchivePath(doc),
-								download: resolveArchivePath(doc) }, _("Download document"))
+									return a(linkAttributes, linkText);
+								})),
+								a({ target: '_blank', href: '/' + resolveArchivePath(doc),
+									download: resolveArchivePath(doc) }, _("Download document"))
+							),
+							// File navigation
+							_if(moreThanOneFile, div(
+								{ class: 'business-process-document-preview-navigation' },
+								div({ id: 'submitted-preview-new-navigation-top' },
+									a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' },
+										_("Previous"))),
+									span(span({ class: 'current-index' }, "1"), " / ", files._size),
+									a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' },
+										_("Next"))))
+							))
 						),
-						// File navigation
+						// File render
+						docPreviewElement = ul({
+							id: 'doc-previews',
+							class: 'submitted-preview-new-image-placeholder'
+						}, files, function (file) {
+							return li({ class: _if(eq(file, files._first), 'active') }, getFilePreview(file));
+						}, doc),
+						// File navigation - bottom
 						_if(moreThanOneFile, div(
-							{ class: 'business-process-document-preview-navigation' },
-							div({ id: 'submitted-preview-new-navigation-top' },
+							{ class: 'submitted-preview-new-documents-navigation' },
+							div({ id: 'submitted-preview-new-navigation-bottom' },
 								a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' },
 									_("Previous"))),
 								span(span({ class: 'current-index' }, "1"), " / ", files._size),
 								a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' },
 									_("Next"))))
-						))
-					),
-					// File render
-					docPreviewElement = ul({
-						id: 'doc-previews',
-						class: 'submitted-preview-new-image-placeholder'
-					}, files, function (file) {
-						return li({ class: _if(eq(file, files._first), 'active') }, getFilePreview(file));
-					}, doc),
-					// File navigation - bottom
-					_if(moreThanOneFile, div(
-						{ class: 'submitted-preview-new-documents-navigation' },
-						div({ id: 'submitted-preview-new-navigation-bottom' },
-							a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' },
-								_("Previous"))),
-							span(span({ class: 'current-index' }, "1"), " / ", files._size),
-							a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' },
-								_("Next"))))
-					)),
-					// Legacy scripts
-					_if(moreThanOneFile, [
-						legacy('hashNavOrderedListControls', 'submitted-preview-new-navigation-top',
-							'doc-previews', 'doc-preview'),
-						legacy('hashNavOrderedListControls', 'submitted-preview-new-navigation-bottom',
-							'doc-previews', 'doc-preview'),
-						legacy('hashNavDocumentLink', 'doc-open-links', 'doc-preview'),
-						legacy('hashNavOrderedList', 'doc-previews', 'doc-preview')
-					])
-				), div(
+						)),
+						// Legacy scripts
+						_if(moreThanOneFile, [
+							legacy('hashNavOrderedListControls', 'submitted-preview-new-navigation-top',
+								'doc-previews', 'doc-preview'),
+							legacy('hashNavOrderedListControls', 'submitted-preview-new-navigation-bottom',
+								'doc-previews', 'doc-preview'),
+							legacy('hashNavDocumentLink', 'doc-open-links', 'doc-preview'),
+							legacy('hashNavOrderedList', 'doc-previews', 'doc-preview')
+						])
+					);
+				}, div(
 					{ class: 'submitted-preview-document-missing' },
 					p(_("This document does not have any physical file attached to it."))
-				))),
+				)),
 				sideContentContainer = div(
 					{ class: 'submitted-preview-user-data  entity-data-section-side' },
 					options.sideContent
-				),
-				syncHeight(mainContent || docPreviewElement),
-				// This hack is here because unfortunately this function returns object that gets
-				// stringified by domjs into DOM.
-				syncStyle.call(sideContentContainer, mainContent || docPreviewElement, 'height',
-					isMobileView) && null
+				)
 			)
-		)];
+		)
+	];
+
+	syncHeight(mainContent || docPreviewElement);
+	syncStyle.call(sideContentContainer, mainContent || docPreviewElement, 'height', isMobileView);
+
+	return result;
 };
