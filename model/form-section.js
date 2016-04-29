@@ -246,16 +246,10 @@ module.exports = memoize(function (db) {
 				lastEditDate: this.getOwnDescriptor('lastEditDate').valueToJSON()
 			};
 			var fields = [];
-			if (this.resolventProperty) {
-				fields.push(this.master.resolveSKeyPath(this.resolventProperty)
-					.ownDescriptor.fieldToJSON());
-			}
-			if (!this.isUnresolved) {
-				this.applicablePropertyNames.forEach(function (name) {
-					var data = this.master.resolveSKeyPath(name), descriptor = data.ownDescriptor;
-					if (!descriptor.isValueEmpty()) fields.push(descriptor.fieldToJSON());
-				}, this);
-			}
+			this.filledPropertyNames.forEach(function (name) {
+				var data = this.master.resolveSKeyPath(name), descriptor = data.ownDescriptor;
+				if (!descriptor.isValueEmpty()) fields.push(descriptor.fieldToJSON());
+			}, this);
 			if (fields.length) result.fields = fields;
 			return result;
 		} }
