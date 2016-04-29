@@ -16,7 +16,7 @@ module.exports = exports = function (context) {
 						return [h4(_d(requirementUpload.document.label,
 							requirementUpload.document.getTranslations())),
 							_if(eq(requirementUpload.rejectReasons._size, 1),
-								span(requirementUpload.rejectReasons._first),
+								p(requirementUpload.rejectReasons._first),
 								ul({ class: 'info-main-documents-sent-back-list-reasons' },
 									requirementUpload.rejectReasons, identity))];
 					})))),
@@ -24,7 +24,7 @@ module.exports = exports = function (context) {
 				li(h4(_("Issues with uploaded payment receipts:")), div({ class: 'free-form' },
 					ul(businessProcess.paymentReceiptUploads.recentlyRejected, function (paymentUpload) {
 						return [h4(paymentUpload.document.label),
-							span(paymentUpload._rejectReasonMemo)];
+							p(paymentUpload._rejectReasonMemo)];
 					}))))
 		]), exports._otherInfo(context)),
 		p(mdi(_("After all issues are cleared, please [re-submit](/submission/#submit-form) " +
