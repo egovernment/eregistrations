@@ -160,10 +160,10 @@ var drawCertificatesPart = function (target, urlPrefix) {
 	});
 };
 
-module.exports = exports = function (businessProcess/*, options*/) {
+module.exports = exports = function (context/*, options*/) {
 	var options         = Object(arguments[1])
 	  , urlPrefix       = options.urlPrefix || '/'
-	  , uploadsResolver = options.uploadsResolver || businessProcess;
+	  , uploadsResolver = options.uploadsResolver || context.businessProcess;
 
 	return [
 		section(
@@ -185,7 +185,7 @@ module.exports = exports = function (businessProcess/*, options*/) {
 					span({ class: 'fa fa-print' }, _("Print"))
 				)
 			),
-			renderSections(businessProcess.dataForms.dataSnapshot)
+			renderSections(context.businessProcess.dataForms.dataSnapshot)
 		)
 	];
 };

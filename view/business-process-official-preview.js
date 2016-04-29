@@ -16,7 +16,7 @@ exports['sub-main'] = {
 		exports._customPreviewInfo(this);
 
 		div({ id: 'business-process-official-content', class: 'business-process-official-content' },
-			renderDocumentsAndData(this.businessProcess, {
+			renderDocumentsAndData(this, {
 				urlPrefix: '/' + this.businessProcess.__id__ + '/',
 				uploadsResolver: this.processingStep
 			}));
