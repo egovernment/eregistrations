@@ -23,7 +23,9 @@ var memoize             = require('memoizee/plain')
 module.exports = memoize(function (db/*, options*/) {
 	var NestedMap = ensureDb(db).Object.extend('NestedMap', {
 		// Map of objects
-		map: { type: db.Object, nested: true },
+		map: { type: db.Object, nested: true, isValueEmpty: function () {
+			return !this.object.ordered.size;
+		} },
 		// Key of a property, which is decisive in whether object should be recognized
 		cardinalPropertyKey: { type: db.Base, required: true },
 		// Returns ordered set of all recognized objects from a map

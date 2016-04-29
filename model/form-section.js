@@ -253,7 +253,7 @@ module.exports = memoize(function (db) {
 			if (!this.isUnresolved) {
 				this.applicablePropertyNames.forEach(function (name) {
 					var data = this.master.resolveSKeyPath(name), descriptor = data.ownDescriptor;
-					if (!descriptor.type.isValueEmpty(data.value)) fields.push(descriptor.fieldToJSON());
+					if (!descriptor.isValueEmpty()) fields.push(descriptor.fieldToJSON());
 				}, this);
 			}
 			if (fields.length) result.fields = fields;

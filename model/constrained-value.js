@@ -111,7 +111,7 @@ module.exports = function (target, ValueType/*, options*/) {
 			}
 		},
 		isEmpty: { value: function (ignore) {
-			return this.getDescriptor('resolvedValue').type.isValueEmpty(this.resolvedValue);
+			return this.getOwnDescriptor('resolvedValue').isValueEmpty();
 		} }
 	});
 

@@ -26,6 +26,11 @@ module.exports = memoize(function (db) {
 				value: this.valueToJSON(),
 				id: this.__valueId__
 			};
+		},
+		isValueEmpty: function (ignore) {
+			var value = this.object.get(this.key);
+			if (value && value.forEach && !this.nested && this.multiple) return !value.size;
+			return this.type.isValueEmpty(value);
 		}
 	});
 
@@ -36,12 +41,8 @@ module.exports = memoize(function (db) {
 
 	return db.Base.defineProperties({
 		// Whether provided value should be considered empty
-		isValueEmpty: { type: db.Function, value: function (value) {
+		isValueEmpty: { type: db.Function, value: function (value, desciptor) {
 			if (value == null) return true;
-			if (value.owner && (value.key === 'map')) {
-				var NestedMap = this.database.NestedMap;
-				if (NestedMap && (value.owner instanceof NestedMap)) return value.owner.isEmpty();
-			}
 			if (typeof value.isEmpty !== 'function') return false;
 			return value.isEmpty();
 		} },
