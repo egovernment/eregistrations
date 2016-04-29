@@ -83,36 +83,62 @@ module.exports = memoize(function (db) {
 
 			return props;
 		} },
+		isPropertyFilled: {
+			type: db.Function,
+			value: function (resolved, _observe) {
+				var owner     = resolved.object
+				  , value     = resolved.value
+				  , db        = this.database
+				  , NestedMap = db.NestedMap
+				  , File      = db.File;
+
+				// NestedMap
+				if (owner && NestedMap && (resolved.key === 'map') && (owner instanceof NestedMap)) {
+					return Boolean(_observe(owner.ordered._size));
+				}
+
+				// Constrained Value
+				if (value && (typeof value === 'object') && value.__id__ &&
+						(typeof value.getDescriptor('resolvedValue')._value_ === 'function')) {
+					return Boolean(_observe(value._resolvedValue));
+				}
+
+				// Simple multiple
+				if (resolved.descriptor.multiple) return Boolean(_observe(resolved.observable).size);
+
+				value = _observe(resolved.observable);
+				if (value != null) {
+					// File
+					if (File && (value instanceof File)) {
+						return Boolean(_observe(value._path));
+					}
+
+					// Simple value
+					return true;
+				}
+
+				return false;
+			}
+		},
 		missingRequiredPropertyNames: {
 			type: StringLine,
 			multiple: true,
 			value: function (_observe) {
-				var resolved, isOwn, db = this.database,
-					File = db.File, NestedMap = db.NestedMap, result = [];
+				var result = []
+				  , resolved, isOwn;
 
 				if (this.isUnresolved) {
 					return this.resolventStatus < 1 ? [this.resolventProperty] : [];
 				}
 
 				this.applicablePropertyNames.forEach(function (name) {
-					var value;
 					resolved = this.master.resolveSKeyPath(name, _observe);
 
 					if (!resolved) return;
 					if (this.isPropertyExcludedFromStatus(resolved, _observe)) return;
 
-					if (resolved.object && NestedMap && (resolved.key === 'map')
-							&& (resolved.object instanceof NestedMap)) {
-						if (!_observe(resolved.object.ordered._size)) result.push(name);
-
-						return;
-					}
-
-					if (resolved.value && (typeof resolved.value === 'object') && resolved.value.__id__ &&
-							(typeof resolved.value.getDescriptor('resolvedValue')._value_ === 'function')) {
-						// Constrained Value
-						if (!_observe(resolved.value._resolvedValue)) result.push(name);
-
+					if (!this.isPropertyFilled(resolved, _observe)) {
+						result.push(name);
 						return;
 					}
 
@@ -130,23 +156,28 @@ module.exports = memoize(function (db) {
 							return;
 						}
 					}
+				}, this);
 
-					if (resolved.descriptor.multiple && !_observe(resolved.observable).size) {
-						result.push(name);
-						return;
-					}
+				return result;
+			}
+		},
+		filledPropertyNames: {
+			type: StringLine,
+			multiple: true,
+			value: function (_observe) {
+				var result = []
+				  , resolved;
 
-					value = _observe(resolved.observable);
+				if (this.isResolventFilled(_observe)) result.push(this.resolventProperty);
 
-					if (value != null) {
-						if (File && (value instanceof File)) {
-							value = _observe(value._path);
+				if (this.isUnresolved) return result;
 
-							if (value == null) result.push(name);
-						}
-					} else {
-						result.push(name);
-					}
+				this.applicablePropertyNames.forEach(function (name) {
+					resolved = this.master.resolveSKeyPath(name, _observe);
+
+					if (!resolved) return;
+
+					if (this.isPropertyFilled(resolved, _observe)) result.push(name);
 				}, this);
 
 				return result;
@@ -160,6 +191,11 @@ module.exports = memoize(function (db) {
 		hasMissingRequiredPropertyNamesDeep: {
 			value: function (_observe) {
 				return _observe(this.missingRequiredPropertyNames._size) > 0;
+			}
+		},
+		hasFilledPropertyNamesDeep: {
+			value: function (_observe) {
+				return _observe(this.filledPropertyNames._size) > 0;
 			}
 		},
 		// Used to set input options for form.

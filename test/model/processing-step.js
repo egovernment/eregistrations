@@ -54,7 +54,7 @@ module.exports = function (t, a) {
 	step.isApplicable = true;
 
 	a.h2("Paused");
-	step.status = 'paused';
+	step.officialStatus = 'paused';
 	a(step.isApplicable, true);
 	a(step.isReady, true);
 	a(step.isPending, false);
@@ -68,7 +68,7 @@ module.exports = function (t, a) {
 	a(step.isPaused, false);
 
 	a.h2("Sent back");
-	step.status = 'sentBack';
+	step.officialStatus = 'sentBack';
 
 	a.h3("Incomplete");
 	a(step.isApplicable, true);
@@ -92,7 +92,7 @@ module.exports = function (t, a) {
 	a(step.isClosed, false);
 
 	a.h2("Rejected");
-	step.status = 'rejected';
+	step.officialStatus = 'rejected';
 
 	a.h3("Incomplete");
 	a(step.isApplicable, true);
@@ -116,7 +116,7 @@ module.exports = function (t, a) {
 	a(step.isClosed, true);
 
 	a.h2("Approved");
-	step.status = 'approved';
+	step.officialStatus = 'approved';
 
 	a.h3("Incomplete");
 	a(step.isApplicable, true);

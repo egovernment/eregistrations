@@ -12,6 +12,8 @@ var compact       = require('es5-ext/array/#/compact')
   , readdir       = require('fs2/readdir')
   , urlParse      = require('url').parse
   , mano          = require('mano')
+  , isSet         = require('es6-set/is-set')
+  , aFrom         = require('es5-ext/array/from')
   , setupTriggers = require('../_setup-triggers')
 
   , create = Object.create
@@ -20,20 +22,25 @@ var compact       = require('es5-ext/array/#/compact')
   , defContext = { url: mano.env.url, domain: mano.env.url && urlParse(mano.env.url).host }
   , setup, getFrom, getTo, getCc, getAttachments;
 
-getFrom = function (user, from) {
+getFrom = function (target, from) {
 	if (from == null) return defaults.from;
-	if (typeof from === 'function') return from(user);
+	if (typeof from === 'function') return from(target);
 	return from;
 };
 
-getTo = function (user, to) {
-	var previousBusinessProcess = user.previousBusinessProcess;
+getTo = function (target, to) {
+	var previousBusinessProcess = target.previousBusinessProcess;
 
+	// Custom 'to' option
 	if (to != null) {
-		if (typeof to === 'function') return to(user);
+		if (typeof to === 'function') return to(target);
 		return to;
 	}
-	if (user.user) return user.user.email;
+
+	// New BusinessProcess model
+	if (isSet(target.notificationEmails)) return aFrom(target.notificationEmails);
+
+	// If we have an instance of derived BusinessProcess, find original one
 	while (previousBusinessProcess) {
 		if (previousBusinessProcess.previousBusinessProcess) {
 			previousBusinessProcess = previousBusinessProcess.previousBusinessProcess;
@@ -41,22 +48,25 @@ getTo = function (user, to) {
 			return previousBusinessProcess.user.email;
 		}
 	}
-	if (user.email) return user.email;
-	if (user.manager) return user.manager.email;
+
+	// Target is most certainly a user
+	if (target.email) return target.email;
+	if (target.manager) return target.manager.email;
 };
 
-getCc = function (user, cc) {
+getCc = function (target, cc) {
 	if (cc != null) {
-		if (typeof cc === 'function') return cc(user);
+		if (typeof cc === 'function') return cc(target);
 		return cc;
 	}
-	if (user.email && user.manager) return user.manager.email;
+
+	if (target.email && target.manager) return target.manager.email;
 };
 
-getAttachments = function (user, att) {
+getAttachments = function (target, att) {
 	if (att == null) return [];
 	if (typeof att === 'function') {
-		return att(user);
+		return att(target);
 	}
 	return [];
 };
@@ -78,8 +88,8 @@ setup = function (path) {
 				return compileTpl(readFile(resolve(dir, path + '.txt')));
 			});
 		}
-		getText = function (user, context) {
-			var data = conf.text(user, context);
+		getText = function (target, context) {
+			var data = conf.text(target, context);
 			if (!conf.textResolvesTemplate) return getTemplate(data);
 			return compileTpl(data);
 		};
@@ -87,14 +97,14 @@ setup = function (path) {
 		resolvedText = compileTpl(conf.text);
 	}
 
-	setupTriggers(conf, delay(function (user) {
-		var text, mailOpts, to = getTo(user, conf.to), prop, localContext;
+	setupTriggers(conf, delay(function (target) {
+		var text, mailOpts, to = getTo(target, conf.to), prop, localContext;
 		if (!to) {
-			console.error("No email provided for " + user.fullName + " [" + user.__id__ + "]");
+			console.error("No email provided for " + target.fullName + " [" + target.__id__ + "]");
 			return;
 		}
 		localContext = create(context);
-		localContext.user = localContext.businessProcess = user;
+		localContext.user = localContext.businessProcess = target;
 		if (conf.resolveGetters) {
 			for (prop in localContext) {
 				if (typeof localContext[prop] === 'function') {
@@ -109,7 +119,7 @@ setup = function (path) {
 				}
 			}
 		}
-		if (!resolvedText) text = getText(user, localContext);
+		if (!resolvedText) text = getText(target, localContext);
 		else text = resolvedText;
 		try { text = resolveTpl(text, localContext); } catch (e) {
 			console.log("Error: Resolution of notification crashed\n\tpath: " + path);
@@ -119,11 +129,11 @@ setup = function (path) {
 		}
 		text = compact.call(text).join('');
 		mailOpts = {
-			from: getFrom(user, conf.from),
+			from: getFrom(target, conf.from),
 			to: to,
-			cc: getCc(user, conf.cc),
+			cc: getCc(target, conf.cc),
 			subject: compact.call(resolveTpl(subject, localContext)).join(''),
-			attachments: getAttachments(user, conf.attachments)
+			attachments: getAttachments(target, conf.attachments)
 		};
 		mailOpts.text = text;
 		mano.mail(mailOpts).done(null, function (err) {

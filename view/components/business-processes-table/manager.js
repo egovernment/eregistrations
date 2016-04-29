@@ -36,13 +36,13 @@ var BusinessProcessesManager = module.exports = function (conf) {
 	  , getOrderIndex = ensureCallable(conf.getOrderIndex)
 	  , searchFilter = getSearchFilter
 	  , itemsPerPage = toNaturalNumber(conf.itemsPerPage)
-	  , pendingBusinessProcesses;
+	  , businessProcesses;
 
 	if (itemsPerPage) this.itemsPerPage = itemsPerPage;
 	if (viewKeyPath) {
-		pendingBusinessProcesses = db.views.pendingBusinessProcesses.resolveSKeyPath(viewKeyPath).value;
+		businessProcesses = db.views.businessProcesses.resolveSKeyPath(viewKeyPath).value;
 	} else {
-		pendingBusinessProcesses = db.views.pendingBusinessProcesses.getBySKeyPath(stepShortPath);
+		businessProcesses = db.views.businessProcesses.getBySKeyPath(stepShortPath);
 	}
 
 	defineProperties(this, {
@@ -50,7 +50,7 @@ var BusinessProcessesManager = module.exports = function (conf) {
 			.getBySKeyPath(conf.fullItemsRoleName || stepShortPath)),
 		_canItemBeApplicable: d((conf.canItemBeApplicable != null)
 			? ensureCallable(conf.canItemBeApplicable) : null),
-		_statusViews: d(pendingBusinessProcesses),
+		_statusViews: d(businessProcesses),
 		_statusMap: d(statusMap),
 		_getItemOrderIndex: d(getOrderIndex),
 		_getSearchFilter: d(searchFilter),
@@ -83,7 +83,9 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 		});
 	}),
 	_isItemApplicable: d(function (item, query) {
-		if (this._canItemBeApplicable && !this._canItemBeApplicable(item, query)) return false;
+		if (this._fullItems.has(item)) {
+			if (this._canItemBeApplicable && !this._canItemBeApplicable(item, query)) return false;
+		}
 		if (!this._statusMap[query.status || 'all'].data.has(item)) return false;
 		if (!query.search) return true;
 		return query.search.split(/\s+/).every(function (value) {

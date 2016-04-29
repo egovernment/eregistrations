@@ -13,6 +13,9 @@ var db                        = require('mano').db
 
 exports._parent = require('./dispatcher-base');
 exports._match  = 'processingStep';
+exports._customFilter = function (processingStep, assignableUsers) {
+	return assignableUsers;
+};
 
 columns.push(tableColumns.archiverColumn);
 columns.push(tableColumns.goToColumn);
@@ -24,7 +27,8 @@ var assignmentColumn = {
 				action: url('assign-business-process'), class: 'submitted-menu-role-select',
 				id: 'form-current-role', autoSubmit: true },
 			p(input({ id: 'assignee-select',
-				dbjs: processingStep._assignee, list: assignableUsers })),
+				dbjs: processingStep._assignee, list:
+					exports._customFilter(processingStep, assignableUsers) })),
 			p({ class: 'submit' }, input({ type: 'submit' })));
 	}
 };

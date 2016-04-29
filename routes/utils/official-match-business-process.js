@@ -36,7 +36,8 @@ module.exports = function (step) {
 					var baseResolution;
 					baseResolution = baseMatcher.call(this, step, businessProcessId);
 					if (!baseResolution) {
-						def.reject(new Error("Data sync issue"));
+						console.error("Data sync issue");
+						def.resolve(false);
 						return;
 					}
 					def.resolve(baseResolution);

@@ -4,9 +4,11 @@
 
 var ensureNaturalNumber = require('es5-ext/object/ensure-natural-number-value')
   , startsWith          = require('es5-ext/string/#/starts-with')
-  , debug               = require('debug-ext')('recently-visited-limiter');
+  , debug               = require('debug-ext')('recently-visited-limiter')
+  , ensureStorage       = require('dbjs-persistence/ensure-storage');
 
 module.exports = function (storage/*, options*/) {
+	ensureStorage(storage);
 	var options = Object(arguments[1])
 	  , limit = (options.limit != null) ? ensureNaturalNumber(options.limit) : 10;
 	storage.on('update', function (event) {

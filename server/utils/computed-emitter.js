@@ -32,6 +32,7 @@ var ComputedEmitter = module.exports = function (storage, keyPath/*, options*/) 
 	}
 
 	this._storage.on('key:' + keyPath || '&', function (event) {
+		if (event.type !== this._type) return;
 		this._map.set(event.ownerId, event.data.value);
 		this.emit(event.ownerId, event.data.value);
 	}.bind(this));

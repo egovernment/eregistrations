@@ -104,6 +104,9 @@ Flexible basic menu button positioning
 	font-size: 17px;
 }
 
+.header-top-menu > li {
+	height: 22px;
+}
 .header-top-menu a span {
 	vertical-align: middle;
 	line-height: 22px;

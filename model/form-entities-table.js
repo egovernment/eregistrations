@@ -161,6 +161,26 @@ module.exports = memoize(function (db) {
 					});
 				}, this);
 			}
+		},
+		hasFilledPropertyNamesDeep: {
+			value: function (_observe) {
+				if (this.isResolventFilled(_observe)) return true;
+
+				return this.entitiesSet.some(function (child) {
+					var sections;
+
+					sections = child.resolveSKeyPath(this.sectionProperty, _observe);
+					sections = sections.object[sections.key];
+
+					if (this.sectionProperty === 'dataForms') {
+						sections = sections.applicable;
+					}
+
+					return sections.some(function (section) {
+						return (_observe(section._hasFilledPropertyNamesDeep));
+					});
+				}, this);
+			}
 		}
 	});
 

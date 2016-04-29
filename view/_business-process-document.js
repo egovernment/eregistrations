@@ -2,8 +2,7 @@
 
 'use strict';
 
-var curry              = require('es5-ext/function/#/curry')
-  , nextTick           = require('next-tick')
+var nextTick           = require('next-tick')
   , _                  = require('mano').i18n.bind('User: Submitted')
   , resolveArchivePath = require('../utils/resolve-document-archive-path')
   , syncHeight         = require('./utils/sync-height')
@@ -19,7 +18,8 @@ var curry              = require('es5-ext/function/#/curry')
 var getFilePreview = function (file) {
 	var type = file.type;
 	if (includes.call(docMimeTypes, type)) {
-		return img({ class: 'submitted-preview-new-word-document', src: '/img/word-doc-icon.png' });
+		return img({ class: 'submitted-preview-new-word-document',
+			src: stUrl('/img/word-doc-icon.png') });
 	}
 	if (!isReadOnlyRender && (type === 'application/pdf')) {
 		return iframe({
@@ -27,7 +27,10 @@ var getFilePreview = function (file) {
 		});
 	}
 	return img({ zoomOnHover: true, src: or(resolve(file._preview, '_url'),
-		resolve(file._thumb, '_url')) });
+		file.thumb._url.map(function (thumbUrl) {
+			if (!thumbUrl) return;
+			return stUrl(thumbUrl);
+		})) });
 };
 
 module.exports = function (doc, sideContent) {
@@ -47,7 +50,7 @@ module.exports = function (doc, sideContent) {
 							function (log) {
 								th(log.label);
 								td({ class: 'submitted-user-history-time' }, log.time);
-								td(log.text && log.text.split('\n').filter(Boolean).map(curry.call(p, 1)));
+								td(md(log.text));
 							}
 						)
 					)

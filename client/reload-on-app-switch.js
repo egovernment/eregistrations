@@ -1,13 +1,20 @@
 'use strict';
 
-var server = require('mano/lib/client/server-sync')
+var server           = require('mano/lib/client/server-sync')
   , isReadOnlyRender = require('mano/client/utils/is-read-only-render')
-  , reload = function () { window.location.href = '/'; };
+  , delay            = require('timers-ext/delay');
+
+var reload = function () {
+	localStorage._reload = '1';
+	window.location.href = '/';
+};
 
 module.exports = function (user) {
 	var inReload;
 	if (isReadOnlyRender) return;
-	user._appAccessId.on('change', function (event) {
+	// Delay response, as immediate reloads were observed, and they got to server
+	// before it had new app resolved
+	user._appAccessId.on('change', delay(function (event) {
 		if (inReload) {
 			console.log("App access id change ", event.oldValue, " -> ", event.newValue, ", ignored");
 			return;
@@ -24,8 +31,8 @@ module.exports = function (user) {
 				reload();
 			});
 		}
-	});
-	user._appName.on('change', function (event) {
+	}, 100));
+	user._appName.on('change', delay(function (event) {
 		if (inReload) {
 			console.log("App name change ", event.oldValue, " -> ", event.newValue, ", ignored");
 			return;
@@ -42,5 +49,5 @@ module.exports = function (user) {
 				reload();
 			});
 		}
-	});
+	}, 100));
 };

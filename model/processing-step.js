@@ -51,15 +51,14 @@ module.exports = memoize(function (db) {
 		// Processing step form fields section (applies only to approved status)
 		dataForm: { type: FormSectionBase, nested: true },
 		// Eventual reason of file been sent back
-		sendBackReason: { type: db.String, required: true  },
+		sendBackReason: { type: db.String, required: true },
 		// Eventual reason of rejection
-		rejectionReason: { type: db.String, required: true  },
+		rejectionReason: { type: db.String, required: true, label: _("Rejection reason") },
 		// Reason of redelegation
-		redelegationReason: { type: db.String, required: true  },
-		// Resolution status of a step
-		// Note: 'pending' option doesn't apply here, as this one is intended for direct resolution
-		// of processing step. For dynamically computed status, see `resolvedStatus` below
-		status: { type: ProcessingStepStatus },
+		redelegationReason: { type: db.String, required: true },
+		// Final status as decided by official
+		// Note: 'pending' option doesn't apply here, as it's not a final status
+		officialStatus: { type: ProcessingStepStatus },
 
 		// Progress of individual step statuses
 		// "paused" status progress
@@ -73,24 +72,13 @@ module.exports = memoize(function (db) {
 			return this.sendBackReason ? 1 : 0;
 		} },
 
-		// Used in redelegationProgress, ensures model sanity
-		hasRedelegationTarget: { type: db.Boolean, value: function (_observe) {
-			var done = Object.create(null);
-			return this.previousSteps.some(function self(step) {
-				if (done[step.__id__]) return;
-				done[step.__id__] = true;
-				if (_observe(step._delegatedFrom) === this) return true;
-				return step.previousSteps.some(self, this);
-			}, this);
-		} },
-
 		// "redelegate" status progress
 		redelegationProgress: { type: Percentage, value: function (_observe) {
 			var total = 0, status = 0;
 			total++;
-			if (this.hasRedelegationTarget) status++;
-			total++;
 			if (this.redelegationReason) status++;
+			total++;
+			if (this.redelegatedTo) status++;
 			return status / total;
 		} },
 
@@ -99,99 +87,68 @@ module.exports = memoize(function (db) {
 			return this.rejectionReason ? 1 : 0;
 		} },
 
-		// Whether process is pending at step
-		isPending: { value: function (_observe) {
-			// If not ready, then obviously not pending
-			if (!this.isReady) return false;
-			// If status not decided then clearly pending
-			if (!this.status) return true;
-			// If approved, but form data is complete, it's still pending
-			if (this.status === 'approved') return (this.approvalProgress !== 1);
-			// If sent back, but no reason provided, it's still pending
-			if (this.status === 'sentBack') return (this.sendBackProgress !== 1);
-			// If rejected, but no reason provided, it's still pending
-			if (this.status === 'rejected') return (this.rejectionProgress !== 1);
-			// If redelegated, but no reason provided, it's still pending
-			if (this.status === 'redelegated') return (this.redelegationProgress !== 1);
-			// 'paused' is the only option left, if it's not done waiting, it's still pending
-			return (this.pauseProgress !== 1);
-		} },
-
-		// Whether process is paused at step
-		isPaused: { value: function (_observe) {
-			// If not ready, then obviously not paused
-			if (!this.isReady) return false;
-			if (this.status !== 'paused') return false;
-			return this.pauseProgress === 1;
-		} },
-
-		// Whether process was sent back from this step
-		isSentBack: { value: function (_observe) {
-			// We don't check isReady as this is used in isReady
-			// No sentBack status, means no sent back
-			if (this.status !== 'sentBack') return false;
-			// Provided reason confirms complete sent back
-			return this.sendBackProgress === 1;
-		} },
-
-		// Whether process was redelegated from this step
-		isRedelegated: { value: function (_observe) {
-			// If not ready, then obviously not isRedelegated
-			if (!this.isReady) return false;
-			if (this.status !== 'redelegated') return false;
-			return this.redelegationProgress === 1;
-		} },
-
 		// Use it to redelegate from this step to previousStep
 		redelegate: {
 			type: db.Function,
-			value: function (previousStep, _observe) {
-				this.status = 'redelegated';
-				previousStep.delegatedFrom = this;
-				previousStep.status = null;
+			value: function (targetStep) {
+				this.redelegatedTo = targetStep;
+				this.officialStatus = 'redelegated';
 			}
 		},
 
-		// Should be called once the delegated step has finished it's job
-		undelegate: {
-			type: db.Function,
-			value: function (observeFunction) {
-				if (!this.delegatedFrom) return;
-				this.delegatedFrom.status = null;
-				this.delegatedFrom = null;
-			}
-		},
-
-		// Whether process was rejected at this step
-		isRejected: { value: function (_observe) {
-			// If not ready, then obviously not rejected
-			if (!this.isReady) return false;
-			// No rejected status, means no it's not rejected
-			if (this.status !== 'rejected') return false;
-			// Provided reason confirms complete rejection
-			return this.rejectionProgress === 1;
-		} },
-
-		// Whether process successfully passed this step
-		isApproved: { value: function (_observe) {
-			// If not ready, then obviously not approved
-			if (!this.isReady) return false;
-			// No approved status, means no it's not approved
-			if (this.status !== 'approved') return false;
-			// Completed form confirms step completion
-			return this.approvalProgress === 1;
-		} },
-
-		// Dynamically resolved processing step status
-		resolvedStatus: { type: ProcessingStepStatus, value: function (_observe) {
+		// Computed processing step status. Resolves to final (not 'pending') status
+		// only if all constraints are met, otherwise 'pending' status is resolved
+		statusComputed: { type: ProcessingStepStatus, value: function () {
+			// If not ready, then no status (yet)
 			if (!this.isReady) return null;
-			if (this.isPending) return 'pending';
-			if (this.isApproved) return 'approved';
-			if (this.isRejected) return 'rejected';
-			if (this.isSentBack) return 'sentBack';
-			if (this.isRedelegated) return 'redelegated';
-			if (this.isPaused) return 'paused';
+
+			// If status not decided then clearly pending
+			if (!this.officialStatus) return 'pending';
+
+			if (this.officialStatus === 'approved') {
+				return (this.approvalProgress === 1) ? 'approved' : 'pending';
+			}
+
+			if (this.officialStatus === 'sentBack') {
+				return (this.sendBackProgress === 1) ? 'sentBack' : 'pending';
+			}
+
+			if (this.officialStatus === 'rejected') {
+				return (this.rejectionProgress === 1) ? 'rejected' : 'pending';
+			}
+
+			if (this.officialStatus === 'redelegated') {
+				return (this.redelegationProgress === 1) ? 'redelegated' : 'pending';
+			}
+
+			if (this.officialStatus === 'paused') {
+				return (this.pauseProgress === 1) ? 'paused' : 'pending';
+			}
+			return 'pending';
 		} },
+		// In initial phase it's proxy of `statusComputed` result
+		// However when final status is reached below getter is shadowed
+		// with direct value (so any further model changes do not invalidate
+		// once decided status).
+		// `statusComputed` is kept separetely as we need access to computed
+		// status also after final status is met (it's to gently handle eventual valid returns to step)
+		status: { type: ProcessingStepStatus, value: function () {
+			return this.statusComputed;
+		} },
+
+		// Convienient access getters:
+		// Whether process is pending at step
+		isPending: { value: function (_observe) { return this.status === 'pending'; } },
+		// Whether process successfully passed this step
+		isApproved: { value: function (_observe) { return this.status === 'approved'; } },
+		// Whether process was sent back from this step
+		isSentBack: { value: function (_observe) { return this.status === 'sentBack'; } },
+		// Whether process was rejected at this step
+		isRejected: { value: function (_observe) { return this.status === 'rejected'; } },
+		// Whether process was redelegated from this step
+		isRedelegated: { value: function (_observe) { return this.status === 'redelegated'; } },
+		// Whether process is paused at step
+		isPaused: { value: function (_observe) { return this.status === 'paused'; } },
 
 		requirementUploads: { type: UploadsProcess, nested: true },
 		paymentReceiptUploads: { type: UploadsProcess, nested: true },
@@ -244,7 +201,7 @@ module.exports = memoize(function (db) {
 	});
 
 	// Step which redelegated to this step
-	ProcessingStep.prototype.define('delegatedFrom', {
+	ProcessingStep.prototype.define('redelegatedTo', {
 		type: ProcessingStep
 	});
 

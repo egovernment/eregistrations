@@ -95,7 +95,7 @@ exports.archiveServer = function (data) {
 			return deferred.some(storages, function (storage) {
 				return storage.getObject(businessProcessId)(function (records) {
 					if (!records.length) return;
-					return storage.getComputed(businessProcessId + '/isSubmitted')(function (data) {
+					return storage.get(businessProcessId + '/isSubmitted')(function (data) {
 						var businessName, paths = [];
 						if (!data || (data.value !== '11')) {
 							res.statusCode = 404;

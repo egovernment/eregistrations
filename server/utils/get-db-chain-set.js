@@ -32,7 +32,10 @@ var observe = function (set, storages, ownerId, keyPath) {
 		child = observe(set, storages, nu, keyPath);
 		return child.promise;
 	};
-	listener = function (event) { handler(event.data).done(); };
+	listener = function (event) {
+		if (event.type !== 'direct') return;
+		handler(event.data).done();
+	};
 	storages.forEach(function (storage) { storage.on('keyid:' + id, listener); });
 	promise = deferred.some(storages, function (storage) {
 		return storage.get(id)(function (data) {

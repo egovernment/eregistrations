@@ -2,8 +2,9 @@
 
 'use strict';
 
-var _            = require('mano').i18n.bind('View: Requests')
-  , actionsColumn = require('./_business-process-table-columns').actionsColumn
+var _              = require('mano').i18n.bind('View: Requests')
+  , actionsColumn  = require('./_business-process-table-columns').actionsColumn
+  , getServiceIcon = require('./_business-process-table-columns').getServiceIcon
   , formatLastModified = require('./utils/last-modified');
 
 exports._parent = require('./manager');
@@ -14,7 +15,12 @@ exports['manager-account-content'] = function () {
 	var requests = this.user.managedBusinessProcesses, user = this.user;
 
 	insert(_if(not(this.user._isManagerActive),
-		section(p({ class: 'entities-overview-info' }, _("Your account is currently inactive")))));
+		p({ class: 'section-primary-legend' }, _("Your account is currently inactive")),
+		p({ class: 'section-primary-legend' }, _("Here is the list of " +
+			"requests that you have started " +
+			"in the name of your client. " +
+			"Click on the pen to modify the request or on the " +
+			"magnifying glass to see the status of the registration."))));
 
 	insert(_if(requests._size, function () {
 		return section({ class: 'submitted-main table-responsive-container' },
@@ -32,7 +38,10 @@ exports['manager-account-content'] = function () {
 					requests,
 					function (businessProcess) {
 						return tr(
-							td(businessProcess._abbr),
+							td({ class: 'submitted-user-data-table-service' },
+								span({ class: 'hint-optional hint-optional-right',
+										'data-hint': businessProcess._label },
+									getServiceIcon(businessProcess))),
 							td(businessProcess.user._fullName),
 							td(businessProcess._businessName),
 							td(_if(businessProcess._isSubmitted, function () {

@@ -16,7 +16,6 @@ var aFrom            = require('es5-ext/array/from')
   , resolve          = require('path').resolve
   , fork             = require('child_process').fork
   , mano             = require('mano')
-  , getAddRecords    = require('../../data-fragments/get-add-records-to-fragment')
   , getDriver        = require('./local/master')
   , getDriverGlobal  = require('./global/master')
 
@@ -26,6 +25,7 @@ var aFrom            = require('es5-ext/array/from')
 module.exports = function (root, data) {
 	var getFragment, driver, driverGlobal, emitter, def, userStorage, storageNamesGlobal
 	  , getInitialFragment, registerSlaveProcess;
+
 	root = ensureString(root);
 
 	ensureObject(data);
@@ -49,6 +49,8 @@ module.exports = function (root, data) {
 	emitter = fork(resolve(root, 'server/processes/memory-db'));
 	process.on('exit', function () { emitter.kill(); });
 	emitter.on('exit', function () { process.kill(); });
+
+	var getAddRecords = require('../../data-fragments/get-add-records-to-fragment');
 
 	def = deferred();
 	emitter.once('message', function (message) {

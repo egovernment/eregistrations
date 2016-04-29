@@ -19,6 +19,7 @@ module.exports = memoize(function (storage, recordType, keyPath, value) {
 	return deferred.map(storages, function (storage) {
 		storage.on('key:' + keyPath || '&', function (event) {
 			var result;
+			if (event.type !== recordType) return;
 			if (recordType === 'computed') result = resolveFilter(value, event.data.value);
 			else result = resolveDirectFilter(value, event.data.value, event.id);
 			if (result) set.add(event.ownerId);

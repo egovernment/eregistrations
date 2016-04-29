@@ -50,20 +50,24 @@ module.exports = memoize(function (db/*, options */) {
 		},
 		approvalProgress: {
 			value: function (_observe) {
-				var requirementUploads;
+				var requirementUploads, certificates, requirementsProgress = 0, certificatesProgress = 0;
 
 				if (this.steps && _observe(this.steps.applicable._size)) {
 					requirementUploads = this.steps.applicable.first.requirementUploads;
 				} else {
 					requirementUploads = this.requirementUploads;
 				}
+				certificates = this.master.certificates;
 
 				if (requirementUploads) {
-					return _observe(requirementUploads.frontDeskApplicable._size)
-						=== _observe(requirementUploads.frontDeskApproved._size) ? 1 : 0;
+					requirementsProgress = _observe(requirementUploads.frontDeskApplicable._size)
+						=== _observe(requirementUploads.frontDeskApproved._size) ? 0.5 : 0;
 				}
+				certificatesProgress = _observe(certificates.toBeHanded).every(function (cert) {
+					return _observe(cert._wasHanded);
+				}) ? 0.5 : 0;
 
-				return 0;
+				return requirementsProgress + certificatesProgress;
 			}
 		}
 	});

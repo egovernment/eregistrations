@@ -42,6 +42,10 @@
 	text-decoration: none;
 	padding: 0 17px;
 	display: block;
+	text-align: center;
+	line-height: 22px;
+	padding-top: 11px;
+	padding-bottom: 11px;
 }
 
 .submitted-menu button {

@@ -462,10 +462,91 @@ ul.multiple {
 	display: none;
 }
 
+.form-elements .dbjs-input-component > label,
+.form-elements .dbjs-input-component > .input {
+	padding: 0 10px;
+	display: inline-block;
+	vertical-align: top;
+}
+.form-elements .dbjs-input-component.pure-value > .input {
+	padding-top: 11px;
+}
+
+.form-elements .dbjs-input-component > label {
+	width: 40%;
+	text-align: right;
+	font-weight: 500;
+	margin: 11px 0;
+}
+.form-elements .dbjs-input-component > .input {
+	width: 60%;
+}
+.form-elements .dbjs-input-component > .input:first-child {
+	margin-left: 40%;
+}
+
+.form-elements .dbjs-input-component > .input input[type="text"],
+.form-elements .dbjs-input-component > .input input[type="number"],
+.form-elements .dbjs-input-component > .input input[type="password"],
+.form-elements .dbjs-input-component > .input input[type="date"],
+.form-elements .dbjs-input-component > .input input[type="month"],
+.form-elements .dbjs-input-component > .input input[type="week"],
+.form-elements .dbjs-input-component > .input input[type="time"],
+.form-elements .dbjs-input-component > .input input[type="datetime"],
+.form-elements .dbjs-input-component > .input input[type="datetime-local"],
+.form-elements .dbjs-input-component > .input input[type="search"],
+.form-elements .dbjs-input-component > .input input[type="email"],
+.form-elements .dbjs-input-component > .input input[type="url"],
+.form-elements .dbjs-input-component > .input input[type="tel"],
+.form-elements .dbjs-input-component > .input input[type="color"],
+.form-elements .dbjs-input-component > .input select,
+.form-elements .dbjs-input-component > .input textarea,
+.form-elements .dbjs-input-component > .input > .radio  {
+	max-width: 90%;
+}
+
+.form-elements .dbjs-input-component .multiple input[type="text"],
+.form-elements .dbjs-input-component .multiple input[type="number"],
+.form-elements .dbjs-input-component .multiple input[type="email"],
+.form-elements .dbjs-input-component .multiple input[type="password"],
+.form-elements .dbjs-input-component .multiple input[type="date"],
+.form-elements .dbjs-input-component .multiple input[type="month"],
+.form-elements .dbjs-input-component .multiple input[type="week"],
+.form-elements .dbjs-input-component .multiple input[type="time"],
+.form-elements .dbjs-input-component .multiple input[type="datetime"],
+.form-elements .dbjs-input-component .multiple input[type="datetime-local"],
+.form-elements .dbjs-input-component .multiple input[type="search"],
+.form-elements .dbjs-input-component .multiple input[type="url"],
+.form-elements .dbjs-input-component .multiple input[type="tel"],
+.form-elements .dbjs-input-component .multiple input[type="color"],
+.form-elements .dbjs-input-component .multiple select,
+.form-elements .dbjs-input-component .multiple textarea  {
+	max-width: 100%;
+}
+
+.form-elements .dbjs-input-component > .input .input {
+	width: auto;
+	margin-left: 0;
+	padding-left: 0;
+}
+
+.form-elements .dbjs-input-component > .input .multiple ul {
+	max-width: 96%;
+}
+
 /*
 Styles applied while screen size is less than 640px
 */
 @media only screen and (max-width: var(--mobile-width)) {
+	.form-elements .dbjs-input-component > label {
+		text-align: left;
+		width: 100%;
+		margin: 3px 0 -3px;
+	}
+	.form-elements .dbjs-input-component > .input:first-child {
+		margin-left: 0;
+	}
+
 	.form-elements .dbjs-input-component > .label,
 	.form-elements .dbjs-input-component > .input {
 		display: block;

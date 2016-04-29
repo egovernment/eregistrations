@@ -1,0 +1,27 @@
+.manager-label {
+	background: var(--manager-label-base);
+	color: var(--white-text);
+	display: inline-block;
+	margin: 0 3px 0 0;
+	padding: 0 6px;
+	font-size: 10px;
+	text-transform: uppercase;
+	height: 21px;
+	line-height: 22px;
+	white-space: nowrap;
+	font-weight: 300;
+	position: relative;
+	border-left: 1px solid var(--manager-label-base);
+}
+
+.manager-label::after {
+	content: "";
+	position: absolute;
+	top: 20px;
+	left: 0;
+	border-top: 6px solid var(--normal-dark-background);
+	border-left: 6px solid transparent;
+	border-right: 6px solid transparent;
+	margin-left: 0;
+	transform: rotate(-135deg);
+}

@@ -13,14 +13,14 @@ module.exports = require('eregistrations/server/routes/official')([{
 	listProperties: require('../../../apps-common/business-process-list-properties'),
 	listComputedProperties: require('../../../apps-common/business-process-list-computed-properties'),
 	itemsPerPage: require('../../../env').objectsListItemsPerPage,
-	statusIndexName: 'processingSteps/map/officer/resolvedStatus'
+	statusIndexName: 'processingSteps/map/officer/status'
 }, {
 	roleName: 'revision',
 	statusMap: require('../../official-revision/business-processes/map'),
 	listProperties: require('../../../apps-common/business-process-list-properties'),
 	listComputedProperties: require('../../../apps-common/business-process-list-computed-properties'),
 	itemsPerPage: require('../../../env').objectsListItemsPerPage,
-	statusIndexName: 'processingSteps/map/revision/resolvedStatus'
+	statusIndexName: 'processingSteps/map/revision/status'
 }], {
 	resolveConf: function (req) {
 		var pathname = url.parse(req.headers.referer).pathname;

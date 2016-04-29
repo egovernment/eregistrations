@@ -4,7 +4,6 @@ var d        = require('d')
   , isNested = require('dbjs/is-dbjs-nested-object')
   , _if      = require('observable-value/if')
   , map      = require('observable-value/map')
-  , resolve  = require('observable-value/resolve')
   , _        = require('mano').i18n.bind("Documents")
   , db       = require('mano').db
   , docMimeTypes = require('../../utils/microsoft-word-doc-mime-types')
@@ -50,9 +49,13 @@ module.exports = Object.defineProperties(db.File, {
 				el('a', { href: file._url, target: '_blank', class: 'file-thumb-image' },
 					el('img', { src: (function () {
 						if (includes.call(docMimeTypes, file.type)) {
-							return '/img/word-doc-icon.png';
+							return stUrl('/img/word-doc-icon.png');
 						}
-						return resolve(file, '_thumb', '_url');
+
+						return file.thumb._url.map(function (thumbUrl) {
+							if (!thumbUrl) return;
+							return stUrl(thumbUrl);
+						});
 					}()) })),
 				el('div', { class: 'file-thumb-actions' },
 					el('span', { class: 'file-thumb-document-size' },

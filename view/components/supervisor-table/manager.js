@@ -58,7 +58,7 @@ SupervisorManager.prototype = Object.create(ListManager.prototype, {
 		if (!query.step) {
 			views = db.views.supervisor.all;
 		} else {
-			views = db.views.pendingBusinessProcesses[query.step].pending;
+			views = db.views.businessProcesses[query.step].pending;
 		}
 		if (views.totalSize <= this.itemsPerPage) return false;
 		// If it's not about first page, it's only server that knows
@@ -79,7 +79,7 @@ SupervisorManager.prototype = Object.create(ListManager.prototype, {
 					views = db.views.supervisor.all;
 					list = unserializeView(views.get(1), this._type);
 				} else {
-					views = db.views.pendingBusinessProcesses[query.step].pending;
+					views = db.views.businessProcesses[query.step].pending;
 					stepViews = unserializeView(views.get(1), this._type);
 					list = stepViews.map(function (businessProcess) {
 						return businessProcess.processingSteps.map[query.step];
@@ -103,7 +103,7 @@ SupervisorManager.prototype = Object.create(ListManager.prototype, {
 					}
 				});
 				result = list.filter(function (processingStep) {
-					var value = Date.now() - (processingStep._resolvedStatus.lastModified / 1000);
+					var value = Date.now() - (processingStep._status.lastModified / 1000);
 					return value >= threshold;
 				});
 				return { list: result, size: result.length };
