@@ -38,7 +38,8 @@ module.exports = memoize(function (db/*, options*/) {
 				return a.resolveSKeyPath(cardinalPropertyKey).descriptor._lastOwnModified_ -
 					b.resolveSKeyPath(cardinalPropertyKey).descriptor._lastOwnModified_;
 			});
-		} }
+		} },
+		isEmpty: { value: function (ignore) { return !this.ordered.size; } }
 	});
 	NestedMap.prototype.map._descriptorPrototype_.setProperties({
 		nested: true,
