@@ -360,7 +360,7 @@ https://code.google.com/p/chromium/issues/detail?id=409581 */
 .dbjs.multiple {
 	display: inline-block;
 	list-style-type: none;
-	max-width: 100%;
+	max-width: 95%;
 }
 
 .dbjs.multiple .controls {
@@ -531,7 +531,15 @@ ul.multiple {
 }
 
 .form-elements .dbjs-input-component > .input .multiple ul {
-	max-width: 96%;
+	max-width: 95%;
+}
+
+.form-elements .dbjs-input-component > .input .multiple ul select {
+	max-width: 100%;
+}
+
+.form-elements .dbjs-input-component > .input .multiple.more-than-one ul select {
+	max-width: 95%;
 }
 
 /*
