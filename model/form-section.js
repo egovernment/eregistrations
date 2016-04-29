@@ -241,11 +241,7 @@ module.exports = memoize(function (db) {
 		// not count towards progress and rendered not as inputs.
 		readOnlyPropertyNames: { type: StringLine, multiple: true },
 		toJSON: { type: db.Function, value: function (ignore) {
-			var result = {
-				label: this.label,
-				lastEditDate: this.getOwnDescriptor('lastEditDate').valueToJSON()
-			};
-			var fields = [];
+			var result = this.commonToJSON(), fields = [];
 			this.filledPropertyNames.forEach(function (name) {
 				var data = this.master.resolveSKeyPath(name), descriptor = data.ownDescriptor;
 				if (!descriptor.isValueEmpty()) fields.push(descriptor.fieldToJSON());

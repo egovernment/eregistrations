@@ -271,6 +271,12 @@ module.exports = memoize(function (db) {
 		pageUrl: {
 			type: StringLine
 		},
+		commonToJSON: { type: db.Function, value: function (ignore) {
+			return {
+				label: this.label,
+				lastEditDate: this.getOwnDescriptor('lastEditDate').valueToJSON()
+			};
+		} },
 		toJSON: { value: function (ignore) {
 			throw new Error("toJSON not implemented for " + this.__id__);
 		} }
