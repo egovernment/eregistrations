@@ -7,8 +7,8 @@ var db            = require('mano').db
 
 var matchBusinessProcess = function (businessProcessId) {
 	this.businessProcess = db.BusinessProcess.getById(businessProcessId);
-	if (!this.businessProcess.isSubmitted) return false;
-	return Boolean(this.businessProcess);
+	if (!this.businessProcess) return false;
+	return this.businessProcess.isSubmitted;
 };
 
 module.exports = {
