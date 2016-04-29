@@ -17,8 +17,7 @@ module.exports = exports = function (context) {
 							requirementUpload.document.getTranslations())),
 							_if(eq(requirementUpload.rejectReasons._size, 1),
 								p(requirementUpload.rejectReasons._first),
-								ul({ class: 'info-main-documents-sent-back-list-reasons' },
-									requirementUpload.rejectReasons, identity))];
+								ul(requirementUpload.rejectReasons, identity))];
 					})))),
 			_if(businessProcess.paymentReceiptUploads.recentlyRejected._size,
 				li(h4(_("Issues with uploaded payment receipts:")), div({ class: 'free-form' },
