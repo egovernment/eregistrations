@@ -38,6 +38,10 @@ module.exports = memoize(function (db) {
 		// Whether provided value should be considered empty
 		isValueEmpty: { type: db.Function, value: function (value) {
 			if (value == null) return true;
+			if (value.owner && (value.key === 'map')) {
+				var NestedMap = this.database.NestedMap;
+				if (NestedMap && (value.owner instanceof NestedMap)) return value.owner.isEmpty();
+			}
 			if (typeof value.isEmpty !== 'function') return false;
 			return value.isEmpty();
 		} },
