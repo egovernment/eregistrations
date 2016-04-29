@@ -25,6 +25,7 @@ var aFrom                = require('es5-ext/array/from')
   , ensureDriver         = require('dbjs-persistence/ensure-driver')
   , unserializeView      = require('../utils/db-view/unserialize-ids')
   , resolveStepPath      = require('../utils/resolve-processing-step-full-path')
+  , isOfficialRoleName   = require('../utils/is-official-role-name')
   , getReducedFrag       = require('./data-fragments/get-reduced-object-fragments')
   , getRedRecFrag        = require('./data-fragments/get-reduced-records-fragment')
   , getAddRecFrag        = require('./data-fragments/get-add-records-to-fragment')
@@ -37,8 +38,7 @@ var aFrom                = require('es5-ext/array/from')
   , defaultUserListProps = require('../apps/users-admin/user-list-properties')
 
   , create = Object.create, keys = Object.keys, stringify = JSON.stringify
-  , emptyFragment = new Fragment()
-  , isOfficialRoleName = RegExp.prototype.test.bind(/^official[A-Z]/);
+  , emptyFragment = new Fragment();
 
 var managerValidationUserListProps = require('../apps/manager-validation/user-list-properties');
 

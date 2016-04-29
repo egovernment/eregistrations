@@ -10,8 +10,7 @@ var aFrom            = require('es5-ext/array/from')
   , serializeValue   = require('dbjs/_setup/serialize/value')
   , ensureStorage    = require('dbjs-persistence/ensure-storage')
   , getUsersFragment = require('./get-users-fragment')
-
-  , isOfficialRole = RegExp.prototype.test.bind(/^official[A-Z]/);
+  , isOfficialRole   = require('../../utils/is-official-role-name');
 
 module.exports = function (db, storage/*, options*/) {
 	var roleNames = aFrom(ensureDatabase(db).Role.members).filter(isOfficialRole)
