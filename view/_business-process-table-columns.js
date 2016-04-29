@@ -65,7 +65,7 @@ exports.goToColumn = {
 var generateCertificatesList = (function () {
 	var getStatusLabel = function (cert) {
 		if (cert._status) return _if(cert._status, ["- ", cert._status]);
-		return "- " + certificateStatusMeta[cert.status].label;
+		return cert.status && ("- " + certificateStatusMeta[cert.status].label);
 	};
 	var resolveStatusClass = function (status) {
 		if (!status) return;
