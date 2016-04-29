@@ -10,7 +10,7 @@ var find           = require('es5-ext/array/#/find')
 
   , _d = _;
 
-var resolveUploads = function (targetMap) {
+var resolveUploads = function (context, targetMap) {
 	var target = targetMap.owner, businessProcess = target.master;
 	var kind = (targetMap.key === 'requirementUploads')
 		? 'requirementUpload' : 'paymentReceiptUpload';
@@ -31,7 +31,7 @@ var resolveUploads = function (targetMap) {
 	});
 };
 
-var resolveCertificates = function (targetMap) {
+var resolveCertificates = function (context, targetMap) {
 	var target = targetMap.owner, businessProcess = target.master;
 	return businessProcess._isApproved.map(function (isApproved) {
 		if (!isApproved) {
@@ -55,8 +55,8 @@ var resolveCertificates = function (targetMap) {
 	});
 };
 
-var drawDocumentsPart = function (target, urlPrefix) {
-	return mmap(resolveUploads(target.requirementUploads), function (data) {
+var drawDocumentsPart = function (context, target, urlPrefix) {
+	return mmap(resolveUploads(context, target.requirementUploads), function (data) {
 		if (!data) return;
 		return _if(data._length || data.length, function () {
 			return [
@@ -87,8 +87,8 @@ var drawDocumentsPart = function (target, urlPrefix) {
 	});
 };
 
-var drawPaymentReceiptsPart = function (target, urlPrefix) {
-	return mmap(resolveUploads(target.paymentReceiptUploads), function (data) {
+var drawPaymentReceiptsPart = function (context, target, urlPrefix) {
+	return mmap(resolveUploads(context, target.paymentReceiptUploads), function (data) {
 		if (!data) return;
 		return _if(data._length || data.length, function () {
 			return [
@@ -116,8 +116,8 @@ var drawPaymentReceiptsPart = function (target, urlPrefix) {
 	});
 };
 
-var drawCertificatesPart = function (target, urlPrefix) {
-	return mmap(resolveCertificates(target.certificates), function (data) {
+var drawCertificatesPart = function (context, target, urlPrefix) {
+	return mmap(resolveCertificates(context, target.certificates), function (data) {
 		if (!data) return;
 		return _if(data._length || data.length, function () {
 			return [
@@ -169,9 +169,9 @@ module.exports = exports = function (context/*, options*/) {
 		section(
 			{ class: 'section-primary' },
 			h2(_("Documents")),
-			drawDocumentsPart(uploadsResolver, urlPrefix),
-			drawPaymentReceiptsPart(uploadsResolver, urlPrefix),
-			drawCertificatesPart(uploadsResolver, urlPrefix)
+			drawDocumentsPart(context, uploadsResolver, urlPrefix),
+			drawPaymentReceiptsPart(context, uploadsResolver, urlPrefix),
+			drawCertificatesPart(context, uploadsResolver, urlPrefix)
 		),
 		section(
 			{ class: 'section-primary entity-data-section-side' },
