@@ -161,8 +161,10 @@ module.exports = function (doc, collection/*, options*/) {
 		)
 	];
 
-	syncHeight(mainContent || docPreviewElement);
-	syncStyle.call(sideContentContainer, mainContent || docPreviewElement, 'height', isMobileView);
+	if (docPreviewElement) {
+		syncHeight(docPreviewElement);
+		syncStyle.call(sideContentContainer, docPreviewElement, 'height', isMobileView);
+	}
 
 	return result;
 };
