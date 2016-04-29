@@ -16,7 +16,7 @@ var resolveUploads = function (context, targetMap) {
 		? 'requirementUpload' : 'paymentReceiptUpload';
 	var snapshot = (kind === 'requirementUpload') ? businessProcess.requirementUploads.dataSnapshot
 		: businessProcess.paymentReceiptUploads.dataSnapshot;
-	if (target === businessProcess) return snapshot._resolved;
+	if (context.user.currentRoleResolved === 'user') return snapshot._resolved;
 	return snapshot._resolved.map(function (data) {
 		return getSetProxy(targetMap.applicable).map(function (upload) {
 			var uniqueKey = (kind === 'requirementUpload') ? upload.document.uniqueKey : upload.key;
@@ -35,10 +35,10 @@ var resolveCertificates = function (context, targetMap) {
 	var target = targetMap.owner, businessProcess = target.master;
 	return businessProcess._isApproved.map(function (isApproved) {
 		if (!isApproved) {
-			if (target === businessProcess) return null; // User is viewer
+			if (context.user.currentRoleResolved === 'user') return null; // User is viewer
 			return targetMap.released.toArray(); // Official is viewer
 		}
-		if (target === businessProcess) {
+		if (context.user.currentRoleResolved === 'user') {
 			// User is viewer
 			return businessProcess.certificates.dataSnapshot._resolved;
 		}
