@@ -72,30 +72,29 @@ exports.main = function () {
 				p(_("Introduction to demo version"))))));
 
 	insert(_if(this.manager, function () {
-		var managedUser         = this.manager.currentlyManagedUser
-		  , isUserReallyManaged = eq(this.manager, managedUser._manager);
+		return this.manager._currentlyManagedUser.map(function (managedUser) {
+			if (!managedUser) return;
+			var isUserReallyManaged = eq(this.manager, managedUser._manager);
 
-		requestAccountDialog(managedUser);
+			requestAccountDialog(managedUser);
 
-		return div({ class: 'manager-bar' },
-			div({ class: 'content' },
-				div({ class: 'manager-bar-info' },
-					span(_("Client"), ": "),
-						this.appName === 'user' ? a({ href: '/' }, managedUser._fullName) :
-							exports._getMyAccountButton(this.manager, managedUser._fullName)
-					),
-				_if(isUserReallyManaged, div({ class: 'manager-bar-actions' },
-					_if(not(managedUser._isActiveAccount),
-						a({
-							class: 'actions-create',
-							href: '#request-create-account'
-						}, span(_('Create account for this client')))
-						),
-					a({ href: '/managed-user-profile/' },
-						span({ class: 'hint-optional hint-optional-left',
+			return div({ class: 'manager-bar' },
+				div({ class: 'content' },
+					div({ class: 'manager-bar-info' },
+						span(_("Client"), ": "),
+						this.appName === 'user' ? a({ href: '/' }, managedUser._fullName)
+						: exports._getMyAccountButton(this.manager, managedUser._fullName)),
+					_if(isUserReallyManaged, div({ class: 'manager-bar-actions' },
+						_if(not(managedUser._isActiveAccount),
+							a({
+								class: 'actions-create',
+								href: '#request-create-account'
+							}, span(_('Create account for this client')))),
+						a({ href: '/managed-user-profile/' },
+							span({ class: 'hint-optional hint-optional-left',
 								'data-hint': _('edit user details') },
-							i({ class: 'fa fa-cog' })))))
-				));
+								i({ class: 'fa fa-cog' })))))));
+		}.bind(this));
 	}.bind(this)));
 
 	div({ class: 'user-forms', id: 'sub-main' });
