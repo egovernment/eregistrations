@@ -13,7 +13,7 @@ module.exports = function (context) {
 		return div({ class: 'section-secondary' },
 			(kind === 'paymentReceiptUpload')
 			? [h4(_("This payment receipt was rejected for the following reason(s)"), ':'),
-					p(snapshot.rejectReasons[0])]
+					p(getArrayIndex(snapshot.rejectReasons, 0))]
 			: [h4(_("This document was rejected for the following reason(s)")),
 					_if(eq(snapshot.rejectReasons._length || snapshot.rejectReasons.length, 1),
 						p(getArrayIndex(snapshot.rejectReasons, 0)),
