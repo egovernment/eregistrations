@@ -16,7 +16,14 @@ var resolveUploads = function (context, targetMap) {
 		? 'requirementUpload' : 'paymentReceiptUpload';
 	var snapshot = (kind === 'requirementUpload') ? businessProcess.requirementUploads.dataSnapshot
 		: businessProcess.paymentReceiptUploads.dataSnapshot;
+
+	// If it's a user, then we show to him direct result of saved snapshot
 	if (context.user.currentRoleResolved === 'user') return snapshot._resolved;
+
+	// Otherwise we show only those items from snapshot which are applicable according
+	// to current model state.
+	// Additionally for revision case we show processable items even if they're not
+	// represented in snapshot
 	return snapshot._resolved.map(function (data) {
 		return getSetProxy(targetMap.applicable).map(function (upload) {
 			var uniqueKey = (kind === 'requirementUpload') ? upload.document.uniqueKey : upload.key;
@@ -35,14 +42,16 @@ var resolveCertificates = function (context, targetMap) {
 	var target = targetMap.owner, businessProcess = target.master;
 	return businessProcess._isApproved.map(function (isApproved) {
 		if (!isApproved) {
-			if (context.user.currentRoleResolved === 'user') return null; // User is viewer
-			return targetMap.released.toArray(); // Official is viewer
+			// User, can see released certificates only when request is finalized
+			if (context.user.currentRoleResolved === 'user') return null;
+			return targetMap.released.toArray();
 		}
 		if (context.user.currentRoleResolved === 'user') {
-			// User is viewer
+			// For user we show certificates as they're stored in snapshot
 			return businessProcess.certificates.dataSnapshot._resolved;
 		}
-		// Official is viewer
+		// For officials we show only those certificates from snapshot which are applicable
+		// to be exposed to him
 		return businessProcess.certificates.dataSnapshot._resolved.map(function (data) {
 			if (!data) return;
 			return getSetProxy(targetMap.released).map(function (certificate) {
