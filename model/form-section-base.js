@@ -12,7 +12,7 @@ var memoize             = require('memoizee/plain')
   , _                   = require('mano').i18n.bind('Model: FormSectionBase');
 
 module.exports = memoize(function (db) {
-	var Date, StringLine, Percentage, UInteger, ProgressRules, FormSectionBase;
+	var DateType, StringLine, Percentage, UInteger, ProgressRules, FormSectionBase;
 	validDb(db);
 	ProgressRules = defineProgressRules(db);
 	db.Object.defineProperties({
@@ -23,7 +23,7 @@ module.exports = memoize(function (db) {
 			return 'is' + prop[0].toUpperCase() + prop.slice(1) + 'Applicable';
 		} }
 	});
-	Date       = defineDate(db);
+	DateType   = defineDate(db);
 	UInteger   = defineUInteger(db);
 	StringLine = defineStringLine(db);
 	Percentage = definePercentage(db);
@@ -213,7 +213,7 @@ module.exports = memoize(function (db) {
 			return false;
 		} },
 		lastEditStamp: { type: UInteger, value: 0 },
-		lastEditDate: { type: Date, value: function () {
+		lastEditDate: { type: DateType, value: function () {
 			return this.lastEditStamp / 1000;
 		} },
 		excludedFromStatus: { type: StringLine, multiple: true },
