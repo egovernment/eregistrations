@@ -12,3 +12,8 @@
 .info-main > :last-child {
 	margin-bottom: 0;
 }
+
+.info-main > ul > li > h4 {
+	font-weight: 300;
+	text-decoration: underline;
+}

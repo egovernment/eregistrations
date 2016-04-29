@@ -21,11 +21,11 @@ module.exports = exports = function (context) {
 								ul(requirementUpload.rejectReasons, identity))];
 					})))),
 			_if(businessProcess.paymentReceiptUploads.recentlyRejected._size,
-				li(h4(_("Issues with uploaded payment receipts:"), div({ class: 'free-form' },
+				li(h4(_("Issues with uploaded payment receipts:")), div({ class: 'free-form' },
 					ul(businessProcess.paymentReceiptUploads.recentlyRejected, function (paymentUpload) {
 						return [h4(paymentUpload.document.label),
 							p(paymentUpload._rejectReasonMemo)];
-					})))))
+					}))))
 		]), exports._otherInfo.call(context)),
 		p(mdi(_("After all issues are cleared, please [re-submit](/submission/#submit-form) " +
 			"application")))];
