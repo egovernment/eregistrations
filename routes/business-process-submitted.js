@@ -51,7 +51,10 @@ module.exports = {
 			}, this);
 			if (!this.dataSnapshot) return false;
 			paymentReceiptUpload = this.businessProcess.paymentReceiptUploads.map[uniqueKey];
-			if (paymentReceiptUpload) this.document = paymentReceiptUpload.document;
+			if (paymentReceiptUpload &&
+					this.businessProcess.paymentReceiptUploads.applicable.has(paymentReceiptUpload)) {
+				this.document = paymentReceiptUpload.document;
+			}
 			this.documentKind = 'paymentReceiptUpload';
 			this.documentUniqueId =
 				this.businessProcess.__id__ + '/' + this.documentKind + '/' + uniqueKey;
@@ -71,7 +74,6 @@ module.exports = {
 			}, this);
 			if (!this.dataSnapshot) return false;
 
-			this.document = this.businessProcess.certificates.map[uniqueKey];
 			this.documentKind = 'certificate';
 			this.documentUniqueId =
 				this.businessProcess.__id__ + '/' + this.documentKind + '/' + uniqueKey;
