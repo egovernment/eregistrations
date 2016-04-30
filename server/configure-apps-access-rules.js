@@ -128,6 +128,7 @@ module.exports = exports = function (dbDriver, data) {
 	businessProcessMyAccountProperties =
 		new Set(aFrom(ensureIterable(data.businessProcessListProperties))
 			.concat(['certificates/dataSnapshot/jsonString', 'dataForms/dataSnapshot/jsonString',
+				'isSentBack', 'isUserProcessing',
 				'paymentReceiptUploads/dataSnapshot/jsonString',
 				'requirementUploads/dataSnapshot/jsonString', 'status'])
 			.concat(businessProcessMyAccountExtraProperties));
