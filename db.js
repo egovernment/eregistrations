@@ -2,12 +2,11 @@
 
 'use strict';
 
-var Database        = require('dbjs')
-  , _               = require('mano').i18n
+var _               = require('mano').i18n
   , d               = require('d')
   , resolveTemplate = require('es6-template-strings');
 
-var db = module.exports = require('mano').db = new Database();
+var db = module.exports = require('mano').db;
 
 db.locale = 'en-GB'; // default locale, to be shadowed with expected one in end system
 
