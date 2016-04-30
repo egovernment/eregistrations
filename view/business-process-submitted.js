@@ -10,6 +10,6 @@ exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
 		mainInfo(this);
-		documentsAndData(this.businessProcess);
+		documentsAndData(this);
 	}
 };

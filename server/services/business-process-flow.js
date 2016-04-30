@@ -40,22 +40,15 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		if (onSubmitted) onSubmitted(businessProcess);
 		businessProcess.isSubmitted = true;
 	});
-
-	// Below two triggers are needed just for migration phase
-	// After that there's no scenario when they may trigger, therefore should be removed
 	setupTriggers({
-		trigger: businessProcesses.filterByKey('isSentBack', true)
-			.filterByKey('isSubmitted', false)
+		trigger: businessProcesses.filterByKey('isSubmitted', true)
 	}, function (businessProcess) {
-		debug('%s submitted (through sent back)', businessProcess.__id__);
-		businessProcess.isSubmitted = true;
-	});
-	setupTriggers({
-		trigger: businessProcesses.filterByKey('isUserProcessing', true)
-			.filterByKey('isSubmitted', false)
-	}, function (businessProcess) {
-		debug('%s submitted (through user processing)', businessProcess.__id__);
-		businessProcess.isSubmitted = true;
+		if (!businessProcess.dataForms.dataSnapshot.jsonString) {
+			debug('%s generate initial data snapshots', businessProcess.__id__);
+		}
+		businessProcess.dataForms.dataSnapshot.generate();
+		businessProcess.requirementUploads.dataSnapshot.generate();
+		businessProcess.paymentReceiptUploads.dataSnapshot.generate();
 	});
 
 	var businessProcessesSubmitted = businessProcesses.filterByKey('isSubmitted', true);
@@ -67,6 +60,9 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	}, function (businessProcess) {
 		debug('%s finalize sentBack', businessProcess.__id__);
 		businessProcess.delete('isSentBack');
+		businessProcess.dataForms.dataSnapshot.regenerate();
+		businessProcess.requirementUploads.dataSnapshot.regenerate();
+		businessProcess.paymentReceiptUploads.dataSnapshot.regenerate();
 	});
 
 	// Business process: isUserProcessing initialization
@@ -87,6 +83,9 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		debug('%s finalize user processing', businessProcess.__id__);
 		if (onUserProcessingEnd) onUserProcessingEnd(businessProcess);
 		businessProcess.delete('isUserProcessing');
+		businessProcess.dataForms.dataSnapshot.regenerate();
+		businessProcess.requirementUploads.dataSnapshot.regenerate();
+		businessProcess.paymentReceiptUploads.dataSnapshot.regenerate();
 	});
 
 	// Business process: isApproved preservation
@@ -96,6 +95,16 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	}, function (businessProcess) {
 		debug('%s approved', businessProcess.__id__);
 		businessProcess.isApproved = true;
+	});
+	setupTriggers({
+		trigger: businessProcesses.filterByKey('isClosed', true)
+	}, function (businessProcess) {
+		if (!businessProcess.certificates.dataSnapshot.jsonString) {
+			debug('%s generate certificates data snapshots', businessProcess.__id__);
+		}
+		businessProcess.certificates.dataSnapshot.generate();
+		businessProcess.requirementUploads.dataSnapshot.finalize();
+		businessProcess.paymentReceiptUploads.dataSnapshot.finalize();
 	});
 
 	// Processing steps:

@@ -4,19 +4,24 @@
 
 var memoize                     = require('memoizee/plain')
   , definePropertyGroupsProcess = require('../lib/property-groups-process')
+  , defineDataSnapshot          = require('../lib/data-snapshot')
   , defineBusinessProcess       = require('./base')
   , defineFormSectionBase       = require('../form-section-base');
 
 module.exports = memoize(function (db/* options */) {
 	var BusinessProcess       = defineBusinessProcess(db, arguments[1])
 	  , PropertyGroupsProcess = definePropertyGroupsProcess(db)
-	  , FormSectionBase       = defineFormSectionBase(db);
+	  , FormSectionBase       = defineFormSectionBase(db)
+	  , DataSnapshot          = defineDataSnapshot(db);
 
 	BusinessProcess.prototype.defineProperties({
 		dataForms: { type: PropertyGroupsProcess, nested: true }
 	});
 
 	BusinessProcess.prototype.dataForms.defineProperties({
+		// Forms data snapshot (saved when file is submitted to Part B)
+		dataSnapshot: { type: DataSnapshot, nested: true },
+
 		// Applicable, touched (at least partially filled) form sections
 		processChainApplicable: {
 			type: FormSectionBase,

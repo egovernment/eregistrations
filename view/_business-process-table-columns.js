@@ -1,8 +1,8 @@
 'use strict';
 
-var formatLastModified = require('./utils/last-modified')
-  , _ = require('mano').i18n.bind('User')
-  , ProcessingStepStatus = require('mano').db.ProcessingStepStatus;
+var _                     = require('mano').i18n.bind('User')
+  , certificateStatusMeta = require('mano').db.CertificateStatus.meta
+  , formatLastModified    = require('./utils/last-modified');
 
 exports.getServiceIcon = function (businessProcess) {
 	return i({ class: "fa fa-user" });
@@ -62,12 +62,28 @@ exports.goToColumn = {
 	}
 };
 
-exports.getCertStatus = function (cert) {
-	var processingStep = cert.processingStep, businessProcess = cert.master;
-
-	return _if(businessProcess._isRejected,
-		"rejected", processingStep && processingStep._status);
-};
+var generateCertificatesList = (function () {
+	var getStatusLabel = function (cert) {
+		if (cert._status) return _if(cert._status, ["- ", cert._status]);
+		return cert.status && ("- " + certificateStatusMeta[cert.status].label);
+	};
+	var resolveStatusClass = function (status) {
+		if (!status) return;
+		if (status === 'pending') return 'ready';
+		return status;
+	};
+	var getStatusClass = function (cert) {
+		if (cert._status) return cert._status.map(resolveStatusClass);
+		return resolveStatusClass(cert.status);
+	};
+	return function (certificates) {
+		return span(list(certificates, function (cert) {
+			return span({ class: 'hint-optional hint-optional-left',
+				'data-hint': [cert.label, getStatusLabel(cert)] },
+				span({ class: ['label-reg', getStatusClass(cert)] }, cert.abbr));
+		}));
+	};
+}());
 
 exports.columns = [{
 	head: _("Service"),
@@ -102,24 +118,18 @@ exports.columns = [{
 }, {
 	head: _("Inscriptions and controls"),
 	data: function (businessProcess) {
-		return mmap(businessProcess.certificates._applicable, function (certificates) {
-			//When bp is deleted...
-			if (!certificates) return;
-			return span(list(businessProcess.certificates.applicable, function (cert) {
-				var certStatus;
-
-				certStatus = exports.getCertStatus(cert);
-				return span({ class: 'hint-optional hint-optional-left',
-					'data-hint': [cert.constructor.label,
-						_if(eq(certStatus, "rejected"), "- " + ProcessingStepStatus.meta.rejected.label,
-							certStatus.map(function (status) {
-								if (status) return "- " + ProcessingStepStatus.meta[status].label;
-							}))] },
-					span({ class: ['label-reg',
-						_if(eq(certStatus, "rejected"), "rejected",
-							_if(eq(certStatus, 'approved'), "approved",
-								_if(not(eqSloppy(certStatus, null)), "ready")))]  }, cert.constructor.abbr));
-			}));
+		return mmap(businessProcess._isClosed, function (isClosed) {
+			if (!businessProcess.certificates) return;
+			if (isClosed) {
+				return mmap(businessProcess.certificates.dataSnapshot._resolved, function (certificates) {
+					if (!certificates) return;
+					return generateCertificatesList(certificates);
+				});
+			}
+			return mmap(businessProcess.certificates._applicable, function (certificates) {
+				if (!certificates) return;
+				return generateCertificatesList(certificates);
+			});
 		});
 	}
 }];

@@ -2,133 +2,185 @@
 
 'use strict';
 
-var camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
-  , _                = require('mano').i18n.bind('User Submitted')
-  , generateSections = require('./components/generate-sections')
+var find           = require('es5-ext/array/#/find')
+  , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
+  , _              = require('mano').i18n.bind('User Submitted')
+  , renderSections = require('./components/render-sections-json')
+  , getSetProxy    = require('../utils/observable-set-proxy')
+
   , _d = _;
 
-var drawDocumentsPart = function (target, urlPrefix) {
-	return _if(target.requirementUploads.applicable._size, [
-		h3(_("Documents required")),
-		div(
-			{ class: 'table-responsive-container' },
-			table(
-				{ class: 'submitted-user-data-table user-request-table' },
-				thead(
-					tr(
-						th({ class: 'submitted-user-data-table-status' }),
-						th(_("Name")),
-						th(_("Issuer")),
-						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
-						th({ class: 'submitted-user-data-table-link' })
-					)
-				),
-				tbody(
-					target.requirementUploads.applicable,
-					function (requirementUpload) {
-						td(
-							{ class: 'submitted-user-data-table-status' },
-							_if(requirementUpload._isApproved, span({ class: 'fa fa-check' })),
-							_if(requirementUpload._isRejected, span({ class: 'fa fa-exclamation' }))
-						);
-						td(_d(requirementUpload.document._label, requirementUpload.document.getTranslations()));
-						td(requirementUpload.document._issuedBy);
-						td({ class: 'submitted-user-data-table-date' }, requirementUpload.document._issueDate);
-						td({ class: 'submitted-user-data-table-link' },
-							a({ href: urlPrefix + 'document/' +
-								camelToHyphen.call(requirementUpload.document.uniqueKey) + "/" },
-								span({ class: 'fa fa-search' }, _("Go to"))));
-					}
-				)
-			)
-		)
-	]);
+var resolveUploads = function (context, targetMap) {
+	var target = targetMap.owner, businessProcess = target.master;
+	var kind = (targetMap.key === 'requirementUploads')
+		? 'requirementUpload' : 'paymentReceiptUpload';
+	var snapshot = (kind === 'requirementUpload') ? businessProcess.requirementUploads.dataSnapshot
+		: businessProcess.paymentReceiptUploads.dataSnapshot;
+
+	// If it's a user, then we show to him direct result of saved snapshot
+	if (context.user.currentRoleResolved === 'user') return snapshot._resolved;
+
+	// Otherwise we show only those items from snapshot which are applicable according
+	// to current model state.
+	// Additionally for revision case we show processable items even if they're not
+	// represented in snapshot
+	return snapshot._resolved.map(function (data) {
+		return getSetProxy(targetMap.applicable).map(function (upload) {
+			var uniqueKey = (kind === 'requirementUpload') ? upload.document.uniqueKey : upload.key;
+			var snapshot = data && find.call(data, function (snapshot) {
+				return uniqueKey === snapshot.uniqueKey;
+			});
+			if (snapshot) return snapshot;
+			if (!targetMap.processable) return;
+			if (!targetMap.processable.has(upload)) return;
+			return upload.enrichJSON(upload.toJSON());
+		}).filter(Boolean).toArray();
+	});
 };
 
-var drawPaymentReceiptsPart = function (target, urlPrefix) {
-	return _if(target.paymentReceiptUploads.applicable._size, [
-		h3(_("Payment receipts")),
-		div(
-			{ class: 'table-responsive-container' },
-			table(
-				{ class: 'submitted-user-data-table user-request-table' },
-				thead(
-					tr(
-						th({ class: 'submitted-user-data-table-status' }),
-						th(_("Name")),
-						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
-						th({ class: 'submitted-user-data-table-link' })
-					)
-				),
-				tbody(
-					target.paymentReceiptUploads.applicable,
-					function (receipt) {
-						td(
-							{ class: 'submitted-user-data-table-status' },
-							_if(receipt._isApproved, span({ class: 'fa fa-check' })),
-							_if(receipt._isRejected, span({ class: 'fa fa-exclamation' }))
-						);
-						td(receipt.document.label);
-						td({ class: 'submitted-user-data-table-date' }, receipt.document._issueDate);
-						td({ class: 'submitted-user-data-table-link' },
-							a({ href: urlPrefix + 'receipt/' + camelToHyphen.call(receipt.key) + "/" },
-								span({ class: 'fa fa-search' }, _("Go to"))));
-					}
-				)
-			)
-		)
-	]);
+var resolveCertificates = function (context, targetMap) {
+	var target = targetMap.owner, businessProcess = target.master;
+	return businessProcess._isApproved.map(function (isApproved) {
+		if (!isApproved) {
+			// User, can see released certificates only when request is finalized
+			if (context.user.currentRoleResolved === 'user') return null;
+			return targetMap.released.toArray();
+		}
+		if (context.user.currentRoleResolved === 'user') {
+			// For user we show certificates as they're stored in snapshot
+			return businessProcess.certificates.dataSnapshot._resolved;
+		}
+		// For officials we show only those certificates from snapshot which are applicable
+		// to be exposed to him
+		return businessProcess.certificates.dataSnapshot._resolved.map(function (data) {
+			if (!data) return;
+			return getSetProxy(targetMap.released).map(function (certificate) {
+				var snapshot = find.call(data, function (snapshot) {
+					return certificate.key === snapshot.uniqueKey;
+				});
+				if (snapshot) return snapshot;
+			}).filter(Boolean).toArray();
+		});
+	});
 };
 
-var drawCertificatesPart = function (target, urlPrefix) {
-	return _if(target.certificates.uploaded._size, [
-		h3(_("Certificates")),
-		div(
-			{ class: 'table-responsive-container' },
-			table(
-				{ class: 'submitted-user-data-table user-request-table' },
-				thead(
-					tr(
-						th({ class: 'submitted-user-data-table-status' }),
-						th(_("Name")),
-						th(_("Issuer")),
-						th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
-						th(_("Number")),
-						th({ class: 'submitted-user-data-table-link' })
-					)
-				),
-				tbody(
-					target.certificates.uploaded,
-					function (certificate) {
-						td({ class: 'submitted-user-data-table-status' },
-							span({ class: 'fa fa-certificate' }));
-						td(certificate.label);
-						td(certificate._issuedBy);
-						td({ class: 'submitted-user-data-table-date' }, certificate._issueDate);
-						td(certificate._number);
-						td({ class: 'submitted-user-data-table-link' },
-							a({ href: urlPrefix + 'certificate/' +
-								camelToHyphen.call(certificate.key) + '/' },
-								span({ class: 'fa fa-search' }, _("Go to"))));
-					}
-				)
-			)
-		)
-	]);
+var drawDocumentsPart = function (context, target, urlPrefix) {
+	return mmap(resolveUploads(context, target.requirementUploads), function (data) {
+		if (!data) return;
+		return _if(data._length || data.length, function () {
+			return [
+				h3(_("Documents required")),
+				div({ class: 'table-responsive-container' },
+					table({ class: 'submitted-user-data-table user-request-table' },
+						thead(tr(th({ class: 'submitted-user-data-table-status' }),
+							th(_("Name")),
+							th(_("Issuer")),
+							th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
+							th({ class: 'submitted-user-data-table-link' }))),
+						tbody(data, function (uploadData) {
+							return tr(
+								td({ class: 'submitted-user-data-table-status' },
+									_if(eq(uploadData.status, 'approved'), span({ class: 'fa fa-check' })),
+									_if(eq(uploadData.status, 'rejected'), span({ class: 'fa fa-exclamation' }))),
+								td(uploadData.label),
+								td(uploadData.issuedBy),
+								td({ class: 'submitted-user-data-table-date' }, uploadData.issueDate),
+								td({ class: 'submitted-user-data-table-link' },
+									a({ href: urlPrefix + 'document/' +
+										camelToHyphen.call(uploadData.uniqueKey) + "/" },
+										span({ class: 'fa fa-search' }, _("Go to"))))
+							);
+						})))
+			];
+		});
+	});
 };
 
-module.exports = exports = function (businessProcess/*, options*/) {
+var drawPaymentReceiptsPart = function (context, target, urlPrefix) {
+	return mmap(resolveUploads(context, target.paymentReceiptUploads), function (data) {
+		if (!data) return;
+		return _if(data._length || data.length, function () {
+			return [
+				h3(_("Payment receipts")),
+				div({ class: 'table-responsive-container' },
+					table({ class: 'submitted-user-data-table user-request-table' },
+						thead(tr(th({ class: 'submitted-user-data-table-status' }),
+							th(_("Name")),
+							th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
+							th({ class: 'submitted-user-data-table-link' }))),
+						tbody(data, function (uploadData) {
+							return tr(
+								td({ class: 'submitted-user-data-table-status' },
+									_if(eq(uploadData.status, 'approved'), span({ class: 'fa fa-check' })),
+									_if(eq(uploadData.status, 'rejected'), span({ class: 'fa fa-exclamation' }))),
+								td(uploadData.label),
+								td({ class: 'submitted-user-data-table-date' }, uploadData.issueDate),
+								td({ class: 'submitted-user-data-table-link' },
+									a({ href: urlPrefix + 'receipt/' + camelToHyphen.call(uploadData.uniqueKey) +
+										"/" }, span({ class: 'fa fa-search' }, _("Go to"))))
+							);
+						})))
+			];
+		});
+	});
+};
+
+var drawCertificatesPart = function (context, target, urlPrefix) {
+	return mmap(resolveCertificates(context, target.certificates), function (data) {
+		if (!data) return;
+		return _if(data._length || data.length, function () {
+			return [
+				h3(_("Certificates")),
+				div({ class: 'table-responsive-container' },
+					table({ class: 'submitted-user-data-table user-request-table' },
+						thead(tr(th({ class: 'submitted-user-data-table-status' }),
+							th(_("Name")),
+							th(_("Issuer")),
+							th({ class: 'submitted-user-data-table-date' }, _("Issue date")),
+							th(_("Number")),
+							th({ class: 'submitted-user-data-table-link' }))),
+						tbody(data, function (certificate) {
+							var data = certificate;
+							if (certificate.__id_) {
+								data = {
+									label: certificate._label.map(function (label) {
+										return _d(label, certificate.getTranslations());
+									}),
+									issuedBy: certificate._issuedBy,
+									issueDate: certificate._issueDate,
+									number: certificate._number,
+									uniqueKey: certificate.key
+								};
+							}
+							return tr(
+								td({ class: 'submitted-user-data-table-status' },
+									span({ class: 'fa fa-certificate' })),
+								td(data.label),
+								td(data.issuedBy),
+								td({ class: 'submitted-user-data-table-date' }, data.issueDate),
+								td(data.number),
+								td({ class: 'submitted-user-data-table-link' },
+									a({ href: urlPrefix + 'certificate/' + camelToHyphen.call(data.uniqueKey) + '/' },
+										span({ class: 'fa fa-search' }, _("Go to"))))
+							);
+						})))
+			];
+		});
+	});
+};
+
+module.exports = exports = function (context/*, options*/) {
 	var options         = Object(arguments[1])
 	  , urlPrefix       = options.urlPrefix || '/'
-	  , uploadsResolver = options.uploadsResolver || businessProcess;
+	  , uploadsResolver = options.uploadsResolver || context.businessProcess;
 
 	return [
 		section(
 			{ class: 'section-primary' },
 			h2(_("Documents")),
-			drawDocumentsPart(uploadsResolver, urlPrefix),
-			drawPaymentReceiptsPart(uploadsResolver, urlPrefix),
-			drawCertificatesPart(uploadsResolver, urlPrefix)
+			drawDocumentsPart(context, uploadsResolver, urlPrefix),
+			drawPaymentReceiptsPart(context, uploadsResolver, urlPrefix),
+			drawCertificatesPart(context, uploadsResolver, urlPrefix)
 		),
 		section(
 			{ class: 'section-primary entity-data-section-side' },
@@ -142,11 +194,7 @@ module.exports = exports = function (businessProcess/*, options*/) {
 					span({ class: 'fa fa-print' }, _("Print"))
 				)
 			),
-			exports._prependData(businessProcess),
-			generateSections(businessProcess.dataForms.applicable, { viewContext: this,
-					customResolveValue: exports._customValueResolver })
+			renderSections(context.businessProcess.dataForms.dataSnapshot)
 		)
 	];
 };
-exports._prependData = Function.prototype;
-exports._customValueResolver = null;

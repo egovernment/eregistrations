@@ -10,7 +10,7 @@ var _              = require('mano').i18n.bind('Official: Revision')
   , revisionForm;
 
 exports._parent = require('./user-base');
-exports._match = 'document';
+exports._match = 'documentUniqueId';
 
 revisionForm = function (requirementUpload) {
 	var revFail, revFailOther, revFailInput;
@@ -43,10 +43,8 @@ revisionForm = function (requirementUpload) {
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var processingStep = this.processingStep
-		  , doc            = this.document;
-
-		renderDocument(doc, _if(processingStep.processableUploads.has(doc.owner),
-			disableStep(this.processingStep, revisionForm(doc.owner))));
+		insert(renderDocument(this,
+			_if(this.processingStep.requirementUploads.processable._has(this.document.owner),
+				disableStep(this.processingStep, revisionForm(this.document.owner)))));
 	}
 };
