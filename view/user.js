@@ -14,19 +14,16 @@ exports['sub-main'] = {
 		div({ class: 'user-account-boxes' },
 			section({ id: 'welcome-box', class: 'user-account-welcome' },
 				_if(manager, function () {
-					var managedUser = manager.currentlyManagedUser;
+					return manager._currentlyManagedUser.map(function (managedUser) {
+						if (!managedUser) return;
 
-					return [
-						header(
-							h3(_("View for client: ${ clientFullName }",
-								{ clientFullName: managedUser._fullName }))
-						),
-						div({ class: 'free-form' },
-							md(_("1. From here you can access all the requests of this client in draft, " +
+						return [header(h3(_("View for client: ${ clientFullName }",
+							{ clientFullName: managedUser._fullName }))), div({ class: 'free-form' },
+								md(_("1. From here you can access all the requests of this client in draft, " +
 									"in process, finished\n" +
-								"2. Start a new service for this client\n" +
-								"3. Create an account for this client if not done already")))
-					];
+									"2. Start a new service for this client\n" +
+									"3. Create an account for this client if not done already")))];
+					}.bind(this));
 				}.bind(this), function () {
 					return [
 						header(
@@ -37,18 +34,18 @@ exports['sub-main'] = {
 								"2. Access and edit your documents and data\n" +
 								"3. Start a new service related to your company")))
 					];
-				})));
+				}.bind(this))));
 
 		exports._notificationsBox(this);
 
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab user-account-tab',
-					id: 'user-account-requests',
-					href: '/' },
+				id: 'user-account-requests',
+				href: '/' },
 				_if(manager, _("Requests"), _("My requests"))),
 			a({ class: 'section-tab-nav-tab user-account-tab',
-					id: 'user-account-data',
-					href: '/requests/' },
+				id: 'user-account-data',
+				href: '/requests/' },
 				_if(manager, _("Documents and data"), _("My documents and data"))),
 			div({ id: 'user-account-content', class: 'section-primary' }));
 
@@ -80,8 +77,7 @@ exports['sub-main'] = {
 											_('You have reached the draft limit for this service'),
 											_('Click to start'))))))
 						)));
-					}))
-		]));
+					}))]));
 
 	}
 };
