@@ -18,7 +18,7 @@ require('mano/lib/client/implement-es');
 
 // Assure Client id
 // TODO: Require here strictly to log (there should be no log in imported module)
-require('mano/lib/client/client-id');
+var clientId = require('mano/lib/client/client-id');
 
 // Ensure time is in sync with server
 require('eregistrations/client/time-sync');
