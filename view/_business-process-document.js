@@ -5,7 +5,7 @@
 var includes           = require('es5-ext/array/#/contains')
   , camelToHyphen      = require('es5-ext/string/#/camel-to-hyphen')
   , endsWith           = require('es5-ext/string/#/ends-with')
-  , touchObservable    = require('domjs-ext/lin/unbind-injected')
+  , touchObservable    = require('domjs-ext/lib/unbind-injected')
   , nextTick           = require('next-tick')
   , isReadOnlyRender   = require('mano/client/utils/is-read-only-render')
   , _                  = require('mano').i18n.bind('User: Submitted')
