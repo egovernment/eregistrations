@@ -2,12 +2,10 @@
 
 'use strict';
 
-var find             = require('es5-ext/array/#/find')
-  , normalizeOptions = require('es5-ext/object/normalize-options')
+var normalizeOptions = require('es5-ext/object/normalize-options')
   , camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
   , _                = require('mano').i18n.bind('View: Component: Certificates')
-  , isUserApp        = require('../../utils/is-user-app')
-  , getSetProxy      = require('../../utils/observable-set-proxy')
+  , getCertificates  = require('../utils/get-certificates-list')
 
   , _d = _;
 
@@ -16,30 +14,7 @@ module.exports = function (context/*, options*/) {
 	  , businessProcess = context.businessProcess
 	  , urlPrefix       = options.urlPrefix || '/'
 	  , target          = options.uploadsResolver || businessProcess
-	  , targetMap       = target.certificates;
-
-	var certificates = businessProcess._isApproved.map(function (isApproved) {
-		if (!isApproved) {
-			// User, can see released certificates only when request is finalized
-			if (isUserApp(context.appName)) return null;
-			return targetMap.released.toArray();
-		}
-		if (isUserApp(context.appName)) {
-			// For user we show certificates as they're stored in snapshot
-			return businessProcess.certificates.dataSnapshot._resolved;
-		}
-		// For officials we show only those certificates from snapshot which are applicable
-		// to be exposed to him
-		return businessProcess.certificates.dataSnapshot._resolved.map(function (data) {
-			if (!data) return;
-			return getSetProxy(targetMap.released).map(function (certificate) {
-				var snapshot = find.call(data, function (snapshot) {
-					return certificate.key === snapshot.uniqueKey;
-				});
-				if (snapshot) return snapshot;
-			}).filter(Boolean).toArray();
-		});
-	});
+	  , certificates    = getCertificates(target.certificates, context.appName);
 
 	return mmap(certificates, function (data) {
 		if (!data) return;
