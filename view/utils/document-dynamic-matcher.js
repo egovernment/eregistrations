@@ -2,9 +2,11 @@
 
 'use strict';
 
+var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen');
+
 module.exports = function (documentTypePrefix) {
 	return function (doc) {
-		var listItemId = documentTypePrefix + '-item-' + this.document.docId
+		var listItemId = documentTypePrefix + '-item-' + camelToHyphen.call(this.documentUniqueKey)
 		  , conf       = {};
 
 		conf[listItemId] = { class: { active: true } };
