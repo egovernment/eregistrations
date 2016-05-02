@@ -27,6 +27,10 @@
 	margin-left: 0;
 }
 
+.scrollable-list-box-described > label {
+	font-size: 12px;
+}
+
 .scrollable-list-box-described > ul {
 	border: 1px solid var(--light-inner-border);
 	padding: 0 5px;
