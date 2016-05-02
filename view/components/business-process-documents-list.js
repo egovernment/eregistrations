@@ -10,12 +10,12 @@ var find             = require('es5-ext/array/#/find')
   , getSetProxy      = require('../../utils/observable-set-proxy');
 
 module.exports = function (context/*, options*/) {
-	var options            = normalizeOptions(arguments[1])
-	  , businessProcess    = context.businessProcess
-	  , urlPrefix          = options.urlPrefix || '/'
-	  , target             = options.uploadsResolver || businessProcess
-	  , targetMap          = target.requirementUploads
-	  , snapshot           = businessProcess.requirementUploads.dataSnapshot
+	var options         = normalizeOptions(arguments[1])
+	  , businessProcess = context.businessProcess
+	  , urlPrefix       = options.urlPrefix || '/'
+	  , target          = options.uploadsResolver || businessProcess
+	  , targetMap       = target.requirementUploads
+	  , snapshot        = businessProcess.requirementUploads.dataSnapshot
 
 	  , requirementUploads;
 
