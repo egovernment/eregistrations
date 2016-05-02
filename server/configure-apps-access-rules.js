@@ -120,9 +120,9 @@ module.exports = exports = function (dbDriver, data) {
 		officialDispatcherListExtraProperties =
 			aFrom(ensureIterable(data.officialDispatcherListExtraProperties));
 	}
-	if (data.businessProcessMyAccountProperties) {
+	if (data.businessProcessMyAccountExtraProperties) {
 		businessProcessMyAccountExtraProperties =
-			aFrom(ensureIterable(data.businessProcessMyAccountProperties));
+			aFrom(ensureIterable(data.businessProcessMyAccountExtraProperties));
 	}
 
 	businessProcessMyAccountProperties =
