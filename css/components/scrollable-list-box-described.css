@@ -1,12 +1,5 @@
-.valid .scrollable-list-box-described {
-	display: none;
-}
-
-.invalid .scrollable-list-box-described {
-	display: inline-block;
-}
-
 .scrollable-list-box-described {
+	display: inline-block;
 	padding: 11px;
 	background-color: #F4F4F4;
 	border-radius: 3px;
