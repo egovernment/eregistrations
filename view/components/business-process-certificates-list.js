@@ -7,7 +7,7 @@ var find             = require('es5-ext/array/#/find')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , _                = require('mano').i18n.bind('View: Component: Certificates')
   , isUserApp        = require('../../utils/is-user-app')
-  , getSetProxy      = require('../utils/observable-set-proxy')
+  , getSetProxy      = require('../../utils/observable-set-proxy')
 
   , _d = _;
 
