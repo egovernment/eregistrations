@@ -92,7 +92,22 @@ module.exports = memoize(function (db) {
 					return _observe(child._hasFilledPropertyNamesDeep);
 				});
 			}
-		}
+		},
+		toJSON: { value: function (ignore) {
+			var result = this.commonToJSON();
+			if (this.resolventProperty) {
+				result.fields = [this.master.resolveSKeyPath(this.resolventProperty)
+					.ownDescriptor.fieldToJSON()];
+			}
+			if (!this.isUnresolved) {
+				var sections = [];
+				this.internallyApplicableSections.forEach(function (section) {
+					if (section.hasFilledPropertyNamesDeep) sections.push(section.toJSON());
+				});
+				if (sections.length) result.sections = sections;
+			}
+			return result;
+		} }
 	});
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSectionBase;
 

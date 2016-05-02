@@ -14,7 +14,7 @@ var _                     = require('mano').i18n.bind('View: Official: Revision'
 
 exports._parent  = require('./business-process-revision-documents');
 exports._dynamic = require('./utils/document-dynamic-matcher')('document');
-exports._match   = 'document';
+exports._match = 'documentUniqueId';
 
 revisionForm = function (requirementUpload) {
 	var revFail, revFailOther, revFailInput;

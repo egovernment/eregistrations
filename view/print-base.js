@@ -15,7 +15,7 @@ exports.body = function () {
 			h2({ id: 'print-page-title' }),
 			p(new db.DateTime())));
 	hr();
-	section({ id: 'main' });
+	section({ id: 'main', class: 'print-body' });
 };
 
 exports._logo = Function.prototype;

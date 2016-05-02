@@ -3,6 +3,8 @@
 var Database   = require('dbjs')
   , defineFile = require('dbjs-ext/object/file');
 
+require('mano').uploadsPath = '/foobar';
+
 module.exports = function (t, a) {
 	var db       = new Database()
 	  , File     = defineFile(db)
@@ -14,5 +16,5 @@ module.exports = function (t, a) {
 	a.deep(t(testFile), []);
 	testFile.name = 'foo';
 	testFile.path = 'bar';
-	a.deep(t(testFile), [{ filename: 'foo', path: 'bar' }]);
+	a.deep(t(testFile), [{ filename: 'foo', path: '/foobar/bar' }]);
 };

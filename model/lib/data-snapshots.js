@@ -1,3 +1,7 @@
+// Should actually be named `ListViews`, it's about storing (reactively) paginated states of lists
+// e.g. if we have 100 entities, then at totalSize is 100 and at '1' we can store serialized array
+// of ids of first 50 entities and at '2' we can store last 50 ids.
+
 'use strict';
 
 var memoize             = require('memoizee/plain')

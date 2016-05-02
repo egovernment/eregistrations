@@ -3,7 +3,8 @@
 
 'use strict';
 
-var memoize               = require('memoizee/plain')
+var Map                   = require('es6-map')
+  , memoize               = require('memoizee/plain')
   , defineDate            = require('dbjs-ext/date-time/date')
   , defineStringLine      = require('dbjs-ext/string/string-line')
   , _                     = require('mano').i18n.bind('Model: Documents')
@@ -25,22 +26,41 @@ module.exports = memoize(function (db) {
 	  , Person          = definePerson(db)
 	  , Document;
 
+	// Enum for processing step status
+	var CertificateStatus = StringLine.createEnum('CertificateStatus', new Map([
+		['pending', { label: _("Pending") }],
+		['rejected', { label: _("Rejected") }],
+		['approved', { label: _("Approved") }]
+	]));
+
 	Document = db.Object.extend('Document', {
 		// Document label, fallbacks to label as decided on constructor
 		label: { type: StringLine, value: function () { return this.constructor.label; } },
+		// Document abbreviation, fallbacks to abbr as decided on constructor
+		abbr: { type: StringLine, value: function () { return this.constructor.abbr; } },
 		// Document legend, fallbacks to legend as decided on constructor
 		legend: { type: StringLine, value: function () { return this.constructor.legend; } },
-		// Resolves unique named id (in camelCase), that's usually used to resolve human readable urls.
-		// e.g. if uniqueKey would be 'authorizedAlocoholLicence' then url token leading to document
-		// (converted via es5-ext/string/#/camel-to-hyphen) would 'authorized-alcohol-licence'
-		uniqueKey: { type: StringLine, value: function () { return this.key; } },
 		// Which entity issued the document. In case of certificates it's an issuing institution,
 		// in case of user uploads, it's a user that uploaded files (and that's the default)
 		issuedBy: {
 			type: db.Object,
-			value: function () { return this.master.user; },
 			label: _("Emissor institution")
 		},
+		// Issue date. It's inputted by hand official issuance date
+		issueDate: { type: DateType, required: true, label: _("Date of issuance") },
+		// Eventual expiration date
+		expirationDate: { type: DateType, label: _("Date of expiration") },
+		// True when a given document is electronic, false otherwise
+		isElectronic: { type: db.Boolean, value: false },
+		// Document number
+		number: { type: StringLine, label: _("Number") },
+
+		// Below properties are to be moved to Certificate class when it will be introduced
+		//
+		// Resolves unique named id (in camelCase), that's usually used to resolve human readable urls.
+		// e.g. if uniqueKey would be 'authorizedAlocoholLicence' then url token leading to document
+		// (converted via es5-ext/string/#/camel-to-hyphen) would 'authorized-alcohol-licence'
+		uniqueKey: { type: StringLine, value: function () { return this.key; } },
 		issuedByOfficer: {
 			type: Person,
 			value: function () {
@@ -64,19 +84,11 @@ module.exports = memoize(function (db) {
 			},
 			label: _("Related Inscription")
 		},
-		// Issue date. It's inputted by hand official issuance date
-		issueDate: { type: DateType, required: true, label: _("Date of issuance") },
-		// Eventual expiration date
-		expirationDate: { type: DateType, label: _("Date of expiration") },
 		// Document fields sections
 		// It's about fields we want officials to fill either at revision (document upload) or
 		// processing step (certificate upload)
 		dataForm: { type: FormSectionBase, nested: true },
 		overviewSection: { type: FormSection, nested: true },
-		// True when a given document is electronic, false otherwise
-		isElectronic: { type: db.Boolean, value: false },
-		// Document number
-		number: { type: StringLine, label: _("Number") },
 		// True if this document is used as a certificate
 		isCertificate: { type: db.Boolean, value: function (_observe) {
 			return this.owner === this.master.certificates.map;
@@ -99,7 +111,44 @@ module.exports = memoize(function (db) {
 				if (!this.isCertificate) return;
 				return this.master.processingSteps.map.processing;
 			}
-		}
+		},
+		// Status of certificate
+		status: { type: CertificateStatus, value: function (_observe) {
+			if (_observe(this.master._isApproved)) return 'approved';
+			if (_observe(this.master._isRejected)) return 'rejected';
+			if (!this.processingStep) return;
+			if (_observe(this.processingStep._status) === 'approved') return 'approved';
+			if (this.processingStep.status) return 'pending';
+		} },
+		// Used for preservation in data snapshots
+		toJSON: { value: function (ignore) {
+			var data = {
+				uniqueKey: this.key,
+				label: this.database.resolveTemplate(this.label, this.getTranslations(), { partial: true }),
+				abbr: this.abbr,
+				issuedBy: this.getOwnDescriptor('issuedBy').valueToJSON(),
+				issueDate: this.getOwnDescriptor('issueDate').valueToJSON(),
+				status: this.status,
+				number: this.getOwnDescriptor('number').valueToJSON(),
+				overviewSection: this.overviewSection.toJSON()
+			};
+			var files = [];
+			this.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
+			if (files.length) data.files = files;
+			if (this.dataForm.constructor !== this.database.FormSectionBase) {
+				data.section = this.dataForm.toJSON();
+				// Strip `files/map` property, as it's exposed directly on `snapshot.files`
+				(function self(data) {
+					if (data.fields) {
+						data.fields = data.fields.filter(function (field) {
+							return !field.id.match(/\/files\/map$/);
+						});
+					}
+					if (data.sections) data.sections.forEach(self);
+				}(data.section));
+			}
+			return data;
+		} }
 	}, {
 		// Document label
 		label: { type: StringLine },

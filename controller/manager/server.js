@@ -19,3 +19,6 @@ exports['business-process/[0-9][a-z0-9]+/delete'] = {
 		return true;
 	}
 };
+// Ensure that when legacy render, we land at root url after reload
+exports['business-process/[0-9][a-z0-9]+'] = { redirectUrl: '/' };
+exports['clients/[0-9][a-z0-9]+'] = { redirectUrl: '/' };

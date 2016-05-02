@@ -1,8 +1,9 @@
 // Basic business process print data view
+
 'use strict';
 
-var _                = require('mano').i18n.bind('View: Print')
-  , generateSections = require('./components/generate-sections');
+var _              = require('mano').i18n.bind('View: Print')
+  , renderSections = require('./components/render-sections-json');
 
 exports._parent = require('./print-base');
 exports._match = 'businessProcess';
@@ -12,9 +13,9 @@ exports['print-page-title'] = function () {
 		{ businessProcessName: this.businessProcess._businessName }));
 };
 
-exports.main = function () {
-	insert(generateSections(this.businessProcess.dataForms.applicable, {
-		cssClass: ["section-primary", "entity-data-section-primary", "entity-data-section"],
-		viewContext: this
-	}));
+exports.main = {
+	class: { 'entity-data-section-primary': true },
+	content: function () {
+		insert(renderSections(this.businessProcess.dataForms.dataSnapshot));
+	}
 };

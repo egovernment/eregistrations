@@ -2,13 +2,13 @@
 
 'use strict';
 
-var db               = require('mano').db
-  , hyphenToCamel    = require('es5-ext/string/#/hyphen-to-camel')
-  , matchCertificate = require('./utils/match-certificate')('businessProcess', 'applicable');
+var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
+  , db            = require('mano').db;
 
 var matchBusinessProcess = function (businessProcessId) {
 	this.businessProcess = db.BusinessProcess.getById(businessProcessId);
-	return Boolean(this.businessProcess);
+	if (!this.businessProcess) return false;
+	return this.businessProcess.isSubmitted;
 };
 
 module.exports = {
@@ -36,22 +36,47 @@ module.exports = {
 			if (!matchBusinessProcess.call(this, businessProcessId)) return false;
 
 			uniqueKey = hyphenToCamel.call(uniqueKey);
-			this.businessProcess.documents.processChainUploaded.some(function (document) {
-				if (document.uniqueKey === uniqueKey) {
-					this.document = document;
+			this.businessProcess.requirementUploads.dataSnapshot.resolved.some(function (data) {
+				if (data.uniqueKey === uniqueKey) {
+					this.dataSnapshot = data;
 					return true;
 				}
 			}, this);
-
-			return Boolean(this.document);
+			if (!this.dataSnapshot) return false;
+			this.businessProcess.requirementUploads.applicable.some(function (requirementUpload) {
+				if (requirementUpload.document.uniqueKey === uniqueKey) {
+					this.document = requirementUpload.document;
+					return true;
+				}
+			}, this);
+			this.documentKind = 'requirementUpload';
+			this.documentUniqueId =
+				this.businessProcess.__id__ + '/' + this.documentKind + '/' + uniqueKey;
+			return true;
 		},
 		view: require('../view/business-process-document')
 	},
 	'business-process/[0-9][a-z0-9]+/certificate/[a-z][a-z0-9-]*': {
-		match: function (businessProcessId, certificateKey) {
-			if (!matchBusinessProcess.call(this, businessProcessId)) return false;
+		match: function (businessProcessId, uniqueKey) {
+			var self = this;
 
-			return matchCertificate.call(this, certificateKey);
+			if (!matchBusinessProcess.call(self, businessProcessId)) return false;
+			if (!this.businessProcess.isApproved) return false;
+
+			uniqueKey = hyphenToCamel.call(uniqueKey);
+			this.businessProcess.certificates.dataSnapshot.resolved.some(function (data) {
+				if (data.uniqueKey === uniqueKey) {
+					this.dataSnapshot = data;
+					return true;
+				}
+			}, this);
+			if (!this.dataSnapshot) return false;
+
+			this.document = this.businessProcess.certificates.map[uniqueKey];
+			this.documentKind = 'certificate';
+			this.documentUniqueId =
+				this.businessProcess.__id__ + '/' + this.documentKind + '/' + uniqueKey;
+			return true;
 		},
 		view: require('../view/business-process-document')
 	},
@@ -61,6 +86,6 @@ module.exports = {
 	},
 	'business-process/[0-9][a-z0-9]+/print-data': {
 		match: matchBusinessProcess,
-		view: require('../view/print-business-process-chain-data')
+		view: require('../view/print-business-process-data')
 	}
 };

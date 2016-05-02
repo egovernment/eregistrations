@@ -2,16 +2,14 @@
 
 'use strict';
 
-var _                = require('mano').i18n.bind("View: User")
-  , generateSections = require('./components/generate-sections');
+var _              = require('mano').i18n.bind("View: User")
+  , renderSections = require('./components/render-sections-json');
 
 exports._parent = require('./user-base');
 exports._match = 'businessProcess';
 
 exports['sub-main'] = {
 	content: function () {
-		var cumulatedSections;
-		cumulatedSections = this.businessProcess.dataForms.processChainApplicable;
 		div({ class: "content user-forms" },
 			h2({ class: "container-with-nav" },
 				_("Data of ${businessName}",
@@ -20,11 +18,7 @@ exports['sub-main'] = {
 					'data-hint': _("Print your application form"), target: '_blank',
 					href: '/business-process/' + this.businessProcess.__id__ + '/print-data/'
 					}, span({ class: "fa fa-print" }, _("Print")))),
-			_if(cumulatedSections._size,
-				div({ class: 'section-primary entity-data-section-side' },
-					generateSections(cumulatedSections, { viewContext: this })),
-				div({ class: 'section-primary' },
-					p(_('No data to display'))))
-			);
+			div({ class: 'section-primary entity-data-section-side' },
+				renderSections(this.businessProcess.dataForms.dataSnapshot)));
 	}
 };
