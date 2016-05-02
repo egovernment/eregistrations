@@ -7,8 +7,9 @@ var normalizeOptions = require('es5-ext/object/normalize-options')
 
   , _d = _;
 
-module.exports = function (businessProcess/*, options*/) {
+module.exports = function (context/*, options*/) {
 	var options               = normalizeOptions(arguments[1])
+	  , businessProcess       = context.businessProcess
 	  , urlPrefix             = options.urlPrefix || '/'
 	  , target                = options.uploadsResolver || businessProcess
 	  , paymentReceiptUploads = target.paymentReceiptUploads.applicable;
