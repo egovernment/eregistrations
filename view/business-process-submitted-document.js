@@ -8,7 +8,7 @@ var renderDocument             = require('./components/business-process-document
 
 exports._parent  = require('./business-process-submitted-documents');
 exports._dynamic = require('./utils/document-dynamic-matcher')('document');
-exports._match   = 'document';
+exports._match   = 'documentUniqueId';
 
 exports['selection-preview'] = function () {
 	var doc = this.document;
