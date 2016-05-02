@@ -2,8 +2,9 @@
 
 'use strict';
 
-var _                = require('mano').i18n.bind('View: Component: Payments')
-  , normalizeOptions = require('es5-ext/object/normalize-options')
+var normalizeOptions = require('es5-ext/object/normalize-options')
+  , _                = require('mano').i18n.bind('View: Component: Payments')
+
   , _d = _;
 
 module.exports = function (businessProcess/*, options*/) {
