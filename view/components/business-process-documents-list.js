@@ -2,43 +2,18 @@
 
 'use strict';
 
-var find             = require('es5-ext/array/#/find')
-  , normalizeOptions = require('es5-ext/object/normalize-options')
+var normalizeOptions = require('es5-ext/object/normalize-options')
   , camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
   , _                = require('mano').i18n.bind('View: Component: Documents')
-  , isUserApp        = require('../../utils/is-user-app')
-  , getSetProxy      = require('../../utils/observable-set-proxy');
+  , getUploads       = require('../utils/get-uploads-list');
 
 module.exports = function (context/*, options*/) {
-	var options         = normalizeOptions(arguments[1])
-	  , businessProcess = context.businessProcess
-	  , urlPrefix       = options.urlPrefix || '/'
-	  , target          = options.uploadsResolver || businessProcess
-	  , targetMap       = target.requirementUploads
-	  , snapshot        = businessProcess.requirementUploads.dataSnapshot
+	var options            = normalizeOptions(arguments[1])
+	  , businessProcess    = context.businessProcess
+	  , urlPrefix          = options.urlPrefix || '/'
+	  , target             = options.uploadsResolver || businessProcess
+	  , requirementUploads = getUploads(target.requirementUploads, context.appName);
 
-	  , requirementUploads;
-
-	if (isUserApp(context.appName)) {
-		// If it's a user, then we show to him direct result of saved snapshot
-		requirementUploads = snapshot._resolved;
-	} else {
-		// Otherwise we show only those items from snapshot which are applicable according
-		// to current model state. Additionally for revision case we show processable items even if
-		// they're not represented in snapshot
-		requirementUploads = snapshot._resolved.map(function (data) {
-			return getSetProxy(targetMap.applicable).map(function (upload) {
-				var uniqueKey = upload.document.uniqueKey;
-				var snapshot = data && find.call(data, function (snapshot) {
-					return uniqueKey === snapshot.uniqueKey;
-				});
-				if (snapshot) return snapshot;
-				if (!targetMap.processable) return;
-				if (!targetMap.processable.has(upload)) return;
-				return upload.enrichJSON(upload.toJSON());
-			}).filter(Boolean).toArray();
-		});
-	}
 	return mmap(requirementUploads, function (data) {
 		if (!data) return;
 		return _if(data._length || data.length, function () {
