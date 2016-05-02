@@ -11,12 +11,10 @@ exports._dynamic = require('./utils/document-dynamic-matcher')('document');
 exports._match   = 'documentUniqueId';
 
 exports['selection-preview'] = function () {
-	var doc = this.document;
-
-	insert(renderDocument(doc, this.businessProcess.requirementUploads.applicable, {
+	insert(renderDocument(this, this.businessProcess.requirementUploads.applicable, {
 		mainContent: exports._documentPreviewContent.call(this),
-		sideContent: renderDocumentHistory(doc)
-	}), renderDocumentRevisionInfo(doc));
+		sideContent: renderDocumentHistory(this.document)
+	}), renderDocumentRevisionInfo(this.document));
 };
 
 exports._documentPreviewContent = Function.prototype;
