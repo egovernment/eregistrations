@@ -3,8 +3,8 @@
 'use strict';
 
 var find             = require('es5-ext/array/#/find')
-  , camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
   , normalizeOptions = require('es5-ext/object/normalize-options')
+  , camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
   , _                = require('mano').i18n.bind('View: Component: Certificates')
   , isUserApp        = require('../../utils/is-user-app')
   , getSetProxy      = require('../../utils/observable-set-proxy')
