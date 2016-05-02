@@ -40,6 +40,7 @@
 	font-size: 12px;
 	color: var(--hint-text);
 	margin-left: 5px;
+	line-height: 16px;
 }
 
 .scrollable-list-box-described > label {
