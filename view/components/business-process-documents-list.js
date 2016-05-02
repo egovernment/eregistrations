@@ -61,10 +61,10 @@ module.exports = function (context/*, options*/) {
 							data: function (upload) { return upload.label; }
 						}, {
 							class: 'submitted-user-data-table-date',
-							head: _("Issue date"),
+							head: _("Emission date"),
 							data: function (upload) { return upload.issueDate; }
 						}, {
-							head: _("Issuer"),
+							head: _("Emissor"),
 							data: _("User")
 						}, {
 							class: 'submitted-user-data-table-link',
