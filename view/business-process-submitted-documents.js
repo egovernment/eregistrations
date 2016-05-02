@@ -9,17 +9,12 @@ var renderDocumentsList   = require('./components/business-process-documents-lis
 exports._parent = require('./business-process-submitted');
 
 exports['tab-business-process-documents'] = { class: { active: true } };
-exports['tab-content'] = function (/*options*/) {
-	var options = Object(arguments[0]);
+exports['tab-content'] = function () {
 
-	section(
-		{ class: 'section-primary' },
-		div(
-			{ class: "section-primary-sub all-documents-table" },
-			div(renderCertificateList(this.businessProcess, options)),
-			div(renderDocumentsList(this.businessProcess, options)),
-			div(renderPaymentList(this.businessProcess, options))
-		),
-		div({ id: 'selection-preview' })
-	);
+	section({ class: 'section-primary' },
+		div({ class: "section-primary-sub all-documents-table" },
+			div(renderCertificateList(this.businessProcess)),
+			div(renderDocumentsList(this.businessProcess)),
+			div(renderPaymentList(this.businessProcess))),
+		div({ id: 'selection-preview' }));
 };
