@@ -13,8 +13,8 @@ exports['tab-content'] = function () {
 
 	section({ class: 'section-primary' },
 		div({ class: "section-primary-sub all-documents-table" },
-			div(renderCertificateList(this.businessProcess)),
-			div(renderDocumentsList(this.businessProcess)),
-			div(renderPaymentList(this.businessProcess))),
+			div(renderCertificateList(this)),
+			div(renderDocumentsList(this)),
+			div(renderPaymentList(this))),
 		div({ id: 'selection-preview' }));
 };
