@@ -50,6 +50,7 @@ module.exports = {
 				}
 			}, this);
 			this.documentKind = 'requirementUpload';
+			this.documentUniqueKey = uniqueKey;
 			this.documentUniqueId =
 				this.businessProcess.__id__ + '/' + this.documentKind + '/' + uniqueKey;
 			return true;
@@ -74,6 +75,7 @@ module.exports = {
 
 			this.document = this.businessProcess.certificates.map[uniqueKey];
 			this.documentKind = 'certificate';
+			this.documentUniqueKey = uniqueKey;
 			this.documentUniqueId =
 				this.businessProcess.__id__ + '/' + this.documentKind + '/' + uniqueKey;
 			return true;

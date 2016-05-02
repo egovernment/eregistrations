@@ -58,6 +58,7 @@ module.exports = function (step) {
 						this.dataSnapshot = this.document.owner.enrichJSON(this.document.owner.toJSON());
 					}
 					this.documentKind = 'requirementUpload';
+					this.documentUniqueKey = docUniqueKey;
 					this.documentUniqueId =
 						this.processingStep.__id__ + '/' + this.documentKind + '/' + docUniqueKey;
 					return true;
@@ -92,6 +93,7 @@ module.exports = function (step) {
 						this.dataSnapshot = this.document.owner.enrichJSON(this.document.owner.toJSON());
 					}
 					this.documentKind = 'paymentReceiptUpload';
+					this.documentUniqueKey = docUniqueKey;
 					this.documentUniqueId =
 						this.processingStep.__id__ + '/' + this.documentKind + '/' + docUniqueKey;
 					return true;
@@ -122,6 +124,7 @@ module.exports = function (step) {
 					}
 
 					this.documentKind = 'certificate';
+					this.documentUniqueKey = docUniqueKey;
 					this.documentUniqueId =
 						this.processingStep.__id__ + '/' + this.documentKind + '/' + docUniqueKey;
 					return true;
