@@ -181,7 +181,25 @@ module.exports = memoize(function (db) {
 					});
 				}, this);
 			}
-		}
+		},
+		toJSON: { value: function (ignore) {
+			var result = this.commonToJSON();
+			if (this.resolventProperty) {
+				result.fields = [this.master.resolveSKeyPath(this.resolventProperty)
+					.ownDescriptor.fieldToJSON()];
+			}
+			if (!this.isUnresolved) {
+				var entities = [], data = this.entitiesSet;
+				data.forEach(function (entity) {
+					entities.push({
+						name: entity.getBySKeyPath(this.entityTitleProperty),
+						sections: entity.getBySKeyPath(this.sectionProperty).toJSON()
+					});
+				}, this);
+				if (entities.length) result.entities = entities;
+			}
+			return result;
+		} }
 	});
 
 	FormEntitiesTable.prototype.progressRules.map.define('entities', {

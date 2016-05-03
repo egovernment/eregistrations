@@ -1,7 +1,7 @@
 'use strict';
 
 var domEnum = require('dbjs-dom/enum')
-  , db      = require('mano').db
+  , db      = require('../../db')
   , requirementUpload = db.RequirementUpload.prototype
 
   , user = db.User.prototype;
@@ -22,6 +22,8 @@ require('dbjs-dom/input/object/file')(db);
 require('dbjs-dom/input/string/string-line')(db);
 require('dbjs-dom/input/string/string-line/email')(db);
 require('dbjs-dom/input/string/string-line/password')(db);
+
+require('../../model/lib/data-snapshot/resolved')(db);
 
 require('dbjs-dom/input/utils/fieldset')(db);
 require('dbjs-dom-bootstrap/number/currency')(db);

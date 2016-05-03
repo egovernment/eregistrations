@@ -27,6 +27,7 @@
     "time-uuid": "1",
     "jsdom": "^8.0.4",
     "next-tick": "^0.2.2",
+    "observable-array": "0.0.4",
     "observable-set": "0.0.4",
     "observable-value": "0.0.5",
     "soap": "0.13",

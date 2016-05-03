@@ -193,10 +193,15 @@ module.exports = memoize(function (db) {
 
 	ProcessingStep.prototype.certificates.defineProperties({
 		applicable: { type: Document, multiple: true, value: function (_observe) {
+			// Property is observed on purpose
+			// (there's a possible switch between direct and computed set mode)
 			return _observe(this.master.certificates._applicable);
 		} },
 		uploaded: { type: Document, multiple: true, value: function (_observe) {
-			return _observe(this.master.certificates._uploaded);
+			return _observe(this.master.certificates.uploaded);
+		} },
+		released: { type: Document, multiple: true, value: function (_observe) {
+			return _observe(this.master.certificates.released);
 		} }
 	});
 
