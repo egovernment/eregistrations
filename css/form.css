@@ -505,6 +505,13 @@ ul.multiple {
 	max-width: 90%;
 }
 
+.form-elements .dbjs-input-component .multiple {
+	max-width: 90%;
+}
+.form-elements .dbjs-input-component .multiple > ul {
+	max-width: 91%;
+}
+
 .form-elements .dbjs-input-component .multiple input[type="text"],
 .form-elements .dbjs-input-component .multiple input[type="number"],
 .form-elements .dbjs-input-component .multiple input[type="email"],
@@ -521,29 +528,32 @@ ul.multiple {
 .form-elements .dbjs-input-component .multiple input[type="color"],
 .form-elements .dbjs-input-component .multiple select,
 .form-elements .dbjs-input-component .multiple textarea  {
-	max-width: 100%;
+	width: 100%;
+}
+
+.form-elements .dbjs-input-component .more-than-one input[type="text"],
+.form-elements .dbjs-input-component .more-than-one input[type="number"],
+.form-elements .dbjs-input-component .more-than-one input[type="email"],
+.form-elements .dbjs-input-component .more-than-one input[type="password"],
+.form-elements .dbjs-input-component .more-than-one input[type="date"],
+.form-elements .dbjs-input-component .more-than-one input[type="month"],
+.form-elements .dbjs-input-component .more-than-one input[type="week"],
+.form-elements .dbjs-input-component .more-than-one input[type="time"],
+.form-elements .dbjs-input-component .more-than-one input[type="datetime"],
+.form-elements .dbjs-input-component .more-than-one input[type="datetime-local"],
+.form-elements .dbjs-input-component .more-than-one input[type="search"],
+.form-elements .dbjs-input-component .more-than-one input[type="url"],
+.form-elements .dbjs-input-component .more-than-one input[type="tel"],
+.form-elements .dbjs-input-component .more-than-one input[type="color"],
+.form-elements .dbjs-input-component .more-than-one select,
+.form-elements .dbjs-input-component .more-than-one textarea  {
+	width: 91%;
 }
 
 .form-elements .dbjs-input-component > .input .input {
 	width: auto;
 	margin-left: 0;
 	padding-left: 0;
-}
-
-.form-elements .dbjs-input-component > .input .multiple {
-	max-width: 100%;
-}
-
-.form-elements .dbjs-input-component > .input .multiple ul {
-	max-width: 95%;
-}
-
-.form-elements .dbjs-input-component > .input .multiple ul select {
-	max-width: 100%;
-}
-
-.form-elements .dbjs-input-component > .input .multiple.more-than-one ul select {
-	max-width: 95%;
 }
 
 /*
