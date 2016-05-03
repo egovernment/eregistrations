@@ -18,6 +18,7 @@
 .scrollable-list-box-described > *:first-child {
 	margin-right: 5px;
 	margin-left: 0;
+	display: block;
 }
 
 .scrollable-list-box-described > label {
@@ -38,10 +39,6 @@
 	color: var(--hint-text);
 	margin-left: 5px;
 	line-height: 16px;
-}
-
-.scrollable-list-box-described > label {
-	display: block;
 }
 
 /*
