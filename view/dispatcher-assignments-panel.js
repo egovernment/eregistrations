@@ -3,10 +3,8 @@
 var db                        = require('mano').db
   , _                         = require('mano').i18n.bind('View: Official: Dispatcher')
   , env                       = require('mano').env
-  , from                      = require('es5-ext/array/from')
   , getBusinessProcessesTable = require('./components/business-processes-table')
   , tableColumns              = require('./components/business-process-table-columns')
-  , columns                   = from(tableColumns.columns)
   , once                      = require('timers-ext/once')
   , dispatch                  = require('dom-ext/html-element/#/dispatch-event-2')
   , location                  = require('mano/lib/client/location');
@@ -16,9 +14,6 @@ exports._match  = 'processingStep';
 exports._customFilter = function (processingStep, assignableUsers) {
 	return assignableUsers;
 };
-
-columns.push(tableColumns.archiverColumn);
-columns.push(tableColumns.goToColumn);
 
 var assignmentColumn = {
 	head: _("Assignee"),
@@ -33,7 +28,16 @@ var assignmentColumn = {
 	}
 };
 var assignmentColumnData = assignmentColumn.data;
-columns.push(assignmentColumn);
+
+var columns = [
+	tableColumns.servicesColumn,
+	tableColumns.businessNameColumn,
+	tableColumns.submissionDateColumn,
+	tableColumns.certificatesListColumn,
+	tableColumns.archiverColumn,
+	tableColumns.goToColumn,
+	assignmentColumn
+];
 
 var businessProcessTable = function (context) {
 	var assignableUsers = db.User.instances.filterByKey('roles', function (roles) {
