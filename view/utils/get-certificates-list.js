@@ -11,8 +11,8 @@ module.exports = memoize(function (targetMap, appName) {
 	var businessProcess = ensureDbjsObject(targetMap).master;
 	appName = ensureString(appName);
 
-	return businessProcess._isApproved.map(function (isApproved) {
-		if (!isApproved) {
+	return businessProcess._isClosed.map(function (isClosed) {
+		if (!isClosed) {
 			// User, can see released certificates only when request is finalized
 			if (isUserApp(appName)) return null;
 			return targetMap.released.toArray();
