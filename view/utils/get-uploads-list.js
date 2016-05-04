@@ -21,19 +21,21 @@ module.exports = memoize(function (targetMap, appName) {
 		return snapshot._resolved;
 	}
 	// Otherwise we show only those items from snapshot which are applicable according
-	// to current model state. Additionally for revision case we show processable items even if
-	// they're not represented in snapshot
-	return snapshot._resolved.map(function (data) {
-		return getSetProxy(targetMap.applicable).map(function (upload) {
-			var uniqueKey = (kind === 'requirementUploads') ? upload.document.uniqueKey : upload.key;
-			var snapshot = data && find.call(data, function (snapshot) {
-				return uniqueKey === snapshot.uniqueKey;
-			});
-			if (snapshot) return snapshot;
-			if (!targetMap.processable) return;
-			if (!targetMap.processable.has(upload)) return;
-			return upload.enrichJSON(upload.toJSON());
-		}).filter(Boolean).toArray();
+	// to current model state.
+	return businessProcess._isClosed.map(function (isClosed) {
+		return snapshot._resolved.map(function (data) {
+			return getSetProxy(targetMap.applicable).map(function (upload) {
+				var uniqueKey = (kind === 'requirementUploads') ? upload.document.uniqueKey : upload.key;
+				var snapshot = data && find.call(data, function (snapshot) {
+					return uniqueKey === snapshot.uniqueKey;
+				});
+				if (snapshot) return snapshot;
+				if (isClosed) return;
+				// If file is not yet closed, then we show all applicable even if they're not referenced in
+				// snapshot
+				return upload.enrichJSON(upload.toJSON());
+			}).filter(Boolean).toArray();
+		});
 	});
 }, {
 	normalizer: require('memoizee/normalizers/get-primitive-fixed')(2)
