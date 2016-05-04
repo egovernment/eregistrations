@@ -7,8 +7,4 @@ var dataView = require('./components/business-process-data');
 exports._parent = require('./business-process-submitted');
 
 exports['tab-business-process-data'] = { class: { active: true } };
-exports['tab-content'] = function () {
-	var businessProcess = this.businessProcess;
-
-	insert(dataView(businessProcess.dataForms.applicable));
-};
+exports['tab-content'] = function () { insert(dataView(this)); };
