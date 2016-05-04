@@ -2,21 +2,22 @@
 
 'use strict';
 
-var documentView          = require('./components/business-process-document')
-  , renderDocumentHistory = require('./components/business-process-document-history')
-  , documentRevisionInfo  = require('./components/business-process-document-review-info');
+var renderDocument             = require('./components/business-process-document')
+  , renderDocumentHistory      = require('./components/business-process-document-history')
+  , renderDocumentRevisionInfo = require('./components/business-process-document-review-info')
+  , getDocumentData            = require('./utils/get-document-data');
 
 exports._parent  = require('./business-process-official-documents');
 exports._dynamic = require('./utils/document-dynamic-matcher')('receipt');
-exports._match   = 'document';
+exports._match   = 'documentUniqueId';
 
 exports['selection-preview'] = function () {
-	var doc = this.document;
+	var documentData = getDocumentData(this);
 
-	insert(documentView(doc, this.processingStep.paymentReceiptUploads.applicable, {
-		prependContent: documentRevisionInfo(doc),
-		mainContent: exports._paymentPreviewContent.call(this),
-		sideContent: renderDocumentHistory(doc),
+	insert(renderDocument(this, documentData, {
+		prependContent: renderDocumentRevisionInfo(this),
+		mainContent: exports._paymentPreviewContent.call(this, documentData),
+		sideContent: renderDocumentHistory(documentData),
 		urlPrefix: '/' + this.businessProcess.__id__ + '/'
 	}));
 };

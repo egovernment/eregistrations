@@ -2,29 +2,23 @@
 
 'use strict';
 
-var db                    = require('mano').db
-  , endsWith              = require('es5-ext/string/#/ends-with')
-  , documentView          = require('./components/business-process-document')
-  , renderDocumentHistory = require('./components/business-process-document-history');
+var renderDocument        = require('./components/business-process-document')
+  , renderDocumentHistory = require('./components/business-process-document-history')
+  , getDocumentData       = require('./utils/get-document-data');
 
 exports._parent  = require('./business-process-official-documents');
 exports._dynamic = require('./utils/document-dynamic-matcher')('certificate');
-exports._match   = 'document';
+exports._match   = 'documentUniqueId';
 
 exports['selection-preview'] = function () {
-	var doc = this.document;
+	var documentData = getDocumentData(this);
 
-	insert(documentView(doc, this.processingStep.certificates.uploaded, {
-		mainContent: exports._certificatePreviewContent.call(this),
+	insert(renderDocument(this, documentData, {
+		mainContent: exports._certificatePreviewContent.call(this, documentData),
 		sideContent: [
-			doc.overviewSection.toDOM(document, { disableHeader: false }),
-			doc.dataForm.constructor !== db.FormSectionBase ? doc.dataForm.toDOM(document, {
-				customFilter: function (resolved) {
-					return !endsWith.call(resolved.observable.dbId, 'files/map');
-				},
-				disableHeader: false
-			}) : null,
-			renderDocumentHistory(doc)
+			documentData.overviewSection,
+			documentData.section,
+			renderDocumentHistory(documentData)
 		],
 		urlPrefix: '/' + this.businessProcess.__id__ + '/'
 	}));
