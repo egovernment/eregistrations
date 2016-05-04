@@ -2,13 +2,14 @@
 
 'use strict';
 
-var _                     = require('mano').i18n.bind('View: Official: Revision')
-  , camelToHyphen         = require('es5-ext/string/#/camel-to-hyphen')
-  , documentView          = require('./components/business-process-document')
-  , renderDocumentHistory = require('./components/business-process-document-history')
-  , documentRevisionInfo  = require('./components/business-process-document-review-info')
-  , generateSections      = require('./components/generate-sections')
-  , disableStep           = require('./components/disable-processing-step')
+var camelToHyphen              = require('es5-ext/string/#/camel-to-hyphen')
+  , _                          = require('mano').i18n.bind('View: Official: Revision')
+  , renderDocument             = require('./components/business-process-document')
+  , renderDocumentHistory      = require('./components/business-process-document-history')
+  , renderDocumentRevisionInfo = require('./components/business-process-document-review-info')
+  , renderSections             = require('./components/render-sections-json')
+  , disableStep                = require('./components/disable-processing-step')
+  , getDocumentData            = require('./utils/get-document-data')
 
   , paymentForm;
 
@@ -18,36 +19,42 @@ exports._match = 'documentUniqueId';
 
 paymentForm = function (paymentReceiptUpload) {
 	var revFail;
-	return form(
-		{ id: 'form-revision-payment-receipt-upload',
-			action: '/form-revision-payment-receipt-upload/' + paymentReceiptUpload.master.__id__ +
-			'/' + camelToHyphen.call(paymentReceiptUpload.document.docId) + '/',
-			method: 'post', class: 'submitted-preview-form' },
-		ul({ class: 'form-elements' },
+	return form({
+		id: 'form-revision-payment-receipt-upload',
+		class: 'submitted-preview-form',
+		method: 'post',
+		action: '/form-revision-payment-receipt-upload/' + paymentReceiptUpload.master.__id__ +
+			'/' + camelToHyphen.call(paymentReceiptUpload.document.docId) + '/'
+	}, ul({ class: 'form-elements' },
 			li(div({ class: 'input' }, input({ dbjs: paymentReceiptUpload._status }))),
-			li(
-				revFail = div({ class: 'official-form-document-revision-reject-reason' },
-					field({ dbjs: paymentReceiptUpload._rejectReasonMemo }))
-			),
+			li(revFail = div({ class: 'official-form-document-revision-reject-reason' },
+				field({ dbjs: paymentReceiptUpload._rejectReasonMemo }))),
 			li(input({ type: 'submit', value: _("Save") }))),
 		legacy('radioMatch', 'form-revision-payment-receipt-upload',
-			paymentReceiptUpload.__id__ + '/status', { invalid: revFail.getId() })
-	);
+			paymentReceiptUpload.__id__ + '/status', { invalid: revFail.getId() }));
 };
 
 exports['selection-preview'] = function () {
-	var doc            = this.document
-	  , processingStep = this.processingStep;
+	var documentData = getDocumentData(this), isProcessable;
 
-	insert(documentView(doc, this.processingStep.paymentReceiptUploads.applicable, {
-		prependContent: insert(_if(processingStep.paymentReceiptUploads.processable._has(doc.owner),
-			disableStep(this.processingStep, paymentForm(doc.owner)),
-			documentRevisionInfo(doc))),
-		mainContent: exports._paymentPreviewContent.call(this),
-		sideContent: generateSections(this.businessProcess.dataForms.applicable,
-			{ viewContext: this }),
-		urlPrefix: '/' + this.businessProcess.__id__ + '/'
-	}), renderDocumentHistory(doc));
+	if (this.document) {
+		isProcessable  = this.processingStep.paymentReceiptUploads.processable
+			._has(this.document.owner);
+	}
+
+	insert(
+		renderDocument(this, documentData, {
+			prependContent: _if(isProcessable, function () {
+				return disableStep(this.processingStep, paymentForm(this.document.owner));
+			}.bind(this), function () {
+				return renderDocumentRevisionInfo(this);
+			}.bind(this)),
+			mainContent: exports._paymentPreviewContent.call(this, documentData),
+			sideContent: renderSections(this.businessProcess.dataForms.dataSnapshot),
+			urlPrefix: '/' + this.businessProcess.__id__ + '/'
+		}),
+		renderDocumentHistory(documentData)
+	);
 };
 
 exports._paymentPreviewContent = Function.prototype;

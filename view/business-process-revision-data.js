@@ -8,9 +8,5 @@ exports._parent = require('./business-process-revision');
 
 exports['tab-business-process-data'] = { class: { active: true } };
 exports['tab-content'] = function () {
-	var businessProcess = this.businessProcess;
-
-	insert(dataView(businessProcess.dataForms.applicable, {
-		urlPrefix: '/' + businessProcess.__id__ + '/'
-	}));
+	insert(dataView(this, { urlPrefix: '/' + this.businessProcess.__id__ + '/' }));
 };
