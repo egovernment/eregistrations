@@ -9,6 +9,7 @@ module.exports = function (uniqueKey) {
 	}, this);
 	if (!this.document) return false;
 	if (this.businessProcess.isClosed) {
+		if (!this.businessProcess.isApproved) return false;
 		this.businessProcess.certificates.dataSnapshot.resolved.some(function (data) {
 			if (data.uniqueKey === uniqueKey) {
 				this.dataSnapshot = data;
