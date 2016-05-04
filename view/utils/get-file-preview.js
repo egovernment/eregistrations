@@ -2,7 +2,8 @@
 
 var includes         = require('es5-ext/array/#/contains')
   , isReadOnlyRender = require('mano/client/utils/is-read-only-render')
-  , docMimeTypes     = require('../../utils/microsoft-word-doc-mime-types');
+  , docMimeTypes     = require('../../utils/microsoft-word-doc-mime-types')
+  , pathToUrl        = require('../../utils/upload-path-to-url');
 
 module.exports = function (file) {
 	var type = file.type;
@@ -11,9 +12,13 @@ module.exports = function (file) {
 	}
 	if (!isReadOnlyRender && (type === 'application/pdf')) {
 		return iframe({
-			src: url('pdfjs/web/viewer.html?file=') + file.path
+			src: url('pdfjs/web/viewer.html?file=') + encodeURIComponent('/' + file.path)
 		});
 	}
-	return img({ zoomOnHover: true, src: or(resolve(file._preview, '_url'),
-		resolve(file._thumb, '_url')) });
+	return img({
+		zoomOnHover: true,
+		src: mmap(or(file.previewPath, file.thumbPath), function (path) {
+			if (path) return stUrl(pathToUrl(path));
+		})
+	});
 };

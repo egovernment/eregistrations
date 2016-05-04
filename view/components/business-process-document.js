@@ -2,143 +2,147 @@
 
 'use strict';
 
-var _                  = require('mano').i18n.bind('View: Component: Documents')
-  , isReadOnlyRender   = require('mano/client/utils/is-read-only-render')
+var includes           = require('es5-ext/array/#/contains')
   , normalizeOptions   = require('es5-ext/object/normalize-options')
-  , includes           = require('es5-ext/array/#/contains')
+  , camelToHyphen      = require('es5-ext/string/#/camel-to-hyphen')
   , syncStyle          = require('dom-ext/html-element/#/sync-style')
-  , reactiveSibling    = require('../../utils/reactive-sibling')
+  , _                  = require('mano').i18n.bind('View: Component: Documents')
+  , isReadOnlyRender   = require('mano/client/utils/is-read-only-render')
+  , getArrayIndex      = require('../../utils/get-observable-array-index')
   , docMimeTypes       = require('../../utils/microsoft-word-doc-mime-types')
-  , resolveArchivePath = require('../../utils/resolve-document-archive-path')
+  , pathToUrl          = require('../../utils/upload-path-to-url')
+  , reactiveSibling    = require('../utils/reactive-document-sibling')
   , syncHeight         = require('../utils/sync-height')
   , getFilePreview     = require('../utils/get-file-preview')
   , isMobileView       = require('../utils/is-mobile-view')
-  , _d                 = _;
+  , getCertificates    = require('../utils/get-certificates-list')
+  , getUploads         = require('../utils/get-uploads-list');
 
-module.exports = function (doc, collection/*, options*/) {
-	var options         = normalizeOptions(arguments[2])
-	  , urlPrefix       = options.urlPrefix || '/'
-	  , mainContent     = options.mainContent
-	  , isCertificate   = doc.owner.owner.key === 'certificates'
-	  , files           = doc.files.ordered
-	  , nextDocument, previousDocument, nextDocumentUrl, previousDocumentUrl, docPreviewElement
+module.exports = function (context, documentData/*, options*/) {
+	var options          = normalizeOptions(arguments[2])
+	  , urlPrefix        = options.urlPrefix || '/'
+	  , mainContent      = options.mainContent
+	  , businessProcess  = context.businessProcess
+	  , collectionTarget = options.uploadsResolver || businessProcess
+	  , kind             = context.documentKind
+
+	  , collection
+
+	  , nextDocumentUrl, previousDocumentUrl, docPreviewElement
 	  , sideContentContainer;
 
-	var resolveDocumentUrl = function (elem) {
-		if (!elem) return null;
-		return urlPrefix + (isCertificate ? elem.docUrl : elem.document.docUrl);
+	if (kind === 'certificate') collection = getCertificates(collectionTarget, context.appName);
+	else collection = getUploads(collectionTarget, context.appName);
+
+	var resolveDocumentUrl = function (data) {
+		var url = urlPrefix;
+		if (!data) return null;
+		if (kind === 'certificate') url += 'certificates';
+		else if (kind === 'requirementUpload') url += 'documents';
+		else if (kind === 'paymentReceiptUpload') url = 'payment-receipts';
+		else throw new Error(kind + " is not recognized document kind");
+		return url + '/' + camelToHyphen.call(data.uniqueKey) + '/';
 	};
 
-	if (isCertificate) {
-		// Certificate case
-		nextDocument = reactiveSibling.next(collection, doc);
-		previousDocument = reactiveSibling.previous(collection, doc);
-	} else {
-		// Requirement upload or payment receipt case
-		nextDocument = reactiveSibling.next(collection, doc.owner);
-		previousDocument = reactiveSibling.previous(collection, doc.owner);
-	}
-
-	nextDocumentUrl = nextDocument.map(resolveDocumentUrl);
-	previousDocumentUrl = previousDocument.map(resolveDocumentUrl);
+	nextDocumentUrl = reactiveSibling.next(collection, context.documentUniqueId)
+		.map(resolveDocumentUrl);
+	previousDocumentUrl = reactiveSibling.previous(collection, context.documentUniqueId)
+		.map(resolveDocumentUrl);
 
 	var result = [
-		div(
-			{ id: 'submitted-box', class: 'business-process-submitted-box' },
-			div(
-				{ class: 'business-process-submitted-box-header' },
-				div(
-					{ class: 'business-process-submitted-box-header-document-title' },
-					_d(doc.label, doc.getTranslations())
-				),
-				div(
-					{ class: 'business-process-submitted-box-controls' },
+		div({ id: 'submitted-box', class: 'business-process-submitted-box' },
+			div({ class: 'business-process-submitted-box-header' },
+
+				// Label
+				div({ class: 'business-process-submitted-box-header-document-title' }, documentData.label),
+
+				// Links to previous and next document
+				div({ class: 'business-process-submitted-box-controls' },
 					div({ class: 'label-doc-type' }, _('Document')),
-					_if(previousDocument,
+					_if(previousDocumentUrl,
 						a({ href: previousDocumentUrl,
 							class: 'hint-optional hint-optional-left',
 							'data-hint': _('Previous document') },
 							i({ class: 'fa fa-angle-left' }))),
-					_if(nextDocument,
+					_if(nextDocumentUrl,
 						a({ href: nextDocumentUrl,
 							class: 'hint-optional hint-optional-left', 'data-hint': _('Next document') },
-							i({ class: 'fa fa-angle-right' })))
-				)
-			),
-			options.prependContent
-		),
-		div(
-			{ class: 'business-process-submitted-selected-document' },
-			div(
-				{ class: 'submitted-preview' },
-				mainContent || _if(files._size, function () {
-					var moreThanOneFile = gt(files._size, 1);
+							i({ class: 'fa fa-angle-right' }))))),
 
-					return div(
-						{ id: 'document-preview', class: ['submitted-preview-document',
-							'business-process-document-preview'] },
-						// Top links container
-						div(
-							{ class: 'container-with-nav' },
-							// Download links
-							div(
-								{ class: 'business-process-document-preview-external-links' },
-								span({
-									id: 'doc-open-links',
-									class: 'business-process-document-preview-download-links'
-								}, list(files, function (file) {
-									var type           = file.type
-									  , linkText       = _("Open file in new window")
-									  , linkAttributes = {
-										target: '_blank',
-										href: file._url,
-										class: _if(eq(file, files._first), 'active')
-									};
+			options.prependContent),
 
-									if (includes.call(docMimeTypes, type)) {
-										linkAttributes.download = file._name;
-									} else if (!isReadOnlyRender && (type === 'application/pdf')) {
-										linkAttributes.href = file._path.map(function (path) {
-											if (path) {
-												return '/pdfjs/web/viewer.html?file=/'
-													+ encodeURIComponent(path);
-											}
-										});
-									}
+		// Document preview
+		div({ class: 'business-process-submitted-selected-document' },
+			div({ class: 'submitted-preview' },
 
-									return a(linkAttributes, linkText);
-								})),
-								a({ target: '_blank', href: '/' + resolveArchivePath(doc),
-									download: resolveArchivePath(doc) }, _("Download document"))
-							),
-							// File navigation
+				// Main content
+				mainContent || _if(documentData.filesSize, function () {
+					var moreThanOneFile = gt(documentData.filesSize, 1);
+
+					return div({ id: 'document-preview', class: ['submitted-preview-document',
+						'business-process-document-preview'] },
+
+						div({ class: 'container-with-nav' },
+							div({ class: 'business-process-document-preview-external-links' },
+
+								// Open file in new window link
+								span({ id: 'doc-open-links',
+									class: 'business-process-document-preview-download-links' },
+									list(documentData.files, function (file) {
+										var linkAttributes = { target: '_blank', href: stUrl(pathToUrl(file.path)),
+											class: _if(eq(file, getArrayIndex(documentData.files, 0)), 'active') };
+
+										if (includes.call(docMimeTypes, file.type)) {
+											linkAttributes.download = file.path;
+										} else if (!isReadOnlyRender && (file.type === 'application/pdf')) {
+											linkAttributes.href = '/pdfjs/web/viewer.html?file=' +
+												encodeURIComponent('/' + file.path);
+										}
+
+										return a(linkAttributes, _("Open file in new window"));
+									})),
+
+								// Download document lint
+								a({ href: _if(documentData.filesSize,
+									_if(eq(documentData.filesSize, 1),
+										mmap(resolve(getArrayIndex(documentData.files, 0), 'path'), function (path) {
+											if (path) return stUrl(pathToUrl(path));
+										}),
+										'/' + documentData.archiveUrl)),
+									download: _if(documentData.filesSize,
+										_if(eq(documentData.filesSize, 1),
+											resolve(documentData.firstFile, 'path'),
+											documentData.archiveUrl)) }, _("Download document"))),
+
+							// Document files navigation (top)
 							_if(moreThanOneFile, div(
 								{ class: 'business-process-document-preview-navigation' },
 								div({ id: 'submitted-preview-new-navigation-top' },
 									a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' },
 										_("Previous"))),
-									span(span({ class: 'current-index' }, "1"), " / ", files._size),
-									a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' },
-										_("Next"))))
-							))
-						),
-						// File render
+									span(span({ class: 'current-index' }, "1"), " / ", documentData.filesSize),
+									a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, _("Next"))))
+							))),
+
+						// Document file preview (usually zoomable)
 						docPreviewElement = ul({
 							id: 'doc-previews',
 							class: 'submitted-preview-new-image-placeholder'
-						}, files, function (file) {
-							return li({ class: _if(eq(file, files._first), 'active') }, getFilePreview(file));
-						}, doc),
-						// File navigation - bottom
+						}, documentData.files, function (file) {
+							return li({ class: _if(eq(file, getArrayIndex(documentData.files, 0)), 'active') },
+								getFilePreview(file));
+						}),
+
+						// Document files navigation (bottom)
 						_if(moreThanOneFile, div(
 							{ class: 'submitted-preview-new-documents-navigation' },
 							div({ id: 'submitted-preview-new-navigation-bottom' },
 								a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' },
 									_("Previous"))),
-								span(span({ class: 'current-index' }, "1"), " / ", files._size),
-								a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' },
-									_("Next"))))
+								span(span({ class: 'current-index' }, "1"), " / ", documentData.filesSize),
+								a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, _("Next"))))
 						)),
+
 						// Legacy scripts
 						_if(moreThanOneFile, [
 							legacy('hashNavOrderedListControls', 'submitted-preview-new-navigation-top',
@@ -147,22 +151,25 @@ module.exports = function (doc, collection/*, options*/) {
 								'doc-previews', 'doc-preview'),
 							legacy('hashNavDocumentLink', 'doc-open-links', 'doc-preview'),
 							legacy('hashNavOrderedList', 'doc-previews', 'doc-preview')
-						])
-					);
-				}, div(
-					{ class: 'submitted-preview-document-missing' },
-					p(_("This document does not have any physical file attached to it."))
-				)),
+						]));
+				},
+
+					// When no files in document
+					div({ class: 'submitted-preview-document-missing' },
+						p(_("This document does not have any physical file attached to it.")))),
+
+				// Side content
 				sideContentContainer = div(
 					{ class: 'submitted-preview-user-data  entity-data-section-side' },
 					options.sideContent
-				)
-			)
-		)
+				)))
 	];
 
 	if (docPreviewElement) {
+		// 'syncHeight' ensures that document file preview is enforced to be displayed with
+		// A4 proportions, and with respect to VR (its height is in all cases multiplication of 22px)
 		syncHeight(docPreviewElement);
+		// `syncStyle` ensures that side content has exactly same height as main content
 		syncStyle.call(sideContentContainer, docPreviewElement, 'height', isMobileView);
 	}
 
