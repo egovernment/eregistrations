@@ -16,7 +16,7 @@ exports['selection-preview'] = function () {
 	insert(
 		renderDocument(this, documentData, {
 			mainContent: exports._paymentPreviewContent.call(this, documentData),
-			sideContent: renderDocumentHistory(this.document)
+			sideContent: renderDocumentHistory(documentData)
 		}),
 		renderDocumentRevisionInfo(this)
 	);

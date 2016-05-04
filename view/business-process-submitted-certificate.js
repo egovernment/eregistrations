@@ -17,7 +17,7 @@ exports['selection-preview'] = function () {
 		sideContent: [
 			documentData.overviewSection,
 			documentData.section,
-			renderDocumentHistory(this)
+			renderDocumentHistory(documentData)
 		]
 	}));
 };
