@@ -56,7 +56,8 @@ exports['selection-preview'] = function () {
 			}.bind(this)),
 			mainContent: exports._documentPreviewContent.call(this, documentData),
 			sideContent: renderSections(this.businessProcess.dataForms.dataSnapshot),
-			urlPrefix: '/' + this.businessProcess.__id__ + '/'
+			urlPrefix: '/' + this.businessProcess.__id__ + '/',
+			isFirstDocumentRoot: true
 		}),
 		renderDocumentHistory(documentData)
 	);

@@ -17,7 +17,8 @@ exports['selection-preview'] = function () {
 		renderDocument(this, documentData, {
 			prependContent: renderDocumentRevisionInfo(this),
 			mainContent: exports._documentPreviewContent.call(this, documentData),
-			sideContent: renderDocumentHistory(documentData)
+			sideContent: renderDocumentHistory(documentData),
+			isFirstDocumentRoot: true
 		})
 	);
 };

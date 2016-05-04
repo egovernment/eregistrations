@@ -18,7 +18,8 @@ exports['selection-preview'] = function () {
 		prependContent: renderDocumentRevisionInfo(this),
 		mainContent: exports._documentPreviewContent.call(this, documentData),
 		sideContent: renderDocumentHistory(documentData),
-		urlPrefix: '/' + this.businessProcess.__id__ + '/'
+		urlPrefix: '/' + this.businessProcess.__id__ + '/',
+		isFirstDocumentRoot: true
 	}));
 };
 

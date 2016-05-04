@@ -19,12 +19,13 @@ var includes           = require('es5-ext/array/#/contains')
   , getUploads         = require('../utils/get-uploads-list');
 
 module.exports = function (context, documentData/*, options*/) {
-	var options          = normalizeOptions(arguments[2])
-	  , urlPrefix        = options.urlPrefix || '/'
-	  , mainContent      = options.mainContent
-	  , businessProcess  = context.businessProcess
-	  , collectionTarget = options.uploadsResolver || businessProcess
-	  , kind             = context.documentKind
+	var options             = normalizeOptions(arguments[2])
+	  , urlPrefix           = options.urlPrefix || '/'
+	  , mainContent         = options.mainContent
+	  , businessProcess     = context.businessProcess
+	  , collectionTarget    = options.uploadsResolver || businessProcess
+	  , isFirstDocumentRoot = options.isFirstDocumentRoot
+	  , kind                = context.documentKind
 
 	  , collection
 
@@ -41,12 +42,16 @@ module.exports = function (context, documentData/*, options*/) {
 		else if (kind === 'requirementUpload') url += 'documents';
 		else if (kind === 'paymentReceiptUpload') url = 'payment-receipts';
 		else throw new Error(kind + " is not recognized document kind");
-		return url + '/' + camelToHyphen.call(data.uniqueKey) + '/';
+		if (!isFirstDocumentRoot) return url + '/' + camelToHyphen.call(data.uniqueKey) + '/';
+		return reactiveSibling.previous(collection, data.uniqueKey).map(function (previous) {
+			if (!previous) return url + '/';
+			return url + '/' + camelToHyphen.call(data.uniqueKey) + '/';
+		});
 	};
 
-	nextDocumentUrl = reactiveSibling.next(collection, context.documentUniqueId)
+	nextDocumentUrl = reactiveSibling.next(collection, context.documentUniqueKey)
 		.map(resolveDocumentUrl);
-	previousDocumentUrl = reactiveSibling.previous(collection, context.documentUniqueId)
+	previousDocumentUrl = reactiveSibling.previous(collection, context.documentUniqueKey)
 		.map(resolveDocumentUrl);
 
 	var result = [
