@@ -15,7 +15,7 @@ exports['selection-preview'] = function () {
 	var documentData = getDocumentData(this);
 	insert(
 		renderDocument(this, documentData, {
-			mainContent: exports._documentPreviewContent.call(this),
+			mainContent: exports._documentPreviewContent.call(this, documentData),
 			sideContent: renderDocumentHistory(this.document)
 		}),
 		renderDocumentRevisionInfo(this)
