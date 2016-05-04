@@ -11,6 +11,7 @@ require('./view/business-process-submitted');
 require('./view/business-process-official');
 require('./view/business-process-revision');
 require('./view/manager');
+require('./view/user-business-process-documents');
 
 module.exports = {
 	// Public routes
@@ -48,13 +49,23 @@ module.exports = {
 	// Business Process Submitted routes
 	'business-process-submitted': {
 		decorateContext: function () {
-			this.document = this.businessProcess.requirementUploads.applicable.first.document;
+			var upload = this.businessProcess.requirementUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.documentKind = 'requirementUpload';
+			this.documentUniqueKey = 'document';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
 		},
 		view: require('../view/business-process-submitted-document')
 	},
 	'business-process-submitted/payment-receipts/(payment)': {
 		match: function () {
-			this.document = this.businessProcess.paymentReceiptUploads.applicable.first.document;
+			var upload = this.businessProcess.paymentReceiptUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.documentKind = 'paymentReceiptUpload';
+			this.documentUniqueKey = 'payment';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/payment';
 			return true;
 		},
 		view: require('../view/business-process-submitted-payment')
@@ -62,6 +73,11 @@ module.exports = {
 	'business-process-submitted/certificates/(certificate)': {
 		match: function () {
 			this.document = this.businessProcess.certificates.uploaded.first;
+			this.dataSnapshot = this.document.toJSON();
+			this.documentKind = 'certificate';
+			this.documentUniqueKey = 'certificate';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind +
+				'/certificate';
 			return true;
 		},
 		view: require('../view/business-process-submitted-certificate')
@@ -74,7 +90,29 @@ module.exports = {
 	'my-account': require('../view/user-home'),
 	'my-account/requests': require('../view/user-requests'),
 	'my-account/summary': require('../view/user-business-process-summary'),
-	'my-account/documents': require('./view/user-business-process-documents'),
+	'my-account/documents': {
+		decorateContext: function () {
+			var upload = this.businessProcess.requirementUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.documentKind = 'requirementUpload';
+			this.documentUniqueKey = 'document';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
+		},
+		view: require('../view/user-business-process-document')
+	},
+	'my-account/certificates/(certificate)': {
+		match: function () {
+			this.document = this.businessProcess.certificates.uploaded.first;
+			this.dataSnapshot = this.document.toJSON();
+			this.documentKind = 'certificate';
+			this.documentUniqueKey = 'certificate';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind +
+				'/certificate';
+			return true;
+		},
+		view: require('../view/user-business-process-certificate')
+	},
 	'my-account/data': require('./view/user-business-process-data'),
 	'my-account/print': require('../view/print-business-process-data'),
 
@@ -85,13 +123,23 @@ module.exports = {
 	'official/business-process-id': require('./view/business-process-official-form'),
 	'official/business-process-id/documents': {
 		decorateContext: function () {
-			this.document = this.businessProcess.requirementUploads.applicable.first.document;
+			var upload = this.businessProcess.requirementUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.documentKind = 'requirementUpload';
+			this.documentUniqueKey = 'document';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
 		},
 		view: require('../view/business-process-official-document')
 	},
 	'official/business-process-id/payment-receipts/(payment)': {
 		match: function () {
-			this.document = this.businessProcess.paymentReceiptUploads.applicable.first.document;
+			var upload = this.businessProcess.paymentReceiptUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.documentKind = 'paymentReceiptUpload';
+			this.documentUniqueKey = 'payment';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/payment';
 			return true;
 		},
 		view: require('../view/business-process-official-payment')
@@ -99,6 +147,11 @@ module.exports = {
 	'official/business-process-id/certificates/(certificate)': {
 		match: function () {
 			this.document = this.businessProcess.certificates.uploaded.first;
+			this.dataSnapshot = this.document.toJSON();
+			this.documentKind = 'certificate';
+			this.documentUniqueKey = 'certificate';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind +
+				'/certificate';
 			return true;
 		},
 		view: require('../view/business-process-official-certificate')
@@ -108,14 +161,24 @@ module.exports = {
 	// Official Revision routes
 	'revision/business-process-id': {
 		decorateContext: function () {
-			this.document = this.businessProcess.requirementUploads.applicable.first.document;
+			var upload = this.businessProcess.requirementUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.documentKind = 'requirementUpload';
+			this.documentUniqueKey = 'document';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
 			this.processingStep = this.businessProcess.processingSteps.map.revision;
 		},
 		view: require('../view/business-process-revision-document')
 	},
 	'revision/business-process-id/payment-receipts': {
 		decorateContext: function () {
-			this.document = this.businessProcess.paymentReceiptUploads.applicable.first.document;
+			var upload = this.businessProcess.paymentReceiptUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.documentKind = 'paymentReceiptUpload';
+			this.documentUniqueKey = 'payment';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/payment';
 			this.processingStep = this.businessProcess.processingSteps.map.revision;
 		},
 		view: require('../view/business-process-revision-payment')
