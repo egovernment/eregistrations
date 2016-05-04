@@ -74,7 +74,7 @@ module.exports = {
 	'my-account': require('../view/user-home'),
 	'my-account/requests': require('../view/user-requests'),
 	'my-account/summary': require('../view/user-business-process-summary'),
-	'my-account/documents': require('./view/user-business-process-documents-list'),
+	'my-account/documents': require('./view/user-business-process-documents'),
 	'my-account/data': require('./view/user-business-process-data'),
 	'my-account/print': require('../view/print-business-process-data'),
 
