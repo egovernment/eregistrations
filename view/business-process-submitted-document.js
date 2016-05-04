@@ -18,7 +18,7 @@ exports['selection-preview'] = function () {
 			mainContent: exports._documentPreviewContent.call(this),
 			sideContent: renderDocumentHistory(this.document)
 		}),
-		renderDocumentRevisionInfo(this.document)
+		renderDocumentRevisionInfo(this)
 	);
 };
 
