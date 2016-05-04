@@ -5,7 +5,7 @@
 var hyphenToCamel        = require('es5-ext/string/#/hyphen-to-camel')
   , matchBusinessProcess = require('./utils/official-match-business-process')
   , findFirstUploadKey   = require('./utils/official-find-first-upload-key')
-  , matchUpload          = require('./utils/official-match-upload');
+  , matchUpload          = require('./utils/official-match-upload')
   , matchCertificate     = require('./utils/official-match-certificate');
 
 module.exports = function (step) {
