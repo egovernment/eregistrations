@@ -1,5 +1,11 @@
 .scrollable-list-box-described {
 	display: inline-block;
+	padding: 11px;
+	background-color: #F4F4F4;
+	border-radius: 3px;
+	color: #999;
+	margin-top: 11px;
+	margin-bottom: 11px;
 }
 
 .scrollable-list-box-described > * {
@@ -7,12 +13,16 @@
 	width: calc(50% - 10px);
 	line-height: 22px;
 	vertical-align: top;
-	margin-left: 5px;
 }
 
 .scrollable-list-box-described > *:first-child {
 	margin-right: 5px;
 	margin-left: 0;
+	display: block;
+}
+
+.scrollable-list-box-described > label {
+	font-size: 12px;
 }
 
 .scrollable-list-box-described > ul {
@@ -27,6 +37,8 @@
 .scrollable-list-box-described > p {
 	font-size: 12px;
 	color: var(--hint-text);
+	margin-left: 5px;
+	line-height: 16px;
 }
 
 /*
