@@ -15,10 +15,10 @@ exports['selection-preview'] = function () {
 	var documentData = getDocumentData(this);
 	insert(
 		renderDocument(this, documentData, {
+			prependContent: renderDocumentRevisionInfo(this),
 			mainContent: exports._documentPreviewContent.call(this, documentData),
 			sideContent: renderDocumentHistory(documentData)
-		}),
-		renderDocumentRevisionInfo(this)
+		})
 	);
 };
 
