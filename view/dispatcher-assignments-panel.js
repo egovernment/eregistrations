@@ -33,7 +33,6 @@ var columns = [
 	tableColumns.servicesColumn,
 	tableColumns.businessNameColumn,
 	tableColumns.submissionDateColumn,
-	tableColumns.withdrawalDateColumn,
 	tableColumns.certificatesListColumn,
 	tableColumns.archiverColumn,
 	tableColumns.goToColumn,
