@@ -3,7 +3,10 @@
 'use strict';
 
 var hyphenToCamel        = require('es5-ext/string/#/hyphen-to-camel')
-  , matchBusinessProcess = require('./utils/official-match-business-process');
+  , matchBusinessProcess = require('./utils/official-match-business-process')
+  , findFirstUploadKey   = require('./utils/official-find-first-upload-key')
+  , matchUpload          = require('./utils/official-match-upload');
+  , matchCertificate     = require('./utils/official-match-certificate');
 
 module.exports = function (step) {
 	if (!step) {
@@ -21,113 +24,43 @@ module.exports = function (step) {
 			view: require('../view/business-process-official-form')
 		},
 		'[0-9][a-z0-9]*/documents': {
-			match: match,
-			decorateContext: function () {
-				var requirementUpload = this.businessProcess.requirementUploads.applicable.first;
-
-				if (requirementUpload) {
-					this.document = requirementUpload.document;
-				}
+			match: function (businessProcessId) {
+				return match.call(this, businessProcessId).then(function (result) {
+					if (!result) return false;
+					var firstUniqueKey = findFirstUploadKey.call(this, 'requirementUpload');
+					if (!firstUniqueKey) return false;
+					return matchUpload.call(this, 'requirementUpload', firstUniqueKey);
+				}.bind(this));
 			},
 			view: require('../view/business-process-official-document')
 		},
 		'[0-9][a-z0-9]*/documents/[a-z][a-z0-9-]*': {
-			match: function (businessProcessId, docUniqueKey) {
+			match: function (businessProcessId, uniqueKey) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
-					docUniqueKey = hyphenToCamel.call(docUniqueKey);
-					this.processingStep.requirementUploads.applicable.some(function (requirementUpload) {
-						if (requirementUpload.document.uniqueKey === docUniqueKey) {
-							this.document = requirementUpload.document;
-							return true;
-						}
-					}, this);
-					if (!this.document) return false;
-					this.businessProcess.requirementUploads.dataSnapshot.resolved.some(function (data) {
-						if (data.uniqueKey === docUniqueKey) {
-							this.dataSnapshot = data;
-							return true;
-						}
-					}, this);
-					if (!this.dataSnapshot) {
-						// If no snapshot we show document only if it's directed for review
-						if (!this.processingStep.requirementUploads.processable) return false;
-						if (!this.processingStep.requirementUploads.processable.has(this.document.owner)) {
-							return false;
-						}
-						this.dataSnapshot = this.document.owner.enrichJSON(this.document.owner.toJSON());
-					}
-					this.documentKind = 'requirementUpload';
-					this.documentUniqueKey = docUniqueKey;
-					this.documentUniqueId =
-						this.processingStep.__id__ + '/' + this.documentKind + '/' + docUniqueKey;
-					return true;
+					var firstUniqueKey = findFirstUploadKey.call(this, 'requirementUpload');
+					if (!firstUniqueKey) return false;
+					uniqueKey = hyphenToCamel.call(uniqueKey);
+					if (firstUniqueKey === uniqueKey) return false;
+					return matchUpload.call(this, 'requirementUpload', uniqueKey);
 				}.bind(this));
 			},
 			view: require('../view/business-process-official-document')
 		},
 		'[0-9][a-z0-9]*/payment-receipts/[a-z][a-z0-9-]*': {
-			match: function (businessProcessId, docUniqueKey) {
+			match: function (businessProcessId, uniqueKey) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
-					docUniqueKey = hyphenToCamel.call(docUniqueKey);
-					var paymentReceiptUpload = this.businessProcess.paymentReceiptUploads.map[docUniqueKey];
-					if (!paymentReceiptUpload) return false;
-					if (!this.processingStep.paymentReceiptUploads.applicable.has(paymentReceiptUpload)) {
-						return false;
-					}
-
-					this.document = paymentReceiptUpload.document;
-					this.businessProcess.paymentReceiptUploads.dataSnapshot.resolved.some(function (data) {
-						if (data.uniqueKey === docUniqueKey) {
-							this.dataSnapshot = data;
-							return true;
-						}
-					}, this);
-					if (!this.dataSnapshot) {
-						// If no snapshot we show document only if it's directed for review
-						if (!this.processingStep.paymentReceiptUploads.processable) return false;
-						if (!this.processingStep.paymentReceiptUploads.processable.has(paymentReceiptUpload)) {
-							return false;
-						}
-						this.dataSnapshot = this.document.owner.enrichJSON(this.document.owner.toJSON());
-					}
-					this.documentKind = 'paymentReceiptUpload';
-					this.documentUniqueKey = docUniqueKey;
-					this.documentUniqueId =
-						this.processingStep.__id__ + '/' + this.documentKind + '/' + docUniqueKey;
-					return true;
+					return matchUpload.call(this, 'paymentReceiptUpload', hyphenToCamel.call(uniqueKey));
 				}.bind(this));
 			},
 			view: require('../view/business-process-official-payment')
 		},
 		'[0-9][a-z0-9]*/certificates/[a-z][a-z0-9-]*': {
-			match: function (businessProcessId, docUniqueKey) {
+			match: function (businessProcessId, uniqueKey) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
-					docUniqueKey = hyphenToCamel.call(docUniqueKey);
-					var certificate = this.businessProcess.certificates.map[docUniqueKey];
-					if (!certificate) return false;
-					if (!this.processingStep.certificates.released.has(certificate)) {
-						return false;
-					}
-
-					this.document = certificate;
-					if (this.businessProcess.isClosed) {
-						this.businessProcess.certificates.dataSnapshot.resolved.some(function (data) {
-							if (data.uniqueKey === docUniqueKey) {
-								this.dataSnapshot = data;
-								return true;
-							}
-						}, this);
-						if (!this.dataSnapshot) return false;
-					}
-
-					this.documentKind = 'certificate';
-					this.documentUniqueKey = docUniqueKey;
-					this.documentUniqueId =
-						this.processingStep.__id__ + '/' + this.documentKind + '/' + docUniqueKey;
-					return true;
+					return matchCertificate.call(this, hyphenToCamel.call(uniqueKey));
 				}.bind(this));
 			},
 			view: require('../view/business-process-official-certificate')
