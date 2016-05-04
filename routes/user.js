@@ -29,7 +29,7 @@ module.exports = {
 	},
 	'business-process/[0-9][a-z0-9]+/documents': {
 		match: matchBusinessProcess,
-		view: require('../view/user-business-process-documents-list')
+		view: require('../view/user-business-process-documents')
 	},
 	'business-process/[0-9][a-z0-9]+/document/[a-z][a-z0-9-]*': {
 		match: function (businessProcessId, uniqueKey) {
