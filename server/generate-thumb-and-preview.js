@@ -1,16 +1,16 @@
 'use strict';
 
-var mano     = require('mano')
-  , gm       = require('./gm')
-  , path     = require('path')
-  , unlink   = require('fs2/unlink')
-  , contains = require('es5-ext/string/#/contains')
-  , deferred = require('deferred')
+var contains     = require('es5-ext/string/#/contains')
+  , startsWith   = require('es5-ext/string/#/starts-with')
+  , deferred     = require('deferred')
+  , path         = require('path')
+  , unlink       = require('fs2/unlink')
+  , mano         = require('mano')
+  , gm           = require('./gm')
+  , docMimeTypes = require('../utils/microsoft-word-doc-mime-types')
 
-  , resolve = path.resolve
-  , extname = path.extname
-  , uploadsPath = mano.uploadsPath
-  , docMimeTypes = require('../utils/microsoft-word-doc-mime-types');
+  , resolve = path.resolve, extname = path.extname
+  , uploadsPath = mano.uploadsPath;
 
 module.exports = function (file) {
 	var path        = uploadsPath
@@ -57,6 +57,11 @@ module.exports = function (file) {
 		}
 		if (contains.call(e.message, "Improper image header")) {
 			console.log("Cannot generate previews", e.stack);
+			return;
+		}
+		if (startsWith.call(e.message, "Command failed: gm convert:")) {
+			console.error("\nCould not generate thumb and preview:\n");
+			console.error(e.stack + "\n\n");
 			return;
 		}
 		throw e;
