@@ -17,6 +17,7 @@ module.exports = memoize(function (targetMap, appName) {
 			if (isUserApp(appName)) return null;
 			return targetMap.released.toArray();
 		}
+		if (!businessProcess.isApproved) return null;
 		if (isUserApp(appName)) {
 			// For user we show certificates as they're stored in snapshot
 			return businessProcess.certificates.dataSnapshot._resolved;
