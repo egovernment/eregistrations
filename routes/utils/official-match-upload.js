@@ -1,8 +1,8 @@
 'use strict';
 
 module.exports = function (kind, uniqueKey) {
-	var colName = kind + 's';
-	this.processingStep[colName].applicable.some(function (upload) {
+	var colName = kind + 's', target = this.processingStep || this.businessProcess;
+	target[colName].applicable.some(function (upload) {
 		var uploadKey = (kind === 'requirementUpload') ? upload.document.uniqueKey : upload.key;
 		if (uploadKey === uniqueKey) {
 			this.document = upload.document;
@@ -23,6 +23,6 @@ module.exports = function (kind, uniqueKey) {
 	}
 	this.documentKind = kind;
 	this.documentUniqueKey = uniqueKey;
-	this.documentUniqueId = this.processingStep.__id__ + '/' + this.documentKind + '/' + uniqueKey;
+	this.documentUniqueId = target.__id__ + '/' + this.documentKind + '/' + uniqueKey;
 	return true;
 };

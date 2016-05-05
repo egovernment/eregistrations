@@ -1,7 +1,8 @@
 'use strict';
 
 module.exports = function (uniqueKey) {
-	this.processingStep.certificates.released.some(function (certificate) {
+	var target = this.processingStep || this.businessProcess;
+	target.certificates.released.some(function (certificate) {
 		if (certificate.key === uniqueKey) {
 			this.document = certificate;
 			return true;
@@ -20,6 +21,6 @@ module.exports = function (uniqueKey) {
 	}
 	this.documentKind = 'certificate';
 	this.documentUniqueKey = uniqueKey;
-	this.documentUniqueId = this.processingStep.__id__ + '/' + this.documentKind + '/' + uniqueKey;
+	this.documentUniqueId = target.__id__ + '/' + this.documentKind + '/' + uniqueKey;
 	return true;
 };
