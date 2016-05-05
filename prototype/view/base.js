@@ -62,119 +62,119 @@ exports._bodyAppend = function () {
 			// Part A views
 			li(
 				a({ href: '/guide/' },
-					span("User: Guide"),
+					span("Business Process: Guide"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
 				a({ href: '/guide-lomas/' },
-					span("User: Guide: Lomas like"),
+					span("Business Process: Guide: Lomas like"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
 				a({ href: '/guide/costs-print/' },
-					span("User: Guide: Costs print"),
+					span("Business Process: Guide: Costs print"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
 				a({ href: '/forms/' },
-					span("User: Forms"),
+					span("Business Process: Forms"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
 				a({ href: '/forms/disabled/' },
-					span("User: Forms: Disabled"),
+					span("Business Process: Forms: Disabled"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
 				a({ href: '/forms/tabbed/' },
-					span("User: Forms: Tabbed"),
+					span("Business Process: Forms: Tabbed"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
 				a({ href: '/nested-entity/example/' },
-					span("User: Forms: Add entity"),
+					span("Business Process: Forms: Add entity"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
 				a({ href: '/documents/' },
-					span("User: Documents"),
+					span("Business Process: Documents"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
 				a({ href: '/documents/disabled/' },
-					span("User: Documents: Disabled"),
+					span("Business Process: Documents: Disabled"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
 				a({ href: '/pay/' },
-					span("User: Payment"),
+					span("Business Process: Payment"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
 				a({ href: '/submission/' },
-					span("User: Submission"),
+					span("Business Process: Submission"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			// Business Process Submitted views
 			li(
 				a({ href: '/business-process-submitted/' },
-					span("User: Submitted"),
+					span("Business Process: Submitted"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
 				a({ href: '/business-process-submitted/payment-receipts/payment/' },
-					span("User: Submitted: Receipts"),
+					span("Business Process: Submitted: Receipts"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
 				a({ href: '/business-process-submitted/certificates/certificate/' },
-					span("User: Submitted: Certificates"),
+					span("Business Process: Submitted: Certificates"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
 				a({ href: '/business-process-submitted/data/' },
-					span("User: Submitted: Data"),
+					span("Business Process: Submitted: Data"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
 				a({ href: '/print-business-process-data/' },
-					span("User: Submitted: Data print"),
+					span("Business Process: Submitted: Data print"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
 				a({ href: '/print-request-history/' },
-					span("User: Submitted: History print"),
+					span("Business Process: Submitted: History print"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			// My Account views
 			li(
 				a({ href: '/my-account/' },
-					span("My Account"),
+					span("User: My Account"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
 				a({ href: '/my-account/requests/' },
-					span("My Account: Requests"),
+					span("User: My Account: Requests"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
 				a({ href: '/my-account/summary/' },
-					span("My Account: Request: Summary"),
+					span("User: My Account: Request: Summary"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
 				a({ href: '/my-account/documents/' },
-					span("My Account: Request: Documents"),
+					span("User: My Account: Request: Documents"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
 				a({ href: '/my-account/data/' },
-					span("My Account: Request: Data"),
+					span("User: My Account: Request: Data"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
 				a({ href: '/my-account/print/' },
-					span("My Account: Request: Data print"),
+					span("User: My Account: Request: Data print"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			// Official views
