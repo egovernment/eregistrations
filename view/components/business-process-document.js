@@ -12,11 +12,28 @@ var includes              = require('es5-ext/array/#/contains')
   , pathToUrl             = require('../../utils/upload-path-to-url')
   , reactiveSibling       = require('../utils/reactive-document-sibling')
   , syncHeight            = require('../utils/sync-height')
-  , getFilePreview        = require('../utils/get-file-preview')
   , isMobileView          = require('../utils/is-mobile-view')
   , getCertificates       = require('../utils/get-certificates-list')
   , getUploads            = require('../utils/get-uploads-list')
   , getResolveDocumentUrl = require('../utils/get-resolve-document-url');
+
+var getFilePreview = function (file) {
+	var type = file.type;
+	if (includes.call(docMimeTypes, type)) {
+		return img({ class: 'submitted-preview-new-word-document', src: '/img/word-doc-icon.png' });
+	}
+	if (!isReadOnlyRender && (type === 'application/pdf')) {
+		return iframe({
+			src: url('pdfjs/web/viewer.html?file=') + encodeURIComponent('/' + file.path)
+		});
+	}
+	return img({
+		zoomOnHover: true,
+		src: mmap(or(file.previewPath, file.thumbPath), function (path) {
+			if (path) return stUrl(pathToUrl(path));
+		})
+	});
+};
 
 module.exports = function (context, documentData/*, options*/) {
 	var options          = normalizeOptions(arguments[2])
