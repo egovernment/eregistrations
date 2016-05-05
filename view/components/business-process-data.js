@@ -4,7 +4,7 @@
 
 var normalizeOptions = require('es5-ext/object/normalize-options')
   , _                = require('mano').i18n.bind('View: Component: Documents')
-  , renderSections   = require('./components/render-sections-json');
+  , renderSections   = require('./render-sections-json');
 
 module.exports = function (context/*, options*/) {
 	var options   = normalizeOptions(arguments[1])
