@@ -25,7 +25,7 @@ revisionForm = function (requirementUpload) {
 		class: 'submitted-preview-form',
 		method: 'post',
 		action: '/revision-requirement-upload/' + requirementUpload.master.__id__ +
-			'/' + camelToHyphen.call(requirementUpload.document.docId) + '/'
+			'/' + camelToHyphen.call(requirementUpload.document.uniqueKey) + '/'
 	}, ul({ class: 'form-elements' },
 			li(div({ class: 'input' }, input({ dbjs: requirementUpload._status }))),
 			li(revFail = div({ class: 'input' },

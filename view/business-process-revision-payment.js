@@ -24,7 +24,7 @@ paymentForm = function (paymentReceiptUpload) {
 		class: 'submitted-preview-form',
 		method: 'post',
 		action: '/form-revision-payment-receipt-upload/' + paymentReceiptUpload.master.__id__ +
-			'/' + camelToHyphen.call(paymentReceiptUpload.document.docId) + '/'
+			'/' + camelToHyphen.call(paymentReceiptUpload.key) + '/'
 	}, ul({ class: 'form-elements' },
 			li(div({ class: 'input' }, input({ dbjs: paymentReceiptUpload._status }))),
 			li(revFail = div({ class: 'official-form-document-revision-reject-reason' },
