@@ -168,6 +168,11 @@ exports._bodyAppend = function () {
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
+				a({ href: '/my-account/certificates/certificate' },
+					span("User: My Account: Request: Certificate"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
 				a({ href: '/my-account/data/' },
 					span("User: My Account: Request: Data"),
 					span({ class: 'label-reg' }, "Part B"))
