@@ -5,6 +5,7 @@
 var assign                = require('es5-ext/object/assign')
   , _                     = require('mano').i18n.bind('View: Documents list')
   , getUploads            = require('../utils/get-uploads-list')
+  , getCertificates       = require('../utils/get-certificates-list')
   , getResolveDocumentUrl = require('../utils/get-resolve-document-url');
 
 var compareByLabel = function (a, b) {
@@ -20,7 +21,7 @@ module.exports = function (context) {
 			documentsRootHref: '/business-process/' + this.businessProcess.__id__ + '/documents/'
 		}));
 	var resolveCertificateUrl = getResolveDocumentUrl('certificate',
-		getUploads(businessProcess.certificates, context.appName), options);
+		getCertificates(businessProcess.certificates, context.appName), options);
 
 	return div({ class: "table-responsive-container" },
 		mmap(businessProcess.requirementUploads.dataSnapshot._resolved, function (uploadsData) {
