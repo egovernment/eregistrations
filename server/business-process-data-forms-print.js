@@ -5,10 +5,34 @@ var debug              = require('debug-ext')('business-process-data-forms-print
   , ensureObject       = require('es5-ext/object/valid-object')
   , ensureString       = require('es5-ext/object/validate-stringifiable-value')
   , resolve            = require('path').resolve
+  , unlink             = require('fs2/unlink')
+  , storagesPromise    = require('./utils/business-process-storages')
 
   , re = /^\/business-process-data-forms-([0-9][0-9a-z]+)\.pdf$/;
 
-module.exports = function (config) {
+var resolvePdfPath = function (businessProcessId, uploadsPath) {
+	return resolve(uploadsPath, 'business-process-data-forms-' + businessProcessId + '.pdf');
+};
+
+exports.filenameResetService = function (data) {
+	var uploadsPath = ensureString(ensureObject(data).uploadsPath);
+
+	storagesPromise(function (storages) {
+		storages.forEach(function (storage) {
+			storage.on('key:dataForms/lastEditStamp', function (event) {
+				var businessProcessId = event.ownerId
+				  , filename          = resolvePdfPath(businessProcessId, uploadsPath);
+
+				unlink(filename).done(null, function (err) {
+					if (err.code === 'ENOENT') return;
+					debug("Could not remove file %s %s", filename, err.stack);
+				});
+			});
+		});
+	});
+};
+
+exports.printServer = function (config) {
 	var queryHandler = ensureCallable(ensureObject(config).queryHandler)
 	  , uploadsPath  = ensureString(config.uploadsPath)
 	  , stMiddleware = ensureCallable(config.stMiddleware);

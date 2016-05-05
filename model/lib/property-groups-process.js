@@ -47,6 +47,7 @@ module.exports = memoize(function (db/*, options*/) {
 			});
 			return result;
 		} },
+		// Uses most recently edited applicable section
 		lastEditStamp: { type: UInteger, value: function (_observe) {
 			var result = 0;
 
