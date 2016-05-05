@@ -27,7 +27,7 @@ module.exports = function (context, documentData/*, options*/) {
 	  , isFirstDocumentRoot = options.isFirstDocumentRoot
 	  , kind                = context.documentKind
 
-	  , collection
+	  , collection, documentsRootHref
 
 	  , nextDocumentUrl, previousDocumentUrl, docPreviewElement
 	  , sideContentContainer;
@@ -35,8 +35,10 @@ module.exports = function (context, documentData/*, options*/) {
 	if (kind === 'certificate') collection = getCertificates(collectionTarget, context.appName);
 	else collection = getUploads(collectionTarget, context.appName);
 
-	var documentsRootHref =
-		document.getElementById('tab-business-process-documents').getAttribute('href');
+	if (isFirstDocumentRoot) {
+		documentsRootHref =
+			document.getElementById('tab-business-process-documents').getAttribute('href');
+	}
 	var resolveDocumentUrl = function (data) {
 		var url = urlPrefix;
 		if (!data) return null;
