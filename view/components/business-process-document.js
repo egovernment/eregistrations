@@ -35,6 +35,8 @@ module.exports = function (context, documentData/*, options*/) {
 	if (kind === 'certificate') collection = getCertificates(collectionTarget, context.appName);
 	else collection = getUploads(collectionTarget, context.appName);
 
+	var documentsRootHref =
+		document.getElementById('tab-business-process-documents').getAttribute('href');
 	var resolveDocumentUrl = function (data) {
 		var url = urlPrefix;
 		if (!data) return null;
@@ -44,7 +46,7 @@ module.exports = function (context, documentData/*, options*/) {
 		else throw new Error(kind + " is not recognized document kind");
 		if (!isFirstDocumentRoot) return url + '/' + camelToHyphen.call(data.uniqueKey) + '/';
 		return reactiveSibling.previous(collection, data.uniqueKey).map(function (previous) {
-			if (!previous) return url + '/';
+			if (!previous) return documentsRootHref;
 			return url + '/' + camelToHyphen.call(data.uniqueKey) + '/';
 		});
 	};
