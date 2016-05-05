@@ -53,7 +53,7 @@ module.exports = {
 			this.document = upload.document;
 			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
 			this.documentKind = 'requirementUpload';
-			this.documentUniqueKey = 'document';
+			this.documentUniqueKey = 'idDoc';
 			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
 		},
 		view: require('../view/business-process-submitted-document')
