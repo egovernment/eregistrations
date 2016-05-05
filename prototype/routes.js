@@ -64,7 +64,7 @@ module.exports = {
 			this.document = upload.document;
 			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
 			this.documentKind = 'paymentReceiptUpload';
-			this.documentUniqueKey = 'payment';
+			this.documentUniqueKey = 'handlingFee';
 			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/payment';
 			return true;
 		},
@@ -75,7 +75,7 @@ module.exports = {
 			this.document = this.businessProcess.certificates.uploaded.first;
 			this.dataSnapshot = this.document.toJSON();
 			this.documentKind = 'certificate';
-			this.documentUniqueKey = 'certificate';
+			this.documentUniqueKey = 'docA';
 			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind +
 				'/certificate';
 			return true;
@@ -96,7 +96,7 @@ module.exports = {
 			this.document = upload.document;
 			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
 			this.documentKind = 'requirementUpload';
-			this.documentUniqueKey = 'document';
+			this.documentUniqueKey = 'idDoc';
 			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
 		},
 		view: require('../view/user-business-process-document')
@@ -106,7 +106,7 @@ module.exports = {
 			this.document = this.businessProcess.certificates.uploaded.first;
 			this.dataSnapshot = this.document.toJSON();
 			this.documentKind = 'certificate';
-			this.documentUniqueKey = 'certificate';
+			this.documentUniqueKey = 'docA';
 			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind +
 				'/certificate';
 			return true;
@@ -127,7 +127,7 @@ module.exports = {
 			this.document = upload.document;
 			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
 			this.documentKind = 'requirementUpload';
-			this.documentUniqueKey = 'document';
+			this.documentUniqueKey = 'idDoc';
 			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
 		},
 		view: require('../view/business-process-official-document')
@@ -138,7 +138,7 @@ module.exports = {
 			this.document = upload.document;
 			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
 			this.documentKind = 'paymentReceiptUpload';
-			this.documentUniqueKey = 'payment';
+			this.documentUniqueKey = 'handlingFee';
 			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/payment';
 			return true;
 		},
@@ -149,7 +149,7 @@ module.exports = {
 			this.document = this.businessProcess.certificates.uploaded.first;
 			this.dataSnapshot = this.document.toJSON();
 			this.documentKind = 'certificate';
-			this.documentUniqueKey = 'certificate';
+			this.documentUniqueKey = 'docA';
 			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind +
 				'/certificate';
 			return true;
@@ -165,7 +165,7 @@ module.exports = {
 			this.document = upload.document;
 			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
 			this.documentKind = 'requirementUpload';
-			this.documentUniqueKey = 'document';
+			this.documentUniqueKey = 'idDoc';
 			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
 			this.processingStep = this.businessProcess.processingSteps.map.revision;
 		},
@@ -177,7 +177,7 @@ module.exports = {
 			this.document = upload.document;
 			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
 			this.documentKind = 'paymentReceiptUpload';
-			this.documentUniqueKey = 'payment';
+			this.documentUniqueKey = 'handlingFee';
 			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/payment';
 			this.processingStep = this.businessProcess.processingSteps.map.revision;
 		},
