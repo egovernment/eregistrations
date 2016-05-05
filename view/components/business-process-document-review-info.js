@@ -2,7 +2,7 @@
 
 var _             = require('mano').i18n.bind('View: Component: Documents')
   , identity      = require('es5-ext/function/identity')
-  , getArrayIndex = require('../utils/get-observable-array-index');
+  , getArrayIndex = require('../../utils/get-observable-array-index');
 
 module.exports = function (context) {
 	var snapshot = context.dataSnapshot
