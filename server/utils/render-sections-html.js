@@ -1,6 +1,6 @@
 'use strict';
 
-var debug               = require('debug-ext')('generate-date-print-template')
+var debug               = require('debug-ext')('business-process-data-forms-print')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
   , ensureNaturalNumber = require('es5-ext/object/ensure-natural-number-value')
   , template            = require('es6-template-strings')
@@ -13,7 +13,7 @@ renderers.value = function (data) {
 		}
 		debug("Could not resolve " + JSON.stringify(data.kind) + " customisation renderer");
 	}
-	if (Array.isArray(data)) return data.map(renderers.value).join(', ');
+	if (Array.isArray(data)) return data.map(renderers.value).join(", ");
 	return data;
 };
 
@@ -39,12 +39,15 @@ renderers.entity = function (data/*, options*/) {
 	}
 	options.headerRank = headerRank;
 
-	return template("<li><h${ headerRank }>${ name }<h${ headerRank }/>" +
-		renderers.mainSections(data.sections, options) + "</li>", { headerRank: headerRank });
+	return template("<li><h${ headerRank }>${ name }</h${ headerRank }>" +
+		renderers.mainSections(data.sections, options) + "</li>", {
+			headerRank: headerRank,
+			name: data.name
+		});
 };
 
 renderers.entities = function (data/*, options*/) {
-	return "<ul class='entity-data-section-entities>" + data.map(function (entityData) {
+	return "<ul class='entity-data-section-entities'>" + data.map(function (entityData) {
 		return renderers.entity(entityData, arguments[1]);
 	}).join('') + "</ul>";
 };
@@ -56,7 +59,7 @@ renderers.subSection = function (data/*, options*/) {
 renderers.subSections = function (data/*, options*/) {
 	return data.map(function (sectionData) {
 		return renderers.subSection(sectionData, arguments[1]);
-	});
+	}).join('');
 };
 
 renderers.section = function (data, className/*, options*/) {
@@ -81,7 +84,7 @@ renderers.section = function (data, className/*, options*/) {
 	var result = template("<section class='${ className }'>", { className: className });
 
 	if (!disableLabel && data.label) {
-		result += template("<h${ headerRank }>${ label }<h${ headerRank }/>", {
+		result += template("<h${ headerRank }>${ label }</h${ headerRank }>", {
 			headerRank: headerRank,
 			label: data.label
 		});
@@ -106,10 +109,7 @@ renderers.mainSections = function (data/*, options*/) {
 module.exports = exports = function (dataSnapshot/*, options*/) {
 	var options = arguments[1];
 
-	return mmap(dataSnapshot._resolved, function (json) {
-		if (!json) return;
-		return renderers.mainSections(json, options);
-	});
+	return renderers.mainSections(dataSnapshot.resolved, options);
 };
 
 exports.renderers = renderers;
