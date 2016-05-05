@@ -2,7 +2,8 @@
 
 'use strict';
 
-var _                     = require('mano').i18n.bind('View: User')
+var normalizeOptions      = require('es5-ext/object/normalize-options')
+  , _                     = require('mano').i18n.bind('View: User')
   , loc                   = require('mano/lib/client/location')
   , documentsAndDataBrief = require('./components/business-process-documents-and-data-brief');
 
@@ -35,7 +36,7 @@ exports['user-account-content'] = function () {
 	}, function () {
 		return mmap(businessProcesses._first, function (businessProcess) {
 			if (!businessProcess) return p(_('No requests started'));
-			return documentsAndDataBrief(this);
+			return documentsAndDataBrief(normalizeOptions(this, { businessProcess: businessProcess }));
 		}, this);
 	}.bind(this)));
 	div({ id: 'user-requests-preview' });
