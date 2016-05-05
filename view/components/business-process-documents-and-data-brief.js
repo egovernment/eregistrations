@@ -5,14 +5,15 @@
 var _                   = require('mano').i18n.bind('View: Component: Documents and data')
   , renderDocumentsList = require('./user-business-process-documents-list');
 
-module.exports = function (businessProcess) {
+module.exports = function (context) {
+	var businessProcess = context.businessProcess;
 	return [
 		div({ class: "section-primary-sub user-account-content-selector" },
 			h2(_("Documents")),
 			p({ class: 'section-primary-legend' },
 				_("Here you can see documents that you uploaded as part of the application and the " +
 					"certificates issued in the process.")),
-			renderDocumentsList(businessProcess, { limit: 5 }),
+			renderDocumentsList(context),
 			p({ class: 'section-primary-sub-action' },
 				a({ href: '/business-process/' + businessProcess.__id__ + '/documents/',
 					class: 'button-regular' },

@@ -2,15 +2,26 @@
 
 'use strict';
 
-var camelToHyphen = require('es5-ext/string/#/camel-to-hyphen')
-  , _             = require('mano').i18n.bind('View: Documents list');
+var assign                = require('es5-ext/object/assign')
+  , _                     = require('mano').i18n.bind('View: Documents list')
+  , getUploads            = require('../utils/get-uploads-list')
+  , getResolveDocumentUrl = require('../utils/get-resolve-document-url');
 
 var compareByLabel = function (a, b) {
 	return a.label.toLowerCase().localeCompare(b.label.toLowerCase());
 };
 
-module.exports = function (businessProcess/*, options*/) {
-	var options = Object(arguments[1]);
+module.exports = function (context) {
+	var businessProcess = context.businessProcess
+	  , options = { urlPrefix: '/business-process/' + businessProcess.__id__ + '/' };
+
+	var resolveUploadUrl = getResolveDocumentUrl('requirementUpload',
+		getUploads(businessProcess.requirementUploads, context.appName), assign(options, {
+			documentsRootHref: '/business-process/' + this.businessProcess.__id__ + '/documents/'
+		}));
+	var resolveCertificateUrl = getResolveDocumentUrl('certificate',
+		getUploads(businessProcess.certificates, context.appName), options);
+
 	return div({ class: "table-responsive-container" },
 		mmap(businessProcess.requirementUploads.dataSnapshot._resolved, function (uploadsData) {
 			if (uploadsData) {
@@ -26,7 +37,7 @@ module.exports = function (businessProcess/*, options*/) {
 					} else {
 						data = uploadsData;
 					}
-					if (data) data = data.sort(compareByLabel).slice(0, options.limit || Infinity);
+					if (data) data = data.sort(compareByLabel).slice(0, 5);
 					return table({ class: 'submitted-user-data-table user-request-table' },
 						thead(
 							tr(
@@ -48,8 +59,9 @@ module.exports = function (businessProcess/*, options*/) {
 									td(documentData.issuedBy),
 									td({ class: 'submitted-user-data-table-date' }, documentData.issueDate),
 									td({ class: 'submitted-user-data-table-link' },
-										a({ href: '/business-process/' + businessProcess.__id__ + '/' +
-											documentData.kind + '/' + camelToHyphen.call(documentData.uniqueKey) + '/' },
+										a({ href: (documentData.kind === 'certificate')
+											? resolveCertificateUrl(documentData)
+											: resolveUploadUrl(documentData) },
 											span({ class: 'fa fa-search' }, _("Go to"))))
 								);
 							})));
