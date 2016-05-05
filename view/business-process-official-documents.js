@@ -2,7 +2,8 @@
 
 'use strict';
 
-var renderDocumentsList   = require('./components/business-process-documents-list')
+var assign                = require('es5-ext/object/assign')
+  , renderDocumentsList   = require('./components/business-process-documents-list')
   , renderCertificateList = require('./components/business-process-certificates-list')
   , renderPaymentList     = require('./components/business-process-payments-list');
 
@@ -15,7 +16,10 @@ exports['tab-content'] = function () {
 	return section({ class: 'section-primary' },
 		div({ class: "section-primary-sub all-documents-table" },
 			div(renderCertificateList(this, options)),
-			div(renderDocumentsList(this, options)),
+			div(renderDocumentsList(this, assign(options, {
+				documentsRootHref:
+					document.getElementById('tab-business-process-documents').getAttribute('href')
+			}))),
 			div(renderPaymentList(this, options))),
 		div({ id: 'selection-preview' }));
 };

@@ -2,56 +2,35 @@
 
 'use strict';
 
-var includes           = require('es5-ext/array/#/contains')
-  , normalizeOptions   = require('es5-ext/object/normalize-options')
-  , camelToHyphen      = require('es5-ext/string/#/camel-to-hyphen')
-  , syncStyle          = require('dom-ext/html-element/#/sync-style')
-  , _                  = require('mano').i18n.bind('View: Component: Documents')
-  , isReadOnlyRender   = require('mano/client/utils/is-read-only-render')
-  , getArrayIndex      = require('../../utils/get-observable-array-index')
-  , docMimeTypes       = require('../../utils/microsoft-word-doc-mime-types')
-  , pathToUrl          = require('../../utils/upload-path-to-url')
-  , reactiveSibling    = require('../utils/reactive-document-sibling')
-  , syncHeight         = require('../utils/sync-height')
-  , getFilePreview     = require('../utils/get-file-preview')
-  , isMobileView       = require('../utils/is-mobile-view')
-  , getCertificates    = require('../utils/get-certificates-list')
-  , getUploads         = require('../utils/get-uploads-list');
+var includes              = require('es5-ext/array/#/contains')
+  , normalizeOptions      = require('es5-ext/object/normalize-options')
+  , syncStyle             = require('dom-ext/html-element/#/sync-style')
+  , _                     = require('mano').i18n.bind('View: Component: Documents')
+  , isReadOnlyRender      = require('mano/client/utils/is-read-only-render')
+  , getArrayIndex         = require('../../utils/get-observable-array-index')
+  , docMimeTypes          = require('../../utils/microsoft-word-doc-mime-types')
+  , pathToUrl             = require('../../utils/upload-path-to-url')
+  , reactiveSibling       = require('../utils/reactive-document-sibling')
+  , syncHeight            = require('../utils/sync-height')
+  , getFilePreview        = require('../utils/get-file-preview')
+  , isMobileView          = require('../utils/is-mobile-view')
+  , getCertificates       = require('../utils/get-certificates-list')
+  , getUploads            = require('../utils/get-uploads-list')
+  , getResolveDocumentUrl = require('../utils/get-resolve-document-url');
 
 module.exports = function (context, documentData/*, options*/) {
-	var options             = normalizeOptions(arguments[2])
-	  , urlPrefix           = options.urlPrefix || '/'
-	  , mainContent         = options.mainContent
-	  , businessProcess     = context.businessProcess
-	  , collectionTarget    = options.uploadsResolver || businessProcess
-	  , isFirstDocumentRoot = options.isFirstDocumentRoot
-	  , kind                = context.documentKind
+	var options          = normalizeOptions(arguments[2])
+	  , mainContent      = options.mainContent
+	  , businessProcess  = context.businessProcess
+	  , collectionTarget = options.uploadsResolver || businessProcess
+	  , kind             = context.documentKind
 
-	  , collection, documentsRootHref
-
-	  , nextDocumentUrl, previousDocumentUrl, docPreviewElement
-	  , sideContentContainer;
+	  , collection, nextDocumentUrl, previousDocumentUrl, docPreviewElement, sideContentContainer;
 
 	if (kind === 'certificate') collection = getCertificates(collectionTarget, context.appName);
 	else collection = getUploads(collectionTarget, context.appName);
 
-	if (isFirstDocumentRoot) {
-		documentsRootHref =
-			document.getElementById('tab-business-process-documents').getAttribute('href');
-	}
-	var resolveDocumentUrl = function (data) {
-		var url = urlPrefix;
-		if (!data) return null;
-		if (kind === 'certificate') url += 'certificates';
-		else if (kind === 'requirementUpload') url += 'documents';
-		else if (kind === 'paymentReceiptUpload') url = 'payment-receipts';
-		else throw new Error(kind + " is not recognized document kind");
-		if (!isFirstDocumentRoot) return url + '/' + camelToHyphen.call(data.uniqueKey) + '/';
-		return reactiveSibling.previous(collection, data.uniqueKey).map(function (previous) {
-			if (!previous) return documentsRootHref;
-			return url + '/' + camelToHyphen.call(data.uniqueKey) + '/';
-		});
-	};
+	var resolveDocumentUrl = getResolveDocumentUrl(kind, collection, options);
 
 	nextDocumentUrl = reactiveSibling.next(collection, context.documentUniqueKey)
 		.map(resolveDocumentUrl);

@@ -2,19 +2,20 @@
 
 'use strict';
 
-var normalizeOptions = require('es5-ext/object/normalize-options')
-  , camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
-  , _                = require('mano').i18n.bind('View: Component: Certificates')
-  , getCertificates  = require('../utils/get-certificates-list')
+var normalizeOptions      = require('es5-ext/object/normalize-options')
+  , camelToHyphen         = require('es5-ext/string/#/camel-to-hyphen')
+  , _                     = require('mano').i18n.bind('View: Component: Certificates')
+  , getCertificates       = require('../utils/get-certificates-list')
+  , getResolveDocumentUrl = require('../utils/get-resolve-document-url')
 
   , _d = _;
 
 module.exports = function (context/*, options*/) {
-	var options         = normalizeOptions(arguments[1])
-	  , businessProcess = context.businessProcess
-	  , urlPrefix       = options.urlPrefix || '/'
-	  , target          = options.uploadsResolver || businessProcess
-	  , certificates    = getCertificates(target.certificates, context.appName);
+	var options            = normalizeOptions(arguments[1])
+	  , businessProcess    = context.businessProcess
+	  , target             = options.uploadsResolver || businessProcess
+	  , certificates       = getCertificates(target.certificates, context.appName)
+	  , resolveDocumentUrl = getResolveDocumentUrl('certificate', certificates, options);
 
 	return mmap(certificates, function (data) {
 		if (!data) return;
@@ -52,8 +53,7 @@ module.exports = function (context/*, options*/) {
 						}, {
 							class: 'submitted-user-data-table-link',
 							data: function (certificate) {
-								return a({ href: urlPrefix + 'certificates/' +
-									camelToHyphen.call(certificate.uniqueKey) + '/' },
+								return a({ href: resolveDocumentUrl(certificate) },
 									span({ class: 'fa fa-search' }, _("Go to")));
 							}
 						}],

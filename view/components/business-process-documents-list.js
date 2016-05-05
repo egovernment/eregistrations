@@ -2,26 +2,27 @@
 
 'use strict';
 
-var normalizeOptions = require('es5-ext/object/normalize-options')
-  , camelToHyphen    = require('es5-ext/string/#/camel-to-hyphen')
-  , _                = require('mano').i18n.bind('View: Component: Documents')
-  , getUploads       = require('../utils/get-uploads-list');
+var normalizeOptions      = require('es5-ext/object/normalize-options')
+  , camelToHyphen         = require('es5-ext/string/#/camel-to-hyphen')
+  , _                     = require('mano').i18n.bind('View: Component: Documents')
+  , getUploads            = require('../utils/get-uploads-list')
+  , getResolveDocumentUrl = require('../utils/get-resolve-document-url');
 
 module.exports = function (context/*, options*/) {
 	var options            = normalizeOptions(arguments[1])
 	  , businessProcess    = context.businessProcess
-	  , urlPrefix          = options.urlPrefix || '/'
 	  , target             = options.uploadsResolver || businessProcess
-	  , requirementUploads = getUploads(target.requirementUploads, context.appName);
+	  , uploads            = getUploads(target.uploads, context.appName)
+	  , resolveDocumentUrl = getResolveDocumentUrl('requirementUpload', uploads, options);
 
-	return mmap(requirementUploads, function (data) {
+	return mmap(uploads, function (data) {
 		if (!data) return;
 		return _if(data._length || data.length, function () {
 			return div({ class: 'table-responsive-container' },
 				table({
 					class: 'submitted-user-data-table user-request-table',
 					configuration: {
-						collection: requirementUploads,
+						collection: uploads,
 						columns: [{
 							class: 'submitted-user-data-table-status',
 							data: function (upload) {
@@ -44,8 +45,7 @@ module.exports = function (context/*, options*/) {
 						}, {
 							class: 'submitted-user-data-table-link',
 							data: function (upload) {
-								return a({ href: urlPrefix + 'documents/' +
-									camelToHyphen.call(upload.uniqueKey) + '/' },
+								return a({ href: resolveDocumentUrl(upload) },
 									span({ class: 'fa fa-search' }, _("Go to")));
 							}
 						}],

@@ -19,7 +19,8 @@ exports['selection-preview'] = function () {
 		mainContent: exports._documentPreviewContent.call(this, documentData),
 		sideContent: renderDocumentHistory(documentData),
 		urlPrefix: '/' + this.businessProcess.__id__ + '/',
-		isFirstDocumentRoot: true
+		documentsRootHref:
+			document.getElementById('tab-business-process-documents').getAttribute('href')
 	}));
 };
 

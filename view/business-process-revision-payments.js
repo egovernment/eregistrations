@@ -8,9 +8,10 @@ exports._parent = require('./business-process-revision');
 
 exports['tab-business-process-payments'] = { class: { active: true } };
 exports['tab-content'] = function () {
-	var options = { urlPrefix: '/' + this.businessProcess.__id__ + '/' };
-
 	return section({ class: 'section-primary' },
-		div({ class: "section-primary-sub" }, div(renderPaymentList(this, options))),
+		div({ class: "section-primary-sub" }, div(renderPaymentList(this, {
+			urlPrefix: '/' + this.businessProcess.__id__ + '/',
+			documentsRootHref: '/' + this.businessProcess.__id__ + '/payment-receipts/'
+		}))),
 		div({ id: 'selection-preview' }));
 };

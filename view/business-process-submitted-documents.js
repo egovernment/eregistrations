@@ -14,7 +14,7 @@ exports['tab-content'] = function () {
 	section({ class: 'section-primary' },
 		div({ class: "section-primary-sub all-documents-table" },
 			div(renderCertificateList(this)),
-			div(renderDocumentsList(this)),
+			div(renderDocumentsList(this, { documentsRootHref: '/' })),
 			div(renderPaymentList(this))),
 		div({ id: 'selection-preview' }));
 };

@@ -52,7 +52,7 @@ exports['selection-preview'] = function () {
 			mainContent: exports._paymentPreviewContent.call(this, documentData),
 			sideContent: renderSections(this.businessProcess.dataForms.dataSnapshot),
 			urlPrefix: '/' + this.businessProcess.__id__ + '/',
-			isFirstDocumentRoot: true
+			documentsRootHref: '/' + this.businessProcess.__id__ + '/payment-receipts/'
 		}),
 		renderDocumentHistory(documentData)
 	);
