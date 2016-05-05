@@ -1,14 +1,12 @@
 'use strict';
 
-var debug            = require('debug-ext')('business-process-data-forms-print')
-  , ensureString     = require('es5-ext/object/validate-stringifiable-value')
+var ensureString     = require('es5-ext/object/validate-stringifiable-value')
   , ensureObject     = require('es5-ext/object/valid-object')
   , ensureCallable   = require('es5-ext/object/valid-callable')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , defineResolved   = require('../../../../model/lib/data-snapshot/resolved')
   , ensureDatabase   = require('dbjs/valid-dbjs')
   , resolve          = require('path').resolve
-  , basename         = require('path').basename
   , renderSections   = require('../../../utils/render-sections-html')
   , htmlToPdf        = require('../../../html-to-pdf')
   , root             = resolve(__dirname, '../../../..')
@@ -43,7 +41,5 @@ module.exports = function (db/*, options*/) {
 		if (!businessProcess) return false;
 
 		return defaultRenderer(businessProcess, filePath);
-
-		return true;
 	};
 };
