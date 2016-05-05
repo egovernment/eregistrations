@@ -121,7 +121,7 @@ module.exports = function (context, documentData/*, options*/) {
 										'/' + documentData.archiveUrl)),
 									download: _if(documentData.filesSize,
 										_if(eq(documentData.filesSize, 1),
-											resolve(documentData.firstFile, 'path'),
+											resolve(getArrayIndex(documentData.files, 0), 'path'),
 											documentData.archiveUrl)) }, _("Download document"))),
 
 							// Document files navigation (top)
