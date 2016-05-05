@@ -15,17 +15,7 @@ module.exports = function (context/*, options */) {
 	var options         = Object(arguments[1])
 	  , businessProcess = context.businessProcess
 	  , processingStep  = context.processingStep
-	  , urlPrefix       = options.urlPrefix || '/', scrollableElem
-	  , historyTitle, historyPrintTitle;
-
-	// TODO: Maybe we could just use generic one?
-	if (processingStep) {
-		historyTitle = _("History of request");
-		historyPrintTitle = _("Print history of request");
-	} else {
-		historyTitle = _("History of your request");
-		historyPrintTitle = _("Print history of your request");
-	}
+	  , urlPrefix       = options.urlPrefix || '/', scrollableElem;
 
 	return [
 		section(
@@ -42,8 +32,8 @@ module.exports = function (context/*, options */) {
 		),
 		section(
 			{ class: 'section-primary' },
-			h2({ class: 'container-with-nav' }, historyTitle,
-				a({ class: 'hint-optional hint-optional-left', 'data-hint': historyPrintTitle,
+			h2({ class: 'container-with-nav' }, _("History of request"),
+				a({ class: 'hint-optional hint-optional-left', 'data-hint': _("Print history of request"),
 					href: urlPrefix + 'print-request-history/', target: '_blank' },
 					span({ class: 'fa fa-print' }, _("Print")))),
 			scrollableElem = div(
