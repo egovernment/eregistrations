@@ -41,6 +41,5 @@ module.exports = function (config) {
 			res.statusCode = 500;
 			res.end('Server error');
 		});
-		//
 	};
 };
