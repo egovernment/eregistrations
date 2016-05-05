@@ -14,8 +14,6 @@ require('dbjs-dom/input/string/string-line/password')(db);
 require('dbjs-dom/input/object/file')(db);
 require('dbjs-dom/input/utils/fieldset')(db);
 require('eregistrations/view/dbjs/submission-file');
-require('eregistrations/view/dbjs/document-url');
-require('eregistrations/view/dbjs/document-id');
 
 db.StringLine.DOMInput.prototype.dbAttributes.inputMask = 'data-mask';
 
