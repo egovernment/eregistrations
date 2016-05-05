@@ -12,7 +12,7 @@ module.exports = function (context/*, options*/) {
 	var options            = normalizeOptions(arguments[1])
 	  , businessProcess    = context.businessProcess
 	  , target             = options.uploadsResolver || businessProcess
-	  , uploads            = getUploads(target.uploads, context.appName)
+	  , uploads            = getUploads(target.requirementUploads, context.appName)
 	  , resolveDocumentUrl = getResolveDocumentUrl('requirementUpload', uploads, options);
 
 	return mmap(uploads, function (data) {
