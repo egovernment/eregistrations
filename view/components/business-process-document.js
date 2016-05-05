@@ -112,7 +112,7 @@ module.exports = function (context, documentData/*, options*/) {
 										return a(linkAttributes, _("Open file in new window"));
 									})),
 
-								// Download document lint
+								// Download document link
 								a({ href: _if(documentData.filesSize,
 									_if(eq(documentData.filesSize, 1),
 										mmap(resolve(getArrayIndex(documentData.files, 0), 'path'), function (path) {
