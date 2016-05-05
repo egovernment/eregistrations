@@ -2,7 +2,7 @@
 
 var _                     = require('mano').i18n.bind('View: Component: Business Process table')
   , certificateStatusMeta = require('mano').db.CertificateStatus.meta
-  , formatLastModified    = require('./utils/last-modified');
+  , formatLastModified    = require('../utils/last-modified');
 
 var generateCertificatesList = (function () {
 	var getStatusLabel = function (cert) {
