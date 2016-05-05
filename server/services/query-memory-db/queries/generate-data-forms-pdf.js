@@ -12,21 +12,9 @@ var ensureString     = require('es5-ext/object/validate-stringifiable-value')
   , root             = resolve(__dirname, '../../../..')
   , templatePath     = resolve(root, 'apps-common/pdf-templates/data-forms.html');
 
-var defaultRenderer = function (businessProcess, filePath) {
-	return htmlToPdf(templatePath, filePath, {
-		writeHtml: true,
-		width: "210mm",
-		height: "170mm",
-		templateInserts: {
-			locale: businessProcess.database.locale,
-			sections: renderSections(businessProcess.dataForms.dataSnapshot)
-		}
-	});
-};
-
-module.exports = function (db/*, options*/) {
+module.exports = exports = function (db/*, options*/) {
 	var options  = normalizeOptions(arguments[1])
-	  , renderer = options.renderer || defaultRenderer;
+	  , renderer = options.renderer || exports.defaultRenderer;
 
 	ensureDatabase(db);
 	ensureCallable(renderer);
@@ -40,6 +28,18 @@ module.exports = function (db/*, options*/) {
 
 		if (!businessProcess) return false;
 
-		return defaultRenderer(businessProcess, filePath);
+		return renderer(businessProcess, filePath);
 	};
+};
+
+exports.defaultRenderer = function (businessProcess, filePath) {
+	return htmlToPdf(templatePath, filePath, {
+		writeHtml: true,
+		width: "210mm",
+		height: "170mm",
+		templateInserts: {
+			locale: businessProcess.database.locale,
+			sections: renderSections(businessProcess.dataForms.dataSnapshot)
+		}
+	});
 };

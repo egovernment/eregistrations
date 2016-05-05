@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+'use strict';
+
+Error.stackTraceLimit = Infinity;
+
+require('../server/utils/debug-conf');
+
+var db               = require('../prototype/model')
+  , generateFormsPdf = require('../server/services/query-memory-db/queries/generate-data-forms-pdf')
+  , resolve          = require('path').resolve
+
+  , root             = resolve(__dirname, '..')
+  , filePath         = resolve(root, 'tmp/data-forms.pdf');
+
+generateFormsPdf.defaultRenderer(db.firstBusinessProcess, filePath).done();
