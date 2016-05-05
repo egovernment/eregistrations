@@ -375,7 +375,8 @@ processes.forEach(function (businessProcess) {
 			diskSize: 376306,
 			path: 'uploads/doc-a-sub-file1.idoc.jpg'
 		});
-		certificate.files.map.get('cert' + index).thumb.url = '/uploads/doc-a-sub-file1.idoc.jpg';
+		certificate.files.map.get('cert' + index).thumb.path = 'uploads/doc-a-sub-file1.idoc.jpg';
+		certificate.files.map.get('cert' + index).preview.path = 'uploads/doc-a-sub-file1.idoc.jpg';
 	});
 
 	businessProcess.paymentReceiptUploads.applicable.first.document
