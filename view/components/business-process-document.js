@@ -44,8 +44,13 @@ module.exports = function (context, documentData/*, options*/) {
 
 	  , collection, nextDocumentUrl, previousDocumentUrl, docPreviewElement, sideContentContainer;
 
-	if (kind === 'certificate') collection = getCertificates(collectionTarget, context.appName);
-	else collection = getUploads(collectionTarget, context.appName);
+	if (kind === 'certificate') {
+		collection = getCertificates(collectionTarget.certificates, context.appName);
+	} else if (kind === 'requirementUpload') {
+		collection = getUploads(collectionTarget.requirementUploads, context.appName);
+	} else {
+		collection = getUploads(collectionTarget.paymentReceiptUploads, context.appName);
+	}
 
 	var resolveDocumentUrl = getResolveDocumentUrl(kind, collection, options);
 
