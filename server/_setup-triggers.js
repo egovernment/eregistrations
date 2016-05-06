@@ -43,7 +43,6 @@ module.exports = function (conf, onTrigger) {
 			postPool[target.__id__] = target;
 			clearPool();
 		};
-		preTrigger.forEach(onPreTargetAdd);
 		preTrigger.on('change', function (event) {
 			if (event.type === 'add') {
 				onPreTargetAdd(event.value);
@@ -61,7 +60,6 @@ module.exports = function (conf, onTrigger) {
 			console.log("Errorneous event:", event);
 			throw new Error("Unsupported event: " + event.type);
 		});
-		postTrigger.forEach(onPostTarget);
 		postTrigger.on('change', function (event) {
 			if (event.type === 'add') {
 				onPostTarget(event.value);
