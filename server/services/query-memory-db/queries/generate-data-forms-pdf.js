@@ -33,6 +33,10 @@ module.exports = exports = function (db/*, options*/) {
 };
 
 exports.defaultRenderer = function (businessProcess, filePath) {
+	var dataSnapshot = !businessProcess.isAtDraft && businessProcess.dataForms.dataSnapshot;
+
+	if (!dataSnapshot) dataSnapshot = businessProcess.dataForms.toJSON();
+
 	return htmlToPdf(templatePath, filePath, {
 		writeHtml: true,
 		width: "210mm",

@@ -115,12 +115,7 @@ module.exports = exports = function (dataSnapshot/*, options*/) {
 exports.renderers = renderers;
 exports.customRenderers = {
 	fileValue: function (data) {
+		// TODO: Resolve the global path and insert image
 		return data.path;
-		// return template("<div class='file-thumb'>" +
-		// 	"<a href='${ filepath }' target='_blank' class='file-thumb-image'>" +
-		// 		"<img src='${ thumbPath }'></img></a></div>", {
-		// 		filepath: pathToUrl(data.path),
-		// 		thumbPath: stUrl(pathToUrl(data.thumbPath))
-		// 	});
 	}
 };
