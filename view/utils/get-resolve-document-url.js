@@ -6,8 +6,8 @@ var camelToHyphen   = require('es5-ext/string/#/camel-to-hyphen')
   , reactiveSibling = require('../utils/reactive-document-sibling');
 
 module.exports = function (kind, collection/*, options*/) {
-	var options = Object(arguments[2])
-	  , urlPrefix = kind.urlPrefix || '/'
+	var options           = Object(arguments[2])
+	  , urlPrefix         = options.urlPrefix || '/'
 	  , documentsRootHref = options.documentsRootHref;
 
 	kind = ensureString(kind);
