@@ -15,7 +15,6 @@ module.exports = {
 		}
 	},
 	'managed-user-profile': require('../view/managed-user-profile'),
-	'data-print': require('../view/print-business-process-data'),
 	'document/[a-z][a-z0-9-]*': {
 		match: function (uniqueKey) {
 			uniqueKey = hyphenToCamel.call(uniqueKey);

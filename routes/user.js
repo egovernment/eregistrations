@@ -89,11 +89,5 @@ module.exports = {
 			return matchBusinessProcess.call(this, businessProcessId);
 		},
 		view: require('../view/user-business-process-data')
-	},
-	'business-process/[0-9][a-z0-9]+/print-data': {
-		match: function (businessProcessId) {
-			return matchBusinessProcess.call(this, businessProcessId);
-		},
-		view: require('../view/print-business-process-data')
 	}
 };

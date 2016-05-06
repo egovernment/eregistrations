@@ -21,10 +21,6 @@ module.exports = function (step) {
 			match: match,
 			view: require('eregistrations/view/print-business-process-status-log')
 		},
-		'[0-9][a-z0-9]*/data-print': {
-			match: match,
-			view: require('eregistrations/view/print-business-process-data')
-		},
 		'[0-9][a-z0-9]*/documents-and-data': {
 			match: match,
 			view: require('eregistrations/view/business-process-official-data')
