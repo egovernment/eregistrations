@@ -18,9 +18,9 @@ module.exports = function (context) {
 	  , options = { urlPrefix: '/business-process/' + businessProcess.__id__ + '/' };
 
 	var resolveUploadUrl = getResolveDocumentUrl('requirementUpload',
-		getUploads(businessProcess.requirementUploads, context.appName), assign(options, {
+		getUploads(businessProcess.requirementUploads, context.appName), assign({
 			documentsRootHref: '/business-process/' + businessProcess.__id__ + '/documents/'
-		}));
+		}, options));
 	var resolveCertificateUrl = getResolveDocumentUrl('certificate',
 		getCertificates(businessProcess.certificates, context.appName), options);
 

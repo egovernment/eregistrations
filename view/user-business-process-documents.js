@@ -16,8 +16,8 @@ exports['sub-main'] = function () {
 		section({ class: 'section-primary' },
 			div({ class: "section-primary-sub all-documents-table" },
 				div(renderCertificateList(this, options)),
-				div(renderDocumentsList(this, assign(options, {
+				div(renderDocumentsList(this, assign({
 					documentsRootHref: '/business-process/' + this.businessProcess.__id__ + '/documents/'
-				})))),
+				}, options)))),
 			div({ id: 'selection-preview' })));
 };
