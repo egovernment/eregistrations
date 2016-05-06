@@ -17,17 +17,20 @@ var resolvePdfPath = function (businessProcessId, uploadsPath) {
 exports.filenameResetService = function (data) {
 	var uploadsPath = ensureString(ensureObject(data).uploadsPath);
 
+	var eventHandler = function (event) {
+		var businessProcessId = event.ownerId
+		  , filename          = resolvePdfPath(businessProcessId, uploadsPath);
+
+		unlink(filename).done(null, function (err) {
+			if (err.code === 'ENOENT') return;
+			debug("Could not remove file %s %s", filename, err.stack);
+		});
+	};
+
 	storagesPromise(function (storages) {
 		storages.forEach(function (storage) {
-			storage.on('key:dataForms/lastEditStamp', function (event) {
-				var businessProcessId = event.ownerId
-				  , filename          = resolvePdfPath(businessProcessId, uploadsPath);
-
-				unlink(filename).done(null, function (err) {
-					if (err.code === 'ENOENT') return;
-					debug("Could not remove file %s %s", filename, err.stack);
-				});
-			});
+			storage.on('key:dataForms/lastEditStamp', eventHandler);
+			storage.on('key:dataForms/dataSnapshot/jsonString', eventHandler);
 		});
 	});
 };
