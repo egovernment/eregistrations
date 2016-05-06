@@ -49,7 +49,6 @@ module.exports = {
 	// My-account
 	'my-account': require('../view/user-home'),
 	'my-account/data': require('./view/user-business-process-data'),
-	'my-account/print': require('../view/print-business-process-data'),
 	'my-account/documents': require('./view/user-business-process-documents-list'),
 	'my-account/requests': require('../view/user-requests'),
 	'my-account/summary': require('../view/user-business-process-summary'),
@@ -97,7 +96,6 @@ module.exports = {
 	'print-request-history': require('../view/print-business-process-status-log'),
 	'data-print': require('./view/print-user-data'),
 	'user-submitted/print-user-data-alternative': require('./view/print-user-data-alternative'),
-	'print-business-processes-data': require('../view/print-business-process-data'),
 
 	// Part-B routes - users admin
 	'users-admin': require('../view/users-table'),
