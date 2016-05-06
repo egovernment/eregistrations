@@ -2,7 +2,7 @@
 
 module.exports = function (kind) {
 	var colName = kind + 's', target = this.processingStep || this.businessProcess, first, snapshot;
-	if (!this.businessProcesss.isClosed) {
+	if (!this.businessProcess.isClosed) {
 		first = target[colName].applicable.first;
 	} else {
 		snapshot = this.businessProcess[colName].dataSnapshot.resolved;
