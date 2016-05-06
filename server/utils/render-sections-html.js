@@ -115,9 +115,6 @@ module.exports = exports = function (dataSnapshot/*, options*/) {
 exports.renderers = renderers;
 exports.customRenderers = {
 	fileValue: function (data) {
-		// TODO: Resolve the path
-		return template("<div class='file-thumb'><img src='${ thumbPath }'></img></div>", {
-			thumbPath: data.thumbPath
-		});
+		return data.name;
 	}
 };
