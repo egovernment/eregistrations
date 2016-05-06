@@ -7,6 +7,10 @@ var debug               = require('debug-ext')('business-process-data-forms-prin
   , encode              = require('ent').encode
   , renderers           = {};
 
+var e = function (data) {
+	return data ? encode(data) : data;
+};
+
 renderers.value = function (data) {
 	if (data && data.kind) {
 		if (exports.customRenderers[data.kind]) {
@@ -14,13 +18,13 @@ renderers.value = function (data) {
 		}
 		debug("Could not resolve " + JSON.stringify(data.kind) + " customisation renderer");
 	}
-	if (Array.isArray(data)) return encode(data.map(renderers.value).join(", "));
-	return encode(data);
+	if (Array.isArray(data)) return e(data.map(renderers.value).join(", "));
+	return e(data);
 };
 
 renderers.field = function (data) {
 	return template("<tr><th>${ label }</th><td>${ value }</td></tr>", {
-		label: encode(data.label),
+		label: e(data.label),
 		value: renderers.value(data.value)
 	});
 };
@@ -43,7 +47,7 @@ renderers.entity = function (data/*, options*/) {
 	return template("<li><h${ headerRank }>${ name }</h${ headerRank }>" +
 		renderers.mainSections(data.sections, options) + "</li>", {
 			headerRank: headerRank,
-			name: encode(data.name)
+			name: e(data.name)
 		});
 };
 
@@ -87,7 +91,7 @@ renderers.section = function (data, className/*, options*/) {
 	if (!disableLabel && data.label) {
 		result += template("<h${ headerRank }>${ label }</h${ headerRank }>", {
 			headerRank: headerRank,
-			label: encode(data.label)
+			label: e(data.label)
 		});
 	}
 	if (data.fields) result += renderers.fields(data.fields);
@@ -116,6 +120,6 @@ module.exports = exports = function (dataSnapshot/*, options*/) {
 exports.renderers = renderers;
 exports.customRenderers = {
 	fileValue: function (data) {
-		return encode(data.name);
+		return e(data.name);
 	}
 };
