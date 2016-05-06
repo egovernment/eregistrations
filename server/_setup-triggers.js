@@ -75,6 +75,7 @@ module.exports = function (conf, onTrigger) {
 			throw new Error("Unsupported event: " + event.type);
 		});
 	} else {
+		postTrigger.forEach(onTrigger);
 		postTrigger.on('change', function (event) {
 			if (event.type === 'add') {
 				onTrigger(event.value);

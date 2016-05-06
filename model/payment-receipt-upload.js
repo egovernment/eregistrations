@@ -58,6 +58,9 @@ module.exports = memoize(function (db) {
 
 		status: { type: PaymentReceiptUploadStatus },
 
+		// Unifies API, and provides multiple rejectReasons
+		// (altough there's one reject reason per payment receipt)
+		rejectReasons: { value: function () { return [this.rejectReasonMemo]; } },
 		// In case of receipt upload we do not show all reject reasons just memo
 		isRejected: { type: db.Boolean, value: function () {
 			if (this.status == null) return false;
@@ -71,6 +74,12 @@ module.exports = memoize(function (db) {
 		isRecentlyRejected: { type: db.Boolean, value: function () {
 			if ((this.status !== 'invalid') && (this.status != null)) return false;
 			return Boolean(this.rejectReasonMemo);
+		} },
+		toJSON: { value: function (ignore) {
+			var data = this.database.RequirementUpload.prototype.toJSON.call(this);
+			data.uniqueKey = this.key;
+			delete data.issuedBy;
+			return data;
 		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

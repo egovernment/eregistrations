@@ -11,6 +11,8 @@ module.exports = memoize(function (Target/* options */) {
 	db      = Target.database;
 	Document = defineDocument(db, options);
 	Target.prototype.defineProperties({
+		// Used only in old BusinessProcess model (so just in Lomas)
+		// To be removed when that dependency is removed
 		businessProcessesDocuments: {
 			type: Document,
 			multiple: true,

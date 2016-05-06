@@ -18,7 +18,7 @@ require('mano/lib/client/implement-es');
 
 // Assure Client id
 // TODO: Require here strictly to log (there should be no log in imported module)
-require('mano/lib/client/client-id');
+var clientId = require('mano/lib/client/client-id');
 
 // Ensure time is in sync with server
 require('eregistrations/client/time-sync');
@@ -101,13 +101,17 @@ loadView = function () {
 		return;
 	}
 	Object.defineProperty(db, '$user', { configurable: true, value: user });
-	viewContext = { appName: '${ appName }',
-		businessProcess: user.currentBusinessProcess };
-	if (user.currentRoleResolved === 'manager') {
-		viewContext.manager = user;
-		viewContext.user = user.currentlyManagedUser;
+	viewContext = { appName: '${ appName }' };
+	if (isReadOnlyRender) {
+		require('eregistrations/client/resolve-legacy-render-view-context')(db, clientId, viewContext);
 	} else {
-		viewContext.user = user;
+		viewContext.businessProcess = user.currentBusinessProcess;
+		if (user.currentRoleResolved === 'manager') {
+			viewContext.manager = user;
+			viewContext.user = user.currentlyManagedUser;
+		} else {
+			viewContext.user = user;
+		}
 	}
 	var siteTree = new DomjsSiteTree(require('mano/lib/client/domjs'));
 	var siteTreeRouter = new SiteTreeRouter(require('../routes'), siteTree, {

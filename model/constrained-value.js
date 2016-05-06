@@ -109,7 +109,10 @@ module.exports = function (target, ValueType/*, options*/) {
 
 				return type.getObjectValue(value, this).toString(this);
 			}
-		}
+		},
+		isEmpty: { value: function (ignore) {
+			return this.getOwnDescriptor('resolvedValue').isValueEmpty();
+		} }
 	});
 
 	if (options.dynamicConstraints != null) {

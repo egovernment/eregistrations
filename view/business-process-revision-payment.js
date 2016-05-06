@@ -10,7 +10,7 @@ var _              = require('mano').i18n.bind('Official: Revision')
   , paymentForm;
 
 exports._parent = require('./user-base');
-exports._match = 'document';
+exports._match = 'documentUniqueId';
 
 paymentForm = function (paymentReceiptUpload) {
 	var revFail;
@@ -42,7 +42,8 @@ paymentForm = function (paymentReceiptUpload) {
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		renderDocument(this.document, disableStep(this.processingStep,
-			paymentForm(this.document.owner)));
+		insert(renderDocument(this,
+			_if(this.processingStep.paymentReceiptUploads.processable._has(this.document.owner),
+				disableStep(this.processingStep, paymentForm(this.document.owner)))));
 	}
 };

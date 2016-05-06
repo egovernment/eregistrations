@@ -30,7 +30,7 @@ mano.env = require('../../common/client/env');
 
 // Expose for dev purposes
 // TODO: Expose only in dev environments
-var db = window.db = mano.db;
+var db = window.db = require('../../db');
 
 mano.noData = true;
 

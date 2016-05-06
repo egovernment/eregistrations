@@ -18,42 +18,65 @@ module.exports = {
 	'data-print': require('../view/print-business-process-data'),
 	'document/[a-z][a-z0-9-]*': {
 		match: function (uniqueKey) {
-			var self = this;
-
 			uniqueKey = hyphenToCamel.call(uniqueKey);
-			self.businessProcess.requirementUploads.applicable.some(function (requirementUpload) {
-				if (requirementUpload.document.uniqueKey === uniqueKey) {
-					self.document = requirementUpload.document;
+			this.businessProcess.requirementUploads.dataSnapshot.resolved.some(function (data) {
+				if (data.uniqueKey === uniqueKey) {
+					this.dataSnapshot = data;
 					return true;
 				}
-			});
-			return Boolean(self.document);
+			}, this);
+			if (!this.dataSnapshot) return false;
+			this.businessProcess.requirementUploads.applicable.some(function (requirementUpload) {
+				if (requirementUpload.document.uniqueKey === uniqueKey) {
+					this.document = requirementUpload.document;
+					return true;
+				}
+			}, this);
+			this.documentKind = 'requirementUpload';
+			this.documentUniqueId =
+				this.businessProcess.__id__ + '/' + this.documentKind + '/' + uniqueKey;
+			return true;
 		},
 		view: require('../view/business-process-document')
 	},
 	'receipt/[a-z][a-z0-9-]*': {
-		match: function (key) {
-			var paymentReceiptUpload =
-				this.businessProcess.paymentReceiptUploads.map.get(hyphenToCamel.call(key));
-			if (!paymentReceiptUpload) return false;
-			if (!this.businessProcess.paymentReceiptUploads.applicable.has(paymentReceiptUpload)) {
-				return false;
+		match: function (uniqueKey) {
+			var paymentReceiptUpload;
+			uniqueKey = hyphenToCamel.call(uniqueKey);
+			this.businessProcess.paymentReceiptUploads.dataSnapshot.resolved.some(function (data) {
+				if (data.uniqueKey === uniqueKey) {
+					this.dataSnapshot = data;
+					return true;
+				}
+			}, this);
+			if (!this.dataSnapshot) return false;
+			paymentReceiptUpload = this.businessProcess.paymentReceiptUploads.map[uniqueKey];
+			if (paymentReceiptUpload &&
+					this.businessProcess.paymentReceiptUploads.applicable.has(paymentReceiptUpload)) {
+				this.document = paymentReceiptUpload.document;
 			}
-
-			this.document = paymentReceiptUpload.document;
+			this.documentKind = 'paymentReceiptUpload';
+			this.documentUniqueId =
+				this.businessProcess.__id__ + '/' + this.documentKind + '/' + uniqueKey;
 			return true;
 		},
 		view: require('../view/business-process-document')
 	},
 	'certificate/[a-z][a-z0-9-]*': {
-		match: function (key) {
-			var certificate = this.businessProcess.certificates.map.get(hyphenToCamel.call(key));
-			if (!certificate) return false;
-			if (!this.businessProcess.certificates.applicable.has(certificate)) {
-				return false;
-			}
+		match: function (uniqueKey) {
+			if (!this.businessProcess.isApproved) return;
+			uniqueKey = hyphenToCamel.call(uniqueKey);
+			this.businessProcess.certificates.dataSnapshot.resolved.some(function (data) {
+				if (data.uniqueKey === uniqueKey) {
+					this.dataSnapshot = data;
+					return true;
+				}
+			}, this);
+			if (!this.dataSnapshot) return false;
 
-			this.document = certificate;
+			this.documentKind = 'certificate';
+			this.documentUniqueId =
+				this.businessProcess.__id__ + '/' + this.documentKind + '/' + uniqueKey;
 			return true;
 		},
 		view: require('../view/business-process-document')

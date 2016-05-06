@@ -160,7 +160,7 @@ module.exports = function (t, a) {
 	a(section.resolventWeight, 0);
 	a(section.status, 1);
 	a(section.weight, 0);
-	a(String(section.lastEditDate), String(new db.DateTime(0)));
+	a(String(section.lastEditDate), String(new db.Date(0)));
 
 	a.h2('With overridden properties in derived class');
 	section = nestedObject.sectionOfDerivedType;
