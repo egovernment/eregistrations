@@ -38,7 +38,6 @@ exports.defaultRenderer = function (businessProcess, filePath) {
 	if (!dataSnapshot) dataSnapshot = businessProcess.dataForms.toJSON();
 
 	return htmlToPdf(templatePath, filePath, {
-		writeHtml: true,
 		width: "210mm",
 		height: "170mm",
 		templateInserts: {
