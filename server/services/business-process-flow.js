@@ -177,7 +177,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 				.filterByKeyPath(stepPath + '/isPreviousStepsSatisfiedDeep', false),
 			trigger: businessProcessesSubmitted
 				.filterByKeyPath(stepPath + '/isPreviousStepsSatisfiedDeep', true)
-		}, delay(function (businessProcess) {
+		}, function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath)
 			  , returnHandlerResult;
 
@@ -205,6 +205,6 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			if (step.hasOwnProperty('revisionStatus')) step.delete('revisionStatus');
 			step.delete('status');
 			if (step.hasOwnProperty('isSatisfied')) step.delete('isSatisfied');
-		}));
+		});
 	});
 };
