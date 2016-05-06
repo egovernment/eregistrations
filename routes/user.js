@@ -47,7 +47,7 @@ module.exports = {
 			if (firstUpload && (firstUpload.uniqueKey === uniqueKey)) return false;
 			return matchUpload.call(this, 'requirementUpload', uniqueKey);
 		},
-		view: require('../view/business-process-document')
+		view: require('../view/user-business-process-document')
 	},
 	'business-process/[0-9][a-z0-9]+/certificates/[a-z][a-z0-9-]*': {
 		match: function (businessProcessId, uniqueKey) {
@@ -55,7 +55,7 @@ module.exports = {
 			if (!this.businessProcess.isApproved) return false;
 			return matchCertificate.call(this, hyphenToCamel.call(uniqueKey));
 		},
-		view: require('../view/business-process-document')
+		view: require('../view/user-business-process-certificate')
 	},
 	'business-process/[0-9][a-z0-9]+/data': {
 		match: matchBusinessProcess,
