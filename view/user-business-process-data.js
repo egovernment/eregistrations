@@ -16,7 +16,7 @@ exports['sub-main'] = {
 					{ businessName: this.businessProcess._businessName }),
 				a({ class: "hint-optional hint-optional-left",
 					'data-hint': _("Print your application form"), target: '_blank',
-					href: '/business-process/' + this.businessProcess.__id__ + '/print-data/'
+					href: '/business-process-data-forms-' + this.businessProcess.__id__ + '.pdf'
 					}, span({ class: "fa fa-print" }, _("Print")))),
 			div({ class: 'section-primary entity-data-section-side' },
 				renderSections(this.businessProcess.dataForms.dataSnapshot)));

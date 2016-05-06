@@ -172,7 +172,8 @@ var drawCertificatesPart = function (context, target, urlPrefix) {
 module.exports = exports = function (context/*, options*/) {
 	var options         = Object(arguments[1])
 	  , urlPrefix       = options.urlPrefix || '/'
-	  , uploadsResolver = options.uploadsResolver || context.businessProcess;
+	  , businessProcess = context.businessProcess
+	  , uploadsResolver = options.uploadsResolver || businessProcess;
 
 	return [
 		section(
@@ -187,14 +188,14 @@ module.exports = exports = function (context/*, options*/) {
 			h2(
 				{ class: 'container-with-nav' },
 				_("Form data"),
-				a(
-					{ class: 'hint-optional hint-optional-left',
-						'data-hint': _("Print your application form"), href: urlPrefix + 'data-print/',
-						target: '_blank' },
-					span({ class: 'fa fa-print' }, _("Print"))
-				)
+				a({
+					class: 'hint-optional hint-optional-left',
+					'data-hint': _("Print your application form"),
+					href: '/business-process-data-forms-' + businessProcess.__id__ + '.pdf',
+					target: '_blank'
+				}, span({ class: 'fa fa-print' }, _("Print")))
 			),
-			renderSections(context.businessProcess.dataForms.dataSnapshot)
+			renderSections(businessProcess.dataForms.dataSnapshot)
 		)
 	];
 };
