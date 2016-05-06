@@ -3,12 +3,13 @@
 var debug               = require('debug-ext')('business-process-data-forms-print')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
   , ensureNaturalNumber = require('es5-ext/object/ensure-natural-number-value')
+  , isString            = require('es5-ext/string/is-string')
   , template            = require('es6-template-strings')
   , encode              = require('ent').encode
   , renderers           = {};
 
 var e = function (data) {
-	return data ? encode(data) : data;
+	return (data && isString(data)) ? encode(data) : data;
 };
 
 renderers.value = function (data) {
