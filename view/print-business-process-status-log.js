@@ -13,9 +13,9 @@ exports.main = function () {
 		table({ class: 'print-user-history' },
 			tbody(this.businessProcess.statusLog.ordered,
 				function (log) {
-					th(log.label);
+					th(log._label);
 					td({ class: 'print-user-history-time' }, log._time);
-					td(md(log.text));
-					if (this.processingStep) td(log.official);
+					td(md(log._text));
+					if (this.processingStep) td(log._official);
 				}, this)));
 };

@@ -54,10 +54,10 @@ module.exports = function (context/*, options */) {
 					tbody(
 						businessProcess.statusLog.ordered,
 						function (log) {
-							th(log.label);
-							td({ class: 'submitted-user-history-time' }, log.time);
-							td(md(log.text));
-							if (context.processingStep) td(log.official);
+							th(log._label);
+							td({ class: 'submitted-user-history-time' }, log._time);
+							td(md(log._text));
+							if (context.processingStep) td(log._official);
 						}
 					)
 				)

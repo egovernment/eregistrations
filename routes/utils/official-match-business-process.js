@@ -17,7 +17,13 @@ baseMatcher = function (step, businessProcessId) {
 		} else {
 			this.processingStep = this.businessProcess.processingSteps.map[step];
 		}
-		return this.processingStep && this.processingStep.isReady;
+		if (!this.processingStep) return false;
+
+		// Below check is a hack through which we ensure that business process has full data loaded
+		// (we don't want to show the page to user until that's the case)
+		if (!this.businessProcess.dataForms.dataSnapshot.jsonString) return false;
+
+		return this.processingStep.isReady;
 	}
 
 	return false;
