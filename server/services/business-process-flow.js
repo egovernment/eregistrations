@@ -1,4 +1,7 @@
 // Service that propagates business process flow changes
+//
+// Most updates are delayed to next tick, so eventual preTrigger setups have chance to catch up
+// for cases when file is loaded in inconsistent state
 
 'use strict';
 
@@ -8,6 +11,7 @@ var aFrom           = require('es5-ext/array/from')
   , Set             = require('es6-set')
   , ensureType      = require('dbjs/valid-dbjs-type')
   , debug           = require('debug-ext')('business-process-flow')
+  , delay           = require('timers-ext/delay')
   , resolveStepPath = require('../../utils/resolve-processing-step-full-path')
   , setupTriggers   = require('../_setup-triggers');
 
@@ -35,11 +39,11 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	setupTriggers({
 		trigger: businessProcesses.filterByKey('isSubmittedReady', true)
 			.filterByKey('isSubmitted', false)
-	}, function (businessProcess) {
+	}, delay(function (businessProcess) {
 		debug('%s submitted', businessProcess.__id__);
 		if (onSubmitted) onSubmitted(businessProcess);
 		businessProcess.isSubmitted = true;
-	});
+	}));
 	setupTriggers({
 		trigger: businessProcesses.filterByKey('isSubmitted', true)
 	}, function (businessProcess) {
@@ -57,45 +61,45 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	setupTriggers({
 		trigger: businessProcessesSubmitted.filterByKey('isSubmittedReady', true)
 			.filterByKey('isSentBack', true)
-	}, function (businessProcess) {
+	}, delay(function (businessProcess) {
 		debug('%s finalize sentBack', businessProcess.__id__);
 		businessProcess.delete('isSentBack');
 		businessProcess.dataForms.dataSnapshot.regenerate();
 		businessProcess.requirementUploads.dataSnapshot.regenerate();
 		businessProcess.paymentReceiptUploads.dataSnapshot.regenerate();
-	});
+	}));
 
 	// Business process: isUserProcessing initialization
 	setupTriggers({
 		trigger: businessProcessesSubmitted.filterByKey('isUserProcessingReady', true)
 			.filterByKey('isUserProcessing', false)
-	}, function (businessProcess) {
+	}, delay(function (businessProcess) {
 		debug('%s initialize user processing', businessProcess.__id__);
 		businessProcess.submissionForms.delete('isAffidavitSigned');
 		businessProcess.isUserProcessing = true;
-	});
+	}));
 
 	// Business process: isUserProcessing finalization
 	setupTriggers({
 		trigger: businessProcessesSubmitted.filterByKey('isSubmittedReady', true)
 			.filterByKey('isUserProcessing', true)
-	}, function (businessProcess) {
+	}, delay(function (businessProcess) {
 		debug('%s finalize user processing', businessProcess.__id__);
 		if (onUserProcessingEnd) onUserProcessingEnd(businessProcess);
 		businessProcess.delete('isUserProcessing');
 		businessProcess.dataForms.dataSnapshot.regenerate();
 		businessProcess.requirementUploads.dataSnapshot.regenerate();
 		businessProcess.paymentReceiptUploads.dataSnapshot.regenerate();
-	});
+	}));
 
 	// Business process: isApproved preservation
 	setupTriggers({
 		trigger: businessProcessesSubmitted.filterByKey('isApprovedReady', true)
 			.filterByKey('isApproved', false)
-	}, function (businessProcess) {
+	}, delay(function (businessProcess) {
 		debug('%s approved', businessProcess.__id__);
 		businessProcess.isApproved = true;
-	});
+	}));
 	setupTriggers({
 		trigger: businessProcesses.filterByKey('isClosed', true)
 	}, function (businessProcess) {
@@ -115,7 +119,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			trigger: businessProcessesSubmitted.filterByKeyPath(stepPath + '/status', function (value) {
 				return value && !nonFinalStatuses.has(value);
 			})
-		}, function (businessProcess) {
+		}, delay(function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath), targetStep;
 			if (step.hasOwnProperty('status')) return; // Already shadowed
 			debug('%s %s step %s', businessProcess.__id__, step.shortPath, step.status);
@@ -154,17 +158,17 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 				debug('%s rejected at %s', businessProcess.__id__, step.shortPath);
 				businessProcess.isRejected = true;
 			}
-		});
+		}));
 
 		// isSatisfied
 		setupTriggers({
 			trigger: businessProcessesSubmitted.filterByKeyPath(stepPath + '/isSatisfiedReady', true)
 				.filterByKeyPath(stepPath + '/isSatisfied', false)
-		}, function (businessProcess) {
+		}, delay(function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath);
 			debug('%s %s step satisfied', businessProcess.__id__, step.shortPath);
 			step.isSatisfied = true;
-		});
+		}));
 
 		// Valid returns
 		var returnStatuses = new Set(['sentBack', 'redelegated']);

@@ -2,13 +2,13 @@
 
 module.exports = function (kind) {
 	var colName = kind + 's', target = this.processingStep || this.businessProcess, first, snapshot;
-	if (!this.businessProcesss.isClosed) {
+	if (!this.businessProcess.isClosed) {
 		first = target[colName].applicable.first;
 	} else {
 		snapshot = this.businessProcess[colName].dataSnapshot.resolved;
 
 		// Find first viewable document
-		this.target[colName].applicable.some(function (upload) {
+		target[colName].applicable.some(function (upload) {
 			var uploadKey = (kind === 'requirementUpload') ? upload.document.uniqueKey : upload.key;
 			return snapshot.some(function (data) {
 				if (data.uniqueKey === uploadKey) {

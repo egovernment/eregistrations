@@ -16,10 +16,10 @@ exports['tab-content'] = function () {
 	return section({ class: 'section-primary' },
 		div({ class: "section-primary-sub all-documents-table" },
 			div(renderCertificateList(this, options)),
-			div(renderDocumentsList(this, assign(options, {
+			div(renderDocumentsList(this, assign({
 				documentsRootHref:
 					document.getElementById('tab-business-process-documents').getAttribute('href')
-			}))),
+			}, options))),
 			div(renderPaymentList(this, options))),
 		div({ id: 'selection-preview' }));
 };

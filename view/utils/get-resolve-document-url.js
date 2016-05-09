@@ -6,8 +6,8 @@ var camelToHyphen   = require('es5-ext/string/#/camel-to-hyphen')
   , reactiveSibling = require('../utils/reactive-document-sibling');
 
 module.exports = function (kind, collection/*, options*/) {
-	var options = Object(arguments[2])
-	  , urlPrefix = kind.urlPrefix || '/'
+	var options           = Object(arguments[2])
+	  , urlPrefix         = options.urlPrefix || '/'
 	  , documentsRootHref = options.documentsRootHref;
 
 	kind = ensureString(kind);
@@ -17,7 +17,7 @@ module.exports = function (kind, collection/*, options*/) {
 		if (!data) return null;
 		if (kind === 'certificate') url += 'certificates';
 		else if (kind === 'requirementUpload') url += 'documents';
-		else if (kind === 'paymentReceiptUpload') url = 'payment-receipts';
+		else if (kind === 'paymentReceiptUpload') url += 'payment-receipts';
 		else throw new Error(kind + " is not recognized document kind");
 		if (!documentsRootHref) return url + '/' + camelToHyphen.call(data.uniqueKey) + '/';
 		return reactiveSibling.previous(collection, data.uniqueKey).map(function (previous) {

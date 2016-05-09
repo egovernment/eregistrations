@@ -24,7 +24,7 @@ var getFilePreview = function (file) {
 	}
 	if (!isReadOnlyRender && (type === 'application/pdf')) {
 		return iframe({
-			src: url('pdfjs/web/viewer.html?file=') + encodeURIComponent('/' + file.path)
+			src: '/pdfjs/web/viewer.html?file=' + encodeURIComponent('/' + file.path)
 		});
 	}
 	return img({
@@ -42,7 +42,8 @@ module.exports = function (context, documentData/*, options*/) {
 	  , collectionTarget = options.uploadsResolver || businessProcess
 	  , kind             = context.documentKind
 
-	  , collection, nextDocumentUrl, previousDocumentUrl, docPreviewElement, sideContentContainer;
+	  , collection, nextDocumentUrl, previousDocumentUrl, docPreviewElement, sideContentContainer
+	  , defaultResolveDocumentUrl, resolveDocumentUrl;
 
 	if (kind === 'certificate') {
 		collection = getCertificates(collectionTarget.certificates, context.appName);
@@ -52,7 +53,12 @@ module.exports = function (context, documentData/*, options*/) {
 		collection = getUploads(collectionTarget.paymentReceiptUploads, context.appName);
 	}
 
-	var resolveDocumentUrl = getResolveDocumentUrl(kind, collection, options);
+	defaultResolveDocumentUrl = getResolveDocumentUrl(kind, collection, options);
+	resolveDocumentUrl = function (data) {
+		var resolvedUrl = defaultResolveDocumentUrl(data);
+
+		return resolvedUrl && resolvedUrl + '#submitted-box';
+	};
 
 	nextDocumentUrl = reactiveSibling.next(collection, context.documentUniqueKey)
 		.map(resolveDocumentUrl);

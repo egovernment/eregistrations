@@ -11,7 +11,7 @@ exports['tab-content'] = function () {
 	return section({ class: 'section-primary' },
 		div({ class: "section-primary-sub" }, div(renderDocumentsList(this, {
 			urlPrefix: '/' + this.businessProcess.__id__ + '/',
-			documentsRootHref: '/' + this.businessProcess.__id__ + '/documents/'
+			documentsRootHref: '/' + this.businessProcess.__id__ + '/'
 		}))),
 		div({ id: 'selection-preview' }));
 };

@@ -18,7 +18,8 @@ exports['selection-preview'] = function () {
 			documentData.overviewSection,
 			documentData.section,
 			renderDocumentHistory(documentData)
-		]
+		],
+		urlPrefix: '/business-process/' + this.businessProcess.__id__ + '/'
 	}));
 };
 

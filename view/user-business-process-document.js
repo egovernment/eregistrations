@@ -18,6 +18,7 @@ exports['selection-preview'] = function () {
 			prependContent: renderDocumentRevisionInfo(this),
 			mainContent: exports._documentPreviewContent.call(this, documentData),
 			sideContent: renderDocumentHistory(documentData),
+			urlPrefix: '/business-process/' + this.businessProcess.__id__ + '/',
 			documentsRootHref: '/business-process/' + this.businessProcess.__id__ + '/documents/'
 		})
 	);

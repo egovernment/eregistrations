@@ -3,6 +3,7 @@
 'use strict';
 
 var assign                = require('es5-ext/object/assign')
+  , aFrom                 = require('es5-ext/array/from')
   , _                     = require('mano').i18n.bind('View: Documents list')
   , getUploads            = require('../utils/get-uploads-list')
   , getCertificates       = require('../utils/get-certificates-list')
@@ -17,9 +18,9 @@ module.exports = function (context) {
 	  , options = { urlPrefix: '/business-process/' + businessProcess.__id__ + '/' };
 
 	var resolveUploadUrl = getResolveDocumentUrl('requirementUpload',
-		getUploads(businessProcess.requirementUploads, context.appName), assign(options, {
+		getUploads(businessProcess.requirementUploads, context.appName), assign({
 			documentsRootHref: '/business-process/' + businessProcess.__id__ + '/documents/'
-		}));
+		}, options));
 	var resolveCertificateUrl = getResolveDocumentUrl('certificate',
 		getCertificates(businessProcess.certificates, context.appName), options);
 
@@ -34,9 +35,9 @@ module.exports = function (context) {
 					if (certsData && isApproved) {
 						certsData.forEach(function (documentData) { documentData.kind = 'certificate'; });
 						if (uploadsData) data = uploadsData.concat(certsData);
-						else data = certsData;
+						else data = aFrom(certsData);
 					} else {
-						data = uploadsData;
+						data = aFrom(uploadsData);
 					}
 					if (data) data = data.sort(compareByLabel).slice(0, 5);
 					return table({ class: 'submitted-user-data-table user-request-table' },
