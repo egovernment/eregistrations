@@ -8,7 +8,7 @@ module.exports = function (kind) {
 		snapshot = this.businessProcess[colName].dataSnapshot.resolved;
 
 		// Find first viewable document
-		this.target[colName].applicable.some(function (upload) {
+		target[colName].applicable.some(function (upload) {
 			var uploadKey = (kind === 'requirementUpload') ? upload.document.uniqueKey : upload.key;
 			return snapshot.some(function (data) {
 				if (data.uniqueKey === uploadKey) {
