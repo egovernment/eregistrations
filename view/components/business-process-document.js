@@ -24,7 +24,7 @@ var getFilePreview = function (file) {
 	}
 	if (!isReadOnlyRender && (type === 'application/pdf')) {
 		return iframe({
-			src: url('pdfjs/web/viewer.html?file=') + encodeURIComponent('/' + file.path)
+			src: '/pdfjs/web/viewer.html?file=' + encodeURIComponent('/' + file.path)
 		});
 	}
 	return img({
