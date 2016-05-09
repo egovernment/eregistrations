@@ -15,6 +15,7 @@ var aFrom                = require('es5-ext/array/from')
   , memoize              = require('memoizee')
   , Set                  = require('es6-set')
   , deferred             = require('deferred')
+  , ensureDatabase       = require('dbjs/valid-dbjs')
   , unserializeValue     = require('dbjs/_setup/unserialize/value')
   , serializeValue       = require('dbjs/_setup/serialize/value')
   , ObservableSet        = require('observable-set')
@@ -35,6 +36,7 @@ var aFrom                = require('es5-ext/array/from')
   , getDbRecordSet       = require('./utils/get-db-record-set')
   , getDbSet             = require('./utils/get-db-set')
   , mapDbSet             = require('./utils/map-db-set')
+  , getOfficialsFragment = require('./utils/get-officials-fragment')
   , defaultUserListProps = require('../apps/users-admin/user-list-properties')
 
   , create = Object.create, keys = Object.keys, stringify = JSON.stringify
@@ -61,7 +63,7 @@ var defaultResolveOfficialViewPath = function (userId, roleName, stepShortPath, 
 	return stepShortPath;
 };
 
-module.exports = exports = function (dbDriver, data) {
+module.exports = exports = function (db, dbDriver, data) {
 	var userStorage = ensureDriver(dbDriver).getStorage('user')
 	  , getBusinessProcessData = getObjFragment()
 	  , reducedStorage = dbDriver.getReducedStorage()
@@ -74,6 +76,8 @@ module.exports = exports = function (dbDriver, data) {
 	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, userListProps
 	  , businessProcessDispatcherListExtraProperties = [], officialDispatcherListExtraProperties = []
 	  , businessProcessMyAccountExtraProperties = [];
+
+	ensureDatabase(db);
 
 	var getBusinessProcessStorages = require('./utils/business-process-storages');
 	var getManagerUserData = getPartFragments(userStorage, new Set(['email', 'firstName',
@@ -164,6 +168,8 @@ module.exports = exports = function (dbDriver, data) {
 		}
 		return defaultKey;
 	};
+
+	var officialsFragment = getOfficialsFragment(db, userStorage, { keyPaths: ['fullName'] });
 
 	// Configure fragment resolvers
 	// Non role specific
@@ -285,6 +291,7 @@ module.exports = exports = function (dbDriver, data) {
 		var addSortRecord = getAddRecFrag(null,
 			['processingSteps/map/' + resolveStepPath(stepShortPath) + '/isReady']);
 
+		fragment.addFragment(officialsFragment);
 		fragment.promise = initializeView('businessProcesses/' + viewPath)(function () {
 			// To be visited (recently pending) business processes (full data)
 			fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
@@ -319,6 +326,7 @@ module.exports = exports = function (dbDriver, data) {
 	var getDispatcherFragment = memoize(function () {
 		var fragment = new FragmentGroup();
 
+		fragment.addFragment(officialsFragment);
 		if (assignableProcessingSteps) {
 			assignableProcessingSteps.forEach(function (stepShortPath) {
 				var defaultStatusName = resolveDefaultStatus(stepShortPath), roleName, getOfficialFragment;
@@ -356,6 +364,7 @@ module.exports = exports = function (dbDriver, data) {
 	}()));
 	var getSupervisorFragment = memoize(function () {
 		var fragment = new FragmentGroup();
+		fragment.addFragment(officialsFragment);
 		// "All roles" first page snapshot
 		fragment.promise = initializeView('supervisor')(function () {
 			fragment.addFragment(getReducedData('views/supervisor/all'));

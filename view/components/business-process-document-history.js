@@ -11,9 +11,9 @@ module.exports = function (documentData) {
 			div({ class: 'submitted-user-history-wrapper' },
 				table({ class: 'submitted-user-history' },
 					tbody(documentData.statusLog, function (log) {
-						th(log.label);
-						td({ class: 'submitted-user-history-time' }, log.time);
-						td(md(log.text));
+						th(log._label || log.label);
+						td({ class: 'submitted-user-history-time' }, log._time || log.time);
+						td(md(log._text || log.text));
 					})))
 		];
 	});

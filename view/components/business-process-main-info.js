@@ -5,6 +5,7 @@
 var _            = require('mano').i18n.bind('View: Component: Business Process info')
   , from         = require('es5-ext/array/from')
   , nextTick     = require('next-tick')
+  , isUserApp    = require('../../utils/is-user-app')
   , scrollBottom = require('../utils/scroll-to-bottom')
   , tableCols    = require('./business-process-table-columns')
   , columns      = from(tableCols.columns);
@@ -14,7 +15,6 @@ columns.push(tableCols.archiverColumn);
 module.exports = function (context/*, options */) {
 	var options         = Object(arguments[1])
 	  , businessProcess = context.businessProcess
-	  , processingStep  = context.processingStep
 	  , urlPrefix       = options.urlPrefix || '/', scrollableElem;
 
 	return [
@@ -43,10 +43,10 @@ module.exports = function (context/*, options */) {
 					tbody(
 						businessProcess.statusLog.ordered,
 						function (log) {
-							th(log.label);
-							td({ class: 'submitted-user-history-time' }, log.time);
-							td(md(log.text));
-							if (processingStep) td(log.official);
+							th(log._label);
+							td({ class: 'submitted-user-history-time' }, log._time);
+							td(md(log._text));
+							if (!isUserApp(context.appName)) td(log._official);
 						}
 					)
 				)
