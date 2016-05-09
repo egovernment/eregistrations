@@ -72,7 +72,7 @@ module.exports = function (config) {
 		// Invoke match
 		updateSelect = $.selectMatch(parentSelect, map);
 		parentSelect.disabled = childSelect.disabled;
-		document.setInterval(function () {
+		setInterval(function () {
 			parentSelect.disabled = childSelect.disabled;
 		}, 1000);
 

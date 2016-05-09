@@ -29,7 +29,7 @@ vars
 todo
 evil
 
-predef+ console, setTimeout
+predef+ console, setTimeout, setInterval
 
 ./bin
 ./lib
