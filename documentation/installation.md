@@ -6,14 +6,14 @@ Application can be deployed on both OSX/\*nix and Windows systems. It needs foll
 
 * __Node.js__ - http://nodejs.org/ - v0.4 in it's **latest** release
 
-#### Image processing utilties:
+### Image processing utilties:
 
 On OSX we recommend to use [Homebrew](http://brew.sh/) to install below utitlites
 
 * __GraphicsMagick__ - http://www.graphicsmagick.org/download.html
 * __GhostScript__ - http://www.ghostscript.com/download/gsdnld.html __it needs to be in the same architecture version (32bit or 64bit) as GraphicsMagick__. GhostScript helps GraphicsMagick to generate thumbnails of PDF documents.
 
-#### Compilation related utilities
+### Compilation related utilities
 
 In \*nix systems normally no additional work needs to be done. Still for Windows, it's important that all dependencies mentioned below are ensured.
 
@@ -23,13 +23,13 @@ Few packages that we use are written in C++ and need to be compiled. For that ne
 
 After all needed software is installed and application code is downloaded, compile packages with following command (needs to be run in application path):
 
-### Project compilation
+## Project compilation
 
 Few packages needs compilation, running below ensures that
 
 * `$ npm rebuild` __[Note: on Windows 8 it needs to be run in VS Command Prompt](https://github.com/TooTallNate/node-gyp/issues/177#issuecomment-12184651)__
 
-### Environment configuration
+## Environment configuration
 
 What's left is environment configuration. Create _env.js_ file in main path of application, as follows:
 
@@ -75,7 +75,7 @@ module.exports = require('mano').env = {
 };
 ```
 
-### Setup administrator account
+## Setup administrator account
 
 To be able to additionally access site administrator functionality, _users admin_ account needs to be created. To do so run following command and follow instructions:
 
@@ -85,7 +85,7 @@ While logged in as users admin, you can create accounts of institution workers, 
 
 User administrators and institution workers log in into application using same login form as regular merchants.
 
-### Deployment
+## Deployment
 
 Start server:
 
