@@ -45,7 +45,7 @@ defaultRenderers.entities = renderEntities = function (data/*, options*/) {
 		data, function (entityData) { return renderEntity(entityData, options); });
 };
 
-defaultRenderers = renderSection = function (data, className/*, options*/) {
+renderSection = function (data, className/*, options*/) {
 	var options = arguments[2], headerRank, disableLabel;
 	if (data.kind && exports.customRenderers[data.kind]) {
 		return exports.customRenderers[data.kind](data, className, options, defaultRenderers);
