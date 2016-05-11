@@ -77,26 +77,25 @@ module.exports = require('mano').env = {
 
 ### Database configuration
 
-By default [plain text](https://github.com/medikoo/dbjs-persistence/tree/master/text-file) database driver is used, and it's efficient enough for common eRegistrations setup. It doesn't require any configuration to be provided.
+The eRegistrations system is built to work with any database. By default [plain text](https://github.com/medikoo/dbjs-persistence/tree/master/text-file) database driver is used, it's efficient enough for common eRegistrations setup and it doesn't require any specific configuration to be provided.
 
-However any other engine can be used with dedicated dbjs driver. Example setup in `env.js` looks then as follows
+The following database engines have prepared dedicated dbjs drivers (engines not mentioned in a list can have a driver prepared on request in 1-3 days)
+
+- [LevelDB](http://leveldb.org/) -> [dbjs-level](https://github.com/medikoo/dbjs-level)
+- [MongoDB](https://www.mongodb.com) -> [dbjs-mongo](https://github.com/medikoo/dbjs-mongo)
+
+If there's intention to use one of above engines, the database engine and dbjs driver need to be installed separately (installation instructions can be found in driver repository), and it's usage needs to be configured in  `env.js`, as g.:
 
 ```javascript
 module.exports = require('mano').env = {
 	...
   db: {
-    driver: require('dbjs-level'), // LevelDB driver
+    driver: require('dbjs-level'), // Store data in LevelDB database
     // .. Driver configuration properties if needed ..
   }
 	...
 };
 ```
-
-At this point following engines have prepared dbjs drivers:
-- [LevelDB](http://leveldb.org/) -> [dbjs-level](https://github.com/medikoo/dbjs-level)
-- [MongoDB](https://www.mongodb.com) -> [dbjs-mongo](https://github.com/medikoo/dbjs-mongo)
-
-For any other, relatively popular engine, driver can be prepared on request (usually it takes 1-3 days to prepare such)
 
 ## Setup administrator account
 
