@@ -72,6 +72,9 @@ module.exports = function (config) {
 		// Invoke match
 		updateSelect = $.selectMatch(parentSelect, map);
 		parentSelect.disabled = childSelect.disabled;
+		setInterval(function () {
+			parentSelect.disabled = childSelect.disabled;
+		}, 1000);
 
 		if (!childSelect._dbjsInput) return;
 		document.on('dbupdate', function () { parentSelect.disabled = childSelect.disabled; });
