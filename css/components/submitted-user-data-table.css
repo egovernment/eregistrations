@@ -30,6 +30,7 @@
 	font-weight: bold;
 	border-top-color: var(--normal-background);
 	border-bottom-color: var(--normal-background);
+	border-top-style: double;
 }
 
 .submitted-user-data-table tbody .active td:first-child {
