@@ -10,15 +10,26 @@ exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
 		mainInfo(this);
+
 		section({ class: 'section-tab-nav' },
-			a({ class: 'section-tab-nav-tab',
-					id: 'tab-business-process-documents',
-					href: '/' },
-				_("Documents")),
-			a({ class: 'section-tab-nav-tab',
-					id: 'tab-business-process-data',
-					href: '/data/' },
-				_("Data")),
+			exports._documentsTabLink.call(this),
+			exports._dataTabLink.call(this),
 			div({ id: 'tab-content', class: 'business-process-revision' }));
 	}
+};
+
+exports._documentsTabLink = function () {
+	return a({
+		class: 'section-tab-nav-tab',
+		id: 'tab-business-process-documents',
+		href: '/'
+	}, _("Documents"));
+};
+
+exports._dataTabLink = function () {
+	return a({
+		class: 'section-tab-nav-tab',
+		id: 'tab-business-process-data',
+		href: '/data/'
+	}, _("Data"));
 };
