@@ -169,6 +169,36 @@ var drawCertificatesPart = function (context, target, urlPrefix) {
 	});
 };
 
+var dataFormsRevisionControls = function (context) {
+	var businessProcess = context.businessProcess
+	  , processingStep  = context.processingStep
+	  , dataForms       = businessProcess.dataForms
+	  , revReason;
+
+	if (!processingStep) return;
+	if (!businessProcess.processingSteps.revisions.has(processingStep)) return;
+
+	return form(
+		{
+			id: 'form-revision-data-forms',
+			action: '/revision-data-forms',
+			method: 'post',
+			class: 'submitted-preview-form'
+		},
+		ul(
+			{ class: 'form-elements' },
+			li(div({ class: 'input' }, input({ dbjs: dataForms._status }))),
+			li(
+				revReason = div({ class: 'official-form-data-forms-revision-reject-reason' },
+					field({ dbjs: dataForms._rejectReason }))
+			)
+		),
+		p(input({ type: 'submit', value: _("Save") })),
+		legacy('radioMatch', 'form-revision-data-forms',
+			dataForms.__id__ + '/status', { rejected: revReason.getId() })
+	);
+};
+
 module.exports = exports = function (context/*, options*/) {
 	var options         = Object(arguments[1])
 	  , urlPrefix       = options.urlPrefix || '/'
@@ -194,6 +224,7 @@ module.exports = exports = function (context/*, options*/) {
 					span({ class: 'fa fa-print' }, _("Print"))
 				)
 			),
+			dataFormsRevisionControls(context),
 			renderSections(context.businessProcess.dataForms.dataSnapshot)
 		)
 	];
