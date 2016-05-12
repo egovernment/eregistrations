@@ -103,3 +103,10 @@
 .business-process-submitted-selected-document .entity-data-section-side h3 {
 	margin-top: 0;
 }
+
+.business-submitted-data-print-only {
+	text-align: right;
+	font-weight: 400;
+	font-size: 25px;
+	line-height: 44px;
+}

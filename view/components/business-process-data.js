@@ -11,7 +11,7 @@ module.exports = function (context/*, options*/) {
 	  , urlPrefix = options.urlPrefix || '/';
 
 	return section({ class: 'section-primary' },
-		div({ class: 'container-with-nav' },
+		div({ class: 'business-submitted-data-print-only' }, ' ',
 			a({ class: 'hint-optional hint-optional-left',
 				'data-hint': _("Print your application form"), href: urlPrefix + 'data-print/',
 				target: '_blank' },
