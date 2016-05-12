@@ -172,7 +172,7 @@ module.exports = function (context, documentData/*, options*/) {
 				},
 
 					// When no files in document
-					div({ class: 'submitted-preview-document-missing' },
+					div({ class: 'business-process-document-missing' },
 						p(_("This document does not have any physical file attached to it.")))),
 
 				// Side content
