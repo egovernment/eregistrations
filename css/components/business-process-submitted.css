@@ -34,6 +34,7 @@
 .business-process-document-preview-box-controls a .fa-angle-right,
 .business-process-document-preview-box-controls a .fa-angle-left {
 	vertical-align: middle;
+	font-size: 22px;
 }
 
 .business-process-document-preview-box-controls .label-doc-type + a {
@@ -43,7 +44,11 @@
 .business-process-document-preview-box .form-elements > li {
 	display: inline-block;
 	padding: 0 8px;
-	vertical-align: middle;
+	vertical-align: top;
+}
+
+.business-process-document-preview-box .form-elements > li:last-child {
+	line-height: 44px;
 }
 
 .business-process-document-preview-box .form-elements > li .dbjs-input-component > .input {
@@ -53,6 +58,10 @@
 .business-process-document-preview-box .form-elements > li .input textarea {
 	width: auto;
 	max-width: 260px;
+}
+
+.business-process-document-preview-box .form-elements > li input[type='submit'] {
+	padding: 2px 11px;
 }
 
 .business-process-document-preview-selected-document {
