@@ -4,7 +4,7 @@
 
 var camelToHyphen              = require('es5-ext/string/#/camel-to-hyphen')
   , _                          = require('mano').i18n.bind('View: Official: Revision')
-  , renderDocument             = require('./components/business-process-document')
+  , renderDocument             = require('./components/business-process-document-review')
   , renderDocumentHistory      = require('./components/business-process-document-history')
   , renderDocumentRevisionInfo = require('./components/business-process-document-review-info')
   , renderSections             = require('./components/render-sections-json')
