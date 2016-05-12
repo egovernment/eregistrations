@@ -2,7 +2,7 @@
 
 'use strict';
 
-var renderDocument             = require('./components/business-process-document-review')
+var renderDocument             = require('./components/business-process-document-preview')
   , renderDocumentHistory      = require('./components/business-process-document-history')
   , renderDocumentRevisionInfo = require('./components/business-process-document-review-info')
   , getDocumentData            = require('./utils/get-document-data');
