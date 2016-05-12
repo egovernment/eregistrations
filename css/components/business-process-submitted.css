@@ -47,6 +47,10 @@
 	vertical-align: top;
 }
 
+.business-process-document-preview-box .form-elements > li:empty {
+	display: none;
+}
+
 .business-process-document-preview-box .form-elements > li:last-child {
 	line-height: 44px;
 }
@@ -61,7 +65,19 @@
 }
 
 .business-process-document-preview-box .form-elements > li input[type='submit'] {
-	padding: 2px 11px;
+	padding: 1px 11px;
+}
+
+.business-process-document-preview-box .form-elements > li .inline-button-radio label {
+	background-color: #fff;
+}
+
+.business-process-document-preview-box .form-elements > li .inline-button-radio .success {
+	background-color: #5CB85C;
+}
+
+.business-process-document-preview-box .form-elements > li .inline-button-radio .error {
+	background-color: #D9534F;
 }
 
 .business-process-document-preview-selected-document {
