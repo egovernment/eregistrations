@@ -19,17 +19,4 @@ module.exports = function (t, a) {
 	process.map.define('test', { nested: true });
 	a(process.progress, 1);
 	a(process.weight, 0);
-
-	a(process.status, undefined);
-	a(process.isRejected, false);
-
-	process.status = 'invalid';
-	a(process.status, 'invalid');
-	a(process.isRejected, false);
-
-	process.rejectReason = 'test';
-	a(process.isRejected, true);
-
-	process.status = 'valid';
-	a(process.isRejected, false);
 };

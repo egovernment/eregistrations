@@ -2,7 +2,11 @@
 
 'use strict';
 
-var memoize                     = require('memoizee/plain')
+var _                           = require('mano').i18n.bind('Model')
+  , memoize                     = require('memoizee/plain')
+  , Map                         = require('es6-map')
+  , defineStringLine            = require('dbjs-ext/string/string-line')
+  , defineCreateEnum            = require('dbjs-ext/create-enum')
   , definePropertyGroupsProcess = require('../lib/property-groups-process')
   , defineDataSnapshot          = require('../lib/data-snapshot')
   , defineBusinessProcess       = require('./base')
@@ -11,8 +15,17 @@ var memoize                     = require('memoizee/plain')
 module.exports = memoize(function (db/* options */) {
 	var BusinessProcess       = defineBusinessProcess(db, arguments[1])
 	  , PropertyGroupsProcess = definePropertyGroupsProcess(db)
+	  , StringLine            = defineStringLine(db)
 	  , FormSectionBase       = defineFormSectionBase(db)
 	  , DataSnapshot          = defineDataSnapshot(db);
+
+	defineCreateEnum(db);
+
+	// Enum for forms status
+	var DataFormsStatus = StringLine.createEnum('DataFormsStatus', new Map([
+		['approved', { label: _("Valid") }],
+		['rejected', { label: _("Invalid") }]
+	]));
 
 	BusinessProcess.prototype.defineProperties({
 		dataForms: { type: PropertyGroupsProcess, nested: true }
@@ -51,7 +64,21 @@ module.exports = memoize(function (db/* options */) {
 
 				return result;
 			}
-		}
+		},
+		// Verification status of data forms
+		status: { type: DataFormsStatus },
+		// Eventual rejection details
+		rejectReason: { type: db.String, required: true, label: _("Explanation") },
+		// Whether data forms was validated and all required properties where provided.
+		isApproved: { type: db.Boolean, value: function (_observe) {
+			return this.status === 'valid';
+		} },
+		// Whether data forms was rejected and reject reason was provided
+		isRejected: { type: db.Boolean, value: function () {
+			if (this.status == null) return false;
+			if (this.status !== 'rejected') return false;
+			return Boolean(this.rejectReason);
+		} }
 	});
 
 	return BusinessProcess;

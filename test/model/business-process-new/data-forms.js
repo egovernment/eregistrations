@@ -27,4 +27,17 @@ module.exports = function (t, a) {
 		aFrom(businessProcess.dataForms.processChainApplicable));
 	businessProcess.dataForms.map.test1.isApplicable = false;
 	a(businessProcess.dataForms.processChainApplicable.size, 1);
+
+	a(businessProcess.dataForms.status, undefined);
+	a(businessProcess.dataForms.isRejected, false);
+
+	businessProcess.dataForms.status = 'rejected';
+	a(businessProcess.dataForms.status, 'rejected');
+	a(businessProcess.dataForms.isRejected, false);
+
+	businessProcess.dataForms.rejectReason = 'test';
+	a(businessProcess.dataForms.isRejected, true);
+
+	businessProcess.dataForms.status = 'approved';
+	a(businessProcess.dataForms.isRejected, false);
 };
