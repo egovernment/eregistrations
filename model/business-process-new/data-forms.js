@@ -78,6 +78,53 @@ module.exports = memoize(function (db/* options */) {
 			if (this.status == null) return false;
 			if (this.status !== 'rejected') return false;
 			return Boolean(this.rejectReason);
+		} },
+
+		// Enrich snapshot JSON with reactive configuration of revision related properties
+		enrichJSON: { type: db.Function, value: function (data) {
+			if (data.isFinalized) return data;
+			data.status = this._isApproved.map(function (isApproved) {
+				if (isApproved) return 'approved';
+				return this._isRejected.map(function (isRejected) {
+					if (isRejected) return 'rejected';
+				});
+			}.bind(this));
+			data.rejectReason = this.rejectReason;
+			return data;
+		} },
+		// Finalize snapshot JSON by adding revision status properties
+		finalizeJSON: { type: db.Function, value: function (data) {
+			if (data.isFinalized) return data;
+			if (this.isApproved) data.status = 'approved';
+			else if (this.isRejected) data.status = 'rejected';
+			if (data.status === 'rejected') {
+				data.rejectReason = this.getOwnDescriptor('rejectReason').valueToJSON();
+			}
+			data.isFinalized = true;
+			return data;
+		} }
+	});
+
+	BusinessProcess.prototype.dataForms.dataSnapshot.defineProperties({
+		// Enriches resolved JSON with reactive revision status properties.
+		resolve: { value: function (ignore) {
+			var data = this.database.DataSnapshot.prototype.resolve.call(this);
+			if (!data) return data;
+			if (data.isFinalized) return data; // Already done
+			this.owner.enrichJSON(data);
+			return data;
+		} },
+		// After request is finalized, we finalize snapshots by extending it with revision status
+		// results.
+		finalize: { type: db.Function, value: function (ignore) {
+			var data;
+			if (this.jsonString) {
+				data = JSON.parse(this.jsonString);
+				if (data.isFinalized) return; // Already done
+			}
+			data = this.owner.toJSON();
+			this.owner.finalizeJSON(data);
+			this.jsonString = JSON.stringify(data);
 		} }
 	});
 
