@@ -66,14 +66,15 @@ module.exports = function (context, documentData/*, options*/) {
 		.map(resolveDocumentUrl);
 
 	var result = [
-		div({ id: 'submitted-box', class: 'business-process-submitted-box' },
-			div({ class: 'business-process-submitted-box-header' },
+		div({ id: 'submitted-box', class: 'business-process-document-preview-box' },
+			div({ class: 'business-process-document-preview-box-header' },
 
 				// Label
-				div({ class: 'business-process-submitted-box-header-document-title' }, documentData.label),
+				div({ class: 'business-process-document-preview-box-header-document-title' },
+					documentData.label),
 
 				// Links to previous and next document
-				div({ class: 'business-process-submitted-box-controls' },
+				div({ class: 'business-process-document-preview-box-controls' },
 					div({ class: 'label-doc-type' }, _('Document')),
 					_if(previousDocumentUrl,
 						a({ href: previousDocumentUrl,
@@ -88,7 +89,7 @@ module.exports = function (context, documentData/*, options*/) {
 			options.prependContent),
 
 		// Document preview
-		div({ class: 'business-process-submitted-selected-document' },
+		div({ class: 'business-process-document-preview-selected-document' },
 			div({ class: 'submitted-preview' },
 
 				// Main content

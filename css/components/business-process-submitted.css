@@ -1,4 +1,4 @@
-.business-process-submitted-box {
+.business-process-document-preview-box {
 	margin: 22px -20px;
 	padding: 21px 20px;
 	background: var(--light-background);
@@ -6,22 +6,22 @@
 	border-bottom: 1px solid var(--light-text);
 }
 
-.business-process-submitted-box-header {
+.business-process-document-preview-box-header {
 	display: flex;
 	justify-content: space-between;
 }
 
-.business-process-submitted-box-header-document-title .fa-external-link {
+.business-process-document-preview-box-header-document-title .fa-external-link {
 	margin-left: 8px;
 	vertical-align: middle;
 }
 
-.business-process-submitted-box-controls {
+.business-process-document-preview-box-controls {
 	vertical-align: middle;
 	line-height: 22px;
 }
 
-.business-process-submitted-box-controls .label-doc-type {
+.business-process-document-preview-box-controls .label-doc-type {
 	display: inline-block;
 	font-size: 12px;
 	vertical-align: middle;
@@ -31,52 +31,52 @@
 	color: var(--white-text);
 }
 
-.business-process-submitted-box-controls a .fa-angle-right,
-.business-process-submitted-box-controls a .fa-angle-left {
+.business-process-document-preview-box-controls a .fa-angle-right,
+.business-process-document-preview-box-controls a .fa-angle-left {
 	vertical-align: middle;
 }
 
-.business-process-submitted-box-controls .label-doc-type + a {
+.business-process-document-preview-box-controls .label-doc-type + a {
 	margin-left: 16px;
 }
 
-.business-process-submitted-box .form-elements > li {
+.business-process-document-preview-box .form-elements > li {
 	display: inline-block;
 	padding: 0 8px;
 	vertical-align: middle;
 }
 
-.business-process-submitted-box .form-elements > li .dbjs-input-component > .input {
+.business-process-document-preview-box .form-elements > li .dbjs-input-component > .input {
 	width: auto;
 }
 
-.business-process-submitted-box .form-elements > li .input textarea {
+.business-process-document-preview-box .form-elements > li .input textarea {
 	width: auto;
 	max-width: 260px;
 }
 
-.business-process-submitted-selected-document {
+.business-process-document-preview-selected-document {
 	display: block;
 }
 
-.business-process-submitted-selected-document .submitted-preview-document {
+.business-process-document-preview-selected-document .submitted-preview-document {
 	width:59%;
 	margin-right: 2%;
 	display: inline-block;
 }
 
-.business-process-submitted-selected-document .submitted-preview-document-history {
+.business-process-document-preview-selected-document .submitted-preview-document-history {
 	width:39%;
 	display: inline-block;
 	margin: 0;
 }
 
-.business-process-submitted-selected-document .submitted-preview-document-history h3 {
+.business-process-document-preview-selected-document .submitted-preview-document-history h3 {
 	margin: 0;
 	line-height: 44px;
 }
 
-.business-process-submitted-box .business-process-submitted-list {
+.business-process-document-preview-box .business-process-document-preview-list {
 	display: block;
 	width: 100%;
 }
@@ -88,19 +88,19 @@
 	border: 1px solid var(--light-medium-background);
 }
 
-.business-process-submitted-selected-document .entity-data-section {
+.business-process-document-preview-selected-document .entity-data-section {
 	margin-bottom: 22px;
 }
 
-.business-process-submitted-selected-document .entity-data-section h3 {
+.business-process-document-preview-selected-document .entity-data-section h3 {
 	margin-top: 0;
 }
 
-.business-process-submitted-selected-document .entity-data-section-side {
+.business-process-document-preview-selected-document .entity-data-section-side {
 	margin-top: 44px;
 }
 
-.business-process-submitted-selected-document .entity-data-section-side h3 {
+.business-process-document-preview-selected-document .entity-data-section-side h3 {
 	margin-top: 0;
 }
 
