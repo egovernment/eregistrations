@@ -181,7 +181,7 @@ var dataFormsRevisionControls = function (context) {
 	return form(
 		{
 			id: 'form-revision-data-forms',
-			action: '/revision-data-forms',
+			action: '/revision-data-forms/' + businessProcess.__id__ + '/',
 			method: 'post',
 			class: 'submitted-preview-form'
 		},
