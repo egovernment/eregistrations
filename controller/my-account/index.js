@@ -16,13 +16,7 @@ exports['business-process/[0-9][a-z0-9]+/delete'] = {
 		this.businessProcess = businessProcess;
 		return true;
 	},
-	submit: function () {
-		var previous = this.businessProcess.previousBusinessProcess;
-		db.objects.delete(this.businessProcess);
-		// If it's business update based on business process not coming from eRegistrations
-		// then ensure to also delete that base businessProcess
-		if (previous && !previous.isFromEregistrations) db.objects.delete(previous);
-	}
+	validate: Function.prototype
 };
 
 exports['business-process/[0-9][a-z0-9]+'] = {

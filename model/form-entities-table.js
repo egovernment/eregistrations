@@ -8,9 +8,9 @@ var _                       = require('mano').i18n.bind("Model: Form Entities Ta
   , memoize                 = require('memoizee/plain')
   , validDb                 = require('dbjs/valid-dbjs')
   , defineStringLine        = require('dbjs-ext/string/string-line')
+  , defineUInteger          = require('dbjs-ext/number/integer/u-integer')
   , defineFormSectionBase   = require('./form-section-base')
   , defineFormTabularEntity = require('./form-tabular-entity')
-  , defineUInteger          = require('dbjs-ext/number/integer/u-integer')
   , defineProgressRule      = require('./lib/progress-rule');
 
 module.exports = memoize(function (db) {
