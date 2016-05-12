@@ -46,6 +46,15 @@
 	vertical-align: middle;
 }
 
+.business-process-submitted-box .form-elements > li .dbjs-input-component > .input {
+	width: auto;
+}
+
+.business-process-submitted-box .form-elements > li .input textarea {
+	width: auto;
+	max-width: 260px;
+}
+
 .business-process-submitted-selected-document {
 	display: block;
 }
