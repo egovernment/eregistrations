@@ -20,7 +20,7 @@ var includes              = require('es5-ext/array/#/contains')
 var getFilePreview = function (file) {
 	var type = file.type;
 	if (includes.call(docMimeTypes, type)) {
-		return img({ class: 'business-process-document-preview-new-word-document', src: '/img/word-doc-icon.png' });
+		return img({ class: 'document-preview-new-word-document', src: '/img/word-doc-icon.png' });
 	}
 	if (!isReadOnlyRender && (type === 'application/pdf')) {
 		return iframe({
@@ -66,15 +66,15 @@ module.exports = function (context, documentData/*, options*/) {
 		.map(resolveDocumentUrl);
 
 	var result = [
-		div({ id: 'submitted-box', class: 'business-process-document-preview-box' },
-			div({ class: 'business-process-document-preview-box-header' },
+		div({ id: 'submitted-box', class: 'document-preview-box' },
+			div({ class: 'document-preview-box-header' },
 
 				// Label
-				div({ class: 'business-process-document-preview-box-header-document-title' },
+				div({ class: 'document-preview-box-header-document-title' },
 					documentData.label),
 
 				// Links to previous and next document
-				div({ class: 'business-process-document-preview-box-controls' },
+				div({ class: 'document-preview-box-controls' },
 					div({ class: 'label-doc-type' }, _('Document')),
 					_if(previousDocumentUrl,
 						a({ href: previousDocumentUrl,
@@ -89,21 +89,21 @@ module.exports = function (context, documentData/*, options*/) {
 			options.prependContent),
 
 		// Document preview
-		div({ class: 'business-process-document-preview-selected-document' },
-			div({ class: 'business-process-document-preview-content' },
+		div({ class: 'document-preview-selected-document' },
+			div({ class: 'document-preview-content' },
 
 				// Main content
 				mainContent || _if(documentData.filesSize, function () {
 					var moreThanOneFile = gt(documentData.filesSize, 1);
 
-					return div({ id: 'document-preview', class: 'business-process-document-preview' },
+					return div({ id: 'selection-preview', class: 'document-preview' },
 
 						div({ class: 'container-with-nav' },
-							div({ class: 'business-process-document-preview-external-links' },
+							div({ class: 'document-preview-external-links' },
 
 								// Open file in new window link
 								span({ id: 'doc-open-links',
-									class: 'business-process-document-preview-download-links' },
+									class: 'document-preview-download-links' },
 									list(documentData.files, function (file) {
 										var linkAttributes = { target: '_blank', href: stUrl(pathToUrl(file.path)),
 											class: _if(eq(file, getArrayIndex(documentData.files, 0)), 'active') };
@@ -132,7 +132,7 @@ module.exports = function (context, documentData/*, options*/) {
 
 							// Document files navigation (top)
 							_if(moreThanOneFile, div(
-								{ class: 'business-process-document-preview-navigation' },
+								{ class: 'document-preview-navigation' },
 								div({ id: 'submitted-preview-new-navigation-top' },
 									a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' },
 										_("Previous"))),
@@ -143,7 +143,7 @@ module.exports = function (context, documentData/*, options*/) {
 						// Document file preview (usually zoomable)
 						docPreviewElement = ul({
 							id: 'doc-previews',
-							class: 'business-process-document-preview-image-placeholder'
+							class: 'document-preview-image-placeholder'
 						}, documentData.files, function (file) {
 							return li({ class: _if(eq(file, getArrayIndex(documentData.files, 0)), 'active') },
 								getFilePreview(file));
@@ -151,7 +151,7 @@ module.exports = function (context, documentData/*, options*/) {
 
 						// Document files navigation (bottom)
 						_if(moreThanOneFile, div(
-							{ class: 'business-process-document-preview-navigation' },
+							{ class: 'document-preview-navigation' },
 							div({ id: 'submitted-preview-new-navigation-bottom' },
 								a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' },
 									_("Previous"))),
@@ -171,12 +171,12 @@ module.exports = function (context, documentData/*, options*/) {
 				},
 
 					// When no files in document
-					div({ class: 'business-process-document-preview-missing' },
+					div({ class: 'document-preview-missing' },
 						p(_("This document does not have any physical file attached to it.")))),
 
 				// Side content
 				sideContentContainer = div(
-					{ class: 'business-process-document-preview-data  entity-data-section-side' },
+					{ class: 'document-preview-data  entity-data-section-side' },
 					options.sideContent
 				)))
 	];
