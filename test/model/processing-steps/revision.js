@@ -59,15 +59,15 @@ module.exports = function (t, a) {
 	a(step.isClosed, false);
 	a(step.isRevisionApproved, false);
 	a(step.isRevisionPending, false);
-	a(step.isDataFormsProcessable, true);
+	a(step.dataFormsRevision.isProcessable, true);
 	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
 	a(step.sendBackProgress, 0);
 	a(step.sendBackStatusesProgress, 0);
-	a(step.dataFormsRevisionProgress, 0);
-	a(step.dataFormsApprovalProgress, 0);
-	a(step.dataFormsSentBackProgress, 0);
+	a(step.dataFormsRevision.progress, 0);
+	a(step.dataFormsRevision.approvalProgress, 0);
+	a(step.dataFormsRevision.sentBackProgress, 0);
 
 	a.h1("Submitted");
 	businessProcess.requirementUploads.map.req.document.files.map.newUniq().path = '/elo.png';
@@ -87,9 +87,9 @@ module.exports = function (t, a) {
 	a(step.revisionProgress, 0);
 	a(step.sendBackProgress, 0);
 	a(step.sendBackStatusesProgress, 0);
-	a(step.dataFormsRevisionProgress, 0);
-	a(step.dataFormsApprovalProgress, 0);
-	a(step.dataFormsSentBackProgress, 0);
+	a(step.dataFormsRevision.progress, 0);
+	a(step.dataFormsRevision.approvalProgress, 0);
+	a(step.dataFormsRevision.sentBackProgress, 0);
 
 	a.h2("Not applicable");
 	step.isApplicable = false;
@@ -107,9 +107,9 @@ module.exports = function (t, a) {
 	a(step.revisionProgress, 0);
 	a(step.sendBackProgress, 0);
 	a(step.sendBackStatusesProgress, 0);
-	a(step.dataFormsRevisionProgress, 0);
-	a(step.dataFormsApprovalProgress, 0);
-	a(step.dataFormsSentBackProgress, 0);
+	a(step.dataFormsRevision.progress, 0);
+	a(step.dataFormsRevision.approvalProgress, 0);
+	a(step.dataFormsRevision.sentBackProgress, 0);
 	step.isApplicable = true;
 
 	a.h2("Paused");
@@ -128,9 +128,9 @@ module.exports = function (t, a) {
 	a(step.revisionProgress, 0);
 	a(step.sendBackProgress, 0);
 	a(step.sendBackStatusesProgress, 0);
-	a(step.dataFormsRevisionProgress, 0);
-	a(step.dataFormsApprovalProgress, 0);
-	a(step.dataFormsSentBackProgress, 0);
+	a(step.dataFormsRevision.progress, 0);
+	a(step.dataFormsRevision.approvalProgress, 0);
+	a(step.dataFormsRevision.sentBackProgress, 0);
 
 	a.h2("Sent back");
 	step.officialStatus = 'sentBack';
@@ -150,9 +150,9 @@ module.exports = function (t, a) {
 	a(step.revisionProgress, 0);
 	a(step.sendBackProgress, 0);
 	a(step.sendBackStatusesProgress, 0);
-	a(step.dataFormsRevisionProgress, 0);
-	a(step.dataFormsApprovalProgress, 0);
-	a(step.dataFormsSentBackProgress, 0);
+	a(step.dataFormsRevision.progress, 0);
+	a(step.dataFormsRevision.approvalProgress, 0);
+	a(step.dataFormsRevision.sentBackProgress, 0);
 
 	a.h3("Complete - uploads invalid");
 	businessProcess.requirementUploads.map.req.status = 'invalid';
@@ -174,9 +174,9 @@ module.exports = function (t, a) {
 	a(step.revisionProgress, 1);
 	a(step.sendBackProgress, 1);
 	a(step.sendBackStatusesProgress, 1);
-	a(step.dataFormsRevisionProgress, 1);
-	a(step.dataFormsApprovalProgress, 1);
-	a(step.dataFormsSentBackProgress, 0);
+	a(step.dataFormsRevision.progress, 1);
+	a(step.dataFormsRevision.approvalProgress, 1);
+	a(step.dataFormsRevision.sentBackProgress, 0);
 
 	a.h3("Complete - data forms");
 	businessProcess.requirementUploads.map.req.status = 'valid';
@@ -197,9 +197,9 @@ module.exports = function (t, a) {
 	a(step.revisionProgress, 1);
 	a(step.sendBackProgress, 1);
 	a(step.sendBackStatusesProgress, 1);
-	a(step.dataFormsRevisionProgress, 1);
-	a(step.dataFormsApprovalProgress, 0);
-	a(step.dataFormsSentBackProgress, 1);
+	a(step.dataFormsRevision.progress, 1);
+	a(step.dataFormsRevision.approvalProgress, 0);
+	a(step.dataFormsRevision.sentBackProgress, 1);
 
 	a.h2("Rejected");
 	step.officialStatus = 'rejected';
@@ -220,9 +220,9 @@ module.exports = function (t, a) {
 	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
-	a(step.dataFormsRevisionProgress, 0);
-	a(step.dataFormsApprovalProgress, 0);
-	a(step.dataFormsSentBackProgress, 0);
+	a(step.dataFormsRevision.progress, 0);
+	a(step.dataFormsRevision.approvalProgress, 0);
+	a(step.dataFormsRevision.sentBackProgress, 0);
 
 	a.h3("Complete");
 	step.rejectionReason = "Whateever ..";
@@ -238,9 +238,9 @@ module.exports = function (t, a) {
 	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
-	a(step.dataFormsRevisionProgress, 0);
-	a(step.dataFormsApprovalProgress, 0);
-	a(step.dataFormsSentBackProgress, 0);
+	a(step.dataFormsRevision.progress, 0);
+	a(step.dataFormsRevision.approvalProgress, 0);
+	a(step.dataFormsRevision.sentBackProgress, 0);
 
 	a.h2("Approved");
 	step.officialStatus = 'approved';
@@ -258,9 +258,9 @@ module.exports = function (t, a) {
 	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
-	a(step.dataFormsRevisionProgress, 0);
-	a(step.dataFormsApprovalProgress, 0);
-	a(step.dataFormsSentBackProgress, 0);
+	a(step.dataFormsRevision.progress, 0);
+	a(step.dataFormsRevision.approvalProgress, 0);
+	a(step.dataFormsRevision.sentBackProgress, 0);
 
 	a.h3("Incomplete - data forms");
 	businessProcess.requirementUploads.map.req.status = 'valid';
@@ -278,9 +278,9 @@ module.exports = function (t, a) {
 	a(step.approvalProgress, 0.66);
 	a(step.revisionProgress, 0.66);
 	a(step.sendBackProgress, 0);
-	a(step.dataFormsRevisionProgress, 0);
-	a(step.dataFormsApprovalProgress, 0);
-	a(step.dataFormsSentBackProgress, 0);
+	a(step.dataFormsRevision.progress, 0);
+	a(step.dataFormsRevision.approvalProgress, 0);
+	a(step.dataFormsRevision.sentBackProgress, 0);
 
 	a.h3("Complete");
 	businessProcess.dataForms.status = 'approved';
@@ -297,7 +297,7 @@ module.exports = function (t, a) {
 	a(step.approvalProgress, 1);
 	a(step.revisionProgress, 1);
 	a(step.sendBackProgress, 0);
-	a(step.dataFormsRevisionProgress, 1);
-	a(step.dataFormsApprovalProgress, 1);
-	a(step.dataFormsSentBackProgress, 0);
+	a(step.dataFormsRevision.progress, 1);
+	a(step.dataFormsRevision.approvalProgress, 1);
+	a(step.dataFormsRevision.sentBackProgress, 0);
 };

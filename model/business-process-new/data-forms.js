@@ -89,7 +89,7 @@ module.exports = memoize(function (db/* options */) {
 					if (isRejected) return 'rejected';
 				});
 			}.bind(this));
-			data.rejectReason = this.rejectReason;
+			data.rejectReason = this._rejectReason;
 			return data;
 		} },
 		// Finalize snapshot JSON by adding revision status properties
@@ -118,13 +118,11 @@ module.exports = memoize(function (db/* options */) {
 		// results.
 		finalize: { type: db.Function, value: function (ignore) {
 			var data;
-			if (this.jsonString) {
-				data = JSON.parse(this.jsonString);
-				if (data.isFinalized) return; // Already done
+			if (!this.jsonString) {
+				data = this.owner.toJSON();
+				this.owner.finalizeJSON(data);
+				this.jsonString = JSON.stringify(data);
 			}
-			data = this.owner.toJSON();
-			this.owner.finalizeJSON(data);
-			this.jsonString = JSON.stringify(data);
 		} }
 	});
 
