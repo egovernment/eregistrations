@@ -131,7 +131,7 @@ module.exports = function (driver, slavePath/*, options*/) {
 			if (event.type === 'nextPool') debug.progress('↻');
 		});
 	})(function () {
-		debug.progress();
+		debug.progress('|');
 		return driver.recalculateAllSizes();
 	})(debug.close);
 };
