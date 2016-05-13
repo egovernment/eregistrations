@@ -71,7 +71,7 @@ module.exports = memoize(function (db/* options */) {
 		rejectReason: { type: db.String, required: true, label: _("Explanation") },
 		// Whether data forms was validated and all required properties where provided.
 		isApproved: { type: db.Boolean, value: function (_observe) {
-			return this.status === 'valid';
+			return this.status === 'approved';
 		} },
 		// Whether data forms was rejected and reject reason was provided
 		isRejected: { type: db.Boolean, value: function () {

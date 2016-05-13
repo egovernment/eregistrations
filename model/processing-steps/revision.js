@@ -9,7 +9,7 @@ var memoize                  = require('memoizee/plain')
   , ensureDb                 = require('dbjs/valid-dbjs');
 
 module.exports = memoize(function (db) {
-	var Percentage = definePercentage(ensureDb(db))
+	var Percentage     = definePercentage(ensureDb(db))
 	  , ProcessingStep = defineProcessingStep(db);
 
 	var RevisionProcessingStep = ProcessingStep.extend('RevisionProcessingStep', {
@@ -41,14 +41,16 @@ module.exports = memoize(function (db) {
 		// Progress of revision approval
 		// All processable requirement uploads must be approved
 		revisionApprovalProgress: { type: Percentage, value: function (_observe) {
-			var weight = 0, progress = 0, itemWeight;
+			var weight   = 1
+			  , progress = this.dataFormsApprovalProgress
+			  , itemWeight;
 
 			weight += itemWeight = _observe(this.requirementUploads.processable).size;
 			progress += _observe(this.requirementUploads._approvalProgress) * itemWeight;
 			weight += itemWeight = _observe(this.paymentReceiptUploads.processable).size;
 			progress += _observe(this.paymentReceiptUploads._approvalProgress) * itemWeight;
 
-			return weight ? (progress / weight) : 1;
+			return progress / weight;
 		} },
 
 		// Progress for "approved" status
@@ -60,12 +62,16 @@ module.exports = memoize(function (db) {
 		// Progress of revision
 		// All processable requirement uploads must be revised
 		revisionProgress: { type: Percentage, value: function (_observe) {
-			var weight = 0, progress = 0, itemWeight;
+			var weight   = 1
+			  , progress = this.dataFormsRevisionProgress
+			  , itemWeight;
+
 			weight += itemWeight = _observe(this.requirementUploads.processable).size;
 			progress += _observe(this.requirementUploads._revisionProgress) * itemWeight;
 			weight += itemWeight = _observe(this.paymentReceiptUploads.processable).size;
 			progress += _observe(this.paymentReceiptUploads._revisionProgress) * itemWeight;
-			return weight ? (progress / weight) : 1;
+
+			return progress / weight;
 		} },
 
 		// Progress for "sentBack" state
@@ -73,7 +79,7 @@ module.exports = memoize(function (db) {
 		sendBackProgress: { value: function (_observe) {
 			return this.processableUploads.some(function (reqUpload) {
 				return _observe(reqUpload._isRecentlyRejected);
-			}) ? 1 : 0;
+			}) ? this.dataFormsSentBackProgress : 0;
 		} },
 
 		// Progress for "sentBack" status
@@ -81,14 +87,16 @@ module.exports = memoize(function (db) {
 		// reasoning, and invalid status must be explicitly state.
 		// This needs to be complete for official to be able to send file back for corrections
 		sendBackStatusesProgress: { value: function (_observe) {
-			var total = 0, valid = 0;
+			var weight   = 1
+			  , progress = this.dataFormsSentBackProgress;
+
 			this.processableUploads.forEach(function (reqUpload) {
 				if (_observe(reqUpload._status) !== 'invalid') return;
-				++total;
-				if (_observe(reqUpload._isRejected)) ++valid;
+				++weight;
+				if (_observe(reqUpload._isRejected)) ++progress;
 			});
-			if (!total) return 0;
-			return valid / total;
+
+			return progress / weight;
 		} },
 
 		// Cumulates processable requirement uploads and payment receipt uploads.
@@ -104,6 +112,39 @@ module.exports = memoize(function (db) {
 					result.push(upload);
 				});
 				return result;
+			}
+		},
+
+		// Whether this processing step is able to review data forms
+		isDataFormsProcessable: {
+			type: db.Boolean,
+			value: true
+		},
+
+		// Progress of data forms revision
+		// The verification status must be set with additional rejection reason if rejected.
+		dataFormsRevisionProgress: {
+			type: Percentage,
+			value: function (_observe) {
+				if (!this.isDataFormsProcessable) return 1;
+				return _observe(this.master.dataForms._isApproved) ||
+					_observe(this.master.dataForms._isRejected) ? 1 : 0;
+			}
+		},
+
+		dataFormsApprovalProgress: {
+			type: Percentage,
+			value: function (_observe) {
+				if (!this.isDataFormsProcessable) return 1;
+				return _observe(this.master.dataForms._isApproved) ? 1 : 0;
+			}
+		},
+
+		dataFormsSentBackProgress: {
+			type: Percentage,
+			value: function (_observe) {
+				if (!this.isDataFormsProcessable) return 1;
+				return _observe(this.master.dataForms._isRejected) ? 1 : 0;
 			}
 		}
 	});
