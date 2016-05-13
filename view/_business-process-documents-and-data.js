@@ -176,7 +176,7 @@ var dataFormsRevisionControls = function (context) {
 	  , revReason;
 
 	if (!processingStep) return;
-	if (!businessProcess.processingSteps.revisions.has(processingStep)) return;
+	if (!(processingStep.dataFormsRevision && processingStep.dataFormsRevision.isProcessable)) return;
 
 	return form(
 		{
