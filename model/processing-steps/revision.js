@@ -89,8 +89,7 @@ module.exports = memoize(function (db) {
 		// reasoning, and invalid status must be explicitly state.
 		// This needs to be complete for official to be able to send file back for corrections
 		sendBackStatusesProgress: { value: function (_observe) {
-			var weight   = 1
-			  , progress = this.dataFormsSentBackProgress;
+			var weight = 0, progress = 0;
 
 			this.processableUploads.forEach(function (reqUpload) {
 				if (_observe(reqUpload._status) !== 'invalid') return;
@@ -98,7 +97,12 @@ module.exports = memoize(function (db) {
 				if (_observe(reqUpload._isRejected)) ++progress;
 			});
 
-			return progress / weight;
+			if (_observe(this.master.dataForms._isRejected)) {
+				++weight;
+				++progress;
+			}
+
+			return weight ? progress / weight : 0;
 		} },
 
 		// Cumulates processable requirement uploads and payment receipt uploads.

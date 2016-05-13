@@ -64,6 +64,7 @@ module.exports = function (t, a) {
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
 	a(step.sendBackProgress, 0);
+	a(step.sendBackStatusesProgress, 0);
 	a(step.dataFormsRevisionProgress, 0);
 	a(step.dataFormsApprovalProgress, 0);
 	a(step.dataFormsSentBackProgress, 0);
@@ -85,6 +86,7 @@ module.exports = function (t, a) {
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
 	a(step.sendBackProgress, 0);
+	a(step.sendBackStatusesProgress, 0);
 	a(step.dataFormsRevisionProgress, 0);
 	a(step.dataFormsApprovalProgress, 0);
 	a(step.dataFormsSentBackProgress, 0);
@@ -104,6 +106,7 @@ module.exports = function (t, a) {
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
 	a(step.sendBackProgress, 0);
+	a(step.sendBackStatusesProgress, 0);
 	a(step.dataFormsRevisionProgress, 0);
 	a(step.dataFormsApprovalProgress, 0);
 	a(step.dataFormsSentBackProgress, 0);
@@ -124,6 +127,7 @@ module.exports = function (t, a) {
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
 	a(step.sendBackProgress, 0);
+	a(step.sendBackStatusesProgress, 0);
 	a(step.dataFormsRevisionProgress, 0);
 	a(step.dataFormsApprovalProgress, 0);
 	a(step.dataFormsSentBackProgress, 0);
@@ -145,6 +149,7 @@ module.exports = function (t, a) {
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
 	a(step.sendBackProgress, 0);
+	a(step.sendBackStatusesProgress, 0);
 	a(step.dataFormsRevisionProgress, 0);
 	a(step.dataFormsApprovalProgress, 0);
 	a(step.dataFormsSentBackProgress, 0);
@@ -168,6 +173,7 @@ module.exports = function (t, a) {
 	a(step.approvalProgress, 0.33);
 	a(step.revisionProgress, 1);
 	a(step.sendBackProgress, 1);
+	a(step.sendBackStatusesProgress, 1);
 	a(step.dataFormsRevisionProgress, 1);
 	a(step.dataFormsApprovalProgress, 1);
 	a(step.dataFormsSentBackProgress, 0);
@@ -190,6 +196,7 @@ module.exports = function (t, a) {
 	a(step.approvalProgress, 0.66);
 	a(step.revisionProgress, 1);
 	a(step.sendBackProgress, 1);
+	a(step.sendBackStatusesProgress, 1);
 	a(step.dataFormsRevisionProgress, 1);
 	a(step.dataFormsApprovalProgress, 0);
 	a(step.dataFormsSentBackProgress, 1);
