@@ -20,7 +20,7 @@ var includes              = require('es5-ext/array/#/contains')
 var getFilePreview = function (file) {
 	var type = file.type;
 	if (includes.call(docMimeTypes, type)) {
-		return img({ class: 'submitted-preview-new-word-document', src: '/img/word-doc-icon.png' });
+		return img({ class: 'business-process-document-preview-new-word-document', src: '/img/word-doc-icon.png' });
 	}
 	if (!isReadOnlyRender && (type === 'application/pdf')) {
 		return iframe({
@@ -90,14 +90,13 @@ module.exports = function (context, documentData/*, options*/) {
 
 		// Document preview
 		div({ class: 'business-process-document-preview-selected-document' },
-			div({ class: 'submitted-preview' },
+			div({ class: 'business-process-document-preview-content' },
 
 				// Main content
 				mainContent || _if(documentData.filesSize, function () {
 					var moreThanOneFile = gt(documentData.filesSize, 1);
 
-					return div({ id: 'document-preview', class: ['submitted-preview-document',
-						'business-process-document-preview'] },
+					return div({ id: 'document-preview', class: 'business-process-document-preview' },
 
 						div({ class: 'container-with-nav' },
 							div({ class: 'business-process-document-preview-external-links' },
@@ -144,7 +143,7 @@ module.exports = function (context, documentData/*, options*/) {
 						// Document file preview (usually zoomable)
 						docPreviewElement = ul({
 							id: 'doc-previews',
-							class: 'submitted-preview-new-image-placeholder'
+							class: 'business-process-document-preview-image-placeholder'
 						}, documentData.files, function (file) {
 							return li({ class: _if(eq(file, getArrayIndex(documentData.files, 0)), 'active') },
 								getFilePreview(file));
@@ -152,7 +151,7 @@ module.exports = function (context, documentData/*, options*/) {
 
 						// Document files navigation (bottom)
 						_if(moreThanOneFile, div(
-							{ class: 'submitted-preview-new-documents-navigation' },
+							{ class: 'business-process-document-preview-navigation' },
 							div({ id: 'submitted-preview-new-navigation-bottom' },
 								a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' },
 									_("Previous"))),
@@ -172,12 +171,12 @@ module.exports = function (context, documentData/*, options*/) {
 				},
 
 					// When no files in document
-					div({ class: 'business-process-document-missing' },
+					div({ class: 'business-process-document-preview-missing' },
 						p(_("This document does not have any physical file attached to it.")))),
 
 				// Side content
 				sideContentContainer = div(
-					{ class: 'submitted-preview-user-data  entity-data-section-side' },
+					{ class: 'business-process-document-preview-data  entity-data-section-side' },
 					options.sideContent
 				)))
 	];

@@ -65,8 +65,6 @@
 ../../css/components/submitted-documents-list.css
 ../../css/components/submitted-add-user.css
 ../../css/components/submitted-user-history.css
-../../css/components/submitted-preview.css
-../../css/components/submitted-preview-new.css
 ../../css/components/submitted-documents-thumbs.css
 ../../css/components/official-submission-toolbar.css
 ../../css/components/label-reg.css

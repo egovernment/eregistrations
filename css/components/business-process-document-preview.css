@@ -97,8 +97,15 @@
 	display: block;
 }
 
-.business-process-document-preview-selected-document .submitted-preview-document,
-.business-process-document-preview-selected-document .business-process-document-missing {
+.business-process-document-preview-content {
+	max-width: var(--desktop-width);
+}
+.business-process-document-preview-content > * {
+	display: inline-block;
+}
+
+.business-process-document-preview-selected-document .business-process-document-preview,
+.business-process-document-preview-selected-document .business-process-document-preview-missing {
 	width:59%;
 	margin-right: 2%;
 	display: inline-block;
@@ -125,6 +132,14 @@
 	overflow: hidden;
 	overflow-y: scroll;
 	border: 1px solid var(--light-medium-background);
+}
+
+.business-process-document-preview-data {
+	width: 39%;
+	overflow-y: auto;
+}
+.business-process-document-preview-data h2 {
+	font-size: 19px;
 }
 
 .business-process-document-preview-selected-document .entity-data-section {
@@ -206,10 +221,29 @@
 	max-height: 100%;
 }
 
+.business-process-document-preview-image-placeholder .business-process-document-preview-new-word-document {
+	margin: 30% 10%;
+	width: 80%;
+}
+
 .business-process-document-preview-download-links > a {
 	display: none;
 }
 
 .business-process-document-preview-download-links > .active {
 	display: inline;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+
+	.business-process-document-preview-content .business-process-document-preview {
+		width: 100%;
+		}
+
+	.business-process-document-preview-data {
+		width: 100%;
+		max-height: 100%;
+		overflow: visible;
+		margin-top: 22px;
+		}
 }
