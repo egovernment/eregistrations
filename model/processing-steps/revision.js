@@ -77,9 +77,11 @@ module.exports = memoize(function (db) {
 		// Progress for "sentBack" state
 		// All processable requirement uploads which are invalidated, must come with rejection reasoning
 		sendBackProgress: { value: function (_observe) {
-			return this.processableUploads.some(function (reqUpload) {
+			var isAnyRecentlyRejected = this.processableUploads.some(function (reqUpload) {
 				return _observe(reqUpload._isRecentlyRejected);
-			}) ? this.dataFormsSentBackProgress : 0;
+			});
+
+			return (isAnyRecentlyRejected || this.dataFormsSentBackProgress) ? 1 : 0;
 		} },
 
 		// Progress for "sentBack" status

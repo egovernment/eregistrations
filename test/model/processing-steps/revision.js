@@ -63,6 +63,7 @@ module.exports = function (t, a) {
 	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
+	a(step.sendBackProgress, 0);
 	a(step.dataFormsRevisionProgress, 0);
 	a(step.dataFormsApprovalProgress, 0);
 	a(step.dataFormsSentBackProgress, 0);
@@ -83,6 +84,10 @@ module.exports = function (t, a) {
 	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
+	a(step.sendBackProgress, 0);
+	a(step.dataFormsRevisionProgress, 0);
+	a(step.dataFormsApprovalProgress, 0);
+	a(step.dataFormsSentBackProgress, 0);
 
 	a.h2("Not applicable");
 	step.isApplicable = false;
@@ -98,6 +103,10 @@ module.exports = function (t, a) {
 	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
+	a(step.sendBackProgress, 0);
+	a(step.dataFormsRevisionProgress, 0);
+	a(step.dataFormsApprovalProgress, 0);
+	a(step.dataFormsSentBackProgress, 0);
 	step.isApplicable = true;
 
 	a.h2("Paused");
@@ -114,11 +123,15 @@ module.exports = function (t, a) {
 	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
+	a(step.sendBackProgress, 0);
+	a(step.dataFormsRevisionProgress, 0);
+	a(step.dataFormsApprovalProgress, 0);
+	a(step.dataFormsSentBackProgress, 0);
 
 	a.h2("Sent back");
 	step.officialStatus = 'sentBack';
 
-	a.h3("Incomplete - all");
+	a.h3("Incomplete");
 	a(step.isApplicable, true);
 	a(step.isReady, true);
 	a(step.isPending, true);
@@ -131,29 +144,37 @@ module.exports = function (t, a) {
 	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
-
-	a.h3("Incomplete - data forms");
-	businessProcess.requirementUploads.map.req.status = 'invalid';
-	businessProcess.requirementUploads.map.req.rejectReasonTypes.add('illegible');
-	businessProcess.paymentReceiptUploads.map.test.status = 'invalid';
-	businessProcess.paymentReceiptUploads.map.test.rejectReasonMemo = 'Wrong amount';
-	a(step.isApplicable, true);
-	a(step.isReady, true);
-	a(step.isPending, true);
-	a(step.isPaused, false);
-	a(step.isSentBack, false);
-	a(step.isRejected, false);
-	a(step.isApproved, false);
-	a(step.isClosed, false);
-	a(step.isRevisionPending, true);
-	a(step.revisionApprovalProgress, 0);
-	a(step.approvalProgress, 0);
-	a(step.revisionProgress, 0.66);
+	a(step.sendBackProgress, 0);
 	a(step.dataFormsRevisionProgress, 0);
 	a(step.dataFormsApprovalProgress, 0);
 	a(step.dataFormsSentBackProgress, 0);
 
-	a.h3("Complete");
+	a.h3("Complete - uploads invalid");
+	businessProcess.requirementUploads.map.req.status = 'invalid';
+	businessProcess.requirementUploads.map.req.rejectReasonTypes.add('illegible');
+	businessProcess.paymentReceiptUploads.map.test.status = 'invalid';
+	businessProcess.paymentReceiptUploads.map.test.rejectReasonMemo = 'Wrong amount';
+	businessProcess.dataForms.status = 'approved';
+	a(step.isApplicable, true);
+	a(step.isReady, true);
+	a(step.isPending, false);
+	a(step.isPaused, false);
+	a(step.isSentBack, true);
+	a(step.isRejected, false);
+	a(step.isApproved, false);
+	a(step.isClosed, false);
+	a(step.isRevisionPending, false);
+	a(step.revisionApprovalProgress, 0.33);
+	a(step.approvalProgress, 0.33);
+	a(step.revisionProgress, 1);
+	a(step.sendBackProgress, 1);
+	a(step.dataFormsRevisionProgress, 1);
+	a(step.dataFormsApprovalProgress, 1);
+	a(step.dataFormsSentBackProgress, 0);
+
+	a.h3("Complete - data forms");
+	businessProcess.requirementUploads.map.req.status = 'valid';
+	businessProcess.paymentReceiptUploads.map.test.status = 'valid';
 	businessProcess.dataForms.status = 'rejected';
 	businessProcess.dataForms.rejectReason = 'Wrong name';
 	a(step.isApplicable, true);
@@ -165,9 +186,10 @@ module.exports = function (t, a) {
 	a(step.isApproved, false);
 	a(step.isClosed, false);
 	a(step.isRevisionPending, false);
-	a(step.revisionApprovalProgress, 0);
-	a(step.approvalProgress, 0);
+	a(step.revisionApprovalProgress, 0.66);
+	a(step.approvalProgress, 0.66);
 	a(step.revisionProgress, 1);
+	a(step.sendBackProgress, 1);
 	a(step.dataFormsRevisionProgress, 1);
 	a(step.dataFormsApprovalProgress, 0);
 	a(step.dataFormsSentBackProgress, 1);
@@ -191,6 +213,9 @@ module.exports = function (t, a) {
 	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
+	a(step.dataFormsRevisionProgress, 0);
+	a(step.dataFormsApprovalProgress, 0);
+	a(step.dataFormsSentBackProgress, 0);
 
 	a.h3("Complete");
 	step.rejectionReason = "Whateever ..";
@@ -226,6 +251,9 @@ module.exports = function (t, a) {
 	a(step.revisionApprovalProgress, 0);
 	a(step.approvalProgress, 0);
 	a(step.revisionProgress, 0);
+	a(step.dataFormsRevisionProgress, 0);
+	a(step.dataFormsApprovalProgress, 0);
+	a(step.dataFormsSentBackProgress, 0);
 
 	a.h3("Incomplete - data forms");
 	businessProcess.requirementUploads.map.req.status = 'valid';
@@ -242,6 +270,7 @@ module.exports = function (t, a) {
 	a(step.revisionApprovalProgress, 0.66);
 	a(step.approvalProgress, 0.66);
 	a(step.revisionProgress, 0.66);
+	a(step.sendBackProgress, 0);
 	a(step.dataFormsRevisionProgress, 0);
 	a(step.dataFormsApprovalProgress, 0);
 	a(step.dataFormsSentBackProgress, 0);
@@ -260,6 +289,7 @@ module.exports = function (t, a) {
 	a(step.revisionApprovalProgress, 1);
 	a(step.approvalProgress, 1);
 	a(step.revisionProgress, 1);
+	a(step.sendBackProgress, 0);
 	a(step.dataFormsRevisionProgress, 1);
 	a(step.dataFormsApprovalProgress, 1);
 	a(step.dataFormsSentBackProgress, 0);
