@@ -97,5 +97,16 @@ module.exports = function (/*options*/) {
 		formHtmlId: 'form-revision-payment-receipt-upload'
 	};
 
+	// Data forms revision.
+	controller['revision-data-forms/[0-9][a-z0-9]+'] = {
+		match: function (businessProcessId, receiptKey) {
+			return matcher.call(this, businessProcessId, stepName);
+		},
+		redirectUrl: function () {
+			return '/' + this.businessProcess.__id__ + '/';
+		},
+		formHtmlId: 'form-revision-data-forms'
+	};
+
 	return controller;
 };

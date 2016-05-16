@@ -169,10 +169,51 @@ var drawCertificatesPart = function (context, target, urlPrefix) {
 	});
 };
 
+var dataFormsRevisionControls = function (context) {
+	var businessProcess = context.businessProcess
+	  , processingStep  = context.processingStep
+	  , dataForms       = businessProcess.dataForms
+	  , revReason;
+
+	if (!processingStep) return;
+	if (!(processingStep.dataFormsRevision && processingStep.dataFormsRevision.isProcessable)) return;
+
+	return form(
+		{
+			id: 'form-revision-data-forms',
+			action: '/revision-data-forms/' + businessProcess.__id__ + '/',
+			method: 'post',
+			class: 'submitted-preview-form'
+		},
+		ul(
+			{ class: 'form-elements' },
+			li(div({ class: 'input' }, input({ dbjs: dataForms._status }))),
+			li(
+				revReason = div({ class: 'official-form-data-forms-revision-reject-reason' },
+					field({ dbjs: dataForms._rejectReason }))
+			)
+		),
+		p(input({ type: 'submit', value: _("Save") })),
+		legacy('radioMatch', 'form-revision-data-forms',
+			dataForms.__id__ + '/status', { rejected: revReason.getId() })
+	);
+};
+
+var dataFormsRevisionInfo = function (context) {
+	var snapshot = context.dataSnapshot;
+
+	return _if(eq(snapshot.status, 'rejected'), div({ class: 'section-secondary info-main' },
+		p(_("Data forms were rejected for the following reason(s)"), ': ', snapshot.rejectReason)));
+};
+
 module.exports = exports = function (context/*, options*/) {
 	var options         = Object(arguments[1])
 	  , urlPrefix       = options.urlPrefix || '/'
-	  , uploadsResolver = options.uploadsResolver || context.businessProcess;
+	  , uploadsResolver = options.uploadsResolver || context.businessProcess
+	  , processingStep  = context.processingStep
+	  , isDataFormsRevisionProcessable = (processingStep && processingStep.dataFormsRevision
+				&& processingStep.dataFormsRevision.isProcessable)
+				&& context.appName !== 'supervisor' && context.appName !== 'dispatcher';
 
 	return [
 		section(
@@ -194,6 +235,8 @@ module.exports = exports = function (context/*, options*/) {
 					span({ class: 'fa fa-print' }, _("Print"))
 				)
 			),
+			isDataFormsRevisionProcessable ? dataFormsRevisionControls(context) :
+					dataFormsRevisionInfo(context),
 			renderSections(context.businessProcess.dataForms.dataSnapshot)
 		)
 	];
