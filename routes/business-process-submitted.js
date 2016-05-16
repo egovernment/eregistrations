@@ -5,7 +5,12 @@
 var hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel');
 
 module.exports = {
-	'/': require('../view/business-process-submitted'),
+	'/': {
+		view: require('../view/business-process-submitted'),
+		decorateContext: function () {
+			this.dataSnapshot = this.businessProcess.dataForms.dataSnapshot.resolved;
+		}
+	},
 	profile: {
 		view: require('../view/user-profile'),
 		decorateContext: function () {

@@ -15,6 +15,9 @@ module.exports = function (step) {
 		'print-business-processes-list': require('eregistrations/view/print-business-processes-table'),
 		'[0-9][a-z0-9]*': {
 			match: match,
+			decorateContext: function () {
+				this.dataSnapshot = this.businessProcess.dataForms.dataSnapshot.resolved;
+			},
 			view: require('eregistrations/view/business-process-official-form')
 		},
 		'[0-9][a-z0-9]*/print-request-history': {
@@ -27,6 +30,9 @@ module.exports = function (step) {
 		},
 		'[0-9][a-z0-9]*/documents-and-data': {
 			match: match,
+			decorateContext: function () {
+				this.dataSnapshot = this.businessProcess.dataForms.dataSnapshot.resolved;
+			},
 			view: require('eregistrations/view/business-process-official-data')
 		},
 		'[0-9][a-z0-9]*/document/[a-z][a-z0-9-]*': {

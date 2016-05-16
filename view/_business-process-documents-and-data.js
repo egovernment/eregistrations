@@ -199,10 +199,18 @@ var dataFormsRevisionControls = function (context) {
 	);
 };
 
+var dataFormsRevisionInfo = function (context) {
+	var snapshot = context.dataSnapshot;
+
+	return _if(eq(snapshot.status, 'rejected'), div({ class: 'section-secondary info-main' },
+		p(_("Data forms were rejected for the following reason(s)"), ': ', snapshot.rejectReason)));
+};
+
 module.exports = exports = function (context/*, options*/) {
 	var options         = Object(arguments[1])
 	  , urlPrefix       = options.urlPrefix || '/'
-	  , uploadsResolver = options.uploadsResolver || context.businessProcess;
+	  , uploadsResolver = options.uploadsResolver || context.businessProcess
+	  , processingStep  = context.processingStep;
 
 	return [
 		section(
@@ -224,7 +232,10 @@ module.exports = exports = function (context/*, options*/) {
 					span({ class: 'fa fa-print' }, _("Print"))
 				)
 			),
-			dataFormsRevisionControls(context),
+			(processingStep && processingStep.dataFormsRevision
+				&& processingStep.dataFormsRevision.isProcessable) ?
+					dataFormsRevisionControls(context) :
+					dataFormsRevisionInfo(context),
 			renderSections(context.businessProcess.dataForms.dataSnapshot)
 		)
 	];
