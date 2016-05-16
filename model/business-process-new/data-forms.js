@@ -121,8 +121,9 @@ module.exports = memoize(function (db/* options */) {
 			if (this.jsonString) {
 				data = JSON.parse(this.jsonString);
 				if (data.isFinalized) return;
+			} else {
+				data = this.owner.toJSON();
 			}
-			data = this.owner.toJSON();
 
 			this.owner.finalizeJSON(data);
 			this.jsonString = JSON.stringify(data);
