@@ -26,7 +26,10 @@ module.exports = exports = function (context) {
 						return [h4(paymentUpload.document.label),
 							p(paymentUpload._rejectReasonMemo)];
 					}))))
-		]), exports._otherInfo.call(context)),
+		]), _if(eq(businessProcess.dataForms._status, 'rejected'), li(
+			h4(_("Issues with data forms:")),
+			p(businessProcess.dataForms._rejectReason)
+		)), exports._otherInfo.calll(context)),
 		p(mdi(_("After all issues are cleared, please [re-submit](/submission/#submit-form) " +
 			"application")))];
 };

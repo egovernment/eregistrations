@@ -107,6 +107,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			debug('%s generate certificates data snapshots', businessProcess.__id__);
 		}
 		businessProcess.certificates.dataSnapshot.generate();
+		businessProcess.dataForms.dataSnapshot.finalize();
 		businessProcess.requirementUploads.dataSnapshot.finalize();
 		businessProcess.paymentReceiptUploads.dataSnapshot.finalize();
 	});

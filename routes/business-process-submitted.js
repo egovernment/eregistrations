@@ -47,7 +47,12 @@ module.exports = {
 		},
 		view: require('../view/business-process-submitted-certificate')
 	},
-	data: require('../view/business-process-submitted-data'),
+	data: {
+		decorateContext: function () {
+			this.dataSnapshot = this.businessProcess.dataForms.dataSnapshot.resolved;
+		},
+		view: require('../view/business-process-submitted-data')
+	},
 
 	// Print routes
 	'data-print': require('../view/print-business-process-data'),

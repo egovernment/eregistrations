@@ -3,7 +3,7 @@
 'use strict';
 
 var normalizeOptions = require('es5-ext/object/normalize-options')
-  , _                = require('mano').i18n.bind('View: Component: Documents')
+  , _                = require('mano').i18n.bind('View: Component: Data')
   , renderSections   = require('./render-sections-json');
 
 module.exports = function (context/*, options*/) {
@@ -11,6 +11,7 @@ module.exports = function (context/*, options*/) {
 	  , urlPrefix = options.urlPrefix || '/';
 
 	return section({ class: 'section-primary' },
+		options.prependContent,
 		div({ class: 'business-submitted-data-print-only' }, ' ',
 			a({ class: 'hint-optional hint-optional-left',
 				'data-hint': _("Print your application form"), href: urlPrefix + 'data-print/',
