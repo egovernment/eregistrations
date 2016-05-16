@@ -210,7 +210,10 @@ module.exports = exports = function (context/*, options*/) {
 	var options         = Object(arguments[1])
 	  , urlPrefix       = options.urlPrefix || '/'
 	  , uploadsResolver = options.uploadsResolver || context.businessProcess
-	  , processingStep  = context.processingStep;
+	  , processingStep  = context.processingStep
+	  , isDataFormsRevisionProcessable = (processingStep && processingStep.dataFormsRevision
+				&& processingStep.dataFormsRevision.isProcessable)
+				&& context.appName !== 'supervisor' && context.appName !== 'dispatcher';
 
 	return [
 		section(
@@ -232,9 +235,7 @@ module.exports = exports = function (context/*, options*/) {
 					span({ class: 'fa fa-print' }, _("Print"))
 				)
 			),
-			(processingStep && processingStep.dataFormsRevision
-				&& processingStep.dataFormsRevision.isProcessable) ?
-					dataFormsRevisionControls(context) :
+			isDataFormsRevisionProcessable ? dataFormsRevisionControls(context) :
 					dataFormsRevisionInfo(context),
 			renderSections(context.businessProcess.dataForms.dataSnapshot)
 		)
