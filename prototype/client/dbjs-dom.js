@@ -45,6 +45,8 @@ require('../../view/dbjs/determinants-to-dom-fieldset')(
 );
 
 requirementUpload.$status.DOMInput = require('../../view/dbjs/enum-inline-button-group');
+db.BusinessProcessNew.prototype.dataForms.$status.DOMInput =
+		require('eregistrations/view/dbjs/enum-inline-button-group');
 
 require('../view/dbjs/business-activity');
 require('../view/dbjs/company-info-shares');

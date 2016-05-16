@@ -82,7 +82,12 @@ module.exports = {
 		},
 		view: require('../view/business-process-submitted-certificate')
 	},
-	'business-process-submitted/data': require('../view/business-process-submitted-data'),
+	'business-process-submitted/data': {
+		decorateContext: function () {
+			this.dataSnapshot = this.businessProcess.dataForms.toJSON();
+		},
+		view: require('../view/business-process-submitted-data')
+	},
 	'print-business-process-data': require('../view/print-business-process-data'),
 	'print-request-history': require('../view/print-business-process-status-log'),
 
@@ -156,7 +161,12 @@ module.exports = {
 		},
 		view: require('../view/business-process-official-certificate')
 	},
-	'official/business-process-id/data': require('../view/business-process-official-data'),
+	'official/business-process-id/data': {
+		decorateContext: function () {
+			this.dataSnapshot = this.businessProcess.dataForms.toJSON();
+		},
+		view: require('../view/business-process-official-data')
+	},
 
 	// Official Revision routes
 	'revision/business-process-id': {
@@ -183,7 +193,14 @@ module.exports = {
 		},
 		view: require('../view/business-process-revision-payment')
 	},
-	'revision/business-process-id/data': require('../view/business-process-revision-data'),
+	'revision/business-process-id/data': {
+		decorateContext: function () {
+			var dataForms = this.businessProcess.dataForms;
+
+			this.dataSnapshot = dataForms.enrichJSON(dataForms.toJSON());
+		},
+		view: require('../view/business-process-revision-data')
+	},
 	'revision/business-process-id/processing': require('./view/business-process-revision-form'),
 
 	// Official Front Desk routes
