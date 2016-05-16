@@ -98,7 +98,6 @@ module.exports = exports = function (db, dbDriver, data) {
 			var fragment = new FragmentGroup();
 
 			fragment.addFragment(getBusinessProcessData(businessProcessId));
-			//mutates frgment param
 			addCustomBusinessProcessData(businessProcessId, fragment);
 
 			return fragment;
@@ -438,8 +437,7 @@ module.exports = exports = function (db, dbDriver, data) {
 				initialBusinessProcesses.promise = promise;
 				if (roleName === 'memoryDb') {
 					// All businesss processes (full data)
-					fragment.addFragment(getColFragments(initialBusinessProcesses,
-						getBusinessProcessFullData));
+					fragment.addFragment(getColFragments(initialBusinessProcesses, getBusinessProcessData));
 				} else {
 					// All businesss processes (partial data)
 					fragment.addFragment(getColFragments(initialBusinessProcesses,
@@ -487,7 +485,7 @@ module.exports = exports = function (db, dbDriver, data) {
 						  , promise = clientBps.promise;
 						clientBps = clientBps.map(function (value) { return value.slice(1); });
 						fragment.addFragment(getColFragments(managerBps.and(clientBps),
-							getBusinessProcessFullData));
+							getBusinessProcessMyAccountFragment));
 						return promise;
 					});
 				});
