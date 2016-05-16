@@ -118,11 +118,14 @@ module.exports = memoize(function (db/* options */) {
 		// results.
 		finalize: { type: db.Function, value: function (ignore) {
 			var data;
-			if (!this.jsonString) {
-				data = this.owner.toJSON();
-				this.owner.finalizeJSON(data);
-				this.jsonString = JSON.stringify(data);
+			if (this.jsonString) {
+				data = JSON.parse(this.jsonString);
+				if (data.isFinalized) return;
 			}
+			data = this.owner.toJSON();
+
+			this.owner.finalizeJSON(data);
+			this.jsonString = JSON.stringify(data);
 		} }
 	});
 
