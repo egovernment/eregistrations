@@ -76,7 +76,7 @@ module.exports = exports = function (db, dbDriver, data) {
 	  , globalFragment, getMetaAdminFragment, getAccessRules
 	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, userListProps
 	  , businessProcessDispatcherListExtraProperties = [], officialDispatcherListExtraProperties = []
-	  , businessProcessMyAccountExtraProperties = [];
+	  , businessProcessMyAccountExtraProperties = [], businessProcessSupervisorExtraProperties = [];
 
 	ensureDatabase(db);
 
@@ -141,6 +141,10 @@ module.exports = exports = function (db, dbDriver, data) {
 	if (data.businessProcessMyAccountExtraProperties) {
 		businessProcessMyAccountExtraProperties =
 			aFrom(ensureIterable(data.businessProcessMyAccountExtraProperties));
+	}
+	if (data.businessProcessSupervisorExtraProperties) {
+		businessProcessSupervisorExtraProperties =
+			aFrom(ensureIterable(data.businessProcessSupervisorExtraProperties));
 	}
 
 	businessProcessMyAccountProperties =
@@ -370,7 +374,7 @@ module.exports = exports = function (db, dbDriver, data) {
 
 	// Supervisor resolvers
 	var getBusinessProcessSupervisorListFragment = getPartFragments(null, (function () {
-		var set = new Set(['businessName']);
+		var set = new Set(['businessName'].concat(businessProcessSupervisorExtraProperties));
 		forEach(processingStepsMeta, function (data, stepShortPath) {
 			set.add('processingSteps/map/' + resolveStepPath(stepShortPath) + '/status');
 		});
