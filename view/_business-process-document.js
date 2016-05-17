@@ -104,7 +104,8 @@ module.exports = function (context, sideContent) {
 					table({ class: 'submitted-user-history' },
 						tbody(data.statusLog, function (log) {
 							th(log._label || log.label);
-							td({ class: 'submitted-user-history-time' }, log._time || log.time);
+							td({ class: 'submitted-user-history-time' }, log._time ||
+								(log.time.value ? new db.DateTime(log.time.value) : log.time));
 							td(md(log._text || log.text));
 						}))));
 			nextTick(function () { scrollBottom(scrollableElem); });
