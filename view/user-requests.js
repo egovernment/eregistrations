@@ -35,7 +35,7 @@ exports['user-account-content'] = function () {
 	}, function () {
 		return mmap(businessProcesses._first, function (businessProcess) {
 			if (!businessProcess) return p(_('No requests started'));
-			return documentsAndDataBrief(businessProcesses);
+			return documentsAndDataBrief(businessProcess);
 		});
 	}));
 	div({ id: 'user-requests-preview' });
