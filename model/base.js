@@ -39,7 +39,7 @@ module.exports = memoize(function (db) {
 		toJSON: { type: db.Function }
 	});
 
-	return db.Base.defineProperties({
+	db.Base.defineProperties({
 		// Whether provided value should be considered empty
 		isValueEmpty: { type: db.Function, value: function (value, desciptor) {
 			if (value == null) return true;
@@ -56,4 +56,12 @@ module.exports = memoize(function (db) {
 			return (new this(value)).toString(descriptor);
 		} }
 	});
+
+	db.DateTime.valueToJSON = function (value, descriptor) {
+		if (value == null) return value;
+		if (this !== this.database.DateTime) return (new this(value)).toString(descriptor); // Date
+		return { kind: 'dateTimeValue', value: Number(value) };
+	};
+
+	return db.Base;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
