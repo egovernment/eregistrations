@@ -31,8 +31,10 @@ module.exports = function (businessProcess) {
 						)
 					),
 					tbody(mmap(businessProcess.dataForms.dataSnapshot._resolved, function (data) {
-						if (!data) return tr({ class: 'empty' }, td({ colspan: 3 }, _("No data")));
-						return data.map(function (sectionData) {
+						if (!data || !data.sections) {
+							return tr({ class: 'empty' }, td({ colspan: 3 }, _("No data")));
+						}
+						return data.sections.map(function (sectionData) {
 							return tr(
 								td(sectionData.label),
 								td({ class: 'submitted-user-data-table-date' }, sectionData.lastEditDate),
