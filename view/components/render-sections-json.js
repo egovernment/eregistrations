@@ -84,8 +84,8 @@ defaultRenderers.subSections = renderSubSections = function (data/*, options*/) 
 module.exports = exports = function (dataSnapshot/*, options*/) {
 	var options = arguments[1];
 	return mmap(dataSnapshot._resolved, function (json) {
-		if (!json) return;
-		return renderMainSections(json, options);
+		if (!json || !json.sections) return;
+		return renderMainSections(json.sections, options);
 	});
 };
 
