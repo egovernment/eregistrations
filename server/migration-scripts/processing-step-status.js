@@ -6,7 +6,7 @@
 var flatten  = require('es5-ext/array/#/flatten')
   , deferred = require('deferred')
 
-  , isStepStatus = RegExp.prototype.test.bind(/\/processingSteps\/\map\/[a-zA-Z0-9\/]+\/status$/)
+  , isStepStatus = RegExp.prototype.test.bind(/\/processingSteps\/map\/[a-zA-Z0-9\/]+\/status$/)
   , keys = Object.keys;
 
 module.exports = function () {
