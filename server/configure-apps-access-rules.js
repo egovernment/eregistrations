@@ -377,6 +377,7 @@ module.exports = exports = function (db, dbDriver, data) {
 		var set = new Set(['businessName'].concat(businessProcessSupervisorExtraProperties));
 		forEach(processingStepsMeta, function (data, stepShortPath) {
 			set.add('processingSteps/map/' + resolveStepPath(stepShortPath) + '/status');
+			set.add('processingSteps/map/' + resolveStepPath(stepShortPath) + '/assignee');
 		});
 		return set;
 	}()));
