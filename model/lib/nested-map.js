@@ -48,6 +48,12 @@ module.exports = memoize(function (db/*, options*/) {
 				if (!this.map.has(key)) return false;
 				return this.ordered.has(this.map[key]);
 			}
+		},
+		getItemProto: {
+			type: db.Function,
+			value: function (ignore) {
+				return this.map.__descriptorPrototype__.type.prototype;
+			}
 		}
 	});
 	NestedMap.prototype.map._descriptorPrototype_.setProperties({
