@@ -38,5 +38,5 @@ module.exports = function (t, a) {
 	a(map.hasItem(obj3.key), true);
 	obj3.set('name', null);
 	a(map.hasItem(obj3.key), false);
-	a(map.getItemProto(), Object.getPrototypeOf(obj1));
+	a(map.getItemType(), obj1.constructor);
 };

@@ -49,10 +49,10 @@ module.exports = memoize(function (db/*, options*/) {
 				return this.ordered.has(this.map[key]);
 			}
 		},
-		getItemProto: {
+		getItemType: {
 			type: db.Function,
 			value: function (ignore) {
-				return this.map.__descriptorPrototype__.type.prototype;
+				return this.map.__descriptorPrototype__.type;
 			}
 		}
 	});
