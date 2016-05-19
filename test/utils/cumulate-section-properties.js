@@ -53,7 +53,4 @@ module.exports = function (t, a) {
 	properties = [];
 	t(businessProcess.dataForms.map.mainGroup, properties);
 	a.deep(properties, ['businessName', 'representative/email', 'submissionNumber/number']);
-	properties = [];
-	t(businessProcess.dataForms.map.mainEntities, properties);
-	a.deep(properties, ['businessName', 'representative/email', 'submissionNumber/number']);
 };
