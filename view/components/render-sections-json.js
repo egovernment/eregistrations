@@ -4,6 +4,7 @@
 
 var normalizeOptions    = require('es5-ext/object/normalize-options')
   , ensureNaturalNumber = require('es5-ext/object/ensure-natural-number-value')
+  , db                  = require('mano').db
   , pathToUrl           = require('../../utils/upload-path-to-url')
 
   , isArray = Array.isArray, min = Math.min, stringify = JSON.stringify
@@ -84,8 +85,8 @@ defaultRenderers.subSections = renderSubSections = function (data/*, options*/) 
 module.exports = exports = function (dataSnapshot/*, options*/) {
 	var options = arguments[1];
 	return mmap(dataSnapshot._resolved, function (json) {
-		if (!json) return;
-		return renderMainSections(json, options);
+		if (!json || !json.sections) return;
+		return renderMainSections(json.sections, options);
 	});
 };
 
@@ -99,5 +100,6 @@ exports.customRenderers = {
 				span({ class: 'file-thumb-document-size' }, (data.diskSize / 1000000).toFixed(2) + ' Mo'),
 				a({ href: pathToUrl(data.path), target: '_blank', class: 'file-thumb-action',
 					download: data.path }, span({ class: 'fa fa-download' }, "download"))));
-	}
+	},
+	dateTimeValue: function (data) { return (new db.DateTime(data.value)).toString(); }
 };

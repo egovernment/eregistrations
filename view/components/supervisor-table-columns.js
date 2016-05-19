@@ -7,7 +7,12 @@ var _          = require('mano').i18n.bind('View: Component: Supervisor')
 exports.columns = [{
 	head: _("Role"),
 	data: function (processingStep) {
-		return processingStep._label;
+		var assignee = processingStep._assignee;
+
+		return [
+			processingStep._label,
+			_if(assignee, [' ', span('(', assignee, ')')])
+		];
 	}
 }, {
 	head: _("Name"),

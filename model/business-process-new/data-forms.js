@@ -80,6 +80,11 @@ module.exports = memoize(function (db/* options */) {
 			return Boolean(this.rejectReason);
 		} },
 
+		toJSON: { type: db.Function, value: function (ignore) {
+			return {
+				sections: this.database.PropertyGroupsProcess.prototype.toJSON.call(this)
+			};
+		} },
 		// Enrich snapshot JSON with reactive configuration of revision related properties
 		enrichJSON: { type: db.Function, value: function (data) {
 			if (data.isFinalized) return data;
