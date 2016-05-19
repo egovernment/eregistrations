@@ -125,12 +125,12 @@ module.exports = memoize(function (db) {
 				uniqueKey: this.key,
 				label: this.database.resolveTemplate(this.label, this.getTranslations(), { partial: true }),
 				abbr: this.abbr,
-				issuedBy: this.getOwnDescriptor('issuedBy').valueToJSON(),
-				issueDate: this.getOwnDescriptor('issueDate').valueToJSON(),
 				status: this.status,
-				number: this.getOwnDescriptor('number').valueToJSON(),
 				overviewSection: this.overviewSection.toJSON()
 			};
+			if (this.issuedBy) data.issuedBy = this.getOwnDescriptor('issuedBy').valueToJSON();
+			if (this.issueDate) data.issueDate = this.getOwnDescriptor('issueDate').valueToJSON();
+			if (this.number) data.number = this.getOwnDescriptor('number').valueToJSON();
 			var files = [];
 			this.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
 			if (files.length) data.files = files;
