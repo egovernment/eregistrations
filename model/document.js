@@ -40,8 +40,7 @@ module.exports = memoize(function (db) {
 		abbr: { type: StringLine, value: function () { return this.constructor.abbr; } },
 		// Document legend, fallbacks to legend as decided on constructor
 		legend: { type: StringLine, value: function () { return this.constructor.legend; } },
-		// Which entity issued the document. In case of certificates it's an issuing institution,
-		// in case of user uploads, it's a user that uploaded files (and that's the default)
+		// Which entity issued the document.
 		issuedBy: {
 			type: db.Object,
 			label: _("Emissor institution")
