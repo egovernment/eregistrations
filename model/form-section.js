@@ -183,6 +183,14 @@ module.exports = memoize(function (db) {
 				return result;
 			}
 		},
+		propertyNamesDeep: {
+			value: function () {
+				var result = this.propertyNames.copy();
+				if (this.resolventProperty) result.add(this.resolventProperty);
+
+				return result;
+			}
+		},
 		hasDisplayableRuleDeep: {
 			value: function (_observe) {
 				return _observe(this.progressRules.displayable._size) > 0;

@@ -253,6 +253,11 @@ module.exports = memoize(function (db) {
 		hasFilledPropertyNamesDeep: {
 			type: db.Boolean
 		},
+		propertyNamesDeep: {
+			multiple: true,
+			type: StringLine,
+			value: []
+		},
 		// Resolves collection of which section is part of
 		resolveParentCollection: {
 			type: db.Function,

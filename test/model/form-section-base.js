@@ -270,4 +270,6 @@ module.exports = function (t, a) {
 	a.h1('Neighbourhood');
 	a(section.nextSection, null);
 	a(section.previousSection, null);
+
+	a.deep(section.propertyNamesDeep, []);
 };

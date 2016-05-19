@@ -64,6 +64,19 @@ module.exports = memoize(function (db) {
 				return res;
 			}
 		},
+		propertyNamesDeep: {
+			value: function (_observe) {
+				var result = [];
+				if (this.resolventProperty) result.push(this.resolventProperty);
+				this.sections.forEach(function (section) {
+					_observe(section.propertyNamesDeep).forEach(function (property) {
+						result.push(property);
+					});
+				});
+
+				return result;
+			}
+		},
 		hasDisplayableRuleDeep: {
 			value: function (_observe) {
 				if (_observe(this.progressRules.displayable._size) > 0) return true;
