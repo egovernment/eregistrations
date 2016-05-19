@@ -96,9 +96,6 @@ module.exports = function (/*options*/) {
 		match: function (businessProcessId, receiptKey) {
 			return matcher.call(this, businessProcessId, stepName);
 		},
-		redirectUrl: function () {
-			return '/' + this.businessProcess.__id__ + '/data';
-		},
 		formHtmlId: 'form-revision-data-forms'
 	};
 
