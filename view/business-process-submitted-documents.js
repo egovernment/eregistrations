@@ -12,7 +12,7 @@ exports['tab-business-process-documents'] = { class: { active: true } };
 exports['tab-content'] = function () {
 
 	section({ class: 'section-primary' },
-		div({ class: "section-primary-sub all-documents-table" },
+		div({ class: "section-primary-sub document-preview-all-documents-table" },
 			div(renderCertificateList(this)),
 			div(renderDocumentsList(this, { documentsRootHref: '/' })),
 			div(renderPaymentList(this))),

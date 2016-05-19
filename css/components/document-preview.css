@@ -104,17 +104,18 @@
 	display: inline-block;
 }
 
-.section-primary-sub.all-documents-table {
+.document-preview-selected-document .document-preview-data {
+	width: 39%;
+	overflow-y: auto;
+}
+
+.document-preview-all-documents-table {
 	max-height: 242px;
 	overflow: hidden;
 	overflow-y: scroll;
 	border: 1px solid var(--light-medium-background);
 }
 
-.document-preview + .document-preview-data {
-	width: 39%;
-	overflow-y: auto;
-}
 .document-preview-data h2 {
 	font-size: 19px;
 }
