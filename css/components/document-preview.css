@@ -93,13 +93,6 @@
 	background-color: #D9534F;
 }
 
-.document-preview-selected-document {
-	display: block;
-}
-
-.document-preview-content {
-	max-width: var(--desktop-width);
-}
 .document-preview-content > * {
 	display: inline-block;
 }
@@ -109,22 +102,6 @@
 	width:59%;
 	margin-right: 2%;
 	display: inline-block;
-}
-
-.document-preview-selected-document .submitted-preview-document-history {
-	width:39%;
-	display: inline-block;
-	margin: 0;
-}
-
-.document-preview-selected-document .submitted-preview-document-history h3 {
-	margin: 0;
-	line-height: 44px;
-}
-
-.document-preview-box .document-preview-list {
-	display: block;
-	width: 100%;
 }
 
 .section-primary-sub.all-documents-table {
