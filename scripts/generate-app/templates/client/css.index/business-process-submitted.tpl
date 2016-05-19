@@ -22,7 +22,6 @@
 ../../../node_modules/eregistrations/css/components/error-page.css
 ../../../node_modules/eregistrations/css/components/entities-overview.css
 ../../../node_modules/eregistrations/css/components/entity-data-section.css
-../../../node_modules/eregistrations/css/components/entity-data-section-side.css
 ../../../node_modules/eregistrations/css/components/label-reg.css
 ../../../node_modules/eregistrations/css/components/hint-optional.css
 ../../../node_modules/eregistrations/css/components/table-responsive.css

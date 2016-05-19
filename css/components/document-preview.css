@@ -111,7 +111,7 @@
 	border: 1px solid var(--light-medium-background);
 }
 
-.document-preview-data {
+.document-preview + .document-preview-data {
 	width: 39%;
 	overflow-y: auto;
 }
@@ -119,20 +119,37 @@
 	font-size: 19px;
 }
 
-.document-preview-selected-document .entity-data-section {
+.document-preview-data h3 {
+	font-size: 17px;
+	color: var(--white-text);
+	background-color: var(--normal-background);
+	padding: 11px 0 11px 8px;
+	margin-top: 0;
+}
+
+.document-preview-data h4 {
+	margin:0;
+	padding:11px 10px 10px 10px;
+	border-bottom: 1px solid var(--light-medium-background);
+	font-size: 15px;
+	font-weight: 300;
+	background: var(--light-medium-background);
+}
+
+.document-preview-data h5 {
+	font-size: 14px;
+	padding: 18px 0 3px 10px;
+	font-weight: 500;
+	border-bottom: 1px dashed #E3E3E3;
+}
+
+.document-preview-data .entity-data-section table tr:nth-child(even) {
+	background-color: var(--light-background);
+}
+
+.document-preview-data .entity-data-section {
 	margin-bottom: 22px;
-}
-
-.document-preview-selected-document .entity-data-section h3 {
-	margin-top: 0;
-}
-
-.document-preview-selected-document .entity-data-section-side {
-	margin-top: 44px;
-}
-
-.document-preview-selected-document .entity-data-section-side h3 {
-	margin-top: 0;
+	outline: 1px solid var(--light-text);
 }
 
 .business-submitted-data-print-only {

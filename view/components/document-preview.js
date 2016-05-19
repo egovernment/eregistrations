@@ -176,7 +176,7 @@ module.exports = function (context, documentData/*, options*/) {
 
 				// Side content
 				sideContentContainer = div(
-					{ class: 'document-preview-data  entity-data-section-side' },
+					{ class: 'document-preview-data' },
 					options.sideContent
 				)))
 	];

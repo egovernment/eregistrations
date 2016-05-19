@@ -17,7 +17,6 @@ module.exports = function (context/*, options*/) {
 				'data-hint': _("Print your application form"), href: urlPrefix + 'data-print/',
 				target: '_blank' },
 				span({ class: 'fa fa-print' }, _("Print")))),
-		div({ class: 'business-process-revision-selected-document' },
-			div({ class: 'entity-data-section-side' },
-				renderSections(context.businessProcess.dataForms.dataSnapshot))));
+		div({ class: 'document-preview-data' },
+			renderSections(context.businessProcess.dataForms.dataSnapshot)));
 };

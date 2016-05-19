@@ -31,7 +31,6 @@
 ../../css/components/error-page.css
 ../../css/components/entity-data-section.css
 ../../css/components/entity-data-section-primary.css
-../../css/components/entity-data-section-side.css
 ../../css/components/public-multi-entry.css
 ../../css/components/public-login-register-section.css
 ../../css/components/user-account.css

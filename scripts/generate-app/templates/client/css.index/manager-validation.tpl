@@ -20,7 +20,6 @@
 ../../../node_modules/eregistrations/css/components/document-download.css
 ../../../node_modules/eregistrations/css/components/entities-overview.css
 ../../../node_modules/eregistrations/css/components/entity-data-section.css
-../../../node_modules/eregistrations/css/components/entity-data-section-side.css
 ../../../node_modules/eregistrations/css/components/button-main.css
 ../../../node_modules/eregistrations/css/components/entity-header.css
 ../../../node_modules/eregistrations/css/components/table-responsive-container.css

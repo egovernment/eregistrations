@@ -34,7 +34,6 @@
 ../../../node_modules/eregistrations/css/components/info-main.css
 ../../../node_modules/eregistrations/css/components/entity-data-section.css
 ../../../node_modules/eregistrations/css/components/entity-data-section-primary.css
-../../../node_modules/eregistrations/css/components/entity-data-section-side.css
 ../../../node_modules/eregistrations/css/components/submitted-user-history.css
 ../../../node_modules/eregistrations/css/components/submitted-preview.css
 ../../../node_modules/eregistrations/css/components/submitted-preview-new.css
