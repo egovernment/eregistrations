@@ -93,9 +93,10 @@ module.exports = exports = function (dataSnapshot/*, options*/) {
 exports.renderers = defaultRenderers;
 exports.customRenderers = {
 	fileValue: function (data) {
+		var thumbUrl = pathToUrl(data.thumbPath);
 		return div({ class: 'file-thumb' },
 			a({ href: pathToUrl(data.path), target: '_blank', class: 'file-thumb-image' },
-				img({ src: stUrl(pathToUrl(data.thumbPath)) })),
+				img({ src: thumbUrl ? stUrl(thumbUrl) : thumbUrl })),
 			div({ class: 'file-thumb-actions' },
 				span({ class: 'file-thumb-document-size' }, (data.diskSize / 1000000).toFixed(2) + ' Mo'),
 				a({ href: pathToUrl(data.path), target: '_blank', class: 'file-thumb-action',
