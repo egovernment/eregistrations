@@ -31,3 +31,11 @@
 .submitted-user-history-time {
 	white-space: nowrap;
 }
+
+.submitted-user-history-header {
+	font-size: 17px;
+	color: var(--white-text);
+	background-color: var(--normal-background);
+	padding: 11px 0 11px 8px;
+	margin-top: 22px;
+}
