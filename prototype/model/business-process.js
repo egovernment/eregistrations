@@ -366,7 +366,7 @@ processes.forEach(function (businessProcess) {
 	businessProcess.branches.map.get('second').responsiblePerson.email = "spiderman@daily-bugle.com";
 
 	businessProcess.certificates.applicable.toArray().forEach(function (certificate, index) {
-		certificate.label = 'Certyficate label';
+		certificate.label = 'Certificate label';
 		certificate.issuedBy = db.institutionOfficialMinistry;
 		certificate.issueDate = new Date(2015, 23, 7);
 		certificate.files.map.get('cert' + index).setProperties({
