@@ -29,5 +29,8 @@
 ../../../node_modules/eregistrations/css/components/throbber.css
 ../../../node_modules/eregistrations/css/components/manager-bar.css
 ../../../node_modules/eregistrations/css/components/manager-label.css
+../../../node_modules/eregistrations/css/components/document-preview.css
+../../../node_modules/eregistrations/css/components/documents-list-table.css
+../../../node_modules/eregistrations/css/components/business-process-submitted-data.css
 ../../../css/theme.css
 ../../../css/theme-part-b.css
