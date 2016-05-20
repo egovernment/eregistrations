@@ -13,8 +13,9 @@ module.exports = function (documentData) {
 				table({ class: 'submitted-user-history' },
 					tbody(documentData.statusLog, function (log) {
 						th(log._label || log.label);
-						td({ class: 'submitted-user-history-time' }, log._time || log.time);
-						td(md(log._time || (log.time.value ? new db.DateTime(log.time.value) : log.time)));
+						td({ class: 'submitted-user-history-time' },
+							log._time || (log.time.value ? new db.DateTime(log.time.value) : log.time));
+						td(md(log._text || log.text));
 					})))
 		];
 	});
