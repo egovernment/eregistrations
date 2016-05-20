@@ -2,7 +2,8 @@
 
 'use strict';
 
-var _     = require('mano').i18n.bind('View: Component: Documents');
+var _  = require('mano').i18n.bind('View: Component: Documents')
+  , db = require('mano').db;
 
 module.exports = function (documentData) {
 	return _if(documentData.statusLog._length || documentData.statusLog.length, function () {
@@ -13,7 +14,7 @@ module.exports = function (documentData) {
 					tbody(documentData.statusLog, function (log) {
 						th(log._label || log.label);
 						td({ class: 'submitted-user-history-time' }, log._time || log.time);
-						td(md(log._text || log.text));
+						td(md(log._time || (log.time.value ? new db.DateTime(log.time.value) : log.time)));
 					})))
 		];
 	});
