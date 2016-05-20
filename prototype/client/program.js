@@ -56,7 +56,7 @@ var siteTree = new DomjsSiteTree(require('mano/lib/client/domjs'));
 router = new SiteTreeRouter(require('../routes'), siteTree, {
 	notFound: require('../../view/404'),
 	eventProto: { user: db.userVianney, businessProcess: db.firstBusinessProcess,
-		processingStep: db.firstBusinessProcess.processingSteps.map.revision  }
+		processingStep: db.firstBusinessProcess.processingSteps.map.revision, appName: 'prototype'  }
 });
 appLocation.on('change', function () {
 	var result;

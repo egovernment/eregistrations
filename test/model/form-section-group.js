@@ -2,7 +2,8 @@
 
 var Database           = require('dbjs')
   , defineFormSection  = require('../../model/form-section')
-  , defineProgressRule = require('../../model/lib/progress-rule');
+  , defineProgressRule = require('../../model/lib/progress-rule')
+  , aFrom              = require('es5-ext/array/from');
 
 module.exports = function (t, a) {
 	var db = new Database()
@@ -169,4 +170,9 @@ module.exports = function (t, a) {
 	a(section.status, 4 / 5);
 	section.progressRules.map.testRule.progress = 1;
 	a(section.status, 1);
+
+	a.h2('propertyNamesDeep');
+	section = masterObject.sectionOfDerivedType;
+	a.deep(aFrom(section.propertyNamesDeep), ['resolventProperty', 'propertyForFirstSection',
+		'propertyForSecondSection', 'secondPropertyForSecondSection']);
 };

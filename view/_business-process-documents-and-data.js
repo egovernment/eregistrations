@@ -4,11 +4,17 @@
 
 var find           = require('es5-ext/array/#/find')
   , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
+  , Set            = require('es6-set')
   , _              = require('mano').i18n.bind('User Submitted')
   , renderSections = require('./components/render-sections-json')
   , getSetProxy    = require('../utils/observable-set-proxy')
 
+  , userRoles = new Set(['user', 'manager'])
   , _d = _;
+
+var isUserApp = function (context) {
+	return userRoles.has((context.manager || context.user).currentRoleResolved);
+};
 
 var resolveUploads = function (context, targetMap) {
 	var target = targetMap.owner, businessProcess = target.master;
@@ -18,7 +24,7 @@ var resolveUploads = function (context, targetMap) {
 		: businessProcess.paymentReceiptUploads.dataSnapshot;
 
 	// If it's a user, then we show to him direct result of saved snapshot
-	if (context.user.currentRoleResolved === 'user') return snapshot._resolved;
+	if (isUserApp(context)) return snapshot._resolved;
 
 	// Otherwise we show only those items from snapshot which are applicable according
 	// to current model state.
@@ -43,10 +49,10 @@ var resolveCertificates = function (context, targetMap) {
 	return businessProcess._isApproved.map(function (isApproved) {
 		if (!isApproved) {
 			// User, can see released certificates only when request is finalized
-			if (context.user.currentRoleResolved === 'user') return null;
+			if (isUserApp(context)) return null;
 			return targetMap.released.toArray();
 		}
-		if (context.user.currentRoleResolved === 'user') {
+		if (isUserApp(context)) {
 			// For user we show certificates as they're stored in snapshot
 			return businessProcess.certificates.dataSnapshot._resolved;
 		}
