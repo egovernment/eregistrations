@@ -13,10 +13,10 @@ revisionForm = function (businessProcess) {
 	var dataForms = businessProcess.dataForms
 	  , revReason;
 
-	return form(
+	return div({ class: 'document-preview-box' }, form(
 		{
 			id: 'form-revision-data-forms',
-			class: 'data-forms-review-form',
+			class: 'submitted-preview-form',
 			method: 'post',
 			action: '/revision-data-forms/' + businessProcess.__id__ + '/'
 		},
@@ -31,7 +31,7 @@ revisionForm = function (businessProcess) {
 		),
 		legacy('radioMatch', 'form-revision-data-forms',
 			dataForms.__id__ + '/status', { rejected: revReason.getId() })
-	);
+	));
 };
 
 exports['tab-business-process-data'] = { class: { active: true } };
