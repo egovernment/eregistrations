@@ -22,15 +22,6 @@
 	padding-bottom: 11px;
 }
 
-.submitted-user-history-header {
-	font-size: 17px;
-	margin-bottom: 5px;
-	color: #ffffff;
-	margin:  22px 0 0 0;
-	background-color: #999;
-	padding: 11px 0 11px 8px;
-}
-
 .submitted-user-history-wrapper {
 	max-height: 220px;
 	overflow: auto;

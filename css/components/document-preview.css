@@ -54,45 +54,6 @@
 	margin-left: 16px;
 }
 
-.document-preview-box .form-elements > li {
-	display: inline-block;
-	padding: 0 8px;
-	vertical-align: top;
-}
-
-.document-preview-box .form-elements > li:empty {
-	display: none;
-}
-
-.document-preview-box .form-elements > li:last-child {
-	line-height: 44px;
-}
-
-.document-preview-box .form-elements > li .dbjs-input-component > .input {
-	width: auto;
-}
-
-.document-preview-box .form-elements > li .input textarea {
-	width: auto;
-	max-width: 260px;
-}
-
-.document-preview-box .form-elements > li input[type='submit'] {
-	padding: 1px 11px;
-}
-
-.document-preview-box .form-elements > li .inline-button-radio label {
-	background-color: #fff;
-}
-
-.document-preview-box .form-elements > li .inline-button-radio .success {
-	background-color: #5CB85C;
-}
-
-.document-preview-box .form-elements > li .inline-button-radio .error {
-	background-color: #D9534F;
-}
-
 .document-preview-file,
 .document-preview-missing {
 	width:59%;

@@ -43,7 +43,6 @@
 ../../css/components/user-submission.css
 ../../css/components/business-process-costs-list.css
 ../../css/components/business-process-official.css
-../../css/components/business-process-revision.css
 ../../css/components/document-preview.css
 ../../css/components/documents-list-table.css
 ../../css/components/business-process-submitted-data.css
