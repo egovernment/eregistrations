@@ -65,6 +65,7 @@
 	width: 39%;
 	overflow-y: auto;
 	display: inline-block;
+	border: 1px solid var(--light-medium-background);
 }
 
 .document-preview-external-link {
