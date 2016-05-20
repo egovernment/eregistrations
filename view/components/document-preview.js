@@ -75,7 +75,10 @@ module.exports = function (context, documentData/*, options*/) {
 
 				// Links to previous and next document
 				div({ class: 'document-preview-box-controls' },
-					div({ class: 'document-preview-label-doc-type' }, _('Document')),
+					div({ class: 'document-preview-label-doc-type' },
+						_if(kind === 'certificate', _('Certificate'),
+							_if(kind === 'requirementUpload', _('Document'),
+								_('Payment receipt')))),
 					_if(previousDocumentUrl,
 						a({ href: previousDocumentUrl,
 							class: 'hint-optional hint-optional-left',
