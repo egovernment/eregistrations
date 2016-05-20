@@ -119,6 +119,11 @@ module.exports = memoize(function (db) {
 		sectionProperty: { type: StringLine, required: true },
 		// The text of message displayed when there are no entities.
 		onEmptyMessage: { type: StringLine, value: _("There are no elements added at the moment.") },
+		propertyNamesDeep: {
+			value: function () {
+				if (this.resolventProperty) return [this.resolventProperty];
+			}
+		},
 		hasDisplayableRuleDeep: {
 			value: function (_observe) {
 				if (_observe(this.progressRules.displayable._size) > 0) return true;

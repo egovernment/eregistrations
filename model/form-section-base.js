@@ -255,8 +255,7 @@ module.exports = memoize(function (db) {
 		},
 		propertyNamesDeep: {
 			multiple: true,
-			type: StringLine,
-			value: []
+			type: StringLine
 		},
 		// Resolves collection of which section is part of
 		resolveParentCollection: {
