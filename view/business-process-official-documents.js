@@ -14,7 +14,7 @@ exports['tab-content'] = function () {
 	var options = { urlPrefix: '/' + this.businessProcess.__id__ + '/' };
 
 	return section({ class: 'section-primary' },
-		div({ class: "section-primary-sub document-preview-all-documents-table" },
+		div({ class: "section-primary-sub documents-list-table" },
 			div(renderCertificateList(this, options)),
 			div(renderDocumentsList(this, assign({
 				documentsRootHref:

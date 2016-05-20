@@ -75,7 +75,7 @@ module.exports = function (context, documentData/*, options*/) {
 
 				// Links to previous and next document
 				div({ class: 'document-preview-box-controls' },
-					div({ class: 'label-doc-type' }, _('Document')),
+					div({ class: 'document-preview-label-doc-type' }, _('Document')),
 					_if(previousDocumentUrl,
 						a({ href: previousDocumentUrl,
 							class: 'hint-optional hint-optional-left',
@@ -96,10 +96,10 @@ module.exports = function (context, documentData/*, options*/) {
 				mainContent || _if(documentData.filesSize, function () {
 					var moreThanOneFile = gt(documentData.filesSize, 1);
 
-					return div({ id: 'selection-preview', class: 'document-preview' },
+					return div({ id: 'selection-preview', class: 'document-preview-file' },
 
 						div({ class: 'container-with-nav' },
-							div({ class: 'document-preview-external-links' },
+							div({ class: 'document-preview-external-link' },
 
 								// Open file in new window link
 								span({ id: 'doc-open-links',
@@ -176,7 +176,7 @@ module.exports = function (context, documentData/*, options*/) {
 
 				// Side content
 				sideContentContainer = div(
-					{ class: 'document-preview-data' },
+					{ class: 'document-preview-data business-process-submitted-data' },
 					options.sideContent
 				)))
 	];

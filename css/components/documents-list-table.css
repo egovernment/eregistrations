@@ -1,0 +1,6 @@
+.documents-list-table {
+	max-height: 242px;
+	overflow: hidden;
+	overflow-y: scroll;
+	border: 1px solid var(--light-medium-background);
+}

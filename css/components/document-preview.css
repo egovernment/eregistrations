@@ -1,9 +1,9 @@
-.document-preview {
+.document-preview-file {
 	width: 100%;
 	margin-right: 0;
 }
 
-.document-preview > * {
+.document-preview-file > * {
 	margin-bottom: 0;
 }
 
@@ -34,7 +34,13 @@
 	line-height: 22px;
 }
 
-.document-preview-box-controls .label-doc-type {
+.document-preview-box-controls .fa-angle-right,
+.document-preview-box-controls .fa-angle-left {
+	vertical-align: middle;
+	font-size: 22px;
+}
+
+.document-preview-label-doc-type {
 	display: inline-block;
 	font-size: 12px;
 	vertical-align: middle;
@@ -44,13 +50,7 @@
 	color: var(--white-text);
 }
 
-.document-preview-box-controls a .fa-angle-right,
-.document-preview-box-controls a .fa-angle-left {
-	vertical-align: middle;
-	font-size: 22px;
-}
-
-.document-preview-box-controls .label-doc-type + a {
+.document-preview-label-doc-type + a {
 	margin-left: 16px;
 }
 
@@ -97,78 +97,27 @@
 	display: inline-block;
 }
 
-.document-preview-selected-document .document-preview,
-.document-preview-selected-document .document-preview-missing {
+.document-preview-file,
+.document-preview-missing {
 	width:59%;
 	margin-right: 2%;
 	display: inline-block;
 }
 
-.document-preview-selected-document .document-preview-data {
+.document-preview-file + .document-preview-data {
 	width: 39%;
 	overflow-y: auto;
 }
 
-.document-preview-all-documents-table {
-	max-height: 242px;
-	overflow: hidden;
-	overflow-y: scroll;
-	border: 1px solid var(--light-medium-background);
-}
-
-.document-preview-data h2 {
-	font-size: 19px;
-}
-
-.document-preview-data h3 {
-	font-size: 17px;
-	color: var(--white-text);
-	background-color: var(--normal-background);
-	padding: 11px 0 11px 8px;
-	margin-top: 0;
-}
-
-.document-preview-data h4 {
-	margin:0;
-	padding:11px 10px 10px 10px;
-	border-bottom: 1px solid var(--light-medium-background);
-	font-size: 15px;
-	font-weight: 300;
-	background: var(--light-medium-background);
-}
-
-.document-preview-data h5 {
-	font-size: 14px;
-	padding: 18px 0 3px 10px;
-	font-weight: 500;
-	border-bottom: 1px dashed #E3E3E3;
-}
-
-.document-preview-data .entity-data-section table tr:nth-child(even) {
-	background-color: var(--light-background);
-}
-
-.document-preview-data .entity-data-section {
-	margin-bottom: 22px;
-	outline: 1px solid var(--light-text);
-}
-
-.business-submitted-data-print-only {
-	text-align: right;
-	font-weight: 400;
-	font-size: 25px;
-	line-height: 44px;
-}
-
-.document-preview-external-links a {
+.document-preview-external-link a {
 	margin-left: 5px;
 }
 
-.document-preview > .container-with-nav > div > * {
+.document-preview-file > .container-with-nav > div > * {
 	margin: 0 2px;
 }
 
-.document-preview > .container-with-nav > div:last-child {
+.document-preview-file > .container-with-nav > div:last-child {
 	margin-bottom: 0;
 }
 
@@ -216,7 +165,7 @@
 	max-height: 100%;
 }
 
-.document-preview-image-placeholder .document-preview-new-word-document {
+.document-preview-new-word-document {
 	margin: 30% 10%;
 	width: 80%;
 }
@@ -231,11 +180,11 @@
 
 @media only screen and (max-width: var(--mobile-width)) {
 
-	.document-preview-content .document-preview {
+	.document-preview-file {
 		width: 100%;
 		}
 
-	.document-preview-data {
+	.document-preview-file + .document-preview-data {
 		width: 100%;
 		max-height: 100%;
 		overflow: visible;
