@@ -6,5 +6,5 @@
 }
 
 .documents-list-table .submitted-user-data-table {
-	width:99.99%;
+	width:99.99%; /* Hack to help make the right border of responsive table visible */
 }
