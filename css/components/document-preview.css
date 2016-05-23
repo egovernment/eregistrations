@@ -136,6 +136,10 @@
 	display: inline;
 }
 
+.document-preview-selected-document {
+	overflow: hidden;
+}
+
 .document-preview-selected-document + * {
 	margin-top: 22px;
 }
