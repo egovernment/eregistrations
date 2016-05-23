@@ -134,6 +134,10 @@
 	display: inline;
 }
 
+.document-preview-selected-document + * {
+	margin-top: 22px;
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 
 	.document-preview-file {
