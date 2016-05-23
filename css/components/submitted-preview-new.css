@@ -53,10 +53,6 @@
 	min-width: inherit;
 }
 
-.submitted-preview-revision-document .container-with-nav div:last-child {
-	margin-bottom:inherit;
-}
-
 .submitted-preview-new-document .container-with-nav div:last-child span {
 	font-size: 14px;
 	font-weight: normal;
@@ -81,6 +77,7 @@
 	text-align: right;
 	line-height: 44px;
 	white-space: nowrap;
+	margin-top: -22px;
 }
 
 .container-with-nav .submitted-preview-new-documents-navigation {
@@ -93,7 +90,6 @@
 	align-self: flex-end;
 }
 
-.submitted-preview-new-documents-external-links a,
 .submitted-preview-new-documents-navigation a {
 	margin-left: 5px;
 }

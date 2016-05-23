@@ -14,25 +14,6 @@
 	margin-bottom: 0;
 }
 
-.submitted-preview-revision-document {
-	width: 100%;
-	margin-right: 0;
-}
-
-.submitted-preview-revision-document > * {
-	margin-bottom: 0;
-}
-
-.submitted-preview-document-history {
-	display: block;
-	margin: 22px 0;
-}
-
-.submitted-preview-document-history > h3 {
-	margin-bottom: 22px;
-	font-weight: 300;
-}
-
 .submitted-preview-image-placeholder {
 	border: 1px solid var(--light-inner-border);
 	text-align: center;
@@ -72,7 +53,7 @@
 
 .submitted-preview-user-data {
 	width: 39%;
-	overflow-y: auto;
+	overflow-y: scroll;
 }
 .submitted-preview-user-data h2 {
 	font-size: 19px;

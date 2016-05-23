@@ -40,8 +40,7 @@ module.exports = memoize(function (db) {
 		abbr: { type: StringLine, value: function () { return this.constructor.abbr; } },
 		// Document legend, fallbacks to legend as decided on constructor
 		legend: { type: StringLine, value: function () { return this.constructor.legend; } },
-		// Which entity issued the document. In case of certificates it's an issuing institution,
-		// in case of user uploads, it's a user that uploaded files (and that's the default)
+		// Which entity issued the document.
 		issuedBy: {
 			type: db.Object,
 			label: _("Emissor institution")
@@ -126,12 +125,12 @@ module.exports = memoize(function (db) {
 				uniqueKey: this.key,
 				label: this.database.resolveTemplate(this.label, this.getTranslations(), { partial: true }),
 				abbr: this.abbr,
-				issuedBy: this.getOwnDescriptor('issuedBy').valueToJSON(),
-				issueDate: this.getOwnDescriptor('issueDate').valueToJSON(),
 				status: this.status,
-				number: this.getOwnDescriptor('number').valueToJSON(),
 				overviewSection: this.overviewSection.toJSON()
 			};
+			if (this.issuedBy) data.issuedBy = this.getOwnDescriptor('issuedBy').valueToJSON();
+			if (this.issueDate) data.issueDate = this.getOwnDescriptor('issueDate').valueToJSON();
+			if (this.number) data.number = this.getOwnDescriptor('number').valueToJSON();
 			var files = [];
 			this.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
 			if (files.length) data.files = files;

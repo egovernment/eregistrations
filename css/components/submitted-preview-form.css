@@ -1,10 +1,50 @@
-.submitted-preview-form {
+.document-preview-box-header + .disabler-range > .submitted-preview-form,
+.document-preview-box-header + .submitted-preview-form {
 	border-top: 1px solid #e3e3e3;
 	padding: 22px 0 0;
-	margin-top: 10px;
+	margin-top: 21px;
 }
 
 .submitted-preview-form .dbjs-input-component label {
 	width: auto;
 	padding-left: 0;
+}
+
+.submitted-preview-form .form-elements > li {
+	display: inline-block;
+	padding: 0 8px;
+	vertical-align: top;
+}
+
+.submitted-preview-form .form-elements > li:empty {
+	display: none;
+}
+
+.submitted-preview-form .form-elements > li:last-child {
+	line-height: 44px;
+}
+
+.submitted-preview-form .form-elements > li .dbjs-input-component > .input {
+	width: auto;
+}
+
+.submitted-preview-form .form-elements > li .input textarea {
+	width: auto;
+	max-width: 260px;
+}
+
+.submitted-preview-form .form-elements > li input[type='submit'] {
+	padding: 1px 11px;
+}
+
+.submitted-preview-form .form-elements > li .inline-button-radio label {
+	background-color: #fff;
+}
+
+.submitted-preview-form .form-elements > li .inline-button-radio .success {
+	background-color: #5CB85C;
+}
+
+.submitted-preview-form .form-elements > li .inline-button-radio .error {
+	background-color: #D9534F;
 }

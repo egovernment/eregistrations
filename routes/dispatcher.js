@@ -64,6 +64,9 @@ module.exports = function (step) {
 		},
 		'[0-9][a-z0-9]*/data': {
 			match: match,
+			decorateContext: function () {
+				this.dataSnapshot = this.businessProcess.dataForms.dataSnapshot.resolved;
+			},
 			view: require('../view/business-process-official-data')
 		},
 

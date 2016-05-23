@@ -14,7 +14,7 @@ exports['sub-main'] = function () {
 		h2(_("Documents of ${businessName}",
 			{ businessName: this.businessProcess._businessName })),
 		section({ class: 'section-primary' },
-			div({ class: "section-primary-sub document-preview-all-documents-table" },
+			div({ class: "section-primary-sub documents-list-table" },
 				div(renderCertificateList(this, options)),
 				div(renderDocumentsList(this, assign({
 					documentsRootHref: '/business-process/' + this.businessProcess.__id__ + '/documents/'

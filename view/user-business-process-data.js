@@ -19,7 +19,7 @@ exports['sub-main'] = {
 					href: '/business-process/' + this.businessProcess.__id__ + '/print-data/'
 					}, span({ class: "fa fa-print" }, _("Print")))),
 			div({ class: 'section-primary' },
-				div({ class: 'document-preview-data' },
+				div({ class: 'document-preview-data business-process-submitted-data' },
 					renderSections(this.businessProcess.dataForms.dataSnapshot))));
 	}
 };
