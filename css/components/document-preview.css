@@ -59,7 +59,7 @@
 	width:59%;
 	margin-right: 2%;
 	display: inline-block;
-	vertical-align: bottom;
+	vertical-align: top;
 }
 
 .document-preview-file + .document-preview-data {
@@ -67,7 +67,8 @@
 	overflow-y: auto;
 	display: inline-block;
 	border: 1px solid var(--light-medium-background);
-	vertical-align: bottom;
+	vertical-align: top;
+	margin-top: 44px;
 }
 
 .document-preview-external-link {
