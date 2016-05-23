@@ -26,7 +26,7 @@ dialog {
 	border: none;
 	display: none;
 	width: auto;
-	z-index: 1000;
+	z-index: 1000002;
 	margin: 0 auto;
 }
 
@@ -81,4 +81,12 @@ dialog footer p {
 	padding-left: 0;
 	padding-right: 0;
 	white-space: nowrap;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	dialog {
+		left:0;
+		right:0;
+		transform:none;
+	}
 }

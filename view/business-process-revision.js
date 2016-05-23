@@ -109,7 +109,7 @@ exports._rejectButton = function (/*options*/) {
 	), a({
 		href: '#reject-reason',
 		class: 'button-main button-main-error hint-optional' +
-			' hint-optional-right hint-optional-multiline',
+			' hint-optional-top hint-optional-multiline',
 		'data-hint': _("You can reject the registration when documents and/or data that is " +
 			"sent can be determined as not real.")
 	}, _("Reject application"))];

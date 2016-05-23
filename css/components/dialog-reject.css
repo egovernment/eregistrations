@@ -6,3 +6,10 @@
 .dialog-reject footer p {
 	text-align: right;
 }
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.dialog-reject textarea {
+		width: 100%;
+		height: 130px;
+	}
+}
