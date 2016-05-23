@@ -28,7 +28,8 @@
 .section-tab-nav > div {
 	width: 100%;
 }
-.section-tab-nav > .section-primary {
+.section-tab-nav > .section-primary,
+.section-tab-nav > .section-tab-content > .section-primary {
 	border-radius: 0 5px 5px 5px;
 }
 .section-tab-nav > li {
