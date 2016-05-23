@@ -22,7 +22,7 @@ module.exports = memoize(function (db) {
 	// Enum for document upload status
 	var RequirementUploadStatus = StringLine.createEnum('RequirementUploadStatus', new Map([
 		['valid', { label: _("Valid") }],
-		['invalid', { label: _("Invalid") }]
+		['invalid', { label: _("Invalid"), htmlClass: 'error' }]
 	]));
 
 	// Enum for document upload reject reasn

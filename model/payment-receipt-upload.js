@@ -22,7 +22,7 @@ module.exports = memoize(function (db) {
 	// Enum for document upload status
 	var PaymentReceiptUploadStatus = StringLine.createEnum('PaymentReceiptUploadStatus', new Map([
 		['valid', { label: _("Confirmed as paid") }],
-		['invalid', { label: _("Rejected") }]
+		['invalid', { label: _("Rejected"), htmlClass: 'error' }]
 	]));
 
 	return RequirementUpload.extend('PaymentReceiptUpload', {
