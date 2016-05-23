@@ -14,7 +14,7 @@ exports['sub-main'] = {
 		section({ class: 'section-tab-nav' },
 			exports._documentsTabLink.call(this),
 			exports._dataTabLink.call(this),
-			div({ id: 'tab-content', class: 'business-process-revision section-tab-content' }));
+			div({ id: 'tab-content', class: 'business-process-revision' }));
 	}
 };
 
