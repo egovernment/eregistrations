@@ -1,0 +1,15 @@
+.document-preview-box-header {
+	min-height: 22px;
+}
+
+.document-preview-box-header-document-title {
+	width: 70%;
+	float: left;
+	text-align: left;
+}
+
+.document-preview-box-controls {
+	width: 30%;
+	float: right;
+	text-align: right;
+}
