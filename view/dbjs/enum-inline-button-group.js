@@ -14,6 +14,9 @@ var assign        = require('es5-ext/object/assign')
 module.exports = Radio = function (document, type/*, options*/) {
 	var options = Object(arguments[2]);
 	this.controlsOptions = Object(options.controls);
+	type.meta.forEach(function (itemMeta, name) {
+		if (itemMeta.htmlClass) this[name] = itemMeta.htmlClass;
+	}, this.classMap = {});
 	DOMRadio.call(this, document, type, options);
 };
 
