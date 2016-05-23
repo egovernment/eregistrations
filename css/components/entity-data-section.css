@@ -55,6 +55,10 @@
 	padding-bottom:22px;
 }
 
+.entity-data-section-entities li:last-child {
+	padding-bottom: 0;
+}
+
 .entity-data-section-entities .entity-data-section .label-reg,
 .entity-data-section-entities .entity-data-section-sub .label-reg {
 	font-size: 9px;

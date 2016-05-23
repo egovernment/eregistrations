@@ -35,13 +35,8 @@
 	outline: 1px solid var(--light-text);
 }
 
-.business-process-submitted-data .entity-data-section .entity-data-section-entities li .entity-data-section:last-child,
 .business-process-submitted-data .entity-data-section:last-child {
 	margin-bottom: 0;
-}
-
-.business-process-submitted-data .entity-data-section .entity-data-section-entities li:last-child {
-	padding-bottom: 0;
 }
 
 .business-process-submitted-data-print-only {
