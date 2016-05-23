@@ -68,7 +68,8 @@ module.exports = memoize(function (db/* options */) {
 		// Verification status of data forms
 		status: { type: DataFormsStatus },
 		// Eventual rejection details
-		rejectReason: { type: db.String, required: true, label: _("Explanation") },
+		rejectReason: { type: db.String, required: true, label: _("Explanation"),
+			inputPlaceholder: _("Please write here the reason of rejection") },
 		// Whether data forms was validated and all required properties where provided.
 		isApproved: { type: db.Boolean, value: function (_observe) {
 			return this.status === 'approved';

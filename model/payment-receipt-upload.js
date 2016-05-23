@@ -67,6 +67,7 @@ module.exports = memoize(function (db) {
 			if (this.status !== 'invalid') return false;
 			return Boolean(this.rejectReasonMemo);
 		} },
+		rejectReasonMemo: { inputPlaceholder: _("Please write here the reason of rejection") },
 
 		// Whether document upload was rejected recently
 		// Needed for part A, where status for document might already have been cleared

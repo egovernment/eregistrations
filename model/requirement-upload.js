@@ -56,7 +56,8 @@ module.exports = memoize(function (db) {
 
 		// Eventual rejection details
 		rejectReasonTypes: { type: RequirementUploadRejectReason, multiple: true, required: true },
-		rejectReasonMemo: { type: db.String, required: true, label: _("Explanation") },
+		rejectReasonMemo: { type: db.String, required: true, label: _("Explanation"),
+			inputPlaceholder: _("Please write here the other(s) reason(s) of rejection") },
 		rejectReasons: { type: db.String, multiple: true, required: true,
 			value: function () {
 				var result = [], isInvalid = false;
