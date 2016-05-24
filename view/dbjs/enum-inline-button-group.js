@@ -1,6 +1,7 @@
 'use strict';
 
 var assign        = require('es5-ext/object/assign')
+  , forEach       = require('es5-ext/object/for-each')
   , mixin         = require('es5-ext/object/mixin')
   , d             = require('d')
   , autoBind      = require('d/auto-bind')
@@ -14,9 +15,12 @@ var assign        = require('es5-ext/object/assign')
 module.exports = Radio = function (document, type/*, options*/) {
 	var options = Object(arguments[2]);
 	this.controlsOptions = Object(options.controls);
-	type.meta.forEach(function (itemMeta, name) {
+	var cb = function (itemMeta, name) {
 		if (itemMeta.htmlClass) this[name] = itemMeta.htmlClass;
-	}, this.classMap = {});
+	};
+	this.classMap = {};
+	if (type.meta.forEach) type.meta.forEach(cb, this.classMap);
+	else forEach(type.meta, cb, this.classMap);
 	DOMRadio.call(this, document, type, options);
 };
 
