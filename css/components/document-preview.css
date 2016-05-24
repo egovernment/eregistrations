@@ -16,12 +16,15 @@
 }
 
 .document-preview-box .entities-overview-info {
-	margin-top: 22px;
 	margin-bottom: 22px;
 	color: #8a6d3b;
 	text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 	background-color: #fcf8e3;
 	border-color: #fbeed5;
+}
+
+.document-preview-box-header + .entities-overview-info {
+	margin-top: 22px;
 }
 
 .document-preview-box-header {
