@@ -86,6 +86,7 @@
 	text-align: right;
 	line-height: 44px;
 	white-space: nowrap;
+	float: right;
 }
 
 .document-preview-navigation div {
