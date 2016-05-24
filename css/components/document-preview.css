@@ -74,7 +74,8 @@
 	vertical-align: top;
 }
 
-.document-preview-file + .document-preview-data {
+.document-preview-file + .document-preview-data,
+.document-preview-missing + .document-preview-data {
 	width: 39%;
 	overflow-y: auto;
 	display: inline-block;
