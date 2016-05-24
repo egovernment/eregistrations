@@ -34,6 +34,7 @@
 
 .document-preview-box-header-document-title {
 	font-size: 18px;
+	max-width: 70%;
 }
 
 .document-preview-box-header-document-title .fa-external-link {
