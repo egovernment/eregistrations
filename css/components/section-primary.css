@@ -12,6 +12,7 @@
 .section-primary > .section-primary-wrapper > * {
 	margin-bottom: 22px;
 }
+.section-primary > *:empty,
 .section-primary > *:last-child,
 .section-primary > form > *:last-child,
 .section-primary > .disabler-range > *:last-child,
@@ -81,6 +82,7 @@
 	margin-bottom:12px;
 }
 
+.section-primary-sub > *:empty,
 .section-primary-sub > :last-child {
 	margin-bottom: 0;
 }
