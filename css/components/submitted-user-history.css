@@ -9,14 +9,11 @@
 	background-color: var(--light-background);
 }
 
-.submitted-user-history tr th {
-	text-align: left;
-	padding-left: 10px;
-}
-.submitted-user-history tr,
+.submitted-user-history th,
 .submitted-user-history td {
 	padding: 11px 11px 10px;
 	text-align: left;
+	vertical-align: top;
 }
 .submitted-user-history tr:first-child td {
 	padding-bottom: 11px;
