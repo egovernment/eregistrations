@@ -13,3 +13,15 @@
 	float: right;
 	text-align: right;
 }
+
+.document-preview-external-link {
+	width: 70%;
+	float: left;
+	text-align: left;
+}
+
+.document-preview-navigation {
+	width: 30%;
+	float: right;
+	text-align: right;
+}
