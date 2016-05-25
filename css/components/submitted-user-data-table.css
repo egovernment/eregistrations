@@ -36,14 +36,14 @@
 
 .submitted-user-data-table tbody .active td:first-child {
 	border-left-color: var(--normal-background);
-	border-left-width:2px;
-	border-left-style: inset;
+	border-left-width:3px;
+	border-left-style: solid;
 }
 
 .submitted-user-data-table tbody .active td:last-child {
 	border-right-color: var(--normal-background);
 	border-right-width:2px;
-	border-left-style: inset;
+	border-left-style: solid;
 }
 
 .submitted-user-data-table tbody td {
