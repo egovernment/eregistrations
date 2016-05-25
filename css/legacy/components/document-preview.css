@@ -14,6 +14,10 @@
 	text-align: right;
 }
 
+.document-preview-file-controls {
+	display: block;
+}
+
 .document-preview-external-link {
 	width: 70%;
 	float: left;
@@ -24,4 +28,10 @@
 	width: 30%;
 	float: right;
 	text-align: right;
+}
+
+.document-preview-image-placeholder {
+	width: 100%;
+	display: block;
+	float: left;
 }
