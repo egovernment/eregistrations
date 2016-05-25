@@ -100,46 +100,47 @@ module.exports = function (context, documentData/*, options*/) {
 
 				return div({ id: 'selection-preview', class: 'document-preview-file' },
 
-					div({ class: 'document-preview-external-link' },
+					div({ class: 'document-preview-file-controls' },
+						div({ class: 'document-preview-external-link' },
 
-						// Open file in new window link
-						span({ id: 'doc-open-links',
-							class: 'document-preview-open-link' },
-							list(documentData.files, function (file) {
-								var linkAttributes = { target: '_blank', href: stUrl(pathToUrl(file.path)),
-									class: _if(eq(file, getArrayIndex(documentData.files, 0)), 'active') };
+							// Open file in new window link
+							span({ id: 'doc-open-links',
+								class: 'document-preview-open-link' },
+								list(documentData.files, function (file) {
+									var linkAttributes = { target: '_blank', href: stUrl(pathToUrl(file.path)),
+										class: _if(eq(file, getArrayIndex(documentData.files, 0)), 'active') };
 
-								if (includes.call(docMimeTypes, file.type)) {
-									linkAttributes.download = file.path;
-								} else if (!isReadOnlyRender && (file.type === 'application/pdf')) {
-									linkAttributes.href = '/pdfjs/web/viewer.html?file=' +
-										encodeURIComponent('/' + file.path);
-								}
+									if (includes.call(docMimeTypes, file.type)) {
+										linkAttributes.download = file.path;
+									} else if (!isReadOnlyRender && (file.type === 'application/pdf')) {
+										linkAttributes.href = '/pdfjs/web/viewer.html?file=' +
+											encodeURIComponent('/' + file.path);
+									}
 
-								return a(linkAttributes, _("Open file in new window"));
-							})),
+									return a(linkAttributes, _("Open file in new window"));
+								})),
 
-						// Download document link
-						a({ href: _if(documentData.filesSize,
-							_if(eq(documentData.filesSize, 1),
-								mmap(resolve(getArrayIndex(documentData.files, 0), 'path'), function (path) {
-									if (path) return stUrl(pathToUrl(path));
-								}),
-								'/' + documentData.archiveUrl)),
-							download: _if(documentData.filesSize,
+							// Download document link
+							a({ href: _if(documentData.filesSize,
 								_if(eq(documentData.filesSize, 1),
-									resolve(getArrayIndex(documentData.files, 0), 'path'),
-									documentData.archiveUrl)) }, _("Download document"))),
+									mmap(resolve(getArrayIndex(documentData.files, 0), 'path'), function (path) {
+										if (path) return stUrl(pathToUrl(path));
+									}),
+									'/' + documentData.archiveUrl)),
+								download: _if(documentData.filesSize,
+									_if(eq(documentData.filesSize, 1),
+										resolve(getArrayIndex(documentData.files, 0), 'path'),
+										documentData.archiveUrl)) }, _("Download document"))),
 
-					// Document files navigation (top)
-					_if(moreThanOneFile, div(
-						{ class: 'document-preview-navigation' },
-						div({ id: 'submitted-preview-new-navigation-top' },
-							a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' },
-								_("Previous"))),
-							span(span({ class: 'current-index' }, "1"), " / ", documentData.filesSize),
-							a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, _("Next"))))
-					)),
+						// Document files navigation (top)
+						_if(moreThanOneFile, div(
+							{ class: 'document-preview-navigation' },
+							div({ id: 'submitted-preview-new-navigation-top' },
+								a({ class: 'previous' }, span({ class: 'fa fa-chevron-circle-left' },
+									_("Previous"))),
+								span(span({ class: 'current-index' }, "1"), " / ", documentData.filesSize),
+								a({ class: 'next' }, span({ class: 'fa fa-chevron-circle-right' }, _("Next"))))
+						))),
 
 					// Document file preview (usually zoomable)
 					docPreviewElement = ul({

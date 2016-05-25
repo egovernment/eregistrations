@@ -86,9 +86,14 @@
 	margin-top: 44px;
 }
 
+.document-preview-file-controls {
+	display: flex;
+	justify-content: space-between;
+}
+
 .document-preview-external-link {
 	line-height: 44px;
-	display: inline-block;
+	flex:2;
 }
 
 .document-preview-external-link a {
@@ -96,12 +101,10 @@
 }
 
 .document-preview-navigation {
-	display: block;
-	min-width: 63px;
+	flex:1;
 	text-align: right;
 	line-height: 44px;
 	white-space: nowrap;
-	float: right;
 }
 
 .document-preview-navigation div {
