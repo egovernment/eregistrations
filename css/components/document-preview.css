@@ -34,7 +34,7 @@
 
 .document-preview-box-header-document-title {
 	font-size: 18px;
-	max-width: 70%;
+	flex:2;
 }
 
 .document-preview-box-header-document-title .fa-external-link {
@@ -45,6 +45,7 @@
 .document-preview-box-controls {
 	vertical-align: middle;
 	line-height: 22px;
+	flex:1;
 }
 
 .document-preview-box-controls .fa-angle-right,
