@@ -40,9 +40,10 @@ exports['tab-content'] = function () {
 	  , processingStep  = this.processingStep;
 
 	insert(dataView(this, {
-		prependContent: div({ class: 'document-preview-box' },
+		prependContent:
 			_if(processingStep.dataFormsRevision._isProcessable,
-				disableStep(processingStep, revisionForm(businessProcess)))),
+				div({ class: 'document-preview-box' },
+					disableStep(processingStep, revisionForm(businessProcess)))),
 		urlPrefix: '/' + businessProcess.__id__ + '/'
 	}));
 };
