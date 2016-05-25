@@ -13,7 +13,7 @@ revisionForm = function (businessProcess) {
 	var dataForms = businessProcess.dataForms
 	  , revReason;
 
-	return div({ class: 'document-preview-box' }, form(
+	return form(
 		{
 			id: 'form-revision-data-forms',
 			class: 'submitted-preview-form',
@@ -31,7 +31,7 @@ revisionForm = function (businessProcess) {
 		),
 		legacy('radioMatch', 'form-revision-data-forms',
 			dataForms.__id__ + '/status', { rejected: revReason.getId() })
-	));
+	);
 };
 
 exports['tab-business-process-data'] = { class: { active: true } };
@@ -40,8 +40,9 @@ exports['tab-content'] = function () {
 	  , processingStep  = this.processingStep;
 
 	insert(dataView(this, {
-		prependContent: _if(processingStep.dataFormsRevision._isProcessable,
-			disableStep(processingStep, revisionForm(businessProcess))),
+		prependContent: div({ class: 'document-preview-box' },
+			_if(processingStep.dataFormsRevision._isProcessable,
+				disableStep(processingStep, revisionForm(businessProcess)))),
 		urlPrefix: '/' + businessProcess.__id__ + '/'
 	}));
 };
