@@ -45,6 +45,7 @@
 .document-preview-box-controls {
 	vertical-align: middle;
 	line-height: 22px;
+	text-align: right;
 	flex:1;
 }
 
