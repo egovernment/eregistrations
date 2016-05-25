@@ -23,8 +23,8 @@ module.exports = memoize(function (db/* options */) {
 
 	// Enum for forms status
 	var DataFormsStatus = StringLine.createEnum('DataFormsStatus', new Map([
-		['approved', { label: _("Valid") }],
-		['rejected', { label: _("Invalid"), htmlClass: 'error' }]
+		['approved', { label: _("The data is valid") }],
+		['rejected', { label: _("The data is invalid"), htmlClass: 'error' }]
 	]));
 
 	BusinessProcess.prototype.defineProperties({
