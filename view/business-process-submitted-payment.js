@@ -5,6 +5,7 @@
 var renderDocument             = require('./components/document-preview')
   , renderDocumentHistory      = require('./components/business-process-document-history')
   , renderDocumentRevisionInfo = require('./components/business-process-document-review-info')
+  , renderSections             = require('./components/render-sections-json')
   , getDocumentData            = require('./utils/get-document-data');
 
 exports._parent  = require('./business-process-submitted-documents');
@@ -17,8 +18,9 @@ exports['selection-preview'] = function () {
 		renderDocument(this, documentData, {
 			prependContent: renderDocumentRevisionInfo(this),
 			mainContent: exports._paymentPreviewContent.call(this, documentData),
-			sideContent: renderDocumentHistory(documentData)
-		})
+			sideContent: renderSections(this.businessProcess.dataForms.dataSnapshot)
+		}),
+		renderDocumentHistory(documentData)
 	);
 };
 

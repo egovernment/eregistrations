@@ -4,6 +4,7 @@
 
 var renderDocument        = require('./components/document-preview')
   , renderDocumentHistory = require('./components/business-process-document-history')
+  , renderSections        = require('./components/render-sections-json')
   , getDocumentData       = require('./utils/get-document-data');
 
 exports._parent  = require('./business-process-official-documents');
@@ -18,10 +19,12 @@ exports['selection-preview'] = function () {
 		sideContent: [
 			documentData.overviewSection,
 			documentData.section,
-			renderDocumentHistory(documentData)
+			renderSections(this.businessProcess.dataForms.dataSnapshot)
 		],
 		urlPrefix: '/' + this.businessProcess.__id__ + '/'
-	}));
+	}),
+		renderDocumentHistory(documentData)
+		);
 };
 
 exports._certificatePreviewContent = Function.prototype;
