@@ -284,6 +284,11 @@ module.exports = memoize(function (db) {
 		toJSON: { value: function (ignore) {
 			throw new Error("toJSON not implemented for " + this.__id__);
 		} }
+	}, {
+		updateSectionPostfix: {
+			type: StringLine,
+			value: "UpdatePostfix"
+		}
 	});
 
 	FormSectionBase.prototype.defineProperties({
