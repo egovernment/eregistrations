@@ -27,26 +27,27 @@ module.exports = function (context/*, options*/) {
 							class: 'submitted-user-data-table-status',
 							data: function (upload) {
 								return [
-									_if(eq(upload.status, 'approved'), span({ class: 'fa fa-check' })),
-									_if(eq(upload.status, 'rejected'), span({ class: 'fa fa-exclamation' }))
+									_if(eq(upload.status, 'approved'), a({ href: resolveDocumentUrl(upload) },
+										span({ class: 'fa fa-check' }))),
+									_if(eq(upload.status, 'rejected'), a({ href: resolveDocumentUrl(upload) },
+										span({ class: 'fa fa-exclamation' })))
 								];
 							}
 						}, {
 							class: 'submitted-user-data-table-label',
 							head: _("Payment receipts"),
-							data: function (upload) { return upload.label; }
+							data: function (upload) { return a({ href:
+								resolveDocumentUrl(upload) }, upload.label); }
 						}, {
 							class: 'submitted-user-data-table-date',
 							head: _("Emission date"),
-							data: function (upload) { return upload.issueDate; }
+							data: function (upload) {
+								return a({ href: resolveDocumentUrl(upload) }, upload.issueDate);
+							}
 						}, {
 							head: _("Emissor"),
-							data: _("User")
-						}, {
-							class: 'submitted-user-data-table-link',
 							data: function (upload) {
-								return a({ href: resolveDocumentUrl(upload) },
-									span({ class: 'fa fa-search' }, _("Go to")));
+								return a({ href: resolveDocumentUrl(upload) }, _("User"));
 							}
 						}],
 						rowAttributes: function (upload) {

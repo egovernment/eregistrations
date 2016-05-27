@@ -38,23 +38,28 @@ module.exports = function (context/*, options*/) {
 						}),
 						columns: [{
 							class: 'submitted-user-data-table-status',
-							data: function () { return span({ class: 'fa fa-certificate' }); }
+							data: function (certificate) {
+								return a({ href: resolveDocumentUrl(certificate) },
+									span({ class: 'fa fa-certificate' }));
+							}
 						}, {
 							class: 'submitted-user-data-table-label',
 							head: _("Certificates"),
-							data: function (certificate) { return certificate.label; }
+							data: function (certificate) {
+								return a({ href: resolveDocumentUrl(certificate) }, certificate.label);
+							}
 						}, {
 							class: 'submitted-user-data-table-date',
 							head: _("Emission date"),
-							data: function (certificate) { return certificate.issueDate; }
-						}, {
-							head: _("Emissor"),
-							data: function (certificate) { return certificate.issuedBy; }
-						}, {
-							class: 'submitted-user-data-table-link',
 							data: function (certificate) {
 								return a({ href: resolveDocumentUrl(certificate) },
-									span({ class: 'fa fa-search' }, _("Go to")));
+									certificate.issueDate);
+							}
+						}, {
+							head: _("Emissor"),
+							data: function (certificate) {
+								return a({ href: resolveDocumentUrl(certificate) },
+									certificate.issuedBy);
 							}
 						}],
 						rowAttributes: function (certificate) {
