@@ -55,9 +55,7 @@ module.exports = function (context, documentData/*, options*/) {
 
 	defaultResolveDocumentUrl = getResolveDocumentUrl(kind, collection, options);
 	resolveDocumentUrl = function (data) {
-		var resolvedUrl = defaultResolveDocumentUrl(data);
-
-		return resolvedUrl && resolvedUrl + '#submitted-box';
+		return defaultResolveDocumentUrl(data);
 	};
 
 	nextDocumentUrl = reactiveSibling.next(collection, context.documentUniqueKey)

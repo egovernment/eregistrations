@@ -19,10 +19,12 @@ module.exports = function (kind, collection/*, options*/) {
 		else if (kind === 'requirementUpload') url += 'documents';
 		else if (kind === 'paymentReceiptUpload') url += 'payment-receipts';
 		else throw new Error(kind + " is not recognized document kind");
-		if (!documentsRootHref) return url + '/' + camelToHyphen.call(data.uniqueKey) + '/';
+		if (!documentsRootHref) {
+			return url + '/' + camelToHyphen.call(data.uniqueKey) + '/#submitted-box';
+		}
 		return reactiveSibling.previous(collection, data.uniqueKey).map(function (previous) {
 			if (!previous) return documentsRootHref;
-			return url + '/' + camelToHyphen.call(data.uniqueKey) + '/';
+			return url + '/' + camelToHyphen.call(data.uniqueKey) + '/#submitted-box';
 		});
 	};
 };
