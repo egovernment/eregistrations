@@ -22,7 +22,8 @@ revisionForm = function (requirementUpload) {
 
 	return form({
 		id: 'form-revision-requirement-upload',
-		class: 'submitted-preview-form',
+		class: ['submitted-preview-form', _if(or(requirementUpload._isApproved,
+			requirementUpload._isRejected), 'completed')],
 		method: 'post',
 		action: '/revision-requirement-upload/' + requirementUpload.master.__id__ +
 			'/' + camelToHyphen.call(requirementUpload.document.uniqueKey) + '/'
@@ -33,9 +34,7 @@ revisionForm = function (requirementUpload) {
 				._dbjsInput)),
 			li(revFailOther = div({ class: 'input' },
 				input({ dbjs: requirementUpload._rejectReasonMemo }))),
-			li(input({ class: _if(or(requirementUpload._isApproved,
-				requirementUpload._isRejected), 'completed'),
-				type: 'submit', value: _("Save") }))),
+			li(input({ type: 'submit', value: _("Save") }))),
 		legacy('radioMatch', 'form-revision-requirement-upload',
 			requirementUpload.__id__ + '/status', { invalid: revFail.getId() }),
 		legacy('checkboxToggle', normalize(revFailInput.itemsByValue.other.dom).getId(),
