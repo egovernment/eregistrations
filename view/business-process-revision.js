@@ -4,7 +4,8 @@
 
 var _                = require('mano').i18n.bind('View: Official: Revision')
   , normalizeOptions = require('es5-ext/object/normalize-options')
-  , renderMainInfo   = require('./components/business-process-main-info');
+  , renderMainInfo   = require('./components/business-process-main-info')
+  , getUploads       = require('./utils/get-uploads-list');
 
 exports._parent = require('./user-base');
 exports._match = 'businessProcess';
@@ -12,8 +13,8 @@ exports._match = 'businessProcess';
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var revisionStep = this.processingStep;
-
+		var revisionStep = this.processingStep,
+				uploads      = getUploads(this.processingStep.paymentReceiptUploads, this.appName);
 		renderMainInfo(this, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
 
 		insert(_if(revisionStep._isRevisionPending, [exports._customAlert.call(this), section(
@@ -31,7 +32,8 @@ exports['sub-main'] = {
 
 		section({ class: 'section-tab-nav' },
 			exports._documentsTabLink.call(this),
-			exports._paymentsTabLink.call(this),
+			_if(resolve(uploads, '_length'),
+				exports._paymentsTabLink.call(this)),
 			exports._dataTabLink.call(this),
 			exports._processingTabLink.call(this),
 			div({ id: 'tab-content', class: 'business-process-revision' }));
