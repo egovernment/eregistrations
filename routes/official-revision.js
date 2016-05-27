@@ -35,7 +35,6 @@ module.exports = function (step) {
 					var firstUniqueKey = findFirstUploadKey.call(this, 'requirementUpload');
 					if (!firstUniqueKey) return false;
 					uniqueKey = hyphenToCamel.call(uniqueKey);
-					if (firstUniqueKey === uniqueKey) return false;
 					return matchUpload.call(this, 'requirementUpload', uniqueKey);
 				}.bind(this));
 			},
@@ -59,7 +58,6 @@ module.exports = function (step) {
 					var firstUniqueKey = findFirstUploadKey.call(this, 'paymentReceiptUpload');
 					if (!firstUniqueKey) return false;
 					uniqueKey = hyphenToCamel.call(uniqueKey);
-					if (firstUniqueKey === uniqueKey) return false;
 					return matchUpload.call(this, 'paymentReceiptUpload', uniqueKey);
 				}.bind(this));
 			},
