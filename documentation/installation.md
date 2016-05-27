@@ -4,7 +4,7 @@
 
 Application can be deployed on both OSX/\*nix and Windows systems. It needs following software to be installed:
 
-* __Node.js__ - http://nodejs.org/ - v0.4 in it's **latest** release
+* __Node.js__ - http://nodejs.org/ - v4 in it's **latest** release
 
 ### Image processing utilties:
 
