@@ -31,37 +31,37 @@ exports['sub-main'] = {
 		)]));
 
 		section({ class: 'section-tab-nav' },
-			exports._documentsTabLink.call(this),
+			exports._documentsTabLink.call(this, 1),
 			_if(resolve(uploads, '_length'),
-				exports._paymentsTabLink.call(this)),
-			exports._dataTabLink.call(this),
-			exports._processingTabLink.call(this),
+				exports._paymentsTabLink.call(this, 2)),
+			exports._dataTabLink.call(this, _if(resolve(uploads, '_length'), 3, 2)),
+			exports._processingTabLink.call(this, _if(resolve(uploads, '_length'), 4, 3)),
 			div({ id: 'tab-content', class: 'business-process-revision' }));
 	}
 };
 
-exports._documentsTabLink = function () {
+exports._documentsTabLink = function (tabNumber) {
 	return a({
 		class: 'section-tab-nav-tab',
 		id: 'tab-business-process-documents',
 		href: '/' + this.businessProcess.__id__ + '/'
-	}, _("Revision of the documents"));
+	}, tabNumber + ". " + _("Revision of the documents"));
 };
 
-exports._paymentsTabLink = function () {
+exports._paymentsTabLink = function (tabNumber) {
 	return a({
 		class: 'section-tab-nav-tab',
 		id: 'tab-business-process-payments',
 		href: '/' + this.businessProcess.__id__ + '/payment-receipts/'
-	}, _("Revision of payments"));
+	}, tabNumber + ". " + _("Revision of payments"));
 };
 
-exports._dataTabLink = function () {
+exports._dataTabLink = function (tabNumber) {
 	return a({
 		class: 'section-tab-nav-tab',
 		id: 'tab-business-process-data',
 		href: '/' + this.businessProcess.__id__ + '/data/'
-	}, _("Revision of data"));
+	}, tabNumber + ". " + _("Revision of data"));
 };
 
 exports._processingTabLink = Function.prototype;
