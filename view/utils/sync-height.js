@@ -8,8 +8,8 @@ module.exports = function (el) {
 	var lastValue;
 	var updateHeight = function () {
 		if (el.clientWidth === lastValue) return;
-		lastValue = el.clientWidth;
 		if (!el.clientWidth) return;
+		lastValue = el.clientWidth;
 		var height = el.clientWidth * 1.415, diff = height % 22;
 		height = round(diff < 11 ? (height - diff) : (height + (22 - diff)));
 		el.style.height = height + 'px';
