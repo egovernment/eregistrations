@@ -186,7 +186,9 @@ module.exports = function (context, documentData/*, options*/) {
 		// A4 proportions, and with respect to VR (its height is in all cases multiplication of 22px)
 		syncHeight(docPreviewElement);
 		// `syncStyle` ensures that side content has exactly same height as main content
-		syncStyle.call(sideContentContainer, docPreviewElement, 'height', isMobileView);
+		syncStyle.call(sideContentContainer, docPreviewElement, 'height', function () {
+			return isMobileView() && document.body.contains(sideContentContainer);
+		});
 	}
 
 	return result;
