@@ -55,11 +55,17 @@ module.exports = function (file) {
 		if (!file.path && contains.call(e.message, 'Unable to open file')) {
 			return deferred(unlink(thumbFullPath), preview && unlink(previewFullPath))(null, false);
 		}
+		console.log(e);
 		if (contains.call(e.message, "Improper image header")) {
 			console.log("Cannot generate previews", e.stack);
 			return;
 		}
 		if (startsWith.call(e.message, "Command failed: gm convert:")) {
+			console.error("\nCould not generate thumb and preview:\n");
+			console.error(e.stack + "\n\n");
+			return;
+		}
+		if (contains.call(e.message, "GPL Ghostscript")) {
 			console.error("\nCould not generate thumb and preview:\n");
 			console.error(e.stack + "\n\n");
 			return;
