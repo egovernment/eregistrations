@@ -13,7 +13,7 @@ exports._match   = 'documentUniqueId';
 
 exports['selection-preview'] = function () {
 	var documentData = getDocumentData(this);
-	console.log('renderDocumentHistory(documentData)', renderDocumentHistory(documentData));
+
 	insert(renderDocument(this, documentData, {
 		mainContent: exports._certificatePreviewContent.call(this, documentData),
 		sideContent: [

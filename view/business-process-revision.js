@@ -36,21 +36,21 @@ exports['sub-main'] = {
 				class: 'section-tab-nav-tab',
 				id: 'tab-business-process-documents',
 				href: '/' + this.businessProcess.__id__ + '/'
-			}, _("${ tabNumber } Revision of the documents", { tabNumber: 1 })),
+			}, _("${ tabNumber } Revision of the documents", { tabNumber: "1." })),
 
 			_if(resolve(uploads, '_length'),
 				a({
 					class: 'section-tab-nav-tab',
 					id: 'tab-business-process-payments',
 					href: '/' + this.businessProcess.__id__ + '/payment-receipts/'
-				}, _("${ tabNumber } Revision of payments", { tabNumber: 2 }))),
+				}, _("${ tabNumber } Revision of payments", { tabNumber: "2." }))),
 
 			a({
 				class: 'section-tab-nav-tab',
 				id: 'tab-business-process-data',
 				href: '/' + this.businessProcess.__id__ + '/data/'
 			}, _("${ tabNumber } Revision of data",
-				{ tabNumber: _if(resolve(uploads, '_length'), 3, 2) })),
+				{ tabNumber: _if(resolve(uploads, '_length'), "3.", "2.") })),
 
 			_if(exports._processingTabLabel.call(this),
 				a({
@@ -58,7 +58,7 @@ exports['sub-main'] = {
 					id: 'tab-business-process-processing',
 					href: '/' + this.businessProcess.__id__ + '/processing'
 				}, _d(exports._processingTabLabel.call(this),
-					{ tabNumber: _if(resolve(uploads, '_length'), 4, 3) }))),
+					{ tabNumber: _if(resolve(uploads, '_length'), "4.", "3.") }))),
 
 			div({ id: 'tab-content', class: 'business-process-revision' }));
 	}
