@@ -3,6 +3,7 @@
 'use strict';
 
 var _                = require('mano').i18n.bind('View: Official: Revision')
+  , _d               = _
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , renderMainInfo   = require('./components/business-process-main-info')
   , getUploads       = require('./utils/get-uploads-list');
@@ -31,40 +32,39 @@ exports['sub-main'] = {
 		)]));
 
 		section({ class: 'section-tab-nav' },
-			exports._documentsTabLink.call(this, 1),
+			a({
+				class: 'section-tab-nav-tab',
+				id: 'tab-business-process-documents',
+				href: '/' + this.businessProcess.__id__ + '/'
+			}, _("${ tabNumber } Revision of the documents", { tabNumber: 1 })),
+
 			_if(resolve(uploads, '_length'),
-				exports._paymentsTabLink.call(this, 2)),
-			exports._dataTabLink.call(this, _if(resolve(uploads, '_length'), 3, 2)),
-			exports._processingTabLink.call(this, _if(resolve(uploads, '_length'), 4, 3)),
+				a({
+					class: 'section-tab-nav-tab',
+					id: 'tab-business-process-payments',
+					href: '/' + this.businessProcess.__id__ + '/payment-receipts/'
+				}, _("${ tabNumber } Revision of payments", { tabNumber: 2 }))),
+
+			a({
+				class: 'section-tab-nav-tab',
+				id: 'tab-business-process-data',
+				href: '/' + this.businessProcess.__id__ + '/data/'
+			}, _("${ tabNumber } Revision of data",
+				{ tabNumber: _if(resolve(uploads, '_length'), 3, 2) })),
+
+			_if(exports._processingTabLabel.call(this),
+				a({
+					class: 'section-tab-nav-tab',
+					id: 'tab-business-process-processing',
+					href: '/' + this.businessProcess.__id__ + '/processing'
+				}, _d(exports._processingTabLabel.call(this),
+					{ tabNumber: _if(resolve(uploads, '_length'), 4, 3) }))),
+
 			div({ id: 'tab-content', class: 'business-process-revision' }));
 	}
 };
 
-exports._documentsTabLink = function (tabNumber) {
-	return a({
-		class: 'section-tab-nav-tab',
-		id: 'tab-business-process-documents',
-		href: '/' + this.businessProcess.__id__ + '/'
-	}, tabNumber + ". " + _("Revision of the documents"));
-};
-
-exports._paymentsTabLink = function (tabNumber) {
-	return a({
-		class: 'section-tab-nav-tab',
-		id: 'tab-business-process-payments',
-		href: '/' + this.businessProcess.__id__ + '/payment-receipts/'
-	}, tabNumber + ". " + _("Revision of payments"));
-};
-
-exports._dataTabLink = function (tabNumber) {
-	return a({
-		class: 'section-tab-nav-tab',
-		id: 'tab-business-process-data',
-		href: '/' + this.businessProcess.__id__ + '/data/'
-	}, tabNumber + ". " + _("Revision of data"));
-};
-
-exports._processingTabLink = Function.prototype;
+exports._processingTabLabel = Function.prototype;
 
 exports._approveButton = function (/*options*/) {
 	var options = normalizeOptions(arguments[0]);
