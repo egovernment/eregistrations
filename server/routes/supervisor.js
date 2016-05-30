@@ -21,6 +21,7 @@ var aFrom               = require('es5-ext/array/from')
   , QueryHandler        = require('../../utils/query-handler')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
   , stepsMap            = require('../../utils/processing-steps-map')
+  , filterStepsMap      = require('../../utils/filter-supervisor-steps-map')
   , timeRanges          = require('../../utils/supervisor-time-ranges')
   , bpListProps         = require('../../utils/supervisor-list-properties')
   , bpListComputedProps = aFrom(require('../../utils/supervisor-list-computed-properties'))
@@ -69,19 +70,23 @@ var getStepsFromBps = function (businessProcessesArr, keyPath) {
 };
 
 var initializeHandler = function (conf) {
-	var tableQueryHandler = new QueryHandler(exports.tableQueryConf)
-	  , itemsPerPage = toNaturalNumber(listItemsPerPage) || defaultItemsPerPage
-	  , storage = ensureStorage(conf.storage)
+	var tableQueryHandler  = new QueryHandler(exports.tableQueryConf)
+	  , itemsPerPage       = toNaturalNumber(listItemsPerPage) || defaultItemsPerPage
+	  , storage            = ensureStorage(conf.storage)
+	  , stepsMap           = filterStepsMap(conf.stepsMap)
 	  , allSupervisorSteps = getSupervisorSteps(storage);
 
 	var getTableData = memoize(function (query) {
 		var promise;
 
 		if (query.step) {
-			promise = getDbSet(storage, 'computed', stepsMap[query.step].indexName,
-				serializeValue(stepsMap[query.step].indexValue)).then(
+			var indexName  = stepsMap[query.step][query.status].indexName
+			  , indexValue = stepsMap[query.step][query.status].indexValue;
+
+			promise = getDbSet(storage, 'computed', indexName,
+				serializeValue(indexValue)).then(
 				function (baseSet) {
-					return getDbArray(baseSet, storage, 'computed', stepsMap[query.step].indexName).then(
+					return getDbArray(baseSet, storage, 'computed', indexName).then(
 						function (arr) {
 							return getStepsFromBps(arr, 'processingSteps/map/' + query.step);
 						}
