@@ -48,3 +48,7 @@
 .submitted-preview-form .form-elements > li .inline-button-radio .error {
 	background-color: #D9534F;
 }
+
+.submitted-preview-form.completed input[type="submit"] {
+	background-color: var(--success-text);
+}
