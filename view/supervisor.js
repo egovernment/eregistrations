@@ -45,7 +45,12 @@ exports['sub-main'] = {
 					label({ for: 'status-select' }, _("Status"), ":"),
 					select({ id: 'status-select', name: 'status' },
 						list(statuses, function (status) {
-							return option({ value: status }, statusMeta[status].label);
+							return option({
+								value: status,
+								selected: location.query.get('status').map(function (name) {
+									return status === name ? 'selected' : null;
+								})
+							}, statusMeta[status].label);
 						}))
 				),
 				div(
