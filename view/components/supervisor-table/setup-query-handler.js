@@ -9,6 +9,7 @@ var uniq              = require('es5-ext/array/#/uniq')
   , appLocation       = require('mano/lib/client/location')
   , setupQueryHandler = require('../../../utils/setup-client-query-handler')
   , timeRanges        = require('../../../utils/supervisor-time-ranges')
+  , statuses          = require('../../../utils/supervisor-statuses-list')
   , db                = require('mano').db
 
   , wsRe = /\s{2,}/g
@@ -28,6 +29,13 @@ exports.conf = [
 		ensure: function (value) {
 			if (!value) return;
 			if (!this._stepsMap[value]) throw new Error("Unrecognized step value " + stringify(value));
+			return value;
+		}
+	}, {
+		name: 'status',
+		ensure: function (value) {
+			if (!value) return;
+			if (!statuses.includes(value)) throw new Error("Unrecognized time value " + stringify(value));
 			return value;
 		}
 	}, {
