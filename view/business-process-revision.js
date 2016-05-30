@@ -25,7 +25,8 @@ exports['sub-main'] = {
 			_if(eq(revisionStep._revisionProgress, 1),
 				// show "approve" or "sent back" buttons only, when revision was finalized
 				_if(eq(revisionStep._revisionApprovalProgress, 1),
-					exports._approveButton.call(this),
+					_if(not(exports._processingTabLabel.call(this)),
+						exports._approveButton.call(this)),
 					_if(eq(revisionStep._sendBackStatusesProgress, 1),
 						exports._returnButton.call(this)))),
 					// show reject button at all times when revision is pending
