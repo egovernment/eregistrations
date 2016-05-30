@@ -7,6 +7,8 @@ var _                  = require('mano').i18n.bind('View: Supervisor')
   , dispatch           = require('dom-ext/html-element/#/dispatch-event-2')
   , location           = require('mano/lib/client/location')
   , timeRanges         = require('../utils/supervisor-time-ranges')
+  , statuses           = require('../utils/supervisor-statuses-list')
+  , statusMeta         = require('mano').db.ProcessingStepStatus.meta
   , assign             = require('es5-ext/object/assign')
   , stepsMap           = assign(require('../utils/processing-steps-map'))
   , getSupervisorTable = require('eregistrations/view/components/supervisor-table')
@@ -39,6 +41,13 @@ exports['sub-main'] = {
 								}) },
 								data.label);
 						}, null, byOrder))),
+				div(
+					label({ for: 'status-select' }, _("Status"), ":"),
+					select({ id: 'status-select', name: 'status' },
+						list(statuses, function (status) {
+							return option({ value: status }, statusMeta[status].label);
+						}))
+				),
 				div(
 					label({ for: 'time-select' }, _("Time"), ":"),
 					select({ id: 'time-select', name: 'time' },
