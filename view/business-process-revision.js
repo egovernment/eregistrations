@@ -15,7 +15,8 @@ exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
 		var revisionStep = this.processingStep,
-				uploads      = getUploads(this.processingStep.paymentReceiptUploads, this.appName);
+			paymentUploads = getUploads(this.processingStep.paymentReceiptUploads, this.appName);
+
 		renderMainInfo(this, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
 
 		insert(_if(revisionStep._isRevisionPending, [exports._customAlert.call(this), section(
@@ -38,7 +39,7 @@ exports['sub-main'] = {
 				href: '/' + this.businessProcess.__id__ + '/'
 			}, _("${ tabNumber } Revision of the documents", { tabNumber: "1." })),
 
-			_if(resolve(uploads, '_length'),
+			_if(resolve(paymentUploads, '_length'),
 				a({
 					class: 'section-tab-nav-tab',
 					id: 'tab-business-process-payments',
@@ -50,7 +51,7 @@ exports['sub-main'] = {
 				id: 'tab-business-process-data',
 				href: '/' + this.businessProcess.__id__ + '/data/'
 			}, _("${ tabNumber } Revision of data",
-				{ tabNumber: _if(resolve(uploads, '_length'), "3.", "2.") })),
+				{ tabNumber: _if(resolve(paymentUploads, '_length'), "3.", "2.") })),
 
 			_if(exports._processingTabLabel.call(this),
 				a({
@@ -58,7 +59,7 @@ exports['sub-main'] = {
 					id: 'tab-business-process-processing',
 					href: '/' + this.businessProcess.__id__ + '/processing'
 				}, _d(exports._processingTabLabel.call(this),
-					{ tabNumber: _if(resolve(uploads, '_length'), "4.", "3.") }))),
+					{ tabNumber: _if(resolve(paymentUploads, '_length'), "4.", "3.") }))),
 
 			div({ id: 'tab-content', class: 'business-process-revision' }));
 	}
