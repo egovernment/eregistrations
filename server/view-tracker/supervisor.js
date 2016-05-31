@@ -1,15 +1,14 @@
 'use strict';
 
-var aFrom               = require('es5-ext/array/from')
-  , toNaturalNumber     = require('es5-ext/number/to-pos-integer')
+var toNaturalNumber     = require('es5-ext/number/to-pos-integer')
   , forEach             = require('es5-ext/object/for-each')
-  , ensureIterable      = require('es5-ext/iterable/validate-object')
   , ensureObject        = require('es5-ext/object/valid-object')
   , deferred            = require('deferred')
   , serializeValue      = require('dbjs/_setup/serialize/value')
   , ensureStorage       = require('dbjs-persistence/ensure-storage')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
   , serializeView       = require('../../utils/db-view/serialize')
+  , filterStepsMap      = require('../../utils/filter-supervisor-steps-map')
   , getDbSet            = require('../utils/get-db-set')
   , getDbArray          = require('../utils/get-db-array')
 
@@ -17,8 +16,10 @@ var aFrom               = require('es5-ext/array/from')
 
 module.exports = function (steps, data) {
 	var businessProcessStorage, reducedStorage, stepArrays, itemsPerPage;
-	steps = aFrom(ensureIterable(steps));
+
 	ensureObject(data);
+	steps = filterStepsMap(steps);
+
 	businessProcessStorage = ensureStorage(data.businessProcessStorage);
 	reducedStorage = ensureStorage(data.reducedStorage);
 	if (data.itemsPerPage != null) itemsPerPage = toNaturalNumber(data.itemsPerPage);
@@ -26,14 +27,17 @@ module.exports = function (steps, data) {
 
 	// Configure view that covers 'all' roles case
 	stepArrays = {};
-	return deferred.map(steps, function (stepPath) {
+	return deferred.map(Object.keys(steps), function (stepPath) {
 		// TODO: Fix for deep paths
 		var keyPath = 'processingSteps/map/' + stepPath + '/status';
-		var setPromise = getDbSet(businessProcessStorage, 'computed', keyPath,
-			serializeValue('pending'));
-		return setPromise(function (set) {
-			return getDbArray(set, businessProcessStorage, 'computed', keyPath)(function (array) {
-				stepArrays['processingSteps/map/' + stepPath] = array;
+
+		return deferred.map(Object.keys(steps[stepPath]), function (status) {
+			var setPromise = getDbSet(businessProcessStorage, 'computed', keyPath,
+				serializeValue(status));
+			return setPromise(function (set) {
+				return getDbArray(set, businessProcessStorage, 'computed', keyPath)(function (array) {
+					stepArrays['processingSteps/map/' + stepPath] = array;
+				});
 			});
 		});
 	})(function () {
