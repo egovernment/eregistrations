@@ -19,6 +19,7 @@ module.exports = function (driver, slavePath/*, options*/) {
 	var userStorage = ensureDriver(driver).getStorage('user')
 	  , businessProcessStorages = require('../../utils/business-process-storages')
 	  , takenByParent = new Set(), depsMap = new Map(), storageMap = new Map()
+	  , reverseDepMap = new Map()
 	  , options = Object(arguments[2])
 	  , officialPropertyNames;
 
@@ -79,8 +80,11 @@ module.exports = function (driver, slavePath/*, options*/) {
 							var deps = {};
 							depsMap.set(id, deps);
 							return storage.get(id + '/derivedBusinessProcess')(function (data) {
+								var dep;
 								if (!data || (data.value[0] !== '7')) return;
-								takenByParent.add(deps.businessProcess = data.value.slice(1));
+								deps.businessProcess = dep = data.value.slice(1);
+								takenByParent.add(dep);
+								reverseDepMap.add(dep, id);
 							});
 						})(function () {
 							return ids.filter(function (id) {
@@ -100,7 +104,8 @@ module.exports = function (driver, slavePath/*, options*/) {
 			return deferred(
 				storage.getObject(objectId),
 				deps.user && self(deps.user),
-				deps.businessProcess && self(deps.businessProcess)
+				deps.businessProcess &&
+					self(reverseDepMap.get(deps.businessProcess) || deps.businessProcess)
 			).invoke('filter', Boolean).invoke(flatten);
 		},
 		initialData: initialData
