@@ -59,6 +59,7 @@ module.exports = function (driver, slavePath/*, options*/) {
 		ids: userStorage.getAllObjectIds()(function (userIds) {
 			return deferred.map(userIds, function (userId) {
 				var deps = {};
+				storageMap.set(userId, userStorage);
 				depsMap.set(userId, deps);
 				return deferred(
 					userStorage.get(userId + '/currentBusinessProcess')(function (data) {
@@ -74,9 +75,18 @@ module.exports = function (driver, slavePath/*, options*/) {
 				userIds = userIds.filter(function (userId) { return !takenByParent.has(userId); });
 				return businessProcessStorages.map(function (storage) {
 					return storage.getAllObjectIds()(function (ids) {
-						return ids.filter(function (id) {
-							storageMap.set(id, storage);
-							return !takenByParent.has(id);
+						return deferred.map(ids, function (id) {
+							var deps = {};
+							depsMap.set(id, deps);
+							return storage.get(id + '/derivedBusinessProcess')(function (data) {
+								if (!data || (data.value[0] !== '7')) return;
+								takenByParent.add(deps.businessProcess = data.value.slice(1));
+							});
+						})(function () {
+							return ids.filter(function (id) {
+								storageMap.set(id, storage);
+								return !takenByParent.has(id);
+							});
 						});
 					});
 				})(function (ids) { return userIds.concat(flatten.call(ids)); });
@@ -84,12 +94,11 @@ module.exports = function (driver, slavePath/*, options*/) {
 		}),
 		getData: function self(objectId) {
 			var storage = storageMap.get(objectId), deps;
-			if (storage) return storage.getObject(objectId); // Business process
-			// User
+			if (!storage) throw new Error("Cannot resolve deps map");
 			deps = depsMap.get(objectId);
 			if (!deps) throw new Error("Cannot resolve deps map");
 			return deferred(
-				userStorage.getObject(objectId),
+				storage.getObject(objectId),
 				deps.user && self(deps.user),
 				deps.businessProcess && self(deps.businessProcess)
 			).invoke('filter', Boolean).invoke(flatten);
