@@ -7,8 +7,8 @@ var aFrom              = require('es5-ext/array/from')
   , flatten            = require('es5-ext/array/#/flatten')
   , ensureIterable     = require('es5-ext/iterable/validate-object')
   , ensureString       = require('es5-ext/object/validate-stringifiable-value')
-  , startsWith         = require('es5-ext/string/#/starts-with')
   , Map                = require('es6-map')
+  , Set                = require('es6-set')
   , deferred           = require('deferred')
   , debug              = require('debug-ext')('setup', 4)
   , ensureDriver       = require('dbjs-persistence/ensure-driver')
@@ -17,9 +17,9 @@ var aFrom              = require('es5-ext/array/from')
 
 module.exports = function (driver, slavePath/*, options*/) {
 	var userStorage = ensureDriver(driver).getStorage('user')
-	  , anyIdToStorage = require('../../utils/any-id-to-storage')
 	  , businessProcessStorages = require('../../utils/business-process-storages')
-	  , options = Object(arguments[2]), userManagers = new Map()
+	  , takenByParent = new Set(), depsMap = new Map(), storageMap = new Map()
+	  , options = Object(arguments[2])
 	  , officialPropertyNames;
 
 	if (options.officialPropertyNames) {
@@ -28,108 +28,76 @@ module.exports = function (driver, slavePath/*, options*/) {
 		officialPropertyNames = ['firstName', 'lastName'];
 	}
 
-	var getBusinessProcessData = function (bpId) {
-		return anyIdToStorage(bpId)(function (storage) {
-			if (!storage) return [];
-			return storage.getObject(bpId)(function (bpData) {
-				var id = bpId + '/derivedBusinessProcess';
-				return deferred.map(bpData, function (data) {
-					if (data.id !== id) return data;
-					if (data.data.value[0] !== '7') return data;
-					return getBusinessProcessData(data.data.value.slice(1))(function (result) {
-						result.push(data);
-						return result;
-					});
-				});
+	// Gather basic data of all official accounts to be present in memory of each process
+	var initialData = userStorage.search(function (id, data) {
+		var userId = id.split('/', 1)[0];
+		return userStorage.getObjectKeyPath(userId + '/roles')(function (records) {
+			var isOfficial = records.some(function (record) {
+				var roleName;
+				if (record.data.value !== '11') return;
+				roleName = record.id.slice((userId + '/roles*').length);
+				if (isOfficialRoleName(roleName)) return true;
 			});
+			if (!isOfficial) return;
+			return userStorage.getObject(userId, { keyPaths: officialPropertyNames });
 		});
-	};
-
-	var getUserData = function (userId) {
-		return userStorage.getObject(userId)(function (userData) {
-			var prefix = userId + '/initialBusinessProcesses*7';
-			return deferred.map(userData, function (data) {
-				if (!startsWith.call(data.id, prefix)) return data;
-				if (data.data.value !== '11') return data;
-				return getBusinessProcessData(data.id.slice(prefix.length))(function (result) {
-					result.push(data);
-					return result;
+	})(function (data) {
+		data = flatten.call(data).filter(Boolean);
+		if (!options.initialData) return data;
+		return deferred(options.initialData)(function (optionalData) {
+			return data.concat(flatten.call(optionalData).filter(Boolean))
+				.filter(function (record, index, all) {
+					// Filter duplicate records
+					return findIndex.call(all, function (item) { return record.id === item.id; }) === index;
 				});
-			});
 		});
-	};
+	});
 
-	return deferred(
-		userStorage.search({ keyPath: 'manager' }, function (id, data) {
-			var managerId;
-			if (data.value[0] !== '7') return;
-			managerId = data.value.slice(1);
-			if (!userManagers.has(managerId)) userManagers.set(managerId, []);
-			userManagers.get(managerId).push(id.split('/', 1)[0]);
-		}),
-		businessProcessStorages.map(function (storage) {
-			var businessProcessManagers = new Map();
-			return storage.search({ keyPath: 'manager' }, function (id, data) {
-				var managerId;
-				if (data.value[0] !== '7') return;
-				managerId = data.value.slice(1);
-				businessProcessManagers.set(id.split('/', 1)[0], managerId);
-			})(function () {
-				return userStorage.search({ keyPath: 'initialBusinessProcesses' }, function (id, data) {
-					var managerId;
-					if (data.value !== '11') return;
-					managerId = businessProcessManagers.get(id.slice(id.lastIndexOf('*') + 2));
-					if (!managerId) return;
-					if (!userManagers.has(managerId)) userManagers.set(managerId, []);
-					userManagers.get(managerId).push(id.split('/', 1)[0]);
-				});
-			});
-		})
-	)(function () {
-
-		var getManagerData = function (managerId) {
-			if (!userManagers.has(managerId)) return [];
-			return deferred.map(userManagers.get(managerId), getUserData);
-		};
-
-		var initialData = userStorage.search(function (id, data) {
-			var userId = id.split('/', 1)[0];
-			return userStorage.getObjectKeyPath(userId + '/roles')(function (records) {
-				var isOfficial = records.some(function (record) {
-					var roleName;
-					if (record.data.value !== '11') return;
-					roleName = record.id.slice((userId + '/roles*').length);
-					if (isOfficialRoleName(roleName)) return true;
-				});
-				if (!isOfficial) return;
-				return userStorage.getObject(userId, { keyPaths: officialPropertyNames });
-			});
-		})(function (data) {
-			data = flatten.call(data).filter(Boolean);
-			if (!options.initialData) return data;
-			return deferred(options.initialData)(function (optionalData) {
-				return data.concat(flatten.call(optionalData).filter(Boolean))
-					.filter(function (record, index, all) {
-						// Filter duplicate records
-						return findIndex.call(all, function (item) { return record.id === item.id; }) === index;
-					});
-			});
-		});
-		debug.open("db-recompute");
-		return recompute(driver, {
-			slaveScriptPath: ensureString(slavePath),
-			ids: userStorage.getAllObjectIds(),
-			getData: function (userId) {
+	debug.open("db-recompute");
+	return recompute(driver, {
+		slaveScriptPath: ensureString(slavePath),
+		ids: userStorage.getAllObjectIds()(function (userIds) {
+			return deferred.map(userIds, function (userId) {
+				var deps = {};
+				depsMap.set(userId, deps);
 				return deferred(
-					getUserData(userId),
-					getManagerData(userId)
-				).invoke(flatten);
-			},
-			initialData: initialData
-		}).on('progress', function (event) {
-			if (event.type === 'nextObject') debug.progress();
-			if (event.type === 'nextPool') debug.progress('↻');
-		});
+					userStorage.get(userId + '/currentBusinessProcess')(function (data) {
+						if (!data || (data.value[0] !== '7')) return;
+						takenByParent.add(deps.businessProcess = data.value.slice(1));
+					}),
+					userStorage.get(userId + '/currentlyManagedUser')(function (data) {
+						if (!data || (data.value[0] !== '7')) return;
+						takenByParent.add(deps.user = data.value.slice(1));
+					})
+				);
+			})(function () {
+				userIds = userIds.filter(function (userId) { return !takenByParent.has(userId); });
+				return businessProcessStorages.map(function (storage) {
+					return storage.getAllObjectIds()(function (ids) {
+						return ids.filter(function (id) {
+							storageMap.set(id, storage);
+							return !takenByParent.has(id);
+						});
+					});
+				})(function (ids) { return userIds.concat(flatten.call(ids)); });
+			});
+		}),
+		getData: function self(objectId) {
+			var storage = storageMap.get(objectId), deps;
+			if (storage) return storage.getObject(objectId); // Business process
+			// User
+			deps = depsMap.get(objectId);
+			if (!deps) throw new Error("Cannot resolve deps map");
+			return deferred(
+				userStorage.getObject(objectId),
+				deps.user && self(deps.user),
+				deps.businessProcess && self(deps.businessProcess)
+			).invoke('filter', Boolean).invoke(flatten);
+		},
+		initialData: initialData
+	}).on('progress', function (event) {
+		if (event.type === 'nextObject') debug.progress();
+		if (event.type === 'nextPool') debug.progress('↻');
 	})(function (stats) {
 		debug.progress('|');
 		return driver.recalculateAllSizes()(stats);
