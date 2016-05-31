@@ -13,10 +13,6 @@ db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
 			step.steps.map.forEach(self);
 			return;
 		}
-		meta[step.shortPath] = {
-			label: step.label,
-			indexName: step.__id__.slice(step.master.__id__.length + 1) + '/status',
-			indexValue: 'pending'
-		};
+		meta[step.shortPath] = step.label;
 	});
 });

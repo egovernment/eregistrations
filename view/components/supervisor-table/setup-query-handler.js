@@ -16,18 +16,31 @@ var uniq              = require('es5-ext/array/#/uniq')
 
 module.exports = exports = function (listManager/*, pathname*/) {
 	var queryHandler = setupQueryHandler(exports.conf, appLocation, arguments[1] || '/');
+
 	queryHandler._stepsMap = listManager._stepsMap;
 	queryHandler._itemsPerPage = listManager.itemsPerPage;
 	queryHandler._listManager = listManager;
 	queryHandler.on('query', function (query) { listManager.update(query); });
+
 	return queryHandler;
 };
+
 exports.conf = [
 	{
 		name: 'step',
 		ensure: function (value) {
 			if (!value) return;
 			if (!this._stepsMap[value]) throw new Error("Unrecognized step value " + stringify(value));
+			return value;
+		}
+	}, {
+		name: 'status',
+		ensure: function (value, resolvedQuery) {
+			if (!value) return;
+			if (!resolvedQuery.step || !this._stepsMap[resolvedQuery.step][value]) {
+				throw customError("Status value not applicable", { fixedQueryValue: null });
+			}
+
 			return value;
 		}
 	}, {
