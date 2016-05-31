@@ -8,9 +8,9 @@ var _                  = require('mano').i18n.bind('View: Supervisor')
   , location           = require('mano/lib/client/location')
   , timeRanges         = require('../utils/supervisor-time-ranges')
   , statuses           = require('../utils/supervisor-statuses-list')
+  , filterStepsMap     = require('../../utils/filter-supervisor-steps-map')
   , statusMeta         = require('mano').db.ProcessingStepStatus.meta
-  , assign             = require('es5-ext/object/assign')
-  , stepsMap           = assign(require('../utils/processing-steps-map'))
+  , stepLabelsMap      = require('../utils/processing-steps-label-map')
   , getSupervisorTable = require('eregistrations/view/components/supervisor-table')
   , from               = require('es5-ext/array/from')
   , tableColumns       = require('eregistrations/view/_supervisor-table-columns.js')
@@ -22,7 +22,13 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		var searchForm, searchInput, supervisorTable;
+		var stepsMap = exports._statusMap(this)
+		  , searchForm, searchInput, supervisorTable;
+
+		// this should not happen, but it might if we don't block illegal role dependencies
+		if (!stepsMap) return;
+
+		stepsMap = filterStepsMap(stepsMap);
 
 		section({ class: 'section-primary users-table-filter-bar' },
 			searchForm = form({ action: '/', autoSubmit: true },
@@ -34,23 +40,28 @@ exports['sub-main'] = {
 								return value ? null : 'selected';
 							}) },
 							_("All")),
-						toArray(stepsMap, function (data, name) {
-							return option({ value: name, selected:
-									location.query.get('step').map(function (value) {
+						toArray(stepsMap, function (statuses, name) {
+							return option({
+								value: name,
+								selected: location.query.get('step').map(function (value) {
 									return value === name ? 'selected' : null;
-								}) },
-								data.label);
+								})
+							}, stepLabelsMap[name]);
 						}, null, byOrder))),
 				div(
 					label({ for: 'status-select' }, _("Status"), ":"),
 					select({ id: 'status-select', name: 'status' },
 						list(statuses, function (status) {
-							return option({
-								value: status,
-								selected: location.query.get('status').map(function (name) {
-									return status === name ? 'selected' : null;
-								})
-							}, statusMeta[status].label);
+							return location.query.get('step').map(function (step) {
+								if (!stepsMap[step][status]) return;
+
+								return option({
+									value: status,
+									selected: location.query.get('status').map(function (name) {
+										return status === name ? 'selected' : null;
+									})
+								}, statusMeta[status].label);
+							});
 						}))
 				),
 				div(
@@ -108,3 +119,5 @@ exports['sub-main'] = {
 			supervisorTable.pagination);
 	}
 };
+
+exports._statusMap = Function.prototype;
