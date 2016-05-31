@@ -77,6 +77,7 @@ module.exports = function (driver, slavePath/*, options*/) {
 					return storage.getAllObjectIds()(function (ids) {
 						return ids.filter(function (id) {
 							storageMap.set(id, storage);
+							depsMap.set(id, {});
 							return !takenByParent.has(id);
 						});
 					});
