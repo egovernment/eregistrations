@@ -1,11 +1,10 @@
 'use strict';
 
-var db = require('mano').db
-
-  , user = db.User.prototype
-  , login         = require('./_login')
-  , register      = require('./_register')
-  , resetPassword = require('./_reset-password-request');
+var db            = require('mano').db
+  , login         = require('../../view/components/login-dialog')
+  , register      = require('../../view/components/register-dialog')
+  , resetPassword = require('../../view/components/reset-password-dialog')
+  , user          = db.User.prototype;
 
 exports._parent = require('./base');
 
@@ -17,7 +16,7 @@ exports.menu = function () {
 		li(a('link one')),
 		li(a('link two')),
 		li(a({ onclick: '$(\'dialog-app-nav\').include()' }, 'nav dialog')),
-		li({ class: 'header-top-login-inactive' },
+		li({ class: 'header-top-login-active' },
 			span({ class: 'header-top-login-hint' }, ('Do you have an account?')),
 			a({ class: 'header-top-login', href: '#login' },
 				"Log in"))
@@ -26,7 +25,7 @@ exports.menu = function () {
 
 exports.main = function () {
 	insert(login);
-	insert(register);
+	insert(register(this));
 	insert(resetPassword);
 	section(
 		{ class: 'content user-forms' },

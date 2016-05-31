@@ -17,8 +17,8 @@ var d                   = require('d')
   , db                  = require('mano').db
   , ns                  = require('mano').domjs.ns
   , normalizeOptions    = require('es5-ext/object/normalize-options')
-  , progressRules       = require('../components/progress-rules')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
+  , progressRules       = require('../components/progress-rules')
   , readOnlyRender      = require('../utils/read-only-render');
 
 require('./form-section-base');

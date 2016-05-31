@@ -22,7 +22,7 @@ module.exports = memoize(function (db) {
 	// Enum for document upload status
 	var PaymentReceiptUploadStatus = StringLine.createEnum('PaymentReceiptUploadStatus', new Map([
 		['valid', { label: _("Confirmed as paid") }],
-		['invalid', { label: _("Rejected") }]
+		['invalid', { label: _("Rejected"), htmlClass: 'error' }]
 	]));
 
 	return RequirementUpload.extend('PaymentReceiptUpload', {
@@ -67,6 +67,7 @@ module.exports = memoize(function (db) {
 			if (this.status !== 'invalid') return false;
 			return Boolean(this.rejectReasonMemo);
 		} },
+		rejectReasonMemo: { inputPlaceholder: _("Please write here the reason of rejection") },
 
 		// Whether document upload was rejected recently
 		// Needed for part A, where status for document might already have been cleared

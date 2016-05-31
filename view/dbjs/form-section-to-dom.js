@@ -13,7 +13,7 @@
  */
 'use strict';
 
-var _          = require('mano').i18n.bind('Sections')
+var _          = require('mano').i18n.bind('View: Binding: Sections')
   , d          = require('d')
   , db         = require('mano').db
   , find       = require('es5-ext/array/#/find')

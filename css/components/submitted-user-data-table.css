@@ -26,6 +26,26 @@
 	background-color: var(--white-text);
 }
 
+.submitted-user-data-table tbody .active td {
+	border-top-color: var(--normal-background);
+	border-bottom-color: var(--normal-background);
+	border-top-style: double;
+	border-top-width: 2px;
+	border-bottom-width: 2px;
+}
+
+.submitted-user-data-table tbody .active td:first-child {
+	border-left-color: var(--normal-background);
+	border-left-width:3px;
+	border-left-style: solid;
+}
+
+.submitted-user-data-table tbody .active td:last-child {
+	border-right-color: var(--normal-background);
+	border-right-width:2px;
+	border-left-style: solid;
+}
+
 .submitted-user-data-table tbody td {
 	border: 1px solid var(--light-inner-border);
 	text-align: left;
@@ -96,6 +116,11 @@
 
 .submitted-user-data-table .submitted-user-data-table-status {
 	width: 40px;
+	text-align: center;
+}
+
+.submitted-user-data-table .submitted-user-data-table-label {
+	width: 486px;
 }
 
 .submitted-user-data-table .submitted-user-data-table-link {

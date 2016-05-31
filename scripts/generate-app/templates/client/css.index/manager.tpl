@@ -9,7 +9,6 @@
 ../../../node_modules/eregistrations/css/components/document-download.css
 ../../../node_modules/eregistrations/css/components/entities-overview.css
 ../../../node_modules/eregistrations/css/components/entity-data-section-primary.css
-../../../node_modules/eregistrations/css/components/entity-data-section-side.css
 ../../../node_modules/eregistrations/css/components/entity-data-section.css
 ../../../node_modules/eregistrations/css/components/error-main.css
 ../../../node_modules/eregistrations/css/components/error-page.css

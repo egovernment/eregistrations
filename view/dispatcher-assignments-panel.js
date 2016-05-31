@@ -1,10 +1,10 @@
 'use strict';
 
 var db                        = require('mano').db
-  , _                         = require('mano').i18n.bind('View: Dispatcher')
+  , _                         = require('mano').i18n.bind('View: Official: Dispatcher')
   , env                       = require('mano').env
   , getBusinessProcessesTable = require('./components/business-processes-table')
-  , tableColumns              = require('./_business-process-table-columns')
+  , tableColumns              = require('./components/business-process-table-columns')
   , once                      = require('timers-ext/once')
   , dispatch                  = require('dom-ext/html-element/#/dispatch-event-2')
   , location                  = require('mano/lib/client/location');

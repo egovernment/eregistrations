@@ -1,6 +1,6 @@
 'use strict';
 
-var _    = require('mano').i18n.bind('Users Admin')
+var _    = require('mano').i18n.bind('View: Manager')
   , db   = require('mano').db
   , user = db.User.prototype;
 

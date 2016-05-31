@@ -42,171 +42,253 @@ exports._bodyAppend = function () {
 			a({ onclick: '$(\'dialog-app-nav\').exclude()' }, span({ class: 'fa fa-close' }, "Close"))
 		),
 		section(ol(
+			// Public views
 			li(
-				a({ href: '/' }, span("Login"), span({ class: 'label-reg' }, "Public"))
-			),
-			li(
-				a({ href: '/reset-password/' }, span("Reset password"),
+				a({ href: '/' },
+					span("Login"),
 					span({ class: 'label-reg' }, "Public"))
 			),
 			li(
-				a({ href: '/guide/' }, span("User - guide"), span({ class: 'label-reg' }, "Part A"))
+				a({ href: '/reset-password/' },
+					span("Reset password"),
+					span({ class: 'label-reg' }, "Public"))
 			),
+			// User views
 			li(
-				a({ href: '/guide-lomas/' }, span("User - Lomas like guide "),
-						span({ class: 'label-reg' }, "Part A"))
+				a({ href: '/profile/' },
+					span("User: Profile"),
+					span({ class: 'label-reg' }, "Part B"))
 			),
+			// Part A views
 			li(
-				a({ href: '/guide/costs-print/' }, span("User - costs print list"),
+				a({ href: '/guide/' },
+					span("Business Process: Guide"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
-				a({ href: '/forms/' }, span("User - forms"), span({ class: 'label-reg' }, "Part A"))
-			),
-			li(
-				a({ href: '/forms/sides/' },
-					span("User - tabbed forms - Sides"),
+				a({ href: '/guide-lomas/' },
+					span("Business Process: Guide: Lomas like"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
-				a({ href: '/forms/company-informations/' },
-					span("User - tabbed forms - Company informations"),
+				a({ href: '/guide/costs-print/' },
+					span("Business Process: Guide: Costs print"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
-				a({ href: '/forms/disabled/' }, span("User - forms (disabled)"),
+				a({ href: '/forms/' },
+					span("Business Process: Forms"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
-				a({ href: '/nested-entity/example/' }, span("User - forms, add entity"),
+				a({ href: '/forms/disabled/' },
+					span("Business Process: Forms: Disabled"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
-				a({ href: '/documents/' }, span("User - documents"),
+				a({ href: '/forms/tabbed/' },
+					span("Business Process: Forms: Tabbed"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
-				a({ href: '/documents/disabled/' }, span("User - documents (disabled)"),
+				a({ href: '/nested-entity/example/' },
+					span("Business Process: Forms: Add entity"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
-				a({ href: '/pay/' }, span("User - payment"),
+				a({ href: '/documents/' },
+					span("Business Process: Documents"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
-				a({ href: '/submission/' }, span("User - submission"),
+				a({ href: '/documents/disabled/' },
+					span("Business Process: Documents: Disabled"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
-				a({ href: '/profile/' }, span("User - profile"), span({ class: 'label-reg' }, "Part A"))
+				a({ href: '/pay/' },
+					span("Business Process: Payment"),
+					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
-				a({ href: '/user-submitted/' }, span("User submitted"),
+				a({ href: '/submission/' },
+					span("Business Process: Submission"),
+					span({ class: 'label-reg' }, "Part A"))
+			),
+			// Business Process Submitted views
+			li(
+				a({ href: '/business-process-submitted/' },
+					span("Business Process: Submitted"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/print-business-processes-data/' }, span("User submitted - data print"),
+				a({ href: '/business-process-submitted/payment-receipts/payment/' },
+					span("Business Process: Submitted: Receipts"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/print-request-history/' }, span("User history print"),
+				a({ href: '/business-process-submitted/certificates/certificate/' },
+					span("Business Process: Submitted: Certificates"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/my-account/' }, span("My account"),
+				a({ href: '/business-process-submitted/data/' },
+					span("Business Process: Submitted: Data"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/my-account/summary/' }, span("My account: Business process summary"),
+				a({ href: '/print-business-process-data/' },
+					span("Business Process: Submitted: Data print"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/my-account/documents/' }, span("My account: Business process documents"),
+				a({ href: '/print-request-history/' },
+					span("Business Process: Submitted: History print"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			// My Account views
+			li(
+				a({ href: '/my-account/' },
+					span("User: My Account"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/my-account/data/' }, span("My account: Business process data"),
+				a({ href: '/my-account/requests/' },
+					span("User: My Account: Requests"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/my-account/print/' }, span("My account: Print Business process data"),
+				a({ href: '/my-account/summary/' },
+					span("User: My Account: Request: Summary"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/official/' }, span("Official"),
+				a({ href: '/my-account/documents/' },
+					span("User: My Account: Request: Documents"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/revision/user-id/' }, span("Official: Revision"),
+				a({ href: '/my-account/certificates/certificate' },
+					span("User: My Account: Request: Certificate"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/revision/user-id/document' }, span("Official: Revision: Requirement"),
+				a({ href: '/my-account/data/' },
+					span("User: My Account: Request: Data"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/revision/user-id/payment' }, span("Official: Revision: Payment"),
+				a({ href: '/my-account/print/' },
+					span("User: My Account: Request: Data print"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			// Official views
+			li(
+				a({ href: '/official/' },
+					span("Official"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			// Official Processing views
+			li(
+				a({ href: '/official/business-process-id/' },
+					span("Official: Processing"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/official/user-id/' }, span("Official - user"),
+				a({ href: '/official/business-process-id/documents/' },
+					span("Official: Processing: Documents"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/official/user-id/document/' },
-						span("Official - user, document"), span({ class: 'label-reg' }, "Part B"))
+				a({ href: '/official/business-process-id/payment-receipts/payment/' },
+					span("Official: Processing: Payments"),
+					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/official/user-id/certificates/' },
-						span("Official - user at certificate process"),
-						span({ class: 'label-reg' }, "Part B"))
+				a({ href: '/official/business-process-id/certificates/certificate/' },
+					span("Official: Processing: Certificates"),
+					span({ class: 'label-reg' }, "Part B"))
 			),
+			li(
+				a({ href: '/official/business-process-id/data/' },
+					span("Official: Processing: Data"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			// Official Revision views
+			li(
+				a({ href: '/revision/business-process-id/' },
+					span("Official: Revision"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
+				a({ href: '/revision/business-process-id/payment-receipts/' },
+					span("Official: Revision: Payments"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
+				a({ href: '/revision/business-process-id/data/' },
+					span("Official: Revision: Data"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			li(
+				a({ href: '/revision/business-process-id/processing/' },
+					span("Official: Revision: Processing"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			// Official Front Desk views
 			li(
 				a({ href: '/front-desk/user-id/' },
-						span("Official - user at front-desk"), span({ class: 'label-reg' }, "Part B"))
+						span("Official: Front Desk: Processing"),
+						span({ class: 'label-reg' }, "Part B"))
+			),
+			// Manager views
+			li(
+				a({ href: '/manager/' },
+					span("Notary"),
+					span({ class: 'label-reg' }, "Notary"))
 			),
 			li(
-				a({ href: '/official/users-list/print/' },
-						span("Official - users print list"), span({ class: 'label-reg' }, "Part B"))
+				a({ href: '/manager/requests/' },
+					span("Notary: Requests"),
+					span({ class: 'label-reg' }, "Notary"))
 			),
 			li(
-				a({ href: '/users-admin/' }, span("Users admin"), span({ class: 'label-reg' }, "Admin"))
+				a({ href: '/manager/requests/firstrequest' },
+					span("Notary: Request: Guide"),
+					span({ class: 'label-reg' }, "Notary"))
 			),
 			li(
-				a({ href: '/users-admin/add-user/' }, span("Users admin - add user"),
+				a({ href: '/manager-validation/edit-user' },
+					span("Notary Validation: Edit User"),
+					span({ class: 'label-reg' }, "Part B"))
+			),
+			// Admin views
+			li(
+				a({ href: '/users-admin/' },
+					span("Admin: Users"),
 					span({ class: 'label-reg' }, "Admin"))
 			),
 			li(
-				a({ href: '/users-admin/edit-user-id/' }, span("Users admin - edit user"),
+				a({ href: '/users-admin/add-user/' },
+					span("Admin: Users: Add user"),
+					span({ class: 'label-reg' }, "Admin"))
+			),
+			li(
+				a({ href: '/users-admin/edit-user-id/' },
+					span("Admin: Users: Edit user"),
 					span({ class: 'label-reg' }, "Admin"))
 			),
 			li(
 				a({ href: '/statistics/' },
-						span("Statistics"), span({ class: 'label-reg' }, "Statistics"))
+						span("Admin: Statistics"), span({ class: 'label-reg' }, "Statistics"))
 			),
 			li(
 				a({ href: '/filtered-statistics/' },
-						span("Filtered statistics"), span({ class: 'label-reg' }, "Statistics"))
-			),
-			li(
-				a({ href: '/manager/' },
-						span("Notary"), span({ class: 'label-reg' }, "Notary"))
-			),
-			li(
-				a({ href: '/manager/requests/' },
-						span("Notary Requests"), span({ class: 'label-reg' }, "Notary"))
-			),
-			li(
-				a({ href: '/manager/requests/firstrequest' },
-						span("Notary Requests - Guide view"), span({ class: 'label-reg' }, "Notary"))
-			),
-			li(
-				a({ href: '/manager-validation/edit-user' },
-						span("Notary Validation - Edit User"), span({ class: 'label-reg' }, "Notary"))
+						span("Admin: Statistics: Filtered"), span({ class: 'label-reg' }, "Statistics"))
 			),
 			li(
 				a({ href: '/i18n/' },
-						span("Translations"), span({ class: 'label-reg' }, "Meta"))
+						span("Admin: Translations"), span({ class: 'label-reg' }, "Meta"))
 			)
 		)),
 		footer()

@@ -2,9 +2,9 @@
 
 var copy          = require('es5-ext/object/copy')
   , mano          = require('mano')
-  , _             = require('mano').i18n.bind('Users Admin')
+  , _             = require('mano').i18n.bind('View: Users Admin')
   , getOrderIndex = require('../users/get-default-order-index')
-  , getUsersTable = require('../view/components/users-table/')
+  , getUsersTable = require('./components/users-table/')
   , once          = require('timers-ext/once')
   , location      = require('mano/lib/client/location')
   , dispatch      = require('dom-ext/html-element/#/dispatch-event-2')

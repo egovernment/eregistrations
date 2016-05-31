@@ -3,7 +3,7 @@
 var normalizeOptions = require('es5-ext/object/normalize-options')
   , db               = require('mano').db
   , d                = require('d')
-  , _                = require('mano').i18n.bind('View: Signed Data Forms');
+  , _                = require('mano').i18n.bind('View: Binding: Requirement uploads');
 
 module.exports = Object.defineProperty(
 	db.SignedDataFormsRequirementUpload.prototype,

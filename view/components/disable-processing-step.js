@@ -1,6 +1,6 @@
 'use strict';
 
-var _  = require('mano').i18n.bind('View: Disabled Forms');
+var _  = require('mano').i18n.bind('View: Component: Official');
 
 module.exports = function (step, container) {
 	return [_if(not(step._isPending), div({ class: 'entities-overview-info' },

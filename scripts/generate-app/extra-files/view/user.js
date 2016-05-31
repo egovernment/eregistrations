@@ -13,7 +13,7 @@ module.exports = exports = require('eregistrations/view/user');
  * require('eregistrations/business-processes/get-user-business-processes-by-type');
  */
 
-exports._servicesBoxList = function (context) {
+exports._servicesBoxList = function () {
 	/**
 	 * Service box configuration example:
 	 * {
@@ -21,7 +21,7 @@ exports._servicesBoxList = function (context) {
 	 * buttonContent:  div({ class: 'user-account-service-button' },
 	 * i({ class: 'fa fa-user' }), _("Register as individual trader")),
 	 * content: span(_("Short description of merchant registration process")),
-	 * disabledCondition: gtOrEq(getSelectedBusinessProcesses(context.user,
+	 * disabledCondition: gtOrEq(getSelectedBusinessProcesses(this.user,
 	 * db.BusinessProcessMerchant)._size, 5)
 	 * }
 	 *

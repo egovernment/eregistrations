@@ -1,4 +1,3 @@
-.entity-data-section-side .entity-data-section-entities .entity-data-section,
 .entity-data-section-entities .entity-data-section {
 	border-left: none;
 	border-right: none;
@@ -54,6 +53,10 @@
 
 .entity-data-section-entities li {
 	padding-bottom:22px;
+}
+
+.entity-data-section-entities li:last-child {
+	padding-bottom: 0;
 }
 
 .entity-data-section-entities .entity-data-section .label-reg,
