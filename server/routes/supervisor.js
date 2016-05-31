@@ -20,7 +20,7 @@ var aFrom               = require('es5-ext/array/from')
   , listItemsPerPage    = require('mano').env.objectsListItemsPerPage
   , QueryHandler        = require('../../utils/query-handler')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
-  , stepsMap            = require('../../utils/processing-steps-map')
+  , stepLabelsMap       = require('../../utils/processing-steps-label-map')
   , filterStepsMap      = require('../../utils/filter-supervisor-steps-map')
   , timeRanges          = require('../../utils/supervisor-time-ranges')
   , bpListProps         = require('../../utils/supervisor-list-properties')
@@ -74,7 +74,7 @@ var initializeHandler = function (conf) {
 	  , itemsPerPage       = toNaturalNumber(listItemsPerPage) || defaultItemsPerPage
 	  , storage            = ensureStorage(conf.storage)
 	  , stepsMap           = filterStepsMap(conf.stepsMap)
-	  , allSupervisorSteps = getSupervisorSteps(storage);
+	  , allSupervisorSteps = getSupervisorSteps(storage, stepsMap);
 
 	var getTableData = memoize(function (query) {
 		var promise;
@@ -83,8 +83,7 @@ var initializeHandler = function (conf) {
 			var indexName  = stepsMap[query.step][query.status].indexName
 			  , indexValue = stepsMap[query.step][query.status].indexValue;
 
-			promise = getDbSet(storage, 'computed', indexName,
-				serializeValue(indexValue)).then(
+			promise = getDbSet(storage, 'computed', indexName, serializeValue(indexValue)).then(
 				function (baseSet) {
 					return getDbArray(baseSet, storage, 'computed', indexName).then(
 						function (arr) {
@@ -96,8 +95,10 @@ var initializeHandler = function (conf) {
 		} else {
 			promise = allSupervisorSteps.then(function (supervisorResults) {
 				var result = [];
-				forEach(supervisorResults, function (subArray, keyPath) {
-					result = result.concat(getStepsFromBps(subArray, keyPath));
+				forEach(supervisorResults, function (statuses, keyPath) {
+					forEach(statuses, function (subArray) {
+						result = result.concat(getStepsFromBps(subArray, keyPath));
+					});
 				});
 				result.sort(compareStamps);
 				return result;
@@ -221,7 +222,7 @@ exports.tableQueryConf = [{
 	name: 'step',
 	ensure: function (value) {
 		if (!value) return;
-		if (!stepsMap[value]) {
+		if (!stepLabelsMap[value]) {
 			throw new Error("Unreconized status value " + stringify(value));
 		}
 		return value;
