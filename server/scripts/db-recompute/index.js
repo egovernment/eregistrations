@@ -19,7 +19,6 @@ module.exports = function (driver, slavePath/*, options*/) {
 	var userStorage = ensureDriver(driver).getStorage('user')
 	  , businessProcessStorages = require('../../utils/business-process-storages')
 	  , takenByParent = new Set(), depsMap = new Map(), storageMap = new Map()
-	  , reverseDepMap = new Map()
 	  , options = Object(arguments[2])
 	  , officialPropertyNames;
 
@@ -76,21 +75,9 @@ module.exports = function (driver, slavePath/*, options*/) {
 				userIds = userIds.filter(function (userId) { return !takenByParent.has(userId); });
 				return businessProcessStorages.map(function (storage) {
 					return storage.getAllObjectIds()(function (ids) {
-						return deferred.map(ids, function (id) {
-							var deps = {};
-							depsMap.set(id, deps);
-							return storage.get(id + '/derivedBusinessProcess')(function (data) {
-								var dep;
-								if (!data || (data.value[0] !== '7')) return;
-								deps.businessProcess = dep = data.value.slice(1);
-								takenByParent.add(dep);
-								reverseDepMap.add(dep, id);
-							});
-						})(function () {
-							return ids.filter(function (id) {
-								storageMap.set(id, storage);
-								return !takenByParent.has(id);
-							});
+						return ids.filter(function (id) {
+							storageMap.set(id, storage);
+							return !takenByParent.has(id);
 						});
 					});
 				})(function (ids) { return userIds.concat(flatten.call(ids)); });
@@ -98,14 +85,13 @@ module.exports = function (driver, slavePath/*, options*/) {
 		}),
 		getData: function self(objectId) {
 			var storage = storageMap.get(objectId), deps;
-			if (!storage) throw new Error("Cannot resolve deps map");
+			if (!storage) return;
 			deps = depsMap.get(objectId);
 			if (!deps) throw new Error("Cannot resolve deps map");
 			return deferred(
 				storage.getObject(objectId),
 				deps.user && self(deps.user),
-				deps.businessProcess &&
-					self(reverseDepMap.get(deps.businessProcess) || deps.businessProcess)
+				deps.businessProcess && self(deps.businessProcess)
 			).invoke('filter', Boolean).invoke(flatten);
 		},
 		initialData: initialData
