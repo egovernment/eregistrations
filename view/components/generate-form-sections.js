@@ -5,10 +5,9 @@
 
 'use strict';
 
-var ns = require('mano').domjs.ns
-  , customError = require('es5-ext/error/custom')
-  , isSet = require('es6-set/is-set')
-  , document = require('mano').domjs.document;
+var customError = require('es5-ext/error/custom')
+  , isSet       = require('es6-set/is-set')
+  , document    = require('mano').domjs.document;
 
 module.exports = function (sections/*, options */) {
 	var result, options;
@@ -19,14 +18,14 @@ module.exports = function (sections/*, options */) {
 			"plsease use FormSectionGroup instead", "UNSUPPORTED_SECTIONS_FUNCTIONALITY");
 	}
 	if (isSet(sections)) {
-		return ns.list(sections, function (section) {
+		return list(sections, function (section) {
 			return section.toDOMForm(document, options);
 		});
 	}
 	//TODO: Below is deprecated code which expects map (old model version)
 	result = [];
 	sections.forEach(function (section) {
-		result.push(ns._if(section._isApplicable, section.toDOMForm(document, options)));
+		result.push(_if(section._isApplicable, section.toDOMForm(document, options)));
 	});
 
 	return result;

@@ -1,10 +1,10 @@
 'use strict';
 
-var d  = require('d')
-  , db = require('mano').db
-  , ns = require('mano').domjs.ns
+var d                = require('d')
+  , db               = require('mano').db
+  , ns               = require('mano').domjs.ns
   , normalizeOptions = require('es5-ext/object/normalize-options')
-  , headersMap = require('../utils/headers-map');
+  , headersMap       = require('../utils/headers-map');
 
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOM',
 	d(function (document/*,options */) {

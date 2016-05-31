@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _              = require('mano').i18n.bind("View: business data")
+var _              = require('mano').i18n.bind("View: User")
   , renderSections = require('./components/render-sections-json');
 
 exports._parent = require('./user-base');
@@ -18,7 +18,8 @@ exports['sub-main'] = {
 					'data-hint': _("Print your application form"), target: '_blank',
 					href: '/business-process/' + this.businessProcess.__id__ + '/print-data/'
 					}, span({ class: "fa fa-print" }, _("Print")))),
-			div({ class: 'section-primary entity-data-section-side' },
-				renderSections(this.businessProcess.dataForms.dataSnapshot)));
+			div({ class: 'section-primary' },
+				div({ class: 'document-preview-data business-process-submitted-data' },
+					renderSections(this.businessProcess.dataForms.dataSnapshot))));
 	}
 };

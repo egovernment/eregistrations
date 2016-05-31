@@ -1,6 +1,6 @@
 'use strict';
 
-var _    = require('mano').i18n.bind('Users Admin')
+var _    = require('mano').i18n.bind('View: Official: Manager validation')
   , user = require('mano').db.User.prototype;
 
 exports._parent = require('./user-base');

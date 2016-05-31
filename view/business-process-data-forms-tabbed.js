@@ -3,8 +3,8 @@
 'use strict';
 
 var appLocation = require('mano/lib/client/location')
-  , errorMsg    = require('./_business-process-error-info').errorMsg
-  , infoMsg     = require('./_business-process-optional-info').infoMsg;
+  , errorMsg    = require('./components/business-process-error-info').errorMsg
+  , infoMsg     = require('./components/business-process-optional-info').infoMsg;
 
 exports._parent = require('./business-process-base');
 
@@ -14,14 +14,14 @@ exports.step = {
 		nav({ class: 'forms-tab-nav' },
 			div({ class: 'content' }, errorMsg(this)),
 			div({ class: 'content' }, infoMsg(this)),
-			div({ class: 'content' }, exports._optionalInfo(this)),
-			ul({ class: 'content' }, exports._tabs(this)));
+			div({ class: 'content' }, exports._optionalInfo.call(this)),
+			ul({ class: 'content' }, exports._tabs.call(this)));
 		div({ id: 'forms-sections-content', class: 'content user-forms forms-tab-content' });
 	}
 };
 
-exports._tabs = function (context) {
-	return list(context.businessProcess.dataForms.applicable, function (section) {
+exports._tabs = function () {
+	return list(this.businessProcess.dataForms.applicable, function (section) {
 		var sectionTabAddress = section.pageUrl ? ('/forms/' + section.pageUrl + '/') : '/forms/';
 
 		return li({ class: ['forms-tab-nav-tab',

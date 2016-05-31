@@ -2,9 +2,10 @@
 
 'use strict';
 
-var _ = require('mano').i18n.bind('View: Business process summary'),
-	loc = require('mano/lib/client/location'),
-	documentsAndDataBrief = require('./_business-process-documents-and-data-brief.js');
+var normalizeOptions      = require('es5-ext/object/normalize-options')
+  , _                     = require('mano').i18n.bind('View: User')
+  , loc                   = require('mano/lib/client/location')
+  , documentsAndDataBrief = require('./components/business-process-documents-and-data-brief');
 
 exports._parent = require('./user');
 exports._match = 'businessProcess';
@@ -35,8 +36,8 @@ exports['user-account-content'] = function () {
 	}, function () {
 		return mmap(businessProcesses._first, function (businessProcess) {
 			if (!businessProcess) return p(_('No requests started'));
-			return documentsAndDataBrief(businessProcess);
-		});
-	}));
+			return documentsAndDataBrief(normalizeOptions(this, { businessProcess: businessProcess }));
+		}, this);
+	}.bind(this)));
 	div({ id: 'user-requests-preview' });
 };

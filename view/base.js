@@ -6,15 +6,15 @@
 
 'use strict';
 
-var modalContainer = require('./_modal-container'),
-_ = require('mano').i18n.bind('Registration');
+var _              = require('mano').i18n.bind('View')
+  , modalContainer = require('./components/modal-container');
 
 exports.body = function () {
 	var modalCurtain;
 
 	header({ class: 'header-top' },
 		div({ class: 'content header-top-wrapper' },
-			div({ class: 'header-top-logo' }, a({ href: '/' }, exports._logo(this))),
+			div({ class: 'header-top-logo' }, a({ href: '/' }, exports._logo.call(this))),
 			nav({ id: 'menu' })
 			)
 		);
@@ -23,7 +23,7 @@ exports.body = function () {
 	main({ id: 'main' });
 
 	footer({ class: 'footer-logos' },
-		exports._footerContent(this));
+		exports._footerContent.call(this));
 
 	insert(modalContainer);
 	div({ class: 'throbber' },
@@ -33,7 +33,7 @@ exports.body = function () {
 	// iOS fix, without that modals don't get closed
 	modalCurtain.addEventListener('click', Function.prototype, false);
 
-	insert(exports._bodyAppend(this));
+	insert(exports._bodyAppend.call(this));
 };
 
 exports._logo = Function.prototype;

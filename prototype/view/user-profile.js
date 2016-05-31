@@ -3,5 +3,5 @@
 module.exports = exports = require('../../view/user-profile');
 
 exports['submitted-menu'] = function () {
-	li(a({ href: '/guide/' }, "Process"));
+	li(a({ href: '/guide/' }, "My Account"));
 };

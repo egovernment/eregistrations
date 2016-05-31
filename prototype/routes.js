@@ -2,59 +2,211 @@
 
 'use strict';
 
-var db           = require('mano').db;
+var db = require('mano').db;
 
 // Assure prototype specific print base customisations
 require('./view/print-base');
 require('./view/user');
+require('./view/business-process-submitted');
+require('./view/business-process-official');
+require('./view/business-process-revision');
+require('./view/manager');
+require('./view/user-business-process-documents');
 
 module.exports = {
 	// Public routes
 	'/': require('./view/index'),
 	'reset-password': require('./view/reset-password'),
 
-	// Part-A routes
-	guide: require('./view/guide'),
-	'guide-lomas': require('./view/guide-lomas-form'),
-	'guide-lomas/form-complement': require('./view/guide-lomas-form-complement'),
+	// User routes
+	profile: require('./view/user-profile'),
+
+	// Part A routes
+	guide: require('./view/business-process-guide'),
+	'guide-lomas': require('./view/business-process-guide-lomas-form'),
+	'guide-lomas/form-complement': require('./view/business-process-guide-lomas-form-complement'),
 	'guide/costs-print': require('../view/print-business-process-costs-list'),
-	forms: require('./view/forms'),
-	'forms/company-informations': {
+	forms: require('./view/business-process-data-forms'),
+	'forms/disabled': require('./view/business-process-data-forms-disabled'),
+	'forms/tabbed': {
 		decorateContext: function () {
 			this.section = this.businessProcess.dataForms.map.company;
 		},
 		view: require('../view/business-process-data-forms-section-tab')
 	},
-	'forms/sides': {
-		decorateContext: function () {
-			this.section = this.businessProcess.dataForms.map.sides;
-		},
-		view: require('../view/business-process-data-forms-section-tab')
-	},
-	'forms/disabled': require('./view/disabled-forms'),
-	documents: require('./view/documents'),
-	pay: require('./view/payment'),
-	'documents/disabled': require('./view/disabled-documents'),
-	submission: require('./view/submission'),
-	profile: require('./view/user-profile'),
 	'nested-entity/(example)': {
 		match: function (entity) {
 			this.entity = this.businessProcess.branches.map.get(entity);
 			return true;
 		},
-		view: require('./view/add-edit-entity')
+		view: require('./view/business-process-add-edit-entity')
 	},
-	'partner-add': require('./view/partner-add'),
+	documents: require('./view/business-process-documents'),
+	'documents/disabled': require('./view/business-process-documents-disabled'),
+	pay: require('./view/business-process-payment'),
+	submission: require('./view/business-process-submission-forms'),
 
-	// My-account
+	// Business Process Submitted routes
+	'business-process-submitted': {
+		decorateContext: function () {
+			var upload = this.businessProcess.requirementUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.documentKind = 'requirementUpload';
+			this.documentUniqueKey = 'idDoc';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
+		},
+		view: require('../view/business-process-submitted-document')
+	},
+	'business-process-submitted/payment-receipts/(payment)': {
+		match: function () {
+			var upload = this.businessProcess.paymentReceiptUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.documentKind = 'paymentReceiptUpload';
+			this.documentUniqueKey = 'handlingFee';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/payment';
+			return true;
+		},
+		view: require('../view/business-process-submitted-payment')
+	},
+	'business-process-submitted/certificates/(certificate)': {
+		match: function () {
+			this.document = this.businessProcess.certificates.uploaded.first;
+			this.dataSnapshot = this.document.toJSON();
+			this.documentKind = 'certificate';
+			this.documentUniqueKey = 'docA';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind +
+				'/certificate';
+			return true;
+		},
+		view: require('../view/business-process-submitted-certificate')
+	},
+	'business-process-submitted/data': {
+		decorateContext: function () {
+			this.dataSnapshot = this.businessProcess.dataForms.toJSON();
+		},
+		view: require('../view/business-process-submitted-data')
+	},
+	'print-business-process-data': require('../view/print-business-process-data'),
+	'print-request-history': require('../view/print-business-process-status-log'),
+
+	// My Account routes
 	'my-account': require('../view/user-home'),
-	'my-account/data': require('./view/user-business-process-data'),
-	'my-account/print': require('../view/print-business-process-data'),
-	'my-account/documents': require('./view/user-business-process-documents-list'),
 	'my-account/requests': require('../view/user-requests'),
 	'my-account/summary': require('../view/user-business-process-summary'),
+	'my-account/documents': {
+		decorateContext: function () {
+			var upload = this.businessProcess.requirementUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.documentKind = 'requirementUpload';
+			this.documentUniqueKey = 'idDoc';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
+		},
+		view: require('../view/user-business-process-document')
+	},
+	'my-account/certificates/(certificate)': {
+		match: function () {
+			this.document = this.businessProcess.certificates.uploaded.first;
+			this.dataSnapshot = this.document.toJSON();
+			this.documentKind = 'certificate';
+			this.documentUniqueKey = 'docA';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind +
+				'/certificate';
+			return true;
+		},
+		view: require('../view/user-business-process-certificate')
+	},
+	'my-account/data': require('./view/user-business-process-data'),
+	'my-account/print': require('../view/print-business-process-data'),
 
-	// Manager
+	// Official routes
+	official: require('./view/business-processes-table'),
+
+	// Official Processing routes
+	'official/business-process-id': require('./view/business-process-official-form'),
+	'official/business-process-id/documents': {
+		decorateContext: function () {
+			var upload = this.businessProcess.requirementUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.documentKind = 'requirementUpload';
+			this.documentUniqueKey = 'idDoc';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
+		},
+		view: require('../view/business-process-official-document')
+	},
+	'official/business-process-id/payment-receipts/(payment)': {
+		match: function () {
+			var upload = this.businessProcess.paymentReceiptUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.documentKind = 'paymentReceiptUpload';
+			this.documentUniqueKey = 'handlingFee';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/payment';
+			return true;
+		},
+		view: require('../view/business-process-official-payment')
+	},
+	'official/business-process-id/certificates/(certificate)': {
+		match: function () {
+			this.document = this.businessProcess.certificates.uploaded.first;
+			this.dataSnapshot = this.document.toJSON();
+			this.documentKind = 'certificate';
+			this.documentUniqueKey = 'docA';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind +
+				'/certificate';
+			return true;
+		},
+		view: require('../view/business-process-official-certificate')
+	},
+	'official/business-process-id/data': {
+		decorateContext: function () {
+			this.dataSnapshot = this.businessProcess.dataForms.toJSON();
+		},
+		view: require('../view/business-process-official-data')
+	},
+
+	// Official Revision routes
+	'revision/business-process-id': {
+		decorateContext: function () {
+			var upload = this.businessProcess.requirementUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.documentKind = 'requirementUpload';
+			this.documentUniqueKey = 'idDoc';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
+			this.processingStep = this.businessProcess.processingSteps.map.revision;
+		},
+		view: require('../view/business-process-revision-document')
+	},
+	'revision/business-process-id/payment-receipts': {
+		decorateContext: function () {
+			var upload = this.businessProcess.paymentReceiptUploads.applicable.first;
+			this.document = upload.document;
+			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
+			this.documentKind = 'paymentReceiptUpload';
+			this.documentUniqueKey = 'handlingFee';
+			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/payment';
+			this.processingStep = this.businessProcess.processingSteps.map.revision;
+		},
+		view: require('../view/business-process-revision-payment')
+	},
+	'revision/business-process-id/data': {
+		decorateContext: function () {
+			var dataForms = this.businessProcess.dataForms;
+
+			this.dataSnapshot = dataForms.enrichJSON(dataForms.toJSON());
+		},
+		view: require('../view/business-process-revision-data')
+	},
+	'revision/business-process-id/processing': require('./view/business-process-revision-form'),
+
+	// Official Front Desk routes
+	'front-desk/user-id': require('./view/business-process-official-front-desk'),
+
+	// Manager routes
 	manager: {
 		decorateContext: function () {
 			this.user = db.notary;
@@ -73,7 +225,7 @@ module.exports = {
 			this.user = db.userVianney;
 			this.businessProcess = db.firstBusinessProcess;
 		},
-		view: require('./view/guide')
+		view: require('./view/business-process-guide')
 	},
 	'manager-validation/edit-user': {
 		decorateContext: function () {
@@ -81,25 +233,8 @@ module.exports = {
 		},
 		view: require('../view/manager-validation-user-edit')
 	},
-	// Part-B routes - user submitted
-	'user-submitted': require('./view/user-submitted'),
-	'user-submitted/(document)': {
-		match: function () {
-			var upload = this.businessProcess.requirementUploads.applicable.first;
-			this.document = upload.document;
-			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
-			this.documentKind = 'requirementUpload';
-			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
-			return true;
-		},
-		view: require('./view/document')
-	},
-	'print-request-history': require('../view/print-business-process-status-log'),
-	'data-print': require('./view/print-user-data'),
-	'user-submitted/print-user-data-alternative': require('./view/print-user-data-alternative'),
-	'print-business-processes-data': require('../view/print-business-process-data'),
 
-	// Part-B routes - users admin
+	// Admin routes
 	'users-admin': require('../view/users-table'),
 	'users-admin/add-user': require('../view/user-create'),
 	'users-admin/(edit-user-id)': {
@@ -109,65 +244,7 @@ module.exports = {
 		},
 		view: require('../view/user-edit')
 	},
-
-	// Part-B routes - official user
-	official: require('./view/business-processes-table'),
-	'revision/user-id': require('./view/business-process-revision'),
-	'revision/user-id/(document)': {
-		match: function () {
-			var upload = this.businessProcess.requirementUploads.applicable.first;
-			this.document = upload.document;
-			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
-			this.documentKind = 'requirementUpload';
-			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
-			return true;
-		},
-		view: require('./view/business-process-revision-document')
-	},
-	'revision/user-id/(payment)': {
-		match: function () {
-			var upload = this.businessProcess.paymentReceiptUploads.applicable.first;
-			this.document = upload.document;
-			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
-			this.documentKind = 'paymentReceiptUpload';
-			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/payment';
-			return true;
-		},
-		view: require('./view/business-process-revision-payment')
-	},
-	'official/user-id/(document)': {
-		match: function () {
-			var upload = this.businessProcess.requirementUploads.applicable.first;
-			this.document = upload.document;
-			this.dataSnapshot = upload.enrichJSON(upload.toJSON());
-			this.documentKind = 'requirementUpload';
-			this.documentUniqueId = this.businessProcess.__id__ + '/' + this.documentKind + '/document';
-			return true;
-		},
-		view: require('../view/business-process-document')
-	},
-	firstBusinessProcess: {
-		match: function () { return true; },
-		view: require('./view/business-process-official-form')
-	},
-	'official/user-id/certificates': require('./view/_certificates-form'),
-	'firstBusinessProcess/documents-and-data': {
-		match: function () {
-			this.document = this.businessProcess.requirementUploads.applicable.first.document;
-			return true;
-		},
-		view: require('../view/business-process-official-data')
-	},
-	'print-business-processes-list': require('./view/print-business-processes-table'),
-
-	// Part-B routes - front-desk
-	'front-desk/user-id': require('./view/_front-desk'),
-
-	// Part-B routes - statistics
 	statistics: require('./view/statistics'),
 	'filtered-statistics': require('./view/filtered-statistics'),
-
-	// Part-B routes - translations
 	i18n: require('./view/translations-panel')
-
 };

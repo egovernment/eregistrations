@@ -1,15 +1,13 @@
 'use strict';
 
-var replaceContent = require('dom-ext/element/#/replace-content')
-  , mano           = require('mano')
-  , Manager        = require('./components/supervisor-table/manager')
-  , db             = require('mano').db
-  , stepsLabelMap  = require('../utils/processing-steps-label-map')
-  , columns        = require('./_supervisor-table-columns').columns
+var replaceContent    = require('dom-ext/element/#/replace-content')
+  , mano              = require('mano')
+  , Manager           = require('./components/supervisor-table/manager')
+  , db                = require('mano').db
+  , stepsLabelMap     = require('../utils/processing-steps-label-map')
+  , columns           = require('./components/supervisor-table-columns').columns
+  , setupQueryHandler = require('./components/supervisor-table/setup-query-handler')
   , env = mano.env, _ = mano.i18n;
-
-var setupQueryHandler =
-	require('eregistrations/view/components/supervisor-table/setup-query-handler');
 
 exports._parent = require('./print-base');
 
@@ -21,7 +19,7 @@ exports.main = function () {
 		stepsMap: stepsLabelMap,
 		itemsPerPage: env.objectsListItemsPerPage
 	});
-	setupQueryHandler(listManager, '/print-supervisor-list/');
+	setupQueryHandler(listManager, '/print-business-processes-list/');
 
 	var getSection  = function (url, processingSteps, dataLabel) {
 		return [div({ class: 'print-users-list-caption' },
