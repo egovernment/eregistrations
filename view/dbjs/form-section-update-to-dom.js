@@ -12,18 +12,19 @@
  */
 'use strict';
 
-var _          = require('mano').i18n.bind('Sections')
-  , d          = require('d')
-  , db         = require('mano').db
-  , ns         = require('mano').domjs.ns
-  , headersMap = require('../utils/headers-map');
+var _                = require('mano').i18n.bind('Sections')
+  , d                = require('d')
+  , db               = require('mano').db
+  , ns               = require('mano').domjs.ns
+  , headersMap       = require('../utils/headers-map')
+  , normalizeOptions = require('es5-ext/object/normalize-options');
 
 require('./form-section-update-to-dom-fieldset');
 require('./form-section-base');
 
 module.exports = Object.defineProperty(db.FormSectionUpdate.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var options = Object(arguments[1])
+		var options = normalizeOptions(arguments[1])
 		  , url = options.url || ns.url
 		  , actionUrl = url(this.actionUrl)
 		  , master = options.master || this.master
@@ -39,13 +40,13 @@ module.exports = Object.defineProperty(db.FormSectionUpdate.prototype, 'toDOMFor
 			formId: this.domId,
 			subSectionHeaderRank: headerRank + 1
 		};
-
 		fieldsetResult = this.toDOMFieldset(document, sectionFieldsetOptions);
 		contentContainer = [
 			ns._if(this._label, [
 				headersMap[headerRank](this._label),
 				ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
 					ns.md(this._legend)))]),
+			this.originalSourceSection.toDOM(document),
 			fieldsetResult,
 			ns.p({ class: 'submit-placeholder input' },
 					ns.input({ type: 'submit', value: _("Submit") })),

@@ -6,12 +6,14 @@
 
 var memoize               = require('memoizee/plain')
   , validDb               = require('dbjs/valid-dbjs')
+  , defineStringLine      = require('dbjs-ext/string/string-line')
   , defineFormSectionBase = require('./form-section-base')
   , defineProgressRule    = require('./lib/progress-rule');
 
 module.exports = memoize(function (db) {
-	var FormSectionUpdate, FormSectionBase, ProgressRule;
+	var StringLine, FormSectionUpdate, FormSectionBase, ProgressRule;
 	validDb(db);
+	StringLine      = defineStringLine(db);
 	FormSectionBase = defineFormSectionBase(db);
 	ProgressRule    = defineProgressRule(db);
 	FormSectionUpdate = FormSectionBase.extend('FormSectionUpdate', {
@@ -33,15 +35,28 @@ module.exports = memoize(function (db) {
 				return _observe(this.sourceSection._legend);
 			}
 		},
+		sourceSectionPath: {
+			type: StringLine,
+			value: function () {
+				return this.__id__.slice(this.__id__.indexOf('/') + 1)
+					.replace(new RegExp('\/(.+?)' +
+						this.database.FormSectionBase.updateSectionPostfix), '/$1');
+			}
+		},
 		sourceSection: {
 			type: FormSectionBase,
 			value: function () {
-				var path = this.__id__.slice(this.__id__.indexOf('/') + 1)
-					.replace(new RegExp('\/(.+?)' +
-						this.database.FormSectionBase.updateSectionPostfix), '/$1'), resolved;
-				resolved = this.master.resolveSKeyPath(path);
+				var resolved;
+				resolved = this.master.resolveSKeyPath(this.sourceSectionPath);
 				if (!resolved || !resolved.value) return;
 				return resolved.value;
+			}
+		},
+		originalSourceSection: {
+			type: FormSectionBase,
+			value: function () {
+				if (!this.master.previousProcess) return;
+				return this.master.previousProcess.resolveSKeyPath(this.sourceSectionPath).value;
 			}
 		},
 		lastEditStamp: {
