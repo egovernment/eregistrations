@@ -2,13 +2,14 @@
 
 var _                  = require('mano').i18n.bind('View: Supervisor')
   , toArray            = require('es5-ext/object/to-array')
+  , identity           = require('es5-ext/function/identity')
   , byOrder            = function (a, b) { return this[a].order - this[b].order; }
   , once               = require('timers-ext/once')
   , dispatch           = require('dom-ext/html-element/#/dispatch-event-2')
   , location           = require('mano/lib/client/location')
   , timeRanges         = require('../utils/supervisor-time-ranges')
   , statuses           = require('../utils/supervisor-statuses-list')
-  , filterStepsMap     = require('../../utils/filter-supervisor-steps-map')
+  , filterStepsMap     = require('../utils/filter-supervisor-steps-map')
   , statusMeta         = require('mano').db.ProcessingStepStatus.meta
   , stepLabelsMap      = require('../utils/processing-steps-label-map')
   , getSupervisorTable = require('eregistrations/view/components/supervisor-table')
@@ -48,12 +49,12 @@ exports['sub-main'] = {
 								})
 							}, stepLabelsMap[name]);
 						}, null, byOrder))),
-				div(
+				_if(location.query.get('step').map(identity), div(
 					label({ for: 'status-select' }, _("Status"), ":"),
 					select({ id: 'status-select', name: 'status' },
 						list(statuses, function (status) {
 							return location.query.get('step').map(function (step) {
-								if (!stepsMap[step][status]) return;
+								if (!step || !stepsMap[step][status]) return;
 
 								return option({
 									value: status,
@@ -63,7 +64,7 @@ exports['sub-main'] = {
 								}, statusMeta[status].label);
 							});
 						}))
-				),
+				)),
 				div(
 					label({ for: 'time-select' }, _("Time"), ":"),
 					select({ id: 'time-select', name: 'time' },

@@ -4,7 +4,7 @@ var replaceContent = require('dom-ext/element/#/replace-content')
   , mano           = require('mano')
   , Manager        = require('./components/supervisor-table/manager')
   , db             = require('mano').db
-  , stepsMap       = require('../utils/processing-steps-map')
+  , stepsLabelMap  = require('../utils/processing-steps-label-map')
   , columns        = require('./_supervisor-table-columns').columns
   , env = mano.env, _ = mano.i18n;
 
@@ -18,7 +18,7 @@ exports.main = function () {
 
 	listManager = new Manager({
 		user: this.user,
-		stepsMap: stepsMap,
+		stepsMap: stepsLabelMap,
 		itemsPerPage: env.objectsListItemsPerPage
 	});
 	setupQueryHandler(listManager, '/print-supervisor-list/');
@@ -47,7 +47,7 @@ exports.main = function () {
 		}
 
 		if (listManager.query.step) {
-			result.push(getSection(url, listManager.list, stepsMap[listManager.query.step].label));
+			result.push(getSection(url, listManager.list, stepsLabelMap[listManager.query.step].label));
 		} else {
 			result.push(getSection(url, listManager.list, _("All")));
 		}
