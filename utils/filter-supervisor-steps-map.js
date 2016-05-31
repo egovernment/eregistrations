@@ -2,7 +2,7 @@
 
 var oForEach = require('es5-ext/object/for-each')
   , includes = require('es5-ext/array/#/contains')
-  , statuses = require('./supervisor-statuses-list');
+  , statuses = ['pending', 'sentBack'];
 
 module.exports = function (stepsMap) {
 	var result = {};
