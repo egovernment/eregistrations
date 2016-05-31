@@ -9,7 +9,6 @@ var uniq              = require('es5-ext/array/#/uniq')
   , appLocation       = require('mano/lib/client/location')
   , setupQueryHandler = require('../../../utils/setup-client-query-handler')
   , timeRanges        = require('../../../utils/supervisor-time-ranges')
-  , statuses          = require('../../../utils/supervisor-statuses-list')
   , db                = require('mano').db
 
   , wsRe = /\s{2,}/g
@@ -17,12 +16,15 @@ var uniq              = require('es5-ext/array/#/uniq')
 
 module.exports = exports = function (listManager/*, pathname*/) {
 	var queryHandler = setupQueryHandler(exports.conf, appLocation, arguments[1] || '/');
+
 	queryHandler._stepsMap = listManager._stepsMap;
 	queryHandler._itemsPerPage = listManager.itemsPerPage;
 	queryHandler._listManager = listManager;
 	queryHandler.on('query', function (query) { listManager.update(query); });
+
 	return queryHandler;
 };
+
 exports.conf = [
 	{
 		name: 'step',
@@ -33,9 +35,12 @@ exports.conf = [
 		}
 	}, {
 		name: 'status',
-		ensure: function (value) {
+		ensure: function (value, resolvedQuery) {
 			if (!value) return;
-			if (!statuses.includes(value)) throw new Error("Unrecognized time value " + stringify(value));
+			if (!resolvedQuery.step || !this._stepsMap[resolvedQuery.step][value]) {
+				throw customError("Status value not applicable", { fixedQueryValue: null });
+			}
+
 			return value;
 		}
 	}, {

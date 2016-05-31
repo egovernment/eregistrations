@@ -2,13 +2,11 @@
 
 var _                  = require('mano').i18n.bind('View: Supervisor')
   , toArray            = require('es5-ext/object/to-array')
-  , identity           = require('es5-ext/function/identity')
   , byOrder            = function (a, b) { return this[a].order - this[b].order; }
   , once               = require('timers-ext/once')
   , dispatch           = require('dom-ext/html-element/#/dispatch-event-2')
   , location           = require('mano/lib/client/location')
   , timeRanges         = require('../utils/supervisor-time-ranges')
-  , statuses           = require('../utils/supervisor-statuses-list')
   , filterStepsMap     = require('../utils/filter-supervisor-steps-map')
   , statusMeta         = require('mano').db.ProcessingStepStatus.meta
   , stepLabelsMap      = require('../utils/processing-steps-label-map')
@@ -23,7 +21,11 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		var stepsMap = exports._statusMap(this)
+		var stepsMap    = exports._statusMap(this)
+		  , stepQuery   = location.query.get('step')
+		  , statusQuery = location.query.get('status')
+		  , timeQuery   = location.query.get('time')
+
 		  , searchForm, searchInput, supervisorTable;
 
 		// this should not happen, but it might if we don't block illegal role dependencies
@@ -36,41 +38,48 @@ exports['sub-main'] = {
 				div({ class: 'users-table-filter-bar-status' },
 					label({ for: 'state-select' }, _("Role"), ":"),
 					select({ id: 'state-select', name: 'step' },
-						option({ value: '', selected:
-								location.query.get('step').map(function (value) {
-								return value ? null : 'selected';
-							}) },
-							_("All")),
+						option({ value: '', selected: stepQuery.map(function (value) {
+							return value ? null : 'selected';
+						}) }, _("All")),
 						toArray(stepsMap, function (statuses, name) {
 							return option({
 								value: name,
-								selected: location.query.get('step').map(function (value) {
+								selected: stepQuery.map(function (value) {
 									return value === name ? 'selected' : null;
 								})
 							}, stepLabelsMap[name]);
 						}, null, byOrder))),
-				_if(location.query.get('step').map(identity), div(
-					label({ for: 'status-select' }, _("Status"), ":"),
-					select({ id: 'status-select', name: 'status' },
-						list(statuses, function (status) {
-							return location.query.get('step').map(function (step) {
-								if (!step || !stepsMap[step][status]) return;
+				mmap(stepQuery, function (selectedStep) {
+					var statuses;
 
-								return option({
-									value: status,
-									selected: location.query.get('status').map(function (name) {
-										return status === name ? 'selected' : null;
-									})
-								}, statusMeta[status].label);
-							});
-						}))
-				)),
+					if (!selectedStep) return;
+
+					statuses = Object.keys(stepsMap[selectedStep]);
+					if (statuses.length < 2) return;
+
+					return statusQuery.map(function (selectedStatus) {
+						if (selectedStatus && !stepsMap[selectedStep][selectedStatus]) return;
+
+						return div(
+							label({ for: 'status-select' }, _("Status"), ":"),
+							select(
+								{ id: 'status-select', name: 'status' },
+								list(statuses, function (status) {
+									return option({
+										value: status === 'pending' ? '' : status,
+										selected: status === selectedStatus ? 'selected' : null
+									}, statusMeta[status].label);
+								})
+							)
+						);
+					});
+				}),
 				div(
 					label({ for: 'time-select' }, _("Time"), ":"),
 					select({ id: 'time-select', name: 'time' },
 						list(timeRanges, function (data) {
 							return option({ value: data.name || '', selected:
-									location.query.get('time').map(function (name) {
+									timeQuery.map(function (name) {
 									var selected = (data.name ? (data.name === name) : (name == null));
 									return selected ? 'selected' : null;
 								}) },
@@ -88,8 +97,8 @@ exports['sub-main'] = {
 					input({ type: 'submit', value: _("Search") })
 				)),
 			div(
-				a({ href: mmap(location.query.get('step'), function (step) {
-					return mmap(location.query.get('time'), function (time) {
+				a({ href: mmap(stepQuery, function (step) {
+					return mmap(timeQuery, function (time) {
 						return mmap(location.query.get('page'), function (page) {
 							var search = [];
 								if (step) search.push('step=' + step);
