@@ -79,7 +79,7 @@ exports['sub-main'] = {
 					select({ id: 'time-select', name: 'time' },
 						list(timeRanges, function (data) {
 							return option({ value: data.name || '', selected:
-									timeQuery.map(function (name) {
+								timeQuery.map(function (name) {
 									var selected = (data.name ? (data.name === name) : (name == null));
 									return selected ? 'selected' : null;
 								}) },
