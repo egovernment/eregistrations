@@ -133,5 +133,9 @@ module.exports = function (driver, slavePath/*, options*/) {
 	})(function () {
 		debug.progress('|');
 		return driver.recalculateAllSizes();
-	})(debug.close);
+	})(function (stats) {
+		debug.progress(' masters: ' + stats.mastersCount + ', records: ' + stats.recordCount +
+			' maxRecords: ' + stats.maxRecordsPerMasterCount);
+		debug.close();
+	});
 };
