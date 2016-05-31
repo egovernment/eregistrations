@@ -11,22 +11,22 @@ var db          = require('mano').db
 baseMatcher = function (step, businessProcessId) {
 	this.businessProcess = db.BusinessProcess.getById(businessProcessId);
 
-	if (this.businessProcess) {
-		if (typeof step === 'function') {
-			this.processingStep = step.call(this);
-		} else {
-			this.processingStep = this.businessProcess.processingSteps.map[step];
-		}
-		if (!this.processingStep) return false;
+	if (!this.businessProcess) return false;
 
-		// Below check is a hack through which we ensure that business process has full data loaded
-		// (we don't want to show the page to user until that's the case)
-		if (!this.businessProcess.dataForms.dataSnapshot.jsonString) return false;
+	// Below check is a hack through which we ensure that business process has full data loaded
+	// (we don't want to show the page to user until that's the case)
+	if (!this.businessProcess.dataForms.dataSnapshot.jsonString) return false;
 
-		return this.processingStep.isReady;
+	if (step === false) return this.businessProcess.isSubmitted;
+
+	if (typeof step === 'function') {
+		this.processingStep = step.call(this);
+	} else {
+		this.processingStep = this.businessProcess.processingSteps.map[step];
 	}
+	if (!this.processingStep) return false;
 
-	return false;
+	return this.processingStep.isReady;
 };
 
 module.exports = function (step) {

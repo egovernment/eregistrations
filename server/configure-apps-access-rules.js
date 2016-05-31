@@ -27,6 +27,7 @@ var aFrom                = require('es5-ext/array/from')
   , unserializeView      = require('../utils/db-view/unserialize-ids')
   , resolveStepPath      = require('../utils/resolve-processing-step-full-path')
   , isOfficialRoleName   = require('../utils/is-official-role-name')
+  , supervisorFilter     = require('../utils/filter-supervisor-steps-map')
   , getReducedFrag       = require('./data-fragments/get-reduced-object-fragments')
   , getRedRecFrag        = require('./data-fragments/get-reduced-records-fragment')
   , getAddRecFrag        = require('./data-fragments/get-add-records-to-fragment')
@@ -392,17 +393,17 @@ module.exports = exports = function (db, dbDriver, data) {
 		});
 
 		// Per role first page snapshots
-		forEach(processingStepsMeta, function (data, stepShortPath) {
-			var defaultStatusName = resolveDefaultStatus(stepShortPath);
-			if (!defaultStatusName) return;
-			fragment.promise = initializeView('businessProcesses/' + stepShortPath)(function () {
-				// First page snapshot
-				fragment.addFragment(getReducedData('views/businessProcesses/' + stepShortPath +
-					'/' + defaultStatusName));
-				// First page list data
-				fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
-					'businessProcesses/' + stepShortPath + '/' + defaultStatusName),
-					getBusinessProcessSupervisorListFragment));
+		forEach(supervisorFilter(processingStepsMeta), function (statuses, stepShortPath) {
+			forEach(statuses, function (conf, status) {
+				fragment.promise = initializeView('businessProcesses/' + stepShortPath)(function () {
+					// First page snapshot
+					fragment.addFragment(getReducedData('views/businessProcesses/' + stepShortPath +
+						'/' + status));
+					// First page list data
+					fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
+						'businessProcesses/' + stepShortPath + '/' + status),
+						getBusinessProcessSupervisorListFragment));
+				});
 			});
 		});
 		return fragment;

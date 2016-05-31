@@ -53,12 +53,13 @@ SupervisorManager.prototype = Object.create(ListManager.prototype, {
 	_getSearchFilter: d(null),
 
 	_isExternalQuery: d(function (query) {
-		var views;
+		var status = query.status || 'pending'
+		  , views;
 		// When we have all the items, we don't need to query server
 		if (!query.step) {
 			views = db.views.supervisor.all;
 		} else {
-			views = db.views.businessProcesses[query.step].pending;
+			views = db.views.businessProcesses[query.step][status];
 		}
 		if (views.totalSize <= this.itemsPerPage) return false;
 		// If it's not about first page, it's only server that knows
@@ -74,12 +75,15 @@ SupervisorManager.prototype = Object.create(ListManager.prototype, {
 			name: 'step',
 			required: true,
 			process: function (ignore, query) {
-				var views, list = [], stepViews;
+				var list = []
+				  , status = query.status || 'pending'
+				  , views, stepViews;
+
 				if (!query.step) {
 					views = db.views.supervisor.all;
 					list = unserializeView(views.get(1), this._type);
 				} else {
-					views = db.views.businessProcesses[query.step].pending;
+					views = db.views.businessProcesses[query.step][status];
 					stepViews = unserializeView(views.get(1), this._type);
 					list = stepViews.map(function (businessProcess) {
 						return businessProcess.processingSteps.map[query.step];

@@ -7,11 +7,8 @@ var hyphenToCamel        = require('es5-ext/string/#/hyphen-to-camel')
   , matchUpload          = require('./utils/official-match-upload')
   , matchCertificate     = require('./utils/official-match-certificate');
 
-module.exports = function (step) {
-	if (!step) {
-		throw new Error('No step provided for official route');
-	}
-	var match = matchBusinessProcess(step);
+module.exports = function () {
+	var match = matchBusinessProcess(false);
 	return {
 		// User routes
 		profile: require('../view/user-profile'),
