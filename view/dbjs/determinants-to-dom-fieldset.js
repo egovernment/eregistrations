@@ -1,9 +1,9 @@
 'use strict';
 
-var d  = require('d')
+var _                   = require('mano').i18n.bind('View: Binding: Business Process')
+  , d                   = require('d')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
-  , normalizeOptions = require('es5-ext/object/normalize-options')
-  , _ = require('mano').i18n.bind('User');
+  , normalizeOptions    = require('es5-ext/object/normalize-options');
 
 module.exports = function (target) {
 	Object.defineProperties(target, {

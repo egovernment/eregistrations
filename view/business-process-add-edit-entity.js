@@ -3,7 +3,7 @@
 'use strict';
 
 var db                   = require('mano').db
-  , _                    = require('mano').i18n.bind('User')
+  , _                    = require('mano').i18n.bind('View: Business Process')
   , generateFormSections = require('./components/generate-form-sections')
   , baseUrl              = url;
 

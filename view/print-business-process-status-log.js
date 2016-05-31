@@ -1,6 +1,7 @@
 'use strict';
 
-var _ = require('mano').i18n.bind('User');
+var _         = require('mano').i18n.bind('View: Print')
+  , isUserApp = require('../utils/is-user-app');
 
 exports._parent = require('./print-base');
 exports._match = 'businessProcess';
@@ -16,6 +17,6 @@ exports.main = function () {
 					th(log._label);
 					td({ class: 'print-user-history-time' }, log._time);
 					td(md(log._text));
-					if (this.processingStep) td(log._official);
+					if (!isUserApp(this.appName)) td(log._official);
 				}, this)));
 };

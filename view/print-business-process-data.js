@@ -1,7 +1,8 @@
 // Basic business process print data view
+
 'use strict';
 
-var _              = require('mano').i18n.bind('User')
+var _              = require('mano').i18n.bind('View: Print')
   , renderSections = require('./components/render-sections-json');
 
 exports._parent = require('./print-base');

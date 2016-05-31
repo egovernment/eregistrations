@@ -17,6 +17,7 @@ require('mano-legacy/checkbox-toggle');
 require('domjs-ext/post-button.legacy');
 
 require('../../client/legacy/form-section-state-helper');
+require('../../client/legacy/hash-nav-document-link');
 require('../../common/legacy/date-controls');
 
 // Assure empty mock

@@ -1,17 +1,17 @@
 'use strict';
 
-var _                  = require('mano').i18n.bind('View: Supervisor')
+var _                  = require('mano').i18n.bind('View: Official: Supervisor')
   , toArray            = require('es5-ext/object/to-array')
+  , assign             = require('es5-ext/object/assign')
+  , from               = require('es5-ext/array/from')
   , byOrder            = function (a, b) { return this[a].order - this[b].order; }
   , once               = require('timers-ext/once')
   , dispatch           = require('dom-ext/html-element/#/dispatch-event-2')
   , location           = require('mano/lib/client/location')
+  , getSupervisorTable = require('./components/supervisor-table')
+  , tableColumns       = require('./components/supervisor-table-columns')
   , timeRanges         = require('../utils/supervisor-time-ranges')
-  , assign             = require('es5-ext/object/assign')
   , stepsMap           = assign(require('../utils/processing-steps-map'))
-  , getSupervisorTable = require('eregistrations/view/components/supervisor-table')
-  , from               = require('es5-ext/array/from')
-  , tableColumns       = require('eregistrations/view/_supervisor-table-columns.js')
   , columns            = from(tableColumns.columns)
   , env                = require('mano').env;
 
@@ -71,7 +71,7 @@ exports['sub-main'] = {
 								if (page) search.push('page=' + page);
 								if (search.length) search = '?' + search.join('&');
 								else search = null;
-							return url('print-supervisor-list', search);
+							return url('print-business-processes-list', search);
 						});
 					});
 				}), class: 'users-table-filter-bar-print', target: '_blank' },

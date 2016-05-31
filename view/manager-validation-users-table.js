@@ -1,16 +1,16 @@
 'use strict';
 
-var copy                = require('es5-ext/object/copy')
+var _                   = require('mano').i18n.bind('View: Official: Manager validation')
+  , location            = require('mano/lib/client/location')
+  , copy                = require('es5-ext/object/copy')
   , ReactiveTable       = require('reactive-table')
   , ReactiveTableList   = require('reactive-table/list')
   , mano                = require('mano')
-  , _                   = require('mano').i18n.bind('Users Admin')
+  , activateManagerForm = require('./components/activate-manager-form')
+  , getUsersTable       = require('./components/users-table/')
   , getOrderIndex       = require('../users/get-default-order-index')
   , compareUsers        = require('../utils/get-compare')(getOrderIndex)
-  , getUsersTable       = require('../view/components/users-table/')
-  , activateManagerForm = require('./components/activate-manager-form')
   , once                = require('timers-ext/once')
-  , location            = require('mano/lib/client/location')
   , dispatch            = require('dom-ext/html-element/#/dispatch-event-2')
 
   , db = mano.db, env = mano.env, roleMeta = db.Role.meta;

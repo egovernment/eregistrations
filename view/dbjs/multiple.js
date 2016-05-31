@@ -1,9 +1,9 @@
 'use strict';
 
-var MultipleInput = require('dbjs-dom/input/_multiple'),
-		el = require('dom-ext/document/#/make-element').bind(document),
-		d = require('d'),
-		_  = require('mano').i18n;
+var MultipleInput = require('dbjs-dom/input/_multiple')
+  , el            = require('dom-ext/document/#/make-element').bind(document)
+  , d             = require('d')
+  , _             = require('mano').i18n;
 
 Object.defineProperties(MultipleInput.prototype, {
 	addLabel: d(

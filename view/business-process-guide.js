@@ -2,11 +2,11 @@
 
 'use strict';
 
-var camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
-  , sentBackInfo   = require('./_business-process-sent-back-info')
-  , _              = require('mano').i18n.bind('Registration')
-  , inventoryModal = require('./_business-process-inventory')
-  , infoMsg        = require('./_business-process-optional-info').infoMsg;
+var _              = require('mano').i18n.bind('View: Business Process')
+  , camelToHyphen  = require('es5-ext/string/#/camel-to-hyphen')
+  , sentBackInfo   = require('./components/business-process-sent-back-info')
+  , inventoryModal = require('./components/business-process-inventory')
+  , infoMsg        = require('./components/business-process-optional-info').infoMsg;
 
 /**
  * getRegistrationSpanContent
@@ -54,27 +54,28 @@ exports.step = function () {
 	  , paymentProcessed = and(businessProcess.costs._paymentWeight,
 			businessProcess.costs._paymentProgress);
 
-	exports._guideHeading(this);
+	exports._guideHeading.call(this);
 
 	insert(_if(isSentBack,
 		function () { return div({ class: 'info-main' }, sentBackInfo(this)); }.bind(this),
-		_if(and(guideFinished, paymentProcessed, not(exports._forceEnabledState(this))), div(
+		_if(and(guideFinished, paymentProcessed, not(exports._forceEnabledState.call(this))), div(
 			{ class: 'info-main' },
 			_("The guide is disabled as you have already processed your payment.")
 		))));
 	insert(infoMsg(this));
-	insert(exports._optionalInfo(this));
+	insert(exports._optionalInfo.call(this));
 
 	disabler(
 		{ id: 'guide-disabler-range' },
-		and(or(isSubmitted, paymentProcessed), guideFinished, not(exports._forceEnabledState(this))),
+		and(or(isSubmitted, paymentProcessed), guideFinished,
+			not(exports._forceEnabledState.call(this))),
 		businessProcess.inventory ? insert(inventoryModal(businessProcess)) : null,
 		form(
 			{ id: 'guide-form', class: 'user-guide', action: '/guide/', method: 'post' },
-			exports._questionsSection(this),
-			exports._registrationsSection(this),
-			exports._requirementsSection(this),
-			exports._costsSection(this),
+			exports._questionsSection.call(this),
+			exports._registrationsSection.call(this),
+			exports._requirementsSection.call(this),
+			exports._costsSection.call(this),
 			p({ id: 'guide-save-button', class: 'user-next-step-button' },
 				button({ type: 'submit' },
 					_("Save and continue"))),
@@ -84,13 +85,13 @@ exports.step = function () {
 		)
 	);
 
-	exports._customScripts(this);
+	exports._customScripts.call(this);
 	legacy('refreshGuide', 'guide-form', businessProcess.__id__, businessProcess.constructor.__id__);
 };
 
 exports._forceEnabledState = Function.prototype;
 
-exports._guideHeading = function (context) {
+exports._guideHeading = function () {
 	var headingText = _("Obtain your certificates");
 
 	return div(
@@ -109,16 +110,16 @@ exports._customScripts = Function.prototype;
 
 // Questions
 
-exports._questionsSection = function (context) {
+exports._questionsSection = function () {
 	return div(
 		{ class: ['section-primary', 'user-guide-questions-section'] },
 		h2(_("Questions")),
-		exports._questionsIntro(context),
-		context.businessProcess.determinants.toDOMFieldset(document, { formId: 'guide-form' })
+		exports._questionsIntro.call(this),
+		this.businessProcess.determinants.toDOMFieldset(document, { formId: 'guide-form' })
 	);
 };
 
-exports._questionsIntro = function (context) {
+exports._questionsIntro = function () {
 	return p({ class: "section-primary-legend" },
 		_("These questions allow you to determine what " +
 			"requirements are needed and what are the costs of the registrations:"));
@@ -126,15 +127,15 @@ exports._questionsIntro = function (context) {
 
 // Registrations
 
-exports._registrationsSection = function (context) {
-	var registrationsMap = context.businessProcess.registrations.map;
+exports._registrationsSection = function () {
+	var registrationsMap = this.businessProcess.registrations.map;
 
 	return div(
 		{ class: ['section-primary', 'user-guide-registrations-section'] },
 		div(
 			{ id: 'mandatory-registrations-section', class: 'section-primary-wrapper' },
 			h2(_("Mandatory Registrations")),
-			exports._mandatoryRegistrationIntro(context),
+			exports._mandatoryRegistrationIntro.call(this),
 			ul({ id: 'mandatory-registrations-list' }, registrationsMap, function (registration) {
 				var key   = registration.key
 				  , idKey = camelToHyphen.call(registration.key)
@@ -153,7 +154,7 @@ exports._registrationsSection = function (context) {
 		div(
 			{ id: 'optional-registrations-section', class: 'section-primary-wrapper' },
 			h2(_("Optional Registrations")),
-			exports._optionalRegistrationIntro(context),
+			exports._optionalRegistrationIntro.call(this),
 			ul({ id: 'optional-registrations-list' }, registrationsMap, function (registration) {
 				var key   = registration.key
 				  , idKey = camelToHyphen.call(registration.key)
@@ -174,31 +175,31 @@ exports._registrationsSection = function (context) {
 
 exports._mandatoryRegistrationIntro = Function.prototype;
 
-exports._optionalRegistrationIntro = function (context) {
+exports._optionalRegistrationIntro = function () {
 	return p({ class: "section-primary-legend" },
 		_("You have the possibility to additionally request following registrations:"));
 };
 
 // Requirements
 
-exports._requirementsSection = function (context) {
+exports._requirementsSection = function () {
 	return div(
 		{ id: 'requirements-section', class: ['section-primary',
 			'user-guide-requirements-section'] },
 		h2(_("Requirements")),
-		exports._requirementsIntro(context),
+		exports._requirementsIntro.call(this),
 		ul({ id: 'requirements-list', class: 'user-guide-requirements-list' },
-			context.businessProcess.requirements.map,
+			this.businessProcess.requirements.map,
 			function (requirement) {
 				li({ 'data-key': requirement.key },
 					requirement.toGuideDOM ? requirement.toGuideDOM() : [requirement.label,
 							requirement.legend && [br(), small(mdi(requirement.legend))]]);
 			}),
-		exports._requirementsFooter(context)
+		exports._requirementsFooter.call(this)
 	);
 };
 
-exports._requirementsIntro = function (context) {
+exports._requirementsIntro = function () {
 	return p({ class: "section-primary-legend" },
 		_("These are the documents you have to upload and send with your application:"));
 };
@@ -207,23 +208,23 @@ exports._requirementsFooter = Function.prototype;
 
 // Costs
 
-exports._costsSection = function (context) {
+exports._costsSection = function () {
 	return div(
 		{ id: 'costs-section', class: ['section-primary', 'user-guide-costs-section'] },
 		h2(_("Costs")),
-		exports._costsIntro(context),
-		ul({ id: 'costs-list', class: 'user-guide-costs-list' }, exports._costsList(context)),
-		div({ class: 'user-guide-costs-footer' }, exports._costsFooter(context))
+		exports._costsIntro.call(this),
+		ul({ id: 'costs-list', class: 'user-guide-costs-list' }, exports._costsList.call(this)),
+		div({ class: 'user-guide-costs-footer' }, exports._costsFooter.call(this))
 	);
 };
 
-exports._costsIntro = function (context) {
+exports._costsIntro = function () {
 	return p({ class: "section-primary-legend" },
 		_("These are the fees you will need to pay before obtaining your certificates:"));
 };
 
-exports._costsList = function (context) {
-	return [list(context.businessProcess.costs.map,
+exports._costsList = function () {
+	return [list(this.businessProcess.costs.map,
 		function (cost) {
 			var key          = cost.key
 			  , idKey        = camelToHyphen.call(cost.key)
@@ -244,7 +245,7 @@ exports._costsList = function (context) {
 			span({ id: 'costs-total' }))];
 };
 
-exports._costsFooter = function (context) {
+exports._costsFooter = function () {
 	return a({ id: 'print-costs-link', class: 'button-resource-link', href: '/costs-print/',
 		target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print costs list"));
 };

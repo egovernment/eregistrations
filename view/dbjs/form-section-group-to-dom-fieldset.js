@@ -17,8 +17,8 @@ var d                = require('d')
   , ns               = require('mano').domjs.ns
   , find             = require('es5-ext/array/#/find')
   , forEach          = require('es5-ext/object/for-each')
-  , progressRules    = require('../components/progress-rules')
   , normalizeOptions = require('es5-ext/object/normalize-options')
+  , progressRules    = require('../components/progress-rules')
   , headersMap       = require('../utils/headers-map');
 
 require('./form-section-base');

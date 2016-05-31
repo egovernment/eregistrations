@@ -24,4 +24,10 @@
 	font-size: 11px;
 	line-height: 18px;
 	font-weight: bold;
+	vertical-align: text-bottom;
+}
+
+.submitted-documents-list > li .hint-optional {
+	vertical-align: middle;
+	margin-left: 8px;
 }

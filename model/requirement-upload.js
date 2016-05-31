@@ -22,7 +22,7 @@ module.exports = memoize(function (db) {
 	// Enum for document upload status
 	var RequirementUploadStatus = StringLine.createEnum('RequirementUploadStatus', new Map([
 		['valid', { label: _("Valid") }],
-		['invalid', { label: _("Invalid") }]
+		['invalid', { label: _("Invalid"), htmlClass: 'error' }]
 	]));
 
 	// Enum for document upload reject reasn
@@ -56,7 +56,8 @@ module.exports = memoize(function (db) {
 
 		// Eventual rejection details
 		rejectReasonTypes: { type: RequirementUploadRejectReason, multiple: true, required: true },
-		rejectReasonMemo: { type: db.String, required: true, label: _("Explanation") },
+		rejectReasonMemo: { type: db.String, required: true, label: _("Explanation"),
+			inputPlaceholder: _("Please write here the other(s) reason(s) of rejection") },
 		rejectReasons: { type: db.String, multiple: true, required: true,
 			value: function () {
 				var result = [], isInvalid = false;
