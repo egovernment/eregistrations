@@ -239,6 +239,9 @@ module.exports = memoize(function (db) {
 			value: _("Section is disabled because online payment transaction has " +
 				"already been made or it's in progress")
 		},
+		setPropertyMasterTypeDeep: {
+			type: db.Function
+		},
 		// Checks whether at least one progress rule of this section or it's children
 		// is displayable (invalid and has a message)
 		hasDisplayableRuleDeep: {

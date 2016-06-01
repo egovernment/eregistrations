@@ -119,6 +119,23 @@ module.exports = memoize(function (db) {
 		sectionProperty: { type: StringLine, required: true },
 		// The text of message displayed when there are no entities.
 		onEmptyMessage: { type: StringLine, value: _("There are no elements added at the moment.") },
+		setPropertyMasterTypeDeep: {
+			value: function (PropertyMasterType) {
+				var entityObjects, objectsType;
+
+				entityObjects = this.master.resolveSKeyPath(this.propertyName);
+				if (!entityObjects) {
+					return;
+				}
+				objectsType = entityObjects.descriptor.type;
+				if (!objectsType.prototype[this.sectionProperty]) {
+					return;
+				}
+				objectsType.prototype[this.sectionProperty].dataForms.forEach(function (section) {
+					section.setPropertyMasterTypeDeep(PropertyMasterType);
+				});
+			}
+		},
 		propertyNamesDeep: {
 			value: function () {
 				if (this.resolventProperty) return [this.resolventProperty];

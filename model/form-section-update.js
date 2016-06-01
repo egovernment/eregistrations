@@ -39,8 +39,8 @@ module.exports = memoize(function (db) {
 			type: StringLine,
 			value: function () {
 				return this.__id__.slice(this.__id__.indexOf('/') + 1)
-					.replace(new RegExp('\/(.+?)' +
-						this.database.FormSectionBase.updateSectionPostfix), '/$1');
+					.replace(new RegExp('(\/?)(.+?)' +
+						this.database.FormSectionBase.updateSectionPostfix), '$1$2');
 			}
 		},
 		sourceSection: {

@@ -64,6 +64,13 @@ module.exports = memoize(function (db) {
 				return res;
 			}
 		},
+		setPropertyMasterTypeDeep: {
+			value: function (PropertyMasterType) {
+				this.sections.forEach(function (section) {
+					section.setPropertyMasterTypeDeep(PropertyMasterType);
+				});
+			}
+		},
 		propertyNamesDeep: {
 			value: function (_observe) {
 				var result = [];
