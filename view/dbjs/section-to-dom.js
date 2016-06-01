@@ -16,6 +16,7 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 		  , options      = Object(arguments[1])
 		  , headerRank   = options.headerRank || 3
 		  , cssClass     = options.cssClass || 'entity-data-section'
+		  , displayEmpty = options.displayEmpty
 		  , resolveValue = options.customResolveValue || defaultResolveValue
 		  , filteredNames;
 
@@ -37,6 +38,7 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 							if (options.customFilter) {
 								if (!options.customFilter(resolved)) return false;
 							}
+							if (displayEmpty) return true;
 							return observable.value != null;
 						}), function (name) {
 							var resolved = resolvePropertyPath(self.master, name)
