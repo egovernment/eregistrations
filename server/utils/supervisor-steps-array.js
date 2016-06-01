@@ -1,26 +1,33 @@
 'use strict';
 
-var supervisorMeta = require('../../utils/processing-steps-map')
-  , deferred       = require('deferred')
+var deferred       = require('deferred')
   , getDbSet       = require('./get-db-set')
   , getDbArray     = require('./get-db-array')
   , serializeValue = require('dbjs/_setup/serialize/value');
 
-module.exports = function (storage, onProcessingStepsChange) {
+module.exports = function (storage, stepsMap, onProcessingStepsChange) {
 	var supervisorResults = {};
-	return deferred.map(Object.keys(supervisorMeta),
-		function (name) {
-			var keyPath = supervisorMeta[name].indexName
-			  , value = serializeValue(supervisorMeta[name].indexValue);
-			return getDbSet(storage, 'computed', keyPath, value)(function (set) {
+
+	return deferred.map(Object.keys(stepsMap), function (stepName) {
+		var processingStepKeyPath = 'processingSteps/map/' + stepName;
+
+		supervisorResults[processingStepKeyPath] = {};
+
+		return deferred.map(Object.keys(stepsMap[stepName]), function (statusName) {
+			var keyPath = stepsMap[stepName][statusName].indexName
+			  , value   = stepsMap[stepName][statusName].indexValue;
+
+			return getDbSet(storage, 'computed', keyPath, serializeValue(value))(function (set) {
 				return getDbArray(set, storage, 'computed', keyPath)(function (array) {
-					var processingStepKeyPath = 'processingSteps/map/' + name;
-					supervisorResults[processingStepKeyPath] = array;
+					supervisorResults[processingStepKeyPath][statusName] = array;
+
 					if (typeof onProcessingStepsChange === 'function') {
-						supervisorResults[processingStepKeyPath].on('change', onProcessingStepsChange);
+						array.on('change', onProcessingStepsChange);
 					}
-					return supervisorResults[processingStepKeyPath];
+
+					return array;
 				});
 			});
-		})(supervisorResults);
+		});
+	})(supervisorResults);
 };

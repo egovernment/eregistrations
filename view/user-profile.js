@@ -54,5 +54,5 @@ exports._extraProfileForms = function () {
 	return _if(and(eq(this.user._currentRoleResolved, 'manager'),
 			this.appName !== 'manager-registration'), function () {
 		return generateFormSections(this.user.managerDataForms.applicable);
-	});
+	}.bind(this));
 };
