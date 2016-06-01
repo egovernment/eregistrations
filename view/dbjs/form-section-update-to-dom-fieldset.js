@@ -50,10 +50,11 @@ module.exports = Object.defineProperties(db.FormSectionUpdate.prototype, {
 			ns.div({ id: resolvent.affectedSectionId },
 				ns.div(
 					{ class: 'section-primary-sub', id: this.sourceSection.domId },
-					ns._if(this.sourceSection._label,
-						headersMap[subSectionHeaderRank](this.sourceSection.label)),
-					ns._if(this.sourceSection._legend, ns.div({ class: 'section-primary-legend' },
-						ns.md(this.sourceSection._legend))),
+					options.disableHeader ? null :
+							[ns._if(this.sourceSection._label,
+								headersMap[subSectionHeaderRank](this.sourceSection.label)),
+								ns._if(this.sourceSection._legend, ns.div({ class: 'section-primary-legend' },
+									ns.md(this.sourceSection._legend)))],
 					customizeData.sourceSection.arrayResult
 						= this.sourceSection.toDOMFieldset(document, fieldsetOptions)
 				), resolvent.legacyScript).extend(options.append)
