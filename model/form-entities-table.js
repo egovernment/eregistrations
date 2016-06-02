@@ -121,19 +121,7 @@ module.exports = memoize(function (db) {
 		onEmptyMessage: { type: StringLine, value: _("There are no elements added at the moment.") },
 		setPropertyMasterTypeDeep: {
 			value: function (PropertyMasterType) {
-				var entityObjects, objectsType;
-
-				entityObjects = this.master.resolveSKeyPath(this.propertyName);
-				if (!entityObjects) {
-					return;
-				}
-				objectsType = entityObjects.descriptor.type;
-				if (!objectsType.prototype[this.sectionProperty]) {
-					return;
-				}
-				objectsType.prototype[this.sectionProperty].dataForms.forEach(function (section) {
-					section.setPropertyMasterTypeDeep(PropertyMasterType);
-				});
+				this.propertyMasterType = PropertyMasterType;
 			}
 		},
 		propertyNamesDeep: {
