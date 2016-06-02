@@ -115,7 +115,7 @@ renderers.mainSections = function (data/*, options*/) {
 module.exports = exports = function (dataSnapshot/*, options*/) {
 	var options = arguments[1];
 
-	return renderers.mainSections(dataSnapshot.resolved, options);
+	return renderers.mainSections(dataSnapshot.resolved.sections, options);
 };
 
 exports.renderers = renderers;
