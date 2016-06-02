@@ -2,15 +2,17 @@
 
 'use strict';
 
-var appLocation = require('mano/lib/client/location')
-  , errorMsg    = require('./components/business-process-error-info').errorMsg
-  , infoMsg     = require('./components/business-process-optional-info').infoMsg;
+var appLocation  = require('mano/lib/client/location')
+  , errorMsg     = require('./components/business-process-error-info').errorMsg
+  , infoMsg      = require('./components/business-process-optional-info').infoMsg
+  , formsHeading = require('./components/business-process-data-forms-heading');
 
 exports._parent = require('./business-process-base');
 
 exports.step = {
 	class: { content: false, 'user-forms': false },
 	content: function () {
+		exports._formsHeading.call(this);
 		nav({ class: 'forms-tab-nav' },
 			div({ class: 'content' }, errorMsg(this)),
 			div({ class: 'content' }, infoMsg(this)),
@@ -32,6 +34,8 @@ exports._tabs = function () {
 				section._shortLabel)));
 	});
 };
+
+exports._formsHeading = formsHeading;
 
 // Displayed together with error info and 'global' optional info
 exports._optionalInfo = Function.prototype;
