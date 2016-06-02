@@ -8,7 +8,6 @@ var normalizeOptions = require('es5-ext/object/normalize-options')
 
 module.exports = function (context/*, options*/) {
 	var options         = normalizeOptions(arguments[1])
-	  , urlPrefix       = options.urlPrefix || '/'
 	  , businessProcess = context.businessProcess;
 
 	return section({ class: 'section-primary' },
