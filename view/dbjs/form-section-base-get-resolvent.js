@@ -45,7 +45,7 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 					(dbjsInput.observable.descriptor.inputOptions.multiline === false))) {
 					dbjsInput.dom.classList.add('multiline');
 				}
-				result.legacyScript = ns.legacy('radioMatch', this.domId,
+				result.legacyScript = ns.legacy('radioMatch', options.formId || this.domId,
 						master.__id__ + '/' + this.resolventProperty,
 					match);
 			}
