@@ -467,12 +467,10 @@ module.exports = exports = function (db, dbDriver, data) {
 						fragment.addFragment(getColFragments(bps, getManagerBusinessProcessData));
 						// Users that come out of business processes
 						fragment.addFragment(getColFragments(mapDbSet(bps, function (bpId) {
-							var userId, query = { keyPath: 'initialBusinessProcesses' };
+							var userId, query = { keyPath: 'initialBusinessProcesses', value: '7' + bpId };
 							return userStorage.search(query, function (id, data, stream) {
-								if ((data.value === '11') && endsWith.call(id, '*7' + bpId)) {
-									userId = id.split('/', 1)[0];
-									stream.destroy();
-								}
+								userId = id.split('/', 1)[0];
+								stream.destroy();
 							})(function () { return userId; });
 						}), getManagerUserData));
 					});
