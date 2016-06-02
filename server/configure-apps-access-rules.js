@@ -68,7 +68,7 @@ module.exports = exports = function (db, dbDriver, data) {
 	var userStorage = ensureDriver(dbDriver).getStorage('user')
 	  , getBusinessProcessData = getObjFragment()
 	  , reducedStorage = dbDriver.getReducedStorage()
-	  , getUserData = getObjFragment(userStorage)
+	  , getUserData = getObjFragment()
 	  , getUserReducedData = getReducedFrag(userStorage)
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , getBusinessProcessFullData
