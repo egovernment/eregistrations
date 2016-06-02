@@ -18,10 +18,12 @@ var appTypes = {
 	'users-admin': true,
 	'meta-admin': { extraFiles: ['view/meta-admin'] },
 	dispatcher: { extraFiles: ['view/dispatcher'],
-		'client/model.js': 'client/model.js/official.tpl'
+		'client/model.js': 'client/model.js/official.tpl',
+		'client/dbjs-dom.js': 'client/dbjs-dom.js/official.tpl'
 		},
 	supervisor: {
-		'client/model.js': 'client/model.js/official.tpl'
+		'client/model.js': 'client/model.js/official.tpl',
+		'client/dbjs-dom.js': 'client/dbjs-dom.js/official.tpl'
 	},
 	user: { extraFiles: ['view/user.js'] },
 	public: { extraFiles: ['apps/public'] },

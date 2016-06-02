@@ -1,6 +1,6 @@
 'use strict';
 
-var _  = require('mano').i18n.bind('Users Admin');
+var _  = require('mano').i18n.bind('View: Users Admin');
 
 exports._parent = require('./user-base');
 exports._match  = 'editedUser';

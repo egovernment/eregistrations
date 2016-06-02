@@ -1,8 +1,8 @@
 'use strict';
 
-var _              = require('mano').i18n.bind('Registration')
+var _              = require('mano').i18n.bind('View: Manager')
   , readOnlyRender = require('./utils/read-only-render')
-  , baseUrl = url;
+  , baseUrl        = url;
 
 exports._parent = require('./user-base');
 

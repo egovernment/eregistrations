@@ -4,7 +4,7 @@
 partners section table custom footer
 */
 
-var d = require('d')
+var d  = require('d')
   , db = require('mano').db
   , ns = require('mano').domjs.ns;
 

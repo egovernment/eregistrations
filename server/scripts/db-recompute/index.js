@@ -130,8 +130,12 @@ module.exports = function (driver, slavePath/*, options*/) {
 			if (event.type === 'nextObject') debug.progress();
 			if (event.type === 'nextPool') debug.progress('↻');
 		});
-	})(function () {
-		debug.progress();
-		return driver.recalculateAllSizes();
-	})(debug.close);
+	})(function (stats) {
+		debug.progress('|');
+		return driver.recalculateAllSizes()(stats);
+	})(function (stats) {
+		debug.progress(' records: ' + stats.recordsCount + ', masters: ' + stats.mastersCount +
+			', maxMasterRecords: ' + stats.maxRecordsPerMasterCount);
+		debug.close();
+	});
 };

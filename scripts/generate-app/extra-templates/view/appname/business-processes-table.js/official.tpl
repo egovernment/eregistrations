@@ -5,7 +5,7 @@ var statusMap                 = require('../../apps/${ appName }/business-proces
 			require('../../apps/${ appName }/business-processes/get-default-order-index')
   , getBusinessProcessesTable = require('eregistrations/view/components/business-processes-table')
   , from                      = require('es5-ext/array/from')
-  , tableColumns              = require('eregistrations/view/_business-process-table-columns')
+  , tableColumns              = require('eregistrations/view/components/business-process-table-columns')
   , columns                   = from(tableColumns.columns)
   , env                       = require('../../apps-common/client/env');
 
@@ -18,9 +18,9 @@ exports._statusMap = function () {
 	return statusMap;
 };
 
-exports._businessProcessTable = function (context) {
+exports._businessProcessTable = function () {
 	return getBusinessProcessesTable({
-		user: context.user,
+		user: this.user,
 		roleName: '${ appNameSuffix }',
 		statusMap: statusMap,
 		getOrderIndex: getOrderIndex,

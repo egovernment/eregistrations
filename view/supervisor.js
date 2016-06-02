@@ -1,17 +1,18 @@
 'use strict';
 
-var _                  = require('mano').i18n.bind('View: Supervisor')
+var _                  = require('mano').i18n.bind('View: Official: Supervisor')
   , toArray            = require('es5-ext/object/to-array')
+  , from               = require('es5-ext/array/from')
   , byOrder            = function (a, b) { return this[a].order - this[b].order; }
   , once               = require('timers-ext/once')
   , dispatch           = require('dom-ext/html-element/#/dispatch-event-2')
   , location           = require('mano/lib/client/location')
+  , getSupervisorTable = require('./components/supervisor-table')
+  , tableColumns       = require('./components/supervisor-table-columns')
   , timeRanges         = require('../utils/supervisor-time-ranges')
-  , assign             = require('es5-ext/object/assign')
-  , stepsMap           = assign(require('../utils/processing-steps-map'))
-  , getSupervisorTable = require('eregistrations/view/components/supervisor-table')
-  , from               = require('es5-ext/array/from')
-  , tableColumns       = require('eregistrations/view/_supervisor-table-columns.js')
+  , filterStepsMap     = require('../utils/filter-supervisor-steps-map')
+  , statusMeta         = require('mano').db.ProcessingStepStatus.meta
+  , stepLabelsMap      = require('../utils/processing-steps-label-map')
   , columns            = from(tableColumns.columns)
   , env                = require('mano').env;
 
@@ -20,31 +21,65 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		var searchForm, searchInput, supervisorTable;
+		var stepsMap    = exports._statusMap(this)
+		  , stepQuery   = location.query.get('step')
+		  , statusQuery = location.query.get('status')
+		  , timeQuery   = location.query.get('time')
+
+		  , searchForm, searchInput, supervisorTable;
+
+		// this should not happen, but it might if we don't block illegal role dependencies
+		if (!stepsMap) return;
+
+		stepsMap = filterStepsMap(stepsMap);
 
 		section({ class: 'section-primary users-table-filter-bar' },
 			searchForm = form({ action: '/', autoSubmit: true },
 				div({ class: 'users-table-filter-bar-status' },
 					label({ for: 'state-select' }, _("Role"), ":"),
 					select({ id: 'state-select', name: 'step' },
-						option({ value: '', selected:
-								location.query.get('step').map(function (value) {
-								return value ? null : 'selected';
-							}) },
-							_("All")),
-						toArray(stepsMap, function (data, name) {
-							return option({ value: name, selected:
-									location.query.get('step').map(function (value) {
+						option({ value: '', selected: stepQuery.map(function (value) {
+							return value ? null : 'selected';
+						}) }, _("All")),
+						toArray(stepsMap, function (statuses, name) {
+							return option({
+								value: name,
+								selected: stepQuery.map(function (value) {
 									return value === name ? 'selected' : null;
-								}) },
-								data.label);
+								})
+							}, stepLabelsMap[name]);
 						}, null, byOrder))),
+				mmap(stepQuery, function (selectedStep) {
+					var statuses;
+
+					if (!selectedStep) return;
+
+					statuses = Object.keys(stepsMap[selectedStep]);
+					if (statuses.length < 2) return;
+
+					return statusQuery.map(function (selectedStatus) {
+						if (selectedStatus && !stepsMap[selectedStep][selectedStatus]) return;
+
+						return div(
+							label({ for: 'status-select' }, _("Status"), ":"),
+							select(
+								{ id: 'status-select', name: 'status' },
+								list(statuses, function (status) {
+									return option({
+										value: status === 'pending' ? '' : status,
+										selected: status === selectedStatus ? 'selected' : null
+									}, statusMeta[status].label);
+								})
+							)
+						);
+					});
+				}),
 				div(
 					label({ for: 'time-select' }, _("Time"), ":"),
 					select({ id: 'time-select', name: 'time' },
 						list(timeRanges, function (data) {
 							return option({ value: data.name || '', selected:
-									location.query.get('time').map(function (name) {
+								timeQuery.map(function (name) {
 									var selected = (data.name ? (data.name === name) : (name == null));
 									return selected ? 'selected' : null;
 								}) },
@@ -62,8 +97,8 @@ exports['sub-main'] = {
 					input({ type: 'submit', value: _("Search") })
 				)),
 			div(
-				a({ href: mmap(location.query.get('step'), function (step) {
-					return mmap(location.query.get('time'), function (time) {
+				a({ href: mmap(stepQuery, function (step) {
+					return mmap(timeQuery, function (time) {
 						return mmap(location.query.get('page'), function (page) {
 							var search = [];
 								if (step) search.push('step=' + step);
@@ -71,7 +106,7 @@ exports['sub-main'] = {
 								if (page) search.push('page=' + page);
 								if (search.length) search = '?' + search.join('&');
 								else search = null;
-							return url('print-supervisor-list', search);
+							return url('print-business-processes-list', search);
 						});
 					});
 				}), class: 'users-table-filter-bar-print', target: '_blank' },
@@ -94,3 +129,5 @@ exports['sub-main'] = {
 			supervisorTable.pagination);
 	}
 };
+
+exports._statusMap = Function.prototype;

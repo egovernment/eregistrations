@@ -27,6 +27,7 @@ var aFrom                = require('es5-ext/array/from')
   , unserializeView      = require('../utils/db-view/unserialize-ids')
   , resolveStepPath      = require('../utils/resolve-processing-step-full-path')
   , isOfficialRoleName   = require('../utils/is-official-role-name')
+  , supervisorFilter     = require('../utils/filter-supervisor-steps-map')
   , getReducedFrag       = require('./data-fragments/get-reduced-object-fragments')
   , getRedRecFrag        = require('./data-fragments/get-reduced-records-fragment')
   , getAddRecFrag        = require('./data-fragments/get-add-records-to-fragment')
@@ -70,12 +71,13 @@ module.exports = exports = function (db, dbDriver, data) {
 	  , getUserData = getObjFragment(userStorage)
 	  , getUserReducedData = getReducedFrag(userStorage)
 	  , getReducedData = getReducedFrag(reducedStorage)
+	  , getBusinessProcessFullData
 	  , resolveOfficialViews, processingStepsMeta, processingStepsDefaultMap = create(null)
 	  , businessProcessListProperties, businessProcessMyAccountProperties
 	  , globalFragment, getMetaAdminFragment, getAccessRules
 	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, userListProps
 	  , businessProcessDispatcherListExtraProperties = [], officialDispatcherListExtraProperties = []
-	  , businessProcessMyAccountExtraProperties = [];
+	  , businessProcessMyAccountExtraProperties = [], businessProcessSupervisorExtraProperties = [];
 
 	ensureDatabase(db);
 
@@ -91,6 +93,19 @@ module.exports = exports = function (db, dbDriver, data) {
 	processingStepsMeta          = ensureObject(data.processingStepsMeta);
 	addCustomBusinessProcessData = data.addCustomBusinessProcessData &&
 		ensureCallable(data.addCustomBusinessProcessData);
+
+	if (addCustomBusinessProcessData) {
+		getBusinessProcessFullData = function (businessProcessId) {
+			var fragment = new FragmentGroup();
+
+			fragment.addFragment(getBusinessProcessData(businessProcessId));
+			addCustomBusinessProcessData(businessProcessId, fragment);
+
+			return fragment;
+		};
+	} else {
+		getBusinessProcessFullData = getBusinessProcessData;
+	}
 
 	// Eventual fragment that should be passed to all clients
 	if (data.globalFragment != null) globalFragment = ensureFragment(data.globalFragment);
@@ -127,6 +142,10 @@ module.exports = exports = function (db, dbDriver, data) {
 	if (data.businessProcessMyAccountExtraProperties) {
 		businessProcessMyAccountExtraProperties =
 			aFrom(ensureIterable(data.businessProcessMyAccountExtraProperties));
+	}
+	if (data.businessProcessSupervisorExtraProperties) {
+		businessProcessSupervisorExtraProperties =
+			aFrom(ensureIterable(data.businessProcessSupervisorExtraProperties));
 	}
 
 	businessProcessMyAccountProperties =
@@ -278,7 +297,7 @@ module.exports = exports = function (db, dbDriver, data) {
 			userId + '/recentlyVisited/businessProcesses/' + stepShortPath)
 			.map(function (value) { return value.slice(1); });
 
-		return getColFragments(list, getBusinessProcessData);
+		return getColFragments(list, getBusinessProcessFullData);
 	};
 	var getBusinessProcessOfficialListFragment =
 		getPartFragments(null, businessProcessListProperties);
@@ -296,7 +315,7 @@ module.exports = exports = function (db, dbDriver, data) {
 			// To be visited (recently pending) business processes (full data)
 			fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
 				'businessProcesses/' + viewPath + '/' + defaultStatusName).toArray().slice(0, 10),
-				getBusinessProcessData));
+				getBusinessProcessFullData));
 			// First page snapshot for each status
 			fragment.addFragment(getReducedData('views/businessProcesses/' + viewPath));
 			// First page list data for each status
@@ -356,9 +375,10 @@ module.exports = exports = function (db, dbDriver, data) {
 
 	// Supervisor resolvers
 	var getBusinessProcessSupervisorListFragment = getPartFragments(null, (function () {
-		var set = new Set(['businessName']);
+		var set = new Set(['businessName'].concat(businessProcessSupervisorExtraProperties));
 		forEach(processingStepsMeta, function (data, stepShortPath) {
 			set.add('processingSteps/map/' + resolveStepPath(stepShortPath) + '/status');
+			set.add('processingSteps/map/' + resolveStepPath(stepShortPath) + '/assignee');
 		});
 		return set;
 	}()));
@@ -373,17 +393,17 @@ module.exports = exports = function (db, dbDriver, data) {
 		});
 
 		// Per role first page snapshots
-		forEach(processingStepsMeta, function (data, stepShortPath) {
-			var defaultStatusName = resolveDefaultStatus(stepShortPath);
-			if (!defaultStatusName) return;
-			fragment.promise = initializeView('businessProcesses/' + stepShortPath)(function () {
-				// First page snapshot
-				fragment.addFragment(getReducedData('views/businessProcesses/' + stepShortPath +
-					'/' + defaultStatusName));
-				// First page list data
-				fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
-					'businessProcesses/' + stepShortPath + '/' + defaultStatusName),
-					getBusinessProcessSupervisorListFragment));
+		forEach(supervisorFilter(processingStepsMeta), function (statuses, stepShortPath) {
+			forEach(statuses, function (conf, status) {
+				fragment.promise = initializeView('businessProcesses/' + stepShortPath)(function () {
+					// First page snapshot
+					fragment.addFragment(getReducedData('views/businessProcesses/' + stepShortPath +
+						'/' + status));
+					// First page list data
+					fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
+						'businessProcesses/' + stepShortPath + '/' + status),
+						getBusinessProcessSupervisorListFragment));
+				});
 			});
 		});
 		return fragment;
@@ -413,10 +433,7 @@ module.exports = exports = function (db, dbDriver, data) {
 			if (custom) {
 				// Business process application
 				// Business process data
-				fragment.addFragment(getBusinessProcessData(custom));
-				if (addCustomBusinessProcessData) {
-					addCustomBusinessProcessData(custom, fragment);
-				}
+				fragment.addFragment(getBusinessProcessFullData(custom));
 			} else {
 				initialBusinessProcesses = getDbRecordSet(userStorage,
 					userId + '/initialBusinessProcesses');
@@ -466,7 +483,7 @@ module.exports = exports = function (db, dbDriver, data) {
 			businessProcessId = appId[3];
 			fragment.addFragment(getManagerUserData(clientId));
 			if (businessProcessId) {
-				fragment.addFragment(getBusinessProcessData(businessProcessId));
+				fragment.addFragment(getBusinessProcessFullData(businessProcessId));
 			} else {
 				fragment.promise = getBusinessProcessStorages(function (storages) {
 					return getDbSet(storages, 'direct', 'manager', '7' + userId)(function (managerBps) {
@@ -474,7 +491,7 @@ module.exports = exports = function (db, dbDriver, data) {
 						  , promise = clientBps.promise;
 						clientBps = clientBps.map(function (value) { return value.slice(1); });
 						fragment.addFragment(getColFragments(managerBps.and(clientBps),
-							getBusinessProcessData));
+							getBusinessProcessMyAccountFragment));
 						return promise;
 					});
 				});

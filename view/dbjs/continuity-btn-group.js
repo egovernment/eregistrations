@@ -1,9 +1,9 @@
 'use strict';
 
-var normalizeOptions = require('es5-ext/object/normalize-options'),
-	d = require('d'),
-	Radio = require('./_enum-inline-button-group'),
-	RuleRadio;
+var normalizeOptions = require('es5-ext/object/normalize-options')
+  , d                = require('d')
+  , Radio            = require('./enum-inline-button-group')
+  , RuleRadio;
 
 module.exports = RuleRadio = function (document, type/*, options*/) {
 	var options = normalizeOptions(arguments[2]);

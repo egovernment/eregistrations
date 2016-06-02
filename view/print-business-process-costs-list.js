@@ -1,7 +1,7 @@
 'use strict';
 
-var _  = require('mano').i18n.bind('User')
-  , db = require('mano').db
+var _        = require('mano').i18n.bind('View: Print')
+  , db       = require('mano').db
   , location = require('mano/lib/client/location');
 
 exports._parent = require('./print-base');

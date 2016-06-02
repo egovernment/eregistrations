@@ -4,11 +4,11 @@ var Database          = require('dbjs')
   , defineFormSection = require('../../../model/form-section');
 
 module.exports = function (t, a) {
-	var db = new Database()
-	  , FormSection = defineFormSection(db)
+	var db                   = new Database()
+	  , FormSection          = defineFormSection(db)
 	  , PropertyGroupProcess = t(db)
 
-	  , process = new PropertyGroupProcess();
+	  , process              = new PropertyGroupProcess();
 
 	process.map._descriptorPrototype_.type = FormSection;
 	process.define('applicable', { type: FormSection });

@@ -82,3 +82,11 @@ dialog footer p {
 	padding-right: 0;
 	white-space: nowrap;
 }
+
+@media only screen and (max-width: var(--mobile-width)) {
+	dialog {
+		left:0;
+		right:0;
+		transform:none;
+	}
+}

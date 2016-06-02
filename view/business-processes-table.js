@@ -1,11 +1,12 @@
 'use strict';
 
-var _  = require('mano').i18n.bind('User Offcial')
-, toArray       = require('es5-ext/object/to-array')
-, byOrder = function (a, b) { return this[a].order - this[b].order; }
-, once          = require('timers-ext/once')
-, dispatch      = require('dom-ext/html-element/#/dispatch-event-2')
-, location     = require('mano/lib/client/location');
+var _        = require('mano').i18n.bind('View: Offcial')
+  , location = require('mano/lib/client/location')
+  , toArray  = require('es5-ext/object/to-array')
+  , once     = require('timers-ext/once')
+  , dispatch = require('dom-ext/html-element/#/dispatch-event-2')
+
+  , byOrder  = function (a, b) { return this[a].order - this[b].order; };
 
 exports._parent = require('./user-base');
 
@@ -13,15 +14,15 @@ exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
 		var searchForm, searchInput, businessProcessesTable;
-		exports._optionalContent(this);
+		exports._optionalContent.call(this);
 		// this should not happen, but it might if we don't block illegal role dependencies
-		if (!exports._statusMap(this)) return;
+		if (!exports._statusMap.call(this)) return;
 		section({ class: 'section-primary users-table-filter-bar' },
 			searchForm = form({ action: '/', autoSubmit: true },
 				div({ class: 'users-table-filter-bar-status' },
 					label({ for: 'state-select' }, _("Status"), ":"),
 					select({ id: 'state-select', name: 'status' },
-						toArray(exports._statusMap(this), function (data, name) {
+						toArray(exports._statusMap.call(this), function (data, name) {
 							return option({ value: data.default ? '' : name, selected:
 								location.query.get('status').map(function (value) {
 									var selected = (name ? (value === name) : (value == null));
@@ -56,7 +57,7 @@ exports['sub-main'] = {
 			));
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
 
-		businessProcessesTable = exports._businessProcessTable(this);
+		businessProcessesTable = exports._businessProcessTable.call(this);
 
 		if (businessProcessesTable) {
 			insert(businessProcessesTable.pagination,

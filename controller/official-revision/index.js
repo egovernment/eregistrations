@@ -74,9 +74,6 @@ module.exports = function (/*options*/) {
 				}
 			}, this);
 		},
-		redirectUrl: function () {
-			return '/' + this.businessProcess.__id__ + '/';
-		},
 		formHtmlId: 'form-revision-requirement-upload'
 	};
 
@@ -91,10 +88,15 @@ module.exports = function (/*options*/) {
 
 			return this.processingStep.paymentReceiptUploads.processable.has(paymentReceiptUpload);
 		},
-		redirectUrl: function () {
-			return '/' + this.businessProcess.__id__ + '/';
-		},
 		formHtmlId: 'form-revision-payment-receipt-upload'
+	};
+
+	// Data forms revision.
+	controller['revision-data-forms/[0-9][a-z0-9]+'] = {
+		match: function (businessProcessId, receiptKey) {
+			return matcher.call(this, businessProcessId, stepName);
+		},
+		formHtmlId: 'form-revision-data-forms'
 	};
 
 	return controller;

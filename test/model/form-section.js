@@ -381,4 +381,19 @@ module.exports = function (t, a) {
 	a.deep(aFrom(section.resolvedPropertyNames), [
 		'nestedObject/notRequiredProperty'
 	]);
+
+	a.h2('propertyNamesDeep');
+	section = masterObject.sectionOfDerivedType;
+	a.deep(aFrom(section.propertyNamesDeep), ['notRequiredProperty',
+		'property',
+		'secondProperty',
+		'thirdProperty',
+		'propertyWithDefaultValue',
+		'propertyNotApplicable',
+		'propertyNotFormApplicable',
+		'nestedObject/notRequiredProperty',
+		'nonExistentNestedObject/notRequiredProperty',
+		'readOnlyPropertyName',
+		'constrainedProperty',
+		'resolventProperty']);
 };

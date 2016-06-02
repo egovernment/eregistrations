@@ -5,10 +5,10 @@ var d                   = require('d')
   , mano                = require('mano')
   , headersMap          = require('../utils/headers-map')
   , getPropertyLabel    = require('../utils/get-property-label')
+  , defaultResolveValue = require('../utils/default-resolve-value')
 
-  , db = mano.db, File = db.File;
-
-var defaultResolveValue =  require('../utils/default-resolve-value');
+  , db                  = mano.db
+  , File                = db.File;
 
 module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 	d(function (document/*, options*/) {

@@ -1,0 +1,37 @@
+.document-preview-box-header {
+	min-height: 22px;
+}
+
+.document-preview-box-header-document-title {
+	width: 70%;
+	float: left;
+	text-align: left;
+}
+
+.document-preview-box-controls {
+	width: 30%;
+	float: right;
+	text-align: right;
+}
+
+.document-preview-file-controls {
+	display: block;
+}
+
+.document-preview-external-link {
+	width: 70%;
+	float: left;
+	text-align: left;
+}
+
+.document-preview-navigation {
+	width: 30%;
+	float: right;
+	text-align: right;
+}
+
+.document-preview-image-placeholder {
+	width: 100%;
+	display: block;
+	float: left;
+}
