@@ -172,11 +172,6 @@ exports._bodyAppend = function () {
 					span("User: My Account: Request: Data"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
-			li(
-				a({ href: '/my-account/print/' },
-					span("User: My Account: Request: Data print"),
-					span({ class: 'label-reg' }, "Part B"))
-			),
 			// Official views
 			li(
 				a({ href: '/official/' },
