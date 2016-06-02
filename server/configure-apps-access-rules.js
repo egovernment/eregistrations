@@ -88,6 +88,7 @@ module.exports = exports = function (db, dbDriver, data) {
 	var getManagerBusinessProcessData = getPartFragments(null, new Set(['businessName', 'isSubmitted',
 		'manager', 'status']));
 	var addCustomBusinessProcessData;
+	var businessProcessUserMap = require('mano/lib/server/business-process-user-map');
 
 	ensureObject(data);
 	processingStepsMeta          = ensureObject(data.processingStepsMeta);
@@ -467,11 +468,7 @@ module.exports = exports = function (db, dbDriver, data) {
 						fragment.addFragment(getColFragments(bps, getManagerBusinessProcessData));
 						// Users that come out of business processes
 						fragment.addFragment(getColFragments(mapDbSet(bps, function (bpId) {
-							var userId, query = { keyPath: 'initialBusinessProcesses', value: '7' + bpId };
-							return userStorage.search(query, function (id, data, stream) {
-								userId = id.split('/', 1)[0];
-								stream.destroy();
-							})(function () { return userId; });
+							return businessProcessUserMap()(function (map) { return map.get('7' + bpId); });
 						}), getManagerUserData));
 					});
 				});
