@@ -85,8 +85,8 @@ module.exports = exports = function (db, dbDriver, data) {
 	var getManagerUserData = getPartFragments(userStorage, new Set(['email', 'firstName',
 		'initialBusinessProcesses', 'lastName', 'manager', 'canManagedUserBeDestroyed',
 		'isActiveAccount', 'isInvitationSent']));
-	var getManagerBusinessProcessData = getPartFragments(null, new Set(['businessName', 'isSubmitted',
-		'manager', 'status']));
+	var getManagerBusinessProcessData = getPartFragments(null, new Set(['businessName',
+		'isSentBack', 'isUserProcessing', 'isSubmitted', 'manager', 'status']));
 	var addCustomBusinessProcessData;
 	var businessProcessUserMap = require('mano/lib/server/business-process-user-map');
 
