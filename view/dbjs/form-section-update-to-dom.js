@@ -1,4 +1,4 @@
-/** Renders form of a FormSectionGroup object
+/** Renders form of a FormSectionUpdate object
  * @param document {object} - document object, usually DOM
  * @param options {object} -
  * {

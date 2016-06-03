@@ -1,4 +1,4 @@
-/** Renders fieldset of a FormSectionGroup object
+/** Renders fieldset of a FormSectionUpdate object
  * @param document {object} - document object, usually DOM
  * @param options {object} -
  * {

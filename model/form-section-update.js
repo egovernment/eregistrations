@@ -1,5 +1,6 @@
 /** This class should be used as a super class for those section classes
- * which handle forms with more than one fields group.
+ * which wrap a given section of previousProcess
+ * (it's about businessProcessUpdate functionality).
  */
 
 'use strict';
