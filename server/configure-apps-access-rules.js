@@ -68,7 +68,7 @@ module.exports = exports = function (db, dbDriver, data) {
 	var userStorage = ensureDriver(dbDriver).getStorage('user')
 	  , getBusinessProcessData = getObjFragment()
 	  , reducedStorage = dbDriver.getReducedStorage()
-	  , getUserData = getObjFragment(userStorage)
+	  , getUserData = getObjFragment()
 	  , getUserReducedData = getReducedFrag(userStorage)
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , getBusinessProcessFullData
@@ -85,9 +85,10 @@ module.exports = exports = function (db, dbDriver, data) {
 	var getManagerUserData = getPartFragments(userStorage, new Set(['email', 'firstName',
 		'initialBusinessProcesses', 'lastName', 'manager', 'canManagedUserBeDestroyed',
 		'isActiveAccount', 'isInvitationSent']));
-	var getManagerBusinessProcessData = getPartFragments(null, new Set(['businessName', 'isSubmitted',
-		'manager', 'status']));
+	var getManagerBusinessProcessData = getPartFragments(null, new Set(['businessName',
+		'isSentBack', 'isUserProcessing', 'isSubmitted', 'manager', 'status']));
 	var addCustomBusinessProcessData;
+	var businessProcessUserMap = require('mano/lib/server/business-process-user-map');
 
 	ensureObject(data);
 	processingStepsMeta          = ensureObject(data.processingStepsMeta);
@@ -467,13 +468,7 @@ module.exports = exports = function (db, dbDriver, data) {
 						fragment.addFragment(getColFragments(bps, getManagerBusinessProcessData));
 						// Users that come out of business processes
 						fragment.addFragment(getColFragments(mapDbSet(bps, function (bpId) {
-							var userId, query = { keyPath: 'initialBusinessProcesses' };
-							return userStorage.search(query, function (id, data, stream) {
-								if ((data.value === '11') && endsWith.call(id, '*7' + bpId)) {
-									userId = id.split('/', 1)[0];
-									stream.destroy();
-								}
-							})(function () { return userId; });
+							return businessProcessUserMap()(function (map) { return map.get('7' + bpId); });
 						}), getManagerUserData));
 					});
 				});

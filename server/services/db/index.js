@@ -83,7 +83,7 @@ module.exports = function (root, data) {
 			done[userId] = true;
 			debug("register data for %s", userId);
 			fragment = getFragment(userId);
-			if (!fragment.promise || !fragment.promise.resolved) fragment.flush();
+			if (!fragment.promise || fragment.promise.resolved) fragment.flush();
 			accessFragment.addFragment(fragment);
 			addPassword(userId, accessFragment);
 			registerDeferreds.push(def = deferred());
