@@ -3,6 +3,7 @@
 var emptyPromise     = require('deferred')(null)
   , genId            = require('time-uuid')
   , login            = require('mano-auth/server/authentication').login
+  , serverLogin      = require('mano-auth/controller/server-master/login')
   , registerSubmit   = require('mano-auth/controller/server-master/register-and-login').submit
   , mano             = require('mano')
   , sendNotification = require('../../server/email-notifications/create-account')
@@ -18,7 +19,36 @@ var emptyPromise     = require('deferred')(null)
   , genSalt = promisify(bcrypt.genSalt), hash = promisify(bcrypt.hash)
   , userStorage = mano.dbDriver.getStorage('user');
 
-exports.login = require('mano-auth/controller/server-master/login');
+exports.login = {
+	submit: function (data) {
+		var that = this;
+
+		return serverLogin.submit.call(this, data)(function (loginResult) {
+			var userId = that.req.$user;
+
+			if (userId) {
+				return userStorage.getObject(userId, {
+					keyPaths: ['currentBusinessProcess', 'currentlyManagedUser']
+				})(unserializeObjectRecord)(function (user) {
+					var records = [];
+
+					if (user.currentBusinessProcess) {
+						records.push({ id: userId + '/currentBusinessProcess', data: { value: '' } });
+					}
+					if (user.currentlyManagedUser) {
+						records.push({ id: userId + '/currentlyManagedUser', data: { value: '' } });
+					}
+
+					return userStorage.storeMany(records);
+				})(function () {
+					return loginResult;
+				});
+			}
+
+			return loginResult;
+		});
+	}
+};
 exports.register = {
 	submit: function (data) {
 		if (data.isManager) {
