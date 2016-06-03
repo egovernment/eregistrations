@@ -10,22 +10,24 @@ var identity       = require('es5-ext/function/identity')
 
   , getId, promise;
 
-if (driverGlobal) {
-	promise = deferred(driver.getStorages(), driverGlobal.getStorages());
-	promise.done(function (result) {
-		getId = getIdToStorage(toArray(result[0], identity).concat(toArray(result[1], identity)));
-	});
-} else {
-	promise = driver.getStorages();
-	promise.done(function (storages) {
-		getId = getIdToStorage(toArray(storages, identity));
-	});
-}
-
-module.exports = function self(id) {
+module.exports = exports = function self(id) {
 	ensureString(id);
 	if (!getId) {
 		return promise(function () { return self(id); });
 	}
 	return getId(id);
 };
+
+if (driverGlobal) {
+	promise = deferred(driver.getStorages(), driverGlobal.getStorages());
+	promise.done(function (result) {
+		getId = getIdToStorage(toArray(result[0], identity).concat(toArray(result[1], identity)));
+		exports.setStorage = getId.setStorage;
+	});
+} else {
+	promise = driver.getStorages();
+	promise.done(function (storages) {
+		getId = getIdToStorage(toArray(storages, identity));
+		exports.setStorage = getId.setStorage;
+	});
+}
