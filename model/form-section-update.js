@@ -6,6 +6,7 @@
 'use strict';
 
 var memoize               = require('memoizee/plain')
+  , _                     = require('mano').i18n.bind('Model: FormSectionUpdate')
   , validDb               = require('dbjs/valid-dbjs')
   , defineStringLine      = require('dbjs-ext/string/string-line')
   , defineFormSectionBase = require('./form-section-base')
@@ -57,6 +58,22 @@ module.exports = memoize(function (db) {
 			value: function () {
 				if (!this.master.previousProcess) return;
 				return this.master.previousProcess.resolveSKeyPath(this.sourceSectionPath).value;
+			}
+		},
+		resolvent: {
+			label: _("Do you want to amend this section?"),
+			type: db.Boolean,
+			required: true
+		},
+		resolventValue: {
+			value: true
+		},
+		resolventProperty: {
+			value: function (_observe) {
+				// We allow resolvent only if originalSourceSection is acceptable
+				if (_observe(this.originalSourceSection._status) === 1) {
+					return this.__id__.split('/').slice(1).join('/') + '/resolvent';
+				}
 			}
 		},
 		lastEditStamp: {
@@ -136,7 +153,7 @@ module.exports = memoize(function (db) {
 			var sum = 0, resolvedResolvent, isResolventExcluded, section;
 			section = this.owner.owner.owner;
 
-			if (section.resolventProperty) {
+			if (_observe(section._resolventProperty)) {
 				resolvedResolvent = section.ensureResolvent(_observe);
 
 				if (!resolvedResolvent) return 0;
@@ -169,7 +186,7 @@ module.exports = memoize(function (db) {
 			var weightTotal = 0, resolvedResolvent, isResolventExcluded, section;
 			section = this.owner.owner.owner;
 
-			if (section.resolventProperty) {
+			if (_observe(section._resolventProperty)) {
 				resolvedResolvent = section.ensureResolvent(_observe);
 
 				if (!resolvedResolvent) return 0;

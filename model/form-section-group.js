@@ -145,7 +145,7 @@ module.exports = memoize(function (db) {
 			var sum = 0, resolvedResolvent, isResolventExcluded, section;
 			section = this.owner.owner.owner;
 
-			if (section.resolventProperty) {
+			if (_observe(section._resolventProperty)) {
 				resolvedResolvent = section.ensureResolvent(_observe);
 
 				if (!resolvedResolvent) return 0;
@@ -179,7 +179,7 @@ module.exports = memoize(function (db) {
 			var weightTotal = 0, resolvedResolvent, isResolventExcluded, section;
 			section = this.owner.owner.owner;
 
-			if (section.resolventProperty) {
+			if (_observe(section._resolventProperty)) {
 				resolvedResolvent = section.ensureResolvent(_observe);
 
 				if (!resolvedResolvent) return 0;

@@ -1,17 +1,10 @@
 'use strict';
 
 var db                = require('../db')
-  , _                 = require('mano').i18n
   , FormUpdateSection = require('../model/form-section-update')(db)
   , updatePostfix     = require('../model/form-section-base')(db).updateSectionPostfix
   , camelToHyphen     = require('es5-ext/string/#/camel-to-hyphen')
-  , resolventDefinition, setupPropertyMasterType, defineSectionUpdate;
-
-resolventDefinition = {
-	label: _("Do you want to amend this section?"),
-	type: db.Boolean,
-	required: true
-};
+  , setupPropertyMasterType, defineSectionUpdate;
 
 setupPropertyMasterType = function (section) {
 	var UpdateMasterType = section.master.constructor,
@@ -23,24 +16,16 @@ setupPropertyMasterType = function (section) {
 };
 
 defineSectionUpdate = function (section, path, nuSectionKey) {
-	var resolventName = section.key + 'Resolvent' + updatePostfix, definition = {},
-		resolved, resolventOwner;
-
-	resolventOwner = section.master;
-	resolved       = resolventOwner.resolveSKeyPath(path);
+	var resolved = section.master.resolveSKeyPath(path);
 
 	if (!resolved) throw new Error("Cannot resolve path ", path);
 
-	definition[resolventName] = resolventDefinition;
-	resolventOwner.defineProperties(definition);
 	resolved.object.define(nuSectionKey, {
 		type: FormUpdateSection,
 		nested: true
 	});
 	resolved.object[nuSectionKey].setProperties({
-		shortLabel: section.shortLabel || null,
-		resolventProperty: resolventName,
-		resolventValue: true
+		shortLabel: section.shortLabel || null
 	});
 	if (section.pageUrl) {
 		resolved.object[nuSectionKey].pageUrl = camelToHyphen.call(section.pageUrl + updatePostfix);

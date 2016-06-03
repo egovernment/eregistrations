@@ -41,13 +41,17 @@ module.exports = Object.defineProperty(db.FormSectionUpdate.prototype, 'toDOMFor
 			subSectionHeaderRank: headerRank + 1,
 			disableHeader: true
 		};
-		fieldsetResult = this.toDOMFieldset(document, sectionFieldsetOptions);
+		fieldsetResult = [
+			this.originalSourceSection.toDOM(document, { disableHeader: true }),
+			mmap(this._resolventProperty, function () {
+				return this.toDOMFieldset(document, sectionFieldsetOptions);
+			}.bind(this))
+		];
 		contentContainer = [
 			ns._if(this._label, [
 				headersMap[headerRank](this._label),
 				ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
 					ns.md(this._legend)))]),
-			this.originalSourceSection.toDOM(document, { disableHeader: true }),
 			fieldsetResult,
 			ns.p({ class: 'submit-placeholder input' },
 					ns.input({ type: 'submit', value: _("Submit") })),
