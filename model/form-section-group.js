@@ -127,7 +127,11 @@ module.exports = memoize(function (db) {
 				if (sections.length) result.sections = sections;
 			}
 			return result;
-		} }
+		} },
+		hasSplitForms: {
+			type: db.Boolean,
+			value: true
+		}
 	});
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSectionBase;
 
