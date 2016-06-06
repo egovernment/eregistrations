@@ -14,6 +14,7 @@ module.exports = function (user) {
 	if (isReadOnlyRender) return;
 	// Delay response, as immediate reloads were observed, and they got to server
 	// before it had new app resolved
+	// Proper fix would be to send static version from server (so we're never faster then server)
 	user._appAccessId.on('change', delay(function (event) {
 		if (inReload) {
 			console.log("App access id change ", event.oldValue, " -> ", event.newValue, ", ignored");
@@ -31,7 +32,7 @@ module.exports = function (user) {
 				reload();
 			});
 		}
-	}, 100));
+	}, 300));
 	user._appName.on('change', delay(function (event) {
 		if (inReload) {
 			console.log("App name change ", event.oldValue, " -> ", event.newValue, ", ignored");
@@ -49,5 +50,5 @@ module.exports = function (user) {
 				reload();
 			});
 		}
-	}, 100));
+	}, 300));
 };
