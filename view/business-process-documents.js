@@ -29,9 +29,12 @@ var drawOriginalDocument = function (requirementUpload, cssClasses) {
 };
 
 exports.step = function () {
-	var businessProcess    = this.businessProcess
-	  , requirementUploads = businessProcess.requirementUploads
-	  , guideProgress      = businessProcess._guideProgress;
+	var businessProcess         = this.businessProcess
+	  , requirementUploads      = businessProcess.requirementUploads
+	  , recentlyRejectedUploads = requirementUploads.recentlyRejected
+	  , processableUploads      = requirementUploads.userProcessable.not(recentlyRejectedUploads)
+	  , disabledUploads         = requirementUploads.applicable.not(processableUploads)
+	  , guideProgress           = businessProcess._guideProgress;
 
 	exports._documentsHeading.call(this);
 
@@ -45,26 +48,33 @@ exports.step = function () {
 		section(
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
-				list(requirementUploads.recentlyRejected, function (requirementUpload) {
-					insert(_if(businessProcess._previousProcess, function () {
-						return drawOriginalDocument(requirementUpload,
-							['section-primary', _if(requirementUpload._isRejected,
-								'user-documents-upload-rejected')]);
-					}));
-
-					li({ class: ['section-primary', _if(requirementUpload._isRejected,
-						'user-documents-upload-rejected')] },
-						requirementUpload.toDOMForm(document, { viewContext: this }));
+				list(recentlyRejectedUploads, function (requirementUpload) {
+					return [
+						insert(_if(businessProcess._previousProcess, function () {
+							return drawOriginalDocument(requirementUpload,
+								['section-primary', _if(requirementUpload._isRejected,
+									'user-documents-upload-rejected')]);
+						})),
+						li({ class: ['section-primary', _if(requirementUpload._isRejected,
+								'user-documents-upload-rejected')] },
+							requirementUpload.toDOMForm(document, { viewContext: this }))];
 				}.bind(this)),
-				list(requirementUploads.applicable.not(requirementUploads.recentlyRejected),
-					function (requirementUpload) {
+				list(processableUploads, function (requirementUpload) {
+					return [
 						insert(_if(businessProcess._previousProcess, function () {
 							return drawOriginalDocument(requirementUpload, 'section-primary');
-						}));
-
+						})),
 						li({ class: 'section-primary' }, requirementUpload.toDOMForm(document,
-							{ viewContext: this }));
-					}.bind(this)),
+							{ viewContext: this }))];
+				}.bind(this)),
+				list(disabledUploads, function (requirementUpload) {
+					return [
+						insert(_if(businessProcess._previousProcess, function () {
+							return drawOriginalDocument(requirementUpload, 'section-primary');
+						})),
+						li({ class: 'section-primary' }, disabler(true,
+							requirementUpload.toDOMForm(document, { viewContext: this })))];
+				}.bind(this)),
 				exports._extraDocuments.call(this)
 			)
 		)
