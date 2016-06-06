@@ -39,7 +39,7 @@ exports.defaultRenderer = function (businessProcess, filePath) {
 
 	return htmlToPdf(templatePath, filePath, {
 		width: "210mm",
-		height: "170mm",
+		height: "297mm",
 		templateInserts: {
 			locale: businessProcess.database.locale,
 			sections: renderSections(businessProcess.dataForms.dataSnapshot)
