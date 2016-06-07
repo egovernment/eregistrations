@@ -1,7 +1,7 @@
 'use strict';
 
 var ensureDate   = require('es5-ext/date/valid-date')
-  , ensureString = require('es5-ext/string/validate-stringifiable-value')
+  , ensureString = require('es5-ext/object/validate-stringifiable-value')
   , memoize      = require('memoizee/plain')
   , validDb      = require('dbjs/valid-dbjs');
 
