@@ -2,7 +2,6 @@
 
 var debug               = require('debug-ext')('business-process-data-forms-print')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
-  , ensureNaturalNumber = require('es5-ext/object/ensure-natural-number-value')
   , isString            = require('es5-ext/string/is-string')
   , template            = require('es6-template-strings')
   , encode              = require('ent').encode
@@ -24,86 +23,111 @@ renderers.value = function (data) {
 };
 
 renderers.field = function (data) {
-	return template("<tr><th>${ label }</th><td>${ value }</td></tr>", {
+	return template('<td><label>${ label }</label><span>${ value }</span></td>\n', {
 		label: e(data.label),
 		value: renderers.value(data.value)
 	});
 };
 
 renderers.fields = function (data) {
-	return template("<table><tbody>" + data.map(renderers.field).join('') + "</tbody></table>");
+	var result  = ''
+	  , missing = 0;
+
+	while (data.length) {
+		missing = Math.max(4 - data.length, 0);
+		result += '<tr>\n' + data.splice(0, 4).map(renderers.field).join('')
+			+ '<td></td>'.repeat(missing) + '</tr>\n';
+	}
+
+	return result;
 };
 
 renderers.entity = function (data/*, options*/) {
-	var options = normalizeOptions(arguments[1])
-	  , headerRank;
+	var options     = normalizeOptions(arguments[1])
+	  , disableName = Boolean(options.disableName)
+	  , kind        = data.kind
+	  , result;
 
-	if (options.headerRank != null) {
-		headerRank = Math.min(ensureNaturalNumber(options.headerRank), 6);
-	} else {
-		headerRank = 4;
+	delete options.disableName;
+
+	if (kind && exports.customRenderers[kind]) {
+		return exports.customRenderers[kind](data, options, renderers);
 	}
-	options.headerRank = headerRank;
 
-	return template("<li><h${ headerRank }>${ name }</h${ headerRank }>" +
-		renderers.mainSections(data.sections, options) + "</li>", {
-			headerRank: headerRank,
-			name: e(data.name)
-		});
+	result = '';
+
+	if (!disableName && data.name) {
+		result += template('<tr>\n<td colspan="4" class="data-section-heading-subsection">${ name }' +
+			'</td>\n</tr>\n', { name: e(data.name) });
+	}
+
+	return result + renderers.sections(data.sections, options);
 };
 
 renderers.entities = function (data/*, options*/) {
-	return "<ul class='entity-data-section-entities'>" + data.map(function (entityData) {
+	return data.map(function (entityData) {
 		return renderers.entity(entityData, arguments[1]);
-	}).join('') + "</ul>";
-};
-
-renderers.subSection = function (data/*, options*/) {
-	return renderers.section(data, 'entity-data-section-sub', arguments[1]);
-};
-
-renderers.subSections = function (data/*, options*/) {
-	return data.map(function (sectionData) {
-		return renderers.subSection(sectionData, arguments[1]);
 	}).join('');
 };
 
-renderers.section = function (data, className/*, options*/) {
-	var options      = normalizeOptions(arguments[2])
+renderers.section = function (data/*, options*/) {
+	var options      = normalizeOptions(arguments[1])
 	  , disableLabel = Boolean(options.disableLabel)
 	  , kind         = data.kind
-	  , headerRank;
+	  , result;
 
 	delete options.disableLabel;
 
 	if (kind && exports.customRenderers[kind]) {
-		return exports.customRenderers[kind](data, className, options, renderers);
+		return exports.customRenderers[kind](data, options, renderers);
 	}
 
-	if (options.headerRank != null) {
-		headerRank = Math.min(ensureNaturalNumber(options.headerRank), 6);
-	} else {
-		headerRank = 3;
-	}
-	options.headerRank = headerRank + 1;
-
-	var result = template("<section class='${ className }'>", { className: className });
+	result = '';
 
 	if (!disableLabel && data.label) {
-		result += template("<h${ headerRank }>${ label }</h${ headerRank }>", {
-			headerRank: headerRank,
-			label: e(data.label)
-		});
+		result += template('<tr>\n<td colspan="4" class="data-section-heading-subsection">${ label }' +
+			'</td>\n</tr>\n', { label: e(data.label) });
 	}
+
 	if (data.fields) result += renderers.fields(data.fields);
 	if (data.entities) result += renderers.entities(data.entities, options);
-	if (data.sections) result += renderers.subSections(data.sections, options);
+	if (data.sections) result += renderers.sections(data.sections, options);
 
-	return result + "</section>";
+	return result;
+};
+
+renderers.sections = function (data/*, options*/) {
+	return data.map(function (sectionData) {
+		return renderers.section(sectionData, arguments[1]);
+	}).join('');
 };
 
 renderers.mainSection = function (data/*, options*/) {
-	return renderers.section(data, 'entity-data-section', arguments[1]);
+	var options      = normalizeOptions(arguments[1])
+	  , disableLabel = Boolean(options.disableLabel)
+	  , kind         = data.kind
+	  , result;
+
+	delete options.disableLabel;
+
+	if (kind && exports.customRenderers[kind]) {
+		return exports.customRenderers[kind](data, options, renderers);
+	}
+
+	result = '<table class="data-section" cellpadding="0" cellspacing="0">\n';
+
+	if (!disableLabel && data.label) {
+		result += template('<thead>\n<tr><th colspan="4" class="data-section-heading">${ label }' +
+			'</th></tr>\n</thead>\n', { label: e(data.label) });
+	}
+
+	result += '<tbody>\n';
+	if (data.fields) result += renderers.fields(data.fields);
+	if (data.entities) result += renderers.entities(data.entities, options);
+	if (data.sections) result += renderers.sections(data.sections, options);
+	result += '</tbody>\n';
+
+	return result + '</table>\n';
 };
 
 renderers.mainSections = function (data/*, options*/) {

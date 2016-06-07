@@ -4,9 +4,10 @@ var ensureString     = require('es5-ext/object/validate-stringifiable-value')
   , ensureObject     = require('es5-ext/object/valid-object')
   , ensureCallable   = require('es5-ext/object/valid-callable')
   , normalizeOptions = require('es5-ext/object/normalize-options')
-  , defineResolved   = require('../../../../model/lib/data-snapshot/resolved')
   , ensureDatabase   = require('dbjs/valid-dbjs')
   , resolve          = require('path').resolve
+  , encode           = require('ent').encode
+  , defineResolved   = require('../../../../model/lib/data-snapshot/resolved')
   , renderSections   = require('../../../../apps-common/pdf-templates/render-sections-html')
   , htmlToPdf        = require('../../../html-to-pdf')
   , root             = resolve(__dirname, '../../../..')
@@ -41,7 +42,10 @@ exports.defaultRenderer = function (businessProcess, filePath) {
 		width: "210mm",
 		height: "297mm",
 		templateInserts: {
-			locale: businessProcess.database.locale,
+			inserts: {
+				locale:       businessProcess.database.locale,
+				businessName: encode(businessProcess.stringifyPropertyValue('businessName'))
+			},
 			sections: renderSections(businessProcess.dataForms.dataSnapshot)
 		}
 	});
