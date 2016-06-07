@@ -1,6 +1,8 @@
 'use strict';
 
-var db               = require('../db')
+var ensureDate       = require('es5-ext/date/valid-date')
+  , ensureString     = require('es5-ext/object/validate-stringifiable-value')
+  , db               = require('../db')
   , toDateInTimeZone = require('./to-date-in-time-zone')(db)
 
   , daysOff          = db.globalPrimitives.holidays.map(Number);
@@ -14,8 +16,9 @@ var isDayOff = function (date) {
 module.exports = function (startDate, endDate, timeZone) {
 	var daysPassed = 0;
 
-	startDate = toDateInTimeZone(startDate, timeZone);
-	endDate = toDateInTimeZone(endDate, timeZone);
+	timeZone = ensureString(timeZone);
+	startDate = toDateInTimeZone(ensureDate(startDate), timeZone);
+	endDate = toDateInTimeZone(ensureDate(endDate), timeZone);
 
 	while (startDate < endDate) {
 		if (!isDayOff(startDate)) ++daysPassed;
