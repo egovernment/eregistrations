@@ -42,6 +42,29 @@
 .business-process-submitted-data-print-only {
 	text-align: right;
 	font-weight: 400;
-	font-size: 25px;
+	font-size: 15px;
 	line-height: 44px;
+}
+
+.business-process-submitted-data-print-only a {
+	border: 1px solid var(--normal-background);
+	border-radius: 4px;
+	display: inline-block;
+	text-decoration: none;
+	white-space: nowrap;
+	padding: 4px 10px;
+	line-height: 22px;
+}
+
+.business-process-submitted-data-print-only a:active,
+.business-process-submitted-data-print-only a:hover,
+.business-process-submitted-data-print-only a:focus {
+	background-color: var(--normal-dark-background);
+	color: var(--white-text);
+}
+
+.business-process-submitted-data-print-only .fa-print {
+	font-size: 18px;
+	margin-right:8px;
+	vertical-align: middle;
 }
