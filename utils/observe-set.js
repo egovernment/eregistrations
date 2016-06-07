@@ -13,24 +13,27 @@ module.exports = function (set, conf) {
 	if (!onAdd && !onDelete) throw new Error("Expected at least one listener");
 	set.on('change', listener = function (event) {
 		if (event.type === 'add') {
-			if (onAdd) onAdd(event.value, event);
+			if (onAdd) onAdd(event.value);
 			return;
 		}
 		if (event.type === 'delete') {
-			if (onDelete) onDelete(event.value, event);
+			if (onDelete) onDelete(event.value);
 			return;
 		}
 		if (event.type === 'batch') {
 			if (event.added) {
-				event.added.forEach(function (item) { onAdd(item, event); });
+				event.added.forEach(function (item) { onAdd(item); });
 			}
 			if (event.deleted) {
-				event.deleted.forEach(function (item) { onDelete(item, event); });
+				event.deleted.forEach(function (item) { onDelete(item); });
 			}
 			return;
 		}
 		console.log("Errorneous event:", event);
 		throw new Error("Unsupported event: " + event.type);
 	});
+	if (onAdd && conf.iterateExisting) {
+		set.forEach(function (item) { onAdd(item); });
+	}
 	return { destroy: function () { set.off('change', listener); } };
 };
