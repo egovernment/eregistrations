@@ -11,7 +11,6 @@ module.exports = memoize(function (db) {
 
 	return function (date, timeZone) {
 		ensureDate(date);
-		if (isNaN(date)) throw new Error(date + " is invalid Date");
 		timeZone = ensureString(timeZone);
 		try {
 			var res = new Date(date).toLocaleDateString('en', {
