@@ -8,7 +8,7 @@ var ensureArray      = require('es5-ext/array/valid-array')
   , endsWith         = require('es5-ext/string/#/ends-with')
   , d                = require('d')
   , deferred         = require('deferred')
-  , Map              = require('es6-map')
+  , ObservableMap    = require('observable-map/primitive')
   , ensureStorage    = require('dbjs-persistence/ensure-storage')
   , resolveEventKeys = require('dbjs-persistence/lib/resolve-event-keys')
 
@@ -22,7 +22,7 @@ module.exports = function (storage, keyPath/*, options*/) {
 	else storages = [ensureStorage(storage)];
 	ensureString(keyPath);
 
-	map = Object.defineProperty(new Map(), 'isReverseMap', d(true));
+	map = Object.defineProperty(new ObservableMap(), 'isReverseMap', d(true));
 	return deferred.map(storages, function (storage) {
 		storage.on('key:' + keyPath, function (event) {
 			var old, nu;
