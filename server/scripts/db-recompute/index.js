@@ -84,15 +84,17 @@ module.exports = function (driver, slavePath/*, options*/) {
 				})(function (ids) { return userIds.concat(flatten.call(ids)); });
 			});
 		}),
-		getData: function self(objectId) {
+		getData: function self(objectId, path) {
 			var storage = storageMap.get(objectId), deps;
 			if (!storage) return;
 			deps = depsMap.get(objectId);
 			if (!deps) throw new Error("Cannot resolve deps map");
+			if (!path) path = new Set();
+			path.add(objectId);
 			return deferred(
 				storage.getObject(objectId),
-				deps.user && self(deps.user),
-				deps.businessProcess && self(deps.businessProcess)
+				deps.user && !path.has(deps.user) && self(deps.user),
+				deps.businessProcess && !path.has(deps.businessProcess) && self(deps.businessProcess)
 			).invoke('filter', Boolean).invoke(flatten);
 		},
 		initialData: initialData
