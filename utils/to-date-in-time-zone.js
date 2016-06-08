@@ -1,13 +1,17 @@
 'use strict';
 
-var memoize    = require('memoizee/plain')
-  , validDb    = require('dbjs/valid-dbjs');
+var ensureDate   = require('es5-ext/date/valid-date')
+  , ensureString = require('es5-ext/object/validate-stringifiable-value')
+  , memoize      = require('memoizee/plain')
+  , validDb      = require('dbjs/valid-dbjs');
 
 // Convert any date to db.Date in specified time zone.
 module.exports = memoize(function (db) {
 	validDb(db);
 
 	return function (date, timeZone) {
+		ensureDate(date);
+		timeZone = ensureString(timeZone);
 		try {
 			var res = new Date(date).toLocaleDateString('en', {
 				timeZone: timeZone,
