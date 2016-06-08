@@ -1,3 +1,9 @@
+// Computes sizes of two collections
+// - (submittedBusinessProcessesSize) count of all submitted business process of given user
+// - (dependentManagedUsersSize) count of all clients which depend on existence of manager
+//
+// It's needed for proper computation of canBeDestroyed (client or manager) properties
+
 'use strict';
 
 var deferred                   = require('deferred')
