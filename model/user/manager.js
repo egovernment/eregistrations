@@ -104,7 +104,7 @@ module.exports = memoize(function (db/* options */) {
 			type: db.Boolean,
 			value: function (_observe) {
 				// If user has independent account then it can live without manager which created it
-				// Otherwise do not allow deletion if there's any submitted business processes
+				// Otherwise do not allow deletion if there's any submitted business process
 				return this.isActiveAccount || !this.submittedBusinessProcessesSize;
 			}
 		},
