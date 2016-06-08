@@ -3,6 +3,7 @@
 var debug               = require('debug-ext')('business-process-data-forms-print')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
   , isString            = require('es5-ext/string/is-string')
+  , repeat              = require('es5-ext/string/#/repeat')
   , template            = require('es6-template-strings')
   , encode              = require('ent').encode
   , renderers           = {};
@@ -36,7 +37,7 @@ renderers.fields = function (data) {
 	while (data.length) {
 		missing = Math.max(4 - data.length, 0);
 		result += '<tr>\n' + data.splice(0, 4).map(renderers.field).join('')
-			+ '<td></td>'.repeat(missing) + '</tr>\n';
+			+ repeat.call('<td></td>', missing) + '</tr>\n';
 	}
 
 	return result;
