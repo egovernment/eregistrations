@@ -85,7 +85,7 @@ module.exports = memoize(function (db/* options */) {
 			value: 0
 		},
 		// How many clients depend on this manger (depend in sense that it should not be allowed
-		// to destroy manager)
+		// to destroy manager with client in given state)
 		dependentManagedUsersSize: {
 			type: UInteger,
 			value: 0
@@ -99,7 +99,7 @@ module.exports = memoize(function (db/* options */) {
 			}
 		},
 
-		// Whether state of this user (client) allows its (manager) user to be deleted
+		// Whether state of this user (client) allows manager to be deleted
 		canManagedUserParentBeDestroyed: {
 			type: db.Boolean,
 			value: function (_observe) {
