@@ -281,7 +281,8 @@ module.exports = memoize(function (db) {
 		commonToJSON: { type: db.Function, value: function (ignore) {
 			return {
 				label: this.label,
-				lastEditDate: this.getOwnDescriptor('lastEditDate').valueToJSON()
+				lastEditDate: this.getOwnDescriptor('lastEditDate').valueToJSON(),
+				key: this.key
 			};
 		} },
 		toJSON: { value: function (ignore) {
