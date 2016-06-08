@@ -35,10 +35,13 @@ module.exports = exports = function (db/*, options*/) {
 };
 
 exports.defaultRenderer = function (businessProcess, filePath) {
-	var dataSnapshot     = !businessProcess.isAtDraft && businessProcess.dataForms.dataSnapshot
-	  , toDateInTimeZone = getToDateInTimeZone(businessProcess.database);
+	var toDateInTimeZone = getToDateInTimeZone(businessProcess.database), dataSnapshot;
 
-	if (!dataSnapshot) dataSnapshot = businessProcess.dataForms.toJSON();
+	if (businessProcess.isAtDraft) {
+		dataSnapshot = businessProcess.dataForms.toJSON();
+	} else {
+		dataSnapshot = businessProcess.dataForms.dataSnapshot.resolved;
+	}
 
 	return htmlToPdf(templatePath, filePath, {
 		width: "210mm",
@@ -49,7 +52,7 @@ exports.defaultRenderer = function (businessProcess, filePath) {
 				currentDate:  toDateInTimeZone(new Date(), businessProcess.database.timeZone),
 				businessName: encode(businessProcess.stringifyPropertyValue('businessName'))
 			},
-			sections: renderSections(businessProcess.dataForms.dataSnapshot)
+			sections: renderSections(dataSnapshot)
 		}
 	});
 };
