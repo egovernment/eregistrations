@@ -91,7 +91,7 @@ module.exports = memoize(function (db/* options */) {
 			value: 0
 		},
 
-		// Wether user account can be destroyed from scope of manager
+		// Whether user account can be destroyed from scope of manager
 		canManagedUserBeDestroyed: {
 			type: db.Boolean,
 			value: function (_observe) {
