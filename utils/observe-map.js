@@ -1,3 +1,11 @@
+// Makes observable map observation easier
+// Temporary solution until https://github.com/medikoo/observable-map/issues/1
+// is solved
+//
+// map  - Observable map
+// conf - Hash with `onSet` and/or `onDelete` listeners, and eventual `iterateExisting: true`
+//        instruction that requests to invoke `onSet` with all current items at initialization
+
 'use strict';
 
 var ensureCallable      = require('es5-ext/object/valid-callable')

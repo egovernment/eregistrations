@@ -1,3 +1,11 @@
+// Makes observable set observation easier
+// Temporary solution until https://github.com/medikoo/observable-set/issues/3
+// is solved
+//
+// set  - Observable set
+// conf - Hash with `onAdd` and/or `onDelete` listeners, and eventual `iterateExisting: true`
+//        instruction that requests to invoke `onAdd` with all current items at initialization
+
 'use strict';
 
 var ensureCallable      = require('es5-ext/object/valid-callable')

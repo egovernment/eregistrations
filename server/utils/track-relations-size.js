@@ -1,3 +1,9 @@
+// Tracks size of related (to owner) objects of specific state
+//
+// keyPath     - At which owner's keyPath results should stored
+// targetItems - Observable set of all related objects that match desired state
+// ownerMap    - Observable map that maps related objects to owners
+
 'use strict';
 
 var aFrom               = require('es5-ext/array/from')
