@@ -9,6 +9,7 @@ var aFrom               = require('es5-ext/array/from')
   , ensureObservableSet = require('observable-set/valid-observable-set')
   , ensureObservableMap = require('observable-map/valid-observable-map')
   , serializeValue      = require('dbjs/_setup/serialize/value')
+  , unserializeValue    = require('dbjs/_setup/unserialize/value')
   , observeSet          = require('../../utils/observe-set')
   , observeMap          = require('../../utils/observe-map')
   , idToStorage         = require('./any-id-to-storage');
@@ -23,8 +24,15 @@ module.exports = function (keyPath, targetItems, ownerMap) {
 
 		var update = function (ownerId, set) {
 			return idToStorage(ownerId)(function (storage) {
+				var id = ownerId + '/' + keyPath;
 				if (!storage) throw new Error("Could not resolve storage for " + ownerId);
-				return storage.storeComputed(ownerId + '/' + keyPath, serializeValue(set.size));
+				return storage.get(id)(function (data) {
+					if (data && (unserializeValue(data.value) === set.size)) return;
+					// Technically this should go to reduced storage,
+					// but as common data propagation mechanism take data of objects only from direct storage
+					// we need to store in direct storage
+					return storage.store(id, serializeValue(set.size));
+				});
 			});
 		};
 
