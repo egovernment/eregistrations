@@ -23,6 +23,7 @@ module.exports = function (context) {
 
 					if (name === 'password-repeat') {
 						labelElement = label(
+							span({ class: 'placeholder-fallback' }, _("Repeat password")),
 							input({
 								dbjs: db.Password,
 								name: name,
