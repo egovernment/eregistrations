@@ -4,6 +4,7 @@
 
 var normalizeOptions    = require('es5-ext/object/normalize-options')
   , ensureNaturalNumber = require('es5-ext/object/ensure-natural-number-value')
+  , identity            = require('es5-ext/function/identity')
   , db                  = require('mano').db
   , pathToUrl           = require('../../utils/upload-path-to-url')
 
@@ -86,10 +87,11 @@ module.exports = exports = function (dataSnapshot/*, options*/) {
 	var options = arguments[1];
 	return mmap(dataSnapshot._resolved, function (json) {
 		if (!json || !json.sections) return;
-		return renderMainSections(json.sections, options);
+		return renderMainSections(exports.decorator(json.sections), options);
 	});
 };
 
+exports.decorator = identity;
 exports.renderers = defaultRenderers;
 exports.customRenderers = {
 	fileValue: function (data) {
