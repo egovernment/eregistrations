@@ -1,10 +1,20 @@
 <!DOCTYPE html>
-<html lang="${ locale }">
+<html lang="${ inserts.locale }">
 <head>
-    <meta charset="utf-8" />
-    <link href="${root}data-forms.css" rel="stylesheet" media="all" />
+	<meta charset="utf-8" />
+	<link href="${root}data-forms.css" rel="stylesheet" media="all" />
 </head>
 <body>
-	${ sections }
+
+	<header class="print-header">
+		<div class="print-header-title">
+			<h2>${ _("Registration of ${ businessName }", inserts) }</h2>
+			<small>${ _("Printed on ${ currentDate }", inserts) }</small>
+		</div>
+	</header>
+
+	<section id="main">
+		${ sections }
+	</section>
 </body>
 </html>

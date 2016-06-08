@@ -13,12 +13,9 @@ module.exports = function (context/*, options*/) {
 	return section({ class: 'section-primary' },
 		options.prependContent,
 		div({ class: 'business-process-submitted-data-print-only' }, ' ',
-			a({
-				class: 'hint-optional hint-optional-left',
-				'data-hint': _("Print your application form"),
-				href: '/business-process-data-forms-' + businessProcess.__id__ + '.pdf',
-				target: '_blank'
-			}, span({ class: 'fa fa-print' }, _("Print")))),
+			a({ href: '/business-process-data-forms-' + businessProcess.__id__ + '.pdf',
+				target: '_blank' }, span({ class: 'fa fa-print' }),
+				span(_("Print your application form")))),
 		div({ class: 'document-preview-data business-process-submitted-data' },
 			renderSections(businessProcess.dataForms.dataSnapshot)));
 };
