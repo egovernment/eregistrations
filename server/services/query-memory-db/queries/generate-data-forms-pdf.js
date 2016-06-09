@@ -47,7 +47,6 @@ exports.defaultRenderer = function (businessProcess, filePath/* options*/) {
 	return htmlToPdf(templatePath, filePath, {
 		width: "210mm",
 		height: "297mm",
-		writeHtml: true,
 		templateInserts: {
 			inserts: {
 				locale:           businessProcess.database.locale,
