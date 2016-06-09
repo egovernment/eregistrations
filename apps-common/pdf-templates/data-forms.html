@@ -2,12 +2,13 @@
 <html lang="${ inserts.locale }">
 <head>
 	<meta charset="utf-8" />
-	<link href="${root}data-forms.css" rel="stylesheet" media="all" />
+	<link href="${ root }data-forms.css" rel="stylesheet" media="all" />
 </head>
 <body>
 
 	<header class="print-header">
 		<div class="print-header-logos">
+			${ inserts.logo ? '<img src="file://' + inserts.logo + '" />' : '' }
 		</div>
 		<div class="print-header-title">
 			<h2>${ _("Registration of ${ businessName }", inserts) }</h2>

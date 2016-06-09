@@ -34,8 +34,9 @@ module.exports = exports = function (db/*, options*/) {
 	};
 };
 
-exports.defaultRenderer = function (businessProcess, filePath) {
-	var toDateInTimeZone = getToDateInTimeZone(businessProcess.database), dataSnapshot;
+exports.defaultRenderer = function (businessProcess, filePath/* options*/) {
+	var options          = normalizeOptions(arguments[2])
+	  , toDateInTimeZone = getToDateInTimeZone(businessProcess.database), dataSnapshot;
 
 	if (businessProcess.isAtDraft) {
 		dataSnapshot = businessProcess.dataForms.toJSON();
@@ -46,11 +47,13 @@ exports.defaultRenderer = function (businessProcess, filePath) {
 	return htmlToPdf(templatePath, filePath, {
 		width: "210mm",
 		height: "297mm",
+		writeHtml: true,
 		templateInserts: {
 			inserts: {
 				locale:       businessProcess.database.locale,
 				currentDate:  toDateInTimeZone(new Date(), businessProcess.database.timeZone),
-				businessName: encode(businessProcess.stringifyPropertyValue('businessName'))
+				businessName: encode(businessProcess.stringifyPropertyValue('businessName')),
+				logo:         options.logo
 			},
 			sections: renderSections(dataSnapshot)
 		}
