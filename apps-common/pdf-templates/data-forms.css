@@ -69,6 +69,7 @@ body {
 .data-section .data-section-heading {
 	background-color: #BFBFBF;
 	border: 1px solid #BFBFBF;
+	border-bottom: 1px solid #EAEAEA;
 	text-transform: uppercase;
 	font-weight: 700;
 	font-size: 12px;
@@ -83,4 +84,14 @@ body {
 
 .data-section .signature {
 	height: 84px;
+}
+
+footer {
+	margin-top: 44px;
+	font-size: 12px;
+}
+
+.signature {
+	display: inline-block;
+	width: 200px;
 }

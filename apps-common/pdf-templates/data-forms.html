@@ -7,6 +7,8 @@
 <body>
 
 	<header class="print-header">
+		<div class="print-header-logos">
+		</div>
 		<div class="print-header-title">
 			<h2>${ _("Registration of ${ businessName }", inserts) }</h2>
 			<small>${ _("Printed on ${ currentDate }", inserts) }</small>
@@ -16,5 +18,11 @@
 	<section id="main">
 		${ sections }
 	</section>
+
+	<footer class="print-footer">
+    	<p><strong>${ e(_("Received by") + ':') }</strong></p>
+    	<p><span class="signature">${ e(_("Name") + ':') }</span><span>_______________________</span></p>
+    	<p><span class="signature">${ e(_("Signature") + ':') }</span><span>_______________________</span></p>
+	</footer>
 </body>
 </html>
