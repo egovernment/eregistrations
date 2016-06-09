@@ -8,13 +8,15 @@ var memoize                     = require('memoizee/plain')
   , definePropertyGroupsProcess = require('../lib/property-groups-process')
   , defineUser                  = require('./base')
   , defineUserBusinessProcesses = require('./business-processes')
-  , defineStringLine            = require('dbjs-ext/string/string-line');
+  , defineStringLine            = require('dbjs-ext/string/string-line')
+  , defineUInteger              = require('dbjs-ext/number/integer/u-integer');
 
 module.exports = memoize(function (db/* options */) {
 	var options = arguments[1]
 	  , User = ensureDatabase(db).User || defineUser(db, options)
 	  , PropertyGroupsProcess = definePropertyGroupsProcess(db)
 	  , StringLine = defineStringLine(db)
+	  , UInteger = defineUInteger(db)
 	  , Role = db.Role;
 
 	defineUserBusinessProcesses(User);
@@ -72,29 +74,45 @@ module.exports = memoize(function (db/* options */) {
 			label: _("Is manager active?"),
 			type: db.Boolean
 		},
+
+		// Due to involved relations to other objects, below two properties are not computed via
+		// getters, but via persistence engine tracker configuration. See:
+		// /server/services/compute-manager-relations-sizes.js
+		//
+		// How many submitted business proceses are handled by this user
+		submittedBusinessProcessesSize: {
+			type: UInteger,
+			value: 0
+		},
+		// How many clients depend on this manger (depend in sense that it should not be allowed
+		// to destroy manager with client in given state)
+		dependentManagedUsersSize: {
+			type: UInteger,
+			value: 0
+		},
+
+		// Whether user account can be destroyed from scope of manager
 		canManagedUserBeDestroyed: {
 			type: db.Boolean,
 			value: function (_observe) {
-				if (this.isActiveAccount) return false;
-				return this.initialBusinessProcesses.every(function (bp) {
-					return !_observe(bp._isSubmitted);
-				});
+				return !this.isActiveAccount && !this.submittedBusinessProcessesSize;
 			}
 		},
+
+		// Whether state of this user (client) allows manager to be deleted
+		isManagerDesctructionBlocker: {
+			type: db.Boolean,
+			value: function (_observe) {
+				// If user has independent account then it can live without manager which created it
+				// Otherwise do not allow deletion if there's any submitted business process
+				return this.isActiveAccount || !this.submittedBusinessProcessesSize;
+			}
+		},
+		// Can this manager account be destroyed
 		canManagerBeDestroyed: {
 			type: db.Boolean,
 			value: function (_observe) {
-				if (!this.roles.has('manager')) return false;
-				return this.managedUsers.every(function (user) {
-					// There's a possible race condition where object coming
-					// from managedUsers set is no longer a user (was destroyed),
-					// this prevents crash in such case
-					if (!user.initialBusinessProcesses) return;
-					return _observe(user._isActiveAccount) ||
-						_observe(user.initialBusinessProcesses).every(function (bp) {
-							return !_observe(bp._isSubmitted);
-						});
-				});
+				return this.roles.has('manager') && !this.dependentManagedUsersSize;
 			}
 		},
 		destroyManagedUser: {
