@@ -100,7 +100,7 @@ module.exports = memoize(function (db/* options */) {
 		},
 
 		// Whether state of this user (client) allows manager to be deleted
-		canManagedUserParentBeDestroyed: {
+		isManagerDesctructionBlocker: {
 			type: db.Boolean,
 			value: function (_observe) {
 				// If user has independent account then it can live without manager which created it
