@@ -58,10 +58,13 @@ exports.menu = function () {
 };
 
 exports.main = function () {
+	var mainNav;
 	div({ class: 'submitted-menu' },
 		div({ class: 'submitted-menu-bar content' },
-			nav(ul({ class: 'submitted-menu-items', id: 'submitted-menu' },
-				exports._submittedMenu.call(this))),
+			nav(
+				mainNav = ul({ class: 'submitted-menu-items', id: 'submitted-menu' },
+					exports._submittedMenu.call(this))
+			),
 			_if(this.user._isDemo, div({ class: 'submitted-menu-demo' },
 				a({ class: 'submitted-menu-demo-ribon' }, _("Demo"))))));
 
@@ -99,7 +102,7 @@ exports.main = function () {
 
 	div({ class: 'user-forms', id: 'sub-main' });
 
-	okayNav(document.getElementById('submitted-menu'));
+	okayNav(mainNav);
 
 };
 

@@ -47,6 +47,7 @@ module.exports = function (target) {
 	function okayNav(target, rawopts) {
 		// setup instance
 		console.log("--- In okayNav ---");
+		console.log(target);
 		var self = this;
 
 		// setup options
@@ -242,9 +243,6 @@ module.exports = function (target) {
 		}
 	};
 
-	window.addEventListener('DOMContentLoaded', function () {
-		console.log("--- In event ---");
-		okayNav(document.getElementById(target));
-	});
+	return okayNav(target);
 
 };
