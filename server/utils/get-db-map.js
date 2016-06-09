@@ -5,7 +5,7 @@
 var ensureString  = require('es5-ext/object/validate-stringifiable-value')
   , endsWith      = require('es5-ext/string/#/ends-with')
   , deferred      = require('deferred')
-  , Map           = require('es6-map')
+  , ObservableMap = require('observable-map/primitive')
   , ensureStorage = require('dbjs-persistence/ensure-storage')
 
   , isArray = Array.isArray;
@@ -18,7 +18,7 @@ module.exports = function (storage, keyPath/*, options*/) {
 	else storages = [ensureStorage(storage)];
 	ensureString(keyPath);
 
-	map = new Map();
+	map = new ObservableMap();
 	return deferred.map(storages, function (storage) {
 		storage.on('key:' + keyPath, function (event) {
 			var old, nu;

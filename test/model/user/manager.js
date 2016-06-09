@@ -64,11 +64,13 @@ module.exports = function (t, a) {
 	user.initialBusinessProcesses.add(bp);
 	a(db.BusinessProcess.instances.has(bp), true);
 	bp.isSubmitted = true;
+	user.submittedBusinessProcessesSize = 1;
 	a.throws(function () {
 		return manager.destroyManagedUser(user);
 	}, destroyManagedErr, 'throws when has submitted process');
 	a(db.BusinessProcess.instances.has(bp), true);
 	bp.isSubmitted = false;
+	user.delete('submittedBusinessProcessesSize');
 	a(user.canManagedUserBeDestroyed, true);
 	manager.destroyManagedUser(user);
 	a(db.BusinessProcess.instances.has(bp), false);
@@ -95,6 +97,8 @@ module.exports = function (t, a) {
 	bp = new BusinessProcess();
 	user.initialBusinessProcesses.add(bp);
 	bp.isSubmitted = true;
+	user.submittedBusinessProcessesSize = 1;
+	manager.dependentManagedUsersSize = 1;
 	a(db.BusinessProcess.instances.has(bp), true);
 	a(db.User.instances.has(user), true);
 	a(db.User.instances.has(manager), true);
@@ -106,6 +110,8 @@ module.exports = function (t, a) {
 	a(db.User.instances.has(user), true);
 	a(manager.canManagerBeDestroyed, false);
 	bp.isSubmitted = false;
+	user.delete('submittedBusinessProcessesSize');
+	manager.delete('dependentManagedUsersSize');
 	a(manager.canManagerBeDestroyed, true);
 	managerValidation.destroyManager(manager);
 	a(db.BusinessProcess.instances.has(bp), false);
