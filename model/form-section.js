@@ -183,11 +183,6 @@ module.exports = memoize(function (db) {
 				return result;
 			}
 		},
-		setPropertyMasterTypeDeep: {
-			value: function (PropertyMasterType) {
-				this.propertyMasterType = PropertyMasterType;
-			}
-		},
 		propertyNamesDeep: {
 			value: function () {
 				var result = this.propertyNames.copy();

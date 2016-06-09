@@ -1,7 +1,6 @@
 'use strict';
 
 var Database               = require('dbjs')
-  , defineFormSectionBase  = require('../../model/form-section-base')
   , defineFormSection      = require('../../model/form-section')
   , defineFormSectionGroup = require('../../model/form-section-group')
   , aFrom                  = require('es5-ext/array/from');
@@ -9,7 +8,6 @@ var Database               = require('dbjs')
 module.exports = function (t, a) {
 	var db = new Database()
 	  , FormSectionUpdate     = t(db)
-	  , FormSectionBase       = defineFormSectionBase(db)
 	  , FormSection           = defineFormSection(db)
 	  , FormSectionGroup      = defineFormSectionGroup(db)
 	  , TestFormSectionGroup  = FormSectionGroup.extend('TestFormSectionGroup')
@@ -93,7 +91,7 @@ module.exports = function (t, a) {
 		}
 	});
 
-	BusinessProcessUpdate.prototype.define('formSection' + FormSectionBase.updateSectionPostfix, {
+	BusinessProcessUpdate.prototype.define('formSection' + FormSectionUpdate.updateSectionPostfix, {
 		type: FormSectionUpdate,
 		nested: true
 	});
@@ -102,7 +100,7 @@ module.exports = function (t, a) {
 
 	a.h1('Source is FormSection');
 
-	section = businessProcessUpdate['formSection' + FormSectionBase.updateSectionPostfix];
+	section = businessProcessUpdate['formSection' + FormSectionUpdate.updateSectionPostfix];
 
 	a(section.sourceSection, businessProcessUpdate.formSection);
 	a(section.originalSourceSection, businessProcessUpdate.previousProcess.formSection);

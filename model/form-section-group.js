@@ -64,13 +64,6 @@ module.exports = memoize(function (db) {
 				return res;
 			}
 		},
-		setPropertyMasterTypeDeep: {
-			value: function (PropertyMasterType) {
-				this.sections.forEach(function (section) {
-					section.setPropertyMasterTypeDeep(PropertyMasterType);
-				});
-			}
-		},
 		propertyNamesDeep: {
 			value: function (_observe) {
 				var result = [];
@@ -130,7 +123,7 @@ module.exports = memoize(function (db) {
 		} },
 		hasSplitForms: {
 			type: db.Boolean,
-			value: true
+			value: false
 		}
 	});
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSectionBase;

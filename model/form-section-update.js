@@ -41,7 +41,7 @@ module.exports = memoize(function (db) {
 			type: StringLine,
 			value: function () {
 				return this.__id__.slice(this.__id__.indexOf('/') + 1)
-					.replace(this.database.FormSectionBase.updateSectionPostfix, '');
+					.replace(this.constructor.updateSectionPostfix, '');
 			}
 		},
 		sourceSection: {
@@ -141,6 +141,11 @@ module.exports = memoize(function (db) {
 			}
 			return result;
 		} }
+	}, {
+		updateSectionPostfix: {
+			type: StringLine,
+			value: "UpdatePostfix"
+		}
 	});
 
 	FormSectionUpdate.prototype.progressRules.map.define('sourceSection', {

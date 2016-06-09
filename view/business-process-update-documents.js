@@ -10,6 +10,24 @@ exports._parent = require('./business-process-base');
 
 exports['step-documents'] = { class: { 'step-active': true } };
 
+var drawOriginalDocument = function (requirementUpload, cssClasses) {
+	var resolved, previousRequirementUpload, path;
+
+	path = requirementUpload.__id__.split('/');
+	path.splice(0, 1, 'previousProcess');
+	path = path.join('/');
+	resolved = requirementUpload.master.resolveSKeyPath(path);
+	if (!resolved || !resolved.value) return;
+	previousRequirementUpload = resolved.value;
+
+	return li({ class: cssClasses },
+		h2(_("Original ${ documentName }",
+			{ documentName: previousRequirementUpload.document._label })),
+		list(previousRequirementUpload.document.files.ordered, function (file) {
+			return thumb(file);
+		}));
+};
+
 exports.step = function () {
 	var businessProcess         = this.businessProcess
 	  , requirementUploads      = businessProcess.requirementUploads
@@ -31,17 +49,25 @@ exports.step = function () {
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
 				list(recentlyRejectedUploads, function (requirementUpload) {
-					return li({ class: ['section-primary', _if(requirementUpload._isRejected,
-						'user-documents-upload-rejected')] },
-						requirementUpload.toDOMForm(document, { viewContext: this }));
+					return [
+						drawOriginalDocument(requirementUpload,
+								['section-primary', _if(requirementUpload._isRejected,
+									'user-documents-upload-rejected')]),
+						li({ class: ['section-primary', _if(requirementUpload._isRejected,
+								'user-documents-upload-rejected')] },
+							requirementUpload.toDOMForm(document, { viewContext: this }))];
 				}.bind(this)),
 				list(processableUploads, function (requirementUpload) {
-					return li({ class: 'section-primary' }, requirementUpload.toDOMForm(document,
-						{ viewContext: this }));
+					return [
+						drawOriginalDocument(requirementUpload, 'section-primary'),
+						li({ class: 'section-primary' }, requirementUpload.toDOMForm(document,
+							{ viewContext: this }))];
 				}.bind(this)),
 				list(disabledUploads, function (requirementUpload) {
-					return li({ class: 'section-primary' }, disabler(true,
-						requirementUpload.toDOMForm(document, { viewContext: this })));
+					return [
+						drawOriginalDocument(requirementUpload, 'section-primary'),
+						li({ class: 'section-primary' }, disabler(true,
+							requirementUpload.toDOMForm(document, { viewContext: this })))];
 				}.bind(this)),
 				exports._extraDocuments.call(this)
 			)

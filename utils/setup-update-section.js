@@ -2,17 +2,27 @@
 
 var db                = require('../db')
   , FormUpdateSection = require('../model/form-section-update')(db)
-  , updatePostfix     = require('../model/form-section-base')(db).updateSectionPostfix
+  , updatePostfix     = FormUpdateSection.updateSectionPostfix
   , camelToHyphen     = require('es5-ext/string/#/camel-to-hyphen')
   , setupPropertyMasterType, defineSectionUpdate;
+
+var setPropertyMasterTypeDeep = function (section, MasterType) {
+	if (db.FormSectionGroup && section instanceof db.FormSectionGroup) {
+		section.sections.forEach(function (subSection) {
+			setPropertyMasterTypeDeep(subSection, MasterType);
+		});
+		return;
+	}
+	section.propertyMasterType = MasterType;
+};
 
 setupPropertyMasterType = function (section) {
 	var UpdateMasterType = section.master.constructor,
 		MasterType = db[UpdateMasterType.__id__.replace('Update', '')];
 
-	UpdateMasterType.prototype.previousProcess.resolveSKeyPath(
+	setPropertyMasterTypeDeep(UpdateMasterType.prototype.previousProcess.resolveSKeyPath(
 		[section.__id__.slice(section.__id__.indexOf('/') + 1)]
-	).value.setPropertyMasterTypeDeep(MasterType);
+	).value, MasterType);
 };
 
 defineSectionUpdate = function (section, path, nuSectionKey) {
@@ -38,7 +48,7 @@ module.exports = function (section) {
 	var sectionOwner, path;
 	sectionOwner = section.owner;
 
-	if (section instanceof db.FormSectionGroup && section.hasSplitForms) {
+	if (section instanceof db.FormSectionGroup && !section.hasSplitForms) {
 		sectionOwner.define(section.key + updatePostfix, {
 			type: section.constructor,
 			nested: true
