@@ -50,10 +50,11 @@ exports.defaultRenderer = function (businessProcess, filePath/* options*/) {
 		writeHtml: true,
 		templateInserts: {
 			inserts: {
-				locale:       businessProcess.database.locale,
-				currentDate:  toDateInTimeZone(new Date(), businessProcess.database.timeZone),
-				businessName: encode(businessProcess.stringifyPropertyValue('businessName')),
-				logo:         options.logo
+				locale:           businessProcess.database.locale,
+				currentDate:      toDateInTimeZone(new Date(), businessProcess.database.timeZone),
+				businessName:     encode(businessProcess.stringifyPropertyValue('businessName')),
+				logo:             options.logo,
+				swornDeclaration: options.swornDeclaration
 			},
 			sections: renderSections(dataSnapshot)
 		}
