@@ -4,7 +4,8 @@ var _                    = require('mano').i18n.bind('View: User')
   , loginDialog          = require('./components/login-dialog')
   , registerDialog       = require('./components/register-dialog')
   , modalContainer       = require('./components/modal-container')
-  , requestAccountDialog = require('./components/request-account-dialog');
+  , requestAccountDialog = require('./components/request-account-dialog')
+  , okayNav              = require('./utils/okay-nav');
 
 exports._parent = require('./base');
 
@@ -97,6 +98,9 @@ exports.main = function () {
 	}.bind(this)));
 
 	div({ class: 'user-forms', id: 'sub-main' });
+
+	okayNav(document.getElementById('submitted-menu'));
+
 };
 
 exports._submittedMenu = Function.prototype;
