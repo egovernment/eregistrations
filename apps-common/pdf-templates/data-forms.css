@@ -86,6 +86,10 @@ body {
 	height: 84px;
 }
 
+.data-section.signing .data-section-heading-subsection {
+	text-transform: none;
+}
+
 footer {
 	margin-top: 44px;
 	font-size: 12px;

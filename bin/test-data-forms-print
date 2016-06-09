@@ -12,7 +12,7 @@ var db               = require('../prototype/model')
 
   , root             = resolve(__dirname, '..')
   , filePath         = resolve(root, 'tmp/data-forms.pdf')
-  , logoPath         = resolve(root, 'prototype/public/img/logo.png');
+  , logoPath         = resolve(root, 'prototype/public/img/logo-2.png');
 
 generateFormsPdf.defaultRenderer(db.firstBusinessProcess, filePath, {
 	logo: logoPath
