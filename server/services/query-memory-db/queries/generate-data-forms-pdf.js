@@ -53,6 +53,7 @@ exports.defaultRenderer = function (businessProcess, filePath/* options*/) {
 				currentDate:      toDateInTimeZone(new Date(), businessProcess.database.timeZone),
 				businessName:     encode(businessProcess.stringifyPropertyValue('businessName')),
 				logo:             options.logo,
+				disableSigning:   options.disableSigning,
 				swornDeclaration: options.swornDeclaration
 			},
 			sections: renderSections(dataSnapshot)
