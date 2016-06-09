@@ -3,10 +3,10 @@
 var debug               = require('debug-ext')('business-process-data-forms-print')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
   , isString            = require('es5-ext/string/is-string')
-  , repeat              = require('es5-ext/string/#/repeat')
   , template            = require('es6-template-strings')
   , encode              = require('ent').encode
-  , renderers           = {};
+  , renderers           = {}
+  , cellsInARow         = 4;
 
 var e = function (data) {
 	return (data && isString(data)) ? encode(data) : data;
@@ -23,21 +23,27 @@ renderers.value = function (data) {
 	return e(data);
 };
 
-renderers.field = function (data) {
-	return template('<td><label>${ label }</label><span>${ value }</span></td>\n', {
+renderers.field = function (data, colspan) {
+	return template('<td ${colspan}><label>${ label }</label><span>${ value }</span></td>\n', {
+		colspan: colspan ? 'colspan="' + colspan + '"' : '',
 		label: e(data.label),
 		value: renderers.value(data.value)
 	});
 };
 
 renderers.fields = function (data) {
-	var result  = ''
-	  , missing = 0;
+	var result  = '';
+
+	var renderCell = function (cell, index, ar) {
+		var missing = Math.max(cellsInARow - ar.length, 0);
+
+		if (missing && (index === ar.length - 1)) return renderers.field(cell, missing + 1);
+
+		return renderers.field(cell);
+	};
 
 	while (data.length) {
-		missing = Math.max(4 - data.length, 0);
-		result += '<tr>\n' + data.splice(0, 4).map(renderers.field).join('')
-			+ repeat.call('<td></td>', missing) + '</tr>\n';
+		result += '<tr>\n' + data.splice(0, cellsInARow).map(renderCell).join('') + '</tr>\n';
 	}
 
 	return result;
