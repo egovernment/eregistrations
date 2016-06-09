@@ -17,12 +17,43 @@
 
 	<section id="main">
 		${ sections }
+
+		<table class="data-section" cellpadding="0" cellspacing="0">
+			<thead>
+				<tr>
+					<th colspan="4" class="data-section-heading">
+						${ e(_("Signing of the form")) }
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td colspan="4" class="data-section-heading-subsection">
+						${ e(_("I declare that the information contained in this document applies absolutely and reliably to reality and that conforms to the requirements of the regulation. I express my full knowledge that the Government in exercising its powers and functions of inspection, verification and control established by the National Laws, is empowered to sanction if they were to find the falsity of the statement, making me responsible for the particular offense and facing the actions provided by law.")) }
+					</td>
+				</tr>
+				<tr>
+					<td class="signature">
+						<label>${ e(_("Complete name")) }</label>
+					</td>
+					<td class="signature">
+						<label>${ e(_("Place of signing")) }</label>
+					</td>
+					<td class="signature">
+						<label>${ e(_("Date of signing")) }</label>
+					</td>
+					<td class="signature">
+						<label>${ e(_("Signing")) }</label>
+					</td>
+				</tr>
+			</tbody>
+		</table>
 	</section>
 
 	<footer class="print-footer">
-    	<p><strong>${ e(_("Received by") + ':') }</strong></p>
-    	<p><span class="signature">${ e(_("Name") + ':') }</span><span>_______________________</span></p>
-    	<p><span class="signature">${ e(_("Signature") + ':') }</span><span>_______________________</span></p>
+		<p><strong>${ e(_("Received by") + ':') }</strong></p>
+		<p><span class="signature">${ e(_("Name") + ':') }</span><span>_______________________</span></p>
+		<p><span class="signature">${ e(_("Signature") + ':') }</span><span>_______________________</span></p>
 	</footer>
 </body>
 </html>
