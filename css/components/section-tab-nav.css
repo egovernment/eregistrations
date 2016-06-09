@@ -36,6 +36,20 @@
 	display: inline-block;
 }
 
+.section-tab-nav-tab .fa {
+	vertical-align: middle;
+	margin-left: 8px;
+	font-size: 16px;
+}
+
+.section-tab-nav-tab .fa-exclamation {
+	color:var(--error-text);
+}
+
+.section-tab-nav-tab .fa-check {
+	color:var(--success-text);
+}
+
 /* Tabs content section rules (displayed to user) */
 
 .section-tab-nav-tab-content {
