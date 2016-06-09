@@ -38,21 +38,35 @@ exports['sub-main'] = {
 				class: 'section-tab-nav-tab',
 				id: 'tab-business-process-documents',
 				href: '/' + this.businessProcess.__id__ + '/'
-			}, _("${ tabNumber } Revision of the documents", { tabNumber: "1." })),
+			}, _("${ tabNumber } Revision of the documents", { tabNumber: "1." }),
+				_if(eq(this.processingStep.requirementUploads._approvalProgress, 1),
+					span({ class: 'fa fa-check' })),
+				_if(gt(this.processingStep.requirementUploads.rejected._size, 0),
+					span({ class: 'fa fa-exclamation' }))),
 
 			_if(resolve(paymentUploads, '_length'),
 				a({
 					class: 'section-tab-nav-tab',
 					id: 'tab-business-process-payments',
 					href: '/' + this.businessProcess.__id__ + '/payment-receipts/'
-				}, _("${ tabNumber } Revision of payments", { tabNumber: "2." }))),
+				}, _("${ tabNumber } Revision of payments", { tabNumber: "2." }),
+					_if(eq(this.processingStep.paymentReceiptUploads._approvalProgress, 1),
+						span({ class: 'fa fa-check' })),
+					_if(gt(this.processingStep.paymentReceiptUploads.rejected._size, 0),
+						span({ class: 'fa fa-exclamation' })))),
 
 			a({
 				class: 'section-tab-nav-tab',
 				id: 'tab-business-process-data',
 				href: '/' + this.businessProcess.__id__ + '/data/'
 			}, _("${ tabNumber } Revision of data",
-				{ tabNumber: _if(resolve(paymentUploads, '_length'), "3.", "2.") })),
+				{ tabNumber: _if(resolve(paymentUploads, '_length'), "3.", "2.") }),
+				_if(and(this.processingStep.dataFormsRevision._isProcessable,
+					eq(this.processingStep.dataFormsRevision._approvalProgress, 1)),
+						span({ class: 'fa fa-check' })),
+				_if(and(this.processingStep.dataFormsRevision._isProcessable,
+					gt(this.processingStep.dataFormsRevision._sentBackProgress, 0)),
+						span({ class: 'fa fa-exclamation' }))),
 
 			_if(exports._processingTabLabel.call(this),
 				function () {
