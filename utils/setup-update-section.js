@@ -48,14 +48,14 @@ module.exports = function (section) {
 	var sectionOwner, path;
 	sectionOwner = section.owner;
 
-	if (section instanceof db.FormSectionGroup && !section.hasSplitForms) {
+	if (db.FormSectionGroup && section instanceof db.FormSectionGroup && !section.hasSplitForms) {
 		sectionOwner.define(section.key + updatePostfix, {
 			type: section.constructor,
 			nested: true
 		});
 
 		sectionOwner[section.key + updatePostfix].setProperties({
-			label: section.label,
+			label: section.label || '',
 			pageUrl: section.pageUrl ? camelToHyphen.call(section.pageUrl + updatePostfix) : null
 		});
 		section.sections.forEach(function (subSection) {
