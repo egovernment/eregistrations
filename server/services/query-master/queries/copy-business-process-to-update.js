@@ -20,7 +20,9 @@ module.exports = function () {
 		additionalProperties  = query.additionalProperties && ensureArray(query.additionalProperties);
 
 		return idToStorage(fromBusinessProcessId)(function (fromStorage) {
+			if (!fromStorage) return;
 			return idToStorage(toBusinessProcessId)(function (toStorage) {
+				if (!toStorage) return;
 				return fromStorage.getObject(fromBusinessProcessId)(function (records) {
 					var updateRecords = [], filteredRecords;
 					if (!records.length) return;
@@ -29,18 +31,24 @@ module.exports = function () {
 					propertyPaths =
 						propertyPaths.concat(aFrom(fromBusinessProcessProto.determinants.propertyNamesDeep));
 					fromBusinessProcessProto.dataForms.map.forEach(function (section) {
-						propertyPaths = propertyPaths.concat(propertyPaths, aFrom(section.propertyNamesDeep));
+						propertyPaths = propertyPaths.concat(aFrom(section.propertyNamesDeep));
+					});
+					propertyPaths = flatten.call(propertyPaths).map(function (keyPath) {
+						return new RegExp('^\\d[a-z0-9]+\\\/' + escape(keyPath) + '(\\*|$)');
 					});
 					if (additionalProperties) {
-						propertyPaths = propertyPaths.concat(additionalProperties);
+						propertyPaths = flatten.call(
+							propertyPaths.concat(additionalProperties.map(function (keyPath) {
+								return new RegExp('^\\d[a-z0-9]+\\\/' + escape(keyPath));
+							}))
+						);
 					}
-					propertyPaths = flatten.call(propertyPaths).map(function (keyPath) {
-						return new RegExp('^\\d[a-z]+\\\/' + escape(keyPath) + '(\\*|$)');
-					});
 					propertyPaths.push(
-						'^d[a-z]+\/requirementUploads\/map\/[a-zA-Z0-9]+\/document\/files\/map\/'
+						new RegExp(
+							'^\\d[a-z0-9]+\\\/requirementUploads\\\/map\\\/' +
+								'[a-zA-Z0-9]+\\\/document\\\/files\\\/map\\\/'
+						)
 					);
-
 					filteredRecords = records.filter(function (record) {
 						return propertyPaths.some(function (path) {
 							return record.id.match(path);
@@ -57,7 +65,6 @@ module.exports = function () {
 							data: record.data
 						});
 					});
-
 					return toStorage.storeMany(updateRecords)(true);
 				});
 			});
