@@ -77,7 +77,8 @@ module.exports = exports = function (db, dbDriver, data) {
 	  , globalFragment, getMetaAdminFragment, getAccessRules
 	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, userListProps
 	  , businessProcessDispatcherListExtraProperties = [], officialDispatcherListExtraProperties = []
-	  , businessProcessMyAccountExtraProperties = [], businessProcessSupervisorExtraProperties = [];
+	  , businessProcessMyAccountExtraProperties = [], businessProcessSupervisorExtraProperties = []
+	  , businessProcessAppGlobalFragment;
 
 	ensureDatabase(db);
 
@@ -127,6 +128,9 @@ module.exports = exports = function (db, dbDriver, data) {
 		userListProps = new Set(aFrom(ensureIterable(data.userListProps)));
 	} else {
 		userListProps = defaultUserListProps;
+	}
+	if (data.businessProcessAppGlobalFragment) {
+		businessProcessAppGlobalFragment = data.businessProcessAppGlobalFragment;
 	}
 
 	businessProcessListProperties =
@@ -315,7 +319,7 @@ module.exports = exports = function (db, dbDriver, data) {
 		fragment.promise = initializeView('businessProcesses/' + viewPath)(function () {
 			// To be visited (recently pending) business processes (full data)
 			fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
-				'businessProcesses/' + viewPath + '/' + defaultStatusName).toArray().slice(0, 10),
+				'businessProcesses/' + viewPath + '/' + defaultStatusName).toArray().slice(0, 5),
 				getBusinessProcessFullData));
 			// First page snapshot for each status
 			fragment.addFragment(getReducedData('views/businessProcesses/' + viewPath));
@@ -435,6 +439,9 @@ module.exports = exports = function (db, dbDriver, data) {
 				// Business process application
 				// Business process data
 				fragment.addFragment(getBusinessProcessFullData(custom));
+				if (businessProcessAppGlobalFragment) {
+					fragment.addFragment(businessProcessAppGlobalFragment);
+				}
 			} else {
 				initialBusinessProcesses = getDbRecordSet(userStorage,
 					userId + '/initialBusinessProcesses');
