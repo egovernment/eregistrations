@@ -77,7 +77,8 @@ module.exports = exports = function (db, dbDriver, data) {
 	  , globalFragment, getMetaAdminFragment, getAccessRules
 	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, userListProps
 	  , businessProcessDispatcherListExtraProperties = [], officialDispatcherListExtraProperties = []
-	  , businessProcessMyAccountExtraProperties = [], businessProcessSupervisorExtraProperties = [];
+	  , businessProcessMyAccountExtraProperties = [], businessProcessSupervisorExtraProperties = []
+	  , businessProcessAppGlobalFragment;
 
 	ensureDatabase(db);
 
@@ -127,6 +128,9 @@ module.exports = exports = function (db, dbDriver, data) {
 		userListProps = new Set(aFrom(ensureIterable(data.userListProps)));
 	} else {
 		userListProps = defaultUserListProps;
+	}
+	if (data.businessProcessAppGlobalFragment) {
+		businessProcessAppGlobalFragment = data.businessProcessAppGlobalFragment;
 	}
 
 	businessProcessListProperties =
@@ -435,6 +439,9 @@ module.exports = exports = function (db, dbDriver, data) {
 				// Business process application
 				// Business process data
 				fragment.addFragment(getBusinessProcessFullData(custom));
+				if (businessProcessAppGlobalFragment) {
+					fragment.addFragment(businessProcessAppGlobalFragment);
+				}
 			} else {
 				initialBusinessProcesses = getDbRecordSet(userStorage,
 					userId + '/initialBusinessProcesses');
