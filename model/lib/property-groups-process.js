@@ -46,18 +46,6 @@ module.exports = memoize(function (db/*, options*/) {
 				if (section.hasFilledPropertyNamesDeep) result.push(section.toJSON());
 			});
 			return result;
-		} },
-		// Uses most recently edited applicable section
-		lastEditStamp: { type: UInteger, value: function (_observe) {
-			var result = 0;
-
-			this.applicable.forEach(function (section) {
-				var lastEditStamp = _observe(section._lastEditStamp);
-
-				if (lastEditStamp > result) result = lastEditStamp;
-			});
-
-			return result;
 		} }
 	});
 	PropertyGroupsProcess.prototype.map._descriptorPrototype_.type = FormSectionBase;
