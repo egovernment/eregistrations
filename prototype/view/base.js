@@ -137,11 +137,6 @@ exports._bodyAppend = function () {
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			li(
-				a({ href: '/print-business-process-data/' },
-					span("Business Process: Submitted: Data print"),
-					span({ class: 'label-reg' }, "Part B"))
-			),
-			li(
 				a({ href: '/print-request-history/' },
 					span("Business Process: Submitted: History print"),
 					span({ class: 'label-reg' }, "Part B"))
@@ -175,11 +170,6 @@ exports._bodyAppend = function () {
 			li(
 				a({ href: '/my-account/data/' },
 					span("User: My Account: Request: Data"),
-					span({ class: 'label-reg' }, "Part B"))
-			),
-			li(
-				a({ href: '/my-account/print/' },
-					span("User: My Account: Request: Data print"),
 					span({ class: 'label-reg' }, "Part B"))
 			),
 			// Official views

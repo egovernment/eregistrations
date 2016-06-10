@@ -63,9 +63,5 @@ module.exports = {
 			this.dataSnapshot = this.businessProcess.dataForms.dataSnapshot.resolved;
 		},
 		view: require('../view/user-business-process-data')
-	},
-	'business-process/[0-9][a-z0-9]+/print-data': {
-		match: matchBusinessProcess,
-		view: require('../view/print-business-process-data')
 	}
 };
