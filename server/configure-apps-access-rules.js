@@ -319,7 +319,7 @@ module.exports = exports = function (db, dbDriver, data) {
 		fragment.promise = initializeView('businessProcesses/' + viewPath)(function () {
 			// To be visited (recently pending) business processes (full data)
 			fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
-				'businessProcesses/' + viewPath + '/' + defaultStatusName).toArray().slice(0, 10),
+				'businessProcesses/' + viewPath + '/' + defaultStatusName).toArray().slice(0, 5),
 				getBusinessProcessFullData));
 			// First page snapshot for each status
 			fragment.addFragment(getReducedData('views/businessProcesses/' + viewPath));
