@@ -88,6 +88,7 @@ module.exports = {
 		},
 		view: require('../view/business-process-submitted-data')
 	},
+	'print-business-process-data': require('../view/print-business-process-data'),
 	'print-request-history': require('../view/print-business-process-status-log'),
 
 	// My Account routes
@@ -118,6 +119,7 @@ module.exports = {
 		view: require('../view/user-business-process-certificate')
 	},
 	'my-account/data': require('./view/user-business-process-data'),
+	'my-account/print': require('../view/print-business-process-data'),
 
 	// Official routes
 	official: require('./view/business-processes-table'),
