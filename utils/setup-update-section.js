@@ -47,10 +47,11 @@ defineSectionUpdate = function (section, path, nuSectionKey) {
 };
 
 module.exports = function (section) {
-	var sectionOwner, path, db, updatePostfix;
-	db            = section.database;
-	sectionOwner  = section.owner;
-	updatePostfix = db.FormSectionUpdate.updateSectionPostfix;
+	var sectionOwner, path, db, updatePostfix, FormSectionUpdate;
+	db                = section.database;
+	FormSectionUpdate = require('../model/form-section-update')(db);
+	sectionOwner      = section.owner;
+	updatePostfix     = FormSectionUpdate.updateSectionPostfix;
 
 	if (db.FormSectionGroup && section instanceof db.FormSectionGroup && !section.hasSplitForms) {
 		sectionOwner.define(section.key + updatePostfix, {
