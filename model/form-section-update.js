@@ -1,48 +1,79 @@
 /** This class should be used as a super class for those section classes
- * which handle forms with more than one fields group.
+ * which wrap a given section of previousProcess
+ * (it's about businessProcessUpdate functionality).
  */
 
 'use strict';
 
 var memoize               = require('memoizee/plain')
+  , _                     = require('mano').i18n.bind('Model: FormSectionUpdate')
   , validDb               = require('dbjs/valid-dbjs')
+  , defineStringLine      = require('dbjs-ext/string/string-line')
   , defineFormSectionBase = require('./form-section-base')
   , defineProgressRule    = require('./lib/progress-rule');
 
 module.exports = memoize(function (db) {
-	var FormSectionGroup, FormSectionBase, ProgressRule;
+	var StringLine, FormSectionUpdate, FormSectionBase, ProgressRule;
 	validDb(db);
+	StringLine      = defineStringLine(db);
 	FormSectionBase = defineFormSectionBase(db);
 	ProgressRule    = defineProgressRule(db);
-	FormSectionGroup = FormSectionBase.extend('FormSectionGroup', {
-		// A map of child sections.
-		// Note: to add a child section you should define a type on sections map.
-		// Example: BusinessProcess.prototype.dataForms.map.groupSection.sections.define('myChild', {
-		// type: db.ChildClass, nested: true })
-		sections: {
-			type: db.Object,
-			nested: true
-		},
-		applicableSections: {
-			multiple: true,
-			type: FormSectionBase,
+	FormSectionUpdate = FormSectionBase.extend('FormSectionUpdate', {
+		label: {
 			value: function (_observe) {
-				var result = [];
-				this.sections.forEach(function (section) {
-					if (_observe(section._isApplicable)) result.push(section);
-				});
-				return result;
+				if (!this.sourceSection) return;
+				return _observe(this.sourceSection._label);
 			}
 		},
-		internallyApplicableSections: {
-			multiple: true,
-			type: FormSectionBase,
+		actionUrl: {
 			value: function (_observe) {
-				var result = [];
-				this.applicableSections.forEach(function (section) {
-					if (_observe(section._isInternallyApplicable)) result.push(section);
-				});
-				return result;
+				if (!this.sourceSection) return;
+				return _observe(this.sourceSection._actionUrl);
+			}
+		},
+		legend: {
+			value: function (_observe) {
+				if (!this.sourceSection) return;
+				return _observe(this.sourceSection._legend);
+			}
+		},
+		sourceSectionPath: {
+			type: StringLine,
+			value: function () {
+				return this.__id__.slice(this.__id__.indexOf('/') + 1)
+					.replace(this.constructor.updateSectionPostfix, '');
+			}
+		},
+		sourceSection: {
+			type: FormSectionBase,
+			value: function () {
+				var resolved;
+				resolved = this.master.resolveSKeyPath(this.sourceSectionPath);
+				if (!resolved || !resolved.value) return;
+				return resolved.value;
+			}
+		},
+		originalSourceSection: {
+			type: FormSectionBase,
+			value: function () {
+				if (!this.master.previousProcess) return;
+				return this.master.previousProcess.resolveSKeyPath(this.sourceSectionPath).value;
+			}
+		},
+		resolvent: {
+			label: _("Do you want to amend this section?"),
+			type: db.Boolean,
+			required: true
+		},
+		resolventValue: {
+			value: true
+		},
+		resolventProperty: {
+			value: function (_observe) {
+				// We allow resolvent only if originalSourceSection is acceptable
+				if (_observe(this.originalSourceSection._status) === 1) {
+					return this.__id__.split('/').slice(1).join('/') + '/resolvent';
+				}
 			}
 		},
 		lastEditStamp: {
@@ -57,9 +88,9 @@ module.exports = memoize(function (db) {
 					res = _observe(resolvedResolvent.object['_' + resolvedResolvent.key]._lastModified);
 				}
 
-				this.internallyApplicableSections.forEach(function (section) {
-					if (_observe(section._lastEditStamp) > res) res = section.lastEditStamp;
-				});
+				if (_observe(this.sourceSection._lastEditStamp) > res) {
+					res = this.sourceSection.lastEditStamp;
+				}
 
 				return res;
 			}
@@ -68,10 +99,9 @@ module.exports = memoize(function (db) {
 			value: function (_observe) {
 				var result = [];
 				if (this.resolventProperty) result.push(this.resolventProperty);
-				this.sections.forEach(function (section) {
-					_observe(section.propertyNamesDeep).forEach(function (property) {
-						result.push(property);
-					});
+
+				_observe(this.sourceSection.propertyNamesDeep).forEach(function (property) {
+					result.push(property);
 				});
 
 				return result;
@@ -81,9 +111,7 @@ module.exports = memoize(function (db) {
 			value: function (_observe) {
 				if (_observe(this.progressRules.displayable._size) > 0) return true;
 
-				return this.internallyApplicableSections.some(function (child) {
-					return _observe(child._hasDisplayableRuleDeep);
-				});
+				return _observe(this.sourceSection._hasDisplayableRuleDeep);
 			}
 		},
 		hasMissingRequiredPropertyNamesDeep: {
@@ -92,18 +120,14 @@ module.exports = memoize(function (db) {
 					return this.resolventStatus < 1;
 				}
 
-				return this.internallyApplicableSections.some(function (child) {
-					return _observe(child._hasMissingRequiredPropertyNamesDeep);
-				});
+				return _observe(this.sourceSection._hasMissingRequiredPropertyNamesDeep);
 			}
 		},
 		hasFilledPropertyNamesDeep: {
 			value: function (_observe) {
 				if (this.isResolventFilled(_observe)) return true;
 
-				return this.internallyApplicableSections.some(function (child) {
-					return _observe(child._hasFilledPropertyNamesDeep);
-				});
+				return _observe(this.sourceSection._hasFilledPropertyNamesDeep);
 			}
 		},
 		toJSON: { value: function (ignore) {
@@ -112,28 +136,24 @@ module.exports = memoize(function (db) {
 				result.fields = [this.master.resolveSKeyPath(this.resolventProperty)
 					.ownDescriptor.fieldToJSON()];
 			}
-			if (!this.isUnresolved) {
-				var sections = [];
-				this.internallyApplicableSections.forEach(function (section) {
-					if (section.hasFilledPropertyNamesDeep) sections.push(section.toJSON());
-				});
-				if (sections.length) result.sections = sections;
+			if (!this.isUnresolved && this.sourceSection.hasFilledPropertyNamesDeep) {
+				result.sections = [this.sourceSection.toJSON()];
 			}
 			return result;
-		} },
-		hasSplitForms: {
-			type: db.Boolean,
-			value: false
+		} }
+	}, {
+		updateSectionPostfix: {
+			type: StringLine,
+			value: "UpdatePostfix"
 		}
 	});
-	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSectionBase;
 
-	FormSectionGroup.prototype.progressRules.map.define('subSections', {
+	FormSectionUpdate.prototype.progressRules.map.define('sourceSection', {
 		type: ProgressRule,
 		nested: true
 	});
 
-	FormSectionGroup.prototype.progressRules.map.subSections.setProperties({
+	FormSectionUpdate.prototype.progressRules.map.sourceSection.setProperties({
 		progress: function (_observe) {
 			var sum = 0, resolvedResolvent, isResolventExcluded, section;
 			section = this.owner.owner.owner;
@@ -159,10 +179,9 @@ module.exports = memoize(function (db) {
 					++sum;
 				}
 			}
-
-			_observe(section.internallyApplicableSections).forEach(function (section) {
-				sum += (_observe(section._status) * _observe(section._weight));
-			});
+			if (section.sourceSection) {
+				sum += (_observe(section.sourceSection._status) * _observe(section.sourceSection._weight));
+			}
 
 			if (!this.weight) return 1;
 
@@ -187,13 +206,13 @@ module.exports = memoize(function (db) {
 				}
 			}
 
-			_observe(section.internallyApplicableSections).forEach(function (section) {
-				weightTotal += _observe(section._weight);
-			});
+			if (section.sourceSection) {
+				weightTotal += _observe(section.sourceSection._weight);
+			}
 
 			return weightTotal;
 		}
 	});
 
-	return FormSectionGroup;
+	return FormSectionUpdate;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
