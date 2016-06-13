@@ -42,7 +42,7 @@ module.exports = Object.defineProperty(db.FormSectionUpdate.prototype, 'toDOMFor
 			disableHeader: true
 		};
 		fieldsetResult = [
-			this.originalSourceSection.toDOM(document, { disableHeader: true, displayEmptyFields: true }),
+			this.originalSourceSection.toDOM(document, { disableHeader: true, displayEmpty: true }),
 			mmap(this._resolventProperty, function () {
 				return this.toDOMFieldset(document, sectionFieldsetOptions);
 			}.bind(this))
