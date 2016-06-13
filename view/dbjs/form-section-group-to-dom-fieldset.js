@@ -40,7 +40,7 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 
 		customizeData.arrayResult = [
 			options.prepend,
-			resolvent.formResolvent,
+			div({ class: 'form-elements' }, resolvent.formResolvent),
 			progressRules(this)
 		];
 
