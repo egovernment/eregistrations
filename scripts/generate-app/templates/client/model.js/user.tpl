@@ -12,7 +12,7 @@ user.$password.type = Password;
 
 // TODO: Remove below line as soon as first business process service is added
 require('../../../model/business-process/base');
-// Warning: ../../../model/views must be required after all business processes models
+
 require('../../../model/views');
 
 module.exports = db;
