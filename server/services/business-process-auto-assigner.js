@@ -4,41 +4,52 @@ var unserializeValue = require('dbjs/_setup/unserialize/value')
   , serializeValue   = require('dbjs/_setup/serialize/value')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , getDbSet         = require('eregistrations/server/utils/get-db-set')
+  , ensureStorage    = require('dbjs-persistence/ensure-storage')
   , deferred         = require('deferred')
   , aFrom            = require('es5-ext/array/from')
   , ensureCallable   = require('es5-ext/object/valid-callable')
+  , idToStorage      = require('../utils/business-process-id-to-storage')
   , debug            = require('debug-ext')('auto-assign');
 
-module.exports = function (businessProcessStorage, counterStorage, officials, step/*, options*/) {
+module.exports = function (businessProcessStorages, counterStorage, officials, step/*, options*/) {
 	var options = normalizeOptions(arguments[4])
 	  , id      = step.shortPath
 	  , path    = step.__id__.slice(step.master.__id__.length + 1)
 	  , customFilter    = options.customFilter && ensureCallable(options.customFilter)
 	  , customIndexPath = options.customIndexPath
 	  , officialsArray, lastIndex;
+	if (Array.isArray(businessProcessStorages)) {
+		businessProcessStorages = businessProcessStorages.map(ensureStorage);
+	} else {
+		businessProcessStorages = [ensureStorage(businessProcessStorages)];
+	}
 
 	officialsArray = officials.toArray();
 
 	var addAssignee = function (businessProcessId) {
 		var recordId = businessProcessId + '/' + path + '/assignee';
 
-		return businessProcessStorage.get(recordId)(function (data) {
-			if (data && data.value[0] === '7') return;
+		return idToStorage(businessProcessId)(function (businessProcessStorage) {
+			if (!businessProcessStorage) return;
+			return businessProcessStorage.get(recordId)(function (data) {
+				if (data && data.value[0] === '7') return;
 
-			return deferred(customFilter ? customFilter(businessProcessId) : true).then(function (isOK) {
-				var officialId;
-				if (!isOK) return;
+				return deferred(customFilter ?
+						customFilter(businessProcessStorage, businessProcessId) : true).then(function (isOK) {
+					var officialId;
+					if (!isOK) return;
 
-				lastIndex = officialsArray[lastIndex + 1] ? lastIndex + 1 : 0;
-				officialId = officialsArray[lastIndex];
-				debug('for %s assigned official: %s, to process: %s', id, officialId, businessProcessId);
-				return deferred(
-					businessProcessStorage.store(businessProcessId + '/' + path + '/assignee',
-							'7' + officialId),
-					counterStorage.store('processingStepAutoAssignLastIndex/' +
-						(customIndexPath || id), serializeValue(lastIndex))
-				)(function () {
-					if (options.onAssign) return options.onAssign(officialId);
+					lastIndex = officialsArray[lastIndex + 1] ? lastIndex + 1 : 0;
+					officialId = officialsArray[lastIndex];
+					debug('for %s assigned official: %s, to process: %s', id, officialId, businessProcessId);
+					return deferred(
+						businessProcessStorage.store(businessProcessId + '/' + path + '/assignee',
+								'7' + officialId),
+						counterStorage.store('processingStepAutoAssignLastIndex/' +
+							(customIndexPath || id), serializeValue(lastIndex))
+					)(function () {
+						if (options.onAssign) return options.onAssign(officialId);
+					});
 				});
 			});
 		});
@@ -50,7 +61,7 @@ module.exports = function (businessProcessStorage, counterStorage, officials, st
 	}).then(function (index) {
 		lastIndex = index;
 		return getDbSet(
-			businessProcessStorage,
+			businessProcessStorages,
 			'computed',
 			path + '/status',
 			serializeValue('pending')
