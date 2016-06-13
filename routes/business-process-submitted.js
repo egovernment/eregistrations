@@ -55,6 +55,5 @@ module.exports = {
 	},
 
 	// Print routes
-	'data-print': require('../view/print-business-process-data'),
 	'print-request-history': require('../view/print-business-process-status-log')
 };
