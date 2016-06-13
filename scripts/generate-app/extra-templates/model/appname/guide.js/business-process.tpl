@@ -10,4 +10,9 @@ require('eregistrations/model/business-process-new/guide')(db);
 
 ${ className }.prototype.getOwnDescriptor('determinants').type = FormSection;
 
+${ className }.prototype.determinants.setProperties({
+	disablePartialSubmit: true,
+	propertyNames: []
+});
+
 module.exports = ${ className };
