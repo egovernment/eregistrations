@@ -7,3 +7,9 @@ Component describing styles for login modal windows - rules specific only for th
 .dialog-login form p:last-child  {
 	width: 320px;
 }
+
+.dialog-login .dbjs-input-component > label {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+}
