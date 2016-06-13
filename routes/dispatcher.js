@@ -72,6 +72,10 @@ module.exports = function () {
 		'[0-9][a-z0-9]*/print-request-history': {
 			match: match,
 			view: require('../view/print-business-process-status-log')
+		},
+		'[0-9][a-z0-9]*/data-print': {
+			match: match,
+			view: require('../view/print-business-process-data')
 		}
 	};
 };
