@@ -1,3 +1,10 @@
+.forms-tab-heading {
+	padding-top: 44px;
+	padding-bottom: 22px;
+	background-color: var(--white-background);
+	margin-top: -22px;
+}
+
 .forms-tab-nav {
 	background-color: var(--white-background);
 	margin-top: -22px;
