@@ -4,10 +4,11 @@ var defineBusinessProcess   = require('../../model/business-process-new')
   , defineFormSection       = require('../../model/form-section')
   , defineFormSectionGroup  = require('../../model/form-section-group')
   , defineFormSectionUpdate = require('../../model/form-section-update')
-  , db = require('../../db');
+  , Database                = require('dbjs');
 
 module.exports = function (t, a) {
-	var BusinessProcess   = defineBusinessProcess(db)
+	var db                = new Database()
+	  , BusinessProcess   = defineBusinessProcess(db)
 	  , FormSection       = defineFormSection(db)
 	  , FormSectionGroup  = defineFormSectionGroup(db)
 	  , FormSectionUpdate = defineFormSectionUpdate(db)

@@ -1,12 +1,10 @@
 'use strict';
 
-var db                = require('../db')
-  , FormUpdateSection = require('../model/form-section-update')(db)
-  , updatePostfix     = FormUpdateSection.updateSectionPostfix
-  , camelToHyphen     = require('es5-ext/string/#/camel-to-hyphen')
+var camelToHyphen     = require('es5-ext/string/#/camel-to-hyphen')
   , setupPropertyMasterType, defineSectionUpdate;
 
 var setPropertyMasterTypeDeep = function (section, MasterType) {
+	var db = section.database;
 	if (db.FormSectionGroup && section instanceof db.FormSectionGroup) {
 		section.sections.forEach(function (subSection) {
 			setPropertyMasterTypeDeep(subSection, MasterType);
@@ -18,7 +16,7 @@ var setPropertyMasterTypeDeep = function (section, MasterType) {
 
 setupPropertyMasterType = function (section) {
 	var UpdateMasterType = section.master.constructor,
-		MasterType = db[UpdateMasterType.__id__.replace('Update', '')];
+		db = section.database, MasterType = db[UpdateMasterType.__id__.replace('Update', '')];
 
 	setPropertyMasterTypeDeep(UpdateMasterType.prototype.previousProcess.resolveSKeyPath(
 		[section.__id__.slice(section.__id__.indexOf('/') + 1)]
@@ -26,12 +24,16 @@ setupPropertyMasterType = function (section) {
 };
 
 defineSectionUpdate = function (section, path, nuSectionKey) {
-	var resolved = section.master.resolveSKeyPath(path);
+	var resolved, db, FormSectionUpdate, updatePostfix;
+	resolved          = section.master.resolveSKeyPath(path);
+	db                = section.database;
+	FormSectionUpdate = require('../model/form-section-update')(db);
+	updatePostfix     = FormSectionUpdate.updateSectionPostfix;
 
 	if (!resolved) throw new Error("Cannot resolve path ", path);
 
 	resolved.object.define(nuSectionKey, {
-		type: FormUpdateSection,
+		type: FormSectionUpdate,
 		nested: true
 	});
 	resolved.object[nuSectionKey].setProperties({
@@ -45,8 +47,10 @@ defineSectionUpdate = function (section, path, nuSectionKey) {
 };
 
 module.exports = function (section) {
-	var sectionOwner, path;
-	sectionOwner = section.owner;
+	var sectionOwner, path, db, updatePostfix;
+	db            = section.database;
+	sectionOwner  = section.owner;
+	updatePostfix = db.FormSectionUpdate.updateSectionPostfix;
 
 	if (db.FormSectionGroup && section instanceof db.FormSectionGroup && !section.hasSplitForms) {
 		sectionOwner.define(section.key + updatePostfix, {
