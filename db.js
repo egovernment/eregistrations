@@ -9,6 +9,7 @@ var _               = require('mano').i18n
 var db = module.exports = require('mano').db;
 
 db.locale = 'en-GB'; // default locale, to be shadowed with expected one in end system
+db.timeZone = 'UTC'; // default time zone, to be shadowed with expected one in end system
 
 Object.defineProperties(db, {
 	resolveTemplate: d(resolveTemplate)
