@@ -486,6 +486,9 @@ module.exports = exports = function (db, dbDriver, data) {
 			fragment.addFragment(getManagerUserData(clientId));
 			if (businessProcessId) {
 				fragment.addFragment(getBusinessProcessFullData(businessProcessId));
+				if (businessProcessAppGlobalFragment) {
+					fragment.addFragment(businessProcessAppGlobalFragment);
+				}
 			} else {
 				fragment.promise = getBusinessProcessStorages(function (storages) {
 					return getDbSet(storages, 'direct', 'manager', '7' + userId)(function (managerBps) {
