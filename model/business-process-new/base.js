@@ -35,7 +35,7 @@ module.exports = memoize(function (db/*, options*/) {
 
 		// Name of businessProcess
 		// Usually computed from other properties
-		businessName: { type: StringLine },
+		businessName: { type: StringLine, label: _("Business name")  },
 
 		// URL at which archive of files related to given business process
 		// is accessible
