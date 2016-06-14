@@ -19,7 +19,7 @@ exports._statusMap = function () {
 };
 
 exports._businessProcessTable = function () {
-	return getBusinessProcessesTable({
+	return getTable({
 		user: this.user,
 		roleName: '${ appNameSuffix }',
 		statusMap: statusMap,
