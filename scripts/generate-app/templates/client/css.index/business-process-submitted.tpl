@@ -6,13 +6,13 @@
 ../../../node_modules/eregistrations/css/components/button-main.css
 ../../../node_modules/eregistrations/css/components/container-with-nav.css
 ../../../node_modules/eregistrations/css/components/section-primary.css
+../../../node_modules/eregistrations/css/components/section-secondary.css
+../../../node_modules/eregistrations/css/components/section-tab-nav.css
 ../../../node_modules/eregistrations/css/components/header-top.css
 ../../../node_modules/eregistrations/css/components/submitted-menu.css
 ../../../node_modules/eregistrations/css/components/submitted-user-history.css
 ../../../node_modules/eregistrations/css/components/submitted-documents-list.css
 ../../../node_modules/eregistrations/css/components/submitted-documents-thumbs.css
-../../../node_modules/eregistrations/css/components/submitted-preview.css
-../../../node_modules/eregistrations/css/components/submitted-preview-new.css
 ../../../node_modules/eregistrations/css/components/user-forms.css
 ../../../node_modules/eregistrations/css/components/submitted-user-data-table.css
 ../../../node_modules/eregistrations/css/components/user-documents-upload.css
