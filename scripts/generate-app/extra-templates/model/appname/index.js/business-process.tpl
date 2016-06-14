@@ -13,6 +13,7 @@ require('./guide');
 require('./certificates');
 require('./requirements');
 require('./requirement-uploads');
+require('./payment-receipt-uploads');
 require('./registrations');
 require('./costs');
 require('./data-forms');
