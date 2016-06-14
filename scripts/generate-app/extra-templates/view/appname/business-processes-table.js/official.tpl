@@ -23,7 +23,7 @@ exports._businessProcessTable = function () {
 		user: this.user,
 		roleName: '${ appNameSuffix }',
 		statusMap: statusMap,
-		getOrderIdx: getOrderIdx,
+		getOrderIndex: getOrderIdx,
 		itemsPerPage: env.objectsListItemsPerPage,
 		columns: columns,
 		class: 'submitted-user-data-table'
