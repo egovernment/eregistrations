@@ -1,7 +1,7 @@
 'use strict';
 
 var _                 = require('../../../i18n').bind('User')
-  , businessProcesses = require('../../../apps-common/business-processes/TODO: Provide name');
+  , businessProcesses = require('../../../apps-common/business-processes/${ appNamePostfix }');
 
 module.exports = [{
 	preTrigger: businessProcesses.filterByKey('guideProgress', 1),
