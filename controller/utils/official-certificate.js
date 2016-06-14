@@ -1,7 +1,7 @@
 'use strict';
 
 var hyphenToCamel   = require('es5-ext/string/#/hyphen-to-camel')
-  , officialMatcher = require('eregistrations/controller/utils/official-matcher');
+  , officialMatcher = require('./official-matcher');
 
 module.exports = function (stepName) {
 	return {
