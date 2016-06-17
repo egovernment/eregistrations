@@ -2,9 +2,11 @@
 
 'use strict';
 
-var normalizeOptions  = require('es5-ext/object/normalize-options')
-  , capitalize        = require('es5-ext/string/#/capitalize')
+var capitalize        = require('es5-ext/string/#/capitalize')
+  , uncapitalize      = require('es5-ext/string/#/uncapitalize')
+  , startsWith        = require('es5-ext/string/#/starts-with')
   , hyphenToCamel     = require('es5-ext/string/#/hyphen-to-camel')
+  , normalizeOptions  = require('es5-ext/object/normalize-options')
   , template          = require('es6-template-strings')
   , deferred          = require('deferred')
   , fs                = require('fs2')
@@ -49,6 +51,11 @@ module.exports = function (projectRoot, appName/*, options*/) {
 
 	templateVars.appName       = appName;
 	templateVars.className     = capitalize.call(hyphenToCamel.call(appName));
+	if (startsWith.call(templateVars.className, 'BusinessProcess')) {
+		templateVars.classPostfix
+			= uncapitalize.call(templateVars.className.slice('BusinessProcess'.length));
+		templateVars.appNamePostfix = templateVars.appName.slice('business-process-'.length);
+	}
 	templateVars.isBusinessProcessSubmitted = appName === 'business-process-submitted';
 
 	if (appTypes[appName]) {
