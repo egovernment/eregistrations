@@ -304,3 +304,27 @@ e.g.:
 .fa-external-link:before {
 	content: "\f08e";
 }
+
+.fa-file {
+	width:1em;
+}
+
+.fa-file:before {
+	content: "\f15b";
+}
+
+.fa-pencil-square-o {
+	width:1em;
+}
+
+.fa-pencil-square-o:before {
+	content: "\f044";
+}
+
+.fa-repeat {
+	width:1em;
+}
+
+.fa-repeat:before {
+	content: "\f01e";
+}
