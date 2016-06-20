@@ -20,7 +20,6 @@ module.exports = exports = function (db/*, options*/) {
 
 	ensureDatabase(db);
 	ensureCallable(renderer);
-
 	defineResolved(db);
 
 	return function (query) {
@@ -30,7 +29,7 @@ module.exports = exports = function (db/*, options*/) {
 
 		if (!businessProcess) return false;
 
-		return renderer(businessProcess, filePath);
+		return renderer(businessProcess, filePath, options);
 	};
 };
 
