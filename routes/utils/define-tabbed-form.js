@@ -12,13 +12,19 @@ var camelToHyphen       = require('es5-ext/string/#/camel-to-hyphen')
  * @param {Object}  options           - options
  * @param {Object}  options.context   - Usually a view routes should be passed
  * @param {Boolean} options.isDefault - Is this tab a default forms view?
+ * @param {String}  options.urlPrefix - route prefix for section pageUrl
  * @returns {Object}
  */
 module.exports = function (sectionKey/*, options */) {
-	var pageUrl, context, options = Object(arguments[1]);
+	var pageUrl, context, urlPrefix, options = Object(arguments[1]);
 	ensureStringifiable(sectionKey);
 
-	pageUrl = options.isDefault ? 'forms' : ('forms/' + camelToHyphen.call(sectionKey));
+	urlPrefix = options.urlPrefix || 'forms';
+	if (urlPrefix === '/') {
+		pageUrl = options.isDefault ? urlPrefix : camelToHyphen.call(sectionKey);
+	} else {
+		pageUrl = options.isDefault ? urlPrefix : urlPrefix + '/' + camelToHyphen.call(sectionKey);
+	}
 	context = options.context || Object.create(null);
 
 	context[pageUrl] = {
