@@ -7,6 +7,8 @@ var normalizeOptions    = require('es5-ext/object/normalize-options')
   , identity            = require('es5-ext/function/identity')
   , db                  = require('mano').db
   , pathToUrl           = require('../../utils/upload-path-to-url')
+  , includes            = require('es5-ext/array/#/contains')
+  , docMimeTypes        = require('../../utils/microsoft-word-doc-mime-types')
 
   , isArray = Array.isArray, min = Math.min, stringify = JSON.stringify
   , renderValue, renderField, renderFields, renderEntity, renderEntities
@@ -96,6 +98,9 @@ exports.renderers = defaultRenderers;
 exports.customRenderers = {
 	fileValue: function (data) {
 		var thumbUrl = pathToUrl(data.thumbPath);
+		if (includes.call(docMimeTypes, data.type)) {
+			thumbUrl = '/img/word-doc-icon.png';
+		}
 		return div({ class: 'file-thumb' },
 			a({ href: pathToUrl(data.path), target: '_blank', class: 'file-thumb-image' },
 				img({ src: thumbUrl ? stUrl(thumbUrl) : thumbUrl })),
