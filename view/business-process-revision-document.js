@@ -56,7 +56,7 @@ exports['selection-preview'] = function () {
 				return renderDocumentRevisionInfo(this);
 			}.bind(this)),
 			mainContent: exports._documentPreviewContent.call(this, documentData),
-			sideContent: renderSections(this.businessProcess.dataForms.dataSnapshot),
+			sideContent: exports._renderSections.call(this),
 			urlPrefix: '/' + this.businessProcess.__id__ + '/',
 			documentsRootHref: '/' + this.businessProcess.__id__ + '/'
 		}),
@@ -65,3 +65,7 @@ exports['selection-preview'] = function () {
 };
 
 exports._documentPreviewContent = Function.prototype;
+
+exports._renderSections = function () {
+	return renderSections(this.businessProcess.dataForms.dataSnapshot);
+};

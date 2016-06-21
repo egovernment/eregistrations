@@ -24,7 +24,9 @@ exports.step = {
 
 exports._tabs = function () {
 	return list(this.businessProcess.dataForms.applicable, function (section) {
-		var sectionTabAddress = section.pageUrl ? ('/forms/' + section.pageUrl + '/') : '/forms/';
+		var sectionTabAddress, rootUrl;
+		rootUrl           = exports._rootUrl.call(this);
+		sectionTabAddress = section.pageUrl ? (rootUrl + section.pageUrl + '/') : rootUrl;
 
 		return li({ class: ['forms-tab-nav-tab',
 			_if(eq(appLocation._pathname, sectionTabAddress),
@@ -33,6 +35,10 @@ exports._tabs = function () {
 				_if(eq(section._status, 1), 'fa-check', 'fa-star')] }),
 				section._shortLabel)));
 	});
+};
+
+exports._rootUrl = function () {
+	return '/forms/';
 };
 
 exports._formsHeading = formsHeading;

@@ -11,7 +11,7 @@ exports._parent = require('./business-process-data-forms-tabbed');
 exports['forms-sections-content'] = function () {
 	var nextPageLink = this.section._nextSection.map(function (nextSection) {
 		if (!nextSection) return exports._nextSectionUrl.call(this);
-		return '/forms/' + nextSection.pageUrl + '/';
+		return exports._parent._rootUrl.call(this) + nextSection.pageUrl + '/';
 	}.bind(this));
 
 	insert(
