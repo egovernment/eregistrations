@@ -61,7 +61,7 @@ exports['sub-main'] = {
 						  , renderAsDiv = or(item.hrefUrl, disabled)
 						  , boxClasses = [ 'user-account-service-box', _if(disabled, 'disabled') ];
 
-						return li(_if(item.condition || true, _if(
+						return _if(item.condition || true, li(_if(
 							renderAsForm,
 							form({ class: boxClasses, action: item.actionUrl, method: 'post' },
 								button({ type: 'submit' }, _if(renderAsForm, item.buttonContent)),

@@ -9,7 +9,7 @@
  */
 'use strict';
 
-var generateId          = require('time-uuid')
+var generateId          = require('dom-ext/html-document/generate-id')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
   , isObject            = require('dbjs/is-dbjs-object')
   , d                   = require('d')

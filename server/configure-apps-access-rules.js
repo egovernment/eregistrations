@@ -15,6 +15,7 @@ var aFrom                = require('es5-ext/array/from')
   , memoize              = require('memoizee')
   , Set                  = require('es6-set')
   , deferred             = require('deferred')
+  , debug                = require('debug-ext')('data-access')
   , ensureDatabase       = require('dbjs/valid-dbjs')
   , unserializeValue     = require('dbjs/_setup/unserialize/value')
   , serializeValue       = require('dbjs/_setup/serialize/value')
@@ -315,12 +316,20 @@ module.exports = exports = function (db, dbDriver, data) {
 		var addSortRecord = getAddRecFrag(null,
 			['processingSteps/map/' + resolveStepPath(stepShortPath) + '/isReady']);
 
+		debug('%s init official', stepShortPath);
 		fragment.addFragment(officialsFragment);
 		fragment.promise = initializeView('businessProcesses/' + viewPath)(function () {
+			var items = getFirstPageItems(reducedStorage,
+				'businessProcesses/' + viewPath + '/' + defaultStatusName).toArray().slice(0, 5);
+			debug('%s init pending items %s', stepShortPath, items.length);
+			items.on('change', function () {
+				debug('%s changed pending items %s', stepShortPath, items.length);
+			});
 			// To be visited (recently pending) business processes (full data)
-			fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
-				'businessProcesses/' + viewPath + '/' + defaultStatusName).toArray().slice(0, 5),
-				getBusinessProcessFullData));
+			fragment.addFragment(getColFragments(items, function (bpId) {
+				debug('%s got pending item fragment %s', stepShortPath, bpId);
+				return getBusinessProcessFullData(bpId);
+			}));
 			// First page snapshot for each status
 			fragment.addFragment(getReducedData('views/businessProcesses/' + viewPath));
 			// First page list data for each status
