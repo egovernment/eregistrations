@@ -29,7 +29,7 @@ var assignmentColumn = {
 };
 var assignmentColumnData = assignmentColumn.data;
 
-var columns = [
+exports._columns = [
 	tableColumns.servicesColumn,
 	tableColumns.businessNameColumn,
 	tableColumns.submissionDateColumn,
@@ -43,7 +43,7 @@ var businessProcessTable = function (context) {
 	var assignableUsers = db.User.instances.filterByKey('roles', function (roles) {
 		return roles.has(context.roleName);
 	});
-	columns[columns.length - 1].data = function (businessProcess) {
+	assignmentColumn.data = function (businessProcess) {
 		return assignmentColumnData(businessProcess.processingSteps.map[context.shortRoleName],
 			assignableUsers);
 	};
@@ -55,7 +55,7 @@ var businessProcessTable = function (context) {
 		statusMap: context.statusMap,
 		getOrderIndex: context.getOrderIndex,
 		itemsPerPage: env.objectsListItemsPerPage,
-		columns: columns,
+		columns: exports._columns,
 		tableUrl: location.pathname,
 		class: 'submitted-user-data-table'
 	});
