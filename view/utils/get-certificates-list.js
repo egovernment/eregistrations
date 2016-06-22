@@ -14,17 +14,17 @@ module.exports = memoize(function (targetMap, appName) {
 	return businessProcess._isClosed.map(function (isClosed) {
 		if (!isClosed) {
 			// User, can see released certificates only when request is finalized
-			if (isUserApp(appName)) return null;
+			if (isUserApp(appName)) return targetMap.userApplicable.toArray();
 			return targetMap.released.toArray();
 		}
 		if (!businessProcess.isApproved) return null;
 		if (isUserApp(appName)) {
 			// For user we show certificates as they're stored in snapshot
-			return businessProcess.certificates.dataSnapshot._resolved;
+			return targetMap.dataSnapshot._resolved;
 		}
 		// For officials we show only those certificates from snapshot which are applicable
 		// to be exposed to him
-		return businessProcess.certificates.dataSnapshot._resolved.map(function (data) {
+		return targetMap.dataSnapshot._resolved.map(function (data) {
 			if (!data) return;
 			return getSetProxy(targetMap.released).map(function (certificate) {
 				var snapshot = find.call(data, function (snapshot) {
