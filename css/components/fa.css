@@ -328,3 +328,11 @@ e.g.:
 .fa-repeat:before {
 	content: "\f01e";
 }
+
+.fa-line-chart {
+	width: 1em;
+}
+
+.fa-line-chart:before {
+	content: "\f201";
+}
