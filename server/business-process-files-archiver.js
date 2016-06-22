@@ -5,8 +5,9 @@ var endsWith          = require('es5-ext/string/#/ends-with')
   , ensureObject      = require('es5-ext/object/valid-object')
   , ensureString      = require('es5-ext/object/validate-stringifiable-value')
   , deferred          = require('deferred')
-  , debug             = require('debug-ext')('zip-archiver')
+  , debug             = require('debug-ext')('business-process-data-archiver')
   , once              = require('timers-ext/once')
+  , now               = require('microtime-x')
   , ensureDatabase    = require('dbjs/valid-dbjs')
   , unserializeValue  = require('dbjs/_setup/unserialize/value')
   , generateHash      = require('murmurhash-js/murmurhash3_gc')
@@ -32,6 +33,7 @@ exports.filenameResetService = function (db, data) {
 		keys(pending).forEach(function (id) {
 			var bp = db.BusinessProcessBase.getById(id), url, filenames, oldFilename;
 			delete pending[id];
+			debug('resolve %s', bp.__id__);
 			if (!bp) return;
 			if (!bp.isSubmitted) {
 				if (bp.filesArchiveUrl) bp.delete('filesArchiveUrl');
@@ -54,6 +56,7 @@ exports.filenameResetService = function (db, data) {
 				});
 			}
 			bp.filesArchiveUrl = url;
+			debug('set url for %s', bp.__id__);
 		});
 		--db._postponed_;
 	});
@@ -71,6 +74,11 @@ exports.filenameResetService = function (db, data) {
 		if (!endsWith.call(id, '/path') && !endsWith.call(id, '/submissionForms/isAffidavitSigned')) {
 			return;
 		}
+		if (isPastRecordEvent(event)) {
+			debug('past event %s for %s: now: %s, stamp: %s', id, bp.__id__, now(), event.stamp);
+			return;
+		}
+		debug('queue %s', bp.__id__);
 		pending[bp.__id__] = true;
 		update();
 	});
