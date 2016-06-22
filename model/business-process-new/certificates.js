@@ -78,7 +78,7 @@ module.exports = memoize(function (db/* options */) {
 		} },
 		// Certificates that can be seen by user
 		userApplicable: { type: Document, multiple: true, value: function (_observe) {
-			if (_observe(this.master._isApproved)) return null;
+			if (!_observe(this.master._isApproved)) return null;
 
 			return this.released;
 		} },
