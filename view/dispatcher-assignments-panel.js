@@ -15,7 +15,7 @@ exports._customFilter = function (processingStep, assignableUsers) {
 	return assignableUsers;
 };
 
-var assignmentColumn = {
+exports._assignmentColumn = {
 	head: _("Assignee"),
 	data: function (processingStep, assignableUsers) {
 		return form({ method: 'post',
@@ -27,23 +27,23 @@ var assignmentColumn = {
 			p({ class: 'submit' }, input({ type: 'submit' })));
 	}
 };
-var assignmentColumnData = assignmentColumn.data;
+var assignmentColumnData = exports._assignmentColumn.data;
 
-var columns = [
+exports._columns = [
 	tableColumns.servicesColumn,
 	tableColumns.businessNameColumn,
 	tableColumns.submissionDateColumn,
 	tableColumns.certificatesListColumn,
 	tableColumns.archiverColumn,
 	tableColumns.goToColumn,
-	assignmentColumn
+	exports._assignmentColumn
 ];
 
 var businessProcessTable = function (context) {
 	var assignableUsers = db.User.instances.filterByKey('roles', function (roles) {
 		return roles.has(context.roleName);
 	});
-	columns[columns.length - 1].data = function (businessProcess) {
+	exports._columns[exports._columns.length - 1].data = function (businessProcess) {
 		return assignmentColumnData(businessProcess.processingSteps.map[context.shortRoleName],
 			assignableUsers);
 	};
@@ -55,7 +55,7 @@ var businessProcessTable = function (context) {
 		statusMap: context.statusMap,
 		getOrderIndex: context.getOrderIndex,
 		itemsPerPage: env.objectsListItemsPerPage,
-		columns: columns,
+		columns: exports._columns,
 		tableUrl: location.pathname,
 		class: 'submitted-user-data-table'
 	});
