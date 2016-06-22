@@ -43,7 +43,7 @@ var businessProcessTable = function (context) {
 	var assignableUsers = db.User.instances.filterByKey('roles', function (roles) {
 		return roles.has(context.roleName);
 	});
-	exports._columns[exports._columns.length - 1].data = function (businessProcess) {
+	assignmentColumn.data = function (businessProcess) {
 		return assignmentColumnData(businessProcess.processingSteps.map[context.shortRoleName],
 			assignableUsers);
 	};
