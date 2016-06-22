@@ -15,7 +15,7 @@ exports._customFilter = function (processingStep, assignableUsers) {
 	return assignableUsers;
 };
 
-exports._assignmentColumn = {
+var assignmentColumn = {
 	head: _("Assignee"),
 	data: function (processingStep, assignableUsers) {
 		return form({ method: 'post',
@@ -27,7 +27,7 @@ exports._assignmentColumn = {
 			p({ class: 'submit' }, input({ type: 'submit' })));
 	}
 };
-var assignmentColumnData = exports._assignmentColumn.data;
+var assignmentColumnData = assignmentColumn.data;
 
 exports._columns = [
 	tableColumns.servicesColumn,
@@ -36,7 +36,7 @@ exports._columns = [
 	tableColumns.certificatesListColumn,
 	tableColumns.archiverColumn,
 	tableColumns.goToColumn,
-	exports._assignmentColumn
+	assignmentColumn
 ];
 
 var businessProcessTable = function (context) {
