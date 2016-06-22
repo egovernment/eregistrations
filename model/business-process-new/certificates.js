@@ -76,6 +76,12 @@ module.exports = memoize(function (db/* options */) {
 			});
 			return result;
 		} },
+		// Certificates that can be seen by user
+		userApplicable: { type: Document, multiple: true, value: function (_observe) {
+			if (_observe(this.master._isApproved)) return null;
+
+			return this.released;
+		} },
 		// It's for data snapshots functionality
 		// Returns overview of gathered (or applied) certificates.
 		// It is run on business process closure (no matter if rejection or approval)
