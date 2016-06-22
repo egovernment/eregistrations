@@ -4,7 +4,7 @@
 
 var hyphenToCamel    = require('es5-ext/string/#/hyphen-to-camel')
   , matchUpload      = require('./utils/user-match-upload')
-  , matchCertificate = require('./utils/user-match-certificate');
+  , matchCertificate = require('./utils/official-match-certificate');
 
 module.exports = {
 	// User routes
