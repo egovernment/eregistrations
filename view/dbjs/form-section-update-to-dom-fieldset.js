@@ -39,7 +39,7 @@ module.exports = Object.defineProperties(db.FormSectionUpdate.prototype, {
 
 		customizeData.arrayResult = [
 			options.prepend,
-			div({ class: 'form-elements' }, resolvent.formResolvent),
+			div({ class: 'form-elements data-update-question' }, resolvent.formResolvent),
 			progressRules(this)
 		];
 
