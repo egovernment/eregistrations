@@ -13,7 +13,7 @@ module.exports = function (uniqueKey) {
 		if (!this.dataSnapshot) return false;
 	}
 
-	this.businessProcess.certificates.applicable.some(function (certificate) {
+	this.businessProcess.certificates.userApplicable.some(function (certificate) {
 		if (certificate.key === uniqueKey) {
 			this.document = certificate;
 			return true;
