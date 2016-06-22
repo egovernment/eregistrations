@@ -42,7 +42,6 @@ module.exports = {
 	},
 	'certificates/[a-z][a-z0-9-]*': {
 		match: function (uniqueKey) {
-			if (!this.businessProcess.isApproved) return;
 			return matchCertificate.call(this, hyphenToCamel.call(uniqueKey));
 		},
 		view: require('../view/business-process-submitted-certificate')
