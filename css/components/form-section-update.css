@@ -1,4 +1,4 @@
-.data-update-section {
+.form-section-update {
 	background: var(--light-background);
 	margin-left: -20px;
 	margin-right: -20px;
@@ -6,7 +6,7 @@
 	padding-bottom: 22px;
 }
 
-.data-update-section h3 {
+.form-section-update h3 {
 	font-weight: 400;
 	border-bottom: 1px dashed var(--normal-light-green-background);
 	padding: 5px;
@@ -16,31 +16,31 @@
 	padding-right: 60%;
 }
 
-.data-update-section .entity-data-section-sub {
+.form-section-update .entity-data-section-sub {
 	margin-bottom: 22px;
 }
 
-.data-update-section .entity-data-section-sub:last-child {
+.form-section-update .entity-data-section-sub:last-child {
 	margin-bottom: 0;
 }
 
-.data-update-section h4 {
+.form-section-update h4 {
 	padding: 5px;
 	text-align: right;
 	padding-right: 60%;
 }
 
-.data-update-section table th {
+.form-section-update table th {
 	width: 40%;
 	text-align: right;
 }
 
-.data-update-section table td {
+.form-section-update table td {
 	width: 60%;
 	text-align: left;
 }
 
-.data-update-question {
+.form-section-update-question {
 	background: var(--dark-background);
 	border-radius: 3px;
 	color: #FFF;

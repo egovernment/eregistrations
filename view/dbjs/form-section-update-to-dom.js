@@ -43,7 +43,7 @@ module.exports = Object.defineProperty(db.FormSectionUpdate.prototype, 'toDOMFor
 		};
 		fieldsetResult = [
 			this.originalSourceSection.toDOM(document, { disableHeader: true, displayEmptyFields: true,
-				cssClass: ['data-update-section', 'entity-data-section'] }),
+				cssClass: ['form-section-update', 'entity-data-section'] }),
 			mmap(this._resolventProperty, function () {
 				return this.toDOMFieldset(document, sectionFieldsetOptions);
 			}.bind(this))

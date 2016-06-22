@@ -35,5 +35,6 @@
 ../../../node_modules/eregistrations/css/components/throbber.css
 ../../../node_modules/eregistrations/css/components/manager-bar.css
 ../../../node_modules/eregistrations/css/components/manager-label.css
+../../../node_modules/eregistrations/css/components/form-section-update.css
 ../../../css/theme.css
 ../../../css/theme-part-a.css
