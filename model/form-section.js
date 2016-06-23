@@ -227,6 +227,7 @@ module.exports = memoize(function (db) {
 						return;
 					}
 					lastModified = _observe(resolved.object['_' + resolved.key]._lastModified);
+					if (lastModified < 1e6) lastModified = 0; // Ignore model stamps
 					if (lastModified > res) res = lastModified;
 				}, this);
 
