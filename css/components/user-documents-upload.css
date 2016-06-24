@@ -14,3 +14,15 @@
 .section-primary.user-documents-upload-rejected {
 	border-color: var(--error-background);
 }
+
+.user-documents-upload-original {
+	background: var(--light-background);
+}
+
+.user-documents-upload-original.section-primary > h2 {
+	color:var(--medium-text);
+}
+
+.user-documents-upload-original .file-thumb-image {
+	background: var(--white-background);
+}

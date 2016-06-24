@@ -20,7 +20,7 @@ var drawOriginalDocument = function (requirementUpload, cssClasses) {
 	if (!resolved || !resolved.value) return;
 	previousRequirementUpload = resolved.value;
 
-	return li({ class: [cssClasses, 'form-section-update-document'] },
+	return li({ class: [cssClasses, 'user-documents-upload-original'] },
 		h2(_("Original ${ documentName }",
 			{ documentName: previousRequirementUpload.document._label })),
 		ul({ class: 'file-uploader-items' },

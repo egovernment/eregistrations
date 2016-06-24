@@ -45,15 +45,3 @@
 	border-radius: 3px;
 	color: #FFF;
 }
-
-.form-section-update-document {
-	background: var(--light-background);
-}
-
-.form-section-update-document.section-primary > h2 {
-	color:var(--medium-text);
-}
-
-.form-section-update-document .file-thumb-image {
-	background: var(--white-background);
-}
