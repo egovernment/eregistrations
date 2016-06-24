@@ -67,5 +67,9 @@ exports.emissorColumn = {
 	}
 };
 
-exports.columns = [exports.statusColumn, exports.labelColumn, exports.emissionDateColumn,
-	exports.emissorColumn];
+exports.columns = [
+	exports.statusColumn,
+	exports.labelColumn,
+	exports.emissionDateColumn,
+	exports.emissorColumn
+];
