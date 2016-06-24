@@ -38,35 +38,43 @@ exports['sub-main'] = {
 				class: 'section-tab-nav-tab',
 				id: 'tab-business-process-documents',
 				href: '/' + this.businessProcess.__id__ + '/'
-			}, _("${ tabNumber } Revision of the documents", { tabNumber: "1." }),
+			}, _if(gt(this.processingStep.requirementUploads.processable._size, 0), [
+				_("${ tabNumber } Revision of the documents", { tabNumber: "1." }),
 				_if(eq(this.processingStep.requirementUploads._approvalProgress, 1),
 					span({ class: 'fa fa-check' })),
 				_if(gt(this.processingStep.requirementUploads.rejected._size, 0),
-					span({ class: 'fa fa-exclamation' }))),
+					span({ class: 'fa fa-exclamation' }))
+			], _("${ tabNumber } Documents", { tabNumber: "1." }))),
 
 			_if(resolve(paymentUploads, '_length'),
 				a({
 					class: 'section-tab-nav-tab',
 					id: 'tab-business-process-payments',
 					href: '/' + this.businessProcess.__id__ + '/payment-receipts/'
-				}, _("${ tabNumber } Revision of payments", { tabNumber: "2." }),
+				}, _if(gt(this.processingStep.paymentReceiptUploads.processable._size, 0), [
+					_("${ tabNumber } Revision of payments", { tabNumber: "2." }),
 					_if(eq(this.processingStep.paymentReceiptUploads._approvalProgress, 1),
 						span({ class: 'fa fa-check' })),
 					_if(gt(this.processingStep.paymentReceiptUploads.rejected._size, 0),
-						span({ class: 'fa fa-exclamation' })))),
+						span({ class: 'fa fa-exclamation' }))
+				], _("${ tabNumber } Payment receipts", { tabNumber: "2." })))),
 
 			a({
 				class: 'section-tab-nav-tab',
 				id: 'tab-business-process-data',
 				href: '/' + this.businessProcess.__id__ + '/data/'
-			}, _("${ tabNumber } Revision of data",
-				{ tabNumber: _if(resolve(paymentUploads, '_length'), "3.", "2.") }),
+			}, _if(this.processingStep.dataFormsRevision._isProcessable, [
+				_("${ tabNumber } Revision of data",
+					{ tabNumber: _if(resolve(paymentUploads, '_length'), "3.", "2.") }),
 				_if(and(this.processingStep.dataFormsRevision._isProcessable,
 					eq(this.processingStep.dataFormsRevision._approvalProgress, 1)),
 						span({ class: 'fa fa-check' })),
 				_if(and(this.processingStep.dataFormsRevision._isProcessable,
 					gt(this.processingStep.dataFormsRevision._sentBackProgress, 0)),
-						span({ class: 'fa fa-exclamation' }))),
+					span({ class: 'fa fa-exclamation' }))
+			], _("${ tabNumber } Data", {
+				tabNumber: _if(resolve(paymentUploads, '_length'), "3.", "2.")
+			}))),
 
 			_if(exports._processingTabLabel.call(this),
 				function () {
