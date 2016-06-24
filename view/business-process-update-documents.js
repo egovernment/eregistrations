@@ -20,12 +20,13 @@ var drawOriginalDocument = function (requirementUpload, cssClasses) {
 	if (!resolved || !resolved.value) return;
 	previousRequirementUpload = resolved.value;
 
-	return li({ class: cssClasses },
+	return li({ class: [cssClasses, 'user-documents-upload-original'] },
 		h2(_("Original ${ documentName }",
 			{ documentName: previousRequirementUpload.document._label })),
-		list(previousRequirementUpload.document.files.ordered, function (file) {
-			return thumb(file);
-		}));
+		ul({ class: 'file-uploader-items' },
+			previousRequirementUpload.document.files.ordered, function (file) {
+				return thumb(file);
+			}));
 };
 
 exports.step = function () {
