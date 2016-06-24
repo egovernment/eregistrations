@@ -86,6 +86,18 @@ module.exports = memoize(function (db) {
 			data.uniqueKey = this.key;
 			delete data.issuedBy;
 			return data;
+		} },
+		enrichJSON: { value: function (data) {
+			if (data.isFinalized) return data;
+			this.database.RequirementUpload.prototype.enrichJSON.call(this, data);
+			data.receiptNumber = this._receiptNumber;
+			return data;
+		} },
+		finalizeJSON: { value: function (data) {
+			if (data.isFinalized) return data;
+			this.database.RequirementUpload.prototype.finalizeJSON.call(this, data);
+			if (this.receiptNumber) data.receiptNumber = this.receiptNumber;
+			return data;
 		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
