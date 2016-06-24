@@ -38,6 +38,11 @@ module.exports = memoize(function (db) {
 
 			return result;
 		} },
+		receiptNumber: {
+			label: _("Number"),
+			type: StringLine,
+			required: true
+		},
 		applicableCosts: { type: Cost, multiple: true, value: function (_observe) {
 			var result = [], payable = _observe(this.master.costs.payable);
 			this.costs.forEach(function (cost) {
