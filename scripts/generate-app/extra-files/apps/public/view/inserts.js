@@ -34,7 +34,7 @@ if (isReadOnlyRender) {
 	exports.spaTakeOver = null;
 }
 
-exports.title = 'Title';
+exports.title = require('../../../view/base').title;
 
 exports.passwordPattern = db.Password.pattern.source.slice(1, -1);
 exports.passwordFormatHint = db.User.prototype.$password.inputHint;

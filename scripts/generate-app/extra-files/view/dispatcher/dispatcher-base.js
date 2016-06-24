@@ -1,11 +1,11 @@
 'use strict';
 
-var _ = require('mano').i18n.bind('View: Dispatcher')
+var _           = require('mano').i18n.bind('View: Dispatcher')
   , appLocation = require('mano/lib/client/location');
 
 module.exports = exports = require('eregistrations/view/dispatcher-base');
 
-exports._dispatcherNav = function (context) {
+exports._dispatcherNav = function () {
 	return [
 		// Change this to real setup
 		li({ id: "example-nav", class:

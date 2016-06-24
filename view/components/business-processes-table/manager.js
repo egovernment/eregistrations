@@ -10,10 +10,10 @@ var includes        = require('es5-ext/array/#/contains')
   , ensureCallable  = require('es5-ext/object/valid-callable')
   , ensureString    = require('es5-ext/object/validate-stringifiable-value')
   , d               = require('d')
-  , getSearchFilter = require('eregistrations/utils/get-search-filter')
   , memoize         = require('memoizee/plain')
   , db              = require('mano').db
   , getData         = require('mano/lib/client/xhr-driver').get
+  , getSearchFilter = require('../../../utils/get-search-filter')
   , ListManager     = require('../objects-table/manager')
   , resolveList     = require('../objects-table/resolve-list')
 

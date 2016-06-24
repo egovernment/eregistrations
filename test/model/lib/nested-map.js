@@ -35,4 +35,8 @@ module.exports = function (t, a) {
 	obj5.defineNestedMap('bar2', { itemType: BarType, cardinalPropertyKey: 'foo' });
 	obj5.bar2.map.get('mapItem1');
 	a(obj4.foo.map.getDescriptor('mapItem1').type, FooType);
+	a(map.hasItem(obj3.key), true);
+	obj3.set('name', null);
+	a(map.hasItem(obj3.key), false);
+	a(map.getItemType(), obj1.constructor);
 };

@@ -17,8 +17,8 @@ var d                = require('d')
   , ns               = require('mano').domjs.ns
   , find             = require('es5-ext/array/#/find')
   , forEach          = require('es5-ext/object/for-each')
-  , progressRules    = require('../components/progress-rules')
   , normalizeOptions = require('es5-ext/object/normalize-options')
+  , progressRules    = require('../components/progress-rules')
   , headersMap       = require('../utils/headers-map');
 
 require('./form-section-base');
@@ -40,7 +40,7 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 
 		customizeData.arrayResult = [
 			options.prepend,
-			resolvent.formResolvent,
+			div({ class: 'form-elements' }, resolvent.formResolvent),
 			progressRules(this)
 		];
 

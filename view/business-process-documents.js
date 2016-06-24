@@ -2,42 +2,48 @@
 
 'use strict';
 
-var _        = require('mano').i18n.bind('Registration')
-  , errorMsg = require('./_business-process-error-info').errorMsg
-  , infoMsg  = require('./_business-process-optional-info').infoMsg;
+var _        = require('mano').i18n.bind('View: Business Process')
+  , errorMsg = require('./components/business-process-error-info').errorMsg
+  , infoMsg  = require('./components/business-process-optional-info').infoMsg;
 
 exports._parent = require('./business-process-base');
 
 exports['step-documents'] = { class: { 'step-active': true } };
 
 exports.step = function () {
-	var businessProcess    = this.businessProcess
-	  , requirementUploads = businessProcess.requirementUploads
-	  , guideProgress      = businessProcess._guideProgress;
+	var businessProcess         = this.businessProcess
+	  , requirementUploads      = businessProcess.requirementUploads
+	  , recentlyRejectedUploads = requirementUploads.recentlyRejected
+	  , processableUploads      = requirementUploads.userProcessable.not(recentlyRejectedUploads)
+	  , disabledUploads         = requirementUploads.applicable.not(processableUploads)
+	  , guideProgress           = businessProcess._guideProgress;
 
-	exports._documentsHeading(this);
+	exports._documentsHeading.call(this);
 
 	insert(errorMsg(this));
 	insert(infoMsg(this));
-	insert(exports._optionalInfo(this));
+	insert(exports._optionalInfo.call(this));
 
 	disabler(
 		{ id: 'documents-disabler-range' },
-		exports._disableCondition(this),
+		exports._disableCondition.call(this),
 		section(
 			ul(
 				{ class: 'sections-primary-list user-documents-upload' },
-				list(requirementUploads.recentlyRejected, function (requirementUpload) {
+				list(recentlyRejectedUploads, function (requirementUpload) {
 					return li({ class: ['section-primary', _if(requirementUpload._isRejected,
 						'user-documents-upload-rejected')] },
 						requirementUpload.toDOMForm(document, { viewContext: this }));
 				}.bind(this)),
-				list(requirementUploads.applicable.not(requirementUploads.recentlyRejected),
-					function (requirementUpload) {
-						return li({ class: 'section-primary' }, requirementUpload.toDOMForm(document,
-							{ viewContext: this }));
-					}.bind(this)),
-				exports._extraDocuments(this)
+				list(processableUploads, function (requirementUpload) {
+					return li({ class: 'section-primary' }, requirementUpload.toDOMForm(document,
+						{ viewContext: this }));
+				}.bind(this)),
+				list(disabledUploads, function (requirementUpload) {
+					return li({ class: 'section-primary' }, disabler(true,
+						requirementUpload.toDOMForm(document, { viewContext: this })));
+				}.bind(this)),
+				exports._extraDocuments.call(this)
 			)
 		)
 	);
@@ -48,11 +54,11 @@ exports.step = function () {
 				'/submission/') }, _("Continue to next step")))));
 };
 
-exports._disableCondition = function (context) {
-	return not(eq(context.businessProcess._guideProgress, 1));
+exports._disableCondition = function () {
+	return not(eq(this.businessProcess._guideProgress, 1));
 };
 
-exports._documentsHeading = function (context) {
+exports._documentsHeading = function () {
 	var headingText = _("2 Upload the documents");
 
 	return div(

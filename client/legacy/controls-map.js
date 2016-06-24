@@ -33,7 +33,7 @@ require('mano-legacy/element#/parent-by-name');
  * @param config {object} - The generated map (don't pass anything manually)
  */
 module.exports = function (config) {
-	live.add('select', 'class', config.htmlClass, function (childSelect) {
+	live.add('select', 'class', config.htmlClass, function self(childSelect) {
 		var parentSelect, parentOptions = {}, options = {}, child, parentMap
 		  , map = {}, selectedParentOption, updateSelect
 		  , selectedDeptOption, deptMap = {};
@@ -42,6 +42,11 @@ module.exports = function (config) {
 
 		childSelect = $(childSelect);
 		parentSelect = childSelect.parentByName('li').previousSibling.getElementsByTagName('select')[0];
+		if (!parentSelect) {
+			// There's a race condition when this function is run before parentSelect is accessible
+			setTimeout(function () { self(childSelect); }, 300);
+			return;
+		}
 		parentSelect.removeAttribute('name');
 
 		child = childSelect.value;
@@ -72,6 +77,9 @@ module.exports = function (config) {
 		// Invoke match
 		updateSelect = $.selectMatch(parentSelect, map);
 		parentSelect.disabled = childSelect.disabled;
+		setInterval(function () {
+			parentSelect.disabled = childSelect.disabled;
+		}, 1000);
 
 		if (!childSelect._dbjsInput) return;
 		document.on('dbupdate', function () { parentSelect.disabled = childSelect.disabled; });

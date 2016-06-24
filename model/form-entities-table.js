@@ -8,9 +8,9 @@ var _                       = require('mano').i18n.bind("Model: Form Entities Ta
   , memoize                 = require('memoizee/plain')
   , validDb                 = require('dbjs/valid-dbjs')
   , defineStringLine        = require('dbjs-ext/string/string-line')
+  , defineUInteger          = require('dbjs-ext/number/integer/u-integer')
   , defineFormSectionBase   = require('./form-section-base')
   , defineFormTabularEntity = require('./form-tabular-entity')
-  , defineUInteger          = require('dbjs-ext/number/integer/u-integer')
   , defineProgressRule      = require('./lib/progress-rule');
 
 module.exports = memoize(function (db) {
@@ -119,6 +119,11 @@ module.exports = memoize(function (db) {
 		sectionProperty: { type: StringLine, required: true },
 		// The text of message displayed when there are no entities.
 		onEmptyMessage: { type: StringLine, value: _("There are no elements added at the moment.") },
+		propertyNamesDeep: {
+			value: function () {
+				if (this.resolventProperty) return [this.resolventProperty];
+			}
+		},
 		hasDisplayableRuleDeep: {
 			value: function (_observe) {
 				if (_observe(this.progressRules.displayable._size) > 0) return true;
@@ -181,7 +186,25 @@ module.exports = memoize(function (db) {
 					});
 				}, this);
 			}
-		}
+		},
+		toJSON: { value: function (ignore) {
+			var result = this.commonToJSON();
+			if (this.resolventProperty) {
+				result.fields = [this.master.resolveSKeyPath(this.resolventProperty)
+					.ownDescriptor.fieldToJSON()];
+			}
+			if (!this.isUnresolved) {
+				var entities = [], data = this.entitiesSet;
+				data.forEach(function (entity) {
+					entities.push({
+						name: entity.getBySKeyPath(this.entityTitleProperty),
+						sections: entity.getBySKeyPath(this.sectionProperty).toJSON()
+					});
+				}, this);
+				if (entities.length) result.entities = entities;
+			}
+			return result;
+		} }
 	});
 
 	FormEntitiesTable.prototype.progressRules.map.define('entities', {

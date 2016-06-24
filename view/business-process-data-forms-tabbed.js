@@ -2,27 +2,31 @@
 
 'use strict';
 
-var appLocation = require('mano/lib/client/location')
-  , errorMsg    = require('./_business-process-error-info').errorMsg
-  , infoMsg     = require('./_business-process-optional-info').infoMsg;
+var appLocation  = require('mano/lib/client/location')
+  , errorMsg     = require('./components/business-process-error-info').errorMsg
+  , infoMsg      = require('./components/business-process-optional-info').infoMsg
+  , formsHeading = require('./components/business-process-data-forms-heading');
 
 exports._parent = require('./business-process-base');
 
 exports.step = {
 	class: { content: false, 'user-forms': false },
 	content: function () {
+		exports._formsHeading.call(this);
 		nav({ class: 'forms-tab-nav' },
 			div({ class: 'content' }, errorMsg(this)),
 			div({ class: 'content' }, infoMsg(this)),
-			div({ class: 'content' }, exports._optionalInfo(this)),
-			ul({ class: 'content' }, exports._tabs(this)));
+			div({ class: 'content' }, exports._optionalInfo.call(this)),
+			ul({ class: 'content' }, exports._tabs.call(this)));
 		div({ id: 'forms-sections-content', class: 'content user-forms forms-tab-content' });
 	}
 };
 
-exports._tabs = function (context) {
-	return list(context.businessProcess.dataForms.applicable, function (section) {
-		var sectionTabAddress = section.pageUrl ? ('/forms/' + section.pageUrl + '/') : '/forms/';
+exports._tabs = function () {
+	return list(this.businessProcess.dataForms.applicable, function (section) {
+		var sectionTabAddress, rootUrl;
+		rootUrl           = exports._rootUrl.call(this);
+		sectionTabAddress = section.pageUrl ? (rootUrl + section.pageUrl + '/') : rootUrl;
 
 		return li({ class: ['forms-tab-nav-tab',
 			_if(eq(appLocation._pathname, sectionTabAddress),
@@ -32,6 +36,12 @@ exports._tabs = function (context) {
 				section._shortLabel)));
 	});
 };
+
+exports._rootUrl = function () {
+	return '/forms/';
+};
+
+exports._formsHeading = formsHeading;
 
 // Displayed together with error info and 'global' optional info
 exports._optionalInfo = Function.prototype;

@@ -50,6 +50,7 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 			var processingStep        = this.businessProcess.processingSteps.map[stepName]
 			  , paymentReceiptUploads = processingStep.paymentReceiptUploads
 			  , requirementUploads    = processingStep.requirementUploads
+			  , dataForms             = this.businessProcess.dataForms
 			  , result                = [];
 
 			if (requirementUploads.rejected.size) {
@@ -74,6 +75,10 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 					result.push("- " + paymentReceiptUpload.document.label);
 					result.push("    " + paymentReceiptUpload.rejectReasonMemo);
 				});
+			}
+			if (dataForms.isRejected) {
+				result.push(_("Issues with data forms:"));
+				result.push(dataForms.rejectReason);
 			}
 			return result.join('\n');
 		}

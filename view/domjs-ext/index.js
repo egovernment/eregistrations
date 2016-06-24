@@ -41,7 +41,10 @@ module.exports = function (domjs) {
 	mdToDom = require('i18n2-md-to-dom')(domjs.document);
 	md = ns.md = function (message/*, options*/) {
 		var options = arguments[1];
-		if (!isObservable(message)) return mdToDom(message, options);
+		if (!isObservable(message)) {
+			if (message == null) return message;
+			return mdToDom(message, options);
+		}
 		return message.map(function (message) {
 			if (message == null) return message;
 			return mdToDom(message, options);
@@ -72,6 +75,7 @@ module.exports = function (domjs) {
 		require('../directives/img-zoom-on-hover')(domjs);
 		require('../directives/table-responsive')(domjs);
 	}
+	require('../directives/table-configuration')(domjs);
 
 	// extensions
 	require('domjs-ext/ext/_element/toggle');

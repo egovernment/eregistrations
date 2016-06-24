@@ -2,7 +2,7 @@
 
 'use strict';
 
-var _  = require('mano').i18n.bind('User');
+var _  = require('mano').i18n.bind('View: User');
 
 exports._parent = require('./user-base');
 
@@ -14,19 +14,16 @@ exports['sub-main'] = {
 		div({ class: 'user-account-boxes' },
 			section({ id: 'welcome-box', class: 'user-account-welcome' },
 				_if(manager, function () {
-					var managedUser = manager.currentlyManagedUser;
+					return manager._currentlyManagedUser.map(function (managedUser) {
+						if (!managedUser) return;
 
-					return [
-						header(
-							h3(_("View for client: ${ clientFullName }",
-								{ clientFullName: managedUser._fullName }))
-						),
-						div({ class: 'free-form' },
-							md(_("1. From here you can access all the requests of this client in draft, " +
+						return [header(h3(_("View for client: ${ clientFullName }",
+							{ clientFullName: managedUser._fullName }))), div({ class: 'free-form' },
+								md(_("1. From here you can access all the requests of this client in draft, " +
 									"in process, finished\n" +
-								"2. Start a new service for this client\n" +
-								"3. Create an account for this client if not done already")))
-					];
+									"2. Start a new service for this client\n" +
+									"3. Create an account for this client if not done already")))];
+					}.bind(this));
 				}.bind(this), function () {
 					return [
 						header(
@@ -37,32 +34,34 @@ exports['sub-main'] = {
 								"2. Access and edit your documents and data\n" +
 								"3. Start a new service related to your company")))
 					];
-				})));
+				}.bind(this))));
+
+		exports._notificationsBox.call(this);
 
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab user-account-tab',
-					id: 'user-account-requests',
-					href: '/' },
+				id: 'user-account-requests',
+				href: '/' },
 				_if(manager, _("Requests"), _("My requests"))),
 			a({ class: 'section-tab-nav-tab user-account-tab',
-					id: 'user-account-data',
-					href: '/requests/' },
+				id: 'user-account-data',
+				href: '/requests/' },
 				_if(manager, _("Documents and data"), _("My documents and data"))),
 			div({ id: 'user-account-content', class: 'section-primary' }));
 
 		insert(_if(!manager || eq(this.user._manager, manager), [
-			exports._followUpsBoxes(this),
+			exports._followUpsBoxes.call(this),
 			h3({ class: 'user-account-section-title' }, _("Available services")),
 			section({ class: 'section-primary' },
 				ul({ class: 'user-account-service-boxes' },
-					exports._servicesBoxList(this),
+					exports._servicesBoxList.call(this),
 					function (item) {
 						var disabled = item.disabledCondition
 						  , renderAsForm = item.actionUrl != null ? and(item.actionUrl, not(disabled)) : false
 						  , renderAsDiv = or(item.hrefUrl, disabled)
 						  , boxClasses = [ 'user-account-service-box', _if(disabled, 'disabled') ];
 
-						return li(_if(item.condition || true, _if(
+						return _if(item.condition || true, li(_if(
 							renderAsForm,
 							form({ class: boxClasses, action: item.actionUrl, method: 'post' },
 								button({ type: 'submit' }, _if(renderAsForm, item.buttonContent)),
@@ -78,11 +77,11 @@ exports['sub-main'] = {
 											_('You have reached the draft limit for this service'),
 											_('Click to start'))))))
 						)));
-					}))
-		]));
+					}))]));
 
 	}
 };
 
-exports._servicesBoxList = Function.prototype;
-exports._followUpsBoxes  = Function.prototype;
+exports._notificationsBox = Function.prototype;
+exports._servicesBoxList  = Function.prototype;
+exports._followUpsBoxes   = Function.prototype;

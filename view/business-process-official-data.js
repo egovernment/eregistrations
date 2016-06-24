@@ -2,14 +2,15 @@
 
 'use strict';
 
-var businessProcessData = require('./_business-process-documents-and-data');
+var dataView               = require('./components/business-process-data')
+  , renderDataRevisionInfo = require('./components/business-process-data-review-info');
 
 exports._parent = require('./business-process-official');
 
-exports['business-process-official-details'] = { class: { active: true } };
-exports['business-process-official-content'] = function () {
-	businessProcessData(this.businessProcess, {
-		urlPrefix: '/' + this.businessProcess.__id__ + '/',
-		uploadsResolver: this.processingStep
-	});
+exports['tab-business-process-data'] = { class: { active: true } };
+exports['tab-content'] = function () {
+	insert(dataView(this, {
+		prependContent: renderDataRevisionInfo(this),
+		urlPrefix: '/' + this.businessProcess.__id__ + '/'
+	}));
 };

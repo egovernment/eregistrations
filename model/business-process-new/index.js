@@ -11,7 +11,6 @@ module.exports = memoize(function (db/*, options */) {
 	require('./costs')(db, options);
 	require('./data-forms')(db, options);
 	require('./derived')(db, options);
-	require('./documents')(db, options);
 	require('./flow')(db, options);
 	require('./guide')(db, options);
 	require('./manager')(db, options);

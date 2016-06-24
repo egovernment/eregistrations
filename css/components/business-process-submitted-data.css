@@ -1,0 +1,70 @@
+.business-process-submitted-data h2 {
+	font-size: 19px;
+}
+
+.business-process-submitted-data h3 {
+	font-size: 17px;
+	color: var(--white-text);
+	background-color: var(--normal-background);
+	padding: 11px 0 11px 8px;
+	margin-top: 0;
+}
+
+.business-process-submitted-data h4 {
+	margin:0;
+	padding:11px 10px 10px 10px;
+	border-bottom: 1px solid var(--light-medium-background);
+	font-size: 15px;
+	font-weight: 300;
+	background: var(--light-medium-background);
+}
+
+.business-process-submitted-data h5 {
+	font-size: 14px;
+	padding: 18px 0 3px 10px;
+	font-weight: 500;
+	border-bottom: 1px dashed #E3E3E3;
+}
+
+.business-process-submitted-data .entity-data-section table tr:nth-child(even) {
+	background-color: var(--light-background);
+}
+
+.business-process-submitted-data .entity-data-section {
+	margin-bottom: 22px;
+	outline: 1px solid var(--light-text);
+}
+
+.business-process-submitted-data .entity-data-section:last-child {
+	margin-bottom: 0;
+}
+
+.business-process-submitted-data-print-only {
+	text-align: right;
+	font-weight: 400;
+	font-size: 15px;
+	line-height: 44px;
+}
+
+.business-process-submitted-data-print-only a {
+	border: 1px solid var(--normal-background);
+	border-radius: 4px;
+	display: inline-block;
+	text-decoration: none;
+	white-space: nowrap;
+	padding: 4px 10px;
+	line-height: 22px;
+}
+
+.business-process-submitted-data-print-only a:active,
+.business-process-submitted-data-print-only a:hover,
+.business-process-submitted-data-print-only a:focus {
+	background-color: var(--normal-dark-background);
+	color: var(--white-text);
+}
+
+.business-process-submitted-data-print-only .fa-print {
+	font-size: 18px;
+	margin-right:8px;
+	vertical-align: middle;
+}

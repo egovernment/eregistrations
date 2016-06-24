@@ -1,6 +1,6 @@
 'use strict';
 
-var d = require('d'),
+var d  = require('d'),
 	db = require('mano').db;
 
 Object.defineProperty(

@@ -23,7 +23,9 @@ var memoize             = require('memoizee/plain')
 module.exports = memoize(function (db/*, options*/) {
 	var NestedMap = ensureDb(db).Object.extend('NestedMap', {
 		// Map of objects
-		map: { type: db.Object, nested: true },
+		map: { type: db.Object, nested: true, isValueEmpty: function () {
+			return !this.object.ordered.size;
+		} },
 		// Key of a property, which is decisive in whether object should be recognized
 		cardinalPropertyKey: { type: db.Base, required: true },
 		// Returns ordered set of all recognized objects from a map
@@ -38,7 +40,21 @@ module.exports = memoize(function (db/*, options*/) {
 				return a.resolveSKeyPath(cardinalPropertyKey).descriptor._lastOwnModified_ -
 					b.resolveSKeyPath(cardinalPropertyKey).descriptor._lastOwnModified_;
 			});
-		} }
+		} },
+		isEmpty: { value: function (ignore) { return !this.ordered.size; } },
+		hasItem: {
+			type: db.Function,
+			value: function (key) {
+				if (!this.map.has(key)) return false;
+				return this.ordered.has(this.map[key]);
+			}
+		},
+		getItemType: {
+			type: db.Function,
+			value: function (ignore) {
+				return this.map.__descriptorPrototype__.type;
+			}
+		}
 	});
 	NestedMap.prototype.map._descriptorPrototype_.setProperties({
 		nested: true,

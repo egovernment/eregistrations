@@ -10,3 +10,4 @@ require('domjs-ext/post-button.legacy');
 require('mano-legacy/element#/class');
 require('mano-legacy/hash-nav-ordered-list');
 require('mano-legacy/hash-nav-ordered-list-controls');
+require('eregistrations/client/legacy/hash-nav-document-link');

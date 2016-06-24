@@ -2,10 +2,10 @@
 
 var d                   = require('d')
   , db                  = require('mano').db
-  , headersMap          = require('../utils/headers-map')
-  , getPropertyLabel    = require('../utils/get-property-label')
   , resolvePropertyPath = require('dbjs/_setup/utils/resolve-property-path')
-  , normalizeOptions = require('es5-ext/object/normalize-options');
+  , normalizeOptions    = require('es5-ext/object/normalize-options')
+  , headersMap          = require('../utils/headers-map')
+  , getPropertyLabel    = require('../utils/get-property-label');
 
 module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOM',
 	d(function (document/*, options */) {

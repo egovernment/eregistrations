@@ -3,20 +3,23 @@
 var normalizeOptions = require('es5-ext/object/normalize-options')
   , db               = require('mano').db
   , d                = require('d')
-  , _                = require('mano').i18n.bind('View: Signed Data Forms');
+  , _                = require('mano').i18n.bind('View: Binding: Requirement uploads');
 
 module.exports = Object.defineProperty(
 	db.SignedDataFormsRequirementUpload.prototype,
 	'toDOMForm',
 	d(function (document/*, options */) {
-		var opts = normalizeOptions(arguments[1]);
+		var opts            = normalizeOptions(arguments[1])
+		  , businessProcess = this.master;
 		opts.afterHeader = function (requirementUpload) {
 			var checkbox;
 			var needsConfirmation = and(requirementUpload.document.files.ordered._size,
 				not(requirementUpload.document._isUpToDate));
 			var result = [
-				div(a({ href: '/print-forms-data/', target: '_blank' },
-					_("Print your application form"))),
+				div(a({
+					href: '/business-process-data-forms-' + businessProcess.__id__ + '.pdf',
+					target: '_blank'
+				}, _("Print your application form"))),
 				// If the printed form is uploaded and might not be up to date,
 				// the user should check the confirmation checkbox.
 				insert(_if(needsConfirmation,

@@ -2,7 +2,7 @@
 
 var isReadOnlyRender = require('mano/client/utils/is-read-only-render')
   , ns               = require('mano').domjs.ns
-  , _                = require('mano').i18n.bind('Documents')
+  , _                = require('mano').i18n.bind('View: Component: File upload')
 
   , normRe = /[$#:\/]/g;
 

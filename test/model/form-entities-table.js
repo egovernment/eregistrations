@@ -4,6 +4,7 @@ var Database              = require('dbjs')
   , defineBusinessProcess = require('../../model/business-process/base')
   , defineFormSection     = require('../../model/form-section')
   , defineFormSections    = require('../../model/form-sections')
+  , aFrom                 = require('es5-ext/array/from')
   , definePropertyGroupsProcess = require('../../model/lib/property-groups-process');
 
 module.exports = function (t, a) {
@@ -72,7 +73,7 @@ module.exports = function (t, a) {
 	a(section.status, 1);
 	a(section.hasMissingRequiredPropertyNamesDeep, false);
 	a(String(section.lastEditDate), String(
-		new db.DateTime(businessProcess.partners.first.getDescriptor('prop3').lastModified / 1000)
+		new db.Date(businessProcess.partners.first.getDescriptor('prop3').lastModified / 1000)
 	));
 	section.min = 2;
 	a(section.status, 0.5);
@@ -140,6 +141,7 @@ module.exports = function (t, a) {
 	a(section.weight, 10);
 	a(section.status, 1);
 	a(String(section.lastEditDate), String(
-		new db.DateTime(businessProcess.partners.last.getDescriptor('prop3').lastModified / 1000)
+		new db.Date(businessProcess.partners.last.getDescriptor('prop3').lastModified / 1000)
 	));
+	a.deep(aFrom(section.propertyNamesDeep), ['tableResolver']);
 };

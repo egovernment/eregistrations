@@ -5,10 +5,10 @@ var d                   = require('d')
   , mano                = require('mano')
   , headersMap          = require('../utils/headers-map')
   , getPropertyLabel    = require('../utils/get-property-label')
+  , defaultResolveValue = require('../utils/default-resolve-value')
 
-  , db = mano.db, File = db.File;
-
-var defaultResolveValue =  require('../utils/default-resolve-value');
+  , db                  = mano.db
+  , File                = db.File;
 
 module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 	d(function (document/*, options*/) {
@@ -16,6 +16,7 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 		  , options      = Object(arguments[1])
 		  , headerRank   = options.headerRank || 3
 		  , cssClass     = options.cssClass || 'entity-data-section'
+		  , displayEmptyFields = options.displayEmptyFields
 		  , resolveValue = options.customResolveValue || defaultResolveValue
 		  , filteredNames;
 
@@ -37,6 +38,7 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 							if (options.customFilter) {
 								if (!options.customFilter(resolved)) return false;
 							}
+							if (displayEmptyFields) return true;
 							return observable.value != null;
 						}), function (name) {
 							var resolved = resolvePropertyPath(self.master, name)

@@ -64,6 +64,19 @@ module.exports = memoize(function (db) {
 				return res;
 			}
 		},
+		propertyNamesDeep: {
+			value: function (_observe) {
+				var result = [];
+				if (this.resolventProperty) result.push(this.resolventProperty);
+				this.sections.forEach(function (section) {
+					_observe(section.propertyNamesDeep).forEach(function (property) {
+						result.push(property);
+					});
+				});
+
+				return result;
+			}
+		},
 		hasDisplayableRuleDeep: {
 			value: function (_observe) {
 				if (_observe(this.progressRules.displayable._size) > 0) return true;
@@ -92,6 +105,25 @@ module.exports = memoize(function (db) {
 					return _observe(child._hasFilledPropertyNamesDeep);
 				});
 			}
+		},
+		toJSON: { value: function (ignore) {
+			var result = this.commonToJSON();
+			if (this.resolventProperty) {
+				result.fields = [this.master.resolveSKeyPath(this.resolventProperty)
+					.ownDescriptor.fieldToJSON()];
+			}
+			if (!this.isUnresolved) {
+				var sections = [];
+				this.internallyApplicableSections.forEach(function (section) {
+					if (section.hasFilledPropertyNamesDeep) sections.push(section.toJSON());
+				});
+				if (sections.length) result.sections = sections;
+			}
+			return result;
+		} },
+		hasSplitForms: {
+			type: db.Boolean,
+			value: false
 		}
 	});
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSectionBase;
@@ -106,7 +138,7 @@ module.exports = memoize(function (db) {
 			var sum = 0, resolvedResolvent, isResolventExcluded, section;
 			section = this.owner.owner.owner;
 
-			if (section.resolventProperty) {
+			if (_observe(section._resolventProperty)) {
 				resolvedResolvent = section.ensureResolvent(_observe);
 
 				if (!resolvedResolvent) return 0;
@@ -140,7 +172,7 @@ module.exports = memoize(function (db) {
 			var weightTotal = 0, resolvedResolvent, isResolventExcluded, section;
 			section = this.owner.owner.owner;
 
-			if (section.resolventProperty) {
+			if (_observe(section._resolventProperty)) {
 				resolvedResolvent = section.ensureResolvent(_observe);
 
 				if (!resolvedResolvent) return 0;

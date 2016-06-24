@@ -28,6 +28,7 @@ module.exports = function (storage, keyPaths) {
 		if (storage) promise = storagePromise;
 		else promise = anyIdToStorage(ownerId);
 		fragment.promise = promise(function (storage) {
+			if (!storage) return; // Non existing id
 			storage.on('owner:' + ownerId, function (event) {
 				if (event.type === 'reduced') return;
 				if (!event.keyPath || keyPaths.has(event.path) || keyPaths.has(event.keyPath)) {

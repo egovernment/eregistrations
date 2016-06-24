@@ -9,17 +9,18 @@ var ensureArray   = require('es5-ext/array/valid-array')
 
 module.exports = memoize(function (storages) {
 	var map = new Map(), unresolved = new Map();
+	var setStorage = function (id, storage) {
+		var def;
+		if (map.has(id)) return;
+		map.set(id, deferred(storage));
+		def = unresolved.get(id);
+		if (def) {
+			def.resolve(storage);
+			unresolved.delete(id);
+		}
+	};
 	storages.forEach(function (storage) {
-		storage.on('update', function (event) {
-			var def;
-			if (map.has(event.ownerId)) return;
-			map.set(event.ownerId, deferred(storage));
-			def = unresolved.get(event.ownerId);
-			if (def) {
-				def.resolve(storage);
-				unresolved.delete(event.ownerId);
-			}
-		});
+		storage.on('update', function (event) { return setStorage(event.ownerId, storage); });
 	});
 	var resolve = function (id) {
 		var def;
@@ -39,10 +40,12 @@ module.exports = memoize(function (storages) {
 		}, def.reject);
 		return def.promise;
 	};
-	return function (id) {
+	var getId = function (id) {
 		id = ensureString(id);
 		return map.get(id) || resolve(id);
 	};
+	getId.setStorage = setStorage;
+	return getId;
 }, { primitive: true, normalizer: function (args) {
 	return ensureArray(args[0]).map(function (storage) {
 		return ensureStorage(storage).name;

@@ -1,9 +1,9 @@
 'use strict';
 
-var  _       = require('mano').i18n.bind('Official: Revision')
-, all = require('eregistrations/business-processes').filterByKey('isRevisionReady', true)
+var  _      = require('mano').i18n.bind('Official: Revision')
+  , all     = require('eregistrations/business-processes').filterByKey('isRevisionReady', true)
 	.filterByKey('isApplicationResolved', false)
-, memoize = require('memoizee/plain');
+  , memoize = require('memoizee/plain');
 
 module.exports = exports = require('../../view/business-processes-table');
 

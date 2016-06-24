@@ -17,7 +17,7 @@
 	transform: translate3d(0, 0, 0);
 	visibility: hidden;
 	opacity: 0;
-	z-index: 1000000;
+	z-index: 900;
 	pointer-events: none;
 	transition: 0.3s ease;
 	transition-delay: 0ms; }
@@ -31,7 +31,7 @@
 	position: absolute;
 	background: transparent;
 	border: 6px solid transparent;
-	z-index: 1000001; }
+	z-index: 901; }
 .hint-optional:after {
 	content: attr(data-hint);
 	background: #383838;

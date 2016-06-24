@@ -8,10 +8,10 @@ var includes        = require('es5-ext/array/#/contains')
   , toArray         = require('es5-ext/object/to-array')
   , ensureCallable  = require('es5-ext/object/valid-callable')
   , d               = require('d')
-  , getSearchFilter = require('eregistrations/utils/get-search-filter')
   , memoize         = require('memoizee/plain')
   , db              = require('mano').db
   , getData         = require('mano/lib/client/xhr-driver').get
+  , getSearchFilter = require('../../../utils/get-search-filter')
   , ListManager     = require('../objects-table/manager')
 
   , defineProperties = Object.defineProperties, User = db.User;

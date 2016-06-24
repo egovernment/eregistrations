@@ -2,9 +2,9 @@
 
 'use strict';
 
-var _            = require('mano').i18n.bind('View: Documents list')
+var _            = require('mano').i18n.bind('View: User')
   , from         = require('es5-ext/array/from')
-  , tableColumns = require('./_business-process-table-columns')
+  , tableColumns = require('./components/business-process-table-columns')
   , columns      = from(tableColumns.columns);
 
 columns.push(tableColumns.actionsColumn);

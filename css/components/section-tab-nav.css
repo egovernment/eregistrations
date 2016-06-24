@@ -28,11 +28,26 @@
 .section-tab-nav > div {
 	width: 100%;
 }
-.section-tab-nav > .section-primary {
+.section-tab-nav > .section-primary,
+.section-tab-nav > .business-process-revision > .section-primary {
 	border-radius: 0 5px 5px 5px;
 }
 .section-tab-nav > li {
 	display: inline-block;
+}
+
+.section-tab-nav-tab .fa {
+	vertical-align: middle;
+	margin-left: 8px;
+	font-size: 16px;
+}
+
+.section-tab-nav-tab .fa-exclamation {
+	color:var(--error-text);
+}
+
+.section-tab-nav-tab .fa-check {
+	color:var(--success-text);
 }
 
 /* Tabs content section rules (displayed to user) */

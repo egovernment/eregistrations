@@ -63,6 +63,8 @@ BusinessProcessNew.prototype.abbr = 'COI';
 
 module.exports = BusinessProcessNew;
 
+require('../../model/lib/data-snapshot/resolved')(db);
+
 Representative = Person.extend('Representative', {
 	address: {
 		type: Address,
@@ -100,11 +102,10 @@ Representative.prototype.idPhoto.setProperties({
 	name: 'idoc.jpg',
 	type: 'image/jpeg',
 	diskSize: 376306,
-	path: 'doc-a-sub-file1.idoc.jpg',
-	url: '/uploads/doc-a-sub-file1.idoc.jpg'
+	path: 'uploads/doc-a-sub-file1.idoc.jpg'
 });
 
-Representative.prototype.idPhoto.thumb.url = '/uploads/doc-a-sub-file1.idoc.jpg';
+Representative.prototype.idPhoto.thumb.path = 'uploads/doc-a-sub-file1.idoc.jpg';
 
 BusinessProcessNew.prototype.defineProperties({
 	//guide
@@ -187,10 +188,34 @@ BusinessProcessNew.prototype.defineNestedMap('branches', {
 	itemType: Branch
 });
 
-DocA = Document.extend('DocA', {}, {
+DocA = Document.extend('DocA', {
+	nitCode: {
+		type: StringLine,
+		required: true,
+		label: "NIT"
+	},
+	satInternalCode: {
+		type: StringLine,
+		required: true,
+		label: "SAT internal code"
+	}
+}, {
 	abbr: { value: "DOC-A" },
 	label: { value: "Document A" },
 	legend: { value: "This document is issued as a result of Registration A" }
+});
+
+DocA.prototype.getDescriptor('dataForm').type = FormSection;
+DocA.prototype.dataForm.setProperties({
+	label: function () {
+		return this.propertyMaster.label;
+	},
+	disablePartialSubmit: true,
+	actionUrl: function () {
+		return this.master.__id__ + '/certificate/rtu';
+	},
+	propertyMasterType: DocA,
+	propertyNames: ['nitCode', 'satInternalCode', 'files/map', 'issueDate']
 });
 
 DocB = Document.extend('DocB', {}, {
@@ -340,17 +365,18 @@ processes.forEach(function (businessProcess) {
 	businessProcess.branches.map.get('second').responsiblePerson.lastName = "Parker";
 	businessProcess.branches.map.get('second').responsiblePerson.email = "spiderman@daily-bugle.com";
 
-	businessProcess.certificates.applicable.forEach(function (certificate, index) {
-		certificate.label = 'Certyficate label';
+	businessProcess.certificates.applicable.toArray().forEach(function (certificate, index) {
+		certificate.label = 'Certificate label';
 		certificate.issuedBy = db.institutionOfficialMinistry;
 		certificate.issueDate = new Date(2015, 23, 7);
 		certificate.files.map.get('cert' + index).setProperties({
 			name: 'idoc.jpg',
 			type: 'image/jpeg',
 			diskSize: 376306,
-			path: 'doc-a-sub-file1.idoc.jpg',
-			url: '/uploads/doc-a-sub-file1.idoc.jpg'
+			path: 'uploads/doc-a-sub-file1.idoc.jpg'
 		});
+		certificate.files.map.get('cert' + index).thumb.path = 'uploads/doc-a-sub-file1.idoc.jpg';
+		certificate.files.map.get('cert' + index).preview.path = 'uploads/doc-a-sub-file1.idoc.jpg';
 	});
 
 	businessProcess.paymentReceiptUploads.applicable.first.document
@@ -401,37 +427,36 @@ processes.forEach(function (businessProcess) {
 			name: 'idoc.jpg',
 			type: 'image/jpeg',
 			diskSize: 376306,
-			path: 'doc-a-sub-file1.idoc.jpg',
-			url: '/uploads/doc-a-sub-file1.idoc.jpg'
+			path: 'uploads/doc-a-sub-file1.idoc.jpg'
 		});
 	businessProcess.paymentReceiptUploads.applicable.first.document.files.map.
-			get('idDoc').thumb.url = '/uploads/doc-a-sub-file1.idoc.jpg';
+			get('idDoc').thumb.path = 'uploads/doc-a-sub-file1.idoc.jpg';
 
 	businessProcess.requirementUploads.applicable.first.document.files.map.
 			get('idDoc').setProperties({
 			name: 'idoc.jpg',
 			type: 'image/jpeg',
 			diskSize: 376306,
-			path: 'doc-a-sub-file1.idoc.jpg',
-			url: '/uploads/doc-a-sub-file1.idoc.jpg'
+			path: 'uploads/doc-a-sub-file1.idoc.jpg'
 		});
 	businessProcess.requirementUploads.applicable.first.document.files.map.
-			get('idDoc').thumb.url = '/uploads/doc-a-sub-file1.idoc.jpg';
+			get('idDoc').thumb.path = 'uploads/doc-a-sub-file1.idoc.jpg';
 	businessProcess.requirementUploads.applicable.last.document.files.map.
 			get('idDoc').setProperties({
 			name: 'idoc.png',
 			type: 'image/png',
 			diskSize: 124998,
-			path: 'doc-a-sub-file2.idoc.png',
-			url: '/uploads/doc-a-sub-file2.idoc.png'
+			path: 'uploads/doc-a-sub-file2.idoc.png'
 		});
 	businessProcess.requirementUploads.applicable.last.document.files.map.
-			get('idDoc').thumb.url = '/uploads/doc-a-sub-file2.idoc.png';
+			get('idDoc').thumb.path = 'uploads/doc-a-sub-file2.idoc.png';
 
 	businessProcess.processingSteps.map.define('revision', {
 		nested: true,
 		type: RevisionProcessingStep
 	});
+
+	businessProcess.processingSteps.map.revision.set('status', 'pending');
 
 	businessProcess.processingSteps.map.define('frontDesk', {
 		nested: true,
@@ -590,3 +615,10 @@ BusinessProcessNew.prototype.dataForms.map.branches.entities.add(
 		propertyName: 'isFranchise'
 	})
 );
+
+processes.forEach(function (businessProcess) {
+	businessProcess.dataForms.dataSnapshot.generate();
+	businessProcess.requirementUploads.dataSnapshot.finalize();
+	businessProcess.paymentReceiptUploads.dataSnapshot.finalize();
+	businessProcess.certificates.dataSnapshot.generate();
+});

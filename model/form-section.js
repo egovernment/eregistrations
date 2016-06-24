@@ -183,6 +183,14 @@ module.exports = memoize(function (db) {
 				return result;
 			}
 		},
+		propertyNamesDeep: {
+			value: function () {
+				var result = this.propertyNames.copy();
+				if (this.resolventProperty) result.add(this.resolventProperty);
+
+				return result;
+			}
+		},
 		hasDisplayableRuleDeep: {
 			value: function (_observe) {
 				return _observe(this.progressRules.displayable._size) > 0;
@@ -239,7 +247,16 @@ module.exports = memoize(function (db) {
 		// The names of the model fields that should be treated as read only in this section.
 		// It should contain the same elements as in propertyNames list. Listed properties will
 		// not count towards progress and rendered not as inputs.
-		readOnlyPropertyNames: { type: StringLine, multiple: true }
+		readOnlyPropertyNames: { type: StringLine, multiple: true },
+		toJSON: { type: db.Function, value: function (ignore) {
+			var result = this.commonToJSON(), fields = [];
+			this.filledPropertyNames.forEach(function (name) {
+				var data = this.master.resolveSKeyPath(name), descriptor = data.ownDescriptor;
+				if (!descriptor.isValueEmpty()) fields.push(descriptor.fieldToJSON());
+			}, this);
+			if (fields.length) result.fields = fields;
+			return result;
+		} }
 	});
 	db.FormSection.prototype.inputOptions._descriptorPrototype_.nested = true;
 	db.FormSection.prototype.inputOptions._descriptorPrototype_.type   = db.Object;

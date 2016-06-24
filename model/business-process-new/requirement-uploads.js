@@ -33,6 +33,9 @@ module.exports = memoize(function (db/* options */) {
 		// It should be overriden if there are some extra requirementUploads not from requirements.
 		applicable: { type: RequirementUpload, value: function (_observe) {
 			return this.applicableByRequirements;
+		} },
+		userProcessable: { type: RequirementUpload, multiple: true, value: function (_observe) {
+			return this.applicable;
 		} }
 	});
 

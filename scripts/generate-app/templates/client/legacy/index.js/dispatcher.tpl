@@ -10,3 +10,4 @@ require('mano-legacy/element#/class');
 require('mano-legacy/hash-nav-ordered-list');
 require('mano-legacy/hash-nav-ordered-list-controls');
 require('mano-legacy/hash-nav-modal');
+require('eregistrations/client/legacy/hash-nav-document-link');

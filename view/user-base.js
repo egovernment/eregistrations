@@ -1,15 +1,15 @@
 'use strict';
 
-var _              = require('mano').i18n.bind('User')
-  , loginDialog    = require('./_user-login-dialog')
-  , registerDialog = require('./_user-register-dialog')
-  , modalContainer = require('./_modal-container')
-  , requestAccountDialog = require('./_request-account-dialog');
+var _                    = require('mano').i18n.bind('View: User')
+  , loginDialog          = require('./components/login-dialog')
+  , registerDialog       = require('./components/register-dialog')
+  , modalContainer       = require('./components/modal-container')
+  , requestAccountDialog = require('./components/request-account-dialog');
 
 exports._parent = require('./base');
 
-exports._extraRoleLabel = function (context) {
-	return _if(or(context.manager, eq(context.user._currentRoleResolved, 'manager')), li(
+exports._extraRoleLabel = function () {
+	return _if(or(this.manager, eq(this.user._currentRoleResolved, 'manager')), li(
 		span(
 			{ class: 'manager-label' },
 			_("Notary")
@@ -33,7 +33,7 @@ exports.menu = function () {
 		),
 		ul(
 			{ class: 'header-top-menu' },
-			exports._extraRoleLabel(this),
+			exports._extraRoleLabel.call(this),
 			li(
 				a(
 					{ href: '/profile/' },
@@ -57,11 +57,10 @@ exports.menu = function () {
 };
 
 exports.main = function () {
-
 	div({ class: 'submitted-menu' },
 		div({ class: 'submitted-menu-bar content' },
 			nav(ul({ class: 'submitted-menu-items', id: 'submitted-menu' },
-				exports._submittedMenu(this))),
+				exports._submittedMenu.call(this))),
 			_if(this.user._isDemo, div({ class: 'submitted-menu-demo' },
 				a({ class: 'submitted-menu-demo-ribon' }, _("Demo"))))));
 
@@ -72,30 +71,29 @@ exports.main = function () {
 				p(_("Introduction to demo version"))))));
 
 	insert(_if(this.manager, function () {
-		var managedUser         = this.manager.currentlyManagedUser
-		  , isUserReallyManaged = eq(this.manager, managedUser._manager);
+		return this.manager._currentlyManagedUser.map(function (managedUser) {
+			if (!managedUser) return;
+			var isUserReallyManaged = eq(this.manager, managedUser._manager);
 
-		requestAccountDialog(managedUser);
+			requestAccountDialog(managedUser);
 
-		return div({ class: 'manager-bar' },
-			div({ class: 'content' },
-				div({ class: 'manager-bar-info' },
-					span(_("Client"), ": "),
-						this.appName === 'user' ? a({ href: '/' }, managedUser._fullName) :
-							exports._getMyAccountButton(this.manager, managedUser._fullName)
-					),
-				_if(isUserReallyManaged, div({ class: 'manager-bar-actions' },
-					_if(not(managedUser._isActiveAccount),
-						a({
-							class: 'actions-create',
-							href: '#request-create-account'
-						}, span(_('Create account for this client')))
-						),
-					a({ href: '/managed-user-profile/' },
-						span({ class: 'hint-optional hint-optional-left',
+			return div({ class: 'manager-bar' },
+				div({ class: 'content' },
+					div({ class: 'manager-bar-info' },
+						span(_("Client"), ": "),
+						this.appName === 'user' ? a({ href: '/' }, managedUser._fullName)
+						: exports._getMyAccountButton(this.manager, managedUser._fullName)),
+					_if(isUserReallyManaged, div({ class: 'manager-bar-actions' },
+						_if(not(managedUser._isActiveAccount),
+							a({
+								class: 'actions-create',
+								href: '#request-create-account'
+							}, span(_('Create account for this client')))),
+						a({ href: '/managed-user-profile/' },
+							span({ class: 'hint-optional hint-optional-left',
 								'data-hint': _('edit user details') },
-							i({ class: 'fa fa-cog' })))))
-				));
+								i({ class: 'fa fa-cog' })))))));
+		}.bind(this));
 	}.bind(this)));
 
 	div({ class: 'user-forms', id: 'sub-main' });

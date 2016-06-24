@@ -15,6 +15,7 @@ require('dbjs-dom/input/date-time/date')(db);
 require('dbjs-dom/input/string/string-line/password')(db);
 require('dbjs-dom/input/object/file')(db);
 require('dbjs-dom/input/utils/fieldset')(db);
+require('eregistrations/model/lib/data-snapshot/resolved')(db);
 require('eregistrations/view/dbjs/submission-file');
 
 db.StringLine.DOMInput.prototype.dbAttributes.inputMask = 'data-mask';
@@ -23,4 +24,6 @@ if (!isReadOnlyRender) require('dbjs-file/client')(db, FormData, XMLHttpRequest,
 
 domEnum(db.RequirementUploadRejectReason);
 
-requirementUpload.$status.DOMInput = require('eregistrations/view/dbjs/_enum-inline-button-group');
+requirementUpload.$status.DOMInput = require('eregistrations/view/dbjs/enum-inline-button-group');
+db.BusinessProcess.prototype.dataForms.$status.DOMInput =
+		require('eregistrations/view/dbjs/enum-inline-button-group');

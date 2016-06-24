@@ -2,11 +2,12 @@
 
 'use strict';
 
-var _                 = require('mano').i18n.bind('Registration')
+var _                 = require('mano').i18n.bind('View: Business Process')
   , generateSections  = require('./components/generate-form-sections')
   , incompleteFormNav = require('./components/incomplete-form-nav')
-  , errorMsg          = require('./_business-process-error-info').errorMsg
-  , infoMsg           = require('./_business-process-optional-info').infoMsg;
+  , errorMsg          = require('./components/business-process-error-info').errorMsg
+  , infoMsg           = require('./components/business-process-optional-info').infoMsg
+  , formsHeading      = require('./components/business-process-data-forms-heading');
 
 exports._parent = require('./business-process-base');
 
@@ -15,16 +16,16 @@ exports.step = function () {
 	  , dataForms       = businessProcess.dataForms
 	  , guideProgress   = businessProcess._guideProgress;
 
-	exports._formsHeading(this);
+	exports._formsHeading.call(this);
 
 	insert(errorMsg(this));
 	insert(infoMsg(this));
-	insert(exports._optionalInfo(this));
+	insert(exports._optionalInfo.call(this));
 
 	disabler(
 		{ id: 'forms-disabler-range' },
-		exports._disableCondition(this),
-		exports._forms(this)
+		exports._disableCondition.call(this),
+		exports._forms.call(this)
 	);
 
 	insert(_if(and(eq(guideProgress, 1),
@@ -36,26 +37,15 @@ exports.step = function () {
 		));
 };
 
-exports._disableCondition = function (context) {
-	return not(eq(context.businessProcess._guideProgress, 1));
+exports._disableCondition = function () {
+	return not(eq(this.businessProcess._guideProgress, 1));
 };
 
-exports._formsHeading = function (context) {
-	var headingText = _("1 Fill the form");
-
-	return div(
-		{ class: 'capital-first' },
-		div(headingText[0]),
-		div(
-			h1(headingText.slice(1).trim()),
-			p(_("Answer all mandatory questions."))
-		)
-	);
-};
+exports._formsHeading = formsHeading;
 
 // Displayed together with error info and 'global' optional info
 exports._optionalInfo = Function.prototype;
 
-exports._forms = function (context) {
-	return generateSections(context.businessProcess.dataForms.applicable, { viewContext: context });
+exports._forms = function () {
+	return generateSections(this.businessProcess.dataForms.applicable, { viewContext: this });
 };

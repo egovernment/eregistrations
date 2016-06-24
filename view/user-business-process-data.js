@@ -2,29 +2,24 @@
 
 'use strict';
 
-var _ = require('mano').i18n.bind("View: business data")
-  , generateSections = require('./components/generate-sections');
+var _              = require('mano').i18n.bind("View: User")
+  , renderSections = require('./components/render-sections-json');
 
 exports._parent = require('./user-base');
 exports._match = 'businessProcess';
 
 exports['sub-main'] = {
 	content: function () {
-		var cumulatedSections;
-		cumulatedSections = this.businessProcess.dataForms.processChainApplicable;
 		div({ class: "content user-forms" },
 			h2({ class: "container-with-nav" },
 				_("Data of ${businessName}",
 					{ businessName: this.businessProcess._businessName }),
 				a({ class: "hint-optional hint-optional-left",
 					'data-hint': _("Print your application form"), target: '_blank',
-					href: '/business-process/' + this.businessProcess.__id__ + '/print-data/'
+					href: '/business-process-data-forms-' + this.businessProcess.__id__ + '.pdf'
 					}, span({ class: "fa fa-print" }, _("Print")))),
-			_if(cumulatedSections._size,
-				div({ class: 'section-primary entity-data-section-side' },
-					generateSections(cumulatedSections, { viewContext: this })),
-				div({ class: 'section-primary' },
-					p(_('No data to display'))))
-			);
+			div({ class: 'section-primary' },
+				div({ class: 'document-preview-data business-process-submitted-data' },
+					renderSections(this.businessProcess.dataForms.dataSnapshot))));
 	}
 };

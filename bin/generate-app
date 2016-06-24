@@ -77,6 +77,8 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push("After model for new BusinessProcess is complete," +
 				" make sure to provide necessary DOM bindings (for sections and properties (e.g. enum)) " +
 				"in client/dbjs-dom.js for user and official applications.");
+			msgItems.push("Add entry of new business process storage" +
+				" in server/services/db/storage-names.js");
 		}
 
 		if (startsWith.call(appName, 'official-') || appName === 'dispatcher') {

@@ -1,14 +1,16 @@
-// Service: Limits LRU recentlyVisited lists up to max 10 (configurable) items
+// Service: Limits LRU recentlyVisited lists up to max 5 (configurable) items
 
 'use strict';
 
 var ensureNaturalNumber = require('es5-ext/object/ensure-natural-number-value')
   , startsWith          = require('es5-ext/string/#/starts-with')
-  , debug               = require('debug-ext')('recently-visited-limiter');
+  , debug               = require('debug-ext')('recently-visited-limiter')
+  , ensureStorage       = require('dbjs-persistence/ensure-storage');
 
 module.exports = function (storage/*, options*/) {
+	ensureStorage(storage);
 	var options = Object(arguments[1])
-	  , limit = (options.limit != null) ? ensureNaturalNumber(options.limit) : 10;
+	  , limit = (options.limit != null) ? ensureNaturalNumber(options.limit) : 5;
 	storage.on('update', function (event) {
 		if (!event.keyPath || !startsWith.call(event.keyPath, 'recentlyVisited/')) {
 			return; // No recentlyVisited record

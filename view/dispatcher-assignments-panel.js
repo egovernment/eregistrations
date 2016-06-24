@@ -1,21 +1,19 @@
 'use strict';
 
 var db                        = require('mano').db
-  , _                         = require('mano').i18n.bind('View: Dispatcher')
+  , _                         = require('mano').i18n.bind('View: Official: Dispatcher')
   , env                       = require('mano').env
-  , from                      = require('es5-ext/array/from')
   , getBusinessProcessesTable = require('./components/business-processes-table')
-  , tableColumns              = require('./_business-process-table-columns')
-  , columns                   = from(tableColumns.columns)
+  , tableColumns              = require('./components/business-process-table-columns')
   , once                      = require('timers-ext/once')
   , dispatch                  = require('dom-ext/html-element/#/dispatch-event-2')
   , location                  = require('mano/lib/client/location');
 
 exports._parent = require('./dispatcher-base');
 exports._match  = 'processingStep';
-
-columns.push(tableColumns.archiverColumn);
-columns.push(tableColumns.goToColumn);
+exports._customFilter = function (processingStep, assignableUsers) {
+	return assignableUsers;
+};
 
 var assignmentColumn = {
 	head: _("Assignee"),
@@ -24,18 +22,28 @@ var assignmentColumn = {
 				action: url('assign-business-process'), class: 'submitted-menu-role-select',
 				id: 'form-current-role', autoSubmit: true },
 			p(input({ id: 'assignee-select',
-				dbjs: processingStep._assignee, list: assignableUsers })),
+				dbjs: processingStep._assignee, list:
+					exports._customFilter(processingStep, assignableUsers) })),
 			p({ class: 'submit' }, input({ type: 'submit' })));
 	}
 };
 var assignmentColumnData = assignmentColumn.data;
-columns.push(assignmentColumn);
+
+exports._columns = [
+	tableColumns.servicesColumn,
+	tableColumns.businessNameColumn,
+	tableColumns.submissionDateColumn,
+	tableColumns.certificatesListColumn,
+	tableColumns.archiverColumn,
+	tableColumns.goToColumn,
+	assignmentColumn
+];
 
 var businessProcessTable = function (context) {
 	var assignableUsers = db.User.instances.filterByKey('roles', function (roles) {
 		return roles.has(context.roleName);
 	});
-	columns[columns.length - 1].data = function (businessProcess) {
+	assignmentColumn.data = function (businessProcess) {
 		return assignmentColumnData(businessProcess.processingSteps.map[context.shortRoleName],
 			assignableUsers);
 	};
@@ -47,7 +55,7 @@ var businessProcessTable = function (context) {
 		statusMap: context.statusMap,
 		getOrderIndex: context.getOrderIndex,
 		itemsPerPage: env.objectsListItemsPerPage,
-		columns: columns,
+		columns: exports._columns,
 		tableUrl: location.pathname,
 		class: 'submitted-user-data-table'
 	});
