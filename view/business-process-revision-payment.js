@@ -25,14 +25,18 @@ paymentForm = function (paymentReceiptUpload) {
 		method: 'post',
 		action: '/form-revision-payment-receipt-upload/' + paymentReceiptUpload.master.__id__ +
 			'/' + camelToHyphen.call(paymentReceiptUpload.key) + '/'
-	}, ul({ class: 'form-elements' },
+	},
+		ul({ class: 'form-elements' },
 			li(div({ class: 'input' }, input({ dbjs: paymentReceiptUpload._status }))),
-			li(revFail = div({ class: 'official-form-document-revision-reject-reason' },
+			revFail = li(div({ class: 'official-form-document-revision-reject-reason' },
 				field({ dbjs: paymentReceiptUpload._rejectReasonMemo }))),
+			exports._extraFormFields.call(this),
 			li(input({ type: 'submit', value: _("Save") }))),
 		legacy('radioMatch', 'form-revision-payment-receipt-upload',
 			paymentReceiptUpload.__id__ + '/status', { invalid: revFail.getId() }));
 };
+
+exports._extraFormFields = Function.prototype;
 
 exports['selection-preview'] = function () {
 	var documentData = getDocumentData(this), isProcessable;
@@ -45,7 +49,7 @@ exports['selection-preview'] = function () {
 	insert(
 		renderDocument(this, documentData, {
 			prependContent: _if(isProcessable, function () {
-				return disableStep(this.processingStep, paymentForm(this.document.owner));
+				return disableStep(this.processingStep, paymentForm.call(this, this.document.owner));
 			}.bind(this), function () {
 				return renderDocumentRevisionInfo(this);
 			}.bind(this)),
