@@ -9,7 +9,7 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var manager = this.manager;
+		var manager = this.manager, pendingProcesses = this.user.pendingBusinessProcesses;
 
 		div({ class: 'user-account-boxes' },
 			section({ id: 'welcome-box', class: 'user-account-welcome' },
@@ -37,6 +37,21 @@ exports['sub-main'] = {
 				}.bind(this))));
 
 		exports._notificationsBox.call(this);
+
+		if (pendingProcesses.size) {
+			div({ class: 'notifications-box section-warning pending-processes' },
+				ul(
+					pendingProcesses.map(function (pendingProcess) {
+						console.log(pendingProcess._businessName);
+						return li(div({ class: 'entities-overview-table' },
+							span(pendingProcess._businessName, ' ', _('is pending for corrections')),
+							span(postButton({
+								action: url('business-process', pendingProcess.__id__),
+								value: _('Correct now')
+							}))));
+					})
+				));
+		}
 
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab user-account-tab',

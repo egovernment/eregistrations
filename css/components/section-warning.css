@@ -12,6 +12,10 @@
 	margin-bottom: 22px;
 }
 
+.section-warning.pending-processes > ul > li {
+	border-left-color: var(--error-background);
+}
+
 .section-warning > ul > li > a {
 	text-decoration: none;
 	color: var(--dark-text);

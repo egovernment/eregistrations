@@ -106,6 +106,19 @@
 	background-color: var(--light-background);
 }
 
+.submitted-user-data-table tbody .pending {
+	background-color: var(--error-background);
+}
+
+.submitted-user-data-table tbody .pending > *,
+.submitted-user-data-table tbody .pending td.actions a,
+.submitted-user-data-table tbody .pending td.actions button,
+.submitted-user-data-table tbody .pending td.submitted-user-data-table-link a,
+.submitted-user-data-table tbody .pending td.submitted-user-data-table-link button {
+	color: var(--white-text);
+	border-color: var(--error-background);
+}
+
 .submitted-user-data-table .submitted-user-data-table-status .fa-check {
 	color: var(--success-text);
 }
