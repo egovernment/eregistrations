@@ -10,7 +10,8 @@ exports['tab-business-process-processing'] = { class: { active: true } };
 exports['tab-content'] = function () {
 	var showApproveButton = and(
 		eq(this.processingStep._revisionApprovalProgress, 1),
-		revisionView._processingTabLabel.call(this)
+		revisionView._processingTabLabel.call(this),
+		not(this.processingStep._revisionOfficialStatus)
 	);
 
 	section(
