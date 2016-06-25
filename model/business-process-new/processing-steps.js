@@ -22,13 +22,12 @@ module.exports = memoize(function (db/* options */) {
 		applicable: { type: ProcessingStepBase },
 		// Revision processing steps
 		revisions: { type: ProcessingStepBase, multiple: true, value: function (_observe) {
-			var result   = []
-			  , revision = this.map.revision;
+			var result = [], type = this.database.RevisionProcessingStep;
 
-			if (revision) {
-				var isApplicable = revision._get ? _observe(revision._isApplicable) : revision.isApplicable;
-				if (isApplicable) result.push(revision);
-			}
+			if (!type) return;
+			this.applicable.forEach(function (step) {
+				if (step instanceof type) result.push(step);
+			});
 
 			return result;
 		} }
