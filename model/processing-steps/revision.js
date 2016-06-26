@@ -55,9 +55,7 @@ module.exports = memoize(function (db) {
 
 		// Progress for "approved" status
 		// Defaults to revisionApprovalProgress
-		approvalProgress: { value: function (_observe) {
-			return this.revisionApprovalProgress;
-		} },
+		approvalProgress: { value: function (_observe) { return this.revisionApprovalProgress; } },
 
 		// Progress of revision
 		// All processable requirement uploads must be revised
@@ -74,15 +72,19 @@ module.exports = memoize(function (db) {
 			return progress / weight;
 		} },
 
-		// Progress for "sentBack" state
+		// Progress of revision sent back
 		// All processable requirement uploads which are invalidated, must come with rejection reasoning
-		sendBackProgress: { value: function (_observe) {
+		revisionSendBackProgress: { value: function (_observe) {
 			var isAnyRecentlyRejected = this.processableUploads.some(function (reqUpload) {
 				return _observe(reqUpload._isRecentlyRejected);
 			});
 
 			return (isAnyRecentlyRejected || _observe(this.dataFormsRevision._sentBackProgress)) ? 1 : 0;
 		} },
+
+		// Progress for "sentBack" status
+		// Defaults to revisionSendBackProgress
+		sendBackProgress: { value: function (_observe) { return this.revisionSendBackProgress; } },
 
 		// Progress for "sentBack" status
 		// All processable requirement uploads which are invalidated, must come with rejection
