@@ -9,7 +9,8 @@ var memoize             = require('memoizee/plain')
   , defineUInteger      = require('dbjs-ext/number/integer/u-integer')
   , definePercentage    = require('dbjs-ext/number/percentage')
   , defineProgressRules = require('./lib/progress-rules')
-  , _                   = require('mano').i18n.bind('Model: FormSectionBase');
+  , _                   = require('mano').i18n.bind('Model: FormSectionBase')
+  , defineGetTranslations = require('./lib/define-get-translations');
 
 module.exports = memoize(function (db) {
 	var DateType, StringLine, Percentage, UInteger, ProgressRules, FormSectionBase;
@@ -320,6 +321,8 @@ module.exports = memoize(function (db) {
 			}
 		}
 	});
+
+	defineGetTranslations(FormSectionBase.prototype);
 
 	return FormSectionBase;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

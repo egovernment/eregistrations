@@ -14,6 +14,7 @@
 'use strict';
 
 var _          = require('mano').i18n.bind('View: Binding: Sections')
+  , _d         = _
   , d          = require('d')
   , db         = require('mano').db
   , find       = require('es5-ext/array/#/find')
@@ -68,7 +69,11 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 						ns._if(this._label, [
 							headersMap[headerRank](this._label),
 							ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
-								ns.md(this._legend)))]),
+								ns.md(this._legend.map(function (legend) {
+									console.log('this.getTranslations()', this.$getTranslations._value_);
+									if (!legend) return;
+									return _d(legend, this.getTranslations());
+								}.bind(this)))))]),
 						fieldsetResult = this.toDOMFieldset(document, sectionFieldsetOptions),
 						ns.p({ class: 'submit-placeholder input' },
 							ns.input({ type: 'submit', value: _("Submit") })),
