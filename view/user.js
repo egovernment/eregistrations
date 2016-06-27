@@ -38,7 +38,7 @@ exports['sub-main'] = {
 
 		exports._notificationsBox.call(this);
 
-		if (pendingProcesses.size) {
+		insert(_if(gt(pendingProcesses._size, 0), function () {
 			div({ class: 'notifications-box section-warning pending-processes' },
 				ul(
 					pendingProcesses.map(function (pendingProcess) {
@@ -51,7 +51,7 @@ exports['sub-main'] = {
 							}))));
 					})
 				));
-		}
+		}));
 
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab user-account-tab',
