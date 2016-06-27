@@ -17,21 +17,3 @@
 	font-weight: 300;
 	text-decoration: underline;
 }
-
-.info-main-correct-button button {
-	background: transparent;
-	color: var(--normal-text);
-	padding: 0;
-}
-
-.info-main-correct-button button:active,
-.info-main-correct-button button:focus,
-.info-main-correct-button button:hover {
-	background: transparent;
-	color: var(--normal-text);
-}
-
-.info-main-correct-button button > * {
-	display: inline-block;
-	vertical-align: middle;
-}
