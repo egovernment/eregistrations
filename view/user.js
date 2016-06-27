@@ -9,7 +9,7 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var manager = this.manager, pendingProcesses = this.user.pendingBusinessProcesses;
+		var manager = this.manager, pendingProcesses = this.user.revertedBusinessProcesses;
 
 		div({ class: 'user-account-boxes' },
 			section({ id: 'welcome-box', class: 'user-account-welcome' },

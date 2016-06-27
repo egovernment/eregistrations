@@ -26,7 +26,7 @@ module.exports = memoize(function (User/* options */) {
 		currentBusinessProcess: {
 			type: BusinessProcessBase
 		},
-		pendingBusinessProcesses: {
+		revertedBusinessProcesses: {
 			type: BusinessProcessBase,
 			multiple: true,
 			value: function (_observe) {
