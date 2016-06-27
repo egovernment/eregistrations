@@ -12,8 +12,8 @@ var assign = require('es5-ext/object/assign');
 require('../../view/print-base');
 require('../../view/user-base');
 
-assign(exports, require('eregistrations/routes/official-revision')('revision'));
+assign(exports, require('eregistrations/routes/official-revision')('${ appNameSuffix }'));
 
-exports['/'] = require('../../view/official-revision/business-processes-table');
+exports['/'] = require('../../view/${ appName }/business-processes-table');
 exports['print-business-processes-list'] =
-	require('../../view/official-revision/print-business-processes-table');
+	require('../../view/${ appName }/print-business-processes-table');

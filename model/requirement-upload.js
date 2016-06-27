@@ -94,9 +94,7 @@ module.exports = memoize(function (db) {
 
 		// Whether document upload was validated and all required properties
 		// where provided
-		isApproved: { type: db.Boolean, value: function (_observe) {
-			return this.status === 'valid';
-		} },
+		isApproved: { type: db.Boolean, value: function () { return this.status === 'valid'; } },
 
 		// Whether uploaded documents should be verified at front-desk at certificates reception
 		isFrontDeskApplicable: { type: db.Boolean, value: true },

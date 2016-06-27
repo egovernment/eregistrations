@@ -7,6 +7,7 @@ var capitalize        = require('es5-ext/string/#/capitalize')
   , startsWith        = require('es5-ext/string/#/starts-with')
   , hyphenToCamel     = require('es5-ext/string/#/hyphen-to-camel')
   , normalizeOptions  = require('es5-ext/object/normalize-options')
+  , Set               = require('es6-set')
   , template          = require('es6-template-strings')
   , deferred          = require('deferred')
   , fs                = require('fs2')
@@ -14,23 +15,19 @@ var capitalize        = require('es5-ext/string/#/capitalize')
   , exec              = deferred.promisify(require('child_process').execFile)
   , generateAppsList  = require('mano/scripts/generate-apps-list')
   , generateAppsConf  = require('mano/scripts/generate-apps-conf')
-  , getApps           = require('mano/server/utils/resolve-apps');
+  , getApps           = require('mano/server/utils/resolve-apps')
+
+  , templatesPath = path.resolve(__dirname, 'templates')
+  , extraTemplatesPath = path.resolve(__dirname, 'extra-templates');
 
 var appTypes = {
 	'users-admin': true,
 	'meta-admin': { extraFiles: ['view/meta-admin'] },
-	dispatcher: { extraFiles: ['view/dispatcher'],
-		'client/model.js': 'client/model.js/official.tpl',
-		'client/dbjs-dom.js': 'client/dbjs-dom.js/official.tpl'
-		},
-	supervisor: {
-		'client/model.js': 'client/model.js/official.tpl',
-		'client/dbjs-dom.js': 'client/dbjs-dom.js/official.tpl'
-	},
+	dispatcher: { extraFiles: ['view/dispatcher'] },
 	user: { extraFiles: ['view/user.js'] },
 	public: { extraFiles: ['apps/public'] },
 	official: true,
-	'business-process-submitted': { 'client/program.js': 'client/program.js/business-process.tpl' },
+	'official-revision': true,
 	'business-process': true,
 	'manager-registration': true,
 	manager: true
@@ -44,7 +41,7 @@ var copyExtraFile = function (projectRoot, extraPath) {
 
 module.exports = function (projectRoot, appName/*, options*/) {
 	var options = normalizeOptions(arguments[2]), extraFilesPath, partialAppName, templateType
-	  , appRootPath, templateVars = {}, findTemplate;
+	  , appRootPath, templateVars = {};
 
 	appRootPath = path.resolve(projectRoot, 'apps', appName);
 	extraFilesPath    = path.join(__dirname, 'extra-files');
@@ -74,62 +71,65 @@ module.exports = function (projectRoot, appName/*, options*/) {
 			templateType = 'authenticated';
 		}
 	}
-	templateVars.appNameSuffix = hyphenToCamel.call(appName.replace(templateType + '-', ''));
+	if (templateType === 'official-revision') {
+		templateVars.appNameSuffix = hyphenToCamel.call(appName.replace('official-', ''));
+	} else {
+		templateVars.appNameSuffix = hyphenToCamel.call(appName.replace(templateType + '-', ''));
+	}
 
 	var templates = {};
 
-	findTemplate = function (appPath, fName, templates, templatePath) {
-		var partialAppName = appName, i = 0;
-		if (templates[appPath] && path.basename(templates[appPath]) !== 'authenticated.tpl') return;
-		while (partialAppName) {
-			if (fName === partialAppName) {
-				templates[appPath] = path.join(__dirname, 'templates', templatePath);
-				return;
-			}
-			--i;
-			partialAppName = appName.split('-').slice(0, i).join('-');
-		}
-	};
-
-	return exec('node',
-		[path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + appName],
-		{ cwd: projectRoot }).then(function () {
-		return fs.readdir(path.join(__dirname, 'templates'),
-				{ depth: Infinity, type: { file: true } }).map(
-			function (templatePath) {
-				var fName = path.basename(templatePath, '.tpl')
-			  , appPathRel = path.dirname(templatePath)
-			  , appPath = path.join(appRootPath, appPathRel);
-
-				if (appTypes[templateType] && appTypes[templateType][appPathRel] === templatePath) {
-					templates[appPath] = path.join(__dirname, 'templates', templatePath);
-					return;
+	var scriptArgs = [path.resolve(projectRoot, 'bin', 'adapt-app'), 'apps' + path.sep + appName];
+	return exec('node', scriptArgs, { cwd: projectRoot }).then(function () {
+		var opts = { depth: Infinity, type: { directory: true } };
+		return fs.readdir(templatesPath, opts).map(function (directoryPath) {
+			var opts = { type: { file: true }, pattern: /\.tpl$/ };
+			return fs.readdir(path.resolve(templatesPath, directoryPath), opts)(function (templateNames) {
+				var appPathTokens = appName.split('-'), templateName;
+				templateNames = new Set(templateNames.map(function (name) {
+					return name.slice(0, -'.tpl'.length);
+				}));
+				while (true) {
+					templateName = appPathTokens.join('-');
+					if (templateNames.has(templateName)) break;
+					appPathTokens.pop();
+					if (!appPathTokens.length) {
+						templateName = templateNames.has('authenticated') ? 'authenticated' : null;
+						break;
+					}
 				}
-				if (fName === 'authenticated' && !templates[appPath]) {
-					templates[appPath] = path.join(__dirname, 'templates', templatePath);
-					return;
+				if (templateName) {
+					templates[path.resolve(appRootPath, directoryPath)] =
+						path.resolve(templatesPath, directoryPath, templateName + '.tpl');
 				}
-				if (templateType === 'official') {
-					findTemplate(appPath, fName, templates, templatePath);
-					return;
-				}
-				if (fName === templateType) {
-					templates[appPath] = path.join(__dirname, 'templates', templatePath);
-				}
-			}
-		);
+			});
+		});
 	}).then(function () {
-		return fs.readdir(path.join(__dirname, 'extra-templates'),
-				{ depth: Infinity, type: { file: true } }).map(
-			function (templatePath) {
-				var fName = path.basename(templatePath, '.tpl')
-				  , projectPath = path.dirname(path.join(projectRoot,
-						templatePath.replace('appname', templateVars.appName)));
-				if (fName === templateType) {
-					templates[projectPath] = path.join(__dirname, 'extra-templates', templatePath);
+		var opts = { depth: Infinity, type: { directory: true } };
+		return fs.readdir(extraTemplatesPath, opts).map(function (directoryPath) {
+			var opts = { type: { file: true }, pattern: /\.tpl$/ }
+			  , fullPath = path.resolve(extraTemplatesPath, directoryPath);
+			return fs.readdir(fullPath, opts)(function (templateNames) {
+				var appPathTokens = appName.split('-'), templateName;
+				templateNames = new Set(templateNames.map(function (name) {
+					return name.slice(0, -'.tpl'.length);
+				}));
+				while (true) {
+					templateName = appPathTokens.join('-');
+					if (templateNames.has(templateName)) break;
+					appPathTokens.pop();
+					if (!appPathTokens.length) {
+						templateName = templateNames.has('authenticated') ? 'authenticated' : null;
+						break;
+					}
 				}
-			}
-		);
+				if (templateName) {
+					templates[path.resolve(projectRoot,
+						directoryPath.replace('appname', templateVars.appName))] =
+						path.resolve(extraTemplatesPath, directoryPath, templateName + '.tpl');
+				}
+			});
+		});
 	}).then(function () {
 		var toResolve = [deferred.map(Object.keys(templates), function (appPath) {
 			return fs.readFile(templates[appPath])(function (fContent) {

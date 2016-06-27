@@ -11,6 +11,10 @@ module.exports = function (type) {
 		throw new Error(type.__id__ + " is not BusinessProcess type");
 	}
 	return type.instances
+		.filter(function (obj) {
+			if (obj.master !== obj) return false;
+			return (obj.constructor.prototype !== obj);
+		})
 		.filterByKey('isFromEregistrations', true)
 		.filterByKey('isDemo', isFalsy);
 };

@@ -55,6 +55,7 @@ module.exports = memoize(function (db) {
 					if (!resolvedResolvent) return;
 
 					res = _observe(resolvedResolvent.object['_' + resolvedResolvent.key]._lastModified);
+					if (res < 1e6) res = 0; // Ignore model stamps
 				}
 
 				this.internallyApplicableSections.forEach(function (section) {

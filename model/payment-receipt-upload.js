@@ -38,6 +38,11 @@ module.exports = memoize(function (db) {
 
 			return result;
 		} },
+		receiptNumber: {
+			label: _("Number"),
+			type: StringLine,
+			required: true
+		},
 		applicableCosts: { type: Cost, multiple: true, value: function (_observe) {
 			var result = [], payable = _observe(this.master.costs.payable);
 			this.costs.forEach(function (cost) {
@@ -80,6 +85,18 @@ module.exports = memoize(function (db) {
 			var data = this.database.RequirementUpload.prototype.toJSON.call(this);
 			data.uniqueKey = this.key;
 			delete data.issuedBy;
+			return data;
+		} },
+		enrichJSON: { value: function (data) {
+			if (data.isFinalized) return data;
+			this.database.RequirementUpload.prototype.enrichJSON.call(this, data);
+			data.receiptNumber = this._receiptNumber;
+			return data;
+		} },
+		finalizeJSON: { value: function (data) {
+			if (data.isFinalized) return data;
+			this.database.RequirementUpload.prototype.finalizeJSON.call(this, data);
+			if (this.receiptNumber) data.receiptNumber = this.receiptNumber;
 			return data;
 		} }
 	});
