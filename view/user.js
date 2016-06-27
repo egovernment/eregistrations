@@ -47,7 +47,7 @@ exports['sub-main'] = {
 								{ businessName: pendingProcess._businessName })),
 							span(postButton({
 								action: url('business-process', pendingProcess.__id__),
-								value: _('Coorect now')
+								value: _('Correct now')
 							}))));
 					})
 				));
