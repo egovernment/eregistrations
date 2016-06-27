@@ -18,7 +18,7 @@ exports['selection-preview'] = function () {
 	insert(renderDocument(this, documentData, {
 		prependContent: renderDocumentRevisionInfo(this),
 		mainContent: exports._documentPreviewContent.call(this, documentData),
-		sideContent: renderSections(this.businessProcess.dataForms.dataSnapshot),
+		sideContent: exports._renderSections.call(this),
 		urlPrefix: '/' + this.businessProcess.__id__ + '/',
 		documentsRootHref:
 			document.getElementById('tab-business-process-documents').getAttribute('href')
@@ -28,3 +28,13 @@ exports['selection-preview'] = function () {
 };
 
 exports._documentPreviewContent = Function.prototype;
+
+exports._renderSections = function () {
+	var businessProcess = this.businessProcess, requirementUpload = this.document.owner;
+
+	return _if(requirementUpload.sections, function () {
+		return list(requirementUpload.sections, function (section) { return section.toDOM(document); });
+	}, function () {
+		return renderSections(businessProcess.dataForms.dataSnapshot);
+	});
+};

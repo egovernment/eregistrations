@@ -7,7 +7,7 @@ var camelToHyphen              = require('es5-ext/string/#/camel-to-hyphen')
   , renderDocument             = require('./components/document-preview')
   , renderDocumentHistory      = require('./components/business-process-document-history')
   , renderDocumentRevisionInfo = require('./components/business-process-document-review-info')
-  , renderSections             = require('./components/render-sections-json')
+  , renderSections             = require('./business-process-official-document')._renderSections
   , disableStep                = require('./components/disable-processing-step')
   , getDocumentData            = require('./utils/get-document-data')
 
@@ -66,6 +66,4 @@ exports['selection-preview'] = function () {
 
 exports._documentPreviewContent = Function.prototype;
 
-exports._renderSections = function () {
-	return renderSections(this.businessProcess.dataForms.dataSnapshot);
-};
+exports._renderSections = renderSections;
