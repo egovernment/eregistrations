@@ -7,7 +7,7 @@ var includes             = require('es5-ext/array/#/contains')
   , ensureCallable       = require('es5-ext/object/valid-callable')
   , ensureIterable       = require('es5-ext/iterable/validate-object')
   , ensureObservable     = require('observable-value/valid-observable')
-  , Set                  = require('es6-set/primitive')
+  , Set                  = require('es6-set')
   , DataFragmentGroup    = require('data-fragment/group')
   , getFullDataFragments = require('./get-full-data-fragments')
 
