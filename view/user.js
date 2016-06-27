@@ -42,7 +42,6 @@ exports['sub-main'] = {
 			div({ class: 'notifications-box section-warning pending-processes' },
 				ul(
 					pendingProcesses.map(function (pendingProcess) {
-						console.log(pendingProcess._businessName);
 						return li(div({ class: 'entities-overview-table' },
 							span(pendingProcess._businessName, ' ', _('is pending for corrections')),
 							span(postButton({
