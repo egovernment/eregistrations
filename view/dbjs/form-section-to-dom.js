@@ -70,7 +70,6 @@ module.exports = Object.defineProperties(db.FormSection.prototype, {
 							headersMap[headerRank](this._label),
 							ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
 								ns.md(this._legend.map(function (legend) {
-									console.log('this.getTranslations()', this.$getTranslations._value_);
 									if (!legend) return;
 									return _d(legend, this.getTranslations());
 								}.bind(this)))))]),
