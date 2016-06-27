@@ -39,7 +39,7 @@ exports['sub-main'] = {
 		exports._notificationsBox.call(this);
 
 		insert(_if(gt(pendingProcesses._size, 0), function () {
-			div({ class: 'notifications-box section-warning pending-processes' },
+			div({ class: 'section-warning section-warning-error section-warning-right-button' },
 				ul(
 					pendingProcesses.map(function (pendingProcess) {
 						return li(div({ class: 'entities-overview-table' },

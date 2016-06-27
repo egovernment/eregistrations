@@ -12,8 +12,28 @@
 	margin-bottom: 22px;
 }
 
-.section-warning.pending-processes > ul > li {
+.section-warning-error > ul > li {
 	border-left-color: var(--error-background);
+}
+
+.section-warning-right-button > ul >li {
+	padding:11px 15px;
+}
+
+.section-warning-right-button > ul >li > * {
+	display: flex;
+	vertical-align: middle;
+	line-height: 44px;
+}
+
+.section-warning-right-button > ul >li > * > span {
+	flex:1;
+	text-align: right;
+}
+
+.section-warning-right-button > ul >li > * > span:first-child {
+	flex:3;
+	text-align: left;
 }
 
 .section-warning > ul > li > a {
