@@ -106,15 +106,15 @@
 	background-color: var(--light-background);
 }
 
-.submitted-user-data-table-sent-back {
+.submitted-user-data-table tr.submitted-user-data-table-sent-back {
 	background-color: var(--error-background);
 }
 
-.submitted-user-data-table-sent-back > *,
-.submitted-user-data-table-sent-back td.actions a,
-.submitted-user-data-table-sent-back td.actions button,
-.submitted-user-data-table-sent-back td.submitted-user-data-table-link a,
-.submitted-user-data-table-sent-back td.submitted-user-data-table-link button {
+.submitted-user-data-table tr.submitted-user-data-table-sent-back > *,
+.submitted-user-data-table tr.submitted-user-data-table-sent-back td.actions a,
+.submitted-user-data-table tr.submitted-user-data-table-sent-back td.actions button,
+.submitted-user-data-table tr.submitted-user-data-table-sent-back td.submitted-user-data-table-link a,
+.submitted-user-data-table tr.submitted-user-data-table-sent-back td.submitted-user-data-table-link button {
 	color: var(--white-text);
 	border-color: var(--error-background);
 }

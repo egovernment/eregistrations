@@ -9,7 +9,7 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var manager = this.manager, pendingProcesses = this.user.revertedBusinessProcesses;
+		var manager = this.manager, revertedBusinessProcesses = this.user.revertedBusinessProcesses;
 
 		div({ class: 'user-account-boxes' },
 			section({ id: 'welcome-box', class: 'user-account-welcome' },
@@ -38,14 +38,15 @@ exports['sub-main'] = {
 
 		exports._notificationsBox.call(this);
 
-		insert(_if(gt(pendingProcesses._size, 0), function () {
-			div({ class: 'section-warning section-warning-error section-warning-right-button' },
+		insert(_if(gt(revertedBusinessProcesses._size, 0), function () {
+			div({ class: 'section-warning' },
 				ul(
-					pendingProcesses.map(function (pendingProcess) {
-						return li(div({ class: 'entities-overview-table' },
-							span(_(' ${ businessName } is pending for corrections',
-								{ businessName: pendingProcess._businessName })),
-							span(postButton({
+					revertedBusinessProcesses.map(function (pendingProcess) {
+						return li({ class: 'section-warning-error' }, div({ class: 'entities-overview-table' },
+							span({ class: "section-warning-error-content" },
+								_(' ${ businessName } is pending for corrections',
+									{ businessName: pendingProcess._businessName })),
+							span({ class: "section-warning-error-action" }, postButton({
 								action: url('business-process', pendingProcess.__id__),
 								value: _('Correct now')
 							}))));
