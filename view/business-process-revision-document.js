@@ -7,7 +7,7 @@ var camelToHyphen              = require('es5-ext/string/#/camel-to-hyphen')
   , renderDocument             = require('./components/document-preview')
   , renderDocumentHistory      = require('./components/business-process-document-history')
   , renderDocumentRevisionInfo = require('./components/business-process-document-review-info')
-  , renderSections             = require('./business-process-official-document')._renderSections
+  , renderSections             = require('./components/business-process-document-render-sections')
   , disableStep                = require('./components/disable-processing-step')
   , getDocumentData            = require('./utils/get-document-data')
 

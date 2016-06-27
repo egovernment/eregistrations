@@ -2,18 +2,20 @@
 
 'use strict';
 
-var Map              = require('es6-map')
-  , memoize          = require('memoizee/plain')
-  , defineStringLine = require('dbjs-ext/string/string-line')
-  , defineCreateEnum = require('dbjs-ext/create-enum')
-  , _                = require('mano').i18n.bind('Model')
-  , definePercentage = require('dbjs-ext/number/percentage')
-  , defineDocument   = require('./document');
+var Map                   = require('es6-map')
+  , memoize               = require('memoizee/plain')
+  , defineStringLine      = require('dbjs-ext/string/string-line')
+  , defineCreateEnum      = require('dbjs-ext/create-enum')
+  , _                     = require('mano').i18n.bind('Model')
+  , definePercentage      = require('dbjs-ext/number/percentage')
+  , defineDocument        = require('./document')
+  , defineFormSectionBase = require('./form-section-base');
 
 module.exports = memoize(function (db) {
 	var StringLine        = defineStringLine(db)
 	  , Percentage        = definePercentage(db)
 	  , Document          = defineDocument(db)
+	  , FormSectionBase   = defineFormSectionBase(db)
 
 	  , RequirementUpload = db.Object.extend('RequirementUpload');
 
@@ -101,6 +103,11 @@ module.exports = memoize(function (db) {
 
 		// Whether uploaded files were validated by front-desk processing step
 		isFrontDeskApproved: { type: db.Boolean, required: true },
+
+		relatedDataFormSections: {
+			type: FormSectionBase,
+			multiple: true
+		},
 
 		toJSON: { value: function (ignore) {
 			var data = {
