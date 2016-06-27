@@ -43,8 +43,8 @@ exports['sub-main'] = {
 				ul(
 					pendingProcesses.map(function (pendingProcess) {
 						return li(div({ class: 'entities-overview-table' },
-							span(_(' ${ processName } is pending for corrections',
-								{ processName: pendingProcess._businessName })),
+							span(_(' ${ businessName } is pending for corrections',
+								{ businessName: pendingProcess._businessName })),
 							span(postButton({
 								action: url('business-process', pendingProcess.__id__),
 								value: _('Coorect now')
