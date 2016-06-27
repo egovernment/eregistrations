@@ -316,18 +316,18 @@ module.exports = exports = function (db, dbDriver, data) {
 		var addSortRecord = getAddRecFrag(null,
 			['processingSteps/map/' + resolveStepPath(stepShortPath) + '/isReady']);
 
-		debug('%s init official', stepShortPath);
+		debug('%s:%s init', stepShortPath, viewPath);
 		fragment.addFragment(officialsFragment);
 		fragment.promise = initializeView('businessProcesses/' + viewPath)(function () {
 			var items = getFirstPageItems(reducedStorage,
 				'businessProcesses/' + viewPath + '/' + defaultStatusName).toArray().slice(0, 5);
-			debug('%s init pending items %s', stepShortPath, items.length);
+			debug('%s:%s init pending items %s', stepShortPath, viewPath, items.length);
 			items.on('change', function () {
-				debug('%s changed pending items %s', stepShortPath, items.length);
+				debug('%s:%s changed pending items %s', stepShortPath, viewPath, items.length);
 			});
 			// To be visited (recently pending) business processes (full data)
 			fragment.addFragment(getColFragments(items, function (bpId) {
-				debug('%s got pending item fragment %s', stepShortPath, bpId);
+				debug('%s:%s retrieve item fragment %s', stepShortPath, viewPath, bpId);
 				return getBusinessProcessFullData(bpId);
 			}));
 			// First page snapshot for each status

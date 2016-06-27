@@ -21,6 +21,7 @@ module.exports = function (user) {
 			return;
 		}
 		inReload = true;
+		document.body.classList.add('throbber-active');
 		if (server.isSync) {
 			console.log("App access id change ", event.oldValue, " -> ", event.newValue, ", immediate");
 			reload();
@@ -39,6 +40,7 @@ module.exports = function (user) {
 			return;
 		}
 		inReload = true;
+		document.body.classList.add('throbber-active');
 		if (server.isSync) {
 			console.log("App name change ", event.oldValue, " -> ", event.newValue, ", immediate");
 			reload();

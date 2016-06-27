@@ -81,7 +81,7 @@ exports['sub-main'] = {
 					return a({
 						class: 'section-tab-nav-tab',
 						id: 'tab-business-process-processing',
-						href: '/' + this.businessProcess.__id__ + '/processing'
+						href: '/' + this.businessProcess.__id__ + '/processing/'
 					}, _d(exports._processingTabLabel.call(this),
 						{ tabNumber: resolve(paymentUploads, '_length').map(function (length) {
 							return length ? "4." : "3.";
