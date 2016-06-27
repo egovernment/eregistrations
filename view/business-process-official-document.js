@@ -5,7 +5,7 @@
 var renderDocument             = require('./components/document-preview')
   , renderDocumentHistory      = require('./components/business-process-document-history')
   , renderDocumentRevisionInfo = require('./components/business-process-document-review-info')
-  , renderSections             = require('./components/render-sections-json')
+  , renderSections             = require('./components/business-process-document-render-sections')
   , getDocumentData            = require('./utils/get-document-data');
 
 exports._parent  = require('./business-process-official-documents');
@@ -18,7 +18,7 @@ exports['selection-preview'] = function () {
 	insert(renderDocument(this, documentData, {
 		prependContent: renderDocumentRevisionInfo(this),
 		mainContent: exports._documentPreviewContent.call(this, documentData),
-		sideContent: renderSections(this.businessProcess.dataForms.dataSnapshot),
+		sideContent: exports._renderSections.call(this),
 		urlPrefix: '/' + this.businessProcess.__id__ + '/',
 		documentsRootHref:
 			document.getElementById('tab-business-process-documents').getAttribute('href')
@@ -28,3 +28,5 @@ exports['selection-preview'] = function () {
 };
 
 exports._documentPreviewContent = Function.prototype;
+
+exports._renderSections = renderSections;
