@@ -34,7 +34,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			"required in apps/" + appName + "/client/model.js"
 		  , otherClientsModelReminder = "Ensure that the model/" + appName +
 			" is required in: apps/official-*/client/model.js, apps/user/client/model.js," +
-			" apps/business-process-submitted/client/model.js"
+			" apps/business-process-submitted/client/model.js and model/statistics.js"
 		  , processingStepsMsg =
 			"Provide processing steps configuration in apps-common/processing-steps"
 		  , accessMsg = "Provide processing step configuration for data access rules in " +
@@ -51,14 +51,6 @@ resolveProjectRoot(projectRoot).done(function (root) {
 
 		// Default messages
 
-		msgItems.push("If appName resolution for created app is not straightforward, " +
-			" be sure to expose it model/user/app-resolvers.js");
-		msgItems.push("Configure application URL tree in apps/" + appName + "/routes.js");
-		msgItems.push(domBindings);
-		msgItems.push("Configure model needed for application client in apps/"
-			+ appName + "/client/model.js");
-		msgItems.push("Ensure POST (form submissions) controllers " +
-			"configuration is complete in apps/" + appName + "/controller");
 		msgItems.push(appsPostControllers);
 		msgItems.push("Register server GET routes for new app in 'server/apps/routers.js'");
 
@@ -91,6 +83,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 
 		if (startsWith.call(appName, 'official-') || appName === 'dispatcher') {
 			msgItems.push(clientModelReminder);
+			msgItems.push(domBindings);
 			msgItems.push(addRole);
 			if (startsWith.call(appName, 'official-')) {
 				msgItems.push(processingStepsMsg);
@@ -152,10 +145,15 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push("Ensure proper businessProcsss storage in  apps/" + appName +
 				"/server/routes.js");
 		}
+		if (appName === 'statistics') {
+			msgItems.push(addRole);
+			msgItems.push("Ensure that all services model is required in server/model.js and " +
+				"model.statistics.js");
+		}
 
 		console.log(["\nSuccessfully created " + appName + " application." +
 			"\nIt's located in: " + appRootPath + "." +
 			"\n\nIn order to setup application you need to: \n"] +
-			msgItems.join('\n- '));
+			'- ' + msgItems.join('\n- '));
 	});
 });
