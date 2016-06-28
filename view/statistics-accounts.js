@@ -45,6 +45,8 @@ exports['statistics-main'] = function () {
 			db.Role.members.has('supervisor')
 				? tr(td(_("Supervisor")), td(data.accounts.admin._supervisor.map(mapSize))) : null,
 			db.Role.members.has('dispatcher')
-				? tr(td(_("Dispatcher")), td(data.accounts.admin._dispatcher.map(mapSize))) : null
+				? tr(td(_("Dispatcher")), td(data.accounts.admin._dispatcher.map(mapSize))) : null,
+			tr({ class: 'statistics-table-sub-header' }, td(_("Demo accounts")),
+					td(data._demo.map(mapSize)))
 		));
 };
