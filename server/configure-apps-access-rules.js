@@ -41,6 +41,7 @@ var aFrom                = require('es5-ext/array/from')
   , getOfficialsFragment = require('./utils/get-officials-fragment')
   , defaultUserListProps = require('../apps/users-admin/user-list-properties')
 
+  , isBusinessProcessStorageName = RegExp.prototype.test.bind(/^businessProcess[A-Z]/)
   , create = Object.create, keys = Object.keys, stringify = JSON.stringify
   , emptyFragment = new Fragment();
 
@@ -423,6 +424,22 @@ module.exports = exports = function (db, dbDriver, data) {
 		return fragment;
 	});
 
+	var getStatisticsFragment = memoize(function () {
+		var fragment = new FragmentGroup();
+
+		// Accounts statistics
+		fragment.addFragment(getUserReducedData('statistics'));
+
+		// Business process statistics
+		fragment.promise = dbDriver.getStorages()(function (storages) {
+			forEach(storages, function (storage, name) {
+				if (!isBusinessProcessStorageName(name)) return;
+				fragment.addFragment(getReducedFrag(storage)('statistics'));
+			});
+		});
+		return fragment;
+	});
+
 	getAccessRules = memoize(function (appId) {
 		var userId, roleName, stepShortPath, custom, fragment, initialBusinessProcesses, promise
 		  , clientId, businessProcessId, viewPath;
@@ -565,6 +582,13 @@ module.exports = exports = function (db, dbDriver, data) {
 			fragment.addFragment(getSupervisorFragment());
 			return fragment;
 		}
+
+		if (roleName === 'statistics') {
+			// Statistics specific data
+			fragment.addFragment(getStatisticsFragment());
+			return fragment;
+		}
+
 		console.error("\n\nError: Unrecognized role " + roleName + "\n\n");
 		return fragment;
 	}, { primitive: true });
