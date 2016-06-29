@@ -24,14 +24,14 @@ exports['statistics-main'] = function () {
 		});
 	});
 
-	table({ class: 'statistics-table' },
+	table({ class: 'statistics-table statistics-table-registrations' },
 		thead(tr(
 			th(),
 			th(),
-			th(_("Waiting")),
-			th(_("Pending")),
-			th(_("Rejected")),
-			th(_("Validated"))
+			th({ class: "statistics-table-header-grey" }, _("Waiting")),
+			th({ class: "statistics-table-header-orange" }, _("Pending")),
+			th({ class: "statistics-table-header-red" }, _("Rejected")),
+			th({ class: "statistics-table-header-green" }, _("Validated"))
 		)),
 		tbody(
 			toArray(certs, function (data) {

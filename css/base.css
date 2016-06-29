@@ -40,6 +40,14 @@ Component describing basic elements styles - reusable
 
 	--manager-label-base: #569C65;
 
+	/* Common colors */
+	--common-light-blue: #D4E9FA;
+	--common-light-orange: #FAEBD4;
+	--common-light-red: #FAD7D4;
+	--common-light-green: #D0F5DC;
+	--common-light-violet: #DCDCF5;
+	--common-light-grey: #E4E4E4;
+
 }
 
 @font-face {

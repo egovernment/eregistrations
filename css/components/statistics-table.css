@@ -17,9 +17,35 @@
 }
 
 .statistics-table thead tr th {
-	background: var(--normal-light-medium-background);
-	color: var(--white-text);
-	text-align: right;
+	color: var(--dark-text);
+	padding: 11px 3px 10px;
+	text-align: center;
+	font-weight: 700;
+	font-size: 15px;
+	border:none;
+}
+
+.statistics-table.statistics-table-registrations thead tr th {
+	background: var(--white-background);
+	color: var(--normal-text);
+	padding: 10px 3px;
+	border-bottom: 1px solid var(--light-inner-border);
+}
+
+.statistics-table.statistics-table-registrations thead tr .statistics-table-header-green {
+	background: var(--common-light-green);
+}
+
+.statistics-table.statistics-table-registrations thead tr .statistics-table-header-grey {
+	background: var(--common-light-grey);
+}
+
+.statistics-table.statistics-table-registrations thead tr .statistics-table-header-orange {
+	background: var(--common-light-orange);
+}
+
+.statistics-table-registrations.statistics-table thead tr .statistics-table-header-red {
+	background: var(--common-light-red);
 }
 
 .statistics-table thead tr th span {
@@ -38,15 +64,38 @@
 .statistics-table tbody tr td {
 	border-bottom: 1px solid var(--light-inner-border);
 	background: var(--white-background);
-	text-align: right;
+	text-align: center;
 }
 .statistics-table tbody tr td:first-child {
 	text-align: left;
 }
 
-.statistics-table tbody .statistics-table-sub-header td {
+.statistics-table tbody .statistics-table-sub-header {
 	font-weight: bold;
-	background: var(--light-medium-background);
+}
+
+.statistics-table tbody .statistics-table-sub-header-blue td {
+	background: var(--common-light-blue);
+}
+
+.statistics-table tbody .statistics-table-sub-header-grey td {
+	background: var(--common-light-grey);
+}
+
+.statistics-table tbody .statistics-table-sub-header-orange td {
+	background: var(--common-light-orange);
+}
+
+.statistics-table tbody .statistics-table-sub-header-red td {
+	background: var(--common-light-red);
+}
+
+.statistics-table tbody .statistics-table-sub-header-green td {
+	background: var(--common-light-green);
+}
+
+.statistics-table tbody .statistics-table-sub-header-violet td {
+	background: var(--common-light-violet);
 }
 
 .statistics-table tbody .statistics-table-sub-sub-header td {
