@@ -38,7 +38,11 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 							if (options.customFilter) {
 								if (!options.customFilter(resolved)) return false;
 							}
+							if (resolved.descriptor.multiple) {
+								observable.value.once('change', function (event) { filteredNames.refresh(name); });
+							}
 							if (displayEmptyFields) return true;
+							if (resolved.descriptor.multiple) return observable.value.size;
 							return observable.value != null;
 						}), function (name) {
 							var resolved = resolvePropertyPath(self.master, name)

@@ -22,6 +22,7 @@ var capitalize        = require('es5-ext/string/#/capitalize')
 
 var appTypes = {
 	'users-admin': true,
+	statistics: true,
 	'meta-admin': { extraFiles: ['view/meta-admin'] },
 	dispatcher: { extraFiles: ['view/dispatcher'] },
 	user: { extraFiles: ['view/user.js'] },

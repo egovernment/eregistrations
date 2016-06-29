@@ -34,12 +34,11 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			"required in apps/" + appName + "/client/model.js"
 		  , otherClientsModelReminder = "Ensure that the model/" + appName +
 			" is required in: apps/official-*/client/model.js, apps/user/client/model.js," +
-			" apps/business-process-submitted/client/model.js"
+			" apps/business-process-submitted/client/model.js and model/statistics.js"
 		  , processingStepsMsg =
 			"Provide processing steps configuration in apps-common/processing-steps"
 		  , accessMsg = "Provide processing step configuration for data access rules in " +
 			"server/processes/master/apps-access-rulles.js"
-		  , appsRoutersReminder = "Ensure configuration entry in server/apps/routers.js"
 		  , modelViews = "Ensure that views model is updated with " +
 			"added status maps in model/views.js"
 		  , serverIndexes = "Ensure entry in server/db/indexes.js"
@@ -52,15 +51,8 @@ resolveProjectRoot(projectRoot).done(function (root) {
 
 		// Default messages
 
-		msgItems.push("If appName resolution for created app is not straightforward, " +
-			" be sure to expose it model/user/app-resolvers.js");
-		msgItems.push("Configure application URL tree in apps/" + appName + "/routes.js");
-		msgItems.push(domBindings);
-		msgItems.push("Configure model needed for application client in apps/"
-			+ appName + "/client/model.js");
-		msgItems.push("Ensure POST (form submissions) controllers " +
-			"configuration is complete in apps/" + appName + "/controller");
 		msgItems.push(appsPostControllers);
+		msgItems.push("Register server GET routes for new app in 'server/apps/routers.js'");
 
 		// Application specifics
 
@@ -71,30 +63,41 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		if (appName === 'business-process-submitted') {
 			msgItems.push(clientModelReminder);
 		} else if (startsWith.call(appName, 'business-process-')) {
+			msgItems.push("Register the storage for the new service in " +
+				"'server/services/db/storage-names.js' and 'server/business-process-storages.js'");
+			msgItems.push("Register the business process flow handler for new service in " +
+				"'server/services/business-process-flow.js'");
+			msgItems.push("Add new service to collection utils at " +
+				"'apps-common/business-processes/..' and 'apps-common/business-processes/submitted/...'");
 			msgItems.push("Ensure that the " +
 				"underlying businessProcess model is required in server/model.js");
 			msgItems.push(otherClientsModelReminder);
 			msgItems.push("After model for new BusinessProcess is complete," +
 				" make sure to provide necessary DOM bindings (for sections and properties (e.g. enum)) " +
 				"in client/dbjs-dom.js for user and official applications.");
-			msgItems.push("Add entry of new business process storage" +
-				" in server/services/db/storage-names.js");
+			msgItems.push("Add new service legacy model mock generator to setup in " +
+				"'scripts/setup.js'");
+			msgItems.push("Configure model for new service in 'model/'" + appName + "/..'");
+
 		}
 
 		if (startsWith.call(appName, 'official-') || appName === 'dispatcher') {
 			msgItems.push(clientModelReminder);
-			msgItems.push(appsRoutersReminder);
+			msgItems.push(domBindings);
+			msgItems.push(addRole);
 			if (startsWith.call(appName, 'official-')) {
 				msgItems.push(processingStepsMsg);
 				msgItems.push("Replace all occurrences of BusinessProcessCHANGEME with proper " +
 					"class names in: apps/" + appName + "/client/program.js");
-				msgItems.push(modelViews);
-
+				msgItems.push("Configure model for new processing step in " +
+					"'model/business-process-.../processing-steps/..'");
+				msgItems.push("If processing step is meant to be assignable be sure to reflect it in " +
+					"'server/processes/master/apps-access-rules.js' and " +
+					"'apps/app-name/business-processes/meta.js'");
 			} else {
 				msgItems.push(accessMsg);
+				msgItems.push(recentlyVisitedProcesses);
 			}
-			msgItems.push(addRole);
-			msgItems.push(recentlyVisitedProcesses);
 		}
 
 		if (appName === 'manager') {
@@ -142,10 +145,15 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push("Ensure proper businessProcsss storage in  apps/" + appName +
 				"/server/routes.js");
 		}
+		if (appName === 'statistics') {
+			msgItems.push(addRole);
+			msgItems.push("Ensure that all services model is required in server/model.js and " +
+				"model.statistics.js");
+		}
 
 		console.log(["\nSuccessfully created " + appName + " application." +
 			"\nIt's located in: " + appRootPath + "." +
 			"\n\nIn order to setup application you need to: \n"] +
-			msgItems.join('\n- '));
+			'- ' + msgItems.join('\n- '));
 	});
 });
