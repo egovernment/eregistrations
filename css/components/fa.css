@@ -336,3 +336,11 @@ e.g.:
 .fa-line-chart:before {
 	content: "\f201";
 }
+
+.fa-exclamation-triangle {
+	width: 1em;
+}
+
+.fa-exclamation-triangle:before {
+	content: "\f071";
+}
