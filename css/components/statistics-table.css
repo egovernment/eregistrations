@@ -16,10 +16,36 @@
 	padding-right: 11px;
 }
 
-.statistics-table thead tr th {
-	background: var(--normal-light-medium-background);
-	color: var(--white-text);
-	text-align: right;
+.statistics-table thead th {
+	color: var(--dark-text);
+	padding: 11px 3px 10px;
+	text-align: center;
+	font-weight: 700;
+	font-size: 15px;
+	border:none;
+}
+
+.statistics-table-registrations thead th {
+	background: var(--white-background);
+	color: var(--normal-text);
+	padding: 10px 3px;
+	border-bottom: 1px solid var(--light-inner-border);
+}
+
+.statistics-table-registrations .statistics-table-header-success {
+	background: var(--light-success-background);
+}
+
+.statistics-table-registrations .statistics-table-header-waiting {
+	background: var(--light-waiting-background);
+}
+
+.statistics-table-registrations .statistics-table-header-pending {
+	background: var(--light-pending-background);
+}
+
+.statistics-table-registrations .statistics-table-header-sentback {
+	background: var(--light-sentback-background);
 }
 
 .statistics-table thead tr th span {
@@ -38,15 +64,38 @@
 .statistics-table tbody tr td {
 	border-bottom: 1px solid var(--light-inner-border);
 	background: var(--white-background);
-	text-align: right;
+	text-align: center;
 }
 .statistics-table tbody tr td:first-child {
 	text-align: left;
 }
 
-.statistics-table tbody .statistics-table-sub-header td {
+.statistics-table tbody .statistics-table-sub-header {
 	font-weight: bold;
-	background: var(--light-medium-background);
+}
+
+.statistics-table tbody .statistics-table-sub-header-overall td {
+	background: var(--light-overall-background);
+}
+
+.statistics-table tbody .statistics-table-sub-header-waiting td {
+	background: var(--light-waiting-background);
+}
+
+.statistics-table tbody .statistics-table-sub-header-pending td {
+	background: var(--light-pending-background);
+}
+
+.statistics-table tbody .statistics-table-sub-header-sentback td {
+	background: var(--light-sentback-background);
+}
+
+.statistics-table tbody .statistics-table-sub-header-success td {
+	background: var(--light-success-background);
+}
+
+.statistics-table tbody .statistics-table-sub-header-demo td {
+	background: var(--light-demo-background);
 }
 
 .statistics-table tbody .statistics-table-sub-sub-header td {

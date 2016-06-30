@@ -14,8 +14,7 @@ exports._match = 'businessProcess';
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var revisionStep = this.processingStep,
-			paymentUploads = getUploads(this.processingStep.paymentReceiptUploads, this.appName);
+		var revisionStep = this.processingStep;
 
 		renderMainInfo(this, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
 
@@ -29,66 +28,11 @@ exports['sub-main'] = {
 						exports._approveButton.call(this)),
 					_if(eq(revisionStep._sendBackStatusesProgress, 1),
 						exports._returnButton.call(this)))),
-					// show reject button at all times when revision is pending
+			// show reject button at all times when revision is pending
 			exports._rejectButton.call(this)
 		)]));
 
-		section({ class: 'section-tab-nav' },
-			a({
-				class: 'section-tab-nav-tab',
-				id: 'tab-business-process-documents',
-				href: '/' + this.businessProcess.__id__ + '/'
-			}, _if(gt(this.processingStep.requirementUploads.processable._size, 0), [
-				_("${ tabNumber } Revision of the documents", { tabNumber: "1." }),
-				_if(eq(this.processingStep.requirementUploads._approvalProgress, 1),
-					span({ class: 'fa fa-check' })),
-				_if(gt(this.processingStep.requirementUploads.rejected._size, 0),
-					span({ class: 'fa fa-exclamation' }))
-			], _("${ tabNumber } Documents", { tabNumber: "1." }))),
-
-			_if(resolve(paymentUploads, '_length'),
-				a({
-					class: 'section-tab-nav-tab',
-					id: 'tab-business-process-payments',
-					href: '/' + this.businessProcess.__id__ + '/payment-receipts/'
-				}, _if(gt(this.processingStep.paymentReceiptUploads.processable._size, 0), [
-					_("${ tabNumber } Revision of payments", { tabNumber: "2." }),
-					_if(eq(this.processingStep.paymentReceiptUploads._approvalProgress, 1),
-						span({ class: 'fa fa-check' })),
-					_if(gt(this.processingStep.paymentReceiptUploads.rejected._size, 0),
-						span({ class: 'fa fa-exclamation' }))
-				], _("${ tabNumber } Payment receipts", { tabNumber: "2." })))),
-
-			a({
-				class: 'section-tab-nav-tab',
-				id: 'tab-business-process-data',
-				href: '/' + this.businessProcess.__id__ + '/data/'
-			}, _if(this.processingStep.dataFormsRevision._isProcessable, [
-				_("${ tabNumber } Revision of data",
-					{ tabNumber: _if(resolve(paymentUploads, '_length'), "3.", "2.") }),
-				_if(and(this.processingStep.dataFormsRevision._isProcessable,
-					eq(this.processingStep.dataFormsRevision._approvalProgress, 1)),
-						span({ class: 'fa fa-check' })),
-				_if(and(this.processingStep.dataFormsRevision._isProcessable,
-					gt(this.processingStep.dataFormsRevision._sentBackProgress, 0)),
-					span({ class: 'fa fa-exclamation' }))
-			], _("${ tabNumber } Data", {
-				tabNumber: _if(resolve(paymentUploads, '_length'), "3.", "2.")
-			}))),
-
-			_if(exports._processingTabLabel.call(this),
-				function () {
-					return a({
-						class: 'section-tab-nav-tab',
-						id: 'tab-business-process-processing',
-						href: '/' + this.businessProcess.__id__ + '/processing/'
-					}, _d(exports._processingTabLabel.call(this),
-						{ tabNumber: resolve(paymentUploads, '_length').map(function (length) {
-							return length ? "4." : "3.";
-						}) }));
-				}.bind(this)),
-
-			div({ id: 'tab-content', class: 'business-process-revision' }));
+		insert(exports._revisionContainer.call(this));
 	}
 };
 
@@ -133,7 +77,7 @@ exports._rejectButton = function (/*options*/) {
 		section({ class: 'dialog-body' },
 			form({ method: 'post', action: '/revision/' + this.businessProcess.__id__ + '/reject/' },
 				p({ class: 'input' }, input({ id: 'revision-reject-reason',
-						dbjs: this.processingStep._rejectionReason })),
+					dbjs: this.processingStep._rejectionReason })),
 				p(input({ type: 'submit', value: options.rejectLabel || _("Reject") })))),
 		footer(p(a({ href: '' }, _("Cancel"))))
 	), a({
@@ -143,6 +87,67 @@ exports._rejectButton = function (/*options*/) {
 		'data-hint': _("You can reject the registration when documents and/or data that is " +
 			"sent can be determined as not real.")
 	}, _("Reject application"))];
+};
+
+exports._revisionContainer = function () {
+	var paymentUploads = getUploads(this.processingStep.paymentReceiptUploads, this.appName);
+	section({ class: 'section-tab-nav' },
+		a({
+			class: 'section-tab-nav-tab',
+			id: 'tab-business-process-documents',
+			href: '/' + this.businessProcess.__id__ + '/'
+		}, _if(gt(this.processingStep.requirementUploads.processable._size, 0), [
+			_("${ tabNumber } Revision of the documents", { tabNumber: "1." }),
+			_if(eq(this.processingStep.requirementUploads._approvalProgress, 1),
+				span({ class: 'fa fa-check' })),
+			_if(gt(this.processingStep.requirementUploads.rejected._size, 0),
+				span({ class: 'fa fa-exclamation' }))
+		], _("${ tabNumber } Documents", { tabNumber: "1." }))),
+
+		_if(resolve(paymentUploads, '_length'),
+			a({
+				class: 'section-tab-nav-tab',
+				id: 'tab-business-process-payments',
+				href: '/' + this.businessProcess.__id__ + '/payment-receipts/'
+			}, _if(gt(this.processingStep.paymentReceiptUploads.processable._size, 0), [
+				_("${ tabNumber } Revision of payments", { tabNumber: "2." }),
+				_if(eq(this.processingStep.paymentReceiptUploads._approvalProgress, 1),
+					span({ class: 'fa fa-check' })),
+				_if(gt(this.processingStep.paymentReceiptUploads.rejected._size, 0),
+					span({ class: 'fa fa-exclamation' }))
+			], _("${ tabNumber } Payment receipts", { tabNumber: "2." })))),
+
+		a({
+			class: 'section-tab-nav-tab',
+			id: 'tab-business-process-data',
+			href: '/' + this.businessProcess.__id__ + '/data/'
+		}, _if(this.processingStep.dataFormsRevision._isProcessable, [
+			_("${ tabNumber } Revision of data",
+				{ tabNumber: _if(resolve(paymentUploads, '_length'), "3.", "2.") }),
+			_if(and(this.processingStep.dataFormsRevision._isProcessable,
+				eq(this.processingStep.dataFormsRevision._approvalProgress, 1)),
+				span({ class: 'fa fa-check' })),
+			_if(and(this.processingStep.dataFormsRevision._isProcessable,
+				gt(this.processingStep.dataFormsRevision._sentBackProgress, 0)),
+				span({ class: 'fa fa-exclamation' }))
+		], _("${ tabNumber } Data", {
+			tabNumber: _if(resolve(paymentUploads, '_length'), "3.", "2.")
+		}))),
+
+		_if(exports._processingTabLabel.call(this),
+			function () {
+				return a({
+					class: 'section-tab-nav-tab',
+					id: 'tab-business-process-processing',
+					href: '/' + this.businessProcess.__id__ + '/processing/'
+				}, _d(exports._processingTabLabel.call(this), {
+					tabNumber: resolve(paymentUploads, '_length').map(function (length) {
+						return length ? "4." : "3.";
+					})
+				}));
+			}.bind(this)),
+
+		div({ id: 'tab-content', class: 'business-process-revision' }));
 };
 
 exports._customAlert = Function.prototype;

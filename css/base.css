@@ -40,6 +40,14 @@ Component describing basic elements styles - reusable
 
 	--manager-label-base: #569C65;
 
+	/* Common colors */
+	--light-overall-background: #D4E9FA;
+	--light-pending-background: #FAEBD4;
+	--light-sentback-background: #FAD7D4;
+	--light-success-background: #D0F5DC;
+	--light-demo-background: #DCDCF5;
+	--light-waiting-background: #E4E4E4;
+
 }
 
 @font-face {
