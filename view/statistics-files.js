@@ -33,20 +33,21 @@ var generateRow = function (label, data, getValue) {
 	);
 };
 
-var generateProcessingStepRows = function (label, services, getData, processingStepsMeta) {
-	return [
-		generateRow({ class: 'statistics-table-sub-header' }, label, services, getData),
-		toArray(processingStepsMeta, function (data, name) {
-			var step = db['BusinessProcess' + capitalize.call(data._services[0])].prototype
-				.processingSteps.map.getBySKeyPath(resolveFullStepPath(name));
-			return generateRow(step.label, services,
-				function (data) {
-					data = data.atPartB.getBySKeyPath(name);
-					return data ? getData(data) : null;
-				});
-		})
-	];
-};
+var generateProcessingStepRows =
+	function (label, services, getData, processingStepsMeta, cssClass) {
+		return [
+			generateRow({ class: ['statistics-table-sub-header', cssClass] }, label, services, getData),
+			toArray(processingStepsMeta, function (data, name) {
+				var step = db['BusinessProcess' + capitalize.call(data._services[0])].prototype
+					.processingSteps.map.getBySKeyPath(resolveFullStepPath(name));
+				return generateRow(step.label, services,
+					function (data) {
+						data = data.atPartB.getBySKeyPath(name);
+						return data ? getData(data) : null;
+					});
+			})
+		];
+	};
 
 exports['files-nav'] = { class: { 'pills-nav-active': true } };
 
@@ -66,7 +67,8 @@ exports['statistics-main'] = function () {
 			th(_("Total"))
 		)),
 		tbody(
-			generateRow({ class: 'statistics-table-sub-header' }, _("Files in Part A"), services,
+			generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-overall' },
+				_("Files in Part A"), services,
 				function (data) { return data.atPartA._all; }),
 			generateRow(_("No pages completed"), services,
 				function (data) { return data.atPartA._atGuide; }),
@@ -82,15 +84,18 @@ exports['statistics-main'] = function () {
 				function (data) { return data.atPartA.guideComplete._atSend; }),
 
 			generateProcessingStepRows(_("Files pending for processing in Part B"), services,
-				function (data) { return data._pending; }, this.processingStepsMeta),
+				function (data) { return data._pending; }, this.processingStepsMeta,
+				"statistics-table-sub-header-waiting"),
 
 			generateProcessingStepRows(_("Files sent back to user for correction"), services,
-				function (data) { return data._sentBack; }, this.processingStepsMeta),
+				function (data) { return data._sentBack; }, this.processingStepsMeta,
+				"statistics-table-sub-header-pending"),
 
 			generateProcessingStepRows(_("Files rejected"), services,
-				function (data) { return data._rejected; }, this.processingStepsMeta),
+				function (data) { return data._rejected; }, this.processingStepsMeta,
+				"statistics-table-sub-header-sentback"),
 
-			generateRow({ class: 'statistics-table-sub-header' },
+			generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-success' },
 				_("Files completed and closed"), services, function (data) { return data._approved; })
 		));
 };
