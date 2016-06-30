@@ -28,10 +28,10 @@ exports['statistics-main'] = function () {
 		thead(tr(
 			th(),
 			th(),
-			th({ class: "statistics-table-header-grey" }, _("Waiting")),
-			th({ class: "statistics-table-header-orange" }, _("Pending")),
-			th({ class: "statistics-table-header-red" }, _("Rejected")),
-			th({ class: "statistics-table-header-green" }, _("Validated"))
+			th({ class: "statistics-table-header-waiting" }, _("Waiting")),
+			th({ class: "statistics-table-header-pending" }, _("Pending")),
+			th({ class: "statistics-table-header-sentback" }, _("Rejected")),
+			th({ class: "statistics-table-header-success" }, _("Validated"))
 		)),
 		tbody(
 			toArray(certs, function (data) {

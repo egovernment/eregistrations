@@ -20,7 +20,7 @@ exports['statistics-main'] = function () {
 			th(_("Total"))
 		)),
 		tbody(
-			tr({ class: 'statistics-table-sub-header statistics-table-sub-header-blue' },
+			tr({ class: 'statistics-table-sub-header statistics-table-sub-header-overall' },
 				td(_("Accounts of Part A")),
 				td(data.accounts._all.map(mapSize))),
 
@@ -30,7 +30,7 @@ exports['statistics-main'] = function () {
 				tr(td(_("Notaries unvalidated")), td(data.accounts.manager._inactive.map(mapSize)))
 			] : null,
 
-			tr({ class: 'statistics-table-sub-header statistics-table-sub-header-grey' },
+			tr({ class: 'statistics-table-sub-header statistics-table-sub-header-waiting' },
 				td(_("Operators of Part B")),
 				td(data.accounts.official._all.map(mapSize))),
 			aFrom(db.Role.members, function (roleName) {
@@ -40,7 +40,7 @@ exports['statistics-main'] = function () {
 					td(data.accounts.official['_' + shortName].map(mapSize)));
 			}),
 
-			tr({ class: 'statistics-table-sub-header statistics-table-sub-header-orange' },
+			tr({ class: 'statistics-table-sub-header statistics-table-sub-header-pending' },
 				td(_("Admin accounts")),
 				td(data.accounts.admin._all.map(mapSize))),
 			tr(td(_("Admin")), td(data.accounts.admin._usersAdmin.map(mapSize))),
@@ -49,7 +49,7 @@ exports['statistics-main'] = function () {
 				? tr(td(_("Supervisor")), td(data.accounts.admin._supervisor.map(mapSize))) : null,
 			db.Role.members.has('dispatcher')
 				? tr(td(_("Dispatcher")), td(data.accounts.admin._dispatcher.map(mapSize))) : null,
-			tr({ class: 'statistics-table-sub-header statistics-table-sub-header-violet' },
+			tr({ class: 'statistics-table-sub-header statistics-table-sub-header-demo' },
 					td(_("Demo accounts")),
 					td(data._demo.map(mapSize)))
 		));

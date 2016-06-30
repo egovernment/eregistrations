@@ -67,7 +67,7 @@ exports['statistics-main'] = function () {
 			th(_("Total"))
 		)),
 		tbody(
-			generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-blue' },
+			generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-overall' },
 				_("Files in Part A"), services,
 				function (data) { return data.atPartA._all; }),
 			generateRow(_("No pages completed"), services,
@@ -85,17 +85,17 @@ exports['statistics-main'] = function () {
 
 			generateProcessingStepRows(_("Files pending for processing in Part B"), services,
 				function (data) { return data._pending; }, this.processingStepsMeta,
-				"statistics-table-sub-header-grey"),
+				"statistics-table-sub-header-waiting"),
 
 			generateProcessingStepRows(_("Files sent back to user for correction"), services,
 				function (data) { return data._sentBack; }, this.processingStepsMeta,
-				"statistics-table-sub-header-orange"),
+				"statistics-table-sub-header-pending"),
 
 			generateProcessingStepRows(_("Files rejected"), services,
 				function (data) { return data._rejected; }, this.processingStepsMeta,
-				"statistics-table-sub-header-red"),
+				"statistics-table-sub-header-sentback"),
 
-			generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-green' },
+			generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-success' },
 				_("Files completed and closed"), services, function (data) { return data._approved; })
 		));
 };

@@ -16,7 +16,7 @@
 	padding-right: 11px;
 }
 
-.statistics-table thead tr th {
+.statistics-table thead th {
 	color: var(--dark-text);
 	padding: 11px 3px 10px;
 	text-align: center;
@@ -25,27 +25,27 @@
 	border:none;
 }
 
-.statistics-table.statistics-table-registrations thead tr th {
+.statistics-table-registrations thead th {
 	background: var(--white-background);
 	color: var(--normal-text);
 	padding: 10px 3px;
 	border-bottom: 1px solid var(--light-inner-border);
 }
 
-.statistics-table.statistics-table-registrations thead tr .statistics-table-header-green {
-	background: var(--common-light-green);
+.statistics-table-registrations .statistics-table-header-success {
+	background: var(--light-success-background);
 }
 
-.statistics-table.statistics-table-registrations thead tr .statistics-table-header-grey {
-	background: var(--common-light-grey);
+.statistics-table-registrations .statistics-table-header-waiting {
+	background: var(--light-waiting-background);
 }
 
-.statistics-table.statistics-table-registrations thead tr .statistics-table-header-orange {
-	background: var(--common-light-orange);
+.statistics-table-registrations .statistics-table-header-pending {
+	background: var(--light-pending-background);
 }
 
-.statistics-table-registrations.statistics-table thead tr .statistics-table-header-red {
-	background: var(--common-light-red);
+.statistics-table-registrations .statistics-table-header-sentback {
+	background: var(--light-sentback-background);
 }
 
 .statistics-table thead tr th span {
@@ -74,28 +74,28 @@
 	font-weight: bold;
 }
 
-.statistics-table tbody .statistics-table-sub-header-blue td {
-	background: var(--common-light-blue);
+.statistics-table tbody .statistics-table-sub-header-overall td {
+	background: var(--light-overall-background);
 }
 
-.statistics-table tbody .statistics-table-sub-header-grey td {
-	background: var(--common-light-grey);
+.statistics-table tbody .statistics-table-sub-header-waiting td {
+	background: var(--light-waiting-background);
 }
 
-.statistics-table tbody .statistics-table-sub-header-orange td {
-	background: var(--common-light-orange);
+.statistics-table tbody .statistics-table-sub-header-pending td {
+	background: var(--light-pending-background);
 }
 
-.statistics-table tbody .statistics-table-sub-header-red td {
-	background: var(--common-light-red);
+.statistics-table tbody .statistics-table-sub-header-sentback td {
+	background: var(--light-sentback-background);
 }
 
-.statistics-table tbody .statistics-table-sub-header-green td {
-	background: var(--common-light-green);
+.statistics-table tbody .statistics-table-sub-header-success td {
+	background: var(--light-success-background);
 }
 
-.statistics-table tbody .statistics-table-sub-header-violet td {
-	background: var(--common-light-violet);
+.statistics-table tbody .statistics-table-sub-header-demo td {
+	background: var(--light-demo-background);
 }
 
 .statistics-table tbody .statistics-table-sub-sub-header td {
