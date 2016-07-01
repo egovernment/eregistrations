@@ -159,6 +159,7 @@ module.exports = memoize(function (db) {
 			data.isFinalized = true;
 			return data;
 		} },
+		// The user who uploaded the requirementUpload
 		uploadedBy: {
 			type: User
 		}
