@@ -63,7 +63,7 @@ exports['requirement-upload/[a-z][a-z0-9-]*'] = {
 	submit: function (data) {
 		if (this.requirementUpload.status) this.requirementUpload.status = null;
 		if (this.user !== this.requirementUpload.uploadedBy) {
-			this.uploadedBy = this.user;
+			this.requirementUpload.uploadedBy = this.user;
 		}
 		return submit.apply(this, arguments);
 	}
@@ -84,7 +84,7 @@ exports['payment-receipt-upload/[a-z][a-z0-9-]*'] = {
 	submit: function (data) {
 		if (this.paymentReceiptUpload.status) this.paymentReceiptUpload.status = null;
 		if (this.user !== this.paymentReceiptUpload.uploadedBy) {
-			this.uploadedBy = this.user;
+			this.paymentReceiptUpload.uploadedBy = this.user;
 		}
 		return submit.apply(this, arguments);
 	}
