@@ -150,7 +150,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		if (appName === 'statistics') {
 			msgItems.push(addRole);
 			msgItems.push("Ensure that all services model is required in server/model.js and " +
-				"model.statistics.js");
+				"model/statistics.js");
 		}
 
 		console.log(["\nSuccessfully created " + appName + " application." +
