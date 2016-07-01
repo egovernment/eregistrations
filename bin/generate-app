@@ -151,6 +151,8 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push(addRole);
 			msgItems.push("Ensure that all services model is required in server/model.js and " +
 				"model/statistics.js");
+			msgItems.push("Ensure that statistics related indexes are initialized in " +
+				"server/db/indexes.js");
 		}
 
 		console.log(["\nSuccessfully created " + appName + " application." +
