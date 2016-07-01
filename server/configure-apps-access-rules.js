@@ -589,6 +589,11 @@ module.exports = exports = function (db, dbDriver, data) {
 			return fragment;
 		}
 
+		if (roleName === 'dashboard') {
+			// No specific model at this point
+			return fragment;
+		}
+
 		console.error("\n\nError: Unrecognized role " + roleName + "\n\n");
 		return fragment;
 	}, { primitive: true });

@@ -13,6 +13,7 @@
 'use strict';
 
 var _                = require('mano').i18n.bind('Sections')
+  , _d               = _
   , d                = require('d')
   , db               = require('mano').db
   , ns               = require('mano').domjs.ns
@@ -52,7 +53,10 @@ module.exports = Object.defineProperty(db.FormSectionUpdate.prototype, 'toDOMFor
 			ns._if(this._label, [
 				headersMap[headerRank](this._label),
 				ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
-					ns.md(this._legend)))]),
+					ns.md(this._legend.map(function (legend) {
+						if (!legend) return;
+						return _d(legend, this.getTranslations());
+					}.bind(this)))))]),
 			fieldsetResult,
 			ns.p({ class: 'submit-placeholder input' },
 					ns.input({ type: 'submit', value: _("Submit") })),

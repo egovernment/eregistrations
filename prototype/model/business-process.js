@@ -514,7 +514,7 @@ BusinessProcessNew.prototype.dataForms.map.define('company', {
 
 BusinessProcessNew.prototype.dataForms.map.get('company').setProperties({
 	label: "Company information",
-	pageUrl: 'company-informations'
+	pageUrl: 'tabbed'
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('company').sections.define('details', {
