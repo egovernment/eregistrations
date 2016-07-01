@@ -39,7 +39,7 @@ module.exports = memoize(function (db) {
 			return result;
 		} },
 		receiptNumber: {
-			label: _("Number"),
+			label: _("Receipt number"),
 			type: StringLine,
 			required: true
 		},
