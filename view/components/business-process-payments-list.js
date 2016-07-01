@@ -63,7 +63,7 @@ exports.emissionDateColumn = {
 exports.emissorColumn = {
 	head: _("Emissor"),
 	data: function (upload) {
-		return a({ href: this.resolveDocumentUrl(upload) }, _("User"));
+		return a({ href: this.resolveDocumentUrl(upload) }, upload.uploadedBy || _("User"));
 	}
 };
 

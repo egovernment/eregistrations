@@ -16,7 +16,8 @@ var db            = require('mano').db
 
 module.exports = Object.defineProperty(db.RequirementUpload.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var options = Object(arguments[1])
+		var options          = Object(arguments[1])
+		  , currentUser      = options.viewContext && options.viewContext.user
 		  , isPaymentReceipt = (db.PaymentReceiptUpload && (this instanceof db.PaymentReceiptUpload));
 
 		return form({ action: (isPaymentReceipt ?
@@ -37,6 +38,11 @@ module.exports = Object.defineProperty(db.RequirementUpload.prototype, 'toDOMFor
 				p({ class: 'section-primary-legend' }, mdi(_d(this.document.legend,
 					this.document.getTranslations()))),
 			input({ dbjs: this.document.files._map, label: _("Select file") }),
+			currentUser && this._uploadedBy.map(function (uploadedBy) {
+				if (uploadedBy === currentUser) return;
+				return input({ name: this.__id__ + '/uploadedBy',
+					value: currentUser.__id__, type: 'hidden' });
+			}.bind(this)),
 			p({ class: 'submit' }, input({ type: 'submit', value: _("Submit") })),
 			p({ class: 'section-primary-scroll-top' },
 					a({ onclick: 'window.scroll(0, 0)' },
