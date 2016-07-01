@@ -48,7 +48,7 @@ module.exports = function (context/*, options*/) {
 						}, {
 							head: _("Emissor"),
 							data: function (upload) {
-								return a({ href: resolveDocumentUrl(upload) }, _("User"));
+								return a({ href: resolveDocumentUrl(upload) }, upload.uploadedBy);
 							}
 						}],
 						rowAttributes: function (upload) {

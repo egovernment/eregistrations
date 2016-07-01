@@ -16,7 +16,7 @@ var db            = require('mano').db
 
 module.exports = Object.defineProperty(db.RequirementUpload.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
-		var options = Object(arguments[1])
+		var options          = Object(arguments[1])
 		  , isPaymentReceipt = (db.PaymentReceiptUpload && (this instanceof db.PaymentReceiptUpload));
 
 		return form({ action: (isPaymentReceipt ?
