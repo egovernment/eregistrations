@@ -8,15 +8,6 @@ var _                    = require('mano').i18n.bind('View: User')
 
 exports._parent = require('./base');
 
-exports._extraRoleLabel = function () {
-	return _if(or(this.manager, eq(this.user._currentRoleResolved, 'manager')), li(
-		span(
-			{ class: 'manager-label' },
-			_("Notary")
-		)
-	));
-};
-
 exports.menu = function () {
 	modalContainer.append(loginDialog);
 	modalContainer.append(registerDialog(this));
@@ -33,26 +24,7 @@ exports.menu = function () {
 		),
 		ul(
 			{ class: 'header-top-menu' },
-			exports._extraRoleLabel.call(this),
-			li(
-				a(
-					{ href: '/profile/' },
-					span({ class: 'header-top-user-name' },
-						this.manager ? this.manager._fullName : this.user._fullName)
-				)
-			),
-			li(
-				a(
-					{ href: '/profile/' },
-					span({ class: 'fa fa-cog' }, "Preferences")
-				)
-			),
-			li(
-				a(
-					{ href: '/logout/', rel: 'server' },
-					span({ class: 'fa fa-power-off' }, "Log out")
-				)
-			)
+			list(exports._menuItems, function (item) { return item.call(this); }.bind(this))
 		)));
 };
 
@@ -116,3 +88,47 @@ exports._getManagerButton = function (user, roleTitle) {
 			name: user.__id__ + '/currentlyManagedUser', value: null }),
 		button({ type: 'submit' }, roleTitle));
 };
+
+exports._extraRoleLabel = function () {
+	return _if(or(this.manager, eq(this.user._currentRoleResolved, 'manager')), li(
+		span(
+			{ class: 'manager-label' },
+			_("Notary")
+		)
+	));
+};
+
+exports._userNameMenuItem = function () {
+	return li(
+		a(
+			{ href: '/profile/' },
+			span({ class: 'header-top-user-name' },
+				this.manager ? this.manager._fullName : this.user._fullName)
+		)
+	);
+};
+
+exports._profileMenuItem = function () {
+	return li(
+		a(
+			{ href: '/profile/' },
+			span({ class: 'fa fa-cog' }, "Preferences")
+		)
+	);
+};
+
+exports._logoutMenuItem = function () {
+	return li(
+		a(
+			{ href: '/logout/', rel: 'server' },
+			span({ class: 'fa fa-power-off' }, "Log out")
+		)
+	);
+};
+
+exports._menuItems = [
+	exports._extraRoleLabel,
+	exports._userNameMenuItem,
+	exports._profileMenuItem,
+	exports._logoutMenuItem
+];
