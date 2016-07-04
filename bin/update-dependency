@@ -1,0 +1,10 @@
+#!/usr/bin/env sh
+
+SOURCE_PATH=$(readlink -f "$1")
+
+if [[ $SOURCE_PATH =~ 'eregistrations' ]]
+then
+	rsync -aAXv --exclude={".git*",".lintcache","npm-debug.log","node_modules","log","tmp","env.json","env.js","view/prototype/index.generated.html","prototype/view/index.generated.html","i18n-scan-map.generated.json","common/client/env.json","prototype/public/prototype.css","prototype/public/prototype-legacy.css","prototype/public/prototype-print.css","prototype/public/prototype.js","prototype/public/prototype.legacy.js"} "$@"
+else
+	rsync -aAXv --exclude={".git*",".lintcache","npm-debug.log","node_modules"} "$@"
+fi

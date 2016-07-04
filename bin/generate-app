@@ -86,11 +86,13 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push(domBindings);
 			msgItems.push(addRole);
 			if (startsWith.call(appName, 'official-')) {
+				msgItems.push("Configure model for new processing step in " +
+					"'model/business-process-.../processing-steps/..'");
+				msgItems.push("Ensure binding with corresponding business process service(s) " +
+					"in apps/" + appName + "/business-processes/meta.js");
 				msgItems.push(processingStepsMsg);
 				msgItems.push("Replace all occurrences of BusinessProcessCHANGEME with proper " +
 					"class names in: apps/" + appName + "/client/program.js");
-				msgItems.push("Configure model for new processing step in " +
-					"'model/business-process-.../processing-steps/..'");
 				msgItems.push("If processing step is meant to be assignable be sure to reflect it in " +
 					"'server/processes/master/apps-access-rules.js' and " +
 					"'apps/app-name/business-processes/meta.js'");
@@ -148,7 +150,9 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		if (appName === 'statistics') {
 			msgItems.push(addRole);
 			msgItems.push("Ensure that all services model is required in server/model.js and " +
-				"model.statistics.js");
+				"model/statistics.js");
+			msgItems.push("Ensure that statistics related indexes are initialized in " +
+				"server/db/indexes.js");
 		}
 
 		console.log(["\nSuccessfully created " + appName + " application." +

@@ -14,6 +14,7 @@
 'use strict';
 
 var _          = require('mano').i18n.bind('View: Binding: Sections')
+  , _d         = _
   , d          = require('d')
   , forEach    = require('es5-ext/object/for-each')
   , db         = require('mano').db
@@ -71,7 +72,10 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 			ns._if(this._label, [
 				headersMap[headerRank](this._label),
 				ns._if(this._legend, ns.div({ class: 'section-primary-legend' },
-					ns.md(this._legend)))]),
+					ns.md(this._legend.map(function (legend) {
+						if (!legend) return;
+						return _d(legend, this.getTranslations());
+					}.bind(this)))))]),
 			fieldsetResult,
 			hasOnlyTabularChildren(fieldsetResult.subSections) ? null :
 					ns.p({ class: 'submit-placeholder input' },

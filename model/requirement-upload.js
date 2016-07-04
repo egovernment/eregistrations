@@ -9,13 +9,15 @@ var Map                   = require('es6-map')
   , _                     = require('mano').i18n.bind('Model')
   , definePercentage      = require('dbjs-ext/number/percentage')
   , defineDocument        = require('./document')
-  , defineFormSectionBase = require('./form-section-base');
+  , defineFormSectionBase = require('./form-section-base')
+  , defineUser            = require('./user/base');
 
 module.exports = memoize(function (db) {
 	var StringLine        = defineStringLine(db)
 	  , Percentage        = definePercentage(db)
 	  , Document          = defineDocument(db)
 	  , FormSectionBase   = defineFormSectionBase(db)
+	  , User              = defineUser(db)
 
 	  , RequirementUpload = db.Object.extend('RequirementUpload');
 
@@ -115,7 +117,8 @@ module.exports = memoize(function (db) {
 				label: this.database.resolveTemplate(this.document.label, this.document.getTranslations(),
 					{ partial: true }),
 				issuedBy: this.document.getOwnDescriptor('issuedBy').valueToJSON(),
-				issueDate: this.document.getOwnDescriptor('issueDate').valueToJSON()
+				issueDate: this.document.getOwnDescriptor('issueDate').valueToJSON(),
+				uploadedBy: this.uploadedBy && this.getOwnDescriptor('uploadedBy').valueToJSON()
 			};
 			var files = [];
 			this.document.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
@@ -155,7 +158,11 @@ module.exports = memoize(function (db) {
 			}
 			data.isFinalized = true;
 			return data;
-		} }
+		} },
+		// The user who uploaded the requirementUpload
+		uploadedBy: {
+			type: User
+		}
 	});
 
 	return RequirementUpload;
