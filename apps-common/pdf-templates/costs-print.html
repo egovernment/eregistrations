@@ -1,17 +1,15 @@
 <!DOCTYPE html>
-<html lang="${ inserts.locale }">
+<html lang="${ locale }">
 <head>
 	<meta charset="utf-8" />
-	<link href="${ root }cost-print.css" rel="stylesheet" media="all" />
+	<link href="${ root }costs-print.css" rel="stylesheet" media="all" />
 </head>
 <body>
 	<header class="print-header">
-		<div class="print-header-logos">
-			${ inserts.logo ? '<img src="file://' + inserts.logo + '" />' : '' }
-		</div>
+		${ logo ? '<img src="file://' + logo + '" />' : '' }
 		<duv class="print-header-title">
 			<h2>${ e(_("Registration costs")) }</h2>
-			<small>${ _("Printed on ${ currentDate }", inserts) }</small>
+			<small>${ _("Printed on ${ currentDate }", { currentDate: currentDate }) }</small>
 		</div>
 	</header>
 	<h2>${ e(businessName) }</h2>
