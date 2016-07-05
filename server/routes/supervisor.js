@@ -83,8 +83,9 @@ var initializeHandler = function (conf) {
 		var promise, stepStorages;
 
 		if (query.step) {
-			var indexName  = stepsMap[query.step][query.status].indexName
-			  , indexValue = stepsMap[query.step][query.status].indexValue;
+			var status = query.status || 'pending'
+			  , indexName  = stepsMap[query.step][status].indexName
+			  , indexValue = stepsMap[query.step][status].indexValue;
 
 			stepStorages = stepsMap[query.step]._services.map(function (name) { return storages[name]; });
 
@@ -238,6 +239,15 @@ exports.tableQueryConf = [{
 	ensure: function (value) {
 		if (!value) return;
 		if (!stepLabelsMap[value]) {
+			throw new Error("Unreconized status value " + stringify(value));
+		}
+		return value;
+	}
+}, {
+	name: 'status',
+	ensure: function (value) {
+		if (!value) return;
+		if (value !== 'sentBack') {
 			throw new Error("Unreconized status value " + stringify(value));
 		}
 		return value;
