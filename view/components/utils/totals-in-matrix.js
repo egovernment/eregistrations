@@ -70,17 +70,21 @@ module.exports = function (config) {
 		script(function (formId, horizontalTotals, verticalTotals, totalId) {
 			var form = $(formId), totals = [], fullTotal = { total: $(totalId), subTotals: [] };
 			$.forEach(horizontalTotals.concat(verticalTotals), function (total) {
+				var subTotatals = [];
+				$.forEach(total.paths, function (path) {
+					subTotatals.push($('matrix-display-input-' + path));
+				});
 				totals.push({
 					total: $(total.totalId),
-					subTotals: total.paths.map(function (path) {
-						return $('matrix-display-input-' + path);
-					})
+					subTotals: subTotatals
 				});
 			});
 			$.forEach(verticalTotals, function (total) {
-				fullTotal.subTotals = fullTotal.subTotals.concat(total.paths.map(function (path) {
-					return $('matrix-display-input-' + path);
-				}));
+				var subTotatals = [];
+				$.forEach(total.paths, function (path) {
+					subTotatals.push($('matrix-display-input-' + path));
+				});
+				fullTotal.subTotals = fullTotal.subTotals.concat(subTotatals);
 			});
 			totals.push(fullTotal);
 
