@@ -6,9 +6,10 @@
 
 var ensureObject      = require('es5-ext/object/valid-object')
   , ReactiveTable     = require('reactive-table')
+  , db                = require('../../../db')
+  , Pagination        = require('../pagination')
   , Manager           = require('./manager')
-  , setupQueryHandler = require('./setup-query-handler')
-  , Pagination        = require('../pagination');
+  , setupQueryHandler = require('./setup-query-handler');
 
 module.exports = function (conf) {
 	var columns = ensureObject(conf.columns)
@@ -26,6 +27,6 @@ module.exports = function (conf) {
 		table.reload(listManager.list);
 	});
 
-	setupQueryHandler(listManager, conf.tableUrl);
+	db.objects.on('update', setupQueryHandler(listManager, conf.tableUrl).update);
 	return table;
 };
