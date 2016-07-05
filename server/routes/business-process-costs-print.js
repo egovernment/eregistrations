@@ -55,6 +55,10 @@ module.exports = function (BusinessProcess/*, options */) {
 					costMock.label = costLabel;
 				}
 
+				if (options.customCostExtract) {
+					assign(costMock, options.customCostExtract(cost, data));
+				}
+
 				return costMock;
 			}).filter(Boolean);
 
