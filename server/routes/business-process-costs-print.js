@@ -1,14 +1,14 @@
 'use strict';
 
-var db               = require('../db')
+var db               = require('../../db')
   , debug            = require('debug-ext')('pdf-generator')
   , ensureDbjsType   = require('dbjs/valid-dbjs-type')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , assign           = require('es5-ext/object/assign')
   , resolve          = require('path').resolve
-  , root             = resolve(__dirname, '..')
+  , root             = resolve(__dirname, '../..')
   , templatePath     = resolve(root, 'apps-common/pdf-templates/costs-print.html')
-  , htmlToPdf        = require('../server/html-to-pdf');
+  , htmlToPdf        = require('../html-to-pdf');
 
 module.exports = function (BusinessProcess/*, options */) {
 	var costsMap = ensureDbjsType(BusinessProcess).prototype.costs.map
