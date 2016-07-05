@@ -9,18 +9,19 @@ var toNaturalNumber     = require('es5-ext/number/to-pos-integer')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
   , serializeView       = require('../../utils/db-view/serialize')
   , filterStepsMap      = require('../../utils/filter-supervisor-steps-map')
+  , resolveStepPath     = require('../../utils/resolve-processing-step-full-path')
   , getDbSet            = require('../utils/get-db-set')
   , getDbArray          = require('../utils/get-db-array')
 
   , compareStamps = function (a, b) { return a.stamp - b.stamp; };
 
 module.exports = function (steps, data) {
-	var businessProcessStorage, reducedStorage, stepArrays, itemsPerPage;
+	var businessProcessStorages, reducedStorage, stepArrays, itemsPerPage;
 
 	ensureObject(data);
 	steps = filterStepsMap(steps);
 
-	businessProcessStorage = ensureStorage(data.businessProcessStorage);
+	businessProcessStorages = ensureObject(data.businessProcessStorages);
 	reducedStorage = ensureStorage(data.reducedStorage);
 	if (data.itemsPerPage != null) itemsPerPage = toNaturalNumber(data.itemsPerPage);
 	if (!itemsPerPage) itemsPerPage = defaultItemsPerPage;
@@ -28,15 +29,17 @@ module.exports = function (steps, data) {
 	// Configure view that covers 'all' roles case
 	stepArrays = {};
 	return deferred.map(Object.keys(steps), function (stepPath) {
-		// TODO: Fix for deep paths
-		var keyPath = 'processingSteps/map/' + stepPath + '/status';
+		var fullStepPath = 'processingSteps/map/' + resolveStepPath(stepPath)
+		  , keyPath = fullStepPath + '/status';
+		var storages = steps[stepPath]._services.map(function (name) {
+			return businessProcessStorages[name];
+		});
 
 		return deferred.map(Object.keys(steps[stepPath]), function (status) {
-			var setPromise = getDbSet(businessProcessStorage, 'computed', keyPath,
-				serializeValue(status));
+			var setPromise = getDbSet(storages, 'computed', keyPath, serializeValue(status));
 			return setPromise(function (set) {
-				return getDbArray(set, businessProcessStorage, 'computed', keyPath)(function (array) {
-					stepArrays['processingSteps/map/' + stepPath] = array;
+				return getDbArray(set, storages, 'computed', keyPath)(function (array) {
+					stepArrays[fullStepPath] = array;
 				});
 			});
 		});
