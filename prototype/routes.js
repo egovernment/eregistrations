@@ -25,7 +25,6 @@ module.exports = {
 	guide: require('./view/business-process-guide'),
 	'guide-lomas': require('./view/business-process-guide-lomas-form'),
 	'guide-lomas/form-complement': require('./view/business-process-guide-lomas-form-complement'),
-	'guide/costs-print': require('../view/print-business-process-costs-list'),
 	forms: require('./view/business-process-data-forms'),
 	'forms/disabled': require('./view/business-process-data-forms-disabled'),
 	'forms/tabbed': {
