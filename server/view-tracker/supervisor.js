@@ -35,20 +35,23 @@ module.exports = function (steps, data) {
 			return businessProcessStorages[name];
 		});
 
+		stepArrays[fullStepPath] = {};
 		return deferred.map(Object.keys(steps[stepPath]), function (status) {
 			var setPromise = getDbSet(storages, 'computed', keyPath, serializeValue(status));
 			return setPromise(function (set) {
 				return getDbArray(set, storages, 'computed', keyPath)(function (array) {
-					stepArrays[fullStepPath] = array;
+					stepArrays[fullStepPath][status] = array;
 				});
 			});
 		});
 	})(function () {
 		var onChange = function () {
 			var result = [];
-			forEach(stepArrays, function (stepArray, keyPath) {
-				stepArray.forEach(function (data) {
-					result.push({ id: data.id + '/' + keyPath, stamp: data.stamp });
+			forEach(stepArrays, function (stepArrayStatuses, keyPath) {
+				forEach(stepArrayStatuses, function (stepArray) {
+					stepArray.forEach(function (data) {
+						result.push({ id: data.id + '/' + keyPath, stamp: data.stamp });
+					});
 				});
 			});
 			result.sort(compareStamps);
@@ -59,8 +62,10 @@ module.exports = function (steps, data) {
 			]);
 		};
 
-		forEach(stepArrays, function (stepArray) {
-			stepArray.on('change', function () { onChange().done(); });
+		forEach(stepArrays, function (stepArrayStatuses) {
+			forEach(stepArrayStatuses, function (stepArray) {
+				stepArray.on('change', function () { onChange().done(); });
+			});
 		});
 		return onChange();
 	})(Function.prototype);
