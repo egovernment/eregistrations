@@ -2,13 +2,17 @@
 
 'use strict';
 
-var ensureType = require('dbjs/valid-dbjs-type')
+var memoize    = require('memoizee')
+  , ensureType = require('dbjs/valid-dbjs-type')
   , isFalsy    = require('../utils/is-falsy');
 
-var filterTypes = function (obj) {
-	if (obj.master !== obj) return false;
-	return (obj.constructor.prototype !== obj);
-};
+var getTypeFilter = memoize(function (type) {
+	return function (obj) {
+		if (obj.master !== obj) return false;
+		if (obj.constructor !== type) return false;
+		return (obj.constructor.prototype !== obj);
+	};
+});
 
 module.exports = function (type) {
 	var BusinessProcess = ensureType(type).database.BusinessProcess;
@@ -16,7 +20,7 @@ module.exports = function (type) {
 		throw new Error(type.__id__ + " is not BusinessProcess type");
 	}
 	return type.instances
-		.filter(filterTypes)
+		.filter(getTypeFilter(type))
 		.filterByKey('isFromEregistrations', true)
 		.filterByKey('isDemo', isFalsy);
 };
