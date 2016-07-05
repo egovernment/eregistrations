@@ -19,7 +19,7 @@ var generateTableBody = function (rows, master) {
 };
 
 module.exports = function (config) {
-	var i, horizontalTotal, horizontalTotals = [], verticalTotals = [], totalId,
+	var horizontalTotal, horizontalTotals = [], verticalTotals = [], totalId,
 		rows, columnLabels, lastRowLabel, tableId, master, formId;
 	ensureObject(config);
 	rows         = ensureArray(config.rows);
@@ -40,17 +40,16 @@ module.exports = function (config) {
 		row.totalId = verticalTotal.totalId;
 	});
 	//horizontal totals
-	var addPath = function (row) {
-		horizontalTotal.paths.push(row.paths[i]);
-	};
-	for (i = 0; i < rows[0].paths.length; i++) {
+	rows[0].paths.forEach(function (path, index) {
 		horizontalTotal = {
 			totalId: generateId('total'),
 			paths: []
 		};
-		rows.forEach(addPath);
+		rows.forEach(function (row) {
+			horizontalTotal.paths.push(row.paths[index]);
+		});
 		horizontalTotals.push(horizontalTotal);
-	}
+	});
 
 	return table({ id: tableId },
 		thead(tr(
@@ -70,7 +69,7 @@ module.exports = function (config) {
 
 		script(function (formId, horizontalTotals, verticalTotals, totalId) {
 			var form = $(formId), totals = [], fullTotal = { total: $(totalId), subTotals: [] };
-			horizontalTotals.concat(verticalTotals).forEach(function (total) {
+			$.forEach(horizontalTotals.concat(verticalTotals), function (total) {
 				totals.push({
 					total: $(total.totalId),
 					subTotals: total.paths.map(function (path) {
@@ -78,7 +77,7 @@ module.exports = function (config) {
 					})
 				});
 			});
-			verticalTotals.forEach(function (total) {
+			$.forEach(verticalTotals, function (total) {
 				fullTotal.subTotals = fullTotal.subTotals.concat(total.paths.map(function (path) {
 					return $('matrix-display-input-' + path);
 				}));
@@ -86,9 +85,9 @@ module.exports = function (config) {
 			totals.push(fullTotal);
 
 			$.onEnvUpdate(form, function () {
-				totals.forEach(function (total) {
+				$.forEach(totals, function (total) {
 					var sum = 0;
-					total.subTotals.forEach(function (subTotal) {
+					$.forEach(total.subTotals, function (subTotal) {
 						sum += (subTotal.value ? Number(subTotal.value) : 0);
 					});
 					total.total.innerText = sum.toLocaleString();
