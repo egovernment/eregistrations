@@ -62,7 +62,7 @@ module.exports = function (BusinessProcess/*, options */) {
 				return costMock;
 			}).filter(Boolean);
 
-			return htmlToPdf(templatePath, '', {
+			return htmlToPdf(options.template || templatePath, '', {
 				width: "210mm",
 				height: "170mm",
 				streamable: true,
