@@ -14,4 +14,6 @@ require('../../../model/user/recently-visited/business-processes');
 
 require('../../../model/views');
 
+//TODO: Require all business processes services models
+
 module.exports = db;
