@@ -71,11 +71,6 @@ exports._bodyAppend = function () {
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(
-				a({ href: '/guide/costs-print/' },
-					span("Business Process: Guide: Costs print"),
-					span({ class: 'label-reg' }, "Part A"))
-			),
-			li(
 				a({ href: '/forms/' },
 					span("Business Process: Forms"),
 					span({ class: 'label-reg' }, "Part A"))
