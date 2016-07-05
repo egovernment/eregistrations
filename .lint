@@ -37,7 +37,6 @@ predef+ console, setTimeout, setInterval
 ./prototype/scripts
 ./utils
 ./scripts
-./controller/business-process-costs-print.js
 predef+ process, __dirname, setInterval, Buffer
 
 ./controller/client
