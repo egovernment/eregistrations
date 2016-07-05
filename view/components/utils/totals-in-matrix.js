@@ -27,7 +27,7 @@ module.exports = function (config) {
 	lastRowLabel = config.lastRowLabel;
 	master       = ensureObject(config.master);
 	tableId      = config.tableId || generateId();
-	formId       = config.formId;
+	formId       = config.formId || tableId;
 
 	totalId = generateId('total');
 	//vertical totals
