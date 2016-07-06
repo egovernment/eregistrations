@@ -4,10 +4,10 @@
 
 var aFrom           = require('es5-ext/array/from')
   , ensureIterable  = require('es5-ext/iterable/validate-object')
-  , ensureString    = require('es5-ext/object/validate-stringifiable-value')
   , Set             = require('es6-set')
   , deferred        = require('deferred')
   , ensureStorage   = require('dbjs-persistence/ensure-storage')
+  , ensureOwnerId   = require('../../utils/ensure-object-id')
   , assimilateEvent = require('./lib/assimilate-driver-event')
   , anyIdToStorage  = require('../utils/any-id-to-storage');
 
@@ -21,7 +21,7 @@ module.exports = function (storage, keyPaths) {
 
 	return function (ownerId, fragment) {
 		var promise;
-		ownerId = ensureString(ownerId);
+		ownerId = ensureOwnerId(ownerId);
 		if (storage) promise = storagePromise;
 		else promise = anyIdToStorage(ownerId);
 		fragment.promise = promise(function (storage) {

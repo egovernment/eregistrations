@@ -16,6 +16,7 @@ var aFrom            = require('es5-ext/array/from')
   , resolve          = require('path').resolve
   , fork             = require('child_process').fork
   , mano             = require('mano')
+  , ensureOwnerId    = require('../../../utils/ensure-object-id')
   , getDriver        = require('./local/master')
   , getDriverGlobal  = require('./global/master')
 
@@ -79,6 +80,7 @@ module.exports = function (root, data) {
 		mano.slaveAccessFragment = accessFragment = new FragmentGroup();
 		mano.registerUserAccess = function (userId) {
 			var fragment, def, promise;
+			userId = ensureOwnerId(userId);
 			if (done[userId]) return mano.registerUserPromise;
 			done[userId] = true;
 			debug("register data for %s", userId);
