@@ -92,8 +92,9 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 	});
 
 	$.forIn(requirementsListElements, function (li, name) {
-		requirementsLabelElements[name] =
-			$.getTextChild('requirement-label-' + camelToHyphen.call(name));
+		var labelElement = $('requirement-label-' + camelToHyphen.call(name));
+
+		if (labelElement) requirementsLabelElements[name] = $.getTextChild(labelElement);
 	});
 
 	if ($('costs-total')) {
