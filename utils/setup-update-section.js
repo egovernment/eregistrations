@@ -53,7 +53,7 @@ module.exports = function (section) {
 	sectionOwner      = section.owner;
 	updatePostfix     = FormSectionUpdate.updateSectionPostfix;
 
-	if (db.FormSectionGroup && section instanceof db.FormSectionGroup && section.hasSplitForms) {
+	if (db.FormSectionGroup && section instanceof db.FormSectionGroup && !section.hasSplitForms) {
 		sectionOwner.define(section.key + updatePostfix, {
 			type: section.constructor,
 			nested: true
@@ -61,7 +61,6 @@ module.exports = function (section) {
 
 		sectionOwner[section.key + updatePostfix].setProperties({
 			label: section.label || '',
-			hasSplitForms: section.hasSplitForms,
 			pageUrl: section.pageUrl ? camelToHyphen.call(section.pageUrl + updatePostfix) : null
 		});
 		section.sections.forEach(function (subSection) {
