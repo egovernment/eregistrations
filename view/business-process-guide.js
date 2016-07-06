@@ -191,9 +191,16 @@ exports._requirementsSection = function () {
 		ul({ id: 'requirements-list', class: 'user-guide-requirements-list' },
 			this.businessProcess.requirements.map,
 			function (requirement) {
-				li({ 'data-key': requirement.key },
-					requirement.toGuideDOM ? requirement.toGuideDOM() : [requirement.label,
-							requirement.legend && [br(), small(mdi(requirement.legend))]]);
+				li(
+					{ 'data-key': requirement.key },
+					requirement.toGuideDOM ? requirement.toGuideDOM() : [
+						span(
+							{ id: 'requirement-label-' + camelToHyphen.call(requirement.key) },
+							requirement.label
+						),
+						requirement.legend && [br(), small(mdi(requirement.legend))]
+					]
+				);
 			}),
 		exports._requirementsFooter.call(this)
 	);

@@ -62,7 +62,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 	  , noRequstedRegistrationsSection, mandatoryRegistrationsSection
 	  , mandatoryRegistrationsListElements
 	  , optionalRegistrationsSection, optionalRegistrationsListElements
-	  , requirementsSection, requirementsListElements
+	  , requirementsSection, requirementsListElements, requirementsLabelElements = {}
 	  , costsListElements, costsAmountsElements = {}, costsLabelElements = {}
 	  , costsTotalElement, costsPrintLink, guideSaveButton
 	  , costsSection, zeroCostsClass;
@@ -89,6 +89,12 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 	$.forIn(costsListElements, function (li, name) {
 		costsAmountsElements[name] = $.getTextChild('cost-amount-' + camelToHyphen.call(name));
 		costsLabelElements[name] = $.getTextChild('cost-label-' + camelToHyphen.call(name));
+	});
+
+	$.forIn(requirementsListElements, function (li, name) {
+		var labelElement = $('requirement-label-' + camelToHyphen.call(name));
+
+		if (labelElement) requirementsLabelElements[name] = $.getTextChild(labelElement);
 	});
 
 	if ($('costs-total')) {
@@ -200,6 +206,10 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		businessProcess.requirements.applicable =
 			$.setify(businessProcess.requirements.applicable($.dbjsObserveMock));
 
+		businessProcess.requirements.map.forEach(function (requirement) {
+			requirement.label = getPropertyValue(requirement, 'label');
+		});
+
 		//Resolve costs
 		businessProcess.costs.applicable =
 			$.setify(businessProcess.costs.applicable($.dbjsObserveMock));
@@ -217,9 +227,16 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 		// Filter requirements and costs lists
 		$.forIn(requirementsListElements, function (li, name) {
-			li.toggle(businessProcess.requirements.applicable.has(
+			var enabled = businessProcess.requirements.applicable.has(
 				businessProcess.requirements.map[name]
-			));
+			);
+
+			li.toggle(enabled);
+			if (enabled) {
+				if (requirementsLabelElements[name]) {
+					requirementsLabelElements[name].data = businessProcess.requirements.map[name].label;
+				}
+			}
 		});
 
 		$.forIn(costsListElements, function (li, name) {
