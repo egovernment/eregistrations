@@ -19,7 +19,7 @@ exports['forms-sections-content'] = function () {
 			md(this.section._legend))),
 		disabler(
 			exports._disableCondition.call(this),
-			this.section.applicableSections ?
+			this.section.applicableSections && this.section.hasSplitForms ?
 					[progressRules(this.section),
 						generateSections(this.section.applicableSections, { viewContext: this })] :
 					this.section.toDOMForm(document)
