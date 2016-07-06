@@ -33,6 +33,7 @@ module.exports = Object.defineProperty(db.FormSectionUpdate.prototype, 'toDOMFor
 		  , headerRank = options.headerRank || 2
 		  , contentContainer
 		  , fieldsetResult
+		  , drawAsTabular
 		  , sectionFieldsetOptions = {
 			fieldsetOptions: options.fieldsetOptions,
 			prepend: options.prepend,
@@ -42,6 +43,9 @@ module.exports = Object.defineProperty(db.FormSectionUpdate.prototype, 'toDOMFor
 			subSectionHeaderRank: headerRank + 1,
 			disableHeader: true
 		};
+		drawAsTabular = this.sourceSection.hasOnlyTabularChildren ||
+			(db.FormEntitiesTable && this.sourceSection instanceof db.FormEntitiesTable);
+
 		fieldsetResult = [
 			this.originalSourceSection.toDOM(document, { disableHeader: true, displayEmptyFields: true,
 				cssClass: ['form-section-update', 'entity-data-section'] }),
@@ -58,8 +62,9 @@ module.exports = Object.defineProperty(db.FormSectionUpdate.prototype, 'toDOMFor
 						return _d(legend, this.getTranslations());
 					}.bind(this)))))]),
 			fieldsetResult,
-			ns.p({ class: 'submit-placeholder input' },
-					ns.input({ type: 'submit', value: _("Submit") })),
+			drawAsTabular ? null :
+					ns.p({ class: 'submit-placeholder input' },
+						ns.input({ type: 'submit', value: _("Submit") })),
 			ns.p({ class: 'section-primary-scroll-top' },
 				ns.a({ onclick: 'window.scroll(0, 0)' },
 					ns.span({ class: 'fa fa-arrow-up' }, "Back to top")))
@@ -72,7 +77,7 @@ module.exports = Object.defineProperty(db.FormSectionUpdate.prototype, 'toDOMFor
 			div({ class: ['disabler-range',
 					_if(this._isDisabled, 'disabler-active')] },
 				div({ class: 'disabler' }),
-				customizeData.form = ns.form(
+				drawAsTabular ? contentContainer : customizeData.form = ns.form(
 					{
 						id: this.domId,
 						method: 'post',
