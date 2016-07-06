@@ -125,12 +125,6 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push(appServerRoutes);
 		}
 
-		if (appName === 'meta-admin') {
-			msgItems.push(appsRoutersReminder);
-		}
-		if (appName === 'users-admin') {
-			msgItems.push(appsRoutersReminder);
-		}
 		if (appName === 'manager-registration') {
 			msgItems.push("Ensure manager model is configured with its managerDataForms");
 		}
@@ -143,7 +137,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		if (appName === 'supervisor') {
 			msgItems = [accessMsg, clientModelReminder, domBindings, addRole, modelViews,
 				"Ensure that views populations for supervisor 'all' is configured in server/db/views.js",
-				appsPostControllers, recentlyVisitedProcesses, appsRoutersReminder];
+				appsPostControllers, recentlyVisitedProcesses];
 		}
 		if (appName === 'statistics') {
 			msgItems.push(addRole);
