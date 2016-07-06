@@ -61,7 +61,7 @@ module.exports = function (BusinessProcessType, filename/*, options*/) {
 	costs.map         = copyMapEntities('costs', ['amount', 'label']);
 	registrations.map = copyMapEntities('registrations', ['isApplicable', 'isMandatory',
 		'isRequested', 'certificates', 'requirements', 'costs']);
-	requirements.map  = copyMapEntities('requirements', ['isApplicable']);
+	requirements.map  = copyMapEntities('requirements', ['isApplicable', 'label']);
 
 	// Assure each map implements forEach.
 	[certificates.map, costs.map, registrations.map, requirements.map].forEach(defineForEach);
