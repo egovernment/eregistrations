@@ -90,8 +90,8 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 				}
 				// In case of tabular children
 				subSection.arrayResult.some(function (el) {
-					if (el && el.querySelector && el.querySelector('.buttons-container')) {
-						subSection.buttonsContainer = el.querySelector('.buttons-container');
+					if (el && el.querySelector && el.querySelector('.entities-overview-table-buttons')) {
+						subSection.buttonsContainer = el.querySelector('.entities-overview-table-buttons');
 						return true;
 					}
 				});
