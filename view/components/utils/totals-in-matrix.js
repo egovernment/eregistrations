@@ -8,11 +8,12 @@ var generateTableBody = function (rows, master) {
 	return rows.map(function (row) {
 		return tr(th(row.label, span({ class: 'hint' }, row.inputHint)),
 			list(row.paths, function (path) {
-				var resolved = master.resolveSKeyPath(path);
-				return td(
-					input({ id: 'matrix-display-input-' + path,
-						dbjs: resolved.observable, required: false })
-				);
+				var resolved = master.resolveSKeyPath(path)
+				  , input    = resolved.observable.toDOMInput(document);
+
+				input.control.id = 'matrix-display-input-' + path;
+
+				return td(input);
 			}),
 			td({ id: row.totalId }));
 	});
