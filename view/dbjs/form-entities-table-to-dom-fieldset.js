@@ -66,8 +66,8 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFie
 						'entities-overview-table entities-overview-table-empty') },
 					ns.thead(
 						ns.tr(ns.list(this.entities, function (entity) {
-							return ns.th({ class: ns._if(entity._desktopOnly, 'desktop-only',
-										ns._if(entity._mobileOnly, 'mobile-only')) },
+							return ns.th({ class: [ns._if(entity._desktopOnly, 'desktop-only',
+								ns._if(entity._mobileOnly, 'mobile-only')), entity.htmlClass] },
 									or(entity._label, resolvePropertyPath(
 									collectionType.prototype,
 									entity.propertyName
@@ -96,25 +96,26 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFie
 							}
 							return ns.tr(ns.list(self.entities, function (entity) {
 								var resolved = resolvePropertyPath(entityObject, entity.propertyName)
+								  , htmlClass = [ns._if(entity._desktopOnly, 'desktop-only',
+										ns._if(entity._mobileOnly, 'mobile-only')), entity.htmlClass]
 								  , isObject = (typeof resolved.value === 'object') && resolved.value
 										&& resolved.value.__id__;
 
 								if (db.File && isObject && (resolved.value instanceof db.File)) {
-									return td(_if(resolved.value._url,
+									return td({ class: htmlClass }, _if(resolved.value._url,
 											a({ href: resolved.value._url, target: '_blank' }, _("See picture"))));
 								}
-								return ns.td({ class: ns._if(entity._desktopOnly, 'desktop-only',
-											ns._if(entity._mobileOnly, 'mobile-only')) },
+								return ns.td({ class: htmlClass },
 										ns.a({ href: editUrl },
 											resolved.observable));
 							}),
-								ns.td({ class: ns._if(ns.eq(status, 1),
-										'completed') },
+								ns.td({ class: [ns._if(ns.eq(status, 1),
+									'completed'), 'entities-overview-table-status-cell'] },
 									ns.span({ class: 'status-complete' }, "✓"),
 									ns.span({ class: 'hint-optional hint-optional-left status-incomplete',
 											'data-hint': _("Some required fields are not filled") },
 										"!")),
-								ns.td({ class: 'actions' },
+								ns.td({ class: 'actions  entities-overview-table-actions-cell' },
 									ns.a({ class: 'actions-edit',
 											href: editUrl },
 										ns.span({ class: 'fa fa-edit' }, _("Edit"))),
