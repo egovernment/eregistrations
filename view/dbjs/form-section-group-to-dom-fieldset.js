@@ -80,9 +80,21 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 
 		if (typeof options.customize === 'function') {
 			forEach(customizeData.subSections, function (subSection) {
-				subSection.fieldset = find.call(subSection.arrayResult, function (el) {
+				var fieldset;
+				fieldset = find.call(subSection.arrayResult, function (el) {
 					return el && el.nodeName === 'FIELDSET';
-				})._dbjsFieldset;
+				});
+				// there may not be any fieldsets (i.e only tabular children)
+				if (fieldset) {
+					subSection.fieldset = fieldset._dbjsFieldset;
+				}
+				// In case of tabular children
+				subSection.arrayResult.some(function (el) {
+					if (el && el.querySelector && el.querySelector('.buttons-container')) {
+						subSection.buttonsContainer = el.querySelector('.buttons-container');
+						return true;
+					}
+				});
 			});
 			options.customize.call(this, customizeData);
 		}
