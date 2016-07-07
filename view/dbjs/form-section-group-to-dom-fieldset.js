@@ -14,6 +14,7 @@
 
 var d                = require('d')
   , db               = require('mano').db
+  , _                = require('mano').i18n.bind('View: Binding: Sections')
   , ns               = require('mano').domjs.ns
   , find             = require('es5-ext/array/#/find')
   , forEach          = require('es5-ext/object/for-each')
@@ -40,26 +41,41 @@ module.exports = Object.defineProperties(db.FormSectionGroup.prototype, {
 
 		customizeData.arrayResult = [
 			options.prepend,
-			div({ class: 'form-elements' }, resolvent.formResolvent),
+			this.hasOnlyTabularChildren ? (resolvent.formResolvent ? ns.form({
+				action: options.actionUrl,
+				class: 'form-elements',
+				autoSubmit: true,
+				method: 'post'
+			}, resolvent.formResolvent, ns.p({ class: 'submit' },
+				ns.input({ type: 'submit', value: _("Submit") }))) : undefined) :
+					div({ class: 'form-elements' }, resolvent.formResolvent),
 			progressRules(this)
 		];
 
 		customizeData.subSections = customizeData.arrayResult.subSections = {};
+		var drawCondition;
+		if (this.resolventProperty && this.hasOnlyTabularChildren) {
+			drawCondition = not(this._isUnresolved);
+		} else {
+			drawCondition = true;
+		}
 
 		customizeData.arrayResult.push(
-			ns.div({ id: resolvent.affectedSectionId }, ns.list(this.applicableSections,
-				function (subSection, subSectionName) {
-					customizeData.subSections[subSectionName] = {};
-					customizeData.subSections[subSectionName].object = subSection;
-					return ns.div(
-						{ class: 'section-primary-sub', id: subSection.domId },
-						ns._if(subSection.label, headersMap[subSectionHeaderRank](subSection.label)),
-						ns._if(subSection._legend, ns.div({ class: 'section-primary-legend' },
-							ns.md(subSection._legend))),
-						customizeData.subSections[subSectionName].arrayResult
-							= subSection.toDOMFieldset(document, fieldsetOptions)
-					);
-				}, this), resolvent.legacyScript).extend(options.append)
+			ns._if(drawCondition,
+				ns.div({ id: resolvent.affectedSectionId }, ns.list(this.applicableSections,
+					function (subSection, subSectionName) {
+						customizeData.subSections[subSectionName] = {};
+						customizeData.subSections[subSectionName].object = subSection;
+						return ns.div(
+							{ class: 'section-primary-sub', id: subSection.domId },
+							ns._if(subSection.label, headersMap[subSectionHeaderRank](subSection.label)),
+							ns._if(subSection._legend, ns.div({ class: 'section-primary-legend' },
+								ns.md(subSection._legend))),
+							customizeData.subSections[subSectionName].arrayResult
+								= subSection.toDOMFieldset(document, fieldsetOptions)
+						);
+					}, this), resolvent.legacyScript).extend(options.append)
+				)
 		);
 
 		if (typeof options.customize === 'function') {

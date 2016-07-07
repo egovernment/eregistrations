@@ -125,6 +125,16 @@ module.exports = memoize(function (db) {
 		hasSplitForms: {
 			type: db.Boolean,
 			value: false
+		},
+		hasOnlyTabularChildren: {
+			type: db.Boolean,
+			value: function (_observe) {
+				var db = this.database;
+				if (!db.FormEntitiesTable) return false;
+				return this.sections.every(function (section) {
+					return section instanceof db.FormEntitiesTable;
+				});
+			}
 		}
 	});
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSectionBase;
