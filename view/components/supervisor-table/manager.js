@@ -15,6 +15,7 @@ var includes        = require('es5-ext/array/#/contains')
   , unserializeView = require('../../../utils/db-view/unserialize')
   , timeRanges      = require('../../../utils/supervisor-time-ranges')
   , getSearchFilter = require('../../../utils/get-search-filter')
+  , resolveStepPath = require('../../../utils/resolve-processing-step-full-path')
 
   , defineProperties = Object.defineProperties;
 
@@ -86,15 +87,7 @@ SupervisorManager.prototype = Object.create(ListManager.prototype, {
 					views = db.views.businessProcesses.getBySKeyPath(query.step)[status];
 					stepViews = unserializeView(views.get(1), this._type);
 					list = stepViews.map(function (businessProcess) {
-						var pathTokens = query.step.split('/')
-						  , stepName   = pathTokens.shift()
-						  , step       = businessProcess.processingSteps.map[stepName];
-
-						while (pathTokens.length) {
-							step = step.getBySKeyPath('steps/map/' + pathTokens.shift());
-						}
-
-						return step;
+						return businessProcess.processingSteps.map.getBySKeyPath(resolveStepPath(query.step));
 					}.bind(this));
 				}
 
