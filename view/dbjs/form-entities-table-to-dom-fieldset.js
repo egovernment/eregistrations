@@ -130,13 +130,12 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFie
 				),
 				options.append,
 				resolvent.legacyScript,
-				ns.p(
+				ns.p({ class: 'entities-overview-table-buttons' },
 					customizeData.addButton = addButton = ns.a(
 						{ class: 'button-regular', href: getAddUrl() },
 						options.addButtonLabel || _("Add ${ entityLabel }",
 							{ entityLabel: collectionType.prototype.label })
-					)
-				))
+					)))
 		];
 		if (isMapMode) {
 			loc.on('change', function (ev) {
