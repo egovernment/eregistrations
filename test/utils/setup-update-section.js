@@ -60,14 +60,12 @@ module.exports = function (t, a) {
 		businessUpdateProto.previousProcess);
 
 	t(businessUpdateProto.dataForms.map.mainGroup);
-	a(businessUpdateProto.dataForms.map['mainGroup' + updatePostfix]
-			.sections.first.constructor,
+	a(businessUpdateProto.dataForms.map['mainGroup' + updatePostfix].constructor,
 		FormSectionUpdate);
-	a(businessUpdateProto.dataForms.map['mainGroup' + updatePostfix]
-			.sections.first.sourceSection.propertyMaster,
+	a(businessUpdateProto.dataForms.map['mainGroup' + updatePostfix].sourceSection.propertyMaster,
 		businessUpdateProto);
 	a(businessUpdateProto.dataForms.map['mainGroup' + updatePostfix]
-			.sections.first.originalSourceSection.propertyMaster,
+			.originalSourceSection.sections.first.propertyMaster,
 		businessUpdateProto.previousProcess);
 
 };
