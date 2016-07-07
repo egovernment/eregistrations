@@ -129,20 +129,11 @@ module.exports = memoize(function (db) {
 		hasOnlyTabularChildren: {
 			type: db.Boolean,
 			value: function (_observe) {
-				var res = false, hasOtherChildren = false, db = this.database;
+				var db = this.database;
 				if (!db.FormEntitiesTable) return false;
-				this.sections.forEach(function (section) {
-					if (section instanceof db.FormEntitiesTable) {
-						res = true;
-					} else {
-						hasOtherChildren = true;
-					}
-					if (res && hasOtherChildren) {
-						throw new Error("You cannot mix tabular and non tabular sections in a group section!");
-					}
+				return this.sections.every(function (section) {
+					return section instanceof db.FormEntitiesTable;
 				});
-
-				return res;
 			}
 		}
 	});
