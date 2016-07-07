@@ -43,22 +43,25 @@ module.exports = Object.defineProperties(db.FormSectionUpdate.prototype, {
 
 		customizeData.arrayResult = [
 			options.prepend,
-			drawAsTabular ? (resolvent.formResolvent ? ns.form({
-				action: options.actionUrl,
-				class: 'form-elements form-section-update-question',
-				autoSubmit: true,
-				method: 'post'
-			}, resolvent.formResolvent, ns.p({ class: 'submit' },
-				ns.input({ type: 'submit', value: _("Submit") }))) : undefined) :
-					div({ class: 'form-elements form-section-update-question' },
-						resolvent.formResolvent),
+			this.resolventProperty ? (
+				drawAsTabular ? (resolvent.formResolvent ? ns.form({
+					action: options.actionUrl,
+					class: 'form-elements form-section-update-question',
+					autoSubmit: true,
+					method: 'post'
+				}, resolvent.formResolvent, ns.p({ class: 'submit' },
+					ns.input({ type: 'submit', value: _("Submit") }))) : undefined) :
+						div({ class: 'form-elements form-section-update-question' },
+							resolvent.formResolvent)
+			) : null,
 			progressRules(this)
 		];
 
 		customizeData.sourceSection = customizeData.arrayResult.sourceSection = {};
 		customizeData.sourceSection.object = this.sourceSection;
 		customizeData.arrayResult.push(
-			ns._if(ns.or(!drawAsTabular, eq(this._resolvent, this._resolventValue)),
+			ns._if(ns.or(!drawAsTabular, !this.resolventProperty,
+					eq(this._resolvent, this._resolventValue)),
 				ns.div({ id: resolvent.affectedSectionId },
 					ns.div({ class: 'section-primary-sub', id: this.sourceSection.domId },
 						options.disableHeader ? null :
