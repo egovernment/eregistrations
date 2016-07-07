@@ -16,31 +16,12 @@
 var _          = require('mano').i18n.bind('View: Binding: Sections')
   , _d         = _
   , d          = require('d')
-  , forEach    = require('es5-ext/object/for-each')
   , db         = require('mano').db
   , ns         = require('mano').domjs.ns
-  , headersMap = require('../utils/headers-map')
-  , hasOnlyTabularChildren;
+  , headersMap = require('../utils/headers-map');
 
 require('./form-section-group-to-dom-fieldset');
 require('./form-section-base');
-
-hasOnlyTabularChildren = function (subSections) {
-	var res = false, hasOtherChildren = false;
-	if (!db.FormEntitiesTable) return false;
-	forEach(subSections, function (result) {
-		if (result.object instanceof db.FormEntitiesTable) {
-			res = true;
-		} else {
-			hasOtherChildren = true;
-		}
-		if (res && hasOtherChildren) {
-			throw new Error("You cannot mix tabular and non tabular sections in a group section!");
-		}
-	});
-
-	return res;
-};
 
 module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm',
 	d(function (document/*, options */) {
@@ -58,6 +39,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 			append: options.append,
 			master: master,
 			formId: this.domId,
+			actionUrl: null,
 			subSectionHeaderRank: headerRank + 1
 		};
 
@@ -66,6 +48,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 					url(this.actionUrl + '-add') :
 					url(this.actionUrl, master.__id__);
 		}
+		sectionFieldsetOptions.actionUrl = actionUrl;
 
 		fieldsetResult = this.toDOMFieldset(document, sectionFieldsetOptions);
 		contentContainer = [
@@ -77,7 +60,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 						return _d(legend, this.getTranslations());
 					}.bind(this)))))]),
 			fieldsetResult,
-			hasOnlyTabularChildren(fieldsetResult.subSections) ? null :
+			this.hasOnlyTabularChildren ? null :
 					ns.p({ class: 'submit-placeholder input' },
 						ns.input({ type: 'submit', value: _("Submit") })),
 			ns.p({ class: 'section-primary-scroll-top' },
@@ -92,7 +75,7 @@ module.exports = Object.defineProperty(db.FormSectionGroup.prototype, 'toDOMForm
 			div({ class: ['disabler-range',
 					_if(this._isDisabled, 'disabler-active')] },
 				div({ class: 'disabler' }),
-				hasOnlyTabularChildren(fieldsetResult.subSections) ?
+				this.hasOnlyTabularChildren ?
 						contentContainer : customizeData.form = ns.form(
 					{
 						id: this.domId,
