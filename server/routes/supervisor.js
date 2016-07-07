@@ -21,6 +21,7 @@ var aFrom               = require('es5-ext/array/from')
   , defaultItemsPerPage = require('../../conf/objects-list-items-per-page')
   , stepLabelsMap       = require('../../utils/processing-steps-label-map')
   , filterStepsMap      = require('../../utils/filter-supervisor-steps-map')
+  , resolveStepPath     = require('../../utils/resolve-processing-step-full-path')
   , timeRanges          = require('../../utils/supervisor-time-ranges')
   , bpListProps         = require('../../utils/supervisor-list-properties')
   , bpListComputedProps = aFrom(require('../../utils/supervisor-list-computed-properties'))
@@ -93,7 +94,7 @@ var initializeHandler = function (conf) {
 				function (baseSet) {
 					return getDbArray(baseSet, stepStorages, 'computed', indexName).then(
 						function (arr) {
-							return getStepsFromBps(arr, 'processingSteps/map/' + query.step);
+							return getStepsFromBps(arr, 'processingSteps/map/' + resolveStepPath(query.step));
 						}
 					);
 				}
