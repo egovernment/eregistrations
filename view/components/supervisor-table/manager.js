@@ -86,8 +86,16 @@ SupervisorManager.prototype = Object.create(ListManager.prototype, {
 					views = db.views.businessProcesses.getBySKeyPath(query.step)[status];
 					stepViews = unserializeView(views.get(1), this._type);
 					list = stepViews.map(function (businessProcess) {
-						return businessProcess.processingSteps.map[query.step];
-					});
+						var pathTokens = query.step.split('/')
+						  , stepName   = pathTokens.shift()
+						  , step       = businessProcess.processingSteps.map[stepName];
+
+						while (pathTokens.length) {
+							step = step.getBySKeyPath('steps/map/' + pathTokens.shift());
+						}
+
+						return step;
+					}.bind(this));
 				}
 
 				return {
