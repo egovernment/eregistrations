@@ -67,10 +67,29 @@
 
 .entities-overview-table .completed {
 	text-align: center;
+	width: 50px;
 }
 
 .entities-overview-table .actions {
 	text-align: center;
+	width: 60px;
+}
+
+.entities-overview-table .entities-overview-table-shares {
+	width: 50px;
+}
+
+.entities-overview-table-total th:first-child {
+	text-align: right;
+}
+
+.entities-overview-table-total .complete {
+	background-color: var(--success-background);
+}
+
+.entities-overview-table-total .complete th,
+.entities-overview-table-total .complete td {
+	color: var(--white-text);
 }
 
 .entities-overview-info {
