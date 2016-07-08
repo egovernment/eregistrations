@@ -35,8 +35,9 @@ var getNamedListElements = function (listId) {
 };
 
 var getPropertyValue = function (target, property) {
-	return typeof target[property] === 'function' ? target[property]($.dbjsObserveMock)
-		: target[property];
+	var result = typeof target[property] === 'function'
+		? target[property]($.dbjsObserveMock) : target[property];
+	return result || ''; // Do not pass null/undefined literally
 };
 
 var buildCostsPrintLink = function (currentLink, cost, field, prefix) {
