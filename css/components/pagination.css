@@ -12,28 +12,32 @@
 	border: 1px solid var(--light-inner-border);
 	padding: 0 10px;
 	display: block;
-	background: var(--white-background);
 	border-left-width: 0;
 	text-decoration: none;
+	cursor: default;
 }
-.pagination li > a:hover,
-.pagination li > a:focus,
-.pagination li > a:active {
+
+.pagination li > a:link {
+	background: var(--white-background);
+	cursor: pointer;
+}
+
+.pagination li > a:link:hover,
+.pagination li > a:link:active {
 	background: var(--light-background);
 }
 
-.pagination .pagination-active > a,
-.pagination .pagination-active > a:hover,
-.pagination .pagination-active > a:focus,
-.pagination .pagination-active > a:active {
-	background: var(--normal-background);
-	color: var(--white-background);
-}
-
-.pagination li:first-child > a {
+.pagination li:first-child > a, .pagination .pagination-left-edge > a {
 	border-radius: 4px 0 0 4px;
 	border-left-width: 1px;
 }
-.pagination li:last-child > a {
+.pagination li:last-child > a, .pagination .pagination-right-edge > a {
 	border-radius: 0 4px 4px 0;
+}
+
+.pagination form {
+	padding: 0 10px;
+}
+.pagination input{
+	margin: 0 3px;
 }
