@@ -35,21 +35,6 @@ module.exports = memoize(function (db/* options */) {
 		// Forms data snapshot (saved when file is submitted to Part B)
 		dataSnapshot: { type: DataSnapshot, nested: true },
 
-		// Applicable, touched (at least partially filled) form sections
-		processChainApplicable: {
-			type: FormSectionBase,
-			multiple: true,
-			value: function (_observe) {
-				var sections = [];
-
-				this.applicable.forEach(function (section) {
-					if (_observe(section._status) === 0) return;
-					sections.push(section);
-				});
-
-				return sections;
-			}
-		},
 		incompleteOnlinePaymentsDependents: {
 			type: FormSectionBase,
 			multiple: true,
