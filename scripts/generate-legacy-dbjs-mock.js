@@ -43,7 +43,12 @@ module.exports = function (BusinessProcessType, filename/*, options*/) {
 			var entity = {};
 
 			entitiesPropertyNames.forEach(function (entityPropertyName) {
-				value = item.getDescriptor(entityPropertyName)._value_;
+				if (typeof entityPropertyName.resolve === 'function') {
+					value = entityPropertyName.resolve(item);
+					entityPropertyName = entityPropertyName.name;
+				} else {
+					value = item.getDescriptor(entityPropertyName)._value_;
+				}
 				if (item.getDescriptor(entityPropertyName).multiple) {
 					value = typeof value === 'function' ? value : toArray(item[entityPropertyName]);
 				}
@@ -61,7 +66,15 @@ module.exports = function (BusinessProcessType, filename/*, options*/) {
 	costs.map         = copyMapEntities('costs', ['amount', 'label']);
 	registrations.map = copyMapEntities('registrations', ['isApplicable', 'isMandatory',
 		'isRequested', 'certificates', 'requirements', 'costs']);
-	requirements.map  = copyMapEntities('requirements', ['isApplicable', 'label', 'Document']);
+	requirements.map  = copyMapEntities('requirements', ['isApplicable',
+		{ name: 'label', resolve: function (item) {
+			// By default label is resolved from underlying document class,
+			// and as this class is not propaged to legacy it can't work well
+			// Therefore we propagate only custom getters and otherwise take label literally
+			var desc = item.getDescriptor('label');
+			if (desc === db.Requirement.prototype.getDescriptor('label')) return item.label;
+			return desc._value_;
+		} }]);
 
 	// Assure each map implements forEach.
 	[certificates.map, costs.map, registrations.map, requirements.map].forEach(defineForEach);
