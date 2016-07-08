@@ -189,7 +189,7 @@ module.exports = memoize(function (db) {
 			}
 		} },
 		ensureResolvent: { type: db.Function, value: function (observeFunction) {
-			var resolved = this.master.resolveSKeyPath(this.resolventProperty, observeFunction);
+			var resolved = this.propertyMaster.resolveSKeyPath(this.resolventProperty, observeFunction);
 
 			if (!resolved) {
 				return;

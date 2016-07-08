@@ -222,7 +222,7 @@ module.exports = memoize(function (db) {
 				}
 
 				propertiesToCheck.forEach(function (name) {
-					resolved = this.master.resolveSKeyPath(name, _observe);
+					resolved = this.propertyMaster.resolveSKeyPath(name, _observe);
 					if (!resolved) {
 						return;
 					}
@@ -276,7 +276,7 @@ module.exports = memoize(function (db) {
 			if (!_observe(section._resolventStatus)) return 0;
 
 			_observe(section.applicablePropertyNames).forEach(function (name) {
-				resolved = section.master.resolveSKeyPath(name, _observe);
+				resolved = section.propertyMaster.resolveSKeyPath(name, _observe);
 
 				if (!resolved) {
 					++total;
@@ -307,7 +307,7 @@ module.exports = memoize(function (db) {
 				}
 			}
 			_observe(section.applicablePropertyNames).forEach(function (name) {
-				resolved = section.master.resolveSKeyPath(name, _observe);
+				resolved = section.propertyMaster.resolveSKeyPath(name, _observe);
 				if (!resolved) {
 					++total;
 					return;

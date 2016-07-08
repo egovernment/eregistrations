@@ -19,7 +19,7 @@ var generateId          = require('dom-ext/html-document/generate-id')
 module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormResolvent',
 	d(function (/*options*/) {
 		var result, match, options = Object(arguments[0])
-		  , master = options.master || this.master, dbjsInput;
+		  , master = this.propertyMaster, dbjsInput;
 		result = {};
 		match = {};
 		if (this.resolventProperty) {
