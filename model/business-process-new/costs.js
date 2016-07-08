@@ -5,6 +5,7 @@
 var memoize               = require('memoizee/plain')
   , definePercentage      = require('dbjs-ext/number/percentage')
   , defineCurrency        = require('dbjs-ext/number/currency')
+  , defineUInteger        = require('dbjs-ext/number/integer/u-integer')
   , defineMultipleProcess = require('../lib/multiple-process')
   , defineCost            = require('../cost')
   , defineBusinessProcess = require('./registrations')
@@ -15,6 +16,7 @@ module.exports = memoize(function (db/* options */) {
 	var options         = Object(arguments[1])
 	  , BusinessProcess = defineBusinessProcess(db, options)
 	  , Percentage      = definePercentage(db)
+	  , UInteger        = defineUInteger(db)
 	  , MultipleProcess = defineMultipleProcess(db)
 	  , Currency        = defineCurrency(db)
 	  , Cost            = defineCost(db);
@@ -96,7 +98,7 @@ module.exports = memoize(function (db/* options */) {
 		// Indicates number of step user needs to take to complete payment step in Part A
 		// e.g. one step per each payment receipt, and one step for one online payment
 		// If it's zero, that means we should not show payment step at all
-		paymentWeight: { type: Percentage, value: function (_observe) {
+		paymentWeight: { type: UInteger, value: function (_observe) {
 			var weight = 0;
 			// We assume that there will be at most one online payment
 			// that will cover all electronic costs
