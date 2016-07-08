@@ -27,11 +27,11 @@
 	background: var(--light-background);
 }
 
-.pagination li:first-child > a, .pagination .pagination-left-edge > a {
+.pagination li:first-child > a, .pagination .pagination-buttons-left-edge > a {
 	border-radius: 4px 0 0 4px;
 	border-left-width: 1px;
 }
-.pagination li:last-child > a, .pagination .pagination-right-edge > a {
+.pagination li:last-child > a, .pagination .pagination-buttons-right-edge > a {
 	border-radius: 0 4px 4px 0;
 }
 

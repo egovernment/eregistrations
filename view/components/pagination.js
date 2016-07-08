@@ -32,7 +32,7 @@ Object.defineProperties(PaginationDom.prototype, assign({
 			// Go to beginning
 			li(a({ href: _if(current.eq(1), null, this.pagination.getLink(1)) }, "<<")),
 			// Go back
-			li({ class: 'pagination-right-edge' },
+			li({ class: 'pagination-buttons-right-edge' },
 				a({ href: _if(current.eq(1), null, current.map(function (page) {
 					return this.pagination.getLink(page - 1);
 				}, this)) }, "<")),
@@ -43,7 +43,7 @@ Object.defineProperties(PaginationDom.prototype, assign({
 					total: count
 				})), span({ class: 'submit' }, input({ type: 'submit' }))))),
 			// Go forward
-			li({ class: 'pagination-left-edge' },
+			li({ class: 'pagination-buttons-left-edge' },
 				a({ href: _if(current.eq(count), null, current.map(function (page) {
 					return this.pagination.getLink(page + 1);
 				}, this)) }, ">")),
