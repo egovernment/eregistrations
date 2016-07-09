@@ -6,7 +6,8 @@ var _                = require('mano').i18n.bind('View: Business Process')
   , generateSections = require('./components/generate-form-sections')
   , progressRules    = require('./components/progress-rules');
 
-exports._parent = require('./business-process-data-forms-tabbed');
+exports._parent  = require('./business-process-data-forms-tabbed');
+exports._dynamic = require('./utils/tab-section-dynamic-matcher');
 
 exports['forms-sections-content'] = function () {
 	var nextPageLink = this.section._nextSection.map(function (nextSection) {
