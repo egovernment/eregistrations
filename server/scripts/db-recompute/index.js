@@ -55,7 +55,11 @@ module.exports = function (driver, slavePath/*, options*/) {
 
 	debug.open("db-recompute");
 	return recompute(driver, {
+
+		// Path to slave process file
 		slaveScriptPath: ensureString(slavePath),
+
+		// All master ids for which we recompute getters
 		ids: userStorage.getAllObjectIds()(function (userIds) {
 			return deferred.map(userIds, function (userId) {
 				var deps = {};
@@ -84,6 +88,8 @@ module.exports = function (driver, slavePath/*, options*/) {
 				})(function (ids) { return userIds.concat(flatten.call(ids)); });
 			});
 		}),
+
+		// Retrieve data for passed master id
 		getData: function self(objectId, path) {
 			var storage = storageMap.get(objectId), deps;
 			if (!storage) return;
@@ -97,6 +103,8 @@ module.exports = function (driver, slavePath/*, options*/) {
 				deps.businessProcess && !path.has(deps.businessProcess) && self(deps.businessProcess)
 			).invoke('filter', Boolean).invoke(flatten);
 		},
+
+		// Initial data fragment
 		initialData: initialData
 	}).on('progress', function (event) {
 		if (event.type === 'nextObject') debug.progress();
