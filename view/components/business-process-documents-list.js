@@ -37,7 +37,11 @@ module.exports = function (context/*, options*/) {
 							class: 'submitted-user-data-table-label',
 							head: _("Documents"),
 							data: function (upload) {
-								return a({ href: resolveDocumentUrl(upload) }, upload.label);
+								return a({ href: resolveDocumentUrl(upload) }, upload.label, ' ',
+									_if(upload.isFrontDeskApproved, span({
+										class: 'hint-optional hint-optional-right',
+										'data-hint': _('Declared consistent with it original')
+									}, i({ class: 'fa fa-certificate' }))));
 							}
 						}, {
 							class: 'submitted-user-data-table-date',
