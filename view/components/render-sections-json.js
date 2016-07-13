@@ -21,7 +21,9 @@ var isSectionAllowed = function (allowedSectionKeys, sectionKey) {
 	if (!allowedSectionKeys || !allowedSectionKeys.length) return true;
 
 	return allowedSectionKeys.some(function (key) {
-		return startsWith.call(sectionKey, key) || startsWith.call(key, sectionKey + '/');
+		return sectionKey === key
+			|| startsWith.call(sectionKey + '/', key)
+			|| startsWith.call(key, sectionKey + '/');
 	});
 };
 
