@@ -21,11 +21,11 @@ var getHeaderRank = function (headerRank, defaultRank) {
 	return defaultRank;
 };
 
-var isSectionAllowed = function (allowedSections, sectionKey) {
-	if (!allowedSections || !allowedSections.length) return true;
+var isSectionAllowed = function (allowedSectionKeys, sectionKey) {
+	if (!allowedSectionKeys || !allowedSectionKeys.length) return true;
 
-	return allowedSections.some(function (section) {
-		return startsWith.call(sectionKey, section) || startsWith.call(section, sectionKey);
+	return allowedSectionKeys.some(function (key) {
+		return startsWith.call(sectionKey, key) || startsWith.call(key, sectionKey);
 	});
 };
 
@@ -70,7 +70,7 @@ defaultRenderers.section = function (data, className/*, options*/) {
 	if (options.sectionKey) options.sectionKey += '/' + data.key;
 	else options.sectionKey = data.key;
 
-	if (!isSectionAllowed(options.allowedSections, options.sectionKey)) return;
+	if (!isSectionAllowed(options.allowedSectionKeys, options.sectionKey)) return;
 
 	if (data.kind && exports.customRenderers[data.kind]) {
 		return exports.customRenderers[data.kind](data, className, options, defaultRenderers);
