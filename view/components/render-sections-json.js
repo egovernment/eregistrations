@@ -20,8 +20,8 @@ var normalizeOptions    = require('es5-ext/object/normalize-options')
 var isSectionAllowed = function (allowedSectionKeys, sectionKey) {
 	if (!allowedSectionKeys || !allowedSectionKeys.length) return true;
 
-	return allowedSectionKeys.some(function (section) {
-		return startsWith.call(sectionKey, section) || startsWith.call(section, sectionKey);
+	return allowedSectionKeys.some(function (key) {
+		return startsWith.call(sectionKey, key) || startsWith.call(key, sectionKey);
 	});
 };
 
