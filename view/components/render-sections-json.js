@@ -22,7 +22,7 @@ var isSectionAllowed = function (allowedSectionKeys, sectionKey) {
 
 	return allowedSectionKeys.some(function (key) {
 		return sectionKey === key
-			|| startsWith.call(sectionKey + '/', key)
+			|| startsWith.call(sectionKey, key + '/')
 			|| startsWith.call(key, sectionKey + '/');
 	});
 };
