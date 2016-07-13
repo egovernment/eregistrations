@@ -132,6 +132,7 @@ module.exports = memoize(function (db) {
 					if (isRejected) return 'rejected';
 				});
 			}.bind(this));
+			data.isFrontDeskApproved = this._isFrontDeskApproved;
 			data.statusLog = this.document.statusLog.ordered.toArray();
 			data.rejectReasons = this.rejectReasons.toArray();
 			return data;
@@ -154,6 +155,7 @@ module.exports = memoize(function (db) {
 			if (data.status === 'rejected') {
 				data.rejectReasons = this.getOwnDescriptor('rejectReasons').valueToJSON();
 			}
+			data.isFrontDeskApproved = this.getOwnDescriptor('isFrontDeskApproved').valueToJSON();
 			data.isFinalized = true;
 			return data;
 		} },
