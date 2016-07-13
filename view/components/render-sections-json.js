@@ -17,10 +17,10 @@ var normalizeOptions    = require('es5-ext/object/normalize-options')
   , renderMainSections, renderSubSections
   , defaultRenderers = {};
 
-var isSectionAllowed = function (allowedSections, sectionKey) {
-	if (!allowedSections || !allowedSections.length) return true;
+var isSectionAllowed = function (allowedSectionKeys, sectionKey) {
+	if (!allowedSectionKeys || !allowedSectionKeys.length) return true;
 
-	return allowedSections.some(function (section) {
+	return allowedSectionKeys.some(function (section) {
 		return startsWith.call(sectionKey, section) || startsWith.call(section, sectionKey);
 	});
 };
@@ -101,6 +101,7 @@ defaultRenderers.subSections = renderSubSections = function (data/*, options*/) 
 
 module.exports = exports = function (dataSnapshot/*, options*/) {
 	var options = arguments[1];
+
 	return mmap(dataSnapshot._resolved, function (json) {
 		if (!json || !json.sections) return;
 		return renderMainSections(exports.decorator(json.sections), options);
