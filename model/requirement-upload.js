@@ -9,14 +9,12 @@ var Map                   = require('es6-map')
   , _                     = require('mano').i18n.bind('Model')
   , definePercentage      = require('dbjs-ext/number/percentage')
   , defineDocument        = require('./document')
-  , defineFormSectionBase = require('./form-section-base')
   , defineUser            = require('./user/base');
 
 module.exports = memoize(function (db) {
 	var StringLine        = defineStringLine(db)
 	  , Percentage        = definePercentage(db)
 	  , Document          = defineDocument(db)
-	  , FormSectionBase   = defineFormSectionBase(db)
 	  , User              = defineUser(db)
 
 	  , RequirementUpload = db.Object.extend('RequirementUpload');
@@ -107,7 +105,7 @@ module.exports = memoize(function (db) {
 		isFrontDeskApproved: { type: db.Boolean, required: true },
 
 		relatedDataFormSections: {
-			type: FormSectionBase,
+			type: StringLine,
 			multiple: true
 		},
 
