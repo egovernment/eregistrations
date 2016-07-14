@@ -24,6 +24,7 @@ module.exports = memoize(function (db) {
 		institution: { type: Institution },
 
 		// Can be used in subStep of a group to retrieve parent
+		// Type is overriden to ProcessingStepGroup in processing-step-group.js file
 		parentGroup: { type: db.Object, value: function () {
 			var ProcessingStepGroup, parentGroup;
 			ProcessingStepGroup = this.database.ProcessingStepGroup;
