@@ -68,6 +68,9 @@ module.exports = memoize(function (db) {
 			},
 			label: _("Emissor officer")
 		},
+		// Registration corresponding to certificate.
+		// Type is overriden to Registration in registraction-new.js
+		// (We do no require here Registration type to avoid circular resolution issue)
 		registration: {
 			type: db.Object,
 			value: function () {

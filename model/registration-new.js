@@ -19,7 +19,7 @@ module.exports = memoize(function (db/*, options*/) {
 
 	  , options = Object(arguments[1]);
 
-	return db.Object.extend(options.className || 'Registration', {
+	var Registration = db.Object.extend(options.className || 'Registration', {
 		toString: {
 			value: function (options) {
 				return this.label;
@@ -88,4 +88,8 @@ module.exports = memoize(function (db/*, options*/) {
 			}
 		}
 	});
+
+	Document.prototype.getDescriptor('registration').type = Registration;
+
+	return Registration;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
