@@ -8,11 +8,13 @@ Each eRegistrations system has its own iterations, still system specific iterati
 
 ## Time assignment
 
-The usual time dedicated for _iteration_ tasks is 7 hours per working day, the other 1 hour is left over to address eventual _bugs_ and _fast-track_ issues, and at lowest priority (e.g. other not our stack related tasks) if such work was planned.
+The usual time dedicated for _iteration_ tasks is 7 hours per working day, the other 1 hour is left over to address eventual _bugs_ and _fast-track_ issues, and at lowest priority the other tasks (e.g. not our stack related tasks) if such work was planned.
 
 The 7 hours _iteration_ dedicated time, also includes time that needs to be devoted for _revision_ of work of other colleagues. Revision time has not strict time assignment, but with use of common sense should taken into account when estimating delivery dates for milestones
 
 The _revision_ should always be treated with priority to not block work of other colleagues.
+
+The _fast-track_ hour, usually should be first hour of a day, when eventual _fast-track_ issues (requested day before) are addressed, and afterwards work on current _milestone_ issues is continued. Still it's not a strict guideline, developer can adjust this up to his preference, assuming that time assignment is respected
 
 Discovered _bugs_ should also be treated as a priority. The critical or blocker bugs, should be addressed immediately, the other best if are addressed within 1-3 hours of discovering them.
 
