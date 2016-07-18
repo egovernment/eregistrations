@@ -26,7 +26,7 @@ If for some reason discovered bug taken longer time to address (e.g. 4 hours), t
 
 The order in which tasks of given _iteration_ should be addressed is specified on Github on milestone page.
 
-In case of _fast-track_ issues, the order is not specified, howeved tasks with _top-priority_ or _priority_ labels should be addressed in first order, and tasks with _low-priority_ in last order.
+In case of _fast-track_ issues, the order is not specified, however tasks with _top-priority_ or _priority_ labels should be addressed in first order, and tasks with _low-priority_ in last order.
 
 ## Planning and estimations
 
@@ -38,7 +38,7 @@ The iteration should be estimated and result of estimate put into two documents:
 - [Overview of current and future tasks](https://docs.google.com/document/d/1cebUp70ElHAYM4vAoLD9lyHQfpuRfzZDN-MiTgQHiEs/edit)  
 Here we should put the date where we expect to deliver the iteration
 - [Log of past and current tasks](https://docs.google.com/document/d/1is0Y_qwDwBMjXcx_DoWzofP5oXF8jgPAwm5YdLHOqy0/edit)  
-Here we should put the date work is started, and estimation in working days (rounded to 1 day)
+Here we should put the start date of work, and estimation in working days (rounded to 1 day)
 
 ### When estimated date is not met
 
