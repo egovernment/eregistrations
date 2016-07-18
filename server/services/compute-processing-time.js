@@ -2,18 +2,18 @@
 
 var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
   , serializeValue                = require('dbjs/_setup/serialize/value')
-  , unserializeValue              = require('dbjs/_setup/unserialize/value');
+  , unserializeValue              = require('dbjs/_setup/unserialize/value')
+  , capitalize                    = require('es5-ext/string/#/capitalize');
 
 module.exports = function (driver, processingStepsMeta) {
 	Object.keys(processingStepsMeta).forEach(function (stepMetaKey) {
 		var stepPath, storages;
-		stepPath = resolveProcessingStepFullPath(stepMetaKey);
+		stepPath = 'processingSteps/map/' + resolveProcessingStepFullPath(stepMetaKey);
 		storages = processingStepsMeta[stepMetaKey]._services;
 		if (!storages) return;
 		storages = storages.map(function (storageName) {
-			return driver.getStorage(storageName);
+			return driver.getStorage('businessProcess' + capitalize.call(storageName));
 		});
-
 		storages.forEach(function (storage) {
 			storage.on('key:' + stepPath + '/status', function (event) {
 				var status, oldStatus, timePath;
