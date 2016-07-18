@@ -1,3 +1,9 @@
+/**
+ * Tracks processing steps status changes and updates processingTime and correctionTime props.
+ * In other words, it calculates how long given businessProcess was being processed at given step
+ * and how long the was it corrected by user.
+ */
+
 'use strict';
 
 var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
