@@ -10,16 +10,18 @@ module.exports = function (driver, processingStepsMeta) {
 		var stepPath, storages;
 		stepPath = 'processingSteps/map/' + resolveProcessingStepFullPath(stepMetaKey);
 		storages = processingStepsMeta[stepMetaKey]._services;
-		if (!storages) return;
+		if (!storages) throw new Error("Storages must be set");
 		storages = storages.map(function (storageName) {
 			return driver.getStorage('businessProcess' + capitalize.call(storageName));
 		});
 		storages.forEach(function (storage) {
 			storage.on('key:' + stepPath + '/status', function (event) {
 				var status, oldStatus, timePath;
-				if (event.type !== 'computed' || !event.old || !event.old.stamp) return;
+				if (event.type !== 'computed' || !event.old) return;
 				status    = unserializeValue(event.data.value);
 				oldStatus = unserializeValue(event.data.value);
+				// We ignore such cases, they may happen when direct overwrites computed
+				if (status === oldStatus) return;
 
 				if (status === 'approved' || status === 'rejected') {
 					timePath = event.ownerId + '/' + stepPath + '/processingTime';
