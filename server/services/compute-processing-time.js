@@ -19,16 +19,16 @@ module.exports = function (driver, processingStepsMeta) {
 				var status, oldStatus, timePath;
 				if (event.type !== 'computed' || !event.old) return;
 				status    = unserializeValue(event.data.value);
-				oldStatus = unserializeValue(event.data.value);
+				oldStatus = unserializeValue(event.old.value);
 				// We ignore such cases, they may happen when direct overwrites computed
 				if (status === oldStatus) return;
-
 				if (status === 'approved' || status === 'rejected') {
 					timePath = event.ownerId + '/' + stepPath + '/processingTime';
 				}
 				if (oldStatus === 'sentBack') {
 					timePath = event.ownerId + '/' + stepPath + '/correctionTime';
 				}
+				if (!timePath) return;
 				storage.get(timePath)(function (data) {
 					var currentValue = 0;
 					if (data && unserializeValue(data.value)) {
