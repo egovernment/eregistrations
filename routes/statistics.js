@@ -7,11 +7,11 @@ module.exports = function (processingStepsMeta) {
 
 	return {
 		'/': require('../view/statistics-dashboard'),
-		files: {
+		files: require('../view/statistics-files-completed'),
+		'files/pending': {
 			decorateContext: function () { this.processingStepsMeta = processingStepsMeta; },
 			view: require('../view/statistics-files-pending')
 		},
-		'files/completed': require('../view/statistics-files-completed'),
 		'files/rejected': require('../view/statistics-files-rejected'),
 		'files/accounts': require('../view/statistics-files-accounts'),
 		time: require('../view/statistics-time-per-role'),
