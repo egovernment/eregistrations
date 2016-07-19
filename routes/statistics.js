@@ -9,13 +9,13 @@ module.exports = function (processingStepsMeta) {
 		'/': require('../view/statistics-dashboard'),
 		'pending-files': {
 			decorateContext: function () { this.processingStepsMeta = processingStepsMeta; },
-			view: require('../view/statistics-pending-files')
+			view: require('../view/statistics-files-pending')
 		},
-		'completed-files': require('../view/statistics-completed-files'),
-		'rejected-files': require('../view/statistics-rejected-files'),
-		accounts: require('../view/statistics-accounts'),
-		'per-role': require('../view/statistics-per-role'),
-		'per-person': require('../view/statistics-per-person'),
+		'completed-files': require('../view/statistics-files-completed'),
+		'rejected-files': require('../view/statistics-files-rejected'),
+		accounts: require('../view/statistics-files-accounts'),
+		'per-role': require('../view/statistics-time-per-role'),
+		'per-person': require('../view/statistics-time-per-person'),
 		analysis: require('../view/statistics-analysis'),
 
 		profile: require('../view/user-profile')
