@@ -6,7 +6,7 @@ var aFrom              = require('es5-ext/array/from')
   , db                 = require('../db')
   , isOfficialRoleName = require('../utils/is-official-role-name');
 
-exports._parent = require('./statistics-sub-files');
+exports._parent = require('./statistics-files');
 
 var mapSize = function (val) { return (val == null) ? '-' : val; };
 

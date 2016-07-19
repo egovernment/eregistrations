@@ -8,7 +8,7 @@ exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
 		ul({ class: 'pills-nav' }, exports._statisticsNav.call(this));
-		ul({ id: 'statistics-sub-menu', class: 'pills-nav sub-pills-nav' });
+		ul({ id: 'statistics-sub-menu', class: 'pills-nav pills-nav-sub' });
 		div({ class: 'statistics-main', id: 'statistics-main' });
 	}
 };
