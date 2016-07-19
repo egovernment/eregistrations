@@ -5,9 +5,10 @@ var capitalize = require('es5-ext/string/#/capitalize')
   , _          = require('mano').i18n
   , db         = require('../db');
 
-exports._parent = require('./statistics-base');
+exports._parent = require('./statistics-sub-files');
 
-exports['registrations-nav'] = { class: { 'pills-nav-active': true } };
+exports['files-nav'] = { class: { 'pills-nav-active': true } };
+exports['completed-files-nav'] = { class: { 'pills-nav-active': true } };
 
 exports['statistics-main'] = function () {
 	var certs = {};

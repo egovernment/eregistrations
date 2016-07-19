@@ -7,7 +7,7 @@ var capitalize          = require('es5-ext/string/#/capitalize')
   , db                  = require('../db')
   , resolveFullStepPath = require('../utils/resolve-processing-step-full-path');
 
-exports._parent = require('./statistics-base');
+exports._parent = require('./statistics-sub-files');
 
 var mapSize = function (val) { return (val == null) ? '-' : val; };
 
@@ -50,6 +50,7 @@ var generateProcessingStepRows =
 	};
 
 exports['files-nav'] = { class: { 'pills-nav-active': true } };
+exports['pending-files-nav'] = { class: { 'pills-nav-active': true } };
 
 exports['statistics-main'] = function () {
 	var services = toArray(this.statistics.businessProcess, function (data, name) {

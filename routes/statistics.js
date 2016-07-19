@@ -6,12 +6,17 @@ module.exports = function (processingStepsMeta) {
 	ensureObject(processingStepsMeta);
 
 	return {
-		'/': {
+		'/': require('../view/statistics-dashboard'),
+		'pending-files': {
 			decorateContext: function () { this.processingStepsMeta = processingStepsMeta; },
-			view: require('../view/statistics-files')
+			view: require('../view/statistics-pending-files')
 		},
+		'completed-files': require('../view/statistics-completed-files'),
+		'rejected-files': require('../view/statistics-rejected-files'),
 		accounts: require('../view/statistics-accounts'),
-		registrations: require('../view/statistics-registrations'),
+		'per-role': require('../view/statistics-per-role'),
+		'per-person': require('../view/statistics-per-person'),
+		analysis: require('../view/statistics-analysis'),
 
 		profile: require('../view/user-profile')
 	};
