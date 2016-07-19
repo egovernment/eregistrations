@@ -16,8 +16,8 @@ exports['sub-main'] = {
 exports._statisticsNav = function () {
 	return [
 		li({ id: 'dashboard-nav' }, a({ href: '/', class: 'pills-nav-pill' }, _("Dashboard"))),
-		li({ id: 'files-nav' }, a({ href: '/completed-files/', class: 'pills-nav-pill' }, _("Files"))),
-		li({ id: 'time-nav' }, a({ href: '/per-role/', class: 'pills-nav-pill' },
+		li({ id: 'files-nav' }, a({ href: '/files/', class: 'pills-nav-pill' }, _("Files"))),
+		li({ id: 'time-nav' }, a({ href: '/time/', class: 'pills-nav-pill' },
 			_("Time"))),
 		li({ id: 'analysis-nav' }, a({ href: '/analysis/', class: 'pills-nav-pill' },
 			_("Analysis")))
