@@ -34,10 +34,11 @@ var generateRow = function (label, data, getValue) {
 };
 
 var generateProcessingStepRows =
-	function (label, services, getData, processingStepsMeta, cssClass) {
+	function (label, services, getData, processingStepsMeta, cssClass, filter) {
 		return [
 			generateRow({ class: ['statistics-table-sub-header', cssClass] }, label, services, getData),
 			toArray(processingStepsMeta, function (data, name) {
+				if (filter && !filter(data, name, processingStepsMeta)) return;
 				var step = db['BusinessProcess' + capitalize.call(data._services[0])].prototype
 					.processingSteps.map.getBySKeyPath(resolveFullStepPath(name));
 				return generateRow(step.label, services,
@@ -90,11 +91,11 @@ exports['statistics-main'] = function () {
 
 			generateProcessingStepRows(_("Files sent back to user for correction"), services,
 				function (data) { return data._sentBack; }, this.processingStepsMeta,
-				"statistics-table-sub-header-pending"),
+				"statistics-table-sub-header-pending", function (data) { return data.sentBack; }),
 
 			generateProcessingStepRows(_("Files rejected"), services,
 				function (data) { return data._rejected; }, this.processingStepsMeta,
-				"statistics-table-sub-header-sentback"),
+				"statistics-table-sub-header-sentback", function (data) { return data.rejected; }),
 
 			generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-success' },
 				_("Files completed and closed"), services, function (data) { return data._approved; })
