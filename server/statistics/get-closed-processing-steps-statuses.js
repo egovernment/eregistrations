@@ -27,7 +27,7 @@ module.exports = memoize(function (driver, processingStepsMeta, db) {
 				businessProcessesBySteps[stepShortPath].push({
 					id: id.split('/')[0],
 					data: data,
-					date: toDateInTz(new db.Date(data.stamp / 1000), db.timeZone),
+					date: toDateInTz(new Date(data.stamp / 1000), db.timeZone),
 					stepFullPath: stepFullPath,
 					serviceName: serviceName,
 					storage: storage

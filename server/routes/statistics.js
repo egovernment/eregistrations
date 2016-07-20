@@ -1,18 +1,22 @@
 'use strict';
 
 var assign           = require('es5-ext/object/assign')
+  , includes         = require('es5-ext/array/#/contains')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , ensureDriver     = require('dbjs-persistence/ensure-driver')
   , ensureDatabase   = require('dbjs/valid-dbjs')
   , ensureObject     = require('es5-ext/object/valid-object')
   , QueryHandler     = require('../../utils/query-handler')
+  , Set              = require('es6-set')
   , getBaseRoutes    = require('./authenticated')
+  , customError      = require('es5-ext/error')
   , stringify        = JSON.stringify
   , getClosedProcessingStepsStatuses = require('../statistics/get-closed-processing-steps-statuses')
   , deferred         = require('deferred')
   , unserializeValue = require('dbjs/_setup/unserialize/value')
+  , dateStringtoDbDate = require('../../utils/date-string-to-db-date')
   , memoize          = require('memoizee')
-  , driver, processingStepsMeta, db;
+  , driver, processingStepsMeta, db, availableServices;
 
 var getProcessorAndProcessingTime = memoize(function (data) {
 	return deferred(
@@ -43,15 +47,18 @@ var getData = function (query) {
 				function (stepShortPath) {
 					var entries = businessProcessesByStepsMap[stepShortPath];
 					if (query.service) {
-						entries = businessProcessesByStepsMap[stepShortPath].filter(function (entry) {
-							return entry.serviceName === query.service;
-						});
+						if (!includes.call(processingStepsMeta[stepShortPath]._services, query.service)) {
+							return;
+						}
+						if (processingStepsMeta[stepShortPath]._services.length > 1) {
+							entries = businessProcessesByStepsMap[stepShortPath].filter(function (entry) {
+								return entry.serviceName === query.service;
+							});
+						}
 					}
 					result[stepShortPath] = [];
+					if (!entries.length) return result;
 
-					if (exports.customFilter) {
-						entries = entries.filter(exports.customFilter);
-					}
 					if (query.from) {
 						entries = entries.filter(function (data) {
 							return data.date >= query.from;
@@ -61,6 +68,9 @@ var getData = function (query) {
 						entries = entries.filter(function (data) {
 							return data.date <= query.to;
 						});
+					}
+					if (exports.customFilter) {
+						entries = entries.filter(exports.customFilter);
 					}
 					return deferred.map(entries, function (data) {
 						return getProcessorAndProcessingTime(data);
@@ -73,7 +83,7 @@ var getData = function (query) {
 							if (!entry.processingTime) return;
 							if (!dataByProcessors[entry.processor]) {
 								dataByProcessors[entry.processor] = {
-									operator: entry.processor,
+									processor: entry.processor,
 									processed: 0,
 									avgTime: 0,
 									minTime: Infinity,
@@ -107,6 +117,10 @@ module.exports = exports = function (data) {
 	driver              = ensureDriver(data.driver);
 	db                  = ensureDatabase(data.db);
 	processingStepsMeta = data.processingStepsMeta;
+	availableServices   = new Set();
+	Object.keys(processingStepsMeta, function (stepShortPath) {
+		processingStepsMeta[stepShortPath]._services.forEach(availableServices.add);
+	});
 
 	var queryHandler = new QueryHandler(exports.queryConf);
 
@@ -119,25 +133,12 @@ module.exports = exports = function (data) {
 
 exports.customFilter = null;
 
-var parseDate = function (date) {
-	date = Date.parse(date);
-	if (isNaN(date)) throw new Error("Unrecognized date value" + stringify(date));
-	date = new Date(date);
-	return new db.Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
-};
-
 exports.queryConf = [
 	{
 		name: 'service',
 		ensure: function (value) {
-			var isService;
 			if (!value) return;
-			isService = Object.keys(processingStepsMeta).some(function (stepMeta) {
-				return processingStepsMeta[stepMeta]._services.some(function (serviceName) {
-					return serviceName === value;
-				});
-			});
-			if (!isService) {
+			if (!availableServices.has(value)) {
 				throw new Error("Unreconized service value " + stringify(value));
 			}
 			return value;
@@ -148,10 +149,10 @@ exports.queryConf = [
 		ensure: function (value, resolvedQuery, query) {
 			var now = new db.Date(), fromDate, toDate;
 			if (!value) return;
-			fromDate = parseDate(value);
+			fromDate = dateStringtoDbDate(db, value);
 			if (fromDate > now) throw new Error('From cannot be in future');
 			if (query.to) {
-				toDate = parseDate(query.to);
+				toDate = dateStringtoDbDate(query.to);
 				if (toDate < fromDate) throw new Error('Invalid date range');
 			}
 			return fromDate;
@@ -160,8 +161,13 @@ exports.queryConf = [
 	{
 		name: 'to',
 		ensure: function (value) {
+			var now = new db.Date(), toDate;
 			if (!value) return;
-			return parseDate(value);
+			toDate = dateStringtoDbDate(db, value);
+			if (toDate > now) {
+				throw customError("To date cannot be in future", { fixedQueryValue: now });
+			}
+			return toDate;
 		}
 	}
 ];
