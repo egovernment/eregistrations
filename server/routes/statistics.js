@@ -7,20 +7,22 @@ var isNaturalNumber  = require('es5-ext/number/is-natural')
   , ensureObject     = require('es5-ext/object/valid-object')
   , QueryHandler     = require('../../utils/query-handler')
   , getBaseRoutes    = require('./authenticated')
-  , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
   , idToStorage      = require('../utils/business-process-id-to-storage')
   , stringify        = JSON.stringify
   , getClosedProcessingStepsStatuses = require('../statistics/get-closed-processing-steps-statuses')
   , deferred         = require('deferred')
+  , unserializeValue = require('dbjs/_setup/unserialize/value')
   , driver, processingStepsMeta;
 
 var getData = function (query) {
 	var result = {};
-	return getClosedProcessingStepsStatuses(driver, processingStepsMeta, query.service)(
+	return getClosedProcessingStepsStatuses(driver, processingStepsMeta,
+		{ serviceName: query.service })(
 		function (businessProcessesByStepsMap) {
 			if (!businessProcessesByStepsMap) return;
 			return deferred.map(Object.keys(businessProcessesByStepsMap),
-				function (stepName, entries) {
+				function (stepName) {
+					var entries = businessProcessesByStepsMap[stepName];
 					result[stepName] = [];
 
 					if (exports.customFilter) {
@@ -40,21 +42,26 @@ var getData = function (query) {
 						data.sideData = {};
 						return idToStorage(data.id)(function (storage) {
 							return deferred(
-								storage.get(data.id + '/processingSteps/map/' + stepName + '/processor',
+								storage.get(data.id + '/processingSteps/map/' + stepName + '/processor')(
 									function (processorData) {
 										if (!processorData || !processorData.value) return;
-										data.sideData.processor = processorData.value;
-									}),
-								storage.get(data.id + '/processingSteps/map/' + stepName + '/processingTime',
+										data.sideData.processor = processorData.value.slice(1);
+									}
+								).done(),
+								storage.get(data.id + '/processingSteps/map/' + stepName + '/processingTime')(
 									function (processingTimeData) {
 										if (!processingTimeData || !processingTimeData.value) return;
-										data.sideData.processingTime = processingTimeData.value;
-									})
+										data.sideData.processingTime =
+											Number(unserializeValue(processingTimeData.value));
+									}
+								).done()
 							);
 						});
 					})(function () {
 						var dataByProcessors = {};
 						entries.forEach(function (entry) {
+							// Older businessProcess don't have processingTime, so tehy're useless here
+							if (!entry.sideData.processingTime) return;
 							if (!dataByProcessors[entry.sideData.processor]) {
 								dataByProcessors[entry.sideData.processor] = {
 									operator: entry.sideData.processor,
@@ -116,7 +123,9 @@ exports.queryConf = [
 			var isService;
 			if (!value) return;
 			isService = Object.keys(processingStepsMeta).some(function (stepMeta) {
-				return resolveProcessingStepFullPath(stepMeta) === value;
+				return processingStepsMeta[stepMeta]._services.some(function (serviceName) {
+					return serviceName === value;
+				});
 			});
 			if (!isService) {
 				throw new Error("Unreconized service value " + stringify(value));
@@ -126,24 +135,26 @@ exports.queryConf = [
 	},
 	{
 		name: 'from',
-		ensure: function (value, resolvedQuery, query) {
+		ensure: function (value) {
 			if (!value) return;
 			if (isNaN(value)) throw new Error("Unrecognized from value" + stringify(value));
-			var num;
-			if (!isNaturalNumber(value)) throw new Error("Unexpected from value " + stringify(value));
-			num = Number(value);
+			var num = Number(value);
+			if (!isNaturalNumber(num)) throw new Error("Unexpected from value " + stringify(value));
 			var fromDate = new Date(num);
 			if (fromDate > new Date()) throw new Error('From cannot be in future');
-			return value;
+			// we want to use micro
+			return num * 1000;
 		}
 	},
 	{
 		name: 'to',
-		ensure: function (value, resolvedQuery, query) {
+		ensure: function (value) {
 			if (!value) return;
 			if (isNaN(value)) throw new Error("Unrecognized to value " + stringify(value));
-			if (!isNaturalNumber(value)) throw new Error("Unexpected to value" + stringify(value));
-			return value;
+			var num = Number(value);
+			if (!isNaturalNumber(num)) throw new Error("Unexpected to value" + stringify(value));
+			// we want to use micro
+			return num * 1000;
 		}
 	}
 ];

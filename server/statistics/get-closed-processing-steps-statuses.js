@@ -19,7 +19,7 @@ module.exports = function (driver, processingStepsMeta/*, options */) {
 		services = processingStepsMeta[stepMetaKey]._services;
 		stepName = resolveProcessingStepFullPath(stepMetaKey);
 		if (serviceName) {
-			if (!includes.call(serviceName, services)) {
+			if (!includes.call(services, serviceName)) {
 				return;
 			}
 			services = [serviceName];
@@ -37,7 +37,7 @@ module.exports = function (driver, processingStepsMeta/*, options */) {
 				if (!businessProcessesBySteps[stepName]) {
 					businessProcessesBySteps[stepName] = [];
 				}
-				businessProcessesBySteps[stepName].push({ id: id, data: data });
+				businessProcessesBySteps[stepName].push({ id: id.split('/')[0], data: data });
 			});
 		});
 	})(businessProcessesBySteps);
