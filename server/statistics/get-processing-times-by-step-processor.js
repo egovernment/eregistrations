@@ -30,10 +30,7 @@ var getProcessorAndProcessingTime = memoize(function (data) {
 		).done()
 	)(result);
 }, {
-	normalizer: function (args) {
-		console.log('normalizer: ', args[0].id + args[0].stepFullPath);
-		return args[0].id + args[0].stepFullPath;
-	}
+	normalizer: function (args) { return args[0].id + args[0].stepFullPath; }
 });
 /**
  *
