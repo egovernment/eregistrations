@@ -11,7 +11,28 @@ var assign           = require('es5-ext/object/assign')
   , getClosedProcessingStepsStatuses = require('../statistics/get-closed-processing-steps-statuses')
   , deferred         = require('deferred')
   , unserializeValue = require('dbjs/_setup/unserialize/value')
+  , memoize          = require('memoizee')
   , driver, processingStepsMeta, db;
+
+var getProcessorAndProcessingTime = memoize(function (data) {
+	return deferred(
+		data.storage.get(data.id + '/' + data.stepFullPath + '/processor')(
+			function (processorData) {
+				if (!processorData || processorData.value[0] !== '7') return;
+				data.processor = processorData.value.slice(1);
+			}
+		).done(),
+		data.storage.get(data.id + '/' + data.stepFullPath + '/processingTime')(
+			function (processingTimeData) {
+				if (!processingTimeData || processingTimeData.value[2] !== '2') return;
+				data.processingTime =
+					Number(unserializeValue(processingTimeData.value));
+			}
+		).done()
+	);
+}, {
+	normalizer: function (args) { return args[0].id + args[0].stepFullPath; }
+});
 
 var getData = function (query) {
 	var result = {};
@@ -42,21 +63,7 @@ var getData = function (query) {
 						});
 					}
 					return deferred.map(entries, function (data) {
-						return deferred(
-							data.storage.get(data.id + '/' + data.stepFullPath + '/processor')(
-								function (processorData) {
-									if (!processorData || processorData.value[0] !== '7') return;
-									data.processor = processorData.value.slice(1);
-								}
-							).done(),
-							data.storage.get(data.id + '/' + data.stepFullPath + '/processingTime')(
-								function (processingTimeData) {
-									if (!processingTimeData || processingTimeData.value[2] !== '2') return;
-									data.processingTime =
-										Number(unserializeValue(processingTimeData.value));
-								}
-							).done()
-						);
+						return getProcessorAndProcessingTime(data);
 					})(function () {
 						var dataByProcessors = {};
 						entries.forEach(function (entry) {
@@ -75,16 +82,10 @@ var getData = function (query) {
 								};
 							}
 							dataByProcessors[entry.processor].processed++;
-							if (!dataByProcessors[entry.processor].minTime ||
-									entry.processingTime <
-									dataByProcessors[entry.processor].minTime) {
-								dataByProcessors[entry.processor].minTime = entry.processingTime;
-							}
-							if (!dataByProcessors[entry.processor].maxTime ||
-									entry.processingTime >
-									dataByProcessors[entry.processor].maxTime) {
-								dataByProcessors[entry.processor].maxTime = entry.processingTime;
-							}
+							dataByProcessors[entry.processor].minTime =
+								Math.min(dataByProcessors[entry.processor].minTime, entry.processingTime);
+							dataByProcessors[entry.processor].maxTime =
+								Math.max(dataByProcessors[entry.processor].maxTime, entry.processingTime);
 							dataByProcessors[entry.processor].totalTime += entry.processingTime;
 							dataByProcessors[entry.processor].avgTime =
 								dataByProcessors[entry.processor].totalTime /
