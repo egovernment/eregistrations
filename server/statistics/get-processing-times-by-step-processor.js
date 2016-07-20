@@ -1,6 +1,7 @@
 'use strict';
 
 var includes                         = require('es5-ext/array/#/contains')
+  , assign                           = require('es5-ext/object/assign')
   , normalizeOptions                 = require('es5-ext/object/normalize-options')
   , getClosedProcessingStepsStatuses = require('./get-closed-processing-steps-statuses')
   , ensureDriver                     = require('dbjs-persistence/ensure-driver')
@@ -8,25 +9,32 @@ var includes                         = require('es5-ext/array/#/contains')
   , ensureObject                     = require('es5-ext/object/valid-object')
   , ensureCallable                   = require('es5-ext/object/valid-callable')
   , deferred                         = require('deferred')
-  , unserializeValue                 = require('dbjs/_setup/unserialize/value');
+  , unserializeValue                 = require('dbjs/_setup/unserialize/value')
+  , memoize                          = require('memoizee');
 
-var getProcessorAndProcessingTime = function (data) {
+var getProcessorAndProcessingTime = memoize(function (data) {
+	var result = {};
 	return deferred(
 		data.storage.get(data.id + '/' + data.stepFullPath + '/processor')(
 			function (processorData) {
 				if (!processorData || processorData.value[0] !== '7') return;
-				data.processor = processorData.value.slice(1);
+				result.processor = processorData.value.slice(1);
 			}
 		).done(),
 		data.storage.get(data.id + '/' + data.stepFullPath + '/processingTime')(
 			function (processingTimeData) {
 				if (!processingTimeData || processingTimeData.value[2] !== '2') return;
-				data.processingTime =
+				result.processingTime =
 					Number(unserializeValue(processingTimeData.value));
 			}
 		).done()
-	);
-};
+	)(result);
+}, {
+	normalizer: function (args) {
+		console.log('normalizer: ', args[0].id + args[0].stepFullPath);
+		return args[0].id + args[0].stepFullPath;
+	}
+});
 /**
  *
  * @param data
@@ -84,7 +92,9 @@ module.exports = function (data) {
 						entries = entries.filter(customFilter);
 					}
 					return deferred.map(entries, function (data) {
-						return getProcessorAndProcessingTime(data);
+						return getProcessorAndProcessingTime(data)(function (result) {
+							assign(data, result);
+						}).done();
 					})(function () {
 						var dataByProcessors = {};
 						entries.forEach(function (entry) {
