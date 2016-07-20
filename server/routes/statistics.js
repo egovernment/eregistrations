@@ -16,13 +16,17 @@ var isNaturalNumber  = require('es5-ext/number/is-natural')
 
 var getData = function (query) {
 	var result = {};
-	return getClosedProcessingStepsStatuses(driver, processingStepsMeta,
-		{ serviceName: query.service })(
+	return getClosedProcessingStepsStatuses(driver, processingStepsMeta)(
 		function (businessProcessesByStepsMap) {
 			if (!businessProcessesByStepsMap) return;
 			return deferred.map(Object.keys(businessProcessesByStepsMap),
 				function (stepName) {
 					var entries = businessProcessesByStepsMap[stepName];
+					if (query.service) {
+						entries = businessProcessesByStepsMap[stepName].filter(function (entry) {
+							return entry.serviceName === query.service;
+						});
+					}
 					result[stepName] = [];
 
 					if (exports.customFilter) {
@@ -97,7 +101,6 @@ var getData = function (query) {
 				});
 		}
 	);
-
 };
 
 module.exports = exports = function (data) {

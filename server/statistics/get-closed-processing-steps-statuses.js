@@ -1,29 +1,18 @@
 'use strict';
 
 var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
-  , normalizeOptions = require('es5-ext/object/normalize-options')
-  , capitalize       = require('es5-ext/string/#/capitalize')
-  , includes         = require('es5-ext/array/#/contains')
-  , unserializeValue = require('dbjs/_setup/unserialize/value')
-  , ensureString     = require('es5-ext/object/validate-stringifiable-value')
-  , deferred         = require('deferred');
+  , capitalize                    = require('es5-ext/string/#/capitalize')
+  , uncapitalize                  = require('es5-ext/string/#/uncapitalize')
+  , unserializeValue              = require('dbjs/_setup/unserialize/value')
+  , deferred                      = require('deferred')
+  , memoize                       = require('memoizee');
 
-module.exports = function (driver, processingStepsMeta/*, options */) {
-	var businessProcessesBySteps = {}, options, serviceName;
-	options = normalizeOptions(arguments[2]);
-	if (options.serviceName) {
-		serviceName = ensureString(options.serviceName);
-	}
+module.exports = memoize(function (driver, processingStepsMeta) {
+	var businessProcessesBySteps = {};
 	return deferred.map(Object.keys(processingStepsMeta), function (stepMetaKey) {
 		var stepPath, stepName, storages, services;
 		services = processingStepsMeta[stepMetaKey]._services;
 		stepName = resolveProcessingStepFullPath(stepMetaKey);
-		if (serviceName) {
-			if (!includes.call(services, serviceName)) {
-				return;
-			}
-			services = [serviceName];
-		}
 		storages = services.map(function (storageName) {
 			return driver.getStorage('businessProcess' + capitalize.call(storageName));
 		});
@@ -37,8 +26,15 @@ module.exports = function (driver, processingStepsMeta/*, options */) {
 				if (!businessProcessesBySteps[stepName]) {
 					businessProcessesBySteps[stepName] = [];
 				}
-				businessProcessesBySteps[stepName].push({ id: id.split('/')[0], data: data });
+				businessProcessesBySteps[stepName].push({ id: id.split('/')[0], data: data,
+					serviceName: uncapitalize.call(storage.name.slice('businessProcess'.length)),
+					storage: storage
+					});
 			});
 		});
 	})(businessProcessesBySteps);
-};
+}, {
+	length: 0,
+	// One day
+	maxAge: 86400000
+});
