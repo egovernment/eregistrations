@@ -8,10 +8,9 @@ var includes                         = require('es5-ext/array/#/contains')
   , ensureObject                     = require('es5-ext/object/valid-object')
   , ensureCallable                   = require('es5-ext/object/valid-callable')
   , deferred                         = require('deferred')
-  , unserializeValue                 = require('dbjs/_setup/unserialize/value')
-  , memoize                          = require('memoizee');
+  , unserializeValue                 = require('dbjs/_setup/unserialize/value');
 
-var getProcessorAndProcessingTime = memoize(function (data) {
+var getProcessorAndProcessingTime = function (data) {
 	return deferred(
 		data.storage.get(data.id + '/' + data.stepFullPath + '/processor')(
 			function (processorData) {
@@ -27,9 +26,7 @@ var getProcessorAndProcessingTime = memoize(function (data) {
 			}
 		).done()
 	);
-}, {
-	normalizer: function (args) { return args[0].id + args[0].stepFullPath; }
-});
+};
 /**
  *
  * @param data
@@ -38,21 +35,21 @@ var getProcessorAndProcessingTime = memoize(function (data) {
  * db                      - dbjs database
  * query (optional)        - query past from controller
  * customFilter (optional) - function used to filter by system specific parameters
- * @returns {Array}
+ * @returns {Object}
  */
 module.exports = function (data) {
-	var result = {}, driver, processingStepsMeta, db, query, customFilter;
-	data                = normalizeOptions(ensureObject(data));
-	driver              = ensureDriver(data.driver);
-	processingStepsMeta = ensureObject(data.processingStepsMeta);
-	db                  = ensureDatabase(data.db);
-	if (query) {
-		query = ensureObject(data.query);
+	var result = {}, driver, processingStepsMeta, db, query, customFilter, options;
+	options             = normalizeOptions(ensureObject(data));
+	driver              = ensureDriver(options.driver);
+	processingStepsMeta = ensureObject(options.processingStepsMeta);
+	db                  = ensureDatabase(options.db);
+	if (options.query) {
+		query = ensureObject(options.query);
 	} else {
 		query = {};
 	}
-	if (data.customFilter) {
-		customFilter = ensureCallable(data.customFilter);
+	if (options.customFilter) {
+		customFilter = ensureCallable(options.customFilter);
 	}
 	return getClosedProcessingStepsStatuses(driver, processingStepsMeta, db)(
 		function (businessProcessesByStepsMap) {
@@ -121,7 +118,7 @@ module.exports = function (data) {
 
 						return result;
 					});
-				});
+				})(result);
 		}
 	);
 };

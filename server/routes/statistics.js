@@ -16,10 +16,10 @@ var assign           = require('es5-ext/object/assign')
   , processingStepsMeta, db, availableServices;
 
 module.exports = exports = function (data) {
-	data                = normalizeOptions(ensureObject(data));
-	ensureDriver(data.driver);
-	db                  = ensureDatabase(data.db);
-	processingStepsMeta = data.processingStepsMeta;
+	var options         = normalizeOptions(ensureObject(data));
+	ensureDriver(options.driver);
+	db                  = ensureDatabase(options.db);
+	processingStepsMeta = options.processingStepsMeta;
 	availableServices   = new Set();
 	Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
 		processingStepsMeta[stepShortPath]._services.forEach(function (serviceName) {
@@ -32,7 +32,7 @@ module.exports = exports = function (data) {
 	return assign({
 		'get-processing-time-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
-				return getProcessingTimesByStepProcessor(assign(data, { query: query }));
+				return getProcessingTimesByStepProcessor(assign(options, { query: query }));
 			});
 		}
 	}, getBaseRoutes());
