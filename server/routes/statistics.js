@@ -1,98 +1,96 @@
 'use strict';
 
-var isNaturalNumber  = require('es5-ext/number/is-natural')
-  , assign           = require('es5-ext/object/assign')
+var assign           = require('es5-ext/object/assign')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , ensureDriver     = require('dbjs-persistence/ensure-driver')
+  , ensureDatabase   = require('dbjs/valid-dbjs')
   , ensureObject     = require('es5-ext/object/valid-object')
   , QueryHandler     = require('../../utils/query-handler')
   , getBaseRoutes    = require('./authenticated')
-  , idToStorage      = require('../utils/business-process-id-to-storage')
   , stringify        = JSON.stringify
   , getClosedProcessingStepsStatuses = require('../statistics/get-closed-processing-steps-statuses')
   , deferred         = require('deferred')
   , unserializeValue = require('dbjs/_setup/unserialize/value')
-  , driver, processingStepsMeta;
+  , driver, processingStepsMeta, db;
 
 var getData = function (query) {
 	var result = {};
-	return getClosedProcessingStepsStatuses(driver, processingStepsMeta)(
+	return getClosedProcessingStepsStatuses(driver, processingStepsMeta, db)(
 		function (businessProcessesByStepsMap) {
 			if (!businessProcessesByStepsMap) return;
 			return deferred.map(Object.keys(businessProcessesByStepsMap),
-				function (stepName) {
-					var entries = businessProcessesByStepsMap[stepName];
+				function (stepShortPath) {
+					var entries = businessProcessesByStepsMap[stepShortPath];
 					if (query.service) {
-						entries = businessProcessesByStepsMap[stepName].filter(function (entry) {
+						entries = businessProcessesByStepsMap[stepShortPath].filter(function (entry) {
 							return entry.serviceName === query.service;
 						});
 					}
-					result[stepName] = [];
+					result[stepShortPath] = [];
 
 					if (exports.customFilter) {
 						entries = entries.filter(exports.customFilter);
 					}
 					if (query.from) {
 						entries = entries.filter(function (data) {
-							return data.data.stamp >= query.from;
+							return data.date >= query.from;
 						});
 					}
 					if (query.to) {
 						entries = entries.filter(function (data) {
-							return data.data.stamp <= query.to;
+							return data.date <= query.to;
 						});
 					}
 					return deferred.map(entries, function (data) {
-						data.sideData = {};
-						return idToStorage(data.id)(function (storage) {
-							return deferred(
-								storage.get(data.id + '/processingSteps/map/' + stepName + '/processor')(
-									function (processorData) {
-										if (!processorData || !processorData.value) return;
-										data.sideData.processor = processorData.value.slice(1);
-									}
-								).done(),
-								storage.get(data.id + '/processingSteps/map/' + stepName + '/processingTime')(
-									function (processingTimeData) {
-										if (!processingTimeData || !processingTimeData.value) return;
-										data.sideData.processingTime =
-											Number(unserializeValue(processingTimeData.value));
-									}
-								).done()
-							);
-						});
+						return deferred(
+							data.storage.get(data.id + '/' + data.stepFullPath + '/processor')(
+								function (processorData) {
+									if (!processorData || processorData.value[0] !== '7') return;
+									data.processor = processorData.value.slice(1);
+								}
+							).done(),
+							data.storage.get(data.id + '/' + data.stepFullPath + '/processingTime')(
+								function (processingTimeData) {
+									if (!processingTimeData || processingTimeData.value[2] !== '2') return;
+									data.processingTime =
+										Number(unserializeValue(processingTimeData.value));
+								}
+							).done()
+						);
 					})(function () {
 						var dataByProcessors = {};
 						entries.forEach(function (entry) {
-							// Older businessProcess don't have processingTime, so tehy're useless here
-							if (!entry.sideData.processingTime) return;
-							if (!dataByProcessors[entry.sideData.processor]) {
-								dataByProcessors[entry.sideData.processor] = {
-									operator: entry.sideData.processor,
+							// Should not happen, but it's not right place to crash due to data inconsistency
+							if (!entry.processor) return;
+							// Older businessProcess don't have processingTime, so they're useless here
+							if (!entry.processingTime) return;
+							if (!dataByProcessors[entry.processor]) {
+								dataByProcessors[entry.processor] = {
+									operator: entry.processor,
 									processed: 0,
 									avgTime: 0,
-									minTime: 0,
+									minTime: Infinity,
 									maxTime: 0,
 									totalTime: 0
 								};
 							}
-							dataByProcessors[entry.sideData.processor].processed++;
-							if (!dataByProcessors[entry.sideData.processor].minTime ||
-									entry.sideData.processingTime <
-									dataByProcessors[entry.sideData.processor].minTime) {
-								dataByProcessors[entry.sideData.processor].minTime = entry.sideData.processingTime;
+							dataByProcessors[entry.processor].processed++;
+							if (!dataByProcessors[entry.processor].minTime ||
+									entry.processingTime <
+									dataByProcessors[entry.processor].minTime) {
+								dataByProcessors[entry.processor].minTime = entry.processingTime;
 							}
-							if (!dataByProcessors[entry.sideData.processor].maxTime ||
-									entry.sideData.processingTime >
-									dataByProcessors[entry.sideData.processor].maxTime) {
-								dataByProcessors[entry.sideData.processor].maxTime = entry.sideData.processingTime;
+							if (!dataByProcessors[entry.processor].maxTime ||
+									entry.processingTime >
+									dataByProcessors[entry.processor].maxTime) {
+								dataByProcessors[entry.processor].maxTime = entry.processingTime;
 							}
-							dataByProcessors[entry.sideData.processor].totalTime += entry.sideData.processingTime;
-							dataByProcessors[entry.sideData.processor].avgTime =
-								dataByProcessors[entry.sideData.processor].totalTime /
-								dataByProcessors[entry.sideData.processor].processed;
+							dataByProcessors[entry.processor].totalTime += entry.processingTime;
+							dataByProcessors[entry.processor].avgTime =
+								dataByProcessors[entry.processor].totalTime /
+								dataByProcessors[entry.processor].processed;
 						});
-						result[stepName] = Object.keys(dataByProcessors).map(function (processorId) {
+						result[stepShortPath] = Object.keys(dataByProcessors).map(function (processorId) {
 							return dataByProcessors[processorId];
 						});
 
@@ -106,6 +104,7 @@ var getData = function (query) {
 module.exports = exports = function (data) {
 	data                = normalizeOptions(ensureObject(data));
 	driver              = ensureDriver(data.driver);
+	db                  = ensureDatabase(data.db);
 	processingStepsMeta = data.processingStepsMeta;
 
 	var queryHandler = new QueryHandler(exports.queryConf);
@@ -118,6 +117,13 @@ module.exports = exports = function (data) {
 };
 
 exports.customFilter = null;
+
+var parseDate = function (date) {
+	date = Date.parse(date);
+	if (isNaN(date)) throw new Error("Unrecognized date value" + stringify(date));
+	date = new Date(date);
+	return new db.Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+};
 
 exports.queryConf = [
 	{
@@ -138,26 +144,23 @@ exports.queryConf = [
 	},
 	{
 		name: 'from',
-		ensure: function (value) {
+		ensure: function (value, resolvedQuery, query) {
+			var now = new db.Date(), fromDate, toDate;
 			if (!value) return;
-			if (isNaN(value)) throw new Error("Unrecognized from value" + stringify(value));
-			var num = Number(value);
-			if (!isNaturalNumber(num)) throw new Error("Unexpected from value " + stringify(value));
-			var fromDate = new Date(num);
-			if (fromDate > new Date()) throw new Error('From cannot be in future');
-			// we want to use micro
-			return num * 1000;
+			fromDate = parseDate(value);
+			if (fromDate > now) throw new Error('From cannot be in future');
+			if (query.to) {
+				toDate = parseDate(query.to);
+				if (toDate < fromDate) throw new Error('Invalid date range');
+			}
+			return fromDate;
 		}
 	},
 	{
 		name: 'to',
 		ensure: function (value) {
 			if (!value) return;
-			if (isNaN(value)) throw new Error("Unrecognized to value " + stringify(value));
-			var num = Number(value);
-			if (!isNaturalNumber(num)) throw new Error("Unexpected to value" + stringify(value));
-			// we want to use micro
-			return num * 1000;
+			return parseDate(value);
 		}
 	}
 ];
