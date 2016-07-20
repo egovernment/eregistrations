@@ -30,7 +30,16 @@ var getProcessorAndProcessingTime = memoize(function (data) {
 }, {
 	normalizer: function (args) { return args[0].id + args[0].stepFullPath; }
 });
-
+/**
+ *
+ * @param data
+ * driver                  - Database driver
+ * processingStepsMeta     - map of processing steps
+ * db                      - dbjs database
+ * query (optional)        - query past from controller
+ * customFilter (optional) - function used to filter by system specific parameters
+ * @returns {Array}
+ */
 module.exports = function (data) {
 	var result = {}, driver, processingStepsMeta, db, query, customFilter;
 	data                = normalizeOptions(ensureObject(data));
