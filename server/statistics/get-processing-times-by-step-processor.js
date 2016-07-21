@@ -74,7 +74,6 @@ module.exports = function (data) {
 					}
 					result[stepShortPath] = [];
 					if (!entries.length) return;
-
 					if (query.dateFrom) {
 						entries = entries.filter(function (data) {
 							return data.date >= query.dateFrom;

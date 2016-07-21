@@ -27,6 +27,12 @@ exports['statistics-main'] = function () {
 	}), location, '/time/');
 
 	queryHandler.on('query', function (query) {
+		if (query.dateFrom) {
+			query.dateFrom = query.dateFrom.toJSON();
+		}
+		if (query.dateTo) {
+			query.dateTo = query.dateTo.toJSON();
+		}
 		getData('/get-processing-time-data/', query)(function (result) {
 			Object.keys(stepsMap).forEach(function (key) {
 				stepsMap[key].value = result[key];
@@ -55,25 +61,12 @@ exports['statistics-main'] = function () {
 							}) },
 							service.prototype.label);
 					}, null)),
-
-				label({ for: 'service-select' }, _("Service"), ":"),
-				select({ id: 'service-select', name: 'service' },
-					option(
-						{ value: '', selected: location.query.get('service').map(function (value) {
-							return (value == null);
-						})
-							},
-						_("All")
-					),
-					list(db.BusinessProcess.extensions, function (service) {
-						var serviceName = uncapitalize.call(service.__id__.slice('BusinessProcess'.length));
-						return option({ value: serviceName, selected:
-								location.query.get('service').map(function (value) {
-								var selected = (serviceName ? (value === serviceName) : (value == null));
-								return selected ? 'selected' : null;
-							}) },
-							service.prototype.label);
-					}, null)))));
+				label({ for: 'date-from-input' }, _("Date from"), ":"),
+				input({ id: 'date-from-input', type: 'date',
+					name: 'dateFrom', value: location.query.get('dateFrom') }),
+				label({ for: 'date-to-input' }, _("Date to"), ":"),
+				input({ id: 'date-to-input', type: 'date',
+					name: 'dateTo', value: location.query.get('dateTo') }))));
 	ul(list(Object.keys(stepsMap), function (shortStepPath) {
 		return _if(stepsMap[shortStepPath], function () {
 			var step = db['BusinessProcess' +

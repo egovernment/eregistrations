@@ -1,8 +1,12 @@
 'use strict';
 
+var ensureDatabase = require('dbjs/valid-dbjs');
+
 module.exports = function (db, date) {
-	date = Date.parse(date);
-	if (isNaN(date)) throw new Error("Unrecognized date value" + JSON.stringify(date));
-	date = new Date(date);
-	return new db.Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+	ensureDatabase(db);
+	var resultDate = Date.parse(date);
+	if (isNaN(resultDate)) throw new Error("Unrecognized date value: " + JSON.stringify(date));
+	resultDate = new Date(resultDate);
+	return new db.Date(resultDate.getUTCFullYear(), resultDate.getUTCMonth(),
+		resultDate.getUTCDate());
 };

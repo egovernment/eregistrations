@@ -28,7 +28,7 @@ var queryConf = [
 			dateFrom = dateStringtoDbDate(db, value);
 			if (dateFrom > now) throw new Error('From cannot be in future');
 			if (query.dateTo) {
-				dateTo = dateStringtoDbDate(query.dateTo);
+				dateTo = dateStringtoDbDate(db, query.dateTo);
 				if (dateTo < dateFrom) throw new Error('Invalid date range');
 			}
 			return dateFrom;
