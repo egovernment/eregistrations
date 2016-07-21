@@ -25,7 +25,7 @@ var getProcessorAndProcessingTime = memoize(function (data) {
 			function (processingTimeData) {
 				if (!processingTimeData || processingTimeData.value[2] !== '2') return;
 				result.processingTime =
-					Number(unserializeValue(processingTimeData.value));
+					unserializeValue(processingTimeData.value);
 			}
 		)
 	)(result);
@@ -86,7 +86,9 @@ module.exports = function (data) {
 						});
 					}
 					return deferred(customFilter ?
-							deferred.map(entries, customFilter) : entries)(function (filteredEntries) {
+							deferred.map(entries, function (entry) {
+								return customFilter(entry) ? entry : null;
+							}).invoke('filter', Boolean) : entries)(function (filteredEntries) {
 						entries = filteredEntries;
 						return deferred.map(entries, function (data) {
 							return getProcessorAndProcessingTime(data)(function (result) {
