@@ -14,7 +14,10 @@ module.exports = function (processingStepsMeta) {
 		},
 		'files/rejected': require('../view/statistics-files-rejected'),
 		'files/accounts': require('../view/statistics-files-accounts'),
-		time: require('../view/statistics-time-per-role'),
+		time: {
+			decorateContext: function () { this.processingStepsMeta = processingStepsMeta; },
+			view: require('../view/statistics-time-per-role')
+		},
 		'time/per-person': require('../view/statistics-time-per-person'),
 		analysis: require('../view/statistics-analysis'),
 
