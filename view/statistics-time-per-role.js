@@ -1,37 +1,15 @@
 'use strict';
 
-var location     = require('mano/lib/client/location')
-  , _            = require('mano').i18n.bind('View: Statistics')
-  , db           = require('mano').db
-  , capitalize   = require('es5-ext/string/#/capitalize')
-  , uncapitalize = require('es5-ext/string/#/uncapitalize')
-  , ObservableValue = require('observable-value')
-  , setupQueryHandler = require('../utils/setup-client-query-handler')
+var location            = require('mano/lib/client/location')
+  , _                   = require('mano').i18n.bind('View: Statistics')
+  , db                  = require('mano').db
+  , capitalize          = require('es5-ext/string/#/capitalize')
+  , uncapitalize        = require('es5-ext/string/#/uncapitalize')
+  , ObservableValue     = require('observable-value')
+  , setupQueryHandler   = require('../utils/setup-client-query-handler')
   , resolveFullStepPath = require('../utils/resolve-processing-step-full-path')
-  , getData           = require('mano/lib/client/xhr-driver').get
-  , stepsMap     = {}
-  , queryHandler;
-
-queryHandler = setupQueryHandler([
-	{
-		name: 'service',
-		ensure: function (value) {
-			return value;
-		}
-	},
-	{
-		name: 'from',
-		ensure: function (value, resolvedQuery, query) {
-			return value;
-		}
-	},
-	{
-		name: 'to',
-		ensure: function (value) {
-			return value;
-		}
-	}
-], location, '/time/');
+  , getData             = require('mano/lib/client/xhr-driver').get
+  , getQueryHandlerConf = require('../routes/utils/get-statistics-time-query-handler-conf');
 
 exports._parent = require('./statistics-time');
 
@@ -39,10 +17,15 @@ exports['time-nav'] = { class: { 'pills-nav-active': true } };
 exports['per-role-nav'] = { class: { 'pills-nav-active': true } };
 
 exports['statistics-main'] = function () {
-	var processingStepsMeta = this.processingStepsMeta;
+	var processingStepsMeta = this.processingStepsMeta, stepsMap = {}, queryHandler;
 	Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
 		stepsMap[stepShortPath] = new ObservableValue();
 	});
+	queryHandler = setupQueryHandler(getQueryHandlerConf({
+		db: db,
+		processingStepsMeta: processingStepsMeta
+	}), location, '/time/');
+
 	queryHandler.on('query', function (query) {
 		getData('/get-processing-time-data/', query)(function (result) {
 			Object.keys(stepsMap).forEach(function (key) {

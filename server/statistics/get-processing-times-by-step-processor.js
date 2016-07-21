@@ -75,14 +75,14 @@ module.exports = function (data) {
 					result[stepShortPath] = [];
 					if (!entries.length) return;
 
-					if (query.from) {
+					if (query.dateFrom) {
 						entries = entries.filter(function (data) {
-							return data.date >= query.from;
+							return data.date >= query.dateFrom;
 						});
 					}
-					if (query.to) {
+					if (query.dateTo) {
 						entries = entries.filter(function (data) {
-							return data.date <= query.to;
+							return data.date <= query.dateTo;
 						});
 					}
 					return deferred(customFilter ?
