@@ -64,7 +64,7 @@ module.exports = function (data) {
 					var entries = businessProcessesByStepsMap[stepShortPath];
 					if (query.service) {
 						if (!includes.call(processingStepsMeta[stepShortPath]._services, query.service)) {
-							return result;
+							return;
 						}
 						if (processingStepsMeta[stepShortPath]._services.length > 1) {
 							entries = businessProcessesByStepsMap[stepShortPath].filter(function (entry) {
@@ -73,7 +73,7 @@ module.exports = function (data) {
 						}
 					}
 					result[stepShortPath] = [];
-					if (!entries.length) return result;
+					if (!entries.length) return;
 
 					if (query.from) {
 						entries = entries.filter(function (data) {
@@ -123,8 +123,6 @@ module.exports = function (data) {
 						result[stepShortPath] = Object.keys(dataByProcessors).map(function (processorId) {
 							return dataByProcessors[processorId];
 						});
-
-						return result;
 					});
 				})(result);
 		}
