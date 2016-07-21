@@ -9,7 +9,8 @@ var location            = require('mano/lib/client/location')
   , setupQueryHandler   = require('../utils/setup-client-query-handler')
   , resolveFullStepPath = require('../utils/resolve-processing-step-full-path')
   , getData             = require('mano/lib/client/xhr-driver').get
-  , getQueryHandlerConf = require('../routes/utils/get-statistics-time-query-handler-conf');
+  , getQueryHandlerConf = require('../routes/utils/get-statistics-time-query-handler-conf')
+  , memoize             = require('memoizee');
 
 exports._parent = require('./statistics-time');
 
@@ -17,16 +18,17 @@ exports['time-nav'] = { class: { 'pills-nav-active': true } };
 exports['per-role-nav'] = { class: { 'pills-nav-active': true } };
 
 exports['statistics-main'] = function () {
-	var processingStepsMeta = this.processingStepsMeta, stepsMap = {}, queryHandler;
+	var processingStepsMeta = this.processingStepsMeta, stepsMap = {}, stepTotals = {}, queryHandler;
 	Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
-		stepsMap[stepShortPath] = new ObservableValue();
+		stepsMap[stepShortPath]   = new ObservableValue();
+		stepTotals[stepShortPath] = new ObservableValue();
 	});
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
 		db: db,
 		processingStepsMeta: processingStepsMeta
 	}), location, '/time/');
 
-	queryHandler.on('query', function (query) {
+	queryHandler.on('query', memoize(function (query) {
 		if (query.dateFrom) {
 			query.dateFrom = query.dateFrom.toJSON();
 		}
@@ -35,10 +37,32 @@ exports['statistics-main'] = function () {
 		}
 		getData('/get-processing-time-data/', query)(function (result) {
 			Object.keys(stepsMap).forEach(function (key) {
+				var total;
 				stepsMap[key].value = result[key];
+				if (!result[key] || !result[key].length) {
+					stepTotals[key].value = null;
+					return;
+				}
+				total = {
+					processed: 0,
+					avgTime: 0,
+					minTime: Infinity,
+					maxTime: 0,
+					totalTime: 0
+				};
+				result[key].forEach(function (byProcessor) {
+					total.processed += byProcessor.processed;
+					total.totalTime += byProcessor.totalTime;
+					total.minTime = Math.min(byProcessor.minTime, total.minTime);
+					total.maxTime = Math.max(byProcessor.maxTime, total.maxTime);
+				});
+				total.avgTime = total.totalTime / total.processed;
+				stepTotals[key].value = total;
 			});
 		});
-	});
+	}, {
+		normalizer: function (args) { return JSON.stringify(args[0]); }
+	}));
 
 	section({ class: 'section-primary users-table-filter-bar' },
 		form({ action: '/time', autoSubmit: true },
@@ -72,7 +96,6 @@ exports['statistics-main'] = function () {
 			var step = db['BusinessProcess' +
 				capitalize.call(processingStepsMeta[shortStepPath]._services[0])].prototype
 				.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath));
-
 			return section({ class: "section-primary" },
 				step.label,
 				_if(stepsMap[shortStepPath].map(function (data) {
@@ -86,7 +109,7 @@ exports['statistics-main'] = function () {
 						th(_("Min time")),
 						th(_("Max time"))
 					),
-					tbody(stepsMap[shortStepPath], function (rowData) {
+					tbody(list(stepsMap[shortStepPath], function (rowData) {
 						tr(
 							td(db.User.getById(rowData.processor).fullName),
 							td(rowData.processed),
@@ -94,8 +117,19 @@ exports['statistics-main'] = function () {
 							td(rowData.minTime),
 							td(rowData.maxTime)
 						);
-					})
-				)));
+					}), stepTotals[shortStepPath].map(function (totals) {
+						if (!totals) return;
+						return tr(
+							td(_("Total & times")),
+							td(totals.processed),
+							td(totals.avgTime),
+							td(totals.minTime),
+							td(totals.maxTime)
+						);
+					}))
+				)
+					)
+				);
 		});
 	}));
 };
