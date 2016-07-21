@@ -87,7 +87,9 @@ module.exports = function (data) {
 					}
 					return deferred(customFilter ?
 							deferred.map(entries, function (entry) {
-								return customFilter(entry) ? entry : null;
+								return customFilter(entry)(function (isOK) {
+									return isOK ? entry : null;
+								});
 							}).invoke('filter', Boolean) : entries)(function (filteredEntries) {
 						entries = filteredEntries;
 						return deferred.map(entries, function (data) {
