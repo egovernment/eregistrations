@@ -88,7 +88,7 @@ exports['statistics-main'] = function () {
 					),
 					tbody(stepsMap[shortStepPath], function (rowData) {
 						tr(
-							td(rowData.processor),
+							td(db.User.getById(rowData.processor).fullName),
 							td(rowData.processed),
 							td(rowData.avgTime),
 							td(rowData.minTime),

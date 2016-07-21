@@ -445,6 +445,8 @@ module.exports = exports = function (db, dbDriver, data) {
 				fragment.addFragment(getReducedFrag(storage)('statistics'));
 			});
 		});
+		// Officials
+		fragment.addFragment(officialsFragment);
 		return fragment;
 	});
 
