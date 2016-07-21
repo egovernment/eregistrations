@@ -20,14 +20,14 @@ var getProcessorAndProcessingTime = memoize(function (data) {
 				if (!processorData || processorData.value[0] !== '7') return;
 				result.processor = processorData.value.slice(1);
 			}
-		).done(),
+		),
 		data.storage.get(data.id + '/' + data.stepFullPath + '/processingTime')(
 			function (processingTimeData) {
 				if (!processingTimeData || processingTimeData.value[2] !== '2') return;
 				result.processingTime =
 					Number(unserializeValue(processingTimeData.value));
 			}
-		).done()
+		)
 	)(result);
 }, {
 	normalizer: function (args) { return args[0].id + args[0].stepFullPath; }
@@ -85,13 +85,14 @@ module.exports = function (data) {
 							return data.date <= query.to;
 						});
 					}
-					if (customFilter) {
-						entries = entries.filter(customFilter);
-					}
-					return deferred.map(entries, function (data) {
-						return getProcessorAndProcessingTime(data)(function (result) {
-							assign(data, result);
-						}).done();
+					return deferred(customFilter ?
+							deferred.map(entries, customFilter) : entries)(function (filteredEntries) {
+						entries = filteredEntries;
+						return deferred.map(entries, function (data) {
+							return getProcessorAndProcessingTime(data)(function (result) {
+								assign(data, result);
+							});
+						});
 					})(function () {
 						var dataByProcessors = {};
 						entries.forEach(function (entry) {

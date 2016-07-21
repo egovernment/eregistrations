@@ -38,5 +38,5 @@ module.exports = memoize(function (driver, processingStepsMeta, db) {
 }, {
 	length: 0,
 	// One day
-	maxAge: 1
+	maxAge: 86400000
 });
