@@ -1,7 +1,6 @@
 'use strict';
 
-var _  = require('mano').i18n.bind("View: Duration format")
-  , _d = _;
+var _  = require('mano').i18n.bind("View: Duration format");
 /**
  *
  * @param msTime { Number } - time in milliseconds
@@ -13,5 +12,5 @@ module.exports = function (msTime) {
 	hours = Math.round(msTime / 1000 / 60 / 60);
 	days  = Math.floor(hours / 24);
 	hours %= 24;
-	return _d("${ days } d ${ hours } h", { days: days, hours: hours });
+	return _("${ days } d ${ hours } h", { days: days, hours: hours });
 };
