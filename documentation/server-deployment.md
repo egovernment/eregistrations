@@ -24,7 +24,7 @@ Server restarts for one application should be handled by one person, there shoul
 </tbody>
 </table>
 
-## How often do restarts should occur
+## How often do restarts should be handled
 
 ### Production systems
 
