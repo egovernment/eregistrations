@@ -98,7 +98,7 @@ exports['statistics-main'] = function () {
 				label({ for: 'date-to-input' }, _("Date to"), ":"),
 				input({ id: 'date-to-input', type: 'date',
 					name: 'dateTo', value: location.query.get('dateTo') }))));
-	ul(Object.keys(stepsMap), function (shortStepPath) {
+	insert(list(Object.keys(stepsMap), function (shortStepPath) {
 		return stepsMap[shortStepPath].map(function (data) {
 			if (!data) return;
 			var step = db['BusinessProcess' +
@@ -106,7 +106,7 @@ exports['statistics-main'] = function () {
 				.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath));
 			return section({ class: "section-primary" },
 				h3(step.label),
-				data.length ? table({ class: 'statistics-table' },
+				table(
 					thead(
 						th(),
 						th(_("Files processed")),
@@ -114,7 +114,8 @@ exports['statistics-main'] = function () {
 						th(_("Min time")),
 						th(_("Max time"))
 					),
-					tbody(data, function (rowData) {
+					tbody({ onEmpty: tr(td({ class: 'empty', colspan: 5 },
+						_("There are no files processed at this step"))) }, data, function (rowData) {
 						tr(
 							td(db.User.getById(rowData.processor).fullName),
 							td(rowData.processed),
@@ -131,7 +132,8 @@ exports['statistics-main'] = function () {
 							td(getDurationDaysHours(totals.minTime)),
 							td(getDurationDaysHours(totals.maxTime))
 						);
-					}))) : null);
+					}))
+				));
 		});
-	});
+	}));
 };
