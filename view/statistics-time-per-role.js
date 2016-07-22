@@ -17,6 +17,12 @@ exports._parent = require('./statistics-time');
 exports['time-nav'] = { class: { 'pills-nav-active': true } };
 exports['per-role-nav'] = { class: { 'pills-nav-active': true } };
 
+var queryServer = memoize(function (query) {
+	return getData('/get-processing-time-data/', query);
+}, {
+	normalizer: function (args) { return JSON.stringify(args[0]); }
+});
+
 exports['statistics-main'] = function () {
 	var processingStepsMeta = this.processingStepsMeta, stepsMap = {}, stepTotals = {}, queryHandler;
 	Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
@@ -28,14 +34,14 @@ exports['statistics-main'] = function () {
 		processingStepsMeta: processingStepsMeta
 	}), location, '/time/');
 
-	queryHandler.on('query', memoize(function (query) {
+	queryHandler.on('query', function (query) {
 		if (query.dateFrom) {
 			query.dateFrom = query.dateFrom.toJSON();
 		}
 		if (query.dateTo) {
 			query.dateTo = query.dateTo.toJSON();
 		}
-		getData('/get-processing-time-data/', query)(function (result) {
+		queryServer(query)(function (result) {
 			Object.keys(stepsMap).forEach(function (key) {
 				var total;
 				stepsMap[key].value = result[key];
@@ -60,9 +66,7 @@ exports['statistics-main'] = function () {
 				stepTotals[key].value = total;
 			});
 		});
-	}, {
-		normalizer: function (args) { return JSON.stringify(args[0]); }
-	}));
+	});
 
 	section({ class: 'section-primary users-table-filter-bar' },
 		form({ action: '/time', autoSubmit: true },
@@ -97,39 +101,37 @@ exports['statistics-main'] = function () {
 				capitalize.call(processingStepsMeta[shortStepPath]._services[0])].prototype
 				.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath));
 			return section({ class: "section-primary" },
-				step.label,
-				_if(stepsMap[shortStepPath].map(function (data) {
+				h3(step.label),
+				stepsMap[shortStepPath].map(function (data) {
 					if (!data) return;
-					return data.length;
-				}), table(
-					thead(
-						th(),
-						th(_("Files processed")),
-						th(_("Average time")),
-						th(_("Min time")),
-						th(_("Max time"))
-					),
-					tbody(list(stepsMap[shortStepPath], function (rowData) {
-						tr(
-							td(db.User.getById(rowData.processor).fullName),
-							td(rowData.processed),
-							td(rowData.avgTime),
-							td(rowData.minTime),
-							td(rowData.maxTime)
-						);
-					}), stepTotals[shortStepPath].map(function (totals) {
-						if (!totals) return;
-						return tr(
-							td(_("Total & times")),
-							td(totals.processed),
-							td(totals.avgTime),
-							td(totals.minTime),
-							td(totals.maxTime)
-						);
-					}))
-				)
-					)
-				);
+					return data.length ? table({ class: 'statistics-table' },
+						thead(
+							th(),
+							th(_("Files processed")),
+							th(_("Average time")),
+							th(_("Min time")),
+							th(_("Max time"))
+						),
+						tbody(data, function (rowData) {
+							tr(
+								td(db.User.getById(rowData.processor).fullName),
+								td(rowData.processed),
+								td(rowData.avgTime),
+								td(rowData.minTime),
+								td(rowData.maxTime)
+							);
+						}, stepTotals[shortStepPath].map(function (totals) {
+							if (!totals) return;
+							return tr(
+								td(_("Total & times")),
+								td(totals.processed),
+								td(totals.avgTime),
+								td(totals.minTime),
+								td(totals.maxTime)
+							);
+						}))
+						) : null;
+				}));
 		});
 	}));
 };

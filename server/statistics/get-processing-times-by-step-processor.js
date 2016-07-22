@@ -23,7 +23,7 @@ var getProcessorAndProcessingTime = memoize(function (data) {
 		),
 		data.storage.get(data.id + '/' + data.stepFullPath + '/processingTime')(
 			function (processingTimeData) {
-				if (!processingTimeData || processingTimeData.value[2] !== '2') return;
+				if (!processingTimeData || processingTimeData.value[0] !== '2') return;
 				result.processingTime =
 					unserializeValue(processingTimeData.value);
 			}
