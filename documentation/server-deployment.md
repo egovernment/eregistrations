@@ -17,10 +17,10 @@ Server restarts for one application should be handled by one person, there shoul
 <table>
 <thead><tr><th>System name</th><th>Assigned developer</th></tr></thead>
 <tbody>
-<tr><td>Guatemala</td><td>Marek Tuchowski [@mtuchowski](https://github.com/mtuchowski/)</td></tr>
-<tr><td>Lomas</td><td>Kamil Gruca [@kamsi](https://github.com/kamsi/)</td></tr>
-<tr><td>Salvador</td><td>Marek Tuchowski [@mtuchowski](https://github.com/mtuchowski/)</td></tr>
-<tr><td>Tanzania</td><td>Kamil Gruca [@kamsi](https://github.com/kamsi/)</td></tr>
+<tr><td>Guatemala</td><td>Marek Tuchowski <a href-"https://github.com/mtuchowski/">@mtuchowski</a></td></tr>
+<tr><td>Lomas</td><td>Kamil Gruca <a href-"https://github.com/kamsi/">@kamsi</a></td></tr>
+<tr><td>Salvador</td><td>Marek Tuchowski <a href-"https://github.com/mtuchowski/">@mtuchowski</a></td></tr>
+<tr><td>Tanzania</td><td>Kamil Gruca <a href-"https://github.com/kamsi/">@kamsi</a></td></tr>
 </tbody>
 </table>
 
@@ -80,6 +80,8 @@ There's a preconfigured script that helps with that process:
 During review we need to check whether translations are technically correct:
 - Translations variables are used 1:1, e.g. it happened that translators tried to translate variable names. `I'm ${ fullName }`, was translated as `I'm ${ primerNombre }`. We should prevent taking in such changes (in such case please correct errors before merging the changes)
 - Messages that relate to model values of type `StringLine` (e.g. `legend`) must not introduce new line characters (if we accept such change, then server will crash at model initialization).
+
+2.3 After confirming that changes proposed with `server-translations` are fine, we merge the changes to master
 
 ##### 3. Update application to latest version
 
