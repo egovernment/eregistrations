@@ -1,18 +1,20 @@
 'use strict';
 
-var location            = require('mano/lib/client/location')
-  , _                   = require('mano').i18n.bind('View: Statistics')
-  , db                  = require('mano').db
-  , capitalize          = require('es5-ext/string/#/capitalize')
-  , uncapitalize        = require('es5-ext/string/#/uncapitalize')
-  , ObservableValue     = require('observable-value')
-  , setupQueryHandler   = require('../utils/setup-client-query-handler')
-  , resolveFullStepPath = require('../utils/resolve-processing-step-full-path')
-  , getData             = require('mano/lib/client/xhr-driver').get
-  , getQueryHandlerConf = require('../routes/utils/get-statistics-time-query-handler-conf')
-  , memoize             = require('memoizee');
+var location             = require('mano/lib/client/location')
+  , _                    = require('mano').i18n.bind('View: Statistics')
+  , db                   = require('mano').db
+  , capitalize           = require('es5-ext/string/#/capitalize')
+  , uncapitalize         = require('es5-ext/string/#/uncapitalize')
+  , ObservableValue      = require('observable-value')
+  , setupQueryHandler    = require('../utils/setup-client-query-handler')
+  , resolveFullStepPath  = require('../utils/resolve-processing-step-full-path')
+  , getData              = require('mano/lib/client/xhr-driver').get
+  , getQueryHandlerConf  = require('../routes/utils/get-statistics-time-query-handler-conf')
+  , getDurationDaysHours = require('./utils/get-duration-days-hours')
+  , memoize              = require('memoizee');
 
-exports._parent = require('./statistics-time');
+exports._parent        = require('./statistics-time');
+exports._customFilters = Function.prototype;
 
 exports['time-nav'] = { class: { 'pills-nav-active': true } };
 exports['per-role-nav'] = { class: { 'pills-nav-active': true } };
@@ -89,6 +91,7 @@ exports['statistics-main'] = function () {
 							}) },
 							service.prototype.label);
 					}, null)),
+				exports._customFilters.call(this),
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
 				input({ id: 'date-from-input', type: 'date',
 					name: 'dateFrom', value: location.query.get('dateFrom') }),
@@ -116,18 +119,18 @@ exports['statistics-main'] = function () {
 							tr(
 								td(db.User.getById(rowData.processor).fullName),
 								td(rowData.processed),
-								td(rowData.avgTime),
-								td(rowData.minTime),
-								td(rowData.maxTime)
+								td(getDurationDaysHours(rowData.avgTime)),
+								td(getDurationDaysHours(rowData.minTime)),
+								td(getDurationDaysHours(rowData.maxTime))
 							);
 						}, stepTotals[shortStepPath].map(function (totals) {
 							if (!totals) return;
 							return tr(
 								td(_("Total & times")),
 								td(totals.processed),
-								td(totals.avgTime),
-								td(totals.minTime),
-								td(totals.maxTime)
+								td(getDurationDaysHours(totals.avgTime)),
+								td(getDurationDaysHours(totals.minTime)),
+								td(getDurationDaysHours(totals.maxTime))
 							);
 						}))
 						) : null;
