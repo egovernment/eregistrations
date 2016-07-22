@@ -9,7 +9,7 @@ exports['sub-main'] = {
 	content: function () {
 		ul({ class: 'pills-nav' }, exports._statisticsNav.call(this));
 		ul({ id: 'statistics-sub-menu', class: 'pills-nav pills-nav-sub' });
-		div({ class: 'statistics-main', id: 'statistics-main' });
+		div({ class: 'statistics-main user-forms', id: 'statistics-main' });
 	}
 };
 
