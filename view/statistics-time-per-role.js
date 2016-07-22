@@ -98,43 +98,40 @@ exports['statistics-main'] = function () {
 				label({ for: 'date-to-input' }, _("Date to"), ":"),
 				input({ id: 'date-to-input', type: 'date',
 					name: 'dateTo', value: location.query.get('dateTo') }))));
-	ul(list(Object.keys(stepsMap), function (shortStepPath) {
-		return _if(stepsMap[shortStepPath], function () {
+	ul(Object.keys(stepsMap), function (shortStepPath) {
+		return stepsMap[shortStepPath].map(function (data) {
+			if (!data) return;
 			var step = db['BusinessProcess' +
 				capitalize.call(processingStepsMeta[shortStepPath]._services[0])].prototype
 				.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath));
 			return section({ class: "section-primary" },
 				h3(step.label),
-				stepsMap[shortStepPath].map(function (data) {
-					if (!data) return;
-					return data.length ? table({ class: 'statistics-table' },
-						thead(
-							th(),
-							th(_("Files processed")),
-							th(_("Average time")),
-							th(_("Min time")),
-							th(_("Max time"))
-						),
-						tbody(data, function (rowData) {
-							tr(
-								td(db.User.getById(rowData.processor).fullName),
-								td(rowData.processed),
-								td(getDurationDaysHours(rowData.avgTime)),
-								td(getDurationDaysHours(rowData.minTime)),
-								td(getDurationDaysHours(rowData.maxTime))
-							);
-						}, stepTotals[shortStepPath].map(function (totals) {
-							if (!totals) return;
-							return tr(
-								td(_("Total & times")),
-								td(totals.processed),
-								td(getDurationDaysHours(totals.avgTime)),
-								td(getDurationDaysHours(totals.minTime)),
-								td(getDurationDaysHours(totals.maxTime))
-							);
-						}))
-						) : null;
-				}));
+				data.length ? table({ class: 'statistics-table' },
+					thead(
+						th(),
+						th(_("Files processed")),
+						th(_("Average time")),
+						th(_("Min time")),
+						th(_("Max time"))
+					),
+					tbody(data, function (rowData) {
+						tr(
+							td(db.User.getById(rowData.processor).fullName),
+							td(rowData.processed),
+							td(getDurationDaysHours(rowData.avgTime)),
+							td(getDurationDaysHours(rowData.minTime)),
+							td(getDurationDaysHours(rowData.maxTime))
+						);
+					}, stepTotals[shortStepPath].map(function (totals) {
+						if (!totals) return;
+						return tr(
+							td(_("Total & times")),
+							td(totals.processed),
+							td(getDurationDaysHours(totals.avgTime)),
+							td(getDurationDaysHours(totals.minTime)),
+							td(getDurationDaysHours(totals.maxTime))
+						);
+					}))) : null);
 		});
-	}));
+	});
 };
