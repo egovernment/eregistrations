@@ -5,7 +5,7 @@ var location             = require('mano/lib/client/location')
   , db                   = require('mano').db
   , capitalize           = require('es5-ext/string/#/capitalize')
   , uncapitalize         = require('es5-ext/string/#/uncapitalize')
-  , ObservableValue      = require('observable-value')
+  , ObservableArray      = require('observable-array')
   , setupQueryHandler    = require('../utils/setup-client-query-handler')
   , resolveFullStepPath  = require('../utils/resolve-processing-step-full-path')
   , getData              = require('mano/lib/client/xhr-driver').get
@@ -14,6 +14,7 @@ var location             = require('mano/lib/client/location')
   , memoize              = require('memoizee');
 
 exports._parent = require('./statistics-time');
+exports._customFilters = Function.prototype;
 
 exports['time-nav'] = { class: { 'pills-nav-active': true } };
 exports['per-role-nav'] = { class: { 'pills-nav-active': true } };
@@ -24,12 +25,28 @@ var queryServer = memoize(function (query) {
 	normalizer: function (args) { return JSON.stringify(args[0]); }
 });
 
+var getEmptyResult = function () {
+	return {
+		processed: 0,
+		label: 'Label',
+		avgTime: 0,
+		minTime: Infinity,
+		maxTime: 0,
+		totalTime: 0
+	};
+};
+
+var resetResult = function (result) {
+	result.processed = '-';
+	result.avgTime = '-';
+	result.minTime = '-';
+	result.maxTime = '-';
+	result.totalTime = '-';
+};
+
 exports['statistics-main'] = function () {
-	var processingStepsMeta = this.processingStepsMeta, stepsMap = {}, stepTotals = {}, queryHandler;
-	Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
-		stepsMap[stepShortPath]   = new ObservableValue();
-		stepTotals[stepShortPath] = new ObservableValue();
-	});
+	var processingStepsMeta = this.processingStepsMeta, mainData, queryHandler;
+	mainData = new ObservableArray();
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
 		db: db,
 		processingStepsMeta: processingStepsMeta
@@ -43,16 +60,53 @@ exports['statistics-main'] = function () {
 			query.dateTo = query.dateTo.toJSON();
 		}
 		queryServer(query)(function (result) {
-			Object.keys(stepsMap).forEach(function (key) {
-				stepsMap[key].value = result[key];
-				if (!result[key] || !result[key].length) {
-					stepTotals[key].value = null;
+			var totalWithoutCorrections, perRoleTotal;
+			mainData.splice(0, mainData.length);
+			totalWithoutCorrections = getEmptyResult();
+			totalWithoutCorrections.label = _("Total process without corrections");
+			Object.keys(result).forEach(function (key) {
+				perRoleTotal = getEmptyResult();
+				perRoleTotal.label   = db['BusinessProcess' +
+					capitalize.call(processingStepsMeta[key]._services[0])].prototype
+					.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
+
+				if (!result[key].length) {
+					resetResult(perRoleTotal);
+
+					mainData.push(perRoleTotal);
+					return;
 				}
+				result[key].forEach(function (byProcessor) {
+					perRoleTotal.processed += byProcessor.processed;
+					perRoleTotal.minTime = Math.min(byProcessor.minTime, perRoleTotal.minTime);
+					perRoleTotal.maxTime = Math.max(byProcessor.maxTime, perRoleTotal.maxTime);
+					perRoleTotal.totalTime += byProcessor.totalTime;
+				});
+				perRoleTotal.avgTime = perRoleTotal.totalTime / perRoleTotal.processed;
+
+				mainData.push(perRoleTotal);
+
+				totalWithoutCorrections.processed += perRoleTotal.processed;
+				totalWithoutCorrections.minTime =
+					Math.min(perRoleTotal.minTime, totalWithoutCorrections.minTime);
+				totalWithoutCorrections.maxTime =
+					Math.max(perRoleTotal.maxTime, totalWithoutCorrections.maxTime);
+				totalWithoutCorrections.totalTime += perRoleTotal.totalTime;
 			});
-		});
+
+			if (!totalWithoutCorrections.processed) {
+				resetResult(totalWithoutCorrections);
+			} else {
+				totalWithoutCorrections.avgTime =
+					totalWithoutCorrections.totalTime / totalWithoutCorrections.processed;
+			}
+
+			mainData.push(totalWithoutCorrections);
+		}).done();
 	});
+
 	section({ class: 'section-primary users-table-filter-bar' },
-		form({ action: '/time/per-person', autoSubmit: true },
+		form({ action: '/time', autoSubmit: true },
 			div({ class: 'users-table-filter-bar-status' },
 				label({ for: 'service-select' }, _("Service"), ":"),
 				select({ id: 'service-select', name: 'service' },
@@ -90,35 +144,14 @@ exports['statistics-main'] = function () {
 			th(_("Min time")),
 			th(_("Max time"))
 		), tbody({ onEmpty: tr(td({ class: 'empty', colspan: 5 },
-			_("There are no files processed at this step"))) },
-			Object.keys(stepsMap), function (shortStepPath) {
-				return stepsMap[shortStepPath].map(function (data) {
-					if (!data) return;
-					var step = db['BusinessProcess' +
-						capitalize.call(processingStepsMeta[shortStepPath]._services[0])].prototype
-						.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath)), perRoleTotal;
-					perRoleTotal = {
-						processed: 0,
-						avgTime: 0,
-						minTime: Infinity,
-						maxTime: 0,
-						totalTime: 0
-					};
-					data.forEach(function (byProcessor) {
-						perRoleTotal.processed++;
-						perRoleTotal.minTime = Math.min(byProcessor.minTime, perRoleTotal.minTime);
-						perRoleTotal.maxTime = Math.max(byProcessor.maxTime, perRoleTotal.maxTime);
-						perRoleTotal.totalTime += byProcessor.totalTime;
-					});
-					perRoleTotal.avgTime = perRoleTotal.totalTime / perRoleTotal.processed;
-					return tr(
-						td(step.label),
-						td(perRoleTotal.processed),
-						td(getDurationDaysHours(perRoleTotal.avgTime)),
-						td(getDurationDaysHours(perRoleTotal.minTime)),
-						td(getDurationDaysHours(perRoleTotal.maxTime))
-					);
-				});
-			}))
-		);
+					_("There is no data to display"))) },
+				mainData, function (row) {
+				return tr(
+					td(row.label),
+					td(row.processed),
+					td(Number(row.avgTime) ? getDurationDaysHours(row.avgTime) : row.avgTime),
+					td(Number(row.minTime) ? getDurationDaysHours(row.minTime) : row.minTime),
+					td(Number(row.maxTime) ? getDurationDaysHours(row.maxTime) : row.maxTime)
+				);
+			})));
 };
