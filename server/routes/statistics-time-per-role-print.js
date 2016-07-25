@@ -45,7 +45,9 @@ module.exports = function (configData) {
 						capitalize.call(options.processingStepsMeta[key]._services[0])].prototype
 						.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
 
+					inserts.steps.push(step);
 					if (!step.data.length) return;
+
 					total = {
 						processed: 0,
 						avgTime: 0,
