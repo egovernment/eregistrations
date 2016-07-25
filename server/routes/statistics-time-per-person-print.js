@@ -6,14 +6,14 @@ var debug               = require('debug-ext')('pdf-generator')
   , ensureDatabase      = require('dbjs/valid-dbjs')
   , ensureObject        = require('es5-ext/object/valid-object')
   , assign              = require('es5-ext/object/assign')
-  , _                   = require('mano').i18n.bind('Statistics time per role pdf')
+  , _                   = require('mano').i18n.bind('Statistics time per person pdf')
   , resolve             = require('path').resolve
   , capitalize          = require('es5-ext/string/#/capitalize')
   , resolveFullStepPath = require('../../utils/resolve-processing-step-full-path')
   , root                = resolve(__dirname, '../..')
   , getProcessingTimesByStepProcessor =
 		require('../statistics/get-processing-times-by-step-processor')
-  , templatePath        = resolve(root, 'apps-common/pdf-templates/statistics-time-per-role.html')
+  , templatePath        = resolve(root, 'apps-common/pdf-templates/statistics-time-per-person.html')
   , getDurationDaysHours = require('../../view/utils/get-duration-days-hours')
   , getUserFullName     = require('../utils/get-user-full-name')
   , htmlToPdf           = require('../html-to-pdf');
@@ -36,7 +36,7 @@ module.exports = function (configData) {
 			return getProcessingTimesByStepProcessor(assign(options, query))(function (result) {
 				var inserts = { steps: [], locale: db.locale,
 					logo: options.logo, currentDate: db.DateTime().toString() };
-				debug('Generating statistics time per role');
+				debug('Generating statistics time per person');
 
 				return deferred.map(Object.keys(result), function (key) {
 					var step = {}, total;
