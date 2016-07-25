@@ -7,6 +7,7 @@ var assign           = require('es5-ext/object/assign')
   , ensureObject     = require('es5-ext/object/valid-object')
   , QueryHandler     = require('../../utils/query-handler')
   , getBaseRoutes    = require('./authenticated')
+  , timePerRolePrint = require('./statistics-time-per-role-print')
   , getProcessingTimesByStepProcessor =
 		require('../statistics/get-processing-times-by-step-processor')
   , getQueryHandlerConf = require('../../routes/utils/get-statistics-time-query-handler-conf');
@@ -20,6 +21,7 @@ module.exports = exports = function (data) {
 		db: db,
 		processingStepsMeta: processingStepsMeta
 	});
+	timePerRolePrint = timePerRolePrint(assign(options));
 
 	var queryHandler = new QueryHandler(queryConf);
 
@@ -28,6 +30,14 @@ module.exports = exports = function (data) {
 			return queryHandler.resolve(query)(function (query) {
 				return getProcessingTimesByStepProcessor(assign(options, { query: query }));
 			});
+		},
+		'get-time-per-role-print': {
+			headers: timePerRolePrint.headers,
+			controller: function (query) {
+				return queryHandler.resolve(query)(function (query) {
+					return timePerRolePrint.controller({ query: query });
+				});
+			}
 		}
 	}, getBaseRoutes());
 };

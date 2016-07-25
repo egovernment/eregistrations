@@ -12,30 +12,30 @@
 		<small>${ _("Printed on ${ currentDate }", { currentDate: currentDate }) }</small>
 	</div>
 </header>
-<h2>${ e(businessName) }</h2>
 <ul class='data-blocks-list'>
 	${
 	steps.map(function (step) {
-		var header, table, thead, tbody = [];
-		header = '<h3>step.label</h3>';
-		thead  = '<thead><th></th><th>e(_("Files processed"))</th><th>e(_("Average time"))</th><th>e(_("Min time"))</th><th>e(_("Max time"))</th></thead>';
-		step.data.forEach(function (item) {
+		var header, thead, tbody = [];
+		header = '<h3>' + step.label + '</h3>';
+		thead  = '<thead><th></th><th>' + e(_("Files processed")) + '</th><th>'
+		+ e(_("Average time")) + '</th><th>' + e(_("Min time")) + '</th><th>' + e(_("Max time")) + '</th></thead>';
+		if (!step.data.length) {
+			return header;
+		};
+		tbody = step.data.map(function (item) {
 			var tds = [];
-			tds.push('<td>' + item.label + '</td>');
+			tds.push('<td>' + item.fullName + '</td>');
 			tds.push('<td>' + item.processed + '</td>');
 			tds.push('<td>' + item.avgTime + '</td>');
 			tds.push('<td>' + item.minTime + '</td>');
 			tds.push('<td>' + item.maxTime + '</td>');
 
-			tbody.push('<tr>' + tds.join() + '</tr>');
+			return '<tr>' + tds.join('') + '</tr>';
 		});
 		tbody  = '<tbody>' + tbody.join('') + '</tbody>';
-
-		table = '<table>' + header + tbody + '</table>';
-
-		return '<li>' + table.join() + '</li>';
-	});
-	}).join();
+		return header + '<table>' + thead + tbody + '</table>';
+	}).join('')
+	}
 </ul>
 </body>
 </html>
