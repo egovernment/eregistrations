@@ -20,7 +20,9 @@
 		thead  = '<thead><th></th><th>' + e(_("Files processed")) + '</th><th>'
 		+ e(_("Average time")) + '</th><th>' + e(_("Min time")) + '</th><th>' + e(_("Max time")) + '</th></thead>';
 		if (!step.data.length) {
-			return header;
+			return header + '<table>' + thead + '<tbody><tr><td colspan="5">' +
+			_("There are no files processed at this step")
+			+ '</td></tr></tbody>' + '</table>';
 		};
 		tbody = step.data.map(function (item) {
 			var tds = [];
