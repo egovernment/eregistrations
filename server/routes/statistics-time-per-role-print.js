@@ -1,6 +1,7 @@
 'use strict';
 
 var debug               = require('debug-ext')('pdf-generator')
+  , deferred            = require('deferred')
   , ensureDriver        = require('dbjs-persistence/ensure-driver')
   , ensureDatabase      = require('dbjs/valid-dbjs')
   , ensureObject        = require('es5-ext/object/valid-object')
@@ -14,6 +15,7 @@ var debug               = require('debug-ext')('pdf-generator')
 		require('../statistics/get-processing-times-by-step-processor')
   , templatePath        = resolve(root, 'apps-common/pdf-templates/statistics-time-per-role.html')
   , getDurationDaysHours = require('../../view/utils/get-duration-days-hours')
+  , getUserFullName     = require('../utils/get-user-full-name')
   , htmlToPdf           = require('../html-to-pdf');
 
 module.exports = function (configData) {
@@ -36,48 +38,49 @@ module.exports = function (configData) {
 					logo: options.logo, currentDate: db.DateTime().toString() };
 				debug('Generating statistics time per role');
 
-				Object.keys(result).forEach(function (key) {
+				return deferred.map(Object.keys(result), function (key) {
 					var step = {}, total;
 					step.data  = result[key];
 					step.label =  db['BusinessProcess' +
 						capitalize.call(options.processingStepsMeta[key]._services[0])].prototype
 						.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
 
-					if (step.data.length) {
-						total = {
-							processed: 0,
-							avgTime: 0,
-							minTime: Infinity,
-							maxTime: 0,
-							totalTime: 0
-						};
-						step.data.forEach(function (byProcessor) {
-							total.fullName = _("Total & times");
-							total.processed += byProcessor.processed;
-							total.totalTime += byProcessor.totalTime;
-							total.minTime = Math.min(byProcessor.minTime, total.minTime);
-							total.maxTime = Math.max(byProcessor.maxTime, total.maxTime);
-						});
-						total.avgTime = getDurationDaysHours(total.totalTime / total.processed);
-						total.minTime = getDurationDaysHours(total.minTime);
-						total.maxTime = getDurationDaysHours(total.maxTime);
-						step.data.forEach(function (item) {
-							item.fullName = item.processor;
-							item.avgTime = getDurationDaysHours(item.avgTime);
-							item.minTime = getDurationDaysHours(item.minTime);
-							item.maxTime = getDurationDaysHours(item.maxTime);
-						});
+					if (!step.data.length) return;
+					total = {
+						processed: 0,
+						avgTime: 0,
+						minTime: Infinity,
+						maxTime: 0,
+						totalTime: 0
+					};
+					step.data.forEach(function (byProcessor) {
+						total.fullName = _("Total & times");
+						total.processed += byProcessor.processed;
+						total.totalTime += byProcessor.totalTime;
+						total.minTime = Math.min(byProcessor.minTime, total.minTime);
+						total.maxTime = Math.max(byProcessor.maxTime, total.maxTime);
+					});
+					total.avgTime = getDurationDaysHours(total.totalTime / total.processed);
+					total.minTime = getDurationDaysHours(total.minTime);
+					total.maxTime = getDurationDaysHours(total.maxTime);
+					return deferred.map(step.data, function (item) {
+						item.avgTime = getDurationDaysHours(item.avgTime);
+						item.minTime = getDurationDaysHours(item.minTime);
+						item.maxTime = getDurationDaysHours(item.maxTime);
 
-						step.data.push(total);
-					}
-					inserts.steps.push(step);
-				});
-
-				return htmlToPdf(templatePath, '', {
-					width: "210mm",
-					height: "170mm",
-					streamable: true,
-					templateInserts: inserts
+						return getUserFullName(item.processor)(function (fullName) {
+							item.fullName = fullName;
+							step.data.push(total);
+							inserts.steps.push(step);
+						});
+					});
+				})(function () {
+					return htmlToPdf(templatePath, '', {
+						width: "210mm",
+						height: "170mm",
+						streamable: true,
+						templateInserts: inserts
+					});
 				});
 			});
 		}
