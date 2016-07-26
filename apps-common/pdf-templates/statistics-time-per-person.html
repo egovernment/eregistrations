@@ -9,7 +9,7 @@
 	${ logo ? '<img src="file://' + logo + '" />' : '' }
 	<div class="print-header-title">
 		<h2>${ e(_("Statistics time per person")) }</h2>
-		<small>${ _("Printed on ${ currentDate }", { currentDate: currentDate }) }</small>
+		<small>${ e(_("Printed on ${ currentDate }", { currentDate: currentDate })) }</small>
 	</div>
 </header>
 <ul class='data-blocks-list'>
@@ -20,7 +20,9 @@
 		thead  = '<thead><th></th><th>' + e(_("Files processed")) + '</th><th>'
 		+ e(_("Average time")) + '</th><th>' + e(_("Min time")) + '</th><th>' + e(_("Max time")) + '</th></thead>';
 		if (!step.data.length) {
-			return header;
+			return header + '<table>' + thead + '<tbody><tr><td colspan="5">' +
+			_("There are no files processed at this step")
+			+ '</td></tr></tbody>' + '</table>';
 		};
 		tbody = step.data.map(function (item) {
 			var tds = [];
