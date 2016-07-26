@@ -21,6 +21,13 @@ var getProcessorAndProcessingTime = memoize(function (data) {
 				result.processor = processorData.value.slice(1);
 			}
 		),
+		data.storage.get(data.id + '/' + data.stepFullPath + '/correctionTime')(
+			function (correctionTimeData) {
+				if (!correctionTimeData || correctionTimeData.value[0] !== '2') return;
+				result.correctionTime =
+					unserializeValue(correctionTimeData.value);
+			}
+		),
 		data.storage.get(data.id + '/' + data.stepFullPath + '/processingTime')(
 			function (processingTimeData) {
 				if (!processingTimeData || processingTimeData.value[0] !== '2') return;
