@@ -46,8 +46,8 @@ exports['statistics-main'] = function () {
 		queryServer(query)(function (result) {
 			Object.keys(stepsMap).forEach(function (key) {
 				var total;
-				stepsMap[key].value = result[key];
-				if (!result[key] || !result[key].length) {
+				stepsMap[key].value = result.byProcessor[key];
+				if (!result.byProcessor[key] || !result.byProcessor[key].length) {
 					stepTotals[key].value = null;
 					return;
 				}
@@ -58,7 +58,7 @@ exports['statistics-main'] = function () {
 					maxTime: 0,
 					totalTime: 0
 				};
-				result[key].forEach(function (byProcessor) {
+				result.byProcessor[key].forEach(function (byProcessor) {
 					total.processed += byProcessor.processed;
 					total.totalTime += byProcessor.totalTime;
 					total.minTime = Math.min(byProcessor.minTime, total.minTime);
@@ -67,7 +67,7 @@ exports['statistics-main'] = function () {
 				total.avgTime = total.totalTime / total.processed;
 				stepTotals[key].value = total;
 			});
-		});
+		}).done();
 	});
 	section({ class: 'section-primary users-table-filter-bar' },
 		form({ action: '/time/per-person', autoSubmit: true },

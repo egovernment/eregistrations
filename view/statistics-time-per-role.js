@@ -11,6 +11,8 @@ var location             = require('mano/lib/client/location')
   , getData              = require('mano/lib/client/xhr-driver').get
   , getQueryHandlerConf  = require('../routes/utils/get-statistics-time-query-handler-conf')
   , getDurationDaysHours = require('./utils/get-duration-days-hours')
+  , normalizeOptions     = require('es5-ext/object/normalize-options')
+  , assign               = require('es5-ext/object/assign')
   , memoize              = require('memoizee');
 
 exports._parent = require('./statistics-time');
@@ -60,23 +62,34 @@ exports['statistics-main'] = function () {
 			query.dateTo = query.dateTo.toJSON();
 		}
 		queryServer(query)(function (result) {
-			var totalWithoutCorrections, perRoleTotal;
+			var totalWithoutCorrections, total, totalCorrections, perRoleTotal;
 			mainData.splice(0, mainData.length);
+
 			totalWithoutCorrections = getEmptyResult();
+			totalWithoutCorrections = result.byBusinessProcess.totalProcessing;
 			totalWithoutCorrections.label = _("Total process without corrections");
-			Object.keys(result).forEach(function (key) {
+
+			totalCorrections = getEmptyResult();
+			totalCorrections = result.byBusinessProcess.totalCorrection;
+			totalCorrections.label = _("Total correcting time");
+
+			total = getEmptyResult();
+			total = result.byBusinessProcess.total;
+			total.label = _("Total process");
+
+			Object.keys(result.byProcessor).forEach(function (key) {
 				perRoleTotal = getEmptyResult();
 				perRoleTotal.label   = db['BusinessProcess' +
 					capitalize.call(processingStepsMeta[key]._services[0])].prototype
 					.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
 
-				if (!result[key].length) {
+				if (!result.byProcessor[key].length) {
 					resetResult(perRoleTotal);
 
 					mainData.push(perRoleTotal);
 					return;
 				}
-				result[key].forEach(function (byProcessor) {
+				result.byProcessor[key].forEach(function (byProcessor) {
 					perRoleTotal.processed += byProcessor.processed;
 					perRoleTotal.minTime = Math.min(byProcessor.minTime, perRoleTotal.minTime);
 					perRoleTotal.maxTime = Math.max(byProcessor.maxTime, perRoleTotal.maxTime);
@@ -85,23 +98,14 @@ exports['statistics-main'] = function () {
 				perRoleTotal.avgTime = perRoleTotal.totalTime / perRoleTotal.processed;
 
 				mainData.push(perRoleTotal);
-
-				totalWithoutCorrections.processed += perRoleTotal.processed;
-				totalWithoutCorrections.minTime =
-					Math.min(perRoleTotal.minTime, totalWithoutCorrections.minTime);
-				totalWithoutCorrections.maxTime =
-					Math.max(perRoleTotal.maxTime, totalWithoutCorrections.maxTime);
-				totalWithoutCorrections.totalTime += perRoleTotal.totalTime;
 			});
 
-			if (!totalWithoutCorrections.processed) {
-				resetResult(totalWithoutCorrections);
-			} else {
-				totalWithoutCorrections.avgTime =
-					totalWithoutCorrections.totalTime / totalWithoutCorrections.processed;
-			}
-
 			mainData.push(totalWithoutCorrections);
+			// Below line was explicitly requested, though doesn't give anything interesting right now
+			mainData.push(assign(normalizeOptions(totalCorrections),
+				{ label: _("Corrections by the users") }));
+			mainData.push(totalCorrections);
+			mainData.push(total);
 		}).done();
 	});
 
