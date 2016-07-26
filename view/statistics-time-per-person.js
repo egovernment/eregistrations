@@ -133,7 +133,7 @@ exports['statistics-main'] = function () {
 						th(_("Max time"))
 					),
 					tbody({ onEmpty: tr(td({ class: 'empty', colspan: 5 },
-						_("There are no files processed at this step"))) }, data, function (rowData) {
+						_("There are no files processed at this step"))) }, list(data, function (rowData) {
 						tr(
 							td(db.User.getById(rowData.processor).fullName),
 							td(rowData.processed),
@@ -141,7 +141,7 @@ exports['statistics-main'] = function () {
 							td(getDurationDaysHours(rowData.minTime)),
 							td(getDurationDaysHours(rowData.maxTime))
 						);
-					}, stepTotals[shortStepPath].map(function (totals) {
+					}), stepTotals[shortStepPath].map(function (totals) {
 						if (!totals) return;
 						return tr(
 							td(_("Total & times")),
