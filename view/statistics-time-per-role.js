@@ -137,7 +137,23 @@ exports['statistics-main'] = function () {
 				label({ for: 'date-to-input' }, _("Date to"), ":"),
 				input({ id: 'date-to-input', type: 'date',
 					name: 'dateTo', value: location.query.get('dateTo') }),
-				a({ class: 'button-resource-link', href: '#',
+				a({ class: 'button-resource-link', href:
+					location.query.get('dateTo').map(function (dateTo) {
+						return location.query.get('dateFrom').map(function (dateFrom) {
+							return location.query.get('service').map(function (service) {
+								var href = '/get-time-per-role-print/';
+								if (!Object.keys(location.query).length) {
+									return href;
+								}
+								href += '?';
+								href += Object.keys(location.query).map(function (key) {
+									return key + '=' + location.query[key];
+								}).join('&');
+
+								return href;
+							});
+						});
+					}),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
 				)));
 	section({ class: 'section-primary' },

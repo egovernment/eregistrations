@@ -38,24 +38,40 @@ module.exports = function (configData) {
 					logo: options.logo, currentDate: db.DateTime().toString() };
 				debug('Generating statistics time per role');
 				return deferred.map(Object.keys(result.byProcessor), function (key) {
-					var step;
-					step       = result.byProcessor[key];
+					var step = {
+						processed: '-',
+						avgTime: '-',
+						minTime: '-',
+						maxTime: '-',
+						totalTime: '-'
+					};
 					step.label =  db['BusinessProcess' +
 						capitalize.call(options.processingStepsMeta[key]._services[0])].prototype
 						.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
 
 					inserts.data.push(step);
-					if (!step.data.length) return;
-					step.data.forEach(function (item) {
-						item.avgTime = getDurationDaysHours(item.avgTime);
-						item.minTime = getDurationDaysHours(item.minTime);
-						item.maxTime = getDurationDaysHours(item.maxTime);
+					if (!result.byProcessor[key].length) return;
+					step = assign(step, {
+						processed: 0,
+						avgTime: 0,
+						minTime: Infinity,
+						maxTime: 0,
+						totalTime: 0
 					});
+					result.byProcessor[key].forEach(function (byProcessor) {
+						step.processed += byProcessor.processed;
+						step.minTime = Math.min(byProcessor.minTime, step.minTime);
+						step.maxTime = Math.max(byProcessor.maxTime, step.maxTime);
+						step.totalTime += byProcessor.totalTime;
+					});
+					step.avgTime = getDurationDaysHours(step.totalTime / step.processed);
+					step.minTime = getDurationDaysHours(step.minTime);
+					step.maxTime = getDurationDaysHours(step.maxTime);
 				})(function () {
 					var total, processingTotal, correctionTotal, correctionByUsers;
-					correctionTotal         = result.byBusinessProcess.correctionTotal;
+					correctionTotal         = result.byBusinessProcess.totalCorrection;
 					correctionTotal.label   = _("Total correcting time");
-					correctionByUsers       = normalizeOptions(result.byBusinessProcess.correctionTotal);
+					correctionByUsers       = normalizeOptions(result.byBusinessProcess.totalCorrection);
 					correctionByUsers.label = _("Corrections by the users");
 					processingTotal         = result.byBusinessProcess.totalProcessing;
 					processingTotal.label   = _("Total process without corrections");

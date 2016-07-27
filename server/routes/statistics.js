@@ -24,6 +24,7 @@ module.exports = exports = function (data) {
 		processingStepsMeta: processingStepsMeta
 	});
 	timePerPersonPrint = timePerPersonPrint(assign(options));
+	timePerRolePrint   = timePerRolePrint(assign(options));
 
 	var queryHandler = new QueryHandler(queryConf);
 
