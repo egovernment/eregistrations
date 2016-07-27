@@ -10,6 +10,7 @@ var includes                         = require('es5-ext/array/#/contains')
   , ensureCallable                   = require('es5-ext/object/valid-callable')
   , deferred                         = require('deferred')
   , unserializeValue                 = require('dbjs/_setup/unserialize/value')
+  , businessProcessesApprovedMap     = require('../utils/business-processes-approved-map')
   , memoize                          = require('memoizee');
 
 var getEmptyData = function () {
@@ -20,15 +21,6 @@ var getEmptyData = function () {
 		maxTime: 0,
 		totalTime: 0
 	};
-};
-
-var isBusinessProcessApproved = function (storage, id) {
-	return storage.get(id + '/isApproved')(
-		function (data) {
-			if (!data || data.value[0] !== '1') return false;
-			return unserializeValue(data.value);
-		}
-	);
 };
 
 var getProcessorAndProcessingTime = memoize(function (data) {
@@ -134,74 +126,75 @@ module.exports = function (data) {
 						});
 					})(function () {
 						var dataByProcessors = {};
-						entries.forEach(function (entry) {
+						return deferred.map(entries, function (entry) {
 							// Should not happen, but it's not right place to crash due to data inconsistency
 							if (!entry.processor) return;
 							// Older businessProcess don't have processingTime, so they're useless here
 							if (!entry.processingTime) return;
-							return isBusinessProcessApproved(entry.storage, entry.id)(
-								function (isBusinessProcessApproved) {
-									if (!dataByProcessors[entry.processor]) {
-										dataByProcessors[entry.processor] = getEmptyData();
-										dataByProcessors[entry.processor].processor = entry.processor;
+							if (!dataByProcessors[entry.processor]) {
+								dataByProcessors[entry.processor] = getEmptyData();
+								dataByProcessors[entry.processor].processor = entry.processor;
+							}
+							dataByProcessors[entry.processor].processed++;
+							dataByProcessors[entry.processor].minTime =
+								Math.min(dataByProcessors[entry.processor].minTime, entry.processingTime);
+							dataByProcessors[entry.processor].maxTime =
+								Math.max(dataByProcessors[entry.processor].maxTime, entry.processingTime);
+							dataByProcessors[entry.processor].totalTime += entry.processingTime;
+							dataByProcessors[entry.processor].avgTime =
+								dataByProcessors[entry.processor].totalTime /
+								dataByProcessors[entry.processor].processed;
+
+							result.byProcessor[stepShortPath] =
+								Object.keys(dataByProcessors).map(function (processorId) {
+									return dataByProcessors[processorId];
+								});
+
+							// We collect totals by bps as well
+							return businessProcessesApprovedMap(function (approvedMap) {
+								return approvedMap.get('7' + entry.id + '/isApproved')(function (isApproved) {
+									console.log('isApproved', isApproved);
+									if (!isApproved) return;
+
+									if (!result.byBusinessProcess.data[entry.id]) {
+										result.byBusinessProcess.data[entry.id] = getEmptyData();
+										result.byBusinessProcess.totalProcessing.processed++;
+										result.byBusinessProcess.total.processed++;
 									}
-									dataByProcessors[entry.processor].processed++;
-									dataByProcessors[entry.processor].minTime =
-										Math.min(dataByProcessors[entry.processor].minTime, entry.processingTime);
-									dataByProcessors[entry.processor].maxTime =
-										Math.max(dataByProcessors[entry.processor].maxTime, entry.processingTime);
-									dataByProcessors[entry.processor].totalTime += entry.processingTime;
-									dataByProcessors[entry.processor].avgTime =
-										dataByProcessors[entry.processor].totalTime /
-										dataByProcessors[entry.processor].processed;
-
-									result.byProcessor[stepShortPath] =
-										Object.keys(dataByProcessors).map(function (processorId) {
-											return dataByProcessors[processorId];
-										});
-
-									// We collect totals by bps as well
-									if (isBusinessProcessApproved) {
-										if (!result.byBusinessProcess.data[entry.id]) {
-											result.byBusinessProcess.data[entry.id] = getEmptyData();
-											result.byBusinessProcess.totalProcessing.processed++;
-											result.byBusinessProcess.total.processed++;
+									result.byBusinessProcess.data[entry.id].totalTime += entry.processingTime;
+									if (entry.correctionTime) {
+										result.byBusinessProcess.data[entry.id].correctionTime = entry.correctionTime;
+										result.byBusinessProcess.data[entry.id].totalTime += entry.correctionTime;
+										if (!result.byBusinessProcess.data[entry.id].hasCorrectionTime) {
+											result.byBusinessProcess.data[entry.id].hasCorrectionTime = true;
+											result.byBusinessProcess.totalCorrection.processed++;
 										}
-										result.byBusinessProcess.data[entry.id].totalTime += entry.processingTime;
-										if (entry.correctionTime) {
-											result.byBusinessProcess.data[entry.id].correctionTime = entry.correctionTime;
-											result.byBusinessProcess.data[entry.id].totalTime += entry.correctionTime;
-											if (!result.byBusinessProcess.data[entry.id].hasCorrectionTime) {
-												result.byBusinessProcess.data[entry.id].hasCorrectionTime = true;
-												result.byBusinessProcess.totalCorrection.processed++;
-											}
-										} else {
-											result.byBusinessProcess.data[entry.id].correctionTime = 0;
-										}
-										result.byBusinessProcess.totalProcessing.totalTime += entry.processingTime;
-										result.byBusinessProcess.totalCorrection.totalTime +=
-											(entry.correctionTime || 0);
-										result.byBusinessProcess.total.totalTime =
-											result.byBusinessProcess.totalProcessing.totalTime
-											+ result.byBusinessProcess.totalCorrection.totalTime;
-
-										result.byBusinessProcess.totalProcessing.avgTime =
-											result.byBusinessProcess.totalProcessing.totalTime /
-											result.byBusinessProcess.totalProcessing.processed;
-
-										// Can be 0 here
-										if (result.byBusinessProcess.totalCorrection.processed) {
-											result.byBusinessProcess.totalCorrection.avgTime =
-												result.byBusinessProcess.totalCorrection.totalTime /
-												result.byBusinessProcess.totalCorrection.processed;
-										}
-
-										result.byBusinessProcess.total.avgTime =
-											result.byBusinessProcess.total.totalTime /
-											result.byBusinessProcess.total.processed;
+									} else {
+										result.byBusinessProcess.data[entry.id].correctionTime = 0;
 									}
-								}
-							);
+									result.byBusinessProcess.totalProcessing.totalTime += entry.processingTime;
+									result.byBusinessProcess.totalCorrection.totalTime +=
+										(entry.correctionTime || 0);
+									result.byBusinessProcess.total.totalTime =
+										result.byBusinessProcess.totalProcessing.totalTime
+										+ result.byBusinessProcess.totalCorrection.totalTime;
+
+									result.byBusinessProcess.totalProcessing.avgTime =
+										result.byBusinessProcess.totalProcessing.totalTime /
+										result.byBusinessProcess.totalProcessing.processed;
+
+									// Can be 0 here
+									if (result.byBusinessProcess.totalCorrection.processed) {
+										result.byBusinessProcess.totalCorrection.avgTime =
+											result.byBusinessProcess.totalCorrection.totalTime /
+											result.byBusinessProcess.totalCorrection.processed;
+									}
+
+									result.byBusinessProcess.total.avgTime =
+										result.byBusinessProcess.total.totalTime /
+										result.byBusinessProcess.total.processed;
+								});
+							});
 						});
 					});
 				})(function () {
