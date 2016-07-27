@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="${ locale }">
+<head>
+	<meta charset="utf-8" />
+	<link href="${ root }statistics-time-per-role.html" rel="stylesheet" media="all" />
+</head>
+<body>
+<header class="print-header">
+	${ logo ? '<img src="file://' + logo + '" />' : '' }
+	<div class="print-header-title">
+		<h2>${ e(_("Statistics time per role")) }</h2>
+		<small>${ e(_("Printed on ${ currentDate }", { currentDate: currentDate })) }</small>
+	</div>
+</header>
+<ul class='data-blocks-list'>
+	${
+	var header, thead, tbody = [];
+	header = '<h3>' + step.label + '</h3>';
+	thead  = '<thead><th></th><th>' + e(_("Files processed")) + '</th><th>'
+	+ e(_("Average time")) + '</th><th>' + e(_("Min time")) + '</th><th>' + e(_("Max time")) + '</th></thead>';
+	if (!data.length) {
+		return header + '<table>' + thead + '<tbody><tr><td colspan="5">' +
+		_("There is no data to display")
+		+ '</td></tr></tbody>' + '</table>';
+	};
+	tbody = data.map(function (item) {
+		var tds = [];
+		tds.push('<td>' + item.label + '</td>');
+		tds.push('<td>' + item.processed + '</td>');
+		tds.push('<td>' + item.avgTime + '</td>');
+		tds.push('<td>' + item.minTime + '</td>');
+		tds.push('<td>' + item.maxTime + '</td>');
+
+		return '<tr>' + tds.join('') + '</tr>';
+	});
+	tbody  = '<tbody>' + tbody.join('') + '</tbody>';
+	header + '<table>' + thead + tbody + '</table>';
+	}
+</ul>
+</body>
+</html>
