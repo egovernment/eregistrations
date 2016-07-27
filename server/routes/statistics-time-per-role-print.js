@@ -18,6 +18,16 @@ var debug               = require('debug-ext')('pdf-generator')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
   , htmlToPdf           = require('../html-to-pdf');
 
+var getEmptyResult = function () {
+	return {
+		processed: '-',
+		avgTime: '-',
+		minTime: '-',
+		maxTime: '-',
+		totalTime: '-'
+	};
+};
+
 module.exports = function (configData) {
 	var options, db = ensureDatabase(configData.db);
 	options = {
@@ -38,13 +48,7 @@ module.exports = function (configData) {
 					logo: options.logo, currentDate: db.DateTime().toString() };
 				debug('Generating statistics time per role');
 				return deferred.map(Object.keys(result.byProcessor), function (key) {
-					var step = {
-						processed: '-',
-						avgTime: '-',
-						minTime: '-',
-						maxTime: '-',
-						totalTime: '-'
-					};
+					var step = getEmptyResult();
 					step.label =  db['BusinessProcess' +
 						capitalize.call(options.processingStepsMeta[key]._services[0])].prototype
 						.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
@@ -87,6 +91,9 @@ module.exports = function (configData) {
 							}
 							if (totalItem.maxTime) {
 								totalItem.maxTime = getDurationDaysHours(totalItem.maxTime);
+							}
+							if (!totalItem.processed) {
+								totalItem = assign(totalItem, getEmptyResult());
 							}
 							inserts.data.push(totalItem);
 						}
