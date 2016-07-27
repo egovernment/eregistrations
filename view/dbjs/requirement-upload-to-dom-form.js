@@ -25,7 +25,9 @@ module.exports = Object.defineProperty(db.RequirementUpload.prototype, 'toDOMFor
 				enctype: 'multipart/form-data', autoSubmit: true },
 
 			h2(this.document._label.map(function (label) {
-				return _d(label, this.document.getTranslations());
+				// In legacy renders businessProcess can be removed, and not checking existance of document
+				// may crash
+				return _d(label, this.document ? this.document.getTranslations() : {});
 			}.bind(this))),
 			_if(and(this._isRecentlyRejected, this.master._isSentBack), div({ class: 'info-main' },
 				_if(isPaymentReceipt, this._rejectReasonMemo,
