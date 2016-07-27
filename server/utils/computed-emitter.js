@@ -57,7 +57,7 @@ ee(Object.defineProperties(ComputedEmitter.prototype, assign({
 				this._map.set(ownerId, value);
 				return value;
 			}.bind(this));
-		});
+		}.bind(this));
 	})
 }), lazy({
 	_map: d(function () { return new Map(); }),
