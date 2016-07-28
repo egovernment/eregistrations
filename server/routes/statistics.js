@@ -9,6 +9,7 @@ var assign                            = require('es5-ext/object/assign')
   , getBaseRoutes                     = require('./authenticated')
   , timePerPersonPrint                = require('./statistics-time-per-person-print')
   , timePerRolePrint                  = require('./statistics-time-per-role-print')
+  , timePerRoleCsv                    = require('./statistics-time-per-role-csv')
   , getProcessingTimesByStepProcessor =
 		require('../statistics/get-processing-times-by-step-processor')
   , getQueryHandlerConf               =
@@ -25,6 +26,7 @@ module.exports = exports = function (data) {
 	});
 	timePerPersonPrint = timePerPersonPrint(assign(options));
 	timePerRolePrint   = timePerRolePrint(assign(options));
+	timePerRoleCsv     = timePerRoleCsv(assign(options));
 
 	var queryHandler = new QueryHandler(queryConf);
 
@@ -47,6 +49,14 @@ module.exports = exports = function (data) {
 			controller: function (query) {
 				return queryHandler.resolve(query)(function (query) {
 					return timePerRolePrint.controller({ query: query });
+				});
+			}
+		},
+		'get-time-per-role-csv': {
+			headers: timePerRoleCsv.headers,
+			controller: function (query) {
+				return queryHandler.resolve(query)(function (query) {
+					return timePerRoleCsv.controller({ query: query });
 				});
 			}
 		}
