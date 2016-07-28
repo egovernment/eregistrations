@@ -52,6 +52,7 @@ ee(Object.defineProperties(ComputedEmitter.prototype, assign({
 		var methodName = 'get' + ((this._type === 'direct') ? '' : capitalize.call(this._type))
 		  , id = ownerId + (this._keyPath ? '/' + this._keyPath : '');
 		return this.getStorage(ownerId)(function (storage) {
+			if (!storage) return null;
 			return storage[methodName](id)(function (data) {
 				var value = data ? data.value : '';
 				this._map.set(ownerId, value);
