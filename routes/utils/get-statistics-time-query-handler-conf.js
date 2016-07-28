@@ -11,16 +11,6 @@ var normalizeOptions   = require('es5-ext/object/normalize-options')
 
 var queryConf = [
 	{
-		name: 'service',
-		ensure: function (value) {
-			if (!value) return;
-			if (!availableServices.has(value)) {
-				throw new Error("Unrecognized service value " + stringify(value));
-			}
-			return value;
-		}
-	},
-	{
 		name: 'dateFrom',
 		ensure: function (value, resolvedQuery, query) {
 			var now = new db.Date(), dateFrom, dateTo;
@@ -49,14 +39,28 @@ var queryConf = [
 ];
 
 module.exports = function (data) {
-	var options         = normalizeOptions(ensureObject(data));
+	var options         = normalizeOptions(ensureObject(data)), conf;
 	db                  = ensureDatabase(options.db);
 	processingStepsMeta = options.processingStepsMeta;
-	availableServices   = new Set();
-	Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
-		processingStepsMeta[stepShortPath]._services.forEach(function (serviceName) {
-			availableServices.add(serviceName);
+	conf                = queryConf.slice(0);
+	if (processingStepsMeta) {
+		availableServices   = new Set();
+		Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
+			processingStepsMeta[stepShortPath]._services.forEach(function (serviceName) {
+				availableServices.add(serviceName);
+			});
 		});
-	});
-	return queryConf;
+
+		conf.push({
+			name: 'service',
+			ensure: function (value) {
+				if (!value) return;
+				if (!availableServices.has(value)) {
+					throw new Error("Unrecognized service value " + stringify(value));
+				}
+				return value;
+			}
+		});
+	}
+	return conf;
 };

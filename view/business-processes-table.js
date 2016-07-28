@@ -5,6 +5,7 @@ var _        = require('mano').i18n.bind('View: Offcial')
   , toArray  = require('es5-ext/object/to-array')
   , once     = require('timers-ext/once')
   , dispatch = require('dom-ext/html-element/#/dispatch-event-2')
+  , renderStatsOverview = require('./components/render-stats-overview')
 
   , byOrder  = function (a, b) { return this[a].order - this[b].order; };
 
@@ -14,6 +15,7 @@ exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
 		var searchForm, searchInput, businessProcessesTable;
+		renderStatsOverview(this);
 		exports._optionalContent.call(this);
 		// this should not happen, but it might if we don't block illegal role dependencies
 		if (!exports._statusMap.call(this)) return;
