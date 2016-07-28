@@ -37,9 +37,9 @@ module.exports = function (configData) {
 				var inserts = { steps: [], locale: db.locale,
 					logo: options.logo, currentDate: db.DateTime().toString() };
 				debug('Generating statistics time per person');
-				return deferred.map(Object.keys(result), function (key) {
+				return deferred.map(Object.keys(result.byProcessor), function (key) {
 					var step = {}, total;
-					step.data  = result[key];
+					step.data  = result.byProcessor[key];
 					step.label =  db['BusinessProcess' +
 						capitalize.call(options.processingStepsMeta[key]._services[0])].prototype
 						.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;

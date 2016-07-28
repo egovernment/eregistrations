@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="${ locale }">
+<head>
+	<meta charset="utf-8" />
+	<link href="${ root }statistics-time-per-role.html" rel="stylesheet" media="all" />
+</head>
+<body>
+<header class="print-header">
+	${ logo ? '<img src="file://' + logo + '" />' : '' }
+	<div class="print-header-title">
+		<h2>${ e(_("Statistics time per role")) }</h2>
+		<small>${ e(_("Printed on ${ currentDate }", { currentDate: currentDate })) }</small>
+	</div>
+</header>
+<table>
+	<thead>
+	<th></th>
+	<th>${ e(_("Files processed")) }</th>
+	<th>${ e(_("Average time")) }</th>
+	<th>${ e(_("Min time")) }</th>
+	<th>${ e(_("Max time")) }</th>
+	</thead>
+	<tbody>
+	${
+		data.map(function (item) {
+			return '<tr><td>' + item.label + '</td><td>'
+			+ item.processed + '</td><td>'
+			+ item.avgTime + '</td><td>'
+			+ item.minTime + '</td><td>'
+			+ item.maxTime + '</td><td></tr>';
+		}).join('')
+	}
+	</tbody>
+</table>
+</body>
+</html>
