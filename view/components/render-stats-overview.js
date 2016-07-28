@@ -16,13 +16,22 @@ var queryServer = memoize(function (query) {
 	normalizer: function (args) { return JSON.stringify(args[0]); }
 });
 
+var renderedProps = ['processed', 'avgTime', 'minTime', 'maxTime', 'totalAvgTime'];
+
+var mapDurationValue = function (value) {
+	if (!value || value === '-') return '-';
+	return getDurationDaysHours(value);
+};
+
 module.exports = function (context) {
-	var data, queryHandler;
+	var data = {}, queryHandler;
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
 		db: db
 	}), location, '/');
 
-	data = new ObservableValue();
+	renderedProps.forEach(function (prop) {
+		data[prop] = new ObservableValue();
+	});
 
 	queryHandler.on('query', function (query) {
 		if (query.dateFrom) {
@@ -33,12 +42,16 @@ module.exports = function (context) {
 		}
 		queryServer(query)(function (result) {
 			var totalOfAll;
-			data.value = result.byProcessor[context.processingStep.key][this.user.__id__] || {
-				processed: '-',
-				avgTime: '-',
-				minTime: '-',
-				max: '-'
-			};
+			if (!result || !result.byProcessor[context.processingStep.key]) return;
+
+			result.byProcessor[context.processingStep.key].some(function (item) {
+				if (item.processor === context.user.__id__) {
+					renderedProps.forEach(function (prop) {
+						if (item[prop]) data[prop].value = item[prop];
+					});
+					return true;
+				}
+			});
 
 			totalOfAll = { processed: 0, totalTime: 0 };
 			result.byProcessor[context.processingStep.key].forEach(function (byProcessor) {
@@ -46,22 +59,22 @@ module.exports = function (context) {
 				totalOfAll.totalTime += byProcessor.totalTime;
 			});
 			if (!totalOfAll.processed) {
-				data.value.totalAvgTime = '-';
+				data.totalAvgTime.value = '-';
 			} else {
-				data.value.totalAvgTime = totalOfAll.totalTime / totalOfAll.processed;
+				data.totalAvgTime.value = totalOfAll.totalTime / totalOfAll.processed;
 			}
 		}).done();
 	}, this);
-	return section({ class: 'section-primary users-table-filter-bar' },
-		form({ action: '/time/per-person', autoSubmit: true },
+	return [section({ class: 'section-primary users-table-filter-bar' },
+		form({ action: '/', autoSubmit: true },
 			div({ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
 				input({ id: 'date-from-input', type: 'date',
 					name: 'dateFrom', value: location.query.get('dateFrom') }),
 				label({ for: 'date-to-input' }, _("Date to"), ":"),
 				input({ id: 'date-to-input', type: 'date',
-					name: 'dateTo', value: location.query.get('dateTo') }))),
-		table(
+					name: 'dateTo', value: location.query.get('dateTo') })))),
+		section({ class: 'section-primary' }, table(
 			thead(
 				th(_("Files processed")),
 				th(_("Min time")),
@@ -69,14 +82,17 @@ module.exports = function (context) {
 				th(_("Average time")),
 				th(_("Overall processors average time"))
 			),
-			tbody({ onEmpty: tr(td({ class: 'empty', colspan: 6 },
-				_("There are no files processed at this step"))) },
+			tbody(
 				tr(
-					td(data.processed),
-					td(getDurationDaysHours(data.avgTime)),
-					td(getDurationDaysHours(data.minTime)),
-					td(getDurationDaysHours(data.maxTime)),
-					td(getDurationDaysHours(data.totalAvgTime))
-				))
-		));
+					td(data.processed.map(function (value) {
+						if (!value) return '-';
+						return value;
+					})),
+					td(data.minTime.map(mapDurationValue)),
+					td(data.maxTime.map(mapDurationValue)),
+					td(data.avgTime.map(mapDurationValue)),
+					td(data.totalAvgTime.map(mapDurationValue))
+				)
+			)
+		))];
 };

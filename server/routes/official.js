@@ -28,6 +28,8 @@ var aFrom                          = require('es5-ext/array/from')
   , mano                           = require('mano')
   , roleNameMap                    = require('mano/lib/server/user-role-name-map')
   , QueryHandler                   = require('../../utils/query-handler')
+  , getStatsQueryHandlerConf       =
+		require('../../routes/utils/get-statistics-time-query-handler-conf')
   , defaultItemsPerPage            = require('../../conf/objects-list-items-per-page')
   , getDbSet                       = require('../utils/get-db-set')
   , getDbArray                     = require('../utils/get-db-array')
@@ -35,6 +37,8 @@ var aFrom                          = require('es5-ext/array/from')
   , businessProcessStoragesPromise = require('../utils/business-process-storages')
   , idToStorage                    = require('../utils/business-process-id-to-storage')
   , getBaseRoutes                  = require('./authenticated')
+  , getProcessingTimesByStepProcessor =
+		require('../statistics/get-processing-times-by-step-processor')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }
@@ -306,9 +310,18 @@ var initializeHandler = function (conf) {
 
 module.exports = exports = function (mainConf/*, options */) {
 	var resolveHandler, options, stepShortPathResolve, getHandlerByRole
-	  , recentlyVisitedContextName, decorateQuery;
+	  , recentlyVisitedContextName, decorateQuery, statsOverviewQueryHandler, statsHandlerOpts;
 	options = Object(arguments[1]);
 	recentlyVisitedContextName = options.recentlyVisitedContextName;
+	if (options.processingStepsMeta) {
+		statsHandlerOpts = {
+			processingStepsMeta: options.processingStepsMeta,
+			db: require('mano').db,
+			driver: require('mano').dbDriver
+		};
+
+		statsOverviewQueryHandler = new QueryHandler(getStatsQueryHandlerConf(statsHandlerOpts));
+	}
 	if (options.decorateQuery != null) decorateQuery = ensureCallable(options.decorateQuery);
 	if (isArray(mainConf)) {
 		resolveHandler = (function () {
@@ -374,6 +387,12 @@ module.exports = exports = function (mainConf/*, options */) {
 					return mano.dbDriver.getStorage('user').store(recordId, '11')({ passed: true });
 				}.bind(this));
 			}.bind(this));
+		},
+		'get-processing-time-data': function (query) {
+			if (!statsOverviewQueryHandler) return null;
+			return statsOverviewQueryHandler.resolve(query)(function (query) {
+				return getProcessingTimesByStepProcessor(assign(statsHandlerOpts, { query: query }));
+			});
 		}
 	}, getBaseRoutes());
 };
