@@ -152,8 +152,7 @@ module.exports = function (data) {
 
 							// We collect totals by bps as well
 							return businessProcessesApprovedMap(function (approvedMap) {
-								return approvedMap.get('7' + entry.id + '/isApproved')(function (isApproved) {
-									console.log('isApproved', isApproved);
+								return approvedMap.get(entry.id)(function (isApproved) {
 									if (!isApproved) return;
 
 									if (!result.byBusinessProcess.data[entry.id]) {
