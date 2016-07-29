@@ -107,6 +107,7 @@ exports._userNameMenuItem = function () {
 				this.manager ? this.manager._fullName : this.user._fullName,
 				i({ id: 'dropDownMenu-angle', class: 'fa fa-angle-down' }))),
 			ul({ class: "header-top-menu-dropdown-content" },
+				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 				exports._profileMenuItem(this),
 				exports._logoutMenuItem(this)
 				)
@@ -135,7 +136,7 @@ exports._userNameMenuItem = function () {
 		})];
 };
 
-exports._profileMenuItem = function (this) {
+exports._profileMenuItem = function () {
 	return li(
 		a(
 			{ href: '/profile/' },
@@ -144,7 +145,7 @@ exports._profileMenuItem = function (this) {
 	);
 };
 
-exports._logoutMenuItem = function (this) {
+exports._logoutMenuItem = function () {
 	return li(
 		a(
 			{ href: '/logout/', rel: 'server' },
