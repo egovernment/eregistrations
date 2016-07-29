@@ -108,8 +108,8 @@ exports._userNameMenuItem = function () {
 				i({ id: 'dropDownMenu-angle', class: 'fa fa-angle-down' }))),
 			ul({ class: "header-top-menu-dropdown-content" },
 				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
-				exports._profileMenuItem(this),
-				exports._logoutMenuItem(this)
+				exports._profileMenuItem.call(this),
+				exports._logoutMenuItem.call(this)
 				)
 			),
 			script(function () {
