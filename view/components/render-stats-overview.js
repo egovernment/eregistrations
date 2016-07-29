@@ -81,13 +81,15 @@ module.exports = function (context) {
 				input({ id: 'date-to-input', type: 'date',
 					name: 'dateTo', value: location.query.get('dateTo') })))),
 		section({ class: 'table-responsive-container' },
-			table({ class: 'submitted-user-data-table' },
+			table({ class: 'statistics-table statistics-table-registrations' },
 				thead(
-					th(_("Files processed")),
-					th(_("Min time")),
-					th(_("Max time")),
-					th(_("Average time")),
-					th(_("Overall processors average time"))
+					tr(
+						th(_("Files processed")),
+						th(_("Min time")),
+						th(_("Max time")),
+						th(_("Average time")),
+						th(_("Overall processors average time"))
+					)
 				),
 				tbody(
 					tr(

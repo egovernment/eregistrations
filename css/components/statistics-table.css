@@ -10,6 +10,7 @@
 .statistics-table thead tr th:first-child,
 .statistics-table tbody tr td:first-child {
 	padding-left: 11px;
+	text-align: left;
 }
 .statistics-table thead tr th:last-child,
 .statistics-table tbody tr td:last-child {
@@ -65,9 +66,6 @@
 	border-bottom: 1px solid var(--light-inner-border);
 	background: var(--white-background);
 	text-align: center;
-}
-.statistics-table tbody tr td:first-child {
-	text-align: left;
 }
 
 .statistics-table tbody .statistics-table-sub-header {
