@@ -37,6 +37,12 @@ module.exports = function (from, to, paths) {
 			resolvedTo.object.delete(resolvedTo.key);
 			return;
 		}
+		if (resolvedFrom.value === null && resolvedTo.descriptor.required) {
+			return;
+		}
+		if (resolvedFrom.descriptor.multiple && !resolvedFrom.value.size) {
+			return;
+		}
 		resolvedTo.object.set(resolvedTo.key, resolvedFrom.value);
 	});
 };

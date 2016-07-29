@@ -6,10 +6,11 @@ var aFrom              = require('es5-ext/array/from')
   , db                 = require('../db')
   , isOfficialRoleName = require('../utils/is-official-role-name');
 
-exports._parent = require('./statistics-base');
+exports._parent = require('./statistics-files');
 
 var mapSize = function (val) { return (val == null) ? '-' : val; };
 
+exports['files-nav'] = { class: { 'pills-nav-active': true } };
 exports['accounts-nav'] = { class: { 'pills-nav-active': true } };
 
 exports['statistics-main'] = function () {

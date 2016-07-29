@@ -222,7 +222,7 @@ module.exports = memoize(function (db) {
 				}
 
 				propertiesToCheck.forEach(function (name) {
-					resolved = this.propertyMaster.resolveSKeyPath(name, _observe);
+					resolved = this.master.resolveSKeyPath(name, _observe);
 					if (!resolved) {
 						return;
 					}
