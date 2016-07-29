@@ -313,15 +313,14 @@ module.exports = exports = function (mainConf/*, options */) {
 	  , recentlyVisitedContextName, decorateQuery, statsOverviewQueryHandler, statsHandlerOpts;
 	options = Object(arguments[1]);
 	recentlyVisitedContextName = options.recentlyVisitedContextName;
-	if (options.processingStepsMeta) {
-		statsHandlerOpts = {
-			processingStepsMeta: options.processingStepsMeta,
-			db: require('mano').db,
-			driver: require('mano').dbDriver
-		};
 
-		statsOverviewQueryHandler = new QueryHandler(getStatsQueryHandlerConf(statsHandlerOpts));
-	}
+	statsHandlerOpts = {
+		processingStepsMeta: ensureObject(options.processingStepsMeta),
+		db: require('mano').db,
+		driver: require('mano').dbDriver
+	};
+
+	statsOverviewQueryHandler = new QueryHandler(getStatsQueryHandlerConf(statsHandlerOpts));
 	if (options.decorateQuery != null) decorateQuery = ensureCallable(options.decorateQuery);
 	if (isArray(mainConf)) {
 		resolveHandler = (function () {

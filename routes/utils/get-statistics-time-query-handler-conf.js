@@ -7,6 +7,7 @@ var normalizeOptions   = require('es5-ext/object/normalize-options')
   , customError        = require('es5-ext/error/custom')
   , stringify          = JSON.stringify
   , dateStringtoDbDate = require('../../utils/date-string-to-db-date')
+  , aFrom              = require('es5-ext/array/from')
   , processingStepsMeta, db, availableServices;
 
 var queryConf = [
@@ -42,7 +43,7 @@ module.exports = function (data) {
 	var options         = normalizeOptions(ensureObject(data)), conf;
 	db                  = ensureDatabase(options.db);
 	processingStepsMeta = options.processingStepsMeta;
-	conf                = queryConf.slice(0);
+	conf                = aFrom(queryConf);
 	if (processingStepsMeta) {
 		availableServices   = new Set();
 		Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
