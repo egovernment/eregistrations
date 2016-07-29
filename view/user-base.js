@@ -102,10 +102,10 @@ exports._extraRoleLabel = function () {
 };
 
 exports._userNameMenuItem = function () {
-	return [li({ id: "dropDownMenu", class: "header-top-dropdown-container" },
+	return [li({ id: "drop-down-menu", class: "header-top-dropdown-container" },
 			a(span({ class: 'header-top-user-name header-top-dropdown-button' },
 				this.manager ? this.manager._fullName : this.user._fullName,
-				i({ id: 'dropDownMenu-angle', class: 'fa fa-angle-down' }))),
+				i({ id: 'drop-down-menu-angle', class: 'fa fa-angle-down' }))),
 			ul({ class: "header-top-menu-dropdown-content" },
 				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 				exports._profileMenuItem.call(this),
@@ -113,7 +113,7 @@ exports._userNameMenuItem = function () {
 				)
 			),
 			script(function () {
-			var dropDownMenu = $('dropDownMenu'), dropDownMenuAngle = $('dropDownMenu-angle');
+			var dropDownMenu = $('drop-down-menu'), dropDownMenuAngle = $('drop-down-menu-angle');
 			dropDownMenu.onclick = function () {
 				if (dropDownMenu.hasClass("header-top-menu-opened")) {
 					dropDownMenu.removeClass("header-top-menu-opened");
@@ -125,7 +125,7 @@ exports._userNameMenuItem = function () {
 					dropDownMenuAngle.removeClass("fa-angle-down");
 				}
 			};
-			window.onclick = function (event) {
+			document.onclick = function (event) {
 				var clicked = $(event.toElement);
 				if (!clicked.hasClass('header-top-dropdown-button')) {
 					dropDownMenu.removeClass("header-top-menu-opened");

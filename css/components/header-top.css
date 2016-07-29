@@ -141,7 +141,7 @@ Flexible basic menu button positioning
 	color: var(--white-text);
 }
 
-.header-top-menu .header-top-menu-dropdown-content {
+.header-top-menu-dropdown-content {
 	display: none;
 }
 
