@@ -81,7 +81,7 @@ module.exports = function (context) {
 				input({ id: 'date-to-input', type: 'date',
 					name: 'dateTo', value: location.query.get('dateTo') })))),
 		section({ class: 'table-responsive-container' },
-			table({ class: 'statistics-table statistics-table-registrations' },
+			table({ class: 'statistics-table statistics-table-officials' },
 				thead(
 					tr(
 						th(_("Files processed")),

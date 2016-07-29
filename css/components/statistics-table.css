@@ -12,6 +12,13 @@
 	padding-left: 11px;
 	text-align: left;
 }
+
+.statistics-table-officials thead tr th:first-child,
+.statistics-table-officials tbody tr td:first-child {
+	padding-left: 11px;
+	text-align: center;
+}
+
 .statistics-table thead tr th:last-child,
 .statistics-table tbody tr td:last-child {
 	padding-right: 11px;
@@ -26,6 +33,7 @@
 	border:none;
 }
 
+.statistics-table-officials thead th,
 .statistics-table-registrations thead th {
 	background: var(--white-background);
 	color: var(--normal-text);
