@@ -81,25 +81,26 @@ module.exports = function (context) {
 				label({ for: 'date-to-input' }, _("Statistics date to"), ":"),
 				input({ id: 'date-to-input', type: 'date',
 					name: 'dateTo', value: location.query.get('dateTo') })))),
-		section({ class: 'section-primary' }, table(
-			thead(
-				th(_("Files processed")),
-				th(_("Min time")),
-				th(_("Max time")),
-				th(_("Average time")),
-				th(_("Overall processors average time"))
-			),
-			tbody(
-				tr(
-					td(data.processed.map(function (value) {
-						if (!value) return '-';
-						return value;
-					})),
-					td(data.minTime.map(mapDurationValue)),
-					td(data.maxTime.map(mapDurationValue)),
-					td(data.avgTime.map(mapDurationValue)),
-					td(data.totalAvgTime.map(mapDurationValue))
+		section({ class: 'table-responsive-container' },
+			table({ class: 'submitted-user-data-table' },
+				thead(
+					th(_("Files processed")),
+					th(_("Min time")),
+					th(_("Max time")),
+					th(_("Average time")),
+					th(_("Overall processors average time"))
+				),
+				tbody(
+					tr(
+						td(data.processed.map(function (value) {
+							if (!value) return '-';
+							return value;
+						})),
+						td(data.minTime.map(mapDurationValue)),
+						td(data.maxTime.map(mapDurationValue)),
+						td(data.avgTime.map(mapDurationValue)),
+						td(data.totalAvgTime.map(mapDurationValue))
+					)
 				)
-			)
-		))];
+				))];
 };
