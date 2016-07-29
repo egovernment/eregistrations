@@ -90,6 +90,7 @@ module.exports = function (data) {
 			return deferred.map(Object.keys(businessProcessesByStepsMap),
 				function (stepShortPath) {
 					var entries = businessProcessesByStepsMap[stepShortPath];
+					if (query.step && query.step !== stepShortPath) return;
 					if (query.service) {
 						if (!includes.call(processingStepsMeta[stepShortPath]._services, query.service)) {
 							return;

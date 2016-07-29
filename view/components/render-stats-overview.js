@@ -42,14 +42,13 @@ module.exports = function (context) {
 		if (query.dateTo) {
 			query.dateTo = query.dateTo.toJSON();
 		}
+		query.step = context.processingStep.key;
 		queryServer(query)(function (result) {
 			var totalOfAll;
-			if (!result || !result.byProcessor[context.processingStep.key]) {
-				renderedProps.forEach(function (prop) {
-					data[prop].value = null;
-				});
-				return;
-			}
+			renderedProps.forEach(function (prop) {
+				data[prop].value = null;
+			});
+			if (!result || !result.byProcessor[context.processingStep.key]) return;
 
 			result.byProcessor[context.processingStep.key].some(function (item) {
 				if (item.processor === context.user.__id__) {

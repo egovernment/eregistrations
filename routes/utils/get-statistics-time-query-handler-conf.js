@@ -61,6 +61,15 @@ module.exports = function (data) {
 				}
 				return value;
 			}
+		}, {
+			name: 'step',
+			ensure: function (value) {
+				if (!value) return;
+				if (!processingStepsMeta[value]) {
+					throw new Error("Unrecognized step value " + stringify(value));
+				}
+				return value;
+			}
 		});
 	}
 	return conf;
