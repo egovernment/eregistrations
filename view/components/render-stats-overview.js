@@ -8,6 +8,7 @@ var location             = require('mano/lib/client/location')
   , getData              = require('mano/lib/client/xhr-driver').get
   , getQueryHandlerConf  = require('../../routes/utils/get-statistics-time-query-handler-conf')
   , getDurationDaysHours = require('../utils/get-duration-days-hours')
+  , getDynamicFormAction = require('../utils/get-dynamic-form-action')
   , memoize              = require('memoizee');
 
 var queryServer = memoize(function (query) {
@@ -24,7 +25,7 @@ var mapDurationValue = function (value) {
 };
 
 module.exports = function (context) {
-	var data = {}, queryHandler;
+	var data = {}, queryHandler, formAction;
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
 		db: db
 	}), location, '/');
@@ -32,6 +33,7 @@ module.exports = function (context) {
 	renderedProps.forEach(function (prop) {
 		data[prop] = new ObservableValue();
 	});
+	formAction = getDynamicFormAction('/', ['dateFrom', 'dateTo']);
 
 	queryHandler.on('query', function (query) {
 		if (query.dateFrom) {
@@ -66,7 +68,7 @@ module.exports = function (context) {
 		}).done();
 	}, this);
 	return [section({ class: 'section-primary users-table-filter-bar' },
-		form({ action: '/', autoSubmit: true },
+		form({ action: formAction, autoSubmit: true },
 			div({ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
 				input({ id: 'date-from-input', type: 'date',
