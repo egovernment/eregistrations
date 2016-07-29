@@ -101,7 +101,7 @@ exports._extraRoleLabel = function () {
 exports._userNameMenuItem = function () {
 	function openMenu() {
 		console.log("clicked");
-		document.getElementById("dropDownMenu").classList.toggle("opened");
+		document.getElementById("dropDownMenu").classList.toggle("header-top-menu-opened");
 		document.getElementById("dropDownMenu-angle").classList.toggle("fa-angle-down");
 		document.getElementById("dropDownMenu-angle").classList.toggle("fa-angle-up");
 	}
@@ -109,7 +109,7 @@ exports._userNameMenuItem = function () {
 		console.log(event);
 		if (!event.target.classList.contains('header-top-dropdown-button')) {
 			console.log("no btn clicked");
-			document.getElementById("dropDownMenu").classList.remove("opened");
+			document.getElementById("dropDownMenu").classList.remove("header-top-menu-opened");
 			document.getElementById("dropDownMenu-angle").classList.add("fa-angle-down");
 			document.getElementById("dropDownMenu-angle").classList.remove("fa-angle-up");
 		}
@@ -118,7 +118,7 @@ exports._userNameMenuItem = function () {
 		a(span({ class: 'header-top-user-name header-top-dropdown-button' },
 			this.manager ? this.manager._fullName : this.user._fullName,
 			i({ id: 'dropDownMenu-angle', class: 'fa fa-angle-down' }))),
-		ul({ class: "dropdown-content" },
+		ul({ class: "header-top-menu-dropdown-content" },
 			li(form(button("Form button"))),
 			li(hr()),
 			li(a({ href: '/profile/' }, _("My informations"))),

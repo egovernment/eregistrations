@@ -115,8 +115,38 @@ Flexible basic menu button positioning
 	line-height: 22px;
 }
 
-.header-top-menu > li > ul {
+.header-top-menu a {
+	border: 1px solid var(--white-background);
+	border-bottom: none;
+}
+
+.header-top-menu-opened a {
+	background-color: var(--white-background);
+	border-radius: 3px 3px 0 0;
+	border: 1px solid var(--light-inner-border);
+	border-bottom: none;
+}
+
+.header-top-menu-dropdown-content a {
+	border: none;
+}
+
+.header-top-menu-dropdown-content a:hover,
+.header-top-menu-dropdown-content a:active,
+.header-top-menu-dropdown-content a:focus,
+.header-top-menu-dropdown-content button:hover,
+.header-top-menu-dropdown-content button:active,
+.header-top-menu-dropdown-content button:focus {
+	background-color: var(--normal-dark-background);
+	color: var(--white-text);
+}
+
+.header-top-menu .header-top-menu-dropdown-content {
 	display: none;
+}
+
+.header-top-menu-opened .header-top-menu-dropdown-content {
+	display: block;
 	background-color: var(--white-background);
 	border-radius: 0 0 3px 3px;
 	border: 1px solid var(--light-inner-border);
@@ -129,51 +159,20 @@ Flexible basic menu button positioning
 	width: 100%;
 }
 
-.header-top-menu > li > a {
-	border: 1px solid var(--white-background);
-	border-bottom: none;
-}
-
-.header-top-menu > .opened > a {
-	background-color: var(--white-background);
-	border-radius: 3px 3px 0 0;
-	border: 1px solid var(--light-inner-border);
-	border-bottom: none;
-}
-
-.header-top-menu > li > ul a,
-.header-top-menu > li > ul button {
-	width: 100%;
-	text-align: left;
-}
-
-.header-top-menu > .opened > ul a:hover,
-.header-top-menu > .opened > ul a:active,
-.header-top-menu > .opened > ul a:focus,
-.header-top-menu > .opened > ul button:hover,
-.header-top-menu > .opened > ul button:active,
-.header-top-menu > .opened > ul button:focus {
-	background-color: var(--normal-dark-background);
-	color: var(--white-text);
-}
-
-.header-top-menu > .opened > ul {
-	display: block;
-}
-
-.header-top-menu > li > ul hr {
+.header-top-menu hr {
 	margin-top: 10px;
 	margin-bottom: 11px;
 }
 
-.header-top-menu > li > ul a,
-.header-top-menu > li > ul button {
+.header-top-menu ul a,
+.header-top-menu ul button {
 	text-transform: none;
+	width: 100%;
+	text-align: left;
 }
 
 .header-top-dropdown button {
 	line-height: 22px;
-
 }
 
 .header-top-dropdown-button .fa {
