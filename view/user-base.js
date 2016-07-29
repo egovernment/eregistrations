@@ -4,7 +4,10 @@ var _                    = require('mano').i18n.bind('View: User')
   , loginDialog          = require('./components/login-dialog')
   , registerDialog       = require('./components/register-dialog')
   , modalContainer       = require('./components/modal-container')
-  , requestAccountDialog = require('./components/request-account-dialog');
+  , requestAccountDialog = require('./components/request-account-dialog')
+  , $                    = require('mano-legacy');
+
+require('mano-legacy/element#/class');
 
 exports._parent = require('./base');
 
@@ -99,32 +102,31 @@ exports._extraRoleLabel = function () {
 };
 
 exports._userNameMenuItem = function () {
-	function openMenu() {
-		console.log("clicked");
-		document.getElementById("dropDownMenu").classList.toggle("header-top-menu-opened");
-		document.getElementById("dropDownMenu-angle").classList.toggle("fa-angle-down");
-		document.getElementById("dropDownMenu-angle").classList.toggle("fa-angle-up");
-	}
-	window.onclick = function (event) {
-		console.log(event);
-		if (!event.target.classList.contains('header-top-dropdown-button')) {
-			console.log("no btn clicked");
-			document.getElementById("dropDownMenu").classList.remove("header-top-menu-opened");
-			document.getElementById("dropDownMenu-angle").classList.add("fa-angle-down");
-			document.getElementById("dropDownMenu-angle").classList.remove("fa-angle-up");
-		}
-	};
-	return li({ id: "dropDownMenu", onclick: openMenu, class: "header-top-dropdown-container" },
-		a(span({ class: 'header-top-user-name header-top-dropdown-button' },
-			this.manager ? this.manager._fullName : this.user._fullName,
-			i({ id: 'dropDownMenu-angle', class: 'fa fa-angle-down' }))),
-		ul({ class: "header-top-menu-dropdown-content" },
-			li(form(button("Form button"))),
-			li(hr()),
-			li(a({ href: '/profile/' }, _("My informations"))),
-			li(a({ href: '/logout/', rel: 'server' }, _("Log out")))
-			)
-		);
+	return [li({ id: "dropDownMenu", class: "header-top-dropdown-container" },
+			a(span({ class: 'header-top-user-name header-top-dropdown-button' },
+				this.manager ? this.manager._fullName : this.user._fullName,
+				i({ id: 'dropDownMenu-angle', class: 'fa fa-angle-down' }))),
+			ul({ class: "header-top-menu-dropdown-content" },
+				li(form(button("Form button"))),
+				li(hr()),
+				li(a({ href: '/profile/' }, _("My informations"))),
+				li(a({ href: '/logout/', rel: 'server' }, _("Log out")))
+				)
+			),
+			script(function () {
+			var dropDownMenu = $('dropDownMenu'), dropDownMenuAngle = $('dropDownMenu-angle');
+			dropDownMenu.onclick = function () {
+				if (dropDownMenu.hasClass("header-top-menu-opened")) {
+					dropDownMenu.removeClass("header-top-menu-opened");
+					dropDownMenuAngle.removeClass("fa-angle-up");
+					dropDownMenuAngle.addClass("fa-angle-down");
+				} else {
+					dropDownMenu.addClass("header-top-menu-opened");
+					dropDownMenuAngle.addClass("fa-angle-up");
+					dropDownMenuAngle.removeClass("fa-angle-down");
+				}
+			};
+		})];
 };
 
 exports._profileMenuItem = function () {
