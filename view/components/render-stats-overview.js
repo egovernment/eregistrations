@@ -70,10 +70,10 @@ module.exports = function (context) {
 	return [section({ class: 'section-primary users-table-filter-bar' },
 		form({ action: formAction, autoSubmit: true },
 			div({ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-from-input' }, _("Date from"), ":"),
+				label({ for: 'date-from-input' }, _("Statistics date from"), ":"),
 				input({ id: 'date-from-input', type: 'date',
 					name: 'dateFrom', value: location.query.get('dateFrom') }),
-				label({ for: 'date-to-input' }, _("Date to"), ":"),
+				label({ for: 'date-to-input' }, _("Statistics date to"), ":"),
 				input({ id: 'date-to-input', type: 'date',
 					name: 'dateTo', value: location.query.get('dateTo') })))),
 		section({ class: 'section-primary' }, table(
