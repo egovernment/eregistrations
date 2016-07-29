@@ -126,6 +126,14 @@ exports._userNameMenuItem = function () {
 					dropDownMenuAngle.removeClass("fa-angle-down");
 				}
 			};
+			window.onclick = function (event) {
+				var clicked = $(event.toElement);
+				if (!clicked.hasClass('header-top-dropdown-button')) {
+					dropDownMenu.removeClass("header-top-menu-opened");
+					dropDownMenuAngle.removeClass("fa-angle-up");
+					dropDownMenuAngle.addClass("fa-angle-down");
+				}
+			};
 		})];
 };
 
