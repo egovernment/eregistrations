@@ -44,7 +44,12 @@ module.exports = function (context) {
 		}
 		queryServer(query)(function (result) {
 			var totalOfAll;
-			if (!result || !result.byProcessor[context.processingStep.key]) return;
+			if (!result || !result.byProcessor[context.processingStep.key]) {
+				renderedProps.forEach(function (prop) {
+					data[prop].value = null;
+				});
+				return;
+			}
 
 			result.byProcessor[context.processingStep.key].some(function (item) {
 				if (item.processor === context.user.__id__) {
