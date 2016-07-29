@@ -109,8 +109,8 @@ exports._userNameMenuItem = function () {
 			ul({ class: "header-top-menu-dropdown-content" },
 				li(form(button("Form button"))),
 				li(hr()),
-				li(a({ href: '/profile/' }, _("My informations"))),
-				li(a({ href: '/logout/', rel: 'server' }, _("Log out")))
+				exports._profileMenuItem(),
+				exports._logoutMenuItem()
 				)
 			),
 			script(function () {
@@ -133,7 +133,7 @@ exports._profileMenuItem = function () {
 	return li(
 		a(
 			{ href: '/profile/' },
-			span({ class: 'fa fa-cog' }, "Preferences")
+			_("My informations")
 		)
 	);
 };
@@ -142,7 +142,7 @@ exports._logoutMenuItem = function () {
 	return li(
 		a(
 			{ href: '/logout/', rel: 'server' },
-			span({ class: 'fa fa-power-off' }, "Log out")
+			_("Log out")
 		)
 	);
 };
