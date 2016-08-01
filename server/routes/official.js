@@ -326,7 +326,11 @@ module.exports = exports = function (mainConf/*, options */) {
 	options = Object(arguments[1]);
 	recentlyVisitedContextName = options.recentlyVisitedContextName;
 
-	if (env.enableProcessorStatisticsOverview) {
+	/**
+	 * This is to safeguard older systems which don't use this functionality
+	 * the flag is not mandatory, so only setup if you don't want this configured in a system
+	 * */
+	if (options.processingStepsMeta && !env.disableProcessorStatisticsOverview) {
 		statsHandlerOpts = {
 			processingStepsMeta: ensureObject(options.processingStepsMeta),
 			db: require('mano').db,

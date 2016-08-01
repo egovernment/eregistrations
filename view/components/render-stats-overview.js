@@ -27,7 +27,7 @@ var mapDurationValue = function (value) {
 
 module.exports = function (context) {
 	var data = {}, queryHandler, formAction;
-	if (!env.enableProcessorStatisticsOverview) {
+	if (env.disableProcessorStatisticsOverview) {
 		return;
 	}
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
