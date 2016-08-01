@@ -68,7 +68,7 @@ module.exports = function (data) {
 		totalCorrection: null,
 		total: null,
 		data: {}
-	}, byProcessor: {} },
+	}, byProcessor: {}, stepTotal: {} },
 		driver, processingStepsMeta, db, query, customFilter, options;
 	result.byBusinessProcess.totalProcessing = getEmptyData();
 	result.byBusinessProcess.totalCorrection = getEmptyData();
@@ -104,6 +104,7 @@ module.exports = function (data) {
 						}
 					}
 					result.byProcessor[stepShortPath] = [];
+					result.stepTotal[stepShortPath]   = getEmptyData();
 					if (!entries.length) return;
 					if (query.dateFrom) {
 						entries = entries.filter(function (data) {
@@ -153,6 +154,17 @@ module.exports = function (data) {
 									return dataByProcessors[processorId];
 								});
 
+							// Per step totals
+							result.stepTotal[stepShortPath].processed++;
+							result.stepTotal[stepShortPath].minTime =
+								Math.min(result.stepTotal[stepShortPath].minTime, entry.processingTime);
+							result.stepTotal[stepShortPath].maxTime =
+								Math.max(result.stepTotal[stepShortPath].maxTime, entry.processingTime);
+							result.stepTotal[stepShortPath].totalTime += entry.processingTime;
+							result.stepTotal[stepShortPath].avgTime =
+								result.stepTotal[stepShortPath].totalTime /
+								result.stepTotal[stepShortPath].processed;
+
 							// We collect totals by bps as well
 							return businessProcessesApprovedMap(function (approvedMap) {
 								return approvedMap.get(entry.id)(function (isApproved) {
@@ -200,6 +212,23 @@ module.exports = function (data) {
 						});
 					});
 				})(function () {
+				if (query.step && options.userId) {
+					var perUserResult = {
+						processor: getEmptyData(),
+						stepTotal: getEmptyData()
+					};
+					if (!result.byProcessor[query.step] || !result.byProcessor[query.step].length) {
+						return perUserResult;
+					}
+					result.byProcessor[query.step].some(function (resultItem) {
+						if (resultItem.processor === options.userId) {
+							perUserResult.processor = resultItem;
+							return true;
+						}
+					});
+					perUserResult.stepTotal = result.stepTotal[query.step];
+					return perUserResult;
+				}
 				if (result.byBusinessProcess.totalProcessing.processed) {
 					// We can calculate min and max only after we have collected all the data
 					Object.keys(result.byBusinessProcess.data).forEach(function (businessProcessId) {

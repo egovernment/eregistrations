@@ -43,31 +43,19 @@ module.exports = function (context) {
 			query.dateTo = query.dateTo.toJSON();
 		}
 		queryServer(query)(function (result) {
-			var totalOfAll;
 			renderedProps.forEach(function (prop) {
 				data[prop].value = null;
 			});
-			if (!result || !result.byProcessor[context.processingStep.key]) return;
-
-			result.byProcessor[context.processingStep.key].some(function (item) {
-				if (item.processor === context.user.__id__) {
-					renderedProps.forEach(function (prop) {
-						if (item[prop]) data[prop].value = item[prop];
-					});
-					return true;
+			if (!result || !result.stepTotal) return;
+			console.log('result.stepTotal', result.stepTotal);
+			renderedProps.forEach(function (prop) {
+				if (result.processor && result.processor[prop]) {
+					data[prop].value = result.processor[prop];
+				}
+				if (prop === 'totalAvgTime') {
+					data.totalAvgTime.value = result.stepTotal.avgTime;
 				}
 			});
-
-			totalOfAll = { processed: 0, totalTime: 0 };
-			result.byProcessor[context.processingStep.key].forEach(function (byProcessor) {
-				totalOfAll.processed += byProcessor.processed;
-				totalOfAll.totalTime += byProcessor.totalTime;
-			});
-			if (!totalOfAll.processed) {
-				data.totalAvgTime.value = '-';
-			} else {
-				data.totalAvgTime.value = totalOfAll.totalTime / totalOfAll.processed;
-			}
 		}).done();
 	}, this);
 	return [section({ class: 'section-primary users-table-filter-bar' },

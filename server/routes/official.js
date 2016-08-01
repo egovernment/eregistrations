@@ -308,6 +308,17 @@ var initializeHandler = function (conf) {
 	};
 };
 
+var getStatsOverviewData = memoize(function (query, userId, statsHandlerOpts) {
+	return getProcessingTimesByStepProcessor(assign(statsHandlerOpts,
+		{ query: query, userId: userId }));
+}, {
+	normalizer: function (args) {
+		return args[0].step + args[1]
+			+ args[0].dateFrom + args[0].dateTo;
+	},
+	maxAge: 1000 * 60 * 60
+});
+
 module.exports = exports = function (mainConf/*, options */) {
 	var resolveHandler, options, stepShortPathResolve, getHandlerByRole
 	  , recentlyVisitedContextName, decorateQuery, statsOverviewQueryHandler, statsHandlerOpts;
@@ -390,15 +401,14 @@ module.exports = exports = function (mainConf/*, options */) {
 		'get-processing-time-data': function (query) {
 			if (!statsOverviewQueryHandler) return null;
 			return resolveHandler(this.req)(function (handler) {
+				var userId = this.req.$user;
 				if (!handler.roleName) return;
 				query.step = handler.roleName;
-				return statsOverviewQueryHandler.resolve(query)(memoize(function (query) {
-					return getProcessingTimesByStepProcessor(assign(statsHandlerOpts,
-						{ query: query }));
-				}, {
-					normalizer: function (args) { return args[0].step + args[0].dateFrom + args[0].dateTo; }
-				}));
-			});
+
+				return statsOverviewQueryHandler.resolve(query)(function (query) {
+					return getStatsOverviewData(query, userId, statsHandlerOpts);
+				});
+			}.bind(this));
 		}
 	}, getBaseRoutes());
 };
