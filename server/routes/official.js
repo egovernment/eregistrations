@@ -37,7 +37,7 @@ var aFrom                          = require('es5-ext/array/from')
   , businessProcessStoragesPromise = require('../utils/business-process-storages')
   , idToStorage                    = require('../utils/business-process-id-to-storage')
   , getBaseRoutes                  = require('./authenticated')
-	, env                            = require('mano').env
+  , env                            = require('mano').env
   , getProcessingTimesByStepProcessor =
 		require('../statistics/get-processing-times-by-step-processor')
 
