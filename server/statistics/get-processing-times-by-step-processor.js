@@ -48,7 +48,9 @@ var getProcessorAndProcessingTime = memoize(function (data) {
 		)
 	)(result);
 }, {
-	normalizer: function (args) { return args[0].id + args[0].stepFullPath; }
+	normalizer: function (args) { return args[0].id + args[0].stepFullPath; },
+	// One hour
+	maxAge: 1000 * 60 * 60
 });
 /**
  *
