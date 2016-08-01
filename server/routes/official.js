@@ -389,8 +389,15 @@ module.exports = exports = function (mainConf/*, options */) {
 		},
 		'get-processing-time-data': function (query) {
 			if (!statsOverviewQueryHandler) return null;
-			return statsOverviewQueryHandler.resolve(query)(function (query) {
-				return getProcessingTimesByStepProcessor(assign(statsHandlerOpts, { query: query }));
+			return resolveHandler(this.req)(function (handler) {
+				if (!handler.roleName) return;
+				query.step = handler.roleName;
+				return statsOverviewQueryHandler.resolve(query)(memoize(function (query) {
+					return getProcessingTimesByStepProcessor(assign(statsHandlerOpts,
+						{ query: query }));
+				}, {
+					normalizer: function (args) { return args[0].step + args[0].dateFrom + args[0].dateTo; }
+				}));
 			});
 		}
 	}, getBaseRoutes());

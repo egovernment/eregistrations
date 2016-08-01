@@ -42,7 +42,6 @@ module.exports = function (context) {
 		if (query.dateTo) {
 			query.dateTo = query.dateTo.toJSON();
 		}
-		query.step = context.processingStep.key;
 		queryServer(query)(function (result) {
 			var totalOfAll;
 			renderedProps.forEach(function (prop) {
