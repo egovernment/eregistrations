@@ -47,7 +47,6 @@ module.exports = function (context) {
 				data[prop].value = null;
 			});
 			if (!result || !result.stepTotal) return;
-			console.log('result.stepTotal', result.stepTotal);
 			renderedProps.forEach(function (prop) {
 				if (result.processor && result.processor[prop]) {
 					data[prop].value = result.processor[prop];
