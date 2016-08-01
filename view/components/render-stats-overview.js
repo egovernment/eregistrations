@@ -9,8 +9,7 @@ var location             = require('mano/lib/client/location')
   , getQueryHandlerConf  = require('../../routes/utils/get-statistics-time-query-handler-conf')
   , getDurationDaysHours = require('../utils/get-duration-days-hours')
   , getDynamicFormAction = require('../utils/get-dynamic-form-action')
-  , memoize              = require('memoizee')
-  , env                  = require('mano').env;
+  , memoize              = require('memoizee');
 
 var queryServer = memoize(function (query) {
 	return getData('/get-processing-time-data/', query);
@@ -27,9 +26,6 @@ var mapDurationValue = function (value) {
 
 module.exports = function (context) {
 	var data = {}, queryHandler, formAction;
-	if (env.disableProcessorStatisticsOverview) {
-		return;
-	}
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
 		db: db
 	}), location, '/');

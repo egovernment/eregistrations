@@ -37,7 +37,6 @@ var aFrom                          = require('es5-ext/array/from')
   , businessProcessStoragesPromise = require('../utils/business-process-storages')
   , idToStorage                    = require('../utils/business-process-id-to-storage')
   , getBaseRoutes                  = require('./authenticated')
-  , env                            = require('mano').env
   , getProcessingTimesByStepProcessor =
 		require('../statistics/get-processing-times-by-step-processor')
 
@@ -330,7 +329,7 @@ module.exports = exports = function (mainConf/*, options */) {
 	 * This is to safeguard older systems which don't use this functionality
 	 * the flag is not mandatory, so only setup if you don't want this configured in a system
 	 * */
-	if (options.processingStepsMeta && !env.disableProcessorStatisticsOverview) {
+	if (options.processingStepsMeta) {
 		statsHandlerOpts = {
 			processingStepsMeta: ensureObject(options.processingStepsMeta),
 			db: require('mano').db,
