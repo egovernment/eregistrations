@@ -37,6 +37,7 @@ var aFrom                          = require('es5-ext/array/from')
   , businessProcessStoragesPromise = require('../utils/business-process-storages')
   , idToStorage                    = require('../utils/business-process-id-to-storage')
   , getBaseRoutes                  = require('./authenticated')
+	, env                            = require('mano').env
   , getProcessingTimesByStepProcessor =
 		require('../statistics/get-processing-times-by-step-processor')
 
@@ -325,13 +326,15 @@ module.exports = exports = function (mainConf/*, options */) {
 	options = Object(arguments[1]);
 	recentlyVisitedContextName = options.recentlyVisitedContextName;
 
-	statsHandlerOpts = {
-		processingStepsMeta: ensureObject(options.processingStepsMeta),
-		db: require('mano').db,
-		driver: require('mano').dbDriver
-	};
+	if (env.enableProcessorStatisticsOverview) {
+		statsHandlerOpts = {
+			processingStepsMeta: ensureObject(options.processingStepsMeta),
+			db: require('mano').db,
+			driver: require('mano').dbDriver
+		};
 
-	statsOverviewQueryHandler = new QueryHandler(getStatsQueryHandlerConf(statsHandlerOpts));
+		statsOverviewQueryHandler = new QueryHandler(getStatsQueryHandlerConf(statsHandlerOpts));
+	}
 	if (options.decorateQuery != null) decorateQuery = ensureCallable(options.decorateQuery);
 	if (isArray(mainConf)) {
 		resolveHandler = (function () {
@@ -399,6 +402,7 @@ module.exports = exports = function (mainConf/*, options */) {
 			}.bind(this));
 		},
 		'get-processing-time-data': function (query) {
+			if (!statsOverviewQueryHandler) return null;
 			return resolveHandler(this.req)(function (handler) {
 				var userId = this.req.$user;
 				if (!handler.roleName) return;
