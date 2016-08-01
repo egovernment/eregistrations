@@ -399,7 +399,6 @@ module.exports = exports = function (mainConf/*, options */) {
 			}.bind(this));
 		},
 		'get-processing-time-data': function (query) {
-			if (!statsOverviewQueryHandler) return null;
 			return resolveHandler(this.req)(function (handler) {
 				var userId = this.req.$user;
 				if (!handler.roleName) return;
