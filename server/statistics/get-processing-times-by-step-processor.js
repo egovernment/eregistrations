@@ -118,7 +118,7 @@ module.exports = function (data) {
 					}
 					return deferred(customFilter ?
 							deferred.map(entries, function (entry) {
-								return customFilter(entry)(function (isOK) {
+								return customFilter(query, entry)(function (isOK) {
 									return isOK ? entry : null;
 								});
 							}).invoke('filter', Boolean) : entries)(function (filteredEntries) {
@@ -168,7 +168,10 @@ module.exports = function (data) {
 							// We collect totals by bps as well
 							return businessProcessesApprovedMap(function (approvedMap) {
 								return approvedMap.get(entry.id)(function (isApproved) {
-									if (!isApproved) return;
+									if (!isApproved || isApproved[0] !== '1' ||
+											unserializeValue(isApproved) === false) {
+										return;
+									}
 
 									if (!result.byBusinessProcess.data[entry.id]) {
 										result.byBusinessProcess.data[entry.id] = getEmptyData();

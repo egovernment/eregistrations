@@ -12,6 +12,6 @@ module.exports = (function () {
 			if (!isBusinessProcessStorageName(name)) return;
 			bpStorages.push(storage);
 		});
-		return new ComputedEmitter(bpStorages, 'isApproved');
+		return new ComputedEmitter(bpStorages, 'isApproved', { type: 'direct' });
 	});
 }());
