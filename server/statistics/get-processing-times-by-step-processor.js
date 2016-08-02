@@ -118,7 +118,7 @@ module.exports = function (data) {
 					}
 					return deferred(customFilter ?
 							deferred.map(entries, function (entry) {
-								return customFilter(query, entry)(function (isOK) {
+								return customFilter(entry, query)(function (isOK) {
 									return isOK ? entry : null;
 								});
 							}).invoke('filter', Boolean) : entries)(function (filteredEntries) {
