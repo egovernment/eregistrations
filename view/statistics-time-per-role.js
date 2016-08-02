@@ -13,6 +13,7 @@ var location             = require('mano/lib/client/location')
   , getDurationDaysHours = require('./utils/get-duration-days-hours')
   , normalizeOptions     = require('es5-ext/object/normalize-options')
   , assign               = require('es5-ext/object/assign')
+  , getDynamicUrl        = require('./utils/get-dynamic-url')
   , memoize              = require('memoizee');
 
 exports._parent = require('./statistics-time');
@@ -46,13 +47,19 @@ var resetResult = function (result) {
 	result.totalTime = '-';
 };
 
+exports._queryConf = null;
+
 exports['statistics-main'] = function () {
-	var processingStepsMeta = this.processingStepsMeta, mainData, queryHandler;
+	var processingStepsMeta = this.processingStepsMeta, mainData, queryHandler, params;
 	mainData = new ObservableArray();
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
 		db: db,
-		processingStepsMeta: processingStepsMeta
+		processingStepsMeta: processingStepsMeta,
+		queryConf: exports._queryConf
 	}), location, '/time/');
+	params = queryHandler._handlers.map(function (handler) {
+		return handler.name;
+	});
 
 	queryHandler.on('query', function (query) {
 		if (query.dateFrom) {
@@ -137,41 +144,9 @@ exports['statistics-main'] = function () {
 				label({ for: 'date-to-input' }, _("Date to"), ":"),
 				input({ id: 'date-to-input', type: 'date',
 					name: 'dateTo', value: location.query.get('dateTo') }),
-				a({ class: 'button-resource-link', href:
-					location.query.get('dateTo').map(function (dateTo) {
-						return location.query.get('dateFrom').map(function (dateFrom) {
-							return location.query.get('service').map(function (service) {
-								var href = '/get-time-per-role-csv/';
-								if (!Object.keys(location.query).length) {
-									return href;
-								}
-								href += '?';
-								href += Object.keys(location.query).map(function (key) {
-									return key + '=' + location.query[key];
-								}).join('&');
-
-								return href;
-							});
-						});
-					}),
+				a({ class: 'button-resource-link', href: getDynamicUrl('/get-time-per-role-csv/', params),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print csv")),
-				a({ class: 'button-resource-link', href:
-					location.query.get('dateTo').map(function (dateTo) {
-						return location.query.get('dateFrom').map(function (dateFrom) {
-							return location.query.get('service').map(function (service) {
-								var href = '/get-time-per-role-print/';
-								if (!Object.keys(location.query).length) {
-									return href;
-								}
-								href += '?';
-								href += Object.keys(location.query).map(function (key) {
-									return key + '=' + location.query[key];
-								}).join('&');
-
-								return href;
-							});
-						});
-					}),
+				a({ class: 'button-resource-link', href: getDynamicUrl('/get-time-per-role-print/', params),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
 				)));
 	section({ class: 'section-primary' },

@@ -11,10 +11,12 @@ var location             = require('mano/lib/client/location')
   , getData              = require('mano/lib/client/xhr-driver').get
   , getQueryHandlerConf  = require('../routes/utils/get-statistics-time-query-handler-conf')
   , getDurationDaysHours = require('./utils/get-duration-days-hours')
+  , getDynamicUrl        = require('./utils/get-dynamic-url')
   , memoize              = require('memoizee');
 
 exports._parent        = require('./statistics-time');
 exports._customFilters = Function.prototype;
+exports._queryConf     = null;
 
 exports['time-nav'] = { class: { 'pills-nav-active': true } };
 exports['per-person-nav'] = { class: { 'pills-nav-active': true } };
@@ -26,16 +28,20 @@ var queryServer = memoize(function (query) {
 });
 
 exports['statistics-main'] = function () {
-	var processingStepsMeta = this.processingStepsMeta, stepsMap = {}, stepTotals = {}, queryHandler;
+	var processingStepsMeta = this.processingStepsMeta, stepsMap = {}, stepTotals = {}, queryHandler
+	  , params;
 	Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
 		stepsMap[stepShortPath]   = new ObservableValue();
 		stepTotals[stepShortPath] = new ObservableValue();
 	});
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
 		db: db,
-		processingStepsMeta: processingStepsMeta
+		processingStepsMeta: processingStepsMeta,
+		queryConf: exports._queryConf
 	}), location, '/time/per-person/');
-
+	params = queryHandler._handlers.map(function (handler) {
+		return handler.name;
+	});
 	queryHandler.on('query', function (query) {
 		if (query.dateFrom) {
 			query.dateFrom = query.dateFrom.toJSON();
@@ -98,22 +104,7 @@ exports['statistics-main'] = function () {
 				input({ id: 'date-to-input', type: 'date',
 					name: 'dateTo', value: location.query.get('dateTo') }),
 				a({ class: 'button-resource-link', href:
-					location.query.get('dateTo').map(function (dateTo) {
-						return location.query.get('dateFrom').map(function (dateFrom) {
-							return location.query.get('service').map(function (service) {
-								var href = '/get-time-per-person-print/';
-								if (!Object.keys(location.query).length) {
-									return href;
-								}
-								href += '?';
-								href += Object.keys(location.query).map(function (key) {
-									return key + '=' + location.query[key];
-								}).join('&');
-
-								return href;
-							});
-						});
-					}),
+					getDynamicUrl('/get-time-per-person-print/', params),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
 				)));
 	insert(list(Object.keys(stepsMap), function (shortStepPath) {
