@@ -23,27 +23,29 @@ module.exports = function (url/*, options */) {
 		params = options.only;
 	} else if (options.filter) {
 		params = options.filter;
-	} else {
-		throw new Error("Either fileter or only parameter needs to be specified");
 	}
-	params = aFrom(ensureIterable(params));
+	if (params) {
+		params = aFrom(ensureIterable(params));
+	}
 	formActionUrl = parseUrl(ensureString(url), true);
 	delete formActionUrl.search;
 	var updateUrl = function () {
 		// 1. copy all query params from current url
 		formActionUrl.query = copy(location.query);
-		if (options.filter) {
-			// 2. delete black listed
-			params.forEach(function (param) {
-				delete formActionUrl.query[param];
-			});
-		} else {
-			// 2. delete not white listed
-			Object.keys(formActionUrl.query).forEach(function (param) {
-				if (!includes.call(params, param)) {
+		if (params) {
+			if (options.filter) {
+				// 2. delete black listed
+				params.forEach(function (param) {
 					delete formActionUrl.query[param];
-				}
-			});
+				});
+			} else {
+				// 2. delete not white listed
+				Object.keys(formActionUrl.query).forEach(function (param) {
+					if (!includes.call(params, param)) {
+						delete formActionUrl.query[param];
+					}
+				});
+			}
 		}
 		formAction.value = formatUrl(formActionUrl);
 	};
