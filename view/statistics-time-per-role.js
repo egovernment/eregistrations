@@ -144,9 +144,11 @@ exports['statistics-main'] = function () {
 				label({ for: 'date-to-input' }, _("Date to"), ":"),
 				input({ id: 'date-to-input', type: 'date',
 					name: 'dateTo', value: location.query.get('dateTo') }),
-				a({ class: 'button-resource-link', href: getDynamicUrl('/get-time-per-role-csv/', params),
+				a({ class: 'button-resource-link', href: getDynamicUrl('/get-time-per-role-csv/',
+					{ only: params }),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print csv")),
-				a({ class: 'button-resource-link', href: getDynamicUrl('/get-time-per-role-print/', params),
+				a({ class: 'button-resource-link', href: getDynamicUrl('/get-time-per-role-print/',
+					{ only: params }),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
 				)));
 	section({ class: 'section-primary' },

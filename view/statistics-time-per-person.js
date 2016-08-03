@@ -104,7 +104,7 @@ exports['statistics-main'] = function () {
 				input({ id: 'date-to-input', type: 'date',
 					name: 'dateTo', value: location.query.get('dateTo') }),
 				a({ class: 'button-resource-link', href:
-					getDynamicUrl('/get-time-per-person-print/', params),
+					getDynamicUrl('/get-time-per-person-print/', { only: params }),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
 				)));
 	insert(list(Object.keys(stepsMap), function (shortStepPath) {
