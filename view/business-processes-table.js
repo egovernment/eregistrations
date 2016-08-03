@@ -6,7 +6,7 @@ var _        = require('mano').i18n.bind('View: Offcial')
   , once     = require('timers-ext/once')
   , dispatch = require('dom-ext/html-element/#/dispatch-event-2')
   , renderStatsOverview = require('./components/render-stats-overview')
-  , getDynamicFormAction = require('./utils/get-dynamic-form-action')
+  , getDynamicUrl = require('./utils/get-dynamic-url')
 
   , byOrder  = function (a, b) { return this[a].order - this[b].order; };
 
@@ -17,7 +17,7 @@ exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
 		var searchForm, searchInput, businessProcessesTable, formAction;
-		formAction = getDynamicFormAction('/', exports._urlParams);
+		formAction = getDynamicUrl('/', { filter: exports._urlParams });
 		renderStatsOverview(this);
 		exports._optionalContent.call(this);
 		// this should not happen, but it might if we don't block illegal role dependencies
