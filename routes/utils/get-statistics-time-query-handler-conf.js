@@ -8,6 +8,7 @@ var normalizeOptions   = require('es5-ext/object/normalize-options')
   , stringify          = JSON.stringify
   , dateStringtoDbDate = require('../../utils/date-string-to-db-date')
   , aFrom              = require('es5-ext/array/from')
+  , ensureArray        = require('es5-ext/array/valid-array')
   , processingStepsMeta, db, availableServices;
 
 var queryConf = [
@@ -72,5 +73,11 @@ module.exports = function (data) {
 			}
 		});
 	}
+	if (options.queryConf && ensureArray(options.queryConf)) {
+		options.queryConf.forEach(function (confItem) {
+			conf.push(confItem);
+		});
+	}
+
 	return conf;
 };
