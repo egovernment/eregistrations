@@ -82,3 +82,13 @@
 .entities-overview-info > * {
 	color: var(--light-normal-text);
 }
+
+.entities-overview-info.success-message,
+.entities-overview-info.success-message > * {
+	background-color: var(--success-background);
+	color: var(--white-text);
+}
+.entities-overview-info.success-message .fa-close {
+	float: right;
+	cursor: pointer;
+}
