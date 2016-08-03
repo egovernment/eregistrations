@@ -36,7 +36,19 @@ module.exports = function (context/*, options */) {
 			timeInMs = (modTime / 1000);
 			return timeInMs >= Date.now() - (1000 * 60);
 		}), eq(context.user._currentRoleResolved, 'user')),
-			div({ class: 'entities-overview-info' }, _("Your file was submitted successfully.")))),
+			div({ id: 'submission-success-message', class: 'entities-overview-info' },
+				_("Your file was submitted successfully."),
+				span({ id: 'close-submission-success-message',
+					class: 'fa fa-close', onclick: true }))), script(function () {
+			var successMsg = $('submission-success-message');
+			if (!successMsg) return;
+			$('close-submission-success-message').onclick = function (ev) {
+				successMsg.remove();
+			};
+			setTimeout(function () {
+				successMsg.remove();
+			}, 10000);
+		})),
 		section(
 			{ class: 'section-primary' },
 			h2({ class: 'container-with-nav' }, _("History of request"),
