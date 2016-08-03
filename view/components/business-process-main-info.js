@@ -41,12 +41,12 @@ module.exports = function (context/*, options */) {
 				span({ id: 'close-submission-success-message',
 					class: 'fa fa-close', onclick: true }))), script(function () {
 			var successMsg = $('submission-success-message');
-			if (!successMsg) return;
+			if (!successMsg || !successMsg.parentNode) return;
 			$('close-submission-success-message').onclick = function (ev) {
-				successMsg.remove();
+				successMsg.parentNode.removeChild(successMsg);
 			};
 			setTimeout(function () {
-				successMsg.remove();
+				successMsg.parentNode.removeChild(successMsg);
 			}, 10000);
 		})),
 		section(
