@@ -39,7 +39,7 @@ module.exports = function (context/*, options */) {
 			div({ id: 'submission-success-message', class: 'entities-overview-info' },
 				_("Your file was submitted successfully."),
 				span({ id: 'close-submission-success-message',
-					class: 'fa fa-close', onclick: true }))), script(function () {
+					class: 'fa fa-close' }))), script(function () {
 			var successMsg = $('submission-success-message');
 			if (!successMsg || !successMsg.parentNode) return;
 			$('close-submission-success-message').onclick = function (ev) {
