@@ -73,6 +73,7 @@
 	text-align: center;
 }
 
+.entities-overview-info-success,
 .entities-overview-info {
 	background-color: var(--light-background);
 	border: 1px solid  var(--normal-light-background);
@@ -83,12 +84,12 @@
 	color: var(--light-normal-text);
 }
 
-.entities-overview-info.success-message,
-.entities-overview-info.success-message > * {
+.entities-overview-info-success,
+.entities-overview-info-success > * {
 	background-color: var(--success-background);
 	color: var(--white-text);
 }
-.entities-overview-info.success-message .fa-close {
+.entities-overview-info-success .fa-close {
 	float: right;
 	cursor: pointer;
 }

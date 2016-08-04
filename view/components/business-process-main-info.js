@@ -36,7 +36,7 @@ module.exports = function (context/*, options */) {
 			timeInMs = (modTime / 1000);
 			return timeInMs >= Date.now() - (1000 * 60);
 		}), eq(context.user._currentRoleResolved, 'user')),
-			div({ id: 'submission-success-message', class: 'entities-overview-info success-message' },
+			div({ id: 'submission-success-message', class: 'entities-overview-info-success' },
 				_("Your file was submitted successfully."),
 				span({ id: 'close-submission-success-message',
 					class: 'fa fa-close' }))), script(function () {
