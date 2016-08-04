@@ -96,11 +96,12 @@ exports['statistics-main'] = function () {
 				function (data) { return data._rejected; }, this.processingStepsMeta,
 				"statistics-table-sub-header-sentback", function (data) { return data.rejected; }),
 
-			generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-success' },
-				_("Pending for withdraw at Front Desk"), services, function (data) {
-					data = data.atPartB.getBySKeyPath(resolveFullStepPath('frontDesk'));
-					return data ? data._pending : null;
-				}),
+			this.processingStepsMeta.frontDesk ?
+					generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-success' },
+						_("Pending for withdraw at Front Desk"), services, function (data) {
+							data = data.atPartB.getBySKeyPath(resolveFullStepPath('frontDesk'));
+							return data ? data._pending : null;
+						}) : null,
 
 			generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-success' },
 				_("Files completed and closed"), services, function (data) { return data._approved; })
