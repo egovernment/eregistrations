@@ -33,17 +33,6 @@ module.exports = memoize(function (db/* options */) {
 			return result;
 		} },
 
-		// Subset of applicable certificates which were processed
-		processed: { type: Document, multiple: true, value: function (_observe) {
-			var result = [];
-			this.applicable.forEach(function (certificate) {
-				if (_observe(certificate._isProcessed)) {
-					result.push(certificate);
-				}
-			});
-			return result;
-		} },
-
 		// Subset of applicable certificates for which document files were uploaded
 		uploaded: { type: Document, multiple: true, value: function (_observe) {
 			var result = [];
@@ -55,7 +44,13 @@ module.exports = memoize(function (db/* options */) {
 		// Subset of applicable certificate that were released
 		// (its processing was approved and finalized)
 		released: { type: Document, multiple: true, value: function (_observe) {
-			return this.processed;
+			var result = [];
+			this.applicable.forEach(function (certificate) {
+				if (_observe(certificate._isReleased)) {
+					result.push(certificate);
+				}
+			});
+			return result;
 		} },
 		// Subset of applicable certificates for which are electronic
 		electronic: { type: Document, multiple: true, value: function (_observe) {
@@ -80,7 +75,7 @@ module.exports = memoize(function (db/* options */) {
 		// Subset of uploaded certificates that can be handed out
 		toBeHanded: { type: Document, multiple: true, value: function (_observe) {
 			var result = [];
-			this.uploaded.forEach(function (certificate) {
+			this.released.forEach(function (certificate) {
 				if (_observe(certificate._isToBeHanded)) {
 					result.push(certificate);
 				}
