@@ -201,6 +201,9 @@ module.exports = memoize(function (db) {
 			// (there's a possible switch between direct and computed set mode)
 			return _observe(this.master.certificates._applicable);
 		} },
+		processed: { type: Document, multiple: true, value: function (_observe) {
+			return _observe(this.master.certificates.processed);
+		} },
 		uploaded: { type: Document, multiple: true, value: function (_observe) {
 			return _observe(this.master.certificates.uploaded);
 		} },

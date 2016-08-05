@@ -122,6 +122,10 @@ module.exports = memoize(function (db) {
 			if (_observe(this.processingStep._status) === 'approved') return 'approved';
 			if (this.processingStep.status) return 'pending';
 		} },
+		// Is the certificate issued and approved
+		isProcessed: { type: db.Boolean, value: function () {
+			return this.status === 'approved';
+		} },
 		// Used for preservation in data snapshots
 		toJSON: { value: function (ignore) {
 			var data = {
