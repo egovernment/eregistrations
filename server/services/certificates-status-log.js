@@ -22,7 +22,8 @@ setupCertLogTrigger = function (config) {
 		if (!businessProcess.certificates.applicable.has(certificate)) return;
 		statusLogProperties = {
 			time: new Date(),
-			text: conf.statusText
+			text: conf.statusText,
+			label: conf.label
 		};
 
 		certificate.statusLog.map.newUniq(statusLogProperties);
