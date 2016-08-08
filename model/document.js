@@ -110,7 +110,7 @@ module.exports = memoize(function (db) {
 			// as RequirementUpload) as then this property will land on Certificate and not Document
 			type: db.Object,
 			value: function () {
-				if (!this.isCertificate) return;
+				if (!this.isCertificate || !this.master.processingSteps) return;
 				return this.master.processingSteps.map.processing;
 			}
 		},
@@ -121,6 +121,10 @@ module.exports = memoize(function (db) {
 			if (!this.processingStep) return;
 			if (_observe(this.processingStep._status) === 'approved') return 'approved';
 			if (this.processingStep.status) return 'pending';
+		} },
+		// Is the certificate issued and approved
+		isReleased: { type: db.Boolean, value: function () {
+			return this.status === 'approved';
 		} },
 		// Used for preservation in data snapshots
 		toJSON: { value: function (ignore) {
