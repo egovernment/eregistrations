@@ -72,10 +72,9 @@ var isSubmittedConfig = {
 };
 
 var withdrawalConfig = {
-	preTriggerValue: null,
+	preTriggerValue: false,
 	triggerValue: true,
-	// will be resolved to full path
-	triggerPath: 'wasHanded',
+	triggerPath: 'processingSteps/map/frontDesk/isApproved',
 	officialPath: 'processingSteps/map/frontDesk/processor',
 	statusText: _("Certificate was withdrawn"),
 	label: _("Withdraw")
@@ -109,7 +108,7 @@ module.exports = function (db) {
 				BusinessProcessType: BusinessProcessType,
 				collection: businessProcessesSubmitted,
 				certificatePath: basePath,
-				triggerPath: basePath + '/' + withdrawalConfig.triggerPath
+				triggerPath: withdrawalConfig.triggerPath
 			}));
 		});
 	});
