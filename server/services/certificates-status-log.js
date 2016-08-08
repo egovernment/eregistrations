@@ -1,9 +1,10 @@
 'use strict';
 
-var db               = require('mano').db
-  , _                = require('mano').i18n.bind("Certificate status log")
+var _                = require('mano').i18n.bind("Certificate status log")
   , assign           = require('es5-ext/object/assign')
   , normalizeOptions = require('es5-ext/object/normalize-options')
+  , ensureDb         = require('dbjs/valid-dbjs')
+  , resolveInstances = require('../../business-processes/resolve')
   , setupCertLogTrigger
   , businessProcesses
   , businessProcessesSubmitted
@@ -17,7 +18,7 @@ setupCertLogTrigger = function (config) {
 		trigger: conf.collection.filterByKeyPath(conf.triggerPath, conf.triggerValue)
 	}, function (businessProcess) {
 		var certificate = businessProcess.resolveSKeyPath(conf.certificatePath)
-		  , statusLog, statusLogProperties;
+		  , statusLog, statusLogProperties, official;
 		if (!certificate) return;
 		certificate = certificate.value;
 		if (!businessProcess.certificates.applicable.has(certificate)) return;
@@ -27,6 +28,12 @@ setupCertLogTrigger = function (config) {
 			text: conf.statusText,
 			label: conf.label
 		};
+		if (conf.officialPath) {
+			official = businessProcess.resolveSKeyPath(conf.officialPath);
+			if (official) {
+				statusLogProperties.official = official.value;
+			}
+		}
 		statusLog.setProperties(statusLogProperties);
 	});
 };
@@ -41,12 +48,16 @@ var statusConfigs = [
 	{
 		preTriggerValue: 'pending',
 		triggerValue: 'approved',
+		// will be resolved to full path (relative to cert)
+		officialPath: 'processingStep/processor',
 		statusText: _("Certificate was issued"),
 		label: _("Approved")
 	},
 	{
 		preTriggerValue: 'pending',
 		triggerValue: 'rejected',
+		// will be resolved to full path (relative to cert)
+		officialPath: 'processingStep/processor',
 		statusText: _("Certificate request was rejected"),
 		label: _("Rejected")
 	}
@@ -65,16 +76,16 @@ var withdrawalConfig = {
 	triggerValue: true,
 	// will be resolved to full path
 	triggerPath: 'wasHanded',
+	officialPath: 'processingSteps/map/frontDesk',
 	statusText: _("Certificate was withdrawn"),
 	label: _("Withdraw")
 };
 
-module.exports = function () {
+module.exports = function (db) {
+	ensureDb(db);
 	db.BusinessProcess.extensions.forEach(function (BusinessProcessType) {
 		if (!BusinessProcessType.prototype.certificates.map.size) return;
-		businessProcesses = BusinessProcessType.instances
-			.filterByKey('isFromEregistrations', true).filterByKey('isDemo',
-				false);
+		businessProcesses = resolveInstances(BusinessProcessType);
 		businessProcessesSubmitted = businessProcesses.filterByKey('isSubmitted', true);
 
 		BusinessProcessType.prototype.certificates.map.forEach(function (certificate) {
@@ -84,6 +95,8 @@ module.exports = function () {
 					BusinessProcessType: BusinessProcessType,
 					collection: businessProcessesSubmitted,
 					certificatePath: basePath,
+					officialPath: config.officialPath ? basePath + '/'
+							+ config.officialPath : null,
 					triggerPath: basePath + '/status'
 				}));
 			});
