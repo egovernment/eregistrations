@@ -16,17 +16,18 @@ setupCertLogTrigger = function (config) {
 		preTrigger: conf.collection.filterByKeyPath(conf.triggerPath, conf.preTriggerValue),
 		trigger: conf.collection.filterByKeyPath(conf.triggerPath, conf.triggerValue)
 	}, function (businessProcess) {
-		var certificate = businessProcess.resolveSKeyPath(conf.certificatePath), statusLogProperties;
+		var certificate = businessProcess.resolveSKeyPath(conf.certificatePath)
+		  , statusLog, statusLogProperties;
 		if (!certificate) return;
 		certificate = certificate.value;
 		if (!businessProcess.certificates.applicable.has(certificate)) return;
+		statusLog = certificate.statusLog.map.newUniq();
 		statusLogProperties = {
 			time: new Date(),
 			text: conf.statusText,
 			label: conf.label
 		};
-
-		certificate.statusLog.map.newUniq(statusLogProperties);
+		statusLog.setProperties(statusLogProperties);
 	});
 };
 
@@ -53,7 +54,7 @@ var statusConfigs = [
 
 var isSubmittedConfig = {
 	triggerPath: 'isSubmitted',
-	preTriggerValue: null,
+	preTriggerValue: false,
 	triggerValue: true,
 	statusText: _("Certificate request received"),
 	label: _("Submission")
@@ -95,7 +96,7 @@ module.exports = function () {
 				BusinessProcessType: BusinessProcessType,
 				collection: businessProcessesSubmitted,
 				certificatePath: basePath,
-				triggerPath: basePath + withdrawalConfig.triggerPath
+				triggerPath: basePath + '/' + withdrawalConfig.triggerPath
 			}));
 		});
 	});
