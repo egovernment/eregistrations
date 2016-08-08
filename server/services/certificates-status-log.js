@@ -30,7 +30,7 @@ setupCertLogTrigger = function (config) {
 		};
 		if (conf.officialPath) {
 			official = businessProcess.resolveSKeyPath(conf.officialPath);
-			if (official) {
+			if (official && official.value) {
 				statusLogProperties.official = official.value;
 			}
 		}
@@ -76,7 +76,7 @@ var withdrawalConfig = {
 	triggerValue: true,
 	// will be resolved to full path
 	triggerPath: 'wasHanded',
-	officialPath: 'processingSteps/map/frontDesk',
+	officialPath: 'processingSteps/map/frontDesk/processor',
 	statusText: _("Certificate was withdrawn"),
 	label: _("Withdraw")
 };
