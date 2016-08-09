@@ -33,7 +33,7 @@ setupCertLogTrigger = function (config) {
 			if (official && official.value) {
 				statusLogProperties.official = official.value;
 			}
-		} else if (conf.getOfficial && (typeof conf.getOfficial === 'function')) {
+		} else if (typeof conf.getOfficial === 'function') {
 			official = conf.getOfficial(certificate);
 			if (official) {
 				statusLogProperties.official = official;
