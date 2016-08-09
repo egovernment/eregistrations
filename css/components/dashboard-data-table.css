@@ -1,15 +1,13 @@
 .dashboard-data-table-content {
 	display: flex;
 }
-.dashboard-data-table-content > *:first-child {
-	margin-right:4%;
-}
 .dashboard-data-table-content > table td {
 	border: 1px solid #eee;
 	line-height: 44px;
 	padding: 0 11px;
 	font-size: 16px;
+	text-align: right;
 }
 .dashboard-data-table-content > table td:first-child {
-	text-align: center;
+	text-align: left;
 }
