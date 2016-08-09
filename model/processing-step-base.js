@@ -74,22 +74,14 @@ module.exports = memoize(function (db) {
 			return this.isApproved || this.isRejected || false;
 		} },
 
-		// Whether all directly previous steps are satisfied (not applicable or successfully passed)
-		isPreviousStepsSatisfied: { type: db.Boolean, value: function (_observe) {
-			if (!this.previousSteps.size) return _observe(this.master._isSubmitted);
-			return this.previousSteps.every(function (step) {
-				return _observe(step._isSatisfied);
-			});
-		} },
-
 		// Whether all previous steps are satisfied (not applicable or successfully passed)
 		// It checks alls steps deep down in chain
 		// This resolution is used purely to detect valid returns
 		// (either from 'sentBack' or 'redelegated' states)
-		isPreviousStepsSatisfiedDeep: { type: db.Boolean, value: function (_observe) {
+		isPreviousStepsSatisfied: { type: db.Boolean, value: function (_observe) {
 			if (!this.previousSteps.size) return !_observe(this.master._isAtDraft);
 			return this.previousSteps.every(function (step) {
-				return _observe(step._isSatisfied) && _observe(step._isPreviousStepsSatisfiedDeep);
+				return _observe(step._isSatisfied) && _observe(step._isPreviousStepsSatisfied);
 			});
 		} },
 
