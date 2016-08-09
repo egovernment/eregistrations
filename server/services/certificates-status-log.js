@@ -70,7 +70,6 @@ var isSubmittedConfig = {
 };
 
 var rejectionConfig = {
-	// will be setup automatically
 	triggerPath: 'isRejected',
 	preTriggerValue: false,
 	triggerValue: true,
