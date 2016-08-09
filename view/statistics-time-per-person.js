@@ -78,7 +78,8 @@ exports['statistics-main'] = function () {
 	});
 	section({ class: 'section-primary users-table-filter-bar' },
 		form({ action: '/time/per-person', autoSubmit: true },
-			div({ class: 'users-table-filter-bar-status' },
+			div(
+				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'service-select' }, _("Service"), ":"),
 				select({ id: 'service-select', name: 'service' },
 					option(
@@ -96,18 +97,29 @@ exports['statistics-main'] = function () {
 								return selected ? 'selected' : null;
 							}) },
 							service.prototype.label);
-					}, null)),
-				exports._customFilters.call(this),
+					}, null))
+			),
+			div(
+				{ class: 'users-table-filter-bar-status' },
+				exports._customFilters.call(this)
+			),
+			div(
+				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
 				input({ id: 'date-from-input', type: 'date',
-					name: 'dateFrom', value: location.query.get('dateFrom') }),
+					name: 'dateFrom', value: location.query.get('dateFrom') })
+			),
+			div(
+				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-to-input' }, _("Date to"), ":"),
 				input({ id: 'date-to-input', type: 'date',
-					name: 'dateTo', value: location.query.get('dateTo') }),
-				a({ class: 'button-resource-link', href:
+					name: 'dateTo', value: location.query.get('dateTo') })
+			),
+			div(
+				a({ class: 'users-table-filter-bar-print', href:
 					getDynamicUrl('/get-time-per-person-print/', { only: params }),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
-				)));
+			)));
 	insert(list(Object.keys(stepsMap), function (shortStepPath) {
 		return stepsMap[shortStepPath].map(function (data) {
 			if (!data) return;
