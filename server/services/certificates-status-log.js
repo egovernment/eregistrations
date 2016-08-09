@@ -33,7 +33,13 @@ setupCertLogTrigger = function (config) {
 			if (official && official.value) {
 				statusLogProperties.official = official.value;
 			}
+		} else if (conf.getOfficial && (typeof conf.getOfficial === 'function')) {
+			official = conf.getOfficial(certificate);
+			if (official) {
+				statusLogProperties.official = official;
+			}
 		}
+
 		statusLog.setProperties(statusLogProperties);
 	});
 };
@@ -52,14 +58,6 @@ var statusConfigs = [
 		officialPath: 'processingStep/processor',
 		statusText: _("Certificate was issued"),
 		label: _("Approved")
-	},
-	{
-		preTriggerValue: 'pending',
-		triggerValue: 'rejected',
-		// will be resolved to full path (relative to cert)
-		officialPath: 'processingStep/processor',
-		statusText: _("Certificate request was rejected"),
-		label: _("Rejected")
 	}
 ];
 
@@ -69,6 +67,25 @@ var isSubmittedConfig = {
 	triggerValue: true,
 	statusText: _("Certificate request received"),
 	label: _("Submission")
+};
+
+var rejectionConfig = {
+	// will be setup automatically
+	triggerPath: 'isRejected',
+	preTriggerValue: false,
+	triggerValue: true,
+	getOfficial: function (certificate) {
+		var official;
+		certificate.master.processingSteps.applicable.some(function (step) {
+			if (step.isRejected) {
+				official = step.processor;
+				return true;
+			}
+		});
+		return official;
+	},
+	statusText: _("Certificate request was rejected"),
+	label: _("Rejected")
 };
 
 var withdrawalConfig = {
@@ -107,8 +124,12 @@ module.exports = function (db) {
 			setupCertLogTrigger(assign(withdrawalConfig, {
 				BusinessProcessType: BusinessProcessType,
 				collection: businessProcessesSubmitted,
-				certificatePath: basePath,
-				triggerPath: withdrawalConfig.triggerPath
+				certificatePath: basePath
+			}));
+			setupCertLogTrigger(assign(rejectionConfig, {
+				BusinessProcessType: BusinessProcessType,
+				collection: businessProcessesSubmitted,
+				certificatePath: basePath
 			}));
 		});
 	});
