@@ -175,9 +175,9 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 		var returnStatuses = new Set(['sentBack', 'redelegated']);
 		setupTriggers({
 			preTrigger: businessProcessesSubmitted
-				.filterByKeyPath(stepPath + '/isPreviousStepsSatisfiedDeep', false),
+				.filterByKeyPath(stepPath + '/isPreviousStepsSatisfied', false),
 			trigger: businessProcessesSubmitted
-				.filterByKeyPath(stepPath + '/isPreviousStepsSatisfiedDeep', true)
+				.filterByKeyPath(stepPath + '/isPreviousStepsSatisfied', true)
 		}, function (businessProcess) {
 			var step = businessProcess.getBySKeyPath(stepPath)
 			  , returnHandlerResult;
