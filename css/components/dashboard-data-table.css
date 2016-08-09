@@ -1,9 +1,6 @@
 .dashboard-data-table-content {
 	display: flex;
 }
-.dashboard-data-table-content > * {
-	width: 48%;
-}
 .dashboard-data-table-content > *:first-child {
 	margin-right:4%;
 }
@@ -14,8 +11,5 @@
 	font-size: 16px;
 }
 .dashboard-data-table-content > table td:first-child {
-	text-align: left;
-}
-.dashboard-data-table-histogram {
-	background: grey;
+	text-align: center;
 }
