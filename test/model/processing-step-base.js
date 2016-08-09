@@ -27,11 +27,8 @@ module.exports = function (t, a) {
 	businessProcess.set('isAtDraft', false);
 	businessProcess.set('isSubmitted', true);
 	a(fooStep.isPreviousStepsSatisfied, true);
-	a(fooStep.isPreviousStepsSatisfiedDeep, true);
 	a(barStep.isPreviousStepsSatisfied, false);
-	a(barStep.isPreviousStepsSatisfiedDeep, false);
 	a(miszkaStep.isPreviousStepsSatisfied, false);
-	a(miszkaStep.isPreviousStepsSatisfiedDeep, false);
 
 	a(fooStep.isApplicable, true);
 	a(fooStep.isClosed, false);
@@ -39,11 +36,8 @@ module.exports = function (t, a) {
 
 	fooStep.isRejected = true;
 	a(fooStep.isPreviousStepsSatisfied, true);
-	a(fooStep.isPreviousStepsSatisfiedDeep, true);
 	a(barStep.isPreviousStepsSatisfied, false);
-	a(barStep.isPreviousStepsSatisfiedDeep, false);
 	a(miszkaStep.isPreviousStepsSatisfied, false);
-	a(miszkaStep.isPreviousStepsSatisfiedDeep, false);
 	a(fooStep.isClosed, true);
 
 	fooStep.isRejected = false;
@@ -51,11 +45,8 @@ module.exports = function (t, a) {
 
 	fooStep.isApproved = true;
 	a(fooStep.isPreviousStepsSatisfied, true);
-	a(fooStep.isPreviousStepsSatisfiedDeep, true);
 	a(barStep.isPreviousStepsSatisfied, false);
-	a(barStep.isPreviousStepsSatisfiedDeep, false);
 	a(miszkaStep.isPreviousStepsSatisfied, false);
-	a(miszkaStep.isPreviousStepsSatisfiedDeep, false);
 	a(fooStep.isSatisfiedReady, true);
 	a(fooStep.isClosed, true);
 	fooStep.isApplicable = false;
@@ -63,33 +54,21 @@ module.exports = function (t, a) {
 
 	fooStep.isSatisfied = true;
 	a(fooStep.isPreviousStepsSatisfied, true);
-	a(fooStep.isPreviousStepsSatisfiedDeep, true);
 	a(barStep.isPreviousStepsSatisfied, true);
-	a(barStep.isPreviousStepsSatisfiedDeep, true);
 	a(miszkaStep.isPreviousStepsSatisfied, false);
-	a(miszkaStep.isPreviousStepsSatisfiedDeep, false);
 
 	barStep.isSatisfied = true;
 	a(fooStep.isPreviousStepsSatisfied, true);
-	a(fooStep.isPreviousStepsSatisfiedDeep, true);
 	a(barStep.isPreviousStepsSatisfied, true);
-	a(barStep.isPreviousStepsSatisfiedDeep, true);
 	a(miszkaStep.isPreviousStepsSatisfied, true);
-	a(miszkaStep.isPreviousStepsSatisfiedDeep, true);
 
 	businessProcess.set('isAtDraft', true);
-	a(fooStep.isPreviousStepsSatisfied, true);
-	a(fooStep.isPreviousStepsSatisfiedDeep, false);
-	a(barStep.isPreviousStepsSatisfied, true);
-	a(barStep.isPreviousStepsSatisfiedDeep, false);
-	a(miszkaStep.isPreviousStepsSatisfied, true);
-	a(miszkaStep.isPreviousStepsSatisfiedDeep, false);
+	a(fooStep.isPreviousStepsSatisfied, false);
+	a(barStep.isPreviousStepsSatisfied, false);
+	a(miszkaStep.isPreviousStepsSatisfied, false);
 
 	businessProcess.set('isAtDraft', false);
 	a(fooStep.isPreviousStepsSatisfied, true);
-	a(fooStep.isPreviousStepsSatisfiedDeep, true);
 	a(barStep.isPreviousStepsSatisfied, true);
-	a(barStep.isPreviousStepsSatisfiedDeep, true);
 	a(miszkaStep.isPreviousStepsSatisfied, true);
-	a(miszkaStep.isPreviousStepsSatisfiedDeep, true);
 };
