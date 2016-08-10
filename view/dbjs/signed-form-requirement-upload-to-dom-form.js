@@ -17,7 +17,10 @@ module.exports = Object.defineProperty(
 				not(requirementUpload.document._isUpToDate));
 			var result = [
 				div(a({
-					href: '/business-process-data-forms-' + businessProcess.__id__ + '.pdf',
+					href: mmap(businessProcess.dataForms._lastEditStamp, function (lastEditStamp) {
+						return '/business-process-data-forms-' + businessProcess.__id__ +
+							'.pdf?' + lastEditStamp;
+					}),
 					target: '_blank'
 				}, _("Print your application form"))),
 				// If the printed form is uploaded and might not be up to date,
