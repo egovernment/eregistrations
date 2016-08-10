@@ -16,7 +16,7 @@ module.exports = function (context/*, options*/) {
 			a({
 				href: mmap(businessProcess.dataForms._lastEditStamp, function (lastEditStamp) {
 					return '/business-process-data-forms-' + businessProcess.__id__ +
-						'-' + lastEditStamp + '.pdf';
+						'.pdf?' + lastEditStamp;
 				}),
 				target: '_blank'
 			}, span({ class: 'fa fa-print' }),

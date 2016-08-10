@@ -8,7 +8,7 @@ var debug              = require('debug-ext')('business-process-data-forms-print
   , unlink             = require('fs2/unlink')
   , storagesPromise    = require('./utils/business-process-storages')
 
-  , re = /^\/business-process-data-forms-([0-9][0-9a-z]+)-[0-9]+\.pdf$/;
+  , re = /^\/business-process-data-forms-([0-9][0-9a-z]+)\.pdf$/;
 
 var resolvePdfPath = function (businessProcessId, uploadsPath) {
 	return resolve(uploadsPath, 'business-process-data-forms-' + businessProcessId + '.pdf');

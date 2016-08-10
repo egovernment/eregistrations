@@ -20,7 +20,7 @@ exports['sub-main'] = {
 					'data-hint': _("Print your application form"), target: '_blank',
 					href: mmap(businessProcess.dataForms._lastEditStamp, function (lastEditStamp) {
 						return '/business-process-data-forms-' + businessProcess.__id__ +
-							'-' + lastEditStamp + '.pdf';
+							'.pdf?' + lastEditStamp;
 					})
 					}, span({ class: "fa fa-print" }, _("Print")))),
 			div({ class: 'section-primary' },

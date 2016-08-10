@@ -19,7 +19,7 @@ module.exports = Object.defineProperty(
 				div(a({
 					href: mmap(businessProcess.dataForms._lastEditStamp, function (lastEditStamp) {
 						return '/business-process-data-forms-' + businessProcess.__id__ +
-							'-' + lastEditStamp + '.pdf';
+							'.pdf?' + lastEditStamp;
 					}),
 					target: '_blank'
 				}, _("Print your application form"))),
