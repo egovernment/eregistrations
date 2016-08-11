@@ -34,7 +34,7 @@ module.exports = Object.defineProperties(db.File, {
 					options.observable.dbId.replace(normRe, '-') }, ""));
 		},
 		renderItem: function (file) {
-			var el = this.make, data = {}, itemDom, name, isValid = or(file._name, file._path);
+			var el = this.make, data = {}, itemDom, name, isValid = or(file._name, file._path), img;
 
 			if (this.multiple) {
 				data.dom = el('li', { class: _if(isValid, null, 'empty'), 'data-id': file.__id__ });
@@ -44,10 +44,25 @@ module.exports = Object.defineProperties(db.File, {
 			if (isNested(file)) name = file.__id__;
 			else if (this.multiple) name = this.observable.dbId + '*7' + file.__id__;
 			else name = this.observable.dbId;
+			file.on('upload-progress', function (ev) {
+				var loadedPercent;
+				if (!ev.total) return;
+				loadedPercent = (ev.loaded / ev.total);
+				if (loadedPercent === 1) {
+					$('file-' + name).removeClass('loading');
+					$('file-' + name).addClass('generating-preview');
+					$('file-' + name).innerText = 'GENERATING PREVIEW';
+					return;
+				}
+				loadedPercent = new db.Percentage(loadedPercent).toString();
+				$('file-' + name).addClass('loading');
+				$('file-' + name).innerText = loadedPercent;
+			});
 
 			itemDom = _if(isValid, el('div', { class: 'file-thumb' },
 				el('a', { href: file._url, target: '_blank', class: 'file-thumb-image' },
-					el('img', { src: (function () {
+					el('div', { id: 'file-' + name }),
+					img = el('img', { id: 'img-' + name, src: (function () {
 						if (includes.call(docMimeTypes, file.type)) {
 							return stUrl('/img/word-doc-icon.png');
 						}
@@ -61,7 +76,7 @@ module.exports = Object.defineProperties(db.File, {
 					el('span', { class: 'file-thumb-document-size' },
 						map(file._diskSize, function (size) {
 							if (size == null) return null;
-							return ((size / 1000000).toFixed(2) + ' MB');
+							return ((size / 1000000).toFixed(2) + ' Mo');
 						})),
 					el('label', { class: 'file-thumb-action' },
 						el('input', { type: 'checkbox', name: name, value: '' }),
@@ -69,6 +84,13 @@ module.exports = Object.defineProperties(db.File, {
 					el('a', { href: file._url, download: file._name, class: 'file-thumb-action' },
 						el('span', { class: 'fa fa-download' }, "download")))));
 			data.dom.appendChild(itemDom.toDOM ? itemDom.toDOM(this.document) : itemDom);
+			data.dom.appendChild(script(function () {
+				$('img-' + name).src.on('change', function (ev) {
+					$('file-' + name).removeClass('generating-preview');
+					$('file-' + name).innerText = '';
+					console.log('src changed');
+				});
+			}));
 			return data;
 		}
 	})
