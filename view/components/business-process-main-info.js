@@ -12,10 +12,9 @@ var _            = require('mano').i18n.bind('View: Component: Business Process 
 
 columns.push(tableCols.archiverColumn);
 
-module.exports = function (context/*, options */) {
-	var options         = Object(arguments[1])
-	  , businessProcess = context.businessProcess
-	  , urlPrefix       = options.urlPrefix || '/', scrollableElem;
+module.exports = function (context) {
+	var businessProcess = context.businessProcess
+	  , scrollableElem;
 
 	return [
 		section(
@@ -34,7 +33,8 @@ module.exports = function (context/*, options */) {
 			{ class: 'section-primary' },
 			h2({ class: 'container-with-nav' }, _("History of request"),
 				a({ class: 'hint-optional hint-optional-left', 'data-hint': _("Print history of request"),
-					href: urlPrefix + 'print-request-history/', target: '_blank' },
+					href: '/business-process-status-log-print?id=' +
+						businessProcess.__id__, target: '_blank' },
 					span({ class: 'fa fa-print' }, _("Print")))),
 			scrollableElem = div(
 				{ class: 'submitted-user-history-wrapper' },

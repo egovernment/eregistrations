@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="${ locale }">
+<head>
+	<meta charset="utf-8" />
+	<link href="${ root }print-business-process-status-log.css" rel="stylesheet" media="all" />
+</head>
+<body>
+
+
+<header class="print-header">
+	<div class="print-header-logos">
+		${ logo ? '<img src="file://' + logo + '" />' : '' }
+	</div>
+	<div class="print-header-title">
+		<h2>${ e(_("Registration history")) }</h2>
+		<small>${ e(_("Printed on ${ currentDate }", { currentDate: currentDate })) }</small>
+	</div>
+</header>
+<hr>
+<section class="print-body section-primary">
+<h2>${ businessName }</h2>
+<table class="print-user-history">
+	<tbody>
+		${ statusLog.map(function (log) {
+			var result = [];
+			result.push('<tr><td>' + e(log.label) + '</td>');
+			result.push('<td class="print-user-history-time">' + e(log.time) + '</td>');
+			result.push('<td>' + e(log.text) + '</td>');
+			if (log.official) {
+				result.push('<td>' + e(log.official) + '</td>');
+			}
+			result.push('</tr>');
+
+			return result.join('');
+		}).join('') }
+	</tbody>
+</table>
+</section>
+</body>
+</html>

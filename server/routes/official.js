@@ -39,6 +39,7 @@ var aFrom                          = require('es5-ext/array/from')
   , getBaseRoutes                  = require('./authenticated')
   , getProcessingTimesByStepProcessor =
 		require('../statistics/get-processing-times-by-step-processor')
+  , statusLogPrintPdfRenderer = require('../pdf-renderers/business-process-status-log-print')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }
@@ -415,6 +416,23 @@ module.exports = exports = function (mainConf/*, options */) {
 					return getStatsOverviewData(query, userId, statsHandlerOpts);
 				});
 			}.bind(this));
+		},
+		'business-process-status-log-print': {
+			headers: {
+				'Cache-Control': 'no-cache',
+				'Content-Type': 'application/pdf; charset=utf-8'
+			},
+			controller: function (query) {
+				console.log('RESOLVING QUERY', query);
+				return resolveHandler(this.req)(function (handler) {
+					console.log('HANDLER RECEIVED', handler);
+					// Get full data of one of the business processeses
+					return handler.businessProcessQueryHandler.resolve(query)(function (query) {
+						if (!query.id) return { passed: false };
+						return statusLogPrintPdfRenderer(query.id, { streamable: true });
+					});
+				});
+			}
 		}
 	}, getBaseRoutes());
 };
