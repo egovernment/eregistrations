@@ -18,7 +18,7 @@
 </header>
 <hr>
 <section class="print-body section-primary">
-<h2>${ businessName }</h2>
+<h2>${ e(businessName) }</h2>
 <table class="print-user-history">
 	<tbody>
 		${ statusLog.map(function (log) {
