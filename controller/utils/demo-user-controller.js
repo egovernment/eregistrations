@@ -12,6 +12,7 @@ module.exports = function (controllers) {
 			  , userId = user.__id__;
 
 			dbjsValidate(data, { partial: true });
+			console.log('DATA BEFORE VALIDATE', data);
 			data[userId + '/password'] = passwordValidation(data[userId + '/password'],
 				data['password-repeat']);
 
