@@ -423,9 +423,7 @@ module.exports = exports = function (mainConf/*, options */) {
 				'Content-Type': 'application/pdf; charset=utf-8'
 			},
 			controller: function (query) {
-				console.log('RESOLVING QUERY', query);
 				return resolveHandler(this.req)(function (handler) {
-					console.log('HANDLER RECEIVED', handler);
 					// Get full data of one of the business processeses
 					return handler.businessProcessQueryHandler.resolve(query)(function (query) {
 						if (!query.id) return { passed: false };

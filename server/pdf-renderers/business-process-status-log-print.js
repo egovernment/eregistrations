@@ -13,7 +13,7 @@ var db             = require('../../db')
 module.exports = function (businessProcessId/*, options */) {
 	var options = normalizeOptions(arguments[1]);
 	if (!businessProcessId) return null;
-	return queryMemoryDb([businessProcessId], 'getBusinessProcessById', {
+	return queryMemoryDb([businessProcessId], 'businessProcessStatusLog', {
 		businessProcessId: businessProcessId
 	})(function (businessProcess) {
 		if (!businessProcess) return null;
