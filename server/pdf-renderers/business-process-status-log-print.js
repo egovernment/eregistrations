@@ -5,6 +5,7 @@ var db             = require('../../db')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , resolve        = require('path').resolve
   , queryMemoryDb  = require('mano').queryMemoryDb
+  , isUserApp      = require('../../utils/is-user-app')
   , root           = resolve(__dirname, '../..')
   , templatePath   =
 			resolve(root, 'apps-common/pdf-templates/business-process-status-log-print.html')
@@ -17,6 +18,12 @@ module.exports = function (businessProcessId/*, options */) {
 		businessProcessId: businessProcessId
 	})(function (businessProcess) {
 		if (!businessProcess) return null;
+		businessProcess.statusLog.forEach(function (statusLog) {
+			// we don't show officials to end users
+			if (statusLog.official && isUserApp(options.appName || '')) {
+				statusLog.official = null;
+			}
+		});
 		var inserts = {
 			statusLog: businessProcess.statusLog,
 			businessName: businessProcess.businessName,

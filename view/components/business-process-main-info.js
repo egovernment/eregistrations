@@ -33,8 +33,8 @@ module.exports = function (context) {
 			{ class: 'section-primary' },
 			h2({ class: 'container-with-nav' }, _("History of request"),
 				a({ class: 'hint-optional hint-optional-left', 'data-hint': _("Print history of request"),
-					href: '/business-process-status-log-print?id=' +
-						businessProcess.__id__, target: '_blank' },
+					href: '/business-process-status-log-print' +
+						(isUserApp(context.appName) ? '' : '?id=' + businessProcess.__id__), target: '_blank' },
 					span({ class: 'fa fa-print' }, _("Print")))),
 			scrollableElem = div(
 				{ class: 'submitted-user-history-wrapper' },
