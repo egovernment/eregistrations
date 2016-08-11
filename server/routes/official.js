@@ -426,7 +426,7 @@ module.exports = exports = function (mainConf/*, options */) {
 				return resolveHandler(this.req)(function (handler) {
 					// Get full data of one of the business processeses
 					return handler.businessProcessQueryHandler.resolve(query)(function (query) {
-						if (!query.id) return { passed: false };
+						if (!query.id) return;
 						return statusLogPrintPdfRenderer(query.id, { streamable: true });
 					});
 				});

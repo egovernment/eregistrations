@@ -7,7 +7,7 @@ var db             = require('../../db')
   , queryMemoryDb  = require('mano').queryMemoryDb
   , root           = resolve(__dirname, '../..')
   , templatePath   =
-			resolve(root, 'apps-common/pdf-templates/print-business-process-status-log.html')
+			resolve(root, 'apps-common/pdf-templates/business-process-status-log-print.html')
   , htmlToPdf      = require('../html-to-pdf');
 
 module.exports = function (businessProcessId/*, options */) {
@@ -21,7 +21,7 @@ module.exports = function (businessProcessId/*, options */) {
 			statusLog: businessProcess.statusLog,
 			businessName: businessProcess.businessName,
 			locale: db.locale,
-			logo: null,
+			logo: options.logo,
 			currentDate: db.DateTime().toString()
 		};
 

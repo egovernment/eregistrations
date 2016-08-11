@@ -87,7 +87,6 @@ module.exports = {
 		},
 		view: require('../view/business-process-submitted-data')
 	},
-	'print-request-history': require('../view/print-business-process-status-log'),
 
 	// My Account routes
 	'my-account': require('../view/user-home'),
