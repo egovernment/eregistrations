@@ -12,7 +12,6 @@ var from        = require('es5-ext/array/from')
 module.exports = exports = require('eregistrations/view/business-processes-table');
 
 columns.push(tableCols.archiverColumn);
-columns.push(tableCols.goToColumn);
 
 exports._statusMap = function () {
 	return statusMap;

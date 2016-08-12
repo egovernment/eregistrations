@@ -26,6 +26,10 @@
 	background-color: var(--white-text);
 }
 
+.submitted-user-data-table tbody tr:hover td {
+	background-color: var(--light-medium-background);
+}
+
 .submitted-user-data-table tbody .active td {
 	border-top-color: var(--normal-background);
 	border-bottom-color: var(--normal-background);
@@ -90,7 +94,7 @@
 .submitted-user-data-table td a:hover,
 .submitted-user-data-table td a:active,
 .submitted-user-data-table td a:focus {
-	text-decoration: underline;
+	text-decoration: none;
 }
 .submitted-user-data-table-basic > a > span {
 	display: block;

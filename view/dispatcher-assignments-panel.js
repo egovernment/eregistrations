@@ -35,7 +35,6 @@ exports._columns = [
 	tableColumns.submissionDateColumn,
 	tableColumns.certificatesListColumn,
 	tableColumns.archiverColumn,
-	tableColumns.goToColumn,
 	assignmentColumn
 ];
 

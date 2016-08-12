@@ -38,8 +38,8 @@ exports.getServiceIcon = function (businessProcess) {
 exports.actionsColumn = {
 	class: 'actions',
 	data: function (businessProcess) {
-		return _if(businessProcess._isAtDraft,
-			[postButton({
+		return _if(businessProcess._isAtDraft, [
+			postButton({
 				buttonClass: 'actions-edit',
 				action: url('business-process', businessProcess.__id__),
 				value: span({
@@ -47,21 +47,20 @@ exports.actionsColumn = {
 					'data-hint': _('Edit')
 				}, i({ class: 'fa fa-edit' }))
 			}),
-				_if(not(businessProcess._isSubmitted), postButton({
-					buttonClass: 'actions-delete',
-					action: url('business-process', businessProcess.__id__, 'delete'),
-					confirm: _("Are you sure?"),
-					value: span({
-						class: 'hint-optional hint-optional-left',
-						'data-hint': _('Delete')
-					}, i({ class: 'fa fa-trash-o' }))
-				}))],
-
-			postButton({
-				buttonClass: 'actions-edit',
-				action: url('business-process', businessProcess.__id__),
-				value: span({ class: 'fa fa-search' }, _("Go to"))
-			}));
+			_if(not(businessProcess._isSubmitted), postButton({
+				buttonClass: 'actions-delete',
+				action: url('business-process', businessProcess.__id__, 'delete'),
+				confirm: _("Are you sure?"),
+				value: span({
+					class: 'hint-optional hint-optional-left',
+					'data-hint': _('Delete')
+				}, i({ class: 'fa fa-trash-o' }))
+			}))
+		], postButton({
+			buttonClass: 'actions-edit',
+			action: url('business-process', businessProcess.__id__),
+			value: span({ class: 'fa fa-search' }, _("Go to"))
+		}));
 	}
 };
 
@@ -77,15 +76,6 @@ exports.archiverColumn = {
 				}),
 				href: businessProcess._filesArchiveUrl },
 				span({ class: 'fa fa-download' }, _("Download"))));
-	}
-};
-
-exports.goToColumn = {
-	class: 'submitted-user-data-table-link',
-	data: function (businessProcess) {
-		return a({ class: 'actions-edit',
-			href: url(businessProcess.__id__) },
-			span({ class: 'fa fa-search' }, _("Go to")));
 	}
 };
 
