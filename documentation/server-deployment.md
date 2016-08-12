@@ -17,9 +17,9 @@ Server restarts for one application should be handled by one person, there shoul
 <table>
 <thead><tr><th>System name</th><th>Assigned developer</th></tr></thead>
 <tbody>
-<tr><td>Guatemala</td><td>Marek Tuchowski <a href-"https://github.com/mtuchowski/">@mtuchowski</a></td></tr>
+<tr><td>Guatemala</td><td>Mariusz Nowak <a href-"https://github.com/medikoo/">@medikoo</a></td></tr>
 <tr><td>Lomas</td><td>Kamil Gruca <a href-"https://github.com/kamsi/">@kamsi</a></td></tr>
-<tr><td>Salvador</td><td>Marek Tuchowski <a href-"https://github.com/mtuchowski/">@mtuchowski</a></td></tr>
+<tr><td>Salvador</td><td>Mariusz Nowak <a href-"https://github.com/medikoo/">@medikoo</a></td></tr>
 <tr><td>Tanzania</td><td>Kamil Gruca <a href-"https://github.com/kamsi/">@kamsi</a></td></tr>
 </tbody>
 </table>
