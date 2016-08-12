@@ -12,6 +12,9 @@ module.exports = function (controllers) {
 	controllers.register = {
 		submit: function (normalizedData, data) {
 			this.user.delete('isDemo');
+			this.user.initialBusinessProcesses.forEach(function (businessProcess) {
+				businessProcess.delete('isDemo');
+			});
 
 			return hash(normalizedData[this.user.__id__ + '/password'],
 				genSalt())(function (password) {
