@@ -9,6 +9,7 @@
     "url": "git://github.com/egovernment/eregistrations.git"
   },
   "devDependencies": {
+    "bcypt": "^0.8.7",
     "d": "1",
     "dbjs": "git://github.com/medikoo/dbjs.git#36db8dc0f5bfa3affc758118009c9904d82ff936",
     "dbjs-ext": "git://github.com/medikoo/dbjs-ext.git#d83f1e333223414e397f1da7bae58cd1f49bb0e0",
