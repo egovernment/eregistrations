@@ -14,23 +14,22 @@ module.exports = function (/* options */) {
 	return {
 		register: {
 			submit: function (normalizedData, data) {
-				var user = this.user, pwd;
+				var user = this.user;
 				user.delete('isDemo');
 				return queryMaster('loadInitialBusinessProcesses', {
 					userId: user.__id__
-				})(function (hasInitialProcesses) {
-					if (hasInitialProcesses) {
-						user.initialBusinessProcesses.forEach(function (businessProcess) {
-							businessProcess.delete('isDemo');
-						});
-					}
-					pwd = options.oldClientHash ?
+				})(function () {
+					var password;
+					user.initialBusinessProcesses.forEach(function (businessProcess) {
+						businessProcess.delete('isDemo');
+					});
+					password = options.oldClientHash ?
 							options.oldClientHash(normalizedData[user.__id__ + '/email'],
 								normalizedData[user.__id__ + '/password']) :
 									normalizedData[user.__id__ + '/password'];
-					return hash(pwd, genSalt())(function (password) {
+					return hash(password, genSalt())(function (hashedPassword) {
 						delete normalizedData[user.__id__ + '/password'];
-						user.password = password;
+						user.password = hashedPassword;
 						return submit.call(this, normalizedData, data);
 					}.bind(this));
 				}.bind(this));

@@ -18,8 +18,8 @@ module.exports = function () {
 					if (entry.id === userId) return;
 					businessProcesses.push(entry.id.split('*')[1].slice(1));
 				});
-				if (!businessProcesses.length) return false;
-				return loadToMemoryDb(businessProcesses)(true);
+				if (!businessProcesses.length) return;
+				return loadToMemoryDb(businessProcesses);
 			});
 	};
 };
