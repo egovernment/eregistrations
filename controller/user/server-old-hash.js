@@ -1,9 +1,11 @@
 'use strict';
 
-var oldClientHash = require('mano-auth/utils/client-hash')
+var assign        = require('es5-ext/object/assign')
+  , oldClientHash = require('mano-auth/utils/client-hash')
   , profileSubmit = require('./server').profile.submit;
 
-module.exports = exports = require('./server');
+assign(exports, require('./server'),
+	require('../demo-user/server')({ oldClientHash: oldClientHash }));
 
 exports.profile = {
 	submit: function (normalizedData, data) {

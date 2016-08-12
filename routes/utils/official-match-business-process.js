@@ -33,6 +33,7 @@ module.exports = function (step) {
 	return function (businessProcessId) {
 		var resolution = baseMatcher.call(this, step, businessProcessId), visitedBusinessProcesses;
 		if (!resolution) {
+			document.body.classList.add('throbber-active');
 			return xhrGet('/get-business-process-data/', { id: businessProcessId })(function (result) {
 				var def;
 				if (!result.passed) return false;
@@ -49,7 +50,7 @@ module.exports = function (step) {
 					def.resolve(baseResolution);
 				}.bind(this));
 				return def.promise;
-			}.bind(this));
+			}.bind(this)).finally(function () { document.body.classList.remove('throbber-active'); });
 		}
 		if (this.user.currentRoleResolved === 'dispatcher') {
 			visitedBusinessProcesses = this.user.recentlyVisited.businessProcesses.dispatcher;
