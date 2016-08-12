@@ -5,10 +5,9 @@
 var assign = require('es5-ext/object/assign');
 
 // Common
-module.exports = exports = assign(exports, require('../user/server-old-hash'));
+module.exports = exports = assign(exports,
+	require('../user/server-old-hash'), require('../demo-user/server')());
 
 exports['application-submit'] = {
 	redirectUrl: '/'
 };
-
-exports.register = require('../demo-user-server-controller')().register;

@@ -13,7 +13,7 @@ var assign        = require('es5-ext/object/assign')
   , re = /\/isRequested$/;
 
 // Common controller - login and password change.
-module.exports = exports = assign(exports, require('../user'));
+module.exports = exports = assign(exports, require('../user'), require('../demo-user/index')());
 
 // Guide
 exports.guide = {
@@ -98,6 +98,3 @@ exports['application-submit'] = {
 		return validate.apply(this, arguments);
 	}
 };
-
-// Registration controller used by Demo users.
-exports.register = require('../demo-user-controller')().register;
