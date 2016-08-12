@@ -15,7 +15,7 @@ exports['business-process-status-log-print'] = {
 	},
 	controller: function (query) {
 		var userId = this.req.$user, appName = this.req.$appName;
-		if (!userId) return;
+		if (!userId) throw customError("Server error", { statusCode: 500 });
 		return currentBusinessProcessMap(function (map) {
 			var businessProcessId = map.get(userId);
 			if (!businessProcessId) throw customError("Not Found", { statusCode: 404 });
