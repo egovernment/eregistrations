@@ -18,7 +18,7 @@ module.exports = function (domjs/*, options*/) {
 				}) })),
 			div({ class: 'file-thumb-actions' }, map(file._diskSize, function (size) {
 				if (size == null) return null;
-				return span({ class: 'file-thumb-document-size' }, (size / 1000000).toFixed(2) + ' Mo');
+				return span({ class: 'file-thumb-document-size' }, (size / 1000000).toFixed(2) + ' MB');
 			}),
 				a({ href: file._url, target: '_blank', class: 'file-thumb-action' },
 					span({ class: 'fa fa-download' }, "download"))));

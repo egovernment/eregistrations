@@ -36,9 +36,9 @@ When system is actively developed, usual flow is that requests that come when ad
 
 The iteration should be estimated and result of estimate put into two documents:
 - [Overview of current and future tasks](https://docs.google.com/document/d/1cebUp70ElHAYM4vAoLD9lyHQfpuRfzZDN-MiTgQHiEs/edit)  
-Here we should put the date where we expect to deliver the iteration
-- [Log of past and current tasks](https://docs.google.com/document/d/1is0Y_qwDwBMjXcx_DoWzofP5oXF8jgPAwm5YdLHOqy0/edit)  
-Here we should put the start date of work, and estimation in working days (rounded to 1 day)
+Here we should put the time-span in which e we expect to deliver the iteration
+- [Log of past and current tasks](https://docs.google.com/document/d/1cebUp70ElHAYM4vAoLD9lyHQfpuRfzZDN-MiTgQHiEs/edit#heading=h.nunnwa3yjst1)  
+Here the day we're starting the work we should put the start date of work, and estimation in working days (rounded to 1 day, where 7 hours of work is counted as 1 day)
 
 ### When estimated date is not met
 
@@ -46,5 +46,11 @@ If for some reason work on given milestone still continues when its estimated en
 
 ### When work on iteration is finalized
 
-The task should be removed from [overview](https://docs.google.com/document/d/1cebUp70ElHAYM4vAoLD9lyHQfpuRfzZDN-MiTgQHiEs/edit) document, and total time it took should be filled into [log](https://docs.google.com/document/d/1is0Y_qwDwBMjXcx_DoWzofP5oXF8jgPAwm5YdLHOqy0/edit) document.  
+The task should be removed from [overview](https://docs.google.com/document/d/1cebUp70ElHAYM4vAoLD9lyHQfpuRfzZDN-MiTgQHiEs/edit) document, and total time it took should be filled into [log](https://docs.google.com/document/d/1cebUp70ElHAYM4vAoLD9lyHQfpuRfzZDN-MiTgQHiEs/edit#heading=h.nunnwa3yjst1) document.  
 If there were some disruptions during addressing the task, or estimation wasn't met, the reasoning should be provided in dedicated columns.
+
+### Daily timesheets
+
+Aside of [general overview and log](https://docs.google.com/document/d/1cebUp70ElHAYM4vAoLD9lyHQfpuRfzZDN-MiTgQHiEs/edit), on daily basis we should fill [timesheet document](https://docs.google.com/spreadsheets/d/1hIlaJa9N6xNz_o9SkBs1E85juY4DqowjWQnnjP4I254/edit), with information on how many hours were devoted to given milestone per day.  
+It'll give more transparency in how much time was spent on milestone, and should give clear picture in cases where work on milestone was split into some parts (interrupted).  
+Here we assume that normal day is 7 hours. Still if there were no fast-tracks and bugs on given day we should put 8 hours (still in final estimate it'll be counted as a 8/7 of day).
