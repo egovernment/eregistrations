@@ -9,11 +9,12 @@ var promisify   = require('deferred').promisify
 
   , genSalt = promisify(bcrypt.genSalt), hash = promisify(bcrypt.hash);
 
-module.exports = function () {
+module.exports = function (/* options */) {
+	var options = Object(arguments[0]);
 	return {
 		register: {
 			submit: function (normalizedData, data) {
-				var user = this.user;
+				var user = this.user, pwd;
 				user.delete('isDemo');
 				return queryMaster('loadInitialBusinessProcesses', {
 					userId: user.__id__
@@ -23,8 +24,11 @@ module.exports = function () {
 							businessProcess.delete('isDemo');
 						});
 					}
-					return hash(normalizedData[user.__id__ + '/password'],
-						genSalt())(function (password) {
+					pwd = options.oldClientHash ?
+							options.oldClientHash(normalizedData[user.__id__ + '/email'],
+								normalizedData[user.__id__ + '/password']) :
+									normalizedData[user.__id__ + '/password'];
+					return hash(pwd, genSalt())(function (password) {
 						delete normalizedData[user.__id__ + '/password'];
 						user.password = password;
 						return submit.call(this, normalizedData, data);
