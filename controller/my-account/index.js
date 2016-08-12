@@ -35,4 +35,4 @@ exports['business-process/[0-9][a-z0-9]+'] = {
 	}
 };
 
-require('../utils/demo-user-controller')(exports);
+exports.register = require('../demo-user-controller')().register;

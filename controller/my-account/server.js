@@ -18,4 +18,4 @@ exports['business-process/[0-9][a-z0-9]+/delete'] = {
 	}
 };
 
-require('../utils/demo-user-server-controller')(exports);
+exports.register = require('../demo-user-server-controller')().register;
