@@ -77,7 +77,7 @@ module.exports = Object.defineProperties(db.File, {
 					el('span', { class: 'file-thumb-document-size' },
 						map(file._diskSize, function (size) {
 							if (size == null) return null;
-							return ((size / 1000000).toFixed(2) + ' Mo');
+							return ((size / 1000000).toFixed(2) + ' MB');
 						})),
 					el('label', { class: 'file-thumb-action' },
 						el('input', { type: 'checkbox', name: name, value: '' }),
