@@ -1,13 +1,15 @@
 'use strict';
 
 var Database   = require('dbjs')
-  , defineUser = require('../../../model/user/base');
+  , defineUser = require('../../../model/user/base')
+  , defineBusinessProcesses = require('../../../model/user/business-processes');
 
 module.exports = function (t, a) {
 	var db = new Database()
 	  , User = t(defineUser(db))
 
 	  , user = new User();
+	defineBusinessProcesses(User);
 
 	user.roles.add('user');
 	a(user.canBeDestroyed, true);
