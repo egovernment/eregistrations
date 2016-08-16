@@ -75,15 +75,10 @@ module.exports = memoize(function (db/* options */) {
 			type: db.Boolean
 		},
 
-		// Due to involved relations to other objects, below two properties are not computed via
-		// getters, but via persistence engine tracker configuration. See:
+		// Due to involved relations to other objects, below property is not computed via
+		// getter, but via persistence engine tracker configuration. See:
 		// /server/services/compute-manager-relations-sizes.js
 		//
-		// How many submitted business proceses are handled by this user
-		submittedBusinessProcessesSize: {
-			type: UInteger,
-			value: 0
-		},
 		// How many clients depend on this manger (depend in sense that it should not be allowed
 		// to destroy manager with client in given state)
 		dependentManagedUsersSize: {

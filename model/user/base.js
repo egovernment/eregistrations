@@ -3,16 +3,18 @@
 var normalizeOpts  = require('es5-ext/object/normalize-options')
   , memoize        = require('memoizee/plain')
   , ensureDatabase = require('dbjs/valid-dbjs')
+  , defineUInteger = require('dbjs-ext/number/integer/u-integer')
   , _              = require('mano').i18n.bind('Model')
   , defineUser     = require('mano-auth/model/user')
   , defineRole     = require('mano-auth/model/role')
   , definePerson   = require('../person');
 
 module.exports = memoize(function (db/*, options */) {
-	var options = Object(arguments[1])
-	  , Person = definePerson(ensureDatabase(db), options)
-	  , User = defineUser(db, normalizeOpts(options, { Parent: Person }))
-	  , Role = defineRole(db);
+	var options  = Object(arguments[1])
+	  , Person   = definePerson(ensureDatabase(db), options)
+	  , User     = defineUser(db, normalizeOpts(options, { Parent: Person }))
+	  , Role     = defineRole(db)
+	  , UInteger = defineUInteger(db);
 
 	Role.members.add('user');
 	Role.meta.get('user').set('label', _("User"));
@@ -37,7 +39,16 @@ module.exports = memoize(function (db/*, options */) {
 			if (this.email) arr.push(this.email.toLowerCase());
 
 			return arr.join('\x02');
-		} }
+		} },
+		// Due to involved relations to other objects, below property is not computed via
+		// getter, but via persistence engine tracker configuration. See:
+		// /server/services/compute-manager-relations-sizes.js
+		//
+		// How many submitted business processes are handled by this user
+		submittedBusinessProcessesSize: {
+			type: UInteger,
+			value: 0
+		}
 	});
 
 	return User;
