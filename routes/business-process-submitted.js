@@ -51,8 +51,5 @@ module.exports = {
 			this.dataSnapshot = this.businessProcess.dataForms.dataSnapshot.resolved;
 		},
 		view: require('../view/business-process-submitted-data')
-	},
-
-	// Print routes
-	'print-request-history': require('../view/print-business-process-status-log')
+	}
 };
