@@ -58,6 +58,7 @@ module.exports = function (t, a) {
 		return manager.destroyManagedUser(user);
 	}, destroyManagedErr, 'throws when not a manager');
 	user = new User();
+	user.roles.add('user');
 	user.manager = manager;
 	a(db.User.instances.has(user), true);
 	bp = new BusinessProcess();
@@ -91,6 +92,7 @@ module.exports = function (t, a) {
 	a(db.User.instances.has(manager), false);
 
 	user = new User();
+	user.roles.add('user');
 	manager = new User();
 	manager.roles.add('manager');
 	user.manager = manager;

@@ -8,6 +8,7 @@ var memoize                     = require('memoizee/plain')
   , definePropertyGroupsProcess = require('../lib/property-groups-process')
   , defineUser                  = require('./base')
   , defineUserBusinessProcesses = require('./business-processes')
+  , defineUserRolesMeta         = require('./roles-meta')
   , defineStringLine            = require('dbjs-ext/string/string-line')
   , defineUInteger              = require('dbjs-ext/number/integer/u-integer');
 
@@ -19,9 +20,21 @@ module.exports = memoize(function (db/* options */) {
 	  , UInteger = defineUInteger(db)
 	  , Role = db.Role;
 
+	defineUserRolesMeta(User);
 	defineUserBusinessProcesses(User);
 	Role.members.add('manager');
 	Role.meta.get('manager').set('label', _("User Manager"));
+	User.prototype.rolesMeta.define('manager', { nested: true });
+	User.prototype.rolesMeta.get('manager').setProperties({
+		_destroy: function (ignore) {
+			var manager = this.master;
+
+			manager.managedUsers.forEach(manager.destroyManagedUser, manager);
+		},
+		canBeDestroyed: function (_observe) {
+			return !_observe(this.master._dependentManagedUsersSize);
+		}
+	});
 
 	User.prototype.defineProperties({
 		// 1. Normal user properties
@@ -107,30 +120,27 @@ module.exports = memoize(function (db/* options */) {
 		canManagerBeDestroyed: {
 			type: db.Boolean,
 			value: function (_observe) {
-				return this.roles.has('manager') && !this.dependentManagedUsersSize;
+				if (!this.roles.has('manager')) return false;
+				return _observe(this.rolesMeta.manager._canBeDestroyed);
 			}
 		},
 		destroyManagedUser: {
 			type: db.Function,
 			value: function (user) {
-				var dbObjects = this.database.objects, err = new Error('Cannot destroy user', user.__id__);
+				var err = new Error('Cannot destroy user', user.__id__);
 				if (!this.managedUsers.has(user)) {
 					throw err;
 				}
 				if (!user.canManagedUserBeDestroyed) {
 					throw err;
 				}
-				user.initialBusinessProcesses.forEach(function (bp) {
-					dbObjects.delete(bp);
-				});
-				dbObjects.delete(user);
+				user.destroy();
 			}
 		},
 		destroyManager: {
 			type: db.Function,
 			value: function (manager) {
-				var dbObjects = this.database.objects
-				  , err = new Error('Cannot destroy manager', manager.__id__);
+				var err = new Error('Cannot destroy manager', manager.__id__);
 				if (!this.roles.has('managerValidation') && !(this.roles.has('usersAdmin'))) {
 					throw err;
 				}
@@ -138,7 +148,7 @@ module.exports = memoize(function (db/* options */) {
 					throw err;
 				}
 				manager.managedUsers.forEach(manager.destroyManagedUser, manager);
-				dbObjects.delete(manager);
+				manager.destroy();
 			}
 		}
 	});
