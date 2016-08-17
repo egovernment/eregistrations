@@ -18,6 +18,8 @@ module.exports = memoize(function (db/*, options */) {
 	Role.meta.get('user').set('label', _("User"));
 
 	User.prototype.defineProperties({
+		// Used for some additional functionalities like institution switch,
+		// used for demonstrational purposes
 		isSuperUser: {
 			label: _("Is super user?"),
 			type: db.Boolean
