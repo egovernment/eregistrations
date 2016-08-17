@@ -36,6 +36,7 @@
 }
 
 .submitted-menu a,
+.submitted-menu label,
 .submitted-menu button {
 	color:var(--white-text);
 	font-size: 16px;
