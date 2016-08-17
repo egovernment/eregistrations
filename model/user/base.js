@@ -18,6 +18,10 @@ module.exports = memoize(function (db/*, options */) {
 	Role.meta.get('user').set('label', _("User"));
 
 	User.prototype.defineProperties({
+		isSuperUser: {
+			label: _("Is super user?"),
+			type: db.Boolean
+		},
 		// This is resolved on server and propagated (in resolved form to client)
 		// The client will never have a password so it needs to rely on server
 		isActiveAccount: {

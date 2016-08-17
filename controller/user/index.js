@@ -20,6 +20,9 @@ exports.profile = {
 // Role switch
 exports['set-role'] = true;
 
+// Institution switch
+exports['set-institution'] = true;
+
 // Active Business Process change
 exports['change-business-process'] = true;
 
