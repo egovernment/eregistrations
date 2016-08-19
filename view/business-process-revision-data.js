@@ -16,7 +16,8 @@ revisionForm = function (businessProcess) {
 	return form(
 		{
 			id: 'form-revision-data-forms',
-			class: 'submitted-preview-form',
+			class: ['submitted-preview-form', _if(or(eq(dataForms._status, 'approved'),
+				and(eq(dataForms._status, 'rejected'), dataForms._rejectReason)), 'completed')],
 			method: 'post',
 			action: '/revision-data-forms/' + businessProcess.__id__ + '/'
 		},
