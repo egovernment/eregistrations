@@ -7,5 +7,5 @@ var db                      = require('../../../db')
   , getCostsPrintController = require('eregistrations/server/routes/business-process-costs-print');
 
 module.exports = assign(require('eregistrations/server/routes/authenticated')(), {
-    'costs-print': getCostsPrintController(db.${ className })
+	'costs-print': getCostsPrintController(db.${ className })
 });
