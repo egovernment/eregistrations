@@ -22,7 +22,8 @@ module.exports = exports = function (data) {
 	processingStepsMeta = options.processingStepsMeta;
 	queryConf = getQueryHandlerConf({
 		db: db,
-		processingStepsMeta: processingStepsMeta
+		processingStepsMeta: processingStepsMeta,
+		queryConf: options.queryConf
 	});
 	timePerPersonPrint = timePerPersonPrint(assign(options));
 	timePerRolePrint   = timePerRolePrint(assign(options));

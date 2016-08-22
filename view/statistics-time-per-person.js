@@ -11,10 +11,13 @@ var location             = require('mano/lib/client/location')
   , getData              = require('mano/lib/client/xhr-driver').get
   , getQueryHandlerConf  = require('../routes/utils/get-statistics-time-query-handler-conf')
   , getDurationDaysHours = require('./utils/get-duration-days-hours')
+  , getDynamicUrl        = require('./utils/get-dynamic-url')
+  , copy                 = require('es5-ext/object/copy')
   , memoize              = require('memoizee');
 
 exports._parent        = require('./statistics-time');
 exports._customFilters = Function.prototype;
+exports._queryConf     = null;
 
 exports['time-nav'] = { class: { 'pills-nav-active': true } };
 exports['per-person-nav'] = { class: { 'pills-nav-active': true } };
@@ -25,17 +28,30 @@ var queryServer = memoize(function (query) {
 	normalizer: function (args) { return JSON.stringify(args[0]); }
 });
 
+var getRowResult = function (rowData, label) {
+	var result     = copy(rowData);
+	result.label   = label;
+	result.avgTime = rowData.avgTime ? getDurationDaysHours(rowData.avgTime) : '-';
+	result.minTime = rowData.minTime ? getDurationDaysHours(rowData.minTime) : '-';
+	result.maxTime = rowData.maxTime ? getDurationDaysHours(rowData.maxTime) : '-';
+
+	return result;
+};
+
 exports['statistics-main'] = function () {
-	var processingStepsMeta = this.processingStepsMeta, stepsMap = {}, stepTotals = {}, queryHandler;
+	var processingStepsMeta = this.processingStepsMeta, stepsMap = {}, queryHandler
+	  , params;
 	Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
 		stepsMap[stepShortPath]   = new ObservableValue();
-		stepTotals[stepShortPath] = new ObservableValue();
 	});
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
 		db: db,
-		processingStepsMeta: processingStepsMeta
+		processingStepsMeta: processingStepsMeta,
+		queryConf: exports._queryConf
 	}), location, '/time/per-person/');
-
+	params = queryHandler._handlers.map(function (handler) {
+		return handler.name;
+	});
 	queryHandler.on('query', function (query) {
 		if (query.dateFrom) {
 			query.dateFrom = query.dateFrom.toJSON();
@@ -45,33 +61,25 @@ exports['statistics-main'] = function () {
 		}
 		queryServer(query)(function (result) {
 			Object.keys(stepsMap).forEach(function (key) {
-				var total;
-				stepsMap[key].value = result.byProcessor[key];
-				if (!result.byProcessor[key] || !result.byProcessor[key].length) {
-					stepTotals[key].value = null;
+				var preparedResult = [];
+				if (!result.byProcessor[key]) {
+					stepsMap[key].value = null;
 					return;
 				}
-				total = {
-					processed: 0,
-					avgTime: 0,
-					minTime: Infinity,
-					maxTime: 0,
-					totalTime: 0
-				};
-				result.byProcessor[key].forEach(function (byProcessor) {
-					total.processed += byProcessor.processed;
-					total.totalTime += byProcessor.totalTime;
-					total.minTime = Math.min(byProcessor.minTime, total.minTime);
-					total.maxTime = Math.max(byProcessor.maxTime, total.maxTime);
-				});
-				total.avgTime = total.totalTime / total.processed;
-				stepTotals[key].value = total;
+				if (result.byProcessor[key].length) {
+					result.byProcessor[key].forEach(function (rowData) {
+						preparedResult.push(getRowResult(rowData, db.User.getById(rowData.processor).fullName));
+					});
+					preparedResult.push(getRowResult(result.stepTotal[key], _("Total & times")));
+				}
+				stepsMap[key].value = preparedResult;
 			});
 		}).done();
 	});
 	section({ class: 'section-primary users-table-filter-bar' },
 		form({ action: '/time/per-person', autoSubmit: true },
-			div({ class: 'users-table-filter-bar-status' },
+			div(
+				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'service-select' }, _("Service"), ":"),
 				select({ id: 'service-select', name: 'service' },
 					option(
@@ -89,33 +97,29 @@ exports['statistics-main'] = function () {
 								return selected ? 'selected' : null;
 							}) },
 							service.prototype.label);
-					}, null)),
-				exports._customFilters.call(this),
+					}, null))
+			),
+			div(
+				{ class: 'users-table-filter-bar-status' },
+				exports._customFilters.call(this)
+			),
+			div(
+				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
 				input({ id: 'date-from-input', type: 'date',
-					name: 'dateFrom', value: location.query.get('dateFrom') }),
+					name: 'dateFrom', value: location.query.get('dateFrom') })
+			),
+			div(
+				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-to-input' }, _("Date to"), ":"),
 				input({ id: 'date-to-input', type: 'date',
-					name: 'dateTo', value: location.query.get('dateTo') }),
-				a({ class: 'button-resource-link', href:
-					location.query.get('dateTo').map(function (dateTo) {
-						return location.query.get('dateFrom').map(function (dateFrom) {
-							return location.query.get('service').map(function (service) {
-								var href = '/get-time-per-person-print/';
-								if (!Object.keys(location.query).length) {
-									return href;
-								}
-								href += '?';
-								href += Object.keys(location.query).map(function (key) {
-									return key + '=' + location.query[key];
-								}).join('&');
-
-								return href;
-							});
-						});
-					}),
+					name: 'dateTo', value: location.query.get('dateTo') })
+			),
+			div(
+				a({ class: 'users-table-filter-bar-print', href:
+					getDynamicUrl('/get-time-per-person-print/', { only: params }),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
-				)));
+			)));
 	insert(list(Object.keys(stepsMap), function (shortStepPath) {
 		return stepsMap[shortStepPath].map(function (data) {
 			if (!data) return;
@@ -133,24 +137,15 @@ exports['statistics-main'] = function () {
 						th(_("Max time"))
 					),
 					tbody({ onEmpty: tr(td({ class: 'empty', colspan: 5 },
-						_("There are no files processed at this step"))) }, list(data, function (rowData) {
-						tr(
-							td(db.User.getById(rowData.processor).fullName),
-							td(rowData.processed),
-							td(getDurationDaysHours(rowData.avgTime)),
-							td(getDurationDaysHours(rowData.minTime)),
-							td(getDurationDaysHours(rowData.maxTime))
-						);
-					}), stepTotals[shortStepPath].map(function (totals) {
-						if (!totals) return;
+						_("There are no files processed at this step"))) }, data, function (rowData) {
 						return tr(
-							td(_("Total & times")),
-							td(totals.processed),
-							td(getDurationDaysHours(totals.avgTime)),
-							td(getDurationDaysHours(totals.minTime)),
-							td(getDurationDaysHours(totals.maxTime))
+							td(rowData.label),
+							td(rowData.processed),
+							td(rowData.avgTime),
+							td(rowData.minTime),
+							td(rowData.maxTime)
 						);
-					}))
+					})
 				));
 		});
 	}));

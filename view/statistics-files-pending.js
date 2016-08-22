@@ -61,7 +61,6 @@ exports['statistics-main'] = function () {
 			service: db['BusinessProcess' + capitalize.call(name)].prototype
 		};
 	});
-
 	table({ class: 'statistics-table' },
 		thead(tr(
 			th(),
@@ -96,6 +95,13 @@ exports['statistics-main'] = function () {
 			generateProcessingStepRows(_("Files rejected"), services,
 				function (data) { return data._rejected; }, this.processingStepsMeta,
 				"statistics-table-sub-header-sentback", function (data) { return data.rejected; }),
+
+			this.processingStepsMeta.frontDesk ?
+					generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-success' },
+						_("Pending for withdraw at Front Desk"), services, function (data) {
+							data = data.atPartB.getBySKeyPath(resolveFullStepPath('frontDesk'));
+							return data ? data._pending : null;
+						}) : null,
 
 			generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-success' },
 				_("Files completed and closed"), services, function (data) { return data._approved; })

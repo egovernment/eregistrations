@@ -13,6 +13,7 @@ var location             = require('mano/lib/client/location')
   , getDurationDaysHours = require('./utils/get-duration-days-hours')
   , normalizeOptions     = require('es5-ext/object/normalize-options')
   , assign               = require('es5-ext/object/assign')
+  , getDynamicUrl        = require('./utils/get-dynamic-url')
   , memoize              = require('memoizee');
 
 exports._parent = require('./statistics-time');
@@ -46,13 +47,19 @@ var resetResult = function (result) {
 	result.totalTime = '-';
 };
 
+exports._queryConf = null;
+
 exports['statistics-main'] = function () {
-	var processingStepsMeta = this.processingStepsMeta, mainData, queryHandler;
+	var processingStepsMeta = this.processingStepsMeta, mainData, queryHandler, params;
 	mainData = new ObservableArray();
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
 		db: db,
-		processingStepsMeta: processingStepsMeta
+		processingStepsMeta: processingStepsMeta,
+		queryConf: exports._queryConf
 	}), location, '/time/');
+	params = queryHandler._handlers.map(function (handler) {
+		return handler.name;
+	});
 
 	queryHandler.on('query', function (query) {
 		if (query.dateFrom) {
@@ -111,7 +118,8 @@ exports['statistics-main'] = function () {
 
 	section({ class: 'section-primary users-table-filter-bar' },
 		form({ action: '/time', autoSubmit: true },
-			div({ class: 'users-table-filter-bar-status' },
+			div(
+				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'service-select' }, _("Service"), ":"),
 				select({ id: 'service-select', name: 'service' },
 					option(
@@ -129,51 +137,34 @@ exports['statistics-main'] = function () {
 								return selected ? 'selected' : null;
 							}) },
 							service.prototype.label);
-					}, null)),
-				exports._customFilters.call(this),
+					}, null))
+			),
+			div(
+				{ class: 'users-table-filter-bar-status' },
+				exports._customFilters.call(this)
+			),
+			div(
+				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
 				input({ id: 'date-from-input', type: 'date',
-					name: 'dateFrom', value: location.query.get('dateFrom') }),
+					name: 'dateFrom', value: location.query.get('dateFrom') })
+			),
+			div(
+				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-to-input' }, _("Date to"), ":"),
 				input({ id: 'date-to-input', type: 'date',
-					name: 'dateTo', value: location.query.get('dateTo') }),
-				a({ class: 'button-resource-link', href:
-					location.query.get('dateTo').map(function (dateTo) {
-						return location.query.get('dateFrom').map(function (dateFrom) {
-							return location.query.get('service').map(function (service) {
-								var href = '/get-time-per-role-csv/';
-								if (!Object.keys(location.query).length) {
-									return href;
-								}
-								href += '?';
-								href += Object.keys(location.query).map(function (key) {
-									return key + '=' + location.query[key];
-								}).join('&');
-
-								return href;
-							});
-						});
-					}),
-					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print csv")),
-				a({ class: 'button-resource-link', href:
-					location.query.get('dateTo').map(function (dateTo) {
-						return location.query.get('dateFrom').map(function (dateFrom) {
-							return location.query.get('service').map(function (service) {
-								var href = '/get-time-per-role-print/';
-								if (!Object.keys(location.query).length) {
-									return href;
-								}
-								href += '?';
-								href += Object.keys(location.query).map(function (key) {
-									return key + '=' + location.query[key];
-								}).join('&');
-
-								return href;
-							});
-						});
-					}),
+					name: 'dateTo', value: location.query.get('dateTo') })
+			),
+			div(
+				a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/get-time-per-role-csv/',
+					{ only: params }),
+					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print csv"))
+			),
+			div(
+				a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/get-time-per-role-print/',
+					{ only: params }),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
-				)));
+			)));
 	section({ class: 'section-primary' },
 		table(thead(
 			th(),

@@ -61,12 +61,12 @@ module.exports = Object.defineProperties(db.File, {
 					el('span', { class: 'file-thumb-document-size' },
 						map(file._diskSize, function (size) {
 							if (size == null) return null;
-							return ((size / 1000000).toFixed(2) + ' Mo');
+							return ((size / 1000000).toFixed(2) + ' MB');
 						})),
 					el('label', { class: 'file-thumb-action' },
 						el('input', { type: 'checkbox', name: name, value: '' }),
 						el('span', { class: 'fa fa-trash-o' }, "delete")),
-					el('a', { href: file._url, target: '_blank', class: 'file-thumb-action' },
+					el('a', { href: file._url, download: file._name, class: 'file-thumb-action' },
 						el('span', { class: 'fa fa-download' }, "download")))));
 			data.dom.appendChild(itemDom.toDOM ? itemDom.toDOM(this.document) : itemDom);
 			return data;

@@ -24,7 +24,8 @@ module.exports = function (configData) {
 		logo: configData.logo,
 		driver: ensureDriver(configData.driver),
 		db: db,
-		processingStepsMeta: ensureObject(configData.processingStepsMeta)
+		processingStepsMeta: ensureObject(configData.processingStepsMeta),
+		customFilter: configData.customFilter
 	};
 
 	return {

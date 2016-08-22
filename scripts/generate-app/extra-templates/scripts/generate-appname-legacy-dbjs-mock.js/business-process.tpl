@@ -10,10 +10,11 @@ var resolve          = require('path').resolve
   , generateDbjsMock = require('eregistrations/scripts/generate-legacy-dbjs-mock')
   , BusinessProcess  = require('../model/${ appName }');
 
+var protoPath =
+'../apps/${ appName }/client/legacy/${ appName }-legacy-proto.js';
 module.exports = function () {
 	debug('generate-${ appName }-legacy-dbjs-mock');
 
 	return generateDbjsMock(BusinessProcess,
-		resolve(__dirname,
-			'../apps/${ appName }/client/legacy/${ appName }-legacy-proto.js'));
+		resolve(__dirname, protoPath));
 };

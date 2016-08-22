@@ -28,6 +28,8 @@ var aFrom                          = require('es5-ext/array/from')
   , mano                           = require('mano')
   , roleNameMap                    = require('mano/lib/server/user-role-name-map')
   , QueryHandler                   = require('../../utils/query-handler')
+  , getStatsQueryHandlerConf       =
+		require('../../routes/utils/get-statistics-time-query-handler-conf')
   , defaultItemsPerPage            = require('../../conf/objects-list-items-per-page')
   , getDbSet                       = require('../utils/get-db-set')
   , getDbArray                     = require('../utils/get-db-array')
@@ -35,6 +37,10 @@ var aFrom                          = require('es5-ext/array/from')
   , businessProcessStoragesPromise = require('../utils/business-process-storages')
   , idToStorage                    = require('../utils/business-process-id-to-storage')
   , getBaseRoutes                  = require('./authenticated')
+  , customError                    = require('es5-ext/error/custom')
+  , getProcessingTimesByStepProcessor =
+		require('../statistics/get-processing-times-by-step-processor')
+  , statusLogPrintPdfRenderer = require('../pdf-renderers/business-process-status-log-print')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }
@@ -304,11 +310,36 @@ var initializeHandler = function (conf) {
 	};
 };
 
+var getStatsOverviewData = memoize(function (query, userId, statsHandlerOpts) {
+	return getProcessingTimesByStepProcessor(assign(statsHandlerOpts,
+		{ query: query, userId: userId }));
+}, {
+	normalizer: function (args) {
+		return args[0].step + args[1]
+			+ args[0].dateFrom + args[0].dateTo;
+	},
+	maxAge: 1000 * 60 * 60
+});
+
 module.exports = exports = function (mainConf/*, options */) {
 	var resolveHandler, options, stepShortPathResolve, getHandlerByRole
-	  , recentlyVisitedContextName, decorateQuery;
+	  , recentlyVisitedContextName, decorateQuery, statsOverviewQueryHandler, statsHandlerOpts;
 	options = Object(arguments[1]);
 	recentlyVisitedContextName = options.recentlyVisitedContextName;
+
+	/**
+	 * This is to safeguard older systems which don't use this functionality
+	 * the flag is not mandatory, so only setup if you don't want this configured in a system
+	 * */
+	if (options.processingStepsMeta) {
+		statsHandlerOpts = {
+			processingStepsMeta: ensureObject(options.processingStepsMeta),
+			db: require('mano').db,
+			driver: require('mano').dbDriver
+		};
+
+		statsOverviewQueryHandler = new QueryHandler(getStatsQueryHandlerConf(statsHandlerOpts));
+	}
 	if (options.decorateQuery != null) decorateQuery = ensureCallable(options.decorateQuery);
 	if (isArray(mainConf)) {
 		resolveHandler = (function () {
@@ -374,6 +405,35 @@ module.exports = exports = function (mainConf/*, options */) {
 					return mano.dbDriver.getStorage('user').store(recordId, '11')({ passed: true });
 				}.bind(this));
 			}.bind(this));
+		},
+		'get-processing-time-data': function (query) {
+			if (!statsOverviewQueryHandler) return null;
+			return resolveHandler(this.req)(function (handler) {
+				var userId = this.req.$user;
+				if (!handler.roleName) return;
+				query.step = handler.roleName;
+
+				return statsOverviewQueryHandler.resolve(query)(function (query) {
+					return getStatsOverviewData(query, userId, statsHandlerOpts);
+				});
+			}.bind(this));
+		},
+		'business-process-status-log-print': {
+			headers: {
+				'Cache-Control': 'no-cache',
+				'Content-Type': 'application/pdf; charset=utf-8'
+			},
+			controller: function (query) {
+				var appName = this.req.$appName;
+				return resolveHandler(this.req)(function (handler) {
+					// Get full data of one of the business processeses
+					return handler.businessProcessQueryHandler.resolve(query)(function (query) {
+						if (!query.id) throw customError("Not Found", { statusCode: 404 });
+						return statusLogPrintPdfRenderer(query.id, { streamable: true,
+							appName: appName });
+					});
+				});
+			}
 		}
 	}, getBaseRoutes());
 };
