@@ -130,7 +130,6 @@ exports._userNameMenuItem = function () {
 				} else {
 					clicked = $(evt.srcElement);
 				}
-				//var clicked = $(event.target);
 				if (!clicked.hasClass('header-top-dropdown-button')) {
 					dropDownMenu.removeClass("header-top-menu-opened");
 					dropDownMenuAngle.removeClass("fa-angle-up");
