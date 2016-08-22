@@ -123,7 +123,6 @@ exports._userNameMenuItem = function () {
 				}
 			};
 			document.onclick = function (event) {
-				console.log(event);
 				var clicked = $(event.target);
 				if (!clicked.hasClass('header-top-dropdown-button')) {
 					dropDownMenu.removeClass("header-top-menu-opened");
