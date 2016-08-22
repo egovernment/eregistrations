@@ -123,7 +123,14 @@ exports._userNameMenuItem = function () {
 				}
 			};
 			document.onclick = function (event) {
-				var clicked = $(event.target);
+				var evt = event || window.event;
+				var clicked = null;
+				if (typeof evt.target !== 'undefined') {
+					clicked = $(evt.target);
+				} else {
+					clicked = $(evt.srcElement);
+				}
+				//var clicked = $(event.target);
 				if (!clicked.hasClass('header-top-dropdown-button')) {
 					dropDownMenu.removeClass("header-top-menu-opened");
 					dropDownMenuAngle.removeClass("fa-angle-up");
