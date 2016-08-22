@@ -139,6 +139,7 @@ Flexible basic menu button positioning
 .header-top-menu-dropdown-content button:focus {
 	background-color: var(--normal-dark-background);
 	color: var(--white-text);
+	border-radius: 0;
 }
 
 .header-top-menu-dropdown-content {

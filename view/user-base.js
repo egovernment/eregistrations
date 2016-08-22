@@ -4,10 +4,7 @@ var _                    = require('mano').i18n.bind('View: User')
   , loginDialog          = require('./components/login-dialog')
   , registerDialog       = require('./components/register-dialog')
   , modalContainer       = require('./components/modal-container')
-  , requestAccountDialog = require('./components/request-account-dialog')
-  , $                    = require('mano-legacy');
-
-require('mano-legacy/element#/class');
+  , requestAccountDialog = require('./components/request-account-dialog');
 
 exports._parent = require('./base');
 
@@ -126,7 +123,8 @@ exports._userNameMenuItem = function () {
 				}
 			};
 			document.onclick = function (event) {
-				var clicked = $(event.toElement);
+				console.log(event);
+				var clicked = $(event.target);
 				if (!clicked.hasClass('header-top-dropdown-button')) {
 					dropDownMenu.removeClass("header-top-menu-opened");
 					dropDownMenuAngle.removeClass("fa-angle-up");
