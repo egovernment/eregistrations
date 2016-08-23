@@ -24,12 +24,14 @@ var generateRow = function (label, data, getValue) {
 		td(label),
 		data.map(function (data) {
 			var result = getValue(data.data);
-			return td(result ? result.map(mapSize) : '-');
+			return td({ class: 'statistics-table-number' },
+				result ? result.map(mapSize) : '-');
 		}),
-		td(add.apply(null, data.map(function (data) {
-			var result = getValue(data.data);
-			return result ? result.or(0) : 0;
-		})))
+		td({ class: 'statistics-table-number' },
+			add.apply(null, data.map(function (data) {
+				var result = getValue(data.data);
+				return result ? result.or(0) : 0;
+			})))
 	);
 };
 
@@ -64,8 +66,9 @@ exports['statistics-main'] = function () {
 	table({ class: 'statistics-table' },
 		thead(tr(
 			th(),
-			services.map(function (data) { return th(data.service.label); }),
-			th(_("Total"))
+			services.map(function (data) { return th({ class: 'statistics-table-number' },
+				data.service.label); }),
+			th({ class: 'statistics-table-number' }, _("Total"))
 		)),
 		tbody(
 			generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-overall' },

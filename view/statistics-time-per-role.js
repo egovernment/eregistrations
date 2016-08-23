@@ -165,22 +165,26 @@ exports['statistics-main'] = function () {
 					{ only: params }),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
 			)));
-	section({ class: 'section-primary' },
-		table(thead(
+	section(
+		table({ class: 'statistics-table' }, thead(
 			th(),
-			th(_("Files processed")),
-			th(_("Average time")),
-			th(_("Min time")),
-			th(_("Max time"))
+			th({ class: 'statistics-table-number' }, _("Files processed")),
+			th({ class: 'statistics-table-number' }, _("Average time")),
+			th({ class: 'statistics-table-number' }, _("Min time")),
+			th({ class: 'statistics-table-number' }, _("Max time"))
 		), tbody({ onEmpty: tr(td({ class: 'empty', colspan: 5 },
 					_("There is no data to display"))) },
 				mainData, function (row) {
 				return tr(
 					td(row.label),
-					td(row.processed),
-					td(Number(row.avgTime) ? getDurationDaysHours(row.avgTime) : row.avgTime),
-					td(Number(row.minTime) ? getDurationDaysHours(row.minTime) : row.minTime),
-					td(Number(row.maxTime) ? getDurationDaysHours(row.maxTime) : row.maxTime)
+					td({ class: 'statistics-table-number' }, row.processed),
+					td({ class: 'statistics-table-number' },
+						Number(row.avgTime) ? getDurationDaysHours(row.avgTime) : row.avgTime),
+					td({ class: 'statistics-table-number' },
+						Number(row.minTime) ? getDurationDaysHours(row.minTime) : row.minTime),
+					td({ class: 'statistics-table-number' },
+						Number(row.maxTime) ? getDurationDaysHours(row.maxTime) : row.maxTime)
 				);
-			})));
+			}))
+	);
 };
