@@ -146,14 +146,6 @@ Flexible basic menu button positioning
 	display: none;
 }
 
-.header-top-menu-dropdown-content-separator {
-	display: none;
-}
-
-* + .header-top-menu-dropdown-content-separator {
-	display: block;
-}
-
 .header-top-menu-opened .header-top-menu-dropdown-content {
 	display: block;
 	background-color: var(--white-background);
