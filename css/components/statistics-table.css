@@ -28,6 +28,11 @@
 	border-bottom: 1px solid var(--light-inner-border);
 }
 
+.statistics-table-officials thead tr th,
+.statistics-table-officials tbody tr td {
+	text-align: center;
+}
+
 .statistics-table-registrations .statistics-table-header-success {
 	background: var(--light-success-background);
 }
