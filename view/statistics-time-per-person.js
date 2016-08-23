@@ -128,25 +128,25 @@ exports['statistics-main'] = function () {
 				.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath));
 			return section({ class: "section-primary" },
 				h3(step.label),
-				table(
+				table({ class: 'statistics-table' },
 					thead(
 						th(),
-						th(_("Files processed")),
-						th(_("Average time")),
-						th(_("Min time")),
-						th(_("Max time"))
+						th({ class: 'statistics-table-number' }, _("Files processed")),
+						th({ class: 'statistics-table-number' }, _("Average time")),
+						th({ class: 'statistics-table-number' }, _("Min time")),
+						th({ class: 'statistics-table-number' }, _("Max time"))
 					),
-					tbody({ onEmpty: tr(td({ class: 'empty', colspan: 5 },
+					tbody({ onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
 						_("There are no files processed at this step"))) }, data, function (rowData) {
 						return tr(
 							td(rowData.label),
-							td(rowData.processed),
-							td(rowData.avgTime),
-							td(rowData.minTime),
-							td(rowData.maxTime)
+							td({ class: 'statistics-table-number' }, rowData.processed),
+							td({ class: 'statistics-table-number' }, rowData.avgTime),
+							td({ class: 'statistics-table-number' }, rowData.minTime),
+							td({ class: 'statistics-table-number' }, rowData.maxTime)
 						);
 					})
-				));
+					));
 		});
 	}));
 };
