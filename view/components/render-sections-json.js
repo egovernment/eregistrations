@@ -122,7 +122,7 @@ exports.customRenderers = {
 			a({ href: pathToUrl(data.path), target: '_blank', class: 'file-thumb-image' },
 				img({ src: thumbUrl ? stUrl(thumbUrl) : thumbUrl })),
 			div({ class: 'file-thumb-actions' },
-				span({ class: 'file-thumb-document-size' }, (data.diskSize / 1000000).toFixed(2) + ' Mo'),
+				span({ class: 'file-thumb-document-size' }, (data.diskSize / 1000000).toFixed(2) + ' MB'),
 				a({ href: pathToUrl(data.path), target: '_blank', class: 'file-thumb-action',
 					download: data.path }, span({ class: 'fa fa-download' }, "download"))));
 	},

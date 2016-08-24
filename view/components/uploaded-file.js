@@ -5,7 +5,7 @@ var ns = require('mano').domjs.ns
 
 var resolveSize = function (size) {
 	if (size == null) return null;
-	return ((size / 1000000).toFixed(2) + ' Mo');
+	return ((size / 1000000).toFixed(2) + ' MB');
 };
 
 module.exports = function (observable/*, options*/) {

@@ -31,6 +31,8 @@ var aFrom               = require('es5-ext/array/from')
   , getDbArray          = require('../utils/get-db-array')
   , getSupervisorSteps  = require('../utils/supervisor-steps-array')
   , getBaseRoutes       = require('./authenticated')
+  , customError         = require('es5-ext/error/custom')
+  , statusLogPrintPdfRenderer = require('../pdf-renderers/business-process-status-log-print')
 
   , hasBadWs       = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps  = function (a, b) { return a.stamp - b.stamp; }
@@ -231,6 +233,21 @@ module.exports = exports = function (conf) {
 				recordId = this.req.$user + '/recentlyVisited/businessProcesses/supervisor*7' + query.id;
 				return driver.getStorage('user').store(recordId, '11')({ passed: true });
 			}.bind(this));
+		},
+		'business-process-status-log-print': {
+			headers: {
+				'Cache-Control': 'no-cache',
+				'Content-Type': 'application/pdf; charset=utf-8'
+			},
+			controller: function (query) {
+				var appName = this.req.$appName;
+				// Get full data of one of the business processeses
+				return handler.businessProcessQueryHandler.resolve(query)(function (query) {
+					if (!query.id) throw customError("Not Found", { statusCode: 404 });
+					return statusLogPrintPdfRenderer(query.id, { streamable: true,
+						appName: appName });
+				});
+			}
 		}
 	}, getBaseRoutes());
 };

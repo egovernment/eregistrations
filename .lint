@@ -29,7 +29,7 @@ vars
 todo
 evil
 
-predef+ console, setTimeout, setInterval
+predef+ console, setTimeout, setInterval, clearInterval
 
 ./bin
 ./lib
@@ -43,6 +43,7 @@ predef+ process, __dirname, setInterval, Buffer
 ./controller/manager/client.js
 ./client
 ./prototype/client
+./routes
 predef+ window, document, location, $, localStorage
 
 ./prototype/view
