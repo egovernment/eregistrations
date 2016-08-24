@@ -12,25 +12,27 @@
 		<small>${ e(_("Printed on ${ currentDate }", { currentDate: currentDate })) }</small>
 	</div>
 </header>
-<table>
-	<thead>
-	<th></th>
-	<th>${ e(_("Files processed")) }</th>
-	<th>${ e(_("Average time")) }</th>
-	<th>${ e(_("Min time")) }</th>
-	<th>${ e(_("Max time")) }</th>
-	</thead>
-	<tbody>
-	${
-		data.map(function (item) {
-			return '<tr><td>' + item.label + '</td><td>'
-			+ item.processed + '</td><td>'
-			+ item.avgTime + '</td><td>'
-			+ item.minTime + '</td><td>'
-			+ item.maxTime + '</td><td></tr>';
-		}).join('')
-	}
-	</tbody>
-</table>
+<div class="data-blocks-list">
+	<table>
+		<thead>
+		<th></th>
+		<th class="centered">${ e(_("Files processed")) }</th>
+		<th class="centered">${ e(_("Average time")) }</th>
+		<th class="centered">${ e(_("Min time")) }</th>
+		<th class="centered">${ e(_("Max time")) }</th>
+		</thead>
+		<tbody>
+		${
+			data.map(function (item) {
+				return '<tr><td>' + item.label + '</td><td class="centered">'
+				+ item.processed + '</td><td class="centered">'
+				+ item.avgTime + '</td><td class="centered">'
+				+ item.minTime + '</td><td class="centered">'
+				+ item.maxTime + '</td></tr>';
+			}).join('')
+		}
+		</tbody>
+	</table>
+</div>
 </body>
 </html>
