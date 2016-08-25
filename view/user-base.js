@@ -102,7 +102,7 @@ exports._userNameMenuItem = function () {
 	return [li({ id: "drop-down-menu", class: "header-top-dropdown-container" },
 			a(span({ class: 'header-top-user-name header-top-dropdown-button' },
 				this.manager ? this.manager._fullName : this.user._fullName,
-				i({ id: 'drop-down-menu-angle', class: 'fa fa-angle-down' }))),
+				i({ id: 'drop-down-menu-angle', class: 'fa fa-angle-down header-top-dropdown-button' }))),
 			ul({ class: "header-top-menu-dropdown-content" },
 				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 				exports._profileMenuItem.call(this),
