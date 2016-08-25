@@ -14,8 +14,8 @@ var resolvePdfPath = function (businessProcessId, uploadsPath) {
 	return resolve(uploadsPath, 'business-process-data-forms-' + businessProcessId + '.pdf');
 };
 
-exports.filenameResetService = function (options) {
-	var uploadsPath = ensureString(ensureObject(options).uploadsPath);
+exports.filenameResetService = function (config) {
+	var uploadsPath = ensureString(ensureObject(config).uploadsPath);
 
 	var eventHandler = function (event) {
 		var businessProcessId = event.ownerId
@@ -31,8 +31,8 @@ exports.filenameResetService = function (options) {
 		storages.forEach(function (storage) {
 			storage.on('key:dataForms/lastEditStamp', eventHandler);
 			storage.on('key:dataForms/dataSnapshot/jsonString', eventHandler);
-			if (options.installCustomEvent) {
-				options.installCustomEvent(storage, eventHandler);
+			if (config.installCustomEvent) {
+				config.installCustomEvent(storage, eventHandler);
 			}
 		});
 	});
