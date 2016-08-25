@@ -20,7 +20,7 @@ exports._mapRolesToLabels = function (role, user) {
 	return '';
 };
 
-var baseColumns = [{
+exports._usersTableColumns = [{
 	head: _("Email"),
 	data: function (user) { return [strong(user._fullName), br(), user._email]; }
 }, {
@@ -67,7 +67,7 @@ exports['sub-main'] = {
 
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
 
-		var columns = baseColumns.map(function (conf) {
+		var columns = exports._usersTableColumns.map(function (conf) {
 			conf = copy(conf);
 			conf.data = conf.data.bind(this);
 			return conf;
