@@ -99,20 +99,51 @@ exports._extraRoleLabel = function () {
 };
 
 exports._userNameMenuItem = function () {
-	return li(
-		a(
-			{ href: '/profile/' },
-			span({ class: 'header-top-user-name' },
-				this.manager ? this.manager._fullName : this.user._fullName)
-		)
-	);
+	return [li({ id: "drop-down-menu", class: "header-top-dropdown-container" },
+			a(span({ class: 'header-top-user-name header-top-dropdown-button' },
+				this.manager ? this.manager._fullName : this.user._fullName,
+				i({ id: 'drop-down-menu-angle', class: 'fa fa-angle-down header-top-dropdown-button' }))),
+			ul({ class: "header-top-menu-dropdown-content" },
+				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
+				exports._profileMenuItem.call(this),
+				exports._logoutMenuItem.call(this)
+				)
+			),
+			script(function () {
+			var dropDownMenu = $('drop-down-menu'), dropDownMenuAngle = $('drop-down-menu-angle');
+			dropDownMenu.onclick = function () {
+				if (dropDownMenu.hasClass("header-top-menu-opened")) {
+					dropDownMenu.removeClass("header-top-menu-opened");
+					dropDownMenuAngle.removeClass("fa-angle-up");
+					dropDownMenuAngle.addClass("fa-angle-down");
+				} else {
+					dropDownMenu.addClass("header-top-menu-opened");
+					dropDownMenuAngle.addClass("fa-angle-up");
+					dropDownMenuAngle.removeClass("fa-angle-down");
+				}
+			};
+			document.onclick = function (event) {
+				var evt = event || window.event;
+				var clicked = null;
+				if (typeof evt.target !== 'undefined') {
+					clicked = $(evt.target);
+				} else {
+					clicked = $(evt.srcElement);
+				}
+				if (!clicked.hasClass('header-top-dropdown-button')) {
+					dropDownMenu.removeClass("header-top-menu-opened");
+					dropDownMenuAngle.removeClass("fa-angle-up");
+					dropDownMenuAngle.addClass("fa-angle-down");
+				}
+			};
+		})];
 };
 
 exports._profileMenuItem = function () {
 	return li(
 		a(
 			{ href: '/profile/' },
-			span({ class: 'fa fa-cog' }, "Preferences")
+			_("My informations")
 		)
 	);
 };
@@ -121,14 +152,12 @@ exports._logoutMenuItem = function () {
 	return li(
 		a(
 			{ href: '/logout/', rel: 'server' },
-			span({ class: 'fa fa-power-off' }, "Log out")
+			_("Log out")
 		)
 	);
 };
 
 exports._menuItems = [
 	exports._extraRoleLabel,
-	exports._userNameMenuItem,
-	exports._profileMenuItem,
-	exports._logoutMenuItem
+	exports._userNameMenuItem
 ];
