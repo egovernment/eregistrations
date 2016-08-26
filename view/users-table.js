@@ -20,21 +20,29 @@ exports._mapRolesToLabels = function (role, user) {
 	return '';
 };
 
-var baseColumns = [{
+exports._emailColumn = {
 	head: _("Email"),
 	data: function (user) { return [strong(user._fullName), br(), user._email]; }
-}, {
+};
+
+exports._roleColumn = {
 	head: _("Role"),
 	data: function (user) { return ul(user.roles, function (role) {
 		return exports._mapRolesToLabels(role, user);
 	}); }
-}, {
+};
+
+exports._institutionColumn = {
 	head: _("Institution"),
 	data: function (user) { return user._institution; }
-}, {
+};
+
+exports._creationDateColumn = {
 	head: _("Creation date"),
 	data: function (user) { return new db.DateTime(user.lastModified / 1000); }
-}, {
+};
+
+exports._actionsColumn = {
 	head: th({ class: 'actions' }),
 	data: function (user) {
 		var isSelfUser = (user === this.user);
@@ -45,7 +53,15 @@ var baseColumns = [{
 				action: url('user', user.__id__, 'delete'),
 				confirm: _("Are you sure?"), value: span({ class: 'fa fa-trash-o' }) }) : null);
 	}
-}];
+};
+
+exports._columns = [
+	exports._emailColumn,
+	exports._roleColumn,
+	exports._institutionColumn,
+	exports._creationDateColumn,
+	exports._actionsColumn
+];
 
 exports['sub-main'] = {
 	class: { content: true },
@@ -67,7 +83,7 @@ exports['sub-main'] = {
 
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
 
-		var columns = baseColumns.map(function (conf) {
+		var columns = exports._columns.map(function (conf) {
 			conf = copy(conf);
 			conf.data = conf.data.bind(this);
 			return conf;
