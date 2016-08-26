@@ -9,7 +9,7 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	  , stepName          = options.stepName || 'revision'
 	  , stepKeyPath       = 'processingSteps/map/' + stepName
 	  , processorKeyPath  = stepKeyPath + '/processor'
-	  , revisionLabel     = options.revisionLabel || _("Review");
+	  , label             = options.label || _("Review");
 
 	ensureType(BusinessProcessClass);
 
@@ -29,14 +29,14 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 		trigger: approvedProcesses,
 		preTrigger: readyProcesses,
 		official: processorKeyPath,
-		label: revisionLabel,
+		label: label,
 		text: options.approvedText || _("Review successful")
 	}, {
 		id: 'sentBack',
 		trigger: sentBackProcesses,
 		preTrigger: readyProcesses,
 		official: processorKeyPath,
-		label: revisionLabel,
+		label: label,
 		text: options.sentBackText || _("Necessary corrections in the file")
 	}, {
 		id: 'correction',
@@ -49,7 +49,7 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 		trigger: rejectedProcesses,
 		preTrigger: readyProcesses,
 		official: processorKeyPath,
-		label: revisionLabel,
+		label: label,
 		text: options.rejectedText || (_("Application rejected.\n" +
 			"After reviewing the information and documents, the validation request can not be " +
 			"processed for the following reason:\n${ rejectionReason }")),
