@@ -4,10 +4,6 @@ var _                     = require('mano').i18n.bind('View: Component: Business
   , certificateStatusMeta = require('mano').db.CertificateStatus.meta
   , formatLastModified    = require('../utils/last-modified');
 
-var wrapInLink = function (businessProcess, content) {
-	return a({ href: url(businessProcess.__id__) }, content);
-};
-
 var generateCertificatesList = (function () {
 	var getStatusLabel = function (cert) {
 		if (cert._status) return _if(cert._status, ["- ", cert._status]);
@@ -83,18 +79,15 @@ exports.servicesColumn = {
 	head: _("Service"),
 	class: 'submitted-user-data-table-service',
 	data: function (businessProcess) {
-		return wrapInLink(
-			businessProcess,
-			span({ class: 'hint-optional hint-optional-right', 'data-hint': businessProcess._label },
-				exports.getServiceIcon(businessProcess))
-		);
+		return span({ class: 'hint-optional hint-optional-right', 'data-hint': businessProcess._label },
+			exports.getServiceIcon(businessProcess));
 	}
 };
 
 exports.businessNameColumn = {
 	head: _("Entity"),
 	data: function (businessProcess) {
-		return wrapInLink(businessProcess, span(businessProcess._businessName));
+		return span(businessProcess._businessName);
 	}
 };
 
@@ -104,9 +97,9 @@ exports.submissionDateColumn = {
 	data: function (businessProcess) {
 		var isSubmitted = businessProcess._isSubmitted;
 
-		return wrapInLink(businessProcess, _if(isSubmitted, function () {
+		return _if(isSubmitted, function () {
 			return isSubmitted._lastModified.map(formatLastModified);
-		}));
+		});
 	}
 };
 
@@ -116,16 +109,16 @@ exports.withdrawalDateColumn = {
 	data: function (businessProcess) {
 		var isApproved = businessProcess._isApproved;
 
-		return wrapInLink(businessProcess, _if(isApproved, function () {
+		return _if(isApproved, function () {
 			return isApproved._lastModified.map(formatLastModified);
-		}));
+		});
 	}
 };
 
 exports.certificatesListColumn = {
 	head: _("Inscriptions and controls"),
 	data: function (businessProcess) {
-		return wrapInLink(businessProcess, mmap(businessProcess._isClosed, function (isClosed) {
+		return mmap(businessProcess._isClosed, function (isClosed) {
 			if (!businessProcess.certificates) return;
 			if (isClosed) {
 				return mmap(businessProcess.certificates.dataSnapshot._resolved, function (certificates) {
@@ -137,7 +130,7 @@ exports.certificatesListColumn = {
 				if (!certificates) return;
 				return generateCertificatesList(certificates);
 			});
-		}));
+		});
 	}
 };
 
