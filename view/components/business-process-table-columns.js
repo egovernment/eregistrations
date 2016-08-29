@@ -33,35 +33,23 @@ exports.getServiceIcon = function (businessProcess) {
 
 exports.actionsColumn = {
 	class: 'actions',
+	noWrap: true,
 	data: function (businessProcess) {
-		return _if(businessProcess._isAtDraft, [
-			postButton({
-				buttonClass: 'actions-edit',
-				action: url('business-process', businessProcess.__id__),
-				value: span({
-					class: 'hint-optional hint-optional-left',
-					'data-hint': _('Edit')
-				}, i({ class: 'fa fa-edit' }))
-			}),
-			_if(not(businessProcess._isSubmitted), postButton({
-				buttonClass: 'actions-delete',
-				action: url('business-process', businessProcess.__id__, 'delete'),
-				confirm: _("Are you sure?"),
-				value: span({
-					class: 'hint-optional hint-optional-left',
-					'data-hint': _('Delete')
-				}, i({ class: 'fa fa-trash-o' }))
-			}))
-		], postButton({
-			buttonClass: 'actions-edit',
-			action: url('business-process', businessProcess.__id__),
-			value: span({ class: 'fa fa-search' }, _("Go to"))
+		return _if(and(businessProcess._isAtDraft, not(businessProcess._isSubmitted)), postButton({
+			buttonClass: 'actions-delete',
+			action: url('business-process', businessProcess.__id__, 'delete'),
+			confirm: _("Are you sure?"),
+			value: span({
+				class: 'hint-optional hint-optional-left',
+				'data-hint': _('Delete')
+			}, i({ class: 'fa fa-trash-o' }))
 		}));
 	}
 };
 
 exports.archiverColumn = {
 	class: 'submitted-user-data-table-link',
+	noWrap: true,
 	data: function (businessProcess) {
 		return _if(businessProcess._filesArchiveUrl,
 			a({ class: 'hint-optional hint-optional-left', target: "_blank",
@@ -86,9 +74,7 @@ exports.servicesColumn = {
 
 exports.businessNameColumn = {
 	head: _("Entity"),
-	data: function (businessProcess) {
-		return span(businessProcess._businessName);
-	}
+	data: function (businessProcess) { return businessProcess._businessName; }
 };
 
 exports.submissionDateColumn = {
