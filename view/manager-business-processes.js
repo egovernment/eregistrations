@@ -2,19 +2,48 @@
 
 'use strict';
 
-var _                  = require('mano').i18n.bind('View: Manager')
-  , actionsColumn      = require('./components/business-process-table-columns').actionsColumn
-  , getServiceIcon     = require('./components/business-process-table-columns').getServiceIcon
-  , formatLastModified = require('./utils/last-modified');
+var _            = require('mano').i18n.bind('View: Manager')
+  , assign       = require('es5-ext/object/assign')
+  , tableColumns = require('./components/business-process-table-columns');
 
 exports._parent = require('./manager');
 
 exports['manager-account-requests'] = { class: { active: true } };
 
-exports['manager-account-content'] = function () {
-	var requests = this.user.managedBusinessProcesses, user = this.user;
+exports._clientColumn = {
+	head: _("Client"),
+	data: function (businessProcess) {
+		return businessProcess.user._fullName;
+	}
+};
 
-	insert(_if(not(this.user._isManagerActive),
+exports._statusColumn = {
+	head: _("State"),
+	data: function (businessProcess) {
+		return businessProcess._status;
+	}
+};
+
+exports._actionsColumn = assign({}, tableColumns.actionsColumn);
+
+exports._columns = [
+	tableColumns.servicesColumn,
+	exports._clientColumn,
+	tableColumns.businessNameColumn,
+	tableColumns.submissionDateColumn,
+	exports._statusColumn,
+	exports._actionsColumn
+];
+
+exports['manager-account-content'] = function () {
+	var user     = this.user
+	  , requests = user.managedBusinessProcesses;
+
+	exports._actionsColumn.data = function (businessProcess) {
+		return _if(user._isManagerActive, tableColumns.actionsColumn.data(businessProcess), _("N/A"));
+	};
+
+	insert(_if(not(user._isManagerActive),
 		p({ class: 'section-primary-legend' }, _("Your account is currently inactive")),
 		p({ class: 'section-primary-legend' }, _("Here is the list of " +
 			"requests that you have started " +
@@ -24,36 +53,13 @@ exports['manager-account-content'] = function () {
 
 	insert(_if(requests._size, function () {
 		return section({ class: 'submitted-main table-responsive-container' },
-			table(
-				{ class: 'submitted-user-data-table' },
-				thead(tr(
-					th(_("Service")),
-					th(_("Client")),
-					th(_('Entity')),
-					th(_('Submission date')),
-					th(_('State')),
-					th()
-				)),
-				tbody(
-					requests,
-					function (businessProcess) {
-						return tr(
-							td({ class: 'submitted-user-data-table-service' },
-								span({ class: 'hint-optional hint-optional-right',
-										'data-hint': businessProcess._label },
-									getServiceIcon(businessProcess))),
-							td(businessProcess.user._fullName),
-							td(businessProcess._businessName),
-							td(_if(businessProcess._isSubmitted, function () {
-								return businessProcess._isSubmitted._lastModified.map(formatLastModified);
-							})),
-							td(businessProcess._status),
-							td({ class: 'actions' }, _if(user._isManagerActive,
-								actionsColumn.data(businessProcess), _("N/A")))
-						);
-					}
-				)
-			));
+			table({
+				class: 'submitted-user-data-table',
+				configuration: {
+					collection: requests,
+					columns: exports._columns
+				}
+			}));
 	}.bind(this),
-		_if(this.user._isManagerActive, p(_('You have no requests yet.')))));
+		_if(user._isManagerActive, p(_('You have no requests yet.')))));
 };
