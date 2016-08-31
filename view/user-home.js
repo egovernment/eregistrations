@@ -3,10 +3,18 @@
 'use strict';
 
 var _            = require('mano').i18n.bind('View: User')
-  , from         = require('es5-ext/array/from')
   , tableColumns = require('./components/business-process-table-columns')
-  , columns      = from(tableColumns.columns);
+  , wrapColumns  = require('./components/utils/table-column-wrapper')
+  , columns;
 
+exports._statusColumn = {
+	head: _("Status"),
+	data: function (businessProcess) {
+		return businessProcess._status;
+	}
+};
+
+columns = [exports._statusColumn].concat(tableColumns.columns);
 columns.push(tableColumns.actionsColumn);
 
 exports._parent = require('./user');
@@ -20,20 +28,18 @@ exports['user-account-content'] = function () {
 			_("Here you can modify not yet submitted requests, follow the process of the " +
 				"ongoing procedures and view already concluded records.")),
 			section({ class: 'submitted-main table-responsive-container' },
-				table(
-					{ class: 'submitted-user-data-table' },
-					thead(tr(th(_("Status")), list(columns, function (column) {
-						return th({ class: column.class }, column.head);
-					}))),
-					tbody(
-						businessProcesses,
-						function (businessProcess) {
-							return tr(td(businessProcess._status), list(columns, function (column) {
-								return td({ class: column.class }, column.data(businessProcess));
-							}));
-						}
-					)
-				))];
+				table({
+					class: 'submitted-user-data-table',
+					configuration: {
+						collection: businessProcesses,
+						columns: wrapColumns(columns, function (content, businessProcess) {
+							return postButton({
+								action: url('business-process', businessProcess.__id__),
+								value: content
+							});
+						})
+					}
+				}))];
 	}.bind(this),
 		_if(this.manager, md(_('No service has been started for this client yet. Please choose a ' +
 			'service in the list below and click on "Click to start" to launch the service. ' +
