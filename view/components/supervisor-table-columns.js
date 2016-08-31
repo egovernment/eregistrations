@@ -46,12 +46,4 @@ exports.columns = [{
 		var businessProcess = processingStep.master;
 		return span(businessProcess._label);
 	}
-}, {
-	class: 'submitted-user-data-table-link',
-	data: function (processingStep) {
-		var businessProcess = processingStep.master;
-		return a({ class: 'actions-edit',
-				href: url(businessProcess.__id__) },
-			span({ class: 'fa fa-search' }, _("Go to")));
-	}
 }];
