@@ -91,11 +91,6 @@
 .submitted-user-data-table-basic > a {
 		font-weight: bold;
 }
-.submitted-user-data-table td a:hover,
-.submitted-user-data-table td a:active,
-.submitted-user-data-table td a:focus {
-	text-decoration: none;
-}
 .submitted-user-data-table-basic > a > span {
 	display: block;
 	width: 100%;
