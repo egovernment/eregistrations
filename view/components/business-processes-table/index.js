@@ -6,10 +6,10 @@
 
 var ensureObject      = require('es5-ext/object/valid-object')
   , ReactiveTable     = require('reactive-table')
-  , db                = require('mano').db
+  , db                = require('../../../db')
+  , Pagination        = require('../pagination')
   , Manager           = require('./manager')
   , setupQueryHandler = require('./setup-query-handler')
-  , Pagination        = require('../pagination')
   , wrapColumns       = require('../utils/table-column-wrapper');
 
 module.exports = function (conf) {
@@ -19,13 +19,14 @@ module.exports = function (conf) {
 	listManager = new Manager(conf);
 	pagination  = new Pagination(conf.tableUrl || '/');
 	table       = new ReactiveTable(document, null, wrapColumns(columns,
-		function (businessProcess, content) {
+		function (content, businessProcess) {
 			return a({ href: url(businessProcess.__id__) }, content);
 		}));
 
 	if (conf.id) table.table.id = conf.id;
 	if (conf.class) table.table.className = conf.class;
 	table.pagination = pagination;
+
 	listManager.on('change', function () {
 		pagination.current.value = listManager.page;
 		pagination.count.value = listManager.pageCount;

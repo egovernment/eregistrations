@@ -17,9 +17,9 @@ module.exports = function (columns, wrapFn) {
 		if (typeof column.data === 'function') {
 			return assign({}, column, {
 				data: function () {
-					var content = column.data.apply(null, arguments);
+					var content = column.data.apply(this, arguments);
 
-					return wrapFn.apply(null, Array.from(arguments).concat(content));
+					return wrapFn.apply(this, [content].concat(Array.from(arguments)));
 				}
 			});
 		}

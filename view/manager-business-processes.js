@@ -4,7 +4,8 @@
 
 var _            = require('mano').i18n.bind('View: Manager')
   , assign       = require('es5-ext/object/assign')
-  , tableColumns = require('./components/business-process-table-columns');
+  , tableColumns = require('./components/business-process-table-columns')
+  , wrapColumns  = require('./components/utils/table-column-wrapper');
 
 exports._parent = require('./manager');
 
@@ -57,7 +58,12 @@ exports['manager-account-content'] = function () {
 				class: 'submitted-user-data-table',
 				configuration: {
 					collection: requests,
-					columns: exports._columns
+					columns: wrapColumns(exports._columns, function (content, businessProcess) {
+						return postButton({
+							action: url('business-process', businessProcess.__id__),
+							value: content
+						});
+					})
 				}
 			}));
 	}.bind(this),
