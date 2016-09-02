@@ -165,7 +165,21 @@ e.g.:
 	width: 0.97em;
 }
 .fa-arrow-up:before {
-	content: '\f062';
+	content: '\f077';
+}
+
+.fa-chevron-up {
+	width: 0.97em;
+}
+.fa-chevron-up:before {
+	content: '\f078';
+}
+
+.fa-chevron-down {
+	width: 0.97em;
+}
+.fa-chevron-down:before {
+	content: '\f078';
 }
 
 .fa-close {
@@ -263,6 +277,24 @@ e.g.:
 
 .fa-angle-right:before {
 	content: "\f105";
+}
+
+.fa-angle-up {
+	width: 0.74em;
+	vertical-align: text-top;
+}
+
+.fa-angle-up:before {
+	content: "\f106";
+}
+
+.fa-angle-down {
+	width: 0.74em;
+	vertical-align: text-top;
+}
+
+.fa-angle-down:before {
+	content: "\f107";
 }
 
 .fa-check-circle-o {

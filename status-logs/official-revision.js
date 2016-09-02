@@ -8,7 +8,8 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	var options           = normalizeOptions(arguments[1])
 	  , stepName          = options.stepName || 'revision'
 	  , stepKeyPath       = 'processingSteps/map/' + stepName
-	  , processorKeyPath  = stepKeyPath + '/processor';
+	  , processorKeyPath  = stepKeyPath + '/processor'
+	  , label             = options.label || _("Review");
 
 	ensureType(BusinessProcessClass);
 
@@ -28,15 +29,15 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 		trigger: approvedProcesses,
 		preTrigger: readyProcesses,
 		official: processorKeyPath,
-		label: _("Review"),
-		text: _("Review successful")
+		label: label,
+		text: options.approvedText || _("Review successful")
 	}, {
 		id: 'sentBack',
 		trigger: sentBackProcesses,
 		preTrigger: readyProcesses,
 		official: processorKeyPath,
-		label: _("Review"),
-		text: _("Necessary corrections in the file")
+		label: label,
+		text: options.sentBackText || _("Necessary corrections in the file")
 	}, {
 		id: 'correction',
 		trigger: correctedProcesses,
@@ -48,10 +49,10 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 		trigger: rejectedProcesses,
 		preTrigger: readyProcesses,
 		official: processorKeyPath,
-		label: _("Review"),
-		text: _("Application rejected.\n" +
+		label: label,
+		text: options.rejectedText || (_("Application rejected.\n" +
 			"After reviewing the information and documents, the validation request can not be " +
-			"processed for the following reason:\n${ rejectionReason }"),
+			"processed for the following reason:\n${ rejectionReason }")),
 		variables: {
 			rejectionReason: function () {
 				return this.businessProcess.processingSteps.map[stepName].rejectionReason;
