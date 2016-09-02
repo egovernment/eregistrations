@@ -9,29 +9,29 @@ var _           = require('mano').i18n.bind('View: Official: Revision')
 
 exports._parent = require('./business-process-revision');
 
-revisionForm = function (businessProcess) {
-	var dataForms = businessProcess.dataForms
+revisionForm = function (processingStep) {
+	var businessProcess = processingStep.master
 	  , revReason;
 
 	return form(
 		{
 			id: 'form-revision-data-forms',
-			class: ['submitted-preview-form', _if(or(eq(dataForms._status, 'approved'),
-				and(eq(dataForms._status, 'rejected'), dataForms._rejectReason)), 'completed')],
+			class: ['submitted-preview-form',
+				_if(eq(processingStep.dataFormsRevision._progress, 1), 'completed')],
 			method: 'post',
 			action: '/revision-data-forms/' + businessProcess.__id__ + '/'
 		},
 		ul(
 			{ class: 'form-elements' },
-			li(div({ class: 'input' }, input({ dbjs: dataForms._status }))),
+			li(div({ class: 'input' }, input({ dbjs: businessProcess.dataForms._status }))),
 			li(
 				revReason = div({ class: 'official-form-data-forms-revision-reject-reason' },
-					field({ dbjs: dataForms._rejectReason }))
+					field({ dbjs: businessProcess.dataForms._rejectReason }))
 			),
 			li(input({ type: 'submit', value: _("Save") }))
 		),
 		legacy('radioMatch', 'form-revision-data-forms',
-			dataForms.__id__ + '/status', { rejected: revReason.getId() })
+				businessProcess.dataForms.__id__ + '/status', { rejected: revReason.getId() })
 	);
 };
 
@@ -44,7 +44,7 @@ exports['tab-content'] = function () {
 		prependContent:
 			_if(processingStep.dataFormsRevision._isProcessable,
 				div({ class: 'document-preview-box' },
-					disableStep(processingStep, revisionForm(businessProcess)))),
+					disableStep(processingStep, revisionForm(processingStep)))),
 		urlPrefix: '/' + businessProcess.__id__ + '/'
 	}));
 };

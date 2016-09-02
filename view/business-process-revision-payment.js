@@ -21,8 +21,8 @@ paymentForm = function (paymentReceiptUpload) {
 	var revFail;
 	return form({
 		id: 'form-revision-payment-receipt-upload',
-		class: ['submitted-preview-form', _if(or(paymentReceiptUpload._isApproved,
-			paymentReceiptUpload._isRejected), 'completed')],
+		class: ['submitted-preview-form', _if(eq(paymentReceiptUpload._revisionProgress, 1),
+			'completed')],
 		method: 'post',
 		action: '/form-revision-payment-receipt-upload/' + paymentReceiptUpload.master.__id__ +
 			'/' + camelToHyphen.call(paymentReceiptUpload.key) + '/'
