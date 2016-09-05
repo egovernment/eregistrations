@@ -55,6 +55,13 @@ module.exports = memoize(function (db) {
 				return _observe(this.document.files.ordered._size) ? 1 : 0;
 			}
 		},
+		revisionProgress: {
+			type: Percentage,
+			value: function () {
+				if (this.isApproved) return 1;
+				return this.isRejected ? 1 : 0;
+			}
+		},
 
 		// Eventual rejection details
 		rejectReasonTypes: { type: RequirementUploadRejectReason, multiple: true, required: true },
