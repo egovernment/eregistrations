@@ -8,20 +8,20 @@
 var aFrom           = require('es5-ext/array/from')
   , ensureIterable  = require('es5-ext/iterable/validate-object')
   , ensureCallable  = require('es5-ext/object/valid-callable')
-  , ensureObject    = require('es5-ext/object/valid-object')
   , Set             = require('es6-set')
   , ensureType      = require('dbjs/valid-dbjs-type')
   , debug           = require('debug-ext')('business-process-flow')
   , delay           = require('timers-ext/delay')
   , resolveStepPath = require('../../utils/resolve-processing-step-full-path')
-  , setupTriggers   = require('../_setup-triggers');
+  , setupTriggers   = require('../_setup-triggers')
+  , queryMaster     = require('./query-master/slave');
 
 module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	var businessProcesses = ensureType(BusinessProcessType).instances
 		.filterByKey('isFromEregistrations', true).filterByKey('isDemo', false)
 	  , options = Object(arguments[2])
 	  , customStepReturnHandler, onSubmitted, onStepRedelegate, onStepStatus
-	  , onUserProcessingEnd, queryMaster;
+	  , onUserProcessingEnd;
 
 	if (options.customStepReturnHandler != null) {
 		customStepReturnHandler = ensureCallable(options.customStepReturnHandler);
@@ -31,10 +31,6 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	if (options.onSubmitted != null) onSubmitted = ensureCallable(options.onSubmitted);
 	if (options.onUserProcessingEnd != null) {
 		onUserProcessingEnd = ensureCallable(options.onUserProcessingEnd);
-	}
-
-	if (options.queryMaster != null) {
-		queryMaster = ensureObject(options.queryMaster);
 	}
 
 	var stepPaths = aFrom(ensureIterable(stepShortPaths)).map(function (shortPath) {
