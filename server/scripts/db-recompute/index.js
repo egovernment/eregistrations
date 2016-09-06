@@ -71,8 +71,11 @@ module.exports = function (driver, slavePath/*, options*/) {
 						takenByParent.add(deps.businessProcess = data.value.slice(1));
 					}),
 					userStorage.get(userId + '/currentlyManagedUser')(function (data) {
+						var managedUserId;
 						if (!data || (data.value[0] !== '7')) return;
-						takenByParent.add(deps.user = data.value.slice(1));
+						managedUserId = data.value.slice(1);
+						if (managedUserId === userId) return;
+						takenByParent.add(deps.user = managedUserId);
 					})
 				);
 			})(function () {
