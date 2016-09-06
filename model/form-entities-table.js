@@ -89,6 +89,8 @@ module.exports = memoize(function (db) {
 						});
 					});
 				}
+				// We need to check cardinalPropertyKey property in case of NestedMap entities,
+				// otherwise deleting them will be omitted lastEditStamp calculation
 				var entityObjects = this.propertyMaster.resolveSKeyPath(this.propertyName, _observe);
 				if (!entityObjects) {
 					return res;
