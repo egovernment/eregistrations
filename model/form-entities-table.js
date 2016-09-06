@@ -89,6 +89,23 @@ module.exports = memoize(function (db) {
 						});
 					});
 				}
+				var entityObjects = this.propertyMaster.resolveSKeyPath(this.propertyName, _observe);
+				if (!entityObjects) {
+					return res;
+				}
+				entityObjects = entityObjects.value;
+				if (entityObjects instanceof this.database.NestedMap) {
+					var cardinalPropertyPath = entityObjects.cardinalPropertyKey;
+					entityObjects.map.forEach(function (entity) {
+						var resolved = entity.resolveSKeyPath(cardinalPropertyPath, _observe);
+						if (!resolved) return;
+						if (resolved.value == null) {
+							var lastModified = resolved.observable.lastModified;
+							if (lastModified < 1e6) lastModified = 0; // Ignore model stamps
+							if (lastModified > res) res = lastModified;
+						}
+					});
+				}
 
 				return res;
 			}
