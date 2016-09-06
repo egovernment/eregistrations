@@ -71,8 +71,11 @@ module.exports = function (driver, slavePath/*, options*/) {
 						takenByParent.add(deps.businessProcess = data.value.slice(1));
 					}),
 					userStorage.get(userId + '/currentlyManagedUser')(function (data) {
+						var managedUserId;
 						if (!data || (data.value[0] !== '7')) return;
-						takenByParent.add(deps.user = data.value.slice(1));
+						managedUserId = data.value.slice(1);
+						if (managedUserId === userId) return;
+						takenByParent.add(deps.user = managedUserId);
 					})
 				);
 			})(function () {
@@ -99,8 +102,8 @@ module.exports = function (driver, slavePath/*, options*/) {
 			path.add(objectId);
 			return deferred(
 				storage.getObject(objectId),
-				deps.user && !path.has(deps.user) && self(deps.user),
-				deps.businessProcess && !path.has(deps.businessProcess) && self(deps.businessProcess)
+				deps.user && !path.has(deps.user) && self(deps.user, path),
+				deps.businessProcess && !path.has(deps.businessProcess) && self(deps.businessProcess, path)
 			).invoke('filter', Boolean).invoke(flatten);
 		},
 
