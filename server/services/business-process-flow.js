@@ -8,6 +8,7 @@
 var aFrom           = require('es5-ext/array/from')
   , ensureIterable  = require('es5-ext/iterable/validate-object')
   , ensureCallable  = require('es5-ext/object/valid-callable')
+  , ensureObject    = require('es5-ext/object/valid-object')
   , Set             = require('es6-set')
   , ensureType      = require('dbjs/valid-dbjs-type')
   , debug           = require('debug-ext')('business-process-flow')
@@ -33,7 +34,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	}
 
 	if (options.queryMaster != null) {
-		queryMaster = ensureCallable(options.queryMaster);
+		queryMaster = ensureObject(options.queryMaster);
 	}
 
 	var stepPaths = aFrom(ensureIterable(stepShortPaths)).map(function (shortPath) {
