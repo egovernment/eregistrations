@@ -19,7 +19,8 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	var businessProcesses = ensureType(BusinessProcessType).instances
 		.filterByKey('isFromEregistrations', true).filterByKey('isDemo', false)
 	  , options = Object(arguments[2])
-	  , customStepReturnHandler, onSubmitted, onStepRedelegate, onStepStatus, onUserProcessingEnd;
+	  , customStepReturnHandler, onSubmitted, onStepRedelegate, onStepStatus
+	  , onUserProcessingEnd, queryMaster;
 
 	if (options.customStepReturnHandler != null) {
 		customStepReturnHandler = ensureCallable(options.customStepReturnHandler);
@@ -29,6 +30,10 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	if (options.onSubmitted != null) onSubmitted = ensureCallable(options.onSubmitted);
 	if (options.onUserProcessingEnd != null) {
 		onUserProcessingEnd = ensureCallable(options.onUserProcessingEnd);
+	}
+
+	if (options.queryMaster != null) {
+		queryMaster = ensureCallable(options.queryMaster);
 	}
 
 	var stepPaths = aFrom(ensureIterable(stepShortPaths)).map(function (shortPath) {
@@ -125,7 +130,13 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			if (step.hasOwnProperty('status')) return; // Already shadowed
 			debug('%s %s step %s', businessProcess.__id__, step.shortPath, step.status);
 			if (onStepStatus) onStepStatus(step);
-			if (!step.hasOwnProperty('isReady')) step.isReady = true;
+			if (!step.hasOwnProperty('isReady')) {
+				step.isReady = true;
+				queryMaster('copyComputedToDirect', {
+					businessProcessId: businessProcess.__id__,
+					keyPath: step.__id__.split('/', 1)[0] + '/isReady'
+				}).done();
+			}
 			if (step.revisionStatus && !nonFinalStatuses.has(step.revisionStatus)) {
 				step.set('revisionStatus', step.revisionStatus);
 			}
