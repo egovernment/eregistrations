@@ -99,8 +99,8 @@ module.exports = function (driver, slavePath/*, options*/) {
 			path.add(objectId);
 			return deferred(
 				storage.getObject(objectId),
-				deps.user && !path.has(deps.user) && self(deps.user),
-				deps.businessProcess && !path.has(deps.businessProcess) && self(deps.businessProcess)
+				deps.user && !path.has(deps.user) && self(deps.user, path),
+				deps.businessProcess && !path.has(deps.businessProcess) && self(deps.businessProcess, path)
 			).invoke('filter', Boolean).invoke(flatten);
 		},
 
