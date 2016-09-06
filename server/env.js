@@ -23,7 +23,7 @@ if (!env.url) {
 	env.url = 'http://localhost:' + env.port + '/';
 }
 
-// smtp: objects
+// smtp: object
 // Defaults to logOnly configuration
 if (!env.smtp) {
 	env.smtp = {
