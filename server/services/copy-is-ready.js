@@ -9,13 +9,13 @@
 var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
   , unserializeValue              = require('dbjs/_setup/unserialize/value')
   , deferred                      = require('deferred')
-  , capitalize                    = require('es5-ext/string/#/capitalize');
+  , capitalize                    = require('es5-ext/string/#/capitalize')
+  , emptyPromise                  = deferred(null);
 
 var getCopyIsReady = function (storage) {
 	return function (isReadyPath, status) {
-		var result = deferred(true);
 		status = unserializeValue(status);
-		if (status == null) return result;
+		if (status == null) return emptyPromise;
 
 		return storage.get(isReadyPath)(function (directIsReady) {
 			if ((directIsReady == null) || (unserializeValue(directIsReady.value) == null)) {
@@ -23,7 +23,7 @@ var getCopyIsReady = function (storage) {
 					return storage.store(isReadyPath, computedIsReady.value, computedIsReady.stamp);
 				});
 			}
-			return result;
+			return emptyPromise;
 		});
 	};
 };
