@@ -2,7 +2,7 @@
 //
 // Most updates are delayed to next tick, so eventual preTrigger setups have chance to catch up
 // for cases when file is loaded in inconsistent state.
-// There exists a complementary service copy-is-ready which handles isReady of stepd
+// There exists a complementary service copy-is-ready which handles isReady of step
 
 'use strict';
 

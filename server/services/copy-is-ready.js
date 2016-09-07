@@ -10,6 +10,7 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , unserializeValue              = require('dbjs/_setup/unserialize/value')
   , deferred                      = require('deferred')
   , capitalize                    = require('es5-ext/string/#/capitalize')
+  , ensureArray                   = require('es5-ext/array/valid-array')
   , emptyPromise                  = deferred(null);
 
 var getCopyIsReady = function (storage) {
@@ -32,8 +33,7 @@ module.exports = function (driver, processingStepsMeta) {
 	Object.keys(processingStepsMeta).forEach(function (stepMetaKey) {
 		var stepPath, storages;
 		stepPath = 'processingSteps/map/' + resolveProcessingStepFullPath(stepMetaKey);
-		storages = processingStepsMeta[stepMetaKey]._services;
-		if (!storages) throw new Error("Storages must be set");
+		storages = ensureArray(processingStepsMeta[stepMetaKey]._services);
 		storages = storages.map(function (storageName) {
 			return driver.getStorage('businessProcess' + capitalize.call(storageName));
 		});
