@@ -13,15 +13,13 @@ var aFrom           = require('es5-ext/array/from')
   , debug           = require('debug-ext')('business-process-flow')
   , delay           = require('timers-ext/delay')
   , resolveStepPath = require('../../utils/resolve-processing-step-full-path')
-  , setupTriggers   = require('../_setup-triggers')
-  , queryMaster     = require('./query-master/slave');
+  , setupTriggers   = require('../_setup-triggers');
 
 module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 	var businessProcesses = ensureType(BusinessProcessType).instances
 		.filterByKey('isFromEregistrations', true).filterByKey('isDemo', false)
 	  , options = Object(arguments[2])
-	  , customStepReturnHandler, onSubmitted, onStepRedelegate, onStepStatus
-	  , onUserProcessingEnd;
+	  , customStepReturnHandler, onSubmitted, onStepRedelegate, onStepStatus, onUserProcessingEnd;
 
 	if (options.customStepReturnHandler != null) {
 		customStepReturnHandler = ensureCallable(options.customStepReturnHandler);
@@ -127,13 +125,7 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			if (step.hasOwnProperty('status')) return; // Already shadowed
 			debug('%s %s step %s', businessProcess.__id__, step.shortPath, step.status);
 			if (onStepStatus) onStepStatus(step);
-			if (!step.hasOwnProperty('isReady')) {
-				step.isReady = true;
-				queryMaster('copyComputedToDirect', {
-					businessProcessId: businessProcess.__id__,
-					keyPath: step.__id__.split('/', 1)[0] + '/isReady'
-				}).done();
-			}
+			if (!step.hasOwnProperty('isReady')) step.isReady = true;
 			if (step.revisionStatus && !nonFinalStatuses.has(step.revisionStatus)) {
 				step.set('revisionStatus', step.revisionStatus);
 			}
