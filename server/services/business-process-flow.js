@@ -1,7 +1,8 @@
 // Service that propagates business process flow changes
 //
 // Most updates are delayed to next tick, so eventual preTrigger setups have chance to catch up
-// for cases when file is loaded in inconsistent state
+// for cases when file is loaded in inconsistent state.
+// There exists a complementary service copy-is-ready which handles isReady of step
 
 'use strict';
 
@@ -125,7 +126,12 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			if (step.hasOwnProperty('status')) return; // Already shadowed
 			debug('%s %s step %s', businessProcess.__id__, step.shortPath, step.status);
 			if (onStepStatus) onStepStatus(step);
-			if (!step.hasOwnProperty('isReady')) step.isReady = true;
+			// Here what also should happen is: if (!step.hasOwnProperty('isReady')) step.isReady = true;
+			// Still to be able to retrieve information on when given step for first time
+			// turned to be pending,
+			// we want to keep the same stamp. That's not possible natural way,
+			// therefore dedicated service (at /server/services/copy-is-ready.js)
+			// was created to handle that.
 			if (step.revisionStatus && !nonFinalStatuses.has(step.revisionStatus)) {
 				step.set('revisionStatus', step.revisionStatus);
 			}
