@@ -6,20 +6,19 @@
 
 'use strict';
 
-var aFrom           = require('es5-ext/array/from')
-  , ensureIterable  = require('es5-ext/iterable/validate-object')
-  , ensureCallable  = require('es5-ext/object/valid-callable')
-  , Set             = require('es6-set')
-  , ensureType      = require('dbjs/valid-dbjs-type')
-  , debug           = require('debug-ext')('business-process-flow')
-  , delay           = require('timers-ext/delay')
-  , resolveStepPath = require('../../utils/resolve-processing-step-full-path')
-  , setupTriggers   = require('../_setup-triggers');
+var aFrom            = require('es5-ext/array/from')
+  , ensureIterable   = require('es5-ext/iterable/validate-object')
+  , ensureCallable   = require('es5-ext/object/valid-callable')
+  , Set              = require('es6-set')
+  , debug            = require('debug-ext')('business-process-flow')
+  , delay            = require('timers-ext/delay')
+  , resolveStepPath  = require('../../utils/resolve-processing-step-full-path')
+  , setupTriggers    = require('../_setup-triggers')
+  , resolveProcesses = require('../../business-processes/resolve');
 
 module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
-	var businessProcesses = ensureType(BusinessProcessType).instances
-		.filterByKey('isFromEregistrations', true).filterByKey('isDemo', false)
-	  , options = Object(arguments[2])
+	var businessProcesses = resolveProcesses(BusinessProcessType)
+	  , options           = Object(arguments[2])
 	  , customStepReturnHandler, onSubmitted, onStepRedelegate, onStepStatus, onUserProcessingEnd;
 
 	if (options.customStepReturnHandler != null) {
