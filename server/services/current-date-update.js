@@ -1,20 +1,25 @@
 'use strict';
 
-var ensureString   = require('es5-ext/object/validate-stringifiable-value')
+var dateCopy       = require('es5-ext/date/#/copy')
+  , floorDate      = require('es5-ext/date/#/floor-day')
+  , ensureString   = require('es5-ext/object/validate-stringifiable-value')
   , serializeValue = require('dbjs/_setup/serialize/value')
   , ensureStorage  = require('dbjs-persistence/ensure-storage')
-  , db             = require('mano').db
   , debug          = require('debug-ext')('current-date-update')
-  , time           = require('time')
+  , toDateInTz     = require('../../utils/to-date-in-time-zone')
+  , toDateTimeInTz = require('../../utils/to-date-time-in-time-zone')
 
   , key = 'globalPrimitives/currentDate';
 
 var getNextScheduleTimeout = function (tz) {
-	var now                = (new time.Date()).setTimezone(tz)
-	  , next_schedule_date = (new time.Date(now.getFullYear(), now.getMonth(),
-				now.getDate() + 1, tz));
+	var now = toDateTimeInTz(new Date(), tz)
+	  , restartAt = dateCopy.call(now);
 
-	return next_schedule_date - now;
+	// Set proper restartAt time (upcoming midnight)
+	restartAt.setDate(restartAt.getDate() + 1);
+	floorDate.call(restartAt);
+
+	return restartAt - now;
 };
 /**
  * Updates currentDate once per 24 hours
@@ -26,7 +31,7 @@ module.exports = function (storage, tz) {
 	ensureStorage(storage);
 	ensureString(tz);
 	var updateCallback = function () {
-		var currentDate = db.Date((new time.Date()).setTimezone(tz));
+		var currentDate = toDateInTz(new Date(), tz);
 
 		storage.get(key).then(function (data) {
 			if (!data || data.value !== serializeValue(currentDate)) {
@@ -38,6 +43,6 @@ module.exports = function (storage, tz) {
 		setTimeout(updateCallback, getNextScheduleTimeout(tz));
 	};
 
-// Update once on start
+	// Update once on start
 	updateCallback();
 };
