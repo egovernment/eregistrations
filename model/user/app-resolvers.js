@@ -72,6 +72,10 @@ module.exports = memoize(function (db/* options */) {
 		appNameBusinessProcess: {
 			type: StringLine,
 			value: function (_observe) {
+				var businessProcess = this.currentBusinessProcess;
+
+				if (!businessProcess) return 'public';
+
 				// Replace with camelToHyphen() when it'll be possible
 				return 'business-process' +
 					this.currentBusinessProcess.constructor.__id__.slice('BusinessProcess'.length)
