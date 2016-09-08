@@ -4,5 +4,5 @@
 
 module.exports = require('eregistrations/server/routes/users-admin')({
 	listProperties: require('eregistrations/apps/users-admin/user-list-properties'),
-	itemsPerPage: require('../../../env').objectsListItemsPerPage
+	itemsPerPage: require('../../../server/env').objectsListItemsPerPage
 });
