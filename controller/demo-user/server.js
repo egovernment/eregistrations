@@ -2,12 +2,9 @@
 
 'use strict';
 
-var promisify   = require('deferred').promisify
-  , bcrypt      = require('bcrypt')
-  , submit      = require('mano/utils/save')
-  , queryMaster = require('../../server/services/query-master/slave')
-
-  , genSalt = promisify(bcrypt.genSalt), hash = promisify(bcrypt.hash);
+var submit      = require('mano/utils/save')
+  , hash        = require('mano-auth/hash')
+  , queryMaster = require('../../server/services/query-master/slave');
 
 module.exports = function (/* options */) {
 	var options = Object(arguments[0]);
@@ -27,7 +24,7 @@ module.exports = function (/* options */) {
 							options.oldClientHash(normalizedData[user.__id__ + '/email'],
 								normalizedData[user.__id__ + '/password']) :
 									normalizedData[user.__id__ + '/password'];
-					return hash(password, genSalt())(function (hashedPassword) {
+					return hash.hash(password)(function (hashedPassword) {
 						delete normalizedData[user.__id__ + '/password'];
 						user.password = hashedPassword;
 						return submit.call(this, normalizedData, data);
