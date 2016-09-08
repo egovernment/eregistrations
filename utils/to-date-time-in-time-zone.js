@@ -16,7 +16,6 @@ module.exports = function (date, timeZone) {
 			.match(/^(\d{2})\/(\d{2})\/(\d{4}), (\d{1,2}):(\d{2}):(\d{2}) ([AP])M$/);
 	} catch (ignore) {}
 
-	console.log(String(date), result);
 	if (result) {
 		return new Date(result[3], result[1] - 1, result[2],
 			Number(result[4]) + ((result[7] === 'P') ? 12 : 0), result[5], result[6],
