@@ -4,7 +4,6 @@
 
 module.exports = function (user, bpType) {
 	return user.businessProcesses.filter(function (bp) {
-		if (bp.constructor !== bpType) return false;
-		return (bp.constructor.prototype !== bp);
+		return bp.constructor === bpType;
 	}).filterByKey('isFromEregistrations', true).filterByKey('isSubmitted', false);
 };
