@@ -61,15 +61,25 @@ module.exports = memoize(function (db/* options */) {
 						return this.appNameUser || 'public';
 					}
 					if (!_observe(businessProcess._isAtDraft)) return 'business-process-submitted';
-					// Replace with camelToHyphen() when it'll be possible
-					return 'business-process' +
-						businessProcess.constructor.__id__.slice('BusinessProcess'.length)
-							.replace(/([A-Z])/g, '-$1').toLowerCase();
+					return this.appNameBusinessProcess;
 				}
 
 				if (/^official[A-Z]/.test(role)) return this.appNameOfficial;
 
 				return role.replace(/([A-Z])/g, '-$1').toLowerCase();
+			}
+		},
+		appNameBusinessProcess: {
+			type: StringLine,
+			value: function (_observe) {
+				var businessProcess = this.currentBusinessProcess;
+
+				if (!businessProcess) return;
+
+				// Replace with camelToHyphen() when it'll be possible
+				return 'business-process' +
+					this.currentBusinessProcess.constructor.__id__.slice('BusinessProcess'.length)
+						.replace(/([A-Z])/g, '-$1').toLowerCase();
 			}
 		},
 		appNameUser: {
