@@ -1,12 +1,13 @@
 'use strict';
 
-var db             = require('mano').db
+var ensureString   = require('es5-ext/object/validate-stringifiable-value')
   , serializeValue = require('dbjs/_setup/serialize/value')
+  , ensureStorage  = require('dbjs-persistence/ensure-storage')
+  , db             = require('mano').db
   , debug          = require('debug-ext')('current-date-update')
   , time           = require('time')
-  , key            = 'globalPrimitives/currentDate'
-  , ensureStorage  = require('dbjs-persistence/ensure-storage')
-  , ensureString   = require('es5-ext/object/validate-stringifiable-value');
+
+  , key = 'globalPrimitives/currentDate';
 
 var getNextScheduleTimeout = function (tz) {
 	var now                = (new time.Date()).setTimezone(tz)
