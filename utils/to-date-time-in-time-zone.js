@@ -13,7 +13,7 @@ module.exports = function (date, timeZone) {
 
 	try {
 		result = date.toLocaleString('en', { timeZone: timeZone })
-			.match(/^(\d{2})\/(\d{2})\/(\d{4}), (\d{1,2}):(\d{2}):(\d{2}) ([AP])M$/);
+			.match(/^(\d{1,2})\/(\d{1,2})\/(\d{1,4}), (\d{1,2}):(\d{2}):(\d{2}) ([AP])M$/);
 	} catch (ignore) {}
 
 	if (result) {
