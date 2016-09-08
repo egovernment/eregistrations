@@ -4,11 +4,11 @@ var capitalize                    = require('es5-ext/string/#/capitalize')
   , deferred                      = require('deferred')
   , memoize                       = require('memoizee')
   , unserializeValue              = require('dbjs/_setup/unserialize/value')
-  , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path');
+  , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
+  , toDateInTz                    = require('../../utils/to-date-in-time-zone');
 
 module.exports = memoize(function (driver, processingStepsMeta, db) {
-	var businessProcessesBySteps = {}, toDateInTz;
-	toDateInTz = require('../../utils/to-date-in-time-zone')(db);
+	var businessProcessesBySteps = {};
 	return deferred.map(Object.keys(processingStepsMeta), function (stepShortPath) {
 		var stepPath, stepFullPath, services;
 		services = processingStepsMeta[stepShortPath]._services;
