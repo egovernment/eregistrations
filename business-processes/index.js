@@ -2,7 +2,7 @@
 
 'use strict';
 
-var  isFalsy = require('../utils/is-falsy');
+var isFalsy = require('../utils/is-falsy');
 
 module.exports = require('../db').BusinessProcess.instances
 	.filter(function (obj) {

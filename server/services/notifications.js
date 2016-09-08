@@ -20,7 +20,7 @@ var compact       = require('es5-ext/array/#/compact')
   , basename = path.basename, dirname = path.dirname, resolve = path.resolve
   , defaults = mano.mail.config
   , defContext = { url: mano.env.url, domain: mano.env.url && urlParse(mano.env.url).host }
-  , setup, getFrom, getTo, getCc, getAttachments;
+  , setup, getFrom, getTo, getCc, getBcc, getAttachments;
 
 getFrom = function (target, from) {
 	if (from == null) return defaults.from;
@@ -61,6 +61,15 @@ getCc = function (target, cc) {
 	}
 
 	if (target.email && target.manager) return target.manager.email;
+};
+
+getBcc = function (target, bcc) {
+	if (bcc != null) {
+		if (typeof bcc === 'function') return bcc(target);
+		return bcc;
+	}
+
+	return [];
 };
 
 getAttachments = function (target, att) {
@@ -132,6 +141,7 @@ setup = function (path) {
 			from: getFrom(target, conf.from),
 			to: to,
 			cc: getCc(target, conf.cc),
+			bcc: getBcc(target, conf.bcc),
 			subject: compact.call(resolveTpl(subject, localContext)).join(''),
 			attachments: getAttachments(target, conf.attachments)
 		};
