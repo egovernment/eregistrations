@@ -1,22 +1,23 @@
 'use strict';
 
-var endsWith          = require('es5-ext/string/#/ends-with')
-  , ensureCallable    = require('es5-ext/object/valid-callable')
-  , ensureObject      = require('es5-ext/object/valid-object')
-  , ensureString      = require('es5-ext/object/validate-stringifiable-value')
-  , deferred          = require('deferred')
-  , debug             = require('debug-ext')('business-process-data-archiver')
-  , once              = require('timers-ext/once')
-  , ensureDatabase    = require('dbjs/valid-dbjs')
-  , unserializeValue  = require('dbjs/_setup/unserialize/value')
-  , generateHash      = require('murmurhash-js/murmurhash3_gc')
-  , createWriteStream = require('fs').createWriteStream
-  , unlink            = require('fs2/unlink')
-  , path              = require('path')
-  , archiver          = require('archiver')
-  , getFilenames      = require('./lib/get-business-process-filenames')
-  , setupTrigger      = require('./_setup-triggers')
-  , isPastRecordEvent = require('../utils/is-past-record-event')
+var endsWith           = require('es5-ext/string/#/ends-with')
+  , ensureCallable     = require('es5-ext/object/valid-callable')
+  , ensureObject       = require('es5-ext/object/valid-object')
+  , ensureString       = require('es5-ext/object/validate-stringifiable-value')
+  , deferred           = require('deferred')
+  , debug              = require('debug-ext')('business-process-data-archiver')
+  , once               = require('timers-ext/once')
+  , ensureDatabase     = require('dbjs/valid-dbjs')
+  , unserializeValue   = require('dbjs/_setup/unserialize/value')
+  , generateHash       = require('murmurhash-js/murmurhash3_gc')
+  , createWriteStream  = require('fs').createWriteStream
+  , unlink             = require('fs2/unlink')
+  , path               = require('path')
+  , archiver           = require('archiver')
+  , getFilenames       = require('./lib/get-business-process-filenames')
+  , setupTrigger       = require('./_setup-triggers')
+  , isPastRecordEvent  = require('../utils/is-past-record-event')
+  , submittedProcesses = require('../business-processes/submitted')
 
   , basename = path.basename, resolve = path.resolve
   , re = /^\/business-process-archive-([0-9][0-9a-z]+)-([0-9]+)\.zip$/
@@ -55,7 +56,7 @@ exports.filenameResetService = function (db, data) {
 		--db._postponed_;
 	});
 	setupTrigger({
-		trigger: db.BusinessProcess.instances.filterByKey('isSubmitted', true)
+		trigger: submittedProcesses
 	}, function (bp) {
 		pending[bp.__id__] = true;
 		update();
