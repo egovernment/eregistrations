@@ -3,7 +3,7 @@
 var _                = require('mano').i18n.bind('Official: Revision: Notifications')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , assign           = require('es5-ext/object/assign')
-  , ensureType       = require('dbjs/valid-dbjs-type')
+  , resolveProcesses = require('../business-processes/resolve')
   , _d               = _;
 
 module.exports = function (BusinessProcessClass/*, options*/) {
@@ -11,15 +11,7 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	  , stepName          = options.stepName || 'revision'
 	  , stepKeyPath       = 'processingSteps/map/' + stepName
 	  , notification      = {}
-	  , businessProcesses;
-
-	ensureType(BusinessProcessClass);
-
-	if (!BusinessProcessClass.database.BusinessProcess.isPrototypeOf(BusinessProcessClass)) {
-		throw new Error(BusinessProcessClass + ' is expected to extend BusinessProcess');
-	}
-
-	businessProcesses = BusinessProcessClass.instances.filterByKey('isFromEregistrations', true);
+	  , businessProcesses = resolveProcesses(BusinessProcessClass);
 
 	notification.trigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isSentBack', true);
 	notification.preTrigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);
