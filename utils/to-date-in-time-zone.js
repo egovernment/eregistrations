@@ -8,6 +8,7 @@ var ensureDate   = require('es5-ext/date/valid-date')
 module.exports = function (date, timeZone) {
 	ensureDate(date);
 	timeZone = ensureString(timeZone);
+	if (!db.Date) throw new Error("Missing `Date` type defined on database");
 	try {
 		var res = new Date(date).toLocaleDateString('en', {
 			timeZone: timeZone,
