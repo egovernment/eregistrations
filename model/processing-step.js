@@ -162,9 +162,13 @@ module.exports = memoize(function (db) {
 	});
 
 	ProcessingStep.prototype.requirementUploads.defineProperties({
+		// All viewable at given step
 		applicable: { type: RequirementUpload, multiple: true, value: function (_observe) {
 			return _observe(this.master.requirementUploads._applicable);
 		} },
+		// Processable at given step.
+		// Non-empty at revision roles
+		processable: { type: RequirementUpload, multiple: true },
 		// Requirement uploads applicable for front desk verification
 		frontDeskApplicable: { type: RequirementUpload, multiple: true, value: function (_observe) {
 			var result = [];
@@ -186,9 +190,13 @@ module.exports = memoize(function (db) {
 	});
 
 	ProcessingStep.prototype.paymentReceiptUploads.defineProperties({
+		// All viewable at given step
 		applicable: { type: PaymentReceiptUpload, multiple: true, value: function (_observe) {
 			return _observe(this.master.paymentReceiptUploads._applicable);
 		} },
+		// Processable at given step.
+		// Non-empty at revision roles
+		processable: { type: PaymentReceiptUpload, multiple: true },
 		uploaded: { type: PaymentReceiptUpload },
 		approved: { type: PaymentReceiptUpload },
 		rejected: { type: PaymentReceiptUpload },
