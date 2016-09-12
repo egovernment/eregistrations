@@ -42,7 +42,7 @@ exports['meta-admin-main'] = {
 					return a - b;
 				}), function (date) {
 					tr(
-						td(dayName[date.getDay()]),
+						td(dayName[date.getUTCDay()]),
 						td(date),
 						td(postButton({
 							action: url('delete-holiday-date'),
