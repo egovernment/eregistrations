@@ -111,8 +111,8 @@ exports._extraRoleLabel = function () {
 
 exports._userNameMenuItem = function () {
 	var user         = this.manager || this.user
-	  , isMetaAdmin  = user.roles.has('metaAdmin')
-	  , isUsersAdmin = user.roles.has('usersAdmin');
+	  , isMetaAdmin  = user.roles._has('metaAdmin')
+	  , isUsersAdmin = user.roles._has('usersAdmin');
 
 	return [
 		li(
@@ -122,7 +122,7 @@ exports._userNameMenuItem = function () {
 				i({ id: 'drop-down-menu-angle', class: 'fa fa-angle-down header-top-dropdown-button' }))),
 			ul(
 				{ class: "header-top-menu-dropdown-content" },
-				_if(user.roles.has('statistics'), [
+				_if(user.roles._has('statistics'), [
 					li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 					exports._getRoleMenuItem.call(this, 'statistics')
 				]),
