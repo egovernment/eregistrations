@@ -91,7 +91,7 @@ exports._getSubmittedMenuItem = function (role) {
 	var user      = this.user
 	  , appName   = this.appName
 	  , roleTitle = db.Role.meta[role].label
-	  , viewPath, pendingCount;
+	  , viewPath, pending, pendingCount;
 
 	if (role === 'user' && startsWith.call(appName, 'business-process-')) {
 		return li(exports._getMyAccountButton(user, roleTitle));
@@ -99,8 +99,15 @@ exports._getSubmittedMenuItem = function (role) {
 
 	if (startsWith.call(role, 'official')) {
 		viewPath = exports._getPendingViewPath.call(this, role);
+
 		if (viewPath) {
-			pendingCount = db.views.businessProcesses.getBySKeyPath(viewPath).get('pending')._totalSize;
+			pending  = db.views.businessProcesses.getBySKeyPath(viewPath);
+
+			if (pending && pending.pending) {
+				pendingCount = pending.pending._totalSize;
+			} else {
+				pendingCount = '-';
+			}
 		} else {
 			pendingCount = '-';
 		}
