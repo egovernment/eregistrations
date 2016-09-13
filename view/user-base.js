@@ -2,6 +2,8 @@
 
 var db                   = require('../db')
   , _                    = require('mano').i18n.bind('View: User')
+  , uncapitalize         = require('es5-ext/string/#/uncapitalize')
+  , startsWith           = require('es5-ext/string/#/starts-with')
   , loginDialog          = require('./components/login-dialog')
   , registerDialog       = require('./components/register-dialog')
   , modalContainer       = require('./components/modal-container')
@@ -75,14 +77,65 @@ exports.main = function () {
 exports._submittedMenu = function () {
 	var user = this.manager || this.user;
 
-	return list(user.roles.filter(function (role) {
-		return !['metaAdmin', 'usersAdmin', 'statistics'].some(function (disabledRole) {
-			return role === disabledRole;
-		});
-	}), exports._getSubmittedMenuItem.bind(this));
+	return [
+		list(user.roles.filter(function (role) {
+			return !['metaAdmin', 'usersAdmin', 'statistics'].some(function (disabledRole) {
+				return role === disabledRole;
+			});
+		}), exports._getSubmittedMenuItem.bind(this)),
+		exports._submittedMenuExtraItems.call(this)
+	];
 };
 
-exports._getSubmittedMenuItem = Function.prototype;
+exports._getSubmittedMenuItem = function (role) {
+	var user      = this.user
+	  , appName   = this.appName
+	  , roleTitle = db.Role.meta[role].label
+	  , viewPath, pendingCount;
+
+	if (role === 'user' && startsWith.call(appName, 'business-process-')) {
+		return li(exports._getMyAccountButton(user, roleTitle));
+	}
+
+	if (startsWith.call(role, 'official')) {
+		viewPath = exports._getPendingViewPath.call(this, role);
+		if (viewPath) {
+			pendingCount = db.views.businessProcesses.getBySKeyPath(viewPath).get('pending')._totalSize;
+		} else {
+			pendingCount = '-';
+		}
+
+		if (user.currentRoleResolved === role) {
+			return li({ class: 'submitted-menu-item-active' }, a({ href: '/' }, roleTitle,
+				' (', pendingCount, ')'));
+		}
+
+		return li(form({ method: 'post', action: '/set-role/' },
+			input({ type: 'hidden', name: user.__id__ + '/currentRole', value: role }),
+			button({ type: 'submit' }, roleTitle, ' (', pendingCount, ')')));
+	}
+
+	if (user.currentRoleResolved === role) {
+		if (user.currentRoleResolved === 'manager') {
+			if (appName === 'manager' || appName === 'manager-registration') {
+				return li({ class: 'submitted-menu-item-active' }, a({ href: '/' }, roleTitle));
+			}
+			return li({ class: 'submitted-menu-item-active' },
+				exports._getManagerButton(user, roleTitle));
+		}
+		return li({ class: 'submitted-menu-item-active' }, a({ href: '/' }, roleTitle));
+	}
+
+	return li(form({ method: 'post', action: '/set-role/' },
+		input({ type: 'hidden', name: user.__id__ + '/currentRole', value: role }),
+		button({ type: 'submit' }, roleTitle)));
+};
+
+exports._getPendingViewPath = function (role) {
+	return uncapitalize.call(role.slice('official'.length));
+};
+
+exports._submittedMenuExtraItems = Function.prototype;
 
 exports._getMyAccountButton = function (user, roleTitle) {
 	return form({ method: 'post', action: '/change-business-process/' },
