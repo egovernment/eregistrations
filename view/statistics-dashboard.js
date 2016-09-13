@@ -92,7 +92,7 @@ var drawFilesCompletedPerDay = function (data) {
 	}, days = Object.keys(data.filesApprovedByDay),
 		dateFrom, dateTo, dateFromStr, rowData, rangeKey, groupByCount,
 		daysCount = 0, currentRange, chartHandle,
-		setupRange, flushRange, setupRowData;
+		setupRange, addAmountToRange, setupRowData;
 
 	chartHandle = document.getElementById('chart-files-completed-per-day');
 	if (!days || !days.length) {
@@ -105,9 +105,7 @@ var drawFilesCompletedPerDay = function (data) {
 		chart.data[0].push(services[serviceKey].label);
 	});
 	dateFrom = new Date(Date.parse(data.filesApprovedByDay.dateFrom));
-	dateFrom.setHours(0, 0, 0, 0);
 	dateTo   = new Date(Date.parse(data.filesApprovedByDay.dateTo));
-	dateTo.setHours(0, 0, 0, 0);
 	groupByCount = getGroupByCount(dateFrom, dateTo);
 
 	setupRange = function (currentRange) {
@@ -118,7 +116,7 @@ var drawFilesCompletedPerDay = function (data) {
 		});
 	};
 
-	flushRange = function (currentRange, dateFromStr) {
+	addAmountToRange = function (currentRange, dateFromStr) {
 		Object.keys(services).forEach(function (serviceKey) {
 			var serviceName = serviceKey.slice('BusinessProcess'.length), amount;
 			serviceName = serviceName[0].toLowerCase() + serviceName.slice(1);
@@ -132,26 +130,25 @@ var drawFilesCompletedPerDay = function (data) {
 			rowData.push(currentRange.services[service] || 0);
 		});
 	};
-
-	while (dateFrom.getTime() <= dateTo.getTime()) {
+	while (dateFrom <= dateTo) {
 		daysCount++;
 		dateFromStr = dateFrom.toISOString().slice(0, 10);
 		if (!currentRange) {
-			currentRange = { name: new Date(dateFromStr).toLocaleDateString(db.locale), services: {} };
+			currentRange = { name: dateFrom.toLocaleDateString(db.locale), services: {} };
 			setupRange(currentRange);
 		}
 		if (data.filesApprovedByDay[dateFromStr]) {
-			flushRange(currentRange, dateFromStr);
+			addAmountToRange(currentRange, dateFromStr);
 		}
 		if ((daysCount % groupByCount === 0) || dateFrom.getTime() === dateTo.getTime()) {
 			rangeKey = groupByCount === 1 ? currentRange.name : currentRange.name + ' - ' +
-				new Date(dateFromStr).toLocaleDateString(db.locale);
+				dateFrom.toLocaleDateString(db.locale);
 			rowData = [rangeKey];
 			setupRowData(currentRange, rowData);
 			chart.data.push(rowData);
 			currentRange = null;
 		}
-		dateFrom.setDate(dateFrom.getDate() + 1);
+		dateFrom.setUTCDate(dateFrom.getUTCDate() + 1);
 	}
 	chart.data = google.visualization.arrayToDataTable(chart.data);
 	chart.chart.draw(chart.data, chart.options);
