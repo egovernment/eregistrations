@@ -185,27 +185,24 @@ var getFilesCompletedByStep = function (data) {
 	return assign(result, chart);
 };
 
-var drawPendingFiles = function (data) {
-	var chart = {
+var getPendingFiles = function (data) {
+	var result = { handle: 'chart-pending-files' }, chart = {
 		options: assign(copy(commonOptions), {
 			colors: exports._stepsColors
 		}),
+		drawMethod: 'PieChart',
 		data: [["Role", "Count"]]
 	};
 
 	if (!data.pendingFiles || !Object.keys(data.pendingFiles).length) {
-		pendingFilesHandle.innerHTML = '';
-		return;
+		return result;
 	}
 
 	Object.keys(data.pendingFiles).forEach(function (shortPath) {
 		chart.data.push([getStepLabelByShortPath(shortPath), data.pendingFiles[shortPath] || 0]);
 	});
 
-	chart.chart = new google.visualization.PieChart(pendingFilesHandle);
-	chart.data = google.visualization.arrayToDataTable(chart.data);
-
-	chart.chart.draw(chart.data, chart.options);
+	return assign(result, chart);
 };
 
 var drawAverageTime = function (data) {
@@ -317,7 +314,7 @@ var updateChartsData = function (data) {
 
 	dataForCharts.push(getFilesCompletedPerDay(data));
 	dataForCharts.push(getFilesCompletedByStep(data));
-//	drawPendingFiles(data);
+	dataForCharts.push(getPendingFiles(data));
 //	drawAverageTimeByService(data);
 //	drawAverageTime(data);
 //	drawWithdrawalTime(data);
@@ -404,7 +401,7 @@ exports['statistics-main'] = function () {
 						$(chart.handle).innerHtml = '';
 						return;
 					}
-					var googleChart = new google.visualization.BarChart($(chart.handle));
+					var googleChart = new google.visualization[chart.drawMethod || 'BarChart']($(chart.handle));
 					googleChart.draw(google.visualization.arrayToDataTable(chart.data), chart.options);
 				});
 			});
