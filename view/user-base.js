@@ -231,8 +231,11 @@ exports._userNameMenuItem = function () {
 };
 
 exports._getRoleMenuItem = function (role) {
-	var user      = this.manager || this.user
-	  , roleTitle = db.Role.meta[role].label;
+	var user = this.manager || this.user
+	  , roleTitle;
+
+	if (!db.Role.meta[role]) return;
+	roleTitle = db.Role.meta[role].label;
 
 	if (user.currentRoleResolved === role) {
 		return li({ class: 'header-top-menu-dropdown-item-active' }, a({ href: '/' }, roleTitle));
