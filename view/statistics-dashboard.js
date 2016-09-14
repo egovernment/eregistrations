@@ -15,9 +15,7 @@ var db                  = require('../db')
   , getQueryHandlerConf = require('../routes/utils/get-statistics-time-query-handler-conf')
   , ObjservableValue    = require('observable-value')
   , nextTick            = require('next-tick')
-  , observableResult    = new ObjservableValue()
-  , pendingFilesHandle
-  , timeByStepAndServiceHandle, timeByServiceHandle, withdrawalTimeHandle;
+  , observableResult    = new ObjservableValue();
 
 exports._servicesColors = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
 exports._stepsColors    = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
@@ -205,8 +203,8 @@ var getPendingFiles = function (data) {
 	return assign(result, chart);
 };
 
-var drawAverageTime = function (data) {
-	var chart = {
+var getAverageTime = function (data) {
+	var result = { handle: 'chart-by-step-and-service' }, chart = {
 		options: assign(copy(commonOptions), {
 			isStacked: false
 		}),
@@ -214,8 +212,7 @@ var drawAverageTime = function (data) {
 	};
 
 	if (!data.byStepAndService || !Object.keys(data.byStepAndService).length) {
-		timeByStepAndServiceHandle.innerHTML = '';
-		return;
+		return result;
 	}
 	var services = getServiceNames();
 	Object.keys(services).forEach(function (serviceName) {
@@ -236,14 +233,11 @@ var drawAverageTime = function (data) {
 		chart.data.push(stepData);
 	});
 
-	chart.chart = new google.visualization.BarChart(timeByStepAndServiceHandle);
-	chart.data  = google.visualization.arrayToDataTable(chart.data);
-
-	chart.chart.draw(chart.data, chart.options);
+	return assign(result, chart);
 };
 
-var drawAverageTimeByService = function (data) {
-	var chart = {
+var getAverageTimeByService = function (data) {
+	var result = { handle: 'chart-by-service' }, chart = {
 		options: assign(copy(commonOptions), {
 			legend: null
 		}),
@@ -251,8 +245,7 @@ var drawAverageTimeByService = function (data) {
 	};
 
 	if (!data.byService || !Object.keys(data.byService).length) {
-		timeByServiceHandle.innerHTML = '';
-		return;
+		return result;
 	}
 
 	var services = getServiceNames(), i = 0;
@@ -268,14 +261,11 @@ var drawAverageTimeByService = function (data) {
 		chart.data.push(row);
 	});
 
-	chart.chart = new google.visualization.BarChart(timeByServiceHandle);
-	chart.data = google.visualization.arrayToDataTable(chart.data);
-
-	chart.chart.draw(chart.data, chart.options);
+	return assign(result, chart);
 };
 
-var drawWithdrawalTime = function (data) {
-	var chart = {
+var getWithdrawalTime = function (data) {
+	var result = { handle: 'chart-withdrawal-time' }, chart = {
 		options: assign(copy(commonOptions), {
 			isStacked: false,
 			legend: null,
@@ -285,8 +275,7 @@ var drawWithdrawalTime = function (data) {
 	}, i = 0;
 
 	if (!data.byStepAndService.frontDesk) {
-		withdrawalTimeHandle.innerHtml = '';
-		return;
+		return result;
 	}
 	var services = getServiceNames();
 	Object.keys(services).forEach(function (serviceName) {
@@ -304,8 +293,7 @@ var drawWithdrawalTime = function (data) {
 		chart.data.push(row);
 	});
 
-	chart.chart = new google.visualization.BarChart(withdrawalTimeHandle);
-	chart.data = google.visualization.arrayToDataTable(chart.data);
+	return assign(result, chart);
 };
 
 var updateChartsData = function (data) {
@@ -315,9 +303,9 @@ var updateChartsData = function (data) {
 	dataForCharts.push(getFilesCompletedPerDay(data));
 	dataForCharts.push(getFilesCompletedByStep(data));
 	dataForCharts.push(getPendingFiles(data));
-//	drawAverageTimeByService(data);
-//	drawAverageTime(data);
-//	drawWithdrawalTime(data);
+	dataForCharts.push(getAverageTime(data));
+	dataForCharts.push(getAverageTimeByService(data));
+	dataForCharts.push(getWithdrawalTime(data));
 	observableResult.value = dataForCharts;
 
 	nextTick(function () {
@@ -379,15 +367,15 @@ exports['statistics-main'] = function () {
 			return date.toLocaleDateString(db.locale);
 		})
 	})),
-		pendingFilesHandle = div({ id: "chart-pending-files" }));
+		div({ id: "chart-pending-files" }));
 	section({ class: "section-primary" },
 		h3(_("Average processing time")),
-		timeByStepAndServiceHandle = div({ id: "chart-by-step-and-service" }));
+		div({ id: "chart-by-step-and-service" }));
 	section({ class: "section-primary" },
 		h3(_("Total average processing time per service")),
-		timeByServiceHandle = div({ id: "chart-by-service" }));
+		div({ id: "chart-by-service" }));
 	section({ class: "section-primary" },
-		h3(_("Withdrawal time")), withdrawalTimeHandle = div({ id: "chart-withdrawal-time" }));
+		h3(_("Withdrawal time")), div({ id: "chart-withdrawal-time" }));
 
 	script(function () {
 		google.charts.load('current', { packages: ['corechart'] });
@@ -401,7 +389,8 @@ exports['statistics-main'] = function () {
 						$(chart.handle).innerHtml = '';
 						return;
 					}
-					var googleChart = new google.visualization[chart.drawMethod || 'BarChart']($(chart.handle));
+					var googleChart =
+						new google.visualization[chart.drawMethod || 'BarChart']($(chart.handle));
 					googleChart.draw(google.visualization.arrayToDataTable(chart.data), chart.options);
 				});
 			});
