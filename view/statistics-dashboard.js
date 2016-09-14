@@ -17,10 +17,12 @@ var db                  = require('../db')
   , nextTick            = require('next-tick')
   , observableResult    = new ObjservableValue();
 
-exports._servicesColors = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
-exports._stepsColors    = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
+exports._servicesColors  = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
+exports._stepsColors     = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
+exports._customChartsDOM     = Function.prototype;
+exports._customChartsGetData = Function.prototype;
 
-var commonOptions = {
+exports._commonOptions = {
 	colors: exports._servicesColors, // by default colors of the services
 	animation: {
 		startup: true,
@@ -91,7 +93,7 @@ var getStepLabelByShortPath = function (processingStepsMeta) {
 
 var getFilesCompletedPerDay = function (data) {
 	var result = { handle: 'chart-files-completed-per-day' }, chart = {
-		options: assign(copy(commonOptions), {
+		options: assign(copy(exports._commonOptions), {
 			orientation: 'horizontal'
 		}),
 		data: [["Service"]]
@@ -157,7 +159,7 @@ var getFilesCompletedPerDay = function (data) {
 
 var getFilesCompletedByStep = function (data) {
 	var result = { handle: 'chart-files-completed-by-service' }, chart = {
-		options: commonOptions,
+		options: exports._commonOptions,
 		data: [["Service"]]
 	};
 	if (!Object.keys(data.byStepAndService).length) {
@@ -185,7 +187,7 @@ var getFilesCompletedByStep = function (data) {
 
 var getPendingFiles = function (data) {
 	var result = { handle: 'chart-pending-files' }, chart = {
-		options: assign(copy(commonOptions), {
+		options: assign(copy(exports._commonOptions), {
 			colors: exports._stepsColors
 		}),
 		drawMethod: 'PieChart',
@@ -205,7 +207,7 @@ var getPendingFiles = function (data) {
 
 var getAverageTime = function (data) {
 	var result = { handle: 'chart-by-step-and-service' }, chart = {
-		options: assign(copy(commonOptions), {
+		options: assign(copy(exports._commonOptions), {
 			isStacked: false
 		}),
 		data: [["Role"]]
@@ -238,7 +240,7 @@ var getAverageTime = function (data) {
 
 var getAverageTimeByService = function (data) {
 	var result = { handle: 'chart-by-service' }, chart = {
-		options: assign(copy(commonOptions), {
+		options: assign(copy(exports._commonOptions), {
 			legend: null
 		}),
 		data: [["Service", "Data", { role: "style" }]]
@@ -266,7 +268,7 @@ var getAverageTimeByService = function (data) {
 
 var getWithdrawalTime = function (data) {
 	var result = { handle: 'chart-withdrawal-time' }, chart = {
-		options: assign(copy(commonOptions), {
+		options: assign(copy(exports._commonOptions), {
 			isStacked: false,
 			legend: null,
 			axisTitlesPosition: "none"
@@ -297,7 +299,7 @@ var getWithdrawalTime = function (data) {
 };
 
 var updateChartsData = function (data) {
-	var dataForCharts = [];
+	var dataForCharts = [], customChartsData = [];
 	if (!data) return;
 
 	dataForCharts.push(getFilesCompletedPerDay(data));
@@ -306,6 +308,10 @@ var updateChartsData = function (data) {
 	dataForCharts.push(getAverageTime(data));
 	dataForCharts.push(getAverageTimeByService(data));
 	dataForCharts.push(getWithdrawalTime(data));
+	customChartsData = exports._customChartsGetData.call(this, data);
+	if (customChartsData && customChartsData.length) {
+		dataForCharts = dataForCharts.concat(customChartsData);
+	}
 	observableResult.value = dataForCharts;
 
 	nextTick(function () {
@@ -376,6 +382,7 @@ exports['statistics-main'] = function () {
 		div({ id: "chart-by-service" }));
 	section({ class: "section-primary" },
 		h3(_("Withdrawal time")), div({ id: "chart-withdrawal-time" }));
+	exports._customChartsDOM.call(this);
 
 	script(function () {
 		google.charts.load('current', { packages: ['corechart'] });
