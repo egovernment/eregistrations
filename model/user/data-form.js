@@ -38,7 +38,7 @@ module.exports = memoize(function (db/*, options*/) {
 		propertyNames: ['firstName', 'lastName', 'email', 'password']
 	});
 	User.prototype.dataForm.sections.additional.setProperties({
-		propertyNames: ['roles', 'institution']
+		propertyNames: ['roles', 'isSuperUser', 'institution']
 	});
 
 	return User;

@@ -6,6 +6,7 @@
 ../../../node_modules/eregistrations/css/components/disabler.css
 ../../../node_modules/eregistrations/css/components/fa.css
 ../../../node_modules/eregistrations/css/components/tooltip.css
+../../../node_modules/eregistrations/css/components/input-optional-info.css
 ../../../node_modules/eregistrations/css/components/capital-first.css
 ../../../node_modules/eregistrations/css/components/section-primary.css
 ../../../node_modules/eregistrations/css/components/section-warning.css

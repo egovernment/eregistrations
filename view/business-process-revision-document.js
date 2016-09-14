@@ -22,8 +22,8 @@ revisionForm = function (requirementUpload) {
 
 	return form({
 		id: 'form-revision-requirement-upload',
-		class: ['submitted-preview-form', _if(or(requirementUpload._isApproved,
-			requirementUpload._isRejected), 'completed')],
+		class: ['submitted-preview-form', _if(eq(requirementUpload._revisionProgress, 1),
+			'completed')],
 		method: 'post',
 		action: '/revision-requirement-upload/' + requirementUpload.master.__id__ +
 			'/' + camelToHyphen.call(requirementUpload.document.uniqueKey) + '/'

@@ -73,6 +73,8 @@ module.exports = memoize(function (db/*, options*/) {
 
 			return result;
 		} }
+	}, {
+		draftLimit: { type: UInteger, value: 20 }
 	});
 
 	BusinessProcess.prototype.submissionNumber.defineProperties({

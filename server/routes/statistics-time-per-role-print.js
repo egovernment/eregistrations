@@ -101,8 +101,8 @@ module.exports = function (configData) {
 					);
 				})(function () {
 					return htmlToPdf(templatePath, '', {
-						width: "210mm",
-						height: "170mm",
+						width: "297mm",
+						height: "210mm",
 						streamable: true,
 						templateInserts: inserts
 					});

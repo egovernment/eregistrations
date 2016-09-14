@@ -20,6 +20,15 @@ module.exports = memoize(function (db/*, options */) {
 	Role.meta.get('user').set('label', _("User"));
 
 	User.prototype.defineProperties({
+		// Used for some additional functionalities like institution switch,
+		// used for demonstrational purposes
+		isSuperUser: {
+			label: _("Is super user?"),
+			type: db.Boolean,
+			inputHint: _("Whether account was made for presentation purposes. " +
+				"If so, it may expose some extra system specific controls " +
+				"(e.g. switch that allows to change institution or zone). Otherwise has no effect")
+		},
 		// This is resolved on server and propagated (in resolved form to client)
 		// The client will never have a password so it needs to rely on server
 		isActiveAccount: {
