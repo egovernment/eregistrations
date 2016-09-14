@@ -31,7 +31,7 @@ module.exports = memoize(function (query) {
 		});
 	})(result);
 }, {
-	length: 0,
+	normalizer: function (args) { return JSON.stringify(args[0]); },
 	// One day
 	maxAge: 86400000
 });

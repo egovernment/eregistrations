@@ -14,7 +14,7 @@ var addPendingFile = function (pendingFiles, stepShortPath) {
 	pendingFiles[stepShortPath]++;
 };
 
-module.exports = memoize(function (processingStepsMeta, date) {
+module.exports = memoize(function (date, processingStepsMeta) {
 	var pendingFiles = {};
 	return deferred.map(Object.keys(processingStepsMeta), function (stepShortPath) {
 		var stepPath, stepFullPath, services;
@@ -53,7 +53,7 @@ module.exports = memoize(function (processingStepsMeta, date) {
 		});
 	})(pendingFiles);
 }, {
-	length: 0,
+	normalizer: function (args) { return JSON.stringify(args[0]); },
 	// One day
 	maxAge: 86400000
 });

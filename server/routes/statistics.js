@@ -78,9 +78,9 @@ module.exports = exports = function (data) {
 					getFilesApprovedByDateAndService(query)(function (filesApproved) {
 						assign(finalResult, { filesApprovedByDay: filesApproved });
 					}),
-					getFilesPendingByStepAndService(processingStepsMeta,
-							query.dateTo || new db.Date(today.getUTCFullYear(), today.getUTCMonth(),
-							today.getUTCDate()))(function (pendingFiles) {
+					getFilesPendingByStepAndService(query.dateTo ||
+						new db.Date(today.getUTCFullYear(), today.getUTCMonth(),
+							today.getUTCDate()), processingStepsMeta)(function (pendingFiles) {
 						assign(finalResult, { pendingFiles: pendingFiles });
 					})
 				)(finalResult);
