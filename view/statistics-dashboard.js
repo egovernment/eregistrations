@@ -13,7 +13,10 @@ var db                  = require('../db')
   , Duration            = require('duration')
   , getData             = require('mano/lib/client/xhr-driver').get
   , getQueryHandlerConf = require('../routes/utils/get-statistics-time-query-handler-conf')
-  , filesCompletedChartHandle, filesCompletedByServiceHandle, pendingFilesHandle
+  , ObjservableValue    = require('observable-value')
+  , nextTick            = require('next-tick')
+  , observableResult    = new ObjservableValue()
+  , filesCompletedByServiceHandle, pendingFilesHandle
   , timeByStepAndServiceHandle, timeByServiceHandle, withdrawalTimeHandle;
 
 exports._servicesColors = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
@@ -88,8 +91,8 @@ var getStepLabelByShortPath = function (processingStepsMeta) {
 	};
 };
 
-var drawFilesCompletedPerDay = function (data) {
-	var chart = {
+var getFilesCompletedPerDay = function (data) {
+	var result = { handle: 'chart-files-completed-per-day' }, chart = {
 		options: assign(copy(commonOptions), {
 			orientation: 'horizontal'
 		}),
@@ -100,10 +103,9 @@ var drawFilesCompletedPerDay = function (data) {
 		setupRange, addAmountToRange, setupRowData;
 
 	if (!days || !days.length) {
-		filesCompletedChartHandle.innerHTML = '';
-		return;
+		result.data = null;
+		return result;
 	}
-	chart.chart = new google.visualization.BarChart(filesCompletedChartHandle);
 	var services = getServiceNames();
 	Object.keys(services).forEach(function (serviceName) {
 		chart.data[0].push(services[serviceName].label);
@@ -151,8 +153,8 @@ var drawFilesCompletedPerDay = function (data) {
 		}
 		dateFrom.setUTCDate(dateFrom.getUTCDate() + 1);
 	}
-	chart.data = google.visualization.arrayToDataTable(chart.data);
-	chart.chart.draw(chart.data, chart.options);
+
+	return assign(result, chart);
 };
 
 var drawFilesCompletedByStep = function (data) {
@@ -311,19 +313,21 @@ var drawWithdrawalTime = function (data) {
 	chart.data = google.visualization.arrayToDataTable(chart.data);
 };
 
-var drawCharts = function (data) {
-	if (!google || !google.visualization || !data) return;
-	drawFilesCompletedPerDay(data);
-	drawFilesCompletedByStep(data);
-	drawPendingFiles(data);
-	drawAverageTimeByService(data);
-	drawAverageTime(data);
-	drawWithdrawalTime(data);
-};
+var updateChartsData = function (data) {
+	var dataForCharts = [];
+	if (!data) return;
 
-var initializeGoogleCharts = function () {
-	// Load the Visualization API and the corechart package.
-	google.charts.load('current', { packages: ['corechart'] });
+	dataForCharts.push(getFilesCompletedPerDay(data));
+//	drawFilesCompletedByStep(data);
+//	drawPendingFiles(data);
+//	drawAverageTimeByService(data);
+//	drawAverageTime(data);
+//	drawWithdrawalTime(data);
+	observableResult.value = dataForCharts;
+
+	nextTick(function () {
+		document.emit('statistics-chart-update');
+	});
 };
 
 exports._parent = require('./statistics-base');
@@ -348,9 +352,7 @@ exports['statistics-main'] = function () {
 			query.dateTo = query.dateTo.toJSON();
 		}
 		queryServer(query)(function (result) {
-			google.charts.setOnLoadCallback(function () {
-				drawCharts(result);
-			});
+			updateChartsData(result);
 		}).done();
 	});
 
@@ -367,11 +369,12 @@ exports['statistics-main'] = function () {
 				label({ for: 'date-to-input' }, _("Date to"), ":"),
 				input({ id: 'date-to-input', type: 'date',
 					name: 'dateTo', value: location.query.get('dateTo') })
-			)));
+			),
+			p({ class: 'submit' }, input({ type: 'submit' }))));
 
 	section({ class: "section-primary" },
 		h3(_("Files completed per day")),
-		filesCompletedChartHandle = div({ id: "chart-files-completed-per-day" }));
+		div({ id: "chart-files-completed-per-day" }));
 	section({ class: "section-primary" },
 		h3(_("Processed files")),
 		filesCompletedByServiceHandle = div({ id: "chart-files-completed-by-service" }));
@@ -391,5 +394,25 @@ exports['statistics-main'] = function () {
 	section({ class: "section-primary" },
 		h3(_("Withdrawal time")), withdrawalTimeHandle = div({ id: "chart-withdrawal-time" }));
 
-	initializeGoogleCharts();
+	script(function () {
+		google.charts.load('current', { packages: ['corechart'] });
+	});
+	script(function (chartsData) {
+		var reloadCharts = function () {
+			google.charts.setOnLoadCallback(function () {
+				if (!chartsData) return;
+				chartsData.forEach(function (chart) {
+					if (!chart.data) {
+						$(chart.handle).innerHtml = '';
+						return;
+					}
+					var googleChart = new google.visualization.BarChart($(chart.handle));
+					googleChart.draw(google.visualization.arrayToDataTable(chart.data), chart.options);
+				});
+			});
+		};
+		reloadCharts();
+		// this will be invoked only in SPA
+		if (document.on) document.on('statistics-chart-update', reloadCharts);
+	}, observableResult);
 };
