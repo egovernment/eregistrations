@@ -2,6 +2,7 @@
 <html>
 	<meta name="viewport" content="width=device-width" />
 	<noscript><meta http-equiv="refresh" content="0;/?legacy=1" /></noscript>
+	<script src="https://www.gstatic.com/charts/loader.js"></script>
 	<script data-spa>
 if (!Object.getPrototypeOf || !Object.defineProperty || !window.history ||
 		(function () {'use strict'; return this; }()) ||
