@@ -9,9 +9,12 @@ var db                  = require('../db')
   , setupQueryHandler   = require('../utils/setup-client-query-handler')
   , resolveFullStepPath = require('../utils/resolve-processing-step-full-path')
   , capitalize          = require('es5-ext/string/#/capitalize')
+  , uncapitalize        = require('es5-ext/string/#/uncapitalize')
   , Duration            = require('duration')
   , getData             = require('mano/lib/client/xhr-driver').get
-  , getQueryHandlerConf = require('../routes/utils/get-statistics-time-query-handler-conf');
+  , getQueryHandlerConf = require('../routes/utils/get-statistics-time-query-handler-conf')
+  , filesCompletedChartHandle, filesCompletedByServiceHandle, pendingFilesHandle
+  , timeByStepAndServiceHandle, timeByServiceHandle, withdrawalTimeHandle;
 
 exports._servicesColors = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
 exports._stepsColors    = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
@@ -41,14 +44,16 @@ var commonOptions = {
 var queryServer = memoize(function (query) {
 	return getData('/get-dashboard-data/', query);
 }, {
-	normalizer: function (args) { return JSON.stringify(args[0]); }
+	normalizer: function (args) { return JSON.stringify(args[0]); },
+	max: 1000
 });
 
 var getServiceNames = function () {
 	var services = {};
 
 	db.BusinessProcess.extensions.forEach(function (BusinessProcessClass) {
-		services[BusinessProcessClass.__id__] = { label: BusinessProcessClass.prototype.label };
+		services[uncapitalize.call(BusinessProcessClass.__id__.slice('BusinessProcess'.length))] =
+			{ label: BusinessProcessClass.prototype.label };
 	});
 
 	return services;
@@ -91,35 +96,31 @@ var drawFilesCompletedPerDay = function (data) {
 		data: [["Service"]]
 	}, days = Object.keys(data.filesApprovedByDay),
 		dateFrom, dateTo, dateFromStr, rowData, rangeKey, groupByCount,
-		daysCount = 0, currentRange, chartHandle,
+		daysCount = 0, currentRange,
 		setupRange, addAmountToRange, setupRowData;
 
-	chartHandle = document.getElementById('chart-files-completed-per-day');
 	if (!days || !days.length) {
-		chartHandle.innerHTML = '';
+		filesCompletedChartHandle.innerHTML = '';
 		return;
 	}
-	chart.chart = new google.visualization.BarChart(chartHandle);
+	chart.chart = new google.visualization.BarChart(filesCompletedChartHandle);
 	var services = getServiceNames();
-	Object.keys(services).forEach(function (serviceKey) {
-		chart.data[0].push(services[serviceKey].label);
+	Object.keys(services).forEach(function (serviceName) {
+		chart.data[0].push(services[serviceName].label);
 	});
 	dateFrom = new Date(Date.parse(data.filesApprovedByDay.dateFrom));
 	dateTo   = new Date(Date.parse(data.filesApprovedByDay.dateTo));
 	groupByCount = getGroupByCount(dateFrom, dateTo);
 
 	setupRange = function (currentRange) {
-		Object.keys(services).forEach(function (serviceKey) {
-			var serviceName = serviceKey.slice('BusinessProcess'.length);
-			serviceName = serviceName[0].toLowerCase() + serviceName.slice(1);
+		Object.keys(services).forEach(function (serviceName) {
 			currentRange.services[serviceName] = 0;
 		});
 	};
 
 	addAmountToRange = function (currentRange, dateFromStr) {
-		Object.keys(services).forEach(function (serviceKey) {
-			var serviceName = serviceKey.slice('BusinessProcess'.length), amount;
-			serviceName = serviceName[0].toLowerCase() + serviceName.slice(1);
+		Object.keys(services).forEach(function (serviceName) {
+			var amount;
 			amount = data.filesApprovedByDay[dateFromStr][serviceName] || 0;
 			currentRange.services[serviceName] += amount;
 		});
@@ -158,22 +159,19 @@ var drawFilesCompletedByStep = function (data) {
 	var chart = {
 		options: commonOptions,
 		data: [["Service"]]
-	}, chartHandle;
-	chartHandle = document.getElementById('chart-files-completed-by-service');
+	};
 	if (!Object.keys(data.byStepAndService).length) {
-		chartHandle.innerHtml = '';
+		filesCompletedByServiceHandle.innerHtml = '';
 		return;
 	}
-	chart.chart = new google.visualization.BarChart(chartHandle);
+	chart.chart = new google.visualization.BarChart(filesCompletedByServiceHandle);
 	var services = getServiceNames();
-	Object.keys(services).forEach(function (serviceKey) {
-		chart.data[0].push(services[serviceKey].label);
+	Object.keys(services).forEach(function (serviceName) {
+		chart.data[0].push(services[serviceName].label);
 	});
 	Object.keys(data.byStepAndService).forEach(function (shortPath) {
 		var stepData = [getStepLabelByShortPath(shortPath)];
-		Object.keys(services).forEach(function (serviceKey) {
-			var serviceName = serviceKey.slice('BusinessProcess'.length);
-			serviceName = serviceName[0].toLowerCase() + serviceName.slice(1);
+		Object.keys(services).forEach(function (serviceName) {
 			if (!data.byStepAndService[shortPath][serviceName]) {
 				stepData.push(0);
 				return;
@@ -193,11 +191,10 @@ var drawPendingFiles = function (data) {
 			colors: exports._stepsColors
 		}),
 		data: [["Role", "Count"]]
-	}, chartHandle;
-	chartHandle = document.getElementById('chart-pending-files');
+	};
 
 	if (!data.pendingFiles || !Object.keys(data.pendingFiles).length) {
-		chartHandle.innerHTML = '';
+		pendingFilesHandle.innerHTML = '';
 		return;
 	}
 
@@ -205,7 +202,7 @@ var drawPendingFiles = function (data) {
 		chart.data.push([getStepLabelByShortPath(shortPath), data.pendingFiles[shortPath] || 0]);
 	});
 
-	chart.chart = new google.visualization.PieChart(chartHandle);
+	chart.chart = new google.visualization.PieChart(pendingFilesHandle);
 	chart.data = google.visualization.arrayToDataTable(chart.data);
 
 	chart.chart.draw(chart.data, chart.options);
@@ -217,24 +214,20 @@ var drawAverageTime = function (data) {
 			isStacked: false
 		}),
 		data: [["Role"]]
-	}, chartHandle;
-
-	chartHandle = document.getElementById('chart-by-step-and-service');
+	};
 
 	if (!data.byStepAndService || !Object.keys(data.byStepAndService).length) {
-		chartHandle.innerHTML = '';
+		timeByStepAndServiceHandle.innerHTML = '';
 		return;
 	}
 	var services = getServiceNames();
-	Object.keys(services).forEach(function (serviceKey) {
-		chart.data[0].push(services[serviceKey].label);
+	Object.keys(services).forEach(function (serviceName) {
+		chart.data[0].push(services[serviceName].label);
 	});
 	Object.keys(data.byStepAndService).forEach(function (shortPath) {
 		if (shortPath === 'frontDesk') return;
 		var stepData = [getStepLabelByShortPath(shortPath)];
-		Object.keys(services).forEach(function (serviceKey) {
-			var serviceName = serviceKey.slice('BusinessProcess'.length);
-			serviceName = serviceName[0].toLowerCase() + serviceName.slice(1);
+		Object.keys(services).forEach(function (serviceName) {
 			if (!data.byStepAndService[shortPath][serviceName]) {
 				stepData.push(0);
 				return;
@@ -246,7 +239,7 @@ var drawAverageTime = function (data) {
 		chart.data.push(stepData);
 	});
 
-	chart.chart = new google.visualization.BarChart(chartHandle);
+	chart.chart = new google.visualization.BarChart(timeByStepAndServiceHandle);
 	chart.data  = google.visualization.arrayToDataTable(chart.data);
 
 	chart.chart.draw(chart.data, chart.options);
@@ -258,19 +251,18 @@ var drawAverageTimeByService = function (data) {
 			legend: null
 		}),
 		data: [["Service", "Data", { role: "style" }]]
-	}, chartHandle;
-	chartHandle = document.getElementById('chart-by-service');
+	};
+
 	if (!data.byService || !Object.keys(data.byService).length) {
-		chartHandle.innerHTML = '';
+		timeByServiceHandle.innerHTML = '';
 		return;
 	}
 
 	var services = getServiceNames(), i = 0;
 
-	Object.keys(services).forEach(function (serviceKey) {
-		var serviceName = serviceKey.slice('BusinessProcess'.length), row = [];
-		row.push(services[serviceKey].label);
-		serviceName = serviceName[0].toLowerCase() + serviceName.slice(1);
+	Object.keys(services).forEach(function (serviceName) {
+		var row = [];
+		row.push(services[serviceName].label);
 		row.push(Math.round(
 			(data.byService[serviceName] ? data.byService[serviceName].avgTime : 0) / 1000 / 60 / 60 / 24
 		));
@@ -279,7 +271,7 @@ var drawAverageTimeByService = function (data) {
 		chart.data.push(row);
 	});
 
-	chart.chart = new google.visualization.BarChart(chartHandle);
+	chart.chart = new google.visualization.BarChart(timeByServiceHandle);
 	chart.data = google.visualization.arrayToDataTable(chart.data);
 
 	chart.chart.draw(chart.data, chart.options);
@@ -293,19 +285,16 @@ var drawWithdrawalTime = function (data) {
 			axisTitlesPosition: "none"
 		}),
 		data: [["Service", "Data", { role: "style" }]]
-	}, i = 0, chartHandle;
-	chartHandle = document.getElementById('chart-withdrawal-time');
+	}, i = 0;
 
 	if (!data.byStepAndService.frontDesk) {
-		chartHandle.innerHtml = '';
+		withdrawalTimeHandle.innerHtml = '';
 		return;
 	}
 	var services = getServiceNames();
-	Object.keys(services).forEach(function (serviceKey) {
+	Object.keys(services).forEach(function (serviceName) {
 		var row = [];
-		row.push(services[serviceKey].label);
-		var serviceName = serviceKey.slice('BusinessProcess'.length);
-		serviceName = serviceName[0].toLowerCase() + serviceName.slice(1);
+		row.push(services[serviceName].label);
 		if (!data.byStepAndService.frontDesk[serviceName]) {
 			row.push(0);
 		} else {
@@ -318,7 +307,7 @@ var drawWithdrawalTime = function (data) {
 		chart.data.push(row);
 	});
 
-	chart.chart = new google.visualization.BarChart(chartHandle);
+	chart.chart = new google.visualization.BarChart(withdrawalTimeHandle);
 	chart.data = google.visualization.arrayToDataTable(chart.data);
 };
 
@@ -343,7 +332,6 @@ exports['dashboard-nav'] = { class: { 'pills-nav-active': true } };
 
 exports['statistics-main'] = function () {
 	var queryHandler;
-
 	getStepLabelByShortPath = getStepLabelByShortPath(this.processingStepsMeta);
 
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
@@ -382,22 +370,26 @@ exports['statistics-main'] = function () {
 			)));
 
 	section({ class: "section-primary" },
-		h3(_("Files completed per day")), div({ id: "chart-files-completed-per-day" }));
+		h3(_("Files completed per day")),
+		filesCompletedChartHandle = div({ id: "chart-files-completed-per-day" }));
 	section({ class: "section-primary" },
-		h3(_("Processed files")), div({ id: "chart-files-completed-by-service" }));
+		h3(_("Processed files")),
+		filesCompletedByServiceHandle = div({ id: "chart-files-completed-by-service" }));
 	section({ class: "section-primary" }, h3(_("Pending files at ${ date }", {
 		date: location.query.get('dateTo').map(function (dateTo) {
 			var date = dateTo ? new db.Date(dateTo) : new db.Date();
 			return date.toLocaleDateString(db.locale);
 		})
 	})),
-		div({ id: "chart-pending-files" }));
+		pendingFilesHandle = div({ id: "chart-pending-files" }));
 	section({ class: "section-primary" },
-		h3(_("Average processing time")), div({ id: "chart-by-step-and-service" }));
+		h3(_("Average processing time")),
+		timeByStepAndServiceHandle = div({ id: "chart-by-step-and-service" }));
 	section({ class: "section-primary" },
-		h3(_("Total average processing time per service")), div({ id: "chart-by-service" }));
+		h3(_("Total average processing time per service")),
+		timeByServiceHandle = div({ id: "chart-by-service" }));
 	section({ class: "section-primary" },
-		h3(_("Withdrawal time")), div({ id: "chart-withdrawal-time" }));
+		h3(_("Withdrawal time")), withdrawalTimeHandle = div({ id: "chart-withdrawal-time" }));
 
 	initializeGoogleCharts();
 };

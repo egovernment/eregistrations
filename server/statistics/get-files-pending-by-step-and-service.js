@@ -8,12 +8,6 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , driver                        = require('mano').dbDriver
   , toDateInTz                    = require('../../utils/to-date-in-time-zone');
 
-var isSameDay = function (date1, date2) {
-	if (date1.getFullYear() !== date2.getFullYear()) return false;
-	if (date1.getMonth() !== date2.getMonth()) return false;
-	return date1.getDate() === date2.getDate();
-};
-
 var addPendingFile = function (pendingFiles, stepShortPath) {
 	if (!pendingFiles[stepShortPath]) pendingFiles[stepShortPath] = 0;
 	pendingFiles[stepShortPath]++;
@@ -36,7 +30,7 @@ module.exports = function (processingStepsMeta, date) {
 				if (value !== true) return;
 				isReadyDate = toDateInTz(new Date(data.stamp / 1000), db.timeZone);
 				// bullseye, the process started to be pending at exactly the same day as date
-				if (isSameDay(isReadyDate, date)) {
+				if (isReadyDate.getTime() === date.getTime()) {
 					addPendingFile(pendingFiles, stepShortPath);
 					return;
 				}
@@ -50,7 +44,7 @@ module.exports = function (processingStepsMeta, date) {
 						statusValue = unserializeValue(status.value);
 						statusDate  = toDateInTz(new Date(status.stamp / 1000), db.timeZone);
 					}
-					if (!statusValue || date < statusDate || isSameDay(date, statusDate)) {
+					if (!statusValue || date <= statusDate) {
 						addPendingFile(pendingFiles, stepShortPath);
 					}
 				});

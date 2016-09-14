@@ -67,19 +67,23 @@ module.exports = exports = function (data) {
 			}
 		},
 		'get-dashboard-data': function (query) {
+			var today = new Date();
 			return queryHandler.resolve(query)(function (query) {
-				return getProcessingTimesByStepProcessor(assign(options,
-					{ query: query }))(function (result) {
-					return deferred(
-						getFilesApprovedByDateAndService(query)(function (filesApproved) {
-							assign(result, { filesApprovedByDay: filesApproved });
-						}),
-						getFilesPendingByStepAndService(processingStepsMeta,
-								query.dateTo || new db.Date())(function (pendingFiles) {
-							assign(result, { pendingFiles: pendingFiles });
-						})
-					)(result);
-				});
+				var finalResult = {};
+				return deferred(
+					getProcessingTimesByStepProcessor(assign(options,
+						{ query: query }))(function (result) {
+						assign(finalResult, result);
+					}),
+					getFilesApprovedByDateAndService(query)(function (filesApproved) {
+						assign(finalResult, { filesApprovedByDay: filesApproved });
+					}),
+					getFilesPendingByStepAndService(processingStepsMeta,
+							query.dateTo || new db.Date(today.getUTCFullYear(), today.getUTCMonth(),
+							today.getUTCDate()))(function (pendingFiles) {
+						assign(finalResult, { pendingFiles: pendingFiles });
+					})
+				)(finalResult);
 			});
 		}
 	}, getBaseRoutes());

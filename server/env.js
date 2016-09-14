@@ -33,4 +33,8 @@ if (!env.smtp) {
 	};
 }
 
+if (!env.databaseStartDate) {
+	env.databaseStartDate = new Date(2016, 1, 1);
+}
+
 module.exports = env;
