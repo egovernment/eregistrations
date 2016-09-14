@@ -19,6 +19,5 @@ if (!Object.getPrototypeOf || !Object.defineProperty || !window.history ||
 	document.write('<link href="${ stRoot }statistics.css" rel="stylesheet" />');
 	document.write('<scr' + 'ipt src="${ stRoot }statistics.legacy.js"></sc' + 'ript>');
 	document.write('<scr' + 'ipt data-spa src="${ stRoot }statistics.js"></sc' + 'ript>');
-	document.write('<scr' + 'ipt data-spa src="https://www.gstatic.com/charts/loader.js"></sc' + 'ript>');
 }
 	</script>
