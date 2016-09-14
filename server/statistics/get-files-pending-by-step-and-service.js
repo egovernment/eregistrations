@@ -6,6 +6,7 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , deferred                      = require('deferred')
   , db                            = require('../../db')
   , driver                        = require('mano').dbDriver
+  , memoize                       = require('memoizee')
   , toDateInTz                    = require('../../utils/to-date-in-time-zone');
 
 var addPendingFile = function (pendingFiles, stepShortPath) {
@@ -13,7 +14,7 @@ var addPendingFile = function (pendingFiles, stepShortPath) {
 	pendingFiles[stepShortPath]++;
 };
 
-module.exports = function (processingStepsMeta, date) {
+module.exports = memoize(function (processingStepsMeta, date) {
 	var pendingFiles = {};
 	return deferred.map(Object.keys(processingStepsMeta), function (stepShortPath) {
 		var stepPath, stepFullPath, services;
@@ -51,4 +52,8 @@ module.exports = function (processingStepsMeta, date) {
 			});
 		});
 	})(pendingFiles);
-};
+}, {
+	length: 0,
+	// One day
+	maxAge: 86400000
+});

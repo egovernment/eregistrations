@@ -5,9 +5,10 @@ var getBusinessProcessStorages = require('../utils/business-process-storages')
   , deferred                   = require('deferred')
   , uncapitalize               = require('es5-ext/string/#/uncapitalize')
   , env                        = require('mano').env
-  , toDateInTz                 = require('../../utils/to-date-in-time-zone');
+  , toDateInTz                 = require('../../utils/to-date-in-time-zone')
+  , memoize                    = require('memoizee');
 
-module.exports = function (query) {
+module.exports = memoize(function (query) {
 	var result = { dateFrom: (query.dateFrom ||
 		new db.Date(env.databaseStartDate.getTime())).toISOString().slice(0, 10),
 		dateTo: (query.dateTo || new db.Date()).toISOString().slice(0, 10) };
@@ -29,4 +30,8 @@ module.exports = function (query) {
 			});
 		});
 	})(result);
-};
+}, {
+	length: 0,
+	// One day
+	maxAge: 86400000
+});
