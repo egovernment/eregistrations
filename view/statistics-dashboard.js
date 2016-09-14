@@ -16,7 +16,7 @@ var db                  = require('../db')
   , ObjservableValue    = require('observable-value')
   , nextTick            = require('next-tick')
   , observableResult    = new ObjservableValue()
-  , filesCompletedByServiceHandle, pendingFilesHandle
+  , pendingFilesHandle
   , timeByStepAndServiceHandle, timeByServiceHandle, withdrawalTimeHandle;
 
 exports._servicesColors = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
@@ -157,16 +157,15 @@ var getFilesCompletedPerDay = function (data) {
 	return assign(result, chart);
 };
 
-var drawFilesCompletedByStep = function (data) {
-	var chart = {
+var getFilesCompletedByStep = function (data) {
+	var result = { handle: 'chart-files-completed-by-service' }, chart = {
 		options: commonOptions,
 		data: [["Service"]]
 	};
 	if (!Object.keys(data.byStepAndService).length) {
-		filesCompletedByServiceHandle.innerHtml = '';
-		return;
+		return result;
 	}
-	chart.chart = new google.visualization.BarChart(filesCompletedByServiceHandle);
+
 	var services = getServiceNames();
 	Object.keys(services).forEach(function (serviceName) {
 		chart.data[0].push(services[serviceName].label);
@@ -183,8 +182,7 @@ var drawFilesCompletedByStep = function (data) {
 		chart.data.push(stepData);
 	});
 
-	chart.data = google.visualization.arrayToDataTable(chart.data);
-	chart.chart.draw(chart.data, chart.options);
+	return assign(result, chart);
 };
 
 var drawPendingFiles = function (data) {
@@ -318,7 +316,7 @@ var updateChartsData = function (data) {
 	if (!data) return;
 
 	dataForCharts.push(getFilesCompletedPerDay(data));
-//	drawFilesCompletedByStep(data);
+	dataForCharts.push(getFilesCompletedByStep(data));
 //	drawPendingFiles(data);
 //	drawAverageTimeByService(data);
 //	drawAverageTime(data);
@@ -377,7 +375,7 @@ exports['statistics-main'] = function () {
 		div({ id: "chart-files-completed-per-day" }));
 	section({ class: "section-primary" },
 		h3(_("Processed files")),
-		filesCompletedByServiceHandle = div({ id: "chart-files-completed-by-service" }));
+		div({ id: "chart-files-completed-by-service" }));
 	section({ class: "section-primary" }, h3(_("Pending files at ${ date }", {
 		date: location.query.get('dateTo').map(function (dateTo) {
 			var date = dateTo ? new db.Date(dateTo) : new db.Date();
