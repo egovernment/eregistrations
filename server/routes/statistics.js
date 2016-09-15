@@ -35,8 +35,8 @@ module.exports = function (data) {
 	});
 
 	timePerPersonPrint = timePerPersonPrint(assign(options));
-	timePerRolePrint   = timePerRolePrint(assign(options));
-	timePerRoleCsv     = timePerRoleCsv(assign(options));
+	timePerRolePrint = timePerRolePrint(assign(options));
+	timePerRoleCsv = timePerRoleCsv(assign(options));
 
 	var queryHandler = new QueryHandler(queryConf);
 
