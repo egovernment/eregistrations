@@ -2,6 +2,7 @@
 
 'use strict';
 
-var db = require('../../../db');
+var getRoutes = require('eregistrations/server/routes/business-process')
+, 	db        = require('../../../db');
 
-module.exports = require('eregistrations/server/routes/business-process')(db.${ className });
+module.exports = getRoutes(db.${ className });
