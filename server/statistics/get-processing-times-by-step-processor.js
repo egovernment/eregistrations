@@ -94,7 +94,6 @@ module.exports = function (data) {
 	}
 	return getClosedProcessingStepsStatuses(driver, processingStepsMeta, db)(
 		function (businessProcessesByStepsMap) {
-			if (!businessProcessesByStepsMap) return;
 			return deferred.map(Object.keys(businessProcessesByStepsMap),
 				function (stepShortPath) {
 					var entries = businessProcessesByStepsMap[stepShortPath];
