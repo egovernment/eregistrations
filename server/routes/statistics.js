@@ -21,15 +21,18 @@ var getFilesPendingByStepAndService =
 var getQueryHandlerConf = require('../../routes/utils/get-statistics-time-query-handler-conf');
 
 module.exports = function (data) {
-	var options         = normalizeOptions(ensureObject(data)), queryConf, processingStepsMeta, db;
+	var options = normalizeOptions(ensureObject(data))
+	  , queryConf, processingStepsMeta, db;
+
 	ensureDriver(options.driver);
-	db                  = ensureDatabase(options.db);
+	db = ensureDatabase(options.db);
 	processingStepsMeta = options.processingStepsMeta;
 	queryConf = getQueryHandlerConf({
 		db: db,
 		processingStepsMeta: processingStepsMeta,
 		queryConf: options.queryConf
 	});
+
 	timePerPersonPrint = timePerPersonPrint(assign(options));
 	timePerRolePrint   = timePerRolePrint(assign(options));
 	timePerRoleCsv     = timePerRoleCsv(assign(options));
