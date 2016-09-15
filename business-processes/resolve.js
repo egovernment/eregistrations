@@ -3,7 +3,7 @@
 'use strict';
 
 var memoize    = require('memoizee')
-  , ensureType = require('../ensure-business-process-type')
+  , ensureType = require('../utils/ensure-business-process-type')
   , isFalsy    = require('../utils/is-falsy');
 
 var getTypeFilter = memoize(function (type) {
