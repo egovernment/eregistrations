@@ -2,15 +2,15 @@
 
 var includes                         = require('es5-ext/array/#/contains')
   , assign                           = require('es5-ext/object/assign')
-  , getClosedProcessingStepsStatuses = require('./get-closed-processing-steps-statuses')
-  , ensureDriver                     = require('dbjs-persistence/ensure-driver')
-  , ensureDatabase                   = require('dbjs/valid-dbjs')
   , ensureObject                     = require('es5-ext/object/valid-object')
   , ensureCallable                   = require('es5-ext/object/valid-callable')
   , deferred                         = require('deferred')
+  , memoize                          = require('memoizee')
+  , ensureDatabase                   = require('dbjs/valid-dbjs')
   , unserializeValue                 = require('dbjs/_setup/unserialize/value')
+  , ensureDriver                     = require('dbjs-persistence/ensure-driver')
   , businessProcessesApprovedMap     = require('../utils/business-processes-approved-map')
-  , memoize                          = require('memoizee');
+  , getClosedProcessingStepsStatuses = require('./get-closed-processing-steps-statuses');
 
 var getEmptyData = function () {
 	return {
