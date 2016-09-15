@@ -53,15 +53,15 @@ var getProcessorAndProcessingTime = memoize(function (data) {
 	maxAge: 1000 * 60 * 60
 });
 /**
- *
- * @param data
- * driver                  - Database driver
- * processingStepsMeta     - map of processing steps
- * db                      - dbjs database
- * query (optional)        - query past from controller
- * customFilter (optional) - function used to filter by system specific parameters
- * @returns {Object}
- */
+	*
+	* @param data
+	* driver                  - Database driver
+	* processingStepsMeta     - map of processing steps
+	* db                      - dbjs database
+	* query (optional)        - query past from controller
+	* customFilter (optional) - function used to filter by system specific parameters
+	* @returns {Object}
+*/
 module.exports = function (data) {
 	var result = {
 		byBusinessProcess: {
@@ -75,7 +75,7 @@ module.exports = function (data) {
 		byStepAndService: {},
 		byService: {}
 	},
-		driver, processingStepsMeta, db, query, customFilter, options;
+	driver, processingStepsMeta, db, query, customFilter, options;
 	result.byBusinessProcess.totalProcessing = getEmptyData();
 	result.byBusinessProcess.totalCorrection = getEmptyData();
 	result.byBusinessProcess.total           = getEmptyData();
@@ -92,209 +92,222 @@ module.exports = function (data) {
 	if (options.customFilter) {
 		customFilter = ensureCallable(options.customFilter);
 	}
-	return getClosedProcessingStepsStatuses(driver, processingStepsMeta, db)(
-		function (businessProcessesByStepsMap) {
-			return deferred.map(Object.keys(businessProcessesByStepsMap),
-				function (stepShortPath) {
-					var entries = businessProcessesByStepsMap[stepShortPath];
-					if (query.step && query.step !== stepShortPath) return;
-					if (query.service) {
-						if (!includes.call(processingStepsMeta[stepShortPath]._services, query.service)) {
-							return;
-						}
-						if (processingStepsMeta[stepShortPath]._services.length > 1) {
-							entries = businessProcessesByStepsMap[stepShortPath].filter(function (entry) {
-								return entry.serviceName === query.service;
-							});
-						}
+
+	// 1. Get data for all processing steps from all services
+	var promise = getClosedProcessingStepsStatuses(driver, processingStepsMeta, db);
+	return promise(function (businessProcessesByStepsMap) {
+		return deferred.map(Object.keys(businessProcessesByStepsMap), function (stepShortPath) {
+			var entries = businessProcessesByStepsMap[stepShortPath];
+
+			// 2. Filter by step
+			if (query.step && query.step !== stepShortPath) return;
+
+			// 3. Filter by service
+			if (query.service) {
+				if (!includes.call(processingStepsMeta[stepShortPath]._services, query.service)) {
+					return;
+				}
+				if (processingStepsMeta[stepShortPath]._services.length > 1) {
+					entries = businessProcessesByStepsMap[stepShortPath].filter(function (entry) {
+						return entry.serviceName === query.service;
+					});
+				}
+			}
+			result.byProcessor[stepShortPath] = [];
+			result.stepTotal[stepShortPath]   = getEmptyData();
+			if (!entries.length) return;
+
+			// 4. Filter by date range
+			if (query.dateFrom) {
+				entries = entries.filter(function (data) {
+					return data.date >= query.dateFrom;
+				});
+			}
+			if (query.dateTo) {
+				entries = entries.filter(function (data) {
+					return data.date <= query.dateTo;
+				});
+			}
+
+			// 5. Custom filter
+			if (customFilter) {
+				entries = deferred.map(entries, function (entry) {
+					return customFilter(entry, query)(function (isOK) { return isOK ? entry : null; });
+				}).invoke('filter', Boolean);
+			}
+			return deferred(entries)(function (filteredEntries) {
+				entries = filteredEntries;
+
+				// 6. Get extra data for each entry
+				return deferred.map(entries, function (data) {
+					return getProcessorAndProcessingTime(data)(function (result) {
+						assign(data, result);
+					});
+				});
+			})(function () {
+				var dataByProcessors = {};
+				return deferred.map(entries, function (entry) {
+					// May happen only in case of data inconsistency
+					if (!entry.processor) return;
+					// Older businessProcess don't have processingTime, so they're useless here
+					if (!entry.processingTime) return;
+
+					// 7. Calculate processing time totals
+					if (!dataByProcessors[entry.processor]) {
+						dataByProcessors[entry.processor] = getEmptyData();
+						dataByProcessors[entry.processor].processor = entry.processor;
 					}
-					result.byProcessor[stepShortPath] = [];
-					result.stepTotal[stepShortPath]   = getEmptyData();
-					if (!entries.length) return;
-					if (query.dateFrom) {
-						entries = entries.filter(function (data) {
-							return data.date >= query.dateFrom;
+					dataByProcessors[entry.processor].processed++;
+					dataByProcessors[entry.processor].minTime =
+						Math.min(dataByProcessors[entry.processor].minTime, entry.processingTime);
+					dataByProcessors[entry.processor].maxTime =
+						Math.max(dataByProcessors[entry.processor].maxTime, entry.processingTime);
+					dataByProcessors[entry.processor].totalTime += entry.processingTime;
+					dataByProcessors[entry.processor].avgTime =
+						dataByProcessors[entry.processor].totalTime /
+						dataByProcessors[entry.processor].processed;
+
+					result.byProcessor[stepShortPath] =
+						Object.keys(dataByProcessors).map(function (processorId) {
+							return dataByProcessors[processorId];
 						});
+
+					// 7.1 Per step totals
+					result.stepTotal[stepShortPath].processed++;
+					result.stepTotal[stepShortPath].minTime =
+						Math.min(result.stepTotal[stepShortPath].minTime, entry.processingTime);
+					result.stepTotal[stepShortPath].maxTime =
+						Math.max(result.stepTotal[stepShortPath].maxTime, entry.processingTime);
+					result.stepTotal[stepShortPath].totalTime += entry.processingTime;
+					result.stepTotal[stepShortPath].avgTime =
+						result.stepTotal[stepShortPath].totalTime /
+						result.stepTotal[stepShortPath].processed;
+
+					// 7.2 Per service total
+					if (!result.byService[entry.serviceName]) {
+						result.byService[entry.serviceName] = getEmptyData();
 					}
-					if (query.dateTo) {
-						entries = entries.filter(function (data) {
-							return data.date <= query.dateTo;
-						});
+
+					var byService = result.byService[entry.serviceName];
+					byService.processed++;
+					byService.totalTime += entry.processingTime;
+					byService.avgTime = byService.totalTime / byService.processed;
+
+					// 7.3 Per step and service total
+					if (!result.byStepAndService[stepShortPath]) {
+						result.byStepAndService[stepShortPath] = {};
 					}
-					return deferred(customFilter ?
-							deferred.map(entries, function (entry) {
-								return customFilter(entry, query)(function (isOK) {
-									return isOK ? entry : null;
-								});
-							}).invoke('filter', Boolean) : entries)(function (filteredEntries) {
-						entries = filteredEntries;
-						return deferred.map(entries, function (data) {
-							return getProcessorAndProcessingTime(data)(function (result) {
-								assign(data, result);
-							});
-						});
-					})(function () {
-						var dataByProcessors = {};
-						return deferred.map(entries, function (entry) {
-							// Should not happen, but it's not right place to crash due to data inconsistency
-							if (!entry.processor) return;
-							// Older businessProcess don't have processingTime, so they're useless here
-							if (!entry.processingTime) return;
-							if (!dataByProcessors[entry.processor]) {
-								dataByProcessors[entry.processor] = getEmptyData();
-								dataByProcessors[entry.processor].processor = entry.processor;
-							}
-							dataByProcessors[entry.processor].processed++;
-							dataByProcessors[entry.processor].minTime =
-								Math.min(dataByProcessors[entry.processor].minTime, entry.processingTime);
-							dataByProcessors[entry.processor].maxTime =
-								Math.max(dataByProcessors[entry.processor].maxTime, entry.processingTime);
-							dataByProcessors[entry.processor].totalTime += entry.processingTime;
-							dataByProcessors[entry.processor].avgTime =
-								dataByProcessors[entry.processor].totalTime /
-								dataByProcessors[entry.processor].processed;
+					if (!result.byStepAndService[stepShortPath][entry.serviceName]) {
+						result.byStepAndService[stepShortPath][entry.serviceName] = getEmptyData();
+					}
+					var byStepAndService = result.byStepAndService[stepShortPath][entry.serviceName];
+					byStepAndService.processed++;
+					byStepAndService.totalTime += entry.processingTime;
+					byStepAndService.avgTime = byStepAndService.totalTime / byStepAndService.processed;
 
-							result.byProcessor[stepShortPath] =
-								Object.keys(dataByProcessors).map(function (processorId) {
-									return dataByProcessors[processorId];
-								});
-
-							// Per step totals
-							result.stepTotal[stepShortPath].processed++;
-							result.stepTotal[stepShortPath].minTime =
-								Math.min(result.stepTotal[stepShortPath].minTime, entry.processingTime);
-							result.stepTotal[stepShortPath].maxTime =
-								Math.max(result.stepTotal[stepShortPath].maxTime, entry.processingTime);
-							result.stepTotal[stepShortPath].totalTime += entry.processingTime;
-							result.stepTotal[stepShortPath].avgTime =
-								result.stepTotal[stepShortPath].totalTime /
-								result.stepTotal[stepShortPath].processed;
-
-							// Per service total
-							if (!result.byService[entry.serviceName]) {
-								result.byService[entry.serviceName] = getEmptyData();
+					// 7.4 Compute totals for approved bps
+					return businessProcessesApprovedMap(function (approvedMap) {
+						return approvedMap.get(entry.id)(function (isApproved) {
+							if (!isApproved || (isApproved[0] !== '1') ||
+									(unserializeValue(isApproved) === false)) {
+								return;
 							}
 
-							var byService = result.byService[entry.serviceName];
-							byService.processed++;
-							byService.totalTime += entry.processingTime;
-							byService.avgTime = byService.totalTime / byService.processed;
-
-							// Per step and service total
-							if (!result.byStepAndService[stepShortPath]) {
-								result.byStepAndService[stepShortPath] = {};
+							if (!result.byBusinessProcess.data[entry.id]) {
+								result.byBusinessProcess.data[entry.id] = getEmptyData();
+								result.byBusinessProcess.totalProcessing.processed++;
+								result.byBusinessProcess.total.processed++;
 							}
-							if (!result.byStepAndService[stepShortPath][entry.serviceName]) {
-								result.byStepAndService[stepShortPath][entry.serviceName] = getEmptyData();
+							result.byBusinessProcess.data[entry.id].totalTime += entry.processingTime;
+							if (entry.correctionTime) {
+								result.byBusinessProcess.data[entry.id].correctionTime = entry.correctionTime;
+								result.byBusinessProcess.data[entry.id].totalTime += entry.correctionTime;
+								if (!result.byBusinessProcess.data[entry.id].hasCorrectionTime) {
+									result.byBusinessProcess.data[entry.id].hasCorrectionTime = true;
+									result.byBusinessProcess.totalCorrection.processed++;
+								}
+							} else {
+								result.byBusinessProcess.data[entry.id].correctionTime = 0;
 							}
-							var byStepAndService = result.byStepAndService[stepShortPath][entry.serviceName];
-							byStepAndService.processed++;
-							byStepAndService.totalTime += entry.processingTime;
-							byStepAndService.avgTime = byStepAndService.totalTime / byStepAndService.processed;
+							result.byBusinessProcess.totalProcessing.totalTime += entry.processingTime;
+							result.byBusinessProcess.totalCorrection.totalTime += (entry.correctionTime || 0);
+							result.byBusinessProcess.total.totalTime =
+								result.byBusinessProcess.totalProcessing.totalTime
+								+ result.byBusinessProcess.totalCorrection.totalTime;
 
-							// We collect totals by bps as well
-							return businessProcessesApprovedMap(function (approvedMap) {
-								return approvedMap.get(entry.id)(function (isApproved) {
-									if (!isApproved || isApproved[0] !== '1' ||
-											unserializeValue(isApproved) === false) {
-										return;
-									}
+							result.byBusinessProcess.totalProcessing.avgTime =
+								result.byBusinessProcess.totalProcessing.totalTime /
+								result.byBusinessProcess.totalProcessing.processed;
 
-									if (!result.byBusinessProcess.data[entry.id]) {
-										result.byBusinessProcess.data[entry.id] = getEmptyData();
-										result.byBusinessProcess.totalProcessing.processed++;
-										result.byBusinessProcess.total.processed++;
-									}
-									result.byBusinessProcess.data[entry.id].totalTime += entry.processingTime;
-									if (entry.correctionTime) {
-										result.byBusinessProcess.data[entry.id].correctionTime = entry.correctionTime;
-										result.byBusinessProcess.data[entry.id].totalTime += entry.correctionTime;
-										if (!result.byBusinessProcess.data[entry.id].hasCorrectionTime) {
-											result.byBusinessProcess.data[entry.id].hasCorrectionTime = true;
-											result.byBusinessProcess.totalCorrection.processed++;
-										}
-									} else {
-										result.byBusinessProcess.data[entry.id].correctionTime = 0;
-									}
-									result.byBusinessProcess.totalProcessing.totalTime += entry.processingTime;
-									result.byBusinessProcess.totalCorrection.totalTime +=
-										(entry.correctionTime || 0);
-									result.byBusinessProcess.total.totalTime =
-										result.byBusinessProcess.totalProcessing.totalTime
-										+ result.byBusinessProcess.totalCorrection.totalTime;
+							// Can be 0 here
+							if (result.byBusinessProcess.totalCorrection.processed) {
+								result.byBusinessProcess.totalCorrection.avgTime =
+									result.byBusinessProcess.totalCorrection.totalTime /
+									result.byBusinessProcess.totalCorrection.processed;
+							}
 
-									result.byBusinessProcess.totalProcessing.avgTime =
-										result.byBusinessProcess.totalProcessing.totalTime /
-										result.byBusinessProcess.totalProcessing.processed;
-
-									// Can be 0 here
-									if (result.byBusinessProcess.totalCorrection.processed) {
-										result.byBusinessProcess.totalCorrection.avgTime =
-											result.byBusinessProcess.totalCorrection.totalTime /
-											result.byBusinessProcess.totalCorrection.processed;
-									}
-
-									result.byBusinessProcess.total.avgTime =
-										result.byBusinessProcess.total.totalTime /
-										result.byBusinessProcess.total.processed;
-								});
-							});
+							result.byBusinessProcess.total.avgTime =
+								result.byBusinessProcess.total.totalTime /
+								result.byBusinessProcess.total.processed;
 						});
 					});
-				})(function () {
-				if (query.step && options.userId) {
-					var perUserResult = {
-						processor: getEmptyData(),
-						stepTotal: getEmptyData()
-					};
-					if (!result.byProcessor[query.step] || !result.byProcessor[query.step].length) {
-						return perUserResult;
-					}
-					result.byProcessor[query.step].some(function (resultItem) {
-						if (resultItem.processor === options.userId) {
-							perUserResult.processor = resultItem;
-							return true;
-						}
-					});
-					perUserResult.stepTotal = result.stepTotal[query.step];
+				});
+			});
+		})(function () {
+			var perUserResult;
+			if (query.step && options.userId) {
+				perUserResult = {
+					processor: getEmptyData(),
+					stepTotal: getEmptyData()
+				};
+				if (!result.byProcessor[query.step] || !result.byProcessor[query.step].length) {
 					return perUserResult;
 				}
-				if (result.byBusinessProcess.totalProcessing.processed) {
-					// We can calculate min and max only after we have collected all the data
-					Object.keys(result.byBusinessProcess.data).forEach(function (businessProcessId) {
-						var data = result.byBusinessProcess.data[businessProcessId];
-						// Correction
-						result.byBusinessProcess.totalCorrection.minTime = Math.min(
-							result.byBusinessProcess.totalCorrection.minTime,
-							data.correctionTime
-						);
-						result.byBusinessProcess.totalCorrection.maxTime = Math.max(
-							result.byBusinessProcess.totalCorrection.maxTime,
-							data.correctionTime
-						);
-						// Processing
-						result.byBusinessProcess.totalProcessing.minTime = Math.min(
-							result.byBusinessProcess.totalProcessing.minTime,
-							data.totalTime
-						);
-						result.byBusinessProcess.totalProcessing.maxTime = Math.max(
-							result.byBusinessProcess.totalProcessing.maxTime,
-							data.totalTime
-						);
-						// Total
-						result.byBusinessProcess.total.minTime = Math.min(
-							result.byBusinessProcess.total.minTime,
-							data.totalTime + data.correctionTime
-						);
-						result.byBusinessProcess.total.maxTime = Math.max(
-							result.byBusinessProcess.total.maxTime,
-							data.totalTime + data.correctionTime
-						);
-					});
-				}
+				result.byProcessor[query.step].some(function (resultItem) {
+					if (resultItem.processor === options.userId) {
+						perUserResult.processor = resultItem;
+						return true;
+					}
+				});
+				perUserResult.stepTotal = result.stepTotal[query.step];
+				return perUserResult;
+			}
+			if (result.byBusinessProcess.totalProcessing.processed) {
+				// We can calculate min and max only after we have collected all the data
+				Object.keys(result.byBusinessProcess.data).forEach(function (businessProcessId) {
+					var data = result.byBusinessProcess.data[businessProcessId];
+					// Correction
+					result.byBusinessProcess.totalCorrection.minTime = Math.min(
+						result.byBusinessProcess.totalCorrection.minTime,
+						data.correctionTime
+					);
+					result.byBusinessProcess.totalCorrection.maxTime = Math.max(
+						result.byBusinessProcess.totalCorrection.maxTime,
+						data.correctionTime
+					);
+					// Processing
+					result.byBusinessProcess.totalProcessing.minTime = Math.min(
+						result.byBusinessProcess.totalProcessing.minTime,
+						data.totalTime
+					);
+					result.byBusinessProcess.totalProcessing.maxTime = Math.max(
+						result.byBusinessProcess.totalProcessing.maxTime,
+						data.totalTime
+					);
+					// Total
+					result.byBusinessProcess.total.minTime = Math.min(
+						result.byBusinessProcess.total.minTime,
+						data.totalTime + data.correctionTime
+					);
+					result.byBusinessProcess.total.maxTime = Math.max(
+						result.byBusinessProcess.total.maxTime,
+						data.totalTime + data.correctionTime
+					);
+				});
+			}
 
-				return result;
-			});
-		}
+			return result;
+		});
+	}
 	);
 };
