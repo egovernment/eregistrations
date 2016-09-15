@@ -3,7 +3,7 @@
 'use strict';
 
 var memoize    = require('memoizee')
-  , ensureType = require('dbjs/valid-dbjs-type')
+  , ensureType = require('../ensure-business-process-type')
   , isFalsy    = require('../utils/is-falsy');
 
 var getTypeFilter = memoize(function (type) {
@@ -15,11 +15,7 @@ var getTypeFilter = memoize(function (type) {
 });
 
 module.exports = function (type) {
-	var BusinessProcess = ensureType(type).database.BusinessProcess;
-	if (!BusinessProcess || (!BusinessProcess.isPrototypeOf(type) && (type !== BusinessProcess))) {
-		throw new Error(type.__id__ + " is not BusinessProcess type");
-	}
-	return type.instances
+	return ensureType(type).instances
 		.filter(getTypeFilter(type))
 		.filterByKey('isFromEregistrations', true)
 		.filterByKey('isDemo', isFalsy);
