@@ -1,8 +1,8 @@
 'use strict';
 
 var ensureBusinessProcessType = require('../../utils/ensure-business-process-type')
-  , getAuthenticatedRoutes    = require('./authenticated')
-  , getCostsPrintController   = require('./controllers/business-process-costs-print');
+  , getCostsPrintController   = require('./controllers/business-process-costs-print')
+  , getAuthenticatedRoutes    = require('./authenticated');
 
 module.exports = function (type/*, options*/) {
 	ensureBusinessProcessType(type);
