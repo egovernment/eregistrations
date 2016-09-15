@@ -362,7 +362,7 @@ exports['statistics-main'] = function () {
 			p({ class: 'submit' }, input({ type: 'submit' }))));
 
 	section({ class: "section-primary" },
-		h3(_("Files completed per day")),
+		h3(_("Files completed per time range")),
 		div({ id: "chart-files-completed-per-day" }));
 	section({ class: "section-primary" },
 		h3(_("Processed files")),
@@ -375,13 +375,13 @@ exports['statistics-main'] = function () {
 	})),
 		div({ id: "chart-pending-files" }));
 	section({ class: "section-primary" },
-		h3(_("Average processing time")),
+		h3(_("Average processing time in days")),
 		div({ id: "chart-by-step-and-service" }));
 	section({ class: "section-primary" },
-		h3(_("Total average processing time per service")),
+		h3(_("Total average processing time per service in days")),
 		div({ id: "chart-by-service" }));
 	section({ class: "section-primary" },
-		h3(_("Withdrawal time")), div({ id: "chart-withdrawal-time" }));
+		h3(_("Withdrawal time in days")), div({ id: "chart-withdrawal-time" }));
 	exports._customChartsDOM.call(this);
 
 	script(function () {
