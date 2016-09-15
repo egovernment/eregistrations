@@ -1,24 +1,24 @@
 'use strict';
 
-var assign                            = require('es5-ext/object/assign')
-  , deferred                          = require('deferred')
-  , normalizeOptions                  = require('es5-ext/object/normalize-options')
-  , ensureDriver                      = require('dbjs-persistence/ensure-driver')
-  , ensureDatabase                    = require('dbjs/valid-dbjs')
-  , ensureObject                      = require('es5-ext/object/valid-object')
-  , QueryHandler                      = require('../../utils/query-handler')
-  , getBaseRoutes                     = require('./authenticated')
-  , timePerPersonPrint                = require('./controllers/statistics-time-per-person-print')
-  , timePerRolePrint                  = require('./controllers/statistics-time-per-role-print')
-  , timePerRoleCsv                    = require('./controllers/statistics-time-per-role-csv')
-  , getProcessingTimesByStepProcessor =
-		require('../statistics/get-processing-times-by-step-processor')
-  , getFilesApprovedByDateAndService  =
-			require('../statistics/get-files-approved-by-date-and-service')
-  , getFilesPendingByStepAndService   =
-			require('../statistics/get-files-pending-by-step-and-service')
-  , getQueryHandlerConf               =
-		require('../../routes/utils/get-statistics-time-query-handler-conf');
+var assign             = require('es5-ext/object/assign')
+  , normalizeOptions   = require('es5-ext/object/normalize-options')
+  , ensureObject       = require('es5-ext/object/valid-object')
+  , deferred           = require('deferred')
+  , ensureDatabase     = require('dbjs/valid-dbjs')
+  , ensureDriver       = require('dbjs-persistence/ensure-driver')
+  , QueryHandler       = require('../../utils/query-handler')
+  , timePerPersonPrint = require('./controllers/statistics-time-per-person-print')
+  , timePerRolePrint   = require('./controllers/statistics-time-per-role-print')
+  , timePerRoleCsv     = require('./controllers/statistics-time-per-role-csv')
+  , getBaseRoutes      = require('./authenticated');
+
+var getProcessingTimesByStepProcessor =
+	require('../statistics/get-processing-times-by-step-processor');
+var getFilesApprovedByDateAndService =
+	require('../statistics/get-files-approved-by-date-and-service');
+var getFilesPendingByStepAndService =
+	require('../statistics/get-files-pending-by-step-and-service');
+var getQueryHandlerConf = require('../../routes/utils/get-statistics-time-query-handler-conf');
 
 module.exports = exports = function (data) {
 	var options         = normalizeOptions(ensureObject(data)), queryConf, processingStepsMeta, db;
