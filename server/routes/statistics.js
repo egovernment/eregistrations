@@ -30,6 +30,7 @@ module.exports = function (data) {
 	queryConf = getQueryHandlerConf({
 		db: db,
 		processingStepsMeta: processingStepsMeta,
+		// Eventual system specific query conf
 		queryConf: options.queryConf
 	});
 
