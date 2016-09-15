@@ -2,7 +2,6 @@
 
 var includes                         = require('es5-ext/array/#/contains')
   , assign                           = require('es5-ext/object/assign')
-  , normalizeOptions                 = require('es5-ext/object/normalize-options')
   , getClosedProcessingStepsStatuses = require('./get-closed-processing-steps-statuses')
   , ensureDriver                     = require('dbjs-persistence/ensure-driver')
   , ensureDatabase                   = require('dbjs/valid-dbjs')
@@ -63,35 +62,25 @@ var getProcessorAndProcessingTime = memoize(function (data) {
 	* @returns {Object}
 */
 module.exports = function (data) {
+	var driver = ensureDriver(ensureObject(data).driver)
+	  , processingStepsMeta = ensureObject(data.processingStepsMeta)
+	  , db = ensureDatabase(data.db)
+	  , query = data.query || {}
+	  , customFilter = data.customFilter ? ensureCallable(data.customFilter) : null
+	  , userId = data.userId;
+
 	var result = {
 		byBusinessProcess: {
-			totalProcessing: null,
-			totalCorrection: null,
-			total: null,
+			totalProcessing: getEmptyData(),
+			totalCorrection: getEmptyData(),
+			total: getEmptyData(),
 			data: {}
 		},
 		byProcessor: {},
 		stepTotal: {},
 		byStepAndService: {},
 		byService: {}
-	},
-	driver, processingStepsMeta, db, query, customFilter, options;
-	result.byBusinessProcess.totalProcessing = getEmptyData();
-	result.byBusinessProcess.totalCorrection = getEmptyData();
-	result.byBusinessProcess.total           = getEmptyData();
-
-	options             = normalizeOptions(ensureObject(data));
-	driver              = ensureDriver(options.driver);
-	processingStepsMeta = ensureObject(options.processingStepsMeta);
-	db                  = ensureDatabase(options.db);
-	if (options.query) {
-		query = ensureObject(options.query);
-	} else {
-		query = {};
-	}
-	if (options.customFilter) {
-		customFilter = ensureCallable(options.customFilter);
-	}
+	};
 
 	// 1. Get data for all processing steps from all services
 	var promise = getClosedProcessingStepsStatuses(driver, processingStepsMeta, db);
@@ -255,7 +244,8 @@ module.exports = function (data) {
 			});
 		})(function () {
 			var perUserResult;
-			if (query.step && options.userId) {
+			if (query.step && userId) {
+				// 8. Filter by user (data for one processor)
 				perUserResult = {
 					processor: getEmptyData(),
 					stepTotal: getEmptyData()
@@ -264,7 +254,7 @@ module.exports = function (data) {
 					return perUserResult;
 				}
 				result.byProcessor[query.step].some(function (resultItem) {
-					if (resultItem.processor === options.userId) {
+					if (resultItem.processor === userId) {
 						perUserResult.processor = resultItem;
 						return true;
 					}
@@ -308,6 +298,5 @@ module.exports = function (data) {
 
 			return result;
 		});
-	}
-	);
+	});
 };
