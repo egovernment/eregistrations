@@ -8,10 +8,10 @@ var debug               = require('debug-ext')('pdf-generator')
   , assign              = require('es5-ext/object/assign')
   , _                   = require('mano').i18n.bind('Statistics time per role pdf')
   , capitalize          = require('es5-ext/string/#/capitalize')
-  , resolveFullStepPath = require('../../utils/resolve-processing-step-full-path')
+  , resolveFullStepPath = require('../../../utils/resolve-processing-step-full-path')
   , getProcessingTimesByStepProcessor =
-			require('../statistics/get-processing-times-by-step-processor')
-  , getDurationDaysHours = require('../../view/utils/get-duration-days-hours')
+			require('../../statistics/get-processing-times-by-step-processor')
+  , getDurationDaysHours = require('../../../view/utils/get-duration-days-hours')
   , normalizeOptions    = require('es5-ext/object/normalize-options');
 
 var getEmptyResult = function () {
