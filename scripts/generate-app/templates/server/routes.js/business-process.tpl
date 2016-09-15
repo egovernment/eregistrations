@@ -3,6 +3,6 @@
 'use strict';
 
 var getRoutes = require('eregistrations/server/routes/business-process')
-, 	db        = require('../../../db');
+  , db        = require('../../../db');
 
 module.exports = getRoutes(db.${ className });
