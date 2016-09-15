@@ -71,9 +71,8 @@ module.exports = function (data) {
 			}
 		},
 		'get-dashboard-data': function (query) {
-			var today = new Date();
 			return queryHandler.resolve(query)(function (query) {
-				var finalResult = {};
+				var finalResult = {}, today = new Date();
 				return deferred(
 					getProcessingTimesByStepProcessor(assign(options,
 						{ query: query }))(function (result) {
