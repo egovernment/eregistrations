@@ -9,7 +9,7 @@ var includes                         = require('es5-ext/array/#/contains')
   , ensureDatabase                   = require('dbjs/valid-dbjs')
   , unserializeValue                 = require('dbjs/_setup/unserialize/value')
   , ensureDriver                     = require('dbjs-persistence/ensure-driver')
-  , getClosedProcessingStepsStatuses = require('./get');
+  , getClosedProcessingStepsStatuses = require('./map');
 
 var getProcessorAndProcessingTime = memoize(function (data) {
 	var result = {};
