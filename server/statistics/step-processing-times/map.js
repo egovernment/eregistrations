@@ -30,7 +30,23 @@ module.exports = memoize(function (driver, processingStepsMeta) {
 			serviceFullShortNameMap.set(serviceFullName, serviceName);
 			if (!storageStepsMap.has(storage)) storageStepsMap.set(storage, new Set());
 			storageStepsMap.get(storage).add(stepPath);
-			// TODO: Listen for prop changes
+			storage.on('key:processingSteps/map/' + stepPath + '/status', function (event) {
+				if (event.type !== 'direct') return;
+				if ((event.data.value !== '3approved') && (event.data.value !== '3rejected')) {
+					if (!result[stepShortPath]) return;
+					delete result[stepShortPath][event.ownerId];
+				} else {
+					if (!result[stepShortPath]) result[stepShortPath] = Object.create(null);
+					result[stepShortPath][event.ownerId] = {
+						ownerId: event.ownerId,
+						data: event.data,
+						date: toDateInTz(new Date(event.data.stamp / 1000), timeZone),
+						stepFullPath: 'processingSteps/map/' + stepPath,
+						serviceName: serviceName,
+						storage: storage
+					};
+				}
+			});
 		});
 	});
 
@@ -58,8 +74,4 @@ module.exports = memoize(function (driver, processingStepsMeta) {
 		});
 	})(result);
 
-}, {
-	length: 0,
-	// One day
-	maxAge: 86400000
-});
+}, { length: 0 });
