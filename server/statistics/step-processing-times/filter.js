@@ -126,8 +126,6 @@ module.exports = function (data) {
 					});
 				}
 			}
-			result.byProcessor[stepShortPath] = [];
-			result.stepTotal[stepShortPath]   = getEmptyData();
 			if (!entries.length) return;
 
 			// 4. Filter by date range
@@ -164,6 +162,11 @@ module.exports = function (data) {
 					if (!entry.processor) return;
 					// Older businessProcess don't have processingTime, so they're useless here
 					if (!entry.processingTime) return;
+
+					if (!result.byProcessor[stepShortPath]) {
+						result.byProcessor[stepShortPath] = [];
+						result.stepTotal[stepShortPath]   = getEmptyData();
+					}
 
 					// 7. Calculate processing time totals
 					// 7.1 Per step and processor
