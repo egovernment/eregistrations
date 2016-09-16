@@ -12,7 +12,7 @@ var debug               = require('debug-ext')('pdf-generator')
   , resolveFullStepPath = require('../../../utils/resolve-processing-step-full-path')
   , root                = resolve(__dirname, '../..')
   , getProcessingTimesByStepProcessor =
-		require('../../statistics/step-processing-times/filter')
+		require('../../statistics/step-processing-times/reduce')
   , templatePath        = resolve(root, 'apps-common/pdf-templates/statistics-time-per-role.html')
   , getDurationDaysHours = require('../../../view/utils/get-duration-days-hours')
   , normalizeOptions    = require('es5-ext/object/normalize-options')

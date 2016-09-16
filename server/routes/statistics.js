@@ -13,7 +13,7 @@ var assign             = require('es5-ext/object/assign')
   , getBaseRoutes      = require('./authenticated');
 
 var getProcessingTimesByStepProcessor =
-	require('../statistics/step-processing-times/filter');
+	require('../statistics/step-processing-times/reduce');
 var getFilesApprovedByDateAndService =
 	require('../statistics/get-files-approved-by-date-and-service');
 var getFilesPendingByStepAndService =

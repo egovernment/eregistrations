@@ -10,7 +10,7 @@ var debug               = require('debug-ext')('pdf-generator')
   , capitalize          = require('es5-ext/string/#/capitalize')
   , resolveFullStepPath = require('../../../utils/resolve-processing-step-full-path')
   , getProcessingTimesByStepProcessor =
-			require('../../statistics/step-processing-times/filter')
+			require('../../statistics/step-processing-times/reduce')
   , getDurationDaysHours = require('../../../view/utils/get-duration-days-hours')
   , normalizeOptions    = require('es5-ext/object/normalize-options');
 
