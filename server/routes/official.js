@@ -39,7 +39,7 @@ var aFrom                          = require('es5-ext/array/from')
   , getBaseRoutes                  = require('./authenticated')
   , customError                    = require('es5-ext/error/custom')
   , getProcessingTimesByStepProcessor =
-		require('../statistics/get-processing-times-by-step-processor')
+		require('../statistics/step-processing-times/filter')
   , statusLogPrintPdfRenderer = require('../pdf-renderers/business-process-status-log-print')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)

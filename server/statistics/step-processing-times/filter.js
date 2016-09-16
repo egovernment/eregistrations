@@ -9,8 +9,8 @@ var includes                         = require('es5-ext/array/#/contains')
   , ensureDatabase                   = require('dbjs/valid-dbjs')
   , unserializeValue                 = require('dbjs/_setup/unserialize/value')
   , ensureDriver                     = require('dbjs-persistence/ensure-driver')
-  , businessProcessesApprovedMap     = require('../utils/business-processes-approved-map')
-  , getClosedProcessingStepsStatuses = require('./step-processing-times/get');
+  , businessProcessesApprovedMap     = require('../../utils/business-processes-approved-map')
+  , getClosedProcessingStepsStatuses = require('./get');
 
 var getEmptyData = function () {
 	return {
