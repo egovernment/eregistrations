@@ -28,6 +28,7 @@ module.exports = memoize(function (db/* options */) {
 			var manager = this.master;
 
 			manager.managedUsers.forEach(function (managedUser) {
+				if (managedUser.isActiveAccount) return;
 				managedUser._destroy();
 			});
 		},

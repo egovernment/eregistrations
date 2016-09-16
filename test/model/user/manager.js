@@ -107,4 +107,32 @@ module.exports = function (t, a) {
 	manager.destroy();
 	a(db.BusinessProcess.instances.has(bp), false);
 	a(db.User.instances.has(user), false);
+
+
+
+	user = new User();
+	user.roles.add('user');
+	manager = new User();
+	manager.roles.add('manager');
+	user.manager = manager;
+	bp = new BusinessProcess();
+	user.initialBusinessProcesses.add(bp);
+	bp.isSubmitted = true;
+	user.submittedBusinessProcessesSize = 1;
+	manager.dependentManagedUsersSize = 1;
+	a(manager.canBeDestroyed, false);
+
+	var user2 = new User();
+	user2.roles.add('user');
+	user2.manager = manager;
+	user2.isActiveAccount = true;
+
+	bp.isSubmitted = false;
+	user.delete('submittedBusinessProcessesSize');
+	manager.delete('dependentManagedUsersSize');
+	a(manager.canBeDestroyed, true);
+	a(db.User.instances.has(user2), true);
+	manager.destroy();
+	a(db.User.instances.has(user), false);
+	a(db.User.instances.has(user2), true);
 };
