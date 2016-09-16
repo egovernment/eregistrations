@@ -14,10 +14,15 @@ var includes                         = require('es5-ext/array/#/contains')
 
 var getEmptyData = function () {
 	return {
+		// Count of finalized files/steps
 		processed: 0,
+		// Average processing time
 		avgTime: 0,
+		// Shortest processing time
 		minTime: Infinity,
+		// Longest processing time
 		maxTime: 0,
+		// Sum of all processing times
 		totalTime: 0
 	};
 };
@@ -71,14 +76,34 @@ module.exports = function (data) {
 
 	var result = {
 		byBusinessProcess: {
+			// All files processing time
 			totalProcessing: getEmptyData(),
+			// All files correction time
 			totalCorrection: getEmptyData(),
+			// All files processing + correction time
 			total: getEmptyData(),
+			// Data per file
+			// data // Map of files
+			// data[businessProcessId] // Data of file
 			data: {}
 		},
+		// Data per step and processor:
+		// byProcessor // Map of steps
+		// byProcessor[stepShortPath] // Array of processors data
+		// byProcessor[stepShortPath][0] // Data of processor for given step
 		byProcessor: {},
+		// Data per step:
+		// stepTotal // Map of steps
+		// stepTotal[stepShortPath] // Data of step
 		stepTotal: {},
+		// Data per step and service
+		// byStepAndService // Map of steps
+		// byStepAndService[shortStepPath] // Map of services
+		// byStepAndService[shortStepPath][serviceName] // Data of service for given step
 		byStepAndService: {},
+		// Data per service:
+		// byService // Map of services
+		// byService[serviceName] // Data of service
 		byService: {}
 	};
 
@@ -142,6 +167,7 @@ module.exports = function (data) {
 					if (!entry.processingTime) return;
 
 					// 7. Calculate processing time totals
+					// 7.1 Per step and processor
 					if (!dataByProcessors[entry.processor]) {
 						dataByProcessors[entry.processor] = getEmptyData();
 						dataByProcessors[entry.processor].processor = entry.processor;
@@ -161,7 +187,7 @@ module.exports = function (data) {
 							return dataByProcessors[processorId];
 						});
 
-					// 7.1 Per step totals
+					// 7.2 Per step
 					result.stepTotal[stepShortPath].processed++;
 					result.stepTotal[stepShortPath].minTime =
 						Math.min(result.stepTotal[stepShortPath].minTime, entry.processingTime);
@@ -172,7 +198,7 @@ module.exports = function (data) {
 						result.stepTotal[stepShortPath].totalTime /
 						result.stepTotal[stepShortPath].processed;
 
-					// 7.2 Per service total
+					// 7.3 Per service
 					if (!result.byService[entry.serviceName]) {
 						result.byService[entry.serviceName] = getEmptyData();
 					}
@@ -182,7 +208,7 @@ module.exports = function (data) {
 					byService.totalTime += entry.processingTime;
 					byService.avgTime = byService.totalTime / byService.processed;
 
-					// 7.3 Per step and service total
+					// 7.4 Per step and service
 					if (!result.byStepAndService[stepShortPath]) {
 						result.byStepAndService[stepShortPath] = {};
 					}
@@ -194,7 +220,7 @@ module.exports = function (data) {
 					byStepAndService.totalTime += entry.processingTime;
 					byStepAndService.avgTime = byStepAndService.totalTime / byStepAndService.processed;
 
-					// 7.4 Compute totals for approved bps
+					// 7.5 Compute totals for approved files
 					return businessProcessesApprovedMap(function (approvedMap) {
 						return approvedMap.get(entry.id)(function (isApproved) {
 							if (!isApproved || (isApproved[0] !== '1') ||
