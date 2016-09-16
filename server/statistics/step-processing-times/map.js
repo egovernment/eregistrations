@@ -1,3 +1,6 @@
+// Retrive data for all steps of all files
+// (map db data into meta objects for our needs)
+
 'use strict';
 
 var capitalize                    = require('es5-ext/string/#/capitalize')
