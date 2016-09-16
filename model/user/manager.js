@@ -108,12 +108,12 @@ module.exports = memoize(function (db/* options */) {
 		},
 
 		// Whether state of this user (client) allows manager to be deleted
-		isManagerDestructionNonBlocker: {
+		isManagerDestructionBlocker: {
 			type: db.Boolean,
 			value: function (_observe) {
 				// If user has independent account then it can live without manager which created it
 				// Otherwise do not allow deletion if there's any submitted business process
-				return this.isActiveAccount || this.canBeDestroyed;
+				return !this.isActiveAccount && !this.canBeDestroyed;
 			}
 		}
 	});

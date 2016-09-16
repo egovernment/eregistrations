@@ -27,7 +27,7 @@ module.exports = function (driver) {
 		),
 		trackRelationsSize(
 			'dependentManagedUsersSize',
-			getDbSet(userStorage, 'computed', 'isManagerDestructionNonBlocker', '11'),
+			getDbSet(userStorage, 'computed', 'isManagerDestructionBlocker', '11'),
 			clientManagerMap
 		)
 	);
