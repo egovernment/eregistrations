@@ -1,4 +1,4 @@
-sget'use strict';
+'use strict';
 
 var includes         = require('es5-ext/array/#/contains')
   , assign           = require('es5-ext/object/assign')
