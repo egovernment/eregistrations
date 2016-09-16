@@ -1,12 +1,12 @@
 'use strict';
 
-var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
-  , capitalize                    = require('es5-ext/string/#/capitalize')
-  , unserializeValue              = require('dbjs/_setup/unserialize/value')
-  , deferred                      = require('deferred')
-  , db                            = require('../../db')
-  , driver                        = require('mano').dbDriver
+var capitalize                    = require('es5-ext/string/#/capitalize')
   , memoize                       = require('memoizee')
+  , deferred                      = require('deferred')
+  , unserializeValue              = require('dbjs/_setup/unserialize/value')
+  , driver                        = require('mano').dbDriver
+  , db                            = require('../../db')
+  , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
   , toDateInTz                    = require('../../utils/to-date-in-time-zone');
 
 var addPendingFile = function (pendingFiles, stepShortPath) {
