@@ -8,9 +8,10 @@ var capitalize                    = require('es5-ext/string/#/capitalize')
   , memoize                       = require('memoizee')
   , unserializeValue              = require('dbjs/_setup/unserialize/value')
   , resolveProcessingStepFullPath = require('../../../utils/resolve-processing-step-full-path')
-  , toDateInTz                    = require('../../../utils/to-date-in-time-zone');
+  , toDateInTz                    = require('../../../utils/to-date-in-time-zone')
+  , timeZone                      = require('../../../db').timeZone;
 
-module.exports = memoize(function (driver, processingStepsMeta, db) {
+module.exports = memoize(function (driver, processingStepsMeta) {
 	var result = {};
 	return deferred.map(Object.keys(processingStepsMeta), function (stepShortPath) {
 		var stepPath, stepFullPath, services;
@@ -30,7 +31,7 @@ module.exports = memoize(function (driver, processingStepsMeta, db) {
 				result[stepShortPath].push({
 					id: id.split('/')[0],
 					data: data,
-					date: toDateInTz(new Date(data.stamp / 1000), db.timeZone),
+					date: toDateInTz(new Date(data.stamp / 1000), timeZone),
 					stepFullPath: stepFullPath,
 					serviceName: serviceName,
 					storage: storage
