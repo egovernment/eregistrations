@@ -27,18 +27,17 @@ module.exports = memoize(function (date, processingStepsMeta) {
 			return storage.searchComputed({ keyPath: stepFullPath + '/isReady' }, function (id, data) {
 				var value, isReadyDate;
 				value = unserializeValue(data.value);
-				// wither never got to this step, or were moved back due to model change
+				// OUT: Corner case: File was ready, but was moved back due to model change
 				if (value !== true) return;
 				isReadyDate = toDateInTz(new Date(data.stamp / 1000), db.timeZone);
-				// bullseye, the process started to be pending at exactly the same day as date
+				// OUT: Started to be pending at step after date
+				if (isReadyDate > date) return;
+				// IN: Started to be pending at step at date
 				if (isReadyDate.getTime() === date.getTime()) {
 					addPendingFile(pendingFiles, stepShortPath);
 					return;
 				}
-				// isReady changes only once and to true, so if it changed after our date,
-				// than the process was not pending at this step at date
-				if (isReadyDate > date) return;
-				// Worst case, we need to check the status
+				// We need to check when it stopped been pending
 				return storage.get(id.split('/', 1)[0] + '/' + stepFullPath + '/status')(function (status) {
 					var statusDate, statusValue;
 					if (status) {
@@ -46,6 +45,7 @@ module.exports = memoize(function (date, processingStepsMeta) {
 						statusDate  = toDateInTz(new Date(status.stamp / 1000), db.timeZone);
 					}
 					if (!statusValue || date <= statusDate) {
+						// IN: Either still pending, or stopped being pending after date
 						addPendingFile(pendingFiles, stepShortPath);
 					}
 				});
