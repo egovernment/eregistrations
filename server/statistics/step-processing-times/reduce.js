@@ -137,27 +137,27 @@ module.exports = function (data) {
 
 				// 7.5 Compute totals for approved files
 				return businessProcessesApprovedMap(function (approvedMap) {
-					return approvedMap.get(entry.id)(function (isApproved) {
+					return approvedMap.get(entry.ownerId)(function (isApproved) {
 						if (!isApproved || (isApproved[0] !== '1') ||
 								(unserializeValue(isApproved) === false)) {
 							return;
 						}
 
-						if (!businessProcessesData[entry.id]) {
-							businessProcessesData[entry.id] = getEmptyData();
+						if (!businessProcessesData[entry.ownerId]) {
+							businessProcessesData[entry.ownerId] = getEmptyData();
 							result.byBusinessProcess.totalProcessing.processed++;
 							result.byBusinessProcess.total.processed++;
 						}
-						businessProcessesData[entry.id].totalTime += entry.processingTime;
+						businessProcessesData[entry.ownerId].totalTime += entry.processingTime;
 						if (entry.correctionTime) {
-							businessProcessesData[entry.id].correctionTime = entry.correctionTime;
-							businessProcessesData[entry.id].totalTime += entry.correctionTime;
-							if (!businessProcessesData[entry.id].hasCorrectionTime) {
-								businessProcessesData[entry.id].hasCorrectionTime = true;
+							businessProcessesData[entry.ownerId].correctionTime = entry.correctionTime;
+							businessProcessesData[entry.ownerId].totalTime += entry.correctionTime;
+							if (!businessProcessesData[entry.ownerId].hasCorrectionTime) {
+								businessProcessesData[entry.ownerId].hasCorrectionTime = true;
 								result.byBusinessProcess.totalCorrection.processed++;
 							}
 						} else {
-							businessProcessesData[entry.id].correctionTime = 0;
+							businessProcessesData[entry.ownerId].correctionTime = 0;
 						}
 						result.byBusinessProcess.totalProcessing.totalTime += entry.processingTime;
 						result.byBusinessProcess.totalCorrection.totalTime += (entry.correctionTime || 0);
