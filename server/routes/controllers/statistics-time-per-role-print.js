@@ -9,14 +9,14 @@ var debug               = require('debug-ext')('pdf-generator')
   , _                   = require('mano').i18n.bind('Statistics time per role pdf')
   , resolve             = require('path').resolve
   , capitalize          = require('es5-ext/string/#/capitalize')
-  , resolveFullStepPath = require('../../utils/resolve-processing-step-full-path')
+  , resolveFullStepPath = require('../../../utils/resolve-processing-step-full-path')
   , root                = resolve(__dirname, '../..')
   , getProcessingTimesByStepProcessor =
-		require('../statistics/get-processing-times-by-step-processor')
+		require('../../statistics/get-processing-times-by-step-processor')
   , templatePath        = resolve(root, 'apps-common/pdf-templates/statistics-time-per-role.html')
-  , getDurationDaysHours = require('../../view/utils/get-duration-days-hours')
+  , getDurationDaysHours = require('../../../view/utils/get-duration-days-hours')
   , normalizeOptions    = require('es5-ext/object/normalize-options')
-  , htmlToPdf           = require('../html-to-pdf');
+  , htmlToPdf           = require('../../html-to-pdf');
 
 var getEmptyResult = function () {
 	return {

@@ -1,6 +1,9 @@
 'use strict';
 
-var _                    = require('mano').i18n.bind('View: User')
+var db                   = require('../db')
+  , _                    = require('mano').i18n.bind('View: User')
+  , uncapitalize         = require('es5-ext/string/#/uncapitalize')
+  , startsWith           = require('es5-ext/string/#/starts-with')
   , loginDialog          = require('./components/login-dialog')
   , registerDialog       = require('./components/register-dialog')
   , modalContainer       = require('./components/modal-container')
@@ -71,13 +74,81 @@ exports.main = function () {
 	div({ class: 'user-forms', id: 'sub-main' });
 };
 
-exports._submittedMenu = Function.prototype;
+exports._submittedMenu = function () {
+	var user = this.manager || this.user;
 
-exports._getMyAccountButton = function (user, fullName) {
+	return [
+		list(user.roles.filter(function (role) {
+			return !['metaAdmin', 'usersAdmin', 'statistics'].some(function (disabledRole) {
+				return role === disabledRole;
+			});
+		}), exports._getSubmittedMenuItem.bind(this)),
+		exports._submittedMenuExtraItems.call(this)
+	];
+};
+
+exports._getSubmittedMenuItem = function (role) {
+	var user      = this.user
+	  , appName   = this.appName
+	  , roleTitle = db.Role.meta[role].label
+	  , viewPath, pending, pendingCount;
+
+	if (role === 'user' && startsWith.call(appName, 'business-process-')) {
+		return li(exports._getMyAccountButton(user, roleTitle));
+	}
+
+	if (startsWith.call(role, 'official')) {
+		viewPath = exports._getPendingViewPath.call(this, role);
+
+		if (viewPath) {
+			pending  = db.views.businessProcesses.getBySKeyPath(viewPath);
+
+			if (pending && pending.pending) {
+				pendingCount = pending.pending._totalSize;
+			} else {
+				pendingCount = '-';
+			}
+		} else {
+			pendingCount = '-';
+		}
+
+		if (user.currentRoleResolved === role) {
+			return li({ class: 'submitted-menu-item-active' }, a({ href: '/' }, roleTitle,
+				' (', pendingCount, ')'));
+		}
+
+		return li(form({ method: 'post', action: '/set-role/' },
+			input({ type: 'hidden', name: user.__id__ + '/currentRole', value: role }),
+			button({ type: 'submit' }, roleTitle, ' (', pendingCount, ')')));
+	}
+
+	if (user.currentRoleResolved === role) {
+		if (user.currentRoleResolved === 'manager') {
+			if (appName === 'manager' || appName === 'manager-registration') {
+				return li({ class: 'submitted-menu-item-active' }, a({ href: '/' }, roleTitle));
+			}
+			return li({ class: 'submitted-menu-item-active' },
+				exports._getManagerButton(user, roleTitle));
+		}
+		return li({ class: 'submitted-menu-item-active' }, a({ href: '/' }, roleTitle));
+	}
+
+	return li(form({ method: 'post', action: '/set-role/' },
+		input({ type: 'hidden', name: user.__id__ + '/currentRole', value: role }),
+		button({ type: 'submit' }, roleTitle)));
+};
+
+exports._getPendingViewPath = function (role) {
+	return uncapitalize.call(role.slice('official'.length));
+};
+
+exports._submittedMenuExtraItems = Function.prototype;
+
+exports._getMyAccountButton = function (user, roleTitle) {
 	return form({ method: 'post', action: '/change-business-process/' },
 		input({ type: 'hidden',
 			name: user.__id__ + '/currentBusinessProcess', value: null }),
-		button({ type: 'submit' }, fullName));
+		button({ type: 'submit' }, roleTitle));
 };
 
 exports._getManagerButton = function (user, roleTitle) {
@@ -99,18 +170,36 @@ exports._extraRoleLabel = function () {
 };
 
 exports._userNameMenuItem = function () {
-	return [li({ id: "drop-down-menu", class: "header-top-dropdown-container" },
+	var user         = this.manager || this.user
+	  , isMetaAdmin  = user.roles._has('metaAdmin')
+	  , isUsersAdmin = user.roles._has('usersAdmin');
+
+	return [
+		li(
+			{ id: "drop-down-menu", class: "header-top-dropdown-container" },
 			a(span({ class: 'header-top-user-name header-top-dropdown-button' },
-				this.manager ? this.manager._fullName : this.user._fullName,
+				user._fullName,
 				i({ id: 'drop-down-menu-angle', class: 'fa fa-angle-down header-top-dropdown-button' }))),
-			ul({ class: "header-top-menu-dropdown-content" },
+			ul(
+				{ class: "header-top-menu-dropdown-content" },
+				_if(user.roles._has('statistics'), [
+					li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
+					exports._getRoleMenuItem.call(this, 'statistics')
+				]),
+				_if(or(isMetaAdmin, isUsersAdmin), [
+					li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
+					_if(isMetaAdmin, exports._getRoleMenuItem.call(this, 'metaAdmin')),
+					_if(isUsersAdmin, exports._getRoleMenuItem.call(this, 'usersAdmin'))
+				]),
 				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 				exports._profileMenuItem.call(this),
 				exports._logoutMenuItem.call(this)
-				)
-			),
-			script(function () {
-			var dropDownMenu = $('drop-down-menu'), dropDownMenuAngle = $('drop-down-menu-angle');
+			)
+		),
+		script(function () {
+			var dropDownMenu      = $('drop-down-menu')
+			  , dropDownMenuAngle = $('drop-down-menu-angle');
+
 			dropDownMenu.onclick = function () {
 				if (dropDownMenu.hasClass("header-top-menu-opened")) {
 					dropDownMenu.removeClass("header-top-menu-opened");
@@ -122,6 +211,7 @@ exports._userNameMenuItem = function () {
 					dropDownMenuAngle.removeClass("fa-angle-down");
 				}
 			};
+
 			document.onclick = function (event) {
 				var evt = event || window.event;
 				var clicked = null;
@@ -136,7 +226,24 @@ exports._userNameMenuItem = function () {
 					dropDownMenuAngle.addClass("fa-angle-down");
 				}
 			};
-		})];
+		})
+	];
+};
+
+exports._getRoleMenuItem = function (role) {
+	var user = this.manager || this.user
+	  , roleTitle;
+
+	if (!db.Role.meta[role]) return;
+	roleTitle = db.Role.meta[role].label;
+
+	if (user.currentRoleResolved === role) {
+		return li({ class: 'header-top-menu-dropdown-item-active' }, a({ href: '/' }, roleTitle));
+	}
+
+	return li(form({ method: 'post', action: '/set-role/' },
+		input({ type: 'hidden', name: user.__id__ + '/currentRole', value: role }),
+		button({ type: 'submit' }, roleTitle)));
 };
 
 exports._profileMenuItem = function () {

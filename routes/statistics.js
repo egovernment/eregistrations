@@ -6,7 +6,10 @@ module.exports = function (processingStepsMeta) {
 	ensureObject(processingStepsMeta);
 
 	return {
-		'/': require('../view/statistics-dashboard'),
+		'/': {
+			decorateContext: function () { this.processingStepsMeta = processingStepsMeta; },
+			view: require('../view/statistics-dashboard')
+		},
 		files: require('../view/statistics-files-completed'),
 		'files/pending': {
 			decorateContext: function () { this.processingStepsMeta = processingStepsMeta; },
