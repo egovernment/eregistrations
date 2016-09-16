@@ -6,7 +6,6 @@ var includes         = require('es5-ext/array/#/contains')
   , ensureCallable   = require('es5-ext/object/valid-callable')
   , deferred         = require('deferred')
   , memoize          = require('memoizee')
-  , ensureDatabase   = require('dbjs/valid-dbjs')
   , unserializeValue = require('dbjs/_setup/unserialize/value')
   , ensureDriver     = require('dbjs-persistence/ensure-driver')
   , getData          = require('./map');
