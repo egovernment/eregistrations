@@ -88,7 +88,7 @@ exports._submittedMenu = function () {
 };
 
 exports._getSubmittedMenuItem = function (role) {
-	var user      = this.user
+	var user      = this.manager || this.user
 	  , appName   = this.appName
 	  , roleTitle = db.Role.meta[role].label
 	  , viewPath, pending, pendingCount;
