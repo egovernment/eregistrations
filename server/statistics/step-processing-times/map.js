@@ -47,7 +47,7 @@ module.exports = memoize(function (driver, processingStepsMeta) {
 			stepShortPath = stepShortPathMap.get(stepPath);
 			if (!result[stepShortPath]) result[stepShortPath] = [];
 			result[stepShortPath].push({
-				id: match[1],
+				ownerId: match[1],
 				data: data,
 				date: toDateInTz(new Date(data.stamp / 1000), timeZone),
 				stepFullPath: 'processingSteps/map/' + stepPath,
