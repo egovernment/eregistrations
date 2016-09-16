@@ -108,8 +108,6 @@ module.exports = function (t, a) {
 	a(db.BusinessProcess.instances.has(bp), false);
 	a(db.User.instances.has(user), false);
 
-
-
 	user = new User();
 	user.roles.add('user');
 	manager = new User();
