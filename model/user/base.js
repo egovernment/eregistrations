@@ -7,6 +7,7 @@ var normalizeOpts  = require('es5-ext/object/normalize-options')
   , _              = require('mano').i18n.bind('Model')
   , defineUser     = require('mano-auth/model/user')
   , defineRole     = require('mano-auth/model/role')
+  , defineRoleMeta = require('./roles-meta')
   , definePerson   = require('../person');
 
 module.exports = memoize(function (db/*, options */) {
@@ -59,6 +60,7 @@ module.exports = memoize(function (db/*, options */) {
 			value: 0
 		}
 	});
+	defineRoleMeta(User);
 
 	return User;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

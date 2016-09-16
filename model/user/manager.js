@@ -8,7 +8,6 @@ var memoize                     = require('memoizee/plain')
   , definePropertyGroupsProcess = require('../lib/property-groups-process')
   , defineUser                  = require('./base')
   , defineUserBusinessProcesses = require('./business-processes')
-  , defineUserRolesMeta         = require('./roles-meta')
   , defineStringLine            = require('dbjs-ext/string/string-line')
   , defineUInteger              = require('dbjs-ext/number/integer/u-integer');
 
@@ -20,7 +19,6 @@ module.exports = memoize(function (db/* options */) {
 	  , UInteger = defineUInteger(db)
 	  , Role = db.Role;
 
-	defineUserRolesMeta(User);
 	defineUserBusinessProcesses(User);
 	Role.members.add('manager');
 	Role.meta.get('manager').set('label', _("User Manager"));
@@ -29,7 +27,9 @@ module.exports = memoize(function (db/* options */) {
 		_destroy: function (ignore) {
 			var manager = this.master;
 
-			manager.managedUsers.forEach(manager.destroyManagedUser, manager);
+			manager.managedUsers.forEach(function (managedUser) {
+				managedUser._destroy();
+			});
 		},
 		canBeDestroyed: function (_observe) {
 			return !_observe(this.master._dependentManagedUsersSize);
@@ -103,52 +103,17 @@ module.exports = memoize(function (db/* options */) {
 		canManagedUserBeDestroyed: {
 			type: db.Boolean,
 			value: function (_observe) {
-				return !this.isActiveAccount && !this.submittedBusinessProcessesSize;
+				return !this.isActiveAccount && this.canBeDestroyed;
 			}
 		},
 
 		// Whether state of this user (client) allows manager to be deleted
-		isManagerDesctructionBlocker: {
+		isManagerDestructionNonBlocker: {
 			type: db.Boolean,
 			value: function (_observe) {
 				// If user has independent account then it can live without manager which created it
 				// Otherwise do not allow deletion if there's any submitted business process
-				return this.isActiveAccount || !this.submittedBusinessProcessesSize;
-			}
-		},
-		// Can this manager account be destroyed
-		canManagerBeDestroyed: {
-			type: db.Boolean,
-			value: function (_observe) {
-				if (!this.roles.has('manager')) return false;
-				return _observe(this.rolesMeta.manager._canBeDestroyed);
-			}
-		},
-		destroyManagedUser: {
-			type: db.Function,
-			value: function (user) {
-				var err = new Error('Cannot destroy user', user.__id__);
-				if (!this.managedUsers.has(user)) {
-					throw err;
-				}
-				if (!user.canManagedUserBeDestroyed) {
-					throw err;
-				}
-				user.destroy();
-			}
-		},
-		destroyManager: {
-			type: db.Function,
-			value: function (manager) {
-				var err = new Error('Cannot destroy manager', manager.__id__);
-				if (!this.roles.has('managerValidation') && !(this.roles.has('usersAdmin'))) {
-					throw err;
-				}
-				if (!manager.canManagerBeDestroyed) {
-					throw err;
-				}
-				manager.managedUsers.forEach(manager.destroyManagedUser, manager);
-				manager.destroy();
+				return this.isActiveAccount || this.canBeDestroyed;
 			}
 		}
 	});

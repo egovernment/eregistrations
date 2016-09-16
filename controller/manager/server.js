@@ -9,7 +9,10 @@ assign(exports, require('../user/server'));
 // Delete User
 exports['clients/[0-9][a-z0-9]+/delete'] = {
 	submit: function () {
-		return this.user.destroyManagedUser(this.managedUser);
+		if (!this.user.managedUsers.has(this.managedUser)) return;
+		if (!this.managedUser.canManagedUserBeDestroyed) return;
+
+		return this.managedUser.destroy();
 	}
 };
 // Delete Business Process

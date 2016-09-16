@@ -7,5 +7,10 @@ assign(exports, require('../user/server'));
 
 // Delete User
 exports['user/[0-9][a-z0-9]+/delete'] = {
-	submit: function () { this.user.destroyManager(this.target); }
+	submit: function () {
+		if (!this.user.roles.has('managerValidation') && !(this.user.roles.has('usersAdmin'))) {
+			return;
+		}
+		return this.target.destroy();
+	}
 };
