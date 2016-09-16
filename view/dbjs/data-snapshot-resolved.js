@@ -3,16 +3,15 @@
 
 'use strict';
 
-var d                  = require('d')
-  , lazy               = require('d/lazy')
-  , ObservableValue    = require('observable-value')
-  , memoize            = require('memoizee/plain')
-  , defineDataSnapshot = require('./base')
+var d                = require('d')
+  , lazy             = require('d/lazy')
+  , ObservableValue  = require('observable-value')
+  , memoize          = require('memoizee/plain')
 
-  , defineProperties   = Object.defineProperties;
+  , defineProperties = Object.defineProperties;
 
 module.exports = memoize(function (db) {
-	defineProperties(defineDataSnapshot(db).prototype, lazy({
+	defineProperties(db.DataSnapshot.prototype, lazy({
 		resolved: d(function () {
 			this._jsonString.once('change', function () { delete this.resolved; }.bind(this));
 			return this.resolve();
