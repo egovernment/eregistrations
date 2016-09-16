@@ -81,11 +81,7 @@ module.exports = function (data) {
 			// All files correction time
 			totalCorrection: getEmptyData(),
 			// All files processing + correction time
-			total: getEmptyData(),
-			// Data per file
-			// data // Map of files
-			// data[businessProcessId] // Data of file
-			data: {}
+			total: getEmptyData()
 		},
 		// Data per step and processor:
 		// byProcessor // Map of steps
@@ -106,6 +102,9 @@ module.exports = function (data) {
 		// byService[serviceName] // Data of service
 		byService: {}
 	};
+
+	// Temporary data container
+	var businessProcessesData = {};
 
 	// 1. Get data for all processing steps from all services
 	var promise = getClosedProcessingStepsStatuses(driver, processingStepsMeta, db);
@@ -228,21 +227,21 @@ module.exports = function (data) {
 								return;
 							}
 
-							if (!result.byBusinessProcess.data[entry.id]) {
-								result.byBusinessProcess.data[entry.id] = getEmptyData();
+							if (!businessProcessesData[entry.id]) {
+								businessProcessesData[entry.id] = getEmptyData();
 								result.byBusinessProcess.totalProcessing.processed++;
 								result.byBusinessProcess.total.processed++;
 							}
-							result.byBusinessProcess.data[entry.id].totalTime += entry.processingTime;
+							businessProcessesData[entry.id].totalTime += entry.processingTime;
 							if (entry.correctionTime) {
-								result.byBusinessProcess.data[entry.id].correctionTime = entry.correctionTime;
-								result.byBusinessProcess.data[entry.id].totalTime += entry.correctionTime;
-								if (!result.byBusinessProcess.data[entry.id].hasCorrectionTime) {
-									result.byBusinessProcess.data[entry.id].hasCorrectionTime = true;
+								businessProcessesData[entry.id].correctionTime = entry.correctionTime;
+								businessProcessesData[entry.id].totalTime += entry.correctionTime;
+								if (!businessProcessesData[entry.id].hasCorrectionTime) {
+									businessProcessesData[entry.id].hasCorrectionTime = true;
 									result.byBusinessProcess.totalCorrection.processed++;
 								}
 							} else {
-								result.byBusinessProcess.data[entry.id].correctionTime = 0;
+								businessProcessesData[entry.id].correctionTime = 0;
 							}
 							result.byBusinessProcess.totalProcessing.totalTime += entry.processingTime;
 							result.byBusinessProcess.totalCorrection.totalTime += (entry.correctionTime || 0);
@@ -290,8 +289,8 @@ module.exports = function (data) {
 			}
 			if (result.byBusinessProcess.totalProcessing.processed) {
 				// We can calculate min and max only after we have collected all the data
-				Object.keys(result.byBusinessProcess.data).forEach(function (businessProcessId) {
-					var data = result.byBusinessProcess.data[businessProcessId];
+				Object.keys(businessProcessesData).forEach(function (businessProcessId) {
+					var data = businessProcessesData[businessProcessId];
 					// Correction
 					result.byBusinessProcess.totalCorrection.minTime = Math.min(
 						result.byBusinessProcess.totalCorrection.minTime,
