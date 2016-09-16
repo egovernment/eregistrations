@@ -1,15 +1,15 @@
 'use strict';
 
-var includes                         = require('es5-ext/array/#/contains')
-  , assign                           = require('es5-ext/object/assign')
-  , ensureObject                     = require('es5-ext/object/valid-object')
-  , ensureCallable                   = require('es5-ext/object/valid-callable')
-  , deferred                         = require('deferred')
-  , memoize                          = require('memoizee')
-  , ensureDatabase                   = require('dbjs/valid-dbjs')
-  , unserializeValue                 = require('dbjs/_setup/unserialize/value')
-  , ensureDriver                     = require('dbjs-persistence/ensure-driver')
-  , getClosedProcessingStepsStatuses = require('./map');
+var includes         = require('es5-ext/array/#/contains')
+  , assign           = require('es5-ext/object/assign')
+  , ensureObject     = require('es5-ext/object/valid-object')
+  , ensureCallable   = require('es5-ext/object/valid-callable')
+  , deferred         = require('deferred')
+  , memoize          = require('memoizee')
+  , ensureDatabase   = require('dbjs/valid-dbjs')
+  , unserializeValue = require('dbjs/_setup/unserialize/value')
+  , ensureDriver     = require('dbjs-persistence/ensure-driver')
+  , getData          = require('./map');
 
 var getProcessorAndProcessingTime = memoize(function (data) {
 	var result = {};
@@ -60,8 +60,7 @@ module.exports = function (data) {
 	var result = {};
 
 	// 1. Get data for all processing steps from all services
-	var promise = getClosedProcessingStepsStatuses(driver, processingStepsMeta, db);
-	return promise(function (businessProcessesByStepsMap) {
+	return getData(driver, processingStepsMeta, db)(function (businessProcessesByStepsMap) {
 		return deferred.map(Object.keys(businessProcessesByStepsMap), function (stepShortPath) {
 			var entries = businessProcessesByStepsMap[stepShortPath];
 
