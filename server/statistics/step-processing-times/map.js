@@ -18,7 +18,7 @@ var re = new RegExp('^([0-9a-z]+)\\/processingSteps\\/map\\/([a-zA-Z0-9]+' +
 	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$');
 
 module.exports = memoize(function (driver, processingStepsMeta) {
-	var result = {}, storageStepsMap = new Map(), stepShortPathMap = new Map()
+	var result = Object.create(null), storageStepsMap = new Map(), stepShortPathMap = new Map()
 	  , serviceFullShortNameMap = new Map();
 
 	forEach(processingStepsMeta, function (meta, stepShortPath) {
@@ -38,22 +38,23 @@ module.exports = memoize(function (driver, processingStepsMeta) {
 		var storage = data[0], stepPaths = data[1]
 		  , serviceName = serviceFullShortNameMap.get(storage.name);
 		return storage.search(function (id, data) {
-			var match = id.match(re), stepPath, stepShortPath;
+			var match = id.match(re), ownerId, stepPath, stepShortPath;
 			if (!match) return;
 			stepPath = match[2];
 			if (!stepPaths.has(stepPath)) return;
 			if (match[3] !== 'status') return;
 			if ((data.value !== '3approved') && (data.value !== '3rejected')) return;
+			ownerId = match[1];
 			stepShortPath = stepShortPathMap.get(stepPath);
-			if (!result[stepShortPath]) result[stepShortPath] = [];
-			result[stepShortPath].push({
-				ownerId: match[1],
+			if (!result[stepShortPath]) result[stepShortPath] = Object.create(null);
+			result[stepShortPath][ownerId] = {
+				ownerId: ownerId,
 				data: data,
 				date: toDateInTz(new Date(data.stamp / 1000), timeZone),
 				stepFullPath: 'processingSteps/map/' + stepPath,
 				serviceName: serviceName,
 				storage: storage
-			});
+			};
 		});
 	})(result);
 

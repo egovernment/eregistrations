@@ -1,7 +1,9 @@
 'use strict';
 
 var includes         = require('es5-ext/array/#/contains')
+  , identity         = require('es5-ext/function/identity')
   , assign           = require('es5-ext/object/assign')
+  , toArray          = require('es5-ext/object/to-array')
   , ensureObject     = require('es5-ext/object/valid-object')
   , ensureCallable   = require('es5-ext/object/valid-callable')
   , deferred         = require('deferred')
@@ -60,7 +62,7 @@ module.exports = function (data) {
 	// 1. Get data for all processing steps from all services
 	return getData(driver, processingStepsMeta)(function (businessProcessesByStepsMap) {
 		return deferred.map(Object.keys(businessProcessesByStepsMap), function (stepShortPath) {
-			var entries = businessProcessesByStepsMap[stepShortPath];
+			var entries = toArray(businessProcessesByStepsMap[stepShortPath], identity);
 
 			// 2. Filter by step
 			if (query.step && query.step !== stepShortPath) return;
