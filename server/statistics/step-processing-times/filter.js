@@ -53,14 +53,13 @@ var getProcessorAndProcessingTime = memoize(function (data) {
 module.exports = function (data) {
 	var driver = ensureDriver(ensureObject(data).driver)
 	  , processingStepsMeta = ensureObject(data.processingStepsMeta)
-	  , db = ensureDatabase(data.db)
 	  , query = data.query || {}
 	  , customFilter = data.customFilter ? ensureCallable(data.customFilter) : null;
 
 	var result = {};
 
 	// 1. Get data for all processing steps from all services
-	return getData(driver, processingStepsMeta, db)(function (businessProcessesByStepsMap) {
+	return getData(driver, processingStepsMeta)(function (businessProcessesByStepsMap) {
 		return deferred.map(Object.keys(businessProcessesByStepsMap), function (stepShortPath) {
 			var entries = businessProcessesByStepsMap[stepShortPath];
 
