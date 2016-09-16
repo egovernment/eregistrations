@@ -8,7 +8,7 @@ var capitalize                    = require('es5-ext/string/#/capitalize')
   , toDateInTz                    = require('../../../utils/to-date-in-time-zone');
 
 module.exports = memoize(function (driver, processingStepsMeta, db) {
-	var businessProcessesBySteps = {};
+	var result = {};
 	return deferred.map(Object.keys(processingStepsMeta), function (stepShortPath) {
 		var stepPath, stepFullPath, services;
 		services = processingStepsMeta[stepShortPath]._services;
@@ -21,10 +21,10 @@ module.exports = memoize(function (driver, processingStepsMeta, db) {
 				var value;
 				value = unserializeValue(data.value);
 				if (value !== 'approved' && value !== 'rejected') return;
-				if (!businessProcessesBySteps[stepShortPath]) {
-					businessProcessesBySteps[stepShortPath] = [];
+				if (!result[stepShortPath]) {
+					result[stepShortPath] = [];
 				}
-				businessProcessesBySteps[stepShortPath].push({
+				result[stepShortPath].push({
 					id: id.split('/')[0],
 					data: data,
 					date: toDateInTz(new Date(data.stamp / 1000), db.timeZone),
@@ -34,7 +34,7 @@ module.exports = memoize(function (driver, processingStepsMeta, db) {
 				});
 			});
 		});
-	})(businessProcessesBySteps);
+	})(result);
 }, {
 	length: 0,
 	// One day
