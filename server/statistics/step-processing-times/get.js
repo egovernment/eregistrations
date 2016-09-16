@@ -4,8 +4,8 @@ var capitalize                    = require('es5-ext/string/#/capitalize')
   , deferred                      = require('deferred')
   , memoize                       = require('memoizee')
   , unserializeValue              = require('dbjs/_setup/unserialize/value')
-  , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
-  , toDateInTz                    = require('../../utils/to-date-in-time-zone');
+  , resolveProcessingStepFullPath = require('../../../utils/resolve-processing-step-full-path')
+  , toDateInTz                    = require('../../../utils/to-date-in-time-zone');
 
 module.exports = memoize(function (driver, processingStepsMeta, db) {
 	var businessProcessesBySteps = {};
