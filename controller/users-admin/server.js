@@ -3,7 +3,6 @@
 var assign           = require('es5-ext/object/assign')
   , submit           = require('mano/utils/save')
   , changePassword   = require('mano-auth/controller/server/change-password').submit
-  , dbObjects        = require('mano').db.objects
   , hash             = require('mano-auth/hash')
   , sendNotification = require('../../server/email-notifications/create-account')
   , queryMaster      = require('eregistrations/server/services/query-master/slave');

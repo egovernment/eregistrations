@@ -1,7 +1,7 @@
 'use strict';
 
 var d  = require('d')
-  , db = require('mano').db;
+  , db = require('../../db');
 
 Object.defineProperties(db.User.prototype.getOwnDescriptor('roles'), {
 	inputOptions: d({
