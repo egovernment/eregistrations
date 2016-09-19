@@ -36,8 +36,8 @@ var aFrom                          = require('es5-ext/array/from')
   , getIndexMap                    = require('../utils/get-db-sort-index-map')
   , businessProcessStoragesPromise = require('../utils/business-process-storages')
   , idToStorage                    = require('../utils/business-process-id-to-storage')
-  , getBaseRoutes                  = require('./authenticated')
   , statusLogPrintPdfRenderer      = require('../pdf-renderers/business-process-status-log-print')
+  , getBaseRoutes                  = require('./authenticated')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }
