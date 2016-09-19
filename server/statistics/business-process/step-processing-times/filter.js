@@ -1,33 +1,14 @@
 'use strict';
 
-var includes         = require('es5-ext/array/#/contains')
-  , identity         = require('es5-ext/function/identity')
-  , assign           = require('es5-ext/object/assign')
-  , toArray          = require('es5-ext/object/to-array')
-  , ensureObject     = require('es5-ext/object/valid-object')
-  , ensureCallable   = require('es5-ext/object/valid-callable')
-  , deferred         = require('deferred')
-  , memoize          = require('memoizee')
-  , unserializeValue = require('dbjs/_setup/unserialize/value')
-  , ensureDriver     = require('dbjs-persistence/ensure-driver')
-  , getData          = require('../get-data');
+var includes       = require('es5-ext/array/#/contains')
+  , identity       = require('es5-ext/function/identity')
+  , toArray        = require('es5-ext/object/to-array')
+  , ensureObject   = require('es5-ext/object/valid-object')
+  , ensureCallable = require('es5-ext/object/valid-callable')
+  , deferred       = require('deferred')
+  , ensureDriver   = require('dbjs-persistence/ensure-driver')
+  , getData        = require('../get-data');
 
-var getProcessorAndProcessingTime = memoize(function (data) {
-	var result = {};
-	return deferred(
-		data.storage.get(data.businessProcessId + '/' + data.stepFullPath + '/processingTime')(
-			function (processingTimeData) {
-				if (!processingTimeData || processingTimeData.value[0] !== '2') return;
-				result.processingTime =
-					unserializeValue(processingTimeData.value);
-			}
-		)
-	)(result);
-}, {
-	normalizer: function (args) { return args[0].businessProcessId + args[0].stepFullPath; },
-	// One hour
-	maxAge: 1000 * 60 * 60
-});
 /**
 	*
 	* @param data
@@ -86,15 +67,8 @@ module.exports = function (data) {
 				}).invoke('filter', Boolean);
 			}
 			return deferred(entries)(function (filteredEntries) {
-				entries = filteredEntries;
-
-				// 6. Get extra data for each entry
-				return deferred.map(entries, function (data) {
-					return getProcessorAndProcessingTime(data)(function (result) {
-						assign(data, result);
-					});
-				});
-			})(function () { result[stepShortPath] = entries; });
+				result[stepShortPath] = filteredEntries;
+			});
 		});
 	})(result);
 };

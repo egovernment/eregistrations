@@ -59,6 +59,11 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 			validate: function (record) { return (record.value[0] === '2'); },
 			set: function (data, record) { data.correctionTime = unserializeValue(record.value); },
 			delete: function (data) { delete data.correctionTime; }
+		},
+		processingTime: {
+			validate: function (record) { return (record.value[0] === '2'); },
+			set: function (data, record) { data.processingTime = unserializeValue(record.value); },
+			delete: function (data) { delete data.processingTime; }
 		}
 	};
 
