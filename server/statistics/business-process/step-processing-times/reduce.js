@@ -137,27 +137,27 @@ module.exports = function (data) {
 
 				// 7.5 Compute totals for approved files
 				return businessProcessesApprovedMap(function (approvedMap) {
-					return approvedMap.get(entry.ownerId)(function (isApproved) {
+					return approvedMap.get(entry.businessProcessId)(function (isApproved) {
 						if (!isApproved || (isApproved[0] !== '1') ||
 								(unserializeValue(isApproved) === false)) {
 							return;
 						}
 
-						if (!businessProcessesData[entry.ownerId]) {
-							businessProcessesData[entry.ownerId] = getEmptyData();
+						if (!businessProcessesData[entry.businessProcessId]) {
+							businessProcessesData[entry.businessProcessId] = getEmptyData();
 							result.byBusinessProcess.totalProcessing.processed++;
 							result.byBusinessProcess.total.processed++;
 						}
-						businessProcessesData[entry.ownerId].totalTime += entry.processingTime;
+						businessProcessesData[entry.businessProcessId].totalTime += entry.processingTime;
 						if (entry.correctionTime) {
-							businessProcessesData[entry.ownerId].correctionTime = entry.correctionTime;
-							businessProcessesData[entry.ownerId].totalTime += entry.correctionTime;
-							if (!businessProcessesData[entry.ownerId].hasCorrectionTime) {
-								businessProcessesData[entry.ownerId].hasCorrectionTime = true;
+							businessProcessesData[entry.businessProcessId].correctionTime = entry.correctionTime;
+							businessProcessesData[entry.businessProcessId].totalTime += entry.correctionTime;
+							if (!businessProcessesData[entry.businessProcessId].hasCorrectionTime) {
+								businessProcessesData[entry.businessProcessId].hasCorrectionTime = true;
 								result.byBusinessProcess.totalCorrection.processed++;
 							}
 						} else {
-							businessProcessesData[entry.ownerId].correctionTime = 0;
+							businessProcessesData[entry.businessProcessId].correctionTime = 0;
 						}
 						result.byBusinessProcess.totalProcessing.totalTime += entry.processingTime;
 						result.byBusinessProcess.totalCorrection.totalTime += (entry.correctionTime || 0);

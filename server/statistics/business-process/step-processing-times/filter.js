@@ -15,20 +15,20 @@ var includes         = require('es5-ext/array/#/contains')
 var getProcessorAndProcessingTime = memoize(function (data) {
 	var result = {};
 	return deferred(
-		data.storage.get(data.ownerId + '/' + data.stepFullPath + '/processor')(
+		data.storage.get(data.businessProcessId + '/' + data.stepFullPath + '/processor')(
 			function (processorData) {
 				if (!processorData || processorData.value[0] !== '7') return;
 				result.processor = processorData.value.slice(1);
 			}
 		),
-		data.storage.get(data.ownerId + '/' + data.stepFullPath + '/correctionTime')(
+		data.storage.get(data.businessProcessId + '/' + data.stepFullPath + '/correctionTime')(
 			function (correctionTimeData) {
 				if (!correctionTimeData || correctionTimeData.value[0] !== '2') return;
 				result.correctionTime =
 					unserializeValue(correctionTimeData.value);
 			}
 		),
-		data.storage.get(data.ownerId + '/' + data.stepFullPath + '/processingTime')(
+		data.storage.get(data.businessProcessId + '/' + data.stepFullPath + '/processingTime')(
 			function (processingTimeData) {
 				if (!processingTimeData || processingTimeData.value[0] !== '2') return;
 				result.processingTime =
@@ -37,7 +37,7 @@ var getProcessorAndProcessingTime = memoize(function (data) {
 		)
 	)(result);
 }, {
-	normalizer: function (args) { return args[0].ownerId + args[0].stepFullPath; },
+	normalizer: function (args) { return args[0].businessProcessId + args[0].stepFullPath; },
 	// One hour
 	maxAge: 1000 * 60 * 60
 });

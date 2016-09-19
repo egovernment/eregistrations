@@ -38,7 +38,7 @@ module.exports = memoize(function (driver, processingStepsMeta) {
 				} else {
 					if (!result[stepShortPath]) result[stepShortPath] = Object.create(null);
 					result[stepShortPath][event.ownerId] = {
-						ownerId: event.ownerId,
+						businessProcessId: event.ownerId,
 						data: event.data,
 						date: toDateInTz(new Date(event.data.stamp / 1000), timeZone),
 						stepFullPath: 'processingSteps/map/' + stepPath,
@@ -54,17 +54,17 @@ module.exports = memoize(function (driver, processingStepsMeta) {
 		var storage = data[0], stepPaths = data[1]
 		  , serviceName = serviceFullShortNameMap.get(storage.name);
 		return storage.search(function (id, data) {
-			var match = id.match(re), ownerId, stepPath, stepShortPath;
+			var match = id.match(re), businessProcessId, stepPath, stepShortPath;
 			if (!match) return;
 			stepPath = match[2];
 			if (!stepPaths.has(stepPath)) return;
 			if (match[3] !== 'status') return;
 			if ((data.value !== '3approved') && (data.value !== '3rejected')) return;
-			ownerId = match[1];
+			businessProcessId = match[1];
 			stepShortPath = stepShortPathMap.get(stepPath);
 			if (!result[stepShortPath]) result[stepShortPath] = Object.create(null);
-			result[stepShortPath][ownerId] = {
-				ownerId: ownerId,
+			result[stepShortPath][businessProcessId] = {
+				businessProcessId: businessProcessId,
 				data: data,
 				date: toDateInTz(new Date(data.stamp / 1000), timeZone),
 				stepFullPath: 'processingSteps/map/' + stepPath,
