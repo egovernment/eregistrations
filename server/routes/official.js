@@ -8,6 +8,7 @@ var aFrom                          = require('es5-ext/array/from')
   , flatten                        = require('es5-ext/array/#/flatten')
   , remove                         = require('es5-ext/array/#/remove')
   , uniq                           = require('es5-ext/array/#/uniq')
+  , customError                    = require('es5-ext/error/custom')
   , constant                       = require('es5-ext/function/constant')
   , isNaturalNumber                = require('es5-ext/number/is-natural')
   , toNaturalNumber                = require('es5-ext/number/to-pos-integer')
@@ -19,8 +20,8 @@ var aFrom                          = require('es5-ext/array/from')
   , ensureString                   = require('es5-ext/object/validate-stringifiable-value')
   , includes                       = require('es5-ext/string/#/contains')
   , uncapitalize                   = require('es5-ext/string/#/uncapitalize')
-  , d                              = require('d')
   , Set                            = require('es6-set')
+  , d                              = require('d')
   , deferred                       = require('deferred')
   , memoize                        = require('memoizee')
   , serializeValue                 = require('dbjs/_setup/serialize/value')
@@ -29,8 +30,6 @@ var aFrom                          = require('es5-ext/array/from')
   , mano                           = require('mano')
   , roleNameMap                    = require('mano/lib/server/user-role-name-map')
   , QueryHandler                   = require('../../utils/query-handler')
-  , getStatsQueryHandlerConf       =
-		require('../../routes/utils/get-statistics-time-query-handler-conf')
   , defaultItemsPerPage            = require('../../conf/objects-list-items-per-page')
   , getDbSet                       = require('../utils/get-db-set')
   , getDbArray                     = require('../utils/get-db-array')
@@ -38,10 +37,7 @@ var aFrom                          = require('es5-ext/array/from')
   , businessProcessStoragesPromise = require('../utils/business-process-storages')
   , idToStorage                    = require('../utils/business-process-id-to-storage')
   , getBaseRoutes                  = require('./authenticated')
-  , customError                    = require('es5-ext/error/custom')
-  , getProcessingTimesByStepProcessor =
-		require('../statistics/business-process/step-processing-times/reduce')
-  , statusLogPrintPdfRenderer = require('../pdf-renderers/business-process-status-log-print')
+  , statusLogPrintPdfRenderer      = require('../pdf-renderers/business-process-status-log-print')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }
@@ -50,6 +46,9 @@ var aFrom                          = require('es5-ext/array/from')
   , defineProperty = Object.defineProperty, stringify = JSON.stringify
   , businessProcessStorages, businessProcessStorageNames;
 
+var getStatsQueryHandlerConf = require('../../routes/utils/get-statistics-time-query-handler-conf');
+var getProcessingTimesByStepProcessor =
+	require('../statistics/business-process/step-processing-times/reduce');
 var getReductionTemplate = require('../statistics/business-process/get-reduction-template');
 
 businessProcessStoragesPromise.done(function (storages) {
