@@ -10,7 +10,7 @@ var debug               = require('debug-ext')('pdf-generator')
   , resolve             = require('path').resolve
   , capitalize          = require('es5-ext/string/#/capitalize')
   , resolveFullStepPath = require('../../../utils/resolve-processing-step-full-path')
-  , root                = resolve(__dirname, '../..')
+  , root                = resolve(__dirname, '../../..')
   , getProcessingTimesByStepProcessor =
 		require('../../statistics/business-process/step-processing-times/reduce')
   , templatePath        = resolve(root, 'apps-common/pdf-templates/statistics-time-per-role.html')
