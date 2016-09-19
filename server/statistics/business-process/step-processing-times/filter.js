@@ -83,12 +83,12 @@ module.exports = function (data) {
 			// 4. Filter by date range
 			if (query.dateFrom) {
 				entries = entries.filter(function (data) {
-					return data.date >= query.dateFrom;
+					return data.processingDate >= query.dateFrom;
 				});
 			}
 			if (query.dateTo) {
 				entries = entries.filter(function (data) {
-					return data.date <= query.dateTo;
+					return data.processingDate <= query.dateTo;
 				});
 			}
 

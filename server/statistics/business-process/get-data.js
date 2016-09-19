@@ -72,7 +72,7 @@ module.exports = memoize(function (driver, processingStepsMeta) {
 				};
 			}
 			data = result[stepShortPath][businessProcessId];
-			data.date = toDateInTz(new Date(record.stamp / 1000), timeZone);
+			data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
 		});
 	})(result);
 
