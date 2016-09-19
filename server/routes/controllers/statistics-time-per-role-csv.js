@@ -1,18 +1,19 @@
 'use strict';
 
-var debug               = require('debug-ext')('pdf-generator')
-  , deferred            = require('deferred')
-  , ensureDriver        = require('dbjs-persistence/ensure-driver')
-  , ensureDatabase      = require('dbjs/valid-dbjs')
-  , ensureObject        = require('es5-ext/object/valid-object')
-  , assign              = require('es5-ext/object/assign')
-  , _                   = require('mano').i18n.bind('Statistics time per role pdf')
-  , capitalize          = require('es5-ext/string/#/capitalize')
-  , resolveFullStepPath = require('../../../utils/resolve-processing-step-full-path')
-  , getProcessingTimesByStepProcessor =
-			require('../../statistics/business-process/step-processing-times/reduce')
-  , getDurationDaysHours = require('../../../view/utils/get-duration-days-hours')
-  , normalizeOptions    = require('es5-ext/object/normalize-options');
+var ensureObject         = require('es5-ext/object/valid-object')
+  , assign               = require('es5-ext/object/assign')
+  , normalizeOptions     = require('es5-ext/object/normalize-options')
+  , capitalize           = require('es5-ext/string/#/capitalize')
+  , deferred             = require('deferred')
+  , ensureDatabase       = require('dbjs/valid-dbjs')
+  , debug                = require('debug-ext')('pdf-generator')
+  , ensureDriver         = require('dbjs-persistence/ensure-driver')
+  , _                    = require('mano').i18n.bind('Statistics time per role pdf')
+  , resolveFullStepPath  = require('../../../utils/resolve-processing-step-full-path')
+  , getDurationDaysHours = require('../../../view/utils/get-duration-days-hours');
+
+var getProcessingTimesByStepProcessor =
+	require('../../statistics/business-process/step-processing-times/reduce');
 
 var getEmptyResult = function () {
 	return {
