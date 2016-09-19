@@ -17,9 +17,6 @@ var deferred                     = require('deferred')
 	* @returns {Object}
 */
 module.exports = function (data) {
-	var query = data.query || {}
-	  , userId = data.userId;
-
 	var result = {
 		byBusinessProcess: {
 			// All files processing time
