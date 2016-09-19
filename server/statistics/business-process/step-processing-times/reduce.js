@@ -68,8 +68,8 @@ module.exports = function (data) {
 
 	// 1. Get data for all processing steps from all services
 	return filterData(data)(function (entriesMap) {
-		var dataByProcessors = {};
 		return deferred.map(Object.keys(entriesMap), function (stepShortPath) {
+			var dataByProcessors = {};
 			return deferred.map(entriesMap[stepShortPath], function (entry) {
 				// May happen only in case of data inconsistency
 				if (!entry.processor) return;
