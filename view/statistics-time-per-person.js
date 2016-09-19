@@ -1,19 +1,19 @@
 'use strict';
 
-var location             = require('mano/lib/client/location')
-  , _                    = require('mano').i18n.bind('View: Statistics')
-  , db                   = require('mano').db
+var copy                 = require('es5-ext/object/copy')
   , capitalize           = require('es5-ext/string/#/capitalize')
   , uncapitalize         = require('es5-ext/string/#/uncapitalize')
+  , memoize              = require('memoizee')
   , ObservableValue      = require('observable-value')
+  , location             = require('mano/lib/client/location')
+  , _                    = require('mano').i18n.bind('View: Statistics')
+  , db                   = require('mano').db
+  , getData              = require('mano/lib/client/xhr-driver').get
   , setupQueryHandler    = require('../utils/setup-client-query-handler')
   , resolveFullStepPath  = require('../utils/resolve-processing-step-full-path')
-  , getData              = require('mano/lib/client/xhr-driver').get
   , getQueryHandlerConf  = require('../routes/utils/get-statistics-time-query-handler-conf')
   , getDurationDaysHours = require('./utils/get-duration-days-hours')
-  , getDynamicUrl        = require('./utils/get-dynamic-url')
-  , copy                 = require('es5-ext/object/copy')
-  , memoize              = require('memoizee');
+  , getDynamicUrl        = require('./utils/get-dynamic-url');
 
 exports._parent        = require('./statistics-time');
 exports._customFilters = Function.prototype;
