@@ -25,12 +25,14 @@ module.exports = memoize(function (User) {
 		rolesMeta: { type: db.Object, nested: true },
 		canBeDestroyed: { type: db.Boolean, value: function (_observe) {
 			return this.roles.every(function (role) {
+				if (!this.rolesMeta[role]) return;
 				return _observe(this.rolesMeta[role]._canBeDestroyed);
 			}.bind(this));
 		} },
 		_destroy: { type: db.Function, value: function (ignore) {
 			var db = this.database;
 			this.roles.forEach(function (role) {
+				if (!this.rolesMeta[role]) return;
 				this.rolesMeta[role]._destroy();
 			}.bind(this));
 			db.objects.delete(this);
@@ -41,6 +43,7 @@ module.exports = memoize(function (User) {
 		} },
 		validateDestroy: { type: db.Function, value: function (ignore) {
 			this.roles.forEach(function (role) {
+				if (!this.rolesMeta[role]) return;
 				this.rolesMeta[role].validateDestroy();
 			}.bind(this));
 		} }
