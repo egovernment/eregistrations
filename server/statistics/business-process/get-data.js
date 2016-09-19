@@ -54,7 +54,7 @@ module.exports = memoize(function (driver, processingStepsMeta) {
 		var storage = data[0], stepPaths = data[1]
 		  , serviceName = serviceFullShortNameMap.get(storage.name);
 		return storage.search(function (id, record) {
-			var match = id.match(re), businessProcessId, stepPath, stepShortPath;
+			var match = id.match(re), businessProcessId, stepPath, stepShortPath, data;
 			if (!match) return;
 			stepPath = match[2];
 			if (!stepPaths.has(stepPath)) return;
@@ -63,14 +63,17 @@ module.exports = memoize(function (driver, processingStepsMeta) {
 			businessProcessId = match[1];
 			stepShortPath = stepShortPathMap.get(stepPath);
 			if (!result[stepShortPath]) result[stepShortPath] = Object.create(null);
-			result[stepShortPath][businessProcessId] = {
-				businessProcessId: businessProcessId,
-				data: record,
-				date: toDateInTz(new Date(record.stamp / 1000), timeZone),
-				stepFullPath: 'processingSteps/map/' + stepPath,
-				serviceName: serviceName,
-				storage: storage
-			};
+			if (!result[stepShortPath][businessProcessId]) {
+				result[stepShortPath][businessProcessId] = {
+					businessProcessId: businessProcessId,
+					stepFullPath: 'processingSteps/map/' + stepPath,
+					serviceName: serviceName,
+					storage: storage
+				};
+			}
+			data = result[stepShortPath][businessProcessId];
+			data.data = record;
+			data.date = toDateInTz(new Date(record.stamp / 1000), timeZone);
 		});
 	})(result);
 
