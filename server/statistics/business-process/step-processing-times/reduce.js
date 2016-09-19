@@ -26,11 +26,10 @@ module.exports = function (data) {
 			// All files processing + correction time
 			total: getEmptyData()
 		},
-		// Data per step and processor:
-		// byStepAndProcessor // Map of steps
-		// byStepAndProcessor[stepShortPath] // Array of processors data
-		// byStepAndProcessor[stepShortPath][0] // Data of processor for given step
-		byStepAndProcessor: {},
+		// Data per service:
+		// byService // Map of services
+		// byService[serviceName] // Data of service
+		byService: {},
 		// Data per step:
 		// byStep // Map of steps
 		// byStep[stepShortPath] // Data of step
@@ -40,10 +39,11 @@ module.exports = function (data) {
 		// byStepAndService[shortStepPath] // Map of services
 		// byStepAndService[shortStepPath][serviceName] // Data of service for given step
 		byStepAndService: {},
-		// Data per service:
-		// byService // Map of services
-		// byService[serviceName] // Data of service
-		byService: {}
+		// Data per step and processor:
+		// byStepAndProcessor // Map of steps
+		// byStepAndProcessor[stepShortPath] // Array of processors data
+		// byStepAndProcessor[stepShortPath][0] // Data of processor for given step
+		byStepAndProcessor: {}
 	};
 
 	// Temporary data container
