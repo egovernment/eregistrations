@@ -316,8 +316,8 @@ var getStatsOverviewData = memoize(function (query, userId, statsHandlerOpts) {
 	var promise = getProcessingTimesByStepProcessor(assign(statsHandlerOpts, { query: query }));
 	return promise(function (result) {
 		var data = {};
-		if (!result.byProcessor[query.step]) return data;
-		data.processor = find.call(result.byProcessor[query.step], function (resultItem) {
+		if (!result.byStepAndProcessor[query.step]) return data;
+		data.processor = find.call(result.byStepAndProcessor[query.step], function (resultItem) {
 			return (resultItem.processor === userId);
 		});
 		data.stepTotal = result.stepTotal[query.step];

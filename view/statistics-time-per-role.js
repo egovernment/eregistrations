@@ -84,19 +84,19 @@ exports['statistics-main'] = function () {
 			total = result.byBusinessProcess.total;
 			total.label = _("Total process");
 
-			Object.keys(result.byProcessor).forEach(function (key) {
+			Object.keys(result.byStepAndProcessor).forEach(function (key) {
 				perRoleTotal = getEmptyResult();
 				perRoleTotal.label   = db['BusinessProcess' +
 					capitalize.call(processingStepsMeta[key]._services[0])].prototype
 					.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
 
-				if (!result.byProcessor[key].length) {
+				if (!result.byStepAndProcessor[key].length) {
 					resetResult(perRoleTotal);
 
 					mainData.push(perRoleTotal);
 					return;
 				}
-				result.byProcessor[key].forEach(function (byProcessor) {
+				result.byStepAndProcessor[key].forEach(function (byProcessor) {
 					perRoleTotal.processed += byProcessor.processed;
 					perRoleTotal.minTime = Math.min(byProcessor.minTime, perRoleTotal.minTime);
 					perRoleTotal.maxTime = Math.max(byProcessor.maxTime, perRoleTotal.maxTime);

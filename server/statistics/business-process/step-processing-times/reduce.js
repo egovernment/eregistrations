@@ -27,10 +27,10 @@ module.exports = function (data) {
 			total: getEmptyData()
 		},
 		// Data per step and processor:
-		// byProcessor // Map of steps
-		// byProcessor[stepShortPath] // Array of processors data
-		// byProcessor[stepShortPath][0] // Data of processor for given step
-		byProcessor: {},
+		// byStepAndProcessor // Map of steps
+		// byStepAndProcessor[stepShortPath] // Array of processors data
+		// byStepAndProcessor[stepShortPath][0] // Data of processor for given step
+		byStepAndProcessor: {},
 		// Data per step:
 		// stepTotal // Map of steps
 		// stepTotal[stepShortPath] // Data of step
@@ -59,8 +59,8 @@ module.exports = function (data) {
 				// Older businessProcess don't have processingTime, so they're useless here
 				if (!entry.processingTime) return;
 
-				if (!result.byProcessor[stepShortPath]) {
-					result.byProcessor[stepShortPath] = [];
+				if (!result.byStepAndProcessor[stepShortPath]) {
+					result.byStepAndProcessor[stepShortPath] = [];
 					result.stepTotal[stepShortPath]   = getEmptyData();
 				}
 
@@ -80,7 +80,7 @@ module.exports = function (data) {
 					dataByProcessors[entry.processor].totalTime /
 					dataByProcessors[entry.processor].processed;
 
-				result.byProcessor[stepShortPath] =
+				result.byStepAndProcessor[stepShortPath] =
 					Object.keys(dataByProcessors).map(function (processorId) {
 						return dataByProcessors[processorId];
 					});

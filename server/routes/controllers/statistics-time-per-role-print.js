@@ -48,14 +48,14 @@ module.exports = function (configData) {
 				var inserts = { data: [], locale: db.locale,
 					logo: options.logo, currentDate: db.DateTime().toString() };
 				debug('Generating statistics time per role');
-				return deferred.map(Object.keys(result.byProcessor), function (key) {
+				return deferred.map(Object.keys(result.byStepAndProcessor), function (key) {
 					var step = getEmptyResult();
 					step.label =  db['BusinessProcess' +
 						capitalize.call(options.processingStepsMeta[key]._services[0])].prototype
 						.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
 
 					inserts.data.push(step);
-					if (!result.byProcessor[key].length) return;
+					if (!result.byStepAndProcessor[key].length) return;
 					step = assign(step, {
 						processed: 0,
 						avgTime: 0,
@@ -63,7 +63,7 @@ module.exports = function (configData) {
 						maxTime: 0,
 						totalTime: 0
 					});
-					result.byProcessor[key].forEach(function (byProcessor) {
+					result.byStepAndProcessor[key].forEach(function (byProcessor) {
 						step.processed += byProcessor.processed;
 						step.minTime = Math.min(byProcessor.minTime, step.minTime);
 						step.maxTime = Math.max(byProcessor.maxTime, step.maxTime);

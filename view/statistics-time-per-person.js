@@ -62,12 +62,12 @@ exports['statistics-main'] = function () {
 		queryServer(query)(function (result) {
 			Object.keys(stepsMap).forEach(function (key) {
 				var preparedResult = [];
-				if (!result.byProcessor[key]) {
+				if (!result.byStepAndProcessor[key]) {
 					stepsMap[key].value = null;
 					return;
 				}
-				if (result.byProcessor[key].length) {
-					result.byProcessor[key].forEach(function (rowData) {
+				if (result.byStepAndProcessor[key].length) {
+					result.byStepAndProcessor[key].forEach(function (rowData) {
 						preparedResult.push(getRowResult(rowData, db.User.getById(rowData.processor).fullName));
 					});
 					preparedResult.push(getRowResult(result.stepTotal[key], _("Total & times")));
