@@ -42,49 +42,8 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 		var storage = data[0], stepPaths = data[1], customRecordSetup
 		  , serviceName = serviceFullShortNameMap.get(storage.name);
 
-		// Listen for new records
-		stepPaths.forEach(function (stepPath) {
+		var initDataset = function (stepPath, businessProcessId) {
 			var stepShortPath = stepShortPathMap.get(stepPath);
-			storage.on('key:processingSteps/map/' + stepPath + '/status', function (event) {
-				if (event.type !== 'direct') return;
-				if ((event.data.value !== '3approved') && (event.data.value !== '3rejected')) {
-					if (!result[stepShortPath]) return;
-					delete result[stepShortPath][event.ownerId];
-				} else {
-					if (!result[stepShortPath]) result[stepShortPath] = Object.create(null);
-					result[stepShortPath][event.ownerId] = {
-						businessProcessId: event.ownerId,
-						data: event.data,
-						date: toDateInTz(new Date(event.data.stamp / 1000), timeZone),
-						stepFullPath: 'processingSteps/map/' + stepPath,
-						serviceName: serviceName,
-						storage: storage
-					};
-				}
-			});
-		});
-		if (customStorageSetup) {
-			customRecordSetup = customStorageSetup(storage, {
-				stepPaths: stepPaths,
-				stepShortPathMap: stepShortPathMap,
-				serviceName: serviceName,
-				result: result
-			});
-			if (customRecordSetup) ensureCallable(customRecordSetup);
-		}
-
-		// Get current records
-		return storage.search(function (id, record) {
-			var match = id.match(re), businessProcessId, stepPath, keyPath, stepShortPath, data;
-			if (customRecordSetup) customRecordSetup(id, record);
-			if (!match) return;
-			stepPath = match[2];
-			if (!stepPaths.has(stepPath)) return;
-			keyPath = match[3];
-			if (keyPath !== 'status') return;
-			if ((record.value !== '3approved') && (record.value !== '3rejected')) return;
-			businessProcessId = match[1];
-			stepShortPath = stepShortPathMap.get(stepPath);
 			if (!result[stepShortPath]) result[stepShortPath] = Object.create(null);
 			if (!result[stepShortPath][businessProcessId]) {
 				result[stepShortPath][businessProcessId] = {
@@ -94,8 +53,48 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 					storage: storage
 				};
 			}
-			data = result[stepShortPath][businessProcessId];
-			data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
+			return result[stepShortPath][businessProcessId];
+		};
+
+		// Listen for new records
+		stepPaths.forEach(function (stepPath) {
+			var stepShortPath = stepShortPathMap.get(stepPath);
+			storage.on('key:processingSteps/map/' + stepPath + '/status', function (event) {
+				var data;
+				if (event.type !== 'direct') return;
+				if ((event.data.value !== '3approved') && (event.data.value !== '3rejected')) {
+					data = initDataset(stepShortPath, event.ownerId);
+					delete data.processingDate;
+				} else {
+					data = initDataset(stepShortPath, event.ownerId);
+					data.processingDate = toDateInTz(new Date(event.data.stamp / 1000), timeZone);
+				}
+			});
+		});
+		if (customStorageSetup) {
+			customRecordSetup = customStorageSetup(storage, {
+				stepPaths: stepPaths,
+				stepShortPathMap: stepShortPathMap,
+				serviceName: serviceName,
+				initDataset: initDataset
+			});
+			if (customRecordSetup) ensureCallable(customRecordSetup);
+		}
+
+		// Get current records
+		return storage.search(function (id, record) {
+			var match = id.match(re), businessProcessId, stepPath, keyPath, data;
+			if (customRecordSetup) customRecordSetup(id, record);
+			if (!match) return;
+			stepPath = match[2];
+			if (!stepPaths.has(stepPath)) return;
+			businessProcessId = match[1];
+			keyPath = match[3];
+			if (keyPath === 'status') {
+				if ((record.value !== '3approved') && (record.value !== '3rejected')) return;
+				data = initDataset(stepPath, businessProcessId);
+				data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
+			}
 		});
 	})(result);
 
