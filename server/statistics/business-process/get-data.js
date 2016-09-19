@@ -30,6 +30,17 @@ module.exports = memoize(function (driver, processingStepsMeta) {
 			serviceFullShortNameMap.set(serviceFullName, serviceName);
 			if (!storageStepsMap.has(storage)) storageStepsMap.set(storage, new Set());
 			storageStepsMap.get(storage).add(stepPath);
+
+		});
+	});
+
+	return deferred.map(aFrom(storageStepsMap), function (data) {
+		var storage = data[0], stepPaths = data[1]
+		  , serviceName = serviceFullShortNameMap.get(storage.name);
+
+		// Listen for new records
+		stepPaths.forEach(function (stepPath) {
+			var stepShortPath = stepShortPathMap.get(stepPath);
 			storage.on('key:processingSteps/map/' + stepPath + '/status', function (event) {
 				if (event.type !== 'direct') return;
 				if ((event.data.value !== '3approved') && (event.data.value !== '3rejected')) {
@@ -48,11 +59,8 @@ module.exports = memoize(function (driver, processingStepsMeta) {
 				}
 			});
 		});
-	});
 
-	return deferred.map(aFrom(storageStepsMap), function (data) {
-		var storage = data[0], stepPaths = data[1]
-		  , serviceName = serviceFullShortNameMap.get(storage.name);
+		// Get current records
 		return storage.search(function (id, record) {
 			var match = id.match(re), businessProcessId, stepPath, stepShortPath, data;
 			if (!match) return;
