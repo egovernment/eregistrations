@@ -8,7 +8,7 @@ var find           = require('es5-ext/array/#/find')
   , validate       = require('mano/utils/validate')
   , matchUser      = require('../utils/user-matcher')
   , customError    = require('es5-ext/error/custom')
-  , includes       = require('es5-ext/string/#/contains')
+  , Set            = require('es6-set')
 
   , keys = Object.keys;
 
@@ -27,32 +27,27 @@ exports['user/[0-9][a-z0-9]+'] = {
 	validate: function (data) {
 		var propertyKey = find.call(keys(data), function (key) {
 			return endsWith.call(key, '/password');
-		}), roles, areRolesRemovable;
+		}), areRolesRemovable, normalizedData, newRoles;
 		if (propertyKey) {
 			if (data[propertyKey]) return changePassword.call(this, data);
 			delete data[propertyKey];
 		}
 		delete data['password-repeat'];
 
-		find.call(keys(data), function (key) {
-			return endsWith.call(key, '/password');
-		});
-		roles = find.call(keys(data), function (key) {
-			return endsWith.call(key, '/roles');
-		});
-		if (roles && data[roles]) {
-			areRolesRemovable = this.target.roles.every(function (role) {
-				//role removal attempt
-				if (!includes.call(data[roles], role) && this.target.rolesMeta[role]) {
-					return this.target.rolesMeta[role].canBeDestroyed;
-				}
-				return true;
-			}.bind(this));
-			if (!areRolesRemovable) {
-				throw customError("Role cannot be removed", 'CANNOT_REMOVE_ROLE');
+		normalizedData = validate.call(this, data);
+		newRoles = new Set(normalizedData[this.target.__id__ + '/roles']);
+
+		areRolesRemovable = this.target.roles.every(function (role) {
+			//role removal attempt
+			if (!newRoles.has(role) && this.target.rolesMeta[role]) {
+				return this.target.rolesMeta[role].canBeDestroyed;
 			}
+			return true;
+		}, this);
+		if (!areRolesRemovable) {
+			throw customError("Role cannot be removed", 'CANNOT_REMOVE_ROLE');
 		}
-		return validate.call(this, data);
+		return normalizedData;
 	}
 };
 

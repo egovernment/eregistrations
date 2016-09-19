@@ -5,6 +5,7 @@ var assign           = require('es5-ext/object/assign')
   , changePassword   = require('mano-auth/controller/server/change-password').submit
   , hash             = require('mano-auth/hash')
   , sendNotification = require('../../server/email-notifications/create-account')
+  , customError      = require('es5-ext/error/custom')
   , queryMaster      = require('eregistrations/server/services/query-master/slave');
 
 // Common
@@ -54,10 +55,14 @@ exports['user/[0-9][a-z0-9]+'] = {
 
 // Delete User
 exports['user/[0-9][a-z0-9]+/delete'] = {
-	submit: function () {
-		if (!(this.user.roles.has('usersAdmin'))) {
-			return;
+	validate: function (data) {
+		if (!(this.user.roles.has('usersAdmin')) || !this.target.canBeDestroyed) {
+			throw customError("User cannot be removed", 'CANNOT_REMOVE_USER');
 		}
-		return this.target.destroy();
+
+		return data;
+	},
+	submit: function () {
+		return this.target._destroy();
 	}
 };
