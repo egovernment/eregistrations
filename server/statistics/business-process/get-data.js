@@ -75,12 +75,13 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 
 		// Get current records
 		return storage.search(function (id, record) {
-			var match = id.match(re), businessProcessId, stepPath, stepShortPath, data;
+			var match = id.match(re), businessProcessId, stepPath, keyPath, stepShortPath, data;
 			if (customRecordSetup) customRecordSetup(id, record);
 			if (!match) return;
 			stepPath = match[2];
 			if (!stepPaths.has(stepPath)) return;
-			if (match[3] !== 'status') return;
+			keyPath = match[3];
+			if (keyPath !== 'status') return;
 			if ((record.value !== '3approved') && (record.value !== '3rejected')) return;
 			businessProcessId = match[1];
 			stepShortPath = stepShortPathMap.get(stepPath);
