@@ -56,9 +56,10 @@ exports['user/[0-9][a-z0-9]+'] = {
 // Delete User
 exports['user/[0-9][a-z0-9]+/delete'] = {
 	validate: function (data) {
-		if (!(this.user.roles.has('usersAdmin')) || !this.target.canBeDestroyed) {
+		if (!this.user.roles.has('usersAdmin')) {
 			throw customError("User cannot be removed", 'CANNOT_REMOVE_USER');
 		}
+		this.target.validateDestroy();
 
 		return data;
 	},
