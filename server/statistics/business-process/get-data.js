@@ -5,6 +5,7 @@
 
 var aFrom                         = require('es5-ext/array/from')
   , forEach                       = require('es5-ext/object/for-each')
+  , ensureCallable                = require('es5-ext/object/valid-callable')
   , capitalize                    = require('es5-ext/string/#/capitalize')
   , Set                           = require('es6-set')
   , Map                           = require('es6-map')
@@ -17,9 +18,12 @@ var aFrom                         = require('es5-ext/array/from')
 var re = new RegExp('^([0-9a-z]+)\\/processingSteps\\/map\\/([a-zA-Z0-9]+' +
 	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$');
 
-module.exports = memoize(function (driver, processingStepsMeta) {
+module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 	var result = Object.create(null), storageStepsMap = new Map(), stepShortPathMap = new Map()
-	  , serviceFullShortNameMap = new Map();
+	  , serviceFullShortNameMap = new Map(), options = Object(arguments[2])
+	  , customStorageSetup;
+
+	if (options.storageSetup) customStorageSetup = ensureCallable(options.storageSetup);
 
 	forEach(processingStepsMeta, function (meta, stepShortPath) {
 		var stepPath = resolveProcessingStepFullPath(stepShortPath);
@@ -35,7 +39,7 @@ module.exports = memoize(function (driver, processingStepsMeta) {
 	});
 
 	return deferred.map(aFrom(storageStepsMap), function (data) {
-		var storage = data[0], stepPaths = data[1]
+		var storage = data[0], stepPaths = data[1], customRecordSetup
 		  , serviceName = serviceFullShortNameMap.get(storage.name);
 
 		// Listen for new records
@@ -59,10 +63,20 @@ module.exports = memoize(function (driver, processingStepsMeta) {
 				}
 			});
 		});
+		if (customStorageSetup) {
+			customRecordSetup = customStorageSetup(storage, {
+				stepPaths: stepPaths,
+				stepShortPathMap: stepShortPathMap,
+				serviceName: serviceName,
+				result: result
+			});
+			if (customRecordSetup) ensureCallable(customRecordSetup);
+		}
 
 		// Get current records
 		return storage.search(function (id, record) {
 			var match = id.match(re), businessProcessId, stepPath, stepShortPath, data;
+			if (customRecordSetup) customRecordSetup(id, record);
 			if (!match) return;
 			stepPath = match[2];
 			if (!stepPaths.has(stepPath)) return;
