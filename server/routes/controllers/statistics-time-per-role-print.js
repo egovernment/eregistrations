@@ -1,22 +1,24 @@
 'use strict';
 
-var debug               = require('debug-ext')('pdf-generator')
-  , deferred            = require('deferred')
-  , ensureDriver        = require('dbjs-persistence/ensure-driver')
-  , ensureDatabase      = require('dbjs/valid-dbjs')
-  , ensureObject        = require('es5-ext/object/valid-object')
-  , assign              = require('es5-ext/object/assign')
-  , _                   = require('mano').i18n.bind('Statistics time per role pdf')
-  , resolve             = require('path').resolve
-  , capitalize          = require('es5-ext/string/#/capitalize')
-  , resolveFullStepPath = require('../../../utils/resolve-processing-step-full-path')
-  , root                = resolve(__dirname, '../../..')
-  , getProcessingTimesByStepProcessor =
-		require('../../statistics/business-process/step-processing-times/reduce')
-  , templatePath        = resolve(root, 'apps-common/pdf-templates/statistics-time-per-role.html')
+var assign               = require('es5-ext/object/assign')
+  , normalizeOptions     = require('es5-ext/object/normalize-options')
+  , ensureObject         = require('es5-ext/object/valid-object')
+  , capitalize           = require('es5-ext/string/#/capitalize')
+  , deferred             = require('deferred')
+  , ensureDatabase       = require('dbjs/valid-dbjs')
+  , resolve              = require('path').resolve
+  , debug                = require('debug-ext')('pdf-generator')
+  , ensureDriver         = require('dbjs-persistence/ensure-driver')
+  , _                    = require('mano').i18n.bind('Statistics time per role pdf')
+  , resolveFullStepPath  = require('../../../utils/resolve-processing-step-full-path')
   , getDurationDaysHours = require('../../../view/utils/get-duration-days-hours')
-  , normalizeOptions    = require('es5-ext/object/normalize-options')
-  , htmlToPdf           = require('../../html-to-pdf');
+  , htmlToPdf            = require('../../html-to-pdf')
+
+  , root = resolve(__dirname, '../../..')
+  , templatePath = resolve(root, 'apps-common/pdf-templates/statistics-time-per-role.html');
+
+var getProcessingTimesByStepProcessor =
+	require('../../statistics/business-process/step-processing-times/reduce');
 
 var getEmptyResult = function () {
 	return {
