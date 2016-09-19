@@ -38,6 +38,24 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 		});
 	});
 
+	// Map of all proparties to be mapped to result with corresponding instructions
+	var metaMap = {
+		status: {
+			validate: function (record) {
+				return ((record.value === '3approved') || (record.value === '3rejected'));
+			},
+			set: function (data, record) {
+				data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
+			},
+			delete: function (data) { delete data.processingDate; }
+		},
+		processor: {
+			validate: function (record) { return (record.value[0] === '7'); },
+			set: function (data, record) { data.processor = record.value.slice(1); },
+			delete: function (data) { delete data.processor; }
+		}
+	};
+
 	return deferred.map(aFrom(storageStepsMap), function (data) {
 		var storage = data[0], stepPaths = data[1], customRecordSetup
 		  , serviceName = serviceFullShortNameMap.get(storage.name);
@@ -58,32 +76,13 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 
 		// Listen for new records
 		stepPaths.forEach(function (stepPath) {
-			var stepShortPath = stepShortPathMap.get(stepPath);
-
 			// Status
-			storage.on('key:processingSteps/map/' + stepPath + '/status', function (event) {
-				var data;
-				if (event.type !== 'direct') return;
-				if ((event.data.value !== '3approved') && (event.data.value !== '3rejected')) {
-					data = initDataset(stepShortPath, event.ownerId);
-					delete data.processingDate;
-				} else {
-					data = initDataset(stepShortPath, event.ownerId);
-					data.processingDate = toDateInTz(new Date(event.data.stamp / 1000), timeZone);
-				}
-			});
-
-			// Processor
-			storage.on('key:processingSteps/map/' + stepPath + '/processor', function (event) {
-				var data;
-				if (event.type !== 'direct') return;
-				if (event.data.value[0] !== '7') {
-					data = initDataset(stepShortPath, event.ownerId);
-					delete data.processor;
-				} else {
-					data = initDataset(stepShortPath, event.ownerId);
-					data.processor = event.data.value.slice(1);
-				}
+			forEach(metaMap, function (stepKeyPath, meta) {
+				storage.on('key:processingSteps/map/' + stepPath + '/' + stepKeyPath, function (event) {
+					if (event.type !== 'direct') return;
+					if (!meta.validate(event.data)) meta.delete(initDataset(stepPath, event.ownerId));
+					else meta.set(initDataset(stepPath, event.ownerId), event.data);
+				});
 			});
 		});
 		if (customStorageSetup) {
@@ -98,26 +97,17 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 
 		// Get current records
 		return storage.search(function (id, record) {
-			var match = id.match(re), businessProcessId, stepPath, keyPath, data;
+			var match = id.match(re), businessProcessId, stepPath, stepKeyPath, meta;
 			if (customRecordSetup) customRecordSetup(id, record);
 			if (!match) return;
 			stepPath = match[2];
 			if (!stepPaths.has(stepPath)) return;
+			stepKeyPath = match[3];
+			meta = metaMap[stepKeyPath];
+			if (!meta) return;
 			businessProcessId = match[1];
-			keyPath = match[3];
-
-			// Status
-			if (keyPath === 'status') {
-				if ((record.value !== '3approved') && (record.value !== '3rejected')) return;
-				data = initDataset(stepPath, businessProcessId);
-				data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
-
-			// Processor
-			} else if (keyPath === 'processor') {
-				if (record.value[0] !== '7') return;
-				data = initDataset(stepPath, businessProcessId);
-				data.processor = record.value.slice(1);
-			}
+			if (!meta.validate(record)) return;
+			meta.set(initDataset(stepPath, businessProcessId), record);
 		});
 	})(result);
 
