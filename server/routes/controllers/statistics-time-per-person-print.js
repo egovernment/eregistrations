@@ -1,22 +1,24 @@
 'use strict';
 
-var debug               = require('debug-ext')('pdf-generator')
-  , deferred            = require('deferred')
-  , ensureDriver        = require('dbjs-persistence/ensure-driver')
-  , ensureDatabase      = require('dbjs/valid-dbjs')
-  , ensureObject        = require('es5-ext/object/valid-object')
-  , assign              = require('es5-ext/object/assign')
-  , _                   = require('mano').i18n.bind('Statistics time per person pdf')
-  , resolve             = require('path').resolve
-  , capitalize          = require('es5-ext/string/#/capitalize')
-  , resolveFullStepPath = require('../../../utils/resolve-processing-step-full-path')
-  , root                = resolve(__dirname, '../..')
-  , getProcessingTimesByStepProcessor =
-		require('../../statistics/business-process/step-processing-times/reduce')
-  , templatePath        = resolve(root, 'apps-common/pdf-templates/statistics-time-per-person.html')
+var ensureObject         = require('es5-ext/object/valid-object')
+  , assign               = require('es5-ext/object/assign')
+  , capitalize           = require('es5-ext/string/#/capitalize')
+  , deferred             = require('deferred')
+  , ensureDatabase       = require('dbjs/valid-dbjs')
+  , ensureDriver         = require('dbjs-persistence/ensure-driver')
+  , resolve              = require('path').resolve
+  , debug                = require('debug-ext')('pdf-generator')
+  , _                    = require('mano').i18n.bind('Statistics time per person pdf')
+  , resolveFullStepPath  = require('../../../utils/resolve-processing-step-full-path')
   , getDurationDaysHours = require('../../../view/utils/get-duration-days-hours')
-  , getUserFullName     = require('../../utils/get-user-full-name')
-  , htmlToPdf           = require('../../html-to-pdf');
+  , getUserFullName      = require('../../utils/get-user-full-name')
+  , htmlToPdf            = require('../../html-to-pdf')
+
+  , root = resolve(__dirname, '../../..')
+  , templatePath = resolve(root, 'apps-common/pdf-templates/statistics-time-per-person.html');
+
+var getProcessingTimesByStepProcessor =
+	require('../../statistics/business-process/step-processing-times/reduce');
 
 module.exports = function (configData) {
 	var options, db = ensureDatabase(configData.db);
