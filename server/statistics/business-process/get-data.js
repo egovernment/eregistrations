@@ -115,6 +115,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 			// Processor
 			} else if (keyPath === 'processor') {
 				if (record.value[0] !== '7') return;
+				data = initDataset(stepPath, businessProcessId);
 				data.processor = record.value.slice(1);
 			}
 		});
