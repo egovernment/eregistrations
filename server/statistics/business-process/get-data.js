@@ -11,6 +11,7 @@ var aFrom                         = require('es5-ext/array/from')
   , Map                           = require('es6-map')
   , deferred                      = require('deferred')
   , memoize                       = require('memoizee')
+  , unserializeValue              = require('dbjs/_setup/unserialize/value')
   , resolveProcessingStepFullPath = require('../../../utils/resolve-processing-step-full-path')
   , toDateInTz                    = require('../../../utils/to-date-in-time-zone')
   , timeZone                      = require('../../../db').timeZone;
@@ -53,6 +54,11 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 			validate: function (record) { return (record.value[0] === '7'); },
 			set: function (data, record) { data.processor = record.value.slice(1); },
 			delete: function (data) { delete data.processor; }
+		},
+		correctionTime: {
+			validate: function (record) { return (record.value[0] === '2'); },
+			set: function (data, record) { data.correctionTime = unserializeValue(record.value); },
+			delete: function (data) { delete data.correctionTime; }
 		}
 	};
 
