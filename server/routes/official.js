@@ -4,6 +4,7 @@
 
 var aFrom                          = require('es5-ext/array/from')
   , and                            = require('es5-ext/array/#/intersection')
+  , find                           = require('es5-ext/array/#/find')
   , flatten                        = require('es5-ext/array/#/flatten')
   , remove                         = require('es5-ext/array/#/remove')
   , uniq                           = require('es5-ext/array/#/uniq')
@@ -48,6 +49,8 @@ var aFrom                          = require('es5-ext/array/from')
   , ceil = Math.ceil, create = Object.create
   , defineProperty = Object.defineProperty, stringify = JSON.stringify
   , businessProcessStorages, businessProcessStorageNames;
+
+var getReductionTemplate = require('../statistics/business-process/get-reduction-template');
 
 businessProcessStoragesPromise.done(function (storages) {
 	businessProcessStorages = storages;
@@ -311,8 +314,20 @@ var initializeHandler = function (conf) {
 };
 
 var getStatsOverviewData = memoize(function (query, userId, statsHandlerOpts) {
-	return getProcessingTimesByStepProcessor(assign(statsHandlerOpts,
-		{ query: query, userId: userId }));
+	var promise = getProcessingTimesByStepProcessor(assign(statsHandlerOpts, { query: query }));
+	return promise(function (result) {
+		var data = {};
+		if (!result.byProcessor[query.step]) return data;
+		data.processor = find.call(result.byProcessor[query.step], function (resultItem) {
+			return (resultItem.processor === userId);
+		});
+		data.stepTotal = result.stepTotal[query.step];
+		return data;
+	})(function (data) {
+		if (!data.processor) data.processor = getReductionTemplate();
+		if (!data.stepTotal) data.stepTotal = getReductionTemplate();
+		return data;
+	});
 }, {
 	normalizer: function (args) {
 		return args[0].step + args[1]

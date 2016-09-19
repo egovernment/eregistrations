@@ -170,25 +170,6 @@ module.exports = function (data) {
 			});
 		});
 	})(function () {
-		var perUserResult;
-		if (query.step && userId) {
-			// 8. Filter by user (data for one processor)
-			perUserResult = {
-				processor: getEmptyData(),
-				stepTotal: getEmptyData()
-			};
-			if (!result.byProcessor[query.step] || !result.byProcessor[query.step].length) {
-				return perUserResult;
-			}
-			result.byProcessor[query.step].some(function (resultItem) {
-				if (resultItem.processor === userId) {
-					perUserResult.processor = resultItem;
-					return true;
-				}
-			});
-			perUserResult.stepTotal = result.stepTotal[query.step];
-			return perUserResult;
-		}
 		if (result.byBusinessProcess.totalProcessing.processed) {
 			// We can calculate min and max only after we have collected all the data
 			Object.keys(businessProcessesData).forEach(function (businessProcessId) {
