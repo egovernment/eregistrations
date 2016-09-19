@@ -27,15 +27,11 @@ module.exports = function (data) {
 
 	var result = {};
 
-	// 1. Get data for all processing steps from all services
 	return getData(driver, processingStepsMeta)(function (businessProcessesByStepsMap) {
 		return deferred.map(Object.keys(businessProcessesByStepsMap), function (stepShortPath) {
 			var entries = toArray(businessProcessesByStepsMap[stepShortPath], identity);
 
-			// 2. Filter by step
-			if (query.step && query.step !== stepShortPath) return;
-
-			// 3. Filter by service
+			// 1. Filter by service
 			if (query.service) {
 				if (!includes.call(processingStepsMeta[stepShortPath]._services, query.service)) {
 					return;
@@ -44,11 +40,14 @@ module.exports = function (data) {
 					entries = businessProcessesByStepsMap[stepShortPath].filter(function (entry) {
 						return entry.serviceName === query.service;
 					});
+					if (!entries.length) return;
 				}
 			}
-			if (!entries.length) return;
 
-			// 4. Filter by date range
+			// 2. Filter by step
+			if (query.step && query.step !== stepShortPath) return;
+
+			// 3. Filter by date range
 			if (query.dateFrom) {
 				entries = entries.filter(function (data) {
 					return data.processingDate >= query.dateFrom;
@@ -60,7 +59,7 @@ module.exports = function (data) {
 				});
 			}
 
-			// 5. Custom filter
+			// 4. Custom filter
 			if (customFilter) {
 				entries = deferred.map(entries, function (entry) {
 					return customFilter(entry, query)(function (isOK) { return isOK ? entry : null; });
