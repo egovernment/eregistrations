@@ -59,6 +59,8 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 		// Listen for new records
 		stepPaths.forEach(function (stepPath) {
 			var stepShortPath = stepShortPathMap.get(stepPath);
+
+			// Status
 			storage.on('key:processingSteps/map/' + stepPath + '/status', function (event) {
 				var data;
 				if (event.type !== 'direct') return;
@@ -68,6 +70,19 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 				} else {
 					data = initDataset(stepShortPath, event.ownerId);
 					data.processingDate = toDateInTz(new Date(event.data.stamp / 1000), timeZone);
+				}
+			});
+
+			// Processor
+			storage.on('key:processingSteps/map/' + stepPath + '/processor', function (event) {
+				var data;
+				if (event.type !== 'direct') return;
+				if (event.data.value[0] !== '7') {
+					data = initDataset(stepShortPath, event.ownerId);
+					delete data.processor;
+				} else {
+					data = initDataset(stepShortPath, event.ownerId);
+					data.processor = event.data.value.slice(1);
 				}
 			});
 		});
@@ -90,10 +105,17 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 			if (!stepPaths.has(stepPath)) return;
 			businessProcessId = match[1];
 			keyPath = match[3];
+
+			// Status
 			if (keyPath === 'status') {
 				if ((record.value !== '3approved') && (record.value !== '3rejected')) return;
 				data = initDataset(stepPath, businessProcessId);
 				data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
+
+			// Processor
+			} else if (keyPath === 'processor') {
+				if (record.value[0] !== '7') return;
+				data.processor = record.value.slice(1);
 			}
 		});
 	})(result);

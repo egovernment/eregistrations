@@ -15,12 +15,6 @@ var includes         = require('es5-ext/array/#/contains')
 var getProcessorAndProcessingTime = memoize(function (data) {
 	var result = {};
 	return deferred(
-		data.storage.get(data.businessProcessId + '/' + data.stepFullPath + '/processor')(
-			function (processorData) {
-				if (!processorData || processorData.value[0] !== '7') return;
-				result.processor = processorData.value.slice(1);
-			}
-		),
 		data.storage.get(data.businessProcessId + '/' + data.stepFullPath + '/correctionTime')(
 			function (correctionTimeData) {
 				if (!correctionTimeData || correctionTimeData.value[0] !== '2') return;
