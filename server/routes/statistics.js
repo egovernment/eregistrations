@@ -13,11 +13,11 @@ var assign             = require('es5-ext/object/assign')
   , getBaseRoutes      = require('./authenticated');
 
 var getProcessingTimesByStepProcessor =
-	require('../statistics/step-processing-times/reduce');
+	require('../statistics/business-process/step-processing-times/reduce');
 var getFilesApprovedByDateAndService =
-	require('../statistics/get-files-approved-by-date-and-service');
+	require('../statistics/business-process/get-files-approved-by-date-and-service');
 var getFilesPendingByStepAndService =
-	require('../statistics/get-files-pending-by-step-and-service');
+	require('../statistics/business-process/get-files-pending-by-step-and-service');
 var getQueryHandlerConf = require('../../routes/utils/get-statistics-time-query-handler-conf');
 
 module.exports = function (data) {

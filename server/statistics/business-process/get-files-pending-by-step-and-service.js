@@ -5,9 +5,9 @@ var capitalize                    = require('es5-ext/string/#/capitalize')
   , deferred                      = require('deferred')
   , unserializeValue              = require('dbjs/_setup/unserialize/value')
   , driver                        = require('mano').dbDriver
-  , db                            = require('../../db')
-  , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
-  , toDateInTz                    = require('../../utils/to-date-in-time-zone');
+  , db                            = require('../../../db')
+  , resolveProcessingStepFullPath = require('../../../utils/resolve-processing-step-full-path')
+  , toDateInTz                    = require('../../../utils/to-date-in-time-zone');
 
 var addPendingFile = function (pendingFiles, stepShortPath) {
 	if (!pendingFiles[stepShortPath]) pendingFiles[stepShortPath] = 0;

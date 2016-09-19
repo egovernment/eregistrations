@@ -2,7 +2,7 @@
 
 var deferred                     = require('deferred')
   , unserializeValue             = require('dbjs/_setup/unserialize/value')
-  , businessProcessesApprovedMap = require('../../utils/business-processes-approved-map')
+  , businessProcessesApprovedMap = require('../../../utils/business-processes-approved-map')
   , filterData                   = require('./filter');
 
 var getEmptyData = function () {

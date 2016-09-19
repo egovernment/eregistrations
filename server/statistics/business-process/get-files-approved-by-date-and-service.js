@@ -1,11 +1,11 @@
 'use strict';
 
-var getBusinessProcessStorages = require('../utils/business-process-storages')
-  , db                         = require('../../db')
+var getBusinessProcessStorages = require('../../utils/business-process-storages')
+  , db                         = require('../../../db')
   , deferred                   = require('deferred')
   , uncapitalize               = require('es5-ext/string/#/uncapitalize')
   , env                        = require('mano').env
-  , toDateInTz                 = require('../../utils/to-date-in-time-zone')
+  , toDateInTz                 = require('../../../utils/to-date-in-time-zone')
   , memoize                    = require('memoizee');
 
 module.exports = memoize(function (query) {
