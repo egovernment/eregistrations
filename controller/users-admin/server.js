@@ -55,5 +55,10 @@ exports['user/[0-9][a-z0-9]+'] = {
 
 // Delete User
 exports['user/[0-9][a-z0-9]+/delete'] = {
-	submit: function () { dbObjects.delete(this.target); }
+	submit: function () {
+		if (!(this.user.roles.has('usersAdmin'))) {
+			return;
+		}
+		return this.target.destroy();
+	}
 };
