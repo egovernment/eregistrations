@@ -3,22 +3,8 @@
 var deferred                     = require('deferred')
   , unserializeValue             = require('dbjs/_setup/unserialize/value')
   , businessProcessesApprovedMap = require('../../../utils/business-processes-approved-map')
+  , getEmptyData                 = require('../get-reduction-template')
   , filterData                   = require('./filter');
-
-var getEmptyData = function () {
-	return {
-		// Count of finalized files/steps
-		processed: 0,
-		// Average processing time
-		avgTime: 0,
-		// Shortest processing time
-		minTime: Infinity,
-		// Longest processing time
-		maxTime: 0,
-		// Sum of all processing times
-		totalTime: 0
-	};
-};
 
 /**
 	*
