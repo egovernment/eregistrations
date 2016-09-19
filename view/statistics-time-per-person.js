@@ -1,6 +1,8 @@
 'use strict';
 
 var copy                 = require('es5-ext/object/copy')
+  , forEach              = require('es5-ext/object/for-each')
+  , isEmpty              = require('es5-ext/object/is-empty')
   , capitalize           = require('es5-ext/string/#/capitalize')
   , uncapitalize         = require('es5-ext/string/#/uncapitalize')
   , memoize              = require('memoizee')
@@ -66,8 +68,8 @@ exports['statistics-main'] = function () {
 					stepsMap[key].value = null;
 					return;
 				}
-				if (result.byStepAndProcessor[key].length) {
-					result.byStepAndProcessor[key].forEach(function (rowData) {
+				if (!isEmpty(result.byStepAndProcessor[key])) {
+					forEach(result.byStepAndProcessor[key], function (rowData) {
 						preparedResult.push(getRowResult(rowData, db.User.getById(rowData.processor).fullName));
 					});
 					preparedResult.push(getRowResult(result.byStep[key], _("Total & times")));

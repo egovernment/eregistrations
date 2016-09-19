@@ -1,7 +1,9 @@
 'use strict';
 
-var ensureObject         = require('es5-ext/object/valid-object')
+var identity             = require('es5-ext/function/identity')
+  , ensureObject         = require('es5-ext/object/valid-object')
   , assign               = require('es5-ext/object/assign')
+  , toArray              = require('es5-ext/object/to-array')
   , capitalize           = require('es5-ext/string/#/capitalize')
   , deferred             = require('deferred')
   , ensureDatabase       = require('dbjs/valid-dbjs')
@@ -42,7 +44,7 @@ module.exports = function (configData) {
 				debug('Generating statistics time per person');
 				return deferred.map(Object.keys(result.byStepAndProcessor), function (key) {
 					var step = {}, total;
-					step.data  = result.byStepAndProcessor[key];
+					step.data  = toArray(result.byStepAndProcessor[key], identity);
 					step.label =  db['BusinessProcess' +
 						capitalize.call(options.processingStepsMeta[key]._services[0])].prototype
 						.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;

@@ -2,6 +2,8 @@
 
 var ensureObject         = require('es5-ext/object/valid-object')
   , assign               = require('es5-ext/object/assign')
+  , forEach              = require('es5-ext/object/for-each')
+  , isEmpty              = require('es5-ext/object/is-empty')
   , normalizeOptions     = require('es5-ext/object/normalize-options')
   , capitalize           = require('es5-ext/string/#/capitalize')
   , deferred             = require('deferred')
@@ -52,7 +54,7 @@ module.exports = function (configData) {
 						.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
 
 					inserts.data.push(step);
-					if (!result.byStepAndProcessor[key].length) return;
+					if (isEmpty(result.byStepAndProcessor[key])) return;
 					step = assign(step, {
 						processed: 0,
 						avgTime: 0,
@@ -60,7 +62,7 @@ module.exports = function (configData) {
 						maxTime: 0,
 						totalTime: 0
 					});
-					result.byStepAndProcessor[key].forEach(function (byProcessor) {
+					forEach(result.byStepAndProcessor[key], function (byProcessor) {
 						step.processed += byProcessor.processed;
 						step.minTime = Math.min(byProcessor.minTime, step.minTime);
 						step.maxTime = Math.max(byProcessor.maxTime, step.maxTime);

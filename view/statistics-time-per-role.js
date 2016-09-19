@@ -1,6 +1,8 @@
 'use strict';
 
 var assign               = require('es5-ext/object/assign')
+  , forEach              = require('es5-ext/object/for-each')
+  , isEmpty              = require('es5-ext/object/is-empty')
   , normalizeOptions     = require('es5-ext/object/normalize-options')
   , capitalize           = require('es5-ext/string/#/capitalize')
   , uncapitalize         = require('es5-ext/string/#/uncapitalize')
@@ -90,13 +92,13 @@ exports['statistics-main'] = function () {
 					capitalize.call(processingStepsMeta[key]._services[0])].prototype
 					.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
 
-				if (!result.byStepAndProcessor[key].length) {
+				if (isEmpty(result.byStepAndProcessor[key])) {
 					resetResult(perRoleTotal);
 
 					mainData.push(perRoleTotal);
 					return;
 				}
-				result.byStepAndProcessor[key].forEach(function (byProcessor) {
+				forEach(result.byStepAndProcessor[key], function (byProcessor) {
 					perRoleTotal.processed += byProcessor.processed;
 					perRoleTotal.minTime = Math.min(byProcessor.minTime, perRoleTotal.minTime);
 					perRoleTotal.maxTime = Math.max(byProcessor.maxTime, perRoleTotal.maxTime);

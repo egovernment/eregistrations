@@ -315,17 +315,13 @@ var initializeHandler = function (conf) {
 var getStatsOverviewData = memoize(function (query, userId, statsHandlerOpts) {
 	var promise = getProcessingTimesByStepProcessor(assign(statsHandlerOpts, { query: query }));
 	return promise(function (result) {
-		var data = {};
-		if (!result.byStepAndProcessor[query.step]) return data;
-		data.processor = find.call(result.byStepAndProcessor[query.step], function (resultItem) {
-			return (resultItem.processor === userId);
-		});
-		data.stepTotal = result.byStep[query.step];
-		return data;
-	})(function (data) {
-		if (!data.processor) data.processor = getReductionTemplate();
-		if (!data.stepTotal) data.stepTotal = getReductionTemplate();
-		return data;
+		if (!result.byStepAndProcessor[query.step]) {
+			return { processor: getReductionTemplate(), stepTotal: getReductionTemplate() };
+		}
+		return {
+			processor: result.byStepAndProcessor[query.step][userId] || getReductionTemplate(),
+			stepTotal: result.byStep[query.step]
+		};
 	});
 }, {
 	normalizer: function (args) {

@@ -41,8 +41,8 @@ module.exports = function (data) {
 		byStepAndService: {},
 		// Data per step and processor:
 		// byStepAndProcessor // Map of steps
-		// byStepAndProcessor[stepShortPath] // Array of processors data
-		// byStepAndProcessor[stepShortPath][0] // Data of processor for given step
+		// byStepAndProcessor[stepShortPath] // Map of processors data
+		// byStepAndProcessor[stepShortPath][officialId] // Data of processor for given step
 		byStepAndProcessor: {}
 	};
 
@@ -52,17 +52,14 @@ module.exports = function (data) {
 	// 1. Get data for all processing steps from all services
 	return filterData(data)(function (entriesMap) {
 		return deferred.map(Object.keys(entriesMap), function (stepShortPath) {
-			var dataByProcessors = {};
+			var dataByProcessors = result.byStepAndProcessor[stepShortPath] = Object.create(null);
 			return deferred.map(entriesMap[stepShortPath], function (entry) {
 				// May happen only in case of data inconsistency
 				if (!entry.processor) return;
 				// Older businessProcess don't have processingTime, so they're useless here
 				if (!entry.processingTime) return;
 
-				if (!result.byStepAndProcessor[stepShortPath]) {
-					result.byStepAndProcessor[stepShortPath] = [];
-					result.byStep[stepShortPath]   = getEmptyData();
-				}
+				if (!result.byStep[stepShortPath]) result.byStep[stepShortPath] = getEmptyData();
 
 				// 7. Calculate processing time totals
 				// 7.1 Per step and processor
@@ -79,11 +76,6 @@ module.exports = function (data) {
 				dataByProcessors[entry.processor].avgTime =
 					dataByProcessors[entry.processor].totalTime /
 					dataByProcessors[entry.processor].processed;
-
-				result.byStepAndProcessor[stepShortPath] =
-					Object.keys(dataByProcessors).map(function (processorId) {
-						return dataByProcessors[processorId];
-					});
 
 				// 7.2 Per step
 				result.byStep[stepShortPath].processed++;
