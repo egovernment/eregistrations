@@ -25,7 +25,7 @@ module.exports = memoize(function (User) {
 		rolesMeta: { type: db.Object, nested: true },
 		canBeDestroyed: { type: db.Boolean, value: function (_observe) {
 			return this.roles.every(function (role) {
-				if (!this.rolesMeta[role]) return;
+				if (!this.rolesMeta[role]) return true;
 				return _observe(this.rolesMeta[role]._canBeDestroyed);
 			}.bind(this));
 		} },
