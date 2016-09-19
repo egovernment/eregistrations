@@ -320,7 +320,7 @@ var getStatsOverviewData = memoize(function (query, userId, statsHandlerOpts) {
 		data.processor = find.call(result.byStepAndProcessor[query.step], function (resultItem) {
 			return (resultItem.processor === userId);
 		});
-		data.stepTotal = result.stepTotal[query.step];
+		data.stepTotal = result.byStep[query.step];
 		return data;
 	})(function (data) {
 		if (!data.processor) data.processor = getReductionTemplate();

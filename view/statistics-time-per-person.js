@@ -70,7 +70,7 @@ exports['statistics-main'] = function () {
 					result.byStepAndProcessor[key].forEach(function (rowData) {
 						preparedResult.push(getRowResult(rowData, db.User.getById(rowData.processor).fullName));
 					});
-					preparedResult.push(getRowResult(result.stepTotal[key], _("Total & times")));
+					preparedResult.push(getRowResult(result.byStep[key], _("Total & times")));
 				}
 				stepsMap[key].value = preparedResult;
 			});

@@ -32,9 +32,9 @@ module.exports = function (data) {
 		// byStepAndProcessor[stepShortPath][0] // Data of processor for given step
 		byStepAndProcessor: {},
 		// Data per step:
-		// stepTotal // Map of steps
-		// stepTotal[stepShortPath] // Data of step
-		stepTotal: {},
+		// byStep // Map of steps
+		// byStep[stepShortPath] // Data of step
+		byStep: {},
 		// Data per step and service
 		// byStepAndService // Map of steps
 		// byStepAndService[shortStepPath] // Map of services
@@ -61,7 +61,7 @@ module.exports = function (data) {
 
 				if (!result.byStepAndProcessor[stepShortPath]) {
 					result.byStepAndProcessor[stepShortPath] = [];
-					result.stepTotal[stepShortPath]   = getEmptyData();
+					result.byStep[stepShortPath]   = getEmptyData();
 				}
 
 				// 7. Calculate processing time totals
@@ -86,15 +86,15 @@ module.exports = function (data) {
 					});
 
 				// 7.2 Per step
-				result.stepTotal[stepShortPath].processed++;
-				result.stepTotal[stepShortPath].minTime =
-					Math.min(result.stepTotal[stepShortPath].minTime, entry.processingTime);
-				result.stepTotal[stepShortPath].maxTime =
-					Math.max(result.stepTotal[stepShortPath].maxTime, entry.processingTime);
-				result.stepTotal[stepShortPath].totalTime += entry.processingTime;
-				result.stepTotal[stepShortPath].avgTime =
-					result.stepTotal[stepShortPath].totalTime /
-					result.stepTotal[stepShortPath].processed;
+				result.byStep[stepShortPath].processed++;
+				result.byStep[stepShortPath].minTime =
+					Math.min(result.byStep[stepShortPath].minTime, entry.processingTime);
+				result.byStep[stepShortPath].maxTime =
+					Math.max(result.byStep[stepShortPath].maxTime, entry.processingTime);
+				result.byStep[stepShortPath].totalTime += entry.processingTime;
+				result.byStep[stepShortPath].avgTime =
+					result.byStep[stepShortPath].totalTime /
+					result.byStep[stepShortPath].processed;
 
 				// 7.3 Per service
 				if (!result.byService[entry.serviceName]) {
