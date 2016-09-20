@@ -1,7 +1,7 @@
 'use strict';
 
-var ensureObject = require('es5-ext/object/valid-object')
-  , deferred     = require('deferred')
+var forEach      = require('es5-ext/object/for-each')
+  , ensureObject = require('es5-ext/object/valid-object')
   , ensureDriver = require('dbjs-persistence/ensure-driver')
   , getEmptyData = require('../get-reduction-template')
   , getData      = require('../get-data')
@@ -55,7 +55,7 @@ module.exports = function (config) {
 				byStepAndProcessor: {}
 			};
 
-			return deferred.map(Object.keys(data), function (stepShortPath) {
+			forEach(data, function (stepData, stepShortPath) {
 
 				// Initialize containers
 				result.byStep[stepShortPath] = getEmptyData();
@@ -67,45 +67,44 @@ module.exports = function (config) {
 				});
 
 				// Reduce data
-				return deferred.map(Object.keys(data[stepShortPath]), function (businessProcessId) {
-					var entry = data[stepShortPath][businessProcessId];
-
+				forEach(stepData, function (bpData) {
 					// May happen only in case of data inconsistency
-					if (!entry.processor) return;
+					if (!bpData.processor) return;
 
 					// Older businessProcess don't have processingTime, so they're useless here
-					if (!entry.processingTime) return;
+					if (!bpData.processingTime) return;
 
 					// Do not include not yet finally processed steps
-					if (!entry.processingDate) return;
+					if (!bpData.processingDate) return;
 
 					// Initialize container
-					if (!result.byStepAndProcessor[stepShortPath][entry.processor]) {
-						result.byStepAndProcessor[stepShortPath][entry.processor] = getEmptyData();
-						result.byStepAndProcessor[stepShortPath][entry.processor].processor = entry.processor;
+					if (!result.byStepAndProcessor[stepShortPath][bpData.processor]) {
+						result.byStepAndProcessor[stepShortPath][bpData.processor] = getEmptyData();
+						result.byStepAndProcessor[stepShortPath][bpData.processor].processor = bpData.processor;
 					}
 
 					// Reduce processingTime
-					reduce(result.all.processing, entry.processingTime);
-					reduce(result.byService[entry.serviceName].processing, entry.processingTime);
-					reduce(result.byStep[stepShortPath].processing, entry.processingTime);
-					reduce(result.byStepAndService[stepShortPath][entry.serviceName].processing,
-						entry.processingTime);
-					reduce(result.byStepAndProcessor[stepShortPath][entry.processor].processing,
-						entry.processingTime);
+					reduce(result.all.processing, bpData.processingTime);
+					reduce(result.byService[bpData.serviceName].processing, bpData.processingTime);
+					reduce(result.byStep[stepShortPath].processing, bpData.processingTime);
+					reduce(result.byStepAndService[stepShortPath][bpData.serviceName].processing,
+						bpData.processingTime);
+					reduce(result.byStepAndProcessor[stepShortPath][bpData.processor].processing,
+						bpData.processingTime);
 
 					// Reduce correctionTime
-					if (entry.correctionTime) {
-						reduce(result.all.correction, entry.correctionTime);
-						reduce(result.byService[entry.serviceName].correction, entry.correctionTime);
-						reduce(result.byStep[stepShortPath].correction, entry.correctionTime);
-						reduce(result.byStepAndService[stepShortPath][entry.serviceName].correction,
-							entry.correctionTime);
-						reduce(result.byStepAndProcessor[stepShortPath][entry.processor].correction,
-							entry.correctionTime);
+					if (bpData.correctionTime) {
+						reduce(result.all.correction, bpData.correctionTime);
+						reduce(result.byService[bpData.serviceName].correction, bpData.correctionTime);
+						reduce(result.byStep[stepShortPath].correction, bpData.correctionTime);
+						reduce(result.byStepAndService[stepShortPath][bpData.serviceName].correction,
+							bpData.correctionTime);
+						reduce(result.byStepAndProcessor[stepShortPath][bpData.processor].correction,
+							bpData.correctionTime);
 					}
 				});
-			})(result);
+			});
+			return result;
 		});
 	});
 };
