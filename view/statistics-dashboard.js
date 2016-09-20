@@ -341,9 +341,9 @@ exports['statistics-main'] = function () {
 		if (query.dateTo) {
 			query.dateTo = query.dateTo.toJSON();
 		}
-		queryServer(query)(function (result) {
+		queryServer(query).done(function (result) {
 			updateChartsData(result);
-		}).done();
+		});
 	});
 
 	section({ class: 'section-primary users-table-filter-bar' },
