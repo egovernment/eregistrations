@@ -21,6 +21,12 @@ var getCopyIsReady = function (storage) {
 		return storage.get(isReadyPath)(function (directIsReady) {
 			if ((directIsReady == null) || (unserializeValue(directIsReady.value) == null)) {
 				return storage.getComputed(isReadyPath)(function (computedIsReady) {
+					if (computedIsReady.value !== '11') {
+						console.error("\nUnexpected isReady value for" + isReadyPath + "\n");
+						console.log("Status", status);
+						console.log("Data", computedIsReady);
+						return;
+					}
 					return storage.store(isReadyPath, computedIsReady.value, computedIsReady.stamp);
 				});
 			}
@@ -41,7 +47,7 @@ module.exports = function (driver, processingStepsMeta) {
 			var copyIsReady = getCopyIsReady(storage);
 			storage.on('key:' + stepPath + '/status', function (event) {
 				var isReadyPath = event.ownerId + '/' + stepPath + '/isReady';
-				if (event.type === 'computed') return;
+				if (event.type !== 'direct') return;
 				copyIsReady(isReadyPath, event.data.value).done();
 			});
 			storage.search({ keyPath: stepPath + '/status' }, function (id, data) {
