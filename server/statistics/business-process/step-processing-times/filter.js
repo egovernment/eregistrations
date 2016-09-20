@@ -10,7 +10,7 @@ var includes       = require('es5-ext/array/#/contains')
 
 /**
 	*
-	* @param data
+	* @param config
 	* driver                  - Database driver
 	* processingStepsMeta     - map of processing steps
 	* db                      - dbjs database
@@ -18,11 +18,11 @@ var includes       = require('es5-ext/array/#/contains')
 	* customFilter (optional) - function used to filter by system specific parameters
 	* @returns {Object}
 */
-module.exports = function (data) {
-	var driver = ensureDriver(ensureObject(data).driver)
-	  , processingStepsMeta = ensureObject(data.processingStepsMeta)
-	  , query = data.query || {}
-	  , customFilter = data.customFilter ? ensureCallable(data.customFilter) : null;
+module.exports = function (config) {
+	var driver = ensureDriver(ensureObject(config).driver)
+	  , processingStepsMeta = ensureObject(config.processingStepsMeta)
+	  , query = config.query || {}
+	  , customFilter = config.customFilter ? ensureCallable(config.customFilter) : null;
 
 	return getData(driver, processingStepsMeta)(function (data) {
 
