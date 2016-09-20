@@ -57,7 +57,9 @@ module.exports = function (driver, processingStepsMeta) {
 			return stepPath + '/status';
 		}));
 		return storage.search(function (id, data) {
-			if (!statusPaths.has(id)) return;
+			var index = id.indexOf('/');
+			if (index === -1) return;
+			if (!statusPaths.has(id.slice(index + 1))) return;
 			if (data.value[0] !== '3') return;
 			return copyIsReady(storage, id.slice(0, -'/status'.length));
 		});
