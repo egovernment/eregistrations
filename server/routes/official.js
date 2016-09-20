@@ -4,7 +4,6 @@
 
 var aFrom                          = require('es5-ext/array/from')
   , and                            = require('es5-ext/array/#/intersection')
-  , find                           = require('es5-ext/array/#/find')
   , flatten                        = require('es5-ext/array/#/flatten')
   , remove                         = require('es5-ext/array/#/remove')
   , uniq                           = require('es5-ext/array/#/uniq')
