@@ -85,7 +85,7 @@ module.exports = function (data, processingStepsMeta) {
 			reduce(result.byStepAndProcessor[stepShortPath][bpData.processor].processing,
 				bpData.processingTime);
 
-			// Reduce correctionTime
+			// Reduce eventual correctionTime
 			if (bpData.correctionTime) {
 				reduce(result.all.correction, bpData.correctionTime);
 				reduce(result.byService[bpData.serviceName].correction, bpData.correctionTime);
