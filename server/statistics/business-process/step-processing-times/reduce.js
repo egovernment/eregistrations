@@ -53,7 +53,9 @@ module.exports = function (data) {
 	return filterData(data)(function (entriesMap) {
 		return deferred.map(Object.keys(entriesMap), function (stepShortPath) {
 			var dataByProcessors = result.byStepAndProcessor[stepShortPath] = Object.create(null);
-			return deferred.map(entriesMap[stepShortPath], function (entry) {
+			return deferred.map(Object.keys(entriesMap[stepShortPath]), function (businessProcessId) {
+				var entry = entriesMap[stepShortPath][businessProcessId];
+
 				// May happen only in case of data inconsistency
 				if (!entry.processor) return;
 				// Older businessProcess don't have processingTime, so they're useless here

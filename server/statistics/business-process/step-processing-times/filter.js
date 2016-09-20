@@ -1,8 +1,7 @@
 'use strict';
 
 var includes       = require('es5-ext/array/#/contains')
-  , identity       = require('es5-ext/function/identity')
-  , toArray        = require('es5-ext/object/to-array')
+  , filter         = require('es5-ext/object/filter')
   , ensureObject   = require('es5-ext/object/valid-object')
   , ensureCallable = require('es5-ext/object/valid-callable')
   , deferred       = require('deferred')
@@ -25,49 +24,57 @@ module.exports = function (data) {
 	  , query = data.query || {}
 	  , customFilter = data.customFilter ? ensureCallable(data.customFilter) : null;
 
-	var result = {};
-
 	return getData(driver, processingStepsMeta)(function (data) {
-		return deferred.map(Object.keys(data.steps), function (stepShortPath) {
-			var entries = toArray(data.steps[stepShortPath], identity);
 
-			// 1. Filter by step
+		// 1. Exclude not applicable steps
+		data = filter(data.steps, function (stepData, stepShortPath) {
+			// 1.1. Exclude by step
 			if (query.step && query.step !== stepShortPath) return;
 
-			// 2. Filter by service
+			// 1.2. Exclude by service
 			if (query.service) {
-				if (!includes.call(processingStepsMeta[stepShortPath]._services, query.service)) {
-					return;
-				}
-				if (processingStepsMeta[stepShortPath]._services.length > 1) {
-					entries = entries.filter(function (entry) {
-						return entry.serviceName === query.service;
-					});
-					if (!entries.length) return;
-				}
+				if (!includes.call(processingStepsMeta[stepShortPath]._services, query.service)) return;
+			}
+			return true;
+		});
+
+		// 2. Filter items
+		var newData = Object.create(null);
+		return deferred.map(Object.keys(data), function (stepShortPath) {
+			var stepData = data[stepShortPath];
+
+			// 2.1. Filter by service
+			if (query.service && (processingStepsMeta[stepShortPath]._services.length > 1)) {
+				stepData = filter(stepData, function (entry) {
+					return entry.serviceName === query.service;
+				});
 			}
 
-			// 3. Filter by date range
+			// 2.2 Filter by date range
 			if (query.dateFrom) {
-				entries = entries.filter(function (data) {
-					return data.processingDate >= query.dateFrom;
+				stepData = filter(stepData, function (entry) {
+					return entry.processingDate >= query.dateFrom;
 				});
 			}
 			if (query.dateTo) {
-				entries = entries.filter(function (data) {
-					return data.processingDate <= query.dateTo;
+				stepData = filter(stepData, function (entry) {
+					return entry.processingDate <= query.dateTo;
 				});
 			}
 
-			// 4. Custom filter
-			if (customFilter) {
-				entries = deferred.map(entries, function (entry) {
-					return customFilter(entry, query)(function (isOK) { return isOK ? entry : null; });
-				}).invoke('filter', Boolean);
+			if (!customFilter) {
+				newData[stepShortPath] = stepData;
+				return;
 			}
-			return deferred(entries)(function (filteredEntries) {
-				result[stepShortPath] = filteredEntries;
+
+			// 2.3. Custom filter
+			var newStepData = newData[stepShortPath] = Object.create(null);
+			return deferred.map(Object.keys(stepData), function (businessProcessId) {
+				var entry = stepData[businessProcessId];
+				return customFilter(entry, query)(function (isOk) {
+					if (isOk) newStepData[businessProcessId] = entry;
+				}.bind(this));
 			});
-		});
-	})(result);
+		})(newData);
+	});
 };
