@@ -7,12 +7,13 @@ var DataTemplate = function () {};
 Object.defineProperties(DataTemplate.prototype, {
 	// Count of items
 	count: d(0),
+	// Average time
 	avgTime: d(0),
-	// Shortest processing time
+	// Shortest time
 	minTime: d(Infinity),
-	// Longest processing time
+	// Longest time
 	maxTime: d(0),
-	// Sum of all processing times
+	// Sum of all times
 	totalTime: d(0)
 });
 
