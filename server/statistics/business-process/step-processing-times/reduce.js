@@ -31,7 +31,7 @@ module.exports = function (config) {
 
 	// 1. Get data for all processing steps from all services
 	return getData(driver, processingStepsMeta)(function (data) {
-		return filterData(data, config.query || {}, processingStepsMeta, config)(function (entriesMap) {
+		return filterData(data, config.query || {}, processingStepsMeta, config)(function (data) {
 			var result = {
 				// Reduction data for all
 				all: getEmptyData(),
@@ -55,7 +55,7 @@ module.exports = function (config) {
 				byStepAndProcessor: {}
 			};
 
-			return deferred.map(Object.keys(entriesMap), function (stepShortPath) {
+			return deferred.map(Object.keys(data), function (stepShortPath) {
 
 				// Initialize containers
 				result.byStep[stepShortPath] = getEmptyData();
@@ -67,8 +67,8 @@ module.exports = function (config) {
 				});
 
 				// Reduce data
-				return deferred.map(Object.keys(entriesMap[stepShortPath]), function (businessProcessId) {
-					var entry = entriesMap[stepShortPath][businessProcessId];
+				return deferred.map(Object.keys(data[stepShortPath]), function (businessProcessId) {
+					var entry = data[stepShortPath][businessProcessId];
 
 					// May happen only in case of data inconsistency
 					if (!entry.processor) return;
