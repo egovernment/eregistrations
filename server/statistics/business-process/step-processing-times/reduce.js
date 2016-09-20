@@ -16,7 +16,7 @@ var deferred                     = require('deferred')
 	* customFilter (optional) - function used to filter by system specific parameters
 	* @returns {Object}
 */
-module.exports = function (data) {
+module.exports = function (config) {
 	var result = {
 		byBusinessProcess: {
 			// All files processing time
@@ -50,7 +50,7 @@ module.exports = function (data) {
 	var businessProcessesData = {};
 
 	// 1. Get data for all processing steps from all services
-	return filterData(data)(function (entriesMap) {
+	return filterData(config)(function (entriesMap) {
 		return deferred.map(Object.keys(entriesMap), function (stepShortPath) {
 			var dataByProcessors = result.byStepAndProcessor[stepShortPath] = Object.create(null);
 			return deferred.map(Object.keys(entriesMap[stepShortPath]), function (businessProcessId) {
