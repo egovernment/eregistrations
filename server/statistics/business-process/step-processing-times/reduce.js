@@ -1,8 +1,8 @@
 'use strict';
 
-var ensureObject   = require('es5-ext/object/valid-object')
+var ensureObject = require('es5-ext/object/valid-object')
   , deferred     = require('deferred')
-  , ensureDriver   = require('dbjs-persistence/ensure-driver')
+  , ensureDriver = require('dbjs-persistence/ensure-driver')
   , getEmptyData = require('../get-reduction-template')
   , getData      = require('../get-data')
   , filterData   = require('./filter');
