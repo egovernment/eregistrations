@@ -7,6 +7,14 @@ var ensureObject = require('es5-ext/object/valid-object')
   , getData      = require('../get-data')
   , filterData   = require('./filter');
 
+var reduce = function (data, time) {
+	data.count++;
+	data.minTime = Math.min(data.minTime, time);
+	data.maxTime = Math.max(data.maxTime, time);
+	data.totalTime += time;
+	data.avgTime = data.totalTime / data.count;
+};
+
 /**
 	*
 	* @param data
@@ -42,14 +50,6 @@ module.exports = function (config) {
 		// byStepAndProcessor[stepShortPath] // Map of processors data
 		// byStepAndProcessor[stepShortPath][officialId] // Data of processor for given step
 		byStepAndProcessor: {}
-	};
-
-	var reduce = function (data, time) {
-		data.count++;
-		data.minTime = Math.min(data.minTime, time);
-		data.maxTime = Math.max(data.maxTime, time);
-		data.totalTime += time;
-		data.avgTime = data.totalTime / data.count;
 	};
 
 	// 1. Get data for all processing steps from all services
