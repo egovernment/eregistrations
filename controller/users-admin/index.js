@@ -7,7 +7,6 @@ var find           = require('es5-ext/array/#/find')
   , register       = require('mano-auth/controller/register').validate
   , validate       = require('mano/utils/validate')
   , matchUser      = require('../utils/user-matcher')
-  , customError    = require('es5-ext/error/custom')
   , Set            = require('es6-set')
 
   , keys = Object.keys;
@@ -27,7 +26,7 @@ exports['user/[0-9][a-z0-9]+'] = {
 	validate: function (data) {
 		var propertyKey = find.call(keys(data), function (key) {
 			return endsWith.call(key, '/password');
-		}), areRolesRemovable, normalizedData, newRoles;
+		}), normalizedData, newRoles;
 		if (propertyKey) {
 			if (data[propertyKey]) return changePassword.call(this, data);
 			delete data[propertyKey];
@@ -38,16 +37,12 @@ exports['user/[0-9][a-z0-9]+'] = {
 		newRoles = normalizedData[this.target.__id__ + '/roles'];
 		if (newRoles) {
 			newRoles = new Set(newRoles);
-			areRolesRemovable = this.target.roles.every(function (role) {
+			this.target.roles.forEach(function (role) {
 				//role removal attempt
 				if (!newRoles.has(role) && this.target.rolesMeta[role]) {
-					return this.target.rolesMeta[role].canBeDestroyed;
+					this.target.rolesMeta[role].validateDestroy();
 				}
-				return true;
 			}, this);
-			if (!areRolesRemovable) {
-				throw customError("Role cannot be removed", 'CANNOT_REMOVE_ROLE');
-			}
 		}
 
 		return normalizedData;

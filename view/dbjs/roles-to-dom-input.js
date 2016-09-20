@@ -6,20 +6,16 @@ var d  = require('d')
 Object.defineProperties(db.User.prototype.getOwnDescriptor('roles'), {
 	inputOptions: d({
 		renderItem: function (input, label, value) {
-			var el = this.make, disabled, rolesMetaEntry, resultItem;
+			var el = this.make, isDisabled, rolesMetaEntry;
 			rolesMetaEntry = this.observable.object.rolesMeta[value];
-			disabled = rolesMetaEntry ? rolesMetaEntry._canBeDestroyed.map(function (canBeDestroyed) {
+			isDisabled = rolesMetaEntry ? rolesMetaEntry._canBeDestroyed.map(function (canBeDestroyed) {
 				return !canBeDestroyed;
 			}) : false;
 
-			resultItem = el('li', { class: [_if(disabled, "disabled")] }, el('label', input, " ", label));
-			resultItem.addEventListener('click', function (ev) {
-				if (this.classList.contains("disabled")) {
-					ev.preventDefault();
-				}
-			});
+			input.dom.onclick = _if(isDisabled,
+				'event.preventDefault ? event.preventDefault() : (event.returnValue = false)');
 
-			return resultItem;
+			return el('li', { class: [_if(isDisabled, "disabled")] }, el('label', input, " ", label));
 		}
 	})
 });
