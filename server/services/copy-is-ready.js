@@ -6,12 +6,13 @@
 
 'use strict';
 
-var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
-  , unserializeValue              = require('dbjs/_setup/unserialize/value')
-  , deferred                      = require('deferred')
-  , capitalize                    = require('es5-ext/string/#/capitalize')
+var capitalize                    = require('es5-ext/string/#/capitalize')
   , ensureArray                   = require('es5-ext/array/valid-array')
-  , emptyPromise                  = deferred(null);
+  , deferred                      = require('deferred')
+  , unserializeValue              = require('dbjs/_setup/unserialize/value')
+  , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
+
+  , emptyPromise = deferred(null);
 
 var getCopyIsReady = function (storage) {
 	return function (isReadyPath, status) {
