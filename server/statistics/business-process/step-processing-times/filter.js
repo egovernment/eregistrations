@@ -27,9 +27,9 @@ module.exports = function (data) {
 
 	var result = {};
 
-	return getData(driver, processingStepsMeta)(function (businessProcessesByStepsMap) {
-		return deferred.map(Object.keys(businessProcessesByStepsMap), function (stepShortPath) {
-			var entries = toArray(businessProcessesByStepsMap[stepShortPath], identity);
+	return getData(driver, processingStepsMeta)(function (data) {
+		return deferred.map(Object.keys(data.steps), function (stepShortPath) {
+			var entries = toArray(data.steps[stepShortPath], identity);
 
 			// 1. Filter by service
 			if (query.service) {
@@ -37,7 +37,7 @@ module.exports = function (data) {
 					return;
 				}
 				if (processingStepsMeta[stepShortPath]._services.length > 1) {
-					entries = businessProcessesByStepsMap[stepShortPath].filter(function (entry) {
+					entries = data.steps[stepShortPath].filter(function (entry) {
 						return entry.serviceName === query.service;
 					});
 					if (!entries.length) return;

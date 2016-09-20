@@ -20,11 +20,13 @@ var re = new RegExp('^([0-9a-z]+)\\/processingSteps\\/map\\/([a-zA-Z0-9]+' +
 	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$');
 
 module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
-	var result = Object.create(null), storageStepsMap = new Map(), stepShortPathMap = new Map()
+	var storageStepsMap = new Map(), stepShortPathMap = new Map()
 	  , serviceFullShortNameMap = new Map(), options = Object(arguments[2])
 	  , customStorageSetup;
 
 	if (options.storageSetup) customStorageSetup = ensureCallable(options.storageSetup);
+
+	var result = { steps: Object.create(null), businessProcesses: Object.create(null) };
 
 	forEach(processingStepsMeta, function (meta, stepShortPath) {
 		var stepPath = resolveProcessingStepFullPath(stepShortPath);
@@ -73,16 +75,16 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 
 		var initDataset = function (stepPath, businessProcessId) {
 			var stepShortPath = stepShortPathMap.get(stepPath);
-			if (!result[stepShortPath]) result[stepShortPath] = Object.create(null);
-			if (!result[stepShortPath][businessProcessId]) {
-				result[stepShortPath][businessProcessId] = {
+			if (!result.steps[stepShortPath]) result.steps[stepShortPath] = Object.create(null);
+			if (!result.steps[stepShortPath][businessProcessId]) {
+				result.steps[stepShortPath][businessProcessId] = {
 					businessProcessId: businessProcessId,
 					stepFullPath: 'processingSteps/map/' + stepPath,
 					serviceName: serviceName,
 					storage: storage
 				};
 			}
-			return result[stepShortPath][businessProcessId];
+			return result.steps[stepShortPath][businessProcessId];
 		};
 
 		// Listen for new records
