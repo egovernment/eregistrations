@@ -47,7 +47,7 @@ var aFrom                          = require('es5-ext/array/from')
 
 var getStatsQueryHandlerConf = require('../../routes/utils/get-statistics-time-query-handler-conf');
 var getProcessingTimesByStepProcessor =
-	require('../statistics/business-process/step-processing-times/reduce');
+	require('../statistics/business-process/query-times');
 var getReductionTemplate = require('../statistics/business-process/get-reduction-template');
 
 businessProcessStoragesPromise.done(function (storages) {

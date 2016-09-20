@@ -13,7 +13,7 @@ var ensureObject         = require('es5-ext/object/valid-object')
   , getDurationDaysHours = require('../../../view/utils/get-duration-days-hours');
 
 var getProcessingTimesByStepProcessor =
-	require('../../statistics/business-process/step-processing-times/reduce');
+	require('../../statistics/business-process/query-times');
 
 var getEmptyResult = function () {
 	return {

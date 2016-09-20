@@ -20,7 +20,7 @@ var identity             = require('es5-ext/function/identity')
   , templatePath = resolve(root, 'apps-common/pdf-templates/statistics-time-per-person.html');
 
 var getProcessingTimesByStepProcessor =
-	require('../../statistics/business-process/step-processing-times/reduce');
+	require('../../statistics/business-process/query-times');
 
 module.exports = function (configData) {
 	var options, db = ensureDatabase(configData.db);

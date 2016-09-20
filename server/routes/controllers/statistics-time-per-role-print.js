@@ -18,7 +18,7 @@ var assign               = require('es5-ext/object/assign')
   , templatePath = resolve(root, 'apps-common/pdf-templates/statistics-time-per-role.html');
 
 var getProcessingTimesByStepProcessor =
-	require('../../statistics/business-process/step-processing-times/reduce');
+	require('../../statistics/business-process/query-times');
 
 var getEmptyResult = function () {
 	return {
