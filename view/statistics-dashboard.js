@@ -1,21 +1,22 @@
 'use strict';
 
-var db                  = require('../db')
-  , assign              = require('es5-ext/object/assign')
+var assign              = require('es5-ext/object/assign')
   , copy                = require('es5-ext/object/copy')
-  , _                   = require('mano').i18n.bind('View: Statistics')
-  , memoize             = require('memoizee')
-  , location            = require('mano/lib/client/location')
-  , setupQueryHandler   = require('../utils/setup-client-query-handler')
-  , resolveFullStepPath = require('../utils/resolve-processing-step-full-path')
   , capitalize          = require('es5-ext/string/#/capitalize')
   , uncapitalize        = require('es5-ext/string/#/uncapitalize')
   , Duration            = require('duration')
-  , getData             = require('mano/lib/client/xhr-driver').get
-  , getQueryHandlerConf = require('../routes/utils/get-statistics-time-query-handler-conf')
-  , ObjservableValue    = require('observable-value')
+  , memoize             = require('memoizee')
+  , ObservableValue     = require('observable-value')
   , nextTick            = require('next-tick')
-  , observableResult    = new ObjservableValue();
+  , _                   = require('mano').i18n.bind('View: Statistics')
+  , location            = require('mano/lib/client/location')
+  , getData             = require('mano/lib/client/xhr-driver').get
+  , db                  = require('../db')
+  , setupQueryHandler   = require('../utils/setup-client-query-handler')
+  , resolveFullStepPath = require('../utils/resolve-processing-step-full-path')
+  , getQueryHandlerConf = require('../routes/utils/get-statistics-time-query-handler-conf')
+
+  , observableResult = new ObservableValue();
 
 exports._servicesColors  = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
 exports._stepsColors     = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
