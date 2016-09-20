@@ -37,7 +37,7 @@ module.exports = function (data) {
 					return;
 				}
 				if (processingStepsMeta[stepShortPath]._services.length > 1) {
-					entries = data.steps[stepShortPath].filter(function (entry) {
+					entries = entries.filter(function (entry) {
 						return entry.serviceName === query.service;
 					});
 					if (!entries.length) return;
