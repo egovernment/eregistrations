@@ -12,8 +12,18 @@ Object.defineProperties(db.User.prototype.getOwnDescriptor('roles'), {
 				return !canBeDestroyed;
 			}) : false;
 
-			input.dom.onclick = _if(isDisabled,
-				'event.preventDefault ? event.preventDefault() : (event.returnValue = false)');
+			if (isDisabled) {
+				var onIsDisabledChanged = function () {
+					if (isDisabled.value) {
+						input.dom.setAttribute('onclick',
+							'event.preventDefault ? event.preventDefault() : (event.returnValue = false)');
+					} else {
+						input.dom.removeAttribute('onclick');
+					}
+				};
+				isDisabled.on('change', onIsDisabledChanged);
+				onIsDisabledChanged();
+			}
 
 			return el('li', { class: [_if(isDisabled, "disabled")] }, el('label', input, " ", label));
 		}
