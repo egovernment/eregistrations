@@ -178,7 +178,7 @@ var getFilesCompletedByStep = function (data) {
 				stepData.push(0);
 				return;
 			}
-			stepData.push(data.byStepAndService[shortPath][serviceName].processed);
+			stepData.push(data.byStepAndService[shortPath][serviceName].processing.processed);
 		});
 		chart.data.push(stepData);
 	});
@@ -229,9 +229,9 @@ var getAverageTime = function (data) {
 				stepData.push(0);
 				return;
 			}
-			stepData.push(
-				Math.round(data.byStepAndService[shortPath][serviceName].avgTime / 1000 / 60 / 60 / 24)
-			);
+			stepData.push(Math.round(
+				data.byStepAndService[shortPath][serviceName].processing.avgTime / 1000 / 60 / 60 / 24
+			));
 		});
 		chart.data.push(stepData);
 	});
@@ -257,7 +257,8 @@ var getAverageTimeByService = function (data) {
 		var row = [];
 		row.push(services[serviceName].label);
 		row.push(Math.round(
-			(data.byService[serviceName] ? data.byService[serviceName].avgTime : 0) / 1000 / 60 / 60 / 24
+			(data.byService[serviceName] ? data.byService[serviceName].processing.avgTime : 0)
+				/ 1000 / 60 / 60 / 24
 		));
 		row.push(chart.options.colors[i]);
 		i++;
@@ -287,9 +288,9 @@ var getWithdrawalTime = function (data) {
 		if (!data.byStepAndService.frontDesk[serviceName]) {
 			row.push(0);
 		} else {
-			row.push(
-				Math.round(data.byStepAndService.frontDesk[serviceName].avgTime / 1000 / 60 / 60 / 24)
-			);
+			row.push(Math.round(
+				data.byStepAndService.frontDesk[serviceName].processing.avgTime / 1000 / 60 / 60 / 24
+			));
 		}
 		row.push(chart.options.colors[i]);
 		i++;

@@ -1,16 +1,25 @@
 'use strict';
 
-module.exports = function () {
-	return {
-		// Count of finalized files/steps
-		processed: 0,
-		// Average processing time
-		avgTime: 0,
-		// Shortest processing time
-		minTime: Infinity,
-		// Longest processing time
-		maxTime: 0,
-		// Sum of all processing times
-		totalTime: 0
-	};
-};
+var d    = require('d')
+  , lazy = require('d/lazy');
+
+var DataTemplate = function () {};
+Object.defineProperties(DataTemplate.prototype, {
+	// Count of items
+	count: d(0),
+	avgTime: d(0),
+	// Shortest processing time
+	minTime: d(Infinity),
+	// Longest processing time
+	maxTime: d(0),
+	// Sum of all processing times
+	totalTime: d(0)
+});
+
+var DataTemplateGroup = function () {};
+Object.defineProperties(DataTemplateGroup.prototype, lazy({
+	processing: d('cew', function () { return new DataTemplate(); }),
+	correction: d('cew', function () { return new DataTemplate(); })
+}));
+
+module.exports = function () { return new DataTemplateGroup(); };

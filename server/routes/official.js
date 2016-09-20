@@ -315,11 +315,15 @@ var getStatsOverviewData = memoize(function (query, userId, statsHandlerOpts) {
 	var promise = getProcessingTimesByStepProcessor(assign(statsHandlerOpts, { query: query }));
 	return promise(function (result) {
 		if (!result.byStepAndProcessor[query.step]) {
-			return { processor: getReductionTemplate(), stepTotal: getReductionTemplate() };
+			return {
+				processor: getReductionTemplate().processing,
+				stepTotal: getReductionTemplate().processing
+			};
 		}
 		return {
-			processor: result.byStepAndProcessor[query.step][userId] || getReductionTemplate(),
-			stepTotal: result.byStep[query.step]
+			processor: (result.byStepAndProcessor[query.step][userId] || getReductionTemplate())
+				.processing,
+			stepTotal: result.byStep[query.step].processing
 		};
 	});
 }, {

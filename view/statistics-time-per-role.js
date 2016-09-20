@@ -32,7 +32,7 @@ var queryServer = memoize(function (query) {
 
 var getEmptyResult = function () {
 	return {
-		processed: 0,
+		count: 0,
 		label: 'Label',
 		avgTime: 0,
 		minTime: Infinity,
@@ -42,7 +42,7 @@ var getEmptyResult = function () {
 };
 
 var resetResult = function (result) {
-	result.processed = '-';
+	result.count = '-';
 	result.avgTime = '-';
 	result.minTime = '-';
 	result.maxTime = '-';
@@ -75,15 +75,19 @@ exports['statistics-main'] = function () {
 			mainData.splice(0, mainData.length);
 
 			totalWithoutCorrections = getEmptyResult();
-			totalWithoutCorrections = result.byBusinessProcess.totalProcessing;
+			totalWithoutCorrections = result.all.processing;
 			totalWithoutCorrections.label = _("Total process without corrections");
 
 			totalCorrections = getEmptyResult();
-			totalCorrections = result.byBusinessProcess.totalCorrection;
+			totalCorrections = result.all.correction;
 			totalCorrections.label = _("Total correcting time");
 
 			total = getEmptyResult();
-			total = result.byBusinessProcess.total;
+			total.count = result.all.processing.count;
+			total.totalTime = totalWithoutCorrections.totalTime + totalCorrections.totalTime;
+			total.minTime = totalWithoutCorrections.minTime;
+			total.maxTime = totalWithoutCorrections.maxTime;
+			total.avgTime = total.totalTime / total.count;
 			total.label = _("Total process");
 
 			Object.keys(result.byStepAndProcessor).forEach(function (key) {
@@ -99,12 +103,13 @@ exports['statistics-main'] = function () {
 					return;
 				}
 				forEach(result.byStepAndProcessor[key], function (byProcessor) {
-					perRoleTotal.processed += byProcessor.processed;
+					byProcessor = byProcessor.processing;
+					perRoleTotal.count += byProcessor.count;
 					perRoleTotal.minTime = Math.min(byProcessor.minTime, perRoleTotal.minTime);
 					perRoleTotal.maxTime = Math.max(byProcessor.maxTime, perRoleTotal.maxTime);
 					perRoleTotal.totalTime += byProcessor.totalTime;
 				});
-				perRoleTotal.avgTime = perRoleTotal.totalTime / perRoleTotal.processed;
+				perRoleTotal.avgTime = perRoleTotal.totalTime / perRoleTotal.count;
 
 				mainData.push(perRoleTotal);
 			});
@@ -179,7 +184,7 @@ exports['statistics-main'] = function () {
 				mainData, function (row) {
 				return tr(
 					td(row.label),
-					td({ class: 'statistics-table-number' }, row.processed),
+					td({ class: 'statistics-table-number' }, row.count),
 					td({ class: 'statistics-table-number' },
 						Number(row.avgTime) ? getDurationDaysHours(row.avgTime) : row.avgTime),
 					td({ class: 'statistics-table-number' },

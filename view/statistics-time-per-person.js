@@ -61,7 +61,7 @@ exports['statistics-main'] = function () {
 		if (query.dateTo) {
 			query.dateTo = query.dateTo.toJSON();
 		}
-		queryServer(query)(function (result) {
+		queryServer(query).done(function (result) {
 			Object.keys(stepsMap).forEach(function (key) {
 				var preparedResult = [];
 				if (!result.byStepAndProcessor[key]) {
@@ -70,13 +70,14 @@ exports['statistics-main'] = function () {
 				}
 				if (!isEmpty(result.byStepAndProcessor[key])) {
 					forEach(result.byStepAndProcessor[key], function (rowData) {
-						preparedResult.push(getRowResult(rowData, db.User.getById(rowData.processor).fullName));
+						preparedResult.push(getRowResult(rowData.processing,
+							db.User.getById(rowData.processor).fullName));
 					});
 					preparedResult.push(getRowResult(result.byStep[key], _("Total & times")));
 				}
 				stepsMap[key].value = preparedResult;
 			});
-		}).done();
+		});
 	});
 	section({ class: 'section-primary users-table-filter-bar' },
 		form({ action: '/time/per-person', autoSubmit: true },
