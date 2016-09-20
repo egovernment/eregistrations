@@ -3,7 +3,6 @@
 var assign           = require('es5-ext/object/assign')
   , submit           = require('mano/utils/save')
   , changePassword   = require('mano-auth/controller/server/change-password').submit
-  , dbObjects        = require('mano').db.objects
   , hash             = require('mano-auth/hash')
   , sendNotification = require('../../server/email-notifications/create-account')
   , queryMaster      = require('eregistrations/server/services/query-master/slave');
@@ -55,5 +54,12 @@ exports['user/[0-9][a-z0-9]+'] = {
 
 // Delete User
 exports['user/[0-9][a-z0-9]+/delete'] = {
-	submit: function () { dbObjects.delete(this.target); }
+	validate: function (data) {
+		this.target.validateDestroy();
+
+		return data;
+	},
+	submit: function () {
+		return this.target._destroy();
+	}
 };
