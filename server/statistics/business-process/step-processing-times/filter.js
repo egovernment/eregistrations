@@ -31,7 +31,10 @@ module.exports = function (data) {
 		return deferred.map(Object.keys(data.steps), function (stepShortPath) {
 			var entries = toArray(data.steps[stepShortPath], identity);
 
-			// 1. Filter by service
+			// 1. Filter by step
+			if (query.step && query.step !== stepShortPath) return;
+
+			// 2. Filter by service
 			if (query.service) {
 				if (!includes.call(processingStepsMeta[stepShortPath]._services, query.service)) {
 					return;
@@ -43,9 +46,6 @@ module.exports = function (data) {
 					if (!entries.length) return;
 				}
 			}
-
-			// 2. Filter by step
-			if (query.step && query.step !== stepShortPath) return;
 
 			// 3. Filter by date range
 			if (query.dateFrom) {
