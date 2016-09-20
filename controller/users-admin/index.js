@@ -35,18 +35,21 @@ exports['user/[0-9][a-z0-9]+'] = {
 		delete data['password-repeat'];
 
 		normalizedData = validate.call(this, data);
-		newRoles = new Set(normalizedData[this.target.__id__ + '/roles']);
-
-		areRolesRemovable = this.target.roles.every(function (role) {
-			//role removal attempt
-			if (!newRoles.has(role) && this.target.rolesMeta[role]) {
-				return this.target.rolesMeta[role].canBeDestroyed;
+		newRoles = normalizedData[this.target.__id__ + '/roles'];
+		if (newRoles) {
+			newRoles = new Set(newRoles);
+			areRolesRemovable = this.target.roles.every(function (role) {
+				//role removal attempt
+				if (!newRoles.has(role) && this.target.rolesMeta[role]) {
+					return this.target.rolesMeta[role].canBeDestroyed;
+				}
+				return true;
+			}, this);
+			if (!areRolesRemovable) {
+				throw customError("Role cannot be removed", 'CANNOT_REMOVE_ROLE');
 			}
-			return true;
-		}, this);
-		if (!areRolesRemovable) {
-			throw customError("Role cannot be removed", 'CANNOT_REMOVE_ROLE');
 		}
+
 		return normalizedData;
 	}
 };
