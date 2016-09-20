@@ -7,6 +7,7 @@ var find           = require('es5-ext/array/#/find')
   , register       = require('mano-auth/controller/register').validate
   , validate       = require('mano/utils/validate')
   , matchUser      = require('../utils/user-matcher')
+  , Set            = require('es6-set')
 
   , keys = Object.keys;
 
@@ -25,13 +26,26 @@ exports['user/[0-9][a-z0-9]+'] = {
 	validate: function (data) {
 		var propertyKey = find.call(keys(data), function (key) {
 			return endsWith.call(key, '/password');
-		});
+		}), normalizedData, newRoles;
 		if (propertyKey) {
 			if (data[propertyKey]) return changePassword.call(this, data);
 			delete data[propertyKey];
 		}
 		delete data['password-repeat'];
-		return validate.call(this, data);
+
+		normalizedData = validate.call(this, data);
+		newRoles = normalizedData[this.target.__id__ + '/roles'];
+		if (newRoles) {
+			newRoles = new Set(newRoles);
+			this.target.roles.forEach(function (role) {
+				//role removal attempt
+				if (!newRoles.has(role) && this.target.rolesMeta[role]) {
+					this.target.rolesMeta[role].validateDestroy();
+				}
+			}, this);
+		}
+
+		return normalizedData;
 	}
 };
 

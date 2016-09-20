@@ -14,6 +14,7 @@ require('dbjs-dom/input/string/string-line/email')(db);
 require('dbjs-dom/input/string/string-line/password')(db);
 require('dbjs-dom/input/utils/fieldset')(db);
 require('dbjs-dom/input/enum')(db.Role);
+require('eregistrations/view/dbjs/roles-to-dom-input');
 require('eregistrations/view/dbjs/form-section-to-dom');
 require('eregistrations/view/dbjs/form-section-group-to-dom');
 require('eregistrations/view/dbjs/user-create-to-dom-fieldset');
