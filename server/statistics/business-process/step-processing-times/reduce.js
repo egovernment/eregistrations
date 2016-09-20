@@ -29,32 +29,32 @@ module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
 	  , processingStepsMeta = ensureObject(config.processingStepsMeta);
 
-	var result = {
-		// Reduction data for all
-		all: getEmptyData(),
-		// Data per service:
-		// byService // Map of services
-		// byService[serviceName] // Data of service
-		byService: {},
-		// Data per step:
-		// byStep // Map of steps
-		// byStep[stepShortPath] // Data of step
-		byStep: {},
-		// Data per step and service
-		// byStepAndService // Map of steps
-		// byStepAndService[shortStepPath] // Map of services
-		// byStepAndService[shortStepPath][serviceName] // Data of service for given step
-		byStepAndService: {},
-		// Data per step and processor:
-		// byStepAndProcessor // Map of steps
-		// byStepAndProcessor[stepShortPath] // Map of processors data
-		// byStepAndProcessor[stepShortPath][officialId] // Data of processor for given step
-		byStepAndProcessor: {}
-	};
-
 	// 1. Get data for all processing steps from all services
 	return getData(driver, processingStepsMeta)(function (data) {
 		return filterData(data, config.query || {}, processingStepsMeta, config)(function (entriesMap) {
+			var result = {
+				// Reduction data for all
+				all: getEmptyData(),
+				// Data per service:
+				// byService // Map of services
+				// byService[serviceName] // Data of service
+				byService: {},
+				// Data per step:
+				// byStep // Map of steps
+				// byStep[stepShortPath] // Data of step
+				byStep: {},
+				// Data per step and service
+				// byStepAndService // Map of steps
+				// byStepAndService[shortStepPath] // Map of services
+				// byStepAndService[shortStepPath][serviceName] // Data of service for given step
+				byStepAndService: {},
+				// Data per step and processor:
+				// byStepAndProcessor // Map of steps
+				// byStepAndProcessor[stepShortPath] // Map of processors data
+				// byStepAndProcessor[stepShortPath][officialId] // Data of processor for given step
+				byStepAndProcessor: {}
+			};
+
 			return deferred.map(Object.keys(entriesMap), function (stepShortPath) {
 
 				// Initialize containers
@@ -105,7 +105,7 @@ module.exports = function (config) {
 							entry.correctionTime);
 					}
 				});
-			});
+			})(result);
 		});
-	})(result);
+	});
 };
