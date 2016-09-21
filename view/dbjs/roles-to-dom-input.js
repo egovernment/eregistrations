@@ -18,29 +18,16 @@ var RolesInput = function (document, type/*, options*/) {
 RolesInput.prototype = Object.create(RoleEnumMultiple.prototype, assign({
 	constructor: d(RolesInput),
 	_render: d(function () {
-		var title, firstContainer, secondContainer;
-		this.dom = this.document.createElement('ul');
-		this.dom.className = 'dbjs multiple checkbox';
-
-		firstContainer = this.document.createElement('li');
-		this.dom.appendChild(firstContainer);
-
-		secondContainer = this.document.createElement('li');
-		this.dom.appendChild(secondContainer);
-
-		title = this.document.createElement('h4');
-		title.appendChild(document.createTextNode(_("Role(s):")));
-		firstContainer.appendChild(title);
-
-		title = this.document.createElement('h4');
-		title.appendChild(document.createTextNode(_("Page(s):")));
-		secondContainer.appendChild(title);
-
-		this.firstSubList = this.document.createElement('ul');
-		firstContainer.appendChild(this.firstSubList);
-
-		this.secondSubList = this.document.createElement('ul');
-		secondContainer.appendChild(this.secondSubList);
+		this.dom = ul({ class: 'dbjs multiple checkbox' },
+			li(
+				h4(_("Role(s):")),
+				this.firstSubList = ul()
+			),
+			li(
+				h4(_("Page(s):")),
+				this.secondSubList = ul()
+			),
+			this.markEmpty);
 	})
 }, autoBind({
 	reload: d(function () {
@@ -67,8 +54,8 @@ RolesInput.prototype = Object.create(RoleEnumMultiple.prototype, assign({
 			}
 		}, this);
 
-		replaceContent.call(this.firstSubList, firstSubList, this.markEmpty);
-		replaceContent.call(this.secondSubList, secondSubList, this.markEmpty);
+		replaceContent.call(this.firstSubList, firstSubList);
+		replaceContent.call(this.secondSubList, secondSubList);
 		this.items.push(this.markEmpty);
 	})
 })));
