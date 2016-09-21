@@ -69,6 +69,27 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 		}
 	};
 
+	var bpMetaMap = {
+		isApproved: {
+			validate: function (record) { return (record.value === '11'); },
+			set: function (data, record) {
+				data.approvedDateTime = new Date(record.stamp / 1000);
+				data.approvedDate = toDateInTz(data.approvedDateTime, timeZone);
+			},
+			delete: function (data) {
+				delete data.approvedDateTime;
+				delete data.approvedDate;
+			}
+		},
+		isSubmitted: {
+			validate: function (record) { return (record.value === '11'); },
+			set: function (data, record) {
+				data.submissionDateTime = new Date(record.stamp / 1000);
+			},
+			delete: function (data) { delete data.submissionDateTime; }
+		}
+	};
+
 	return deferred.map(aFrom(storageStepsMap), function (data) {
 		var storage = data[0], stepPaths = data[1], customRecordSetup
 		  , serviceName = serviceFullShortNameMap.get(storage.name);
@@ -86,6 +107,12 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 			}
 			return result.steps[stepShortPath][businessProcessId];
 		};
+		var initBpDataset = function (businessProcessId) {
+			if (!result.businessProcesses[businessProcessId]) {
+				result.businessProcesses[businessProcessId] = { serviceName: serviceName };
+			}
+			return result.businessProcesses[businessProcessId];
+		};
 
 		// Listen for new records
 		stepPaths.forEach(function (stepPath) {
@@ -98,6 +125,14 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 				});
 			});
 		});
+		forEach(bpMetaMap, function (meta, keyPath) {
+			storage.on('key:' + keyPath, function (event) {
+				if (event.type !== 'direct') return;
+				if (!meta.validate(event.data)) meta.delete(initBpDataset(event.ownerId));
+				else meta.set(initBpDataset(event.ownerId), event.data);
+			});
+		});
+
 		if (customStorageSetup) {
 			customRecordSetup = customStorageSetup(storage, {
 				stepPaths: stepPaths,
@@ -110,9 +145,16 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 
 		// Get current records
 		return storage.search(function (id, record) {
-			var index = id.indexOf('/'), businessProcessId, stepPath, stepKeyPath, meta;
+			var index = id.indexOf('/'), stepPath, stepKeyPath, meta;
 			if (customRecordSetup) customRecordSetup(id, record);
 			if (index === -1) return;
+			var businessProcessId = id.slice(0, index)
+			  , keyPath = id.slice(index + 1);
+			meta = bpMetaMap[keyPath];
+			if (meta) {
+				if (!meta.validate(record)) return;
+				meta.set(initBpDataset(businessProcessId), record);
+			}
 			var match = id.match(re);
 			if (!match) return;
 			stepPath = match[2];
@@ -120,7 +162,6 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 			stepKeyPath = match[3];
 			meta = stepMetaMap[stepKeyPath];
 			if (!meta) return;
-			businessProcessId = match[1];
 			if (!meta.validate(record)) return;
 			meta.set(initStepDataset(stepPath, businessProcessId), record);
 		});
