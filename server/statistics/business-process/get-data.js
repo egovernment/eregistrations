@@ -42,7 +42,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 	});
 
 	// Map of all proparties to be mapped to result with corresponding instructions
-	var metaMap = {
+	var stepMetaMap = {
 		status: {
 			validate: function (record) {
 				return ((record.value === '3approved') || (record.value === '3rejected'));
@@ -90,7 +90,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 		// Listen for new records
 		stepPaths.forEach(function (stepPath) {
 			// Status
-			forEach(metaMap, function (stepKeyPath, meta) {
+			forEach(stepMetaMap, function (stepKeyPath, meta) {
 				storage.on('key:processingSteps/map/' + stepPath + '/' + stepKeyPath, function (event) {
 					if (event.type !== 'direct') return;
 					if (!meta.validate(event.data)) meta.delete(initDataset(stepPath, event.ownerId));
@@ -118,7 +118,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 			stepPath = match[2];
 			if (!stepPaths.has(stepPath)) return;
 			stepKeyPath = match[3];
-			meta = metaMap[stepKeyPath];
+			meta = stepMetaMap[stepKeyPath];
 			if (!meta) return;
 			businessProcessId = match[1];
 			if (!meta.validate(record)) return;
