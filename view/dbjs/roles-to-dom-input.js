@@ -78,7 +78,6 @@ roleEnum.DOMMultipleInput = RolesInput;
 
 Object.defineProperties(db.User.prototype.getOwnDescriptor('roles'), {
 	inputOptions: d({
-		label: false,
 		renderItem: function (input, label, value) {
 			var el = this.make, isDisabled, rolesMetaEntry;
 			rolesMetaEntry = this.observable.object.rolesMeta[value];
