@@ -109,8 +109,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 				result.steps[stepShortPath][businessProcessId] = {
 					businessProcessId: businessProcessId,
 					stepFullPath: 'processingSteps/map/' + stepPath,
-					serviceName: serviceName,
-					storage: storage
+					serviceName: serviceName
 				};
 			}
 			return result.steps[stepShortPath][businessProcessId];
