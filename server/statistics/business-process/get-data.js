@@ -66,6 +66,14 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 			validate: function (record) { return (record.value[0] === '2'); },
 			set: function (data, record) { data.processingTime = unserializeValue(record.value); },
 			delete: function (data) { delete data.processingTime; }
+		},
+		isReady: {
+			type: 'computed',
+			validate: function (record) { return (record.value === '11'); },
+			set: function (data, record) {
+				data.pendingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
+			},
+			delete: function (data) { delete data.pendingDate; }
 		}
 	};
 
@@ -119,7 +127,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 			// Status
 			forEach(stepMetaMap, function (meta, stepKeyPath) {
 				storage.on('key:processingSteps/map/' + stepPath + '/' + stepKeyPath, function (event) {
-					if (event.type !== 'direct') return;
+					if (event.type !== (meta.type || 'direct')) return;
 					if (!meta.validate(event.data)) meta.delete(initStepDataset(stepPath, event.ownerId));
 					else meta.set(initStepDataset(stepPath, event.ownerId), event.data);
 				});
@@ -127,7 +135,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 		});
 		forEach(bpMetaMap, function (meta, keyPath) {
 			storage.on('key:' + keyPath, function (event) {
-				if (event.type !== 'direct') return;
+				if (event.type !== (meta.type || 'direct')) return;
 				if (!meta.validate(event.data)) meta.delete(initBpDataset(event.ownerId));
 				else meta.set(initBpDataset(event.ownerId), event.data);
 			});
@@ -144,27 +152,37 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 		}
 
 		// Get current records
-		return storage.search(function (id, record) {
-			var index = id.indexOf('/'), stepPath, stepKeyPath, meta;
-			if (customRecordSetup) customRecordSetup(id, record);
-			if (index === -1) return;
-			var businessProcessId = id.slice(0, index)
-			  , keyPath = id.slice(index + 1);
-			meta = bpMetaMap[keyPath];
-			if (meta) {
+		return deferred(
+			storage.search(function (id, record) {
+				var index = id.indexOf('/'), stepPath, stepKeyPath, meta;
+				if (customRecordSetup) customRecordSetup(id, record);
+				if (index === -1) return;
+				var businessProcessId = id.slice(0, index)
+				  , keyPath = id.slice(index + 1);
+				meta = bpMetaMap[keyPath];
+				if (meta) {
+					if (!meta.validate(record)) return;
+					meta.set(initBpDataset(businessProcessId), record);
+				}
+				var match = id.match(re);
+				if (!match) return;
+				stepPath = match[2];
+				if (!stepPaths.has(stepPath)) return;
+				stepKeyPath = match[3];
+				meta = stepMetaMap[stepKeyPath];
+				if (!meta) return;
 				if (!meta.validate(record)) return;
-				meta.set(initBpDataset(businessProcessId), record);
-			}
-			var match = id.match(re);
-			if (!match) return;
-			stepPath = match[2];
-			if (!stepPaths.has(stepPath)) return;
-			stepKeyPath = match[3];
-			meta = stepMetaMap[stepKeyPath];
-			if (!meta) return;
-			if (!meta.validate(record)) return;
-			meta.set(initStepDataset(stepPath, businessProcessId), record);
-		});
+				meta.set(initStepDataset(stepPath, businessProcessId), record);
+			}),
+			deferred.map(aFrom(stepPaths), function (stepPath) {
+				var keyPath = 'processingSteps/map/' + stepPath + '/isReady'
+				  , meta = stepMetaMap.isReady;
+				return storage.searchComputed({ keyPath: keyPath }, function (id, record) {
+					if (!meta.validate(record)) return;
+					meta.set(initStepDataset(stepPath, id.split('/', 1)[0]), record);
+				});
+			})
+		);
 	})(result);
 
 }, { length: 0 });
