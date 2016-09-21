@@ -111,9 +111,9 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 		// Get current records
 		return storage.search(function (id, record) {
 			var index = id.indexOf('/'), businessProcessId, stepPath, stepKeyPath, meta;
+			if (customRecordSetup) customRecordSetup(id, record);
 			if (index === -1) return;
 			var match = id.match(re);
-			if (customRecordSetup) customRecordSetup(id, record);
 			if (!match) return;
 			stepPath = match[2];
 			if (!stepPaths.has(stepPath)) return;
