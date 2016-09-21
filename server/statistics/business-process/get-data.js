@@ -41,7 +41,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 		});
 	});
 
-	// Map of all proparties to be mapped to result with corresponding instructions
+	// Map of all properties to be mapped to result with corresponding instructions
 	var stepMetaMap = {
 		status: {
 			validate: function (record) {
