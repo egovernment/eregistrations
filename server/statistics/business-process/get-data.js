@@ -107,7 +107,6 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 			if (!result.steps[stepShortPath]) result.steps[stepShortPath] = Object.create(null);
 			if (!result.steps[stepShortPath][businessProcessId]) {
 				result.steps[stepShortPath][businessProcessId] = {
-					businessProcessId: businessProcessId,
 					stepFullPath: 'processingSteps/map/' + stepPath,
 					serviceName: serviceName
 				};
