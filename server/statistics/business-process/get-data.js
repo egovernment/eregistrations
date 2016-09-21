@@ -90,7 +90,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 		// Listen for new records
 		stepPaths.forEach(function (stepPath) {
 			// Status
-			forEach(stepMetaMap, function (stepKeyPath, meta) {
+			forEach(stepMetaMap, function (meta, stepKeyPath) {
 				storage.on('key:processingSteps/map/' + stepPath + '/' + stepKeyPath, function (event) {
 					if (event.type !== 'direct') return;
 					if (!meta.validate(event.data)) meta.delete(initStepDataset(stepPath, event.ownerId));
