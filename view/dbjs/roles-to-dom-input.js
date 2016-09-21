@@ -28,6 +28,28 @@ RolesInput.prototype = Object.create(RoleEnumMultiple.prototype, assign({
 				this.secondSubList = ul()
 			),
 			this.markEmpty);
+	}),
+	customRenderItem: d(function (input, label, value) {
+		var el = this.make, isDisabled, rolesMetaEntry;
+		rolesMetaEntry = this.observable.object.rolesMeta[value];
+		isDisabled = rolesMetaEntry ? rolesMetaEntry._canBeDestroyed.map(function (canBeDestroyed) {
+			return !canBeDestroyed;
+		}) : false;
+
+		if (isDisabled) {
+			var onIsDisabledChanged = function () {
+				if (isDisabled.value) {
+					input.dom.setAttribute('onclick',
+						'event.preventDefault ? event.preventDefault() : (event.returnValue = false)');
+				} else {
+					input.dom.removeAttribute('onclick');
+				}
+			};
+			isDisabled.on('change', onIsDisabledChanged);
+			onIsDisabledChanged();
+		}
+
+		return el('li', { class: [_if(isDisabled, "disabled")] }, el('label', input, " ", label));
 	})
 }, autoBind({
 	reload: d(function () {
@@ -60,32 +82,4 @@ RolesInput.prototype = Object.create(RoleEnumMultiple.prototype, assign({
 	})
 })));
 
-roleEnum = roleEnum(db.Role);
-roleEnum.DOMMultipleInput = RolesInput;
-
-Object.defineProperties(db.User.prototype.getOwnDescriptor('roles'), {
-	inputOptions: d({
-		renderItem: function (input, label, value) {
-			var el = this.make, isDisabled, rolesMetaEntry;
-			rolesMetaEntry = this.observable.object.rolesMeta[value];
-			isDisabled = rolesMetaEntry ? rolesMetaEntry._canBeDestroyed.map(function (canBeDestroyed) {
-				return !canBeDestroyed;
-			}) : false;
-
-			if (isDisabled) {
-				var onIsDisabledChanged = function () {
-					if (isDisabled.value) {
-						input.dom.setAttribute('onclick',
-							'event.preventDefault ? event.preventDefault() : (event.returnValue = false)');
-					} else {
-						input.dom.removeAttribute('onclick');
-					}
-				};
-				isDisabled.on('change', onIsDisabledChanged);
-				onIsDisabledChanged();
-			}
-
-			return el('li', { class: [_if(isDisabled, "disabled")] }, el('label', input, " ", label));
-		}
-	})
-});
+db.User.prototype.getOwnDescriptor('roles').DOMInput = RolesInput;
