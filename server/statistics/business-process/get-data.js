@@ -73,7 +73,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 		var storage = data[0], stepPaths = data[1], customRecordSetup
 		  , serviceName = serviceFullShortNameMap.get(storage.name);
 
-		var initDataset = function (stepPath, businessProcessId) {
+		var initStepDataset = function (stepPath, businessProcessId) {
 			var stepShortPath = stepShortPathMap.get(stepPath);
 			if (!result.steps[stepShortPath]) result.steps[stepShortPath] = Object.create(null);
 			if (!result.steps[stepShortPath][businessProcessId]) {
@@ -93,8 +93,8 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 			forEach(stepMetaMap, function (stepKeyPath, meta) {
 				storage.on('key:processingSteps/map/' + stepPath + '/' + stepKeyPath, function (event) {
 					if (event.type !== 'direct') return;
-					if (!meta.validate(event.data)) meta.delete(initDataset(stepPath, event.ownerId));
-					else meta.set(initDataset(stepPath, event.ownerId), event.data);
+					if (!meta.validate(event.data)) meta.delete(initStepDataset(stepPath, event.ownerId));
+					else meta.set(initStepDataset(stepPath, event.ownerId), event.data);
 				});
 			});
 		});
@@ -103,7 +103,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 				stepPaths: stepPaths,
 				stepShortPathMap: stepShortPathMap,
 				serviceName: serviceName,
-				initDataset: initDataset
+				initStepDataset: initStepDataset
 			});
 			if (customRecordSetup) ensureCallable(customRecordSetup);
 		}
@@ -122,7 +122,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 			if (!meta) return;
 			businessProcessId = match[1];
 			if (!meta.validate(record)) return;
-			meta.set(initDataset(stepPath, businessProcessId), record);
+			meta.set(initStepDataset(stepPath, businessProcessId), record);
 		});
 	})(result);
 
