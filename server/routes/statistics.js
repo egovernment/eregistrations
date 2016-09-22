@@ -20,8 +20,8 @@ var getFilesPendingByStepAndService =
 	require('../statistics/business-process/get-files-pending-by-step-and-service');
 var getQueryHandlerConf = require('../../routes/utils/get-statistics-time-query-handler-conf');
 
-module.exports = function (data) {
-	var options = normalizeOptions(ensureObject(data))
+module.exports = function (config) {
+	var options = normalizeOptions(ensureObject(config))
 	  , queryConf, processingStepsMeta, db;
 
 	ensureDriver(options.driver);
