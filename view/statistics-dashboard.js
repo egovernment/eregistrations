@@ -336,13 +336,16 @@ exports['statistics-main'] = function () {
 	}), location, '/');
 
 	queryHandler.on('query', function (query) {
-		if (query.dateFrom) {
-			query.dateFrom = query.dateFrom.toJSON();
+		var serverQuery = copy(query);
+		if (serverQuery.dateFrom) {
+			serverQuery.dateFrom = serverQuery.dateFrom.toJSON();
 		}
-		if (query.dateTo) {
-			query.dateTo = query.dateTo.toJSON();
+		if (serverQuery.dateTo) {
+			serverQuery.dateTo = serverQuery.dateTo.toJSON();
 		}
-		queryServer(query).done(updateChartsData);
+		queryServer(serverQuery).done(function (data) {
+			updateChartsData(data, query);
+		});
 	});
 
 	section({ class: 'section-primary users-table-filter-bar' },
