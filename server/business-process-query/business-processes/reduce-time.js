@@ -2,9 +2,9 @@
 
 var forEach      = require('es5-ext/object/for-each')
   , ensureObject = require('es5-ext/object/valid-object')
-  , serviceNames = require('../../../utils/business-process-service-names')
-  , getEmptyData = require('../../../business-process-query/utils/get-time-reduction-template')
-  , reduce       = require('../../../business-process-query/utils/reduce-time');
+  , serviceNames = require('../../utils/business-process-service-names')
+  , getEmptyData = require('../utils/get-time-reduction-template')
+  , reduce       = require('../utils/reduce-time');
 
 /**
 	*
