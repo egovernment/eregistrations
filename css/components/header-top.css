@@ -133,8 +133,6 @@ Flexible basic menu button positioning
 	background-color: var(--white-background);
 }
 
-.header-top-menu-dropdown-item-active a,
-.header-top-menu-dropdown-item-active button,
 .header-top-menu-dropdown-content a:hover,
 .header-top-menu-dropdown-content a:active,
 .header-top-menu-dropdown-content a:focus,
@@ -144,6 +142,22 @@ Flexible basic menu button positioning
 .header-top-menu-dropdown-content button[type="submit"]:hover,
 .header-top-menu-dropdown-content button[type="submit"]:active
 .header-top-menu-dropdown-content button[type="submit"]:focus {
+	background-color: var(--normal-background);
+	color: var(--white-text);
+	border-radius: 0;
+}
+
+.header-top-menu-dropdown-item-active a,
+.header-top-menu-dropdown-item-active button,
+.header-top-menu-dropdown-item-active a:hover,
+.header-top-menu-dropdown-item-active a:active,
+.header-top-menu-dropdown-item-active a:focus,
+.header-top-menu-dropdown-item-active button:hover,
+.header-top-menu-dropdown-item-active button:active,
+.header-top-menu-dropdown-item-active button:focus,
+.header-top-menu-dropdown-item-active button[type="submit"]:hover,
+.header-top-menu-dropdown-item-active button[type="submit"]:active
+.header-top-menu-dropdown-item-active button[type="submit"]:focus {
 	background-color: var(--normal-dark-background);
 	color: var(--white-text);
 	border-radius: 0;
@@ -178,6 +192,7 @@ Flexible basic menu button positioning
 	width: 100%;
 	text-align: left;
 	border-radius: 0;
+	padding: 4px 8px;
 }
 
 .header-top-dropdown button {
