@@ -4,7 +4,7 @@ var ensureObject = require('es5-ext/object/valid-object')
   , ensureDriver = require('dbjs-persistence/ensure-driver')
   , getData      = require('../../business-process-query/get-data')
   , filterData   = require('../../business-process-query/steps/filter')
-  , reduceData   = require('./step-processing-times/reduce');
+  , reduceData   = require('../../business-process-query/steps/reduce-time');
 
 /**
 	*
