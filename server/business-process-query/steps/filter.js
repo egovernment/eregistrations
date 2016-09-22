@@ -2,9 +2,9 @@
 
 var includes       = require('es5-ext/array/#/contains')
   , filter         = require('es5-ext/object/filter')
+  , map            = require('es5-ext/object/map')
   , ensureObject   = require('es5-ext/object/valid-object')
-  , ensureCallable = require('es5-ext/object/valid-callable')
-  , deferred       = require('deferred');
+  , ensureCallable = require('es5-ext/object/valid-callable');
 
 /**
 	*
@@ -35,9 +35,7 @@ module.exports = function (data, query, processingStepsMeta/*, options*/) {
 	});
 
 	// 2. Filter items
-	var newData = Object.create(null);
-	return deferred.map(Object.keys(data), function (stepShortPath) {
-		var stepData = data[stepShortPath];
+	return map(data, function (stepData, stepShortPath) {
 
 		// 2.1. Filter by service
 		if (query.service && (processingStepsMeta[stepShortPath]._services.length > 1)) {
@@ -58,18 +56,8 @@ module.exports = function (data, query, processingStepsMeta/*, options*/) {
 			});
 		}
 
-		if (!customFilter) {
-			newData[stepShortPath] = stepData;
-			return;
-		}
+		if (customFilter) stepData = filter(stepData, customFilter);
 
-		// 2.3. Custom filter
-		var newStepData = newData[stepShortPath] = Object.create(null);
-		return deferred.map(Object.keys(stepData), function (businessProcessId) {
-			var entry = stepData[businessProcessId];
-			return customFilter(entry, query)(function (isOk) {
-				if (isOk) newStepData[businessProcessId] = entry;
-			}.bind(this));
-		});
-	})(newData);
+		return stepData;
+	});
 };
