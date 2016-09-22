@@ -4,7 +4,7 @@ var forEach      = require('es5-ext/object/for-each')
   , ensureObject = require('es5-ext/object/valid-object')
   , serviceNames = require('../../../utils/business-process-service-names')
   , getEmptyData = require('../get-reduction-template')
-  , reduce       = require('../reduce');
+  , reduce       = require('../../../business-process-query/utils/reduce-time');
 
 /**
 	*
