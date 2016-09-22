@@ -133,6 +133,8 @@ Flexible basic menu button positioning
 	background-color: var(--white-background);
 }
 
+.header-top-menu-dropdown-item-active a,
+.header-top-menu-dropdown-item-active button,
 .header-top-menu-dropdown-content a:hover,
 .header-top-menu-dropdown-content a:active,
 .header-top-menu-dropdown-content a:focus,
@@ -175,6 +177,7 @@ Flexible basic menu button positioning
 	text-transform: none;
 	width: 100%;
 	text-align: left;
+	border-radius: 0;
 }
 
 .header-top-dropdown button {
