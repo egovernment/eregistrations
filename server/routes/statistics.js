@@ -8,9 +8,9 @@ var assign                            = require('es5-ext/object/assign')
   , ensureObject                      = require('es5-ext/object/valid-object')
   , QueryHandler                      = require('../../utils/query-handler')
   , getBaseRoutes                     = require('./authenticated')
-  , timePerPersonPrint                = require('./statistics-time-per-person-print')
-  , timePerRolePrint                  = require('./statistics-time-per-role-print')
-  , timePerRoleCsv                    = require('./statistics-time-per-role-csv')
+  , timePerPersonPrint                = require('./controllers/statistics-time-per-person-print')
+  , timePerRolePrint                  = require('./controllers/statistics-time-per-role-print')
+  , timePerRoleCsv                    = require('./controllers/statistics-time-per-role-csv')
   , getProcessingTimesByStepProcessor =
 		require('../statistics/get-processing-times-by-step-processor')
   , getFilesApprovedByDateAndService  =

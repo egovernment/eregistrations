@@ -1,52 +1,67 @@
 /**
- * Tracks processing steps status changes and updates direct isReady.
- * It's needed to maintain desired isReady's stamp.
- * This service is complementary to business-process-flow
- */
+	* Tracks processing steps status changes and updates direct isReady.
+	* It's needed to maintain desired isReady's stamp.
+	* This service is complementary to business-process-flow
+*/
 
 'use strict';
 
-var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
-  , unserializeValue              = require('dbjs/_setup/unserialize/value')
-  , deferred                      = require('deferred')
+var aFrom                         = require('es5-ext/array/from')
   , capitalize                    = require('es5-ext/string/#/capitalize')
-  , ensureArray                   = require('es5-ext/array/valid-array')
-  , emptyPromise                  = deferred(null);
+  , Map                           = require('es6-map')
+  , Set                           = require('es6-set')
+  , deferred                      = require('deferred')
+  , debug                         = require('debug-ext')('business-process-flow')
+  , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path');
 
-var getCopyIsReady = function (storage) {
-	return function (isReadyPath, status) {
-		status = unserializeValue(status);
-		if (status == null) return emptyPromise;
-
-		return storage.get(isReadyPath)(function (directIsReady) {
-			if ((directIsReady == null) || (unserializeValue(directIsReady.value) == null)) {
-				return storage.getComputed(isReadyPath)(function (computedIsReady) {
-					return storage.store(isReadyPath, computedIsReady.value, computedIsReady.stamp);
-				});
+var copyIsReady = function (storage, stepId) {
+	var isReadyPath = stepId + '/isReady';
+	return storage.get(isReadyPath)(function (record) {
+		if (record && (record.value[0] === '1')) return;
+		return storage.getComputed(isReadyPath)(function (computedRecord) {
+			if (!computedRecord || (computedRecord.value !== '11')) {
+				console.error("\nUnexpected isReady value for" + isReadyPath + "\n");
+				console.log("Direct record", record);
+				console.log("Computed record", computedRecord);
+				return;
 			}
-			return emptyPromise;
+			var shortPath = stepId.split('/map/').slice(1).map(function (part) {
+				return part.replace(/\/steps$/, '');
+			}).join('/');
+			debug('%s %s step shadow isReady', stepId.split('/', 1)[0], shortPath);
+			return storage.store(isReadyPath, computedRecord.value, computedRecord.stamp);
 		});
-	};
+	});
 };
 
 module.exports = function (driver, processingStepsMeta) {
+	var storageStepMap = new Map();
 	Object.keys(processingStepsMeta).forEach(function (stepMetaKey) {
-		var stepPath, storages;
-		stepPath = 'processingSteps/map/' + resolveProcessingStepFullPath(stepMetaKey);
-		storages = ensureArray(processingStepsMeta[stepMetaKey]._services);
-		storages = storages.map(function (storageName) {
-			return driver.getStorage('businessProcess' + capitalize.call(storageName));
-		});
-		storages.forEach(function (storage) {
-			var copyIsReady = getCopyIsReady(storage);
-			storage.on('key:' + stepPath + '/status', function (event) {
-				var isReadyPath = event.ownerId + '/' + stepPath + '/isReady';
-				if (event.type === 'computed') return;
-				copyIsReady(isReadyPath, event.data.value).done();
-			});
-			storage.search({ keyPath: stepPath + '/status' }, function (id, data) {
-				return copyIsReady(id.split('/', 1)[0] + '/' + stepPath + '/isReady', data.value);
-			}).done();
+		var stepPath = 'processingSteps/map/' + resolveProcessingStepFullPath(stepMetaKey);
+		processingStepsMeta[stepMetaKey]._services.forEach(function (serviceName) {
+			var storage = driver.getStorage('businessProcess' + capitalize.call(serviceName));
+			if (!storageStepMap.has(storage)) storageStepMap.set(storage, new Set());
+			storageStepMap.get(storage).add(stepPath);
 		});
 	});
+	deferred.map(aFrom(storageStepMap), function (data) {
+		var storage = data[0], stepPaths = data[1];
+		stepPaths.forEach(function (stepPath) {
+			storage.on('key:' + stepPath + '/status', function (event) {
+				if (event.type !== 'direct') return;
+				if (event.data.value[0] !== '3') return;
+				copyIsReady(storage, event.ownerId + '/' + stepPath).done();
+			});
+		});
+		var statusPaths = new Set(aFrom(stepPaths).map(function (stepPath) {
+			return stepPath + '/status';
+		}));
+		return storage.search(function (id, data) {
+			var index = id.indexOf('/');
+			if (index === -1) return;
+			if (!statusPaths.has(id.slice(index + 1))) return;
+			if (data.value[0] !== '3') return;
+			return copyIsReady(storage, id.slice(0, -'/status'.length));
+		});
+	}).done();
 };
