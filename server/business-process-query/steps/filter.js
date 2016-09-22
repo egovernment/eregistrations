@@ -19,16 +19,18 @@ module.exports = exports = function (data, query, processingStepsMeta) {
 	(ensureObject(data) && ensureObject(query) && ensureObject(processingStepsMeta));
 
 	// 1. Exclude not applicable steps
-	data = filter(data.steps, function (stepData, stepShortPath) {
-		// 1.1. Exclude by step
-		if (query.step && query.step !== stepShortPath) return;
+	if (query.step || query.service) {
+		data = filter(data.steps, function (stepData, stepShortPath) {
+			// 1.1. Exclude by step
+			if (query.step && query.step !== stepShortPath) return;
 
-		// 1.2. Exclude by service
-		if (query.service) {
-			if (!includes.call(processingStepsMeta[stepShortPath]._services, query.service)) return;
-		}
-		return true;
-	});
+			// 1.2. Exclude by service
+			if (query.service) {
+				if (!includes.call(processingStepsMeta[stepShortPath]._services, query.service)) return;
+			}
+			return true;
+		});
+	}
 
 	// 2. Filter items
 	return map(data, function (stepData, stepShortPath) {
