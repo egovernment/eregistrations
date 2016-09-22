@@ -1,11 +1,10 @@
 'use strict';
 
 var assign             = require('es5-ext/object/assign')
-  , normalizeOptions   = require('es5-ext/object/normalize-options')
   , ensureObject       = require('es5-ext/object/valid-object')
   , deferred           = require('deferred')
-  , ensureDatabase     = require('dbjs/valid-dbjs')
   , ensureDriver       = require('dbjs-persistence/ensure-driver')
+  , db                 = require('../../db')
   , QueryHandler       = require('../../utils/query-handler')
   , timePerPersonPrint = require('./controllers/statistics-time-per-person-print')
   , timePerRolePrint   = require('./controllers/statistics-time-per-role-print')
@@ -21,11 +20,10 @@ var getFilesPendingByStepAndService =
 var getQueryHandlerConf = require('../../routes/utils/get-statistics-time-query-handler-conf');
 
 module.exports = function (config) {
-	var queryConf, processingStepsMeta, db;
+	var queryConf, processingStepsMeta;
 
 	ensureObject(config);
 	ensureDriver(config.driver);
-	db = ensureDatabase(config.db);
 	processingStepsMeta = config.processingStepsMeta;
 	queryConf = getQueryHandlerConf({
 		db: db,
