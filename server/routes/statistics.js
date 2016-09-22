@@ -21,29 +21,29 @@ var getFilesPendingByStepAndService =
 var getQueryHandlerConf = require('../../routes/utils/get-statistics-time-query-handler-conf');
 
 module.exports = function (config) {
-	var options = normalizeOptions(ensureObject(config))
-	  , queryConf, processingStepsMeta, db;
+	var queryConf, processingStepsMeta, db;
 
-	ensureDriver(options.driver);
-	db = ensureDatabase(options.db);
-	processingStepsMeta = options.processingStepsMeta;
+	ensureObject(config);
+	ensureDriver(config.driver);
+	db = ensureDatabase(config.db);
+	processingStepsMeta = config.processingStepsMeta;
 	queryConf = getQueryHandlerConf({
 		db: db,
 		processingStepsMeta: processingStepsMeta,
 		// Eventual system specific query conf
-		queryConf: options.queryConf
+		queryConf: config.queryConf
 	});
 
-	timePerPersonPrint = timePerPersonPrint(assign(options));
-	timePerRolePrint = timePerRolePrint(assign(options));
-	timePerRoleCsv = timePerRoleCsv(assign(options));
+	timePerPersonPrint = timePerPersonPrint(assign(config));
+	timePerRolePrint = timePerRolePrint(assign(config));
+	timePerRoleCsv = timePerRoleCsv(assign(config));
 
 	var queryHandler = new QueryHandler(queryConf);
 
 	return assign({
 		'get-processing-time-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
-				return getProcessingTimesByStepProcessor(assign(options, { query: query }));
+				return getProcessingTimesByStepProcessor(assign(config, { query: query }));
 			});
 		},
 		'get-time-per-person-print': {
@@ -74,7 +74,7 @@ module.exports = function (config) {
 			return queryHandler.resolve(query)(function (query) {
 				var finalResult = {}, today = new Date();
 				return deferred(
-					getProcessingTimesByStepProcessor(assign(options,
+					getProcessingTimesByStepProcessor(assign(config,
 						{ query: query }))(function (result) {
 						assign(finalResult, result);
 					}),
