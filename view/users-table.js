@@ -11,7 +11,7 @@ var copy          = require('es5-ext/object/copy')
 
   , db = mano.db, env = mano.env, roleMeta = db.Role.meta;
 
-exports._parent = require('./user-base');
+exports._parent = require('./users-admin-base');
 
 exports._mapRolesToLabels = function (role, user) {
 	if (!role) return 'N/A';

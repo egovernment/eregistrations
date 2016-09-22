@@ -1,11 +1,9 @@
 'use strict';
 
-var _                    = require('mano').i18n.bind('View: User')
+var _                    = require('mano').i18n.bind('View: Abstract User')
   , loginDialog          = require('./components/login-dialog')
   , registerDialog       = require('./components/register-dialog')
-  , modalContainer       = require('./components/modal-container')
-  , myAccountButton      = require('./components/my-account-button')
-  , requestAccountDialog = require('./components/request-account-dialog');
+  , modalContainer       = require('./components/modal-container');
 
 exports._parent = require('./base');
 
@@ -36,37 +34,7 @@ exports.main = function () {
 			_if(this.user._isDemo, div({ class: 'submitted-menu-demo' },
 				a({ class: 'submitted-menu-demo-ribon' }, _("Demo"))))));
 
-	insert(_if(this.user._isDemo,
-		div({ class: 'submitted-menu-demo-msg' },
-			div({ class: 'content' },
-				h3(_("Demo version")),
-				p(_("Introduction to demo version"))))));
-
-	insert(_if(this.manager, function () {
-		return this.manager._currentlyManagedUser.map(function (managedUser) {
-			if (!managedUser) return;
-			var isUserReallyManaged = eq(this.manager, managedUser._manager);
-
-			requestAccountDialog(managedUser);
-
-			return div({ class: 'manager-bar' },
-				div({ class: 'content' },
-					div({ class: 'manager-bar-info' },
-						span(_("Client"), ": "),
-							this.appName === 'user' ? a({ href: '/' }, managedUser._fullName)
-							: myAccountButton(this.manager, managedUser._fullName)),
-					_if(isUserReallyManaged, div({ class: 'manager-bar-actions' },
-						_if(not(managedUser._isActiveAccount),
-							a({
-								class: 'actions-create',
-								href: '#request-create-account'
-							}, span(_('Create account for this client')))),
-						a({ href: '/managed-user-profile/' },
-							span({ class: 'hint-optional hint-optional-left',
-									'data-hint': _('edit user details') },
-								i({ class: 'fa fa-cog' })))))));
-		}.bind(this));
-	}.bind(this)));
+	div({ id: 'abstract-sub-main' });
 
 	div({ class: 'user-forms', id: 'sub-main' });
 };

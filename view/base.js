@@ -39,4 +39,3 @@ exports.body = function () {
 exports._logo = Function.prototype;
 exports._footerContent = Function.prototype;
 exports._bodyAppend = Function.prototype;
-exports._submittedMenu = Function.prototype;
