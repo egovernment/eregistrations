@@ -2,7 +2,7 @@
 
 var ensureObject = require('es5-ext/object/valid-object')
   , ensureDriver = require('dbjs-persistence/ensure-driver')
-  , getData      = require('./get-data')
+  , getData      = require('../../business-process-query/get-data')
   , filterData   = require('./step-processing-times/filter')
   , reduceData   = require('./step-processing-times/reduce');
 
