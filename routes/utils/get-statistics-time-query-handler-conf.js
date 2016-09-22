@@ -40,7 +40,7 @@ var queryConf = [
 	}
 ];
 
-module.exports = function (data) {
+module.exports = exports = function (data) {
 	var options         = normalizeOptions(ensureObject(data)), conf;
 	db                  = ensureDatabase(options.db);
 	processingStepsMeta = options.processingStepsMeta;
@@ -73,8 +73,8 @@ module.exports = function (data) {
 			}
 		});
 	}
-	if (options.queryConf && ensureArray(options.queryConf)) {
-		options.queryConf.forEach(function (confItem) {
+	if (exports.customQueryConf) {
+		ensureArray(exports.customQueryConf).forEach(function (confItem) {
 			conf.push(confItem);
 		});
 	}
