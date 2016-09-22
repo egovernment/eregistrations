@@ -14,6 +14,8 @@ var db      = require('mano').db
 
 exports._parent = require('./meta-admin-base');
 
+exports['holidays-nav'] = { class: { 'submitted-menu-item-active': true } };
+
 exports['meta-admin-main'] = {
 	content: function () {
 		h2(_("Holidays edition"));

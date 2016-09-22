@@ -321,6 +321,8 @@ var updateChartsData = function (data) {
 
 exports._parent = require('./statistics-base');
 
+exports['dashboard-nav'] = { class: { 'submitted-menu-item-active': true } };
+
 exports['statistics-main'] = function () {
 	var queryHandler;
 	getStepLabelByShortPath = getStepLabelByShortPath(this.processingStepsMeta);

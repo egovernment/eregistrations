@@ -7,6 +7,7 @@ var capitalize = require('es5-ext/string/#/capitalize')
 
 exports._parent = require('./statistics-files');
 
+exports['files-nav']           = { class: { 'submitted-menu-item-active': true } };
 exports['completed-files-nav'] = { class: { 'pills-nav-active': true } };
 
 exports['statistics-main'] = function () {

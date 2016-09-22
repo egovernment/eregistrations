@@ -1,15 +1,14 @@
 'use strict';
 
-var _                 = require('mano').i18n
-  , submittedMenuItem = require('./components/submitted-menu-item');
+var _ = require('mano').i18n;
 
 exports._parent = require('./abstract-user-base');
 
 exports['submitted-menu'] = function () {
-	submittedMenuItem('/', _("Dashboard"), { pattern: /^\/$/ });
-	submittedMenuItem('/files/', _("Files"));
-	submittedMenuItem('/time/', _("Time"));
-	submittedMenuItem('/analysis/', _("Analysis"));
+	li({ id: 'dashboard-nav' }, a({ href: '/' }, _("Dashboard")));
+	li({ id: 'files-nav' }, a({ href: '/files/' }, _("Files")));
+	li({ id: 'time-nav' }, a({ href: '/time/' }, _("Time")));
+	li({ id: 'analysis-nav' }, a({ href: '/analysis/' }, _("Analysis")));
 };
 
 exports['sub-main'] = {

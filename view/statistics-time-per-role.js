@@ -19,6 +19,7 @@ var location             = require('mano/lib/client/location')
 exports._parent = require('./statistics-time');
 exports._customFilters = Function.prototype;
 
+exports['time-nav']     = { class: { 'submitted-menu-item-active': true } };
 exports['per-role-nav'] = { class: { 'pills-nav-active': true } };
 
 var queryServer = memoize(function (query) {
