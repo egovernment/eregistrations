@@ -24,11 +24,11 @@ module.exports = function (data) {
 		all: getEmptyData(),
 		// Data per service:
 		// byService // Map of services
-		// byService[serviceName] // Data of service
+		// byService[serviceName] // Time reduction data of service
 		byService: {},
 		// byDateAndService // Map of services
 		// byDateAndService[serviceName] // Map of dates
-		// byDateAndService[serviceName][date] // Data for given date
+		// byDateAndService[serviceName][date] // Count for given date
 		byDateAndService: {}
 	};
 
@@ -44,11 +44,11 @@ module.exports = function (data) {
 		  , time = bpData.approvedDateTime - bpData.submissionDateTime;
 
 		if (!result.byDateAndService[bpData.serviceName][dateString]) {
-			result.byDateAndService[bpData.serviceName][dateString] = getEmptyData();
+			result.byDateAndService[bpData.serviceName][dateString] = 0;
 		}
 		reduce(result.all, time);
 		reduce(result.byService[bpData.serviceName], time);
-		reduce(result.byDateAndService[bpData.serviceName][dateString], time);
+		result.byDateAndService[bpData.serviceName][dateString]++;
 	});
 	return result;
 };
