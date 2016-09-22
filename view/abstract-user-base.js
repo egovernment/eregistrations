@@ -4,6 +4,7 @@ var _                    = require('mano').i18n.bind('View: User')
   , loginDialog          = require('./components/login-dialog')
   , registerDialog       = require('./components/register-dialog')
   , modalContainer       = require('./components/modal-container')
+  , myAccountButton      = require('./components/my-account-button')
   , requestAccountDialog = require('./components/request-account-dialog');
 
 exports._parent = require('./base');
@@ -53,7 +54,7 @@ exports.main = function () {
 					div({ class: 'manager-bar-info' },
 						span(_("Client"), ": "),
 							this.appName === 'user' ? a({ href: '/' }, managedUser._fullName)
-							: exports._getMyAccountButton(this.manager, managedUser._fullName)),
+							: myAccountButton(this.manager, managedUser._fullName)),
 					_if(isUserReallyManaged, div({ class: 'manager-bar-actions' },
 						_if(not(managedUser._isActiveAccount),
 							a({
@@ -71,7 +72,6 @@ exports.main = function () {
 };
 
 exports._getRoleMenuItem    = Function.prototype;
-exports._getMyAccountButton = Function.prototype;
 
 exports._extraRoleLabel = function () {
 	return _if(or(this.manager, eq(this.user._currentRoleResolved, 'manager')), li(

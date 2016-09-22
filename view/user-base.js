@@ -1,8 +1,9 @@
 'use strict';
 
-var db           = require('../db')
-  , uncapitalize = require('es5-ext/string/#/uncapitalize')
-  , startsWith   = require('es5-ext/string/#/starts-with');
+var db              = require('../db')
+  , uncapitalize    = require('es5-ext/string/#/uncapitalize')
+  , startsWith      = require('es5-ext/string/#/starts-with')
+  , myAccountButton = require('./components/my-account-button');
 
 exports._parent = require('./abstract-user-base');
 
@@ -17,13 +18,6 @@ exports['submitted-menu'] = function () {
 	insert(exports._submittedMenuExtraItems.call(this));
 };
 
-exports._getMyAccountButton = function (user, roleTitle) {
-	return form({ method: 'post', action: '/change-business-process/' },
-		input({ type: 'hidden',
-			name: user.__id__ + '/currentBusinessProcess', value: null }),
-		button({ type: 'submit' }, roleTitle));
-};
-
 exports._getSubmittedMenuItem = function (role) {
 	var user      = this.manager || this.user
 	  , appName   = this.appName
@@ -31,7 +25,7 @@ exports._getSubmittedMenuItem = function (role) {
 	  , viewPath, pending, pendingCount;
 
 	if (role === 'user' && startsWith.call(appName, 'business-process-')) {
-		return li(exports._getMyAccountButton(user, roleTitle));
+		return li(myAccountButton(user, roleTitle));
 	}
 
 	if (startsWith.call(role, 'official')) {
