@@ -2,8 +2,7 @@
 
 var filter         = require('es5-ext/object/filter')
   , ensureObject   = require('es5-ext/object/valid-object')
-  , ensureCallable = require('es5-ext/object/valid-callable')
-  , deferred       = require('deferred');
+  , ensureCallable = require('es5-ext/object/valid-callable');
 
 /**
 	*
@@ -38,14 +37,6 @@ module.exports = function (data, query/*, options*/) {
 		});
 	}
 
-	if (!customFilter) return deferred(data);
-
-	// 2.3. Custom filter
-	var newData = Object.create(null);
-	return deferred.map(Object.keys(data), function (businessProcessId) {
-		var entry = data[businessProcessId];
-		return customFilter(entry, query)(function (isOk) {
-			if (isOk) newData[businessProcessId] = entry;
-		}.bind(this));
-	})(newData);
+	if (customFilter) data = filter(data, customFilter);
+	return data;
 };
