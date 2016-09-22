@@ -5,9 +5,9 @@ var ensureObject         = require('es5-ext/object/valid-object')
   , forEach              = require('es5-ext/object/for-each')
   , isEmpty              = require('es5-ext/object/is-empty')
   , capitalize           = require('es5-ext/string/#/capitalize')
-  , ensureDatabase       = require('dbjs/valid-dbjs')
   , debug                = require('debug-ext')('pdf-generator')
   , ensureDriver         = require('dbjs-persistence/ensure-driver')
+  , db                   = require('../../../db')
   , _                    = require('mano').i18n.bind('Statistics time per role pdf')
   , resolveFullStepPath  = require('../../../utils/resolve-processing-step-full-path')
   , getDurationDaysHours = require('../../../view/utils/get-duration-days-hours');
@@ -26,8 +26,7 @@ var getEmptyResult = function () {
 };
 
 module.exports = function (configData) {
-	var options, db = ensureDatabase(configData.db);
-	options = {
+	var options = {
 		logo: configData.logo,
 		driver: ensureDriver(configData.driver),
 		db: db,
