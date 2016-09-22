@@ -6,11 +6,11 @@ var identity             = require('es5-ext/function/identity')
   , toArray              = require('es5-ext/object/to-array')
   , capitalize           = require('es5-ext/string/#/capitalize')
   , deferred             = require('deferred')
-  , ensureDatabase       = require('dbjs/valid-dbjs')
   , ensureDriver         = require('dbjs-persistence/ensure-driver')
   , resolve              = require('path').resolve
   , debug                = require('debug-ext')('pdf-generator')
   , _                    = require('mano').i18n.bind('Statistics time per person pdf')
+  , db                   = require('../../../db')
   , resolveFullStepPath  = require('../../../utils/resolve-processing-step-full-path')
   , getDurationDaysHours = require('../../../view/utils/get-duration-days-hours')
   , getUserFullName      = require('../../utils/get-user-full-name')
@@ -23,8 +23,7 @@ var getProcessingTimesByStepProcessor =
 	require('../../statistics/business-process/query-times');
 
 module.exports = function (configData) {
-	var options, db = ensureDatabase(configData.db);
-	options = {
+	var options = {
 		logo: configData.logo,
 		driver: ensureDriver(configData.driver),
 		db: db,
