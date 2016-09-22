@@ -27,15 +27,12 @@ module.exports = function (data) {
 		// byService[serviceName] // Time reduction data of service
 		byService: {},
 		// byDateAndService // Map of services
-		// byDateAndService[serviceName] // Map of dates
-		// byDateAndService[serviceName][date] // Count for given date
+		// byDateAndService[date] // Map of dates
+		// byDateAndService[date][serviceName] // Count for given service at given date
 		byDateAndService: {}
 	};
 
-	serviceNames.forEach(function (name) {
-		result.byService[name] = getEmptyData();
-		result.byDateAndService[name] = Object.create(null);
-	});
+	serviceNames.forEach(function (name) { result.byService[name] = getEmptyData(); });
 
 	forEach(data, function (bpData, businessProcessId) {
 		if (!bpData.approvedDate) return;
@@ -43,12 +40,14 @@ module.exports = function (data) {
 		var dateString = bpData.approvedDate.toISOString().slice(0, 10)
 		  , time = bpData.approvedDateTime - bpData.submissionDateTime;
 
-		if (!result.byDateAndService[bpData.serviceName][dateString]) {
-			result.byDateAndService[bpData.serviceName][dateString] = 0;
+		if (!result.byDateAndService[dateString]) {
+			serviceNames.forEach(function (name) {
+				this[name] = 0;
+			}, result.byDateAndService[dateString] = {});
 		}
 		reduce(result.all, time);
 		reduce(result.byService[bpData.serviceName], time);
-		result.byDateAndService[bpData.serviceName][dateString]++;
+		result.byDateAndService[dateString][bpData.serviceName]++;
 	});
 	return result;
 };
