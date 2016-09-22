@@ -1,25 +1,21 @@
 'use strict';
 
-var _ = require('mano').i18n;
+var _                 = require('mano').i18n
+  , submittedMenuItem = require('./components/submitted-menu-item');
 
-exports._parent = require('./user-base');
+exports._parent = require('./abstract-user-base');
+
+exports['submitted-menu'] = function () {
+	submittedMenuItem('/', _("Dashboard"), { pattern: /^\/$/ });
+	submittedMenuItem('/files/', _("Files"));
+	submittedMenuItem('/time/', _("Time"));
+	submittedMenuItem('/analysis/', _("Analysis"));
+};
 
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		ul({ class: 'pills-nav' }, exports._statisticsNav.call(this));
 		ul({ id: 'statistics-sub-menu', class: 'pills-nav pills-nav-sub' });
 		div({ class: 'statistics-main user-forms', id: 'statistics-main' });
 	}
-};
-
-exports._statisticsNav = function () {
-	return [
-		li({ id: 'dashboard-nav' }, a({ href: '/', class: 'pills-nav-pill' }, _("Dashboard"))),
-		li({ id: 'files-nav' }, a({ href: '/files/', class: 'pills-nav-pill' }, _("Files"))),
-		li({ id: 'time-nav' }, a({ href: '/time/', class: 'pills-nav-pill' },
-			_("Time"))),
-		li({ id: 'analysis-nav' }, a({ href: '/analysis/', class: 'pills-nav-pill' },
-			_("Analysis")))
-	];
 };

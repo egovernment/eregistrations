@@ -52,7 +52,6 @@ var generateProcessingStepRows =
 		];
 	};
 
-exports['files-nav'] = { class: { 'pills-nav-active': true } };
 exports['pending-files-nav'] = { class: { 'pills-nav-active': true } };
 
 exports['statistics-main'] = function () {
