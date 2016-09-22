@@ -142,8 +142,8 @@ Flexible basic menu button positioning
 .header-top-menu-dropdown-content button[type="submit"]:hover,
 .header-top-menu-dropdown-content button[type="submit"]:active
 .header-top-menu-dropdown-content button[type="submit"]:focus {
-	background-color: var(--normal-background);
-	color: var(--white-text);
+	background-color: var(--lighter-medium-background);
+	color: var(--normal-text);
 	border-radius: 0;
 }
 
