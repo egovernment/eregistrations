@@ -1,10 +1,9 @@
 'use strict';
 
-var includes       = require('es5-ext/array/#/contains')
-  , filter         = require('es5-ext/object/filter')
-  , map            = require('es5-ext/object/map')
-  , ensureObject   = require('es5-ext/object/valid-object')
-  , ensureCallable = require('es5-ext/object/valid-callable');
+var includes     = require('es5-ext/array/#/contains')
+  , filter       = require('es5-ext/object/filter')
+  , map          = require('es5-ext/object/map')
+  , ensureObject = require('es5-ext/object/valid-object');
 
 /**
 	*
@@ -16,11 +15,8 @@ var includes       = require('es5-ext/array/#/contains')
 	* customFilter (optional) - function used to filter by system specific parameters
 	* @returns {Object}
 */
-module.exports = function (data, query, processingStepsMeta/*, options*/) {
+module.exports = exports = function (data, query, processingStepsMeta) {
 	(ensureObject(data) && ensureObject(query) && ensureObject(processingStepsMeta));
-
-	var options = Object(arguments[1])
-	  , customFilter = options.customFilter && ensureCallable(options.customFilter);
 
 	// 1. Exclude not applicable steps
 	data = filter(data.steps, function (stepData, stepShortPath) {
@@ -56,7 +52,7 @@ module.exports = function (data, query, processingStepsMeta/*, options*/) {
 			});
 		}
 
-		if (customFilter) stepData = filter(stepData, customFilter);
+		if (exports.customFilter) stepData = filter(stepData, exports.customFilter);
 
 		return stepData;
 	});

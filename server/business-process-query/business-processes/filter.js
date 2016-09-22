@@ -1,8 +1,7 @@
 'use strict';
 
-var filter         = require('es5-ext/object/filter')
-  , ensureObject   = require('es5-ext/object/valid-object')
-  , ensureCallable = require('es5-ext/object/valid-callable');
+var filter       = require('es5-ext/object/filter')
+  , ensureObject = require('es5-ext/object/valid-object');
 
 /**
 	*
@@ -14,11 +13,8 @@ var filter         = require('es5-ext/object/filter')
 	* customFilter (optional) - function used to filter by system specific parameters
 	* @returns {Object}
 */
-module.exports = function (data, query/*, options*/) {
+module.exports = exports = function (data, query) {
 	(ensureObject(data) && ensureObject(query));
-
-	var options = Object(arguments[1])
-	  , customFilter = options.customFilter && ensureCallable(options.customFilter);
 
 	// 1. Filter by service
 	if (query.service) {
@@ -37,6 +33,6 @@ module.exports = function (data, query/*, options*/) {
 		});
 	}
 
-	if (customFilter) data = filter(data, customFilter);
+	if (exports.customFilter) data = filter(data, exports.customFilter);
 	return data;
 };
