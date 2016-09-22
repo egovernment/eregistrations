@@ -2,15 +2,8 @@
 
 var forEach      = require('es5-ext/object/for-each')
   , ensureObject = require('es5-ext/object/valid-object')
-  , getEmptyData = require('../get-reduction-template');
-
-var reduce = function (data, time) {
-	data.count++;
-	data.minTime = Math.min(data.minTime, time);
-	data.maxTime = Math.max(data.maxTime, time);
-	data.totalTime += time;
-	data.avgTime = data.totalTime / data.count;
-};
+  , getEmptyData = require('../get-reduction-template')
+  , reduce       = require('../reduce');
 
 /**
 	*
