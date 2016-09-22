@@ -17,6 +17,13 @@ exports['submitted-menu'] = function () {
 	insert(exports._submittedMenuExtraItems.call(this));
 };
 
+exports._getMyAccountButton = function (user, roleTitle) {
+	return form({ method: 'post', action: '/change-business-process/' },
+		input({ type: 'hidden',
+			name: user.__id__ + '/currentBusinessProcess', value: null }),
+		button({ type: 'submit' }, roleTitle));
+};
+
 exports._getSubmittedMenuItem = function (role) {
 	var user      = this.manager || this.user
 	  , appName   = this.appName

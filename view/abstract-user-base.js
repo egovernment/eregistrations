@@ -70,14 +70,8 @@ exports.main = function () {
 	div({ class: 'user-forms', id: 'sub-main' });
 };
 
-exports._getRoleMenuItem = Function.prototype;
-
-exports._getMyAccountButton = function (user, roleTitle) {
-	return form({ method: 'post', action: '/change-business-process/' },
-		input({ type: 'hidden',
-			name: user.__id__ + '/currentBusinessProcess', value: null }),
-		button({ type: 'submit' }, roleTitle));
-};
+exports._getRoleMenuItem    = Function.prototype;
+exports._getMyAccountButton = Function.prototype;
 
 exports._extraRoleLabel = function () {
 	return _if(or(this.manager, eq(this.user._currentRoleResolved, 'manager')), li(
