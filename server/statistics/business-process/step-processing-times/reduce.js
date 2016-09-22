@@ -2,7 +2,7 @@
 
 var forEach      = require('es5-ext/object/for-each')
   , ensureObject = require('es5-ext/object/valid-object')
-  , getEmptyData = require('../get-reduction-template')
+  , getEmptyData = require('../../../business-process-query/utils/get-time-reduction-template')
   , reduce       = require('../../../business-process-query/utils/reduce-time');
 
 /**
