@@ -1,9 +1,10 @@
 'use strict';
 
-var _                    = require('mano').i18n.bind('View: Abstract User')
-  , loginDialog          = require('./components/login-dialog')
-  , registerDialog       = require('./components/register-dialog')
-  , modalContainer       = require('./components/modal-container');
+var _              = require('mano').i18n.bind('View: Abstract User')
+  , loginDialog    = require('./components/login-dialog')
+  , registerDialog = require('./components/register-dialog')
+  , modalContainer = require('./components/modal-container')
+  , roleMenuItem   = require('./components/role-menu-item');
 
 exports._parent = require('./base');
 
@@ -34,12 +35,10 @@ exports.main = function () {
 			_if(this.user._isDemo, div({ class: 'submitted-menu-demo' },
 				a({ class: 'submitted-menu-demo-ribon' }, _("Demo"))))));
 
-	div({ id: 'abstract-sub-main' });
+	div({ id: 'sub-main-prepend' });
 
 	div({ class: 'user-forms', id: 'sub-main' });
 };
-
-exports._getRoleMenuItem    = Function.prototype;
 
 exports._extraRoleLabel = function () {
 	return _if(or(this.manager, eq(this.user._currentRoleResolved, 'manager')), li(
@@ -50,25 +49,7 @@ exports._extraRoleLabel = function () {
 	));
 };
 
-exports._profileMenuItem = function () {
-	return li(
-		a(
-			{ href: '/profile/' },
-			_("My informations")
-		)
-	);
-};
-
-exports._logoutMenuItem = function () {
-	return li(
-		a(
-			{ href: '/logout/', rel: 'server' },
-			_("Log out")
-		)
-	);
-};
-
-exports._userNameMenuItem = function () {
+var userNameMenuItem = function () {
 	var user         = this.manager || this.user
 	  , isMetaAdmin  = user.roles._has('metaAdmin')
 	  , isUsersAdmin = user.roles._has('usersAdmin');
@@ -83,16 +64,26 @@ exports._userNameMenuItem = function () {
 				{ class: "header-top-menu-dropdown-content" },
 				_if(user.roles._has('statistics'), [
 					li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
-					exports._getRoleMenuItem.call(this, 'statistics')
+					roleMenuItem(this, 'statistics')
 				]),
 				_if(or(isMetaAdmin, isUsersAdmin), [
 					li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
-					_if(isMetaAdmin, exports._getRoleMenuItem.call(this, 'metaAdmin')),
-					_if(isUsersAdmin, exports._getRoleMenuItem.call(this, 'usersAdmin'))
+					_if(isMetaAdmin, roleMenuItem(this, 'metaAdmin')),
+					_if(isUsersAdmin, roleMenuItem(this, 'usersAdmin'))
 				]),
 				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
-				exports._profileMenuItem.call(this),
-				exports._logoutMenuItem.call(this)
+				li(
+					a(
+						{ href: '/profile/' },
+						_("My informations")
+					)
+				),
+				li(
+					a(
+						{ href: '/logout/', rel: 'server' },
+						_("Log out")
+					)
+				)
 			)
 		),
 		script(function () {
@@ -131,5 +122,5 @@ exports._userNameMenuItem = function () {
 
 exports._menuItems = [
 	exports._extraRoleLabel,
-	exports._userNameMenuItem
+	userNameMenuItem
 ];

@@ -34,7 +34,7 @@ exports['submitted-menu'] = function () {
 	insert(exports._submittedMenuExtraItems.call(this));
 };
 
-exports['abstract-sub-main'] = function () {
+exports['sub-main-prepend'] = function () {
 	insert(_if(this.user._isDemo,
 		div({ class: 'submitted-menu-demo-msg' },
 			div({ class: 'content' },
@@ -132,20 +132,4 @@ exports._getManagerButton = function (user, roleTitle) {
 		input({ type: 'hidden',
 			name: user.__id__ + '/currentlyManagedUser', value: null }),
 		button({ type: 'submit' }, roleTitle));
-};
-
-exports._getRoleMenuItem = function (role) {
-	var user = this.manager || this.user
-	  , roleTitle;
-
-	if (!db.Role.meta[role]) return;
-	roleTitle = db.Role.meta[role].label;
-
-	if (user.currentRoleResolved === role) {
-		return li({ class: 'header-top-menu-dropdown-item-active' }, a({ href: '/' }, roleTitle));
-	}
-
-	return li(form({ method: 'post', action: '/set-role/' },
-		input({ type: 'hidden', name: user.__id__ + '/currentRole', value: role }),
-		button({ type: 'submit' }, roleTitle)));
 };

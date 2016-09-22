@@ -14,7 +14,7 @@ exports['submitted-menu'] = function () {
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
-		ul({ id: 'statistics-sub-menu', class: 'pills-nav pills-nav-sub' });
+		ul({ id: 'statistics-sub-menu', class: 'pills-nav' });
 		div({ class: 'statistics-main user-forms', id: 'statistics-main' });
 	}
 };
