@@ -275,7 +275,7 @@ var updateChartsData = function (data, query) {
 
 	dataForCharts.push(getFilesCompletedPerDay(data.dateRangeData.businessProcesses.byDateAndService,
 		query));
-	dataForCharts.push(getFilesCompletedByStep(data.dataRangeData.steps));
+	dataForCharts.push(getFilesCompletedByStep(data.dateRangeData.steps));
 	dataForCharts.push(getPendingFiles(data.lastDateData));
 	dataForCharts.push(getAverageTime(data.dateRangeData.steps));
 	dataForCharts.push(getAverageTimeByService(data.dateRangeData.businessProcesses.byService));
