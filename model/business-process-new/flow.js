@@ -89,6 +89,13 @@ module.exports = memoize(function (db/*, options*/) {
 			if (!this.isSubmitted) return 'draft';
 			if (this.isSentBack) return 'sentBack';
 			if (this.isClosed) return 'closed';
+
+			if (this.processingSteps.revisions.some(function (processingStep) {
+					return _observe(processingStep._isRevisionPending);
+				})) {
+				return 'revision';
+			}
+
 			frontDesk = this.processingSteps.map.frontDesk;
 			if (frontDesk && _observe(frontDesk._isPending)) return 'pickup';
 			return 'process';
