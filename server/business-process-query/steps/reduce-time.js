@@ -44,14 +44,15 @@ module.exports = function (data, processingStepsMeta) {
 
 		// Reduce data
 		forEach(stepData, function (bpData) {
-			// May happen only in case of data inconsistency
-			if (!bpData.processor) return;
+
+			// Do not take into time reduction not yet finalized steps
+			if (!bpData.processingDate) return;
 
 			// Older businessProcess don't have processingTime, so they're useless here
 			if (!bpData.processingTime) return;
 
-			// Do not include not yet finally processed steps
-			if (!bpData.processingDate) return;
+			// May happen only in case of data inconsistency
+			if (!bpData.processor) return;
 
 			// Initialize container
 			if (!result.byStepAndProcessor[stepShortPath][bpData.processor]) {
