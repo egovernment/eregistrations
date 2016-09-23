@@ -191,7 +191,7 @@ var getPendingFiles = function (data) {
 	};
 
 	Object.keys(data).forEach(function (shortPath) {
-		chart.data.push([getStepLabelByShortPath(shortPath), data[shortPath].processing.count]);
+		chart.data.push([getStepLabelByShortPath(shortPath), data[shortPath].startedCount]);
 	});
 
 	return assign(result, chart);

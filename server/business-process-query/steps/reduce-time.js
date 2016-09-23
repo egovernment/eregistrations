@@ -45,6 +45,11 @@ module.exports = function (data, processingStepsMeta) {
 		// Reduce data
 		forEach(stepData, function (bpData) {
 
+			result.all.startedCount++;
+			result.byService[bpData.serviceName].startedCount++;
+			result.byStep[stepShortPath].startedCount++;
+			result.byStepAndService[stepShortPath][bpData.serviceName].startedCount++;
+
 			// Do not take into time reduction not yet finalized steps
 			if (!bpData.processingDate) return;
 
@@ -58,6 +63,7 @@ module.exports = function (data, processingStepsMeta) {
 			if (!result.byStepAndProcessor[stepShortPath][bpData.processor]) {
 				result.byStepAndProcessor[stepShortPath][bpData.processor] = getEmptyData();
 			}
+			result.byStepAndProcessor[stepShortPath][bpData.processor].startedCount++;
 
 			// Reduce processingTime
 			reduce(result.all.processing, bpData.processingTime);

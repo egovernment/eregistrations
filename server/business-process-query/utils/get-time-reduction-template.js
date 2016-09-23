@@ -15,6 +15,7 @@ var getTemplate = function () {
 
 module.exports = function () {
 	return {
+		startedCount: 0,
 		processing: getTemplate(),
 		correction: getTemplate()
 	};
