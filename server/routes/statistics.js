@@ -12,9 +12,9 @@ var assign                  = require('es5-ext/object/assign')
   , filterBusinessProcesses = require('../business-process-query/business-processes/filter')
   , reduceSteps             = require('../business-process-query/steps/reduce')
   , reduceBusinessProcesses = require('../business-process-query/business-processes/reduce')
-  , timePerPersonPrint      = require('./controllers/statistics-time-per-person-print')
-  , timePerRolePrint        = require('./controllers/statistics-time-per-role-print')
-  , timePerRoleCsv          = require('./controllers/statistics-time-per-role-csv')
+  , timePerPersonPrint      = require('../pdf-renderers/statistics-time-per-person')
+  , timePerRolePrint        = require('../pdf-renderers/statistics-time-per-role')
+  , timePerRoleCsv          = require('../csv-renderers/statistics-time-per-role')
   , getBaseRoutes           = require('./authenticated');
 
 var getQueryHandlerConf = require('../../routes/utils/get-statistics-time-query-handler-conf');

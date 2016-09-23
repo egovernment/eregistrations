@@ -5,10 +5,10 @@ var ensureObject         = require('es5-ext/object/valid-object')
   , capitalize           = require('es5-ext/string/#/capitalize')
   , debug                = require('debug-ext')('pdf-generator')
   , ensureDriver         = require('dbjs-persistence/ensure-driver')
-  , db                   = require('../../../db')
+  , db                   = require('../../db')
   , _                    = require('mano').i18n.bind('Statistics time per role pdf')
-  , resolveFullStepPath  = require('../../../utils/resolve-processing-step-full-path')
-  , getDurationDaysHours = require('../../../view/utils/get-duration-days-hours');
+  , resolveFullStepPath  = require('../../utils/resolve-processing-step-full-path')
+  , getDurationDaysHours = require('../../view/utils/get-duration-days-hours');
 
 module.exports = function (configData) {
 	var options = {

@@ -7,11 +7,11 @@ var ensureObject         = require('es5-ext/object/valid-object')
   , resolve              = require('path').resolve
   , debug                = require('debug-ext')('pdf-generator')
   , _                    = require('mano').i18n.bind('Statistics time per person pdf')
-  , db                   = require('../../../db')
-  , resolveFullStepPath  = require('../../../utils/resolve-processing-step-full-path')
-  , getDurationDaysHours = require('../../../view/utils/get-duration-days-hours')
-  , getUserFullName      = require('../../utils/get-user-full-name')
-  , htmlToPdf            = require('../../html-to-pdf')
+  , db                   = require('../../db')
+  , resolveFullStepPath  = require('../../utils/resolve-processing-step-full-path')
+  , getDurationDaysHours = require('../../view/utils/get-duration-days-hours')
+  , getUserFullName      = require('../utils/get-user-full-name')
+  , htmlToPdf            = require('../html-to-pdf')
 
   , root = resolve(__dirname, '../../..')
   , templatePath = resolve(root, 'apps-common/pdf-templates/statistics-time-per-person.html');
