@@ -91,7 +91,7 @@ module.exports = function (config) {
 		'get-dashboard-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
 				return getData(driver, processingStepsMeta)(function (data) {
-					var lastDateQuery = assign(query, { dateFrom: null, dateTo: null,
+					var lastDateQuery = assign({}, query, { dateFrom: null, dateTo: null,
 						pendingAt: query.dateTo || toDateInTz(new Date(), db.timeZone) });
 					// Spec of data we need for each chart:
 					// # Files completed per time range
