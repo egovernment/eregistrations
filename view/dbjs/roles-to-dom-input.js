@@ -60,19 +60,10 @@ RolesInput.prototype = Object.create(RoleEnumMultiple.prototype, assign({
 		this.dbList.forEach(function (item) {
 			var data = this.renderItem(item.value, item.label);
 			this.items.push(data.input);
-			switch (item.value) {
-			case 'user':
-			case 'manager':
-			case 'dispatcher':
-			case 'supervisor':
+			if (db.Role.isFlowRole(item.value)) {
 				firstSubList.push(data.dom);
-				break;
-			default:
-				if (/^official[A-Z]/.test(item.value)) {
-					firstSubList.push(data.dom);
-				} else {
-					secondSubList.push(data.dom);
-				}
+			} else {
+				secondSubList.push(data.dom);
 			}
 		}, this);
 

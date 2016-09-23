@@ -4,7 +4,8 @@ var _              = require('mano').i18n.bind('View: Abstract User')
   , loginDialog    = require('./components/login-dialog')
   , registerDialog = require('./components/register-dialog')
   , modalContainer = require('./components/modal-container')
-  , roleMenuItem   = require('./components/role-menu-item');
+  , roleMenuItem   = require('./components/role-menu-item')
+  , db             = require('../db');
 
 exports._parent = require('./base');
 
@@ -62,6 +63,18 @@ var userNameMenuItem = function () {
 				i({ id: 'drop-down-menu-angle', class: 'fa fa-angle-down header-top-dropdown-button' }))),
 			ul(
 				{ class: "header-top-menu-dropdown-content" },
+				_if(user.flowRoles._size, user._currentRoleResolved.map(function (role) {
+					if (!role) return;
+
+					if (!db.Role.isFlowRole(role)) {
+						return li(form({ method: 'post', action: '/set-role/' },
+							input({ type: 'hidden', name: user.__id__ + '/currentRole',
+								value: user.flowRoles.first }),
+							button({ type: 'submit' }, _("Roles"))));
+					}
+					return li({ class: 'header-top-menu-dropdown-item-active' },
+						a({ href: '/' }, _("Roles")));
+				})),
 				_if(user.roles._has('statistics'), [
 					li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 					roleMenuItem(this, 'statistics')
