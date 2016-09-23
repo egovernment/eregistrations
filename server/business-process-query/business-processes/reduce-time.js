@@ -35,6 +35,9 @@ module.exports = function (data) {
 	serviceNames.forEach(function (name) { result.byService[name] = getEmptyData(); });
 
 	forEach(data, function (bpData, businessProcessId) {
+		result.all.startedCount++;
+		result.byService[bpData.serviceName].startedCount++;
+
 		if (!bpData.approvedDate) return;
 
 		var dateString = bpData.approvedDate.toISOString().slice(0, 10)
