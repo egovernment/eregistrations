@@ -48,8 +48,8 @@ module.exports = function (data) {
 				this[name] = 0;
 			}, result.byDateAndService[dateString] = {});
 		}
-		reduce(result.all, time);
-		reduce(result.byService[bpData.serviceName], time);
+		reduce(result.all.processing, time);
+		reduce(result.byService[bpData.serviceName].processing, time);
 		result.byDateAndService[dateString][bpData.serviceName]++;
 	});
 	return result;
