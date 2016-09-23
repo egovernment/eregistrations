@@ -35,6 +35,9 @@ var aFrom                          = require('es5-ext/array/from')
   , getIndexMap                    = require('../utils/get-db-sort-index-map')
   , businessProcessStoragesPromise = require('../utils/business-process-storages')
   , idToStorage                    = require('../utils/business-process-id-to-storage')
+  , getData                        = require('../business-process-query/get-data')
+  , filterSteps                    = require('../business-process-query/steps/filter')
+  , reduceSteps                    = require('../business-process-query/steps/reduce')
   , statusLogPrintPdfRenderer      = require('../pdf-renderers/business-process-status-log-print')
   , getBaseRoutes                  = require('./authenticated')
 
@@ -46,8 +49,6 @@ var aFrom                          = require('es5-ext/array/from')
   , businessProcessStorages, businessProcessStorageNames;
 
 var getStatsQueryHandlerConf = require('../../routes/utils/get-statistics-time-query-handler-conf');
-var getProcessingTimesByStepProcessor =
-	require('../statistics/business-process/query-times');
 var getReductionTemplate = require('../business-process-query/utils/get-time-reduction-template');
 
 businessProcessStoragesPromise.done(function (storages) {
@@ -312,18 +313,12 @@ var initializeHandler = function (conf) {
 };
 
 var getStatsOverviewData = memoize(function (query, userId, statsHandlerOpts) {
-	var promise = getProcessingTimesByStepProcessor(assign(statsHandlerOpts, { query: query }));
-	return promise(function (result) {
-		if (!result.byStepAndProcessor[query.step]) {
-			return {
-				processor: getReductionTemplate().processing,
-				stepTotal: getReductionTemplate().processing
-			};
-		}
+	var processingStepsMeta = statsHandlerOpts.processingStepsMeta;
+	return getData(mano.dbDriver, processingStepsMeta)(function (data) {
+		data = reduceSteps(filterSteps(data, query, processingStepsMeta), processingStepsMeta);
 		return {
-			processor: (result.byStepAndProcessor[query.step][userId] || getReductionTemplate())
-				.processing,
-			stepTotal: result.byStep[query.step].processing
+			processor: (data.byStepAndProcessor[query.step][userId] || getReductionTemplate()).processing,
+			stepTotal: data.byStep[query.step].processing
 		};
 	});
 }, {
