@@ -61,18 +61,23 @@ module.exports = function (config) {
 		});
 	};
 
+	var rendererConfig = {
+		processingStepsMeta: processingStepsMeta,
+		logo: config.logo
+	};
+
 	return assign({
 		'get-time-per-role': function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole);
 		},
 		'time-per-role.pdf': makePdf(function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole)(function (data) {
-				return timePerRolePrint(data, config);
+				return timePerRolePrint(data, rendererConfig);
 			});
 		}),
 		'time-per-role.csv': makeCsv(function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole)(function (data) {
-				return timePerRoleCsv(data, config);
+				return timePerRoleCsv(data, rendererConfig);
 			});
 		}),
 		'get-time-per-person': function (query) {
@@ -80,7 +85,7 @@ module.exports = function (config) {
 		},
 		'time-per-person.pdf': makePdf(function (query) {
 			return queryHandler.resolve(query)(resolveTimePerPerson)(function (data) {
-				return timePerPersonPrint(data, config);
+				return timePerPersonPrint(data, rendererConfig);
 			});
 		}),
 		'get-dashboard-data': function (query) {
