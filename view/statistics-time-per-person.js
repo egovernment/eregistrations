@@ -25,7 +25,7 @@ exports['time-nav'] = { class: { 'pills-nav-active': true } };
 exports['per-person-nav'] = { class: { 'pills-nav-active': true } };
 
 var queryServer = memoize(function (query) {
-	return getData('/get-processing-time-data/', query);
+	return getData('/get-time-per-person/', query);
 }, {
 	normalizer: function (args) { return JSON.stringify(args[0]); }
 });
@@ -64,17 +64,15 @@ exports['statistics-main'] = function () {
 		queryServer(query).done(function (result) {
 			Object.keys(stepsMap).forEach(function (key) {
 				var preparedResult = [];
-				if (!result.byStepAndProcessor[key]) {
+				if (!result.byStep[key]) {
 					stepsMap[key].value = null;
 					return;
 				}
-				if (!isEmpty(result.byStepAndProcessor[key])) {
-					forEach(result.byStepAndProcessor[key], function (rowData) {
-						preparedResult.push(getRowResult(rowData.processing,
-							db.User.getById(rowData.processor).fullName));
-					});
-					preparedResult.push(getRowResult(result.byStep[key], _("Total & times")));
-				}
+				forEach(result.byStepAndProcessor[key], function (rowData, userId) {
+					preparedResult.push(getRowResult(rowData.processing,
+						db.User.getById(userId).fullName));
+				});
+				preparedResult.push(getRowResult(result.byStep[key], _("Total & times")));
 				stepsMap[key].value = preparedResult;
 			});
 		});
@@ -120,7 +118,7 @@ exports['statistics-main'] = function () {
 			),
 			div(
 				a({ class: 'users-table-filter-bar-print', href:
-					getDynamicUrl('/get-time-per-person-print/', { only: params }),
+					getDynamicUrl('/time-per-person.pdf', { only: params }),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
 			)));
 	insert(list(Object.keys(stepsMap), function (shortStepPath) {

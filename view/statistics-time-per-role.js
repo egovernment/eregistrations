@@ -1,8 +1,6 @@
 'use strict';
 
 var assign               = require('es5-ext/object/assign')
-  , forEach              = require('es5-ext/object/for-each')
-  , isEmpty              = require('es5-ext/object/is-empty')
   , normalizeOptions     = require('es5-ext/object/normalize-options')
   , capitalize           = require('es5-ext/string/#/capitalize')
   , uncapitalize         = require('es5-ext/string/#/uncapitalize')
@@ -25,29 +23,10 @@ exports['time-nav'] = { class: { 'pills-nav-active': true } };
 exports['per-role-nav'] = { class: { 'pills-nav-active': true } };
 
 var queryServer = memoize(function (query) {
-	return getData('/get-processing-time-data/', query);
+	return getData('/get-time-per-role/', query);
 }, {
 	normalizer: function (args) { return JSON.stringify(args[0]); }
 });
-
-var getEmptyResult = function () {
-	return {
-		count: 0,
-		label: 'Label',
-		avgTime: 0,
-		minTime: Infinity,
-		maxTime: 0,
-		totalTime: 0
-	};
-};
-
-var resetResult = function (result) {
-	result.count = '-';
-	result.avgTime = '-';
-	result.minTime = '-';
-	result.maxTime = '-';
-	result.totalTime = '-';
-};
 
 exports._queryConf = null;
 
@@ -74,43 +53,20 @@ exports['statistics-main'] = function () {
 			var totalWithoutCorrections, total, totalCorrections, perRoleTotal;
 			mainData.splice(0, mainData.length);
 
-			totalWithoutCorrections = getEmptyResult();
-			totalWithoutCorrections = result.all.processing;
+			totalWithoutCorrections = result.businessProcesses.processing;
 			totalWithoutCorrections.label = _("Total process without corrections");
 
-			totalCorrections = getEmptyResult();
-			totalCorrections = result.all.correction;
+			totalCorrections = result.steps.all.correction;
 			totalCorrections.label = _("Total correcting time");
 
-			total = getEmptyResult();
-			total.count = result.all.processing.count;
-			total.totalTime = totalWithoutCorrections.totalTime + totalCorrections.totalTime;
-			total.minTime = totalWithoutCorrections.minTime;
-			total.maxTime = totalWithoutCorrections.maxTime;
-			total.avgTime = total.totalTime / total.count;
+			total = result.businessProcesses.processing;
 			total.label = _("Total process");
 
-			Object.keys(result.byStepAndProcessor).forEach(function (key) {
-				perRoleTotal = getEmptyResult();
+			Object.keys(result.steps.byStep).forEach(function (key) {
+				perRoleTotal = result.steps.byStep[key];
 				perRoleTotal.label   = db['BusinessProcess' +
 					capitalize.call(processingStepsMeta[key]._services[0])].prototype
 					.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
-
-				if (isEmpty(result.byStepAndProcessor[key])) {
-					resetResult(perRoleTotal);
-
-					mainData.push(perRoleTotal);
-					return;
-				}
-				forEach(result.byStepAndProcessor[key], function (byProcessor) {
-					byProcessor = byProcessor.processing;
-					perRoleTotal.count += byProcessor.count;
-					perRoleTotal.minTime = Math.min(byProcessor.minTime, perRoleTotal.minTime);
-					perRoleTotal.maxTime = Math.max(byProcessor.maxTime, perRoleTotal.maxTime);
-					perRoleTotal.totalTime += byProcessor.totalTime;
-				});
-				perRoleTotal.avgTime = perRoleTotal.totalTime / perRoleTotal.count;
-
 				mainData.push(perRoleTotal);
 			});
 
@@ -124,7 +80,7 @@ exports['statistics-main'] = function () {
 	});
 
 	section({ class: 'section-primary users-table-filter-bar' },
-		form({ action: '/time', autoSubmit: true },
+		form({ action: '/time/', autoSubmit: true },
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'service-select' }, _("Service"), ":"),
@@ -163,12 +119,12 @@ exports['statistics-main'] = function () {
 					name: 'dateTo', value: location.query.get('dateTo') })
 			),
 			div(
-				a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/get-time-per-role-csv/',
+				a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/time-per-role.csv',
 					{ only: params }),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print csv"))
 			),
 			div(
-				a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/get-time-per-role-print/',
+				a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/time-per-role.pdf',
 					{ only: params }),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
 			)));
@@ -186,11 +142,11 @@ exports['statistics-main'] = function () {
 					td(row.label),
 					td({ class: 'statistics-table-number' }, row.count),
 					td({ class: 'statistics-table-number' },
-						Number(row.avgTime) ? getDurationDaysHours(row.avgTime) : row.avgTime),
+						row.count ? getDurationDaysHours(row.avgTime) : _("N/A")),
 					td({ class: 'statistics-table-number' },
-						Number(row.minTime) ? getDurationDaysHours(row.minTime) : row.minTime),
+						row.count ? getDurationDaysHours(row.minTime) : _("N/A")),
 					td({ class: 'statistics-table-number' },
-						Number(row.maxTime) ? getDurationDaysHours(row.maxTime) : row.maxTime)
+						row.count ? getDurationDaysHours(row.maxTime) : _("N/A"))
 				);
 			}))
 	);

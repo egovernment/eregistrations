@@ -92,16 +92,18 @@ var getStepLabelByShortPath = function (processingStepsMeta) {
 	};
 };
 
-var getFilesCompletedPerDay = function (data) {
-	var result = { handle: 'chart-files-completed-per-day' }, chart = {
+var getFilesCompletedPerDay = function (data, query) {
+	var result = { handle: 'chart-files-completed-per-day' };
+	var chart = {
 		options: assign(copy(exports._commonOptions), {
 			orientation: 'horizontal'
 		}),
 		data: [["Service"]]
-	}, days = Object.keys(data.filesApprovedByDay),
-		dateFrom, dateTo, dateFromStr, rowData, rangeKey, groupByCount,
-		daysCount = 0, currentRange,
-		setupRange, addAmountToRange, setupRowData;
+	};
+	var days = Object.keys(data).sort()
+	  , dateFrom, dateTo, dateFromStr, rowData, rangeKey, groupByCount
+	  , daysCount = 0, currentRange
+	  , setupRange, addAmountToRange, setupRowData;
 
 	if (!days || !days.length) {
 		result.data = null;
@@ -111,8 +113,8 @@ var getFilesCompletedPerDay = function (data) {
 	Object.keys(services).forEach(function (serviceName) {
 		chart.data[0].push(services[serviceName].label);
 	});
-	dateFrom = new Date(Date.parse(data.filesApprovedByDay.dateFrom));
-	dateTo   = new Date(Date.parse(data.filesApprovedByDay.dateTo));
+	dateFrom = query.dateFrom || new Date(Date.parse(days[0]));
+	dateTo = query.dateTo || new db.Date();
 	groupByCount = getGroupByCount(dateFrom, dateTo);
 
 	setupRange = function (currentRange) {
@@ -124,7 +126,7 @@ var getFilesCompletedPerDay = function (data) {
 	addAmountToRange = function (currentRange, dateFromStr) {
 		Object.keys(services).forEach(function (serviceName) {
 			var amount;
-			amount = data.filesApprovedByDay[dateFromStr][serviceName] || 0;
+			amount = data[dateFromStr][serviceName];
 			currentRange.services[serviceName] += amount;
 		});
 	};
@@ -141,7 +143,7 @@ var getFilesCompletedPerDay = function (data) {
 			currentRange = { name: dateFrom.toLocaleDateString(db.locale), services: {} };
 			setupRange(currentRange);
 		}
-		if (data.filesApprovedByDay[dateFromStr]) {
+		if (data[dateFromStr]) {
 			addAmountToRange(currentRange, dateFromStr);
 		}
 		if ((daysCount % groupByCount === 0) || dateFrom.getTime() === dateTo.getTime()) {
@@ -163,22 +165,14 @@ var getFilesCompletedByStep = function (data) {
 		options: exports._commonOptions,
 		data: [["Service"]]
 	};
-	if (!Object.keys(data.byStepAndService).length) {
-		return result;
-	}
-
 	var services = getServiceNames();
 	Object.keys(services).forEach(function (serviceName) {
 		chart.data[0].push(services[serviceName].label);
 	});
-	Object.keys(data.byStepAndService).forEach(function (shortPath) {
+	Object.keys(data).forEach(function (shortPath) {
 		var stepData = [getStepLabelByShortPath(shortPath)];
 		Object.keys(services).forEach(function (serviceName) {
-			if (!data.byStepAndService[shortPath][serviceName]) {
-				stepData.push(0);
-				return;
-			}
-			stepData.push(data.byStepAndService[shortPath][serviceName].processing.processed);
+			stepData.push(data[shortPath][serviceName].processing.count);
 		});
 		chart.data.push(stepData);
 	});
@@ -195,12 +189,8 @@ var getPendingFiles = function (data) {
 		data: [["Role", "Count"]]
 	};
 
-	if (!data.pendingFiles || !Object.keys(data.pendingFiles).length) {
-		return result;
-	}
-
-	Object.keys(data.pendingFiles).forEach(function (shortPath) {
-		chart.data.push([getStepLabelByShortPath(shortPath), data.pendingFiles[shortPath] || 0]);
+	Object.keys(data).forEach(function (shortPath) {
+		chart.data.push([getStepLabelByShortPath(shortPath), data[shortPath].processing.count]);
 	});
 
 	return assign(result, chart);
@@ -214,23 +204,16 @@ var getAverageTime = function (data) {
 		data: [["Role"]]
 	};
 
-	if (!data.byStepAndService || !Object.keys(data.byStepAndService).length) {
-		return result;
-	}
 	var services = getServiceNames();
 	Object.keys(services).forEach(function (serviceName) {
 		chart.data[0].push(services[serviceName].label);
 	});
-	Object.keys(data.byStepAndService).forEach(function (shortPath) {
+	Object.keys(data).forEach(function (shortPath) {
 		if (shortPath === 'frontDesk') return;
 		var stepData = [getStepLabelByShortPath(shortPath)];
 		Object.keys(services).forEach(function (serviceName) {
-			if (!data.byStepAndService[shortPath][serviceName]) {
-				stepData.push(0);
-				return;
-			}
 			stepData.push(Math.round(
-				data.byStepAndService[shortPath][serviceName].processing.avgTime / 1000 / 60 / 60 / 24
+				(data[shortPath][serviceName].processing.avgTime || 0) / 1000 / 60 / 60 / 24
 			));
 		});
 		chart.data.push(stepData);
@@ -247,18 +230,13 @@ var getAverageTimeByService = function (data) {
 		data: [["Service", "Data", { role: "style" }]]
 	};
 
-	if (!data.byService || !Object.keys(data.byService).length) {
-		return result;
-	}
-
 	var services = getServiceNames(), i = 0;
 
 	Object.keys(services).forEach(function (serviceName) {
 		var row = [];
 		row.push(services[serviceName].label);
 		row.push(Math.round(
-			(data.byService[serviceName] ? data.byService[serviceName].processing.avgTime : 0)
-				/ 1000 / 60 / 60 / 24
+			(data[serviceName].processing.avgTime || 0) / 1000 / 60 / 60 / 24
 		));
 		row.push(chart.options.colors[i]);
 		i++;
@@ -278,20 +256,11 @@ var getWithdrawalTime = function (data) {
 		data: [["Service", "Data", { role: "style" }]]
 	}, i = 0;
 
-	if (!data.byStepAndService.frontDesk) {
-		return result;
-	}
 	var services = getServiceNames();
 	Object.keys(services).forEach(function (serviceName) {
 		var row = [];
 		row.push(services[serviceName].label);
-		if (!data.byStepAndService.frontDesk[serviceName]) {
-			row.push(0);
-		} else {
-			row.push(Math.round(
-				data.byStepAndService.frontDesk[serviceName].processing.avgTime / 1000 / 60 / 60 / 24
-			));
-		}
+		row.push((Math.round(data[serviceName].processing.avgTime || 0) / 1000 / 60 / 60 / 24));
 		row.push(chart.options.colors[i]);
 		i++;
 		chart.data.push(row);
@@ -300,16 +269,17 @@ var getWithdrawalTime = function (data) {
 	return assign(result, chart);
 };
 
-var updateChartsData = function (data) {
+var updateChartsData = function (data, query) {
 	var dataForCharts = [], customChartsData = [];
 	if (!data) return;
 
-	dataForCharts.push(getFilesCompletedPerDay(data));
-	dataForCharts.push(getFilesCompletedByStep(data));
-	dataForCharts.push(getPendingFiles(data));
-	dataForCharts.push(getAverageTime(data));
-	dataForCharts.push(getAverageTimeByService(data));
-	dataForCharts.push(getWithdrawalTime(data));
+	dataForCharts.push(getFilesCompletedPerDay(data.dateRangeData.businessProcesses.byDateAndService,
+		query));
+	dataForCharts.push(getFilesCompletedByStep(data.dataRangeData.steps));
+	dataForCharts.push(getPendingFiles(data.lastDateData));
+	dataForCharts.push(getAverageTime(data.dateRangeData.steps));
+	dataForCharts.push(getAverageTimeByService(data.dateRangeData.businessProcesses.byService));
+	dataForCharts.push(getWithdrawalTime(data.dateRangeData.steps.frontDesk || {}));
 	customChartsData = exports._customChartsGetData.call(this, data);
 	if (customChartsData && customChartsData.length) {
 		dataForCharts = dataForCharts.concat(customChartsData);

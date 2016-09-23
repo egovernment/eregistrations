@@ -1,90 +1,127 @@
 'use strict';
 
-var assign             = require('es5-ext/object/assign')
-  , ensureObject       = require('es5-ext/object/valid-object')
-  , deferred           = require('deferred')
-  , ensureDriver       = require('dbjs-persistence/ensure-driver')
-  , db                 = require('../../db')
-  , QueryHandler       = require('../../utils/query-handler')
-  , timePerPersonPrint = require('./controllers/statistics-time-per-person-print')
-  , timePerRolePrint   = require('./controllers/statistics-time-per-role-print')
-  , timePerRoleCsv     = require('./controllers/statistics-time-per-role-csv')
-  , getBaseRoutes      = require('./authenticated');
+var assign                  = require('es5-ext/object/assign')
+  , ensureCallable          = require('es5-ext/object/valid-callable')
+  , ensureObject            = require('es5-ext/object/valid-object')
+  , ensureDriver            = require('dbjs-persistence/ensure-driver')
+  , db                      = require('../../db')
+  , QueryHandler            = require('../../utils/query-handler')
+  , toDateInTz              = require('../../utils/to-date-in-time-zone')
+  , getData                 = require('../business-process-query/get-data')
+  , filterSteps             = require('../business-process-query/steps/filter')
+  , filterBusinessProcesses = require('../business-process-query/business-processes/filter')
+  , reduceSteps             = require('../business-process-query/steps/reduce')
+  , reduceBusinessProcesses = require('../business-process-query/business-processes/reduce')
+  , timePerPersonPrint      = require('./controllers/statistics-time-per-person-print')
+  , timePerRolePrint        = require('./controllers/statistics-time-per-role-print')
+  , timePerRoleCsv          = require('./controllers/statistics-time-per-role-csv')
+  , getBaseRoutes           = require('./authenticated');
 
-var getProcessingTimesByStepProcessor =
-	require('../statistics/business-process/query-times');
-var getFilesApprovedByDateAndService =
-	require('../statistics/business-process/get-files-approved-by-date-and-service');
-var getFilesPendingByStepAndService =
-	require('../statistics/business-process/get-files-pending-by-step-and-service');
 var getQueryHandlerConf = require('../../routes/utils/get-statistics-time-query-handler-conf');
 
 module.exports = function (config) {
-	var queryConf, processingStepsMeta;
+	var driver = ensureDriver(ensureObject(config).driver)
+	  , processingStepsMeta = ensureObject(config.processingStepsMeta)
+	  , customChartsController;
 
-	ensureObject(config);
-	ensureDriver(config.driver);
-	processingStepsMeta = config.processingStepsMeta;
-	queryConf = getQueryHandlerConf({
+	if (config.customChartsController) {
+		customChartsController = ensureCallable(config.customChartsController);
+	}
+	var queryConf = getQueryHandlerConf({
 		db: db,
-		processingStepsMeta: processingStepsMeta,
-		// Eventual system specific query conf
-		queryConf: config.queryConf
+		processingStepsMeta: processingStepsMeta
 	});
 
-	timePerPersonPrint = timePerPersonPrint(assign(config));
-	timePerRolePrint = timePerRolePrint(assign(config));
-	timePerRoleCsv = timePerRoleCsv(assign(config));
+	timePerPersonPrint = timePerPersonPrint(config);
+	timePerRolePrint = timePerRolePrint(config);
+	timePerRoleCsv = timePerRoleCsv(config);
 
 	var queryHandler = new QueryHandler(queryConf);
 
+	var resolveTimePerRole = function (query) {
+		return getData(driver, processingStepsMeta)(function (data) {
+			var stepsResult;
+			// We need:
+			// steps | filter(query) | reduce()[byStep, all]
+			// businessProcesses | filter(query) | reduce().all
+			stepsResult = reduceSteps(filterSteps(data, query, processingStepsMeta),
+				processingStepsMeta);
+			return {
+				steps: { byStep: stepsResult.byStep, all: stepsResult.all },
+				businessProcesses: reduceBusinessProcesses(filterBusinessProcesses(data, query)).all
+			};
+		});
+	};
+
+	var resolveTimePerPerson = function (query) {
+		return getData(driver, processingStepsMeta)(function (data) {
+			// We need:
+			// steps | filter(query) | reduce()[byStepAndProcessor, byStep]
+			data = reduceSteps(filterSteps(data, query, processingStepsMeta), processingStepsMeta);
+			return { byStep: data.byStep, byStepAndProcessor: data.byStepAndProcessor };
+		});
+	};
+
 	return assign({
-		'get-processing-time-data': function (query) {
-			return queryHandler.resolve(query)(function (query) {
-				return getProcessingTimesByStepProcessor(assign(config, { query: query }));
-			});
+		'get-time-per-role': function (query) {
+			return queryHandler.resolve(query)(resolveTimePerRole);
 		},
-		'get-time-per-person-print': {
-			headers: timePerPersonPrint.headers,
-			controller: function (query) {
-				return queryHandler.resolve(query)(function (query) {
-					return timePerPersonPrint.controller({ query: query });
-				});
-			}
-		},
-		'get-time-per-role-print': {
+		'time-per-role.pdf': {
+			match: function () { return true; },
 			headers: timePerRolePrint.headers,
 			controller: function (query) {
-				return queryHandler.resolve(query)(function (query) {
-					return timePerRolePrint.controller({ query: query });
-				});
+				return queryHandler.resolve(query)(resolveTimePerRole)(timePerRolePrint.controller);
 			}
 		},
-		'get-time-per-role-csv': {
+		'time-per-role.csv': {
+			match: function () { return true; },
 			headers: timePerRoleCsv.headers,
 			controller: function (query) {
-				return queryHandler.resolve(query)(function (query) {
-					return timePerRoleCsv.controller({ query: query });
-				});
+				return queryHandler.resolve(query)(resolveTimePerRole)(timePerRoleCsv.controller);
+			}
+		},
+		'get-time-per-person': function (query) {
+			return queryHandler.resolve(query)(function (query) {
+				return getData(driver, processingStepsMeta)(resolveTimePerPerson);
+			});
+		},
+		'time-per-person.pdf': {
+			match: function () { return true; },
+			headers: timePerPersonPrint.headers,
+			controller: function (query) {
+				return queryHandler.resolve(query)(resolveTimePerPerson)(timePerPersonPrint.controller);
 			}
 		},
 		'get-dashboard-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
-				var finalResult = {}, today = new Date();
-				return deferred(
-					getProcessingTimesByStepProcessor(assign(config,
-						{ query: query }))(function (result) {
-						assign(finalResult, result);
-					}),
-					getFilesApprovedByDateAndService(query)(function (filesApproved) {
-						assign(finalResult, { filesApprovedByDay: filesApproved });
-					}),
-					getFilesPendingByStepAndService(query.dateTo ||
-						new db.Date(today.getUTCFullYear(), today.getUTCMonth(),
-							today.getUTCDate()), processingStepsMeta)(function (pendingFiles) {
-						assign(finalResult, { pendingFiles: pendingFiles });
-					})
-				)(finalResult);
+				return getData(driver, processingStepsMeta)(function (data) {
+					var lastDateQuery = assign(query, { dateFrom: null, dateTo: null,
+						pendingAt: query.dateTo || toDateInTz(new Date(), db.timeZone) });
+					// Spec of data we need for each chart:
+					// # Files completed per time range
+					//   businessProcesses | filter(query) | reduce().byDateAndService
+					// # Processed files
+					//   steps | filter(query) | reduce().byStepAndService
+					// # Pending files at ${lastDate}
+					//   steps | filter(lastDateQuery) | reduce().byStep
+					// # Average processing time in days
+					//   steps | filter(query) | reduce().byStepAndService
+					// # Total average processing time per service in days
+					//   businessProcesses | filter(query) | reduce().byService
+					// # Withdrawal time in days
+					//   steps | filter(query) | reduce().byStepAndService
+					var result = {
+						dateRangeData: {
+							steps: reduceSteps(filterSteps(data, query, processingStepsMeta),
+								processingStepsMeta).byStepAndService,
+							businessProcesses: reduceBusinessProcesses(filterBusinessProcesses(data, query))
+						},
+						lastDateData: reduceSteps(filterSteps(data, lastDateQuery, processingStepsMeta),
+							processingStepsMeta).byStep
+					};
+					if (customChartsController) customChartsController(query, result, lastDateQuery);
+					return result;
+				});
 			});
 		}
 	}, getBaseRoutes());
