@@ -58,7 +58,7 @@ module.exports = exports = function (data, query, processingStepsMeta) {
 		if (query.pendingAt) {
 			stepData = filter(stepData, function (entry) {
 				return ((entry.pendingDate <= query.pendingAt) &&
-					(entry.processingDate >= query.pendingAt));
+					(!entry.processingDate || (entry.processingDate >= query.pendingAt)));
 			});
 		}
 
