@@ -42,11 +42,12 @@ module.exports = function (config) {
 			// We need:
 			// steps | filter(query) | reduce()[byStep, all]
 			// businessProcesses | filter(query) | reduce().all
-			stepsResult = reduceSteps(filterSteps(data, query, processingStepsMeta),
+			stepsResult = reduceSteps(filterSteps(data.steps, query, processingStepsMeta),
 				processingStepsMeta);
 			return {
 				steps: { byStep: stepsResult.byStep, all: stepsResult.all },
-				businessProcesses: reduceBusinessProcesses(filterBusinessProcesses(data, query)).all
+				businessProcesses: reduceBusinessProcesses(filterBusinessProcesses(data.businessProcesses,
+					query)).all
 			};
 		});
 	};
@@ -55,7 +56,7 @@ module.exports = function (config) {
 		return getData(driver, processingStepsMeta)(function (data) {
 			// We need:
 			// steps | filter(query) | reduce()[byStepAndProcessor, byStep]
-			data = reduceSteps(filterSteps(data, query, processingStepsMeta), processingStepsMeta);
+			data = reduceSteps(filterSteps(data.steps, query, processingStepsMeta), processingStepsMeta);
 			return { byStep: data.byStep, byStepAndProcessor: data.byStepAndProcessor };
 		});
 	};
@@ -75,11 +76,7 @@ module.exports = function (config) {
 			});
 		}),
 		'get-time-per-person': function (query) {
-			return queryHandler.resolve(query)(function (query) {
-				return getData(driver, processingStepsMeta)(function (data) {
-					return resolveTimePerPerson(data, config);
-				});
-			});
+			return queryHandler.resolve(query)(resolveTimePerPerson);
 		},
 		'time-per-person.pdf': makePdf(function (query) {
 			return queryHandler.resolve(query)(resolveTimePerPerson)(function (data) {
@@ -106,11 +103,12 @@ module.exports = function (config) {
 					//   steps | filter(query) | reduce().byStepAndService
 					var result = {
 						dateRangeData: {
-							steps: reduceSteps(filterSteps(data, query, processingStepsMeta),
+							steps: reduceSteps(filterSteps(data.steps, query, processingStepsMeta),
 								processingStepsMeta).byStepAndService,
-							businessProcesses: reduceBusinessProcesses(filterBusinessProcesses(data, query))
+							businessProcesses:
+								reduceBusinessProcesses(filterBusinessProcesses(data.businessProcesses, query))
 						},
-						lastDateData: reduceSteps(filterSteps(data, lastDateQuery, processingStepsMeta),
+						lastDateData: reduceSteps(filterSteps(data.steps, lastDateQuery, processingStepsMeta),
 							processingStepsMeta).byStep
 					};
 					if (customChartsController) customChartsController(query, result, lastDateQuery);

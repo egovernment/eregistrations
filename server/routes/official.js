@@ -315,7 +315,7 @@ var initializeHandler = function (conf) {
 var getStatsOverviewData = memoize(function (query, userId, statsHandlerOpts) {
 	var processingStepsMeta = statsHandlerOpts.processingStepsMeta;
 	return getData(mano.dbDriver, processingStepsMeta)(function (data) {
-		data = reduceSteps(filterSteps(data, query, processingStepsMeta), processingStepsMeta);
+		data = reduceSteps(filterSteps(data.steps, query, processingStepsMeta), processingStepsMeta);
 		return {
 			processor: (data.byStepAndProcessor[query.step][userId] || getReductionTemplate()).processing,
 			stepTotal: data.byStep[query.step].processing
