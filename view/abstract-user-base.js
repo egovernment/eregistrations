@@ -67,13 +67,17 @@ var userNameMenuItem = function () {
 					if (!role) return;
 
 					if (!db.Role.isFlowRole(role)) {
-						return li(form({ method: 'post', action: '/set-role/' },
-							input({ type: 'hidden', name: user.__id__ + '/currentRole',
-								value: user.flowRoles.first }),
-							button({ type: 'submit' }, _("Roles"))));
+						return [
+							li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
+							li(form({ method: 'post', action: '/set-role/' },
+								input({ type: 'hidden', name: user.__id__ + '/currentRole',
+									value: user.flowRoles.first }),
+								button({ type: 'submit' }, _("Roles"))))];
 					}
-					return li({ class: 'header-top-menu-dropdown-item-active' },
-						a({ href: '/' }, _("Roles")));
+					return [
+						li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
+						li({ class: 'header-top-menu-dropdown-item-active' },
+							a({ href: '/' }, _("Roles")))];
 				})),
 				_if(user.roles._has('statistics'), [
 					li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
