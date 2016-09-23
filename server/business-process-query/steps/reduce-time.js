@@ -56,7 +56,6 @@ module.exports = function (data, processingStepsMeta) {
 			// Initialize container
 			if (!result.byStepAndProcessor[stepShortPath][bpData.processor]) {
 				result.byStepAndProcessor[stepShortPath][bpData.processor] = getEmptyData();
-				result.byStepAndProcessor[stepShortPath][bpData.processor].processor = bpData.processor;
 			}
 
 			// Reduce processingTime
