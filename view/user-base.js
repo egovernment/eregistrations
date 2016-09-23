@@ -19,18 +19,7 @@ exports._parent = require('./abstract-user-base');
 exports['submitted-menu'] = function () {
 	var user = this.manager || this.user;
 
-	insert(list(user.roles.filter(function (role) {
-		switch (role) {
-		case 'user':
-		case 'manager':
-		case 'managerValidation':
-		case 'dispatcher':
-		case 'supervisor':
-			return true;
-		default:
-			return (/^official[A-Z]/).test(role);
-		}
-	}), exports._getSubmittedMenuItem.bind(this)));
+	insert(list(user.flowRoles, exports._getSubmittedMenuItem.bind(this)));
 	insert(exports._submittedMenuExtraItems.call(this));
 };
 
