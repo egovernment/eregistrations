@@ -10,8 +10,7 @@ var ensureObject         = require('es5-ext/object/valid-object')
 
 module.exports = function (result, config) {
 	var processingStepsMeta = ensureObject(ensureObject(config).processingStepsMeta);
-	var inserts = { data: [], locale: db.locale,
-		logo: config.logo, currentDate: db.DateTime().toString() };
+	var data = [];
 
 	forEach(result.steps.byStep, function (data, key) {
 		var step = data.processing;
@@ -19,7 +18,7 @@ module.exports = function (result, config) {
 			capitalize.call(processingStepsMeta[key]._services[0])].prototype
 			.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
 
-		inserts.data.push(step);
+		data.push(step);
 		step.avgTime = getDurationDaysHours(step.avgTime);
 		step.minTime = getDurationDaysHours(step.minTime);
 		step.maxTime = getDurationDaysHours(step.maxTime);
@@ -45,11 +44,11 @@ module.exports = function (result, config) {
 				totalItem.minTime = getDurationDaysHours(totalItem.minTime);
 				totalItem.maxTime = getDurationDaysHours(totalItem.maxTime);
 			}
-			inserts.data.push(totalItem);
+			data.push(totalItem);
 		}
 	);
 
-	return inserts.data.map(function (row) {
+	return data.map(function (row) {
 		return [
 			row.label,
 			row.count,
