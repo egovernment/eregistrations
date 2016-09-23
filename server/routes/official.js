@@ -37,7 +37,7 @@ var aFrom                          = require('es5-ext/array/from')
   , idToStorage                    = require('../utils/business-process-id-to-storage')
   , getData                        = require('../business-process-query/get-data')
   , filterSteps                    = require('../business-process-query/steps/filter')
-  , reduceSteps                    = require('../business-process-query/steps/reduce')
+  , reduceSteps                    = require('../business-process-query/steps/reduce-time')
   , statusLogPrintPdfRenderer      = require('../pdf-renderers/business-process-status-log-print')
   , getBaseRoutes                  = require('./authenticated')
 
