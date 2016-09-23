@@ -172,7 +172,8 @@ var getFilesCompletedByStep = function (data) {
 	Object.keys(data).forEach(function (shortPath) {
 		var stepData = [getStepLabelByShortPath(shortPath)];
 		Object.keys(services).forEach(function (serviceName) {
-			stepData.push(data[shortPath][serviceName].processing.count);
+			if (!data[shortPath][serviceName]) stepData.push(0);
+			else stepData.push(data[shortPath][serviceName].processing.count);
 		});
 		chart.data.push(stepData);
 	});
@@ -212,9 +213,13 @@ var getAverageTime = function (data) {
 		if (shortPath === 'frontDesk') return;
 		var stepData = [getStepLabelByShortPath(shortPath)];
 		Object.keys(services).forEach(function (serviceName) {
-			stepData.push(Math.round(
-				(data[shortPath][serviceName].processing.avgTime || 0) / 1000 / 60 / 60 / 24
-			));
+			if (!data[shortPath][serviceName]) {
+				stepData.push(0);
+			} else {
+				stepData.push(Math.round(
+					(data[shortPath][serviceName].processing.avgTime || 0) / 1000 / 60 / 60 / 24
+				));
+			}
 		});
 		chart.data.push(stepData);
 	});
@@ -259,6 +264,7 @@ var getWithdrawalTime = function (data) {
 	var services = getServiceNames();
 	Object.keys(services).forEach(function (serviceName) {
 		var row = [];
+		if (!data[serviceName]) return;
 		row.push(services[serviceName].label);
 		row.push((Math.round(data[serviceName].processing.avgTime || 0) / 1000 / 60 / 60 / 24));
 		row.push(chart.options.colors[i]);
