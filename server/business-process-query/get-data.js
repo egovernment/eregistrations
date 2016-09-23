@@ -39,6 +39,8 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 			storageStepsMap.get(storage).add(stepPath);
 
 		});
+
+		result.steps[stepShortPath] = Object.create(null);
 	});
 
 	// Map of all properties to be mapped to result with corresponding instructions
@@ -104,7 +106,6 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 
 		var initStepDataset = function (stepPath, businessProcessId) {
 			var stepShortPath = stepShortPathMap.get(stepPath);
-			if (!result.steps[stepShortPath]) result.steps[stepShortPath] = Object.create(null);
 			if (!result.steps[stepShortPath][businessProcessId]) {
 				result.steps[stepShortPath][businessProcessId] = {
 					stepFullPath: 'processingSteps/map/' + stepPath,
