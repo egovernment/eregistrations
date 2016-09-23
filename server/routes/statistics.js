@@ -15,6 +15,8 @@ var assign                  = require('es5-ext/object/assign')
   , timePerPersonPrint      = require('../pdf-renderers/statistics-time-per-person')
   , timePerRolePrint        = require('../pdf-renderers/statistics-time-per-role')
   , timePerRoleCsv          = require('../csv-renderers/statistics-time-per-role')
+  , makePdf                 = require('./utils/pdf')
+  , makeCsv                 = require('./utils/csv')
   , getBaseRoutes           = require('./authenticated');
 
 var getQueryHandlerConf = require('../../routes/utils/get-statistics-time-query-handler-conf');
@@ -31,10 +33,6 @@ module.exports = function (config) {
 		db: db,
 		processingStepsMeta: processingStepsMeta
 	});
-
-	timePerPersonPrint = timePerPersonPrint(config);
-	timePerRolePrint = timePerRolePrint(config);
-	timePerRoleCsv = timePerRoleCsv(config);
 
 	var queryHandler = new QueryHandler(queryConf);
 
@@ -66,32 +64,28 @@ module.exports = function (config) {
 		'get-time-per-role': function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole);
 		},
-		'time-per-role.pdf': {
-			match: function () { return true; },
-			headers: timePerRolePrint.headers,
-			controller: function (query) {
-				return queryHandler.resolve(query)(resolveTimePerRole)(timePerRolePrint.controller);
-			}
-		},
-		'time-per-role.csv': {
-			match: function () { return true; },
-			headers: timePerRoleCsv.headers,
-			controller: function (query) {
-				return queryHandler.resolve(query)(resolveTimePerRole)(timePerRoleCsv.controller);
-			}
-		},
+		'time-per-role.pdf': makePdf(function (query) {
+			return queryHandler.resolve(query)(resolveTimePerRole)(function (data) {
+				return timePerRolePrint(data, config);
+			});
+		}),
+		'time-per-role.csv': makeCsv(function (query) {
+			return queryHandler.resolve(query)(resolveTimePerRole)(function (data) {
+				return timePerRoleCsv(data, config);
+			});
+		}),
 		'get-time-per-person': function (query) {
 			return queryHandler.resolve(query)(function (query) {
-				return getData(driver, processingStepsMeta)(resolveTimePerPerson);
+				return getData(driver, processingStepsMeta)(function (data) {
+					return resolveTimePerPerson(data, config);
+				});
 			});
 		},
-		'time-per-person.pdf': {
-			match: function () { return true; },
-			headers: timePerPersonPrint.headers,
-			controller: function (query) {
-				return queryHandler.resolve(query)(resolveTimePerPerson)(timePerPersonPrint.controller);
-			}
-		},
+		'time-per-person.pdf': makePdf(function (query) {
+			return queryHandler.resolve(query)(resolveTimePerPerson)(function (data) {
+				return timePerPersonPrint(data, config);
+			});
+		}),
 		'get-dashboard-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
 				return getData(driver, processingStepsMeta)(function (data) {
