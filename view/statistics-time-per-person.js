@@ -2,7 +2,6 @@
 
 var copy                 = require('es5-ext/object/copy')
   , forEach              = require('es5-ext/object/for-each')
-  , isEmpty              = require('es5-ext/object/is-empty')
   , capitalize           = require('es5-ext/string/#/capitalize')
   , uncapitalize         = require('es5-ext/string/#/uncapitalize')
   , memoize              = require('memoizee')
