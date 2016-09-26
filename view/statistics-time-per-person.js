@@ -32,9 +32,9 @@ var queryServer = memoize(function (query) {
 var getRowResult = function (rowData, label) {
 	var result     = copy(rowData);
 	result.label   = label;
-	result.avgTime = rowData.avgTime ? getDurationDaysHours(rowData.avgTime) : '-';
-	result.minTime = rowData.minTime ? getDurationDaysHours(rowData.minTime) : '-';
-	result.maxTime = rowData.maxTime ? getDurationDaysHours(rowData.maxTime) : '-';
+	result.avgTime = rowData.count ? getDurationDaysHours(rowData.avgTime) : '-';
+	result.minTime = rowData.count ? getDurationDaysHours(rowData.minTime) : '-';
+	result.maxTime = rowData.count ? getDurationDaysHours(rowData.maxTime) : '-';
 
 	return result;
 };
