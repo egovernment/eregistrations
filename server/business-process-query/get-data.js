@@ -175,12 +175,23 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 				if (!meta.validate(record)) return;
 				meta.set(initStepDataset(stepPath, businessProcessId), record);
 			}),
-			deferred.map(aFrom(stepPaths), function (stepPath) {
-				var keyPath = 'processingSteps/map/' + stepPath + '/isReady'
-				  , meta = stepMetaMap.isReady;
+			deferred.map(Object.keys(bpMetaMap), function (keyPath) {
+				var meta = bpMetaMap[keyPath];
+				if (meta.type !== 'computed') return;
 				return storage.searchComputed({ keyPath: keyPath }, function (id, record) {
 					if (!meta.validate(record)) return;
-					meta.set(initStepDataset(stepPath, id.split('/', 1)[0]), record);
+					meta.set(initBpDataset(id.split('/', 1)[0]), record);
+				});
+			}),
+			deferred.map(aFrom(stepPaths), function (stepPath) {
+				return deferred.map(Object.keys(stepMetaMap), function (stepPropKeyPath) {
+					var meta = stepMetaMap[stepPropKeyPath];
+					if (meta.type !== 'computed') return;
+					var keyPath = 'processingSteps/map/' + stepPath + '/' + stepPropKeyPath;
+					return storage.searchComputed({ keyPath: keyPath }, function (id, record) {
+						if (!meta.validate(record)) return;
+						meta.set(initStepDataset(stepPath, id.split('/', 1)[0]), record);
+					});
 				});
 			})
 		);
