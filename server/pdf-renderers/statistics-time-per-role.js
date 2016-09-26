@@ -1,6 +1,7 @@
 'use strict';
 
-var forEach              = require('es5-ext/object/for-each')
+var copy                 = require('es5-ext/object/copy')
+  , forEach              = require('es5-ext/object/for-each')
   , ensureObject         = require('es5-ext/object/valid-object')
   , capitalize           = require('es5-ext/string/#/capitalize')
   , resolve              = require('path').resolve
@@ -10,7 +11,7 @@ var forEach              = require('es5-ext/object/for-each')
   , getDurationDaysHours = require('../../view/utils/get-duration-days-hours')
   , htmlToPdf            = require('../html-to-pdf')
 
-  , root = resolve(__dirname, '../../..')
+  , root = resolve(__dirname, '../..')
   , templatePath = resolve(root, 'apps-common/pdf-templates/statistics-time-per-role.html');
 
 module.exports = function (result, config) {
@@ -25,26 +26,26 @@ module.exports = function (result, config) {
 			.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
 
 		inserts.data.push(step);
-		step.avgTime = getDurationDaysHours(step.avgTime);
-		step.minTime = getDurationDaysHours(step.minTime);
-		step.maxTime = getDurationDaysHours(step.maxTime);
+		step.avgTime = step.count ? getDurationDaysHours(step.avgTime) : '-';
+		step.minTime = step.count ? getDurationDaysHours(step.minTime) : '-';
+		step.maxTime = step.count ? getDurationDaysHours(step.maxTime) : '-';
 	});
 
 	var total, processingTotal, correctionTotal, correctionByUsers;
 	correctionTotal         = result.steps.all.correction;
 	correctionTotal.label   = _("Total correcting time");
-	correctionByUsers       = result.steps.all.correction;
+	correctionByUsers       = copy(result.steps.all.correction);
 	correctionByUsers.label = _("Corrections by the users");
-	processingTotal         = result.businessProceesses.processing;
+	processingTotal         = result.businessProcesses.processing;
 	processingTotal.label   = _("Total process without corrections");
 
-	total                   = result.businessProcesses.processing;
+	total                   = copy(result.businessProcesses.processing);
 	total.label             = _("Total process");
 
 	[correctionTotal, correctionByUsers, processingTotal, total].forEach(
 		function (totalItem) {
 			if (!totalItem.count) {
-				totalItem.avgTime = totalItem.minTime = totalItem.maxTime = _("N/A");
+				totalItem.avgTime = totalItem.minTime = totalItem.maxTime = "-";
 			} else {
 				totalItem.avgTime = getDurationDaysHours(totalItem.avgTime);
 				totalItem.minTime = getDurationDaysHours(totalItem.minTime);
