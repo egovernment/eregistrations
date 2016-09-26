@@ -63,7 +63,7 @@ exports['statistics-main'] = function () {
 			total.label = _("Total process");
 
 			Object.keys(result.steps.byStep).forEach(function (key) {
-				perRoleTotal = result.steps.byStep[key];
+				perRoleTotal = result.steps.byStep[key].processing;
 				perRoleTotal.label   = db['BusinessProcess' +
 					capitalize.call(processingStepsMeta[key]._services[0])].prototype
 					.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
