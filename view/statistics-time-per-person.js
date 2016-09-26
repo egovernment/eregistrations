@@ -71,7 +71,7 @@ exports['statistics-main'] = function () {
 					preparedResult.push(getRowResult(rowData.processing,
 						db.User.getById(userId).fullName));
 				});
-				preparedResult.push(getRowResult(result.byStep[key], _("Total & times")));
+				preparedResult.push(getRowResult(result.byStep[key].processing, _("Total & times")));
 				stepsMap[key].value = preparedResult;
 			});
 		});
@@ -140,7 +140,7 @@ exports['statistics-main'] = function () {
 						_("There are no files processed at this step"))) }, data, function (rowData) {
 						return tr(
 							td(rowData.label),
-							td({ class: 'statistics-table-number' }, rowData.processed),
+							td({ class: 'statistics-table-number' }, rowData.count),
 							td({ class: 'statistics-table-number' }, rowData.avgTime),
 							td({ class: 'statistics-table-number' }, rowData.minTime),
 							td({ class: 'statistics-table-number' }, rowData.maxTime)
