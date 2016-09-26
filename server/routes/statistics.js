@@ -12,14 +12,13 @@ var assign                  = require('es5-ext/object/assign')
   , filterBusinessProcesses = require('../business-process-query/business-processes/filter')
   , reduceSteps             = require('../business-process-query/steps/reduce-time')
   , reduceBusinessProcesses = require('../business-process-query/business-processes/reduce-time')
+  , getQueryHandlerConf     = require('../../apps/statistics/get-query-conf')
   , timePerPersonPrint      = require('../pdf-renderers/statistics-time-per-person')
   , timePerRolePrint        = require('../pdf-renderers/statistics-time-per-role')
   , timePerRoleCsv          = require('../csv-renderers/statistics-time-per-role')
   , makePdf                 = require('./utils/pdf')
   , makeCsv                 = require('./utils/csv')
   , getBaseRoutes           = require('./authenticated');
-
-var getQueryHandlerConf = require('../../apps/statistics/get-query-conf');
 
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
