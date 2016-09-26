@@ -20,7 +20,7 @@ module.exports = exports = function (data, query, processingStepsMeta) {
 
 	// 1. Exclude not applicable steps
 	if (query.step || query.service) {
-		data = filter(data.steps, function (stepData, stepShortPath) {
+		data = filter(data, function (stepData, stepShortPath) {
 			// 1.1. Exclude by step
 			if (query.step && query.step !== stepShortPath) return;
 
