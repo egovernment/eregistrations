@@ -20,7 +20,7 @@ exports._parent        = require('./statistics-time');
 exports._customFilters = Function.prototype;
 exports._queryConf     = null;
 
-exports['time-nav'] = { class: { 'pills-nav-active': true } };
+exports['time-nav']       = { class: { 'submitted-menu-item-active': true } };
 exports['per-person-nav'] = { class: { 'pills-nav-active': true } };
 
 var queryServer = memoize(function (query) {

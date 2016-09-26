@@ -2,7 +2,7 @@
 
 var _  = require('mano').i18n.bind('View: Users Admin');
 
-exports._parent = require('./user-base');
+exports._parent = require('./users-admin-base');
 exports._match  = 'editedUser';
 
 exports['sub-main'] = {

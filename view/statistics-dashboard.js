@@ -299,7 +299,7 @@ var updateChartsData = function (data, query) {
 
 exports._parent = require('./statistics-base');
 
-exports['dashboard-nav'] = { class: { 'pills-nav-active': true } };
+exports['dashboard-nav'] = { class: { 'submitted-menu-item-active': true } };
 
 exports['statistics-main'] = function () {
 	var queryHandler;
