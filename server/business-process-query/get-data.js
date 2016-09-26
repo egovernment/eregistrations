@@ -19,7 +19,7 @@ var aFrom                         = require('es5-ext/array/from')
 var re = new RegExp('^([0-9a-z]+)\\/processingSteps\\/map\\/([a-zA-Z0-9]+' +
 	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$');
 
-module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
+module.exports = exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 	var storageStepsMap = new Map(), stepShortPathMap = new Map()
 	  , serviceFullShortNameMap = new Map(), options = Object(arguments[2])
 	  , customStorageSetup;
@@ -42,63 +42,6 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 
 		result.steps[stepShortPath] = Object.create(null);
 	});
-
-	// Map of all properties to be mapped to result with corresponding instructions
-	var stepMetaMap = {
-		status: {
-			validate: function (record) {
-				return ((record.value === '3approved') || (record.value === '3rejected'));
-			},
-			set: function (data, record) {
-				data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
-			},
-			delete: function (data) { delete data.processingDate; }
-		},
-		processor: {
-			validate: function (record) { return (record.value[0] === '7'); },
-			set: function (data, record) { data.processor = record.value.slice(1); },
-			delete: function (data) { delete data.processor; }
-		},
-		correctionTime: {
-			validate: function (record) { return (record.value[0] === '2'); },
-			set: function (data, record) { data.correctionTime = unserializeValue(record.value); },
-			delete: function (data) { delete data.correctionTime; }
-		},
-		processingTime: {
-			validate: function (record) { return (record.value[0] === '2'); },
-			set: function (data, record) { data.processingTime = unserializeValue(record.value); },
-			delete: function (data) { delete data.processingTime; }
-		},
-		isReady: {
-			type: 'computed',
-			validate: function (record) { return (record.value === '11'); },
-			set: function (data, record) {
-				data.pendingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
-			},
-			delete: function (data) { delete data.pendingDate; }
-		}
-	};
-
-	var bpMetaMap = {
-		isApproved: {
-			validate: function (record) { return (record.value === '11'); },
-			set: function (data, record) {
-				data.approvedDateTime = new Date(record.stamp / 1000);
-				data.approvedDate = toDateInTz(data.approvedDateTime, timeZone);
-			},
-			delete: function (data) {
-				delete data.approvedDateTime;
-				delete data.approvedDate;
-			}
-		},
-		isSubmitted: {
-			validate: function (record) { return (record.value === '11'); },
-			set: function (data, record) {
-				data.submissionDateTime = new Date(record.stamp / 1000);
-			},
-			delete: function (data) { delete data.submissionDateTime; }
-		}
-	};
 
 	return deferred.map(aFrom(storageStepsMap), function (data) {
 		var storage = data[0], stepPaths = data[1], customRecordSetup
@@ -124,7 +67,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 		// Listen for new records
 		stepPaths.forEach(function (stepPath) {
 			// Status
-			forEach(stepMetaMap, function (meta, stepKeyPath) {
+			forEach(exports.stepMetaMap, function (meta, stepKeyPath) {
 				storage.on('key:processingSteps/map/' + stepPath + '/' + stepKeyPath, function (event) {
 					if (event.type !== (meta.type || 'direct')) return;
 					if (!meta.validate(event.data)) meta.delete(initStepDataset(stepPath, event.ownerId));
@@ -132,7 +75,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 				});
 			});
 		});
-		forEach(bpMetaMap, function (meta, keyPath) {
+		forEach(exports.businessProcessMetaMap, function (meta, keyPath) {
 			storage.on('key:' + keyPath, function (event) {
 				if (event.type !== (meta.type || 'direct')) return;
 				if (!meta.validate(event.data)) meta.delete(initBpDataset(event.ownerId));
@@ -158,7 +101,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 				if (index === -1) return;
 				var businessProcessId = id.slice(0, index)
 				  , keyPath = id.slice(index + 1);
-				meta = bpMetaMap[keyPath];
+				meta = exports.businessProcessMetaMap[keyPath];
 				if (meta) {
 					if (meta.type && (meta.type !== 'direct')) return;
 					if (!meta.validate(record)) return;
@@ -169,14 +112,14 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 				stepPath = match[2];
 				if (!stepPaths.has(stepPath)) return;
 				stepKeyPath = match[3];
-				meta = stepMetaMap[stepKeyPath];
+				meta = exports.stepsMetaMap[stepKeyPath];
 				if (!meta) return;
 				if (meta.type && (meta.type !== 'direct')) return;
 				if (!meta.validate(record)) return;
 				meta.set(initStepDataset(stepPath, businessProcessId), record);
 			}),
-			deferred.map(Object.keys(bpMetaMap), function (keyPath) {
-				var meta = bpMetaMap[keyPath];
+			deferred.map(Object.keys(exports.businessProcessMetaMap), function (keyPath) {
+				var meta = exports.businessProcessMetaMap[keyPath];
 				if (meta.type !== 'computed') return;
 				return storage.searchComputed({ keyPath: keyPath }, function (id, record) {
 					if (!meta.validate(record)) return;
@@ -184,8 +127,8 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 				});
 			}),
 			deferred.map(aFrom(stepPaths), function (stepPath) {
-				return deferred.map(Object.keys(stepMetaMap), function (stepPropKeyPath) {
-					var meta = stepMetaMap[stepPropKeyPath];
+				return deferred.map(Object.keys(exports.stepsMetaMap), function (stepPropKeyPath) {
+					var meta = exports.stepsMetaMap[stepPropKeyPath];
 					if (meta.type !== 'computed') return;
 					var keyPath = 'processingSteps/map/' + stepPath + '/' + stepPropKeyPath;
 					return storage.searchComputed({ keyPath: keyPath }, function (id, record) {
@@ -198,3 +141,60 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 	})(result);
 
 }, { length: 0 });
+
+// Map of all properties to be mapped to result with corresponding instructions
+exports.stepsMetaMap = {
+	status: {
+		validate: function (record) {
+			return ((record.value === '3approved') || (record.value === '3rejected'));
+		},
+		set: function (data, record) {
+			data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
+		},
+		delete: function (data) { delete data.processingDate; }
+	},
+	processor: {
+		validate: function (record) { return (record.value[0] === '7'); },
+		set: function (data, record) { data.processor = record.value.slice(1); },
+		delete: function (data) { delete data.processor; }
+	},
+	correctionTime: {
+		validate: function (record) { return (record.value[0] === '2'); },
+		set: function (data, record) { data.correctionTime = unserializeValue(record.value); },
+		delete: function (data) { delete data.correctionTime; }
+	},
+	processingTime: {
+		validate: function (record) { return (record.value[0] === '2'); },
+		set: function (data, record) { data.processingTime = unserializeValue(record.value); },
+		delete: function (data) { delete data.processingTime; }
+	},
+	isReady: {
+		type: 'computed',
+		validate: function (record) { return (record.value === '11'); },
+		set: function (data, record) {
+			data.pendingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
+		},
+		delete: function (data) { delete data.pendingDate; }
+	}
+};
+
+exports.businessProcessMetaMap = {
+	isApproved: {
+		validate: function (record) { return (record.value === '11'); },
+		set: function (data, record) {
+			data.approvedDateTime = new Date(record.stamp / 1000);
+			data.approvedDate = toDateInTz(data.approvedDateTime, timeZone);
+		},
+		delete: function (data) {
+			delete data.approvedDateTime;
+			delete data.approvedDate;
+		}
+	},
+	isSubmitted: {
+		validate: function (record) { return (record.value === '11'); },
+		set: function (data, record) {
+			data.submissionDateTime = new Date(record.stamp / 1000);
+		},
+		delete: function (data) { delete data.submissionDateTime; }
+	}
+};
