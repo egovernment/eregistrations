@@ -31,9 +31,6 @@ module.exports = memoize(function (db) {
 		["rejected", {
 			label: _("Rejected")
 		}],
-		["withdrawalReady", {
-			label: _("Ready for withdraw")
-		}],
 		["withdrawn", {
 			label: _("Withdrawn")
 		}],

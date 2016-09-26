@@ -88,7 +88,12 @@ module.exports = memoize(function (db/*, options*/) {
 			var frontDesk;
 			if (!this.isSubmitted) return 'draft';
 			if (this.isSentBack) return 'sentBack';
+			if (this.isRejected) return 'rejected';
 			if (this.isClosed) return 'closed';
+
+			frontDesk = this.processingSteps.map.frontDesk;
+			if (frontDesk && _observe(frontDesk._isApproved)) return 'withdrawn';
+			if (frontDesk && _observe(frontDesk._isPending)) return 'pickup';
 
 			if (this.processingSteps.revisions.some(function (processingStep) {
 					return _observe(processingStep._isRevisionPending);
@@ -96,8 +101,6 @@ module.exports = memoize(function (db/*, options*/) {
 				return 'revision';
 			}
 
-			frontDesk = this.processingSteps.map.frontDesk;
-			if (frontDesk && _observe(frontDesk._isPending)) return 'pickup';
 			return 'process';
 		} }
 	});
