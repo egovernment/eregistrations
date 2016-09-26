@@ -18,10 +18,15 @@ var queryConf = [
 			var now = new db.Date(), dateFrom, dateTo;
 			if (!value) return;
 			dateFrom = dateStringtoDbDate(db, value);
-			if (dateFrom > now) throw new Error('From cannot be in future');
+			if (dateFrom > now) {
+				throw customError("From date cannot be in future", { fixedQueryValue: null });
+			}
 			if (query.dateTo) {
 				dateTo = dateStringtoDbDate(db, query.dateTo);
-				if (dateTo < dateFrom) throw new Error('Invalid date range');
+				if (dateTo < dateFrom) {
+					throw customError("date 'from' cannot be younger than 'to'",
+						{ fixedQueryValue: query.dateTo });
+				}
 			}
 			return dateFrom;
 		}
@@ -33,7 +38,7 @@ var queryConf = [
 			if (!value) return;
 			dateTo = dateStringtoDbDate(db, value);
 			if (dateTo > now) {
-				throw customError("To date cannot be in future", { fixedQueryValue: now });
+				throw customError("To date cannot be in future", { fixedQueryValue: null });
 			}
 			return dateTo;
 		}
