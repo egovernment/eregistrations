@@ -160,6 +160,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 				  , keyPath = id.slice(index + 1);
 				meta = bpMetaMap[keyPath];
 				if (meta) {
+					if (meta.type && (meta.type !== 'direct')) return;
 					if (!meta.validate(record)) return;
 					meta.set(initBpDataset(businessProcessId), record);
 				}
@@ -170,6 +171,7 @@ module.exports = memoize(function (driver, processingStepsMeta/*, options*/) {
 				stepKeyPath = match[3];
 				meta = stepMetaMap[stepKeyPath];
 				if (!meta) return;
+				if (meta.type && (meta.type !== 'direct')) return;
 				if (!meta.validate(record)) return;
 				meta.set(initStepDataset(stepPath, businessProcessId), record);
 			}),
