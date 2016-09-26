@@ -5,7 +5,6 @@
 
 var aFrom                         = require('es5-ext/array/from')
   , forEach                       = require('es5-ext/object/for-each')
-  , ensureCallable                = require('es5-ext/object/valid-callable')
   , capitalize                    = require('es5-ext/string/#/capitalize')
   , Set                           = require('es6-set')
   , Map                           = require('es6-map')
@@ -19,12 +18,9 @@ var aFrom                         = require('es5-ext/array/from')
 var re = new RegExp('^([0-9a-z]+)\\/processingSteps\\/map\\/([a-zA-Z0-9]+' +
 	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$');
 
-module.exports = exports = memoize(function (driver, processingStepsMeta/*, options*/) {
+module.exports = exports = memoize(function (driver, processingStepsMeta) {
 	var storageStepsMap = new Map(), stepShortPathMap = new Map()
-	  , serviceFullShortNameMap = new Map(), options = Object(arguments[2])
-	  , customStorageSetup;
-
-	if (options.storageSetup) customStorageSetup = ensureCallable(options.storageSetup);
+	  , serviceFullShortNameMap = new Map();
 
 	var result = { steps: Object.create(null), businessProcesses: Object.create(null) };
 
@@ -44,7 +40,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta/*, opti
 	});
 
 	return deferred.map(aFrom(storageStepsMap), function (data) {
-		var storage = data[0], stepPaths = data[1], customRecordSetup
+		var storage = data[0], stepPaths = data[1]
 		  , serviceName = serviceFullShortNameMap.get(storage.name);
 
 		var initStepDataset = function (stepPath, businessProcessId) {
@@ -83,21 +79,10 @@ module.exports = exports = memoize(function (driver, processingStepsMeta/*, opti
 			});
 		});
 
-		if (customStorageSetup) {
-			customRecordSetup = customStorageSetup(storage, {
-				stepPaths: stepPaths,
-				stepShortPathMap: stepShortPathMap,
-				serviceName: serviceName,
-				initStepDataset: initStepDataset
-			});
-			if (customRecordSetup) ensureCallable(customRecordSetup);
-		}
-
 		// Get current records
 		return deferred(
 			storage.search(function (id, record) {
 				var index = id.indexOf('/'), stepPath, stepKeyPath, meta;
-				if (customRecordSetup) customRecordSetup(id, record);
 				if (index === -1) return;
 				var businessProcessId = id.slice(0, index)
 				  , keyPath = id.slice(index + 1);
