@@ -33,6 +33,6 @@ module.exports = exports = function (data, query) {
 		});
 	}
 
-	if (exports.customFilter) data = filter(data, exports.customFilter);
+	if (exports.customFilter) data = filter(data, exports.customFilter, query);
 	return data;
 };

@@ -63,7 +63,11 @@ module.exports = exports = function (data, query, processingStepsMeta) {
 		}
 
 		// 2.4 Custom filter
-		if (exports.customFilter) stepData = filter(stepData, exports.customFilter);
+		if (exports.customFilter) {
+			stepData = filter(stepData, function (data, businessProcessId) {
+				return exports.customFilter.call(query, data, businessProcessId, stepShortPath);
+			});
+		}
 
 		return stepData;
 	});
