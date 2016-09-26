@@ -28,6 +28,7 @@ var aFrom                          = require('es5-ext/array/from')
   , ObservableSet                  = require('observable-set/primitive')
   , mano                           = require('mano')
   , roleNameMap                    = require('mano/lib/server/user-role-name-map')
+  , getStatsQueryHandlerConf       = require('../../apps/statistics/get-query-conf')
   , QueryHandler                   = require('../../utils/query-handler')
   , defaultItemsPerPage            = require('../../conf/objects-list-items-per-page')
   , getDbSet                       = require('../utils/get-db-set')
@@ -48,7 +49,6 @@ var aFrom                          = require('es5-ext/array/from')
   , defineProperty = Object.defineProperty, stringify = JSON.stringify
   , businessProcessStorages, businessProcessStorageNames;
 
-var getStatsQueryHandlerConf = require('../../apps/statistics/get-query-conf');
 var getReductionTemplate = require('../business-process-query/utils/get-time-reduction-template');
 
 businessProcessStoragesPromise.done(function (storages) {
