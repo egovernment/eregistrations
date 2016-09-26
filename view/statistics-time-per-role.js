@@ -142,11 +142,11 @@ exports['statistics-main'] = function () {
 					td(row.label),
 					td({ class: 'statistics-table-number' }, row.count),
 					td({ class: 'statistics-table-number' },
-						row.count ? getDurationDaysHours(row.avgTime) : _("N/A")),
+						row.count ? getDurationDaysHours(row.avgTime) : "-"),
 					td({ class: 'statistics-table-number' },
-						row.count ? getDurationDaysHours(row.minTime) : _("N/A")),
+						row.count ? getDurationDaysHours(row.minTime) : "-"),
 					td({ class: 'statistics-table-number' },
-						row.count ? getDurationDaysHours(row.maxTime) : _("N/A"))
+						row.count ? getDurationDaysHours(row.maxTime) : "-")
 				);
 			}))
 	);
