@@ -19,7 +19,7 @@ var assign                  = require('es5-ext/object/assign')
   , makeCsv                 = require('./utils/csv')
   , getBaseRoutes           = require('./authenticated');
 
-var getQueryHandlerConf = require('../../routes/utils/get-statistics-time-query-handler-conf');
+var getQueryHandlerConf = require('../../apps/statistics/get-query-conf');
 
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)

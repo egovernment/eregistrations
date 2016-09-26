@@ -12,7 +12,7 @@ var copy                 = require('es5-ext/object/copy')
   , getData              = require('mano/lib/client/xhr-driver').get
   , setupQueryHandler    = require('../utils/setup-client-query-handler')
   , resolveFullStepPath  = require('../utils/resolve-processing-step-full-path')
-  , getQueryHandlerConf  = require('../routes/utils/get-statistics-time-query-handler-conf')
+  , getQueryHandlerConf  = require('../apps/statistics/get-query-conf')
   , getDurationDaysHours = require('./utils/get-duration-days-hours')
   , getDynamicUrl        = require('./utils/get-dynamic-url');
 

@@ -48,7 +48,7 @@ var aFrom                          = require('es5-ext/array/from')
   , defineProperty = Object.defineProperty, stringify = JSON.stringify
   , businessProcessStorages, businessProcessStorageNames;
 
-var getStatsQueryHandlerConf = require('../../routes/utils/get-statistics-time-query-handler-conf');
+var getStatsQueryHandlerConf = require('../../apps/statistics/get-query-conf');
 var getReductionTemplate = require('../business-process-query/utils/get-time-reduction-template');
 
 businessProcessStoragesPromise.done(function (storages) {

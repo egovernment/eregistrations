@@ -14,7 +14,7 @@ var assign              = require('es5-ext/object/assign')
   , db                  = require('../db')
   , setupQueryHandler   = require('../utils/setup-client-query-handler')
   , resolveFullStepPath = require('../utils/resolve-processing-step-full-path')
-  , getQueryHandlerConf = require('../routes/utils/get-statistics-time-query-handler-conf')
+  , getQueryHandlerConf = require('../apps/statistics/get-query-conf')
 
   , observableResult = new ObservableValue();
 
