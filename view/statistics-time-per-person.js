@@ -18,7 +18,6 @@ var copy                 = require('es5-ext/object/copy')
 
 exports._parent        = require('./statistics-time');
 exports._customFilters = Function.prototype;
-exports._queryConf     = null;
 
 exports['time-nav']       = { class: { 'submitted-menu-item-active': true } };
 exports['per-person-nav'] = { class: { 'pills-nav-active': true } };
@@ -46,9 +45,7 @@ exports['statistics-main'] = function () {
 		stepsMap[stepShortPath]   = new ObservableValue();
 	});
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
-		db: db,
-		processingStepsMeta: processingStepsMeta,
-		queryConf: exports._queryConf
+		processingStepsMeta: processingStepsMeta
 	}), location, '/time/per-person/');
 	params = queryHandler._handlers.map(function (handler) {
 		return handler.name;

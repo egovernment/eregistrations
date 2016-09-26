@@ -28,10 +28,7 @@ module.exports = function (config) {
 	if (config.customChartsController) {
 		customChartsController = ensureCallable(config.customChartsController);
 	}
-	var queryConf = getQueryHandlerConf({
-		db: db,
-		processingStepsMeta: processingStepsMeta
-	});
+	var queryConf = getQueryHandlerConf({ processingStepsMeta: processingStepsMeta });
 
 	var queryHandler = new QueryHandler(queryConf);
 

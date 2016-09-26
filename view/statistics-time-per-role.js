@@ -28,15 +28,11 @@ var queryServer = memoize(function (query) {
 	normalizer: function (args) { return JSON.stringify(args[0]); }
 });
 
-exports._queryConf = null;
-
 exports['statistics-main'] = function () {
 	var processingStepsMeta = this.processingStepsMeta, mainData, queryHandler, params;
 	mainData = new ObservableArray();
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
-		db: db,
-		processingStepsMeta: processingStepsMeta,
-		queryConf: exports._queryConf
+		processingStepsMeta: processingStepsMeta
 	}), location, '/time/');
 	params = queryHandler._handlers.map(function (handler) {
 		return handler.name;

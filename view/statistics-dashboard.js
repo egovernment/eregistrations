@@ -306,9 +306,7 @@ exports['statistics-main'] = function () {
 	getStepLabelByShortPath = getStepLabelByShortPath(this.processingStepsMeta);
 
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
-		db: db,
-		processingStepsMeta: this.processingStepsMeta,
-		queryConf: null
+		processingStepsMeta: this.processingStepsMeta
 	}), location, '/');
 
 	queryHandler.on('query', function (query) {
