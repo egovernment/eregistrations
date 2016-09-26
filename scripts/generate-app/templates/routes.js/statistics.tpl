@@ -2,7 +2,7 @@
 
 'use strict';
 
-require('../../view/user-base');
+require('../../view/base');
 
 module.exports = require('eregistrations/routes/statistics')(
 	require('../../apps-common/processing-steps/meta')
