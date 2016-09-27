@@ -9,7 +9,39 @@
 var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
   , serializeValue                = require('dbjs/_setup/serialize/value')
   , unserializeValue              = require('dbjs/_setup/unserialize/value')
-  , capitalize                    = require('es5-ext/string/#/capitalize');
+  , capitalize                    = require('es5-ext/string/#/capitalize')
+  , Duration                      = require('duration')
+  , isDayOff                      = require('../utils/is-day-off');
+
+var getHolidaysProcessingTime = function (startStamp, endStamp) {
+	var startDate = new Date(startStamp), endDate = new Date(endStamp)
+	  , startDayEnd, endDayStart, currentDate, holidaysProcessingTime = 0;
+	if (startDate.getFullYear() === endDate.getFullYear() &&
+			startDate.getMonth() === endDate.getMonth() &&
+			startDate.getDate() === endDate.getDate()) {
+		return isDayOff(startDate) ? new Duration(startDate, endDate).milliseconds : 0;
+	}
+	if (isDayOff(startDate)) {
+		startDayEnd = new Date(startDate.getTime());
+		startDayEnd.setHours(23, 59, 59, 999);
+		holidaysProcessingTime += new Duration(startDate, startDayEnd).milliseconds;
+	}
+	if (isDayOff(endDate)) {
+		endDayStart = new Date(endDate.getTime());
+		endDayStart.setHours(0, 0, 0, 0);
+		holidaysProcessingTime += new Duration(endDayStart, endDate);
+	}
+	currentDate = new Date(startDate.getTime());
+	currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+	while (currentDate <= endDate) {
+		if (isDayOff(currentDate)) {
+			holidaysProcessingTime += 86400000;
+		}
+		currentDate.setUTCDate(currentDate.getUTCDate() + 1);
+	}
+
+	return holidaysProcessingTime;
+};
 
 module.exports = function (driver, processingStepsMeta) {
 	Object.keys(processingStepsMeta).forEach(function (stepMetaKey) {
@@ -22,7 +54,7 @@ module.exports = function (driver, processingStepsMeta) {
 		});
 		storages.forEach(function (storage) {
 			storage.on('key:' + stepPath + '/status', function (event) {
-				var status, oldStatus, timePath;
+				var status, oldStatus, timePath, processingHolidaysTimePath, processingHolidaysTime;
 				if (event.type !== 'computed' || !event.old) return;
 				status    = unserializeValue(event.data.value);
 				oldStatus = unserializeValue(event.old.value);
@@ -30,6 +62,19 @@ module.exports = function (driver, processingStepsMeta) {
 				if (status === oldStatus) return;
 				if (status === 'approved' || status === 'rejected') {
 					timePath = event.ownerId + '/' + stepPath + '/processingTime';
+					processingHolidaysTimePath = event.ownerId + '/' + stepPath + '/processingHolidaysTime';
+					processingHolidaysTime =
+						getHolidaysProcessingTime(event.old.stamp / 1000, event.data.stamp / 1000);
+					if (processingHolidaysTime) {
+						storage.get(processingHolidaysTimePath)(function (data) {
+							var currentValue = 0;
+							if (data && unserializeValue(data.value)) {
+								currentValue = unserializeValue(data.value);
+							}
+							return storage.store(processingHolidaysTimePath,
+								serializeValue(currentValue + processingHolidaysTime));
+						}).done();
+					}
 				}
 				if (oldStatus === 'sentBack') {
 					timePath = event.ownerId + '/' + stepPath + '/correctionTime';
