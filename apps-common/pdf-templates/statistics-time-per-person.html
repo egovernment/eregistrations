@@ -26,8 +26,9 @@
 		};
 		tbody = step.data.map(function (item) {
 			var tds = [];
+			item = item.processing;
 			tds.push('<td>' + item.fullName + '</td>');
-			tds.push('<td class="centered">' + item.processed + '</td>');
+			tds.push('<td class="centered">' + item.count + '</td>');
 			tds.push('<td class="centered">' + item.avgTime + '</td>');
 			tds.push('<td class="centered">' + item.minTime + '</td>');
 			tds.push('<td class="centered">' + item.maxTime + '</td>');
