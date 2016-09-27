@@ -158,7 +158,8 @@ module.exports = memoize(function (db) {
 		assignee: { type: User },
 		isAssignable: { type: db.Boolean },
 		processingTime: { type: UInteger, value: 0 },
-		correctionTime: { type: UInteger, value: 0 }
+		correctionTime: { type: UInteger, value: 0 },
+		processingHolidaysTime: { type: UInteger, value: 0 }
 	});
 
 	ProcessingStep.prototype.requirementUploads.defineProperties({
