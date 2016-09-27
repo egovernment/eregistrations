@@ -39,39 +39,39 @@ module.exports = exports = function (data, query, processingStepsMeta) {
 		steps: map(stepsData, function (stepData, stepShortPath) {
 
 			// 2.0 Filter out any inconsistent
-			stepData = filter(stepData, function (entry) { return entry.pendingDate; });
+			stepData = filter(stepData, function (bpStepData) { return bpStepData.pendingDate; });
 
 			// 2.1. Filter by service
 			if (query.service && (processingStepsMeta[stepShortPath]._services.length > 1)) {
-				stepData = filter(stepData, function (entry, businessProcessId) {
+				stepData = filter(stepData, function (bpStepData, businessProcessId) {
 					return data.businessProcesses[businessProcessId].serviceName === query.service;
 				});
 			}
 
 			// 2.2 Filter by date range
 			if (query.dateFrom) {
-				stepData = filter(stepData, function (entry) {
-					return entry.processingDate >= query.dateFrom;
+				stepData = filter(stepData, function (bpStepData) {
+					return bpStepData.processingDate >= query.dateFrom;
 				});
 			}
 			if (query.dateTo) {
-				stepData = filter(stepData, function (entry) {
-					return entry.processingDate <= query.dateTo;
+				stepData = filter(stepData, function (bpStepData) {
+					return bpStepData.processingDate <= query.dateTo;
 				});
 			}
 
 			// 2.3 Filter by pending at date
 			if (query.pendingAt) {
-				stepData = filter(stepData, function (entry) {
-					return ((entry.pendingDate <= query.pendingAt) &&
-						(!entry.processingDate || (entry.processingDate >= query.pendingAt)));
+				stepData = filter(stepData, function (bpStepData) {
+					return ((bpStepData.pendingDate <= query.pendingAt) &&
+						(!bpStepData.processingDate || (bpStepData.processingDate >= query.pendingAt)));
 				});
 			}
 
 			// 2.4 Custom filter
 			if (exports.customFilter) {
-				stepData = filter(stepData, function (data, businessProcessId) {
-					return exports.customFilter.call(query, data, businessProcessId, stepShortPath);
+				stepData = filter(stepData, function (bpStepData, businessProcessId) {
+					return exports.customFilter.call(query, bpStepData, businessProcessId, stepShortPath);
 				});
 			}
 
