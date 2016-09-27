@@ -19,7 +19,7 @@ var aFrom                         = require('es5-ext/array/from')
   , toDateInTz                    = require('../../utils/to-date-in-time-zone')
   , timeZone                      = require('../../db').timeZone;
 
-var re = new RegExp('^([0-9a-z]+)\\/processingSteps\\/map\\/([a-zA-Z0-9]+' +
+var re = new RegExp('^processingSteps\\/map\\/([a-zA-Z0-9]+' +
 	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$');
 
 module.exports = exports = memoize(function (driver, processingStepsMeta) {
@@ -86,17 +86,23 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 		// Get current records
 		return deferred(
 			storage.search(function (id, record) {
-				var bpId = id.slice('/', 1)[0], stepPath, stepKeyPath, meta, keyPath;
+				var bpId = id.slice('/', 1)[0], stepPath, stepKeyPath, meta, keyPath, multiItemValue, path;
 				if (bpId === id) return;
-				if (includes.call(id, '*')) keyPath = resolveKeyPath(id);
-				else keyPath = id.slice(bpId.length + 1);
+				if (includes.call(id, '*')) {
+					keyPath = resolveKeyPath(id);
+					path = bpId + '/' + keyPath;
+					if (path !== id) multiItemValue = id.slice(path.length + 1);
+				} else {
+					keyPath = id.slice(bpId.length + 1);
+				}
 				meta = exports.businessProcessMetaMap[keyPath];
 				if (meta) {
 					if (meta.type && (meta.type !== 'direct')) return;
-					if (!meta.validate(record)) return;
-					meta.set(initBpDataset(bpId), record);
+					if (multiItemValue && !meta.multiple) return;
+					if (!meta.validate(record, multiItemValue)) return;
+					meta.set(initBpDataset(bpId), record, multiItemValue);
 				}
-				var match = id.match(re);
+				var match = keyPath.match(re);
 				if (!match) return;
 				stepPath = match[2];
 				if (!stepPaths.has(stepPath)) return;
@@ -104,8 +110,9 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 				meta = exports.stepMetaMap[stepKeyPath];
 				if (!meta) return;
 				if (meta.type && (meta.type !== 'direct')) return;
-				if (!meta.validate(record)) return;
-				meta.set(initStepDataset(stepPath, bpId), record);
+				if (multiItemValue && !meta.multiple) return;
+				if (!meta.validate(record, multiItemValue)) return;
+				meta.set(initStepDataset(stepPath, bpId), record, multiItemValue);
 			}),
 			deferred.map(Object.keys(exports.businessProcessMetaMap), function (keyPath) {
 				var meta = exports.businessProcessMetaMap[keyPath];
