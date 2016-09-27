@@ -139,6 +139,7 @@ exports.stepMetaMap = {
 		},
 		set: function (data, record) {
 			data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
+			data.processingDateTime = new Date(record.stamp / 1000);
 		},
 		delete: function (data) { delete data.processingDate; }
 	},
@@ -162,6 +163,7 @@ exports.stepMetaMap = {
 		validate: function (record) { return (record.value === '11'); },
 		set: function (data, record) {
 			data.pendingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
+			data.pendingDateTime = new Date(record.stamp / 1000);
 		},
 		delete: function (data) { delete data.pendingDate; }
 	}
