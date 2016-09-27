@@ -38,7 +38,6 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 			serviceFullShortNameMap.set(serviceFullName, serviceName);
 			if (!storageStepsMap.has(storage)) storageStepsMap.set(storage, new Set());
 			storageStepsMap.get(storage).add(stepPath);
-
 		});
 
 		result.steps[stepShortPath] = Object.create(null);
