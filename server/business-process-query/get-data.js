@@ -142,29 +142,10 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 
 // Map of all properties to be mapped to result with corresponding instructions
 exports.stepMetaMap = {
-	status: {
-		validate: function (record) {
-			return ((record.value === '3approved') || (record.value === '3rejected'));
-		},
-		set: function (data, record) {
-			data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
-		},
-		delete: function (data) { delete data.processingDate; }
-	},
-	processor: {
-		validate: function (record) { return (record.value[0] === '7'); },
-		set: function (data, record) { data.processor = record.value.slice(1); },
-		delete: function (data) { delete data.processor; }
-	},
 	correctionTime: {
 		validate: function (record) { return (record.value[0] === '2'); },
 		set: function (data, record) { data.correctionTime = unserializeValue(record.value); },
 		delete: function (data) { delete data.correctionTime; }
-	},
-	processingTime: {
-		validate: function (record) { return (record.value[0] === '2'); },
-		set: function (data, record) { data.processingTime = unserializeValue(record.value); },
-		delete: function (data) { delete data.processingTime; }
 	},
 	isReady: {
 		type: 'computed',
@@ -173,15 +154,29 @@ exports.stepMetaMap = {
 			data.pendingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
 		},
 		delete: function (data) { delete data.pendingDate; }
+	},
+	processingTime: {
+		validate: function (record) { return (record.value[0] === '2'); },
+		set: function (data, record) { data.processingTime = unserializeValue(record.value); },
+		delete: function (data) { delete data.processingTime; }
+	},
+	processor: {
+		validate: function (record) { return (record.value[0] === '7'); },
+		set: function (data, record) { data.processor = record.value.slice(1); },
+		delete: function (data) { delete data.processor; }
+	},
+	status: {
+		validate: function (record) {
+			return ((record.value === '3approved') || (record.value === '3rejected'));
+		},
+		set: function (data, record) {
+			data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
+		},
+		delete: function (data) { delete data.processingDate; }
 	}
 };
 
 exports.businessProcessMetaMap = {
-	status: {
-		validate: function (record) { return (record.value[0] === '3'); },
-		set: function (data, record) { data.status = record.value.slice(1); },
-		delete: function (data) { delete data.status; }
-	},
 	isApproved: {
 		validate: function (record) { return (record.value === '11'); },
 		set: function (data, record) {
@@ -199,5 +194,10 @@ exports.businessProcessMetaMap = {
 			data.submissionDateTime = new Date(record.stamp / 1000);
 		},
 		delete: function (data) { delete data.submissionDateTime; }
+	},
+	status: {
+		validate: function (record) { return (record.value[0] === '3'); },
+		set: function (data, record) { data.status = record.value.slice(1); },
+		delete: function (data) { delete data.status; }
 	}
 };
