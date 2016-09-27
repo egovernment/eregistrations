@@ -7,14 +7,8 @@ var forEach      = require('es5-ext/object/for-each')
   , reduce       = require('../utils/reduce-time');
 
 /**
-	*
-	* @param data
-	* driver                  - Database driver
-	* processingStepsMeta     - map of processing steps
-	* db                      - dbjs database
-	* query (optional)        - query past from controller
-	* customFilter (optional) - function used to filter by system specific parameters
-	* @returns {Object}
+	* @param data  - `businessProcesses` result from ../get-data or direct result from ./filter
+	* @returns {Object} - Reduced map (format documented in code)
 */
 module.exports = function (data) {
 	ensureObject(data);

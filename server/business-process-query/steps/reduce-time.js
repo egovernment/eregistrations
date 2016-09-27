@@ -5,6 +5,10 @@ var forEach      = require('es5-ext/object/for-each')
   , getEmptyData = require('../utils/get-time-reduction-template')
   , reduce       = require('../utils/reduce-time');
 
+/**
+	* @param data  - Direct result from ../get-data or ./filter
+	* @returns {Object} - Reduced map (format documented in code)
+*/
 module.exports = function (data, processingStepsMeta) {
 	(ensureObject(data) && ensureObject(processingStepsMeta));
 

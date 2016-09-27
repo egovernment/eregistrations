@@ -6,14 +6,8 @@ var includes     = require('es5-ext/array/#/contains')
   , ensureObject = require('es5-ext/object/valid-object');
 
 /**
-	*
-	* @param config
-	* driver                  - Database driver
-	* processingStepsMeta     - map of processing steps
-	* db                      - dbjs database
-	* query (optional)        - query past from controller
-	* customFilter (optional) - function used to filter by system specific parameters
-	* @returns {Object}
+	* @param data  - Direct result from ../get-data
+	* @returns {Object} - Same format as input data with filtered data.steps collection
 */
 module.exports = exports = function (data, query, processingStepsMeta) {
 	(ensureObject(data) && ensureObject(query) && ensureObject(processingStepsMeta));

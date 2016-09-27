@@ -4,14 +4,8 @@ var filter       = require('es5-ext/object/filter')
   , ensureObject = require('es5-ext/object/valid-object');
 
 /**
-	*
-	* @param config
-	* driver                  - Database driver
-	* processingStepsMeta     - map of processing steps
-	* db                      - dbjs database
-	* query (optional)        - query past from controller
-	* customFilter (optional) - function used to filter by system specific parameters
-	* @returns {Object}
+	* @param data  - `businessProcesses` result from ../get-data
+	* @returns {Object} - Filter data of same format as input data
 */
 module.exports = exports = function (data, query) {
 	(ensureObject(data) && ensureObject(query));
