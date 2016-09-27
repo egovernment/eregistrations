@@ -12,12 +12,17 @@ module.exports = exports = function (data, query) {
 
 	return filter(data, function (bpData, bpId) {
 
-		// 1. Filter by service
+		// Filter by service
 		if (query.service) {
 			if (bpData.serviceName !== query.service) return false;
 		}
 
-		// 2. Filter by date range
+		// Filter by registration
+		if (query.registration) {
+			if (!bpData.registrations.has(query.registration)) return false;
+		}
+
+		// Filter by date range
 		if (query.dateFrom) {
 			if (!(bpData.approvedDate >= query.dateFrom)) return false;
 		}
@@ -25,7 +30,7 @@ module.exports = exports = function (data, query) {
 			if (!(bpData.approvedDate <= query.dateTo)) return false;
 		}
 
-		// 3. Custom filter
+		// Custom filter
 		if (exports.customFilter) {
 			if (!exports.customFilter.call(query, bpData, bpId)) return false;
 		}
