@@ -48,7 +48,7 @@ module.exports = function (data, processingStepsMeta) {
 
 		// Reduce data
 		forEach(stepData, function (bpStepData, businessProcessId) {
-			var serviceName = data.businessProcesses[businessProcessId].serviceName;
+			var serviceName = data.businessProcesses[businessProcessId].serviceName, processingTime;
 
 			result.all.startedCount++;
 			result.byService[serviceName].startedCount++;
@@ -58,11 +58,12 @@ module.exports = function (data, processingStepsMeta) {
 			// Do not take into time reduction not yet finalized steps
 			if (!bpStepData.processingDate) return;
 
-			// Older businessProcess don't have processingTime, so they're useless here
-			if (!bpStepData.processingTime) return;
-
 			// May happen only in case of data inconsistency
 			if (!bpStepData.processor) return;
+
+			processingTime =
+				bpStepData.processingDate - bpStepData.pendingDate -
+					bpStepData.processingHolidaysTime - bpStepData.correctionTime;
 
 			// Initialize container
 			if (!result.byStepAndProcessor[stepShortPath][bpStepData.processor]) {
@@ -71,13 +72,13 @@ module.exports = function (data, processingStepsMeta) {
 			result.byStepAndProcessor[stepShortPath][bpStepData.processor].startedCount++;
 
 			// Reduce processingTime
-			reduce(result.all.processing, bpStepData.processingTime);
-			reduce(result.byService[serviceName].processing, bpStepData.processingTime);
-			reduce(result.byStep[stepShortPath].processing, bpStepData.processingTime);
+			reduce(result.all.processing, processingTime);
+			reduce(result.byService[serviceName].processing, processingTime);
+			reduce(result.byStep[stepShortPath].processing, processingTime);
 			reduce(result.byStepAndService[stepShortPath][serviceName].processing,
-				bpStepData.processingTime);
+				processingTime);
 			reduce(result.byStepAndProcessor[stepShortPath][bpStepData.processor].processing,
-				bpStepData.processingTime);
+				processingTime);
 
 			// Reduce eventual correctionTime
 			if (bpStepData.correctionTime) {

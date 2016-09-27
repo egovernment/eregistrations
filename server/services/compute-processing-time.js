@@ -1,7 +1,7 @@
 /**
- * Tracks processing steps status changes and updates processingTime and correctionTime props.
- * In other words, it calculates how long given businessProcess was being processed at given step
- * and how long the was it corrected by user.
+ * Tracks processing steps status changes and updates processingHolidaysTime and
+ * correctionTime props.
+ * This is needed to calculate how long given processingStep was processed.
  */
 
 'use strict';
@@ -53,14 +53,15 @@ module.exports = function (driver, processingStepsMeta) {
 		});
 		storages.forEach(function (storage) {
 			storage.on('key:' + stepPath + '/status', function (event) {
-				var status, oldStatus, timePath, processingHolidaysTimePath, processingHolidaysTime;
+				var status, oldStatus, correctionTimePath
+				  , processingHolidaysTimePath, processingHolidaysTime;
+
 				if (event.type !== 'computed' || !event.old) return;
 				status    = unserializeValue(event.data.value);
 				oldStatus = unserializeValue(event.old.value);
 				// We ignore such cases, they may happen when direct overwrites computed
 				if (status === oldStatus) return;
 				if (status === 'approved' || status === 'rejected') {
-					timePath = event.ownerId + '/' + stepPath + '/processingTime';
 					processingHolidaysTimePath = event.ownerId + '/' + stepPath + '/processingHolidaysTime';
 					processingHolidaysTime =
 						getHolidaysProcessingTime(event.old.stamp / 1000, event.data.stamp / 1000);
@@ -74,19 +75,19 @@ module.exports = function (driver, processingStepsMeta) {
 								serializeValue(currentValue + processingHolidaysTime));
 						}).done();
 					}
+					return;
 				}
 				if (oldStatus === 'sentBack') {
-					timePath = event.ownerId + '/' + stepPath + '/correctionTime';
+					correctionTimePath = event.ownerId + '/' + stepPath + '/correctionTime';
+					storage.get(correctionTimePath)(function (data) {
+						var currentValue = 0;
+						if (data && unserializeValue(data.value)) {
+							currentValue = unserializeValue(data.value);
+						}
+						return storage.store(correctionTimePath,
+							serializeValue(currentValue + ((event.data.stamp - event.old.stamp) / 1000)));
+					}).done();
 				}
-				if (!timePath) return;
-				storage.get(timePath)(function (data) {
-					var currentValue = 0;
-					if (data && unserializeValue(data.value)) {
-						currentValue = unserializeValue(data.value);
-					}
-					return storage.store(timePath,
-						serializeValue(currentValue + ((event.data.stamp - event.old.stamp) / 1000)));
-				}).done();
 			});
 		});
 	});
