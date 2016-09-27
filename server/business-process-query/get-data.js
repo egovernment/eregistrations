@@ -207,6 +207,12 @@ exports.businessProcessMetaMap = {
 			delete data.registrations;
 		}
 	},
+	searchString: {
+		type: 'computed',
+		validate: function (record) { return record.value[0] === '3'; },
+		set: function (data, record) { data.searchString = unserializeValue(record.value); },
+		delete: function (data) { delete data.searchString; }
+	},
 	status: {
 		validate: function (record) { return (record.value[0] === '3'); },
 		set: function (data, record) { data.status = record.value.slice(1); },
