@@ -13,6 +13,7 @@ var aFrom                         = require('es5-ext/array/from')
   , memoize                       = require('memoizee')
   , unserializeValue              = require('dbjs/_setup/unserialize/value')
   , resolveKeyPath                = require('dbjs/_setup/utils/resolve-key-path')
+  , resolveEventKeys              = require('dbjs-persistence/lib/resolve-event-keys')
   , debugLoad                     = require('debug-ext')('load', 6)
   , humanize                      = require('debug-ext').humanize
   , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
@@ -193,6 +194,18 @@ exports.businessProcessMetaMap = {
 			data.submissionDateTime = new Date(record.stamp / 1000);
 		},
 		delete: function (data) { delete data.submissionDateTime; }
+	},
+	'registrations/requested': {
+		type: 'computed',
+		validate: function (record) { return record.value[0] === '['; },
+		set: function (data, record) {
+			data.registrations = new Set(resolveEventKeys(JSON.parse(record.value)).map(function (value) {
+				return value.slice(value.lastIndexOf('/') + 1);
+			}));
+		},
+		delete: function (data) {
+			delete data.registrations;
+		}
 	},
 	status: {
 		validate: function (record) { return (record.value[0] === '3'); },
