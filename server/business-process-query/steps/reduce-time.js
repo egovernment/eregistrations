@@ -31,7 +31,7 @@ module.exports = function (data, processingStepsMeta) {
 		byStepAndProcessor: {}
 	};
 
-	forEach(data, function (stepData, stepShortPath) {
+	forEach(data.steps, function (stepData, stepShortPath) {
 
 		// Initialize containers
 		result.byStep[stepShortPath] = getEmptyData();
@@ -43,46 +43,50 @@ module.exports = function (data, processingStepsMeta) {
 		});
 
 		// Reduce data
-		forEach(stepData, function (bpData) {
+		forEach(stepData, function (bpStepData, businessProcessId) {
+			if (!data.businessProcesses[businessProcessId]) {
+				console.log(businessProcessId, stepShortPath, bpStepData);
+			}
+			var serviceName = data.businessProcesses[businessProcessId].serviceName;
 
 			result.all.startedCount++;
-			result.byService[bpData.serviceName].startedCount++;
+			result.byService[serviceName].startedCount++;
 			result.byStep[stepShortPath].startedCount++;
-			result.byStepAndService[stepShortPath][bpData.serviceName].startedCount++;
+			result.byStepAndService[stepShortPath][serviceName].startedCount++;
 
 			// Do not take into time reduction not yet finalized steps
-			if (!bpData.processingDate) return;
+			if (!bpStepData.processingDate) return;
 
 			// Older businessProcess don't have processingTime, so they're useless here
-			if (!bpData.processingTime) return;
+			if (!bpStepData.processingTime) return;
 
 			// May happen only in case of data inconsistency
-			if (!bpData.processor) return;
+			if (!bpStepData.processor) return;
 
 			// Initialize container
-			if (!result.byStepAndProcessor[stepShortPath][bpData.processor]) {
-				result.byStepAndProcessor[stepShortPath][bpData.processor] = getEmptyData();
+			if (!result.byStepAndProcessor[stepShortPath][bpStepData.processor]) {
+				result.byStepAndProcessor[stepShortPath][bpStepData.processor] = getEmptyData();
 			}
-			result.byStepAndProcessor[stepShortPath][bpData.processor].startedCount++;
+			result.byStepAndProcessor[stepShortPath][bpStepData.processor].startedCount++;
 
 			// Reduce processingTime
-			reduce(result.all.processing, bpData.processingTime);
-			reduce(result.byService[bpData.serviceName].processing, bpData.processingTime);
-			reduce(result.byStep[stepShortPath].processing, bpData.processingTime);
-			reduce(result.byStepAndService[stepShortPath][bpData.serviceName].processing,
-				bpData.processingTime);
-			reduce(result.byStepAndProcessor[stepShortPath][bpData.processor].processing,
-				bpData.processingTime);
+			reduce(result.all.processing, bpStepData.processingTime);
+			reduce(result.byService[serviceName].processing, bpStepData.processingTime);
+			reduce(result.byStep[stepShortPath].processing, bpStepData.processingTime);
+			reduce(result.byStepAndService[stepShortPath][serviceName].processing,
+				bpStepData.processingTime);
+			reduce(result.byStepAndProcessor[stepShortPath][bpStepData.processor].processing,
+				bpStepData.processingTime);
 
 			// Reduce eventual correctionTime
-			if (bpData.correctionTime) {
-				reduce(result.all.correction, bpData.correctionTime);
-				reduce(result.byService[bpData.serviceName].correction, bpData.correctionTime);
-				reduce(result.byStep[stepShortPath].correction, bpData.correctionTime);
-				reduce(result.byStepAndService[stepShortPath][bpData.serviceName].correction,
-					bpData.correctionTime);
-				reduce(result.byStepAndProcessor[stepShortPath][bpData.processor].correction,
-					bpData.correctionTime);
+			if (bpStepData.correctionTime) {
+				reduce(result.all.correction, bpStepData.correctionTime);
+				reduce(result.byService[serviceName].correction, bpStepData.correctionTime);
+				reduce(result.byStep[stepShortPath].correction, bpStepData.correctionTime);
+				reduce(result.byStepAndService[stepShortPath][serviceName].correction,
+					bpStepData.correctionTime);
+				reduce(result.byStepAndProcessor[stepShortPath][bpStepData.processor].correction,
+					bpStepData.correctionTime);
 			}
 		});
 	});

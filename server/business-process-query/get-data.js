@@ -50,8 +50,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 			var stepShortPath = stepShortPathMap.get(stepPath);
 			if (!result.steps[stepShortPath][businessProcessId]) {
 				result.steps[stepShortPath][businessProcessId] = {
-					stepFullPath: 'processingSteps/map/' + stepPath,
-					serviceName: serviceName
+					stepFullPath: 'processingSteps/map/' + stepPath
 				};
 			}
 			return result.steps[stepShortPath][businessProcessId];

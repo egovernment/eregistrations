@@ -17,10 +17,11 @@ var includes     = require('es5-ext/array/#/contains')
 */
 module.exports = exports = function (data, query, processingStepsMeta) {
 	(ensureObject(data) && ensureObject(query) && ensureObject(processingStepsMeta));
+	var stepsData = data.steps;
 
 	// 1. Exclude not applicable steps
 	if (query.step || query.service) {
-		data = filter(data, function (stepData, stepShortPath) {
+		stepsData = filter(stepsData, function (stepData, stepShortPath) {
 			// 1.1. Exclude by step
 			if (query.step && query.step !== stepShortPath) return;
 
@@ -33,42 +34,48 @@ module.exports = exports = function (data, query, processingStepsMeta) {
 	}
 
 	// 2. Filter items
-	return map(data, function (stepData, stepShortPath) {
+	return {
+		businessProcesses: data.businessProcesses,
+		steps: map(stepsData, function (stepData, stepShortPath) {
 
-		// 2.1. Filter by service
-		if (query.service && (processingStepsMeta[stepShortPath]._services.length > 1)) {
-			stepData = filter(stepData, function (entry) {
-				return entry.serviceName === query.service;
-			});
-		}
+			// 2.0 Filter out any inconsistent
+			stepData = filter(stepData, function (entry) { return entry.pendingDate; });
 
-		// 2.2 Filter by date range
-		if (query.dateFrom) {
-			stepData = filter(stepData, function (entry) {
-				return entry.processingDate >= query.dateFrom;
-			});
-		}
-		if (query.dateTo) {
-			stepData = filter(stepData, function (entry) {
-				return entry.processingDate <= query.dateTo;
-			});
-		}
+			// 2.1. Filter by service
+			if (query.service && (processingStepsMeta[stepShortPath]._services.length > 1)) {
+				stepData = filter(stepData, function (entry, businessProcessId) {
+					return data.businessProcesses[businessProcessId].serviceName === query.service;
+				});
+			}
 
-		// 2.3 Filter by pending at date
-		if (query.pendingAt) {
-			stepData = filter(stepData, function (entry) {
-				return ((entry.pendingDate <= query.pendingAt) &&
-					(!entry.processingDate || (entry.processingDate >= query.pendingAt)));
-			});
-		}
+			// 2.2 Filter by date range
+			if (query.dateFrom) {
+				stepData = filter(stepData, function (entry) {
+					return entry.processingDate >= query.dateFrom;
+				});
+			}
+			if (query.dateTo) {
+				stepData = filter(stepData, function (entry) {
+					return entry.processingDate <= query.dateTo;
+				});
+			}
 
-		// 2.4 Custom filter
-		if (exports.customFilter) {
-			stepData = filter(stepData, function (data, businessProcessId) {
-				return exports.customFilter.call(query, data, businessProcessId, stepShortPath);
-			});
-		}
+			// 2.3 Filter by pending at date
+			if (query.pendingAt) {
+				stepData = filter(stepData, function (entry) {
+					return ((entry.pendingDate <= query.pendingAt) &&
+						(!entry.processingDate || (entry.processingDate >= query.pendingAt)));
+				});
+			}
 
-		return stepData;
-	});
+			// 2.4 Custom filter
+			if (exports.customFilter) {
+				stepData = filter(stepData, function (data, businessProcessId) {
+					return exports.customFilter.call(query, data, businessProcessId, stepShortPath);
+				});
+			}
+
+			return stepData;
+		})
+	};
 };
