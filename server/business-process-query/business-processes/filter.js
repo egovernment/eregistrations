@@ -1,6 +1,7 @@
 'use strict';
 
-var filter       = require('es5-ext/object/filter')
+var includes     = require('es5-ext/string/#/includes')
+  , filter       = require('es5-ext/object/filter')
   , ensureObject = require('es5-ext/object/valid-object');
 
 /**
@@ -8,9 +9,12 @@ var filter       = require('es5-ext/object/filter')
 	* @returns {Object} - Filter data of same format as input data
 */
 module.exports = exports = function (data, query) {
+	var searchTokens;
 	(ensureObject(data) && ensureObject(query));
 
+	if (query.search) searchTokens = query.search.split(' ');
 	return filter(data, function (bpData, bpId) {
+		var filterResult;
 
 		// Filter by service
 		if (query.service) {
@@ -28,6 +32,14 @@ module.exports = exports = function (data, query) {
 		}
 		if (query.dateTo) {
 			if (!(bpData.approvedDate <= query.dateTo)) return false;
+		}
+
+		// Filter by search string
+		if (searchTokens) {
+			filterResult = searchTokens.every(function (token) {
+				return includes.call(bpData.searchString, token);
+			});
+			if (!filterResult) return false;
 		}
 
 		// Custom filter
