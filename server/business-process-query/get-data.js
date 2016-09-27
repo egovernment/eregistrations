@@ -11,6 +11,8 @@ var aFrom                         = require('es5-ext/array/from')
   , deferred                      = require('deferred')
   , memoize                       = require('memoizee')
   , unserializeValue              = require('dbjs/_setup/unserialize/value')
+  , debugLoad                     = require('debug-ext')('load', 6)
+  , humanize                      = require('debug-ext').humanize
   , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
   , toDateInTz                    = require('../../utils/to-date-in-time-zone')
   , timeZone                      = require('../../db').timeZone;
@@ -20,7 +22,8 @@ var re = new RegExp('^([0-9a-z]+)\\/processingSteps\\/map\\/([a-zA-Z0-9]+' +
 
 module.exports = exports = memoize(function (driver, processingStepsMeta) {
 	var storageStepsMap = new Map(), stepShortPathMap = new Map()
-	  , serviceFullShortNameMap = new Map();
+	  , serviceFullShortNameMap = new Map()
+	  , startTime = Date.now();
 
 	var result = { steps: Object.create(null), businessProcesses: Object.create(null) };
 
@@ -123,7 +126,9 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 				});
 			})
 		);
-	})(result);
+	})(result).aside(function () {
+		debugLoad('business process db data (in %s)', humanize(Date.now() - startTime));
+	});
 
 }, { length: 0 });
 
