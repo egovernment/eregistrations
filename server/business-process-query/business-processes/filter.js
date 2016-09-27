@@ -17,7 +17,7 @@ module.exports = exports = function (data, query) {
 			if (bpData.serviceName !== query.service) return false;
 		}
 
-		// 2.2 Filter by date range
+		// 2. Filter by date range
 		if (query.dateFrom) {
 			if (!(bpData.approvedDate >= query.dateFrom)) return false;
 		}
@@ -25,9 +25,11 @@ module.exports = exports = function (data, query) {
 			if (!(bpData.approvedDate <= query.dateTo)) return false;
 		}
 
+		// 3. Custom filter
 		if (exports.customFilter) {
 			if (!exports.customFilter.call(query, bpData, bpId)) return false;
 		}
+
 		return true;
 	});
 };
