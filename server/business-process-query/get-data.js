@@ -6,11 +6,13 @@
 var aFrom                         = require('es5-ext/array/from')
   , forEach                       = require('es5-ext/object/for-each')
   , capitalize                    = require('es5-ext/string/#/capitalize')
+  , includes                      = require('es5-ext/string/#/contains')
   , Set                           = require('es6-set')
   , Map                           = require('es6-map')
   , deferred                      = require('deferred')
   , memoize                       = require('memoizee')
   , unserializeValue              = require('dbjs/_setup/unserialize/value')
+  , resolveKeyPath                = require('dbjs/_setup/utils/resolve-key-path')
   , debugLoad                     = require('debug-ext')('load', 6)
   , humanize                      = require('debug-ext').humanize
   , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
@@ -86,8 +88,9 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 			storage.search(function (id, record) {
 				var index = id.indexOf('/'), stepPath, stepKeyPath, meta;
 				if (index === -1) return;
-				var businessProcessId = id.slice(0, index)
-				  , keyPath = id.slice(index + 1);
+				var businessProcessId = id.slice(0, index), keyPath;
+				if (includes.call(id, '*')) keyPath = resolveKeyPath(id);
+				else keyPath = id.slice(index + 1);
 				meta = exports.businessProcessMetaMap[keyPath];
 				if (meta) {
 					if (meta.type && (meta.type !== 'direct')) return;
