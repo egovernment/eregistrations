@@ -62,8 +62,8 @@ module.exports = function (data, processingStepsMeta) {
 			if (!bpStepData.processor) return;
 
 			processingTime =
-				bpStepData.processingDate - bpStepData.pendingDate -
-					bpStepData.processingHolidaysTime - bpStepData.correctionTime;
+				(bpStepData.processingDate - bpStepData.pendingDate -
+					(bpStepData.processingHolidaysTime || 0) - (bpStepData.correctionTime || 0));
 
 			// Initialize container
 			if (!result.byStepAndProcessor[stepShortPath][bpStepData.processor]) {
