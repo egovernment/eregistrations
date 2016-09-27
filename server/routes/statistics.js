@@ -62,6 +62,9 @@ module.exports = function (config) {
 		logo: config.logo
 	};
 
+	// Initialize data map
+	getData(driver, processingStepsMeta).done();
+
 	return assign({
 		'get-time-per-role': function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole);
