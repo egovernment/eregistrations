@@ -47,19 +47,21 @@ module.exports = exports = function (data, query, processingStepsMeta) {
 					if (data.businessProcesses[bpId].serviceName !== serviceName) return false;
 				}
 
-				// 2.2 Filter by date range
+				// 2.2 Filter by processsed in given date range
 				if (query.dateFrom) {
-					if (!(bpStepData.processingDate >= query.dateFrom)) return false;
+					if (!bpStepData.processingDate) return false;
+					if (bpStepData.processingDate < query.dateFrom) return false;
 				}
 				if (query.dateTo) {
-					if (!(bpStepData.processingDate <= query.dateTo)) return false;
+					if (!bpStepData.processingDate) return false;
+					if (bpStepData.processingDate > query.dateTo) return false;
 				}
 
 				// 2.3 Filter by pending at date
 				if (query.pendingAt) {
-					if (!(bpStepData.pendingDate <= query.pendingAt)) return false;
+					if (bpStepData.pendingDate > query.pendingAt) return false;
 					if (bpStepData.processingDate) {
-						if (!(bpStepData.processingDate >= query.pendingAt)) return false;
+						if (bpStepData.processingDate < query.pendingAt) return false;
 					}
 				}
 
