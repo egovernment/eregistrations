@@ -10,30 +10,29 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , serializeValue                = require('dbjs/_setup/serialize/value')
   , unserializeValue              = require('dbjs/_setup/unserialize/value')
   , capitalize                    = require('es5-ext/string/#/capitalize')
+  , db                            = require('../../db')
   , Duration                      = require('duration')
+  , toDateTimeInTz                = require('../../utils/to-date-time-in-time-zone')
   , isDayOff                      = require('../utils/is-day-off');
 
 var getHolidaysProcessingTime = function (startStamp, endStamp) {
-	var startDate = new Date(startStamp), endDate = new Date(endStamp)
-	  , startDayEnd, endDayStart, currentDate, holidaysProcessingTime = 0;
-	if (startDate.getFullYear() === endDate.getFullYear() &&
-			startDate.getMonth() === endDate.getMonth() &&
-			startDate.getDate() === endDate.getDate()) {
-		return isDayOff(startDate) ? new Duration(startDate, endDate).milliseconds : 0;
+	var startDateTime = toDateTimeInTz(new Date(startStamp), db.timeZone)
+	  , endDateTime   = toDateTimeInTz(new Date(endStamp), db.timeZone)
+	  , startDayEnd, currentDate, holidaysProcessingTime = 0, startDate, endDate;
+
+	startDate = new db.Date(startDateTime.getTime());
+	endDate   = new db.Date(endDateTime.getTime());
+	if (startDate.getTime() === endDate.getTime()) {
+		return 0;
 	}
 	if (isDayOff(startDate)) {
-		startDayEnd = new Date(startDate.getTime());
+		startDayEnd = new db.Date(startDateTime.getTime());
 		startDayEnd.setHours(23, 59, 59, 999);
-		holidaysProcessingTime += new Duration(startDate, startDayEnd).milliseconds;
+		holidaysProcessingTime += new Duration(startDateTime, startDayEnd).milliseconds;
 	}
-	if (isDayOff(endDate)) {
-		endDayStart = new Date(endDate.getTime());
-		endDayStart.setHours(0, 0, 0, 0);
-		holidaysProcessingTime += new Duration(endDayStart, endDate);
-	}
-	currentDate = new Date(startDate.getTime());
+	currentDate = new db.Date(startDate.getTime());
 	currentDate.setUTCDate(currentDate.getUTCDate() + 1);
-	while (currentDate <= endDate) {
+	while (currentDate < endDate) {
 		if (isDayOff(currentDate)) {
 			holidaysProcessingTime += 86400000;
 		}
