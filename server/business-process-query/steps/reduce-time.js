@@ -48,9 +48,6 @@ module.exports = function (data, processingStepsMeta) {
 
 		// Reduce data
 		forEach(stepData, function (bpStepData, businessProcessId) {
-			if (!data.businessProcesses[businessProcessId]) {
-				console.log(businessProcessId, stepShortPath, bpStepData);
-			}
 			var serviceName = data.businessProcesses[businessProcessId].serviceName;
 
 			result.all.startedCount++;
