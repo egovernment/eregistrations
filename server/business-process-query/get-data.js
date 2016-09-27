@@ -86,16 +86,15 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 		// Get current records
 		return deferred(
 			storage.search(function (id, record) {
-				var index = id.indexOf('/'), stepPath, stepKeyPath, meta;
-				if (index === -1) return;
-				var businessProcessId = id.slice(0, index), keyPath;
+				var bpId = id.slice('/', 1)[0], stepPath, stepKeyPath, meta, keyPath;
+				if (bpId === id) return;
 				if (includes.call(id, '*')) keyPath = resolveKeyPath(id);
-				else keyPath = id.slice(index + 1);
+				else keyPath = id.slice(bpId.length + 1);
 				meta = exports.businessProcessMetaMap[keyPath];
 				if (meta) {
 					if (meta.type && (meta.type !== 'direct')) return;
 					if (!meta.validate(record)) return;
-					meta.set(initBpDataset(businessProcessId), record);
+					meta.set(initBpDataset(bpId), record);
 				}
 				var match = id.match(re);
 				if (!match) return;
@@ -106,7 +105,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 				if (!meta) return;
 				if (meta.type && (meta.type !== 'direct')) return;
 				if (!meta.validate(record)) return;
-				meta.set(initStepDataset(stepPath, businessProcessId), record);
+				meta.set(initStepDataset(stepPath, bpId), record);
 			}),
 			deferred.map(Object.keys(exports.businessProcessMetaMap), function (keyPath) {
 				var meta = exports.businessProcessMetaMap[keyPath];
