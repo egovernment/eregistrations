@@ -16,23 +16,24 @@ var filter       = require('es5-ext/object/filter')
 module.exports = exports = function (data, query) {
 	(ensureObject(data) && ensureObject(query));
 
-	// 1. Filter by service
-	if (query.service) {
-		data = filter(data, function (entry) { return entry.serviceName === query.service; });
-	}
+	return filter(data, function (bpData, bpId) {
 
-	// 2.2 Filter by date range
-	if (query.dateFrom) {
-		data = filter(data, function (entry) {
-			return entry.approvedDate >= query.dateFrom;
-		});
-	}
-	if (query.dateTo) {
-		data = filter(data, function (entry) {
-			return entry.approvedDate <= query.dateTo;
-		});
-	}
+		// 1. Filter by service
+		if (query.service) {
+			if (bpData.serviceName !== query.service) return false;
+		}
 
-	if (exports.customFilter) data = filter(data, exports.customFilter, query);
-	return data;
+		// 2.2 Filter by date range
+		if (query.dateFrom) {
+			if (!(bpData.approvedDate >= query.dateFrom)) return false;
+		}
+		if (query.dateTo) {
+			if (!(bpData.approvedDate <= query.dateTo)) return false;
+		}
+
+		if (exports.customFilter) {
+			if (!exports.customFilter.call(query, bpData, bpId)) return false;
+		}
+		return true;
+	});
 };
