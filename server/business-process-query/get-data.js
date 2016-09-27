@@ -203,9 +203,7 @@ exports.businessProcessMetaMap = {
 				return value.slice(value.lastIndexOf('/') + 1);
 			}));
 		},
-		delete: function (data) {
-			delete data.registrations;
-		}
+		delete: function (data) { delete data.registrations; }
 	},
 	searchString: {
 		type: 'computed',
