@@ -2,11 +2,10 @@
 
 var location             = require('mano/lib/client/location')
   , _                    = require('mano').i18n.bind('View: Statistics')
-  , db                   = require('mano').db
   , ObservableValue      = require('observable-value')
   , setupQueryHandler    = require('../../utils/setup-client-query-handler')
   , getData              = require('mano/lib/client/xhr-driver').get
-  , getQueryHandlerConf  = require('../../routes/utils/get-statistics-time-query-handler-conf')
+  , getQueryHandlerConf  = require('../../apps/statistics/get-query-conf')
   , getDurationDaysHours = require('../utils/get-duration-days-hours')
   , getDynamicUrl        = require('../utils/get-dynamic-url')
   , memoize              = require('memoizee');
@@ -26,9 +25,7 @@ var mapDurationValue = function (value) {
 
 module.exports = function (context) {
 	var data = {}, queryHandler, formAction;
-	queryHandler = setupQueryHandler(getQueryHandlerConf({
-		db: db
-	}), location, '/');
+	queryHandler = setupQueryHandler(getQueryHandlerConf(), location, '/');
 
 	renderedProps.forEach(function (prop) {
 		data[prop] = new ObservableValue();
