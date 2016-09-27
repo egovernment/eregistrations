@@ -97,7 +97,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 				stepPath = match[2];
 				if (!stepPaths.has(stepPath)) return;
 				stepKeyPath = match[3];
-				meta = exports.stepsMetaMap[stepKeyPath];
+				meta = exports.stepMetaMap[stepKeyPath];
 				if (!meta) return;
 				if (meta.type && (meta.type !== 'direct')) return;
 				if (!meta.validate(record)) return;
@@ -112,8 +112,8 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 				});
 			}),
 			deferred.map(aFrom(stepPaths), function (stepPath) {
-				return deferred.map(Object.keys(exports.stepsMetaMap), function (stepPropKeyPath) {
-					var meta = exports.stepsMetaMap[stepPropKeyPath];
+				return deferred.map(Object.keys(exports.stepMetaMap), function (stepPropKeyPath) {
+					var meta = exports.stepMetaMap[stepPropKeyPath];
 					if (meta.type !== 'computed') return;
 					var keyPath = 'processingSteps/map/' + stepPath + '/' + stepPropKeyPath;
 					return storage.searchComputed({ keyPath: keyPath }, function (id, record) {
@@ -128,7 +128,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 }, { length: 0 });
 
 // Map of all properties to be mapped to result with corresponding instructions
-exports.stepsMetaMap = {
+exports.stepMetaMap = {
 	status: {
 		validate: function (record) {
 			return ((record.value === '3approved') || (record.value === '3rejected'));
