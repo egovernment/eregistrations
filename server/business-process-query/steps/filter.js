@@ -71,7 +71,8 @@ module.exports = exports = function (data, query, processingStepsMeta) {
 			// 2.4 Custom filter
 			if (exports.customFilter) {
 				stepData = filter(stepData, function (bpStepData, businessProcessId) {
-					return exports.customFilter.call(query, bpStepData, businessProcessId, stepShortPath);
+					return exports.customFilter.call(query, bpStepData, businessProcessId,
+						stepShortPath, data.businessProcesses[businessProcessId]);
 				});
 			}
 
