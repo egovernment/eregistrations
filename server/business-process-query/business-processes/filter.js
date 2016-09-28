@@ -16,6 +16,9 @@ module.exports = exports = function (data, query) {
 	return filter(data, function (bpData, bpId) {
 		var filterResult;
 
+		// Unconditionally filter demo files
+		if (bpData.isDemo) return false;
+
 		// Filter by service
 		if (query.service) {
 			if (bpData.serviceName !== query.service) return false;
