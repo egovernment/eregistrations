@@ -2,29 +2,26 @@
 
 var ensureDate   = require('es5-ext/date/valid-date')
   , ensureString = require('es5-ext/object/validate-stringifiable-value')
-  , memoize      = require('memoizee/plain')
-  , validDb      = require('dbjs/valid-dbjs');
+  , db           = require('../db');
 
 // Convert any date to db.Date in specified time zone.
-module.exports = memoize(function (db) {
-	validDb(db);
+module.exports = function (date, timeZone) {
+	var result;
 
-	return function (date, timeZone) {
-		ensureDate(date);
-		timeZone = ensureString(timeZone);
-		try {
-			var res = new Date(date).toLocaleDateString('en', {
-				timeZone: timeZone,
-				year: 'numeric',
-				month: '2-digit',
-				day: '2-digit'
-			}).match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+	ensureDate(date);
+	timeZone = ensureString(timeZone);
+	if (!db.Date) throw new Error("Missing `Date` type defined on database");
 
-			if (res) {
-				return new db.Date(res[3], res[1] - 1, res[2]);
-			}
-		} catch (ignore) {}
+	try {
+		result = date.toLocaleDateString('en', {
+			timeZone: timeZone,
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit'
+		}).match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+	} catch (ignore) {}
 
-		return new db.Date(date);
-	};
-}, { normalizer: require('memoizee/normalizers/get-1')() });
+	if (result) return new db.Date(result[3], result[1] - 1, result[2]);
+
+	return new db.Date(date.getFullYear(), date.getMonth(), date.getDate());
+};

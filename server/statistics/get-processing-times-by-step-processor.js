@@ -63,12 +63,18 @@ var getProcessorAndProcessingTime = memoize(function (data) {
  * @returns {Object}
  */
 module.exports = function (data) {
-	var result = { byBusinessProcess: {
-		totalProcessing: null,
-		totalCorrection: null,
-		total: null,
-		data: {}
-	}, byProcessor: {}, stepTotal: {} },
+	var result = {
+		byBusinessProcess: {
+			totalProcessing: null,
+			totalCorrection: null,
+			total: null,
+			data: {}
+		},
+		byProcessor: {},
+		stepTotal: {},
+		byStepAndService: {},
+		byService: {}
+	},
 		driver, processingStepsMeta, db, query, customFilter, options;
 	result.byBusinessProcess.totalProcessing = getEmptyData();
 	result.byBusinessProcess.totalCorrection = getEmptyData();
@@ -164,6 +170,28 @@ module.exports = function (data) {
 							result.stepTotal[stepShortPath].avgTime =
 								result.stepTotal[stepShortPath].totalTime /
 								result.stepTotal[stepShortPath].processed;
+
+							// Per service total
+							if (!result.byService[entry.serviceName]) {
+								result.byService[entry.serviceName] = getEmptyData();
+							}
+
+							var byService = result.byService[entry.serviceName];
+							byService.processed++;
+							byService.totalTime += entry.processingTime;
+							byService.avgTime = byService.totalTime / byService.processed;
+
+							// Per step and service total
+							if (!result.byStepAndService[stepShortPath]) {
+								result.byStepAndService[stepShortPath] = {};
+							}
+							if (!result.byStepAndService[stepShortPath][entry.serviceName]) {
+								result.byStepAndService[stepShortPath][entry.serviceName] = getEmptyData();
+							}
+							var byStepAndService = result.byStepAndService[stepShortPath][entry.serviceName];
+							byStepAndService.processed++;
+							byStepAndService.totalTime += entry.processingTime;
+							byStepAndService.avgTime = byStepAndService.totalTime / byStepAndService.processed;
 
 							// We collect totals by bps as well
 							return businessProcessesApprovedMap(function (approvedMap) {

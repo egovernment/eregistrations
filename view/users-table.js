@@ -49,9 +49,9 @@ exports._actionsColumn = {
 		return td({ class: 'actions' },
 			a({ href: isSelfUser ? '/profile/' : url('user', user.__id__) },
 				span({ class: 'fa fa-edit' }, _("Go to"))),
-			!isSelfUser ? postButton({ buttonClass: 'actions-delete',
+			_if(and(!isSelfUser, user._canBeDestroyed), postButton({ buttonClass: 'actions-delete',
 				action: url('user', user.__id__, 'delete'),
-				confirm: _("Are you sure?"), value: span({ class: 'fa fa-trash-o' }) }) : null);
+				confirm: _("Are you sure?"), value: span({ class: 'fa fa-trash-o' }) })));
 	}
 };
 

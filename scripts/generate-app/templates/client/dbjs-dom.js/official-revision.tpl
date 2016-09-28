@@ -15,7 +15,7 @@ require('dbjs-dom/input/date-time/date')(db);
 require('dbjs-dom/input/string/string-line/password')(db);
 require('dbjs-dom/input/object/file')(db);
 require('dbjs-dom/input/utils/fieldset')(db);
-require('eregistrations/model/lib/data-snapshot/resolved')(db);
+require('eregistrations/view/dbjs/data-snapshot-resolved')(db);
 require('eregistrations/view/dbjs/submission-file');
 
 db.StringLine.DOMInput.prototype.dbAttributes.inputMask = 'data-mask';

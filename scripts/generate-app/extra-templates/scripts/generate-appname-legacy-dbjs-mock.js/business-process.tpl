@@ -3,7 +3,7 @@
 'use strict';
 
 // Ensure mano.env
-require('../env');
+require('../server/env');
 
 var resolve          = require('path').resolve
   , debug            = require('debug-ext')('setup')
