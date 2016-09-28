@@ -87,6 +87,14 @@ module.exports = function (config) {
 				return timePerPersonPrint(data, rendererConfig);
 			});
 		}),
+		'get-files-completed': function (query) {
+			return queryHandler.resolve(query)(function (query) {
+				return getData(driver, processingStepsMeta)(function (data) {
+					return reduceBusinessProcesses(filterBusinessProcesses(data.businessProcesses,
+						query)).byDateAndService;
+				});
+			});
+		},
 		'get-dashboard-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
 				return getData(driver, processingStepsMeta)(function (data) {
