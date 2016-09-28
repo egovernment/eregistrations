@@ -88,6 +88,15 @@
 	color:var(--normal-text);
 }
 
+.submitted-user-data-table button,
+.submitted-user-data-table button[type="submit"] {
+	color: inherit;
+	background-color: transparent;
+	font-size: 15px;
+	padding: 0;
+	border-radius: 0;
+}
+
 .submitted-user-data-table-basic > a {
 		font-weight: bold;
 }
