@@ -13,7 +13,8 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , db                            = require('../../db')
   , Duration                      = require('duration')
   , toDateTimeInTz                = require('../../utils/to-date-time-in-time-zone')
-  , isDayOff                      = require('../utils/is-day-off');
+  , isDayOff                      = require('../utils/is-day-off')
+  , Set                           = require('es6-set');
 
 var getHolidaysProcessingTime = function (startStamp, endStamp) {
 	var startDateTime = toDateTimeInTz(new Date(startStamp), db.timeZone)
@@ -43,7 +44,53 @@ var getHolidaysProcessingTime = function (startStamp, endStamp) {
 	return holidaysProcessingTime;
 };
 
+var storeTime = function (storage, path, time) {
+	return storage.get(path)(function (data) {
+		var currentValue = 0;
+		if (data && (data.value[0] === '2')) {
+			currentValue = unserializeValue(data.value);
+		}
+		return storage.store(path, serializeValue(currentValue + time));
+	});
+};
+
+var getOnIsClosed = function (storage) {
+	return function (event) {
+		var nuValue, oldValue, processingHolidaysTimePath, processingHolidaysTime;
+
+		if (event.type !== 'computed' || !event.old) return;
+		nuValue  = unserializeValue(event.data.value);
+		oldValue = unserializeValue(event.old.value);
+		// We ignore such cases, they may happen when direct overwrites computed
+		if (nuValue === oldValue) return;
+		processingHolidaysTimePath = event.ownerId + '/processingHolidaysTime';
+		processingHolidaysTime =
+			getHolidaysProcessingTime(event.old.stamp / 1000, event.data.stamp / 1000);
+		if (processingHolidaysTime) {
+			storeTime(storage, processingHolidaysTimePath, processingHolidaysTime).done();
+		}
+	};
+};
+
+var getOnIsSentBack = function (storage) {
+	return function (event) {
+		var nuValue, oldValue, correctionTimePath, correctionTime;
+
+		if (event.type !== 'computed' || !event.old) return;
+		nuValue  = unserializeValue(event.data.value);
+		oldValue = unserializeValue(event.old.value);
+		// We ignore such cases, they may happen when direct overwrites computed
+		if (nuValue === oldValue) return;
+		correctionTimePath = event.ownerId + '/correctionTime';
+		correctionTime     = (event.data.stamp - event.old.stamp) / 1000;
+		if (correctionTime) {
+			storeTime(storage, correctionTimePath, correctionTime).done();
+		}
+	};
+};
+
 module.exports = function (driver, processingStepsMeta) {
+	var allStorages = new Set();
 	Object.keys(processingStepsMeta).forEach(function (stepMetaKey) {
 		var stepPath, storages;
 		stepPath = 'processingSteps/map/' + resolveProcessingStepFullPath(stepMetaKey);
@@ -53,6 +100,7 @@ module.exports = function (driver, processingStepsMeta) {
 			return driver.getStorage('businessProcess' + capitalize.call(storageName));
 		});
 		storages.forEach(function (storage) {
+			allStorages.add(storage);
 			storage.on('key:' + stepPath + '/status', function (event) {
 				var status, oldStatus, correctionTimePath
 				  , processingHolidaysTimePath, processingHolidaysTime;
@@ -67,29 +115,22 @@ module.exports = function (driver, processingStepsMeta) {
 					processingHolidaysTime =
 						getHolidaysProcessingTime(event.old.stamp / 1000, event.data.stamp / 1000);
 					if (processingHolidaysTime) {
-						storage.get(processingHolidaysTimePath)(function (data) {
-							var currentValue = 0;
-							if (data && (data.value[0] === '2')) {
-								currentValue = unserializeValue(data.value);
-							}
-							return storage.store(processingHolidaysTimePath,
-								serializeValue(currentValue + processingHolidaysTime));
-						}).done();
+						storeTime(storage, processingHolidaysTimePath, processingHolidaysTime).done();
 					}
 					return;
 				}
 				if (oldStatus === 'sentBack') {
 					correctionTimePath = event.ownerId + '/' + stepPath + '/correctionTime';
-					storage.get(correctionTimePath)(function (data) {
-						var currentValue = 0;
-						if (data && (data.value[0] === '2')) {
-							currentValue = unserializeValue(data.value);
-						}
-						return storage.store(correctionTimePath,
-							serializeValue(currentValue + ((event.data.stamp - event.old.stamp) / 1000)));
-					}).done();
+					storeTime(storage, correctionTimePath,
+							(event.data.stamp - event.old.stamp) / 1000).done();
 				}
 			});
 		});
+	});
+	allStorages.forEach(function (storage) {
+		var onIsClosed = getOnIsClosed(storage), onIsSentBack = getOnIsSentBack(storage);
+		storage.on('key:isApproved', onIsClosed);
+		storage.on('key:isRejected', onIsClosed);
+		storage.on('key:isSentBack', onIsSentBack);
 	});
 };
