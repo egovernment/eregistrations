@@ -3,12 +3,82 @@
 var capitalize = require('es5-ext/string/#/capitalize')
   , toArray    = require('es5-ext/object/to-array')
   , _          = require('mano').i18n
-  , db         = require('../db');
+  , db         = require('../db')
+
+  , getData              = require('mano/lib/client/xhr-driver').get
+  , location             = require('mano/lib/client/location')
+  , memoize              = require('memoizee')
+  , setupQueryHandler    = require('../utils/setup-client-query-handler')
+  , getQueryHandlerConf  = require('../apps/statistics/get-query-conf')
+  , ObservableValue      = require('observable-value');
 
 exports._parent = require('./statistics-files');
 
 exports['files-nav']           = { class: { 'submitted-menu-item-active': true } };
 exports['completed-files-nav'] = { class: { 'pills-nav-active': true } };
+
+var queryServer = memoize(function (query) {
+	return getData('/get-files-completed/', query);
+}, {
+	normalizer: function (args) { return JSON.stringify(args[0]); }
+});
+
+var getTimeBreakdownTable = function () {
+	var bpData       = new ObservableValue()
+	  , queryHandler = setupQueryHandler(getQueryHandlerConf({
+		processingStepsMeta: this.processingStepsMeta
+	}), location, '/files/');
+
+	queryHandler.on('query', function (query) {
+		if (query.dateFrom) {
+			query.dateFrom = query.dateFrom.toJSON();
+		}
+		if (query.dateTo) {
+			query.dateTo = query.dateTo.toJSON();
+		}
+		queryServer(query).done(function (result) {
+			bpData.value = result;
+		});
+	});
+
+	return [
+		section(
+			{ class: 'section-primary users-table-filter-bar' },
+			form(
+				{ action: '/files', autoSubmit: true },
+				div(
+					{ class: 'users-table-filter-bar-status' },
+					label({ for: 'date-from-input' }, _("Date from"), ":"),
+					input({ id: 'date-from-input', type: 'date',
+						name: 'dateFrom', value: location.query.get('dateFrom') })
+				),
+				div(
+					{ class: 'users-table-filter-bar-status' },
+					label({ for: 'date-to-input' }, _("Date to"), ":"),
+					input({ id: 'date-to-input', type: 'date',
+						name: 'dateTo', value: location.query.get('dateTo') })
+				)
+			)
+		),
+		table(
+			{ class: 'statistics-table statistics-table-registrations' },
+			thead(tr(
+				th(),
+				th(),
+				th({ class: 'statistics-table-number' }, _("Service")),
+				th({ class: "statistics-table-header-waiting" }, _("Period")),
+				th({ class: "statistics-table-header-pending" }, _("Today")),
+				th({ class: "statistics-table-header-sentback" }, _("This week")),
+				th({ class: "statistics-table-header-sentback" }, _("This month")),
+				th({ class: "statistics-table-header-sentback" }, _("This year")),
+				th({ class: "statistics-table-header-success" }, _("Since launch"))
+			)),
+			tbody(
+				// …
+			)
+		)
+	];
+};
 
 exports['statistics-main'] = function () {
 	var certs = {};
@@ -44,4 +114,6 @@ exports['statistics-main'] = function () {
 				});
 			})
 		));
+
+	insert(getTimeBreakdownTable.call(this));
 };
