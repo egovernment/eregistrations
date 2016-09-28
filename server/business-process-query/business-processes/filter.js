@@ -19,6 +19,17 @@ module.exports = exports = function (data, query) {
 		// Unconditionally filter demo files
 		if (bpData.isDemo) return false;
 
+		// Internal flow status filter
+		// (it's simpler version of status filter, which we use interally to which
+		// focus only on submitted or approved files)
+		if (query.flowStatus) {
+			if (query.flowStatus === 'submitted') {
+				if (!bpData.submissionDateTime) return false;
+			} else if (query.flowStatus === 'approved') {
+				if (!bpData.approvedDate) return false;
+			}
+		}
+
 		// Filter by service
 		if (query.service) {
 			if (bpData.serviceName !== query.service) return false;
