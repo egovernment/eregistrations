@@ -188,6 +188,11 @@ exports.businessProcessMetaMap = {
 			delete data.approvedDate;
 		}
 	},
+	isDemo: {
+		validate: function (record) { return (record.value === '11'); },
+		set: function (data, record) { data.isDemo = true; },
+		delete: function (data) { delete data.isDemo; }
+	},
 	isSubmitted: {
 		validate: function (record) { return (record.value === '11'); },
 		set: function (data, record) {
