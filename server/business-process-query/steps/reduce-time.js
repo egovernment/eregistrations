@@ -47,8 +47,8 @@ module.exports = function (data, processingStepsMeta) {
 		});
 
 		// Reduce data
-		forEach(stepData, function (bpStepData, businessProcessId) {
-			var serviceName = data.businessProcesses[businessProcessId].serviceName, processingTime;
+		forEach(stepData, function (bpStepData, bpId) {
+			var serviceName = data.businessProcesses[bpId].serviceName, processingTime;
 
 			// Do not take into time reduction not yet finalized steps
 			if (!bpStepData.processingDate) return;
