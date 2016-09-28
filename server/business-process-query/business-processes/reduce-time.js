@@ -35,15 +35,15 @@ module.exports = function (data) {
 		if (!bpData.approvedDate) return;
 
 		var dateString = bpData.approvedDate.toISOString().slice(0, 10)
-		  , time = bpData.approvedDateTime - bpData.submissionDateTime;
+		  , processingTime = bpData.approvedDateTime - bpData.submissionDateTime;
 
 		if (!result.byDateAndService[dateString]) {
 			serviceNames.forEach(function (name) {
 				this[name] = 0;
 			}, result.byDateAndService[dateString] = {});
 		}
-		reduce(result.all.processing, time);
-		reduce(result.byService[bpData.serviceName].processing, time);
+		reduce(result.all.processing, processingTime);
+		reduce(result.byService[bpData.serviceName].processing, processingTime);
 		result.byDateAndService[dateString][bpData.serviceName]++;
 	});
 	return result;
