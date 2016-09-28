@@ -50,11 +50,6 @@ module.exports = function (data, processingStepsMeta) {
 		forEach(stepData, function (bpStepData, businessProcessId) {
 			var serviceName = data.businessProcesses[businessProcessId].serviceName, processingTime;
 
-			result.all.startedCount++;
-			result.byService[serviceName].startedCount++;
-			result.byStep[stepShortPath].startedCount++;
-			result.byStepAndService[stepShortPath][serviceName].startedCount++;
-
 			// Do not take into time reduction not yet finalized steps
 			if (!bpStepData.processingDate) return;
 
@@ -64,6 +59,14 @@ module.exports = function (data, processingStepsMeta) {
 			processingTime =
 				(bpStepData.processingDateTime - bpStepData.pendingDateTime -
 					(bpStepData.processingHolidaysTime || 0) - (bpStepData.correctionTime || 0));
+
+			// If there's something wrong with calculations (may happen with old data), ignore record
+			if (processingTime < (1000 * 60)) return;
+
+			result.all.startedCount++;
+			result.byService[serviceName].startedCount++;
+			result.byStep[stepShortPath].startedCount++;
+			result.byStepAndService[stepShortPath][serviceName].startedCount++;
 
 			// Initialize container
 			if (!result.byStepAndProcessor[stepShortPath][bpStepData.processor]) {
