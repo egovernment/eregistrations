@@ -9,12 +9,14 @@ var memoize                     = require('memoizee/plain')
   , defineRequirementUploads    = require('./requirement-uploads')
   , defineCosts                 = require('./costs')
   , defineSubmissionForms       = require('./submission-forms')
-  , defineProcessingSteps       = require('./processing-steps');
+  , defineProcessingSteps       = require('./processing-steps')
+  , defineUInteger              = require('dbjs-ext/number/integer/u-integer');
 
 module.exports = memoize(function (db/*, options*/) {
 	var options               = Object(arguments[1])
 	  , BusinessProcess       = defineBusinessProcess(db, options)
-	  , BusinessProcessStatus = defineBusinessProcessStatus(db);
+	  , BusinessProcessStatus = defineBusinessProcessStatus(db)
+	  , UInteger              = defineUInteger(db);
 
 	defineDataForms(db, options);
 	defineRequirementUploads(db, options);
@@ -102,7 +104,9 @@ module.exports = memoize(function (db/*, options*/) {
 			}
 
 			return 'process';
-		} }
+		} },
+		correctionTime: { type: UInteger, value: 0 },
+		processingHolidaysTime: { type: UInteger, value: 0 }
 	});
 
 	return BusinessProcess;

@@ -187,6 +187,17 @@ exports.businessProcessMetaMap = {
 			delete data.approvedDate;
 		}
 	},
+	isRejected: {
+		validate: function (record) { return (record.value === '11'); },
+		set: function (data, record) {
+			data.rejectedDateTime = new Date(record.stamp / 1000);
+			data.rejectedDate = toDateInTz(data.rejectedDateTime, timeZone);
+		},
+		delete: function (data) {
+			delete data.rejectedDateTime;
+			delete data.rejectedDate;
+		}
+	},
 	isSubmitted: {
 		validate: function (record) { return (record.value === '11'); },
 		set: function (data, record) {
