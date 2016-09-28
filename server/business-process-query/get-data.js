@@ -139,8 +139,12 @@ exports.stepMetaMap = {
 		},
 		set: function (data, record) {
 			data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
+			data.processingDateTime = new Date(record.stamp / 1000);
 		},
-		delete: function (data) { delete data.processingDate; }
+		delete: function (data) {
+			delete data.processingDate;
+			delete data.processingDateTime;
+		}
 	},
 	processor: {
 		validate: function (record) { return (record.value[0] === '7'); },
@@ -152,18 +156,22 @@ exports.stepMetaMap = {
 		set: function (data, record) { data.correctionTime = unserializeValue(record.value); },
 		delete: function (data) { delete data.correctionTime; }
 	},
-	processingTime: {
+	processingHolidaysTime: {
 		validate: function (record) { return (record.value[0] === '2'); },
-		set: function (data, record) { data.processingTime = unserializeValue(record.value); },
-		delete: function (data) { delete data.processingTime; }
+		set: function (data, record) { data.processingHolidaysTime = unserializeValue(record.value); },
+		delete: function (data) { delete data.processingHolidaysTime; }
 	},
 	isReady: {
 		type: 'computed',
 		validate: function (record) { return (record.value === '11'); },
 		set: function (data, record) {
 			data.pendingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
+			data.pendingDateTime = new Date(record.stamp / 1000);
 		},
-		delete: function (data) { delete data.pendingDate; }
+		delete: function (data) {
+			delete data.pendingDate;
+			delete data.pendingDateTime;
+		}
 	}
 };
 
