@@ -40,12 +40,14 @@ module.exports = exports = function (data, query) {
 			if (!bpData.registrations.has(query.registration)) return false;
 		}
 
-		// Filter by date range
+		// Filter by approved in given date range
 		if (query.dateFrom) {
-			if (!(bpData.approvedDate >= query.dateFrom)) return false;
+			if (!bpData.approvedDate) return false;
+			if (bpData.approvedDate < query.dateFrom) return false;
 		}
 		if (query.dateTo) {
-			if (!(bpData.approvedDate <= query.dateTo)) return false;
+			if (!bpData.approvedDate) return false;
+			if (bpData.approvedDate > query.dateTo) return false;
 		}
 
 		// Filter by search string
