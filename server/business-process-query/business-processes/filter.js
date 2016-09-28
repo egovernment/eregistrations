@@ -1,6 +1,6 @@
 'use strict';
 
-var includes     = require('es5-ext/string/#/includes')
+var includes     = require('es5-ext/string/#/contains')
   , filter       = require('es5-ext/object/filter')
   , ensureObject = require('es5-ext/object/valid-object');
 
