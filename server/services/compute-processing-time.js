@@ -18,17 +18,18 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
 var getHolidaysProcessingTime = function (startStamp, endStamp) {
 	var startDateTime = toDateTimeInTz(new Date(startStamp), db.timeZone)
 	  , endDateTime   = toDateTimeInTz(new Date(endStamp), db.timeZone)
-	  , startDayEnd, currentDate, holidaysProcessingTime = 0, startDate, endDate;
+	  , startDateEndTime, currentDate, holidaysProcessingTime = 0, startDate, endDate;
 
-	startDate = new db.Date(startDateTime.getTime());
-	endDate   = new db.Date(endDateTime.getTime());
+	startDate = new db.Date(startDateTime.getFullYear(), startDateTime.getMonth(),
+		startDateTime.getDate());
+	endDate   = new db.Date(endDateTime.getFullYear(), endDateTime.getMonth(), endDateTime.getDate());
 	if (startDate.getTime() === endDate.getTime()) {
 		return 0;
 	}
 	if (isDayOff(startDate)) {
-		startDayEnd = new db.Date(startDateTime.getTime());
-		startDayEnd.setHours(23, 59, 59, 999);
-		holidaysProcessingTime += new Duration(startDateTime, startDayEnd).milliseconds;
+		startDateEndTime = new db.Date(startDate.getTime());
+		startDateEndTime.setHours(23, 59, 59, 1000);
+		holidaysProcessingTime += new Duration(startDateTime, startDateEndTime).milliseconds;
 	}
 	currentDate = new db.Date(startDate.getTime());
 	currentDate.setUTCDate(currentDate.getUTCDate() + 1);
@@ -61,14 +62,14 @@ module.exports = function (driver, processingStepsMeta) {
 				oldStatus = unserializeValue(event.old.value);
 				// We ignore such cases, they may happen when direct overwrites computed
 				if (status === oldStatus) return;
-				if (status === 'approved' || status === 'rejected') {
+				if (status === 'approved' || status === 'rejected' || status === 'paused') {
 					processingHolidaysTimePath = event.ownerId + '/' + stepPath + '/processingHolidaysTime';
 					processingHolidaysTime =
 						getHolidaysProcessingTime(event.old.stamp / 1000, event.data.stamp / 1000);
 					if (processingHolidaysTime) {
 						storage.get(processingHolidaysTimePath)(function (data) {
 							var currentValue = 0;
-							if (data && unserializeValue(data.value)) {
+							if (data && (data.value[0] === '2')) {
 								currentValue = unserializeValue(data.value);
 							}
 							return storage.store(processingHolidaysTimePath,
@@ -81,7 +82,7 @@ module.exports = function (driver, processingStepsMeta) {
 					correctionTimePath = event.ownerId + '/' + stepPath + '/correctionTime';
 					storage.get(correctionTimePath)(function (data) {
 						var currentValue = 0;
-						if (data && unserializeValue(data.value)) {
+						if (data && (data.value[0] === '2')) {
 							currentValue = unserializeValue(data.value);
 						}
 						return storage.store(correctionTimePath,
