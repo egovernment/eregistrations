@@ -20,6 +20,19 @@ module.exports = memoize(function (db/*, options */) {
 	Role.members.add('user');
 	Role.meta.get('user').set('label', _("User"));
 
+	Role.define('isFlowRole', { type: db.Function, value: function (role) {
+		switch (role) {
+		case 'user':
+		case 'manager':
+		case 'managerValidation':
+		case 'dispatcher':
+		case 'supervisor':
+			return true;
+		default:
+			return (/^official[A-Z]/).test(role);
+		}
+	} });
+
 	User.prototype.defineProperties({
 		// Used for some additional functionalities like institution switch,
 		// used for demonstrational purposes
@@ -58,7 +71,19 @@ module.exports = memoize(function (db/*, options */) {
 		submittedBusinessProcessesSize: {
 			type: UInteger,
 			value: 0
-		}
+		},
+		// Collection of user's roles which contribute to flow
+		flowRoles: { type: Role, multiple: true, value: function () {
+			var result = [], db = this.database;
+
+			this.roles.forEach(function (role) {
+				if (db.Role.isFlowRole(role)) {
+					result.push(role);
+				}
+			}, this);
+
+			return result;
+		} }
 	});
 	defineRoleMeta(User);
 
