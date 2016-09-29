@@ -371,45 +371,55 @@ exports['statistics-main'] = function () {
 
 	section({ class: "section-primary" },
 		h3(_("Files completed per time range")),
-		div({ id: "chart-files-completed-per-day" }));
+		div({ id: "chart-files-completed-per-day" }),
+		p({ id: "chart-files-completed-per-day-message",
+			class: "entities-overview-info" }, _("No data for this criteria")));
 	section({ class: "section-primary" },
 		h3(_("Processed files")),
-		div({ id: "chart-files-completed-by-service" }));
+		div({ id: "chart-files-completed-by-service" }),
+		p({ id: "chart-files-completed-by-service-message",
+			class: "entities-overview-info" }, _("No data for this criteria")));
 	section({ class: "section-primary" }, h3(_("Pending files at ${ date }", {
 		date: location.query.get('dateTo').map(function (dateTo) {
 			var date = dateTo ? new db.Date(dateTo) : new db.Date();
 			return date.toLocaleDateString(db.locale);
 		})
 	})),
-		div({ id: "chart-pending-files" }));
+		div({ id: "chart-pending-files" }),
+		p({ id: "chart-pending-files-message",
+			class: "entities-overview-info" }, _("No data for this criteria")));
 	section({ class: "section-primary" },
 		h3(_("Average processing time in days")),
-		div({ id: "chart-by-step-and-service" }));
+		div({ id: "chart-by-step-and-service" }),
+		p({ id: "chart-by-step-and-service-message",
+			class: "entities-overview-info" }, _("No data for this criteria")));
 	section({ class: "section-primary" },
 		h3(_("Total average processing time per service in days")),
-		div({ id: "chart-by-service" }));
+		div({ id: "chart-by-service" }),
+		p({ id: "chart-by-service-message",
+			class: "entities-overview-info" }, _("No data for this criteria")));
 	section({ class: "section-primary" },
-		h3(_("Withdrawal time in days")), div({ id: "chart-withdrawal-time" }));
+		h3(_("Withdrawal time in days")), div({ id: "chart-withdrawal-time" }),
+		p({ id: "chart-withdrawal-time-message",
+			class: "entities-overview-info" }, _("No data for this criteria")));
 	exports._customChartsDOM.call(this);
 
 	script(function () {
 		google.charts.load('current', { packages: ['corechart'] });
 	});
-	script(function (chartsData, noDataMessage) {
+	script(function (chartsData) {
 		var reloadCharts = function () {
 			google.charts.setOnLoadCallback(function () {
 				if (!chartsData) return;
 				chartsData.forEach(function (chart) {
-					var msg;
 					if (!chart.data) {
 						if ($(chart.handle).firstChild) {
 							$(chart.handle).removeChild($(chart.handle).firstChild);
 						}
-						msg = document.createElement("p");
-						msg.innerHTML = noDataMessage;
-						$(chart.handle).appendChild(msg);
+						$(chart.handle + '-message').toggle(true);
 						return;
 					}
+					$(chart.handle + '-message').toggle(false);
 					var googleChart =
 						new google.visualization[chart.drawMethod || 'BarChart']($(chart.handle));
 					googleChart.draw(google.visualization.arrayToDataTable(chart.data), chart.options);
@@ -419,5 +429,5 @@ exports['statistics-main'] = function () {
 		reloadCharts();
 		// this will be invoked only in SPA
 		if (document.on) document.on('statistics-chart-update', reloadCharts);
-	}, observableResult, _("No data for this criteria"));
+	}, observableResult);
 };

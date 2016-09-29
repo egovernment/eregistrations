@@ -20,10 +20,11 @@ var queryConf = [
 			}
 			if (!value) {
 				if (dateTo) {
-					return new db.Date(dateTo.getFullYear(), dateTo.getMonth(), dateTo.getDate() - 6);
+					return new db.Date(dateTo.getUTCFullYear(), dateTo.getUTCMonth(),
+							dateTo.getUTCDate() - 6);
 				}
 				// last week by default
-				return new db.Date(now.getFullYear(), now.getMonth(), now.getDate() - 6);
+				return new db.Date(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() - 6);
 			}
 			dateFrom = dateStringtoDbDate(db, value);
 			if (dateFrom > now) {
