@@ -104,9 +104,9 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 				}
 				var match = keyPath.match(re);
 				if (!match) return;
-				stepPath = match[2];
+				stepPath = match[1];
 				if (!stepPaths.has(stepPath)) return;
-				stepKeyPath = match[3];
+				stepKeyPath = match[2];
 				meta = exports.stepMetaMap[stepKeyPath];
 				if (!meta) return;
 				if (meta.type && (meta.type !== 'direct')) return;
