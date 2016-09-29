@@ -55,7 +55,11 @@ exports['sub-main-prepend'] = function () {
 								i({ class: 'fa fa-cog' })))))));
 		}.bind(this));
 	}.bind(this)));
+
+	insert(exports._subMainPrependExtraItems.call(this));
 };
+
+exports._subMainPrependExtraItems = Function.prototype;
 
 exports._getSubmittedMenuItem = function (role) {
 	var user      = this.manager || this.user
