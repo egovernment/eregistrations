@@ -165,18 +165,26 @@ var getFilesCompletedByStep = function (data) {
 		options: exports._commonOptions,
 		data: [["Service"]]
 	};
-	var services = getServiceNames();
+	var services = getServiceNames(), noData = true;
 	Object.keys(services).forEach(function (serviceName) {
 		chart.data[0].push(services[serviceName].label);
 	});
 	Object.keys(data).forEach(function (shortPath) {
 		var stepData = [getStepLabelByShortPath(shortPath)];
 		Object.keys(services).forEach(function (serviceName) {
-			if (!data[shortPath][serviceName]) stepData.push(0);
-			else stepData.push(data[shortPath][serviceName].processing.count);
+			if (!data[shortPath][serviceName]) {
+				stepData.push(0);
+			} else {
+				if (data[shortPath][serviceName].processing.count) noData = false;
+				stepData.push(data[shortPath][serviceName].processing.count);
+			}
 		});
 		chart.data.push(stepData);
 	});
+	if (noData) {
+		result.data = null;
+		return result;
+	}
 
 	return assign(result, chart);
 };
@@ -188,11 +196,16 @@ var getPendingFiles = function (data) {
 		}),
 		drawMethod: 'PieChart',
 		data: [["Role", "Count"]]
-	};
+	}, noData = true;
 
 	Object.keys(data).forEach(function (shortPath) {
+		if (data[shortPath].startedCount) noData = false;
 		chart.data.push([getStepLabelByShortPath(shortPath), data[shortPath].startedCount]);
 	});
+	if (noData) {
+		result.data = null;
+		return result;
+	}
 
 	return assign(result, chart);
 };
@@ -203,7 +216,7 @@ var getAverageTime = function (data) {
 			isStacked: false
 		}),
 		data: [["Role"]]
-	};
+	}, noData = true;
 
 	var services = getServiceNames();
 	Object.keys(services).forEach(function (serviceName) {
@@ -216,6 +229,7 @@ var getAverageTime = function (data) {
 			if (!data[shortPath][serviceName]) {
 				stepData.push(0);
 			} else {
+				if (data[shortPath][serviceName].processing.avgTime) noData = false;
 				stepData.push(Math.round(
 					(data[shortPath][serviceName].processing.avgTime || 0) / 1000 / 60 / 60 / 24
 				));
@@ -223,6 +237,11 @@ var getAverageTime = function (data) {
 		});
 		chart.data.push(stepData);
 	});
+
+	if (noData) {
+		result.data = null;
+		return result;
+	}
 
 	return assign(result, chart);
 };
@@ -233,13 +252,14 @@ var getAverageTimeByService = function (data) {
 			legend: null
 		}),
 		data: [["Service", "Data", { role: "style" }]]
-	};
+	}, noData = true;
 
 	var services = getServiceNames(), i = 0;
 
 	Object.keys(services).forEach(function (serviceName) {
 		var row = [];
 		row.push(services[serviceName].label);
+		if (data[serviceName].processing.avgTime) noData = false;
 		row.push(Math.round(
 			(data[serviceName].processing.avgTime || 0) / 1000 / 60 / 60 / 24
 		));
@@ -247,6 +267,11 @@ var getAverageTimeByService = function (data) {
 		i++;
 		chart.data.push(row);
 	});
+
+	if (noData) {
+		result.data = null;
+		return result;
+	}
 
 	return assign(result, chart);
 };
@@ -259,18 +284,24 @@ var getWithdrawalTime = function (data) {
 			axisTitlesPosition: "none"
 		}),
 		data: [["Service", "Data", { role: "style" }]]
-	}, i = 0;
+	}, i = 0, noData = true;
 
 	var services = getServiceNames();
 	Object.keys(services).forEach(function (serviceName) {
 		var row = [];
 		if (!data[serviceName]) return;
 		row.push(services[serviceName].label);
+		if (data[serviceName].processing.avgTime) noData = false;
 		row.push((Math.round(data[serviceName].processing.avgTime || 0) / 1000 / 60 / 60 / 24));
 		row.push(chart.options.colors[i]);
 		i++;
 		chart.data.push(row);
 	});
+
+	if (noData) {
+		result.data = null;
+		return result;
+	}
 
 	return assign(result, chart);
 };
@@ -364,13 +395,19 @@ exports['statistics-main'] = function () {
 	script(function () {
 		google.charts.load('current', { packages: ['corechart'] });
 	});
-	script(function (chartsData) {
+	script(function (chartsData, noDataMessage) {
 		var reloadCharts = function () {
 			google.charts.setOnLoadCallback(function () {
 				if (!chartsData) return;
 				chartsData.forEach(function (chart) {
+					var msg;
 					if (!chart.data) {
-						$(chart.handle).innerHtml = '';
+						if ($(chart.handle).firstChild) {
+							$(chart.handle).removeChild($(chart.handle).firstChild);
+						}
+						msg = document.createElement("p");
+						msg.innerHTML = noDataMessage;
+						$(chart.handle).appendChild(msg);
 						return;
 					}
 					var googleChart =
@@ -382,5 +419,5 @@ exports['statistics-main'] = function () {
 		reloadCharts();
 		// this will be invoked only in SPA
 		if (document.on) document.on('statistics-chart-update', reloadCharts);
-	}, observableResult);
+	}, observableResult, _("No data for this criteria"));
 };
