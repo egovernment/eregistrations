@@ -32,8 +32,8 @@ module.exports = function (data) {
 		var closingDate, closingDateTime, dateString, processingTime;
 		result.all.startedCount++;
 		result.byService[bpData.serviceName].startedCount++;
-		closingDateTime = bpData.approvedDateTime || !bpData.rejectedDateTime;
-		closingDate     = bpData.approvedDate || !bpData.rejectedDate;
+		closingDateTime = bpData.approvedDateTime || bpData.rejectedDateTime;
+		closingDate     = bpData.approvedDate || bpData.rejectedDate;
 
 		if (!closingDateTime) return;
 
