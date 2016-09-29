@@ -70,6 +70,10 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 		};
 
 		// Listen for new records
+		storage.on('key:&', function (event) {
+			if (event.data.value[0] !== '7') delete initBpDataset(event.ownerId)._existing;
+			else initBpDataset(event.ownerId)._existing = true;
+		});
 		stepPaths.forEach(function (stepPath) {
 			// Status
 			forEach(exports.stepMetaMap, function (meta, stepKeyPath) {
@@ -92,7 +96,10 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 		return deferred(
 			storage.search(function (id, record) {
 				var bpId = id.split('/', 1)[0], stepPath, stepKeyPath, meta, keyPath, multiItemValue, path;
-				if (bpId === id) return;
+				if (bpId === id) {
+					if (record.value[0] === '7') initBpDataset(bpId)._existing = true;
+					return;
+				}
 				if (includes.call(id, '*')) {
 					keyPath = resolveKeyPath(id);
 					path = bpId + '/' + keyPath;

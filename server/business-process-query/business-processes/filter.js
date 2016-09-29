@@ -17,6 +17,9 @@ module.exports = exports = function (data, query) {
 	data.forEach(function (bpData, bpId) {
 		var filterResult;
 
+		// Unconditionally filter deleted records
+		if (!bpData._existing) return;
+
 		// Unconditionally filter demo files
 		if (bpData.isDemo) return;
 
