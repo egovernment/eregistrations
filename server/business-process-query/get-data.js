@@ -198,6 +198,16 @@ exports.businessProcessMetaMap = {
 			delete data.rejectedDate;
 		}
 	},
+	correctionTime: {
+		validate: function (record) { return (record.value[0] === '2'); },
+		set: function (data, record) { data.correctionTime = unserializeValue(record.value); },
+		delete: function (data) { delete data.correctionTime; }
+	},
+	processingHolidaysTime: {
+		validate: function (record) { return (record.value[0] === '2'); },
+		set: function (data, record) { data.processingHolidaysTime = unserializeValue(record.value); },
+		delete: function (data) { delete data.processingHolidaysTime; }
+	},
 	isSubmitted: {
 		validate: function (record) { return (record.value === '11'); },
 		set: function (data, record) {
