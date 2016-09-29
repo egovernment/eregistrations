@@ -1,7 +1,6 @@
 'use strict';
 
-var forEach      = require('es5-ext/object/for-each')
-  , ensureObject = require('es5-ext/object/valid-object')
+var ensureObject = require('es5-ext/object/valid-object')
   , serviceNames = require('../../../utils/business-process-service-names')
   , getEmptyData = require('../utils/get-time-reduction-template')
   , reduce       = require('../utils/reduce-time');
@@ -28,7 +27,7 @@ module.exports = function (data) {
 
 	serviceNames.forEach(function (name) { result.byService[name] = getEmptyData(); });
 
-	forEach(data, function (bpData, businessProcessId) {
+	data.forEach(function (bpData, businessProcessId) {
 		result.all.startedCount++;
 		result.byService[bpData.serviceName].startedCount++;
 

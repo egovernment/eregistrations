@@ -28,7 +28,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 	  , serviceFullShortNameMap = new Map()
 	  , startTime = Date.now();
 
-	var result = { steps: Object.create(null), businessProcesses: Object.create(null) };
+	var result = { steps: new Map(), businessProcesses: new Map() };
 
 	forEach(processingStepsMeta, function (meta, stepShortPath) {
 		var stepPath = resolveProcessingStepFullPath(stepShortPath);
@@ -41,7 +41,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 			storageStepsMap.get(storage).add(stepPath);
 		});
 
-		result.steps[stepShortPath] = Object.create(null);
+		result.steps.set(stepShortPath, new Map());
 	});
 
 	return deferred.map(aFrom(storageStepsMap), function (data) {
@@ -50,23 +50,23 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 
 		var initStepDataset = function (stepPath, businessProcessId) {
 			var stepShortPath = stepShortPathMap.get(stepPath);
-			if (!result.steps[stepShortPath][businessProcessId]) {
-				result.steps[stepShortPath][businessProcessId] = {
+			if (!result.steps.get(stepShortPath).get(businessProcessId)) {
+				result.steps.get(stepShortPath).set(businessProcessId, {
 					stepShortPath: stepShortPath,
 					businessProcessId: businessProcessId,
 					stepFullPath: 'processingSteps/map/' + stepPath
-				};
+				});
 			}
-			return result.steps[stepShortPath][businessProcessId];
+			return result.steps.get(stepShortPath).get(businessProcessId);
 		};
 		var initBpDataset = function (businessProcessId) {
-			if (!result.businessProcesses[businessProcessId]) {
-				result.businessProcesses[businessProcessId] = {
+			if (!result.businessProcesses.has(businessProcessId)) {
+				result.businessProcesses.set(businessProcessId,  {
 					businessProcessId: businessProcessId,
 					serviceName: serviceName
-				};
+				});
 			}
-			return result.businessProcesses[businessProcessId];
+			return result.businessProcesses.get(businessProcessId);
 		};
 
 		// Listen for new records

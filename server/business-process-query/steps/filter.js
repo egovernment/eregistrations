@@ -2,10 +2,9 @@
 
 var aFrom            = require('es5-ext/array/from')
   , includes         = require('es5-ext/array/#/contains')
-  , filter           = require('es5-ext/object/filter')
-  , map              = require('es5-ext/object/map')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , ensureObject     = require('es5-ext/object/valid-object')
+  , Map              = require('es6-map')
   , filterBps        = require('../business-processes/filter');
 
 var resolveBpFilterQuery = function (query) {
@@ -28,11 +27,12 @@ var resolveBpFilterQuery = function (query) {
 */
 module.exports = exports = function (data, query, processingStepsMeta) {
 	(ensureObject(data) && ensureObject(query) && ensureObject(processingStepsMeta));
-	var stepsData = data.steps;
+	var stepsData = data.steps, filteredStepsData;
 
 	// 1. Exclude not applicable steps
 	if (query.step || query.service) {
-		stepsData = filter(stepsData, function (stepData, stepShortPath) {
+		filteredStepsData = new Map();
+		stepsData.forEach(function (stepData, stepShortPath) {
 			// Exclude by step
 			if (query.step && query.step !== stepShortPath) return;
 
@@ -40,50 +40,55 @@ module.exports = exports = function (data, query, processingStepsMeta) {
 			if (query.service) {
 				if (!includes.call(processingStepsMeta[stepShortPath]._services, query.service)) return;
 			}
-			return true;
+			filteredStepsData.set(stepShortPath, stepData);
 		});
+		stepsData = filteredStepsData;
 	}
 
-	var businessProcessesData = filterBps(data.businessProcesses, resolveBpFilterQuery(query));
+	var filteredBpsData = filterBps(data.businessProcesses, resolveBpFilterQuery(query));
+
+	filteredStepsData = new Map();
+	stepsData.forEach(function (stepData, stepShortPath) {
+		var filteredStepData = new Map();
+		filteredStepsData.set(stepShortPath, filteredStepData);
+		stepData.forEach(function (bpStepData, bpId) {
+
+			// Filter any filtered at business process level
+			if (!filteredBpsData.has(bpId)) return;
+
+			// Filter out any inconsistent
+			if (!bpStepData.pendingDate) return;
+
+			// Filter by processsed in given date range
+			if (query.dateFrom) {
+				if (!bpStepData.processingDate) return;
+				if (bpStepData.processingDate < query.dateFrom) return;
+			}
+			if (query.dateTo) {
+				if (!bpStepData.processingDate) return;
+				if (bpStepData.processingDate > query.dateTo) return;
+			}
+
+			// Filter by pending at date
+			if (query.pendingAt) {
+				if (bpStepData.pendingDate > query.pendingAt) return;
+				if (bpStepData.processingDate) {
+					if (bpStepData.processingDate < query.pendingAt) return;
+				}
+			}
+
+			// Custom filter
+			if (exports.customFilter) {
+				if (!exports.customFilter.call(query, bpStepData, bpId, stepShortPath)) return;
+			}
+
+			filteredStepData.set(bpId, bpStepData);
+		});
+	});
 
 	// 2. Filter items
 	return {
-		businessProcesses: businessProcessesData,
-		steps: map(stepsData, function (stepData, stepShortPath) {
-			return filter(stepData, function (bpStepData, bpId) {
-
-				// Filter any filtered at business process level
-				if (!businessProcessesData[bpId]) return false;
-
-				// Filter out any inconsistent
-				if (!bpStepData.pendingDate) return false;
-
-				// Filter by processsed in given date range
-				if (query.dateFrom) {
-					if (!bpStepData.processingDate) return false;
-					if (bpStepData.processingDate < query.dateFrom) return false;
-				}
-				if (query.dateTo) {
-					if (!bpStepData.processingDate) return false;
-					if (bpStepData.processingDate > query.dateTo) return false;
-				}
-
-				// Filter by pending at date
-				if (query.pendingAt) {
-					if (bpStepData.pendingDate > query.pendingAt) return false;
-					if (bpStepData.processingDate) {
-						if (bpStepData.processingDate < query.pendingAt) return false;
-					}
-				}
-
-				// Custom filter
-				if (exports.customFilter) {
-					if (!exports.customFilter.call(query, bpStepData, bpId, stepShortPath)) {
-						return false;
-					}
-				}
-				return true;
-			});
-		})
+		businessProcesses: filteredBpsData,
+		steps: filteredStepsData
 	};
 };

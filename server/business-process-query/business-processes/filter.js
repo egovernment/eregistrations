@@ -1,53 +1,54 @@
 'use strict';
 
 var includes     = require('es5-ext/string/#/contains')
-  , filter       = require('es5-ext/object/filter')
-  , ensureObject = require('es5-ext/object/valid-object');
+  , ensureObject = require('es5-ext/object/valid-object')
+  , Map          = require('es6-map');
 
 /**
 	* @param data  - `businessProcesses` result from ../get-data
 	* @returns {Object} - Filter data of same format as input data
 */
 module.exports = exports = function (data, query) {
-	var searchTokens;
+	var searchTokens, filteredData = new Map();
+
 	(ensureObject(data) && ensureObject(query));
 
 	if (query.search) searchTokens = query.search.split(' ');
-	return filter(data, function (bpData, bpId) {
+	data.forEach(function (bpData, bpId) {
 		var filterResult;
 
 		// Unconditionally filter demo files
-		if (bpData.isDemo) return false;
+		if (bpData.isDemo) return;
 
 		// Internal flow status filter
 		// (simpler version of 'status' filter, this one we use interally to easily filter out
 		// only on submitted or approved files)
 		if (query.flowStatus) {
 			if (query.flowStatus === 'submitted') {
-				if (!bpData.submissionDateTime) return false;
+				if (!bpData.submissionDateTime) return;
 			} else if (query.flowStatus === 'approved') {
-				if (!bpData.approvedDate) return false;
+				if (!bpData.approvedDate) return;
 			}
 		}
 
 		// Filter by service
 		if (query.service) {
-			if (bpData.serviceName !== query.service) return false;
+			if (bpData.serviceName !== query.service) return;
 		}
 
 		// Filter by registration
 		if (query.registration) {
-			if (!bpData.registrations.has(query.registration)) return false;
+			if (!bpData.registrations.has(query.registration)) return;
 		}
 
 		// Filter by approved in given date range
 		if (query.dateFrom) {
-			if (!bpData.approvedDate) return false;
-			if (bpData.approvedDate < query.dateFrom) return false;
+			if (!bpData.approvedDate) return;
+			if (bpData.approvedDate < query.dateFrom) return;
 		}
 		if (query.dateTo) {
-			if (!bpData.approvedDate) return false;
-			if (bpData.approvedDate > query.dateTo) return false;
+			if (!bpData.approvedDate) return;
+			if (bpData.approvedDate > query.dateTo) return;
 		}
 
 		// Filter by search string
@@ -55,14 +56,15 @@ module.exports = exports = function (data, query) {
 			filterResult = searchTokens.every(function (token) {
 				return includes.call(bpData.searchString, token);
 			});
-			if (!filterResult) return false;
+			if (!filterResult) return;
 		}
 
 		// Custom filter
 		if (exports.customFilter) {
-			if (!exports.customFilter.call(query, bpData, bpId)) return false;
+			if (!exports.customFilter.call(query, bpData, bpId)) return;
 		}
 
-		return true;
+		filteredData.set(bpId, bpData);
 	});
+	return filteredData;
 };
