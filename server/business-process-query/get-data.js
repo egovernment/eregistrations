@@ -86,7 +86,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 		// Get current records
 		return deferred(
 			storage.search(function (id, record) {
-				var bpId = id.slice('/', 1)[0], stepPath, stepKeyPath, meta, keyPath, multiItemValue, path;
+				var bpId = id.split('/', 1)[0], stepPath, stepKeyPath, meta, keyPath, multiItemValue, path;
 				if (bpId === id) return;
 				if (includes.call(id, '*')) {
 					keyPath = resolveKeyPath(id);
