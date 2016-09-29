@@ -52,6 +52,8 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 			var stepShortPath = stepShortPathMap.get(stepPath);
 			if (!result.steps[stepShortPath][businessProcessId]) {
 				result.steps[stepShortPath][businessProcessId] = {
+					stepShortPath: stepShortPath,
+					businessProcessId: businessProcessId,
 					stepFullPath: 'processingSteps/map/' + stepPath
 				};
 			}
@@ -59,7 +61,10 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 		};
 		var initBpDataset = function (businessProcessId) {
 			if (!result.businessProcesses[businessProcessId]) {
-				result.businessProcesses[businessProcessId] = { serviceName: serviceName };
+				result.businessProcesses[businessProcessId] = {
+					businessProcessId: businessProcessId,
+					serviceName: serviceName
+				};
 			}
 			return result.businessProcesses[businessProcessId];
 		};
