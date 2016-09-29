@@ -15,4 +15,5 @@
 ../../../node_modules/eregistrations/css/components/statistics-table-dual.css
 ../../../node_modules/eregistrations/css/components/pills-nav.css
 ../../../node_modules/eregistrations/css/components/throbber.css
+../../../node_modules/eregistrations/css/components/entities-overview.css
 ../../../css/theme.css
