@@ -38,7 +38,7 @@ module.exports = function (data) {
 		  , processingTime = bpData.approvedDateTime - bpData.submissionDateTime;
 
 		// If there's something wrong with calculations (may happen with old data), ignore record
-		if (processingTime < (1000 * 60)) return;
+		if (processingTime < (1000 * 3)) return;
 
 		if (!result.byDateAndService[dateString]) {
 			serviceNames.forEach(function (name) {
