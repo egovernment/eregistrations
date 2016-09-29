@@ -1,9 +1,26 @@
 'use strict';
 
-var includes     = require('es5-ext/array/#/contains')
-  , filter       = require('es5-ext/object/filter')
-  , map          = require('es5-ext/object/map')
-  , ensureObject = require('es5-ext/object/valid-object');
+var aFrom            = require('es5-ext/array/from')
+  , includes         = require('es5-ext/array/#/contains')
+  , filter           = require('es5-ext/object/filter')
+  , map              = require('es5-ext/object/map')
+  , normalizeOptions = require('es5-ext/object/normalize-options')
+  , ensureObject     = require('es5-ext/object/valid-object')
+  , filterBps        = require('../business-processes/filter');
+
+var resolveBpFilterQuery = function (query) {
+	query = normalizeOptions(query, {
+		dateFrom: null,
+		dateTo: null,
+		step: null,
+		pendingAt: null,
+		flowStatus: 'submitted'
+	});
+	if (exports.customStepSpecificQueries) {
+		aFrom(exports.customStepSpecificQueries).forEach(function (name) { delete query[name]; });
+	}
+	return query;
+};
 
 /**
 	* @param data  - Direct result from ../get-data
@@ -27,25 +44,19 @@ module.exports = exports = function (data, query, processingStepsMeta) {
 		});
 	}
 
+	var businessProcessesData = filterBps(data.businessProcesses, resolveBpFilterQuery(query));
+
 	// 2. Filter items
 	return {
-		businessProcesses: data.businessProcesses,
+		businessProcesses: businessProcessesData,
 		steps: map(stepsData, function (stepData, stepShortPath) {
-			var serviceName;
-
-			if (query.service && (processingStepsMeta[stepShortPath]._services.length > 1)) {
-				serviceName = query.service;
-			}
-
 			return filter(stepData, function (bpStepData, bpId) {
+
+				// Filter any filtered at business process level
+				if (!businessProcessesData[bpId]) return false;
 
 				// Filter out any inconsistent
 				if (!bpStepData.pendingDate) return false;
-
-				// Filter by service
-				if (serviceName) {
-					if (data.businessProcesses[bpId].serviceName !== serviceName) return false;
-				}
 
 				// Filter by processsed in given date range
 				if (query.dateFrom) {
@@ -67,8 +78,7 @@ module.exports = exports = function (data, query, processingStepsMeta) {
 
 				// Custom filter
 				if (exports.customFilter) {
-					if (!exports.customFilter.call(query, bpStepData, bpId, stepShortPath,
-							data.businessProcesses[bpId])) {
+					if (!exports.customFilter.call(query, bpStepData, bpId, stepShortPath)) {
 						return false;
 					}
 				}
