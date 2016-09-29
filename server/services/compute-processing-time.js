@@ -56,19 +56,19 @@ var storeTime = function (storage, path, time) {
 
 var getOnIsClosed = function (storage) {
 	return function (event) {
-		var nuValue, oldValue, processingHolidaysTimePath, processingHolidaysTime;
+		var nuValue, processingHolidaysTimePath, processingHolidaysTime;
 
-		if (event.type !== 'computed' || !event.old) return;
+		if (event.type !== 'direct') return;
 		nuValue  = unserializeValue(event.data.value);
-		oldValue = unserializeValue(event.old.value);
-		// We ignore such cases, they may happen when direct overwrites computed
-		if (nuValue === oldValue) return;
-		processingHolidaysTimePath = event.ownerId + '/processingHolidaysTime';
-		processingHolidaysTime =
-			getHolidaysProcessingTime(event.old.stamp / 1000, event.data.stamp / 1000);
-		if (processingHolidaysTime) {
-			storeTime(storage, processingHolidaysTimePath, processingHolidaysTime).done();
-		}
+		if (nuValue !== true) return;
+		storage.get(event.ownerId + '/isSubmitted')(function (isSubmitted) {
+			processingHolidaysTimePath = event.ownerId + '/processingHolidaysTime';
+			processingHolidaysTime =
+				getHolidaysProcessingTime(isSubmitted.stamp / 1000, event.data.stamp / 1000);
+			if (processingHolidaysTime) {
+				return storeTime(storage, processingHolidaysTimePath, processingHolidaysTime);
+			}
+		}).done();
 	};
 };
 
@@ -76,11 +76,11 @@ var getOnIsSentBack = function (storage) {
 	return function (event) {
 		var nuValue, oldValue, correctionTimePath, correctionTime;
 
-		if (event.type !== 'computed' || !event.old) return;
+		if (event.type !== 'direct' || !event.old) return;
 		nuValue  = unserializeValue(event.data.value);
 		oldValue = unserializeValue(event.old.value);
-		// We ignore such cases, they may happen when direct overwrites computed
-		if (nuValue === oldValue) return;
+		// We're only interested in cases when isSentBack is changed from true to undefined
+		if (!(oldValue === true && !nuValue)) return;
 		correctionTimePath = event.ownerId + '/correctionTime';
 		correctionTime     = (event.data.stamp - event.old.stamp) / 1000;
 		if (correctionTime) {
