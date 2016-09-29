@@ -225,6 +225,7 @@ exports.businessProcessMetaMap = {
 		delete: function (data) { delete data.searchString; }
 	},
 	status: {
+		type: 'computed',
 		validate: function (record) { return (record.value[0] === '3'); },
 		set: function (data, record) { data.status = record.value.slice(1); },
 		delete: function (data) { delete data.status; }
