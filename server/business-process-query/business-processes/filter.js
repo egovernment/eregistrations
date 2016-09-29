@@ -41,6 +41,11 @@ module.exports = exports = function (data, query) {
 			if (!bpData.registrations.has(query.registration)) return;
 		}
 
+		// Filter by status
+		if (query.status) {
+			if (bpData.status !== query.status) return;
+		}
+
 		// Filter by approved in given date range
 		if (query.dateFrom) {
 			if (!bpData.approvedDate) return;
