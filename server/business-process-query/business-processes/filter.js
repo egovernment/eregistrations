@@ -2,8 +2,8 @@
 
 var includes     = require('es5-ext/string/#/contains')
   , ensureObject = require('es5-ext/object/valid-object')
-  , Map          = require('es6-map');
-
+  , Map          = require('es6-map')
+  , ensureMap    = require('es6-map/valid-map');
 /**
 	* @param data  - `businessProcesses` result from ../get-data
 	* @returns {Object} - Filter data of same format as input data
@@ -11,7 +11,7 @@ var includes     = require('es5-ext/string/#/contains')
 module.exports = exports = function (data, query) {
 	var searchTokens, filteredData = new Map();
 
-	(ensureObject(data) && ensureObject(query));
+	(ensureMap(data) && ensureObject(query));
 
 	if (query.search) searchTokens = query.search.split(' ');
 	data.forEach(function (bpData, bpId) {
