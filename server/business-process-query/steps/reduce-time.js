@@ -1,7 +1,6 @@
 'use strict';
 
-var forEach      = require('es5-ext/object/for-each')
-  , ensureObject = require('es5-ext/object/valid-object')
+var ensureObject = require('es5-ext/object/valid-object')
   , getEmptyData = require('../utils/get-time-reduction-template')
   , reduce       = require('../utils/reduce-time');
 
@@ -35,7 +34,7 @@ module.exports = function (data, processingStepsMeta) {
 		byStepAndProcessor: {}
 	};
 
-	forEach(data.steps, function (stepData, stepShortPath) {
+	data.steps.forEach(function (stepData, stepShortPath) {
 
 		// Initialize containers
 		result.byStep[stepShortPath] = getEmptyData();
@@ -47,8 +46,8 @@ module.exports = function (data, processingStepsMeta) {
 		});
 
 		// Reduce data
-		forEach(stepData, function (bpStepData, bpId) {
-			var serviceName = data.businessProcesses[bpId].serviceName, processingTime;
+		stepData.forEach(function (bpStepData, bpId) {
+			var serviceName = data.businessProcesses.get(bpId).serviceName, processingTime;
 
 			result.all.startedCount++;
 			result.byService[serviceName].startedCount++;
@@ -66,7 +65,7 @@ module.exports = function (data, processingStepsMeta) {
 					(bpStepData.processingHolidaysTime || 0) - (bpStepData.correctionTime || 0));
 
 			// If there's something wrong with calculations (may happen with old data), ignore record
-			if (processingTime < (1000 * 60)) return;
+			if (processingTime < (1000 * 3)) return;
 
 			// Initialize container
 			if (!result.byStepAndProcessor[stepShortPath][bpStepData.processor]) {

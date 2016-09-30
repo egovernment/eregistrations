@@ -109,8 +109,10 @@ module.exports = function (config) {
 						dateRangeData: {
 							steps: reduceSteps(filterSteps(data, query, processingStepsMeta),
 								processingStepsMeta).byStepAndService,
-							businessProcesses:
-								reduceBusinessProcesses(filterBusinessProcesses(data.businessProcesses, query))
+							businessProcesses: reduceBusinessProcesses(
+								filterBusinessProcesses(data.businessProcesses,
+									assign({ flowStatus: 'submitted' }, query))
+							)
 						},
 						lastDateData: reduceSteps(filterSteps(data, lastDateQuery, processingStepsMeta),
 							processingStepsMeta).byStep

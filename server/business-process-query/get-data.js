@@ -6,18 +6,21 @@
 var aFrom                         = require('es5-ext/array/from')
   , forEach                       = require('es5-ext/object/for-each')
   , capitalize                    = require('es5-ext/string/#/capitalize')
+  , includes                      = require('es5-ext/string/#/contains')
   , Set                           = require('es6-set')
   , Map                           = require('es6-map')
   , deferred                      = require('deferred')
   , memoize                       = require('memoizee')
   , unserializeValue              = require('dbjs/_setup/unserialize/value')
+  , resolveKeyPath                = require('dbjs/_setup/utils/resolve-key-path')
+  , resolveEventKeys              = require('dbjs-persistence/lib/resolve-event-keys')
   , debugLoad                     = require('debug-ext')('load', 6)
   , humanize                      = require('debug-ext').humanize
   , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
   , toDateInTz                    = require('../../utils/to-date-in-time-zone')
   , timeZone                      = require('../../db').timeZone;
 
-var re = new RegExp('^([0-9a-z]+)\\/processingSteps\\/map\\/([a-zA-Z0-9]+' +
+var re = new RegExp('^processingSteps\\/map\\/([a-zA-Z0-9]+' +
 	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$');
 
 module.exports = exports = memoize(function (driver, processingStepsMeta) {
@@ -25,7 +28,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 	  , serviceFullShortNameMap = new Map()
 	  , startTime = Date.now();
 
-	var result = { steps: Object.create(null), businessProcesses: Object.create(null) };
+	var result = { steps: new Map(), businessProcesses: new Map() };
 
 	forEach(processingStepsMeta, function (meta, stepShortPath) {
 		var stepPath = resolveProcessingStepFullPath(stepShortPath);
@@ -36,10 +39,9 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 			serviceFullShortNameMap.set(serviceFullName, serviceName);
 			if (!storageStepsMap.has(storage)) storageStepsMap.set(storage, new Set());
 			storageStepsMap.get(storage).add(stepPath);
-
 		});
 
-		result.steps[stepShortPath] = Object.create(null);
+		result.steps.set(stepShortPath, new Map());
 	});
 
 	return deferred.map(aFrom(storageStepsMap), function (data) {
@@ -48,21 +50,30 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 
 		var initStepDataset = function (stepPath, businessProcessId) {
 			var stepShortPath = stepShortPathMap.get(stepPath);
-			if (!result.steps[stepShortPath][businessProcessId]) {
-				result.steps[stepShortPath][businessProcessId] = {
+			if (!result.steps.get(stepShortPath).get(businessProcessId)) {
+				result.steps.get(stepShortPath).set(businessProcessId, {
+					stepShortPath: stepShortPath,
+					businessProcessId: businessProcessId,
 					stepFullPath: 'processingSteps/map/' + stepPath
-				};
+				});
 			}
-			return result.steps[stepShortPath][businessProcessId];
+			return result.steps.get(stepShortPath).get(businessProcessId);
 		};
 		var initBpDataset = function (businessProcessId) {
-			if (!result.businessProcesses[businessProcessId]) {
-				result.businessProcesses[businessProcessId] = { serviceName: serviceName };
+			if (!result.businessProcesses.has(businessProcessId)) {
+				result.businessProcesses.set(businessProcessId,  {
+					businessProcessId: businessProcessId,
+					serviceName: serviceName
+				});
 			}
-			return result.businessProcesses[businessProcessId];
+			return result.businessProcesses.get(businessProcessId);
 		};
 
 		// Listen for new records
+		storage.on('key:&', function (event) {
+			if (event.data.value[0] !== '7') delete initBpDataset(event.ownerId)._existing;
+			else initBpDataset(event.ownerId)._existing = true;
+		});
 		stepPaths.forEach(function (stepPath) {
 			// Status
 			forEach(exports.stepMetaMap, function (meta, stepKeyPath) {
@@ -84,26 +95,36 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 		// Get current records
 		return deferred(
 			storage.search(function (id, record) {
-				var index = id.indexOf('/'), stepPath, stepKeyPath, meta;
-				if (index === -1) return;
-				var businessProcessId = id.slice(0, index)
-				  , keyPath = id.slice(index + 1);
+				var bpId = id.split('/', 1)[0], stepPath, stepKeyPath, meta, keyPath, multiItemValue, path;
+				if (bpId === id) {
+					if (record.value[0] === '7') initBpDataset(bpId)._existing = true;
+					return;
+				}
+				if (includes.call(id, '*')) {
+					keyPath = resolveKeyPath(id);
+					path = bpId + '/' + keyPath;
+					if (path !== id) multiItemValue = id.slice(path.length + 1);
+				} else {
+					keyPath = id.slice(bpId.length + 1);
+				}
 				meta = exports.businessProcessMetaMap[keyPath];
 				if (meta) {
 					if (meta.type && (meta.type !== 'direct')) return;
-					if (!meta.validate(record)) return;
-					meta.set(initBpDataset(businessProcessId), record);
+					if (multiItemValue && !meta.multiple) return;
+					if (!meta.validate(record, multiItemValue)) return;
+					meta.set(initBpDataset(bpId), record, multiItemValue);
 				}
-				var match = id.match(re);
+				var match = keyPath.match(re);
 				if (!match) return;
-				stepPath = match[2];
+				stepPath = match[1];
 				if (!stepPaths.has(stepPath)) return;
-				stepKeyPath = match[3];
+				stepKeyPath = match[2];
 				meta = exports.stepMetaMap[stepKeyPath];
 				if (!meta) return;
 				if (meta.type && (meta.type !== 'direct')) return;
-				if (!meta.validate(record)) return;
-				meta.set(initStepDataset(stepPath, businessProcessId), record);
+				if (multiItemValue && !meta.multiple) return;
+				if (!meta.validate(record, multiItemValue)) return;
+				meta.set(initStepDataset(stepPath, bpId), record, multiItemValue);
 			}),
 			deferred.map(Object.keys(exports.businessProcessMetaMap), function (keyPath) {
 				var meta = exports.businessProcessMetaMap[keyPath];
@@ -133,33 +154,10 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 
 // Map of all properties to be mapped to result with corresponding instructions
 exports.stepMetaMap = {
-	status: {
-		validate: function (record) {
-			return ((record.value === '3approved') || (record.value === '3rejected'));
-		},
-		set: function (data, record) {
-			data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
-			data.processingDateTime = new Date(record.stamp / 1000);
-		},
-		delete: function (data) {
-			delete data.processingDate;
-			delete data.processingDateTime;
-		}
-	},
-	processor: {
-		validate: function (record) { return (record.value[0] === '7'); },
-		set: function (data, record) { data.processor = record.value.slice(1); },
-		delete: function (data) { delete data.processor; }
-	},
 	correctionTime: {
 		validate: function (record) { return (record.value[0] === '2'); },
 		set: function (data, record) { data.correctionTime = unserializeValue(record.value); },
 		delete: function (data) { delete data.correctionTime; }
-	},
-	processingHolidaysTime: {
-		validate: function (record) { return (record.value[0] === '2'); },
-		set: function (data, record) { data.processingHolidaysTime = unserializeValue(record.value); },
-		delete: function (data) { delete data.processingHolidaysTime; }
 	},
 	isReady: {
 		type: 'computed',
@@ -171,6 +169,29 @@ exports.stepMetaMap = {
 		delete: function (data) {
 			delete data.pendingDate;
 			delete data.pendingDateTime;
+		}
+	},
+	processingHolidaysTime: {
+		validate: function (record) { return (record.value[0] === '2'); },
+		set: function (data, record) { data.processingHolidaysTime = unserializeValue(record.value); },
+		delete: function (data) { delete data.processingHolidaysTime; }
+	},
+	processor: {
+		validate: function (record) { return (record.value[0] === '7'); },
+		set: function (data, record) { data.processor = record.value.slice(1); },
+		delete: function (data) { delete data.processor; }
+	},
+	status: {
+		validate: function (record) {
+			return ((record.value === '3approved') || (record.value === '3rejected'));
+		},
+		set: function (data, record) {
+			data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
+			data.processingDateTime = new Date(record.stamp / 1000);
+		},
+		delete: function (data) {
+			delete data.processingDate;
+			delete data.processingDateTime;
 		}
 	}
 };
@@ -187,11 +208,38 @@ exports.businessProcessMetaMap = {
 			delete data.approvedDate;
 		}
 	},
+	isDemo: {
+		validate: function (record) { return (record.value === '11'); },
+		set: function (data, record) { data.isDemo = true; },
+		delete: function (data) { delete data.isDemo; }
+	},
 	isSubmitted: {
 		validate: function (record) { return (record.value === '11'); },
 		set: function (data, record) {
 			data.submissionDateTime = new Date(record.stamp / 1000);
 		},
 		delete: function (data) { delete data.submissionDateTime; }
+	},
+	'registrations/requested': {
+		type: 'computed',
+		validate: function (record) { return record.value[0] === '['; },
+		set: function (data, record) {
+			data.registrations = new Set(resolveEventKeys(JSON.parse(record.value)).map(function (value) {
+				return value.slice(value.lastIndexOf('/') + 1);
+			}));
+		},
+		delete: function (data) { delete data.registrations; }
+	},
+	searchString: {
+		type: 'computed',
+		validate: function (record) { return record.value[0] === '3'; },
+		set: function (data, record) { data.searchString = unserializeValue(record.value); },
+		delete: function (data) { delete data.searchString; }
+	},
+	status: {
+		type: 'computed',
+		validate: function (record) { return (record.value[0] === '3'); },
+		set: function (data, record) { data.status = record.value.slice(1); },
+		delete: function (data) { delete data.status; }
 	}
 };
