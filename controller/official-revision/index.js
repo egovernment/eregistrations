@@ -7,7 +7,8 @@ var assign               = require('es5-ext/object/assign')
   , save                 = require('mano/utils/save')
   , normalizeOptions     = require('es5-ext/object/normalize-options')
   , commonController     = require('../user')
-  , matchBusinessProcess = require('../utils/official-matcher');
+  , matchBusinessProcess = require('../utils/official-matcher')
+  , unpauseMatcher       = require('../utils/official-unpause-matcher');
 
 module.exports = function (/*options*/) {
 	var options    = normalizeOptions(arguments[0])
@@ -60,6 +61,25 @@ module.exports = function (/*options*/) {
 			this.processingStep.officialStatus = 'rejected';
 		},
 		redirectUrl: '/'
+	};
+
+	controller['revision/[0-9][a-z0-9]+/pause'] = {
+		match: function (businessProcessId) {
+			if (!matcher.call(this, businessProcessId, stepName)) return false;
+			return this.processingStep.pauseProgress === 1;
+		},
+		submit: function () {
+			this.processingStep.processor = this.user;
+			this.processingStep.officialStatus = 'paused';
+		}
+	};
+
+	controller['revision/[0-9][a-z0-9]+/unpause'] = {
+		match: unpauseMatcher,
+		submit: function () {
+			this.processingStep.delete('officialStatus');
+			this.processingStep.delete('status');
+		}
 	};
 
 	// Requirement upload revision.

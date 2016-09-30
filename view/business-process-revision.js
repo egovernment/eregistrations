@@ -10,6 +10,7 @@ var _                = require('mano').i18n.bind('View: Official: Revision')
 
 exports._parent = require('./user-base');
 exports._match = 'businessProcess';
+exports._isPauseEnabled = false;
 
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
@@ -29,8 +30,11 @@ exports['sub-main'] = {
 					_if(eq(revisionStep._sendBackStatusesProgress, 1),
 						exports._returnButton.call(this)))),
 			// show reject button at all times when revision is pending
-			exports._rejectButton.call(this)
-		)]));
+			exports._rejectButton.call(this),
+			_if(and(exports._isPauseEnabled, eq(revisionStep._pauseProgress, 1)),
+				exports._pauseButton.call(this))
+		)], _if(and(revisionStep._isPaused, exports._isPauseEnabled), exports._pauseButton.call(this)))
+			);
 
 		insert(exports._revisionContainer.call(this));
 	}
@@ -87,6 +91,19 @@ exports._rejectButton = function (/*options*/) {
 		'data-hint': _("You can reject the registration when documents and/or data that is " +
 			"sent can be determined as not real.")
 	}, _("Reject application"))];
+};
+
+exports._pauseButton = function (/*options*/) {
+	var options = normalizeOptions(arguments[0]), isPaused = this.processingStep._isPaused, label;
+	label = _if(isPaused, options.unPauseLabel || _("Unpause"), options.pauseLabel || _("Pause"));
+
+	return postButton({
+		action: url('revision', this.businessProcess.__id__, _if(isPaused, 'unpause', 'pause')),
+		buttonClass: 'button-main',
+		'data-hint': _("Pasuses the processing of the application."),
+		class: 'hint-optional hint-optional-bottom',
+		value: label
+	});
 };
 
 exports._revisionContainer = function () {
