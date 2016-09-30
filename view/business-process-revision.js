@@ -31,7 +31,7 @@ exports['sub-main'] = {
 						exports._returnButton.call(this)))),
 			// show reject button at all times when revision is pending
 			exports._rejectButton.call(this),
-			_if(and(exports._isPauseEnabled, eq(revisionStep.pauseProgress, 1)),
+			_if(and(exports._isPauseEnabled, eq(revisionStep._pauseProgress, 1)),
 				exports._pauseButton.call(this))
 		)], _if(and(revisionStep._isPaused, exports._isPauseEnabled), exports._pauseButton.call(this)))
 			);
