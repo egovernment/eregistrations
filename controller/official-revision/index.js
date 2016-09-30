@@ -75,7 +75,9 @@ module.exports = function (/*options*/) {
 	};
 
 	controller['revision/[0-9][a-z0-9]+/unpause'] = {
-		match: unpauseMatcher,
+		match: function (businessProcessId) {
+			return unpauseMatcher.call(this, businessProcessId, stepName);
+		},
 		submit: function () {
 			this.processingStep.delete('officialStatus');
 			this.processingStep.delete('status');
