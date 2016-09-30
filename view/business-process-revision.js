@@ -95,12 +95,12 @@ exports._rejectButton = function (/*options*/) {
 
 exports._pauseButton = function (/*options*/) {
 	var options = normalizeOptions(arguments[0]), isPaused = this.processingStep._isPaused, label;
-	label = _if(isPaused, options.unPauseLabel || _("Unpause"), options.pauseLabel || _("Pause"));
+	label = _if(isPaused, options.unpauseLabel || _("Unpause"), options.pauseLabel || _("Pause"));
 
 	return postButton({
 		action: url('revision', this.businessProcess.__id__, _if(isPaused, 'unpause', 'pause')),
 		buttonClass: 'button-main',
-		'data-hint': _("Pasuses the processing of the application."),
+		'data-hint': _("Pauses the processing of the application."),
 		class: 'hint-optional hint-optional-bottom',
 		value: label
 	});
