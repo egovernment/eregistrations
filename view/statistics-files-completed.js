@@ -60,35 +60,45 @@ var getTimeBreakdownTable = function () {
 
 					if (!serviceData) {
 						serviceData = parsedData.byService[service] = {
-							today: 0,
-							thisWeek: 0,
-							thisMonth: 0,
-							thisYear: 0,
-							sinceLaunch: 0
+							today: { count: 0 },
+							thisWeek: { count: 0 },
+							thisMonth: { count: 0 },
+							thisYear: { count: 0 },
+							sinceLaunch: { count: 0 }
 						};
 					}
 
-					serviceData.sinceLaunch += count;
+					serviceData.sinceLaunch.count += count;
 					total.sinceLaunch += count;
 
 					if (date.getUTCFullYear() === today.getUTCFullYear()) {
-						serviceData.thisYear += count;
+						serviceData.thisYear.count += count;
 						total.thisYear += count;
 
 						if (date.getUTCMonth() === today.getUTCMonth()) {
-							serviceData.thisMonth += count;
+							serviceData.thisMonth.count += count;
 							total.thisMonth += count;
 
 							if ((today.getUTCDate() - date.getUTCDate()) <= (6 + today.getUTCDay()) % 7) {
-								serviceData.thisWeek += count;
+								serviceData.thisWeek.count += count;
 								total.thisWeek += count;
 
 								if (date.valueOf() === today.valueOf()) {
-									serviceData.today += count;
+									serviceData.today.count += count;
 									total.today += count;
 								}
 							}
 						}
+					}
+				});
+			});
+
+			oForEach(parsedData.byService, function (serviceData) {
+				['today', 'thisWeek', 'thisMonth', 'thisYear', 'sinceLaunch'].forEach(function (period) {
+					if (!total[period]) {
+						serviceData[period].percentage = 0;
+					} else {
+						serviceData[period].percentage = serviceData[period].count / total[period];
 					}
 				});
 			});
@@ -136,11 +146,16 @@ var getTimeBreakdownTable = function () {
 							return tr(
 								td(serviceKey),
 								td(), // Period
-								td(serviceData.today),
-								td(serviceData.thisWeek),
-								td(serviceData.thisMonth),
-								td(serviceData.thisYear),
-								td(serviceData.sinceLaunch)
+								td(serviceData.today.count, ' ', '(',
+									serviceData.today.percentage, '%)'),
+								td(serviceData.thisWeek.count, ' ', '(',
+									serviceData.thisWeek.percentage, '%)'),
+								td(serviceData.thisMonth.count, ' ', '(',
+									serviceData.thisMonth.percentage, '%)'),
+								td(serviceData.thisYear.count, ' ', '(',
+									serviceData.thisYear.percentage, '%)'),
+								td(serviceData.sinceLaunch.count, ' ', '(',
+									serviceData.sinceLaunch.percentage, '%)')
 							);
 						}),
 						tr(
