@@ -68,19 +68,19 @@ var getTimeBreakdownTable = function () {
 						};
 					}
 
-					total.sinceLaunch += serviceData.sinceLaunch += count;
+					total.sinceLaunch += (serviceData.sinceLaunch += count);
 
 					if (date.getUTCFullYear() === today.getUTCFullYear()) {
-						total.thisYear += serviceData.thisYear += count;
+						total.thisYear += (serviceData.thisYear += count);
 
 						if (date.getUTCMonth() === today.getUTCMonth()) {
-							total.thisMonth += serviceData.thisMonth += count;
+							total.thisMonth += (serviceData.thisMonth += count);
 
 							if ((today.getUTCDate() - date.getUTCDate()) <= (6 + today.getUTCDay()) % 7) {
-								total.thisWeek += serviceData.thisWeek += count;
+								total.thisWeek += (serviceData.thisWeek += count);
 
 								if (date.valueOf() === today.valueOf()) {
-									total.today += serviceData.today += count;
+									total.today += (serviceData.today += count);
 								}
 							}
 						}
