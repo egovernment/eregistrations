@@ -15,26 +15,33 @@ exports._isPauseEnabled = false;
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var revisionStep = this.processingStep;
+		var revisionStep      = this.processingStep
+		  , isPauseEnabled    = exports._isPauseEnabled
+		  , isRevisionPending = revisionStep._isRevisionPending
+		  , isToolbarEnabled  = or(isRevisionPending, isPauseEnabled);
 
 		renderMainInfo(this, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
 
-		insert(_if(revisionStep._isRevisionPending, [exports._customAlert.call(this), section(
-			{ class: 'official-submission-toolbar' },
-			// show buttons only if step is pending
-			_if(eq(revisionStep._revisionProgress, 1),
-				// show "approve" or "sent back" buttons only, when revision was finalized
-				_if(eq(revisionStep._revisionApprovalProgress, 1),
-					_if(not(exports._processingTabLabel.call(this)),
-						exports._approveButton.call(this)),
-					_if(eq(revisionStep._sendBackStatusesProgress, 1),
-						exports._returnButton.call(this)))),
-			// show reject button at all times when revision is pending
-			exports._rejectButton.call(this),
-			_if(and(exports._isPauseEnabled, eq(revisionStep._pauseProgress, 1)),
-				exports._pauseButton.call(this))
-		)], _if(and(revisionStep._isPaused, exports._isPauseEnabled), exports._pauseButton.call(this)))
-			);
+		insert(_if(isToolbarEnabled), [
+			exports._customAlert.call(this),
+			section(
+				{ class: 'official-submission-toolbar' },
+				// show buttons only if step is pending
+				_if(isRevisionPending, div(
+					{ class: 'official-submission-toolbar-wrapper' },
+					_if(eq(revisionStep._revisionProgress, 1),
+						// show "approve" or "sent back" buttons only, when revision was finalized
+						_if(eq(revisionStep._revisionApprovalProgress, 1),
+							_if(not(exports._processingTabLabel.call(this)),
+								exports._approveButton.call(this)),
+							_if(eq(revisionStep._sendBackStatusesProgress, 1),
+								exports._returnButton.call(this)))),
+					// show reject button at all times when revision is pending
+					exports._rejectButton.call(this)
+				)),
+				_if(isPauseEnabled, exports._pauseButton.call(this))
+			)
+		]);
 
 		insert(exports._revisionContainer.call(this));
 	}
