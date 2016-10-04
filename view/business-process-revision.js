@@ -16,9 +16,10 @@ exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
 		var revisionStep      = this.processingStep
-		  , isPaused          = and(revisionStep._isPaused, exports._isPauseEnabled)
+		  , isPauseEnabled    = exports._isPauseEnabled
+		  , isPaused          = and(revisionStep._isPaused, isPauseEnabled)
 		  , isRevisionPending = revisionStep._isRevisionPending
-		  , isToolbarEnabled  = or(isRevisionPending, isPaused);
+		  , isToolbarEnabled  = or(isRevisionPending, isPauseEnabled);
 
 		renderMainInfo(this, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
 
@@ -27,7 +28,8 @@ exports['sub-main'] = {
 			section(
 				{ class: 'official-submission-toolbar' },
 				// show buttons only if step is pending
-				_if(and(isRevisionPending, not(isPaused)), [
+				_if(and(isRevisionPending, not(isPaused)), div(
+					{ class: 'official-submission-toolbar-wrapper' },
 					_if(eq(revisionStep._revisionProgress, 1),
 						// show "approve" or "sent back" buttons only, when revision was finalized
 						_if(eq(revisionStep._revisionApprovalProgress, 1),
@@ -37,8 +39,8 @@ exports['sub-main'] = {
 								exports._returnButton.call(this)))),
 					// show reject button at all times when revision is pending
 					exports._rejectButton.call(this)
-				]),
-				exports._pauseButton.call(this)
+				)),
+				_if(isPauseEnabled, exports._pauseButton.call(this))
 			)
 		]);
 
