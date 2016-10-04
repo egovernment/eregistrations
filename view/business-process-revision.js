@@ -27,7 +27,7 @@ exports['sub-main'] = {
 			section(
 				{ class: 'official-submission-toolbar' },
 				// show buttons only if step is pending
-				_if(and(isRevisionPending), div(
+				_if(isRevisionPending, div(
 					{ class: 'official-submission-toolbar-wrapper' },
 					_if(eq(revisionStep._revisionProgress, 1),
 						// show "approve" or "sent back" buttons only, when revision was finalized
