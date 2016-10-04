@@ -8,6 +8,7 @@ var capitalize = require('es5-ext/string/#/capitalize')
   , getData              = require('mano/lib/client/xhr-driver').get
   , location             = require('mano/lib/client/location')
   , memoize              = require('memoizee')
+  , oForEach             = require('es5-ext/object/for-each')
   , setupQueryHandler    = require('../utils/setup-client-query-handler')
   , getQueryHandlerConf  = require('../apps/statistics/get-query-conf')
   , ObservableValue      = require('observable-value');
@@ -36,8 +37,49 @@ var getTimeBreakdownTable = function () {
 		if (query.dateTo) {
 			query.dateTo = query.dateTo.toJSON();
 		}
-		queryServer(query).done(function (result) {
-			bpData.value = result;
+		queryServer(query).done(function (queryResult) {
+			var parsedData = {}
+			  , today      = new db.Date();
+
+			oForEach(queryResult, function (valueAtDate, date) {
+				date = new db.Date(date);
+
+				today.setUTCDate(today.getUTCDate() - 1);
+
+				oForEach(valueAtDate, function (count, service) {
+					var serviceData = parsedData[service];
+
+					if (!serviceData) {
+						serviceData = parsedData[service] = {
+							today: 0,
+							thisWeek: 0,
+							thisMonth: 0,
+							thisYear: 0,
+							sinceLaunch: 0
+						};
+					}
+
+					serviceData.sinceLaunch += count;
+
+					if (date.getUTCFullYear() === today.getUTCFullYear()) {
+						serviceData.thisYear += count;
+
+						if (date.getUTCMonth() === today.getUTCMonth()) {
+							serviceData.thisMonth += count;
+
+							if ((today.getUTCDate() - date.getUTCDate()) <= (6 + today.getUTCDay()) % 7) {
+								serviceData.thisWeek += count;
+
+								if (date.valueOf() === today.valueOf()) {
+									serviceData.today += count;
+								}
+							}
+						}
+					}
+				});
+			});
+
+			bpData.value = parsedData;
 		});
 	});
 
@@ -63,8 +105,6 @@ var getTimeBreakdownTable = function () {
 		table(
 			{ class: 'statistics-table statistics-table-registrations' },
 			thead(tr(
-				th(),
-				th(),
 				th({ class: 'statistics-table-number' }, _("Service")),
 				th({ class: "statistics-table-header-waiting" }, _("Period")),
 				th({ class: "statistics-table-header-pending" }, _("Today")),
@@ -74,7 +114,21 @@ var getTimeBreakdownTable = function () {
 				th({ class: "statistics-table-header-success" }, _("Since launch"))
 			)),
 			tbody(
-				// …
+				mmap(bpData, function (data) {
+					if (!data) return;
+
+					return toArray(data, function (serviceData, serviceKey) {
+						return tr(
+							td(serviceKey),
+							td(), // Period
+							td(serviceData.today),
+							td(serviceData.thisWeek),
+							td(serviceData.thisMonth),
+							td(serviceData.thisYear),
+							td(serviceData.sinceLaunch)
+						);
+					});
+				})
 			)
 		)
 	];
