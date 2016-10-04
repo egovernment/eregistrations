@@ -38,8 +38,17 @@ var getTimeBreakdownTable = function () {
 			query.dateTo = query.dateTo.toJSON();
 		}
 		queryServer(query).done(function (queryResult) {
-			var parsedData = {}
-			  , today      = new db.Date();
+			var today      = new db.Date()
+			  , parsedData = { byService: {} }
+			  , total      = {
+				today: 0,
+				thisWeek: 0,
+				thisMonth: 0,
+				thisYear: 0,
+				sinceLaunch: 0
+			};
+
+			parsedData.total = total;
 
 			oForEach(queryResult, function (valueAtDate, date) {
 				date = new db.Date(date);
@@ -47,10 +56,10 @@ var getTimeBreakdownTable = function () {
 				today.setUTCDate(today.getUTCDate() - 1);
 
 				oForEach(valueAtDate, function (count, service) {
-					var serviceData = parsedData[service];
+					var serviceData = parsedData.byService[service];
 
 					if (!serviceData) {
-						serviceData = parsedData[service] = {
+						serviceData = parsedData.byService[service] = {
 							today: 0,
 							thisWeek: 0,
 							thisMonth: 0,
@@ -59,19 +68,19 @@ var getTimeBreakdownTable = function () {
 						};
 					}
 
-					serviceData.sinceLaunch += count;
+					total.sinceLaunch += serviceData.sinceLaunch += count;
 
 					if (date.getUTCFullYear() === today.getUTCFullYear()) {
-						serviceData.thisYear += count;
+						total.thisYear += serviceData.thisYear += count;
 
 						if (date.getUTCMonth() === today.getUTCMonth()) {
-							serviceData.thisMonth += count;
+							total.thisMonth += serviceData.thisMonth += count;
 
 							if ((today.getUTCDate() - date.getUTCDate()) <= (6 + today.getUTCDay()) % 7) {
-								serviceData.thisWeek += count;
+								total.thisWeek += serviceData.thisWeek += count;
 
 								if (date.valueOf() === today.valueOf()) {
-									serviceData.today += count;
+									total.today += serviceData.today += count;
 								}
 							}
 						}
@@ -117,17 +126,28 @@ var getTimeBreakdownTable = function () {
 				mmap(bpData, function (data) {
 					if (!data) return;
 
-					return toArray(data, function (serviceData, serviceKey) {
-						return tr(
-							td(serviceKey),
+					return [
+						toArray(data.byService, function (serviceData, serviceKey) {
+							return tr(
+								td(serviceKey),
+								td(), // Period
+								td(serviceData.today),
+								td(serviceData.thisWeek),
+								td(serviceData.thisMonth),
+								td(serviceData.thisYear),
+								td(serviceData.sinceLaunch)
+							);
+						}),
+						tr(
+							td(_("Total")),
 							td(), // Period
-							td(serviceData.today),
-							td(serviceData.thisWeek),
-							td(serviceData.thisMonth),
-							td(serviceData.thisYear),
-							td(serviceData.sinceLaunch)
-						);
-					});
+							td(data.total.today),
+							td(data.total.thisWeek),
+							td(data.total.thisMonth),
+							td(data.total.thisYear),
+							td(data.total.sinceLaunch)
+						)
+					];
 				})
 			)
 		)
