@@ -17,7 +17,6 @@ exports['sub-main'] = {
 	content: function () {
 		var revisionStep      = this.processingStep
 		  , isPauseEnabled    = exports._isPauseEnabled
-		  , isPaused          = and(revisionStep._isPaused, isPauseEnabled)
 		  , isRevisionPending = revisionStep._isRevisionPending
 		  , isToolbarEnabled  = or(isRevisionPending, isPauseEnabled);
 
@@ -28,7 +27,7 @@ exports['sub-main'] = {
 			section(
 				{ class: 'official-submission-toolbar' },
 				// show buttons only if step is pending
-				_if(and(isRevisionPending, not(isPaused)), div(
+				_if(and(isRevisionPending), div(
 					{ class: 'official-submission-toolbar-wrapper' },
 					_if(eq(revisionStep._revisionProgress, 1),
 						// show "approve" or "sent back" buttons only, when revision was finalized
