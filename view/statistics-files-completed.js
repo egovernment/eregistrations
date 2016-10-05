@@ -6,6 +6,7 @@ var capitalize = require('es5-ext/string/#/capitalize')
   , db         = require('../db')
 
   , getData              = require('mano/lib/client/xhr-driver').get
+  , toDateInTz                    = require('../utils/to-date-in-time-zone')
   , location             = require('mano/lib/client/location')
   , memoize              = require('memoizee')
   , oForEach             = require('es5-ext/object/for-each')
@@ -38,9 +39,10 @@ var getTimeBreakdownTable = function () {
 			query.dateTo = query.dateTo.toJSON();
 		}
 		queryServer(query).done(function (queryResult) {
-			var today      = new db.Date()
+			var today      = toDateInTz(new Date(), db.timeZone)
 			  , parsedData = { byService: {} }
 			  , total      = {
+				inPeriod: 0,
 				today: 0,
 				thisWeek: 0,
 				thisMonth: 0,
@@ -53,13 +55,12 @@ var getTimeBreakdownTable = function () {
 			oForEach(queryResult, function (valueAtDate, date) {
 				date = new db.Date(date);
 
-				today.setUTCDate(today.getUTCDate() - 1);
-
 				oForEach(valueAtDate, function (count, service) {
 					var serviceData = parsedData.byService[service];
 
 					if (!serviceData) {
 						serviceData = parsedData.byService[service] = {
+							inPeriod: { count: 0 },
 							today: { count: 0 },
 							thisWeek: { count: 0 },
 							thisMonth: { count: 0 },
@@ -68,24 +69,34 @@ var getTimeBreakdownTable = function () {
 						};
 					}
 
-					serviceData.sinceLaunch.count += count;
-					total.sinceLaunch += count;
+					var updateCounts = function (period) {
+						serviceData[period].count += count;
+						total[period] += count;
+					};
+
+					updateCounts('sinceLaunch');
+
+					if (query.dateFrom && (date >= new db.Date(query.dateFrom))) {
+						if (query.dateTo) {
+							if (date <= new db.Date(query.dateTo)) {
+								updateCounts('inPeriod');
+							}
+						} else {
+							updateCounts('inPeriod');
+						}
+					}
 
 					if (date.getUTCFullYear() === today.getUTCFullYear()) {
-						serviceData.thisYear.count += count;
-						total.thisYear += count;
+						updateCounts('thisYear');
 
 						if (date.getUTCMonth() === today.getUTCMonth()) {
-							serviceData.thisMonth.count += count;
-							total.thisMonth += count;
+							updateCounts('thisMonth');
 
 							if ((today.getUTCDate() - date.getUTCDate()) <= (6 + today.getUTCDay()) % 7) {
-								serviceData.thisWeek.count += count;
-								total.thisWeek += count;
+								updateCounts('thisWeek');
 
 								if (date.valueOf() === today.valueOf()) {
-									serviceData.today.count += count;
-									total.today += count;
+									updateCounts('today');
 								}
 							}
 						}
@@ -94,7 +105,8 @@ var getTimeBreakdownTable = function () {
 			});
 
 			oForEach(parsedData.byService, function (serviceData, serviceKey) {
-				['today', 'thisWeek', 'thisMonth', 'thisYear', 'sinceLaunch'].forEach(function (period) {
+				['inPeriod', 'today', 'thisWeek', 'thisMonth', 'thisYear',
+					'sinceLaunch'].forEach(function (period) {
 					if (!total[period]) {
 						serviceData[period].percentage = 0;
 					} else {
@@ -147,7 +159,8 @@ var getTimeBreakdownTable = function () {
 						toArray(data.byService, function (serviceData, serviceKey) {
 							return tr(
 								td(serviceData.label),
-								td(), // Period
+								td(serviceData.inPeriod.count, ' ', '(',
+									serviceData.inPeriod.percentage, '%)'),
 								td(serviceData.today.count, ' ', '(',
 									serviceData.today.percentage, '%)'),
 								td(serviceData.thisWeek.count, ' ', '(',
@@ -162,7 +175,7 @@ var getTimeBreakdownTable = function () {
 						}),
 						tr(
 							td(_("Total")),
-							td(), // Period
+							td(data.total.inPeriod, ' ', '(100%)'),
 							td(data.total.today, ' ', '(100%)'),
 							td(data.total.thisWeek, ' ', '(100%)'),
 							td(data.total.thisMonth, ' ', '(100%)'),
