@@ -93,7 +93,7 @@ var getTimeBreakdownTable = function () {
 				});
 			});
 
-			oForEach(parsedData.byService, function (serviceData) {
+			oForEach(parsedData.byService, function (serviceData, serviceKey) {
 				['today', 'thisWeek', 'thisMonth', 'thisYear', 'sinceLaunch'].forEach(function (period) {
 					if (!total[period]) {
 						serviceData[period].percentage = 0;
@@ -101,6 +101,8 @@ var getTimeBreakdownTable = function () {
 						serviceData[period].percentage = (serviceData[period].count / total[period]) * 100;
 					}
 				});
+
+				serviceData.label = db['BusinessProcess' + capitalize.call(serviceKey)].prototype.label;
 			});
 
 			bpData.value = parsedData;
@@ -144,7 +146,7 @@ var getTimeBreakdownTable = function () {
 					return [
 						toArray(data.byService, function (serviceData, serviceKey) {
 							return tr(
-								td(serviceKey),
+								td(serviceData.label),
 								td(), // Period
 								td(serviceData.today.count, ' ', '(',
 									serviceData.today.percentage, '%)'),
