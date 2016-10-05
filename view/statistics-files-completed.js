@@ -98,7 +98,7 @@ var getTimeBreakdownTable = function () {
 					if (!total[period]) {
 						serviceData[period].percentage = 0;
 					} else {
-						serviceData[period].percentage = serviceData[period].count / total[period];
+						serviceData[period].percentage = (serviceData[period].count / total[period]) * 100;
 					}
 				});
 			});
@@ -161,11 +161,11 @@ var getTimeBreakdownTable = function () {
 						tr(
 							td(_("Total")),
 							td(), // Period
-							td(data.total.today),
-							td(data.total.thisWeek),
-							td(data.total.thisMonth),
-							td(data.total.thisYear),
-							td(data.total.sinceLaunch)
+							td(data.total.today, ' ', '(100%)'),
+							td(data.total.thisWeek, ' ', '(100%)'),
+							td(data.total.thisMonth, ' ', '(100%)'),
+							td(data.total.thisYear, ' ', '(100%)'),
+							td(data.total.sinceLaunch, ' ', '(100%)')
 						)
 					];
 				})
@@ -184,6 +184,8 @@ exports['statistics-main'] = function () {
 			certs[name].data.push({ data: data, label: proto.label });
 		});
 	});
+
+	insert(getTimeBreakdownTable.call(this));
 
 	table({ class: 'statistics-table statistics-table-registrations' },
 		thead(tr(
@@ -208,6 +210,4 @@ exports['statistics-main'] = function () {
 				});
 			})
 		));
-
-	insert(getTimeBreakdownTable.call(this));
 };
