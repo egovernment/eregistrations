@@ -106,7 +106,7 @@ module.exports = function (config) {
 					return {
 						sinceLaunch: reduceBusinessProcesses(filterBusinessProcesses(
 							data.businessProcesses,
-							assign(approvedQuery)
+							approvedQuery
 						)),
 						thisYear: reduceBusinessProcesses(filterBusinessProcesses(
 							data.businessProcesses,
@@ -130,6 +130,10 @@ module.exports = function (config) {
 						today: reduceBusinessProcesses(filterBusinessProcesses(
 							data.businessProcesses,
 							assign({ dateFrom: today }, approvedQuery)
+						)),
+						inPeriod: reduceBusinessProcesses(filterBusinessProcesses(
+							data.businessProcesses,
+							assign({}, approvedQuery, query)
 						))
 					};
 				});
@@ -140,7 +144,8 @@ module.exports = function (config) {
 					thisYear: { total: 0, byService: {} },
 					thisMonth: { total: 0, byService: {} },
 					thisWeek: { total: 0, byService: {} },
-					today: { total: 0, byService: {} }
+					today: { total: 0, byService: {} },
+					inPeriod: { total: 0, byService: {} }
 				};
 
 				oForEach(data, function (periodData, periodName) {
