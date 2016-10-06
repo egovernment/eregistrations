@@ -1,18 +1,16 @@
 'use strict';
 
-var capitalize = require('es5-ext/string/#/capitalize')
-  , toArray    = require('es5-ext/object/to-array')
-  , _          = require('mano').i18n
-  , db         = require('../db')
-
+var db                   = require('../db')
+  , _                    = require('mano').i18n
   , getData              = require('mano/lib/client/xhr-driver').get
-  , toDateInTz                    = require('../utils/to-date-in-time-zone')
   , location             = require('mano/lib/client/location')
   , memoize              = require('memoizee')
+  , ObservableValue      = require('observable-value')
+  , capitalize           = require('es5-ext/string/#/capitalize')
+  , toArray              = require('es5-ext/object/to-array')
   , oForEach             = require('es5-ext/object/for-each')
   , setupQueryHandler    = require('../utils/setup-client-query-handler')
-  , getQueryHandlerConf  = require('../apps/statistics/get-query-conf')
-  , ObservableValue      = require('observable-value');
+  , getQueryHandlerConf  = require('../apps/statistics/get-query-conf');
 
 exports._parent = require('./statistics-files');
 
@@ -39,82 +37,37 @@ var getTimeBreakdownTable = function () {
 			query.dateTo = query.dateTo.toJSON();
 		}
 		queryServer(query).done(function (queryResult) {
-			var today      = toDateInTz(new Date(), db.timeZone)
-			  , parsedData = { byService: {} }
-			  , total      = {
-				inPeriod: 0,
-				today: 0,
-				thisWeek: 0,
-				thisMonth: 0,
-				thisYear: 0,
-				sinceLaunch: 0
+			var parsedData = {
+				byService: {},
+				total: {}
 			};
 
-			parsedData.total = total;
+			oForEach(queryResult, function (periodData, periodName) {
+				if (parsedData.total[periodName] == null) {
+					parsedData.total[periodName] = 0;
+				}
 
-			oForEach(queryResult, function (valueAtDate, date) {
-				date = new db.Date(date);
+				oForEach(periodData.byService, function (serviceData, serviceName) {
+					var parsedServiceData = parsedData.byService[serviceName]
+					  , percentage        = 0;
 
-				oForEach(valueAtDate, function (count, service) {
-					var serviceData = parsedData.byService[service];
-
-					if (!serviceData) {
-						serviceData = parsedData.byService[service] = {
-							inPeriod: { count: 0 },
-							today: { count: 0 },
-							thisWeek: { count: 0 },
-							thisMonth: { count: 0 },
-							thisYear: { count: 0 },
-							sinceLaunch: { count: 0 }
+					if (!parsedServiceData) {
+						parsedServiceData = parsedData.byService[serviceName] = {
+							label: db['BusinessProcess' + capitalize.call(serviceName)].prototype.label
 						};
 					}
 
-					var updateCounts = function (period) {
-						serviceData[period].count += count;
-						total[period] += count;
+					if (periodData.total) {
+						percentage = (serviceData / periodData.total) * 100;
+					}
+
+					parsedServiceData[periodName] = {
+						count: serviceData,
+						percentage: percentage
 					};
 
-					updateCounts('sinceLaunch');
-
-					if (query.dateFrom && (date >= new db.Date(query.dateFrom))) {
-						if (query.dateTo) {
-							if (date <= new db.Date(query.dateTo)) {
-								updateCounts('inPeriod');
-							}
-						} else {
-							updateCounts('inPeriod');
-						}
-					}
-
-					if (date.getUTCFullYear() === today.getUTCFullYear()) {
-						updateCounts('thisYear');
-
-						if (date.getUTCMonth() === today.getUTCMonth()) {
-							updateCounts('thisMonth');
-
-							if ((today.getUTCDate() - date.getUTCDate()) <= (6 + today.getUTCDay()) % 7) {
-								updateCounts('thisWeek');
-
-								if (date.valueOf() === today.valueOf()) {
-									updateCounts('today');
-								}
-							}
-						}
-					}
+					parsedData.total[periodName] += serviceData;
 				});
-			});
-
-			oForEach(parsedData.byService, function (serviceData, serviceKey) {
-				['inPeriod', 'today', 'thisWeek', 'thisMonth', 'thisYear',
-					'sinceLaunch'].forEach(function (period) {
-					if (!total[period]) {
-						serviceData[period].percentage = 0;
-					} else {
-						serviceData[period].percentage = (serviceData[period].count / total[period]) * 100;
-					}
-				});
-
-				serviceData.label = db['BusinessProcess' + capitalize.call(serviceKey)].prototype.label;
 			});
 
 			bpData.value = parsedData;

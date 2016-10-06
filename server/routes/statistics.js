@@ -140,12 +140,12 @@ module.exports = function (config) {
 			})(function (data) {
 				// Apply formatting to match view table format
 				var result = {
-					sinceLaunch: { total: 0, byService: {} },
-					thisYear: { total: 0, byService: {} },
-					thisMonth: { total: 0, byService: {} },
-					thisWeek: { total: 0, byService: {} },
+					inPeriod: { total: 0, byService: {} },
 					today: { total: 0, byService: {} },
-					inPeriod: { total: 0, byService: {} }
+					thisWeek: { total: 0, byService: {} },
+					thisMonth: { total: 0, byService: {} },
+					thisYear: { total: 0, byService: {} },
+					sinceLaunch: { total: 0, byService: {} }
 				};
 
 				oForEach(data, function (periodData, periodName) {
