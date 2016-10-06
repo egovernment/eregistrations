@@ -96,13 +96,13 @@ var getTimeBreakdownTable = function () {
 		table(
 			{ class: 'statistics-table statistics-table-registrations' },
 			thead(tr(
-				th({ class: 'statistics-table-number' }, _("Service")),
-				th({ class: "statistics-table-header-waiting" }, _("Period")),
-				th({ class: "statistics-table-header-pending" }, _("Today")),
-				th({ class: "statistics-table-header-sentback" }, _("This week")),
-				th({ class: "statistics-table-header-sentback" }, _("This month")),
-				th({ class: "statistics-table-header-sentback" }, _("This year")),
-				th({ class: "statistics-table-header-success" }, _("Since launch"))
+				th({ class: 'statistics-table-header-waiting' }, _("Service")),
+				th({ class: 'statistics-table-number' }, _("Period")),
+				th({ class: 'statistics-table-number' }, _("Today")),
+				th({ class: 'statistics-table-number' }, _("This week")),
+				th({ class: 'statistics-table-number' }, _("This month")),
+				th({ class: 'statistics-table-number' }, _("This year")),
+				th({ class: 'statistics-table-number' }, _("Since launch"))
 			)),
 			tbody(
 				mmap(bpData, function (data) {
@@ -112,28 +112,28 @@ var getTimeBreakdownTable = function () {
 						toArray(data.byService, function (serviceData, serviceKey) {
 							return tr(
 								td(serviceData.label),
-								td(serviceData.inPeriod.count, ' ', '(',
+								td({ class: 'statistics-table-number' }, serviceData.inPeriod.count, ' ', '(',
 									serviceData.inPeriod.percentage, '%)'),
-								td(serviceData.today.count, ' ', '(',
+								td({ class: 'statistics-table-number' }, serviceData.today.count, ' ', '(',
 									serviceData.today.percentage, '%)'),
-								td(serviceData.thisWeek.count, ' ', '(',
+								td({ class: 'statistics-table-number' }, serviceData.thisWeek.count, ' ', '(',
 									serviceData.thisWeek.percentage, '%)'),
-								td(serviceData.thisMonth.count, ' ', '(',
+								td({ class: 'statistics-table-number' }, serviceData.thisMonth.count, ' ', '(',
 									serviceData.thisMonth.percentage, '%)'),
-								td(serviceData.thisYear.count, ' ', '(',
+								td({ class: 'statistics-table-number' }, serviceData.thisYear.count, ' ', '(',
 									serviceData.thisYear.percentage, '%)'),
-								td(serviceData.sinceLaunch.count, ' ', '(',
+								td({ class: 'statistics-table-number' }, serviceData.sinceLaunch.count, ' ', '(',
 									serviceData.sinceLaunch.percentage, '%)')
 							);
 						}),
 						tr(
 							td(_("Total")),
-							td(data.total.inPeriod, ' ', '(100%)'),
-							td(data.total.today, ' ', '(100%)'),
-							td(data.total.thisWeek, ' ', '(100%)'),
-							td(data.total.thisMonth, ' ', '(100%)'),
-							td(data.total.thisYear, ' ', '(100%)'),
-							td(data.total.sinceLaunch, ' ', '(100%)')
+							td({ class: 'statistics-table-number' }, data.total.inPeriod, ' ', '(100%)'),
+							td({ class: 'statistics-table-number' }, data.total.today, ' ', '(100%)'),
+							td({ class: 'statistics-table-number' }, data.total.thisWeek, ' ', '(100%)'),
+							td({ class: 'statistics-table-number' }, data.total.thisMonth, ' ', '(100%)'),
+							td({ class: 'statistics-table-number' }, data.total.thisYear, ' ', '(100%)'),
+							td({ class: 'statistics-table-number' }, data.total.sinceLaunch, ' ', '(100%)')
 						)
 					];
 				})
