@@ -1,7 +1,6 @@
 'use strict';
 
-var forEach      = require('es5-ext/object/for-each')
-  , ensureObject = require('es5-ext/object/valid-object')
+var ensureObject = require('es5-ext/object/valid-object')
   , serviceNames = require('../../../utils/business-process-service-names')
   , getEmptyData = require('../utils/get-time-reduction-template')
   , reduce       = require('../utils/reduce-time');
@@ -28,22 +27,25 @@ module.exports = function (data) {
 
 	serviceNames.forEach(function (name) { result.byService[name] = getEmptyData(); });
 
-	forEach(data, function (bpData, businessProcessId) {
+	data.forEach(function (bpData, businessProcessId) {
 		result.all.startedCount++;
 		result.byService[bpData.serviceName].startedCount++;
 
 		if (!bpData.approvedDate) return;
 
 		var dateString = bpData.approvedDate.toISOString().slice(0, 10)
-		  , time = bpData.approvedDateTime - bpData.submissionDateTime;
+		  , processingTime = bpData.approvedDateTime - bpData.submissionDateTime;
+
+		// If there's something wrong with calculations (may happen with old data), ignore record
+		if (processingTime < (1000 * 3)) return;
 
 		if (!result.byDateAndService[dateString]) {
 			serviceNames.forEach(function (name) {
 				this[name] = 0;
 			}, result.byDateAndService[dateString] = {});
 		}
-		reduce(result.all.processing, time);
-		reduce(result.byService[bpData.serviceName].processing, time);
+		reduce(result.all.processing, processingTime);
+		reduce(result.byService[bpData.serviceName].processing, processingTime);
 		result.byDateAndService[dateString][bpData.serviceName]++;
 	});
 	return result;
