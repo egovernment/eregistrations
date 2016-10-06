@@ -3,13 +3,13 @@
 var assign                  = require('es5-ext/object/assign')
   , ensureCallable          = require('es5-ext/object/valid-callable')
   , ensureObject            = require('es5-ext/object/valid-object')
+  , oForEach                = require('es5-ext/object/for-each')
   , ensureDriver            = require('dbjs-persistence/ensure-driver')
   , db                      = require('../../db')
   , QueryHandler            = require('../../utils/query-handler')
   , toDateInTz              = require('../../utils/to-date-in-time-zone')
   , getData                 = require('../business-process-query/get-data')
   , filterSteps             = require('../business-process-query/steps/filter')
-  , serviceNames            = require('../../utils/business-process-service-names.js')
   , filterBusinessProcesses = require('../business-process-query/business-processes/filter')
   , reduceSteps             = require('../business-process-query/steps/reduce-time')
   , reduceBusinessProcesses = require('../business-process-query/business-processes/reduce-time')
@@ -66,67 +66,6 @@ module.exports = function (config) {
 	// Initialize data map
 	getData(driver, processingStepsMeta).done();
 
-	var resolveFilesCompleted = function (query) {
-		return queryHandler.resolve(query)(function (query) {
-			return getData(driver, processingStepsMeta)(function (data) {
-				// We need:
-				// businessProcesses | filter(submitted)
-				return filterBusinessProcesses(data.businessProcesses, { flowStatus: 'approved' });
-			});
-		});
-	};
-
-	var getEmptyData = function () {
-		var emptyData = {
-			total: 0,
-			byService: {}
-		};
-
-		serviceNames.forEach(function (name) { emptyData.byService[name] = 0; });
-
-		return emptyData;
-	};
-
-	var reduceCompletedBusinessProcesses = function (data) {
-		var result = {
-			sinceLaunch: getEmptyData(),
-			thisYear: getEmptyData(),
-			thisMonth: getEmptyData(),
-			thisWeek: getEmptyData(),
-			today: getEmptyData()
-		};
-
-		data.forEach(function (bpData) {
-			var today        = toDateInTz(new Date(), db.timeZone)
-			  , date         = new db.Date(bpData.approvedDate);
-
-			var updateCounts = function (period) {
-				result[period].total++;
-				result[period].byService[bpData.serviceName]++;
-			};
-
-			updateCounts('sinceLaunch');
-
-			if (date.getUTCFullYear() === today.getUTCFullYear()) {
-				updateCounts('thisYear');
-
-				if (date.getUTCMonth() === today.getUTCMonth()) {
-					updateCounts('thisMonth');
-
-					if ((today.getUTCDate() - date.getUTCDate()) <= (6 + today.getUTCDay()) % 7) {
-						updateCounts('thisWeek');
-
-						if (date.valueOf() === today.valueOf()) {
-							updateCounts('today');
-						}
-					}
-				}
-			}
-		});
-
-		return result;
-	};
-
 	return assign({
 		'get-time-per-role': function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole);
@@ -149,46 +88,69 @@ module.exports = function (config) {
 				return timePerPersonPrint(data, rendererConfig);
 			});
 		}),
-		'get-files-completed-since-launch': function (query) {
-			// We need:
-			// businessProcesses | filter(approved) | reduceCompletedBusinessProcesses().sinceLaunch
-			return resolveFilesCompleted(query)(function (data) {
-				return reduceCompletedBusinessProcesses(data).sinceLaunch;
-			});
-		},
-		'get-files-completed-this-year': function (query) {
-			// We need:
-			// businessProcesses | filter(approved) | reduceCompletedBusinessProcesses().thisYear
-			return resolveFilesCompleted(query)(function (data) {
-				return reduceCompletedBusinessProcesses(data).thisYear;
-			});
-		},
-		'get-files-completed-this-month': function (query) {
-			// We need:
-			// businessProcesses | filter(approved) | reduceCompletedBusinessProcesses().thisMonth
-			return resolveFilesCompleted(query)(function (data) {
-				return reduceCompletedBusinessProcesses(data).thisMonth;
-			});
-		},
-		'get-files-completed-this-week': function (query) {
-			// We need:
-			// businessProcesses | filter(approved) | reduceCompletedBusinessProcesses().thisWeek
-			return resolveFilesCompleted(query)(function (data) {
-				return reduceCompletedBusinessProcesses(data).thisWeek;
-			});
-		},
-		'get-files-completed-today': function (query) {
-			// We need:
-			// businessProcesses | filter(approved) | reduceCompletedBusinessProcesses().today
-			return resolveFilesCompleted(query)(function (data) {
-				return reduceCompletedBusinessProcesses(data).today;
-			});
-		},
 		'get-files-completed': function (query) {
 			// We need:
-			// businessProcesses | filter(approved) | reduceCompletedBusinessProcesses()
-			return resolveFilesCompleted(query)(function (data) {
-				return reduceCompletedBusinessProcesses(data);
+			// businessProcesses | filter(approved) | reduceCompletedBusinessProcesses().today
+			// Spec of data needed:
+			// # Files completed since system launch
+			//   businessProcesses | filter(approved) | reduce() |
+			// # Files completed this year
+			//   businessProcesses | filter(approved, { dateFrom: this-year }) | reduce()
+			// # Files completed this month
+			//   businessProcesses | filter(approved, { dateFrom: this-month }) | reduce()
+			var approvedQuery = { flowStatus: 'approved' }
+			  , today         = toDateInTz(new Date(), db.timeZone);
+
+			return queryHandler.resolve(query)(function (query) {
+				return getData(driver, processingStepsMeta)(function (data) {
+					return {
+						sinceLaunch: reduceBusinessProcesses(filterBusinessProcesses(
+							data.businessProcesses,
+							assign(approvedQuery)
+						)),
+						thisYear: reduceBusinessProcesses(filterBusinessProcesses(
+							data.businessProcesses,
+							assign({
+								dateFrom: new db.Date(today.getUTCFullYear(), 0, 1)
+							}, approvedQuery)
+						)),
+						thisMonth: reduceBusinessProcesses(filterBusinessProcesses(
+							data.businessProcesses,
+							assign({
+								dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(), 1)
+							}, approvedQuery)
+						)),
+						thisWeek: reduceBusinessProcesses(filterBusinessProcesses(
+							data.businessProcesses,
+							assign({
+								dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(),
+									(6 + today.getUTCDay()) % 7)
+							}, approvedQuery)
+						)),
+						today: reduceBusinessProcesses(filterBusinessProcesses(
+							data.businessProcesses,
+							assign({ dateFrom: today }, approvedQuery)
+						))
+					};
+				});
+			})(function (data) {
+				// Apply formatting to match view table format
+				var result = {
+					sinceLaunch: { total: 0, byService: {} },
+					thisYear: { total: 0, byService: {} },
+					thisMonth: { total: 0, byService: {} },
+					thisWeek: { total: 0, byService: {} },
+					today: { total: 0, byService: {} }
+				};
+
+				oForEach(data, function (periodData, periodName) {
+					result[periodName].total = periodData.all.startedCount;
+					oForEach(periodData.byService, function (serviceData, serviceName) {
+						result[periodName].byService[serviceName] = serviceData.startedCount;
+					});
+				});
+
+				return result;
 			});
 		},
 		'get-dashboard-data': function (query) {
