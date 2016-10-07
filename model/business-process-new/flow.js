@@ -2,25 +2,37 @@
 
 'use strict';
 
-var memoize                     = require('memoizee/plain')
+var _                           = require('mano').i18n.bind('Model')
+  , memoize                     = require('memoizee/plain')
+  , Map                         = require('es6-map')
+  , defineStringLine            = require('dbjs-ext/string/string-line')
   , defineBusinessProcessStatus = require('../lib/business-process-status')
   , defineBusinessProcess       = require('./guide')
   , defineDataForms             = require('./data-forms')
   , defineRequirementUploads    = require('./requirement-uploads')
   , defineCosts                 = require('./costs')
   , defineSubmissionForms       = require('./submission-forms')
-  , defineProcessingSteps       = require('./processing-steps');
+  , defineProcessingSteps       = require('./processing-steps')
+  , definePerson                = require('../person');
 
 module.exports = memoize(function (db/*, options*/) {
 	var options               = Object(arguments[1])
 	  , BusinessProcess       = defineBusinessProcess(db, options)
-	  , BusinessProcessStatus = defineBusinessProcessStatus(db);
+	  , BusinessProcessStatus = defineBusinessProcessStatus(db)
+	  , StringLine            = defineStringLine(db)
+	  , Person                = definePerson(db, options);
 
 	defineDataForms(db, options);
 	defineRequirementUploads(db, options);
 	defineCosts(db, options);
 	defineSubmissionForms(db, options);
 	defineProcessingSteps(db, options);
+
+	// Enum for submitterType property
+	var SubmitterType = StringLine.createEnum('SubmitterType', new Map([
+		['user', { label: _("User") }],
+		['manager', { label: _("Manager"), htmlClass: 'error' }]
+	]));
 
 	BusinessProcess.prototype.defineProperties({
 
@@ -43,6 +55,11 @@ module.exports = memoize(function (db/*, options*/) {
 		// Set to true by server service on first successful request submission
 		// (technically: whenever isSubmittedReady turns true for very first time)
 		isSubmitted: { type: db.Boolean, value: false },
+
+		// The User that submitted application to Part B
+		submitter: { type: Person },
+
+		submitterType: { type: SubmitterType },
 
 		// Whether business process was sent back to Part A
 		isSentBack: { type: db.Boolean, value: false },
