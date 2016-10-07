@@ -1,15 +1,17 @@
 'use strict';
 
-var db                   = require('../db')
-  , _                    = require('mano').i18n
-  , getData              = require('mano/lib/client/xhr-driver').get
-  , location             = require('mano/lib/client/location')
-  , memoize              = require('memoizee')
-  , ObservableValue      = require('observable-value')
-  , capitalize           = require('es5-ext/string/#/capitalize')
-  , toArray              = require('es5-ext/object/to-array')
-  , setupQueryHandler    = require('../utils/setup-client-query-handler')
-  , getQueryHandlerConf  = require('../apps/statistics/get-query-conf');
+var db                    = require('../db')
+  , _                     = require('mano').i18n
+  , getData               = require('mano/lib/client/xhr-driver').get
+  , location              = require('mano/lib/client/location')
+  , memoize               = require('memoizee')
+  , ObservableValue       = require('observable-value')
+  , capitalize            = require('es5-ext/string/#/capitalize')
+  , toArray               = require('es5-ext/object/to-array')
+  , setupQueryHandler     = require('../utils/setup-client-query-handler')
+  , getQueryHandlerConf   = require('../apps/statistics/get-query-conf')
+  , completedFilesPeriods = ['inPeriod', 'today', 'thisWeek', 'thisMonth', 'thisYear',
+		'sinceLaunch'];
 
 exports._parent = require('./statistics-files');
 
@@ -78,8 +80,7 @@ var getTimeBreakdownTable = function () {
 						toArray(data.byService, function (serviceData, serviceName) {
 							return tr(
 								td(db['BusinessProcess' + capitalize.call(serviceName)].prototype.label),
-								list(['inPeriod', 'today', 'thisWeek', 'thisMonth', 'thisYear',
-									'sinceLaunch'], function (periodName) {
+								list(completedFilesPeriods, function (periodName) {
 									var total = data.total[periodName]
 									  , count = serviceData[periodName];
 
@@ -90,12 +91,10 @@ var getTimeBreakdownTable = function () {
 						}),
 						tr(
 							td(_("Total")),
-							td({ class: 'statistics-table-number' }, data.total.inPeriod, ' ', '(100%)'),
-							td({ class: 'statistics-table-number' }, data.total.today, ' ', '(100%)'),
-							td({ class: 'statistics-table-number' }, data.total.thisWeek, ' ', '(100%)'),
-							td({ class: 'statistics-table-number' }, data.total.thisMonth, ' ', '(100%)'),
-							td({ class: 'statistics-table-number' }, data.total.thisYear, ' ', '(100%)'),
-							td({ class: 'statistics-table-number' }, data.total.sinceLaunch, ' ', '(100%)')
+							list(completedFilesPeriods, function (periodName) {
+								return td({ class: 'statistics-table-number' },
+									data.total[periodName], ' ', '(100%)');
+							})
 						)
 					];
 				})
