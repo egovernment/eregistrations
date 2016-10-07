@@ -46,7 +46,7 @@ var getTimeBreakdownTable = function () {
 		section(
 			{ class: 'section-primary users-table-filter-bar' },
 			form(
-				{ action: '/files', autoSubmit: true },
+				{ action: '/files/', autoSubmit: true },
 				div(
 					{ class: 'users-table-filter-bar-status' },
 					label({ for: 'date-from-input' }, _("Date from"), ":"),

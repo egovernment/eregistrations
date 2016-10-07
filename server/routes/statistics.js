@@ -101,7 +101,7 @@ module.exports = function (config) {
 			// # Files completed today
 			//   businessProcesses | filter(approvedToday) | reduce()[all, byService]
 			// # Files completed in given period
-			//   businessProcesses | filter(approved, query) | reduce()[all, byService]
+			//   businessProcesses | filter(approvedAtQueryDateRange) | reduce()[all, byService]
 			var approvedQuery = { flowStatus: 'approved' }
 			  , today         = toDateInTz(new Date(), db.timeZone);
 
