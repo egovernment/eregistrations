@@ -241,5 +241,10 @@ exports.businessProcessMetaMap = {
 		validate: function (record) { return (record.value[0] === '3'); },
 		set: function (data, record) { data.status = record.value.slice(1); },
 		delete: function (data) { delete data.status; }
+	},
+	submitterType: {
+		validate: function (record) { return record.value[0] === '3'; },
+		set: function (data, record) { data.submitterType = record.value.slice(1); },
+		delete: function (data) { delete data.submitterType; }
 	}
 };
