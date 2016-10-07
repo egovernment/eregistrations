@@ -98,11 +98,16 @@ exports['application-submit'] = {
 		return validate.apply(this, arguments);
 	},
 	submit: function (data) {
-		if (this.manager) {
-			this.businessProcess.submitter = this.manager;
-			this.businessProcess.submitterType = 'manager';
-		} else {
-			this.businessProcess.submitter = 'user';
+		var businessProcess = this.businessProcess;
+
+		if (!businessProcess.isSubmitted) {
+			if (this.manager) {
+				businessProcess.submitter = this.manager;
+				businessProcess.submitterType = 'manager';
+			} else {
+				businessProcess.submitter = this.user;
+				businessProcess.submitterType = 'user';
+			}
 		}
 
 		return submit.apply(this, arguments);
