@@ -8,7 +8,6 @@ var db                   = require('../db')
   , ObservableValue      = require('observable-value')
   , capitalize           = require('es5-ext/string/#/capitalize')
   , toArray              = require('es5-ext/object/to-array')
-  , oForEach             = require('es5-ext/object/for-each')
   , setupQueryHandler    = require('../utils/setup-client-query-handler')
   , getQueryHandlerConf  = require('../apps/statistics/get-query-conf');
 
@@ -37,40 +36,7 @@ var getTimeBreakdownTable = function () {
 			query.dateTo = query.dateTo.toJSON();
 		}
 		queryServer(query).done(function (queryResult) {
-			var parsedData = {
-				byService: {},
-				total: {}
-			};
-
-			oForEach(queryResult, function (periodData, periodName) {
-				if (parsedData.total[periodName] == null) {
-					parsedData.total[periodName] = 0;
-				}
-
-				oForEach(periodData.byService, function (serviceData, serviceName) {
-					var parsedServiceData = parsedData.byService[serviceName]
-					  , percentage        = 0;
-
-					if (!parsedServiceData) {
-						parsedServiceData = parsedData.byService[serviceName] = {
-							label: db['BusinessProcess' + capitalize.call(serviceName)].prototype.label
-						};
-					}
-
-					if (periodData.total) {
-						percentage = (serviceData / periodData.total) * 100;
-					}
-
-					parsedServiceData[periodName] = {
-						count: serviceData,
-						percentage: percentage
-					};
-
-					parsedData.total[periodName] += serviceData;
-				});
-			});
-
-			bpData.value = parsedData;
+			bpData.value = queryResult;
 		});
 	});
 
@@ -109,21 +75,17 @@ var getTimeBreakdownTable = function () {
 					if (!data) return;
 
 					return [
-						toArray(data.byService, function (serviceData, serviceKey) {
+						toArray(data.byService, function (serviceData, serviceName) {
 							return tr(
-								td(serviceData.label),
-								td({ class: 'statistics-table-number' }, serviceData.inPeriod.count, ' ', '(',
-									serviceData.inPeriod.percentage, '%)'),
-								td({ class: 'statistics-table-number' }, serviceData.today.count, ' ', '(',
-									serviceData.today.percentage, '%)'),
-								td({ class: 'statistics-table-number' }, serviceData.thisWeek.count, ' ', '(',
-									serviceData.thisWeek.percentage, '%)'),
-								td({ class: 'statistics-table-number' }, serviceData.thisMonth.count, ' ', '(',
-									serviceData.thisMonth.percentage, '%)'),
-								td({ class: 'statistics-table-number' }, serviceData.thisYear.count, ' ', '(',
-									serviceData.thisYear.percentage, '%)'),
-								td({ class: 'statistics-table-number' }, serviceData.sinceLaunch.count, ' ', '(',
-									serviceData.sinceLaunch.percentage, '%)')
+								td(db['BusinessProcess' + capitalize.call(serviceName)].prototype.label),
+								list(['inPeriod', 'today', 'thisWeek', 'thisMonth', 'thisYear',
+									'sinceLaunch'], function (periodName) {
+									var total = data.total[periodName]
+									  , count = serviceData[periodName];
+
+									return td({ class: 'statistics-table-number' }, count, ' ',
+										'(', total ? ((count / total) * 100) : 0, '%)');
+								})
 							);
 						}),
 						tr(

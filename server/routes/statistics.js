@@ -89,15 +89,19 @@ module.exports = function (config) {
 			});
 		}),
 		'get-files-completed': function (query) {
-			// We need:
-			// businessProcesses | filter(approved) | reduceCompletedBusinessProcesses().today
 			// Spec of data needed:
 			// # Files completed since system launch
-			//   businessProcesses | filter(approved) | reduce() |
+			//   businessProcesses | filter(approved) | reduce()[all, byService]
 			// # Files completed this year
-			//   businessProcesses | filter(approved, { dateFrom: this-year }) | reduce()
+			//   businessProcesses | filter(approvedThisYear) | reduce()[all, byService]
 			// # Files completed this month
-			//   businessProcesses | filter(approved, { dateFrom: this-month }) | reduce()
+			//   businessProcesses | filter(approvedThisMonth) | reduce()[all, byService]
+			// # Files completed this week
+			//   businessProcesses | filter(approvedThisWeek) | reduce()[all, byService]
+			// # Files completed today
+			//   businessProcesses | filter(approvedToday) | reduce()[all, byService]
+			// # Files completed in given period
+			//   businessProcesses | filter(approved, query) | reduce()[all, byService]
 			var approvedQuery = { flowStatus: 'approved' }
 			  , today         = toDateInTz(new Date(), db.timeZone);
 
@@ -140,18 +144,21 @@ module.exports = function (config) {
 			})(function (data) {
 				// Apply formatting to match view table format
 				var result = {
-					inPeriod: { total: 0, byService: {} },
-					today: { total: 0, byService: {} },
-					thisWeek: { total: 0, byService: {} },
-					thisMonth: { total: 0, byService: {} },
-					thisYear: { total: 0, byService: {} },
-					sinceLaunch: { total: 0, byService: {} }
+					byService: {},
+					total: {}
 				};
 
 				oForEach(data, function (periodData, periodName) {
-					result[periodName].total = periodData.all.startedCount;
+					result.total[periodName] = periodData.all.startedCount;
+
 					oForEach(periodData.byService, function (serviceData, serviceName) {
-						result[periodName].byService[serviceName] = serviceData.startedCount;
+						var resultServiceData = result.byService[serviceName];
+
+						if (!resultServiceData) {
+							resultServiceData = result.byService[serviceName] = {};
+						}
+
+						resultServiceData[periodName] = serviceData.startedCount;
 					});
 				});
 
