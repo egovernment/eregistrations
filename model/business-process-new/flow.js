@@ -59,7 +59,7 @@ module.exports = memoize(function (db/*, options*/) {
 		// The User that submitted application to Part B
 		submitter: { type: Person },
 
-		submitterType: { type: SubmitterType },
+		submitterType: { type: SubmitterType, value: 'user' },
 
 		// Whether business process was sent back to Part A
 		isSentBack: { type: db.Boolean, value: false },
