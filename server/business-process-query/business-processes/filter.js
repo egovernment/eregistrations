@@ -49,6 +49,11 @@ module.exports = exports = function (data, query) {
 			if (bpData.status !== query.status) return;
 		}
 
+		// Filter by submitter type
+		if (query.submitterType) {
+			if (bpData.submitterType !== query.submitterType) return;
+		}
+
 		// Filter by approved in given date range
 		if (query.dateFrom) {
 			if (!bpData.approvedDate) return;
