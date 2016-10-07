@@ -31,7 +31,7 @@ module.exports = memoize(function (db/*, options*/) {
 	// Enum for submitterType property
 	var SubmitterType = StringLine.createEnum('SubmitterType', new Map([
 		['user', { label: _("User") }],
-		['manager', { label: _("Manager"), htmlClass: 'error' }]
+		['manager', { label: _("Manager") }]
 	]));
 
 	BusinessProcess.prototype.defineProperties({
@@ -57,8 +57,13 @@ module.exports = memoize(function (db/*, options*/) {
 		isSubmitted: { type: db.Boolean, value: false },
 
 		// The User that submitted application to Part B
+		// This will be the original submitter. If the file was sent back and resubmitted by
+		// other user, this property will not change.
 		submitter: { type: Person },
 
+		// Set in application-submit controller for registration apps.
+		// This will be the original submitter type. If the file was sent back and resubmitted by
+		// user of different type, this property will not change.
 		submitterType: { type: SubmitterType, value: 'user' },
 
 		// Whether business process was sent back to Part A
