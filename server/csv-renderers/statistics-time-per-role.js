@@ -24,9 +24,9 @@ module.exports = function (result, config) {
 	});
 
 	var total, processingTotal, correctionTotal, correctionByUsers;
-	correctionTotal         = result.steps.all.correction;
+	correctionTotal         = result.businessProcesses.correction;
 	correctionTotal.label   = _("Total correcting time");
-	correctionByUsers       = copy(result.steps.all.correction);
+	correctionByUsers       = copy(result.businessProcesses.correction);
 	correctionByUsers.label = _("Corrections by the users");
 	processingTotal         = result.businessProcesses.processing;
 	processingTotal.label   = _("Total process without corrections");

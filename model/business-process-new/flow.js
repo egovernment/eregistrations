@@ -13,12 +13,14 @@ var _                           = require('mano').i18n.bind('Model')
   , defineCosts                 = require('./costs')
   , defineSubmissionForms       = require('./submission-forms')
   , defineProcessingSteps       = require('./processing-steps')
+  , defineUInteger              = require('dbjs-ext/number/integer/u-integer')
   , definePerson                = require('../person');
 
 module.exports = memoize(function (db/*, options*/) {
 	var options               = Object(arguments[1])
 	  , BusinessProcess       = defineBusinessProcess(db, options)
 	  , BusinessProcessStatus = defineBusinessProcessStatus(db)
+	  , UInteger              = defineUInteger(db)
 	  , StringLine            = defineStringLine(db)
 	  , Person                = definePerson(db, options);
 
@@ -124,7 +126,9 @@ module.exports = memoize(function (db/*, options*/) {
 			}
 
 			return 'process';
-		} }
+		} },
+		correctionTime: { type: UInteger, value: 0 },
+		processingHolidaysTime: { type: UInteger, value: 0 }
 	});
 
 	return BusinessProcess;

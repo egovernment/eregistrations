@@ -197,6 +197,11 @@ exports.stepMetaMap = {
 };
 
 exports.businessProcessMetaMap = {
+	correctionTime: {
+		validate: function (record) { return (record.value[0] === '2'); },
+		set: function (data, record) { data.correctionTime = unserializeValue(record.value); },
+		delete: function (data) { delete data.correctionTime; }
+	},
 	isApproved: {
 		validate: function (record) { return (record.value === '11'); },
 		set: function (data, record) {
@@ -219,6 +224,11 @@ exports.businessProcessMetaMap = {
 			data.submissionDateTime = new Date(record.stamp / 1000);
 		},
 		delete: function (data) { delete data.submissionDateTime; }
+	},
+	processingHolidaysTime: {
+		validate: function (record) { return (record.value[0] === '2'); },
+		set: function (data, record) { data.processingHolidaysTime = unserializeValue(record.value); },
+		delete: function (data) { delete data.processingHolidaysTime; }
 	},
 	'registrations/requested': {
 		type: 'computed',
