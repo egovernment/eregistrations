@@ -93,7 +93,7 @@ var getTimeBreakdownTable = function () {
 							td(_("Total")),
 							list(completedFilesPeriods, function (periodName) {
 								return td({ class: 'statistics-table-number' },
-									data.total[periodName], ' ', '(100%)');
+									data.total[periodName], ' ', '(100.00%)');
 							})
 						)
 					];
