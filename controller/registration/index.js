@@ -96,5 +96,20 @@ exports['application-submit'] = {
 	validate: function (data) {
 		if (this.user.isDemo) throw customError('Cannot submit in demo mode', 'DEMO_MODE_SUBMISSION');
 		return validate.apply(this, arguments);
+	},
+	submit: function (data) {
+		var businessProcess = this.businessProcess;
+
+		if (!businessProcess.isSubmitted) {
+			if (this.manager) {
+				businessProcess.submitter = this.manager;
+				businessProcess.submitterType = 'manager';
+			} else {
+				businessProcess.submitter = this.user;
+				businessProcess.submitterType = 'user';
+			}
+		}
+
+		return submit.apply(this, arguments);
 	}
 };

@@ -1,7 +1,6 @@
 'use strict';
 
-var forEach      = require('es5-ext/object/for-each')
-  , ensureObject = require('es5-ext/object/valid-object')
+var ensureObject = require('es5-ext/object/valid-object')
   , serviceNames = require('../../../utils/business-process-service-names')
   , getEmptyData = require('../utils/get-time-reduction-template')
   , reduce       = require('../utils/reduce-time');
@@ -28,7 +27,7 @@ module.exports = function (data) {
 
 	serviceNames.forEach(function (name) { result.byService[name] = getEmptyData(); });
 
-	forEach(data, function (bpData, businessProcessId) {
+	data.forEach(function (bpData, businessProcessId) {
 		var dateString, processingTime;
 		result.all.startedCount++;
 		result.byService[bpData.serviceName].startedCount++;
@@ -40,7 +39,7 @@ module.exports = function (data) {
 			(bpData.correctionTime || 0) - (bpData.processingHolidaysTime || 0);
 
 		// If there's something wrong with calculations (may happen with old data), ignore record
-		if (processingTime < (1000 * 60)) return;
+		if (processingTime < (1000 * 3)) return;
 
 		if (!result.byDateAndService[dateString]) {
 			serviceNames.forEach(function (name) {
