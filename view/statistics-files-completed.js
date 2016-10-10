@@ -120,7 +120,7 @@ exports['statistics-main'] = function () {
 		thead(tr(
 			th(),
 			th(),
-			th( _("Service")),
+			th(_("Service")),
 			th({ class: "statistics-table-header-waiting" }, _("Waiting")),
 			th({ class: "statistics-table-header-pending" }, _("Pending")),
 			th({ class: "statistics-table-header-sentback" }, _("Rejected")),
