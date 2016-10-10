@@ -10,7 +10,7 @@
 }
 .statistics-table thead tr .statistics-table-number,
 .statistics-table tbody tr .statistics-table-number {
-	text-align: center;
+	text-align: right;
 }
 
 .statistics-table thead th {

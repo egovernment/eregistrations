@@ -85,7 +85,7 @@ var getTimeBreakdownTable = function () {
 									  , count = serviceData[periodName];
 
 									return td({ class: 'statistics-table-number' }, count, ' ',
-										'(', total ? ((count / total) * 100) : 0, '%)');
+										'(', (total ? ((count / total) * 100) : 0).toFixed(2), '%)');
 								})
 							);
 						}),
@@ -120,7 +120,7 @@ exports['statistics-main'] = function () {
 		thead(tr(
 			th(),
 			th(),
-			th({ class: 'statistics-table-number' }, _("Service")),
+			th( _("Service")),
 			th({ class: "statistics-table-header-waiting" }, _("Waiting")),
 			th({ class: "statistics-table-header-pending" }, _("Pending")),
 			th({ class: "statistics-table-header-sentback" }, _("Rejected")),
@@ -131,7 +131,7 @@ exports['statistics-main'] = function () {
 				var doc = data.document;
 				return data.data.map(function (data) {
 					return tr(td(doc.abbr), td(doc.label),
-						td({ class: 'statistics-table-number' }, data.label),
+						td(data.label),
 						td({ class: 'statistics-table-number' }, data.data._waiting),
 						td({ class: 'statistics-table-number' }, data.data._pending),
 						td({ class: 'statistics-table-number' }, data.data._rejected),
