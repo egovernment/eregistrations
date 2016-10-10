@@ -52,7 +52,7 @@ exports['statistics-main'] = function () {
 			totalWithoutCorrections = result.businessProcesses.processing;
 			totalWithoutCorrections.label = _("Total process without corrections");
 
-			totalCorrections = result.steps.all.correction;
+			totalCorrections = result.businessProcesses.correction;
 			totalCorrections.label = _("Total correcting time");
 
 			total = result.businessProcesses.processing;

@@ -28,7 +28,7 @@ module.exports = function (data) {
 	serviceNames.forEach(function (name) { result.byService[name] = getEmptyData(); });
 
 	data.forEach(function (bpData, businessProcessId) {
-		var dateString, processingTime;
+		var dateString, processingTime, correctionTime;
 		result.all.startedCount++;
 		result.byService[bpData.serviceName].startedCount++;
 
@@ -37,6 +37,7 @@ module.exports = function (data) {
 		dateString     = bpData.approvedDate.toISOString().slice(0, 10);
 		processingTime = bpData.approvedDateTime - bpData.submissionDateTime -
 			(bpData.correctionTime || 0) - (bpData.processingHolidaysTime || 0);
+		correctionTime = bpData.correctionTime || 0;
 
 		// If there's something wrong with calculations (may happen with old data), ignore record
 		if (processingTime < (1000 * 3)) return;
@@ -47,7 +48,10 @@ module.exports = function (data) {
 			}, result.byDateAndService[dateString] = {});
 		}
 		reduce(result.all.processing, processingTime);
+		reduce(result.all.correction, correctionTime);
 		reduce(result.byService[bpData.serviceName].processing, processingTime);
+		reduce(result.byService[bpData.serviceName].correction, correctionTime);
+
 		result.byDateAndService[dateString][bpData.serviceName]++;
 	});
 	return result;
