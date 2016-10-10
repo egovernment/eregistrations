@@ -29,16 +29,14 @@ module.exports = function (data) {
 	serviceNames.forEach(function (name) { result.byService[name] = getEmptyData(); });
 
 	forEach(data, function (bpData, businessProcessId) {
-		var closingDate, closingDateTime, dateString, processingTime;
+		var dateString, processingTime;
 		result.all.startedCount++;
 		result.byService[bpData.serviceName].startedCount++;
-		closingDateTime = bpData.approvedDateTime || bpData.rejectedDateTime;
-		closingDate     = bpData.approvedDate || bpData.rejectedDate;
 
-		if (!closingDateTime) return;
+		if (!bpData.approvedDateTime) return;
 
-		dateString     = closingDate.toISOString().slice(0, 10);
-		processingTime = closingDateTime - bpData.submissionDateTime -
+		dateString     = bpData.approvedDate.toISOString().slice(0, 10);
+		processingTime = bpData.approvedDateTime - bpData.submissionDateTime -
 			(bpData.correctionTime || 0) - (bpData.processingHolidaysTime || 0);
 
 		// If there's something wrong with calculations (may happen with old data), ignore record
