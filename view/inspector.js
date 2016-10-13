@@ -1,12 +1,19 @@
 'use strict';
 
-var db           = require('../db')
-  , _            = require('mano').i18n.bind('View: Official: Inspector')
-  , location     = require('mano/lib/client/location')
-  , capitalize   = require('es5-ext/string/#/capitalize')
-  , uncapitalize = require('es5-ext/string/#/uncapitalize')
-  , once         = require('timers-ext/once')
-  , dispatch     = require('dom-ext/html-element/#/dispatch-event-2');
+var db                = require('../db')
+  , _                 = require('mano').i18n.bind('View: Official: Inspector')
+  , location          = require('mano/lib/client/location')
+  , env               = require('mano').env
+  , capitalize        = require('es5-ext/string/#/capitalize')
+  , uncapitalize      = require('es5-ext/string/#/uncapitalize')
+  , once              = require('timers-ext/once')
+  , dispatch          = require('dom-ext/html-element/#/dispatch-event-2')
+  , getInspectorTable = require('./components/inspector-table')
+  , tableColumns      = require('./components/inspector-table-columns');
+
+var getOrderIndex = function (businessProcess) {
+	return businessProcess._isSubmitted.lastModified;
+};
 
 exports._parent = require('./abstract-user-base');
 
@@ -18,7 +25,7 @@ exports['sub-main'] = {
 		  , inscriptionQuery   = location.query.get('inscription')
 		  , submitterTypeQuery = location.query.get('submitterType')
 		  , SubmitterType      = db.BusinessProcess.prototype.getDescriptor('submitterType').type
-		  , searchForm, searchInput;
+		  , searchForm, searchInput, inspectorTable;
 
 		section(
 			{ class: 'section-primary users-table-filter-bar' },
@@ -146,7 +153,20 @@ exports['sub-main'] = {
 		);
 
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
+
+		inspectorTable = getInspectorTable({
+			getOrderIndex: getOrderIndex,
+			itemsPerPage: env.objectsListItemsPerPage,
+			columns: tableColumns.columns,
+			tableUrl: location.pathname,
+			class: 'submitted-user-data-table'
+		});
+
+		insert(inspectorTable.pagination,
+			section({ class: 'table-responsive-container' }, inspectorTable),
+			inspectorTable.pagination);
 	}
 };
 
 exports._customFilters = Function.prototype;
+exports._statusMap = Function.prototype;
