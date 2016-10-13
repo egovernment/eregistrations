@@ -7,6 +7,7 @@ var customError      = require('es5-ext/error/custom')
   , resolvePluralKey = require('i18n2/resolve-plural-key')
   , compile          = require('es6-template-strings/compile')
   , arrayIncludes    = require('es5-ext/array/#/contains')
+  , copy             = require('es5-ext/object/copy')
   , keysMismatchErr  =
 		customError("The inserts in translation must match the inserts in the key", "INSERTS_MISMATCH")
 
@@ -17,7 +18,7 @@ if (!i18nScanMap) throw new Error("Translations map not set");
 exports.validate = function (data) {
 	var normalized = create(null);
 	forEach(data, function (value, key) {
-		var resolvedPluralKey, normalizedValue, keySubs, subs;
+		var resolvedPluralKey, normalizedValue, keySubs, subs, mismatchErr;
 		if (!i18nScanMap[key]) return;
 		if (isArray(value)) {
 			if (value.length !== 2) {
@@ -44,9 +45,14 @@ exports.validate = function (data) {
 			keySubs = keySubs.map(function (keySub) {
 				return keySub.trim();
 			});
+			subs = subs.map(function (sub) {
+				return sub.trim();
+			});
 			subs.forEach(function (sub) {
-				if (!arrayIncludes.call(keySubs, sub.trim())) {
-					throw keysMismatchErr;
+				if (!arrayIncludes.call(keySubs, sub)) {
+					mismatchErr = copy(keysMismatchErr);
+					mismatchErr.message += ', bad insert: ' + sub + ' in tranlsation: ' + normalizedValue;
+					throw mismatchErr;
 				}
 			});
 		}
