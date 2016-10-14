@@ -29,8 +29,6 @@ getFrom = function (target, from) {
 };
 
 getTo = function (target, to) {
-	var previousBusinessProcess = target.previousBusinessProcess;
-
 	// Custom 'to' option
 	if (to != null) {
 		if (typeof to === 'function') return to(target);
@@ -39,15 +37,6 @@ getTo = function (target, to) {
 
 	// New BusinessProcess model
 	if (isSet(target.notificationEmails)) return aFrom(target.notificationEmails);
-
-	// If we have an instance of derived BusinessProcess, find original one
-	while (previousBusinessProcess) {
-		if (previousBusinessProcess.previousBusinessProcess) {
-			previousBusinessProcess = previousBusinessProcess.previousBusinessProcess;
-		} else {
-			return previousBusinessProcess.user.email;
-		}
-	}
 
 	// Target is most certainly a user
 	if (target.email) return target.email;
