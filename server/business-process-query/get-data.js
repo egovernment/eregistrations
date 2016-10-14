@@ -232,9 +232,9 @@ exports.businessProcessMetaMap = {
 	},
 	'registrations/requested': {
 		type: 'computed',
-		validate: function (record) { return record.value[0] === '['; },
+		validate: function (record) { return Array.isArray(record.value); },
 		set: function (data, record) {
-			data.registrations = new Set(resolveEventKeys(JSON.parse(record.value)).map(function (value) {
+			data.registrations = new Set(resolveEventKeys(record.value).map(function (value) {
 				return value.slice(value.lastIndexOf('/') + 1);
 			}));
 		},
