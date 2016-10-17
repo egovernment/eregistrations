@@ -8,12 +8,9 @@ var customError      = require('es5-ext/error/custom')
   , resolvePluralKey = require('i18n2/resolve-plural-key')
   , compile          = require('es6-template-strings/compile')
   , arrayIncludes    = require('es5-ext/array/#/contains')
-  , copy             = require('es5-ext/object/copy')
   , _d               = _
-  , keysMismatchErr  =
-		customError(_("The inserts in translation must match the inserts in the key" +
-				", bad insert: ${ badInsert } in translation: ${ translation }"),
-			"INSERTS_MISMATCH")
+  , keysMismatchErrMsg  = _("The inserts in translation must match the inserts in the key" +
+		", bad insert(s): ${ badInserts } in translation: ${ translation }")
 
   , create = Object.create;
 
@@ -22,7 +19,7 @@ if (!i18nScanMap) throw new Error("Translations map not set");
 exports.validate = function (data) {
 	var normalized = create(null);
 	forEach(data, function (value, key) {
-		var resolvedPluralKey, normalizedValue, keySubs, subs, mismatchErr;
+		var resolvedPluralKey, normalizedValue, keySubs, subs, badInserts = [];
 		if (!i18nScanMap[key]) return;
 		if (isArray(value)) {
 			if (value.length !== 2) {
@@ -43,11 +40,9 @@ exports.validate = function (data) {
 		subs = compile(normalizedValue).substitutions;
 		if (subs) {
 			keySubs = compile(key).substitutions;
-			if (!(keySubs && subs)) {
-				mismatchErr = copy(keysMismatchErr);
-				mismatchErr.message = _d(mismatchErr.message,
-					{ badInsert: subs, translation: normalizedValue });
-				throw mismatchErr;
+			if (!keySubs) {
+				throw customError(_d(keysMismatchErrMsg,
+					{ badInserts: subs, translation: normalizedValue }), "INSERTS_MISMATCH");
 			}
 			keySubs = keySubs.map(function (keySub) {
 				return keySub.trim();
@@ -57,12 +52,14 @@ exports.validate = function (data) {
 			});
 			subs.forEach(function (sub) {
 				if (!arrayIncludes.call(keySubs, sub)) {
-					mismatchErr = copy(keysMismatchErr);
-					mismatchErr.message = _d(mismatchErr.message,
-						{ badInsert: sub, translation: normalizedValue });
-					throw mismatchErr;
+					badInserts.push(sub);
 				}
 			});
+
+			if (badInserts.length) {
+				throw customError(_d(keysMismatchErrMsg,
+					{ badInserts: badInserts, translation: normalizedValue }), "INSERTS_MISMATCH");
+			}
 		}
 
 		normalized[key] = normalizedValue;
