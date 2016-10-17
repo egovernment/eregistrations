@@ -1,6 +1,7 @@
 'use strict';
 
 var customError      = require('es5-ext/error/custom')
+  , _                = require("../i18n").bind("Translations panel")
   , forEach          = require('es5-ext/object/for-each')
   , i18nScanMap      = require('mano').i18nScanMap
   , isArray          = require('es5-ext/array/is-plain-array')
@@ -8,8 +9,11 @@ var customError      = require('es5-ext/error/custom')
   , compile          = require('es6-template-strings/compile')
   , arrayIncludes    = require('es5-ext/array/#/contains')
   , copy             = require('es5-ext/object/copy')
+  , _d               = _
   , keysMismatchErr  =
-		customError("The inserts in translation must match the inserts in the key", "INSERTS_MISMATCH")
+		customError(_("The inserts in translation must match the inserts in the key" +
+				", bad insert: ${ badInsert } in translation: ${ translation }"),
+			"INSERTS_MISMATCH")
 
   , create = Object.create;
 
@@ -40,7 +44,10 @@ exports.validate = function (data) {
 		if (subs) {
 			keySubs = compile(key).substitutions;
 			if (!(keySubs && subs)) {
-				throw keysMismatchErr;
+				mismatchErr = copy(keysMismatchErr);
+				mismatchErr.message = _d(mismatchErr.message,
+					{ badInsert: subs, translation: normalizedValue });
+				throw mismatchErr;
 			}
 			keySubs = keySubs.map(function (keySub) {
 				return keySub.trim();
@@ -51,7 +58,8 @@ exports.validate = function (data) {
 			subs.forEach(function (sub) {
 				if (!arrayIncludes.call(keySubs, sub)) {
 					mismatchErr = copy(keysMismatchErr);
-					mismatchErr.message += ', bad insert: ' + sub + ' in tranlsation: ' + normalizedValue;
+					mismatchErr.message = _d(mismatchErr.message,
+						{ badInsert: sub, translation: normalizedValue });
 					throw mismatchErr;
 				}
 			});
