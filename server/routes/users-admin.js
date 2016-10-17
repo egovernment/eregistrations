@@ -27,6 +27,7 @@ var aFrom               = require('es5-ext/array/from')
   , getDbArray          = require('../utils/get-db-array')
   , getIndexMap         = require('../utils/get-db-sort-index-map')
   , getBaseRoutes       = require('./authenticated')
+  , compact             = require('es5-ext/array/#/compact')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , slice = Array.prototype.slice, ceil = Math.ceil
@@ -186,7 +187,7 @@ module.exports = exports = function (data) {
 						return data.stamp + '.' + data.id;
 					}).join('\n'),
 					size: size,
-					data: flatten.call(events)
+					data: compact.call(flatten.call(events))
 				};
 			});
 		});
