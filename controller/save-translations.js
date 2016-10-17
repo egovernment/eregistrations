@@ -1,7 +1,7 @@
 'use strict';
 
 var customError      = require('es5-ext/error/custom')
-  , _                = require("../i18n").bind("Translations panel")
+  , _                = require("mano").i18n.bind("Translations panel")
   , forEach          = require('es5-ext/object/for-each')
   , i18nScanMap      = require('mano').i18nScanMap
   , isArray          = require('es5-ext/array/is-plain-array')
