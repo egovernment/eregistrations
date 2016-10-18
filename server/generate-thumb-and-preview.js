@@ -34,50 +34,61 @@ module.exports = function (file) {
 	processFullPath = resolve(path, processPath);
 	thumbFullPath = resolve(path, thumbPath);
 
-	thumb = gm(processFullPath).density(300, 300).resize(500, 500, '>').writeP(thumbFullPath);
+	return gm.getIsInstalled(function (isInstalled) {
 
-	return gm(processFullPath).sizeP()(function (value) {
-		if (!value) {
-			biggerDimension = 0;
-		} else {
-			biggerDimension = Math.max(value.width, value.height);
-		}
-		if (file.path !== previewPath || biggerDimension > 2000) {
-			previewFullPath = resolve(path, previewPath);
-			preview =
-				gm(processFullPath).density(300, 300).resize(2000, 2000, '>').writeP(previewFullPath);
-		}
-		return deferred(thumb, preview)(function () {
-			if (!file.path) {
-				return deferred(unlink(thumbFullPath), preview && unlink(previewFullPath));
-			}
-
-			file.thumb.path = thumbPath;
-			if (preview) {
-				file.generatedPreview.path = previewPath;
-			} else {
+		if (!isInstalled) {
+			if (file.type !== 'application/pdf') {
+				file.thumb.path = file.path;
 				file.isPreviewGenerated = false;
 			}
-		}, function (e) {
-			if (!file.path && contains.call(e.message, 'Unable to open file')) {
-				return deferred(unlink(thumbFullPath), preview && unlink(previewFullPath))(null, false);
+			return;
+		}
+
+		thumb = gm(processFullPath).density(300, 300).resize(500, 500, '>').writeP(thumbFullPath);
+
+		return gm(processFullPath).sizeP()(function (value) {
+			if (!value) {
+				biggerDimension = 0;
+			} else {
+				biggerDimension = Math.max(value.width, value.height);
 			}
-			console.log(e);
-			if (contains.call(e.message, "Improper image header")) {
-				console.log("Cannot generate previews", e.stack);
-				return;
+			if (file.path !== previewPath || biggerDimension > 2000) {
+				previewFullPath = resolve(path, previewPath);
+				preview =
+					gm(processFullPath).density(300, 300).resize(2000, 2000, '>').writeP(previewFullPath);
 			}
-			if (startsWith.call(e.message, "Command failed: gm convert:")) {
-				console.error("\nCould not generate thumb and preview:\n");
-				console.error(e.stack + "\n\n");
-				return;
-			}
-			if (contains.call(e.message, "GPL Ghostscript")) {
-				console.error("\nCould not generate thumb and preview:\n");
-				console.error(e.stack + "\n\n");
-				return;
-			}
-			throw e;
+			return deferred(thumb, preview)(function () {
+				if (!file.path) {
+					return deferred(unlink(thumbFullPath), preview && unlink(previewFullPath));
+				}
+
+				file.thumb.path = thumbPath;
+				if (preview) {
+					file.generatedPreview.path = previewPath;
+				} else {
+					file.isPreviewGenerated = false;
+				}
+			}, function (e) {
+				if (!file.path && contains.call(e.message, 'Unable to open file')) {
+					return deferred(unlink(thumbFullPath), preview && unlink(previewFullPath))(null, false);
+				}
+				console.log(e);
+				if (contains.call(e.message, "Improper image header")) {
+					console.log("Cannot generate previews", e.stack);
+					return;
+				}
+				if (startsWith.call(e.message, "Command failed: gm convert:")) {
+					console.error("\nCould not generate thumb and preview:\n");
+					console.error(e.stack + "\n\n");
+					return;
+				}
+				if (contains.call(e.message, "GPL Ghostscript")) {
+					console.error("\nCould not generate thumb and preview:\n");
+					console.error(e.stack + "\n\n");
+					return;
+				}
+				throw e;
+			});
 		});
 	});
 };
