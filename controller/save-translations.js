@@ -9,8 +9,7 @@ var customError      = require('es5-ext/error/custom')
   , compile          = require('es6-template-strings/compile')
   , arrayIncludes    = require('es5-ext/array/#/contains')
   , _d               = _
-  , keysMismatchErrMsg  = _("The inserts in translation must match the inserts in the key" +
-		", bad insert(s): ${ badInserts } in translation: ${ translation }")
+  , keysMismatchErrMsg  = _("Invalid translation for key: ${ key }\nBad inserts: ${ badInserts }")
 
   , create = Object.create;
 
@@ -42,7 +41,8 @@ exports.validate = function (data) {
 			keySubs = compile(key).substitutions;
 			if (!keySubs) {
 				throw customError(_d(keysMismatchErrMsg,
-					{ badInserts: subs, translation: normalizedValue }), "INSERTS_MISMATCH");
+					{ badInserts: subs.map(JSON.stringify), key: JSON.stringify(key) }),
+					"INSERTS_MISMATCH");
 			}
 			keySubs = keySubs.map(function (keySub) {
 				return keySub.trim();
@@ -58,7 +58,8 @@ exports.validate = function (data) {
 
 			if (badInserts.length) {
 				throw customError(_d(keysMismatchErrMsg,
-					{ badInserts: badInserts, translation: normalizedValue }), "INSERTS_MISMATCH");
+					{ badInserts: badInserts.map(JSON.stringify), key: JSON.stringify(key) }),
+					"INSERTS_MISMATCH");
 			}
 		}
 
