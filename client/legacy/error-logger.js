@@ -1,9 +1,12 @@
 'use strict';
 
+var forEach = require('es5-ext/object/for-each');
+
 var onError = function (message, source, line, column, error) {
 	if ((typeof XMLHttpRequest === 'undefined') || (typeof JSON === 'undefined')) return;
-	var xhr = new XMLHttpRequest(), isSent = false;
-	xhr.open('POST', '/url/', true);
+	var xhr = new XMLHttpRequest(), isSent = false, queryConfig, query = [];
+	xhr.open('POST', '/log-client-error/', true);
+	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	xhr.onreadystatechange = function () {
 		var status;
 		if (isSent) return;
@@ -22,7 +25,7 @@ var onError = function (message, source, line, column, error) {
 			console[console.error ? 'error' : 'log']("Failed to send client crash log");
 		}
 	};
-	xhr.send(JSON.stringify({
+	queryConfig = {
 		location: location.href,
 		message: message,
 		source: source,
@@ -30,7 +33,13 @@ var onError = function (message, source, line, column, error) {
 		column: column,
 		errorMessage: error && error.message,
 		errorStack: error && error.stack
-	}));
+	};
+
+	forEach(queryConfig, function (data, key) {
+		query.push(key + '=' + data);
+	});
+
+	xhr.send(JSON.stringify(query.join('&')));
 };
 
 if (window.attachEvent) {
