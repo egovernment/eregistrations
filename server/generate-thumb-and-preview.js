@@ -37,7 +37,9 @@ module.exports = function (file) {
 	return gm.getIsInstalled(function (isInstalled) {
 
 		if (!isInstalled) {
-			if (file.type !== 'application/pdf') {
+			// No 'gm' software available
+			// If uploaded file is an image, use it directly as a thumb and preview
+			if ((file.type === 'image/jpeg') || (file.type === 'image/png')) {
 				file.thumb.path = file.path;
 				file.isPreviewGenerated = false;
 			}
