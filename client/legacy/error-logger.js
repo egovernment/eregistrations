@@ -1,10 +1,7 @@
 'use strict';
 
-var forEach = require('es5-ext/object/for-each');
-
 var onError = function (message, source, line, column, error) {
-	if ((typeof XMLHttpRequest === 'undefined') || (typeof JSON === 'undefined')) return;
-	var xhr = new XMLHttpRequest(), isSent = false, queryConfig, query = [];
+	var xhr = new XMLHttpRequest(), isSent = false, queryConfig;
 	xhr.open('POST', '/log-client-error/', true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 	xhr.onreadystatechange = function () {
@@ -35,22 +32,21 @@ var onError = function (message, source, line, column, error) {
 		errorStack: error && error.stack
 	};
 
-	forEach(queryConfig, function (data, key) {
-		query.push(key + '=' + data);
-	});
-
-	xhr.send(JSON.stringify(query.join('&')));
+	xhr.send('data=' + JSON.stringify(queryConfig));
 };
 
-if (window.attachEvent) {
-	// We favor attachEvent before addEventListener
-	// As in IE implementations which supports both event that's provided to addEventListener
-	// brings zero information about an error
-	window.attachEvent('onerror', onError);
-} else if (window.addEventListener) {
-	window.addEventListener('error', function (event) {
-		onError(event.message, event.source, event.lineno, event.colno, event.error);
-	});
-} else {
-	window.onerror = onError;
-}
+(function () {
+	if ((typeof XMLHttpRequest === 'undefined') || (typeof JSON === 'undefined')) return;
+	if (window.attachEvent) {
+		// We favor attachEvent before addEventListener
+		// As in IE implementations which supports both event that's provided to addEventListener
+		// brings zero information about an error
+		window.attachEvent('onerror', onError);
+	} else if (window.addEventListener) {
+		window.addEventListener('error', function (event) {
+			onError(event.message, event.source, event.lineno, event.colno, event.error);
+		});
+	} else {
+		window.onerror = onError;
+	}
+}());
