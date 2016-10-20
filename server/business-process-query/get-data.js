@@ -183,15 +183,24 @@ exports.stepMetaMap = {
 	},
 	status: {
 		validate: function (record) {
-			return ((record.value === '3approved') || (record.value === '3rejected'));
+			return record.value[0] === '3';
 		},
 		set: function (data, record) {
-			data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
-			data.processingDateTime = new Date(record.stamp / 1000);
+			if ((record.value === '3approved') || (record.value === '3rejected')) {
+				data.processingDate = toDateInTz(new Date(record.stamp / 1000), timeZone);
+				data.processingDateTime = new Date(record.stamp / 1000);
+			} else {
+				delete data.processingDate;
+				delete data.processingDateTime;
+			}
+			data.status = record.value.slice(1);
+			data.statusStamp = record.stamp;
 		},
 		delete: function (data) {
 			delete data.processingDate;
 			delete data.processingDateTime;
+			delete data.status;
+			delete data.statusStamp;
 		}
 	}
 };

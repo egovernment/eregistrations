@@ -62,7 +62,7 @@ module.exports = function (data, processingStepsMeta) {
 
 			processingTime =
 				(bpStepData.processingDateTime - bpStepData.pendingDateTime -
-					(bpStepData.processingHolidaysTime || 0) - (bpStepData.correctionTime || 0));
+					(bpStepData.processingHolidaysTime || 0) - (bpStepData.nonProcessingTime || 0));
 
 			// If there's something wrong with calculations (may happen with old data), ignore record
 			if (processingTime < (1000 * 3)) return;
