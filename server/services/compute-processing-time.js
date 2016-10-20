@@ -52,7 +52,7 @@ var storeTime = function (storage, path, time) {
 		if (data && (data.value[0] === '2')) {
 			currentValue = unserializeValue(data.value);
 		}
-		return storage.store(path, serializeValue(currentValue + time));
+		return storage.store(path, Math.round(serializeValue(currentValue + time)));
 	});
 };
 
@@ -90,13 +90,11 @@ var getOnIsSentBack = function (storage) {
 		}
 		// We need to handle step statuses as well
 		queryData(function (data) {
-			if (!data || !data.steps) return;
 			data.steps.forEach(function (stepData, stepName) {
 				var currentData, correctionPath, correctionTime;
 				if (!stepData.has(event.ownerId)) return;
 				currentData = stepData.get(event.ownerId);
 				if (currentData.status !== 'sentBack') return;
-				if (!currentData.statusStamp) return;
 				correctionPath = event.ownerId + '/' + currentData.stepFullPath + '/correctionTime';
 
 				//below should never happen
@@ -134,20 +132,23 @@ module.exports = function (driver, processingStepsMeta) {
 
 				// We ignore such cases, they may happen when direct overwrites computed
 				if (status === oldStatus) return;
-				if (status === 'approved' || status === 'rejected'
-						|| status === 'paused' || status === 'redelegated') {
+				switch (status) {
+				case 'approved':
+				case 'rejected':
+				case 'paused':
+				case 'redelegated':
 					processingHolidaysTimePath = event.ownerId + '/' + stepPath + '/processingHolidaysTime';
 					processingHolidaysTime =
 						getHolidaysProcessingTime(event.old.stamp / 1000, event.data.stamp / 1000);
 					if (processingHolidaysTime) {
 						storeTime(storage, processingHolidaysTimePath, processingHolidaysTime).done();
 					}
-				} else if (status === 'pending') {
+					break;
+				case 'pending':
 					nonProcessingTimePath = event.ownerId + '/' + stepPath + '/nonProcessingTime';
 					nonProcessingTime = ((event.data.stamp - event.old.stamp) / 1000);
-					if (nonProcessingTime) {
-						storeTime(storage, nonProcessingTimePath, nonProcessingTime).done();
-					}
+					storeTime(storage, nonProcessingTimePath, nonProcessingTime).done();
+					break;
 				}
 			});
 		});
