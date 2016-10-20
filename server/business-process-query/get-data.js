@@ -183,7 +183,7 @@ exports.stepMetaMap = {
 	},
 	status: {
 		validate: function (record) {
-			return record.value[0] === '3';
+			return (record.value[0] === '3');
 		},
 		set: function (data, record) {
 			if ((record.value === '3approved') || (record.value === '3rejected')) {

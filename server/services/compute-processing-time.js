@@ -85,7 +85,9 @@ var getOnIsSentBack = function (storage) {
 		if (!(oldValue === true && !nuValue)) return;
 		correctionTimePath = event.ownerId + '/correctionTime';
 		correctionTime = (event.data.stamp - event.old.stamp) / 1000;
-		storeTime(storage, correctionTimePath, correctionTime).done();
+		if (correctionTime) {
+			storeTime(storage, correctionTimePath, correctionTime).done();
+		}
 		// We need to handle step statuses as well
 		queryData(function (data) {
 			if (!data || !data.steps) return;
