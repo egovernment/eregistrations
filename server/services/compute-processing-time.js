@@ -84,7 +84,7 @@ var getOnIsSentBack = function (storage) {
 		// We're only interested in cases when isSentBack is changed from true to undefined
 		if (!(oldValue === true && !nuValue)) return;
 		correctionTimePath = event.ownerId + '/correctionTime';
-		correctionTime = (event.data.stamp - event.old.stamp) / 1000;
+		correctionTime     = (event.data.stamp - event.old.stamp) / 1000;
 		if (correctionTime) {
 			storeTime(storage, correctionTimePath, correctionTime).done();
 		}
