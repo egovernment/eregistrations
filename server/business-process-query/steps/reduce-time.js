@@ -2,7 +2,8 @@
 
 var ensureObject = require('es5-ext/object/valid-object')
   , getEmptyData = require('../utils/get-time-reduction-template')
-  , reduce       = require('../utils/reduce-time');
+  , reduce       = require('../utils/reduce-time')
+  , timeCalculationsStart = require('../utils/time-calculations-start');
 
 /**
 	* @param data  - Direct result from ../get-data or ./filter
@@ -47,7 +48,8 @@ module.exports = function (data, processingStepsMeta) {
 
 		// Reduce data
 		stepData.forEach(function (bpStepData, bpId) {
-			var serviceName = data.businessProcesses.get(bpId).serviceName, processingTime;
+			var serviceName = data.businessProcesses.get(bpId).serviceName, processingTime
+			  , submissionDateTime = data.businessProcesses.get(bpId).submissionDateTime;
 
 			result.all.startedCount++;
 			result.byService[serviceName].startedCount++;
@@ -59,6 +61,8 @@ module.exports = function (data, processingStepsMeta) {
 
 			// May happen only in case of data inconsistency
 			if (!bpStepData.processor) return;
+
+			if (submissionDateTime < timeCalculationsStart) return;
 
 			processingTime =
 				(bpStepData.processingDateTime - bpStepData.pendingDateTime -

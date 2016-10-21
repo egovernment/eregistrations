@@ -3,7 +3,8 @@
 var ensureObject = require('es5-ext/object/valid-object')
   , serviceNames = require('../../../utils/business-process-service-names')
   , getEmptyData = require('../utils/get-time-reduction-template')
-  , reduce       = require('../utils/reduce-time');
+  , reduce       = require('../utils/reduce-time')
+  , timeCalculationsStart = require('../utils/time-calculations-start');
 
 /**
 	* @param data  - `businessProcesses` result from ../get-data or direct result from ./filter
@@ -33,6 +34,8 @@ module.exports = function (data) {
 		result.byService[bpData.serviceName].startedCount++;
 
 		if (!bpData.approvedDateTime) return;
+
+		if (bpData.submissionDateTime < timeCalculationsStart) return;
 
 		dateString     = bpData.approvedDate.toISOString().slice(0, 10);
 		processingTime = bpData.approvedDateTime - bpData.submissionDateTime -
