@@ -4,6 +4,9 @@ var onError = function (message, source, line, column, error) {
 	var xhr = new XMLHttpRequest(), isSent = false, queryConfig;
 	xhr.open('POST', '/log-client-error/', true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	if ((typeof sessionStorage !== 'undefined') && sessionStorage.manoSessionId) {
+		xhr.setRequestHeader("X-Browser-Session", sessionStorage.manoSessionId);
+	}
 	xhr.onreadystatechange = function () {
 		var status;
 		if (isSent) return;
