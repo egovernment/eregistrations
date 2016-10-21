@@ -47,7 +47,7 @@ var onError = function (message, source, line, column, error) {
 		window.attachEvent('onerror', onError);
 	} else if (window.addEventListener) {
 		window.addEventListener('error', function (event) {
-			onError(event.message, event.source, event.lineno, event.colno, event.error);
+			onError(event.message, event.filename, event.lineno, event.colno, event.error);
 		});
 	} else {
 		window.onerror = onError;
