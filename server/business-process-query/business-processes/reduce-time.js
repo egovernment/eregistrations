@@ -41,7 +41,7 @@ module.exports = function (data) {
 		correctionTime = bpData.correctionTime || 0;
 		// If there's something wrong with calculations (may happen with old data), or
 		// or the submission date before final calcualtion version we do not count time
-		if (bpData.submissionDateTime < timeCalculationsStart || processingTime < (1000 * 3)) {
+		if ((bpData.submissionDateTime < timeCalculationsStart) || (processingTime < (1000 * 3))) {
 			processingTime = 0;
 			correctionTime = 0;
 		}

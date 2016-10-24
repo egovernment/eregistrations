@@ -49,7 +49,7 @@ module.exports = function (data, processingStepsMeta) {
 		// Reduce data
 		stepData.forEach(function (bpStepData, bpId) {
 			var serviceName = data.businessProcesses.get(bpId).serviceName, processingTime
-			  , submissionDateTime = data.businessProcesses.get(bpId).submissionDateTime;
+			  , correctionTime, submissionDateTime = data.businessProcesses.get(bpId).submissionDateTime;
 
 			result.all.startedCount++;
 			result.byService[serviceName].startedCount++;
@@ -65,15 +65,14 @@ module.exports = function (data, processingStepsMeta) {
 			processingTime =
 				(bpStepData.processingDateTime - bpStepData.pendingDateTime -
 					(bpStepData.processingHolidaysTime || 0) - (bpStepData.nonProcessingTime || 0));
+			correctionTime = bpStepData.correctionTime;
 
 			// If there's something wrong with calculations (may happen with old data), or
 			// or the submission date before final calcualtion version we do not count time
-			if (submissionDateTime < timeCalculationsStart || processingTime < (1000 * 3)) {
+			if ((submissionDateTime < timeCalculationsStart) || (processingTime < (1000 * 3))) {
 				processingTime = 0;
+				correctionTime = 0;
 			}
-
-			// If there's something wrong with calculations (may happen with old data), ignore record
-			if (processingTime < (1000 * 3)) return;
 
 			// Initialize container
 			if (!result.byStepAndProcessor[stepShortPath][bpStepData.processor]) {
@@ -91,14 +90,14 @@ module.exports = function (data, processingStepsMeta) {
 				processingTime);
 
 			// Reduce eventual correctionTime
-			if (bpStepData.correctionTime) {
-				reduce(result.all.correction, bpStepData.correctionTime);
-				reduce(result.byService[serviceName].correction, bpStepData.correctionTime);
-				reduce(result.byStep[stepShortPath].correction, bpStepData.correctionTime);
+			if (correctionTime) {
+				reduce(result.all.correction, correctionTime);
+				reduce(result.byService[serviceName].correction, correctionTime);
+				reduce(result.byStep[stepShortPath].correction, correctionTime);
 				reduce(result.byStepAndService[stepShortPath][serviceName].correction,
-					bpStepData.correctionTime);
+					correctionTime);
 				reduce(result.byStepAndProcessor[stepShortPath][bpStepData.processor].correction,
-					bpStepData.correctionTime);
+					correctionTime);
 			}
 		});
 	});
