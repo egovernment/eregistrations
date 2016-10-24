@@ -8,3 +8,5 @@ require('mano-legacy/ie8-font-visibility-fix');
 window.$ = require('mano-legacy');
 
 require('mano-legacy/live/input-mask');
+//Logs client errors to server logs
+require('eregistrations/client/legacy/error-logger');

@@ -2,6 +2,8 @@
 
 'use strict';
 
+if (process.env.DEBUG) process.env.DEBUG += ',-image-processing';
+
 var ensureCallable = require('es5-ext/object/valid-callable')
   , ensureObject   = require('es5-ext/object/valid-object')
   , ensureDatabase = require('dbjs/valid-dbjs')
