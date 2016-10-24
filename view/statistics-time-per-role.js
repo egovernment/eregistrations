@@ -75,6 +75,10 @@ exports['statistics-main'] = function () {
 		}).done();
 	});
 
+	section({ class: 'entities-overview-info' },
+		_("As processing time is properly recorded since 25th of October." +
+			" Below table only exposes data for files submitted after that day."));
+
 	section({ class: 'section-primary users-table-filter-bar' },
 		form({ action: '/time/', autoSubmit: true },
 			div(
@@ -136,13 +140,13 @@ exports['statistics-main'] = function () {
 				mainData, function (row) {
 				return tr(
 					td(row.label),
-					td({ class: 'statistics-table-number' }, row.count),
+					td({ class: 'statistics-table-number' }, row.timedCount),
 					td({ class: 'statistics-table-number' },
-						row.count ? getDurationDaysHours(row.avgTime) : "-"),
+						row.timedCount ? getDurationDaysHours(row.avgTime) : "-"),
 					td({ class: 'statistics-table-number' },
-						row.count ? getDurationDaysHours(row.minTime) : "-"),
+						row.timedCount ? getDurationDaysHours(row.minTime) : "-"),
 					td({ class: 'statistics-table-number' },
-						row.count ? getDurationDaysHours(row.maxTime) : "-")
+						row.timedCount ? getDurationDaysHours(row.maxTime) : "-")
 				);
 			}))
 	);

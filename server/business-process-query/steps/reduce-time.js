@@ -2,7 +2,8 @@
 
 var ensureObject = require('es5-ext/object/valid-object')
   , getEmptyData = require('../utils/get-time-reduction-template')
-  , reduce       = require('../utils/reduce-time');
+  , reduce       = require('../utils/reduce-time')
+  , timeCalculationsStart = require('../utils/time-calculations-start');
 
 /**
 	* @param data  - Direct result from ../get-data or ./filter
@@ -47,7 +48,8 @@ module.exports = function (data, processingStepsMeta) {
 
 		// Reduce data
 		stepData.forEach(function (bpStepData, bpId) {
-			var serviceName = data.businessProcesses.get(bpId).serviceName, processingTime;
+			var serviceName = data.businessProcesses.get(bpId).serviceName, processingTime
+			  , correctionTime, submissionDateTime = data.businessProcesses.get(bpId).submissionDateTime;
 
 			result.all.startedCount++;
 			result.byService[serviceName].startedCount++;
@@ -62,10 +64,17 @@ module.exports = function (data, processingStepsMeta) {
 
 			processingTime =
 				(bpStepData.processingDateTime - bpStepData.pendingDateTime -
-					(bpStepData.processingHolidaysTime || 0) - (bpStepData.correctionTime || 0));
+					(bpStepData.processingHolidaysTime || 0) - (bpStepData.nonProcessingTime || 0));
+			correctionTime = bpStepData.correctionTime;
 
-			// If there's something wrong with calculations (may happen with old data), ignore record
-			if (processingTime < (1000 * 3)) return;
+			// If there's something wrong with calculations (may happen with old data), or
+			// the submission date before final calcualtion version we do not count time
+			if ((submissionDateTime < timeCalculationsStart) || (processingTime < (1000 * 3))) {
+				processingTime = 0;
+				if (correctionTime) {
+					correctionTime = 0;
+				}
+			}
 
 			// Initialize container
 			if (!result.byStepAndProcessor[stepShortPath][bpStepData.processor]) {
@@ -83,14 +92,14 @@ module.exports = function (data, processingStepsMeta) {
 				processingTime);
 
 			// Reduce eventual correctionTime
-			if (bpStepData.correctionTime) {
-				reduce(result.all.correction, bpStepData.correctionTime);
-				reduce(result.byService[serviceName].correction, bpStepData.correctionTime);
-				reduce(result.byStep[stepShortPath].correction, bpStepData.correctionTime);
+			if (correctionTime != null) {
+				reduce(result.all.correction, correctionTime);
+				reduce(result.byService[serviceName].correction, correctionTime);
+				reduce(result.byStep[stepShortPath].correction, correctionTime);
 				reduce(result.byStepAndService[stepShortPath][serviceName].correction,
-					bpStepData.correctionTime);
+					correctionTime);
 				reduce(result.byStepAndProcessor[stepShortPath][bpStepData.processor].correction,
-					bpStepData.correctionTime);
+					correctionTime);
 			}
 		});
 	});
