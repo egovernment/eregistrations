@@ -17,7 +17,7 @@ if (!Object.getPrototypeOf || !Object.defineProperty || !window.history ||
 	}
 } else {
 	document.write('<link href="${ stRoot }statistics.css" rel="stylesheet" />');
-	document.write('<scr' + 'ipt src="${ stRoot }statistics.legacy.js"></sc' + 'ript>');
-	document.write('<scr' + 'ipt data-spa src="${ stRoot }statistics.js"></sc' + 'ript>');
+	document.write('<scr' + 'ipt crossorigin src="${ stRoot }statistics.legacy.js"></sc' + 'ript>');
+	document.write('<scr' + 'ipt data-spa crossorigin src="${ stRoot }statistics.js"></sc' + 'ript>');
 }
 	</script>
