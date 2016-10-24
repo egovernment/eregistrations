@@ -43,7 +43,9 @@ module.exports = function (data) {
 		// or the submission date before final calcualtion version we do not count time
 		if ((bpData.submissionDateTime < timeCalculationsStart) || (processingTime < (1000 * 3))) {
 			processingTime = 0;
-			correctionTime = 0;
+			if (correctionTime) {
+				correctionTime = 0;
+			}
 		}
 
 		if (!result.byDateAndService[dateString]) {
@@ -52,9 +54,11 @@ module.exports = function (data) {
 			}, result.byDateAndService[dateString] = {});
 		}
 		reduce(result.all.processing, processingTime);
-		reduce(result.all.correction, correctionTime);
 		reduce(result.byService[bpData.serviceName].processing, processingTime);
-		reduce(result.byService[bpData.serviceName].correction, correctionTime);
+		if (correctionTime != null) {
+			reduce(result.all.correction, correctionTime);
+			reduce(result.byService[bpData.serviceName].correction, correctionTime);
+		}
 
 		result.byDateAndService[dateString][bpData.serviceName]++;
 	});
