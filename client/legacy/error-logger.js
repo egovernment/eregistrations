@@ -1,6 +1,13 @@
 'use strict';
 
+var nonReportableMessages = {};
+nonReportableMessages['Script error.'] = true;
+nonReportableMessages['Script error'] = true;
+
 var onError = function (message, source, line, column, error) {
+	// Do not log errors for which we have no useful information
+	if (nonReportableMessages.hasOwnProperty(message) && !source && !line && !column) return;
+
 	var xhr = new XMLHttpRequest(), isSent = false, queryConfig;
 	xhr.open('POST', '/log-client-error/', true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
