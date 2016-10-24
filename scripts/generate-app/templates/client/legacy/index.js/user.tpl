@@ -15,3 +15,4 @@ require('mano-legacy/hash-nav-modal');
 require('mano-legacy/confirm-submit');
 require('mano-legacy/hash-nav-ordered-list-controls');
 require('eregistrations/client/legacy/form-section-state-helper');
+require('eregistrations/client/legacy/hash-nav-document-link');
