@@ -68,10 +68,12 @@ module.exports = function (data, processingStepsMeta) {
 			correctionTime = bpStepData.correctionTime;
 
 			// If there's something wrong with calculations (may happen with old data), or
-			// or the submission date before final calcualtion version we do not count time
+			// the submission date before final calcualtion version we do not count time
 			if ((submissionDateTime < timeCalculationsStart) || (processingTime < (1000 * 3))) {
 				processingTime = 0;
-				correctionTime = 0;
+				if (correctionTime) {
+					correctionTime = 0;
+				}
 			}
 
 			// Initialize container
@@ -90,7 +92,7 @@ module.exports = function (data, processingStepsMeta) {
 				processingTime);
 
 			// Reduce eventual correctionTime
-			if (correctionTime) {
+			if (correctionTime != null) {
 				reduce(result.all.correction, correctionTime);
 				reduce(result.byService[serviceName].correction, correctionTime);
 				reduce(result.byStep[stepShortPath].correction, correctionTime);
