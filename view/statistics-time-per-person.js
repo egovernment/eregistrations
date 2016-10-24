@@ -73,6 +73,10 @@ exports['statistics-main'] = function () {
 			});
 		});
 	});
+	section({ class: 'entities-overview-info' },
+		_("As processing time is properly recorded since 25th of October." +
+			" Below table only exposes data for files submitted after that day."));
+
 	section({ class: 'section-primary users-table-filter-bar' },
 		form({ action: '/time/per-person', autoSubmit: true },
 			div(

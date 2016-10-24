@@ -389,16 +389,25 @@ exports['statistics-main'] = function () {
 		p({ id: "chart-pending-files-message",
 			class: "entities-overview-info" }, _("No data for this criteria")));
 	section({ class: "section-primary" },
+		p({ class: 'entities-overview-info' },
+			_("As processing time is properly recorded since 25th of October." +
+				" Below table only exposes data for files submitted after that day.")),
 		h3(_("Average processing time in days")),
 		div({ id: "chart-by-step-and-service" }),
 		p({ id: "chart-by-step-and-service-message",
 			class: "entities-overview-info" }, _("No data for this criteria")));
 	section({ class: "section-primary" },
+		p({ class: 'entities-overview-info' },
+			_("As processing time is properly recorded since 25th of October." +
+				" Below table only exposes data for files submitted after that day.")),
 		h3(_("Total average processing time per service in days")),
 		div({ id: "chart-by-service" }),
 		p({ id: "chart-by-service-message",
 			class: "entities-overview-info" }, _("No data for this criteria")));
 	section({ class: "section-primary" },
+		p({ class: 'entities-overview-info' },
+			_("As processing time is properly recorded since 25th of October." +
+				" Below table only exposes data for files submitted after that day.")),
 		h3(_("Withdrawal time in days")), div({ id: "chart-withdrawal-time" }),
 		p({ id: "chart-withdrawal-time-message",
 			class: "entities-overview-info" }, _("No data for this criteria")));
