@@ -38,7 +38,7 @@ module.exports = function (data) {
 		dateString     = bpData.approvedDate.toISOString().slice(0, 10);
 		processingTime = bpData.approvedDateTime - bpData.submissionDateTime -
 			(bpData.correctionTime || 0) - (bpData.processingHolidaysTime || 0);
-		correctionTime = bpData.correctionTime || 0;
+		correctionTime = bpData.correctionTime;
 		// If there's something wrong with calculations (may happen with old data), or
 		// or the submission date before final calcualtion version we do not count time
 		if ((bpData.submissionDateTime < timeCalculationsStart) || (processingTime < (1000 * 3))) {
