@@ -31,9 +31,9 @@ var queryServer = memoize(function (query) {
 var getRowResult = function (rowData, label) {
 	var result     = copy(rowData);
 	result.label   = label;
-	result.avgTime = rowData.count ? getDurationDaysHours(rowData.avgTime) : '-';
-	result.minTime = rowData.count ? getDurationDaysHours(rowData.minTime) : '-';
-	result.maxTime = rowData.count ? getDurationDaysHours(rowData.maxTime) : '-';
+	result.avgTime = rowData.timedCount ? getDurationDaysHours(rowData.avgTime) : '-';
+	result.minTime = rowData.timedCount ? getDurationDaysHours(rowData.minTime) : '-';
+	result.maxTime = rowData.timedCount ? getDurationDaysHours(rowData.maxTime) : '-';
 
 	return result;
 };
@@ -137,7 +137,7 @@ exports['statistics-main'] = function () {
 						_("There are no files processed at this step"))) }, data, function (rowData) {
 						return tr(
 							td(rowData.label),
-							td({ class: 'statistics-table-number' }, rowData.count),
+							td({ class: 'statistics-table-number' }, rowData.timedCount),
 							td({ class: 'statistics-table-number' }, rowData.avgTime),
 							td({ class: 'statistics-table-number' }, rowData.minTime),
 							td({ class: 'statistics-table-number' }, rowData.maxTime)

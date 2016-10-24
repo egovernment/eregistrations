@@ -35,15 +35,16 @@ module.exports = function (data) {
 
 		if (!bpData.approvedDateTime) return;
 
-		if (bpData.submissionDateTime < timeCalculationsStart) return;
-
 		dateString     = bpData.approvedDate.toISOString().slice(0, 10);
 		processingTime = bpData.approvedDateTime - bpData.submissionDateTime -
 			(bpData.correctionTime || 0) - (bpData.processingHolidaysTime || 0);
 		correctionTime = bpData.correctionTime || 0;
-
-		// If there's something wrong with calculations (may happen with old data), ignore record
-		if (processingTime < (1000 * 3)) return;
+		// If there's something wrong with calculations (may happen with old data), or
+		// or the submission date before final calcualtion version we do not count time
+		if (bpData.submissionDateTime < timeCalculationsStart || processingTime < (1000 * 3)) {
+			processingTime = 0;
+			correctionTime = 0;
+		}
 
 		if (!result.byDateAndService[dateString]) {
 			serviceNames.forEach(function (name) {

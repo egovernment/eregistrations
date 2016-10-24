@@ -39,10 +39,10 @@ module.exports = function (result, config) {
 	return data.map(function (row) {
 		return [
 			JSON.stringify(row.label),
-			row.count,
-			row.count ? resolveDays(row.avgTime) : '',
-			row.count ? resolveDays(row.minTime) : '',
-			row.count ? resolveDays(row.maxTime) : ''
+			row.timedCount,
+			row.timedCount ? resolveDays(row.avgTime) : '',
+			row.timedCount ? resolveDays(row.minTime) : '',
+			row.timedCount ? resolveDays(row.maxTime) : ''
 		].join();
 	}).join('\n');
 };

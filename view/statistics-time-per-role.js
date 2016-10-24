@@ -136,13 +136,13 @@ exports['statistics-main'] = function () {
 				mainData, function (row) {
 				return tr(
 					td(row.label),
-					td({ class: 'statistics-table-number' }, row.count),
+					td({ class: 'statistics-table-number' }, row.timedCount),
 					td({ class: 'statistics-table-number' },
-						row.count ? getDurationDaysHours(row.avgTime) : "-"),
+						row.timedCount ? getDurationDaysHours(row.avgTime) : "-"),
 					td({ class: 'statistics-table-number' },
-						row.count ? getDurationDaysHours(row.minTime) : "-"),
+						row.timedCount ? getDurationDaysHours(row.minTime) : "-"),
 					td({ class: 'statistics-table-number' },
-						row.count ? getDurationDaysHours(row.maxTime) : "-")
+						row.timedCount ? getDurationDaysHours(row.maxTime) : "-")
 				);
 			}))
 	);

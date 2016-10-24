@@ -62,11 +62,15 @@ module.exports = function (data, processingStepsMeta) {
 			// May happen only in case of data inconsistency
 			if (!bpStepData.processor) return;
 
-			if (submissionDateTime < timeCalculationsStart) return;
-
 			processingTime =
 				(bpStepData.processingDateTime - bpStepData.pendingDateTime -
 					(bpStepData.processingHolidaysTime || 0) - (bpStepData.nonProcessingTime || 0));
+
+			// If there's something wrong with calculations (may happen with old data), or
+			// or the submission date before final calcualtion version we do not count time
+			if (submissionDateTime < timeCalculationsStart || processingTime < (1000 * 3)) {
+				processingTime = 0;
+			}
 
 			// If there's something wrong with calculations (may happen with old data), ignore record
 			if (processingTime < (1000 * 3)) return;
