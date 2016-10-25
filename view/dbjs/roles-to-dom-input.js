@@ -20,12 +20,16 @@ RolesInput.prototype = Object.create(RoleEnumMultiple.prototype, assign({
 	_render: d(function () {
 		this.dom = ul({ class: 'dbjs multiple checkbox' },
 			li(
-				h4(_("Role(s):")),
+				h4(_("Part A:")),
 				this.firstSubList = ul()
 			),
 			li(
-				h4(_("Page(s):")),
+				h4(_("Roles (Part B):")),
 				this.secondSubList = ul()
+			),
+			li(
+				h4(_("Page(s):")),
+				this.thirdSubList = ul()
 			),
 			this.markEmpty);
 	}),
@@ -53,22 +57,25 @@ RolesInput.prototype = Object.create(RoleEnumMultiple.prototype, assign({
 	})
 }, autoBind({
 	reload: d(function () {
-		var firstSubList  = [], secondSubList = [];
+		var firstSubList  = [], secondSubList = [], thirdSubList = [];
 
 		clear.call(this.items);
 
 		this.dbList.forEach(function (item) {
 			var data = this.renderItem(item.value, item.label);
 			this.items.push(data.input);
-			if (db.Role.isFlowRole(item.value)) {
+			if (db.Role.isPartARole(item.value)) {
 				firstSubList.push(data.dom);
-			} else {
+			} else if (db.Role.isOfficialRole(item.value)) {
 				secondSubList.push(data.dom);
+			} else {
+				thirdSubList.push(data.dom);
 			}
 		}, this);
 
 		replaceContent.call(this.firstSubList, firstSubList);
 		replaceContent.call(this.secondSubList, secondSubList);
+		replaceContent.call(this.thirdSubList, thirdSubList);
 		this.items.push(this.markEmpty);
 	})
 })));
