@@ -84,7 +84,7 @@ exports._disableCondition = function () {
 };
 
 var getHeadingText = function (isPaymentEnabled) {
-	return _("${ stepNumber } Send your files", { stepNumber: isPaymentEnabled ? 4 : 3 }).join("");
+	return String(_("${ stepNumber } Send your files", { stepNumber: isPaymentEnabled ? 4 : 3 }));
 };
 
 exports._submissionHeading = function () {
