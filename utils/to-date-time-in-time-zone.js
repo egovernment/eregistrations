@@ -14,7 +14,9 @@ module.exports = function (date, timeZone) {
 	try {
 		result = date.toLocaleString('en', { timeZone: timeZone })
 			.match(/^(\d{1,2})\/(\d{1,2})\/(\d{1,4}), (\d{1,2}):(\d{2}):(\d{2}) ([AP])M$/);
-	} catch (ignore) {}
+	} catch (ignored) {
+		console.log("date.toLocaleString failed, ignoring");
+	}
 
 	if (result) {
 		return new Date(
