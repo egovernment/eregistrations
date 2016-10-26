@@ -95,7 +95,7 @@ loadView = function () {
 		return;
 	}
 	user = db.User.getById(userId);
-	if (!user) {
+	if (!user || !user.currentBusinessProcess) {
 		server.once('sync', loadView);
 		console.log(".. Waiting for user data ..");
 		return;
