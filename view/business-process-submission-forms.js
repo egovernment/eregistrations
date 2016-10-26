@@ -83,14 +83,22 @@ exports._disableCondition = function () {
 	return not(eq(this.businessProcess._guideProgress, 1));
 };
 
+var getHeadingText = function (isPaymentEnabled) {
+	return String(_("${ stepNumber } Send your files", { stepNumber: isPaymentEnabled ? 4 : 3 }));
+};
+
 exports._submissionHeading = function () {
-	var headingText = _("4 Send your files");
+	var isPaymentEnabled = this.businessProcess.costs._paymentWeight;
 
 	return div(
 		{ class: 'capital-first' },
-		div(headingText[0]),
+		div(isPaymentEnabled.map(function (paymentWeight) {
+			return getHeadingText(paymentWeight)[0];
+		})),
 		div(
-			h1(headingText.slice(1).trim()),
+			h1(isPaymentEnabled.map(function (paymentWeight) {
+				return getHeadingText(paymentWeight).slice(1);
+			})),
 			p(_("Approve the sworn declaration and submit your application."))
 		)
 	);
