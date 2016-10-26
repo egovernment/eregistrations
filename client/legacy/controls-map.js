@@ -44,7 +44,10 @@ module.exports = function (config) {
 		parentSelect = childSelect.parentByName('li').previousSibling.getElementsByTagName('select')[0];
 		if (!parentSelect) {
 			// There's a race condition when this function is run before parentSelect is accessible
-			setTimeout(function () { self(childSelect); }, 300);
+			setTimeout(function timeoutSelf() {
+				if (!childSelect.parentByName('li')) setTimeout(timeoutSelf, 300);
+				else self(childSelect);
+			}, 300);
 			return;
 		}
 		parentSelect.removeAttribute('name');
