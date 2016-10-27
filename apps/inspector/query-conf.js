@@ -3,27 +3,16 @@
 
 'use strict';
 
-var db                = require('../../../db')
+var db                = require('../../db')
   , uniq              = require('es5-ext/array/#/uniq')
   , customError       = require('es5-ext/error/custom')
+  , uncapitalize      = require('es5-ext/string/#/uncapitalize')
   , capitalize        = require('es5-ext/string/#/capitalize')
-  , appLocation       = require('mano/lib/client/location')
-  , setupQueryHandler = require('../../../utils/setup-client-query-handler')
 
   , stringify         = JSON.stringify
   , wsRe              = /\s{2,}/g;
 
-module.exports = exports = function (listManager/*, pathname*/) {
-	var queryHandler = setupQueryHandler(exports.conf, appLocation, arguments[1] || '/');
-
-	queryHandler._itemsPerPage = listManager.itemsPerPage;
-	queryHandler._listManager = listManager;
-	queryHandler.on('query', function (query) { listManager.update(query); });
-
-	return queryHandler;
-};
-
-exports.conf = [{
+module.exports = [{
 	name: 'status',
 	ensure: function (value) {
 		if (!value) return;
@@ -42,7 +31,7 @@ exports.conf = [{
 		if (!value) return;
 
 		serviceFound = db.BusinessProcess.extensions.some(function (ServiceType) {
-			return ServiceType.__id__.slice('BusinessProcess'.length) === value;
+			return uncapitalize.call(ServiceType.__id__.slice('BusinessProcess'.length)) === value;
 		});
 
 		if (!serviceFound) {
@@ -52,14 +41,14 @@ exports.conf = [{
 		return value;
 	}
 }, {
-	name: 'inscription',
+	name: 'registration',
 	ensure: function (value, resolvedQuery) {
 		var service = resolvedQuery.service
 		  , inscriptionFound;
 
 		var searchCertificates = function (certificates) {
 			return certificates.some(function (certificate, certificateName) {
-				return certificate === value;
+				return certificateName === value;
 			});
 		};
 

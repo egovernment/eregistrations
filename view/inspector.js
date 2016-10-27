@@ -3,17 +3,23 @@
 var db                = require('../db')
   , _                 = require('mano').i18n.bind('View: Official: Inspector')
   , location          = require('mano/lib/client/location')
-  , env               = require('mano').env
+  , setupQueryHandler = require('../utils/setup-client-query-handler')
+  , getData           = require('mano/lib/client/xhr-driver').get
+  , memoize           = require('memoizee')
   , capitalize        = require('es5-ext/string/#/capitalize')
   , uncapitalize      = require('es5-ext/string/#/uncapitalize')
+  , ObservableValue   = require('observable-value')
   , once              = require('timers-ext/once')
   , dispatch          = require('dom-ext/html-element/#/dispatch-event-2')
-  , getInspectorTable = require('./components/inspector-table')
+
+  , queryHandlerConf  = require('../apps/inspector/query-conf')
   , tableColumns      = require('./components/inspector-table-columns');
 
-var getOrderIndex = function (businessProcess) {
-	return businessProcess._isSubmitted.lastModified;
-};
+var queryServer = memoize(function (query) {
+	return getData('/get-data/', query);
+}, {
+	normalizer: function (args) { return JSON.stringify(args[0]); }
+});
 
 exports._parent = require('./abstract-user-base');
 
@@ -22,10 +28,25 @@ exports['sub-main'] = {
 	content: function () {
 		var statusQuery        = location.query.get('status')
 		  , serviceQuery       = location.query.get('service')
-		  , inscriptionQuery   = location.query.get('inscription')
+		  , registrationQuery   = location.query.get('registration')
 		  , submitterTypeQuery = location.query.get('submitterType')
 		  , SubmitterType      = db.BusinessProcess.prototype.getDescriptor('submitterType').type
-		  , searchForm, searchInput, inspectorTable;
+		  , searchForm, searchInput;
+
+		var bpData       = new ObservableValue()
+		  , queryHandler = setupQueryHandler(queryHandlerConf, location, '/');
+
+		queryHandler.on('query', function (query) {
+			if (query.dateFrom) {
+				query.dateFrom = query.dateFrom.toJSON();
+			}
+			if (query.dateTo) {
+				query.dateTo = query.dateTo.toJSON();
+			}
+			queryServer(query).done(function (queryResult) {
+				bpData.value = queryResult;
+			});
+		});
 
 		section(
 			{ class: 'section-primary users-table-filter-bar' },
@@ -77,13 +98,13 @@ exports['sub-main'] = {
 						})
 					)
 				),
-				// Inscription selector
+				// Registration selector
 				div(
 					{ class: 'users-table-filter-bar-status' },
-					label({ for: 'inscription-select' }, _("Inscription"), ':'),
+					label({ for: 'registration-select' }, _("Inscription"), ':'),
 					select(
-						{ id: 'inscription-select', name: 'inscription' },
-						option({ value: '', selected: inscriptionQuery.map(function (value) {
+						{ id: 'registration-select', name: 'registration' },
+						option({ value: '', selected: registrationQuery.map(function (value) {
 							return value ? null : 'selected';
 						}) }, _("All")),
 						serviceQuery.map(function (service) {
@@ -100,7 +121,7 @@ exports['sub-main'] = {
 
 									return option({
 										value: certificateName,
-										selected: inscriptionQuery.map(function (value) {
+										selected: registrationQuery.map(function (value) {
 											var selected = certificateName ?
 													(value === certificateName) : (value == null);
 											return selected ? 'selected' : null;
@@ -154,17 +175,15 @@ exports['sub-main'] = {
 
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
 
-		inspectorTable = getInspectorTable({
-			getOrderIndex: getOrderIndex,
-			itemsPerPage: env.objectsListItemsPerPage,
-			columns: tableColumns.columns,
-			tableUrl: location.pathname,
-			class: 'submitted-user-data-table'
+		table({
+			class: 'submitted-user-data-table',
+			configuration: {
+				collection: bpData,
+				columns: tableColumns.columns
+			}
+			// Important: this needs to be after configuration directive
+			// responsive: true
 		});
-
-		insert(inspectorTable.pagination,
-			section({ class: 'table-responsive-container' }, inspectorTable),
-			inspectorTable.pagination);
 	}
 };
 
