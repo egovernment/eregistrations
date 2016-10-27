@@ -6,6 +6,7 @@ nonReportableMessages['Script error'] = true;
 
 var nonReportableCodes = {};
 nonReportableCodes.XHR_REQUEST_ERRORED = true;
+nonReportableCodes.XHR_REQUEST_ABORTED = true;
 
 var onError = function (message, source, line, column, error) {
 	var buildStamp;
