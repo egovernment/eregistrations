@@ -41,13 +41,11 @@ module.exports = function (config) {
 		parentMap = config.map;
 
 		childSelect = $(childSelect);
-		parentSelect = childSelect.parentByName('li').previousSibling.getElementsByTagName('select')[0];
+		parentSelect = childSelect.parentByName('li');
+		if (parentSelect) parentSelect = parentSelect.previousSibling.getElementsByTagName('select')[0];
 		if (!parentSelect) {
 			// There's a race condition when this function is run before parentSelect is accessible
-			setTimeout(function timeoutSelf() {
-				if (!childSelect.parentByName('li')) setTimeout(timeoutSelf, 300);
-				else self(childSelect);
-			}, 300);
+			setTimeout(function () { self(childSelect); }, 300);
 			return;
 		}
 		parentSelect.removeAttribute('name');
