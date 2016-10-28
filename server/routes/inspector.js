@@ -8,8 +8,10 @@ var assign                  = require('es5-ext/object/assign')
   , getBaseRoutes           = require('./authenticated')
   , anyIdToStorage          = require('../utils/any-id-to-storage')
   , getData                 = require('../business-process-query/get-data')
-  , unserializeValue        = require('dbjs/_setup/unserialize/value')
   , filterBusinessProcesses = require('../business-process-query/business-processes/filter')
+  , sortData                = require('../../utils/query/sort')
+  , getPage                 = require('../../utils/query/get-page')
+  , unserializeValue        = require('dbjs/_setup/unserialize/value')
   , queryHandlerConf        = require('../../apps/inspector/query-conf')
   , QueryHandler            = require('../../utils/query-handler');
 
@@ -20,7 +22,13 @@ var getRecords = function (data, keyPaths) {
 	ensureObject(keyPaths);
 
 	return deferred.map(Array.from(data.keys()), function (objectId) {
-		var object = {};
+		var object = data.get(objectId);
+
+		object = {
+			serviceName: object.serviceName,
+			status: object.status,
+			registrations: Array.from(object.registrations)
+		};
 
 		return anyIdToStorage(objectId)(function (storage) {
 			var directEvents, computedEvents;
@@ -62,11 +70,18 @@ module.exports = exports = function (config) {
 	return assign({
 		'get-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
-				return getData(driver, processingStepsMeta)(function (data) {
-					return filterBusinessProcesses(data.businessProcesses, query);
-				})(function (result) {
-					return getRecords(result, { direct: listProperties, computed: listComputedProperties });
+				return getData(driver, processingStepsMeta);
+			})(function (data) {
+				return filterBusinessProcesses(data.businessProcesses, query);
+			})(function (data) {
+				return sortData(data, function (bpA, bpB) {
+					return bpA.creationTime < bpB.creationTime;
 				});
+			})(function (data) {
+				if (query.page) return getPage(data, query.page);
+				return data;
+			})(function (data) {
+				return getRecords(data, { direct: listProperties, computed: listComputedProperties });
 			});
 		}
 	}, getBaseRoutes());
