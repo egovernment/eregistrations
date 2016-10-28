@@ -66,7 +66,7 @@ exports['requirement-upload/[a-z][a-z0-9-]*'] = {
 		// by user update, by also by data update coming from the server.
 		// In the later case we don't want to introduce side effects (reset revision status etc.)
 		if (isEmpty(data)) return;
-		if (this.requirementUpload.status) this.requirementUpload.status = null;
+		if (this.requirementUpload.status) this.requirementUpload.delete('status');
 		if (this.user !== this.requirementUpload.uploadedBy) {
 			this.requirementUpload.uploadedBy = this.user;
 		}
@@ -91,7 +91,7 @@ exports['payment-receipt-upload/[a-z][a-z0-9-]*'] = {
 		// by user update, by also by data update coming from the server.
 		// In the later case we don't want to introduce side effects (reset revision status etc.)
 		if (isEmpty(data)) return;
-		if (this.paymentReceiptUpload.status) this.paymentReceiptUpload.status = null;
+		if (this.paymentReceiptUpload.status) this.paymentReceiptUpload.delete('status');
 		if (this.user !== this.paymentReceiptUpload.uploadedBy) {
 			this.paymentReceiptUpload.uploadedBy = this.user;
 		}
