@@ -96,7 +96,7 @@ loadView = function () {
 		return;
 	}
 	user = db.User.getById(userId);
-	if (!user) {
+	if (!user || ((user.currentRoleResolved === 'manager') && !user.currentlyManagedUser)) {
 		server.once('sync', loadView);
 		console.log(".. Waiting for user data ..");
 		return;
