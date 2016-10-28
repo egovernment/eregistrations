@@ -68,7 +68,7 @@ var defaultResolveOfficialViewPath = function (userId, roleName, stepShortPath, 
 };
 
 var defaultResolveShortStepPath = function (userId, roleName) {
-	return roleName.slice('official'.length);
+	return uncapitalize.call(roleName.slice('official'.length));
 };
 
 module.exports = exports = function (db, dbDriver, data) {
