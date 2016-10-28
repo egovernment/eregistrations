@@ -63,7 +63,7 @@ exports['requirement-upload/[a-z][a-z0-9-]*'] = {
 	},
 	submit: function (data) {
 		// As form is set with "auto submit", the submission may be triggered not only
-		// by user update, by also by data update coming from the server.
+		// by user update but also by data update coming from the server.
 		// In the later case we don't want to introduce side effects (reset revision status etc.)
 		if (isEmpty(data)) return;
 		if (this.requirementUpload.status) this.requirementUpload.delete('status');
@@ -88,7 +88,7 @@ exports['payment-receipt-upload/[a-z][a-z0-9-]*'] = {
 	},
 	submit: function (data) {
 		// As form is set with "auto submit", the submission may be triggered not only
-		// by user update, by also by data update coming from the server.
+		// by user update but also by data update coming from the server.
 		// In the later case we don't want to introduce side effects (reset revision status etc.)
 		if (isEmpty(data)) return;
 		if (this.paymentReceiptUpload.status) this.paymentReceiptUpload.delete('status');
