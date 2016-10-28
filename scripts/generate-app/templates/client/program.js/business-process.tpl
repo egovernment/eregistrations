@@ -95,7 +95,8 @@ loadView = function () {
 		return;
 	}
 	user = db.User.getById(userId);
-	if (!user || !user.currentBusinessProcess) {
+	if (!user || !user.currentBusinessProcess ||
+			!user.currentBusinessProcess.requirementUploads.dataSnapshot.resolved) {
 		server.once('sync', loadView);
 		console.log(".. Waiting for user data ..");
 		return;
