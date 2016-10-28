@@ -12,7 +12,7 @@ var onError = function (message, source, line, column, error) {
 	var buildStamp;
 
 	// Do not log errors for which we have no useful information
-	if (nonReportableMessages.hasOwnProperty(message) && !source && !line && !column) return;
+	if (nonReportableMessages.hasOwnProperty(message) && !line && !column) return;
 	if (error && nonReportableCodes.hasOwnProperty(error.code)) return;
 
 	var xhr = new XMLHttpRequest(), isSent = false, queryConfig;
