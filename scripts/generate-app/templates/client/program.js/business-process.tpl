@@ -10,7 +10,8 @@ if (window.performance && window.performance.now) {
 }
 console.log("Build timestamp: ${BUILD_TIMESTAMP}");
 
-var startTime = Date.now();
+var startTime = Date.now()
+  , appName = '${ appName }';
 
 // JavaScript polyfills and shims
 // TODO: autodetect, generate and import from: './shims.generated'
@@ -96,7 +97,8 @@ loadView = function () {
 	}
 	user = db.User.getById(userId);
 	if (!user || !user.currentBusinessProcess ||
-			!user.currentBusinessProcess.requirementUploads.dataSnapshot.resolved) {
+			((appName === 'business-process-submitted') &&
+				!user.currentBusinessProcess.requirementUploads.dataSnapshot.resolved)) {
 		server.once('sync', loadView);
 		console.log(".. Waiting for user data ..");
 		return;
