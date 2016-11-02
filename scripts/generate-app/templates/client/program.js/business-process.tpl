@@ -104,7 +104,7 @@ loadView = function () {
 		return;
 	}
 	Object.defineProperty(db, '$user', { configurable: true, value: user });
-	viewContext = { appName: '${ appName }' };
+	viewContext = { appName: appName };
 	if (isReadOnlyRender) {
 		require('eregistrations/client/resolve-legacy-render-view-context')(db, clientId, viewContext);
 	} else {
