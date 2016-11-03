@@ -3,23 +3,14 @@
 var db                = require('../db')
   , _                 = require('mano').i18n.bind('View: Official: Inspector')
   , location          = require('mano/lib/client/location')
-  , setupQueryHandler = require('../utils/setup-client-query-handler')
-  , getData           = require('mano/lib/client/xhr-driver').get
-  , memoize           = require('memoizee')
   , capitalize        = require('es5-ext/string/#/capitalize')
   , uncapitalize      = require('es5-ext/string/#/uncapitalize')
-  , ObservableValue   = require('observable-value')
   , once              = require('timers-ext/once')
   , dispatch          = require('dom-ext/html-element/#/dispatch-event-2')
+  , env               = require('mano').env
 
-  , queryHandlerConf  = require('../apps/inspector/query-conf')
-  , tableColumns      = require('./components/inspector-table-columns');
-
-var queryServer = memoize(function (query) {
-	return getData('/get-data/', query);
-}, {
-	normalizer: function (args) { return JSON.stringify(args[0]); }
-});
+  , tableColumns      = require('./components/inspector-table-columns')
+  , getInspectorTable = require('./components/inspector-table');
 
 exports._parent = require('./abstract-user-base');
 
@@ -28,25 +19,10 @@ exports['sub-main'] = {
 	content: function () {
 		var statusQuery        = location.query.get('status')
 		  , serviceQuery       = location.query.get('service')
-		  , registrationQuery   = location.query.get('registration')
+		  , registrationQuery  = location.query.get('registration')
 		  , submitterTypeQuery = location.query.get('submitterType')
 		  , SubmitterType      = db.BusinessProcess.prototype.getDescriptor('submitterType').type
-		  , searchForm, searchInput;
-
-		var bpData       = new ObservableValue()
-		  , queryHandler = setupQueryHandler(queryHandlerConf, location, '/');
-
-		queryHandler.on('query', function (query) {
-			if (query.dateFrom) {
-				query.dateFrom = query.dateFrom.toJSON();
-			}
-			if (query.dateTo) {
-				query.dateTo = query.dateTo.toJSON();
-			}
-			queryServer(query).done(function (queryResult) {
-				bpData.value = queryResult;
-			});
-		});
+		  , searchForm, searchInput, inspectorTable;
 
 		section(
 			{ class: 'section-primary users-table-filter-bar' },
@@ -175,15 +151,18 @@ exports['sub-main'] = {
 
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
 
-		table({
-			class: 'submitted-user-data-table',
-			configuration: {
-				collection: bpData,
-				columns: tableColumns.columns
-			}
-			// Important: this needs to be after configuration directive
-			// responsive: true
-		});
+		insert(inspectorTable = getInspectorTable({
+			columns: tableColumns.columns,
+			getOrderIndex: function (businessProcess) {
+				return 1;
+			},
+			itemsPerPage: env.objectsListItemsPerPage,
+			class: 'submitted-user-data-table'
+		}));
+
+		insert(inspectorTable.pagination,
+			section({ class: 'table-responsive-container' }, inspectorTable),
+			inspectorTable.pagination);
 	}
 };
 

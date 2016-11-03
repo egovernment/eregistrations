@@ -3,14 +3,15 @@
 
 'use strict';
 
-var db                = require('../../db')
-  , uniq              = require('es5-ext/array/#/uniq')
-  , customError       = require('es5-ext/error/custom')
-  , uncapitalize      = require('es5-ext/string/#/uncapitalize')
-  , capitalize        = require('es5-ext/string/#/capitalize')
+var db              = require('../../db')
+  , uniq            = require('es5-ext/array/#/uniq')
+  , customError     = require('es5-ext/error/custom')
+  , uncapitalize    = require('es5-ext/string/#/uncapitalize')
+  , capitalize      = require('es5-ext/string/#/capitalize')
+  , isNaturalNumber = require('es5-ext/number/is-natural')
 
-  , stringify         = JSON.stringify
-  , wsRe              = /\s{2,}/g;
+  , stringify       = JSON.stringify
+  , wsRe            = /\s{2,}/g;
 
 module.exports = [{
 	name: 'status',
@@ -104,8 +105,15 @@ module.exports = [{
 }, {
 	name: 'page',
 	ensure: function (value) {
-		if (!value) return;
-		// TODO
+		var num;
+
+		if (value == null) return 1;
+
+		if (isNaN(value)) throw new Error("Unrecognized page value " + stringify(value));
+		num = Number(value);
+		if (!isNaturalNumber(num)) throw new Error("Unreconized page value " + stringify(value));
+		if (!num) throw new Error("Unexpected page value " + stringify(value));
+
 		return value;
 	}
 }];

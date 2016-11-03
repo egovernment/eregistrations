@@ -197,6 +197,11 @@ exports.stepMetaMap = {
 };
 
 exports.businessProcessMetaMap = {
+	creationTime: {
+		validate: function (record) { return (record.value[0] === '2'); },
+		set: function (data, record) { data.creationTime = unserializeValue(record.value); },
+		delete: function (data) { delete data.creationTime; }
+	},
 	businessName: {
 		type: 'computed',
 		validate: function (record) { return record.value[0] === '3'; },
