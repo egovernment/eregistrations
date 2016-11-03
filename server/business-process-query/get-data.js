@@ -97,7 +97,10 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 			storage.search(function (id, record) {
 				var bpId = id.split('/', 1)[0], stepPath, stepKeyPath, meta, keyPath, multiItemValue, path;
 				if (bpId === id) {
-					if (record.value[0] === '7') initBpDataset(bpId)._existing = true;
+					if (record.value[0] === '7') {
+						initBpDataset(bpId)._existing = true;
+						initBpDataset(bpId)._createStamp = record.stamp;
+					}
 					return;
 				}
 				if (includes.call(id, '*')) {
@@ -197,17 +200,6 @@ exports.stepMetaMap = {
 };
 
 exports.businessProcessMetaMap = {
-	creationTime: {
-		validate: function (record) { return (record.value[0] === '2'); },
-		set: function (data, record) { data.creationTime = unserializeValue(record.value); },
-		delete: function (data) { delete data.creationTime; }
-	},
-	businessName: {
-		type: 'computed',
-		validate: function (record) { return record.value[0] === '3'; },
-		set: function (data, record) { data.businessName = record.value.slice(1); },
-		delete: function (data) { delete data.businessName; }
-	},
 	correctionTime: {
 		validate: function (record) { return (record.value[0] === '2'); },
 		set: function (data, record) { data.correctionTime = unserializeValue(record.value); },

@@ -108,7 +108,7 @@ module.exports = exports = function (config) {
 				return filterBusinessProcesses(data.businessProcesses, query);
 			})(function (data) {
 				return sortData(data, function (bpA, bpB) {
-					return bpA.creationTime - bpB.creationTime;
+					return bpA._createStamp - bpB._createStamp;
 				});
 			})(function (data) {
 				var fullSize = data.length;
