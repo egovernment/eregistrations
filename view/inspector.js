@@ -167,4 +167,3 @@ exports['sub-main'] = {
 };
 
 exports._customFilters = Function.prototype;
-exports._statusMap = Function.prototype;
