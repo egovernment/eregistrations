@@ -1,5 +1,4 @@
-// Business process dedicated list manager
-// (used to handle business processes table in official roles)
+// Inspector dedicated list manager
 
 'use strict';
 

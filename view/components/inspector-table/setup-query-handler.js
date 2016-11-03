@@ -1,5 +1,4 @@
-// Business process dedicated search query handler
-// (used to handle business processes table in official roles)
+// Inspector dedicated search query handler
 
 'use strict';
 

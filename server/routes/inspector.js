@@ -108,16 +108,12 @@ module.exports = exports = function (config) {
 				return filterBusinessProcesses(data.businessProcesses, query);
 			})(function (data) {
 				return sortData(data, function (bpA, bpB) {
-					// TODO: This needs fixing
-					return bpA.creationTime < bpB.creationTime;
+					return bpA.creationTime - bpB.creationTime;
 				});
 			})(function (data) {
 				var fullSize = data.length;
 
-				// TODO: Should this be conditional?
-				if (query.page) {
-					data = getPage(data, query.page);
-				}
+				data = getPage(data, query.page);
 
 				if (!data.length) {
 					return { size: 0 };

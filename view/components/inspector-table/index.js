@@ -1,6 +1,5 @@
 // Inspector table handler
 // Setups dedicated list manager and query handler
-// (used to handle business processes table in official roles)
 
 'use strict';
 
