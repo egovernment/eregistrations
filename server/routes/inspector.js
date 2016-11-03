@@ -15,7 +15,7 @@ var assign                  = require('es5-ext/object/assign')
   , queryHandlerConf        = require('../../apps/inspector/query-conf')
   , QueryHandler            = require('../../utils/query-handler');
 
-var listProperties = new Set(['submitterType', 'companyName']);
+var listProperties = new Set(['submitterType', 'companyName', 'isSubmitted']);
 var listComputedProperties = ['status', 'businessName'];
 
 var getRecords = function (data, keyPaths) {

@@ -21,16 +21,10 @@ exports.statusColumn = {
 exports.servicesColumn = {
 	head: _("Service"),
 	data: function (businessProcess) {
-		var ServiceType;
-
-		if (!businessProcess.serviceName) return;
-
-		ServiceType = db['BusinessProcess' + capitalize.call(businessProcess.serviceName)];
-
-		if (!ServiceType) return;
+		var BusinessProcess = businessProcess.constructor;
 
 		return span(
-			{ class: 'hint-optional hint-optional-right', 'data-hint': ServiceType.prototype.label },
+			{ class: 'hint-optional hint-optional-right', 'data-hint': BusinessProcess.prototype.label },
 			exports.getServiceIcon(businessProcess)
 		);
 	}
