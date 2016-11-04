@@ -2,7 +2,6 @@
 
 var db                          = require('../../db')
   , _                           = require('mano').i18n.bind('View: Component: Inspector')
-  , capitalize                  = require('es5-ext/string/#/capitalize')
   , businessProcessTableColumns = require('./business-process-table-columns');
 
 exports.getServiceIcon = function (businessProcess) {
