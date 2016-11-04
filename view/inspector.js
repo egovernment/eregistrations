@@ -153,9 +153,7 @@ exports['sub-main'] = {
 
 		insert(inspectorTable = getInspectorTable({
 			columns: tableColumns.columns,
-			getOrderIndex: function (businessProcess) {
-				return 1;
-			},
+			getOrderIndex: exports._getOrderIndex,
 			itemsPerPage: env.objectsListItemsPerPage,
 			class: 'submitted-user-data-table'
 		}));
@@ -167,3 +165,7 @@ exports['sub-main'] = {
 };
 
 exports._customFilters = Function.prototype;
+
+exports._getOrderIndex = function (businessProcess) {
+	return businessProcess.lastModified;
+};
