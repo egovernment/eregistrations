@@ -13,7 +13,6 @@ var assign                  = require('es5-ext/object/assign')
   , filterBusinessProcesses = require('../business-process-query/business-processes/filter')
   , sortData                = require('../../utils/query/sort')
   , getPage                 = require('../../utils/query/get-page')
-  , queryHandlerConf        = require('../../apps/inspector/query-conf')
   , QueryHandler            = require('../../utils/query-handler');
 
 var getRecords = function (data, keyPaths) {
@@ -96,16 +95,20 @@ module.exports = exports = function (config) {
 	  , processingStepsMeta    = ensureObject(config.processingStepsMeta)
 	  , listProperties         = new Set(aFrom(config.listProperties))
 	  , listComputedProperties = config.listComputedProperties && aFrom(config.listComputedProperties)
-	  , queryHandler           = new QueryHandler(queryHandlerConf);
+	  , queryHandler           = new QueryHandler(config.queryHandlerConf);
 
 	getData(driver, processingStepsMeta).done();
 
 	return assign({
 		'get-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
-				return getData(driver, processingStepsMeta);
+				return getData(driver, processingStepsMeta, config);
 			})(function (data) {
 				return filterBusinessProcesses(data.businessProcesses, query);
+			})(function (data) {
+				if (config.filterData) return config.filterData(data, query);
+
+				return data;
 			})(function (data) {
 				return sortData(data, function (bpA, bpB) {
 					return bpA._createStamp - bpB._createStamp;

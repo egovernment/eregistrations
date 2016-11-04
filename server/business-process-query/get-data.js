@@ -5,6 +5,8 @@
 
 var aFrom                         = require('es5-ext/array/from')
   , forEach                       = require('es5-ext/object/for-each')
+  , assign                        = require('es5-ext/object/assign')
+  , normalizeOptions              = require('es5-ext/object/normalize-options')
   , capitalize                    = require('es5-ext/string/#/capitalize')
   , includes                      = require('es5-ext/string/#/contains')
   , Set                           = require('es6-set')
@@ -23,10 +25,15 @@ var aFrom                         = require('es5-ext/array/from')
 var re = new RegExp('^processingSteps\\/map\\/([a-zA-Z0-9]+' +
 	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$');
 
-module.exports = exports = memoize(function (driver, processingStepsMeta) {
-	var storageStepsMap = new Map(), stepShortPathMap = new Map()
+module.exports = exports = memoize(function (driver, processingStepsMeta/*, options*/) {
+	var options                 = normalizeOptions(arguments[2])
+	  , storageStepsMap         = new Map()
+	  , stepShortPathMap        = new Map()
 	  , serviceFullShortNameMap = new Map()
-	  , startTime = Date.now();
+	  , startTime               = Date.now()
+	  , stepMetaMap             = assign({}, exports.stepMetaMap, options.stepMetaMap || {})
+	  , businessProcessMetaMap  = assign({}, exports.businessProcessMetaMap,
+			options.businessProcessMetaMap || {});
 
 	var result = { steps: new Map(), businessProcesses: new Map() };
 
@@ -76,7 +83,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 		});
 		stepPaths.forEach(function (stepPath) {
 			// Status
-			forEach(exports.stepMetaMap, function (meta, stepKeyPath) {
+			forEach(stepMetaMap, function (meta, stepKeyPath) {
 				storage.on('key:processingSteps/map/' + stepPath + '/' + stepKeyPath, function (event) {
 					if (event.type !== (meta.type || 'direct')) return;
 					if (!meta.validate(event.data)) meta.delete(initStepDataset(stepPath, event.ownerId));
@@ -84,7 +91,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 				});
 			});
 		});
-		forEach(exports.businessProcessMetaMap, function (meta, keyPath) {
+		forEach(businessProcessMetaMap, function (meta, keyPath) {
 			storage.on('key:' + keyPath, function (event) {
 				if (event.type !== (meta.type || 'direct')) return;
 				if (!meta.validate(event.data)) meta.delete(initBpDataset(event.ownerId));
@@ -110,7 +117,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 				} else {
 					keyPath = id.slice(bpId.length + 1);
 				}
-				meta = exports.businessProcessMetaMap[keyPath];
+				meta = businessProcessMetaMap[keyPath];
 				if (meta) {
 					if (meta.type && (meta.type !== 'direct')) return;
 					if (multiItemValue && !meta.multiple) return;
@@ -122,15 +129,15 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 				stepPath = match[1];
 				if (!stepPaths.has(stepPath)) return;
 				stepKeyPath = match[2];
-				meta = exports.stepMetaMap[stepKeyPath];
+				meta = stepMetaMap[stepKeyPath];
 				if (!meta) return;
 				if (meta.type && (meta.type !== 'direct')) return;
 				if (multiItemValue && !meta.multiple) return;
 				if (!meta.validate(record, multiItemValue)) return;
 				meta.set(initStepDataset(stepPath, bpId), record, multiItemValue);
 			}),
-			deferred.map(Object.keys(exports.businessProcessMetaMap), function (keyPath) {
-				var meta = exports.businessProcessMetaMap[keyPath];
+			deferred.map(Object.keys(businessProcessMetaMap), function (keyPath) {
+				var meta = businessProcessMetaMap[keyPath];
 				if (meta.type !== 'computed') return;
 				return storage.searchComputed({ keyPath: keyPath }, function (id, record) {
 					if (!meta.validate(record)) return;
@@ -138,8 +145,8 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 				});
 			}),
 			deferred.map(aFrom(stepPaths), function (stepPath) {
-				return deferred.map(Object.keys(exports.stepMetaMap), function (stepPropKeyPath) {
-					var meta = exports.stepMetaMap[stepPropKeyPath];
+				return deferred.map(Object.keys(stepMetaMap), function (stepPropKeyPath) {
+					var meta = stepMetaMap[stepPropKeyPath];
 					if (meta.type !== 'computed') return;
 					var keyPath = 'processingSteps/map/' + stepPath + '/' + stepPropKeyPath;
 					return storage.searchComputed({ keyPath: keyPath }, function (id, record) {
