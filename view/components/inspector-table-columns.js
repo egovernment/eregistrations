@@ -51,7 +51,7 @@ exports.columns = [
 	exports.servicesColumn,
 	exports.userTypeColumn,
 	exports.businessNameColumn,
-	// TODO: Replace with created date
+	// TODO: Replace with created date?
 	businessProcessTableColumns.submissionDateColumn,
 	businessProcessTableColumns.certificatesListColumn
 ];

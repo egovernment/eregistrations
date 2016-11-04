@@ -3,6 +3,7 @@
 var assign                  = require('es5-ext/object/assign')
   , ensureObject            = require('es5-ext/object/valid-object')
   , flatten                 = require('es5-ext/array/#/flatten')
+  , aFrom                   = require('es5-ext/array/from')
   , ensureDriver            = require('dbjs-persistence/ensure-driver')
   , Set                     = require('es6-set')
   , deferred                = require('deferred')
@@ -14,9 +15,6 @@ var assign                  = require('es5-ext/object/assign')
   , getPage                 = require('../../utils/query/get-page')
   , queryHandlerConf        = require('../../apps/inspector/query-conf')
   , QueryHandler            = require('../../utils/query-handler');
-
-var listProperties = new Set(['submitterType', 'companyName', 'isSubmitted']);
-var listComputedProperties = ['status', 'businessName'];
 
 var getRecords = function (data, keyPaths) {
 	var viewEvents, directEvents, computedEvents;
@@ -94,9 +92,11 @@ var getRecords = function (data, keyPaths) {
 };
 
 module.exports = exports = function (config) {
-	var driver              = ensureDriver(ensureObject(config).driver)
-	  , processingStepsMeta = ensureObject(config.processingStepsMeta)
-	  , queryHandler        = new QueryHandler(queryHandlerConf);
+	var driver                 = ensureDriver(ensureObject(config).driver)
+	  , processingStepsMeta    = ensureObject(config.processingStepsMeta)
+	  , listProperties         = new Set(aFrom(config.listProperties))
+	  , listComputedProperties = config.listComputedProperties && aFrom(config.listComputedProperties)
+	  , queryHandler           = new QueryHandler(queryHandlerConf);
 
 	getData(driver, processingStepsMeta).done();
 

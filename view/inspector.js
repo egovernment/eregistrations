@@ -84,34 +84,34 @@ exports['sub-main'] = {
 							return value ? null : 'selected';
 						}) }, _("All")),
 						serviceQuery.map(function (service) {
-							var drawnCertificates = [];
+							var drawnRegistrations = [];
 
 							if (service) {
 								service = db['BusinessProcess' + capitalize.call(service)];
 							}
 
-							var drawCertificates = function (certificates) {
-								return list(certificates, function (certificate, certificateName) {
-									if (drawnCertificates[certificateName]) return;
-									drawnCertificates[certificateName] = true;
+							var drawRegistrations = function (registrations) {
+								return list(registrations, function (registration, registrationName) {
+									if (drawnRegistrations[registrationName]) return;
+									drawnRegistrations[registrationName] = true;
 
 									return option({
-										value: certificateName,
+										value: registrationName,
 										selected: registrationQuery.map(function (value) {
-											var selected = certificateName ?
-													(value === certificateName) : (value == null);
+											var selected = registrationName ?
+													(value === registrationName) : (value == null);
 											return selected ? 'selected' : null;
 										})
-									}, certificate.label);
+									}, registration.label);
 								});
 							};
 
 							if (service) {
-								return drawCertificates(service.prototype.certificates.map);
+								return drawRegistrations(service.prototype.registrations.map);
 							}
 
 							return list(db.BusinessProcess.extensions, function (ServiceType) {
-								return drawCertificates(ServiceType.prototype.certificates.map);
+								return drawRegistrations(ServiceType.prototype.registrations.map);
 							});
 						})
 					)
