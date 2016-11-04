@@ -2,7 +2,8 @@
 
 var db                          = require('../../db')
   , _                           = require('mano').i18n.bind('View: Component: Inspector')
-  , businessProcessTableColumns = require('./business-process-table-columns');
+  , businessProcessTableColumns = require('./business-process-table-columns')
+  , formatLastModified          = require('../utils/last-modified');
 
 exports.getServiceIcon = function (businessProcess) {
 	return i({ class: "fa fa-user" });
@@ -46,12 +47,18 @@ exports.businessNameColumn = {
 	}
 };
 
+exports.creationDateColumn = {
+	head: _("Creation date"),
+	data: function (businessProcess) {
+		return formatLastModified(businessProcess.lastModified);
+	}
+};
+
 exports.columns = [
 	exports.statusColumn,
 	exports.servicesColumn,
 	exports.userTypeColumn,
 	exports.businessNameColumn,
-	// TODO: Replace with created date?
-	businessProcessTableColumns.submissionDateColumn,
+	exports.creationDateColumn,
 	businessProcessTableColumns.certificatesListColumn
 ];
