@@ -102,7 +102,7 @@ module.exports = exports = function (config) {
 	return assign({
 		'get-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
-				return getData(driver, processingStepsMeta, config);
+				return getData(driver, processingStepsMeta);
 			})(function (data) {
 				return filterBusinessProcesses(data.businessProcesses, query);
 			})(function (data) {
