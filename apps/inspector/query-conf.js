@@ -13,6 +13,10 @@ var db              = require('../../db')
   , stringify       = JSON.stringify
   , wsRe            = /\s{2,}/g;
 
+var servicesMap = db.BusinessProcess.extensions.map(function (ServiceType) {
+	return uncapitalize.call(ServiceType.__id__.slice('BusinessProcess'.length));
+});
+
 module.exports = [{
 	name: 'status',
 	ensure: function (value) {
@@ -31,11 +35,7 @@ module.exports = [{
 
 		if (!value) return;
 
-		serviceFound = db.BusinessProcess.extensions.some(function (ServiceType) {
-			return uncapitalize.call(ServiceType.__id__.slice('BusinessProcess'.length)) === value;
-		});
-
-		if (!serviceFound) {
+		if (!servicesMap.has(value)) {
 			throw new Error("Unrecognized service value " + stringify(value));
 		}
 
