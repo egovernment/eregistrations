@@ -2,8 +2,7 @@
 
 'use strict';
 
-var includes        = require('es5-ext/array/#/contains')
-  , toNaturalNumber = require('es5-ext/number/to-pos-integer')
+var toNaturalNumber = require('es5-ext/number/to-pos-integer')
   , toArray         = require('es5-ext/object/to-array')
   , ensureObject    = require('es5-ext/object/valid-object')
   , ensureCallable  = require('es5-ext/object/valid-callable')
@@ -60,23 +59,5 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 			return this._getSearchFilter(value)(item);
 		}, this);
 	}),
-	// Modifiers (used only in case of non-external list resolution)
-	_modifiers: d([
-		{
-			name: 'search',
-			process: function (data, query) {
-				var value = query.search.split(/\s+/), list = data.list, result;
-				result = list.filter(this._getSearchFilter(value.shift()));
-				if (value.length) {
-					result = value.reduce(function (result, value) {
-						return result.filter(function (item) {
-							return includes.call(this, item);
-						}, list.filter(this._getSearchFilter(value)));
-					}.bind(this), result);
-				}
-				return { list: result, size: result.length };
-			}
-		}
-	]),
 	_resolveList: d(resolveList)
 });
