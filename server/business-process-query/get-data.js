@@ -100,7 +100,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 				if (bpId === id) {
 					if (record.value[0] === '7') {
 						initBpDataset(bpId)._existing = true;
-						initBpDataset(bpId)._createStamp = record.stamp;
+						initBpDataset(bpId).createdDateTime = new Date(record.stamp / 1000);
 					}
 					return;
 				}

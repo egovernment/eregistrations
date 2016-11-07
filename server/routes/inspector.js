@@ -111,7 +111,7 @@ module.exports = exports = function (config) {
 				return data;
 			})(function (data) {
 				return sortData(data, function (bpA, bpB) {
-					return bpA._createStamp - bpB._createStamp;
+					return bpA.createdDateTime.getTime() - bpB.createdDateTime.getTime();
 				});
 			})(function (data) {
 				var fullSize = data.length;
