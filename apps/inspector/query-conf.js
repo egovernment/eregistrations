@@ -34,7 +34,7 @@ var servicesMap = db.BusinessProcess.extensions.map(function (ServiceType) {
 	return uncapitalize.call(ServiceType.__id__.slice('BusinessProcess'.length));
 });
 
-module.exports = [{
+exports.statusQueryConf = {
 	name: 'status',
 	ensure: function (value) {
 		if (!value) return;
@@ -45,7 +45,9 @@ module.exports = [{
 
 		return value;
 	}
-}, {
+};
+
+exports.serviceQueryConf = {
 	name: 'service',
 	ensure: function (value) {
 		if (!value) return;
@@ -56,7 +58,9 @@ module.exports = [{
 
 		return value;
 	}
-}, {
+};
+
+exports.registrationQueryConf = {
 	name: 'registration',
 	ensure: function (value, resolvedQuery) {
 		var service = resolvedQuery.service
@@ -76,7 +80,9 @@ module.exports = [{
 
 		return value;
 	}
-}, {
+};
+
+exports.submitterTypeQueryConf = {
 	name: 'submitterType',
 	ensure: function (value) {
 		if (!value) return;
@@ -87,7 +93,9 @@ module.exports = [{
 
 		return value;
 	}
-}, {
+};
+
+exports.searchQueryConf = {
 	name: 'search',
 	ensure: function (value) {
 		var expected;
@@ -106,7 +114,9 @@ module.exports = [{
 
 		return value;
 	}
-}, {
+};
+
+exports.pageQueryConf = {
 	name: 'page',
 	ensure: function (value) {
 		var num;
@@ -120,4 +130,13 @@ module.exports = [{
 
 		return value;
 	}
-}];
+};
+
+module.exports = [
+	exports.statusQueryConf,
+	exports.serviceQueryConf,
+	exports.registrationQueryConf,
+	exports.submitterTypeQueryConf,
+	exports.searchQueryConf,
+	exports.pageQueryConf
+];
