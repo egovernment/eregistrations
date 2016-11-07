@@ -7,11 +7,27 @@ var db              = require('../../db')
   , uniq            = require('es5-ext/array/#/uniq')
   , customError     = require('es5-ext/error/custom')
   , uncapitalize    = require('es5-ext/string/#/uncapitalize')
-  , capitalize      = require('es5-ext/string/#/capitalize')
   , isNaturalNumber = require('es5-ext/number/is-natural')
+  , Set             = require('es6-set')
+  , Map             = require('es6-map')
 
   , stringify       = JSON.stringify
   , wsRe            = /\s{2,}/g;
+
+var servicesAndRegistrations = new Map();
+var allRegistrations = new Set();
+
+db.BusinessProcess.extensions.forEach(function (ServiceType) {
+	var serviceShortName = uncapitalize.call(ServiceType.__id__.slice('BusinessProcess'.length))
+	  , registrations    = new Set();
+
+	ServiceType.prototype.registrations.map.forEach(function (registration, registrationName) {
+		allRegistrations.add(registrationName);
+		registrations.add(registrationName);
+	});
+
+	servicesAndRegistrations.set(serviceShortName, registrations);
+});
 
 var servicesMap = db.BusinessProcess.extensions.map(function (ServiceType) {
 	return uncapitalize.call(ServiceType.__id__.slice('BusinessProcess'.length));
@@ -31,8 +47,6 @@ module.exports = [{
 }, {
 	name: 'service',
 	ensure: function (value) {
-		var serviceFound;
-
 		if (!value) return;
 
 		if (!servicesMap.has(value)) {
@@ -47,21 +61,12 @@ module.exports = [{
 		var service = resolvedQuery.service
 		  , inscriptionFound;
 
-		var searchCertificates = function (certificates) {
-			return certificates.some(function (certificate, certificateName) {
-				return certificateName === value;
-			});
-		};
-
 		if (!value) return;
 
-		if (service) {
-			service          = db['BusinessProcess' + capitalize.call(service)];
-			inscriptionFound = searchCertificates(service.prototype.certificates.map);
+		if (service && servicesAndRegistrations.has(service)) {
+			inscriptionFound = servicesAndRegistrations.get(service).has(value);
 		} else {
-			inscriptionFound = db.BusinessProcess.extensions.some(function (ServiceType) {
-				return searchCertificates(ServiceType.prototype.certificates.map);
-			});
+			inscriptionFound = allRegistrations.has(value);
 		}
 
 		if (!inscriptionFound) {
