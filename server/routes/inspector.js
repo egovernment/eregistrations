@@ -93,17 +93,16 @@ module.exports = exports = function (config) {
 			return queryHandler.resolve(query)(function (query) {
 				return getData(driver, processingStepsMeta);
 			})(function (data) {
-				return filterBusinessProcesses(data.businessProcesses, query);
-			})(function (data) {
-				if (config.filterData) return config.filterData(data, query);
+				var fullSize;
 
-				return data;
-			})(function (data) {
-				return sortData(data, function (bpA, bpB) {
-					return bpA.createdDateTime.getTime() - bpB.createdDateTime.getTime();
-				});
-			})(function (data) {
-				var fullSize = data.length;
+				data = sortData(
+					filterBusinessProcesses(data.businessProcesses, query),
+					function (bpA, bpB) {
+						return bpA.createdDateTime.getTime() - bpB.createdDateTime.getTime();
+					}
+				);
+
+				fullSize = data.length;
 
 				data = getPage(data, query.page);
 
