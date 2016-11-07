@@ -97,6 +97,7 @@ loadView = function () {
 	}
 	user = db.User.getById(userId);
 	if (!user || !user.currentBusinessProcess ||
+			((user.currentRoleResolved === 'manager') && !user.currentlyManagedUser) ||
 			((appName === 'business-process-submitted') &&
 				!user.currentBusinessProcess.requirementUploads.dataSnapshot.resolved)) {
 		server.once('sync', loadView);
