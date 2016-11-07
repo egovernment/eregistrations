@@ -13,4 +13,5 @@
 ../../../node_modules/eregistrations/css/components/submitted-user-data-table.css
 ../../../node_modules/eregistrations/css/components/pagination.css
 ../../../node_modules/eregistrations/css/components/throbber.css
+../../../node_modules/eregistrations/css/components/label-reg.css
 ../../../css/theme.css
