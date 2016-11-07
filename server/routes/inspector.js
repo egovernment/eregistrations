@@ -102,13 +102,13 @@ module.exports = exports = function (config) {
 					}
 				);
 
-				fullSize = data.length;
-
-				data = getPage(data, query.page);
-
 				if (!data.length) {
 					return { size: 0 };
 				}
+
+				fullSize = data.length;
+
+				data = getPage(data, query.page);
 
 				return getRecords(data)(function (result) {
 					result.size = fullSize;
