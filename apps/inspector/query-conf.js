@@ -16,6 +16,7 @@ var db              = require('../../db')
 
 var servicesAndRegistrations = new Map();
 var allRegistrations = new Set();
+var submitterTypes = db.BusinessProcess.prototype.getDescriptor('submitterType').type.members;
 
 db.BusinessProcess.extensions.forEach(function (ServiceType) {
 	var serviceShortName = uncapitalize.call(ServiceType.__id__.slice('BusinessProcess'.length))
@@ -78,11 +79,9 @@ module.exports = [{
 }, {
 	name: 'submitterType',
 	ensure: function (value) {
-		var SubmitterType = db.BusinessProcess.prototype.getDescriptor('submitterType').type;
-
 		if (!value) return;
 
-		if (!SubmitterType.members.has(value)) {
+		if (!submitterTypes.has(value)) {
 			throw new Error("Unrecognized user type value " + stringify(value));
 		}
 
