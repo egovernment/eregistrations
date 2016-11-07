@@ -11,7 +11,6 @@ var toNaturalNumber = require('es5-ext/number/to-pos-integer')
   , memoize         = require('memoizee/plain')
   , db              = require('mano').db
   , getData         = require('mano/lib/client/xhr-driver').get
-  , getSearchFilter = require('../../../utils/get-search-filter')
   , ListManager     = require('../objects-table/manager')
   , resolveList     = require('../objects-table/resolve-list')
 
@@ -28,14 +27,12 @@ var getViewData = function (query) {
 
 var BusinessProcessesManager = module.exports = function (conf) {
 	var getOrderIndex = ensureCallable(ensureObject(conf).getOrderIndex)
-	  , searchFilter  = getSearchFilter
 	  , itemsPerPage  = toNaturalNumber(conf.itemsPerPage);
 
 	if (itemsPerPage) this.itemsPerPage = itemsPerPage;
 
 	defineProperties(this, {
 		_getItemOrderIndex: d(getOrderIndex),
-		_getSearchFilter: d(searchFilter),
 		_queryExternal: d(memoize(getViewData, {
 			normalizer: function (args) { return String(toArray(args[0], null, null, true)); },
 			maxAge: 10 * 1000
@@ -49,15 +46,9 @@ BusinessProcessesManager.prototype = Object.create(ListManager.prototype, {
 
 	// Characterics that needs to be provided per system/user:
 	_getItemOrderIndex: d(null),
-	_getSearchFilter: d(null),
 	_fullItems: d(new Set()),
 
 	_isExternalQuery: d(function (query) { return true; }),
-	_isItemApplicable: d(function (item, query) {
-		if (!query.search) return true;
-		return query.search.split(/\s+/).every(function (value) {
-			return this._getSearchFilter(value)(item);
-		}, this);
-	}),
+	_isItemApplicable: d(function (item, query) { return true; }),
 	_resolveList: d(resolveList)
 });
