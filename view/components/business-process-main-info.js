@@ -8,7 +8,7 @@ var _            = require('mano').i18n.bind('View: Component: Business Process 
   , isUserApp    = require('../../utils/is-user-app')
   , scrollBottom = require('../utils/scroll-to-bottom')
   , tableCols    = require('./table-columns')
-  , columns      = from(require('./business-process-table-columns'));
+  , columns      = from(require('./business-processes-table-columns'));
 
 columns.push(tableCols.businessProcessArchiverColumn);
 

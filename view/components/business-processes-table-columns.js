@@ -2,7 +2,7 @@
 
 var tableColumns = require('./table-columns');
 
-exports = [
+module.exports = [
 	tableColumns.businessProcessServiceColumn,
 	tableColumns.businessProcessBusinessNameColumn,
 	tableColumns.businessProcessSubmissionDateColumn,
