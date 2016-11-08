@@ -7,10 +7,10 @@ var _            = require('mano').i18n.bind('View: Component: Business Process 
   , nextTick     = require('next-tick')
   , isUserApp    = require('../../utils/is-user-app')
   , scrollBottom = require('../utils/scroll-to-bottom')
-  , tableCols    = require('./business-process-table-columns')
-  , columns      = from(tableCols.columns);
+  , tableCols    = require('./table-columns')
+  , columns      = from(require('./business-process-table-columns'));
 
-columns.push(tableCols.archiverColumn);
+columns.push(tableCols.businessProcessArchiverColumn);
 
 module.exports = function (context) {
 	var businessProcess = context.businessProcess

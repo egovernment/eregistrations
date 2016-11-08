@@ -3,9 +3,11 @@
 'use strict';
 
 var _                  = require('mano').i18n.bind('View: Manager')
-  , actionsColumn      = require('./components/business-process-table-columns').actionsColumn
-  , getServiceIcon     = require('./components/business-process-table-columns').getServiceIcon
-  , formatLastModified = require('./utils/last-modified');
+  , tableColumns       = require('./components/table-columns')
+  , formatLastModified = require('./utils/last-modified')
+
+  , actionsColumn      = tableColumns.businessProcessActionsColumn
+  , getServiceIcon     = tableColumns.getServiceIcon;
 
 exports._parent = require('./manager');
 

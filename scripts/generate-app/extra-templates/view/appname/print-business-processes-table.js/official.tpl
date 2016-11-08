@@ -1,7 +1,7 @@
 'use strict';
 
 var statusMap = require('../../apps/${ appName }/business-processes/map')
-  , columns   = require('../components/business-process-table-columns').columns;
+  , columns   = require('../components/business-process-table-columns');
 
 var getOrderIndex =
 	require('../../apps/${ appName }/business-processes/get-default-order-index');

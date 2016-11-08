@@ -7,12 +7,11 @@ var _                  = require('mano').i18n.bind('View: Official: Supervisor')
   , dispatch           = require('dom-ext/html-element/#/dispatch-event-2')
   , location           = require('mano/lib/client/location')
   , getSupervisorTable = require('./components/supervisor-table')
-  , tableColumns       = require('./components/supervisor-table-columns')
   , timeRanges         = require('../utils/supervisor-time-ranges')
   , filterStepsMap     = require('../utils/filter-supervisor-steps-map')
   , statusMeta         = require('mano').db.ProcessingStepStatus.meta
   , stepLabelsMap      = require('../utils/processing-steps-label-map')
-  , columns            = from(tableColumns.columns)
+  , columns            = require('./components/supervisor-table-columns')
   , env                = require('mano').env;
 
 exports._parent = require('./user-base');

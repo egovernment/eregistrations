@@ -152,7 +152,7 @@ exports['sub-main'] = {
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
 
 		insert(inspectorTable = getInspectorTable({
-			columns: tableColumns.columns,
+			columns: tableColumns,
 			getOrderIndex: exports._getOrderIndex,
 			itemsPerPage: env.objectsListItemsPerPage,
 			class: 'submitted-user-data-table'

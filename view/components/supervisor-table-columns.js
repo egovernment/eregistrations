@@ -2,7 +2,7 @@
 
 var tableColumns = require('./table-columns');
 
-exports.columns = [
+exports = [
 	tableColumns.processingStepRoleColumn,
 	tableColumns.processingStepBusinessNameColumn,
 	tableColumns.processingStepProcessingTimeColumn,
