@@ -11,7 +11,7 @@ var normalizeOptions      = require('es5-ext/object/normalize-options')
 module.exports = exports = function (context/*, options*/) {
 	var options            = normalizeOptions(arguments[1])
 	  , businessProcess    = context.businessProcess
-	  , target             = options.uploadsResolver || businessProcess
+	  , target             = context.processingStep || businessProcess
 	  , uploads            = getUploads(target.paymentReceiptUploads, context.appName)
 	  , resolveDocumentUrl = getResolveDocumentUrl('paymentReceiptUpload', uploads, options);
 
