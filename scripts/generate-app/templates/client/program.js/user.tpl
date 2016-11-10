@@ -142,6 +142,7 @@ loadView = function () {
 	isViewGenerated = true;
 	runDbSync();
 };
+
 if (userId) {
 	if (localStorage._id) loadView();
 	else server.once('sync', loadView);
