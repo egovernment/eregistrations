@@ -148,6 +148,6 @@ loadView = function () {
 };
 
 if (userId) {
-  if (localStorage._id) loadView();
-  else server.once('sync', loadView);
+	if (localStorage._id) loadView();
+	else server.once('sync', loadView);
 }
