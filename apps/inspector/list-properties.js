@@ -5,6 +5,5 @@
 var Set = require('es6-set');
 
 module.exports = new Set([
-	'isApproved', 'isRejected', 'isSubmitted', 'certificates/dataSnapshot/jsonString',
-	'submitterType'
+	'certificates/dataSnapshot/jsonString', 'submitterType'
 ]);
