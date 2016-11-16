@@ -37,7 +37,7 @@ module.exports = function (context) {
 						if (uploadsData) data = uploadsData.concat(certsData);
 						else data = aFrom(certsData);
 					} else {
-						data = aFrom(uploadsData);
+						if (uploadsData) data = aFrom(uploadsData);
 					}
 					if (data) data = data.sort(compareByLabel).slice(0, 5);
 					return table({ class: 'submitted-user-data-table user-request-table' },

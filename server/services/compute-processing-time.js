@@ -14,7 +14,9 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , Duration                      = require('duration')
   , toDateTimeInTz                = require('../../utils/to-date-time-in-time-zone')
   , isDayOff                      = require('../utils/is-day-off')
-  , Set                           = require('es6-set');
+  , Set                           = require('es6-set')
+  , getData                       = require('../business-process-query/get-data')
+  , queryData;
 
 var getHolidaysProcessingTime = function (startStamp, endStamp) {
 	var startDateTime = toDateTimeInTz(new Date(startStamp), db.timeZone)
@@ -50,7 +52,7 @@ var storeTime = function (storage, path, time) {
 		if (data && (data.value[0] === '2')) {
 			currentValue = unserializeValue(data.value);
 		}
-		return storage.store(path, serializeValue(currentValue + time));
+		return storage.store(path, Math.round(serializeValue(currentValue + time)));
 	});
 };
 
@@ -86,11 +88,30 @@ var getOnIsSentBack = function (storage) {
 		if (correctionTime) {
 			storeTime(storage, correctionTimePath, correctionTime).done();
 		}
+		// We need to handle step statuses as well
+		queryData(function (data) {
+			data.steps.forEach(function (stepData, stepName) {
+				var currentData, correctionPath, correctionTime;
+				if (!stepData.has(event.ownerId)) return;
+				currentData = stepData.get(event.ownerId);
+				if (currentData.status !== 'sentBack') return;
+				correctionPath = event.ownerId + '/' + currentData.stepFullPath + '/correctionTime';
+
+				//below should never happen
+				if (event.data.stamp - currentData.statusStamp < 0) {
+					return;
+				}
+
+				correctionTime = (event.data.stamp - currentData.statusStamp) / 1000;
+				storeTime(storage, correctionPath, correctionTime).done();
+			});
+		}).done();
 	};
 };
 
 module.exports = function (driver, processingStepsMeta) {
 	var allStorages = new Set();
+	queryData = getData(driver, processingStepsMeta);
 	Object.keys(processingStepsMeta).forEach(function (stepMetaKey) {
 		var stepPath, storages;
 		stepPath = 'processingSteps/map/' + resolveProcessingStepFullPath(stepMetaKey);
@@ -102,27 +123,32 @@ module.exports = function (driver, processingStepsMeta) {
 		storages.forEach(function (storage) {
 			allStorages.add(storage);
 			storage.on('key:' + stepPath + '/status', function (event) {
-				var status, oldStatus, correctionTimePath
-				  , processingHolidaysTimePath, processingHolidaysTime;
+				var status, oldStatus, processingHolidaysTimePath, processingHolidaysTime
+				  , nonProcessingTimePath, nonProcessingTime;
 
 				if (event.type !== 'computed' || !event.old) return;
 				status    = unserializeValue(event.data.value);
 				oldStatus = unserializeValue(event.old.value);
+
 				// We ignore such cases, they may happen when direct overwrites computed
 				if (status === oldStatus) return;
-				if (status === 'approved' || status === 'rejected' || status === 'paused') {
+				switch (status) {
+				case 'approved':
+				case 'rejected':
+				case 'paused':
+				case 'redelegated':
 					processingHolidaysTimePath = event.ownerId + '/' + stepPath + '/processingHolidaysTime';
 					processingHolidaysTime =
 						getHolidaysProcessingTime(event.old.stamp / 1000, event.data.stamp / 1000);
 					if (processingHolidaysTime) {
 						storeTime(storage, processingHolidaysTimePath, processingHolidaysTime).done();
 					}
-					return;
-				}
-				if (oldStatus === 'sentBack') {
-					correctionTimePath = event.ownerId + '/' + stepPath + '/correctionTime';
-					storeTime(storage, correctionTimePath,
-							(event.data.stamp - event.old.stamp) / 1000).done();
+					break;
+				case 'pending':
+					nonProcessingTimePath = event.ownerId + '/' + stepPath + '/nonProcessingTime';
+					nonProcessingTime = ((event.data.stamp - event.old.stamp) / 1000);
+					storeTime(storage, nonProcessingTimePath, nonProcessingTime).done();
+					break;
 				}
 			});
 		});

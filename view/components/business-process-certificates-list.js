@@ -13,7 +13,7 @@ var normalizeOptions      = require('es5-ext/object/normalize-options')
 module.exports = function (context/*, options*/) {
 	var options            = normalizeOptions(arguments[1])
 	  , businessProcess    = context.businessProcess
-	  , target             = options.uploadsResolver || businessProcess
+	  , target             = context.processingStep || businessProcess
 	  , certificates       = getCertificates(target.certificates, context.appName)
 	  , resolveDocumentUrl = getResolveDocumentUrl('certificate', certificates, options);
 

@@ -17,9 +17,15 @@ module.exports = function (date, timeZone) {
 	} catch (ignore) {}
 
 	if (result) {
-		return new Date(result[3], result[1] - 1, result[2],
-			Number(result[4]) + ((result[7] === 'P') ? 12 : 0), result[5], result[6],
-			date.getMilliseconds());
+		return new Date(
+			result[3],
+			result[1] - 1,
+			result[2],
+			Number(result[4]) + ((result[7] === 'P' && Number(result[4]) !== 12) ? 12 : 0),
+			result[5],
+			result[6],
+			date.getMilliseconds()
+		);
 	}
 
 	return date;

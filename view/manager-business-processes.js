@@ -44,7 +44,7 @@ exports['manager-account-content'] = function () {
 								span({ class: 'hint-optional hint-optional-right',
 										'data-hint': businessProcess._label },
 									getServiceIcon(businessProcess))),
-							td(businessProcess.user._fullName),
+							td(resolve(businessProcess._user, '_fullName')),
 							td(businessProcess._businessName),
 							td(_if(businessProcess._isSubmitted, function () {
 								return businessProcess._isSubmitted._lastModified.map(formatLastModified);

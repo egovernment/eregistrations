@@ -1,11 +1,29 @@
 'use strict';
 
+var nonReportableMessages = {};
+nonReportableMessages['Script error.'] = true;
+nonReportableMessages['Script error'] = true;
+
+var nonReportableCodes = {};
+nonReportableCodes.XHR_REQUEST_ERRORED = true;
+nonReportableCodes.XHR_REQUEST_ABORTED = true;
+
 var onError = function (message, source, line, column, error) {
+	var buildStamp;
+
+	// Do not log errors for which we have no useful information
+	if (!message && !source && !line && !column && !error) return;
+	if (nonReportableMessages.hasOwnProperty(message) && !line && !column) return;
+	if (error && nonReportableCodes.hasOwnProperty(error.code)) return;
+
 	var xhr = new XMLHttpRequest(), isSent = false, queryConfig;
 	xhr.open('POST', '/log-client-error/', true);
 	xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-	if ((typeof sessionStorage !== 'undefined') && sessionStorage.manoSessionId) {
-		xhr.setRequestHeader("X-Browser-Session", sessionStorage.manoSessionId);
+	if (typeof sessionStorage !== 'undefined') {
+		if (sessionStorage.manoSessionId) {
+			xhr.setRequestHeader("X-Browser-Session", sessionStorage.manoSessionId);
+		}
+		buildStamp = sessionStorage.manoBuildStamp;
 	}
 	xhr.onreadystatechange = function () {
 		var status;
@@ -27,6 +45,7 @@ var onError = function (message, source, line, column, error) {
 	};
 	queryConfig = {
 		location: location.href,
+		buildStamp: buildStamp,
 		message: message,
 		source: source,
 		line: line,
