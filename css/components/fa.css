@@ -376,3 +376,11 @@ e.g.:
 .fa-exclamation-triangle:before {
 	content: "\f071";
 }
+
+.fa-money {
+	width: 1em;
+}
+
+.fa-money:before {
+	content: "\f0d6";
+}
