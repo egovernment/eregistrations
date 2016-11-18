@@ -28,7 +28,7 @@ module.exports = memoize(function (targetMap, appName) {
 			if (!data) return;
 			return getSetProxy(targetMap.released).map(function (certificate) {
 				var snapshot = find.call(data, function (snapshot) {
-					return certificate.key === snapshot.uniqueKey;
+					return certificate.uniqueKey === snapshot.uniqueKey;
 				});
 				if (snapshot) return snapshot;
 			}).filter(Boolean).toArray();
