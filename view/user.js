@@ -61,7 +61,7 @@ exports['sub-main'] = {
 						  , renderAsDiv = not(renderAsForm)
 						  , boxClasses = [ 'user-account-service-box', _if(disabled, 'disabled') ];
 
-						// Explanation superfluous _if usage within configuration below
+						// Explanation of superfluous _if usage within configuration below:
 						// As item.content and item.buttonContent can be used in two scenarios (form and aHref)
 						// which may toggle during time of interface being displayed, we need to ensure that
 						// very same DOM content is moved between two containers, and that can only be ensured
