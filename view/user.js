@@ -68,14 +68,16 @@ exports['sub-main'] = {
 								div(div({ class: 'free-form' }, _if(renderAsForm, item.content)),
 									p(button({ type: 'submit' },
 										i({ class: 'fa fa-angle-right' }), _('Click to start'))))),
-							div({ class: boxClasses },
-								a({ href: _if(disabled, null, item.hrefUrl) },
-									_if(renderAsDiv, item.buttonContent)),
-								div(div({ class: 'free-form' }, _if(renderAsDiv, item.content)),
-									p(a({ href: _if(disabled, null, item.hrefUrl) },
-										i({ class: 'fa fa-angle-right' }), _if(disabled,
-											_('You have reached the draft limit for this service'),
-											_('Click to start'))))))
+							mmap(renderAsDiv, function (renderAsDiv) {
+								return div({ class: boxClasses },
+									a({ href: _if(disabled, null, item.hrefUrl) },
+										_if(renderAsDiv, item.buttonContent)),
+									div(div({ class: 'free-form' }, _if(renderAsDiv, item.content)),
+										p(a({ href: _if(disabled, null, item.hrefUrl) },
+											i({ class: 'fa fa-angle-right' }), _if(disabled,
+												_('You have reached the draft limit for this service'),
+												_('Click to start'))))));
+							})
 						)));
 					}))]));
 
