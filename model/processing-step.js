@@ -17,8 +17,7 @@ var Map                        = require('es6-map')
   , defineMultipleProcess      = require('./lib/multiple-process')
   , definePaymentReceiptUpload = require('./payment-receipt-upload')
   , defineRequirementUpload    = require('./requirement-upload')
-  , defineDocument             = require('./document')
-  , defineDataSnapshot         = require('./lib/data-snapshot');
+  , defineDocument             = require('./document');
 
 module.exports = memoize(function (db) {
 	var Percentage           = definePercentage(db)
@@ -32,7 +31,6 @@ module.exports = memoize(function (db) {
 	  , PaymentReceiptUpload = definePaymentReceiptUpload(db)
 	  , RequirementUpload    = defineRequirementUpload(db)
 	  , Document             = defineDocument(db)
-	  , DataSnapshot         = defineDataSnapshot(db)
 
 	  , ProcessingStep       = ProcessingStepBase.extend('ProcessingStep');
 
@@ -209,8 +207,7 @@ module.exports = memoize(function (db) {
 		} },
 		released: { type: Document, multiple: true, value: function (_observe) {
 			return _observe(this.master.certificates.released);
-		} },
-		dataSnapshot: { type: DataSnapshot, nested: true }
+		} }
 	});
 
 	// Step which redelegated to this step
