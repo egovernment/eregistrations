@@ -13,7 +13,7 @@
 	width: 49%;
 }
 
-.user-guide > *.full-width {
+.user-guide > .full-width {
 	width: 100%;
 }
 
