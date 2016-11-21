@@ -46,6 +46,17 @@ exports._parent = require('./business-process-base');
 
 exports['step-guide'] = { class: { 'step-active': true } };
 
+var getSectionCssClass = function (setup) {
+	var additionalCssClass = setup.additionalCssClass, cssClass = setup.cssClass;
+	if (additionalCssClass) {
+		if (!Array.isArray(additionalCssClass)) {
+			additionalCssClass = [additionalCssClass];
+		}
+		cssClass = cssClass.concat(additionalCssClass);
+	}
+	return cssClass;
+};
+
 exports.step = function () {
 	var businessProcess  = this.businessProcess
 	  , isSentBack       = businessProcess._isSentBack
@@ -111,8 +122,14 @@ exports._customScripts = Function.prototype;
 // Questions
 
 exports._questionsSection = function () {
+	var cssClass, options;
+	options = Object(arguments[0]);
+	cssClass = getSectionCssClass.call(this, {
+		cssClass: ['section-primary', 'user-guide-questions-section'],
+		additionalCssClass: options.additionalCssClass
+	});
 	return div(
-		{ class: ['section-primary', 'user-guide-questions-section'] },
+		{ class: cssClass },
 		h2(_("Questions")),
 		exports._questionsIntro.call(this),
 		this.businessProcess.determinants.toDOMFieldset(document, { formId: 'guide-form' })
@@ -128,10 +145,14 @@ exports._questionsIntro = function () {
 // Registrations
 
 exports._registrationsSection = function () {
-	var registrationsMap = this.businessProcess.registrations.map;
-
+	var registrationsMap = this.businessProcess.registrations.map, cssClass, options;
+	options = Object(arguments[0]);
+	cssClass = getSectionCssClass.call(this, {
+		cssClass: ['section-primary', 'user-guide-registrations-section'],
+		additionalCssClass: options.additionalCssClass
+	});
 	return div(
-		{ class: ['section-primary', 'user-guide-registrations-section'] },
+		{ class: cssClass },
 		div(
 			{ id: 'mandatory-registrations-section', class: 'section-primary-wrapper' },
 			h2(_("Mandatory Registrations")),
@@ -183,9 +204,14 @@ exports._optionalRegistrationIntro = function () {
 // Requirements
 
 exports._requirementsSection = function () {
+	var options, cssClass;
+	options = Object(arguments[0]);
+	cssClass = getSectionCssClass.call(this, {
+		cssClass: ['section-primary', 'user-guide-requirements-section'],
+		additionalCssClass: options.additionalCssClass
+	});
 	return div(
-		{ id: 'requirements-section', class: ['section-primary',
-			'user-guide-requirements-section'] },
+		{ id: 'requirements-section', class: cssClass },
 		h2(_("Requirements")),
 		exports._requirementsIntro.call(this),
 		ul({ id: 'requirements-list', class: 'user-guide-requirements-list' },
@@ -216,8 +242,14 @@ exports._requirementsFooter = Function.prototype;
 // Costs
 
 exports._costsSection = function () {
+	var options, cssClass;
+	options = Object(arguments[0]);
+	cssClass = getSectionCssClass.call(this, {
+		cssClass: ['section-primary', 'user-guide-costs-section'],
+		additionalCssClass: options.additionalCssClass
+	});
 	return div(
-		{ id: 'costs-section', class: ['section-primary', 'user-guide-costs-section'] },
+		{ id: 'costs-section', class: cssClass },
 		h2(_("Costs")),
 		exports._costsIntro.call(this),
 		ul({ id: 'costs-list', class: 'user-guide-costs-list' }, exports._costsList.call(this)),
