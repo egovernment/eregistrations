@@ -61,7 +61,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		businessProcessTypeName) {
 	var guideForm = $(guideFormId)
 	  , noRequstedRegistrationsSection, mandatoryRegistrationsSection
-	  , mandatoryRegistrationsListElements
+	  , mandatoryRegistrationsListElements, mandatoryRegistrationsEmptyMessage
 	  , optionalRegistrationsSection, optionalRegistrationsListElements
 	  , requirementsSection, requirementsListElements, requirementsLabelElements = {}
 	  , costsListElements, costsAmountsElements = {}, costsLabelElements = {}
@@ -76,6 +76,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 	noRequstedRegistrationsSection = $('no-requested-registrations-section');
 	mandatoryRegistrationsSection = $('mandatory-registrations-section');
+	mandatoryRegistrationsEmptyMessage = $('mandatory-registrations-empty-message');
 	mandatoryRegistrationsListElements = getNamedListElements('mandatory-registrations-list');
 	optionalRegistrationsSection = $('optional-registrations-section');
 	optionalRegistrationsListElements = getNamedListElements('optional-registrations-list');
@@ -138,6 +139,14 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 				li.toggle(businessProcess.registrations.mandatory.has(
 					businessProcess.registrations.map[name]
 				));
+			});
+		}
+		toggleConditionally(mandatoryRegistrationsEmptyMessage, false);
+		if (businessProcess.registrations.applicable.size === 0) {
+			toggleConditionally(mandatoryRegistrationsSection, true);
+			toggleConditionally(mandatoryRegistrationsEmptyMessage, true);
+			$.forIn(mandatoryRegistrationsListElements, function (li, name) {
+				li.toggle(false);
 			});
 		}
 
