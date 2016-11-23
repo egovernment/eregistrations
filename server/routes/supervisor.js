@@ -152,6 +152,7 @@ var initializeHandler = function (conf) {
 						return anyIdToStorage(objId)(function (storage) {
 							if (!storage) return;
 							return storage.getComputed(objId + '/' + keyPath)(function (data) {
+								if (!data) return;
 								if (isArray(data.value)) {
 									return data.value.map(function (data) {
 										var key = data.key ? '*' + data.key : '';
