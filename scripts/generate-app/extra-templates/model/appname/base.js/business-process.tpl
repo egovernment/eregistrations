@@ -2,4 +2,6 @@
 
 'use strict';
 
-module.exports = require('../business-process/base').extend('${ className }');
+module.exports = require('../business-process/base').extend('${ className }', {
+    //TODO define label
+});

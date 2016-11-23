@@ -13,4 +13,10 @@ user.$password.type = Password;
 require('../../../model/views');
 require('../../../model/statistics');
 
+db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
+	if (!BusinessProcess.prototype.label) {
+		throw new Error('Set label attribute for: ' + BusinessProcess.__id__);
+	}
+});
+
 module.exports = db;
