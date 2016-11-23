@@ -15,7 +15,8 @@ require('../../../model/statistics');
 
 db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
 	if (!BusinessProcess.prototype.label) {
-		throw new Error('Set label attribute for: ' + BusinessProcess.__id__);
+		throw new Error('Missing label for ' + BusinessProcess.__id__ +
+				' Statistics require that all BusinessProcess extensions come with label.');
 	}
 });
 
