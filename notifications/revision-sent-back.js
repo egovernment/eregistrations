@@ -17,10 +17,9 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	notification.preTrigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);
 
 	notification.subject = _("M05 You must correct some elements in your application");
-	notification.text = _("M05 Revision sent back\n\n"
+	notification.text = options.text || _("M05 Revision sent back\n\n"
 			+ "Name of company: ${ businessName }\n\n"
-			+ "${ rejectedUploads }\n\n${ processorFullName }\n\n"
-			+ "${ processorPhone }\n\n${ processorEmail }");
+			+ "${ rejectedUploads }");
 
 	if (options.greeting == null) {
 		notification.text = _("Email message greeting ${ fullName }") + "\n\n" + notification.text;
@@ -32,7 +31,7 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 
 	notification.resolveGetters = true;
 
-	notification.variables = {
+	notification.variables = assign({
 		fullName: function () {
 			return this.businessProcess.user.fullName;
 		},
@@ -74,24 +73,14 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 				result.push(dataForms.rejectReason);
 			}
 			return result.join('\n');
-		},
-		processorFullName: function () {
-			var processingStep = this.businessProcess.processingSteps.map[stepName];
-			return processingStep.processor.fullName;
-		},
-		processorPhone: function () {
-			var processingStep = this.businessProcess.processingSteps.map[stepName];
-			return processingStep.processor.phone;
-		},
-		processorEmail: function () {
-			var processingStep = this.businessProcess.processingSteps.map[stepName];
-			return processingStep.processor.email;
 		}
-	};
+	}, options.variables);
 
 	delete options.stepName;
 	delete options.greeting;
 	delete options.signature;
+	delete options.text;
+	delete options.variables;
 
 	return assign(notification, options);
 };
