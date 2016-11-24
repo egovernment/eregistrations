@@ -19,7 +19,8 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	notification.subject = _("M05 You must correct some elements in your application");
 	notification.text = _("M05 Revision sent back\n\n"
 			+ "Name of company: ${ businessName }\n\n"
-			+ "${ rejectedUploads }");
+			+ "${ rejectedUploads }\n\n${ processorFullName }\n\n"
+			+ "${ processorPhone }\n\n${ processorEmail }");
 
 	if (options.greeting == null) {
 		notification.text = _("Email message greeting ${ fullName }") + "\n\n" + notification.text;
@@ -73,6 +74,19 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 				result.push(dataForms.rejectReason);
 			}
 			return result.join('\n');
+		},
+		processorFullName: function () {
+			var processingStep = this.businessProcess.processingSteps.map[stepName];
+			return processingStep.processor.fullName;
+		},
+		processorPhone: function () {
+			var processingStep = this.businessProcess.processingSteps.map[stepName];
+			// We give the number of Registro de Comercio as default
+			return processingStep.processor.phone || '+503 2593 5479';
+		},
+		processorEmail: function () {
+			var processingStep = this.businessProcess.processingSteps.map[stepName];
+			return processingStep.processor.email;
 		}
 	};
 
