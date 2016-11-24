@@ -81,8 +81,7 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 		},
 		processorPhone: function () {
 			var processingStep = this.businessProcess.processingSteps.map[stepName];
-			// We give the number of Registro de Comercio as default
-			return processingStep.processor.phone || '+503 2593 5479';
+			return processingStep.processor.phone;
 		},
 		processorEmail: function () {
 			var processingStep = this.businessProcess.processingSteps.map[stepName];
