@@ -27,7 +27,7 @@ module.exports = function (BusinessProcess/*, options */) {
 
 			// Common inserts.
 			inserts.locale       = db.locale;
-			inserts.currentDate  = toDateTimeInTz(new Date(), db.timeZone).toString();
+			inserts.currentDate  = new db.DateTime(toDateTimeInTz(new Date(), db.timeZone)).toString();
 			inserts.logo         = options.logo;
 			inserts.businessName = data.businessName || '';
 			inserts.total        = data.total || '0';
