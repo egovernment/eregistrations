@@ -57,10 +57,7 @@ exports.step = function () {
 						dbjs: submissionForms._isAffidavitSigned,
 						type: 'checkbox',
 						control: { id: 'input-certified-truth' }
-					})), " ", span(_("I, ${ fullName }, declare under oath that the information, " +
-						"regarding registration of \"${ businessName }\", entered into the system is " +
-						"correct, and I accept that it would be saved and processed by involved institutions.",
-						{ fullName: user._fullName, businessName: businessProcess._businessName })))
+					})), " ", exports._swornDeclaration.call(this))
 				),
 				div(p({ id: 'application-submit-button' },
 					_if(user._isDemo,
@@ -77,6 +74,13 @@ exports.step = function () {
 					}
 				)
 			))));
+};
+
+exports._swornDeclaration = function () {
+	return span(_("I, ${ fullName }, declare under oath that the information, " +
+			"regarding registration of \"${ businessName }\", entered into the system is " +
+			"correct, and I accept that it would be saved and processed by involved institutions.",
+		{ fullName: this.user._fullName, businessName: this.businessProcess._businessName }));
 };
 
 exports._disableCondition = function () {
