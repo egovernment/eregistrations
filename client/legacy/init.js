@@ -1,6 +1,6 @@
 'use strict';
 
-var main = require('mano-legacy');
+var main = module.exports = require('mano-legacy');
 
 try {
 	Object.defineProperty(window, '$',
