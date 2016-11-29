@@ -21,6 +21,10 @@ module.exports = memoize(function (db/*, options */) {
 	Role.meta.get('user').set('label', _("User"));
 
 	Role.define('isFlowRole', { type: db.Function, value: function (role) {
+		return this.isPartARole(role) || this.isOfficialRole(role);
+	} });
+
+	Role.define('isPartARole', { type: db.Function, value: function (role) {
 		switch (role) {
 		case 'user':
 		case 'manager':
@@ -29,8 +33,12 @@ module.exports = memoize(function (db/*, options */) {
 		case 'supervisor':
 			return true;
 		default:
-			return (/^official[A-Z]/).test(role);
+			return false;
 		}
+	} });
+
+	Role.define('isOfficialRole', { type: db.Function, value: function (role) {
+		return (/^official[A-Z]/).test(role);
 	} });
 
 	User.prototype.defineProperties({

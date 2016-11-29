@@ -1,10 +1,10 @@
 'use strict';
 
-var forEach      = require('es5-ext/object/for-each')
-  , ensureObject = require('es5-ext/object/valid-object')
+var ensureObject = require('es5-ext/object/valid-object')
   , serviceNames = require('../../../utils/business-process-service-names')
   , getEmptyData = require('../utils/get-time-reduction-template')
-  , reduce       = require('../utils/reduce-time');
+  , reduce       = require('../utils/reduce-time')
+  , timeCalculationsStart = require('../utils/time-calculations-start');
 
 /**
 	* @param data  - `businessProcesses` result from ../get-data or direct result from ./filter
@@ -28,22 +28,38 @@ module.exports = function (data) {
 
 	serviceNames.forEach(function (name) { result.byService[name] = getEmptyData(); });
 
-	forEach(data, function (bpData, businessProcessId) {
+	data.forEach(function (bpData, businessProcessId) {
+		var dateString, processingTime, correctionTime;
 		result.all.startedCount++;
 		result.byService[bpData.serviceName].startedCount++;
 
-		if (!bpData.approvedDate) return;
+		if (!bpData.approvedDateTime) return;
 
-		var dateString = bpData.approvedDate.toISOString().slice(0, 10)
-		  , time = bpData.approvedDateTime - bpData.submissionDateTime;
+		dateString     = bpData.approvedDate.toISOString().slice(0, 10);
+		processingTime = bpData.approvedDateTime - bpData.submissionDateTime -
+			(bpData.correctionTime || 0) - (bpData.processingHolidaysTime || 0);
+		correctionTime = bpData.correctionTime;
+		// If there's something wrong with calculations (may happen with old data), or
+		// or the submission date before final calcualtion version we do not count time
+		if ((bpData.submissionDateTime < timeCalculationsStart) || (processingTime < (1000 * 3))) {
+			processingTime = 0;
+			if (correctionTime) {
+				correctionTime = 0;
+			}
+		}
 
 		if (!result.byDateAndService[dateString]) {
 			serviceNames.forEach(function (name) {
 				this[name] = 0;
 			}, result.byDateAndService[dateString] = {});
 		}
-		reduce(result.all.processing, time);
-		reduce(result.byService[bpData.serviceName].processing, time);
+		reduce(result.all.processing, processingTime);
+		reduce(result.byService[bpData.serviceName].processing, processingTime);
+		if (correctionTime != null) {
+			reduce(result.all.correction, correctionTime);
+			reduce(result.byService[bpData.serviceName].correction, correctionTime);
+		}
+
 		result.byDateAndService[dateString][bpData.serviceName]++;
 	});
 	return result;

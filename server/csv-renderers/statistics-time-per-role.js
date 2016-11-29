@@ -24,9 +24,9 @@ module.exports = function (result, config) {
 	});
 
 	var total, processingTotal, correctionTotal, correctionByUsers;
-	correctionTotal         = result.steps.all.correction;
+	correctionTotal         = result.businessProcesses.correction;
 	correctionTotal.label   = _("Total correcting time");
-	correctionByUsers       = copy(result.steps.all.correction);
+	correctionByUsers       = copy(result.businessProcesses.correction);
 	correctionByUsers.label = _("Corrections by the users");
 	processingTotal         = result.businessProcesses.processing;
 	processingTotal.label   = _("Total process without corrections");
@@ -39,10 +39,10 @@ module.exports = function (result, config) {
 	return data.map(function (row) {
 		return [
 			JSON.stringify(row.label),
-			row.count,
-			row.count ? resolveDays(row.avgTime) : '',
-			row.count ? resolveDays(row.minTime) : '',
-			row.count ? resolveDays(row.maxTime) : ''
+			row.timedCount,
+			row.timedCount ? resolveDays(row.avgTime) : '',
+			row.timedCount ? resolveDays(row.minTime) : '',
+			row.timedCount ? resolveDays(row.maxTime) : ''
 		].join();
 	}).join('\n');
 };

@@ -4,8 +4,11 @@
 
 module.exports = function (data, time) {
 	data.count++;
-	data.minTime = Math.min(data.minTime, time);
-	data.maxTime = Math.max(data.maxTime, time);
-	data.totalTime += time;
-	data.avgTime = data.totalTime / data.count;
+	if (time) {
+		data.timedCount++;
+		data.minTime = Math.min(data.minTime, time);
+		data.maxTime = Math.max(data.maxTime, time);
+		data.totalTime += time;
+		data.avgTime = data.totalTime / data.timedCount;
+	}
 };

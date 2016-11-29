@@ -26,15 +26,15 @@ module.exports = function (result, config) {
 			.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
 
 		inserts.data.push(step);
-		step.avgTime = step.count ? getDurationDaysHours(step.avgTime) : '-';
-		step.minTime = step.count ? getDurationDaysHours(step.minTime) : '-';
-		step.maxTime = step.count ? getDurationDaysHours(step.maxTime) : '-';
+		step.avgTime = step.timedCount ? getDurationDaysHours(step.avgTime) : '-';
+		step.minTime = step.timedCount ? getDurationDaysHours(step.minTime) : '-';
+		step.maxTime = step.timedCount ? getDurationDaysHours(step.maxTime) : '-';
 	});
 
 	var total, processingTotal, correctionTotal, correctionByUsers;
-	correctionTotal         = result.steps.all.correction;
+	correctionTotal         = result.businessProcesses.correction;
 	correctionTotal.label   = _("Total correcting time");
-	correctionByUsers       = copy(result.steps.all.correction);
+	correctionByUsers       = copy(result.businessProcesses.correction);
 	correctionByUsers.label = _("Corrections by the users");
 	processingTotal         = result.businessProcesses.processing;
 	processingTotal.label   = _("Total process without corrections");
@@ -44,7 +44,7 @@ module.exports = function (result, config) {
 
 	[correctionTotal, correctionByUsers, processingTotal, total].forEach(
 		function (totalItem) {
-			if (!totalItem.count) {
+			if (!totalItem.timedCount) {
 				totalItem.avgTime = totalItem.minTime = totalItem.maxTime = "-";
 			} else {
 				totalItem.avgTime = getDurationDaysHours(totalItem.avgTime);

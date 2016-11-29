@@ -28,14 +28,14 @@ module.exports = function (result, config) {
 		inserts.steps.push(step);
 		total = result.byStep[key].processing;
 		total.fullName = _("Total & times");
-		total.avgTime = total.count ? getDurationDaysHours(total.avgTime) : '-';
-		total.minTime = total.count ? getDurationDaysHours(total.minTime) : '-';
-		total.maxTime = total.count ? getDurationDaysHours(total.maxTime) : '-';
+		total.avgTime = total.timedCount ? getDurationDaysHours(total.avgTime) : '-';
+		total.minTime = total.timedCount ? getDurationDaysHours(total.minTime) : '-';
+		total.maxTime = total.timedCount ? getDurationDaysHours(total.maxTime) : '-';
 		return deferred.map(Object.keys(result.byStepAndProcessor[key]), function (userId) {
 			var item = result.byStepAndProcessor[key][userId].processing;
-			item.avgTime = item.count ? getDurationDaysHours(item.avgTime) : '-';
-			item.minTime = item.count ? getDurationDaysHours(item.minTime) : '-';
-			item.maxTime = item.count ? getDurationDaysHours(item.maxTime) : '-';
+			item.avgTime = item.timedCount ? getDurationDaysHours(item.avgTime) : '-';
+			item.minTime = item.timedCount ? getDurationDaysHours(item.minTime) : '-';
+			item.maxTime = item.timedCount ? getDurationDaysHours(item.maxTime) : '-';
 
 			return getUserFullName(userId)(function (fullName) {
 				item.fullName = fullName;

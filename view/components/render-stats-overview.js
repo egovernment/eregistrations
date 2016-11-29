@@ -16,7 +16,7 @@ var queryServer = memoize(function (query) {
 	normalizer: function (args) { return JSON.stringify(args[0]); }
 });
 
-var renderedProps = ['processed', 'avgTime', 'minTime', 'maxTime', 'totalAvgTime'];
+var renderedProps = ['timedCount', 'avgTime', 'minTime', 'maxTime', 'totalAvgTime'];
 
 var mapDurationValue = function (value) {
 	if (!value || value === '-') return '-';
@@ -75,8 +75,10 @@ module.exports = function (context) {
 					)
 				),
 				tbody(
+					tr(td({ colspan: 5 }, _("As processing time is properly recorded since 25th of October." +
+						" Below table only exposes data for files submitted after that day."))),
 					tr(
-						td(data.processed.map(function (value) {
+						td(data.timedCount.map(function (value) {
 							if (!value) return '-';
 							return value;
 						})),

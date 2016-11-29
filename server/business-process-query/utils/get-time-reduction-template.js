@@ -9,7 +9,9 @@ var getTemplate = function () {
 		// Longest time
 		maxTime: 0,
 		// Sum of all times
-		totalTime: 0
+		totalTime: 0,
+		// Count only those which have processing time
+		timedCount: 0
 	};
 };
 

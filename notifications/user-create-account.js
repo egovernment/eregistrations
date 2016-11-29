@@ -11,8 +11,8 @@ module.exports = function (/*options*/) {
 
 	notification.trigger = users;
 
-	notification.subject = _("M01 Your account in the service has been created");
-	notification.text = _("M01 Account registration\n\n" + "Email: ${ email }");
+	notification.subject = _("M01 Your account in the service has been created ${ domain }");
+	notification.text = _("M01 Account registration\n\n" + "Email: ${ email }, ${ domain }");
 
 	if (options.greeting == null) {
 		notification.text = _("Email message greeting ${ fullName }") + "\n\n" + notification.text;
