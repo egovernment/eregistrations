@@ -31,7 +31,7 @@ ee(Object.defineProperties(ListManager.prototype, assign({
 
 	_currentQueryId: d(null),
 	_resolveList: d(function (data, query) {
-		return data.view.map(function (id) {  unserializeId(id, this._type); }, this);
+		return data.view.map(function (id) { return unserializeId(id, this._type); }, this);
 	}),
 	_resolveExternalResult: d(function (data, query, queryId) {
 		var list = this._resolveList(data, query);

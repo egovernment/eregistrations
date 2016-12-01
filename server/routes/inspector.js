@@ -35,7 +35,7 @@ module.exports = exports = function (config) {
 				);
 
 				if (!data.length) {
-					return { size: 0 };
+					return { size: 0, view: [] };
 				}
 
 				fullSize = data.length;

@@ -6,20 +6,7 @@ var deferred       = require('deferred')
   , anyIdToStorage = require('../utils/any-id-to-storage');
 
 module.exports = function (data, listProperties, listComputedProperties) {
-	var viewEvents, directEvents, computedEvents;
-
-	viewEvents = deferred.map(data, function (businessProcess) {
-		var businessProcessId = businessProcess.businessProcessId;
-
-		return anyIdToStorage(businessProcessId)(function (storage) {
-			if (!storage) return;
-
-			return storage.getObject(businessProcessId, { keyPaths: [] })(function (data) {
-				data = data[0];
-				return data.data.stamp + '.' + data.id;
-			});
-		});
-	});
+	var directEvents, computedEvents;
 
 	computedEvents = deferred.map(data, function (businessProcess) {
 		var businessProcessId = businessProcess.businessProcessId;
@@ -61,10 +48,10 @@ module.exports = function (data, listProperties, listComputedProperties) {
 		});
 	});
 
-	return deferred(viewEvents, directEvents, computedEvents)
-		.spread(function (viewEvents, directEvents, computedEvents) {
+	return deferred(directEvents, computedEvents)
+		.spread(function (directEvents, computedEvents) {
 			return {
-				view: viewEvents.join('\n'),
+				view: data.map(function (businessProcess) { return businessProcess.businessProcessId; }),
 				data: flatten.call([directEvents, computedEvents]).filter(Boolean)
 			};
 		});
