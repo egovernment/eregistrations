@@ -12,7 +12,7 @@ module.exports = new Set([
 ]);
 
 db.BusinessProcess.extensions.forEach(function (ServiceType) {
-	ServiceType.prototype.certificates.map.forEach(function (certificate) {
-		module.exports.add('certificates/map/' + certificate.__id__ + '/status');
+	ServiceType.prototype.certificates.map.forEach(function (certificate, key) {
+		module.exports.add('certificates/map/' + key + '/status');
 	});
 });
