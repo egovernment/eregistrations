@@ -16,6 +16,7 @@ var onError = function (message, source, line, column, error) {
 	if (nonReportableMessages.hasOwnProperty(message) && !line && !column) return;
 	if (error && nonReportableCodes.hasOwnProperty(error.code)) return;
 	if (message && (message.indexOf('Error: Rejecteded XHR request to ') === 0)) return;
+	if (message && (message.indexOf('Uncaught Error: Rejecteded XHR request to ') === 0)) return;
 
 	var xhr = new XMLHttpRequest(), isSent = false, queryConfig;
 	xhr.open('POST', '/log-client-error/', true);
