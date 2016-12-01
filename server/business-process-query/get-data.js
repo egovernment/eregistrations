@@ -23,6 +23,20 @@ var aFrom                         = require('es5-ext/array/from')
 var re = new RegExp('^processingSteps\\/map\\/([a-zA-Z0-9]+' +
 	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$');
 
+var metaMap = {
+	validate: function (record) {
+		return record.value[0] === '7';
+	},
+	set: function (data, record) {
+		data._existing = true;
+		data.createdDateTime = new Date(record.stamp / 1000);
+	},
+	delete: function (data) {
+		delete data._existing;
+		delete data.createdDateTime;
+	}
+};
+
 module.exports = exports = memoize(function (driver, processingStepsMeta) {
 	var storageStepsMap         = new Map()
 	  , stepShortPathMap        = new Map()
@@ -74,13 +88,8 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 		storage.on('key:&', function (event) {
 			var dataset = initBpDataset(event.ownerId);
 
-			if (event.data.value[0] !== '7') {
-				delete dataset._existing;
-				exports.metaMap.createdDateTime.delete(dataset);
-			} else {
-				dataset._existing = true;
-				exports.metaMap.createdDateTime.set(dataset, event.data);
-			}
+			if (!metaMap.validate(event.data)) metaMap.delete(dataset);
+			else metaMap.set(dataset, event.data);
 		});
 		stepPaths.forEach(function (stepPath) {
 			// Status
@@ -105,10 +114,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 			storage.search(function (id, record) {
 				var bpId = id.split('/', 1)[0], stepPath, stepKeyPath, meta, keyPath, multiItemValue, path;
 				if (bpId === id) {
-					if (record.value[0] === '7') {
-						initBpDataset(bpId)._existing = true;
-						exports.metaMap.createdDateTime.set(initBpDataset(bpId), record);
-					}
+					if (metaMap.validate(record)) metaMap.set(initBpDataset(bpId), record);
 					return;
 				}
 				if (includes.call(id, '*')) {
@@ -281,12 +287,5 @@ exports.businessProcessMetaMap = {
 		validate: function (record) { return record.value[0] === '3'; },
 		set: function (data, record) { data.submitterType = record.value.slice(1); },
 		delete: function (data) { delete data.submitterType; }
-	}
-};
-
-exports.metaMap = {
-	createdDateTime: {
-		set: function (data, record) { data.createdDateTime = new Date(record.stamp / 1000); },
-		delete: function (data) { delete data.createdDateTime; }
 	}
 };
