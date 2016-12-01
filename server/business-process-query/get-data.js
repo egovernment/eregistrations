@@ -72,8 +72,15 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 
 		// Listen for new records
 		storage.on('key:&', function (event) {
-			if (event.data.value[0] !== '7') delete initBpDataset(event.ownerId)._existing;
-			else initBpDataset(event.ownerId)._existing = true;
+			var dataset = initBpDataset(event.ownerId);
+
+			if (event.data.value[0] !== '7') {
+				delete dataset._existing;
+				exports.metaMap.createdDateTime.delete(dataset);
+			} else {
+				dataset._existing = true;
+				exports.metaMap.createdDateTime.set(dataset, event.data);
+			}
 		});
 		stepPaths.forEach(function (stepPath) {
 			// Status
@@ -100,7 +107,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 				if (bpId === id) {
 					if (record.value[0] === '7') {
 						initBpDataset(bpId)._existing = true;
-						initBpDataset(bpId).createdDateTime = new Date(record.stamp / 1000);
+						exports.metaMap.createdDateTime.set(initBpDataset(bpId), record);
 					}
 					return;
 				}
@@ -274,5 +281,12 @@ exports.businessProcessMetaMap = {
 		validate: function (record) { return record.value[0] === '3'; },
 		set: function (data, record) { data.submitterType = record.value.slice(1); },
 		delete: function (data) { delete data.submitterType; }
+	}
+};
+
+exports.metaMap = {
+	createdDateTime: {
+		set: function (data, record) { data.createdDateTime = new Date(record.stamp / 1000); },
+		delete: function (data) { delete data.createdDateTime; }
 	}
 };
