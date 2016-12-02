@@ -89,6 +89,25 @@ module.exports = memoize(function (db) {
 						});
 					});
 				}
+				// We need to check cardinalPropertyKey property in case of NestedMap entities,
+				// otherwise deleting them will be omitted lastEditStamp calculation
+				var entityObjects = this.propertyMaster.resolveSKeyPath(this.propertyName, _observe);
+				if (!entityObjects) {
+					return res;
+				}
+				entityObjects = entityObjects.value;
+				if (entityObjects instanceof this.database.NestedMap) {
+					var cardinalPropertyPath = entityObjects.cardinalPropertyKey;
+					entityObjects.map.forEach(function (entity) {
+						var resolved = entity.resolveSKeyPath(cardinalPropertyPath, _observe);
+						if (!resolved) return;
+						if (resolved.value == null) {
+							var lastModified = resolved.observable.lastModified;
+							if (lastModified < 1e6) lastModified = 0; // Ignore model stamps
+							if (lastModified > res) res = lastModified;
+						}
+					});
+				}
 
 				return res;
 			}
@@ -191,7 +210,7 @@ module.exports = memoize(function (db) {
 		toJSON: { value: function (ignore) {
 			var result = this.commonToJSON();
 			if (this.resolventProperty) {
-				result.fields = [this.master.resolveSKeyPath(this.resolventProperty)
+				result.fields = [this.propertyMaster.resolveSKeyPath(this.resolventProperty)
 					.ownDescriptor.fieldToJSON()];
 			}
 			if (!this.isUnresolved) {
@@ -283,7 +302,7 @@ module.exports = memoize(function (db) {
 		minMaxSameMessage: _("Exactly ${ max } items should be added"),
 		getTranslations: function (options) {
 			var tabularSection = this.owner.owner.owner;
-			return { min: tabularSection.min, max: tabularSection.max };
+			return { min: tabularSection._min, max: tabularSection._max };
 		},
 		message: function (_observe) {
 			var tabularSection = this.owner.owner.owner, min, max;
@@ -321,7 +340,8 @@ module.exports = memoize(function (db) {
 			if (!_observe(tabularSection._max)) {
 				return 0;
 			}
-			entityObjects = this.master.resolveSKeyPath(tabularSection.propertyName, _observe);
+			entityObjects =
+				tabularSection.propertyMaster.resolveSKeyPath(tabularSection.propertyName, _observe);
 			if (!entityObjects) {
 				return 0;
 			}
@@ -341,7 +361,8 @@ module.exports = memoize(function (db) {
 			if (!_observe(tabularSection._min)) {
 				return 0;
 			}
-			entityObjects = this.master.resolveSKeyPath(tabularSection.propertyName, _observe);
+			entityObjects =
+				tabularSection.propertyMaster.resolveSKeyPath(tabularSection.propertyName, _observe);
 			if (!entityObjects) {
 				return 0;
 			}

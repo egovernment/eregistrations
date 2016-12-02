@@ -12,10 +12,16 @@ exports.head = function () {
 	if (isReadOnlyRender) {
 		// SPA takeover
 		script(function (appUrl) {
-			var isStrict;
+			var isStrict, hasLocalStorage;
 			if (typeof Object.getPrototypeOf !== 'function') return;
 			if (typeof Object.defineProperty !== 'function') return;
 			if (!window.history) return;
+			if (!window.localStorage) return;
+			try {
+				localStorage.$test = '';
+				hasLocalStorage = true;
+			} catch (ignore) {}
+			if (!hasLocalStorage) return;
 			isStrict = !(function () { return this; }());
 			if (!isStrict) return;
 			if (Object.getPrototypeOf({ __proto__: Function.prototype }) !== Function.prototype) return;
@@ -68,11 +74,6 @@ exports._bodyAppend = function () {
 			li(
 				a({ href: '/guide-lomas/' },
 					span("Business Process: Guide: Lomas like"),
-					span({ class: 'label-reg' }, "Part A"))
-			),
-			li(
-				a({ href: '/guide/costs-print/' },
-					span("Business Process: Guide: Costs print"),
 					span({ class: 'label-reg' }, "Part A"))
 			),
 			li(

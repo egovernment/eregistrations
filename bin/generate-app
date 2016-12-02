@@ -78,7 +78,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push("Add new service legacy model mock generator to setup in " +
 				"'scripts/setup.js'");
 			msgItems.push("Configure model for new service in 'model/'" + appName + "/..'");
-
+			msgItems.push("Define a label for new BusinessProcess in 'model/'" + appName + "/base.js'");
 		}
 
 		if (startsWith.call(appName, 'official-') || appName === 'dispatcher') {
@@ -123,14 +123,10 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push("Ensure that views model is updated with proper " +
 				"assignees map in model/views.js");
 			msgItems.push(appServerRoutes);
+			msgItems.push("For each role that is to be assignable, adjust viewKeyPath " +
+				"and canItemBeApplicable in view/app-name/business-processes-table.js");
 		}
 
-		if (appName === 'meta-admin') {
-			msgItems.push(appsRoutersReminder);
-		}
-		if (appName === 'users-admin') {
-			msgItems.push(appsRoutersReminder);
-		}
 		if (appName === 'manager-registration') {
 			msgItems.push("Ensure manager model is configured with its managerDataForms");
 		}
@@ -143,14 +139,14 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		if (appName === 'supervisor') {
 			msgItems = [accessMsg, clientModelReminder, domBindings, addRole, modelViews,
 				"Ensure that views populations for supervisor 'all' is configured in server/db/views.js",
-				appsPostControllers, recentlyVisitedProcesses, appsRoutersReminder];
-			msgItems.push("Ensure proper businessProcsss storage in  apps/" + appName +
-				"/server/routes.js");
+				appsPostControllers, recentlyVisitedProcesses];
 		}
 		if (appName === 'statistics') {
 			msgItems.push(addRole);
 			msgItems.push("Ensure that all services model is required in server/model.js and " +
-				"model.statistics.js");
+				"model/statistics.js");
+			msgItems.push("Ensure that statistics related indexes are initialized in " +
+				"server/db/indexes.js");
 		}
 
 		console.log(["\nSuccessfully created " + appName + " application." +

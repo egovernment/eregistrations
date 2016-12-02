@@ -4,6 +4,7 @@
 
 var assign        = require('es5-ext/object/assign')
   , hyphenToCamel = require('es5-ext/string/#/hyphen-to-camel')
+  , isEmpty       = require('es5-ext/object/is-empty')
   , some          = require('es5-ext/object/some')
   , validate      = require('mano/utils/validate')
   , customError   = require('es5-ext/error/custom')
@@ -13,7 +14,7 @@ var assign        = require('es5-ext/object/assign')
   , re = /\/isRequested$/;
 
 // Common controller - login and password change.
-module.exports = exports = assign(exports, require('../user'));
+module.exports = exports = assign(exports, require('../user'), require('../demo-user/index')());
 
 // Guide
 exports.guide = {
@@ -61,7 +62,14 @@ exports['requirement-upload/[a-z][a-z0-9-]*'] = {
 		return validate(data, { changedOnly: false });
 	},
 	submit: function (data) {
-		if (this.requirementUpload.status) this.requirementUpload.status = null;
+		// As form is set with "auto submit", the submission may be triggered not only
+		// by user update but also by data update coming from the server.
+		// In the later case we don't want to introduce side effects (reset revision status etc.)
+		if (isEmpty(data)) return;
+		if (this.requirementUpload.status) this.requirementUpload.delete('status');
+		if (this.user !== this.requirementUpload.uploadedBy) {
+			this.requirementUpload.uploadedBy = this.user;
+		}
 		return submit.apply(this, arguments);
 	}
 };
@@ -79,7 +87,14 @@ exports['payment-receipt-upload/[a-z][a-z0-9-]*'] = {
 		return true;
 	},
 	submit: function (data) {
-		if (this.paymentReceiptUpload.status) this.paymentReceiptUpload.status = null;
+		// As form is set with "auto submit", the submission may be triggered not only
+		// by user update but also by data update coming from the server.
+		// In the later case we don't want to introduce side effects (reset revision status etc.)
+		if (isEmpty(data)) return;
+		if (this.paymentReceiptUpload.status) this.paymentReceiptUpload.delete('status');
+		if (this.user !== this.paymentReceiptUpload.uploadedBy) {
+			this.paymentReceiptUpload.uploadedBy = this.user;
+		}
 		return submit.apply(this, arguments);
 	}
 };
@@ -90,8 +105,20 @@ exports['application-submit'] = {
 	validate: function (data) {
 		if (this.user.isDemo) throw customError('Cannot submit in demo mode', 'DEMO_MODE_SUBMISSION');
 		return validate.apply(this, arguments);
+	},
+	submit: function (data) {
+		var businessProcess = this.businessProcess;
+
+		if (!businessProcess.isSubmitted) {
+			if (this.manager) {
+				businessProcess.submitter = this.manager;
+				businessProcess.submitterType = 'manager';
+			} else {
+				businessProcess.submitter = this.user;
+				businessProcess.submitterType = 'user';
+			}
+		}
+
+		return submit.apply(this, arguments);
 	}
 };
-
-// Registration controller used by Demo users.
-require('../utils/demo-user-controller')(exports);

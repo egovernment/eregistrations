@@ -6,9 +6,12 @@ var copyDeep    = require('es5-ext/object/copy-deep')
   , passwordValidation = require('mano-auth/utils/password-validation');
 
 exports.login = require('mano-auth/controller/login');
+exports.login.formHtmlId = 'login';
 exports.register = require('mano-auth/controller/register');
+exports.register.formHtmlId = 'register';
 exports['reset-password'] = require('mano-auth/controller/reset-password');
 exports['request-reset-password'] = require('mano-auth/controller/request-reset-password');
+exports['request-reset-password'].formHtmlId = 'reset-password';
 exports['create-managed-account'] = {
 	validate: function (data) {
 		var normalizedData = copyDeep(data);

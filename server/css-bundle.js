@@ -1,6 +1,6 @@
 'use strict';
 
-var autoprefixer = require('autoprefixer-core')
+var autoprefixer = require('autoprefixer')
   , cssAid       = require('css-aid/process')
   , cssAidRules  = [require('css-aid/rules/variables')]
   , getFiles     = require('./css-bundle-get-files');

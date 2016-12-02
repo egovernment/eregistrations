@@ -13,7 +13,8 @@ var aFrom              = require('es5-ext/array/from')
   , debug              = require('debug-ext')('setup', 4)
   , ensureDriver       = require('dbjs-persistence/ensure-driver')
   , recompute          = require('dbjs-persistence/recompute')
-  , isOfficialRoleName = require('../../../utils/is-official-role-name');
+  , isOfficialRoleName = require('../../../utils/is-official-role-name')
+  , copyIsReady        = require('../../services/copy-is-ready');
 
 module.exports = function (driver, slavePath/*, options*/) {
 	var userStorage = ensureDriver(driver).getStorage('user')
@@ -53,9 +54,15 @@ module.exports = function (driver, slavePath/*, options*/) {
 		});
 	});
 
+	copyIsReady(driver, options.processingStepsMeta);
+
 	debug.open("db-recompute");
 	return recompute(driver, {
+
+		// Path to slave process file
 		slaveScriptPath: ensureString(slavePath),
+
+		// All master ids for which we recompute getters
 		ids: userStorage.getAllObjectIds()(function (userIds) {
 			return deferred.map(userIds, function (userId) {
 				var deps = {};
@@ -67,8 +74,11 @@ module.exports = function (driver, slavePath/*, options*/) {
 						takenByParent.add(deps.businessProcess = data.value.slice(1));
 					}),
 					userStorage.get(userId + '/currentlyManagedUser')(function (data) {
+						var managedUserId;
 						if (!data || (data.value[0] !== '7')) return;
-						takenByParent.add(deps.user = data.value.slice(1));
+						managedUserId = data.value.slice(1);
+						if (managedUserId === userId) return;
+						takenByParent.add(deps.user = managedUserId);
 					})
 				);
 			})(function () {
@@ -84,6 +94,8 @@ module.exports = function (driver, slavePath/*, options*/) {
 				})(function (ids) { return userIds.concat(flatten.call(ids)); });
 			});
 		}),
+
+		// Retrieve data for passed master id
 		getData: function self(objectId, path) {
 			var storage = storageMap.get(objectId), deps;
 			if (!storage) return;
@@ -93,10 +105,12 @@ module.exports = function (driver, slavePath/*, options*/) {
 			path.add(objectId);
 			return deferred(
 				storage.getObject(objectId),
-				deps.user && !path.has(deps.user) && self(deps.user),
-				deps.businessProcess && !path.has(deps.businessProcess) && self(deps.businessProcess)
+				deps.user && !path.has(deps.user) && self(deps.user, path),
+				deps.businessProcess && !path.has(deps.businessProcess) && self(deps.businessProcess, path)
 			).invoke('filter', Boolean).invoke(flatten);
 		},
+
+		// Initial data fragment
 		initialData: initialData
 	}).on('progress', function (event) {
 		if (event.type === 'nextObject') debug.progress();

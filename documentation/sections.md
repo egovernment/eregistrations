@@ -365,9 +365,11 @@ div(generateSections(User.prototype.formSections));
 
 _prototype_
 
-**isApplicable** The section will not by visible on view if false
+**isApplicable** The section will not by visible on view if false.
 
-**label** The label of the section (can be translated to form header, or header of data in user submitted)
+**isInternallyApplicable** The section will not be visible when false. Works only when the section is a sub section of `FormSectionGroup`.
+
+**label** The label of the section (can be translated to form header, or header of data in user submitted).
 
 **propertyMaster** The master object for property paths resolution.
     

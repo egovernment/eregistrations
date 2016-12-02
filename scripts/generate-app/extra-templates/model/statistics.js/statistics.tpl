@@ -20,10 +20,17 @@ db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
 
 forEach(processingStepsMap, function (meta, stepName) {
 	meta._services.forEach(function (serviceName) {
-		var tokens = stepName.split('/');
-		var current = statistics.businessProcess[serviceName]
-			.atPartB.define(tokens.shift(), { nested: true });
-		while (tokens.length) current.define(tokens.shift(), { nested: true, type: db.Object });
+		var tokens = stepName.split('/'), current = statistics.businessProcess[serviceName].atPartB
+		  , last = tokens.pop();
+		if (tokens.length) {
+			tokens.forEach(function (token) {
+				if (!current[token]) current.define(token, { nested: true, type: db.Object });
+				current = current[token];
+			});
+			current.define(last, { nested: true, type: db.StatisticsBusinessProcessProcessingStep });
+		} else {
+			current.define(last, { nested: true });
+		}
 	});
 });
 

@@ -7,6 +7,7 @@ var Map                        = require('es6-map')
   , memoize                    = require('memoizee/plain')
   , definePercentage           = require('dbjs-ext/number/percentage')
   , defineStringLine           = require('dbjs-ext/string/string-line')
+  , defineUInteger             = require('dbjs-ext/number/integer/u-integer')
   , defineCreateEnum           = require('dbjs-ext/create-enum')
   , _                          = require('mano').i18n.bind('Model')
   , defineUser                 = require('./user/base')
@@ -21,6 +22,7 @@ var Map                        = require('es6-map')
 module.exports = memoize(function (db) {
 	var Percentage           = definePercentage(db)
 	  , StringLine           = defineStringLine(db)
+	  , UInteger             = defineUInteger(db)
 	  , MultipleProcess      = defineMultipleProcess(db)
 	  , User                 = defineUser(db)
 	  , FormSectionBase      = defineFormSectionBase(db)
@@ -154,7 +156,10 @@ module.exports = memoize(function (db) {
 		paymentReceiptUploads: { type: UploadsProcess, nested: true },
 		certificates: { type: MultipleProcess, nested: true },
 		assignee: { type: User },
-		isAssignable: { type: db.Boolean }
+		isAssignable: { type: db.Boolean },
+		correctionTime: { type: UInteger, value: 0 },
+		processingHolidaysTime: { type: UInteger, value: 0 },
+		nonProcessingTime: { type: UInteger, value: 0 }
 	});
 
 	ProcessingStep.prototype.requirementUploads.defineProperties({

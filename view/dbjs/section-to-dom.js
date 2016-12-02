@@ -25,7 +25,7 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 			table(
 				tbody(
 					_if(self._resolventProperty, function () {
-						var resolvent = resolvePropertyPath(self.master, self.resolventProperty);
+						var resolvent = resolvePropertyPath(self.propertyMaster, self.resolventProperty);
 
 						return tr(th(getPropertyLabel(resolvent)), td(resolvent.observable));
 					}),

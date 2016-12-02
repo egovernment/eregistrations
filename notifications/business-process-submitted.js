@@ -3,23 +3,13 @@
 var _                = require('mano').i18n.bind('User: Notifications')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , assign           = require('es5-ext/object/assign')
-  , ensureType       = require('dbjs/valid-dbjs-type')
-  , isFalsy          = require('eregistrations/utils/is-falsy')
+  , resolveProcesses = require('../business-processes/resolve')
   , _d               = _;
 
 module.exports = function (BusinessProcessClass/*, options*/) {
-	var options      = normalizeOptions(arguments[1])
-	  , notification = {}
-	  , businessProcesses;
-
-	ensureType(BusinessProcessClass);
-
-	if (!BusinessProcessClass.database.BusinessProcess.isPrototypeOf(BusinessProcessClass)) {
-		throw new Error(BusinessProcessClass + ' is expected to extend BusinessProcess');
-	}
-
-	businessProcesses = BusinessProcessClass.instances.filterByKey('isFromEregistrations', true)
-		.filterByKey('isDemo', isFalsy);
+	var options           = normalizeOptions(arguments[1])
+	  , notification      = {}
+	  , businessProcesses = resolveProcesses(BusinessProcessClass);
 
 	notification.preTrigger = businessProcesses.filterByKey('guideProgress', 1);
 	notification.trigger = businessProcesses.filterByKey('isSubmitted', true);

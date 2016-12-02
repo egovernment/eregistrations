@@ -10,16 +10,21 @@ exports._match = 'businessProcess';
 
 exports['sub-main'] = {
 	content: function () {
+		var businessProcess = this.businessProcess;
+
 		div({ class: "content user-forms" },
 			h2({ class: "container-with-nav" },
 				_("Data of ${businessName}",
-					{ businessName: this.businessProcess._businessName }),
+					{ businessName: businessProcess._businessName }),
 				a({ class: "hint-optional hint-optional-left",
 					'data-hint': _("Print your application form"), target: '_blank',
-					href: '/business-process-data-forms-' + this.businessProcess.__id__ + '.pdf'
+					href: mmap(businessProcess.dataForms._lastEditStamp, function (lastEditStamp) {
+						return '/business-process-data-forms-' + businessProcess.__id__ +
+							'.pdf?' + lastEditStamp;
+					})
 					}, span({ class: "fa fa-print" }, _("Print")))),
 			div({ class: 'section-primary' },
 				div({ class: 'document-preview-data business-process-submitted-data' },
-					renderSections(this.businessProcess.dataForms.dataSnapshot))));
+					renderSections(businessProcess.dataForms.dataSnapshot))));
 	}
 };

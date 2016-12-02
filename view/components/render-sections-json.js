@@ -9,12 +9,23 @@ var normalizeOptions    = require('es5-ext/object/normalize-options')
   , pathToUrl           = require('../../utils/upload-path-to-url')
   , includes            = require('es5-ext/array/#/contains')
   , docMimeTypes        = require('../../utils/microsoft-word-doc-mime-types')
+  , startsWith          = require('es5-ext/string/#/starts-with')
 
   , isArray = Array.isArray, min = Math.min, stringify = JSON.stringify
   , renderValue, renderField, renderFields, renderEntity, renderEntities
   , renderSection, renderMainSection, renderSubSection
   , renderMainSections, renderSubSections
   , defaultRenderers = {};
+
+var isSectionAllowed = function (allowedSectionKeys, sectionKey) {
+	if (!allowedSectionKeys || !allowedSectionKeys.length) return true;
+
+	return allowedSectionKeys.some(function (key) {
+		return sectionKey === key
+			|| startsWith.call(sectionKey, key + '/')
+			|| startsWith.call(key, sectionKey + '/');
+	});
+};
 
 defaultRenderers.value = renderValue = function (data) {
 	if (data && data.kind) {
@@ -50,11 +61,16 @@ defaultRenderers.entities = renderEntities = function (data/*, options*/) {
 };
 
 renderSection = function (data, className/*, options*/) {
-	var options = arguments[2], headerRank, disableLabel;
+	var options = normalizeOptions(arguments[2]), headerRank, disableLabel;
+
+	if (options.sectionKey) options.sectionKey += '/' + data.key;
+	else options.sectionKey = data.key;
+
+	if (!isSectionAllowed(options.allowedSectionKeys, options.sectionKey)) return;
+
 	if (data.kind && exports.customRenderers[data.kind]) {
 		return exports.customRenderers[data.kind](data, className, options, defaultRenderers);
 	}
-	options = normalizeOptions(options);
 	if (options.headerRank != null) headerRank = min(ensureNaturalNumber(options.headerRank), 6);
 	if (!headerRank) headerRank = 3;
 	options.headerRank = min(headerRank + 1, 6);
@@ -87,6 +103,7 @@ defaultRenderers.subSections = renderSubSections = function (data/*, options*/) 
 
 module.exports = exports = function (dataSnapshot/*, options*/) {
 	var options = arguments[1];
+
 	return mmap(dataSnapshot._resolved, function (json) {
 		if (!json || !json.sections) return;
 		return renderMainSections(exports.decorator(json.sections), options);
@@ -105,7 +122,7 @@ exports.customRenderers = {
 			a({ href: pathToUrl(data.path), target: '_blank', class: 'file-thumb-image' },
 				img({ src: thumbUrl ? stUrl(thumbUrl) : thumbUrl })),
 			div({ class: 'file-thumb-actions' },
-				span({ class: 'file-thumb-document-size' }, (data.diskSize / 1000000).toFixed(2) + ' Mo'),
+				span({ class: 'file-thumb-document-size' }, (data.diskSize / 1000000).toFixed(2) + ' MB'),
 				a({ href: pathToUrl(data.path), target: '_blank', class: 'file-thumb-action',
 					download: data.path }, span({ class: 'fa fa-download' }, "download"))));
 	},

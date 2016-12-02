@@ -6,6 +6,7 @@ var aFrom                = require('es5-ext/array/from')
   , ensureIterable       = require('es5-ext/iterable/validate-object')
   , findKey              = require('es5-ext/object/find-key')
   , forEach              = require('es5-ext/object/for-each')
+  , objectMap            = require('es5-ext/object/map')
   , ensureCallable       = require('es5-ext/object/valid-callable')
   , ensureObject         = require('es5-ext/object/valid-object')
   , ensureString         = require('es5-ext/object/validate-stringifiable-value')
@@ -66,6 +67,10 @@ var defaultResolveOfficialViewPath = function (userId, roleName, stepShortPath, 
 	return stepShortPath;
 };
 
+var defaultResolveShortStepPath = function (userId, roleName) {
+	return uncapitalize.call(roleName.slice('official'.length));
+};
+
 module.exports = exports = function (db, dbDriver, data) {
 	var userStorage = ensureDriver(dbDriver).getStorage('user')
 	  , getBusinessProcessData = getObjFragment()
@@ -77,10 +82,11 @@ module.exports = exports = function (db, dbDriver, data) {
 	  , resolveOfficialViews, processingStepsMeta, processingStepsDefaultMap = create(null)
 	  , businessProcessListProperties, businessProcessMyAccountProperties
 	  , globalFragment, getMetaAdminFragment, getAccessRules
-	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, userListProps
-	  , businessProcessDispatcherListExtraProperties = [], officialDispatcherListExtraProperties = []
+	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, resolveStepShortPath
+	  , userListProps, businessProcessDispatcherListExtraProperties = []
+	  , officialDispatcherListExtraProperties = []
 	  , businessProcessMyAccountExtraProperties = [], businessProcessSupervisorExtraProperties = []
-	  , businessProcessAppGlobalFragment;
+	  , businessProcessAppGlobalFragment, customRoleFragments;
 
 	ensureDatabase(db);
 
@@ -134,6 +140,13 @@ module.exports = exports = function (db, dbDriver, data) {
 	if (data.businessProcessAppGlobalFragment) {
 		businessProcessAppGlobalFragment = data.businessProcessAppGlobalFragment;
 	}
+	if (data.customRoleFragments) {
+		customRoleFragments = objectMap(data.customRoleFragments, function (getFragment) {
+			return memoize(ensureCallable(getFragment), { length: 0 });
+		});
+	} else {
+		customRoleFragments = {};
+	}
 
 	businessProcessListProperties =
 		new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
@@ -169,6 +182,12 @@ module.exports = exports = function (db, dbDriver, data) {
 		resolveOfficialViewPath = ensureCallable(data.resolveOfficialViewPath);
 	} else {
 		resolveOfficialViewPath = defaultResolveOfficialViewPath;
+	}
+
+	if (data.resolveStepShortPath != null) {
+		resolveStepShortPath = ensureCallable(data.resolveStepShortPath);
+	} else {
+		resolveStepShortPath = defaultResolveShortStepPath;
 	}
 
 	// Configure official steps (per user) resolver
@@ -437,6 +456,8 @@ module.exports = exports = function (db, dbDriver, data) {
 				fragment.addFragment(getReducedFrag(storage)('statistics'));
 			});
 		});
+		// Officials
+		fragment.addFragment(officialsFragment);
 		return fragment;
 	});
 
@@ -459,6 +480,9 @@ module.exports = exports = function (db, dbDriver, data) {
 		addOfficialViewsPendingSizes(userId, fragment);
 		// Eventual global fragment
 		if (globalFragment && (roleName !== 'memoryDb')) fragment.addFragment(globalFragment);
+
+		// Add eventual custom role fragment
+		if (customRoleFragments[roleName]) fragment.addFragment(customRoleFragments[roleName]());
 
 		if ((roleName === 'user') || (roleName === 'memoryDb')) {
 			if (custom) {
@@ -549,7 +573,8 @@ module.exports = exports = function (db, dbDriver, data) {
 		}
 
 		if (isOfficialRoleName(roleName)) {
-			stepShortPath = uncapitalize.call(roleName.slice('official'.length));
+			stepShortPath = resolveStepShortPath(userId, roleName);
+
 			// Recently visited business processes (full data)
 			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, stepShortPath));
 			// Official role specific data
@@ -600,3 +625,4 @@ module.exports = exports = function (db, dbDriver, data) {
 	return getAccessRules;
 };
 exports.getDefaultOfficialViewsResolver = getDefaultOfficialViewsResolver;
+exports.defaultResolveShortStepPath     = defaultResolveShortStepPath;

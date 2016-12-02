@@ -39,25 +39,18 @@ module.exports = function (t, a) {
 
 	user = new User();
 	var destroyManagedErr = new RegExp('Cannot destroy user');
-	var destroyManagerErr = new RegExp('Cannot destroy manager');
+	var destroyManagerErr = new RegExp('Cannot destroy user, role restriction: "manager"');
 
-	// not a managed user
-	a.throws(function () {
-		return manager.destroyManagedUser(user);
-	}, destroyManagedErr, 'throws when not a manged user');
-	a(db.User.instances.has(user), true);
 	user.manager = manager;
-	manager.destroyManagedUser(user);
+	user.destroy();
 	a(db.User.instances.has(user), false);
 
 	user = new User();
 	user.manager = manager;
 	user.password = 'abc123';
 	user.email    = 'asd@asd.com';
-	a.throws(function () {
-		return manager.destroyManagedUser(user);
-	}, destroyManagedErr, 'throws when not a manager');
 	user = new User();
+	user.roles.add('user');
 	user.manager = manager;
 	a(db.User.instances.has(user), true);
 	bp = new BusinessProcess();
@@ -66,13 +59,13 @@ module.exports = function (t, a) {
 	bp.isSubmitted = true;
 	user.submittedBusinessProcessesSize = 1;
 	a.throws(function () {
-		return manager.destroyManagedUser(user);
+		return user.destroy();
 	}, destroyManagedErr, 'throws when has submitted process');
 	a(db.BusinessProcess.instances.has(bp), true);
 	bp.isSubmitted = false;
 	user.delete('submittedBusinessProcessesSize');
 	a(user.canManagedUserBeDestroyed, true);
-	manager.destroyManagedUser(user);
+	user.destroy();
 	a(db.BusinessProcess.instances.has(bp), false);
 	a(db.User.instances.has(user), false);
 
@@ -81,16 +74,14 @@ module.exports = function (t, a) {
 	manager.roles.add('manager');
 	managerValidation = new User();
 	a(db.User.instances.has(manager), true);
-	a(manager.canManagerBeDestroyed, true);
-	a.throws(function () {
-		return managerValidation.destroyManager(manager);
-	}, destroyManagerErr, 'throws when managerValidation role not set');
+	a(manager.canBeDestroyed, true);
 	a(db.User.instances.has(manager), true);
 	managerValidation.roles.add('managerValidation');
-	managerValidation.destroyManager(manager);
+	manager.destroy();
 	a(db.User.instances.has(manager), false);
 
 	user = new User();
+	user.roles.add('user');
 	manager = new User();
 	manager.roles.add('manager');
 	user.manager = manager;
@@ -103,17 +94,43 @@ module.exports = function (t, a) {
 	a(db.User.instances.has(user), true);
 	a(db.User.instances.has(manager), true);
 	a.throws(function () {
-		return managerValidation.destroyManager(manager);
+		return manager.destroy();
 	}, destroyManagerErr, 'throws when unable to remove some managers user');
 	a(db.User.instances.has(manager), true);
 	a(db.BusinessProcess.instances.has(bp), true);
 	a(db.User.instances.has(user), true);
-	a(manager.canManagerBeDestroyed, false);
+	a(manager.canBeDestroyed, false);
 	bp.isSubmitted = false;
 	user.delete('submittedBusinessProcessesSize');
 	manager.delete('dependentManagedUsersSize');
-	a(manager.canManagerBeDestroyed, true);
-	managerValidation.destroyManager(manager);
+	a(manager.canBeDestroyed, true);
+	manager.destroy();
 	a(db.BusinessProcess.instances.has(bp), false);
 	a(db.User.instances.has(user), false);
+
+	user = new User();
+	user.roles.add('user');
+	manager = new User();
+	manager.roles.add('manager');
+	user.manager = manager;
+	bp = new BusinessProcess();
+	user.initialBusinessProcesses.add(bp);
+	bp.isSubmitted = true;
+	user.submittedBusinessProcessesSize = 1;
+	manager.dependentManagedUsersSize = 1;
+	a(manager.canBeDestroyed, false);
+
+	var user2 = new User();
+	user2.roles.add('user');
+	user2.manager = manager;
+	user2.isActiveAccount = true;
+
+	bp.isSubmitted = false;
+	user.delete('submittedBusinessProcessesSize');
+	manager.delete('dependentManagedUsersSize');
+	a(manager.canBeDestroyed, true);
+	a(db.User.instances.has(user2), true);
+	manager.destroy();
+	a(db.User.instances.has(user), false);
+	a(db.User.instances.has(user2), true);
 };

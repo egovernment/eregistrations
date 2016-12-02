@@ -17,7 +17,7 @@ var ensureCallable = require('es5-ext/object/valid-callable')
 
 var body = compileTpl(_("Mx1 - General - Email message greeting - Full name: ${fullName}") +
 	"\n\n" + _("M01 - Create Account\n\nEmail: ${email}\n\nUrl: ${domain}/ayuda/.") + "\n\n" +
-	_("Mx2 - General - Email message\n\nsignature"));
+	_("Mx2 - General - Email message\n\nsignature ${ domain }"));
 
 module.exports = function (data) {
 	var inserts;

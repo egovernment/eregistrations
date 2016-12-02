@@ -6,7 +6,8 @@ var _                = require('mano').i18n.bind('View: Business Process')
   , generateSections = require('./components/generate-form-sections')
   , progressRules    = require('./components/progress-rules');
 
-exports._parent = require('./business-process-data-forms-tabbed');
+exports._parent  = require('./business-process-data-forms-tabbed');
+exports._dynamic = require('./utils/tab-section-dynamic-matcher');
 
 exports['forms-sections-content'] = function () {
 	var nextPageLink = this.section._nextSection.map(function (nextSection) {
@@ -19,7 +20,7 @@ exports['forms-sections-content'] = function () {
 			md(this.section._legend))),
 		disabler(
 			exports._disableCondition.call(this),
-			this.section.applicableSections ?
+			this.section.applicableSections && this.section.hasSplitForms ?
 					[progressRules(this.section),
 						generateSections(this.section.applicableSections, { viewContext: this })] :
 					this.section.toDOMForm(document)

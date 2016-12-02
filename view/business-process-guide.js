@@ -125,6 +125,11 @@ exports._questionsIntro = function () {
 			"requirements are needed and what are the costs of the registrations:"));
 };
 
+exports._mandatoryRegistrationsEmptyMessage = function () {
+	return p({ class: 'user-guide-no-applicable-registrations-message' },
+		_("No applicable registrations"));
+};
+
 // Registrations
 
 exports._registrationsSection = function () {
@@ -136,6 +141,9 @@ exports._registrationsSection = function () {
 			{ id: 'mandatory-registrations-section', class: 'section-primary-wrapper' },
 			h2(_("Mandatory Registrations")),
 			exports._mandatoryRegistrationIntro.call(this),
+			div({ id: 'mandatory-registrations-empty-message' },
+				exports._mandatoryRegistrationsEmptyMessage.call(this)
+				),
 			ul({ id: 'mandatory-registrations-list' }, registrationsMap, function (registration) {
 				var key   = registration.key
 				  , idKey = camelToHyphen.call(registration.key)
@@ -191,9 +199,16 @@ exports._requirementsSection = function () {
 		ul({ id: 'requirements-list', class: 'user-guide-requirements-list' },
 			this.businessProcess.requirements.map,
 			function (requirement) {
-				li({ 'data-key': requirement.key },
-					requirement.toGuideDOM ? requirement.toGuideDOM() : [requirement.label,
-							requirement.legend && [br(), small(mdi(requirement.legend))]]);
+				li(
+					{ 'data-key': requirement.key },
+					requirement.toGuideDOM ? requirement.toGuideDOM() : [
+						span(
+							{ id: 'requirement-label-' + camelToHyphen.call(requirement.key) },
+							requirement.label
+						),
+						requirement.legend && [br(), small(mdi(requirement.legend))]
+					]
+				);
 			}),
 		exports._requirementsFooter.call(this)
 	);

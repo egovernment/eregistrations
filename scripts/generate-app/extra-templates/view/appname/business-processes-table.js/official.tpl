@@ -2,7 +2,7 @@
 
 var from        = require('es5-ext/array/from')
   , getTable    = require('eregistrations/view/components/business-processes-table')
-  , tableCols   = require('eregistrations/view/components/business-process-table-columns')
+  , tableCols   = require('../components/business-process-table-columns')
   , statusMap   = require('../../apps/${ appName }/business-processes/map')
   , getOrderIdx = require('../../apps/${ appName }/business-processes/get-default-order-index')
   , env         = require('../../apps-common/client/env')
