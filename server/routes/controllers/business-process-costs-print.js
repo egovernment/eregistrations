@@ -8,6 +8,7 @@ var db               = require('../../../db')
   , resolve          = require('path').resolve
   , root             = resolve(__dirname, '../../..')
   , templatePath     = resolve(root, 'apps-common/pdf-templates/costs-print.html')
+  , toDateTimeInTz   = require('../../../utils/to-date-time-in-time-zone')
   , htmlToPdf        = require('../../html-to-pdf');
 
 module.exports = function (BusinessProcess/*, options */) {
@@ -26,7 +27,7 @@ module.exports = function (BusinessProcess/*, options */) {
 
 			// Common inserts.
 			inserts.locale       = db.locale;
-			inserts.currentDate  = db.DateTime().toString();
+			inserts.currentDate  = new db.DateTime(toDateTimeInTz(new Date(), db.timeZone)).toString();
 			inserts.logo         = options.logo;
 			inserts.businessName = data.businessName || '';
 			inserts.total        = data.total || '0';

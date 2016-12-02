@@ -25,7 +25,7 @@ exports['sub-main'] = {
 					fieldset({
 						class: 'form-elements',
 						dbjs: this.user,
-						names: ['firstName', 'lastName'],
+						names: ['firstName', 'lastName', 'phone'],
 						append: [
 							li(field({ dbjs: this.user._email, disabled: true })),
 							li(field({ dbjs: db.Password,

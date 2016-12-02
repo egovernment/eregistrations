@@ -4,7 +4,8 @@
 	<noscript><meta http-equiv="refresh" content="0;/?legacy=1" /></noscript>
 	<script src="https://www.gstatic.com/charts/loader.js"></script>
 	<script data-spa>
-if (!Object.getPrototypeOf || !Object.defineProperty || !window.history ||
+if (!Object.getPrototypeOf || !Object.defineProperty || !window.history || !window.localStorage ||
+		!(function () { try { localStorage.$test = ''; return true; } catch (ignore) {} }()) ||
 		(function () {'use strict'; return this; }()) ||
 	 (Object.getPrototypeOf({ __proto__: Function.prototype }) !==
 		 Function.prototype) || (Object.defineProperty({}, 'foo',

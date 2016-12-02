@@ -7,7 +7,7 @@ require('mano-legacy/ie8-font-visibility-fix');
 //Logs client errors to server logs
 require('eregistrations/client/legacy/error-logger');
 
-window.$ = require('mano-legacy');
+require('eregistrations/client/legacy/init');
 $.legacyDb = require('./${ appName }-legacy-proto');
 
 require('mano-legacy/live/input-mask');

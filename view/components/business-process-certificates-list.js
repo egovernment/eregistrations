@@ -33,7 +33,7 @@ module.exports = function (context/*, options*/) {
 								issuedBy: certificate._issuedBy,
 								issueDate: certificate._issueDate,
 								number: certificate._number,
-								uniqueKey: certificate.key
+								uniqueKey: certificate.uniqueKey
 							};
 						}),
 						columns: [{

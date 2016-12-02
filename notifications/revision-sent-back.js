@@ -17,7 +17,7 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	notification.preTrigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);
 
 	notification.subject = _("M05 You must correct some elements in your application");
-	notification.text = _("M05 Revision sent back\n\n"
+	notification.text = options.text || _("M05 Revision sent back\n\n"
 			+ "Name of company: ${ businessName }\n\n"
 			+ "${ rejectedUploads }");
 
@@ -31,7 +31,7 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 
 	notification.resolveGetters = true;
 
-	notification.variables = {
+	notification.variables = assign({
 		fullName: function () {
 			return this.businessProcess.user.fullName;
 		},
@@ -74,11 +74,13 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 			}
 			return result.join('\n');
 		}
-	};
+	}, options.variables);
 
 	delete options.stepName;
 	delete options.greeting;
 	delete options.signature;
+	delete options.text;
+	delete options.variables;
 
 	return assign(notification, options);
 };
