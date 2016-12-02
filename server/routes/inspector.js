@@ -11,12 +11,13 @@ var assign                  = require('es5-ext/object/assign')
   , getPage                 = require('../../utils/query/get-page')
   , QueryHandler            = require('../../utils/query-handler')
   , listProperties          = require('../../apps/inspector/list-properties')
-  , listComputedProperties  = require('../../apps/inspector/list-computed-properties');
+  , listComputedProperties  = require('../../apps/inspector/list-computed-properties')
+  , queryHandlerConf        = require('../../apps/inspector/query-conf');
 
 module.exports = exports = function (config) {
 	var driver                 = ensureDriver(ensureObject(config).driver)
 	  , processingStepsMeta    = ensureObject(config.processingStepsMeta)
-	  , queryHandler           = new QueryHandler(config.queryHandlerConf);
+	  , queryHandler           = new QueryHandler(queryHandlerConf);
 
 	getData(driver, processingStepsMeta).done();
 
