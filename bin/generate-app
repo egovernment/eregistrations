@@ -78,7 +78,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push("Add new service legacy model mock generator to setup in " +
 				"'scripts/setup.js'");
 			msgItems.push("Configure model for new service in 'model/'" + appName + "/..'");
-
+			msgItems.push("Define a label for new BusinessProcess in 'model/'" + appName + "/base.js'");
 		}
 
 		if (startsWith.call(appName, 'official-') || appName === 'dispatcher') {

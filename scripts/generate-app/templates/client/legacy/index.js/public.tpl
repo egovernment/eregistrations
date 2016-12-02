@@ -5,6 +5,6 @@ require('mano-legacy/ie8-font-visibility-fix');
 //Logs client errors to server logs
 require('eregistrations/client/legacy/error-logger');
 
-window.$ = require('mano-legacy');
+require('eregistrations/client/legacy/init');
 
 require('mano-legacy/hash-nav-modal');

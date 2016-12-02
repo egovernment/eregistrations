@@ -18,8 +18,9 @@ exports['sub-main'] = {
 	content: function () {
 		var searchForm, searchInput, businessProcessesTable, formAction;
 		formAction = getDynamicUrl('/', { filter: exports._urlParams });
+		insert(exports._optionalContentTop.call(this));
 		renderStatsOverview(this);
-		exports._optionalContent.call(this);
+		insert(exports._optionalContent.call(this));
 		// this should not happen, but it might if we don't block illegal role dependencies
 		if (!exports._statusMap.call(this)) return;
 		section({ class: 'section-primary users-table-filter-bar' },
@@ -73,5 +74,6 @@ exports['sub-main'] = {
 };
 
 exports._optionalContent = Function.prototype;
+exports._optionalContentTop = Function.prototype;
 exports._statusMap = Function.prototype;
 exports._businessProcessTable = Function.prototype;

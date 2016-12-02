@@ -302,7 +302,7 @@ module.exports = memoize(function (db) {
 		minMaxSameMessage: _("Exactly ${ max } items should be added"),
 		getTranslations: function (options) {
 			var tabularSection = this.owner.owner.owner;
-			return { min: tabularSection.min, max: tabularSection.max };
+			return { min: tabularSection._min, max: tabularSection._max };
 		},
 		message: function (_observe) {
 			var tabularSection = this.owner.owner.owner, min, max;
