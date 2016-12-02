@@ -58,8 +58,6 @@
 }
 
 .submitted-user-data-table .actions {
-	padding-left: 5px;
-	padding-right: 5px;
 	text-align: center;
 }
 
@@ -72,6 +70,11 @@
 	padding: 0;
 }
 
+.submitted-user-data-table td {
+	padding: 0;
+	position: relative;
+}
+
 .submitted-user-data-table td a {
 	display: block;
 }
@@ -81,11 +84,34 @@
 	font-size: 12px;
 }
 
+.submitted-user-data-table td a,
+.submitted-user-data-table td button {
+	width: 100%;
+	text-align: left;
+}
+
+.submitted-user-data-table td a:empty,
+.submitted-user-data-table td button:empty {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+}
+
+.submitted-user-data-table td.actions a,
+.submitted-user-data-table td.actions button {
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
 .submitted-user-data-table td.actions a,
 .submitted-user-data-table td.actions button,
 .submitted-user-data-table td.submitted-user-data-table-link a,
 .submitted-user-data-table td.submitted-user-data-table-link button {
 	color:var(--normal-text);
+	width: auto;
+	text-align: center;
 }
 
 .submitted-user-data-table button,
@@ -93,7 +119,7 @@
 	color: inherit;
 	background-color: transparent;
 	font-size: 15px;
-	padding: 0;
+	padding: 11px 10px 10px;
 	border-radius: 0;
 }
 
@@ -112,6 +138,10 @@
 
 .submitted-user-data-table tbody tr:nth-of-type(even) {
 	background-color: var(--light-background);
+}
+
+.submitted-user-data-table .submitted-user-data-table-status a {
+	text-align: center;
 }
 
 .submitted-user-data-table .submitted-user-data-table-status .fa-check {
@@ -151,6 +181,11 @@
 .submitted-user-data-table .submitted-user-data-table-service {
 	text-align: center;
 	width: 40px;
+}
+
+.submitted-user-data-table .submitted-user-data-table-service a,
+.submitted-user-data-table .submitted-user-data-table-service button {
+	text-align: center;
 }
 
 .submitted-user-data-table .submitted-user-data-table-action a,
