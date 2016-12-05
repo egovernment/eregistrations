@@ -18,6 +18,7 @@ module.exports = function () {
 
 				return data;
 			}
-		}
+		},
+		login: require('mano-auth/controller/login')
 	};
 };

@@ -4,7 +4,7 @@ var customError = require('es5-ext/error/custom');
 
 module.exports = function (bpType) {
 	return function () {
-		var max = 5;
+		var max = bpType.draftLimit;
 		if (this.user.businessProcesses.some(function (bp) {
 			if ((bp instanceof bpType) && !bp.isSubmitted) return !--max;
 			})) {

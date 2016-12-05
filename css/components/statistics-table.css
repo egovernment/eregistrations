@@ -5,40 +5,32 @@
 
 .statistics-table thead tr th,
 .statistics-table tbody tr td {
-	padding: 11px 3px 10px;
-}
-.statistics-table thead tr th:first-child,
-.statistics-table tbody tr td:first-child {
-	padding-left: 11px;
+	padding: 11px 6px 10px;
 	text-align: left;
 }
-
-.statistics-table-officials thead tr th:first-child,
-.statistics-table-officials tbody tr td:first-child {
-	padding-left: 11px;
-	text-align: center;
-}
-
-.statistics-table thead tr th:last-child,
-.statistics-table tbody tr td:last-child {
-	padding-right: 11px;
+.statistics-table thead tr .statistics-table-number,
+.statistics-table tbody tr .statistics-table-number {
+	text-align: right;
 }
 
 .statistics-table thead th {
 	color: var(--dark-text);
-	padding: 11px 3px 10px;
+	padding: 11px 6px 10px;
 	text-align: center;
-	font-weight: 700;
+	font-weight: 100;
 	font-size: 15px;
 	border:none;
 }
 
 .statistics-table-officials thead th,
 .statistics-table-registrations thead th {
-	background: var(--white-background);
-	color: var(--normal-text);
-	padding: 10px 3px;
+	padding: 10px 6px;
 	border-bottom: 1px solid var(--light-inner-border);
+}
+
+.statistics-table-officials thead tr th,
+.statistics-table-officials tbody tr td {
+	text-align: center;
 }
 
 .statistics-table-registrations .statistics-table-header-success {
@@ -73,7 +65,6 @@
 .statistics-table tbody tr td {
 	border-bottom: 1px solid var(--light-inner-border);
 	background: var(--white-background);
-	text-align: center;
 }
 
 .statistics-table tbody .statistics-table-sub-header {

@@ -1,18 +1,18 @@
 'use strict';
 
-var ensureString        = require('es5-ext/object/validate-stringifiable-value')
-  , ensureObject        = require('es5-ext/object/valid-object')
-  , ensureCallable      = require('es5-ext/object/valid-callable')
-  , normalizeOptions    = require('es5-ext/object/normalize-options')
-  , ensureDatabase      = require('dbjs/valid-dbjs')
-  , resolve             = require('path').resolve
-  , encode              = require('ent').encode
-  , defineResolved      = require('../../../../model/lib/data-snapshot/resolved')
-  , renderSections      = require('../../../../apps-common/pdf-templates/render-sections-html')
-  , getToDateInTimeZone = require('../../../../utils/to-date-in-time-zone')
-  , htmlToPdf           = require('../../../html-to-pdf')
-  , root                = resolve(__dirname, '../../../..')
-  , templatePath        = resolve(root, 'apps-common/pdf-templates/data-forms.html');
+var ensureString     = require('es5-ext/object/validate-stringifiable-value')
+  , ensureObject     = require('es5-ext/object/valid-object')
+  , ensureCallable   = require('es5-ext/object/valid-callable')
+  , normalizeOptions = require('es5-ext/object/normalize-options')
+  , ensureDatabase   = require('dbjs/valid-dbjs')
+  , resolve          = require('path').resolve
+  , encode           = require('ent').encode
+  , defineResolved   = require('../../../../view/dbjs/data-snapshot-resolved')
+  , renderSections   = require('../../../../apps-common/pdf-templates/render-sections-html')
+  , toDateInTimeZone = require('../../../../utils/to-date-in-time-zone')
+  , htmlToPdf        = require('../../../html-to-pdf')
+  , root             = resolve(__dirname, '../../../..')
+  , templatePath     = resolve(root, 'apps-common/pdf-templates/data-forms.html');
 
 module.exports = exports = function (db/*, options*/) {
 	var options  = normalizeOptions(arguments[1])
@@ -35,8 +35,7 @@ module.exports = exports = function (db/*, options*/) {
 };
 
 exports.defaultRenderer = function (businessProcess, filePath/* options*/) {
-	var options          = normalizeOptions(arguments[2])
-	  , toDateInTimeZone = getToDateInTimeZone(businessProcess.database), dataSnapshot;
+	var options          = normalizeOptions(arguments[2]), dataSnapshot;
 
 	if (businessProcess.isAtDraft) {
 		dataSnapshot = businessProcess.dataForms.toJSON();

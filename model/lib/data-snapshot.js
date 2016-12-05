@@ -13,7 +13,7 @@
 
 var memoize    = require('memoizee/plain')
   , ensureDb   = require('dbjs/valid-dbjs')
-  , extendBase = require('../../base');
+  , extendBase = require('../base');
 
 module.exports = memoize(function (db) {
 	extendBase(ensureDb(db));

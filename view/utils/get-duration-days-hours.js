@@ -7,10 +7,9 @@ var _  = require('mano').i18n.bind("View: Duration format");
  * @returns { String }      - formatted time string
  */
 module.exports = function (msTime) {
-	var days, hours;
+	var days;
 	if (isNaN(msTime)) throw new Error("Get duration expects a number.");
-	hours = Math.round(msTime / 1000 / 60 / 60);
-	days  = Math.floor(hours / 24);
-	hours %= 24;
-	return _("${ days } d ${ hours } h", { days: days, hours: hours });
+	days = Math.round(msTime / (1000 * 60 * 60 * 24));
+	if (!days) return _("< 1 d ");
+	return _("${ days } d", { days: days });
 };

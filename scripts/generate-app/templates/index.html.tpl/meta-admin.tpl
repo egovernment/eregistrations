@@ -3,7 +3,8 @@
 	<meta name="viewport" content="width=device-width" />
 	<noscript><meta http-equiv="refresh" content="0;/?legacy=1" /></noscript>
 	<script data-spa>
-if (!Object.getPrototypeOf || !Object.defineProperty || !window.history ||
+if (!Object.getPrototypeOf || !Object.defineProperty || !window.history || !window.localStorage ||
+		!(function () { try { localStorage.$test = ''; return true; } catch (ignore) {} }()) ||
 		(function () {'use strict'; return this; }()) ||
 	 (Object.getPrototypeOf({ __proto__: Function.prototype }) !==
 		 Function.prototype) || (Object.defineProperty({}, 'foo',
@@ -16,8 +17,8 @@ if (!Object.getPrototypeOf || !Object.defineProperty || !window.history ||
 	}
 } else {
 	document.write('<link href="${ stRoot }meta-admin.css" rel="stylesheet" />');
-	document.write('<scr' + 'ipt src="${ stRoot }meta-admin.legacy.js"></sc' + 'ript>');
+	document.write('<scr' + 'ipt crossorigin src="${ stRoot }meta-admin.legacy.js"></sc' + 'ript>');
 	document.write('<scr' + 'ipt data-spa src="/i18n.js"></sc' + 'ript>');
-	document.write('<scr' + 'ipt data-spa src="${ stRoot }meta-admin.js"></sc' + 'ript>');
+	document.write('<scr' + 'ipt data-spa crossorigin src="${ stRoot }meta-admin.js"></sc' + 'ript>');
 }
 	</script>

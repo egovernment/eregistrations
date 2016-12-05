@@ -17,25 +17,26 @@
 	steps.map(function (step) {
 		var header, thead, tbody = [];
 		header = '<h3>' + step.label + '</h3>';
-		thead  = '<thead><th></th><th>' + e(_("Files processed")) + '</th><th>'
-		+ e(_("Average time")) + '</th><th>' + e(_("Min time")) + '</th><th>' + e(_("Max time")) + '</th></thead>';
+		thead  = '<thead><th>' + header + '</th><th class="centered">' + e(_("Files processed")) + '</th><th class="centered">'
+		+ e(_("Average time")) + '</th><th class="centered">' + e(_("Min time")) + '</th><th class="centered">' + e(_("Max time")) + '</th></thead>';
 		if (!step.data.length) {
-			return header + '<table>' + thead + '<tbody><tr><td colspan="5">' +
+			return '<table>' + thead + '<tbody><tr><td colspan="5" class="centered">' +
 			_("There are no files processed at this step")
 			+ '</td></tr></tbody>' + '</table>';
 		};
 		tbody = step.data.map(function (item) {
 			var tds = [];
+			item = item.processing;
 			tds.push('<td>' + item.fullName + '</td>');
-			tds.push('<td>' + item.processed + '</td>');
-			tds.push('<td>' + item.avgTime + '</td>');
-			tds.push('<td>' + item.minTime + '</td>');
-			tds.push('<td>' + item.maxTime + '</td>');
+			tds.push('<td class="centered">' + item.count + '</td>');
+			tds.push('<td class="centered">' + item.avgTime + '</td>');
+			tds.push('<td class="centered">' + item.minTime + '</td>');
+			tds.push('<td class="centered">' + item.maxTime + '</td>');
 
 			return '<tr>' + tds.join('') + '</tr>';
 		});
 		tbody  = '<tbody>' + tbody.join('') + '</tbody>';
-		return header + '<table>' + thead + tbody + '</table>';
+		return '<table>' + thead + tbody + '</table>';
 	}).join('')
 	}
 </ul>
