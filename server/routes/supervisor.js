@@ -3,6 +3,7 @@
 'use strict';
 
 var aFrom               = require('es5-ext/array/from')
+  , and                 = require('es5-ext/array/#/intersection')
   , flatten             = require('es5-ext/array/#/flatten')
   , uniq                = require('es5-ext/array/#/uniq')
   , isNaturalNumber     = require('es5-ext/number/is-natural')
@@ -31,10 +32,12 @@ var aFrom               = require('es5-ext/array/from')
   , getDbArray          = require('../utils/get-db-array')
   , getSupervisorSteps  = require('../utils/supervisor-steps-array')
   , getBaseRoutes       = require('./authenticated')
+  , customError         = require('es5-ext/error/custom')
+  , statusLogPrintPdfRenderer = require('../pdf-renderers/business-process-status-log-print')
 
   , hasBadWs       = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps  = function (a, b) { return a.stamp - b.stamp; }
-  , isArray        = Array.isArray, slice = Array.prototype.slice, push = Array.prototype.push
+  , isArray        = Array.isArray, slice = Array.prototype.slice
   , ceil           = Math.ceil
   , stringify      = JSON.stringify;
 
@@ -122,11 +125,10 @@ var initializeHandler = function (conf) {
 			})(function (arrays) {
 				if (arrays.length === 1) return arrays[0];
 
-				return uniq.call(arrays.reduce(function (current, next, index) {
+				return arrays.reduce(function (current, next, index) {
 					if (index === 1) current = aFrom(current);
-					push.apply(current, next);
-					return current;
-				})).sort(compareStamps);
+					return and.call(current, next);
+				}).sort(compareStamps);
 			});
 		})(function (arr) {
 			var size = arr.length, pageCount, offset, computedEvents, directEvents;
@@ -150,6 +152,7 @@ var initializeHandler = function (conf) {
 						return anyIdToStorage(objId)(function (storage) {
 							if (!storage) return;
 							return storage.getComputed(objId + '/' + keyPath)(function (data) {
+								if (!data) return;
 								if (isArray(data.value)) {
 									return data.value.map(function (data) {
 										var key = data.key ? '*' + data.key : '';
@@ -231,6 +234,21 @@ module.exports = exports = function (conf) {
 				recordId = this.req.$user + '/recentlyVisited/businessProcesses/supervisor*7' + query.id;
 				return driver.getStorage('user').store(recordId, '11')({ passed: true });
 			}.bind(this));
+		},
+		'business-process-status-log-print': {
+			headers: {
+				'Cache-Control': 'no-cache',
+				'Content-Type': 'application/pdf; charset=utf-8'
+			},
+			controller: function (query) {
+				var appName = this.req.$appName;
+				// Get full data of one of the business processeses
+				return handler.businessProcessQueryHandler.resolve(query)(function (query) {
+					if (!query.id) throw customError("Not Found", { statusCode: 404 });
+					return statusLogPrintPdfRenderer(query.id, { streamable: true,
+						appName: appName });
+				});
+			}
 		}
 	}, getBaseRoutes());
 };

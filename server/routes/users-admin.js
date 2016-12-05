@@ -27,6 +27,7 @@ var aFrom               = require('es5-ext/array/from')
   , getDbArray          = require('../utils/get-db-array')
   , getIndexMap         = require('../utils/get-db-sort-index-map')
   , getBaseRoutes       = require('./authenticated')
+  , compact             = require('es5-ext/array/#/compact')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , slice = Array.prototype.slice, ceil = Math.ceil
@@ -156,19 +157,37 @@ module.exports = exports = function (data) {
 			// Pagination
 			offset = (query.page - 1) * itemsPerPage;
 			arr = slice.call(arr, offset, offset + itemsPerPage);
-			return deferred.map(arr, function (data) {
-				return storage.getObject(data.id, { keyPaths: listProps })(function (datas) {
-					return datas.map(function (data) {
-						return data.data.stamp + '.' + data.id + '.' + data.data.value;
+
+			return deferred(
+				deferred.map(arr, function (data) {
+					var objId = data.id;
+					return deferred.map(['canBeDestroyed'], function (keyPath) {
+						return storage.getComputed(objId + '/' + keyPath)(function (data) {
+							if (!data) return;
+							if (Array.isArray(data.value)) {
+								return data.value.map(function (data) {
+									var key = data.key ? '*' + data.key : '';
+									return data.stamp + '.' + objId + '/' + keyPath + key + '.' + data.value;
+								});
+							}
+							return data.stamp + '.' + objId + '/' + keyPath + '.' + data.value;
+						});
 					});
-				});
-			})(function (directEvents) {
+				}),
+				deferred.map(arr, function (data) {
+					return storage.getObject(data.id, { keyPaths: listProps })(function (datas) {
+						return datas.map(function (data) {
+							return data.data.stamp + '.' + data.id + '.' + data.data.value;
+						});
+					});
+				})
+			)(function (events) {
 				return {
 					view: arr.map(function (data) {
 						return data.stamp + '.' + data.id;
 					}).join('\n'),
 					size: size,
-					data: flatten.call(directEvents)
+					data: compact.call(flatten.call(events))
 				};
 			});
 		});

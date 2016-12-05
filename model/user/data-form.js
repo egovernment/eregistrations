@@ -35,10 +35,10 @@ module.exports = memoize(function (db/*, options*/) {
 
 	User.prototype.dataForm.sections.profile.setProperties({
 		excludedFromStatus: ['password'],
-		propertyNames: ['firstName', 'lastName', 'email', 'password']
+		propertyNames: ['firstName', 'lastName', 'email', 'phone', 'password']
 	});
 	User.prototype.dataForm.sections.additional.setProperties({
-		propertyNames: ['roles', 'institution']
+		propertyNames: ['roles', 'isSuperUser', 'institution']
 	});
 
 	return User;

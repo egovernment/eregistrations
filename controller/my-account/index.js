@@ -6,7 +6,7 @@ var db     = require('mano').db
   , assign = require('es5-ext/object/assign');
 
 // Common controller.
-module.exports = assign(exports, require('../user'));
+module.exports = assign(exports, require('../user'), require('../demo-user/index')());
 
 exports['business-process/[0-9][a-z0-9]+/delete'] = {
 	match: function (businessProcessId) {
@@ -34,5 +34,3 @@ exports['business-process/[0-9][a-z0-9]+'] = {
 		}
 	}
 };
-
-require('../utils/demo-user-controller')(exports);

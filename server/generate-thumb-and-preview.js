@@ -18,7 +18,7 @@ module.exports = function (file) {
 	  , processPath = file.path
 	  , extension   = extname(file.path)
 	  , thumbPath   = file.path.slice(0, -extension.length) + '.thumb' + extension
-	  , thumb, preview, processFullPath, thumbFullPath, previewFullPath;
+	  , thumb, preview, processFullPath, thumbFullPath, previewFullPath, biggerDimension;
 
 	//Skip for word doc
 	if (docMimeTypes.indexOf(file.type) !== -1) return deferred(null);
@@ -33,43 +33,64 @@ module.exports = function (file) {
 
 	processFullPath = resolve(path, processPath);
 	thumbFullPath = resolve(path, thumbPath);
-	thumb = gm(processFullPath).density(300, 300).resize(500, 500, '>').writeP(thumbFullPath);
 
-	if (file.path !== previewPath) {
-		previewFullPath = resolve(path, previewPath);
-		preview = gm(processFullPath).density(300, 300).resize(1500, 1500, '>').writeP(previewFullPath);
-	}
+	return gm.getIsInstalled(function (isInstalled) {
 
-	return deferred(thumb, preview)(function () {
-		if (!file.path) {
-			return deferred(unlink(thumbFullPath), preview && unlink(previewFullPath));
-		}
-
-		file.thumb.path = thumbPath;
-		if (preview) {
-			file.generatedPreview.path = previewPath;
-		} else {
-			file.isPreviewGenerated = false;
-		}
-	}, function (e) {
-		if (!file.path && contains.call(e.message, 'Unable to open file')) {
-			return deferred(unlink(thumbFullPath), preview && unlink(previewFullPath))(null, false);
-		}
-		console.log(e);
-		if (contains.call(e.message, "Improper image header")) {
-			console.log("Cannot generate previews", e.stack);
+		if (!isInstalled) {
+			// No 'gm' software available
+			// If uploaded file is an image, use it directly as a thumb and preview
+			if ((file.type === 'image/jpeg') || (file.type === 'image/png')) {
+				file.thumb.path = file.path;
+				file.isPreviewGenerated = false;
+			}
 			return;
 		}
-		if (startsWith.call(e.message, "Command failed: gm convert:")) {
-			console.error("\nCould not generate thumb and preview:\n");
-			console.error(e.stack + "\n\n");
-			return;
-		}
-		if (contains.call(e.message, "GPL Ghostscript")) {
-			console.error("\nCould not generate thumb and preview:\n");
-			console.error(e.stack + "\n\n");
-			return;
-		}
-		throw e;
+
+		thumb = gm(processFullPath).density(300, 300).resize(500, 500, '>').writeP(thumbFullPath);
+
+		return gm(processFullPath).sizeP()(function (value) {
+			if (!value) {
+				biggerDimension = 0;
+			} else {
+				biggerDimension = Math.max(value.width, value.height);
+			}
+			if (file.path !== previewPath || biggerDimension > 2000) {
+				previewFullPath = resolve(path, previewPath);
+				preview =
+					gm(processFullPath).density(300, 300).resize(2000, 2000, '>').writeP(previewFullPath);
+			}
+			return deferred(thumb, preview)(function () {
+				if (!file.path) {
+					return deferred(unlink(thumbFullPath), preview && unlink(previewFullPath));
+				}
+
+				file.thumb.path = thumbPath;
+				if (preview) {
+					file.generatedPreview.path = previewPath;
+				} else {
+					file.isPreviewGenerated = false;
+				}
+			}, function (e) {
+				if (!file.path && contains.call(e.message, 'Unable to open file')) {
+					return deferred(unlink(thumbFullPath), preview && unlink(previewFullPath))(null, false);
+				}
+			});
+		}).catch(function (e) {
+			if (contains.call(e.message, "Improper image header")) {
+				console.log("Cannot generate previews", e.stack);
+				return;
+			}
+			if (startsWith.call(e.message, "Command failed: gm convert:")) {
+				console.error("\nCould not generate thumb and preview:\n");
+				console.error(e.stack + "\n\n");
+				return;
+			}
+			if (contains.call(e.message, "GPL Ghostscript")) {
+				console.error("\nCould not generate thumb and preview:\n");
+				console.error(e.stack + "\n\n");
+				return;
+			}
+			throw e;
+		});
 	});
 };

@@ -41,7 +41,8 @@ module.exports = function (config) {
 		parentMap = config.map;
 
 		childSelect = $(childSelect);
-		parentSelect = childSelect.parentByName('li').previousSibling.getElementsByTagName('select')[0];
+		parentSelect = childSelect.parentByName('li');
+		if (parentSelect) parentSelect = parentSelect.previousSibling.getElementsByTagName('select')[0];
 		if (!parentSelect) {
 			// There's a race condition when this function is run before parentSelect is accessible
 			setTimeout(function () { self(childSelect); }, 300);

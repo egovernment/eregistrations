@@ -10,27 +10,38 @@ var _                = require('mano').i18n.bind('View: Official: Revision')
 
 exports._parent = require('./user-base');
 exports._match = 'businessProcess';
+exports._isPauseEnabled = false;
 
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var revisionStep = this.processingStep;
+		var revisionStep      = this.processingStep
+		  , isPauseEnabled    = exports._isPauseEnabled
+		  , isRevisionPending = revisionStep._isRevisionPending
+		  , isToolbarEnabled  = or(isRevisionPending, isPauseEnabled);
 
 		renderMainInfo(this, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
 
-		insert(_if(revisionStep._isRevisionPending, [exports._customAlert.call(this), section(
-			{ class: 'official-submission-toolbar' },
-			// show buttons only if step is pending
-			_if(eq(revisionStep._revisionProgress, 1),
-				// show "approve" or "sent back" buttons only, when revision was finalized
-				_if(eq(revisionStep._revisionApprovalProgress, 1),
-					_if(not(exports._processingTabLabel.call(this)),
-						exports._approveButton.call(this)),
-					_if(eq(revisionStep._sendBackStatusesProgress, 1),
-						exports._returnButton.call(this)))),
-			// show reject button at all times when revision is pending
-			exports._rejectButton.call(this)
-		)]));
+		insert(_if(isToolbarEnabled), [
+			exports._customAlert.call(this),
+			section(
+				{ class: 'official-submission-toolbar' },
+				// show buttons only if step is pending
+				_if(isRevisionPending, div(
+					{ class: 'official-submission-toolbar-wrapper' },
+					_if(eq(revisionStep._revisionProgress, 1),
+						// show "approve" or "sent back" buttons only, when revision was finalized
+						_if(eq(revisionStep._revisionApprovalProgress, 1),
+							_if(not(exports._processingTabLabel.call(this)),
+								exports._approveButton.call(this)),
+							_if(eq(revisionStep._sendBackStatusesProgress, 1),
+								exports._returnButton.call(this)))),
+					// show reject button at all times when revision is pending
+					exports._rejectButton.call(this)
+				)),
+				_if(isPauseEnabled, exports._pauseButton.call(this))
+			)
+		]);
 
 		insert(exports._revisionContainer.call(this));
 	}
@@ -87,6 +98,19 @@ exports._rejectButton = function (/*options*/) {
 		'data-hint': _("You can reject the registration when documents and/or data that is " +
 			"sent can be determined as not real.")
 	}, _("Reject application"))];
+};
+
+exports._pauseButton = function (/*options*/) {
+	var options = normalizeOptions(arguments[0]), isPaused = this.processingStep._isPaused, label;
+	label = _if(isPaused, options.unpauseLabel || _("Unpause"), options.pauseLabel || _("Pause"));
+
+	return postButton({
+		action: url('revision', this.businessProcess.__id__, _if(isPaused, 'unpause', 'pause')),
+		buttonClass: 'button-main',
+		'data-hint': _("Pauses the processing of the application."),
+		class: 'hint-optional hint-optional-bottom',
+		value: label
+	});
 };
 
 exports._revisionContainer = function () {

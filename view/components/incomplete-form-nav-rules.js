@@ -103,16 +103,16 @@ generateMissingList = function (formSection, level) {
 };
 
 module.exports = function (sections) {
-	return ul(sections, function (formSection) {
-
-		return _if(formSection._hasDisplayableRuleDeep,
-			section(
-				a(
-					{ href: '#' + formSection.domId },
-					formSection.onIncompleteMessage || _("${sectionLabel} is invalid",
-						{ sectionLabel: formSection.label })
-				),
-				generateMissingList(formSection)
-			));
+	var incompleteSections = sections.filter(function (section) {
+		section._hasDisplayableRuleDeep.once('change', function () {
+			incompleteSections.refresh(section);
+		});
+		return section.hasDisplayableRuleDeep;
+	});
+	return ul(incompleteSections, function (formSection) {
+		return section(a({ href: '#' + formSection.domId },
+			formSection.onIncompleteMessage || _("${sectionLabel} is invalid",
+				{ sectionLabel: formSection.label })),
+			generateMissingList(formSection));
 	});
 };

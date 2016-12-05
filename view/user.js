@@ -58,9 +58,14 @@ exports['sub-main'] = {
 					function (item) {
 						var disabled = item.disabledCondition
 						  , renderAsForm = item.actionUrl != null ? and(item.actionUrl, not(disabled)) : false
-						  , renderAsDiv = or(item.hrefUrl, disabled)
+						  , renderAsDiv = not(renderAsForm)
 						  , boxClasses = [ 'user-account-service-box', _if(disabled, 'disabled') ];
 
+						// Explanation of superfluous _if usage within configuration below:
+						// As item.content and item.buttonContent can be used in two scenarios (form and aHref)
+						// which may toggle during time of interface being displayed, we need to ensure that
+						// very same DOM content is moved between two containers, and that can only be ensured
+						// with extra `_if(cond, item.x)` calls (otherwise those `_if` have no real function)
 						return _if(item.condition || true, li(_if(
 							renderAsForm,
 							form({ class: boxClasses, action: item.actionUrl, method: 'post' },

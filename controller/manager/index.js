@@ -6,7 +6,7 @@ var assign   = require('es5-ext/object/assign')
   , db = mano.db;
 
 var managedUserMatcher = function (managedUserId) {
-	if (!this.user.isManagerActive) return false;
+	if (!this.authenticatedUser.isManagerActive) return false;
 	this.managedUser = db.User.getById(managedUserId);
 	return this.managedUser != null;
 };
@@ -15,7 +15,7 @@ var businessProcessMatcher = function (businessProcessId) {
 	var businessProcess = db.BusinessProcess.getById(businessProcessId);
 	if (!businessProcess) return false;
 	if (!managedUserMatcher.call(this, businessProcess.user.__id__)) return false;
-	if (businessProcess.manager !== this.user) return false;
+	if (businessProcess.manager !== this.authenticatedUser) return false;
 	this.businessProcess = businessProcess;
 	return true;
 };
@@ -46,11 +46,11 @@ exports['business-process/[0-9][a-z0-9]+'] = {
 exports['clients/[0-9][a-z0-9]+'] = {
 	match: managedUserMatcher,
 	submit: function () {
-		this.user.currentlyManagedUser = this.managedUser;
+		this.authenticatedUser.currentlyManagedUser = this.managedUser;
 	}
 };
 
-// The validation is currently handled in submit by destroyManagedUser
+// The validation is currently handled in submit by user destruction mechanism
 exports['clients/[0-9][a-z0-9]+/delete'] = {
 	match: managedUserMatcher
 };

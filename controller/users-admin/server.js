@@ -3,14 +3,9 @@
 var assign           = require('es5-ext/object/assign')
   , submit           = require('mano/utils/save')
   , changePassword   = require('mano-auth/controller/server/change-password').submit
-  , dbObjects        = require('mano').db.objects
+  , hash             = require('mano-auth/hash')
   , sendNotification = require('../../server/email-notifications/create-account')
-  , deferred         = require('deferred')
-  , bcrypt           = require('bcrypt')
-  , queryMaster      = require('eregistrations/server/services/query-master/slave')
-
-  , promisify = deferred.promisify
-  , genSalt = promisify(bcrypt.genSalt), hash = promisify(bcrypt.hash);
+  , queryMaster      = require('eregistrations/server/services/query-master/slave');
 
 // Common
 assign(exports, require('../user/server'));
@@ -23,7 +18,7 @@ exports['user-add'] = {
 		return queryMaster('ensureEmailNotTaken', {
 			email: email
 		}).then(function () {
-			return hash(data['User#/password'], genSalt()).then(function (password) {
+			return hash.hash(data['User#/password']).then(function (password) {
 				data['User#/password'] = password;
 
 				submit.apply(this, args);
@@ -59,5 +54,12 @@ exports['user/[0-9][a-z0-9]+'] = {
 
 // Delete User
 exports['user/[0-9][a-z0-9]+/delete'] = {
-	submit: function () { dbObjects.delete(this.target); }
+	validate: function (data) {
+		this.target.validateDestroy();
+
+		return data;
+	},
+	submit: function () {
+		return this.target._destroy();
+	}
 };

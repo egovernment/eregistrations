@@ -78,7 +78,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push("Add new service legacy model mock generator to setup in " +
 				"'scripts/setup.js'");
 			msgItems.push("Configure model for new service in 'model/'" + appName + "/..'");
-
+			msgItems.push("Define a label for new BusinessProcess in 'model/'" + appName + "/base.js'");
 		}
 
 		if (startsWith.call(appName, 'official-') || appName === 'dispatcher') {
@@ -123,6 +123,8 @@ resolveProjectRoot(projectRoot).done(function (root) {
 			msgItems.push("Ensure that views model is updated with proper " +
 				"assignees map in model/views.js");
 			msgItems.push(appServerRoutes);
+			msgItems.push("For each role that is to be assignable, adjust viewKeyPath " +
+				"and canItemBeApplicable in view/app-name/business-processes-table.js");
 		}
 
 		if (appName === 'manager-registration') {

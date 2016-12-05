@@ -1,7 +1,3 @@
-.header-top-wrapper {
-	overflow: hidden;
-}
-
 .header-top-logo img {
 	border: none;
 }
@@ -16,4 +12,8 @@
 .header-top-menu li {
 	display: inline-block;
 	vertical-align: middle;
+}
+
+.header-top-menu-dropdown-content li {
+	display: block;
 }

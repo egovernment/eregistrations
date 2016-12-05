@@ -10,7 +10,8 @@ if (window.performance && window.performance.now) {
 }
 console.log("Build timestamp: ${BUILD_TIMESTAMP}");
 
-var startTime = Date.now();
+var startTime = Date.now()
+  , appName = '${ appName }';
 
 // JavaScript polyfills and shims
 // TODO: autodetect, generate and import from: './shims.generated'
@@ -70,15 +71,7 @@ require('mano/lib/client/sync-guard');
 require('mano/lib/client/dom-app-events');
 
 // Find authenticated user object
-userId = require('dom-ext/html-document/#/get-cookie')
-	.call(document, 'authenticated' + location.port);
-
-if (userId) {
-	localStorage._authenticated = userId;
-} else {
-	throw new Error('No data on authenticated user found. ' +
-			'Make sure that url port matches one provided into url setting in env.js(on)');
-}
+userId = require('eregistrations/client/resolve-authenticated')();
 
 loadView = function () {
 	var appLocation  = window.appLocation = require('mano/lib/client/location')
@@ -95,13 +88,16 @@ loadView = function () {
 		return;
 	}
 	user = db.User.getById(userId);
-	if (!user) {
+	if (!user || !user.currentBusinessProcess ||
+			((user.currentRoleResolved === 'manager') && !user.currentlyManagedUser) ||
+			((appName === 'business-process-submitted') &&
+				!user.currentBusinessProcess.requirementUploads.dataSnapshot.resolved)) {
 		server.once('sync', loadView);
 		console.log(".. Waiting for user data ..");
 		return;
 	}
 	Object.defineProperty(db, '$user', { configurable: true, value: user });
-	viewContext = { appName: '${ appName }' };
+	viewContext = { appName: appName };
 	if (isReadOnlyRender) {
 		require('eregistrations/client/resolve-legacy-render-view-context')(db, clientId, viewContext);
 	} else {
@@ -150,5 +146,8 @@ loadView = function () {
 	isViewGenerated = true;
 	runDbSync();
 };
-if (localStorage._id) loadView();
-else server.once('sync', loadView);
+
+if (userId) {
+	if (localStorage._id) loadView();
+	else server.once('sync', loadView);
+}

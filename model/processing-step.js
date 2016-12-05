@@ -157,8 +157,9 @@ module.exports = memoize(function (db) {
 		certificates: { type: MultipleProcess, nested: true },
 		assignee: { type: User },
 		isAssignable: { type: db.Boolean },
-		processingTime: { type: UInteger, value: 0 },
-		correctionTime: { type: UInteger, value: 0 }
+		correctionTime: { type: UInteger, value: 0 },
+		processingHolidaysTime: { type: UInteger, value: 0 },
+		nonProcessingTime: { type: UInteger, value: 0 }
 	});
 
 	ProcessingStep.prototype.requirementUploads.defineProperties({
