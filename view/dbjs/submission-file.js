@@ -34,7 +34,8 @@ module.exports = Object.defineProperties(db.File, {
 					options.observable.dbId.replace(normRe, '-') }, ""));
 		},
 		renderItem: function (file) {
-			var el = this.make, data = {}, itemDom, name, isValid = or(file._name, file._path), loader;
+			var el = this.make, data = {}, itemDom, name, isValid = or(file._name, file._path), loader
+			  , loaderText, fileThumb;
 
 			if (this.multiple) {
 				data.dom = el('li', { class: _if(isValid, null, 'empty'), 'data-id': file.__id__ });
@@ -44,20 +45,25 @@ module.exports = Object.defineProperties(db.File, {
 			if (isNested(file)) name = file.__id__;
 			else if (this.multiple) name = this.observable.dbId + '*7' + file.__id__;
 			else name = this.observable.dbId;
-			loader = text();
+			loader = span({ class: 'file-thumb-upload-status' });
+			loaderText = $.getTextChild(loader);
 			file.on('upload-progress', function (ev) {
 				var loadedPercent;
 				if (!ev.total) return;
 				loadedPercent = (ev.loaded / ev.total);
+				fileThumb.classList.add('file-thumb-uploading');
 				if (loadedPercent === 1) {
-					loader.data = _("Generating preview");
+					loaderText.nodeValue = _("Generating preview");
+					fileThumb.classList.remove('file-thumb-uploading');
+					fileThumb.classList.add('file-thumb-generating');
+
 					return;
 				}
 				loadedPercent = new db.Percentage(loadedPercent).toString();
-				loader.data = loadedPercent;
+				loaderText.nodeValue = loadedPercent;
 			});
 
-			itemDom = _if(isValid, el('div', { class: 'file-thumb' },
+			itemDom = _if(isValid, fileThumb = el('div', { class: 'file-thumb' },
 				el('a', { href: file._url, target: '_blank', class: 'file-thumb-image' },
 					loader,
 					el('img', { id: 'img-' + name, src: (function () {
@@ -67,8 +73,9 @@ module.exports = Object.defineProperties(db.File, {
 
 						return file.thumb._url.map(function (thumbUrl) {
 							if (!thumbUrl) return;
-							if (loader) {
-								loader.data = '';
+							if (loaderText && fileThumb) {
+								loaderText.nodeValue = '';
+								fileThumb.classList.remove('file-thumb-generating');
 							}
 							return stUrl(thumbUrl);
 						});
