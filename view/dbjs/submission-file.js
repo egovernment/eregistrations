@@ -45,22 +45,21 @@ module.exports = Object.defineProperties(db.File, {
 			if (isNested(file)) name = file.__id__;
 			else if (this.multiple) name = this.observable.dbId + '*7' + file.__id__;
 			else name = this.observable.dbId;
-			loader = span({ class: 'file-thumb-upload-status' });
-			loaderText = $.getTextChild(loader);
+			loader = span({ class: 'file-thumb-upload-status' }, loaderText = text());
 			file.on('upload-progress', function (ev) {
 				var loadedPercent;
 				if (!ev.total) return;
 				loadedPercent = (ev.loaded / ev.total);
 				fileThumb.classList.add('file-thumb-uploading');
 				if (loadedPercent === 1) {
-					loaderText.nodeValue = _("Generating preview");
+					loaderText.data = _("Generating preview");
 					fileThumb.classList.remove('file-thumb-uploading');
 					fileThumb.classList.add('file-thumb-generating');
 
 					return;
 				}
 				loadedPercent = new db.Percentage(loadedPercent).toString();
-				loaderText.nodeValue = loadedPercent;
+				loaderText.data = loadedPercent;
 			});
 
 			itemDom = _if(isValid, fileThumb = el('div', { class: 'file-thumb' },
@@ -74,7 +73,7 @@ module.exports = Object.defineProperties(db.File, {
 						return file.thumb._url.map(function (thumbUrl) {
 							if (!thumbUrl) return;
 							if (loaderText && fileThumb) {
-								loaderText.nodeValue = '';
+								loaderText.data = '';
 								fileThumb.classList.remove('file-thumb-generating');
 							}
 							return stUrl(thumbUrl);
