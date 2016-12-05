@@ -39,7 +39,7 @@ module.exports = exports = function (context, documentData/*, options*/) {
 	var options          = normalizeOptions(arguments[2])
 	  , mainContent      = options.mainContent
 	  , businessProcess  = context.businessProcess
-	  , collectionTarget = options.uploadsResolver || businessProcess
+	  , collectionTarget = context.processingStep || businessProcess
 	  , kind             = context.documentKind
 
 	  , collection, nextDocumentUrl, previousDocumentUrl, docPreviewElement, sideContentContainer

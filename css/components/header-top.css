@@ -43,15 +43,17 @@ Flexible basic menu - used on home page and can be reused elsewhere
 /*
 	Flexible basic menu link
 */
-.header-top-menu a {
+.header-top-menu a,
+.header-top-menu button {
 	color: var(--normal-text);
 	font-size: 14px;
-	padding-right: 8px;
-	padding-left: 8px;
+	padding-right: 12px;
+	padding-left: 12px;
 	cursor: pointer;
 	display: block;
 	text-decoration: none;
 	text-transform: uppercase;
+	background-color: transparent;
 }
 .header-top-menu a:hover,
 .header-top-menu a:focus,
@@ -105,10 +107,104 @@ Flexible basic menu button positioning
 }
 
 .header-top-menu > li {
-	height: 22px;
+	height: 44px;
+	line-height: 44px;
+	position: relative;
 }
 .header-top-menu a span {
 	vertical-align: middle;
+	line-height: 22px;
+}
+
+.header-top-menu a {
+	border: 1px solid var(--white-background);
+	border-bottom: none;
+}
+
+.header-top-menu-opened a {
+	background-color: var(--white-background);
+	border-radius: 3px 3px 0 0;
+	border: 1px solid var(--light-inner-border);
+	border-bottom: none;
+}
+
+.header-top-menu-dropdown-content a,
+.header-top-menu-dropdown-content button[type="submit"] {
+	border: none;
+	background-color: var(--white-background);
+}
+
+.header-top-menu-dropdown-content a:hover,
+.header-top-menu-dropdown-content a:active,
+.header-top-menu-dropdown-content a:focus,
+.header-top-menu-dropdown-content button:hover,
+.header-top-menu-dropdown-content button:active,
+.header-top-menu-dropdown-content button:focus,
+.header-top-menu-dropdown-content button[type="submit"]:hover,
+.header-top-menu-dropdown-content button[type="submit"]:active
+.header-top-menu-dropdown-content button[type="submit"]:focus {
+	background-color: var(--lighter-medium-background);
+	color: var(--normal-text);
+	border-radius: 0;
+}
+
+.header-top-menu-dropdown-item-active a,
+.header-top-menu-dropdown-item-active button,
+.header-top-menu-dropdown-item-active a:hover,
+.header-top-menu-dropdown-item-active a:active,
+.header-top-menu-dropdown-item-active a:focus,
+.header-top-menu-dropdown-item-active button:hover,
+.header-top-menu-dropdown-item-active button:active,
+.header-top-menu-dropdown-item-active button:focus,
+.header-top-menu-dropdown-item-active button[type="submit"]:hover,
+.header-top-menu-dropdown-item-active button[type="submit"]:active
+.header-top-menu-dropdown-item-active button[type="submit"]:focus {
+	background-color: var(--normal-dark-background);
+	color: var(--white-text);
+	border-radius: 0;
+}
+
+.header-top-menu-dropdown-content {
+	display: none;
+}
+
+.header-top-menu-dropdown-content li {
+	line-height: 22px;
+}
+
+.header-top-menu-opened .header-top-menu-dropdown-content {
+	display: block;
+	background-color: var(--white-background);
+	border-radius: 0 0 3px 3px;
+	border: 1px solid var(--light-inner-border);
+	border-top: none;
+	z-index: 1010;
+	position: absolute;
+	top: 100%;
+	left: 0;
+	width: 100%;
+}
+
+.header-top-menu hr {
+	margin-top: 10px;
+	margin-bottom: 11px;
+}
+
+.header-top-menu ul a,
+.header-top-menu ul button {
+	text-transform: none;
+	width: 100%;
+	text-align: left;
+	border-radius: 0;
+	padding: 11px 8px;
+}
+
+.header-top-dropdown button {
+	line-height: 22px;
+}
+
+.header-top-dropdown-button .fa {
+	margin-left: 8px;
 	line-height: 22px;
 }
 

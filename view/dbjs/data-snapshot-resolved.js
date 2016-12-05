@@ -3,10 +3,10 @@
 
 'use strict';
 
-var d               = require('d')
-  , lazy            = require('d/lazy')
-  , ObservableValue = require('observable-value')
-  , memoize         = require('memoizee/plain')
+var d                = require('d')
+  , lazy             = require('d/lazy')
+  , ObservableValue  = require('observable-value')
+  , memoize          = require('memoizee/plain')
 
   , defineProperties = Object.defineProperties;
 

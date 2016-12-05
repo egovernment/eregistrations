@@ -1,7 +1,7 @@
 'use strict';
 
 var Database = require('dbjs')
-  , define   = require('../../../../model/lib/data-snapshot');
+  , define   = require('../../../model/lib/data-snapshot');
 
 module.exports = function (t, a) {
 	var db = new Database(), snapshot;

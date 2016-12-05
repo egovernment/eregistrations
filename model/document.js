@@ -129,7 +129,7 @@ module.exports = memoize(function (db) {
 		// Used for preservation in data snapshots
 		toJSON: { value: function (ignore) {
 			var data = {
-				uniqueKey: this.key,
+				uniqueKey: this.uniqueKey,
 				label: this.database.resolveTemplate(this.label, this.getTranslations(), { partial: true }),
 				abbr: this.abbr,
 				status: this.status,

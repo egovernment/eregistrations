@@ -5,7 +5,11 @@ var _                    = require('mano').i18n.bind('View: User')
   , generateFormSections = require('./components/generate-form-sections')
   , baseUrl              = url;
 
-exports._parent = require('./user-base');
+exports._parent = require('./abstract-user-base');
+
+exports['submitted-menu'] = function () {
+	li({ id: 'profile-nav', class: 'submitted-menu-item-active' }, a({ href: '/' }, _("Profile")));
+};
 
 exports['sub-main'] = {
 	class: { content: true },
@@ -21,7 +25,7 @@ exports['sub-main'] = {
 					fieldset({
 						class: 'form-elements',
 						dbjs: this.user,
-						names: ['firstName', 'lastName'],
+						names: ['firstName', 'lastName', 'phone'],
 						append: [
 							li(field({ dbjs: this.user._email, disabled: true })),
 							li(field({ dbjs: db.Password,

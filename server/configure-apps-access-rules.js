@@ -67,6 +67,10 @@ var defaultResolveOfficialViewPath = function (userId, roleName, stepShortPath, 
 	return stepShortPath;
 };
 
+var defaultResolveShortStepPath = function (userId, roleName) {
+	return uncapitalize.call(roleName.slice('official'.length));
+};
+
 module.exports = exports = function (db, dbDriver, data) {
 	var userStorage = ensureDriver(dbDriver).getStorage('user')
 	  , getBusinessProcessData = getObjFragment()
@@ -78,8 +82,9 @@ module.exports = exports = function (db, dbDriver, data) {
 	  , resolveOfficialViews, processingStepsMeta, processingStepsDefaultMap = create(null)
 	  , businessProcessListProperties, businessProcessMyAccountProperties
 	  , globalFragment, getMetaAdminFragment, getAccessRules
-	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, userListProps
-	  , businessProcessDispatcherListExtraProperties = [], officialDispatcherListExtraProperties = []
+	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, resolveStepShortPath
+	  , userListProps, businessProcessDispatcherListExtraProperties = []
+	  , officialDispatcherListExtraProperties = []
 	  , businessProcessMyAccountExtraProperties = [], businessProcessSupervisorExtraProperties = []
 	  , businessProcessAppGlobalFragment, customRoleFragments;
 
@@ -177,6 +182,12 @@ module.exports = exports = function (db, dbDriver, data) {
 		resolveOfficialViewPath = ensureCallable(data.resolveOfficialViewPath);
 	} else {
 		resolveOfficialViewPath = defaultResolveOfficialViewPath;
+	}
+
+	if (data.resolveStepShortPath != null) {
+		resolveStepShortPath = ensureCallable(data.resolveStepShortPath);
+	} else {
+		resolveStepShortPath = defaultResolveShortStepPath;
 	}
 
 	// Configure official steps (per user) resolver
@@ -562,7 +573,8 @@ module.exports = exports = function (db, dbDriver, data) {
 		}
 
 		if (isOfficialRoleName(roleName)) {
-			stepShortPath = uncapitalize.call(roleName.slice('official'.length));
+			stepShortPath = resolveStepShortPath(userId, roleName);
+
 			// Recently visited business processes (full data)
 			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, stepShortPath));
 			// Official role specific data
@@ -613,3 +625,4 @@ module.exports = exports = function (db, dbDriver, data) {
 	return getAccessRules;
 };
 exports.getDefaultOfficialViewsResolver = getDefaultOfficialViewsResolver;
+exports.defaultResolveShortStepPath     = defaultResolveShortStepPath;

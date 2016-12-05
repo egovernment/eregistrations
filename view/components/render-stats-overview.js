@@ -2,11 +2,10 @@
 
 var location             = require('mano/lib/client/location')
   , _                    = require('mano').i18n.bind('View: Statistics')
-  , db                   = require('mano').db
   , ObservableValue      = require('observable-value')
   , setupQueryHandler    = require('../../utils/setup-client-query-handler')
   , getData              = require('mano/lib/client/xhr-driver').get
-  , getQueryHandlerConf  = require('../../routes/utils/get-statistics-time-query-handler-conf')
+  , getQueryHandlerConf  = require('../../apps/statistics/get-query-conf')
   , getDurationDaysHours = require('../utils/get-duration-days-hours')
   , getDynamicUrl        = require('../utils/get-dynamic-url')
   , memoize              = require('memoizee');
@@ -17,7 +16,7 @@ var queryServer = memoize(function (query) {
 	normalizer: function (args) { return JSON.stringify(args[0]); }
 });
 
-var renderedProps = ['processed', 'avgTime', 'minTime', 'maxTime', 'totalAvgTime'];
+var renderedProps = ['timedCount', 'avgTime', 'minTime', 'maxTime', 'totalAvgTime'];
 
 var mapDurationValue = function (value) {
 	if (!value || value === '-') return '-';
@@ -26,9 +25,7 @@ var mapDurationValue = function (value) {
 
 module.exports = function (context) {
 	var data = {}, queryHandler, formAction;
-	queryHandler = setupQueryHandler(getQueryHandlerConf({
-		db: db
-	}), location, '/');
+	queryHandler = setupQueryHandler(getQueryHandlerConf(), location, '/');
 
 	renderedProps.forEach(function (prop) {
 		data[prop] = new ObservableValue();
@@ -78,8 +75,10 @@ module.exports = function (context) {
 					)
 				),
 				tbody(
+					tr(td({ colspan: 5 }, _("As processing time is properly recorded since 25th of October." +
+						" Below table only exposes data for files submitted after that day."))),
 					tr(
-						td(data.processed.map(function (value) {
+						td(data.timedCount.map(function (value) {
 							if (!value) return '-';
 							return value;
 						})),

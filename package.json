@@ -42,8 +42,8 @@
     "xlint-jslint-medikoo": "^0.1.4"
   },
   "scripts": {
-    "start": "node node_modules/mano/bin/start",
-    "quick-start": "node node_modules/mano/bin/start --quick",
+    "start": "node bin/proto-start",
+    "quick-start": "node bin/proto-start --quick",
     "setup": "node node_modules/mano/bin/setup",
     "client-make": "node node_modules/mano/bin/generate-client-files",
     "webmake": "node node_modules/mano/bin/generate-client-programs",

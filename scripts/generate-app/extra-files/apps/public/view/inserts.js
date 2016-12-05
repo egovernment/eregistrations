@@ -17,10 +17,16 @@ exports.stRoot = stUrl('');
 // SPA take over handler
 if (isReadOnlyRender) {
 	exports.spaTakeOver = script(function (appUrl) {
-		var isStrict;
+		var isStrict, hasLocalStorage;
 		if (typeof Object.getPrototypeOf !== 'function') return;
 		if (typeof Object.defineProperty !== 'function') return;
 		if (!window.history) return;
+		if (!window.localStorage) return;
+		try {
+			localStorage.$test = '';
+			hasLocalStorage = true;
+		} catch (ignore) {}
+		if (!hasLocalStorage) return;
 		isStrict = !(function () { return this; }());
 		if (!isStrict) return;
 		if (Object.getPrototypeOf({ __proto__: Function.prototype }) !== Function.prototype) return;
@@ -28,7 +34,7 @@ if (isReadOnlyRender) {
 			return;
 		}
 		if (document.cookie.indexOf('legacy=1') !== -1) return;
-		document.write('<scr' + 'ipt defer src="' + appUrl + '"></sc' + 'ript>');
+		document.write('<scr' + 'ipt defer crossorigin src="' + appUrl + '"></sc' + 'ript>');
 	}, stUrl('public.js'));
 } else {
 	exports.spaTakeOver = null;

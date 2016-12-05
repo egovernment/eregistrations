@@ -1,10 +1,8 @@
 'use strict';
 
-var promisify  = require('deferred').promisify
-  , bcrypt     = require('bcrypt')
-  , program    = require('commander')
+var program = require('commander')
+  , hash    = require('mano-auth/hash')
 
-  , genSalt = promisify(bcrypt.genSalt), hash = promisify(bcrypt.hash)
   , promptEmail, promptPassword;
 
 module.exports = function (dbServer) {
@@ -29,7 +27,7 @@ module.exports = function (dbServer) {
 				promptPassword(email);
 				return;
 			}
-			hash(value, genSalt())(function (password) {
+			hash.hash(value)(function (password) {
 				return database.User({ email: email, password: password,
 					firstName: "Users", lastName: "Admin",
 					roles: ['usersAdmin'] });

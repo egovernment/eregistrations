@@ -19,6 +19,10 @@ require('mano/lib/client/implement-es');
 // TODO: Require here strictly to log (there should be no log in imported module)
 require('mano/lib/client/client-id');
 
+// DOM bindings for observables
+// TODO: Should not be here
+require('mano/lib/observable-dom');
+
 // Env settings
 require('../../../apps-common/client/env');
 

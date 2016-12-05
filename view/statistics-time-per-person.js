@@ -1,29 +1,29 @@
 'use strict';
 
-var location             = require('mano/lib/client/location')
-  , _                    = require('mano').i18n.bind('View: Statistics')
-  , db                   = require('mano').db
+var copy                 = require('es5-ext/object/copy')
+  , forEach              = require('es5-ext/object/for-each')
   , capitalize           = require('es5-ext/string/#/capitalize')
   , uncapitalize         = require('es5-ext/string/#/uncapitalize')
+  , memoize              = require('memoizee')
   , ObservableValue      = require('observable-value')
+  , location             = require('mano/lib/client/location')
+  , _                    = require('mano').i18n.bind('View: Statistics')
+  , db                   = require('mano').db
+  , getData              = require('mano/lib/client/xhr-driver').get
   , setupQueryHandler    = require('../utils/setup-client-query-handler')
   , resolveFullStepPath  = require('../utils/resolve-processing-step-full-path')
-  , getData              = require('mano/lib/client/xhr-driver').get
-  , getQueryHandlerConf  = require('../routes/utils/get-statistics-time-query-handler-conf')
+  , getQueryHandlerConf  = require('../apps/statistics/get-query-conf')
   , getDurationDaysHours = require('./utils/get-duration-days-hours')
-  , getDynamicUrl        = require('./utils/get-dynamic-url')
-  , copy                 = require('es5-ext/object/copy')
-  , memoize              = require('memoizee');
+  , getDynamicUrl        = require('./utils/get-dynamic-url');
 
 exports._parent        = require('./statistics-time');
 exports._customFilters = Function.prototype;
-exports._queryConf     = null;
 
-exports['time-nav'] = { class: { 'pills-nav-active': true } };
+exports['time-nav']       = { class: { 'submitted-menu-item-active': true } };
 exports['per-person-nav'] = { class: { 'pills-nav-active': true } };
 
 var queryServer = memoize(function (query) {
-	return getData('/get-processing-time-data/', query);
+	return getData('/get-time-per-person/', query);
 }, {
 	normalizer: function (args) { return JSON.stringify(args[0]); }
 });
@@ -31,9 +31,9 @@ var queryServer = memoize(function (query) {
 var getRowResult = function (rowData, label) {
 	var result     = copy(rowData);
 	result.label   = label;
-	result.avgTime = rowData.avgTime ? getDurationDaysHours(rowData.avgTime) : '-';
-	result.minTime = rowData.minTime ? getDurationDaysHours(rowData.minTime) : '-';
-	result.maxTime = rowData.maxTime ? getDurationDaysHours(rowData.maxTime) : '-';
+	result.avgTime = rowData.timedCount ? getDurationDaysHours(rowData.avgTime) : '-';
+	result.minTime = rowData.timedCount ? getDurationDaysHours(rowData.minTime) : '-';
+	result.maxTime = rowData.timedCount ? getDurationDaysHours(rowData.maxTime) : '-';
 
 	return result;
 };
@@ -45,9 +45,7 @@ exports['statistics-main'] = function () {
 		stepsMap[stepShortPath]   = new ObservableValue();
 	});
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
-		db: db,
-		processingStepsMeta: processingStepsMeta,
-		queryConf: exports._queryConf
+		processingStepsMeta: processingStepsMeta
 	}), location, '/time/per-person/');
 	params = queryHandler._handlers.map(function (handler) {
 		return handler.name;
@@ -59,23 +57,26 @@ exports['statistics-main'] = function () {
 		if (query.dateTo) {
 			query.dateTo = query.dateTo.toJSON();
 		}
-		queryServer(query)(function (result) {
+		queryServer(query).done(function (result) {
 			Object.keys(stepsMap).forEach(function (key) {
 				var preparedResult = [];
-				if (!result.byProcessor[key]) {
+				if (!result.byStep[key]) {
 					stepsMap[key].value = null;
 					return;
 				}
-				if (result.byProcessor[key].length) {
-					result.byProcessor[key].forEach(function (rowData) {
-						preparedResult.push(getRowResult(rowData, db.User.getById(rowData.processor).fullName));
-					});
-					preparedResult.push(getRowResult(result.stepTotal[key], _("Total & times")));
-				}
+				forEach(result.byStepAndProcessor[key], function (rowData, userId) {
+					preparedResult.push(getRowResult(rowData.processing,
+						db.User.getById(userId).fullName));
+				});
+				preparedResult.push(getRowResult(result.byStep[key].processing, _("Total & times")));
 				stepsMap[key].value = preparedResult;
 			});
-		}).done();
+		});
 	});
+	section({ class: 'entities-overview-info' },
+		_("As processing time is properly recorded since 25th of October." +
+			" Below table only exposes data for files submitted after that day."));
+
 	section({ class: 'section-primary users-table-filter-bar' },
 		form({ action: '/time/per-person', autoSubmit: true },
 			div(
@@ -117,7 +118,7 @@ exports['statistics-main'] = function () {
 			),
 			div(
 				a({ class: 'users-table-filter-bar-print', href:
-					getDynamicUrl('/get-time-per-person-print/', { only: params }),
+					getDynamicUrl('/time-per-person.pdf', { only: params }),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
 			)));
 	insert(list(Object.keys(stepsMap), function (shortStepPath) {
@@ -128,25 +129,25 @@ exports['statistics-main'] = function () {
 				.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath));
 			return section({ class: "section-primary" },
 				h3(step.label),
-				table(
+				table({ class: 'statistics-table' },
 					thead(
 						th(),
-						th(_("Files processed")),
-						th(_("Average time")),
-						th(_("Min time")),
-						th(_("Max time"))
+						th({ class: 'statistics-table-number' }, _("Files processed")),
+						th({ class: 'statistics-table-number' }, _("Average time")),
+						th({ class: 'statistics-table-number' }, _("Min time")),
+						th({ class: 'statistics-table-number' }, _("Max time"))
 					),
-					tbody({ onEmpty: tr(td({ class: 'empty', colspan: 5 },
+					tbody({ onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
 						_("There are no files processed at this step"))) }, data, function (rowData) {
 						return tr(
 							td(rowData.label),
-							td(rowData.processed),
-							td(rowData.avgTime),
-							td(rowData.minTime),
-							td(rowData.maxTime)
+							td({ class: 'statistics-table-number' }, rowData.timedCount),
+							td({ class: 'statistics-table-number' }, rowData.avgTime),
+							td({ class: 'statistics-table-number' }, rowData.minTime),
+							td({ class: 'statistics-table-number' }, rowData.maxTime)
 						);
 					})
-				));
+					));
 		});
 	}));
 };

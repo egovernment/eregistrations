@@ -61,7 +61,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		businessProcessTypeName) {
 	var guideForm = $(guideFormId)
 	  , noRequstedRegistrationsSection, mandatoryRegistrationsSection
-	  , mandatoryRegistrationsListElements
+	  , mandatoryRegistrationsListElements, mandatoryRegistrationsEmptyMessage
 	  , optionalRegistrationsSection, optionalRegistrationsListElements
 	  , requirementsSection, requirementsListElements, requirementsLabelElements = {}
 	  , costsListElements, costsAmountsElements = {}, costsLabelElements = {}
@@ -76,6 +76,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 	noRequstedRegistrationsSection = $('no-requested-registrations-section');
 	mandatoryRegistrationsSection = $('mandatory-registrations-section');
+	mandatoryRegistrationsEmptyMessage = $('mandatory-registrations-empty-message');
 	mandatoryRegistrationsListElements = getNamedListElements('mandatory-registrations-list');
 	optionalRegistrationsSection = $('optional-registrations-section');
 	optionalRegistrationsListElements = getNamedListElements('optional-registrations-list');
@@ -130,15 +131,26 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 			$.setify(businessProcess.registrations.optional($.dbjsObserveMock));
 
 		// Filter mandatory and optional registration lists
-		if (businessProcess.registrations.mandatory.size === 0) {
-			toggleConditionally(mandatoryRegistrationsSection, false);
-		} else {
+		var anyApplicable = businessProcess.registrations.applicable.size > 0;
+		var anyMandatory = anyApplicable && businessProcess.registrations.mandatory.size > 0;
+
+		if (anyMandatory || !anyApplicable) {
 			toggleConditionally(mandatoryRegistrationsSection, true);
-			$.forIn(mandatoryRegistrationsListElements, function (li, name) {
-				li.toggle(businessProcess.registrations.mandatory.has(
-					businessProcess.registrations.map[name]
-				));
-			});
+			if (!anyApplicable) {
+				toggleConditionally(mandatoryRegistrationsEmptyMessage, true);
+				$.forIn(mandatoryRegistrationsListElements, function (li) {
+					li.toggle(businessProcess.registrations.mandatory.has(false));
+				});
+			} else {
+				toggleConditionally(mandatoryRegistrationsEmptyMessage, false);
+				$.forIn(mandatoryRegistrationsListElements, function (li, name) {
+					li.toggle(businessProcess.registrations.mandatory.has(
+						businessProcess.registrations.map[name]
+					));
+				});
+			}
+		} else {
+			toggleConditionally(mandatoryRegistrationsSection, false);
 		}
 
 		if (businessProcess.registrations.optional.size === 0) {

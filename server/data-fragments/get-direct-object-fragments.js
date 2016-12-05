@@ -62,5 +62,9 @@ module.exports = memoize(function (storage) {
 			});
 		});
 		return fragment;
-	}, { primitive: true });
+	}, { normalizer: function (args) {
+		var options = args[1];
+		if (!options || !options.filter) return args[0];
+		return args[0] + '|' + String(options.filter);
+	} });
 }, { primitive: true });

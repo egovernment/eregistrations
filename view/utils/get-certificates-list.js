@@ -24,11 +24,11 @@ module.exports = memoize(function (targetMap, appName) {
 		}
 		// For officials we show only those certificates from snapshot which are applicable
 		// to be exposed to him
-		return targetMap.dataSnapshot._resolved.map(function (data) {
+		return businessProcess.certificates.dataSnapshot._resolved.map(function (data) {
 			if (!data) return;
 			return getSetProxy(targetMap.released).map(function (certificate) {
 				var snapshot = find.call(data, function (snapshot) {
-					return certificate.key === snapshot.uniqueKey;
+					return certificate.uniqueKey === snapshot.uniqueKey;
 				});
 				if (snapshot) return snapshot;
 			}).filter(Boolean).toArray();
