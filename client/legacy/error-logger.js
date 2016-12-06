@@ -14,7 +14,12 @@ var onError = function (message, source, line, column, error) {
 	// Do not log errors for which we have no useful information
 	if (!message && !source && !line && !column && !error) return;
 	if (nonReportableMessages.hasOwnProperty(message) && !line && !column) return;
-	if (error && nonReportableCodes.hasOwnProperty(error.code)) return;
+	if (error) {
+		if (nonReportableCodes.hasOwnProperty(error.code)) return;
+		// Do not report malware generated errors:
+		// http://stackoverflow.com/a/31986308/96806
+		if (error.stack && (String(error.stack).indexOf('/adrns') !== -1)) return;
+	}
 	if (message) {
 		// XHR erorr (usually result of server restarts)
 		if (message.indexOf('Error: Rejecteded XHR request to ') === 0) return;
