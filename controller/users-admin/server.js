@@ -44,9 +44,6 @@ exports['user/[0-9][a-z0-9]+'] = {
 
 		save = function () {
 			if (this.propertyKey) return changePassword.apply(this, args);
-			if (data[this.target.__id__ + '/isSuperUser']) {
-				setupSuperUserRoles(this.target);
-			}
 			return submit.apply(this, args);
 		}.bind(this);
 
