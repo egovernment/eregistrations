@@ -7,7 +7,7 @@ var db         = require('../db')
   , initDriver = require('../server/utils/init-driver')
   , resolve    = require('path').resolve
   , debug      = require('debug-ext')('setup', 4)
-  , setupSuperUserRoles = require('../controller/utils/setup-super-user-roles')
+  , setupSuperUserRoles = require('../utils/setup-super-user-roles')
 
   , root       = resolve(__dirname, '../../../');
 

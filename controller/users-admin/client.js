@@ -2,7 +2,7 @@
 
 var assign              = require('es5-ext/object/assign')
   , router              = require('mano/client/post-router')
-  , setupSuperUserRoles = require('../utils/setup-super-user-roles')
+  , setupSuperUserRoles = require('../../utils/setup-super-user-roles')
 
   , submit  = router.submit, remoteSubmit = router.remoteSubmit;
 

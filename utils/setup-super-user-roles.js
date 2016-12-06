@@ -1,6 +1,6 @@
 'use strict';
 
-var db = require('../../db');
+var db = require('../db');
 
 var isSuperUserRole = function (role) {
 	return !db.Role.isPartARole(role) || db.Role.isOfficialRole(role);

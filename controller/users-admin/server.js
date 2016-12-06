@@ -6,7 +6,7 @@ var assign              = require('es5-ext/object/assign')
   , hash                = require('mano-auth/hash')
   , sendNotification    = require('../../server/email-notifications/create-account')
   , queryMaster         = require('eregistrations/server/services/query-master/slave')
-  , setupSuperUserRoles = require('../utils/setup-super-user-roles');
+  , setupSuperUserRoles = require('../../utils/setup-super-user-roles');
 
 // Common
 assign(exports, require('../user/server'));

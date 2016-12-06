@@ -1,7 +1,7 @@
 'use strict';
 
 var db = require('mano').db
-  , User = require('../../../model/user')(require('mano').db);
+  , User = require('../../model/user/index')(require('mano').db);
 
 module.exports = function (t, a) {
 	var user = new User();
