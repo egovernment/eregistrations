@@ -17,18 +17,18 @@
 	padding:11px 15px;
 }
 
-.section-warning > ul > li.section-warning-error > * {
+.section-warning > ul > li > * {
 	display: flex;
 	vertical-align: middle;
 	line-height: 44px;
 }
 
-.section-warning-error-action {
+.section-warning-action {
 	flex:1;
 	text-align: right;
 }
 
-.section-warning-error-content {
+.section-warning-content {
 	flex:3;
 	text-align: left;
 }

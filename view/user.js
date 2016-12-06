@@ -43,10 +43,10 @@ exports['sub-main'] = {
 				ul(
 					revertedBusinessProcesses.map(function (pendingProcess) {
 						return li({ class: 'section-warning-error' }, div({ class: 'entities-overview-table' },
-							span({ class: "section-warning-error-content" },
+							span({ class: "section-warning-content" },
 								_('${ businessName } is pending for corrections',
 									{ businessName: pendingProcess._businessName })),
-							span({ class: "section-warning-error-action" }, postButton({
+							span({ class: "section-warning-action" }, postButton({
 								action: url('business-process', pendingProcess.__id__),
 								value: _('Correct now')
 							}))));
