@@ -35,7 +35,7 @@ DocumentLink.prototype.update = function () {
 	activeItem = $(this.prefix + '-link-' + index);
 	if (activeItem === this.lastItemActive) return;
 
-	// There can be non activeTime (and in next run non lastItemActive) if user navigated out of
+	// There can be non activeItem (and in next run no lastItemActive) if user navigated out of
 	// non first document page to other url while never visiting before first document page
 	if (this.lastItemActive) this.lastItemActive.removeClass('active');
 	if (activeItem) activeItem.addClass('active');
