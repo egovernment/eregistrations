@@ -50,6 +50,7 @@ module.exports = memoize(function (db/*, options */) {
 		isSuperUser: {
 			label: _("Is super user?"),
 			type: db.Boolean,
+			value: false,
 			inputHint: _("Whether account was made for presentation purposes. " +
 				"If so, it may expose some extra system specific controls " +
 				"(e.g. switch that allows to change institution or zone). Otherwise has no effect")
