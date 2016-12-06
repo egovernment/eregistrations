@@ -12,7 +12,7 @@
 	margin-bottom: 22px;
 }
 
-.section-warning > ul > li.section-warning-error {
+.section-warning > ul > .section-warning-error {
 	border-left-color: var(--error-background);
 	padding:11px 15px;
 }
