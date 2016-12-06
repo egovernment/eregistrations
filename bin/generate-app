@@ -141,6 +141,12 @@ resolveProjectRoot(projectRoot).done(function (root) {
 				"Ensure that views populations for supervisor 'all' is configured in server/db/views.js",
 				appsPostControllers, recentlyVisitedProcesses];
 		}
+
+		if (appName === 'inspector') {
+			msgItems.push(clientModelReminder);
+			msgItems.push(addRole);
+		}
+
 		if (appName === 'statistics') {
 			msgItems.push(addRole);
 			msgItems.push("Ensure that all services model is required in server/model.js and " +
