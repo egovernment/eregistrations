@@ -29,6 +29,27 @@ module.exports = function (context) {
 				responsive: true
 			})
 		),
+		insert(_if(and(businessProcess._isSubmitted._lastModified.map(function (modTime) {
+			var timeInMs;
+			if (!modTime) return;
+			timeInMs = (modTime / 1000);
+			return timeInMs >= Date.now() - (1000 * 60);
+		}), eq(context.user._currentRoleResolved, 'user')),
+			div({ id: 'submission-success-message', class: 'entities-overview-info-success' },
+				div({ class: 'entities-overview-info-message' },
+					_("Your file was submitted successfully.")),
+				div({ class: 'entities-overview-info-dismiss' },
+					span({ id: 'close-submission-success-message',
+						class: 'fa fa-close' })))), script(function () {
+			var successMsg = $('submission-success-message');
+			if (!successMsg || !successMsg.parentNode) return;
+			$('close-submission-success-message').onclick = function (ev) {
+				successMsg.parentNode.removeChild(successMsg);
+			};
+			setTimeout(function () {
+				successMsg.parentNode.removeChild(successMsg);
+			}, 10000);
+		})),
 		section(
 			{ class: 'section-primary' },
 			h2({ class: 'container-with-nav' }, _("History of request"),
