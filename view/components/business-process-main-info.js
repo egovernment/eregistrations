@@ -36,9 +36,11 @@ module.exports = function (context) {
 			return timeInMs >= Date.now() - (1000 * 60);
 		}), eq(context.user._currentRoleResolved, 'user')),
 			div({ id: 'submission-success-message', class: 'entities-overview-info-success' },
-				_("Your file was submitted successfully."),
-				span({ id: 'close-submission-success-message',
-					class: 'fa fa-close' }))), script(function () {
+				div({ class: 'entities-overview-info-message' },
+					_("Your file was submitted successfully.")),
+				div({ class: 'entities-overview-info-dismiss' },
+					span({ id: 'close-submission-success-message',
+						class: 'fa fa-close' })))), script(function () {
 			var successMsg = $('submission-success-message');
 			if (!successMsg || !successMsg.parentNode) return;
 			$('close-submission-success-message').onclick = function (ev) {

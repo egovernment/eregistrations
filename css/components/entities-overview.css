@@ -89,7 +89,21 @@
 	background-color: var(--success-background);
 	color: var(--white-text);
 }
-.entities-overview-info-success .fa-close {
-	float: right;
+
+.entities-overview-info-success {
+	display: flex;
+	justify-content: space-between;
+}
+
+.entities-overview-info-message {
+	flex: 1;
+	padding-right: 10px;
+}
+
+.entities-overview-info-dismiss {
+	text-align: right;
+}
+
+.entities-overview-info-dismiss .fa-close {
 	cursor: pointer;
 }
