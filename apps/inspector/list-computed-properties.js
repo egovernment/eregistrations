@@ -8,7 +8,8 @@ var db  = require('../../db')
 module.exports = new Set([
 	'businessName',
 	'certificates/applicable',
-	'status'
+	'status',
+	'submitterType'
 ]);
 
 db.BusinessProcess.extensions.forEach(function (ServiceType) {
