@@ -15,11 +15,16 @@ exports['user-add'] = { remoteSubmit: true };
 // Edit User
 exports['user/[0-9][a-z0-9]+'] = {
 	submit: function (normalizedData, data) {
+		var result;
+
+		if (this.propertyKey) return remoteSubmit.apply(this, arguments);
+		result = submit.apply(this, arguments);
+
 		if (data[this.target.__id__ + '/isSuperUser'] === "1") {
 			setupSuperUserRoles(this.target);
 		}
-		if (this.propertyKey) return remoteSubmit.apply(this, arguments);
-		return submit.apply(this, arguments);
+
+		return result;
 	}
 };
 
