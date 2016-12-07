@@ -29,7 +29,15 @@ exports['user/[0-9][a-z0-9]+'] = {
 			return endsWith.call(key, '/password');
 		}), normalizedData, newRoles;
 
-		normalizedData = validate.call(this, data);
+		if (propertyKey && data[propertyKey]) {
+			normalizedData = changePassword.call(this, data);
+		} else {
+			delete data[propertyKey];
+			delete data['password-repeat'];
+		}
+		if (!normalizedData) {
+			normalizedData = validate.call(this, data);
+		}
 		newRoles = normalizedData[this.target.__id__ + '/roles'];
 		if (newRoles) {
 			newRoles = new Set(newRoles);
@@ -47,12 +55,6 @@ exports['user/[0-9][a-z0-9]+'] = {
 				}
 			}, this);
 		}
-
-		if (propertyKey) {
-			if (data[propertyKey]) return changePassword.call(this, data);
-			delete data[propertyKey];
-		}
-		delete data['password-repeat'];
 
 		return normalizedData;
 	}

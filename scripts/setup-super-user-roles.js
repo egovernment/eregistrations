@@ -6,7 +6,7 @@ var db         = require('../db')
   , env        = require('mano').env
   , initDriver = require('../server/utils/init-driver')
   , resolve    = require('path').resolve
-  , debug      = require('debug-ext')('setup', 4)
+  , debug      = require('debug-ext')('setup')
   , setupSuperUserRoles = require('../utils/setup-super-user-roles')
 
   , root       = resolve(__dirname, '../../../');
