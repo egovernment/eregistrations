@@ -84,7 +84,7 @@ button.file-thumb-action span {
 }
 
 .file-thumb-upload-status .throbber {
-	padding: 50% 11px 11px; 
+	padding: 50% 11px 11px;
 }
 
 .file-thumb-upload-status .spinner-loader:not(:required) {
