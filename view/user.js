@@ -49,7 +49,8 @@ exports['sub-main'] = {
 							span({ class: "section-warning-action-button" }, postButton({
 								action: url('business-process', pendingProcess.__id__),
 								value: _('Correct now')
-							}))));
+							})))
+						);
 					})
 				));
 		}));
