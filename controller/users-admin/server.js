@@ -1,12 +1,11 @@
 'use strict';
 
-var assign              = require('es5-ext/object/assign')
-  , submit              = require('mano/utils/save')
-  , changePassword      = require('mano-auth/controller/server/change-password').submit
-  , hash                = require('mano-auth/hash')
-  , sendNotification    = require('../../server/email-notifications/create-account')
-  , queryMaster         = require('eregistrations/server/services/query-master/slave')
-  , setupSuperUserRoles = require('../../utils/setup-super-user-roles');
+var assign           = require('es5-ext/object/assign')
+  , submit           = require('mano/utils/save')
+  , changePassword   = require('mano-auth/controller/server/change-password').submit
+  , hash             = require('mano-auth/hash')
+  , sendNotification = require('../../server/email-notifications/create-account')
+  , queryMaster      = require('eregistrations/server/services/query-master/slave');
 
 // Common
 assign(exports, require('../user/server'));
@@ -23,9 +22,6 @@ exports['user-add'] = {
 				data['User#/password'] = password;
 
 				submit.apply(this, args);
-				if (data['User#/isSuperUser']) {
-					setupSuperUserRoles(this.target);
-				}
 				sendNotification(this.target).done(null, function (err) {
 					console.log(err.stack);
 					console.error("Cannot send email");
