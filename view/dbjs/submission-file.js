@@ -45,7 +45,10 @@ module.exports = Object.defineProperties(db.File, {
 			if (isNested(file)) name = file.__id__;
 			else if (this.multiple) name = this.observable.dbId + '*7' + file.__id__;
 			else name = this.observable.dbId;
-			loader = span({ class: 'file-thumb-upload-status' }, loaderText = text());
+			loader = span({ class: 'file-thumb-upload-status' },
+				div({ class: 'throbber' },
+					div({ class: 'spinner-loader' })),
+				loaderText = text());
 			file.on('upload-progress', function (ev) {
 				var loadedPercent;
 				if (!ev.total) return;
