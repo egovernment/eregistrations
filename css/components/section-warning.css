@@ -12,27 +12,6 @@
 	margin-bottom: 22px;
 }
 
-.section-warning > ul > .section-warning-action {
-	border-left-color: var(--error-background);
-	padding:11px 15px;
-}
-
-.section-warning-action > * {
-	display: flex;
-	vertical-align: middle;
-	line-height: 44px;
-}
-
-.section-warning-action-button {
-	flex:1;
-	text-align: right;
-}
-
-.section-warning-action-description {
-	flex:3;
-	text-align: left;
-}
-
 .section-warning > ul > li > a {
 	text-decoration: none;
 	color: var(--dark-text);
