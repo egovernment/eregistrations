@@ -10,6 +10,7 @@ var _                   = require('mano').i18n.bind('View: Official: Manager val
   , getUsersTable       = require('./components/users-table/')
   , getOrderIndex       = require('../users/get-default-order-index')
   , compareUsers        = require('../utils/get-compare')(getOrderIndex)
+  , wrapColumns         = require('./components/utils/table-column-wrapper')
   , once                = require('timers-ext/once')
   , dispatch            = require('dom-ext/html-element/#/dispatch-event-2')
 
@@ -41,11 +42,10 @@ var baseColumns = [{
 	data: activateManagerForm
 }, {
 	head: th({ class: 'actions' }),
+	noWrap: true,
 	data: function (user) {
 		var isSelfUser = (user === this.user);
 		return td({ class: 'actions' },
-			a({ href: isSelfUser ? '/profile/' : url('user', user.__id__) },
-				span({ class: 'fa fa-edit' }, _("Go to"))),
 			_if(and(user._canBeDestroyed, !isSelfUser), postButton({ buttonClass: 'actions-delete',
 				action: url('user', user.__id__, 'delete'),
 				confirm: _("Are you sure?"), value: span({ class: 'fa fa-trash-o' }) }), null));
@@ -77,6 +77,12 @@ exports['sub-main'] = {
 			conf.data = conf.data.bind(this);
 			return conf;
 		}, this);
+
+		columns = wrapColumns(columns, function (content, user) {
+			var isSelfUser = (user === this.user);
+			return a({ href: isSelfUser ? '/profile/' : url('user', user.__id__) }, content);
+		}.bind(this));
+
 		if (db.views && db.views.managerValidation) {
 			usersTable = getUsersTable({
 				views: db.views.managerValidation,
