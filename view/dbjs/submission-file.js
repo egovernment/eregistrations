@@ -48,7 +48,7 @@ module.exports = Object.defineProperties(db.File, {
 			loader = span({ class: 'file-thumb-upload-status' },
 				div({ class: 'throbber' },
 					div({ class: 'spinner-loader' })),
-				loaderText = text());
+				loaderText = text(''));
 			file.on('upload-progress', function (ev) {
 				var loadedPercent;
 				if (!ev.total) return;
