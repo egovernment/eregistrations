@@ -5,7 +5,7 @@
 var stringify = JSON.stringify;
 
 module.exports = function (data, type) {
-	var id = data.split('.')[1], path, obj, masterId;
+	var id = data.split('.')[1] || data, path, obj, masterId;
 
 	if (id.indexOf('/') !== -1) {
 		path = id.slice(id.indexOf('/') + 1);

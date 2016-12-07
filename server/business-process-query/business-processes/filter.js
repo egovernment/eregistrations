@@ -69,6 +69,7 @@ module.exports = exports = function (data, query) {
 			filterResult = searchTokens.every(function (token) {
 				return includes.call(bpData.searchString, token);
 			});
+
 			if (!filterResult) return;
 		}
 

@@ -79,6 +79,10 @@ var userNameMenuItem = function () {
 						li({ class: 'header-top-menu-dropdown-item-active' },
 							a({ href: '/' }, _("Roles")))];
 				})),
+				_if(user.roles._has('inspector'), [
+					li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
+					roleMenuItem(this, 'inspector')
+				]),
 				_if(user.roles._has('statistics'), [
 					li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 					roleMenuItem(this, 'statistics')

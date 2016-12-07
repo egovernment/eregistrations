@@ -73,6 +73,7 @@
 	text-align: center;
 }
 
+.entities-overview-info-success,
 .entities-overview-info {
 	background-color: var(--light-background);
 	border: 1px solid  var(--normal-light-background);
@@ -81,4 +82,28 @@
 }
 .entities-overview-info > * {
 	color: var(--light-normal-text);
+}
+
+.entities-overview-info-success,
+.entities-overview-info-success > * {
+	background-color: var(--success-background);
+	color: var(--white-text);
+}
+
+.entities-overview-info-success {
+	display: flex;
+	justify-content: space-between;
+}
+
+.entities-overview-info-message {
+	flex: 1;
+	padding-right: 10px;
+}
+
+.entities-overview-info-dismiss {
+	text-align: right;
+}
+
+.entities-overview-info-dismiss .fa-close {
+	cursor: pointer;
 }
