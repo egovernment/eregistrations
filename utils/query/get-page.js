@@ -15,7 +15,7 @@ module.exports = function (data, pageNumber) {
 	pageNumber = ensureNumber(pageNumber);
 	if (!pageNumber) throw new TypeError("Page number should be greater than 0");
 	if (Math.ceil(data.length / itemsPerPage) < pageNumber) {
-		throw new Error("Page number exceeds number of items");
+		return [];
 	}
 	offset = itemsPerPage * (pageNumber - 1);
 	return data.slice(offset, offset + itemsPerPage);
