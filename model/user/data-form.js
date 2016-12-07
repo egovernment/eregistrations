@@ -42,8 +42,10 @@ module.exports = memoize(function (db/*, options*/) {
 		propertyNames: ['isSuperUser', 'roles', 'institution']
 	});
 
-	User.prototype.set(getApplicablePropName('roles'), function () {
-		return !this.isSuperUser;
+	['roles', 'institution'].forEach(function (prop) {
+		User.prototype.set(getApplicablePropName(prop), function () {
+			return !this.isSuperUser;
+		});
 	});
 
 	return User;
