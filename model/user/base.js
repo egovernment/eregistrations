@@ -21,7 +21,12 @@ module.exports = memoize(function (db/*, options */) {
 	Role.meta.get('user').set('label', _("User"));
 
 	Role.define('isFlowRole', { type: db.Function, value: function (role) {
-		return this.isPartARole(role) || this.isOfficialRole(role);
+		var additionalFlowRoles = {
+			dispatcher: true,
+			supervisor: true
+		};
+
+		return this.isPartARole(role) || this.isOfficialRole(role) || additionalFlowRoles[role];
 	} });
 
 	Role.define('isPartARole', { type: db.Function, value: function (role) {
@@ -29,8 +34,6 @@ module.exports = memoize(function (db/*, options */) {
 		case 'user':
 		case 'manager':
 		case 'managerValidation':
-		case 'dispatcher':
-		case 'supervisor':
 			return true;
 		default:
 			return false;
@@ -47,6 +50,7 @@ module.exports = memoize(function (db/*, options */) {
 		isSuperUser: {
 			label: _("Is super user?"),
 			type: db.Boolean,
+			value: false,
 			inputHint: _("Whether account was made for presentation purposes. " +
 				"If so, it may expose some extra system specific controls " +
 				"(e.g. switch that allows to change institution or zone). Otherwise has no effect")
