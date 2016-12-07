@@ -50,7 +50,7 @@
 	border-left-style: solid;
 }
 
-.submitted-user-data-table tbody td {
+.submitted-user-data-table td {
 	border: 1px solid var(--light-inner-border);
 	text-align: left;
 	font-weight: 400;
@@ -136,12 +136,25 @@
 	border: 1px solid var(--light-inner-border);
 }
 
-.submitted-user-data-table tbody tr:nth-of-type(even) {
+.submitted-user-data-table tr:nth-of-type(even) {
 	background-color: var(--light-background);
 }
 
 .submitted-user-data-table .submitted-user-data-table-status a {
 	text-align: center;
+}
+
+.submitted-user-data-table tr.submitted-user-data-table-sent-back {
+	background-color: var(--error-background);
+}
+
+.submitted-user-data-table-sent-back td,
+.submitted-user-data-table-sent-back td.actions a,
+.submitted-user-data-table-sent-back td.actions button,
+.submitted-user-data-table-sent-back td.submitted-user-data-table-link a,
+.submitted-user-data-table-sent-back td.submitted-user-data-table-link button {
+	color: var(--white-text);
+	border-color: var(--error-background);
 }
 
 .submitted-user-data-table .submitted-user-data-table-status .fa-check {
