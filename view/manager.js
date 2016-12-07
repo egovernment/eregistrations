@@ -22,13 +22,13 @@ exports['sub-main'] = {
 
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab user-account-tab',
-					id: 'manager-account-clients',
-					href: '/' },
-				_("Clients")),
-			a({ class: 'section-tab-nav-tab user-account-tab',
 					id: 'manager-account-requests',
-					href: '/requests/' },
+					href: '/' },
 				_("Requests")),
+			a({ class: 'section-tab-nav-tab user-account-tab',
+					id: 'manager-account-clients',
+					href: '/clients/' },
+				_("Clients")),
 			div({ id: 'manager-account-content', class: 'section-primary' }));
 	}
 };
