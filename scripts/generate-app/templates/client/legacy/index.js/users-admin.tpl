@@ -13,3 +13,4 @@ require('mano-legacy/select-match');
 
 require('mano-legacy/element#/event');
 require('domjs-ext/post-button.legacy');
+require('eregistrations/client/legacy/form-section-state-helper');

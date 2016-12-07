@@ -25,6 +25,21 @@ module.exports = memoize(function (User/* options */) {
 		},
 		currentBusinessProcess: {
 			type: BusinessProcessBase
+		},
+		revertedBusinessProcesses: {
+			type: BusinessProcessBase,
+			multiple: true,
+			value: function (_observe) {
+				var result = [];
+				this.initialBusinessProcesses.forEach(function (businessProcess) {
+					if (_observe(businessProcess._isSentBack) ||
+							_observe(businessProcess._isUserProcessing)) {
+						result.push(businessProcess);
+					}
+				});
+
+				return result;
+			}
 		}
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
