@@ -27,7 +27,7 @@ module.exports = function () {
 		return storage.loadObject(userId);
 	})(function () {
 		db.User.instances.forEach(function (superUser) {
-			setupSuperUserRoles(superUser);
+			setupSuperUserRoles(superUser, { onlyAdd: true });
 		});
 		return driver.close();
 	});

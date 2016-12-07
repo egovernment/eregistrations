@@ -34,8 +34,6 @@ exports['user/[0-9][a-z0-9]+'] = {
 		} else {
 			delete data[propertyKey];
 			delete data['password-repeat'];
-		}
-		if (!normalizedData) {
 			normalizedData = validate.call(this, data);
 		}
 		newRoles = normalizedData[this.target.__id__ + '/roles'];

@@ -13,7 +13,10 @@ module.exports = function (t, a) {
 	a(user.roles.size === 1, true);
 	user.roles.add('user');
 	a(user.roles.size === 2, true);
+	t(user, { onlyAdd: true });
+	a(user.roles.has('officialTest'), true);
+	a(user.roles.size === 2, true);
 	t(user);
-	a(user.roles.first, 'officialTest');
+	a(user.roles.has('officialTest'), true);
 	a(user.roles.size === 1, true);
 };
