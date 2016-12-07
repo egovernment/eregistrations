@@ -4,7 +4,7 @@
 
 var _            = require('mano').i18n.bind('View: Manager')
   , assign       = require('es5-ext/object/assign')
-  , tableColumns = require('./components/business-process-table-columns')
+  , tableColumns = require('./components/table-columns')
   , wrapColumns  = require('./components/utils/table-column-wrapper');
 
 exports._parent = require('./manager');
@@ -18,21 +18,14 @@ exports._clientColumn = {
 	}
 };
 
-exports._statusColumn = {
-	head: _("State"),
-	data: function (businessProcess) {
-		return businessProcess._status;
-	}
-};
-
-exports._actionsColumn = assign({}, tableColumns.actionsColumn);
+exports._actionsColumn = assign({}, tableColumns.businessProcessActionsColumn);
 
 exports._columns = [
 	tableColumns.servicesColumn,
 	exports._clientColumn,
-	tableColumns.businessNameColumn,
-	tableColumns.submissionDateColumn,
-	exports._statusColumn,
+	tableColumns.businessProcessBusinessNameColumn,
+	tableColumns.businessProcessSubmissionDateColumn,
+	exports.businessProcessStatusColumn,
 	exports._actionsColumn
 ];
 
@@ -41,7 +34,8 @@ exports['manager-account-content'] = function () {
 	  , requests = user.managedBusinessProcesses;
 
 	exports._actionsColumn.data = function (businessProcess) {
-		return _if(user._isManagerActive, tableColumns.actionsColumn.data(businessProcess), _("N/A"));
+		return _if(user._isManagerActive,
+			tableColumns.businessProcessActionsColumn.data(businessProcess), _("N/A"));
 	};
 
 	insert(_if(not(user._isManagerActive),

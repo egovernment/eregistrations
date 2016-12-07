@@ -5,7 +5,7 @@ var replaceContent    = require('dom-ext/element/#/replace-content')
   , Manager           = require('./components/supervisor-table/manager')
   , db                = require('mano').db
   , stepsLabelMap     = require('../utils/processing-steps-label-map')
-  , columns           = require('./components/supervisor-table-columns').columns
+  , columns           = require('./components/supervisor-table-columns')
   , setupQueryHandler = require('./components/supervisor-table/setup-query-handler')
   , env = mano.env, _ = mano.i18n;
 

@@ -23,10 +23,25 @@ var aFrom                         = require('es5-ext/array/from')
 var re = new RegExp('^processingSteps\\/map\\/([a-zA-Z0-9]+' +
 	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$');
 
+var metaMap = {
+	validate: function (record) {
+		return record.value[0] === '7';
+	},
+	set: function (data, record) {
+		data._existing = true;
+		data.createdDateTime = new Date(record.stamp / 1000);
+	},
+	delete: function (data) {
+		delete data._existing;
+		delete data.createdDateTime;
+	}
+};
+
 module.exports = exports = memoize(function (driver, processingStepsMeta) {
-	var storageStepsMap = new Map(), stepShortPathMap = new Map()
+	var storageStepsMap         = new Map()
+	  , stepShortPathMap        = new Map()
 	  , serviceFullShortNameMap = new Map()
-	  , startTime = Date.now();
+	  , startTime               = Date.now();
 
 	var result = { steps: new Map(), businessProcesses: new Map() };
 
@@ -71,8 +86,10 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 
 		// Listen for new records
 		storage.on('key:&', function (event) {
-			if (event.data.value[0] !== '7') delete initBpDataset(event.ownerId)._existing;
-			else initBpDataset(event.ownerId)._existing = true;
+			var dataset = initBpDataset(event.ownerId);
+
+			if (!metaMap.validate(event.data)) metaMap.delete(dataset);
+			else metaMap.set(dataset, event.data);
 		});
 		stepPaths.forEach(function (stepPath) {
 			// Status
@@ -97,7 +114,7 @@ module.exports = exports = memoize(function (driver, processingStepsMeta) {
 			storage.search(function (id, record) {
 				var bpId = id.split('/', 1)[0], stepPath, stepKeyPath, meta, keyPath, multiItemValue, path;
 				if (bpId === id) {
-					if (record.value[0] === '7') initBpDataset(bpId)._existing = true;
+					if (metaMap.validate(record)) metaMap.set(initBpDataset(bpId), record);
 					return;
 				}
 				if (includes.call(id, '*')) {
@@ -246,9 +263,9 @@ exports.businessProcessMetaMap = {
 	},
 	'registrations/requested': {
 		type: 'computed',
-		validate: function (record) { return record.value[0] === '['; },
+		validate: function (record) { return Array.isArray(record.value); },
 		set: function (data, record) {
-			data.registrations = new Set(resolveEventKeys(JSON.parse(record.value)).map(function (value) {
+			data.registrations = new Set(resolveEventKeys(record.value).map(function (value) {
 				return value.slice(value.lastIndexOf('/') + 1);
 			}));
 		},
@@ -267,6 +284,7 @@ exports.businessProcessMetaMap = {
 		delete: function (data) { delete data.status; }
 	},
 	submitterType: {
+		type: 'computed',
 		validate: function (record) { return record.value[0] === '3'; },
 		set: function (data, record) { data.submitterType = record.value.slice(1); },
 		delete: function (data) { delete data.submitterType; }

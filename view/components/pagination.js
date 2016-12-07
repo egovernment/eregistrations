@@ -65,6 +65,7 @@ var Pagination = module.exports = function (pathname, count, current) {
 	this.count = new ObservableValue(count);
 	this.count.on('change', this.updateLinks);
 	this.current = new ObservableValue(count);
+	this.current.on('change', this.updateLinks);
 };
 
 ee(Object.defineProperties(Pagination.prototype, assign({

@@ -4,7 +4,7 @@ var db                        = require('mano').db
   , _                         = require('mano').i18n.bind('View: Official: Dispatcher')
   , env                       = require('mano').env
   , getBusinessProcessesTable = require('./components/business-processes-table')
-  , tableColumns              = require('./components/business-process-table-columns')
+  , tableColumns              = require('./components/table-columns')
   , once                      = require('timers-ext/once')
   , dispatch                  = require('dom-ext/html-element/#/dispatch-event-2')
   , location                  = require('mano/lib/client/location');
@@ -31,11 +31,11 @@ var assignmentColumn = {
 var assignmentColumnData = assignmentColumn.data;
 
 exports._columns = [
-	tableColumns.servicesColumn,
-	tableColumns.businessNameColumn,
-	tableColumns.submissionDateColumn,
-	tableColumns.certificatesListColumn,
-	tableColumns.archiverColumn,
+	tableColumns.businessProcessServiceColumn,
+	tableColumns.businessProcessBusinessNameColumn,
+	tableColumns.businessProcessSubmissionDateColumn,
+	tableColumns.businessProcessCertificatesListColumn,
+	tableColumns.businessProcessArchiverColumn,
 	assignmentColumn
 ];
 

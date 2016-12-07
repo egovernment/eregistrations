@@ -3,19 +3,13 @@
 'use strict';
 
 var _            = require('mano').i18n.bind('View: User')
-  , tableColumns = require('./components/business-process-table-columns')
+  , from         = require('es5-ext/array/from')
   , wrapColumns  = require('./components/utils/table-column-wrapper')
-  , columns;
+  , tableColumns = require('./components/table-columns')
+  , columns      = from(require('./components/business-processes-table-columns'));
 
-exports._statusColumn = {
-	head: _("Status"),
-	data: function (businessProcess) {
-		return businessProcess._status;
-	}
-};
-
-columns = [exports._statusColumn].concat(tableColumns.columns);
-columns.push(tableColumns.actionsColumn);
+columns = [tableColumns.businessProcessStatusColumn].concat(columns);
+columns.push(tableColumns.businessProcessActionsColumn);
 
 exports._parent = require('./user');
 
