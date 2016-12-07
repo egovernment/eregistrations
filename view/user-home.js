@@ -26,6 +26,10 @@ exports['user-account-content'] = function () {
 					class: 'submitted-user-data-table',
 					configuration: {
 						collection: businessProcesses,
+						rowAttributes: function (businessProcess) {
+							return { class: _if(or(businessProcess._isSentBack,
+								businessProcess._isUserProcessing), 'submitted-user-data-table-sent-back') };
+						},
 						columns: wrapColumns(columns, function (content, businessProcess) {
 							return postButton({
 								action: url('business-process', businessProcess.__id__),
