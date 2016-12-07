@@ -48,7 +48,7 @@ exports['user/[0-9][a-z0-9]+'] = {
 		}
 		if (normalizedData[this.target.__id__ + '/isSuperUser']) {
 			this.target.roles.forEach(function (role) {
-				if (db.Role.isPartARole(role)) {
+				if (db.Role.isPartARole(role) && this.target.rolesMeta[role]) {
 					this.target.rolesMeta[role].validateDestroy();
 				}
 			}, this);
