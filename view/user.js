@@ -42,11 +42,11 @@ exports['sub-main'] = {
 			div({ class: 'section-warning' },
 				ul(
 					revertedBusinessProcesses.map(function (pendingProcess) {
-						return li({ class: 'section-warning-error' }, div({ class: 'entities-overview-table' },
-							span({ class: "section-warning-content" },
+						return li({ class: 'section-warning-action' }, div(
+							span({ class: "section-warning-action-description" },
 								_('${ businessName } is pending for corrections',
 									{ businessName: pendingProcess._businessName })),
-							span({ class: "section-warning-action" }, postButton({
+							span({ class: "section-warning-action-button" }, postButton({
 								action: url('business-process', pendingProcess.__id__),
 								value: _('Correct now')
 							}))));
