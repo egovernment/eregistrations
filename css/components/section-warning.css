@@ -13,7 +13,7 @@
 }
 
 .section-warning > ul > .section-warning-action {
-	border-left-color: var(--error-background);
+	border-left-color: var(--error-light-background);
 	padding:11px 15px;
 }
 
