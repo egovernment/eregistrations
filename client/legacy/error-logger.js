@@ -27,6 +27,8 @@ var onError = function (message, source, line, column, error) {
 		// Mysterious iOS error (not coming from our codebase)
 		// http://stackoverflow.com/q/40744060/96806
 		if (message.indexOf('\'elt.parentNode\'') !== -1) return;
+		// Observable occasionally, possibly caused by extensions or e.g. chat plugins
+		if (message === 'Access is denied.\r') return;
 	}
 
 	var xhr = new XMLHttpRequest(), isSent = false, queryConfig;
