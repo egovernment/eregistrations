@@ -9,7 +9,7 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var manager = this.manager;
+		var manager = this.manager, revertedBusinessProcesses = this.user.revertedBusinessProcesses;
 
 		div({ class: 'user-account-boxes' },
 			section({ id: 'welcome-box', class: 'user-account-welcome' },
@@ -37,6 +37,23 @@ exports['sub-main'] = {
 				}.bind(this))));
 
 		exports._notificationsBox.call(this);
+
+		insert(_if(gt(revertedBusinessProcesses._size, 0), function () {
+			div({ class: 'section-warning' },
+				ul(
+					revertedBusinessProcesses.map(function (pendingProcess) {
+						return li({ class: 'section-warning-action' }, div(
+							span({ class: "section-warning-action-description" },
+								_('${ businessName } is pending for corrections',
+									{ businessName: pendingProcess._businessName })),
+							span({ class: "section-warning-action-button" }, postButton({
+								action: url('business-process', pendingProcess.__id__),
+								value: _('Correct now')
+							}))
+						));
+					})
+				));
+		}));
 
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab user-account-tab',
