@@ -34,7 +34,8 @@ module.exports = Object.defineProperties(db.File, {
 					options.observable.dbId.replace(normRe, '-') }, ""));
 		},
 		renderItem: function (file) {
-			var el = this.make, data = {}, itemDom, name, isValid = or(file._name, file._path);
+			var el = this.make, data = {}, itemDom, name, isValid = or(file._name, file._path), loader
+			  , loaderText, fileThumb;
 
 			if (this.multiple) {
 				data.dom = el('li', { class: _if(isValid, null, 'empty'), 'data-id': file.__id__ });
@@ -44,16 +45,40 @@ module.exports = Object.defineProperties(db.File, {
 			if (isNested(file)) name = file.__id__;
 			else if (this.multiple) name = this.observable.dbId + '*7' + file.__id__;
 			else name = this.observable.dbId;
+			loader = div({ class: 'file-thumb-upload-status' },
+				div({ class: 'throbber' },
+					div({ class: 'spinner-loader' })),
+				loaderText = text(''));
+			file.on('upload-progress', function (ev) {
+				var loadedPercent;
+				if (!ev.total) return;
+				loadedPercent = (ev.loaded / ev.total);
+				fileThumb.classList.add('file-thumb-uploading');
+				if (loadedPercent === 1) {
+					loaderText.data = _("Generating preview");
+					fileThumb.classList.remove('file-thumb-uploading');
+					fileThumb.classList.add('file-thumb-generating');
 
-			itemDom = _if(isValid, el('div', { class: 'file-thumb' },
+					return;
+				}
+				loadedPercent = new db.Percentage(loadedPercent).toString();
+				loaderText.data = loadedPercent;
+			});
+
+			itemDom = _if(isValid, fileThumb = el('div', { class: 'file-thumb' },
 				el('a', { href: file._url, target: '_blank', class: 'file-thumb-image' },
-					el('img', { src: (function () {
+					loader,
+					el('img', { id: 'img-' + name, src: (function () {
 						if (includes.call(docMimeTypes, file.type)) {
 							return stUrl('/img/word-doc-icon.png');
 						}
 
 						return file.thumb._url.map(function (thumbUrl) {
 							if (!thumbUrl) return;
+							if (loaderText && fileThumb) {
+								loaderText.data = '';
+								fileThumb.classList.remove('file-thumb-generating');
+							}
 							return stUrl(thumbUrl);
 						});
 					}()) })),
