@@ -27,9 +27,14 @@ exports._emailColumn = {
 
 exports._roleColumn = {
 	head: _("Role"),
-	data: function (user) { return ul(user.roles, function (role) {
-		return exports._mapRolesToLabels(role, user);
-	}); }
+	data: function (user) {
+		return user._isSuperUser.map(function (isSuperUser) {
+			if (isSuperUser) return _("Superuser");
+			return ul(user.roles, function (role) {
+				return exports._mapRolesToLabels(role, user);
+			});
+		});
+	}
 };
 
 exports._institutionColumn = {

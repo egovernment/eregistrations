@@ -21,6 +21,7 @@ Component describing basic elements styles - reusable
 	--light-error-background: #D69592;
 	--success-background: #5CB85C;
 	--success-dark-background: #3A733A;
+	--error-light-background: #ef9581;
 	--error-background: #D9534F;
 	--error-dark-background: #9B3E3B;
 	--info-background: #4892A4;
