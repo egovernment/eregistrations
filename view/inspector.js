@@ -17,7 +17,7 @@ exports._parent = require('./abstract-user-base');
 exports['submitted-menu'] = function () {
 	li(
 		{ id: 'inspector-nav', class: 'submitted-menu-item-active' },
-		a({ href: '/' }, _("All files"))
+		a({ href: '/' }, db.Role.meta.inspector.label)
 	);
 };
 
