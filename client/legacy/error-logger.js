@@ -28,7 +28,7 @@ var onError = function (message, source, line, column, error) {
 		// http://stackoverflow.com/q/40744060/96806
 		if (message.indexOf('\'elt.parentNode\'') !== -1) return;
 		// Observable occasionally, possibly caused by extensions or e.g. chat plugins
-		if (message === 'Access is denied.\r') return;
+		if (message === 'Access is denied.\r\n') return;
 	}
 
 	var xhr = new XMLHttpRequest(), isSent = false, queryConfig;
