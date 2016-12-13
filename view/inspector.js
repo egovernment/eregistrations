@@ -14,6 +14,13 @@ var db                = require('../db')
 
 exports._parent = require('./abstract-user-base');
 
+exports['submitted-menu'] = function () {
+	li(
+		{ id: 'inspector-nav', class: 'submitted-menu-item-active' },
+		a({ href: '/' }, _("All files"))
+	);
+};
+
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {
