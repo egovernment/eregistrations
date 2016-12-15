@@ -13,7 +13,7 @@ module.exports = function (context, role) {
 		return li({ class: 'header-top-menu-dropdown-item-active' }, a({ href: '/' }, roleTitle));
 	}
 
-	return li(form({ method: 'post', action: '/set-role/' },
+	return _if(user.roles._has(role), li(form({ method: 'post', action: '/set-role/' },
 		input({ type: 'hidden', name: user.__id__ + '/currentRole', value: role }),
-		button({ type: 'submit' }, roleTitle)));
+		button({ type: 'submit' }, roleTitle))));
 };

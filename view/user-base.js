@@ -19,7 +19,11 @@ exports._parent = require('./abstract-user-base');
 exports['submitted-menu'] = function () {
 	var user = this.manager || this.user;
 
-	insert(list(user.flowRoles, exports._getSubmittedMenuItem.bind(this)));
+	insert(user._currentRoleResolved.map(function (role) {
+		var isOfficialRole = user.officialRoles.has(role);
+		if (isOfficialRole) return list(user.officialRoles, exports._getSubmittedMenuItem.bind(this));
+		return exports._getSubmittedMenuItem.call(this, role);
+	}.bind(this)));
 	insert(exports._submittedMenuExtraItems.call(this));
 };
 

@@ -21,12 +21,8 @@ module.exports = memoize(function (db/*, options */) {
 	Role.meta.get('user').set('label', _("User"));
 
 	Role.define('isFlowRole', { type: db.Function, value: function (role) {
-		var additionalFlowRoles = {
-			dispatcher: true,
-			supervisor: true
-		};
 
-		return this.isPartARole(role) || this.isOfficialRole(role) || additionalFlowRoles[role];
+		return this.isOfficialRole(role);
 	} });
 
 	Role.define('isPartARole', { type: db.Function, value: function (role) {
@@ -84,12 +80,11 @@ module.exports = memoize(function (db/*, options */) {
 			type: UInteger,
 			value: 0
 		},
-		// Collection of user's roles which contribute to flow
-		flowRoles: { type: Role, multiple: true, value: function () {
+		officialRoles: { type: Role, multiple: true, value: function () {
 			var result = [], db = this.database;
 
 			this.roles.forEach(function (role) {
-				if (db.Role.isFlowRole(role)) {
+				if (db.Role.isOfficialRole(role)) {
 					result.push(role);
 				}
 			}, this);
