@@ -9,10 +9,6 @@
 	width:99.99%; /* Hack to help make the right border of responsive table visible */
 }
 
-.documents-list-table .submitted-user-data-table tr:hover td {
-	background-color: var(--light-medium-background);
-}
-
 .documents-list-table .submitted-user-data-table .active:hover td {
 	background-color: inherit;
 }
@@ -32,12 +28,6 @@
 
 .documents-list-table .submitted-user-data-table tbody .active a {
 	padding: 10px 10px 10px;
-}
-
-.documents-list-table .submitted-user-data-table a:hover,
-.documents-list-table .submitted-user-data-table a:active,
-.documents-list-table .submitted-user-data-table a:focus {
-	text-decoration: none;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {

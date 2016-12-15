@@ -6,6 +6,5 @@ module.exports = [
 	tableColumns.processingStepRoleColumn,
 	tableColumns.processingStepBusinessNameColumn,
 	tableColumns.processingStepProcessingTimeColumn,
-	tableColumns.processingStepServiceColumn,
-	tableColumns.processingStepGoToColumn
+	tableColumns.processingStepServiceColumn
 ];

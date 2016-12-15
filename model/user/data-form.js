@@ -8,10 +8,9 @@ var memoize                = require('memoizee/plain')
   , defineFormSectionGroup = require('../form-section-group');
 
 module.exports = memoize(function (db/*, options*/) {
-	var User                  = defineUser(db, arguments[1])
-	  , FormSectionGroup      = defineFormSectionGroup(db)
-	  , FormSection           = defineFormSection(db)
-	  , getApplicablePropName = db.Object.getApplicablePropName;
+	var User = defineUser(db, arguments[1])
+	  , FormSectionGroup = defineFormSectionGroup(db)
+	  , FormSection      = defineFormSection(db);
 
 	User.prototype.defineProperties({
 		// Used during user create and edit
@@ -39,13 +38,7 @@ module.exports = memoize(function (db/*, options*/) {
 		propertyNames: ['firstName', 'lastName', 'email', 'phone', 'password']
 	});
 	User.prototype.dataForm.sections.additional.setProperties({
-		propertyNames: ['isSuperUser', 'roles', 'institution']
-	});
-
-	['roles', 'institution'].forEach(function (prop) {
-		User.prototype.set(getApplicablePropName(prop), function () {
-			return !this.isSuperUser;
-		});
+		propertyNames: ['roles', 'isSuperUser', 'institution']
 	});
 
 	return User;

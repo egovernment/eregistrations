@@ -23,7 +23,7 @@ var onError = function (message, source, line, column, error) {
 	if (message) {
 		// XHR erorr (usually result of server restarts)
 		if (message.indexOf('Error: Rejecteded XHR request to ') === 0) return;
-		if (message.indexOf('Uncaught Error: Rejected XHR request to ') === 0) return;
+		if (message.indexOf('Uncaught Error: Rejecteded XHR request to ') === 0) return;
 		// Mysterious iOS error (not coming from our codebase)
 		// http://stackoverflow.com/q/40744060/96806
 		if (message.indexOf('\'elt.parentNode\'') !== -1) return;

@@ -124,45 +124,23 @@ exports.businessProcessWithdrawalDateColumn = {
 
 exports.businessProcessActionsColumn = {
 	class: 'actions',
+	noWrap: true,
 	data: function (businessProcess) {
-		return _if(businessProcess._isAtDraft,
-			[postButton({
-				buttonClass: 'actions-edit',
-				action: url('business-process', businessProcess.__id__),
-				value: span({
-					class: 'hint-optional hint-optional-left',
-					'data-hint': _('Edit')
-				}, i({ class: 'fa fa-edit' }))
-			}),
-				_if(not(businessProcess._isSubmitted), postButton({
-					buttonClass: 'actions-delete',
-					action: url('business-process', businessProcess.__id__, 'delete'),
-					confirm: _("Are you sure?"),
-					value: span({
-						class: 'hint-optional hint-optional-left',
-						'data-hint': _('Delete')
-					}, i({ class: 'fa fa-trash-o' }))
-				}))],
-
-			postButton({
-				buttonClass: 'actions-edit',
-				action: url('business-process', businessProcess.__id__),
-				value: span({ class: 'fa fa-search' }, _("Go to"))
-			}));
-	}
-};
-
-exports.businessProcessGoToColumn = {
-	class: 'submitted-user-data-table-link',
-	data: function (businessProcess) {
-		return a({ class: 'actions-edit',
-			href: url(businessProcess.__id__) },
-			span({ class: 'fa fa-search' }, _("Go to")));
+		return _if(and(businessProcess._isAtDraft, not(businessProcess._isSubmitted)), postButton({
+			buttonClass: 'actions-delete',
+			action: url('business-process', businessProcess.__id__, 'delete'),
+			confirm: _("Are you sure?"),
+			value: span({
+				class: 'hint-optional hint-optional-left',
+				'data-hint': _('Delete')
+			}, i({ class: 'fa fa-trash-o' }))
+		}));
 	}
 };
 
 exports.businessProcessArchiverColumn = {
 	class: 'submitted-user-data-table-link',
+	noWrap: true,
 	data: function (businessProcess) {
 		return _if(businessProcess._filesArchiveUrl,
 			a({ class: 'hint-optional hint-optional-left', target: "_blank",
@@ -223,15 +201,5 @@ exports.processingStepServiceColumn = {
 	data: function (processingStep) {
 		var businessProcess = processingStep.master;
 		return span(businessProcess._label);
-	}
-};
-
-exports.processingStepGoToColumn = {
-	class: 'submitted-user-data-table-link',
-	data: function (processingStep) {
-		var businessProcess = processingStep.master;
-		return a({ class: 'actions-edit',
-				href: url(businessProcess.__id__) },
-			span({ class: 'fa fa-search' }, _("Go to")));
 	}
 };

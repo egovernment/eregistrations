@@ -17,6 +17,7 @@ exports._customFilter = function (processingStep, assignableUsers) {
 
 var assignmentColumn = {
 	head: _("Assignee"),
+	noWrap: true,
 	data: function (processingStep, assignableUsers) {
 		return form({ method: 'post',
 				action: url('assign-business-process'), class: 'submitted-menu-role-select',
@@ -35,7 +36,6 @@ exports._columns = [
 	tableColumns.businessProcessSubmissionDateColumn,
 	tableColumns.businessProcessCertificatesListColumn,
 	tableColumns.businessProcessArchiverColumn,
-	tableColumns.businessProcessGoToColumn,
 	assignmentColumn
 ];
 
