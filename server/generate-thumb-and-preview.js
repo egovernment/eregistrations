@@ -85,6 +85,11 @@ module.exports = function (file) {
 				console.error(e.stack + "\n\n");
 				return;
 			}
+			if (startsWith.call(e.message, "Command failed: gm identify:")) {
+				console.error("\nCould not generate thumb and preview:\n");
+				console.error(e.stack + "\n\n");
+				return;
+			}
 			if (contains.call(e.message, "GPL Ghostscript")) {
 				console.error("\nCould not generate thumb and preview:\n");
 				console.error(e.stack + "\n\n");
