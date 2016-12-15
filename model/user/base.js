@@ -20,11 +20,6 @@ module.exports = memoize(function (db/*, options */) {
 	Role.members.add('user');
 	Role.meta.get('user').set('label', _("User"));
 
-	Role.define('isFlowRole', { type: db.Function, value: function (role) {
-
-		return this.isOfficialRole(role);
-	} });
-
 	Role.define('isPartARole', { type: db.Function, value: function (role) {
 		switch (role) {
 		case 'user':
