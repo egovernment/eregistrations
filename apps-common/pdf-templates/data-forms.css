@@ -3,6 +3,8 @@ body {
 	padding-top: 11px;
 	font-family: Helvetica;
 	font-size: 14px;
+	margin-bottom: 0;
+	zoom: 80%;
 }
 
 .print-header {
