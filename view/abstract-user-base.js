@@ -51,9 +51,7 @@ exports._extraRoleLabel = function () {
 };
 
 var userNameMenuItem = function () {
-	var user         = this.manager || this.user
-	  , isMetaAdmin  = user.roles._has('metaAdmin')
-	  , isUsersAdmin = user.roles._has('usersAdmin');
+	var user         = this.manager || this.user;
 
 	return [
 		li(
@@ -63,15 +61,15 @@ var userNameMenuItem = function () {
 				i({ id: 'drop-down-menu-angle', class: 'fa fa-angle-down header-top-dropdown-button' }))),
 			ul(
 				{ class: "header-top-menu-dropdown-content" },
-				_if(user.flowRoles._size, user._currentRoleResolved.map(function (role) {
+				_if(user.officialRoles._size, user._currentRoleResolved.map(function (role) {
 					if (!role) return;
 
-					if (!db.Role.isFlowRole(role)) {
+					if (!db.Role.isOfficialRole(role)) {
 						return [
 							li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 							li(form({ method: 'post', action: '/set-role/' },
 								input({ type: 'hidden', name: user.__id__ + '/currentRole',
-									value: user.flowRoles.first }),
+									value: user.officialRoles.first }),
 								button({ type: 'submit' }, _("Roles"))))];
 					}
 					return [
@@ -79,18 +77,27 @@ var userNameMenuItem = function () {
 						li({ class: 'header-top-menu-dropdown-item-active' },
 							a({ href: '/' }, _("Roles")))];
 				})),
-				_if(user.roles._has('inspector'), [
+				_if(or(user.roles._has('user'), user.roles._has('manager')), [
 					li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
-					roleMenuItem(this, 'inspector')
+					roleMenuItem(this, 'user'),
+					roleMenuItem(this, 'manager')
+				]),
+				_if(or(user.roles._has('inspector'), user.roles._has('supervisor'),
+						user.roles._has('dispatcher'), user.roles._has('managerValidation')), [
+					li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
+					roleMenuItem(this, 'dispatcher'),
+					roleMenuItem(this, 'inspector'),
+					roleMenuItem(this, 'supervisor'),
+					roleMenuItem(this, 'managerValidation')
 				]),
 				_if(user.roles._has('statistics'), [
 					li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 					roleMenuItem(this, 'statistics')
 				]),
-				_if(or(isMetaAdmin, isUsersAdmin), [
+				_if(or(user.roles._has('metaAdmin'), user.roles._has('usersAdmin')), [
 					li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
-					_if(isMetaAdmin, roleMenuItem(this, 'metaAdmin')),
-					_if(isUsersAdmin, roleMenuItem(this, 'usersAdmin'))
+					roleMenuItem(this, 'metaAdmin'),
+					roleMenuItem(this, 'usersAdmin')
 				]),
 				li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 				li(
