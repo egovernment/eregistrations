@@ -608,6 +608,12 @@ module.exports = exports = function (db, dbDriver, data) {
 			return fragment;
 		}
 
+		if (roleName === 'inspector') {
+			// Recently visited business processes (full data)
+			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, 'inspector'));
+			return fragment;
+		}
+
 		if (roleName === 'statistics') {
 			// Statistics specific data
 			fragment.addFragment(getStatisticsFragment());
