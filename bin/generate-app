@@ -145,6 +145,7 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		if (appName === 'inspector') {
 			msgItems.push(clientModelReminder);
 			msgItems.push(addRole);
+			msgItems.push(recentlyVisitedProcesses);
 		}
 
 		if (appName === 'statistics') {
