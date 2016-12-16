@@ -51,9 +51,7 @@ exports._extraRoleLabel = function () {
 };
 
 var userNameMenuItem = function () {
-	var user         = this.manager || this.user
-	  , isMetaAdmin  = user.roles._has('metaAdmin')
-	  , isUsersAdmin = user.roles._has('usersAdmin');
+	var user         = this.manager || this.user;
 
 	return [
 		li(
@@ -96,7 +94,7 @@ var userNameMenuItem = function () {
 					li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 					roleMenuItem(this, 'statistics')
 				]),
-				_if(or(isMetaAdmin, isUsersAdmin), [
+				_if(or(user.roles._has('metaAdmin'), user.roles._has('usersAdmin')), [
 					li({ class: 'header-top-menu-dropdown-content-separator' }, hr()),
 					roleMenuItem(this, 'metaAdmin'),
 					roleMenuItem(this, 'usersAdmin')

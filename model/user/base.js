@@ -78,8 +78,8 @@ module.exports = memoize(function (db/*, options */) {
 		officialRoles: { type: Role, multiple: true, value: function () {
 			var result = [], db = this.database;
 
-			this.roles.forEach(function (role) {
-				if (db.Role.isOfficialRole(role)) {
+			db.Role.members.forEach(function (role) {
+				if (this.roles.has(role) && db.Role.isOfficialRole(role)) {
 					result.push(role);
 				}
 			}, this);
