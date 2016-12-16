@@ -9,9 +9,11 @@ var db          = require('mano').db
   , baseMatcher;
 
 baseMatcher = function (businessProcessId) {
+	var visitedBusinessProcesses = this.user.recentlyVisited.businessProcesses.inspector;
+
 	this.businessProcess = db.BusinessProcess.getById(businessProcessId);
 
-	return Boolean(this.businessProcess);
+	return Boolean(this.businessProcess && visitedBusinessProcesses.has(this.businessProcess));
 };
 
 module.exports = function (step) {
@@ -19,7 +21,7 @@ module.exports = function (step) {
 		var resolution = baseMatcher.call(this, businessProcessId)
 		  , visitedBusinessProcesses;
 
-		if (!resolution || !this.businessProcess.dataForms.dataSnapshot.jsonString) {
+		if (!resolution) {
 			document.body.classList.add('throbber-active');
 			return xhrGet('/get-business-process-data/', { id: businessProcessId })(function (result) {
 				var def, interval;
