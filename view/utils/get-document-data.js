@@ -23,7 +23,7 @@ var resolveSnapshotArchivePath = function (businessProcess, snapshot, kind) {
 module.exports = function (context) {
 	var businessProcess = context.businessProcess, kind = context.documentKind
 	  , doc = context.document, snapshot = context.dataSnapshot
-	  , files;
+	  , files, data;
 
 	if ((kind === 'certificate') && !snapshot) {
 		// Show certificate for not yet finalized request
@@ -53,7 +53,7 @@ module.exports = function (context) {
 				disableHeader: true
 			});
 		}
-	} else {
+	} else if (snapshot) {
 		// Rely on snapshot
 		data = {
 			label: snapshot.label,

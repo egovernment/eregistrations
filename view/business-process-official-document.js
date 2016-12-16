@@ -2,7 +2,8 @@
 
 'use strict';
 
-var renderDocument             = require('./components/document-preview')
+var _                          = require('mano').i18n
+  , renderDocument             = require('./components/document-preview')
   , renderDocumentHistory      = require('./components/business-process-document-history')
   , renderDocumentRevisionInfo = require('./components/business-process-document-review-info')
   , renderSections             = require('./components/business-process-document-render-sections')
@@ -15,16 +16,18 @@ exports._match   = 'documentUniqueId';
 exports['selection-preview'] = function () {
 	var documentData = getDocumentData(this);
 
-	insert(renderDocument(this, documentData, {
-		prependContent: renderDocumentRevisionInfo(this),
-		mainContent: exports._documentPreviewContent.call(this, documentData),
-		sideContent: exports._renderSections.call(this),
-		urlPrefix: '/' + this.businessProcess.__id__ + '/',
-		documentsRootHref:
-			document.getElementById('tab-business-process-documents').getAttribute('href')
-	}),
-		renderDocumentHistory(documentData)
-		);
+	if (documentData) {
+		insert(renderDocument(this, documentData, {
+			prependContent: renderDocumentRevisionInfo(this),
+			mainContent: exports._documentPreviewContent.call(this, documentData),
+			sideContent: exports._renderSections.call(this),
+			urlPrefix: '/' + this.businessProcess.__id__ + '/',
+			documentsRootHref:
+				document.getElementById('tab-business-process-documents').getAttribute('href')
+		}), renderDocumentHistory(documentData));
+	} else {
+		insert(section({ class: 'section-secondary' }, p(_("No data to display"))));
+	}
 };
 
 exports._documentPreviewContent = Function.prototype;

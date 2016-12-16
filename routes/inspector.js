@@ -4,9 +4,9 @@
 
 var hyphenToCamel        = require('es5-ext/string/#/hyphen-to-camel')
   , matchBusinessProcess = require('./utils/inspector-match-business-process')
-  , findFirstUploadKey   = require('./utils/official-find-first-upload-key')
-  , matchUpload          = require('./utils/official-match-upload')
-  , matchCertificate     = require('./utils/official-match-certificate');
+  , findFirstUploadKey   = require('./utils/inspector-find-first-upload-key')
+  , matchUpload          = require('./utils/inspector-match-upload')
+  , matchCertificate     = require('./utils/user-match-certificate');
 
 module.exports = function () {
 	var match = matchBusinessProcess();
@@ -61,6 +61,9 @@ module.exports = function () {
 		},
 		'[0-9][a-z0-9]*/data': {
 			match: match,
+			decorateContext: function () {
+				this.dataSnapshot = this.businessProcess.dataForms.dataSnapshot.resolved;
+			},
 			view: require('../view/business-process-official-data')
 		}
 	};
