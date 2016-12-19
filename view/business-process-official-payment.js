@@ -13,16 +13,19 @@ exports._dynamic = require('./utils/document-dynamic-matcher')('receipt');
 exports._match   = 'documentUniqueId';
 
 exports['selection-preview'] = function () {
-	var documentData = getDocumentData(this);
+	var documentData    = getDocumentData(this)
+	  , businessProcess = this.businessProcess
+	  , dataSnapshot    = businessProcess.dataForms.dataSnapshot;
 
 	insert(renderDocument(this, documentData, {
 		prependContent: renderDocumentRevisionInfo(documentData, this.documentKind),
 		mainContent: exports._paymentPreviewContent.call(this, documentData),
-		sideContent: renderSections(this.businessProcess.dataForms.dataSnapshot),
-		urlPrefix: '/' + this.businessProcess.__id__ + '/'
-	}),
-		renderDocumentHistory(documentData)
-		);
+		sideContent: dataSnapshot.resolved ? renderSections(dataSnapshot) :
+				list(businessProcess.dataForms.applicable, function (section) {
+					return section.toDOM(document);
+				}),
+		urlPrefix: '/' + businessProcess.__id__ + '/'
+	}), renderDocumentHistory(documentData));
 };
 
 exports._paymentPreviewContent = Function.prototype;

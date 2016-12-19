@@ -53,7 +53,7 @@ module.exports = function (context) {
 				disableHeader: true
 			});
 		}
-	} else if (snapshot) {
+	} else if (doc) {
 		// Rely on snapshot
 		data = {
 			label: snapshot.label,

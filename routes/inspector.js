@@ -22,8 +22,10 @@ module.exports = function () {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
 					var firstUniqueKey = findFirstUploadKey.call(this, 'requirementUpload');
-					if (!firstUniqueKey) return false;
-					return matchUpload.call(this, 'requirementUpload', firstUniqueKey);
+					if (firstUniqueKey) {
+						return matchUpload.call(this, 'requirementUpload', firstUniqueKey);
+					}
+					return true;
 				}.bind(this));
 			},
 			view: require('../view/business-process-official-document')
