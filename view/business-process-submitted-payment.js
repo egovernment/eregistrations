@@ -16,7 +16,7 @@ exports['selection-preview'] = function () {
 	var documentData = getDocumentData(this);
 	insert(
 		renderDocument(this, documentData, {
-			prependContent: renderDocumentRevisionInfo(this),
+			prependContent: renderDocumentRevisionInfo(documentData, this.documentKind),
 			mainContent: exports._paymentPreviewContent.call(this, documentData),
 			sideContent: renderSections(this.businessProcess.dataForms.dataSnapshot)
 		}),

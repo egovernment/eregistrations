@@ -18,7 +18,7 @@ exports['selection-preview'] = function () {
 
 	if (documentData) {
 		insert(renderDocument(this, documentData, {
-			prependContent: renderDocumentRevisionInfo(this),
+			prependContent: renderDocumentRevisionInfo(documentData, this.documentKind),
 			mainContent: exports._documentPreviewContent.call(this, documentData),
 			sideContent: exports._renderSections.call(this),
 			urlPrefix: '/' + this.businessProcess.__id__ + '/',

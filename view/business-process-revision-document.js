@@ -53,7 +53,7 @@ exports['selection-preview'] = function () {
 			prependContent: _if(isProcessable, function () {
 				return disableStep(this.processingStep, revisionForm(this.document.owner));
 			}.bind(this), function () {
-				return renderDocumentRevisionInfo(this);
+				return renderDocumentRevisionInfo(documentData, this.documentKind);
 			}.bind(this)),
 			mainContent: exports._documentPreviewContent.call(this, documentData),
 			sideContent: exports._renderSections.call(this),
