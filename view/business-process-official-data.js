@@ -16,6 +16,7 @@ exports['tab-content'] = function () {
 			urlPrefix: '/' + this.businessProcess.__id__ + '/'
 		}));
 	} else {
-		insert(section({ class: 'section-primary' }, p(_("No data to display"))));
+		insert(section({ class: 'section-primary' },
+			p({ class: 'info-main' }, _("No data to display"))));
 	}
 };

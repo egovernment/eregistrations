@@ -26,7 +26,8 @@ exports['selection-preview'] = function () {
 			urlPrefix: '/' + this.businessProcess.__id__ + '/'
 		}), renderDocumentHistory(documentData));
 	} else {
-		insert(section({ class: 'section-secondary' }, p(_("No data to display"))));
+		insert(section({ class: 'section-secondary' },
+			p({ class: 'info-main' }, _("No data to display"))));
 	}
 };
 
