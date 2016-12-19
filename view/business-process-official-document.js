@@ -12,7 +12,7 @@ var _                          = require('mano').i18n
 
 exports._parent  = require('./business-process-official-documents');
 exports._dynamic = function (doc) {
-	return this.document ? dynamicMatcher(doc) : {};
+	return this.document ? dynamicMatcher.call(this, doc) : {};
 };
 exports._match   = 'documentUniqueId';
 

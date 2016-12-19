@@ -2,8 +2,7 @@
 
 'use strict';
 
-var _                      = require('mano').i18n
-  , dataView               = require('./components/business-process-data')
+var dataView               = require('./components/business-process-data')
   , renderDataRevisionInfo = require('./components/business-process-data-review-info');
 
 exports._parent = require('./business-process-official');
@@ -16,7 +15,11 @@ exports['tab-content'] = function () {
 			urlPrefix: '/' + this.businessProcess.__id__ + '/'
 		}));
 	} else {
-		insert(section({ class: 'section-primary' },
-			p({ class: 'info-main' }, _("No data to display"))));
+		insert(section({ class: 'section-primary' }, div(
+			{ class: 'document-preview-data business-process-submitted-data' },
+			list(this.businessProcess.dataForms.applicable, function (section) {
+				return section.toDOM(document);
+			})
+		)));
 	}
 };
