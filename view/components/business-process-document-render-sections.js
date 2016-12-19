@@ -7,9 +7,13 @@ module.exports = function () {
 	  , requirementUpload = this.document.owner
 	  , dataSnapshot      = businessProcess.dataForms.dataSnapshot;
 
-	return _if(dataSnapshot.resolved, renderSections(dataSnapshot, {
-		allowedSectionKeys: requirementUpload.relatedDataFormSections.toArray()
-	}), list(businessProcess.dataForms.applicable, function (section) {
+	if (dataSnapshot.resolved) {
+		return renderSections(dataSnapshot, {
+			allowedSectionKeys: requirementUpload.relatedDataFormSections.toArray()
+		});
+	}
+
+	return list(businessProcess.dataForms.applicable, function (section) {
 		return section.toDOM(document);
-	}));
+	});
 };
