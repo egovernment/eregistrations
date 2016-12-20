@@ -29,6 +29,9 @@ var onError = function (message, source, line, column, error) {
 		if (message.indexOf('\'elt.parentNode\'') !== -1) return;
 		// Observable occasionally, possibly caused by extensions or e.g. chat plugins
 		if (message === 'Access is denied.\r\n') return;
+		// iOS interface errors
+		// https://groups.google.com/a/chromium.org/forum/#!topic/chromium-discuss/7VU0_VvC7mE
+		if (message.indexOf('__gCrWeb') !== -1) return;
 	}
 
 	var xhr = new XMLHttpRequest(), isSent = false, queryConfig;
