@@ -83,16 +83,15 @@
 	cursor: pointer;
 }
 
+.greedy-menu .toggle-links:active,
+.greedy-menu .toggle-links:focus,
 .greedy-menu .toggle-links:hover {
 	background-color: var(--normal-dark-background);
+	outline: none;
 }
 
 .greedy-menu .toggle-links:hover::before {
 	transform: scale(1.05);
-}
-
-.greedy-menu .toggle-links:focus {
-	outline: none;
 }
 
 .greedy-menu .toggle-links.visible {
