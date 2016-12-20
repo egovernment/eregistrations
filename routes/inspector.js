@@ -56,7 +56,9 @@ module.exports = function () {
 			match: function (businessProcessId, uniqueKey) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
-					return matchCertificate.call(this, hyphenToCamel.call(uniqueKey), 'applicable');
+					return matchCertificate.call(this, hyphenToCamel.call(uniqueKey), {
+						collection: 'applicable'
+					});
 				}.bind(this));
 			},
 			view: require('../view/business-process-official-certificate')
