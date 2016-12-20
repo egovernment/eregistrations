@@ -2,6 +2,7 @@
 
 var assign                  = require('es5-ext/object/assign')
   , ensureObject            = require('es5-ext/object/valid-object')
+  , startsWith              = require('es5-ext/string/#/starts-with')
   , ensureDriver            = require('dbjs-persistence/ensure-driver')
   , getBaseRoutes           = require('./authenticated')
   , getData                 = require('../business-process-query/get-data')
@@ -21,6 +22,7 @@ var businessProcessQueryHandler = new QueryHandler([{
 		if (!value) throw new Error("Missing id");
 		return anyIdToStorage(value)(function (storage) {
 			if (!storage) return null;
+			if (!startsWith.call(storage.name, 'businessProcess')) return null;
 			return value;
 		});
 	}

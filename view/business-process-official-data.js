@@ -15,11 +15,11 @@ exports['tab-content'] = function () {
 			urlPrefix: '/' + this.businessProcess.__id__ + '/'
 		}));
 	} else {
-		insert(section({ class: 'section-primary' }, div(
+		section({ class: 'section-primary' }, div(
 			{ class: 'document-preview-data business-process-submitted-data' },
 			list(this.businessProcess.dataForms.applicable, function (section) {
 				return section.toDOM(document);
 			})
-		)));
+		));
 	}
 };

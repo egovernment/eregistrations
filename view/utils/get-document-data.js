@@ -44,14 +44,16 @@ module.exports = function (context) {
 			};
 		});
 		data.files = files.toArray();
-		if ((kind === 'certificate') && (doc.dataForm.constructor !== db.FormSectionBase)) {
+		if ((kind === 'certificate')) {
 			data.overviewSection = doc.overviewSection.toDOM(document, { disableHeader: true });
-			data.section = doc.dataForm.toDOM(document, {
-				customFilter: function (resolved) {
-					return !endsWith.call(resolved.observable.dbId, 'files/map');
-				},
-				disableHeader: true
-			});
+			if (doc.dataForm.constructor !== db.FormSectionBase) {
+				data.section = doc.dataForm.toDOM(document, {
+					customFilter: function (resolved) {
+						return !endsWith.call(resolved.observable.dbId, 'files/map');
+					},
+					disableHeader: true
+				});
+			}
 		}
 	} else if (doc) {
 		// Rely on snapshot
