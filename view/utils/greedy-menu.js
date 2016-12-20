@@ -13,7 +13,7 @@ var Greedy = function Greedy(options) {
 
 window.Greedy = Greedy;
 
-Greedy.prototype.init = function() {
+Greedy.prototype.init = function () {
 	this.setupMenu();
 	this.calculateBreakpoints();
 	this.updateMenu();
@@ -25,9 +25,10 @@ Creates/returns a method bounded with 'this'. Used for creating
 named event listeners that can easily be removed
 */
 
-Greedy.prototype.bindMethod = function(name) {
+Greedy.prototype.bindMethod = function (name) {
 	return this['_' + name + '_'] || Object.defineProperty(
-		this, '_' + name + '_', {value: this[name].bind(this)}
+		this,
+		'_' + name + '_', { value: this[name].bind(this) }
 		)['_' + name + '_'];
 };
 
@@ -35,7 +36,7 @@ Greedy.prototype.bindMethod = function(name) {
 Creates the necessary markup and adds the necessary classes
 */
 
-Greedy.prototype.setupMenu = function() {
+Greedy.prototype.setupMenu = function () {
 	this.hiddenLinks = document.createElement('ul');
 	this.hiddenLinks.classList.add('hidden-links');
 	this.hiddenLinks.classList.add('links-invisible');
@@ -54,9 +55,9 @@ For each navigation item, calculate how much space is needed
 to accomodate it
 */
 
-Greedy.prototype.calculateBreakpoints = function() {
-	var childrenWidth = 0;
-	for (var i = 0; i < this.visibleLinks.children.length; i++) {
+Greedy.prototype.calculateBreakpoints = function () {
+	var childrenWidth = 0, i;
+	for (i = 0; i < this.visibleLinks.children.length; i++) {
 		childrenWidth += this.visibleLinks.children[i].offsetWidth;
 		this.breakpoints[i] = childrenWidth;
 	}
