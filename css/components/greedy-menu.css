@@ -55,7 +55,7 @@
 .greedy-menu .hidden-links li {
 	display: block;
 	opacity: 1;
-	transition: opacity 0.25s ease 0.15s, color 0.15s;
+	transition: opacity 0.25s ease 0.15s color 0.15s;
 }
 
 .greedy-menu .hidden-links li:not(:last-child) > a {
@@ -111,7 +111,7 @@
 	height: 4px;
 	background-color: black;
 	box-shadow: 0 8px 0 var(--dark-background), 0 16px 0 var(--dark-background);
-	transition: transform 0.3s cubic-bezier(0.77, 0, 0.175, 1), box-shadow 0.2s ease 0.1s;
+	transition: transform 0.3s cubic-bezier(0.77, 0, 0.175, 1) box-shadow 0.2s ease 0.1s;
 }
 
 .greedy-menu .toggle-links.counter::before {
