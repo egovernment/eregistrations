@@ -5,6 +5,7 @@ var _              = require('mano').i18n.bind('View: Abstract User')
   , registerDialog = require('./components/register-dialog')
   , modalContainer = require('./components/modal-container')
   , roleMenuItem   = require('./components/role-menu-item')
+  , greedyMenu   = require('./utils/greedy-menu')
   , db             = require('../db');
 
 exports._parent = require('./base');
@@ -32,7 +33,9 @@ exports.menu = function () {
 exports.main = function () {
 	div({ class: 'submitted-menu' },
 		div({ class: 'submitted-menu-bar content' },
-			nav(ul({ class: 'submitted-menu-items', id: 'submitted-menu' })),
+			nav({ class: 'greedy-menu' },
+				button({ class: 'toggle-links'}),
+				ul({ class: 'submitted-menu-items greedy-menu-items', id: 'submitted-menu' })),
 			_if(this.user._isDemo, div({ class: 'submitted-menu-demo' },
 				a({ class: 'submitted-menu-demo-ribon' }, _("Demo"))))));
 
