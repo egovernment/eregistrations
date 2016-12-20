@@ -101,18 +101,6 @@
 	border: 0;
 }
 
-.greedy-menu .toggle-links::after {
-	content: '';
-	position: absolute;
-	top: 13px;
-	left: 12px;
-	display: block;
-	width: 36px;
-	height: 4px;
-	background-color: black;
-	box-shadow: 0 8px 0 var(--dark-background), 0 16px 0 var(--dark-background);
-	transition: transform 0.3s, cubic-bezier(0.77, 0, 0.175, 1), box-shadow 0.2s, ease 0.1s;
-}
 
 .greedy-menu .toggle-links.counter::before {
 	box-sizing: border-box;
@@ -120,7 +108,7 @@
 	position: absolute;
 	z-index: 2;
 	top: 6px;
-	left: -17px;
+	left: 13px;
 	display: block;
 	color: var(--white-text);
 	font-size: 16px;
