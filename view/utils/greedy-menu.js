@@ -111,4 +111,4 @@ module.export = function (el) {
 			counter: true
 		});
 	});
-}
+};
