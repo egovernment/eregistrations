@@ -1,8 +1,11 @@
 'use strict';
 
+var normalizeOptions = require('es5-ext/object/normalize-options');
+
 // This module is used by user, business-process-submitted and inspector routes.
-module.exports = function (uniqueKey/*, collection*/) {
-	var collection = arguments[1] || 'userApplicable';
+module.exports = function (uniqueKey/*, options*/) {
+	var options    = normalizeOptions(arguments[1])
+	  , collection = options.collection || 'userApplicable';
 
 	if (this.businessProcess.isClosed) {
 		if (!this.businessProcess.isApproved) return false;
