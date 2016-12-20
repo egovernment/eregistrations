@@ -1,13 +1,11 @@
 .toggle-links {
-  display: none;
+	display: none;
 }
 
 ul.greedy-menu-items {
-  display: inline-block;
-  padding: 0;
-  margin: 0;
-  background-color: #fff;
-  /* Displaying the menu items on the same line */
+	display: inline-block;
+	padding: 0;
+	margin: 0;
 }
 
 ul.greedy-menu-items li {
@@ -15,10 +13,10 @@ ul.greedy-menu-items li {
 }
 
 ul.greedy-menu-items a {
-  display: block;
-  padding: 11px 25px;
-  text-decoration: none;
-  white-space: nowrap;
-  line-height: 22px;
-  color: #000;
+	display: block;
+	padding: 11px 25px;
+	text-decoration: none;
+	white-space: nowrap;
+	line-height: 22px;
+	color: #000;
 }
