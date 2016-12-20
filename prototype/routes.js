@@ -25,7 +25,6 @@ module.exports = {
 	guide: require('./view/business-process-guide'),
 	'guide-lomas': require('./view/business-process-guide-lomas-form'),
 	'guide-lomas/form-complement': require('./view/business-process-guide-lomas-form-complement'),
-	'guide/costs-print': require('../view/print-business-process-costs-list'),
 	forms: require('./view/business-process-data-forms'),
 	'forms/disabled': require('./view/business-process-data-forms-disabled'),
 	'forms/tabbed': {
@@ -88,8 +87,6 @@ module.exports = {
 		},
 		view: require('../view/business-process-submitted-data')
 	},
-	'print-business-process-data': require('../view/print-business-process-data'),
-	'print-request-history': require('../view/print-business-process-status-log'),
 
 	// My Account routes
 	'my-account': require('../view/user-home'),
@@ -119,7 +116,6 @@ module.exports = {
 		view: require('../view/user-business-process-certificate')
 	},
 	'my-account/data': require('./view/user-business-process-data'),
-	'my-account/print': require('../view/print-business-process-data'),
 
 	// Official routes
 	official: require('./view/business-processes-table'),

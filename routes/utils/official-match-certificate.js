@@ -3,7 +3,7 @@
 module.exports = function (uniqueKey) {
 	var target = this.processingStep || this.businessProcess;
 	target.certificates.released.some(function (certificate) {
-		if (certificate.key === uniqueKey) {
+		if (certificate.uniqueKey === uniqueKey) {
 			this.document = certificate;
 			return true;
 		}

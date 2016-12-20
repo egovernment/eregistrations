@@ -63,7 +63,7 @@ BusinessProcessNew.prototype.abbr = 'COI';
 
 module.exports = BusinessProcessNew;
 
-require('../../model/lib/data-snapshot/resolved')(db);
+require('../../view/dbjs/data-snapshot-resolved')(db);
 
 Representative = Person.extend('Representative', {
 	address: {
@@ -514,7 +514,7 @@ BusinessProcessNew.prototype.dataForms.map.define('company', {
 
 BusinessProcessNew.prototype.dataForms.map.get('company').setProperties({
 	label: "Company information",
-	pageUrl: 'company-informations'
+	pageUrl: 'tabbed'
 });
 
 BusinessProcessNew.prototype.dataForms.map.get('company').sections.define('details', {

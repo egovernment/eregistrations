@@ -1,15 +1,18 @@
 'use strict';
 
-var deferred       = require('deferred')
-  , getDbSet       = require('./get-db-set')
-  , getDbArray     = require('./get-db-array')
-  , serializeValue = require('dbjs/_setup/serialize/value');
+var deferred        = require('deferred')
+  , serializeValue  = require('dbjs/_setup/serialize/value')
+  , getDbSet        = require('./get-db-set')
+  , getDbArray      = require('./get-db-array')
+  , resolveStepPath = require('../../utils/resolve-processing-step-full-path');
 
-module.exports = function (storage, stepsMap, onProcessingStepsChange) {
+module.exports = function (storages, stepsMap, onProcessingStepsChange) {
 	var supervisorResults = {};
 
 	return deferred.map(Object.keys(stepsMap), function (stepName) {
-		var processingStepKeyPath = 'processingSteps/map/' + stepName;
+		var processingStepKeyPath = 'processingSteps/map/' + resolveStepPath(stepName);
+
+		var stepStorages = stepsMap[stepName]._services.map(function (name) { return storages[name]; });
 
 		supervisorResults[processingStepKeyPath] = {};
 
@@ -17,8 +20,8 @@ module.exports = function (storage, stepsMap, onProcessingStepsChange) {
 			var keyPath = stepsMap[stepName][statusName].indexName
 			  , value   = stepsMap[stepName][statusName].indexValue;
 
-			return getDbSet(storage, 'computed', keyPath, serializeValue(value))(function (set) {
-				return getDbArray(set, storage, 'computed', keyPath)(function (array) {
+			return getDbSet(stepStorages, 'computed', keyPath, serializeValue(value))(function (set) {
+				return getDbArray(set, stepStorages, 'computed', keyPath)(function (array) {
 					supervisorResults[processingStepKeyPath][statusName] = array;
 
 					if (typeof onProcessingStepsChange === 'function') {

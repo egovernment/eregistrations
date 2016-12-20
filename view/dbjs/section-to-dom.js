@@ -16,6 +16,7 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 		  , options      = Object(arguments[1])
 		  , headerRank   = options.headerRank || 3
 		  , cssClass     = options.cssClass || 'entity-data-section'
+		  , displayEmptyFields = options.displayEmptyFields
 		  , resolveValue = options.customResolveValue || defaultResolveValue
 		  , filteredNames;
 
@@ -24,7 +25,7 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 			table(
 				tbody(
 					_if(self._resolventProperty, function () {
-						var resolvent = resolvePropertyPath(self.master, self.resolventProperty);
+						var resolvent = resolvePropertyPath(self.propertyMaster, self.resolventProperty);
 
 						return tr(th(getPropertyLabel(resolvent)), td(resolvent.observable));
 					}),
@@ -37,6 +38,11 @@ module.exports = Object.defineProperty(db.FormSection.prototype, 'toDOM',
 							if (options.customFilter) {
 								if (!options.customFilter(resolved)) return false;
 							}
+							if (resolved.descriptor.multiple) {
+								observable.value.once('change', function (event) { filteredNames.refresh(name); });
+							}
+							if (displayEmptyFields) return true;
+							if (resolved.descriptor.multiple) return observable.value.size;
 							return observable.value != null;
 						}), function (name) {
 							var resolved = resolvePropertyPath(self.master, name)

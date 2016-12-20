@@ -59,6 +59,11 @@
 	text-align: center;
 }
 
+.user-guide-no-applicable-registrations-message {
+	width: 100%;
+	text-align: center;
+}
+
 .user-guide-inventory-button {
 	padding-left: 40%;
 	padding-top: 11px;

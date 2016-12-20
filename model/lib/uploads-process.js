@@ -68,12 +68,12 @@ module.exports = memoize(function (db/*, options*/) {
 			return result;
 		} },
 		// Progress for "approved" status
-		approvalProgress: { value: function (_observe) {
+		approvalProgress: { type: Percentage, value: function (_observe) {
 			if (!this.applicable.size) return 1;
 			return this.approved.size / this.applicable.size;
 		} },
 		// Progress of revision
-		revisionProgress: { value: function (_observe) {
+		revisionProgress: { type: Percentage, value: function (_observe) {
 			if (!this.applicable.size) return 1;
 			return (this.approved.size + this.rejected.size) / this.applicable.size;
 		} },

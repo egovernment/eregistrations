@@ -14,7 +14,7 @@ var db      = require('mano').db
 
 exports._parent = require('./meta-admin-base');
 
-exports['holidays-nav'] = { class: { 'pills-nav-active': true } };
+exports['holidays-nav'] = { class: { 'submitted-menu-item-active': true } };
 
 exports['meta-admin-main'] = {
 	content: function () {
@@ -42,7 +42,7 @@ exports['meta-admin-main'] = {
 					return a - b;
 				}), function (date) {
 					tr(
-						td(dayName[date.getDay()]),
+						td(dayName[date.getUTCDay()]),
 						td(date),
 						td(postButton({
 							action: url('delete-holiday-date'),

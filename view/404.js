@@ -2,9 +2,9 @@
 
 var _ = require('mano').i18n.bind('View');
 
-exports._parent = require('./base');
+exports._parent = require('./user-base');
 
-exports.main = function () {
+exports['sub-main'] = function () {
 	div(
 		{ class: 'error-page content user-forms' },
 		div(

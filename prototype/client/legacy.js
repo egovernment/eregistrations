@@ -1,7 +1,7 @@
 'use strict';
 
 require('mano-legacy/html5');
-window.$ = require('mano-legacy');
+require('eregistrations/client/legacy/init');
 
 require('mano-legacy/for-each');
 require('mano-legacy/on-env-update');

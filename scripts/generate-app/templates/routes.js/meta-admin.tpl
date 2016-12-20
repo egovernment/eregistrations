@@ -2,7 +2,7 @@
 
 'use strict';
 
-require('../../view/user-base');
+require('../../view/base');
 require('../../view/meta-admin/meta-admin-base');
 
 module.exports = {

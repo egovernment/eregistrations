@@ -24,6 +24,7 @@ module.exports = memoize(function (db) {
 		institution: { type: Institution },
 
 		// Can be used in subStep of a group to retrieve parent
+		// Type is overriden to ProcessingStepGroup in processing-step-group.js file
 		parentGroup: { type: db.Object, value: function () {
 			var ProcessingStepGroup, parentGroup;
 			ProcessingStepGroup = this.database.ProcessingStepGroup;
@@ -73,18 +74,18 @@ module.exports = memoize(function (db) {
 			return this.isApproved || this.isRejected || false;
 		} },
 
-		// Whether all directly previous steps are satisfied (not applicable or successfully passed)
+		// Whether all previous steps are satisfied (not applicable or successfully passed)
 		isPreviousStepsSatisfied: { type: db.Boolean, value: function (_observe) {
 			if (!this.previousSteps.size) return _observe(this.master._isSubmitted);
 			return this.previousSteps.every(function (step) {
-				return _observe(step._isSatisfied);
+				return _observe(step._isSatisfied) && _observe(step._isPreviousStepsSatisfied);
 			});
 		} },
 
 		// Whether all previous steps are satisfied (not applicable or successfully passed)
-		// It checks alls steps deep down in chain
-		// This resolution is used purely to detect valid returns
-		// (either from 'sentBack' or 'redelegated' states)
+		// With respect to Part A handling. No steps will resolve as satisfied if file
+		// is at draft stage (not submitted, send back or at user processing step)
+		// This one is needed for handling valid returns by business-process-flow service
 		isPreviousStepsSatisfiedDeep: { type: db.Boolean, value: function (_observe) {
 			if (!this.previousSteps.size) return !_observe(this.master._isAtDraft);
 			return this.previousSteps.every(function (step) {

@@ -3,9 +3,11 @@
 'use strict';
 
 var _                  = require('mano').i18n.bind('View: Manager')
-  , actionsColumn      = require('./components/business-process-table-columns').actionsColumn
-  , getServiceIcon     = require('./components/business-process-table-columns').getServiceIcon
-  , formatLastModified = require('./utils/last-modified');
+  , tableColumns       = require('./components/table-columns')
+  , formatLastModified = require('./utils/last-modified')
+
+  , actionsColumn      = tableColumns.businessProcessActionsColumn
+  , getServiceIcon     = tableColumns.getServiceIcon;
 
 exports._parent = require('./manager');
 
@@ -42,7 +44,7 @@ exports['manager-account-content'] = function () {
 								span({ class: 'hint-optional hint-optional-right',
 										'data-hint': businessProcess._label },
 									getServiceIcon(businessProcess))),
-							td(businessProcess.user._fullName),
+							td(resolve(businessProcess._user, '_fullName')),
 							td(businessProcess._businessName),
 							td(_if(businessProcess._isSubmitted, function () {
 								return businessProcess._isSubmitted._lastModified.map(formatLastModified);

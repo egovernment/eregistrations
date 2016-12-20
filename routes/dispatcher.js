@@ -68,14 +68,6 @@ module.exports = function () {
 		},
 
 		// Print routes
-		'print-business-processes-list': require('../view/print-business-processes-table'),
-		'[0-9][a-z0-9]*/print-request-history': {
-			match: match,
-			view: require('../view/print-business-process-status-log')
-		},
-		'[0-9][a-z0-9]*/data-print': {
-			match: match,
-			view: require('../view/print-business-process-data')
-		}
+		'print-business-processes-list': require('../view/print-business-processes-table')
 	};
 };

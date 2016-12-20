@@ -4,7 +4,7 @@ var db                        = require('mano').db
   , _                         = require('mano').i18n.bind('View: Official: Dispatcher')
   , env                       = require('mano').env
   , getBusinessProcessesTable = require('./components/business-processes-table')
-  , tableColumns              = require('./components/business-process-table-columns')
+  , tableColumns              = require('./components/table-columns')
   , once                      = require('timers-ext/once')
   , dispatch                  = require('dom-ext/html-element/#/dispatch-event-2')
   , location                  = require('mano/lib/client/location');
@@ -29,13 +29,13 @@ var assignmentColumn = {
 };
 var assignmentColumnData = assignmentColumn.data;
 
-var columns = [
-	tableColumns.servicesColumn,
-	tableColumns.businessNameColumn,
-	tableColumns.submissionDateColumn,
-	tableColumns.certificatesListColumn,
-	tableColumns.archiverColumn,
-	tableColumns.goToColumn,
+exports._columns = [
+	tableColumns.businessProcessServiceColumn,
+	tableColumns.businessProcessBusinessNameColumn,
+	tableColumns.businessProcessSubmissionDateColumn,
+	tableColumns.businessProcessCertificatesListColumn,
+	tableColumns.businessProcessArchiverColumn,
+	tableColumns.businessProcessGoToColumn,
 	assignmentColumn
 ];
 
@@ -43,7 +43,7 @@ var businessProcessTable = function (context) {
 	var assignableUsers = db.User.instances.filterByKey('roles', function (roles) {
 		return roles.has(context.roleName);
 	});
-	columns[columns.length - 1].data = function (businessProcess) {
+	assignmentColumn.data = function (businessProcess) {
 		return assignmentColumnData(businessProcess.processingSteps.map[context.shortRoleName],
 			assignableUsers);
 	};
@@ -55,7 +55,7 @@ var businessProcessTable = function (context) {
 		statusMap: context.statusMap,
 		getOrderIndex: context.getOrderIndex,
 		itemsPerPage: env.objectsListItemsPerPage,
-		columns: columns,
+		columns: exports._columns,
 		tableUrl: location.pathname,
 		class: 'submitted-user-data-table'
 	});

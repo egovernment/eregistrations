@@ -6,6 +6,7 @@ var aFrom                = require('es5-ext/array/from')
   , ensureIterable       = require('es5-ext/iterable/validate-object')
   , findKey              = require('es5-ext/object/find-key')
   , forEach              = require('es5-ext/object/for-each')
+  , objectMap            = require('es5-ext/object/map')
   , ensureCallable       = require('es5-ext/object/valid-callable')
   , ensureObject         = require('es5-ext/object/valid-object')
   , ensureString         = require('es5-ext/object/validate-stringifiable-value')
@@ -15,6 +16,7 @@ var aFrom                = require('es5-ext/array/from')
   , memoize              = require('memoizee')
   , Set                  = require('es6-set')
   , deferred             = require('deferred')
+  , debug                = require('debug-ext')('data-access')
   , ensureDatabase       = require('dbjs/valid-dbjs')
   , unserializeValue     = require('dbjs/_setup/unserialize/value')
   , serializeValue       = require('dbjs/_setup/serialize/value')
@@ -40,6 +42,7 @@ var aFrom                = require('es5-ext/array/from')
   , getOfficialsFragment = require('./utils/get-officials-fragment')
   , defaultUserListProps = require('../apps/users-admin/user-list-properties')
 
+  , isBusinessProcessStorageName = RegExp.prototype.test.bind(/^businessProcess[A-Z]/)
   , create = Object.create, keys = Object.keys, stringify = JSON.stringify
   , emptyFragment = new Fragment();
 
@@ -64,6 +67,10 @@ var defaultResolveOfficialViewPath = function (userId, roleName, stepShortPath, 
 	return stepShortPath;
 };
 
+var defaultResolveShortStepPath = function (userId, roleName) {
+	return uncapitalize.call(roleName.slice('official'.length));
+};
+
 module.exports = exports = function (db, dbDriver, data) {
 	var userStorage = ensureDriver(dbDriver).getStorage('user')
 	  , getBusinessProcessData = getObjFragment()
@@ -75,9 +82,11 @@ module.exports = exports = function (db, dbDriver, data) {
 	  , resolveOfficialViews, processingStepsMeta, processingStepsDefaultMap = create(null)
 	  , businessProcessListProperties, businessProcessMyAccountProperties
 	  , globalFragment, getMetaAdminFragment, getAccessRules
-	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, userListProps
-	  , businessProcessDispatcherListExtraProperties = [], officialDispatcherListExtraProperties = []
-	  , businessProcessMyAccountExtraProperties = [], businessProcessSupervisorExtraProperties = [];
+	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, resolveStepShortPath
+	  , userListProps, businessProcessDispatcherListExtraProperties = []
+	  , officialDispatcherListExtraProperties = []
+	  , businessProcessMyAccountExtraProperties = [], businessProcessSupervisorExtraProperties = []
+	  , businessProcessAppGlobalFragment, customRoleFragments;
 
 	ensureDatabase(db);
 
@@ -128,6 +137,16 @@ module.exports = exports = function (db, dbDriver, data) {
 	} else {
 		userListProps = defaultUserListProps;
 	}
+	if (data.businessProcessAppGlobalFragment) {
+		businessProcessAppGlobalFragment = data.businessProcessAppGlobalFragment;
+	}
+	if (data.customRoleFragments) {
+		customRoleFragments = objectMap(data.customRoleFragments, function (getFragment) {
+			return memoize(ensureCallable(getFragment), { length: 0 });
+		});
+	} else {
+		customRoleFragments = {};
+	}
 
 	businessProcessListProperties =
 		new Set(aFrom(ensureIterable(data.businessProcessListProperties)));
@@ -163,6 +182,12 @@ module.exports = exports = function (db, dbDriver, data) {
 		resolveOfficialViewPath = ensureCallable(data.resolveOfficialViewPath);
 	} else {
 		resolveOfficialViewPath = defaultResolveOfficialViewPath;
+	}
+
+	if (data.resolveStepShortPath != null) {
+		resolveStepShortPath = ensureCallable(data.resolveStepShortPath);
+	} else {
+		resolveStepShortPath = defaultResolveShortStepPath;
 	}
 
 	// Configure official steps (per user) resolver
@@ -311,12 +336,20 @@ module.exports = exports = function (db, dbDriver, data) {
 		var addSortRecord = getAddRecFrag(null,
 			['processingSteps/map/' + resolveStepPath(stepShortPath) + '/isReady']);
 
+		debug('%s:%s init', stepShortPath, viewPath);
 		fragment.addFragment(officialsFragment);
 		fragment.promise = initializeView('businessProcesses/' + viewPath)(function () {
+			var items = getFirstPageItems(reducedStorage,
+				'businessProcesses/' + viewPath + '/' + defaultStatusName).toArray().slice(0, 5);
+			debug('%s:%s init pending items %s', stepShortPath, viewPath, items.length);
+			items.on('change', function () {
+				debug('%s:%s changed pending items %s', stepShortPath, viewPath, items.length);
+			});
 			// To be visited (recently pending) business processes (full data)
-			fragment.addFragment(getColFragments(getFirstPageItems(reducedStorage,
-				'businessProcesses/' + viewPath + '/' + defaultStatusName).toArray().slice(0, 10),
-				getBusinessProcessFullData));
+			fragment.addFragment(getColFragments(items, function (bpId) {
+				debug('%s:%s retrieve item fragment %s', stepShortPath, viewPath, bpId);
+				return getBusinessProcessFullData(bpId);
+			}));
 			// First page snapshot for each status
 			fragment.addFragment(getReducedData('views/businessProcesses/' + viewPath));
 			// First page list data for each status
@@ -410,6 +443,24 @@ module.exports = exports = function (db, dbDriver, data) {
 		return fragment;
 	});
 
+	var getStatisticsFragment = memoize(function () {
+		var fragment = new FragmentGroup();
+
+		// Accounts statistics
+		fragment.addFragment(getUserReducedData('statistics'));
+
+		// Business process statistics
+		fragment.promise = dbDriver.getStorages()(function (storages) {
+			forEach(storages, function (storage, name) {
+				if (!isBusinessProcessStorageName(name)) return;
+				fragment.addFragment(getReducedFrag(storage)('statistics'));
+			});
+		});
+		// Officials
+		fragment.addFragment(officialsFragment);
+		return fragment;
+	});
+
 	getAccessRules = memoize(function (appId) {
 		var userId, roleName, stepShortPath, custom, fragment, initialBusinessProcesses, promise
 		  , clientId, businessProcessId, viewPath;
@@ -430,11 +481,17 @@ module.exports = exports = function (db, dbDriver, data) {
 		// Eventual global fragment
 		if (globalFragment && (roleName !== 'memoryDb')) fragment.addFragment(globalFragment);
 
+		// Add eventual custom role fragment
+		if (customRoleFragments[roleName]) fragment.addFragment(customRoleFragments[roleName]());
+
 		if ((roleName === 'user') || (roleName === 'memoryDb')) {
 			if (custom) {
 				// Business process application
 				// Business process data
 				fragment.addFragment(getBusinessProcessFullData(custom));
+				if (businessProcessAppGlobalFragment) {
+					fragment.addFragment(businessProcessAppGlobalFragment);
+				}
 			} else {
 				initialBusinessProcesses = getDbRecordSet(userStorage,
 					userId + '/initialBusinessProcesses');
@@ -479,6 +536,9 @@ module.exports = exports = function (db, dbDriver, data) {
 			fragment.addFragment(getManagerUserData(clientId));
 			if (businessProcessId) {
 				fragment.addFragment(getBusinessProcessFullData(businessProcessId));
+				if (businessProcessAppGlobalFragment) {
+					fragment.addFragment(businessProcessAppGlobalFragment);
+				}
 			} else {
 				fragment.promise = getBusinessProcessStorages(function (storages) {
 					return getDbSet(storages, 'direct', 'manager', '7' + userId)(function (managerBps) {
@@ -513,7 +573,8 @@ module.exports = exports = function (db, dbDriver, data) {
 		}
 
 		if (isOfficialRoleName(roleName)) {
-			stepShortPath = uncapitalize.call(roleName.slice('official'.length));
+			stepShortPath = resolveStepShortPath(userId, roleName);
+
 			// Recently visited business processes (full data)
 			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, stepShortPath));
 			// Official role specific data
@@ -546,9 +607,22 @@ module.exports = exports = function (db, dbDriver, data) {
 			fragment.addFragment(getSupervisorFragment());
 			return fragment;
 		}
+
+		if (roleName === 'statistics') {
+			// Statistics specific data
+			fragment.addFragment(getStatisticsFragment());
+			return fragment;
+		}
+
+		if (roleName === 'dashboard') {
+			// No specific model at this point
+			return fragment;
+		}
+
 		console.error("\n\nError: Unrecognized role " + roleName + "\n\n");
 		return fragment;
 	}, { primitive: true });
 	return getAccessRules;
 };
 exports.getDefaultOfficialViewsResolver = getDefaultOfficialViewsResolver;
+exports.defaultResolveShortStepPath     = defaultResolveShortStepPath;

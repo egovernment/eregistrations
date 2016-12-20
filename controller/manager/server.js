@@ -1,15 +1,26 @@
 'use strict';
 
-var assign    = require('es5-ext/object/assign')
-  , dbObjects = require('mano').db.objects;
+var assign      = require('es5-ext/object/assign')
+  , dbObjects   = require('mano').db.objects
+  , customError = require('es5-ext/error/custom');
 
 // Common
 assign(exports, require('../user/server'));
 
 // Delete User
 exports['clients/[0-9][a-z0-9]+/delete'] = {
+	validate: function (data) {
+		if (!this.user.managedUsers.has(this.managedUser)) {
+			throw customError("Not a managed user", 'NOT_MANAGED_USER');
+		}
+		if (!this.managedUser.canManagedUserBeDestroyed) {
+			throw customError("Managed user cannot be removed", 'CANNOT_REMOVE_MANAGED_USER');
+		}
+
+		return data;
+	},
 	submit: function () {
-		return this.user.destroyManagedUser(this.managedUser);
+		return this.managedUser._destroy();
 	}
 };
 // Delete Business Process

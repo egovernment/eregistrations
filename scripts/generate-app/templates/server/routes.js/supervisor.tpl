@@ -3,6 +3,6 @@
 'use strict';
 
 module.exports = require('eregistrations/server/routes/supervisor')({
-	// TODO: Choose proper businessProcess storage
-	storage: require('mano').dbDriver.getStorage('businessProcessTODO')
+	storages: require('../../../server/business-process-storages'),
+	stepsMap: require('../../../apps-common/processing-steps/meta')
 });

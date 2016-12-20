@@ -42,7 +42,6 @@ module.exports = {
 	},
 	'certificates/[a-z][a-z0-9-]*': {
 		match: function (uniqueKey) {
-			if (!this.businessProcess.isApproved) return;
 			return matchCertificate.call(this, hyphenToCamel.call(uniqueKey));
 		},
 		view: require('../view/business-process-submitted-certificate')
@@ -52,9 +51,5 @@ module.exports = {
 			this.dataSnapshot = this.businessProcess.dataForms.dataSnapshot.resolved;
 		},
 		view: require('../view/business-process-submitted-data')
-	},
-
-	// Print routes
-	'data-print': require('../view/print-business-process-data'),
-	'print-request-history': require('../view/print-business-process-status-log')
+	}
 };

@@ -35,6 +35,11 @@
 	color:var(--white-text);
 }
 
+.submitted-menu label {
+	color:var(--white-text);
+	font-size: 16px;
+}
+
 .submitted-menu a,
 .submitted-menu button {
 	color:var(--white-text);

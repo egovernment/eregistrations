@@ -35,8 +35,9 @@ var getNamedListElements = function (listId) {
 };
 
 var getPropertyValue = function (target, property) {
-	return typeof target[property] === 'function' ? target[property]($.dbjsObserveMock)
-		: target[property];
+	var result = typeof target[property] === 'function'
+		? target[property]($.dbjsObserveMock) : target[property];
+	return result || ''; // Do not pass null/undefined literally
 };
 
 var buildCostsPrintLink = function (currentLink, cost, field, prefix) {
@@ -60,9 +61,9 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		businessProcessTypeName) {
 	var guideForm = $(guideFormId)
 	  , noRequstedRegistrationsSection, mandatoryRegistrationsSection
-	  , mandatoryRegistrationsListElements
+	  , mandatoryRegistrationsListElements, mandatoryRegistrationsEmptyMessage
 	  , optionalRegistrationsSection, optionalRegistrationsListElements
-	  , requirementsSection, requirementsListElements
+	  , requirementsSection, requirementsListElements, requirementsLabelElements = {}
 	  , costsListElements, costsAmountsElements = {}, costsLabelElements = {}
 	  , costsTotalElement, costsPrintLink, guideSaveButton
 	  , costsSection, zeroCostsClass;
@@ -75,6 +76,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 	noRequstedRegistrationsSection = $('no-requested-registrations-section');
 	mandatoryRegistrationsSection = $('mandatory-registrations-section');
+	mandatoryRegistrationsEmptyMessage = $('mandatory-registrations-empty-message');
 	mandatoryRegistrationsListElements = getNamedListElements('mandatory-registrations-list');
 	optionalRegistrationsSection = $('optional-registrations-section');
 	optionalRegistrationsListElements = getNamedListElements('optional-registrations-list');
@@ -89,6 +91,12 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 	$.forIn(costsListElements, function (li, name) {
 		costsAmountsElements[name] = $.getTextChild('cost-amount-' + camelToHyphen.call(name));
 		costsLabelElements[name] = $.getTextChild('cost-label-' + camelToHyphen.call(name));
+	});
+
+	$.forIn(requirementsListElements, function (li, name) {
+		var labelElement = $('requirement-label-' + camelToHyphen.call(name));
+
+		if (labelElement) requirementsLabelElements[name] = $.getTextChild(labelElement);
 	});
 
 	if ($('costs-total')) {
@@ -123,15 +131,26 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 			$.setify(businessProcess.registrations.optional($.dbjsObserveMock));
 
 		// Filter mandatory and optional registration lists
-		if (businessProcess.registrations.mandatory.size === 0) {
-			toggleConditionally(mandatoryRegistrationsSection, false);
-		} else {
+		var anyApplicable = businessProcess.registrations.applicable.size > 0;
+		var anyMandatory = anyApplicable && businessProcess.registrations.mandatory.size > 0;
+
+		if (anyMandatory || !anyApplicable) {
 			toggleConditionally(mandatoryRegistrationsSection, true);
-			$.forIn(mandatoryRegistrationsListElements, function (li, name) {
-				li.toggle(businessProcess.registrations.mandatory.has(
-					businessProcess.registrations.map[name]
-				));
-			});
+			if (!anyApplicable) {
+				toggleConditionally(mandatoryRegistrationsEmptyMessage, true);
+				$.forIn(mandatoryRegistrationsListElements, function (li) {
+					li.toggle(businessProcess.registrations.mandatory.has(false));
+				});
+			} else {
+				toggleConditionally(mandatoryRegistrationsEmptyMessage, false);
+				$.forIn(mandatoryRegistrationsListElements, function (li, name) {
+					li.toggle(businessProcess.registrations.mandatory.has(
+						businessProcess.registrations.map[name]
+					));
+				});
+			}
+		} else {
+			toggleConditionally(mandatoryRegistrationsSection, false);
 		}
 
 		if (businessProcess.registrations.optional.size === 0) {
@@ -200,6 +219,10 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		businessProcess.requirements.applicable =
 			$.setify(businessProcess.requirements.applicable($.dbjsObserveMock));
 
+		businessProcess.requirements.map.forEach(function (requirement) {
+			requirement.label = getPropertyValue(requirement, 'label');
+		});
+
 		//Resolve costs
 		businessProcess.costs.applicable =
 			$.setify(businessProcess.costs.applicable($.dbjsObserveMock));
@@ -217,9 +240,16 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 
 		// Filter requirements and costs lists
 		$.forIn(requirementsListElements, function (li, name) {
-			li.toggle(businessProcess.requirements.applicable.has(
+			var enabled = businessProcess.requirements.applicable.has(
 				businessProcess.requirements.map[name]
-			));
+			);
+
+			li.toggle(enabled);
+			if (enabled) {
+				if (requirementsLabelElements[name]) {
+					requirementsLabelElements[name].data = businessProcess.requirements.map[name].label;
+				}
+			}
 		});
 
 		$.forIn(costsListElements, function (li, name) {

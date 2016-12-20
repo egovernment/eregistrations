@@ -33,13 +33,16 @@ module.exports = function (step) {
 	return function (businessProcessId) {
 		var resolution = baseMatcher.call(this, step, businessProcessId), visitedBusinessProcesses;
 		if (!resolution) {
+			document.body.classList.add('throbber-active');
 			return xhrGet('/get-business-process-data/', { id: businessProcessId })(function (result) {
-				var def;
+				var def, interval;
 				if (!result.passed) return false;
 				if (baseMatcher.call(this, step, businessProcessId)) return true;
 				def = deferred();
 				serverSync.once('sync', function () {
 					var baseResolution;
+					if (def.promise.resolved) return;
+					clearInterval(interval);
 					baseResolution = baseMatcher.call(this, step, businessProcessId);
 					if (!baseResolution) {
 						console.error("Data sync issue");
@@ -48,8 +51,17 @@ module.exports = function (step) {
 					}
 					def.resolve(baseResolution);
 				}.bind(this));
+				// 'sync' will be emitted only if updates go to current tab,
+				// so if SSE connection is handled by other tab, we may end with infinte wait
+				// to we avoid that, following check on interval is done
+				interval = setInterval(function () {
+					var baseResolution = baseMatcher.call(this, step, businessProcessId);
+					if (!baseResolution) return;
+					clearInterval(interval);
+					def.resolve(baseResolution);
+				}.bind(this), 1000);
 				return def.promise;
-			}.bind(this));
+			}.bind(this)).finally(function () { document.body.classList.remove('throbber-active'); });
 		}
 		if (this.user.currentRoleResolved === 'dispatcher') {
 			visitedBusinessProcesses = this.user.recentlyVisited.businessProcesses.dispatcher;

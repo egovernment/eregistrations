@@ -12,15 +12,10 @@ module.exports = memoize(function (db) {
 		isUpToDate: {
 			type: db.Boolean,
 			value: function (_observe) {
-				var sections, lastEditStamp;
+				var lastEditStamp;
 				if (!this.isUpToDateByUser) return false;
-				sections = _observe(this.master.dataForms.applicable).copy().add(this.master.determinants);
-				lastEditStamp = 0;
-
-				// Find out the last edit date of the form sections.
-				sections.forEach(function (section) {
-					lastEditStamp = Math.max(lastEditStamp, _observe(section._lastEditStamp));
-				}, this);
+				lastEditStamp = Math.max(_observe(this.master.dataForms._lastEditStamp),
+					_observe(this.master.determinants._lastEditStamp));
 
 				_observe(this.files.ordered).forEach(function (file) {
 					lastEditStamp = Math.max(lastEditStamp,

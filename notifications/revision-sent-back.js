@@ -3,7 +3,7 @@
 var _                = require('mano').i18n.bind('Official: Revision: Notifications')
   , normalizeOptions = require('es5-ext/object/normalize-options')
   , assign           = require('es5-ext/object/assign')
-  , ensureType       = require('dbjs/valid-dbjs-type')
+  , resolveProcesses = require('../business-processes/resolve')
   , _d               = _;
 
 module.exports = function (BusinessProcessClass/*, options*/) {
@@ -11,21 +11,13 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 	  , stepName          = options.stepName || 'revision'
 	  , stepKeyPath       = 'processingSteps/map/' + stepName
 	  , notification      = {}
-	  , businessProcesses;
-
-	ensureType(BusinessProcessClass);
-
-	if (!BusinessProcessClass.database.BusinessProcess.isPrototypeOf(BusinessProcessClass)) {
-		throw new Error(BusinessProcessClass + ' is expected to extend BusinessProcess');
-	}
-
-	businessProcesses = BusinessProcessClass.instances.filterByKey('isFromEregistrations', true);
+	  , businessProcesses = resolveProcesses(BusinessProcessClass);
 
 	notification.trigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isSentBack', true);
 	notification.preTrigger = businessProcesses.filterByKeyPath(stepKeyPath + '/isReady', true);
 
 	notification.subject = _("M05 You must correct some elements in your application");
-	notification.text = _("M05 Revision sent back\n\n"
+	notification.text = options.text || _("M05 Revision sent back\n\n"
 			+ "Name of company: ${ businessName }\n\n"
 			+ "${ rejectedUploads }");
 
@@ -39,7 +31,7 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 
 	notification.resolveGetters = true;
 
-	notification.variables = {
+	notification.variables = assign({
 		fullName: function () {
 			return this.businessProcess.user.fullName;
 		},
@@ -50,6 +42,7 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 			var processingStep        = this.businessProcess.processingSteps.map[stepName]
 			  , paymentReceiptUploads = processingStep.paymentReceiptUploads
 			  , requirementUploads    = processingStep.requirementUploads
+			  , dataForms             = this.businessProcess.dataForms
 			  , result                = [];
 
 			if (requirementUploads.rejected.size) {
@@ -75,13 +68,19 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 					result.push("    " + paymentReceiptUpload.rejectReasonMemo);
 				});
 			}
+			if (dataForms.isRejected) {
+				result.push(_("Issues with data forms:"));
+				result.push(dataForms.rejectReason);
+			}
 			return result.join('\n');
 		}
-	};
+	}, options.variables);
 
 	delete options.stepName;
 	delete options.greeting;
 	delete options.signature;
+	delete options.text;
+	delete options.variables;
 
 	return assign(notification, options);
 };

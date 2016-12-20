@@ -21,6 +21,7 @@ module.exports = memoize(function (db/*, options*/) {
 		lastName: { type: StringLine, label: _("Last name"), required: true },
 		fullName: { type: db.StringLine, label: _("Full name"), value: function () {
 			return (this.firstName || "") + " " + (this.lastName || "");
-		} }
+		} },
+		phone: { type: StringLine, label: _("Phone number") }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

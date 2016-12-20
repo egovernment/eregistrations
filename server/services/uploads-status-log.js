@@ -15,6 +15,7 @@ module.exports = function (db) {
 		if (isPastEvent(event)) return;
 		if (endsWith.call(id, 'submissionForms/isAffidavitSigned')) {
 			bp = event.object.master;
+			if (!event.value) return;
 			nextTick(function () {
 				if (!bp.requirementUploads || !bp.paymentReceiptUploads) return;
 

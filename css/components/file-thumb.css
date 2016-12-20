@@ -7,7 +7,7 @@
 .file-thumb-actions {
 	display: flex;
 	flex-direction: row;
-	justify-content: space-around;
+	justify-content: flex-end;
 	margin-top: 11px;
 	margin-bottom: 11px;
 }
@@ -19,6 +19,7 @@
 	border-radius: 5px;
 	padding: 8px;
 	text-align: center;
+	text-decoration: none;
 }
 .file-thumb-image:hover,
 .file-thumb-image:focus,
@@ -44,7 +45,7 @@
 	color: var(--white-text);
 	padding: 0 4px 0;
 	border: none;
-	margin-right: 3px;
+	margin-left: 3px;
 	text-align: center;
 }
 .file-thumb-action:hover,
@@ -68,4 +69,28 @@ button.file-thumb-action span {
 }
 .auto-submit .file-thumb-action input {
 	display: none;
+}
+
+.file-thumb-uploading .throbber,
+.file-thumb-generating .throbber {
+	display: block;
+	text-align: center;
+}
+
+.file-thumb-upload-status {
+	font-size: 10px;
+	font-weight: 500;
+	display: block;
+}
+
+.file-thumb-upload-status .throbber {
+	padding: 50% 11px 11px;
+}
+
+.file-thumb-upload-status .spinner-loader:not(:required) {
+	box-shadow: rgb(0, 0, 0) 1.5em 0 0 0, rgb(0, 0, 0) 1.1em 1.1em 0 0, rgb(0, 0, 0) 0 1.5em 0 0, rgb(0, 0, 0) -1.1em 1.1em 0 0, rgb(0, 0, 0) -1.5em 0 0 0, rgb(0, 0, 0) -1.1em -1.1em 0 0, rgb(0, 0, 0) 0 -1.5em 0 0, rgb(0, 0, 0) 1.1em -1.1em 0 0;
+	display: block;
+	font-size: 6px;
+	margin: auto;
+	position: relative;
 }

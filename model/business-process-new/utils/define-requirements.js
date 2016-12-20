@@ -41,7 +41,11 @@ module.exports = function (BusinessProcess, data) {
 			}
 		}
 		definitions[name] = { nested: true };
-		typesMap[name] = { label: conf.label, legend: conf.legend };
+		typesMap[name] = {};
+		if (!isType(conf)) {
+			if (conf.label) typesMap[name].label = conf.label;
+			if (conf.legend) typesMap[name].legend = conf.legend;
+		}
 		if (Requirement.isPrototypeOf(Required)) {
 			definitions[name].type = Required;
 		} else {

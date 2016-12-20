@@ -19,7 +19,8 @@ var ComputedEmitter = module.exports = function (storage, keyPath/*, options*/) 
 		return new ComputedEmitter(storage, keyPath, arguments[2]);
 	}
 	options = Object(arguments[2]);
-	this._storage = ensureStorage(storage);
+	if (Array.isArray(storage)) this._storages = storage.map(ensureStorage);
+	else this._storages = [ensureStorage(storage)];
 	if (options.type != null) {
 		if (options.type === 'direct') {
 			this._type = 'direct';
@@ -31,11 +32,13 @@ var ComputedEmitter = module.exports = function (storage, keyPath/*, options*/) 
 		this._keyPath = ensureString(keyPath);
 	}
 
-	this._storage.on('key:' + keyPath || '&', function (event) {
-		if (event.type !== this._type) return;
-		this._map.set(event.ownerId, event.data.value);
-		this.emit(event.ownerId, event.data.value);
-	}.bind(this));
+	this._storages.forEach(function (storage) {
+		storage.on('key:' + keyPath || '&', function (event) {
+			if (event.type !== this._type) return;
+			this._map.set(event.ownerId, event.data.value);
+			this.emit(event.ownerId, event.data.value);
+		}.bind(this));
+	}, this);
 };
 
 ee(Object.defineProperties(ComputedEmitter.prototype, assign({
@@ -48,12 +51,20 @@ ee(Object.defineProperties(ComputedEmitter.prototype, assign({
 	_getData: d(function (ownerId) {
 		var methodName = 'get' + ((this._type === 'direct') ? '' : capitalize.call(this._type))
 		  , id = ownerId + (this._keyPath ? '/' + this._keyPath : '');
-		return this._storage[methodName](id)(function (data) {
-			var value = data ? data.value : '';
-			this._map.set(ownerId, value);
-			return value;
+		return this.getStorage(ownerId)(function (storage) {
+			if (!storage) return null;
+			return storage[methodName](id)(function (data) {
+				var value = data ? data.value : '';
+				this._map.set(ownerId, value);
+				return value;
+			}.bind(this));
 		}.bind(this));
 	})
 }), lazy({
-	_map: d(function () { return new Map(); })
+	_map: d(function () { return new Map(); }),
+	getStorage: d(function () {
+		if (this._storages.length > 1) return require('./get-id-to-storage')(this._storages);
+		var storagePromise = deferred(this._storages[0]);
+		return function () { return storagePromise; };
+	})
 }))));

@@ -12,13 +12,13 @@ var includes            = require('es5-ext/array/#/contains')
 
   , isArray = Array.isArray;
 
-module.exports = function (collection, getFragment) {
-	var fragment, current, isArrayMode = isArray(collection);
+module.exports = function (collection, getFragment/*, options*/) {
+	var fragment, current, isArrayMode = isArray(collection), options = Object(arguments[2]);
 
 	ensureObservable(ensureIterable(collection));
 	if (typeof getFragment !== 'function') getFragment = defaultGetFragments(getFragment);
 
-	fragment = new DataFragmentGroup();
+	fragment = options.fragment || new DataFragmentGroup();
 	current = new Set();
 	if (collection.promise) fragment.promise = collection.promise;
 

@@ -227,6 +227,7 @@ module.exports = memoize(function (db) {
 						return;
 					}
 					lastModified = _observe(resolved.object['_' + resolved.key]._lastModified);
+					if (lastModified < 1e6) lastModified = 0; // Ignore model stamps
 					if (lastModified > res) res = lastModified;
 				}, this);
 
@@ -275,7 +276,7 @@ module.exports = memoize(function (db) {
 			if (!_observe(section._resolventStatus)) return 0;
 
 			_observe(section.applicablePropertyNames).forEach(function (name) {
-				resolved = section.master.resolveSKeyPath(name, _observe);
+				resolved = section.propertyMaster.resolveSKeyPath(name, _observe);
 
 				if (!resolved) {
 					++total;
@@ -306,7 +307,7 @@ module.exports = memoize(function (db) {
 				}
 			}
 			_observe(section.applicablePropertyNames).forEach(function (name) {
-				resolved = section.master.resolveSKeyPath(name, _observe);
+				resolved = section.propertyMaster.resolveSKeyPath(name, _observe);
 				if (!resolved) {
 					++total;
 					return;

@@ -5,7 +5,7 @@ var endsWith          = require('es5-ext/string/#/ends-with')
   , ensureObject      = require('es5-ext/object/valid-object')
   , ensureString      = require('es5-ext/object/validate-stringifiable-value')
   , deferred          = require('deferred')
-  , debug             = require('debug-ext')('zip-archiver')
+  , debug             = require('debug-ext')('business-process-data-archiver')
   , once              = require('timers-ext/once')
   , ensureDatabase    = require('dbjs/valid-dbjs')
   , unserializeValue  = require('dbjs/_setup/unserialize/value')
@@ -32,11 +32,7 @@ exports.filenameResetService = function (db, data) {
 		keys(pending).forEach(function (id) {
 			var bp = db.BusinessProcessBase.getById(id), url, filenames, oldFilename;
 			delete pending[id];
-			if (!bp) return;
-			if (!bp.isSubmitted) {
-				if (bp.filesArchiveUrl) bp.delete('filesArchiveUrl');
-				return;
-			}
+			if (!bp || !bp.dataForms) return;
 			filenames = getFilenames(bp);
 			if (!filenames.length) {
 				if (bp.filesArchiveUrl) bp.delete('filesArchiveUrl');
@@ -54,11 +50,12 @@ exports.filenameResetService = function (db, data) {
 				});
 			}
 			bp.filesArchiveUrl = url;
+			debug('%s set url', bp.__id__);
 		});
 		--db._postponed_;
 	});
 	setupTrigger({
-		trigger: db.BusinessProcess.instances.filterByKey('isFromEregistrations', true)
+		trigger: db.BusinessProcess.instances.filterByKey('isSubmitted', true)
 	}, function (bp) {
 		pending[bp.__id__] = true;
 		update();
@@ -67,8 +64,10 @@ exports.filenameResetService = function (db, data) {
 		if (isPastRecordEvent(event)) return;
 		var id = event.object.__valueId__, bp = event.object.master;
 		if (!(bp instanceof db.BusinessProcessBase)) return;
-		if (!bp.dataForms || !bp.dataForms.map) return;
-		if (!endsWith.call(id, '/path') && !endsWith.call(id, '/submissionForms/isAffidavitSigned')) {
+		if (!bp.dataForms) return; // Destroyed
+		if (endsWith.call(id, '/path')) {
+			if (!bp.submissionForms.isAffidavitSigned) return;
+		} else if (!endsWith.call(id, '/submissionForms/isAffidavitSigned')) {
 			return;
 		}
 		pending[bp.__id__] = true;

@@ -7,6 +7,9 @@
 	--light-background: #f5f5f5;
 	--normal-light-background: #ddd;
 	--normal-background: #999;
+	--success-background: #5CB85C;
+	--error-background: #D9534F;
+	--progress-background: #f89406;
 
 	/* Text colors */
 	--dark-text: #333333;

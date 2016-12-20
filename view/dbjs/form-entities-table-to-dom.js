@@ -15,6 +15,7 @@
 'use strict';
 
 var _          = require('mano').i18n.bind('View: Binding: Sections')
+  , _d         = _
   , d          = require('d')
   , db         = require('mano').db
   , ns         = require('mano').domjs.ns
@@ -42,7 +43,11 @@ module.exports = Object.defineProperty(db.FormEntitiesTable.prototype, 'toDOMFor
 				ns._if(this._label, [
 					headersMap[headerRank](this._label),
 					ns._if(this._legend,
-						ns.div({ class: 'section-primary-legend' }, ns.md(this._legend)))]),
+						ns.div({ class: 'section-primary-legend' },
+							ns.md(this._legend.map(function (legend) {
+								if (!legend) return;
+								return _d(legend, this.getTranslations());
+							}.bind(this)))))]),
 				this.toDOMFieldset(document, options),
 				ns.p({ class: 'section-primary-scroll-top' },
 					ns.a({ onclick: 'window.scroll(0, 0)' }, ns.span({ class: 'fa fa-arrow-up' },

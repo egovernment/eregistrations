@@ -20,13 +20,8 @@ module.exports = function (t, a) {
 	businessProcess = new BusinessProcess();
 	a.deep(aFrom(businessProcess.dataForms.applicable),
 		[businessProcess.dataForms.map.test1, businessProcess.dataForms.map.test2]);
-	a.deep(aFrom(businessProcess.dataForms.applicable),
-		aFrom(businessProcess.dataForms.processChainApplicable));
 	businessProcess.derivedBusinessProcess = new BusinessProcess();
-	a.deep(aFrom(businessProcess.dataForms.applicable),
-		aFrom(businessProcess.dataForms.processChainApplicable));
 	businessProcess.dataForms.map.test1.isApplicable = false;
-	a(businessProcess.dataForms.processChainApplicable.size, 1);
 
 	a(businessProcess.dataForms.status, undefined);
 	a(businessProcess.dataForms.isRejected, false);

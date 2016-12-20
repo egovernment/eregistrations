@@ -7,7 +7,7 @@ var camelToHyphen              = require('es5-ext/string/#/camel-to-hyphen')
   , renderDocument             = require('./components/document-preview')
   , renderDocumentHistory      = require('./components/business-process-document-history')
   , renderDocumentRevisionInfo = require('./components/business-process-document-review-info')
-  , renderSections             = require('./components/render-sections-json')
+  , renderSections             = require('./components/business-process-document-render-sections')
   , disableStep                = require('./components/disable-processing-step')
   , getDocumentData            = require('./utils/get-document-data')
 
@@ -22,8 +22,8 @@ revisionForm = function (requirementUpload) {
 
 	return form({
 		id: 'form-revision-requirement-upload',
-		class: ['submitted-preview-form', _if(or(requirementUpload._isApproved,
-			requirementUpload._isRejected), 'completed')],
+		class: ['submitted-preview-form', _if(eq(requirementUpload._revisionProgress, 1),
+			'completed')],
 		method: 'post',
 		action: '/revision-requirement-upload/' + requirementUpload.master.__id__ +
 			'/' + camelToHyphen.call(requirementUpload.document.uniqueKey) + '/'
@@ -56,7 +56,7 @@ exports['selection-preview'] = function () {
 				return renderDocumentRevisionInfo(this);
 			}.bind(this)),
 			mainContent: exports._documentPreviewContent.call(this, documentData),
-			sideContent: renderSections(this.businessProcess.dataForms.dataSnapshot),
+			sideContent: exports._renderSections.call(this),
 			urlPrefix: '/' + this.businessProcess.__id__ + '/',
 			documentsRootHref: '/' + this.businessProcess.__id__ + '/'
 		}),
@@ -65,3 +65,5 @@ exports['selection-preview'] = function () {
 };
 
 exports._documentPreviewContent = Function.prototype;
+
+exports._renderSections = renderSections;

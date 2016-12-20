@@ -4,8 +4,8 @@ var isFunction = require('es5-ext/function/is-function')
   , forEach    = Array.prototype.forEach
   , some       = Array.prototype.some;
 
-var resolveConf = function (content, item) {
-	return content && (isFunction(content) ? content(item) : content);
+var resolveConf = function (content, item, thisArg) {
+	return content && (isFunction(content) ? content.call(thisArg, item) : content);
 };
 
 module.exports = function (domjs) {
@@ -16,19 +16,19 @@ module.exports = function (domjs) {
 			var tableHeadings = tr();
 
 			forEach.call(conf.columns, function (column) {
-				tableHeadings.appendChild(th({ class: resolveConf(column.headClass) },
-					resolveConf(column.head)));
+				tableHeadings.appendChild(th({ class: resolveConf(column.headClass, null, conf.thisArg) },
+					resolveConf(column.head, null, conf.thisArg)));
 			});
 
 			this.appendChild(thead(tableHeadings));
 		}
 
 		this.appendChild(tbody(conf.collection, function (item) {
-			var itemRow = tr(resolveConf(conf.rowAttributes, item));
+			var itemRow = tr(resolveConf(conf.rowAttributes, item, conf.thisArg));
 
 			forEach.call(conf.columns, function (column) {
-				itemRow.appendChild(td({ class: resolveConf(column.class, item) },
-					resolveConf(column.data, item)));
+				itemRow.appendChild(td({ class: resolveConf(column.class, item, conf.thisArg) },
+					resolveConf(column.data, item, conf.thisArg)));
 			});
 
 			return itemRow;

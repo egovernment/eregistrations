@@ -3,6 +3,7 @@
 var aFrom                 = require('es5-ext/array/from')
   , Database              = require('dbjs')
   , defineDocument        = require('../../../model/document')
+  , defineProcessingSteps = require('../../../model/business-process-new/processing-steps')
   , defineMapCertificates
 	= require('../../../model/business-process-new/utils/define-certificates');
 
@@ -15,9 +16,11 @@ module.exports = function (t, a) {
 			{ label: { value: "Test document 2" } })
 	  , BusinessProcess = t(db)
 	  , businessProcess;
+	defineProcessingSteps(db);
 
 	BusinessProcess.prototype.registrations.map.define('test', { nested: true });
 	BusinessProcess.prototype.registrations.map.test.Document = TestDocument;
+	BusinessProcess.prototype.processingSteps.map.define('processing', { nested: true });
 	defineMapCertificates(BusinessProcess, [TestDocument, TestDocument2]);
 	businessProcess = new BusinessProcess();
 	a.deep(aFrom(businessProcess.certificates.applicable), [businessProcess.certificates.map.test]);
@@ -38,6 +41,8 @@ module.exports = function (t, a) {
 		businessProcess.certificates.map.test2]);
 	a.deep(aFrom(businessProcess.certificates.physical), [businessProcess.certificates.map.test]);
 	a.deep(aFrom(businessProcess.certificates.electronic), [businessProcess.certificates.map.test2]);
+
+	businessProcess.processingSteps.map.processing.status = 'approved';
 	a.deep(aFrom(businessProcess.certificates.toBeHanded),
 		[businessProcess.certificates.map.test]);
 };

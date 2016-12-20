@@ -3,6 +3,6 @@
 'use strict';
 
 module.exports = {
-	'/': require('../../view/${ appName }'),
+	'/': require('../../view/user-base'),
 	profile: require('eregistrations/view/user-profile')
 };

@@ -12,6 +12,7 @@ exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
 		renderMainInfo(this, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
+		insert(exports._prependContent.call(this));
 		section({ class: 'section-tab-nav' },
 			exports._processingTabLink.call(this),
 			exports._documentsTabLink.call(this),
@@ -43,3 +44,5 @@ exports._dataTabLink = function () {
 		href: '/' + this.businessProcess.__id__ + '/data/'
 	}, _("Data"));
 };
+
+exports._prependContent = Function.prototype;

@@ -2,25 +2,39 @@
 
 'use strict';
 
-var memoize                     = require('memoizee/plain')
+var _                           = require('mano').i18n.bind('Model')
+  , memoize                     = require('memoizee/plain')
+  , Map                         = require('es6-map')
+  , defineStringLine            = require('dbjs-ext/string/string-line')
   , defineBusinessProcessStatus = require('../lib/business-process-status')
   , defineBusinessProcess       = require('./guide')
   , defineDataForms             = require('./data-forms')
   , defineRequirementUploads    = require('./requirement-uploads')
   , defineCosts                 = require('./costs')
   , defineSubmissionForms       = require('./submission-forms')
-  , defineProcessingSteps       = require('./processing-steps');
+  , defineProcessingSteps       = require('./processing-steps')
+  , defineUInteger              = require('dbjs-ext/number/integer/u-integer')
+  , definePerson                = require('../person');
 
 module.exports = memoize(function (db/*, options*/) {
 	var options               = Object(arguments[1])
 	  , BusinessProcess       = defineBusinessProcess(db, options)
-	  , BusinessProcessStatus = defineBusinessProcessStatus(db);
+	  , BusinessProcessStatus = defineBusinessProcessStatus(db)
+	  , UInteger              = defineUInteger(db)
+	  , StringLine            = defineStringLine(db)
+	  , Person                = definePerson(db, options);
 
 	defineDataForms(db, options);
 	defineRequirementUploads(db, options);
 	defineCosts(db, options);
 	defineSubmissionForms(db, options);
 	defineProcessingSteps(db, options);
+
+	// Enum for submitterType property
+	var SubmitterType = StringLine.createEnum('SubmitterType', new Map([
+		['user', { label: _("User") }],
+		['manager', { label: _("Manager") }]
+	]));
 
 	BusinessProcess.prototype.defineProperties({
 
@@ -43,6 +57,16 @@ module.exports = memoize(function (db/*, options*/) {
 		// Set to true by server service on first successful request submission
 		// (technically: whenever isSubmittedReady turns true for very first time)
 		isSubmitted: { type: db.Boolean, value: false },
+
+		// The User that submitted application to Part B
+		// This will be the original submitter. If the file was sent back and resubmitted by
+		// other user, this property will not change.
+		submitter: { type: Person },
+
+		// Set in application-submit controller for registration apps.
+		// This will be the original submitter type. If the file was sent back and resubmitted by
+		// user of different type, this property will not change.
+		submitterType: { type: SubmitterType, value: 'user' },
 
 		// Whether business process was sent back to Part A
 		isSentBack: { type: db.Boolean, value: false },
@@ -88,11 +112,23 @@ module.exports = memoize(function (db/*, options*/) {
 			var frontDesk;
 			if (!this.isSubmitted) return 'draft';
 			if (this.isSentBack) return 'sentBack';
+			if (this.isRejected) return 'rejected';
 			if (this.isClosed) return 'closed';
+
 			frontDesk = this.processingSteps.map.frontDesk;
+			if (frontDesk && _observe(frontDesk._isApproved)) return 'withdrawn';
 			if (frontDesk && _observe(frontDesk._isPending)) return 'pickup';
+
+			if (this.processingSteps.revisions.some(function (processingStep) {
+					return _observe(processingStep._isRevisionPending);
+				})) {
+				return 'revision';
+			}
+
 			return 'process';
-		} }
+		} },
+		correctionTime: { type: UInteger, value: 0 },
+		processingHolidaysTime: { type: UInteger, value: 0 }
 	});
 
 	return BusinessProcess;

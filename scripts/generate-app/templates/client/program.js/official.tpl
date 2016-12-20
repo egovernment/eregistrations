@@ -70,15 +70,7 @@ require('mano/lib/client/sync-guard');
 require('mano/lib/client/dom-app-events');
 
 // Find authenticated user object
-userId = require('dom-ext/html-document/#/get-cookie')
-	.call(document, 'authenticated' + location.port);
-
-if (userId) {
-	localStorage._authenticated = userId;
-} else {
-	throw new Error('No data on authenticated user found. ' +
-			'Make sure that url port matches one provided into url setting in env.js(on)');
-}
+userId = require('eregistrations/client/resolve-authenticated')();
 
 loadView = function () {
 	var appLocation    = window.appLocation = require('mano/lib/client/location')
@@ -141,5 +133,8 @@ loadView = function () {
 	isViewGenerated = true;
 	runDbSync();
 };
-if (localStorage._id) loadView();
-else server.once('sync', loadView);
+
+if (userId) {
+	if (localStorage._id) loadView();
+	else server.once('sync', loadView);
+}

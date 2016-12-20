@@ -4,10 +4,11 @@
 
 var _            = require('mano').i18n.bind('View: User')
   , from         = require('es5-ext/array/from')
-  , tableColumns = require('./components/business-process-table-columns')
-  , columns      = from(tableColumns.columns);
+  , tableColumns = require('./components/table-columns')
 
-columns.push(tableColumns.actionsColumn);
+  , columns      = from(require('./components/business-processes-table-columns'));
+
+columns.push(tableColumns.businessProcessActionsColumn);
 
 exports._parent = require('./user');
 
@@ -28,9 +29,11 @@ exports['user-account-content'] = function () {
 					tbody(
 						businessProcesses,
 						function (businessProcess) {
-							return tr(td(businessProcess._status), list(columns, function (column) {
-								return td({ class: column.class }, column.data(businessProcess));
-							}));
+							return tr({ class: _if(or(businessProcess._isSentBack,
+									businessProcess._isUserProcessing), "submitted-user-data-table-sent-back") },
+								td(businessProcess._status), list(columns, function (column) {
+									return td({ class: column.class }, column.data(businessProcess));
+								}));
 						}
 					)
 				))];

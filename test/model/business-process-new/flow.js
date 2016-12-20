@@ -124,7 +124,7 @@ module.exports = function (t, a) {
 	a(businessProcess.isSentBack, false);
 	a(businessProcess.isRejected, true);
 	a(businessProcess.isClosed, true);
-	a(businessProcess.status, 'closed');
+	a(businessProcess.status, 'rejected');
 
 	step.officialStatus = 'approved';
 	businessProcess.foo = true;

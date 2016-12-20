@@ -2,18 +2,20 @@
 
 'use strict';
 
-var Map              = require('es6-map')
-  , memoize          = require('memoizee/plain')
-  , defineStringLine = require('dbjs-ext/string/string-line')
-  , defineCreateEnum = require('dbjs-ext/create-enum')
-  , _                = require('mano').i18n.bind('Model')
-  , definePercentage = require('dbjs-ext/number/percentage')
-  , defineDocument   = require('./document');
+var Map                   = require('es6-map')
+  , memoize               = require('memoizee/plain')
+  , defineStringLine      = require('dbjs-ext/string/string-line')
+  , defineCreateEnum      = require('dbjs-ext/create-enum')
+  , _                     = require('mano').i18n.bind('Model')
+  , definePercentage      = require('dbjs-ext/number/percentage')
+  , defineDocument        = require('./document')
+  , defineUser            = require('./user/base');
 
 module.exports = memoize(function (db) {
 	var StringLine        = defineStringLine(db)
 	  , Percentage        = definePercentage(db)
 	  , Document          = defineDocument(db)
+	  , User              = defineUser(db)
 
 	  , RequirementUpload = db.Object.extend('RequirementUpload');
 
@@ -51,6 +53,13 @@ module.exports = memoize(function (db) {
 				}
 
 				return _observe(this.document.files.ordered._size) ? 1 : 0;
+			}
+		},
+		revisionProgress: {
+			type: Percentage,
+			value: function () {
+				if (this.isApproved) return 1;
+				return this.isRejected ? 1 : 0;
 			}
 		},
 
@@ -94,9 +103,7 @@ module.exports = memoize(function (db) {
 
 		// Whether document upload was validated and all required properties
 		// where provided
-		isApproved: { type: db.Boolean, value: function (_observe) {
-			return this.status === 'valid';
-		} },
+		isApproved: { type: db.Boolean, value: function () { return this.status === 'valid'; } },
 
 		// Whether uploaded documents should be verified at front-desk at certificates reception
 		isFrontDeskApplicable: { type: db.Boolean, value: true },
@@ -104,13 +111,19 @@ module.exports = memoize(function (db) {
 		// Whether uploaded files were validated by front-desk processing step
 		isFrontDeskApproved: { type: db.Boolean, required: true },
 
+		relatedDataFormSections: {
+			type: StringLine,
+			multiple: true
+		},
+
 		toJSON: { value: function (ignore) {
 			var data = {
 				uniqueKey: this.document.uniqueKey,
 				label: this.database.resolveTemplate(this.document.label, this.document.getTranslations(),
 					{ partial: true }),
 				issuedBy: this.document.getOwnDescriptor('issuedBy').valueToJSON(),
-				issueDate: this.document.getOwnDescriptor('issueDate').valueToJSON()
+				issueDate: this.document.getOwnDescriptor('issueDate').valueToJSON(),
+				uploadedBy: this.uploadedBy && this.getOwnDescriptor('uploadedBy').valueToJSON()
 			};
 			var files = [];
 			this.document.files.ordered.forEach(function (file) { files.push(file.toJSON()); });
@@ -126,6 +139,7 @@ module.exports = memoize(function (db) {
 					if (isRejected) return 'rejected';
 				});
 			}.bind(this));
+			data.isFrontDeskApproved = this._isFrontDeskApproved;
 			data.statusLog = this.document.statusLog.ordered.toArray();
 			data.rejectReasons = this.rejectReasons.toArray();
 			return data;
@@ -148,9 +162,14 @@ module.exports = memoize(function (db) {
 			if (data.status === 'rejected') {
 				data.rejectReasons = this.getOwnDescriptor('rejectReasons').valueToJSON();
 			}
+			data.isFrontDeskApproved = this.getOwnDescriptor('isFrontDeskApproved').valueToJSON();
 			data.isFinalized = true;
 			return data;
-		} }
+		} },
+		// The user who uploaded the requirementUpload
+		uploadedBy: {
+			type: User
+		}
 	});
 
 	return RequirementUpload;

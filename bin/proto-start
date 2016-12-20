@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+
+'use strict';
+
+try {
+	require('mano').env = require('../env');
+} catch (e) {
+	if (e.code !== 'MODULE_NOT_FOUND') throw e;
+	if (e.message !== 'Cannot find module \'../env\'') throw e;
+}
+
+require('eregistrations/server/env');
+
+require('mano/bin/start');

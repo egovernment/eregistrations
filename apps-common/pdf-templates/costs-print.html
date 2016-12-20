@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="${ locale }">
+<head>
+	<meta charset="utf-8" />
+	<link href="${ root }costs-print.css" rel="stylesheet" media="all" />
+</head>
+<body>
+	<header class="print-header">
+		${ logo ? '<img src="file://' + logo + '" />' : '' }
+		<div class="print-header-title">
+			<h2>${ e(_("Registration costs")) }</h2>
+			<small>${ e(_("Printed on ${ currentDate }", { currentDate: currentDate })) }</small>
+		</div>
+	</header>
+	<h2>${ e(businessName) }</h2>
+	<ul class='print-costs-list'>
+		${ costs.map(function (cost) {
+			return '<li><span class="cost-title">' + e(cost.label) + '</span><span class="cost-value">' + e(cost.value) + ' $</span></li>'
+		}).join('') }
+		<li><span class="cost-title">${ e(_("Total Costs:")) } </span><span class="cost-value">${ e(total) } $</span></li>
+	</ul>
+</body>
+</html>

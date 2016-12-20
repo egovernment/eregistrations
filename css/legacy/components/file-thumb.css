@@ -1,3 +1,12 @@
 .file-thumb > a {
 	display: block;
 }
+
+.file-thumb-action {
+	float: right;
+	clear: right;
+}
+
+.file-thumb-document-size {
+	float: left;
+}

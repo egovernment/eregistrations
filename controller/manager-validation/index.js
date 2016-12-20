@@ -34,7 +34,7 @@ exports['user/[0-9][a-z0-9]+/set-activation'] = {
 	match: matchUser
 };
 
-// Delete manager, the validation is currently handled in submit by destroyManagedUser
+// Delete manager, the validation is currently handled in submit by user destruction mechanism
 exports['user/[0-9][a-z0-9]+/delete'] = {
 	match: matchUser,
 	validate: Function.prototype,

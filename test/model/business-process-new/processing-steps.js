@@ -1,11 +1,13 @@
 'use strict';
 
-var aFrom    = require('es5-ext/array/from')
-  , Database = require('dbjs');
+var aFrom              = require('es5-ext/array/from')
+  , Database           = require('dbjs')
+  , defineRevisionStep = require('../../../model/processing-steps/revision');
 
 module.exports = function (t, a) {
 	var db = new Database()
 	  , BusinessProcess = t(db)
+	  , RevisionStep = defineRevisionStep(db)
 
 	  , businessProcess;
 
@@ -21,7 +23,8 @@ module.exports = function (t, a) {
 		[businessProcess.processingSteps.map.test, businessProcess.processingSteps.map.test2]);
 
 	a.deep(aFrom(businessProcess.processingSteps.revisions), []);
-	BusinessProcess.prototype.processingSteps.map.define('revision', { nested: true });
+	BusinessProcess.prototype.processingSteps.map.define('revision',
+		{ nested: true, type: RevisionStep });
 	a.deep(aFrom(businessProcess.processingSteps.revisions), [
 		businessProcess.processingSteps.map.revision]);
 	BusinessProcess.prototype.processingSteps.map.revision.define('isApplicable', { value: false });

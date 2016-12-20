@@ -10,7 +10,7 @@
 }
 
 .submitted-menu-demo > a {
-	color: var(--dark-text);
+	color: var(--white-text);
 	background-color: var(--info-background);
 	text-transform: uppercase;
 	text-align: center;
@@ -19,7 +19,7 @@
 }
 
 .submitted-menu-demo > a:hover {
-	color: var(--dark-text);
+	color: var(--white-text);
 	background-color: var(--info-background);
 }
 
@@ -83,10 +83,9 @@
 .submitted-menu-demo-info-wrapper .demo-public-out {
 	color: #fff;
 	background: #44B7E3;
-	border: 2px solid var(--normal-light-background);
-	padding: 7px 16px 7px;
-	border-radius: 4px;
-	font-size: 11px;
+	padding: 5px 10px;
+	border-radius: 3px;
+	font-size: 13px;
 	line-height: 1;
 	text-transform: uppercase;
 	text-decoration: none;
@@ -95,10 +94,9 @@
 .submitted-menu-demo-info-wrapper .demo-public-login {
 	color: #fff;
 	background: #686868;
-	border: 2px solid var(--normal-light-background);
-	padding: 7px 16px 7px;
-	border-radius: 4px;
-	font-size: 11px;
+	padding: 5px 10px;
+	border-radius: 3px;
+	font-size: 13px;
 	line-height: 1;
 	text-transform: uppercase;
 	text-decoration: none;

@@ -55,6 +55,7 @@ module.exports = memoize(function (db) {
 					if (!resolvedResolvent) return;
 
 					res = _observe(resolvedResolvent.object['_' + resolvedResolvent.key]._lastModified);
+					if (res < 1e6) res = 0; // Ignore model stamps
 				}
 
 				this.internallyApplicableSections.forEach(function (section) {
@@ -120,7 +121,21 @@ module.exports = memoize(function (db) {
 				if (sections.length) result.sections = sections;
 			}
 			return result;
-		} }
+		} },
+		hasSplitForms: {
+			type: db.Boolean,
+			value: false
+		},
+		hasOnlyTabularChildren: {
+			type: db.Boolean,
+			value: function (_observe) {
+				var db = this.database;
+				if (!db.FormEntitiesTable) return false;
+				return this.sections.every(function (section) {
+					return section instanceof db.FormEntitiesTable;
+				});
+			}
+		}
 	});
 	FormSectionGroup.prototype.sections._descriptorPrototype_.type = FormSectionBase;
 
@@ -134,7 +149,7 @@ module.exports = memoize(function (db) {
 			var sum = 0, resolvedResolvent, isResolventExcluded, section;
 			section = this.owner.owner.owner;
 
-			if (section.resolventProperty) {
+			if (_observe(section._resolventProperty)) {
 				resolvedResolvent = section.ensureResolvent(_observe);
 
 				if (!resolvedResolvent) return 0;
@@ -168,7 +183,7 @@ module.exports = memoize(function (db) {
 			var weightTotal = 0, resolvedResolvent, isResolventExcluded, section;
 			section = this.owner.owner.owner;
 
-			if (section.resolventProperty) {
+			if (_observe(section._resolventProperty)) {
 				resolvedResolvent = section.ensureResolvent(_observe);
 
 				if (!resolvedResolvent) return 0;

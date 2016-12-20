@@ -94,5 +94,7 @@ module.exports = memoize(function (db) {
 		// Applicable procesing steps
 		applicable: { type: ProcessingStepBase }
 	});
+
+	ProcessingStepBase.prototype.getDescriptor('parentGroup').type = ProcessingStepGroup;
 	return ProcessingStepGroup;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

@@ -6,17 +6,15 @@ var emptyPromise     = require('deferred')(null)
   , serverLogin      = require('mano-auth/controller/server-master/login')
   , registerSubmit   = require('mano-auth/controller/server-master/register-and-login').submit
   , mano             = require('mano')
+  , hash             = require('mano-auth/hash')
   , sendNotification = require('../../server/email-notifications/create-account')
   , unserializeObjectRecord = require('../../server/utils/unserialize-object-record')
 
   , dbDriver = mano.dbDriver
   , maxage = 1000 * 60 * 60 * 24 * 7
   , customError      = require('es5-ext/error/custom')
-  , promisify        = require('deferred').promisify
-  , bcrypt           = require('bcrypt')
   , serializeValue   = require('dbjs/_setup/serialize/value')
 
-  , genSalt = promisify(bcrypt.genSalt), hash = promisify(bcrypt.hash)
   , userStorage = mano.dbDriver.getStorage('user');
 
 exports.login = {
@@ -77,7 +75,7 @@ exports['create-managed-account'] = {
 			if (!userId) {
 				throw customError("Cannot process request", "MALFORMED_EMAIL", { statusCode: 400 });
 			}
-			return hash(data.password, genSalt())(function (password) {
+			return hash.hash(data.password)(function (password) {
 				return userStorage.storeMany([
 					{ id: userId + '/createManagedAccountToken', data: { value: '' } },
 					{ id: userId + '/password', data: { value: serializeValue(password) } }

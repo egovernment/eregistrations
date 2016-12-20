@@ -2,18 +2,15 @@
 
 var _                  = require('mano').i18n.bind('View: Official: Supervisor')
   , toArray            = require('es5-ext/object/to-array')
-  , from               = require('es5-ext/array/from')
-  , byOrder            = function (a, b) { return this[a].order - this[b].order; }
   , once               = require('timers-ext/once')
   , dispatch           = require('dom-ext/html-element/#/dispatch-event-2')
   , location           = require('mano/lib/client/location')
   , getSupervisorTable = require('./components/supervisor-table')
-  , tableColumns       = require('./components/supervisor-table-columns')
   , timeRanges         = require('../utils/supervisor-time-ranges')
   , filterStepsMap     = require('../utils/filter-supervisor-steps-map')
   , statusMeta         = require('mano').db.ProcessingStepStatus.meta
   , stepLabelsMap      = require('../utils/processing-steps-label-map')
-  , columns            = from(tableColumns.columns)
+  , columns            = require('./components/supervisor-table-columns')
   , env                = require('mano').env;
 
 exports._parent = require('./user-base');
@@ -48,7 +45,7 @@ exports['sub-main'] = {
 									return value === name ? 'selected' : null;
 								})
 							}, stepLabelsMap[name]);
-						}, null, byOrder))),
+						}))),
 				mmap(stepQuery, function (selectedStep) {
 					var statuses;
 

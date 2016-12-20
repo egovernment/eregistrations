@@ -9,7 +9,7 @@ exports._parent = require('./user-base');
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
-		var manager = this.manager;
+		var manager = this.manager, revertedBusinessProcesses = this.user.revertedBusinessProcesses;
 
 		div({ class: 'user-account-boxes' },
 			section({ id: 'welcome-box', class: 'user-account-welcome' },
@@ -38,6 +38,23 @@ exports['sub-main'] = {
 
 		exports._notificationsBox.call(this);
 
+		insert(_if(gt(revertedBusinessProcesses._size, 0), function () {
+			div({ class: 'section-warning' },
+				ul(
+					revertedBusinessProcesses.map(function (pendingProcess) {
+						return li({ class: 'section-warning-action' }, div(
+							span({ class: "section-warning-action-description" },
+								_('${ businessName } is pending for corrections',
+									{ businessName: pendingProcess._businessName })),
+							span({ class: "section-warning-action-button" }, postButton({
+								action: url('business-process', pendingProcess.__id__),
+								value: _('Correct now')
+							}))
+						));
+					})
+				));
+		}));
+
 		section({ class: 'section-tab-nav' },
 			a({ class: 'section-tab-nav-tab user-account-tab',
 				id: 'user-account-requests',
@@ -58,10 +75,15 @@ exports['sub-main'] = {
 					function (item) {
 						var disabled = item.disabledCondition
 						  , renderAsForm = item.actionUrl != null ? and(item.actionUrl, not(disabled)) : false
-						  , renderAsDiv = or(item.hrefUrl, disabled)
+						  , renderAsDiv = not(renderAsForm)
 						  , boxClasses = [ 'user-account-service-box', _if(disabled, 'disabled') ];
 
-						return li(_if(item.condition || true, _if(
+						// Explanation of superfluous _if usage within configuration below:
+						// As item.content and item.buttonContent can be used in two scenarios (form and aHref)
+						// which may toggle during time of interface being displayed, we need to ensure that
+						// very same DOM content is moved between two containers, and that can only be ensured
+						// with extra `_if(cond, item.x)` calls (otherwise those `_if` have no real function)
+						return _if(item.condition || true, li(_if(
 							renderAsForm,
 							form({ class: boxClasses, action: item.actionUrl, method: 'post' },
 								button({ type: 'submit' }, _if(renderAsForm, item.buttonContent)),

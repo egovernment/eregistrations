@@ -35,11 +35,11 @@ var getFilePreview = function (file) {
 	});
 };
 
-module.exports = function (context, documentData/*, options*/) {
+module.exports = exports = function (context, documentData/*, options*/) {
 	var options          = normalizeOptions(arguments[2])
 	  , mainContent      = options.mainContent
 	  , businessProcess  = context.businessProcess
-	  , collectionTarget = options.uploadsResolver || businessProcess
+	  , collectionTarget = context.processingStep || businessProcess
 	  , kind             = context.documentKind
 
 	  , collection, nextDocumentUrl, previousDocumentUrl, docPreviewElement, sideContentContainer
@@ -171,8 +171,7 @@ module.exports = function (context, documentData/*, options*/) {
 			},
 
 				// When no files in document
-				div({ class: 'document-preview-missing' },
-					p(_("This document does not have any physical file attached to it.")))),
+				exports._missingDocumentPreview(context)),
 
 			// Side content
 			sideContentContainer = div(
@@ -192,4 +191,9 @@ module.exports = function (context, documentData/*, options*/) {
 	}
 
 	return result;
+};
+
+exports._missingDocumentPreview = function (context) {
+	return div({ class: 'document-preview-missing' },
+		p(_("This document does not have any physical file attached to it.")));
 };

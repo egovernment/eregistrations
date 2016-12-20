@@ -10,8 +10,8 @@ var db       = require('../../../db')
 
 user.$password.type = Password;
 
-require('../../../model/user/manager');
-// Warning: ../../../model/views must be required after all business processes models
 require('../../../model/views');
+
+require('../../../model/user/manager');
 
 module.exports = db;

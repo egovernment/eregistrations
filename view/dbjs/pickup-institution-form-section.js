@@ -29,6 +29,7 @@ module.exports = Object.defineProperty(db.PickupInstitutionFormSection.prototype
 						)),
 					ns.p({ class: 'submit-placeholder' },
 						input({ type: 'submit', value: _("Save") })))]
-				)
+				),
+			options.append
 			);
 	}));

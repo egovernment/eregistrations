@@ -1,11 +1,9 @@
 'use strict';
 
-var mano           = require('mano')
-  , Database       = require('dbjs')
-  , defineDate     = require('dbjs-ext/date-time/date')
+var defineDate     = require('dbjs-ext/date-time/date')
+  , db             = require('../../db')
   , defineHolidays = require('../../model/global-primitives/holidays');
 
-var db = mano.db = new Database();
 defineDate(db);
 defineHolidays(db);
 

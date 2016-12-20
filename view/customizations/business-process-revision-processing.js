@@ -3,5 +3,5 @@
 module.exports = exports = require('../business-process-revision');
 
 exports._processingTabLabel = function () {
-	return this.processingStep.label;
+	return '4. ' + this.processingStep.label;
 };

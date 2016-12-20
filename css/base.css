@@ -21,6 +21,7 @@ Component describing basic elements styles - reusable
 	--light-error-background: #D69592;
 	--success-background: #5CB85C;
 	--success-dark-background: #3A733A;
+	--error-light-background: #ef9581;
 	--error-background: #D9534F;
 	--error-dark-background: #9B3E3B;
 	--info-background: #4892A4;
@@ -39,6 +40,14 @@ Component describing basic elements styles - reusable
 	--progress-text: #f89406;
 
 	--manager-label-base: #569C65;
+
+	/* Common colors */
+	--light-overall-background: #D4E9FA;
+	--light-pending-background: #FAEBD4;
+	--light-sentback-background: #FAD7D4;
+	--light-success-background: #D0F5DC;
+	--light-demo-background: #DCDCF5;
+	--light-waiting-background: #E4E4E4;
 
 }
 

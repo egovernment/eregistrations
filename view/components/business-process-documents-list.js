@@ -11,7 +11,7 @@ var normalizeOptions      = require('es5-ext/object/normalize-options')
 module.exports = function (context/*, options*/) {
 	var options            = normalizeOptions(arguments[1])
 	  , businessProcess    = context.businessProcess
-	  , target             = options.uploadsResolver || businessProcess
+	  , target             = context.processingStep || businessProcess
 	  , uploads            = getUploads(target.requirementUploads, context.appName)
 	  , resolveDocumentUrl = getResolveDocumentUrl('requirementUpload', uploads, options);
 
@@ -37,7 +37,11 @@ module.exports = function (context/*, options*/) {
 							class: 'submitted-user-data-table-label',
 							head: _("Documents"),
 							data: function (upload) {
-								return a({ href: resolveDocumentUrl(upload) }, upload.label);
+								return a({ href: resolveDocumentUrl(upload) }, upload.label,
+									_if(upload.isFrontDeskApproved, [' ', span({
+										class: 'hint-optional hint-optional-right',
+										'data-hint': _('Declared consistent with it original')
+									}, i({ class: 'fa fa-certificate' }))]));
 							}
 						}, {
 							class: 'submitted-user-data-table-date',
@@ -48,7 +52,7 @@ module.exports = function (context/*, options*/) {
 						}, {
 							head: _("Emissor"),
 							data: function (upload) {
-								return a({ href: resolveDocumentUrl(upload) }, _("User"));
+								return a({ href: resolveDocumentUrl(upload) }, upload.uploadedBy);
 							}
 						}],
 						rowAttributes: function (upload) {

@@ -1,6 +1,7 @@
 /*
 Component describing styles for registration modal windows - rules specific only for this modal
 */
+
 .dialog-register section form fieldset {
 	border: none;
 }
@@ -10,4 +11,10 @@ Component describing styles for registration modal windows - rules specific only
 .dialog-register input[type="password"],
 .dialog-register li {
 	width: 320px;
+}
+
+.dialog-register .dbjs-input-component > label {
+	width: 100%;
+	margin: 0;
+	padding: 0;
 }

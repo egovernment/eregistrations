@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <!-- Loaded only in server-side render mode or in dev mode -->
 	<script data-spa>
-if (!Object.getPrototypeOf || !Object.defineProperty || !window.history ||
+if (!Object.getPrototypeOf || !Object.defineProperty || !window.history || !window.localStorage ||
+		!(function () { try { localStorage.$test = ''; return true; } catch (ignore) {} }()) ||
 		(function () {'use strict'; return this; }()) ||
 	 (Object.getPrototypeOf({ __proto__: Function.prototype }) !==
 		 Function.prototype) || (Object.defineProperty({}, 'foo',

@@ -1,24 +1,24 @@
 // Service that propagates business process flow changes
 //
 // Most updates are delayed to next tick, so eventual preTrigger setups have chance to catch up
-// for cases when file is loaded in inconsistent state
+// for cases when file is loaded in inconsistent state.
+// There exists a complementary service copy-is-ready which handles isReady of step
 
 'use strict';
 
-var aFrom           = require('es5-ext/array/from')
-  , ensureIterable  = require('es5-ext/iterable/validate-object')
-  , ensureCallable  = require('es5-ext/object/valid-callable')
-  , Set             = require('es6-set')
-  , ensureType      = require('dbjs/valid-dbjs-type')
-  , debug           = require('debug-ext')('business-process-flow')
-  , delay           = require('timers-ext/delay')
-  , resolveStepPath = require('../../utils/resolve-processing-step-full-path')
-  , setupTriggers   = require('../_setup-triggers');
+var aFrom            = require('es5-ext/array/from')
+  , ensureIterable   = require('es5-ext/iterable/validate-object')
+  , ensureCallable   = require('es5-ext/object/valid-callable')
+  , Set              = require('es6-set')
+  , debug            = require('debug-ext')('business-process-flow')
+  , delay            = require('timers-ext/delay')
+  , resolveStepPath  = require('../../utils/resolve-processing-step-full-path')
+  , setupTriggers    = require('../_setup-triggers')
+  , resolveProcesses = require('../../business-processes/resolve');
 
 module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
-	var businessProcesses = ensureType(BusinessProcessType).instances
-		.filterByKey('isFromEregistrations', true).filterByKey('isDemo', false)
-	  , options = Object(arguments[2])
+	var businessProcesses = resolveProcesses(BusinessProcessType)
+	  , options           = Object(arguments[2])
 	  , customStepReturnHandler, onSubmitted, onStepRedelegate, onStepStatus, onUserProcessingEnd;
 
 	if (options.customStepReturnHandler != null) {
@@ -125,7 +125,14 @@ module.exports = function (BusinessProcessType, stepShortPaths/*, options*/) {
 			if (step.hasOwnProperty('status')) return; // Already shadowed
 			debug('%s %s step %s', businessProcess.__id__, step.shortPath, step.status);
 			if (onStepStatus) onStepStatus(step);
-			if (!step.hasOwnProperty('isReady')) step.isReady = true;
+			if (!step.hasOwnProperty('isReady')) {
+				// Here what should happen is: step.isReady = true;
+				// Still to be able to retrieve information on when given step for first time turned to be
+				// pending we want to keep the same stamp. That's not possible natural way, therefore
+				// dedicated service (at /server/services/copy-is-ready.js) was created to handle that.
+				// To avoid eventual race conditions we mask `isReady` outside of db events:
+				step.getOwnDescriptor('isReady')._setValue_(true);
+			}
 			if (step.revisionStatus && !nonFinalStatuses.has(step.revisionStatus)) {
 				step.set('revisionStatus', step.revisionStatus);
 			}

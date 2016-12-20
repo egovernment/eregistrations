@@ -46,10 +46,7 @@ module.exports = function (context) {
 			)
 		),
 		footer(
-			p(_("Already has account?"), ' ',
-				a({ href: '#login' }, _("Log in")),
-				span(" | "),
-				a({ href: '#reset-password' }, _("Reset password")))
+			p(_("Already has account?"), ' ', a({ href: '#login' }, _("Log in")))
 		)
 	);
 };

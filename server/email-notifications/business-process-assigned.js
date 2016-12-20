@@ -15,5 +15,8 @@ module.exports = function (dispatchersEmails, assignedOfficial, stepName) {
 			stepName: stepName,
 			official: assignedOfficial.fullName
 		})
+	}).catch(function (e) {
+		console.error("Cannot send assignment notification email");
+		console.error(e.stack);
 	});
 };

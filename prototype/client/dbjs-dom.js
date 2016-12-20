@@ -24,7 +24,7 @@ require('dbjs-dom/input/string/string-line')(db);
 require('dbjs-dom/input/string/string-line/email')(db);
 require('dbjs-dom/input/string/string-line/password')(db);
 
-require('../../model/lib/data-snapshot/resolved')(db);
+require('../../view/dbjs/data-snapshot-resolved')(db);
 
 require('dbjs-dom/input/utils/fieldset')(db);
 require('dbjs-dom-bootstrap/number/currency')(db);

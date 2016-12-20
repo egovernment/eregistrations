@@ -15,8 +15,10 @@ exports.step = function () {
 	  , requirementUploads      = businessProcess.requirementUploads
 	  , recentlyRejectedUploads = requirementUploads.recentlyRejected
 	  , processableUploads      = requirementUploads.userProcessable.not(recentlyRejectedUploads)
-	  , disabledUploads         = requirementUploads.applicable.not(processableUploads)
 	  , guideProgress           = businessProcess._guideProgress;
+
+	var disabledUploads = requirementUploads.applicable.not(processableUploads)
+		.not(recentlyRejectedUploads);
 
 	exports._documentsHeading.call(this);
 

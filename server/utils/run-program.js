@@ -7,7 +7,7 @@ var deferred = require('deferred')
 
 module.exports = function (program/*, args, options*/) {
 	var def = deferred();
-	var child = fork.apply(null, arguments);
+	var child = def.promise.process = fork.apply(null, arguments);
 	child.on('exit', function () { def.resolve(); });
 	child.on('error', def.reject);
 	return def.promise;

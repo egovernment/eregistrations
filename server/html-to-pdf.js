@@ -32,7 +32,7 @@ module.exports = function (htmlPath, pdfPath/*, options*/) {
 		var inserts = normalizeOptions(options.templateInserts, {
 			root: 'file://' + dirname(htmlPath) + '/',
 			_: _,
-			e: encode,
+			e: function (str) { return encode(String(str)); },
 			md: function (str) { return md2Html(String(str)); }
 		});
 		delete options.templateInserts;
