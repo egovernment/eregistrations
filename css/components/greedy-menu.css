@@ -101,7 +101,6 @@
 	border: 0;
 }
 
-
 .greedy-menu .toggle-links.counter::before {
 	box-sizing: border-box;
 	content: attr(data-count);
