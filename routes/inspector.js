@@ -6,7 +6,7 @@ var hyphenToCamel        = require('es5-ext/string/#/hyphen-to-camel')
   , matchBusinessProcess = require('./utils/inspector-match-business-process')
   , findFirstUploadKey   = require('./utils/inspector-find-first-upload-key')
   , matchUpload          = require('./utils/inspector-match-upload')
-  , matchCertificate     = require('./utils/inspector-match-certificate');
+  , matchCertificate     = require('./utils/user-match-certificate');
 
 module.exports = function () {
 	var match = matchBusinessProcess();
@@ -56,7 +56,7 @@ module.exports = function () {
 			match: function (businessProcessId, uniqueKey) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
-					return matchCertificate.call(this, hyphenToCamel.call(uniqueKey));
+					return matchCertificate.call(this, hyphenToCamel.call(uniqueKey), 'applicable');
 				}.bind(this));
 			},
 			view: require('../view/business-process-official-certificate')

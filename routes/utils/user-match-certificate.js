@@ -1,6 +1,9 @@
 'use strict';
 
-module.exports = function (uniqueKey) {
+// This module is used by user, business-process-submitted and inspector routes.
+module.exports = function (uniqueKey/*, collection*/) {
+	var collection = arguments[1] || 'userApplicable';
+
 	if (this.businessProcess.isClosed) {
 		if (!this.businessProcess.isApproved) return false;
 
@@ -13,7 +16,7 @@ module.exports = function (uniqueKey) {
 		if (!this.dataSnapshot) return false;
 	}
 
-	this.businessProcess.certificates.userApplicable.some(function (certificate) {
+	this.businessProcess.certificates[collection].some(function (certificate) {
 		if (certificate.key === uniqueKey) {
 			this.document = certificate;
 			return true;
