@@ -28,8 +28,9 @@ named event listeners that can easily be removed
 Greedy.prototype.bindMethod = function (name) {
 	return this['_' + name + '_'] || Object.defineProperty(
 		this,
-		'_' + name + '_', { value: this[name].bind(this) }
-		)['_' + name + '_'];
+		'_' + name + '_',
+		{ value: this[name].bind(this) }
+	)['_' + name + '_'];
 };
 
 /*
@@ -63,15 +64,14 @@ Greedy.prototype.calculateBreakpoints = function () {
 	}
 };
 
-Greedy.prototype.addBindings = function() {
+Greedy.prototype.addBindings = function () {
 	window.addEventListener('resize', this.bindMethod('updateMenu'));
 	this.toggleButton.addEventListener('click', this.bindMethod('toggleHiddenLinks'));
 };
 
-Greedy.prototype.updateMenu = function() {
+Greedy.prototype.updateMenu = function () {
 	var availableSpace = this.element.offsetWidth - this.toggleButton.offsetWidth;
 	var itemsVisible = this.visibleLinks.children.length;
-	var requiredSpace = this.breakpoints[itemsVisible - 1];
 
 	/*
 	Check if there is not enough space for the visible links or
@@ -80,7 +80,8 @@ Greedy.prototype.updateMenu = function() {
 	if (availableSpace < this.breakpoints[itemsVisible - 1]) {
 		this.toggleButton.classList.add('visible');
 		while (availableSpace < this.breakpoints[itemsVisible - 1]) {
-			this.hiddenLinks.insertBefore(this.visibleLinks.children[itemsVisible - 1], this.hiddenLinks.firstChild);
+			this.hiddenLinks.insertBefore(this.visibleLinks.children[itemsVisible - 1],
+				this.hiddenLinks.firstChild);
 			itemsVisible--;
 		}
 	} else if (availableSpace > this.breakpoints[itemsVisible]) {
@@ -98,14 +99,14 @@ Greedy.prototype.updateMenu = function() {
 	}
 };
 
-Greedy.prototype.toggleHiddenLinks = function() {
+Greedy.prototype.toggleHiddenLinks = function () {
 	this.hiddenLinks.classList.toggle('links-invisible');
 	this.toggleButton.classList.toggle('links-displayed');
 };
 
-module.export = function(el) {
-	document.addEventListener('DOMContentLoaded', function(event) {
-		var menu = new Greedy({
+module.export = function (el) {
+	document.addEventListener('DOMContentLoaded', function (event) {
+		new Greedy({
 			element: '.greedy-menu',
 			counter: true
 		});
