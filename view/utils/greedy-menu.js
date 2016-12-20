@@ -106,7 +106,7 @@ Greedy.prototype.toggleHiddenLinks = function () {
 
 module.export = function (el) {
 	document.addEventListener('DOMContentLoaded', function (event) {
-		new Greedy({
+		Greedy({
 			element: '.greedy-menu',
 			counter: true
 		});
