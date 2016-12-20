@@ -12,14 +12,14 @@ var _                          = require('mano').i18n
 
 exports._parent  = require('./business-process-official-documents');
 exports._dynamic = function (doc) {
-	return this.document ? dynamicMatcher.call(this, doc) : {};
+	return this.documentKind ? dynamicMatcher.call(this, doc) : {};
 };
 exports._match   = 'documentUniqueId';
 
 exports['selection-preview'] = function () {
 	var documentData;
 
-	if (this.document) {
+	if (this.documentKind) {
 		documentData = getDocumentData(this);
 
 		insert(renderDocument(this, documentData, {
