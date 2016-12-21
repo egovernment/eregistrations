@@ -35,7 +35,7 @@ exports.main = function () {
 	div({ class: 'submitted-menu' },
 		div({ class: 'submitted-menu-bar content' },
 			greedyNav = nav({ class: 'greedy-menu' },
-				button({ class: 'toggle-links' }, i({ class: 'fa fa-bars'})),
+				button({ class: 'toggle-links' }, i({ class: 'fa fa-bars' })),
 				ul({ class: 'submitted-menu-items greedy-menu-items', id: 'submitted-menu' })),
 			_if(this.user._isDemo, div({ class: 'submitted-menu-demo' },
 				a({ class: 'submitted-menu-demo-ribon' }, _("Demo"))))));
