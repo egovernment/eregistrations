@@ -14,6 +14,7 @@ columns.push(tableCols.businessProcessArchiverColumn);
 
 module.exports = function (context) {
 	var businessProcess = context.businessProcess
+	  , statusLogs      = businessProcess.statusLog.ordered
 	  , scrollableElem;
 
 	return [
@@ -52,24 +53,24 @@ module.exports = function (context) {
 		})),
 		section(
 			{ class: 'section-primary' },
-			h2({ class: 'container-with-nav' }, _("History of request"),
-				a({ class: 'hint-optional hint-optional-left', 'data-hint': _("Print history of request"),
-					href: '/business-process-status-log-print' +
+			h2(
+				{ class: 'container-with-nav' },
+				_("History of request"),
+				_if(statusLogs.size, a({ class: 'hint-optional hint-optional-left',
+					'data-hint': _("Print history of request"), href: '/business-process-status-log-print' +
 						(isUserApp(context.appName) ? '' : '?id=' + businessProcess.__id__), target: '_blank' },
-					span({ class: 'fa fa-print' }, _("Print")))),
+					span({ class: 'fa fa-print' }, _("Print"))))
+			),
 			scrollableElem = div(
 				{ class: 'submitted-user-history-wrapper' },
 				table(
 					{ class: 'submitted-user-history' },
-					tbody(
-						businessProcess.statusLog.ordered,
-						function (log) {
-							th(log._label);
-							td({ class: 'submitted-user-history-time' }, log._time);
-							td(md(log._text));
-							if (!isUserApp(context.appName)) td(log._official);
-						}
-					)
+					tbody(statusLogs, function (log) {
+						th(log._label);
+						td({ class: 'submitted-user-history-time' }, log._time);
+						td(md(log._text));
+						if (!isUserApp(context.appName)) td(log._official);
+					})
 				)
 			)
 		),
