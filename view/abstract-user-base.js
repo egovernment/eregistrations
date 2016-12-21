@@ -5,7 +5,7 @@ var _              = require('mano').i18n.bind('View: Abstract User')
   , registerDialog = require('./components/register-dialog')
   , modalContainer = require('./components/modal-container')
   , roleMenuItem   = require('./components/role-menu-item')
-  , greedy         = require('./utils/greedy-menu.js')
+  , greedy         = require('./utils/greedy-menu')
   , db             = require('../db');
 
 exports._parent = require('./base');

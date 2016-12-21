@@ -14,4 +14,5 @@
 ../../../node_modules/eregistrations/css/components/pagination.css
 ../../../node_modules/eregistrations/css/components/throbber.css
 ../../../node_modules/eregistrations/css/components/label-reg.css
+../../../node_modules/eregistrations/css/components/greedy-menu.css
 ../../../css/theme.css
