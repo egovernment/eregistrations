@@ -44,7 +44,7 @@ exports.main = function () {
 
 	div({ class: 'user-forms', id: 'sub-main' });
 
-	Greedy({ element: greedyNav, counter: true });
+	new Greedy({ element: greedyNav, counter: true });
 };
 
 exports._extraRoleLabel = function () {
