@@ -10,7 +10,8 @@ exports['sub-main'] = {
 	content: function () {
 		var user = this.editedUser, prepend, options = {};
 
-		options.fieldsetOptions = { controls: { password: { modelRequired: false } } };
+		options.fieldsetOptions = { controls: { email: { disabled: true },
+			password: { modelRequired: false } } };
 		prepend = div(
 			{ class: 'entity-header' },
 			h3(_("Edit user: ${ fullName }", { fullName: user._fullName })),
