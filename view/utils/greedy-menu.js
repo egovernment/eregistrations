@@ -2,7 +2,7 @@
 
 'use strict';
 
-var Greedy = function Greedy(options) {
+var Greedy = function (options) {
 	this.element = document.querySelector(options.element);
 	this.counter = options.counter || false;
 	this.visibleLinks = this.element.querySelector('ul');
@@ -11,7 +11,7 @@ var Greedy = function Greedy(options) {
 	this.init();
 };
 
-window.Greedy = Greedy;
+module.Greedy = Greedy;
 
 Greedy.prototype.init = function () {
 	this.setupMenu();
@@ -104,11 +104,4 @@ Greedy.prototype.toggleHiddenLinks = function () {
 	this.toggleButton.classList.toggle('links-displayed');
 };
 
-module.export = function (el) {
-	document.addEventListener('DOMContentLoaded', function (event) {
-		new Greedy({
-			element: '.greedy-menu',
-			counter: true
-		});
-	});
-};
+module.export = Greedy;
