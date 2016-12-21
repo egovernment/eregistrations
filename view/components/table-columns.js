@@ -8,7 +8,7 @@ var db                    = require('../../db')
 
   , certificateStatusMeta = db.CertificateStatus.meta;
 
-var generateCertificatesList = (function () {
+exports.generateCertificatesList = (function () {
 	var getStatusLabel = function (cert) {
 		if (cert._status) return _if(cert._status, ["- ", cert._status]);
 		return cert.status && ("- " + certificateStatusMeta[cert.status].label);
@@ -80,12 +80,12 @@ exports.businessProcessCertificatesListColumn = {
 			if (isClosed) {
 				return mmap(businessProcess.certificates.dataSnapshot._resolved, function (certificates) {
 					if (!certificates) return;
-					return generateCertificatesList(certificates);
+					return exports.generateCertificatesList(certificates);
 				});
 			}
 			return mmap(businessProcess.certificates._applicable, function (certificates) {
 				if (!certificates) return;
-				return generateCertificatesList(certificates);
+				return exports.generateCertificatesList(certificates);
 			});
 		});
 	}
