@@ -5,7 +5,7 @@ var _              = require('mano').i18n.bind('View: Abstract User')
   , registerDialog = require('./components/register-dialog')
   , modalContainer = require('./components/modal-container')
   , roleMenuItem   = require('./components/role-menu-item')
-  , Greedy         = require('./utils/greedy-menu.js')
+  , greedy         = require('./utils/greedy-menu.js')
   , db             = require('../db');
 
 exports._parent = require('./base');
@@ -44,7 +44,7 @@ exports.main = function () {
 
 	div({ class: 'user-forms', id: 'sub-main' });
 
-	Greedy({ element: greedyNav, counter: true });
+	greedy({ element: greedyNav, counter: true });
 };
 
 exports._extraRoleLabel = function () {
