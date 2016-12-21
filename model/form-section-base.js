@@ -188,6 +188,11 @@ module.exports = memoize(function (db) {
 				if (_observe(resolved.observable) != null) return true;
 			}
 		} },
+		getResolventObservable: { type: db.Function, value: function (ignore) {
+			var resolved = this.propertyMaster.resolveSKeyPath(this.resolventProperty);
+			if (!resolved) return null;
+			return resolved.observable;
+		} },
 		ensureResolvent: { type: db.Function, value: function (observeFunction) {
 			var resolved = this.propertyMaster.resolveSKeyPath(this.resolventProperty, observeFunction);
 
