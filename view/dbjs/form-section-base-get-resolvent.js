@@ -31,9 +31,9 @@ module.exports = Object.defineProperty(db.FormSectionBase.prototype, 'getFormRes
 			} else {
 				match[this.resolventValue] = result.affectedSectionId;
 			}
-			result.formResolvent = ns.field({ dbjs: resolvePropertyPath(master,
-				this.resolventProperty
-				).observable });
+			result.formResolvent = ns.field({
+				dbjs: resolvePropertyPath(master, this.resolventProperty).observable
+			});
 			dbjsInput = result.formResolvent._dbjsInput;
 			if (dbjsInput instanceof db.Base.DOMSelect) {
 				dbjsInput.control.id = 'select-' + generateId();
