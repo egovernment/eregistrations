@@ -2,7 +2,7 @@
 
 'use strict';
 
-module.exports = function(elt) {
+module.exports = function (elt) {
 
 	var Greedy = function (options) {
 		this.element = document.querySelector(options.element);
@@ -107,4 +107,4 @@ module.exports = function(elt) {
 	window.addEventListener('DOMContentLoaded', function (elt) {
 		new Greedy(elt);
 	});
-}
+};
