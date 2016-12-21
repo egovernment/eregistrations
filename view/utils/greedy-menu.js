@@ -9,7 +9,7 @@ var Greedy = function (options) {
 	this.visibleLinks = this.element.querySelector('ul');
 	this.toggleButton = this.element.querySelector('.toggle-links');
 	this.breakpoints = [];
-	this.init();
+	setTimeout(this.init.bind(this),0);
 };
 
 module.exports = Greedy;
