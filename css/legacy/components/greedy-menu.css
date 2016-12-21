@@ -1,9 +1,9 @@
-.toggle-links {
+.greedy-menu .toggle-links {
 	display: none;
 }
 
 ul.greedy-menu-items {
-	display: inline-block;
+	display: block;
 	padding: 0;
 	margin: 0;
 }
@@ -12,11 +12,12 @@ ul.greedy-menu-items li {
 	display: inline-block;
 }
 
-ul.greedy-menu-items a {
+ul.greedy-menu-items a,
+ul.greedy-menu-items button,
+ul.greedy-menu-items input {
 	display: block;
 	padding: 11px 25px;
 	text-decoration: none;
 	white-space: nowrap;
 	line-height: 22px;
-	color: #000;
 }
