@@ -9,7 +9,8 @@
 .section-primary > form > *,
 .section-primary > .disabler-range > *,
 .section-primary > .disabler-range > form > *,
-.section-primary > .section-primary-wrapper > * {
+.section-primary > .section-primary-wrapper > *,
+.blocks-container > * {
 	margin-bottom: 22px;
 }
 
@@ -17,7 +18,8 @@
 .section-primary > form > *:last-child,
 .section-primary > .disabler-range > *:last-child,
 .section-primary > .disabler-range > form > *:last-child,
-.section-primary > .section-primary-wrapper > *:last-child {
+.section-primary > .section-primary-wrapper > *:last-child,
+.blocks-container > *:last-child {
 	margin-bottom: 0;
 }
 
