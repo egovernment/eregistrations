@@ -3,6 +3,7 @@
 'use strict';
 
 var Greedy = function (options) {
+	if (!(this instanceof Greedy)) return new Greedy(options);
 	this.element = options.element;
 	this.counter = options.counter || false;
 	this.visibleLinks = this.element.querySelector('ul');
