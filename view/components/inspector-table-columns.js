@@ -8,5 +8,6 @@ module.exports = [
 	tableColumns.businessProcessSubmitterTypeColumn,
 	tableColumns.businessProcessBusinessNameColumn,
 	tableColumns.businessProcessCreationDateColumn,
-	tableColumns.businessProcessCertificatesListColumn
+	tableColumns.businessProcessCertificatesListColumn,
+	tableColumns.businessProcessGoToColumn
 ];

@@ -2,9 +2,9 @@
 
 'use strict';
 
-require('../../view/base');
+var assign = require('es5-ext/object/assign');
 
-module.exports = {
-	'/': require('eregistrations/view/inspector'),
-	profile: require('eregistrations/view/user-profile')
-};
+require('../../view/base');
+require('eregistrations/view/customizations/business-process-official-no-form');
+
+assign(exports, require('eregistrations/routes/inspector')());

@@ -8,28 +8,29 @@ var db                    = require('../../db')
 
   , certificateStatusMeta = db.CertificateStatus.meta;
 
-var generateCertificatesList = (function () {
-	var getStatusLabel = function (cert) {
-		if (cert._status) return _if(cert._status, ["- ", cert._status]);
-		return cert.status && ("- " + certificateStatusMeta[cert.status].label);
-	};
-	var resolveStatusClass = function (status) {
-		if (!status) return;
-		if (status === 'pending') return 'ready';
-		return status;
-	};
-	var getStatusClass = function (cert) {
-		if (cert._status) return cert._status.map(resolveStatusClass);
-		return resolveStatusClass(cert.status);
-	};
-	return function (certificates) {
-		return span(list(certificates, function (cert) {
-			return span({ class: 'hint-optional hint-optional-left',
-				'data-hint': [cert.label, getStatusLabel(cert)] },
-				span({ class: ['label-reg', getStatusClass(cert)] }, cert.abbr));
-		}));
-	};
-}());
+exports.getCertificateStatusLabel = function (cert) {
+	if (cert._status) return _if(cert._status, ["- ", cert._status]);
+	return cert.status && ("- " + certificateStatusMeta[cert.status].label);
+};
+
+exports.resolveCertificateStatusClass = function (status) {
+	if (!status) return;
+	if (status === 'pending') return 'ready';
+	return status;
+};
+
+exports.getCertificateStatusClass = function (cert) {
+	if (cert._status) return cert._status.map(exports.resolveCertificateStatusClass);
+	return exports.resolveCertificateStatusClass(cert.status);
+};
+
+exports.generateCertificatesList = function (certificates) {
+	return span(list(certificates, function (cert) {
+		return span({ class: 'hint-optional hint-optional-left',
+			'data-hint': [cert.label, exports.getCertificateStatusLabel(cert)] },
+			span({ class: ['label-reg', exports.getCertificateStatusClass(cert)] }, cert.abbr));
+	}));
+};
 
 exports.getServiceIcon = function (businessProcess) {
 	return i({ class: "fa fa-user" });
@@ -80,12 +81,12 @@ exports.businessProcessCertificatesListColumn = {
 			if (isClosed) {
 				return mmap(businessProcess.certificates.dataSnapshot._resolved, function (certificates) {
 					if (!certificates) return;
-					return generateCertificatesList(certificates);
+					return exports.generateCertificatesList(certificates);
 				});
 			}
 			return mmap(businessProcess.certificates._applicable, function (certificates) {
 				if (!certificates) return;
-				return generateCertificatesList(certificates);
+				return exports.generateCertificatesList(certificates);
 			});
 		});
 	}
