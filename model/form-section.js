@@ -165,10 +165,16 @@ module.exports = memoize(function (db) {
 			type: StringLine,
 			multiple: true,
 			value: function (_observe) {
-				var result = []
-				  , resolved;
+				var result = [], resolventProperty, resolved;
 
-				if (this.isResolventFilled(_observe)) result.push(this.resolventProperty);
+				if (this.isResolventFilled(_observe)) {
+					resolventProperty = this.resolventProperty;
+					if (this.propertyMaster !== this.master) {
+						resolventProperty = this.propertyMaster.__id__.slice(this.master.__id__.length + 1) +
+							'/' + resolventProperty;
+					}
+					result.push(resolventProperty);
+				}
 
 				if (this.isUnresolved) return result;
 
