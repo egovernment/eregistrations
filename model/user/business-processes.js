@@ -13,12 +13,13 @@ module.exports = memoize(function (User/* options */) {
 		isOpenForNewDraft: {
 			type: db.Boolean,
 			value: function (_observe) {
-				var serviceName = this.owner.key, db = this.database, BusinessProcess, bpSet, count = 0;
+				var serviceName = this.key, db = this.database, BusinessProcess, bpSet, count = 0;
 				BusinessProcess = db['BusinessProcess' + serviceName[0].toUpperCase() +
 					serviceName.slice(1)];
 				if (!BusinessProcess || (BusinessProcess.draftLimit == null)) return;
-				bpSet = _observe(this.initialBusinessProcess.initialBusinessProcesses);
+				bpSet = _observe(this.master.initialBusinessProcesses);
 				bpSet.forEach(function (businessProcess) {
+					if (businessProcess.isSubmitted || !businessProcess.isFromEregistrations) return;
 					if (businessProcess.constructor === BusinessProcess) count++;
 				});
 
@@ -66,6 +67,7 @@ module.exports = memoize(function (User/* options */) {
 	});
 
 	User.prototype.services._descriptorPrototype_.type = ServiceMeta;
+	User.prototype.services._descriptorPrototype_.nested = true;
 
 	return User;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

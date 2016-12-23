@@ -91,9 +91,16 @@ module.exports = exports = function (db, dbDriver, data) {
 	ensureDatabase(db);
 
 	var getBusinessProcessStorages = require('./utils/business-process-storages');
-	var getManagerUserData = getPartFragments(userStorage, new Set(['email', 'firstName',
+	var managerUserDataSet = new Set(['email', 'firstName',
 		'initialBusinessProcesses', 'lastName', 'manager', 'canManagedUserBeDestroyed',
-		'isActiveAccount', 'isInvitationSent']));
+		'isActiveAccount', 'isInvitationSent']);
+	db.BusinessProcess.extensions.forEach(function (BusinessProcessType) {
+		var id = BusinessProcessType.__id__.slice('BusinessProcess'.length);
+
+		managerUserDataSet.add('services/' + uncapitalize.call(id) + '/isOpenForNewDraft');
+	});
+	var getManagerUserData = getPartFragments(userStorage, managerUserDataSet);
+
 	var getManagerBusinessProcessData = getPartFragments(null, new Set(['businessName',
 		'isSentBack', 'isUserProcessing', 'isSubmitted', 'manager', 'status']));
 	var addCustomBusinessProcessData;
