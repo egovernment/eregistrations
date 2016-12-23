@@ -28,7 +28,7 @@ exports['manager-account-content'] = function () {
 				thead(tr(
 					th(_("Client")),
 					th(_('Services')),
-					th()
+					th({ colspan: "2" })
 				)),
 				tbody(
 					clients,
@@ -39,23 +39,24 @@ exports['manager-account-content'] = function () {
 						return tr(
 							td(client._fullName),
 
-							td(bpSet.map(function (bp) { return bp.constructor; })._size),
-
-							td({ class: 'actions' },
-								_if(manager._isManagerActive,
-									[
-										postButton({ buttonClass: 'actions-edit',
-											action: url('clients', client.__id__),
-											value: span({
-												class: ['fa', _if(eq(client._manager, manager), 'fa-edit', 'fa-search')]
-											}) }),
+							td(bpSet.map(function (bp) { console.log(bp.__id__); return bp.constructor; })._size),
+							_if(manager._isManagerActive,
+								[td(
+									postButton({
+										action: url('clients', client.__id__),
+										value: _("Access the client's account")
+									})
+								),
+									td(
 										_if(client._canManagedUserBeDestroyed,
-											postButton({ buttonClass: 'actions-delete',
+											postButton({
 												action: url('clients', client.__id__, 'delete'),
-												confirm: _("Are you sure?"), value: span({ class: 'fa fa-trash-o' }) })
+												confirm: _("Are you sure?"),
+												value: _("Remove the client's account")
+											}),
+											_("N/A")
 											)
-									], _("N/A")
-									)
+									)], td({ colspan: "2" }, _("N/A"))
 								)
 						);
 					},
