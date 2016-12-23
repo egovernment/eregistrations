@@ -39,7 +39,7 @@ exports['manager-account-content'] = function () {
 						return tr(
 							td(client._fullName),
 
-							td(bpSet.map(function (bp) { console.log(bp.__id__); return bp.constructor; })._size),
+							td(bpSet.map(function (bp) { return bp.constructor; })._size),
 							_if(manager._isManagerActive,
 								[td(
 									postButton({
