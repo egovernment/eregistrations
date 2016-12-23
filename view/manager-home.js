@@ -26,8 +26,8 @@ exports['manager-account-content'] = function () {
 			table(
 				{ class: 'submitted-user-data-table' },
 				thead(tr(
-					th(_("Client")),
-					th(_('Services')),
+					th(_("Client linked to this notary account")),
+					th(_("Services started for this client")),
 					th({ colspan: "2" })
 				)),
 				tbody(
