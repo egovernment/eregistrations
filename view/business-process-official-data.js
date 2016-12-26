@@ -9,8 +9,17 @@ exports._parent = require('./business-process-official');
 
 exports['tab-business-process-data'] = { class: { active: true } };
 exports['tab-content'] = function () {
-	insert(dataView(this, {
-		prependContent: renderDataRevisionInfo(this),
-		urlPrefix: '/' + this.businessProcess.__id__ + '/'
-	}));
+	if (this.dataSnapshot) {
+		insert(dataView(this, {
+			prependContent: renderDataRevisionInfo(this),
+			urlPrefix: '/' + this.businessProcess.__id__ + '/'
+		}));
+	} else {
+		section({ class: 'section-primary' }, div(
+			{ class: 'document-preview-data business-process-submitted-data' },
+			list(this.businessProcess.dataForms.applicable, function (section) {
+				return section.toDOM(document);
+			})
+		));
+	}
 };

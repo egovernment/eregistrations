@@ -13,19 +13,20 @@ module.exports = function (data, listProperties, listComputedProperties) {
 
 		return deferred.map(aFrom(listComputedProperties), function (keyPath) {
 			return anyIdToStorage(businessProcessId)(function (storage) {
+				var propertyKeyPath = businessProcessId + '/' + keyPath;
+
 				if (!storage) return;
 
-				return storage.getComputed(businessProcessId + '/' + keyPath)(function (data) {
+				return storage.getComputed(propertyKeyPath)(function (data) {
 					if (!data) return;
 					if (Array.isArray(data.value)) {
 						return data.value.map(function (data) {
 							var key = data.key ? '*' + data.key : '';
-							var result = data.stamp + '.' + businessProcessId + '/'
-								+ keyPath + key + '.' + data.value;
+							var result = data.stamp + '.' + propertyKeyPath + key + '.' + data.value;
 							return result;
 						});
 					}
-					var result = data.stamp + '.' + businessProcessId + '/' + keyPath + '.' + data.value;
+					var result = data.stamp + '.' + propertyKeyPath + '.' + data.value;
 					return result;
 				});
 			});

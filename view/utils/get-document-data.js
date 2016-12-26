@@ -23,15 +23,14 @@ var resolveSnapshotArchivePath = function (businessProcess, snapshot, kind) {
 module.exports = function (context) {
 	var businessProcess = context.businessProcess, kind = context.documentKind
 	  , doc = context.document, snapshot = context.dataSnapshot
-	  , files;
+	  , files, data;
 
-	if ((kind === 'certificate') && !snapshot) {
-		// Show certificate for not yet finalized request
+	if (!snapshot) {
+		// Show data for not yet finalized requests
 		// As we don't have snapshot, we rely naturally on model
 		data = {
 			label: doc._label.map(function (label) { return _d(label, doc.getTranslations()); }),
 			statusLog: doc.statusLog.ordered.toArray(),
-			overviewSection: doc.overviewSection.toDOM(document, { disableHeader: true }),
 			archiveUrl: resolveArchivePath(doc)
 		};
 		data.filesSize = doc.files.ordered._size;
@@ -45,15 +44,18 @@ module.exports = function (context) {
 			};
 		});
 		data.files = files.toArray();
-		if (doc.dataForm.constructor !== db.FormSectionBase) {
-			data.section = doc.dataForm.toDOM(document, {
-				customFilter: function (resolved) {
-					return !endsWith.call(resolved.observable.dbId, 'files/map');
-				},
-				disableHeader: true
-			});
+		if ((kind === 'certificate')) {
+			data.overviewSection = doc.overviewSection.toDOM(document, { disableHeader: true });
+			if (doc.dataForm.constructor !== db.FormSectionBase) {
+				data.section = doc.dataForm.toDOM(document, {
+					customFilter: function (resolved) {
+						return !endsWith.call(resolved.observable.dbId, 'files/map');
+					},
+					disableHeader: true
+				});
+			}
 		}
-	} else {
+	} else if (doc) {
 		// Rely on snapshot
 		data = {
 			label: snapshot.label,
