@@ -33,8 +33,8 @@ exports['user-account-content'] = function () {
 									businessProcess._isUserProcessing), "submitted-user-data-table-sent-back") },
 								td({ class: "submitted-user-data-table-file-status" },
 									businessProcess._status), list(columns, function (column) {
-										return td({ class: column.class }, column.data(businessProcess));
-									}));
+									return td({ class: column.class }, column.data(businessProcess));
+								}));
 						}
 					)
 				))];
