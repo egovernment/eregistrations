@@ -38,7 +38,7 @@ exports.getServiceIcon = function (businessProcess) {
 
 exports.businessProcessSubmitterTypeColumn = {
 	head: _("User type"),
-	class: 'submitted-user-data-table-type',
+	class: 'submitted-user-data-table-submitter-type',
 	data: function (businessProcess) {
 		return mmap(businessProcess._submitterType, function (submitterType) {
 			if (!businessProcess.submitterType) return;
@@ -78,7 +78,7 @@ exports.businessProcessBusinessNameColumn = {
 
 exports.businessProcessCertificatesListColumn = {
 	head: _("Inscriptions and controls"),
-	class: 'submitted-user-data-table-inscriptions',
+	class: 'submitted-user-data-table-certs',
 	data: function (businessProcess) {
 		return mmap(businessProcess._isClosed, function (isClosed) {
 			if (!businessProcess.certificates) return;
@@ -98,7 +98,7 @@ exports.businessProcessCertificatesListColumn = {
 
 exports.businessProcessCreationDateColumn = {
 	head: _("Creation date"),
-	class: 'submitted-user-data-table-creation-date',
+	class: 'submitted-user-data-table-date-time',
 	data: function (businessProcess) {
 		return formatLastModified(businessProcess.lastModified);
 	}
@@ -106,7 +106,7 @@ exports.businessProcessCreationDateColumn = {
 
 exports.businessProcessSubmissionDateColumn = {
 	head: _("Submission date"),
-	class: 'submitted-user-data-table-submission-date',
+	class: 'submitted-user-data-table-date-time',
 	data: function (businessProcess) {
 		var isSubmitted = businessProcess._isSubmitted;
 
@@ -118,7 +118,7 @@ exports.businessProcessSubmissionDateColumn = {
 
 exports.businessProcessWithdrawalDateColumn = {
 	head: _("Withdraw date"),
-	class: 'submitted-user-data-table-withdrawal-date',
+	class: 'submitted-user-data-table-date',
 	data: function (businessProcess) {
 		var isApproved = businessProcess._isApproved;
 
@@ -129,7 +129,7 @@ exports.businessProcessWithdrawalDateColumn = {
 };
 
 exports.businessProcessActionsColumn = {
-	class: 'submitted-user-data-table-link',
+	class: 'submitted-user-data-table-actions',
 	data: function (businessProcess) {
 		return _if(businessProcess._isAtDraft,
 			[postButton({

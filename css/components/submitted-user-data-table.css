@@ -57,7 +57,7 @@
 	width: 95px;
 }
 
-.submitted-user-data-table-inscriptions {
+.submitted-user-data-table-certs {
 	width: 210px;
 }
 
@@ -66,17 +66,19 @@
 	text-align: center;
 }
 
+.submitted-user-data-table td.submitted-user-data-table-actions a,
 .submitted-user-data-table td.submitted-user-data-table-link a,
 .submitted-user-data-table td {
 	padding: 11px 10px 10px;
 	font-size: 15px;
 }
+.submitted-user-data-table td.submitted-user-data-table-actions,
 .submitted-user-data-table td.submitted-user-data-table-link {
 	padding: 0;
 	width:	60px;
 }
 
-.submitted-user-data-table td.submitted-user-data-table-link .fa {
+.submitted-user-data-table .fa {
 	vertical-align: middle;
 }
 
@@ -90,12 +92,15 @@
 }
 
 .submitted-user-data-table td.actions form,
+.submitted-user-data-table td.submitted-user-data-table-actions form,
 .submitted-user-data-table td.submitted-user-data-table-link form {
 	display: inline-block;
 }
 
 .submitted-user-data-table td.actions a,
 .submitted-user-data-table td.actions button,
+.submitted-user-data-table td.submitted-user-data-table-actions a,
+.submitted-user-data-table td.submitted-user-data-table-actions button,
 .submitted-user-data-table td.submitted-user-data-table-link a,
 .submitted-user-data-table td.submitted-user-data-table-link button {
 	color:var(--normal-text);
@@ -134,6 +139,8 @@
 .submitted-user-data-table-sent-back td,
 .submitted-user-data-table-sent-back td.actions a,
 .submitted-user-data-table-sent-back td.actions button,
+.submitted-user-data-table-sent-back td.submitted-user-data-table-actions a,
+.submitted-user-data-table-sent-back td.submitted-user-data-table-actions button,
 .submitted-user-data-table-sent-back td.submitted-user-data-table-link a,
 .submitted-user-data-table-sent-back td.submitted-user-data-table-link button {
 	color: var(--white-text);
@@ -157,6 +164,7 @@
 	width: 486px;
 }
 
+.submitted-user-data-table .submitted-user-data-table-actions,
 .submitted-user-data-table .submitted-user-data-table-link {
 	width: 60px;
 	text-align: center;
@@ -164,19 +172,11 @@
 }
 
 .submitted-user-data-table-date {
-	width: 145px;
-}
-
-.submitted-user-data-table-creation-date {
-	width: 165px;
-}
-
-.submitted-user-data-table-submission-date {
-	width: 165px;
-}
-
-.submitted-user-data-table-withdrawal-date {
 	width: 125px;
+}
+
+.submitted-user-data-table-date-time {
+	width: 170px;
 }
 
 .submitted-user-data-table .submitted-user-data-table-action {
@@ -223,6 +223,7 @@
 
 	.submitted-user-data-table .submitted-user-data-table-action,
 	.submitted-user-data-table .submitted-user-data-table-service,
+	.submitted-user-data-table .submitted-user-data-table-actions,
 	.submitted-user-data-table .submitted-user-data-table-link,
 	.submitted-user-data-table-date {
 		width: auto;
