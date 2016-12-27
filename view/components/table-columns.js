@@ -38,7 +38,6 @@ exports.getServiceIcon = function (businessProcess) {
 
 exports.businessProcessSubmitterTypeColumn = {
 	head: _("User type"),
-	class: 'submitted-user-data-table-submitter-type',
 	data: function (businessProcess) {
 		return mmap(businessProcess._submitterType, function (submitterType) {
 			if (!businessProcess.submitterType) return;
@@ -118,7 +117,7 @@ exports.businessProcessSubmissionDateColumn = {
 
 exports.businessProcessWithdrawalDateColumn = {
 	head: _("Withdraw date"),
-	class: 'submitted-user-data-table-date',
+	class: 'submitted-user-data-table-date-time',
 	data: function (businessProcess) {
 		var isApproved = businessProcess._isApproved;
 
