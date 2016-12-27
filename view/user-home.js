@@ -31,9 +31,10 @@ exports['user-account-content'] = function () {
 						function (businessProcess) {
 							return tr({ class: _if(or(businessProcess._isSentBack,
 									businessProcess._isUserProcessing), "submitted-user-data-table-sent-back") },
-								td(businessProcess._status), list(columns, function (column) {
-									return td({ class: column.class }, column.data(businessProcess));
-								}));
+								td({ class: "submitted-user-data-table-file-status" },
+									businessProcess._status), list(columns, function (column) {
+										return td({ class: column.class }, column.data(businessProcess));
+									}));
 						}
 					)
 				))];

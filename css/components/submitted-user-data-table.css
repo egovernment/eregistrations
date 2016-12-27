@@ -53,9 +53,16 @@
 	vertical-align: top;
 }
 
+.submitted-user-data-table-file-status {
+	width: 95px;
+}
+
+.submitted-user-data-table-inscriptions {
+	width: 210px;
+}
+
 .submitted-user-data-table .actions {
-	padding-left: 5px;
-	padding-right: 5px;
+	padding: 0;
 	text-align: center;
 }
 
@@ -66,15 +73,25 @@
 }
 .submitted-user-data-table td.submitted-user-data-table-link {
 	padding: 0;
+	width:	60px;
+}
+
+.submitted-user-data-table td.submitted-user-data-table-link .fa {
+	vertical-align: middle;
 }
 
 .submitted-user-data-table td a {
 	display: block;
 }
 .submitted-user-data-table td.actions a {
-	display: inline;
+	display: inline-block;
 	padding: 3px 6px 4px;
 	font-size: 12px;
+}
+
+.submitted-user-data-table td.actions form,
+.submitted-user-data-table td.submitted-user-data-table-link form {
+	display: inline-block;
 }
 
 .submitted-user-data-table td.actions a,
@@ -82,10 +99,14 @@
 .submitted-user-data-table td.submitted-user-data-table-link a,
 .submitted-user-data-table td.submitted-user-data-table-link button {
 	color:var(--normal-text);
+	border: none;
+	font-size: 15px;
+	background-color: transparent;
+	padding: 11px 3px;
 }
 
 .submitted-user-data-table-basic > a {
-		font-weight: bold;
+	font-weight: bold;
 }
 .submitted-user-data-table td a:hover,
 .submitted-user-data-table td a:active,
@@ -137,20 +158,31 @@
 }
 
 .submitted-user-data-table .submitted-user-data-table-link {
-	width: 40px;
+	width: 60px;
 	text-align: center;
 	padding:0;
 }
 
 .submitted-user-data-table-date {
-	width: 185px;
+	width: 145px;
+}
+
+.submitted-user-data-table-creation-date {
+	width: 165px;
+}
+
+.submitted-user-data-table-submission-date {
+	width: 165px;
+}
+
+.submitted-user-data-table-withdrawal-date {
+	width: 125px;
 }
 
 .submitted-user-data-table .submitted-user-data-table-action {
-	padding-left: 0;
-	padding-right: 0;
+	padding: 0;
 	text-align: center;
-	width: 40px;
+	width: 60px;
 }
 
 .submitted-user-data-table .submitted-user-data-table-service {

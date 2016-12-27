@@ -38,6 +38,7 @@ exports.getServiceIcon = function (businessProcess) {
 
 exports.businessProcessSubmitterTypeColumn = {
 	head: _("User type"),
+	class: 'submitted-user-data-table-type',
 	data: function (businessProcess) {
 		return mmap(businessProcess._submitterType, function (submitterType) {
 			if (!businessProcess.submitterType) return;
@@ -50,6 +51,7 @@ exports.businessProcessSubmitterTypeColumn = {
 
 exports.businessProcessStatusColumn = {
 	head: _("Status"),
+	class: 'submitted-user-data-table-file-status',
 	data: function (businessProcess) {
 		if (!businessProcess.status) return;
 
@@ -68,6 +70,7 @@ exports.businessProcessServiceColumn = {
 
 exports.businessProcessBusinessNameColumn = {
 	head: _("Entity"),
+	class: 'submitted-user-data-table-name',
 	data: function (businessProcess) {
 		return businessProcess._businessName;
 	}
@@ -75,6 +78,7 @@ exports.businessProcessBusinessNameColumn = {
 
 exports.businessProcessCertificatesListColumn = {
 	head: _("Inscriptions and controls"),
+	class: 'submitted-user-data-table-inscriptions',
 	data: function (businessProcess) {
 		return mmap(businessProcess._isClosed, function (isClosed) {
 			if (!businessProcess.certificates) return;
@@ -94,6 +98,7 @@ exports.businessProcessCertificatesListColumn = {
 
 exports.businessProcessCreationDateColumn = {
 	head: _("Creation date"),
+	class: 'submitted-user-data-table-creation-date',
 	data: function (businessProcess) {
 		return formatLastModified(businessProcess.lastModified);
 	}
@@ -101,7 +106,7 @@ exports.businessProcessCreationDateColumn = {
 
 exports.businessProcessSubmissionDateColumn = {
 	head: _("Submission date"),
-	class: 'submitted-user-data-table-date',
+	class: 'submitted-user-data-table-submission-date',
 	data: function (businessProcess) {
 		var isSubmitted = businessProcess._isSubmitted;
 
@@ -113,7 +118,7 @@ exports.businessProcessSubmissionDateColumn = {
 
 exports.businessProcessWithdrawalDateColumn = {
 	head: _("Withdraw date"),
-	class: 'submitted-user-data-table-date',
+	class: 'submitted-user-data-table-withdrawal-date',
 	data: function (businessProcess) {
 		var isApproved = businessProcess._isApproved;
 
@@ -124,7 +129,7 @@ exports.businessProcessWithdrawalDateColumn = {
 };
 
 exports.businessProcessActionsColumn = {
-	class: 'actions',
+	class: 'submitted-user-data-table-link',
 	data: function (businessProcess) {
 		return _if(businessProcess._isAtDraft,
 			[postButton({
@@ -179,6 +184,7 @@ exports.businessProcessArchiverColumn = {
 
 exports.processingStepBusinessNameColumn = {
 	head: _("Name"),
+	class: 'submitted-user-data-table-name',
 	data: function (processingStep) {
 		var businessProcess = processingStep.master;
 		return businessProcess._businessName;
@@ -187,6 +193,7 @@ exports.processingStepBusinessNameColumn = {
 
 exports.processingStepRoleColumn = {
 	head: _("Role"),
+	class: 'submitted-user-data-table-role',
 	data: function (processingStep) {
 		var assignee = processingStep._assignee;
 
@@ -199,6 +206,7 @@ exports.processingStepRoleColumn = {
 
 exports.processingStepProcessingTimeColumn = {
 	head: _("Time"),
+	class: 'submitted-user-data-table-date',
 	data: function (processingStep) {
 		var result, value;
 		return processingStep._status._lastModified.map(function (modDate) {
@@ -221,6 +229,7 @@ exports.processingStepProcessingTimeColumn = {
 
 exports.processingStepServiceColumn = {
 	head: _("Registration"),
+	class: 'submitted-user-data-table-service',
 	data: function (processingStep) {
 		var businessProcess = processingStep.master;
 		return span(businessProcess._label);
