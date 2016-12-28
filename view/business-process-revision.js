@@ -88,9 +88,10 @@ exports._rejectButton = function (/*options*/) {
 		section({ class: 'dialog-body' },
 			form({ method: 'post', action: '/revision/' + this.businessProcess.__id__ + '/reject/' },
 				p({ class: 'input' }, input({ id: 'revision-reject-reason',
-					dbjs: this.processingStep._rejectionReason })),
-				p(input({ type: 'submit', value: options.rejectLabel || _("Reject") })))),
-		footer(p(a({ href: '' }, _("Cancel"))))
+					dbjs: this.processingStep._rejectionReason }))
+				)),
+		footer(p(a({ href: '' }, _("Cancel")),
+			input({ class: 'button-main-error', type: 'submit', value: options.rejectLabel || _("Reject") })))
 	), a({
 		href: '#reject-reason',
 		class: 'button-main button-main-error hint-optional' +

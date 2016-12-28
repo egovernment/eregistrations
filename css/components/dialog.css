@@ -83,6 +83,14 @@ dialog footer p {
 	white-space: nowrap;
 }
 
+dialog footer p > * {
+	margin-left: 8px;
+}
+
+dialog footer p > *:first-child {
+	margin-left: 0;
+}
+
 @media only screen and (max-width: var(--mobile-width)) {
 	dialog {
 		left:0;
