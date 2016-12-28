@@ -44,11 +44,12 @@ exports._institutionColumn = {
 
 exports._creationDateColumn = {
 	head: _("Creation date"),
+	class: "submitted-user-data-table-date-time",
 	data: function (user) { return new db.DateTime(user.lastModified / 1000); }
 };
 
 exports._actionsColumn = {
-	head: th({ class: 'actions' }),
+	head: th({ class: 'submitted-user-data-table-actions' }),
 	data: function (user) {
 		var isSelfUser = (user === this.user);
 		return td({ class: 'actions' },

@@ -40,5 +40,6 @@
 ../../../node_modules/eregistrations/css/components/document-preview.css
 ../../../node_modules/eregistrations/css/components/documents-list-table.css
 ../../../node_modules/eregistrations/css/components/business-process-submitted-data.css
+../../../node_modules/eregistrations/css/components/greedy-menu.css
 ../../../css/theme.css
 ../../../css/theme-part-b.css

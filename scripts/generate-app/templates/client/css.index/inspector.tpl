@@ -15,6 +15,7 @@
 ../../../node_modules/eregistrations/css/components/submitted-user-data-table.css
 ../../../node_modules/eregistrations/css/components/section-warning.css
 ../../../node_modules/eregistrations/css/components/label-reg.css
+../../../node_modules/eregistrations/css/components/greedy-menu.css
 ../../../node_modules/eregistrations/css/components/pills-nav.css
 ../../../node_modules/eregistrations/css/components/container-with-nav.css
 ../../../node_modules/eregistrations/css/components/button-main.css
