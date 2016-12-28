@@ -50,7 +50,7 @@ exports.businessProcessSubmitterTypeColumn = {
 
 exports.businessProcessStatusColumn = {
 	head: _("Status"),
-	class: 'submitted-user-data-table-file-status',
+	class: 'submitted-user-data-table-business-process-status',
 	data: function (businessProcess) {
 		if (!businessProcess.status) return;
 

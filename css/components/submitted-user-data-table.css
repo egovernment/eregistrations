@@ -53,6 +53,10 @@
 	vertical-align: top;
 }
 
+.submitted-user-data-table-name {
+	min-width: 170px;
+}
+
 .submitted-user-data-table-business-process-status {
 	width: 95px;
 }
