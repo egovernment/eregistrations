@@ -384,3 +384,11 @@ e.g.:
 .fa-money:before {
 	content: "\f0d6";
 }
+
+.fa-bars {
+	width: 1em;
+}
+
+.fa-bars:before {
+	content: "\f0c9";
+}
