@@ -91,7 +91,8 @@ exports._rejectButton = function (/*options*/) {
 					dbjs: this.processingStep._rejectionReason }))
 				)),
 		footer(p(a({ href: '' }, _("Cancel")),
-			input({ class: 'button-main-error', type: 'submit', value: options.rejectLabel || _("Reject") })))
+			input({ class: 'button-main-error',
+				type: 'submit', value: options.rejectLabel || _("Reject") })))
 	), a({
 		href: '#reject-reason',
 		class: 'button-main button-main-error hint-optional' +
