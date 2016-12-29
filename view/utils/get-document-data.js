@@ -55,7 +55,7 @@ module.exports = function (context) {
 				});
 			}
 		}
-	} else if (doc) {
+	} else {
 		// Rely on snapshot
 		data = {
 			label: snapshot.label,
