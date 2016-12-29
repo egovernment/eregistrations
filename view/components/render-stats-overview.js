@@ -8,6 +8,7 @@ var location             = require('mano/lib/client/location')
   , getQueryHandlerConf  = require('../../apps/statistics/get-query-conf')
   , getDurationDaysHours = require('../utils/get-duration-days-hours')
   , getDynamicUrl        = require('../utils/get-dynamic-url')
+  , dateRange            = require('../utils/date-range')
   , memoize              = require('memoizee');
 
 var queryServer = memoize(function (query) {
@@ -24,7 +25,7 @@ var mapDurationValue = function (value) {
 };
 
 module.exports = function (context) {
-	var data = {}, queryHandler, formAction;
+	var data = {}, queryHandler, formAction,  dateRange;
 	queryHandler = setupQueryHandler(getQueryHandlerConf(), location, '/');
 
 	renderedProps.forEach(function (prop) {
@@ -62,7 +63,10 @@ module.exports = function (context) {
 					name: 'dateFrom', value: location.query.get('dateFrom') }),
 				label({ for: 'date-to-input' }, _("Statistics date to"), ":"),
 				input({ id: 'date-to-input', type: 'date',
-					name: 'dateTo', value: location.query.get('dateTo') })))),
+					name: 'dateTo', value: location.query.get('dateTo') })),
+			hr(),
+			div({ class: 'users-table-filter-bar-status'},
+				dateRange = button('blabla')))),
 		section({ class: 'table-responsive-container' },
 			table({ class: 'statistics-table statistics-table-officials' },
 				thead(
@@ -89,4 +93,5 @@ module.exports = function (context) {
 					)
 				)
 				))];
+		dateRange({ element: dateRange });
 };
