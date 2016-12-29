@@ -5,9 +5,6 @@
 		padding-top: 20px;
 }
 
-.users-table-filter-bar-all {
-	padding-top: 22px;
-}
 
 .users-table-filter-bar > * {
 	margin-bottom: 0;
@@ -30,16 +27,6 @@
 	max-width: 85%;
 }
 
-.users-table-filter-bar-all .users-table-filter-bar-status {
-	max-width: 25%;
-	width: 25%;
-}
-
-.users-table-filter-bar-all .users-table-filter-bar-status > select {
-	max-width: 100%;
-	width: 100%;
-}
-
 .users-table-filter-bar form > div {
 	white-space: nowrap;
 }
@@ -49,38 +36,14 @@
 	margin: -11px 20px 11px 0;
 }
 
-.users-table-filter-bar-all div {
-	margin: -11px 0 0 0;
-	padding: 0 10px 10px 10px;
-}
-
 .users-table-filter-bar label {
 	text-align: left;
 	margin-left: 30px;
 	margin-right: 5px;
 }
 
-.users-table-filter-bar-all label {
-	display: block;
-	line-height: 22px;
-}
-
 .users-table-filter-bar label:first-child {
 	margin-left: 0;
-}
-
-.users-table-filter-bar-all .users-table-filter-bar-search {
-	width: 50%;
-}
-
-.users-table-filter-bar-all .users-table-filter-bar-search .input-append {
-	width: 100%;
-	display: block;
-}
-
-.users-table-filter-bar-all .users-table-filter-bar-search .input-append input {
-	width: calc(100% - 30px);
-	max-width: 100%;
 }
 
 .users-table-filter-bar-print {
@@ -120,14 +83,5 @@
 	}
 	.users-table-filter-bar-status {
 		max-width: 100%;
-	}
-
-	.users-table-filter-bar-all .users-table-filter-bar-status {
-		max-width: 100%;
-		width: 100%;
-	}
-
-	.users-table-filter-bar-all .users-table-filter-bar-search {
-		width: 100%;
 	}
 }

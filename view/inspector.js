@@ -32,7 +32,7 @@ exports['sub-main'] = {
 		  , searchForm, searchInput, inspectorTable;
 
 		section(
-			{ class: 'section-primary users-table-filter-bar users-table-filter-bar-all' },
+			{ class: 'section-primary users-table-filter-bar users-table-filter-bar-inspector' },
 			searchForm = form(
 				{ action: '/', autoSubmit: true },
 				exports._customFilters.call(this),

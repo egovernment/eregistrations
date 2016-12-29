@@ -12,6 +12,7 @@
 ../../../node_modules/eregistrations/css/components/info-main.css
 ../../../node_modules/eregistrations/css/components/error-page.css
 ../../../node_modules/eregistrations/css/components/users-table-filter-bar.css
+../../../node_modules/eregistrations/css/components/users-table-filter-bar-inspector.css
 ../../../node_modules/eregistrations/css/components/submitted-user-data-table.css
 ../../../node_modules/eregistrations/css/components/section-warning.css
 ../../../node_modules/eregistrations/css/components/label-reg.css
