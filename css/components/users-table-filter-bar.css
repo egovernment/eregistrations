@@ -5,7 +5,6 @@
 		padding-top: 20px;
 }
 
-
 .users-table-filter-bar > * {
 	margin-bottom: 0;
 }
@@ -54,6 +53,7 @@
 	white-space: nowrap;
 	text-decoration: none;
 }
+
 .users-table-filter-bar-print:hover,
 .users-table-filter-bar-print:focus,
 .users-table-filter-bar-print:active {
