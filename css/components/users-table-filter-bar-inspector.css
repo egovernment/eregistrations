@@ -1,0 +1,48 @@
+.users-table-filter-bar-inspector {
+	padding-top: 22px;
+}
+
+.users-table-filter-bar-inspector .users-table-filter-bar-status {
+	max-width: 25%;
+	width: 25%;
+}
+
+.users-table-filter-bar-inspector .users-table-filter-bar-status > select {
+	max-width: 100%;
+	width: 100%;
+}
+
+.users-table-filter-bar-inspector div {
+	margin: -11px 0 0 0;
+	padding: 0 10px 10px 10px;
+}
+
+.users-table-filter-bar-inspector label {
+	display: block;
+	line-height: 22px;
+}
+
+.users-table-filter-bar-inspector .users-table-filter-bar-search {
+	width: 50%;
+}
+
+.users-table-filter-bar-inspector .users-table-filter-bar-search .input-append {
+	width: 100%;
+	display: block;
+}
+
+.users-table-filter-bar-inspector .users-table-filter-bar-search .input-append input {
+	width: calc(100% - 30px);
+	max-width: 100%;
+}
+
+@media only screen and (max-width: var(--mobile-width)) {
+	.users-table-filter-bar-inspector .users-table-filter-bar-status {
+		max-width: 100%;
+		width: 100%;
+	}
+
+	.users-table-filter-bar-inspector .users-table-filter-bar-search {
+		width: 100%;
+	}
+}

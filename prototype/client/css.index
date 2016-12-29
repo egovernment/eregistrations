@@ -73,6 +73,7 @@
 ../../css/components/table-responsive-container.css
 ../../css/components/submitted-preview-form.css
 ../../css/components/users-table-filter-bar.css
+../../css/components/users-table-filter-bar-inspector.css
 ../../css/components/official-form.css
 ../../css/components/official-document.css
 ../../css/components/submitted-user-data-table.css
