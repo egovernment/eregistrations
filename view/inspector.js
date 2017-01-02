@@ -12,7 +12,7 @@ var db                = require('../db')
   , tableColumns      = require('./components/inspector-table-columns')
   , getInspectorTable = require('./components/inspector-table');
 
-exports._parent = require('./abstract-user-base');
+exports._parent = require('./user-base');
 
 exports['submitted-menu'] = function () {
 	li(

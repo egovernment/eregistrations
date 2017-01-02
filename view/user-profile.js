@@ -5,7 +5,7 @@ var _                    = require('mano').i18n.bind('View: User')
   , generateFormSections = require('./components/generate-form-sections')
   , baseUrl              = url;
 
-exports._parent = require('./abstract-user-base');
+exports._parent = require('./user-base');
 
 exports['submitted-menu'] = function () {
 	li({ id: 'profile-nav', class: 'submitted-menu-item-active' }, a({ href: '/' }, _("Profile")));
