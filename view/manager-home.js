@@ -28,7 +28,7 @@ exports['manager-account-content'] = function () {
 				thead(tr(
 					th(_("Client linked to this notary account")),
 					th(_("Services started for this client")),
-					th({ colspan: "2" })
+					_if(manager._isManagerActive, th({ colspan: "2" }))
 				)),
 				tbody(
 					clients,
@@ -53,10 +53,9 @@ exports['manager-account-content'] = function () {
 												action: url('clients', client.__id__, 'delete'),
 												confirm: _("Are you sure?"),
 												value: _("Remove the client's account")
-											}),
-											_("N/A")
+											})
 											)
-									)], td({ colspan: "2" }, _("N/A"))
+									)]
 								)
 						);
 					},
