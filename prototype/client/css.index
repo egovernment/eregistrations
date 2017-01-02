@@ -73,6 +73,7 @@
 ../../css/components/table-responsive-container.css
 ../../css/components/submitted-preview-form.css
 ../../css/components/users-table-filter-bar.css
+../../css/components/users-table-filter-bar-inspector.css
 ../../css/components/official-form.css
 ../../css/components/official-document.css
 ../../css/components/submitted-user-data-table.css
@@ -94,3 +95,4 @@
 ../../css/components/forms-tab-nav.css
 ../../css/components/manager-bar.css
 ../../css/components/form-section-update.css
+../../css/components/greedy-menu.css

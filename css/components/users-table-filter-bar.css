@@ -4,6 +4,7 @@
 		padding-bottom: 0;
 		padding-top: 20px;
 }
+
 .users-table-filter-bar > * {
 	margin-bottom: 0;
 }
@@ -20,6 +21,7 @@
 .users-table-filter-bar-status {
 	max-width: 50%;
 }
+
 .users-table-filter-bar-status > select {
 	max-width: 85%;
 }
@@ -35,11 +37,10 @@
 
 .users-table-filter-bar label {
 	text-align: left;
-}
-.users-table-filter-bar label {
 	margin-left: 30px;
 	margin-right: 5px;
 }
+
 .users-table-filter-bar label:first-child {
 	margin-left: 0;
 }
@@ -52,6 +53,7 @@
 	white-space: nowrap;
 	text-decoration: none;
 }
+
 .users-table-filter-bar-print:hover,
 .users-table-filter-bar-print:focus,
 .users-table-filter-bar-print:active {

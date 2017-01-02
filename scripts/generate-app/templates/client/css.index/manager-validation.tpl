@@ -25,5 +25,6 @@
 ../../../node_modules/eregistrations/css/components/table-responsive-container.css
 ../../../node_modules/eregistrations/css/components/pagination.css
 ../../../node_modules/eregistrations/css/components/throbber.css
+../../../node_modules/eregistrations/css/components/greedy-menu.css
 ../../../css/theme.css
 ../../../css/theme-part-b.css

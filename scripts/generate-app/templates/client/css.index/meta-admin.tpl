@@ -19,5 +19,6 @@
 ../../../node_modules/eregistrations/css/components/button-main.css
 ../../../node_modules/eregistrations/css/components/meta-admin-main.css
 ../../../node_modules/eregistrations/css/components/throbber.css
+../../../node_modules/eregistrations/css/components/greedy-menu.css
 ../../../css/theme.css
 ../../../css/theme-part-b.css
