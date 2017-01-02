@@ -41,14 +41,17 @@ exports.menu = function () {
 };
 
 exports.main = function () {
-	var greedyNav;
 	div({ class: 'submitted-menu' },
 		div({ class: 'submitted-menu-bar content' },
-			greedyNav = nav({ class: 'greedy-menu' },
-				button({ class: 'toggle-links' }, i({ class: 'fa fa-bars' })),
-				ul({ class: 'submitted-menu-items greedy-menu-items', id: 'submitted-menu' },
-					exports._submittedMenu.call(this))
-				),
+			this.user._currentRoleResolved.map(function (role) {
+				var greedyElement = nav({ class: 'greedy-menu' },
+					button({ class: 'toggle-links' }, i({ class: 'fa fa-bars' })),
+					ul({ class: 'submitted-menu-items greedy-menu-items', id: 'submitted-menu' },
+						exports._submittedMenu.call(this, role))
+					);
+				greedy({ element: greedyElement, counter: true });
+				return greedyElement;
+			}.bind(this)),
 			_if(this.user._isDemo, div({ class: 'submitted-menu-demo' },
 				a({ class: 'submitted-menu-demo-ribon' }, _("Demo"))))));
 
@@ -88,19 +91,16 @@ exports.main = function () {
 		insert(exports._subMainPrependExtraItems.call(this)));
 
 	div({ class: 'user-forms', id: 'sub-main' });
-
-	greedy({ element: greedyNav, counter: true });
 };
 
-exports._submittedMenu = function () {
-	var user = this.manager || this.user;
+exports._submittedMenu = function (role) {
+	var user = this.manager || this.user, isOfficialRole;
 
-	return [user._currentRoleResolved.map(function (role) {
-		var isOfficialRole = user.officialRoles.has(role);
-		if (isOfficialRole) return list(user.officialRoles, exports._getSubmittedMenuItem.bind(this));
-		return exports._getSubmittedMenuItem.call(this, role);
-	}.bind(this)),
-		insert(exports._submittedMenuExtraItems.call(this))];
+	isOfficialRole = user.officialRoles.has(user.currentRoleResolved);
+
+	return [isOfficialRole ? list(user.officialRoles, exports._getSubmittedMenuItem.bind(this)) :
+			exports._getSubmittedMenuItem.call(this, role),
+		exports._submittedMenuExtraItems.call(this)];
 };
 
 exports._getSubmittedMenuItem = function (role) {
