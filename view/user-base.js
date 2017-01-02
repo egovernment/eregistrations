@@ -47,7 +47,7 @@ exports.main = function () {
 				var greedyElement = nav({ class: 'greedy-menu' },
 					button({ class: 'toggle-links' }, i({ class: 'fa fa-bars' })),
 					ul({ class: 'submitted-menu-items greedy-menu-items', id: 'submitted-menu' },
-						exports._submittedMenu.call(this, role))
+						exports._submittedMenu.call(this))
 					);
 				greedy({ element: greedyElement, counter: true });
 				return greedyElement;
@@ -93,13 +93,12 @@ exports.main = function () {
 	div({ class: 'user-forms', id: 'sub-main' });
 };
 
-exports._submittedMenu = function (role) {
+exports._submittedMenu = function () {
 	var user = this.manager || this.user, isOfficialRole;
 
 	isOfficialRole = user.officialRoles.has(user.currentRoleResolved);
-
 	return [isOfficialRole ? list(user.officialRoles, exports._getSubmittedMenuItem.bind(this)) :
-			exports._getSubmittedMenuItem.call(this, role),
+			exports._getSubmittedMenuItem.call(this, user.currentRoleResolved),
 		exports._submittedMenuExtraItems.call(this)];
 };
 
