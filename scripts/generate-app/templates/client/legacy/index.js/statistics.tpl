@@ -10,5 +10,6 @@ require('eregistrations/client/legacy/init');
 require('mano-legacy/live/input-mask');
 //Logs client errors to server logs
 require('eregistrations/client/legacy/error-logger');
+require('eregistrations/client/legacy/date-controls');
 
 require('mano-legacy/element#/toggle');
