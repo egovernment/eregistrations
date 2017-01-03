@@ -14,13 +14,6 @@ var db                = require('../db')
 
 exports._parent = require('./user-base');
 
-exports['submitted-menu'] = function () {
-	li(
-		{ id: 'inspector-nav', class: 'submitted-menu-item-active' },
-		a({ href: '/' }, db.Role.meta.inspector.label)
-	);
-};
-
 exports['sub-main'] = {
 	class: { content: true },
 	content: function () {

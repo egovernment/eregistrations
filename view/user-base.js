@@ -97,9 +97,8 @@ exports._submittedMenu = function () {
 	var user = this.manager || this.user, isOfficialRole;
 
 	isOfficialRole = user.officialRoles.has(user.currentRoleResolved);
-	return [isOfficialRole ? list(user.officialRoles, exports._getSubmittedMenuItem.bind(this)) :
-			exports._getSubmittedMenuItem.call(this, user.currentRoleResolved),
-		exports._submittedMenuExtraItems.call(this)];
+	return isOfficialRole ? list(user.officialRoles, exports._getSubmittedMenuItem.bind(this)) :
+			exports._getSubmittedMenuItem.call(this, user.currentRoleResolved);
 };
 
 exports._getSubmittedMenuItem = function (role) {
@@ -152,8 +151,6 @@ exports._getSubmittedMenuItem = function (role) {
 		input({ type: 'hidden', name: user.__id__ + '/currentRole', value: role }),
 		button({ type: 'submit' }, roleTitle)));
 };
-
-exports._submittedMenuExtraItems = Function.prototype;
 
 exports._getPendingViewPath = function (role) {
 	return uncapitalize.call(role.slice('official'.length));
