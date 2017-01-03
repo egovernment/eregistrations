@@ -25,7 +25,6 @@ module.exports = function (processingStepsMeta) {
 			decorateContext: function () { this.processingStepsMeta = processingStepsMeta; },
 			view: require('../view/statistics-time-per-person')
 		},
-		analysis: require('../view/statistics-analysis'),
 
 		profile: require('../view/user-profile')
 	};
