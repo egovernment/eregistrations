@@ -53,16 +53,19 @@ RolesInput.prototype = Object.create(RoleEnumMultiple.prototype, assign({
 			onIsDisabledChanged();
 		}
 
-		return el('li', { class: [_if(isDisabled, "disabled")] }, el('label', input, " ", label));
+		return el('li', { class: [_if(isDisabled, "disabled")] },
+			el('label', { class: "input-aside" }, el('span', input), " ", label));
 	})
 }, autoBind({
 	reload: d(function () {
 		var firstSubList  = [], secondSubList = [], thirdSubList = [];
 
 		clear.call(this.items);
-
 		this.dbList.forEach(function (item) {
-			var data = this.renderItem(item.value, item.label);
+			var longLabel, label, data;
+			longLabel = db.Role.meta[item.value].longLabel;
+			label = longLabel ? longLabel + ' (' + item.label + ')' : item.label;
+			data = this.renderItem(item.value, label);
 			this.items.push(data.input);
 			if (db.Role.isPartARole(item.value)) {
 				firstSubList.push(data.dom);
