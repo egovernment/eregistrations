@@ -1,3 +1,6 @@
+// Takes date instance and on basis of it's stamp, says what was the date (via instance of db.Date)
+// at passed timeZone
+
 'use strict';
 
 var ensureDate   = require('es5-ext/date/valid-date')

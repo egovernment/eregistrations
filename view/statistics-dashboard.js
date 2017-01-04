@@ -96,7 +96,8 @@ var getFilesCompletedPerDay = function (data, query) {
 	var result = { handle: 'chart-files-completed-per-day' };
 	var chart = {
 		options: assign(copy(exports._commonOptions), {
-			orientation: 'horizontal'
+			orientation: 'horizontal',
+			legend: { position: "top" }
 		}),
 		data: [["Service"]]
 	};
@@ -162,7 +163,7 @@ var getFilesCompletedPerDay = function (data, query) {
 
 var getFilesCompletedByStep = function (data) {
 	var result = { handle: 'chart-files-completed-by-service' }, chart = {
-		options: exports._commonOptions,
+		options: assign(copy(exports._commonOptions), { legend: { position: "top" } }),
 		data: [["Service"]]
 	};
 	var services = getServiceNames(), noData = true;

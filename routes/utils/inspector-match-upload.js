@@ -2,7 +2,7 @@
 
 module.exports = function (kind, uniqueKey) {
 	var colName = kind + 's';
-	if (this.businessProcess.isSubmitted) {
+	if (!this.businessProcess.isAtDraft) {
 		this.businessProcess[colName].dataSnapshot.resolved.some(function (data) {
 			if (data.uniqueKey === uniqueKey) {
 				this.dataSnapshot = data;

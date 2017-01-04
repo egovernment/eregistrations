@@ -5,7 +5,7 @@ module.exports = function (kind) {
 	  , uploads = this.businessProcess[colName]
 	  , first;
 
-	if (!this.businessProcess.isSubmitted) {
+	if (this.businessProcess.isAtDraft) {
 		first = uploads.applicable.first;
 
 		if (!first) return;
