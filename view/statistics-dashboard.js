@@ -163,7 +163,11 @@ var getFilesCompletedPerDay = function (data, query) {
 
 var getFilesCompletedByStep = function (data) {
 	var result = { handle: 'chart-files-completed-by-service' }, chart = {
-		options: assign(copy(exports._commonOptions), { legend: { position: "top" } }),
+		options: assign(copy(exports._commonOptions), {
+			legend: { position: "top" },
+			vAxis: { textPosition: "out" },
+			chartArea: { width: "60%" }
+		}),
 		data: [["Service"]]
 	};
 	var services = getServiceNames(), noData = true;
