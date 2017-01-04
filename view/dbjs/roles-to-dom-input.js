@@ -54,7 +54,7 @@ RolesInput.prototype = Object.create(RoleEnumMultiple.prototype, assign({
 		}
 
 		return el('li', { class: [_if(isDisabled, "disabled")] },
-			el('label', { class: "input-aside" }, el('span', input), " ", label));
+			el('label', { class: "input-aside" }, el('span', input), el('span', label)));
 	})
 }, autoBind({
 	reload: d(function () {
