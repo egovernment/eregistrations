@@ -12,14 +12,7 @@ var db                = require('../db')
   , tableColumns      = require('./components/inspector-table-columns')
   , getInspectorTable = require('./components/inspector-table');
 
-exports._parent = require('./abstract-user-base');
-
-exports['submitted-menu'] = function () {
-	li(
-		{ id: 'inspector-nav', class: 'submitted-menu-item-active' },
-		a({ href: '/' }, db.Role.meta.inspector.label)
-	);
-};
+exports._parent = require('./user-base');
 
 exports['sub-main'] = {
 	class: { content: true },
