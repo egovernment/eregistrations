@@ -15,7 +15,6 @@ module.exports = function (processingStepsMeta) {
 			decorateContext: function () { this.processingStepsMeta = processingStepsMeta; },
 			view: require('../view/statistics-files-pending')
 		},
-		'files/rejected': require('../view/statistics-files-rejected'),
 		'files/accounts': require('../view/statistics-files-accounts'),
 		time: {
 			decorateContext: function () { this.processingStepsMeta = processingStepsMeta; },
