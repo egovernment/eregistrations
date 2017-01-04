@@ -33,7 +33,7 @@ exports._commonOptions = {
 	legend: { position: "bottom", maxLines: 3 },
 	chartArea: { width: "100%", height: "75%" },
 	height: 300,
-	is3D: true,
+	is3D: false,
 	isStacked: true,
 	titlePosition: "out",
 	axisTitlesPosition: "in",
@@ -193,7 +193,9 @@ var getFilesCompletedByStep = function (data) {
 var getPendingFiles = function (data) {
 	var result = { handle: 'chart-pending-files' }, chart = {
 		options: assign(copy(exports._commonOptions), {
-			colors: exports._stepsColors
+			colors: exports._stepsColors,
+			pieSliceText: 'value-and-percentage',
+			pieSliceTextStyle: { fontSize: '10' }
 		}),
 		drawMethod: 'PieChart',
 		data: [["Role", "Count"]]
