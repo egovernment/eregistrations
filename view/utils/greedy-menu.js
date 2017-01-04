@@ -2,6 +2,8 @@
 
 'use strict';
 
+var nextTick = require('next-tick');
+
 var Greedy = function (options) {
 	if (!(this instanceof Greedy)) return new Greedy(options);
 	this.element = options.element;
@@ -9,7 +11,7 @@ var Greedy = function (options) {
 	this.visibleLinks = this.element.querySelector('ul');
 	this.toggleButton = this.element.querySelector('.toggle-links');
 	this.breakpoints = [];
-	setTimeout(this.init.bind(this), 0);
+	nextTick(this.init.bind(this));
 };
 
 module.exports = Greedy;

@@ -2,7 +2,7 @@
 
 var _ = require('mano').i18n;
 
-exports._parent = require('./abstract-user-base');
+exports._parent = require('./user-base');
 
 exports['submitted-menu'] = function () {
 	li({ id: 'dashboard-nav' }, a({ href: '/' }, _("Dashboard")));

@@ -3,7 +3,7 @@
 var user = require('mano').db.User.prototype
   , _    = require('mano').i18n.bind('View: Users Admin');
 
-exports._parent = require('./users-admin-base');
+exports._parent = require('./user-base');
 
 exports['sub-main'] = {
 	class: { content: true },
