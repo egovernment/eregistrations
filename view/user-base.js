@@ -95,6 +95,11 @@ exports.main = function () {
 
 exports._submittedMenu = function () {
 	var user = this.manager || this.user, isOfficialRole;
+	if (user.currentRoleResolved === 'statistics') {
+		return [li({ id: 'dashboard-nav' }, a({ href: '/' }, _("Dashboard"))),
+			li({ id: 'files-nav' }, a({ href: '/files/' }, _("Files"))),
+			li({ id: 'time-nav' }, a({ href: '/time/' }, _("Time")))];
+	}
 
 	isOfficialRole = user.officialRoles.has(user.currentRoleResolved);
 	return isOfficialRole ? list(user.officialRoles, exports._getSubmittedMenuItem.bind(this)) :
