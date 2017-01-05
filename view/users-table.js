@@ -11,7 +11,7 @@ var copy          = require('es5-ext/object/copy')
 
   , db = mano.db, env = mano.env, roleMeta = db.Role.meta;
 
-exports._parent = require('./users-admin-base');
+exports._parent = require('./user-base');
 
 exports._mapRolesToLabels = function (role, user) {
 	if (!role) return 'N/A';
@@ -44,11 +44,12 @@ exports._institutionColumn = {
 
 exports._creationDateColumn = {
 	head: _("Creation date"),
+	class: "submitted-user-data-table-date-time",
 	data: function (user) { return new db.DateTime(user.lastModified / 1000); }
 };
 
 exports._actionsColumn = {
-	head: th({ class: 'actions' }),
+	head: th({ class: 'submitted-user-data-table-actions' }),
 	data: function (user) {
 		var isSelfUser = (user === this.user);
 		return td({ class: 'actions' },

@@ -16,4 +16,5 @@
 ../../../node_modules/eregistrations/css/components/pills-nav.css
 ../../../node_modules/eregistrations/css/components/throbber.css
 ../../../node_modules/eregistrations/css/components/entities-overview.css
+../../../node_modules/eregistrations/css/components/greedy-menu.css
 ../../../css/theme.css

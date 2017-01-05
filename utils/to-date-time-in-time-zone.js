@@ -1,4 +1,5 @@
-// Return date which will correspond to input date time but in specified time-zone
+// Takes date instance and on basis of it's stamp, says what was is the date & time
+// (via instance of Date) at passed timeZone
 
 'use strict';
 

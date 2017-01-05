@@ -33,7 +33,7 @@ exports._commonOptions = {
 	legend: { position: "bottom", maxLines: 3 },
 	chartArea: { width: "100%", height: "75%" },
 	height: 300,
-	is3D: true,
+	is3D: false,
 	isStacked: true,
 	titlePosition: "out",
 	axisTitlesPosition: "in",
@@ -96,7 +96,8 @@ var getFilesCompletedPerDay = function (data, query) {
 	var result = { handle: 'chart-files-completed-per-day' };
 	var chart = {
 		options: assign(copy(exports._commonOptions), {
-			orientation: 'horizontal'
+			orientation: 'horizontal',
+			legend: { position: "top" }
 		}),
 		data: [["Service"]]
 	};
@@ -162,7 +163,11 @@ var getFilesCompletedPerDay = function (data, query) {
 
 var getFilesCompletedByStep = function (data) {
 	var result = { handle: 'chart-files-completed-by-service' }, chart = {
-		options: exports._commonOptions,
+		options: assign(copy(exports._commonOptions), {
+			legend: { position: "top" },
+			vAxis: { textPosition: "out" },
+			chartArea: { width: "60%" }
+		}),
 		data: [["Service"]]
 	};
 	var services = getServiceNames(), noData = true;
@@ -192,7 +197,9 @@ var getFilesCompletedByStep = function (data) {
 var getPendingFiles = function (data) {
 	var result = { handle: 'chart-pending-files' }, chart = {
 		options: assign(copy(exports._commonOptions), {
-			colors: exports._stepsColors
+			colors: exports._stepsColors,
+			pieSliceText: 'value-and-percentage',
+			pieSliceTextStyle: { fontSize: '10' }
 		}),
 		drawMethod: 'PieChart',
 		data: [["Role", "Count"]]

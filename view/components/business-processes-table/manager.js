@@ -45,6 +45,10 @@ var BusinessProcessesManager = module.exports = function (conf) {
 		businessProcesses = db.views.businessProcesses.getBySKeyPath(stepShortPath);
 	}
 
+	if (!businessProcesses) {
+		throw new Error("Cannot resolve table view for " +
+			JSON.stringify(viewKeyPath || stepShortPath));
+	}
 	defineProperties(this, {
 		_fullItems: d(user.recentlyVisited.businessProcesses
 			.getBySKeyPath(conf.fullItemsRoleName || stepShortPath)),
