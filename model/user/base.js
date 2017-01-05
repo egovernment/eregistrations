@@ -1,21 +1,28 @@
 'use strict';
 
-var normalizeOpts  = require('es5-ext/object/normalize-options')
-  , memoize        = require('memoizee/plain')
-  , ensureDatabase = require('dbjs/valid-dbjs')
-  , defineUInteger = require('dbjs-ext/number/integer/u-integer')
-  , _              = require('mano').i18n.bind('Model')
-  , defineUser     = require('mano-auth/model/user')
-  , defineRole     = require('mano-auth/model/role')
-  , defineRoleMeta = require('./roles-meta')
-  , definePerson   = require('../person');
+var normalizeOpts    = require('es5-ext/object/normalize-options')
+  , memoize          = require('memoizee/plain')
+  , ensureDatabase   = require('dbjs/valid-dbjs')
+  , defineUInteger   = require('dbjs-ext/number/integer/u-integer')
+  , _                = require('mano').i18n.bind('Model')
+  , defineUser       = require('mano-auth/model/user')
+  , defineRole       = require('mano-auth/model/role')
+  , defineRoleMeta   = require('./roles-meta')
+  , defineStringLine = require('dbjs-ext/string/string-line')
+  , definePerson     = require('../person');
 
 module.exports = memoize(function (db/*, options */) {
-	var options  = Object(arguments[1])
-	  , Person   = definePerson(ensureDatabase(db), options)
-	  , User     = defineUser(db, normalizeOpts(options, { Parent: Person }))
-	  , Role     = defineRole(db)
-	  , UInteger = defineUInteger(db);
+	var options    = Object(arguments[1])
+	  , Person     = definePerson(ensureDatabase(db), options)
+	  , User       = defineUser(db, normalizeOpts(options, { Parent: Person }))
+	  , Role       = defineRole(db)
+	  , UInteger   = defineUInteger(db)
+	  , StringLine = defineStringLine(db);
+
+	// RoleMeta is defined through defineRole
+	db.RoleMeta.prototype.defineProperties({
+		longLabel: { type: StringLine }
+	});
 
 	Role.members.add('user');
 	Role.meta.get('user').set('label', _("User"));
