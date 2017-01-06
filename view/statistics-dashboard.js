@@ -220,6 +220,8 @@ var getPendingFiles = function (data) {
 var getAverageTime = function (data) {
 	var result = { handle: 'chart-by-step-and-service' }, chart = {
 		options: assign(copy(exports._commonOptions), {
+			vAxis: { textPosition: "out" },
+			chartArea: { width: "60%" },
 			isStacked: false
 		}),
 		data: [["Role"]]
@@ -256,6 +258,8 @@ var getAverageTime = function (data) {
 var getAverageTimeByService = function (data) {
 	var result = { handle: 'chart-by-service' }, chart = {
 		options: assign(copy(exports._commonOptions), {
+			vAxis: { textPosition: "out" },
+			chartArea: { width: "60%" },
 			legend: null
 		}),
 		data: [["Service", "Data", { role: "style" }]]
@@ -288,6 +292,8 @@ var getWithdrawalTime = function (data) {
 		options: assign(copy(exports._commonOptions), {
 			isStacked: false,
 			legend: null,
+			vAxis: { textPosition: "out" },
+			chartArea: { width: "60%" },
 			axisTitlesPosition: "none"
 		}),
 		data: [["Service", "Data", { role: "style" }]]
