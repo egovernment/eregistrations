@@ -165,7 +165,10 @@ Flexible basic menu button positioning
 }
 
 .header-top-menu-dropdown-content {
-	display: none;
+	position: absolute;
+	transform: scaleY(0);
+	transform-origin: 0 0;
+	transition: transform 0.2s, cubic-bezier(0.77, 0, 0.175, 1);
 }
 
 .header-top-menu-dropdown-content li {
@@ -173,13 +176,12 @@ Flexible basic menu button positioning
 }
 
 .header-top-menu-opened .header-top-menu-dropdown-content {
-	display: block;
+	transform: none;
 	background-color: var(--white-background);
 	border-radius: 0 0 3px 3px;
 	border: 1px solid var(--light-inner-border);
 	border-top: none;
 	z-index: 1010;
-	position: absolute;
 	top: 100%;
 	left: 0;
 	width: 100%;
