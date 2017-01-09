@@ -95,6 +95,10 @@ exports.main = function () {
 
 exports._submittedMenu = function () {
 	var user = this.manager || this.user, isOfficialRole;
+	// user.currentRoleResolved may not be resolved yet...
+	if (!user.currentRoleResolved) {
+		return;
+	}
 	if (user.currentRoleResolved === 'statistics') {
 		return [li({ id: 'dashboard-nav' }, a({ href: '/' }, _("Dashboard"))),
 			li({ id: 'files-nav' }, a({ href: '/files/' }, _("Files"))),
