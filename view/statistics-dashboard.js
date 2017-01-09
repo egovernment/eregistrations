@@ -372,7 +372,11 @@ exports['statistics-main'] = function () {
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
 				input({ id: 'date-from-input', type: 'date',
-					name: 'dateFrom', value: location.query.get('dateFrom') })
+					name: 'dateFrom', value: location.query.get('dateFrom').map(function (dateFrom) {
+					var now = new db.Date();
+					now.setDate(now.getDate() - 7);
+					return dateFrom || now.toISOString().slice(0, 10);
+				}) })
 			),
 			div(
 				{ class: 'users-table-filter-bar-status' },
