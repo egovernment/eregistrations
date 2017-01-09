@@ -18,9 +18,9 @@
 	display: block;
 }
 
- .header-top-menu-dropdown-content {
- 	display: none;
- }
+.header-top-menu-dropdown-content {
+	display: none;
+}
 
 .header-top-menu-opened .header-top-menu-dropdown-content {
 	display: block;
