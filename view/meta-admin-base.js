@@ -1,6 +1,6 @@
 'use strict';
 
-exports._parent = require('./abstract-user-base');
+exports._parent = require('./user-base');
 
 exports['sub-main'] = {
 	class: { content: true },

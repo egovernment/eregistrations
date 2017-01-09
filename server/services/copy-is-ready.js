@@ -29,6 +29,22 @@ var copyIsReady = function (storage, stepId) {
 				return part.replace(/\/steps$/, '');
 			}).join('/');
 			debug('%s %s step shadow isReady', stepId.split('/', 1)[0], shortPath);
+			if (record) {
+				if (record.stamp === computedRecord.stamp) {
+					// Observed once on GT, probably one time case:
+					return deferred(
+						storage.store(isReadyPath, computedRecord.value, computedRecord.stamp + 1),
+						storage.storeComputed(isReadyPath, computedRecord.value, computedRecord.stamp + 1)
+					);
+				}
+				if (record.stamp > computedRecord.stamp) {
+					// Should not happen
+					console.error("\nUnexpected records configuration for " + isReadyPath + "\n");
+					console.log("Direct record", record);
+					console.log("Computed record", computedRecord);
+					return;
+				}
+			}
 			return storage.store(isReadyPath, computedRecord.value, computedRecord.stamp);
 		});
 	});

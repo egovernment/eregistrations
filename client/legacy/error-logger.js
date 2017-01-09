@@ -22,7 +22,8 @@ var onError = function (message, source, line, column, error) {
 	}
 	if (message) {
 		// XHR erorr (usually result of server restarts)
-		if (message.indexOf('Error: Rejecteded XHR request to ') === 0) return;
+		if (message.indexOf('Error: Rejected XHR request to ') === 0) return;
+		if (message.indexOf('Error: Errored XHR request to ') === 0) return;
 		if (message.indexOf('Uncaught Error: Rejected XHR request to ') === 0) return;
 		// Mysterious iOS error (not coming from our codebase)
 		// http://stackoverflow.com/q/40744060/96806
@@ -30,6 +31,7 @@ var onError = function (message, source, line, column, error) {
 		// Observable occasionally, possibly caused by extensions or e.g. chat plugins
 		if (message === 'Access is denied.\r\n') return;
 		if (message === 'Acceso denegado.\r\n') return;
+		if (message === 'Uncaught ReferenceError: androidInterface is not defined') return;
 		// iOS interface errors
 		// https://groups.google.com/a/chromium.org/forum/#!topic/chromium-discuss/7VU0_VvC7mE
 		if (message.indexOf('__gCrWeb') !== -1) return;

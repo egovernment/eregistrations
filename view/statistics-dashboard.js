@@ -33,7 +33,7 @@ exports._commonOptions = {
 	legend: { position: "bottom", maxLines: 3 },
 	chartArea: { width: "100%", height: "75%" },
 	height: 300,
-	is3D: true,
+	is3D: false,
 	isStacked: true,
 	titlePosition: "out",
 	axisTitlesPosition: "in",
@@ -96,7 +96,8 @@ var getFilesCompletedPerDay = function (data, query) {
 	var result = { handle: 'chart-files-completed-per-day' };
 	var chart = {
 		options: assign(copy(exports._commonOptions), {
-			orientation: 'horizontal'
+			orientation: 'horizontal',
+			legend: { position: "top" }
 		}),
 		data: [["Service"]]
 	};
@@ -162,7 +163,11 @@ var getFilesCompletedPerDay = function (data, query) {
 
 var getFilesCompletedByStep = function (data) {
 	var result = { handle: 'chart-files-completed-by-service' }, chart = {
-		options: exports._commonOptions,
+		options: assign(copy(exports._commonOptions), {
+			legend: { position: "top" },
+			vAxis: { textPosition: "out" },
+			chartArea: { width: "60%" }
+		}),
 		data: [["Service"]]
 	};
 	var services = getServiceNames(), noData = true;
@@ -192,7 +197,9 @@ var getFilesCompletedByStep = function (data) {
 var getPendingFiles = function (data) {
 	var result = { handle: 'chart-pending-files' }, chart = {
 		options: assign(copy(exports._commonOptions), {
-			colors: exports._stepsColors
+			colors: exports._stepsColors,
+			pieSliceText: 'value-and-percentage',
+			pieSliceTextStyle: { fontSize: '10' }
 		}),
 		drawMethod: 'PieChart',
 		data: [["Role", "Count"]]
@@ -213,6 +220,8 @@ var getPendingFiles = function (data) {
 var getAverageTime = function (data) {
 	var result = { handle: 'chart-by-step-and-service' }, chart = {
 		options: assign(copy(exports._commonOptions), {
+			vAxis: { textPosition: "out" },
+			chartArea: { width: "60%" },
 			isStacked: false
 		}),
 		data: [["Role"]]
@@ -249,6 +258,8 @@ var getAverageTime = function (data) {
 var getAverageTimeByService = function (data) {
 	var result = { handle: 'chart-by-service' }, chart = {
 		options: assign(copy(exports._commonOptions), {
+			vAxis: { textPosition: "out" },
+			chartArea: { width: "60%" },
 			legend: null
 		}),
 		data: [["Service", "Data", { role: "style" }]]
@@ -281,6 +292,8 @@ var getWithdrawalTime = function (data) {
 		options: assign(copy(exports._commonOptions), {
 			isStacked: false,
 			legend: null,
+			vAxis: { textPosition: "out" },
+			chartArea: { width: "60%" },
 			axisTitlesPosition: "none"
 		}),
 		data: [["Service", "Data", { role: "style" }]]
@@ -359,7 +372,11 @@ exports['statistics-main'] = function () {
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
 				input({ id: 'date-from-input', type: 'date',
-					name: 'dateFrom', value: location.query.get('dateFrom') })
+					name: 'dateFrom', value: location.query.get('dateFrom').map(function (dateFrom) {
+					var now = new db.Date();
+					now.setDate(now.getDate() - 7);
+					return dateFrom || now.toISOString().slice(0, 10);
+				}) })
 			),
 			div(
 				{ class: 'users-table-filter-bar-status' },

@@ -40,7 +40,7 @@ exports.step  = function () {
 	h1(_if(eqSloppy(entity.getObservable(
 		entity.owner.owner.cardinalPropertyKey
 	), null),
-		_("Add ${ entityLabel }", { entityLabel: entity.label }),
+		exports._addHeaderText.call(this),
 		_("Edit ${ entityName }", { entityName: entity._name })));
 	insert(generateFormSections(entity.dataForms.applicable,
 		{ viewContext: this, url: url }));
@@ -49,4 +49,8 @@ exports.step  = function () {
 			a({ href: (this.entitiesTableRootUrl || '/forms/') + '#' + entitiesTableId },
 				_("Back to form")));
 	}
+};
+
+exports._addHeaderText = function () {
+	return _("Add ${ entityLabel }", { entityLabel: this.entity.label });
 };

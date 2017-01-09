@@ -12,4 +12,4 @@ var Set = require('es6-set');
  */
 
 module.exports = new Set(['firstName', 'lastName', 'email', 'roles', 'institution',
-	'canBeDestroyed']);
+	'canBeDestroyed', 'isSuperUser']);
