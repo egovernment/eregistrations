@@ -29,6 +29,11 @@ module.exports = memoize(function (db/*, options*/) {
 		// "Merchant registration", "Company registration" etc.
 		label: { type: StringLine },
 
+		// Should contain some action i.e. "start a company"
+		registerServiceLabel: { type: StringLine },
+
+		serviceDescription: { type: db.String },
+
 		// General abbreviation of business process type
 		// e.g. IT (Individual trader), C (Company), COI (Certificate of incentives)
 		abbr: { type: StringLine },
