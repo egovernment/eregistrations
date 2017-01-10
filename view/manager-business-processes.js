@@ -19,7 +19,9 @@ exports._parent = require('./manager');
 exports['manager-account-requests'] = { class: { active: true } };
 
 exports._createBpDialog = function (params) {
-	var actionUrl, BusinessProcess, manager, bpHyphened, serviceName, availableClients;
+	var actionUrl, BusinessProcess, manager, bpHyphened, serviceName
+	  , availableClients, derivationSources;
+
 	manager = this.user;
 	BusinessProcess = params.BusinessProcess;
 	serviceName     = uncapitalize.call(BusinessProcess.__id__.slice('BusinessProcess'.length));
@@ -27,6 +29,9 @@ exports._createBpDialog = function (params) {
 	actionUrl       = params.actionUrl || 'start-new-business-process/' + bpHyphened;
 	availableClients = manager.managedUsers.and(db.User.instances.filterByKeyPath('services/' +
 		serviceName + '/isOpenForNewDraft', true));
+	derivationSources = manager.managedBusinessProcesses.and(
+		db.BusinessProcess.instances.filterByKey('canBeDerivationSource', true)
+	);
 
 	return modalContainer.append(dialog(
 		{ id: bpHyphened,
@@ -48,8 +53,21 @@ exports._createBpDialog = function (params) {
 								list(availableClients,
 									function (managedUser) {
 										return option({ value: managedUser.__id__ }, managedUser._fullName);
-									})))
+									}))),
+						_if(derivationSources._size, [
+							li({ class: 'input' },
+								label({ for: 'derivation-source-select' + bpHyphened },
+									_("Select the entity for which you want to start the service"))),
+
+							li({ class: 'input' }),
+							select({ name: 'initialProcess', id: 'derivation-source-select' + bpHyphened },
+								list(derivationSources,
+									function (derivationSource) {
+										return option({ value: derivationSource.__id__ },
+											derivationSource._businessName);
+									}))])
 					),
+
 					p(input({ type: 'submit', value: _("Start service") }))),
 				hr()
 			]),
