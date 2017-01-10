@@ -28,11 +28,10 @@ exports._createBpDialog = function (params) {
 	serviceName     = uncapitalize.call(BusinessProcess.__id__.slice('BusinessProcess'.length));
 	bpHyphened      = camelToHyphen.call(BusinessProcess.__id__);
 	actionUrl       = params.actionUrl || 'start-new-business-process/' + bpHyphened;
-	availableClients = manager.managedUsers.and(db.User.instances.filterByKeyPath('services/' +
-		serviceName + '/isOpenForNewDraft', true));
-	derivationSources = manager.managedBusinessProcesses.and(
-		db.BusinessProcess.instances.filterByKey('canBeDerivationSource', true)
-	);
+	availableClients = manager.managedUsers.filterByKeyPath('services/' +
+		serviceName + '/isOpenForNewDraft', true);
+	derivationSources = manager.managedBusinessProcesses.filterByKey('canBeDerivationSource', true);
+
 	clientSelectPrefix            = 'client-select' + bpHyphened;
 	derivationSourcesSelectPrefix = 'derivation-source-select' + bpHyphened;
 
