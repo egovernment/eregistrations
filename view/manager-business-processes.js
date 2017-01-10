@@ -9,7 +9,6 @@ var _                  = require('mano').i18n.bind('View: Manager')
   , camelToHyphen      = require('es5-ext/string/#/camel-to-hyphen')
   , uncapitalize       = require('es5-ext/string/#/uncapitalize')
   , modalContainer     = require('./components/modal-container')
-  , ObservableValue    = require('observable-value')
 
   , actionsColumn      = tableColumns.businessProcessActionsColumn
   , getServiceIcon     = tableColumns.getServiceIcon
@@ -19,15 +18,6 @@ exports._parent = require('./manager');
 
 exports['manager-account-requests'] = { class: { active: true } };
 
-var recomputeAvailableClients = function (manager, serviceName, availableClients) {
-	return manager.managedUsers.filter(function (user) {
-		user.services[serviceName]._isOpenForNewDraft.on('change', function () {
-			availableClients.value = recomputeAvailableClients(manager, serviceName, availableClients);
-		});
-		return user.services[serviceName].isOpenForNewDraft;
-	});
-};
-
 exports._createBpDialog = function (params) {
 	var actionUrl, BusinessProcess, manager, bpHyphened, serviceName, availableClients;
 	manager = this.user;
@@ -35,8 +25,8 @@ exports._createBpDialog = function (params) {
 	serviceName     = uncapitalize.call(BusinessProcess.__id__.slice('BusinessProcess'.length));
 	bpHyphened      = camelToHyphen.call(BusinessProcess.__id__);
 	actionUrl       = params.actionUrl || 'start-new-business-process/' + bpHyphened;
-	availableClients = new ObservableValue();
-	availableClients.value = recomputeAvailableClients(manager, serviceName, availableClients);
+	availableClients = manager.managedUsers.and(db.User.instances.filterByKeyPath('services/' +
+		serviceName + '/isOpenForNewDraft', true));
 
 	return modalContainer.append(dialog(
 		{ id: bpHyphened,
@@ -46,9 +36,7 @@ exports._createBpDialog = function (params) {
 		),
 		section(
 			{ class: 'dialog-body' },
-			_if(availableClients.map(function (avbClients) {
-				return avbClients.size;
-			}), [
+			_if(availableClients._size, [
 				form({ action: url(actionUrl), method: 'post' },
 					ul(
 						{ class: 'form-elements' },
