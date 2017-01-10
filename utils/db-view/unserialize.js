@@ -11,10 +11,11 @@ module.exports = function (view, type) {
 			return unserializeId(data, type);
 		} catch (e) {
 			if (e.code !== 'MISSING_TARGET') throw e;
-			// In case of race condition there can be scenario when in first batch object remove
-			// records arrive and in second updated view.
-			// As views functionality is deprecated, we will silence such error, allowing
-			// the app to naturally recover when view update comes in
+			// There can be a race condition when in first batch object remove records arrive and in
+			// second updated view. In such case after first batch we may try to resolve view
+			// that references removed object, hence MISSING_TARGET crash.
+			// As views functionality is deprecated, we will silence such error in all cases, allowing
+			// the app to naturally recover
 		}
 	}).filter(Boolean);
 };
