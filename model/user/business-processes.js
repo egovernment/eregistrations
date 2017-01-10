@@ -19,7 +19,10 @@ module.exports = memoize(function (User/* options */) {
 				if (!BusinessProcess || (BusinessProcess.draftLimit == null)) return;
 				bpSet = _observe(this.master.initialBusinessProcesses);
 				bpSet.forEach(function (businessProcess) {
-					if (businessProcess.isSubmitted || !businessProcess.isFromEregistrations) return;
+					if (_observe(businessProcess._isSubmitted) ||
+							!_observe(businessProcess._isFromEregistrations)) {
+						return;
+					}
 					if (businessProcess.constructor === BusinessProcess) count++;
 				});
 

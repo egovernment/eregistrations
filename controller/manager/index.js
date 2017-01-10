@@ -1,10 +1,11 @@
 'use strict';
 
-var assign   = require('es5-ext/object/assign')
-  , mano     = require('mano')
+var assign                = require('es5-ext/object/assign')
+  , mano                  = require('mano')
   , camelToHyphen         = require('es5-ext/string/#/camel-to-hyphen')
+  , uncapitalize          = require('es5-ext/string/#/uncapitalize')
   , createBusinessProcess = require('../utils/create-business-process')
-  , validateCreateProcess = require('../utils/validate-create-business-process')
+  , customError           = require('es5-ext/error/custom')
 
   , db = mano.db;
 
@@ -70,9 +71,16 @@ db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
 			if (!normalizedData.client) return false;
 			this.managedUser = db.User.getById(normalizedData.client);
 			if (!this.managedUser) return false;
+			if (!this.managedUser.services[
+					uncapitalize.call(BusinessProcess.__id__.slice('BusinessProcess'.length))
+				].isOpenForNewDraft) {
+				throw customError("Cannot open new draft", "CANNOT_OPEN_NEW_DRAFT");
+			}
 			this.manager = this.authenticatedUser;
 			this.user = this.managedUser;
-			return validateCreateProcess(BusinessProcess).call(this);
+			if (this.manager && this.manager !== this.user.manager) {
+				throw customError("Cannot create a business process for this user", "USER_NOT_MANAGED");
+			}
 		}
 	};
 });

@@ -7,7 +7,9 @@ var _                  = require('mano').i18n.bind('View: Manager')
   , tableColumns       = require('./components/table-columns')
   , formatLastModified = require('./utils/last-modified')
   , camelToHyphen      = require('es5-ext/string/#/camel-to-hyphen')
+  , uncapitalize       = require('es5-ext/string/#/uncapitalize')
   , modalContainer     = require('./components/modal-container')
+  , ObservableValue    = require('observable-value')
 
   , actionsColumn      = tableColumns.businessProcessActionsColumn
   , getServiceIcon     = tableColumns.getServiceIcon
@@ -17,12 +19,24 @@ exports._parent = require('./manager');
 
 exports['manager-account-requests'] = { class: { active: true } };
 
+var recomputeAvailableClients = function (manager, serviceName, availableClients) {
+	return manager.managedUsers.filter(function (user) {
+		user.services[serviceName]._isOpenForNewDraft.on('change', function () {
+			availableClients.value = recomputeAvailableClients(manager, serviceName, availableClients);
+		});
+		return user.services[serviceName].isOpenForNewDraft;
+	});
+};
+
 exports._createBpDialog = function (params) {
-	var actionUrl, BusinessProcess, manager, bpHyphened;
+	var actionUrl, BusinessProcess, manager, bpHyphened, serviceName, availableClients;
 	manager = this.user;
 	BusinessProcess = params.BusinessProcess;
+	serviceName     = uncapitalize.call(BusinessProcess.__id__.slice('BusinessProcess'.length));
 	bpHyphened      = camelToHyphen.call(BusinessProcess.__id__);
 	actionUrl       = params.actionUrl || 'start-new-business-process/' + bpHyphened;
+	availableClients = new ObservableValue();
+	availableClients.value = recomputeAvailableClients(manager, serviceName, availableClients);
 
 	return modalContainer.append(dialog(
 		{ id: bpHyphened,
@@ -32,21 +46,25 @@ exports._createBpDialog = function (params) {
 		),
 		section(
 			{ class: 'dialog-body' },
-			form({ action: url(actionUrl), method: 'post' },
-				ul(
-					{ class: 'form-elements' },
-					li({ class: 'input' },
-						label({ for: 'business-process-derive-select' },
-							_("I want to run the service for the following client"))),
-					li({ class: 'input' },
-						select({ name: 'client', id: 'client-select' },
-							list(manager.managedUsers,
-								function (managedUser) {
-									return option({ value: managedUser.__id__ }, managedUser._fullName);
-								})))
-				),
-				p(input({ type: 'submit', value: _("Start service") }))),
-			hr(),
+			_if(availableClients.map(function (avbClients) {
+				return avbClients.size;
+			}), [
+				form({ action: url(actionUrl), method: 'post' },
+					ul(
+						{ class: 'form-elements' },
+						li({ class: 'input' },
+							label({ for: 'client-select' + bpHyphened },
+								_("I want to run the service for the following client"))),
+						li({ class: 'input' },
+							select({ name: 'client', id: 'client-select' + bpHyphened },
+								list(availableClients,
+									function (managedUser) {
+										return option({ value: managedUser.__id__ }, managedUser._fullName);
+									})))
+					),
+					p(input({ type: 'submit', value: _("Start service") }))),
+				hr()
+			]),
 			p(a({ class: 'button-regular', href: 'new-client' }, _("I want to create a new client")))
 		)
 	));
@@ -118,12 +136,12 @@ exports['manager-account-content'] = function () {
 	}.bind(this),
 		_if(this.user._isManagerActive, p(_('You have no requests yet.')))));
 
-	insert([
+	insert(_if(this.user._isManagerActive, [
 		h3({ class: 'user-account-section-title' }, _("Available services")),
 		p({ class: "section-primary-legend" }, "Manager - available services explanation"),
 		section({ class: 'section-primary' },
 			ul({ class: 'user-account-service-boxes' },
 				exports._servicesBoxList.call(this),
 				renderServiceBox))
-	]);
+	]));
 };
