@@ -2,6 +2,9 @@
 
 var assign   = require('es5-ext/object/assign')
   , mano     = require('mano')
+  , camelToHyphen         = require('es5-ext/string/#/camel-to-hyphen')
+  , createBusinessProcess = require('../utils/create-business-process')
+  , validateCreateProcess = require('../utils/validate-create-business-process')
 
   , db = mano.db;
 
@@ -54,3 +57,22 @@ exports['clients/[0-9][a-z0-9]+'] = {
 exports['clients/[0-9][a-z0-9]+/delete'] = {
 	match: managedUserMatcher
 };
+
+db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
+	exports['start-new-business-process/' + camelToHyphen.call(BusinessProcess.__id__)] = {
+		submit: function () {
+			createBusinessProcess(BusinessProcess).call(this);
+			this.manager.currentlyManagedUser = this.managedUser;
+		},
+		redirectUrl: '/',
+		validate: function (normalizedData, data) {
+			if (!this.authenticatedUser.isManagerActive) return false;
+			if (!normalizedData.client) return false;
+			this.managedUser = db.User.getById(normalizedData.client);
+			if (!this.managedUser) return false;
+			this.manager = this.authenticatedUser;
+			this.user = this.managedUser;
+			return validateCreateProcess(BusinessProcess).call(this);
+		}
+	};
+});

@@ -28,7 +28,7 @@ exports._createBpDialog = function (params) {
 		{ id: bpHyphened,
 			class: 'dialog-modal dialog-business-process-derive' },
 		header(
-			h3(_("Select a client, for which you would like to start a new service."))
+			h3(_("Start a new service for a client"))
 		),
 		section(
 			{ class: 'dialog-body' },
@@ -37,7 +37,7 @@ exports._createBpDialog = function (params) {
 					{ class: 'form-elements' },
 					li({ class: 'input' },
 						label({ for: 'business-process-derive-select' },
-							_("Please select client"))),
+							_("I want to run the service for the following client"))),
 					li({ class: 'input' },
 						select({ name: 'client', id: 'client-select' },
 							list(manager.managedUsers,
@@ -45,7 +45,9 @@ exports._createBpDialog = function (params) {
 									return option({ value: managedUser.__id__ }, managedUser._fullName);
 								})))
 				),
-				p(input({ type: 'submit', value: _("Start service") })))
+				p(input({ type: 'submit', value: _("Start service") }))),
+			hr(),
+			p(a({ class: 'button-regular', href: 'new-client' }, _("I want to create a new client")))
 		)
 	));
 };
