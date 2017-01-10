@@ -20,7 +20,8 @@ exports['manager-account-requests'] = { class: { active: true } };
 
 exports._createBpDialog = function (params) {
 	var actionUrl, BusinessProcess, manager, bpHyphened, serviceName
-	  , availableClients, derivationSources;
+	  , availableClients, derivationSources, clientsProcesses
+	  , clientSelectPrefix, derivationSourcesSelectPrefix;
 
 	manager = this.user;
 	BusinessProcess = params.BusinessProcess;
@@ -32,6 +33,17 @@ exports._createBpDialog = function (params) {
 	derivationSources = manager.managedBusinessProcesses.and(
 		db.BusinessProcess.instances.filterByKey('canBeDerivationSource', true)
 	);
+	clientSelectPrefix            = 'client-select' + bpHyphened;
+	derivationSourcesSelectPrefix = 'derivation-source-select' + bpHyphened;
+
+	clientsProcesses = {};
+	manager.managedBusinessProcesses.forEach(function (managedBp) {
+		if (!managedBp.user) return;
+		if (!clientsProcesses[managedBp.user.__id__]) {
+			clientsProcesses[managedBp.user.__id__] = [];
+		}
+		clientsProcesses[managedBp.user.__id__].push(derivationSourcesSelectPrefix + managedBp.__id__);
+	});
 
 	return modalContainer.append(dialog(
 		{ id: bpHyphened,
@@ -46,29 +58,33 @@ exports._createBpDialog = function (params) {
 					ul(
 						{ class: 'form-elements' },
 						li({ class: 'input' },
-							label({ for: 'client-select' + bpHyphened },
+							label({ for: clientSelectPrefix },
 								_("I want to run the service for the following client"))),
 						li({ class: 'input' },
-							select({ name: 'client', id: 'client-select' + bpHyphened },
+							select({ name: 'client', id: clientSelectPrefix },
 								list(availableClients,
 									function (managedUser) {
 										return option({ value: managedUser.__id__ }, managedUser._fullName);
 									}))),
 						_if(and(derivationSources._size, BusinessProcess.prototype.isDerivable), [
 							li({ class: 'input' },
-								label({ for: 'derivation-source-select' + bpHyphened },
+								label({ for: derivationSourcesSelectPrefix },
 									_("Select the entity for which you want to start the service"))),
 
 							li({ class: 'input' }),
-							select({ name: 'initialProcess', id: 'derivation-source-select' + bpHyphened },
+							select({ name: 'initialProcess', id: derivationSourcesSelectPrefix },
 								list(derivationSources,
 									function (derivationSource) {
-										return option({ value: derivationSource.__id__ },
+										return option({ id: derivationSourcesSelectPrefix + derivationSource.__id__,
+											value: derivationSource.__id__ },
 											derivationSource._businessName);
-									}))])
+									}),
+								option({ value: 'notRegistered' }, _("An other business"))
+								)])
 					),
-
-					p(input({ type: 'submit', value: _("Start service") }))),
+					p(input({ type: 'submit', value: _("Start service") })),
+					legacy('selectMatch', clientSelectPrefix, clientsProcesses)
+					),
 				hr()
 			]),
 			p(a({ class: 'button-regular', href: 'new-client' }, _("I want to create a new client")))

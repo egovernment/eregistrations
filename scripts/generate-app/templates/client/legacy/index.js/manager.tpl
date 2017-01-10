@@ -11,3 +11,4 @@ require('eregistrations/client/legacy/init');
 require('mano-legacy/confirm-submit');
 require('mano-legacy/live/input-mask');
 require('mano-legacy/hash-nav-modal');
+require('mano-legacy/select-match');
