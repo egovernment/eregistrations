@@ -4,6 +4,7 @@ var assign                = require('es5-ext/object/assign')
   , mano                  = require('mano')
   , camelToHyphen         = require('es5-ext/string/#/camel-to-hyphen')
   , uncapitalize          = require('es5-ext/string/#/uncapitalize')
+  , copyDeep              = require('es5-ext/object/copy-deep')
   , createBusinessProcess = require('../utils/create-business-process')
   , customError           = require('es5-ext/error/custom')
   , validateDerive        = require('eregistrations/controller/utils/validate-derive')
@@ -62,12 +63,8 @@ exports['clients/[0-9][a-z0-9]+/delete'] = {
 
 db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
 	exports['start-new-business-process/' + camelToHyphen.call(BusinessProcess.__id__)] = {
-		submit: function () {
-			createBusinessProcess(BusinessProcess).call(this);
-			this.manager.currentlyManagedUser = this.managedUser;
-		},
-		redirectUrl: '/',
-		validate: function (normalizedData, data) {
+		validate: function (data) {
+			var normalizedData = copyDeep(data);
 			if (!this.authenticatedUser.isManagerActive) return false;
 			if (!normalizedData.client) return false;
 			this.managedUser = db.User.getById(normalizedData.client);
@@ -83,8 +80,15 @@ db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
 				throw customError("Cannot create a business process for this user", "USER_NOT_MANAGED");
 			}
 			if (BusinessProcess.prototype.isDerivable) {
-				return validateDerive.call(this, normalizedData, data);
+				return validateDerive.call(this, normalizedData);
 			}
-		}
+
+			return normalizedData;
+		},
+		submit: function () {
+			createBusinessProcess(BusinessProcess).call(this);
+			this.manager.currentlyManagedUser = this.managedUser;
+		},
+		redirectUrl: '/'
 	};
 });
