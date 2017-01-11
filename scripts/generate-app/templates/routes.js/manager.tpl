@@ -2,6 +2,7 @@
 
 'use strict';
 
+require('../../view/components/table-columns');
 require('../../view/user-base');
 
 module.exports = {
