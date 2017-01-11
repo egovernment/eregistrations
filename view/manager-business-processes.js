@@ -65,7 +65,7 @@ exports._createBpDialog = function (params) {
 									function (managedUser) {
 										return option({ value: managedUser.__id__ }, managedUser._fullName);
 									}))),
-						_if(and(derivationSources._size, BusinessProcess.prototype.isDerivable), [
+						_if(BusinessProcess.prototype.isDerivable, [
 							li({ class: 'input' },
 								label({ for: derivationSourcesSelectPrefix },
 									_("Select the entity for which you want to start the service"))),
