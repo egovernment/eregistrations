@@ -83,7 +83,7 @@ db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
 				throw customError("Cannot create a business process for this user", "USER_NOT_MANAGED");
 			}
 			if (BusinessProcess.prototype.isDerivable) {
-				return validateDerive.call(normalizedData, data);
+				return validateDerive.call(this, normalizedData, data);
 			}
 		}
 	};
