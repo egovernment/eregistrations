@@ -6,8 +6,9 @@ var assign                = require('es5-ext/object/assign')
   , uncapitalize          = require('es5-ext/string/#/uncapitalize')
   , createBusinessProcess = require('../utils/create-business-process')
   , customError           = require('es5-ext/error/custom')
+  , validateDerive        = require('eregistrations/controller/utils/validate-derive')
 
-  , db = mano.db;
+, db = mano.db;
 
 var managedUserMatcher = function (managedUserId) {
 	if (!this.authenticatedUser.isManagerActive) return false;
@@ -80,6 +81,9 @@ db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
 			this.user = this.managedUser;
 			if (this.manager && this.manager !== this.user.manager) {
 				throw customError("Cannot create a business process for this user", "USER_NOT_MANAGED");
+			}
+			if (BusinessProcess.prototype.isDerivable) {
+				return validateDerive.call(normalizedData, data);
 			}
 		}
 	};
