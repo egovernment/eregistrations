@@ -9,7 +9,6 @@ var _                  = require('mano').i18n.bind('View: Manager')
   , camelToHyphen      = require('es5-ext/string/#/camel-to-hyphen')
   , uncapitalize       = require('es5-ext/string/#/uncapitalize')
   , modalContainer     = require('./components/modal-container')
-  , ensureArray        = require('es5-ext/array/valid-array')
 
   , actionsColumn      = tableColumns.businessProcessActionsColumn
   , getServiceIcon     = tableColumns.getServiceIcon
@@ -92,10 +91,11 @@ exports._createBpDialog = function (params) {
 	));
 };
 
-exports._servicesBoxList = function (businessProcesses) {
+exports._businessProcessesTypes = Function.prototype;
+
+exports._servicesBoxList = function () {
 	var serviceBoxes = [], bpCollection;
-	bpCollection = businessProcesses ? ensureArray(businessProcesses) :
-			db.BusinessProcess.extensions;
+	bpCollection = exports._businessProcessesTypes.call(this) || db.BusinessProcess.extensions;
 
 	bpCollection.forEach(function (BusinessProcess) {
 		exports._createBpDialog.call(this, {
