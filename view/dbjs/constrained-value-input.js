@@ -35,7 +35,9 @@ module.exports = memoize(function (ValueInputType) {
 			value = this.valueResolver.call(mock, mock.database.observePassthru);
 			return value;
 		}, function (object) {
-			var value = this.type.toInputValue(object.value);
+			var value;
+			if (!object) value = null;
+			else value = this.type.toInputValue(object.value);
 			if (value == null) value = '';
 			this.inputValue = value;
 		})

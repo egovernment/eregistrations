@@ -2,7 +2,8 @@
 
 'use strict';
 
-var stringify = JSON.stringify;
+var customError = require('es5-ext/error/custom')
+  , stringify   = JSON.stringify;
 
 module.exports = function (data, type) {
 	var id = data.split('.')[1] || data, path, obj, masterId;
@@ -19,8 +20,9 @@ module.exports = function (data, type) {
 	}
 
 	if (!obj) {
-		throw new Error("Not object found for " + stringify(id) +
-			" (full data: " + stringify(data) + ") by type: " + stringify(type.__id__));
+		throw customError("Not object found for " + stringify(id) +
+			" (full data: " + stringify(data) + ") by type: " + stringify(type.__id__),
+			'MISSING_TARGET');
 	}
 	return obj;
 };
