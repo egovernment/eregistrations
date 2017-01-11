@@ -103,16 +103,16 @@ exports._rejectButton = function (/*options*/) {
 				"will not be able to make corrections and send it again; if you want to ask for " +
 				"corrections click 'cancel' and review the application until the " +
 				"'Return to corrections' button is displayed. If you still want to reject the file click " +
-				"'Confirm rejection'; this action is permanent and can not be undone.")))
-		),
-		footer(p(
-			_if(needsConfirmation, input({ class: 'button-main-error', type: 'submit',
-				form: 'reject-reason-form', value: _("Confirm rejection") })),
-			a({ href: '', onclick: toggleNeedsConfirmation }, _("Cancel")),
-			_if(not(needsConfirmation), a({ class: 'button-regular',
-				href: '#reject-reason', onclick: toggleNeedsConfirmation },
-				options.rejectLabel || _("Reject")))
-		))
+				"'Confirm rejection'; this action is permanent and can not be undone."))),
+			footer(p(
+				_if(needsConfirmation, input({ class: 'button-main-error', type: 'submit',
+					form: 'reject-reason-form', value: _("Confirm rejection") })),
+				a({ href: '', onclick: toggleNeedsConfirmation }, _("Cancel")),
+				_if(not(needsConfirmation), a({ class: 'button-regular',
+					href: '#reject-reason', onclick: toggleNeedsConfirmation },
+					options.rejectLabel || _("Reject")))
+			))
+		)
 	), a({
 		href: '#reject-reason',
 		class: 'button-main button-main-error hint-optional' +
