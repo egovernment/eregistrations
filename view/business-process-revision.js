@@ -106,7 +106,7 @@ exports._rejectButton = function (/*options*/) {
 				"'Confirm rejection'; this action is permanent and can not be undone."))),
 			footer(p(
 				_if(needsConfirmation, input({ class: 'button-main-error', type: 'submit',
-					form: 'reject-reason-form', value: _("Confirm rejection") })),
+					value: _("Confirm rejection") })),
 				a({ href: '', onclick: toggleNeedsConfirmation }, _("Cancel")),
 				_if(not(needsConfirmation), a({ class: 'button-regular',
 					href: '#reject-reason', onclick: toggleNeedsConfirmation },
