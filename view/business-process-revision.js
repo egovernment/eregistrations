@@ -82,9 +82,24 @@ exports._rejectButton = function (/*options*/) {
 	var options           = normalizeOptions(arguments[0])
 	  , needsConfirmation = new ObservableValue(false);
 
-	var toggleNeedsConfirmation = function () {
-		needsConfirmation.value = !needsConfirmation.value;
+	var disableNeedsConfirmation = function () {
+		needsConfirmation.value = false;
 	};
+
+	var enableNeedsConfirmation = function () {
+		needsConfirmation.value = true;
+	};
+
+	var toggleNeedsConfirmation = function () {
+		var hash = window.location.hash;
+
+		if (!hash || (hash.slice(1) !== 'reject-reason')) {
+			disableNeedsConfirmation();
+		}
+	};
+
+	window.addEventListener('hashchange', toggleNeedsConfirmation);
+	document.addEventListener('click', toggleNeedsConfirmation);
 
 	return [dialog(
 		{ id: 'reject-reason', class: 'dialog-reject dialog-modal' },
@@ -105,10 +120,10 @@ exports._rejectButton = function (/*options*/) {
 				"'Return to corrections' button is displayed. If you still want to reject the file click " +
 				"'Confirm rejection'; this action is permanent and can not be undone."))),
 			footer(p(
-				a({ href: '', onclick: toggleNeedsConfirmation }, _("Cancel")),
+				a({ href: '', onclick: disableNeedsConfirmation }, _("Cancel")),
 				_if(needsConfirmation, input({ class: 'button-main-error', type: 'submit',
 					value: _("Confirm rejection") }), a({ class: 'button-regular',
-					href: '#reject-reason', onclick: toggleNeedsConfirmation },
+					href: '#reject-reason', onclick: enableNeedsConfirmation },
 					options.rejectLabel || _("Reject")))
 			))
 		)
