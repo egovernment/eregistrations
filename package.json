@@ -1,7 +1,6 @@
 {
-  "private": true,
   "name": "eregistrations",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "Base framework for eregistrations applications",
   "author": "UNCTAD team",
   "repository": {
@@ -60,7 +59,5 @@
     "ensure-valid-filenames": "node node_modules/mano/bin/ensure-valid-filenames",
     "test": "node node_modules/tad/bin/tad stats server/populate.js model controller/utils utils"
   },
-  "engines": {
-    "node": ">=0.8"
-  }
+  "license": "MIT"
 }
