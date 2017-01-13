@@ -74,6 +74,8 @@ var drawFormSectionGroup = function (groupSection, level) {
 };
 
 var drawFormEntitiesTable = function (tableSection, level) {
+	var entities = tableSection.entitiesSet.filterByKeyPath(tableSection.sectionProperty +
+		'/progress', function (val) { return val < 1; });
 	return div(
 		level === 0 ? [
 			invalidProgressRulesList(tableSection, level),
@@ -82,17 +84,15 @@ var drawFormEntitiesTable = function (tableSection, level) {
 			sectionLabel(tableSection, level),
 			invalidProgressRulesList(tableSection, level + 1)
 		],
-		ul(tableSection.entitiesSet, function (entity) {
+		ul(entities, function (entity) {
 			var entitySections = entity.resolveSKeyPath(tableSection.sectionProperty).value;
 
-			return _if(lt(entitySections._progress, 1), li(
-				{ class: 'section-warning-missing-fields-sub-' + (level + 1) },
+			return li({ class: 'section-warning-missing-fields-sub-' + (level + 1) },
 				p(mdi(_("In \"**${ entityTitle }**\" entity:",
 					{ entityTitle: entityLabel(tableSection, entity) }))),
 				ul(entitySections.applicable, function (entitySection) {
 					return generateMissingList(entitySection, level + 1);
-				})
-			));
+				}));
 		})
 	);
 };

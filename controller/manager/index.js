@@ -1,9 +1,15 @@
 'use strict';
 
-var assign   = require('es5-ext/object/assign')
-  , mano     = require('mano')
+var assign                = require('es5-ext/object/assign')
+  , mano                  = require('mano')
+  , camelToHyphen         = require('es5-ext/string/#/camel-to-hyphen')
+  , uncapitalize          = require('es5-ext/string/#/uncapitalize')
+  , copyDeep              = require('es5-ext/object/copy-deep')
+  , createBusinessProcess = require('../utils/create-business-process')
+  , customError           = require('es5-ext/error/custom')
+  , validateDerive        = require('eregistrations/controller/utils/validate-derive')
 
-  , db = mano.db;
+, db = mano.db;
 
 var managedUserMatcher = function (managedUserId) {
 	if (!this.authenticatedUser.isManagerActive) return false;
@@ -54,3 +60,35 @@ exports['clients/[0-9][a-z0-9]+'] = {
 exports['clients/[0-9][a-z0-9]+/delete'] = {
 	match: managedUserMatcher
 };
+
+db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
+	exports['start-new-business-process/' + camelToHyphen.call(BusinessProcess.__id__)] = {
+		validate: function (data) {
+			var normalizedData = copyDeep(data);
+			if (!this.authenticatedUser.isManagerActive) return false;
+			if (!normalizedData.client) return false;
+			this.managedUser = db.User.getById(normalizedData.client);
+			if (!this.managedUser) return false;
+			if (!this.managedUser.services[
+					uncapitalize.call(BusinessProcess.__id__.slice('BusinessProcess'.length))
+				].isOpenForNewDraft) {
+				throw customError("Cannot open new draft", "CANNOT_OPEN_NEW_DRAFT");
+			}
+			this.manager = this.authenticatedUser;
+			this.user = this.managedUser;
+			if (this.manager && this.manager !== this.user.manager) {
+				throw customError("Cannot create a business process for this user", "USER_NOT_MANAGED");
+			}
+			if (BusinessProcess.prototype.isDerivable) {
+				return validateDerive.call(this, normalizedData);
+			}
+
+			return normalizedData;
+		},
+		submit: function () {
+			createBusinessProcess(BusinessProcess).call(this);
+			this.manager.currentlyManagedUser = this.managedUser;
+		},
+		redirectUrl: '/'
+	};
+});

@@ -18,6 +18,10 @@ module.exports = memoize(function (db/*, options*/) {
 			type: BusinessProcess,
 			reverse: 'derivatives'
 		},
+		isDerivable: {
+			type: db.Boolean,
+			value: false
+		},
 		/**
 		 * @param {BusinessProcess} businessProcess
 		 * @returns undefined
