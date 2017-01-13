@@ -105,10 +105,9 @@ exports._rejectButton = function (/*options*/) {
 				"'Return to corrections' button is displayed. If you still want to reject the file click " +
 				"'Confirm rejection'; this action is permanent and can not be undone."))),
 			footer(p(
-				_if(needsConfirmation, input({ class: 'button-main-error', type: 'submit',
-					value: _("Confirm rejection") })),
 				a({ href: '', onclick: toggleNeedsConfirmation }, _("Cancel")),
-				_if(not(needsConfirmation), a({ class: 'button-regular',
+				_if(needsConfirmation, input({ class: 'button-main-error', type: 'submit',
+					value: _("Confirm rejection") }), a({ class: 'button-regular',
 					href: '#reject-reason', onclick: toggleNeedsConfirmation },
 					options.rejectLabel || _("Reject")))
 			))
