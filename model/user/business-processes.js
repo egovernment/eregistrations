@@ -66,6 +66,24 @@ module.exports = memoize(function (User/* options */) {
 		services: {
 			type: db.Object,
 			nested: true
+		},
+		servicesOpenForNewDraft: {
+			multiple: true,
+			type: db.Base,
+			value: function (_observe) {
+				var db = this.database, result = [];
+
+				db.BusinessProcess.extensions.forEach(function (Bp) {
+					var serviceName;
+					serviceName = Bp.__id__.slice('BusinessProcess'.length);
+					serviceName = serviceName[0].toLowerCase() + serviceName.slice(1);
+					if (_observe(this.services[serviceName]._isOpenForNewDraft)) {
+						result.push(Bp);
+					}
+				}, this);
+
+				return result;
+			}
 		}
 	});
 
