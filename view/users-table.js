@@ -30,6 +30,7 @@ exports._roleColumn = {
 	data: function (user) {
 		return user._isSuperUser.map(function (isSuperUser) {
 			if (isSuperUser) return _("Superuser");
+			if (!user.roles) return;
 			return ul(user.roles, function (role) {
 				return exports._mapRolesToLabels(role, user);
 			});

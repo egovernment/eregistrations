@@ -70,16 +70,16 @@ exports._createBpDialog = function (params) {
 								label({ for: derivationSourcesSelectPrefix },
 									_("Select the entity for which you want to start the service"))),
 
-							li({ class: 'input' }),
-							select({ name: 'initialProcess', id: derivationSourcesSelectPrefix },
-								list(derivationSources,
-									function (derivationSource) {
-										return option({ id: derivationSourcesSelectPrefix + derivationSource.__id__,
-											value: derivationSource.__id__ },
-											derivationSource._businessName);
-									}),
-								option({ value: 'notRegistered' }, _("An other business"))
-								)])
+							li({ class: 'input' },
+								select({ name: 'initialProcess', id: derivationSourcesSelectPrefix },
+									list(derivationSources,
+										function (derivationSource) {
+											return option({ id: derivationSourcesSelectPrefix + derivationSource.__id__,
+												value: derivationSource.__id__ },
+												derivationSource._businessName);
+										}),
+									option({ value: 'notRegistered' }, _("An other business"))
+									))])
 					),
 					p(input({ type: 'submit', value: _("Start service") })),
 					legacy('selectMatch', clientSelectPrefix, clientsProcesses)
@@ -162,7 +162,7 @@ exports['manager-account-content'] = function () {
 
 	insert(_if(this.user._isManagerActive, [
 		h3({ class: 'user-account-section-title' }, _("Available services")),
-		p({ class: "section-primary-legend" }, "Manager - available services explanation"),
+		p({ class: "section-primary-legend" }, _("Manager - available services explanation")),
 		section({ class: 'section-primary' },
 			ul({ class: 'user-account-service-boxes' },
 				exports._servicesBoxList.call(this),

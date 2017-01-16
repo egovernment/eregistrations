@@ -61,6 +61,37 @@ exports['clients/[0-9][a-z0-9]+/delete'] = {
 	match: managedUserMatcher
 };
 
+exports['start-new-business-process-by-client/[0-9][a-z0-9]+'] = {
+	match: managedUserMatcher,
+	validate: function (data) {
+		var normalizedData = copyDeep(data);
+		if (!this.authenticatedUser.isManagerActive) return false;
+		if (!normalizedData.BusinessProcessId) return false;
+		if (!db[normalizedData.BusinessProcessId]) return false;
+		this.BusinessProcess = db[normalizedData.BusinessProcessId];
+		if (!this.managedUser.services[
+				uncapitalize.call(this.BusinessProcess.__id__.slice('BusinessProcess'.length))
+			].isOpenForNewDraft) {
+			throw customError("Cannot open new draft", "CANNOT_OPEN_NEW_DRAFT");
+		}
+		this.manager = this.authenticatedUser;
+		this.user = this.managedUser;
+		if (this.manager && this.manager !== this.user.manager) {
+			throw customError("Cannot create a business process for this user", "USER_NOT_MANAGED");
+		}
+		if (this.BusinessProcess.prototype.isDerivable) {
+			return validateDerive.call(this, normalizedData);
+		}
+
+		return normalizedData;
+	},
+	submit: function () {
+		createBusinessProcess(this.BusinessProcess).call(this);
+		this.manager.currentlyManagedUser = this.managedUser;
+	},
+	redirectUrl: '/'
+};
+
 db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
 	exports['start-new-business-process/' + camelToHyphen.call(BusinessProcess.__id__)] = {
 		validate: function (data) {
