@@ -112,9 +112,10 @@ exports._rejectButton = function (/*options*/) {
 				{ id: 'reject-reason-form', method: 'post',
 					action: '/revision/' + this.businessProcess.__id__ + '/reject/' },
 				p({ class: 'input' }, input({ id: 'revision-reject-reason',
-					dbjs: this.processingStep._rejectionReason }))
+					dbjs: this.processingStep._rejectionReason, placeholder: _('Reason of rejection') }))
 			),
-			_if(needsConfirmation, p(_("You are about to reject the request, in doing so the user " +
+			_if(needsConfirmation, p({ class: 'dialog-reject-warning' },
+				_("You are about to reject the request, in doing so the user " +
 				"will not be able to make corrections and send it again; if you want to ask for " +
 				"corrections click 'cancel' and review the application until the " +
 				"'Return to corrections' button is displayed. If you still want to reject the file click " +
@@ -122,7 +123,7 @@ exports._rejectButton = function (/*options*/) {
 			footer(p(
 				a({ href: '', onclick: disableNeedsConfirmation }, _("Cancel")),
 				_if(needsConfirmation, input({ class: 'button-main-error', type: 'submit',
-					value: _("Confirm rejection") }), a({ class: 'button-regular',
+					value: _("Confirm rejection") }), a({ class: 'button-main button-main-error',
 					href: '#reject-reason', onclick: enableNeedsConfirmation },
 					options.rejectLabel || _("Reject")))
 			))

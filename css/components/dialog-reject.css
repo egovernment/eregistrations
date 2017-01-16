@@ -7,6 +7,15 @@
 	height: 130px;
 }
 
+.dialog-reject form {
+	margin: 0;
+}
+
+.dialog-reject footer {
+	padding: 0;
+	border: none;
+}
+
 .dialog-reject footer p {
 	text-align: right;
 }
@@ -17,6 +26,21 @@
 
 .dialog-reject footer p > *:first-child {
 	margin-left: 0;
+}
+
+.dialog-reject footer a {
+	font-size: 14px;
+	padding: 4px 10px;
+}
+
+.dialog-reject-warning {
+	width: 540px;
+	margin-left: -20px;
+	margin-right: -20px;
+	padding: 22px;
+	background-color: var(--light-error-background);
+	color: var(--white-text);
+	margin-top: 22px;
 }
 
 @media only screen and (max-width: var(--mobile-width)) {
