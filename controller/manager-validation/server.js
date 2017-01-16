@@ -12,6 +12,7 @@ exports['user/[0-9][a-z0-9]+/delete'] = {
 		return data;
 	},
 	submit: function () {
-		return this.target._destroy();
+		this.target._destroy();
+		return true;
 	}
 };

@@ -51,7 +51,11 @@ UsersManager.prototype = Object.create(ListManager.prototype, {
 	_view: d(null),
 	_getItemOrderIndex: d(null),
 	_getSearchFilter: d(null),
-
+	_resolveList: d(function (data, query) {
+		return ListManager.prototype._resolveList.call(this, data, query).filter(function (user) {
+			return db.User.instances.has(user);
+		});
+	}),
 	_isExternalQuery: d(function (query) {
 		if (query.search) return true;
 		return (query.page > 1);

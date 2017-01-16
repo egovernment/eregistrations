@@ -47,9 +47,9 @@ ee(Object.defineProperties(ListManager.prototype, assign({
 		this.query = query;
 		if (this._isExternalQuery(query)) {
 			queryId = stringify(toArray(query, null, null, true));
+			if (this._cache[queryId]) this._resolveExternalResult(this._cache[queryId], query, queryId);
 			if (this._currentQueryId === queryId) return;
 			this._currentQueryId = queryId;
-			if (this._cache[queryId]) this._resolveExternalResult(this._cache[queryId], query, queryId);
 			this._queryExternal(query).done(function (data) {
 				var fixedQuery;
 				ensureValue(data.size);
