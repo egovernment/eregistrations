@@ -162,7 +162,7 @@ exports['manager-account-content'] = function () {
 
 	insert(_if(this.user._isManagerActive, [
 		h3({ class: 'user-account-section-title' }, _("Available services")),
-		p({ class: "section-primary-legend" }, "Manager - available services explanation"),
+		p({ class: "section-primary-legend" }, _("Manager - available services explanation")),
 		section({ class: 'section-primary' },
 			ul({ class: 'user-account-service-boxes' },
 				exports._servicesBoxList.call(this),
