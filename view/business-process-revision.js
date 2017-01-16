@@ -118,8 +118,8 @@ exports._rejectButton = function (/*options*/) {
 				_("You are about to reject the request, in doing so the user " +
 					"will not be able to make corrections and send it again; if you want to ask for " +
 					"corrections click 'cancel' and review the application until the " +
-					"'Return to corrections' button is displayed. If you still want to reject the file click " +
-					"'Confirm rejection'; this action is permanent and can not be undone."))),
+					"'Return to corrections' button is displayed. If you still want to reject the " +
+					"file click 'Confirm rejection'; this action is permanent and can not be undone."))),
 			footer(p(
 				a({ href: '', onclick: disableNeedsConfirmation }, _("Cancel")),
 				_if(needsConfirmation, input({ class: 'button-main-error', type: 'submit',
