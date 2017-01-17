@@ -49,6 +49,11 @@ module.exports = exports = function (data, query) {
 			if (bpData.status !== query.status) return;
 		}
 
+//		// Filter by step status
+//		if (query.stepStatus) {
+//			if (!bpData.step)
+//		}
+
 		// Filter by submitter type
 		if (query.submitterType) {
 			if (bpData.submitterType !== query.submitterType) return;
