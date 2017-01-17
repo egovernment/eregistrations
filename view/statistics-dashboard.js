@@ -1,26 +1,26 @@
 'use strict';
 
-var assign              = require('es5-ext/object/assign')
-  , copy                = require('es5-ext/object/copy')
-  , capitalize          = require('es5-ext/string/#/capitalize')
-  , uncapitalize        = require('es5-ext/string/#/uncapitalize')
-  , Duration            = require('duration')
-  , memoize             = require('memoizee')
-  , ObservableValue     = require('observable-value')
-  , nextTick            = require('next-tick')
-  , _                   = require('mano').i18n.bind('View: Statistics')
-  , location            = require('mano/lib/client/location')
-  , getData             = require('mano/lib/client/xhr-driver').get
-  , db                  = require('../db')
-  , setupQueryHandler   = require('../utils/setup-client-query-handler')
+var assign = require('es5-ext/object/assign')
+  , copy = require('es5-ext/object/copy')
+  , capitalize = require('es5-ext/string/#/capitalize')
+  , uncapitalize = require('es5-ext/string/#/uncapitalize')
+  , Duration = require('duration')
+  , memoize = require('memoizee')
+  , ObservableValue = require('observable-value')
+  , nextTick = require('next-tick')
+  , _ = require('mano').i18n.bind('View: Statistics')
+  , location = require('mano/lib/client/location')
+  , getData = require('mano/lib/client/xhr-driver').get
+  , db = require('../db')
+  , setupQueryHandler = require('../utils/setup-client-query-handler')
   , resolveFullStepPath = require('../utils/resolve-processing-step-full-path')
   , getQueryHandlerConf = require('../apps/statistics/get-query-conf')
 
   , observableResult = new ObservableValue();
 
-exports._servicesColors  = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
-exports._stepsColors     = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
-exports._customChartsDOM     = Function.prototype;
+exports._servicesColors = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
+exports._stepsColors = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
+exports._customChartsDOM = Function.prototype;
 exports._customChartsGetData = Function.prototype;
 
 exports._commonOptions = {
@@ -48,7 +48,9 @@ exports._commonOptions = {
 var queryServer = memoize(function (query) {
 	return getData('/get-dashboard-data/', query);
 }, {
-	normalizer: function (args) { return JSON.stringify(args[0]); },
+	normalizer: function (args) {
+		return JSON.stringify(args[0]);
+	},
 	max: 1000
 });
 
@@ -99,7 +101,9 @@ var getFilesCompletedPerDay = function (data, query) {
 			orientation: 'horizontal',
 			legend: { position: "top" }
 		}),
-		data: [["Service"]]
+		data: [
+			["Service"]
+		]
 	};
 	var days = Object.keys(data).sort()
 	  , dateFrom, dateTo, dateFromStr, rowData, rangeKey, groupByCount
@@ -168,7 +172,9 @@ var getFilesCompletedByStep = function (data) {
 			vAxis: { textPosition: "out" },
 			chartArea: { width: "60%" }
 		}),
-		data: [["Service"]]
+		data: [
+			["Service"]
+		]
 	};
 	var services = getServiceNames(), noData = true;
 	Object.keys(services).forEach(function (serviceName) {
@@ -202,7 +208,9 @@ var getPendingFiles = function (data) {
 			pieSliceTextStyle: { fontSize: '10' }
 		}),
 		drawMethod: 'PieChart',
-		data: [["Role", "Count"]]
+		data: [
+			["Role", "Count"]
+		]
 	}, noData = true;
 
 	Object.keys(data).forEach(function (shortPath) {
@@ -224,7 +232,9 @@ var getAverageTime = function (data) {
 			chartArea: { width: "60%" },
 			isStacked: false
 		}),
-		data: [["Role"]]
+		data: [
+			["Role"]
+		]
 	}, noData = true;
 
 	var services = getServiceNames();
@@ -262,7 +272,9 @@ var getAverageTimeByService = function (data) {
 			chartArea: { width: "60%" },
 			legend: null
 		}),
-		data: [["Service", "Data", { role: "style" }]]
+		data: [
+			["Service", "Data", { role: "style" }]
+		]
 	}, noData = true;
 
 	var services = getServiceNames(), i = 0;
@@ -296,7 +308,9 @@ var getWithdrawalTime = function (data) {
 			chartArea: { width: "60%" },
 			axisTitlesPosition: "none"
 		}),
-		data: [["Service", "Data", { role: "style" }]]
+		data: [
+			["Service", "Data", { role: "style" }]
+		]
 	}, i = 0, noData = true;
 
 	var services = getServiceNames();
@@ -341,119 +355,122 @@ var updateChartsData = function (data, query) {
 	});
 };
 
-exports._parent = require('./statistics-base');
+exports._parent = require('./user-base');
 
 exports['dashboard-nav'] = { class: { 'submitted-menu-item-active': true } };
 
-exports['statistics-main'] = function () {
-	var queryHandler;
-	getStepLabelByShortPath = getStepLabelByShortPath(this.processingStepsMeta);
+exports['sub-main'] = {
+	class: { content: true },
+	content: function () {
+		var queryHandler;
+		getStepLabelByShortPath = getStepLabelByShortPath(this.processingStepsMeta);
 
-	queryHandler = setupQueryHandler(getQueryHandlerConf({
-		processingStepsMeta: this.processingStepsMeta
-	}), location, '/');
+		queryHandler = setupQueryHandler(getQueryHandlerConf({
+			processingStepsMeta: this.processingStepsMeta
+		}), location, '/');
 
-	queryHandler.on('query', function (query) {
-		var serverQuery = copy(query);
-		if (serverQuery.dateFrom) {
-			serverQuery.dateFrom = serverQuery.dateFrom.toJSON();
-		}
-		if (serverQuery.dateTo) {
-			serverQuery.dateTo = serverQuery.dateTo.toJSON();
-		}
-		queryServer(serverQuery).done(function (data) {
-			updateChartsData(data, query);
-		});
-	});
-
-	section({ class: 'section-primary users-table-filter-bar' },
-		form({ action: '/', autoSubmit: true },
-			div(
-				{ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-from-input' }, _("Date from"), ":"),
-				input({ id: 'date-from-input', type: 'date',
-					name: 'dateFrom', value: location.query.get('dateFrom').map(function (dateFrom) {
-					var now = new db.Date();
-					now.setDate(now.getDate() - 7);
-					return dateFrom || now.toISOString().slice(0, 10);
-				}) })
-			),
-			div(
-				{ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-to-input' }, _("Date to"), ":"),
-				input({ id: 'date-to-input', type: 'date',
-					name: 'dateTo', value: location.query.get('dateTo') })
-			),
-			p({ class: 'submit' }, input({ type: 'submit' }))));
-
-	section({ class: "section-primary" },
-		h3(_("Files completed per time range")),
-		div({ id: "chart-files-completed-per-day" }),
-		p({ id: "chart-files-completed-per-day-message",
-			class: "entities-overview-info" }, _("No data for this criteria")));
-	section({ class: "section-primary" },
-		h3(_("Processed files")),
-		div({ id: "chart-files-completed-by-service" }),
-		p({ id: "chart-files-completed-by-service-message",
-			class: "entities-overview-info" }, _("No data for this criteria")));
-	section({ class: "section-primary" }, h3(_("Pending files at ${ date }", {
-		date: location.query.get('dateTo').map(function (dateTo) {
-			var date = dateTo ? new db.Date(dateTo) : new db.Date();
-			return date.toLocaleDateString(db.locale);
-		})
-	})),
-		div({ id: "chart-pending-files" }),
-		p({ id: "chart-pending-files-message",
-			class: "entities-overview-info" }, _("No data for this criteria")));
-	section({ class: "section-primary" },
-		p({ class: 'entities-overview-info' },
-			_("As processing time is properly recorded since 25th of October." +
-				" Below table only exposes data for files submitted after that day.")),
-		h3(_("Average processing time in days")),
-		div({ id: "chart-by-step-and-service" }),
-		p({ id: "chart-by-step-and-service-message",
-			class: "entities-overview-info" }, _("No data for this criteria")));
-	section({ class: "section-primary" },
-		p({ class: 'entities-overview-info' },
-			_("As processing time is properly recorded since 25th of October." +
-				" Below table only exposes data for files submitted after that day.")),
-		h3(_("Total average processing time per service in days")),
-		div({ id: "chart-by-service" }),
-		p({ id: "chart-by-service-message",
-			class: "entities-overview-info" }, _("No data for this criteria")));
-	section({ class: "section-primary" },
-		p({ class: 'entities-overview-info' },
-			_("As processing time is properly recorded since 25th of October." +
-				" Below table only exposes data for files submitted after that day.")),
-		h3(_("Withdrawal time in days")), div({ id: "chart-withdrawal-time" }),
-		p({ id: "chart-withdrawal-time-message",
-			class: "entities-overview-info" }, _("No data for this criteria")));
-	exports._customChartsDOM.call(this);
-
-	script(function () {
-		google.charts.load('current', { packages: ['corechart'] });
-	});
-	script(function (chartsData) {
-		var reloadCharts = function () {
-			google.charts.setOnLoadCallback(function () {
-				if (!chartsData) return;
-				chartsData.forEach(function (chart) {
-					if (!chart.data) {
-						if ($(chart.handle).firstChild) {
-							$(chart.handle).removeChild($(chart.handle).firstChild);
-						}
-						$(chart.handle + '-message').toggle(true);
-						return;
-					}
-					$(chart.handle + '-message').toggle(false);
-					var googleChart =
-						new google.visualization[chart.drawMethod || 'BarChart']($(chart.handle));
-					googleChart.draw(google.visualization.arrayToDataTable(chart.data), chart.options);
-				});
+		queryHandler.on('query', function (query) {
+			var serverQuery = copy(query);
+			if (serverQuery.dateFrom) {
+				serverQuery.dateFrom = serverQuery.dateFrom.toJSON();
+			}
+			if (serverQuery.dateTo) {
+				serverQuery.dateTo = serverQuery.dateTo.toJSON();
+			}
+			queryServer(serverQuery).done(function (data) {
+				updateChartsData(data, query);
 			});
-		};
-		reloadCharts();
-		// this will be invoked only in SPA
-		if (document.on) document.on('statistics-chart-update', reloadCharts);
-	}, observableResult);
+		});
+
+		section({ class: 'section-primary users-table-filter-bar' },
+			form({ action: '/', autoSubmit: true },
+				div(
+					{ class: 'users-table-filter-bar-status' },
+					label({ for: 'date-from-input' }, _("Date from"), ":"),
+					input({ id: 'date-from-input', type: 'date',
+						name: 'dateFrom', value: location.query.get('dateFrom').map(function (dateFrom) {
+						var now = new db.Date();
+						now.setDate(now.getDate() - 7);
+						return dateFrom || now.toISOString().slice(0, 10);
+					}) })
+				),
+				div(
+					{ class: 'users-table-filter-bar-status' },
+					label({ for: 'date-to-input' }, _("Date to"), ":"),
+					input({ id: 'date-to-input', type: 'date',
+						name: 'dateTo', value: location.query.get('dateTo') })
+				),
+				p({ class: 'submit' }, input({ type: 'submit' }))));
+
+		section({ class: "section-primary" },
+			h3(_("Files completed per time range")),
+			div({ id: "chart-files-completed-per-day" }),
+			p({ id: "chart-files-completed-per-day-message",
+				class: "entities-overview-info" }, _("No data for this criteria")));
+		section({ class: "section-primary" },
+			h3(_("Processed files")),
+			div({ id: "chart-files-completed-by-service" }),
+			p({ id: "chart-files-completed-by-service-message",
+				class: "entities-overview-info" }, _("No data for this criteria")));
+		section({ class: "section-primary" }, h3(_("Pending files at ${ date }", {
+			date: location.query.get('dateTo').map(function (dateTo) {
+				var date = dateTo ? new db.Date(dateTo) : new db.Date();
+				return date.toLocaleDateString(db.locale);
+			})
+		})),
+			div({ id: "chart-pending-files" }),
+			p({ id: "chart-pending-files-message",
+				class: "entities-overview-info" }, _("No data for this criteria")));
+		section({ class: "section-primary" },
+			p({ class: 'entities-overview-info' },
+				_("As processing time is properly recorded since 25th of October." +
+					" Below table only exposes data for files submitted after that day.")),
+			h3(_("Average processing time in days")),
+			div({ id: "chart-by-step-and-service" }),
+			p({ id: "chart-by-step-and-service-message",
+				class: "entities-overview-info" }, _("No data for this criteria")));
+		section({ class: "section-primary" },
+			p({ class: 'entities-overview-info' },
+				_("As processing time is properly recorded since 25th of October." +
+					" Below table only exposes data for files submitted after that day.")),
+			h3(_("Total average processing time per service in days")),
+			div({ id: "chart-by-service" }),
+			p({ id: "chart-by-service-message",
+				class: "entities-overview-info" }, _("No data for this criteria")));
+		section({ class: "section-primary" },
+			p({ class: 'entities-overview-info' },
+				_("As processing time is properly recorded since 25th of October." +
+					" Below table only exposes data for files submitted after that day.")),
+			h3(_("Withdrawal time in days")), div({ id: "chart-withdrawal-time" }),
+			p({ id: "chart-withdrawal-time-message",
+				class: "entities-overview-info" }, _("No data for this criteria")));
+		exports._customChartsDOM.call(this);
+
+		script(function () {
+			google.charts.load('current', { packages: ['corechart'] });
+		});
+		script(function (chartsData) {
+			var reloadCharts = function () {
+				google.charts.setOnLoadCallback(function () {
+					if (!chartsData) return;
+					chartsData.forEach(function (chart) {
+						if (!chart.data) {
+							if ($(chart.handle).firstChild) {
+								$(chart.handle).removeChild($(chart.handle).firstChild);
+							}
+							$(chart.handle + '-message').toggle(true);
+							return;
+						}
+						$(chart.handle + '-message').toggle(false);
+						var googleChart =
+							new google.visualization[chart.drawMethod || 'BarChart']($(chart.handle));
+						googleChart.draw(google.visualization.arrayToDataTable(chart.data), chart.options);
+					});
+				});
+			};
+			reloadCharts();
+			// this will be invoked only in SPA
+			if (document.on) document.on('statistics-chart-update', reloadCharts);
+		}, observableResult);
+	}
 };

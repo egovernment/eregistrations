@@ -55,58 +55,62 @@ var generateProcessingStepRows =
 exports['files-nav']         = { class: { 'submitted-menu-item-active': true } };
 exports['pending-files-nav'] = { class: { 'pills-nav-active': true } };
 
-exports['statistics-main'] = function () {
-	var services = toArray(this.statistics.businessProcess, function (data, name) {
-		return {
-			name: name,
-			data: data,
-			service: db['BusinessProcess' + capitalize.call(name)].prototype
-		};
-	});
-	table({ class: 'statistics-table' },
-		thead(tr(
-			th(),
-			services.map(function (data) { return th({ class: 'statistics-table-number' },
-				data.service.label); }),
-			th({ class: 'statistics-table-number' }, _("Total"))
-		)),
-		tbody(
-			generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-overall' },
-				_("Files in Part A"), services,
-				function (data) { return data.atPartA._all; }),
-			generateRow(_("No pages completed"), services,
-				function (data) { return data.atPartA._atGuide; }),
-			generateRow({ class: 'statistics-table-sub-sub-header' }, _("Guide completed"), services,
-				function (data) { return data.atPartA.guideComplete._all; }),
-			generateRow(_("Forms completed"), services,
-				function (data) { return data.atPartA.guideComplete._dataFormsComplete; }),
-			generateRow(_("Documents completed"), services,
-				function (data) { return data.atPartA.guideComplete._requirementUploadsComplete; }),
-			generateRow(_("Payment completed"), services,
-				function (data) { return data.atPartA.guideComplete._paymentComplete; }),
-			generateRow(_("At Send page"), services,
-				function (data) { return data.atPartA.guideComplete._atSend; }),
+exports['sub-main'] = {
+	class: { content: true },
+	content: function () {
+		var services = toArray(this.statistics.businessProcess, function (data, name) {
+			return {
+				name: name,
+				data: data,
+				service: db['BusinessProcess' + capitalize.call(name)].prototype
+			};
+		});
+		table({ class: 'statistics-table' },
+			thead(tr(
+				th(),
+				services.map(function (data) { return th({ class: 'statistics-table-number' },
+					data.service.label); }),
+				th({ class: 'statistics-table-number' }, _("Total"))
+			)),
+			tbody(
+				generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-overall' },
+					_("Files in Part A"), services,
+					function (data) { return data.atPartA._all; }),
+				generateRow(_("No pages completed"), services,
+					function (data) { return data.atPartA._atGuide; }),
+				generateRow({ class: 'statistics-table-sub-sub-header' }, _("Guide completed"), services,
+					function (data) { return data.atPartA.guideComplete._all; }),
+				generateRow(_("Forms completed"), services,
+					function (data) { return data.atPartA.guideComplete._dataFormsComplete; }),
+				generateRow(_("Documents completed"), services,
+					function (data) { return data.atPartA.guideComplete._requirementUploadsComplete; }),
+				generateRow(_("Payment completed"), services,
+					function (data) { return data.atPartA.guideComplete._paymentComplete; }),
+				generateRow(_("At Send page"), services,
+					function (data) { return data.atPartA.guideComplete._atSend; }),
 
-			generateProcessingStepRows(_("Files pending for processing in Part B"), services,
-				function (data) { return data._pending; }, this.processingStepsMeta,
-				"statistics-table-sub-header-waiting"),
+				generateProcessingStepRows(_("Files pending for processing in Part B"), services,
+					function (data) { return data._pending; }, this.processingStepsMeta,
+					"statistics-table-sub-header-waiting"),
 
-			generateProcessingStepRows(_("Files sent back to user for correction"), services,
-				function (data) { return data._sentBack; }, this.processingStepsMeta,
-				"statistics-table-sub-header-pending", function (data) { return data.sentBack; }),
+				generateProcessingStepRows(_("Files sent back to user for correction"), services,
+					function (data) { return data._sentBack; }, this.processingStepsMeta,
+					"statistics-table-sub-header-pending", function (data) { return data.sentBack; }),
 
-			generateProcessingStepRows(_("Files rejected"), services,
-				function (data) { return data._rejected; }, this.processingStepsMeta,
-				"statistics-table-sub-header-sentback", function (data) { return data.rejected; }),
+				generateProcessingStepRows(_("Files rejected"), services,
+					function (data) { return data._rejected; }, this.processingStepsMeta,
+					"statistics-table-sub-header-sentback", function (data) { return data.rejected; }),
 
-			this.processingStepsMeta.frontDesk ?
-					generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-success' },
-						_("Pending for withdraw at Front Desk"), services, function (data) {
-							data = data.atPartB.getBySKeyPath(resolveFullStepPath('frontDesk'));
-							return data ? data._pending : null;
-						}) : null,
+				this.processingStepsMeta.frontDesk ?
+						generateRow({ class:
+								'statistics-table-sub-header statistics-table-sub-header-success' },
+							_("Pending for withdraw at Front Desk"), services, function (data) {
+								data = data.atPartB.getBySKeyPath(resolveFullStepPath('frontDesk'));
+								return data ? data._pending : null;
+							}) : null,
 
-			generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-success' },
-				_("Files completed and closed"), services, function (data) { return data._approved; })
-		));
+				generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-success' },
+					_("Files completed and closed"), services, function (data) { return data._approved; })
+			));
+	}
 };
