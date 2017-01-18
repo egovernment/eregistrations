@@ -7,7 +7,7 @@ var copy                = require('es5-ext/object/copy')
   , db                  = require('../../db')
   , _                   = require('mano').i18n.bind('Statistics time per role pdf')
   , resolveFullStepPath = require('../../utils/resolve-processing-step-full-path')
-  , processingStepsMeta = require('../../apps-common/processing-steps-meta');
+  , processingStepsMeta = require('../../processing-steps-meta');
 
 var resolveDays = function (time) { return time / (1000 * 60 * 60 * 24); };
 

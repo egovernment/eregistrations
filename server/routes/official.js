@@ -41,7 +41,7 @@ var aFrom                          = require('es5-ext/array/from')
   , reduceSteps                    = require('../business-process-query/steps/reduce-time')
   , statusLogPrintPdfRenderer      = require('../pdf-renderers/business-process-status-log-print')
   , getBaseRoutes                  = require('./authenticated')
-  , processingStepsMeta            = require('../../apps-common/processing-steps-meta')
+  , processingStepsMeta            = require('../../processing-steps-meta')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }

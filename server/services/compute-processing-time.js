@@ -16,7 +16,7 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , isDayOff                      = require('../utils/is-day-off')
   , Set                           = require('es6-set')
   , getData                       = require('../business-process-query/get-data')
-  , processingStepsMeta           = require('../../apps-common/processing-steps-meta')
+  , processingStepsMeta           = require('../../processing-steps-meta')
   , queryData;
 
 var getHolidaysProcessingTime = function (startStamp, endStamp) {

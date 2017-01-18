@@ -13,7 +13,7 @@ var aFrom                         = require('es5-ext/array/from')
   , deferred                      = require('deferred')
   , debug                         = require('debug-ext')('business-process-flow')
   , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
-  , processingStepsMeta           = require('../../apps-common/processing-steps-meta');
+  , processingStepsMeta           = require('../../processing-steps-meta');
 
 var copyIsReady = function (storage, stepId) {
 	var isReadyPath = stepId + '/isReady';

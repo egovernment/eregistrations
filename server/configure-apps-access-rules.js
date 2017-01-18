@@ -41,7 +41,7 @@ var aFrom                = require('es5-ext/array/from')
   , mapDbSet             = require('./utils/map-db-set')
   , getOfficialsFragment = require('./utils/get-officials-fragment')
   , defaultUserListProps = require('../apps/users-admin/user-list-properties')
-  , processingStepsMeta  = require('../apps-common/processing-steps-meta')
+  , processingStepsMeta  = require('../processing-steps-meta')
 
   , isBusinessProcessStorageName = RegExp.prototype.test.bind(/^businessProcess[A-Z]/)
   , create = Object.create, keys = Object.keys, stringify = JSON.stringify

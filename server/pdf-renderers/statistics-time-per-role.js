@@ -10,7 +10,7 @@ var copy                 = require('es5-ext/object/copy')
   , resolveFullStepPath  = require('../../utils/resolve-processing-step-full-path')
   , getDurationDaysHours = require('../../view/utils/get-duration-days-hours')
   , htmlToPdf            = require('../html-to-pdf')
-  , processingStepsMeta  = require('../../apps-common/processing-steps-meta')
+  , processingStepsMeta  = require('../../processing-steps-meta')
 
   , root = resolve(__dirname, '../..')
   , templatePath = resolve(root, 'apps-common/pdf-templates/statistics-time-per-role.html');

@@ -20,7 +20,7 @@ var assign                  = require('es5-ext/object/assign')
   , makePdf                 = require('./utils/pdf')
   , makeCsv                 = require('./utils/csv')
   , getBaseRoutes           = require('./authenticated')
-  , processingStepsMeta     = require('../../apps-common/processing-steps-meta');
+  , processingStepsMeta     = require('../../processing-steps-meta');
 
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)

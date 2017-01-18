@@ -10,7 +10,7 @@ var ensureObject         = require('es5-ext/object/valid-object')
   , getDurationDaysHours = require('../../view/utils/get-duration-days-hours')
   , getUserFullName      = require('../utils/get-user-full-name')
   , htmlToPdf            = require('../html-to-pdf')
-  , processingStepsMeta  = require('../../apps-common/processing-steps-meta')
+  , processingStepsMeta  = require('../../processing-steps-meta')
 
   , root = resolve(__dirname, '../..')
   , templatePath = resolve(root, 'apps-common/pdf-templates/statistics-time-per-person.html');

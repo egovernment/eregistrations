@@ -4,7 +4,7 @@ var ensureObject = require('es5-ext/object/valid-object')
   , getEmptyData = require('../utils/get-time-reduction-template')
   , reduce       = require('../utils/reduce-time')
   , timeCalculationsStart = require('../utils/time-calculations-start')
-  , processingStepsMeta   = require('../../../apps-common/processing-steps-meta');
+  , processingStepsMeta   = require('../../../processing-steps-meta');
 
 /**
 	* @param data  - Direct result from ../get-data or ./filter

@@ -6,7 +6,7 @@ var aFrom               = require('es5-ext/array/from')
   , ensureObject        = require('es5-ext/object/valid-object')
   , Map                 = require('es6-map')
   , filterBps           = require('../business-processes/filter')
-  , processingStepsMeta = require('../../../apps-common/processing-steps-meta');
+  , processingStepsMeta = require('../../../processing-steps-meta');
 
 var resolveBpFilterQuery = function (query) {
 	query = normalizeOptions(query, {

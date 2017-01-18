@@ -1,6 +1,6 @@
 'use strict';
 
-var processingStepsMeta = require('../apps-common/processing-steps-meta');
+var processingStepsMeta = require('../processing-steps-meta');
 
 module.exports = {
 	'/': {

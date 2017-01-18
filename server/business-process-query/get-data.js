@@ -19,7 +19,7 @@ var aFrom                         = require('es5-ext/array/from')
   , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
   , toDateInTz                    = require('../../utils/to-date-in-time-zone')
   , timeZone                      = require('../../db').timeZone
-  , processingStepsMeta           = require('../../apps-common/processing-steps-meta');
+  , processingStepsMeta           = require('../../processing-steps-meta');
 
 var re = new RegExp('^processingSteps\\/map\\/([a-zA-Z0-9]+' +
 	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$');
