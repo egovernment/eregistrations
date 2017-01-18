@@ -12,6 +12,9 @@ module.exports = memoize(function (db) {
 		label: { type: StringLine, required: true },
 		time: { type: db.DateTime, required: true },
 		official: { type: User },
+		officialFullName: { type: StringLine, value: function (_observe) {
+			return this.official ? _observe(this.official._fullName) : null;
+		} },
 		text: { type: db.String, required: true }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

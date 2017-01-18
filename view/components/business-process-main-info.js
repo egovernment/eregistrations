@@ -69,7 +69,9 @@ module.exports = function (context) {
 						th(log._label);
 						td({ class: 'submitted-user-history-time' }, log._time);
 						td(md(log._text));
-						if (!isUserApp(context.appName)) td(log._official);
+						if (!isUserApp(context.appName)) {
+							_if(log._officialFullName, td(log._officialFullName), td(log._official));
+						}
 					})
 				)
 			)

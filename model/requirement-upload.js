@@ -155,6 +155,7 @@ module.exports = memoize(function (db) {
 				statusLog.push({
 					label: log.getOwnDescriptor('label').valueToJSON(),
 					time: log.getOwnDescriptor('time').valueToJSON(),
+					officialFullName: log.getOwnDescriptor('officialFullName').valueToJSON(),
 					text: log.getOwnDescriptor('text').valueToJSON()
 				});
 			});
