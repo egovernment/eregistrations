@@ -18,7 +18,11 @@ module.exports = exports = function (db) {
 			var rowResult = copy(log);
 
 			rowResult.time = log.time.toString();
-			rowResult.official = log.officialFullName;
+			if (log.officialFullName) {
+				rowResult.official = log.officialFullName;
+			} else if (log.official) {
+				rowResult.official = log.official.fullName;
+			}
 
 			result.statusLog.push(rowResult);
 		});

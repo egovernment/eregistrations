@@ -20,8 +20,13 @@ module.exports = function (businessProcessId/*, options */) {
 		if (!businessProcess) return null;
 		businessProcess.statusLog.forEach(function (statusLog) {
 			// we don't show officials to end users
-			if (statusLog.officialFullName && isUserApp(options.appName || '')) {
-				statusLog.officialFullName = null;
+			if (isUserApp(options.appName || '')) {
+				if (statusLog.officialFullName) {
+					statusLog.officialFullName = null;
+				}
+				if (statusLog.official) {
+					statusLog.official = null;
+				}
 			}
 		});
 		var inserts = {

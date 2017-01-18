@@ -28,7 +28,8 @@
 			result.push('<td>' + e(log.text) + '</td>');
 			if (log.officialFullName) {
 				result.push('<td>' + e(log.officialFullName) + '</td>');
-			}
+			} else if (log.official) {
+				result.push('<td>' + e(log.official) + '</td>');
 			result.push('</tr>');
 
 			return result.join('');
