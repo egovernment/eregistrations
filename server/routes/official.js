@@ -338,7 +338,7 @@ module.exports = exports = function (mainConf/*, options */) {
 	/**
 	 * This is to safeguard older systems which don't use this functionality.
 	 * */
-	if (!Object.keys(processingStepsMeta).length) {
+	if (Object.keys(processingStepsMeta).length) {
 		statsHandlerOpts = {
 			processingStepsMeta: processingStepsMeta,
 			db: require('mano').db,

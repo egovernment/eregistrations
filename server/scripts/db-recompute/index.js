@@ -2,19 +2,19 @@
 
 'use strict';
 
-var aFrom               = require('es5-ext/array/from')
-  , findIndex           = require('es5-ext/array/#/find-index')
-  , flatten             = require('es5-ext/array/#/flatten')
-  , ensureIterable      = require('es5-ext/iterable/validate-object')
-  , ensureString        = require('es5-ext/object/validate-stringifiable-value')
-  , Map                 = require('es6-map')
-  , Set                 = require('es6-set')
-  , deferred            = require('deferred')
-  , debug               = require('debug-ext')('setup', 4)
-  , ensureDriver        = require('dbjs-persistence/ensure-driver')
-  , recompute           = require('dbjs-persistence/recompute')
-  , isOfficialRoleName  = require('../../../utils/is-official-role-name')
-  , copyIsReady         = require('../../services/copy-is-ready');
+var aFrom              = require('es5-ext/array/from')
+  , findIndex          = require('es5-ext/array/#/find-index')
+  , flatten            = require('es5-ext/array/#/flatten')
+  , ensureIterable     = require('es5-ext/iterable/validate-object')
+  , ensureString       = require('es5-ext/object/validate-stringifiable-value')
+  , Map                = require('es6-map')
+  , Set                = require('es6-set')
+  , deferred           = require('deferred')
+  , debug              = require('debug-ext')('setup', 4)
+  , ensureDriver       = require('dbjs-persistence/ensure-driver')
+  , recompute          = require('dbjs-persistence/recompute')
+  , isOfficialRoleName = require('../../../utils/is-official-role-name')
+  , copyIsReady        = require('../../services/copy-is-ready');
 
 module.exports = function (driver, slavePath/*, options*/) {
 	var userStorage = ensureDriver(driver).getStorage('user')
