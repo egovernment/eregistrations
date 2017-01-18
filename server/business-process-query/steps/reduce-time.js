@@ -3,14 +3,15 @@
 var ensureObject = require('es5-ext/object/valid-object')
   , getEmptyData = require('../utils/get-time-reduction-template')
   , reduce       = require('../utils/reduce-time')
-  , timeCalculationsStart = require('../utils/time-calculations-start');
+  , timeCalculationsStart = require('../utils/time-calculations-start')
+  , processingStepsMeta   = require('../../../apps-common/processing-steps-meta');
 
 /**
 	* @param data  - Direct result from ../get-data or ./filter
 	* @returns {Object} - Reduced map (format documented in code)
 */
-module.exports = function (data, processingStepsMeta) {
-	(ensureObject(data) && ensureObject(processingStepsMeta));
+module.exports = function (data) {
+	ensureObject(data);
 
 	var result = {
 		// Reduction data for all

@@ -1,30 +1,34 @@
 'use strict';
 
-var ensureObject = require('es5-ext/object/valid-object');
+var processingStepsMeta = require('../apps-common/processing-steps-meta');
 
-module.exports = function (processingStepsMeta) {
-	ensureObject(processingStepsMeta);
+module.exports = {
+	'/': {
+		decorateContext: function () {
+			this.processingStepsMeta = processingStepsMeta;
+		},
+		view: require('../view/statistics-dashboard')
+	},
+	files: require('../view/statistics-files-completed'),
+	'files/pending': {
+		decorateContext: function () {
+			this.processingStepsMeta = processingStepsMeta;
+		},
+		view: require('../view/statistics-files-pending')
+	},
+	'files/accounts': require('../view/statistics-files-accounts'),
+	time: {
+		decorateContext: function () {
+			this.processingStepsMeta = processingStepsMeta;
+		},
+		view: require('../view/statistics-time-per-role')
+	},
+	'time/per-person': {
+		decorateContext: function () {
+			this.processingStepsMeta = processingStepsMeta;
+		},
+		view: require('../view/statistics-time-per-person')
+	},
 
-	return {
-		'/': {
-			decorateContext: function () { this.processingStepsMeta = processingStepsMeta; },
-			view: require('../view/statistics-dashboard')
-		},
-		files: require('../view/statistics-files-completed'),
-		'files/pending': {
-			decorateContext: function () { this.processingStepsMeta = processingStepsMeta; },
-			view: require('../view/statistics-files-pending')
-		},
-		'files/accounts': require('../view/statistics-files-accounts'),
-		time: {
-			decorateContext: function () { this.processingStepsMeta = processingStepsMeta; },
-			view: require('../view/statistics-time-per-role')
-		},
-		'time/per-person': {
-			decorateContext: function () { this.processingStepsMeta = processingStepsMeta; },
-			view: require('../view/statistics-time-per-person')
-		},
-
-		profile: require('../view/user-profile')
-	};
+	profile: require('../view/user-profile')
 };

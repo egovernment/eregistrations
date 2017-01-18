@@ -41,6 +41,7 @@ var aFrom                          = require('es5-ext/array/from')
   , reduceSteps                    = require('../business-process-query/steps/reduce-time')
   , statusLogPrintPdfRenderer      = require('../pdf-renderers/business-process-status-log-print')
   , getBaseRoutes                  = require('./authenticated')
+  , processingStepsMeta            = require('../../apps-common/processing-steps-meta')
 
   , hasBadWs = RegExp.prototype.test.bind(/\s{2,}/)
   , compareStamps = function (a, b) { return a.stamp - b.stamp; }
@@ -312,10 +313,9 @@ var initializeHandler = function (conf) {
 	};
 };
 
-var getStatsOverviewData = memoize(function (query, userId, statsHandlerOpts) {
-	var processingStepsMeta = statsHandlerOpts.processingStepsMeta;
-	return getData(mano.dbDriver, processingStepsMeta)(function (data) {
-		data = reduceSteps(filterSteps(data, query, processingStepsMeta), processingStepsMeta);
+var getStatsOverviewData = memoize(function (query, userId) {
+	return getData(mano.dbDriver)(function (data) {
+		data = reduceSteps(filterSteps(data, query));
 		return {
 			processor: (data.byStepAndProcessor[query.step][userId] || getReductionTemplate()).processing,
 			stepTotal: data.byStep[query.step].processing
@@ -336,12 +336,11 @@ module.exports = exports = function (mainConf/*, options */) {
 	recentlyVisitedContextName = options.recentlyVisitedContextName;
 
 	/**
-	 * This is to safeguard older systems which don't use this functionality
-	 * the flag is not mandatory, so only setup if you don't want this configured in a system
+	 * This is to safeguard older systems which don't use this functionality.
 	 * */
-	if (options.processingStepsMeta) {
+	if (!Object.keys(processingStepsMeta).length) {
 		statsHandlerOpts = {
-			processingStepsMeta: ensureObject(options.processingStepsMeta),
+			processingStepsMeta: processingStepsMeta,
 			db: require('mano').db,
 			driver: require('mano').dbDriver
 		};
@@ -422,7 +421,7 @@ module.exports = exports = function (mainConf/*, options */) {
 				query.step = handler.roleName;
 
 				return statsOverviewQueryHandler.resolve(query)(function (query) {
-					return getStatsOverviewData(query, userId, statsHandlerOpts);
+					return getStatsOverviewData(query, userId);
 				});
 			}.bind(this));
 		},

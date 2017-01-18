@@ -32,15 +32,14 @@ var businessProcessQueryHandler = new QueryHandler([{
 
 module.exports = exports = function (config) {
 	var driver                 = ensureDriver(ensureObject(config).driver)
-	  , processingStepsMeta    = ensureObject(config.processingStepsMeta)
 	  , queryHandler           = new QueryHandler(queryHandlerConf);
 
-	getData(driver, processingStepsMeta).done();
+	getData(driver).done();
 
 	return assign({
 		'get-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
-				return getData(driver, processingStepsMeta);
+				return getData(driver);
 			})(function (data) {
 				var fullSize;
 

@@ -12,7 +12,8 @@ var aFrom                         = require('es5-ext/array/from')
   , Set                           = require('es6-set')
   , deferred                      = require('deferred')
   , debug                         = require('debug-ext')('business-process-flow')
-  , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path');
+  , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
+  , processingStepsMeta           = require('../../apps-common/processing-steps-meta');
 
 var copyIsReady = function (storage, stepId) {
 	var isReadyPath = stepId + '/isReady';
@@ -50,7 +51,7 @@ var copyIsReady = function (storage, stepId) {
 	});
 };
 
-module.exports = function (driver, processingStepsMeta) {
+module.exports = function (driver) {
 	var storageStepMap = new Map();
 	Object.keys(processingStepsMeta).forEach(function (stepMetaKey) {
 		var stepPath = 'processingSteps/map/' + resolveProcessingStepFullPath(stepMetaKey);

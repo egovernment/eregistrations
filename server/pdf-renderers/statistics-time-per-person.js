@@ -10,12 +10,13 @@ var ensureObject         = require('es5-ext/object/valid-object')
   , getDurationDaysHours = require('../../view/utils/get-duration-days-hours')
   , getUserFullName      = require('../utils/get-user-full-name')
   , htmlToPdf            = require('../html-to-pdf')
+  , processingStepsMeta  = require('../../apps-common/processing-steps-meta')
 
   , root = resolve(__dirname, '../..')
   , templatePath = resolve(root, 'apps-common/pdf-templates/statistics-time-per-person.html');
 
 module.exports = function (result, config) {
-	var processingStepsMeta = ensureObject(ensureObject(config).processingStepsMeta);
+	ensureObject(config);
 	var inserts = { steps: [], locale: db.locale,
 		logo: config.logo, currentDate: db.DateTime().toString() };
 

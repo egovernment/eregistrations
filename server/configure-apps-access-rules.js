@@ -41,6 +41,7 @@ var aFrom                = require('es5-ext/array/from')
   , mapDbSet             = require('./utils/map-db-set')
   , getOfficialsFragment = require('./utils/get-officials-fragment')
   , defaultUserListProps = require('../apps/users-admin/user-list-properties')
+  , processingStepsMeta  = require('../apps-common/processing-steps-meta')
 
   , isBusinessProcessStorageName = RegExp.prototype.test.bind(/^businessProcess[A-Z]/)
   , create = Object.create, keys = Object.keys, stringify = JSON.stringify
@@ -79,7 +80,7 @@ module.exports = exports = function (db, dbDriver, data) {
 	  , getUserReducedData = getReducedFrag(userStorage)
 	  , getReducedData = getReducedFrag(reducedStorage)
 	  , getBusinessProcessFullData
-	  , resolveOfficialViews, processingStepsMeta, processingStepsDefaultMap = create(null)
+	  , resolveOfficialViews, processingStepsDefaultMap = create(null)
 	  , businessProcessListProperties, businessProcessMyAccountProperties
 	  , globalFragment, getMetaAdminFragment, getAccessRules
 	  , assignableProcessingSteps, initializeView, resolveOfficialViewPath, resolveStepShortPath
@@ -108,7 +109,6 @@ module.exports = exports = function (db, dbDriver, data) {
 	var businessProcessUserMap = require('mano/lib/server/business-process-user-map');
 
 	ensureObject(data);
-	processingStepsMeta          = ensureObject(data.processingStepsMeta);
 	addCustomBusinessProcessData = data.addCustomBusinessProcessData &&
 		ensureCallable(data.addCustomBusinessProcessData);
 
