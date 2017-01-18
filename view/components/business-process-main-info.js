@@ -70,7 +70,7 @@ module.exports = function (context) {
 						td({ class: 'submitted-user-history-time' }, log._time);
 						td(md(log._text));
 						if (!isUserApp(context.appName)) {
-							_if(log._officialFullName, td(log._officialFullName), td(log._official));
+							insert(_if(log._officialFullName, td(log._officialFullName), td(log._official)));
 						}
 					})
 				)
