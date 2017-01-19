@@ -18,8 +18,8 @@ module.exports = memoize(function (db) {
 			return {
 				label: this.getOwnDescriptor('label').valueToJSON(),
 				time: this.getOwnDescriptor('time').valueToJSON(),
-				official: this.getOwnDescriptor('official').valueToJSON(),
-				officialFullName: this.getOwnDescriptor('officialFullName').valueToJSON(),
+				officialFullName: this.officialFullName
+					&& this.getOwnDescriptor('officialFullName').valueToJSON(),
 				text: this.getOwnDescriptor('text').valueToJSON()
 			};
 		} }
