@@ -15,10 +15,10 @@ var assign                    = require('es5-ext/object/assign')
   , sortData                  = require('../../utils/query/sort')
   , getPage                   = require('../../utils/query/get-page')
   , QueryHandler              = require('../../utils/query-handler')
-//TODO console.log('CLEAN UP BELOW LISTS')
-  , listProperties            = require('../../apps/inspector/list-properties')
-  , listComputedProperties    = require('../../apps/inspector/list-computed-properties')
-  , queryHandlerConf          = require('../../apps/inspector/query-conf')
+  , listProperties            = require('../../apps/official/business-process-list-properties')
+  , listComputedProperties    =
+			require('../../apps/official/business-process-list-computed-properties')
+  , queryHandlerConf          = require('../../apps/official/query-conf')
   , getStatsQueryHandlerConf  = require('../../apps/statistics/get-query-conf')
   , getReductionTemplate      =
 		require('../business-process-query/utils/get-time-reduction-template')
@@ -108,15 +108,11 @@ module.exports = exports = function (config/*, options */) {
 		},
 		'get-processing-time-data': function (query) {
 			if (!statsOverviewQueryHandler) return null;
-			return resolveHandler(this.req)(function (handler) {
-				var userId = this.req.$user;
-				if (!handler.roleName) return;
-				query.step = handler.roleName;
+			var userId = this.req.$user;
 
-				return statsOverviewQueryHandler.resolve(query)(function (query) {
-					return getStatsOverviewData(query, userId);
-				});
-			}.bind(this));
+			return statsOverviewQueryHandler.resolve(query)(function (query) {
+				return getStatsOverviewData(query, userId);
+			});
 		},
 		'business-process-status-log-print': {
 			headers: {
