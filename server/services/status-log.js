@@ -59,7 +59,10 @@ exports.forEach(function (conf) {
 						(conf.timeShift ? (conf.timeShift * 100) : 0)),
 				text: text
 			});
-			if (official) statusLog.official = official;
+			if (official) {
+				statusLog.official = official;
+				statusLog.officialFullName = official.fullName;
+			}
 		});
 	});
 });
