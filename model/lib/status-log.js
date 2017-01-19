@@ -16,11 +16,11 @@ module.exports = memoize(function (db) {
 		text: { type: db.String, required: true },
 		toJSON: { value: function (ignore) {
 			return {
-				label: this.label,
+				label: this.getOwnDescriptor('label').valueToJSON(),
 				time: this.getOwnDescriptor('time').valueToJSON(),
 				official: this.getOwnDescriptor('official').valueToJSON(),
-				officialFullName: this.officialFullName,
-				text: this.text
+				officialFullName: this.getOwnDescriptor('officialFullName').valueToJSON(),
+				text: this.getOwnDescriptor('text').valueToJSON()
 			};
 		} }
 	});

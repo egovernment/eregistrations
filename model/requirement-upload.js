@@ -152,11 +152,7 @@ module.exports = memoize(function (db) {
 			else if (this.isRejected) data.status = 'rejected';
 			statusLog = [];
 			this.document.statusLog.ordered.forEach(function (log) {
-				statusLog.push({
-					label: log.getOwnDescriptor('label').valueToJSON(),
-					time: log.getOwnDescriptor('time').valueToJSON(),
-					text: log.getOwnDescriptor('text').valueToJSON()
-				});
+				statusLog.push(log.toJSON());
 			});
 			if (statusLog.length) data.statusLog = statusLog;
 			if (data.status === 'rejected') {
