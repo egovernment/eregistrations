@@ -15,13 +15,16 @@ module.exports = memoize(function (db) {
 		officialFullName: { type: StringLine },
 		text: { type: db.String, required: true },
 		toJSON: { value: function (ignore) {
-			return {
+			var data = {
 				label: this.getOwnDescriptor('label').valueToJSON(),
 				time: this.getOwnDescriptor('time').valueToJSON(),
-				officialFullName: this.officialFullName
-					&& this.getOwnDescriptor('officialFullName').valueToJSON(),
 				text: this.getOwnDescriptor('text').valueToJSON()
 			};
+			if (this.officialFullName) {
+				data.officialFullName = this.getOwnDescriptor('officialFullName').valueToJSON();
+			}
+
+			return data;
 		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
