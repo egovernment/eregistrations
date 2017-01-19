@@ -16,6 +16,7 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , isDayOff                      = require('../utils/is-day-off')
   , Set                           = require('es6-set')
   , getData                       = require('../business-process-query/get-data')
+  , processingStepsMeta           = require('../../processing-steps-meta')
   , queryData;
 
 var getHolidaysProcessingTime = function (startStamp, endStamp) {
@@ -109,9 +110,9 @@ var getOnIsSentBack = function (storage) {
 	};
 };
 
-module.exports = function (driver, processingStepsMeta) {
+module.exports = function (driver) {
 	var allStorages = new Set();
-	queryData = getData(driver, processingStepsMeta);
+	queryData = getData(driver);
 	Object.keys(processingStepsMeta).forEach(function (stepMetaKey) {
 		var stepPath, storages;
 		stepPath = 'processingSteps/map/' + resolveProcessingStepFullPath(stepMetaKey);

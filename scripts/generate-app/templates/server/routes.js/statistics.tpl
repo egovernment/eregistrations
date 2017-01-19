@@ -9,6 +9,5 @@ var resolve  = require('path').resolve
 module.exports = require('eregistrations/server/routes/statistics')({
 	db: require('../../../db'),
 	driver: require('mano').dbDriver,
-	processingStepsMeta: require('../../../apps-common/processing-steps'),
 	logo: logoPath
 });

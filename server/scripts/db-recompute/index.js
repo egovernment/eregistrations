@@ -54,7 +54,7 @@ module.exports = function (driver, slavePath/*, options*/) {
 		});
 	});
 
-	copyIsReady(driver, options.processingStepsMeta);
+	copyIsReady(driver);
 
 	debug.open("db-recompute");
 	return recompute(driver, {

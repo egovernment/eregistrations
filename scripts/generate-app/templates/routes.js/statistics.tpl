@@ -4,6 +4,4 @@
 
 require('../../view/base');
 
-module.exports = require('eregistrations/routes/statistics')(
-	require('../../apps-common/processing-steps/meta')
-);
+module.exports = require('eregistrations/routes/statistics');
