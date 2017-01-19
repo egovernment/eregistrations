@@ -133,7 +133,10 @@ module.exports = memoize(function (db) {
 				label: this.database.resolveTemplate(this.label, this.getTranslations(), { partial: true }),
 				abbr: this.abbr,
 				status: this.status,
-				overviewSection: this.overviewSection.toJSON()
+				overviewSection: this.overviewSection.toJSON(),
+				statusLog: this.statusLog.ordered.map(function (stautLogEntry) {
+					return stautLogEntry.toJSON();
+				}).toArray()
 			};
 			if (this.issuedBy) data.issuedBy = this.getOwnDescriptor('issuedBy').valueToJSON();
 			if (this.issueDate) data.issueDate = this.getOwnDescriptor('issueDate').valueToJSON();
