@@ -36,10 +36,9 @@ var businessProcessQueryHandler = new QueryHandler([{
 	}
 }]);
 
-var getStatsOverviewData = memoize(function (query, userId, statsHandlerOpts) {
-	var processingStepsMeta = statsHandlerOpts.processingStepsMeta;
-	return getData(mano.dbDriver, processingStepsMeta)(function (data) {
-		data = reduceSteps(filterSteps(data, query, processingStepsMeta), processingStepsMeta);
+var getStatsOverviewData = memoize(function (query, userId) {
+	return getData(require('mano').dbDriver)(function (data) {
+		data = reduceSteps(filterSteps(data, query));
 		return {
 			processor: (data.byStepAndProcessor[query.step][userId] || getReductionTemplate()).processing,
 			stepTotal: data.byStep[query.step].processing
@@ -57,13 +56,12 @@ module.exports = exports = function (config/*, options */) {
 	var driver                 = ensureDriver(ensureObject(config).driver)
 	  , processingStepsMeta    = ensureObject(config.processingStepsMeta)
 	  , queryHandler           = new QueryHandler(queryHandlerConf)
-	  , options, statsHandlerOpts, statsOverviewQueryHandler;
-	options = Object(arguments[1]);
+	  , statsHandlerOpts, statsOverviewQueryHandler;
 
-	getData(driver, processingStepsMeta).done();
+	getData(driver).done();
 
 	statsHandlerOpts = {
-		processingStepsMeta: ensureObject(processingStepsMeta),
+		processingStepsMeta: processingStepsMeta,
 		db: require('mano').db,
 		driver: require('mano').dbDriver
 	};
@@ -116,7 +114,7 @@ module.exports = exports = function (config/*, options */) {
 				query.step = handler.roleName;
 
 				return statsOverviewQueryHandler.resolve(query)(function (query) {
-					return getStatsOverviewData(query, userId, statsHandlerOpts);
+					return getStatsOverviewData(query, userId);
 				});
 			}.bind(this));
 		},

@@ -16,10 +16,14 @@ module.exports = exports = function (db) {
 		result.businessName = businessProcess.businessName;
 		businessProcess.statusLog.ordered.forEach(function (log) {
 			var rowResult = copy(log);
+
 			rowResult.time = log.time.toString();
-			if (log.official) {
+			if (log.officialFullName) {
+				rowResult.official = log.officialFullName;
+			} else if (log.official) {
 				rowResult.official = log.official.fullName;
 			}
+
 			result.statusLog.push(rowResult);
 		});
 

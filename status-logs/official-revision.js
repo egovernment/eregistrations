@@ -2,7 +2,8 @@
 
 var _                = require('mano').i18n.bind('Official: Revision: Status Log')
   , normalizeOptions = require('es5-ext/object/normalize-options')
-  , resolveProcesses = require('../business-processes/resolve');
+  , resolveProcesses = require('../business-processes/resolve')
+  , _d               = _;
 
 module.exports = function (BusinessProcessClass/*, options*/) {
 	var options           = normalizeOptions(arguments[1])
@@ -31,7 +32,44 @@ module.exports = function (BusinessProcessClass/*, options*/) {
 		preTrigger: readyProcesses,
 		official: processorKeyPath,
 		label: label,
-		text: options.sentBackText || _("Necessary corrections in the file")
+		text: options.sentBackText || _("Necessary corrections in the file.\n ${ rejectedUploads }"),
+		variables: {
+			rejectedUploads: function () {
+				var processingStep        = this.businessProcess.processingSteps.map[stepName]
+				  , paymentReceiptUploads = processingStep.paymentReceiptUploads
+				  , requirementUploads    = processingStep.requirementUploads
+				  , dataForms             = this.businessProcess.dataForms
+				  , result                = [];
+
+				if (requirementUploads.rejected.size) {
+					result.push(_("Issues with uploaded documents:"));
+					requirementUploads.rejected.forEach(function (requirementUpload) {
+						var rejectReasons = requirementUpload.rejectReasons
+						  , doc           = requirementUpload.document;
+
+						result.push("- " + _d(doc.label, doc.getTranslations()));
+						rejectReasons.forEach(function (reason) {
+							result.push("    - " + reason);
+						});
+					});
+					result.push('');
+				}
+				if (paymentReceiptUploads.rejected.size) {
+					result.push(_("Issues with uploaded payment receipts:"));
+					paymentReceiptUploads.rejected.forEach(function (paymentReceiptUpload) {
+						result.push("- " + paymentReceiptUpload.document.label);
+						result.push("    - " + paymentReceiptUpload.rejectReasonMemo);
+					});
+					result.push('');
+				}
+				if (dataForms.isRejected) {
+					result.push(_("Issues with data forms:"));
+					result.push(dataForms.rejectReason);
+				}
+				return result.join('\n');
+			}
+		},
+		resolveGetters: true
 	}, {
 		id: 'correction',
 		trigger: correctedProcesses,

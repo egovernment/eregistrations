@@ -1,11 +1,12 @@
 'use strict';
 
-var aFrom            = require('es5-ext/array/from')
-  , includes         = require('es5-ext/array/#/contains')
-  , normalizeOptions = require('es5-ext/object/normalize-options')
-  , ensureObject     = require('es5-ext/object/valid-object')
-  , Map              = require('es6-map')
-  , filterBps        = require('../business-processes/filter');
+var aFrom               = require('es5-ext/array/from')
+  , includes            = require('es5-ext/array/#/contains')
+  , normalizeOptions    = require('es5-ext/object/normalize-options')
+  , ensureObject        = require('es5-ext/object/valid-object')
+  , Map                 = require('es6-map')
+  , filterBps           = require('../business-processes/filter')
+  , processingStepsMeta = require('../../../processing-steps-meta');
 
 var resolveBpFilterQuery = function (query) {
 	query = normalizeOptions(query, {
@@ -25,8 +26,8 @@ var resolveBpFilterQuery = function (query) {
 	* @param data  - Direct result from ../get-data
 	* @returns {Object} - Same format as input data with filtered data.steps collection
 */
-module.exports = exports = function (data, query, processingStepsMeta) {
-	(ensureObject(data) && ensureObject(query) && ensureObject(processingStepsMeta));
+module.exports = exports = function (data, query) {
+	(ensureObject(data) && ensureObject(query));
 	var stepsData = data.steps, filteredStepsData;
 
 	// 1. Exclude not applicable steps
