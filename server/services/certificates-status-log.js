@@ -40,6 +40,10 @@ setupCertLogTrigger = function (config) {
 			}
 		}
 
+		if (statusLogProperties.official) {
+			statusLogProperties.officialFullName = statusLogProperties.official.fullName;
+		}
+
 		statusLog.setProperties(statusLogProperties);
 	});
 };

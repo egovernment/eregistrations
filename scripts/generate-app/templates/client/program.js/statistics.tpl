@@ -38,6 +38,9 @@ require('../../../i18n');
 var db = window.db = require('../../../db');
 require('./model.generated');
 
+// processingStepsMeta
+require('../../../processing-steps-meta');
+
 var formClear = require('mano/lib/client/utils/form-status').clear.bind(document)
   , loadView, userId, server, inSync, isViewGenerated;
 

@@ -134,7 +134,7 @@ module.exports = memoize(function (db) {
 				abbr: this.abbr,
 				status: this.status,
 				overviewSection: this.overviewSection.toJSON()
-			};
+			}, statusLog = [];
 			if (this.issuedBy) data.issuedBy = this.getOwnDescriptor('issuedBy').valueToJSON();
 			if (this.issueDate) data.issueDate = this.getOwnDescriptor('issueDate').valueToJSON();
 			if (this.number) data.number = this.getOwnDescriptor('number').valueToJSON();
@@ -153,6 +153,11 @@ module.exports = memoize(function (db) {
 					if (data.sections) data.sections.forEach(self);
 				}(data.section));
 			}
+			this.statusLog.ordered.forEach(function (statusLogEntry) {
+				statusLog.push(statusLogEntry.toJSON());
+			});
+			if (statusLog.length) data.statusLog = statusLog;
+
 			return data;
 		} }
 	}, {

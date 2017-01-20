@@ -12,6 +12,19 @@ module.exports = memoize(function (db) {
 		label: { type: StringLine, required: true },
 		time: { type: db.DateTime, required: true },
 		official: { type: User },
-		text: { type: db.String, required: true }
+		officialFullName: { type: StringLine },
+		text: { type: db.String, required: true },
+		toJSON: { value: function (ignore) {
+			var data = {
+				label: this.getOwnDescriptor('label').valueToJSON(),
+				time: this.getOwnDescriptor('time').valueToJSON(),
+				text: this.getOwnDescriptor('text').valueToJSON()
+			};
+			if (this.officialFullName) {
+				data.officialFullName = this.getOwnDescriptor('officialFullName').valueToJSON();
+			}
+
+			return data;
+		} }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

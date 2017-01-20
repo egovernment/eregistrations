@@ -6,12 +6,13 @@ var copy                = require('es5-ext/object/copy')
   , capitalize          = require('es5-ext/string/#/capitalize')
   , db                  = require('../../db')
   , _                   = require('mano').i18n.bind('Statistics time per role pdf')
-  , resolveFullStepPath = require('../../utils/resolve-processing-step-full-path');
+  , resolveFullStepPath = require('../../utils/resolve-processing-step-full-path')
+  , processingStepsMeta = require('../../processing-steps-meta');
 
 var resolveDays = function (time) { return time / (1000 * 60 * 60 * 24); };
 
 module.exports = function (result, config) {
-	var processingStepsMeta = ensureObject(ensureObject(config).processingStepsMeta);
+	ensureObject(config);
 	var data = [];
 
 	forEach(result.steps.byStep, function (stepData, key) {
