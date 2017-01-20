@@ -22,8 +22,12 @@ var getContext = function (formEntity, sKeyPath) {
 	return { sKey: sKey, object: context };
 };
 
-$.formSectionStateHelper = function (formId, entityId, constraints, legacyEntityProto) {
+$.formSectionStateHelper = function fsHelper(formId, entityId, constraints, legacyEntityProto) {
 	var Entity = function () {}, form = $(formId);
+	if (!form) {
+		setTimeout(function () { fsHelper(formId, entityId, constraints, legacyEntityProto); }, 0);
+		return;
+	}
 	if (legacyEntityProto) {
 		Entity.prototype = legacyEntityProto;
 	}
