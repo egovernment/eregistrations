@@ -2,12 +2,13 @@
 
 'use strict';
 
-var _                = require('mano').i18n.bind('View: Official: Revision')
-  , _d               = _
-  , normalizeOptions = require('es5-ext/object/normalize-options')
-  , ObservableValue  = require('observable-value')
-  , renderMainInfo   = require('./components/business-process-main-info')
-  , getUploads       = require('./utils/get-uploads-list');
+var _                        = require('mano').i18n.bind('View: Official: Revision')
+  , _d                       = _
+  , normalizeOptions         = require('es5-ext/object/normalize-options')
+  , renderMainInfo           = require('./components/business-process-main-info')
+  , getUploads               = require('./utils/get-uploads-list')
+  , dialogHeaderLabel        = _("Reason for rejection of the file")
+  , dialogHeaderLabelWarning = _("Warning!");
 
 exports._parent = require('./user-base');
 exports._match = 'businessProcess';
@@ -79,33 +80,12 @@ exports._returnButton = function (/*options*/) {
 // Technically, it's not 'just' a button that gets returned from here, but in this case it makes
 // no sense to return just the 'a' element.
 exports._rejectButton = function (/*options*/) {
-	var options           = normalizeOptions(arguments[0])
-	  , needsConfirmation = new ObservableValue(false);
-
-	var disableNeedsConfirmation = function () {
-		needsConfirmation.value = false;
-	};
-
-	var enableNeedsConfirmation = function () {
-		needsConfirmation.value = true;
-	};
-
-	var toggleNeedsConfirmation = function () {
-		var hash = window.location.hash;
-
-		if (!hash || (hash.slice(1) !== 'reject-reason')) {
-			disableNeedsConfirmation();
-		}
-	};
-
-	window.addEventListener('hashchange', toggleNeedsConfirmation);
-	document.addEventListener('click', toggleNeedsConfirmation);
+	var options = normalizeOptions(arguments[0]);
 
 	return [dialog(
 		{ id: 'reject-reason', class: 'dialog-reject dialog-modal' },
-		header(_if(needsConfirmation,
-			h3(_("Warning!")),
-			label({ for: 'revision-reject-reason' }, h3(_("Reason for rejection of the file"))))),
+		header(label({ for: 'revision-reject-reason' },
+			h3({ id: 'reject-reason-dialog-header' }, dialogHeaderLabel))),
 		section(
 			{ class: 'dialog-body' },
 			form(
@@ -114,18 +94,18 @@ exports._rejectButton = function (/*options*/) {
 				p({ class: 'input' }, input({ id: 'revision-reject-reason',
 					dbjs: this.processingStep._rejectionReason, placeholder: _('Reason of rejection') }))
 			),
-			_if(needsConfirmation, p({ class: 'dialog-reject-warning' },
+			p({ id: 'reject-reason-dialog-warning', class: 'dialog-reject-warning' },
 				_("You are about to reject the request, in doing so the user " +
 					"will not be able to make corrections and send it again; if you want to ask for " +
 					"corrections click 'cancel' and review the application until the " +
 					"'Return to corrections' button is displayed. If you still want to reject the " +
-					"file click 'Confirm rejection'; this action is permanent and can not be undone."))),
+					"file click 'Confirm rejection'; this action is permanent and can not be undone.")),
 			footer(p(
-				a({ href: '', onclick: disableNeedsConfirmation }, _("Cancel")),
-				_if(needsConfirmation, input({ class: 'button-main-error', type: 'submit',
-					value: _("Confirm rejection") }), a({ class: 'button-main button-main-error',
-					href: '#reject-reason', onclick: enableNeedsConfirmation },
-					options.rejectLabel || _("Reject")))
+				a({ href: '', id: 'reject-reason-dialog-cancel' }, _("Cancel")),
+				input({ id: 'reject-reason-dialog-submit-button', class: 'button-main-error',
+					type: 'submit', value: _("Confirm rejection") }),
+				a({ id: 'reject-reason-dialog-reject-button', class: 'button-main button-main-error',
+					href: '#reject-reason' }, options.rejectLabel || _("Reject"))
 			))
 		)
 	), a({
@@ -134,7 +114,42 @@ exports._rejectButton = function (/*options*/) {
 			' hint-optional-top hint-optional-multiline',
 		'data-hint': _("You can reject the registration when documents and/or data that is " +
 			"sent can be determined as not real.")
-	}, _("Reject application"))];
+	}, _("Reject application")), script(function (dialogHeaderLabel, dialogHeaderLabelWarning) {
+		var dialogHeader = $.getTextChild('reject-reason-dialog-header')
+		  , warningBox   = $('reject-reason-dialog-warning')
+		  , rejectButton = $('reject-reason-dialog-reject-button')
+		  , submitButton = $('reject-reason-dialog-submit-button');
+
+		var disableNeedsConfirmation = function () {
+			dialogHeader.data = dialogHeaderLabel;
+			warningBox.toggle(false);
+			rejectButton.toggle(true);
+			submitButton.toggle(false);
+		};
+
+		var enableNeedsConfirmation = function () {
+			dialogHeader.data = dialogHeaderLabelWarning;
+			warningBox.toggle(true);
+			rejectButton.toggle(false);
+			submitButton.toggle(true);
+		};
+
+		var toggleNeedsConfirmation = function () {
+			var hash = window.location.hash;
+
+			if (!hash || (hash.slice(1) !== 'reject-reason')) {
+				disableNeedsConfirmation();
+			}
+		};
+
+		disableNeedsConfirmation();
+
+		$('reject-reason-dialog-cancel').onclick = disableNeedsConfirmation;
+		rejectButton.onclick = enableNeedsConfirmation;
+
+		window.addEventListener('hashchange', toggleNeedsConfirmation);
+		document.addEventListener('click', toggleNeedsConfirmation);
+	}, dialogHeaderLabel, dialogHeaderLabelWarning)];
 };
 
 exports._pauseButton = function (/*options*/) {
