@@ -1,14 +1,13 @@
 'use strict';
 
-var $ = require('mano-legacy')
-  , getContext;
+var $ = require('mano-legacy');
 
 require('mano-legacy/on-env-update');
 require('mano-legacy/dbjs-form-fill');
 require('mano-legacy/element#/toggle');
 require('mano-legacy/dbjs-observe-mock');
 
-getContext = function (formEntity, sKeyPath) {
+var getContext = function (formEntity, sKeyPath) {
 	var i, context, arrayFromName, sKey;
 	context = formEntity;
 	sKey = sKeyPath;
