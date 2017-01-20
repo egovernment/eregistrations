@@ -115,7 +115,8 @@ exports._rejectButton = function (/*options*/) {
 		'data-hint': _("You can reject the registration when documents and/or data that is " +
 			"sent can be determined as not real.")
 	}, _("Reject application")), script(function (dialogHeaderLabel, dialogHeaderLabelWarning) {
-		var dialogHeader = $.getTextChild('reject-reason-dialog-header')
+		var dialog       = $('reject-reason')
+		  , dialogHeader = $.getTextChild('reject-reason-dialog-header')
 		  , warningBox   = $('reject-reason-dialog-warning')
 		  , rejectButton = $('reject-reason-dialog-reject-button')
 		  , submitButton = $('reject-reason-dialog-submit-button');
@@ -147,8 +148,8 @@ exports._rejectButton = function (/*options*/) {
 		$('reject-reason-dialog-cancel').onclick = disableNeedsConfirmation;
 		rejectButton.onclick = enableNeedsConfirmation;
 
-		window.addEventListener('hashchange', toggleNeedsConfirmation);
-		document.addEventListener('click', toggleNeedsConfirmation);
+		dialog.addEvent.call(window, 'hashchange', toggleNeedsConfirmation);
+		dialog.addEvent.call(document, 'click', toggleNeedsConfirmation);
 	}, dialogHeaderLabel, dialogHeaderLabelWarning)];
 };
 
