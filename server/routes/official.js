@@ -4,7 +4,6 @@ var assign                    = require('es5-ext/object/assign')
   , ensureObject              = require('es5-ext/object/valid-object')
   , startsWith                = require('es5-ext/string/#/starts-with')
   , customError               = require('es5-ext/error/custom')
-  , ensureDriver              = require('dbjs-persistence/ensure-driver')
   , getBaseRoutes             = require('./authenticated')
   , getData                   = require('../business-process-query/get-data')
   , reduceSteps               = require('../business-process-query/steps/reduce-time')
@@ -22,7 +21,9 @@ var assign                    = require('es5-ext/object/assign')
   , getStatsQueryHandlerConf  = require('../../apps/statistics/get-query-conf')
   , getReductionTemplate      =
 		require('../business-process-query/utils/get-time-reduction-template')
-  , memoize                   = require('memoizee');
+  , memoize                   = require('memoizee')
+  , Map                       = require('es6-map')
+  , ensureCallable            = require('es5-ext/object/valid-callable');
 
 var businessProcessQueryHandler = new QueryHandler([{
 	name: 'id',
@@ -39,6 +40,7 @@ var businessProcessQueryHandler = new QueryHandler([{
 var getStatsOverviewData = memoize(function (query, userId) {
 	return getData(require('mano').dbDriver)(function (data) {
 		data = reduceSteps(filterSteps(data, query));
+
 		return {
 			processor: (data.byStepAndProcessor[query.step][userId] || getReductionTemplate()).processing,
 			stepTotal: data.byStep[query.step].processing
@@ -53,34 +55,50 @@ var getStatsOverviewData = memoize(function (query, userId) {
 });
 
 module.exports = exports = function (config/*, options */) {
-	var driver                 = ensureDriver(ensureObject(config).driver)
-	  , processingStepsMeta    = ensureObject(config.processingStepsMeta)
+	ensureObject(config);
+	var driver                 = require('mano').dbDriver
 	  , queryHandler           = new QueryHandler(queryHandlerConf)
-	  , statsHandlerOpts, statsOverviewQueryHandler;
+	  , options                = Object(arguments[1])
+	  , statsHandlerOpts, statsOverviewQueryHandler, resolveConf;
 
-	getData(driver).done();
+	if (options && options.resolveConf) {
+		resolveConf = ensureCallable(options.resolveConf);
+	} else {
+		resolveConf = function () {
+			return config.roleName;
+		};
+	}
 
 	statsHandlerOpts = {
-		processingStepsMeta: processingStepsMeta,
+		processingStepsMeta: require('../../processing-steps-meta'),
 		db: require('mano').db,
-		driver: require('mano').dbDriver
+		driver: driver
 	};
 
 	statsOverviewQueryHandler = new QueryHandler(getStatsQueryHandlerConf(statsHandlerOpts));
 
 	return assign({
 		'get-data': function (query) {
+			var req = this.req;
+
 			return queryHandler.resolve(query)(function (query) {
-				return getData(driver, processingStepsMeta);
+				return getData(driver);
 			})(function (data) {
 				var fullSize;
-
-				data = sortData(
-					filterSteps(data.businessProcesses, query),
-					function (bpA, bpB) {
-						return bpA.createdDateTime.getTime() - bpB.createdDateTime.getTime();
-					}
-				);
+				query.step = resolveConf(req);
+				data = filterSteps(data, query);
+				var result = new Map();
+				data.steps.forEach(function (step) {
+					step.forEach(function (item, key) {
+						if (data.businessProcesses.has(key)) {
+							result.set(key, data.businessProcesses.get(key));
+						}
+					});
+				});
+				data = result;
+				data = sortData(data, function (bpA, bpB) {
+					return bpA.createdDateTime - bpB.createdDateTime;
+				});
 
 				if (!data.length) {
 					return { size: 0, view: [] };
@@ -107,10 +125,12 @@ module.exports = exports = function (config/*, options */) {
 			}.bind(this));
 		},
 		'get-processing-time-data': function (query) {
+			var req = this.req;
 			if (!statsOverviewQueryHandler) return null;
-			var userId = this.req.$user;
+			var userId = req.$user;
 
 			return statsOverviewQueryHandler.resolve(query)(function (query) {
+				query.step = resolveConf(req);
 				return getStatsOverviewData(query, userId);
 			});
 		},

@@ -13,6 +13,7 @@ var resolveBpFilterQuery = function (query) {
 		dateFrom: null,
 		dateTo: null,
 		step: null,
+		status: null,
 		pendingAt: null,
 		flowStatus: 'submitted'
 	});
@@ -45,15 +46,12 @@ module.exports = exports = function (data, query) {
 		});
 		stepsData = filteredStepsData;
 	}
-
 	var filteredBpsData = filterBps(data.businessProcesses, resolveBpFilterQuery(query));
-
 	filteredStepsData = new Map();
 	stepsData.forEach(function (stepData, stepShortPath) {
 		var filteredStepData = new Map();
 		filteredStepsData.set(stepShortPath, filteredStepData);
 		stepData.forEach(function (bpStepData, bpId) {
-
 			// Filter any filtered at business process level
 			if (!filteredBpsData.has(bpId)) return;
 
@@ -76,6 +74,10 @@ module.exports = exports = function (data, query) {
 				if (bpStepData.processingDate) {
 					if (bpStepData.processingDate < query.pendingAt) return;
 				}
+			}
+
+			if (query.status) {
+				if (bpStepData.status !== query.status) return;
 			}
 
 			// Custom filter
