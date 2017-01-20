@@ -15,4 +15,5 @@ require('mano-legacy/hash-nav-ordered-list-controls');
 require('mano-legacy/hash-nav-modal');
 require('mano-legacy/radio-match');
 require('mano-legacy/checkbox-toggle');
+require('mano-legacy/get-text-child');
 require('eregistrations/client/legacy/hash-nav-document-link');
