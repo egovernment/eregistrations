@@ -55,7 +55,6 @@ exports.main = function () {
 			_if(this.user._isDemo, div({ class: 'submitted-menu-demo' },
 				a({ class: 'submitted-menu-demo-ribon' }, _("Demo"))))));
 
-	ul({ id: 'pills-menu', class: 'pills-nav content' });
 	div({ id: 'sub-main-prepend' },
 		insert(_if(this.user._isDemo,
 			div({ class: 'submitted-menu-demo-msg' },
