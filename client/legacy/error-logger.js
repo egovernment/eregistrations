@@ -39,6 +39,11 @@ var onError = function (message, source, line, column, error) {
 		// https://groups.google.com/a/chromium.org/forum/#!topic/chromium-discuss/7VU0_VvC7mE
 		if (message.indexOf('__gCrWeb') !== -1) return;
 	}
+	if (source) {
+		// Once got report from: https://cdn.myspservices.com/coms/1.5.0/js/mng.js?rnd=babylonNS431
+		// Probably some audio player extension (but not confirmed)
+		if (source.indexOf('js/mng.js') !== -1) return;
+	}
 
 	var xhr = new XMLHttpRequest(), isSent = false, queryConfig;
 	xhr.open('POST', '/log-client-error/', true);
