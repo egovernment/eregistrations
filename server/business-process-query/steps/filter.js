@@ -47,6 +47,7 @@ module.exports = exports = function (data, query) {
 		stepsData = filteredStepsData;
 	}
 	var filteredBpsData = filterBps(data.businessProcesses, resolveBpFilterQuery(query));
+
 	filteredStepsData = new Map();
 	stepsData.forEach(function (stepData, stepShortPath) {
 		var filteredStepData = new Map();
@@ -77,7 +78,11 @@ module.exports = exports = function (data, query) {
 			}
 
 			if (query.status) {
-				if (bpStepData.status !== query.status) return;
+				if (query.status === 'pending') {
+					if (bpStepData.status) return;
+				} else {
+					if (bpStepData.status !== query.status) return;
+				}
 			}
 
 			// Custom filter
