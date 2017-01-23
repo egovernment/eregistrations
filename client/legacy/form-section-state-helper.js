@@ -1,14 +1,13 @@
 'use strict';
 
-var $ = require('mano-legacy')
-  , getContext;
+var $ = require('mano-legacy');
 
 require('mano-legacy/on-env-update');
 require('mano-legacy/dbjs-form-fill');
 require('mano-legacy/element#/toggle');
 require('mano-legacy/dbjs-observe-mock');
 
-getContext = function (formEntity, sKeyPath) {
+var getContext = function (formEntity, sKeyPath) {
 	var i, context, arrayFromName, sKey;
 	context = formEntity;
 	sKey = sKeyPath;
@@ -23,8 +22,12 @@ getContext = function (formEntity, sKeyPath) {
 	return { sKey: sKey, object: context };
 };
 
-$.formSectionStateHelper = function (formId, entityId, constraints, legacyEntityProto) {
+$.formSectionStateHelper = function fsHelper(formId, entityId, constraints, legacyEntityProto) {
 	var Entity = function () {}, form = $(formId);
+	if (!form) {
+		setTimeout(function () { fsHelper(formId, entityId, constraints, legacyEntityProto); }, 0);
+		return;
+	}
 	if (legacyEntityProto) {
 		Entity.prototype = legacyEntityProto;
 	}
