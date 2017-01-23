@@ -19,11 +19,11 @@ var assign                  = require('es5-ext/object/assign')
   , timePerRoleCsv          = require('../csv-renderers/statistics-time-per-role')
   , makePdf                 = require('./utils/pdf')
   , makeCsv                 = require('./utils/csv')
-  , getBaseRoutes           = require('./authenticated');
+  , getBaseRoutes           = require('./authenticated')
+  , processingStepsMeta     = require('../../processing-steps-meta');
 
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
-	  , processingStepsMeta = ensureObject(config.processingStepsMeta)
 	  , customChartsController;
 
 	if (config.customChartsController) {
@@ -34,13 +34,12 @@ module.exports = function (config) {
 	var queryHandler = new QueryHandler(queryConf);
 
 	var resolveTimePerRole = function (query) {
-		return getData(driver, processingStepsMeta)(function (data) {
+		return getData(driver)(function (data) {
 			var stepsResult;
 			// We need:
 			// steps | filter(query) | reduce()[byStep, all]
 			// businessProcesses | filter(query) | reduce().all
-			stepsResult = reduceSteps(filterSteps(data, query, processingStepsMeta),
-				processingStepsMeta);
+			stepsResult = reduceSteps(filterSteps(data, query));
 			return {
 				steps: { byStep: stepsResult.byStep, all: stepsResult.all },
 				businessProcesses: reduceBusinessProcesses(filterBusinessProcesses(data.businessProcesses,
@@ -50,10 +49,10 @@ module.exports = function (config) {
 	};
 
 	var resolveTimePerPerson = function (query) {
-		return getData(driver, processingStepsMeta)(function (data) {
+		return getData(driver)(function (data) {
 			// We need:
 			// steps | filter(query) | reduce()[byStepAndProcessor, byStep]
-			data = reduceSteps(filterSteps(data, query, processingStepsMeta), processingStepsMeta);
+			data = reduceSteps(filterSteps(data, query));
 			return { byStep: data.byStep, byStepAndProcessor: data.byStepAndProcessor };
 		});
 	};
@@ -64,7 +63,7 @@ module.exports = function (config) {
 	};
 
 	// Initialize data map
-	getData(driver, processingStepsMeta).done();
+	getData(driver).done();
 
 	return assign({
 		'get-time-per-role': function (query) {
@@ -106,7 +105,7 @@ module.exports = function (config) {
 			  , today         = toDateInTz(new Date(), db.timeZone);
 
 			return queryHandler.resolve(query)(function (query) {
-				return getData(driver, processingStepsMeta)(function (data) {
+				return getData(driver)(function (data) {
 					return {
 						sinceLaunch: reduceBusinessProcesses(filterBusinessProcesses(
 							data.businessProcesses,
@@ -167,7 +166,7 @@ module.exports = function (config) {
 		},
 		'get-dashboard-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
-				return getData(driver, processingStepsMeta)(function (data) {
+				return getData(driver)(function (data) {
 					var lastDateQuery = assign({}, query, { dateFrom: null, dateTo: null,
 						pendingAt: query.dateTo || toDateInTz(new Date(), db.timeZone) });
 					// Spec of data we need for each chart:
@@ -185,15 +184,13 @@ module.exports = function (config) {
 					//   steps | filter(query) | reduce().byStepAndService
 					var result = {
 						dateRangeData: {
-							steps: reduceSteps(filterSteps(data, query, processingStepsMeta),
-								processingStepsMeta).byStepAndService,
+							steps: reduceSteps(filterSteps(data, query)).byStepAndService,
 							businessProcesses: reduceBusinessProcesses(
 								filterBusinessProcesses(data.businessProcesses,
 									assign({ flowStatus: 'submitted' }, query))
 							)
 						},
-						lastDateData: reduceSteps(filterSteps(data, lastDateQuery, processingStepsMeta),
-							processingStepsMeta).byStep
+						lastDateData: reduceSteps(filterSteps(data, lastDateQuery)).byStep
 					};
 					if (customChartsController) customChartsController(query, result, lastDateQuery);
 					return result;

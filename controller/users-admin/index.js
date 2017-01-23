@@ -62,5 +62,11 @@ exports['user/[0-9][a-z0-9]+'] = {
 exports['user/[0-9][a-z0-9]+/delete'] = {
 	match: matchUser,
 	validate: Function.prototype,
-	redirectUrl: '/'
+	redirectUrl: function () {
+		if (this.referer) {
+			if (this.referer.pathname !== '/') return '/';
+		} else {
+			return '/';
+		}
+	}
 };

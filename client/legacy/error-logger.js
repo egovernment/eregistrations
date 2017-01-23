@@ -31,6 +31,9 @@ var onError = function (message, source, line, column, error) {
 		// Observable occasionally, possibly caused by extensions or e.g. chat plugins
 		if (message === 'Access is denied.\r\n') return;
 		if (message === 'Acceso denegado.\r\n') return;
+		// Chrome extension error
+		// http://stackoverflow.com/q/24763691/96806
+		if (message === 'Uncaught TypeError: Cannot read property \'onUpdated\' of undefined') return;
 		if (message === 'Uncaught ReferenceError: androidInterface is not defined') return;
 		// iOS interface errors
 		// https://groups.google.com/a/chromium.org/forum/#!topic/chromium-discuss/7VU0_VvC7mE
