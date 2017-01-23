@@ -103,43 +103,40 @@ var getTimeBreakdownTable = function () {
 	];
 };
 
-exports['sub-main'] = {
-	class: { content: true },
-	content: function () {
-		var certs = {};
-		this.statistics.businessProcess.forEach(function (data, name) {
-			var proto = db['BusinessProcess' + capitalize.call(name)].prototype
-			  , certsMap = proto.certificates.map;
-			data.certificate.forEach(function (data, name) {
-				if (!certs[name]) certs[name] = { document: certsMap[name], data: [] };
-				certs[name].data.push({ data: data, label: proto.label });
-			});
+exports['statistics-main'] = function () {
+	var certs = {};
+	this.statistics.businessProcess.forEach(function (data, name) {
+		var proto = db['BusinessProcess' + capitalize.call(name)].prototype
+		  , certsMap = proto.certificates.map;
+		data.certificate.forEach(function (data, name) {
+			if (!certs[name]) certs[name] = { document: certsMap[name], data: [] };
+			certs[name].data.push({ data: data, label: proto.label });
 		});
+	});
 
-		insert(getTimeBreakdownTable.call(this));
+	insert(getTimeBreakdownTable.call(this));
 
-		table({ class: 'statistics-table statistics-table-registrations' },
-			thead(tr(
-				th(),
-				th(),
-				th(_("Service")),
-				th({ class: "statistics-table-header-waiting" }, _("Waiting")),
-				th({ class: "statistics-table-header-pending" }, _("Pending")),
-				th({ class: "statistics-table-header-sentback" }, _("Rejected")),
-				th({ class: "statistics-table-header-success" }, _("Validated"))
-			)),
-			tbody(
-				toArray(certs, function (data) {
-					var doc = data.document;
-					return data.data.map(function (data) {
-						return tr(td(doc.abbr), td(doc.label),
-							td(data.label),
-							td({ class: 'statistics-table-number' }, data.data._waiting),
-							td({ class: 'statistics-table-number' }, data.data._pending),
-							td({ class: 'statistics-table-number' }, data.data._rejected),
-							td({ class: 'statistics-table-number' }, data.data._approved));
-					});
-				})
-			));
-	}
+	table({ class: 'statistics-table statistics-table-registrations' },
+		thead(tr(
+			th(),
+			th(),
+			th(_("Service")),
+			th({ class: "statistics-table-header-waiting" }, _("Waiting")),
+			th({ class: "statistics-table-header-pending" }, _("Pending")),
+			th({ class: "statistics-table-header-sentback" }, _("Rejected")),
+			th({ class: "statistics-table-header-success" }, _("Validated"))
+		)),
+		tbody(
+			toArray(certs, function (data) {
+				var doc = data.document;
+				return data.data.map(function (data) {
+					return tr(td(doc.abbr), td(doc.label),
+						td(data.label),
+						td({ class: 'statistics-table-number' }, data.data._waiting),
+						td({ class: 'statistics-table-number' }, data.data._pending),
+						td({ class: 'statistics-table-number' }, data.data._rejected),
+						td({ class: 'statistics-table-number' }, data.data._approved));
+				});
+			})
+		));
 };

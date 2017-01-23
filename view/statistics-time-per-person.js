@@ -38,119 +38,116 @@ var getRowResult = function (rowData, label) {
 	return result;
 };
 
-exports['sub-main'] = {
-	class: { content: true },
-	content: function () {
-		var processingStepsMeta = this.processingStepsMeta, stepsMap = {}, queryHandler
-		  , params;
-		Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
-			stepsMap[stepShortPath]   = new ObservableValue();
-		});
-		queryHandler = setupQueryHandler(getQueryHandlerConf({
-			processingStepsMeta: processingStepsMeta
-		}), location, '/time/per-person/');
-		params = queryHandler._handlers.map(function (handler) {
-			return handler.name;
-		});
-		queryHandler.on('query', function (query) {
-			if (query.dateFrom) {
-				query.dateFrom = query.dateFrom.toJSON();
-			}
-			if (query.dateTo) {
-				query.dateTo = query.dateTo.toJSON();
-			}
-			queryServer(query).done(function (result) {
-				Object.keys(stepsMap).forEach(function (key) {
-					var preparedResult = [];
-					if (!result.byStep[key]) {
-						stepsMap[key].value = null;
-						return;
-					}
-					forEach(result.byStepAndProcessor[key], function (rowData, userId) {
-						preparedResult.push(getRowResult(rowData.processing,
-							db.User.getById(userId).fullName));
-					});
-					preparedResult.push(getRowResult(result.byStep[key].processing, _("Total & times")));
-					stepsMap[key].value = preparedResult;
+exports['statistics-main'] = function () {
+	var processingStepsMeta = this.processingStepsMeta, stepsMap = {}, queryHandler
+	  , params;
+	Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
+		stepsMap[stepShortPath]   = new ObservableValue();
+	});
+	queryHandler = setupQueryHandler(getQueryHandlerConf({
+		processingStepsMeta: processingStepsMeta
+	}), location, '/time/per-person/');
+	params = queryHandler._handlers.map(function (handler) {
+		return handler.name;
+	});
+	queryHandler.on('query', function (query) {
+		if (query.dateFrom) {
+			query.dateFrom = query.dateFrom.toJSON();
+		}
+		if (query.dateTo) {
+			query.dateTo = query.dateTo.toJSON();
+		}
+		queryServer(query).done(function (result) {
+			Object.keys(stepsMap).forEach(function (key) {
+				var preparedResult = [];
+				if (!result.byStep[key]) {
+					stepsMap[key].value = null;
+					return;
+				}
+				forEach(result.byStepAndProcessor[key], function (rowData, userId) {
+					preparedResult.push(getRowResult(rowData.processing,
+						db.User.getById(userId).fullName));
 				});
+				preparedResult.push(getRowResult(result.byStep[key].processing, _("Total & times")));
+				stepsMap[key].value = preparedResult;
 			});
 		});
-		section({ class: 'entities-overview-info' },
-			_("As processing time is properly recorded since 25th of October." +
-				" Below table only exposes data for files submitted after that day."));
+	});
+	section({ class: 'entities-overview-info' },
+		_("As processing time is properly recorded since 25th of October." +
+			" Below table only exposes data for files submitted after that day."));
 
-		section({ class: 'section-primary users-table-filter-bar' },
-			form({ action: '/time/per-person', autoSubmit: true },
-				div(
-					{ class: 'users-table-filter-bar-status' },
-					label({ for: 'service-select' }, _("Service"), ":"),
-					select({ id: 'service-select', name: 'service' },
-						option(
-							{ value: '', selected: location.query.get('service').map(function (value) {
-								return (value == null);
-							})
-									},
-							_("All")
-						),
-						list(db.BusinessProcess.extensions, function (service) {
-							var serviceName = uncapitalize.call(service.__id__.slice('BusinessProcess'.length));
-							return option({ value: serviceName, selected:
-									location.query.get('service').map(function (value) {
-									var selected = (serviceName ? (value === serviceName) : (value == null));
-									return selected ? 'selected' : null;
-								}) },
-								service.prototype.label);
-						}, null))
-				),
-				div(
-					{ class: 'users-table-filter-bar-status' },
-					exports._customFilters.call(this)
-				),
-				div(
-					{ class: 'users-table-filter-bar-status' },
-					label({ for: 'date-from-input' }, _("Date from"), ":"),
-					input({ id: 'date-from-input', type: 'date',
-						name: 'dateFrom', value: location.query.get('dateFrom') })
-				),
-				div(
-					{ class: 'users-table-filter-bar-status' },
-					label({ for: 'date-to-input' }, _("Date to"), ":"),
-					input({ id: 'date-to-input', type: 'date',
-						name: 'dateTo', value: location.query.get('dateTo') })
-				),
-				div(
-					a({ class: 'users-table-filter-bar-print', href:
-						getDynamicUrl('/time-per-person.pdf', { only: params }),
-						target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
-				)));
-		insert(list(Object.keys(stepsMap), function (shortStepPath) {
-			return stepsMap[shortStepPath].map(function (data) {
-				if (!data) return;
-				var step = db['BusinessProcess' +
-					capitalize.call(processingStepsMeta[shortStepPath]._services[0])].prototype
-					.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath));
-				return section({ class: "section-primary" },
-					h3(step.label),
-					table({ class: 'statistics-table' },
-						thead(
-							th(),
-							th({ class: 'statistics-table-number' }, _("Files processed")),
-							th({ class: 'statistics-table-number' }, _("Average time")),
-							th({ class: 'statistics-table-number' }, _("Min time")),
-							th({ class: 'statistics-table-number' }, _("Max time"))
-						),
-						tbody({ onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
-							_("There are no files processed at this step"))) }, data, function (rowData) {
-							return tr(
-								td(rowData.label),
-								td({ class: 'statistics-table-number' }, rowData.timedCount),
-								td({ class: 'statistics-table-number' }, rowData.avgTime),
-								td({ class: 'statistics-table-number' }, rowData.minTime),
-								td({ class: 'statistics-table-number' }, rowData.maxTime)
-							);
+	section({ class: 'section-primary users-table-filter-bar' },
+		form({ action: '/time/per-person', autoSubmit: true },
+			div(
+				{ class: 'users-table-filter-bar-status' },
+				label({ for: 'service-select' }, _("Service"), ":"),
+				select({ id: 'service-select', name: 'service' },
+					option(
+						{ value: '', selected: location.query.get('service').map(function (value) {
+							return (value == null);
 						})
-						));
-			});
-		}));
-	}
+							},
+						_("All")
+					),
+					list(db.BusinessProcess.extensions, function (service) {
+						var serviceName = uncapitalize.call(service.__id__.slice('BusinessProcess'.length));
+						return option({ value: serviceName, selected:
+								location.query.get('service').map(function (value) {
+								var selected = (serviceName ? (value === serviceName) : (value == null));
+								return selected ? 'selected' : null;
+							}) },
+							service.prototype.label);
+					}, null))
+			),
+			div(
+				{ class: 'users-table-filter-bar-status' },
+				exports._customFilters.call(this)
+			),
+			div(
+				{ class: 'users-table-filter-bar-status' },
+				label({ for: 'date-from-input' }, _("Date from"), ":"),
+				input({ id: 'date-from-input', type: 'date',
+					name: 'dateFrom', value: location.query.get('dateFrom') })
+			),
+			div(
+				{ class: 'users-table-filter-bar-status' },
+				label({ for: 'date-to-input' }, _("Date to"), ":"),
+				input({ id: 'date-to-input', type: 'date',
+					name: 'dateTo', value: location.query.get('dateTo') })
+			),
+			div(
+				a({ class: 'users-table-filter-bar-print', href:
+					getDynamicUrl('/time-per-person.pdf', { only: params }),
+					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
+			)));
+	insert(list(Object.keys(stepsMap), function (shortStepPath) {
+		return stepsMap[shortStepPath].map(function (data) {
+			if (!data) return;
+			var step = db['BusinessProcess' +
+				capitalize.call(processingStepsMeta[shortStepPath]._services[0])].prototype
+				.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath));
+			return section({ class: "section-primary" },
+				h3(step.label),
+				table({ class: 'statistics-table' },
+					thead(
+						th(),
+						th({ class: 'statistics-table-number' }, _("Files processed")),
+						th({ class: 'statistics-table-number' }, _("Average time")),
+						th({ class: 'statistics-table-number' }, _("Min time")),
+						th({ class: 'statistics-table-number' }, _("Max time"))
+					),
+					tbody({ onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
+						_("There are no files processed at this step"))) }, data, function (rowData) {
+						return tr(
+							td(rowData.label),
+							td({ class: 'statistics-table-number' }, rowData.timedCount),
+							td({ class: 'statistics-table-number' }, rowData.avgTime),
+							td({ class: 'statistics-table-number' }, rowData.minTime),
+							td({ class: 'statistics-table-number' }, rowData.maxTime)
+						);
+					})
+					));
+		});
+	}));
 };
