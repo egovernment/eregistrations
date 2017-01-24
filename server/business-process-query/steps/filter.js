@@ -87,7 +87,6 @@ module.exports = exports = function (data, query) {
 
 			// Custom filter
 			if (exports.customFilter) {
-				console.log('WILL COMPARE', bpStepData);
 				if (!exports.customFilter.call(query, bpStepData, bpId, stepShortPath)) return;
 			}
 

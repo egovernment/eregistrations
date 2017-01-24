@@ -1,21 +1,19 @@
-// Business process table handler
+// Inspector table handler
 // Setups dedicated list manager and query handler
-// (used to handle business processes table in official roles)
 
 'use strict';
 
 var ensureObject      = require('es5-ext/object/valid-object')
   , ReactiveTable     = require('reactive-table')
-  , db                = require('mano').db
   , Manager           = require('./manager')
   , setupQueryHandler = require('./setup-query-handler')
   , Pagination        = require('../pagination');
 
 module.exports = function (conf) {
-	var columns = ensureObject(conf.columns)
+	var columns     = ensureObject(conf.columns)
 	  , listManager = new Manager(conf)
-	  , pagination = new Pagination(conf.tableUrl || '/')
-	  , table = new ReactiveTable(document, null, columns);
+	  , pagination  = new Pagination(conf.tableUrl || '/')
+	  , table       = new ReactiveTable(document, null, columns);
 
 	if (conf.id) table.table.id = conf.id;
 	if (conf.class) table.table.className = conf.class;
@@ -26,6 +24,7 @@ module.exports = function (conf) {
 		table.reload(listManager.list);
 	});
 
-	db.objects.on('update', setupQueryHandler(listManager, conf.tableUrl).update);
+	setupQueryHandler(listManager, conf.tableUrl);
+
 	return table;
 };

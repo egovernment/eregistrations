@@ -23,7 +23,6 @@ var assign                    = require('es5-ext/object/assign')
 		require('../business-process-query/utils/get-time-reduction-template')
   , memoize                   = require('memoizee')
   , Map                       = require('es6-map')
-  , ensureCallable            = require('es5-ext/object/valid-callable')
   , deferred                  = require('deferred');
 
 var businessProcessQueryHandler = new QueryHandler([{
@@ -55,20 +54,11 @@ var getStatsOverviewData = memoize(function (query, userId) {
 	maxAge: 1000 * 60 * 60
 });
 
-module.exports = exports = function (config/*, options */) {
+module.exports = exports = function (config) {
 	ensureObject(config);
 	var driver                 = require('mano').dbDriver
 	  , queryHandler           = new QueryHandler(queryHandlerConf)
-	  , options                = Object(arguments[1])
-	  , statsHandlerOpts, statsOverviewQueryHandler, resolveConf;
-
-	if (options && options.resolveConf) {
-		resolveConf = ensureCallable(options.resolveConf);
-	} else {
-		resolveConf = function () {
-			return config.roleName;
-		};
-	}
+	  , statsHandlerOpts, statsOverviewQueryHandler, decorateQuery;
 
 	statsHandlerOpts = {
 		processingStepsMeta: require('../../processing-steps-meta'),
@@ -78,15 +68,20 @@ module.exports = exports = function (config/*, options */) {
 
 	statsOverviewQueryHandler = new QueryHandler(getStatsQueryHandlerConf(statsHandlerOpts));
 
+	if (config.decorateQuery) {
+		decorateQuery = config.decorateQuery;
+	} else {
+		decorateQuery = function (query, req) {
+			if (config.step) {
+				query.step = config.step;
+			}
+			return deferred(query);
+		};
+	}
+
 	return assign({
 		'get-data': function (query) {
-			var req = this.req, decorateQuery;
-
-			if (options.decorateQuery) {
-				decorateQuery = options.decorateQuery;
-			} else {
-				decorateQuery = deferred(query);
-			}
+			var req = this.req;
 
 			return decorateQuery(query, req)(function () {
 				return queryHandler.resolve(query);
@@ -94,7 +89,6 @@ module.exports = exports = function (config/*, options */) {
 				return getData(driver);
 			})(function (data) {
 				var fullSize;
-				query.step = resolveConf(req);
 				data = filterSteps(data, query);
 				var result = new Map();
 				data.steps.forEach(function (step) {
@@ -138,8 +132,9 @@ module.exports = exports = function (config/*, options */) {
 			if (!statsOverviewQueryHandler) return null;
 			var userId = req.$user;
 
-			return statsOverviewQueryHandler.resolve(query)(function (query) {
-				query.step = resolveConf(req);
+			return decorateQuery(query, req)(function () {
+				return statsOverviewQueryHandler.resolve(query);
+			})(function (query) {
 				return getStatsOverviewData(query, userId);
 			});
 		},
