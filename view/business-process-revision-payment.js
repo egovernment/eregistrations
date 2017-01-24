@@ -55,7 +55,7 @@ exports['selection-preview'] = function () {
 				return renderDocumentRevisionInfo(documentData, this.documentKind);
 			}.bind(this)),
 			mainContent: exports._paymentPreviewContent.call(this, documentData),
-			sideContent: renderSections(this.businessProcess.dataForms.dataSnapshot),
+			sideContent: exports._renderSections.call(this),
 			urlPrefix: '/' + this.businessProcess.__id__ + '/',
 			documentsRootHref: '/' + this.businessProcess.__id__ + '/payment-receipts/'
 		}),
@@ -64,3 +64,7 @@ exports['selection-preview'] = function () {
 };
 
 exports._paymentPreviewContent = Function.prototype;
+
+exports._renderSections = function () {
+	return renderSections(this.businessProcess.dataForms.dataSnapshot);
+};
