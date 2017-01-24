@@ -23,7 +23,8 @@ var assign                    = require('es5-ext/object/assign')
 		require('../business-process-query/utils/get-time-reduction-template')
   , memoize                   = require('memoizee')
   , Map                       = require('es6-map')
-  , ensureCallable            = require('es5-ext/object/valid-callable');
+  , ensureCallable            = require('es5-ext/object/valid-callable')
+  , deferred                  = require('deferred');
 
 var businessProcessQueryHandler = new QueryHandler([{
 	name: 'id',
@@ -79,9 +80,17 @@ module.exports = exports = function (config/*, options */) {
 
 	return assign({
 		'get-data': function (query) {
-			var req = this.req;
+			var req = this.req, decorateQuery;
 
-			return queryHandler.resolve(query)(function (query) {
+			if (options.decorateQuery) {
+				decorateQuery = options.decorateQuery;
+			} else {
+				decorateQuery = deferred(query);
+			}
+
+			return decorateQuery(query, req)(function () {
+				return queryHandler.resolve(query);
+			})(function (query) {
 				return getData(driver);
 			})(function (data) {
 				var fullSize;
