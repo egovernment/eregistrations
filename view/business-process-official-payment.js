@@ -31,7 +31,7 @@ exports._renderSections = function () {
 	  , dataSnapshot    = businessProcess.dataForms.dataSnapshot;
 
 	return dataSnapshot.resolved ? renderSections(dataSnapshot) :
-		list(businessProcess.dataForms.applicable, function (section) {
-			return section.toDOM(document);
-		});
+			list(businessProcess.dataForms.applicable, function (section) {
+				return section.toDOM(document);
+			});
 };
