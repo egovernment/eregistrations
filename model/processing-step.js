@@ -226,7 +226,7 @@ module.exports = memoize(function (db) {
 	// See it's definition for explanation why it is done here
 	db.Document.prototype.getOwnDescriptor('processingStep').type = ProcessingStep;
 
-	db.Document.prototype.defineNestedMap('statusHistory',
+	ProcessingStep.prototype.defineNestedMap('statusHistory',
 		{ itemType: StatusHistoryLog, cardinalPropertyKey: 'status' });
 
 	return ProcessingStep;
