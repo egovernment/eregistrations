@@ -16,8 +16,8 @@ var storeLog = function (storage, logPath) {
 		var status, oldStatus;
 
 		if (event.type !== 'computed') return;
-		status    = unserializeValue(event.data.value);
-		oldStatus = event.old && unserializeValue(event.old.value);
+		status    = unserializeValue(event.data.value) || null;
+		oldStatus = (event.old && unserializeValue(event.old.value)) || null;
 
 		// We ignore such cases, they may happen when direct overwrites computed
 		if (status === oldStatus) return;
