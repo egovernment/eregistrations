@@ -3,27 +3,29 @@
 
 'use strict';
 
-var Map                   = require('es6-map')
-  , memoize               = require('memoizee/plain')
-  , defineDate            = require('dbjs-ext/date-time/date')
-  , defineStringLine      = require('dbjs-ext/string/string-line')
-  , _                     = require('mano').i18n.bind('Model: Documents')
-  , defineFile            = require('./file')
-  , defineStatusLog       = require('./lib/status-log')
-  , defineFormSectionBase = require('./form-section-base')
-  , defineFormSection     = require('./form-section')
-  , defineNestedMap       = require('./lib/nested-map')
-  , definePerson          = require('./person')
-  , defineGetTranslations = require('./lib/define-get-translations');
+var Map                    = require('es6-map')
+  , memoize                = require('memoizee/plain')
+  , defineDate             = require('dbjs-ext/date-time/date')
+  , defineStringLine       = require('dbjs-ext/string/string-line')
+  , _                      = require('mano').i18n.bind('Model: Documents')
+  , defineFile             = require('./file')
+  , defineStatusLog        = require('./lib/status-log')
+  , defineFormSectionBase  = require('./form-section-base')
+  , defineFormSection      = require('./form-section')
+  , defineNestedMap        = require('./lib/nested-map')
+  , definePerson           = require('./person')
+  , defineGetTranslations  = require('./lib/define-get-translations')
+  , defineStatusHistoryLog = require('./lib/status-history-log');
 
 module.exports = memoize(function (db) {
-	var StringLine      = defineStringLine(db)
-	  , File            = defineFile(db)
-	  , DateType        = defineDate(db)
-	  , StatusLog       = defineStatusLog(db)
-	  , FormSectionBase = defineFormSectionBase(db)
-	  , FormSection     = defineFormSection(db)
-	  , Person          = definePerson(db)
+	var StringLine       = defineStringLine(db)
+	  , File             = defineFile(db)
+	  , DateType         = defineDate(db)
+	  , StatusLog        = defineStatusLog(db)
+	  , FormSectionBase  = defineFormSectionBase(db)
+	  , FormSection      = defineFormSection(db)
+	  , Person           = definePerson(db)
+	  , StatusHistoryLog = defineStatusHistoryLog(db)
 	  , Document;
 
 	// Enum for processing step status
@@ -178,6 +180,9 @@ module.exports = memoize(function (db) {
 	// History of document processing
 	Document.prototype.defineNestedMap('statusLog',
 		{ itemType: StatusLog, cardinalPropertyKey: 'label' });
+
+	Document.prototype.defineNestedMap('statusHistory',
+		{ itemType: StatusHistoryLog, cardinalPropertyKey: 'label' });
 
 	Document.prototype.overviewSection.setProperties({
 		label: _("Emission data"),
