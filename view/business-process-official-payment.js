@@ -14,18 +14,24 @@ exports._match   = 'documentUniqueId';
 
 exports['selection-preview'] = function () {
 	var documentData    = getDocumentData(this)
-	  , businessProcess = this.businessProcess
-	  , dataSnapshot    = businessProcess.dataForms.dataSnapshot;
+	  , businessProcess = this.businessProcess;
 
 	insert(renderDocument(this, documentData, {
 		prependContent: renderDocumentRevisionInfo(documentData, this.documentKind),
 		mainContent: exports._paymentPreviewContent.call(this, documentData),
-		sideContent: dataSnapshot.resolved ? renderSections(dataSnapshot) :
-				list(businessProcess.dataForms.applicable, function (section) {
-					return section.toDOM(document);
-				}),
+		sideContent: exports._renderSections.call(this),
 		urlPrefix: '/' + businessProcess.__id__ + '/'
 	}), renderDocumentHistory(documentData));
 };
 
 exports._paymentPreviewContent = Function.prototype;
+
+exports._renderSections = function () {
+	var businessProcess = this.businessProcess
+	  , dataSnapshot    = businessProcess.dataForms.dataSnapshot;
+
+	return dataSnapshot.resolved ? renderSections(dataSnapshot) :
+			list(businessProcess.dataForms.applicable, function (section) {
+				return section.toDOM(document);
+			});
+};
