@@ -26,6 +26,10 @@ var storeLog = function (storage, logPath) {
 	};
 };
 
+var getPathSuffix = function () {
+	return '/statusHistory/map/' + uniqIdPrefix + uuid() + '/status';
+};
+
 module.exports = function () {
 	var allStorages = new Set(), driver;
 	// Cannot be initialized before call
@@ -41,18 +45,16 @@ module.exports = function () {
 		storages.forEach(function (storage) {
 			allStorages.add(storage);
 			storage.on('key:' + stepPath + '/status',
-				storeLog(storage, stepPath + '/statusHistory/map/' + uniqIdPrefix + uuid() + '/status')
+				storeLog(storage, stepPath + getPathSuffix())
 				);
 		});
 	});
 	allStorages.forEach(function (storage) {
-		storage.on('key:status', storeLog(storage, 'statusHistory/map/' +
-			uniqIdPrefix + uuid() + '/status'));
+		storage.on('key:status', storeLog(storage, getPathSuffix()));
 		db[capitalize.call(storage.name)].prototype.certificates.map.forEach(function (cert) {
 			var certificatePath = 'certificates/map/' + cert.key;
 			storage.on('key:' + certificatePath + '/status',
-				storeLog(storage, certificatePath + '/statusHistory/map/' +
-					uniqIdPrefix + uuid() + '/status'));
+				storeLog(storage, certificatePath + getPathSuffix()));
 		});
 	});
 };
