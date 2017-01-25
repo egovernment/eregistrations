@@ -15,7 +15,7 @@ var aFrom              = require('es5-ext/array/from')
   , recompute          = require('dbjs-persistence/recompute')
   , isOfficialRoleName = require('../../../utils/is-official-role-name')
   , copyIsReady        = require('../../services/copy-is-ready')
-  , statusLogHistory   = require('../../services/status-history-logger');
+  , statusHistoryLog   = require('../../services/status-history-logger');
 
 module.exports = function (driver, slavePath/*, options*/) {
 	var userStorage = ensureDriver(driver).getStorage('user')
@@ -56,7 +56,7 @@ module.exports = function (driver, slavePath/*, options*/) {
 	});
 
 	copyIsReady(driver);
-	statusLogHistory();
+	statusHistoryLog();
 
 	debug.open("db-recompute");
 	return recompute(driver, {
