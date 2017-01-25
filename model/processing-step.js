@@ -18,7 +18,7 @@ var Map                        = require('es6-map')
   , definePaymentReceiptUpload = require('./payment-receipt-upload')
   , defineRequirementUpload    = require('./requirement-upload')
   , defineDocument             = require('./document')
-  , defineStatusHistoryLog     = require('./lib/status-history-log');
+  , defineStatusHistoryItem    = require('./lib/status-history-item');
 
 module.exports = memoize(function (db) {
 	var Percentage           = definePercentage(db)
@@ -32,7 +32,7 @@ module.exports = memoize(function (db) {
 	  , PaymentReceiptUpload = definePaymentReceiptUpload(db)
 	  , RequirementUpload    = defineRequirementUpload(db)
 	  , Document             = defineDocument(db)
-	  , StatusHistoryLog     = defineStatusHistoryLog(db)
+	  , StatusHistoryItem    = defineStatusHistoryItem(db)
 
 	  , ProcessingStep       = ProcessingStepBase.extend('ProcessingStep');
 
@@ -227,7 +227,7 @@ module.exports = memoize(function (db) {
 	db.Document.prototype.getOwnDescriptor('processingStep').type = ProcessingStep;
 
 	ProcessingStep.prototype.defineNestedMap('statusHistory',
-		{ itemType: StatusHistoryLog, cardinalPropertyKey: 'status' });
+		{ itemType: StatusHistoryItem, cardinalPropertyKey: 'status' });
 
 	return ProcessingStep;
 }, { normalizer: require('memoizee/normalizers/get-1')() });

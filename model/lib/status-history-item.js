@@ -6,7 +6,7 @@ var memoize          = require('memoizee/plain')
 module.exports = memoize(function (db) {
 	var StringLine = defineStringLine(db);
 
-	return db.Object.extend('StatusHistoryLog', {
+	return db.Object.extend('StatusHistoryItem', {
 		status: { type: StringLine, required: true }
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });
