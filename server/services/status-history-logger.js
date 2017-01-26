@@ -11,10 +11,15 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , uuid                          = require('time-uuid')
   , uniqIdPrefix                  = 'abcdefghiklmnopqrstuvxyz'[Math.floor(Math.random() * 24)];
 
-var storeLog = function (storage, logPath/* options */) {
+var getPathSuffix = function () {
+	return 'statusHistory/map/' + uniqIdPrefix + uuid();
+};
+
+var storeLog = function (storage, logPath/*, options */) {
+	var options = Object(arguments[2]);
 	return function (event) {
-		var status, oldStatus, options;
-		options = Object(arguments[2]);
+		var status, oldStatus, resolvedPath, logPathResolved;
+		logPathResolved = logPath ? logPath + '/' + getPathSuffix() : getPathSuffix();
 
 		if (event.type !== 'computed') return;
 		status    = unserializeValue(event.data.value) || null;
@@ -23,20 +28,18 @@ var storeLog = function (storage, logPath/* options */) {
 		// We ignore such cases, they may happen when direct overwrites computed
 		if (status === oldStatus) return;
 		if (options.processorPath) {
-			storage.get(options.processorPath)(function (data) {
+			storage.get(event.ownerId + '/' + options.processorPath)(function (data) {
 				if (data && data.value[0] === '7') {
-					storage.store(logPath + '/processor', data.value);
-					debug('Stored priocessor %s for the path %s', data.value, logPath + '/processor');
+					resolvedPath = event.ownerId + '/' + logPathResolved + '/processor';
+					storage.store(resolvedPath, data.value);
+					debug('Stored processor %s for the path %s', data.value, resolvedPath);
 				}
 			});
 		}
-		storage.store(logPath + '/status', serializeValue(status));
-		debug('Stored status %s for the path %s', status, logPath + '/status');
+		resolvedPath = event.ownerId + '/' + logPathResolved + '/status';
+		storage.store(resolvedPath, serializeValue(status));
+		debug('Stored status %s for the path %s', status, resolvedPath);
 	};
-};
-
-var getPathSuffix = function () {
-	return '/statusHistory/map/' + uniqIdPrefix + uuid();
 };
 
 module.exports = function () {
@@ -54,16 +57,16 @@ module.exports = function () {
 		storages.forEach(function (storage) {
 			allStorages.add(storage);
 			storage.on('key:' + stepPath + '/status',
-				storeLog(storage, stepPath + getPathSuffix(), { processorPath: stepPath + '/processor' })
+				storeLog(storage, stepPath, { processorPath: stepPath + '/processor' })
 				);
 		});
 	});
 	allStorages.forEach(function (storage) {
-		storage.on('key:status', storeLog(storage, getPathSuffix()));
+		storage.on('key:status', storeLog(storage));
 		db[capitalize.call(storage.name)].prototype.certificates.map.forEach(function (cert) {
 			var certificatePath = 'certificates/map/' + cert.key;
 			storage.on('key:' + certificatePath + '/status',
-				storeLog(storage, certificatePath + getPathSuffix()));
+				storeLog(storage, certificatePath));
 		});
 	});
 };

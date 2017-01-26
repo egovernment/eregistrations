@@ -184,7 +184,7 @@ module.exports = memoize(function (db) {
 		{ itemType: StatusLog, cardinalPropertyKey: 'label' });
 
 	Document.prototype.defineNestedMap('statusHistory',
-		{ itemType: StatusHistoryItem, cardinalPropertyKey: 'label' });
+		{ itemType: StatusHistoryItem, cardinalPropertyKey: 'status' });
 
 	Document.prototype.overviewSection.setProperties({
 		label: _("Emission data"),
