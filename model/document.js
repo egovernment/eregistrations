@@ -118,7 +118,6 @@ module.exports = memoize(function (db) {
 		},
 		// Status of certificate
 		status: { type: CertificateStatus, value: function (_observe) {
-			if (!this.isCertificate) return;
 			if (!_observe(this.master.certificates.applicable).has(this)) return;
 			if (_observe(this.master._isApproved)) return 'approved';
 			if (_observe(this.master._isRejected)) return 'rejected';
