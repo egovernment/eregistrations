@@ -4,7 +4,6 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , serializeValue                = require('dbjs/_setup/serialize/value')
   , unserializeValue              = require('dbjs/_setup/unserialize/value')
   , capitalize                    = require('es5-ext/string/#/capitalize')
-  , debug                         = require('debug-ext')('status-history-logger')
   , db                            = require('../../db')
   , Set                           = require('es6-set')
   , processingStepsMeta           = require('../../processing-steps-meta')
@@ -31,14 +30,15 @@ var storeLog = function (storage, logPath/*, options */) {
 			storage.get(event.ownerId + '/' + options.processorPath)(function (data) {
 				if (data && data.value[0] === '7') {
 					resolvedPath = event.ownerId + '/' + logPathResolved + '/processor';
-					storage.store(resolvedPath, data.value);
-					debug('Stored processor %s for the path %s', data.value, resolvedPath);
+					return storage.store(resolvedPath, data.value);
 				}
-			});
+			}).done();
 		}
 		resolvedPath = event.ownerId + '/' + logPathResolved + '/status';
-		storage.store(resolvedPath, serializeValue(status));
-		debug('Stored status %s for the path %s', status, resolvedPath);
+		// We don't save null, as status is cardinalProperty of nested map and
+		// needs to be set in order to avoid inconsistency with in memory engine
+		if (status == null) status = '';
+		storage.store(resolvedPath, serializeValue(status)).done();
 	};
 };
 
