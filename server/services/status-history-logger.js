@@ -11,9 +11,10 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , uuid                          = require('time-uuid')
   , uniqIdPrefix                  = 'abcdefghiklmnopqrstuvxyz'[Math.floor(Math.random() * 24)];
 
-var storeLog = function (storage, logPath) {
+var storeLog = function (storage, logPath/* options */) {
 	return function (event) {
-		var status, oldStatus;
+		var status, oldStatus, options;
+		options = Object(arguments[2]);
 
 		if (event.type !== 'computed') return;
 		status    = unserializeValue(event.data.value) || null;
@@ -21,13 +22,21 @@ var storeLog = function (storage, logPath) {
 
 		// We ignore such cases, they may happen when direct overwrites computed
 		if (status === oldStatus) return;
-		storage.store(logPath, serializeValue(status));
-		debug('Stored status %s for the path %s', status, logPath);
+		if (options.processorPath) {
+			storage.get(options.processorPath)(function (data) {
+				if (data && data.value[0] === '7') {
+					storage.store(logPath + '/processor', data.value);
+					debug('Stored priocessor %s for the path %s', data.value, logPath + '/processor');
+				}
+			});
+		}
+		storage.store(logPath + '/status', serializeValue(status));
+		debug('Stored status %s for the path %s', status, logPath + '/status');
 	};
 };
 
 var getPathSuffix = function () {
-	return '/statusHistory/map/' + uniqIdPrefix + uuid() + '/status';
+	return '/statusHistory/map/' + uniqIdPrefix + uuid();
 };
 
 module.exports = function () {
@@ -45,7 +54,7 @@ module.exports = function () {
 		storages.forEach(function (storage) {
 			allStorages.add(storage);
 			storage.on('key:' + stepPath + '/status',
-				storeLog(storage, stepPath + getPathSuffix())
+				storeLog(storage, stepPath + getPathSuffix(), { processorPath: stepPath + '/processor' })
 				);
 		});
 	});
