@@ -21,8 +21,10 @@ var storeLog = function (storage, logPath/*, options */) {
 		logPathResolved = logPath ? logPath + '/' + getPathSuffix() : getPathSuffix();
 
 		if (event.type !== 'computed') return;
-		status    = unserializeValue(event.data.value) || null;
-		oldStatus = (event.old && unserializeValue(event.old.value)) || null;
+		// We don't want to save null, as status is cardinalProperty of nested map and
+		// needs to be set in order to avoid inconsistency with in memory engine
+		status    = unserializeValue(event.data.value) || '';
+		oldStatus = (event.old && unserializeValue(event.old.value)) || '';
 
 		// We ignore such cases, they may happen when direct overwrites computed
 		if (status === oldStatus) return;
@@ -35,9 +37,6 @@ var storeLog = function (storage, logPath/*, options */) {
 			}).done();
 		}
 		resolvedPath = event.ownerId + '/' + logPathResolved + '/status';
-		// We don't save null, as status is cardinalProperty of nested map and
-		// needs to be set in order to avoid inconsistency with in memory engine
-		if (status == null) status = '';
 		storage.store(resolvedPath, serializeValue(status)).done();
 	};
 };
