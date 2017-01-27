@@ -109,26 +109,22 @@ module.exports = memoize(function (db/*, options*/) {
 		} },
 		// Computed status of registration
 		status: { type: BusinessProcessStatus, value: function (_observe) {
-			var frontDesk, result;
+			var frontDesk;
 			if (!this.isSubmitted) return 'draft';
 			if (this.isSentBack) return 'sentBack';
 			if (this.isRejected) return 'rejected';
 			if (this.isClosed) return 'closed';
 
-			_observe(this.processingSteps.applicable).some(function (step) {
-				if (_observe(step._status) === 'rejected') {
-					result = step.status;
-					return true;
-				}
-			});
-			if (result) return result;
-			this.processingSteps.applicable.some(function (step) {
-				if (_observe(step._status) === 'sentBack' && _observe(step._isPreviousStepsSatisfied)) {
-					result = step.status;
-					return true;
-				}
-			});
-			if (result) return result;
+			if (_observe(this.processingSteps.applicable).some(function (step) {
+					return _observe(step._status) === 'rejected';
+				})) {
+				return 'rejected';
+			}
+			if (this.processingSteps.applicable.some(function (step) {
+					return _observe(step._status) === 'sentBack' && _observe(step._isPreviousStepsSatisfied);
+				})) {
+				return 'sentBack';
+			}
 			if (this.processingSteps.applicable.every(function (step) {
 					return _observe(step._status) === 'approved';
 				})) {
