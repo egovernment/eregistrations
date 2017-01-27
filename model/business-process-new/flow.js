@@ -115,20 +115,26 @@ module.exports = memoize(function (db/*, options*/) {
 			if (this.isRejected) return 'rejected';
 			if (this.isClosed) return 'closed';
 
-			this.processingSteps.applicable.some(function (step) {
-				if (step.status === 'rejected' || step.status === 'sentBack') {
+			_observe(this.processingSteps.applicable).some(function (step) {
+				if (_observe(step._status) === 'rejected') {
 					result = step.status;
 					return true;
 				}
 			});
 			if (result) return result;
-			this.processingSteps.applicable.every(function (step) {
-				if (step.status === 'closed') {
-					result = 'closed';
+			this.processingSteps.applicable.some(function (step) {
+				if (_observe(step._status) === 'sentBack' && _observe(step._isPreviousStepsSatisfied)) {
+					result = step.status;
 					return true;
 				}
 			});
 			if (result) return result;
+			if (this.processingSteps.applicable.every(function (step) {
+					return _observe(step._status) === 'approved';
+				})) {
+				return 'closed';
+			}
+
 			frontDesk = this.processingSteps.map.frontDesk;
 			if (frontDesk && _observe(frontDesk._isApproved)) return 'withdrawn';
 			if (frontDesk && _observe(frontDesk._isPending)) return 'pickup';
