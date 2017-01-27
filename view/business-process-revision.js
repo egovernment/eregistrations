@@ -18,7 +18,7 @@ exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
 		var revisionStep      = this.processingStep
-		  , isPauseEnabled    = exports._isPauseEnabled
+		  , isPauseEnabled    = and(exports._isPauseEnabled, not(revisionStep._isClosed))
 		  , isRevisionPending = revisionStep._isRevisionPending
 		  , isToolbarEnabled  = or(isRevisionPending, isPauseEnabled);
 
@@ -92,21 +92,21 @@ exports._rejectButton = function (/*options*/) {
 				{ id: 'reject-reason-form', method: 'post',
 					action: '/revision/' + this.businessProcess.__id__ + '/reject/' },
 				p({ class: 'input' }, input({ id: 'revision-reject-reason',
-					dbjs: this.processingStep._rejectionReason, placeholder: _('Reason of rejection') }))
-			),
-			p({ id: 'reject-reason-dialog-warning', class: 'dialog-reject-warning' },
-				_("You are about to reject the request, in doing so the user " +
-					"will not be able to make corrections and send it again; if you want to ask for " +
-					"corrections click 'cancel' and review the application until the " +
-					"'Return to corrections' button is displayed. If you still want to reject the " +
-					"file click 'Confirm rejection'; this action is permanent and can not be undone.")),
-			footer(p(
-				a({ href: '', id: 'reject-reason-dialog-cancel' }, _("Cancel")),
-				input({ id: 'reject-reason-dialog-submit-button', class: 'button-main-error',
-					type: 'submit', value: _("Confirm rejection") }),
-				a({ id: 'reject-reason-dialog-reject-button', class: 'button-main button-main-error',
-					href: '#reject-reason' }, options.rejectLabel || _("Reject"))
-			))
+					dbjs: this.processingStep._rejectionReason, placeholder: _('Reason of rejection') })),
+				p({ id: 'reject-reason-dialog-warning', class: 'dialog-reject-warning' },
+					_("You are about to reject the request, in doing so the user " +
+						"will not be able to make corrections and send it again; if you want to ask for " +
+						"corrections click 'cancel' and review the application until the " +
+						"'Return to corrections' button is displayed. If you still want to reject the " +
+						"file click 'Confirm rejection'; this action is permanent and can not be undone.")),
+				footer(p(
+					a({ href: '', id: 'reject-reason-dialog-cancel' }, _("Cancel")),
+					input({ id: 'reject-reason-dialog-submit-button', class: 'button-main-error',
+						type: 'submit', value: _("Confirm rejection") }),
+					a({ id: 'reject-reason-dialog-reject-button', class: 'button-main button-main-error',
+						href: '#reject-reason' }, options.rejectLabel || _("Reject"))
+				))
+			)
 		)
 	), a({
 		href: '#reject-reason',
