@@ -100,18 +100,17 @@ exports['statistics-main'] = function () {
 				function (data) { return data._rejected; }, this.processingStepsMeta,
 				"statistics-table-sub-header-sentback", function (data) { return data.rejected; }),
 
-			this.processingStepsMeta.frontDesk ?
+			getFrontDeskNames().size ?
 					generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-success' },
 						_("Pending for withdraw at Front Desk"), services, function (data) {
 							var result = null;
-							if (!getFrontDeskNames().size) return null;
 							getFrontDeskNames().forEach(function (name) {
 								var value = data.atPartB.getBySKeyPath(resolveFullStepPath(name));
 								if (value) {
 									if (!result) {
 										result = value._pending;
 									} else {
-										result.value += value.pending;
+										result.add(value._pending);
 									}
 								}
 							});
