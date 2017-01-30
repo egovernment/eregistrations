@@ -15,7 +15,7 @@ var assign              = require('es5-ext/object/assign')
   , setupQueryHandler   = require('../utils/setup-client-query-handler')
   , resolveFullStepPath = require('../utils/resolve-processing-step-full-path')
   , getQueryHandlerConf = require('../apps/statistics/get-query-conf')
-  , getFrontDeskNames   = require('./utils/get-front-desk-names')
+  , frontDeskNames      = require('./utils/front-desk-names')
 
   , observableResult = new ObservableValue();
 
@@ -233,7 +233,7 @@ var getAverageTime = function (data) {
 		chart.data[0].push(services[serviceName].label);
 	});
 	Object.keys(data).forEach(function (shortPath) {
-		if (getFrontDeskNames().has(shortPath)) return;
+		if (frontDeskNames.has(shortPath)) return;
 		var stepData = [getStepLabelByShortPath(shortPath)];
 		Object.keys(services).forEach(function (serviceName) {
 			if (!data[shortPath][serviceName]) {
