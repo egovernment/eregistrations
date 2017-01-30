@@ -136,7 +136,9 @@ module.exports = memoize(function (db/*, options*/) {
 			if (frontDesk && _observe(frontDesk._isPending)) return 'pickup';
 
 			if (this.processingSteps.revisions.some(function (processingStep) {
-					return _observe(processingStep._isRevisionPending);
+					return _observe(processingStep._isRevisionPending) ||
+						(_observe(processingStep._status) === 'approved' &&
+							!_observe(processingStep._isSatisfied));
 				})) {
 				return 'revision';
 			}
