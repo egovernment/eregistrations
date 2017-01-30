@@ -5,6 +5,7 @@ var capitalize          = require('es5-ext/string/#/capitalize')
   , add                 = require('observable-value/add')
   , _                   = require('mano').i18n
   , db                  = require('../db')
+  , frontDeskNames      = require('./utils/front-desk-names')
   , resolveFullStepPath = require('../utils/resolve-processing-step-full-path');
 
 exports._parent = require('./statistics-files');
@@ -99,11 +100,22 @@ exports['statistics-main'] = function () {
 				function (data) { return data._rejected; }, this.processingStepsMeta,
 				"statistics-table-sub-header-sentback", function (data) { return data.rejected; }),
 
-			this.processingStepsMeta.frontDesk ?
+			frontDeskNames.size ?
 					generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-success' },
 						_("Pending for withdraw at Front Desk"), services, function (data) {
-							data = data.atPartB.getBySKeyPath(resolveFullStepPath('frontDesk'));
-							return data ? data._pending : null;
+							var result = null;
+							frontDeskNames.forEach(function (name) {
+								var value = data.atPartB.getBySKeyPath(resolveFullStepPath(name));
+								if (value) {
+									if (!result) {
+										result = value._pending;
+									} else {
+										result.add(value._pending);
+									}
+								}
+							});
+
+							return result;
 						}) : null,
 
 			generateRow({ class: 'statistics-table-sub-header statistics-table-sub-header-success' },

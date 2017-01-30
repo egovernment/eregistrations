@@ -9,7 +9,7 @@ module.exports = Object.defineProperty(db.PickupInstitutionFormSection.prototype
 	d(function (document/*, options */) {
 		var url, frontDeskStep, options = Object(arguments[1]);
 		url = options.url || ns.url;
-		frontDeskStep = this.master.processingSteps.map.frontDesk;
+		frontDeskStep = this.master.processingSteps.frontDesk;
 
 		return ns.section({ class: 'section-primary' },
 			ns.h2(_("Where do you want to collect your registrations?")),
