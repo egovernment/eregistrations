@@ -4,7 +4,7 @@ var ensureDatabase = require('dbjs/valid-dbjs')
   , notifyAssigned = require('../../../email-notifications/business-process-assigned');
 
 module.exports = function (db) {
-	var dispatcherEmails = db.User
+	var dispatcherEmails = ensureDatabase(db).User
 		.filterByKey('isSuperUser', false)
 		.filterByKey('roles', function (roles) {
 			if (!roles) return false;
