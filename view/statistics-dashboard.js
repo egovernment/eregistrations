@@ -15,7 +15,7 @@ var assign              = require('es5-ext/object/assign')
   , setupQueryHandler   = require('../utils/setup-client-query-handler')
   , resolveFullStepPath = require('../utils/resolve-processing-step-full-path')
   , getQueryHandlerConf = require('../apps/statistics/get-query-conf')
-  , Set                 = require('es6-set')
+  , getFrontDeskNames   = require('./utils/get-front-desk-names')
 
   , observableResult = new ObservableValue();
 
@@ -62,19 +62,6 @@ var getServiceNames = function () {
 	});
 
 	return services;
-};
-
-var getFrontDeskNames = function () {
-	var names = new Set([]);
-
-	db.BusinessProcess.extensions.forEach(function (BusinessProcessClass) {
-		var frontDesk = BusinessProcessClass.prototype.processingSteps.frontDesk;
-		if (frontDesk) {
-			names.add(frontDesk.key);
-		}
-	});
-
-	return names;
 };
 
 var dayRangeConfig = {
