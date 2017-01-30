@@ -94,8 +94,8 @@ var rejectionConfig = {
 var withdrawalConfig = {
 	preTriggerValue: false,
 	triggerValue: true,
-	triggerPath: 'processingSteps/map/frontDesk/isApproved',
-	officialPath: 'processingSteps/map/frontDesk/processor',
+	triggerPath: 'processingSteps/frontDesk/isApproved',
+	officialPath: 'processingSteps/frontDesk/processor',
 	statusText: _("Certificate was withdrawn"),
 	label: _("Withdraw")
 };

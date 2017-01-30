@@ -115,7 +115,7 @@ module.exports = memoize(function (db/*, options*/) {
 			if (this.isRejected) return 'rejected';
 			if (this.isClosed) return 'closed';
 
-			frontDesk = this.processingSteps.map.frontDesk;
+			frontDesk = this.processingSteps.frontDesk;
 			if (frontDesk && _observe(frontDesk._isApproved)) return 'withdrawn';
 			if (frontDesk && _observe(frontDesk._isPending)) return 'pickup';
 

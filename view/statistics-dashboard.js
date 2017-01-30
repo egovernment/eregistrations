@@ -15,6 +15,7 @@ var assign              = require('es5-ext/object/assign')
   , setupQueryHandler   = require('../utils/setup-client-query-handler')
   , resolveFullStepPath = require('../utils/resolve-processing-step-full-path')
   , getQueryHandlerConf = require('../apps/statistics/get-query-conf')
+  , Set                 = require('es6-set')
 
   , observableResult = new ObservableValue();
 
@@ -61,6 +62,19 @@ var getServiceNames = function () {
 	});
 
 	return services;
+};
+
+var getFrontDeskNames = function () {
+	var names = new Set([]);
+
+	db.BusinessProcess.extensions.forEach(function (BusinessProcessClass) {
+		var frontDesk = BusinessProcessClass.prototype.processingSteps.frontDesk;
+		if (frontDesk) {
+			names.add(frontDesk.key);
+		}
+	});
+
+	return names;
 };
 
 var dayRangeConfig = {
@@ -232,7 +246,7 @@ var getAverageTime = function (data) {
 		chart.data[0].push(services[serviceName].label);
 	});
 	Object.keys(data).forEach(function (shortPath) {
-		if (shortPath === 'frontDesk') return;
+		if (getFrontDeskNames().has(shortPath)) return;
 		var stepData = [getStepLabelByShortPath(shortPath)];
 		Object.keys(services).forEach(function (serviceName) {
 			if (!data[shortPath][serviceName]) {
@@ -301,11 +315,17 @@ var getWithdrawalTime = function (data) {
 
 	var services = getServiceNames();
 	Object.keys(services).forEach(function (serviceName) {
-		var row = [];
-		if (!data[serviceName]) return;
+		var row = [], frontDesk, frontDeskName, frontDeskData;
+		frontDesk = db['BusinessProcess' +
+			capitalize.call(serviceName)].prototype.processingSteps.frontDesk;
+		if (!frontDesk) return;
+		frontDeskName = frontDesk.key;
+		frontDeskData = data[frontDeskName];
+		if (!frontDeskData || !frontDeskData[serviceName]) return;
 		row.push(services[serviceName].label);
-		if (data[serviceName].processing.avgTime) noData = false;
-		row.push((Math.round(data[serviceName].processing.avgTime || 0) / 1000 / 60 / 60 / 24));
+		if (frontDeskData[serviceName].processing.avgTime) noData = false;
+		row.push((Math.round(frontDeskData[serviceName].processing.avgTime || 0)
+			/ 1000 / 60 / 60 / 24));
 		row.push(chart.options.colors[i]);
 		i++;
 		chart.data.push(row);
@@ -329,7 +349,7 @@ var updateChartsData = function (data, query) {
 	dataForCharts.push(getPendingFiles(data.lastDateData));
 	dataForCharts.push(getAverageTime(data.dateRangeData.steps));
 	dataForCharts.push(getAverageTimeByService(data.dateRangeData.businessProcesses.byService));
-	dataForCharts.push(getWithdrawalTime(data.dateRangeData.steps.frontDesk || {}));
+	dataForCharts.push(getWithdrawalTime(data.dateRangeData.steps || {}));
 	customChartsData = exports._customChartsGetData.call(this, data);
 	if (customChartsData && customChartsData.length) {
 		dataForCharts = dataForCharts.concat(customChartsData);
