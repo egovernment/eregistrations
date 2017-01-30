@@ -30,7 +30,14 @@ module.exports = memoize(function (db/* options */) {
 			});
 
 			return result;
-		} }
+		} },
+		frontDesk: {
+			type: ProcessingStepBase,
+			value: function (_observe) {
+				var processingSteps = this.master.processingSteps;
+				return processingSteps.map.frontDesk;
+			}
+		}
 	});
 
 	return BusinessProcess;
