@@ -132,7 +132,7 @@ module.exports = memoize(function (db/*, options*/) {
 			}
 
 			if (this.processingSteps.revisions.some(function (processingStep) {
-					return _observe(processingStep._isRevisionPending) ||
+					return _observe(processingStep._isPending) ||
 						(_observe(processingStep._status) === 'approved' &&
 							!_observe(processingStep._isSatisfied));
 				})) {
