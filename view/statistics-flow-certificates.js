@@ -8,7 +8,9 @@ var _            = require('mano').i18n.bind('View: Statistics')
   , setupQueryHandler   = require('../utils/setup-client-query-handler')
   , getData             = require('mano/lib/client/xhr-driver').get
   , memoize             = require('memoizee')
-  , copy                = require('es5-ext/object/copy');
+  , copy                = require('es5-ext/object/copy')
+  , ObservableValue     = require('observable-value')
+  , assign              = require('es5-ext/object/assign');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -31,8 +33,70 @@ db.BusinessProcess.extensions.forEach(function (ServiceType) {
 	});
 });
 
+// TODO: remove this
+var dummyData = {
+	"2016-01-02": {
+		businessProcess: {
+			merchant: {
+				pending: 20,
+				sentBack: 40
+			},
+			company: {
+				pending: 15,
+				rejected: 2
+			}
+		},
+		certificate: {
+			afpConfia: {
+				pending: 30
+			}
+		}
+	}
+};
+
+var buildResultRow = function (rowData) {
+	return assign({
+		submitted: 0,
+		pending: 0,
+		pickup: 0,
+		withdrawn: 0,
+		rejected: 0,
+		sentBack: 0
+	}, rowData);
+};
+
+var accumulateResultRows = function (rows) {
+	var result = buildResultRow(rows[0]);
+	rows.slice(1).forEach(function (row) {
+		Object.keys(row).forEach(function (propertyName) {
+			result[propertyName] += row[propertyName];
+		});
+	});
+
+	return result;
+};
+
+var filterData = function (data) {
+	var result = {};
+	location.query.get('service').map(function (service) {
+		location.query.get('certificate').map(function (certificate) {
+			Object.keys(data).forEach(function (key) {
+				if (certificate) {
+					result[key] = buildResultRow(data[key].certificate[certificate]);
+				} else if (service) {
+					result[key] = buildResultRow(data[key].businessProcess[service]);
+				} else {
+					result[key] = accumulateResultRows(Object.values(data[key].businessProcess));
+				}
+			});
+		});
+	});
+
+	return result;
+};
+
 exports['statistics-main'] = function () {
-	var queryHandler;
+	var queryHandler, data = new ObservableValue({});
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
 		processingStepsMeta: this.processingStepsMeta
 	}), location, '/flow/');
@@ -45,8 +109,8 @@ exports['statistics-main'] = function () {
 		if (serverQuery.dateTo) {
 			serverQuery.dateTo = serverQuery.dateTo.toJSON();
 		}
-		queryServer(serverQuery).done(function (data) {
-			//After data loaded;
+		queryServer(serverQuery).done(function (responseData) {
+			data.value = filterData(dummyData);
 		});
 	});
 
@@ -155,4 +219,27 @@ exports['statistics-main'] = function () {
 					}, 0);
 				}("mode-selection")))),
 			p({ class: 'submit' }, input({ type: 'submit' }))));
+
+	section({ class: "section-primary" },
+		data.map(function (result) {
+			return table({ class: 'statistics-table' },
+				thead(
+					th({ class: 'statistics-table-number' }, _("Day")),
+					th({ class: 'statistics-table-number' }, _("Submitted")),
+					th({ class: 'statistics-table-number' }, _("Pending")),
+					th({ class: 'statistics-table-number' }, _("Ready for withdraw")),
+					th({ class: 'statistics-table-number' }, _("Withdrawn by user")),
+					th({ class: 'statistics-table-number' }, _("Rejected")),
+					th({ class: 'statistics-table-number' }, _("Sent back for correction"))
+				),
+				tbody({ onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 7 },
+					_("No data for this criteria"))) }, Object.keys(result), function (key) {
+					return tr(
+						td(key),
+						list(Object.keys(result[key]), function (status) {
+							return td({ class: 'statistics-table-number' }, result[key][status]);
+						})
+					);
+				}));
+		}));
 };
