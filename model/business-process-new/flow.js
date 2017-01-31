@@ -131,6 +131,10 @@ module.exports = memoize(function (db/*, options*/) {
 				return 'closed';
 			}
 
+			frontDesk = this.processingSteps.frontDesk;
+			if (frontDesk && _observe(frontDesk._isApproved)) return 'withdrawn';
+			if (frontDesk && _observe(frontDesk._isPending)) return 'pickup';
+
 			if (this.processingSteps.revisions.some(function (processingStep) {
 					return _observe(processingStep._isPending) ||
 						(_observe(processingStep._status) === 'approved' &&
@@ -138,10 +142,6 @@ module.exports = memoize(function (db/*, options*/) {
 				})) {
 				return 'revision';
 			}
-
-			frontDesk = this.processingSteps.frontDesk;
-			if (frontDesk && _observe(frontDesk._isApproved)) return 'withdrawn';
-			if (frontDesk && _observe(frontDesk._isPending)) return 'pickup';
 
 			return 'process';
 		} },
