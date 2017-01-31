@@ -14,7 +14,7 @@ module.exports = function (t, a) {
 	  , ProcessingStep = defineProcessingStep(db)
 	  , BusinessProcess = t(db)
 
-	  , businessProcess, step;
+	  , businessProcess, prevStep, step;
 
 	var FormSection1 = FormSection.extend('FormSection1');
 	FormSection.prototype.propertyNames = ['foo'];
@@ -44,6 +44,8 @@ module.exports = function (t, a) {
 	BusinessProcess.prototype.dataForms.map.define('formSection2',
 		{ nested: true, type: FormSection2 });
 
+	BusinessProcess.prototype.processingSteps.map.define('prevTest',
+		{ nested: true, type: ProcessingStep });
 	BusinessProcess.prototype.processingSteps.map.define('test',
 		{ nested: true, type: ProcessingStep });
 	BusinessProcess.prototype.processingSteps.map.test.define('dataForm', { type: FormSection1 });
@@ -80,15 +82,40 @@ module.exports = function (t, a) {
 	a(businessProcess.isClosed, false);
 	a(businessProcess.status, 'process');
 
+	// Interaction with steps
+
+	prevStep = businessProcess.processingSteps.map.prevTest;
+	businessProcess.processingSteps.map.test.previousSteps = [prevStep];
 	step = businessProcess.processingSteps.map.test;
-	step.officialStatus = 'sentBack';
-	step.sendBackReason = "Whateever ..";
+	step.status = 'sentBack';
+	step.sendBackReason = "Whatever ..";
 	a(businessProcess.isSubmittedReady, true);
 	a(businessProcess.isSubmitted, true);
 	a(businessProcess.isSentBack, false);
 	a(businessProcess.isRejected, false);
 	a(businessProcess.isClosed, false);
 	a(businessProcess.status, 'process');
+
+	prevStep.isSatisfied = true;
+	prevStep.status = 'approved';
+	a(businessProcess.isSubmittedReady, true);
+	a(businessProcess.isSubmitted, true);
+	a(businessProcess.isSentBack, false);
+	a(businessProcess.isRejected, false);
+	a(businessProcess.isClosed, false);
+	a(businessProcess.status, 'sentBack');
+
+	step.status = 'rejected';
+	a(businessProcess.isSubmittedReady, true);
+	a(businessProcess.isSubmitted, true);
+	a(businessProcess.isSentBack, false);
+	a(businessProcess.isRejected, false);
+	a(businessProcess.isClosed, false);
+	a(businessProcess.status, 'rejected');
+
+	businessProcess.processingSteps.map.test.previousSteps = [];
+	step.delete('status');
+	// End interaction with steps
 
 	businessProcess.submissionForms.delete('isAffidavitSigned'); // Normally done by service
 	businessProcess.isSentBack = true; // Normally done by service

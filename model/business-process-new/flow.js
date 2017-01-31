@@ -115,12 +115,30 @@ module.exports = memoize(function (db/*, options*/) {
 			if (this.isRejected) return 'rejected';
 			if (this.isClosed) return 'closed';
 
+			if (_observe(this.processingSteps.applicable).some(function (step) {
+					return _observe(step._status) === 'rejected';
+				})) {
+				return 'rejected';
+			}
+			if (this.processingSteps.applicable.some(function (step) {
+					return _observe(step._status) === 'sentBack' && _observe(step._isPreviousStepsSatisfied);
+				})) {
+				return 'sentBack';
+			}
+			if (this.processingSteps.applicable.every(function (step) {
+					return _observe(step._status) === 'approved';
+				})) {
+				return 'closed';
+			}
+
 			frontDesk = this.processingSteps.frontDesk;
 			if (frontDesk && _observe(frontDesk._isApproved)) return 'withdrawn';
 			if (frontDesk && _observe(frontDesk._isPending)) return 'pickup';
 
 			if (this.processingSteps.revisions.some(function (processingStep) {
-					return _observe(processingStep._isRevisionPending);
+					return _observe(processingStep._isPending) ||
+						(_observe(processingStep._status) === 'approved' &&
+							!_observe(processingStep._isSatisfied));
 				})) {
 				return 'revision';
 			}

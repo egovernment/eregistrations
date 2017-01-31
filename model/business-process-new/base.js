@@ -9,7 +9,8 @@ var memoize                   = require('memoizee/plain')
   , _                         = require('mano').i18n.bind("Model: Business Process")
   , defineBusinessProcessBase = require('../lib/business-process-base')
   , defineNestedMap           = require('../lib/nested-map')
-  , defineStatusLog           = require('../lib/status-log');
+  , defineStatusLog           = require('../lib/status-log')
+  , defineStatusHistoryItem   = require('../lib/status-history-item');
 
 module.exports = memoize(function (db/*, options*/) {
 	var options             = Object(arguments[1])
@@ -18,6 +19,7 @@ module.exports = memoize(function (db/*, options*/) {
 	  , UInteger            = defineUInteger(db)
 	  , Url                 = defineUrl(db)
 	  , StatusLog           = defineStatusLog(db)
+	  , StatusHistoryItem   = defineStatusHistoryItem(db)
 
 	  , BusinessProcess;
 
@@ -93,6 +95,9 @@ module.exports = memoize(function (db/*, options*/) {
 
 	BusinessProcess.prototype.defineNestedMap('statusLog',
 		{ itemType: StatusLog, cardinalPropertyKey: 'label' });
+
+	BusinessProcess.prototype.defineNestedMap('statusHistory',
+		{ itemType: StatusHistoryItem, cardinalPropertyKey: 'status' });
 
 	return BusinessProcess;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
