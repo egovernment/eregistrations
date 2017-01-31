@@ -87,6 +87,22 @@ exports['statistics-main'] = function () {
 						}, certificates[certificateKey].label);
 					})
 				)),
+			div(
+				{ class: 'users-table-filter-bar-status' },
+				label({ for: 'date-from-input' }, _("Date from"), ":"),
+				input({ id: 'date-from-input', type: 'date',
+					name: 'dateFrom', value: location.query.get('dateFrom').map(function (dateFrom) {
+					var now = new db.Date();
+					now.setDate(now.getDate() - 7);
+					return dateFrom || now.toISOString().slice(0, 10);
+				}) })
+			),
+			div(
+				{ class: 'users-table-filter-bar-status' },
+				label({ for: 'date-to-input' }, _("Date to"), ":"),
+				input({ id: 'date-to-input', type: 'date',
+					name: 'dateTo', value: location.query.get('dateTo') })
+			),
 			div({ class: "input", id: "mode-selection" },
 				div({ class: "inline-button-radio" },
 					list([
@@ -138,21 +154,5 @@ exports['statistics-main'] = function () {
 						onChange();
 					}, 0);
 				}("mode-selection")))),
-			div(
-				{ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-from-input' }, _("Date from"), ":"),
-				input({ id: 'date-from-input', type: 'date',
-					name: 'dateFrom', value: location.query.get('dateFrom').map(function (dateFrom) {
-					var now = new db.Date();
-					now.setDate(now.getDate() - 7);
-					return dateFrom || now.toISOString().slice(0, 10);
-				}) })
-			),
-			div(
-				{ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-to-input' }, _("Date to"), ":"),
-				input({ id: 'date-to-input', type: 'date',
-					name: 'dateTo', value: location.query.get('dateTo') })
-			),
 			p({ class: 'submit' }, input({ type: 'submit' }))));
 };
