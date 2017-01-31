@@ -102,7 +102,8 @@ exports._submittedMenu = function () {
 	if (user.currentRoleResolved === 'statistics') {
 		return [li({ id: 'dashboard-nav' }, a({ href: '/' }, _("Dashboard"))),
 			li({ id: 'files-nav' }, a({ href: '/files/' }, _("Files"))),
-			li({ id: 'time-nav' }, a({ href: '/time/' }, _("Time")))];
+			li({ id: 'time-nav' }, a({ href: '/time/' }, _("Time"))),
+			li({ id: 'flow-nav' }, a({ href: '/flow/' }, _("Flow analysis")))];
 	}
 
 	isOfficialRole = user.officialRoles.has(user.currentRoleResolved);
