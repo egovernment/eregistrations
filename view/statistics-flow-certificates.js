@@ -87,24 +87,57 @@ exports['statistics-main'] = function () {
 						}, certificates[certificateKey].label);
 					})
 				)),
-			div({ class: 'users-table-filter-bar-status' },
-				select(
-					{ id: 'mode-select', name: 'mode' },
+			div({ class: "input", id: "mode-selection" },
+				div({ class: "inline-button-radio" },
 					list([
-						{ key: 'day', label: _('Daily') },
-						{ key: 'week', label: _('Weeky') },
-						{ key: 'month', label: _('Monthy') },
-						{ key: 'year', label: _('Yearly') }], function (mode) {
-						return option({
-							value: mode.key,
-							selected: location.query.get('mode').map(function (value) {
-								var selected = (mode.key ? (value === mode.key) : (value == null));
-								return selected ? 'selected' : null;
-							})
-						}, mode.label);
-					})
-				)),
-
+						{ key: 'daily', label: _('Daily') },
+						{ key: 'weekly', label: _('Weeky') },
+						{ key: 'monthly', label: _('Monthy') },
+						{ key: 'yearly', label: _('Yearly') }], function (mode) {
+						label(
+							input({
+								type: "radio",
+								name: "mode",
+								value: mode.key,
+								checked: location.query.get('mode').map(function (value) {
+									var checked = (mode.key ? (value === mode.key) : (value == null));
+									return checked ? 'checked' : null;
+								})
+							}),
+							mode.label
+						);
+					})),
+				script((function (id, classMap) {
+					var current, radio, radios;
+					var onChange = function () {
+						var nu, i;
+						for (i = 0; (radio = radios[i]); ++i) {
+							if (radio.checked) {
+								nu = radio;
+								break;
+							}
+						}
+							if (nu === current) return;
+							if (current) current.parentNode.removeClass('success');
+							if (nu) $(nu.parentNode).addClass('success');
+						current = nu;
+					};
+					setTimeout(function self() {
+						var container = $(id);
+						if (!container) {
+							setTimeout(self, 1000);
+							return;
+						}
+						radios = container.getElementsByTagName('input');
+						container.addEvent('change', function () {
+							setTimeout(onChange, 0);
+						});
+						container.addEvent('click', function () {
+							setTimeout(onChange, 0);
+						});
+						onChange();
+					}, 0);
+				}("mode-selection")))),
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
