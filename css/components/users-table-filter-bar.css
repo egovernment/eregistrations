@@ -42,8 +42,8 @@
 }
 
 .users-table-filter-bar .inline-button-radio label {
-	margin-left: 0px;
-	margin-right: 0px;
+	margin-left: 0;
+	margin-right: 0;
 }
 
 .users-table-filter-bar label:first-child {
