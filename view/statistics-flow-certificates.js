@@ -10,7 +10,10 @@ var _            = require('mano').i18n.bind('View: Statistics')
   , memoize             = require('memoizee')
   , copy                = require('es5-ext/object/copy')
   , ObservableValue     = require('observable-value')
-  , assign              = require('es5-ext/object/assign');
+  , assign              = require('es5-ext/object/assign')
+  , Pagination          = require('./components/pagination')
+  , Duration            = require('duration')
+  , itemsPerPage        = 100;
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -49,55 +52,7 @@ db.BusinessProcess.extensions.forEach(function (ServiceType) {
 });
 
 // TODO: remove this
-var dummyData = {
-	"2016-01-02": {
-		merchant: {
-			businessProcess: {
-				pending: 33,
-				sentBack: 40,
-				rejected: 2
-			},
-			certificate: {
-				afpConfia: {
-					submitted: 20,
-					pending: 32
-				},
-				afpCrecer: {
-					submitted: 25,
-					pending: 14
-				}
-			}
-		},
-		company: {
-			businessProcess: {
-				pending: 20,
-				sentBack: 35,
-				rejected: 1
-			},
-			certificate: {
-				afpConfia: {
-					submitted: 13,
-					pending: 20
-				},
-				afpCrecer: {
-					submitted: 6,
-					pending: 7
-				}
-			}
-		},
-		solvency: {
-			businessProcess: {
-				pending: 9
-			},
-			certificate: {
-				solvency: {
-					submitted: 2,
-					pending: 9
-				}
-			}
-		}
-	}
-};
+var getDummyData = require('../stats-dummy-data');
 
 var buildResultRow = function (rowData) {
 	return assign({
@@ -150,21 +105,55 @@ var filterData = function (data) {
 };
 
 exports['statistics-main'] = function () {
-	var queryHandler, data = new ObservableValue({});
+	var queryHandler, data = new ObservableValue({}), pagination = new Pagination('/flow/');
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
 		processingStepsMeta: this.processingStepsMeta
 	}), location, '/flow/');
-
 	queryHandler.on('query', function (query) {
-		var serverQuery = copy(query);
-		if (serverQuery.dateFrom) {
-			serverQuery.dateFrom = serverQuery.dateFrom.toJSON();
+		var serverQuery = copy(query), dateFrom, dateTo, now,
+			duration, currentDate, offset, daysCount = 0;
+		now      = new db.Date();
+		dateFrom = new db.Date(serverQuery.dateFrom);
+		dateTo = serverQuery.dateTo || new db.Date(now.getFullYear(), now.getMonth(), now.getDate());
+		dateTo = new db.Date(dateTo);
+		duration = new Duration(dateFrom, dateTo);
+		pagination.count.value = Math.ceil(duration.days / itemsPerPage);
+		pagination.current.value = location.query.get('page').map(function (page) {
+			return Number(page) || 1;
+		});
+		if (pagination.count.value > 1) {
+			offset = { from: ((pagination.current.value - 1) * itemsPerPage) };
+			offset.to = offset.from;
+			if (duration.days - offset.from < itemsPerPage) {
+				offset.to += duration.days - offset.from;
+			} else {
+				offset.to += itemsPerPage;
+			}
+
+			currentDate = dateFrom;
+			while (daysCount <= offset.to) {
+				if (daysCount === offset.from) {
+					dateFrom = currentDate;
+				}
+				if (daysCount === offset.to) {
+					dateTo = currentDate;
+				}
+				daysCount++;
+				currentDate = new db.Date(currentDate.getFullYear(),
+					currentDate.getMonth(), currentDate.getDate() + 1);
+			}
 		}
-		if (serverQuery.dateTo) {
-			serverQuery.dateTo = serverQuery.dateTo.toJSON();
+		if (dateFrom) {
+			serverQuery.dateFrom = dateFrom.toJSON();
 		}
+		if (dateTo) {
+			serverQuery.dateTo = dateTo.toJSON();
+		}
+
 		queryServer(serverQuery).done(function (responseData) {
-			data.value = filterData(dummyData);
+			//TODO remove below line
+			var d = getDummyData({ dateFrom: dateFrom, dateTo: dateTo });
+			data.value = filterData(d);
 		});
 	});
 
@@ -274,6 +263,7 @@ exports['statistics-main'] = function () {
 				}("mode-selection")))),
 			p({ class: 'submit' }, input({ type: 'submit' }))));
 
+	section(pagination);
 	section({ class: "section-primary" },
 		data.map(function (result) {
 			return table({ class: 'statistics-table' },
