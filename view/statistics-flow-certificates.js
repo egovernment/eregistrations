@@ -104,28 +104,52 @@ var filterData = function (data) {
 	return result;
 };
 
+var calculateDurationByMode = function (duration, mode) {
+	var result;
+	switch (mode) {
+	case 'weekly':
+		result = Math.ceil(duration.days / 7);
+		break;
+	case 'monthly':
+		result = duration.months;
+		break;
+	case 'yearly':
+		result = duration.years;
+		break;
+	default:
+		result = duration.days;
+		break;
+	}
+
+	return result;
+};
+
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue({}), pagination = new Pagination('/flow/');
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
 		processingStepsMeta: this.processingStepsMeta
 	}), location, '/flow/');
 	queryHandler.on('query', function (query) {
-		var serverQuery = copy(query), dateFrom, dateTo, now,
-			duration, currentDate, offset, daysCount = 0;
+		var serverQuery = copy(query), dateFrom, dateTo, now, mode
+		  , duration, currentDate, offset, daysCount = 0, timeUnit;
 		now      = new db.Date();
 		dateFrom = new db.Date(serverQuery.dateFrom);
 		dateTo = serverQuery.dateTo || new db.Date(now.getFullYear(), now.getMonth(), now.getDate());
 		dateTo = new db.Date(dateTo);
 		duration = new Duration(dateFrom, dateTo);
-		pagination.count.value = Math.ceil(duration.days / itemsPerPage);
+		mode = location.query.get('mode').map(function (mode) {
+			return mode;
+		}).value;
+		timeUnit = calculateDurationByMode(duration, mode);
+		pagination.count.value = Math.ceil(timeUnit / itemsPerPage);
 		pagination.current.value = location.query.get('page').map(function (page) {
 			return Number(page) || 1;
 		});
 		if (pagination.count.value > 1) {
 			offset = { from: ((pagination.current.value - 1) * itemsPerPage) };
 			offset.to = offset.from;
-			if (duration.days - offset.from < itemsPerPage) {
-				offset.to += duration.days - offset.from;
+			if (timeUnit - offset.from < itemsPerPage) {
+				offset.to += timeUnit - offset.from;
 			} else {
 				offset.to += itemsPerPage;
 			}
@@ -139,8 +163,23 @@ exports['statistics-main'] = function () {
 					dateTo = currentDate;
 				}
 				daysCount++;
-				currentDate = new db.Date(currentDate.getFullYear(),
-					currentDate.getMonth(), currentDate.getDate() + 1);
+				switch (mode) {
+				case 'weekly':
+					currentDate = new db.Date(currentDate.getFullYear(),
+							currentDate.getMonth(), currentDate.getDate() + 7);
+					break;
+				case 'monthly':
+					currentDate = new db.Date(currentDate.getFullYear(),
+							currentDate.getMonth() + 1);
+					break;
+				case 'yearly':
+					currentDate = new db.Date(currentDate.getFullYear() + 1);
+					break;
+				default:
+					currentDate = new db.Date(currentDate.getFullYear(),
+							currentDate.getMonth(), currentDate.getDate() + 1);
+					break;
+				}
 			}
 		}
 		if (dateFrom) {
@@ -152,7 +191,7 @@ exports['statistics-main'] = function () {
 
 		queryServer(serverQuery).done(function (responseData) {
 			//TODO remove below line
-			var d = getDummyData({ dateFrom: dateFrom, dateTo: dateTo });
+			var d = getDummyData({ dateFrom: dateFrom, dateTo: dateTo, mode: mode });
 			data.value = filterData(d);
 		});
 	});
