@@ -140,7 +140,7 @@ module.exports = exports = memoize(function (driver) {
 			storage.search(function (id, record) {
 				var bpId = id.split('/', 1)[0]
 				  , path, keyPath, multiItemValue, meta, match, stepPath, stepKeyPath
-				  , certificatePath, certificateKeyPath;
+				  , certificatePath, certificateKeyPath, nestedEntityPath, nestedEntityKeyPath;
 
 				if (bpId === id) {
 					if (metaMap.validate(record)) metaMap.set(initBpDataset(bpId), record);
@@ -165,12 +165,17 @@ module.exports = exports = memoize(function (driver) {
 						match = keyPath.match(nestedEntityConf.matchRe);
 
 						if (match) {
-							meta = nestedEntityConf.metaMap[match[1]];
+							nestedEntityPath = match[1];
+							nestedEntityKeyPath = match[2];
+
+							meta = nestedEntityConf.metaMap[nestedEntityKeyPath];
 
 							if (validateRecord(record, meta, multiItemValue)) {
-								console.log("--- bp nested: ", keyPath);
-
-								meta.set(initBpDataset(bpId), record, multiItemValue);
+								meta.set(
+									nestedEntityConf.init(initBpDataset(bpId), nestedEntityPath),
+									record,
+									multiItemValue
+								);
 								return true;
 							}
 						}
@@ -188,12 +193,18 @@ module.exports = exports = memoize(function (driver) {
 							match = certificateKeyPath.match(nestedEntityConf.matchRe);
 
 							if (match) {
-								meta = nestedEntityConf.metaMap[match[1]];
+								nestedEntityPath = match[1];
+								nestedEntityKeyPath = match[2];
+
+								meta = nestedEntityConf.metaMap[nestedEntityKeyPath];
 
 								if (validateRecord(record, meta, multiItemValue)) {
-									console.log("--- cert nested: ", certificateKeyPath);
+									meta.set(
+										nestedEntityConf.init(initCertDataset(certificatePath, bpId), nestedEntityPath),
+										record,
+										multiItemValue
+									);
 
-									meta.set(initCertDataset(certificatePath, bpId), record, multiItemValue);
 									return true;
 								}
 							}
@@ -222,12 +233,18 @@ module.exports = exports = memoize(function (driver) {
 							match = stepKeyPath.match(nestedEntityConf.matchRe);
 
 							if (match) {
-								meta = nestedEntityConf.metaMap[match[1]];
+								nestedEntityPath = match[1];
+								nestedEntityKeyPath = match[2];
+
+								meta = nestedEntityConf.metaMap[nestedEntityKeyPath];
 
 								if (validateRecord(record, meta, multiItemValue)) {
-									console.log("--- step nested: ", stepKeyPath);
+									meta.set(
+										nestedEntityConf.init(initStepDataset(stepPath, bpId), nestedEntityPath),
+										record,
+										multiItemValue
+									);
 
-									meta.set(initStepDataset(stepPath, bpId), record, multiItemValue);
 									return true;
 								}
 							}
@@ -384,82 +401,75 @@ exports.businessProcessMetaMap = {
 	}
 };
 
+var statusHistoryMatchRe = new RegExp('^statusHistory\\/map\\/([a-zA-Z0-9]+)/([a-z0-9A-Z\\/]+)$');
+var statusHistoryEntityInit = function (data, nestedEntityId) {
+	if (!data.statusHistory) data.statusHistory = new Map();
+
+	if (!data.statusHistory.has(nestedEntityId)) {
+		data.statusHistory.set(nestedEntityId, {});
+	}
+
+	return data.statusHistory.get(nestedEntityId);
+};
+
 exports.businessProcessNestedEntities = [{
-	matchRe: new RegExp('^statusHistory\\/map\\/[a-zA-Z0-9]+/([a-z0-9A-Z\\/]+)$'),
+	matchRe: statusHistoryMatchRe,
+	init: statusHistoryEntityInit,
 	metaMap: {
 		status: {
 			validate: function (record) { return (record.value[0] === '3'); },
 			set: function (data, record) {
-				console.log("---- bp nested set status: ", record.value);
-
-				if (!data.statusHistory) data.statusHistory = [];
-				data.statusHistory.push({
-					status: record.value.slice(1),
-					date: toDateInTz(new Date(record.stamp / 1000), timeZone)
-				});
+				data.status = record.value.slice(1);
+				data.date = toDateInTz(new Date(record.stamp / 1000), timeZone);
 			},
 			delete: function (data) {
-				console.log("---- bp nestes delete status");
-				delete data.statusHistory;
+				delete data.status;
+				delete data.date;
 			}
 		}
 	}
 }];
 
 exports.certificateNestedEntities = [{
-	matchRe: new RegExp('^statusHistory\\/map\\/[a-zA-Z0-9]+/([a-z0-9A-Z\\/]+)$'),
+	matchRe: statusHistoryMatchRe,
+	init: statusHistoryEntityInit,
 	metaMap: {
 		status: {
 			validate: function (record) { return (record.value[0] === '3'); },
 			set: function (data, record) {
-				console.log("---- cert nested set status: ", record.value);
-
-				if (!data.statusHistory) data.statusHistory = [];
-				data.statusHistory.push({
-					status: record.value.slice(1),
-					date: toDateInTz(new Date(record.stamp / 1000), timeZone)
-				});
+				data.status = record.value.slice(1);
+				data.date = toDateInTz(new Date(record.stamp / 1000), timeZone);
 			},
 			delete: function (data) {
-				console.log("---- cert nestes delete status");
-				delete data.statusHistory;
+				delete data.status;
+				delete data.date;
 			}
 		}
 	}
 }];
 
 exports.processingStepNestedEntities = [{
-	matchRe: new RegExp('^statusHistory\\/map\\/[a-zA-Z0-9]+/([a-z0-9A-Z\\/]+)$'),
+	matchRe: statusHistoryMatchRe,
+	init: statusHistoryEntityInit,
 	metaMap: {
 		status: {
 			validate: function (record) { return (record.value[0] === '3'); },
 			set: function (data, record) {
-				console.log("---- step nested set status: ", record.value);
-
-				if (!data.statusHistory) data.statusHistory = [];
-				data.statusHistory.push({
-					status: record.value.slice(1),
-					date: toDateInTz(new Date(record.stamp / 1000), timeZone)
-				});
+				data.status = record.value.slice(1);
+				data.date = toDateInTz(new Date(record.stamp / 1000), timeZone);
 			},
 			delete: function (data) {
-				console.log("---- step nestes delete status");
-				delete data.statusHistory;
+				delete data.status;
+				delete data.date;
 			}
 		},
 		processor: {
 			validate: function (record) { return (record.value[0] === '7'); },
 			set: function (data, record) {
-				console.log("---- step nested set processor: ", record.value);
-
-				if (!data.statusHistory) data.statusHistory = [];
-				data.statusHistory.push({
-					processor: record.value.slice(1)
-				});
+				data.processor = record.value.slice(1);
 			},
 			delete: function (data) {
-				console.log("---- step nestes delete processor");
-				delete data.statusHistory;
+				delete data.processor;
 			}
 		}
 	}
