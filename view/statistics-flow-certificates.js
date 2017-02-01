@@ -25,30 +25,75 @@ var queryServer = memoize(function (query) {
 	max: 1000
 });
 
+var serviceToCertLegacyMatch = { all: [] };
+
 var certificates = {};
+
+var getServiceName = function (ServiceType) {
+	return uncapitalize.call(
+		ServiceType.__id__.slice('BusinessProcess'.length)
+	);
+};
 
 db.BusinessProcess.extensions.forEach(function (ServiceType) {
 	ServiceType.prototype.certificates.map.forEach(function (certificate) {
-		certificates[certificate.key] = { label: certificate.label };
+		if (!certificates[certificate.key]) {
+			certificates[certificate.key] = { label: certificate.label };
+		}
+		if (!serviceToCertLegacyMatch[getServiceName(ServiceType)]) {
+			serviceToCertLegacyMatch[getServiceName(ServiceType)] = [];
+		}
+		serviceToCertLegacyMatch[getServiceName(ServiceType)].push('certificate-' + certificate.key);
+		serviceToCertLegacyMatch.all.push('certificate-' + certificate.key);
 	});
 });
 
 // TODO: remove this
 var dummyData = {
 	"2016-01-02": {
-		businessProcess: {
-			merchant: {
-				pending: 20,
-				sentBack: 40
-			},
-			company: {
-				pending: 15,
+		merchant: {
+			businessProcess: {
+				pending: 33,
+				sentBack: 40,
 				rejected: 2
+			},
+			certificate: {
+				afpConfia: {
+					submitted: 20,
+					pending: 32
+				},
+				afpCrecer: {
+					submitted: 25,
+					pending: 14
+				}
 			}
 		},
-		certificate: {
-			afpConfia: {
-				pending: 30
+		company: {
+			businessProcess: {
+				pending: 20,
+				sentBack: 35,
+				rejected: 1
+			},
+			certificate: {
+				afpConfia: {
+					submitted: 13,
+					pending: 20
+				},
+				afpCrecer: {
+					submitted: 6,
+					pending: 7
+				}
+			}
+		},
+		solvency: {
+			businessProcess: {
+				pending: 9
+			},
+			certificate: {
+				solvency: {
+					submitted: 2,
+					pending: 9
+				}
 			}
 		}
 	}
@@ -62,7 +107,7 @@ var buildResultRow = function (rowData) {
 		withdrawn: 0,
 		rejected: 0,
 		sentBack: 0
-	}, rowData);
+	}, rowData || {});
 };
 
 var accumulateResultRows = function (rows) {
@@ -81,12 +126,21 @@ var filterData = function (data) {
 	location.query.get('service').map(function (service) {
 		location.query.get('certificate').map(function (certificate) {
 			Object.keys(data).forEach(function (key) {
-				if (certificate) {
-					result[key] = buildResultRow(data[key].certificate[certificate]);
-				} else if (service) {
-					result[key] = buildResultRow(data[key].businessProcess[service]);
+				if (service !== 'all' && certificate) {
+					result[key] = buildResultRow(data[key][service].certificate[certificate]);
+				} else if (service !== 'all') {
+					result[key] = buildResultRow(data[key][service].businessProcess);
 				} else {
-					result[key] = accumulateResultRows(Object.values(data[key].businessProcess));
+					var rowsToAccumulate = [];
+					Object.keys(data[key]).forEach(function (service) {
+						if (certificate) {
+							if (!data[key][service].certificate[certificate]) return;
+							rowsToAccumulate.push(data[key][service].certificate[certificate]);
+						} else {
+							rowsToAccumulate.push(data[key][service].businessProcess);
+						}
+					});
+					result[key] = accumulateResultRows(rowsToAccumulate);
 				}
 			});
 		});
@@ -119,13 +173,11 @@ exports['statistics-main'] = function () {
 			div({ class: 'users-table-filter-bar-status' },
 				select(
 					{ id: 'service-select', name: 'service' },
-					option({ value: '', selected: location.query.get('service').map(function (value) {
-						return value ? null : 'selected';
+					option({ value: 'all', selected: location.query.get('service').map(function (value) {
+						return !value || value === 'all' ? 'selected' : null;
 					}) }, _("All services")),
 					list(db.BusinessProcess.extensions, function (ServiceType) {
-						var serviceName = uncapitalize.call(
-							ServiceType.__id__.slice('BusinessProcess'.length)
-						);
+						var serviceName = getServiceName(ServiceType);
 						return option({
 							value: serviceName,
 							selected: location.query.get('service').map(function (value) {
@@ -143,13 +195,15 @@ exports['statistics-main'] = function () {
 					}) }, _("All certificates")),
 					list(Object.keys(certificates), function (certificateKey) {
 						return option({
+							id: 'certificate-' + certificateKey,
 							value: certificateKey,
 							selected: location.query.get('certificate').map(function (value) {
 								var selected = (certificateKey ? (value === certificateKey) : (value == null));
 								return selected ? 'selected' : null;
 							})
 						}, certificates[certificateKey].label);
-					})
+					}),
+					legacy('selectMatch', 'service-select', serviceToCertLegacyMatch)
 				)),
 			div(
 				{ class: 'users-table-filter-bar-status' },
