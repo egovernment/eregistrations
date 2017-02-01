@@ -21,7 +21,9 @@ var aFrom                         = require('es5-ext/array/from')
   , timeZone                      = require('../../db').timeZone
   , processingStepsMeta           = require('../../processing-steps-meta')
   , processingStepPropertyRe      = new RegExp('^processingSteps\\/map\\/([a-zA-Z0-9]+' +
-	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$');
+	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$')
+  , certificatePropertyRe         = new RegExp('^certificates\\/map\\/([a-zA-Z0-9]+)\\/' +
+	'([a-z0-9A-Z\\/]+)$');
 
 var metaMap = {
 	validate: function (record) {
@@ -72,6 +74,7 @@ module.exports = exports = memoize(function (driver) {
 
 		var initStepDataset = function (stepPath, businessProcessId) {
 			var stepShortPath = stepShortPathMap.get(stepPath);
+
 			if (!result.steps.get(stepShortPath).get(businessProcessId)) {
 				result.steps.get(stepShortPath).set(businessProcessId, {
 					stepShortPath: stepShortPath,
@@ -79,6 +82,7 @@ module.exports = exports = memoize(function (driver) {
 					stepFullPath: 'processingSteps/map/' + stepPath
 				});
 			}
+
 			return result.steps.get(stepShortPath).get(businessProcessId);
 		};
 		var initCertDataset = function (certificatePath, businessProcessId) {
@@ -92,6 +96,8 @@ module.exports = exports = memoize(function (driver) {
 					businessProcessId: businessProcessId
 				});
 			}
+
+			return result.certificates.get(certificatePath).get(businessProcessId);
 		};
 		var initBpDataset = function (businessProcessId) {
 			if (!result.businessProcesses.has(businessProcessId)) {
@@ -100,6 +106,7 @@ module.exports = exports = memoize(function (driver) {
 					serviceName: serviceName
 				});
 			}
+
 			return result.businessProcesses.get(businessProcessId);
 		};
 
@@ -132,7 +139,8 @@ module.exports = exports = memoize(function (driver) {
 		return deferred(
 			storage.search(function (id, record) {
 				var bpId = id.split('/', 1)[0]
-				  , path, keyPath, multiItemValue, meta, match, stepPath, stepKeyPath;
+				  , path, keyPath, multiItemValue, meta, match, stepPath, stepKeyPath
+				  , certificatePath, certificateKeyPath;
 
 				if (bpId === id) {
 					if (metaMap.validate(record)) metaMap.set(initBpDataset(bpId), record);
@@ -145,21 +153,85 @@ module.exports = exports = memoize(function (driver) {
 				} else {
 					keyPath = id.slice(bpId.length + 1);
 				}
+
 				// Business process properties
 				meta = exports.businessProcessMetaMap[keyPath];
 				if (validateRecord(record, meta, multiItemValue)) {
 					meta.set(initBpDataset(bpId), record, multiItemValue);
 					return;
 				}
-				// Processing step properties
+				// Business process nested entities
+				if (exports.businessProcessNestedEntities.some(function (nestedEntityConf) {
+						match = keyPath.match(nestedEntityConf.matchRe);
+
+						if (match) {
+							meta = nestedEntityConf.metaMap[match[1]];
+
+							if (validateRecord(record, meta, multiItemValue)) {
+								console.log("--- bp nested: ", keyPath);
+
+								meta.set(initBpDataset(bpId), record, multiItemValue);
+								return true;
+							}
+						}
+					})) {
+					return;
+				}
+				// Certificates
+				match = keyPath.match(certificatePropertyRe);
+				if (match) {
+					certificatePath = match[1];
+					certificateKeyPath = match[2];
+
+					// Certificate nested entities
+					if (exports.certificateNestedEntities.some(function (nestedEntityConf) {
+							match = certificateKeyPath.match(nestedEntityConf.matchRe);
+
+							if (match) {
+								meta = nestedEntityConf.metaMap[match[1]];
+
+								if (validateRecord(record, meta, multiItemValue)) {
+									console.log("--- cert nested: ", certificateKeyPath);
+
+									meta.set(initCertDataset(certificatePath, bpId), record, multiItemValue);
+									return true;
+								}
+							}
+						})) {
+						return;
+					}
+				}
+
+				// Processing steps
 				match = keyPath.match(processingStepPropertyRe);
 				if (match) {
 					stepPath = match[1];
 					stepKeyPath = match[2];
-					meta = exports.stepMetaMap[stepKeyPath];
 
-					if (stepPaths.has(stepPath) && validateRecord(record, meta, multiItemValue)) {
+					if (!stepPaths.has(stepPath)) return;
+
+					// Processing step properties
+					meta = exports.stepMetaMap[stepKeyPath];
+					if (validateRecord(record, meta, multiItemValue)) {
 						meta.set(initStepDataset(stepPath, bpId), record, multiItemValue);
+						return;
+					}
+
+					// Processing step nested entities
+					if (exports.processingStepNestedEntities.some(function (nestedEntityConf) {
+							match = stepKeyPath.match(nestedEntityConf.matchRe);
+
+							if (match) {
+								meta = nestedEntityConf.metaMap[match[1]];
+
+								if (validateRecord(record, meta, multiItemValue)) {
+									console.log("--- step nested: ", stepKeyPath);
+
+									meta.set(initStepDataset(stepPath, bpId), record, multiItemValue);
+									return true;
+								}
+							}
+						})) {
 						return;
 					}
 				}
@@ -311,3 +383,84 @@ exports.businessProcessMetaMap = {
 		delete: function (data) { delete data.submitterType; }
 	}
 };
+
+exports.businessProcessNestedEntities = [{
+	matchRe: new RegExp('^statusHistory\\/map\\/[a-zA-Z0-9]+/([a-z0-9A-Z\\/]+)$'),
+	metaMap: {
+		status: {
+			validate: function (record) { return (record.value[0] === '3'); },
+			set: function (data, record) {
+				console.log("---- bp nested set status: ", record.value);
+
+				if (!data.statusHistory) data.statusHistory = [];
+				data.statusHistory.push({
+					status: record.value.slice(1),
+					date: toDateInTz(new Date(record.stamp / 1000), timeZone)
+				});
+			},
+			delete: function (data) {
+				console.log("---- bp nestes delete status");
+				delete data.statusHistory;
+			}
+		}
+	}
+}];
+
+exports.certificateNestedEntities = [{
+	matchRe: new RegExp('^statusHistory\\/map\\/[a-zA-Z0-9]+/([a-z0-9A-Z\\/]+)$'),
+	metaMap: {
+		status: {
+			validate: function (record) { return (record.value[0] === '3'); },
+			set: function (data, record) {
+				console.log("---- cert nested set status: ", record.value);
+
+				if (!data.statusHistory) data.statusHistory = [];
+				data.statusHistory.push({
+					status: record.value.slice(1),
+					date: toDateInTz(new Date(record.stamp / 1000), timeZone)
+				});
+			},
+			delete: function (data) {
+				console.log("---- cert nestes delete status");
+				delete data.statusHistory;
+			}
+		}
+	}
+}];
+
+exports.processingStepNestedEntities = [{
+	matchRe: new RegExp('^statusHistory\\/map\\/[a-zA-Z0-9]+/([a-z0-9A-Z\\/]+)$'),
+	metaMap: {
+		status: {
+			validate: function (record) { return (record.value[0] === '3'); },
+			set: function (data, record) {
+				console.log("---- step nested set status: ", record.value);
+
+				if (!data.statusHistory) data.statusHistory = [];
+				data.statusHistory.push({
+					status: record.value.slice(1),
+					date: toDateInTz(new Date(record.stamp / 1000), timeZone)
+				});
+			},
+			delete: function (data) {
+				console.log("---- step nestes delete status");
+				delete data.statusHistory;
+			}
+		},
+		processor: {
+			validate: function (record) { return (record.value[0] === '7'); },
+			set: function (data, record) {
+				console.log("---- step nested set processor: ", record.value);
+
+				if (!data.statusHistory) data.statusHistory = [];
+				data.statusHistory.push({
+					processor: record.value.slice(1)
+				});
+			},
+			delete: function (data) {
+				console.log("---- step nestes delete processor");
+				delete data.statusHistory;
+			}
+		}
+	}
+}];
