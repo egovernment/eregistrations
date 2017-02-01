@@ -50,7 +50,7 @@ module.exports = exports = memoize(function (driver) {
 	  , serviceFullShortNameMap = new Map()
 	  , startTime               = Date.now();
 
-	var result = { steps: new Map(), businessProcesses: new Map() };
+	var result = { steps: new Map(), businessProcesses: new Map(), certificates: new Map() };
 
 	forEach(processingStepsMeta, function (meta, stepShortPath) {
 		var stepPath = resolveProcessingStepFullPath(stepShortPath);
@@ -80,6 +80,18 @@ module.exports = exports = memoize(function (driver) {
 				});
 			}
 			return result.steps.get(stepShortPath).get(businessProcessId);
+		};
+		var initCertDataset = function (certificatePath, businessProcessId) {
+			if (!result.certificates.get(certificatePath)) {
+				result.certificates.set(certificatePath, new Map());
+			}
+
+			if (!result.certificates.get(certificatePath).get(businessProcessId)) {
+				result.certificates.get(certificatePath).set(businessProcessId, {
+					certificatePath: certificatePath,
+					businessProcessId: businessProcessId
+				});
+			}
 		};
 		var initBpDataset = function (businessProcessId) {
 			if (!result.businessProcesses.has(businessProcessId)) {
