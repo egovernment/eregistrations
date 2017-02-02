@@ -14,6 +14,7 @@ var assign                  = require('es5-ext/object/assign')
   , reduceSteps             = require('../business-process-query/steps/reduce-time')
   , reduceBusinessProcesses = require('../business-process-query/business-processes/reduce-time')
   , getQueryHandlerConf     = require('../../apps/statistics/get-query-conf')
+  , getFlowQueryHandlerConf = require('../../apps/statistics/get-flow-query-conf')
   , timePerPersonPrint      = require('../pdf-renderers/statistics-time-per-person')
   , timePerRolePrint        = require('../pdf-renderers/statistics-time-per-role')
   , timePerRoleCsv          = require('../csv-renderers/statistics-time-per-role')
@@ -30,8 +31,10 @@ module.exports = function (config) {
 		customChartsController = ensureCallable(config.customChartsController);
 	}
 	var queryConf = getQueryHandlerConf({ processingStepsMeta: processingStepsMeta });
+	var flowQueryConf = getFlowQueryHandlerConf();
 
 	var queryHandler = new QueryHandler(queryConf);
+	var flowQueryHandler = new QueryHandler(flowQueryConf);
 
 	var resolveTimePerRole = function (query) {
 		return getData(driver)(function (data) {
@@ -67,8 +70,9 @@ module.exports = function (config) {
 
 	return assign({
 		'get-flow-data': function (query) {
-			return queryHandler.resolve(query)(function (query) {
-				return require('../../stats-dummy-data')(query);
+			return flowQueryHandler.resolve(query)(function (query) {
+				// data goes here
+				return null;
 			});
 		},
 		'get-time-per-role': function (query) {

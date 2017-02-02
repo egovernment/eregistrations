@@ -4,7 +4,7 @@ var _                   = require('mano').i18n.bind('View: Statistics')
   , db                  = require('../db')
   , uncapitalize        = require('es5-ext/string/#/uncapitalize')
   , location            = require('mano/lib/client/location')
-  , getQueryHandlerConf = require('../apps/statistics/get-query-conf')
+  , getQueryHandlerConf = require('../apps/statistics/get-flow-query-conf')
   , setupQueryHandler   = require('../utils/setup-client-query-handler')
   , getData             = require('mano/lib/client/xhr-driver').get
   , memoize             = require('memoizee')
@@ -12,7 +12,6 @@ var _                   = require('mano').i18n.bind('View: Statistics')
   , ObservableValue     = require('observable-value')
   , assign              = require('es5-ext/object/assign')
   , Pagination          = require('./components/pagination')
-  , Duration            = require('duration')
   , modes               = require('../utils/statistics-flow-group-modes')
   , selectService       = require('./components/select-service')
   , itemsPerPage        = 2;
@@ -103,91 +102,78 @@ var filterData = function (data) {
 	return result;
 };
 
-var calculateDurationByMode = function (duration, mode) {
-	var result;
+var incrementDateByTimeUnit = function (date, mode) {
 	switch (mode) {
 	case 'weekly':
-		result = Math.ceil(duration.days / 7);
+		date.setUTCDate(date.getUTCDate() + 7);
 		break;
 	case 'monthly':
-		result = duration.months;
+		date.setUTCMonth(date.getUTCMonth() + 1);
 		break;
 	case 'yearly':
-		result = duration.years;
+		date.setUTCFullYear(date.getUTCFullYear() + 1);
 		break;
 	default:
-		result = duration.days;
+		date.setUTCDate(date.getUTCDate() + 1);
 		break;
 	}
 
-	return result;
+	return date;
+};
+
+var calculateDurationByMode = function (dateFrom, dateTo, mode) {
+	var timeUnitsCount = 0, currentDate;
+	currentDate = new db.Date(dateFrom.getTime());
+	if (!dateTo) dateTo = new db.Date();
+
+	while (currentDate < dateTo && timeUnitsCount < 600) {
+		timeUnitsCount++;
+		incrementDateByTimeUnit(currentDate, mode);
+	}
+	return timeUnitsCount;
 };
 
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue({}), pagination = new Pagination('/flow/');
-	queryHandler = setupQueryHandler(getQueryHandlerConf({
-		processingStepsMeta: this.processingStepsMeta
-	}), location, '/flow/');
+	queryHandler = setupQueryHandler(getQueryHandlerConf(), location, '/flow/');
 	queryHandler.on('query', function (query) {
-		var serverQuery = copy(query), dateFrom, dateTo, now, mode
-		  , duration, currentDate, offset, timeUnitsCount = 0, timeUnit;
-		now      = new db.Date();
-		dateFrom = new db.Date(serverQuery.dateFrom);
-		dateTo = serverQuery.dateTo || new db.Date(now.getFullYear(), now.getMonth(), now.getDate());
-		dateTo = new db.Date(dateTo);
-		duration = new Duration(dateFrom, dateTo);
-		mode = location.query.get('mode').map(function (mode) {
-			return mode;
-		}).value;
-		timeUnit = calculateDurationByMode(duration, mode);
-		pagination.count.value = Math.ceil(timeUnit / itemsPerPage);
-		pagination.current.value = location.query.get('page').map(function (page) {
-			return Number(page) || 1;
-		});
+		var serverQuery = copy(query), dateFrom, dateTo, mode
+		  , currentDate, offset, timeUnitsCount = 0, durationInTimeUnits;
+
+		dateFrom = new db.Date(location.query.get('dateFrom').value);
+		dateTo = query.dateTo || new db.Date();
+		mode = query.mode;
+		durationInTimeUnits = calculateDurationByMode(dateFrom, dateTo, mode);
+		pagination.count.value = Math.ceil(durationInTimeUnits / itemsPerPage);
+		pagination.current.value = Number(location.query.get('page').value) || 1;
 		if (pagination.count.value > 1) {
 			offset = { from: ((pagination.current.value - 1) * itemsPerPage) };
 			offset.to = offset.from;
-			if (timeUnit - offset.from < itemsPerPage) {
-				offset.to += timeUnit - offset.from;
+			if (durationInTimeUnits - offset.from < itemsPerPage) {
+				offset.to += durationInTimeUnits - offset.from;
 			} else {
 				offset.to += itemsPerPage;
 			}
 
-			currentDate = dateFrom;
+			currentDate = new db.Date(dateFrom.getTime());
 			while (timeUnitsCount <= offset.to) {
 				if (timeUnitsCount === offset.from) {
-					dateFrom = currentDate;
+					dateFrom = new db.Date(currentDate.getTime());
 				}
 				if (timeUnitsCount === offset.to) {
-					dateTo = currentDate;
+					dateTo = new db.Date(Math.min(currentDate.getTime(), new db.Date().getTime()));
 				}
 				timeUnitsCount++;
-				switch (mode) {
-				case 'weekly':
-					currentDate = new db.Date(currentDate.getFullYear(),
-							currentDate.getMonth(), currentDate.getDate() + 7);
-					break;
-				case 'monthly':
-					currentDate = new db.Date(currentDate.getFullYear(),
-							currentDate.getMonth() + 1);
-					break;
-				case 'yearly':
-					currentDate = new db.Date(currentDate.getFullYear() + 1);
-					break;
-				default:
-					currentDate = new db.Date(currentDate.getFullYear(),
-							currentDate.getMonth(), currentDate.getDate() + 1);
-					break;
-				}
+				incrementDateByTimeUnit(currentDate, mode);
 			}
 		}
 		if (dateFrom) {
 			serverQuery.dateFrom = dateFrom.toJSON();
 		}
+
 		if (dateTo) {
 			serverQuery.dateTo = dateTo.toJSON();
 		}
-
 		queryServer(serverQuery).done(function (responseData) {
 			data.value = filterData(responseData);
 		});
