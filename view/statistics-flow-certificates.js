@@ -14,7 +14,8 @@ var _                   = require('mano').i18n.bind('View: Statistics')
   , Pagination          = require('./components/pagination')
   , Duration            = require('duration')
   , modes               = require('../utils/statistics-flow-group-modes')
-  , itemsPerPage        = 100;
+  , selectService       = require('./components/select-service')
+  , itemsPerPage        = 2;
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -29,7 +30,7 @@ var queryServer = memoize(function (query) {
 	max: 1000
 });
 
-var serviceToCertLegacyMatch = { all: [] };
+var serviceToCertLegacyMatch = { '': [] };
 
 var certificates = {};
 
@@ -48,7 +49,7 @@ db.BusinessProcess.extensions.forEach(function (ServiceType) {
 			serviceToCertLegacyMatch[getServiceName(ServiceType)] = [];
 		}
 		serviceToCertLegacyMatch[getServiceName(ServiceType)].push('certificate-' + certificate.key);
-		serviceToCertLegacyMatch.all.push('certificate-' + certificate.key);
+		serviceToCertLegacyMatch[''].push('certificate-' + certificate.key);
 	});
 });
 
@@ -79,9 +80,9 @@ var filterData = function (data) {
 	location.query.get('service').map(function (service) {
 		location.query.get('certificate').map(function (certificate) {
 			Object.keys(data).forEach(function (key) {
-				if (service !== 'all' && certificate) {
+				if (service && certificate) {
 					result[key] = buildResultRow(data[key][service].certificate[certificate]);
-				} else if (service !== 'all') {
+				} else if (service) {
 					result[key] = buildResultRow(data[key][service].businessProcess);
 				} else {
 					var rowsToAccumulate = [];
@@ -129,7 +130,7 @@ exports['statistics-main'] = function () {
 	}), location, '/flow/');
 	queryHandler.on('query', function (query) {
 		var serverQuery = copy(query), dateFrom, dateTo, now, mode
-		  , duration, currentDate, offset, daysCount = 0, timeUnit;
+		  , duration, currentDate, offset, timeUnitsCount = 0, timeUnit;
 		now      = new db.Date();
 		dateFrom = new db.Date(serverQuery.dateFrom);
 		dateTo = serverQuery.dateTo || new db.Date(now.getFullYear(), now.getMonth(), now.getDate());
@@ -153,14 +154,14 @@ exports['statistics-main'] = function () {
 			}
 
 			currentDate = dateFrom;
-			while (daysCount <= offset.to) {
-				if (daysCount === offset.from) {
+			while (timeUnitsCount <= offset.to) {
+				if (timeUnitsCount === offset.from) {
 					dateFrom = currentDate;
 				}
-				if (daysCount === offset.to) {
+				if (timeUnitsCount === offset.to) {
 					dateTo = currentDate;
 				}
-				daysCount++;
+				timeUnitsCount++;
 				switch (mode) {
 				case 'weekly':
 					currentDate = new db.Date(currentDate.getFullYear(),
@@ -195,22 +196,7 @@ exports['statistics-main'] = function () {
 	section({ class: 'section-primary users-table-filter-bar' },
 		form({ action: '/flow/', autoSubmit: true },
 			div({ class: 'users-table-filter-bar-status' },
-				select(
-					{ id: 'service-select', name: 'service' },
-					option({ value: 'all', selected: location.query.get('service').map(function (value) {
-						return !value || value === 'all' ? 'selected' : null;
-					}) }, _("All services")),
-					list(db.BusinessProcess.extensions, function (ServiceType) {
-						var serviceName = getServiceName(ServiceType);
-						return option({
-							value: serviceName,
-							selected: location.query.get('service').map(function (value) {
-								var selected = (serviceName ? (value === serviceName) : (value == null));
-								return selected ? 'selected' : null;
-							})
-						}, ServiceType.prototype.label);
-					})
-				)),
+				selectService({ label: _("All services") })),
 			div({ class: 'users-table-filter-bar-status' },
 				select(
 					{ id: 'certificate-select', name: 'certificate' },

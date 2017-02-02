@@ -4,13 +4,13 @@ var db                = require('../db')
   , _                 = require('mano').i18n.bind('View: Official: Inspector')
   , location          = require('mano/lib/client/location')
   , capitalize        = require('es5-ext/string/#/capitalize')
-  , uncapitalize      = require('es5-ext/string/#/uncapitalize')
   , once              = require('timers-ext/once')
   , dispatch          = require('dom-ext/html-element/#/dispatch-event-2')
   , env               = require('mano').env
 
   , tableColumns      = require('./components/inspector-table-columns')
-  , getInspectorTable = require('./components/inspector-table');
+  , getInspectorTable = require('./components/inspector-table')
+  , selectService     = require('./components/select-service');
 
 exports._parent = require('./user-base');
 
@@ -54,25 +54,7 @@ exports['sub-main'] = {
 				div(
 					{ class: 'users-table-filter-bar-status' },
 					label({ for: 'service-select' }, _("Service"), ':'),
-					select(
-						{ id: 'service-select', name: 'service' },
-						option({ value: '', selected: serviceQuery.map(function (value) {
-							return value ? null : 'selected';
-						}) }, _("All")),
-						list(db.BusinessProcess.extensions, function (ServiceType) {
-							var serviceName = uncapitalize.call(
-								ServiceType.__id__.slice('BusinessProcess'.length)
-							);
-
-							return option({
-								value: serviceName,
-								selected: serviceQuery.map(function (value) {
-									var selected = (serviceName ? (value === serviceName) : (value == null));
-									return selected ? 'selected' : null;
-								})
-							}, ServiceType.prototype.label);
-						})
-					)
+					selectService()
 				),
 				// Registration selector
 				div(

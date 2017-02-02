@@ -71,7 +71,7 @@ module.exports = exports = function (data) {
 	conf.push({
 		name: 'service',
 		ensure: function (value) {
-			if (!value || value === 'all') return;
+			if (!value) return;
 			if (!availableServices.has(value)) {
 				throw new Error("Unrecognized service value " + stringify(value));
 			}

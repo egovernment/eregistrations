@@ -68,8 +68,7 @@ module.exports = function (config) {
 	return assign({
 		'get-flow-data': function (query) {
 			return queryHandler.resolve(query)(function (query) {
-				//Data goes here
-				return null;
+				return require('../../stats-dummy-data')(query);
 			});
 		},
 		'get-time-per-role': function (query) {
