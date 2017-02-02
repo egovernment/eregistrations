@@ -1,9 +1,9 @@
 'use strict';
 
-var _            = require('mano').i18n.bind('View: Statistics')
-  , db           = require('../db')
-  , uncapitalize = require('es5-ext/string/#/uncapitalize')
-  , location     = require('mano/lib/client/location')
+var _                   = require('mano').i18n.bind('View: Statistics')
+  , db                  = require('../db')
+  , uncapitalize        = require('es5-ext/string/#/uncapitalize')
+  , location            = require('mano/lib/client/location')
   , getQueryHandlerConf = require('../apps/statistics/get-query-conf')
   , setupQueryHandler   = require('../utils/setup-client-query-handler')
   , getData             = require('mano/lib/client/xhr-driver').get
@@ -13,6 +13,7 @@ var _            = require('mano').i18n.bind('View: Statistics')
   , assign              = require('es5-ext/object/assign')
   , Pagination          = require('./components/pagination')
   , Duration            = require('duration')
+  , modes               = require('../utils/statistics-flow-group-modes')
   , itemsPerPage        = 100;
 
 exports._parent        = require('./statistics-flow');
@@ -50,9 +51,6 @@ db.BusinessProcess.extensions.forEach(function (ServiceType) {
 		serviceToCertLegacyMatch.all.push('certificate-' + certificate.key);
 	});
 });
-
-// TODO: remove this
-var getDummyData = require('../stats-dummy-data');
 
 var buildResultRow = function (rowData) {
 	return assign({
@@ -190,9 +188,7 @@ exports['statistics-main'] = function () {
 		}
 
 		queryServer(serverQuery).done(function (responseData) {
-			//TODO remove below line
-			var d = getDummyData({ dateFrom: dateFrom, dateTo: dateTo, mode: mode });
-			data.value = filterData(d);
+			data.value = filterData(responseData);
 		});
 	});
 
@@ -251,17 +247,14 @@ exports['statistics-main'] = function () {
 			),
 			div({ class: "input", id: "mode-selection" },
 				div({ class: "inline-button-radio" },
-					list([
-						{ key: 'daily', label: _('Daily') },
-						{ key: 'weekly', label: _('Weeky') },
-						{ key: 'monthly', label: _('Monthy') },
-						{ key: 'yearly', label: _('Yearly') }], function (mode) {
+					list(modes, function (mode) {
 						label(
 							input({
 								type: "radio",
 								name: "mode",
 								value: mode.key,
 								checked: location.query.get('mode').map(function (value) {
+									if (!value) value = 'daily';
 									var checked = (mode.key ? (value === mode.key) : (value == null));
 									return checked ? 'checked' : null;
 								})
@@ -307,7 +300,17 @@ exports['statistics-main'] = function () {
 		data.map(function (result) {
 			return table({ class: 'statistics-table' },
 				thead(
-					th({ class: 'statistics-table-number' }, _("Day")),
+					th({ class: 'statistics-table-number' }, location.query.get("mode").map(function (mode) {
+						var title;
+						if (!mode) return;
+						modes.some(function (m) {
+							if (mode === m.key) {
+								title = m.labelNoun;
+								return true;
+							}
+						});
+						return title;
+					})),
 					th({ class: 'statistics-table-number' }, _("Submitted")),
 					th({ class: 'statistics-table-number' }, _("Pending")),
 					th({ class: 'statistics-table-number' }, _("Ready for withdraw")),
@@ -315,7 +318,7 @@ exports['statistics-main'] = function () {
 					th({ class: 'statistics-table-number' }, _("Rejected")),
 					th({ class: 'statistics-table-number' }, _("Sent back for correction"))
 				),
-				tbody({ onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 7 },
+				tbody({ onEmpty: tr(td({ class: 'empty', colspan: 7 },
 					_("No data for this criteria"))) }, Object.keys(result), function (key) {
 					return tr(
 						td(key),
