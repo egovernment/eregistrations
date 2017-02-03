@@ -14,6 +14,7 @@ var _                   = require('mano').i18n.bind('View: Statistics')
   , Pagination          = require('./components/pagination')
   , modes               = require('../utils/statistics-flow-group-modes')
   , selectService       = require('./components/select-service')
+  , selectCertificate   = require('./components/select-certificate')
   , itemsPerPage        = require('../conf/objects-list-items-per-page');
 
 exports._parent        = require('./statistics-flow');
@@ -31,8 +32,6 @@ var queryServer = memoize(function (query) {
 
 var serviceToCertLegacyMatch = { '': [] };
 
-var certificates = {};
-
 var getServiceName = function (ServiceType) {
 	return uncapitalize.call(
 		ServiceType.__id__.slice('BusinessProcess'.length)
@@ -41,9 +40,6 @@ var getServiceName = function (ServiceType) {
 
 db.BusinessProcess.extensions.forEach(function (ServiceType) {
 	ServiceType.prototype.certificates.map.forEach(function (certificate) {
-		if (!certificates[certificate.key]) {
-			certificates[certificate.key] = { label: certificate.label };
-		}
 		if (!serviceToCertLegacyMatch[getServiceName(ServiceType)]) {
 			serviceToCertLegacyMatch[getServiceName(ServiceType)] = [];
 		}
@@ -192,23 +188,8 @@ exports['statistics-main'] = function () {
 			div({ class: 'users-table-filter-bar-status' },
 				selectService({ label: _("All services") })),
 			div({ class: 'users-table-filter-bar-status' },
-				select(
-					{ id: 'certificate-select', name: 'certificate' },
-					option({ value: '', selected: location.query.get('certificate').map(function (value) {
-						return value ? null : 'selected';
-					}) }, _("All certificates")),
-					list(Object.keys(certificates), function (certificateKey) {
-						return option({
-							id: 'certificate-' + certificateKey,
-							value: certificateKey,
-							selected: location.query.get('certificate').map(function (value) {
-								var selected = (certificateKey ? (value === certificateKey) : (value == null));
-								return selected ? 'selected' : null;
-							})
-						}, certificates[certificateKey].label);
-					}),
-					legacy('selectMatch', 'service-select', serviceToCertLegacyMatch)
-				)),
+					selectCertificate(),
+					legacy('selectMatch', 'service-select', serviceToCertLegacyMatch)),
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
