@@ -15,7 +15,8 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , modes             = require('../utils/statistics-flow-group-modes')
   , selectService     = require('./components/filter-bar/select-service')
   , selectCertificate = require('./components/filter-bar/select-certificate')
-  , itemsPerPage      = require('../conf/objects-list-items-per-page');
+  , itemsPerPage      = require('../conf/objects-list-items-per-page')
+  , isNaturalNumber   = require('es5-ext/number/is-natural');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -130,23 +131,52 @@ var calculateDurationByMode = function (dateFrom, dateTo, mode) {
 	return timeUnitsCount;
 };
 
+var decorateQueryHandlerConf = function (queryHandlerConf, pagination) {
+	var conf = queryHandlerConf.slice(0);
+
+	conf.push({
+		name: 'page',
+		ensure: function (value, resolvedQuery, query) {
+			var num, dateFrom, dateTo, mode, durationInTimeUnits, resolvedValue;
+			resolvedValue = value;
+			if (resolvedValue == null) resolvedValue = '1';
+			if (isNaN(resolvedValue)) throw new Error("Unrecognized page value " + JSON.stringify(value));
+			num = Number(resolvedValue);
+			if (!isNaturalNumber(num)) throw new Error("Unreconized page value " + JSON.stringify(value));
+			if (num < 1) throw new Error("Unexpected page value " + JSON.stringify(value));
+
+			dateFrom = resolvedQuery.dateFrom; //new db.Date(location.query.get('dateFrom').value);
+			dateTo   = resolvedQuery.dateTo || new db.Date();
+			mode     = resolvedQuery.mode;
+			durationInTimeUnits = calculateDurationByMode(dateFrom, dateTo, mode);
+			pagination.count.value =
+				resolvedQuery.pageCount = Math.ceil(durationInTimeUnits / itemsPerPage);
+			if (num > resolvedQuery.pageCount) throw new Error("Page value overflow");
+			pagination.current.value = num;
+			return num;
+		}
+	});
+
+	return conf;
+};
+
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue({}), pagination = new Pagination('/flow/');
-	queryHandler = setupQueryHandler(queryHandlerConf, location, '/flow/');
+	queryHandler = setupQueryHandler(decorateQueryHandlerConf(queryHandlerConf, pagination),
+		location, '/flow/');
 	queryHandler.on('query', function (query) {
 		var serverQuery = copy(query), dateFrom, dateTo, mode
-		  , currentDate, offset, timeUnitsCount = 0, durationInTimeUnits, now;
+		  , currentDate, offset, timeUnitsCount = 0, durationInTimeUnits, now, page;
 
 		now      = new db.Date();
-		dateFrom = new db.Date(location.query.get('dateFrom').value);
+		dateFrom = query.dateFrom;
 		dateTo   = query.dateTo || new db.Date();
 		mode     = query.mode;
-		durationInTimeUnits = calculateDurationByMode(dateFrom, dateTo, mode);
-		pagination.count.value = Math.ceil(durationInTimeUnits / itemsPerPage);
-		pagination.current.value = Math.min(pagination.count.value,
-				Number(location.query.get('page').value) || 1);
-		if (pagination.count.value > 1) {
-			offset = { from: ((pagination.current.value - 1) * itemsPerPage) };
+		page     = query.page;
+
+		if (query.pageCount > 1) {
+			durationInTimeUnits = calculateDurationByMode(dateFrom, dateTo, mode);
+			offset = { from: ((page - 1) * itemsPerPage) };
 			offset.to = offset.from;
 			if ((durationInTimeUnits - offset.from) < itemsPerPage) {
 				offset.to += durationInTimeUnits - offset.from;
