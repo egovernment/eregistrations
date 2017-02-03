@@ -1,7 +1,7 @@
 'use strict';
 
 var _            = require('mano').i18n.bind('View: Select Certificate')
-  , db           = require('../../db')
+  , db           = require('../../../db')
   , location     = require('mano/lib/client/location');
 
 module.exports = function (/* opts */) {

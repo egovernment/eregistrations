@@ -1,7 +1,7 @@
 'use strict';
 
 var _            = require('mano').i18n.bind('View: Select Service')
-  , db           = require('../../db')
+  , db           = require('../../../db')
   , location     = require('mano/lib/client/location')
   , uncapitalize = require('es5-ext/string/#/uncapitalize');
 
