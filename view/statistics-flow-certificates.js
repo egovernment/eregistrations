@@ -14,7 +14,7 @@ var _                   = require('mano').i18n.bind('View: Statistics')
   , Pagination          = require('./components/pagination')
   , modes               = require('../utils/statistics-flow-group-modes')
   , selectService       = require('./components/select-service')
-  , itemsPerPage        = 2;
+  , itemsPerPage        = require('../conf/objects-list-items-per-page');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -112,6 +112,7 @@ var incrementDateByTimeUnit = function (date, mode) {
 		break;
 	case 'yearly':
 		date.setUTCFullYear(date.getUTCFullYear() + 1);
+		date.setUTCMonth(0);
 		break;
 	default:
 		date.setUTCDate(date.getUTCDate() + 1);
@@ -126,9 +127,9 @@ var calculateDurationByMode = function (dateFrom, dateTo, mode) {
 	currentDate = new db.Date(dateFrom.getTime());
 	if (!dateTo) dateTo = new db.Date();
 
-	while (currentDate < dateTo && timeUnitsCount < 600) {
-		timeUnitsCount++;
+	while (currentDate < dateTo) {
 		incrementDateByTimeUnit(currentDate, mode);
+		timeUnitsCount++;
 	}
 	return timeUnitsCount;
 };
@@ -138,18 +139,20 @@ exports['statistics-main'] = function () {
 	queryHandler = setupQueryHandler(getQueryHandlerConf(), location, '/flow/');
 	queryHandler.on('query', function (query) {
 		var serverQuery = copy(query), dateFrom, dateTo, mode
-		  , currentDate, offset, timeUnitsCount = 0, durationInTimeUnits;
+		  , currentDate, offset, timeUnitsCount = 0, durationInTimeUnits, now;
 
+		now      = new db.Date();
 		dateFrom = new db.Date(location.query.get('dateFrom').value);
-		dateTo = query.dateTo || new db.Date();
-		mode = query.mode;
+		dateTo   = query.dateTo || new db.Date();
+		mode     = query.mode;
 		durationInTimeUnits = calculateDurationByMode(dateFrom, dateTo, mode);
 		pagination.count.value = Math.ceil(durationInTimeUnits / itemsPerPage);
-		pagination.current.value = Number(location.query.get('page').value) || 1;
+		pagination.current.value = Math.min(pagination.count.value,
+				Number(location.query.get('page').value) || 1);
 		if (pagination.count.value > 1) {
 			offset = { from: ((pagination.current.value - 1) * itemsPerPage) };
 			offset.to = offset.from;
-			if (durationInTimeUnits - offset.from < itemsPerPage) {
+			if ((durationInTimeUnits - offset.from) < itemsPerPage) {
 				offset.to += durationInTimeUnits - offset.from;
 			} else {
 				offset.to += itemsPerPage;
@@ -161,7 +164,12 @@ exports['statistics-main'] = function () {
 					dateFrom = new db.Date(currentDate.getTime());
 				}
 				if (timeUnitsCount === offset.to) {
-					dateTo = new db.Date(Math.min(currentDate.getTime(), new db.Date().getTime()));
+					dateTo = new db.Date(currentDate.getTime());
+					if (dateTo > now) {
+						dateTo.setUTCFullYear(now.getUTCFullYear());
+						dateTo.setUTCMonth(now.getUTCMonth());
+						dateTo.setUTCDate(now.getUTCDate());
+					}
 				}
 				timeUnitsCount++;
 				incrementDateByTimeUnit(currentDate, mode);
