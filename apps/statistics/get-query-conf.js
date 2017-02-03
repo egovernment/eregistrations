@@ -1,3 +1,4 @@
+// Handles params parsing for all statistics queries
 'use strict';
 
 var aFrom              = require('es5-ext/array/from')
