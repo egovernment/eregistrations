@@ -14,7 +14,7 @@ var assign                  = require('es5-ext/object/assign')
   , reduceSteps             = require('../business-process-query/steps/reduce-time')
   , reduceBusinessProcesses = require('../business-process-query/business-processes/reduce-time')
   , getQueryHandlerConf     = require('../../apps/statistics/get-query-conf')
-  , getFlowQueryHandlerConf = require('../../apps/statistics/get-flow-query-conf')
+  , flowQueryHandlerConf    = require('../../apps/statistics/flow-query-conf')
   , timePerPersonPrint      = require('../pdf-renderers/statistics-time-per-person')
   , timePerRolePrint        = require('../pdf-renderers/statistics-time-per-role')
   , timePerRoleCsv          = require('../csv-renderers/statistics-time-per-role')
@@ -31,7 +31,7 @@ module.exports = function (config) {
 		customChartsController = ensureCallable(config.customChartsController);
 	}
 	var queryConf = getQueryHandlerConf({ processingStepsMeta: processingStepsMeta });
-	var flowQueryConf = getFlowQueryHandlerConf();
+	var flowQueryConf = flowQueryHandlerConf;
 
 	var queryHandler = new QueryHandler(queryConf);
 	var flowQueryHandler = new QueryHandler(flowQueryConf);

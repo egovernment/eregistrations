@@ -1,21 +1,21 @@
 'use strict';
 
-var _                   = require('mano').i18n.bind('View: Statistics')
-  , db                  = require('../db')
-  , uncapitalize        = require('es5-ext/string/#/uncapitalize')
-  , location            = require('mano/lib/client/location')
-  , getQueryHandlerConf = require('../apps/statistics/get-flow-query-conf')
-  , setupQueryHandler   = require('../utils/setup-client-query-handler')
-  , getData             = require('mano/lib/client/xhr-driver').get
-  , memoize             = require('memoizee')
-  , copy                = require('es5-ext/object/copy')
-  , ObservableValue     = require('observable-value')
-  , assign              = require('es5-ext/object/assign')
-  , Pagination          = require('./components/pagination')
-  , modes               = require('../utils/statistics-flow-group-modes')
-  , selectService       = require('./components/select-service')
-  , selectCertificate   = require('./components/select-certificate')
-  , itemsPerPage        = require('../conf/objects-list-items-per-page');
+var _                 = require('mano').i18n.bind('View: Statistics')
+  , db                = require('../db')
+  , uncapitalize      = require('es5-ext/string/#/uncapitalize')
+  , location          = require('mano/lib/client/location')
+  , queryHandlerConf  = require('../apps/statistics/flow-query-conf')
+  , setupQueryHandler = require('../utils/setup-client-query-handler')
+  , getData           = require('mano/lib/client/xhr-driver').get
+  , memoize           = require('memoizee')
+  , copy              = require('es5-ext/object/copy')
+  , ObservableValue   = require('observable-value')
+  , assign            = require('es5-ext/object/assign')
+  , Pagination        = require('./components/pagination')
+  , modes             = require('../utils/statistics-flow-group-modes')
+  , selectService     = require('./components/filter-bar/select-service')
+  , selectCertificate = require('./components/filter-bar/select-certificate')
+  , itemsPerPage      = require('../conf/objects-list-items-per-page');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -132,7 +132,7 @@ var calculateDurationByMode = function (dateFrom, dateTo, mode) {
 
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue({}), pagination = new Pagination('/flow/');
-	queryHandler = setupQueryHandler(getQueryHandlerConf(), location, '/flow/');
+	queryHandler = setupQueryHandler(queryHandlerConf, location, '/flow/');
 	queryHandler.on('query', function (query) {
 		var serverQuery = copy(query), dateFrom, dateTo, mode
 		  , currentDate, offset, timeUnitsCount = 0, durationInTimeUnits, now;

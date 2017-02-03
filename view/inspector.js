@@ -10,7 +10,7 @@ var db                = require('../db')
 
   , tableColumns      = require('./components/inspector-table-columns')
   , getInspectorTable = require('./components/inspector-table')
-  , selectService     = require('./components/select-service');
+  , selectService     = require('./components/filter-bar/select-service');
 
 exports._parent = require('./user-base');
 
