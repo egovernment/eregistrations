@@ -15,11 +15,9 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , modes             = require('../utils/statistics-flow-group-modes')
   , selectService     = require('./components/filter-bar/select-service')
   , selectCertificate = require('./components/filter-bar/select-certificate')
+  , selectPeriodMode  = require('./components/filter-bar/select-period-mode')
   , itemsPerPage      = require('../conf/objects-list-items-per-page')
-  , isNaturalNumber   = require('es5-ext/number/is-natural')
-  , generateScript    = require('dom-ext/html-document/#/generate-inline-script')
-  , inlineButtonGroupHandlerScript =
-		require('../view/dbjs/inline-button-group/class-handler-script');
+  , isNaturalNumber   = require('es5-ext/number/is-natural');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -275,23 +273,7 @@ exports['statistics-main'] = function () {
 				input({ id: 'date-to-input', type: 'date',
 					name: 'dateTo', value: location.query.get('dateTo') })
 			),
-			div({ class: "input", id: "mode-selection" },
-				div({ class: "inline-button-radio" },
-					list(modes, function (mode) {
-						label(
-							input({
-								type: "radio",
-								name: "mode",
-								value: mode.key,
-								checked: location.query.get('mode').map(function (value) {
-									if (!value) value = 'daily';
-									var checked = (mode.key ? (value === mode.key) : (value == null));
-									return checked ? 'checked' : null;
-								})
-							}),
-							mode.label
-						);
-					})), generateScript.call(document, inlineButtonGroupHandlerScript, "mode-selection")),
+			selectPeriodMode(),
 			p({ class: 'submit' }, input({ type: 'submit' }))));
 
 	section(pagination);
