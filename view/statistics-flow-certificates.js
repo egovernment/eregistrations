@@ -16,7 +16,10 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , selectService     = require('./components/filter-bar/select-service')
   , selectCertificate = require('./components/filter-bar/select-certificate')
   , itemsPerPage      = require('../conf/objects-list-items-per-page')
-  , isNaturalNumber   = require('es5-ext/number/is-natural');
+  , isNaturalNumber   = require('es5-ext/number/is-natural')
+  , generateScript    = require('dom-ext/html-document/#/generate-inline-script')
+  , inlineButtonGroupHandlerScript =
+		require('../view/dbjs/inline-button-group/class-handler-script');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -109,7 +112,6 @@ var incrementDateByTimeUnit = function (date, mode) {
 		break;
 	case 'yearly':
 		date.setUTCFullYear(date.getUTCFullYear() + 1);
-		date.setUTCMonth(0);
 		break;
 	default:
 		date.setUTCDate(date.getUTCDate() + 1);
@@ -119,11 +121,40 @@ var incrementDateByTimeUnit = function (date, mode) {
 	return date;
 };
 
+var floorToUnit = function (date, mode) {
+	switch (mode) {
+	case 'weekly':
+		var dayOfWeek = date.getUTCDay(), modifier;
+		if (dayOfWeek === 0) {
+			modifier = -6;
+		} else {
+			modifier = -(dayOfWeek - 1);
+		}
+		date.setUTCDate(date.getUTCDate() + modifier);
+		break;
+	case 'monthly':
+		date.setUTCDate(1);
+		break;
+	case 'yearly':
+		date.setUTCMonth(0);
+		break;
+	default:
+		break;
+	}
+
+	return date;
+};
+
+var createUTCDate = function (date) {
+	return new db.Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+};
+
 var calculateDurationByMode = function (dateFrom, dateTo, mode) {
 	var timeUnitsCount = 0, currentDate;
-	currentDate = new db.Date(dateFrom.getTime());
+	currentDate = createUTCDate(dateFrom);
 	if (!dateTo) dateTo = new db.Date();
 
+	floorToUnit(currentDate, mode);
 	while (currentDate < dateTo) {
 		incrementDateByTimeUnit(currentDate, mode);
 		timeUnitsCount++;
@@ -131,7 +162,7 @@ var calculateDurationByMode = function (dateFrom, dateTo, mode) {
 	return timeUnitsCount;
 };
 
-var decorateQueryHandlerConf = function (queryHandlerConf, pagination) {
+var decorateQueryHandlerConf = function (queryHandlerConf) {
 	var conf = queryHandlerConf.slice(0);
 
 	conf.push({
@@ -145,14 +176,12 @@ var decorateQueryHandlerConf = function (queryHandlerConf, pagination) {
 			if (!isNaturalNumber(num)) throw new Error("Unreconized page value " + JSON.stringify(value));
 			if (num < 1) throw new Error("Unexpected page value " + JSON.stringify(value));
 
-			dateFrom = resolvedQuery.dateFrom; //new db.Date(location.query.get('dateFrom').value);
+			dateFrom = resolvedQuery.dateFrom;
 			dateTo   = resolvedQuery.dateTo || new db.Date();
 			mode     = resolvedQuery.mode;
-			durationInTimeUnits = calculateDurationByMode(dateFrom, dateTo, mode);
-			pagination.count.value =
-				resolvedQuery.pageCount = Math.ceil(durationInTimeUnits / itemsPerPage);
+			durationInTimeUnits     = calculateDurationByMode(dateFrom, dateTo, mode);
+			resolvedQuery.pageCount = Math.ceil(durationInTimeUnits / itemsPerPage);
 			if (num > resolvedQuery.pageCount) throw new Error("Page value overflow");
-			pagination.current.value = num;
 			return num;
 		}
 	});
@@ -162,8 +191,9 @@ var decorateQueryHandlerConf = function (queryHandlerConf, pagination) {
 
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue({}), pagination = new Pagination('/flow/');
-	queryHandler = setupQueryHandler(decorateQueryHandlerConf(queryHandlerConf, pagination),
+	queryHandler = setupQueryHandler(decorateQueryHandlerConf(queryHandlerConf),
 		location, '/flow/');
+
 	queryHandler.on('query', function (query) {
 		var serverQuery = copy(query), dateFrom, dateTo, mode
 		  , currentDate, offset, timeUnitsCount = 0, durationInTimeUnits, now, page;
@@ -174,8 +204,11 @@ exports['statistics-main'] = function () {
 		mode     = query.mode;
 		page     = query.page;
 
+		durationInTimeUnits = calculateDurationByMode(dateFrom, dateTo, mode);
+		pagination.count.value   = query.pageCount;
+		pagination.current.value = query.page;
+
 		if (query.pageCount > 1) {
-			durationInTimeUnits = calculateDurationByMode(dateFrom, dateTo, mode);
 			offset = { from: ((page - 1) * itemsPerPage) };
 			offset.to = offset.from;
 			if ((durationInTimeUnits - offset.from) < itemsPerPage) {
@@ -184,13 +217,14 @@ exports['statistics-main'] = function () {
 				offset.to += itemsPerPage;
 			}
 
-			currentDate = new db.Date(dateFrom.getTime());
+			currentDate = createUTCDate(dateFrom);
+			floorToUnit(currentDate, mode);
 			while (timeUnitsCount <= offset.to) {
 				if (timeUnitsCount === offset.from) {
-					dateFrom = new db.Date(currentDate.getTime());
+					dateFrom = createUTCDate(currentDate);
 				}
 				if (timeUnitsCount === offset.to) {
-					dateTo = new db.Date(currentDate.getTime());
+					dateTo = createUTCDate(currentDate);
 					if (dateTo > now) {
 						dateTo.setUTCFullYear(now.getUTCFullYear());
 						dateTo.setUTCMonth(now.getUTCMonth());
@@ -208,6 +242,11 @@ exports['statistics-main'] = function () {
 		if (dateTo) {
 			serverQuery.dateTo = dateTo.toJSON();
 		}
+
+		delete serverQuery.service;
+		delete serverQuery.page;
+		delete serverQuery.certificate;
+
 		queryServer(serverQuery).done(function (responseData) {
 			data.value = filterData(responseData);
 		});
@@ -252,38 +291,7 @@ exports['statistics-main'] = function () {
 							}),
 							mode.label
 						);
-					})),
-				script((function (id, classMap) {
-					var current, radio, radios;
-					var onChange = function () {
-						var nu, i;
-						for (i = 0; (radio = radios[i]); ++i) {
-							if (radio.checked) {
-								nu = radio;
-								break;
-							}
-						}
-							if (nu === current) return;
-							if (current) current.parentNode.removeClass('success');
-							if (nu) $(nu.parentNode).addClass('success');
-						current = nu;
-					};
-					setTimeout(function self() {
-						var container = $(id);
-						if (!container) {
-							setTimeout(self, 1000);
-							return;
-						}
-						radios = container.getElementsByTagName('input');
-						container.addEvent('change', function () {
-							setTimeout(onChange, 0);
-						});
-						container.addEvent('click', function () {
-							setTimeout(onChange, 0);
-						});
-						onChange();
-					}, 0);
-				}("mode-selection")))),
+					})), generateScript.call(document, inlineButtonGroupHandlerScript, "mode-selection")),
 			p({ class: 'submit' }, input({ type: 'submit' }))));
 
 	section(pagination);
