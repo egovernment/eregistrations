@@ -117,8 +117,10 @@ module.exports = exports = memoize(function (driver) {
 			if (!metaMap.validate(event.data)) metaMap.delete(dataset);
 			else metaMap.set(dataset, event.data);
 		});
+
+		// Processing steps
 		stepPaths.forEach(function (stepPath) {
-			// Status
+			// Processing step properties
 			forEach(exports.stepMetaMap, function (meta, stepKeyPath) {
 				storage.on('key:processingSteps/map/' + stepPath + '/' + stepKeyPath, function (event) {
 					if (event.type !== (meta.type || 'direct')) return;
@@ -127,12 +129,76 @@ module.exports = exports = memoize(function (driver) {
 				});
 			});
 		});
+		// Business process properties
 		forEach(exports.businessProcessMetaMap, function (meta, keyPath) {
 			storage.on('key:' + keyPath, function (event) {
 				if (event.type !== (meta.type || 'direct')) return;
 				if (!meta.validate(event.data)) meta.delete(initBpDataset(event.ownerId));
 				else meta.set(initBpDataset(event.ownerId), event.data);
 			});
+		});
+
+		storage.on('update', function (event) {
+			var match, certificatePath, certificateKeyPath, stepPath, stepKeyPath;
+
+			if (!event.keyPath) return;
+
+			var updateOnMatch = function (nestedEntityConfs, keyPath, getData) {
+				var nestedEntityPath, nestedEntityKeyPath, meta, data;
+
+				return nestedEntityConfs.some(function (nestedEntityConf) {
+					match = keyPath.match(nestedEntityConf.matchRe);
+
+					if (match) {
+						nestedEntityPath = match[1];
+						nestedEntityKeyPath = match[2];
+
+						meta = nestedEntityConf.metaMap[nestedEntityKeyPath];
+
+						if (event.type !== (meta.type || 'direct')) return;
+
+						data = nestedEntityConf.init(getData(), nestedEntityPath);
+
+						if (!meta.validate(event.data)) meta.delete(data);
+						else meta.set(data, event.data);
+
+						return true;
+					}
+				});
+			};
+
+			// Business process nested entities
+			if (updateOnMatch(exports.businessProcessNestedEntities, event.keyPath, function () {
+					return initBpDataset(event.ownerId);
+				})) {
+				return;
+			}
+
+			// Certificates nested entities
+			match = event.keyPath.match(certificatePropertyRe);
+			if (match) {
+				certificatePath = match[1];
+				certificateKeyPath = match[2];
+
+				if (updateOnMatch(exports.certificateNestedEntities, certificateKeyPath, function () {
+						return initCertDataset(certificatePath, event.ownerId);
+					})) {
+					return;
+				}
+			}
+
+			// Processing step nested entities
+			match = event.keyPath.match(processingStepPropertyRe);
+			if (match) {
+				stepPath = match[1];
+				stepKeyPath = match[2];
+
+				if (updateOnMatch(exports.processingStepNestedEntities, stepKeyPath, function () {
+						return initStepDataset(stepPath, event.ownerId);
+					})) {
+					return;
+				}
+			}
 		});
 
 		// Get current records
