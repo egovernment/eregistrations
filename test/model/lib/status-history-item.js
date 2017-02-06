@@ -1,5 +1,3 @@
-// TODO
-
 'use strict';
 
 var Database = require('dbjs');
