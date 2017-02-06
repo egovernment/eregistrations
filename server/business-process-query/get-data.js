@@ -412,21 +412,23 @@ var statusHistoryEntityInit = function (data, nestedEntityId) {
 	return data.statusHistory.get(nestedEntityId);
 };
 
+var statusHistoryStatusMeta = {
+	validate: function (record) { return (record.value[0] === '3'); },
+	set: function (data, record) {
+		data.status = record.value.slice(1);
+		data.date = toDateInTz(new Date(record.stamp / 1000), timeZone);
+	},
+	delete: function (data) {
+		delete data.status;
+		delete data.date;
+	}
+};
+
 exports.businessProcessNestedEntities = [{
 	matchRe: statusHistoryMatchRe,
 	init: statusHistoryEntityInit,
 	metaMap: {
-		status: {
-			validate: function (record) { return (record.value[0] === '3'); },
-			set: function (data, record) {
-				data.status = record.value.slice(1);
-				data.date = toDateInTz(new Date(record.stamp / 1000), timeZone);
-			},
-			delete: function (data) {
-				delete data.status;
-				delete data.date;
-			}
-		}
+		status: statusHistoryStatusMeta
 	}
 }];
 
@@ -434,17 +436,7 @@ exports.certificateNestedEntities = [{
 	matchRe: statusHistoryMatchRe,
 	init: statusHistoryEntityInit,
 	metaMap: {
-		status: {
-			validate: function (record) { return (record.value[0] === '3'); },
-			set: function (data, record) {
-				data.status = record.value.slice(1);
-				data.date = toDateInTz(new Date(record.stamp / 1000), timeZone);
-			},
-			delete: function (data) {
-				delete data.status;
-				delete data.date;
-			}
-		}
+		status: statusHistoryStatusMeta
 	}
 }];
 
@@ -452,17 +444,7 @@ exports.processingStepNestedEntities = [{
 	matchRe: statusHistoryMatchRe,
 	init: statusHistoryEntityInit,
 	metaMap: {
-		status: {
-			validate: function (record) { return (record.value[0] === '3'); },
-			set: function (data, record) {
-				data.status = record.value.slice(1);
-				data.date = toDateInTz(new Date(record.stamp / 1000), timeZone);
-			},
-			delete: function (data) {
-				delete data.status;
-				delete data.date;
-			}
-		},
+		status: statusHistoryStatusMeta,
 		processor: {
 			validate: function (record) { return (record.value[0] === '7'); },
 			set: function (data, record) {
