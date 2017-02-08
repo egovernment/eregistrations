@@ -1,3 +1,19 @@
-// TODO
-
 'use strict';
+
+var db             = require('../../db')
+  , defineDbjsDate = require('dbjs-ext/date-time/date');
+
+module.exports = function (t, a) {
+	var date, dbDate;
+	defineDbjsDate(db);
+	date   = new Date();
+	dbDate = t(date);
+	date.setUTCFullYear(date.getUTCFullYear());
+	date.setUTCMonth(date.getUTCMonth());
+	date.setUTCDate(date.getUTCDate());
+
+	a(dbDate.getUTCFullYear(), date.getUTCFullYear());
+	a(dbDate.getUTCMonth(), date.getUTCMonth());
+	a(dbDate.getUTCDate(), date.getUTCDate());
+	a(dbDate.constructor, db.Date);
+};

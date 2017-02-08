@@ -131,32 +131,6 @@ var floorToUnit = function (date, mode) {
 	return date;
 };
 
-var ceilToUnit = function (date, mode) {
-	switch (mode) {
-	case 'weekly':
-		var dayOfWeek = date.getUTCDay(), modifier;
-		if (dayOfWeek === 0) {
-			modifier = 0;
-		} else {
-			modifier = 7 - dayOfWeek;
-		}
-		date.setUTCDate(date.getUTCDate() + modifier);
-		break;
-	case 'monthly':
-		date.setUTCMonth(date.getUTCMonth() + 1);
-		date.setUTCDate(0);
-		break;
-	case 'yearly':
-		date.setUTCFullYear(date.getUTCFullYear() + 1);
-		date.setUTCDate(0);
-		break;
-	default:
-		break;
-	}
-
-	return date;
-};
-
 var filterData = function (data, query) {
 	var result = {}, service, certificate, dateTo, currentDate, mode, key;
 	service     = certificate;
@@ -222,9 +196,8 @@ exports['statistics-main'] = function () {
 
 	queryHandler.on('query', function (query) {
 		var serverQuery = copy(query), dateFrom, dateTo, mode
-		  , currentDate, offset, timeUnitsCount = 0, durationInTimeUnits, now, page;
+		  , currentDate, offset, timeUnitsCount = 0, durationInTimeUnits, page;
 
-		now      = new db.Date();
 		dateFrom = query.dateFrom;
 		dateTo   = query.dateTo || new db.Date();
 		mode     = query.mode;
@@ -248,24 +221,15 @@ exports['statistics-main'] = function () {
 					dateFrom = copyDbDate(currentDate);
 				}
 				if (timeUnitsCount === offset.to && query.page < query.pageCount) {
-					dateTo = copyDbDate(ceilToUnit(currentDate, mode));
-					if (dateTo > now) {
-						dateTo.setUTCFullYear(now.getUTCFullYear());
-						dateTo.setUTCMonth(now.getUTCMonth());
-						dateTo.setUTCDate(now.getUTCDate());
-					}
+					dateTo = incrementDateByTimeUnit(copyDbDate(currentDate), mode);
+					dateTo.setUTCDate(dateTo.getUTCDate() - 1);
 				}
 				timeUnitsCount++;
 				incrementDateByTimeUnit(currentDate, mode);
 			}
 		}
-		if (dateFrom) {
-			serverQuery.dateFrom = dateFrom.toJSON();
-		}
-
-		if (dateTo) {
-			serverQuery.dateTo = dateTo.toJSON();
-		}
+		serverQuery.dateFrom = dateFrom.toJSON();
+		serverQuery.dateTo = dateTo.toJSON();
 
 		delete serverQuery.service;
 		delete serverQuery.page;
