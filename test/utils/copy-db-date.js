@@ -15,4 +15,7 @@ module.exports = function (t, a) {
 	a(dbDate.getUTCFullYear(), date.getUTCFullYear());
 	a(dbDate.getUTCMonth(), date.getUTCMonth());
 	a(dbDate.getUTCDate(), date.getUTCDate());
+	a.throws(function () { t(new Date(), ['copyDbDate expects db date']); },
+		new RegExp('copyDbDate expects db date'),
+		'throws when given non dbjs');
 };
