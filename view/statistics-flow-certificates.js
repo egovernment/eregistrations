@@ -17,7 +17,9 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , selectCertificate = require('./components/filter-bar/select-certificate')
   , selectPeriodMode  = require('./components/filter-bar/select-period-mode')
   , itemsPerPage      = require('../conf/objects-list-items-per-page')
-  , isNaturalNumber   = require('es5-ext/number/is-natural');
+  , isNaturalNumber   = require('es5-ext/number/is-natural')
+  , serviceQuery      = require('../apps-common/query-conf/service')
+  , certificateQuery  = require('../apps-common/query-conf/certificate');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -72,32 +74,8 @@ var accumulateResultRows = function (rows) {
 	return result;
 };
 
-var filterData = function (data) {
-	var result = {};
-	location.query.get('service').map(function (service) {
-		location.query.get('certificate').map(function (certificate) {
-			Object.keys(data).forEach(function (key) {
-				if (service && certificate) {
-					result[key] = buildResultRow(data[key][service].certificate[certificate]);
-				} else if (service) {
-					result[key] = buildResultRow(data[key][service].businessProcess);
-				} else {
-					var rowsToAccumulate = [];
-					Object.keys(data[key]).forEach(function (service) {
-						if (certificate) {
-							if (!data[key][service].certificate[certificate]) return;
-							rowsToAccumulate.push(data[key][service].certificate[certificate]);
-						} else {
-							rowsToAccumulate.push(data[key][service].businessProcess);
-						}
-					});
-					result[key] = accumulateResultRows(rowsToAccumulate);
-				}
-			});
-		});
-	});
-
-	return result;
+var copyDbDate = function (date) {
+	return new db.Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
 };
 
 var incrementDateByTimeUnit = function (date, mode) {
@@ -119,6 +97,46 @@ var incrementDateByTimeUnit = function (date, mode) {
 	return date;
 };
 
+var filterData = function (data, query) {
+	var result = {}, service, certificate, dateTo, currentDate, mode;
+	service     = certificate;
+	certificate = query.certificate;
+	currentDate = copyDbDate(query.dateFrom);
+	dateTo      = copyDbDate(query.dateTo);
+	modes.some(function (modeItem) {
+		if (modeItem.key === query.mode) {
+			mode = modeItem;
+			return true;
+		}
+	});
+
+	while (currentDate < dateTo) {
+		result[mode.getDisplayedKey(currentDate)] = buildResultRow();
+		incrementDateByTimeUnit(currentDate, mode.key);
+	}
+
+	Object.keys(data).forEach(function (key) {
+		if (service && certificate) {
+			result[key] = buildResultRow(data[key][service].certificate[certificate]);
+		} else if (service) {
+			result[key] = buildResultRow(data[key][service].businessProcess);
+		} else {
+			var rowsToAccumulate = [];
+			Object.keys(data[key]).forEach(function (service) {
+				if (certificate) {
+					if (!data[key][service].certificate[certificate]) return;
+					rowsToAccumulate.push(data[key][service].certificate[certificate]);
+				} else {
+					rowsToAccumulate.push(data[key][service].businessProcess);
+				}
+			});
+			result[key] = accumulateResultRows(rowsToAccumulate);
+		}
+	});
+
+	return result;
+};
+
 var floorToUnit = function (date, mode) {
 	switch (mode) {
 	case 'weekly':
@@ -134,6 +152,7 @@ var floorToUnit = function (date, mode) {
 		date.setUTCDate(1);
 		break;
 	case 'yearly':
+		date.setUTCDate(1);
 		date.setUTCMonth(0);
 		break;
 	default:
@@ -143,27 +162,25 @@ var floorToUnit = function (date, mode) {
 	return date;
 };
 
-var createUTCDate = function (date) {
-	return new db.Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
-};
-
 var calculateDurationByMode = function (dateFrom, dateTo, mode) {
 	var timeUnitsCount = 0, currentDate;
-	currentDate = createUTCDate(dateFrom);
+	currentDate = copyDbDate(dateFrom);
 	if (!dateTo) dateTo = new db.Date();
 
 	floorToUnit(currentDate, mode);
-	while (currentDate < dateTo) {
+	while (currentDate <= dateTo) {
 		incrementDateByTimeUnit(currentDate, mode);
 		timeUnitsCount++;
 	}
 	return timeUnitsCount;
 };
 
-var decorateQueryHandlerConf = function (queryHandlerConf) {
-	var conf = queryHandlerConf.slice(0);
+exports['statistics-main'] = function () {
+	var queryHandler, data = new ObservableValue({})
+	  , pagination = new Pagination('/flow/'), handlerConf;
 
-	conf.push({
+	handlerConf = queryHandlerConf.slice(0);
+	handlerConf.push({
 		name: 'page',
 		ensure: function (value, resolvedQuery, query) {
 			var num, dateFrom, dateTo, mode, durationInTimeUnits, resolvedValue;
@@ -182,14 +199,8 @@ var decorateQueryHandlerConf = function (queryHandlerConf) {
 			if (num > resolvedQuery.pageCount) throw new Error("Page value overflow");
 			return num;
 		}
-	});
-
-	return conf;
-};
-
-exports['statistics-main'] = function () {
-	var queryHandler, data = new ObservableValue({}), pagination = new Pagination('/flow/');
-	queryHandler = setupQueryHandler(decorateQueryHandlerConf(queryHandlerConf),
+	}, serviceQuery, certificateQuery);
+	queryHandler = setupQueryHandler(handlerConf,
 		location, '/flow/');
 
 	queryHandler.on('query', function (query) {
@@ -215,14 +226,13 @@ exports['statistics-main'] = function () {
 				offset.to += itemsPerPage;
 			}
 
-			currentDate = createUTCDate(dateFrom);
-			floorToUnit(currentDate, mode);
+			currentDate = copyDbDate(dateFrom);
 			while (timeUnitsCount <= offset.to) {
-				if (timeUnitsCount === offset.from) {
-					dateFrom = createUTCDate(currentDate);
+				if (timeUnitsCount === offset.from && query.page > 1) {
+					dateFrom = copyDbDate(floorToUnit(currentDate, mode));
 				}
-				if (timeUnitsCount === offset.to) {
-					dateTo = createUTCDate(currentDate);
+				if (timeUnitsCount === offset.to && query.page < query.pageCount) {
+					dateTo = copyDbDate(floorToUnit(currentDate, mode));
 					if (dateTo > now) {
 						dateTo.setUTCFullYear(now.getUTCFullYear());
 						dateTo.setUTCMonth(now.getUTCMonth());
@@ -246,7 +256,7 @@ exports['statistics-main'] = function () {
 		delete serverQuery.certificate;
 
 		queryServer(serverQuery).done(function (responseData) {
-			data.value = filterData(responseData);
+			data.value = filterData(responseData, assign(query, { dateFrom: dateFrom, dateTo: dateTo }));
 		});
 	});
 
