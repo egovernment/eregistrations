@@ -6,7 +6,7 @@ var db             = require('../../db')
 module.exports = function (t, a) {
 	var date, dbDate;
 	defineDbjsDate(db);
-	date   = new Date();
+	date   = new db.Date();
 	dbDate = t(date);
 	date.setUTCFullYear(date.getUTCFullYear());
 	date.setUTCMonth(date.getUTCMonth());
@@ -15,5 +15,4 @@ module.exports = function (t, a) {
 	a(dbDate.getUTCFullYear(), date.getUTCFullYear());
 	a(dbDate.getUTCMonth(), date.getUTCMonth());
 	a(dbDate.getUTCDate(), date.getUTCDate());
-	a(dbDate.constructor, db.Date);
 };
