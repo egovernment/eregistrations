@@ -6,8 +6,6 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , location          = require('mano/lib/client/location')
   , queryHandlerConf  = require('../apps/statistics/flow-query-conf')
   , setupQueryHandler = require('../utils/setup-client-query-handler')
-  , getData           = require('mano/lib/client/xhr-driver').get
-  , memoize           = require('memoizee')
   , copy              = require('es5-ext/object/copy')
   , ObservableValue   = require('observable-value')
   , assign            = require('es5-ext/object/assign')
@@ -19,20 +17,15 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , itemsPerPage      = require('../conf/objects-list-items-per-page')
   , isNaturalNumber   = require('es5-ext/number/is-natural')
   , serviceQuery      = require('../apps-common/query-conf/service')
-  , certificateQuery  = require('../apps-common/query-conf/certificate');
+  , certificateQuery  = require('../apps-common/query-conf/certificate')
+  , copyDbDate        = require('../utils/copy-db-date')
+  , queryServer       = require('./utils/statistics-flow-query-server');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
 
 exports['flow-nav']                = { class: { 'submitted-menu-item-active': true } };
 exports['flow-by-certificate-nav'] = { class: { 'pills-nav-active': true } };
-
-var queryServer = memoize(function (query) {
-	return getData('/get-flow-data/', query);
-}, {
-	normalizer: function (args) { return JSON.stringify(args[0]); },
-	max: 1000
-});
 
 var serviceToCertLegacyMatch = { '': [] };
 
@@ -74,10 +67,6 @@ var accumulateResultRows = function (rows) {
 	return result;
 };
 
-var copyDbDate = function (date) {
-	return new db.Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
-};
-
 var incrementDateByTimeUnit = function (date, mode) {
 	switch (mode) {
 	case 'weekly':
@@ -97,44 +86,24 @@ var incrementDateByTimeUnit = function (date, mode) {
 	return date;
 };
 
-var filterData = function (data, query) {
-	var result = {}, service, certificate, dateTo, currentDate, mode;
-	service     = certificate;
-	certificate = query.certificate;
-	currentDate = copyDbDate(query.dateFrom);
-	dateTo      = copyDbDate(query.dateTo);
-	modes.some(function (modeItem) {
-		if (modeItem.key === query.mode) {
-			mode = modeItem;
-			return true;
-		}
-	});
-
-	while (currentDate < dateTo) {
-		result[mode.getDisplayedKey(currentDate)] = buildResultRow();
-		incrementDateByTimeUnit(currentDate, mode.key);
+var buildFilteredResult = function (data, key, service, certificate) {
+	if (!data[key]) return buildResultRow();
+	if (service && certificate) {
+		return buildResultRow(data[key][service].certificate[certificate]);
 	}
-
-	Object.keys(data).forEach(function (key) {
-		if (service && certificate) {
-			result[key] = buildResultRow(data[key][service].certificate[certificate]);
-		} else if (service) {
-			result[key] = buildResultRow(data[key][service].businessProcess);
+	if (service) {
+		return buildResultRow(data[key][service].businessProcess);
+	}
+	var rowsToAccumulate = [];
+	Object.keys(data[key]).forEach(function (service) {
+		if (certificate) {
+			if (!data[key][service].certificate[certificate]) return;
+			rowsToAccumulate.push(data[key][service].certificate[certificate]);
 		} else {
-			var rowsToAccumulate = [];
-			Object.keys(data[key]).forEach(function (service) {
-				if (certificate) {
-					if (!data[key][service].certificate[certificate]) return;
-					rowsToAccumulate.push(data[key][service].certificate[certificate]);
-				} else {
-					rowsToAccumulate.push(data[key][service].businessProcess);
-				}
-			});
-			result[key] = accumulateResultRows(rowsToAccumulate);
+			rowsToAccumulate.push(data[key][service].businessProcess);
 		}
 	});
-
-	return result;
+	return accumulateResultRows(rowsToAccumulate);
 };
 
 var floorToUnit = function (date, mode) {
@@ -160,6 +129,54 @@ var floorToUnit = function (date, mode) {
 	}
 
 	return date;
+};
+
+var ceilToUnit = function (date, mode) {
+	switch (mode) {
+	case 'weekly':
+		var dayOfWeek = date.getUTCDay(), modifier;
+		if (dayOfWeek === 0) {
+			modifier = 0;
+		} else {
+			modifier = 7 - dayOfWeek;
+		}
+		date.setUTCDate(date.getUTCDate() + modifier);
+		break;
+	case 'monthly':
+		date.setUTCMonth(date.getUTCMonth() + 1);
+		date.setUTCDate(0);
+		break;
+	case 'yearly':
+		date.setUTCFullYear(date.getUTCFullYear() + 1);
+		date.setUTCDate(0);
+		break;
+	default:
+		break;
+	}
+
+	return date;
+};
+
+var filterData = function (data, query) {
+	var result = {}, service, certificate, dateTo, currentDate, mode, key;
+	service     = certificate;
+	certificate = query.certificate;
+	currentDate = copyDbDate(query.dateFrom);
+	dateTo      = copyDbDate(query.dateTo);
+	modes.some(function (modeItem) {
+		if (modeItem.key === query.mode) {
+			mode = modeItem;
+			return true;
+		}
+	});
+	floorToUnit(currentDate, mode.key);
+	while (currentDate <= dateTo) {
+		key         = mode.getDisplayedKey(currentDate);
+		result[key] = buildFilteredResult(data, key, service, certificate);
+		incrementDateByTimeUnit(currentDate, mode.key);
+	}
+
+	return result;
 };
 
 var calculateDurationByMode = function (dateFrom, dateTo, mode) {
@@ -214,9 +231,6 @@ exports['statistics-main'] = function () {
 		page     = query.page;
 
 		durationInTimeUnits = calculateDurationByMode(dateFrom, dateTo, mode);
-		pagination.count.value   = query.pageCount;
-		pagination.current.value = query.page;
-
 		if (query.pageCount > 1) {
 			offset = { from: ((page - 1) * itemsPerPage) };
 			offset.to = offset.from;
@@ -225,14 +239,16 @@ exports['statistics-main'] = function () {
 			} else {
 				offset.to += itemsPerPage;
 			}
+			offset.to -= 1;
 
 			currentDate = copyDbDate(dateFrom);
+			floorToUnit(currentDate, mode);
 			while (timeUnitsCount <= offset.to) {
 				if (timeUnitsCount === offset.from && query.page > 1) {
-					dateFrom = copyDbDate(floorToUnit(currentDate, mode));
+					dateFrom = copyDbDate(currentDate);
 				}
 				if (timeUnitsCount === offset.to && query.page < query.pageCount) {
-					dateTo = copyDbDate(floorToUnit(currentDate, mode));
+					dateTo = copyDbDate(ceilToUnit(currentDate, mode));
 					if (dateTo > now) {
 						dateTo.setUTCFullYear(now.getUTCFullYear());
 						dateTo.setUTCMonth(now.getUTCMonth());
@@ -257,6 +273,8 @@ exports['statistics-main'] = function () {
 
 		queryServer(serverQuery).done(function (responseData) {
 			data.value = filterData(responseData, assign(query, { dateFrom: dateFrom, dateTo: dateTo }));
+			pagination.count.value   = query.pageCount;
+			pagination.current.value = query.page;
 		});
 	});
 
