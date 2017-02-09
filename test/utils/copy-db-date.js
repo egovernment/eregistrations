@@ -8,9 +8,6 @@ module.exports = function (t, a) {
 	defineDbjsDate(db);
 	date   = new db.Date();
 	dbDate = t(date);
-	date.setUTCFullYear(date.getUTCFullYear());
-	date.setUTCMonth(date.getUTCMonth());
-	date.setUTCDate(date.getUTCDate());
 
 	a(dbDate.getUTCFullYear(), date.getUTCFullYear());
 	a(dbDate.getUTCMonth(), date.getUTCMonth());
