@@ -72,7 +72,7 @@ module.exports = function (config) {
 		'get-flow-data': function (query) {
 			return flowQueryHandler.resolve(query)(function (query) {
 				// data goes here
-				return null;
+				return require('../../stats-dummy-data')(query);
 			});
 		},
 		'get-time-per-role': function (query) {

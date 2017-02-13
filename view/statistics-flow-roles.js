@@ -18,14 +18,17 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , isNaturalNumber   = require('es5-ext/number/is-natural')
   , serviceQuery      = require('../apps-common/query-conf/service')
   , certificateQuery  = require('../apps-common/query-conf/certificate')
+  , stepStatusQuery   = require('../apps-common/query-conf/processing-step-status')
   , copyDbDate        = require('../utils/copy-db-date')
-  , queryServer       = require('./utils/statistics-flow-query-server');
+  , queryServer       = require('./utils/statistics-flow-query-server')
+  , processingSteps   = require('../processing-steps-meta')
+  , getStepLabelByShortPath = require('../utils/get-step-label-by-short-path');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
 
 exports['flow-nav']                = { class: { 'submitted-menu-item-active': true } };
-exports['flow-by-certificate-nav'] = { class: { 'pills-nav-active': true } };
+exports['flow-by-role-nav'] = { class: { 'pills-nav-active': true } };
 
 var serviceToCertLegacyMatch = { '': [] };
 
@@ -45,26 +48,33 @@ db.BusinessProcess.extensions.forEach(function (ServiceType) {
 	});
 });
 
-var buildResultRow = function (rowData) {
-	return assign({
-		submitted: 0,
-		pending: 0,
-		pickup: 0,
-		withdrawn: 0,
-		rejected: 0,
-		sentBack: 0
-	}, rowData || {});
-};
+var stepStatuses = {};
+Object.keys(processingSteps).forEach(function (step) {
+	Object.keys(processingSteps[step]).forEach(function (statusKey) {
+		if (statusKey === 'all') return;
+		stepStatuses[statusKey] = processingSteps[step][statusKey];
+	});
+});
 
-var accumulateResultRows = function (rows) {
-	var result = buildResultRow(rows[0]);
-	rows.slice(1).forEach(function (row) {
-		Object.keys(row).forEach(function (propertyName) {
-			result[propertyName] += row[propertyName];
+var buildResultRow = function (rowData, queryCertificate, queryStatus) {
+	var resultRow = {}, reducedRowData;
+	Object.keys(processingSteps).forEach(function (stepKey) {
+		resultRow[stepKey] = 0;
+	});
+	Object.keys(rowData).forEach(function (stepShortPath) {
+		Object.keys(rowData[stepShortPath]).forEach(function (status) {
+			if (status !== queryStatus) return;
+
+			reducedRowData = rowData[stepShortPath][status];
+			if (queryCertificate) {
+				reducedRowData = reducedRowData.certificate[queryCertificate];
+			} else {
+				reducedRowData = reducedRowData.businessProcess;
+			}
+			resultRow[stepShortPath] = reducedRowData;
 		});
 	});
-
-	return result;
+	return resultRow;
 };
 
 var incrementDateByTimeUnit = function (date, mode) {
@@ -86,24 +96,24 @@ var incrementDateByTimeUnit = function (date, mode) {
 	return date;
 };
 
-var buildFilteredResult = function (data, key, service, certificate) {
-	if (!data[key]) return buildResultRow();
-	if (service && certificate) {
-		return buildResultRow(data[key][service].certificate[certificate]);
-	}
+var buildFilteredResult = function (data, key, service, certificate, status) {
+	var resultRow, finalResult = {};
 	if (service) {
-		return buildResultRow(data[key][service].businessProcess);
+		return buildResultRow(data[key][service].processingStep, certificate, status);
 	}
-	var rowsToAccumulate = [];
-	Object.keys(data[key]).forEach(function (service) {
-		if (certificate) {
-			if (!data[key][service].certificate[certificate]) return;
-			rowsToAccumulate.push(data[key][service].certificate[certificate]);
-		} else {
-			rowsToAccumulate.push(data[key][service].businessProcess);
-		}
+
+	Object.keys(data[key]).forEach(function (serviceKey) {
+		resultRow = buildResultRow(data[key][serviceKey].processingStep, certificate, status);
+		// accumulate
+		Object.keys(resultRow).forEach(function (stepShortPath) {
+			if (!finalResult[stepShortPath]) {
+				finalResult[stepShortPath] = 0;
+			}
+			finalResult[stepShortPath] += resultRow[stepShortPath];
+		});
 	});
-	return accumulateResultRows(rowsToAccumulate);
+
+	return finalResult;
 };
 
 var floorToUnit = function (date, mode) {
@@ -132,9 +142,10 @@ var floorToUnit = function (date, mode) {
 };
 
 var filterData = function (data, query) {
-	var result = {}, service, certificate, dateTo, currentDate, mode, key;
+	var result = {}, service, certificate, dateTo, currentDate, mode, key, status;
 	service     = query.service;
 	certificate = query.certificate;
+	status      = query.status;
 	currentDate = copyDbDate(query.dateFrom);
 	dateTo      = copyDbDate(query.dateTo);
 	modes.some(function (modeItem) {
@@ -146,7 +157,7 @@ var filterData = function (data, query) {
 	floorToUnit(currentDate, mode.key);
 	while (currentDate <= dateTo) {
 		key         = mode.getDisplayedKey(currentDate);
-		result[key] = buildFilteredResult(data, key, service, certificate);
+		result[key] = buildFilteredResult(data, key, service, certificate, status);
 		incrementDateByTimeUnit(currentDate, mode.key);
 	}
 
@@ -168,7 +179,7 @@ var calculateDurationByMode = function (dateFrom, dateTo, mode) {
 
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue({})
-	  , pagination = new Pagination('/flow/'), handlerConf;
+	  , pagination = new Pagination('/flow/by-role/'), handlerConf;
 
 	handlerConf = queryHandlerConf.slice(0);
 	handlerConf.push({
@@ -190,9 +201,9 @@ exports['statistics-main'] = function () {
 			if (num > resolvedQuery.pageCount) throw new Error("Page value overflow");
 			return num;
 		}
-	}, serviceQuery, certificateQuery);
+	}, serviceQuery, certificateQuery, stepStatusQuery);
 	queryHandler = setupQueryHandler(handlerConf,
-		location, '/flow/');
+		location, '/flow/by-role/');
 
 	queryHandler.on('query', function (query) {
 		var serverQuery = copy(query), dateFrom, dateTo, mode
@@ -234,8 +245,10 @@ exports['statistics-main'] = function () {
 		delete serverQuery.service;
 		delete serverQuery.page;
 		delete serverQuery.certificate;
+		delete serverQuery.status;
 
 		queryServer(serverQuery).done(function (responseData) {
+			console.log('responseData', responseData);
 			data.value = filterData(responseData, assign(query, { dateFrom: dateFrom, dateTo: dateTo }));
 			pagination.count.value   = query.pageCount;
 			pagination.current.value = query.page;
@@ -243,12 +256,28 @@ exports['statistics-main'] = function () {
 	});
 
 	section({ class: 'section-primary users-table-filter-bar' },
-		form({ action: '/flow/', autoSubmit: true },
+		form({ action: '/flow/by-role/', autoSubmit: true },
 			div({ class: 'users-table-filter-bar-status' },
 				selectService({ label: _("All services") })),
 			div({ class: 'users-table-filter-bar-status' },
-					selectCertificate(),
-					legacy('selectMatch', 'service-select', serviceToCertLegacyMatch)),
+				selectCertificate(),
+				legacy('selectMatch', 'service-select', serviceToCertLegacyMatch)),
+
+			div({ class: 'users-table-filter-bar-status' },
+				select(
+					{ id: 'step-status', name: 'status' },
+					list(Object.keys(stepStatuses), function (status) {
+						return option({
+							id: 'status-' + status,
+							value: status,
+							selected: location.query.get('status').map(function (value) {
+								var selected = (status ? (value === status) : (value == null));
+								return selected ? 'selected' : null;
+							})
+						}, stepStatuses[status].label);
+					})
+				)),
+
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
@@ -284,19 +313,16 @@ exports['statistics-main'] = function () {
 						});
 						return title;
 					})),
-					th({ class: 'statistics-table-number' }, _("Submitted")),
-					th({ class: 'statistics-table-number' }, _("Pending")),
-					th({ class: 'statistics-table-number' }, _("Ready for withdraw")),
-					th({ class: 'statistics-table-number' }, _("Withdrawn by user")),
-					th({ class: 'statistics-table-number' }, _("Rejected")),
-					th({ class: 'statistics-table-number' }, _("Sent back for correction"))
+					list(Object.keys(processingSteps), function (shortStepPath) {
+						return th({ class: 'statistics-table-number' }, getStepLabelByShortPath(shortStepPath));
+					})
 				),
-				tbody({ onEmpty: tr(td({ class: 'empty', colspan: 7 },
+				tbody({ onEmpty: tr(td({ class: 'empty', colspan: Object.keys(processingSteps).length },
 					_("No data for this criteria"))) }, Object.keys(result), function (key) {
 					return tr(
 						td(key),
-						list(Object.keys(result[key]), function (status) {
-							return td({ class: 'statistics-table-number' }, result[key][status]);
+						list(Object.keys(result[key]), function (step) {
+							return td({ class: 'statistics-table-number' }, result[key][step]);
 						})
 					);
 				}));
