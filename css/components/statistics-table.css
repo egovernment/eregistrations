@@ -1,3 +1,7 @@
+.statistics-table-scrollable {
+	overflow: auto;
+}
+
 .statistics-table {
 	display: inline-table;
 	border: 1px solid var(--light-inner-border);
