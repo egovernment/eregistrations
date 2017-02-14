@@ -15,11 +15,14 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , selectCertificate = require('./components/filter-bar/select-certificate')
   , selectPeriodMode  = require('./components/filter-bar/select-period-mode')
   , itemsPerPage      = require('../conf/objects-list-items-per-page')
-  , isNaturalNumber   = require('es5-ext/number/is-natural')
   , serviceQuery      = require('../apps-common/query-conf/service')
   , certificateQuery  = require('../apps-common/query-conf/certificate')
+  , pageQuery         = require('../utils/query/date-constrained-page')
   , copyDbDate        = require('../utils/copy-db-date')
-  , queryServer       = require('./utils/statistics-flow-query-server');
+  , queryServer       = require('./utils/statistics-flow-query-server')
+  , incrementDateByTimeUnit = require('../utils/increment-date-by-time-unit')
+  , floorToTimeUnit         = require('../utils/floor-to-time-unit')
+  , calculateDurationByMode = require('../utils/calculate-duration-by-mode');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -67,25 +70,6 @@ var accumulateResultRows = function (rows) {
 	return result;
 };
 
-var incrementDateByTimeUnit = function (date, mode) {
-	switch (mode) {
-	case 'weekly':
-		date.setUTCDate(date.getUTCDate() + 7);
-		break;
-	case 'monthly':
-		date.setUTCMonth(date.getUTCMonth() + 1);
-		break;
-	case 'yearly':
-		date.setUTCFullYear(date.getUTCFullYear() + 1);
-		break;
-	default:
-		date.setUTCDate(date.getUTCDate() + 1);
-		break;
-	}
-
-	return date;
-};
-
 var buildFilteredResult = function (data, key, service, certificate) {
 	if (!data[key]) return buildResultRow();
 	if (service && certificate) {
@@ -106,34 +90,9 @@ var buildFilteredResult = function (data, key, service, certificate) {
 	return accumulateResultRows(rowsToAccumulate);
 };
 
-var floorToUnit = function (date, mode) {
-	switch (mode) {
-	case 'weekly':
-		var dayOfWeek = date.getUTCDay(), modifier;
-		if (dayOfWeek === 0) {
-			modifier = -6;
-		} else {
-			modifier = -(dayOfWeek - 1);
-		}
-		date.setUTCDate(date.getUTCDate() + modifier);
-		break;
-	case 'monthly':
-		date.setUTCDate(1);
-		break;
-	case 'yearly':
-		date.setUTCDate(1);
-		date.setUTCMonth(0);
-		break;
-	default:
-		break;
-	}
-
-	return date;
-};
-
 var filterData = function (data, query) {
 	var result = {}, service, certificate, dateTo, currentDate, mode, key;
-	service     = certificate;
+	service     = query.service;
 	certificate = query.certificate;
 	currentDate = copyDbDate(query.dateFrom);
 	dateTo      = copyDbDate(query.dateTo);
@@ -143,7 +102,7 @@ var filterData = function (data, query) {
 			return true;
 		}
 	});
-	floorToUnit(currentDate, mode.key);
+	floorToTimeUnit(currentDate, mode.key);
 	while (currentDate <= dateTo) {
 		key         = mode.getDisplayedKey(currentDate);
 		result[key] = buildFilteredResult(data, key, service, certificate);
@@ -153,44 +112,12 @@ var filterData = function (data, query) {
 	return result;
 };
 
-var calculateDurationByMode = function (dateFrom, dateTo, mode) {
-	var timeUnitsCount = 0, currentDate;
-	currentDate = copyDbDate(dateFrom);
-	if (!dateTo) dateTo = new db.Date();
-
-	floorToUnit(currentDate, mode);
-	while (currentDate <= dateTo) {
-		incrementDateByTimeUnit(currentDate, mode);
-		timeUnitsCount++;
-	}
-	return timeUnitsCount;
-};
-
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue({})
 	  , pagination = new Pagination('/flow/'), handlerConf;
 
 	handlerConf = queryHandlerConf.slice(0);
-	handlerConf.push({
-		name: 'page',
-		ensure: function (value, resolvedQuery, query) {
-			var num, dateFrom, dateTo, mode, durationInTimeUnits, resolvedValue;
-			resolvedValue = value;
-			if (resolvedValue == null) resolvedValue = '1';
-			if (isNaN(resolvedValue)) throw new Error("Unrecognized page value " + JSON.stringify(value));
-			num = Number(resolvedValue);
-			if (!isNaturalNumber(num)) throw new Error("Unreconized page value " + JSON.stringify(value));
-			if (num < 1) throw new Error("Unexpected page value " + JSON.stringify(value));
-
-			dateFrom = resolvedQuery.dateFrom;
-			dateTo   = resolvedQuery.dateTo || new db.Date();
-			mode     = resolvedQuery.mode;
-			durationInTimeUnits     = calculateDurationByMode(dateFrom, dateTo, mode);
-			resolvedQuery.pageCount = Math.ceil(durationInTimeUnits / itemsPerPage);
-			if (num > resolvedQuery.pageCount) throw new Error("Page value overflow");
-			return num;
-		}
-	}, serviceQuery, certificateQuery);
+	handlerConf.push(pageQuery, serviceQuery, certificateQuery);
 	queryHandler = setupQueryHandler(handlerConf,
 		location, '/flow/');
 
@@ -215,7 +142,7 @@ exports['statistics-main'] = function () {
 			offset.to -= 1;
 
 			currentDate = copyDbDate(dateFrom);
-			floorToUnit(currentDate, mode);
+			floorToTimeUnit(currentDate, mode);
 			while (timeUnitsCount <= offset.to) {
 				if (timeUnitsCount === offset.from && query.page > 1) {
 					dateFrom = copyDbDate(currentDate);
