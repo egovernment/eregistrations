@@ -1,7 +1,6 @@
 'use strict';
 
-var uncapitalize = require('es5-ext/string/#/uncapitalize')
-  , ensureBusinessProcessType = require('../../utils/ensure-business-process-type');
+var uncapitalize = require('es5-ext/string/#/uncapitalize');
 
 module.exports = function (businessProcess) {
 	var businessProcessDTO = {};
@@ -16,7 +15,7 @@ module.exports = function (businessProcess) {
 		uncapitalize.call(businessProcess.constructor.__id__.replace('BusinessProcess', ''));
 
 	businessProcessDTO.submittedTimestamp = businessProcess._isSubmitted.lastModified;
-	
+
 	// part a - registrations
 	businessProcessDTO.registrations = [];
 	businessProcess.registrations.applicable.forEach(function (reg) {
@@ -37,7 +36,7 @@ module.exports = function (businessProcess) {
 		// status properties
 		requirement.revised = req.status ? true : false;
 		requirement.revisedTimestamp = req.status ? req._status.lastModified : null;
-		
+
 		// #TODO data forms for requirements - not really existent 
 
 		businessProcessDTO.uploadedDocuments.push(requirement);
