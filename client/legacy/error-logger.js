@@ -46,6 +46,12 @@ var onError = function (message, source, line, column, error) {
 		// Once got report from: https://cdn.myspservices.com/coms/1.5.0/js/mng.js?rnd=babylonNS431
 		// Probably some audio player extension (but not confirmed)
 		if (source.indexOf('js/mng.js') !== -1) return;
+		if (error && error.stack) {
+			if ((source.slice(-3) !== '.js') && (error.stack.indexOf('addHighlightToIndex@') !== -1)) {
+				// iOS interface errors
+				return;
+			}
+		}
 	}
 
 	var xhr = new XMLHttpRequest(), isSent = false, queryConfig;
