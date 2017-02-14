@@ -25,7 +25,8 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , getStepLabelByShortPath = require('../utils/get-step-label-by-short-path')
   , incrementDateByTimeUnit = require('../utils/increment-date-by-time-unit')
   , floorToTimeUnit         = require('../utils/floor-to-time-unit')
-  , calculateDurationByMode = require('../utils/calculate-duration-by-mode');
+  , calculateDurationByMode = require('../utils/calculate-duration-by-mode')
+  , reduceResult            = require('../utils/statistics-flow-reduce-processing-step');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -81,20 +82,10 @@ var buildResultRow = function (rowData, queryCertificate, queryStatus) {
 	return resultRow;
 };
 
-var fillEmpty = function (rowData) {
-	Object.keys(rowData).forEach(function (stepShortPath) {
-		if (!rowData[stepShortPath]) {
-			rowData[stepShortPath] = _("N/A");
-		}
-	});
-
-	return rowData;
-};
-
 var buildFilteredResult = function (data, key, service, certificate, status) {
 	var resultRow, finalResult = {};
 	if (service) {
-		return fillEmpty(buildResultRow(data[key][service].processingStep, certificate, status));
+		return buildResultRow(data[key][service].processingStep, certificate, status);
 	}
 
 	Object.keys(data[key]).forEach(function (serviceKey) {
@@ -108,7 +99,7 @@ var buildFilteredResult = function (data, key, service, certificate, status) {
 		});
 	});
 
-	return fillEmpty(finalResult);
+	return finalResult;
 };
 
 var filterData = function (data, query) {
@@ -186,7 +177,10 @@ exports['statistics-main'] = function () {
 		delete serverQuery.status;
 
 		queryServer(serverQuery).done(function (responseData) {
-			data.value = filterData(responseData, assign(query, { dateFrom: dateFrom, dateTo: dateTo }));
+			console.log('responseData...... RAW', responseData);
+			console.log('responseData...... reduced', reduceResult(responseData));
+			data.value = filterData(reduceResult(responseData),
+				assign(query, { dateFrom: dateFrom, dateTo: dateTo }));
 			pagination.count.value   = query.pageCount;
 			pagination.current.value = query.page;
 		});
