@@ -217,19 +217,10 @@ exports['statistics-main'] = function () {
 	section(pagination);
 	section({ class: "section-primary statistics-table-scrollable" },
 		data.map(function (result) {
+			var mode = modes.get(location.query.mode);
 			return table({ class: 'statistics-table' },
 				thead(
-					th({ class: 'statistics-table-number' }, location.query.get("mode").map(function (mode) {
-						var title;
-						if (!mode) return;
-						modes.some(function (m) {
-							if (mode === m.key) {
-								title = m.labelNoun;
-								return true;
-							}
-						});
-						return title;
-					})),
+					th({ class: 'statistics-table-number' }, mode && mode.labelNoun),
 					list(Object.keys(processingSteps), function (shortStepPath) {
 						return th({ class: 'statistics-table-number' }, getStepLabelByShortPath(shortStepPath));
 					})
