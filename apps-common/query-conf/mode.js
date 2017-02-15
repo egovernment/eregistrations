@@ -7,9 +7,7 @@ module.exports = {
 	name: 'mode',
 	ensure: function (value) {
 		if (!value) value = 'daily';
-		if (!modes.some(function (mode) {
-				return mode.key === value;
-			})) {
+		if (!modes.has(value)) {
 			throw new Error("Unrecognized mode value " + stringify(value));
 		}
 		return value;

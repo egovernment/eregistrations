@@ -15,15 +15,15 @@ module.exports = function (/* opts */) {
 
 	return div({ class: "input", id: id },
 		div({ class: "inline-button-radio" },
-			list(modes, function (mode) {
+			list(modes, function (mode, key) {
 				label(
 					input({
 						type: "radio",
 						name: "mode",
-						value: mode.key,
+						value: key,
 						checked: modeQuery.map(function (value) {
 							if (!value) value = 'daily';
-							var checked = (mode.key ? (value === mode.key) : (value == null));
+							var checked = (key ? (value === key) : (value == null));
 							return checked ? 'checked' : null;
 						})
 					}),
