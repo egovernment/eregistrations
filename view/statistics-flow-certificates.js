@@ -72,10 +72,11 @@ var accumulateResultRows = function (rows) {
 
 var buildFilteredResult = function (data, key, service, certificate) {
 	if (!data[key]) return buildResultRow();
-	if (service && certificate) {
-		return buildResultRow(data[key][service].certificate[certificate]);
-	}
 	if (service) {
+		if (!data[key][service]) return buildResultRow();
+		if (certificate) {
+			return buildResultRow(data[key][service].certificate[certificate]);
+		}
 		return buildResultRow(data[key][service].businessProcess);
 	}
 	var rowsToAccumulate = [];
