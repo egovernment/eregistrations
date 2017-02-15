@@ -21,7 +21,8 @@ var assign                  = require('es5-ext/object/assign')
   , makePdf                 = require('./utils/pdf')
   , makeCsv                 = require('./utils/csv')
   , getBaseRoutes           = require('./authenticated')
-  , processingStepsMeta     = require('../../processing-steps-meta');
+  , processingStepsMeta     = require('../../processing-steps-meta')
+  , getDateRangesByMode     = require('../../utils/get-date-ranges-by-mode');
 
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
@@ -71,8 +72,28 @@ module.exports = function (config) {
 	return assign({
 		'get-flow-data': function (query) {
 			return flowQueryHandler.resolve(query)(function (query) {
-				// data goes here
-				return null;
+				var dateRanges, result = {};
+				dateRanges = getDateRangesByMode(query.dateFrom, query.dateTo, query.mode);
+				dateRanges.forEach(function (dateRange) {
+					// dateRange: { dateFrom: db.Date, dateTo: db.Date } with dateRange query for result
+					switch (query.mode) {
+					case 'yearly':
+						// inflate with data from query
+						result[dateRange.dateFrom.toISOString().slice(0, 4)] = null;
+						break;
+					case 'monthly':
+						// inflate with data from query
+						result[dateRange.dateFrom.toISOString().slice(0, 7)] = null;
+						break;
+					default:
+						// weeks show the starting day of given period
+						// inflate with data from query
+						result[dateRange.dateFrom.toISOString().slice(0, 10)] = null;
+						break;
+					}
+				});
+
+				return result;
 			});
 		},
 		'get-time-per-role': function (query) {
