@@ -74,12 +74,7 @@ module.exports = function (config) {
 		'get-flow-data': function (query) {
 			return flowQueryHandler.resolve(query)(function (query) {
 				var dateRanges, result = {}, mode;
-				modes.some(function (m) {
-					if (m.key === query.mode) {
-						mode = m;
-						return true;
-					}
-				});
+				mode = modes.get(query.mode);
 				dateRanges = getDateRangesByMode(query.dateFrom, query.dateTo, query.mode);
 				dateRanges.forEach(function (dateRange) {
 					// dateRange: { dateFrom: db.Date, dateTo: db.Date } with dateRange query for result
