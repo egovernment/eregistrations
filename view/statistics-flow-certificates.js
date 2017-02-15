@@ -161,6 +161,7 @@ exports['statistics-main'] = function () {
 		delete serverQuery.service;
 		delete serverQuery.page;
 		delete serverQuery.certificate;
+		delete serverQuery.pageCount;
 
 		queryServer(serverQuery).done(function (responseData) {
 			data.value = filterData(responseData, assign(query, { dateFrom: dateFrom, dateTo: dateTo }));
