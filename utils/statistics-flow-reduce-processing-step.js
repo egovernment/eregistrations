@@ -8,7 +8,7 @@ module.exports = function (result) {
 		processingStepMap[date] = {};
 		keys(result[date]).forEach(function (service) {
 			processingStepMap[date][service] = {};
-			processingStep = processingStepMap[date][service].processingStep = {};
+			processingStep = processingStepMap[date][service] = {};
 			keys(result[date][service].processingStep).forEach(function (step) {
 				processingStep[step] = { pending: result[date][service].processingStep[step].pending };
 				mapEntry = result[date][service].processingStep[step].byProcessor;
