@@ -103,24 +103,11 @@ var buildFilteredResult = function (data, key, service, certificate, status) {
 };
 
 var filterData = function (data, query) {
-	var result = {}, service, certificate, dateTo, currentDate, mode, key, status;
-	service     = query.service;
-	certificate = query.certificate;
-	status      = query.status;
-	currentDate = copyDbDate(query.dateFrom);
-	dateTo      = copyDbDate(query.dateTo);
-	modes.some(function (modeItem) {
-		if (modeItem.key === query.mode) {
-			mode = modeItem;
-			return true;
-		}
+	var result = {};
+	Object.keys(data).forEach(function (date) {
+		result[date] = buildFilteredResult(data, date,
+			query.service, query.certificate, query.status);
 	});
-	floorToTimeUnit(currentDate, mode.key);
-	while (currentDate <= dateTo) {
-		key         = mode.getDisplayedKey(currentDate);
-		result[key] = buildFilteredResult(data, key, service, certificate, status);
-		incrementDateByTimeUnit(currentDate, mode.key);
-	}
 
 	return result;
 };
@@ -175,10 +162,9 @@ exports['statistics-main'] = function () {
 		delete serverQuery.page;
 		delete serverQuery.certificate;
 		delete serverQuery.status;
+		delete serverQuery.pageCount;
 
 		queryServer(serverQuery).done(function (responseData) {
-			console.log('responseData...... RAW', responseData);
-			console.log('responseData...... reduced', reduceResult(responseData));
 			data.value = filterData(reduceResult(responseData),
 				assign(query, { dateFrom: dateFrom, dateTo: dateTo }));
 			pagination.count.value   = query.pageCount;
