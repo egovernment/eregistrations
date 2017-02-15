@@ -71,28 +71,26 @@ module.exports = function (t, a) {
 	expected = {
 		"2016-01-02": {
 			serviceA: {
-				processingStep: {
-					stepA: {
-						pending: {
-							businessProcess: 16,
-							certificate: {
-								certA: 5,
-								certB: 6
-							}
-						},
-						approved: {
-							businessProcess: 25,
-							certificate: {
-								certA: 12,
-								certB: 6
-							}
-						},
-						rejected: {
-							businessProcess: 1,
-							certificate: {
-								certA: 1,
-								certB: 0
-							}
+				stepA: {
+					pending: {
+						businessProcess: 16,
+						certificate: {
+							certA: 5,
+							certB: 6
+						}
+					},
+					approved: {
+						businessProcess: 25,
+						certificate: {
+							certA: 12,
+							certB: 6
+						}
+					},
+					rejected: {
+						businessProcess: 1,
+						certificate: {
+							certA: 1,
+							certB: 0
 						}
 					}
 				}
