@@ -117,16 +117,20 @@ generateMissingList = function (formSection, level) {
 };
 
 module.exports = function (sections) {
-	return [ul(sections, function (formSection) {
-
-		return _if(formSection._hasMissingRequiredPropertyNamesDeep,
-			section(
-				a(
-					{ href: '#' + formSection.domId },
-					formSection.onIncompleteMessage || _("${sectionLabel} is incomplete",
-						{ sectionLabel: formSection.label })
-				),
-				generateMissingList(formSection)
-			));
+	var incompleteSections = sections.filter(function (section) {
+		section._hasMissingRequiredPropertyNamesDeep.once('change', function () {
+			incompleteSections.refresh(section);
+		});
+		return section.hasMissingRequiredPropertyNamesDeep;
+	});
+	return [ul(incompleteSections, function (formSection) {
+		return section(
+			a(
+				{ href: '#' + formSection.domId },
+				formSection.onIncompleteMessage || _("${sectionLabel} is incomplete",
+					{ sectionLabel: formSection.label })
+			),
+			generateMissingList(formSection)
+		);
 	}), incompleteNavRules(sections)];
 };
