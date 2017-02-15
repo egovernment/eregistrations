@@ -91,23 +91,11 @@ var buildFilteredResult = function (data, key, service, certificate) {
 };
 
 var filterData = function (data, query) {
-	var result = {}, service, certificate, dateTo, currentDate, mode, key;
-	service     = query.service;
-	certificate = query.certificate;
-	currentDate = copyDbDate(query.dateFrom);
-	dateTo      = copyDbDate(query.dateTo);
-	modes.some(function (modeItem) {
-		if (modeItem.key === query.mode) {
-			mode = modeItem;
-			return true;
-		}
+	var result = {};
+
+	Object.keys(data).forEach(function (date) {
+		result[date] = buildFilteredResult(data, date, query.service, query.certificate);
 	});
-	floorToTimeUnit(currentDate, mode.key);
-	while (currentDate <= dateTo) {
-		key         = mode.getDisplayedKey(currentDate);
-		result[key] = buildFilteredResult(data, key, service, certificate);
-		incrementDateByTimeUnit(currentDate, mode.key);
-	}
 
 	return result;
 };
