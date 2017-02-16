@@ -1,6 +1,8 @@
 'use strict';
 
 var oForEach    = require('es5-ext/object/for-each')
+  , debugLoad   = require('debug-ext')('load', 6)
+  , humanize    = require('debug-ext').humanize
   , memoize     = require('memoizee')
   , filterSteps = require('./steps/filter')
   , toDateInTz  = require('../../utils/to-date-in-time-zone')
@@ -69,6 +71,7 @@ var getStatusHistoryLogs = function (statusHistory) {
 
 module.exports = memoize(function (data) {
 	var currentDate = toDateInTz(new Date(), db.timeZone)
+	  , startTime   = Date.now()
 	  , dateMap     = {};
 
 	var initDataset = function (date, serviceName) {
@@ -381,7 +384,8 @@ module.exports = memoize(function (data) {
 	});
 
 	// TODO: Live update
-	// TODO: Output work time (see get-data)
+
+	debugLoad('status history date map (in %s)', humanize(Date.now() - startTime));
 
 	return dateMap;
 }, { length: 0 });
