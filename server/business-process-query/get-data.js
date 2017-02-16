@@ -447,6 +447,16 @@ exports.businessProcessMetaMap = {
 		},
 		delete: function (data) { delete data.registrations; }
 	},
+	'certificates/applicable': {
+		type: 'computed',
+		validate: function (record) { return Array.isArray(record.value); },
+		set: function (data, record) {
+			data.certificates = new Set(resolveEventKeys(record.value).map(function (value) {
+				return value.slice(value.lastIndexOf('/') + 1);
+			}));
+		},
+		delete: function (data) { delete data.certificates; }
+	},
 	searchString: {
 		type: 'computed',
 		validate: function (record) { return record.value[0] === '3'; },
