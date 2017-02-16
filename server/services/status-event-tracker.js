@@ -229,6 +229,10 @@ module.exports = function () {
 			if (data.steps.get('frontDesk') && data.steps.get('frontDesk').get(bpId)) {
 				var frontDeskData = data.steps.get('frontDesk').get(bpId);
 
+				if (frontDeskData.pendingDate) {
+					statusStartDates.pickup = frontDeskData.pendingDate
+				}
+
 				if (frontDeskData.status === 'approved') {
 					var statusDate = toDateInTz(new Date(frontDeskData.statusStamp / 1000), db.timeZone);
 					// 1.5 [date][serviceName].businessProcess.withdrawn
@@ -236,6 +240,15 @@ module.exports = function () {
 					dataset.withdrawn++;
 					// 2.5 [date][serviceName].certificate[certificateName].withdrawn
 					incrementCertStatus(statusDate, 'withdrawn');
+
+					if (statusStartDates.pickup) {
+						// 1.3 [date][serviceName].businessProcess.pickup
+						storeStatusRange(statusStartDates.pickup, statusDate, 'pickup', bpId, getDataset);
+						// 2.3 [date][serviceName].certificate[certificateName].pickup
+						storeCertStatusRange(statusStartDates.pickup, statusDate, 'pickup', bpId);
+
+						statusStartDates.pickup = null;
+					}
 				}
 			}
 
@@ -261,22 +274,16 @@ module.exports = function () {
 					statusStartDates.pending = null;
 				}
 
-				Object.keys(statusStartDates).forEach(function (status) {
-					if (status === 'pending') return;
+				if (logStauts === 'sentBack') {
+					if (!statusStartDates.sentBack) statusStartDates.sentBack = logDate;
+				} else if (statusStartDates.sentBack) {
+					// 1.3 [date][serviceName].businessProcess.sentBack
+					storeStatusRange(statusStartDates.sentBack, logDate, 'sentBack', bpId, getDataset);
+					// 2.3 [date][serviceName].certificate[certificateName].sentBack
+					storeCertStatusRange(statusStartDates.sentBack, logDate, 'sentBack', bpId);
 
-					if (status === logStauts) {
-						if (!statusStartDates[status]) statusStartDates[status] = logDate;
-					} else if (statusStartDates[status]) {
-						// 1.2 [date][serviceName].businessProcess.pickup
-						// 1.3 [date][serviceName].businessProcess.sentBack
-						storeStatusRange(statusStartDates[status], logDate, status, bpId, getDataset);
-						// 2.2 [date][serviceName].certificate[certificateName].pickup
-						// 2.3 [date][serviceName].certificate[certificateName].sentBack
-						storeCertStatusRange(statusStartDates[status], logDate, status, bpId);
-
-						statusStartDates[status] = null;
-					}
-				});
+					statusStartDates.sentBack = null;
+				}
 			});
 
 			Object.keys(statusStartDates).forEach(function (status) {
