@@ -19,6 +19,7 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , certificateQuery  = require('../apps-common/query-conf/certificate')
   , pageQuery         = require('../utils/query/date-constrained-page')
   , copyDbDate        = require('../utils/copy-db-date')
+  , processingSteps   = require('../processing-steps-meta')
   , queryServer       = require('./utils/statistics-flow-query-server')
   , incrementDateByTimeUnit = require('../utils/increment-date-by-time-unit')
   , floorToTimeUnit         = require('../utils/floor-to-time-unit')
@@ -48,53 +49,75 @@ db.BusinessProcess.extensions.forEach(function (ServiceType) {
 	});
 });
 
-var buildResultRow = function (rowData) {
-	return assign({
-		submitted: 0,
-		pending: 0,
-		pickup: 0,
-		withdrawn: 0,
-		rejected: 0,
-		sentBack: 0
-	}, rowData || {});
-};
-
-var accumulateResultRows = function (rows) {
-	var result = buildResultRow(rows[0]);
-	rows.slice(1).forEach(function (row) {
-		Object.keys(row).forEach(function (propertyName) {
-			result[propertyName] += row[propertyName];
-		});
-	});
-
-	return result;
-};
-
-var buildFilteredResult = function (data, key, service, certificate) {
-	if (!data[key]) return buildResultRow();
-	if (service && certificate) {
-		return buildResultRow(data[key][service].certificate[certificate]);
+var buildResultByProcessor = function (finalResult, row, processorId, certificate) {
+	if (!finalResult[processorId]) {
+		finalResult[processorId] = {};
 	}
-	if (service) {
-		return buildResultRow(data[key][service].businessProcess);
-	}
-	var rowsToAccumulate = [];
-	Object.keys(data[key]).forEach(function (service) {
+	['approved', 'sentBack', 'rejected'].forEach(function (status) {
+		if (!row[status]) return;
+		if (!finalResult[processorId][status]) {
+			finalResult[processorId][status] = 0;
+		}
+		if (!finalResult[processorId].processed) {
+			finalResult[processorId].processed = 0;
+		}
 		if (certificate) {
-			if (!data[key][service].certificate[certificate]) return;
-			rowsToAccumulate.push(data[key][service].certificate[certificate]);
+			if (!row[status].certificate[certificate]) return;
+			finalResult[processorId][status] += row[status].certificate[certificate];
+			finalResult[processorId].processed += row[status].certificate[certificate];
 		} else {
-			rowsToAccumulate.push(data[key][service].businessProcess);
+			finalResult[processorId][status] += row[status].businessProcess;
+			finalResult[processorId].processed += row[status].businessProcess;
 		}
 	});
-	return accumulateResultRows(rowsToAccumulate);
+}
+
+var buildFilteredResult = function (data, date, service, certificate, step, processor) {
+	var finalResult = {}, reducedRows = [data], resultTemplate, row;
+
+
+	if (service) {
+		reducedRows = reducedRows.map(function (reducedRow) {
+			return reducedRow[service];
+		});
+	} else {
+		reducedRows = Object.keys(reducedRows[0]).map(function (serviceName) {
+			return reducedRows[0][serviceName];
+		});
+	}
+	reducedRows = reducedRows.map(function (row) {
+		return row.processingStep[step].byProcessor;
+	});
+
+	reducedRows.forEach(function (reducedRow) {
+		if (processor) {
+			row = reducedRow[processor];
+			buildResultByProcessor(finalResult, row, processor, certificate);
+		} else {
+			Object.keys(reducedRow).forEach(function (processorId) {
+				row = reducedRow[processorId];
+				buildResultByProcessor(finalResult, row, processorId, certificate);
+			});
+		}
+	});
+
+	return Object.keys(finalResult).map(function (processorId) {
+		return assign({
+			date: date,
+			processor: null,
+			processed: 0,
+			approved: 0,
+			sentBack: 0,
+			rejected: 0
+		}, { processor: processorId }, finalResult[processorId]);
+	});
 };
 
 var filterData = function (data, query) {
-	var result = {};
-
+	var result = [];
 	Object.keys(data).forEach(function (date) {
-		result[date] = buildFilteredResult(data, date, query.service, query.certificate);
+		Array.prototype.push.apply(result, buildFilteredResult(data[date], date,
+			query.service, query.certificate, query.step ));
 	});
 
 	return result;
@@ -102,12 +125,13 @@ var filterData = function (data, query) {
 
 exports['statistics-main'] = function () {
 	var queryHandler, tables = new ObservableValue({})
-	  , pagination = new Pagination('/flow/'), handlerConf;
+	  , pagination = new Pagination('/flow/'), handlerConf, tablesValue = {};
 
-	tables.value = {
-		revision: new ObservableValue({}),
-		precal: new ObservableValue({})
-	};
+	Object.keys(processingSteps).forEach(function (stepShortPath) {
+		tablesValue[stepShortPath] = new ObservableValue({});
+	});
+
+	tables.value = tablesValue;
 
 	handlerConf = queryHandlerConf.slice(0);
 	handlerConf.push(pageQuery, serviceQuery, certificateQuery);
@@ -157,10 +181,16 @@ exports['statistics-main'] = function () {
 		delete serverQuery.pageCount;
 
 		queryServer(serverQuery).done(function (responseData) {
-			var filteredData = filterData(responseData,
-				assign(query, { dateFrom: dateFrom, dateTo: dateTo }));
-			tables.value.revision.value = filteredData;
-			tables.value.precal.value = filteredData;
+			if (query.step) {
+				tables.value[query.step].value = filterData(responseData,
+					assign(query, { dateFrom: dateFrom, dateTo: dateTo }));
+			} else {
+				Object.keys(tables.value).forEach(function (stepShortPath) {
+					tables.value[stepShortPath].value = filterData(responseData,
+						assign({ step: stepShortPath }, query, { dateFrom: dateFrom, dateTo: dateTo }));
+				});
+			}
+
 			pagination.count.value   = query.pageCount;
 			pagination.current.value = query.page;
 		});
@@ -198,7 +228,7 @@ exports['statistics-main'] = function () {
 	section({ class: "section-primary" },
 		list(Object.keys(tables.value), function (key) {
 			return tables.value[key].map(function (result) {
-				if (!result) return;
+				if (!result || !result.length) return;
 				var mode = modes.get(location.query.mode || 'daily');
 				return section({ class: "section-primary" },
 					h3(key),
@@ -212,11 +242,10 @@ exports['statistics-main'] = function () {
 							th({ class: 'statistics-table-number' }, _("Rejected"))
 						),
 						tbody({ onEmpty: tr(td({ class: 'empty', colspan: 6 },
-							_("No data for this criteria"))) }, Object.keys(result), function (key) {
+							_("No data for this criteria"))) }, result, function (resultRow) {
 							return tr(
-								td(key),
-								list(Object.keys(result[key]), function (status) {
-									return td({ class: 'statistics-table-number' }, result[key][status]);
+								list(Object.keys(resultRow), function (prop) {
+									return td({ class: 'statistics-table-number' }, resultRow[prop]);
 								})
 							);
 						})));
