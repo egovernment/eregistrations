@@ -171,9 +171,11 @@ exports['statistics-main'] = function () {
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
 				input({ id: 'date-from-input', type: 'date',
 					name: 'dateFrom', value: location.query.get('dateFrom').map(function (dateFrom) {
-					var now = new db.Date();
-					now.setDate(now.getDate() - 7);
-					return dateFrom || now.toISOString().slice(0, 10);
+					var now = new db.Date(), defaultDate;
+					defaultDate = new db.Date(now.getUTCFullYear(), now.getUTCMonth(),
+							now.getUTCDate() - 6);
+
+					return dateFrom || defaultDate;
 				}) })
 			),
 			div(
@@ -188,10 +190,10 @@ exports['statistics-main'] = function () {
 	section(pagination);
 	section({ class: "section-primary" },
 		data.map(function (result) {
-			var mode = modes.get(location.query.mode);
+			var mode = modes.get(location.query.mode || 'daily');
 			return table({ class: 'statistics-table' },
 				thead(
-					th({ class: 'statistics-table-number' }, mode && mode.labelNoun),
+					th({ class: 'statistics-table-number' }, mode.labelNoun),
 					th({ class: 'statistics-table-number' }, _("Submitted")),
 					th({ class: 'statistics-table-number' }, _("Pending")),
 					th({ class: 'statistics-table-number' }, _("Ready for withdraw")),
