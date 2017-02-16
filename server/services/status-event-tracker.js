@@ -71,6 +71,12 @@ var dbDateToISO = function (date) {
 	return date.toISOString().substring(0, 10);
 };
 
+var getStatusHistoryLogs = function (statusHistory) {
+	return Array.from(statusHistory.values()).sort(function (a, b) {
+		return a.date - b.date;
+	});
+};
+
 module.exports = function () {
 	var driver      = require('mano').dbDriver
 	  , currentDate = toDateInTz(new Date(), db.timeZone);
@@ -157,7 +163,7 @@ module.exports = function () {
 			certificateData.forEach(function (businessProcess) {
 				var bpId              = businessProcess.businessProcessId
 				  , serviceName       = data.businessProcesses.get(bpId).serviceName
-				  , statusHistoryLogs = Array.from(businessProcess.statusHistory.values())
+				  , statusHistoryLogs = getStatusHistoryLogs(businessProcess.statusHistory)
 				  , pendingStartDate;
 
 				var getDataset = function (date) {
@@ -189,7 +195,7 @@ module.exports = function () {
 		data.businessProcesses.forEach(function (businessProcess) {
 			var bpId              = businessProcess.businessProcessId
 			  , serviceName       = businessProcess.serviceName
-			  , statusHistoryLogs = Array.from(businessProcess.statusHistory.values())
+			  , statusHistoryLogs = getStatusHistoryLogs(businessProcess.statusHistory)
 			  , certificates      = businessProcess.certificates
 			  , statusStartDates  = { pending: null, pickup: null, sentBack: null }
 			  , dataset;
@@ -308,7 +314,7 @@ module.exports = function () {
 			step.forEach(function (businessProcess) {
 				var bpId              = businessProcess.businessProcessId
 				  , serviceName       = data.businessProcesses.get(bpId).serviceName
-				  , statusHistoryLogs = Array.from(businessProcess.statusHistory.values())
+				  , statusHistoryLogs = getStatusHistoryLogs(businessProcess.statusHistory)
 				  , pendingStartDate  = null
 				  , statusStartDates  = { paused: {}, sentBack: {}, redelegated: {} }
 				  , dataset;
