@@ -115,8 +115,14 @@ var calculate = function (dateMap, data, dateFrom, dateTo) {
 					// 3.1.1 [serviceName].processingStep[stepName].pending.businessProcess
 					storeStatusData(stepResult.pending, 'businessProcess', stepData.pending);
 
-					// 3.1.2 [serviceName].processingStep[stepName].pending.certificate[certificateName]
-					// TODO
+					stepData.pending.forEach(function (bpId) {
+						var certificates = data.businessProcesses.get(bpId).certificates;
+
+						certificates.forEach(function (certificateName) {
+							// 3.1.2 [serviceName].processingStep[stepName].pending.certificate[certificateName]
+							storeStatusData(stepResult.pending.certificate, certificateName, stepData.pending);
+						});
+					});
 
 					oForEach(stepData.byProcessor, function (byProcessorData, processorId) {
 						var processorResult;
@@ -125,19 +131,27 @@ var calculate = function (dateMap, data, dateFrom, dateTo) {
 
 						processorResult = stepResult.byProcessor[processorId];
 
-						// storePerStatusResult(byProcessorData, processorResult);
-
 						oForEach(byProcessorData, function (statusData, status) {
+							var statusResult;
+
 							if (!processorResult[status]) processorResult[status] = { certificate: {} };
+
+							statusResult = processorResult[status];
 
 							// 3.2.1 [serviceName].processingStep[stepName]
 							//           .byProcessor[processorId][status].businessProcess
-							storeStatusData(processorResult[status], 'businessProcess', statusData);
-						});
+							storeStatusData(statusResult, 'businessProcess', statusData);
 
-						// 3.2.2 [serviceName].processingStep[stepName]
-						//           .byProcessor[processorId][status].certificate[certificateName]
-						// TODO
+							statusData.forEach(function (bpId) {
+								var certificates = data.businessProcesses.get(bpId).certificates;
+
+								certificates.forEach(function (certificateName) {
+									// 3.2.2 [serviceName].processingStep[stepName]
+									//           .byProcessor[processorId][status].certificate[certificateName]
+									storeStatusData(statusResult.certificate, certificateName, statusData);
+								});
+							});
+						});
 					});
 				});
 			}
@@ -163,18 +177,19 @@ var calculate = function (dateMap, data, dateFrom, dateTo) {
 			// 3.1.1 [serviceName].processingStep[stepName].pending.businessProcess
 			stepResult.pending.businessProcess = stepResult.pending.businessProcess.size;
 			// 3.1.2 [serviceName].processingStep[stepName].pending.certificate[certificateName]
-			// TODO
+			oForEach(stepResult.pending, eachStatusSetToSum);
 
-			// 3.2.1 [serviceName].processingStep[stepName]
-			//           .byProcessor[processorId][status].businessProcess
-			// TODO: Should end at '.businessProcess'
 			oForEach(stepResult.byProcessor, function (processorResult) {
+				// 3.2.1 [serviceName].processingStep[stepName]
+				//           .byProcessor[processorId][status].businessProcess
 				oForEach(processorResult, eachStatusSetToSum);
-			});
 
-			// 3.2.2 [serviceName].processingStep[stepName]
-			//           .byProcessor[processorId][status].certificate[certificateName]
-			// TODO
+				oForEach(processorResult, function (statusResult) {
+					// 3.2.2 [serviceName].processingStep[stepName]
+					//           .byProcessor[processorId][status].certificate[certificateName]
+					oForEach(statusResult, eachStatusSetToSum);
+				});
+			});
 		});
 	});
 
