@@ -72,10 +72,11 @@ var accumulateResultRows = function (rows) {
 
 var buildFilteredResult = function (data, key, service, certificate) {
 	if (!data[key]) return buildResultRow();
-	if (service && certificate) {
-		return buildResultRow(data[key][service].certificate[certificate]);
-	}
 	if (service) {
+		if (!data[key][service]) return buildResultRow();
+		if (certificate) {
+			return buildResultRow(data[key][service].certificate[certificate]);
+		}
 		return buildResultRow(data[key][service].businessProcess);
 	}
 	var rowsToAccumulate = [];
@@ -170,9 +171,11 @@ exports['statistics-main'] = function () {
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
 				input({ id: 'date-from-input', type: 'date',
 					name: 'dateFrom', value: location.query.get('dateFrom').map(function (dateFrom) {
-					var now = new db.Date();
-					now.setDate(now.getDate() - 7);
-					return dateFrom || now.toISOString().slice(0, 10);
+					var now = new db.Date(), defaultDate;
+					defaultDate = new db.Date(now.getUTCFullYear(), now.getUTCMonth(),
+							now.getUTCDate() - 6);
+
+					return dateFrom || defaultDate;
 				}) })
 			),
 			div(
@@ -187,19 +190,10 @@ exports['statistics-main'] = function () {
 	section(pagination);
 	section({ class: "section-primary" },
 		data.map(function (result) {
+			var mode = modes.get(location.query.mode || 'daily');
 			return table({ class: 'statistics-table' },
 				thead(
-					th({ class: 'statistics-table-number' }, location.query.get("mode").map(function (mode) {
-						var title;
-						if (!mode) return;
-						modes.some(function (m) {
-							if (mode === m.key) {
-								title = m.labelNoun;
-								return true;
-							}
-						});
-						return title;
-					})),
+					th({ class: 'statistics-table-number' }, mode.labelNoun),
 					th({ class: 'statistics-table-number' }, _("Submitted")),
 					th({ class: 'statistics-table-number' }, _("Pending")),
 					th({ class: 'statistics-table-number' }, _("Ready for withdraw")),

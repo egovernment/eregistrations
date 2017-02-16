@@ -1,5 +1,26 @@
 'use strict';
 
+/**
+ * It's about reduction
+ *
+ * FROM:
+ *
+ * [date][serviceName].businessProcess[status] = num;
+ * [date][serviceName].certificate[name][status] = num;
+ * [date][serviceName].processingStep[stepName].pending.businessProcess = num;
+ * [date][serviceName].processingStep[stepName].pending.certificate[name] = num;
+ * [date][serviceName].processingStep[stepName].byProcessor[processorId][status].businessProcess =
+ * num;
+ * [date][serviceName].processingStep[stepName].byProcessor[processorId][status].certificate[name] =
+ * num;
+ *
+ * TO:
+ * [date][serviceName][stepName][status].businessProcess   = num;
+ * [date][serviceName][stepName][status].certificate[name] = num;
+ *
+ * @type {Object.keys|*}
+ */
+
 var keys = Object.keys;
 
 module.exports = function (result) {
@@ -8,7 +29,7 @@ module.exports = function (result) {
 		processingStepMap[date] = {};
 		keys(result[date]).forEach(function (service) {
 			processingStepMap[date][service] = {};
-			processingStep = processingStepMap[date][service].processingStep = {};
+			processingStep = processingStepMap[date][service] = {};
 			keys(result[date][service].processingStep).forEach(function (step) {
 				processingStep[step] = { pending: result[date][service].processingStep[step].pending };
 				mapEntry = result[date][service].processingStep[step].byProcessor;

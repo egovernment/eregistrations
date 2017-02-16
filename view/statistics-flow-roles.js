@@ -85,11 +85,11 @@ var buildResultRow = function (rowData, queryCertificate, queryStatus) {
 var buildFilteredResult = function (data, key, service, certificate, status) {
 	var resultRow, finalResult = {};
 	if (service) {
-		return buildResultRow(data[key][service].processingStep, certificate, status);
+		return buildResultRow(data[key][service], certificate, status);
 	}
 
 	Object.keys(data[key]).forEach(function (serviceKey) {
-		resultRow = buildResultRow(data[key][serviceKey].processingStep, certificate, status);
+		resultRow = buildResultRow(data[key][serviceKey], certificate, status);
 		// accumulate
 		Object.keys(resultRow).forEach(function (stepShortPath) {
 			if (!finalResult[stepShortPath]) {
@@ -124,7 +124,6 @@ exports['statistics-main'] = function () {
 	queryHandler.on('query', function (query) {
 		var serverQuery = copy(query), dateFrom, dateTo, mode
 		  , currentDate, offset, timeUnitsCount = 0, durationInTimeUnits, page;
-
 		dateFrom = query.dateFrom;
 		dateTo   = query.dateTo || new db.Date();
 		mode     = query.mode;
@@ -200,9 +199,11 @@ exports['statistics-main'] = function () {
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
 				input({ id: 'date-from-input', type: 'date',
 					name: 'dateFrom', value: location.query.get('dateFrom').map(function (dateFrom) {
-					var now = new db.Date();
-					now.setDate(now.getDate() - 7);
-					return dateFrom || now.toISOString().slice(0, 10);
+					var now = new db.Date(), defaultDate;
+					defaultDate = new db.Date(now.getUTCFullYear(), now.getUTCMonth(),
+								now.getUTCDate() - 6);
+
+					return dateFrom || defaultDate;
 				}) })
 			),
 			div(
@@ -217,19 +218,10 @@ exports['statistics-main'] = function () {
 	section(pagination);
 	section({ class: "section-primary statistics-table-scrollable" },
 		data.map(function (result) {
+			var mode = modes.get(location.query.mode || 'daily');
 			return table({ class: 'statistics-table' },
 				thead(
-					th({ class: 'statistics-table-number' }, location.query.get("mode").map(function (mode) {
-						var title;
-						if (!mode) return;
-						modes.some(function (m) {
-							if (mode === m.key) {
-								title = m.labelNoun;
-								return true;
-							}
-						});
-						return title;
-					})),
+					th({ class: 'statistics-table-number' }, mode.labelNoun),
 					list(Object.keys(processingSteps), function (shortStepPath) {
 						return th({ class: 'statistics-table-number' }, getStepLabelByShortPath(shortStepPath));
 					})

@@ -6,7 +6,7 @@ var db        = require('../../db')
 module.exports = {
 	name: 'status',
 	ensure: function (value) {
-		if (!value) return;
+		if (!value) return 'pending';
 
 		if (!db.ProcessingStepStatus.members.has(value)) {
 			throw new Error("Unrecognized status value " + stringify(value));
