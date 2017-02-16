@@ -78,7 +78,7 @@ module.exports = function (config) {
 				dateRanges = getDateRangesByMode(query.dateFrom, query.dateTo, query.mode);
 				dateRanges.forEach(function (dateRange) {
 					// dateRange: { dateFrom: db.Date, dateTo: db.Date } with dateRange query for result
-					result[mode.getDisplayedKey(dateRange.dateFrom)] = null;
+					result[mode.getDisplayedKey(dateRange.dateFrom)] = require('../../stats-dummy-data')(dateRange.dateFrom, dateRange.dateTo);
 				});
 
 				return result;
