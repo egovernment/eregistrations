@@ -73,8 +73,7 @@ var dbDateToISO = function (date) {
 
 module.exports = function () {
 	var driver      = require('mano').dbDriver
-	  , currentDate = toDateInTz(new Date(), db.timeZone)
-	  , bpCertMap   = {};
+	  , currentDate = toDateInTz(new Date(), db.timeZone);
 
 	var initDataset = function (date, serviceName) {
 		date = dbDateToISO(date);
@@ -184,9 +183,6 @@ module.exports = function () {
 					storeStatusRange(pendingStartDate, currentDate, 'pending', bpId, getDataset);
 					pendingStartDate = null;
 				}
-
-				if (!bpCertMap[bpId]) bpCertMap[bpId] = [];
-				bpCertMap[bpId].push(certificateName);
 			});
 		});
 
@@ -194,7 +190,7 @@ module.exports = function () {
 			var bpId              = businessProcess.businessProcessId
 			  , serviceName       = businessProcess.serviceName
 			  , statusHistoryLogs = Array.from(businessProcess.statusHistory.values())
-			  , certificates      = bpCertMap[bpId]
+			  , certificates      = businessProcess.certificates
 			  , statusStartDates  = { pending: null, pickup: null, sentBack: null }
 			  , dataset;
 
@@ -230,19 +226,26 @@ module.exports = function () {
 				incrementCertStatus(submittedDate, 'submitted');
 			}
 
+			if (data.steps.get('frontDesk') && data.steps.get('frontDesk').get(bpId)) {
+				var frontDeskData = data.steps.get('frontDesk').get(bpId);
+
+				if (frontDeskData.status === 'approved') {
+					var statusDate = toDateInTz(new Date(frontDeskData.statusStamp / 1000), db.timeZone);
+					// 1.5 [date][serviceName].businessProcess.withdrawn
+					dataset = getDataset(statusDate);
+					dataset.withdrawn++;
+					// 2.5 [date][serviceName].certificate[certificateName].withdrawn
+					incrementCertStatus(statusDate, 'withdrawn');
+				}
+			}
+
 			// Business process statuses: draft, revision, sentBack, process, pickup, rejected,
 			// withdrawn, closed
 			statusHistoryLogs.forEach(function (statusHistoryLog) {
 				var logStauts = statusHistoryLog.status
 				  , logDate   = statusHistoryLog.date;
 
-				if ((logStauts === 'withdrawn') || (logStauts === 'closed')) {
-					// 1.5 [date][serviceName].businessProcess.withdrawn
-					dataset = getDataset(logDate);
-					dataset.withdrawn++;
-					// 2.5 [date][serviceName].certificate[certificateName].withdrawn
-					incrementCertStatus(logDate, 'withdrawn');
-				} else if (logStauts === 'rejected') {
+				if (logStauts === 'rejected') {
 					// 1.6 [date][serviceName].businessProcess.rejected
 					dataset = getDataset(logDate);
 					dataset.rejected++;
