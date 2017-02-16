@@ -178,9 +178,11 @@ exports['statistics-main'] = function () {
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
 				input({ id: 'date-from-input', type: 'date',
 					name: 'dateFrom', value: location.query.get('dateFrom').map(function (dateFrom) {
-					var now = new db.Date();
-					now.setDate(now.getDate() - 7);
-					return dateFrom || now.toISOString().slice(0, 10);
+					var now = new db.Date(), defaultDate;
+					defaultDate = new db.Date(now.getUTCFullYear(), now.getUTCMonth(),
+								now.getUTCDate() - 6);
+
+					return dateFrom || defaultDate;
 				}) })
 			),
 			div(
@@ -197,22 +199,12 @@ exports['statistics-main'] = function () {
 		list(Object.keys(tables.value), function (key) {
 			return tables.value[key].map(function (result) {
 				if (!result) return;
+				var mode = modes.get(location.query.mode || 'daily');
 				return section({ class: "section-primary" },
 					h3(key),
 					table({ class: 'statistics-table' },
 						thead(
-							th({ class: 'statistics-table-number' },
-								location.query.get("mode").map(function (mode) {
-									var title;
-									if (!mode) return;
-									modes.some(function (m) {
-										if (mode === m.key) {
-											title = m.labelNoun;
-											return true;
-										}
-									});
-									return title;
-								})),
+							th({ class: 'statistics-table-number' }, mode.labelNoun),
 							th({ class: 'statistics-table-number' }, _("Operator")),
 							th({ class: 'statistics-table-number' }, _("Files Processed")),
 							th({ class: 'statistics-table-number' }, _("Validated")),
