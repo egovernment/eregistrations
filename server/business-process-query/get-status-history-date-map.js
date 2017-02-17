@@ -155,8 +155,11 @@ module.exports = memoize(function (data) {
 		certificateData.forEach(function (businessProcess) {
 			var bpId              = businessProcess.businessProcessId
 			  , serviceName       = data.businessProcesses.get(bpId).serviceName
-			  , statusHistoryLogs = getStatusHistoryLogs(businessProcess.statusHistory)
-			  , pendingStartDate;
+			  , statusHistoryLogs, pendingStartDate;
+
+			if (!businessProcess.statusHistory) return;
+
+			statusHistoryLogs = getStatusHistoryLogs(businessProcess.statusHistory);
 
 			var getDataset = function (date) {
 				return initCertDataset(date, serviceName, certificateName);
@@ -187,10 +190,13 @@ module.exports = memoize(function (data) {
 	data.businessProcesses.forEach(function (businessProcess) {
 		var bpId              = businessProcess.businessProcessId
 		  , serviceName       = businessProcess.serviceName
-		  , statusHistoryLogs = getStatusHistoryLogs(businessProcess.statusHistory)
 		  , certificates      = businessProcess.certificates
 		  , statusStartDates  = { pending: null, pickup: null, sentBack: null }
-		  , dataset;
+		  , statusHistoryLogs, dataset;
+
+		if (!businessProcess.statusHistory) return;
+
+		statusHistoryLogs = getStatusHistoryLogs(businessProcess.statusHistory);
 
 		var getDataset = function (date) {
 			return initBpDataset(date, serviceName);
@@ -306,10 +312,13 @@ module.exports = memoize(function (data) {
 		step.forEach(function (businessProcess) {
 			var bpId              = businessProcess.businessProcessId
 			  , serviceName       = data.businessProcesses.get(bpId).serviceName
-			  , statusHistoryLogs = getStatusHistoryLogs(businessProcess.statusHistory)
 			  , pendingStartDate  = null
 			  , statusStartDates  = { paused: {}, sentBack: {}, redelegated: {} }
-			  , dataset;
+			  , statusHistoryLogs, dataset;
+
+			if (!businessProcess.statusHistory) return;
+
+			statusHistoryLogs = getStatusHistoryLogs(businessProcess.statusHistory);
 
 			var getPendingDataset = function (date) {
 				return initStepPendingDataset(date, serviceName, stepName);
