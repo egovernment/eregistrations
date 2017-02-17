@@ -7,6 +7,7 @@ var db        = require('mano').db
 module.exports = dialog(
 	{ id: 'reset-password', class: 'dialog-reset-password dialog-modal' },
 	header(
+		button({ class: 'close', type: 'button'}, i({ class: 'fa fa-close' })),
 		h3(_("Reset password"))
 	),
 	section(
