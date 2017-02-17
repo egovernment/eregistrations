@@ -53,11 +53,12 @@ db.BusinessProcess.extensions.forEach(function (ServiceType) {
 });
 
 var stepStatuses = {};
-Object.keys(processingSteps).forEach(function (step) {
-	Object.keys(processingSteps[step]).forEach(function (statusKey) {
-		if (statusKey === 'all') return;
-		stepStatuses[statusKey] = processingSteps[step][statusKey];
-	});
+['pending', 'approved', 'sentBack', 'rejected', 'paused'].forEach(function (stepName) {
+	// sanity check
+	if (!db.ProcessingStepStatus.members.has(stepName)) {
+		return;
+	}
+	stepStatuses[stepName] = db.ProcessingStepStatus.meta[stepName];
 });
 
 var buildResultRow = function (rowData, queryCertificate, queryStatus) {
