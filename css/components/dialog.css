@@ -36,7 +36,7 @@ dialog header h3 {
 	padding: 11px;
 }
 
-dialog header .close {
+dialog header .dialog-modal-close {
 	background-color: transparent;
 	color: white;
 	float: right;
