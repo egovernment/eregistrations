@@ -230,9 +230,12 @@ exports['statistics-main'] = function () {
 					_("No data for this criteria"))) }, Object.keys(result), function (key) {
 					return tr(
 						td(key),
-						list(Object.keys(result[key]), function (step) {
-							return td({ class: 'statistics-table-number' }, result[key][step]);
-						})
+						Object.keys(result[key]).length ?
+								list(Object.keys(result[key]), function (step) {
+									return td({ class: 'statistics-table-number' }, result[key][step]);
+								}) : td({ class: 'statistics-table-info', colspan:
+								Object.keys(processingSteps).length },
+							_("Nothing to report for this period"))
 					);
 				}));
 		}));

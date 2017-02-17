@@ -12,6 +12,11 @@
 	padding: 11px 6px 10px;
 	text-align: left;
 }
+
+.statistics-table thead tr .statistics-table-info,
+.statistics-table tbody tr .statistics-table-info {
+	text-align: center;
+}
 .statistics-table thead tr .statistics-table-number,
 .statistics-table tbody tr .statistics-table-number {
 	text-align: right;
