@@ -7,7 +7,7 @@ var db        = require('mano').db
 module.exports = dialog(
 	{ id: 'login', class: 'dialog-login dialog-modal' },
 	header(
-		a({ class: 'close', type: 'button', href: "" }, i({ class: 'fa fa-close' })),
+		a({ class: 'close', type: 'button', href: "." }, i({ class: 'fa fa-close' })),
 		h3(_("Login"))
 	),
 	section(

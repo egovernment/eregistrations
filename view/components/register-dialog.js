@@ -12,7 +12,7 @@ module.exports = function (context) {
 	return dialog(
 		{ id: 'register', class: 'dialog-register dialog-modal' },
 		header(
-			a({ class: 'close', type: 'button', href: "" }, i({ class: 'fa fa-close' })),
+			a({ class: 'close', type: 'button', href: "." }, i({ class: 'fa fa-close' })),
 			h3(_("Create your account"))
 		),
 		section(
