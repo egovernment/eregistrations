@@ -23,7 +23,9 @@ var assign                  = require('es5-ext/object/assign')
   , getBaseRoutes           = require('./authenticated')
   , processingStepsMeta     = require('../../processing-steps-meta')
   , getDateRangesByMode     = require('../../utils/get-date-ranges-by-mode')
-  , modes                   = require('../../utils/statistics-flow-group-modes');
+  , modes                   = require('../../utils/statistics-flow-group-modes')
+  , reduceOperators         = require('../../utils/statistics-flow-reduce-operators')
+  , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf');
 
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
@@ -37,6 +39,7 @@ module.exports = function (config) {
 
 	var queryHandler = new QueryHandler(queryConf);
 	var flowQueryHandler = new QueryHandler(flowQueryConf);
+	var flowQueryHandlerOperators = new QueryHandler(flowQueryOperatorsHandlerConf);
 
 	var resolveTimePerRole = function (query) {
 		return getData(driver)(function (data) {
@@ -78,10 +81,23 @@ module.exports = function (config) {
 				dateRanges = getDateRangesByMode(query.dateFrom, query.dateTo, query.mode);
 				dateRanges.forEach(function (dateRange) {
 					// dateRange: { dateFrom: db.Date, dateTo: db.Date } with dateRange query for result
-					result[mode.getDisplayedKey(dateRange.dateFrom)] = null;
+					result[mode.getDisplayedKey(dateRange.dateFrom)] = {};
 				});
 
 				return result;
+			});
+		},
+		'get-flow-roles-operators-data': function (query) {
+			return flowQueryHandlerOperators.resolve(query)(function (query) {
+				var dateRanges, result = {}, mode;
+				mode = modes.get(query.mode);
+				dateRanges = getDateRangesByMode(query.dateFrom, query.dateTo, query.mode);
+				dateRanges.forEach(function (dateRange) {
+					// dateRange: { dateFrom: db.Date, dateTo: db.Date } with dateRange query for result
+					result[mode.getDisplayedKey(dateRange.dateFrom)] = {};
+				});
+
+				return reduceOperators(assign({ data: result }, query));
 			});
 		},
 		'get-time-per-role': function (query) {
