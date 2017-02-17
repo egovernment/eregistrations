@@ -14,21 +14,22 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , selectService     = require('./components/filter-bar/select-service')
   , selectCertificate = require('./components/filter-bar/select-certificate')
   , selectPeriodMode  = require('./components/filter-bar/select-period-mode')
-  , itemsPerPage      = require('../conf/objects-list-items-per-page')
+  , selectUser        = require('./components/filter-bar/select-user')
   , serviceQuery      = require('../apps-common/query-conf/service')
   , certificateQuery  = require('../apps-common/query-conf/certificate')
   , pageQuery         = require('../utils/query/date-constrained-page')
-  , copyDbDate        = require('../utils/copy-db-date')
   , processingSteps   = require('../processing-steps-meta')
   , queryServer       = require('./utils/statistics-flow-query-server')
-  , incrementDateByTimeUnit = require('../utils/increment-date-by-time-unit')
-  , floorToTimeUnit         = require('../utils/floor-to-time-unit')
-  , calculateDurationByMode = require('../utils/calculate-duration-by-mode');
+  , getStepLabelByShortPath = require('../utils/get-step-label-by-short-path')
+  , isOfficialRoleName      = require('../utils/is-official-role-name')
+  , usersCollection         = db.User.instances.filterByKey('roles', function (roles) {
+	return roles.some(isOfficialRoleName);
+});
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
 
-exports['flow-nav']                = { class: { 'submitted-menu-item-active': true } };
+exports['flow-nav']             = { class: { 'submitted-menu-item-active': true } };
 exports['flow-by-operator-nav'] = { class: { 'pills-nav-active': true } };
 
 var serviceToCertLegacyMatch = { '': [] };
@@ -70,11 +71,10 @@ var buildResultByProcessor = function (finalResult, row, processorId, certificat
 			finalResult[processorId].processed += row[status].businessProcess;
 		}
 	});
-}
+};
 
 var buildFilteredResult = function (data, date, service, certificate, step, processor) {
-	var finalResult = {}, reducedRows = [data], resultTemplate, row;
-
+	var finalResult = {}, reducedRows = [data], row;
 
 	if (service) {
 		reducedRows = reducedRows.map(function (reducedRow) {
@@ -92,6 +92,10 @@ var buildFilteredResult = function (data, date, service, certificate, step, proc
 	reducedRows.forEach(function (reducedRow) {
 		if (processor) {
 			row = reducedRow[processor];
+			if (!row) {
+				finalResult[processor] = {};
+				return;
+			}
 			buildResultByProcessor(finalResult, row, processor, certificate);
 		} else {
 			Object.keys(reducedRow).forEach(function (processorId) {
@@ -117,7 +121,7 @@ var filterData = function (data, query) {
 	var result = [];
 	Object.keys(data).forEach(function (date) {
 		Array.prototype.push.apply(result, buildFilteredResult(data[date], date,
-			query.service, query.certificate, query.step ));
+			query.service, query.certificate, query.step, query.processor));
 	});
 
 	return result;
@@ -134,49 +138,31 @@ exports['statistics-main'] = function () {
 	tables.value = tablesValue;
 
 	handlerConf = queryHandlerConf.slice(0);
-	handlerConf.push(pageQuery, serviceQuery, certificateQuery);
+	handlerConf.push(pageQuery, serviceQuery, certificateQuery, {
+		name: 'processor',
+		ensure: function (value) {
+			if (!value) return;
+
+			if (!usersCollection.getById(value)) {
+				throw new Error("Unrecognized processor value " + JSON.stringify(value));
+			}
+
+			return value;
+		}
+	});
 	queryHandler = setupQueryHandler(handlerConf,
 		location, '/flow/by-operator/');
 
 	queryHandler.on('query', function (query) {
-		var serverQuery = copy(query), dateFrom, dateTo, mode
-		  , currentDate, offset, timeUnitsCount = 0, durationInTimeUnits, page;
+		var serverQuery = copy(query), dateFrom, dateTo;
 
 		dateFrom = query.dateFrom;
 		dateTo   = query.dateTo || new db.Date();
-		mode     = query.mode;
-		page     = query.page;
 
-		durationInTimeUnits = calculateDurationByMode(dateFrom, dateTo, mode);
-		if (query.pageCount > 1) {
-			offset = { from: ((page - 1) * itemsPerPage) };
-			offset.to = offset.from;
-			if ((durationInTimeUnits - offset.from) < itemsPerPage) {
-				offset.to += durationInTimeUnits - offset.from;
-			} else {
-				offset.to += itemsPerPage;
-			}
-			offset.to -= 1;
-
-			currentDate = copyDbDate(dateFrom);
-			floorToTimeUnit(currentDate, mode);
-			while (timeUnitsCount <= offset.to) {
-				if (timeUnitsCount === offset.from && query.page > 1) {
-					dateFrom = copyDbDate(currentDate);
-				}
-				if (timeUnitsCount === offset.to && query.page < query.pageCount) {
-					dateTo = incrementDateByTimeUnit(copyDbDate(currentDate), mode);
-					dateTo.setUTCDate(dateTo.getUTCDate() - 1);
-				}
-				timeUnitsCount++;
-				incrementDateByTimeUnit(currentDate, mode);
-			}
-		}
 		serverQuery.dateFrom = dateFrom.toJSON();
 		serverQuery.dateTo = dateTo.toJSON();
 
 		delete serverQuery.service;
-		delete serverQuery.page;
 		delete serverQuery.certificate;
 		delete serverQuery.pageCount;
 
@@ -203,6 +189,9 @@ exports['statistics-main'] = function () {
 			div({ class: 'users-table-filter-bar-status' },
 				selectCertificate(),
 				legacy('selectMatch', 'service-select', serviceToCertLegacyMatch)),
+			div({ class: 'users-table-filter-bar-status' },
+				selectUser({ label: _("All operators"), name: 'processor',
+					usersCollection: usersCollection })),
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
@@ -231,7 +220,7 @@ exports['statistics-main'] = function () {
 				if (!result || !result.length) return;
 				var mode = modes.get(location.query.mode || 'daily');
 				return section({ class: "section-primary" },
-					h3(key),
+					h3(getStepLabelByShortPath(key)),
 					table({ class: 'statistics-table' },
 						thead(
 							th({ class: 'statistics-table-number' }, mode.labelNoun),
