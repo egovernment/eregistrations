@@ -51,7 +51,7 @@ exports['selection-preview'] = function () {
 	insert(
 		renderDocument(this, documentData, {
 			prependContent: _if(isProcessable, function () {
-				return disableStep(this.processingStep, revisionForm(this.document.owner));
+				return div(disableStep(this.processingStep, revisionForm(this.document.owner)));
 			}.bind(this), function () {
 				return renderDocumentRevisionInfo(documentData, this.documentKind);
 			}.bind(this)),
