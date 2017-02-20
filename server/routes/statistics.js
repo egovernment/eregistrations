@@ -25,6 +25,7 @@ var assign                  = require('es5-ext/object/assign')
   , getDateRangesByMode     = require('../../utils/get-date-ranges-by-mode')
   , modes                   = require('../../utils/statistics-flow-group-modes')
   , reduceOperators         = require('../../utils/statistics-flow-reduce-operators')
+  , itemsPerPage            = require('../../conf/objects-list-items-per-page')
   , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf');
 
 module.exports = function (config) {
@@ -89,15 +90,32 @@ module.exports = function (config) {
 		},
 		'get-flow-roles-operators-data': function (query) {
 			return flowQueryHandlerOperators.resolve(query)(function (query) {
-				var dateRanges, result = {}, mode;
+				var dateRanges, result = {}, mode, page = Number(query.page)
+				  , finalResult = {}, itemsCnt = 0, currentPage = 1;
 				mode = modes.get(query.mode);
 				dateRanges = getDateRangesByMode(query.dateFrom, query.dateTo, query.mode);
 				dateRanges.forEach(function (dateRange) {
 					// dateRange: { dateFrom: db.Date, dateTo: db.Date } with dateRange query for result
-					result[mode.getDisplayedKey(dateRange.dateFrom)] = {};
+					result[mode.getDisplayedKey(dateRange.dateFrom)] = null;
 				});
 
-				return reduceOperators(assign({ data: result }, query));
+				result = reduceOperators(assign({ data: result }, query));
+				Object.keys(result).forEach(function (date) {
+					Object.keys(result[date]).forEach(function (processorId) {
+						itemsCnt++;
+						if ((itemsCnt % itemsPerPage) === 1 && itemsCnt > 1) {
+							currentPage++;
+						}
+						if (currentPage === page) {
+							if (!finalResult[date]) {
+								finalResult[date] = {};
+							}
+							finalResult[date][processorId] = result[date][processorId];
+						}
+					});
+				});
+
+				return { data: finalResult, pageCount: currentPage };
 			});
 		},
 		'get-time-per-role': function (query) {

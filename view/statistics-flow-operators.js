@@ -70,10 +70,10 @@ exports['statistics-main'] = function () {
 		// hard code for tests
 
 		queryServer(serverQuery).done(function (responseData) {
-			tables.value[query.step].value = responseData;
+			tables.value[query.step].value = responseData.data;
 
-			pagination.count.value   = query.pageCount;
-			pagination.current.value = query.page;
+			pagination.current.value = Number(serverQuery.page);
+			pagination.count.value   = responseData.pageCount;
 		});
 	});
 
@@ -112,7 +112,6 @@ exports['statistics-main'] = function () {
 	section({ class: "section-primary" },
 		list(Object.keys(tables.value), function (key) {
 			return tables.value[key].map(function (result) {
-				if (!result || !Object.keys(result).length) return;
 				var mode = modes.get(location.query.mode || 'daily');
 				return section({ class: "section-primary" },
 					h3(getStepLabelByShortPath(key)),
@@ -125,8 +124,11 @@ exports['statistics-main'] = function () {
 							th({ class: 'statistics-table-number' }, _("Sent Back for corrections")),
 							th({ class: 'statistics-table-number' }, _("Rejected"))
 						),
-						tbody({ onEmpty: tr(td({ class: 'empty', colspan: 6 },
-							_("No data for this criteria"))) }, Object.keys(result).map(function (date) {
+						tbody(Object.keys(result).map(function (date) {
+							if (!Object.keys(result[date]).length) {
+								return tr(td({ class: 'empty statistics-table-info', colspan: 6 },
+									_("No data for this criteria")));
+							}
 							return Object.keys(result[date]).map(function (processorId) {
 								return tr(list(Object.keys(result[date][processorId]), function (prop) {
 									return td({ class: 'statistics-table-number' }, result[date][processorId][prop]);
