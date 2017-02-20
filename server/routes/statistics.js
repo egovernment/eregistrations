@@ -96,7 +96,7 @@ module.exports = function (config) {
 				dateRanges = getDateRangesByMode(query.dateFrom, query.dateTo, query.mode);
 				dateRanges.forEach(function (dateRange) {
 					// dateRange: { dateFrom: db.Date, dateTo: db.Date } with dateRange query for result
-					result[mode.getDisplayedKey(dateRange.dateFrom)] = null;
+					result[mode.getDisplayedKey(dateRange.dateFrom)] = {};
 				});
 
 				result = reduceOperators(assign({ data: result }, query));

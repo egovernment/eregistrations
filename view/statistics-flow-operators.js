@@ -105,14 +105,28 @@ exports['statistics-main'] = function () {
 				input({ id: 'date-to-input', type: 'date',
 					name: 'dateTo', value: location.query.get('dateTo') })
 			),
+			select(
+				{ id: 'select-step', name: 'step' },
+				list(Object.keys(processingSteps), function (step) {
+					return option({
+						value: step,
+						selected: location.query.get('step').map(function (value) {
+							var selected = (step ? (value === step) : (value == null));
+							return selected ? 'selected' : null;
+						})
+					}, getStepLabelByShortPath(step));
+				})
+			),
 			selectPeriodMode(),
 			p({ class: 'submit' }, input({ type: 'submit' }))));
 
 	section(pagination);
 	section({ class: "section-primary" },
-		list(Object.keys(tables.value), function (key) {
+		location.query.get('step').map(function (key) {
+			var mode = modes.get(location.query.mode || 'daily');
+			if (!key) key = Object.keys(processingSteps)[0];
 			return tables.value[key].map(function (result) {
-				var mode = modes.get(location.query.mode || 'daily');
+
 				return section({ class: "section-primary" },
 					h3(getStepLabelByShortPath(key)),
 					table({ class: 'statistics-table' },
@@ -131,7 +145,14 @@ exports['statistics-main'] = function () {
 							}
 							return Object.keys(result[date]).map(function (processorId) {
 								return tr(list(Object.keys(result[date][processorId]), function (prop) {
-									return td({ class: 'statistics-table-number' }, result[date][processorId][prop]);
+									var display;
+									if (prop === 'processor') {
+										display = db.User.getById(processorId) || _('Unknown user');
+									} else {
+										display = result[date][processorId][prop];
+									}
+
+									return td({ class: 'statistics-table-number' }, display);
 								}));
 							});
 						}))));
