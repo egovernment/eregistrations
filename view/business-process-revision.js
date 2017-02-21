@@ -18,7 +18,8 @@ exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
 		var revisionStep      = this.processingStep
-		  , isPauseEnabled    = and(exports._isPauseEnabled, not(revisionStep._isClosed))
+		  , isPauseEnabled    = and(exports._isPauseEnabled, or(revisionStep._isPending,
+				revisionStep._isPaused))
 		  , isRevisionPending = revisionStep._isRevisionPending
 		  , isToolbarEnabled  = or(isRevisionPending, isPauseEnabled);
 
