@@ -74,7 +74,7 @@ var buildResultRow = function (rowData, queryCertificate, queryStatus) {
 
 		reducedRowData = rowData[stepShortPath][queryStatus];
 		if (queryCertificate) {
-			reducedRowData = reducedRowData.certificate[queryCertificate];
+			reducedRowData = reducedRowData.certificate[queryCertificate] || 0;
 		} else {
 			reducedRowData = reducedRowData.businessProcess;
 		}
@@ -86,11 +86,11 @@ var buildResultRow = function (rowData, queryCertificate, queryStatus) {
 var buildFilteredResult = function (data, key, service, certificate, status) {
 	var resultRow, finalResult = {};
 	if (service) {
-		return buildResultRow(data[key][service], certificate, status);
+		return buildResultRow(data[key][service] || {}, certificate, status);
 	}
 
 	Object.keys(data[key]).forEach(function (serviceKey) {
-		resultRow = buildResultRow(data[key][serviceKey], certificate, status);
+		resultRow = buildResultRow(data[key][serviceKey] || {}, certificate, status);
 		// accumulate
 		Object.keys(resultRow).forEach(function (stepShortPath) {
 			if (!finalResult[stepShortPath]) {
