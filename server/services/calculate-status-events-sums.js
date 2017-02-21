@@ -79,14 +79,10 @@ var calculate = function (dateMap, data, dateFrom, dateTo) {
 
 			serviceResult = resultMap[serviceName];
 
-			// TODO: Is this even possible to have a day that had status events for processing
-			// steps and not for business process?
-			// if (serviceData.businessProcess) {
-
-			// 1 [serviceName].businessProcess[status]
-			storePerStatusResult(serviceData.businessProcess, serviceResult.businessProcess);
-
-			// }
+			if (serviceData.businessProcess) {
+				// 1 [serviceName].businessProcess[status]
+				storePerStatusResult(serviceData.businessProcess, serviceResult.businessProcess);
+			}
 
 			if (serviceData.certificate) {
 				oForEach(serviceData.certificate, function (certificateData, certificateName) {
