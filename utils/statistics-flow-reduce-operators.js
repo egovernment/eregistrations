@@ -24,7 +24,6 @@
  *  processed: num
  *  }
  *
- * @type {Object.keys|*}
  */
 
 var isEmptyResult = function (processorRow) {
