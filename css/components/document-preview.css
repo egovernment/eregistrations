@@ -23,7 +23,8 @@
 	border-color: #fbeed5;
 }
 
-.document-preview-box-header + .entities-overview-info {
+.document-preview-box-header + .entities-overview-info,
+.document-preview-box-header + div > .entities-overview-info {
 	margin-top: 22px;
 }
 
