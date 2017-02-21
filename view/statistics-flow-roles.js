@@ -61,14 +61,31 @@ var stepStatuses = {};
 	stepStatuses[stepName] = db.ProcessingStepStatus.meta[stepName];
 });
 
-var buildResultRow = function (rowData, queryCertificate, queryStatus) {
+// We consider step not applicable when it doesn't have given status or
+// it does not belong to selected service
+var isStepApplicable = function (stepKey, queryService, queryStatus) {
+	if (!processingSteps[stepKey]._services.some(function (service) {
+			return service === queryService;
+		})) {
+		return false;
+	}
+
+	if ((!Object.keys(processingSteps[stepKey]).some(function (status) {
+			return status === queryStatus;
+		}))) {
+		return false;
+	}
+
+	return true;
+};
+
+var buildResultRow = function (rowData, queryService, queryCertificate, queryStatus) {
 	var resultRow = {}, reducedRowData;
 	Object.keys(processingSteps).forEach(function (stepKey) {
-		resultRow[stepKey] = 0;
+		resultRow[stepKey] = isStepApplicable(stepKey, queryService, queryStatus) ? 0 : null;
 	});
 	Object.keys(rowData).forEach(function (stepShortPath) {
 		if (rowData[stepShortPath][queryStatus] == null) {
-			resultRow[stepShortPath] = null;
 			return;
 		}
 
@@ -76,23 +93,25 @@ var buildResultRow = function (rowData, queryCertificate, queryStatus) {
 		if (queryCertificate) {
 			reducedRowData = reducedRowData.certificate[queryCertificate] || 0;
 		} else {
-			reducedRowData = reducedRowData.businessProcess;
+			reducedRowData = reducedRowData.businessProcess || 0;
 		}
 		resultRow[stepShortPath] = reducedRowData;
 	});
+
 	return resultRow;
 };
 
 var buildFilteredResult = function (data, key, service, certificate, status) {
 	var resultRow, finalResult = {};
 	if (service) {
-		return buildResultRow(data[key][service] || {}, certificate, status);
+		return buildResultRow(data[key][service] || {}, service, certificate, status);
 	}
 
 	Object.keys(data[key]).forEach(function (serviceKey) {
-		resultRow = buildResultRow(data[key][serviceKey] || {}, certificate, status);
+		resultRow = buildResultRow(data[key][serviceKey] || {}, service, certificate, status);
 		// accumulate
 		Object.keys(resultRow).forEach(function (stepShortPath) {
+			if (resultRow[stepShortPath] == null) return;
 			if (!finalResult[stepShortPath]) {
 				finalResult[stepShortPath] = 0;
 			}
@@ -233,7 +252,8 @@ exports['statistics-main'] = function () {
 						td(key),
 						Object.keys(result[key]).length ?
 								list(Object.keys(result[key]), function (step) {
-									return td({ class: 'statistics-table-number' }, result[key][step]);
+									return td({ class: 'statistics-table-number' },
+											result[key][step] == null ? _("N/A") : result[key][step]);
 								}) : td({ class: 'statistics-table-info', colspan:
 								Object.keys(processingSteps).length },
 							_("Nothing to report for this period"))
