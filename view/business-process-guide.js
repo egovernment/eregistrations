@@ -139,7 +139,7 @@ exports._registrationsSection = function () {
 		{ class: ['section-primary', 'user-guide-registrations-section'] },
 		div(
 			{ id: 'mandatory-registrations-section', class: 'section-primary-wrapper' },
-			h2(_("Mandatory Registrations")),
+			exports._mandatoryRegistrationHeader.call(this),
 			exports._mandatoryRegistrationIntro.call(this),
 			div({ id: 'mandatory-registrations-empty-message' },
 				exports._mandatoryRegistrationsEmptyMessage.call(this)
@@ -161,7 +161,7 @@ exports._registrationsSection = function () {
 		),
 		div(
 			{ id: 'optional-registrations-section', class: 'section-primary-wrapper' },
-			h2(_("Optional Registrations")),
+			exports._optionalRegistrationHeader.call(this),
 			exports._optionalRegistrationIntro.call(this),
 			ul({ id: 'optional-registrations-list' }, registrationsMap, function (registration) {
 				var key   = registration.key
@@ -179,6 +179,14 @@ exports._registrationsSection = function () {
 			})
 		)
 	);
+};
+
+exports._mandatoryRegistrationHeader = function () {
+	return h2(_("Mandatory Registrations"));
+};
+
+exports._optionalRegistrationHeader = function () {
+	return h2(_("Optional Registrations"));
 };
 
 exports._mandatoryRegistrationIntro = Function.prototype;
