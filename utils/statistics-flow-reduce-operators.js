@@ -71,8 +71,9 @@ module.exports = function (data, query) {
 		reducedRows = service ? [data[date][service]] : toArray(data[date], identity);
 
 		reducedRows = reducedRows.map(function (row) {
+			if (!row.processingStep[step]) return;
 			return row.processingStep[step].byProcessor;
-		});
+		}).filter(Boolean);
 
 		reducedRows.forEach(function (reducedRow) {
 			if (processor) {

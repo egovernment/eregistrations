@@ -193,4 +193,6 @@ module.exports = function (t, a) {
 	};
 
 	a.deep(t(inputMap, { step: 'stepA' }), expected);
+	//non existing step
+	a.deep(t(inputMap, { step: 'stepB' }), { "2016-01-02": {} });
 };
