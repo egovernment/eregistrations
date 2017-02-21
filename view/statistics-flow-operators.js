@@ -64,7 +64,6 @@ exports['statistics-main'] = function () {
 		// hard code for tests
 
 		queryServer(serverQuery).done(function (responseData) {
-			console.log('responseData.data...................', responseData.data);
 			data.value = responseData.data;
 
 			pagination.current.value = Number(serverQuery.page);
