@@ -99,7 +99,7 @@ module.exports = function (config) {
 					result[mode.getDisplayedKey(dateRange.dateFrom)] = {};
 				});
 
-				result = reduceOperators(assign({ data: result }, query));
+				result = reduceOperators(result, query);
 				Object.keys(result).forEach(function (date) {
 					Object.keys(result[date]).forEach(function (processorId) {
 						itemsCnt++;

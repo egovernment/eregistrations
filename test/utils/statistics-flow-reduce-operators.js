@@ -88,7 +88,7 @@ module.exports = function (t, a) {
 			}
 		}
 	};
-	a.deep(t({ data: inputMap, step: 'stepA' }), expected);
+	a.deep(t(inputMap, { step: 'stepA' }), expected);
 	// certificate
 	expected = {
 		"2016-01-02": {
@@ -110,5 +110,5 @@ module.exports = function (t, a) {
 			}
 		}
 	};
-	a.deep(t({ data: inputMap, step: 'stepA', certificate: 'certA' }), expected);
+	a.deep(t(inputMap, { step: 'stepA', certificate: 'certA' }), expected);
 };

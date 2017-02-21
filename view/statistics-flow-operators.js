@@ -47,14 +47,8 @@ db.BusinessProcess.extensions.forEach(function (ServiceType) {
 });
 
 exports['statistics-main'] = function () {
-	var queryHandler, tables = new ObservableValue({})
-	  , pagination = new Pagination('/flow/by-operator/'), tablesValue = {};
-
-	Object.keys(processingSteps).forEach(function (stepShortPath) {
-		tablesValue[stepShortPath] = new ObservableValue({});
-	});
-
-	tables.value = tablesValue;
+	var queryHandler, data = new ObservableValue({})
+	  , pagination = new Pagination('/flow/by-operator/');
 
 	queryHandler = setupQueryHandler(queryHandlerConf,
 		location, '/flow/by-operator/');
@@ -70,7 +64,8 @@ exports['statistics-main'] = function () {
 		// hard code for tests
 
 		queryServer(serverQuery).done(function (responseData) {
-			tables.value[query.step].value = responseData.data;
+			console.log('responseData.data...................', responseData.data);
+			data.value = responseData.data;
 
 			pagination.current.value = Number(serverQuery.page);
 			pagination.count.value   = responseData.pageCount;
@@ -105,57 +100,56 @@ exports['statistics-main'] = function () {
 				input({ id: 'date-to-input', type: 'date',
 					name: 'dateTo', value: location.query.get('dateTo') })
 			),
-			select(
-				{ id: 'select-step', name: 'step' },
-				list(Object.keys(processingSteps), function (step) {
-					return option({
-						value: step,
-						selected: location.query.get('step').map(function (value) {
-							var selected = (step ? (value === step) : (value == null));
-							return selected ? 'selected' : null;
-						})
-					}, getStepLabelByShortPath(step));
-				})
-			),
+			div({ class: 'users-table-filter-bar-status' },
+				select(
+					{ id: 'select-step', name: 'step' },
+					list(Object.keys(processingSteps), function (step) {
+						return option({
+							value: step,
+							selected: location.query.get('step').map(function (value) {
+								var selected = (step ? (value === step) : (value == null));
+								return selected ? 'selected' : null;
+							})
+						}, getStepLabelByShortPath(step));
+					})
+				)),
 			selectPeriodMode(),
 			p({ class: 'submit' }, input({ type: 'submit' }))));
 
 	section(pagination);
 	section({ class: "section-primary" },
-		location.query.get('step').map(function (key) {
+		data.map(function (result) {
+			var step = location.query.step || Object.keys(processingSteps)[0];
 			var mode = modes.get(location.query.mode || 'daily');
-			if (!key) key = Object.keys(processingSteps)[0];
-			return tables.value[key].map(function (result) {
 
-				return section({ class: "section-primary" },
-					h3(getStepLabelByShortPath(key)),
-					table({ class: 'statistics-table' },
-						thead(
-							th({ class: 'statistics-table-number' }, mode.labelNoun),
-							th({ class: 'statistics-table-number' }, _("Operator")),
-							th({ class: 'statistics-table-number' }, _("Files Processed")),
-							th({ class: 'statistics-table-number' }, _("Validated")),
-							th({ class: 'statistics-table-number' }, _("Sent Back for corrections")),
-							th({ class: 'statistics-table-number' }, _("Rejected"))
-						),
-						tbody(Object.keys(result).map(function (date) {
-							if (!Object.keys(result[date]).length) {
-								return tr(td({ class: 'empty statistics-table-info', colspan: 6 },
-									_("No data for this criteria")));
-							}
-							return Object.keys(result[date]).map(function (processorId) {
-								return tr(list(Object.keys(result[date][processorId]), function (prop) {
-									var display;
-									if (prop === 'processor') {
-										display = db.User.getById(processorId) || _('Unknown user');
-									} else {
-										display = result[date][processorId][prop];
-									}
+			return section({ class: "section-primary" },
+				h3(getStepLabelByShortPath(step)),
+				table({ class: 'statistics-table' },
+					thead(
+						th({ class: 'statistics-table-number' }, mode.labelNoun),
+						th({ class: 'statistics-table-number' }, _("Operator")),
+						th({ class: 'statistics-table-number' }, _("Files Processed")),
+						th({ class: 'statistics-table-number' }, _("Validated")),
+						th({ class: 'statistics-table-number' }, _("Sent Back for corrections")),
+						th({ class: 'statistics-table-number' }, _("Rejected"))
+					),
+					tbody(Object.keys(result).map(function (date) {
+						if (!Object.keys(result[date]).length) {
+							return tr(td({ class: 'empty statistics-table-info', colspan: 6 },
+								_("No data for this criteria")));
+						}
+						return Object.keys(result[date]).map(function (processorId) {
+							return tr(list(Object.keys(result[date][processorId]), function (prop) {
+								var display;
+								if (prop === 'processor') {
+									display = db.User.getById(processorId) || _('Unknown user');
+								} else {
+									display = result[date][processorId][prop];
+								}
 
-									return td({ class: 'statistics-table-number' }, display);
-								}));
-							});
-						}))));
-			});
+								return td({ class: 'statistics-table-number' }, display);
+							}));
+						});
+					}))));
 		}));
 };

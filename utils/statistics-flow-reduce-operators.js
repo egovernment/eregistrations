@@ -1,5 +1,32 @@
 'use strict';
 
+/**
+ * It's about reduction
+ *
+ * FROM:
+ *
+ * [date][serviceName].businessProcess[status] = num;
+ * [date][serviceName].certificate[name][status] = num;
+ * [date][serviceName].processingStep[stepName].pending.businessProcess = num;
+ * [date][serviceName].processingStep[stepName].pending.certificate[name] = num;
+ * [date][serviceName].processingStep[stepName].byProcessor[processorId][status].businessProcess =
+ * num;
+ * [date][serviceName].processingStep[stepName].byProcessor[processorId][status].certificate[name] =
+ * num;
+ *
+ * TO:
+ * [date][processorId] = {
+ *  processor: processorId,
+ *  date: "YYYY-MM-DD",
+ *  approved: num,
+ *  rejected: num,
+ *  sentBack: num,
+ *  processed: num
+ *  }
+ *
+ * @type {Object.keys|*}
+ */
+
 var isEmptyResult = function (processorRow) {
 	if (!processorRow) return true;
 	return !processorRow.approved && !processorRow.rejected &&
@@ -36,13 +63,12 @@ var buildResultByProcessor = function (row, certificate, processorId, date) {
 	return result;
 };
 
-module.exports = function (params) {
-	var data, service, step, processor, certificate, finalResult, reducedRows, processorRow;
-	data      = params.data;
-	service   = params.service;
-	step      = params.step;
-	processor = params.processor;
-	certificate = params.certificate;
+module.exports = function (data, query) {
+	var service, step, processor, certificate, finalResult, reducedRows, processorRow;
+	service     = query.service;
+	step        = query.step;
+	processor   = query.processor;
+	certificate = query.certificate;
 	finalResult = {};
 
 	Object.keys(data).forEach(function (date) {

@@ -1,8 +1,13 @@
 'use strict';
 
-var _            = require('mano').i18n.bind('View: Select User')
-  , db           = require('../../../db')
-  , location     = require('mano/lib/client/location');
+/**
+ * Provides a select view component, which lists given collection of users (all users by default).
+ * The select adds it's selected options value into url query.
+ */
+
+var _        = require('mano').i18n.bind('View: Select User')
+  , db       = require('../../../db')
+  , location = require('mano/lib/client/location');
 
 module.exports = function (/* opts */) {
 	var opts, name, label, id, userQuery, usersCollection;
