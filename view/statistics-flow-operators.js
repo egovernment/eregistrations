@@ -132,11 +132,7 @@ exports['statistics-main'] = function () {
 						th({ class: 'statistics-table-number' }, _("Sent Back for corrections")),
 						th({ class: 'statistics-table-number' }, _("Rejected"))
 					),
-					tbody(Object.keys(result).map(function (date) {
-						if (!Object.keys(result[date]).length) {
-							return tr(td({ class: 'empty statistics-table-info', colspan: 6 },
-								_("No data for this criteria")));
-						}
+					tbody(Object.keys(result).length ? Object.keys(result).map(function (date) {
 						return Object.keys(result[date]).map(function (processorId) {
 							return tr(list(Object.keys(result[date][processorId]), function (prop) {
 								var display;
@@ -149,6 +145,7 @@ exports['statistics-main'] = function () {
 								return td({ class: 'statistics-table-number' }, display);
 							}));
 						});
-					}))));
+					}) : tr(td({ class: 'empty statistics-table-info', colspan: 6 },
+						_("No data for this criteria"))))));
 		}));
 };
