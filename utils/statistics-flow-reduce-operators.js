@@ -5,10 +5,6 @@
  *
  * FROM:
  *
- * [date][serviceName].businessProcess[status] = num;
- * [date][serviceName].certificate[name][status] = num;
- * [date][serviceName].processingStep[stepName].pending.businessProcess = num;
- * [date][serviceName].processingStep[stepName].pending.certificate[name] = num;
  * [date][serviceName].processingStep[stepName].byProcessor[processorId][status].businessProcess =
  * num;
  * [date][serviceName].processingStep[stepName].byProcessor[processorId][status].certificate[name] =
@@ -26,14 +22,17 @@
  *
  */
 
+var identity = require('es5-ext/function/identity')
+  , toArray  = require('es5-ext/object/to-array');
+
 var isEmptyResult = function (processorRow) {
 	if (!processorRow) return true;
 	return !processorRow.approved && !processorRow.rejected &&
 		!processorRow.sentBack;
 };
 
-var buildResultByProcessor = function (row, certificate, processorId, date) {
-	var result = {
+var buildResultByProcessor = function (row, currentRow, certificate, processorId, date) {
+	var result = currentRow || {
 		date: date,
 		processor: processorId,
 		processed: 0,
@@ -71,18 +70,10 @@ module.exports = function (data, query) {
 	finalResult = {};
 
 	Object.keys(data).forEach(function (date) {
-		reducedRows = [data[date]];
 		finalResult[date] = {};
 
-		if (service) {
-			reducedRows = reducedRows.map(function (reducedRow) {
-				return reducedRow[service];
-			});
-		} else {
-			reducedRows = Object.keys(reducedRows[0]).map(function (serviceName) {
-				return reducedRows[0][serviceName];
-			});
-		}
+		reducedRows = service ? [data[date][service]] : toArray(data[date], identity);
+
 		reducedRows = reducedRows.map(function (row) {
 			return row.processingStep[step].byProcessor;
 		});
@@ -92,13 +83,15 @@ module.exports = function (data, query) {
 				processorRow = reducedRow[processor];
 				if (isEmptyResult(processorRow)) return;
 				finalResult[date][processor] =
-					buildResultByProcessor(processorRow, certificate, processor, date);
+					buildResultByProcessor(processorRow, finalResult[date][processor],
+						certificate, processor, date);
 			} else {
 				Object.keys(reducedRow).forEach(function (processorId) {
 					processorRow = reducedRow[processorId];
 					if (isEmptyResult(processorRow)) return;
 					finalResult[date][processorId] =
-						buildResultByProcessor(processorRow, certificate, processorId, date);
+						buildResultByProcessor(processorRow, finalResult[date][processorId],
+							certificate, processorId, date);
 				});
 			}
 		});

@@ -111,4 +111,98 @@ module.exports = function (t, a) {
 		}
 	};
 	a.deep(t(inputMap, { step: 'stepA', certificate: 'certA' }), expected);
+
+	inputMap = {
+		"2016-01-02": {
+			serviceA: {
+				processingStep: {
+					stepA: {
+						byProcessor: {
+							// processor id
+							'7464567456': {
+								approved: {
+									businessProcess: 13,
+									certificate: {
+										certA: 2,
+										certB: 4
+									}
+								},
+								rejected: {
+									businessProcess: 0,
+									certificate: {
+										certA: 0,
+										certB: 0
+									}
+								}
+							},
+							'52345234': {
+								approved: {
+									businessProcess: 12,
+									certificate: {
+										certA: 10,
+										certB: 2
+									}
+								},
+								rejected: {
+									businessProcess: 1,
+									certificate: {
+										certA: 1,
+										certB: 0
+									}
+								}
+							}
+						}
+					}
+				}
+			},
+			serviceB: {
+				processingStep: {
+					stepA: {
+						byProcessor: {
+							// processor id
+							'7464567456': {
+								approved: {
+									businessProcess: 3,
+									certificate: {
+										certA: 3,
+										certB: 5
+									}
+								},
+								rejected: {
+									businessProcess: 1,
+									certificate: {
+										certA: 1,
+										certB: 0
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	};
+
+	expected = {
+		"2016-01-02": {
+			'7464567456': {
+				processor: '7464567456',
+				date: "2016-01-02",
+				approved: 16,
+				rejected: 1,
+				sentBack: 0,
+				processed: 17
+			},
+			'52345234': {
+				processor: '52345234',
+				date: "2016-01-02",
+				approved: 12,
+				rejected: 1,
+				sentBack: 0,
+				processed: 13
+			}
+		}
+	};
+
+	a.deep(t(inputMap, { step: 'stepA' }), expected);
 };
