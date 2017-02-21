@@ -12,8 +12,6 @@
  *
  * TO:
  * [date][processorId] = {
- *  processor: processorId,
- *  date: "YYYY-MM-DD",
  *  approved: num,
  *  rejected: num,
  *  sentBack: num,
@@ -33,8 +31,6 @@ var isEmptyResult = function (processorRow) {
 
 var buildResultByProcessor = function (row, currentRow, certificate, processorId, date) {
 	var result = currentRow || {
-		date: date,
-		processor: processorId,
 		processed: 0,
 		approved: 0,
 		sentBack: 0,

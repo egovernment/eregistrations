@@ -16,6 +16,7 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , selectUser        = require('./components/filter-bar/select-user')
   , processingSteps   = require('../processing-steps-meta')
   , queryServer       = require('./utils/statistics-flow-operators-query-server')
+  , oToArray           = require('es5-ext/object/to-array')
   , getStepLabelByShortPath = require('../utils/get-step-label-by-short-path')
   , isOfficialRoleName      = require('../utils/is-official-role-name')
   , usersCollection         = db.User.instances.filterByKey('roles', function (roles) {
@@ -132,20 +133,19 @@ exports['statistics-main'] = function () {
 						th({ class: 'statistics-table-number' }, _("Sent Back for corrections")),
 						th({ class: 'statistics-table-number' }, _("Rejected"))
 					),
-					tbody(Object.keys(result).length ? Object.keys(result).map(function (date) {
-						return Object.keys(result[date]).map(function (processorId) {
-							return tr(list(Object.keys(result[date][processorId]), function (prop) {
-								var display;
-								if (prop === 'processor') {
-									display = db.User.getById(processorId) || _('Unknown user');
-								} else {
-									display = result[date][processorId][prop];
-								}
-
-								return td({ class: 'statistics-table-number' }, display);
-							}));
-						});
-					}) : tr(td({ class: 'empty statistics-table-info', colspan: 6 },
+					tbody(Object.keys(result).length ?
+							oToArray(result, function (dateResult, date) {
+								return oToArray(dateResult, function (processorResult, processorId) {
+									return tr(
+										td({ class: 'statistics-table-number' }, date),
+										td({ class: 'statistics-table-number' },
+												db.User.getById(processorId) || _('Unknown user')),
+										oToArray(processorResult, function (data, key) {
+											return td({ class: 'statistics-table-number' }, data);
+										})
+									);
+								});
+							}) : tr(td({ class: 'empty statistics-table-info', colspan: 6 },
 						_("No data for this criteria"))))));
 		}));
 };

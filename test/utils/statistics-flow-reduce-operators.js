@@ -71,16 +71,12 @@ module.exports = function (t, a) {
 	expected = {
 		"2016-01-02": {
 			'7464567456': {
-				processor: '7464567456',
-				date: "2016-01-02",
 				approved: 13,
 				rejected: 0,
 				sentBack: 0,
 				processed: 13
 			},
 			'52345234': {
-				processor: '52345234',
-				date: "2016-01-02",
 				approved: 12,
 				rejected: 1,
 				sentBack: 0,
@@ -93,16 +89,12 @@ module.exports = function (t, a) {
 	expected = {
 		"2016-01-02": {
 			'7464567456': {
-				processor: '7464567456',
-				date: "2016-01-02",
 				approved: 2,
 				rejected: 0,
 				sentBack: 0,
 				processed: 2
 			},
 			'52345234': {
-				processor: '52345234',
-				date: "2016-01-02",
 				approved: 10,
 				rejected: 1,
 				sentBack: 0,
@@ -186,16 +178,12 @@ module.exports = function (t, a) {
 	expected = {
 		"2016-01-02": {
 			'7464567456': {
-				processor: '7464567456',
-				date: "2016-01-02",
 				approved: 16,
 				rejected: 1,
 				sentBack: 0,
 				processed: 17
 			},
 			'52345234': {
-				processor: '52345234',
-				date: "2016-01-02",
 				approved: 12,
 				rejected: 1,
 				sentBack: 0,
