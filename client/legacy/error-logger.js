@@ -46,6 +46,9 @@ var onError = function (message, source, line, column, error) {
 			// Tampermonkey extension
 			// See: https://github.com/kogg/InstantLogoSearch/issues/199#issuecomment-249504926
 			if (message === 'Cannot set property \'tgt\' of null') return;
+
+			// Some extension in play, although not clear which
+			if (message === 'Error: Permission denied to access property "toString"') return;
 		}
 	}
 	if (source) {
