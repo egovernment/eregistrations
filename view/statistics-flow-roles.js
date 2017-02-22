@@ -85,7 +85,7 @@ var buildResultRow = function (rowData, queryService, queryCertificate, querySta
 		resultRow[stepKey] = isStepApplicable(stepKey, queryService, queryStatus) ? 0 : null;
 	});
 	Object.keys(rowData).forEach(function (stepShortPath) {
-		if (rowData[stepShortPath][queryStatus] == null) {
+		if (resultRow[stepShortPath] == null || rowData[stepShortPath][queryStatus] == null) {
 			return;
 		}
 
