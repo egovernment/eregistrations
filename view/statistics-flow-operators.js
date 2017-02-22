@@ -17,11 +17,7 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , processingSteps   = require('../processing-steps-meta')
   , queryServer       = require('./utils/statistics-flow-operators-query-server')
   , oToArray           = require('es5-ext/object/to-array')
-  , getStepLabelByShortPath = require('../utils/get-step-label-by-short-path')
-  , isOfficialRoleName      = require('../utils/is-official-role-name')
-  , usersCollection         = db.User.instances.filterByKey('roles', function (roles) {
-	return roles.some(isOfficialRoleName);
-});
+  , getStepLabelByShortPath = require('../utils/get-step-label-by-short-path');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -80,8 +76,7 @@ exports['statistics-main'] = function () {
 				selectCertificate(),
 				legacy('selectMatch', 'service-select', serviceToCertLegacyMatch)),
 			div({ class: 'users-table-filter-bar-status' },
-				selectUser({ label: _("All operators"), name: 'processor',
-					usersCollection: usersCollection })),
+				selectUser({ label: _("All operators"), name: 'processor' })),
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
