@@ -85,7 +85,7 @@ var buildResultRow = function (rowData, queryService, queryCertificate, querySta
 		resultRow[stepKey] = isStepApplicable(stepKey, queryService, queryStatus) ? 0 : null;
 	});
 	Object.keys(rowData).forEach(function (stepShortPath) {
-		if (rowData[stepShortPath][queryStatus] == null) {
+		if (resultRow[stepShortPath] == null || rowData[stepShortPath][queryStatus] == null) {
 			return;
 		}
 
@@ -107,8 +107,9 @@ var buildFilteredResult = function (data, key, service, certificate, status) {
 		return buildResultRow(data[key][service] || {}, service, certificate, status);
 	}
 
-	Object.keys(data[key]).forEach(function (serviceKey) {
-		resultRow = buildResultRow(data[key][serviceKey] || {}, service, certificate, status);
+	db.BusinessProcess.extensions.forEach(function (ServiceType) {
+		var serviceName = getServiceName(ServiceType);
+		resultRow = buildResultRow(data[key][serviceName] || {}, serviceName, certificate, status);
 		// accumulate
 		Object.keys(resultRow).forEach(function (stepShortPath) {
 			if (resultRow[stepShortPath] == null) return;
