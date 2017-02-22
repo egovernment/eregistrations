@@ -2,6 +2,7 @@
 
 var deferred                 = require('deferred')
   , oForEach                 = require('es5-ext/object/for-each')
+  , flatten                  = require('es5-ext/array/#/flatten')
   , serializeValue           = require('dbjs/_setup/serialize/value')
   , unserializeValue         = require('dbjs/_setup/unserialize/value')
   , uuid                     = require('time-uuid')
@@ -18,14 +19,28 @@ var getLogPathSuffix = function () {
 	return 'statusHistory/map/' + uniqIdPrefix + uuid();
 };
 
-var createLogRecord = function (bar, status, stamp) {
-	return {
-		id: bar + '/' + getLogPathSuffix() + '/status',
+var createLogRecords = function (ownerPath, status, stamp, processor) {
+	var logPath = ownerPath + '/' + getLogPathSuffix();
+
+	var records = [{
+		id: logPath + '/status',
 		data: {
 			value: serializeValue(status),
 			stamp: stamp
 		}
-	};
+	}];
+
+	if (processor) {
+		records.push({
+			id: logPath + '/processor',
+			data: {
+				value: '7' + processor,
+				stamp: stamp
+			}
+		});
+	}
+
+	return records;
 };
 
 module.exports = function (storages) {
@@ -34,7 +49,8 @@ module.exports = function (storages) {
 
 		return storage.getAllObjectIds().map(function (bpId) {
 			var isApprovedStamp, isRejectedStamp, closedLogPresent, rejectedLogPresent
-			  , certificateStatuses = {}, certificateLogs = {}, stepStatuses = {}, stepLogs = {};
+			  , certificateStatuses = {}, certificateLogs = {}, stepStatuses = {}, stepLogs = {}
+			  , stepProcessors = {};
 
 			return storage.getObject(bpId).map(function (record) {
 				var match, value, stamp, keyPath, certificatePath, certificateKeyPath,
@@ -45,8 +61,8 @@ module.exports = function (storages) {
 				if (!match) return;
 
 				keyPath = match[1];
-				value = record.data.value && record.data.value[0] !== '7'
-					&& unserializeValue(record.data.value);
+				value = record.data.value && (record.data.value[0] === '7' ?
+						record.data.value.slice(1) : unserializeValue(record.data.value));
 				stamp = record.data.stamp;
 
 				if ((keyPath === 'isApproved') && (value === true)) {
@@ -110,6 +126,10 @@ module.exports = function (storages) {
 						return;
 					}
 
+					if (processingStepKeyPath === 'processor') {
+						stepProcessors[processingStepPath] = value;
+					}
+
 					match = processingStepKeyPath.match(statusHistoryMatchRe);
 
 					if (match) {
@@ -123,27 +143,29 @@ module.exports = function (storages) {
 				}
 			})(function () {
 				if (isApprovedStamp && !closedLogPresent) {
-					missing.push(createLogRecord(bpId, 'closed', isApprovedStamp));
+					missing.push(createLogRecords(bpId, 'closed', isApprovedStamp));
 				} else if (isRejectedStamp && !rejectedLogPresent) {
-					missing.push(createLogRecord(bpId, 'rejected', isRejectedStamp));
+					missing.push(createLogRecords(bpId, 'rejected', isRejectedStamp));
 				}
 
 				oForEach(certificateStatuses, function (status, certificatePath) {
 
 					if (status.value === certificateLogs[certificatePath]) return;
 
-					missing.push(createLogRecord(bpId + '/certificates/map/' + certificatePath,
+					missing.push(createLogRecords(bpId + '/certificates/map/' + certificatePath,
 						status.value, status.stamp));
 				});
 
 				oForEach(stepStatuses, function (status, stepPath) {
 					if (status.value === stepLogs[stepPath]) return;
 
-					missing.push(createLogRecord(bpId + '/processingSteps/map/' + stepPath,
-						status.value, status.stamp));
+					missing.push(createLogRecords(bpId + '/processingSteps/map/' + stepPath,
+						status.value, status.stamp, stepProcessors[stepPath]));
 				});
 			});
 		})(function () {
+			missing = flatten.call(missing);
+
 			console.log('found', missing.length, 'missing history logs for', storageName);
 			return storage.storeMany(missing);
 		});
