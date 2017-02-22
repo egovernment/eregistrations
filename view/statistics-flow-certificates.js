@@ -20,9 +20,11 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , pageQuery         = require('../utils/query/date-constrained-page')
   , copyDbDate        = require('../utils/copy-db-date')
   , queryServer       = require('./utils/statistics-flow-query-server')
+  , filterData        = require('../utils/statistics-flow-certificates-filter-result')
   , incrementDateByTimeUnit = require('../utils/increment-date-by-time-unit')
   , floorToTimeUnit         = require('../utils/floor-to-time-unit')
-  , calculateDurationByMode = require('../utils/calculate-duration-by-mode');
+  , calculateDurationByMode = require('../utils/calculate-duration-by-mode')
+  , getDynamicUrl           = require('./utils/get-dynamic-url');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -48,67 +50,18 @@ db.BusinessProcess.extensions.forEach(function (ServiceType) {
 	});
 });
 
-var buildResultRow = function (rowData) {
-	return assign({
-		submitted: 0,
-		pending: 0,
-		pickup: 0,
-		withdrawn: 0,
-		rejected: 0,
-		sentBack: 0
-	}, rowData || {});
-};
-
-var accumulateResultRows = function (rows) {
-	var result = buildResultRow(rows[0]);
-	rows.slice(1).forEach(function (row) {
-		Object.keys(row).forEach(function (propertyName) {
-			result[propertyName] += row[propertyName];
-		});
-	});
-
-	return result;
-};
-
-var buildFilteredResult = function (data, key, service, certificate) {
-	if (!data[key]) return buildResultRow();
-	if (service) {
-		if (!data[key][service]) return buildResultRow();
-		if (certificate) {
-			return buildResultRow(data[key][service].certificate[certificate]);
-		}
-		return buildResultRow(data[key][service].businessProcess);
-	}
-	var rowsToAccumulate = [];
-	Object.keys(data[key]).forEach(function (service) {
-		if (certificate) {
-			if (!data[key][service].certificate[certificate]) return;
-			rowsToAccumulate.push(data[key][service].certificate[certificate]);
-		} else {
-			rowsToAccumulate.push(data[key][service].businessProcess);
-		}
-	});
-	return accumulateResultRows(rowsToAccumulate);
-};
-
-var filterData = function (data, query) {
-	var result = {};
-
-	Object.keys(data).forEach(function (date) {
-		result[date] = buildFilteredResult(data, date, query.service, query.certificate);
-	});
-
-	return result;
-};
-
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue({})
-	  , pagination = new Pagination('/flow/'), handlerConf;
+	  , pagination = new Pagination('/flow/'), handlerConf, params;
 
 	handlerConf = queryHandlerConf.slice(0);
 	handlerConf.push(pageQuery, serviceQuery, certificateQuery);
 	queryHandler = setupQueryHandler(handlerConf,
 		location, '/flow/');
+
+	params = queryHandler._handlers.map(function (handler) {
+		return handler.name;
+	});
 
 	queryHandler.on('query', function (query) {
 		var serverQuery = copy(query), dateFrom, dateTo, mode
@@ -185,6 +138,11 @@ exports['statistics-main'] = function () {
 					name: 'dateTo', value: location.query.get('dateTo') })
 			),
 			selectPeriodMode(),
+			div(
+				a({ class: 'users-table-filter-bar-print', href:
+					getDynamicUrl('/flow-certificates-data.pdf', { only: params }),
+					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
+			),
 			p({ class: 'submit' }, input({ type: 'submit' }))));
 
 	section(pagination);

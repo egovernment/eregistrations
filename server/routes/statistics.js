@@ -26,7 +26,11 @@ var assign                  = require('es5-ext/object/assign')
   , modes                   = require('../../utils/statistics-flow-group-modes')
   , reduceOperators         = require('../../utils/statistics-flow-reduce-operators')
   , itemsPerPage            = require('../../conf/objects-list-items-per-page')
-  , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf');
+  , flowCertificatesPrint   = require('../pdf-renderers/statistics-flow-certificates')
+  , flowCertificatesFilter  = require('../../utils/statistics-flow-certificates-filter-result')
+  , flowQueryOperatorsHandlerConf       = require('../../apps/statistics/flow-query-operators-conf')
+  , flowQueryHandlerCertificatesPdfConf =
+		require('../../apps/statistics/flow-query-certificates-pdf-conf');
 
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
@@ -37,9 +41,11 @@ module.exports = function (config) {
 	}
 	var queryConf = getQueryHandlerConf({ processingStepsMeta: processingStepsMeta });
 	var flowQueryConf = flowQueryHandlerConf;
+	var flowQueryCertificatesPdfConf = flowQueryHandlerCertificatesPdfConf;
 
 	var queryHandler = new QueryHandler(queryConf);
 	var flowQueryHandler = new QueryHandler(flowQueryConf);
+	var flowQueryCertificatesPdfHandler = new QueryHandler(flowQueryCertificatesPdfConf);
 	var flowQueryHandlerOperators = new QueryHandler(flowQueryOperatorsHandlerConf);
 
 	var resolveTimePerRole = function (query) {
@@ -88,6 +94,20 @@ module.exports = function (config) {
 				return result;
 			});
 		},
+		'flow-certificates-data.pdf': makePdf(function (query) {
+			return flowQueryCertificatesPdfHandler.resolve(query)(function (query) {
+				var dateRanges, result = {}, mode;
+				mode = modes.get(query.mode);
+				dateRanges = getDateRangesByMode(query.dateFrom, query.dateTo, query.mode);
+				dateRanges.forEach(function (dateRange) {
+					// dateRange: { dateFrom: db.Date, dateTo: db.Date } with dateRange query for result
+					result[mode.getDisplayedKey(dateRange.dateFrom)] = {};
+				});
+
+				return flowCertificatesPrint(flowCertificatesFilter(result, query),
+					assign({ mode: query.mode }, rendererConfig));
+			});
+		}),
 		'get-flow-roles-operators-data': function (query) {
 			return flowQueryHandlerOperators.resolve(query)(function (query) {
 				var dateRanges, result = {}, mode, page = Number(query.page)
