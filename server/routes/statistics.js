@@ -28,9 +28,15 @@ var assign                  = require('es5-ext/object/assign')
   , itemsPerPage            = require('../../conf/objects-list-items-per-page')
   , flowCertificatesPrint   = require('../pdf-renderers/statistics-flow-certificates')
   , flowCertificatesFilter  = require('../../utils/statistics-flow-certificates-filter-result')
-  , flowQueryOperatorsHandlerConf       = require('../../apps/statistics/flow-query-operators-conf')
-  , flowQueryHandlerCertificatesPdfConf =
-		require('../../apps/statistics/flow-query-certificates-pdf-conf');
+  , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf');
+
+var flowQueryHandlerCertificatesPdfConf = [
+	require('../../apps-common/query-conf/date-from'),
+	require('../../apps-common/query-conf/date-to'),
+	require('../../apps-common/query-conf/mode'),
+	require('../../apps-common/query-conf/service'),
+	require('../../apps-common/query-conf/certificate')
+];
 
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
