@@ -8,7 +8,7 @@ module.exports = {
 	name: 'dateTo',
 	ensure: function (value) {
 		var now = new db.Date(), dateTo;
-		if (!value) return;
+		if (!value) return now;
 		dateTo = dateStringtoDbDate(db, value);
 		if (dateTo > now) {
 			throw customError("To date cannot be in future", { fixedQueryValue: null });
