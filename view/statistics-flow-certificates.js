@@ -68,7 +68,7 @@ exports['statistics-main'] = function () {
 		  , currentDate, offset, timeUnitsCount = 0, durationInTimeUnits, page;
 
 		dateFrom = query.dateFrom;
-		dateTo   = query.dateTo || new db.Date();
+		dateTo   = query.dateTo;
 		mode     = query.mode;
 		page     = query.page;
 
