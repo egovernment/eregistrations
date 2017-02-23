@@ -21,6 +21,8 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , copyDbDate        = require('../utils/copy-db-date')
   , queryServer       = require('./utils/statistics-flow-query-server')
   , filterData        = require('../utils/statistics-flow-certificates-filter-result')
+  , selectDateFrom    = require('./components/filter-bar/select-date-from')
+  , selectDateTo      = require('./components/filter-bar/select-date-to')
   , incrementDateByTimeUnit = require('../utils/increment-date-by-time-unit')
   , floorToTimeUnit         = require('../utils/floor-to-time-unit')
   , calculateDurationByMode = require('../utils/calculate-duration-by-mode')
@@ -122,20 +124,12 @@ exports['statistics-main'] = function () {
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
-				input({ id: 'date-from-input', type: 'date',
-					name: 'dateFrom', value: location.query.get('dateFrom').map(function (dateFrom) {
-					var now = new db.Date(), defaultDate;
-					defaultDate = new db.Date(now.getUTCFullYear(), now.getUTCMonth(),
-							now.getUTCDate() - 6);
-
-					return dateFrom || defaultDate;
-				}) })
+				selectDateFrom()
 			),
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-to-input' }, _("Date to"), ":"),
-				input({ id: 'date-to-input', type: 'date',
-					name: 'dateTo', value: location.query.get('dateTo') })
+				selectDateTo()
 			),
 			selectPeriodMode(),
 			div(
