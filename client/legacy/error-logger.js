@@ -41,6 +41,15 @@ var onError = function (message, source, line, column, error) {
 		// iOS interface errors
 		// https://groups.google.com/a/chromium.org/forum/#!topic/chromium-discuss/7VU0_VvC7mE
 		if (message.indexOf('__gCrWeb') !== -1) return;
+
+		if (source && (source.indexOf('.js') === -1)) {
+			// Tampermonkey extension
+			// See: https://github.com/kogg/InstantLogoSearch/issues/199#issuecomment-249504926
+			if (message === 'Cannot set property \'tgt\' of null') return;
+
+			// Some extension in play, although not clear which
+			if (message === 'Error: Permission denied to access property "toString"') return;
+		}
 	}
 	if (source) {
 		// Once got report from: https://cdn.myspservices.com/coms/1.5.0/js/mng.js?rnd=babylonNS431
