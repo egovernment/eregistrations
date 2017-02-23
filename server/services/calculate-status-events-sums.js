@@ -1,6 +1,8 @@
 'use strict';
 
 var oForEach   = require('es5-ext/object/for-each')
+  , debugLoad  = require('debug-ext')('load', 6)
+  , humanize   = require('debug-ext').humanize
   , Set        = require('es6-set')
   , isSet      = require('es6-set/is-set')
   , memoize    = require('memoizee')
@@ -194,13 +196,17 @@ var calculate = function (dateMap, data, dateFrom, dateTo) {
 };
 
 module.exports = memoize(function (dateFrom, dateTo) {
-	var driver = require('mano').dbDriver;
+	var driver    = require('mano').dbDriver
+	  , startTime = Date.now();
 
 	return getData(driver)(function (data) {
 		return calculate(getDateMap(data), data, dateFrom, dateTo);
+	}).aside(function () {
+		debugLoad('%s - %s calculate status events sums (in %s)', dateFrom, dateTo, humanize(Date.now() - startTime));
 	});
 }, {
 	max: 1000,
 	maxAge: env.statisticsResolution || 1000 * 60 * 60 * 24, // 24 hours by default
-	promise: true
+	promise: true,
+	primitive: true
 });
