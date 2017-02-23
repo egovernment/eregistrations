@@ -72,7 +72,12 @@ var buildFilteredResult = function (data, key, service, certificate, status) {
 		resultRow = buildResultRow(data[key][serviceName] || {}, serviceName, certificate, status);
 		// accumulate
 		Object.keys(resultRow).forEach(function (stepShortPath) {
-			if (resultRow[stepShortPath] == null) return;
+			if (resultRow[stepShortPath] == null) {
+				if (finalResult[stepShortPath] == null) {
+					finalResult[stepShortPath] = null;
+				}
+				return;
+			}
 			if (!finalResult[stepShortPath]) {
 				finalResult[stepShortPath] = 0;
 			}
