@@ -65,7 +65,7 @@ module.exports = function (t, a) {
 			}
 		}
 	};
-	defineBusinessProcess(db);
+	if (!db.BusinessProcess) defineBusinessProcess(db);
 	db.BusinessProcess.extend('BusinessProcessServiceA');
 	db.BusinessProcess.extend('BusinessProcessServiceB');
 
