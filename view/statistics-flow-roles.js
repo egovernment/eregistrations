@@ -14,6 +14,8 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , selectService     = require('./components/filter-bar/select-service')
   , selectCertificate = require('./components/filter-bar/select-certificate')
   , selectPeriodMode  = require('./components/filter-bar/select-period-mode')
+  , selectDateFrom    = require('./components/filter-bar/select-date-from')
+  , selectDateTo      = require('./components/filter-bar/select-date-to')
   , itemsPerPage      = require('../conf/objects-list-items-per-page')
   , serviceQuery      = require('../apps-common/query-conf/service')
   , certificateQuery  = require('../apps-common/query-conf/certificate')
@@ -26,7 +28,8 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , incrementDateByTimeUnit = require('../utils/increment-date-by-time-unit')
   , floorToTimeUnit         = require('../utils/floor-to-time-unit')
   , calculateDurationByMode = require('../utils/calculate-duration-by-mode')
-  , reduceResult            = require('../utils/statistics-flow-reduce-processing-step');
+  , reduceResult            = require('../utils/statistics-flow-reduce-processing-step')
+  , filterData              = require('../utils/statistics-flow-roles-filter-result');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -60,78 +63,6 @@ var stepStatuses = {};
 	}
 	stepStatuses[stepName] = db.ProcessingStepStatus.meta[stepName];
 });
-
-// We consider step not applicable when it doesn't have given status or
-// it does not belong to selected service
-var isStepApplicable = function (stepKey, queryService, queryStatus) {
-	if (!processingSteps[stepKey]._services.some(function (service) {
-			return service === queryService;
-		})) {
-		return false;
-	}
-
-	if ((!Object.keys(processingSteps[stepKey]).some(function (status) {
-			return status === queryStatus;
-		}))) {
-		return false;
-	}
-
-	return true;
-};
-
-var buildResultRow = function (rowData, queryService, queryCertificate, queryStatus) {
-	var resultRow = {}, reducedRowData;
-	Object.keys(processingSteps).forEach(function (stepKey) {
-		resultRow[stepKey] = isStepApplicable(stepKey, queryService, queryStatus) ? 0 : null;
-	});
-	Object.keys(rowData).forEach(function (stepShortPath) {
-		if (resultRow[stepShortPath] == null || rowData[stepShortPath][queryStatus] == null) {
-			return;
-		}
-
-		reducedRowData = rowData[stepShortPath][queryStatus];
-		if (queryCertificate) {
-			reducedRowData = reducedRowData.certificate[queryCertificate] || 0;
-		} else {
-			reducedRowData = reducedRowData.businessProcess || 0;
-		}
-		resultRow[stepShortPath] = reducedRowData;
-	});
-
-	return resultRow;
-};
-
-var buildFilteredResult = function (data, key, service, certificate, status) {
-	var resultRow, finalResult = {};
-	if (service) {
-		return buildResultRow(data[key][service] || {}, service, certificate, status);
-	}
-
-	db.BusinessProcess.extensions.forEach(function (ServiceType) {
-		var serviceName = getServiceName(ServiceType);
-		resultRow = buildResultRow(data[key][serviceName] || {}, serviceName, certificate, status);
-		// accumulate
-		Object.keys(resultRow).forEach(function (stepShortPath) {
-			if (resultRow[stepShortPath] == null) return;
-			if (!finalResult[stepShortPath]) {
-				finalResult[stepShortPath] = 0;
-			}
-			finalResult[stepShortPath] += resultRow[stepShortPath];
-		});
-	});
-
-	return finalResult;
-};
-
-var filterData = function (data, query) {
-	var result = {};
-	Object.keys(data).forEach(function (date) {
-		result[date] = buildFilteredResult(data, date,
-			query.service, query.certificate, query.status);
-	});
-
-	return result;
-};
 
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue({})
@@ -218,20 +149,12 @@ exports['statistics-main'] = function () {
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
-				input({ id: 'date-from-input', type: 'date',
-					name: 'dateFrom', value: location.query.get('dateFrom').map(function (dateFrom) {
-					var now = new db.Date(), defaultDate;
-					defaultDate = new db.Date(now.getUTCFullYear(), now.getUTCMonth(),
-								now.getUTCDate() - 6);
-
-					return dateFrom || defaultDate;
-				}) })
+				selectDateFrom()
 			),
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-to-input' }, _("Date to"), ":"),
-				input({ id: 'date-to-input', type: 'date',
-					name: 'dateTo', value: location.query.get('dateTo') })
+				selectDateTo()
 			),
 			selectPeriodMode(),
 			p({ class: 'submit' }, input({ type: 'submit' }))));
