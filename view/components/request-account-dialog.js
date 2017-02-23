@@ -6,6 +6,7 @@ module.exports = function (user) {
 	return div(dialog(
 		{ id: 'request-create-account', class: 'dialog-modal' },
 		header(
+			a({ class: 'dialog-modal-close', type: 'button', href: "." }, i({ class: 'fa fa-close' })),
 			h3(_('Create account for this client'))
 		),
 		form(

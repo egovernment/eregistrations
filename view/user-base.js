@@ -59,8 +59,7 @@ exports.main = function () {
 		insert(_if(this.user._isDemo,
 			div({ class: 'submitted-menu-demo-msg' },
 				div({ class: 'content' },
-					h3(_("Demo version")),
-					p(_("Introduction to demo version")))))),
+					exports._demoBannerContent.call(this))))),
 
 		insert(_if(this.manager, function () {
 			return this.manager._currentlyManagedUser.map(function (managedUser) {
@@ -287,3 +286,8 @@ exports._menuItems = [
 	exports._extraRoleLabel,
 	userNameMenuItem
 ];
+
+exports._demoBannerContent = function () {
+	return [h3(_("Demo version")),
+		p(_("Introduction to demo version"))];
+};
