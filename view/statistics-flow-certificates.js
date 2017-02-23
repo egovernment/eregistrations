@@ -119,18 +119,24 @@ exports['statistics-main'] = function () {
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
 				input({ id: 'date-from-input', type: 'date',
 					name: 'dateFrom', value: location.query.get('dateFrom').map(function (dateFrom) {
+					if (dateFrom) return dateFrom;
 					var now = new db.Date(), defaultDate;
 					defaultDate = new db.Date(now.getUTCFullYear(), now.getUTCMonth(),
-							now.getUTCDate() - 6);
-
-					return dateFrom || defaultDate;
+								now.getUTCDate() - 6);
+					return defaultDate.toISOString().slice(0, 10);
 				}) })
 			),
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-to-input' }, _("Date to"), ":"),
 				input({ id: 'date-to-input', type: 'date',
-					name: 'dateTo', value: location.query.get('dateTo') })
+					name: 'dateTo', value: location.query.get('dateTo').map(function (dateTo) {
+					if (dateTo) return dateTo;
+					var now = new db.Date(), defaultDate;
+					defaultDate = new db.Date(now.getUTCFullYear(), now.getUTCMonth(),
+								now.getUTCDate());
+					return defaultDate.toISOString().slice(0, 10);
+				}) })
 			),
 			selectPeriodMode(),
 			p({ class: 'submit' }, input({ type: 'submit' }))));
