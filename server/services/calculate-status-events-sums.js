@@ -8,7 +8,8 @@ var oForEach   = require('es5-ext/object/for-each')
   , memoize    = require('memoizee')
   , env        = require('mano').env
   , getData    = require('../business-process-query/get-data')
-  , getDateMap = require('../business-process-query/get-status-history-date-map');
+  , getDateMap = require('../business-process-query/get-status-history-date-map')
+  , db         = require('../../db');
 
 /*
 Result map of calculateStatusEventsSums:
@@ -42,10 +43,40 @@ var dbDateToISO = function (date) {
 };
 
 var calculate = function (dateMap, data, dateFrom, dateTo) {
-	var resultMap = {};
+	var resultMap   = {}
+	  , dateFromISO = dbDateToISO(dateFrom)
+	  , dateToISO   = dbDateToISO(dateTo);
 
-	dateFrom = dbDateToISO(dateFrom);
-	dateTo = dbDateToISO(dateTo);
+	var initServiceResult = function (serviceName) {
+		if (!resultMap[serviceName]) {
+			resultMap[serviceName] = {
+				businessProcess: {},
+				certificate: {},
+				processingStep: {}
+			};
+		}
+
+		return resultMap[serviceName];
+	};
+
+	var initCertResult = function (serviceResult, certificateName) {
+		if (!serviceResult.certificate[certificateName]) {
+			serviceResult.certificate[certificateName] = {};
+		}
+
+		return serviceResult.certificate[certificateName];
+	};
+
+	var initStepResult = function (serviceResult, stepName) {
+		if (!serviceResult.processingStep[stepName]) {
+			serviceResult.processingStep[stepName] = {
+				pending: { businessProcess: 0, certificate: {} },
+				byProcessor: {}
+			};
+		}
+
+		return serviceResult.processingStep[stepName];
+	};
 
 	var storeStatusData = function (resultSet, field, statusData) {
 		if (Array.isArray(statusData)) {
@@ -59,69 +90,86 @@ var calculate = function (dateMap, data, dateFrom, dateTo) {
 		}
 	};
 
+	var removeStatusData = function (resultSet, field, statusData) {
+		if (!resultSet[field]) resultSet[field] = new Set();
+
+		statusData.forEach(Set.prototype.delete.bind(resultSet[field]));
+	};
+
+	var storePendingData = function (resultSet, field, pendingData) {
+		storeStatusData(resultSet, field, pendingData.at);
+		storeStatusData(resultSet, field, pendingData.start);
+		removeStatusData(resultSet, field, pendingData.end);
+	};
+
 	var storePerStatusResult = function (data, resultSet) {
 		oForEach(data, function (statusData, status) {
+			if (status === 'pending') return;
+
 			storeStatusData(resultSet, status, statusData);
 		});
 	};
 
+	var startMonthDate = new db.Date(dateFrom.getFullYear(), dateFrom.getMonth(), 1);
+	do {
+		if (dateMap[dbDateToISO(startMonthDate)]) {
+			oForEach(dateMap[dbDateToISO(startMonthDate)], function (serviceData, serviceName) {
+				var serviceResult = initServiceResult(serviceName)
+				  , pendingData, certificateResult, stepResult;
+
+				if (serviceData.businessProcess) {
+					pendingData = serviceData.businessProcess.pending;
+
+					// 1 [serviceName].businessProcess.pending
+					storePendingData(serviceResult.businessProcess, 'pending', pendingData);
+				}
+
+				if (serviceData.certificate) {
+					oForEach(serviceData.certificate, function (certificateData, certificateName) {
+						pendingData = certificateData.pending;
+						certificateResult = initCertResult(serviceResult, certificateName);
+
+						// 2 [serviceName].certificate[certificateName].pending
+						storePendingData(certificateResult, 'pending', pendingData);
+					});
+				}
+
+				if (serviceData.processingStep) {
+					oForEach(serviceData.processingStep, function (stepData, stepName) {
+						pendingData = stepData.pending;
+						stepResult = initStepResult(serviceResult, stepName);
+
+						// 3.1.1 [serviceName].processingStep[stepName].pending.businessProcess
+						storePendingData(stepResult.pending, 'businessProcess', pendingData);
+					});
+				}
+			});
+		}
+
+		startMonthDate.setDate(startMonthDate.getDate() + 1);
+	} while (startMonthDate <= dateTo);
+
 	oForEach(dateMap, function (dateData, date) {
-		// TODO: This uses string comparison between ISO date string representation. Correct?
-		if (date < dateFrom || date > dateTo) return;
+		if ((date < dateFromISO) || (date > dateToISO)) return;
 
 		oForEach(dateData, function (serviceData, serviceName) {
-			var serviceResult;
-
-			if (!resultMap[serviceName]) {
-				resultMap[serviceName] = {
-					businessProcess: {},
-					certificate: {},
-					processingStep: {}
-				};
-			}
-
-			serviceResult = resultMap[serviceName];
+			var serviceResult = initServiceResult(serviceName);
 
 			if (serviceData.businessProcess) {
-				// 1 [serviceName].businessProcess[status]
+				// 1 [serviceName].businessProcess[status (!pending)]
 				storePerStatusResult(serviceData.businessProcess, serviceResult.businessProcess);
 			}
 
 			if (serviceData.certificate) {
 				oForEach(serviceData.certificate, function (certificateData, certificateName) {
-					if (!serviceResult.certificate[certificateName]) {
-						serviceResult.certificate[certificateName] = {};
-					}
-
-					// 2 [serviceName].certificate[certificateName][status]
-					storePerStatusResult(certificateData, serviceResult.certificate[certificateName]);
+					// 2 [serviceName].certificate[certificateName][status (!pending)]
+					storePerStatusResult(certificateData, initCertResult(serviceResult, certificateName));
 				});
 			}
 
 			if (serviceData.processingStep) {
 				oForEach(serviceData.processingStep, function (stepData, stepName) {
-					var stepResult;
-
-					if (!serviceResult.processingStep[stepName]) {
-						serviceResult.processingStep[stepName] = {
-							pending: { businessProcess: 0, certificate: {} },
-							byProcessor: {}
-						};
-					}
-
-					stepResult = serviceResult.processingStep[stepName];
-
-					// 3.1.1 [serviceName].processingStep[stepName].pending.businessProcess
-					storeStatusData(stepResult.pending, 'businessProcess', stepData.pending);
-
-					stepData.pending.forEach(function (bpId) {
-						var certificates = data.businessProcesses.get(bpId).certificates;
-
-						certificates.forEach(function (certificateName) {
-							// 3.1.2 [serviceName].processingStep[stepName].pending.certificate[certificateName]
-							storeStatusData(stepResult.pending.certificate, certificateName, stepData.pending);
-						});
-					});
+					var stepResult = initStepResult(serviceResult, stepName);
 
 					oForEach(stepData.byProcessor, function (byProcessorData, processorId) {
 						var processorResult;
@@ -172,11 +220,21 @@ var calculate = function (dateMap, data, dateFrom, dateTo) {
 		// 2 [serviceName].certificate[certificateName][status]
 		oForEach(serviceResult.certificate, eachStatusSetToSum);
 
-		oForEach(serviceResult.processingStep, function (stepResult) {
-			// 3.1.1 [serviceName].processingStep[stepName].pending.businessProcess
-			stepResult.pending.businessProcess = stepResult.pending.businessProcess.size;
+		oForEach(serviceResult.processingStep, function (stepResult, stepName) {
+			stepResult.pending.businessProcess.forEach(function (bpId) {
+				var certificates = data.businessProcesses.get(bpId).certificates;
+
+				certificates.forEach(function (certificateName) {
+					// 3.1.2 [serviceName].processingStep[stepName].pending.certificate[certificateName]
+					storeStatusData(stepResult.pending.certificate, certificateName, [bpId]);
+				});
+			});
+
 			// 3.1.2 [serviceName].processingStep[stepName].pending.certificate[certificateName]
 			oForEach(stepResult.pending, eachStatusSetToSum);
+
+			// 3.1.1 [serviceName].processingStep[stepName].pending.businessProcess
+			stepResult.pending.businessProcess = stepResult.pending.businessProcess.size;
 
 			oForEach(stepResult.byProcessor, function (processorResult) {
 				// 3.2.1 [serviceName].processingStep[stepName]

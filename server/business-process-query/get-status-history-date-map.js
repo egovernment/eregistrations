@@ -88,8 +88,8 @@ module.exports = memoize(function (data) {
 		var dataset = initDataset(date, serviceName);
 
 		if (!dataset.businessProcess) {
-			dataset.businessProcess = { pending: [], pickup: [], sentBack: [],
-				submitted: 0, withdrawn: 0, rejected: 0 };
+			dataset.businessProcess = { pending: { at: [], start: [], end: [] },
+				pickup: [], sentBack: [], submitted: 0, withdrawn: 0, rejected: 0 };
 		}
 
 		return dataset.businessProcess;
@@ -101,8 +101,8 @@ module.exports = memoize(function (data) {
 		if (!dataset.certificate) dataset.certificate = {};
 
 		if (!dataset.certificate[certificateName]) {
-			dataset.certificate[certificateName] = { pending: [], pickup: [], sentBack: [],
-				submitted: 0, withdrawn: 0, rejected: 0 };
+			dataset.certificate[certificateName] = { pending: { at: [], start: [], end: [] },
+				pickup: [], sentBack: [], submitted: 0, withdrawn: 0, rejected: 0 };
 		}
 
 		return dataset.certificate[certificateName];
@@ -115,7 +115,7 @@ module.exports = memoize(function (data) {
 
 		if (!dataset.processingStep[stepName]) {
 			dataset.processingStep[stepName] = {
-				pending: [],
+				pending: { at: [], start: [], end: [] },
 				byProcessor: {}
 			};
 		}
@@ -135,18 +135,35 @@ module.exports = memoize(function (data) {
 	};
 
 	var storeStatusRange = function (startDate, endDate, status, bpId, getDataset) {
-		var dataset;
+		var dataset, pendingStartStored = false;
 
 		startDate = new db.Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate());
 
-		while (startDate < endDate) {
-			startDate.setDate(startDate.getDate() + 1);
+		if (status === 'pending') {
+			while (startDate < endDate) {
+				startDate.setDate(startDate.getDate() + 1);
 
-			// TODO: Do we need to skip those:
-			// if (!isDayOff(startDate)) {
-			dataset = getDataset(startDate);
-			dataset[status].push(bpId);
-			// }
+				dataset = getDataset(startDate);
+
+				if (startDate.getDate() === 1) {
+					dataset[status].at.push(bpId);
+					if (!pendingStartStored) pendingStartStored = true;
+				} else if (!pendingStartStored) {
+					dataset[status].start.push(bpId);
+					pendingStartStored = true;
+				}
+
+				if (startDate.valueOf() === endDate.valueOf()) {
+					dataset[status].end.push(bpId);
+				}
+			}
+		} else {
+			while (startDate < endDate) {
+				startDate.setDate(startDate.getDate() + 1);
+
+				dataset = getDataset(startDate);
+				dataset[status].push(bpId);
+			}
 		}
 	};
 
