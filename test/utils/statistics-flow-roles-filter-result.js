@@ -109,7 +109,8 @@ module.exports = function (t, a) {
 	a.deep(t(inputMap, { status: 'approved', certificate: 'certA' }), expected);
 	expected = {
 		"2016-01-02": {
-			stepA: 1
+			stepA: 1,
+			stepB: null
 		}
 	};
 	a.deep(t(inputMap, { status: 'rejected' }), expected);
