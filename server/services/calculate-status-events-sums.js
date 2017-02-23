@@ -4,6 +4,7 @@ var oForEach   = require('es5-ext/object/for-each')
   , Set        = require('es6-set')
   , isSet      = require('es6-set/is-set')
   , memoize    = require('memoizee')
+  , env        = require('mano').env
   , getData    = require('../business-process-query/get-data')
   , getDateMap = require('../business-process-query/get-status-history-date-map');
 
@@ -198,4 +199,8 @@ module.exports = memoize(function (dateFrom, dateTo) {
 	return getData(driver)(function (data) {
 		return calculate(getDateMap(data), data, dateFrom, dateTo);
 	});
-}, { max: 1000, promise: true });
+}, {
+	max: 1000,
+	maxAge: env.statisticsResolution || 1000 * 60 * 60 * 24, // 24 hours by default
+	promise: true
+});

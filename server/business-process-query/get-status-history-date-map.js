@@ -4,6 +4,7 @@ var oForEach    = require('es5-ext/object/for-each')
   , debugLoad   = require('debug-ext')('load', 6)
   , humanize    = require('debug-ext').humanize
   , memoize     = require('memoizee')
+  , env         = require('mano').env
   , filterSteps = require('./steps/filter')
   , toDateInTz  = require('../../utils/to-date-in-time-zone')
   , db          = require('../../db');
@@ -392,9 +393,11 @@ module.exports = memoize(function (data) {
 		});
 	});
 
-	// TODO: Live update
-
 	debugLoad('status history date map (in %s)', humanize(Date.now() - startTime));
 
 	return dateMap;
-}, { length: 0 });
+}, {
+	length: 0,
+	maxAge: env.statisticsResolution || 1000 * 60 * 60 * 24, // 24 hours by default
+	preFetch: 0.9
+});
