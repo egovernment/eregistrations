@@ -111,39 +111,42 @@ var calculate = function (dateMap, data, dateFrom, dateTo) {
 	};
 
 	var startMonthDate = new db.Date(dateFrom.getFullYear(), dateFrom.getMonth(), 1);
+
+	var calculateServicePendings = function (serviceData, serviceName) {
+		var serviceResult = initServiceResult(serviceName)
+		  , pendingData, certificateResult, stepResult;
+
+		if (serviceData.businessProcess) {
+			pendingData = serviceData.businessProcess.pending;
+
+			// 1 [serviceName].businessProcess.pending
+			storePendingData(serviceResult.businessProcess, 'pending', pendingData);
+		}
+
+		if (serviceData.certificate) {
+			oForEach(serviceData.certificate, function (certificateData, certificateName) {
+				pendingData = certificateData.pending;
+				certificateResult = initCertResult(serviceResult, certificateName);
+
+				// 2 [serviceName].certificate[certificateName].pending
+				storePendingData(certificateResult, 'pending', pendingData);
+			});
+		}
+
+		if (serviceData.processingStep) {
+			oForEach(serviceData.processingStep, function (stepData, stepName) {
+				pendingData = stepData.pending;
+				stepResult = initStepResult(serviceResult, stepName);
+
+				// 3.1.1 [serviceName].processingStep[stepName].pending.businessProcess
+				storePendingData(stepResult.pending, 'businessProcess', pendingData);
+			});
+		}
+	};
+
 	do {
 		if (dateMap[dbDateToISO(startMonthDate)]) {
-			oForEach(dateMap[dbDateToISO(startMonthDate)], function (serviceData, serviceName) {
-				var serviceResult = initServiceResult(serviceName)
-				  , pendingData, certificateResult, stepResult;
-
-				if (serviceData.businessProcess) {
-					pendingData = serviceData.businessProcess.pending;
-
-					// 1 [serviceName].businessProcess.pending
-					storePendingData(serviceResult.businessProcess, 'pending', pendingData);
-				}
-
-				if (serviceData.certificate) {
-					oForEach(serviceData.certificate, function (certificateData, certificateName) {
-						pendingData = certificateData.pending;
-						certificateResult = initCertResult(serviceResult, certificateName);
-
-						// 2 [serviceName].certificate[certificateName].pending
-						storePendingData(certificateResult, 'pending', pendingData);
-					});
-				}
-
-				if (serviceData.processingStep) {
-					oForEach(serviceData.processingStep, function (stepData, stepName) {
-						pendingData = stepData.pending;
-						stepResult = initStepResult(serviceResult, stepName);
-
-						// 3.1.1 [serviceName].processingStep[stepName].pending.businessProcess
-						storePendingData(stepResult.pending, 'businessProcess', pendingData);
-					});
-				}
-			});
+			oForEach(dateMap[dbDateToISO(startMonthDate)], calculateServicePendings);
 		}
 
 		startMonthDate.setDate(startMonthDate.getDate() + 1);
@@ -260,7 +263,8 @@ module.exports = memoize(function (dateFrom, dateTo) {
 	return getData(driver)(function (data) {
 		return calculate(getDateMap(data), data, dateFrom, dateTo);
 	}).aside(function () {
-		debugLoad('%s - %s calculate status events sums (in %s)', dateFrom, dateTo, humanize(Date.now() - startTime));
+		debugLoad('%s - %s calculate status events sums (in %s)', dateFrom, dateTo,
+			humanize(Date.now() - startTime));
 	});
 }, {
 	max: 1000,
