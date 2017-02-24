@@ -29,7 +29,7 @@
 			var result = '';
 			Object.keys(data[date]).forEach(function (processor) {
 				result += '<tr><td>' + date + '</td>';
-				result += '<td>' + processor + '</td>';
+				result += '<td>' + (fullNames[processor] || e(_("Unknown user"))) + '</td>';
 				Object.keys(data[date][processor]).forEach(function (prop) {
 					result += '<td>' + data[date][processor][prop] + '</td>';
 				});
