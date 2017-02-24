@@ -55,7 +55,6 @@ var flowQueryHandlerRolesPdfConf = [
 	require('../../apps-common/query-conf/processing-step-status')
 ];
 
-
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
 	  , customChartsController;
