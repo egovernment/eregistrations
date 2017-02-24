@@ -28,10 +28,12 @@ var assign                  = require('es5-ext/object/assign')
   , itemsPerPage            = require('../../conf/objects-list-items-per-page')
   , flowCertificatesPrint   = require('../pdf-renderers/statistics-flow-certificates')
   , flowRolesPrint          = require('../pdf-renderers/statistics-flow-roles')
+  , flowOperatorsPrint      = require('../pdf-renderers/statistics-flow-operators')
   , flowCertificatesFilter  = require('../../utils/statistics-flow-certificates-filter-result')
   , flowRolesReduceSteps    = require('../../utils/statistics-flow-reduce-processing-step')
   , flowRolesFilter         = require('../../utils/statistics-flow-roles-filter-result')
-  , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf');
+  , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf')
+  , getStepLabelByShortPath       = require('../../utils/get-step-label-by-short-path');
 
 var flowQueryHandlerCertificatesPdfConf = [
 	require('../../apps-common/query-conf/date-from'),
@@ -173,6 +175,32 @@ module.exports = function (config) {
 				return { data: finalResult, pageCount: currentPage };
 			});
 		},
+		'flow-roles-operators-data.pdf': makePdf(function (query) {
+			return flowQueryHandlerOperators.resolve(query)(function (query) {
+				var dateRanges, result = {}, mode, finalResult = {};
+				mode = modes.get(query.mode);
+				dateRanges = getDateRangesByMode(query.dateFrom, query.dateTo, query.mode);
+				dateRanges.forEach(function (dateRange) {
+					// dateRange: { dateFrom: db.Date, dateTo: db.Date } with dateRange query for result
+					// TODO: add real data handler here
+					result[mode.getDisplayedKey(dateRange.dateFrom)] = {};
+				});
+
+				result = reduceOperators(result, query);
+
+				Object.keys(result).forEach(function (date) {
+					Object.keys(result[date]).forEach(function (processorId) {
+						if (!finalResult[date]) {
+							finalResult[date] = {};
+						}
+						finalResult[date][processorId] = result[date][processorId];
+					});
+				});
+
+				return flowOperatorsPrint(finalResult,
+					assign({ mode: query.mode, step: getStepLabelByShortPath(query.step) }, rendererConfig));
+			});
+		}),
 		'get-time-per-role': function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole);
 		},
