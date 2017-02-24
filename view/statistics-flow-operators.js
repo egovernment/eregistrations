@@ -113,6 +113,11 @@ exports['statistics-main'] = function () {
 					getDynamicUrl('/flow-roles-operators-data.pdf', { only: params }),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
 			),
+			div(
+				a({ class: 'users-table-filter-bar-print',
+					href: getDynamicUrl('/flow-roles-operators-data.csv', { only: params }),
+					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print csv"))
+			),
 			p({ class: 'submit' }, input({ type: 'submit' }))));
 
 	section(pagination);

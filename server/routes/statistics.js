@@ -20,6 +20,7 @@ var assign                  = require('es5-ext/object/assign')
   , timePerRoleCsv          = require('../csv-renderers/statistics-time-per-role')
   , flowCertificatesCsv     = require('../csv-renderers/statistics-flow-certificates')
   , flowRolesCsv            = require('../csv-renderers/statistics-flow-roles')
+  , flowOperatorsCsv        = require('../csv-renderers/statistics-flow-operators')
   , makePdf                 = require('./utils/pdf')
   , makeCsv                 = require('./utils/csv')
   , getBaseRoutes           = require('./authenticated')
@@ -53,6 +54,7 @@ var flowQueryHandlerRolesPdfConf = [
 	require('../../apps-common/query-conf/certificate'),
 	require('../../apps-common/query-conf/processing-step-status')
 ];
+
 
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
@@ -99,6 +101,31 @@ module.exports = function (config) {
 	var rendererConfig = {
 		processingStepsMeta: processingStepsMeta,
 		logo: config.logo
+	};
+
+	var resolveRolesOperatorsPrint = function (query, renderer) {
+		var dateRanges, result = {}, mode, finalResult = {};
+		mode = modes.get(query.mode);
+		dateRanges = getDateRangesByMode(query.dateFrom, query.dateTo, query.mode);
+		dateRanges.forEach(function (dateRange) {
+			// dateRange: { dateFrom: db.Date, dateTo: db.Date } with dateRange query for result
+			// TODO: add real data handler here
+			result[mode.getDisplayedKey(dateRange.dateFrom)] = {};
+		});
+
+		result = reduceOperators(result, query);
+
+		Object.keys(result).forEach(function (date) {
+			Object.keys(result[date]).forEach(function (processorId) {
+				if (!finalResult[date]) {
+					finalResult[date] = {};
+				}
+				finalResult[date][processorId] = result[date][processorId];
+			});
+		});
+
+		return renderer(finalResult,
+			assign({ mode: query.mode, step: getStepLabelByShortPath(query.step) }, rendererConfig));
 	};
 
 	// Initialize data map
@@ -207,28 +234,12 @@ module.exports = function (config) {
 		},
 		'flow-roles-operators-data.pdf': makePdf(function (query) {
 			return flowQueryHandlerOperators.resolve(query)(function (query) {
-				var dateRanges, result = {}, mode, finalResult = {};
-				mode = modes.get(query.mode);
-				dateRanges = getDateRangesByMode(query.dateFrom, query.dateTo, query.mode);
-				dateRanges.forEach(function (dateRange) {
-					// dateRange: { dateFrom: db.Date, dateTo: db.Date } with dateRange query for result
-					// TODO: add real data handler here
-					result[mode.getDisplayedKey(dateRange.dateFrom)] = {};
-				});
-
-				result = reduceOperators(result, query);
-
-				Object.keys(result).forEach(function (date) {
-					Object.keys(result[date]).forEach(function (processorId) {
-						if (!finalResult[date]) {
-							finalResult[date] = {};
-						}
-						finalResult[date][processorId] = result[date][processorId];
-					});
-				});
-
-				return flowOperatorsPrint(finalResult,
-					assign({ mode: query.mode, step: getStepLabelByShortPath(query.step) }, rendererConfig));
+				return resolveRolesOperatorsPrint(query, flowOperatorsPrint);
+			});
+		}),
+		'flow-roles-operators-data.csv': makeCsv(function (query) {
+			return flowQueryHandlerOperators.resolve(query)(function (query) {
+				return resolveRolesOperatorsPrint(query, flowOperatorsCsv);
 			});
 		}),
 		'get-time-per-role': function (query) {
