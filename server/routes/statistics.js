@@ -18,6 +18,7 @@ var assign                  = require('es5-ext/object/assign')
   , timePerPersonPrint      = require('../pdf-renderers/statistics-time-per-person')
   , timePerRolePrint        = require('../pdf-renderers/statistics-time-per-role')
   , timePerRoleCsv          = require('../csv-renderers/statistics-time-per-role')
+  , flowCertificatesCsv     = require('../csv-renderers/statistics-flow-certificates')
   , makePdf                 = require('./utils/pdf')
   , makeCsv                 = require('./utils/csv')
   , getBaseRoutes           = require('./authenticated')
@@ -127,6 +128,20 @@ module.exports = function (config) {
 				});
 
 				return flowCertificatesPrint(flowCertificatesFilter(result, query),
+					assign({ mode: query.mode }, rendererConfig));
+			});
+		}),
+		'flow-certificates-data.csv': makeCsv(function (query) {
+			return flowQueryCertificatesPdfHandler.resolve(query)(function (query) {
+				var dateRanges, result = {}, mode;
+				mode = modes.get(query.mode);
+				dateRanges = getDateRangesByMode(query.dateFrom, query.dateTo, query.mode);
+				dateRanges.forEach(function (dateRange) {
+					// dateRange: { dateFrom: db.Date, dateTo: db.Date } with dateRange query for result
+					result[mode.getDisplayedKey(dateRange.dateFrom)] = {};
+				});
+
+				return flowCertificatesCsv(flowCertificatesFilter(result, query),
 					assign({ mode: query.mode }, rendererConfig));
 			});
 		}),
