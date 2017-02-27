@@ -66,6 +66,12 @@ module.exports = function (config) {
 	getData(driver).done();
 
 	return assign({
+		'get-flow-data': function (query) {
+			return queryHandler.resolve(query)(function (query) {
+				//Data goes here
+				return null;
+			});
+		},
 		'get-time-per-role': function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole);
 		},

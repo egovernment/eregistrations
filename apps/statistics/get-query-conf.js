@@ -8,6 +8,7 @@ var aFrom              = require('es5-ext/array/from')
   , Set                = require('es6-set')
   , db                 = require('../../db')
   , dateStringtoDbDate = require('../../utils/date-string-to-db-date')
+  , modes              = require('../../utils/statistics-flow-group-modes')
 
   , stringify          = JSON.stringify;
 
@@ -71,7 +72,7 @@ module.exports = exports = function (data) {
 	conf.push({
 		name: 'service',
 		ensure: function (value) {
-			if (!value) return;
+			if (!value || value === 'all') return;
 			if (!availableServices.has(value)) {
 				throw new Error("Unrecognized service value " + stringify(value));
 			}
@@ -83,6 +84,15 @@ module.exports = exports = function (data) {
 			if (!value) return;
 			if (!processingStepsMeta[value]) {
 				throw new Error("Unrecognized step value " + stringify(value));
+			}
+			return value;
+		}
+	}, {
+		name: 'mode',
+		ensure: function (value) {
+			if (!value) return;
+			if (!modes.some(function (mode) { return mode.key === value; })) {
+				throw new Error("Unrecognized mode value " + stringify(value));
 			}
 			return value;
 		}

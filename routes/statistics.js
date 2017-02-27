@@ -30,5 +30,12 @@ module.exports = {
 		view: require('../view/statistics-time-per-person')
 	},
 
+	flow: {
+		decorateContext: function () {
+			this.processingStepsMeta = processingStepsMeta;
+		},
+		view: require('../view/statistics-flow-certificates')
+	},
+
 	profile: require('../view/user-profile')
 };
