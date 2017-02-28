@@ -433,6 +433,19 @@ var getDateMap = function (data, statusHistoryData) {
 	return result;
 };
 
+var getDateMapRecalculateTimeout = function () {
+	var now                 = toDateInTz(new Date(), db.timeZone)
+	  , nextRecalculateDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 1);
+
+	return nextRecalculateDate - now;
+};
+
+var forceDateMapRecalculate = function () {
+	dateMap = null;
+
+	setTimeout(forceDateMapRecalculate, getDateMapRecalculateTimeout());
+};
+
 module.exports = deferred.gate(function () {
 	var driver = require('mano').dbDriver;
 
@@ -443,6 +456,7 @@ module.exports = deferred.gate(function () {
 	return getData(driver)(function (data) {
 		return getStatusHistoryData(driver, data)(function (statusHistoryData) {
 			dateMap = getDateMap(data, statusHistoryData);
+			setTimeout(forceDateMapRecalculate, getDateMapRecalculateTimeout());
 			return dateMap;
 		});
 	});

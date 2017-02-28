@@ -4,6 +4,8 @@ var deferred                      = require('deferred')
   , capitalize                    = require('es5-ext/string/#/capitalize')
   , aFrom                         = require('es5-ext/array/from')
   , Map                           = require('es6-map')
+  , debugLoad                     = require('debug-ext')('load', 6)
+  , humanize                      = require('debug-ext').humanize
   , timeZone                      = require('../../db').timeZone
   , toDateInTz                    = require('../../utils/to-date-in-time-zone')
   , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
@@ -58,11 +60,12 @@ var statusHistoryConf = {
 
 module.exports = function (driver, data) {
 	var stepShortPathMap = new Map()
-	  , result = {
+	  , result           = {
 		businessProcesses: new Map(),
 		certificates: new Map(),
 		steps: new Map()
-	};
+	}
+	  , startTime        = Date.now();
 
 	Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
 		stepShortPathMap.set(resolveProcessingStepFullPath(stepShortPath), stepShortPath);
@@ -172,5 +175,7 @@ module.exports = function (driver, data) {
 				}
 			});
 		});
-	})(result);
+	})(result).aside(function () {
+		debugLoad('status history data (in %s)', humanize(Date.now() - startTime));
+	});
 };
