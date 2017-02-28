@@ -1,13 +1,16 @@
 'use strict';
 
-var oForEach    = require('es5-ext/object/for-each')
-  , debugLoad   = require('debug-ext')('load', 6)
-  , humanize    = require('debug-ext').humanize
-  , memoize     = require('memoizee')
-  , env         = require('mano').env
-  , filterSteps = require('./steps/filter')
-  , toDateInTz  = require('../../utils/to-date-in-time-zone')
-  , db          = require('../../db');
+var oForEach             = require('es5-ext/object/for-each')
+  , deferred             = require('deferred')
+  , debugLoad            = require('debug-ext')('load', 6)
+  , humanize             = require('debug-ext').humanize
+  , filterSteps          = require('./steps/filter')
+  , getData              = require('./get-data')
+  , getStatusHistoryData = require('./get-status-history-data')
+  , toDateInTz           = require('../../utils/to-date-in-time-zone')
+  , db                   = require('../../db')
+
+  , dateMap;
 
 /*
 Date map layout:
@@ -64,24 +67,24 @@ Date map layout:
 };
  */
 
-var getStatusHistoryLogs = function (statusHistory) {
+var sortStatusHistoryLogs = function (statusHistory) {
 	return Array.from(statusHistory.values()).sort(function (a, b) {
 		return a.date - b.date;
 	});
 };
 
-module.exports = memoize(function (data) {
+var getDateMap = function (data, statusHistoryData) {
 	var currentDate = toDateInTz(new Date(), db.timeZone)
 	  , startTime   = Date.now()
-	  , dateMap     = {};
+	  , result      = {};
 
 	var initDataset = function (date, serviceName) {
 		date = date.toISOString().substring(0, 10);
 
-		if (!dateMap[date]) dateMap[date] = {};
-		if (!dateMap[date][serviceName]) dateMap[date][serviceName] = {};
+		if (!result[date]) result[date] = {};
+		if (!result[date][serviceName]) result[date][serviceName] = {};
 
-		return dateMap[date][serviceName];
+		return result[date][serviceName];
 	};
 
 	var initBpDataset = function (date, serviceName) {
@@ -134,6 +137,24 @@ module.exports = memoize(function (data) {
 		return dataset.byProcessor[processorId];
 	};
 
+	var getBusinessProcessStatusHistoryLogs = function (bpId) {
+		var statusHistoryLogs = statusHistoryData.businessProcesses.get(bpId);
+
+		return statusHistoryLogs ? sortStatusHistoryLogs(statusHistoryLogs) : null;
+	};
+
+	var getCertificateStatusHistoryLogs = function (certificateName, bpId) {
+		var statusHistoryLogs = statusHistoryData.certificates.get(certificateName).get(bpId);
+
+		return statusHistoryLogs ? sortStatusHistoryLogs(statusHistoryLogs) : null;
+	};
+
+	var getProcessingStepStatusHistoryLogs = function (stepName, bpId) {
+		var statusHistoryLogs = statusHistoryData.steps.get(stepName).get(bpId);
+
+		return statusHistoryLogs ? sortStatusHistoryLogs(statusHistoryLogs) : null;
+	};
+
 	var storeStatusRange = function (startDate, endDate, status, bpId, getDataset) {
 		var dataset, pendingStartStored = false;
 
@@ -173,11 +194,10 @@ module.exports = memoize(function (data) {
 		certificateData.forEach(function (businessProcess) {
 			var bpId              = businessProcess.businessProcessId
 			  , serviceName       = data.businessProcesses.get(bpId).serviceName
-			  , statusHistoryLogs, pendingStartDate;
+			  , statusHistoryLogs = getCertificateStatusHistoryLogs(certificateName, bpId)
+			  , pendingStartDate;
 
-			if (!businessProcess.statusHistory) return;
-
-			statusHistoryLogs = getStatusHistoryLogs(businessProcess.statusHistory);
+			if (!statusHistoryLogs) return;
 
 			var getDataset = function (date) {
 				return initCertDataset(date, serviceName, certificateName);
@@ -210,11 +230,10 @@ module.exports = memoize(function (data) {
 		  , serviceName       = businessProcess.serviceName
 		  , certificates      = businessProcess.certificates
 		  , statusStartDates  = { pending: null, pickup: null, sentBack: null }
-		  , statusHistoryLogs, dataset;
+		  , statusHistoryLogs = getBusinessProcessStatusHistoryLogs(bpId)
+		  , dataset;
 
-		if (!businessProcess.statusHistory) return;
-
-		statusHistoryLogs = getStatusHistoryLogs(businessProcess.statusHistory);
+		if (!statusHistoryLogs) return;
 
 		var getDataset = function (date) {
 			return initBpDataset(date, serviceName);
@@ -332,11 +351,10 @@ module.exports = memoize(function (data) {
 			  , serviceName       = data.businessProcesses.get(bpId).serviceName
 			  , pendingStartDate  = null
 			  , statusStartDates  = { paused: {}, sentBack: {}, redelegated: {} }
-			  , statusHistoryLogs, dataset;
+			  , statusHistoryLogs = getProcessingStepStatusHistoryLogs(stepName, bpId)
+			  , dataset;
 
-			if (!businessProcess.statusHistory) return;
-
-			statusHistoryLogs = getStatusHistoryLogs(businessProcess.statusHistory);
+			if (!statusHistoryLogs) return;
 
 			var getPendingDataset = function (date) {
 				return initStepPendingDataset(date, serviceName, stepName);
@@ -412,9 +430,20 @@ module.exports = memoize(function (data) {
 
 	debugLoad('status history date map (in %s)', humanize(Date.now() - startTime));
 
-	return dateMap;
-}, {
-	length: 0,
-	maxAge: env.statisticsResolution || 1000 * 60 * 60 * 24, // 24 hours by default
-	preFetch: 0.9
-});
+	return result;
+};
+
+module.exports = deferred.gate(function () {
+	var driver = require('mano').dbDriver;
+
+	if (dateMap) {
+		return dateMap;
+	}
+
+	return getData(driver)(function (data) {
+		return getStatusHistoryData(driver, data)(function (statusHistoryData) {
+			dateMap = getDateMap(data, statusHistoryData);
+			return dateMap;
+		});
+	});
+}, 1);

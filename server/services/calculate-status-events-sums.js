@@ -6,7 +6,6 @@ var oForEach   = require('es5-ext/object/for-each')
   , Set        = require('es6-set')
   , isSet      = require('es6-set/is-set')
   , memoize    = require('memoizee')
-  , env        = require('mano').env
   , getData    = require('../business-process-query/get-data')
   , getDateMap = require('../business-process-query/get-status-history-date-map')
   , db         = require('../../db');
@@ -45,7 +44,8 @@ var dbDateToISO = function (date) {
 var calculate = function (dateMap, data, dateFrom, dateTo) {
 	var resultMap   = {}
 	  , dateFromISO = dbDateToISO(dateFrom)
-	  , dateToISO   = dbDateToISO(dateTo);
+	  , dateToISO   = dbDateToISO(dateTo)
+	  , startTime   = Date.now();
 
 	var initServiceResult = function (serviceName) {
 		if (!resultMap[serviceName]) {
@@ -253,22 +253,27 @@ var calculate = function (dateMap, data, dateFrom, dateTo) {
 		});
 	});
 
+	debugLoad('%s - %s calculate status events sums (in %s)', dateFrom, dateTo,
+		humanize(Date.now() - startTime));
+
 	return resultMap;
 };
 
-module.exports = memoize(function (dateFrom, dateTo) {
-	var driver    = require('mano').dbDriver
-	  , startTime = Date.now();
+var getCalculate = function () {
+	var driver = require('mano').dbDriver;
 
 	return getData(driver)(function (data) {
-		return calculate(getDateMap(data), data, dateFrom, dateTo);
-	}).aside(function () {
-		debugLoad('%s - %s calculate status events sums (in %s)', dateFrom, dateTo,
-			humanize(Date.now() - startTime));
+		return getDateMap()(function (dateMap) {
+			return memoize(function (dateFrom, dateTo) {
+				return calculate(dateMap, data, dateFrom, dateTo);
+			}, {
+				max: 1000,
+				primitive: true
+			});
+		});
 	});
-}, {
-	max: 1000,
-	maxAge: env.statisticsResolution || 1000 * 60 * 60 * 24, // 24 hours by default
-	promise: true,
-	primitive: true
-});
+};
+
+module.exports = function (dateFrom, dateTo) {
+	return getCalculate()(function (calculate) { return calculate(dateFrom, dateTo); });
+};

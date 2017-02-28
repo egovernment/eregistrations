@@ -139,7 +139,7 @@ module.exports = exports = memoize(function (driver) {
 		});
 
 		storage.on('update', function (event) {
-			var match, certificatePath, certificateKeyPath, stepPath, stepKeyPath;
+			var match, certificatePath, certificateKeyPath;
 
 			if (!event.keyPath) return;
 
@@ -167,13 +167,6 @@ module.exports = exports = memoize(function (driver) {
 				});
 			};
 
-			// Business process nested entities
-			if (updateOnMatch(exports.businessProcessNestedEntities, event.keyPath, function () {
-					return initBpDataset(event.ownerId);
-				})) {
-				return;
-			}
-
 			// Certificates nested entities
 			match = event.keyPath.match(certificatePropertyRe);
 			if (match) {
@@ -182,19 +175,6 @@ module.exports = exports = memoize(function (driver) {
 
 				if (updateOnMatch(exports.certificateNestedEntities, certificateKeyPath, function () {
 						return initCertDataset(certificatePath, event.ownerId);
-					})) {
-					return;
-				}
-			}
-
-			// Processing step nested entities
-			match = event.keyPath.match(processingStepPropertyRe);
-			if (match) {
-				stepPath = match[1];
-				stepKeyPath = match[2];
-
-				if (updateOnMatch(exports.processingStepNestedEntities, stepKeyPath, function () {
-						return initStepDataset(stepPath, event.ownerId);
 					})) {
 					return;
 				}
@@ -224,28 +204,6 @@ module.exports = exports = memoize(function (driver) {
 				meta = exports.businessProcessMetaMap[keyPath];
 				if (validateRecord(record, meta, multiItemValue)) {
 					meta.set(initBpDataset(bpId), record, multiItemValue);
-					return;
-				}
-				// Business process nested entities
-				if (exports.businessProcessNestedEntities.some(function (nestedEntityConf) {
-						match = keyPath.match(nestedEntityConf.matchRe);
-
-						if (match) {
-							nestedEntityPath = match[1];
-							nestedEntityKeyPath = match[2];
-
-							meta = nestedEntityConf.metaMap[nestedEntityKeyPath];
-
-							if (validateRecord(record, meta, multiItemValue)) {
-								meta.set(
-									nestedEntityConf.init(initBpDataset(bpId), nestedEntityPath),
-									record,
-									multiItemValue
-								);
-								return true;
-							}
-						}
-					})) {
 					return;
 				}
 				// Certificates
@@ -291,30 +249,6 @@ module.exports = exports = memoize(function (driver) {
 					meta = exports.stepMetaMap[stepKeyPath];
 					if (validateRecord(record, meta, multiItemValue)) {
 						meta.set(initStepDataset(stepPath, bpId), record, multiItemValue);
-						return;
-					}
-
-					// Processing step nested entities
-					if (exports.processingStepNestedEntities.some(function (nestedEntityConf) {
-							match = stepKeyPath.match(nestedEntityConf.matchRe);
-
-							if (match) {
-								nestedEntityPath = match[1];
-								nestedEntityKeyPath = match[2];
-
-								meta = nestedEntityConf.metaMap[nestedEntityKeyPath];
-
-								if (validateRecord(record, meta, multiItemValue)) {
-									meta.set(
-										nestedEntityConf.init(initStepDataset(stepPath, bpId), nestedEntityPath),
-										record,
-										multiItemValue
-									);
-
-									return true;
-								}
-							}
-						})) {
 						return;
 					}
 				}
