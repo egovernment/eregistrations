@@ -138,55 +138,12 @@ module.exports = exports = memoize(function (driver) {
 			});
 		});
 
-		storage.on('update', function (event) {
-			var match, certificatePath, certificateKeyPath;
-
-			if (!event.keyPath) return;
-
-			var updateOnMatch = function (nestedEntityConfs, keyPath, getData) {
-				var nestedEntityPath, nestedEntityKeyPath, meta, data;
-
-				return nestedEntityConfs.some(function (nestedEntityConf) {
-					match = keyPath.match(nestedEntityConf.matchRe);
-
-					if (match) {
-						nestedEntityPath = match[1];
-						nestedEntityKeyPath = match[2];
-
-						meta = nestedEntityConf.metaMap[nestedEntityKeyPath];
-
-						if (event.type !== (meta.type || 'direct')) return;
-
-						data = nestedEntityConf.init(getData(), nestedEntityPath);
-
-						if (!meta.validate(event.data)) meta.delete(data);
-						else meta.set(data, event.data);
-
-						return true;
-					}
-				});
-			};
-
-			// Certificates nested entities
-			match = event.keyPath.match(certificatePropertyRe);
-			if (match) {
-				certificatePath = match[1];
-				certificateKeyPath = match[2];
-
-				if (updateOnMatch(exports.certificateNestedEntities, certificateKeyPath, function () {
-						return initCertDataset(certificatePath, event.ownerId);
-					})) {
-					return;
-				}
-			}
-		});
-
 		// Get current records
 		return deferred(
 			storage.search(function (id, record) {
 				var bpId = id.split('/', 1)[0]
 				  , path, keyPath, multiItemValue, meta, match, stepPath, stepKeyPath
-				  , certificatePath, certificateKeyPath, nestedEntityPath, nestedEntityKeyPath;
+				  , certificatePath;
 
 				if (bpId === id) {
 					if (metaMap.validate(record)) metaMap.set(initBpDataset(bpId), record);
@@ -210,31 +167,8 @@ module.exports = exports = memoize(function (driver) {
 				match = keyPath.match(certificatePropertyRe);
 				if (match) {
 					certificatePath = match[1];
-					certificateKeyPath = match[2];
 
-					// Certificate nested entities
-					if (exports.certificateNestedEntities.some(function (nestedEntityConf) {
-							match = certificateKeyPath.match(nestedEntityConf.matchRe);
-
-							if (match) {
-								nestedEntityPath = match[1];
-								nestedEntityKeyPath = match[2];
-
-								meta = nestedEntityConf.metaMap[nestedEntityKeyPath];
-
-								if (validateRecord(record, meta, multiItemValue)) {
-									meta.set(
-										nestedEntityConf.init(initCertDataset(certificatePath, bpId), nestedEntityPath),
-										record,
-										multiItemValue
-									);
-
-									return true;
-								}
-							}
-						})) {
-						return;
-					}
+					initCertDataset(certificatePath, bpId);
 				}
 
 				// Processing steps
@@ -410,59 +344,3 @@ exports.businessProcessMetaMap = {
 		delete: function (data) { delete data.submitterType; }
 	}
 };
-
-var statusHistoryMatchRe = new RegExp('^statusHistory\\/map\\/([a-zA-Z0-9]+)/([a-z0-9A-Z\\/]+)$');
-var statusHistoryEntityInit = function (data, nestedEntityId) {
-	if (!data.statusHistory) data.statusHistory = new Map();
-
-	if (!data.statusHistory.has(nestedEntityId)) {
-		data.statusHistory.set(nestedEntityId, {});
-	}
-
-	return data.statusHistory.get(nestedEntityId);
-};
-
-var statusHistoryStatusMeta = {
-	validate: function (record) { return (record.value[0] === '3'); },
-	set: function (data, record) {
-		data.status = record.value.slice(1);
-		data.date = toDateInTz(new Date(record.stamp / 1000), timeZone);
-	},
-	delete: function (data) {
-		delete data.status;
-		delete data.date;
-	}
-};
-
-exports.businessProcessNestedEntities = [{
-	matchRe: statusHistoryMatchRe,
-	init: statusHistoryEntityInit,
-	metaMap: {
-		status: statusHistoryStatusMeta
-	}
-}];
-
-exports.certificateNestedEntities = [{
-	matchRe: statusHistoryMatchRe,
-	init: statusHistoryEntityInit,
-	metaMap: {
-		status: statusHistoryStatusMeta
-	}
-}];
-
-exports.processingStepNestedEntities = [{
-	matchRe: statusHistoryMatchRe,
-	init: statusHistoryEntityInit,
-	metaMap: {
-		status: statusHistoryStatusMeta,
-		processor: {
-			validate: function (record) { return (record.value[0] === '7'); },
-			set: function (data, record) {
-				data.processor = record.value.slice(1);
-			},
-			delete: function (data) {
-				delete data.processor;
-			}
-		}
-	}
-}];
