@@ -155,6 +155,11 @@
 	width: 80%;
 }
 
+.document-preview-new-excel-spreadsheet {
+	margin: 30% 10%;
+	width: 80%;
+}
+
 .document-preview-open-link > a {
 	display: none;
 }

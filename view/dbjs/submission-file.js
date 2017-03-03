@@ -8,6 +8,7 @@ var d            = require('d')
   , db           = require('mano').db
   , includes     = require('es5-ext/array/#/contains')
   , docMimeTypes = require('../../utils/microsoft-word-doc-mime-types')
+  , xlsMimeTypes = require('../../utils/microsoft-excel-spreadsheet-mime-types')
 
   , normRe = /[$#:\/]/g;
 
@@ -71,6 +72,9 @@ module.exports = Object.defineProperties(db.File, {
 					el('img', { id: 'img-' + name, src: (function () {
 						if (includes.call(docMimeTypes, file.type)) {
 							return stUrl('/img/word-doc-icon.png');
+						}
+						if (includes.call(xlsMimeTypes, file.type)) {
+							return stUrl('/img/excel-spreadsheet-icon.png');
 						}
 
 						return file.thumb._url.map(function (thumbUrl) {
