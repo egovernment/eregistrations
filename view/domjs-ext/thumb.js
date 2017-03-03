@@ -2,7 +2,8 @@
 
 var map          = require('observable-value/map')
   , includes     = require('es5-ext/array/#/contains')
-  , docMimeTypes = require('../../utils/microsoft-word-doc-mime-types');
+  , docMimeTypes = require('../../utils/microsoft-word-doc-mime-types')
+  , xlsMimeTypes = require('../../utils/microsoft-excel-spreadsheet-mime-types');
 
 module.exports = function (domjs/*, options*/) {
 	var ns = domjs.ns, a = ns.a, img = ns.img, span = ns.span, div = ns.div;
@@ -12,6 +13,9 @@ module.exports = function (domjs/*, options*/) {
 				img({ src: file.thumb._url.map(function (thumbUrl) {
 					if (includes.call(docMimeTypes, file.type)) {
 						return stUrl('/img/word-doc-icon.png');
+					}
+					if (includes.call(xlsMimeTypes, file.type)) {
+						return stUrl('/img/excel-spreadsheet-icon.png');
 					}
 					if (!thumbUrl) return;
 					return stUrl(thumbUrl);

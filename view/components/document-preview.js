@@ -9,6 +9,7 @@ var includes              = require('es5-ext/array/#/contains')
   , isReadOnlyRender      = require('mano/client/utils/is-read-only-render')
   , getArrayIndex         = require('../../utils/get-observable-array-index')
   , docMimeTypes          = require('../../utils/microsoft-word-doc-mime-types')
+  , xlsMimeTypes          = require('../../utils/microsoft-excel-spreadsheet-mime-types')
   , pathToUrl             = require('../../utils/upload-path-to-url')
   , reactiveSibling       = require('../utils/reactive-document-sibling')
   , syncHeight            = require('../utils/sync-height')
@@ -21,6 +22,10 @@ var getFilePreview = function (file) {
 	var type = file.type;
 	if (includes.call(docMimeTypes, type)) {
 		return img({ class: 'document-preview-new-word-document', src: '/img/word-doc-icon.png' });
+	}
+	if (includes.call(xlsMimeTypes, type)) {
+		return img({ class: 'document-preview-new-excel-spreadsheet',
+			src: '/img/excel-spreadsheet-icon.png' });
 	}
 	if (!isReadOnlyRender && (type === 'application/pdf')) {
 		return iframe({
