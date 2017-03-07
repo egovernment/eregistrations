@@ -48,7 +48,7 @@ module.exports = function (config) {
 			setTimeout(function () { self(childSelect); }, 300);
 			return;
 		}
-		if (config.persistParentName) {
+		if (!config.persistParentName) {
 			parentSelect.removeAttribute('name');
 		}
 
