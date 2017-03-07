@@ -26,7 +26,10 @@ module.exports = function (projectRoot, config) {
 
 	ensureString(projectRoot);
 	debug('generate-legacy-' + ensureString(config.fileNamePrefix) + '-data');
-	result.htmlClass       = ensureString(config.htmlClass);
+	result.htmlClass = ensureString(config.htmlClass);
+	if (config.persistParentName != null) {
+		result.persistParentName = config.persistParentName;
+	}
 	ensureString(config.linkingPropertyName);
 
 	ensureType(config.child).instances.forEach(function (child) {
