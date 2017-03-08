@@ -21,12 +21,14 @@ var assign                    = require('es5-ext/object/assign')
   , timePerRolePrint          = require('../pdf-renderers/statistics-time-per-role')
   , flowCertificatesPrint     = require('../pdf-renderers/statistics-flow-certificates')
   , flowRolesPrint            = require('../pdf-renderers/statistics-flow-roles')
+  , flowOperatorsPrint        = require('../pdf-renderers/statistics-flow-operators')
   , timePerRoleCsv            = require('../csv-renderers/statistics-time-per-role')
   , makePdf                   = require('./utils/pdf')
   , makeCsv                   = require('./utils/csv')
   , getBaseRoutes             = require('./authenticated')
   , processingStepsMeta       = require('../../processing-steps-meta')
   , getDateRangesByMode       = require('../../utils/get-date-ranges-by-mode')
+  , getStepLabelByShortPath   = require('../../utils/get-step-label-by-short-path')
   , modes                     = require('../../utils/statistics-flow-group-modes')
   , flowCertificatesFilter    = require('../../utils/statistics-flow-certificates-filter-result')
   , flowRolesFilter           = require('../../utils/statistics-flow-roles-filter-result')
@@ -137,6 +139,28 @@ module.exports = function (config) {
 		});
 	};
 
+	var resolveOperatorsDataPrint = function (unresolvedQuery, renderer) {
+		return flowQueryHandlerOperators.resolve(unresolvedQuery)(function (query) {
+			return calculatePerDateStatusEventsSums(query)(function (result) {
+				var finalResult = {};
+
+				result = flowReduceOperators(result, query);
+
+				Object.keys(result).forEach(function (date) {
+					Object.keys(result[date]).forEach(function (processorId) {
+						if (!finalResult[date]) {
+							finalResult[date] = {};
+						}
+						finalResult[date][processorId] = result[date][processorId];
+					});
+				});
+
+				return renderer(finalResult, assign({ mode: query.mode,
+					step: getStepLabelByShortPath(query.step) }, rendererConfig));
+			});
+		});
+	};
+
 	// Initialize data map
 	getData(driver).done();
 
@@ -179,6 +203,9 @@ module.exports = function (config) {
 				});
 			});
 		},
+		'flow-roles-operators-data.pdf': makePdf(function (unresolvedQuery) {
+			return resolveOperatorsDataPrint(unresolvedQuery, flowOperatorsPrint);
+		}),
 		'get-time-per-role': function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole);
 		},

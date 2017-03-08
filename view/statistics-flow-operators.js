@@ -19,7 +19,8 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , processingSteps   = require('../processing-steps-meta')
   , queryServer       = require('./utils/statistics-flow-operators-query-server')
   , oToArray           = require('es5-ext/object/to-array')
-  , getStepLabelByShortPath = require('../utils/get-step-label-by-short-path');
+  , getStepLabelByShortPath = require('../utils/get-step-label-by-short-path')
+  , getDynamicUrl           = require('./utils/get-dynamic-url');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -47,10 +48,14 @@ db.BusinessProcess.extensions.forEach(function (ServiceType) {
 
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue({})
-	  , pagination = new Pagination('/flow/by-operator/');
+	  , pagination = new Pagination('/flow/by-operator/'), params;
 
 	queryHandler = setupQueryHandler(queryHandlerConf,
 		location, '/flow/by-operator/');
+
+	params = queryHandler._handlers.map(function (handler) {
+		return handler.name;
+	});
 
 	queryHandler.on('query', function (query) {
 		var serverQuery = copy(query), dateFrom, dateTo;
@@ -103,6 +108,11 @@ exports['statistics-main'] = function () {
 					})
 				)),
 			selectPeriodMode(),
+			div(
+				a({ class: 'users-table-filter-bar-print', href:
+					getDynamicUrl('/flow-roles-operators-data.pdf', { only: params }),
+					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
+			),
 			p({ class: 'submit' }, input({ type: 'submit' }))));
 
 	section(pagination);
