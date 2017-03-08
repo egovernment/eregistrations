@@ -1,29 +1,51 @@
 'use strict';
 
-var assign                  = require('es5-ext/object/assign')
-  , ensureCallable          = require('es5-ext/object/valid-callable')
-  , ensureObject            = require('es5-ext/object/valid-object')
-  , oForEach                = require('es5-ext/object/for-each')
-  , ensureDriver            = require('dbjs-persistence/ensure-driver')
-  , db                      = require('../../db')
-  , QueryHandler            = require('../../utils/query-handler')
-  , toDateInTz              = require('../../utils/to-date-in-time-zone')
-  , getData                 = require('../business-process-query/get-data')
-  , filterSteps             = require('../business-process-query/steps/filter')
-  , filterBusinessProcesses = require('../business-process-query/business-processes/filter')
-  , reduceSteps             = require('../business-process-query/steps/reduce-time')
-  , reduceBusinessProcesses = require('../business-process-query/business-processes/reduce-time')
-  , getQueryHandlerConf     = require('../../apps/statistics/get-query-conf')
-  , flowQueryHandlerConf    = require('../../apps/statistics/flow-query-conf')
-  , timePerPersonPrint      = require('../pdf-renderers/statistics-time-per-person')
-  , timePerRolePrint        = require('../pdf-renderers/statistics-time-per-role')
-  , timePerRoleCsv          = require('../csv-renderers/statistics-time-per-role')
-  , makePdf                 = require('./utils/pdf')
-  , makeCsv                 = require('./utils/csv')
-  , getBaseRoutes           = require('./authenticated')
-  , processingStepsMeta     = require('../../processing-steps-meta')
-  , getDateRangesByMode     = require('../../utils/get-date-ranges-by-mode')
-  , modes                   = require('../../utils/statistics-flow-group-modes');
+var assign                    = require('es5-ext/object/assign')
+  , ensureCallable            = require('es5-ext/object/valid-callable')
+  , ensureObject              = require('es5-ext/object/valid-object')
+  , oForEach                  = require('es5-ext/object/for-each')
+  , deferred                  = require('deferred')
+  , ensureDriver              = require('dbjs-persistence/ensure-driver')
+  , db                        = require('../../db')
+  , QueryHandler              = require('../../utils/query-handler')
+  , toDateInTz                = require('../../utils/to-date-in-time-zone')
+  , getData                   = require('../business-process-query/get-data')
+  , filterSteps               = require('../business-process-query/steps/filter')
+  , filterBusinessProcesses   = require('../business-process-query/business-processes/filter')
+  , reduceSteps               = require('../business-process-query/steps/reduce-time')
+  , reduceBusinessProcesses   = require('../business-process-query/business-processes/reduce-time')
+  , calculateStatusEventsSums = require('../services/calculate-status-events-sums')
+  , getQueryHandlerConf       = require('../../apps/statistics/get-query-conf')
+  , flowQueryHandlerConf      = require('../../apps/statistics/flow-query-conf')
+  , timePerPersonPrint        = require('../pdf-renderers/statistics-time-per-person')
+  , timePerRolePrint          = require('../pdf-renderers/statistics-time-per-role')
+  , timePerRoleCsv            = require('../csv-renderers/statistics-time-per-role')
+  , makePdf                   = require('./utils/pdf')
+  , makeCsv                   = require('./utils/csv')
+  , getBaseRoutes             = require('./authenticated')
+  , processingStepsMeta       = require('../../processing-steps-meta')
+  , getDateRangesByMode       = require('../../utils/get-date-ranges-by-mode')
+  , modes                     = require('../../utils/statistics-flow-group-modes');
+
+var calculatePerDateStatusEventsSums = function (query) {
+	var result = {}
+	  , mode   = modes.get(query.mode);
+
+	return deferred.map(getDateRangesByMode(query.dateFrom, query.dateTo, query.mode),
+		function (dateRange) {
+			// dateRange: { dateFrom: db.Date, dateTo: db.Date } with dateRange query for result
+			return calculateStatusEventsSums(dateRange.dateFrom, dateRange.dateTo)(function (data) {
+				return {
+					displayKey: mode.getDisplayedKey(dateRange.dateFrom),
+					data: data
+				};
+			});
+		})(function (dateRangeResults) {
+		dateRangeResults.forEach(function (dateRangeResult) {
+			result[dateRangeResult.displayKey] = dateRangeResult.data;
+		});
+	})(result);
+};
 
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
@@ -71,18 +93,8 @@ module.exports = function (config) {
 	getData(driver).done();
 
 	return assign({
-		'get-flow-data': function (query) {
-			return flowQueryHandler.resolve(query)(function (query) {
-				var dateRanges, result = {}, mode;
-				mode = modes.get(query.mode);
-				dateRanges = getDateRangesByMode(query.dateFrom, query.dateTo, query.mode);
-				dateRanges.forEach(function (dateRange) {
-					// dateRange: { dateFrom: db.Date, dateTo: db.Date } with dateRange query for result
-					result[mode.getDisplayedKey(dateRange.dateFrom)] = null;
-				});
-
-				return result;
-			});
+		'get-flow-data': function (unresolvedQuery) {
+			return flowQueryHandler.resolve(unresolvedQuery)(calculatePerDateStatusEventsSums);
 		},
 		'get-time-per-role': function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole);
