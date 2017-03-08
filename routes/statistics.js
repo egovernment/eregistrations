@@ -38,6 +38,9 @@ module.exports = {
 	'flow/by-role': {
 		view: require('../view/statistics-flow-roles')
 	},
+	'flow/by-operator': {
+		view: require('../view/statistics-flow-operators')
+	},
 
 	profile: require('../view/user-profile')
 };
