@@ -20,6 +20,7 @@ var assign                    = require('es5-ext/object/assign')
   , timePerPersonPrint        = require('../pdf-renderers/statistics-time-per-person')
   , timePerRolePrint          = require('../pdf-renderers/statistics-time-per-role')
   , flowCertificatesPrint     = require('../pdf-renderers/statistics-flow-certificates')
+  , flowRolesPrint            = require('../pdf-renderers/statistics-flow-roles')
   , timePerRoleCsv            = require('../csv-renderers/statistics-time-per-role')
   , makePdf                   = require('./utils/pdf')
   , makeCsv                   = require('./utils/csv')
@@ -28,7 +29,9 @@ var assign                    = require('es5-ext/object/assign')
   , getDateRangesByMode       = require('../../utils/get-date-ranges-by-mode')
   , modes                     = require('../../utils/statistics-flow-group-modes')
   , flowCertificatesFilter    = require('../../utils/statistics-flow-certificates-filter-result')
+  , flowRolesFilter           = require('../../utils/statistics-flow-roles-filter-result')
   , flowReduceOperators       = require('../../utils/statistics-flow-reduce-operators')
+  , flowRolesReduceSteps      = require('../../utils/statistics-flow-reduce-processing-step')
   , itemsPerPage              = require('../../conf/objects-list-items-per-page')
   , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf');
 
@@ -38,6 +41,15 @@ var flowQueryHandlerCertificatesPrintConf = [
 	require('../../apps-common/query-conf/mode'),
 	require('../../apps-common/query-conf/service'),
 	require('../../apps-common/query-conf/certificate')
+];
+
+var flowQueryHandlerRolesPrintConf = [
+	require('../../apps-common/query-conf/date-from'),
+	require('../../apps-common/query-conf/date-to'),
+	require('../../apps-common/query-conf/mode'),
+	require('../../apps-common/query-conf/service'),
+	require('../../apps-common/query-conf/certificate'),
+	require('../../apps-common/query-conf/processing-step-status')
 ];
 
 var calculatePerDateStatusEventsSums = function (query) {
@@ -70,10 +82,12 @@ module.exports = function (config) {
 	var queryConf = getQueryHandlerConf({ processingStepsMeta: processingStepsMeta });
 	var flowQueryConf = flowQueryHandlerConf;
 	var flowQueryCertificatesPrintConf = flowQueryHandlerCertificatesPrintConf;
+	var flowQueryRolesPrintConf = flowQueryHandlerRolesPrintConf;
 
 	var queryHandler = new QueryHandler(queryConf);
 	var flowQueryHandler = new QueryHandler(flowQueryConf);
 	var flowQueryCertificatesPrintHandler = new QueryHandler(flowQueryCertificatesPrintConf);
+	var flowQueryRolesPrintHandler = new QueryHandler(flowQueryRolesPrintConf);
 	var flowQueryHandlerOperators = new QueryHandler(flowQueryOperatorsHandlerConf);
 
 	var resolveTimePerRole = function (query) {
@@ -114,6 +128,15 @@ module.exports = function (config) {
 		});
 	};
 
+	var resolveRolesDataPrint = function (unresolvedQuery, renderer) {
+		return flowQueryRolesPrintHandler.resolve(unresolvedQuery)(function (query) {
+			return calculatePerDateStatusEventsSums(query)(function (result) {
+				return renderer(flowRolesFilter(flowRolesReduceSteps(result), query),
+					assign({ mode: query.mode }, rendererConfig));
+			});
+		});
+	};
+
 	// Initialize data map
 	getData(driver).done();
 
@@ -123,6 +146,9 @@ module.exports = function (config) {
 		},
 		'flow-certificates-data.pdf': makePdf(function (unresolvedQuery) {
 			return resolveCertificatesDataPrint(unresolvedQuery, flowCertificatesPrint);
+		}),
+		'flow-roles-data.pdf': makePdf(function (unresolvedQuery) {
+			return resolveRolesDataPrint(unresolvedQuery, flowRolesPrint);
 		}),
 		'get-flow-roles-operators-data': function (unresolvedQuery) {
 			return flowQueryHandlerOperators.resolve(unresolvedQuery)(function (query) {

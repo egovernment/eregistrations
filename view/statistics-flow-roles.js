@@ -24,6 +24,7 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , copyDbDate        = require('../utils/copy-db-date')
   , queryServer       = require('./utils/statistics-flow-query-server')
   , processingSteps   = require('../processing-steps-meta')
+  , getDynamicUrl     = require('./utils/get-dynamic-url')
   , getStepLabelByShortPath = require('../utils/get-step-label-by-short-path')
   , incrementDateByTimeUnit = require('../utils/increment-date-by-time-unit')
   , floorToTimeUnit         = require('../utils/floor-to-time-unit')
@@ -66,12 +67,16 @@ var stepStatuses = {};
 
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue({})
-	  , pagination = new Pagination('/flow/by-role/'), handlerConf;
+	  , pagination = new Pagination('/flow/by-role/'), handlerConf, params;
 
 	handlerConf = queryHandlerConf.slice(0);
 	handlerConf.push(pageQuery, serviceQuery, certificateQuery, stepStatusQuery);
 	queryHandler = setupQueryHandler(handlerConf,
 		location, '/flow/by-role/');
+
+	params = queryHandler._handlers.map(function (handler) {
+		return handler.name;
+	});
 
 	queryHandler.on('query', function (query) {
 		var serverQuery = copy(query), dateFrom, dateTo, mode
@@ -157,6 +162,11 @@ exports['statistics-main'] = function () {
 				selectDateTo()
 			),
 			selectPeriodMode(),
+			div(
+				a({ class: 'users-table-filter-bar-print', href:
+					getDynamicUrl('/flow-roles-data.pdf', { only: params }),
+					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
+			),
 			p({ class: 'submit' }, input({ type: 'submit' }))));
 
 	section(pagination);
