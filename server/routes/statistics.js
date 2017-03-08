@@ -23,6 +23,7 @@ var assign                    = require('es5-ext/object/assign')
   , flowRolesPrint            = require('../pdf-renderers/statistics-flow-roles')
   , flowOperatorsPrint        = require('../pdf-renderers/statistics-flow-operators')
   , timePerRoleCsv            = require('../csv-renderers/statistics-time-per-role')
+  , flowCertificatesCsv       = require('../csv-renderers/statistics-flow-certificates')
   , makePdf                   = require('./utils/pdf')
   , makeCsv                   = require('./utils/csv')
   , getBaseRoutes             = require('./authenticated')
@@ -170,6 +171,9 @@ module.exports = function (config) {
 		},
 		'flow-certificates-data.pdf': makePdf(function (unresolvedQuery) {
 			return resolveCertificatesDataPrint(unresolvedQuery, flowCertificatesPrint);
+		}),
+		'flow-certificates-data.csv': makeCsv(function (unresolvedQuery) {
+			return resolveCertificatesDataPrint(unresolvedQuery, flowCertificatesCsv);
 		}),
 		'flow-roles-data.pdf': makePdf(function (unresolvedQuery) {
 			return resolveRolesDataPrint(unresolvedQuery, flowRolesPrint);
