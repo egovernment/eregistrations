@@ -13,6 +13,7 @@ var assign                  = require('es5-ext/object/assign')
   , filterBusinessProcesses = require('../business-process-query/business-processes/filter')
   , reduceSteps             = require('../business-process-query/steps/reduce-time')
   , reduceBusinessProcesses = require('../business-process-query/business-processes/reduce-time')
+  , getStatusHistoryDateMap = require('../business-process-query/get-status-history-date-map')
   , getQueryHandlerConf     = require('../../apps/statistics/get-query-conf')
   , timePerPersonPrint      = require('../pdf-renderers/statistics-time-per-person')
   , timePerRolePrint        = require('../pdf-renderers/statistics-time-per-role')
@@ -62,8 +63,10 @@ module.exports = function (config) {
 		logo: config.logo
 	};
 
-	// Initialize data map
+	// Initialize data map.
 	getData(driver).done();
+	// Initialize status history date map.
+	getStatusHistoryDateMap(driver).done();
 
 	return assign({
 		'get-time-per-role': function (query) {

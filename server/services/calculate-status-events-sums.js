@@ -263,7 +263,7 @@ var getCalculate = function () {
 	var driver = require('mano').dbDriver;
 
 	return getData(driver)(function (data) {
-		return getDateMap()(function (dateMap) {
+		return getDateMap(driver)(function (dateMap) {
 			return memoize(function (dateFrom, dateTo) {
 				return calculate(dateMap, data, dateFrom, dateTo);
 			}, {
