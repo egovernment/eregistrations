@@ -259,21 +259,16 @@ var calculate = function (dateMap, data, dateFrom, dateTo) {
 	return resultMap;
 };
 
-var getCalculate = function () {
+module.exports = exports = memoize(function (dateFrom, dateTo) {
 	var driver = require('mano').dbDriver;
 
 	return getData(driver)(function (data) {
 		return getDateMap(driver)(function (dateMap) {
-			return memoize(function (dateFrom, dateTo) {
-				return calculate(dateMap, data, dateFrom, dateTo);
-			}, {
-				max: 1000,
-				primitive: true
-			});
+			return calculate(dateMap, data, dateFrom, dateTo);
 		});
 	});
-};
-
-module.exports = function (dateFrom, dateTo) {
-	return getCalculate()(function (calculate) { return calculate(dateFrom, dateTo); });
-};
+}, {
+	max: 1000,
+	promise: true,
+	primitive: true
+});
