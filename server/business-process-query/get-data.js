@@ -50,7 +50,7 @@ module.exports = exports = memoize(function (driver) {
 	  , serviceFullShortNameMap = new Map()
 	  , startTime               = Date.now();
 
-	var result = { steps: new Map(), businessProcesses: new Map(), certificates: new Map() };
+	var result = { steps: new Map(), businessProcesses: new Map() };
 
 	forEach(processingStepsMeta, function (meta, stepShortPath) {
 		var stepPath = resolveProcessingStepFullPath(stepShortPath);
