@@ -1,16 +1,14 @@
 'use strict';
 
 var oForEach             = require('es5-ext/object/for-each')
-  , deferred             = require('deferred')
+  , memoize              = require('memoizee')
   , debugLoad            = require('debug-ext')('load', 6)
   , humanize             = require('debug-ext').humanize
   , filterSteps          = require('./steps/filter')
   , getData              = require('./get-data')
   , getStatusHistoryData = require('./get-status-history-data')
   , toDateInTz           = require('../../utils/to-date-in-time-zone')
-  , db                   = require('../../db')
-
-  , dateMap;
+  , db                   = require('../../db');
 
 /*
 Date map layout:
@@ -437,27 +435,20 @@ var getDateMapRecalculateTimeout = function () {
 	var now                 = toDateInTz(new Date(), db.timeZone)
 	  , nextRecalculateDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 1);
 
-	return nextRecalculateDate - now;
+	return nextRecalculateDate.getTime() - now.getTime();
 };
 
 var forceDateMapRecalculate = function () {
-	dateMap = null;
-
-	setTimeout(forceDateMapRecalculate, getDateMapRecalculateTimeout());
+	exports.clear();
+	exports(require('mano').dbDriver);
 };
 
-module.exports = deferred.gate(function () {
-	var driver = require('mano').dbDriver;
-
-	if (dateMap) {
-		return dateMap;
-	}
-
+module.exports = exports = memoize(function (driver) {
 	return getData(driver)(function (data) {
 		return getStatusHistoryData(driver, data)(function (statusHistoryData) {
-			dateMap = getDateMap(data, statusHistoryData);
+			var dateMap = getDateMap(data, statusHistoryData);
 			setTimeout(forceDateMapRecalculate, getDateMapRecalculateTimeout());
 			return dateMap;
 		});
 	});
-}, 1);
+}, { length: 0 });
