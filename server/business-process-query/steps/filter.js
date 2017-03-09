@@ -90,7 +90,6 @@ module.exports = exports = function (data, query) {
 	// 2. Filter items
 	return {
 		businessProcesses: filteredBpsData,
-		certificates: data.certificates,
 		steps: filteredStepsData
 	};
 };
