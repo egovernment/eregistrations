@@ -21,9 +21,7 @@ var aFrom                         = require('es5-ext/array/from')
   , timeZone                      = require('../../db').timeZone
   , processingStepsMeta           = require('../../processing-steps-meta')
   , processingStepPropertyRe      = new RegExp('^processingSteps\\/map\\/([a-zA-Z0-9]+' +
-	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$')
-  , certificatePropertyRe         = new RegExp('^certificates\\/map\\/([a-zA-Z0-9]+)\\/' +
-	'([a-z0-9A-Z\\/]+)$');
+	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$');
 
 var metaMap = {
 	validate: function (record) {
@@ -85,20 +83,7 @@ module.exports = exports = memoize(function (driver) {
 
 			return result.steps.get(stepShortPath).get(businessProcessId);
 		};
-		var initCertDataset = function (certificatePath, businessProcessId) {
-			if (!result.certificates.get(certificatePath)) {
-				result.certificates.set(certificatePath, new Map());
-			}
 
-			if (!result.certificates.get(certificatePath).get(businessProcessId)) {
-				result.certificates.get(certificatePath).set(businessProcessId, {
-					certificatePath: certificatePath,
-					businessProcessId: businessProcessId
-				});
-			}
-
-			return result.certificates.get(certificatePath).get(businessProcessId);
-		};
 		var initBpDataset = function (businessProcessId) {
 			if (!result.businessProcesses.has(businessProcessId)) {
 				result.businessProcesses.set(businessProcessId,  {
@@ -142,8 +127,7 @@ module.exports = exports = memoize(function (driver) {
 		return deferred(
 			storage.search(function (id, record) {
 				var bpId = id.split('/', 1)[0]
-				  , path, keyPath, multiItemValue, meta, match, stepPath, stepKeyPath
-				  , certificatePath;
+				  , path, keyPath, multiItemValue, meta, match, stepPath, stepKeyPath;
 
 				if (bpId === id) {
 					if (metaMap.validate(record)) metaMap.set(initBpDataset(bpId), record);
@@ -162,13 +146,6 @@ module.exports = exports = memoize(function (driver) {
 				if (validateRecord(record, meta, multiItemValue)) {
 					meta.set(initBpDataset(bpId), record, multiItemValue);
 					return;
-				}
-				// Certificates
-				match = keyPath.match(certificatePropertyRe);
-				if (match) {
-					certificatePath = match[1];
-
-					initCertDataset(certificatePath, bpId);
 				}
 
 				// Processing steps

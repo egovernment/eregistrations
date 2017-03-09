@@ -142,13 +142,23 @@ var getDateMap = function (data, statusHistoryData) {
 	};
 
 	var getCertificateStatusHistoryLogs = function (certificateName, bpId) {
-		var statusHistoryLogs = statusHistoryData.certificates.get(certificateName).get(bpId);
+		var statusHistoryLogs;
+
+		// Can happen in rare cases of legacy database imported, incomplete files.
+		if (!statusHistoryData.certificates.has(certificateName)) return null;
+
+		statusHistoryLogs = statusHistoryData.certificates.get(certificateName).get(bpId);
 
 		return statusHistoryLogs ? sortStatusHistoryLogs(statusHistoryLogs) : null;
 	};
 
 	var getProcessingStepStatusHistoryLogs = function (stepName, bpId) {
-		var statusHistoryLogs = statusHistoryData.steps.get(stepName).get(bpId);
+		var statusHistoryLogs;
+
+		// Can happen in rare cases of legacy database imported, incomplete files.
+		if (!statusHistoryData.steps.has(stepName)) return null;
+
+		statusHistoryLogs = statusHistoryData.steps.get(stepName).get(bpId);
 
 		return statusHistoryLogs ? sortStatusHistoryLogs(statusHistoryLogs) : null;
 	};
@@ -188,41 +198,6 @@ var getDateMap = function (data, statusHistoryData) {
 
 	data = filterSteps(data, {});
 
-	data.certificates.forEach(function (certificateData, certificateName) {
-		certificateData.forEach(function (businessProcess) {
-			var bpId              = businessProcess.businessProcessId
-			  , serviceName       = data.businessProcesses.get(bpId).serviceName
-			  , statusHistoryLogs = getCertificateStatusHistoryLogs(certificateName, bpId)
-			  , pendingStartDate;
-
-			if (!statusHistoryLogs) return;
-
-			var getDataset = function (date) {
-				return initCertDataset(date, serviceName, certificateName);
-			};
-
-			// Certificate statuses: pending, rejected, approved
-			statusHistoryLogs.forEach(function (statusHistoryLog) {
-				var logStauts = statusHistoryLog.status
-				  , logDate   = statusHistoryLog.date;
-
-				if (logStauts === 'pending') {
-					if (!pendingStartDate) pendingStartDate = logDate;
-				} else if (pendingStartDate) {
-					// 2.1 [date][serviceName].certificate[certificateName].pending
-					storeStatusRange(pendingStartDate, logDate, 'pending', bpId, getDataset);
-					pendingStartDate = null;
-				}
-			});
-
-			if (pendingStartDate) {
-				// 2.1 [date][serviceName].certificate[certificateName].pending
-				storeStatusRange(pendingStartDate, currentDate, 'pending', bpId, getDataset);
-				pendingStartDate = null;
-			}
-		});
-	});
-
 	data.businessProcesses.forEach(function (businessProcess) {
 		var bpId              = businessProcess.businessProcessId
 		  , serviceName       = businessProcess.serviceName
@@ -232,6 +207,37 @@ var getDateMap = function (data, statusHistoryData) {
 		  , dataset;
 
 		if (!statusHistoryLogs) return;
+
+		certificates.forEach(function (certificateName) {
+			var certificateStatusHistoryLogs = getCertificateStatusHistoryLogs(certificateName, bpId)
+			  , pendingStartDate;
+
+			if (!certificateStatusHistoryLogs) return;
+
+			var getCertificateDataset = function (date) {
+				return initCertDataset(date, serviceName, certificateName);
+			};
+
+			// Certificate statuses: pending, rejected, approved
+			certificateStatusHistoryLogs.forEach(function (statusHistoryLog) {
+				var logStauts = statusHistoryLog.status
+				  , logDate   = statusHistoryLog.date;
+
+				if (logStauts === 'pending') {
+					if (!pendingStartDate) pendingStartDate = logDate;
+				} else if (pendingStartDate) {
+					// 2.1 [date][serviceName].certificate[certificateName].pending
+					storeStatusRange(pendingStartDate, logDate, 'pending', bpId, getCertificateDataset);
+					pendingStartDate = null;
+				}
+			});
+
+			if (pendingStartDate) {
+				// 2.1 [date][serviceName].certificate[certificateName].pending
+				storeStatusRange(pendingStartDate, currentDate, 'pending', bpId, getCertificateDataset);
+				pendingStartDate = null;
+			}
+		});
 
 		var getDataset = function (date) {
 			return initBpDataset(date, serviceName);
