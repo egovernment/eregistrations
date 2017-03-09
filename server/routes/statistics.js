@@ -14,6 +14,7 @@ var assign                    = require('es5-ext/object/assign')
   , filterBusinessProcesses   = require('../business-process-query/business-processes/filter')
   , reduceSteps               = require('../business-process-query/steps/reduce-time')
   , reduceBusinessProcesses   = require('../business-process-query/business-processes/reduce-time')
+  , getStatusHistoryDateMap   = require('../business-process-query/get-status-history-date-map')
   , calculateStatusEventsSums = require('../services/calculate-status-events-sums')
   , getQueryHandlerConf       = require('../../apps/statistics/get-query-conf')
   , flowQueryHandlerConf      = require('../../apps/statistics/flow-query-conf')
@@ -161,8 +162,10 @@ module.exports = function (config) {
 		});
 	};
 
-	// Initialize data map
+	// Initialize data map.
 	getData(driver).done();
+	// Initialize status history date map.
+	getStatusHistoryDateMap(driver).done();
 
 	return assign({
 		'get-flow-data': function (unresolvedQuery) {
