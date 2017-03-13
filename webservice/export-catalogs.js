@@ -51,5 +51,5 @@ module.exports = memoize(function (db/* options */) {
 	catalogs.push({ institutions: institutions });
 
 	return catalogs;
-	
+
 }, { length: 0 });
