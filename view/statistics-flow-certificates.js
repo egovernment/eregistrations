@@ -137,6 +137,11 @@ exports['statistics-main'] = function () {
 					getDynamicUrl('/flow-certificates-data.pdf', { only: params }),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
 			),
+			div(
+				a({ class: 'users-table-filter-bar-print',
+					href: getDynamicUrl('/flow-certificates-data.csv', { only: params }),
+					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print csv"))
+			),
 			p({ class: 'submit' }, input({ type: 'submit' }))));
 
 	section(pagination);

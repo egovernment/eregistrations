@@ -24,6 +24,9 @@ var assign                    = require('es5-ext/object/assign')
   , flowRolesPrint            = require('../pdf-renderers/statistics-flow-roles')
   , flowOperatorsPrint        = require('../pdf-renderers/statistics-flow-operators')
   , timePerRoleCsv            = require('../csv-renderers/statistics-time-per-role')
+  , flowCertificatesCsv       = require('../csv-renderers/statistics-flow-certificates')
+  , flowRolesCsv              = require('../csv-renderers/statistics-flow-roles')
+  , flowOperatorsCsv          = require('../csv-renderers/statistics-flow-operators')
   , makePdf                   = require('./utils/pdf')
   , makeCsv                   = require('./utils/csv')
   , getBaseRoutes             = require('./authenticated')
@@ -174,8 +177,14 @@ module.exports = function (config) {
 		'flow-certificates-data.pdf': makePdf(function (unresolvedQuery) {
 			return resolveCertificatesDataPrint(unresolvedQuery, flowCertificatesPrint);
 		}),
+		'flow-certificates-data.csv': makeCsv(function (unresolvedQuery) {
+			return resolveCertificatesDataPrint(unresolvedQuery, flowCertificatesCsv);
+		}),
 		'flow-roles-data.pdf': makePdf(function (unresolvedQuery) {
 			return resolveRolesDataPrint(unresolvedQuery, flowRolesPrint);
+		}),
+		'flow-roles-data.csv': makeCsv(function (unresolvedQuery) {
+			return resolveRolesDataPrint(unresolvedQuery, flowRolesCsv);
 		}),
 		'get-flow-roles-operators-data': function (unresolvedQuery) {
 			return flowQueryHandlerOperators.resolve(unresolvedQuery)(function (query) {
@@ -208,6 +217,9 @@ module.exports = function (config) {
 		},
 		'flow-roles-operators-data.pdf': makePdf(function (unresolvedQuery) {
 			return resolveOperatorsDataPrint(unresolvedQuery, flowOperatorsPrint);
+		}),
+		'flow-roles-operators-data.csv': makeCsv(function (unresolvedQuery) {
+			return resolveOperatorsDataPrint(unresolvedQuery, flowOperatorsCsv);
 		}),
 		'get-time-per-role': function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole);
