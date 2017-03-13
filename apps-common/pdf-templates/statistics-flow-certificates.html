@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="${ locale }">
+<head>
+	<meta charset="utf-8" />
+	<link href="${ root }statistics-flow-certificates.css" rel="stylesheet" media="all" />
+</head>
+<body>
+<header class="print-header">
+	${ logo ? '<img src="file://' + logo + '" />' : '' }
+	<div class="print-header-title">
+		<h2>${ e(_("Statistics flow certificates")) }</h2>
+		<small>${ e(_("Printed on ${ currentDate }", { currentDate: currentDate })) }</small>
+	</div>
+</header>
+<ul class='data-blocks-list'>
+	<section class="section-primary">
+	<table>
+		<thead>
+		<th>${ e(mode.labelNoun) }</th>
+		<th>${ e(_("Submitted")) }</th>
+		<th>${ e(_("Pending")) }</th>
+		<th>${ e(_("Ready for withdraw")) }</th>
+		<th>${ e(_("Withdrawn by user")) }</th>
+		<th>${ e(_("Rejected")) }</th>
+		<th>${ e(_("Sent back for correction")) }</th>
+		</thead>
+		<tbody>
+		${
+		Object.keys(data).map(function (date) {
+			var result = '<tr><td>' + date + '</td>';
+			Object.keys(data[date]).forEach(function (status) {
+				result += '<td class="number">' + data[date][status] + '</td>';
+			});
+		result += '</tr>';
+		return result;
+		}).join('')
+		}
+		</tbody>
+	</table>
+	</section>
+</ul>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="${ locale }">
+<head>
+	<meta charset="utf-8" />
+	<link href="${ root }statistics-flow-roles.css" rel="stylesheet" media="all" />
+</head>
+<body>
+<header class="print-header">
+	${ logo ? '<img src="file://' + logo + '" />' : '' }
+	<div class="print-header-title">
+		<h2>${ e(_("Statistics flow roles")) }</h2>
+		<small>${ e(_("Printed on ${ currentDate }", { currentDate: currentDate })) }</small>
+	</div>
+</header>
+<ul class='data-blocks-list'>
+	<table>
+		<thead>
+		${
+		colLabels.map(function (label) {
+		return '<th>' + label + '</th>';
+		}).join('')
+		}
+		</thead>
+		<tbody>
+		${
+		Object.keys(data).map(function (date) {
+			var result = '<tr><td>' + date + '</td>';
+			Object.keys(data[date]).forEach(function (step) {
+				result += '<td class="number">' + (data[date][step] == null ? e(_("N/A")) : data[date][step]) + '</td>';
+			});
+		result += '</tr>';
+		return result;
+		}).join('')
+		}
+		</tbody>
+	</table>
+</ul>
+</body>
+</html>

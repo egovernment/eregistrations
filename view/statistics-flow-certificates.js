@@ -25,7 +25,8 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , selectDateTo      = require('./components/filter-bar/select-date-to')
   , incrementDateByTimeUnit = require('../utils/increment-date-by-time-unit')
   , floorToTimeUnit         = require('../utils/floor-to-time-unit')
-  , calculateDurationByMode = require('../utils/calculate-duration-by-mode');
+  , calculateDurationByMode = require('../utils/calculate-duration-by-mode')
+  , getDynamicUrl           = require('./utils/get-dynamic-url');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -53,12 +54,16 @@ db.BusinessProcess.extensions.forEach(function (ServiceType) {
 
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue({})
-	  , pagination = new Pagination('/flow/'), handlerConf;
+	  , pagination = new Pagination('/flow/'), handlerConf, params;
 
 	handlerConf = queryHandlerConf.slice(0);
 	handlerConf.push(pageQuery, serviceQuery, certificateQuery);
 	queryHandler = setupQueryHandler(handlerConf,
 		location, '/flow/');
+
+	params = queryHandler._handlers.map(function (handler) {
+		return handler.name;
+	});
 
 	queryHandler.on('query', function (query) {
 		var serverQuery = copy(query), dateFrom, dateTo, mode
@@ -127,6 +132,11 @@ exports['statistics-main'] = function () {
 				selectDateTo()
 			),
 			selectPeriodMode(),
+			div(
+				a({ class: 'users-table-filter-bar-print', href:
+					getDynamicUrl('/flow-certificates-data.pdf', { only: params }),
+					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
+			),
 			p({ class: 'submit' }, input({ type: 'submit' }))));
 
 	section(pagination);
