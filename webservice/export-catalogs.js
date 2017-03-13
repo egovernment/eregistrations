@@ -3,7 +3,7 @@
 var  ensureDb = require('dbjs/valid-dbjs')
   , memoize = require('memoizee');
 
-module.exports = memoize(function (db/* options */) {
+module.exports = memoize(function (db) {
 	// ensure db
 	ensureDb(db);
 
