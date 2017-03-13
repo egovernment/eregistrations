@@ -1,11 +1,9 @@
 'use strict';
 
-var  ensureDb = require('dbjs/valid-dbjs');
+var  ensureDb = require('dbjs/valid-dbjs')
+  , memoize = require('memoizee');
 
-// make it array, it is easier for strongly typed end part to interpret it
-var allCatalogs = [];
-
-var initCatalogs = function (db) {
+module.exports = memoize(function (db/* options */) {
 	// ensure db
 	ensureDb(db);
 
@@ -52,10 +50,6 @@ var initCatalogs = function (db) {
 	});
 	catalogs.push({ institutions: institutions });
 
-	allCatalogs = catalogs;
-};
-
-module.exports = function (db/*, opts*/) {
-	if (!allCatalogs.length) initCatalogs(db);
-	return allCatalogs;
-};
+	return catalogs;
+	
+}, { length: 0 });
