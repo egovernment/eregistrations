@@ -41,6 +41,11 @@
 	margin-right: 5px;
 }
 
+.users-table-filter-bar .inline-button-radio label {
+	margin-left: 0;
+	margin-right: 0;
+}
+
 .users-table-filter-bar label:first-child {
 	margin-left: 0;
 }

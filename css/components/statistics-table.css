@@ -1,3 +1,7 @@
+.statistics-table-scrollable {
+	overflow: auto;
+}
+
 .statistics-table {
 	display: inline-table;
 	border: 1px solid var(--light-inner-border);
@@ -7,6 +11,11 @@
 .statistics-table tbody tr td {
 	padding: 11px 6px 10px;
 	text-align: left;
+}
+
+.statistics-table thead tr .statistics-table-info,
+.statistics-table tbody tr .statistics-table-info {
+	text-align: center;
 }
 .statistics-table thead tr .statistics-table-number,
 .statistics-table tbody tr .statistics-table-number {

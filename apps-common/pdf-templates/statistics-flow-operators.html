@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="${ locale }">
+<head>
+	<meta charset="utf-8" />
+	<link href="${ root }statistics-flow-operators.css" rel="stylesheet" media="all" />
+</head>
+<body>
+<header class="print-header">
+	${ logo ? '<img src="file://' + logo + '" />' : '' }
+	<div class="print-header-title">
+		<h2>${ e(_("Statistics flow operators")) }</h2>
+		<small>${ e(_("Printed on ${ currentDate }", { currentDate: currentDate })) }</small>
+	</div>
+</header>
+<ul class='data-blocks-list'>
+	<h3>${ step }</h3>
+	<table>
+		<thead>
+		<th>${ e(mode.labelNoun) }</th>
+		<th>${ e(_("Operator")) }</th>
+		<th>${ e(_("Files Processed")) }</th>
+		<th>${ e(_("Approved")) }</th>
+		<th>${ e(_("Sent Back for corrections")) }</th>
+		<th>${ e(_("Rejected")) }</th>
+		</thead>
+		<tbody>
+		${
+		Object.keys(data).map(function (date) {
+			var result = '';
+			Object.keys(data[date]).forEach(function (processor) {
+				result += '<tr><td>' + date + '</td>';
+				result += '<td>' + (fullNames[processor] || e(_("Unknown user"))) + '</td>';
+				Object.keys(data[date][processor]).forEach(function (prop) {
+					result += '<td>' + data[date][processor][prop] + '</td>';
+				});
+				result += '</tr>';
+			});
+			return result;
+		}).join('')
+		}
+		</tbody>
+	</table>
+</ul>
+</body>
+</html>
