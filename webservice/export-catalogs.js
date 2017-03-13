@@ -1,7 +1,6 @@
 'use strict';
 
-var  ensureDb = require('dbjs/valid-dbjs')
-  , ensureType = require('dbjs/valid-dbjs-type');
+var  ensureDb = require('dbjs/valid-dbjs');
 
 // make it array, it is easier for strongly typed end part to interpret it
 var allCatalogs = [];
