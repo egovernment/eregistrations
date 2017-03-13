@@ -6,16 +6,16 @@ var  ensureDb = require('dbjs/valid-dbjs')
 // make it array, it is easier for strongly typed end part to interpret it
 var allCatalogs = [];
 
-var initCatalogs = function (db)  {
+var initCatalogs = function (db) {
 	// ensure db
 	ensureDb(db);
 
 	var catalogs = [];
 	// all enums
-	var enums = db.StringLine.extensions.toArray().filter( function (extension) {
+	var enums = db.StringLine.extensions.toArray().filter(function (extension) {
 		return extension.meta && extension.members;
 	}).map(function (extension) {
-		var catalogItem = { name: extension.__id__};
+		var catalogItem = { name: extension.__id__ };
 		catalogItem.options = extension.members.toArray().map(function (option) {
 			return { name: option, label: extension.meta[option].label };
 		});
@@ -54,7 +54,7 @@ var initCatalogs = function (db)  {
 	catalogs.push({ institutions: institutions });
 
 	allCatalogs = catalogs;
-}
+};
 
 module.exports = function (db/*, opts*/) {
 	if (!allCatalogs.length) initCatalogs(db);
