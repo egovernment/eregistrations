@@ -19,9 +19,8 @@ var aFrom                         = require('es5-ext/array/from')
   , resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
   , toDateInTz                    = require('../../utils/to-date-in-time-zone')
   , timeZone                      = require('../../db').timeZone
-  , processingStepsMeta           = require('../../processing-steps-meta');
-
-var re = new RegExp('^processingSteps\\/map\\/([a-zA-Z0-9]+' +
+  , processingStepsMeta           = require('../../processing-steps-meta')
+  , processingStepPropertyRe      = new RegExp('^processingSteps\\/map\\/([a-zA-Z0-9]+' +
 	'(?:\\/steps\\/map\\/[a-zA-Z0-9]+)*)\\/([a-z0-9A-Z\\/]+)$');
 
 var metaMap = {
@@ -36,6 +35,13 @@ var metaMap = {
 		delete data._existing;
 		delete data.createdDateTime;
 	}
+};
+
+var validateRecord = function (record, meta, multiItemValue) {
+	if (!meta) return false;
+	if (meta.type && (meta.type !== 'direct')) return false;
+	if (multiItemValue && !meta.multiple) return false;
+	return meta.validate(record, multiItemValue);
 };
 
 module.exports = exports = memoize(function (driver) {
@@ -66,6 +72,7 @@ module.exports = exports = memoize(function (driver) {
 
 		var initStepDataset = function (stepPath, businessProcessId) {
 			var stepShortPath = stepShortPathMap.get(stepPath);
+
 			if (!result.steps.get(stepShortPath).get(businessProcessId)) {
 				result.steps.get(stepShortPath).set(businessProcessId, {
 					stepShortPath: stepShortPath,
@@ -73,8 +80,10 @@ module.exports = exports = memoize(function (driver) {
 					stepFullPath: 'processingSteps/map/' + stepPath
 				});
 			}
+
 			return result.steps.get(stepShortPath).get(businessProcessId);
 		};
+
 		var initBpDataset = function (businessProcessId) {
 			if (!result.businessProcesses.has(businessProcessId)) {
 				result.businessProcesses.set(businessProcessId,  {
@@ -82,6 +91,7 @@ module.exports = exports = memoize(function (driver) {
 					serviceName: serviceName
 				});
 			}
+
 			return result.businessProcesses.get(businessProcessId);
 		};
 
@@ -92,8 +102,10 @@ module.exports = exports = memoize(function (driver) {
 			if (!metaMap.validate(event.data)) metaMap.delete(dataset);
 			else metaMap.set(dataset, event.data);
 		});
+
+		// Processing steps
 		stepPaths.forEach(function (stepPath) {
-			// Status
+			// Processing step properties
 			forEach(exports.stepMetaMap, function (meta, stepKeyPath) {
 				storage.on('key:processingSteps/map/' + stepPath + '/' + stepKeyPath, function (event) {
 					if (event.type !== (meta.type || 'direct')) return;
@@ -102,6 +114,7 @@ module.exports = exports = memoize(function (driver) {
 				});
 			});
 		});
+		// Business process properties
 		forEach(exports.businessProcessMetaMap, function (meta, keyPath) {
 			storage.on('key:' + keyPath, function (event) {
 				if (event.type !== (meta.type || 'direct')) return;
@@ -113,7 +126,9 @@ module.exports = exports = memoize(function (driver) {
 		// Get current records
 		return deferred(
 			storage.search(function (id, record) {
-				var bpId = id.split('/', 1)[0], stepPath, stepKeyPath, meta, keyPath, multiItemValue, path;
+				var bpId = id.split('/', 1)[0]
+				  , path, keyPath, multiItemValue, meta, match, stepPath, stepKeyPath;
+
 				if (bpId === id) {
 					if (metaMap.validate(record)) metaMap.set(initBpDataset(bpId), record);
 					return;
@@ -125,24 +140,29 @@ module.exports = exports = memoize(function (driver) {
 				} else {
 					keyPath = id.slice(bpId.length + 1);
 				}
+
+				// Business process properties
 				meta = exports.businessProcessMetaMap[keyPath];
-				if (meta) {
-					if (meta.type && (meta.type !== 'direct')) return;
-					if (multiItemValue && !meta.multiple) return;
-					if (!meta.validate(record, multiItemValue)) return;
+				if (validateRecord(record, meta, multiItemValue)) {
 					meta.set(initBpDataset(bpId), record, multiItemValue);
+					return;
 				}
-				var match = keyPath.match(re);
-				if (!match) return;
-				stepPath = match[1];
-				if (!stepPaths.has(stepPath)) return;
-				stepKeyPath = match[2];
-				meta = exports.stepMetaMap[stepKeyPath];
-				if (!meta) return;
-				if (meta.type && (meta.type !== 'direct')) return;
-				if (multiItemValue && !meta.multiple) return;
-				if (!meta.validate(record, multiItemValue)) return;
-				meta.set(initStepDataset(stepPath, bpId), record, multiItemValue);
+
+				// Processing steps
+				match = keyPath.match(processingStepPropertyRe);
+				if (match) {
+					stepPath = match[1];
+					stepKeyPath = match[2];
+
+					if (!stepPaths.has(stepPath)) return;
+
+					// Processing step properties
+					meta = exports.stepMetaMap[stepKeyPath];
+					if (validateRecord(record, meta, multiItemValue)) {
+						meta.set(initStepDataset(stepPath, bpId), record, multiItemValue);
+						return;
+					}
+				}
 			}),
 			deferred.map(Object.keys(exports.businessProcessMetaMap), function (keyPath) {
 				var meta = exports.businessProcessMetaMap[keyPath];
@@ -271,6 +291,16 @@ exports.businessProcessMetaMap = {
 			}));
 		},
 		delete: function (data) { delete data.registrations; }
+	},
+	'certificates/applicable': {
+		type: 'computed',
+		validate: function (record) { return Array.isArray(record.value); },
+		set: function (data, record) {
+			data.certificates = new Set(resolveEventKeys(record.value).map(function (value) {
+				return value.slice(value.lastIndexOf('/') + 1);
+			}));
+		},
+		delete: function (data) { delete data.certificates; }
 	},
 	searchString: {
 		type: 'computed',
