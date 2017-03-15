@@ -121,7 +121,7 @@ exports['statistics-main'] = function () {
 			th(),
 			th(),
 			th(_("Service")),
-			th({ class: "statistics-table-header-waiting" }, _("Waiting")),
+			th({ class: "statistics-table-header-waiting" }, _("Submitted")),
 			th({ class: "statistics-table-header-pending" }, _("Pending")),
 			th({ class: "statistics-table-header-sentback" }, _("Rejected")),
 			th({ class: "statistics-table-header-success" }, _("Validated"))
