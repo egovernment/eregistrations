@@ -53,12 +53,15 @@ module.exports = function (db) {
 	var StatisticsBusinessProcessCertificate
 		= db.Object.extend('StatisticsBusinessProcessCertificate');
 	StatisticsBusinessProcess.prototype.certificate._descriptorPrototype_.type =
-		StatisticsBusinessProcessProcessingStep;
+		StatisticsBusinessProcessCertificate;
 	StatisticsBusinessProcessCertificate.prototype.defineProperties({
 		waiting: { type: UInteger },
 		pending: { type: UInteger },
+		sentBack: { type: UInteger },
 		rejected: { type: UInteger },
-		approved: { type: UInteger }
+		approved: { type: UInteger },
+		pickup: { type: UInteger },
+		withdrawn: { type: UInteger }
 	});
 
 	// User stats
