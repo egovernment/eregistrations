@@ -82,11 +82,9 @@ var getTimeBreakdownTable = function () {
 							return tr(
 								td(db['BusinessProcess' + capitalize.call(serviceName)].prototype.label),
 								list(completedFilesPeriods, function (periodName) {
-									var total = data.total[periodName]
-									  , count = serviceData[periodName];
+									var count = serviceData[periodName];
 
-									return td({ class: 'statistics-table-number' }, count, ' ',
-										'(', (total ? ((count / total) * 100) : 0).toFixed(2), '%)');
+									return td({ class: 'statistics-table-number' }, count);
 								})
 							);
 						}),
@@ -94,7 +92,7 @@ var getTimeBreakdownTable = function () {
 							td(_("Total")),
 							list(completedFilesPeriods, function (periodName) {
 								return td({ class: 'statistics-table-number' },
-									data.total[periodName], ' ', '(100.00%)');
+									data.total[periodName]);
 							})
 						)
 					];
