@@ -1,9 +1,14 @@
 'use strict';
 
-var _              = require('mano').i18n.bind('View: Statistics')
-  , selectService  = require('./components/filter-bar/select-service')
-  , selectDateFrom = require('./components/filter-bar/select-date-from')
-  , selectDateTo   = require('./components/filter-bar/select-date-to');
+var _                            = require('mano').i18n.bind('View: Statistics')
+  , env                          = require('mano').env
+
+  , selectService                = require('./components/filter-bar/select-service')
+  , selectDateFrom               = require('./components/filter-bar/select-date-from')
+  , selectDateTo                 = require('./components/filter-bar/select-date-to')
+
+  , tableColumns                 = require('./components/statistics-rejections-table-columns')
+  , getStatisticsRejectionsTable = require('./components/statistics-rejections-table');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -12,6 +17,8 @@ exports['flow-nav']            = { class: { 'submitted-menu-item-active': true }
 exports['flow-rejections-nav'] = { class: { 'pills-nav-active': true } };
 
 exports['statistics-main'] = function () {
+	var rejectionsTable;
+
 	section(
 		{ class: 'section-primary users-table-filter-bar' },
 		form(
@@ -31,4 +38,21 @@ exports['statistics-main'] = function () {
 			p({ class: 'submit' }, input({ type: 'submit' }))
 		)
 	);
+
+	section(rejectionsTable = getStatisticsRejectionsTable({
+		columns: tableColumns,
+		getOrderIndex: exports._getOrderIndex,
+		itemsPerPage: env.objectsListItemsPerPage,
+		class: 'submitted-user-data-table'
+	}));
+
+	section(
+		rejectionsTable.pagination,
+		section({ class: 'table-responsive-container' }, rejectionsTable),
+		rejectionsTable.pagination
+	);
+};
+
+exports._getOrderIndex = function (businessProcess) {
+	return businessProcess.lastModified;
 };
