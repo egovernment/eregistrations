@@ -221,6 +221,9 @@ module.exports = function (config) {
 		'flow-roles-operators-data.csv': makeCsv(function (unresolvedQuery) {
 			return resolveOperatorsDataPrint(unresolvedQuery, flowOperatorsCsv);
 		}),
+		'get-flow-rejections-data': function (unresolvedQuery) {
+			// TODO
+		},
 		'get-time-per-role': function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole);
 		},
