@@ -41,6 +41,9 @@ module.exports = {
 	'flow/by-operator': {
 		view: require('../view/statistics-flow-operators')
 	},
+	'flow/rejections': {
+		view: require('../view/statistics-flow-rejections')
+	},
 
 	profile: require('../view/user-profile')
 };
