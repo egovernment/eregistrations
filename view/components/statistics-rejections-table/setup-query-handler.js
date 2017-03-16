@@ -11,7 +11,16 @@ module.exports = exports = function (listManager/*, pathname*/) {
 
 	queryHandler._itemsPerPage = listManager.itemsPerPage;
 	queryHandler._listManager = listManager;
-	queryHandler.on('query', function (query) { listManager.update(query); });
+	queryHandler.on('query', function (query) {
+		if (query.dateFrom) {
+			query.dateFrom = query.dateFrom.toJSON();
+		}
+		if (query.dateTo) {
+			query.dateTo = query.dateTo.toJSON();
+		}
+
+		listManager.update(query);
+	});
 
 	return queryHandler;
 };
