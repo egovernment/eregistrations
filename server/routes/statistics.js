@@ -1,44 +1,51 @@
 'use strict';
 
-var assign                    = require('es5-ext/object/assign')
-  , ensureCallable            = require('es5-ext/object/valid-callable')
-  , ensureObject              = require('es5-ext/object/valid-object')
-  , oForEach                  = require('es5-ext/object/for-each')
-  , deferred                  = require('deferred')
-  , ensureDriver              = require('dbjs-persistence/ensure-driver')
-  , db                        = require('../../db')
-  , QueryHandler              = require('../../utils/query-handler')
-  , toDateInTz                = require('../../utils/to-date-in-time-zone')
-  , getData                   = require('../business-process-query/get-data')
-  , filterSteps               = require('../business-process-query/steps/filter')
-  , filterBusinessProcesses   = require('../business-process-query/business-processes/filter')
-  , reduceSteps               = require('../business-process-query/steps/reduce-time')
-  , reduceBusinessProcesses   = require('../business-process-query/business-processes/reduce-time')
-  , getStatusHistoryDateMap   = require('../business-process-query/get-status-history-date-map')
-  , calculateStatusEventsSums = require('../services/calculate-status-events-sums')
-  , getQueryHandlerConf       = require('../../apps/statistics/get-query-conf')
-  , flowQueryHandlerConf      = require('../../apps/statistics/flow-query-conf')
-  , timePerPersonPrint        = require('../pdf-renderers/statistics-time-per-person')
-  , timePerRolePrint          = require('../pdf-renderers/statistics-time-per-role')
-  , flowCertificatesPrint     = require('../pdf-renderers/statistics-flow-certificates')
-  , flowRolesPrint            = require('../pdf-renderers/statistics-flow-roles')
-  , flowOperatorsPrint        = require('../pdf-renderers/statistics-flow-operators')
-  , timePerRoleCsv            = require('../csv-renderers/statistics-time-per-role')
-  , flowCertificatesCsv       = require('../csv-renderers/statistics-flow-certificates')
-  , flowRolesCsv              = require('../csv-renderers/statistics-flow-roles')
-  , flowOperatorsCsv          = require('../csv-renderers/statistics-flow-operators')
-  , makePdf                   = require('./utils/pdf')
-  , makeCsv                   = require('./utils/csv')
-  , getBaseRoutes             = require('./authenticated')
-  , processingStepsMeta       = require('../../processing-steps-meta')
-  , getDateRangesByMode       = require('../../utils/get-date-ranges-by-mode')
-  , getStepLabelByShortPath   = require('../../utils/get-step-label-by-short-path')
-  , modes                     = require('../../utils/statistics-flow-group-modes')
-  , flowCertificatesFilter    = require('../../utils/statistics-flow-certificates-filter-result')
-  , flowRolesFilter           = require('../../utils/statistics-flow-roles-filter-result')
-  , flowReduceOperators       = require('../../utils/statistics-flow-reduce-operators')
-  , flowRolesReduceSteps      = require('../../utils/statistics-flow-reduce-processing-step')
-  , itemsPerPage              = require('../../conf/objects-list-items-per-page')
+var assign                     = require('es5-ext/object/assign')
+  , ensureCallable             = require('es5-ext/object/valid-callable')
+  , ensureObject               = require('es5-ext/object/valid-object')
+  , oForEach                   = require('es5-ext/object/for-each')
+  , deferred                   = require('deferred')
+  , ensureDriver               = require('dbjs-persistence/ensure-driver')
+  , db                         = require('../../db')
+  , QueryHandler               = require('../../utils/query-handler')
+  , toDateInTz                 = require('../../utils/to-date-in-time-zone')
+  , sortData                   = require('../../utils/query/sort')
+  , getPage                    = require('../../utils/query/get-page')
+  , getData                    = require('../business-process-query/get-data')
+  , getViewRecords             = require('../business-process-query/get-view-records')
+  , filterSteps                = require('../business-process-query/steps/filter')
+  , filterBusinessProcesses    = require('../business-process-query/business-processes/filter')
+  , reduceSteps                = require('../business-process-query/steps/reduce-time')
+  , reduceBusinessProcesses    = require('../business-process-query/business-processes/reduce-time')
+  , getStatusHistoryDateMap    = require('../business-process-query/get-status-history-date-map')
+  , calculateStatusEventsSums  = require('../services/calculate-status-events-sums')
+  , getQueryHandlerConf        = require('../../apps/statistics/get-query-conf')
+  , flowQueryHandlerConf       = require('../../apps/statistics/flow-query-conf')
+  , rejectionsQueryHandlerConf = require('../../apps/statistics/rejections-query-conf')
+  , rejectionsListProperties   = require('../../apps/statistics/rejections-list-properties')
+  , rejectionsListComputedProperties
+		= require('../../apps/statistics/rejections-list-computed-properties')
+  , timePerPersonPrint         = require('../pdf-renderers/statistics-time-per-person')
+  , timePerRolePrint           = require('../pdf-renderers/statistics-time-per-role')
+  , flowCertificatesPrint      = require('../pdf-renderers/statistics-flow-certificates')
+  , flowRolesPrint             = require('../pdf-renderers/statistics-flow-roles')
+  , flowOperatorsPrint         = require('../pdf-renderers/statistics-flow-operators')
+  , timePerRoleCsv             = require('../csv-renderers/statistics-time-per-role')
+  , flowCertificatesCsv        = require('../csv-renderers/statistics-flow-certificates')
+  , flowRolesCsv               = require('../csv-renderers/statistics-flow-roles')
+  , flowOperatorsCsv           = require('../csv-renderers/statistics-flow-operators')
+  , makePdf                    = require('./utils/pdf')
+  , makeCsv                    = require('./utils/csv')
+  , getBaseRoutes              = require('./authenticated')
+  , processingStepsMeta        = require('../../processing-steps-meta')
+  , getDateRangesByMode        = require('../../utils/get-date-ranges-by-mode')
+  , getStepLabelByShortPath    = require('../../utils/get-step-label-by-short-path')
+  , modes                      = require('../../utils/statistics-flow-group-modes')
+  , flowCertificatesFilter     = require('../../utils/statistics-flow-certificates-filter-result')
+  , flowRolesFilter            = require('../../utils/statistics-flow-roles-filter-result')
+  , flowReduceOperators        = require('../../utils/statistics-flow-reduce-operators')
+  , flowRolesReduceSteps       = require('../../utils/statistics-flow-reduce-processing-step')
+  , itemsPerPage               = require('../../conf/objects-list-items-per-page')
   , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf');
 
 var flowQueryHandlerCertificatesPrintConf = [
@@ -86,15 +93,13 @@ module.exports = function (config) {
 		customChartsController = ensureCallable(config.customChartsController);
 	}
 	var queryConf = getQueryHandlerConf({ processingStepsMeta: processingStepsMeta });
-	var flowQueryConf = flowQueryHandlerConf;
-	var flowQueryCertificatesPrintConf = flowQueryHandlerCertificatesPrintConf;
-	var flowQueryRolesPrintConf = flowQueryHandlerRolesPrintConf;
 
 	var queryHandler = new QueryHandler(queryConf);
-	var flowQueryHandler = new QueryHandler(flowQueryConf);
-	var flowQueryCertificatesPrintHandler = new QueryHandler(flowQueryCertificatesPrintConf);
-	var flowQueryRolesPrintHandler = new QueryHandler(flowQueryRolesPrintConf);
+	var flowQueryHandler = new QueryHandler(flowQueryHandlerConf);
+	var flowQueryCertificatesPrintHandler = new QueryHandler(flowQueryHandlerCertificatesPrintConf);
+	var flowQueryRolesPrintHandler = new QueryHandler(flowQueryHandlerRolesPrintConf);
 	var flowQueryHandlerOperators = new QueryHandler(flowQueryOperatorsHandlerConf);
+	var rejectionsQueryHandler = new QueryHandler(rejectionsQueryHandlerConf);
 
 	var resolveTimePerRole = function (query) {
 		return getData(driver)(function (data) {
@@ -222,7 +227,36 @@ module.exports = function (config) {
 			return resolveOperatorsDataPrint(unresolvedQuery, flowOperatorsCsv);
 		}),
 		'get-flow-rejections-data': function (unresolvedQuery) {
-			// TODO
+			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
+				return getData(driver)(function (data) {
+					var fullSize;
+
+					data = sortData(
+						filterBusinessProcesses(data.businessProcesses, query),
+						function (bpA, bpB) {
+							return bpA.createdDateTime.getTime() - bpB.createdDateTime.getTime();
+						}
+					);
+
+					if (!data.length) {
+						return { size: 0, view: [] };
+					}
+
+					fullSize = data.length;
+
+					data = getPage(data, query.page);
+
+					return getViewRecords(
+						data,
+						rejectionsListProperties,
+						rejectionsListComputedProperties
+					)(function (result) {
+						result.size = fullSize;
+
+						return result;
+					});
+				});
+			});
 		},
 		'get-time-per-role': function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole);
