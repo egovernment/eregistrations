@@ -2,6 +2,7 @@
 
 var _                            = require('mano').i18n.bind('View: Statistics')
   , env                          = require('mano').env
+  , location                     = require('mano/lib/client/location')
 
   , selectService                = require('./components/filter-bar/select-service')
   , selectDateFrom               = require('./components/filter-bar/select-date-from')
@@ -43,6 +44,7 @@ exports['statistics-main'] = function () {
 		columns: tableColumns,
 		getOrderIndex: exports._getOrderIndex,
 		itemsPerPage: env.objectsListItemsPerPage,
+		tableUrl: location.pathname,
 		class: 'submitted-user-data-table'
 	}));
 
