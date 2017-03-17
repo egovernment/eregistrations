@@ -625,6 +625,8 @@ module.exports = exports = function (db, dbDriver, data) {
 		if (roleName === 'statistics') {
 			// Statistics specific data
 			fragment.addFragment(getStatisticsFragment());
+			// Recently visited business processes (full data)
+			fragment.addFragment(getRecentlyVisitedBusinessProcessesFragment(userId, 'statistics'));
 			return fragment;
 		}
 
