@@ -40,19 +40,17 @@ exports['statistics-main'] = function () {
 		)
 	);
 
-	section(rejectionsTable = getStatisticsRejectionsTable({
+	rejectionsTable = getStatisticsRejectionsTable({
 		columns: tableColumns,
 		getOrderIndex: exports._getOrderIndex,
 		itemsPerPage: env.objectsListItemsPerPage,
 		tableUrl: location.pathname,
 		class: 'submitted-user-data-table'
-	}));
+	});
 
-	section(
-		rejectionsTable.pagination,
-		section({ class: 'table-responsive-container' }, rejectionsTable),
-		rejectionsTable.pagination
-	);
+	section(rejectionsTable.pagination);
+	section({ class: 'table-responsive-container' }, rejectionsTable);
+	section(rejectionsTable.pagination);
 };
 
 exports._getOrderIndex = function (businessProcess) {

@@ -127,6 +127,18 @@ exports.businessProcessWithdrawalDateColumn = {
 	}
 };
 
+exports.businessProcessRejectionDateColumn = {
+	head: _("Rejection date"),
+	class: 'submitted-user-data-table-date-time',
+	data: function (businessProcess) {
+		var isRejected = businessProcess._isRejected;
+
+		return _if(isRejected, function () {
+			return isRejected._lastModified.map(formatLastModified);
+		});
+	}
+};
+
 exports.businessProcessActionsColumn = {
 	class: 'submitted-user-data-table-actions',
 	data: function (businessProcess) {

@@ -8,7 +8,7 @@ module.exports = [
 	// Number
 	// Operator
 	// Role
-	// Date
+	tableColumns.businessProcessRejectionDateColumn,
 	tableColumns.businessProcessBusinessNameColumn,
 	tableColumns.businessProcessGoToColumn
 ];
