@@ -29,19 +29,19 @@ module.exports = function (type, data) {
 			return col.has(col.object.master.certificates.map[key]);
 		});
 
-		storage.trackCollectionSize(currentNs + 'waiting',
-			applicable.filterByKeyPath(keyPath, null));
-		storage.trackCollectionSize(currentNs + 'pending',
-			applicable.filterByKeyPath(keyPath, 'pending'));
-		storage.trackCollectionSize(currentNs + 'sentBack',
-			applicable.filterByKey('status', 'sentBack'));
-		storage.trackCollectionSize(currentNs + 'approved',
-			applicable.filterByKeyPath(keyPath, 'approved'));
-		storage.trackCollectionSize(currentNs + 'rejected',
-			applicable.filterByKeyPath(keyPath, 'rejected'));
-		storage.trackCollectionSize(currentNs + 'pickup',
-			applicable.filterByKey('status', 'pickup'));
-		storage.trackCollectionSize(currentNs + 'withdrawn',
-			applicable.filterByKey('status', 'withdrawn'));
+		var pending   = applicable.filterByKeyPath(keyPath, 'pending');
+		var sentBack  = applicable.filterByKey('status', 'sentBack');
+		var approved  = applicable.filterByKeyPath(keyPath, 'approved');
+		var rejected  = applicable.filterByKeyPath(keyPath, 'rejected');
+		var pickup    = approved.filterByKey('status', 'pickup');
+		var withdrawn = approved.filterByKey('status', 'withdrawn');
+
+		storage.trackCollectionSize(currentNs + 'waiting', applicable.filterByKeyPath(keyPath, null));
+		storage.trackCollectionSize(currentNs + 'pending', pending);
+		storage.trackCollectionSize(currentNs + 'sentBack', sentBack);
+		storage.trackCollectionSize(currentNs + 'approved', approved);
+		storage.trackCollectionSize(currentNs + 'rejected', rejected);
+		storage.trackCollectionSize(currentNs + 'pickup', pickup);
+		storage.trackCollectionSize(currentNs + 'withdrawn', withdrawn);
 	});
 };
