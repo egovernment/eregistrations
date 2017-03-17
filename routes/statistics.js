@@ -2,8 +2,8 @@
 
 var hyphenToCamel        = require('es5-ext/string/#/hyphen-to-camel')
   , matchBusinessProcess = require('./utils/inspector-match-business-process')
-  , findFirstUploadKey   = require('./utils/inspector-find-first-upload-key')
-  , matchUpload          = require('./utils/inspector-match-upload')
+  , findFirstUploadKey   = require('./utils/page-find-first-upload-key')
+  , matchUpload          = require('./utils/page-match-upload')
   , matchCertificate     = require('./utils/user-match-certificate')
   , processingStepsMeta  = require('../processing-steps-meta');
 
