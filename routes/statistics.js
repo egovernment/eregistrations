@@ -1,14 +1,14 @@
 'use strict';
 
 var hyphenToCamel        = require('es5-ext/string/#/hyphen-to-camel')
-  , matchBusinessProcess = require('./utils/inspector-match-business-process')
+  , matchBusinessProcess = require('./utils/page-match-business-process')
   , findFirstUploadKey   = require('./utils/page-find-first-upload-key')
   , matchUpload          = require('./utils/page-match-upload')
   , matchCertificate     = require('./utils/user-match-certificate')
   , processingStepsMeta  = require('../processing-steps-meta');
 
 module.exports = function () {
-	var match = matchBusinessProcess();
+	var match = matchBusinessProcess('statistics');
 
 	return {
 		// Pages with statistics information
