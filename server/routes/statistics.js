@@ -232,7 +232,9 @@ module.exports = function (config) {
 					var fullSize;
 
 					data = sortData(
-						filterBusinessProcesses(data.businessProcesses, query),
+						filterBusinessProcesses(data.businessProcesses, assign({
+							flowStatus: 'rejected'
+						}, query)),
 						function (bpA, bpB) {
 							return bpA.createdDateTime.getTime() - bpB.createdDateTime.getTime();
 						}
