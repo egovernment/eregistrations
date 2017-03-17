@@ -4,6 +4,7 @@ var assign                     = require('es5-ext/object/assign')
   , ensureCallable             = require('es5-ext/object/valid-callable')
   , ensureObject               = require('es5-ext/object/valid-object')
   , oForEach                   = require('es5-ext/object/for-each')
+  , startsWith                 = require('es5-ext/string/#/starts-with')
   , deferred                   = require('deferred')
   , ensureDriver               = require('dbjs-persistence/ensure-driver')
   , db                         = require('../../db')
@@ -11,6 +12,7 @@ var assign                     = require('es5-ext/object/assign')
   , toDateInTz                 = require('../../utils/to-date-in-time-zone')
   , sortData                   = require('../../utils/query/sort')
   , getPage                    = require('../../utils/query/get-page')
+  , anyIdToStorage             = require('../utils/any-id-to-storage')
   , getData                    = require('../business-process-query/get-data')
   , getViewRecords             = require('../business-process-query/get-view-records')
   , filterSteps                = require('../business-process-query/steps/filter')
@@ -84,6 +86,18 @@ var calculatePerDateStatusEventsSums = function (query) {
 		});
 	})(result);
 };
+
+var businessProcessQueryHandler = new QueryHandler([{
+	name: 'id',
+	ensure: function (value) {
+		if (!value) throw new Error("Missing id");
+		return anyIdToStorage(value)(function (storage) {
+			if (!storage) return null;
+			if (!startsWith.call(storage.name, 'businessProcess')) return null;
+			return value;
+		});
+	}
+}]);
 
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
@@ -390,6 +404,15 @@ module.exports = function (config) {
 					return result;
 				});
 			});
+		},
+		'get-business-process-data': function (query) {
+			// Get full data of one of the business processeses
+			return businessProcessQueryHandler.resolve(query)(function (query) {
+				var recordId;
+				if (!query.id) return { passed: false };
+				recordId = this.req.$user + '/recentlyVisited/businessProcesses/statistics*7' + query.id;
+				return driver.getStorage('user').store(recordId, '11')({ passed: true });
+			}.bind(this));
 		}
 	}, getBaseRoutes());
 };
