@@ -6,8 +6,8 @@ module.exports = [
 	// Rejection reason
 	// Star
 	// Number
-	// Operator
-	// Role
+	tableColumns.businessProcessRejectionProcessor,
+	tableColumns.businessProcessRejectionStep,
 	tableColumns.businessProcessRejectionDateColumn,
 	tableColumns.businessProcessBusinessNameColumn,
 	tableColumns.businessProcessGoToColumn
