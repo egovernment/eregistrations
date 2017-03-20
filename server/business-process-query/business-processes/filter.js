@@ -26,14 +26,21 @@ module.exports = exports = function (data, query) {
 		// Internal flow status filter
 		// Simpler version of 'status' filter, this one we use interally to easily filter out
 		// only submitted, approved or rejected files
+		// Also select data filter subject.
 		if (query.flowStatus) {
 			if (query.flowStatus === 'submitted') {
 				if (!bpData.submissionDateTime) return;
+				flowStatusDate = bpData.submissionDateTime;
 			} else if (query.flowStatus === 'approved') {
 				if (!bpData.approvedDate) return;
+				flowStatusDate = bpData.approvedDate;
 			} else if (query.flowStatus === 'rejected') {
 				if (!bpData.rejectedDate) return;
+				flowStatusDate = bpData.rejectedDate;
 			}
+		} else {
+			// By default we filter by approved date
+			flowStatusDate = bpData.approvedDate;
 		}
 
 		// Filter by service
@@ -54,20 +61,6 @@ module.exports = exports = function (data, query) {
 		// Filter by submitter type
 		if (query.submitterType) {
 			if (bpData.submitterType !== query.submitterType) return;
-		}
-
-		// Select data filter subject
-		if (query.flowStatus) {
-			if (query.flowStatus === 'submitted') {
-				flowStatusDate = bpData.submissionDateTime;
-			} else if (query.flowStatus === 'approved') {
-				flowStatusDate = bpData.approvedDate;
-			} else if (query.flowStatus === 'rejected') {
-				flowStatusDate = bpData.rejectedDate;
-			}
-		} else {
-			// By default we filter by approved date
-			flowStatusDate = bpData.approvedDate;
 		}
 
 		// Filter by selected subject date in given date range
