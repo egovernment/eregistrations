@@ -16,5 +16,6 @@ db.BusinessProcess.extensions.forEach(function (BusinessProcess) {
 			return;
 		}
 		module.exports.add(step.__id__.slice(step.master.__id__.length + 1) + '/processor');
+		module.exports.add(step.__id__.slice(step.master.__id__.length + 1) + '/rejectionReason');
 	});
 });

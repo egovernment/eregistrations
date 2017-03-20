@@ -3,9 +3,7 @@
 var tableColumns = require('./table-columns');
 
 module.exports = [
-	// Rejection reason
-	// Star
-	// Number
+	tableColumns.businessProcessRejectionReason,
 	tableColumns.businessProcessRejectionProcessor,
 	tableColumns.businessProcessRejectionStep,
 	tableColumns.businessProcessRejectionDateColumn,

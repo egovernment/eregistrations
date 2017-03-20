@@ -145,6 +145,18 @@ exports.businessProcessWithdrawalDateColumn = {
 	}
 };
 
+exports.businessProcessRejectionReason = {
+	head: _("Rejection reason"),
+	class: 'submitted-user-data-table-date-time',
+	data: function (businessProcess) {
+		var stepFound = findRejectionStep(businessProcess);
+
+		if (stepFound) {
+			return stepFound._rejectionReason;
+		}
+	}
+};
+
 exports.businessProcessRejectionProcessor = {
 	head: _("Operator"),
 	class: 'submitted-user-data-table-date-time',
