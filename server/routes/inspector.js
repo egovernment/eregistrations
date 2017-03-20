@@ -45,7 +45,7 @@ module.exports = exports = function (config) {
 					data = sortData(
 						filterBusinessProcesses(data.businessProcesses, query),
 						function (bpA, bpB) {
-							return bpA.createdDateTime.getTime() - bpB.createdDateTime.getTime();
+							return bpA.createdDateTime - bpB.createdDateTime;
 						}
 					);
 
