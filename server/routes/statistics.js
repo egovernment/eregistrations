@@ -250,7 +250,7 @@ module.exports = function (config) {
 							flowStatus: 'rejected'
 						}, query)),
 						function (bpA, bpB) {
-							return bpA.createdDateTime.getTime() - bpB.createdDateTime.getTime();
+							return bpA.rejectedDateTime - bpB.rejectedDateTime;
 						}
 					);
 
