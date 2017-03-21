@@ -2,7 +2,8 @@
 
 var aFrom                  = require('es5-ext/array/from')
   , Database               = require('dbjs')
-  , defineConstrainedValue = require('../../model/constrained-value');
+  , defineConstrainedValue = require('../../model/constrained-value')
+  , defineBase             = require('../../model/base');
 
 module.exports = function (t, a) {
 	var db = new Database()
@@ -13,6 +14,9 @@ module.exports = function (t, a) {
 	  , MasterType  = db.Object.extend('MasterType')
 
 	  , masterObject, nestedObject, section;
+
+	// needed for jsonification tests
+	defineBase(db);
 
 	// ------------------ Setup ------------------
 
@@ -396,4 +400,16 @@ module.exports = function (t, a) {
 		'readOnlyPropertyName',
 		'constrainedProperty',
 		'resolventProperty']);
+
+	// section unresoved
+	a.deep(section.toWebServiceJSON(), [ { name: 'resolventProperty', value: false } ]);
+	masterObject.resolventProperty = true;
+	a.deep(section.toWebServiceJSON(), [
+		{ name: 'resolventProperty', value: true },
+		{ name: 'notRequiredProperty', value: 1 },
+		{ name: 'property', value: 1 },
+		{ name: 'secondProperty', value: 1 },
+		{ name: 'propertyWithDefaultValue', value: 'test value' },
+		{ name: 'constrainedProperty', value: {} }
+	]);
 };

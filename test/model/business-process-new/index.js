@@ -1,6 +1,7 @@
 'use strict';
 
-var Database = require('dbjs');
+var Database   = require('dbjs')
+  , defineBase = require('../../../model/base');
 
 module.exports = function (t, a) {
 	var db = new Database()
@@ -8,5 +9,8 @@ module.exports = function (t, a) {
 
 	  , businessProcess = new BusinessProcess();
 
+	defineBase(db);
+
 	a(businessProcess.isFromEregistrations, true);
+	a.deep(businessProcess.toWebServiceJSON(), { data: null });
 };

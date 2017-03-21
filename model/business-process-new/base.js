@@ -79,7 +79,36 @@ module.exports = memoize(function (db/*, options*/) {
 			if (this.manager) result.push(_observe(this.manager._email));
 
 			return result;
-		} }
+		} },
+		toWebServiceJSON: {
+			value: function (ignore) {
+				var dataFields = [], result;
+				result = {
+					data: null
+				};
+
+				// toWebServiceJSON is not implemented on FormSectionBase
+				if (this.database.FormSectionBase &&
+						this.determinants.constructor !== this.database.FormSectionBase) {
+					dataFields = dataFields.concat(this.determinants.toWebServiceJSON());
+				}
+				this.dataForms.applicable.forEach(function (section) {
+					dataFields = dataFields.concat(section.toWebServiceJSON());
+				});
+				this.submissionForms.applicable.forEach(function (section) {
+					dataFields = dataFields.concat(section.toWebServiceJSON());
+				});
+
+				if (dataFields.length) {
+					result.data = {};
+					dataFields.forEach(function (field) {
+						result.data[field.name] = field.value;
+					});
+				}
+
+				return result;
+			}
+		}
 	}, {
 		draftLimit: { type: UInteger, value: 20 }
 	});

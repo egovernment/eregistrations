@@ -263,6 +263,17 @@ module.exports = memoize(function (db) {
 			}, this);
 			if (fields.length) result.fields = fields;
 			return result;
+		} },
+		toWebServiceJSON: { type: db.Function, value: function (ignore) {
+			var fields = [];
+			this.filledPropertyNames.forEach(function (name) {
+				var data = this.master.resolveSKeyPath(name), descriptor = data.ownDescriptor;
+				if (!descriptor.isValueEmpty()) {
+					fields.push(descriptor.fieldToWebServiceJSON());
+				}
+			}, this);
+
+			return fields;
 		} }
 	});
 	db.FormSection.prototype.inputOptions._descriptorPrototype_.nested = true;
