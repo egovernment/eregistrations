@@ -224,7 +224,36 @@ module.exports = memoize(function (db) {
 				if (entities.length) result.entities = entities;
 			}
 			return result;
-		} }
+		} },
+		toWebServiceJSON: {
+			value: function (ignore) {
+				var fields = [], entitiesContainer, resolventDescriptor, entityFields, entityDataObject;
+				entitiesContainer = {};
+				entitiesContainer[this.propertyName] = [];
+				if (this.resolventProperty) {
+					resolventDescriptor = this.master.resolveSKeyPath(this.resolventProperty).ownDescriptor;
+					if (!resolventDescriptor.isValueEmpty()) {
+						fields.push(resolventDescriptor.fieldToWebServiceJSON());
+					}
+				}
+				if (!this.isUnresolved) {
+					this.entitiesSet.forEach(function (entity) {
+						entityFields = [];
+						entityDataObject = {};
+						entity.getBySKeyPath(this.sectionProperty).applicable.forEach(function (section) {
+							entityFields = entityFields.concat(section.toWebServiceJSON());
+						});
+						entityFields.forEach(function (fieldData) {
+							entityDataObject[fieldData.name] = fieldData.value;
+						});
+						entitiesContainer[this.propertyName].push(entityDataObject);
+					}, this);
+					fields.push(entitiesContainer);
+				}
+
+				return fields;
+			}
+		}
 	});
 
 	FormEntitiesTable.prototype.progressRules.map.define('entities', {

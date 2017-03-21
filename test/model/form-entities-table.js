@@ -5,7 +5,8 @@ var Database              = require('dbjs')
   , defineFormSection     = require('../../model/form-section')
   , defineFormSections    = require('../../model/form-sections')
   , aFrom                 = require('es5-ext/array/from')
-  , definePropertyGroupsProcess = require('../../model/lib/property-groups-process');
+  , definePropertyGroupsProcess = require('../../model/lib/property-groups-process')
+  , defineBase                  = require('../../model/base');
 
 module.exports = function (t, a) {
 	var db = new Database()
@@ -16,6 +17,9 @@ module.exports = function (t, a) {
 	  , BusinessProcess = defineBusinessProcess(db)
 	  , PropertyGroupsProcess = definePropertyGroupsProcess(db)
 	  , businessProcess, section;
+
+	// needed for jsonification tests
+	defineBase(db);
 
 	TestFormEntitiesTable = FormEntitiesTable.extend('TestFormEntitiesTable', {
 		resolventProperty: { value: 'tableResolver' },
@@ -144,4 +148,15 @@ module.exports = function (t, a) {
 		new db.Date(businessProcess.partners.last.getDescriptor('prop3').lastModified / 1000)
 	));
 	a.deep(aFrom(section.propertyNamesDeep), ['tableResolver']);
+	a.deep(section.toWebServiceJSON(), [ { name: 'tableResolver', value: true },
+		{ partners: [
+			{ prop1: 'test', prop3: true },
+			{ prop1: 'test', prop3: false },
+			{ prop1: 'test', prop3: false },
+			{ prop1: 'test', prop3: true },
+			{ prop1: 'test', prop3: true } ]
+			} ]);
+
+	businessProcess.tableResolver = false;
+	a.deep(section.toWebServiceJSON(), [ { name: 'tableResolver', value: false } ]);
 };
