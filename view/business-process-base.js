@@ -37,7 +37,7 @@ exports._stepsMenu = function () {
 				style: mmap(and(ensureGuide, this.businessProcess.dataForms._progress),
 					setProgressWidth) })
 		),
-		li(
+		_if(this.businessProcess.requirementUploads.applicable._size, li(
 			a({ href: '/documents/', id: 'step-documents' },
 				_("Upload docs")
 				),
@@ -46,7 +46,7 @@ exports._stepsMenu = function () {
 					'user-steps-menu-step-completed')],
 				style: mmap(and(ensureGuide, this.businessProcess.requirementUploads._progress),
 					setProgressWidth) })
-		),
+		)),
 		_if(this.businessProcess.costs._paymentWeight, li(
 			a({ href: '/pay/', id: 'step-pay' },
 				_("Pay")
