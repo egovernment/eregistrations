@@ -22,27 +22,15 @@ module.exports = memoize(function (db) {
 
 	// services
 	var services = db.BusinessProcess.extensions.toArray().map(function (bp) {
-		return { name: bp.__id__, label: bp.label };
+		return { name: bp.__id__, label: bp.prototype.label };
 	});
 	catalogs.push({ services: services });
 
-	// registrations
-	var registrations = db.Registration.extensions.toArray().map(function (reg) {
-		return { name: reg.__id__, label: reg.label };
-	});
-	catalogs.push({ registrations: registrations });
-
 	// documents
 	var documents = db.Document.extensions.toArray().map(function (doc) {
-		return { name: doc.__id__, label: doc.label };
+		return { name: doc.__id__, label: doc.prototype.label };
 	});
 	catalogs.push({ documents: documents });
-
-	// costs
-	var costs = db.Cost.extensions.toArray().map(function (cost) {
-		return { name: cost.__id__, label: cost.label };
-	});
-	catalogs.push({ costs: costs });
 
 	// institutions
 	var institutions = db.Institution.instances.toArray().map(function (institution) {
