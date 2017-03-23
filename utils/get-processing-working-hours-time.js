@@ -10,6 +10,9 @@ module.exports = function (startStamp, endStamp) {
 	  , currentDate, processingTime = 0, startDate, endDate, workingHours
 	  , workTimePerDay;
 	workingHours   = (db.globalPrimitives && db.globalPrimitives.workingHours);
+	if (endStamp < startStamp) {
+		throw new Error('Looks like file was processed before it was sent... check your params');
+	}
 	if (!workingHours) {
 		throw new Error('No working hours defined');
 	}
@@ -59,5 +62,5 @@ module.exports = function (startStamp, endStamp) {
 		}
 	}
 
-	return processingTime;
+	return processingTime < 0 ? 0 : processingTime;
 };
