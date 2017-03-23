@@ -56,9 +56,14 @@ module.exports = Object.defineProperties(db.File, {
 				loadedPercent = (ev.loaded / ev.total);
 				fileThumb.classList.add('file-thumb-uploading');
 				if (loadedPercent === 1) {
-					loaderText.data = _("Generating preview");
 					fileThumb.classList.remove('file-thumb-uploading');
-					fileThumb.classList.add('file-thumb-generating');
+					if (!includes.call(docMimeTypes, file.type) &&
+						!includes.call(xlsMimeTypes, file.type)) {
+						loaderText.data = _("Generating preview");
+						fileThumb.classList.add('file-thumb-generating');
+					} else {
+						loaderText.data = '';
+					}
 
 					return;
 				}
