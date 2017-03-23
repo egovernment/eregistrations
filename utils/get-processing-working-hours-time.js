@@ -31,6 +31,8 @@ module.exports = function (startStamp, endStamp) {
 	// if processing within same day
 	if (startDate.getTime() === endDate.getTime()) {
 		if (isDayOff(startDate)) return 0;
+		// may happen if processing finished before work hours started
+		if (endDateTime < startDateTime) return 0;
 		return endDateTime - startDateTime;
 	}
 	if (!isDayOff(startDate)) {
@@ -46,8 +48,15 @@ module.exports = function (startStamp, endStamp) {
 		currentDate.setUTCDate(currentDate.getUTCDate() + 1);
 	}
 	if (!isDayOff(endDate)) {
-		processingTime += (endDateTime.getHours() - workingHours.start.hours) * 3600000;
-		processingTime += ((endDateTime.getMinutes() - workingHours.start.minutes) * 60000);
+		if (endDateTime.getHours() < workingHours.start.hours) {
+			processingTime += 0;
+		} else if (endDateTime.getHours() === workingHours.start.hours &&
+				workingHours.start.minutes > endDateTime.getMinutes()) {
+			processingTime += 0;
+		} else {
+			processingTime += (endDateTime.getHours() - workingHours.start.hours) * 3600000;
+			processingTime += ((endDateTime.getMinutes() - workingHours.start.minutes) * 60000);
+		}
 	}
 
 	return processingTime;
