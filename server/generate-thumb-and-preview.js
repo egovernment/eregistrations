@@ -23,7 +23,7 @@ module.exports = function (file) {
 
 	//Skip for word doc and excel
 	if (docMimeTypes.indexOf(file.type) !== -1 ||
-		xlsMimeTypes.indexOf(file.type) !== -1) {
+			xlsMimeTypes.indexOf(file.type) !== -1) {
 		return deferred(null);
 	}
 
