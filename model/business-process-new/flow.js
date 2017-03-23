@@ -146,7 +146,8 @@ module.exports = memoize(function (db/*, options*/) {
 			return 'process';
 		} },
 		correctionTime: { type: UInteger, value: 0 },
-		processingHolidaysTime: { type: UInteger, value: 0 }
+		processingHolidaysTime: { type: UInteger, value: 0 },
+		processingWorkingHoursTime: { type: UInteger, value: 0 }
 	});
 
 	return BusinessProcess;

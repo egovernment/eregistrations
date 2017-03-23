@@ -1,7 +1,8 @@
 'use strict';
 
 var db      = require('../../db')
-  , daysOff = (db.globalPrimitives.holidays && db.globalPrimitives.holidays.map(Number));
+  , daysOff = (db.globalPrimitives && db.globalPrimitives.holidays &&
+			db.globalPrimitives.holidays.map(Number));
 
 module.exports = function (date) {
 	if (!date || !date.constructor || date.constructor !== db.Date) {
