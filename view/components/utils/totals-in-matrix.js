@@ -43,7 +43,7 @@ module.exports = function (config) {
 			verticalTotals.push(verticalTotal);
 			row.totalId = verticalTotal.totalId;
 		});
-	};
+	}
 	//horizontal totals
 	rows[0].paths.forEach(function (path, index) {
 		horizontalTotal = {
