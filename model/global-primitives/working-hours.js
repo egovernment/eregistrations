@@ -42,8 +42,8 @@ module.exports = memoize(function (db) {
 	globalPrimitives.workingHours.start.defineProperties(hoursMinutesDefinition);
 	globalPrimitives.workingHours.end.defineProperties(hoursMinutesDefinition);
 
-	globalPrimitives.workingHours.start.hours = 9;
-	globalPrimitives.workingHours.end.hours   = 17;
+	globalPrimitives.workingHours.start.hours = 8;
+	globalPrimitives.workingHours.end.hours   = 16;
 
 	return globalPrimitives;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
