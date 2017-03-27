@@ -2,7 +2,8 @@
 
 var memoize                = require('memoizee/plain')
   , defineGlobalPrimitives = require('./base')
-  , defineUInteger         = require('dbjs-ext/number/integer/u-integer');
+  , defineUInteger         = require('dbjs-ext/number/integer/u-integer')
+  , _                      = require('mano').i18n.bind('Model');
 
 module.exports = memoize(function (db) {
 	var globalPrimitives = defineGlobalPrimitives(db)
@@ -26,17 +27,23 @@ module.exports = memoize(function (db) {
 
 	var hoursMinutesDefinition = {
 		hours: {
+			label: _("Hours"),
 			type: UInteger,
-			max: 24
+			max: 23
 		},
 		minutes: {
+			label: _("Minutes"),
 			type: UInteger,
-			max: 59
+			max: 59,
+			value: 0
 		}
 	};
 
 	globalPrimitives.workingHours.start.defineProperties(hoursMinutesDefinition);
 	globalPrimitives.workingHours.end.defineProperties(hoursMinutesDefinition);
+
+	globalPrimitives.workingHours.start.hours = 9;
+	globalPrimitives.workingHours.end.hours   = 17;
 
 	return globalPrimitives;
 }, { normalizer: require('memoizee/normalizers/get-1')() });
