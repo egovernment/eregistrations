@@ -24,8 +24,14 @@ module.exports = function (startStamp, endStamp) {
 	endDate   = new db.Date(endDateTime.getFullYear(), endDateTime.getMonth(), endDateTime.getDate());
 
 	startDateTime.setHours(Math.max(startDateTime.getHours(), workingHours.start.hours));
-	startDateTime.setMinutes(startDateTime.getHours() < workingHours.end.hours ?
-			startDateTime.getMinutes() : workingHours.end.minutes);
+
+	if (startDateTime.getHours() >= workingHours.end.hours) {
+		startDateTime.setMinutes(startDateTime.getHours() === workingHours.end.hours ?
+				Math.min(startDateTime.getMinutes(), workingHours.end.minutes) :
+				workingHours.end.minutes);
+	} else {
+		startDateTime.setMinutes(startDateTime.getMinutes());
+	}
 
 	endDateTime.setHours(Math.min(endDateTime.getHours(), workingHours.end.hours));
 	endDateTime.setMinutes(endDateTime.getHours() < workingHours.end.hours ?

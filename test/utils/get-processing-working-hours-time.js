@@ -44,6 +44,15 @@ module.exports = function (t, a) {
 	//from 13:58, to 6:58 two days later, before working hours
 	a(t(1490191106777, 1490335106777), 39720000);
 
+	db.globalPrimitives.workingHours.start.minutes = 30;
+	db.globalPrimitives.workingHours.end.minutes   = 30;
+
+	// from 17:15, to end (17:30) same day, within working hours
+	a(t(1490202926777, 1490203826777), 900000);
+
+	// from 17:15, to end 8:30 next day
+	a(t(1490202926777, 1490257826777), 900000);
+
 	/**
 	 * The test for days off was removed, due to setup comlications
 	 * (min on holidays, db.globalPrimirives.holidays exposed beyond scope of function,
