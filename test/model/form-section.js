@@ -402,14 +402,57 @@ module.exports = function (t, a) {
 		'resolventProperty']);
 
 	// section unresoved
-	a.deep(section.toWebServiceJSON(), [ { name: 'resolventProperty', value: false } ]);
+	a.deep(section.toWebServiceJSON(), { resolventProperty: false });
 	masterObject.resolventProperty = true;
-	a.deep(section.toWebServiceJSON(), [
-		{ name: 'resolventProperty', value: true },
-		{ name: 'notRequiredProperty', value: 1 },
-		{ name: 'property', value: 1 },
-		{ name: 'secondProperty', value: 1 },
-		{ name: 'propertyWithDefaultValue', value: 'test value' },
-		{ name: 'constrainedProperty', value: {} }
-	]);
+	a.deep(section.toWebServiceJSON(),
+		{
+			resolventProperty: true,
+			notRequiredProperty: 1,
+			property: 1,
+			secondProperty: 1,
+			propertyWithDefaultValue: 'test value',
+			constrainedProperty: {}
+		});
+
+	nestedObject.notRequiredProperty = 5;
+	a.deep(section.toWebServiceJSON(),
+		{
+			resolventProperty: true,
+			notRequiredProperty: 1,
+			property: 1,
+			secondProperty: 1,
+			propertyWithDefaultValue: 'test value',
+			constrainedProperty: {},
+			nestedObject: {
+				notRequiredProperty: 5
+			}
+		});
+
+	nestedObject.define('otherNested', {
+		type: db.Object,
+		nested: true
+	});
+
+	nestedObject.otherNested.define('reallyNestedProp', {
+		type: db.Number
+	});
+
+	nestedObject.otherNested.reallyNestedProp = 8;
+	section.propertyNames.add('nestedObject/otherNested/reallyNestedProp');
+
+	a.deep(section.toWebServiceJSON(),
+		{
+			resolventProperty: true,
+			notRequiredProperty: 1,
+			property: 1,
+			secondProperty: 1,
+			propertyWithDefaultValue: 'test value',
+			constrainedProperty: {},
+			nestedObject: {
+				notRequiredProperty: 5,
+				otherNested: {
+					reallyNestedProp: 8
+				}
+			}
+		});
 };

@@ -265,11 +265,25 @@ module.exports = memoize(function (db) {
 			return result;
 		} },
 		toWebServiceJSON: { type: db.Function, value: function (ignore) {
-			var fields = [];
+			var fields = {};
 			this.filledPropertyNames.forEach(function (name) {
-				var data = this.master.resolveSKeyPath(name), descriptor = data.ownDescriptor;
+				var data = this.master.resolveSKeyPath(name), descriptor = data.ownDescriptor
+				  , value, splitByPath, currentFieldScope;
+				if (!data) return;
+				splitByPath = name.split('/');
+				currentFieldScope = fields;
+				if (splitByPath.length > 1) {
+					splitByPath.forEach(function (segment, index) {
+						if (index === (splitByPath.length - 1)) return;
+						if (currentFieldScope[segment] == null) {
+							currentFieldScope[segment] = {};
+						}
+						currentFieldScope = currentFieldScope[segment];
+					});
+				}
 				if (!descriptor.isValueEmpty()) {
-					fields.push(descriptor.fieldToWebServiceJSON());
+					value = descriptor.fieldToWebServiceJSON();
+					currentFieldScope[value.name] = value.value;
 				}
 			}, this);
 

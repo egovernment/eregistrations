@@ -227,28 +227,28 @@ module.exports = memoize(function (db) {
 		} },
 		toWebServiceJSON: {
 			value: function (ignore) {
-				var fields = [], entitiesContainer, resolventDescriptor, entityFields, entityDataObject;
-				entitiesContainer = {};
-				entitiesContainer[this.propertyName] = [];
+				var fields = {}, resolventDescriptor, entityFields, sectionFields, wsValue;
+				// entities container
+				fields[this.propertyName] = [];
 				if (this.resolventProperty) {
 					resolventDescriptor = this.master.resolveSKeyPath(this.resolventProperty).ownDescriptor;
 					if (!resolventDescriptor.isValueEmpty()) {
-						fields.push(resolventDescriptor.fieldToWebServiceJSON());
+						wsValue = resolventDescriptor.fieldToWebServiceJSON();
+						fields[wsValue.name] = wsValue.value;
 					}
 				}
 				if (!this.isUnresolved) {
 					this.entitiesSet.forEach(function (entity) {
-						entityFields = [];
-						entityDataObject = {};
+						entityFields = {};
 						entity.getBySKeyPath(this.sectionProperty).applicable.forEach(function (section) {
-							entityFields = entityFields.concat(section.toWebServiceJSON());
-						});
-						entityFields.forEach(function (fieldData) {
-							entityDataObject[fieldData.name] = fieldData.value;
-						});
-						entitiesContainer[this.propertyName].push(entityDataObject);
+							sectionFields = section.toWebServiceJSON();
+							Object.keys(sectionFields).forEach(function (fieldName) {
+								entityFields[fieldName] = sectionFields[fieldName];
+							});
+						}, this);
+
+						fields[this.propertyName].push(entityFields);
 					}, this);
-					fields.push(entitiesContainer);
 				}
 
 				return fields;

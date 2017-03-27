@@ -181,10 +181,12 @@ module.exports = function (t, a) {
 		'propertyForSecondSection', 'secondPropertyForSecondSection']);
 
 	a.h2('toWebServiceJSON');
-	a.deep(aFrom(section.toWebServiceJSON()), [ { name: 'resolventProperty', value: true },
-		{ name: 'propertyForFirstSection', value: 1 },
-		{ name: 'propertyForSecondSection', value: 1 },
-		{ name: 'secondPropertyForSecondSection', value: 1 } ]);
+	a.deep(section.toWebServiceJSON(), {
+		resolventProperty: true,
+		propertyForFirstSection: 1,
+		propertyForSecondSection: 1,
+		secondPropertyForSecondSection: 1
+	});
 	masterObject.resolventProperty = false;
-	a.deep(aFrom(section.toWebServiceJSON()), [ { name: 'resolventProperty', value: false } ]);
+	a.deep(section.toWebServiceJSON(), { resolventProperty: false });
 };

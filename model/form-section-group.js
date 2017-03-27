@@ -123,17 +123,21 @@ module.exports = memoize(function (db) {
 			return result;
 		} },
 		toWebServiceJSON: { value: function (ignore) {
-			var fields = [], resolventDescriptor;
+			var fields = {}, resolventDescriptor, wsValue, sectionFields;
 			if (this.resolventProperty) {
 				resolventDescriptor = this.master.resolveSKeyPath(this.resolventProperty).ownDescriptor;
 				if (!resolventDescriptor.isValueEmpty()) {
-					fields.push(resolventDescriptor.fieldToWebServiceJSON());
+					wsValue = resolventDescriptor.fieldToWebServiceJSON();
+					fields[wsValue.name] = wsValue.value;
 				}
 			}
 			if (!this.isUnresolved) {
 				this.internallyApplicableSections.forEach(function (section) {
 					if (section.hasFilledPropertyNamesDeep) {
-						fields = fields.concat(section.toWebServiceJSON());
+						sectionFields = section.toWebServiceJSON();
+						Object.keys(sectionFields).forEach(function (fieldName) {
+							fields[fieldName] = sectionFields[fieldName];
+						});
 					}
 				});
 			}

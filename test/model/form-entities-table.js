@@ -148,15 +148,15 @@ module.exports = function (t, a) {
 		new db.Date(businessProcess.partners.last.getDescriptor('prop3').lastModified / 1000)
 	));
 	a.deep(aFrom(section.propertyNamesDeep), ['tableResolver']);
-	a.deep(section.toWebServiceJSON(), [ { name: 'tableResolver', value: true },
-		{ partners: [
+	a.deep(section.toWebServiceJSON(), { tableResolver: true,
+			partners: [
 			{ prop1: 'test', prop3: true },
 			{ prop1: 'test', prop3: false },
 			{ prop1: 'test', prop3: false },
 			{ prop1: 'test', prop3: true },
 			{ prop1: 'test', prop3: true } ]
-			} ]);
+		});
 
 	businessProcess.tableResolver = false;
-	a.deep(section.toWebServiceJSON(), [ { name: 'tableResolver', value: false } ]);
+	a.deep(section.toWebServiceJSON(), { tableResolver: false, partners: [] });
 };
