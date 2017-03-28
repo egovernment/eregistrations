@@ -104,7 +104,7 @@ module.exports = memoize(function (db/*, options*/) {
 
 				this.processingSteps.map.forEach(function self(processingStep) {
 					if (processingStep instanceof db.ProcessingStepGroup) {
-						processingStep.steps.forEach(self);
+						processingStep.steps.applicable.forEach(self);
 						return;
 					}
 					result.processingSteps[processingStep.key] = processingStep.toWebServiceJSON();

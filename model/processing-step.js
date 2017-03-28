@@ -170,7 +170,7 @@ module.exports = memoize(function (db) {
 							this._status.lastModified / 1000 : null,
 					data: null
 				};
-				if (this.dataForm !== this.database.FormSectionBase) {
+				if (this.dataForm.constructor !== this.database.FormSectionBase) {
 					data.data = this.dataForm.toWebServiceJSON();
 				}
 
