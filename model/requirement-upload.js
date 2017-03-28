@@ -116,6 +116,11 @@ module.exports = memoize(function (db) {
 			multiple: true
 		},
 
+		toWebServiceJSON: {
+			value: function (ignore) {
+				return this.document.toWebServiceJSON();
+			}
+		},
 		toJSON: { value: function (ignore) {
 			var data = {
 				uniqueKey: this.document.uniqueKey,

@@ -84,8 +84,53 @@ module.exports = memoize(function (db/*, options*/) {
 			value: function (ignore) {
 				var dataFields = {}, result;
 				result = {
-					data: {}
+					id: this.__id__,
+					service: {
+						code: this.constructor.__id__
+					},
+					submittedTimestamp:
+						this._isSubmitted.lastModified ?
+								Math.round(this._isSubmitted.lastModified / 1000) : null,
+					processingSteps: {},
+					request: {
+						registrations: [],
+						documentUploads: [],
+						costs: [],
+						payments: [],
+						certificates: [],
+						data: {}
+					}
 				};
+
+				this.processingSteps.map.forEach(function self(processingStep) {
+					if (processingStep instanceof db.ProcessingStepGroup) {
+						processingStep.steps.forEach(self);
+						return;
+					}
+					result.processingSteps[processingStep.key] = processingStep.toWebServiceJSON();
+				});
+
+				this.registrations.requested.forEach(function (reg) {
+					result.registrations.push({
+						code: reg.key
+					});
+				});
+
+				this.requirementUploads.applicable.forEach(function (upload) {
+					result.documentUploads.push(upload.toWebServiceJSON());
+				});
+
+				this.costs.payable.forEach(function (cost) {
+					result.costs.push(cost.toWebServiceJSON());
+				});
+
+				this.paymentReceiptUploads.applicable.forEach(function (payment) {
+					result.payments.push(payment.toWebServiceJSON());
+				});
+
+				this.certificates.applicable.forEach(function (certificate) {
+					result.certificates.push(certificate.toWebServiceJSON());
+				});
 
 				// toWebServiceJSON is not implemented on FormSectionBase
 				if (this.database.FormSectionBase &&
@@ -108,8 +153,8 @@ module.exports = memoize(function (db/*, options*/) {
 					});
 				});
 
-				if (!Object.keys(result.data).length) {
-					result.data = null;
+				if (!Object.keys(result.request.data).length) {
+					result.request.data = null;
 				}
 
 				return result;

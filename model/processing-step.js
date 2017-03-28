@@ -161,7 +161,22 @@ module.exports = memoize(function (db) {
 		isAssignable: { type: db.Boolean },
 		correctionTime: { type: UInteger, value: 0 },
 		processingHolidaysTime: { type: UInteger, value: 0 },
-		nonProcessingTime: { type: UInteger, value: 0 }
+		nonProcessingTime: { type: UInteger, value: 0 },
+		toWebServiceJSON: {
+			value: function (ignore) {
+				var data = {
+					code: this.status,
+					statusTimestamp: this._status.lastModified ?
+							this._status.lastModified / 1000 : null,
+					data: null
+				};
+				if (this.dataForm !== this.database.FormSectionBase) {
+					data.data = this.dataForm.toWebServiceJSON();
+				}
+
+				return data;
+			}
+		}
 	});
 
 	ProcessingStep.prototype.requirementUploads.defineProperties({

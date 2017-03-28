@@ -129,6 +129,25 @@ module.exports = memoize(function (db) {
 		isReleased: { type: db.Boolean, value: function () {
 			return this.status === 'approved';
 		} },
+		toWebServiceJSON: {
+			value: function (ignore) {
+				var data = {
+					code: this.uniqueKey,
+					files: [],
+					data: null
+				};
+				if (this.dataForm.constructor !== this.database.FormSectionBase) {
+					data.data = this.dataForm.toWebServiceJSON();
+				}
+				this.files.ordered.forEach(function (file) {
+					data.files.push({
+						url: file.url
+					});
+				});
+
+				return data;
+			}
+		},
 		// Used for preservation in data snapshots
 		toJSON: { value: function (ignore) {
 			var data = {
