@@ -411,7 +411,7 @@ module.exports = function (t, a) {
 			property: 1,
 			secondProperty: 1,
 			propertyWithDefaultValue: 'test value',
-			constrainedProperty: {}
+			constrainedProperty: '1,500'
 		});
 
 	nestedObject.notRequiredProperty = 5;
@@ -422,7 +422,7 @@ module.exports = function (t, a) {
 			property: 1,
 			secondProperty: 1,
 			propertyWithDefaultValue: 'test value',
-			constrainedProperty: {},
+			constrainedProperty: '1,500',
 			nestedObject: {
 				notRequiredProperty: 5
 			}
@@ -447,7 +447,7 @@ module.exports = function (t, a) {
 			property: 1,
 			secondProperty: 1,
 			propertyWithDefaultValue: 'test value',
-			constrainedProperty: {},
+			constrainedProperty: '1,500',
 			nestedObject: {
 				notRequiredProperty: 5,
 				otherNested: {
