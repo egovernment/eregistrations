@@ -204,7 +204,8 @@ exports._requirementsSection = function () {
 			'user-guide-requirements-section'] },
 		h2(_("Requirements")),
 		exports._requirementsIntro.call(this),
-		ul({ id: 'requirements-list', class: 'user-guide-requirements-list' },
+		ul({ onEmpty: _("You do not have to upload any documents for this service"),
+			id: 'requirements-list', class: 'user-guide-requirements-list' },
 			this.businessProcess.requirements.map,
 			function (requirement) {
 				li(
