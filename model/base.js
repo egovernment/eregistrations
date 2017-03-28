@@ -74,8 +74,13 @@ module.exports = memoize(function (db) {
 			return (new this(value)).toString(descriptor);
 		} },
 		valueToWebServiceJSON: { type: db.Function, value: function (value, descriptor) {
+			var db = this.database;
 			if (value == null) return value;
-			if (this.database.isObjectType(this)) {
+			// enums handling
+			if (this.meta && this.members) {
+				return { code: value };
+			}
+			if (db.isObjectType(this)) {
 				if (typeof value.toJSON === 'function') return value.toJSON(descriptor);
 				return value.toString(descriptor);
 			}
