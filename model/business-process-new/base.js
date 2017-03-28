@@ -108,6 +108,10 @@ module.exports = memoize(function (db/*, options*/) {
 					});
 				});
 
+				if (!Object.keys(result.data).length) {
+					result.data = null;
+				}
+
 				return result;
 			}
 		}
