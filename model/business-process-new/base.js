@@ -90,7 +90,7 @@ module.exports = memoize(function (db/*, options*/) {
 					},
 					submittedTimestamp:
 						this._isSubmitted.lastModified ?
-								Math.round(this._isSubmitted.lastModified / 1000) : null,
+								Math.floor(this._isSubmitted.lastModified / 1000) : null,
 					processingSteps: {},
 					request: {
 						registrations: [],
@@ -111,25 +111,25 @@ module.exports = memoize(function (db/*, options*/) {
 				});
 
 				this.registrations.requested.forEach(function (reg) {
-					result.registrations.push({
+					result.request.registrations.push({
 						code: reg.key
 					});
 				});
 
 				this.requirementUploads.applicable.forEach(function (upload) {
-					result.documentUploads.push(upload.toWebServiceJSON());
+					result.request.documentUploads.push(upload.toWebServiceJSON());
 				});
 
 				this.costs.payable.forEach(function (cost) {
-					result.costs.push(cost.toWebServiceJSON());
+					result.request.costs.push(cost.toWebServiceJSON());
 				});
 
 				this.paymentReceiptUploads.applicable.forEach(function (payment) {
-					result.payments.push(payment.toWebServiceJSON());
+					result.request.payments.push(payment.toWebServiceJSON());
 				});
 
 				this.certificates.applicable.forEach(function (certificate) {
-					result.certificates.push(certificate.toWebServiceJSON());
+					result.request.certificates.push(certificate.toWebServiceJSON());
 				});
 
 				// toWebServiceJSON is not implemented on FormSectionBase
@@ -137,19 +137,19 @@ module.exports = memoize(function (db/*, options*/) {
 						this.determinants.constructor !== this.database.FormSectionBase) {
 					dataFields = this.determinants.toWebServiceJSON();
 					Object.keys(dataFields).forEach(function (fieldName) {
-						result.data[fieldName] = dataFields[fieldName];
+						result.request.data[fieldName] = dataFields[fieldName];
 					});
 				}
 				this.dataForms.applicable.forEach(function (section) {
 					dataFields = section.toWebServiceJSON();
 					Object.keys(dataFields).forEach(function (fieldName) {
-						result.data[fieldName] = dataFields[fieldName];
+						result.request.data[fieldName] = dataFields[fieldName];
 					});
 				});
 				this.submissionForms.applicable.forEach(function (section) {
 					dataFields = section.toWebServiceJSON();
 					Object.keys(dataFields).forEach(function (fieldName) {
-						result.data[fieldName] = dataFields[fieldName];
+						result.request.data[fieldName] = dataFields[fieldName];
 					});
 				});
 

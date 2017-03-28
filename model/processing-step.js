@@ -167,7 +167,7 @@ module.exports = memoize(function (db) {
 				var data = {
 					code: this.status,
 					statusTimestamp: this._status.lastModified ?
-							this._status.lastModified / 1000 : null,
+							Math.floor(this._status.lastModified / 1000) : null,
 					data: null
 				};
 				if (this.dataForm.constructor !== this.database.FormSectionBase) {
