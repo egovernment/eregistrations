@@ -272,12 +272,11 @@ module.exports = memoize(function (db) {
 				var data = this.master.resolveSKeyPath(name), descriptor = data.ownDescriptor
 				  , value, splitByPath, currentFieldScope, owner;
 				if (!data) return;
-				if (noFiles && db.File && db.MultipleProcess) {
+				if (noFiles && db.File && db.NestedMap) {
 					owner = data.object;
 					while (owner) {
-						if (owner.constructor === db.MultipleProcess &&
+						if (owner.constructor === db.NestedMap &&
 								owner.getItemType() === db.File) {
-							console.log('SKIPPING');
 							return;
 						}
 						owner = owner.owner;
