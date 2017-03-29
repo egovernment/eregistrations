@@ -62,7 +62,6 @@ exports['sub-main'] = {
 					)
 			));
 		searchInput.oninput = once(function () { dispatch.call(searchForm, 'submit'); }, 300);
-
 		businessProcessesTable = exports._businessProcessTable.call(this);
 
 		if (businessProcessesTable) {
