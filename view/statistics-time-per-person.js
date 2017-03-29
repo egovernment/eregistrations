@@ -13,7 +13,7 @@ var copy                 = require('es5-ext/object/copy')
   , setupQueryHandler    = require('../utils/setup-client-query-handler')
   , resolveFullStepPath  = require('../utils/resolve-processing-step-full-path')
   , getQueryHandlerConf  = require('../apps/statistics/get-query-conf')
-  , getDurationDaysHours = require('./utils/get-duration-days-hours')
+  , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , getDynamicUrl        = require('./utils/get-dynamic-url');
 
 exports._parent        = require('./statistics-time');
