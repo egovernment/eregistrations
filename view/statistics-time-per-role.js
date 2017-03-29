@@ -14,7 +14,9 @@ var assign               = require('es5-ext/object/assign')
   , setupQueryHandler    = require('../utils/setup-client-query-handler')
   , resolveFullStepPath  = require('../utils/resolve-processing-step-full-path')
   , getDurationDaysHours = require('./utils/get-duration-days-hours')
-  , getDynamicUrl        = require('./utils/get-dynamic-url');
+  , getDynamicUrl        = require('./utils/get-dynamic-url')
+  , selectDateTo          = require('./components/filter-bar/select-date-to')
+  , selectDateFrom        = require('./components/filter-bar/select-date-from');
 
 exports._parent = require('./statistics-time');
 exports._customFilters = Function.prototype;
@@ -109,14 +111,12 @@ exports['statistics-main'] = function () {
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
-				input({ id: 'date-from-input', type: 'date',
-					name: 'dateFrom', value: location.query.get('dateFrom') })
+				selectDateFrom()
 			),
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-to-input' }, _("Date to"), ":"),
-				input({ id: 'date-to-input', type: 'date',
-					name: 'dateTo', value: location.query.get('dateTo') })
+				selectDateTo()
 			),
 			div(
 				a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/time-per-role.csv',
