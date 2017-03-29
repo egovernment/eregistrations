@@ -137,7 +137,10 @@ module.exports = memoize(function (db) {
 					data: null
 				};
 				if (this.dataForm.constructor !== this.database.FormSectionBase) {
-					data.data = this.dataForm.toWebServiceJSON();
+					data.data = this.dataForm.toWebServiceJSON({ noFiles: true });
+					if (data.data && data.data.files) {
+						delete data.data.files;
+					}
 				}
 				this.files.ordered.forEach(function (file) {
 					data.files.push({

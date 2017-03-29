@@ -264,12 +264,25 @@ module.exports = memoize(function (db) {
 			if (fields.length) result.fields = fields;
 			return result;
 		} },
-		toWebServiceJSON: { type: db.Function, value: function (ignore) {
-			var fields = {};
+		toWebServiceJSON: { type: db.Function, value: function (options) {
+			var fields = {}, opts = Object(options), db, noFiles;
+			db = this.database;
+			noFiles = opts && opts.noFiles;
 			this.filledPropertyNames.forEach(function (name) {
 				var data = this.master.resolveSKeyPath(name), descriptor = data.ownDescriptor
-				  , value, splitByPath, currentFieldScope;
+				  , value, splitByPath, currentFieldScope, owner;
 				if (!data) return;
+				if (noFiles && db.File && db.MultipleProcess) {
+					owner = data.object;
+					while (owner) {
+						if (owner.constructor === db.MultipleProcess &&
+								owner.getItemType() === db.File) {
+							console.log('SKIPPING');
+							return;
+						}
+						owner = owner.owner;
+					}
+				}
 				splitByPath = name.split('/');
 				currentFieldScope = fields;
 				if (splitByPath.length > 1) {
