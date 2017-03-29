@@ -4,10 +4,15 @@ var db             = require('../db')
   , toDateTimeInTz = require('./to-date-time-in-time-zone')
   , isDayOff       = require('../server/utils/is-day-off');
 
+var getTimeInMs = function (hours, minutes) {
+	return (hours * 3600000) + (minutes * 60000);
+};
+
 module.exports = function (startStamp, endStamp) {
 	var startDateTime = toDateTimeInTz(new Date(startStamp), db.timeZone)
 	  , endDateTime   = toDateTimeInTz(new Date(endStamp), db.timeZone)
 	  , currentDate, processingTime = 0, startDate, endDate, workingHours
+	  , startTimeMs, endTimeMs, startTimeThresholdMs, endTimeThresholdMs
 	  , workTimePerDay;
 	workingHours   = (db.globalPrimitives && db.globalPrimitives.workingHours);
 	if (endStamp < startStamp) {
@@ -16,37 +21,37 @@ module.exports = function (startStamp, endStamp) {
 	if (!workingHours) {
 		throw new Error('No working hours defined');
 	}
-	workTimePerDay = (workingHours.end.hours - workingHours.start.hours) * 3600000;
-	workTimePerDay += ((workingHours.end.minutes - workingHours.start.minutes) * 60000);
 
 	startDate = new db.Date(startDateTime.getFullYear(), startDateTime.getMonth(),
 		startDateTime.getDate());
 	endDate   = new db.Date(endDateTime.getFullYear(), endDateTime.getMonth(), endDateTime.getDate());
 
-	startDateTime.setHours(Math.max(startDateTime.getHours(), workingHours.start.hours));
+	startTimeThresholdMs = getTimeInMs(workingHours.start.hours, workingHours.start.minutes);
+	endTimeThresholdMs   = getTimeInMs(workingHours.end.hours, workingHours.end.minutes);
+	startTimeMs = Math.max(getTimeInMs(startDateTime.getHours(),
+		startDateTime.getMinutes()), startTimeThresholdMs);
 
-	if (startDateTime.getHours() >= workingHours.end.hours) {
-		startDateTime.setMinutes(startDateTime.getHours() === workingHours.end.hours ?
-				Math.min(startDateTime.getMinutes(), workingHours.end.minutes) :
-				workingHours.end.minutes);
-	} else {
-		startDateTime.setMinutes(startDateTime.getMinutes());
+	if (startTimeMs > endTimeThresholdMs) {
+		startTimeMs = null;
 	}
 
-	endDateTime.setHours(Math.min(endDateTime.getHours(), workingHours.end.hours));
-	endDateTime.setMinutes(endDateTime.getHours() < workingHours.end.hours ?
-			endDateTime.getMinutes() : workingHours.end.minutes);
+	workTimePerDay = endTimeThresholdMs - startTimeThresholdMs;
+
+	endTimeMs = Math.min(getTimeInMs(endDateTime.getHours(), endDateTime.getMinutes()),
+		endTimeThresholdMs);
+
+	if (endTimeMs < startTimeThresholdMs) {
+		endTimeMs = null;
+	}
 
 	// if processing within same day
 	if (startDate.getTime() === endDate.getTime()) {
 		if (isDayOff(startDate)) return 0;
-		// may happen if processing finished before work hours started
-		if (endDateTime < startDateTime) return 0;
-		return endDateTime - startDateTime;
+		if (startTimeMs == null || endTimeMs == null) return 0;
+		return endTimeMs - startTimeMs;
 	}
-	if (!isDayOff(startDate)) {
-		processingTime += (workingHours.end.hours - startDateTime.getHours()) * 3600000;
-		processingTime += ((workingHours.end.minutes - startDateTime.getMinutes()) * 60000);
+	if (!isDayOff(startDate) && startTimeMs != null) {
+		processingTime += (endTimeThresholdMs - startTimeMs);
 	}
 	currentDate = new db.Date(startDate.getTime());
 	currentDate.setUTCDate(currentDate.getUTCDate() + 1);
@@ -56,16 +61,8 @@ module.exports = function (startStamp, endStamp) {
 		}
 		currentDate.setUTCDate(currentDate.getUTCDate() + 1);
 	}
-	if (!isDayOff(endDate)) {
-		if (endDateTime.getHours() < workingHours.start.hours) {
-			processingTime += 0;
-		} else if (endDateTime.getHours() === workingHours.start.hours &&
-				workingHours.start.minutes > endDateTime.getMinutes()) {
-			processingTime += 0;
-		} else {
-			processingTime += (endDateTime.getHours() - workingHours.start.hours) * 3600000;
-			processingTime += ((endDateTime.getMinutes() - workingHours.start.minutes) * 60000);
-		}
+	if (!isDayOff(endDate) && endTimeMs != null) {
+		processingTime += (endTimeMs - startTimeThresholdMs);
 	}
 
 	return processingTime < 0 ? 0 : processingTime;
