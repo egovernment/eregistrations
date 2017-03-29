@@ -227,9 +227,8 @@ module.exports = memoize(function (db) {
 		} },
 		toWebServiceJSON: {
 			value: function (ignore) {
-				var fields = {}, resolventDescriptor, entityFields, sectionFields, wsValue;
+				var fields = {}, resolventDescriptor, sectionFields, wsValue;
 				// entities container
-				fields[this.propertyName] = [];
 				if (this.resolventProperty) {
 					resolventDescriptor = this.master.resolveSKeyPath(this.resolventProperty).ownDescriptor;
 					if (!resolventDescriptor.isValueEmpty()) {
@@ -239,15 +238,17 @@ module.exports = memoize(function (db) {
 				}
 				if (!this.isUnresolved) {
 					this.entitiesSet.forEach(function (entity) {
-						entityFields = {};
 						entity.getBySKeyPath(this.sectionProperty).applicable.forEach(function (section) {
 							sectionFields = section.toWebServiceJSON();
 							Object.keys(sectionFields).forEach(function (fieldName) {
-								entityFields[fieldName] = sectionFields[fieldName];
+								Object.keys(sectionFields[fieldName].map).forEach(function (id) {
+									if (!fields[fieldName]) {
+										fields[fieldName] = [];
+									}
+									fields[fieldName].push(sectionFields[fieldName].map[id]);
+								});
 							});
 						}, this);
-
-						fields[this.propertyName].push(entityFields);
 					}, this);
 				}
 
