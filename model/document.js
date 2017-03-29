@@ -134,7 +134,6 @@ module.exports = memoize(function (db) {
 				var data = {
 					code: this.key,
 					files: [],
-					owner: this.__id__,
 					data: null
 				};
 				if (this.dataForm.constructor !== this.database.FormSectionBase) {
