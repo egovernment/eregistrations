@@ -82,7 +82,8 @@ module.exports = memoize(function (db/*, options*/) {
 		} },
 		toWebServiceJSON: {
 			value: function (ignore) {
-				var dataFields = {}, result;
+				var dataFields = {}, result, db;
+				db = this.database;
 				result = {
 					id: this.__id__,
 					service: {
@@ -103,7 +104,7 @@ module.exports = memoize(function (db/*, options*/) {
 				};
 
 				this.processingSteps.map.forEach(function self(processingStep) {
-					if (processingStep instanceof db.ProcessingStepGroup) {
+					if (db.ProcessingStepGroup && processingStep instanceof db.ProcessingStepGroup) {
 						processingStep.steps.applicable.forEach(self);
 						return;
 					}
