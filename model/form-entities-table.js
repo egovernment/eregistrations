@@ -227,7 +227,11 @@ module.exports = memoize(function (db) {
 		} },
 		toWebServiceJSON: {
 			value: function (ignore) {
-				var fields = {}, resolventDescriptor, sectionFields, wsValue;
+				var fields = {}, resolventDescriptor, sectionFields, wsValue, entityObjects
+				  , isEntitiesNestedMap, entityFields;
+				entityObjects = this.propertyMaster.resolveSKeyPath(this.propertyName);
+				isEntitiesNestedMap = entityObjects.value instanceof this.database.NestedMap;
+				fields[this.propertyName] = [];
 				// entities container
 				if (this.resolventProperty) {
 					resolventDescriptor = this.master.resolveSKeyPath(this.resolventProperty).ownDescriptor;
@@ -238,17 +242,20 @@ module.exports = memoize(function (db) {
 				}
 				if (!this.isUnresolved) {
 					this.entitiesSet.forEach(function (entity) {
+						entityFields  = {};
 						entity.getBySKeyPath(this.sectionProperty).applicable.forEach(function (section) {
 							sectionFields = section.toWebServiceJSON();
-							Object.keys(sectionFields).forEach(function (fieldName) {
-								Object.keys(sectionFields[fieldName].map).forEach(function (id) {
-									if (!fields[fieldName]) {
-										fields[fieldName] = [];
-									}
-									fields[fieldName].push(sectionFields[fieldName].map[id]);
-								});
-							});
+							if (isEntitiesNestedMap) {
+								Object.keys(sectionFields[this.propertyName].map).forEach(function (id) {
+									Object.keys(sectionFields[this.propertyName].map[id]).forEach(function (propKey) {
+										entityFields[propKey] = sectionFields[this.propertyName].map[id][propKey];
+									}, this);
+								}, this);
+							} else { //old model
+								fields[this.propertyName].push(sectionFields);
+							}
 						}, this);
+						fields[this.propertyName].push(entityFields);
 					}, this);
 				}
 
