@@ -22,24 +22,24 @@ module.exports = memoize(function (db) {
 
 	// services + its roles
 	var roles = [];
-	var bpRoles ={};
+	var bpRoles = {};
 
 	var services = db.BusinessProcess.extensions.toArray().map(function (bp) {
-		bp.prototype.processingSteps.map.forEach(function (step){
+		bp.prototype.processingSteps.map.forEach(function (step) {
 			// if group - check the substeps
 			if (step.steps) {
-					step.steps.map.forEach(function (subStep) {
-						bpRoles[subStep.key] = { name: subStep.key, label: subStep.label };
-					});
+				step.steps.map.forEach(function (subStep) {
+					bpRoles[subStep.key] = { name: subStep.key, label: subStep.label };
+				});
 			} else {
 				bpRoles[step.key] = { name: step.key, label: step.label };
 			}
 		});
-	
+
 		return { name: bp.__id__, label: bp.prototype.label };
 	});
 	roles = Object.keys(bpRoles).map(function (key) {
-			return bpRoles[key];
+		return bpRoles[key];
 	});
 
 	catalogs.push({ services: services });
