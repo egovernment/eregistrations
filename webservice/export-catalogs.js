@@ -20,11 +20,12 @@ module.exports = memoize(function (db) {
 	});
 	catalogs.push({ enums: enums });
 
-	// services + its roles
+	// services + roles
+	var services = [];
 	var roles = [];
 	var bpRoles = {};
 
-	var services = db.BusinessProcess.extensions.toArray().map(function (bp) {
+	db.BusinessProcess.extensions.forEach(function (bp) {
 		bp.prototype.processingSteps.map.forEach(function (step) {
 			// if group - check the substeps
 			if (step.steps) {
@@ -36,7 +37,7 @@ module.exports = memoize(function (db) {
 			}
 		});
 
-		return { name: bp.__id__, label: bp.prototype.label };
+		services.push({ name: bp.__id__, label: bp.prototype.label });
 	});
 	roles = Object.keys(bpRoles).map(function (key) {
 		return bpRoles[key];
