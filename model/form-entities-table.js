@@ -252,7 +252,7 @@ module.exports = memoize(function (db) {
 									}, this);
 								}, this);
 							} else { //old model
-								fields[this.propertyName].push(sectionFields);
+								entityFields = sectionFields;
 							}
 						}, this);
 						fields[this.propertyName].push(entityFields);
