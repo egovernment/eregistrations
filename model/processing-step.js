@@ -170,9 +170,21 @@ module.exports = memoize(function (db) {
 					statusTimestamp: this._status.lastModified ?
 							Math.floor(this._status.lastModified / 1000) : null,
 					data: null
-				};
+				}, tmpData, keys;
 				if (this.dataForm.constructor !== this.database.FormSectionBase) {
-					data.data = this.dataForm.toWebServiceJSON();
+					tmpData = this.dataForm.toWebServiceJSON();
+					while (true) {
+						keys = Object.keys(tmpData);
+						if (keys && keys[0]) {
+							if (keys[0] === this.key) {
+								data.data = tmpData[this.key];
+								break;
+							}
+							tmpData = tmpData[keys[0]];
+						} else {
+							break;
+						}
+					}
 				}
 
 				return data;
