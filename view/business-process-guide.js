@@ -204,8 +204,10 @@ exports._requirementsSection = function () {
 			'user-guide-requirements-section'] },
 		h2(_("Requirements")),
 		exports._requirementsIntro.call(this),
-		ul({ onEmpty: _("You do not have to upload any documents for this service"),
-			id: 'requirements-list', class: 'user-guide-requirements-list' },
+		div({ id: 'requirements-empty-message' },
+			exports._requirementsEmptyMessage.call(this)
+			),
+		ul({ id: 'requirements-list', class: 'user-guide-requirements-list' },
 			this.businessProcess.requirements.map,
 			function (requirement) {
 				li(
@@ -221,6 +223,11 @@ exports._requirementsSection = function () {
 			}),
 		exports._requirementsFooter.call(this)
 	);
+};
+
+exports._requirementsEmptyMessage = function () {
+	return p({ class: 'user-guide-no-applicable-requirements-message' },
+		_("You do not have to upload any documents for this service"));
 };
 
 exports._requirementsIntro = function () {
