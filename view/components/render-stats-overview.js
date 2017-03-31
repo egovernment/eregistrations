@@ -6,7 +6,7 @@ var location             = require('mano/lib/client/location')
   , setupQueryHandler    = require('../../utils/setup-client-query-handler')
   , getData              = require('mano/lib/client/xhr-driver').get
   , getQueryHandlerConf  = require('../../apps/statistics/get-query-conf')
-  , getDurationDaysHours = require('../utils/get-duration-days-hours')
+  , getDurationDaysHours = require('../utils/get-duration-days-hours-fine-grain')
   , getDynamicUrl        = require('../utils/get-dynamic-url')
   , memoize              = require('memoizee');
 
