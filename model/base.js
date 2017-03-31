@@ -82,8 +82,11 @@ module.exports = memoize(function (db) {
 				return { code: value };
 			}
 			if (db.isObjectType(this)) {
-				if (typeof value.valueToWebServiceJSON === 'function') {
-					return value.valueToWebServiceJSON(descriptor);
+				if (typeof value.toWebServiceJSON === 'function') {
+					return value.toWebServiceJSON(descriptor);
+				}
+				if (typeof value.toJSON === 'function') {
+					return value.toJSON(descriptor);
 				}
 				return value.toString(descriptor);
 			}
