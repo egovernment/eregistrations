@@ -18,7 +18,8 @@ var Map                        = require('es6-map')
   , definePaymentReceiptUpload = require('./payment-receipt-upload')
   , defineRequirementUpload    = require('./requirement-upload')
   , defineDocument             = require('./document')
-  , defineStatusHistoryItem    = require('./lib/status-history-item');
+  , defineStatusHistoryItem    = require('./lib/status-history-item')
+  , defineToWSJSONPrettyData   = require('./lib/define-to-ws-json-pretty-data');
 
 module.exports = memoize(function (db) {
 	var Percentage           = definePercentage(db)
@@ -47,6 +48,7 @@ module.exports = memoize(function (db) {
 		['approved', { label: _("Approved") }],
 		['redelegated', { label: _("Redelegated") }]
 	]));
+	defineToWSJSONPrettyData(ProcessingStep.prototype);
 
 	ProcessingStep.prototype.defineProperties({
 		// Official that processed request at given processing step
@@ -170,21 +172,9 @@ module.exports = memoize(function (db) {
 					statusTimestamp: this._status.lastModified ?
 							Math.floor(this._status.lastModified / 1000) : null,
 					data: null
-				}, tmpData, keys;
+				};
 				if (this.dataForm.constructor !== this.database.FormSectionBase) {
-					tmpData = this.dataForm.toWebServiceJSON();
-					while (true) {
-						keys = Object.keys(tmpData);
-						if (keys && keys[0]) {
-							if (keys[0] === this.key) {
-								data.data = tmpData[this.key];
-								break;
-							}
-							tmpData = tmpData[keys[0]];
-						} else {
-							break;
-						}
-					}
+					data.data = this.toWebServiceJSONPrettyData(this.dataForm.toWebServiceJSON());
 				}
 
 				return data;

@@ -54,7 +54,8 @@ module.exports = memoize(function (db) {
 	db.Base.prototype.defineProperties({
 		isEmpty: { type: db.Function },
 		toJSON: { type: db.Function },
-		toWebServiceJSON: { type: db.Function }
+		toWebServiceJSON: { type: db.Function },
+		toWebServiceJSONPrettyData: { type: db.Function }
 	});
 
 	db.Base.defineProperties({
@@ -81,7 +82,9 @@ module.exports = memoize(function (db) {
 				return { code: value };
 			}
 			if (db.isObjectType(this)) {
-				if (typeof value.toJSON === 'function') return value.toJSON(descriptor);
+				if (typeof value.valueToWebServiceJSON === 'function') {
+					return value.valueToWebServiceJSON(descriptor);
+				}
 				return value.toString(descriptor);
 			}
 			return value;

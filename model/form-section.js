@@ -265,14 +265,14 @@ module.exports = memoize(function (db) {
 			return result;
 		} },
 		toWebServiceJSON: { type: db.Function, value: function (options) {
-			var fields = {}, opts = Object(options), db, noFiles;
+			var fields = {}, opts = Object(options), db, excludeFiles;
 			db = this.database;
-			noFiles = opts && opts.noFiles;
+			excludeFiles = opts && opts.excludeFiles;
 			this.filledPropertyNames.forEach(function (name) {
 				var data = this.master.resolveSKeyPath(name), descriptor = data.ownDescriptor
 				  , value, splitByPath, currentFieldScope, owner;
 				if (!data) return;
-				if (noFiles && db.File && db.NestedMap) {
+				if (excludeFiles && db.File && db.NestedMap) {
 					owner = data.object;
 					while (owner) {
 						if (owner.constructor === db.NestedMap &&

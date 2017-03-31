@@ -15,7 +15,8 @@ var Map                     = require('es6-map')
   , defineNestedMap         = require('./lib/nested-map')
   , definePerson            = require('./person')
   , defineGetTranslations   = require('./lib/define-get-translations')
-  , defineStatusHistoryItem = require('./lib/status-history-item');
+  , defineStatusHistoryItem = require('./lib/status-history-item')
+  , defineToWSJSONPrettyData = require('./lib/define-to-ws-json-pretty-data');
 
 module.exports = memoize(function (db) {
 	var StringLine       = defineStringLine(db)
@@ -138,7 +139,9 @@ module.exports = memoize(function (db) {
 				}, owner, db;
 				db = this.database;
 				if (this.dataForm.constructor !== this.database.FormSectionBase) {
-					data.data = this.dataForm.toWebServiceJSON({ noFiles: true });
+					data.data = this.toWebServiceJSONPrettyData(
+						this.dataForm.toWebServiceJSON({ excludeFiles: true })
+					);
 				}
 				this.files.ordered.forEach(function (file) {
 					data.files.push({
@@ -204,6 +207,7 @@ module.exports = memoize(function (db) {
 		abbr: { type: StringLine }
 	});
 
+	defineToWSJSONPrettyData(Document.prototype);
 	defineNestedMap(db);
 	// Map of uploaded files
 	// Document.prototype.files.map property should be used *only* to generate form controls
