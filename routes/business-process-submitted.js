@@ -19,10 +19,35 @@ module.exports = {
 	// App routes
 	'/': {
 		decorateContext: function () {
-			var firstUpload = this.businessProcess.requirementUploads.dataSnapshot.resolved[0];
-			if (firstUpload) matchUpload.call(this, 'requirementUpload', firstUpload.uniqueKey);
+			var firstUpload;
+
+			// Available requirement upload
+			firstUpload = this.businessProcess.requirementUploads.dataSnapshot.resolved[0];
+			if (firstUpload) return matchUpload.call(this, 'requirementUpload', firstUpload.uniqueKey);
+
+			// Available payment receipt upload
+			firstUpload = this.businessProcess.paymentReceiptUploads.dataSnapshot.resolved[0];
+			if (firstUpload) return matchUpload.call(this, 'paymentReceiptUpload', firstUpload.uniqueKey);
+
+			// Available certificate
+			if (this.businessProcess.isApproved) {
+				firstUpload = this.businessProcess.certificates.dataSnapshot.resolved[0];
+				if (firstUpload) return matchCertificate.call(this, firstUpload.uniqueKey);
+			}
+
+			// Fallback to data
+			this.dataSnapshot = this.businessProcess.dataForms.dataSnapshot.resolved;
 		},
-		view: require('../view/business-process-submitted-document')
+		resolveView: function () {
+			if (this.document) {
+				if (this.documentKind === 'requirementUpload') {
+					return require('../view/business-process-submitted-document');
+				}
+
+				return require('../view/business-process-submitted-payment');
+			}
+			return require('../view/business-process-submitted-data');
+		}
 	},
 	'documents/[a-z][a-z0-9-]*': {
 		match: function (uniqueKey) {
