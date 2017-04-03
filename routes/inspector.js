@@ -29,11 +29,6 @@ module.exports = function () {
 					if (matchFirstPaymentReceiptUpload.call(this)) return true;
 					if (matchFirstCertificate.call(this)) return true;
 
-					var firstUniqueKey = findFirstUploadKey.call(this, 'requirementUpload');
-					if (firstUniqueKey) {
-						return matchUpload.call(this, 'requirementUpload', firstUniqueKey);
-					}
-
 					return true;
 				}.bind(this));
 			},
