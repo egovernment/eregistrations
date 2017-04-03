@@ -2,9 +2,12 @@
 
 'use strict';
 
-var hyphenToCamel    = require('es5-ext/string/#/hyphen-to-camel')
-  , matchUpload      = require('./utils/user-match-upload')
-  , matchCertificate = require('./utils/user-match-certificate');
+var hyphenToCamel                  = require('es5-ext/string/#/hyphen-to-camel')
+  , matchUpload                    = require('./utils/user-match-upload')
+  , matchFirstRequirementUpload    = require('./utils/user-match-first-requirement-upload')
+  , matchFirstPaymentReceiptUpload = require('./utils/user-match-first-payment-receipt-upload')
+  , matchFirstCertificate          = require('./utils/user-match-first-certificate')
+  , matchCertificate               = require('./utils/user-match-certificate');
 
 module.exports = {
 	// User routes
@@ -19,32 +22,24 @@ module.exports = {
 	// App routes
 	'/': {
 		decorateContext: function () {
-			var firstUpload;
-
-			// Available requirement upload
-			firstUpload = this.businessProcess.requirementUploads.dataSnapshot.resolved[0];
-			if (firstUpload) return matchUpload.call(this, 'requirementUpload', firstUpload.uniqueKey);
-
-			// Available payment receipt upload
-			firstUpload = this.businessProcess.paymentReceiptUploads.dataSnapshot.resolved[0];
-			if (firstUpload) return matchUpload.call(this, 'paymentReceiptUpload', firstUpload.uniqueKey);
-
-			// Available certificate
-			if (this.businessProcess.isApproved) {
-				firstUpload = this.businessProcess.certificates.dataSnapshot.resolved[0];
-				if (firstUpload) return matchCertificate.call(this, firstUpload.uniqueKey);
-			}
+			if (matchFirstRequirementUpload.call(this)) return true;
+			if (matchFirstPaymentReceiptUpload.call(this)) return true;
+			if (matchFirstCertificate.call(this)) return true;
 
 			// Fallback to data
 			this.dataSnapshot = this.businessProcess.dataForms.dataSnapshot.resolved;
 		},
 		resolveView: function () {
-			if (this.document) {
+			if (this.documentUniqueKey) {
 				if (this.documentKind === 'requirementUpload') {
 					return require('../view/business-process-submitted-document');
 				}
 
-				return require('../view/business-process-submitted-payment');
+				if (this.documentKind === 'paymentReceiptUpload') {
+					return require('../view/business-process-submitted-payment');
+				}
+
+				return require('../view/business-process-submitted-certificate');
 			}
 			return require('../view/business-process-submitted-data');
 		}
