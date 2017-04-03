@@ -2,11 +2,14 @@
 
 'use strict';
 
-var hyphenToCamel        = require('es5-ext/string/#/hyphen-to-camel')
-  , matchBusinessProcess = require('./utils/inspector-match-business-process')
-  , findFirstUploadKey   = require('./utils/inspector-find-first-upload-key')
-  , matchUpload          = require('./utils/inspector-match-upload')
-  , matchCertificate     = require('./utils/user-match-certificate');
+var hyphenToCamel                  = require('es5-ext/string/#/hyphen-to-camel')
+  , matchBusinessProcess           = require('./utils/inspector-match-business-process')
+  , findFirstUploadKey             = require('./utils/inspector-find-first-upload-key')
+  , matchUpload                    = require('./utils/inspector-match-upload')
+  , matchFirstRequirementUpload    = require('./utils/inspector-match-first-requirement-upload')
+  , matchFirstPaymentReceiptUpload = require('./utils/inspector-match-first-payment-receipt-upload')
+  , matchFirstCertificate          = require('./utils/inspector-match-first-certificate')
+  , matchCertificate               = require('./utils/user-match-certificate');
 
 module.exports = function () {
 	var match = matchBusinessProcess();
@@ -21,14 +24,38 @@ module.exports = function () {
 			match: function (businessProcessId) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
+
+					if (matchFirstRequirementUpload.call(this)) return true;
+					if (matchFirstPaymentReceiptUpload.call(this)) return true;
+					if (matchFirstCertificate.call(this)) return true;
+
 					var firstUniqueKey = findFirstUploadKey.call(this, 'requirementUpload');
 					if (firstUniqueKey) {
 						return matchUpload.call(this, 'requirementUpload', firstUniqueKey);
 					}
+
 					return true;
 				}.bind(this));
 			},
-			view: require('../view/business-process-official-document')
+			decorateContext: function () {
+				if (!this.documentUniqueKey) {
+					this.dataSnapshot = this.businessProcess.dataForms.dataSnapshot.resolved;
+				}
+			},
+			resolveView: function () {
+				if (this.documentUniqueKey) {
+					if (this.documentKind === 'requirementUpload') {
+						return require('../view/business-process-official-document');
+					}
+
+					if (this.documentKind === 'paymentReceiptUpload') {
+						return require('../view/business-process-official-payment');
+					}
+
+					return require('../view/business-process-official-certificate');
+				}
+				return require('../view/business-process-official-data');
+			}
 		},
 		'[0-9][a-z0-9]*/documents/[a-z][a-z0-9-]*': {
 			match: function (businessProcessId, uniqueKey) {
