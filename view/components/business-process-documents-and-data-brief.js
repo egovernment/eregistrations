@@ -8,16 +8,17 @@ var _                   = require('mano').i18n.bind('View: Component: Documents 
 module.exports = function (context) {
 	var businessProcess = context.businessProcess;
 	return [
-		div({ class: "section-primary-sub user-account-content-selector" },
-			h2(_("Documents")),
-			p({ class: 'section-primary-legend' },
-				_("Here you can see documents that you uploaded as part of the application and the " +
-					"certificates issued in the process.")),
-			renderDocumentsList(context),
-			p({ class: 'section-primary-sub-action' },
-				a({ href: '/business-process/' + businessProcess.__id__ + '/documents/',
-					class: 'button-regular' },
-					_("See all documents")))),
+		_if(businessProcess.requirementUploads.dataSnapshot.resolved.length,
+			div({ class: "section-primary-sub user-account-content-selector" },
+				h2(_("Documents")),
+				p({ class: 'section-primary-legend' },
+					_("Here you can see documents that you uploaded as part of the application and the " +
+						"certificates issued in the process.")),
+				renderDocumentsList(context),
+				p({ class: 'section-primary-sub-action' },
+					a({ href: '/business-process/' + businessProcess.__id__ + '/documents/',
+						class: 'button-regular' },
+						_("See all documents"))))),
 		div({ class: "section-primary-sub" },
 			h2(_("Data")),
 			p({ class: 'section-primary-legend' },
