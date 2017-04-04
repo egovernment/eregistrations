@@ -168,49 +168,75 @@ exports._pauseButton = function (/*options*/) {
 };
 
 exports._revisionContainer = function () {
-	var paymentUploads = getUploads(this.processingStep.paymentReceiptUploads, this.appName);
-	section({ class: 'section-tab-nav' },
-		a({
+	var requirementUploads    = this.processingStep.requirementUploads
+	  , paymentReceiptUploads = this.processingStep.paymentReceiptUploads
+	  , uploads               = getUploads(requirementUploads, this.appName)
+	  , paymentUploads        = getUploads(paymentReceiptUploads, this.appName);
+
+	var paymentUploadsTabNumber = resolve(uploads, '_length').map(function (uploadsLength) {
+		return uploadsLength ? "2." : "1.";
+	});
+
+	var dataTabNumber = resolve(uploads, '_length').map(function (uploadsLength) {
+		return resolve(paymentUploads, '_length').map(function (paymentUploadsLength) {
+			if (uploadsLength) {
+				return paymentUploadsLength ? "3." : "2.";
+			}
+
+			return paymentUploadsLength ? "2." : "1.";
+		});
+	});
+
+	var processingTabNumber = resolve(uploads, '_length').map(function (uploadsLength) {
+		return resolve(paymentUploads, '_length').map(function (paymentUploadsLength) {
+			if (uploadsLength) {
+				return paymentUploadsLength ? "4." : "3.";
+			}
+
+			return paymentUploadsLength ? "3." : "2.";
+		});
+	});
+
+	section(
+		{ class: 'section-tab-nav' },
+
+		_if(resolve(uploads, '_length'), a({
 			class: 'section-tab-nav-tab',
 			id: 'tab-business-process-documents',
 			href: '/' + this.businessProcess.__id__ + '/'
-		}, _if(gt(this.processingStep.requirementUploads.processable._size, 0), [
+		}, _if(gt(requirementUploads.processable._size, 0), [
 			_("${ tabNumber } Revision of the documents", { tabNumber: "1." }),
-			_if(eq(this.processingStep.requirementUploads._approvalProgress, 1),
+			_if(eq(requirementUploads._approvalProgress, 1),
 				span({ class: 'fa fa-check' })),
-			_if(gt(this.processingStep.requirementUploads.rejected._size, 0),
+			_if(gt(requirementUploads.rejected._size, 0),
 				span({ class: 'fa fa-exclamation' }))
-		], _("${ tabNumber } Documents", { tabNumber: "1." }))),
+		], _("${ tabNumber } Documents", { tabNumber: "1." })))),
 
-		_if(resolve(paymentUploads, '_length'),
-			a({
-				class: 'section-tab-nav-tab',
-				id: 'tab-business-process-payments',
-				href: '/' + this.businessProcess.__id__ + '/payment-receipts/'
-			}, _if(gt(this.processingStep.paymentReceiptUploads.processable._size, 0), [
-				_("${ tabNumber } Revision of payments", { tabNumber: "2." }),
-				_if(eq(this.processingStep.paymentReceiptUploads._approvalProgress, 1),
-					span({ class: 'fa fa-check' })),
-				_if(gt(this.processingStep.paymentReceiptUploads.rejected._size, 0),
-					span({ class: 'fa fa-exclamation' }))
-			], _("${ tabNumber } Payment receipts", { tabNumber: "2." })))),
+		_if(resolve(paymentUploads, '_length'), a({
+			class: 'section-tab-nav-tab',
+			id: 'tab-business-process-payments',
+			href: '/' + this.businessProcess.__id__ + '/payment-receipts/'
+		}, _if(gt(paymentReceiptUploads.processable._size, 0), [
+			_("${ tabNumber } Revision of payments", { tabNumber: paymentUploadsTabNumber }),
+			_if(eq(paymentReceiptUploads._approvalProgress, 1),
+				span({ class: 'fa fa-check' })),
+			_if(gt(paymentReceiptUploads.rejected._size, 0),
+				span({ class: 'fa fa-exclamation' }))
+		], _("${ tabNumber } Payment receipts", { tabNumber: paymentUploadsTabNumber })))),
 
 		a({
 			class: 'section-tab-nav-tab',
 			id: 'tab-business-process-data',
 			href: '/' + this.businessProcess.__id__ + '/data/'
 		}, _if(this.processingStep.dataFormsRevision._isProcessable, [
-			_("${ tabNumber } Revision of data",
-				{ tabNumber: _if(resolve(paymentUploads, '_length'), "3.", "2.") }),
+			_("${ tabNumber } Revision of data", { tabNumber: dataTabNumber }),
 			_if(and(this.processingStep.dataFormsRevision._isProcessable,
 				eq(this.processingStep.dataFormsRevision._approvalProgress, 1)),
 				span({ class: 'fa fa-check' })),
 			_if(and(this.processingStep.dataFormsRevision._isProcessable,
 				gt(this.processingStep.dataFormsRevision._sentBackProgress, 0)),
 				span({ class: 'fa fa-exclamation' }))
-		], _("${ tabNumber } Data", {
-			tabNumber: _if(resolve(paymentUploads, '_length'), "3.", "2.")
-		}))),
+		], _("${ tabNumber } Data", { tabNumber: dataTabNumber }))),
 
 		_if(exports._processingTabLabel.call(this),
 			function () {
@@ -218,14 +244,11 @@ exports._revisionContainer = function () {
 					class: 'section-tab-nav-tab',
 					id: 'tab-business-process-processing',
 					href: '/' + this.businessProcess.__id__ + '/processing/'
-				}, _d(exports._processingTabLabel.call(this), {
-					tabNumber: resolve(paymentUploads, '_length').map(function (length) {
-						return length ? "4." : "3.";
-					})
-				}));
+				}, _d(exports._processingTabLabel.call(this), { tabNumber: processingTabNumber }));
 			}.bind(this)),
 
-		div({ id: 'tab-content', class: 'business-process-revision' }));
+		div({ id: 'tab-content', class: 'business-process-revision' })
+	);
 };
 
 exports._customAlert = Function.prototype;
