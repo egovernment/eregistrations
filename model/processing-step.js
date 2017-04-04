@@ -168,7 +168,7 @@ module.exports = memoize(function (db) {
 		toWebServiceJSON: {
 			value: function (ignore) {
 				var data = {
-					code: this.status,
+					status: { code: this.status },
 					statusTimestamp: this._status.lastModified ?
 							Math.floor(this._status.lastModified / 1000) : null,
 					data: null

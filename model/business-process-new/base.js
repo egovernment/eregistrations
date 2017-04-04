@@ -154,10 +154,6 @@ module.exports = memoize(function (db/*, options*/) {
 					});
 				});
 
-				if (!Object.keys(result.request.data).length) {
-					result.request.data = null;
-				}
-
 				return result;
 			}
 		}
