@@ -12,7 +12,7 @@ TypeMapper.prototype.mapType = function (type) {
 
 	// if custom catalog
 	if (this.customCatalogs && this.customCatalogs.filter(function (cat) {
-			return cat.name === type.__id__;
+			return cat[type.__id__];
 		}).length > 0) {
 		return "enum";
 	}
