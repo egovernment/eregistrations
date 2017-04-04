@@ -290,6 +290,9 @@ module.exports = memoize(function (db) {
 		} },
 		toJSON: { value: function (ignore) {
 			throw new Error("toJSON not implemented for " + this.__id__);
+		} },
+		toWebServiceJSON: { value: function (ignore) {
+			throw new Error("toWebServiceJSON not implemented for " + this.__id__);
 		} }
 	});
 
