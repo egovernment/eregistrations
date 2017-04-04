@@ -12,5 +12,5 @@ module.exports = function (t, a) {
 	defineBase(db);
 
 	a(businessProcess.isFromEregistrations, true);
-	a.deep(businessProcess.toWebServiceJSON().request.data, null);
+	a.deep(businessProcess.toWebServiceJSON().request.data, {});
 };
