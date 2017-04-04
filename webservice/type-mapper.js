@@ -18,9 +18,10 @@ TypeMapper.prototype.mapType = function (type) {
 	}
 
 	// if enum
-	if (type.__id__ === "File" || type.prototype instanceof this.db.File) return "file";
-	// file
 	if (type.meta && type.members) return "enum";
+
+	// file
+	if (type.__id__ === "File" || type.prototype instanceof this.db.File) return "file";
 	// primitives
 	if (type.__id__ === "String" || type.prototype instanceof this.db.String) return "string";
 	if (type.__id__ === "Number" || type.prototype instanceof this.db.Number) return "number";
