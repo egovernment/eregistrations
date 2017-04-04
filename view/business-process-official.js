@@ -11,10 +11,12 @@ exports._match = 'businessProcess';
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
+		var target = this.processingStep || this.businessProcess;
+
 		var hasDocuments = or(
-			this.businessProcess.requirementUploads.applicable._size,
-			this.businessProcess.paymentReceiptUploads.applicable._size,
-			this.businessProcess.certificates.userApplicable._size
+			target.requirementUploads.applicable._size,
+			target.paymentReceiptUploads.applicable._size,
+			target.certificates.applicable._size
 		);
 
 		renderMainInfo(this, { urlPrefix: '/' + this.businessProcess.__id__ + '/' });
