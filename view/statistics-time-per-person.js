@@ -13,6 +13,8 @@ var copy                 = require('es5-ext/object/copy')
   , setupQueryHandler    = require('../utils/setup-client-query-handler')
   , resolveFullStepPath  = require('../utils/resolve-processing-step-full-path')
   , getQueryHandlerConf  = require('../apps/statistics/get-query-conf')
+  , selectDateTo         = require('./components/filter-bar/select-date-to')
+  , selectDateFrom       = require('./components/filter-bar/select-date-from')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , getDynamicUrl        = require('./utils/get-dynamic-url');
 
@@ -107,14 +109,12 @@ exports['statistics-main'] = function () {
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-from-input' }, _("Date from"), ":"),
-				input({ id: 'date-from-input', type: 'date',
-					name: 'dateFrom', value: location.query.get('dateFrom') })
+				selectDateFrom()
 			),
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'date-to-input' }, _("Date to"), ":"),
-				input({ id: 'date-to-input', type: 'date',
-					name: 'dateTo', value: location.query.get('dateTo') })
+				selectDateTo()
 			),
 			div(
 				a({ class: 'users-table-filter-bar-print', href:

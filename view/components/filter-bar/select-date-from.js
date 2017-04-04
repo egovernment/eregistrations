@@ -19,8 +19,7 @@ module.exports = function (/* opts */) {
 				return opts.date;
 			}
 			var now = new db.Date(), defaultDate;
-			defaultDate = new db.Date(now.getUTCFullYear(), now.getUTCMonth(),
-					now.getUTCDate() - 6);
+			defaultDate = new db.Date(now.getUTCFullYear(), 0, 1);
 			return defaultDate.toISOString().slice(0, 10);
 		})
 	});
