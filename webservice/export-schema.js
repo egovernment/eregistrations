@@ -105,7 +105,7 @@ module.exports = memoize(function (db, customCatalogs) {
 		serviceDefinition.properties = {};
 
 		// basic
-		serviceDefinition.properties.id = { type: "string", required: "true" };
+		serviceDefinition.properties.id = { type: "string", required: true };
 		serviceDefinition.properties.service = { type: "enum", ref: "services", required: true };
 		serviceDefinition.properties.submittedTimespamp = { type: "timestamp", required: true };
 
