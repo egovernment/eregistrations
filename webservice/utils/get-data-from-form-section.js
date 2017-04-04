@@ -2,7 +2,7 @@
 
 var assign = require('es5-ext/object/assign');
 
-module.exports = function getDataFromSection (dataForm, result, typeMapper) {
+module.exports = function getDataFromSection(dataForm, result, typeMapper) {
 
 	if (!result) result = {};
 
@@ -60,4 +60,4 @@ module.exports = function getDataFromSection (dataForm, result, typeMapper) {
 		});
 	}
 	return result;
-}
+};

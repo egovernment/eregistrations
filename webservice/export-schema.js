@@ -5,7 +5,6 @@ var ensureDb = require('dbjs/valid-dbjs')
   , getDataFromSection =  require('./utils/get-data-from-form-section')
   , memoize = require('memoizee');
 
-
 function getDataFromProcessingStep(step, db, typeMapper) {
 
 	var stepData = {};
