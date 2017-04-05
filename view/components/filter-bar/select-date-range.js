@@ -11,9 +11,9 @@
 	.write('<scr' +
 	'ipt data-spa crossorigin defer src="js/jquery.comiseo.daterangepicker.js"></sc' + 'ript>');
 	*/
-var db = require('../../../db')
-  , _ = require('mano').i18n.bind('Daterange')
-  , location = require('mano/lib/client/location')
+var _ = require('mano').i18n.bind('Daterange')
+  , dateFrom = require('./select-date-from')
+  , dateTo = require('./select-date-to')
   , moment = window.moment
   , jQuery = window.jQuery;
 
@@ -121,29 +121,13 @@ module.exports = function (/* opts */) {
 	});
 
 	return div(
-		input({
+		dateFrom({
 			id: 'startId',
-			type: 'hidden',
-			name: 'dateFrom',
-			value: location.query.get('dateFrom').map(function (dateFrom) {
-				if (dateFrom) return dateFrom;
-				var now = new db.Date(), defaultDate =
-					new db.Date(now.getUTCFullYear(), now.getUTCMonth(),
-						now.getUTCDate() - 6);
-				return defaultDate.toISOString().slice(0, 10);
-			})
+			type: 'hidden'
 		}),
-		input({
+		dateTo({
 			id: 'endId',
-			type: 'hidden',
-			name: 'dateTo',
-			value: location.query.get('dateTo').map(function (dateTo) {
-				if (dateTo) return dateTo;
-				var now = new db.Date(), defaultDate =
-					new db.Date(now.getUTCFullYear(), now.getUTCMonth(),
-						now.getUTCDate());
-				return defaultDate.toISOString().slice(0, 10);
-			})
+			type: 'hidden'
 		}),
 		input({
 			id: opts.id || 'rangepicker',

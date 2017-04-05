@@ -8,8 +8,8 @@ module.exports = function (/* opts */) {
 	name = opts.name || 'dateFrom';
 	return input({
 		id: opts.id || 'date-from-input',
-		type: 'date',
-		name: name,
+		type: opts.type || 'date',
+		name: opts.name || name,
 		value: location.query.get(name).map(function (dateFrom) {
 			if (dateFrom) return dateFrom;
 			if (opts.date) {

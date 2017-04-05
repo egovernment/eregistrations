@@ -8,8 +8,8 @@ module.exports = function (/* opts */) {
 	name = opts.name || 'dateTo';
 	return input({
 		id: opts.id || 'date-to-input',
-		type: 'date',
-		name: name,
+		type: opts.type || 'date',
+		name: opts.name || name,
 		value: location.query.get(name).map(function (dateTo) {
 			if (dateTo) return dateTo;
 			var now = new db.Date(), defaultDate;
