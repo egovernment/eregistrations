@@ -10,10 +10,9 @@ var db                    = require('../db')
   , toArray               = require('es5-ext/object/to-array')
   , setupQueryHandler     = require('../utils/setup-client-query-handler')
   , getQueryHandlerConf   = require('../apps/statistics/get-query-conf')
+  , dateFromToBlock       = require('./components/filter-bar/select-date-range-safe-fallback')
   , completedFilesPeriods = ['inPeriod', 'today', 'thisWeek', 'thisMonth', 'thisYear',
-		'sinceLaunch']
-  , selectDateTo          = require('./components/filter-bar/select-date-to')
-  , selectDateFrom        = require('./components/filter-bar/select-date-from');
+		'sinceLaunch'];
 
 exports._parent = require('./statistics-files');
 
@@ -44,21 +43,12 @@ var getTimeBreakdownTable = function () {
 		});
 	});
 
-	return [
+	return div({ class: 'block-pull-up' }, [
 		section(
-			{ class: 'section-primary users-table-filter-bar' },
+			{ class: 'date-period-selector-positioned-on-submenu' },
 			form(
 				{ action: '/files/', autoSubmit: true },
-				div(
-					{ class: 'users-table-filter-bar-status' },
-					label({ for: 'date-from-input' }, _("Date from"), ":"),
-					selectDateFrom()
-				),
-				div(
-					{ class: 'users-table-filter-bar-status' },
-					label({ for: 'date-to-input' }, _("Date to"), ":"),
-					selectDateTo()
-				)
+				dateFromToBlock()
 			)
 		),
 		table(
@@ -81,8 +71,7 @@ var getTimeBreakdownTable = function () {
 							return tr(
 								td(db['BusinessProcess' + capitalize.call(serviceName)].prototype.label),
 								list(completedFilesPeriods, function (periodName) {
-									var total = data.total[periodName]
-									  , count = serviceData[periodName];
+									var total = data.total[periodName], count = serviceData[periodName];
 
 									return td({ class: 'statistics-table-number' }, count, ' ',
 										'(', (total ? ((count / total) * 100) : 0).toFixed(2), '%)');
@@ -100,7 +89,7 @@ var getTimeBreakdownTable = function () {
 				})
 			)
 		)
-	];
+	]);
 };
 
 exports['statistics-main'] = function () {

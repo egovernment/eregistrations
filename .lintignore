@@ -1,2 +1,5 @@
 /scripts/generate-app/public-statics
 /public/pdfjs
+/public/js
+/public/images
+/css/base.css
