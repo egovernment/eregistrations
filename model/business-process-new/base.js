@@ -79,7 +79,84 @@ module.exports = memoize(function (db/*, options*/) {
 			if (this.manager) result.push(_observe(this.manager._email));
 
 			return result;
-		} }
+		} },
+		toWebServiceJSON: {
+			value: function (ignore) {
+				var dataFields = {}, result, db;
+				db = this.database;
+				result = {
+					id: this.__id__,
+					service: {
+						code: this.constructor.__id__
+					},
+					submittedTimestamp:
+						this._isSubmitted.lastModified ?
+								Math.floor(this._isSubmitted.lastModified / 1000) : null,
+					processingSteps: {},
+					request: {
+						registrations: [],
+						documentUploads: [],
+						costs: [],
+						payments: [],
+						certificates: [],
+						data: {}
+					}
+				};
+
+				this.processingSteps.map.forEach(function self(processingStep) {
+					if (db.ProcessingStepGroup && processingStep instanceof db.ProcessingStepGroup) {
+						processingStep.steps.applicable.forEach(self);
+						return;
+					}
+					result.processingSteps[processingStep.key] = processingStep.toWebServiceJSON();
+				});
+
+				this.registrations.requested.forEach(function (reg) {
+					result.request.registrations.push({
+						code: reg.key
+					});
+				});
+
+				this.requirementUploads.applicable.forEach(function (upload) {
+					result.request.documentUploads.push(upload.toWebServiceJSON());
+				});
+
+				this.costs.payable.forEach(function (cost) {
+					result.request.costs.push(cost.toWebServiceJSON());
+				});
+
+				this.paymentReceiptUploads.applicable.forEach(function (payment) {
+					result.request.payments.push(payment.toWebServiceJSON());
+				});
+
+				this.certificates.applicable.forEach(function (certificate) {
+					result.request.certificates.push(certificate.toWebServiceJSON());
+				});
+
+				// toWebServiceJSON is not implemented on FormSectionBase
+				if (this.database.FormSectionBase &&
+						this.determinants.constructor !== this.database.FormSectionBase) {
+					dataFields = this.determinants.toWebServiceJSON();
+					Object.keys(dataFields).forEach(function (fieldName) {
+						result.request.data[fieldName] = dataFields[fieldName];
+					});
+				}
+				this.dataForms.applicable.forEach(function (section) {
+					dataFields = section.toWebServiceJSON();
+					Object.keys(dataFields).forEach(function (fieldName) {
+						result.request.data[fieldName] = dataFields[fieldName];
+					});
+				});
+				this.submissionForms.applicable.forEach(function (section) {
+					dataFields = section.toWebServiceJSON();
+					Object.keys(dataFields).forEach(function (fieldName) {
+						result.request.data[fieldName] = dataFields[fieldName];
+					});
+				});
+
+				return result;
+			}
+		}
 	}, {
 		draftLimit: { type: UInteger, value: 20 }
 	});

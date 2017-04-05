@@ -44,6 +44,16 @@ module.exports = memoize(function (db) {
 		// an online payment beeing initialized
 		isElectronic: { type: db.Boolean, value: function () {
 			return this.isOnlinePaymentInitialized;
-		} }
+		} },
+		toWebServiceJSON: {
+			value: function (ignore) {
+				return {
+					code: this.key,
+					data: {
+						amount: this.amount
+					}
+				};
+			}
+		}
 	});
 }, { normalizer: require('memoizee/normalizers/get-1')() });

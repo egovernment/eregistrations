@@ -20,11 +20,28 @@ module.exports = memoize(function (db) {
 			}
 			return this.type.valueToJSON(value, this);
 		},
+		valueToWebServiceJSON: function () {
+			var value = this.object.get(this.key), result;
+			if (value && value.forEach && !this.nested && this.multiple) {
+				result = [];
+				value.forEach(function (value) {
+					result.push(this.type.valueToWebServiceJSON(value, this));
+				}, this);
+				return result;
+			}
+			return this.type.valueToWebServiceJSON(value, this);
+		},
 		fieldToJSON: function (ignore) {
 			return {
 				label: this.labelToJSON(),
 				value: this.valueToJSON(),
 				id: this.__valueId__
+			};
+		},
+		fieldToWebServiceJSON: function (ignore) {
+			return {
+				name: this.key,
+				value: this.valueToWebServiceJSON()
 			};
 		},
 		isValueEmpty: function (ignore) {
@@ -36,7 +53,9 @@ module.exports = memoize(function (db) {
 
 	db.Base.prototype.defineProperties({
 		isEmpty: { type: db.Function },
-		toJSON: { type: db.Function }
+		toJSON: { type: db.Function },
+		toWebServiceJSON: { type: db.Function },
+		toWebServiceJSONPrettyData: { type: db.Function }
 	});
 
 	db.Base.defineProperties({
@@ -54,6 +73,24 @@ module.exports = memoize(function (db) {
 				return value.toString(descriptor);
 			}
 			return (new this(value)).toString(descriptor);
+		} },
+		valueToWebServiceJSON: { type: db.Function, value: function (value, descriptor) {
+			var db = this.database;
+			if (value == null) return value;
+			// enums handling
+			if (this.meta && this.members) {
+				return { code: value };
+			}
+			if (db.isObjectType(this)) {
+				if (typeof value.toWebServiceJSON === 'function') {
+					return value.toWebServiceJSON(descriptor);
+				}
+				if (typeof value.toJSON === 'function') {
+					return value.toJSON(descriptor);
+				}
+				return value.toString(descriptor);
+			}
+			return value;
 		} }
 	});
 

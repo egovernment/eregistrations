@@ -63,7 +63,8 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 	  , noRequstedRegistrationsSection, mandatoryRegistrationsSection
 	  , mandatoryRegistrationsListElements, mandatoryRegistrationsEmptyMessage
 	  , optionalRegistrationsSection, optionalRegistrationsListElements
-	  , requirementsSection, requirementsListElements, requirementsLabelElements = {}
+	  , requirementsSection, requirementsEmptyMessage, requirementsListElements
+	  , requirementsLabelElements = {}
 	  , costsListElements, costsAmountsElements = {}, costsLabelElements = {}
 	  , costsTotalElement, costsPrintLink, guideSaveButton
 	  , costsSection, zeroCostsClass;
@@ -81,6 +82,7 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 	optionalRegistrationsSection = $('optional-registrations-section');
 	optionalRegistrationsListElements = getNamedListElements('optional-registrations-list');
 	requirementsSection      = $('requirements-section');
+	requirementsEmptyMessage = $('requirements-empty-message');
 	requirementsListElements = getNamedListElements('requirements-list');
 	costsListElements = getNamedListElements('costs-list');
 	costsPrintLink  = $('print-costs-link');
@@ -222,6 +224,12 @@ module.exports = $.refreshGuide = function (guideFormId, businessProcessId,
 		businessProcess.requirements.map.forEach(function (requirement) {
 			requirement.label = getPropertyValue(requirement, 'label');
 		});
+
+		if (businessProcess.requirements.applicable.size === 0) {
+			toggleConditionally(requirementsEmptyMessage, true);
+		} else {
+			toggleConditionally(requirementsEmptyMessage, false);
+		}
 
 		//Resolve costs
 		businessProcess.costs.applicable =

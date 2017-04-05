@@ -70,7 +70,7 @@ var calculate = function (dateMap, data, dateFrom, dateTo) {
 	var initStepResult = function (serviceResult, stepName) {
 		if (!serviceResult.processingStep[stepName]) {
 			serviceResult.processingStep[stepName] = {
-				pending: { businessProcess: 0, certificate: {} },
+				pending: { businessProcess: new Set(), certificate: {} },
 				byProcessor: {}
 			};
 		}

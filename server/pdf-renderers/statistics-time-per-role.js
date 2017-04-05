@@ -8,7 +8,7 @@ var copy                 = require('es5-ext/object/copy')
   , _                    = require('mano').i18n.bind('Statistics time per role pdf')
   , db                   = require('../../db')
   , resolveFullStepPath  = require('../../utils/resolve-processing-step-full-path')
-  , getDurationDaysHours = require('../../view/utils/get-duration-days-hours')
+  , getDurationDaysHours = require('../../view/utils/get-duration-days-hours-fine-grain')
   , htmlToPdf            = require('../html-to-pdf')
   , processingStepsMeta  = require('../../processing-steps-meta')
 

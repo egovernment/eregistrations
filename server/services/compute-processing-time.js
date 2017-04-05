@@ -17,6 +17,7 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , Set                           = require('es6-set')
   , getData                       = require('../business-process-query/get-data')
   , processingStepsMeta           = require('../../processing-steps-meta')
+  , getProcessingWorkingHoursTime = require('../../utils/get-processing-working-hours-time')
   , queryData;
 
 var getHolidaysProcessingTime = function (startStamp, endStamp) {
@@ -125,7 +126,8 @@ module.exports = function (driver) {
 			allStorages.add(storage);
 			storage.on('key:' + stepPath + '/status', function (event) {
 				var status, oldStatus, processingHolidaysTimePath, processingHolidaysTime
-				  , nonProcessingTimePath, nonProcessingTime;
+				  , nonProcessingTimePath, nonProcessingTime, processingWorkingHoursTimePath
+				  , processingWorkingHoursTime;
 
 				if (event.type !== 'computed' || !event.old) return;
 				status    = unserializeValue(event.data.value);
@@ -143,6 +145,16 @@ module.exports = function (driver) {
 						getHolidaysProcessingTime(event.old.stamp / 1000, event.data.stamp / 1000);
 					if (processingHolidaysTime) {
 						storeTime(storage, processingHolidaysTimePath, processingHolidaysTime).done();
+					}
+
+					if (oldStatus === 'pending') {
+						processingWorkingHoursTimePath = event.ownerId + '/' + stepPath +
+							'/processingWorkingHoursTime';
+						processingWorkingHoursTime =
+							getProcessingWorkingHoursTime(event.old.stamp / 1000, event.data.stamp / 1000);
+						if (processingWorkingHoursTime) {
+							storeTime(storage, processingWorkingHoursTimePath, processingWorkingHoursTime).done();
+						}
 					}
 					break;
 				case 'pending':

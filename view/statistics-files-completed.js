@@ -12,7 +12,9 @@ var db                    = require('../db')
   , setupQueryHandler     = require('../utils/setup-client-query-handler')
   , getQueryHandlerConf   = require('../apps/statistics/get-query-conf')
   , completedFilesPeriods = ['inPeriod', 'today', 'thisWeek', 'thisMonth', 'thisYear',
-		'sinceLaunch'];
+		'sinceLaunch']
+  , selectDateTo          = require('./components/filter-bar/select-date-to')
+  , selectDateFrom        = require('./components/filter-bar/select-date-from');
 
 exports._parent = require('./statistics-files');
 
@@ -51,14 +53,12 @@ var getTimeBreakdownTable = function () {
 				div(
 					{ class: 'users-table-filter-bar-status' },
 					label({ for: 'date-from-input' }, _("Date from"), ":"),
-					input({ id: 'date-from-input', type: 'date',
-						name: 'dateFrom', value: location.query.get('dateFrom') })
+					selectDateFrom()
 				),
 				div(
 					{ class: 'users-table-filter-bar-status' },
 					label({ for: 'date-to-input' }, _("Date to"), ":"),
-					input({ id: 'date-to-input', type: 'date',
-						name: 'dateTo', value: location.query.get('dateTo') })
+					selectDateTo()
 				)
 			)
 		),

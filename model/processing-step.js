@@ -18,7 +18,8 @@ var Map                        = require('es6-map')
   , definePaymentReceiptUpload = require('./payment-receipt-upload')
   , defineRequirementUpload    = require('./requirement-upload')
   , defineDocument             = require('./document')
-  , defineStatusHistoryItem    = require('./lib/status-history-item');
+  , defineStatusHistoryItem    = require('./lib/status-history-item')
+  , defineToWSJSONPrettyData   = require('./lib/define-to-ws-json-pretty-data');
 
 module.exports = memoize(function (db) {
 	var Percentage           = definePercentage(db)
@@ -47,6 +48,7 @@ module.exports = memoize(function (db) {
 		['approved', { label: _("Approved") }],
 		['redelegated', { label: _("Redelegated") }]
 	]));
+	defineToWSJSONPrettyData(ProcessingStep.prototype);
 
 	ProcessingStep.prototype.defineProperties({
 		// Official that processed request at given processing step
@@ -161,7 +163,23 @@ module.exports = memoize(function (db) {
 		isAssignable: { type: db.Boolean },
 		correctionTime: { type: UInteger, value: 0 },
 		processingHolidaysTime: { type: UInteger, value: 0 },
-		nonProcessingTime: { type: UInteger, value: 0 }
+		nonProcessingTime: { type: UInteger, value: 0 },
+		processingWorkingHoursTime: { type: UInteger, value: 0 },
+		toWebServiceJSON: {
+			value: function (ignore) {
+				var data = {
+					status: { code: this.status },
+					statusTimestamp: this._status.lastModified ?
+							Math.floor(this._status.lastModified / 1000) : null,
+					data: null
+				};
+				if (this.dataForm.constructor !== this.database.FormSectionBase) {
+					data.data = this.toWebServiceJSONPrettyData(this.dataForm.toWebServiceJSON());
+				}
+
+				return data;
+			}
+		}
 	});
 
 	ProcessingStep.prototype.requirementUploads.defineProperties({
