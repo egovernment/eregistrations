@@ -224,7 +224,44 @@ module.exports = memoize(function (db) {
 				if (entities.length) result.entities = entities;
 			}
 			return result;
-		} }
+		} },
+		toWebServiceJSON: {
+			value: function (ignore) {
+				var fields = {}, resolventDescriptor, sectionFields, wsValue, entityObjects
+				  , isEntitiesNestedMap, entityFields;
+				entityObjects = this.propertyMaster.resolveSKeyPath(this.propertyName);
+				isEntitiesNestedMap = entityObjects.value instanceof this.database.NestedMap;
+				fields[this.propertyName] = [];
+				// entities container
+				if (this.resolventProperty) {
+					resolventDescriptor = this.master.resolveSKeyPath(this.resolventProperty).ownDescriptor;
+					if (!resolventDescriptor.isValueEmpty()) {
+						wsValue = resolventDescriptor.fieldToWebServiceJSON();
+						fields[wsValue.name] = wsValue.value;
+					}
+				}
+				if (!this.isUnresolved) {
+					this.entitiesSet.forEach(function (entity) {
+						entityFields  = {};
+						entity.getBySKeyPath(this.sectionProperty).applicable.forEach(function (section) {
+							sectionFields = section.toWebServiceJSON();
+							if (isEntitiesNestedMap) {
+								Object.keys(sectionFields[this.propertyName].map).forEach(function (id) {
+									Object.keys(sectionFields[this.propertyName].map[id]).forEach(function (propKey) {
+										entityFields[propKey] = sectionFields[this.propertyName].map[id][propKey];
+									}, this);
+								}, this);
+							} else { //old model
+								entityFields = sectionFields;
+							}
+						}, this);
+						fields[this.propertyName].push(entityFields);
+					}, this);
+				}
+
+				return fields;
+			}
+		}
 	});
 
 	FormEntitiesTable.prototype.progressRules.map.define('entities', {
