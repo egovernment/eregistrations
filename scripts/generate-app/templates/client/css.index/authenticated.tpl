@@ -12,3 +12,5 @@
 ../../../node_modules/eregistrations/css/components/throbber.css
 ../../../node_modules/eregistrations/css/components/greedy-menu.css
 ../../../css/theme.css
+../../../node_modules/eregistrations/css/jquery.ui.daterangepicker.css
+../../../node_modules/eregistrations/css/jquery.ui.min.css
