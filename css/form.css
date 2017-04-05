@@ -633,10 +633,12 @@ Styles applied while screen size is less than 640px
 	}
 }
 
+/*csslint important: false*/
 .date-period-selector-as-first-block-element{
 	margin-top: 15px !important;
 	margin-bottom: 15px !important;
 }
+/*csslint important: true*/
 
 .date-period-selector-positioned-on-submenu{
 	margin-bottom: 15px;
