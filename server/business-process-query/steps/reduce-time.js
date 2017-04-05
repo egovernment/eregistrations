@@ -8,10 +8,14 @@ var ensureObject = require('es5-ext/object/valid-object')
 
 /**
 	* @param data  - Direct result from ../get-data or ./filter
+	* opts {Object}
+	* opts.mode    - ['full', 'workingHours']
 	* @returns {Object} - Reduced map (format documented in code)
 */
-module.exports = function (data) {
+module.exports = function (data/*, opts */) {
+	var options = Object(arguments[1]), mode;
 	ensureObject(data);
+	mode = options.mode || 'workingHours';
 
 	var result = {
 		// Reduction data for all
@@ -63,9 +67,14 @@ module.exports = function (data) {
 			// May happen only in case of data inconsistency
 			if (!bpStepData.processor) return;
 
-			processingTime =
-				(bpStepData.processingDateTime - bpStepData.pendingDateTime -
-					(bpStepData.processingHolidaysTime || 0) - (bpStepData.nonProcessingTime || 0));
+			if (mode === 'workingHours') {
+				processingTime = bpStepData.processingWorkingHoursTime || 0;
+			} else {
+				processingTime =
+					(bpStepData.processingDateTime - bpStepData.pendingDateTime -
+						(bpStepData.processingHolidaysTime || 0) - (bpStepData.nonProcessingTime || 0));
+			}
+
 			correctionTime = bpStepData.correctionTime;
 
 			// If there's something wrong with calculations (may happen with old data), or

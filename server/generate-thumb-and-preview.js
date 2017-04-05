@@ -8,6 +8,7 @@ var contains     = require('es5-ext/string/#/contains')
   , mano         = require('mano')
   , gm           = require('./gm')
   , docMimeTypes = require('../utils/microsoft-word-doc-mime-types')
+  , xlsMimeTypes = require('../utils/microsoft-excel-spreadsheet-mime-types')
 
   , resolve = path.resolve, extname = path.extname
   , uploadsPath = mano.uploadsPath;
@@ -20,8 +21,11 @@ module.exports = function (file) {
 	  , thumbPath   = file.path.slice(0, -extension.length) + '.thumb' + extension
 	  , thumb, preview, processFullPath, thumbFullPath, previewFullPath, biggerDimension;
 
-	//Skip for word doc
-	if (docMimeTypes.indexOf(file.type) !== -1) return deferred(null);
+	//Skip for word doc and excel
+	if (docMimeTypes.indexOf(file.type) !== -1 ||
+			xlsMimeTypes.indexOf(file.type) !== -1) {
+		return deferred(null);
+	}
 
 	if (file.type !== 'image/jpeg') {
 		thumbPath += '.jpg';

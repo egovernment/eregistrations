@@ -392,13 +392,13 @@ module.exports = function (config) {
 					//   steps | filter(query) | reduce().byStepAndService
 					var result = {
 						dateRangeData: {
-							steps: reduceSteps(filterSteps(data, query)).byStepAndService,
+							steps: reduceSteps(filterSteps(data, query), { mode: 'full' }).byStepAndService,
 							businessProcesses: reduceBusinessProcesses(
 								filterBusinessProcesses(data.businessProcesses,
 									assign({ flowStatus: 'submitted' }, query))
 							)
 						},
-						lastDateData: reduceSteps(filterSteps(data, lastDateQuery)).byStep
+						lastDateData: reduceSteps(filterSteps(data, lastDateQuery), { mode: 'full' }).byStep
 					};
 					if (customChartsController) customChartsController(query, result, lastDateQuery);
 					return result;

@@ -8,6 +8,7 @@ var generateTableBody = function (rows, master) {
 	return rows.map(function (row) {
 		return tr(th(row.label, span({ class: 'hint' }, row.inputHint)),
 			list(row.paths, function (path) {
+				if (path == null) return td();
 				var resolved = master.resolveSKeyPath(path);
 				return td(input({
 					control: { id: 'matrix-display-input-' + path },
@@ -20,26 +21,29 @@ var generateTableBody = function (rows, master) {
 };
 
 module.exports = function (config) {
-	var horizontalTotal, horizontalTotals = [], verticalTotals = [], totalId,
-		rows, columnLabels, lastRowLabel, tableId, master, formId;
+	var horizontalTotal, horizontalTotals = [], verticalTotals = [], skipVerticalTotal,
+		totalId, rows, columnLabels, lastRowLabel, tableId, master, formId;
 	ensureObject(config);
-	rows         = ensureArray(config.rows);
-	columnLabels = ensureArray(config.columnLabels);
-	lastRowLabel = config.lastRowLabel;
-	master       = ensureObject(config.master);
-	tableId      = config.tableId || generateId();
-	formId       = config.formId || tableId;
+	rows              = ensureArray(config.rows);
+	columnLabels      = ensureArray(config.columnLabels);
+	lastRowLabel      = config.lastRowLabel;
+	master            = ensureObject(config.master);
+	tableId           = config.tableId || generateId();
+	formId            = config.formId || tableId;
+	skipVerticalTotal = config.skipVerticalTotal;
 
 	totalId = generateId('total');
 	//vertical totals
-	rows.forEach(function (row) {
-		var verticalTotal = {
-			totalId: generateId('total'),
-			paths: row.paths
-		};
-		verticalTotals.push(verticalTotal);
-		row.totalId = verticalTotal.totalId;
-	});
+	if (!skipVerticalTotal) {
+		rows.forEach(function (row) {
+			var verticalTotal = {
+				totalId: generateId('total'),
+				paths: row.paths
+			};
+			verticalTotals.push(verticalTotal);
+			row.totalId = verticalTotal.totalId;
+		});
+	}
 	//horizontal totals
 	rows[0].paths.forEach(function (path, index) {
 		horizontalTotal = {
@@ -73,6 +77,7 @@ module.exports = function (config) {
 			$.forEach(horizontalTotals.concat(verticalTotals), function (total) {
 				var subTotatals = [];
 				$.forEach(total.paths, function (path) {
+					if (path == null) return;
 					subTotatals.push($('matrix-display-input-' + path));
 				});
 				totals.push({
@@ -83,11 +88,12 @@ module.exports = function (config) {
 			$.forEach(verticalTotals, function (total) {
 				var subTotatals = [];
 				$.forEach(total.paths, function (path) {
+					if (path == null) return;
 					subTotatals.push($('matrix-display-input-' + path));
 				});
 				fullTotal.subTotals = fullTotal.subTotals.concat(subTotatals);
 			});
-			totals.push(fullTotal);
+			if (verticalTotals.length > 0) totals.push(fullTotal);
 
 			$.onEnvUpdate(form, function () {
 				$.forEach(totals, function (total) {

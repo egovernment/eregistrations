@@ -219,6 +219,13 @@ exports.stepMetaMap = {
 		set: function (data, record) { data.processingHolidaysTime = unserializeValue(record.value); },
 		delete: function (data) { delete data.processingHolidaysTime; }
 	},
+	processingWorkingHoursTime: {
+		validate: function (record) { return (record.value[0] === '2'); },
+		set: function (data, record) {
+			data.processingWorkingHoursTime = unserializeValue(record.value);
+		},
+		delete: function (data) { delete data.processingWorkingHoursTime; }
+	},
 	processor: {
 		validate: function (record) { return (record.value[0] === '7'); },
 		set: function (data, record) { data.processor = record.value.slice(1); },

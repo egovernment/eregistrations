@@ -51,8 +51,7 @@ exports.step = function () {
 				section(
 					{ class: 'section-primary user-submission-sworn-declaration' },
 					h2(_("Acceptance")),
-					p(_("Before sending, you must accept that the information entered into the system, " +
-						"would be saved and processed by the involved institutions")),
+					exports._swornDeclarationLegend.call(this),
 					label({ class: 'input-aside' }, span(input({
 						dbjs: submissionForms._isAffidavitSigned,
 						type: 'checkbox',
@@ -74,6 +73,11 @@ exports.step = function () {
 					}
 				)
 			))));
+};
+
+exports._swornDeclarationLegend = function () {
+	return p(_("Before sending, you must accept that the information entered into the system, " +
+		"would be saved and processed by the involved institutions"));
 };
 
 exports._swornDeclaration = function () {
