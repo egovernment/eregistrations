@@ -3,6 +3,7 @@
 var Database           = require('dbjs')
   , defineFormSection  = require('../../model/form-section')
   , defineProgressRule = require('../../model/lib/progress-rule')
+  , defineBase         = require('../../model/base')
   , aFrom              = require('es5-ext/array/from');
 
 module.exports = function (t, a) {
@@ -16,6 +17,9 @@ module.exports = function (t, a) {
 	  , MasterType            = db.Object.extend('MasterType')
 
 	  , masterObject, section;
+
+	// needed for jsonification tests
+	defineBase(db);
 
 	// ------------------ Setup ------------------
 
@@ -175,4 +179,14 @@ module.exports = function (t, a) {
 	section = masterObject.sectionOfDerivedType;
 	a.deep(aFrom(section.propertyNamesDeep), ['resolventProperty', 'propertyForFirstSection',
 		'propertyForSecondSection', 'secondPropertyForSecondSection']);
+
+	a.h2('toWebServiceJSON');
+	a.deep(section.toWebServiceJSON(), {
+		resolventProperty: true,
+		propertyForFirstSection: 1,
+		propertyForSecondSection: 1,
+		secondPropertyForSecondSection: 1
+	});
+	masterObject.resolventProperty = false;
+	a.deep(section.toWebServiceJSON(), { resolventProperty: false });
 };
