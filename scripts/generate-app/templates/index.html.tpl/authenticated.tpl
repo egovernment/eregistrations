@@ -16,11 +16,12 @@ if (!Object.getPrototypeOf || !Object.defineProperty || !window.history || !wind
         document.write('<p>Your browser is not supported</p>');
     }
 } else {
-    document.write('<scr' + 'ipt data-spa crossorigin defer src="js/jquery.min.js"></sc' + 'ript>');
-    document.write('<scr' + 'ipt data-spa crossorigin defer src="js/jquery-ui.min.js"></sc' + 'ript>');
-    document.write('<scr' + 'ipt data-spa crossorigin defer src="js/moment.min.js"></sc' + 'ript>');
-    document.write('<scr' + 'ipt data-spa crossorigin defer src="js/jquery.comiseo.daterangepicker.js"></sc' + 'ript>');
-
+    if (navigator.appName !== 'Zombie') {
+        document.write('<scr' + 'ipt data-spa crossorigin defer src="js/jquery.min.js"></sc' + 'ript>');
+        document.write('<scr' + 'ipt data-spa crossorigin defer src="js/jquery-ui.min.js"></sc' + 'ript>');
+        document.write('<scr' + 'ipt data-spa crossorigin defer src="js/moment.min.js"></sc' + 'ript>');
+        document.write('<scr' + 'ipt data-spa crossorigin defer src="js/jquery.comiseo.daterangepicker.js"></sc' + 'ript>');
+    }
     document.write('<link href="${ stRoot }${ appName }.css" rel="stylesheet" />');
     document.write('<scr' + 'ipt crossorigin defer src="${ stRoot }${ appName }.legacy.js"></sc' + 'ript>');
     document.write('<scr' + 'ipt data-spa crossorigin defer src="${ stRoot }${ appName }.js"></sc' + 'ript>');
