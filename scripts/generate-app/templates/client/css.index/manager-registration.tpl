@@ -15,5 +15,5 @@
 ../../../node_modules/eregistrations/css/components/manager-label.css
 ../../../node_modules/eregistrations/css/components/greedy-menu.css
 ../../../css/theme.css
-../../../node_modules/eregistrations/css/jquery.ui.daterangepicker.css
 ../../../node_modules/eregistrations/css/jquery.ui.min.css
+../../../node_modules/eregistrations/css/jquery.ui.daterangepicker.css

@@ -46,5 +46,5 @@
 
 ../../../css/theme.css
 ../../../css/theme-part-b.css
-../../../node_modules/eregistrations/css/jquery.ui.daterangepicker.css
 ../../../node_modules/eregistrations/css/jquery.ui.min.css
+../../../node_modules/eregistrations/css/jquery.ui.daterangepicker.css
