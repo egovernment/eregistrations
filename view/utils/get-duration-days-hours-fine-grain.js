@@ -10,7 +10,7 @@ module.exports = function (msTime) {
 	var hours, minutes;
 	if (isNaN(msTime)) throw new Error("Get duration expects a number.");
 	minutes = Math.round(msTime / (1000 * 60));
-	if (!minutes) return _("< 1 m");
+	if (!minutes) return _("< 1 m ");
 	hours   = Math.floor(minutes / 60);
 	minutes = minutes % 60;
 	if (!hours) return _("${ minutes } m", { minutes: minutes });
