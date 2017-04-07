@@ -13,9 +13,11 @@ var ensureObject = require('es5-ext/object/valid-object')
 	* @returns {Object} - Reduced map (format documented in code)
 */
 module.exports = function (data/*, opts */) {
-	var options = Object(arguments[1]), mode;
+	var options = Object(arguments[1]), mode, reduceTimeOpts, defaultReduceTimeOpts;
 	ensureObject(data);
 	mode = options.mode || 'workingHours';
+	defaultReduceTimeOpts = { avgTimeMod: 0.9 };
+	reduceTimeOpts = options.reduceTimeOpts || defaultReduceTimeOpts;
 
 	var result = {
 		// Reduction data for all
@@ -93,23 +95,23 @@ module.exports = function (data/*, opts */) {
 			result.byStepAndProcessor[stepShortPath][bpStepData.processor].startedCount++;
 
 			// Reduce processingTime
-			reduce(result.all.processing, processingTime);
-			reduce(result.byService[serviceName].processing, processingTime);
-			reduce(result.byStep[stepShortPath].processing, processingTime);
+			reduce(result.all.processing, processingTime, reduceTimeOpts);
+			reduce(result.byService[serviceName].processing, processingTime, reduceTimeOpts);
+			reduce(result.byStep[stepShortPath].processing, processingTime, reduceTimeOpts);
 			reduce(result.byStepAndService[stepShortPath][serviceName].processing,
-				processingTime);
+				processingTime, reduceTimeOpts);
 			reduce(result.byStepAndProcessor[stepShortPath][bpStepData.processor].processing,
-				processingTime);
+				processingTime, reduceTimeOpts);
 
 			// Reduce eventual correctionTime
 			if (correctionTime != null) {
-				reduce(result.all.correction, correctionTime);
-				reduce(result.byService[serviceName].correction, correctionTime);
-				reduce(result.byStep[stepShortPath].correction, correctionTime);
+				reduce(result.all.correction, correctionTime, reduceTimeOpts);
+				reduce(result.byService[serviceName].correction, correctionTime, reduceTimeOpts);
+				reduce(result.byStep[stepShortPath].correction, correctionTime, reduceTimeOpts);
 				reduce(result.byStepAndService[stepShortPath][serviceName].correction,
-					correctionTime);
+					correctionTime, reduceTimeOpts);
 				reduce(result.byStepAndProcessor[stepShortPath][bpStepData.processor].correction,
-					correctionTime);
+					correctionTime, reduceTimeOpts);
 			}
 		});
 	});
