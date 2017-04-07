@@ -9,10 +9,16 @@ exports._match = 'businessProcess';
 exports['sub-main'] = {
 	class: { content: true, 'user-forms': true },
 	content: function () {
+		var hasDocuments = or(
+			this.businessProcess.requirementUploads.applicable._size,
+			this.businessProcess.paymentReceiptUploads.applicable._size,
+			this.businessProcess.certificates.userApplicable._size
+		);
+
 		mainInfo(this);
 
 		section({ class: 'section-tab-nav' },
-			exports._documentsTabLink.call(this),
+			_if(hasDocuments, exports._documentsTabLink.call(this)),
 			exports._dataTabLink.call(this),
 			div({ id: 'tab-content', class: 'business-process-revision' }));
 	}
