@@ -1,7 +1,7 @@
 'use strict';
 
-var findFirstUploadKey = require('./inspector-find-first-upload-key')
-  , matchUpload        = require('./inspector-match-upload');
+var findFirstUploadKey = require('./page-find-first-upload-key')
+  , matchUpload        = require('./page-match-upload');
 
 module.exports = function () {
 	var firstUniqueKey = findFirstUploadKey.call(this, 'paymentReceiptUpload');
