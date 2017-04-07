@@ -1,10 +1,12 @@
 // Routes for the views.
 'use strict';
 
-var hyphenToCamel        = require('es5-ext/string/#/hyphen-to-camel')
-  , matchBusinessProcess = require('./utils/official-match-business-process')
-  , findFirstUploadKey   = require('./utils/official-find-first-upload-key')
-  , matchUpload          = require('./utils/official-match-upload');
+var hyphenToCamel                  = require('es5-ext/string/#/hyphen-to-camel')
+  , matchBusinessProcess           = require('./utils/official-match-business-process')
+  , findFirstUploadKey             = require('./utils/official-find-first-upload-key')
+  , matchUpload                    = require('./utils/official-match-upload')
+  , matchFirstRequirementUpload    = require('./utils/official-match-first-requirement-upload')
+  , matchFirstPaymentReceiptUpload = require('./utils/official-match-first-payment-receipt-upload');
 
 module.exports = function (step) {
 	if (!step) {
@@ -21,12 +23,28 @@ module.exports = function (step) {
 			match: function (businessProcessId) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
-					var firstUniqueKey = findFirstUploadKey.call(this, 'requirementUpload');
-					if (!firstUniqueKey) return false;
-					return matchUpload.call(this, 'requirementUpload', firstUniqueKey);
+
+					if (matchFirstRequirementUpload.call(this)) return true;
+					if (matchFirstPaymentReceiptUpload.call(this)) return true;
+
+					return true;
 				}.bind(this));
 			},
-			view: require('../view/business-process-revision-document')
+			decorateContext: function () {
+				if (!this.documentUniqueKey) {
+					this.dataSnapshot = this.businessProcess.dataForms.dataSnapshot.resolved;
+				}
+			},
+			resolveView: function () {
+				if (this.documentUniqueKey) {
+					if (this.documentKind === 'requirementUpload') {
+						return require('../view/business-process-revision-document');
+					}
+
+					return require('../view/business-process-revision-payment');
+				}
+				return require('../view/business-process-revision-data');
+			}
 		},
 		'[0-9][a-z0-9]*/documents/[a-z][a-z0-9-]*': {
 			match: function (businessProcessId, uniqueKey) {
@@ -45,9 +63,8 @@ module.exports = function (step) {
 			match: function (businessProcessId) {
 				return match.call(this, businessProcessId).then(function (result) {
 					if (!result) return false;
-					var firstUniqueKey = findFirstUploadKey.call(this, 'paymentReceiptUpload');
-					if (!firstUniqueKey) return false;
-					return matchUpload.call(this, 'paymentReceiptUpload', firstUniqueKey);
+
+					return matchFirstPaymentReceiptUpload.call(this);
 				}.bind(this));
 			},
 			view: require('../view/business-process-revision-payment')
