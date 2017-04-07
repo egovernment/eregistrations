@@ -3,16 +3,16 @@
 'use strict';
 
 var hyphenToCamel                  = require('es5-ext/string/#/hyphen-to-camel')
-  , matchBusinessProcess           = require('./utils/inspector-match-business-process')
-  , findFirstUploadKey             = require('./utils/inspector-find-first-upload-key')
-  , matchUpload                    = require('./utils/inspector-match-upload')
-  , matchFirstRequirementUpload    = require('./utils/inspector-match-first-requirement-upload')
-  , matchFirstPaymentReceiptUpload = require('./utils/inspector-match-first-payment-receipt-upload')
-  , matchFirstCertificate          = require('./utils/inspector-match-first-certificate')
+  , matchBusinessProcess           = require('./utils/page-match-business-process')
+  , findFirstUploadKey             = require('./utils/page-find-first-upload-key')
+  , matchUpload                    = require('./utils/page-match-upload')
+  , matchFirstRequirementUpload    = require('./utils/page-match-first-requirement-upload')
+  , matchFirstPaymentReceiptUpload = require('./utils/page-match-first-payment-receipt-upload')
+  , matchFirstCertificate          = require('./utils/page-match-first-certificate')
   , matchCertificate               = require('./utils/user-match-certificate');
 
 module.exports = function () {
-	var match = matchBusinessProcess();
+	var match = matchBusinessProcess('inspector');
 
 	return {
 		// User routes
