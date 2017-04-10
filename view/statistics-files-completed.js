@@ -89,7 +89,7 @@ var getTimeBreakdownTable = function () {
 				})
 			)
 		)
-	];
+	]);
 };
 
 exports['statistics-main'] = function () {
