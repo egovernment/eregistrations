@@ -7,6 +7,7 @@ var db                    = require('../db')
   , memoize               = require('memoizee')
   , ObservableValue       = require('observable-value')
   , capitalize            = require('es5-ext/string/#/capitalize')
+  , tableColumns          = require('./components/table-columns')
   , toArray               = require('es5-ext/object/to-array')
   , setupQueryHandler     = require('../utils/setup-client-query-handler')
   , getQueryHandlerConf   = require('../apps/statistics/get-query-conf')
@@ -81,11 +82,9 @@ var getTimeBreakdownTable = function () {
 							return tr(
 								td(db['BusinessProcess' + capitalize.call(serviceName)].prototype.label),
 								list(completedFilesPeriods, function (periodName) {
-									var total = data.total[periodName]
-									  , count = serviceData[periodName];
+									var count = serviceData[periodName];
 
-									return td({ class: 'statistics-table-number' }, count, ' ',
-										'(', (total ? ((count / total) * 100) : 0).toFixed(2), '%)');
+									return td({ class: 'statistics-table-number' }, count);
 								})
 							);
 						}),
@@ -93,7 +92,7 @@ var getTimeBreakdownTable = function () {
 							td(_("Total")),
 							list(completedFilesPeriods, function (periodName) {
 								return td({ class: 'statistics-table-number' },
-									data.total[periodName], ' ', '(100.00%)');
+									data.total[periodName]);
 							})
 						)
 					];
@@ -104,13 +103,23 @@ var getTimeBreakdownTable = function () {
 };
 
 exports['statistics-main'] = function () {
-	var certs = {};
-	this.statistics.businessProcess.forEach(function (data, name) {
-		var proto = db['BusinessProcess' + capitalize.call(name)].prototype
-		  , certsMap = proto.certificates.map;
-		data.certificate.forEach(function (data, name) {
-			if (!certs[name]) certs[name] = { document: certsMap[name], data: [] };
-			certs[name].data.push({ data: data, label: proto.label });
+	var certificates = {};
+
+	this.statistics.businessProcess.forEach(function (serviceData, serviceName) {
+		var BusinessProcess      = db['BusinessProcess' + capitalize.call(serviceName)]
+		  , businessProcessProto = BusinessProcess.prototype
+		  , certificatesMap      = businessProcessProto.certificates.map;
+
+		serviceData.certificate.forEach(function (certificateData, certificateName) {
+			if (!certificates[certificateName]) {
+				certificates[certificateName] = { document: certificatesMap[certificateName], data: [] };
+			}
+
+			certificates[certificateName].data.push({
+				data: certificateData,
+				label: businessProcessProto.label,
+				businessProcessType: BusinessProcess
+			});
 		});
 	});
 
@@ -118,24 +127,34 @@ exports['statistics-main'] = function () {
 
 	table({ class: 'statistics-table statistics-table-registrations' },
 		thead(tr(
+			th(_("Certificate")),
 			th(),
-			th(),
-			th(_("Service")),
-			th({ class: "statistics-table-header-waiting" }, _("Waiting")),
+			th({ class: "statistics-table-header-waiting" }, _("Submitted")),
 			th({ class: "statistics-table-header-pending" }, _("Pending")),
+			th({ class: "statistics-table-header-sentback" }, _("Pending for correction")),
 			th({ class: "statistics-table-header-sentback" }, _("Rejected")),
-			th({ class: "statistics-table-header-success" }, _("Validated"))
+			th({ class: "statistics-table-header-success" }, _("Validated")),
+			th({ class: "statistics-table-header-success" }, _("Processed and ready for pickup")),
+			th({ class: "statistics-table-header-success" }, _("Withdrawn"))
 		)),
 		tbody(
-			toArray(certs, function (data) {
+			toArray(certificates, function (data) {
 				var doc = data.document;
 				return data.data.map(function (data) {
-					return tr(td(doc.abbr), td(doc.label),
-						td(data.label),
+					return tr(
+						td(doc.abbr),
+						td(span({
+							class: 'hint-optional hint-optional-right',
+							'data-hint': data.label
+						}, tableColumns.getServiceIcon({ constructor: data.businessProcessType }))),
 						td({ class: 'statistics-table-number' }, data.data._waiting),
 						td({ class: 'statistics-table-number' }, data.data._pending),
+						td({ class: 'statistics-table-number' }, data.data._sentBack),
 						td({ class: 'statistics-table-number' }, data.data._rejected),
-						td({ class: 'statistics-table-number' }, data.data._approved));
+						td({ class: 'statistics-table-number' }, data.data._approved),
+						td({ class: 'statistics-table-number' }, data.data._pickup),
+						td({ class: 'statistics-table-number' }, data.data._withdrawn)
+					);
 				});
 			})
 		));
