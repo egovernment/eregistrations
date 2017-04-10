@@ -15,24 +15,33 @@ module.exports = function (type, data) {
 	}
 	ensureObject(data);
 
-	var storage = ensureStorage(data.storage)
+	var storage     = ensureStorage(data.storage)
 	  , serviceName = uncapitalize.call(type.__id__.slice('BusinessProcess'.length))
-	  , ns = 'statistics/businessProcess/' + serviceName + '/certificate/'
-	  , instances = resolveInstances(type).filterByKey('isSubmitted', true);
+	  , ns          = 'statistics/businessProcess/' + serviceName + '/certificate/'
+	  , instances   = resolveInstances(type).filterByKey('isSubmitted', true);
 
 	type.prototype.certificates.map.forEach(function (cert, key) {
+		var currentNs = ns + key + '/'
+		  , keyPath   = 'certificates/map/' + key + '/status';
+
 		var applicable = instances.filterByKeyPath('certificates/applicable', function (col) {
 			if (!col.object.master.certificates) return false;
 			return col.has(col.object.master.certificates.map[key]);
 		});
-		var currentNs = ns + key + '/'
-		  , keyPath = 'certificates/map/' + key + '/status';
+
+		var pending   = applicable.filterByKeyPath(keyPath, 'pending');
+		var sentBack  = applicable.filterByKey('status', 'sentBack');
+		var approved  = applicable.filterByKeyPath(keyPath, 'approved');
+		var rejected  = applicable.filterByKeyPath(keyPath, 'rejected');
+		var pickup    = approved.filterByKey('status', 'pickup');
+		var withdrawn = approved.filterByKey('status', 'withdrawn');
+
 		storage.trackCollectionSize(currentNs + 'waiting', applicable.filterByKeyPath(keyPath, null));
-		storage.trackCollectionSize(currentNs + 'pending',
-			applicable.filterByKeyPath(keyPath, 'pending'));
-		storage.trackCollectionSize(currentNs + 'approved',
-			applicable.filterByKeyPath(keyPath, 'approved'));
-		storage.trackCollectionSize(currentNs + 'rejected',
-			applicable.filterByKeyPath(keyPath, 'rejected'));
+		storage.trackCollectionSize(currentNs + 'pending', pending);
+		storage.trackCollectionSize(currentNs + 'sentBack', sentBack);
+		storage.trackCollectionSize(currentNs + 'approved', approved);
+		storage.trackCollectionSize(currentNs + 'rejected', rejected);
+		storage.trackCollectionSize(currentNs + 'pickup', pickup);
+		storage.trackCollectionSize(currentNs + 'withdrawn', withdrawn);
 	});
 };
