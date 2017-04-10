@@ -1,22 +1,21 @@
-// Standard matcher for inspector app routes.
+// Standard matcher for page apps routes.
 
 'use strict';
 
-var db          = require('mano').db
-  , xhrGet      = require('mano/lib/client/xhr-driver').get
-  , serverSync  = require('mano/lib/client/server-sync')
-  , deferred    = require('deferred')
-  , baseMatcher;
+var db         = require('mano').db
+  , xhrGet     = require('mano/lib/client/xhr-driver').get
+  , serverSync = require('mano/lib/client/server-sync')
+  , deferred   = require('deferred');
 
-baseMatcher = function (businessProcessId) {
-	var visitedBusinessProcesses = this.user.recentlyVisited.businessProcesses.inspector;
+module.exports = function (pageRole) {
+	var baseMatcher = function (businessProcessId) {
+		var visitedBusinessProcesses = this.user.recentlyVisited.businessProcesses[pageRole];
 
-	this.businessProcess = db.BusinessProcess.getById(businessProcessId);
+		this.businessProcess = db.BusinessProcess.getById(businessProcessId);
 
-	return Boolean(this.businessProcess && visitedBusinessProcesses.has(this.businessProcess));
-};
+		return Boolean(this.businessProcess && visitedBusinessProcesses.has(this.businessProcess));
+	};
 
-module.exports = function (step) {
 	return function (businessProcessId) {
 		var resolution = baseMatcher.call(this, businessProcessId)
 		  , visitedBusinessProcesses;
@@ -53,7 +52,7 @@ module.exports = function (step) {
 			}.bind(this)).finally(function () { document.body.classList.remove('throbber-active'); });
 		}
 
-		visitedBusinessProcesses = this.user.recentlyVisited.businessProcesses.inspector;
+		visitedBusinessProcesses = this.user.recentlyVisited.businessProcesses[pageRole];
 
 		if (visitedBusinessProcesses.last !== this.businessProcess) {
 			visitedBusinessProcesses.add(this.businessProcess);

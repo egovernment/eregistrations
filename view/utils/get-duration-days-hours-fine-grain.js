@@ -15,6 +15,6 @@ module.exports = function (msTime) {
 	minutes = minutes % 60;
 	if (!hours) return _("${ minutes } m", { minutes: minutes });
 	if (!minutes) return _("${ hours } h", { hours: hours });
-	return _("${ hours } h, ${ minutes } m",
+	return _("${ hours } h ${ minutes } m",
 		{ hours: hours, minutes: minutes });
 };

@@ -2,10 +2,11 @@
 
 'use strict';
 
-var hyphenToCamel    = require('es5-ext/string/#/hyphen-to-camel')
-  , db               = require('mano').db
-  , matchUpload      = require('./utils/user-match-upload')
-  , matchCertificate = require('./utils/user-match-certificate');
+var hyphenToCamel               = require('es5-ext/string/#/hyphen-to-camel')
+  , db                          = require('mano').db
+  , matchUpload                 = require('./utils/user-match-upload')
+  , matchFirstRequirementUpload = require('./utils/user-match-first-requirement-upload')
+  , matchCertificate            = require('./utils/user-match-certificate');
 
 var matchBusinessProcess = function (businessProcessId) {
 	this.businessProcess = db.BusinessProcess.getById(businessProcessId);
@@ -32,9 +33,7 @@ module.exports = {
 	'business-process/[0-9][a-z0-9]+/documents': {
 		match: function (businessProcessId) {
 			if (!matchBusinessProcess.call(this, businessProcessId)) return false;
-			var firstUpload = this.businessProcess.requirementUploads.dataSnapshot.resolved[0];
-			if (!firstUpload) return false;
-			return matchUpload.call(this, 'requirementUpload', firstUpload.uniqueKey);
+			return matchFirstRequirementUpload.call(this);
 		},
 		view: require('../view/user-business-process-document')
 	},

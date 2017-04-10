@@ -3,10 +3,28 @@
 var db                    = require('../../db')
   , _                     = require('mano').i18n.bind('View: Component: Inspector')
   , someRight             = require('es5-ext/array/#/some-right')
+  , objectSome            = require('es5-ext/object/some')
   , timeRanges            = require('../../utils/supervisor-time-ranges')
   , formatLastModified    = require('../utils/last-modified')
 
   , certificateStatusMeta = db.CertificateStatus.meta;
+
+var findRejectionStep = function (businessProcess) {
+	var stepFound;
+
+	objectSome(businessProcess.processingSteps.map, function self(step) {
+		if (db.ProcessingStepGroup && (step instanceof db.ProcessingStepGroup)) {
+			return objectSome(step.steps.map, self);
+		}
+
+		if (step.status === 'rejected') {
+			stepFound = step;
+			return true;
+		}
+	});
+
+	return stepFound;
+};
 
 exports.getCertificateStatusLabel = function (cert) {
 	if (cert._status) return _if(cert._status, ["- ", cert._status]);
@@ -123,6 +141,54 @@ exports.businessProcessWithdrawalDateColumn = {
 
 		return _if(isApproved, function () {
 			return isApproved._lastModified.map(formatLastModified);
+		});
+	}
+};
+
+exports.businessProcessRejectionReason = {
+	head: _("Rejection reason"),
+	class: 'submitted-user-data-table-date-time',
+	data: function (businessProcess) {
+		var stepFound = findRejectionStep(businessProcess);
+
+		if (stepFound) {
+			return stepFound._rejectionReason;
+		}
+	}
+};
+
+exports.businessProcessRejectionProcessor = {
+	head: _("Operator"),
+	class: 'submitted-user-data-table-date-time',
+	data: function (businessProcess) {
+		var stepFound = findRejectionStep(businessProcess);
+
+		if (stepFound) {
+			return stepFound._processor;
+		}
+	}
+};
+
+exports.businessProcessRejectionStep = {
+	head: _("Role"),
+	class: 'submitted-user-data-table-date-time',
+	data: function (businessProcess) {
+		var stepFound = findRejectionStep(businessProcess);
+
+		if (stepFound) {
+			return stepFound._label;
+		}
+	}
+};
+
+exports.businessProcessRejectionDateColumn = {
+	head: _("Rejection date"),
+	class: 'submitted-user-data-table-date-time',
+	data: function (businessProcess) {
+		var isRejected = businessProcess._isRejected;
+
+		return _if(isRejected, function () {
+			return isRejected._lastModified.map(formatLastModified);
 		});
 	}
 };

@@ -15,7 +15,7 @@ module.exports = exports = function (data, query) {
 
 	if (query.search) searchTokens = query.search.split(' ');
 	data.forEach(function (bpData, bpId) {
-		var filterResult;
+		var filterResult, flowStatusDate;
 
 		// Unconditionally filter deleted records
 		if (!bpData._existing) return;
@@ -25,13 +25,22 @@ module.exports = exports = function (data, query) {
 
 		// Internal flow status filter
 		// Simpler version of 'status' filter, this one we use interally to easily filter out
-		// only submitted or approved files
+		// only submitted, approved or rejected files
+		// Also select data filter subject.
 		if (query.flowStatus) {
 			if (query.flowStatus === 'submitted') {
 				if (!bpData.submissionDateTime) return;
+				flowStatusDate = bpData.submissionDateTime;
 			} else if (query.flowStatus === 'approved') {
 				if (!bpData.approvedDate) return;
+				flowStatusDate = bpData.approvedDate;
+			} else if (query.flowStatus === 'rejected') {
+				if (!bpData.rejectedDate) return;
+				flowStatusDate = bpData.rejectedDate;
 			}
+		} else {
+			// By default we filter by approved date
+			flowStatusDate = bpData.approvedDate;
 		}
 
 		// Filter by service
@@ -54,14 +63,14 @@ module.exports = exports = function (data, query) {
 			if (bpData.submitterType !== query.submitterType) return;
 		}
 
-		// Filter by approved in given date range
+		// Filter by selected subject date in given date range
 		if (query.dateFrom) {
-			if (!bpData.approvedDate) return;
-			if (bpData.approvedDate < query.dateFrom) return;
+			if (!flowStatusDate) return;
+			if (flowStatusDate < query.dateFrom) return;
 		}
 		if (query.dateTo) {
-			if (!bpData.approvedDate) return;
-			if (bpData.approvedDate > query.dateTo) return;
+			if (!flowStatusDate) return;
+			if (flowStatusDate > query.dateTo) return;
 		}
 
 		// Filter by search string
