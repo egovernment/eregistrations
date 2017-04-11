@@ -2,14 +2,14 @@
 	/*
 	To use rangepicker prepend following snippet to index.html.tpl
 	document
-	.write('<scr' + 'ipt data-spa crossorigin defer src="js/jquery.min.js"></sc' + 'ript>');
+	.write('<scr' + 'ipt data-spa crossorigin defer src="/js/jquery.min.js"></sc' + 'ript>');
 	document
-	.write('<scr' + 'ipt data-spa crossorigin defer src="js/jquery-ui.min.js"></sc' + 'ript>');
+	.write('<scr' + 'ipt data-spa crossorigin defer src="/js/jquery-ui.min.js"></sc' + 'ript>');
 	document
-	.write('<scr' + 'ipt data-spa crossorigin defer src="js/moment.min.js"></sc' + 'ript>');
+	.write('<scr' + 'ipt data-spa crossorigin defer src="/js/moment.min.js"></sc' + 'ript>');
 	document
 	.write('<scr' +
-	'ipt data-spa crossorigin defer src="js/jquery.comiseo.daterangepicker.js"></sc' + 'ript>');
+	'ipt data-spa crossorigin defer src="/js/jquery.comiseo.daterangepicker.js"></sc' + 'ript>');
 	*/
 var _ = require('mano').i18n.bind('Daterange')
   , dateFrom = require('./select-date-from')
