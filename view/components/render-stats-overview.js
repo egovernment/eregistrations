@@ -56,7 +56,8 @@ module.exports = function (context) {
 			});
 		}).done();
 	}, this);
-	return [section({ class: 'first-out-of-section-element date-period-selector-out-of-section-block' },
+	return [section({ class: 'first-out-of-section-element ' +
+		'date-period-selector-out-of-section-block' },
 		form({ action: formAction, autoSubmit: true },
 			dateFromToBlock())),
 		section({ class: 'table-responsive-container' },
