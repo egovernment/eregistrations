@@ -634,10 +634,15 @@ Styles applied while screen size is less than 640px
 }
 
 /*csslint important: false*/
-.date-period-selector-as-first-block-element{
+
+.first-out-of-section-element{
 	margin-top: 15px !important;
-	margin-bottom: 15px !important;
 }
+
+.date-period-selector-out-of-section-block{
+	margin-bottom: 15px;
+}
+
 /*csslint important: true*/
 
 .date-period-selector-positioned-on-submenu{

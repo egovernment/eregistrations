@@ -375,7 +375,7 @@ exports['sub-main'] = {
 			});
 		});
 
-		section({ class: 'date-period-selector-as-first-block-element' },
+		section({ class: 'first-out-of-section-element date-period-selector-out-of-section-block' },
 			form({ action: '/', autoSubmit: true },
 				dateFromToBlock(),
 				p({ class: 'submit' }, input({ type: 'submit' }))));
