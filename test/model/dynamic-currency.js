@@ -30,7 +30,7 @@ module.exports = function (t, a) {
 	a(masterObject.currencyField.hasPropertyDefined('value'), true);
 	a(masterObject.currencyField.toString(), '');
 	masterObject.currencyField.value = 42;
-	a(masterObject.currencyField.toString(), '42');
+	a(masterObject.currencyField.toString(), '42.00');
 	masterObject.dynamicCurrencyType = 'usDollar';
-	a(masterObject.currencyField.toString(), '$42');
+	a(masterObject.currencyField.toString(), '$42.00');
 };
