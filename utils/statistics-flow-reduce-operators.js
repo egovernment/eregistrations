@@ -58,19 +58,23 @@ var buildResultByProcessor = function (row, currentRow, certificate, processorId
 };
 
 module.exports = function (data, query) {
-	var service, step, processor, certificate, finalResult, reducedRows, processorRow;
-	service     = query.service;
-	step        = query.step;
-	processor   = query.processor;
-	certificate = query.certificate;
-	finalResult = {};
+	var service     = query.service
+	  , step        = query.step
+	  , processor   = query.processor
+	  , certificate = query.certificate
+	  , finalResult = {}
+	  , dateData, reducedRows, processorRow;
 
 	Object.keys(data).forEach(function (date) {
 		finalResult[date] = {};
+		dateData          = data[date];
 
-		reducedRows = service ? [data[date][service]] : toArray(data[date], identity);
+		if (!dateData) return;
+
+		reducedRows = service ? [dateData[service]] : toArray(dateData, identity);
 
 		reducedRows = reducedRows.map(function (row) {
+			if (!row) return;
 			if (!row.processingStep[step]) return;
 			return row.processingStep[step].byProcessor;
 		}).filter(Boolean);
