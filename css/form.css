@@ -632,3 +632,43 @@ Styles applied while screen size is less than 640px
 		width: 100%;
 	}
 }
+
+/*csslint important: false*/
+
+.first-out-of-section-element{
+	margin-top: 15px !important;
+}
+
+.date-period-selector-out-of-section-block{
+	margin-bottom: 15px;
+}
+
+/*csslint important: true*/
+
+.date-period-selector-positioned-on-submenu{
+	margin-bottom: 15px;
+	margin-left: auto;
+}
+
+.rangepicker-pull-right{
+	display: flex;
+	justify-content: flex-end;
+}
+
+.block-pull-up{
+	position: relative;
+	top: -40px;
+}
+
+.bring-to-front{
+	position: relative;
+	z-index: 1;
+}
+
+.display-flex{
+	display: flex;
+}
+
+.flex-wrap{
+	flex-wrap: wrap;
+}

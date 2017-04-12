@@ -4,11 +4,11 @@ var db       = require('../../../db')
   , location = require('mano/lib/client/location');
 
 module.exports = function (/* opts */) {
-	var opts = Object(arguments[0]), name;
-	name = opts.name || 'dateTo';
+	var opts = Object(arguments[0])
+	  , name = opts.name || 'dateTo';
 	return input({
 		id: opts.id || 'date-to-input',
-		type: 'date',
+		type: opts.type || 'date',
 		name: name,
 		value: location.query.get(name).map(function (dateTo) {
 			if (dateTo) return dateTo;

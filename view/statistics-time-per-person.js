@@ -13,9 +13,8 @@ var copy                 = require('es5-ext/object/copy')
   , setupQueryHandler    = require('../utils/setup-client-query-handler')
   , resolveFullStepPath  = require('../utils/resolve-processing-step-full-path')
   , getQueryHandlerConf  = require('../apps/statistics/get-query-conf')
-  , selectDateTo         = require('./components/filter-bar/select-date-to')
-  , selectDateFrom       = require('./components/filter-bar/select-date-from')
-  , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
+  , getDurationDaysHours = require('./utils/get-duration-days-hours')
+  , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url');
 
 exports._parent        = require('./statistics-time');
@@ -75,52 +74,48 @@ exports['statistics-main'] = function () {
 			});
 		});
 	});
-	section({ class: 'entities-overview-info' },
-		_("As processing time is properly recorded since 25th of October." +
-			" Below table only exposes data for files submitted after that day."));
 
-	section({ class: 'section-primary users-table-filter-bar' },
+	div({ class: 'block-pull-up' },
 		form({ action: '/time/per-person', autoSubmit: true },
-			div(
-				{ class: 'users-table-filter-bar-status' },
-				label({ for: 'service-select' }, _("Service"), ":"),
-				select({ id: 'service-select', name: 'service' },
-					option(
-						{ value: '', selected: location.query.get('service').map(function (value) {
-							return (value == null);
-						})
-							},
-						_("All")
-					),
-					list(db.BusinessProcess.extensions, function (service) {
-						var serviceName = uncapitalize.call(service.__id__.slice('BusinessProcess'.length));
-						return option({ value: serviceName, selected:
-								location.query.get('service').map(function (value) {
-								var selected = (serviceName ? (value === serviceName) : (value == null));
-								return selected ? 'selected' : null;
-							}) },
-							service.prototype.label);
-					}, null))
-			),
-			div(
-				{ class: 'users-table-filter-bar-status' },
-				exports._customFilters.call(this)
-			),
-			div(
-				{ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-from-input' }, _("Date from"), ":"),
-				selectDateFrom()
-			),
-			div(
-				{ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-to-input' }, _("Date to"), ":"),
-				selectDateTo()
-			),
-			div(
-				a({ class: 'users-table-filter-bar-print', href:
-					getDynamicUrl('/time-per-person.pdf', { only: params }),
-					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
-			)));
+			section({ class: 'date-period-selector-positioned-on-submenu' },
+				dateFromToBlock()),
+			section({ class: 'entities-overview-info' },
+				_("As processing time is properly recorded since 25th of October." +
+					" Below table only exposes data for files submitted after that day.")),
+			br(),
+			section({ class: 'section-primary users-table-filter-bar' },
+				div(
+					{ class: 'users-table-filter-bar-status' },
+					label({ for: 'service-select' }, _("Service"), ":"),
+					select({ id: 'service-select', name: 'service' },
+						option({
+							value: '',
+							selected: location.query.get('service').map(function (value) {
+								return (value == null);
+							})
+						}, _("All")),
+						list(db.BusinessProcess.extensions, function (service) {
+							var serviceName = uncapitalize.call(service.__id__.slice('BusinessProcess'.length));
+							return option({
+								value: serviceName,
+								selected: location.query.get('service').map(function (value) {
+									var selected = (serviceName ? (value === serviceName) : (value == null));
+									return selected ? 'selected' : null;
+								})
+							}, service.prototype.label);
+						}, null))
+				),
+				div(
+					{ class: 'users-table-filter-bar-status' },
+					exports._customFilters.call(this)
+				),
+				div(
+					a({
+						class: 'users-table-filter-bar-print',
+						href: getDynamicUrl('/time-per-person.pdf', { only: params }),
+						target: '_blank'
+					}, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
+				))));
 	insert(list(Object.keys(stepsMap), function (shortStepPath) {
 		return stepsMap[shortStepPath].map(function (data) {
 			if (!data) return;
@@ -137,8 +132,10 @@ exports['statistics-main'] = function () {
 						th({ class: 'statistics-table-number' }, _("Min time")),
 						th({ class: 'statistics-table-number' }, _("Max time"))
 					),
-					tbody({ onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
-						_("There are no files processed at this step"))) }, data, function (rowData) {
+					tbody({
+						onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
+							_("There are no files processed at this step")))
+					}, data, function (rowData) {
 						return tr(
 							td(rowData.label),
 							td({ class: 'statistics-table-number' }, rowData.timedCount),

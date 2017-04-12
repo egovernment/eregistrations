@@ -16,9 +16,7 @@ var assign              = require('es5-ext/object/assign')
   , resolveFullStepPath = require('../utils/resolve-processing-step-full-path')
   , getQueryHandlerConf = require('../apps/statistics/get-query-conf')
   , frontDeskNames      = require('./utils/front-desk-names')
-  , selectDateTo        = require('./components/filter-bar/select-date-to')
-  , selectDateFrom      = require('./components/filter-bar/select-date-from')
-
+  , dateFromToBlock     = require('./components/filter-bar/select-date-range-safe-fallback')
   , observableResult = new ObservableValue();
 
 exports._servicesColors  = ["#673AB7", "#FFC107", "#FF4B4B", "#3366CC"];
@@ -377,18 +375,9 @@ exports['sub-main'] = {
 			});
 		});
 
-		section({ class: 'section-primary users-table-filter-bar' },
+		section({ class: 'first-out-of-section-element date-period-selector-out-of-section-block' },
 			form({ action: '/', autoSubmit: true },
-				div(
-					{ class: 'users-table-filter-bar-status' },
-					label({ for: 'date-from-input' }, _("Date from"), ":"),
-					selectDateFrom()
-				),
-				div(
-					{ class: 'users-table-filter-bar-status' },
-					label({ for: 'date-to-input' }, _("Date to"), ":"),
-					selectDateTo()
-				),
+				dateFromToBlock(),
 				p({ class: 'submit' }, input({ type: 'submit' }))));
 
 		section({ class: "section-primary" },

@@ -13,9 +13,8 @@ var assign               = require('es5-ext/object/assign')
   , getQueryHandlerConf  = require('../apps/statistics/get-query-conf')
   , setupQueryHandler    = require('../utils/setup-client-query-handler')
   , resolveFullStepPath  = require('../utils/resolve-processing-step-full-path')
-  , selectDateTo          = require('./components/filter-bar/select-date-to')
-  , selectDateFrom        = require('./components/filter-bar/select-date-from')
-  , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
+  , getDurationDaysHours = require('./utils/get-duration-days-hours')
+  , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url');
 
 exports._parent = require('./statistics-time');
@@ -77,12 +76,14 @@ exports['statistics-main'] = function () {
 		}).done();
 	});
 
-	section({ class: 'entities-overview-info' },
-		_("As processing time is properly recorded since 25th of October." +
-			" Below table only exposes data for files submitted after that day."));
-
-	section({ class: 'section-primary users-table-filter-bar' },
-		form({ action: '/time/', autoSubmit: true },
+	div({ class: 'block-pull-up' }, form({ action: '/time/', autoSubmit: true },
+		section({ class: 'date-period-selector-positioned-on-submenu' },
+			dateFromToBlock()),
+		section({ class: 'entities-overview-info' },
+			_("As processing time is properly recorded since 25th of October." +
+				" Below table only exposes data for files submitted after that day.")),
+		br(),
+		section({ class: 'section-primary users-table-filter-bar' },
 			div(
 				{ class: 'users-table-filter-bar-status' },
 				label({ for: 'service-select' }, _("Service"), ":"),
@@ -109,16 +110,6 @@ exports['statistics-main'] = function () {
 				exports._customFilters.call(this)
 			),
 			div(
-				{ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-from-input' }, _("Date from"), ":"),
-				selectDateFrom()
-			),
-			div(
-				{ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-to-input' }, _("Date to"), ":"),
-				selectDateTo()
-			),
-			div(
 				a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/time-per-role.csv',
 					{ only: params }),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print csv"))
@@ -127,17 +118,20 @@ exports['statistics-main'] = function () {
 				a({ class: 'users-table-filter-bar-print', href: getDynamicUrl('/time-per-role.pdf',
 					{ only: params }),
 					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
-			)));
-	section(
-		table({ class: 'statistics-table' }, thead(
-			th(),
-			th({ class: 'statistics-table-number' }, _("Files processed")),
-			th({ class: 'statistics-table-number' }, _("Average time")),
-			th({ class: 'statistics-table-number' }, _("Min time")),
-			th({ class: 'statistics-table-number' }, _("Max time"))
-		), tbody({ onEmpty: tr(td({ class: 'empty', colspan: 5 },
-					_("There is no data to display"))) },
-				mainData, function (row) {
+			))),
+		br(),
+		section(table({ class: 'statistics-table' },
+			thead(
+				th(),
+				th({ class: 'statistics-table-number' }, _("Files processed")),
+				th({ class: 'statistics-table-number' }, _("Average time")),
+				th({ class: 'statistics-table-number' }, _("Min time")),
+				th({ class: 'statistics-table-number' }, _("Max time"))
+			),
+			tbody({
+				onEmpty: tr(td({ class: 'empty', colspan: 5 },
+						_("There is no data to display")))
+			}, mainData, function (row) {
 				return tr(
 					td(row.label),
 					td({ class: 'statistics-table-number' }, row.timedCount),
@@ -149,5 +143,5 @@ exports['statistics-main'] = function () {
 						row.timedCount ? getDurationDaysHours(row.maxTime) : "-")
 				);
 			}))
-	);
+			));
 };

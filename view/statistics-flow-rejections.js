@@ -3,12 +3,9 @@
 var _                            = require('mano').i18n.bind('View: Statistics')
   , env                          = require('mano').env
   , location                     = require('mano/lib/client/location')
-
   , selectService                = require('./components/filter-bar/select-service')
-  , selectDateFrom               = require('./components/filter-bar/select-date-from')
-  , selectDateTo                 = require('./components/filter-bar/select-date-to')
-
   , tableColumns                 = require('./components/statistics-rejections-table-columns')
+  , dateFromToBlock     = require('./components/filter-bar/select-date-range-safe-fallback')
   , getStatisticsRejectionsTable = require('./components/statistics-rejections-table');
 
 exports._parent        = require('./statistics-flow');
@@ -20,25 +17,14 @@ exports['flow-rejections-nav'] = { class: { 'pills-nav-active': true } };
 exports['statistics-main'] = function () {
 	var rejectionsTable;
 
-	section(
-		{ class: 'section-primary users-table-filter-bar' },
-		form(
-			{ action: '/flow/rejections', autoSubmit: true },
-			div({ class: 'users-table-filter-bar-status' },
-				selectService({ label: _("All services") })),
-			div(
-				{ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-from-input' }, _("Date from"), ":"),
-				selectDateFrom()
-			),
-			div(
-				{ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-to-input' }, _("Date to"), ":"),
-				selectDateTo()
-			),
-			p({ class: 'submit' }, input({ type: 'submit' }))
-		)
-	);
+	div({ class: 'block-pull-up' },
+		form({ action: '/flow/rejections', autoSubmit: true },
+			section({ class: 'date-period-selector-positioned-on-submenu' }, dateFromToBlock()),
+			section({ class: 'section-primary users-table-filter-bar' },
+				div({ class: 'users-table-filter-bar-status' },
+					selectService({ label: _("All services") })),
+				p({ class: 'submit' }, input({ type: 'submit' }))
+				)));
 
 	rejectionsTable = getStatisticsRejectionsTable({
 		columns: tableColumns,

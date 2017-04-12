@@ -1,2 +1,6 @@
 /scripts/generate-app/public-statics
 /public/pdfjs
+/public/js
+/public/images
+/css/jquery.ui.min.css
+/css/jquery.ui.daterangepicker.css

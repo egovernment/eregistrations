@@ -14,8 +14,6 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , selectService     = require('./components/filter-bar/select-service')
   , selectCertificate = require('./components/filter-bar/select-certificate')
   , selectPeriodMode  = require('./components/filter-bar/select-period-mode')
-  , selectDateFrom    = require('./components/filter-bar/select-date-from')
-  , selectDateTo      = require('./components/filter-bar/select-date-to')
   , itemsPerPage      = require('../conf/objects-list-items-per-page')
   , serviceQuery      = require('../apps-common/query-conf/service')
   , certificateQuery  = require('../apps-common/query-conf/certificate')
@@ -29,6 +27,7 @@ var _                 = require('mano').i18n.bind('View: Statistics')
   , incrementDateByTimeUnit = require('../utils/increment-date-by-time-unit')
   , floorToTimeUnit         = require('../utils/floor-to-time-unit')
   , calculateDurationByMode = require('../utils/calculate-duration-by-mode')
+  , dateFromToBlock         = require('./components/filter-bar/select-date-range-safe-fallback')
   , reduceResult            = require('../utils/statistics-flow-reduce-processing-step')
   , filterData              = require('../utils/statistics-flow-roles-filter-result');
 
@@ -128,75 +127,78 @@ exports['statistics-main'] = function () {
 		});
 	});
 
-	section({ class: 'section-primary users-table-filter-bar' },
+	div({ class: 'block-pull-up' },
 		form({ action: '/flow/by-role/', autoSubmit: true },
-			div({ class: 'users-table-filter-bar-status' },
-				selectService({ label: _("All services") })),
-			div({ class: 'users-table-filter-bar-status' },
-				selectCertificate(),
-				legacy('selectMatch', 'service-select', serviceToCertLegacyMatch)),
-
-			div({ class: 'users-table-filter-bar-status' },
-				select(
-					{ id: 'step-status', name: 'status' },
-					list(Object.keys(stepStatuses), function (status) {
-						return option({
-							id: 'status-' + status,
-							value: status,
-							selected: location.query.get('status').map(function (value) {
-								var selected = (status ? (value === status) : (value == null));
-								return selected ? 'selected' : null;
+			section({ class: 'date-period-selector-positioned-on-submenu' }, dateFromToBlock()),
+			section({ class: 'section-primary users-table-filter-bar display-flex flex-wrap' },
+				div(
+					div({ class: 'users-table-filter-bar-status' },
+						selectService({ label: _("All services") })),
+					div({ class: 'users-table-filter-bar-status' },
+						selectCertificate(),
+						legacy('selectMatch', 'service-select', serviceToCertLegacyMatch)),
+					div({ class: 'users-table-filter-bar-status' },
+						select(
+							{ id: 'step-status', name: 'status' },
+							list(Object.keys(stepStatuses), function (status) {
+								return option({
+									id: 'status-' + status,
+									value: status,
+									selected: location.query.get('status').map(function (value) {
+										var selected = (status ? (value === status) : (value == null));
+										return selected ? 'selected' : null;
+									})
+								}, stepStatuses[status].label);
 							})
-						}, stepStatuses[status].label);
-					})
-				)),
-
-			div(
-				{ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-from-input' }, _("Date from"), ":"),
-				selectDateFrom()
-			),
-			div(
-				{ class: 'users-table-filter-bar-status' },
-				label({ for: 'date-to-input' }, _("Date to"), ":"),
-				selectDateTo()
-			),
-			selectPeriodMode(),
-			div(
-				a({ class: 'users-table-filter-bar-print', href:
-					getDynamicUrl('/flow-roles-data.pdf', { only: params }),
-					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
-			),
-			div(
-				a({ class: 'users-table-filter-bar-print',
-					href: getDynamicUrl('/flow-roles-data.csv', { only: params }),
-					target: '_blank' }, span({ class: 'fa fa-print' }), " ", _("Print csv"))
-			),
-			p({ class: 'submit' }, input({ type: 'submit' }))));
-
-	section(pagination);
-	section({ class: "section-primary statistics-table-scrollable" },
-		data.map(function (result) {
-			var mode = modes.get(location.query.mode || 'daily');
-			return table({ class: 'statistics-table' },
-				thead(
-					th({ class: 'statistics-table-number' }, mode.labelNoun),
-					list(Object.keys(processingSteps), function (shortStepPath) {
-						return th({ class: 'statistics-table-number' }, getStepLabelByShortPath(shortStepPath));
-					})
+						))
 				),
-				tbody({ onEmpty: tr(td({ class: 'empty', colspan: Object.keys(processingSteps).length },
-					_("No data for this criteria"))) }, Object.keys(result), function (key) {
-					return tr(
-						td(key),
-						Object.keys(result[key]).length ?
-								list(Object.keys(result[key]), function (step) {
-									return td({ class: 'statistics-table-number' },
+				selectPeriodMode(),
+				div(
+					div(
+						a({
+							class: 'users-table-filter-bar-print',
+							href: getDynamicUrl('/flow-roles-data.pdf', { only: params }),
+							target: '_blank'
+						}, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
+					),
+					div(
+						a({
+							class: 'users-table-filter-bar-print',
+							href: getDynamicUrl('/flow-roles-data.csv', { only: params }),
+							target: '_blank'
+						}, span({ class: 'fa fa-print' }), " ", _("Print csv"))
+					)
+				),
+				p({ class: 'submit' }, input({ type: 'submit' })))),
+
+		section(pagination),
+		br(),
+		section({ class: "section-primary statistics-table-scrollable" },
+			data.map(function (result) {
+				var mode = modes.get(location.query.mode || 'daily');
+				return table({ class: 'statistics-table' },
+					thead(
+						th({ class: 'statistics-table-number' }, mode.labelNoun),
+						list(Object.keys(processingSteps), function (shortStepPath) {
+							return th({ class: 'statistics-table-number' },
+								getStepLabelByShortPath(shortStepPath));
+						})
+					),
+					tbody({
+						onEmpty: tr(td({ class: 'empty', colspan: Object.keys(processingSteps).length },
+							_("No data for this criteria")))
+					}, Object.keys(result), function (key) {
+						return tr(
+							td(key),
+							Object.keys(result[key]).length ?
+									list(Object.keys(result[key]), function (step) {
+										return td({ class: 'statistics-table-number' },
 											result[key][step] == null ? _("N/A") : result[key][step]);
-								}) : td({ class: 'statistics-table-info', colspan:
-								Object.keys(processingSteps).length },
-							_("Nothing to report for this period"))
-					);
-				}));
-		}));
+									}) : td({
+								class: 'statistics-table-info',
+								colspan: Object.keys(processingSteps).length
+							}, _("Nothing to report for this period"))
+						);
+					}));
+			})));
 };
