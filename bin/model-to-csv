@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var resolveProjectRoot = require('cjs-module/resolve-project-root')
+  , projectRoot        = process.cwd();
+
+resolveProjectRoot(projectRoot).done(function (root) {
+	if (!root) {
+		throw new Error('Could not locate project in projectRoot: ' + projectRoot);
+	}
+
+	require('../scripts/model-to-csv')(root);
+});
