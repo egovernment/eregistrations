@@ -144,6 +144,17 @@ module.exports = memoize(function (db) {
 
 			return fields;
 		} },
+
+		toMetaDataJSON: {
+			value: function (ignore) {
+				var result = [];
+				this.sections.forEach(function (section) {
+					result = result.concat(section.toMetaDataJSON());
+				}, this);
+
+				return result;
+			}
+		},
 		hasSplitForms: {
 			type: db.Boolean,
 			value: false

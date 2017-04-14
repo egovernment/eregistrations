@@ -261,6 +261,20 @@ module.exports = memoize(function (db) {
 
 				return fields;
 			}
+		},
+		toMetaDataJSON: {
+			value: function (ignore) {
+				var result = [], entityObjects, Item, isEntitiesNestedMap;
+				entityObjects = this.propertyMaster.resolveSKeyPath(this.propertyName);
+				isEntitiesNestedMap = entityObjects.value instanceof this.database.NestedMap;
+				if (!isEntitiesNestedMap) return result;
+				Item = entityObjects.value.getItemType();
+				Item.prototype.getBySKeyPath(this.sectionProperty).forEach(function (section) {
+					result = result.concat(section.toMetaDataJSON());
+				});
+
+				return result;
+			}
 		}
 	});
 

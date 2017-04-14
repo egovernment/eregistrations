@@ -156,6 +156,19 @@ module.exports = memoize(function (db/*, options*/) {
 
 				return result;
 			}
+		},
+		toMetaDataJSON: {
+			type: db.Function,
+			value: function (opts) {
+				var fields = [];
+				this.dataForms.map.forEach(function (section) {
+					try {
+						fields = fields.concat(section.toMetaDataJSON());
+					} catch (ignore) {}
+				});
+
+				return fields;
+			}
 		}
 	}, {
 		draftLimit: { type: UInteger, value: 20 }
