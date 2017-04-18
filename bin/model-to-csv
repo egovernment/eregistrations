@@ -10,5 +10,5 @@ resolveProjectRoot(projectRoot).done(function (root) {
 		throw new Error('Could not locate project in projectRoot: ' + projectRoot);
 	}
 
-	require('../scripts/model-to-csv')(root);
+	require('../scripts/model-to-csv')(root).done();
 });

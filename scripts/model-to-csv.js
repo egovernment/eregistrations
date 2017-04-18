@@ -1,11 +1,13 @@
 'use strict';
 
-var fs     = require('fs2')
-  , path   = require('path');
+var fs    = require('fs2')
+  , path  = require('path')
+  , debug = require('debug-ext')('setup');
 
 module.exports = function (projectRoot) {
+	debug('model-to-csv');
 	require(path.resolve(projectRoot, 'server/env'));
-	fs.readdir(path.resolve(projectRoot, 'model'),
+	return fs.readdir(path.resolve(projectRoot, 'model'),
 		{ type: { directory: true } }).map(function (path) {
 		return path.match(/^business-process-/) ? path : null;
 	}).then(function (servicePaths) {
@@ -32,8 +34,10 @@ module.exports = function (projectRoot) {
 				}).join(','));
 			});
 			csvResult = csvResult.join('\n');
-			fs.writeFile(projectRoot + '/model-to-csv/' + BusinessProcess.prototype.__id__ + '.csv',
+			fs.writeFile(projectRoot + '/public/csv/' +
+					BusinessProcess.__id__.replace('BusinessProcess', '') + '.csv',
 				csvResult, { intermediate: true });
+			debug('Created model fields csv for: %s', BusinessProcess.__id__);
 		});
-	}).done();
+	});
 };
