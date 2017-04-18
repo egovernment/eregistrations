@@ -118,7 +118,7 @@ exports['statistics-main'] = function () {
 					)
 				),
 				p({ class: 'submit' }, input({ type: 'submit' }))),
-			section(pagination),
+			section({ class: 'pad-if-pagination' }, pagination),
 			br(),
 			data.map(function (result) {
 				var step = location.query.step || Object.keys(processingSteps)[0];
