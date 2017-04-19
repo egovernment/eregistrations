@@ -120,8 +120,7 @@ module.exports = function (/* opts */) {
 			$.dispatchEvent($('endId'), 'change');
 		});
 
-		var path;
-		path = location.pathname;
+		var path = location.pathname;
 		location.on('change', function () {
 			if (location.pathname !== path) {
 				path = location.pathname;
