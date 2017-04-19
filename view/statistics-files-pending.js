@@ -66,7 +66,7 @@ exports['statistics-main'] = function () {
 	});
 	table({ class: 'statistics-table' },
 		thead(tr(
-			th(),
+			th(_('Date:'), ' ', window.moment().format('DD/MM/YYYY')),
 			services.map(function (data) { return th({ class: 'statistics-table-number' },
 				data.service.label); }),
 			th({ class: 'statistics-table-number' }, _("Total"))
