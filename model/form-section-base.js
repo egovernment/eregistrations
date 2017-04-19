@@ -293,7 +293,13 @@ module.exports = memoize(function (db) {
 		} },
 		toWebServiceJSON: { value: function (ignore) {
 			throw new Error("toWebServiceJSON not implemented for " + this.__id__);
-		} }
+		} },
+		toMetaDataJSON: {
+			type: db.Function,
+			value: function (opts) {
+				return [];
+			}
+		}
 	});
 
 	FormSectionBase.prototype.defineProperties({

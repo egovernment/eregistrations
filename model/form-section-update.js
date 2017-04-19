@@ -155,7 +155,12 @@ module.exports = memoize(function (db) {
 			}
 
 			return fields;
-		} }
+		} },
+		toMetaDataJSON: {
+			value: function (ignore) {
+				return this.sourceSection.toMetaDataJSON();
+			}
+		}
 	}, {
 		updateSectionPostfix: {
 			type: StringLine,

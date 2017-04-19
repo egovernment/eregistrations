@@ -44,6 +44,16 @@ module.exports = memoize(function (db) {
 				value: this.valueToWebServiceJSON()
 			};
 		},
+		fieldToMetaJSON: function (ignore) {
+			return {
+				name: this.key,
+				path: this.__valueId__,
+				type: this.type.__id__,
+				label: this.label,
+				required: this.required,
+				pattern: this.pattern
+			};
+		},
 		isValueEmpty: function (ignore) {
 			var value = this.object.get(this.key);
 			if (value && value.forEach && !this.nested && this.multiple) return !value.size;
