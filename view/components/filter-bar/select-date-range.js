@@ -14,6 +14,7 @@
 var _ = require('mano').i18n.bind('Daterange')
   , dateFrom = require('./select-date-from')
   , dateTo = require('./select-date-to')
+  , location = require('mano/lib/client/location')
   , moment = window.moment
   , jQuery = window.jQuery;
 
@@ -118,6 +119,19 @@ module.exports = function (/* opts */) {
 			jQuery('#endId').val(dateToString(range.end));
 			$.dispatchEvent($('startId'), 'change');
 			$.dispatchEvent($('endId'), 'change');
+		});
+
+		var path = location.pathname;
+		location.on('change', function () {
+			if (location.pathname !== path) {
+				path = location.pathname;
+				if (elem) {
+					elem.daterangepicker("setRange", {
+						start: stringToDate(jQuery('#startId').val()),
+						end: stringToDate(jQuery('#endId').val())
+					});
+				}
+			}
 		});
 	});
 
