@@ -55,7 +55,8 @@ module.exports = function (/* opts */) {
 			}, {
 				text: _('Week to date'),
 				dateStart: function () {
-					return moment().startOf('week');
+					// JS week starts on Sunday
+					return moment().startOf('week').add(1, 'days');
 				},
 				dateEnd: function () {
 					return moment();
