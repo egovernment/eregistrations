@@ -335,7 +335,7 @@ module.exports = function (config) {
 							data.businessProcesses,
 							assign({
 								dateFrom: new db.Date(today.getUTCFullYear(), today.getUTCMonth(),
-									(6 + today.getUTCDay()) % 7)
+										today.getUTCDate() - ((6 + today.getUTCDay()) % 7))
 							}, approvedQuery)
 						)),
 						today: reduceBusinessProcesses(filterBusinessProcesses(
