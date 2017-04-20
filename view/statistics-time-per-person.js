@@ -15,7 +15,9 @@ var copy                 = require('es5-ext/object/copy')
   , getQueryHandlerConf  = require('../apps/statistics/get-query-conf')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
-  , getDynamicUrl        = require('./utils/get-dynamic-url');
+  , getDynamicUrl        = require('./utils/get-dynamic-url')
+  , processingStepsMetaFrontDeskFilter
+	= require('./statistics-time-per-role').processingStepsMetaFrontDeskFilter;
 
 exports._parent        = require('./statistics-time');
 exports._customFilters = Function.prototype;
@@ -40,13 +42,14 @@ var getRowResult = function (rowData, label) {
 };
 
 exports['statistics-main'] = function () {
-	var processingStepsMeta = this.processingStepsMeta, stepsMap = {}, queryHandler
-	  , params;
-	Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
+	var processingStepsMetaWithoutFrontDesk
+		= processingStepsMetaFrontDeskFilter(this.processingStepsMeta)
+		, stepsMap = {}, queryHandler, params;
+	Object.keys(processingStepsMetaWithoutFrontDesk).forEach(function (stepShortPath) {
 		stepsMap[stepShortPath]   = new ObservableValue();
 	});
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
-		processingStepsMeta: processingStepsMeta
+		processingStepsMeta: processingStepsMetaWithoutFrontDesk
 	}), location, '/time/per-person/');
 	params = queryHandler._handlers.map(function (handler) {
 		return handler.name;

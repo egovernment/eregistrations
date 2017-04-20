@@ -29,11 +29,25 @@ var queryServer = memoize(function (query) {
 	normalizer: function (args) { return JSON.stringify(args[0]); }
 });
 
+var processingStepsMetaFrontDeskFilter = function (processingStepsMeta) {
+	var processingStepsMetaWithoutFrontDesk = {};
+	Object.keys(processingStepsMeta).forEach(function (key) {
+		if(key !== 'frontDesk'){
+			processingStepsMetaWithoutFrontDesk[key] = processingStepsMeta[key];
+		}
+	});
+	return processingStepsMetaWithoutFrontDesk;
+};
+
+exports['processingStepsMetaFrontDeskFilter'] = processingStepsMetaFrontDeskFilter;
+
 exports['statistics-main'] = function () {
-	var processingStepsMeta = this.processingStepsMeta, mainData, queryHandler, params;
+	var processingStepsMetaWithoutFrontDesk =
+		processingStepsMetaFrontDeskFilter(this.processingStepsMeta),
+		mainData, queryHandler, params;
 	mainData = new ObservableArray();
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
-		processingStepsMeta: processingStepsMeta
+		processingStepsMeta: processingStepsMetaWithoutFrontDesk
 	}), location, '/time/');
 	params = queryHandler._handlers.map(function (handler) {
 		return handler.name;
@@ -59,10 +73,10 @@ exports['statistics-main'] = function () {
 			total = result.businessProcesses.processing;
 			total.label = _("Total process");
 
-			Object.keys(result.steps.byStep).forEach(function (key) {
+			Object.keys(processingStepsMetaWithoutFrontDesk).forEach(function (key) {
 				perRoleTotal = result.steps.byStep[key].processing;
 				perRoleTotal.label   = db['BusinessProcess' +
-					capitalize.call(processingStepsMeta[key]._services[0])].prototype
+					capitalize.call(processingStepsMetaWithoutFrontDesk[key]._services[0])].prototype
 					.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
 				mainData.push(perRoleTotal);
 			});
