@@ -102,7 +102,7 @@ exports._submittedMenu = function () {
 		return [li({ id: 'dashboard-nav' }, a({ href: '/' }, _("Dashboard"))),
 			li({ id: 'files-nav' }, a({ href: '/files/' }, _("Files"))),
 			li({ id: 'time-nav' }, a({ href: '/time/' }, _("Time"))),
-			li({ id: 'flow-nav' }, a({ href: '/flow/' }, _("Tables")))];
+			li({ id: 'flow-nav' }, a({ href: '/flow/' }, _("Files")))];
 	}
 
 	isOfficialRole = user.officialRoles.has(user.currentRoleResolved);
