@@ -13,11 +13,12 @@ var ensureObject = require('es5-ext/object/valid-object')
 	* @returns {Object} - Reduced map (format documented in code)
 */
 module.exports = function (data/*, opts */) {
-	var options = Object(arguments[1]), mode, reduceTimeOpts, defaultReduceTimeOpts;
+	var options               = Object(arguments[1])
+	  , mode                  = options.mode || 'workingHours'
+	  , defaultReduceTimeOpts = { avgTimeMod: 0.9 }
+	  , reduceTimeOpts        = options.reduceTimeOpts || defaultReduceTimeOpts;
+
 	ensureObject(data);
-	mode = options.mode || 'workingHours';
-	defaultReduceTimeOpts = { avgTimeMod: 0.9 };
-	reduceTimeOpts = options.reduceTimeOpts || defaultReduceTimeOpts;
 
 	var result = {
 		// Reduction data for all
@@ -53,10 +54,16 @@ module.exports = function (data/*, opts */) {
 			result.byStepAndService[stepShortPath][serviceName] = getEmptyData();
 		});
 
+		if (options.includeBusinessProcesses) {
+			result.byStep[stepShortPath].businessProcesses = [];
+		}
+
 		// Reduce data
 		stepData.forEach(function (bpStepData, bpId) {
-			var serviceName = data.businessProcesses.get(bpId).serviceName, processingTime
-			  , correctionTime, submissionDateTime = data.businessProcesses.get(bpId).submissionDateTime;
+			var serviceName        = data.businessProcesses.get(bpId).serviceName
+			  , submissionDateTime = data.businessProcesses.get(bpId).submissionDateTime
+			  , processor          = bpStepData.processor
+			  , processingTime, correctionTime, skipTimeCount;
 
 			result.all.startedCount++;
 			result.byService[serviceName].startedCount++;
@@ -67,7 +74,7 @@ module.exports = function (data/*, opts */) {
 			if (!bpStepData.processingDate) return;
 
 			// May happen only in case of data inconsistency
-			if (!bpStepData.processor) return;
+			if (!processor) return;
 
 			if (mode === 'workingHours') {
 				processingTime = bpStepData.processingWorkingHoursTime || 0;
@@ -78,10 +85,11 @@ module.exports = function (data/*, opts */) {
 			}
 
 			correctionTime = bpStepData.correctionTime;
+			skipTimeCount = (submissionDateTime < timeCalculationsStart) || (processingTime < (1000 * 3));
 
 			// If there's something wrong with calculations (may happen with old data), or
 			// the submission date before final calcualtion version we do not count time
-			if ((submissionDateTime < timeCalculationsStart) || (processingTime < (1000 * 3))) {
+			if (skipTimeCount) {
 				processingTime = 0;
 				if (correctionTime) {
 					correctionTime = 0;
@@ -89,10 +97,13 @@ module.exports = function (data/*, opts */) {
 			}
 
 			// Initialize container
-			if (!result.byStepAndProcessor[stepShortPath][bpStepData.processor]) {
-				result.byStepAndProcessor[stepShortPath][bpStepData.processor] = getEmptyData();
+			if (!result.byStepAndProcessor[stepShortPath][processor]) {
+				result.byStepAndProcessor[stepShortPath][processor] = getEmptyData();
+				if (options.includeBusinessProcesses) {
+					result.byStepAndProcessor[stepShortPath][processor].businessProcesses = [];
+				}
 			}
-			result.byStepAndProcessor[stepShortPath][bpStepData.processor].startedCount++;
+			result.byStepAndProcessor[stepShortPath][processor].startedCount++;
 
 			// Reduce processingTime
 			reduce(result.all.processing, processingTime, reduceTimeOpts);
@@ -100,7 +111,7 @@ module.exports = function (data/*, opts */) {
 			reduce(result.byStep[stepShortPath].processing, processingTime, reduceTimeOpts);
 			reduce(result.byStepAndService[stepShortPath][serviceName].processing,
 				processingTime, reduceTimeOpts);
-			reduce(result.byStepAndProcessor[stepShortPath][bpStepData.processor].processing,
+			reduce(result.byStepAndProcessor[stepShortPath][processor].processing,
 				processingTime, reduceTimeOpts);
 
 			// Reduce eventual correctionTime
@@ -110,8 +121,24 @@ module.exports = function (data/*, opts */) {
 				reduce(result.byStep[stepShortPath].correction, correctionTime, reduceTimeOpts);
 				reduce(result.byStepAndService[stepShortPath][serviceName].correction,
 					correctionTime, reduceTimeOpts);
-				reduce(result.byStepAndProcessor[stepShortPath][bpStepData.processor].correction,
+				reduce(result.byStepAndProcessor[stepShortPath][processor].correction,
 					correctionTime, reduceTimeOpts);
+			}
+
+			if (options.includeBusinessProcesses && !skipTimeCount) {
+				var businessProcessStepRecord = {
+					bpId: bpId,
+					// file name
+					processor: processor,
+					processingTime: processingTime,
+					processingStart: bpStepData.pendingDateTime,
+					processingEnd: bpStepData.processingDateTime
+				};
+
+				result.byStep[stepShortPath].businessProcesses.push(businessProcessStepRecord);
+				result.byStepAndProcessor[stepShortPath][processor].businessProcesses.push(
+					businessProcessStepRecord
+				);
 			}
 		});
 	});

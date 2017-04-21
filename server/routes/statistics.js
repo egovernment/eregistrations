@@ -121,7 +121,7 @@ module.exports = function (config) {
 			// We need:
 			// steps | filter(query) | reduce()[byStep, all]
 			// businessProcesses | filter(query) | reduce().all
-			stepsResult = reduceSteps(filterSteps(data, query));
+			stepsResult = reduceSteps(filterSteps(data, query), { includeBusinessProcesses: true });
 			return {
 				steps: { byStep: stepsResult.byStep, all: stepsResult.all },
 				businessProcesses: reduceBusinessProcesses(filterBusinessProcesses(data.businessProcesses,
