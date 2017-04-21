@@ -15,7 +15,13 @@ exports['flow-nav']            = { class: { 'submitted-menu-item-active': true }
 exports['flow-rejections-nav'] = { class: { 'pills-nav-active': true } };
 
 exports['statistics-main'] = function () {
-	var rejectionsTable;
+	var rejectionsTable = getStatisticsRejectionsTable({
+		columns: tableColumns,
+		getOrderIndex: exports._getOrderIndex,
+		itemsPerPage: env.objectsListItemsPerPage,
+		tableUrl: location.pathname,
+		class: 'submitted-user-data-table'
+	});
 
 	div({ class: 'block-pull-up' },
 		form({ action: '/flow/rejections', autoSubmit: true },
@@ -24,19 +30,11 @@ exports['statistics-main'] = function () {
 				div({ class: 'users-table-filter-bar-status' },
 					selectService({ label: _("All services") })),
 				p({ class: 'submit' }, input({ type: 'submit' }))
-				)));
-
-	rejectionsTable = getStatisticsRejectionsTable({
-		columns: tableColumns,
-		getOrderIndex: exports._getOrderIndex,
-		itemsPerPage: env.objectsListItemsPerPage,
-		tableUrl: location.pathname,
-		class: 'submitted-user-data-table'
-	});
-
-	section(rejectionsTable.pagination);
-	section({ class: 'table-responsive-container' }, rejectionsTable);
-	section(rejectionsTable.pagination);
+				)),
+	br(),
+	section({ class: 'pad-if-pagination' }, rejectionsTable.pagination),
+	section({ class: 'table-responsive-container' }, rejectionsTable),
+	section({ class: 'pad-if-pagination' }, rejectionsTable.pagination));
 };
 
 exports._getOrderIndex = function (businessProcess) {
