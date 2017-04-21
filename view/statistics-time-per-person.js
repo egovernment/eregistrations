@@ -15,7 +15,9 @@ var copy                 = require('es5-ext/object/copy')
   , getQueryHandlerConf  = require('../apps/statistics/get-query-conf')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
-  , getDynamicUrl        = require('./utils/get-dynamic-url');
+  , getDynamicUrl        = require('./utils/get-dynamic-url')
+  , processingStepsMetaFrontDeskFilter = require('./utils/statistics-time-util')
+	.processingStepsMetaFrontDeskFilter;
 
 exports._parent        = require('./statistics-time');
 exports._customFilters = Function.prototype;
@@ -37,16 +39,6 @@ var getRowResult = function (rowData, label) {
 	result.maxTime = rowData.timedCount ? getDurationDaysHours(rowData.maxTime) : '-';
 
 	return result;
-};
-
-var processingStepsMetaFrontDeskFilter = function (processingStepsMeta) {
-	var processingStepsMetaWithoutFrontDesk = {};
-	Object.keys(processingStepsMeta).forEach(function (key) {
-		if (key !== 'frontDesk') {
-			processingStepsMetaWithoutFrontDesk[key] = processingStepsMeta[key];
-		}
-	});
-	return processingStepsMetaWithoutFrontDesk;
 };
 
 exports['statistics-main'] = function () {

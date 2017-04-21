@@ -15,7 +15,9 @@ var assign               = require('es5-ext/object/assign')
   , resolveFullStepPath  = require('../utils/resolve-processing-step-full-path')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
-  , getDynamicUrl        = require('./utils/get-dynamic-url');
+  , getDynamicUrl        = require('./utils/get-dynamic-url')
+  , processingStepsMetaFrontDeskFilter = require('./utils/statistics-time-util')
+	.processingStepsMetaFrontDeskFilter;
 
 exports._parent = require('./statistics-time');
 exports._customFilters = Function.prototype;
@@ -28,16 +30,6 @@ var queryServer = memoize(function (query) {
 }, {
 	normalizer: function (args) { return JSON.stringify(args[0]); }
 });
-
-var processingStepsMetaFrontDeskFilter = function (processingStepsMeta) {
-	var processingStepsMetaWithoutFrontDesk = {};
-	Object.keys(processingStepsMeta).forEach(function (key) {
-		if (key !== 'frontDesk') {
-			processingStepsMetaWithoutFrontDesk[key] = processingStepsMeta[key];
-		}
-	});
-	return processingStepsMetaWithoutFrontDesk;
-};
 
 exports['statistics-main'] = function () {
 	var processingStepsMetaWithoutFrontDesk =
