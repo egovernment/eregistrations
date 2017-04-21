@@ -42,7 +42,7 @@ var getRowResult = function (rowData, label) {
 var processingStepsMetaFrontDeskFilter = function (processingStepsMeta) {
 	var processingStepsMetaWithoutFrontDesk = {};
 	Object.keys(processingStepsMeta).forEach(function (key) {
-		if(key !== 'frontDesk'){
+		if (key !== 'frontDesk') {
 			processingStepsMetaWithoutFrontDesk[key] = processingStepsMeta[key];
 		}
 	});
@@ -51,8 +51,8 @@ var processingStepsMetaFrontDeskFilter = function (processingStepsMeta) {
 
 exports['statistics-main'] = function () {
 	var processingStepsMetaWithoutFrontDesk
-		= processingStepsMetaFrontDeskFilter(this.processingStepsMeta)
-		, stepsMap = {}, queryHandler, params;
+		= processingStepsMetaFrontDeskFilter(this.processingStepsMeta),
+		stepsMap = {}, queryHandler, params;
 	Object.keys(processingStepsMetaWithoutFrontDesk).forEach(function (stepShortPath) {
 		stepsMap[stepShortPath]   = new ObservableValue();
 	});
@@ -131,7 +131,7 @@ exports['statistics-main'] = function () {
 		return stepsMap[shortStepPath].map(function (data) {
 			if (!data) return;
 			var step = db['BusinessProcess' +
-				capitalize.call(processingStepsMeta[shortStepPath]._services[0])].prototype
+				capitalize.call(processingStepsMetaWithoutFrontDesk[shortStepPath]._services[0])].prototype
 				.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath));
 			return section({ class: "section-primary" },
 				h3(step.label),

@@ -32,7 +32,7 @@ var queryServer = memoize(function (query) {
 var processingStepsMetaFrontDeskFilter = function (processingStepsMeta) {
 	var processingStepsMetaWithoutFrontDesk = {};
 	Object.keys(processingStepsMeta).forEach(function (key) {
-		if(key !== 'frontDesk'){
+		if (key !== 'frontDesk') {
 			processingStepsMetaWithoutFrontDesk[key] = processingStepsMeta[key];
 		}
 	});
