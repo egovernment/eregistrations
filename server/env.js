@@ -37,4 +37,11 @@ if (!env.databaseStartDate) {
 	env.databaseStartDate = new Date(Date.UTC(2016, 0, 1));
 }
 
+if (!env.mongo) {
+	env.mongo = {
+		dbName: 'test',
+		url: 'mongodb://localhost:27017/'
+	};
+}
+
 module.exports = env;
