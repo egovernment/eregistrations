@@ -124,7 +124,8 @@ exports['statistics-main'] = function () {
 			return stepsMap[shortStepPath].map(function (data) {
 				if (!data) return;
 				var step = db['BusinessProcess' +
-					capitalize.call(processingStepsMetaWithoutFrontDesk[shortStepPath]._services[0])].prototype
+					capitalize.call(processingStepsMetaWithoutFrontDesk[shortStepPath]._services[0])]
+					.prototype
 					.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath));
 				return [section({ class: "section-primary" },
 					h3(step.label),
