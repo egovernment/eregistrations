@@ -31,10 +31,10 @@ exports['statistics-main'] = function () {
 					selectService({ label: _("All services") })),
 				p({ class: 'submit' }, input({ type: 'submit' }))
 				)),
-	br(),
-	section({ class: 'pad-if-pagination' }, rejectionsTable.pagination),
-	section({ class: 'table-responsive-container' }, rejectionsTable),
-	section({ class: 'pad-if-pagination' }, rejectionsTable.pagination));
+		br(),
+		section({ class: 'pad-if-pagination' }, rejectionsTable.pagination),
+		section({ class: 'table-responsive-container' }, rejectionsTable),
+		section({ class: 'pad-if-pagination' }, rejectionsTable.pagination));
 };
 
 exports._getOrderIndex = function (businessProcess) {
