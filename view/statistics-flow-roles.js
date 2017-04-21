@@ -171,7 +171,7 @@ exports['statistics-main'] = function () {
 				),
 				p({ class: 'submit' }, input({ type: 'submit' })))),
 
-		section(pagination),
+		section({ class: 'pad-if-pagination' }, pagination),
 		br(),
 		section({ class: "section-primary statistics-table-scrollable" },
 			data.map(function (result) {
