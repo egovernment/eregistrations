@@ -39,8 +39,6 @@ var processingStepsMetaFrontDeskFilter = function (processingStepsMeta) {
 	return processingStepsMetaWithoutFrontDesk;
 };
 
-exports['processingStepsMetaFrontDeskFilter'] = processingStepsMetaFrontDeskFilter;
-
 exports['statistics-main'] = function () {
 	var processingStepsMetaWithoutFrontDesk =
 		processingStepsMetaFrontDeskFilter(this.processingStepsMeta),
