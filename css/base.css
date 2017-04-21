@@ -238,3 +238,7 @@ Styles applied while screen size is less than 640px
 /*csslint important: false*/
 script { display: none !important; }
 /*csslint important: true*/
+
+.pad-if-pagination .pagination{
+	margin-top: 1rem;
+}
