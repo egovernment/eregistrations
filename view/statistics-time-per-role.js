@@ -16,8 +16,8 @@ var assign               = require('es5-ext/object/assign')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
-  , processingStepsMetaFrontDeskFilter = require('./utils/statistics-time-util')
-	.processingStepsMetaFrontDeskFilter;
+  , processingStepsMetaWithoutFrontDesk
+	= require('./utils/processing-steps-meta-without-front-desk');
 
 exports._parent = require('./statistics-time');
 exports._customFilters = Function.prototype;
@@ -32,12 +32,11 @@ var queryServer = memoize(function (query) {
 });
 
 exports['statistics-main'] = function () {
-	var processingStepsMetaWithoutFrontDesk =
-		processingStepsMetaFrontDeskFilter(this.processingStepsMeta),
+	var stepsMeta = processingStepsMetaWithoutFrontDesk(),
 		mainData, queryHandler, params;
 	mainData = new ObservableArray();
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
-		processingStepsMeta: processingStepsMetaWithoutFrontDesk
+		processingStepsMeta: stepsMeta
 	}), location, '/time/');
 	params = queryHandler._handlers.map(function (handler) {
 		return handler.name;
@@ -63,10 +62,10 @@ exports['statistics-main'] = function () {
 			total = result.businessProcesses.processing;
 			total.label = _("Total process");
 
-			Object.keys(processingStepsMetaWithoutFrontDesk).forEach(function (key) {
+			Object.keys(stepsMeta).forEach(function (key) {
 				perRoleTotal = result.steps.byStep[key].processing;
 				perRoleTotal.label   = db['BusinessProcess' +
-					capitalize.call(processingStepsMetaWithoutFrontDesk[key]._services[0])].prototype
+					capitalize.call(stepsMeta[key]._services[0])].prototype
 					.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
 				mainData.push(perRoleTotal);
 			});
