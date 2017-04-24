@@ -129,6 +129,7 @@ module.exports = function (data/*, opts */) {
 				var businessProcessStepRecord = {
 					bpId: bpId,
 					// file name
+					businessName: data.businessProcesses.get(bpId).businessName,
 					processor: processor,
 					processingTime: processingTime,
 					processingStart: bpStepData.pendingDateTime,
