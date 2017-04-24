@@ -10,11 +10,9 @@ var assign                     = require('es5-ext/object/assign')
   , db                         = require('../../db')
   , QueryHandler               = require('../../utils/query-handler')
   , toDateInTz                 = require('../../utils/to-date-in-time-zone')
-  , sortData                   = require('../../utils/query/sort')
   , getPage                    = require('../../utils/query/get-page')
   , anyIdToStorage             = require('../utils/any-id-to-storage')
   , getData                    = require('../business-process-query/get-data')
-  , getViewRecords             = require('../business-process-query/get-view-records')
   , filterSteps                = require('../business-process-query/steps/filter')
   , filterBusinessProcesses    = require('../business-process-query/business-processes/filter')
   , reduceSteps                = require('../business-process-query/steps/reduce-time')
@@ -24,9 +22,6 @@ var assign                     = require('es5-ext/object/assign')
   , getQueryHandlerConf        = require('../../apps/statistics/get-query-conf')
   , flowQueryHandlerConf       = require('../../apps/statistics/flow-query-conf')
   , rejectionsQueryHandlerConf = require('../../apps/statistics/rejections-query-conf')
-  , rejectionsListProperties   = require('../../apps/statistics/rejections-list-properties')
-  , rejectionsListComputedProperties
-		= require('../../apps/statistics/rejections-list-computed-properties')
   , timePerPersonPrint         = require('../pdf-renderers/statistics-time-per-person')
   , timePerRolePrint           = require('../pdf-renderers/statistics-time-per-role')
   , flowCertificatesPrint      = require('../pdf-renderers/statistics-flow-certificates')
@@ -242,36 +237,16 @@ module.exports = function (config) {
 		}),
 		'get-flow-rejections-data': function (unresolvedQuery) {
 			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
-				return getData(driver)(function (data) {
-					var fullSize;
-
-					data = sortData(
-						filterBusinessProcesses(data.businessProcesses, assign({
-							flowStatus: 'rejected'
-						}, query)),
-						function (bpA, bpB) {
-							return bpA.rejectedDateTime - bpB.rejectedDateTime;
-						}
-					);
-
-					if (!data.length) {
-						return { size: 0, view: [] };
-					}
-
-					fullSize = data.length;
-
-					data = getPage(data, query.page);
-
-					return getViewRecords(
-						data,
-						rejectionsListProperties,
-						rejectionsListComputedProperties
-					)(function (result) {
-						result.size = fullSize;
-
-						return result;
-					});
-				});
+				var data = { rows: [], pageCount: 1 };
+				data.pageCount = getPage(data.rows, query.page);
+				/* TODO inflate data.rows with real results
+					expected structure:
+					[
+					['Reason 1, Reason 2', '*', 3, 'John Smith', 'Revision', '02/03/2017', 'Super inc.'],
+					['Reason', '', 0, 'John Doe', 'Precal', '01/04/2017', 'Bar']
+					]
+				 */
+				return data;
 			});
 		},
 		'get-time-per-role': function (query) {
