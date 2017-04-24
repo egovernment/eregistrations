@@ -15,7 +15,9 @@ var copy                 = require('es5-ext/object/copy')
   , getQueryHandlerConf  = require('../apps/statistics/get-query-conf')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
-  , getDynamicUrl        = require('./utils/get-dynamic-url');
+  , getDynamicUrl        = require('./utils/get-dynamic-url')
+  , processingStepsMetaWithoutFrontDesk
+	= require('./utils/processing-steps-meta-without-front-desk');
 
 exports._parent        = require('./statistics-time');
 exports._customFilters = Function.prototype;
@@ -40,13 +42,13 @@ var getRowResult = function (rowData, label) {
 };
 
 exports['statistics-main'] = function () {
-	var processingStepsMeta = this.processingStepsMeta, stepsMap = {}, queryHandler
-	  , params;
-	Object.keys(processingStepsMeta).forEach(function (stepShortPath) {
+	var stepsMeta = processingStepsMetaWithoutFrontDesk(),
+		stepsMap = {}, queryHandler, params;
+	Object.keys(stepsMeta).forEach(function (stepShortPath) {
 		stepsMap[stepShortPath]   = new ObservableValue();
 	});
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
-		processingStepsMeta: processingStepsMeta
+		processingStepsMeta: stepsMeta
 	}), location, '/time/per-person/');
 	params = queryHandler._handlers.map(function (handler) {
 		return handler.name;
@@ -121,7 +123,8 @@ exports['statistics-main'] = function () {
 			return stepsMap[shortStepPath].map(function (data) {
 				if (!data) return;
 				var step = db['BusinessProcess' +
-					capitalize.call(processingStepsMeta[shortStepPath]._services[0])].prototype
+					capitalize.call(stepsMeta[shortStepPath]._services[0])]
+					.prototype
 					.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath));
 				return [section({ class: "section-primary" },
 					h3(step.label),
