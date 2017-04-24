@@ -115,36 +115,37 @@ exports['statistics-main'] = function () {
 						href: getDynamicUrl('/time-per-person.pdf', { only: params }),
 						target: '_blank'
 					}, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
-				))));
-	insert(list(Object.keys(stepsMap), function (shortStepPath) {
-		return stepsMap[shortStepPath].map(function (data) {
-			if (!data) return;
-			var step = db['BusinessProcess' +
-				capitalize.call(processingStepsMeta[shortStepPath]._services[0])].prototype
-				.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath));
-			return section({ class: "section-primary" },
-				h3(step.label),
-				table({ class: 'statistics-table' },
-					thead(
-						th(),
-						th({ class: 'statistics-table-number' }, _("Files processed")),
-						th({ class: 'statistics-table-number' }, _("Average time")),
-						th({ class: 'statistics-table-number' }, _("Min time")),
-						th({ class: 'statistics-table-number' }, _("Max time"))
-					),
-					tbody({
-						onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
-							_("There are no files processed at this step")))
-					}, data, function (rowData) {
-						return tr(
-							td(rowData.label),
-							td({ class: 'statistics-table-number' }, rowData.timedCount),
-							td({ class: 'statistics-table-number' }, rowData.avgTime),
-							td({ class: 'statistics-table-number' }, rowData.minTime),
-							td({ class: 'statistics-table-number' }, rowData.maxTime)
-						);
-					})
-					));
-		});
-	}));
+				))),
+		br(),
+		insert(list(Object.keys(stepsMap), function (shortStepPath) {
+			return stepsMap[shortStepPath].map(function (data) {
+				if (!data) return;
+				var step = db['BusinessProcess' +
+					capitalize.call(processingStepsMeta[shortStepPath]._services[0])].prototype
+					.processingSteps.map.getBySKeyPath(resolveFullStepPath(shortStepPath));
+				return [section({ class: "section-primary" },
+					h3(step.label),
+					table({ class: 'statistics-table' },
+						thead(
+							th(),
+							th({ class: 'statistics-table-number' }, _("Files processed")),
+							th({ class: 'statistics-table-number' }, _("Average time")),
+							th({ class: 'statistics-table-number' }, _("Min time")),
+							th({ class: 'statistics-table-number' }, _("Max time"))
+						),
+						tbody({
+							onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
+								_("There are no files processed at this step")))
+						}, data, function (rowData) {
+							return tr(
+								td(rowData.label),
+								td({ class: 'statistics-table-number' }, rowData.timedCount),
+								td({ class: 'statistics-table-number' }, rowData.avgTime),
+								td({ class: 'statistics-table-number' }, rowData.minTime),
+								td({ class: 'statistics-table-number' }, rowData.maxTime)
+							);
+						})
+						)), br()];
+			});
+		})));
 };
