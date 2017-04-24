@@ -10,7 +10,7 @@ var _                            = require('mano').i18n.bind('View: Statistics')
   , Pagination        = require('./components/pagination')
   , selectService     = require('./components/filter-bar/select-service')
   , selectRejectionReason = require('./components/filter-bar/select-rejection-reason')
-  , queryServer       = require('./utils/statistics-flow-operators-query-server')
+  , queryServer       = require('./utils/statistics-rejections-query-server')
   , dateFromToBlock    = require('./components/filter-bar/select-date-range-safe-fallback');
 
 exports._parent        = require('./statistics-flow');
