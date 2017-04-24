@@ -141,6 +141,9 @@ exports['statistics-main'] = function () {
 						select(
 							{ id: 'step-status', name: 'status' },
 							list(Object.keys(stepStatuses), function (status) {
+								if (status === 'pending') {
+									return;
+								}
 								return option({
 									id: 'status-' + status,
 									value: status,
