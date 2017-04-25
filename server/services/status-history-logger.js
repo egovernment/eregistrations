@@ -1,14 +1,14 @@
 'use strict';
 
 var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step-full-path')
-	, serializeValue                = require('dbjs/_setup/serialize/value')
-	, unserializeValue              = require('dbjs/_setup/unserialize/value')
-	, capitalize                    = require('es5-ext/string/#/capitalize')
-	, db                            = require('../../db')
-	, Set                           = require('es6-set')
-	, processingStepsMeta           = require('../../processing-steps-meta')
-	, uuid                          = require('time-uuid')
-	, uniqIdPrefix                  = 'abcdefghiklmnopqrstuvxyz'[Math.floor(Math.random() * 24)];
+  , serializeValue                = require('dbjs/_setup/serialize/value')
+  , unserializeValue              = require('dbjs/_setup/unserialize/value')
+  , capitalize                    = require('es5-ext/string/#/capitalize')
+  , db                            = require('../../db')
+  , Set                           = require('es6-set')
+  , processingStepsMeta           = require('../../processing-steps-meta')
+  , uuid                          = require('time-uuid')
+  , uniqIdPrefix                  = 'abcdefghiklmnopqrstuvxyz'[Math.floor(Math.random() * 24)];
 
 var getPathSuffix = function () {
 	return 'statusHistory/map/' + uniqIdPrefix + uuid();
