@@ -184,7 +184,7 @@ module.exports = function () {
 			allStorages.add(storage);
 			storage.on('key:' + stepPath + '/status',
 				storeLog(storage, stepPath, { processorPath: stepPath + '/processor' })
-			);
+				);
 		});
 	});
 	allStorages.forEach(function (storage) {
@@ -196,4 +196,3 @@ module.exports = function () {
 		});
 	});
 };
-
