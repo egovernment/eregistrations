@@ -30,6 +30,12 @@ module.exports = function (/* opts */) {
 	};
 
 	setTimeout(function () {
+		if (!$('startId')) {
+			return;
+		}
+		if (!$('endId')) {
+			return;
+		}
 		if (!jQuery) {
 			console.error('Probably you will have to integrate JQuery and all ' +
 				'rangepicker dependencies into into index.html.tpl file. ' +
