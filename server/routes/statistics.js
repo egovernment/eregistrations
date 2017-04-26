@@ -121,7 +121,7 @@ module.exports = function (config) {
 			// We need:
 			// steps | filter(query) | reduce()[byStep, all]
 			// businessProcesses | filter(query) | reduce().all
-			stepsResult = reduceSteps(filterSteps(data, query));
+			stepsResult = reduceSteps(filterSteps(data, query), { includeBusinessProcesses: true });
 			return {
 				steps: { byStep: stepsResult.byStep, all: stepsResult.all },
 				businessProcesses: reduceBusinessProcesses(filterBusinessProcesses(data.businessProcesses,
@@ -134,7 +134,7 @@ module.exports = function (config) {
 		return getData(driver)(function (data) {
 			// We need:
 			// steps | filter(query) | reduce()[byStepAndProcessor, byStep]
-			data = reduceSteps(filterSteps(data, query));
+			data = reduceSteps(filterSteps(data, query), { includeBusinessProcesses: true });
 			return { byStep: data.byStep, byStepAndProcessor: data.byStepAndProcessor };
 		});
 	};

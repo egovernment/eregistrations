@@ -242,3 +242,11 @@ script { display: none !important; }
 .pad-if-pagination .pagination{
 	margin-top: 1rem;
 }
+
+.width-30{
+	width: 30%;
+}
+
+.width-27-5{
+	width: 27.5%;
+}

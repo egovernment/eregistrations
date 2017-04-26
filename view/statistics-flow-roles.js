@@ -56,7 +56,7 @@ db.BusinessProcess.extensions.forEach(function (ServiceType) {
 });
 
 var stepStatuses = {};
-['pending', 'approved', 'sentBack', 'rejected', 'paused'].forEach(function (stepName) {
+['approved', 'sentBack', 'rejected', 'paused'].forEach(function (stepName) {
 	// sanity check
 	if (!db.ProcessingStepStatus.members.has(stepName)) {
 		return;
