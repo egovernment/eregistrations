@@ -137,21 +137,25 @@ exports['statistics-main'] = function () {
 				onEmpty: tr(td({ class: 'empty', colspan: 5 },
 						_("There is no data to display")))
 			}, mainData, function (row) {
-				return tr({ class: 'cursor-pointer', onclick: function () {
-					var jQuery = window.jQuery,
-						currentRow = jQuery(this),
-						detailRow = currentRow.next('.detail');
 
-					if (detailRow.length === 0) {
-						var rows = queryResult.steps
-							.byStep[row.key]
-							.businessProcesses
-							.map(function (record, index) {
+				var step = queryResult.steps.byStep[row.key],
+					props = {};
 
-								var user = db.User.getById(record.processor),
-								userName = user === null ? record.processor : user.fullName,
-								style = { class: 'background-secondary' },
-								lastTdContent = index === 0 ? span({
+				if (step && step.businessProcesses.length !== 0) {
+					var businessProcessesOfRow = step.businessProcesses;
+					props.class = 'cursor-pointer';
+					props.onclick = function () {
+						var jQuery = window.jQuery,
+							currentRow = jQuery(this),
+							detailRow = currentRow.next('.detail');
+
+						if (detailRow.length === 0) {
+							var rows = businessProcessesOfRow.map(function (bp, index) {
+
+								var user = db.User.getById(bp.processor),
+									userName = user === null ? bp.processor : user.fullName,
+									style = { class: 'background-secondary' },
+									lastTdContent = index === 0 ? span({
 										onclick: function () {
 											detailRow.hide();
 										},
@@ -159,24 +163,28 @@ exports['statistics-main'] = function () {
 									}, 'x') : '';
 
 								return tr(
-									td(style, record.businessName),
+									td(style, bp.businessName),
 									td(style, userName),
-									td(style, getDurationDaysHours(record.processingTime)),
-									td(style, new db.DateTime(record.processingStart)),
-									td(style, new db.DateTime(record.processingEnd)),
+									td(style, getDurationDaysHours(bp.processingTime)),
+									td(style, new db.DateTime(bp.processingStart)),
+									td(style, new db.DateTime(bp.processingEnd)),
 									td(style, lastTdContent)
 								);
 							});
 
-						detailRow = jQuery(tr({
-							class: 'detail',
-							style: 'display:none'
-						}, td({ colspan: 5 }, table(rows))));
+							detailRow = jQuery(tr({
+								class: 'detail',
+								style: 'display:none'
+							}, td({ colspan: 5 }, table(rows))));
 
-						detailRow.insertAfter(currentRow);
-					}
-					detailRow.toggle();
-				} },
+							detailRow.insertAfter(currentRow);
+						}
+
+						detailRow.toggle();
+					};
+				}
+
+				return tr(props,
 					td(row.label),
 					td({ class: 'statistics-table-number' }, row.timedCount),
 					td({ class: 'statistics-table-number' },
