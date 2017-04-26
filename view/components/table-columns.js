@@ -6,7 +6,7 @@ var db                    = require('../../db')
   , objectSome            = require('es5-ext/object/some')
   , timeRanges            = require('../../utils/supervisor-time-ranges')
   , formatLastModified    = require('../utils/last-modified')
-
+  , formatLastModifiedDate    = require('../utils/last-modified-date')
   , certificateStatusMeta = db.CertificateStatus.meta;
 
 var findRejectionStep = function (businessProcess) {
@@ -188,7 +188,7 @@ exports.businessProcessRejectionDateColumn = {
 		var isRejected = businessProcess._isRejected;
 
 		return _if(isRejected, function () {
-			return isRejected._lastModified.map(formatLastModified);
+			return isRejected._lastModified.map(formatLastModifiedDate);
 		});
 	}
 };

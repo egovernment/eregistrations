@@ -79,15 +79,15 @@ exports['statistics-main'] = function () {
 			section({ class: 'date-period-selector-positioned-on-submenu' }, dateFromToBlock()),
 			section({ class: 'section-primary users-table-filter-bar display-flex flex-wrap' },
 				div(
-					div({ class: 'users-table-filter-bar-status' },
+					div({ class: 'width-30 users-table-filter-bar-status' },
 						selectService({ label: _("All services") })),
-					div({ class: 'users-table-filter-bar-status' },
+					div({ class: 'width-30 users-table-filter-bar-status' },
 						selectCertificate(),
 						legacy('selectMatch', 'service-select', serviceToCertLegacyMatch)),
-					div({ class: 'users-table-filter-bar-status' },
+					div({ class: 'width-30 users-table-filter-bar-status' },
 						selectUser({ label: _("All operators"), name: 'processor' }))
 				),
-				div({ class: 'users-table-filter-bar-status' },
+				div({ class: 'width-27-5 users-table-filter-bar-status' },
 					select(
 						{ id: 'select-step', name: 'step' },
 						list(Object.keys(processingSteps), function (step) {
