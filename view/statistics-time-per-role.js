@@ -140,31 +140,40 @@ exports['statistics-main'] = function () {
 				return tr({ class: 'cursor-pointer', onclick: function () {
 					var jQuery = window.jQuery;
 					var currentRow = jQuery(this);
-					if (currentRow.next('.detail').length === 0) {
-						var rows = queryResult.steps.byStep[row.key].businessProcesses.map(function (record) {
+						var detailRow = currentRow.next('.detail');
+
+						if (detailRow.length === 0) {
+						var rows = queryResult.steps.byStep[row.key].businessProcesses.map(function (record, index) {
 
 							var user = db.User.getById(record.processor),
 								userName = user === null ? record.processor : user.fullName;
 
 							var style = { class: 'background-secondary' };
+							var lastTdContent = index === 0 ? span({
+								onclick: function () {
+									detailRow.hide()
+								},
+								class:'cursor-pointer'},'x') : '';
 							return tr(
 								td(style, record.businessName),
 								td(style, userName),
 								td(style, getDurationDaysHours(record.processingTime)),
 								td(style, new db.DateTime(record.processingStart)),
-								td(style, new db.DateTime(record.processingEnd))
+								td(style, new db.DateTime(record.processingEnd)),
+								td(style, lastTdContent)
 							);
 						});
 
-						jQuery(tr(
-							{
+						detailRow = jQuery(tr({
 								class: 'detail',
 								style: 'display:none'
 							},
 							td({ colspan: 5 }, table(rows))
-						)).insertAfter(currentRow);
+						));
+
+						detailRow.insertAfter(currentRow);
 					}
-					currentRow.next('.detail').toggle();
+					detailRow.toggle();
 				} },
 					td(row.label),
 					td({ class: 'statistics-table-number' }, row.timedCount),
