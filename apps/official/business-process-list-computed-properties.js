@@ -7,7 +7,9 @@ var db  = require('../../db')
 
 module.exports = exports = new Set([
 	'businessName',
-	'certificates/applicable'
+	'certificates/applicable',
+	'requirementUploads/applicable',
+	'paymentReceiptUploads/applicable'
 ]);
 
 db.BusinessProcess.extensions.forEach(function (ServiceType) {
