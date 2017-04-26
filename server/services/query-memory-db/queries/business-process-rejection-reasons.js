@@ -47,16 +47,16 @@ module.exports = exports = function (db) {
 		//rejectionReasons -> processingSteps
 		businessProcess.processingSteps.applicable.some(function (processingStep) {
 			otherValue = '';
-			if (!processingStep.isRejected || !processingStep.isSentBack) return;
+			if (!processingStep.isRejected && !processingStep.isSentBack) return;
 			result.rejectionType = processingStep.isRejected ? 'rejected' : 'sentBack';
 			if (processingStep.steps) { // processingStepGroup. We need the full path.
 				processingStep.steps.applicable.some(function (step) {
-					if (!step.isRejected || !step.isSentBack) return;
+					if (!step.isRejected && !step.isSentBack) return;
 					result.processingStep.label = step.label;
 					result.processingStep.path = step.__id__.slice(step.__id__.indexOf('/'));
 					otherValue = step.rejectionReason || '';
-					result.operator.id = step.operator.__id__;
-					result.operator.name = step.operator.fullName;
+					result.operator.id = step.processor.__id__;
+					result.operator.name = step.processor.fullName;
 					return true;
 				});
 			} else { // standard processingStep.
@@ -64,8 +64,8 @@ module.exports = exports = function (db) {
 				result.processingStep.path =
 					processingStep.__id__.slice(processingStep.__id__.indexOf('/'));
 				otherValue = processingStep.rejectionReason || '';
-				result.operator.id = processingStep.operator.__id__;
-				result.operator.name = processingStep.operator.fullName;
+				result.operator.id = processingStep.processor.__id__;
+				result.operator.name = processingStep.processor.fullName;
 
 			}
 			if (processingStep.isRejected) {
@@ -75,7 +75,7 @@ module.exports = exports = function (db) {
 			return true;
 		});
 		//rejectionReasons -> data
-		if (!businessProcess.dataForms.rejectReason) {
+		if (businessProcess.dataForms.rejectReason) {
 			result.hasOnlySystemicReasons = false;
 			result.rejectionReasons.push(rejectionReason('data', ['other'],
 				businessProcess.dataForms.rejectReason));
@@ -98,7 +98,7 @@ module.exports = exports = function (db) {
 		businessProcess.paymentReceiptUploads.applicable.forEach(function (paymentReceiptUpload) {
 			if (paymentReceiptUpload.status !== 'invalid') return;
 			result.hasOnlySystemicReasons = false;
-			result.rejectReasons.push(
+			result.rejectionReasons.push(
 				rejectionReason('paymentReceipt', ['other'], paymentReceiptUpload.rejectReasonMemo)
 			);
 		});
