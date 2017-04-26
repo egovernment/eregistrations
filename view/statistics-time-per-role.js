@@ -33,7 +33,7 @@ var queryServer = memoize(function (query) {
 
 exports['statistics-main'] = function () {
 	var stepsMeta = processingStepsMetaWithoutFrontDesk(),
-		mainData, queryHandler, params;
+		mainData, queryHandler, params, queryResult;
 	mainData = new ObservableArray();
 	queryHandler = setupQueryHandler(getQueryHandlerConf({
 		processingStepsMeta: stepsMeta
@@ -50,6 +50,7 @@ exports['statistics-main'] = function () {
 			query.dateTo = query.dateTo.toJSON();
 		}
 		queryServer(query)(function (result) {
+			queryResult = result;
 			var totalWithoutCorrections, total, totalCorrections, perRoleTotal;
 			mainData.splice(0, mainData.length);
 
@@ -64,6 +65,7 @@ exports['statistics-main'] = function () {
 
 			Object.keys(stepsMeta).forEach(function (key) {
 				perRoleTotal = result.steps.byStep[key].processing;
+				perRoleTotal.key = key;
 				perRoleTotal.label   = db['BusinessProcess' +
 					capitalize.call(stepsMeta[key]._services[0])].prototype
 					.processingSteps.map.getBySKeyPath(resolveFullStepPath(key)).label;
@@ -135,7 +137,35 @@ exports['statistics-main'] = function () {
 				onEmpty: tr(td({ class: 'empty', colspan: 5 },
 						_("There is no data to display")))
 			}, mainData, function (row) {
-				return tr(
+				return tr({ class: 'cursor-pointer', onclick: function () {
+					var jQuery = window.jQuery;
+					var currentRow = jQuery(this);
+					if (currentRow.next('.detail').length === 0) {
+						var rows = queryResult.steps.byStep[row.key].businessProcesses.map(function (record) {
+
+							var user = db.User.getById(record.processor),
+								userName = user === null ? record.processor : user.fullName;
+
+							var style = { class: 'background-secondary' };
+							return tr(
+								td(style, record.businessName),
+								td(style, userName),
+								td(style, getDurationDaysHours(record.processingTime)),
+								td(style, new db.DateTime(record.processingStart)),
+								td(style, new db.DateTime(record.processingEnd))
+							);
+						});
+
+						jQuery(tr(
+							{
+								class: 'detail',
+								style: 'display:none'
+							},
+							td({ colspan: 5 }, table(rows))
+						)).insertAfter(currentRow);
+					}
+					currentRow.next('.detail').toggle();
+				} },
 					td(row.label),
 					td({ class: 'statistics-table-number' }, row.timedCount),
 					td({ class: 'statistics-table-number' },
@@ -143,8 +173,7 @@ exports['statistics-main'] = function () {
 					td({ class: 'statistics-table-number' },
 						row.timedCount ? getDurationDaysHours(row.minTime) : "-"),
 					td({ class: 'statistics-table-number' },
-						row.timedCount ? getDurationDaysHours(row.maxTime) : "-")
-				);
+						row.timedCount ? getDurationDaysHours(row.maxTime) : "-"));
 			}))
 			));
 };

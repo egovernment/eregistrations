@@ -242,3 +242,11 @@ script { display: none !important; }
 .pad-if-pagination .pagination{
 	margin-top: 1rem;
 }
+
+.cursor-pointer{
+	cursor: pointer;
+}
+
+.background-secondary{
+	background-color: grey;
+}
