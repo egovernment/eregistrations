@@ -9,7 +9,7 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , processingStepsMeta           = require('../../processing-steps-meta')
   , uuid                          = require('time-uuid')
   , uniqIdPrefix                  = 'abcdefghiklmnopqrstuvxyz'[Math.floor(Math.random() * 24)]
-  , queryMemoryDb                 = require('mano').queryMemoryDb
+  , mano                          = require('mano')
   , mongoDB                       = require('../mongo-db');
 
 var getPathSuffix = function () {
@@ -50,10 +50,10 @@ var saveRejectionReason = function (event) {
 	status = unserializeValue(event.data.value);
 	if (status !== 'rejected' && status !== 'sentBack') return;
 
-	return queryMemoryDb([event.ownerId], 'businessProcessRejectionReasons', {
+	return mano.queryMemoryDb([event.ownerId], 'businessProcessRejectionReasons', {
 		businessProcessId: event.ownerId
 	})(function (reasonObject) {
-		return mongoDB()(function (db) {
+		return mongoDB.connect()(function (db) {
 			var collection = db.collection('rejectionReasons');
 			return collection.insertOne(reasonObject);
 		});
@@ -65,7 +65,7 @@ var saveRejectionReason = function (event) {
 module.exports = function () {
 	var allStorages = new Set(), driver;
 	// Cannot be initialized before call
-	driver = require('mano').dbDriver;
+	driver = mano.dbDriver;
 	Object.keys(processingStepsMeta).forEach(function (stepMetaKey) {
 		var stepPath, storages;
 		stepPath = 'processingSteps/map/' + resolveProcessingStepFullPath(stepMetaKey);
