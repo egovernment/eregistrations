@@ -5,11 +5,12 @@ var ensureObject   = require('es5-ext/object/valid-object')
   , ensureDatabase = require('dbjs/valid-dbjs')
   , rejectionReason;
 
-rejectionReason = function (ownerType, types, value) {
+rejectionReason = function (ownerType, types, value, path) {
 	var reason = {};
 	reason.types = typeof types === 'object' ? types : [];
 	reason.value = value || '';
 	reason.ownerType = ownerType || '';
+	reason.path = path || '';
 
 	return reason;
 };
@@ -37,6 +38,7 @@ module.exports = exports = function (db) {
 				path: null,
 				label: null
 			},
+			occurancesCount: 0,
 			date: null
 		};
 		businessProcess = db.BusinessProcess.getById(businessProcessId);
@@ -65,7 +67,9 @@ module.exports = exports = function (db) {
 			otherValue = processStep.rejectionReason || '';
 			if (processingStep.isRejected) {
 				result.hasOnlySystemicReasons = false;
-				result.rejectionReasons.push(rejectionReason('processingStep', ['other'], otherValue));
+				result.rejectionReasons.push(
+					rejectionReason('processingStep', ['other'], otherValue, '')
+				);
 			}
 			return true;
 		});
@@ -73,7 +77,7 @@ module.exports = exports = function (db) {
 		if (businessProcess.dataForms.rejectReason) {
 			result.hasOnlySystemicReasons = false;
 			result.rejectionReasons.push(rejectionReason('data', ['other'],
-				businessProcess.dataForms.rejectReason));
+				businessProcess.dataForms.rejectReason, ''));
 		}
 		//rejectionReasons -> requirementUploads
 		businessProcess.requirementUploads.applicable.forEach(function (requirementUpload) {
@@ -87,14 +91,18 @@ module.exports = exports = function (db) {
 				}
 				types.push(type);
 			});
-			result.rejectionReasons.push(rejectionReason('requirementUpload', types, otherValue));
+			result.rejectionReasons.push(
+				rejectionReason('requirementUpload', types, otherValue
+				  , requirementUpload.__id__.slice(requirementUpload.__id__.indexOf('/')))
+			);
 		});
 		//rejectionReasons -> paymentReceiptUploads
 		businessProcess.paymentReceiptUploads.applicable.forEach(function (paymentReceiptUpload) {
 			if (paymentReceiptUpload.status !== 'invalid') return;
 			result.hasOnlySystemicReasons = false;
 			result.rejectionReasons.push(
-				rejectionReason('paymentReceipt', ['other'], paymentReceiptUpload.rejectReasonMemo)
+				rejectionReason('paymentReceipt', ['other'], paymentReceiptUpload.rejectReasonMemo
+				  , paymentReceiptUpload.__id__.slice(paymentReceiptUpload.__id__.indexOf('/')))
 			);
 		});
 
