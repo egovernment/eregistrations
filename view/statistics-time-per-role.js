@@ -143,7 +143,7 @@ exports['statistics-main'] = function () {
 
 				if (step && step.businessProcesses.length !== 0) {
 					var businessProcessesOfRow = step.businessProcesses;
-					props.class = 'cursor-pointer';
+					props.class = 'cursor-pointer text-decoration-underline';
 					props.onclick = function () {
 						var jQuery = window.jQuery,
 							currentRow = jQuery(this),

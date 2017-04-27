@@ -258,3 +258,7 @@ script { display: none !important; }
 .background-secondary{
     background-color: #f5f5f5;
 }
+
+.text-decoration-underline{
+	text-decoration: underline;
+}
