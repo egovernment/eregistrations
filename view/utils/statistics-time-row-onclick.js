@@ -1,5 +1,6 @@
 'use strict';
 var getDurationDaysHours = require('./get-duration-days-hours-fine-grain'),
+	db           = require('../../db'),
 	statisticsTimeRowOnClick = function (currentRow, businessProcessesOfRow, showUserName) {
 		var jQuery = window.jQuery,
 			detailRow = currentRow.next('.detail');
@@ -7,7 +8,6 @@ var getDurationDaysHours = require('./get-duration-days-hours-fine-grain'),
 		if (detailRow.length === 0) {
 			var rows = businessProcessesOfRow.map(function (bp, index) {
 
-				var db = window.db;
 				var user = db.User.getById(bp.processor),
 					userName = user === null ? bp.processor : user.fullName,
 					lastTdContent = index === 0 ? span({
