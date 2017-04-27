@@ -56,7 +56,7 @@ var saveRejectionReason = function (event) {
 		return mongoDB()(function (db) {
 			var collection = db.collection('rejectionReasons');
 			return collection.insertOne(reasonObject);
-		})
+		});
 	}).done(null, function (err) {
 		console.error(err);
 	});
