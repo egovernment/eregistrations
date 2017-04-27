@@ -243,10 +243,18 @@ script { display: none !important; }
 	margin-top: 1rem;
 }
 
+.width-30{
+	width: 30%;
+}
+
+.width-27-5{
+	width: 27.5%;
+}
+
 .cursor-pointer{
-	cursor: pointer;
+    cursor: pointer;
 }
 
 .background-secondary{
-	background-color: #f5f5f5;
+    background-color: #f5f5f5;
 }

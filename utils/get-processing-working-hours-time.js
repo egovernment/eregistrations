@@ -64,6 +64,7 @@ module.exports = function (startStamp, endStamp) {
 	if (!isDayOff(endDate) && endTimeMs != null) {
 		processingTime += (endTimeMs - startTimeThresholdMs);
 	}
+	processingTime = Number(processingTime);
 
 	return processingTime < 0 ? 0 : processingTime;
 };
