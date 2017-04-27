@@ -50,7 +50,7 @@ var saveRejectionReason = function (event) {
 	status = unserializeValue(event.data.value);
 	if (status !== 'rejected' && status !== 'sentBack') return;
 
-	return mano.queryMemoryDb([event.ownerId], 'businessProcessRejectionReasons', {
+	mano.queryMemoryDb([event.ownerId], 'businessProcessRejectionReasons', {
 		businessProcessId: event.ownerId
 	})(function (reasonObject) {
 		return mongoDB.connect()(function (db) {

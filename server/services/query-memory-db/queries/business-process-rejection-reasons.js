@@ -39,7 +39,10 @@ module.exports = exports = function (db) {
 				label: null
 			},
 			occurancesCount: 0,
-			date: null
+			date: {
+				ts: null,
+				date: null
+			}
 		};
 		businessProcess = db.BusinessProcess.getById(businessProcessId);
 		if (!businessProcess) return;
@@ -106,7 +109,8 @@ module.exports = exports = function (db) {
 			);
 		});
 
-		result.date = Number(new db.DateTime());
+		result.date.ts = Number(new db.DateTime());
+		result.date.date = Number(new db.Date());
 
 		return result;
 	};
