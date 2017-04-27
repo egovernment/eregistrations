@@ -16,6 +16,7 @@ var assign               = require('es5-ext/object/assign')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
+  , statisticsTimeRowOnClick        = require('./utils/statistics-time-row-onclick')
   , processingStepsMetaWithoutFrontDesk
 	= require('./utils/processing-steps-meta-without-front-desk');
 
@@ -142,45 +143,9 @@ exports['statistics-main'] = function () {
 					props = {};
 
 				if (step && step.businessProcesses.length !== 0) {
-					var businessProcessesOfRow = step.businessProcesses;
 					props.class = 'cursor-pointer text-decoration-underline';
 					props.onclick = function () {
-						var jQuery = window.jQuery,
-							currentRow = jQuery(this),
-							detailRow = currentRow.next('.detail');
-
-						if (detailRow.length === 0) {
-							var rows = businessProcessesOfRow.map(function (bp, index) {
-
-								var user = db.User.getById(bp.processor),
-									userName = user === null ? bp.processor : user.fullName,
-									style = { class: 'background-secondary' },
-									lastTdContent = index === 0 ? span({
-										onclick: function () {
-											detailRow.hide();
-										},
-										class: 'cursor-pointer'
-									}, 'x') : '';
-
-								return tr(
-									td(style, bp.businessName),
-									td(style, userName),
-									td(style, getDurationDaysHours(bp.processingTime)),
-									td(style, new db.DateTime(bp.processingStart)),
-									td(style, new db.DateTime(bp.processingEnd)),
-									td(style, lastTdContent)
-								);
-							});
-
-							detailRow = jQuery(tr({
-								class: 'detail',
-								style: 'display:none'
-							}, td({ colspan: 5 }, table(rows))));
-
-							detailRow.insertAfter(currentRow);
-						}
-
-						detailRow.toggle();
+						statisticsTimeRowOnClick(window.jQuery(this), step.businessProcesses);
 					};
 				}
 
