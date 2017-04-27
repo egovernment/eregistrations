@@ -44,7 +44,6 @@ module.exports = exports = function (db) {
 		otherValue = step.rejectionReason || '';
 	};
 
-
 	return function (query) {
 		var businessProcessId = ensureString(ensureObject(query).businessProcessId), businessProcess
 		  , types;
