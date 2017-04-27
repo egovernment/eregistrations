@@ -9,7 +9,8 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , processingStepsMeta           = require('../../processing-steps-meta')
   , uuid                          = require('time-uuid')
   , uniqIdPrefix                  = 'abcdefghiklmnopqrstuvxyz'[Math.floor(Math.random() * 24)]
-  , queryMemoryDb                 = require('mano').queryMemoryDb;
+  , queryMemoryDb                 = require('mano').queryMemoryDb
+  , mongoDB                       = require('../mongo-db');
 
 var getPathSuffix = function () {
 	return 'statusHistory/map/' + uniqIdPrefix + uuid();
@@ -49,12 +50,14 @@ var saveRejectionReason = function (event) {
 	status = unserializeValue(event.data.value);
 	if (status !== 'rejected' && status !== 'sentBack') return;
 
-	queryMemoryDb([event.ownerId], 'businessProcessRejectionReasons', {
+	return queryMemoryDb([event.ownerId], 'businessProcessRejectionReasons', {
 		businessProcessId: event.ownerId
-	}).done(function (reasonObject) {
-		//TODO here should be added logic for saving the reasonObject
-		console.log(JSON.stringify(reasonObject));
-	}, function (err) {
+	})(function (reasonObject) {
+		return mongoDB()(function (db) {
+			var collection = db.collection('rejectionReasons');
+			return collection.insertOne(reasonObject);
+		})
+	}).done(null, function (err) {
 		console.error(err);
 	});
 };
