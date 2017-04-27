@@ -7,6 +7,7 @@ var DbjsEvent         = require('dbjs/_setup/event')
   , env               = require('../../../env')
   , startsWith        = require('es5-ext/string/#/starts-with')
   , deferred          = require('deferred')
+  , mongoDB           = require('../server/mongo-db')
 
   , resolve = path.resolve
   , root = resolve(__dirname, '../../..')
@@ -43,10 +44,15 @@ dbService().done(function () {
 				return mano.queryMemoryDb([bpId], 'businessProcessRejectionReasons', {
 					businessProcessId: bpId
 				})(function (result) {
-
+					return mongoDB()(function (db) {
+						var collection = db.collection('rejectionReasons');
+						return collection.find({ 'service.id': bpId }).count().then(function (count) {
+							if (count) return;
+							return collection.insertOne(result);
+						});
+					});
 				});
 			});
 		});
 	}).done();
-
 });
