@@ -67,6 +67,11 @@ module.exports = exports = function (db) {
 			result.processingStep.path = processStep.__id__.slice(processStep.__id__.indexOf('/'));
 			result.operator.id = processStep.processor.__id__;
 			result.operator.name = processStep.processor.fullName;
+			processStep._status._lastModified.map(function (time) {
+				time = Math.round(time / 1000);
+				result.date.ts = time;
+				result.date.date = Number(db.Date(time));
+			});
 			otherValue = processStep.rejectionReason || '';
 			if (processingStep.isRejected) {
 				result.hasOnlySystemicReasons = false;
@@ -108,9 +113,6 @@ module.exports = exports = function (db) {
 				  , paymentReceiptUpload.__id__.slice(paymentReceiptUpload.__id__.indexOf('/')))
 			);
 		});
-
-		result.date.ts = Number(new db.DateTime());
-		result.date.date = Number(new db.Date());
 
 		return result;
 	};
