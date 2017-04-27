@@ -44,7 +44,7 @@ dbService().done(function () {
 				return mano.queryMemoryDb([bpId], 'businessProcessRejectionReasons', {
 					businessProcessId: bpId
 				})(function (result) {
-					return mongoDB()(function (db) {
+					return mongoDB.connect()(function (db) {
 						var collection = db.collection('rejectionReasons');
 						return collection.find({ 'service.id': bpId }).count().then(function (count) {
 							if (count) return;
