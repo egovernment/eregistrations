@@ -16,7 +16,7 @@ var assign               = require('es5-ext/object/assign')
   , getDurationDaysHours = require('./utils/get-duration-days-hours-fine-grain')
   , dateFromToBlock      = require('./components/filter-bar/select-date-range-safe-fallback')
   , getDynamicUrl        = require('./utils/get-dynamic-url')
-  , statisticsTimeRowOnClick        = require('./utils/statistics-time-row-onclick')
+  , initializeRowOnClick = require('./utils/statistics-time-row-onclick')
   , processingStepsMetaWithoutFrontDesk
 	= require('./utils/processing-steps-meta-without-front-desk');
 
@@ -142,12 +142,7 @@ exports['statistics-main'] = function () {
 				var step = queryResult.steps.byStep[row.key],
 					props = {};
 
-				if (step && step.businessProcesses.length !== 0) {
-					props.class = 'cursor-pointer text-decoration-underline';
-					props.onclick = function () {
-						statisticsTimeRowOnClick(window.jQuery(this), step.businessProcesses);
-					};
-				}
+				initializeRowOnClick(step, props, true);
 
 				return tr(props,
 					td(row.label),
