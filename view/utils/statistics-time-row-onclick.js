@@ -1,6 +1,6 @@
 'use strict';
 var getDurationDaysHours = require('./get-duration-days-hours-fine-grain'),
-	db           = require('../../db'),
+	db                   = require('../../db'),
 	statisticsTimeRowOnClick = function (currentRow, businessProcessesOfRow, showUserName) {
 		var jQuery = window.jQuery,
 			detailRow = currentRow.next('.detail');
