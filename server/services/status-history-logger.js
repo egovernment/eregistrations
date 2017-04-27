@@ -49,7 +49,7 @@ var saveRejectionReason = function (event) {
 	status = unserializeValue(event.data.value);
 	if (status !== 'rejected' && status !== 'sentBack') return;
 
-	return queryMemoryDb([event.ownerId], 'businessProcessRejectionReasons', {
+	queryMemoryDb([event.ownerId], 'businessProcessRejectionReasons', {
 		businessProcessId: event.ownerId
 	}).done(function (reasonObject) {
 		//TODO here should be added logic for saving the reasonObject
@@ -85,7 +85,7 @@ module.exports = function () {
 		db[capitalize.call(storage.name)].prototype.certificates.map.forEach(function (cert) {
 			var certificatePath = 'certificates/map/' + cert.key;
 			storage.on('key:' + certificatePath + '/status',
-				storeLog(storage, certificatePath));//
+				storeLog(storage, certificatePath));
 		});
 	});
 };

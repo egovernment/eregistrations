@@ -16,29 +16,39 @@ rejectionReason = function (ownerType, types, value) {
 
 module.exports = exports = function (db) {
 	ensureDatabase(db);
+	var otherValue, result = {
+		hasOnlySystemicReasons: true,
+		rejectionType: null,
+		rejectionReasons: [],
+		service: {
+			type: null,
+			id: null,
+			businessName: null
+		},
+		operator: {
+			id: null,
+			name: null
+		},
+		processingStep: {
+			path: null,
+			label: null
+		},
+		date: null
+	};
+
+	var setProcessingStepData = function (step) {
+		result.processingStep.label = step.label;
+		result.processingStep.path = step.__id__.slice(step.__id__.indexOf('/'));
+		result.operator.id = step.processor.__id__;
+		result.operator.name = step.processor.fullName;
+		otherValue = step.rejectionReason || '';
+	};
+
 
 	return function (query) {
 		var businessProcessId = ensureString(ensureObject(query).businessProcessId), businessProcess
-		  , result, types, otherValue;
-		result = {
-			hasOnlySystemicReasons: true,
-			rejectionType: null,
-			rejectionReasons: [],
-			service: {
-				type: null,
-				id: null,
-				businessName: null
-			},
-			operator: {
-				id: null,
-				name: null
-			},
-			processingStep: {
-				path: null,
-				label: null
-			},
-			date: null
-		};
+		  , types;
+
 		businessProcess = db.BusinessProcess.getById(businessProcessId);
 		if (!businessProcess) return;
 		result.service.businessName = businessProcess.businessName;
@@ -52,21 +62,11 @@ module.exports = exports = function (db) {
 			if (processingStep.steps) { // processingStepGroup. We need the full path.
 				processingStep.steps.applicable.some(function (step) {
 					if (!step.isRejected && !step.isSentBack) return;
-					result.processingStep.label = step.label;
-					result.processingStep.path = step.__id__.slice(step.__id__.indexOf('/'));
-					otherValue = step.rejectionReason || '';
-					result.operator.id = step.processor.__id__;
-					result.operator.name = step.processor.fullName;
+					setProcessingStepData(step);
 					return true;
 				});
 			} else { // standard processingStep.
-				result.processingStep.label = processingStep.label;
-				result.processingStep.path =
-					processingStep.__id__.slice(processingStep.__id__.indexOf('/'));
-				otherValue = processingStep.rejectionReason || '';
-				result.operator.id = processingStep.processor.__id__;
-				result.operator.name = processingStep.processor.fullName;
-
+				setProcessingStepData(processingStep);
 			}
 			if (processingStep.isRejected) {
 				result.hasOnlySystemicReasons = false;
@@ -103,7 +103,7 @@ module.exports = exports = function (db) {
 			);
 		});
 
-		result.date = Date.now();
+		result.date = Number(new db.DateTime());
 
 		return result;
 	};
