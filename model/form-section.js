@@ -300,7 +300,20 @@ module.exports = memoize(function (db) {
 			}, this);
 
 			return fields;
-		} }
+		} },
+		toMetaDataJSON: {
+			value: function (ignore) {
+				var result = [];
+				this.propertyNamesDeep.forEach(function (prop) {
+					var resolved = this.propertyMaster.resolveSKeyPath(prop);
+					if (resolved) {
+						result.push(resolved.ownDescriptor.fieldToMetaJSON());
+					}
+				}, this);
+
+				return result;
+			}
+		}
 	});
 	db.FormSection.prototype.inputOptions._descriptorPrototype_.nested = true;
 	db.FormSection.prototype.inputOptions._descriptorPrototype_.type   = db.Object;

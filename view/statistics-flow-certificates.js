@@ -138,8 +138,8 @@ exports['statistics-main'] = function () {
 				}, span({ class: 'fa fa-print' }), " ", _("Print csv")))
 			),
 			p({ class: 'submit' }, input({ type: 'submit' }))),
+		section({ class: 'pad-if-pagination' }, pagination),
 		br(),
-		section(pagination),
 		section({ class: "section-primary" },
 			data.map(function (result) {
 				var mode = modes.get(location.query.mode || 'daily');

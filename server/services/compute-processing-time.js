@@ -54,7 +54,7 @@ var storeTime = function (storage, path, time) {
 		if (data && (data.value[0] === '2')) {
 			currentValue = unserializeValue(data.value);
 		}
-		return storage.store(path, Math.round(serializeValue(currentValue + time)));
+		return storage.store(path, serializeValue(Math.round(currentValue + time)));
 	});
 };
 

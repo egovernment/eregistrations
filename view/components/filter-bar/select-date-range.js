@@ -14,6 +14,7 @@
 var _ = require('mano').i18n.bind('Daterange')
   , dateFrom = require('./select-date-from')
   , dateTo = require('./select-date-to')
+  , location = require('mano/lib/client/location')
   , moment = window.moment
   , jQuery = window.jQuery;
 
@@ -29,6 +30,12 @@ module.exports = function (/* opts */) {
 	};
 
 	setTimeout(function () {
+		if (!$('startId')) {
+			return;
+		}
+		if (!$('endId')) {
+			return;
+		}
 		if (!jQuery) {
 			console.error('Probably you will have to integrate JQuery and all ' +
 				'rangepicker dependencies into into index.html.tpl file. ' +
@@ -55,7 +62,8 @@ module.exports = function (/* opts */) {
 			}, {
 				text: _('Week to date'),
 				dateStart: function () {
-					return moment().startOf('week');
+					// JS week starts on Sunday
+					return moment().startOf('week').add(1, 'days');
 				},
 				dateEnd: function () {
 					return moment();
@@ -117,6 +125,19 @@ module.exports = function (/* opts */) {
 			jQuery('#endId').val(dateToString(range.end));
 			$.dispatchEvent($('startId'), 'change');
 			$.dispatchEvent($('endId'), 'change');
+		});
+
+		var path = location.pathname;
+		location.on('change', function () {
+			if (location.pathname !== path) {
+				path = location.pathname;
+				if (elem) {
+					elem.daterangepicker("setRange", {
+						start: stringToDate(jQuery('#startId').val()),
+						end: stringToDate(jQuery('#endId').val())
+					});
+				}
+			}
 		});
 	});
 

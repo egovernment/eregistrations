@@ -13,3 +13,6 @@ require('eregistrations/client/legacy/error-logger');
 require('eregistrations/client/legacy/date-controls');
 
 require('mano-legacy/element#/toggle');
+require('mano-legacy/hash-nav-ordered-list');
+require('mano-legacy/hash-nav-ordered-list-controls');
+require('eregistrations/client/legacy/hash-nav-document-link');
