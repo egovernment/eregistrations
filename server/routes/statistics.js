@@ -32,7 +32,7 @@ var assign                     = require('es5-ext/object/assign')
   , flowCertificatesCsv        = require('../csv-renderers/statistics-flow-certificates')
   , flowRolesCsv               = require('../csv-renderers/statistics-flow-roles')
   , flowOperatorsCsv           = require('../csv-renderers/statistics-flow-operators')
-//  , flowRejectionsCsv          = require('../csv-renderers/statistics-flow-rejections')
+  , flowRejectionsCsv          = require('../csv-renderers/statistics-flow-rejections')
   , makePdf                    = require('./utils/pdf')
   , makeCsv                    = require('./utils/csv')
   , getBaseRoutes              = require('./authenticated')
@@ -267,7 +267,7 @@ module.exports = function (config) {
 			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
 				return getRejectionReasons.find(query);
 			}).then(function (data) {
-//				return flowRejectionsCsv(parseRejectionsForView(data), rendererConfig);
+				return flowRejectionsCsv(parseRejectionsForView(data), rendererConfig);
 			});
 		}),
 		'get-time-per-role': function (query) {
