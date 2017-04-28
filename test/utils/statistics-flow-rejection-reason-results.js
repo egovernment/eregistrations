@@ -51,7 +51,7 @@ module.exports = function (t, a) {
 				date: 1493251200000
 			}
 		}];
-	expected = [
+	expected = [[
 		[
 			'other',
 			'not good',
@@ -66,6 +66,6 @@ module.exports = function (t, a) {
 		'Revision',
 		'27/4/2017',
 		'John Doe'
-	];
+	]];
 	a.deep(t(inputArray), expected);
 };
