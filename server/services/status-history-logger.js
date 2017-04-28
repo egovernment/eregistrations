@@ -8,7 +8,9 @@ var resolveProcessingStepFullPath = require('../../utils/resolve-processing-step
   , Set                           = require('es6-set')
   , processingStepsMeta           = require('../../processing-steps-meta')
   , uuid                          = require('time-uuid')
-  , uniqIdPrefix                  = 'abcdefghiklmnopqrstuvxyz'[Math.floor(Math.random() * 24)];
+  , uniqIdPrefix                  = 'abcdefghiklmnopqrstuvxyz'[Math.floor(Math.random() * 24)]
+  , mano                          = require('mano')
+  , mongoDB                       = require('../mongo-db');
 
 var getPathSuffix = function () {
 	return 'statusHistory/map/' + uniqIdPrefix + uuid();
@@ -41,10 +43,29 @@ var storeLog = function (storage, logPath/*, options */) {
 	};
 };
 
+var saveRejectionReason = function (event) {
+	var status;
+	if (event.type !== 'direct') return;
+	if (!event.path.startsWith('processingSteps')) return;
+	status = unserializeValue(event.data.value);
+	if (status !== 'rejected' && status !== 'sentBack') return;
+
+	mano.queryMemoryDb([event.ownerId], 'businessProcessRejectionReasons', {
+		businessProcessId: event.ownerId
+	})(function (reasonObject) {
+		return mongoDB.connect()(function (db) {
+			var collection = db.collection('rejectionReasons');
+			return collection.insertOne(reasonObject);
+		});
+	}).done(null, function (err) {
+		console.error(err);
+	});
+};
+
 module.exports = function () {
 	var allStorages = new Set(), driver;
 	// Cannot be initialized before call
-	driver = require('mano').dbDriver;
+	driver = mano.dbDriver;
 	Object.keys(processingStepsMeta).forEach(function (stepMetaKey) {
 		var stepPath, storages;
 		stepPath = 'processingSteps/map/' + resolveProcessingStepFullPath(stepMetaKey);
@@ -55,11 +76,13 @@ module.exports = function () {
 		});
 		storages.forEach(function (storage) {
 			allStorages.add(storage);
-			storage.on('key:' + stepPath + '/status',
-				storeLog(storage, stepPath, { processorPath: stepPath + '/processor' })
-				);
+			storage.on('key:' + stepPath + '/status', function (event) {
+				storeLog(storage, stepPath, { processorPath: stepPath + '/processor' })(event);
+				saveRejectionReason(event);
+			});
 		});
 	});
+
 	allStorages.forEach(function (storage) {
 		storage.on('key:status', storeLog(storage));
 		db[capitalize.call(storage.name)].prototype.certificates.map.forEach(function (cert) {
