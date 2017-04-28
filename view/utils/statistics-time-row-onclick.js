@@ -19,17 +19,15 @@ var getDurationDaysHours = require('./get-duration-days-hours-fine-grain'),
 					tdArr = [];
 
 				tdArr.push(bp.businessName);
-				if (showUserName) {
-					tdArr.push(userName);
-				}
-				tdArr.push(getDurationDaysHours(bp.processingTime));
-				tdArr.push(new db.DateTime(bp.processingStart));
-				tdArr.push(new db.DateTime(bp.processingEnd));
-				tdArr.push(lastTdContent);
+                if (showUserName) {
+                    tdArr.push(td({class: 'background-secondary'}, userName));
+                }
+                tdArr.push(td({class: 'background-secondary'}, getDurationDaysHours(bp.processingTime)));
+                tdArr.push(td({class: 'background-secondary'}, new db.DateTime(bp.processingStart)));
+                tdArr.push(td({class: 'background-secondary'}, new db.DateTime(bp.processingEnd)));
+                tdArr.push(td({class: 'background-secondary'}, lastTdContent));
 
-				return tr(tdArr.map(function (val) {
-					return td({ class: 'background-secondary' }, val);
-				}));
+				return tr(tdArr);
 			});
 
 			detailRow = jQuery(tr({
