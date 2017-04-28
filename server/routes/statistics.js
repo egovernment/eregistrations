@@ -27,10 +27,12 @@ var assign                     = require('es5-ext/object/assign')
   , flowCertificatesPrint      = require('../pdf-renderers/statistics-flow-certificates')
   , flowRolesPrint             = require('../pdf-renderers/statistics-flow-roles')
   , flowOperatorsPrint         = require('../pdf-renderers/statistics-flow-operators')
+  , flowRejectionsPrint        = require('../pdf-renderers/statistics-flow-rejections')
   , timePerRoleCsv             = require('../csv-renderers/statistics-time-per-role')
   , flowCertificatesCsv        = require('../csv-renderers/statistics-flow-certificates')
   , flowRolesCsv               = require('../csv-renderers/statistics-flow-roles')
   , flowOperatorsCsv           = require('../csv-renderers/statistics-flow-operators')
+//  , flowRejectionsCsv          = require('../csv-renderers/statistics-flow-rejections')
   , makePdf                    = require('./utils/pdf')
   , makeCsv                    = require('./utils/csv')
   , getBaseRoutes              = require('./authenticated')
@@ -43,7 +45,8 @@ var assign                     = require('es5-ext/object/assign')
   , flowReduceOperators        = require('../../utils/statistics-flow-reduce-operators')
   , flowRolesReduceSteps       = require('../../utils/statistics-flow-reduce-processing-step')
   , itemsPerPage               = require('../../conf/objects-list-items-per-page')
-  , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf');
+  , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf')
+  , getRejectionReasons           = require('../mongo-queries/get-rejection-reasons');
 
 var flowQueryHandlerCertificatesPrintConf = [
 	require('../../apps-common/query-conf/date-from'),
@@ -93,6 +96,30 @@ var businessProcessQueryHandler = new QueryHandler([{
 		});
 	}
 }]);
+
+/* TODO: parseRejectionsForView should be replaced by real function which peroforms setup */
+
+var parseRejectionsForView = function (reasons) {
+	return reasons.map(function (reason) {
+		var result = [], reasonsConcat = [];
+		reason.rejectionReasons.forEach(function (reasonItem) {
+			if (reasonItem.value) {
+				reasonsConcat.push(reasonItem.value);
+			}
+			reasonsConcat.push.apply(reasonsConcat, reasonItem.types);
+		});
+		reasonsConcat.join('/n');
+		result.push(reasonsConcat);
+		result.push(reason.hasOnlySystemicReasons ? '*' : '');
+		result.push('');
+		result.push(reason.operator.name);
+		result.push(reason.processingStep.label);
+		result.push(new db.Date(reason.date.date));
+		result.push(reason.service.businessName);
+
+		return result;
+	});
+};
 
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
@@ -239,16 +266,23 @@ module.exports = function (config) {
 			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
 				var data = { rows: [], pageCount: 1 };
 				data.pageCount = getPage(data.rows, query.page);
-				/* TODO inflate data.rows with real results
-					expected structure:
-					[
-					['Reason 1, Reason 2', '*', 3, 'John Smith', 'Revision', '02/03/2017', 'Super inc.'],
-					['Reason', '', 0, 'John Doe', 'Precal', '01/04/2017', 'Bar']
-					]
-				 */
-				return data;
+				return getRejectionReasons().then(parseRejectionsForView);
 			});
 		},
+		'flow-rejections-data.pdf': makePdf(function (unresolvedQuery) {
+			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
+				return getRejectionReasons(query);
+			}).then(function (data) {
+				return flowRejectionsPrint(parseRejectionsForView(data), rendererConfig);
+			});
+		}),
+		'flow-rejections-data.csv': makeCsv(function (unresolvedQuery) {
+			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
+				return getRejectionReasons(query);
+			}).then(function (data) {
+//				return flowRejectionsCsv(parseRejectionsForView(data), rendererConfig);
+			});
+		}),
 		'get-time-per-role': function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole);
 		},
