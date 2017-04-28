@@ -3,14 +3,15 @@
 var assign                     = require('es5-ext/object/assign')
   , ensureCallable             = require('es5-ext/object/valid-callable')
   , ensureObject               = require('es5-ext/object/valid-object')
+  , ensureNumber               = require('es5-ext/object/ensure-natural-number-value')
   , oForEach                   = require('es5-ext/object/for-each')
   , startsWith                 = require('es5-ext/string/#/starts-with')
+  , capitalize                 = require('es5-ext/string/#/capitalize')
   , deferred                   = require('deferred')
   , ensureDriver               = require('dbjs-persistence/ensure-driver')
   , db                         = require('../../db')
   , QueryHandler               = require('../../utils/query-handler')
   , toDateInTz                 = require('../../utils/to-date-in-time-zone')
-  , getPage                    = require('../../utils/query/get-page')
   , anyIdToStorage             = require('../utils/any-id-to-storage')
   , getData                    = require('../business-process-query/get-data')
   , filterSteps                = require('../business-process-query/steps/filter')
@@ -37,12 +38,14 @@ var assign                     = require('es5-ext/object/assign')
   , processingStepsMeta        = require('../../processing-steps-meta')
   , getDateRangesByMode        = require('../../utils/get-date-ranges-by-mode')
   , getStepLabelByShortPath    = require('../../utils/get-step-label-by-short-path')
+  , flowRejectionReasonResults = require('../../utils/statistics-flow-rejection-reason-results')
   , modes                      = require('../../utils/statistics-flow-group-modes')
   , flowCertificatesFilter     = require('../../utils/statistics-flow-certificates-filter-result')
   , flowRolesFilter            = require('../../utils/statistics-flow-roles-filter-result')
   , flowReduceOperators        = require('../../utils/statistics-flow-reduce-operators')
   , flowRolesReduceSteps       = require('../../utils/statistics-flow-reduce-processing-step')
   , itemsPerPage               = require('../../conf/objects-list-items-per-page')
+  , getRejectionReasons        = require('../mongo-queries/get-rejection-reasons')
   , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf');
 
 var flowQueryHandlerCertificatesPrintConf = [
@@ -237,16 +240,30 @@ module.exports = function (config) {
 		}),
 		'get-flow-rejections-data': function (unresolvedQuery) {
 			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
-				var data = { rows: [], pageCount: 1 };
-				data.pageCount = getPage(data.rows, query.page);
-				/* TODO inflate data.rows with real results
-					expected structure:
-					[
-					['Reason 1, Reason 2', '*', 3, 'John Smith', 'Revision', '02/03/2017', 'Super inc.'],
-					['Reason', '', 0, 'John Doe', 'Precal', '01/04/2017', 'Bar']
-					]
-				 */
-				return data;
+				var data = { rows: [] }, page, queryCriteria, queryDate = {};
+				queryCriteria = {};
+				if (query.dateFrom) queryDate.$gte = Number(db.Date(query.dateFrom));
+				if (query.dateTo) queryDate.$lte = Number(db.Date(query.dateTo));
+				if (Object.keys(queryDate).length > 0) queryCriteria["date.date"] = queryDate;
+				if (query.service) {
+					queryCriteria["service.type"] = 'BusinessProcess' + capitalize.call(query.service);
+				}
+				if (query.rejectionReasonType) queryCriteria.rejectionType = query.rejectionReasonType;
+				page = ensureNumber(query.page);
+
+				return getRejectionReasons.count(queryCriteria).then(function (count) {
+					var portion = { offset: 0, limit: 0 };
+					portion.offset = (page - 1) * itemsPerPage;
+					if (page * itemsPerPage < count) portion.limit = itemsPerPage;
+					data.pageCount = ensureNumber(Math.ceil(count / itemsPerPage));
+
+					return getRejectionReasons.find(queryCriteria, portion).then(function (reasons) {
+						data.rows = flowRejectionReasonResults(reasons);
+						return data;
+					});
+				}, function (err) {
+					console.log(err);
+				});
 			});
 		},
 		'get-time-per-role': function (query) {
