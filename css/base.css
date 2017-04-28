@@ -262,3 +262,8 @@ script { display: none !important; }
 .text-decoration-underline{
 	text-decoration: underline;
 }
+
+.width-25{
+	width: 25%;
+}
+

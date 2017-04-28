@@ -18,14 +18,14 @@ var getDurationDaysHours = require('./get-duration-days-hours-fine-grain'),
 					}, 'x') : '',
 					tdArr = [];
 
-				tdArr.push(bp.businessName);
-                if (showUserName) {
-                    tdArr.push(td({class: 'background-secondary'}, userName));
-                }
-                tdArr.push(td({class: 'background-secondary'}, getDurationDaysHours(bp.processingTime)));
-                tdArr.push(td({class: 'background-secondary'}, new db.DateTime(bp.processingStart)));
-                tdArr.push(td({class: 'background-secondary'}, new db.DateTime(bp.processingEnd)));
-                tdArr.push(td({class: 'background-secondary'}, lastTdContent));
+				tdArr.push(td({ class: 'background-secondary width-30' }, bp.businessName));
+				if (showUserName) {
+					tdArr.push(td({ class: 'background-secondary width-25' }, userName));
+				}
+				tdArr.push(td({ class: 'background-secondary ' }, getDurationDaysHours(bp.processingTime)));
+				tdArr.push(td({ class: 'background-secondary' }, new db.DateTime(bp.processingStart)));
+				tdArr.push(td({ class: 'background-secondary' }, new db.DateTime(bp.processingEnd)));
+				tdArr.push(td({ class: 'background-secondary' }, lastTdContent));
 
 				return tr(tdArr);
 			});
