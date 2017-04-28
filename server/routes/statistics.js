@@ -6,7 +6,6 @@ var assign                     = require('es5-ext/object/assign')
   , ensureNumber               = require('es5-ext/object/ensure-natural-number-value')
   , oForEach                   = require('es5-ext/object/for-each')
   , startsWith                 = require('es5-ext/string/#/starts-with')
-  , capitalize                 = require('es5-ext/string/#/capitalize')
   , deferred                   = require('deferred')
   , ensureDriver               = require('dbjs-persistence/ensure-driver')
   , db                         = require('../../db')
@@ -40,20 +39,16 @@ var assign                     = require('es5-ext/object/assign')
   , processingStepsMeta        = require('../../processing-steps-meta')
   , getDateRangesByMode        = require('../../utils/get-date-ranges-by-mode')
   , getStepLabelByShortPath    = require('../../utils/get-step-label-by-short-path')
-  , flowRejectionReasonResults = require('../../utils/statistics-flow-rejection-reason-results')
+  , parseRejectionsForView     = require('../../utils/statistics-flow-rejection-reason-results')
   , modes                      = require('../../utils/statistics-flow-group-modes')
   , flowCertificatesFilter     = require('../../utils/statistics-flow-certificates-filter-result')
   , flowRolesFilter            = require('../../utils/statistics-flow-roles-filter-result')
   , flowReduceOperators        = require('../../utils/statistics-flow-reduce-operators')
   , flowRolesReduceSteps       = require('../../utils/statistics-flow-reduce-processing-step')
   , itemsPerPage               = require('../../conf/objects-list-items-per-page')
-<<<<<<< HEAD
-  , getRejectionReasons        = require('../mongo-queries/get-rejection-reasons')
-  , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf');
-=======
   , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf')
   , getRejectionReasons           = require('../mongo-queries/get-rejection-reasons');
->>>>>>> origin/1844-rejection-reasons-pdf-and-csv
+
 
 var flowQueryHandlerCertificatesPrintConf = [
 	require('../../apps-common/query-conf/date-from'),
@@ -103,30 +98,6 @@ var businessProcessQueryHandler = new QueryHandler([{
 		});
 	}
 }]);
-
-/* TODO: parseRejectionsForView should be replaced by real function which peroforms setup */
-
-var parseRejectionsForView = function (reasons) {
-	return reasons.map(function (reason) {
-		var result = [], reasonsConcat = [];
-		reason.rejectionReasons.forEach(function (reasonItem) {
-			if (reasonItem.value) {
-				reasonsConcat.push(reasonItem.value);
-			}
-			reasonsConcat.push.apply(reasonsConcat, reasonItem.types);
-		});
-		reasonsConcat = reasonsConcat.join(',');
-		result.push(reasonsConcat);
-		result.push(reason.hasOnlySystemicReasons ? '*' : '');
-		result.push('');
-		result.push(reason.operator.name);
-		result.push(reason.processingStep.label);
-		result.push(new db.Date(reason.date.date));
-		result.push(reason.service.businessName);
-
-		return result;
-	});
-};
 
 module.exports = function (config) {
 	var driver = ensureDriver(ensureObject(config).driver)
@@ -270,43 +241,34 @@ module.exports = function (config) {
 			return resolveOperatorsDataPrint(unresolvedQuery, flowOperatorsCsv);
 		}),
 		'get-flow-rejections-data': function (unresolvedQuery) {
+			var data = {rows: []}, page, queryData;
 			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
-				var data = { rows: [] }, page, queryCriteria, queryDate = {};
-				queryCriteria = {};
-				if (query.dateFrom) queryDate.$gte = Number(db.Date(query.dateFrom));
-				if (query.dateTo) queryDate.$lte = Number(db.Date(query.dateTo));
-				if (Object.keys(queryDate).length > 0) queryCriteria["date.date"] = queryDate;
-				if (query.service) {
-					queryCriteria["service.type"] = 'BusinessProcess' + capitalize.call(query.service);
-				}
-				if (query.rejectionReasonType) queryCriteria.rejectionType = query.rejectionReasonType;
 				page = ensureNumber(query.page);
-
-				return getRejectionReasons.count(queryCriteria).then(function (count) {
-					var portion = { offset: 0, limit: 0 };
-					portion.offset = (page - 1) * itemsPerPage;
-					if (page * itemsPerPage < count) portion.limit = itemsPerPage;
-					data.pageCount = ensureNumber(Math.ceil(count / itemsPerPage));
-
-					return getRejectionReasons.find(queryCriteria, portion).then(function (reasons) {
-						data.rows = flowRejectionReasonResults(reasons);
-						return data;
-					});
-				}, function (err) {
-					console.log(err);
-				});
+				queryData = data;
+				return getRejectionReasons.count(queryData);
+			}).then(function (count) {
+				var offset, limit;
+				offset = (page - 1) * itemsPerPage;
+				if (page * itemsPerPage < count) limit = itemsPerPage;
+				data.pageCount = ensureNumber(Math.ceil(count / itemsPerPage));
+				return getRejectionReasons.find(queryData, offset, limit);
+			}).then(function (reasons) {
+				data.rows = parseRejectionsForView(reasons);
+				return data;
+			}, function (err) {
+				console.log(err);
 			});
 		},
 		'flow-rejections-data.pdf': makePdf(function (unresolvedQuery) {
 			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
-				return getRejectionReasons(query);
+				return getRejectionReasons.find(query);
 			}).then(function (data) {
 				return flowRejectionsPrint(parseRejectionsForView(data), rendererConfig);
 			});
 		}),
 		'flow-rejections-data.csv': makeCsv(function (unresolvedQuery) {
 			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
-				return getRejectionReasons(query);
+				return getRejectionReasons.find(query);
 			}).then(function (data) {
 				return flowRejectionsCsv(parseRejectionsForView(data), rendererConfig);
 			});
