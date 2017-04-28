@@ -49,7 +49,6 @@ var assign                     = require('es5-ext/object/assign')
   , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf')
   , getRejectionReasons           = require('../mongo-queries/get-rejection-reasons');
 
-
 var flowQueryHandlerCertificatesPrintConf = [
 	require('../../apps-common/query-conf/date-from'),
 	require('../../apps-common/query-conf/date-to'),
@@ -241,7 +240,7 @@ module.exports = function (config) {
 			return resolveOperatorsDataPrint(unresolvedQuery, flowOperatorsCsv);
 		}),
 		'get-flow-rejections-data': function (unresolvedQuery) {
-			var data = {rows: []}, page, queryData;
+			var data = { rows: [] }, page, queryData;
 			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
 				page = ensureNumber(query.page);
 				queryData = data;

@@ -8,7 +8,7 @@ module.exports = function (reasons) {
 		reason.rejectionReasons.forEach(function (reasonItem) {
 			reasonItem.types.forEach(function (type) {
 				reasonsConcat.push(type);
-				if (type === 'other' && reasonItem.value){
+				if (type === 'other' && reasonItem.value) {
 					reasonsConcat.push(reasonItem.value);
 				}
 			});

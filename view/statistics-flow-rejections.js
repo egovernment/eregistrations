@@ -50,7 +50,6 @@ exports['statistics-main'] = function () {
 		});
 	});
 
-
 	div({ class: 'block-pull-up' },
 		form({ action: '/flow/rejections/', autoSubmit: true },
 			section({ class: 'date-period-selector-positioned-on-submenu' }, dateFromToBlock()),
