@@ -44,7 +44,7 @@ var getDurationDaysHours = require('./get-duration-days-hours-fine-grain'),
 
 module.exports = function (step, props, showUserName) {
 	if (step && step.businessProcesses.length !== 0) {
-		props.class = 'cursor-pointer text-decoration-underline';
+		props.class = 'cursor-pointer';
 		props.onclick = function () {
 			statisticsTimeRowOnClick(window.jQuery(this), step.businessProcesses, showUserName);
 		};
