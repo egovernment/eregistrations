@@ -148,4 +148,8 @@ exports['statistics-main'] = function () {
 				});
 			})
 		));
+
+	setTimeout(function () {
+		window.jQuery('.statistics-table-registrations').tablesorter()
+	});
 };

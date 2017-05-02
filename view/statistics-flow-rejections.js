@@ -20,7 +20,7 @@ exports['statistics-main'] = function () {
 		getOrderIndex: exports._getOrderIndex,
 		itemsPerPage: env.objectsListItemsPerPage,
 		tableUrl: location.pathname,
-		class: 'submitted-user-data-table'
+		class: 'submitted-user-data-table datatable'
 	});
 
 	div({ class: 'block-pull-up' },
@@ -35,6 +35,10 @@ exports['statistics-main'] = function () {
 		section({ class: 'pad-if-pagination' }, rejectionsTable.pagination),
 		section({ class: 'table-responsive-container' }, rejectionsTable),
 		section({ class: 'pad-if-pagination' }, rejectionsTable.pagination));
+
+	setTimeout(function () {
+		window.jQuery('.datatable').tablesorter()
+	});
 };
 
 exports._getOrderIndex = function (businessProcess) {
