@@ -12,7 +12,7 @@ var _                            = require('mano').i18n.bind('View: Statistics')
   , selectRejectionReason = require('./components/filter-bar/select-rejection-reason')
   , queryServer       = require('./utils/statistics-rejections-query-server')
   , dateFromToBlock    = require('./components/filter-bar/select-date-range-safe-fallback');
-m
+
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
 

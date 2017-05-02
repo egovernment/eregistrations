@@ -10,16 +10,17 @@ module.exports = function (reasons) {
 			if (reasonItem.ownerType === 'processingStep') prefix = '';
 			else if (reasonItem.ownerType === 'data') prefix = 'Data - ';
 			else {
-				prefixCount++;
-				prefix = 'Document ' + prefixCount + ' - ';
-
-			}
+					prefixCount++;
+					prefix = 'Document ' + prefixCount + ' - ';
+				}
 			reasonItem.types.forEach(function (type) {
 				if (type === 'other') {
 					reasonsConcat.push(prefix + reasonItem.value);
 					return;
 				}
-				reasonsConcat.push(prefix + db.RequirementUploadRejectReason.meta[type].label);
+				reasonsConcat.push(
+					prefix + db.RequirementUploadRejectReason.meta[type].label
+				);
 			});
 		});
 		result.push(reasonsConcat);
