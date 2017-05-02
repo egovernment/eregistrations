@@ -3,6 +3,7 @@
 var assign                     = require('es5-ext/object/assign')
   , ensureCallable             = require('es5-ext/object/valid-callable')
   , ensureObject               = require('es5-ext/object/valid-object')
+  , ensureNumber               = require('es5-ext/object/ensure-natural-number-value')
   , oForEach                   = require('es5-ext/object/for-each')
   , startsWith                 = require('es5-ext/string/#/starts-with')
   , deferred                   = require('deferred')
@@ -10,7 +11,6 @@ var assign                     = require('es5-ext/object/assign')
   , db                         = require('../../db')
   , QueryHandler               = require('../../utils/query-handler')
   , toDateInTz                 = require('../../utils/to-date-in-time-zone')
-  , getPage                    = require('../../utils/query/get-page')
   , anyIdToStorage             = require('../utils/any-id-to-storage')
   , getData                    = require('../business-process-query/get-data')
   , filterSteps                = require('../business-process-query/steps/filter')
@@ -37,13 +37,15 @@ var assign                     = require('es5-ext/object/assign')
   , processingStepsMeta        = require('../../processing-steps-meta')
   , getDateRangesByMode        = require('../../utils/get-date-ranges-by-mode')
   , getStepLabelByShortPath    = require('../../utils/get-step-label-by-short-path')
+  , parseRejectionsForView     = require('../../utils/statistics-flow-rejection-reason-results')
   , modes                      = require('../../utils/statistics-flow-group-modes')
   , flowCertificatesFilter     = require('../../utils/statistics-flow-certificates-filter-result')
   , flowRolesFilter            = require('../../utils/statistics-flow-roles-filter-result')
   , flowReduceOperators        = require('../../utils/statistics-flow-reduce-operators')
   , flowRolesReduceSteps       = require('../../utils/statistics-flow-reduce-processing-step')
   , itemsPerPage               = require('../../conf/objects-list-items-per-page')
-  , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf');
+  , flowQueryOperatorsHandlerConf = require('../../apps/statistics/flow-query-operators-conf')
+  , getRejectionReasons           = require('../mongo-queries/get-rejection-reasons');
 
 var flowQueryHandlerCertificatesPrintConf = [
 	require('../../apps-common/query-conf/date-from'),
@@ -236,16 +238,19 @@ module.exports = function (config) {
 			return resolveOperatorsDataPrint(unresolvedQuery, flowOperatorsCsv);
 		}),
 		'get-flow-rejections-data': function (unresolvedQuery) {
+			var data = { rows: [] }, page, queryData;
 			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
-				var data = { rows: [], pageCount: 1 };
-				data.pageCount = getPage(data.rows, query.page);
-				/* TODO inflate data.rows with real results
-					expected structure:
-					[
-					['Reason 1, Reason 2', '*', 3, 'John Smith', 'Revision', '02/03/2017', 'Super inc.'],
-					['Reason', '', 0, 'John Doe', 'Precal', '01/04/2017', 'Bar']
-					]
-				 */
+				page = ensureNumber(query.page);
+				queryData = query;
+				return getRejectionReasons.count(queryData);
+			}).then(function (count) {
+				var portion = {};
+				portion.offset = (page - 1) * itemsPerPage;
+				if (page * itemsPerPage < count) portion.limit = itemsPerPage;
+				data.pageCount = ensureNumber(Math.ceil(count / itemsPerPage));
+				return getRejectionReasons.find(queryData, portion);
+			}).then(function (reasons) {
+				data.rows = parseRejectionsForView(reasons);
 				return data;
 			});
 		},

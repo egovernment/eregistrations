@@ -3,7 +3,7 @@
 var _                            = require('mano').i18n.bind('View: Statistics')
   , db                = require('../db')
   , location          = require('mano/lib/client/location')
-  , queryHandlerConf  = require('../apps/statistics/flow-query-operators-conf')
+  , rejectionsHandlerConf  = require('../apps/statistics/rejections-query-conf')
   , setupQueryHandler = require('../utils/setup-client-query-handler')
   , copy              = require('es5-ext/object/copy')
   , ObservableValue   = require('observable-value')
@@ -23,7 +23,7 @@ exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue([])
 	  , pagination = new Pagination('/flow/rejections/');
 
-	queryHandler = setupQueryHandler(queryHandlerConf,
+	queryHandler = setupQueryHandler(rejectionsHandlerConf,
 		location, '/flow/rejections/');
 
 	queryHandler.on('query', function (query) {
@@ -71,8 +71,13 @@ exports['statistics-main'] = function () {
 						),
 						tbody(result.length ? result.map(function (dataRow) {
 							return tr(dataRow.map(function (cellContent, index) {
-								if (index === 1) {
-									return td(span({ class: "fa fa-star" }, cellContent));
+								if (index === 0) {
+									return td(cellContent.map(function (cellItem) {
+										return p(cellItem);
+									}));
+								}
+								if (index === 1 && cellContent === '*') {
+									return td(span({ class: "fa fa-star" }));
 								}
 								return td(cellContent);
 							}));
