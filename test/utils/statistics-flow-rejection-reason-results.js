@@ -53,12 +53,10 @@ module.exports = function (t, a) {
 		}];
 	expected = [[
 		[
-			'other',
 			'not good',
-			'illegible',
-			'invalid',
-			'other',
-			'junk'
+			'Document 1 - The document is unreadable',
+			'Document 1 - The loaded document does not match the required document',
+			'Document 2 - junk'
 		],
 		'',
 		'',

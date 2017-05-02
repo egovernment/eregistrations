@@ -244,16 +244,14 @@ module.exports = function (config) {
 				queryData = data;
 				return getRejectionReasons.count(queryData);
 			}).then(function (count) {
-				var offset, limit;
-				offset = (page - 1) * itemsPerPage;
-				if (page * itemsPerPage < count) limit = itemsPerPage;
+				var portion = {};
+				portion.offset = (page - 1) * itemsPerPage;
+				if (page * itemsPerPage < count) portion.limit = itemsPerPage;
 				data.pageCount = ensureNumber(Math.ceil(count / itemsPerPage));
-				return getRejectionReasons.find(queryData, offset, limit);
+				return getRejectionReasons.find(queryData, portion);
 			}).then(function (reasons) {
 				data.rows = parseRejectionsForView(reasons);
 				return data;
-			}, function (err) {
-				console.log(err);
 			});
 		},
 		'get-time-per-role': function (query) {

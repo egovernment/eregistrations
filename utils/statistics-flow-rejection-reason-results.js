@@ -4,13 +4,22 @@ var db = require('../db');
 
 module.exports = function (reasons) {
 	return reasons.map(function (reason) {
-		var result = [], reasonsConcat = [];
+		var result = [], reasonsConcat = []
+		  , prefix, prefixCount = 0;
 		reason.rejectionReasons.forEach(function (reasonItem) {
+			if (reasonItem.ownerType === 'processingStep') prefix = '';
+			else if (reasonItem.ownerType === 'data') prefix = 'Data - ';
+			else {
+				prefixCount++;
+				prefix = 'Document ' + prefixCount + ' - ';
+
+			}
 			reasonItem.types.forEach(function (type) {
-				reasonsConcat.push(type);
-				if (type === 'other' && reasonItem.value) {
-					reasonsConcat.push(reasonItem.value);
+				if (type === 'other') {
+					reasonsConcat.push(prefix + reasonItem.value);
+					return;
 				}
+				reasonsConcat.push(prefix + db.RequirementUploadRejectReason.meta[type].label);
 			});
 		});
 		result.push(reasonsConcat);

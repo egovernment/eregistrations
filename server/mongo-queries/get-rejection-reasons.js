@@ -18,9 +18,11 @@ var queryCriteria = function (query) {
 };
 
 exports.find = function (query/*, options */) {
-	var offset = arguments[1] || 0
-	  , limit = arguments[2] || 0
-	  , criteria = queryCriteria(query);
+	var portion = Object(arguments[1])
+	  , criteria = queryCriteria(query), limit, offset;
+
+	offset = portion.offset || 0;
+	limit = portion.limit || 0;
 
 	return mongo.connect()(function (db) {
 		return db.collection('rejectionReasons')
