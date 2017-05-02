@@ -1,48 +1,28 @@
 'use strict';
 
 var mongo    = require('../mongo-db')
+  , Set      = require('es6-set')
   , deferred = require('deferred');
 
 module.exports = function () {
 	mongo.connect()(function (db) {
 		var collection = db.collection('rejectionReasons');
 		// setup rejectionReasonsConcat, were there is none
-		return collection.find({ rejectionReasonsConcat:
-			{ $exists: false } }).toArray().then(function (rows) {
+		return collection.find({ rejectionReasonsConcat: null }).toArray().then(function (rows) {
 			return deferred.map(rows, function (row) {
-				return collection.update({ _id: row._id }, {
-					$set: { rejectionReasonsConcat: row.rejectionReasons.map(
-						function (reason) {
-							if (reason.value) {
-								return reason.value;
-							}
-							return reason.types.join('');
+				var result = [];
+				row.rejectionReasons.forEach(
+					function (reason) {
+						if (reason.value) {
+							result.push(reason.value);
+							return;
 						}
-					).join('')
-						}
-				});
-			});
-		}).then(function () {
-			return collection.aggregate([
-				{
-					$group: {
-						_id: {
-							date: '$date.date',
-							rejectionReasonsConcat: '$rejectionReasonsConcat'
-						},
-						count: {
-							$sum: 1
-						}
+						Array.prototype.push.apply(result, reason.types);
 					}
-				}
-			]).toArray();
-		}).then(function (result) {
-			return deferred.map(result, function (item) {
-				if (item.count <= 1) return;
-				return collection.update({ 'date.date': item._id.date,
-					rejectionReasonsConcat: item._id.rejectionReasonsConcat
-					},
-					{ $set: { occurrencesCount: item.count } });
+				);
+				return collection.update({ _id: row._id }, {
+					$set: { rejectionReasonsConcat: Array.from(new Set(result)).sort().join('') }
+				});
 			});
 		});
 	}).done(null, function (err) {
