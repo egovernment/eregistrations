@@ -11,8 +11,7 @@ var _                            = require('mano').i18n.bind('View: Statistics')
   , selectService     = require('./components/filter-bar/select-service')
   , selectRejectionReason = require('./components/filter-bar/select-rejection-reason')
   , queryServer       = require('./utils/statistics-rejections-query-server')
-  , dateFromToBlock    = require('./components/filter-bar/select-date-range-safe-fallback')
-  , getDynamicUrl      = require('./utils/get-dynamic-url');
+  , dateFromToBlock    = require('./components/filter-bar/select-date-range-safe-fallback');
 
 exports._parent        = require('./statistics-flow');
 exports._customFilters = Function.prototype;
@@ -22,15 +21,10 @@ exports['flow-rejections-nav'] = { class: { 'pills-nav-active': true } };
 
 exports['statistics-main'] = function () {
 	var queryHandler, data = new ObservableValue([])
-	  , pagination = new Pagination('/flow/rejections/')
-	  , params;
+	  , pagination = new Pagination('/flow/rejections/');
 
 	queryHandler = setupQueryHandler(rejectionsHandlerConf,
 		location, '/flow/rejections/');
-
-	params = queryHandler._handlers.map(function (handler) {
-		return handler.name;
-	});
 
 	queryHandler.on('query', function (query) {
 		var serverQuery = copy(query), dateFrom, dateTo;
@@ -59,22 +53,6 @@ exports['statistics-main'] = function () {
 						selectService({ label: _("All services") })),
 					div({ class: 'users-table-filter-bar-status' },
 						selectRejectionReason())
-				),
-				div(
-					div(
-						a({
-							class: 'users-table-filter-bar-print',
-							href: getDynamicUrl('/flow-rejections-data.pdf', { only: params }),
-							target: '_blank'
-						}, span({ class: 'fa fa-print' }), " ", _("Print pdf"))
-					),
-					div(
-						a({
-							class: 'users-table-filter-bar-print',
-							href: getDynamicUrl('/flow-rejections-data.csv', { only: params }),
-							target: '_blank'
-						}, span({ class: 'fa fa-print' }), " ", _("Print csv"))
-					)
 				),
 				p({ class: 'submit' }, input({ type: 'submit' }))),
 			section({ class: 'pad-if-pagination' }, pagination),

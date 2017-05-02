@@ -27,12 +27,10 @@ var assign                     = require('es5-ext/object/assign')
   , flowCertificatesPrint      = require('../pdf-renderers/statistics-flow-certificates')
   , flowRolesPrint             = require('../pdf-renderers/statistics-flow-roles')
   , flowOperatorsPrint         = require('../pdf-renderers/statistics-flow-operators')
-  , flowRejectionsPrint        = require('../pdf-renderers/statistics-flow-rejections')
   , timePerRoleCsv             = require('../csv-renderers/statistics-time-per-role')
   , flowCertificatesCsv        = require('../csv-renderers/statistics-flow-certificates')
   , flowRolesCsv               = require('../csv-renderers/statistics-flow-roles')
   , flowOperatorsCsv           = require('../csv-renderers/statistics-flow-operators')
-  , flowRejectionsCsv          = require('../csv-renderers/statistics-flow-rejections')
   , makePdf                    = require('./utils/pdf')
   , makeCsv                    = require('./utils/csv')
   , getBaseRoutes              = require('./authenticated')
@@ -258,20 +256,6 @@ module.exports = function (config) {
 				console.log(err);
 			});
 		},
-		'flow-rejections-data.pdf': makePdf(function (unresolvedQuery) {
-			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
-				return getRejectionReasons.find(query);
-			}).then(function (data) {
-				return flowRejectionsPrint(parseRejectionsForView(data), rendererConfig);
-			});
-		}),
-		'flow-rejections-data.csv': makeCsv(function (unresolvedQuery) {
-			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
-				return getRejectionReasons.find(query);
-			}).then(function (data) {
-				return flowRejectionsCsv(parseRejectionsForView(data), rendererConfig);
-			});
-		}),
 		'get-time-per-role': function (query) {
 			return queryHandler.resolve(query)(resolveTimePerRole);
 		},
