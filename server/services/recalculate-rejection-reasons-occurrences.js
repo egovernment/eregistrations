@@ -3,7 +3,7 @@
 var mongo    = require('../mongo-db')
   , deferred = require('deferred');
 
-module.exports = (function () {
+module.exports = function () {
 	mongo.connect()(function (db) {
 		var collection = db.collection('rejectionReasons');
 		// setup rejectionReasonsConcat, were there is none
@@ -37,8 +37,15 @@ module.exports = (function () {
 				}
 			]).toArray();
 		}).then(function (result) {
+			return deferred.map(result, function (item) {
+				if (item.count <= 1) return;
+				return collection.update({ 'date.date': item._id.date,
+					rejectionReasonsConcat: item._id.rejectionReasonsConcat
+					},
+					{ $set: { occurrencesCount: item.count } });
+			});
 		});
 	}).done(null, function (err) {
 		console.log(err);
 	});
-}());
+};
