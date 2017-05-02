@@ -25,7 +25,7 @@ module.exports = function (reasons) {
 		});
 		result.push(reasonsConcat);
 		result.push(reason.hasOnlySystemicReasons ? '*' : '');
-		result.push(reason.occurrencesCount > 0 ? reason.occurrencesCount : '');
+		result.push(reason.occurrencesCount > 1 ? reason.occurrencesCount : '');
 		result.push(reason.operator.name);
 		result.push(reason.processingStep.label);
 		result.push((new db.Date(reason.date.date)).toString());

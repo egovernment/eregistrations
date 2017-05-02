@@ -241,7 +241,7 @@ module.exports = function (config) {
 			var data = { rows: [] }, page, queryData;
 			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
 				page = ensureNumber(query.page);
-				queryData = data;
+				queryData = query;
 				return getRejectionReasons.count(queryData);
 			}).then(function (count) {
 				var portion = {};
