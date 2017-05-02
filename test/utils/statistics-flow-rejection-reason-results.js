@@ -64,7 +64,7 @@ module.exports = function (t, a) {
 		'',
 		'John Doe',
 		'Revision',
-		'27/4/2017',
+		'4/27/2017',
 		'John Doe'
 	]];
 	a.deep(t(inputArray), expected);
