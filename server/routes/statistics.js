@@ -260,7 +260,6 @@ module.exports = function (config) {
 			return rejectionsQueryHandler.resolve(unresolvedQuery)(function (query) {
 				return getRejectionReasons.find(query);
 			}).then(function (data) {
-				console.log("data nus laheb pdf-iks on", data);
 				return flowRejectionsPrint(parseRejectionsForView(data), rendererConfig);
 			});
 		}),
