@@ -1,21 +1,29 @@
 .tablesorter-default .header, .tablesorter-default .tablesorter-header {
-    background-position: center left !important;
+    background-position: center right !important;
     background-repeat: no-repeat !important;
     cursor: pointer !important;
     white-space: normal !important;
 }
 
-.tablesorter-default thead .headerSortUp, .tablesorter-default thead .tablesorter-headerAsc, .tablesorter-default thead .tablesorter-headerSortUp {
-    padding-left: 20px;
-    background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7) !important;
+.headerSortUp::after,
+.tablesorter-headerAsc::after,
+.tablesorter-headerSortUp::after {
+    content: "\f0dd";
+    font: normal normal normal 14px/1 FontAwesome;
+    vertical-align: text-bottom;
+    line-height: 21px;
 }
 
-.tablesorter-default thead .headerSortDown, .tablesorter-default thead .tablesorter-headerDesc, .tablesorter-default thead .tablesorter-headerSortDown {
-    padding-left: 20px;
-    background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7) !important;
+.tablesorter-default thead .headerSortDown::after,
+.tablesorter-default thead .tablesorter-headerDesc::after,
+.tablesorter-default thead .tablesorter-headerSortDown::after {
+    content: "\f0de";
+    font: normal normal normal 14px/1 FontAwesome;
+    vertical-align: text-bottom;
+    line-height: 10px;
 }
 
-.tablesorter-default .tablesorter-processing {
-    padding-left: 20px;
-    background-image: url(data:image/gif;base64,R0lGODlhFAAUAKEAAO7u7lpaWgAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQBCgACACwAAAAAFAAUAAACQZRvoIDtu1wLQUAlqKTVxqwhXIiBnDg6Y4eyx4lKW5XK7wrLeK3vbq8J2W4T4e1nMhpWrZCTt3xKZ8kgsggdJmUFACH5BAEKAAIALAcAAAALAAcAAAIUVB6ii7jajgCAuUmtovxtXnmdUAAAIfkEAQoAAgAsDQACAAcACwAAAhRUIpmHy/3gUVQAQO9NetuugCFWAAAh+QQBCgACACwNAAcABwALAAACE5QVcZjKbVo6ck2AF95m5/6BSwEAIfkEAQoAAgAsBwANAAsABwAAAhOUH3kr6QaAcSrGWe1VQl+mMUIBACH5BAEKAAIALAIADQALAAcAAAIUlICmh7ncTAgqijkruDiv7n2YUAAAIfkEAQoAAgAsAAAHAAcACwAAAhQUIGmHyedehIoqFXLKfPOAaZdWAAAh+QQFCgACACwAAAIABwALAAACFJQFcJiXb15zLYRl7cla8OtlGGgUADs=) !important
+.tablesorter-header-inner{
+    display: inline;
+    margin-right: 7px;
 }
