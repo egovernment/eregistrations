@@ -149,7 +149,7 @@ exports['statistics-main'] = function () {
 			})
 		));
 
-	var checkExist = setInterval(function() {
+	var checkExist = setInterval(function () {
 		var element = window.jQuery('.statistics-table-registrations');
 		if (element.length) {
 			element.tablesorter();

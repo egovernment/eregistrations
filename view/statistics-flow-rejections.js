@@ -36,7 +36,7 @@ exports['statistics-main'] = function () {
 		section({ class: 'table-responsive-container' }, rejectionsTable),
 		section({ class: 'pad-if-pagination' }, rejectionsTable.pagination));
 
-	var checkExist = setInterval(function() {
+	var checkExist = setInterval(function () {
 		var element = window.jQuery('.datatable');
 		if (element.length) {
 			element.tablesorter();
