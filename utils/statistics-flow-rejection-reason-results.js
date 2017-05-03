@@ -1,6 +1,7 @@
 'use strict';
 
-var db = require('../db');
+var _  = require('mano').i18n.bind('Routes: Statistics')
+  , db = require('../db');
 
 module.exports = function (reasons) {
 	return reasons.map(function (reason) {
@@ -8,7 +9,7 @@ module.exports = function (reasons) {
 		  , prefix, uploadParent, upload;
 		reason.rejectionReasons.forEach(function (reasonItem) {
 			if (reasonItem.ownerType === 'processingStep') prefix = '';
-			else if (reasonItem.ownerType === 'data') prefix = 'Data - ';
+			else if (reasonItem.ownerType === 'data') prefix = _('Data') + ' - ';
 			else {
 					try {
 						uploadParent = reasonItem.path.slice(1, reasonItem.path.slice(1).indexOf('/') + 1);
@@ -17,7 +18,7 @@ module.exports = function (reasons) {
 						prefix += ' - ';
 					} catch (e) {
 						//document's label that was rejected cannot be detected
-						prefix = 'Document - ';
+						prefix = _('Document') + ' - ';
 					}
 				}
 			reasonItem.types.forEach(function (type) {
