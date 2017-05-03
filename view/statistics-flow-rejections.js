@@ -42,7 +42,7 @@ exports['statistics-main'] = function () {
 			element.tablesorter();
 			clearInterval(checkExist);
 		}
-	}, 1000);
+	}, 500);
 
 };
 

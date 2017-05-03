@@ -128,11 +128,12 @@ exports['statistics-main'] = function () {
 		br(),
 		section(table({ class: 'statistics-table' },
 			thead(
-				th(),
-				th({ class: 'statistics-table-number' }, _("Files processed")),
-				th({ class: 'statistics-table-number' }, _("Average time")),
-				th({ class: 'statistics-table-number' }, _("Min time")),
-				th({ class: 'statistics-table-number' }, _("Max time"))
+				tr(
+					th(),
+					th({ class: 'statistics-table-number' }, _("Files processed")),
+					th({ class: 'statistics-table-number' }, _("Average time")),
+					th({ class: 'statistics-table-number' }, _("Min time")),
+					th({ class: 'statistics-table-number' }, _("Max time")))
 			),
 			tbody({
 				onEmpty: tr(td({ class: 'empty', colspan: 5 },
@@ -155,4 +156,13 @@ exports['statistics-main'] = function () {
 						row.timedCount ? getDurationDaysHours(row.maxTime) : "-"));
 			}))
 			));
+
+	var checkExist = setInterval(function() {
+		var element = window.jQuery('.statistics-table');
+		if (element.length) {
+			element.tablesorter();
+			clearInterval(checkExist);
+		}
+	}, 500);
+
 };

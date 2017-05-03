@@ -1,5 +1,6 @@
 .tablesorter-default .header, .tablesorter-default .tablesorter-header {
-    background-position: center right !important;
+    padding-left: 20px;
+    background-position: center left !important;
     background-repeat: no-repeat !important;
     cursor: pointer !important;
     white-space: normal !important;
