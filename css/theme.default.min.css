@@ -1,5 +1,6 @@
 .tablesorter-default .header, .tablesorter-default .tablesorter-header {
 	cursor: pointer;
+	outline: none;
 }
 
 .headerSortUp::after,
