@@ -5,13 +5,20 @@ var db = require('../db');
 module.exports = function (reasons) {
 	return reasons.map(function (reason) {
 		var result = [], reasonsConcat = []
-		  , prefix, prefixCount = 0;
+		  , prefix, uploadParent, upload;
 		reason.rejectionReasons.forEach(function (reasonItem) {
 			if (reasonItem.ownerType === 'processingStep') prefix = '';
 			else if (reasonItem.ownerType === 'data') prefix = 'Data - ';
 			else {
-					prefixCount++;
-					prefix = 'Document ' + prefixCount + ' - ';
+					try {
+						uploadParent = reasonItem.path.slice(1, reasonItem.path.slice(1).indexOf('/') + 1);
+						upload = reasonItem.path.slice(reasonItem.path.lastIndexOf('/') + 1);
+						prefix = db[reason.service.type].prototype[uploadParent].map[upload].document.label;
+						prefix += ' - ';
+					} catch (e) {
+						//document's label that was rejected cannot be detected
+						prefix = 'Document - ';
+					}
 				}
 			reasonItem.types.forEach(function (type) {
 				if (type === 'other') {
