@@ -135,11 +135,12 @@ exports['statistics-main'] = function () {
 					h3(step.label),
 					table({ class: 'statistics-table' },
 						thead(
+							tr(
 							th(),
 							th({ class: 'statistics-table-number' }, _("Files processed")),
 							th({ class: 'statistics-table-number' }, _("Average time")),
 							th({ class: 'statistics-table-number' }, _("Min time")),
-							th({ class: 'statistics-table-number' }, _("Max time"))
+							th({ class: 'statistics-table-number' }, _("Max time")))
 						),
 						tbody({
 							onEmpty: tr(td({ class: 'empty statistics-table-number', colspan: 5 },
@@ -165,4 +166,13 @@ exports['statistics-main'] = function () {
 						)), br()];
 			});
 		})));
+
+	var checkExist = setInterval(function() {
+		var element = window.jQuery('.statistics-table');
+		if (element.length) {
+			element.tablesorter();
+			clearInterval(checkExist);
+		}
+	}, 500);
+
 };
