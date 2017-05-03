@@ -15,11 +15,11 @@ module.exports = function (reasons) {
 						uploadParent = reasonItem.path.slice(1, reasonItem.path.slice(1).indexOf('/') + 1);
 						upload = reasonItem.path.slice(reasonItem.path.lastIndexOf('/') + 1);
 						prefix = db[reason.service.type].prototype[uploadParent].map[upload].document.label;
-						prefix += ' - ';
 					} catch (e) {
 						//document's label that was rejected cannot be detected
-						prefix = _('Document') + ' - ';
+						prefix = _('Document');
 					}
+					prefix += ' - ';
 				}
 			reasonItem.types.forEach(function (type) {
 				if (type === 'other') {
