@@ -14,7 +14,7 @@ module.exports = function (result, config) {
 	];
 
 	data.push.apply(data, result.map(function (row) {
-		row[0] = row[0].join(' ');
+		row[0] = row[0].join(' ').replace(/\r?\n|\r/g, ' ').replace(/,/g, ' ');
 		return row;
 	}));
 
