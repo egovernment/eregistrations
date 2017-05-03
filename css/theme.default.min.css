@@ -1,29 +1,26 @@
 .tablesorter-default .header, .tablesorter-default .tablesorter-header {
-    background-position: center right !important;
-    background-repeat: no-repeat !important;
-    cursor: pointer !important;
-    white-space: normal !important;
+	cursor: pointer;
 }
 
 .headerSortUp::after,
 .tablesorter-headerAsc::after,
 .tablesorter-headerSortUp::after {
-    content: "\f0dd";
-    font: normal normal normal 14px/1 FontAwesome;
-    vertical-align: text-bottom;
-    line-height: 21px;
+	content: "\f0dd";
+	font: normal normal normal 14px/1 FontAwesome;
+	vertical-align: text-bottom;
+	line-height: 21px;
 }
 
 .tablesorter-default thead .headerSortDown::after,
 .tablesorter-default thead .tablesorter-headerDesc::after,
 .tablesorter-default thead .tablesorter-headerSortDown::after {
-    content: "\f0de";
-    font: normal normal normal 14px/1 FontAwesome;
-    vertical-align: text-bottom;
-    line-height: 10px;
+	content: "\f0de";
+	font: normal normal normal 14px/1 FontAwesome;
+	vertical-align: text-bottom;
+	line-height: 10px;
 }
 
-.tablesorter-header-inner{
-    display: inline;
-    margin-right: 7px;
+.tablesorter-header-inner {
+	display: inline;
+	margin-right: 7px;
 }
