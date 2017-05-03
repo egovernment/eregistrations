@@ -36,9 +36,14 @@ exports['statistics-main'] = function () {
 		section({ class: 'table-responsive-container' }, rejectionsTable),
 		section({ class: 'pad-if-pagination' }, rejectionsTable.pagination));
 
-	setTimeout(function () {
-		window.jQuery('.datatable').tablesorter()
-	});
+	var checkExist = setInterval(function() {
+		var element = window.jQuery('.datatable');
+		if (element.length) {
+			element.tablesorter();
+			clearInterval(checkExist);
+		}
+	}, 1000);
+
 };
 
 exports._getOrderIndex = function (businessProcess) {

@@ -149,7 +149,12 @@ exports['statistics-main'] = function () {
 			})
 		));
 
-	setTimeout(function () {
-		window.jQuery('.statistics-table-registrations').tablesorter()
-	});
+	var checkExist = setInterval(function() {
+		var element = window.jQuery('.statistics-table-registrations');
+		if (element.length) {
+			element.tablesorter();
+			clearInterval(checkExist);
+		}
+	}, 1000);
+
 };
