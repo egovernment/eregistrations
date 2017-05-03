@@ -1,5 +1,4 @@
 .tablesorter-default .header, .tablesorter-default .tablesorter-header {
-    padding-left: 20px;
     background-position: center left !important;
     background-repeat: no-repeat !important;
     cursor: pointer !important;
@@ -7,13 +6,16 @@
 }
 
 .tablesorter-default thead .headerSortUp, .tablesorter-default thead .tablesorter-headerAsc, .tablesorter-default thead .tablesorter-headerSortUp {
+    padding-left: 20px;
     background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjI8Bya2wnINUMopZAQA7) !important;
 }
 
 .tablesorter-default thead .headerSortDown, .tablesorter-default thead .tablesorter-headerDesc, .tablesorter-default thead .tablesorter-headerSortDown {
+    padding-left: 20px;
     background-image: url(data:image/gif;base64,R0lGODlhFQAEAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAQAAAINjB+gC+jP2ptn0WskLQA7) !important;
 }
 
 .tablesorter-default .tablesorter-processing {
+    padding-left: 20px;
     background-image: url(data:image/gif;base64,R0lGODlhFAAUAKEAAO7u7lpaWgAAAAAAACH/C05FVFNDQVBFMi4wAwEAAAAh+QQBCgACACwAAAAAFAAUAAACQZRvoIDtu1wLQUAlqKTVxqwhXIiBnDg6Y4eyx4lKW5XK7wrLeK3vbq8J2W4T4e1nMhpWrZCTt3xKZ8kgsggdJmUFACH5BAEKAAIALAcAAAALAAcAAAIUVB6ii7jajgCAuUmtovxtXnmdUAAAIfkEAQoAAgAsDQACAAcACwAAAhRUIpmHy/3gUVQAQO9NetuugCFWAAAh+QQBCgACACwNAAcABwALAAACE5QVcZjKbVo6ck2AF95m5/6BSwEAIfkEAQoAAgAsBwANAAsABwAAAhOUH3kr6QaAcSrGWe1VQl+mMUIBACH5BAEKAAIALAIADQALAAcAAAIUlICmh7ncTAgqijkruDiv7n2YUAAAIfkEAQoAAgAsAAAHAAcACwAAAhQUIGmHyedehIoqFXLKfPOAaZdWAAAh+QQFCgACACwAAAIABwALAAACFJQFcJiXb15zLYRl7cla8OtlGGgUADs=) !important
 }
