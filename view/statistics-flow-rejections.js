@@ -80,21 +80,21 @@ exports['statistics-main'] = function () {
 			section({ class: 'pad-if-pagination' }, pagination),
 			br(),
 			data.map(function (result) {
+				var defaultOpts = { class: "submitted-user-data-table-date-time" };
 				return section({ class: 'table-responsive-container' },
 					table({ class: 'submitted-user-data-table' },
 						thead(
-							th({ class: "submitted-user-data-table-date-time" }, _("Rejection reason")),
-							th({ class: "submitted-user-data-table-date-time" }),
-							th({ class: "submitted-user-data-table-date-time" }),
-							th({ class: "submitted-user-data-table-date-time" }, _("Operator")),
-							th({ class: "submitted-user-data-table-date-time" }, _("Role")),
-							th({ class: "submitted-user-data-table-date-time" }, _("Date")),
-							th({ class: "submitted-user-data-table-date-time" }, _("File")),
-							th({ class: "submitted-user-data-table-date-time" })
+							th(defaultOpts, _("Rejection reason")),
+							th(defaultOpts),
+							th(defaultOpts),
+							th(defaultOpts, _("Operator")),
+							th(defaultOpts, _("Role")),
+							th(defaultOpts, _("Date")),
+							th(defaultOpts, _("File")),
+							th({ class: "submitted-user-data-table-link" })
 						),
 						tbody(result.length ? result.map(function (dataRow) {
 							return tr(dataRow.map(function (cellContent, index) {
-								var defaultOpts = { class: "submitted-user-data-table-date-time" };
 								if (index === 0) {
 									return td(defaultOpts, cellContent.map(function (cellItem) {
 										return p(cellItem);
