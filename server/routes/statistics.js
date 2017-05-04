@@ -253,13 +253,13 @@ module.exports = function (config) {
 				return getRejectionReasons.find(queryData, portion);
 			}).then(function (reasons) {
 				var groupBy = {
-					"$group" : {
-						_id : {
+					$group: {
+						_id: {
 							date: "$date.date",
 							rejectReasonConcat: "$rejectionReasonsConcat"
 						},
-						count : {
-							$sum : 1
+						count: {
+							$sum: 1
 						}
 					}
 				};
@@ -267,14 +267,15 @@ module.exports = function (config) {
 					return deferred.map(reasons, function (rejectionReason) {
 						groupedRejectionReasons.some(function (groupedRejectionReason) {
 							if (groupedRejectionReason._id.date === rejectionReason.date.date
-								&& groupedRejectionReason.rejectionReasonsConcat === rejectionReason.rejectionReasonsConcat) {
+									&& groupedRejectionReason.rejectionReasonsConcat
+									=== rejectionReason.rejectionReasonsConcat) {
 								rejectionReason.occurrencesCount = groupedRejectionReason.count;
 								return true;
 							}
 						});
 						return rejectionReason;
 					});
-				})
+				});
 			}).then(function (reasonsWithOccurrence) {
 				data.rows = parseRejectionsForView(reasonsWithOccurrence);
 				return data;
