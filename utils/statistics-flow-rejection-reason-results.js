@@ -3,7 +3,8 @@
 var _  = require('mano').i18n.bind('Routes: Statistics')
   , db = require('../db');
 
-module.exports = function (reasons) {
+module.exports = function (reasons/*, opts */) {
+	var opts = Object(arguments[1]);
 	return reasons.map(function (reason) {
 		var result = [], reasonsConcat = []
 		  , prefix, uploadParent, upload;
@@ -38,6 +39,9 @@ module.exports = function (reasons) {
 		result.push(reason.processingStep.label);
 		result.push((new db.Date(reason.date.date)).toString());
 		result.push(reason.service.businessName);
+		if (opts.useBpId) {
+			result.push(reason.service.id);
+		}
 		return result;
 	});
 };

@@ -252,7 +252,7 @@ module.exports = function (config) {
 				data.pageCount = ensureNumber(Math.ceil(count / itemsPerPage));
 				return getRejectionReasons.find(queryData, portion);
 			}).then(function (reasons) {
-				data.rows = parseRejectionsForView(reasons);
+				data.rows = parseRejectionsForView(reasons, { useBpId: true });
 				return data;
 			});
 		},

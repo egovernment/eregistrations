@@ -80,30 +80,40 @@ exports['statistics-main'] = function () {
 			section({ class: 'pad-if-pagination' }, pagination),
 			br(),
 			data.map(function (result) {
-				return section({ class: "section-primary" },
-					table({ class: 'statistics-table' },
+				return section({ class: 'table-responsive-container' },
+					table({ class: 'submitted-user-data-table' },
 						thead(
-							th(_("Rejection reasons")),
-							th(),
-							th(),
-							th(_("Operator")),
-							th(_("Role")),
-							th(_("Date")),
-							th(_("File"))
+							th({ class: "submitted-user-data-table-date-time" }, _("Rejection reason")),
+							th({ class: "submitted-user-data-table-date-time" }),
+							th({ class: "submitted-user-data-table-date-time" }),
+							th({ class: "submitted-user-data-table-date-time" }, _("Operator")),
+							th({ class: "submitted-user-data-table-date-time" }, _("Role")),
+							th({ class: "submitted-user-data-table-date-time" }, _("Date")),
+							th({ class: "submitted-user-data-table-date-time" }, _("File")),
+							th({ class: "submitted-user-data-table-date-time" })
 						),
 						tbody(result.length ? result.map(function (dataRow) {
 							return tr(dataRow.map(function (cellContent, index) {
+								var defaultOpts = { class: "submitted-user-data-table-date-time" };
 								if (index === 0) {
-									return td(cellContent.map(function (cellItem) {
+									return td(defaultOpts, cellContent.map(function (cellItem) {
 										return p(cellItem);
 									}));
 								}
 								if (index === 1 && cellContent === '*') {
-									return td(span({ class: "fa fa-star" }));
+									return td(defaultOpts, span({ class: "fa fa-star" }));
 								}
-								return td(cellContent);
+								if (index === 6) {
+									return td({ class: "submitted-user-data-table-name" }, cellContent);
+								}
+								if (index === 7) {
+									return td({ class: "submitted-user-data-table-link" }, a({ class: 'actions-edit',
+											href: url(cellContent) },
+										span({ class: 'fa fa-search' }, _("Go to"))));
+								}
+								return td(defaultOpts, cellContent);
 							}));
-						}) : tr(td({ class: 'empty statistics-table-info', colspan: 7 },
+						}) : tr(td({ class: 'empty', colspan: 8 },
 							_("No data for this criteria"))))));
 			})));
 };
