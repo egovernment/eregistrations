@@ -132,12 +132,12 @@ exports['statistics-main'] = function () {
 			section({ class: 'date-period-selector-positioned-on-submenu' }, dateFromToBlock()),
 			section({ class: 'section-primary users-table-filter-bar display-flex flex-wrap' },
 				div(
-					div({ class: 'users-table-filter-bar-status' },
+					div({ class: 'users-table-filter-bar-status width-30' },
 						selectService({ label: _("All services") })),
-					div({ class: 'users-table-filter-bar-status' },
+					div({ class: 'users-table-filter-bar-status width-30' },
 						selectCertificate(),
 						legacy('selectMatch', 'service-select', serviceToCertLegacyMatch)),
-					div({ class: 'users-table-filter-bar-status' },
+					div({ class: 'users-table-filter-bar-status width-30' },
 						select(
 							{ id: 'step-status', name: 'status' },
 							list(Object.keys(stepStatuses), function (status) {
